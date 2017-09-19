@@ -1,0 +1,24 @@
+Package: teal.oncology
+Title: Teal Modules useful for analyzing clinical oncology trials data
+Version: 0.0.1
+Authors@R: c(
+  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
+  person("Heng", "Wang", email = "", role = c("aut")),
+  person("Mark", "Rothe", email = "", role = c("aut")),
+  person("Yuyao", "Song", email = "", role = c("aut")),
+  person("Chendi", "Liao", email = "", role = c("aut")),
+  person("Xiao", "Mu Yo", email = "", role = c("aut"))
+  )
+Description: Teal modules
+Depends:
+  R (>= 3.3),
+  teal
+Imports:
+  grid,
+  ggplot2
+Suggests:
+  testthat
+License: Copyright Roche
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
