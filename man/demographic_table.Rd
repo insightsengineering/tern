@@ -2,12 +2,12 @@
 % Please edit documentation in R/tm_demographic.R
 \name{demographic_table}
 \alias{demographic_table}
-\title{Create Demographics Table from ASL data}
+\title{Create Demographics Table from ADSL data}
 \usage{
 demographic_table(ADSL)
 }
 \arguments{
-\item{ADSL}{ASL dataset with the following variables: USUBJID, STUDYID, AGE,
+\item{ADSL}{ADSL dataset with the following variables: USUBJID, STUDYID, AGE,
 and SEX}
 }
 \description{
@@ -23,7 +23,7 @@ ASL <- data.frame(
    STUDYID = "study 1",
    AGE = 40 + rnorm(n, 0, 20),
    SEX = sample(c("M", "F", "UNDEFINED", NA), n, replace = TRUE),
-   stringAsFactor = FALSE
+   stringAsFactors = FALSE
 )
 
 demographic_table(ASL)

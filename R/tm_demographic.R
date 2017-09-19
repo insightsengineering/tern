@@ -21,7 +21,7 @@
 #'    STUDYID = "study 1",
 #'    AGE = 40 + rnorm(n, 0, 20),
 #'    SEX = sample(c("M", "F", "UNDEFINED", NA), n, replace = TRUE),
-#'    stringAsFactor = FALSE
+#'    stringAsFactors = FALSE
 #' )
 #' 
 #' demographic_table(ASL)
