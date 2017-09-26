@@ -4,15 +4,32 @@
 \alias{time_to_event_table}
 \title{Time to Event Table}
 \usage{
-time_to_event_table(ATE)
+time_to_event_table(time_to_event, is_event)
 }
 \arguments{
-\item{ATE}{time to event data.frame}
+\item{time_to_event}{time to event data}
+
+\item{is_event}{boolean with \code{TRUE} if event and \code{FALSE} if censored}
+}
+\value{
+a named list with one element per row where each element contains the
+  data for the row
 }
 \description{
 This is the description of the function
 }
 \examples{
+\dontrun{
+library(atezo.data)
+library(dplyr)
+ATE <- ate(com.roche.cdpt7722.wo29637.rl)
+ATE_f <- ATE \%>\% filter(PARAM == "OS")
+X <- time_to_event_table(
+    time_to_event = ATE_f$AVAL,
+    is_event = (ATE$CNSR == "N")
+)
+ 
+}
 
 time_to_event_table(NULL)
 }
