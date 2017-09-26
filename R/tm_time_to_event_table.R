@@ -30,6 +30,13 @@
 #' time_to_event_table(NULL)
 time_to_event_table <- function(time_to_event, is_event) {
   
-  table(iris$Species)
+  ## first do math
   
+  ## then to data struture
+  list(
+    "Patients with Events (%)" = list(
+      c(5, .2),
+      c(4, .4)
+    )
+  )
 }
