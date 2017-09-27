@@ -5,6 +5,13 @@
 #' and also apply stratification analysis
 #' 
 #' @param data TTE input dataset
+#' 
+#' @import dplyr
+#' @importFrom stringr str_trim
+#' @import survival
+#' @import survminer
+#' 
+#' @export
 
 kmPlot <- function( data, paramcd = PARAMCD, end.point = "OS",
                     tte.var = "AVAL", cens.var = "CNSR",  evt.ind = 0,
