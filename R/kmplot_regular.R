@@ -26,8 +26,29 @@ kmPlot <- function( data,
   ### subset input data to include analysis related variables and replace blank cells/"." with NA
   data <- data %>% select(c(tte.var, cens.var, trt.var, strata.var)) %>%  
             mutate_if(is.factor, as.character) %>% mutate_all(funs(str_trim)) %>%
-            mutate_all(funs(na_if(., ""))) %>% mutate_all(funs(na_if(., ".")))
+            mutate_all(funs(na_if(., "") )) %>% mutate_all(funs(na_if(., ".")))
   
+  if (!(trt.miss)){ ### if don't keep missing values as one treatment group
+    trt.lev <- data[ , trt.var] %>% filter(!is.na(.)) %>% distinct() %>% arrange_(.dots = trt.var) %>% pull()
+  } else {   ### if keep missing values as one treatment group
+    data[ , trt.var] <- data[ , trt.var] %>% pull() %>% recode(.missing = "Missing")
+    trt.lev1 <- data[ , trt.var] %>% filter(. != "Missing") %>% distinct() %>% arrange_(.dots = trt.var)  %>% pull()
+    trt.lev2 <- data[ , trt.var] %>% filter(. == "Missing") %>% distinct() %>% arrange_(.dots = trt.var)  %>% pull()
+    trt.lev <- c(trt.lev1, trt.lev2)
+  }
   
+  if (is.null(ref.trt)){
+    ref.trt <- trt.lev[1]
+  }
+  
+  if (is.null(oth.trt)){
+    oth.trt <- trt.lev[which(trt.lev != ref.trt)]
+  }
+  
+  data[ , trt.var] <- data[ , trt.var] %>% pull() %>% factor(levels = c(ref.trt, oth.trt))
+  return(data)
+  surv.obj1 = paste0("Surv(", tte.var,",",cens.var, "==", evt.ind, ") ~ ", "factor(", group.var, ")")
+  
+ 
   
 }
