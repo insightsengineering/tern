@@ -25,7 +25,8 @@ kmPlot <- function( data, paramcd = PARAMCD, end.point = "OS",
     data <- as_tibble(data)
   }
   paramcd <- enquo(paramcd)
-  data <- data %>% filter((!!paramcd) == "OS")
+  data <- data %>% filter((!!paramcd) == end.point)
+   
   ### subset input data to include analysis related variables and replace blank cells/"." with NA
 
    data <- data %>% select( c(tte.var, cens.var, trt.var, strata.var) ) %>%  
