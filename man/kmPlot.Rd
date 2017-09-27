@@ -4,17 +4,22 @@
 \alias{kmPlot}
 \title{Function to create regular Kaplan Meier Plot}
 \usage{
-kmPlot(data, tte.var = "AVAL", cens.var = "CNSR", evt.ind = 0,
-  trt.var = "ARM", ref.trt = NULL, oth.trt = NULL, trt.miss = FALSE,
-  strata.var = NULL, cox.tie = "efron", conf.int = FALSE,
-  plot.nrisk = TRUE, nrisk.interval = 2, nrisk.height = 0.25,
-  plot.cens = FALSE, plot.stats = TRUE, size.stats = 4,
-  xystats.up = c(0.7, 0.8), xyinterval.up = c(0.1, 0.1),
-  xystats.lo = c(0.05, 0.3), xyinterval.lo = c(0.08, 0.1), widget = c(N =
-  TRUE, `Median(KM)` = TRUE, `95\% CI Median` = TRUE, `p-value` = TRUE, `Hazard
-  Ratio` = TRUE, `95\% CI HR` = TRUE), line.color = NULL, line.type = 1,
-  line.width = 1, xlab = NULL, ylab = NULL, xlim = NULL, ylim = NULL,
-  title = "Kaplan-Meier Plot", legend = F, legend.pos = c(0.9, 0.9))
+kmPlot(data, paramcd = PARAMCD, end.point = "OS", tte.var = "AVAL",
+  cens.var = "CNSR", evt.ind = 0, trt.var = "ARM", ref.trt = NULL,
+  oth.trt = NULL, trt.miss = FALSE, strata.var = NULL,
+  cox.tie = "efron", conf.int = FALSE, plot.median = FALSE,
+  plot.nrisk = TRUE, time.interval = 5, nrisk.height = 0.25,
+  size.nrisk = 4, plot.cens = FALSE, size.cens = 4.5, shape.cens = "+",
+  plot.stats = TRUE, size.stats = 4, xystats.up = c(0.7, 0.8),
+  xyinterval.up = c(0.1, 0.1), xystats.lo = c(0.05, 0.3),
+  xyinterval.lo = c(0.08, 0.1), widget = c(N = TRUE, `Median(KM)` = TRUE,
+  `95\% CI Median` = TRUE, `p-value` = TRUE, `Hazard Ratio` = TRUE, `95\% CI HR`
+  = TRUE), line.color = NULL, line.type = 1, line.width = 1,
+  xlab = NULL, ylab = NULL, xlim = NULL, ylim = NULL,
+  title = "Kaplan-Meier Plot", legend.pos = c(0.9, 0.9))
+}
+\arguments{
+\item{data}{TTE input dataset}
 }
 \description{
 This function allows you to create KM plot with comparison between treatment arms, seperate plots by subpopulations,

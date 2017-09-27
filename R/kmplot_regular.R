@@ -1,4 +1,86 @@
 
+
+
+#' kmPlot
+#' 
+#' descr
+#' 
+#' @param time_to_event time to event values
+#' @param is_event boolean, \code{TRUE} if event and \code{FALSE} if censored
+#' @param ref.arm character: reference arm 
+#' 
+#' 
+#' @importFrom survival survfit Surv
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' library(atezo.data)
+#' library(dplyr)
+#' 
+#' ATE <- ate(com.roche.cdpt7722.wo29637.rl)
+#' 
+#' ATE_filtered <- ATE %>% filter(PARAMCD == "OS")
+#' 
+#'  with(ATE_filtered, kmPlot2(
+#'     time_to_event = AVAL
+#'     event = CNSR == 0
+#'     arm = factor(ARM, levels = unique(ARM))
+#'  ))
+#' 
+#' # powerful with formula: y ~ x1 + x2 + x1*x2, data = dat
+#' 
+#' 
+#' # debug function
+#' library(survival)
+#' 
+#' with(ATE_filtered, {
+#'   time_to_event <<- AVAL
+#'   event <<- CNSR == 0
+#'   arm <<- ARM
+#' })
+#' ref.arm <- arm[1]
+#' 
+#' # specify ARM as factor
+#' ARM <- factor(LETTERS[1:3], levels=c("C", "A", "B"))
+#' }
+#' 
+#' 
+kmPlot2 <- function(time_to_event, event, arm) {
+  
+  
+  fit <- survfit(Surv(time_to_event, event) ~ arm)
+  
+  p <- survminer::ggsurvplot(fit)
+  
+
+}
+
+
+# kmPlot3(Surv(AVAL, I(1-CNSR)) ~ ARM), data = ATE_filtered)
+kmPlot3 <- function(data, formula) {
+  
+  .formula <- formula(formula)
+  fit <- survfit(.formula, data = data)
+  
+  plot <- survminer::ggsurvplot(fit, data=data)
+  
+  ## maybe we need time to event and cnsr and arm
+  # time_to_event <- ...
+  # event <- ...
+  
+}
+
+kmPlotATE <- function(ATE, ...) {
+  # checking
+  
+  kmPlot(...)
+}
+
+
+
 #' Function to create regular Kaplan Meier Plot
 #' 
 #' This function allows you to create KM plot with comparison between treatment arms, seperate plots by subpopulations,
