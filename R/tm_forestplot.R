@@ -1,155 +1,17 @@
-split.sub <- function(data, variable, cutoff=NULL){
-  #create a temporary binary variable for numerical cutoff 
-  data[["temp"]] <- data[[variable]] 
-  if(is.numeric(data[[variable]])){
-    #if no user-defined cutoff, then median is the default
-    if(typeof(cutoff)=="NULL") {
-      data[["temp"]] <- ifelse(data[[variable]]<=median(data[[variable]],na.rm=T),"<=Median",">Median")
-    }else{
-      data[["temp"]] <- ifelse(data[[variable]]<=cutoff,paste("<=",cutoff,sep=""),paste(">",cutoff,sep=""))
-    }
-    data <- data[!is.na(data[[variable]]),]
-  }
-  if(!is.numeric(data[[variable]])){
-    data <- data[data[[variable]]!="",]
-  }
-  data <- data[,c("USUBJID","temp")]
-  return(split(data,data[["temp"]]))
-}
-
-
-#' Subgroup ATE by the selected ASL variable categories;
-#' 
-#' 
-split.anl <- function (x, data){
-  y <- merge(x, data, by = "USUBJID", all.x = T)
-  return (y)
-}
-
-#' Split the data into a tree of depth 2 with data frames
-#' 
-#' This is used as the analysis is applied to subsets of the data. The first
-#' layer of the tree defines the variable (or ALL) and the second layer
-#' partitions the the data sets according to that variable. 
-#' 
-#' @param adsl ADLS data
-#' @param groupvar variables in adsl that are used to partition the data
-#' @param anl analysis data to partition
-#' 
-#'  @return a named list where each element is another named list with data
-#'    frames
-data_subgroup_tree <- function (adsl, groupvar, anl){
-  
-  adsl %needs%  c("USUBJID", "STUDYID", groupvar)
-  anl %needs% c("USUBJID", "STUDYID")
-  
-  
-  dlist <- lapply(setNames(groupvar, groupvar), function(var) {
-    
-    
-    
-    lapply(split.sub(adsl, var), split.anl, data = anl)
-  })
-  
-  c(list(ALL = list(ALL = anl)), dlist)
-}
-
-
-#' Create a survival table
-#' 
-#' @importFrom survival survfit Surv
-tab.surv <- function(data, outcome, arm.ref, arm.comp){
-  
-  # data %needs% c("ARM")
-  
-  datatemp <- data[data[["ARM"]] %in% c(arm.ref, arm.comp), ]
-  
-  arm.ref.temp  <- paste(arm.ref,collapse = "/")
-  arm.comp.temp <- paste(arm.comp,collapse = "/")
-  
-  #create a temporary Arm variable  to store ref and comparable arms, useful when combined arm is required;
-  datatemp[["armtemp"]] <- ifelse(datatemp[["ARM"]] %in% c(arm.ref.temp ), arm.ref.temp , arm.comp.temp)
-  datatemp[["armtemp"]] <- factor(datatemp[["armtemp"]], levels = c(arm.ref.temp , arm.comp.temp))
-  
-  #Create KM table;
-  km     <- survfit(Surv(AVAL,CNSR == 1) ~ armtemp,data = datatemp[datatemp$PARAM == outcome,])
-  km.tab <- round(summary(km)$table, 1)
-  ref.ne   <- paste(km.tab[1,4], km.tab[1,1], sep = "/")  
-  comp.ne  <- paste(km.tab[2,4], km.tab[2,1], sep = "/")      
-  mst      <- paste(km.tab[1,7], km.tab[2,7], sep = "/")    
-  tab      <- data.frame(ref.ne, comp.ne, mst)
-  colnames(tab) <- c(paste(arm.ref.temp, "(Event/N)", sep = ""), 
-                     paste(arm.comp.temp, "(Event/N)",sep=""), 
-                     paste("MST", "(", arm.ref.temp, "/", arm.comp.temp, ")",sep=""))
-  
-  tab
-  
-  #Add Cox-regression Table;
-}
-
-#' create the time to event table
-#' 
-#' @export
-#' 
-#' @examples 
-#' 
-#' 
-#' \dontrun{
-#' library(atezo.data)
-#' 
-#' ATE <- ate(com.roche.cdt30019.go29436.re)
-#' ASL <- asl(com.roche.cdt30019.go29436.re)
-#' 
-#' tab.list(
-#'   adsl = ASL,
-#'   data = ATE,
-#'   groupvar = c("BAGE","BECOG", "SEX"),
-#'   outcome = "Overall Survival",
-#'   arm.ref = "DUMMY A",
-#'   arm.comp = c("DUMMY B", "DUMMY C")
-#' )
-#' }
-#' 
-#' 
-#' 
-tab.list <- function (adsl, data, groupvar, outcome, arm.ref, arm.comp){
-  
-  dlist <- data_subgroup_tree(adsl = adsl, anl = data, groupvar = groupvar)
-  
-  # x <- dlist[[1]]
-  surv_out <- lapply(dlist, function(x) {
-    # data_subgroup <- x[[1]]
-    lapply(x, function(data_subgroup) {
-      # kaplan meier summary
-      df_km <- tab.surv(data = data_subgroup, outcome = outcome,
-                        arm.ref = arm.ref, arm.comp = arm.comp)
-      
-      # cox model
-      arm2 <- factor(ifelse(data_subgroup$ARM == arm.ref, arm.ref, "comparison"))
-      
-      data_subgroup$armtemp <- relevel(arm2, ref = arm.ref)
-      coxm    <- summary( coxph( Surv(AVAL, CNSR == 0 ) ~ armtemp, data = data_subgroup))
-      
-      HR.95 <- coxm$conf.int[1]
-      HR.95lb <- coxm$conf.int[3]
-      HR.95ub <- coxm$conf.int[4]
-      p.val   <- coxm$coef[5]
-      
-      cbind(df_km, HR.95, HR.95lb, HR.95ub, p.val)
-    })
-  })
-  
-  surv_out2 <- unlist(surv_out, recursive = FALSE)
-  
-  X <- Reduce(rbind, surv_out2)
-  row.names(X) <-names(surv_out2)
-  
-  X
-}
-
 
 #' alternative tablist
 #'
+#' @param time_to_event time to event data
+#' @param event is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
+#'   is censored
+#' @param group_by data frame with one column per grouping
+#' @param arm vector with arm information
+#' @param arm.ref a character vector defining which arms in arm should be taken 
+#'   as the reference
+#' @param arm.comp a character vector defining which arms in arm should be taken 
+#'   as the comparison
+#' 
+#' @export
 #' 
 #' @examples 
 #' 
@@ -162,25 +24,158 @@ tab.list <- function (adsl, data, groupvar, outcome, arm.ref, arm.comp){
 #' 
 #' ATE_f <- ATE %>% filter(PARAMCD == "OS")
 #' 
+#' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+#' 
 #' group_by <- merge(
-#'  ATE[c("USUBJID", "STUDYID")],
-#'  ASL[c("USUBJID", "STUDYID", "BAGE", "SEX", "BECOG")],
-#'  all = TRUE
+#'  ATE_f[c("USUBJID", "STUDYID")],
+#'  ASL[c("USUBJID", "STUDYID", "BAGED", "SEX", "BECOG")],
+#'  all.x = TRUE, all.y = FALSE
 #' )
 #' 
 #' head(group_by)
 #' 
 #' surv_subgroup(
 #'    time_to_event = ATE_f$AVAL,
-#'    event = 1 - ATE_f$CNSR,
-#'    group_by = group_by[, -c(1,2)]
+#'    event = ATE_f$CNSR == 0,
+#'    arm = ATE_f$ARM, 
+#'    group_by = group_by[, -c(1,2), drop=FALSE],
+#'    arm.ref = "DUMMY A",
+#'    arm.comp = "DUMMY B"
 #' )
 #' 
 #' }
 #'   
-surv_subgoup <- function(time_to_event, event, group_var, covariates = NULL) {
+surv_subgroup <- function(time_to_event, event, arm, arm.ref, arm.comp, group_by, covariates = NULL) {
+  
+  # argument checking
+  n <- length(time_to_event)
+  if (length(event) != n) stop("event has wrong length")
+  if (length(arm) != n) stop("arm has wrong length")
+  if (!is.data.frame(group_by)) stop("group_by is expected to be a data.frame")
+  if (nrow(group_by) != n) stop("group_by has wrong number of rows")
   
   
+  arm_for_model <- arm_for_model(arm, arm.ref, arm.comp)
   
+  model_data <- subset(
+    data.frame(
+      time_to_event,
+      event,
+      arm = arm_for_model
+    ), arm %in% c(arm.ref, arm.comp)
+  )
+  
+  # split data into a tree for data
+  # where each leaf is a data.frame with 
+  # the data to cumpute the survival analysis with
+  data_list <- c(
+    list(ALL = list(ALL = model_data)),
+    lapply(group_by, function(var) {
+      lapply(unique(var), function(value) {
+        model_data[var == value, , drop= FALSE]
+      })
+    })
+  )
+
+  # apply the survival analysis
+  results_survival <- lapply(data_list, function(varname) {
+    lapply(varname, function(data_for_value) {
+      survival_results(data_for_value)
+    })
+  })
+  
+  # reduce results into a table
+  results_survival2 <- unlist(results_survival, recursive = FALSE)
+  X <- Reduce(rbind, results_survival2)
+  row.names(X) <-names(results_survival2)
+  
+  X
 }
 
+
+
+#' explain what you do
+arm_for_model <- function(arm, arm.ref, arm.comp) {
+  
+  if (!all(arm.ref %in% arm)) stop("not all arms in arm.ref are in arm")
+  if (!all(arm.comp %in% arm)) stop("not all arms in arm.comp are in arm")
+  
+  name_arm_ref <- paste(arm.ref, collapse = "/")
+  name_arm_comp <- paste(arm.comp, collapse = "/")
+  
+  arm2 <- vapply(arm, function(x) {
+    if (x %in% arm.ref) {
+      name_arm_ref
+    } else if (x %in% arm.comp) {
+      name_arm_comp
+    } else {
+      "not possible"
+    }
+  }, character(1))
+  
+  factor(arm2, levels = c(name_arm_ref, name_arm_comp))
+}
+
+#' Forest Plot Numbers for Survival data with ADAM data structure
+#' 
+#' @export
+#' 
+#' @inheritParams surv_subgroup
+#' @param ASL asl data frame
+#' @param ATE data frame
+#' 
+#' @importFrom dplyr %>% filter
+#' 
+#' @examples 
+#' \dontrun{
+#' 
+#' rm(list = ls())
+#' library(atezo.data)
+#' library(dplyr)
+#' 
+#' ATE <- ate(com.roche.cdt30019.go29436.re)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' 
+#' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+#' 
+#' surv_subgroup_ADAM(
+#'   ASL, ATE,
+#'   groupvar = c("SEX", "BECOG", "BAGED"),
+#'   arm.ref = "DUMMY A", arm.comp = "DUMMY B"
+#' )
+#'   
+#' }
+surv_subgroup_ADAM <- function(ASL, ATE,
+                               outcome = "Overall Survival",
+                               groupvar,
+                               arm.ref,
+                               arm.comp,
+                               arm.var = "ARM",
+                               time_to_event.var = "AVAL",
+                               event.var = "CNSR", negate.event.var = TRUE) {
+  
+  ATE %needs% c("USUBJID", "STUDYID", "PARAM", time_to_event.var, event.var)
+  ASL %needs% c("USUBJID", "STUDYID", groupvar, arm.var)
+  
+  event <- ATE[[event.var]]
+  if (!(is.numeric(event) || is.logical(event))) stop("event var needs to be numeric or boolean")  
+  
+  ATE_f <- ATE %>% filter(PARAM == outcome)
+  
+  if (nrow(ATE_f) <= 0) stop("ATE data left after filtering")
+   
+  group_by <- merge(
+    ATE_f[c("USUBJID", "STUDYID")],
+    ASL[c("USUBJID", "STUDYID", groupvar)],
+    all.x = TRUE, all.y = FALSE
+  )
+  
+  surv_subgroup(
+    time_to_event = ATE_f[[time_to_event.var]],
+    event = if(negate.event.var) !ATE_f[[event.var]] else ATE_f[[event.var]],
+    arm = ATE_f[[arm.var]], 
+    group_by = group_by[, -c(1,2), drop=FALSE],
+    arm.ref = arm.ref,
+    arm.comp = arm.comp
+  )
+}
