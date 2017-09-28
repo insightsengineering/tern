@@ -22,14 +22,32 @@ split.sub <- function(data, variable, cutoff=NULL){
 #' 
 #' 
 split.anl <- function (x, data){
-  y <- merge(x,data,by = "USUBJID",all.x = T)
+  y <- merge(x, data, by = "USUBJID", all.x = T)
   return (y)
 }
 
-#' Set up data list
-data.list <- function (adsl, groupvar, anl){
+#' Split the data into a tree of depth 2 with data frames
+#' 
+#' This is used as the analysis is applied to subsets of the data. The first
+#' layer of the tree defines the variable (or ALL) and the second layer
+#' partitions the the data sets according to that variable. 
+#' 
+#' @param adsl ADLS data
+#' @param groupvar variables in adsl that are used to partition the data
+#' @param anl analysis data to partition
+#' 
+#'  @return a named list where each element is another named list with data
+#'    frames
+data_subgroup_tree <- function (adsl, groupvar, anl){
+  
+  adsl %needs%  c("USUBJID", "STUDYID", groupvar)
+  anl %needs% c("USUBJID", "STUDYID")
+  
   
   dlist <- lapply(setNames(groupvar, groupvar), function(var) {
+    
+    
+    
     lapply(split.sub(adsl, var), split.anl, data = anl)
   })
   
@@ -96,7 +114,7 @@ tab.surv <- function(data, outcome, arm.ref, arm.comp){
 #' 
 tab.list <- function (adsl, data, groupvar, outcome, arm.ref, arm.comp){
   
-  dlist <- data.list(adsl = adsl, anl = data, groupvar = groupvar)
+  dlist <- data_subgroup_tree(adsl = adsl, anl = data, groupvar = groupvar)
   
   # x <- dlist[[1]]
   surv_out <- lapply(dlist, function(x) {
@@ -104,7 +122,7 @@ tab.list <- function (adsl, data, groupvar, outcome, arm.ref, arm.comp){
     lapply(x, function(data_subgroup) {
       # kaplan meier summary
       df_km <- tab.surv(data = data_subgroup, outcome = outcome,
-                           arm.ref = arm.ref, arm.comp = arm.comp)
+                        arm.ref = arm.ref, arm.comp = arm.comp)
       
       # cox model
       arm2 <- factor(ifelse(data_subgroup$ARM == arm.ref, arm.ref, "comparison"))
@@ -129,4 +147,40 @@ tab.list <- function (adsl, data, groupvar, outcome, arm.ref, arm.comp){
   X
 }
 
+
+#' alternative tablist
+#'
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' library(atezo.data)
+#' library(dplyr)
+#' 
+#' ATE <- ate(com.roche.cdt30019.go29436.re)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' 
+#' ATE_f <- ATE %>% filter(PARAMCD == "OS")
+#' 
+#' group_by <- merge(
+#'  ATE[c("USUBJID", "STUDYID")],
+#'  ASL[c("USUBJID", "STUDYID", "BAGE", "SEX", "BECOG")],
+#'  all = TRUE
+#' )
+#' 
+#' head(group_by)
+#' 
+#' surv_subgroup(
+#'    time_to_event = ATE_f$AVAL,
+#'    event = 1 - ATE_f$CNSR,
+#'    group_by = group_by[, -c(1,2)]
+#' )
+#' 
+#' }
+#'   
+surv_subgoup <- function(time_to_event, event, group_var, covariates = NULL) {
+  
+  
+  
+}
 

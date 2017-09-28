@@ -4,7 +4,7 @@
 \alias{tab.list}
 \title{create the time to event table}
 \usage{
-tab.list(adsl = ASL, data = ATE, groupvar, outcome, arm.ref, arm.comp)
+tab.list(adsl, data, groupvar, outcome, arm.ref, arm.comp)
 }
 \description{
 create the time to event table
