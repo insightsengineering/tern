@@ -24,6 +24,13 @@
 #' 
 #' tbl
 #' 
+#' tbl[1,2]
+#' 
+#' tbl[3,2]
+#' tbl[5,1]
+#' tbl[5,2]
+#' 
+#' 
 #' dim(tbl)
 #' nrow(tbl)
 #' ncol(tbl)
@@ -33,6 +40,24 @@
 #' as_html(tbl)
 #' 
 #' Viewer(tbl)
+#' 
+#' # colspans
+#' 
+#' tbl2 <- rtable(
+#'   c("A", "B", "C", "D", "E"),
+#'   format = "xx",
+#'   rrow("r1", 1, 2, 3, 4, 5),
+#'   rrow("r2", merge_cells(2, "sp2"), "sp1", merge_cells(2, "sp2-2"))
+#' )
+#' 
+#' Viewer(tbl2)
+#' 
+#' tbl2[1,3]
+#' tbl2[2,1]
+#' tbl2[2,2]
+#' tbl2[2,3]
+#' tbl2[2,4]
+#' tbl2[2,5]
 #' 
 rtable <- function(col.names, format = NULL, ...) {
   
@@ -215,7 +240,7 @@ cf <- function(cell, format) {
 #' @export
 empty_row <- function() {
   structure(
-    "-",
+    list(),
     class = c("empty_row", "rrow")
   )
 }
@@ -394,4 +419,23 @@ as.rtable.table <- function(x, format = "xx") {
   }
 }
 
+
+#' @export
+`[.rtable` <- function(x, i, j, ...) {
+  
+  if (missing(i) || missing(j)) stop("both i and j need to be defined to access elements in rtable")
+  
+  row <- x[[i]]
+  if (length(row) == 0) {
+    NULL # no cell information
+  } else {
+    nc <- ncol(x)
+    nci <- vapply(row, function(ri) if (is(ri, "merged_cell")) attr(ri, "ncells") else 1, numeric(1))
+    j2 <- rep(1:length(nci), nci)
+    
+    el <- as.vector(row[[j2[j]]])  
+    
+    structure(el, merged_cell = j != j2[j])
+  }
+}
 

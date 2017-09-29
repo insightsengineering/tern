@@ -17,14 +17,14 @@ create a table
 \examples{
 
 tbl <- rtable(
-  col.names = c("Treatement", "Comparison"),
+  col.names = c("Treatement\\nN=100", "Comparison\\nN=300"),
   format = "xx (xx.xx\%)",
   rrow("Response", c(104, .2), c(100, .4)),
   rrow("Non-Response", c(23, .4), c(43, .5)),
   empty_row(),
-  rrow("more"),
+  rrow("this is a very long section header"),
   rrow("HR", merge_cells(2, cf(3.23, "xx.xx"))),
-  rrow("95\% CI", indent = 2, merge_cells(2, cf(3.23, "xx.xx")))
+  rrow("95\% CI", indent = 2, merge_cells(2, 3.23), format = "xx.x")
 )
 
 tbl
@@ -33,9 +33,10 @@ dim(tbl)
 nrow(tbl)
 ncol(tbl)
 
-
+tbl[[1]][[1]]
 
 as_html(tbl)
 
 Viewer(tbl)
+
 }
