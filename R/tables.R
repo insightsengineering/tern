@@ -11,8 +11,9 @@
 #' 
 #' @examples
 #' 
-#' tbl <- rtable(c("Treatement", "Comparison"),
-#'   cell_format("xx (xx.xx%)"),
+#' tbl <- rtable(
+#'   col.names = c("Treatement", "Comparison"),
+#'   format = "xx (xx.xx%)",
 #'   rrow("Response", c(104, .2), c(100, .4)),
 #'   rrow("Non-Response", c(23, .4), c(43, .5)),
 #'   empty_row(),
@@ -27,7 +28,7 @@
 #' nrow(tbl)
 #' ncol(tbl)
 #' 
-#' 
+#' tbl[[1]][[1]]
 #' 
 #' as_html(tbl)
 #' 
@@ -97,14 +98,7 @@ as_html.rtable <- function(x, format = NULL, ...) {
   tags$table(
     class = "table",
     do.call(tags$tr, lapply(c("", attr(x, "col.names")), tags$th)), 
-    lapply(x, function(xi) {
-      if (is(xi, "cell_format")) {
-        format <<- unclass(xi)
-        NULL
-      } else {
-        as_html(xi, format=format, ncol = ncol)
-      }
-    })
+    lapply(x, as_html, format=format, ncol = ncol)
   )
   
 }
@@ -134,11 +128,6 @@ as_html.rrow <- function(x, format, ncol, ...) {
   }
 }
 
-
-#' @export
-as_html.cell_format <- function(x, format, ...) {
-  NULL
-}
 
 #' @export
 as_html.merged_cell <- function(x, format, ...) {
@@ -199,14 +188,6 @@ cf <- function(cell, format) {
   )
 }
 
-
-#' @export
-cell_format <- function(format) {
-  structure(
-    format,
-    class = "cell_format"
-  )
-}
 
 
 #' @export

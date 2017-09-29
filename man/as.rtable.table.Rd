@@ -13,7 +13,8 @@ convert a table to an rtable
 Viewer(as.rtable(table(iris$Species)))
 
 Viewer(
-  as.rtable(table(sample(letters[1:4], 200, TRUE), sample(LETTERS[1:4], 200, TRUE)))
+  as.rtable(table(sample(letters[1:4], 200, TRUE), sample(LETTERS[1:4], 200, TRUE))),
+  row.names.bold = TRUE
 )
 
 }
