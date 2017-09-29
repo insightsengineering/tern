@@ -17,9 +17,9 @@
 #'   rrow("Response", c(104, .2), c(100, .4)),
 #'   rrow("Non-Response", c(23, .4), c(43, .5)),
 #'   empty_row(),
-#'   rrow("more"),
+#'   rrow("this is a very long section header"),
 #'   rrow("HR", merge_cells(2, cf(3.23, "xx.xx"))),
-#'   rrow("95% CI", indent = 2, merge_cells(2, cf(3.23, "xx.xx")))
+#'   rrow("95% CI", indent = 2, merge_cells(2, 3.23), format = "xx.x")
 #' )
 #' 
 #' tbl
@@ -33,6 +33,7 @@
 #' as_html(tbl)
 #' 
 #' Viewer(tbl)
+#' 
 rtable <- function(col.names, format = NULL, ...) {
   
   ncol <- length(col.names)
@@ -43,7 +44,7 @@ rtable <- function(col.names, format = NULL, ...) {
   
   check_consistent_ncols(rows, ncol)
 
-  nrow <- sum(vapply(rows, class, character(1)) == "rrow")
+  nrow <- length(rows)
   
   structure(
     rows,
@@ -57,7 +58,10 @@ rtable <- function(col.names, format = NULL, ...) {
 
 check_consistent_ncols <- function(rows, ncols) {
   lapply(rows, function(r) {
-    if (is(r, "rrow") && length(r) != 0) {
+    if (!is(r, "rrow")) stop("element is not a rrow")
+    
+    # zero length is possible (label only)
+    if (length(r) != 0 && !is(r, "empty_row")) {
       ncells <- n_cells_in_rrow(r)
       if (ncells != ncols) {
         stop(paste("row", attr(r, "row.name"), "has", sum(ncells), "cells instead of expected", ncols))
@@ -75,7 +79,13 @@ dim.rtable <- function(x) {
 
 #' @export
 print.rtable <- function(x, ...) {
-  print(paste("rtable of dimension:", paste(dim(x), collapse = "x")))
+  cat(
+    paste(
+      "rtable of dimension:", paste(dim(x), collapse = "x"), "\n",
+      "currently rtables can only be viewed as html with Viewer()\n"
+    )
+  )
+  
 }
 
 #' @export
@@ -89,11 +99,13 @@ as_html.default <- function(x, format, ...) {
 }
 
 #' @export
-as_html.rtable <- function(x, format = NULL, ...) {
+as_html.rtable <- function(x, format, ...) {
+  
+  if (!missing(format)) stop("argument format for as_html.rtable should not be specified")
   
   ncol <- ncol(x)
   
-  if (is.null(format)) format <- attr(x, "format")
+  format <- attr(x, "format")
   
   tags$table(
     class = "table",
@@ -169,9 +181,10 @@ rrow <- function(row.name, ..., format = NULL, indent = 1) {
 }
 
 #' @export
-merge_cells <- function(num, cell, format) {
+merge_cells <- function(num, cell, format = NULL) {
   
-  if (missing(format) && !is.null(attr(cell, "format"))) format <- attr(cell, "format")
+  if (!is.null(attr(cell, "format"))) format <- attr(cell, "format")
+  
   structure(
     cell,
     format = format,
@@ -194,7 +207,7 @@ cf <- function(cell, format) {
 empty_row <- function() {
   structure(
     "-",
-    class = "empty_row"
+    class = c("empty_row", "rrow")
   )
 }
 
@@ -357,7 +370,7 @@ as.rtable.default <- function(x, format) {
 as.rtable.table <- function(x, format = "xx") {
   
   if (length(dim(x)) == 1) {
-    rtable(col.names = names(x), format = format, do.call(rrow, c(list(row.name = ""), as.list(as.vector(x)))))
+    rtable(col.names = names(x), format = format, do.call(rrow, c(list(row.name = "1"), as.list(as.vector(x)))))
   } else {
     X <- as.data.frame.matrix(x)
     do.call(rtable,
