@@ -2,8 +2,10 @@
 
 #' create a table
 #' 
-#' @param colnames vector with column names
+#' @param col.names vector with column names
 #' @param ... each element is a row
+#' 
+#' @importFrom shiny tags
 #' 
 #' @export
 #' 
@@ -26,23 +28,24 @@
 #' ncol(tbl)
 #' 
 #' 
+#' 
 #' as_html(tbl)
 rtable <- function(col.names, ...) {
   
-  ncols <- length(col.names)
-  if (ncols <= 1) stop("table needs at least one 1 columns")
+  ncol <- length(col.names)
+  if (ncol <= 1) stop("table needs at least one 1 columns")
   
   ## check if n-cols correct
   rows <- list(...)
   
-  check_consistent_ncols(rows, ncols)
+  check_consistent_ncols(rows, ncol)
 
   nrow <- sum(vapply(rows, class, character(1)) == "rrow")
   
   structure(
     rows,
     col.names = col.names,
-    ncol = ncols,
+    ncol = ncol,
     nrow = nrow,
     class = "rtable"
   )
@@ -61,7 +64,7 @@ check_consistent_ncols <- function(rows, ncols) {
         }, numeric(1))
         
         if (sum(ncells) != ncols) {
-          stop(paste("row", attr(r, "label"), "has", sum(ncells), "cells instead of expected", ncols))
+          stop(paste("row", attr(r, "row.name"), "has", sum(ncells), "cells instead of expected", ncols))
         }
       }
     }
@@ -85,38 +88,60 @@ as_html <- function(x, format = c("xx.xx", "xx.xx / xx.xx")) {
   UseMethod("as_html")  
 }
 
+#' @export
 as_html.default <- function(x, format) {
   stop("no as_html method for class ", class(x))
 }
 
+#' @export
 as_html.rtable <- function(x, format =  c("xx.xx", "xx.xx / xx.xx")) {
   
-}
-
-as_html.row <- function(x, format) {
+  tags$table(
+    do.call(tags$tr, lapply(c("", attr(x, "col.names")), tags$th)), 
+    lapply(x, as_html)
+  )
   
 }
 
+#' @export
+as_html.rrow <- function(x, format) {
+  do.call(tags$tr,
+          c(
+            list(tags$td(class="rowname", attr(x,"row.name"))),
+            lapply(x, function(xi) {
+              cell_content <- paste(xi, collapse = " / ")
+              if (is(xi, "merged_cell")) {
+                as_html.merged_cell(cell_content)
+              } else {
+                tags$td(cell_content)
+              }
+            })
+          ))
+}
+
+#' @export
 as_html.cell_format <- function(x, format) {
-  
+  NULL
 }
 
+#' @export
 as_html.merged_cell <- function(x, format) {
-  
+  tags$td(colspan = as.character(attr(x, "ncells")), x)
 }
 
+#' @export
 as_html.empty_row <- function(x, format) {
-  
+  tags$tr()
 }
 
 
 #' table row
 #' 
 #' @export
-rrow <- function(label, ..., format = NULL, indent = 1) {
+rrow <- function(row.name, ..., format = NULL, indent = 1) {
   structure(
     list(...),
-    label = label,
+    row.name = row.name,
     format = format,
     indent = indent,
     class = "rrow"
@@ -124,9 +149,10 @@ rrow <- function(label, ..., format = NULL, indent = 1) {
 }
 
 #' @export
-merge_cells <- function(num, cell) {
+merge_cells <- function(num, cell, format = NULL) {
   structure(
     cell,
+    format = format,
     ncells = num,
     class = "merged_cell"
   )

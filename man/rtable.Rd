@@ -7,9 +7,9 @@
 rtable(col.names, ...)
 }
 \arguments{
-\item{...}{each element is a row}
+\item{col.names}{vector with column names}
 
-\item{colnames}{vector with column names}
+\item{...}{each element is a row}
 }
 \description{
 create a table
@@ -31,6 +31,7 @@ tbl
 dim(tbl)
 nrow(tbl)
 ncol(tbl)
+
 
 
 as_html(tbl)
