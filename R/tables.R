@@ -12,7 +12,7 @@
 #' @examples
 #' 
 #' tbl <- rtable(
-#'   col.names = c("Treatement", "Comparison"),
+#'   col.names = c("Treatement\nN=100", "Comparison\nN=300"),
 #'   format = "xx (xx.xx%)",
 #'   rrow("Response", c(104, .2), c(100, .4)),
 #'   rrow("Non-Response", c(23, .4), c(43, .5)),
@@ -107,9 +107,18 @@ as_html.rtable <- function(x, format, ...) {
   
   format <- attr(x, "format")
   
+  # split header into lines
+  col_headers <- lapply(attr(x, "col.names"), function(colname) {
+    els <- unlist(strsplit(colname, "\n", fixed = TRUE))
+    y <- Map(function(el, is.last) {
+      list(tags$span(el), if (!is.last) tags$br() else NULL)
+    }, els, rep(c(FALSE, TRUE), c(length(els) -1, 1)))
+    do.call(tagList, y)
+  })
+  
   tags$table(
     class = "table",
-    do.call(tags$tr, lapply(c("", attr(x, "col.names")), tags$th)), 
+    tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th))), 
     lapply(x, as_html, format=format, ncol = ncol)
   )
   
