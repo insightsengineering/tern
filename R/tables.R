@@ -32,7 +32,7 @@
 #' as_html(tbl)
 #' 
 #' Viewer(tbl)
-rtable <- function(col.names, ...) {
+rtable <- function(col.names, format = NULL, ...) {
   
   ncol <- length(col.names)
   if (ncol <= 1) stop("table needs at least one 1 columns")
@@ -49,6 +49,7 @@ rtable <- function(col.names, ...) {
     col.names = col.names,
     ncol = ncol,
     nrow = nrow,
+    format = format,
     class = "rtable"
   )
 }
@@ -56,7 +57,8 @@ rtable <- function(col.names, ...) {
 check_consistent_ncols <- function(rows, ncols) {
   lapply(rows, function(r) {
     if (is(r, "rrow") && length(r) != 0) {
-      if (n_cells_in_rrow(r) != ncols) {
+      ncells <- n_cells_in_rrow(r)
+      if (ncells != ncols) {
         stop(paste("row", attr(r, "row.name"), "has", sum(ncells), "cells instead of expected", ncols))
       }
     }
@@ -89,6 +91,8 @@ as_html.default <- function(x, format, ...) {
 as_html.rtable <- function(x, format = NULL, ...) {
   
   ncol <- ncol(x)
+  
+  if (is.null(format)) format <- attr(x, "format")
   
   tags$table(
     class = "table",
@@ -215,7 +219,7 @@ empty_row <- function() {
 
 
 #' @export
-Viewer <- function(x) {
+Viewer <- function(x, row.names.bold = FALSE) {
   if (!is(x, "rtable")) stop("x is expected to be an rtable")
   
   viewer <- getOption("viewer")
@@ -255,7 +259,8 @@ Viewer <- function(x) {
       tags$link(href="css/bootstrap.min.css", rel="stylesheet"),
       tags$style(type="text/css",
         "td, th { text-align: -webkit-center;}",
-         ".rowname {text-align: left;}"
+         ".rowname {text-align: left;}",
+        if (row.names.bold) ".rowname {font-weight: bold;}" else NULL
       )
     ),
     tags$body(
@@ -347,5 +352,43 @@ format_cell <- function(x, format, output = c("html", "ascii")) {
   }
 }
 
+#' @export
+as.rtable <- function(x, format = "xx") {
+  UseMethod("as.rtable")
+}
+
+#' @export
+as.rtable.default <- function(x, format) {
+  stop("no default implementation for as.rtable")
+}
+#' convert a table to an rtable
+#' 
+#' @export
+#' 
+#' @examples 
+#' Viewer(as.rtable(table(iris$Species)))
+#' 
+#' Viewer(
+#'   as.rtable(table(sample(letters[1:4], 200, TRUE), sample(LETTERS[1:4], 200, TRUE))),
+#'   row.names.bold = TRUE
+#' )
+#' 
+as.rtable.table <- function(x, format = "xx") {
+  
+  if (length(dim(x)) == 1) {
+    rtable(col.names = names(x), format = format, do.call(rrow, c(list(row.name = ""), as.list(as.vector(x)))))
+  } else {
+    X <- as.data.frame.matrix(x)
+    do.call(rtable,
+            c(list(
+              col.names = names(X), format = format
+            ),
+            Map(function(row, row.name) {
+              do.call(rrow, as.list(c(row.name=row.name, setNames(row, NULL))))
+            }, as.data.frame(t(X)), rownames(X))
+            )
+    )
+  }
+}
 
 

@@ -4,7 +4,7 @@
 \alias{rtable}
 \title{create a table}
 \usage{
-rtable(col.names, ...)
+rtable(col.names, format = NULL, ...)
 }
 \arguments{
 \item{col.names}{vector with column names}
