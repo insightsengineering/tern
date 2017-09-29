@@ -76,7 +76,7 @@ print.rtable <- function(x, ...) {
 }
 
 #' @export
-as_html <- function(x, format = c("xx.xx", "xx.xx / xx.xx"), ...) {
+as_html <- function(x, format, ...) {
   UseMethod("as_html")  
 }
 
@@ -86,20 +86,29 @@ as_html.default <- function(x, format, ...) {
 }
 
 #' @export
-as_html.rtable <- function(x, format =  c("xx.xx", "xx.xx / xx.xx"), ...) {
+as_html.rtable <- function(x, format = NULL, ...) {
   
   ncol <- ncol(x)
   
   tags$table(
     class = "table",
     do.call(tags$tr, lapply(c("", attr(x, "col.names")), tags$th)), 
-    lapply(x, as_html, ncol = ncol)
+    lapply(x, function(xi) {
+      if (is(xi, "cell_format")) {
+        format <<- unclass(xi)
+        NULL
+      } else {
+        as_html(xi, format=format, ncol = ncol)
+      }
+    })
   )
   
 }
 
 #' @export
 as_html.rrow <- function(x, format, ncol, ...) {
+  
+  if (!is.null(attr(x, "format"))) format <- attr(x, "format")
   
   if (length(x) == 0) {
     tags$tr(
@@ -110,13 +119,10 @@ as_html.rrow <- function(x, format, ncol, ...) {
             c(
               list(tags$td(class="rowname", attr(x,"row.name"))),
               lapply(x, function(xi) {
-                
-                cell_content <- paste(xi, collapse = " / ")
-                
                 if (is(xi, "merged_cell")) {
-                  as_html.merged_cell(xi)
+                  as_html.merged_cell(xi, format)
                 } else {
-                  tags$td(cell_content)
+                  tags$td(format_cell(xi, format, output="html"))
                 }
               }),
               replicate(ncol - n_cells_in_rrow(x), tags$td(), simplify = FALSE)
@@ -132,7 +138,7 @@ as_html.cell_format <- function(x, format, ...) {
 
 #' @export
 as_html.merged_cell <- function(x, format, ...) {
-  tags$td(colspan = as.character(attr(x, "ncells")), paste(x, collapse = " / "))
+  tags$td(colspan = as.character(attr(x, "ncells")), format_cell(x, format, output="html"))
 }
 
 #' @export
@@ -170,7 +176,9 @@ rrow <- function(row.name, ..., format = NULL, indent = 1) {
 }
 
 #' @export
-merge_cells <- function(num, cell, format = NULL) {
+merge_cells <- function(num, cell, format) {
+  
+  if (missing(format) && !is.null(attr(cell, "format"))) format <- attr(cell, "format")
   structure(
     cell,
     format = format,
@@ -181,8 +189,10 @@ merge_cells <- function(num, cell, format = NULL) {
 
 #' @export 
 cf <- function(cell, format) {
-  attr(cell, "format") <- format
-  cell
+  structure(
+    cell,
+    format = format
+  )
 }
 
 
@@ -269,4 +279,73 @@ Viewer <- function(x) {
   
   
 }
+
+
+#' @export
+format_cell <- function(x, format, output = c("html", "ascii")) {
+  
+  output <- match.arg(output)
+  
+  if (!is.null(attr(x, "format"))) format <- attr(x, "format")
+  
+  if (is.null(format)) stop("format is NULL")
+  
+  l <- if (format %in% c(
+    "xx", "xx.", "xx.x", "xx.xx", "xx.xxx",
+    "xx%", "xx.x%", "xx.xx%", "xx.xxx%"
+  )) {
+    1
+  } else if (format %in% c(
+    "xx / xx", "xx. / xx.", "xx.x / xx.x", "xx.xx / xx.xx",
+    "xx (xx%)", "xx (xx.%)", "xx (xx.x%)", "xx (xx.xx%)", 
+    "xx. (xx.%)", "xx.x (xx.x%)", "xx.xx (xx.xx%)",
+    "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)"
+  )) {
+    2
+  } else {
+    stop("unknown format: ", format)
+  }
+  
+  if (length(x) != l) stop("cell <", paste(x), "> and format ", format, " are of different length")
+  
+  if (format %in% c()) {
+    # output dependent
+    paste(x, collapse = " / ")
+  } else {
+    
+    switch(
+      format,
+      "xx" = as.character(x),
+      "xx." = as.character(round(x, 0)),
+      "xx.x" = as.character(round(x, 1)),
+      "xx.xx" = as.character(round(x, 2)),
+      "xx.xxx" = as.character(round(x, 3)),
+      "xx%" = paste0(x * 100, "%"),
+      "xx.%" = paste0(round(x * 100, 0, "%")),
+      "xx.x%" = paste0(round(x * 100, 1), "%"),
+      "xx.xx%" = paste0(round(x * 100, 2), "%"),
+      "xx.xxx%" = paste0(round(x * 100, 3), "%"),
+      "xx / xx" = paste(x, collapse = " / "),
+      "xx. / xx." = paste(lapply(x, round, 0)),
+      "xx.x / xx.x" = paste(lapply(x, round, 1)),
+      "xx.xx / xx.xx" = paste(lapply(x, round, 2)),
+      "xx.xxx / xx.xxx" = paste(lapply(x, round, 3)),
+      "xx (xx%)" = paste0(x[1], " (", x[2]*100, "%)"),
+      "xx (xx.%)" = paste0(x[1], " (", round(x[2]*100, 0), "%)"),
+      "xx (xx.x%)" = paste0(x[1], " (", round(x[2]*100, 1), "%)"),
+      "xx (xx.xx%)" = paste0(x[1], " (", round(x[2]*100, 2), "%)"),
+      "xx. (xx.%)" = paste0(round(x[1],0), " (", round(x[2]*100, 1), "%)"),
+      "xx.x (xx.x%)" = paste0(round(x[1],1), " (", round(x[2]*100, 1), "%)"),
+      "xx.xx (xx.xx%)" = paste0(round(x[1],2), " (", round(x[2]*100, 2), "%)"),
+      "(xx, xx)" = paste0("(",x[1], x[2], ")"),
+      "(xx., xx.)" = paste0("(", paste(lapply(x, round, 0), collapse = ", ") , ")"),
+      "(xx.x, xx.x)" = paste0("(", paste(lapply(x, round, 1), collapse = ", ") , ")"),
+      "(xx.xx, xx.xx)" = paste0("(", paste(lapply(x, round, 2), collapse = ", ") , ")")
+    )
+    
+
+  }
+}
+
+
 
