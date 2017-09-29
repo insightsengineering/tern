@@ -35,4 +35,6 @@ ncol(tbl)
 
 
 as_html(tbl)
+
+Viewer
 }

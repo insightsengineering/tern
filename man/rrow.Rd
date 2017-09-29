@@ -4,7 +4,7 @@
 \alias{rrow}
 \title{table row}
 \usage{
-rrow(label, ..., format = NULL, indent = 1)
+rrow(row.name, ..., format = NULL, indent = 1)
 }
 \description{
 table row
