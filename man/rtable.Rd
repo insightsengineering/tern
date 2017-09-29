@@ -2,17 +2,23 @@
 % Please edit documentation in R/tables.R
 \name{rtable}
 \alias{rtable}
-\title{create a table}
+\title{Creating Reporting Tables}
 \usage{
 rtable(col.names, format = NULL, ...)
 }
 \arguments{
 \item{col.names}{vector with column names}
 
-\item{...}{each element is a row}
+\item{format}{a valid format string}
+
+\item{...}{each element is an \code{\link{rrow}} object}
+}
+\value{
+a \code{rtable} object
 }
 \description{
-create a table
+Reporting tables allow multiple values per cell, cell formatting and mergin 
+cells. Currently \code{rtable}s can be converted to html.
 }
 \examples{
 
@@ -21,13 +27,17 @@ tbl <- rtable(
   format = "xx (xx.xx\%)",
   rrow("Response", c(104, .2), c(100, .4)),
   rrow("Non-Response", c(23, .4), c(43, .5)),
-  empty_row(),
+  rrow(),
   rrow("this is a very long section header"),
-  rrow("HR", merge_cells(2, cf(3.23, "xx.xx"))),
-  rrow("95\% CI", indent = 2, merge_cells(2, 3.23), format = "xx.x")
+  rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
+  rrow("95\% CI", indent = 2, rcell(3.23, format = "xx.x", colspan = 2))
 )
 
 tbl
+
+row.names(tbl)
+names(tbl)
+
 
 tbl[1,2]
 

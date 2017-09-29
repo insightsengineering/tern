@@ -2,10 +2,15 @@
 % Please edit documentation in R/tables.R
 \name{rrow}
 \alias{rrow}
-\title{table row}
+\title{Reporting Table Row}
 \usage{
 rrow(row.name, ..., format = NULL, indent = 1)
 }
 \description{
-table row
+Reporting Table Row
+}
+\examples{
+
+rrow("ABC", c(1,2), c(3,2))
+
 }

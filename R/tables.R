@@ -1,9 +1,16 @@
 
 
-#' create a table
+#' Creating Reporting Tables
+#' 
+#' Reporting tables allow multiple values per cell, cell formatting and mergin 
+#' cells. Currently \code{rtable}s can be converted to html.
+#' 
 #' 
 #' @param col.names vector with column names
-#' @param ... each element is a row
+#' @param ... each element is an \code{\link{rrow}} object
+#' @param format a valid format string
+#' 
+#' @return a \code{rtable} object
 #' 
 #' @importFrom shiny tags
 #' 
@@ -16,10 +23,10 @@
 #'   format = "xx (xx.xx%)",
 #'   rrow("Response", c(104, .2), c(100, .4)),
 #'   rrow("Non-Response", c(23, .4), c(43, .5)),
-#'   empty_row(),
+#'   rrow(),
 #'   rrow("this is a very long section header"),
-#'   rrow("HR", merge_cells(2, cf(3.23, "xx.xx"))),
-#'   rrow("95% CI", indent = 2, merge_cells(2, 3.23), format = "xx.x")
+#'   rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
+#'   rrow("95% CI", indent = 2, rcell(3.23, format = "xx.x", colspan = 2))
 #' )
 #' 
 #' tbl
@@ -51,7 +58,7 @@
 #'   c("A", "B", "C", "D", "E"),
 #'   format = "xx",
 #'   rrow("r1", 1, 2, 3, 4, 5),
-#'   rrow("r2", merge_cells(2, "sp2"), "sp1", merge_cells(2, "sp2-2"))
+#'   rrow("r2", rcell("sp2", colspan = 2), "sp1", rcell("sp2-2", colspan = 2))
 #' )
 #' 
 #' Viewer(tbl2)
@@ -71,30 +78,104 @@ rtable <- function(col.names, format = NULL, ...) {
   ## check if n-cols correct
   rows <- list(...)
   
-  check_consistent_ncols(rows, ncol)
-
+  if (!all(vapply(rows, is, logical(1), "rrow"))) stop("not all arguments in ... are of class rrow")
   nrow <- length(rows)
   
+  check_consistent_ncols(rows, ncol)
+
+  rows_formated <- lapply(rows, function(row) {
+   
+    row_f <- lapply(row, function(cell) {
+      rc <- if (is(cell, "rcell")) {
+        if (is.null(attr(cell, "format"))) {
+          structure(cell, format = format)
+        } else {
+          cell
+        }
+      } else {
+        rcell(cell, format = format)
+      }
+      if (is.null(attr(rc, "format"))) stop("NULL format for cell: ", rc)
+      rc
+    }) 
+    
+    attributes(row_f) <- attributes(row)
+    row_f
+  })
+  
   structure(
-    rows,
+    rows_formated,
     col.names = col.names,
     ncol = ncol,
     nrow = nrow,
-    format = format,
     class = "rtable"
   )
 }
 
-check_consistent_ncols <- function(rows, ncols) {
-  lapply(rows, function(r) {
-    if (!is(r, "rrow")) stop("element is not a rrow")
-    
-    # zero length is possible (label only)
-    if (length(r) != 0 && !is(r, "empty_row")) {
-      ncells <- n_cells_in_rrow(r)
-      if (ncells != ncols) {
-        stop(paste("row", attr(r, "row.name"), "has", sum(ncells), "cells instead of expected", ncols))
+#' Reporting Table Row
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' rrow("ABC", c(1,2), c(3,2))
+#' 
+rrow <- function(row.name, ..., format = NULL, indent = 1) {
+  
+  cells <- list(...)
+  
+  cells_f <- lapply(cells, function(cell) {
+    if (is(cell, "rcell")) {
+      if (is.null(attr(cell, "format"))) {
+        structure(cell, format = format)
+      } else {
+        cell
       }
+    } else {
+      rcell(cell, format = format)
+    }
+  })
+  
+  
+  structure(
+    cells_f,
+    row.name = if (missing(row.name)) NULL else row.name,
+    indent = indent,
+    class = "rrow"
+  )
+}
+
+# row <- rrow("ABC", rcell(3.23, format = "xx.x", colspan = 2))
+ncells <- function(row) {
+  if (length(row) == 0) {
+    0 
+  } else {
+    ni <- vapply(row, function(cell) {
+      if (is(cell, "rcell")) {
+        attr(cell, "colspan")
+      } else {
+        1
+      }
+    }, numeric(1))
+    sum(ni)
+  } 
+}
+
+#' @export
+rcell <- function(x, format = NULL, colspan=1) {
+  structure(
+    x,
+    format = format,
+    colspan = colspan,
+    class = "rcell"
+  )
+}
+
+check_consistent_ncols <- function(rows, ncols) {
+  lapply(rows, function(row) {
+    # zero length is possible (label only)
+    if (length(row) != 0 && ncells(row) != ncols) {
+      stop(paste("row", attr(row, "row.name"), "has", sum(ncells(row)), "cells instead of expected", ncols))
     }
   })
   invisible(TRUE)
@@ -105,37 +186,53 @@ dim.rtable <- function(x) {
   as.vector(unlist(attributes(x)[c("nrow", "ncol")]))
 }
 
-
 #' @export
-print.rtable <- function(x, ...) {
-  cat(
-    paste(
-      "rtable of dimension:", paste(dim(x), collapse = "x"), "\n",
-      "currently rtables can only be viewed as html with Viewer()\n"
-    )
-  )
-  
+row.names.rtable <- function(x) {
+  vapply(x, function(row) {
+    rn <- attr(row, "row.name")
+    if (is.null(rn)) "" else rn
+  }, character(1))
 }
 
 #' @export
-as_html <- function(x, format, ...) {
+names.rtable <- function(x) {
+  attr(x, "col.names")
+}
+
+
+# #' @export
+# print.rtable <- function(x, ...) {
+#   
+#   # for now all columns have the same with
+#   
+#   nchar_rownames <- max(vapply(row.names(x), nchar, numeric(1)))
+#   
+#   #x_char <- to_
+#   
+#   cat(
+#     paste(
+#       "rtable of dimension:", paste(dim(x), collapse = "x"), "\n",
+#       "currently rtables can only be viewed as html with Viewer()\n"
+#     )
+#   )
+#   
+# }
+
+#' @export
+as_html <- function(x, ...) {
   UseMethod("as_html")  
 }
 
 #' @export
-as_html.default <- function(x, format, ...) {
+as_html.default <- function(x, ...) {
   stop("no as_html method for class ", class(x))
 }
 
 #' @export
-as_html.rtable <- function(x, format, ...) {
-  
-  if (!missing(format)) stop("argument format for as_html.rtable should not be specified")
+as_html.rtable <- function(x, ...) {
   
   ncol <- ncol(x)
-  
-  format <- attr(x, "format")
-  
+
   # split header into lines
   col_headers <- lapply(attr(x, "col.names"), function(colname) {
     els <- unlist(strsplit(colname, "\n", fixed = TRUE))
@@ -148,15 +245,13 @@ as_html.rtable <- function(x, format, ...) {
   tags$table(
     class = "table",
     tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th))), 
-    lapply(x, as_html, format=format, ncol = ncol)
+    lapply(x, as_html, ncol = ncol)
   )
   
 }
 
 #' @export
-as_html.rrow <- function(x, format, ncol, ...) {
-  
-  if (!is.null(attr(x, "format"))) format <- attr(x, "format")
+as_html.rrow <- function(x, ncol, ...) {
   
   if (length(x) == 0) {
     tags$tr(
@@ -167,91 +262,25 @@ as_html.rrow <- function(x, format, ncol, ...) {
             c(
               list(tags$td(class="rowname", attr(x,"row.name"))),
               lapply(x, function(xi) {
-                if (is(xi, "merged_cell")) {
-                  as_html.merged_cell(xi, format)
+                
+                colspan <- attr(xi, "colspan")
+                if (is.null(colspan)) stop("colspan for rcell is NULL")
+                
+                cell_content <- format_cell(xi, output="html")
+                if (colspan == 1) {
+                  tags$td(cell_content)
                 } else {
-                  tags$td(format_cell(xi, format, output="html"))
+                  tags$td(cell_content, colspan = as.character(colspan))
                 }
               }),
-              replicate(ncol - n_cells_in_rrow(x), tags$td(), simplify = FALSE)
+              replicate(ncol - ncells(x), tags$td(), simplify = FALSE)
             ))   
   }
 }
 
 
-#' @export
-as_html.merged_cell <- function(x, format, ...) {
-  tags$td(colspan = as.character(attr(x, "ncells")), format_cell(x, format, output="html"))
-}
-
-#' @export
-as_html.empty_row <- function(x, format, ncol, ...) {
-  do.call(tags$tr, replicate(ncol+1, tags$td(), simplify = FALSE))
-}
 
 
-n_cells_in_rrow <- function(r) {
-  if (length(r) != 0) {
-    ncells <- vapply(r, function(cell) {
-      if (is(cell, "merged_cell")) {
-        attr(cell, "ncells")
-      } else {
-        1
-      }
-    }, numeric(1))
-    sum(ncells)
-  } else {
-    0
-  }
-}
-
-#' table row
-#' 
-#' @export
-rrow <- function(row.name, ..., format = NULL, indent = 1) {
-  structure(
-    list(...),
-    row.name = row.name,
-    format = format,
-    indent = indent,
-    class = "rrow"
-  )
-}
-
-#' @export
-merge_cells <- function(num, cell, format = NULL) {
-  
-  if (!is.null(attr(cell, "format"))) format <- attr(cell, "format")
-  
-  structure(
-    cell,
-    format = format,
-    ncells = num,
-    class = "merged_cell"
-  )
-}
-
-#' @export 
-cf <- function(cell, format) {
-  structure(
-    cell,
-    format = format
-  )
-}
-
-
-
-#' @export
-empty_row <- function() {
-  
-  structure(
-    list(),
-    row.name = "",
-    format = NULL,
-    indent = 1,
-    class = c("empty_row", "rrow")
-  )
-}
 
 
 #' @export
@@ -327,10 +356,10 @@ format_cell <- function(x, format, output = c("html", "ascii")) {
   
   output <- match.arg(output)
   
-  if (!is.null(attr(x, "format"))) format <- attr(x, "format")
+  if (missing(format)) format <- attr(x, "format")
   
-  if (is.null(format)) stop("format is NULL")
-  
+  if (is.null(x)) stop("format missing")
+
   l <- if (format %in% c(
     "xx", "xx.", "xx.x", "xx.xx", "xx.xxx",
     "xx%", "xx.x%", "xx.xx%", "xx.xxx%"
@@ -438,22 +467,81 @@ as.rtable.table <- function(x, format = "xx") {
     NULL # no cell information
   } else {
     nc <- ncol(x)
-    nci <- vapply(row, function(ri) if (is(ri, "merged_cell")) attr(ri, "ncells") else 1, numeric(1))
+    nci <- vapply(row, function(cell) attr(cell, "colspan") , numeric(1))
     j2 <- rep(1:length(nci), nci)
     
     el <- as.vector(row[[j2[j]]])  
     
-    structure(el, merged_cell = j != j2[j])
+    structure(el, merged = j != j2[j])
+  }
+}
+
+
+
+
+
+#' @export
+as_ascii <- function(x, format, ...) {
+  UseMethod("as_ascii")  
+}
+
+#' @export
+as_ascii.default <- function(x, format, ...) {
+  stop("no as_ascii method for class ", class(x))
+}
+
+#' @export
+as_ascii.rtable <- function(x, format, ...) {
+  
+  if (!missing(format)) stop("argument format for as_ascii.rtable should not be specified")
+  
+  ncol <- ncol(x)
+  
+  format <- attr(x, "format")
+  
+  # split header into lines
+  
+  
+  tags$table(
+    class = "table",
+    tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th))), 
+    lapply(x, as_ascii, format=format, ncol = ncol)
+  )
+  
+}
+
+#' @export
+as_ascii.rrow <- function(x, format, ncol, ...) {
+  
+  if (!is.null(attr(x, "format"))) format <- attr(x, "format")
+  
+  if (length(x) == 0) {
+    tags$tr(
+      tags$td(colspan = as.character(ncol+1), class="rowname", attr(x,"row.name"))
+    )
+  } else {
+    do.call(tags$tr,
+            c(
+              list(tags$td(class="rowname", attr(x,"row.name"))),
+              lapply(x, function(xi) {
+                if (is(xi, "merged_cell")) {
+                  as_ascii.merged_cell(xi, format)
+                } else {
+                  tags$td(format_cell(xi, format, output="html"))
+                }
+              }),
+              replicate(ncol - n_cells_in_rrow(x), tags$td(), simplify = FALSE)
+            ))   
   }
 }
 
 
 #' @export
-row.names.rtable <- function(x) {
-  vapply(x, function(xi) attr(xi, "row.name"), character(1))
+as_ascii.merged_cell <- function(x, format, ...) {
+  tags$td(colspan = as.character(attr(x, "ncells")), format_cell(x, format, output="html"))
 }
 
 #' @export
-names.rtable <- function(x) {
-  attr(x, "col.names")
+as_ascii.empty_row <- function(x, format, ncol, ...) {
+  do.call(tags$tr, replicate(ncol+1, tags$td(), simplify = FALSE))
 }
