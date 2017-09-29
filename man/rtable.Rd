@@ -29,6 +29,13 @@ tbl <- rtable(
 
 tbl
 
+tbl[1,2]
+
+tbl[3,2]
+tbl[5,1]
+tbl[5,2]
+
+
 dim(tbl)
 nrow(tbl)
 ncol(tbl)
@@ -38,5 +45,23 @@ tbl[[1]][[1]]
 as_html(tbl)
 
 Viewer(tbl)
+
+# colspans
+
+tbl2 <- rtable(
+  c("A", "B", "C", "D", "E"),
+  format = "xx",
+  rrow("r1", 1, 2, 3, 4, 5),
+  rrow("r2", merge_cells(2, "sp2"), "sp1", merge_cells(2, "sp2-2"))
+)
+
+Viewer(tbl2)
+
+tbl2[1,3]
+tbl2[2,1]
+tbl2[2,2]
+tbl2[2,3]
+tbl2[2,4]
+tbl2[2,5]
 
 }

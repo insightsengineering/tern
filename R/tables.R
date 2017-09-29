@@ -24,6 +24,10 @@
 #' 
 #' tbl
 #' 
+#' row.names(tbl)
+#' names(tbl)
+#' 
+#' 
 #' tbl[1,2]
 #' 
 #' tbl[3,2]
@@ -239,8 +243,12 @@ cf <- function(cell, format) {
 
 #' @export
 empty_row <- function() {
+  
   structure(
     list(),
+    row.name = "",
+    format = NULL,
+    indent = 1,
     class = c("empty_row", "rrow")
   )
 }
@@ -439,3 +447,13 @@ as.rtable.table <- function(x, format = "xx") {
   }
 }
 
+
+#' @export
+row.names.rtable <- function(x) {
+  vapply(x, function(xi) attr(xi, "row.name"), character(1))
+}
+
+#' @export
+names.rtable <- function(x) {
+  attr(x, "col.names")
+}
