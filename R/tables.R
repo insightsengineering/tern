@@ -199,25 +199,6 @@ names.rtable <- function(x) {
   attr(x, "col.names")
 }
 
-
-# #' @export
-# print.rtable <- function(x, ...) {
-#   
-#   # for now all columns have the same with
-#   
-#   nchar_rownames <- max(vapply(row.names(x), nchar, numeric(1)))
-#   
-#   #x_char <- to_
-#   
-#   cat(
-#     paste(
-#       "rtable of dimension:", paste(dim(x), collapse = "x"), "\n",
-#       "currently rtables can only be viewed as html with Viewer()\n"
-#     )
-#   )
-#   
-# }
-
 #' @export
 as_html <- function(x, ...) {
   UseMethod("as_html")  
@@ -478,70 +459,57 @@ as.rtable.table <- function(x, format = "xx") {
 
 
 
-
-
 #' @export
-as_ascii <- function(x, format, ...) {
-  UseMethod("as_ascii")  
+print.rtable <- function(x, gap = 4, ...) {
+  
+  # for now all columns have the same with
+  cat("print method for rtable is under construction, use Viewer() instead")
+  
+  #nchar_rownames <- max(vapply(row.names(x), nchar, numeric(1)))
+  #
+  #nchar_col <- ceiling(max(unlist(lapply(x, function(row) {
+  #  lapply(row, function(cell) {
+  #    nc <- nchar(unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE)))
+  #    nc / attr(cell, "colspan")
+  #  })
+  #}))))
+  #
+  #
+  #txt <- lapply(x, function(row) {
+  #  
+  #  cells <- lapply(row, function(cell) {
+  #    unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE))
+  #  })
+  #  
+  #  paste0(
+  #    padstr(attr(row, "row.name"), nchar_rownames, "left"),
+  #    spaces(gap),
+  #    padstr(cells[[1]], nchar_col),
+  #    spaces(gap),
+  #    padstr(cells[[2]], nchar_col)
+  #  )
+  # })
+
 }
 
-#' @export
-as_ascii.default <- function(x, format, ...) {
-  stop("no as_ascii method for class ", class(x))
-}
-
-#' @export
-as_ascii.rtable <- function(x, format, ...) {
+padstr <- function(x, n, just = c("center", "left", "right")) {
+ 
+  just <- match.arg(just)
   
-  if (!missing(format)) stop("argument format for as_ascii.rtable should not be specified")
+  nc <- nchar(x)
+  if (n < nc) stop(x, " has more than ", n, " characters")
   
-  ncol <- ncol(x)
-  
-  format <- attr(x, "format")
-  
-  # split header into lines
-  
-  
-  tags$table(
-    class = "table",
-    tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th))), 
-    lapply(x, as_ascii, format=format, ncol = ncol)
+  switch(
+    just,
+    center = {
+      pad <- (n-nc)/2  
+      paste0(spaces(floor(pad)), x, spaces(ceiling(pad)))
+    },
+    left = paste0(x, spaces(n-nc)),
+    right = paste0(spaces(n-nc), x)
   )
-  
 }
 
-#' @export
-as_ascii.rrow <- function(x, format, ncol, ...) {
-  
-  if (!is.null(attr(x, "format"))) format <- attr(x, "format")
-  
-  if (length(x) == 0) {
-    tags$tr(
-      tags$td(colspan = as.character(ncol+1), class="rowname", attr(x,"row.name"))
-    )
-  } else {
-    do.call(tags$tr,
-            c(
-              list(tags$td(class="rowname", attr(x,"row.name"))),
-              lapply(x, function(xi) {
-                if (is(xi, "merged_cell")) {
-                  as_ascii.merged_cell(xi, format)
-                } else {
-                  tags$td(format_cell(xi, format, output="html"))
-                }
-              }),
-              replicate(ncol - n_cells_in_rrow(x), tags$td(), simplify = FALSE)
-            ))   
-  }
-}
-
-
-#' @export
-as_ascii.merged_cell <- function(x, format, ...) {
-  tags$td(colspan = as.character(attr(x, "ncells")), format_cell(x, format, output="html"))
-}
-
-#' @export
-as_ascii.empty_row <- function(x, format, ncol, ...) {
-  do.call(tags$tr, replicate(ncol+1, tags$td(), simplify = FALSE))
+spaces <- function(n) {
+  paste(rep(" ", n), collapse = "")
 }
