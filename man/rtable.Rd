@@ -30,7 +30,7 @@ tbl <- rtable(
   rrow(),
   rrow("this is a very long section header"),
   rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
-  rrow("95\% CI", indent = 2, rcell(3.23, format = "xx.x", colspan = 2))
+  rrow("95\% CI", indent = 2, rcell(c(2.432, 4.3214), format = "(xx.x, xx.x)", colspan = 2))
 )
 
 tbl
@@ -64,6 +64,8 @@ tbl2 <- rtable(
   rrow("r1", 1, 2, 3, 4, 5),
   rrow("r2", rcell("sp2", colspan = 2), "sp1", rcell("sp2-2", colspan = 2))
 )
+
+tbl2
 
 Viewer(tbl2)
 

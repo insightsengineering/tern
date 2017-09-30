@@ -227,6 +227,7 @@ as_html.rtable <- function(x, ...) {
   
   tags$table(
     class = "table",
+    ...,
     tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th, align="center"))), 
     lapply(x, as_html, ncol = ncol)
   )
@@ -249,7 +250,7 @@ as_html.rrow <- function(x, ncol, ...) {
                 colspan <- attr(xi, "colspan")
                 if (is.null(colspan)) stop("colspan for rcell is NULL")
                 
-                cell_content <- format_cell(xi, output="html")
+                cell_content <- format_rcell(xi, output="html")
                 if (colspan == 1) {
                   tags$td(cell_content, align = "center")
                 } else {
@@ -330,7 +331,7 @@ Viewer <- function(x, row.names.bold = FALSE) {
 
 
 #' @export
-format_cell <- function(x, format, output = c("html", "ascii")) {
+format_rcell <- function(x, format, output = c("html", "ascii")) {
   
   output <- match.arg(output)
   
@@ -448,9 +449,7 @@ as.rtable.table <- function(x, format = "xx") {
     nci <- vapply(row, function(cell) attr(cell, "colspan") , numeric(1))
     j2 <- rep(1:length(nci), nci)
     
-    el <- as.vector(row[[j2[j]]])  
-    
-    structure(el, merged = j != j2[j])
+    row[[j2[j]]]
   }
 }
 
@@ -465,7 +464,7 @@ print.rtable <- function(x, gap = 8, ...) {
   
   nchar_col <- ceiling(max(unlist(lapply(c(list(header_row), x), function(row) {
     lapply(row, function(cell) {
-      nc <- nchar(unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE)))
+      nc <- nchar(unlist(strsplit(format_rcell(cell, output = "ascii"), "\n", fixed = TRUE)))
       nc / attr(cell, "colspan")
     })
   }))))
@@ -497,7 +496,7 @@ row_to_str <- function(row, nchar_rownames, nchar_col, gap) {
     if (is.null(rname)) "" else rname 
   } else {
     cells <- lapply(row, function(cell) {
-      unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE))
+      unlist(strsplit(format_rcell(cell, output = "ascii"), "\n", fixed = TRUE))
     })
     
     nlines <- max(vapply(cells,length, numeric(1)))
