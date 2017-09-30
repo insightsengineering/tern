@@ -477,9 +477,16 @@ as.rtable.table <- function(x, format = "xx") {
 
 
 #' @export
-print.rtable <- function(x, gap = 8, ...) {
+print.rtable <- function(x, gap = 8, indent.unit = 2, ...) {
   
-  nchar_rownames <- max(vapply(row.names(x), nchar, numeric(1)))
+  nchar_rownames <- max(vapply(x, function(row) {
+    rn <- attr(row, "row.name")
+    if (is.null(rn)) {
+      0
+    } else {
+      nchar(rn) +  attr(row, "indent") * indent.unit
+    }
+  }, numeric(1)))
   
   header_row <- do.call(rrow, as.list(c(row.name="", format = "xx", names(x))))
   
@@ -491,10 +498,10 @@ print.rtable <- function(x, gap = 8, ...) {
   }))))
   
   
-  txt_header <- row_to_str(header_row, nchar_rownames, nchar_col, gap)
+  txt_header <- row_to_str(header_row, nchar_rownames, nchar_col, gap, indent.unit)
   
   txt_cells <- lapply(x, function(row) {
-    row_to_str(row, nchar_rownames, nchar_col, gap)
+    row_to_str(row, nchar_rownames, nchar_col, gap, indent.unit)
   })
   
 
@@ -509,11 +516,17 @@ print.rtable <- function(x, gap = 8, ...) {
   cat("\n")
 }
 
-row_to_str <- function(row, nchar_rownames, nchar_col, gap) {
+row_to_str <- function(row, nchar_rownames, nchar_col, gap, indent.unit) {
   
+  row.name <-  if (is.null(attr(row, "row.name"))) {
+    ""
+  } else {
+    paste(c(rep(" ",  attr(row, "indent")*indent.unit),
+            attr(row, "row.name")), collapse = "")    
+  }
+    
   if (length(row) == 0) {
-    rname <- attr(row, "row.name")
-    if (is.null(rname)) "" else rname 
+    row.name
   } else {
     cells <- lapply(row, function(cell) {
       unlist(strsplit(format_rcell(cell, output = "ascii"), "\n", fixed = TRUE))
@@ -533,7 +546,7 @@ row_to_str <- function(row, nchar_rownames, nchar_col, gap) {
     lines <- as.matrix(Reduce(cbind, cells_same_length))
     
     row_char <- paste0(
-      padstr(attr(row, "row.name"), nchar_rownames, "left"),
+      padstr(row.name, nchar_rownames, "left"),
       paste(unlist(Map(function(cell, colspan) {
         list(spaces(gap), padstr(cell, colspan*nchar_col+ (colspan-1)*gap))
       }, lines[1,], colspans)), collapse = "")
