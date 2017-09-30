@@ -26,7 +26,7 @@
 #'   rrow(),
 #'   rrow("this is a very long section header"),
 #'   rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
-#'   rrow("95% CI", indent = 2, rcell(3.23, format = "xx.x", colspan = 2))
+#'   rrow("95% CI", indent = 2, rcell(c(2.432, 4.3214), format = "(xx.x, xx.x)", colspan = 2))
 #' )
 #' 
 #' tbl
@@ -227,7 +227,7 @@ as_html.rtable <- function(x, ...) {
   
   tags$table(
     class = "table",
-    tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th))), 
+    tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th, align="center"))), 
     lapply(x, as_html, ncol = ncol)
   )
   
@@ -238,12 +238,12 @@ as_html.rrow <- function(x, ncol, ...) {
   
   if (length(x) == 0) {
     tags$tr(
-      tags$td(colspan = as.character(ncol+1), class="rowname", attr(x,"row.name"))
+      tags$td(colspan = as.character(ncol+1), class="rowname", align="left", attr(x,"row.name"))
     )
   } else {
     do.call(tags$tr,
             c(
-              list(tags$td(class="rowname", attr(x,"row.name"))),
+              list(tags$td(class="rowname", align = "left", attr(x,"row.name"))),
               lapply(x, function(xi) {
                 
                 colspan <- attr(xi, "colspan")
@@ -251,9 +251,9 @@ as_html.rrow <- function(x, ncol, ...) {
                 
                 cell_content <- format_cell(xi, output="html")
                 if (colspan == 1) {
-                  tags$td(cell_content)
+                  tags$td(cell_content, align = "center")
                 } else {
-                  tags$td(cell_content, colspan = as.character(colspan))
+                  tags$td(cell_content, colspan = as.character(colspan), align = "center")
                 }
               }),
               replicate(ncol - ncells(x), tags$td(), simplify = FALSE)
@@ -304,12 +304,7 @@ Viewer <- function(x, row.names.bold = FALSE) {
       tags$meta("http-equiv"="X-UA-Compatible", content="IE=edge"),
       tags$meta(name="viewport", content="width=device-width, initial-scale=1"),
       tags$title("rtable"),
-      tags$link(href="css/bootstrap.min.css", rel="stylesheet"),
-      tags$style(type="text/css",
-        "td, th { text-align: -webkit-center;}",
-         ".rowname {text-align: left;}",
-        if (row.names.bold) ".rowname {font-weight: bold;}" else NULL
-      )
+      tags$link(href="css/bootstrap.min.css", rel="stylesheet")
     ),
     tags$body(
       html_tbl
