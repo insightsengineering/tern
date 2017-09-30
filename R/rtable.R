@@ -72,6 +72,18 @@
 #' tbl2[2,4]
 #' tbl2[2,5]
 #' 
+#' 
+#' # custom format
+#' my_format <- function(x, output) {
+#'    paste(x, collapse = "/")
+#' }
+#' tbl3 <- rtable(
+#'   c("A", "B"),
+#'   format = my_format,
+#'   rrow("row1", c(1,2,3,4), letters[1:10])
+#' )
+#' tbl3
+#'  
 rtable <- function(col.names, format = NULL, ...) {
   
   ncol <- length(col.names)
@@ -84,9 +96,9 @@ rtable <- function(col.names, format = NULL, ...) {
   nrow <- length(rows)
   
   check_consistent_ncols(rows, ncol)
-
+  
   rows_formated <- lapply(rows, function(row) {
-   
+    
     row_f <- lapply(row, function(cell) {
       rc <- if (is(cell, "rcell")) {
         if (is.null(attr(cell, "format"))) {
@@ -165,6 +177,12 @@ ncells <- function(row) {
 
 #' @export
 rcell <- function(x, format = NULL, colspan=1) {
+  
+  if (!any(is.null(format), is.character(format) && length(format) == 1,
+           is.function(format))) {
+    stop("format needs to be NULL, a format label or a function")
+  } 
+  
   structure(
     x,
     format = format,
@@ -215,7 +233,7 @@ as_html.default <- function(x, ...) {
 as_html.rtable <- function(x, ...) {
   
   ncol <- ncol(x)
-
+  
   # split header into lines
   col_headers <- lapply(attr(x, "col.names"), function(colname) {
     els <- unlist(strsplit(colname, "\n", fixed = TRUE))
@@ -223,7 +241,7 @@ as_html.rtable <- function(x, ...) {
       tagList(el, if (!is.last) tags$br() else NULL)
     }, els, c(rep(FALSE, length(els) -1), TRUE))
   })
-
+  
   tags$table(
     class = "table",
     ...,
@@ -300,7 +318,7 @@ Viewer <- function(x, row.names.bold = FALSE) {
     }
   }
   
-
+  
   html_tbl <- as_html(x)
   
   html_bs <- tags$html(
@@ -316,15 +334,15 @@ Viewer <- function(x, row.names.bold = FALSE) {
       html_tbl
     )
   )
-
+  
   cat(
     paste("<!DOCTYPE html>\n",  htmltools::doRenderTags(html_bs)),
     file = htmlFile, append = FALSE
   )
-
+  
   
   viewer <- getOption("viewer")
-
+  
   if (!is.null(viewer)) {
     viewer(htmlFile)
   } else {
@@ -351,8 +369,8 @@ formats_2d <- c(
 get_rcell_formats <- function() {
   structure(  
     list(
-    "1d" = formats_1d,
-    "2d" = formats_2d
+      "1d" = formats_1d,
+      "2d" = formats_2d
     ),
     info = "xx does not modify the element, and xx. rounds a number to 0 digits"
   )
@@ -366,23 +384,19 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
   
   if (missing(format)) format <- attr(x, "format")
   
-  if (is.null(x)) stop("format missing")
+  if (is.null(format)) stop("format missing")
+  
+  
+  if (is.character(format)) {
+    l <- if (format %in% formats_1d) {
+      1
+    } else if (format %in% formats_2d) {
+      2
+    } else {
+      stop("unknown format label: ", format, ". use get_rcell_formats() to get a list of all formats")
+    }
+    if (length(x) != l) stop("cell <", paste(x), "> and format ", format, " are of different length")
 
-  l <- if (format %in% formats_1d) {
-    1
-  } else if (format %in% formats_2d) {
-    2
-  } else {
-    stop("unknown format: ", format)
-  }
-  
-  if (length(x) != l) stop("cell <", paste(x), "> and format ", format, " are of different length")
-  
-  if (format %in% c()) {
-    # output dependent
-    paste(x, collapse = " / ")
-  } else {
-    
     switch(
       format,
       "xx" = as.character(x),
@@ -411,10 +425,11 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
       "(xx., xx.)" = paste0("(", paste(lapply(x, round, 0), collapse = ", ") , ")"),
       "(xx.x, xx.x)" = paste0("(", paste(lapply(x, round, 1), collapse = ", ") , ")"),
       "(xx.xx, xx.xx)" = paste0("(", paste(lapply(x, round, 2), collapse = ", ") , ")")
-    )
-    
-
+    )  
+  } else if (is.function(format)) {
+    format(x, output = output)
   }
+
 }
 
 #' @export
@@ -504,7 +519,7 @@ print.rtable <- function(x, gap = 8, indent.unit = 2, ...) {
     row_to_str(row, nchar_rownames, nchar_col, gap, indent.unit)
   })
   
-
+  
   cat(paste(
     c(
       txt_header,
@@ -524,7 +539,7 @@ row_to_str <- function(row, nchar_rownames, nchar_col, gap, indent.unit) {
     paste(c(rep(" ",  attr(row, "indent")*indent.unit),
             attr(row, "row.name")), collapse = "")    
   }
-    
+  
   if (length(row) == 0) {
     row.name
   } else {
@@ -569,11 +584,11 @@ row_to_str <- function(row, nchar_rownames, nchar_col, gap, indent.unit) {
 
 
 padstr <- function(x, n, just = c("center", "left", "right")) {
- 
+  
   just <- match.arg(just)
-
+  
   if (is.na(x)) x <- ""
-    
+  
   nc <- nchar(x)
   if (n < nc) stop(x, " has more than ", n, " characters")
   
