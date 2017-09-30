@@ -26,7 +26,7 @@
 #'   rrow(),
 #'   rrow("this is a very long section header"),
 #'   rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
-#'   rrow("95% CI", indent = 2, rcell(c(2.432, 4.3214), format = "(xx.x, xx.x)", colspan = 2))
+#'   rrow("95% CI", indent = 1, rcell(c(2.432, 4.3214), format = "(xx.x, xx.x)", colspan = 2))
 #' )
 #' 
 #' tbl
@@ -122,7 +122,7 @@ rtable <- function(col.names, format = NULL, ...) {
 #' 
 #' rrow("ABC", c(1,2), c(3,2))
 #' 
-rrow <- function(row.name, ..., format = NULL, indent = 1) {
+rrow <- function(row.name, ..., format = NULL, indent = 0) {
   
   cells <- list(...)
   
@@ -236,29 +236,35 @@ as_html.rtable <- function(x, ...) {
 #' @export
 as_html.rrow <- function(x, ncol, ...) {
   
-  if (length(x) == 0) {
-    tags$tr(
-      tags$td(colspan = as.character(ncol+1), class="rowname", align="left", attr(x,"row.name"))
-    )
+  indent <- attr(x, "indent")
+  row.name <- attr(x,"row.name")
+  
+  cells <- if (length(x) == 0) {
+    tags$td(colspan = as.character(ncol+1), class="rowname", align="left", row.name)
   } else {
-    do.call(tags$tr,
-            c(
-              list(tags$td(class="rowname", align = "left", attr(x,"row.name"))),
-              lapply(x, function(xi) {
-                
-                colspan <- attr(xi, "colspan")
-                if (is.null(colspan)) stop("colspan for rcell is NULL")
-                
-                cell_content <- format_rcell(xi, output="html")
-                if (colspan == 1) {
-                  tags$td(cell_content, align = "center")
-                } else {
-                  tags$td(cell_content, colspan = as.character(colspan), align = "center")
-                }
-              }),
-              replicate(ncol - ncells(x), tags$td(), simplify = FALSE)
-            ))   
+    tagList(
+      tags$td(class="rowname", align = "left", row.name),
+      lapply(x, function(xi) {
+        
+        colspan <- attr(xi, "colspan")
+        if (is.null(colspan)) stop("colspan for rcell is NULL")
+        
+        cell_content <- format_rcell(xi, output="html")
+        if (colspan == 1) {
+          tags$td(cell_content, align = "center")
+        } else {
+          tags$td(cell_content, colspan = as.character(colspan), align = "center")
+        }
+      }),
+      replicate(ncol - ncells(x), tags$td(), simplify = FALSE)
+    )
   }
+  
+  if (indent>0) {
+    cells[[1]]$attribs <- c(cells[[1]]$attribs, list(style=paste0("padding-left: ", indent*3, "ch")))
+  }
+  
+  tags$tr(cells)
 }
 
 
