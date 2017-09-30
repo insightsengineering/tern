@@ -462,40 +462,89 @@ as.rtable.table <- function(x, format = "xx") {
 #' @export
 print.rtable <- function(x, gap = 4, ...) {
   
-  # for now all columns have the same with
-  cat("print method for rtable is under construction, use Viewer() instead")
+  nchar_rownames <- max(vapply(row.names(x), nchar, numeric(1)))
   
-  #nchar_rownames <- max(vapply(row.names(x), nchar, numeric(1)))
-  #
-  #nchar_col <- ceiling(max(unlist(lapply(x, function(row) {
-  #  lapply(row, function(cell) {
-  #    nc <- nchar(unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE)))
-  #    nc / attr(cell, "colspan")
-  #  })
-  #}))))
-  #
-  #
-  #txt <- lapply(x, function(row) {
-  #  
-  #  cells <- lapply(row, function(cell) {
-  #    unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE))
-  #  })
-  #  
-  #  paste0(
-  #    padstr(attr(row, "row.name"), nchar_rownames, "left"),
-  #    spaces(gap),
-  #    padstr(cells[[1]], nchar_col),
-  #    spaces(gap),
-  #    padstr(cells[[2]], nchar_col)
-  #  )
-  # })
+  header_row <- do.call(rrow, as.list(c(row.name="", format = "xx", names(x))))
+  
+  nchar_col <- ceiling(max(unlist(lapply(c(list(header_row), x), function(row) {
+    lapply(row, function(cell) {
+      nc <- nchar(unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE)))
+      nc / attr(cell, "colspan")
+    })
+  }))))
+  
+  
+  txt_header <- row_to_str(header_row, nchar_rownames, nchar_col, gap)
+  
+  txt_cells <- lapply(x, function(row) {
+    row_to_str(row, nchar_rownames, nchar_col, gap)
+  })
+  
 
+  cat("\n")
+  cat(paste(
+    c(
+      txt_header,
+      paste(rep("-", nchar_rownames + ncol(x)*(nchar_col + gap)), collapse = ""),
+      txt_cells
+    ),
+    collapse = "\n"
+  ))
+  cat("\n")
 }
+
+row_to_str <- function(row, nchar_rownames, nchar_col, gap) {
+  
+  if (length(row) == 0) {
+    rname <- attr(row, "row.name")
+    if (is.null(rname)) "" else rname 
+  } else {
+    cells <- lapply(row, function(cell) {
+      unlist(strsplit(format_cell(cell, output = "ascii"), "\n", fixed = TRUE))
+    })
+    
+    nlines <- max(vapply(cells,length, numeric(1)))
+    
+    cells_same_length <- lapply(cells, function(x) {
+      if (length(x) == nlines) {
+        x
+      } else {
+        c(x, rep(NA_character_, nlines -length(x)))
+      }
+    })
+    
+    colspans <- vapply(row, function(cell) attr(cell, "colspan"), numeric(1))
+    lines <- as.matrix(Reduce(cbind, cells_same_length))
+    
+    row_char <- paste0(
+      padstr(attr(row, "row.name"), nchar_rownames, "left"),
+      paste(unlist(Map(function(cell, colspan) {
+        list(spaces(gap), padstr(cell, colspan*nchar_col+ (colspan-1)*gap))
+      }, lines[1,], colspans)), collapse = "")
+    )
+    
+    if (nrow(lines) > 1) {
+      additional_rows <- apply(lines[-1, , drop=FALSE], 1, function(r) {
+        paste0(
+          spaces(nchar_rownames),
+          paste(unlist(Map(function(cell, colspan) {
+            list(spaces(gap), padstr(cell, colspan*nchar_col + (colspan-1)*gap))
+          }, r, colspans)), collapse = "")
+        )
+      })
+      row_char <- paste(c(row_char, additional_rows), collapse = "\n")
+    }
+    row_char
+  } 
+}
+
 
 padstr <- function(x, n, just = c("center", "left", "right")) {
  
   just <- match.arg(just)
-  
+
+  if (is.na(x)) x <- ""
+    
   nc <- nchar(x)
   if (n < nc) stop(x, " has more than ", n, " characters")
   
