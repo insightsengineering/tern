@@ -219,16 +219,15 @@ as_html.rtable <- function(x, ...) {
   # split header into lines
   col_headers <- lapply(attr(x, "col.names"), function(colname) {
     els <- unlist(strsplit(colname, "\n", fixed = TRUE))
-    y <- Map(function(el, is.last) {
-      list(tags$span(el), if (!is.last) tags$br() else NULL)
-    }, els, rep(c(FALSE, TRUE), c(length(els) -1, 1)))
-    do.call(tagList, y)
+    Map(function(el, is.last) {
+      tagList(el, if (!is.last) tags$br() else NULL)
+    }, els, c(rep(FALSE, length(els) -1), TRUE))
   })
-  
+
   tags$table(
     class = "table",
     ...,
-    tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th, align="center"))), 
+    tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th, align="center", class="text-center"))), 
     lapply(x, as_html, ncol = ncol)
   )
   
@@ -477,7 +476,6 @@ print.rtable <- function(x, gap = 8, ...) {
   })
   
 
-  cat("\n")
   cat(paste(
     c(
       txt_header,
