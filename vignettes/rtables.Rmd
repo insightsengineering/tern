@@ -21,9 +21,10 @@ The main functions currently associated with `rtable`s are `rtable`, `rrow`,
 
 Consider the foolowing example:
 
-```{r}
+```{r, message=FALSE}
 library(teal.oncology)
-
+```
+```{r}
 tbl <- rtable(
   col.names = c("Treatement\nN=100", "Comparison\nN=300"),
   format = "xx (xx.xx%)",
@@ -75,9 +76,11 @@ argument(i.e. format arguments of `rcell` are more specific than those of `rrow`
 which are more specific than those of `rtable`.
 
 Two types of formats are supported
- * format label, e.g. `xx.xx (xx.xx%)`
- * functions that take the element and output type as an argument and return a
- formatted string or html object
+
+* format label, e.g. `xx.xx (xx.xx%)`
+
+* functions that take the element and output type as an argument and return a 
+formatted string or html object
 
 Formats labels are currently limited to the following predefined set:
 
