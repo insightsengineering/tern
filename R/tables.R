@@ -61,6 +61,8 @@
 #'   rrow("r2", rcell("sp2", colspan = 2), "sp1", rcell("sp2-2", colspan = 2))
 #' )
 #' 
+#' tbl2
+#' 
 #' Viewer(tbl2)
 #' 
 #' tbl2[1,3]
@@ -460,7 +462,7 @@ as.rtable.table <- function(x, format = "xx") {
 
 
 #' @export
-print.rtable <- function(x, gap = 4, ...) {
+print.rtable <- function(x, gap = 8, ...) {
   
   nchar_rownames <- max(vapply(row.names(x), nchar, numeric(1)))
   
