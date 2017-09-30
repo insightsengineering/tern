@@ -329,6 +329,30 @@ Viewer <- function(x, row.names.bold = FALSE) {
 }
 
 
+formats_1d <- c(
+  "xx", "xx.", "xx.x", "xx.xx", "xx.xxx",
+  "xx%", "xx.x%", "xx.xx%", "xx.xxx%"
+)
+
+formats_2d <- c(
+  "xx / xx", "xx. / xx.", "xx.x / xx.x", "xx.xx / xx.xx",
+  "xx (xx%)", "xx (xx.%)", "xx (xx.x%)", "xx (xx.xx%)", 
+  "xx. (xx.%)", "xx.x (xx.x%)", "xx.xx (xx.xx%)",
+  "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)"
+)
+
+#' @export
+get_rcell_formats <- function() {
+  structure(  
+    list(
+    "1d" = formats_1d,
+    "2d" = formats_2d
+    ),
+    info = "xx does not modify the element, and xx. rounds a number to 0 digits"
+  )
+}
+
+
 #' @export
 format_rcell <- function(x, format, output = c("html", "ascii")) {
   
@@ -338,17 +362,9 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
   
   if (is.null(x)) stop("format missing")
 
-  l <- if (format %in% c(
-    "xx", "xx.", "xx.x", "xx.xx", "xx.xxx",
-    "xx%", "xx.x%", "xx.xx%", "xx.xxx%"
-  )) {
+  l <- if (format %in% formats_1d) {
     1
-  } else if (format %in% c(
-    "xx / xx", "xx. / xx.", "xx.x / xx.x", "xx.xx / xx.xx",
-    "xx (xx%)", "xx (xx.%)", "xx (xx.x%)", "xx (xx.xx%)", 
-    "xx. (xx.%)", "xx.x (xx.x%)", "xx.xx (xx.xx%)",
-    "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)"
-  )) {
+  } else if (format %in% formats_2d) {
     2
   } else {
     stop("unknown format: ", format)

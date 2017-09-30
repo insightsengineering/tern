@@ -70,6 +70,15 @@ Viewer(tbl)
 
 # Formats
 
+Formats are currently limited to the following predefined set:
+
+```{r}
+get_rcell_formats()
+```
+
+Also not that the formats are inherited to decendents if there is not a more
+specific format argument.
+
 
 # Converting table objects
 
