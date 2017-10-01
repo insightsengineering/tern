@@ -76,4 +76,16 @@ tbl2[2,3]
 tbl2[2,4]
 tbl2[2,5]
 
+
+# custom format
+my_format <- function(x, output) {
+   paste(x, collapse = "/")
+}
+tbl3 <- rtable(
+  c("A", "B"),
+  format = my_format,
+  rrow("row1", c(1,2,3,4), letters[1:10])
+)
+tbl3
+ 
 }
