@@ -4,7 +4,7 @@
 \alias{rrow}
 \title{Reporting Table Row}
 \usage{
-rrow(row.name, ..., format = NULL, indent = 1)
+rrow(row.name, ..., format = NULL, indent = 0)
 }
 \description{
 Reporting Table Row

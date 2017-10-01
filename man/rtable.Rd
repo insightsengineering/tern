@@ -30,7 +30,7 @@ tbl <- rtable(
   rrow(),
   rrow("this is a very long section header"),
   rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
-  rrow("95\% CI", indent = 2, rcell(c(2.432, 4.3214), format = "(xx.x, xx.x)", colspan = 2))
+  rrow("95\% CI", indent = 1, rcell(c(2.432, 4.3214), format = "(xx.x, xx.x)", colspan = 2))
 )
 
 tbl

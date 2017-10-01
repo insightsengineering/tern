@@ -21,9 +21,10 @@ The main functions currently associated with `rtable`s are `rtable`, `rrow`,
 
 Consider the foolowing example:
 
-```{r}
+```{r, message=FALSE}
 library(teal.oncology)
-
+```
+```{r}
 tbl <- rtable(
   col.names = c("Treatement\nN=100", "Comparison\nN=300"),
   format = "xx (xx.xx%)",
@@ -70,14 +71,38 @@ Viewer(tbl)
 
 # Formats
 
-Formats are currently limited to the following predefined set:
+Formats are inherited to decendents if there is not a more specific format 
+argument(i.e. format arguments of `rcell` are more specific than those of `rrow`
+which are more specific than those of `rtable`.
+
+Two types of formats are supported
+
+* format label, e.g. `xx.xx (xx.xx%)`
+
+* functions that take the element and output type as an argument and return a 
+formatted string or html object
+
+Formats labels are currently limited to the following predefined set:
 
 ```{r}
 get_rcell_formats()
 ```
 
-Also not that the formats are inherited to decendents if there is not a more
-specific format argument.
+Here is an example of using functions for formatting cells:
+
+```{r}
+my_format <- function(x, output) {
+   paste(x, collapse = "/")
+}
+tbl3 <- rtable(
+  c("A", "B"),
+  format = my_format,
+  rrow("row1", c(1,2,3,4), letters[1:10])
+)
+tbl3
+```
+
+
 
 
 # Converting table objects
