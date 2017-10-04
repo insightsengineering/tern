@@ -8,9 +8,19 @@
 #' 
 #' @param col.names vector with column names
 #' @param ... each element is an \code{\link{rrow}} object
-#' @param format a valid format string
+#' @param format a valid format string or a format function for
+#'   \code{\link{rcell}}s. To get a list of all valid format strings use 
+#'   \code{\link{get_rcell_formats}}.
 #' 
 #' @return a \code{rtable} object
+#' 
+#' @details 
+#' The rtable objects can be currently expported to text with to 
+#' \code{\link{toString.rtable}} and to html with \code{\link{toHTML.rtable}}.
+#' In future we would like to add a \code{toGridGrob} function.
+#' 
+#' Note that the formats propagate to the \code{\link{rrow}}s and 
+#' \code{\link{rcells}} if these do not specify their own format.
 #' 
 #' @importFrom shiny tags
 #' 
@@ -128,6 +138,18 @@ rtable <- function(col.names, format = NULL, ...) {
 
 #' Reporting Table Row
 #' 
+#' Defines a row with row name for a \code{\link{rtable}}
+#'
+#' @param row.name string with row name
+#' @inheritParams rtable 
+#' @param ... data objects that are wrapped into \code{\link{rcell}} if they
+#'   aren't \code{rcell}s already
+#' @param indent non-negative integer where 0 means that the row should not be
+#'   indented
+#' 
+#' @details 
+#' Note the \code{row()} will return an empty row.
+#' 
 #' @export
 #' 
 #' @examples 
@@ -159,7 +181,10 @@ rrow <- function(row.name, ..., format = NULL, indent = 0) {
   )
 }
 
+# Number of non-empty cells in an \code{\link{rrow}} object
+# 
 # row <- rrow("ABC", rcell(3.23, format = "xx.x", colspan = 2))
+# 
 ncells <- function(row) {
   if (length(row) == 0) {
     0 
@@ -175,6 +200,19 @@ ncells <- function(row) {
   } 
 }
 
+#' Reporting Table Cell
+#' 
+#' \code{\link{rcell}}s compose an \code{\link{rtable}}. An \code{rcell}
+#' contains the encapsulated data object, a format and column span attributes.
+#' 
+#' @param x data object for the \code{rcell} object. Note that if the data
+#'   object has attributes then it needs to be encasultated in a list as the
+#'   \code{rcell} adds/modifies the attributes.
+#' @inheritParams rtable
+#' @param colspan positive integer, number of columns that the cell should span.
+#' 
+#' @return an object of class \code{rcell}
+#' 
 #' @export
 rcell <- function(x, format = NULL, colspan=1) {
   
@@ -201,11 +239,28 @@ check_consistent_ncols <- function(rows, ncols) {
   invisible(TRUE)
 }
 
+#' Dimension of rtable object
+#' 
+#' Retrieve or set the dimension of an \code{rtable} object
+#' 
+#' @param x an \code{\link{rtable}} object
+#' 
+#' @return vector of length two with number of rows and number of columns.
+#' 
 #' @export
+#' 
 dim.rtable <- function(x) {
   as.vector(unlist(attributes(x)[c("nrow", "ncol")]))
 }
 
+#' Row names of an \code{\link{rtable}} object
+#' 
+#' Retrieve the row names of an \code{\link{rtable}} object
+#'   
+#' @inheritParams dim.rtable
+#' 
+#' @return a vector with the row names
+#' 
 #' @export
 row.names.rtable <- function(x) {
   vapply(x, function(row) {
@@ -214,11 +269,30 @@ row.names.rtable <- function(x) {
   }, character(1))
 }
 
+#' Get column names of an \code{\link{rtable}} object
+#' 
+#' Retrieve the column names of an \code{\link{rtable}} object
+#' 
+#' @inheritParams dim.rtable
+#' 
+#' @return a vector with the column names 
+#' 
 #' @export
 names.rtable <- function(x) {
   attr(x, "col.names")
 }
 
+#' Convert an \code{\link{rtable}} object to an \code{shiny.tag} html
+#' representation of the \code{\link{rtable}}
+#' 
+#' The returned html object can be immediately used in shiny and rmarkdown
+#' 
+#' @inheritParams dim.rtable
+#' @param ... arguments passed as attributes to the table html objet
+#' 
+#' @return an object of class \code{shiny.tag}
+#' 
+#' 
 #' @export
 as_html <- function(x, ...) {
   UseMethod("as_html")  
@@ -289,7 +363,15 @@ as_html.rrow <- function(x, ncol, ...) {
 
 
 
-
+#' Dispaly an \code{\link{rtable}} object in the Viewer pane in RStudio or in a
+#' browser
+#' 
+#' The table will be displayed using the bootstrap styling for tables.
+#' 
+#' @inheritParams dim.rtable
+#' @param row.names.bold row.names.bold boolean, make rownames bold
+#' 
+#' 
 #' @export
 Viewer <- function(x, row.names.bold = FALSE) {
   if (!is(x, "rtable")) stop("x is expected to be an rtable")
@@ -365,6 +447,12 @@ formats_2d <- c(
   "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)"
 )
 
+
+#' List with valid \code{\link{rcell}} formats labels grouped by 1d and 2d
+#' 
+#' Currently valid format lables can not be added dynamically. Format functions
+#' must be used for special cases
+#' 
 #' @export
 get_rcell_formats <- function() {
   structure(  
@@ -376,7 +464,14 @@ get_rcell_formats <- function() {
   )
 }
 
-
+#' Convert the contets of an \code{\link{rcell}} to a string using the
+#' \code{format} information
+#' 
+#' @param x an object of class \code{\link{rcell}}
+#' @inheritParams rtable
+#' @param output output type
+#' 
+#' 
 #' @export
 format_rcell <- function(x, format, output = c("html", "ascii")) {
   
@@ -432,6 +527,13 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
 
 }
 
+#' Convert an object to an \code{\link{rtable}} object
+#' 
+#' Generic for converting objects to an \code{\link{rtable}} object
+#' 
+#' @inheritParams dim.rtable
+#' @param format format of the cells
+#' 
 #' @export
 as.rtable <- function(x, format = "xx") {
   UseMethod("as.rtable")
@@ -472,6 +574,20 @@ as.rtable.table <- function(x, format = "xx") {
 }
 
 
+#' Access rcells in an \code{\link{rtable}}
+#' 
+#' Accessor function
+#' 
+#' @param x object of class \code{\link{rtable}}
+#' @param i row index
+#' @param j column index
+#' @param ... currently not used
+#'
+#' @details Note that if a cell spans multiple columns, e.g. the 3 columns
+#'   \code{j} to \code{j + 3} then the accessing then \code{x[i, j]}, \code{x[i,
+#'   j+1]}, \code{x[i, j+2]}, \code{x[i, j+3]} return the same
+#'   \code{\link{rcell}} object.
+#'
 #' @export
 `[.rtable` <- function(x, i, j, ...) {
   
@@ -490,10 +606,9 @@ as.rtable.table <- function(x, format = "xx") {
 }
 
 
-
 #' @export
-print.rtable <- function(x, gap = 8, indent.unit = 2, ...) {
-  
+toString.rtable <- function(x, gap = 8, indent.unit = 2) {
+
   nchar_rownames <- max(vapply(x, function(row) {
     rn <- attr(row, "row.name")
     if (is.null(rn)) {
@@ -520,14 +635,23 @@ print.rtable <- function(x, gap = 8, indent.unit = 2, ...) {
   })
   
   
-  cat(paste(
+  paste(
     c(
       txt_header,
       paste(rep("-", nchar_rownames + ncol(x)*(nchar_col + gap)), collapse = ""),
       txt_cells
     ),
     collapse = "\n"
-  ))
+  )  
+}
+
+
+#' @export
+print.rtable <- function(x, ...) {
+  
+  str <- toString.rtable(x, ...)
+  
+  cat(str)
   cat("\n")
 }
 

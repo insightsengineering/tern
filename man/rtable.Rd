@@ -9,7 +9,9 @@ rtable(col.names, format = NULL, ...)
 \arguments{
 \item{col.names}{vector with column names}
 
-\item{format}{a valid format string}
+\item{format}{a valid format string or a format function for
+\code{\link{rcell}}s. To get a list of all valid format strings use 
+\code{\link{get_rcell_formats}}.}
 
 \item{...}{each element is an \code{\link{rrow}} object}
 }
@@ -19,6 +21,14 @@ a \code{rtable} object
 \description{
 Reporting tables allow multiple values per cell, cell formatting and mergin 
 cells. Currently \code{rtable}s can be converted to html.
+}
+\details{
+The rtable objects can be currently expported to text with to 
+\code{\link{toString.rtable}} and to html with \code{\link{toHTML.rtable}}.
+In future we would like to add a \code{toGridGrob} function.
+
+Note that the formats propagate to the \code{\link{rrow}}s and 
+\code{\link{rcells}} if these do not specify their own format.
 }
 \examples{
 
