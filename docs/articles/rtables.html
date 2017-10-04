@@ -72,7 +72,7 @@
       <h1>rtables: Reporting Tables</h1>
                         <h4 class="author">Adrian Waddell</h4>
             
-            <h4 class="date">2017-10-01</h4>
+            <h4 class="date">2017-10-04</h4>
           </div>
 
     
@@ -92,8 +92,8 @@
   <span class="kw"><a href="../reference/rrow.html">rrow</a></span>(<span class="st">"Non-Response"</span>, <span class="kw">c</span>(<span class="dv">23</span>, .<span class="dv">4</span>), <span class="kw">c</span>(<span class="dv">43</span>, .<span class="dv">5</span>)),
   <span class="kw"><a href="../reference/rrow.html">rrow</a></span>(),
   <span class="kw"><a href="../reference/rrow.html">rrow</a></span>(<span class="st">"this is a very long section header"</span>),
-  <span class="kw"><a href="../reference/rrow.html">rrow</a></span>(<span class="st">"HR"</span>, <span class="kw">rcell</span>(<span class="fl">3.23</span>, <span class="st">"xx.xx"</span>, <span class="dt">colspan =</span> <span class="dv">2</span>)),
-  <span class="kw"><a href="../reference/rrow.html">rrow</a></span>(<span class="st">"95% CI"</span>, <span class="dt">indent =</span> <span class="dv">1</span>, <span class="kw">rcell</span>(<span class="kw">c</span>(<span class="fl">2.8</span>, <span class="fl">4.4</span>), <span class="dt">format =</span> <span class="st">"(xx.x, xx.x)"</span>, <span class="dt">colspan =</span> <span class="dv">2</span>))
+  <span class="kw"><a href="../reference/rrow.html">rrow</a></span>(<span class="st">"HR"</span>, <span class="kw"><a href="../reference/rcell.html">rcell</a></span>(<span class="fl">3.23</span>, <span class="st">"xx.xx"</span>, <span class="dt">colspan =</span> <span class="dv">2</span>)),
+  <span class="kw"><a href="../reference/rrow.html">rrow</a></span>(<span class="st">"95% CI"</span>, <span class="dt">indent =</span> <span class="dv">1</span>, <span class="kw"><a href="../reference/rcell.html">rcell</a></span>(<span class="kw">c</span>(<span class="fl">2.8</span>, <span class="fl">4.4</span>), <span class="dt">format =</span> <span class="st">"(xx.x, xx.x)"</span>, <span class="dt">colspan =</span> <span class="dv">2</span>))
 )
 
 tbl  </code></pre></div>
@@ -107,7 +107,7 @@ tbl  </code></pre></div>
 ## HR                                                    3.23            
 ##   95% CI                                           (2.8, 4.4)</code></pre>
 <p>Before we go into explaining the individual components used to create this table we continue with the html conversio of the <code>rtbale</code> object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as_html</span>(tbl, <span class="dt">width =</span> <span class="st">"80%"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/as_html.html">as_html</a></span>(tbl, <span class="dt">width =</span> <span class="st">"80%"</span>)</code></pre></div>
 <table class="table" width="80%">
 <tr>
 <th></th>
@@ -156,14 +156,14 @@ N=300
 ## [1] "rcell"
 ## attr(,"format")
 ## [1] "xx (xx.xx%)"</code></pre>
-<p>and to format that cell run <code>format_rcell(tbl[1,1])</code>=104 (20%).</p>
+<p>and to format that cell run <code><a href="../reference/format_rcell.html">format_rcell(tbl[1,1])</a></code>=104 (20%).</p>
 <p>Note that <code>tbl[6, 1]</code> and <code>tbl[6, 2]</code> display both the same <code>rcell</code> because of the colspan.</p>
 </div>
 <div id="viewer" class="section level1">
 <h1 class="hasAnchor">
 <a href="#viewer" class="anchor"></a>Viewer</h1>
 <p>The <code>Viewer</code> functions takes an <code>rtable</code> object and displays it with bootstrap styling in RStudio’s Viewer pane.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Viewer</span>(tbl)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/Viewer.html">Viewer</a></span>(tbl)</code></pre></div>
 </div>
 <div id="formats" class="section level1">
 <h1 class="hasAnchor">
@@ -175,7 +175,7 @@ N=300
 <li><p>functions that take the element and output type as an argument and return a formatted string or html object</p></li>
 </ul>
 <p>Formats labels are currently limited to the following predefined set:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_rcell_formats</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_rcell_formats.html">get_rcell_formats</a></span>()</code></pre></div>
 <pre><code>## $`1d`
 ## [1] "xx"      "xx."     "xx.x"    "xx.xx"   "xx.xxx"  "xx%"     "xx.x%"  
 ## [8] "xx.xx%"  "xx.xxx%"
@@ -206,12 +206,12 @@ tbl3</code></pre></div>
 <h1 class="hasAnchor">
 <a href="#converting-table-objects" class="anchor"></a>Converting table objects</h1>
 <p>You can also convert table objects to rtables:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.rtable</span>(<span class="kw">table</span>(iris$Species))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/as.rtable.html">as.rtable</a></span>(<span class="kw">table</span>(iris$Species))</code></pre></div>
 <pre><code>##            setosa          versicolor        virginica 
 ## -------------------------------------------------------
 ## 1            50                50                50</code></pre>
 <p>or</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">as.rtable</span>(<span class="kw">with</span>(mtcars, <span class="kw">table</span>(cyl, hp))), <span class="dt">gap =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/as.rtable.html">as.rtable</a></span>(<span class="kw">with</span>(mtcars, <span class="kw">table</span>(cyl, hp))), <span class="dt">gap =</span> <span class="dv">1</span>)</code></pre></div>
 <pre><code>##   52  62  65  66  91  93  95  97  105 109 110 113 123 150 175 180 205 215 230 245 264 335
 ## -----------------------------------------------------------------------------------------
 ## 4  1   1   1   2   1   1   1   1   0   1   0   1   0   0   0   0   0   0   0   0   0   0 

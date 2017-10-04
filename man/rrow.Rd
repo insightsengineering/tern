@@ -6,8 +6,24 @@
 \usage{
 rrow(row.name, ..., format = NULL, indent = 0)
 }
+\arguments{
+\item{row.name}{string with row name}
+
+\item{...}{data objects that are wrapped into \code{\link{rcell}} if they
+aren't \code{rcell}s already}
+
+\item{format}{a valid format string or a format function for
+\code{\link{rcell}}s. To get a list of all valid format strings use 
+\code{\link{get_rcell_formats}}.}
+
+\item{indent}{non-negative integer where 0 means that the row should not be
+indented}
+}
 \description{
-Reporting Table Row
+Defines a row with row name for a \code{\link{rtable}}
+}
+\details{
+Note the \code{row()} will return an empty row.
 }
 \examples{
 

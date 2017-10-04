@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reporting Table Row — rrow • teal.oncology</title>
+<title>alternative tablist — surv_subgroup • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -92,76 +92,87 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reporting Table Row</h1>
+    <h1>alternative tablist</h1>
     </div>
 
     
-    <p>Defines a row with row name for a <code><a href='rtable.html'>rtable</a></code></p>
+    <p>alternative tablist</p>
     
 
-    <pre class="usage"><span class='fu'>rrow</span>(<span class='no'>row.name</span>, <span class='no'>...</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>surv_subgroup</span>(<span class='no'>time_to_event</span>, <span class='no'>event</span>, <span class='no'>arm</span>, <span class='no'>arm.ref</span>, <span class='no'>arm.comp</span>, <span class='no'>group_by</span>,
+  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>row.name</th>
-      <td><p>string with row name</p></td>
+      <th>time_to_event</th>
+      <td><p>time to event data</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>data objects that are wrapped into <code><a href='rcell.html'>rcell</a></code> if they
-aren't <code>rcell</code>s already</p></td>
+      <th>event</th>
+      <td><p>is boolean, <code>TRUE</code> if event, <code>FALSE</code> if time_to_event
+is censored</p></td>
     </tr>
     <tr>
-      <th>format</th>
-      <td><p>a valid format string or a format function for
-<code><a href='rcell.html'>rcell</a></code>s. To get a list of all valid format strings use 
-<code><a href='get_rcell_formats.html'>get_rcell_formats</a></code>.</p></td>
+      <th>arm</th>
+      <td><p>vector with arm information</p></td>
     </tr>
     <tr>
-      <th>indent</th>
-      <td><p>non-negative integer where 0 means that the row should not be
-indented</p></td>
+      <th>arm.ref</th>
+      <td><p>a character vector defining which arms in arm should be taken 
+as the reference</p></td>
+    </tr>
+    <tr>
+      <th>arm.comp</th>
+      <td><p>a character vector defining which arms in arm should be taken 
+as the comparison</p></td>
+    </tr>
+    <tr>
+      <th>group_by</th>
+      <td><p>data frame with one column per grouping</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Note the <code>row()</code> will return an empty row.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>rrow</span>(<span class='st'>"ABC"</span>, <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>2</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] 1 2
-#&gt; attr(,"colspan")
-#&gt; [1] 1
-#&gt; attr(,"class")
-#&gt; [1] "rcell"
-#&gt; 
-#&gt; [[2]]
-#&gt; [1] 3 2
-#&gt; attr(,"colspan")
-#&gt; [1] 1
-#&gt; attr(,"class")
-#&gt; [1] "rcell"
-#&gt; 
-#&gt; attr(,"row.name")
-#&gt; [1] "ABC"
-#&gt; attr(,"indent")
-#&gt; [1] 0
-#&gt; attr(,"class")
-#&gt; [1] "rrow"</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>atezo.data</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+
+<span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'>ate</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'>asl</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+
+<span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='no'>ATE</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
+
+<span class='no'>ASL</span>$<span class='no'>BAGED</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='no'>ASL</span>$<span class='no'>BAGE</span> <span class='kw'>&lt;=</span> <span class='fu'>median</span>(<span class='no'>ASL</span>$<span class='no'>BAGE</span>), <span class='st'>"&lt;=median"</span>, <span class='st'>"&gt;median"</span>)
+
+<span class='no'>group_by</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(
+ <span class='no'>ATE_f</span>[<span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>)],
+ <span class='no'>ASL</span>[<span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>, <span class='st'>"BAGED"</span>, <span class='st'>"SEX"</span>, <span class='st'>"BECOG"</span>)],
+ <span class='kw'>all.x</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>all.y</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
+
+<span class='fu'>head</span>(<span class='no'>group_by</span>)
+
+<span class='fu'>surv_subgroup</span>(
+   <span class='kw'>time_to_event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>AVAL</span>,
+   <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
+   <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>ARM</span>,
+   <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='no'>group_by</span>[, -<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>],
+   <span class='kw'>arm.ref</span> <span class='kw'>=</span> <span class='st'>"DUMMY A"</span>,
+   <span class='kw'>arm.comp</span> <span class='kw'>=</span> <span class='st'>"DUMMY B"</span>
+)
+
+<span class='co'># }</span><div class='input'>  
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
