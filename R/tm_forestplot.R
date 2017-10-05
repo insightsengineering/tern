@@ -18,7 +18,7 @@
 #' \dontrun{
 #' library(atezo.data)
 #' library(dplyr)
-#' 
+#' '%needs%' <- teal.oncology:::'%needs%'
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
@@ -43,7 +43,7 @@
 #'    arm.comp = "DUMMY B"
 #' )
 #' 
-#' }
+#' 
 #'   
 surv_subgroup <- function(time_to_event, event, arm, arm.ref, arm.comp, group_by, covariates = NULL) {
   
@@ -57,7 +57,7 @@ surv_subgroup <- function(time_to_event, event, arm, arm.ref, arm.comp, group_by
   
   arm_for_model <- arm_for_model(arm, arm.ref, arm.comp)
   
-  model_data <- subset(
+  cox_data <- subset(
     data.frame(
       time_to_event,
       event,
@@ -67,12 +67,12 @@ surv_subgroup <- function(time_to_event, event, arm, arm.ref, arm.comp, group_by
   
   # split data into a tree for data
   # where each leaf is a data.frame with 
-  # the data to cumpute the survival analysis with
+  # the data to compute the survival analysis with
   data_list <- c(
-    list(ALL = list(ALL = model_data)),
+    list(ALL = list(ALL = cox_data)),
     lapply(group_by, function(var) {
-      lapply(unique(var), function(value) {
-        model_data[var == value, , drop= FALSE]
+      lapply(setNames(unique(var[var != ""]), unique(var[var != ""])), function(value) {
+          cox_data[var == value , , drop= FALSE] 
       })
     })
   )
@@ -116,6 +116,35 @@ arm_for_model <- function(arm, arm.ref, arm.comp) {
   factor(arm2, levels = c(name_arm_ref, name_arm_comp))
 }
 
+#' survival_results(data_for_value)
+survival_results <- function(data){
+  
+  #KM Estimate
+  km_sum <- summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table
+  km_ref_n <- km_sum[1, 1]
+  km_comp_n <- km_sum[2,1]
+  km_ref_event <- km_sum[1, 4]
+  km_comp_event <- km_sum[2, 4]
+  km_ref_median <- km_sum[1, 7]
+  km_comp_median <- km_sum[2, 7]
+  
+  #Cox Model
+  cox_sum  <- summary(coxph(Surv(time_to_event,event) ~ arm, data = data))
+  cox_hr   <- cox_sum$conf.int[1]
+  cox_lcl  <- cox_sum$conf.int[3]
+  cox_ucl  <- cox_sum$conf.int[4]
+  cox_pval <- cox_sum$coefficients[5]
+  
+  km_ref_lcl <- km_sum[1, 8]
+  km_comp_lcl <- km_sum[2, 8]
+  km_ref_ucl <- km_sum[1, 9]
+  km_comp_ucl <- km_sum[2, 9]
+  km_table <- data.frame(km_ref_n, km_comp_n, 
+                         km_ref_event, km_comp_event, 
+                         km_ref_median, km_comp_median, 
+                         cox_hr, cox_lcl, cox_ucl, cox_pval)
+}
+
 #' Forest Plot Numbers for Survival data with ADAM data structure
 #' 
 #' @export
@@ -140,7 +169,7 @@ arm_for_model <- function(arm, arm.ref, arm.comp) {
 #' 
 #' surv_subgroup_ADAM(
 #'   ASL, ATE,
-#'   groupvar = c("SEX", "BECOG", "BAGED"),
+#'   groupvar = c("SEX", "BECOG", "COUNTRY"),
 #'   arm.ref = "DUMMY A", arm.comp = "DUMMY B"
 #' )
 #'   
