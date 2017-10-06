@@ -29,12 +29,12 @@
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
 #'    arm.ref = "DUMMY A",
-#'    arm.rest = "DUMMY B"
+#'    arm.rest = c("DUMMY C","DUMMY B") 
 #'    )
 
 
 kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
-                    strata.var = NULL, cox.tie = "efron", conf.int = FALSE, plot.median = FALSE, 
+                    stratum = NULL,  cox.tie = "efron", conf.int = FALSE, plot.median = FALSE, 
                     plot.nrisk = TRUE, time.interval = 5, nrisk.height = 0.25, size.nrisk = 4, 
                     plot.cens = FALSE, size.cens = 4.5, shape.cens = "+",
                     plot.stats = TRUE, size.stats = 4,
@@ -50,16 +50,42 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
   if (length(event) != n) stop("event has wrong length")
   if (length(arm) != n) stop("arm has wrong length")
   arm_for_model <- arm_for_model2(arm, arm.ref, arm.rest)
+  
+  if (is.null(stratum)){
+    stratum.df <- data.frame(stratum1 = rep(1, n))
+    
+  } else{
+    stratum.df <- Reduce(data.frame, stratum)
+    colnames(stratum.df) <- paste0("stratum", seq(1:length(stratum)))
+  }
+  
+
   cox_data <- subset(
     data.frame(
       time_to_event,
       event,
-      arm = arm_for_model
+      arm = arm_for_model, 
+      stratum.df
     ), arm %in% c(paste(arm.ref, collapse = "/"), arm.rest)
   )
   
-  surv.fit1 <- survfit(Surv(time_to_event, event) ~ arm, data = cox_data)
-  surv.plot <- ggsurvplot(surv.fit1, data = cox_data)
+   surv.fit <- survfit(Surv(time_to_event, event) ~ arm , data = cox_data)  ### need further update for stratified analysis
+   
+   ##### start of setting up plotting parameters
+   trt.lev <- c(paste(arm.ref, collapse = "/"), arm.rest)
+   if (is.null(line.color))    line.color <- seq(1, length(trt.lev))
+   med.line <- ifelse(plot.median, "hv", "none")
+   surv.plot <- ggsurvplot(surv.fit, data = cox_data, 
+                           break.time.by = time.interval, conf.int = conf.int, 
+                           surv.median.line = med.line, 
+                           risk.table =  plot.nrisk, risk.table.title = "No. of Patients at Risk",
+                           risk.table.col = "strata", risk.table.height = nrisk.height, 
+                           risk.table.fontsize = size.nrisk, 
+                           censor = plot.cens, censor.size = size.cens, censor.shape = shape.cens,
+                           legend = legend.pos, legend.labs = trt.lev,
+                           legend.title = "",
+                           palette = line.color, linetype = line.type, size = line.width)
+   
   return(surv.plot)
 }
 
@@ -84,4 +110,18 @@ arm_for_model2 <- function(arm, arm.ref, arm.rest) {
   }, character(1))
   
   factor(arm2, levels = c(name_arm_ref, arm.rest))
+}
+
+#' update function 
+#' get survival analysis results
+#' 
+
+survival_results2 <- function(indata, instratum = stratum){
+  if (is.null(instratum)){
+    surv.fit <- survfit(Surv(time_to_event, event) ~ arm, data = indata)
+  } else{
+   # surv.fit <- survfit(Surv(time_to_event, event) ~ arm + strata(stratum), data = data)
+  }
+  return(surv.fit)
+  
 }
