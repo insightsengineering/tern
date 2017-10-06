@@ -112,16 +112,3 @@ arm_for_model2 <- function(arm, arm.ref, arm.rest) {
   factor(arm2, levels = c(name_arm_ref, arm.rest))
 }
 
-#' update function 
-#' get survival analysis results
-#' 
-
-survival_results2 <- function(indata, instratum = stratum){
-  if (is.null(instratum)){
-    surv.fit <- survfit(Surv(time_to_event, event) ~ arm, data = indata)
-  } else{
-   # surv.fit <- survfit(Surv(time_to_event, event) ~ arm + strata(stratum), data = data)
-  }
-  return(surv.fit)
-  
-}
