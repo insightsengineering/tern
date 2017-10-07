@@ -28,8 +28,8 @@
 #'    time_to_event = ATE_filtered$AVAL,
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
-#'    arm.ref = "DUMMY A",
-#'    arm.rest = c("DUMMY C","DUMMY B") 
+#'    arm.ref = c("DUMMY C","DUMMY B"),
+#'    arm.rest =  "DUMMY A"
 #'    )
 
 
@@ -75,6 +75,16 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
    trt.lev <- c(paste(arm.ref, collapse = "/"), arm.rest)
    if (is.null(line.color))    line.color <- seq(1, length(trt.lev))
    med.line <- ifelse(plot.median, "hv", "none")
+   if(is.null(xlim)){
+     xlim2 <- max(cox_data$time_to_event, na.rm = TRUE)
+     xlim <- c(0, xlim2)
+   }
+   
+   if(is.null(ylim)) ylim <- c(0,1)
+   if(is.null(xlab)) xlab <- "Time to Event or Censoring"
+   if(is.null(ylab)) ylab <- "Survival Probability"
+   
+   
    surv.plot <- ggsurvplot(surv.fit, data = cox_data, 
                            break.time.by = time.interval, conf.int = conf.int, 
                            surv.median.line = med.line, 
@@ -84,7 +94,36 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
                            censor = plot.cens, censor.size = size.cens, censor.shape = shape.cens,
                            legend = legend.pos, legend.labs = trt.lev,
                            legend.title = "",
-                           palette = line.color, linetype = line.type, size = line.width)
+                           palette = line.color, linetype = line.type, size = line.width) 
+   
+   surv.plot$plot <- surv.plot$plot  + ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))+
+     coord_cartesian(ylim=ylim, xlim = xlim) + xlab(xlab) + ylab(ylab)
+   
+   
+   km_sum <- summary(surv.fit, data = cox_data, conf.type = "plain")$table
+   cox_sum <- summary(coxph(Surv(time_to_event, event) ~ arm , data = cox_data))
+   
+   upxstart  <- diff(xlim)*xystats.up[1]
+   upxend    <- diff(xlim)*(xystats.up[1] + xyinterval.up[1]*length(trt.lev))
+   upx.by    <- diff(xlim)*xyinterval.up[1]
+   upystart  <- diff(ylim)*xystats.up[2]
+   upy.by    <- diff(ylim)*xyinterval.up[2]
+   
+   lev.label <- c("",  trt.lev)
+   N.label <- c("N", km_sum[ , "records"])
+   med <- as.character(round(km_sum[ , "median"], 2)); med[is.na(med)] <- "NA"
+   med.label <- c('Median(KM)', med)
+   medci <- paste0("(", round(km_sum[ , "0.95LCL"], 2),"; ", round(km_sum[ , "0.95UCL"], 2), ")")
+   medci.label <- c('95% CI', medci)
+   surv.plot$plot <- surv.plot$plot + annotate("text", x = seq(upxstart, upxend, by = upx.by),
+                                               y = upystart, label = lev.label, hjust = 0, size = size.stats) +
+                                      annotate("text", x = seq(upxstart, upxend, by = upx.by),
+                                               y = upystart - upy.by, label = N.label, hjust = 0, size = size.stats) +
+                               
+                                      annotate("text", x = seq(upxstart, upxend, by = upx.by),
+                                               y = upystart - 2*upy.by, label = med.label, hjust = 0, size = size.stats) +
+                                      annotate("text",x = seq(upxstart, upxend, by = upx.by),
+                                               y = upystart - 3*upy.by, label = medci.label, hjust = 0, size = size.stats)
    
   return(surv.plot)
 }
