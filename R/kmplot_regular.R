@@ -5,7 +5,7 @@
 #' 
 #' @param time_to_event time to event values
 #' @param event boolean, \code{TRUE} if event and \code{FALSE} if censored
-#' @param ref.arm character: reference arm 
+#' @param arm.ref character: reference arm 
 #' 
 #' 
 #' @importFrom survival survfit Surv
@@ -28,8 +28,8 @@
 #'    time_to_event = ATE_filtered$AVAL,
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
-#'    arm.ref = c("DUMMY C","DUMMY B"),
-#'    arm.rest =  "DUMMY A"
+#'    arm.ref =  "DUMMY B" ,
+#'    arm.rest =  c("DUMMY A", "DUMMY C" )
 #'    )
 
 
@@ -40,11 +40,9 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
                     plot.stats = TRUE, size.stats = 4,
                     xystats.up = c(0.7, 0.8), xyinterval.up = c(0.1, 0.1),
                     xystats.lo = c(0.05, 0.3), xyinterval.lo = c(0.08, 0.1),
-                    widget = c('N' = TRUE, 'Median(KM)' = TRUE, '95% CI Median' = TRUE,
-                                'p-value' = TRUE, 'Hazard Ratio' = TRUE, '95% CI HR' = TRUE),
                     line.color = NULL, line.type = 1, line.width = 1,
                     xlab = NULL, ylab = NULL, xlim = NULL, ylim = NULL, title = "Kaplan-Meier Plot",
-                    legend.pos = c(0.9, 0.9) ){
+                    legend.pos = "none" ){
   
   n <- length(time_to_event)
   if (length(event) != n) stop("event has wrong length")
@@ -94,14 +92,13 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
                            censor = plot.cens, censor.size = size.cens, censor.shape = shape.cens,
                            legend = legend.pos, legend.labs = trt.lev,
                            legend.title = "",
-                           palette = line.color, linetype = line.type, size = line.width) 
+                           palette = line.color, linetype = line.type, size = line.width,
+                           title = title, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab ) 
    
-   surv.plot$plot <- surv.plot$plot  + ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))+
-     coord_cartesian(ylim=ylim, xlim = xlim) + xlab(xlab) + ylab(ylab)
    
    
    km_sum <- summary(surv.fit, data = cox_data, conf.type = "plain")$table
-   cox_sum <- summary(coxph(Surv(time_to_event, event) ~ arm , data = cox_data))
+   cox_sum <- summary(coxph(Surv(time_to_event, event) ~ arm , data = cox_data, ties = cox.tie))
    
    upxstart  <- diff(xlim)*xystats.up[1]
    upxend    <- diff(xlim)*(xystats.up[1] + xyinterval.up[1]*length(trt.lev))
@@ -119,12 +116,42 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
                                                y = upystart, label = lev.label, hjust = 0, size = size.stats) +
                                       annotate("text", x = seq(upxstart, upxend, by = upx.by),
                                                y = upystart - upy.by, label = N.label, hjust = 0, size = size.stats) +
-                               
+
                                       annotate("text", x = seq(upxstart, upxend, by = upx.by),
                                                y = upystart - 2*upy.by, label = med.label, hjust = 0, size = size.stats) +
                                       annotate("text",x = seq(upxstart, upxend, by = upx.by),
                                                y = upystart - 3*upy.by, label = medci.label, hjust = 0, size = size.stats)
    
+   model.label <- c("Cox PH:", "Unstratified")  ### need to update if stratum is not NULL
+   compare.label <- c("", arm.rest)
+   hr.label <-  c("HR", as.numeric(round(cox_sum$coefficients[,"exp(coef)"], 2)))
+   hrci.label <- c("95% CI(HR)",
+            paste0("(", as.numeric(round(cox_sum$conf.int[,"lower .95"], 2)), "; ",
+                   as.numeric(round(cox_sum$conf.int[,"upper .95"], 2)), ")"))
+   pval <- as.numeric(cox_sum$coefficients[, "Pr(>|z|)"])
+   pval.label <- c("p-value", ifelse(pval <= 0.0001, '<0.001', round(pval, 3)))
+   
+   
+   loxstart  <- diff(xlim)*xystats.lo[1]
+   lox.by    <- diff(xlim)*xyinterval.lo[1]
+   loystart  <- diff(ylim)*xystats.lo[2]
+   loyend    <- diff(ylim)*(xystats.lo[2] - xyinterval.lo[2]*(length(trt.lev) -1))
+   loy.by    <- diff(ylim)*xyinterval.lo[2]
+   surv.plot$plot <- surv.plot$plot + annotate("text", x = loxstart,
+                                               y = seq(loystart, loyend, by = -loy.by),
+                                               label = compare.label, vjust = 0, size = size.stats) +
+                                      annotate("text", x = loxstart + lox.by,
+                                               y = seq(loystart, loyend, by = -loy.by), label = hr.label,
+                                               vjust=0, size = size.stats) +
+                                      annotate("text", x = loxstart + 2*lox.by,
+                                               y = seq(loystart, loyend, by = -loy.by), label = hrci.label,
+                                               vjust=0, size = size.stats) +
+                                      annotate("text", x = loxstart + 3*lox.by,
+                                               y = seq(loystart, loyend, by = -loy.by), label = pval.label,
+                                               vjust=0, size = size.stats) +
+                                      annotate("text", x = c(loxstart, loxstart + lox.by),
+                                               y = loystart + loy.by, label = model.label,
+                                               vjust = 0, size = size.stats) 
   return(surv.plot)
 }
 
