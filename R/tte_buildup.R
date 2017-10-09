@@ -1,6 +1,5 @@
 
-library(dplyr)
-library(tidyr)
+library(haven)
 library(survival)
 library(broom)
 
@@ -40,41 +39,53 @@ library(broom)
 # ATE.PARAMCD = "OS": Overall survival
 # ATE.PARAMCD = "PFSINV": Investigator progression free survival as per RECISTv1.1
 
-fir_asl <- haven::read_sas("./REPRO_DATA/FIR/asl.sas7bdat")
-fir_ate <- haven::read_sas("./REPRO_DATA/FIR/ate.sas7bdat")
+drop_label <- function(x){
+  for (j in (1:ncol(x))){
+    attr(x[[j]],"label") <- ""
+  }
+  return(x)
+}
 
-fir_os <- dplyr::select(fir_ate,USUBJID,PARAMCD,PARAM,EVNTDESC,CNSR,AVAL,AVALU) %>%
-  dplyr::filter(PARAMCD == "OS")
+asl_ <- haven::read_sas("./REPRO_DATA/FIR/asl.sas7bdat")
+ate_ <- haven::read_sas("./REPRO_DATA/FIR/ate.sas7bdat")
 
-fir_pfs <- dplyr::select(fir_ate,USUBJID,PARAMCD,PARAM,EVNTDESC,CNSR,AVAL,AVALU) %>%
-  dplyr::filter(PARAMCD == "PFSINV")
+asl <- drop_label(asl_)
+ate <- drop_label(ate_)
 
+tte_vars <- c("USUBJID","PARAMCD","PARAM","EVNTDESC","CNSR","AVAL","AVALU")
+tte1 <- ate[tte_vars]
+tte2 <- tte1[which(tte1$PARAMCD == "OS"),]
+tte2$time <- tte2$AVAL * (1 / 30.4368499)
+tte2$status <- ifelse(is.na(tte2$CNSR),NA,
+               ifelse(tte2$CNSR==1,0,1))
 
-# Reproducing Median OS Survival Times + 95% Confidence Intervals for FIR
+demo_vars <- c("USUBJID","ARM","SAFFL")
+demo1 <- asl[demo_vars]
+demo1$ARM <- as.factor(demo1$ARM)
+demo2 <- demo1[which(demo1$SAFFL == "Y"),]
 
-fir_os_check <- dplyr::filter(fir_asl, SAFFL == "Y") %>%
-                dplyr::select(USUBJID,ARM) %>%
-                dplyr::inner_join(., fir_os, by=c("USUBJID")) %>%
-                dplyr::mutate(time   = AVAL * (1 / 30.4368499),
-                              status = ifelse(is.na(CNSR),NA,
-                                       ifelse(CNSR==1,0,1))) 
+BIG_N <- aggregate(x=demo2,by=list(demo2$ARM),FUN=length)[,c(1,2)]
+colnames(BIG_N) <- c("ARM","BIG_N")
 
-fir.os <- survival::survfit(formula = Surv(time, status) ~ ARM, data=fir_os_check, conf.type="plain")
-print(fir.os)
-fir.os.check <- broom::tidy(fir.os)
-fir.os.check
+tte3 <- merge(demo2, tte2, by=c("USUBJID"))
 
+arm_parse <- function(x,y){
+  
+  n_row <- nrow(surv_km_results_tidy)
+  
+  for (i in 1:n_row) {
+    x[i,y] <- strsplit(x[i,strata],"=")
+  }
+  
+  var_list = unlist(strsplit(x,"-"))
+  return(var_list)
+}
 
-# Reproducing Median PFS Survival Times + 95% Confidence Intervals for FIR
+surv_km_results <- survival::survfit(formula = Surv(time, status) ~ ARM, data=tte3, conf.type="plain")
+surv_km_results_summary <- summary(surv_km_results)
+surv_km_results_tidy <- broom::tidy(surv_km_results)
 
-fir_pfs_check <- dplyr::filter(fir_asl, SAFFL == "Y") %>%
-                 dplyr::select(USUBJID,ARM) %>%
-                 dplyr::inner_join(., fir_pfs, by=c("USUBJID")) %>%
-                 dplyr::mutate(time   = AVAL * (1 / 30.4368499),
-                               status = ifelse(is.na(CNSR),NA,
-                               ifelse(CNSR==1,0,1)))
+n_patients_event <- aggregate(x=surv_km_results_tidy,by=list(d))
+n_patients_censored
 
-fir.pfs <- survival::survfit(formula = Surv(time, status) ~ ARM, data=fir_pfs_check, conf.type="plain")
-print(fir.pfs)
-fir.pfs.check <- broom::tidy(fir.pfs)
-fir.pfs.check
+print(surv_km_results)
