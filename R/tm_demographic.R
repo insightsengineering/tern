@@ -28,10 +28,12 @@
 #' 
 #' \dontrun{
 #' library(atezo.data)
-#' ADSL <- asl(com.roche.cdt30019.go29436.re)
+#' library(dplyr)
+#' 
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' tbl_expected <- get_demographic_table(com.roche.cdt30019.go29436.re)
 #' 
-#' 
+#' ADSL <- ASL %>% filter(ITTFL = 'Y') 
 #' tbl <- demographic_table(ADSL)
 #' 
 #' compare_rtables(tbl, tbl_expected)
