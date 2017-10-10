@@ -4,7 +4,8 @@
 \alias{time_to_event_table}
 \title{Time to Event Table}
 \usage{
-time_to_event_table(time_to_event, is_event)
+time_to_event_table(time_to_event, event, arm, arm.ref,
+  arm.rest = setdiff(arm, arm.ref))
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -22,14 +23,25 @@ This is the description of the function
 \dontrun{
 library(atezo.data)
 library(dplyr)
-ATE <- ate(com.roche.cdpt7722.wo29637.rl)
+
+ATE <- ate(com.roche.cdt30019.go29436.re)
+
+
 ATE_f <- ATE \%>\% filter(PARAM == "OS")
-X <- time_to_event_table(
+
+tbl <- time_to_event_table(
     time_to_event = ATE_f$AVAL,
-    is_event = (ATE$CNSR == "N")
+    is_event = (ATE_f$CNSR == "N"),
+    arm = ATE_f$ARM,
+    arm.ref = "DUMMY A",
+    arm.rest = c("DUMMY C", "DUMMY B")
 )
- 
-}
+
+tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
+
+compare_table(tbl, tbl_stream)
 
 time_to_event_table(NULL)
+
+}
 }
