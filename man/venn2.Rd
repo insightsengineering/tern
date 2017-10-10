@@ -30,13 +30,12 @@ IHC <- sample(c(TRUE, FALSE), n, replace=TRUE, prob = c(.6, .4))
 library(atezo.data)
 ASL <- asl(com.roche.cdpt7722.wo29637.rl)
 
-# 
-names(ASL)
-
 IC <- ASL$IC \%in\% c("2", "3")
 TC <- ASL$TC \%in\% c(2, 3)
 
 x <- venn2(x = IC, y = TC)
+plot(x)
+
 venn2(x = IC, y = TC, "biomarker IT", "biamrker TC")
 
 }
