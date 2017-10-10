@@ -218,8 +218,10 @@ rcell <- function(x, format = NULL, colspan=1) {
   
   if (!any(is.null(format), is.character(format) && length(format) == 1,
            is.function(format))) {
-    stop("format needs to be NULL, a format label or a function")
+    stop("format needs to be a format label, a function, or NULL")
   } 
+  
+  if (missing(x) || is.null(x)) x <- list()
   
   structure(
     x,
@@ -474,6 +476,9 @@ get_rcell_formats <- function() {
 #' 
 #' @export
 format_rcell <- function(x, format, output = c("html", "ascii")) {
+  
+  
+  if (length(x) == 0) return("")
   
   output <- match.arg(output)
   
