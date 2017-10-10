@@ -11,6 +11,8 @@
 #' @param arm.comp a character vector defining which arms in arm should be taken 
 #'   as the comparison
 #' 
+#' 
+#' @importFrom survival survfit Surv coxph
 #' @export
 #' 
 #' @examples 
@@ -18,7 +20,11 @@
 #' \dontrun{
 #' library(atezo.data)
 #' library(dplyr)
+#' 
 #' '%needs%' <- teal.oncology:::'%needs%'
+#' 
+#' surv_tbl_steam <- get_forest_survival(com.roche.cdt30019.go29436.re)
+#' 
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
@@ -34,18 +40,26 @@
 #' 
 #' head(group_by)
 #' 
-#' surv_subgroup(
+#' tbl <- surv_subgroup(
 #'    time_to_event = ATE_f$AVAL,
 #'    event = ATE_f$CNSR == 0,
 #'    arm = ATE_f$ARM, 
 #'    group_by = group_by[, -c(1,2), drop=FALSE],
-#'    arm.ref = "DUMMY A",
-#'    arm.comp = "DUMMY B"
+#'    arm.ref = "DUMMY A"
 #' )
+#' tbl
+#' 
+#' compare_rtables(tbl, surv_tbl_steam)
+#' 
+#' plot(tbl)
 #' 
 #' 
-#'   
-surv_subgroup <- function(time_to_event, event, arm, arm.ref, arm.comp, group_by, covariates = NULL) {
+#' }
+#' 
+#' # surv_subgroup(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
+surv_subgroup <- function(time_to_event, event, 
+                          arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
+                          group_by, covariates = NULL) {
   
   # argument checking
   n <- length(time_to_event)
@@ -55,14 +69,14 @@ surv_subgroup <- function(time_to_event, event, arm, arm.ref, arm.comp, group_by
   if (nrow(group_by) != n) stop("group_by has wrong number of rows")
   
   
-  arm_for_model <- arm_for_model(arm, arm.ref, arm.comp)
+  arm_for_model <- combine_arm(arm, arm.ref, arm.comp)
   
   cox_data <- subset(
     data.frame(
       time_to_event,
       event,
       arm = arm_for_model
-    ), arm %in% c(arm.ref, arm.comp)
+    ), !is.na(arm_for_model)
   )
   
   # split data into a tree for data
@@ -88,33 +102,44 @@ surv_subgroup <- function(time_to_event, event, arm, arm.ref, arm.comp, group_by
   results_survival2 <- unlist(results_survival, recursive = FALSE)
   X <- Reduce(rbind, results_survival2)
   row.names(X) <-names(results_survival2)
+
   
   X
+
+  additonal_args <- list(
+    col.names = c("Baseline Risk Factors",
+                  "Total n", "n", "Median Events (Months)",
+                  "n", "Median Events (Months)",
+                  "Hazard Ratio", "95% Wald"),
+    format = "xx"
+  )
+    
+  rrow_collection <- lapply(split(X, 1:nrow(X)), function(x) {
+     rrow("label", ...)
+  })
+  
+  tbl <- do.call(rtable, c(additonal_args, rrow_collection))
+  
+  class(tbl) <- c("forest_survival", "forest_table", class(tbl))
+
+  tbl
 }
 
 
-
-#' explain what you do
-arm_for_model <- function(arm, arm.ref, arm.comp) {
+#' plot
+#' 
+#' @import grid
+#' @export
+plot.forest_survival <- function(x, ...) {
   
-  if (!all(arm.ref %in% arm)) stop("not all arms in arm.ref are in arm")
-  if (!all(arm.comp %in% arm)) stop("not all arms in arm.comp are in arm")
+  grid.newpage()
   
-  name_arm_ref <- paste(arm.ref, collapse = "/")
-  name_arm_comp <- paste(arm.comp, collapse = "/")
+  grid.text("Plot of a forst survival table")
   
-  arm2 <- vapply(arm, function(x) {
-    if (x %in% arm.ref) {
-      name_arm_ref
-    } else if (x %in% arm.comp) {
-      name_arm_comp
-    } else {
-      "not possible"
-    }
-  }, character(1))
   
-  factor(arm2, levels = c(name_arm_ref, name_arm_comp))
 }
+
+
 
 #' survival_results(data_for_value)
 survival_results <- function(data){

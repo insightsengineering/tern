@@ -16,7 +16,7 @@
 #' @examples 
 #' 
 #' \dontrun{
-#' library(ARSzo.data)
+#' library(atezo.data)
 #' library(dplyr)
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
@@ -42,10 +42,12 @@
 #'    arm.ref = "DUMMY A",
 #'    arm.comp = "DUMMY B"
 #' )
-#' 
+#' }
 #' 
 #'   
-glm_subgroup <- function(response, event, arm, arm.ref, arm.comp, group_by, covariARSs = NULL) {
+glm_subgroup <- function(response, event,
+                         arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
+                         group_by, covariARSs = NULL) {
   
   # argument checking
   n <- length(response)
@@ -55,14 +57,14 @@ glm_subgroup <- function(response, event, arm, arm.ref, arm.comp, group_by, cova
   if (nrow(group_by) != n) stop("group_by has wrong number of rows")
   
   
-  arm_for_model <- arm_for_model(arm, arm.ref, arm.comp)
+  arm_for_model <- combine_arm(arm, arm.ref, arm.comp)
   
   glm_data <- subset(
     data.frame(
       response,
       event,
       arm = arm_for_model
-    ), arm %in% c(arm.ref, arm.comp)
+    ), !is.na(arm_for_model)
   )
   
   # split data into a tree for data
@@ -89,32 +91,20 @@ glm_subgroup <- function(response, event, arm, arm.ref, arm.comp, group_by, cova
   X <- Reduce(rbind, results_glm2)
   row.names(X) <-names(results_glm2)
   
-  X
+  structure(X, class= c("forest_response", "forest_table"))
 }
 
 
-
-#' explain what you do
-arm_for_model <- function(arm, arm.ref, arm.comp) {
+#' @export
+plot.forest_response <- function(x, ...) {
   
-  if (!all(arm.ref %in% arm)) stop("not all arms in arm.ref are in arm")
-  if (!all(arm.comp %in% arm)) stop("not all arms in arm.comp are in arm")
+  grid.newpage()
   
-  name_arm_ref <- paste(arm.ref, collapse = "/")
-  name_arm_comp <- paste(arm.comp, collapse = "/")
+  grid.text("Plot of a forst response table")
   
-  arm2 <- vapply(arm, function(x) {
-    if (x %in% arm.ref) {
-      name_arm_ref
-    } else if (x %in% arm.comp) {
-      name_arm_comp
-    } else {
-      "not possible"
-    }
-  }, character(1))
   
-  factor(arm2, levels = c(name_arm_ref, name_arm_comp))
 }
+
 
 #' survival_results(data_for_value)
 glm_results <- function(data){
