@@ -54,6 +54,8 @@ tte_tbl <- function(tte_data,ref_arm,comp_arm) {
   tte_data=ATE2
   ref_arm="DUMMY C"
   comp_arm="DUMMY B"
+  cox_strat <- list("SEX","MLIVER","TCICLVL2")
+  
   tte_data$cox_strat1 <- as.factor(ATE2$SEX)
   tte_data$cox_strat2 <- as.factor(ATE2$MLIVER)
   tte_data$cox_strat3 <- as.factor(ATE2$TCICLVL2)
