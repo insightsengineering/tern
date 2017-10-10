@@ -107,14 +107,16 @@ tte_tbl <- function(tte_data,ref_arm,comp_arm) {
   tte_BIG_N <- data.frame(ref_BIG_N,comp_BIG_N)
   tte_np_events <- data.frame(ref_n_events,ref_p_events,comp_n_events,comp_p_events)
   tte_np_wo_events <- data.frame(ref_n_wo_events,ref_p_wo_events,comp_n_wo_events,comp_p_wo_events)
+  tte_median <- data.frame(ref_med_tte,ref_med_tte_lcl,ref_med_tte_ucl,
+                           comp_med_tte,comp_med_tte_lcl,comp_med_tte_ucl)
+  tte_quantiles <- data.frame(ref_25th,ref_75th,comp_25th,comp_75th)
+  tte_range <- data.frame(ref_km_min,ref_km_max,comp_km_min,comp_km_max)
+  tte_top_3rd <- list(tte_BIG_N,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range)
   
-  tte_top_3rd <- list(tte_BIG_N,tte_np_events,tte_np_wo_events)
   return(tte_top_3rd)
   
 }
 
-tte_tbl(tte_data=ATE2,
-        ref_arm="DUMMY C",
-        comp_arm="DUMMY B")
+tte_1st_3rd <- tte_tbl(tte_data=ATE2,ref_arm="DUMMY C",comp_arm="DUMMY B")
 
 #cox_ph_results  <- summary(survival::coxph(Surv(time,status) ~ ARM, data = tte_data))
