@@ -101,7 +101,7 @@ arm_for_model2 <- function(arm, arm.ref, arm.rest){
     } else if (x %in% arm.rest) {
       x
     } else {
-      "not possible"
+      NA_character_
     }
   }, character(1))
   
@@ -113,12 +113,12 @@ arm_for_model2 <- function(arm, arm.ref, arm.rest){
 #'  
 
 kmPlot_anno <- function(data, 
-                        cox.tie = "efron", conf.int = TRUE, plot.median = FALSE, 
-                        plot.nrisk = TRUE, time.interval = 5, nrisk.height = 0.25, size.nrisk = 4,
-                        plot.cens = FALSE, size.cens = 4.5, shape.cens = "+",
-                        plot.stats = TRUE, size.stats = 4,
-                        xystats.up = c(0.7, 0.8), xyinterval.up = c(0.1, 0.1),
-                        xystats.lo = c(0.05, 0.3), xyinterval.lo = c(0.08, 0.1),
+                        cox.tie = "efron", conf.int = FALSE, plot.median = FALSE, 
+                        plot.nrisk = TRUE, time.interval = 4, nrisk.height = 0.2, size.nrisk = 4,
+                        plot.cens = TRUE, size.cens = 4.5, shape.cens = "+",
+                        plot.stats = TRUE, size.stats = 3,
+                        xystats.up = c(0.7, 0.8), xyinterval.up = c(0.08, 0.06),
+                        xystats.lo = c(0.05, 0.3), xyinterval.lo = c(0.07, 0.06),
                         line.color = NULL, line.type = 1, line.width = 1,
                         xlab = NULL, ylab = NULL, xlim = NULL, ylim = NULL, plot.title = "Kaplan-Meier Plot",
                         legend.pos = "none" ){
