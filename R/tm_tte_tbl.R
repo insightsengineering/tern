@@ -117,6 +117,10 @@ tte_tbl <- function(tte_data,ref_arm,comp_arm) {
   
 }
 
-tte_1st_3rd <- tte_tbl(tte_data=ATE2,ref_arm="DUMMY C",comp_arm="DUMMY B")
+tte_1st_3rd_B_vs_C <- tte_tbl(tte_data=ATE2,ref_arm="DUMMY C",comp_arm="DUMMY B")
+tte_1st_3rd_B_vs_C
+
+tte_1st_3rd_A_vs_C <- tte_tbl(tte_data=ATE2,ref_arm="DUMMY C",comp_arm="DUMMY A")
+tte_1st_3rd_A_vs_C
 
 #cox_ph_results  <- summary(survival::coxph(Surv(time,status) ~ ARM, data = tte_data))
