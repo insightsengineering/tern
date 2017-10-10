@@ -745,7 +745,7 @@ spaces <- function(n) {
 #' @export
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' expected <- rtable(
 #'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
 #'    format = "xx",
@@ -798,7 +798,7 @@ spaces <- function(n) {
 #' )
 #' 
 #' compare_rtables(object, expected)
-#' 
+#' }
 compare_rtables <- function(object, expected, tol=0.1) {
   
   if (identical(object, expected)) return(invisible(TRUE))

@@ -17,7 +17,7 @@ compare_rtables(object, expected, tol = 0.1)
 throws an error if rtables are not equal
 }
 \examples{
-
+\dontrun{
 expected <- rtable(
    col.names = c("ARM A\\nN=100", "ARM B\\nN=200"),
    format = "xx",
@@ -70,5 +70,5 @@ object <- rtable(
 )
 
 compare_rtables(object, expected)
-
+}
 }
