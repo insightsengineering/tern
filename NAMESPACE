@@ -2,10 +2,5 @@
 
 export(demographic_table)
 export(kmPlot)
-export(kmPlot3)
-import(dplyr)
-import(survival)
-import(survminer)
-importFrom(stringr,str_trim)
 importFrom(survival,Surv)
 importFrom(survival,survfit)
