@@ -867,6 +867,8 @@ compare_rtables <- function(object, expected, tol=0.1) {
     )
   }
   
+  if (!identical(object, expected)) stop("something is still wrong")
+  
   invisible(TRUE)
 }
 
