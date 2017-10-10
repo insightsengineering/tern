@@ -730,3 +730,191 @@ padstr <- function(x, n, just = c("center", "left", "right")) {
 spaces <- function(n) {
   paste(rep(" ", n), collapse = "")
 }
+
+
+
+
+#' Corpare two rtables
+#' 
+#' throws an error if rtables are not equal
+#' 
+#' @param object rtable to test
+#' @param expected rtable expected
+#' @param tol numerical tolorance
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' expected <- rtable(
+#'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
+#'    format = "xx",
+#'    rrow("row 1", 10, 15),
+#'    rrow(),
+#'    rrow("section title"),
+#'    rrow("row colspan", rcell(c(.345543, .4432423), colspan = 2, format = "(xx.xx, xx.xx)"))
+#' )
+#' 
+#' Viewer(expected)
+#' 
+#' object <- rtable(
+#'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
+#'    format = "xx",
+#'    rrow("row 1", 10, 15),
+#'    rrow("section title"),
+#'    rrow("row colspan", rcell(c(.345543, .4432423), colspan = 2, format = "(xx.xx, xx.xx)"))
+#' )
+#' 
+#' compare_rtables(object, expected)
+#' 
+#' object <- rtable(
+#'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
+#'    format = "xx",
+#'    rrow("row 1", 10, 15),
+#'    rrow(),
+#'    rrow("section title")
+#' )
+#' 
+#' compare_rtables(object, expected)
+#' 
+#' object <- rtable(
+#'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
+#'    format = "xx",
+#'    rrow("row 1", 14, 15.03),
+#'    rrow(),
+#'    rrow("section title"),
+#'    rrow("row colspan", rcell(c(.345543, .4432423), colspan = 2, format = "(xx.xx, xx.xx)"))
+#' )
+#' 
+#' compare_rtables(object, expected)
+#' 
+#' object <- rtable(
+#'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
+#'    format = "xx",
+#'    rrow("row 1", 10, 15),
+#'    rrow(),
+#'    rrow("section title"),
+#'    rrow("row colspan", rcell(c(.345543, .4432423), colspan = 2, format = "(xx.x, xx.x)"))
+#' )
+#' 
+#' compare_rtables(object, expected)
+#' 
+compare_rtables <- function(object, expected, tol=0.1) {
+  
+  if (identical(object, expected)) return(invisible(TRUE))
+  
+  if (!is(object, "rtable")) stop("argument object is expected to be of class rtable")
+  if (!is(expected, "rtable")) stop("argument expected is expected to be of class rtable")
+  
+  # Compare Number of columns
+  p_obj <- ncol(object)
+  p_exp <- ncol(expected)
+  if (p_obj != p_exp) stop("number of columns to not match ", p_obj, " vs. ", p_exp)
+  
+  # Compare Column Names
+  if(!identical(names(object), names(expected))) {
+    sel <- names(object) != names(expected)
+    
+    msg <- unlist(Map(function(x,y) {
+      paste0(x, " != ", y)
+    }, names(object)[sel], names(expected)[sel]))
+    stop("column name missmatch:", paste(paste0("  ", msg), collapse = "\n"))
+  }
+  
+  # compare row names
+  for (i in 1:min(nrow(object), nrow(expected))) {
+    
+    if (identical(object[[i]], expected[[i]])) next
+
+    rname <- row.names(object)[i]
+    
+    dattr <- diff_attributes(object[[i]], expected[[i]])
+    
+    if (!is.null(dattr)) {
+      stop(
+        "row ", i, " (row: ", rname, ") ", "attriubets missmatch\n",
+        paste(paste0("  ", dattr), collapse = "\n")
+      )
+    }
+    
+    
+    for (j in 1:p_obj) {
+      
+      if (!identical(object[i,j], expected[i,j])) {
+        
+        dcell <- diff_rcell_data(object[i,j], expected[i,j], tol)
+        dattr <- diff_attributes(object[i,j], expected[i,j])
+        
+        stop(
+          "cell ", i, ", ", j, " (row: ", rname, ") differs\n",
+          paste(paste0("  ", c(dcell, dattr)), collapse = "\n")
+        )
+      }
+    }
+  }
+  
+  
+  if (nrow(object) != nrow(expected)) {
+    stop("differing number of rows: ", nrow(object), " vs. ", nrow(expected),
+         " but rows up to row ", min(nrow(object), nrow(expected)), " do match")
+  }
+  
+  dattr <- diff_attributes(object, expected)
+  if (!is.null(dattr)) {
+    stop(
+      "table attriubets missmatch\n",
+      paste(paste0("  ", dattr), collapse = "\n")
+    )
+  }
+  
+  invisible(TRUE)
+}
+
+
+diff_attributes <- function(x, y) {
+  attr_x <- attributes(x)
+  attr_y <- attributes(y)
+  
+  if (identical(attr_x, attr_y)) {
+    NULL
+  } else if (!identical(names(attr_x), names(attr_y))) {
+    paste("names of attributes to not match:",
+          paste(names(attr_x), collapse = ", "), "vs.",
+          paste(names(attr_y), collapse = ", "))
+          
+  } else {
+    unlist(Filter(function(u) !identical(u, FALSE), Map(function(x, y, name) {
+      if (identical(x, y)) {
+        FALSE
+      } else {
+        paste("attribute", name, "does not match:", paste(x, collapse = ", "), "vs.", paste(y, collapse = ", "))
+      }
+    }, attr_x, attr_y, names(attr_x))))
+  }
+  
+}
+
+diff_rcell_data <- function(x, y, tol) {
+  
+  x <- as.vector(x)
+  y <- as.vector(y)
+  
+  if (identical(x, y)) {
+    NULL
+  } else if (is.numeric(x) && is.numeric(y)) {
+    if (any(abs(x - y) > tol)) {
+      paste0(
+        "cell values differ by more than tol=", tol, ": ",
+        paste(x, collapse = ", "), " vs. ",
+        paste(y, collapse = ", ")
+      )
+    } else {
+      NULL
+    }
+  } else {
+    paste("cell values differ:",
+          paste(x, collapse = ", "), "vs.",
+          paste(y, collapse = ", ")
+    )
+  }
+}
