@@ -36,9 +36,9 @@
 #' ASL <- drop_label(ASL_)
 #' ATE <- drop_label(ATE_)
 #' 
-#' ASL1 <- dplyr::select(ASL,USUBJID,ARM,ITTFL) %>%
+#' ASL1 <- dplyr::select(ASL,USUBJID,ARM1,SEX,MLIVER,TCICLVL2,ITTFL) %>%
 #'         dplyr::filter(ITTFL=="Y") %>%
-#'         dplyr::select(USUBJID,ARM)
+#'         dplyr::select(-ITTFL)
 #'         
 #' ATE1 <- dplyr::select(ATE,USUBJID,PARAMCD,PARAM,EVNTDESC,CNSR,AVAL,AVALU) %>%
 #'         dplyr::filter(PARAMCD == "OS") %>%
@@ -51,11 +51,23 @@
 #' }
 tte_tbl <- function(tte_data,ref_arm,comp_arm) {
   
-  tte_data <- ATE2[which(ATE2$ARM %in% c(ref_arm,comp_arm)),]
-  tte_data$ARM <- factor(tte_data$ARM, levels = c(ref_arm, comp_arm))
+  tte_data=ATE2
+  ref_arm="DUMMY C"
+  comp_arm="DUMMY B"
+  tte_data$cox_strat1 <- as.factor(ATE2$SEX)
+  tte_data$cox_strat2 <- as.factor(ATE2$MLIVER)
+  tte_data$cox_strat3 <- as.factor(ATE2$TCICLVL2)
+  tte_data$arm <- ATE2$ARM1
+  
+  tte_data <- tte_data[which(tte_data$arm %in% c(ref_arm,comp_arm)),]
+  tte_data$arm <- factor(tte_data$arm, levels = c(ref_arm, comp_arm))
 
-  surv_km_results <- summary(survival::survfit(formula = Surv(time, status) ~ ARM, 
+  surv_km_results <- summary(survival::survfit(formula = Surv(time, status) ~ arm, 
                                                data=tte_data, conf.type="plain"))$table
+  
+  #----------------------#
+  # Top 3rd of TTE Table #
+  #----------------------#
   ref_BIG_N <- surv_km_results[1,1]
   comp_BIG_N <- surv_km_results[2,1]
 
@@ -80,7 +92,7 @@ tte_tbl <- function(tte_data,ref_arm,comp_arm) {
   comp_med_tte_lcl <- surv_km_results[2,8]
   comp_med_tte_ucl <- surv_km_results[2,9]
 
-  surv_km_quantiles <- quantile(survival::survfit(formula = Surv(time, status) ~ ARM, 
+  surv_km_quantiles <- quantile(survival::survfit(formula = Surv(time, status) ~ arm, 
                                                   data=tte_data))$quantile
 
   ref_25th <- surv_km_quantiles[1,1]
@@ -89,7 +101,7 @@ tte_tbl <- function(tte_data,ref_arm,comp_arm) {
   comp_25th <- surv_km_quantiles[2,1]
   comp_75th <- surv_km_quantiles[2,3]
 
-  surv_km_ranges <- broom::tidy(survival::survfit(formula = Surv(time, status) ~ ARM, 
+  surv_km_ranges <- broom::tidy(survival::survfit(formula = Surv(time, status) ~ arm, 
                                                   data=tte_data, conf.type="plain"))
 
   ref_km_min <- min(surv_km_ranges[which(stringr::str_sub(surv_km_ranges$strata,5,
@@ -111,9 +123,33 @@ tte_tbl <- function(tte_data,ref_arm,comp_arm) {
                            comp_med_tte,comp_med_tte_lcl,comp_med_tte_ucl)
   tte_quantiles <- data.frame(ref_25th,ref_75th,comp_25th,comp_75th)
   tte_range <- data.frame(ref_km_min,ref_km_max,comp_km_min,comp_km_max)
-  tte_top_3rd <- list(tte_BIG_N,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range)
   
-  return(tte_top_3rd)
+  #-------------------------#
+  # Middle 3rd of TTE Table #
+  #-------------------------#
+  cox_ph_hr_lcl_ucl <- summary(survival::coxph(Surv(time,status) ~ arm, data = tte_data))$conf.int
+  cox_ph_hr <- cox_ph_hr_lcl_ucl[,1]
+  cox_ph_hr_lcl <- cox_ph_hr_lcl_ucl[,3]
+  cox_ph_hr_ucl <- cox_ph_hr_lcl_ucl[,4]
+  
+  cox_ph_coefficients  <- summary(survival::coxph(Surv(time,status) ~ arm, data = tte_data))$coefficients
+  cox_ph_hr_pvalue <- cox_ph_coefficients[,5]
+  
+  unstrat_cox <- data.frame(cox_ph_hr_pvalue,cox_ph_hr,cox_ph_hr_lcl,cox_ph_hr_ucl)
+  
+  strat_cox_ph_hr_lcl_ucl <- summary(survival::coxph(Surv(time,status) ~ arm + strata(cox_strat1,cox_strat2,cox_strat3), data = tte_data))$conf.int
+  strat_cox_ph_hr <- strat_cox_ph_hr_lcl_ucl[,1]
+  strat_cox_ph_hr_lcl <- strat_cox_ph_hr_lcl_ucl[,3]
+  strat_cox_ph_hr_ucl <- strat_cox_ph_hr_lcl_ucl[,4]
+  
+  strat_cox_ph_coefficients <- summary(survival::coxph(Surv(time,status) ~ arm + strata(cox_strat1,cox_strat2,cox_strat3), data = tte_data))$coefficients
+  start_cox_pvalue <- strat_cox_ph_coefficients[,5]
+  
+  strat_cox <- data.frame(strat_cox_ph_hr_pvalue,strat_cox_ph_hr,strat_cox_ph_hr_lcl,strat_cox_ph_hr_ucl)
+  
+  tte_table <- list(tte_BIG_N,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,unstrat_cox,strat_cox)
+
+  return(tte_table)
   
 }
 
@@ -123,4 +159,3 @@ tte_1st_3rd_B_vs_C
 tte_1st_3rd_A_vs_C <- tte_tbl(tte_data=ATE2,ref_arm="DUMMY C",comp_arm="DUMMY A")
 tte_1st_3rd_A_vs_C
 
-#cox_ph_results  <- summary(survival::coxph(Surv(time,status) ~ ARM, data = tte_data))
