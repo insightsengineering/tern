@@ -28,9 +28,18 @@
 #' 
 #' \dontrun{
 #' library(atezo.data)
-#' ADSL <- asl(com.roche.atezo.cdpt7722.wo29637)
+#' ADSL <- asl(com.roche.cdt30019.go29436.re)
+#' tbl_expected <- get_demographic_table(com.roche.cdt30019.go29436.re)
 #' 
-#' demographic_table(ADSL)
+#' 
+#' tbl <- demographic_table(ADSL)
+#' 
+#' compare_rtables(tbl, tbl_expected)
+#'
+#' # if all is good then
+#' tbl <- tbl_expected
+#' compare_rtables(tbl, tbl_expected)
+#' 
 #' }
 #' 
 #' 
@@ -39,4 +48,19 @@ demographic_table <- function(ADSL) {
   ADSL %needs% c("USUBJID", "STUDYID", "AGE", "SEX")
   
   table(ADSL$SEX, ADSL$STUDYID)
+  
+  ## get numbers
+  
+  ## create rtable object
+  tbl <- rtable(
+    col.names = c("A", "B", "C", "D"),
+    format = "xx",
+    rrow("row 1", 1,2,3,4),
+    rrow("row 2", c(1.4223423, 2.444444), c(2,3), c(3,4), c(1,4), format = "(xx.xx, xx.xx)")
+  )
+  
+  # Viewer(tbl)
+  
+  ## return rtable object
+  tbl
 }

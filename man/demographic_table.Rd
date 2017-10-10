@@ -32,6 +32,7 @@ demographic_table(ASL)
 library(atezo.data)
 ADSL <- asl(com.roche.atezo.cdpt7722.wo29637)
 
+
 demographic_table(ADSL)
 }
 
