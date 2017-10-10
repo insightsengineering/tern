@@ -4,12 +4,15 @@
 \alias{venn2}
 \title{Create a Venn Diagram Plot with 2 groups}
 \usage{
-venn2(x, y)
+venn2(x, y, xlab, ylab)
 }
 \arguments{
 \item{x}{boolean has biomarker or not}
 
-\item{y}{boolean has biomarker of not}
+\item{y}{boolean has biomarker of not
+
+
+# @importFrom grid}
 }
 \value{
 plot
@@ -20,8 +23,8 @@ Create a Venn Diagram Plot with 2 groups
 \examples{
 
 n <- 100
-tGE <- sample(c(TRUE, FALSE), n, replace=TRUE)
-IHC <- sample(c(TRUE, FALSE), n, replace=TRUE)
+tGE <- sample(c(TRUE, FALSE), n, replace=TRUE, prob = c(.2, .8))
+IHC <- sample(c(TRUE, FALSE), n, replace=TRUE, prob = c(.6, .4))
 
 \dontrun{
 library(atezo.data)
@@ -33,8 +36,8 @@ names(ASL)
 IC <- ASL$IC \%in\% c("2", "3")
 TC <- ASL$TC \%in\% c(2, 3)
 
-venn2(x = IC, y = TC)
-
+x <- venn2(x = IC, y = TC)
+venn2(x = IC, y = TC, "biomarker IT", "biamrker TC")
 
 }
 

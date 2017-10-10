@@ -76,3 +76,4 @@ draw.text(c("center","center"),abs[1,1],paste("(",per[1,1],"%)"),0.5,0.95)
 draw.text(c("center","center"),abs[2,2],paste("(",per[2,2],"%)"),0.5,0.5)
 draw.text(c("center","center"),abs[1,2],paste("(",per[1,2],"%)"),0.5,0.5,unit(-ax/(2*(ax+ay))*0.9*viewport_width,"cm"))
 draw.text(c("center","center"),abs[2,1],paste("(",per[2,1],"%)"),0.5,0.5,unit(ay/(2*(ax+ay))*0.9*viewport_width,"cm"))
+
