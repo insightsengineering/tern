@@ -4,8 +4,7 @@
 \alias{time_to_event_table}
 \title{Time to Event Table}
 \usage{
-time_to_event_table(time_to_event, event, arm, arm.ref,
-  arm.rest = setdiff(arm, arm.ref))
+time_to_event_table(time_to_event, event, arm, arm.ref, vars_strat)
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -26,22 +25,22 @@ library(dplyr)
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 
+tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
+Viewer(tbl_stream)
 
-ATE_f <- ATE \%>\% filter(PARAM == "OS")
+ATE_f <- ATE \%>\% filter(PARAMCD == "OS")
 
 tbl <- time_to_event_table(
     time_to_event = ATE_f$AVAL,
-    is_event = (ATE_f$CNSR == "N"),
-    arm = ATE_f$ARM,
-    arm.ref = "DUMMY A",
-    arm.rest = c("DUMMY C", "DUMMY B")
+    event = (ATE_f$CNSR == 0)*1,
+    arm = ATE_f$ARM1,
+    arm.ref = "DUMMY C"
 )
 
-tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
+tbl
 
-compare_table(tbl, tbl_stream)
+compare_rtables(tbl, tbl_stream)
 
-time_to_event_table(NULL)
 
 }
 }

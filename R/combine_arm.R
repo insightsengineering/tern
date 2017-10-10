@@ -46,3 +46,6 @@ combine_arm <- function(arm, arm.ref, arm.comp = setdiff(arm, arm.ref)) {
   
   factor(as.vector(arm2), levels = c(name_arm_ref, name_arm_comp))
 }
+
+
+
