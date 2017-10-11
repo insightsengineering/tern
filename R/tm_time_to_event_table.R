@@ -21,6 +21,7 @@
 #' library(survival)
 #' library(broom)
 #' library(stringr)
+#' library(readr)
 #' 
 #' ASL <- atezo.data::asl(com.roche.cdt30019.go29436.re)
 #' ATE <- atezo.data::ate(com.roche.cdt30019.go29436.re)
@@ -33,6 +34,22 @@
 #' ATE_f <- dplyr::filter(ATE,ITTFL == "Y" & PARAMCD == "OS")
 #' 
 #' }
+
+#ASL_csv <- dplyr::select(ASL_f,USUBJID,ARM1)
+#ATE_csv <- dplyr::select(ATE_f,USUBJID,ARM1,AVAL,CNSR)
+#readr::write_csv(ASL_csv,"ASL_f.csv")
+#readr::write_csv(ATE_csv,"ATE_f.csv")
+
+#time_to_event <- ATE_f$AVAL
+#event <- ifelse(is.na(ATE_f$CNSR),NA,
+#                ifelse(ATE_f$CNSR==1,0,1))
+#arm <- ATE_f$ARM1
+#big_n_arm <- ASL_f$ARM1
+#arm.ref <- "DUMMY C"
+#strata1 <- as.factor(ATE_f$SEX)
+#strata2 <- as.factor(ATE_f$MLIVER)
+#strata3 <- as.factor(ATE_f$TCICLVL2)
+#time_point <- as.numeric(6)
 
 time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
                                 strata1,strata2,strata3,time_point) {
