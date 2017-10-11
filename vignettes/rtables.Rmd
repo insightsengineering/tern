@@ -1,0 +1,120 @@
+---
+title: "rtables: Reporting Tables"
+author: "Adrian Waddell"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+`rtable` is useful to create tables where multiple values are stored in a cell 
+with a particular format. An `rtable` object has access to the individual raw 
+values and prints the data with formatting rules such as rounding and pasting.
+`rtables` also allow for merging cells within a row.
+
+The main functions currently associated with `rtable`s are `rtable`, `rrow`,
+`rcell`, and `as_html`.
+
+Consider the foolowing example:
+
+```{r, message=FALSE}
+library(teal.oncology)
+```
+```{r}
+tbl <- rtable(
+  col.names = c("Treatement\nN=100", "Comparison\nN=300"),
+  format = "xx (xx.xx%)",
+  rrow("Response", c(104, .2), c(100, .4)),
+  rrow("Non-Response", c(23, .4), c(43, .5)),
+  rrow(),
+  rrow("this is a very long section header"),
+  rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
+  rrow("95% CI", indent = 1, rcell(c(2.8, 4.4), format = "(xx.x, xx.x)", colspan = 2))
+)
+
+tbl  
+```
+
+
+Before we go into explaining the individual components used to create this table
+we continue with the html conversio of the `rtbale` object:
+
+
+```{r}
+as_html(tbl, width = "80%")
+```
+
+Next, the `[` operator lets you access the cell content.
+
+```{r}
+tbl[1, 1]
+```
+
+and to format that cell run `format_rcell(tbl[1,1])`=`r format_rcell(tbl[1,1])`.
+
+Note that `tbl[6, 1]` and `tbl[6, 2]` display both the same `rcell` because of
+the colspan.
+
+# Viewer
+
+The `Viewer` functions takes an `rtable` object and displays it with bootstrap
+styling in RStudio's Viewer pane.
+
+```{r, eval = FALSE}
+Viewer(tbl)
+```
+
+
+# Formats
+
+Formats are inherited to decendents if there is not a more specific format 
+argument(i.e. format arguments of `rcell` are more specific than those of `rrow`
+which are more specific than those of `rtable`.
+
+Two types of formats are supported
+
+* format label, e.g. `xx.xx (xx.xx%)`
+
+* functions that take the element and output type as an argument and return a 
+formatted string or html object
+
+Formats labels are currently limited to the following predefined set:
+
+```{r}
+get_rcell_formats()
+```
+
+Here is an example of using functions for formatting cells:
+
+```{r}
+my_format <- function(x, output) {
+   paste(x, collapse = "/")
+}
+tbl3 <- rtable(
+  c("A", "B"),
+  format = my_format,
+  rrow("row1", c(1,2,3,4), letters[1:10])
+)
+tbl3
+```
+
+
+
+
+# Converting table objects
+
+You can also convert table objects to rtables:
+
+```{r}
+as.rtable(table(iris$Species))
+```
+
+or 
+
+```{r}
+print(as.rtable(with(mtcars, table(cyl, hp))), gap = 1)
+```

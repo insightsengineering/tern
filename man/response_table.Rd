@@ -4,37 +4,50 @@
 \alias{response_table}
 \title{Create the Response Table}
 \usage{
-response_table(time_to_event, event, arm)
+response_table(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp,
+  incl_missing)
 }
 \arguments{
-\item{time_to_event}{time to event variable}
+\item{response}{Tumor response data}
 
-\item{event}{is a boolean with \code{TRUE} if event and \code{FALSE} if
-censored}
+\item{val_rsp}{Character vector, defining list of response values to be used as responders}
 
-\item{arm}{arm data}
+\item{val_nrsp}{Character vector, defining list of response values to be used as non-responders}
+
+\item{arm}{Arm information data}
+
+\item{arm_ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
+
+\item{arm_comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
+
+\item{incl_missing}{Boolean value, \code{TRUE} if missing values should be considered non-responders, 
+\code{FALSE} if missing response should be removed from analysis}
 }
 \description{
 Create the Response Table
 }
 \examples{
 
+
 \dontrun{
 library(atezo.data)
-
-ATE <- ate(com.roche.cdt30019.go29436.re)
-
 library(dplyr)
+'\%needs\%' <- teal.oncology:::'\%needs\%'
 
-ATE_F <- ATE \%>\% filter(PARAMCD == "OS")
+ASL <- asl(com.roche.cdt30019.go29436.re)
+ARS <- ars(com.roche.cdt30019.go29436.re)
+
+ARS_f <- ARS \%>\% filter(PARAMCD == "BESRSPI")
 
 response_table(
-   time_to_event = ATE_F$AVAL,
-   event = ATE_F$CNSR == 0,
-   arm = ATE_F$ARM
+   response     = ARS_f$AVALC,
+   val_rsp      = c("CR","PR"),
+   val_nrsp     = c("SD", "NON CR/PD", "PD", "NE"),
+   arm          = ARS_f$ARM,
+   arm_ref      = "DUMMY A",
+   arm_comp     = "DUMMY B",
+   incl_missing = T
 )
-
-get_response_table(com.roche.cdt30019.go29436.re)
 
 } 
 
