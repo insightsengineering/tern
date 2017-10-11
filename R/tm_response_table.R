@@ -84,7 +84,7 @@ response_table <- function(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp, 
   #####################
   
   #--- Wraggling data to be used in analysis ---#
-  if (incl_missing) {
+  if (incl_missing & !(val_missing %in% val_nrsp)) {
     val_nrsp = c(val_nrsp, val_missing)
   }
   
@@ -121,12 +121,35 @@ response_table <- function(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp, 
   ##########################################
   # Build output data structure with rtable#
   ##########################################
+  
+  #--- Create column header ----#
+  arm_type <- c("Reference Group", "Comparison Group")
+  arm_name <- c(paste(arm_ref, collapse="/"), paste(arm_comp, collapse="/"))
+  arm_n    <- paste0("(N=",rate_result$Responders$totaln,")")
 
-  print(rate_result)
-  print(diff_result)
-  print(or_result)
+  #--- Build output data structure ---#
+  
+  tbl <- rtable(
+    col.names = paste(arm_type, arm_name, arm_n, sep="\n"),
+    format = "xx (xx.xx%)",
+    do.call(rrow, printnpct("Responders", rate_result)),
+    do.call(rrow, printnpct("Non-Responders", rate_result)),
+    rrow(),
+    #do.call(rrow, c(modifyList(printci("Responders"),list(label="95% CI for Response Rates")),format="(xx.xx, xx.xx)")),
+    rrow(),
+    rrow("Difference in Response Rates", rcell(diff_result$diff, format="xx.xx", colspan=2)),
+    rrow("95% CI", indent=1, rcell(diff_result$diffci, format="(xx.x, xx.x)", colspan=2)),
+    rrow("p-value (Chi-square)", indent=1, rcell(diff_result$diffp, format="xx.xxx", colspan=2)),
+    rrow(),
+    rrow("Odds Ratio", rcell(or_result$or, format="xx.xx", colspan=2)),
+    rrow("95% CI", indent=1, rcell(or_result$orci, format="(xx.x, xx.x)", colspan=2)),
+    rrow()
+  )
+  
+  tbl
   
 }
+
 
 #####################
 # Helper Functions #
@@ -189,30 +212,38 @@ rsp_full_name <- list(CR        = "Complete Response (CR)",
                       SD        = "Stable Disease (SD)",
                       `NON CR/PD` = "NON CR/PD",
                       PD        = "Progressive Disease (PD)",
-                      NE        = "Missing or unevaluable (NE)"
-)
+                      NE        = "Missing or unevaluable (NE)")
 
 
-getnpct <- function(rsp_name) {
+printnpct <- function(rsp_name, resultds) {
   #If short name in rsp_full_name, then use the long name as label
   rsp_label <- ifelse(rsp_name %in% names(rsp_full_name),
                       unlist(rsp_full_name[rsp_name]),
                       rsp_name)
-  rrow(rsp_label, 
-       c(rate_result[[rsp_name]]$count[1], rate_result[[rsp_name]]$rate[1]),
-       c(rate_result[[rsp_name]]$count[2], rate_result[[rsp_name]]$rate[2])
+  list(rsp_label,
+       c(resultds[[rsp_name]]$count[1], resultds[[rsp_name]]$rate[1]),
+       c(resultds[[rsp_name]]$count[2], resultds[[rsp_name]]$rate[2])
   )
 }
 
-getci <- function(rsp_name) {
-  rrow("95% CI", 
-       rate_result[[rsp_name]]$rateci[1:2]*100, 
-       rate_result[[rsp_name]]$rateci[3:4]*100
+printnpct2 <- function(rsp_name,resultds) {
+  #If short name in rsp_full_name, then use the long name as label
+  rsp_label <- ifelse(rsp_name %in% names(rsp_full_name),
+                      unlist(rsp_full_name[rsp_name]),
+                      rsp_name)
+  list(label=rsp_label,
+       npct1=c(resultds[[rsp_name]]$count[1], resultds[[rsp_name]]$rate[1]),
+       npct2=c(resultds[[rsp_name]]$count[2], resultds[[rsp_name]]$rate[2])
   )
 }
 
 
-
+printci <- function(rsp_name) {
+  list(label = "95% CI", 
+       ci1   = rate_result[[rsp_name]]$rateci[1:2]*100, 
+       ci2   = rate_result[[rsp_name]]$rateci[3:4]*100
+  )
+}
 
 
 #' Response Table with ADaM data structure 
@@ -232,6 +263,9 @@ getci <- function(rsp_name) {
 #' 
 #' \dontrun{
 #' library(atezo.data)
+#' '%needs%' <- teal.oncology:::'%needs%'
+#' source("C:/Users/liaoc10/Desktop/teal.onco_miscfiles/rtable.R")
+#' 
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' 
