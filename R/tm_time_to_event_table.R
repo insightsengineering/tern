@@ -40,16 +40,18 @@
 #readr::write_csv(ASL_csv,"ASL_f.csv")
 #readr::write_csv(ATE_csv,"ATE_f.csv")
 
-#time_to_event <- ATE_f$AVAL
-#event <- ifelse(is.na(ATE_f$CNSR),NA,
-#                ifelse(ATE_f$CNSR==1,0,1))
-#arm <- ATE_f$ARM1
-#big_n_arm <- ASL_f$ARM1
-#arm.ref <- "DUMMY C"
-#strata1 <- as.factor(ATE_f$SEX)
-#strata2 <- as.factor(ATE_f$MLIVER)
-#strata3 <- as.factor(ATE_f$TCICLVL2)
-#time_point <- as.numeric(6)
+time_to_event <- ATE_f$AVAL
+event <- ifelse(is.na(ATE_f$CNSR),NA,
+                ifelse(ATE_f$CNSR==1,0,1))
+arm <- ATE_f$ARM1
+big_n_arm <- ASL_f$ARM1
+arm.ref <- "DUMMY C"
+comp1.arm <- "DUMMY B"
+comp2.arm <- "DUMMY A"
+strata1 <- as.factor(ATE_f$SEX)
+strata2 <- as.factor(ATE_f$MLIVER)
+strata3 <- as.factor(ATE_f$TCICLVL2)
+time_point <- as.numeric(6)
 
 time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
                                 strata1,strata2,strata3,time_point) {
@@ -68,6 +70,34 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
   surv_km_fit <- survival::survfit(
     formula = Surv(time_to_event, event) ~ ARM, 
     conf.type="plain"
+  )
+  
+  survdiff_data <- data.frame(time_to_event = as.numeric(time_to_event),
+                              event = as.numeric(event),
+                              ARM = ARM,
+                              strata1 = strata1,
+                              strata2 = strata2,
+                              strata3 = strata3,
+                              stringsAsFactors = FALSE)
+  
+  comp1_vs_ref <- subset(survdiff_data, ARM %in% c(arm.ref,comp1.arm))
+  
+  surv_km_test1 <- survival::survdiff(
+    formula = Surv(time_to_event, event) ~ ARM, rho=0, data=comp1_vs_ref
+  )
+  
+  strat_surv_km_test1 <- survival::survdiff(
+    formula = Surv(time_to_event, event) ~ ARM + strata(strata1,strata2,strata3), rho=0, data=comp1_vs_ref
+  )
+  
+  comp2_vs_ref <- subset(survdiff_data, ARM %in% c(arm.ref,comp2.arm))
+  
+  surv_km_test2 <- survival::survdiff(
+    formula = Surv(time_to_event, event) ~ ARM, rho=0, data=comp2_vs_ref
+  )
+  
+  strat_surv_km_test2 <- survival::survdiff(
+    formula = Surv(time_to_event, event) ~ ARM + strata(strata1,strata2,strata3), rho=0, data=comp2_vs_ref
   )
   
   surv_cox_ph <- survival::coxph(
@@ -212,39 +242,35 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
                       )  
   tte_range <- data.frame(ref_km_min,ref_km_max,comp1_km_min,comp1_km_max,comp2_km_min,comp2_km_max)
   
-  # Unstratified COX Proportional Hazard Ratio:  p-value, HR, LCL, and LCL # 
+  # Unstratified COX Proportional Hazard Ratio:  log-rank p-value, HR, LCL, and LCL # 
+  pdiff1 <- pchisq(surv_km_test1$chisq, length(surv_km_test1$n)-1, lower.tail = FALSE)
   cox_ph_hr_lcl_ucl <- summary(surv_cox_ph)$conf.int
   comp1_cox_ph_hr <- cox_ph_hr_lcl_ucl[1,1]
   comp1_cox_ph_hr_lcl <- cox_ph_hr_lcl_ucl[1,3]
   comp1_cox_ph_hr_ucl <- cox_ph_hr_lcl_ucl[1,4]
-
+  
+  pdiff2 <- pchisq(surv_km_test2$chisq, length(surv_km_test2$n)-1, lower.tail = FALSE)
   comp2_cox_ph_hr <- cox_ph_hr_lcl_ucl[2,1]
   comp2_cox_ph_hr_lcl <- cox_ph_hr_lcl_ucl[2,3]
   comp2_cox_ph_hr_ucl <- cox_ph_hr_lcl_ucl[2,4]
   
-  cox_ph_coefficients <- summary(surv_cox_ph)$coefficients
-  comp1_cox_ph_hr_pvalue <- cox_ph_coefficients[1,5]
-  comp2_cox_ph_hr_pvalue <- cox_ph_coefficients[2,5]
+  unstrat_cox <- data.frame(pdiff1,comp1_cox_ph_hr,comp1_cox_ph_hr_lcl,comp1_cox_ph_hr_ucl,
+                            pdiff2,comp2_cox_ph_hr,comp2_cox_ph_hr_lcl,comp2_cox_ph_hr_ucl)
   
-  unstrat_cox <- data.frame(comp1_cox_ph_hr_pvalue,comp1_cox_ph_hr,comp1_cox_ph_hr_lcl,comp1_cox_ph_hr_ucl,
-                            comp2_cox_ph_hr_pvalue,comp2_cox_ph_hr,comp2_cox_ph_hr_lcl,comp2_cox_ph_hr_ucl)
-  
-  # Stratified COX Proportional Hazard Ratio:  p-value, HR, LCL, and LCL # 
+  # Stratified COX Proportional Hazard Ratio:  log-rank p-value, HR, LCL, and LCL # 
+  p_strat_diff1 <- pchisq(strat_surv_km_test1$chisq, length(strat_surv_km_test1$n)-1, lower.tail = FALSE)
   strat_cox_ph_hr_lcl_ucl <- summary(strat_surv_cox_ph)$conf.int
   comp1_strat_cox_ph_hr <- strat_cox_ph_hr_lcl_ucl[1,1]
   comp1_strat_cox_ph_hr_lcl <- strat_cox_ph_hr_lcl_ucl[1,3]
   comp1_strat_cox_ph_hr_ucl <- strat_cox_ph_hr_lcl_ucl[1,4]
-  
+
+  p_strat_diff2 <- pchisq(strat_surv_km_test2$chisq, length(strat_surv_km_test2$n)-1, lower.tail = FALSE)
   comp2_strat_cox_ph_hr <- strat_cox_ph_hr_lcl_ucl[2,1]
   comp2_strat_cox_ph_hr_lcl <- strat_cox_ph_hr_lcl_ucl[2,3]
   comp2_strat_cox_ph_hr_ucl <- strat_cox_ph_hr_lcl_ucl[2,4]
-  
-  strat_cox_ph_coefficients <- summary(strat_surv_cox_ph)$coefficients
-  comp1_strat_cox_ph_hr_pvalue <- strat_cox_ph_coefficients[1,5]
-  comp2_strat_cox_ph_hr_pvalue <- strat_cox_ph_coefficients[2,5]
-  
-  strat_cox <- data.frame(comp1_strat_cox_ph_hr_pvalue,comp1_strat_cox_ph_hr,comp1_strat_cox_ph_hr_lcl,comp1_strat_cox_ph_hr_ucl,
-                          comp2_strat_cox_ph_hr_pvalue,comp2_strat_cox_ph_hr,comp2_strat_cox_ph_hr_lcl,comp2_strat_cox_ph_hr_ucl)
+
+  strat_cox <- data.frame(p_strat_diff1,comp1_strat_cox_ph_hr,comp1_strat_cox_ph_hr_lcl,comp1_strat_cox_ph_hr_ucl,
+                          p_strat_diff2,comp2_strat_cox_ph_hr,comp2_strat_cox_ph_hr_lcl,comp2_strat_cox_ph_hr_ucl)
   
   tte_table <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,
                     unstrat_cox,strat_cox,time_point_analysis)
