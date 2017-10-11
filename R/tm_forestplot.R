@@ -49,6 +49,7 @@
 #'    arm.ref = "DUMMY A"
 #' )
 #' tbl
+#' Viewer(tbl)
 #' 
 #' compare_rtables(tbl, surv_tbl_steam)
 #' 
@@ -68,7 +69,7 @@ surv_subgroup <- function(time_to_event, event,
   if (length(arm) != n) stop("arm has wrong length")
   if (!is.data.frame(group_by)) stop("group_by is expected to be a data.frame")
   if (nrow(group_by) != n) stop("group_by has wrong number of rows")
-  
+  if (any(grepl(".", group_by, fixed = TRUE))) stop("no . are allowed in the group_by variable names")
   
   arm_for_model <- combine_arm(arm, arm.ref, arm.comp)
   
@@ -104,28 +105,54 @@ surv_subgroup <- function(time_to_event, event,
   X <- Reduce(rbind, results_survival2)
   row.names(X) <-names(results_survival2)
 
-  
-  X
-
   additonal_args <- list(
-    col.names = c("Baseline Risk Factors",
-                  "Total n", "n", "Median Events (Months)",
-                  "n", "Median Events (Months)",
+    col.names = c("Total n",
+                  "n", "events", "Median Events (Months)",
+                  "n", "events", "Median Events (Months)",
                   "Hazard Ratio", "95% Wald", "p value"),
     format = "xx"
   )
+  
+  # rname <- rownames(X)[3]
+  # x <- split(X, 1:nrow(X))[[1]]
+  last_header <- "ALL"
+  rrow_collection <- Filter(
+    function(x)!is.null(x),
+    unlist(
+      Map(function(x, rname) {
+        
+        i <- regexpr(".", rname, fixed = TRUE)
+        header_row_name <- c(substr(rname, 1, i-1), substring(rname, i+1))
 
-  rrow_collection <- lapply(split(X, 1:nrow(X)), function(x) {
-     counts = paste("c(", x[1:4], ")", collapse = ",")
-     med =  paste("rcell(", "c(", x[5:6], ")", ",", "format =", '"xx.x"', ")", collapse = ",")
-     hr = paste("rcell(", x[7], ",", "format =", '"xx.xx"', ")", collapse = ",")
-     ci = paste("rcell(", "c(", x[8],",", x[9], ")", ",", "format =", '"xx.x, xx.x"', ")", collapse = ",")
-     text = paste("rrow(rownames(x),", counts, ",", med, ",", hr, ",", ci,")")
-     eval(parse(text))
-  })
-
+        is_new_category <- header_row_name[1] != last_header
+        last_header <<- header_row_name[1]
+        
+        list(
+          if (is_new_category) rrow() else NULL,
+          if (is_new_category) rrow(last_header) else NULL,
+          rrow(
+            row.name = header_row_name[2],
+            x$km_ref_n + x$km_comp_n, # total n
+            x$km_ref_n,
+            x$km_ref_event,
+            rcell(x$km_ref_median, format = "xx.xx"),
+            x$km_comp_n,
+            x$km_comp_event,
+            rcell(x$km_comp_median, format = "xx.xx"),
+            rcell(x$cox_hr, format = "xx.xx"),
+            rcell(c(x$cox_lcl, x$cox_ucl), format = "(xx.xx, xx.xx)"),
+            rcell(x$cox_pval, format = "xx.xx"),
+            indent = if (header_row_name[1] == "ALL") 0 else 1
+          )
+        )
+      }, split(X, 1:nrow(X)), rownames(X)),
+      recursive = FALSE)
+  )
+  
+  
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
 
+  # Viewer(tbl)
   class(tbl) <- c("forest_survival", "forest_table", class(tbl))
 
   tbl

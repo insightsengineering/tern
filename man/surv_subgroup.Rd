@@ -31,8 +31,11 @@ alternative tablist
 \dontrun{
 library(atezo.data)
 library(dplyr)
+library(survival)
 
 '\%needs\%' <- teal.oncology:::'\%needs\%'
+
+surv_tbl_steam <- get_forest_survival(com.roche.cdt30019.go29436.re)
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -57,8 +60,9 @@ tbl <- surv_subgroup(
    arm.ref = "DUMMY A"
 )
 tbl
+Viewer(tbl)
 
-# compare_with stream
+compare_rtables(tbl, surv_tbl_steam)
 
 plot(tbl)
 
