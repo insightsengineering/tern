@@ -253,29 +253,55 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
 
 }  
 
-time_to_event_table(time_to_event = ATE_f$AVAL,
-                    event = ifelse(is.na(ATE_f$CNSR),NA,
-                            ifelse(ATE_f$CNSR==1,0,1)),
-                    arm = ATE_f$ARM1,
-                    big_n_arm = ASL_f$ARM1,
-                    arm.ref = "DUMMY C",
-                    strata1 = as.factor(ATE_f$SEX),
-                    strata2 = as.factor(ATE_f$MLIVER),
-                    strata3 = as.factor(ATE_f$TCICLVL2),
-                    time_point = as.numeric(6))
+tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
+                                      event = ifelse(is.na(ATE_f$CNSR),NA,
+                                              ifelse(ATE_f$CNSR==1,0,1)),
+                                              arm = ATE_f$ARM1,
+                                              big_n_arm = ASL_f$ARM1,
+                                              arm.ref = "DUMMY C",
+                                              strata1 = as.factor(ATE_f$SEX),
+                                              strata2 = as.factor(ATE_f$MLIVER),
+                                              strata3 = as.factor(ATE_f$TCICLVL2),
+                                      time_point = as.numeric(6))
 
-## then to data struture
-#tbl <- rtable(
-#    col.names = c("DUMMY C\n(N=255)", "DUMMY B\n(N=254)", "DUMMY A\n(N=254)"),
-#    format = "xx",
-#    rrow("Responders", c(1, 0.1), c(2, .3), c(33, .43245), format = "xx (xx.xx%)"),
-#    rrow("Non-Responders", c(3, 0.2), c(43,0.32), c(33, .3442), format = "xx (xx.xx%)"),
-#    rrow(),
-#    rrow("95% CI for Response Rates (Clopper−Pearson)", c(0,1), c(0, 2), c(4,5), format = "(xx.xx, xx.xx)")
-#  )
+# Time-to-Event rtable Generation #
+
+tte_tbl_R <- teal.oncology::rtable(
+    col.names = c(paste("DUMMY C\n(N=",tte_tbl_R_data[[1]]$ref_big_n,")",sep=""), 
+                  paste("DUMMY B\n(N=",tte_tbl_R_data[[1]]$comp1_big_n,")",sep=""),
+                  paste("DUMMY A\n(N=",tte_tbl_R_data[[1]]$comp2_big_n,")",sep="")),
+    format = "xx",
+    rrow("Patients with event (%)", 
+         c(tte_tbl_R_data[[2]]$ref_n_events,   tte_tbl_R_data[[2]]$ref_p_events), 
+         c(tte_tbl_R_data[[2]]$comp1_n_events, tte_tbl_R_data[[2]]$comp1_p_events), 
+         c(tte_tbl_R_data[[2]]$comp2_n_events, tte_tbl_R_data[[2]]$comp2_p_events), format = "xx (xx.x%)"),
+    rrow("Patients without event (%)", 
+         c(tte_tbl_R_data[[3]]$ref_n_wo_events,   tte_tbl_R_data[[3]]$ref_p_wo_events), 
+         c(tte_tbl_R_data[[3]]$comp1_n_wo_events, tte_tbl_R_data[[3]]$comp1_p_wo_events), 
+         c(tte_tbl_R_data[[3]]$comp2_n_wo_events, tte_tbl_R_data[[3]]$comp2_p_wo_events), format = "xx (xx.x%)"),
+    rrow(),
+    rrow("Time to Event (months)"),
+    rrow("Median",
+         c(tte_tbl_R_data[[4]]$ref_med_tte),
+         c(tte_tbl_R_data[[4]]$comp1_med_tte),
+         c(tte_tbl_R_data[[4]]$comp2_med_tte), format = "xx.x"),
+    rrow("95% CI",
+         c(tte_tbl_R_data[[4]]$ref_med_tte_lcl,   tte_tbl_R_data[[4]]$ref_med_tte_ucl),
+         c(tte_tbl_R_data[[4]]$comp1_med_tte_lcl, tte_tbl_R_data[[4]]$comp1_med_tte_ucl),
+         c(tte_tbl_R_data[[4]]$comp2_med_tte_lcl, tte_tbl_R_data[[4]]$comp2_med_tte_ucl), format = "(xx.x, xx.x)"),
+    rrow("25% and 75%−ile",
+         c(tte_tbl_R_data[[5]]$ref_25th,   9999),
+         c(tte_tbl_R_data[[5]]$comp1_25th, tte_tbl_R_data[[5]]$comp1_75th),
+         c(tte_tbl_R_data[[5]]$comp2_25th, 9999), format = "(xx.x, xx.x)"),
+    rrow("Range",
+         c(tte_tbl_R_data[[6]]$ref_km_min,   tte_tbl_R_data[[6]]$ref_km_max),
+         c(tte_tbl_R_data[[6]]$comp1_km_min, tte_tbl_R_data[[6]]$comp1_km_max),
+         c(tte_tbl_R_data[[6]]$comp2_km_min, tte_tbl_R_data[[6]]$comp2_km_max), format = "(xx.x, xx.x)")
+)
+teal.oncology::Viewer(tte_tbl_R)
   
-# compare_rtables(tbl, tbl_stream, tol = 0.2)
-#  tbl
+# teal.oncology::compare_rtables(tte_tbl_R, tte_tbl_stream, tol = 0.2)
+# tte_tbl_R
 
 
 
