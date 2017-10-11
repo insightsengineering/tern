@@ -20,6 +20,7 @@
 #' \dontrun{
 #' library(atezo.data)
 #' library(dplyr)
+#' library(survival)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' 
@@ -110,16 +111,21 @@ surv_subgroup <- function(time_to_event, event,
     col.names = c("Baseline Risk Factors",
                   "Total n", "n", "Median Events (Months)",
                   "n", "Median Events (Months)",
-                  "Hazard Ratio", "95% Wald"),
+                  "Hazard Ratio", "95% Wald", "p value"),
     format = "xx"
   )
-    
+
   rrow_collection <- lapply(split(X, 1:nrow(X)), function(x) {
-     rrow("label", ...)
+     counts = paste("c(", x[1:4], ")", collapse = ",")
+     med =  paste("rcell(", "c(", x[5:6], ")", ",", "format =", '"xx.x"', ")", collapse = ",")
+     hr = paste("rcell(", x[7], ",", "format =", '"xx.xx"', ")", collapse = ",")
+     ci = paste("rcell(", "c(", x[8],",", x[9], ")", ",", "format =", '"xx.x, xx.x"', ")", collapse = ",")
+     text = paste("rrow(rownames(x),", counts, ",", med, ",", hr, ",", ci,")")
+     eval(parse(text))
   })
-  
+
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
-  
+
   class(tbl) <- c("forest_survival", "forest_table", class(tbl))
 
   tbl
