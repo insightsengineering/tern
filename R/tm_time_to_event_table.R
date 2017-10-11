@@ -39,9 +39,18 @@ event <- ifelse(is.na(ATE_f$CNSR),NA,
          ifelse(ATE_f$CNSR==1,0,1))
 arm = ATE_f$ARM1
 big_n_arm <- ASL_f$ARM1
-arm.ref = "DUMMY C"
+arm.ref <- "DUMMY C"
+strata1 <- as.factor(ATE_f$SEX)
+strata2 <- as.factor(ATE_f$MLIVER)
+strata3 <- as.factor(ATE_f$TCICLVL2)
 
-  
+  # Argument Checking #
+  n <- length(time_to_event)
+  if (length(event) != n) stop("event has incorrect length!")
+  if (length(arm) != n) stop("arm has incorrect length!")
+  if (!(arm.ref %in% arm)) stop("arm.ref is not in arm!")
+  if (length(arm.ref)!=1) stop("reference arm should have length 1!")
+
   ARM <- factor(arm, levels = c(arm.ref, setdiff(arm, arm.ref)))
   
   levels(big_n_arm) <- as.vector(levels(ARM))
@@ -49,6 +58,14 @@ arm.ref = "DUMMY C"
   surv_km_fit <- survival::survfit(
     formula = Surv(time_to_event, event) ~ ARM, 
     conf.type="plain"
+  )
+  
+  surv_cox_ph <- survival::coxph(
+    formula = Surv(time_to_event, event) ~ ARM
+  )
+  
+  strat_surv_cox_ph <- survival::coxph(
+    formula = Surv(time_to_event, event) ~ ARM + strata(strata1,strata2,strata3)
   )
   
   surv_km_summary <- summary(surv_km_fit)
@@ -74,13 +91,14 @@ arm.ref = "DUMMY C"
   comp1_big_n <- surv_km_table[2,1]
   comp2_big_n <- surv_km_table[3,1]
   
+  # ASL vs. ATE Checking #
   if (as.numeric(ref_BIG_N) != ref_big_n) stop("Reference Population Differences Between ASL and ATE!")
   if (as.numeric(comp1_BIG_N) != comp1_big_n) stop("Comparator 1 Population Differences Between ASL and ATE!")
   if (as.numeric(comp2_BIG_N) != comp2_big_n) stop("Comparator 2 Population Differences Between ASL and ATE!")
   
   tte_big_n <- data.frame(ref_big_n,comp1_big_n,comp2_big_n)
   
-  # Patients With Events #
+  # Patients With Events (N & %) #
   ref_n_events <- surv_km_table[1,4]
   comp1_n_events <- surv_km_table[2,4]
   comp2_n_events <- surv_km_table[3,4]
@@ -92,7 +110,7 @@ arm.ref = "DUMMY C"
   tte_np_events <- data.frame(ref_n_events,ref_p_events,comp1_n_events,comp1_p_events,
                               comp2_n_events,comp2_p_events)
   
-  # Patients Without Events #  
+  # Patients Without Events (N & %) #  
   ref_n_wo_events <- ref_big_n - ref_n_events
   comp1_n_wo_events <- comp1_big_n - comp1_n_events
   comp2_n_wo_events <- comp2_big_n - comp2_n_events
@@ -104,7 +122,7 @@ arm.ref = "DUMMY C"
   tte_np_wo_events <- data.frame(ref_n_wo_events,ref_p_wo_events,comp1_n_wo_events,comp1_p_wo_events,
                                  comp2_n_wo_events,comp2_p_wo_events)
   
-  # Median Time to Event #
+  # Median Time to Event + LCL & UCL #
   ref_med_tte <- surv_km_table[1,7]
   comp1_med_tte <- surv_km_table[2,7]
   comp2_med_tte <- surv_km_table[3,7]
@@ -146,40 +164,48 @@ arm.ref = "DUMMY C"
                       )  
   tte_range <- data.frame(ref_km_min,ref_km_max,comp1_km_min,comp1_km_max,comp2_km_min,comp2_km_max)
   
+  # Unstratified COX Proportional Hazard Ratio:  p-value, HR, LCL, and LCL # 
+  cox_ph_hr_lcl_ucl <- summary(surv_cox_ph)$conf.int
+  comp1_cox_ph_hr <- cox_ph_hr_lcl_ucl[1,1]
+  comp1_cox_ph_hr_lcl <- cox_ph_hr_lcl_ucl[1,3]
+  comp1_cox_ph_hr_ucl <- cox_ph_hr_lcl_ucl[1,4]
+
+  comp2_cox_ph_hr <- cox_ph_hr_lcl_ucl[2,1]
+  comp2_cox_ph_hr_lcl <- cox_ph_hr_lcl_ucl[2,3]
+  comp2_cox_ph_hr_ucl <- cox_ph_hr_lcl_ucl[2,4]
   
-  tte_table <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range)
+  cox_ph_coefficients <- summary(surv_cox_ph)$coefficients
+  comp1_cox_ph_hr_pvalue <- cox_ph_coefficients[1,5]
+  comp2_cox_ph_hr_pvalue <- cox_ph_coefficients[2,5]
+  
+  unstrat_cox <- data.frame(comp1_cox_ph_hr_pvalue,comp1_cox_ph_hr,comp1_cox_ph_hr_lcl,comp1_cox_ph_hr_ucl,
+                            comp2_cox_ph_hr_pvalue,comp2_cox_ph_hr,comp2_cox_ph_hr_lcl,comp2_cox_ph_hr_ucl)
+  
+  # Stratified COX Proportional Hazard Ratio:  p-value, HR, LCL, and LCL # 
+  strat_cox_ph_hr_lcl_ucl <- summary(strat_surv_cox_ph)$conf.int
+  comp1_strat_cox_ph_hr <- strat_cox_ph_hr_lcl_ucl[1,1]
+  comp1_strat_cox_ph_hr_lcl <- strat_cox_ph_hr_lcl_ucl[1,3]
+  comp1_strat_cox_ph_hr_ucl <- strat_cox_ph_hr_lcl_ucl[1,4]
+  
+  comp2_strat_cox_ph_hr <- strat_cox_ph_hr_lcl_ucl[2,1]
+  comp2_strat_cox_ph_hr_lcl <- strat_cox_ph_hr_lcl_ucl[2,3]
+  comp2_strat_cox_ph_hr_ucl <- strat_cox_ph_hr_lcl_ucl[2,4]
+  
+  strat_cox_ph_coefficients <- summary(strat_surv_cox_ph)$coefficients
+  comp1_strat_cox_ph_hr_pvalue <- strat_cox_ph_coefficients[1,5]
+  comp2_strat_cox_ph_hr_pvalue <- strat_cox_ph_coefficients[2,5]
+  
+  strat_cox <- data.frame(comp1_strat_cox_ph_hr_pvalue,comp1_strat_cox_ph_hr,comp1_strat_cox_ph_hr_lcl,comp1_strat_cox_ph_hr_ucl,
+                          comp2_strat_cox_ph_hr_pvalue,comp2_strat_cox_ph_hr,comp2_strat_cox_ph_hr_lcl,comp2_strat_cox_ph_hr_ucl)
+  
+  tte_table <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,
+                    unstrat_cox,strat_cox)
   
   #return(tte_table)
   
   
-  #-------------------------#
-  # Middle 3rd of TTE Table #
-  #-------------------------#
-#  cox_ph_hr_lcl_ucl <- summary(survival::coxph(Surv(time,status) ~ arm, data = tte_data))$conf.int
-#  cox_ph_hr <- cox_ph_hr_lcl_ucl[,1]
-#  cox_ph_hr_lcl <- cox_ph_hr_lcl_ucl[,3]
-#  cox_ph_hr_ucl <- cox_ph_hr_lcl_ucl[,4]
-  
-#  cox_ph_coefficients  <- summary(survival::coxph(Surv(time,status) ~ arm, data = tte_data))$coefficients
-#  cox_ph_hr_pvalue <- cox_ph_coefficients[,5]
-  
-#  unstrat_cox <- data.frame(cox_ph_hr_pvalue,cox_ph_hr,cox_ph_hr_lcl,cox_ph_hr_ucl)
-  
-#  strat_cox_ph_hr_lcl_ucl <- summary(survival::coxph(Surv(time,status) ~ arm + strata(cox_strat1,cox_strat2,cox_strat3), data = tte_data))$conf.int
-#  strat_cox_ph_hr <- strat_cox_ph_hr_lcl_ucl[,1]
-#  strat_cox_ph_hr_lcl <- strat_cox_ph_hr_lcl_ucl[,3]
-#  strat_cox_ph_hr_ucl <- strat_cox_ph_hr_lcl_ucl[,4]
-  
-#  strat_cox_ph_coefficients <- summary(survival::coxph(Surv(time,status) ~ arm + strata(cox_strat1,cox_strat2,cox_strat3), data = tte_data))$coefficients
-#  start_cox_pvalue <- strat_cox_ph_coefficients[,5]
-  
-#  strat_cox <- data.frame(strat_cox_ph_hr_pvalue,strat_cox_ph_hr,strat_cox_ph_hr_lcl,strat_cox_ph_hr_ucl)
-  
-#  tte_table <- list(tte_BIG_N,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,unstrat_cox,strat_cox)
-  
-#  return(tte_table)
-  
-  ## then to data struture
+
+## then to data struture
 #tbl <- rtable(
 #    col.names = c("DUMMY C\n(N=255)", "DUMMY B\n(N=254)", "DUMMY A\n(N=254)"),
 #    format = "xx",
@@ -189,53 +215,10 @@ arm.ref = "DUMMY C"
 #    rrow("95% CI for Response Rates (Clopper−Pearson)", c(0,1), c(0, 2), c(4,5), format = "(xx.xx, xx.xx)")
 #  )
   
-  # compare_rtables(tbl, tbl_stream, tol = 0.2)
-  
-  tbl
-}
-
-#' @export
-time_to_event_table_ADAM <- function(ASL, ATE, PARAMCD, ...) {
-  
-   ATE_f <- ATE %>% filter(PARAMCD == PARAMCD)
-   
-   tbl <- time_to_event_table(
-       time_to_event = ATE_f$AVAL,
-       is_event = (ATE_f$CNSR == "N"),
-       arm = ATE_f$ARM,
-       ...
-   )
-   
-   tbl
-  
-}
-
-#' tbl <- time_to_event_table(
-#'     time_to_event = ATE_f$AVAL,
-#'     event = (ATE_f$CNSR == 0)*1,
-#'     arm = ATE_f$ARM1,
-#'     arm.ref = "DUMMY C"
-#' )
-#' 
-#' tbl
-#' 
-#' compare_rtables(tbl, tbl_stream, tol = 0.2)
+# compare_rtables(tbl, tbl_stream, tol = 0.2)
+#  tbl
 
 
-#'          dplyr::mutate(time_to_event   = AVAL,
-#'                        status = 
-#'                                 
-#'                                 #time_to_event_table <- function(time_to_event, event,
-#                                arm, arm.ref,
-#                                vars_strat
-#                                ) {
-ref_BIG_N <- table(big_n_arm)[[1]]
-comp1_BIG_N <- table(big_n_arm)[[2]]
-comp2_BIG_N <- table(big_n_arm)[[3]]
-# argument checking
-#  n <- length(time_to_event)
-#  if (length(event) != n) stop("event has wrong length")
-#  if (length(arm) != n) stop("arm has wrong length")
-#   if (!(arm.ref %in% arm)) stop("arm.ref not in arm")
 
-#  if (length(arm.ref)!=1) stop("referemce arm to be expected length 1")
+
+
