@@ -446,7 +446,9 @@ formats_2d <- c(
   "xx / xx", "xx. / xx.", "xx.x / xx.x", "xx.xx / xx.xx",
   "xx (xx%)", "xx (xx.%)", "xx (xx.x%)", "xx (xx.xx%)", 
   "xx. (xx.%)", "xx.x (xx.x%)", "xx.xx (xx.xx%)",
-  "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)"
+  "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)",
+  "xx - xx", "xx.x - xx.x", "xx.xx - xx.xx",
+  "xx.x (xx.x)", "xx.xx (xx.xx)"
 )
 
 
@@ -524,7 +526,12 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
       "(xx, xx)" = paste0("(",x[1], x[2], ")"),
       "(xx., xx.)" = paste0("(", paste(lapply(x, round, 0), collapse = ", ") , ")"),
       "(xx.x, xx.x)" = paste0("(", paste(lapply(x, round, 1), collapse = ", ") , ")"),
-      "(xx.xx, xx.xx)" = paste0("(", paste(lapply(x, round, 2), collapse = ", ") , ")")
+      "(xx.xx, xx.xx)" = paste0("(", paste(lapply(x, round, 2), collapse = ", ") , ")"),
+      "xx - xx" = paste(x[1], "-", x[2]),
+      "xx.x - xx.x" = paste(vapply(x, round, numeric(1), 1), collapse = " - "),
+      "xx.xx - xx.xx" = paste(vapply(x, round, numeric(1), 2), collapse = " - "),
+      "xx.x (xx.x)" = paste0(round(x[1], 1), " (",round(x[2], 1), ")"),
+      "xx.xx (xx.xx)" = paste0(round(x[1], 2), " (",round(x[2], 2), ")")
     )  
   } else if (is.function(format)) {
     format(x, output = output)
