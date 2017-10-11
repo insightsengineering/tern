@@ -5,7 +5,7 @@
 \title{Response Table with ADaM data structure}
 \usage{
 response_table_ADAM(ASL, ARS, response_par = "BESRSPI", arm_var = "ARM",
-  arm_ref, arm_comp, val_rsp = c("CR", "PR"), val_nrsp = c("SD",
+  arm.ref, arm.comp, val_rsp = c("CR", "PR"), val_nrsp = c("SD",
   "NON CR/PD", "PD", "NE"), incl_missing = T)
 }
 \arguments{
@@ -15,9 +15,9 @@ response_table_ADAM(ASL, ARS, response_par = "BESRSPI", arm_var = "ARM",
 
 \item{arm_var}{Name of the variable to use as testing arms}
 
-\item{arm_ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
+\item{arm.ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
 
-\item{arm_comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
+\item{arm.comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
 
 \item{val_rsp}{Character vector, defining list of response values to be used as responders}
 
@@ -40,8 +40,8 @@ ASL <- asl(com.roche.cdt30019.go29436.re)
 ARS <- ars(com.roche.cdt30019.go29436.re)
 
 response_table_ADAM(ASL, ARS, 
-                    arm_ref = "DUMMY A", 
-                    arm_comp = "DUMMY B")
+                    arm.ref = "DUMMY A", 
+                    arm.comp = "DUMMY B")
 
 }
 

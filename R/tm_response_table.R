@@ -5,8 +5,8 @@
 #' @param val_rsp Character vector, defining list of response values to be used as responders
 #' @param val_nrsp Character vector, defining list of response values to be used as non-responders
 #' @param arm Arm information data
-#' @param arm_ref Character vector, defining which arm(s) from the list of arms should be used as reference group
-#' @param arm_comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
+#' @param arm.ref Character vector, defining which arm(s) from the list of arms should be used as reference group
+#' @param arm.comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
 #' @param incl_missing Boolean value, \code{TRUE} if missing values should be considered non-responders, 
 #'                     \code{FALSE} if missing response should be removed from analysis
 #' @export
@@ -23,22 +23,122 @@
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "BESRSPI")
+#' ARS_f <- ARS %>%
+#'  filter(PARAMCD == "BESRSPI") %>%
+#'  mutate(is_response = vapply(AVALC, function(xi) {
+#'    if (is.na(xi) || xi == "") {
+#'      FALSE
+#'    } else if (xi %in% c("CR","PR")) {
+#'      TRUE
+#'    } else if (xi %in%  c("SD", "NON CR/PD", "PD", "NE")) {
+#'      FALSE
+#'    } else {
+#'      NA
+#'    }
+#'  }, logical(1))) 
+#'  
+#'  ARS_f$is_response[is.na(ARS_f$is_response)] <- FALSE
+#'  
 #' 
-#' response_table(
-#'    response     = ARS_f$AVALC,
-#'    val_rsp      = c("CR","PR"),
-#'    val_nrsp     = c("SD", "NON CR/PD", "PD", "NE"),
+#' ARS_f$is_response
+#' 
+#' val_rsp      = c("CR","PR"),
+#' val_nrsp     = c("SD", "NON CR/PD", "PD", "NE"),
+#' 
+#' 
+#' tbl <- response_table(
+#'    response     = ARS_f$is_response,
 #'    arm          = ARS_f$ARM,
-#'    arm_ref      = "DUMMY A",
-#'    arm_comp     = "DUMMY B",
-#'    incl_missing = T
+#'    arm.ref      = "DUMMY A",
+#'    group_by     = ARS_f$AVALC,
+#'    group_by_incl_missing = TRUE
 #' )
+#' 
+#' tbl
+#' 
+#' Viewer(tbl)
 #' 
 #' } 
 #' 
-
-response_table <- function(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp, incl_missing) {
+response_table <- function(response,
+                           arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
+                           incl_missing) {
+  
+  if (any(is.na(response))) stop("response can not have any NAs")
+  
+  ARM <- combine_arm(arm, arm.ref, arm.comp)
+  
+  l_response <- split(response, ARM)
+  
+  get_response_numbers <- function(x) {
+    N <- length(x)
+    n_resp <- sum(x == TRUE)
+    n_nresp <- sum(x == FALSE)
+    test <- binom.test(n_resp, N)
+    test$conf.int
+    
+    list(
+      n_resp = n_resp,
+      n_nresp = n_nresp,
+      p_resp = n_resp/N,
+      p_nresp = n_nresp/N,
+      N = N,
+      conf.int = test$conf.int
+    )
+  }
+  
+  
+  # x <- l_response[[1]]
+  y <- lapply(l_response, get_response_numbers)
+  
+  ref <- y[[1]]
+  comp <- y[[2]]
+  
+  all_rows <- list(
+    rrow("Responders", c(ref$n_resp, ref$p_resp), c(comp$n_resp, comp$p_resp)),
+    rrow("Non-Responders", c(ref$n_nresp, ref$p_nresp), c(comp$n_nresp, comp$p_nresp)),
+    rrow("95% CI", ref$conf.int, comp$conf.int, format = "(xx.x, xx.x)")
+  )
+  
+  ## Now lets look at the group_by
+  l_gb_rsp <- split(data.frame(response, ARM, stringsAsFactors = FALSE), group_by)
+  names(l_gb_rsp)
+  
+  l_gb_arm <- lapply(l_gb_rsp, function(df)split(df$response, df$ARM))
+  
+  y2 <- lapply(l_gb_arm, function(x) {
+    lapply(x, get_response_numbers)
+  })
+  
+  partiotioned_rrows <- Map(function(yi, name) {
+    ref <- yi[[1]]
+    comp <- yi[[2]]
+    
+    list(
+      rrow(),
+      rrow(name, c(ref$n_resp, ref$p_resp), c(comp$n_resp, comp$p_resp)),
+      rrow("95% CI", ref$conf.int, comp$conf.int, format = "(xx.x, xx.x)", indent = 1)
+    )
+  }, y2, names(y2))
+  
+  
+  
+  
+  additional_args <-  list(
+    col.names = c("Reference", "Treat"),
+    format = "xx (xx.x%)"
+  )
+  
+  
+  tbl <- do.call(rtable,
+                 c(additional_args, 
+                   all_rows,
+                   unlist(partiotioned_rrows, recursive = FALSE))
+  )
+  
+  # Viewer(tbl)
+  return(tbl)
+  
   
   #####################
   # Argument checking #
@@ -75,9 +175,9 @@ response_table <- function(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp, 
     stop("Invalid arm variable selected. Minimum 2 unique levels required for arm variable.")
   }
 
-  # Check arm_ref and arm_comp in list of arm
-  if (!all(arm_ref %in% arm)) stop("Invalid arm_ref value(s) selected. Not all value(s) in arm_ref are present in arm")
-  if (!all(arm_comp %in% arm)) stop("Invalid arm_comp value(s) selected. Not all value(s) in arm_comp are present in arm")
+  # Check arm.ref and arm.comp in list of arm
+  if (!all(arm.ref %in% arm)) stop("Invalid arm.ref value(s) selected. Not all value(s) in arm.ref are present in arm")
+  if (!all(arm.comp %in% arm)) stop("Invalid arm.comp value(s) selected. Not all value(s) in arm.comp are present in arm")
   
   #####################
   # Math calculations #
@@ -89,7 +189,7 @@ response_table <- function(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp, 
   }
   
   #Creating mask for each categorical values in arm and response separately
-  mask_arm <- mask2di(arm, arm_ref, arm_comp, "Reference", "Comparison", "All Groups")
+  mask_arm <- mask2di(arm, arm.ref, arm.comp, "Reference", "Comparison", "All Groups")
   mask_rsp <- mask2di(response, val_nrsp, val_rsp, "Non-Responders", "Responders","All Evaluable")
 
   #Combine arm and response (union of both masks), if TRUE then to be included in analysis
@@ -124,7 +224,7 @@ response_table <- function(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp, 
   
   #--- Create column header ----#
   arm_type <- c("Reference Group", "Comparison Group")
-  arm_name <- c(paste(arm_ref, collapse="/"), paste(arm_comp, collapse="/"))
+  arm_name <- c(paste(arm.ref, collapse="/"), paste(arm.comp, collapse="/"))
   arm_n    <- paste0("(N=",rate_result$Responders$totaln,")")
 
   #--- Build output data structure ---#
@@ -155,7 +255,7 @@ response_table <- function(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp, 
 # Helper Functions #
 #####################
 #--- Function to mask data to boolean ----#
-#Example: mask2di(arm, arm_ref, arm_comp, "Reference","Comparison", "All Groups")
+#Example: mask2di(arm, arm.ref, arm.comp, "Reference","Comparison", "All Groups")
 mask2di <- function(data, valto0, valto1, label0, label1, labelboth) {
   vallist <- c(valto0, valto1)
   datn <- length(data)
@@ -251,8 +351,8 @@ printci <- function(rsp_name) {
 #' @param ASL ASL dataset with following variables: USUBJID, STUDYID, the specified grouping variable
 #' @param ARS ARS dataset containing the following variables: USUBJID, STUDYID, PARAMCD, AVALC
 #' @param arm_var Name of the variable to use as testing arms
-#' @param arm_ref Character vector, defining which arm(s) from the list of arms should be used as reference group
-#' @param arm_comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
+#' @param arm.ref Character vector, defining which arm(s) from the list of arms should be used as reference group
+#' @param arm.comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
 #' @param val_rsp Character vector, defining list of response values to be used as responders
 #' @param val_nrsp Character vector, defining list of response values to be used as non-responders
 #' @param incl_missing Boolean value, \code{TRUE} if missing values should be considered non-responders, 
@@ -270,8 +370,8 @@ printci <- function(rsp_name) {
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' 
 #' response_table_ADAM(ASL, ARS, 
-#'                     arm_ref = "DUMMY A", 
-#'                     arm_comp = "DUMMY B")
+#'                     arm.ref = "DUMMY A", 
+#'                     arm.comp = "DUMMY B")
 #' 
 #' }
 #' 
@@ -279,8 +379,8 @@ printci <- function(rsp_name) {
 response_table_ADAM <- function(ASL, ARS,
                                 response_par = "BESRSPI",
                                 arm_var      = "ARM",
-                                arm_ref,
-                                arm_comp,
+                                arm.ref,
+                                arm.comp,
                                 val_rsp      = c("CR","PR"),
                                 val_nrsp     = c("SD", "NON CR/PD", "PD", "NE"),
                                 incl_missing = T) {
@@ -290,7 +390,7 @@ response_table_ADAM <- function(ASL, ARS,
   ARS %needs% c("USUBJID", "STUDYID", "PARAMCD", "AVALC")
   
   #Select records needed to analysis, merge ASL/ARS to create analysis dataset
-  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm_var))            %>% filter(get(arm_var) %in% c(arm_ref,arm_comp))
+  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm_var))            %>% filter(get(arm_var) %in% c(arm.ref,arm.comp))
   ARS_f <- ARS %>% select(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == response_par)
   ANL <- merge(ASL_f, ARS_f, by=c("USUBJID", "STUDYID"))
   
@@ -309,8 +409,8 @@ response_table_ADAM <- function(ASL, ARS,
     val_rsp      = val_rsp,
     val_nrsp     = val_nrsp,
     arm          = ANL$ARM,
-    arm_ref      = arm_ref,
-    arm_comp     = arm_comp,
+    arm.ref      = arm.ref,
+    arm.comp     = arm.comp,
     incl_missing = T
   )
   

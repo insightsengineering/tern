@@ -4,24 +4,24 @@
 \alias{response_table}
 \title{Create the Response Table}
 \usage{
-response_table(response, val_rsp, val_nrsp, arm, arm_ref, arm_comp,
+response_table(response, arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
   incl_missing)
 }
 \arguments{
 \item{response}{Tumor response data}
 
-\item{val_rsp}{Character vector, defining list of response values to be used as responders}
-
-\item{val_nrsp}{Character vector, defining list of response values to be used as non-responders}
-
 \item{arm}{Arm information data}
 
-\item{arm_ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
+\item{arm.ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
 
-\item{arm_comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
+\item{arm.comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
 
 \item{incl_missing}{Boolean value, \code{TRUE} if missing values should be considered non-responders, 
 \code{FALSE} if missing response should be removed from analysis}
+
+\item{val_rsp}{Character vector, defining list of response values to be used as responders}
+
+\item{val_nrsp}{Character vector, defining list of response values to be used as non-responders}
 }
 \description{
 Create the Response Table
@@ -37,17 +37,40 @@ library(dplyr)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 ARS <- ars(com.roche.cdt30019.go29436.re)
 
-ARS_f <- ARS \%>\% filter(PARAMCD == "BESRSPI")
+ARS_f <- ARS \%>\%
+ filter(PARAMCD == "BESRSPI") \%>\%
+ mutate(is_response = vapply(AVALC, function(xi) {
+   if (is.na(xi) || xi == "") {
+     FALSE
+   } else if (xi \%in\% c("CR","PR")) {
+     TRUE
+   } else if (xi \%in\%  c("SD", "NON CR/PD", "PD", "NE")) {
+     FALSE
+   } else {
+     NA
+   }
+ }, logical(1))) 
+ 
+ ARS_f$is_response[is.na(ARS_f$is_response)] <- FALSE
+ 
 
-response_table(
-   response     = ARS_f$AVALC,
-   val_rsp      = c("CR","PR"),
-   val_nrsp     = c("SD", "NON CR/PD", "PD", "NE"),
+ARS_f$is_response
+
+val_rsp      = c("CR","PR"),
+val_nrsp     = c("SD", "NON CR/PD", "PD", "NE"),
+
+
+tbl <- response_table(
+   response     = ARS_f$is_response,
    arm          = ARS_f$ARM,
-   arm_ref      = "DUMMY A",
-   arm_comp     = "DUMMY B",
-   incl_missing = T
+   arm.ref      = "DUMMY A",
+   group_by     = ARS_f$AVALC,
+   group_by_incl_missing = TRUE
 )
+
+tbl
+
+Viewer(tbl)
 
 } 
 
