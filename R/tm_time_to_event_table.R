@@ -34,15 +34,8 @@
 #' 
 #' }
 
-time_to_event <- ATE_f$AVAL
-event <- ifelse(is.na(ATE_f$CNSR),NA,
-         ifelse(ATE_f$CNSR==1,0,1))
-arm = ATE_f$ARM1
-big_n_arm <- ASL_f$ARM1
-arm.ref <- "DUMMY C"
-strata1 <- as.factor(ATE_f$SEX)
-strata2 <- as.factor(ATE_f$MLIVER)
-strata3 <- as.factor(ATE_f$TCICLVL2)
+time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
+                                strata1,strata2,strata3,time_point) {
 
   # Argument Checking #
   n <- length(time_to_event)
@@ -69,8 +62,11 @@ strata3 <- as.factor(ATE_f$TCICLVL2)
   )
   
   surv_km_summary <- summary(surv_km_fit)
+  
   surv_km_table <- surv_km_summary$table
+  
   surv_km_broom <- broom::tidy(surv_km_fit)
+  
   ref_surv_km_ranges <- surv_km_broom[which(stringr::str_sub(surv_km_broom$strata,5,
                                       nchar(surv_km_broom$strata)) == as.vector(levels(ARM))[1]),]$time
 
@@ -82,6 +78,41 @@ strata3 <- as.factor(ATE_f$TCICLVL2)
   
   surv_km_quantile <- quantile(surv_km_fit)$quantile
 
+  # Time Point Analysis #  
+  ref_time_points <- surv_km_broom[which(stringr::str_sub(surv_km_broom$strata,5,
+                                   nchar(surv_km_broom$strata)) == as.vector(levels(ARM))[1]),]
+  ref_time_point <- max(subset(ref_time_points,time <= time_point)$time)
+  ref_time_point_row <- subset(ref_time_points,time == ref_time_point)
+  ref_patients_remaining_at_risk <- ref_time_point_row$n.risk
+  ref_patients_event_free_rate <- ref_time_point_row$estimate
+  ref_patients_event_free_rate_lcl <- ref_time_point_row$conf.low
+  ref_patients_event_free_rate_ucl <- ref_time_point_row$conf.high
+  
+  comp1_time_points <- surv_km_broom[which(stringr::str_sub(surv_km_broom$strata,5,
+                                     nchar(surv_km_broom$strata)) == as.vector(levels(ARM))[2]),]
+  comp1_time_point <- max(subset(comp1_time_points,time <= time_point)$time)
+  comp1_time_point_row <- subset(comp1_time_points,time == comp1_time_point)
+  comp1_patients_remaining_at_risk <- comp1_time_point_row$n.risk
+  comp1_patients_event_free_rate <- comp1_time_point_row$estimate
+  comp1_patients_event_free_rate_lcl <- comp1_time_point_row$conf.low
+  comp1_patients_event_free_rate_ucl <- comp1_time_point_row$conf.high
+  
+  comp2_time_points <- surv_km_broom[which(stringr::str_sub(surv_km_broom$strata,5,
+                                     nchar(surv_km_broom$strata)) == as.vector(levels(ARM))[3]),]
+  comp2_time_point <- max(subset(comp2_time_points,time <= time_point)$time)
+  comp2_time_point_row <- subset(comp2_time_points,time == comp2_time_point)
+  comp2_patients_remaining_at_risk <- comp2_time_point_row$n.risk
+  comp2_patients_event_free_rate <- comp2_time_point_row$estimate
+  comp2_patients_event_free_rate_lcl <- comp2_time_point_row$conf.low
+  comp2_patients_event_free_rate_ucl <- comp2_time_point_row$conf.high
+  
+  time_point_analysis <- data.frame(time_point,ref_patients_remaining_at_risk,ref_patients_event_free_rate,
+                                    ref_patients_event_free_rate_lcl,ref_patients_event_free_rate_ucl,
+                                    comp1_patients_remaining_at_risk,comp1_patients_event_free_rate,
+                                    comp1_patients_event_free_rate_lcl,comp1_patients_event_free_rate_ucl,
+                                    comp2_patients_remaining_at_risk,comp2_patients_event_free_rate,
+                                    comp2_patients_event_free_rate_lcl,comp2_patients_event_free_rate_ucl)
+  
   # BIG N #
   ref_BIG_N <- length(big_n_arm[big_n_arm == as.vector(levels(big_n_arm))[1]])
   comp1_BIG_N <- length(big_n_arm[big_n_arm == as.vector(levels(big_n_arm))[2]])
@@ -199,11 +230,22 @@ strata3 <- as.factor(ATE_f$TCICLVL2)
                           comp2_strat_cox_ph_hr_pvalue,comp2_strat_cox_ph_hr,comp2_strat_cox_ph_hr_lcl,comp2_strat_cox_ph_hr_ucl)
   
   tte_table <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,
-                    unstrat_cox,strat_cox)
+                    unstrat_cox,strat_cox,time_point_analysis)
   
-  #return(tte_table)
-  
-  
+  return(tte_table)
+
+}  
+
+time_to_event_table(time_to_event = ATE_f$AVAL,
+                    event = ifelse(is.na(ATE_f$CNSR),NA,
+                            ifelse(ATE_f$CNSR==1,0,1)),
+                    arm = ATE_f$ARM1,
+                    big_n_arm = ASL_f$ARM1,
+                    arm.ref = "DUMMY C",
+                    strata1 = as.factor(ATE_f$SEX),
+                    strata2 = as.factor(ATE_f$MLIVER),
+                    strata3 = as.factor(ATE_f$TCICLVL2),
+                    time_point = as.numeric(6))
 
 ## then to data struture
 #tbl <- rtable(
