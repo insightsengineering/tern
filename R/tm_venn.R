@@ -78,31 +78,28 @@ plot.venn2 <- function(x, ...) {
   # find dx and dy using pythagorean theorm
   # dx and dy are distances from center of cusp to the respective centers of the circles
   # sacle d and r to viewport width, making 2x diameter 90% width of viewport
+
+  min_side <- unit(1, "snpc")
   
+  dx_num <- sqrt(ax^2-(a/2)^2)
+  dy_num <- sqrt(ay^2-(a/2)^2)
   
+  dx <- dx_num/(2*(ax+ay)) * min_side
+  dy <- dy_num/(2*(ax+ay)) * min_side
+  
+  rx <- ax/(2*(ax+ay)) * min_side
+  ry <- ay/(2*(ax+ay)) * min_side
+
+  # draw graphic
   grid.newpage()
   
   pushViewport(plotViewport(margins = c(2,2,2,2))) # add margins
   grid.rect()
   
   # helper lines
-  grid.lines(x = c(0, 1), y = c(.5, .5), default.units = "npc")
-  grid.lines(x =  c(.5, .5), y =c(0, 1), default.units = "npc")
-  
-  viewport_width <- convertWidth(unit(1,'npc'), 'cm', TRUE)
-  
-  dx_num <- sqrt(ax^2-(a/2)^2)
-  dy_num <- sqrt(ay^2-(a/2)^2)
-  
-  dx_num_scale <- dx_num/(2*(ax+ay))*0.9*viewport_width
-  dy_num_scale <- dy_num/(2*(ax+ay))*0.9*viewport_width
-  
-  dx <- unit(dx_num_scale, "cm")
-  dy <- unit(dy_num_scale, "cm")
-  
-  rx <- unit(ax/(2*(ax+ay))*0.9*viewport_width, "cm") 
-  ry <- unit(ay/(2*(ax+ay))*0.9*viewport_width, "cm") 
-  
+  # grid.lines(x = c(0, 1), y = c(.5, .5), default.units = "npc")
+  # grid.lines(x =  c(.5, .5), y =c(0, 1), default.units = "npc")
+
   #draw circles
   
   grid.circle(x = unit(0.5, "npc") - dx, y = unit(0.5, "npc"), r = rx,
@@ -110,19 +107,52 @@ plot.venn2 <- function(x, ...) {
   grid.circle(x = unit(0.5, "npc") + dy, y = unit(0.5, "npc"), r = ry,
               gp = gpar(fill = "orange", alpha = .4))
   
-  #write text
   
-  draw.text <- function(just, text, text2, i, j, k=unit(0,"cm")) {
-    grid.text(text, x=unit(i, "npc")+k, y=unit(j, "npc"), just=just)
-    grid.text(text2, x=unit(i, "npc")+k, y=unit(j, "npc") - unit(1, "lines"),
-              gp=gpar(fontsize=8))
-  }
+  # add labels
   
-  draw.text(c("left","bottom"), paste("Biomarker", x$xlab), "", 0.05,0.1)
-  draw.text(c("right","bottom"), paste("Biomarker", x$ylab), "", 0.95,0.1)
-  draw.text(c("center","center"),abs[1,1],paste("(",per[1,1],"%)"),0.5,0.95)
-  draw.text(c("center","center"),abs[2,2],paste("(",per[2,2],"%)"),0.5,0.5)
-  draw.text(c("center","center"),abs[1,2],paste("(",per[1,2],"%)"),0.5,0.5,unit(-ax/(2*(ax+ay))*0.9*viewport_width,"cm"))
-  draw.text(c("center","center"),abs[2,1],paste("(",per[2,1],"%)"),0.5,0.5,unit(ay/(2*(ax+ay))*0.9*viewport_width,"cm"))
+  grid.text(
+    x$xlab,
+    x = unit(0.5, "npc") - dx - 1.2 * cos(pi/4) * rx ,
+    y = unit(0.5, "npc") - 1.2 * sin(pi/4) * rx ,
+    just = c("right", "center")
+  )
+  grid.text(
+    x$ylab,
+    x = unit(0.5, "npc") + dy + 1.2 * cos(pi/4) * ry,
+    y = unit(0.5, "npc") - 1.2 * sin(pi/4) * ry ,
+    just = c("left", "center")
+  )
+
+  grid.text(
+    paste0(abs[1,1],"\n(",per[1,1],"%)"),
+    x = unit(0.5, "npc"),
+    y = unit(0.5, "npc") + max(rx, ry) + unit(2, "lines"),
+    just = c("center", "center"),
+    gp = gpar(lineheight = .9)
+  )
+
+  grid.text(
+    paste0(abs[2,2],"\n(",per[2,2],"%)"),
+    x = unit(0.5, "npc"),
+    y = unit(0.5, "npc"),
+    just = c("center", "center"),
+    gp = gpar(lineheight = .9)
+  )
+  
+  grid.text(
+    paste0(abs[2,1],"\n(",per[2,1],"%)"),
+    x = unit(0.5, "npc") - ax/(2*(ax+ay))*min_side,
+    y = unit(0.5, "npc"),
+    just = c("center", "center"),
+    gp = gpar(lineheight = .9)
+  )
+  
+  grid.text(
+    paste0(abs[1,2],"\n(",per[1,2],"%)"),
+    x = unit(0.5, "npc") + ay/(2*(ax+ay)) * min_side,
+    y = unit(0.5, "npc"),
+    just = c("center", "center"),
+    gp = gpar(lineheight = .9)
+  )
   
 }
