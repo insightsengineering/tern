@@ -28,6 +28,9 @@
 #' 
 #' }
 #' 
+#' # if too few then table is plotted
+#' x <- venn2(x = c(TRUE, TRUE), y = c(FALSE, FALSE))
+#' plot(x)
 venn2 <- function(x, y, xlab, ylab) {
 
   
@@ -39,7 +42,10 @@ venn2 <- function(x, y, xlab, ylab) {
   
   # what to do with NA?
   if (any(is.na(c(x, y)))) stop("can currently not deal with NA")
-  
+
+  x <- factor(x, levels = c(FALSE, TRUE))
+  y <- factor(y, levels = c(FALSE, TRUE))
+    
   abs <- table(x, y)
   per <- abs/length(x)
   
@@ -57,103 +63,149 @@ plot.venn2 <- function(x, ...) {
   abs <- x$absolute
   per <- apply(x$perentage, c(1,2), function(xi) round(xi*100,1))
   
+  if (!all(dim(abs) == c(2,2))) stop("dimension of x$absolute is not 2x2")
+  
+  
+  label_xy <- paste0(abs[1,1],"\n(",per[1,1],"%)")
+  label_XY <- paste0(abs[2,2],"\n(",per[2,2],"%)")
+  label_xY <- paste0(abs[1,2],"\n(",per[1,2],"%)")
+  label_Xy <- paste0(abs[2,1],"\n(",per[2,1],"%)")
+
+
+  plot_grob <- if (any(c(abs[1,2], abs[2,1]) < 2)) {
+    ## plot a table
+    
+    labels <- c(label_xy, label_Xy, label_XY, label_xY)
+    w2 <- .5 * do.call(max, lapply(labels, stringWidth)) 
+    h2 <- .5 * do.call(max, lapply(labels, stringHeight))
+    
+    u1 <- unit(1, "lines")
+    
+    gTree(
+      children = gList(
+        textGrob(label_xy,
+                  x = unit(0.5, "npc") - (w2 + u1),
+                  y = unit(0.5, "npc") + (h2 + u1)),
+        textGrob(label_Xy,
+                  x = unit(0.5, "npc") - (w2 + u1),
+                  y = unit(0.5, "npc") - (h2 + u1)),
+        textGrob(label_xY,
+                  x = unit(0.5, "npc") + (w2 + u1),
+                  y = unit(0.5, "npc") + (h2 + u1)),
+        textGrob(label_XY,
+                  x = unit(0.5, "npc") + (w2 + u1),
+                  y = unit(0.5, "npc") - (h2 + u1)),
+        textGrob(x$xlab,
+                  y = unit(.5, "npc") + 2 * (h2 + u1),
+                  gp = gpar(fontface = "bold")),
+        textGrob(x$ylab,
+                  x = unit(.5, "npc") - 2 * (w2 + u1),
+                  gp = gpar(fontface = "bold"), rot = 90)
+      )
+    )
+
+    
+  } else {
+    ## plot venn diagram
+    
+    # solve for radius of circles using area
+    
+    ax <- sqrt((abs[1,2]+abs[2,2])/pi) #radius of 1st circle
+    ay <- sqrt((abs[2,1]+abs[2,2])/pi) #radius of 2nd circle
+    
+    #solve for d, the distance between the 2 centers of the cicles
+    
+    d_solve <- uniroot(function(d) ay^2*acos((d^2+ay^2-ax^2)/(2*d*ay)) 
+                       + ax^2*acos((d^2+ax^2-ay^2)/(2*d*ax)) 
+                       - 1/2 * sqrt((-d+ay+ax)*(d+ay-ax)*(d-ay+ax)*(d+ay+ax))-abs[2,2], 
+                       lower=abs(ax-ay)+1e-9, upper=ax+ay-1e-9,tol = 1e-9)$root
+    
+    # solve for a (the cord connecting the cusps of the lens)
+    
+    a <- 1/d_solve * sqrt((-d_solve+ay+ax)*(d_solve+ay-ax)*(d_solve-ay+ax)*(d_solve+ay+ax))
+    
+    # find dx and dy using pythagorean theorm
+    # dx and dy are distances from center of cusp to the respective centers of the circles
+    # sacle d and r to viewport width, making 2x diameter 90% width of viewport
+    
+    min_side <- unit(1, "snpc")
+    
+    dx_num <- sqrt(ax^2-(a/2)^2)
+    dy_num <- sqrt(ay^2-(a/2)^2)
+    
+    dx <- dx_num/(2*(ax+ay)) * min_side
+    dy <- dy_num/(2*(ax+ay)) * min_side
+    
+    rx <- ax/(2*(ax+ay)) * min_side
+    ry <- ay/(2*(ax+ay)) * min_side
+
+    gTree(
+      children = gList(
+        #draw circles
+        circleGrob(x = unit(0.5, "npc") - dx, y = unit(0.5, "npc"), r = rx,
+                    gp = gpar(fill = "thistle", alpha = .4)),
+        circleGrob(x = unit(0.5, "npc") + dy, y = unit(0.5, "npc"), r = ry,
+                    gp = gpar(fill = "orange", alpha = .4)),
+        # add labels
+        textGrob(
+          x$xlab,
+          x = unit(0.5, "npc") - dx - 1.2 * cos(pi/4) * rx ,
+          y = unit(0.5, "npc") - 1.2 * sin(pi/4) * rx ,
+          just = c("right", "center")
+        ),
+        textGrob(
+          x$ylab,
+          x = unit(0.5, "npc") + dy + 1.2 * cos(pi/4) * ry,
+          y = unit(0.5, "npc") - 1.2 * sin(pi/4) * ry ,
+          just = c("left", "center")
+        ),
+        textGrob(
+          label_xy,
+          x = unit(0.5, "npc"),
+          y = unit(0.5, "npc") + max(rx, ry) + unit(2, "lines"),
+          just = c("center", "center"),
+          gp = gpar(lineheight = .9)
+        ),
+        textGrob(
+          label_XY,
+          x = unit(0.5, "npc"),
+          y = unit(0.5, "npc"),
+          just = c("center", "center"),
+          gp = gpar(lineheight = .9)
+        ),
+        textGrob(
+          label_Xy,
+          x = unit(0.5, "npc") - ax/(2*(ax+ay))*min_side,
+          y = unit(0.5, "npc"),
+          just = c("center", "center"),
+          gp = gpar(lineheight = .9)
+        ),
+        textGrob(
+          label_xY,
+          x = unit(0.5, "npc") + ay/(2*(ax+ay)) * min_side,
+          y = unit(0.5, "npc"),
+          just = c("center", "center"),
+          gp = gpar(lineheight = .9)
+        )   
+      )
+    )
+  }
 
   
-  # solve for radius of circles using area
-  
-  ax <- sqrt((abs[1,2]+abs[2,2])/pi) #radius of 1st circle
-  ay <- sqrt((abs[2,1]+abs[2,2])/pi) #radius of 2nd circle
-  
-  #solve for d, the distance between the 2 centers of the cicles
-  
-  d_solve <- uniroot(function(d) ay^2*acos((d^2+ay^2-ax^2)/(2*d*ay)) 
-                     + ax^2*acos((d^2+ax^2-ay^2)/(2*d*ax)) 
-                     - 1/2 * sqrt((-d+ay+ax)*(d+ay-ax)*(d-ay+ax)*(d+ay+ax))-abs[2,2], 
-                     lower=abs(ax-ay)+1e-9, upper=ax+ay-1e-9,tol = 1e-9)$root
-  
-  # solve for a (the cord connecting the cusps of the lens)
-  
-  a <- 1/d_solve * sqrt((-d_solve+ay+ax)*(d_solve+ay-ax)*(d_solve-ay+ax)*(d_solve+ay+ax))
-  
-  # find dx and dy using pythagorean theorm
-  # dx and dy are distances from center of cusp to the respective centers of the circles
-  # sacle d and r to viewport width, making 2x diameter 90% width of viewport
 
-  min_side <- unit(1, "snpc")
-  
-  dx_num <- sqrt(ax^2-(a/2)^2)
-  dy_num <- sqrt(ay^2-(a/2)^2)
-  
-  dx <- dx_num/(2*(ax+ay)) * min_side
-  dy <- dy_num/(2*(ax+ay)) * min_side
-  
-  rx <- ax/(2*(ax+ay)) * min_side
-  ry <- ay/(2*(ax+ay)) * min_side
 
   # draw graphic
   grid.newpage()
-  
   pushViewport(plotViewport(margins = c(2,2,2,2))) # add margins
   grid.rect()
+  grid.draw(plot_grob)
   
   # helper lines
   # grid.lines(x = c(0, 1), y = c(.5, .5), default.units = "npc")
   # grid.lines(x =  c(.5, .5), y =c(0, 1), default.units = "npc")
 
-  #draw circles
   
-  grid.circle(x = unit(0.5, "npc") - dx, y = unit(0.5, "npc"), r = rx,
-              gp = gpar(fill = "thistle", alpha = .4))
-  grid.circle(x = unit(0.5, "npc") + dy, y = unit(0.5, "npc"), r = ry,
-              gp = gpar(fill = "orange", alpha = .4))
-  
-  
-  # add labels
-  
-  grid.text(
-    x$xlab,
-    x = unit(0.5, "npc") - dx - 1.2 * cos(pi/4) * rx ,
-    y = unit(0.5, "npc") - 1.2 * sin(pi/4) * rx ,
-    just = c("right", "center")
-  )
-  grid.text(
-    x$ylab,
-    x = unit(0.5, "npc") + dy + 1.2 * cos(pi/4) * ry,
-    y = unit(0.5, "npc") - 1.2 * sin(pi/4) * ry ,
-    just = c("left", "center")
-  )
 
-  grid.text(
-    paste0(abs[1,1],"\n(",per[1,1],"%)"),
-    x = unit(0.5, "npc"),
-    y = unit(0.5, "npc") + max(rx, ry) + unit(2, "lines"),
-    just = c("center", "center"),
-    gp = gpar(lineheight = .9)
-  )
-
-  grid.text(
-    paste0(abs[2,2],"\n(",per[2,2],"%)"),
-    x = unit(0.5, "npc"),
-    y = unit(0.5, "npc"),
-    just = c("center", "center"),
-    gp = gpar(lineheight = .9)
-  )
-  
-  grid.text(
-    paste0(abs[2,1],"\n(",per[2,1],"%)"),
-    x = unit(0.5, "npc") - ax/(2*(ax+ay))*min_side,
-    y = unit(0.5, "npc"),
-    just = c("center", "center"),
-    gp = gpar(lineheight = .9)
-  )
-  
-  grid.text(
-    paste0(abs[1,2],"\n(",per[1,2],"%)"),
-    x = unit(0.5, "npc") + ay/(2*(ax+ay)) * min_side,
-    y = unit(0.5, "npc"),
-    just = c("center", "center"),
-    gp = gpar(lineheight = .9)
-  )
   
 }
 
