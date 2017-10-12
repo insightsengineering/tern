@@ -1,4 +1,3 @@
-
 #' alternative tablist
 #'
 #' @param time_to_event Response data
@@ -22,26 +21,28 @@
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "BESRSPI")
+#' ARS_f <- ARS %>% filter(PARAMCD == "BESRSPI") %>% filter(ITTWTFL == "Y")
+#' ASL_f <- ASL %>% filter(ITTWTFL == "Y")
 #' 
-#' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+#' ASL_f$BAGED <- ifelse(ASL_f$BAGE <= median(ASL_f$BAGE), "<=median", ">median")
 #' 
 #' group_by <- merge(
 #'  ARS_f[c("USUBJID", "STUDYID")],
-#'  ASL[c("USUBJID", "STUDYID", "BAGED", "SEX", "BECOG")],
-#'  all.x = TRUE, all.y = FALSE
+#'  ASL_f[c("USUBJID", "STUDYID", "ICLEVEL", "ICLVL1", "TC3IC3")],
+#'  all.y = TRUE, all.x = FALSE
 #' )
 #' 
 #' head(group_by)
 #' 
-#' glm_subgroup(
-#'    response = ARS_f$AVAL,
-#'    event = ARS_f$AVALC %in% c("CR","PR"),
-#'    arm = ARS_f$ARM, 
-#'    group_by = group_by[, -c(1,2), drop=FALSE],
-#'    arm.ref = "DUMMY A",
-#'    arm.comp = "DUMMY B"
+#' tbl <- glm_subgroup(
+#'           response = ARS_f$AVAL,
+#'           event = ARS_f$AVALC %in% c("CR","PR"),
+#'           arm = ARS_f$ARM, 
+#'           group_by = group_by[, -c(1,2), drop=FALSE],
+#'           arm.ref = "DUMMY A",
+#'           arm.comp = "DUMMY C"
 #' )
+#' Viewer(tbl)
 #' }
 #' 
 #'   
@@ -67,6 +68,8 @@ glm_subgroup <- function(response, event,
     ), !is.na(arm_for_model)
   )
   
+  #head(glm_data)
+  
   # split data into a tree for data
   # where each leaf is a data.frame with 
   # the data to compute the survival analysis with
@@ -79,7 +82,9 @@ glm_subgroup <- function(response, event,
     })
   )
   
-  # apply the survival analysis
+  #varname=data_list$TC3IC3
+  #data_for_value = varname[1]
+  # apply the glm analysis
   results_glm <- lapply(data_list, function(varname) {
     lapply(varname, function(data_for_value) {
       glm_results(data_for_value)
@@ -91,7 +96,58 @@ glm_subgroup <- function(response, event,
   X <- Reduce(rbind, results_glm2)
   row.names(X) <-names(results_glm2)
   
-  structure(X, class= c("forest_response", "forest_table"))
+  
+  # X <- results_glm2
+  
+  additonal_args <- list(
+    col.names = c("Total n",
+                  "n", "n Responder", "Responder Rate (%)",
+                  "n", "n Responder", "Responder Rate (%)",
+                  "Odds Ratio", "95% CI", "p value"),
+    format = "xx"
+  )
+  
+  # rname <- rownames(X)[1]
+  # x <- split(X, 1:nrow(X))[[1]]
+  last_header <- "ALL"
+  rrow_collection <- Filter(
+    function(x)!is.null(x),
+    unlist(
+      Map(function(x, rname) {
+        
+        i <- regexpr(".", rname, fixed = TRUE)
+        header_row_name <- c(substr(rname, 1, i-1), substring(rname, i+1))
+        
+        is_new_category <- header_row_name[1] != last_header
+        last_header <<- header_row_name[1]
+        
+        list(
+          if (is_new_category) rrow() else NULL,
+          if (is_new_category) rrow(last_header) else NULL,
+          rrow(
+            row.name = header_row_name[2],
+            x$resp_ref_n + x$resp_comp_n, # total n
+            x$resp_ref_n,
+            x$resp_ref_event,
+            rcell(x$resp_ref_event / (x$resp_ref_n + x$resp_ref_event), format = "xx.x"),
+            x$resp_comp_n,
+            x$resp_comp_event,
+            rcell(x$resp_comp_event / (x$resp_comp_n + x$resp_comp_event), format = "xx.x"),
+            rcell(x$glm_or, format = "xx.xx"),
+            rcell(c(x$glm_lcl, x$glm_ucl), format = "(xx.xx, xx.xx)"),
+            rcell(x$glm_pval, format = "xx.xx"),
+            indent = if (header_row_name[1] == "ALL") 0 else 1
+          )
+        )
+      }, split(X, 1:nrow(X)), rownames(X)),
+      recursive = FALSE)
+  )
+  
+  
+  tbl <- do.call(rtable, c(additonal_args, rrow_collection))
+  
+  tbl
+ # Viewer(tbl)
 }
 
 
@@ -106,16 +162,26 @@ plot.forest_response <- function(x, ...) {
 }
 
 
-#' survival_results(data_for_value)
+#' glm_results(data_for_value)
+#' data = data_for_value 
 glm_results <- function(data){
   
   #Response Rate
-  resp_ref_n <- table(data$arm)[1]
-  resp_comp_n <- table(data$arm)[2]
-  resp_ref_event <- table(data$event,data$arm)[2,1]
-  resp_comp_event <- table(data$event,data$arm)[2,2]
+  
+  tbl_arm <- table(data$arm)
+  resp_ref_n <- tbl_arm[names(tbl_arm)==levels(data$arm)[1]]
+  resp_comp_n <- tbl_arm[names(tbl_arm)==levels(data$arm)[2]]
+  if (is.na(resp_ref_n)) resp_ref_n = 0
+  if (is.na(resp_comp_n)) resp_comp_n = 0
+  
+  tbl_freq <- table(data$event,data$arm)
+  resp_ref_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[1]]
+  resp_comp_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[2]]
+  if (length(resp_ref_event)==0) resp_ref_event = 0
+  if (length(resp_comp_event)==0) resp_comp_event = 0
   
   #Logistic Model
+  if (length(levels(as.factor(as.character(data$arm)))) == 2){
   glm_sum  <- summary(glm(event ~ arm, family=binomial(link='logit'), data = data))
   glm_or   <- exp(glm_sum$coefficient[2,1])
   glm_lcl  <- exp(glm_sum$coefficient[2,1]-1.96*sqrt(glm_sum$coefficient[2,2]))
@@ -123,8 +189,13 @@ glm_results <- function(data){
   glm_pval <- glm_sum$coefficients[2,4]
   
   resp_table <- data.frame(resp_ref_n, resp_comp_n, 
-                         resp_ref_event, resp_comp_event, 
-                         glm_or, glm_lcl, glm_ucl, glm_pval)
+                           resp_ref_event, resp_comp_event, 
+                           glm_or, glm_lcl, glm_ucl, glm_pval)
+  }else {
+  resp_table <- data.frame(resp_ref_n, resp_comp_n, 
+                             resp_ref_event, resp_comp_event, 
+                             glm_or = NA, glm_lcl = NA, glm_ucl = NA, glm_pval = NA)
+  }
 }
 
 #' Forest Plot Numbers for Survival data with ADAM data structure
@@ -157,13 +228,13 @@ glm_results <- function(data){
 #'   
 #' }
 glm_subgroup_ADAM <- function(ASL, ARS,
-                               outcome = "Overall Survival",
-                               groupvar,
-                               arm.ref,
-                               arm.comp,
-                               arm.var = "ARM",
-                               time_to_event.var = "AVAL",
-                               event.var = "CNSR", negARS.event.var = TRUE) {
+                              outcome = "Overall Survival",
+                              groupvar,
+                              arm.ref,
+                              arm.comp,
+                              arm.var = "ARM",
+                              time_to_event.var = "AVAL",
+                              event.var = "CNSR", negARS.event.var = TRUE) {
   
   ARS %needs% c("USUBJID", "STUDYID", "PARAM", time_to_event.var, event.var)
   ASL %needs% c("USUBJID", "STUDYID", groupvar, arm.var)
