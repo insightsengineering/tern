@@ -4,8 +4,8 @@
 \alias{kmPlot}
 \title{kmPlot}
 \usage{
-kmPlot(time_to_event, event, arm, arm.ref, arm.rest, stratum = NULL,
-  facet_by = NULL, n_col = 2, ...)
+kmPlot(time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
+  stratum = NULL, facet_by = NULL, n_col = 2, ...)
 }
 \arguments{
 \item{time_to_event}{time to event values}
@@ -33,8 +33,7 @@ kmPlot(
    time_to_event = ATE_filtered$AVAL,
    event = ATE_filtered$CNSR == 0,
    arm = ATE_filtered$ARM,
-   arm.ref =  "DUMMY B" ,
-   arm.rest =  c("DUMMY A", "DUMMY C" )
+   arm.ref =  "DUMMY B"  
    )
    
 kmPlot(

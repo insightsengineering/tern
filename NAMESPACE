@@ -2,5 +2,12 @@
 
 export(demographic_table)
 export(kmPlot)
+export(tm_kmplot_ADAM)
+import(dplyr)
+import(ggplot2)
+import(shiny)
+import(survminer)
+import(teal)
 importFrom(survival,Surv)
+importFrom(survival,coxph)
 importFrom(survival,survfit)

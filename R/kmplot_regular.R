@@ -9,6 +9,9 @@
 #' 
 #' 
 #' @importFrom survival survfit Surv coxph
+#' @import dplyr
+#' @import ggplot2
+#' @import survminer
 #' 
 #' @export
 #' 
@@ -28,8 +31,7 @@
 #'    time_to_event = ATE_filtered$AVAL,
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
-#'    arm.ref =  "DUMMY B" ,
-#'    arm.rest =  c("DUMMY A", "DUMMY C" )
+#'    arm.ref =  "DUMMY B"  
 #'    )
 #'    
 #' kmPlot(
