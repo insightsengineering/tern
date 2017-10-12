@@ -40,20 +40,20 @@
 #readr::write_csv(ASL_csv,"ASL_f.csv")
 #readr::write_csv(ATE_csv,"ATE_f.csv")
 
-time_to_event <- ATE_f$AVAL
-event <- ifelse(is.na(ATE_f$CNSR),NA,
-                ifelse(ATE_f$CNSR==1,0,1))
-arm <- ATE_f$ARM1
-big_n_arm <- ASL_f$ARM1
-arm.ref <- "DUMMY C"
-comp1.arm <- "DUMMY B"
-comp2.arm <- "DUMMY A"
-strata1 <- as.factor(ATE_f$SEX)
-strata2 <- as.factor(ATE_f$MLIVER)
-strata3 <- as.factor(ATE_f$TCICLVL2)
-time_point <- as.numeric(6)
+#time_to_event <- ATE_f$AVAL
+#event <- ifelse(is.na(ATE_f$CNSR),NA,
+#                ifelse(ATE_f$CNSR==1,0,1))
+#arm <- ATE_f$ARM1
+#big_n_arm <- ASL_f$ARM1
+#arm.ref <- "DUMMY C"
+#comp1.arm <- "DUMMY B"
+#comp2.arm <- "DUMMY A"
+#strata1 <- as.factor(ATE_f$SEX)
+#strata2 <- as.factor(ATE_f$MLIVER)
+#strata3 <- as.factor(ATE_f$TCICLVL2)
+#time_point <- as.numeric(6)
 
-time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
+time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
                                 strata1,strata2,strata3,time_point) {
 
   # Argument Checking #
@@ -275,13 +275,14 @@ tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
                                               arm = ATE_f$ARM1,
                                               big_n_arm = ASL_f$ARM1,
                                               arm.ref = "DUMMY C",
+                                              comp1.arm = "DUMMY B",
+                                              comp2.arm = "DUMMY A",
                                               strata1 = as.factor(ATE_f$SEX),
                                               strata2 = as.factor(ATE_f$MLIVER),
                                               strata3 = as.factor(ATE_f$TCICLVL2),
                                       time_point = as.numeric(6))
 
 # Time-to-Event rtable Generation #
-
 tte_tbl_R <- teal.oncology::rtable(
     col.names = c(paste("DUMMY C\n(N=",tte_tbl_R_data[[1]]$ref_big_n,")",sep=""), 
                   paste("DUMMY B\n(N=",tte_tbl_R_data[[1]]$comp1_big_n,")",sep=""),
@@ -312,7 +313,18 @@ tte_tbl_R <- teal.oncology::rtable(
     rrow("Range",
          c(tte_tbl_R_data[[6]]$ref_km_min,   tte_tbl_R_data[[6]]$ref_km_max),
          c(tte_tbl_R_data[[6]]$comp1_km_min, tte_tbl_R_data[[6]]$comp1_km_max),
-         c(tte_tbl_R_data[[6]]$comp2_km_min, tte_tbl_R_data[[6]]$comp2_km_max), format = "(xx.x, xx.x)")
+         c(tte_tbl_R_data[[6]]$comp2_km_min, tte_tbl_R_data[[6]]$comp2_km_max), format = "(xx.x, xx.x)"),
+    rrow(),
+    rrow("Unstratified Analysis"),
+    rrow("p-value (log-rank)",
+         c(9999), c(tte_tbl_R_data[[7]]$pdiff1), c(tte_tbl_R_data[[7]]$pdiff2), format = "xx.xxx"),
+    rrow(),
+    rrow("Hazard Ratio",
+         c(9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr), c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr), format = "xx.xx"),
+    rrow("95% CI",
+         c(9999, 9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp1_cox_ph_hr_ucl),
+                        c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp2_cox_ph_hr_ucl),
+         format = "(xx.xx, xx.xx)")
 )
 teal.oncology::Viewer(tte_tbl_R)
   
