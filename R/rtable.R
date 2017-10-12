@@ -765,6 +765,12 @@ spaces <- function(n) {
 #' 
 #' @examples 
 #' \dontrun{
+#' 
+#' t1 <- rtable(col.name = c("A", "B"), format = "xx", rrow("row 1", 1, 2))
+#' t2 <- rtable(col.name = c("A", "B", "C"), format = "xx", rrow("row 1", 1, 2, 3))
+#'
+#' compare_rtables(object = t1, expected = t2) 
+#' 
 #' expected <- rtable(
 #'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
 #'    format = "xx",
@@ -864,10 +870,10 @@ compare_rtables <- function(object, expected, tol=0.1) {
         }
       } else if (i > nro || j > nco) {
         ## missing in object
-        X[i, j] <- "-"
+        X[i, j] <- "+"
       } else {
         ## too many elements
-        X[i, j] <- "+"
+        X[i, j] <- "-"
       }
     } 
   }
