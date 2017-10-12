@@ -8,7 +8,7 @@
 #' @param arm.ref character: reference arm 
 #' 
 #' 
-#' @importFrom survival survfit Surv
+#' @importFrom survival survfit Surv coxph
 #' 
 #' @export
 #' 
@@ -43,7 +43,7 @@
 #'  }
 
 
-kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest,
+kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
                     stratum = NULL, facet_by = NULL, n_col = 2, ... ){
   
   n <- length(time_to_event)
