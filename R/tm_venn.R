@@ -3,12 +3,9 @@
 #' @param x boolean has biomarker or not
 #' @param y boolean has biomarker of not
 #' 
-#' 
-#'# @importFrom grid 
-#' 
 #' @export
 #' 
-#' @return  plot
+#' @return  list with absolute and percentage cross table
 #' 
 #' 
 #' @examples 
@@ -51,12 +48,37 @@ venn2 <- function(x, y, xlab, ylab) {
 
 #' plot venn2 object
 #' 
+#' @param x an object returned by \code{\link{venn2}}
+#' 
 #' @import grid
 #' @export 
 plot.venn2 <- function(x, ...) {
   
   abs <- x$absolute
   per <- apply(x$perentage, c(1,2), function(xi) round(xi*100,1))
+  
+
+  
+  # solve for radius of circles using area
+  
+  ax <- sqrt((abs[1,2]+abs[2,2])/pi) #radius of 1st circle
+  ay <- sqrt((abs[2,1]+abs[2,2])/pi) #radius of 2nd circle
+  
+  #solve for d, the distance between the 2 centers of the cicles
+  
+  d_solve <- uniroot(function(d) ay^2*acos((d^2+ay^2-ax^2)/(2*d*ay)) 
+                     + ax^2*acos((d^2+ax^2-ay^2)/(2*d*ax)) 
+                     - 1/2 * sqrt((-d+ay+ax)*(d+ay-ax)*(d-ay+ax)*(d+ay+ax))-abs[2,2], 
+                     lower=abs(ax-ay)+1e-9, upper=ax+ay-1e-9,tol = 1e-9)$root
+  
+  # solve for a (the cord connecting the cusps of the lens)
+  
+  a <- 1/d_solve * sqrt((-d_solve+ay+ax)*(d_solve+ay-ax)*(d_solve-ay+ax)*(d_solve+ay+ax))
+  
+  # find dx and dy using pythagorean theorm
+  # dx and dy are distances from center of cusp to the respective centers of the circles
+  # sacle d and r to viewport width, making 2x diameter 90% width of viewport
+  
   
   grid.newpage()
   
@@ -66,26 +88,6 @@ plot.venn2 <- function(x, ...) {
   # helper lines
   grid.lines(x = c(0, 1), y = c(.5, .5), default.units = "npc")
   grid.lines(x =  c(.5, .5), y =c(0, 1), default.units = "npc")
-  
-  # solve for radius of circles using area
-  
-  ax <- sqrt((abs[1,2]+abs[2,2])/pi) #radius of 1st circle
-  ay <- sqrt((abs[2,1]+abs[2,2])/pi) #radius of 2nd circle
-  
-  #solve for d, the distance between the 2 centers of the cicles
-  
-  d_solve<- uniroot(function(d) ay^2*acos((d^2+ay^2-ax^2)/(2*d*ay)) 
-                    + ax^2*acos((d^2+ax^2-ay^2)/(2*d*ax)) 
-                    - 1/2 * sqrt((-d+ay+ax)*(d+ay-ax)*(d-ay+ax)*(d+ay+ax))-abs[2,2], 
-                    lower=abs(ax-ay)+1e-9, upper=ax+ay-1e-9,tol = 1e-9)$root
-  
-  #solve for a (the cord connecting the cusps of the lens)
-  
-  a <- 1/d_solve * sqrt((-d_solve+ay+ax)*(d_solve+ay-ax)*(d_solve-ay+ax)*(d_solve+ay+ax))
-  
-  #find dx and dy using pythagorean theorm
-  #dx and dy are distances from center of cusp to the respective centers of the circles
-  #sacle d and r to viewport width, making 2x diameter 90% width of viewport
   
   viewport_width <- convertWidth(unit(1,'npc'), 'cm', TRUE)
   
@@ -116,8 +118,8 @@ plot.venn2 <- function(x, ...) {
               gp=gpar(fontsize=8))
   }
   
-  draw.text(c("left","bottom"),"Biomarker abc","",0.05,0.1)
-  draw.text(c("right","bottom"),"Biomarker def","",0.95,0.1)
+  draw.text(c("left","bottom"), paste("Biomarker", x$xlab), "", 0.05,0.1)
+  draw.text(c("right","bottom"), paste("Biomarker", x$ylab), "", 0.95,0.1)
   draw.text(c("center","center"),abs[1,1],paste("(",per[1,1],"%)"),0.5,0.95)
   draw.text(c("center","center"),abs[2,2],paste("(",per[2,2],"%)"),0.5,0.5)
   draw.text(c("center","center"),abs[1,2],paste("(",per[1,2],"%)"),0.5,0.5,unit(-ax/(2*(ax+ay))*0.9*viewport_width,"cm"))
