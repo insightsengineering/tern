@@ -29,8 +29,8 @@
 #' }
 #' 
 #' 
-#' x = c(rep(T,5), rep(F,3), rep(T, 4), rep(F, 6))
-#' y = c(rep(T,5), rep(F,3), rep(F, 4), rep(T, 6))
+#' x = c(rep(T,5), rep(F,3), rep(T, 4), rep(F, 9))
+#' y = c(rep(T,5), rep(F,3), rep(F, 4), rep(T, 9))
 #' table(x,y)
 #' y <- venn2(x,y, "X", "Y")
 #' plot(y)
@@ -124,8 +124,8 @@ plot.venn2 <- function(x, ...) {
     
     # solve for radius of circles using area
     
-    ax <- sqrt((abs[1,2]+abs[2,2])/pi) #radius of 1st circle
-    ay <- sqrt((abs[2,1]+abs[2,2])/pi) #radius of 2nd circle
+    ax <- sqrt((abs[2,1]+abs[2,2])/pi) #radius of 1st circle
+    ay <- sqrt((abs[1,2]+abs[2,2])/pi) #radius of 2nd circle
     
     #solve for d, the distance between the 2 centers of the cicles
     
