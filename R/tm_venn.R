@@ -28,11 +28,25 @@
 #' 
 #' }
 #' 
+#' 
+#' x = c(rep(T,5), rep(F,3), rep(T, 4), rep(F, 6))
+#' y = c(rep(T,5), rep(F,3), rep(F, 4), rep(T, 6))
+#' table(x,y)
+#' y <- venn2(x,y, "X", "Y")
+#' plot(y)
+#' 
+#' 
 #' # if too few then table is plotted
-#' x <- venn2(x = c(TRUE, TRUE), y = c(FALSE, FALSE))
-#' plot(x)
+#' x = c(F, F,F,F, T,T)
+#' y = c(F, T,T,T, F,F)
+#' table(x,y)
+#' y <- venn2(x, y, "X", "Y")
+#' plot(y)
+#' 
 venn2 <- function(x, y, xlab, ylab) {
 
+
+  if (length(x) <= 0) stop("lenght of x must be > 0")
   
   if (missing(xlab)) xlab <- deparse(substitute(x))
   if (missing(ylab)) ylab <- deparse(substitute(y))
@@ -72,7 +86,7 @@ plot.venn2 <- function(x, ...) {
   label_Xy <- paste0(abs[2,1],"\n(",per[2,1],"%)")
 
 
-  plot_grob <- if (any(c(abs[1,2], abs[2,1]) < 2)) {
+  plot_grob <- if (any(abs<=2)) {
     ## plot a table
     
     labels <- c(label_xy, label_Xy, label_XY, label_xY)
@@ -317,7 +331,7 @@ srv_venn2 <- function(input, output, session, datasets, dataname) {
     validate(need(!is.null(bm1), "biomarker 1 does not exist"))
     validate(need(!is.null(bm2), "biomarker 2 does not exist"))
     
-    x <- venn2(bm1, bm2, bm1_var, bm1_var)
+    x <- venn2(bm1, bm2, bm1_var, bm2_var)
     
     plot(x)
   })
