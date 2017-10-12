@@ -156,3 +156,118 @@ plot.venn2 <- function(x, ...) {
   )
   
 }
+
+
+
+#' Venn2 teal module
+#' 
+#' @export
+#' 
+#' @examples  
+#' 
+#' N <- 100
+#' 
+#' var_biomarkers <- paste0("B", 1:10) 
+#' sample_bm_data <- lapply(1:10, function(x)sample(c(TRUE, FALSE), N, replace = TRUE))
+#' names(sample_bm_data) <- var_biomarkers
+#' 
+#' ASL <- do.call(data.frame, c(
+#'   list(USUBJID = paste("ID", 1:N),STUDYID = "1"), sample_bm_data
+#' ))
+#' 
+#' x <- teal::init(
+#'   data = list(ASL = ASL),
+#'   modules = root_modules(
+#'     tm_variable_browser(),
+#'     tm_data_table(),
+#'     tm_venn2("Venn Diagram", "ASL", "B1", "B2", var_biomarkers, var_biomarkers)
+#'   )
+#' )   
+#' shinyApp(x$ui, x$server)     
+tm_venn2 <- function(label, dataname, bm1_var, bm2_var,
+                     bm1_var_choices = bm1_var,
+                     bm2_var_choices = bm2_var,
+                     plot_height = c(600, 200, 2000),
+                     alpha = c(1, 0, 1),
+                     pre_output = NULL, post_output = NULL) {
+  
+  args <- as.list(environment())
+  
+  module(
+    label = label,
+    server = srv_venn2,
+    ui = ui_venn2,
+    ui_args = args,
+    server_args = list(dataname = dataname),
+    filters = dataname
+  )
+}
+
+ui_venn2 <- function(id, label, dataname, bm1_var, bm2_var,
+                     bm1_var_choices,
+                     bm2_var_choices,
+                     plot_height,
+                     alpha,
+                     pre_output,
+                     post_output) {
+  ns <- NS(id)
+  
+  standard_layout(
+    output = uiOutput(ns("plot_ui")),
+    encoding = div(
+      tags$label("Encodings", class="text-primary"),
+      helpText("Analysis data:", tags$code(dataname)),
+      optionalSelectInput(ns("bm1_var"), "Biomarker 1", bm1_var_choices, bm1_var, multiple = FALSE),
+      optionalSelectInput(ns("bm2_var"), "Biomarker 2", bm2_var_choices, bm2_var, multiple = FALSE),
+      if (all(c(
+        length(plot_height) == 1,
+        length(alpha) == 1
+      ))) {
+        NULL
+      } else {
+        tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;")
+      },
+      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE),
+      optionalSliderInputValMinMax(ns("alpha"), "opacity", alpha, ticks = FALSE)
+    ),
+    #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
+    pre_output = pre_output,
+    post_output = post_output
+  )
+} 
+
+srv_venn2 <- function(input, output, session, datasets, dataname) {
+  
+  ## dynamic plot height
+  output$plot_ui <- renderUI({
+    plot_height <- input$plot_height
+    validate(need(plot_height, "need valid plot height"))
+    plotOutput(session$ns("scatterplot"), height=plot_height)
+  })
+  
+  output$scatterplot <- renderPlot({
+    
+    ANL <- datasets$get_data(dataname, reactive = TRUE, filtered = TRUE)
+    
+    validate(need(!is.null(ANL) && is.data.frame(ANL), "no data left"))
+    validate(need(nrow(ANL) > 0 , "no observations left"))
+    
+    
+    bm1_var <- input$bm1_var
+    bm2_var <- input$bm2_var
+    alpha <- input$alpha
+
+    validate(need(bm1_var != bm2_var, "Please choose different Biomarker 1 and 2"))
+    
+    bm1 <- ANL[[bm1_var]]
+    bm2 <- ANL[[bm2_var]]
+    
+    validate(need(!is.null(bm1), "biomarker 1 does not exist"))
+    validate(need(!is.null(bm2), "biomarker 2 does not exist"))
+    
+    x <- venn2(bm1, bm2, bm1_var, bm1_var)
+    
+    plot(x)
+  })
+}
+
