@@ -14,10 +14,18 @@ compare_rtables(object, expected, tol = 0.1)
 \item{tol}{numerical tolorance}
 }
 \description{
-throws an error if rtables are not equal
+Prints a matrix where \code{.} means cell matches, \code{X} means cell does 
+cells do not match, \code{+} cell (row) is missing, and \code{-} cell (row)
+should not be there.
 }
 \examples{
 \dontrun{
+
+t1 <- rtable(col.name = c("A", "B"), format = "xx", rrow("row 1", 1, 2))
+t2 <- rtable(col.name = c("A", "B", "C"), format = "xx", rrow("row 1", 1, 2, 3))
+
+compare_rtables(object = t1, expected = t2) 
+
 expected <- rtable(
    col.names = c("ARM A\\nN=100", "ARM B\\nN=200"),
    format = "xx",

@@ -4,7 +4,8 @@
 \alias{time_to_event_table}
 \title{Time to Event Table}
 \usage{
-time_to_event_table(time_to_event, event, arm, arm.ref, vars_strat)
+time_to_event_table(time_to_event, event, arm, big_n_arm, arm.ref, comp1.arm,
+  comp2.arm, strata1, strata2, strata3, time_point)
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -20,27 +21,23 @@ This is the description of the function
 }
 \examples{
 \dontrun{
+library(teal.oncology)
 library(atezo.data)
 library(dplyr)
+library(survival)
+library(broom)
+library(stringr)
+library(readr)
 
-ATE <- ate(com.roche.cdt30019.go29436.re)
+ASL <- atezo.data::asl(com.roche.cdt30019.go29436.re)
+ATE <- atezo.data::ate(com.roche.cdt30019.go29436.re)
 
-tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
-Viewer(tbl_stream)
+tte_tbl_stream <- atezo.data::get_time_to_event_table(com.roche.cdt30019.go29436.re)
+teal.oncology::Viewer(tte_tbl_stream)
 
-ATE_f <- ATE \%>\% filter(PARAMCD == "OS")
-
-tbl <- time_to_event_table(
-    time_to_event = ATE_f$AVAL,
-    event = (ATE_f$CNSR == 0)*1,
-    arm = ATE_f$ARM1,
-    arm.ref = "DUMMY C"
-)
-
-tbl
-
-compare_rtables(tbl, tbl_stream)
-
+ASL_f <- dplyr::filter(ASL,ITTFL == "Y")
+        
+ATE_f <- dplyr::filter(ATE,ITTFL == "Y" & PARAMCD == "OS")
 
 }
 }

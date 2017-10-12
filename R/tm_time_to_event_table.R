@@ -268,6 +268,7 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   return(tte_table)
 
 }  
+if (FALSE){
 
 tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
                                       event = ifelse(is.na(ATE_f$CNSR),NA,
@@ -282,6 +283,8 @@ tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
                                               strata3 = as.factor(ATE_f$TCICLVL2),
                                       time_point = as.numeric(6))
 
+
+  
 # Time-to-Event rtable Generation #
 tte_tbl_R <- teal.oncology::rtable(
     col.names = c(paste("DUMMY C\n(N=",tte_tbl_R_data[[1]]$ref_big_n,")",sep=""), 
@@ -342,12 +345,12 @@ tte_tbl_R <- teal.oncology::rtable(
          c(tte_tbl_R_data[[9]]$ref_patients_remaining_at_risk, tte_tbl_R_data[[9]]$comp1_patients_remaining_at_risk,
            tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk, format = "xx"))
 )
-teal.oncology::Viewer(tte_tbl_R)
+#teal.oncology::Viewer(tte_tbl_R)
   
 # teal.oncology::compare_rtables(tte_tbl_R, tte_tbl_stream, tol = 0.2)
 # tte_tbl_R
 
-
+}
 
 
 
