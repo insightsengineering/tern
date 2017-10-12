@@ -6,6 +6,9 @@
 \usage{
 \method{plot}{venn2}(x, ...)
 }
+\arguments{
+\item{x}{an object returned by \code{\link{venn2}}}
+}
 \description{
 plot venn2 object
 }
