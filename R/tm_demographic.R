@@ -32,9 +32,16 @@
 #' 
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' tbl_expected <- get_demographic_table(com.roche.cdt30019.go29436.re)
+#' Viewer(tbl_expected)
 #' 
-#' ADSL <- ASL %>% filter(ITTFL = 'Y') 
-#' tbl <- demographic_table(ADSL)
+#' 
+#' ADSL <- ASL %>% filter(ITTFL == 'Y') 
+#' 
+#' tbl <- demographic_table(
+#'    data = ADSL,
+#'    arm = ADSL$ARM,
+#'    all.patients = TRUE
+#' )
 #' 
 #' compare_rtables(tbl, tbl_expected)
 #'
@@ -44,25 +51,63 @@
 #' 
 #' }
 #' 
+#' `%needs%` <- teal.oncology:::`%needs%`
 #' 
-demographic_table <- function(ADSL) {
+#' 
+demographic_table <- function(data,
+                              arm,
+                              all.patients = TRUE,
+                              group_by = c("SEX", "AGE", "RACE", "ETHNIC")) {
   
-  ADSL %needs% c("USUBJID", "STUDYID", "AGE", "SEX")
+  data %needs% c("USUBJID", "STUDYID", group_by)
   
-  table(ADSL$SEX, ADSL$STUDYID)
+  if (nrow(data) != length(arm)) stop("dimension of arm and data missmatch")
   
-  ## get numbers
+  if (any("All Patients" %in% arm)) stop("All Patients is not a valid arm name")
   
-  ## create rtable object
-  tbl <- rtable(
-    col.names = c("A", "B", "C", "D"),
-    format = "xx",
-    rrow("row 1", 1,2,3,4),
-    rrow("row 2", c(1.4223423, 2.444444), c(2,3), c(3,4), c(1,4), format = "(xx.xx, xx.xx)")
-  )
+  if (all.patients) {
+    n <- nrow(data)
+    data <- rbind(data, data)
+    arm <- c(arm, rep("All Patients", n))
+  }
   
-  # Viewer(tbl)
+  ## get a list with each variables tht we want to summarize
   
-  ## return rtable object
+  X <- data[group_by]
+
+  ## xi <- X[[1]]
+  row_info <- lapply(X, function(xi) {
+    if (!is.numeric(xi)) {
+      ## then return the n, mean median, and range
+      df <- data.frame(xi, arm)
+      xi_split <- split(df, arm)
+      c(
+        list(
+          n = vapply(xi_split, nrow, numeric(1))
+        ),
+        lapply(split(df, df$xi), function(xii) vapply(split(xii, xii$arm), nrow, numeric(1)))
+      )
+
+    } else {
+      ## categorical count
+      
+    }
+  })
+  
+  first.row <- TRUE
+  rrow_collection <- unlist(lapply(row_info, function(ri) {
+    l <- list(
+      if (first.row) NULL else rrow(),
+      rrow("Sex", ...),
+      rrow("n", ..., indent = 1)
+    )
+    first.row <<- FALSE
+    l
+  }), recursive = FALSE)
+  
+  
+  do.call(rtable, c(list(col.names = ...), rrow_collection))
+  
+  
   tbl
 }
