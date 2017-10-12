@@ -126,32 +126,22 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,
   surv_km_quantile <- quantile(surv_km_fit)$quantile
 
   # Time Point Analysis #  
-  ref_time_points <- surv_km_broom[which(stringr::str_sub(surv_km_broom$strata,5,
-                                   nchar(surv_km_broom$strata)) == as.vector(levels(ARM))[1]),]
-  ref_time_point <- max(subset(ref_time_points,time <= time_point)$time)
-  ref_time_point_row <- subset(ref_time_points,time == ref_time_point)
-  ref_patients_remaining_at_risk <- ref_time_point_row$n.risk
-  ref_patients_event_free_rate <- ref_time_point_row$estimate
-  ref_patients_event_free_rate_lcl <- ref_time_point_row$conf.low
-  ref_patients_event_free_rate_ucl <- ref_time_point_row$conf.high
+  surv_km_time_point <- summary(surv_km_fit,times=c(time_point))
+
+  ref_patients_remaining_at_risk <- surv_km_time_point$n.risk[[1]]
+  ref_patients_event_free_rate <- surv_km_time_point$surv[[1]]
+  ref_patients_event_free_rate_lcl <- surv_km_time_point$lower[[1]]
+  ref_patients_event_free_rate_ucl <- surv_km_time_point$upper[[1]]
   
-  comp1_time_points <- surv_km_broom[which(stringr::str_sub(surv_km_broom$strata,5,
-                                     nchar(surv_km_broom$strata)) == as.vector(levels(ARM))[2]),]
-  comp1_time_point <- max(subset(comp1_time_points,time <= time_point)$time)
-  comp1_time_point_row <- subset(comp1_time_points,time == comp1_time_point)
-  comp1_patients_remaining_at_risk <- comp1_time_point_row$n.risk
-  comp1_patients_event_free_rate <- comp1_time_point_row$estimate
-  comp1_patients_event_free_rate_lcl <- comp1_time_point_row$conf.low
-  comp1_patients_event_free_rate_ucl <- comp1_time_point_row$conf.high
+  comp1_patients_remaining_at_risk <- surv_km_time_point$n.risk[[2]]
+  comp1_patients_event_free_rate <- surv_km_time_point$surv[[2]]
+  comp1_patients_event_free_rate_lcl <- surv_km_time_point$lower[[2]]
+  comp1_patients_event_free_rate_ucl <-surv_km_time_point$upper[[2]]
   
-  comp2_time_points <- surv_km_broom[which(stringr::str_sub(surv_km_broom$strata,5,
-                                     nchar(surv_km_broom$strata)) == as.vector(levels(ARM))[3]),]
-  comp2_time_point <- max(subset(comp2_time_points,time <= time_point)$time)
-  comp2_time_point_row <- subset(comp2_time_points,time == comp2_time_point)
-  comp2_patients_remaining_at_risk <- comp2_time_point_row$n.risk
-  comp2_patients_event_free_rate <- comp2_time_point_row$estimate
-  comp2_patients_event_free_rate_lcl <- comp2_time_point_row$conf.low
-  comp2_patients_event_free_rate_ucl <- comp2_time_point_row$conf.high
+  comp2_patients_remaining_at_risk <- surv_km_time_point$n.risk[[3]]
+  comp2_patients_event_free_rate <- surv_km_time_point$surv[[3]]
+  comp2_patients_event_free_rate_lcl <- surv_km_time_point$lower[[3]]
+  comp2_patients_event_free_rate_ucl <- surv_km_time_point$upper[[3]]
   
   time_point_analysis <- data.frame(time_point,ref_patients_remaining_at_risk,ref_patients_event_free_rate,
                                     ref_patients_event_free_rate_lcl,ref_patients_event_free_rate_ucl,
