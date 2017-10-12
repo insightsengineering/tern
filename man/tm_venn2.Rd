@@ -32,5 +32,5 @@ x <- teal::init(
     tm_venn2("Venn Diagram", "ASL", "B1", "B2", var_biomarkers, var_biomarkers)
   )
 )   
-    
+shinyApp(x$ui, x$server)     
 }
