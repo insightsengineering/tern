@@ -2,10 +2,12 @@
 % Please edit documentation in R/tm_forestplot_rsp.R
 \name{glm_results}
 \alias{glm_results}
-\title{survival_results(data_for_value)}
+\title{glm_results(data_for_value)
+data = data_for_value}
 \usage{
 glm_results(data)
 }
 \description{
-survival_results(data_for_value)
+glm_results(data_for_value)
+data = data_for_value
 }

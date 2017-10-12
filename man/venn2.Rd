@@ -37,7 +37,19 @@ venn2(x = IC, y = TC, "biomarker IT", "biamrker TC")
 
 }
 
+
+x = c(rep(T,5), rep(F,3), rep(T, 4), rep(F, 9))
+y = c(rep(T,5), rep(F,3), rep(F, 4), rep(T, 9))
+table(x,y)
+y <- venn2(x,y, "X", "Y")
+plot(y)
+
+
 # if too few then table is plotted
-x <- venn2(x = c(TRUE, TRUE), y = c(FALSE, FALSE))
-plot(x)
+x = c(F, F,F,F, T,T)
+y = c(F, T,T,T, F,F)
+table(x,y)
+y <- venn2(x, y, "X", "Y")
+plot(y)
+
 }

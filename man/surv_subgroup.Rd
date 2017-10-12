@@ -35,7 +35,8 @@ library(survival)
 
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 
-surv_tbl_steam <- get_forest_survival(com.roche.cdt30019.go29436.re)
+surv_tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
+Viewer(surv_tbl_stream )
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -62,7 +63,7 @@ tbl <- surv_subgroup(
 tbl
 Viewer(tbl)
 
-compare_rtables(tbl, surv_tbl_steam)
+compare_rtables(tbl, surv_tbl_stream)
 
 plot(tbl)
 

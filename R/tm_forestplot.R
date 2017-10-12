@@ -267,3 +267,121 @@ surv_subgroup_ADAM <- function(ASL, ATE,
     arm.comp = arm.comp
   )
 }
+
+
+
+
+#' Forest Survival Plot teal module
+#' 
+#' @export
+#' 
+#' @examples  
+#' 
+#' \donotrun{
+#' library(atezo.data)
+#' library(dplyr)
+#' library(survival)
+#' 
+#' ATE <- ate(com.roche.cdt30019.go29436.re)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' 
+#' 
+#' x <- teal::init(
+#'   data = list(ASL = ASL, ATE = ATE),
+#'   modules = root_modules(
+#'     tm_variable_browser(),
+#'     tm_data_table(),
+#'     tm_forest_survival(
+#'        label = "Forest Survival",
+#'        endpoint = "OS",
+#'        endpoint_choices = unique(ATE$PARAMCD)
+#'    )
+#'   )
+#' )   
+#' shinyApp(x$ui, x$server) 
+#' 
+#'   
+#' } 
+tm_forest_survival <- function(label,
+                               endpoint = "OS",
+                               endpoint_choices = "OS",
+                               plot_height = c(600, 200, 2000),
+                               pre_output = NULL, post_output = NULL) {
+  
+  args <- as.list(environment())
+  
+  module(
+    label = label,
+    server = srv_forest_survival,
+    ui = ui_forest_survival,
+    ui_args = args,
+    filters = "ATE"
+  )
+}
+
+ui_forest_survival <- function(id, label,
+                               endpoint = "OS",
+                               endpoint_choices = "OS",
+                               plot_height,
+                               pre_output,
+                               post_output) {
+  ns <- NS(id)
+  
+  standard_layout(
+    output = uiOutput(ns("forest_plot")),
+    encoding = div(
+      tags$label("Encodings", class="text-primary"),
+      helpText("Analysis data:", tags$code("ATE")),
+      optionalSelectInput(ns("endpoint"), "Time to Event", endpoint_choices, endpoint, multiple = FALSE),
+      optionalSelectInput(ns("x_sel"), "x selector", LETTERS[1:4], "A", multiple = FALSE),
+      optionalSelectInput(ns("y_sel"), "y selector", "a", "a", multiple = FALSE)
+    ),
+    #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
+    pre_output = pre_output,
+    post_output = post_output
+  )
+} 
+
+srv_forest_survival <- function(input, output, session, datasets) {
+
+  
+  
+  output$forest_plot <- renderUI({
+    
+    ATE_filtered <- datasets$get_data("ATE", reactive = TRUE, filtered = TRUE)
+    
+    teal:::as.global(ATE_filtered)
+    
+    validate(need(!is.null(ATE_filtered) && is.data.frame(ATE_filtered), "no data left"))
+    validate(need(nrow(ATE_filtered) > 0 , "no observations left"))
+    
+    endpoint <- input$endpoint
+    
+    validate(need(endpoint %in% ATE_filtered$PARAMCD, "time to event PARAMCD does not exist"))
+  
+      
+    ## you need to add the encodings
+    ATE_f <- ATE_filtered %>% filter(PARAMCD == endpoint)
+    
+    validate(need(nrow(ATE_f) > 0, "no data left"))
+    
+    
+    ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+    
+    group_by <- merge(
+      ATE_f[c("USUBJID", "STUDYID")],
+      ASL[c("USUBJID", "STUDYID", "BAGED", "SEX", "BECOG")],
+      all.x = TRUE, all.y = FALSE
+    )
+    
+    tbl <- surv_subgroup(
+      time_to_event = ATE_f$AVAL,
+      event = ATE_f$CNSR == 0,
+      arm = ATE_f$ARM, 
+      group_by = group_by[, -c(1,2), drop=FALSE],
+      arm.ref = "DUMMY A"
+    )
+    
+    as_html(tbl)
+  })
+}
