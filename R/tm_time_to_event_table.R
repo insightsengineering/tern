@@ -268,6 +268,7 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   return(tte_table)
 
 }  
+
 if (FALSE){
 
 tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
@@ -340,11 +341,12 @@ tte_tbl_R <- teal.oncology::rtable(
          format = "(xx.xx, xx.xx)"),
     rrow(),
     rrow("Time Point Analysis"),
-    rrow(c(tte_tbl_R_data[[9]]$time_point)," months"),
+    rrow("6-Months"),
     rrow("Patients remaining at risk",
-         c(tte_tbl_R_data[[9]]$ref_patients_remaining_at_risk, tte_tbl_R_data[[9]]$comp1_patients_remaining_at_risk,
-           tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk, format = "xx"))
+         c(tte_tbl_R_data[[9]]$ref_patients_remaining_at_risk), c(tte_tbl_R_data[[9]]$comp1_patients_remaining_at_risk),
+         c(tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk), format = "xx")
 )
+
 #teal.oncology::Viewer(tte_tbl_R)
   
 # teal.oncology::compare_rtables(tte_tbl_R, tte_tbl_stream, tol = 0.2)
