@@ -324,7 +324,23 @@ tte_tbl_R <- teal.oncology::rtable(
     rrow("95% CI",
          c(9999, 9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp1_cox_ph_hr_ucl),
                         c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp2_cox_ph_hr_ucl),
-         format = "(xx.xx, xx.xx)")
+         format = "(xx.xx, xx.xx)"),
+    rrow("Stratified Analysis"),
+    rrow("p-value (log-rank)",
+         c(9999), c(tte_tbl_R_data[[8]]$p_strat_diff1), c(tte_tbl_R_data[[8]]$p_strat_diff2), format = "xx.xxx"),
+    rrow(),
+    rrow("Hazard Ratio",
+         c(9999), c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr), c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr), format = "xx.xx"),
+    rrow("95% CI",
+         c(9999, 9999), c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_lcl, tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_ucl),
+         c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr_lcl, tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr_ucl),
+         format = "(xx.xx, xx.xx)"),
+    rrow(),
+    rrow("Time Point Analysis"),
+    rrow(c(tte_tbl_R_data[[9]]$time_point)," months"),
+    rrow("Patients remaining at risk",
+         c(tte_tbl_R_data[[9]]$ref_patients_remaining_at_risk, tte_tbl_R_data[[9]]$comp1_patients_remaining_at_risk,
+           tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk, format = "xx"))
 )
 teal.oncology::Viewer(tte_tbl_R)
   
