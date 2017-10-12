@@ -9,13 +9,10 @@ venn2(x, y, xlab, ylab)
 \arguments{
 \item{x}{boolean has biomarker or not}
 
-\item{y}{boolean has biomarker of not
-
-
-# @importFrom grid}
+\item{y}{boolean has biomarker of not}
 }
 \value{
-plot
+list with absolute and percentage cross table
 }
 \description{
 Create a Venn Diagram Plot with 2 groups
@@ -40,4 +37,7 @@ venn2(x = IC, y = TC, "biomarker IT", "biamrker TC")
 
 }
 
+# if too few then table is plotted
+x <- venn2(x = c(TRUE, TRUE), y = c(FALSE, FALSE))
+plot(x)
 }
