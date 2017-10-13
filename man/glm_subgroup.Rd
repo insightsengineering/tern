@@ -35,26 +35,28 @@ library(dplyr)
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
-ARS_f <- ARS \%>\% filter(PARAMCD == "BESRSPI")
+ARS_f <- ARS \%>\% filter(PARAMCD == "BESRSPI") \%>\% filter(ITTWTFL == "Y")
+ASL_f <- ASL \%>\% filter(ITTWTFL == "Y")
 
-ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+ASL_f$BAGED <- ifelse(ASL_f$BAGE <= median(ASL_f$BAGE), "<=median", ">median")
 
 group_by <- merge(
  ARS_f[c("USUBJID", "STUDYID")],
- ASL[c("USUBJID", "STUDYID", "BAGED", "SEX", "BECOG")],
- all.x = TRUE, all.y = FALSE
+ ASL_f[c("USUBJID", "STUDYID", "ICLEVEL", "ICLVL1", "TC3IC3")],
+ all.y = TRUE, all.x = FALSE
 )
 
 head(group_by)
 
-glm_subgroup(
-   response = ARS_f$AVAL,
-   event = ARS_f$AVALC \%in\% c("CR","PR"),
-   arm = ARS_f$ARM, 
-   group_by = group_by[, -c(1,2), drop=FALSE],
-   arm.ref = "DUMMY A",
-   arm.comp = "DUMMY B"
+tbl <- glm_subgroup(
+          response = ARS_f$AVAL,
+          event = ARS_f$AVALC \%in\% c("CR","PR"),
+          arm = ARS_f$ARM, 
+          group_by = group_by[, -c(1,2), drop=FALSE],
+          arm.ref = "DUMMY A",
+          arm.comp = "DUMMY C"
 )
+Viewer(tbl)
 }
 
   
