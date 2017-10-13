@@ -61,22 +61,24 @@ demographic_table <- function(data,
   
   data %needs% c(arm_var, group_by_vars)
   
-  arm <- as.factor(data[[arm_var]])
-  
+  arm <- factor(data[[arm_var]])
   
   if (all.patients) {
+    if ("All Patients" %in% names(arm)) stop("if argument all.patients = TRUE then there cannot be an arm 'All Patients'")
     n <- nrow(data)
     data <- rbind(data, data)
-    arm <- c(arm, rep("All Patients", n))
+    arm <- factor(c(as.character(arm), rep("All Patients", n)), levels = c(levels(arm), "All Patients"))
   }
+  
   
   ## get a list with each variables tht we want to summarize
   
-
   var_collection <- data[group_by_vars]
   
   ## x <- var_collection[[1]]
   row_info <- lapply(var_collection, function(x) {
+     
+
 
     if (is.numeric(x)) {
       ## then return the n, mean median, and range
@@ -85,23 +87,26 @@ demographic_table <- function(data,
 
     } else {
       ## categorical count
-      xf <- factor(x)
+      df <- data.frame(x = factor(x), arm = arm) %>% filter(!is.na(x))
       
+      n <- lapply(split(df, df$arm), nrow)
       
-      #xi <- xf[arm == arm[1]]
-      tapply(x, arm, function(xi) {
-        
-        #c()
+      lapply(split(df, df$x), function(df_cat) {
+        lapply(split(df_cat, df_cat$arm), function(xi) {
+          nrow(xi)
+        })
       })
       
-#      df <- data.frame(xi, arm) %>% filter(!is.na(xi))
-#      xi_split <- split(df, arm)
-#      c(
-#        list(
-#          n = vapply(xi_split, nrow, numeric(1))
-#        ),
-#        lapply(split(df, df$xi), function(xii) vapply(split(xii, xii$arm), nrow, numeric(1)))
-#      )
+      categ <- tapply(data.frame(xf, arm), xf, function(xi) tapply(), simplify = FALSE)
+      
+      # calculate columns
+      # xi <- xf[arm == arm[1]]
+      out <- lapply(split(df, df$arm), function(dfi) {
+        n <- nrow(dfi)
+        c(list(n = n), lapply(split(dfi, dfi$x), function(dfii) c(nrow(dfii), nrow(dfii)/n)))
+      })
+      
+      Reduce(cbind, )
     }
   })
   
