@@ -146,13 +146,25 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   comp1_ref_diff_event_free_rate <- comp1_patients_event_free_rate - ref_patients_event_free_rate 
   comp2_ref_diff_event_free_rate <- comp2_patients_event_free_rate - ref_patients_event_free_rate
   
+  comp1_ref_diff_event_free_rate_lcl <- comp1_ref_diff_event_free_rate - 1.96*((surv_km_time_point$std.err[[2]]*100)^2 + (surv_km_time_point$std.err[[1]]*100)^2)^0.5
+  comp1_ref_diff_event_free_rate_ucl <- comp1_ref_diff_event_free_rate + 1.96*((surv_km_time_point$std.err[[2]]*100)^2 + (surv_km_time_point$std.err[[1]]*100)^2)^0.5
+ 
+  comp2_ref_diff_event_free_rate_lcl <- comp2_ref_diff_event_free_rate - 1.96*((surv_km_time_point$std.err[[3]]*100)^2 + (surv_km_time_point$std.err[[1]]*100)^2)^0.5
+  comp2_ref_diff_event_free_rate_ucl <- comp2_ref_diff_event_free_rate + 1.96*((surv_km_time_point$std.err[[3]]*100)^2 + (surv_km_time_point$std.err[[1]]*100)^2)^0.5
+  
+  p_comp1_ref_diff_event_free_rate <- 2*(1 - pnorm(abs(comp1_ref_diff_event_free_rate/100)/((surv_km_time_point$std.err[[2]])^2 + (surv_km_time_point$std.err[[1]])^2)^0.5))
+  p_comp2_ref_diff_event_free_rate <- 2*(1 - pnorm(abs(comp2_ref_diff_event_free_rate/100)/((surv_km_time_point$std.err[[3]])^2 + (surv_km_time_point$std.err[[1]])^2)^0.5))
+  
   time_point_analysis <- data.frame(time_point,ref_patients_remaining_at_risk,ref_patients_event_free_rate,
                                     ref_patients_event_free_rate_lcl,ref_patients_event_free_rate_ucl,
                                     comp1_patients_remaining_at_risk,comp1_patients_event_free_rate,
                                     comp1_patients_event_free_rate_lcl,comp1_patients_event_free_rate_ucl,
                                     comp2_patients_remaining_at_risk,comp2_patients_event_free_rate,
                                     comp2_patients_event_free_rate_lcl,comp2_patients_event_free_rate_ucl,
-                                    comp1_ref_diff_event_free_rate, comp2_ref_diff_event_free_rate)
+                                    comp1_ref_diff_event_free_rate, comp2_ref_diff_event_free_rate,
+                                    comp1_ref_diff_event_free_rate_lcl, comp1_ref_diff_event_free_rate_ucl,
+                                    comp2_ref_diff_event_free_rate_lcl, comp2_ref_diff_event_free_rate_ucl,
+                                    p_comp1_ref_diff_event_free_rate, p_comp2_ref_diff_event_free_rate)
   
   # BIG N #
   ref_BIG_N <- length(big_n_arm[big_n_arm == as.vector(levels(big_n_arm))[1]])
@@ -358,7 +370,12 @@ tte_tbl_R <- teal.oncology::rtable(
          format = "(xx.xx, xx.xx)"),
     rrow("Difference in Event Free Rate",
          c(9999), c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate), 
-         c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate), format = "xx.xx")
+         c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate), format = "xx.xx"),
+    rrow("95% CI",
+         c(9999,9999), c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_ucl),
+         c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_ucl), format = "(xx.xx, xx.xx)"),
+    rrow("p-value (Z-test)",
+         c(9999), c(tte_tbl_R_data[[9]]$p_comp1_ref_diff_event_free_rate), c(tte_tbl_R_data[[9]]$p_comp2_ref_diff_event_free_rate), format = "xx.xxxx")
 )
 
 #teal.oncology::Viewer(tte_tbl_R)
