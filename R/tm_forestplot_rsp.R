@@ -16,7 +16,7 @@
 #' 
 #' \dontrun{
 #' library(atezo.data)
-#' library(dplyr)
+#' library(dplyr) 
 #' library(grid)
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
