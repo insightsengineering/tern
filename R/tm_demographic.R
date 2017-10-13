@@ -59,7 +59,7 @@ demographic_table <- function(data,
                               all.patients = TRUE,
                               group_by = c("SEX", "AGE", "RACE", "ETHNIC")) {
   
-  data %needs% c("USUBJID", "STUDYID", group_by)
+  data %needs% group_by
   
   if (nrow(data) != length(arm)) stop("dimension of arm and data missmatch")
   
@@ -79,7 +79,7 @@ demographic_table <- function(data,
   row_info <- lapply(X, function(xi) {
     if (!is.numeric(xi)) {
       ## then return the n, mean median, and range
-      df <- data.frame(xi, arm)
+      df <- data.frame(xi, arm) %>% filter(!is.na(xi))
       xi_split <- split(df, arm)
       c(
         list(
