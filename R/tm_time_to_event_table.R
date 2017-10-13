@@ -15,6 +15,7 @@
 #' 
 #' @examples 
 #' \dontrun{
+#' 
 #' library(teal.oncology)
 #' library(atezo.data)
 #' library(dplyr)
@@ -27,7 +28,6 @@
 #' ATE <- atezo.data::ate(com.roche.cdt30019.go29436.re)
 #' 
 #' tte_tbl_stream <- atezo.data::get_time_to_event_table(com.roche.cdt30019.go29436.re)
-#' teal.oncology::Viewer(tte_tbl_stream)
 #'
 #' ASL_f <- dplyr::filter(ASL,ITTFL == "Y")
 #'         
@@ -48,41 +48,22 @@
 #'   time_point = as.numeric(6)
 #' )
 #' 
-#' Viewer(tbl)
+#' teal.oncology::Viewer(tbl)
 #' 
-#' Viewer(tte_tbl_stream)
+#' teal.oncology::Viewer(tte_tbl_stream)
 #' 
-#' compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
-#' 
-#' tbl[2,1]
-#' tte_tbl_stream[2,1]
-#' 
-#' rtable(
-#'   col.names = c("A", "B", "C"),
-#'   format = "xx",
-#'   rrow("row 1", 1, 2, 3),
-#'   rrow("row 2", NULL, 5, NULL)
-#' )
+#' teal.oncology::compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
 #' 
 #' }
 #' 
-#' ASL_csv <- dplyr::select(ASL_f,USUBJID,ARM1)
-#' ATE_csv <- dplyr::select(ATE_f,USUBJID,ARM1,AVAL,CNSR)
+#' To do ... 
+#' - Add "Earliest contributing event" columns. 
+#' - atezo.data 
+#'   - update the table
+#'   - make it match if possible
+#' - create the teal module ... e.g. ...
+#'   https://github.roche.com/Rpackages/teal.oncology/blob/songy24-forestpl/R/tm_forestplot_tte.R#L314
 #' 
-#' readr::write_csv(ASL_csv,"ASL_f.csv")
-#' readr::write_csv(ATE_csv,"ATE_f.csv")
-#' time_to_event <- ATE_f$AVAL
-#' event <- ifelse(is.na(ATE_f$CNSR),NA,
-#'                 ifelse(ATE_f$CNSR==1,0,1))
-#' arm <- ATE_f$ARM1
-#' big_n_arm <- ASL_f$ARM1
-#' arm.ref <- "DUMMY C"
-#' comp1.arm <- "DUMMY B"
-#' comp2.arm <- "DUMMY A"
-#' strata1 <- as.factor(ATE_f$SEX)
-#' strata2 <- as.factor(ATE_f$MLIVER)
-#' strata3 <- as.factor(ATE_f$TCICLVL2)
-#' time_point <- as.numeric(6)
 
 time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
                                 strata1,strata2,strata3,time_point) {
@@ -312,7 +293,6 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   tte_tbl_R_data <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,
                          unstrat_cox,strat_cox,time_point_analysis)
   
-  
   # Time-to-Event rtable Generation #
   tte_tbl_R <- rtable(
     col.names = c(paste("DUMMY C\n(N=",tte_tbl_R_data[[1]]$ref_big_n,")",sep=""), 
@@ -348,28 +328,27 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
     rrow(),
     rrow("Unstratified Analysis"),
     rrow("p-value (log-rank)", indent=2,
-         c(9999), c(tte_tbl_R_data[[7]]$pdiff1), c(tte_tbl_R_data[[7]]$pdiff2), format = "xx.xxxx"),
+         NULL, c(tte_tbl_R_data[[7]]$pdiff1), c(tte_tbl_R_data[[7]]$pdiff2), format = "xx.xxxx"),
     rrow(),
     rrow("Hazard Ratio", indent=2,
-         c(9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr), c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr), format = "xx.xx"),
+         NULL, c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr), c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr), format = "xx.xx"),
     rrow("95% CI", indent=4,
-         c(9999, 9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp1_cox_ph_hr_ucl),
+         NULL, c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp1_cox_ph_hr_ucl),
          c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp2_cox_ph_hr_ucl),
          format = "(xx.xx, xx.xx)"),
     rrow("Stratified Analysis"),
     rrow("p-value (log-rank)", indent=2,
-         c(9999), c(tte_tbl_R_data[[8]]$p_strat_diff1), c(tte_tbl_R_data[[8]]$p_strat_diff2), format = "xx.xxxx"),
+         NULL, c(tte_tbl_R_data[[8]]$p_strat_diff1), c(tte_tbl_R_data[[8]]$p_strat_diff2), format = "xx.xxxx"),
     rrow(),
     rrow("Hazard Ratio", indent=2,
-         c(9999), c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr), c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr), format = "xx.xx"),
+         NULL, c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr), c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr), format = "xx.xx"),
     rrow("95% CI", indent=4,
-         c(9999, 9999), c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_lcl, tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_ucl),
+         NULL, c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_lcl, tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_ucl),
          c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr_lcl, tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr_ucl),
          format = "(xx.xx, xx.xx)"),
     rrow(),
     rrow("Time Point Analysis"),
-    rrow("6-Months"),
-    #rrow("Months: ", indent=3, rcell(c(tte_tbl_R_data[[9]]$time_point)), format = "xx"),
+    rrow("6-Months <-- Need to make dynamic & indent!!!"),
     rrow("Patients remaining at risk", indent=4,
          c(tte_tbl_R_data[[9]]$ref_patients_remaining_at_risk), c(tte_tbl_R_data[[9]]$comp1_patients_remaining_at_risk),
          c(tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk), format = "xx"),
@@ -383,25 +362,15 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
          c(tte_tbl_R_data[[9]]$comp2_patients_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp2_patients_event_free_rate_ucl),
          format = "(xx.xx, xx.xx)"),
     rrow("Difference in Event Free Rate", indent=4,
-         c(9999), c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate), 
+         NULL, c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate), 
          c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate), format = "xx.xx"),
     rrow("95% CI", indent=6,
-         c(9999,9999), c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_ucl),
+         NULL, c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_ucl),
          c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_ucl), format = "(xx.xx, xx.xx)"),
     rrow("p-value (Z-test)", indent=4,
-         c(9999), c(tte_tbl_R_data[[9]]$p_comp1_ref_diff_event_free_rate), c(tte_tbl_R_data[[9]]$p_comp2_ref_diff_event_free_rate), format = "xx.xxxx")
+         NULL, c(tte_tbl_R_data[[9]]$p_comp1_ref_diff_event_free_rate), c(tte_tbl_R_data[[9]]$p_comp2_ref_diff_event_free_rate), format = "xx.xxxx")
   )
   
   return(tte_tbl_R)
 
 }  
-
-
-# atezo.data 
-#  update the table
-#     - make it match if possible
-#  create the teal modeule
-#    https://github.roche.com/Rpackages/teal.oncology/blob/songy24-forestpl/R/tm_forestplot_tte.R#L314
-
-
-
