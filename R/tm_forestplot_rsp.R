@@ -49,7 +49,7 @@
 #' )
 #' Viewer(tbl)
 #' 
-#' compare_rtables(tbl, stream, tol=0.1)
+#' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
 #' }
 #' 
 #' 
@@ -111,8 +111,8 @@ glm_subgroup <- function(response, event,
   
   additonal_args <- list(
     col.names = c("Total n",
-                  "n", "n Responder", "Responder Rate (%)",
-                  "n", "n Responder", "Responder Rate (%)",
+                  "n", "n\nResponder", "Responder Rate\n(%)",
+                  "n", "n\nResponder", "Responder Rate\n(%)",
                   "Odds Ratio", "95% CI"),
     format = "xx"
   )
