@@ -82,48 +82,39 @@ demographic_table <- function(data,
 
     if (is.numeric(x)) {
       ## then return the n, mean median, and range
-
-
-
+      df <- data.frame(x = x, arm = arm) %>% filter(!is.na(x))
+      lapply(split(df, df$arm), function(dfi) {
+        n <- nrow(dfi)
+        c(list(n = n), lapply(
+          split(dfi, dfi$x), function(dfii) {
+            xii <- dfii$x
+            lapply(c(length, mean, sd, median, range), function(fun)fun(xii))
+          }))
+      })
     } else {
       ## categorical count
       df <- data.frame(x = factor(x), arm = arm) %>% filter(!is.na(x))
-      
-      n <- lapply(split(df, df$arm), nrow)
-      
-      lapply(split(df, df$x), function(df_cat) {
-        lapply(split(df_cat, df_cat$arm), function(xi) {
-          nrow(xi)
-        })
-      })
-      
-      categ <- tapply(data.frame(xf, arm), xf, function(xi) tapply(), simplify = FALSE)
-      
-      # calculate columns
-      # xi <- xf[arm == arm[1]]
-      out <- lapply(split(df, df$arm), function(dfi) {
+      lapply(split(df, df$arm), function(dfi) {
         n <- nrow(dfi)
-        c(list(n = n), lapply(split(dfi, dfi$x), function(dfii) c(nrow(dfii), nrow(dfii)/n)))
+        c(list(n = n), lapply(split(dfi, dfi$x), function(dfii) list(n_cat = nrow(dfii), p_cat = nrow(dfii)/n)))
       })
-      
-      Reduce(cbind, )
     }
   })
   
-  first.row <- TRUE
-  rrow_collection <- unlist(lapply(row_info, function(ri) {
-    l <- list(
-      if (first.row) NULL else rrow(),
-      rrow("Sex", ...),
-      rrow("n", ..., indent = 1)
-    )
-    first.row <<- FALSE
-    l
-  }), recursive = FALSE)
+  #first.row <- TRUE
+  #rrow_collection <- unlist(lapply(row_info, function(ri) {
+  #  l <- list(
+  #    if (first.row) NULL else rrow(),
+  #    rrow("Sex", ...),
+  #    rrow("n", ..., indent = 1)
+  #  )
+  #  first.row <<- FALSE
+  #  l
+  #}), recursive = FALSE)
   
   
-  do.call(rtable, c(list(col.names = ...), rrow_collection))
+  #do.call(rtable, c(list(col.names = ...), rrow_collection))
   
   
-  tbl
+  row_info
 }
