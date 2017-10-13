@@ -129,26 +129,30 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   surv_km_time_point <- summary(surv_km_fit,times=c(time_point))
 
   ref_patients_remaining_at_risk <- surv_km_time_point$n.risk[[1]]
-  ref_patients_event_free_rate <- surv_km_time_point$surv[[1]]
-  ref_patients_event_free_rate_lcl <- surv_km_time_point$lower[[1]]
-  ref_patients_event_free_rate_ucl <- surv_km_time_point$upper[[1]]
+  ref_patients_event_free_rate <- surv_km_time_point$surv[[1]]*100
+  ref_patients_event_free_rate_lcl <- surv_km_time_point$lower[[1]]*100
+  ref_patients_event_free_rate_ucl <- surv_km_time_point$upper[[1]]*100
   
   comp1_patients_remaining_at_risk <- surv_km_time_point$n.risk[[2]]
-  comp1_patients_event_free_rate <- surv_km_time_point$surv[[2]]
-  comp1_patients_event_free_rate_lcl <- surv_km_time_point$lower[[2]]
-  comp1_patients_event_free_rate_ucl <-surv_km_time_point$upper[[2]]
+  comp1_patients_event_free_rate <- surv_km_time_point$surv[[2]]*100
+  comp1_patients_event_free_rate_lcl <- surv_km_time_point$lower[[2]]*100
+  comp1_patients_event_free_rate_ucl <-surv_km_time_point$upper[[2]]*100
   
   comp2_patients_remaining_at_risk <- surv_km_time_point$n.risk[[3]]
-  comp2_patients_event_free_rate <- surv_km_time_point$surv[[3]]
-  comp2_patients_event_free_rate_lcl <- surv_km_time_point$lower[[3]]
-  comp2_patients_event_free_rate_ucl <- surv_km_time_point$upper[[3]]
+  comp2_patients_event_free_rate <- surv_km_time_point$surv[[3]]*100
+  comp2_patients_event_free_rate_lcl <- surv_km_time_point$lower[[3]]*100
+  comp2_patients_event_free_rate_ucl <- surv_km_time_point$upper[[3]]*100
+  
+  comp1_ref_diff_event_free_rate <- comp1_patients_event_free_rate - ref_patients_event_free_rate 
+  comp2_ref_diff_event_free_rate <- comp2_patients_event_free_rate - ref_patients_event_free_rate
   
   time_point_analysis <- data.frame(time_point,ref_patients_remaining_at_risk,ref_patients_event_free_rate,
                                     ref_patients_event_free_rate_lcl,ref_patients_event_free_rate_ucl,
                                     comp1_patients_remaining_at_risk,comp1_patients_event_free_rate,
                                     comp1_patients_event_free_rate_lcl,comp1_patients_event_free_rate_ucl,
                                     comp2_patients_remaining_at_risk,comp2_patients_event_free_rate,
-                                    comp2_patients_event_free_rate_lcl,comp2_patients_event_free_rate_ucl)
+                                    comp2_patients_event_free_rate_lcl,comp2_patients_event_free_rate_ucl,
+                                    comp1_ref_diff_event_free_rate, comp2_ref_diff_event_free_rate)
   
   # BIG N #
   ref_BIG_N <- length(big_n_arm[big_n_arm == as.vector(levels(big_n_arm))[1]])
@@ -283,10 +287,6 @@ tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
                                               strata2 = as.factor(ATE_f$MLIVER),
                                               strata3 = as.factor(ATE_f$TCICLVL2),
                                       time_point = as.numeric(6))
-
-#range_format <- function(x, output) {
-#  "xx.x, xx.x" = paste(vapply(x, round, numeric(1), 1), collapse = ", ")
-#}
   
 # Time-to-Event rtable Generation #
 tte_tbl_R <- teal.oncology::rtable(
@@ -346,7 +346,19 @@ tte_tbl_R <- teal.oncology::rtable(
     rrow("6-Months"),
     rrow("Patients remaining at risk",
          c(tte_tbl_R_data[[9]]$ref_patients_remaining_at_risk), c(tte_tbl_R_data[[9]]$comp1_patients_remaining_at_risk),
-         c(tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk), format = "xx")
+         c(tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk), format = "xx"),
+    rrow("Event Free Rate (%)",
+         c(tte_tbl_R_data[[9]]$ref_patients_event_free_rate),
+         c(tte_tbl_R_data[[9]]$comp1_patients_event_free_rate),
+         c(tte_tbl_R_data[[9]]$comp2_patients_event_free_rate), format = "xx.xx"),
+    rrow("95% CI",
+         c(tte_tbl_R_data[[9]]$ref_patients_event_free_rate_lcl,tte_tbl_R_data[[9]]$ref_patients_event_free_rate_ucl),
+         c(tte_tbl_R_data[[9]]$comp1_patients_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp1_patients_event_free_rate_ucl),
+         c(tte_tbl_R_data[[9]]$comp2_patients_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp2_patients_event_free_rate_ucl),
+         format = "(xx.xx, xx.xx)"),
+    rrow("Difference in Event Free Rate",
+         c(9999), c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate), 
+         c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate), format = "xx.xx")
 )
 
 #teal.oncology::Viewer(tte_tbl_R)
