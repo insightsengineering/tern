@@ -48,7 +48,7 @@ ui_kmplot_ADAM <- function(id, plot_height=700){
                   selected = NULL, multiple = FALSE),
       selectInput(ns("facetby"), "Facet Plots by:", choices = NULL, 
                   selected = NULL, multiple = TRUE),
-      uiOutput(ns("colnum")),
+      
       selectInput(ns("refarm"), "Reference Arm", choices = NULL, 
                   selected = NULL, multiple = TRUE),
       tags$label("Plot Settings", class = "text-primary"),
@@ -85,12 +85,6 @@ srv_kmplot_ADAM <- function(input, output, session, datasets){
                         selected = ANL[[input$armvar]] %>% unique() %>% sort() %>% "["(1))
     }
     
-    if (length(input$facetby) != 0){
-      output$colnum <- renderUI({
-        numericInput(ns("n.col"), label = "Arrange Plots by Columns:", value = 2, min = 1, step = 1)
-      })
-    }
-    
   })
   
 
@@ -120,7 +114,6 @@ srv_kmplot_ADAM <- function(input, output, session, datasets){
         event = ANL[["CNSR"]] == 0,
         arm = ANL[[input$armvar]],
         facet_by = ANL[[input$facetby]],
-        n_col = input$n.col,
         arm.ref =  input$refarm  
       )
     }

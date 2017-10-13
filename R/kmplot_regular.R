@@ -46,7 +46,7 @@
 
 
 kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
-                    stratum = NULL, facet_by = NULL, n_col = 2, ... ){
+                    stratum = NULL, facet_by = NULL, n_col = 1,   ... ){
   
   n <- length(time_to_event)
   if (length(event) != n) stop("event has wrong length")
@@ -76,7 +76,10 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, 
     facet_lev <- unique(cox_data$facet_by)
     plot_list <- lapply(facet_lev, function(lev){
      
-      kmPlot_anno(cox_data %>% filter(facet_by == lev), ...) 
+      plot.out <- kmPlot_anno(cox_data %>% filter(facet_by == lev), ...)
+      newtitle <- paste0(plot.out$plot$labels$title, " : (",  lev, ")")
+      plot.out$plot <- plot.out$plot + ggtitle(newtitle)
+      plot.out
     })
     n_row <- ceiling(length(facet_lev)/n_col)
     
@@ -116,7 +119,7 @@ arm_for_model2 <- function(arm, arm.ref, arm.rest){
 
 kmPlot_anno <- function(data, 
                         cox.tie = "efron", conf.int = FALSE, plot.median = FALSE, 
-                        plot.nrisk = TRUE, time.interval = 4, nrisk.height = 0.2, size.nrisk = 4,
+                        plot.nrisk = TRUE, time.interval = 4, nrisk.height = 0.25, size.nrisk = 4,
                         plot.cens = TRUE, size.cens = 4.5, shape.cens = "+",
                         plot.stats = TRUE, size.stats = 3,
                         xystats.up = c(0.7, 0.8), xyinterval.up = c(0.08, 0.06),
