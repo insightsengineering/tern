@@ -284,7 +284,9 @@ tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
                                               strata3 = as.factor(ATE_f$TCICLVL2),
                                       time_point = as.numeric(6))
 
-
+#range_format <- function(x, output) {
+#  "xx.x, xx.x" = paste(vapply(x, round, numeric(1), 1), collapse = ", ")
+#}
   
 # Time-to-Event rtable Generation #
 tte_tbl_R <- teal.oncology::rtable(
@@ -313,15 +315,15 @@ tte_tbl_R <- teal.oncology::rtable(
     rrow("25% and 75%−ile",
          c(tte_tbl_R_data[[5]]$ref_25th,   9999),
          c(tte_tbl_R_data[[5]]$comp1_25th, tte_tbl_R_data[[5]]$comp1_75th),
-         c(tte_tbl_R_data[[5]]$comp2_25th, 9999), format = "(xx.x, xx.x)"),
+         c(tte_tbl_R_data[[5]]$comp2_25th, 9999), format = "xx.x, xx.x"),
     rrow("Range",
          c(tte_tbl_R_data[[6]]$ref_km_min,   tte_tbl_R_data[[6]]$ref_km_max),
          c(tte_tbl_R_data[[6]]$comp1_km_min, tte_tbl_R_data[[6]]$comp1_km_max),
-         c(tte_tbl_R_data[[6]]$comp2_km_min, tte_tbl_R_data[[6]]$comp2_km_max), format = "(xx.x, xx.x)"),
+         c(tte_tbl_R_data[[6]]$comp2_km_min, tte_tbl_R_data[[6]]$comp2_km_max), format = "xx.x to xx.x"),
     rrow(),
     rrow("Unstratified Analysis"),
     rrow("p-value (log-rank)",
-         c(9999), c(tte_tbl_R_data[[7]]$pdiff1), c(tte_tbl_R_data[[7]]$pdiff2), format = "xx.xxx"),
+         c(9999), c(tte_tbl_R_data[[7]]$pdiff1), c(tte_tbl_R_data[[7]]$pdiff2), format = "xx.xxxx"),
     rrow(),
     rrow("Hazard Ratio",
          c(9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr), c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr), format = "xx.xx"),
@@ -331,7 +333,7 @@ tte_tbl_R <- teal.oncology::rtable(
          format = "(xx.xx, xx.xx)"),
     rrow("Stratified Analysis"),
     rrow("p-value (log-rank)",
-         c(9999), c(tte_tbl_R_data[[8]]$p_strat_diff1), c(tte_tbl_R_data[[8]]$p_strat_diff2), format = "xx.xxx"),
+         c(9999), c(tte_tbl_R_data[[8]]$p_strat_diff1), c(tte_tbl_R_data[[8]]$p_strat_diff2), format = "xx.xxxx"),
     rrow(),
     rrow("Hazard Ratio",
          c(9999), c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr), c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr), format = "xx.xx"),
