@@ -33,25 +33,56 @@
 #'         
 #' ATE_f <- dplyr::filter(ATE,ITTFL == "Y" & PARAMCD == "OS")
 #' 
+#' tbl <- time_to_event_table(
+#'   time_to_event = ATE_f$AVAL,
+#'   event = ifelse(is.na(ATE_f$CNSR),NA,
+#'                  ifelse(ATE_f$CNSR==1,0,1)),
+#'   arm = ATE_f$ARM1,
+#'   big_n_arm = ASL_f$ARM1,
+#'   arm.ref = "DUMMY C",
+#'   comp1.arm = "DUMMY B",
+#'   comp2.arm = "DUMMY A",
+#'   strata1 = as.factor(ATE_f$SEX),
+#'   strata2 = as.factor(ATE_f$MLIVER),
+#'   strata3 = as.factor(ATE_f$TCICLVL2),
+#'   time_point = as.numeric(6)
+#' )
+#' 
+#' Viewer(tbl)
+#' 
+#' Viewer(tte_tbl_stream)
+#' 
+#' compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
+#' 
+#' tbl[2,1]
+#' tte_tbl_stream[2,1]
+#' 
+#' rtable(
+#'   col.names = c("A", "B", "C"),
+#'   format = "xx",
+#'   rrow("row 1", 1, 2, 3),
+#'   rrow("row 2", NULL, 5, NULL)
+#' )
+#' 
 #' }
-
-#ASL_csv <- dplyr::select(ASL_f,USUBJID,ARM1)
-#ATE_csv <- dplyr::select(ATE_f,USUBJID,ARM1,AVAL,CNSR)
-#readr::write_csv(ASL_csv,"ASL_f.csv")
-#readr::write_csv(ATE_csv,"ATE_f.csv")
-
-#time_to_event <- ATE_f$AVAL
-#event <- ifelse(is.na(ATE_f$CNSR),NA,
-#                ifelse(ATE_f$CNSR==1,0,1))
-#arm <- ATE_f$ARM1
-#big_n_arm <- ASL_f$ARM1
-#arm.ref <- "DUMMY C"
-#comp1.arm <- "DUMMY B"
-#comp2.arm <- "DUMMY A"
-#strata1 <- as.factor(ATE_f$SEX)
-#strata2 <- as.factor(ATE_f$MLIVER)
-#strata3 <- as.factor(ATE_f$TCICLVL2)
-#time_point <- as.numeric(6)
+#' 
+#' ASL_csv <- dplyr::select(ASL_f,USUBJID,ARM1)
+#' ATE_csv <- dplyr::select(ATE_f,USUBJID,ARM1,AVAL,CNSR)
+#' 
+#' readr::write_csv(ASL_csv,"ASL_f.csv")
+#' readr::write_csv(ATE_csv,"ATE_f.csv")
+#' time_to_event <- ATE_f$AVAL
+#' event <- ifelse(is.na(ATE_f$CNSR),NA,
+#'                 ifelse(ATE_f$CNSR==1,0,1))
+#' arm <- ATE_f$ARM1
+#' big_n_arm <- ASL_f$ARM1
+#' arm.ref <- "DUMMY C"
+#' comp1.arm <- "DUMMY B"
+#' comp2.arm <- "DUMMY A"
+#' strata1 <- as.factor(ATE_f$SEX)
+#' strata2 <- as.factor(ATE_f$MLIVER)
+#' strata3 <- as.factor(ATE_f$TCICLVL2)
+#' time_point <- as.numeric(6)
 
 time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
                                 strata1,strata2,strata3,time_point) {
@@ -278,30 +309,12 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   strat_cox <- data.frame(p_strat_diff1,comp1_strat_cox_ph_hr,comp1_strat_cox_ph_hr_lcl,comp1_strat_cox_ph_hr_ucl,
                           p_strat_diff2,comp2_strat_cox_ph_hr,comp2_strat_cox_ph_hr_lcl,comp2_strat_cox_ph_hr_ucl)
   
-  tte_table <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,
-                    unstrat_cox,strat_cox,time_point_analysis)
+  tte_tbl_R_data <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,
+                         unstrat_cox,strat_cox,time_point_analysis)
   
-  return(tte_table)
-
-}  
-
-if (FALSE){
-
-tte_tbl_R_data <- time_to_event_table(time_to_event = ATE_f$AVAL,
-                                      event = ifelse(is.na(ATE_f$CNSR),NA,
-                                              ifelse(ATE_f$CNSR==1,0,1)),
-                                              arm = ATE_f$ARM1,
-                                              big_n_arm = ASL_f$ARM1,
-                                              arm.ref = "DUMMY C",
-                                              comp1.arm = "DUMMY B",
-                                              comp2.arm = "DUMMY A",
-                                              strata1 = as.factor(ATE_f$SEX),
-                                              strata2 = as.factor(ATE_f$MLIVER),
-                                              strata3 = as.factor(ATE_f$TCICLVL2),
-                                      time_point = as.numeric(6))
   
-# Time-to-Event rtable Generation #
-tte_tbl_R <- teal.oncology::rtable(
+  # Time-to-Event rtable Generation #
+  tte_tbl_R <- rtable(
     col.names = c(paste("DUMMY C\n(N=",tte_tbl_R_data[[1]]$ref_big_n,")",sep=""), 
                   paste("DUMMY B\n(N=",tte_tbl_R_data[[1]]$comp1_big_n,")",sep=""),
                   paste("DUMMY A\n(N=",tte_tbl_R_data[[1]]$comp2_big_n,")",sep="")),
@@ -341,7 +354,7 @@ tte_tbl_R <- teal.oncology::rtable(
          c(9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr), c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr), format = "xx.xx"),
     rrow("95% CI", indent=4,
          c(9999, 9999), c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp1_cox_ph_hr_ucl),
-                        c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp2_cox_ph_hr_ucl),
+         c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp2_cox_ph_hr_ucl),
          format = "(xx.xx, xx.xx)"),
     rrow("Stratified Analysis"),
     rrow("p-value (log-rank)", indent=2,
@@ -377,14 +390,18 @@ tte_tbl_R <- teal.oncology::rtable(
          c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_ucl), format = "(xx.xx, xx.xx)"),
     rrow("p-value (Z-test)", indent=4,
          c(9999), c(tte_tbl_R_data[[9]]$p_comp1_ref_diff_event_free_rate), c(tte_tbl_R_data[[9]]$p_comp2_ref_diff_event_free_rate), format = "xx.xxxx")
-)
-
-#teal.oncology::Viewer(tte_tbl_R)
+  )
   
-# teal.oncology::compare_rtables(tte_tbl_R, tte_tbl_stream, tol = 0.2)
-# tte_tbl_R
+  return(tte_tbl_R)
 
-}
+}  
+
+
+# atezo.data 
+#  update the table
+#     - make it match if possible
+#  create the teal modeule
+#    https://github.roche.com/Rpackages/teal.oncology/blob/songy24-forestpl/R/tm_forestplot_tte.R#L314
 
 
 
