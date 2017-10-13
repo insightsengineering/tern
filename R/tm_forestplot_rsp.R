@@ -22,6 +22,9 @@
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
+#' surv_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
+#' Viewer(surv_tbl_stream )
+#' 
 #' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
 #' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
 #'
@@ -45,6 +48,8 @@
 #'           arm.comp = "DUMMY A"
 #' )
 #' Viewer(tbl)
+#' 
+#' compare_rtables(tbl, stream, tol=0.1)
 #' }
 #' 
 #' 
@@ -108,7 +113,7 @@ glm_subgroup <- function(response, event,
     col.names = c("Total n",
                   "n", "n Responder", "Responder Rate (%)",
                   "n", "n Responder", "Responder Rate (%)",
-                  "Odds Ratio", "95% CI", "p value"),
+                  "Odds Ratio", "95% CI"),
     format = "xx"
   )
   
@@ -140,7 +145,6 @@ glm_subgroup <- function(response, event,
             rcell(x$resp_comp_event / x$resp_comp_n * 100, format = "xx.x"),
             rcell(x$glm_or, format = "xx.xx"),
             rcell(c(x$glm_lcl, x$glm_ucl), format = "(xx.xx, xx.xx)"),
-            rcell(x$glm_pval, format = "xx.xx"),
             indent = if (header_row_name[1] == "ALL") 0 else 1
           )
         )
