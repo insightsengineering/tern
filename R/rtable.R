@@ -760,6 +760,8 @@ spaces <- function(n) {
 #' @param object rtable to test
 #' @param expected rtable expected
 #' @param tol numerical tolorance
+#' @param comp.attr boolean compare attributes
+#' 
 #' 
 #' @export
 #' 
@@ -791,6 +793,8 @@ spaces <- function(n) {
 #' )
 #' 
 #' compare_rtables(object, expected)
+#' 
+#' compare_rtables(object, expected, comp.attr = FALSE)
 #' 
 #' object <- rtable(
 #'    col.names = c("ARM A\nN=100", "ARM B\nN=200"),
@@ -824,7 +828,7 @@ spaces <- function(n) {
 #' 
 #' compare_rtables(object, expected)
 #' }
-compare_rtables <- function(object, expected, tol=0.1) {
+compare_rtables <- function(object, expected, tol=0.1, comp.attr = TRUE) {
   
   # if (identical(object, expected)) return(invisible(TRUE))
   
@@ -841,6 +845,10 @@ compare_rtables <- function(object, expected, tol=0.1) {
     attr(X, "info") <- "column names are not the same"
   }
   
+  if (!comp.attr) {
+    attr(X, "info") <- c(attr(X, "info"), "cell attributes have not been compared")
+  }
+  
   nro <- nrow(object)
   nre <- nrow(expected)
   nco <- ncol(object)
@@ -853,7 +861,14 @@ compare_rtables <- function(object, expected, tol=0.1) {
       if (i <= nro && i <= nre && j <= nco && j <= nce) {
         x <- object[i,j]
         y <- expected[i, j]
-        if (!identical(attributes(x), attributes(y))) {
+        
+        attr_x <- attributes(x)
+        attr_y <- attributes(y)
+        
+        attr_x_sorted <- if (is.null(attr_x)) NULL else attr_x[order(names(attr_x))]
+        attr_y_sorted <- if (is.null(attr_y)) NULL else attr_y[order(names(attr_y))]
+        
+        if (comp.attr && !identical(attr_x_sorted, attr_y_sorted)) {
           is_equivalent <- FALSE
         } else if (is.numeric(x) && is.numeric(y)) {
           if (any(abs(x - y) > tol)) {
