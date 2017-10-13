@@ -4,7 +4,8 @@
 \alias{demographic_table}
 \title{Create Demographics Table from ADSL data}
 \usage{
-demographic_table(ADSL)
+demographic_table(data, arm_var = "ARM", all.patients = TRUE,
+  group_by_vars = c("SEX", "AGE", "RACE", "ETHNIC"))
 }
 \arguments{
 \item{ADSL}{ADSL dataset with the following variables: USUBJID, STUDYID, AGE,
@@ -30,11 +31,30 @@ demographic_table(ASL)
 
 \dontrun{
 library(atezo.data)
-ADSL <- asl(com.roche.atezo.cdpt7722.wo29637)
+library(dplyr)
+
+ASL <- asl(com.roche.cdt30019.go29436.re)
+tbl_expected <- get_demographic_table(com.roche.cdt30019.go29436.re)
+Viewer(tbl_expected)
 
 
-demographic_table(ADSL)
+ADSL <- ASL \%>\% filter(ITTFL == 'Y') 
+
+tbl <- demographic_table(
+   data = ADSL,
+   arm_var = "ARM",
+   all.patients = TRUE
+)
+
+compare_rtables(tbl, tbl_expected)
+
+# if all is good then
+tbl <- tbl_expected
+compare_rtables(tbl, tbl_expected)
+
 }
+
+`\%needs\%` <- teal.oncology:::`\%needs\%`
 
 
 }

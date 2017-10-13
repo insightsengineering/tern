@@ -39,7 +39,7 @@
 #' 
 #' tbl <- demographic_table(
 #'    data = ADSL,
-#'    arm = ADSL$ARM,
+#'    arm_var = "ARM",
 #'    all.patients = TRUE
 #' )
 #' 
@@ -55,15 +55,14 @@
 #' 
 #' 
 demographic_table <- function(data,
-                              arm,
+                              arm_var = "ARM",
                               all.patients = TRUE,
-                              group_by = c("SEX", "AGE", "RACE", "ETHNIC")) {
+                              group_by_vars = c("SEX", "AGE", "RACE", "ETHNIC")) {
   
-  data %needs% group_by
+  data %needs% c(arm_var, group_by_vars)
   
-  if (nrow(data) != length(arm)) stop("dimension of arm and data missmatch")
+  arm <- as.factor(data[[arm_var]])
   
-  if (any("All Patients" %in% arm)) stop("All Patients is not a valid arm name")
   
   if (all.patients) {
     n <- nrow(data)
@@ -73,24 +72,36 @@ demographic_table <- function(data,
   
   ## get a list with each variables tht we want to summarize
   
-  X <- data[group_by]
 
-  ## xi <- X[[1]]
-  row_info <- lapply(X, function(xi) {
-    if (!is.numeric(xi)) {
+  var_collection <- data[group_by_vars]
+  
+  ## x <- var_collection[[1]]
+  row_info <- lapply(var_collection, function(x) {
+
+    if (is.numeric(x)) {
       ## then return the n, mean median, and range
-      df <- data.frame(xi, arm) %>% filter(!is.na(xi))
-      xi_split <- split(df, arm)
-      c(
-        list(
-          n = vapply(xi_split, nrow, numeric(1))
-        ),
-        lapply(split(df, df$xi), function(xii) vapply(split(xii, xii$arm), nrow, numeric(1)))
-      )
+
+
 
     } else {
       ## categorical count
+      xf <- factor(x)
       
+      
+      #xi <- xf[arm == arm[1]]
+      tapply(x, arm, function(xi) {
+        
+        #c()
+      })
+      
+#      df <- data.frame(xi, arm) %>% filter(!is.na(xi))
+#      xi_split <- split(df, arm)
+#      c(
+#        list(
+#          n = vapply(xi_split, nrow, numeric(1))
+#        ),
+#        lapply(split(df, df$xi), function(xii) vapply(split(xii, xii$arm), nrow, numeric(1)))
+#      )
     }
   })
   
