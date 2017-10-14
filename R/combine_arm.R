@@ -7,23 +7,25 @@
 #' 
 #' @param arm vector with arm information
 #' @param arm.ref values in arm that are combined to the reference group
-#' @param arm.comp values in arm that are combined to the comparison group
-#' 
+#' @param arm.comp values in arm to be used as the comparison group(s)
+#' @param arm.comp.combine Boolean value, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
+#'                       \code{FALSE} if want each of the non-ref arms to be a separate comparison group
 #' 
 #' @export
 #' 
-#' @author songy24
+#' @author songy24 liaoc10
 #' 
 #' @examples 
 #' 
-#' combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"))
-#'
-#' combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp = "C")
+#' combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp.combine = T)
+#' combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp.combine = F)
 #' 
+#' combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp = "C", arm.comp.combine = T)
+#' combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp = "C", arm.comp.combine = F)
 #' 
 #' combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B", "R"), arm.comp = "C")
 #' 
-combine_arm <- function(arm, arm.ref, arm.comp = setdiff(arm, arm.ref)) {
+combine_arm <- function(arm, arm.ref, arm.comp = setdiff(arm, arm.ref), arm.comp.combine = T) {
   
   if (!all(arm.ref %in% arm)) stop("not all arms in arm.ref are in arm")
   if (!all(arm.comp %in% arm)) stop("not all arms in arm.comp are in arm")
@@ -32,17 +34,23 @@ combine_arm <- function(arm, arm.ref, arm.comp = setdiff(arm, arm.ref)) {
   name_arm_comp <- paste(arm.comp, collapse = "/")
   
   arm2 <- vapply(arm, function(x) {
-    if (is.na(x)) {
+    if (is.na(x) || x == "") {
       NA_character_
     } else if (x %in% arm.ref) {
       name_arm_ref
-    } else if (x %in% arm.comp) {
+    } else if (x %in% arm.comp & isTRUE(arm.comp.combine)) {
       name_arm_comp
+    } else if (x %in% arm.comp & !isTRUE(arm.comp.combine)) {
+      x
     } else {
       NA_character_
     }
   }, character(1))
   
+  if (isTRUE(arm.comp.combine)) {
+    factor(as.vector(arm2), levels = c(name_arm_ref, name_arm_comp))
+  } else if (!isTRUE(arm.comp.combine)) {
+    factor(as.vector(arm2), levels = c(name_arm_ref, arm.comp))
+  }
   
-  factor(as.vector(arm2), levels = c(name_arm_ref, name_arm_comp))
 }
