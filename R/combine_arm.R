@@ -47,9 +47,9 @@ combine_arm <- function(arm, arm.ref, arm.comp = setdiff(arm, arm.ref), arm.comp
     }
   }, character(1))
   
-  if (isTRUE(arm.comp.combine)) {
+  if (arm.comp.combine == TRUE) {
     factor(as.vector(arm2), levels = c(name_arm_ref, name_arm_comp))
-  } else if (!isTRUE(arm.comp.combine)) {
+  } else if (arm.comp.combine == FALSE) {
     factor(as.vector(arm2), levels = c(name_arm_ref, arm.comp))
   }
   
