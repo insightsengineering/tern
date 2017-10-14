@@ -45,7 +45,8 @@
 #'   strata1 = as.factor(ATE_f$SEX),
 #'   strata2 = as.factor(ATE_f$MLIVER),
 #'   strata3 = as.factor(ATE_f$TCICLVL2),
-#'   time_point = as.numeric(6)
+#'   time_point = as.numeric(6),
+#'   desc_event = ATE_f$EVNTDESC
 #' )
 #' 
 #' teal.oncology::Viewer(tbl)
@@ -63,10 +64,10 @@
 #'   - make it match if possible
 #' - create the teal module ... e.g. ...
 #'   https://github.roche.com/Rpackages/teal.oncology/blob/songy24-forestpl/R/tm_forestplot_tte.R#L314
-#' 
-
+#'
+   
 time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
-                                strata1,strata2,strata3,time_point) {
+                                strata1,strata2,strata3,time_point,desc_event) {
 
   # Argument Checking #
   n <- length(time_to_event)
@@ -206,6 +207,20 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   tte_np_events <- data.frame(ref_n_events,ref_p_events,comp1_n_events,comp1_p_events,
                               comp2_n_events,comp2_p_events)
   
+  # Earliest Contributing Event #
+  event_desc_df <- as.data.frame(table(ARM,desc_event))
+  event_desc_dis_prog <- subset(event_desc_df, desc_event == "Disease Progression")
+  event_desc_death <- subset(event_desc_df, desc_event == "Death")
+  ref_dis_prog <- ifelse(is.na(event_desc_dis_prog[1,3]),0,event_desc_dis_prog[1,3])
+  comp1_dis_prog <- ifelse(is.na(event_desc_dis_prog[2,3]),0,event_desc_dis_prog[2,3])
+  comp2_dis_prog <- ifelse(is.na(event_desc_dis_prog[3,3]),0,event_desc_dis_prog[3,3])
+  ref_death <- ifelse(is.na(event_desc_death[1,3]),0,event_desc_death[1,3])
+  comp1_death <- ifelse(is.na(event_desc_death[2,3]),0,event_desc_death[2,3])
+  comp2_death <- ifelse(is.na(event_desc_death[3,3]),0,event_desc_death[3,3])
+  
+  ece_dp <- data.frame(ref_dis_prog, comp1_dis_prog, comp2_dis_prog)
+  ece_death <- data.frame(ref_death, comp1_death, comp2_death)
+  
   # Patients Without Events (N & %) #  
   ref_n_wo_events <- ref_big_n - ref_n_events
   comp1_n_wo_events <- comp1_big_n - comp1_n_events
@@ -290,7 +305,8 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
   strat_cox <- data.frame(p_strat_diff1,comp1_strat_cox_ph_hr,comp1_strat_cox_ph_hr_lcl,comp1_strat_cox_ph_hr_ucl,
                           p_strat_diff2,comp2_strat_cox_ph_hr,comp2_strat_cox_ph_hr_lcl,comp2_strat_cox_ph_hr_ucl)
   
-  tte_tbl_R_data <- list(tte_big_n,tte_np_events,tte_np_wo_events,tte_median,tte_quantiles,tte_range,
+  tte_tbl_R_data <- list(tte_big_n,tte_np_events,ece_death,ece_dp,tte_np_wo_events,
+                         tte_median,tte_quantiles,tte_range,
                          unstrat_cox,strat_cox,time_point_analysis)
   
   # Time-to-Event rtable Generation #
@@ -303,72 +319,77 @@ time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.
          c(tte_tbl_R_data[[2]]$ref_n_events,   tte_tbl_R_data[[2]]$ref_p_events), 
          c(tte_tbl_R_data[[2]]$comp1_n_events, tte_tbl_R_data[[2]]$comp1_p_events), 
          c(tte_tbl_R_data[[2]]$comp2_n_events, tte_tbl_R_data[[2]]$comp2_p_events), format = "xx (xx.x%)"),
+    rrow("Earliest contributing event"),
+    rrow("Death",indent=4,
+         c(tte_tbl_R_data[[3]]$ref_death), c(tte_tbl_R_data[[3]]$comp1_death), c(tte_tbl_R_data[[3]]$comp2_death), format = "xx"),
+    rrow("Disease Progression", indent=4,
+         c(tte_tbl_R_data[[4]]$ref_dis_prog), c(tte_tbl_R_data[[4]]$comp1_dis_prog), c(tte_tbl_R_data[[4]]$comp2_dis_prog), format = "xx"),
     rrow("Patients without event (%)", 
-         c(tte_tbl_R_data[[3]]$ref_n_wo_events,   tte_tbl_R_data[[3]]$ref_p_wo_events), 
-         c(tte_tbl_R_data[[3]]$comp1_n_wo_events, tte_tbl_R_data[[3]]$comp1_p_wo_events), 
-         c(tte_tbl_R_data[[3]]$comp2_n_wo_events, tte_tbl_R_data[[3]]$comp2_p_wo_events), format = "xx (xx.x%)"),
+         c(tte_tbl_R_data[[5]]$ref_n_wo_events,   tte_tbl_R_data[[5]]$ref_p_wo_events), 
+         c(tte_tbl_R_data[[5]]$comp1_n_wo_events, tte_tbl_R_data[[5]]$comp1_p_wo_events), 
+         c(tte_tbl_R_data[[5]]$comp2_n_wo_events, tte_tbl_R_data[[5]]$comp2_p_wo_events), format = "xx (xx.x%)"),
     rrow(),
     rrow("Time to Event (months)"),
     rrow("Median", indent=2,
-         c(tte_tbl_R_data[[4]]$ref_med_tte),
-         c(tte_tbl_R_data[[4]]$comp1_med_tte),
-         c(tte_tbl_R_data[[4]]$comp2_med_tte), format = "xx.x"),
+         c(tte_tbl_R_data[[6]]$ref_med_tte),
+         c(tte_tbl_R_data[[6]]$comp1_med_tte),
+         c(tte_tbl_R_data[[6]]$comp2_med_tte), format = "xx.x"),
     rrow("95% CI", indent=4,
-         c(tte_tbl_R_data[[4]]$ref_med_tte_lcl,   tte_tbl_R_data[[4]]$ref_med_tte_ucl),
-         c(tte_tbl_R_data[[4]]$comp1_med_tte_lcl, tte_tbl_R_data[[4]]$comp1_med_tte_ucl),
-         c(tte_tbl_R_data[[4]]$comp2_med_tte_lcl, tte_tbl_R_data[[4]]$comp2_med_tte_ucl), format = "(xx.x, xx.x)"),
+         c(tte_tbl_R_data[[6]]$ref_med_tte_lcl,   tte_tbl_R_data[[6]]$ref_med_tte_ucl),
+         c(tte_tbl_R_data[[6]]$comp1_med_tte_lcl, tte_tbl_R_data[[6]]$comp1_med_tte_ucl),
+         c(tte_tbl_R_data[[6]]$comp2_med_tte_lcl, tte_tbl_R_data[[6]]$comp2_med_tte_ucl), format = "(xx.x, xx.x)"),
     rrow("25% and 75%−ile", indent=2,
-         c(tte_tbl_R_data[[5]]$ref_25th,   9999),
-         c(tte_tbl_R_data[[5]]$comp1_25th, tte_tbl_R_data[[5]]$comp1_75th),
-         c(tte_tbl_R_data[[5]]$comp2_25th, 9999), format = "xx.x, xx.x"),
+         c(tte_tbl_R_data[[7]]$ref_25th,   9999),
+         c(tte_tbl_R_data[[7]]$comp1_25th, tte_tbl_R_data[[7]]$comp1_75th),
+         c(tte_tbl_R_data[[7]]$comp2_25th, 9999), format = "xx.x, xx.x"),
     rrow("Range", indent=2,
-         c(tte_tbl_R_data[[6]]$ref_km_min,   tte_tbl_R_data[[6]]$ref_km_max),
-         c(tte_tbl_R_data[[6]]$comp1_km_min, tte_tbl_R_data[[6]]$comp1_km_max),
-         c(tte_tbl_R_data[[6]]$comp2_km_min, tte_tbl_R_data[[6]]$comp2_km_max), format = "xx.x to xx.x"),
+         c(tte_tbl_R_data[[8]]$ref_km_min,   tte_tbl_R_data[[8]]$ref_km_max),
+         c(tte_tbl_R_data[[8]]$comp1_km_min, tte_tbl_R_data[[8]]$comp1_km_max),
+         c(tte_tbl_R_data[[8]]$comp2_km_min, tte_tbl_R_data[[8]]$comp2_km_max), format = "xx.x to xx.x"),
     rrow(),
     rrow("Unstratified Analysis"),
     rrow("p-value (log-rank)", indent=2,
-         NULL, c(tte_tbl_R_data[[7]]$pdiff1), c(tte_tbl_R_data[[7]]$pdiff2), format = "xx.xxxx"),
+         NULL, c(tte_tbl_R_data[[9]]$pdiff1), c(tte_tbl_R_data[[9]]$pdiff2), format = "xx.xxxx"),
     rrow(),
     rrow("Hazard Ratio", indent=2,
-         NULL, c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr), c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr), format = "xx.xx"),
+         NULL, c(tte_tbl_R_data[[9]]$comp1_cox_ph_hr), c(tte_tbl_R_data[[9]]$comp2_cox_ph_hr), format = "xx.xx"),
     rrow("95% CI", indent=4,
-         NULL, c(tte_tbl_R_data[[7]]$comp1_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp1_cox_ph_hr_ucl),
-         c(tte_tbl_R_data[[7]]$comp2_cox_ph_hr_lcl, tte_tbl_R_data[[7]]$comp2_cox_ph_hr_ucl),
+         NULL, c(tte_tbl_R_data[[9]]$comp1_cox_ph_hr_lcl, tte_tbl_R_data[[9]]$comp1_cox_ph_hr_ucl),
+         c(tte_tbl_R_data[[9]]$comp2_cox_ph_hr_lcl, tte_tbl_R_data[[9]]$comp2_cox_ph_hr_ucl),
          format = "(xx.xx, xx.xx)"),
     rrow("Stratified Analysis"),
     rrow("p-value (log-rank)", indent=2,
-         NULL, c(tte_tbl_R_data[[8]]$p_strat_diff1), c(tte_tbl_R_data[[8]]$p_strat_diff2), format = "xx.xxxx"),
+         NULL, c(tte_tbl_R_data[[10]]$p_strat_diff1), c(tte_tbl_R_data[[10]]$p_strat_diff2), format = "xx.xxxx"),
     rrow(),
     rrow("Hazard Ratio", indent=2,
-         NULL, c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr), c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr), format = "xx.xx"),
+         NULL, c(tte_tbl_R_data[[10]]$comp1_strat_cox_ph_hr), c(tte_tbl_R_data[[10]]$comp2_strat_cox_ph_hr), format = "xx.xx"),
     rrow("95% CI", indent=4,
-         NULL, c(tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_lcl, tte_tbl_R_data[[8]]$comp1_strat_cox_ph_hr_ucl),
-         c(tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr_lcl, tte_tbl_R_data[[8]]$comp2_strat_cox_ph_hr_ucl),
+         NULL, c(tte_tbl_R_data[[10]]$comp1_strat_cox_ph_hr_lcl, tte_tbl_R_data[[10]]$comp1_strat_cox_ph_hr_ucl),
+         c(tte_tbl_R_data[[10]]$comp2_strat_cox_ph_hr_lcl, tte_tbl_R_data[[10]]$comp2_strat_cox_ph_hr_ucl),
          format = "(xx.xx, xx.xx)"),
     rrow(),
     rrow("Time Point Analysis"),
     rrow("6-Months <-- Need to make dynamic & indent!!!"),
     rrow("Patients remaining at risk", indent=4,
-         c(tte_tbl_R_data[[9]]$ref_patients_remaining_at_risk), c(tte_tbl_R_data[[9]]$comp1_patients_remaining_at_risk),
-         c(tte_tbl_R_data[[9]]$comp2_patients_remaining_at_risk), format = "xx"),
+         c(tte_tbl_R_data[[11]]$ref_patients_remaining_at_risk), c(tte_tbl_R_data[[11]]$comp1_patients_remaining_at_risk),
+         c(tte_tbl_R_data[[11]]$comp2_patients_remaining_at_risk), format = "xx"),
     rrow("Event Free Rate (%)", indent=4,
-         c(tte_tbl_R_data[[9]]$ref_patients_event_free_rate),
-         c(tte_tbl_R_data[[9]]$comp1_patients_event_free_rate),
-         c(tte_tbl_R_data[[9]]$comp2_patients_event_free_rate), format = "xx.xx"),
+         c(tte_tbl_R_data[[11]]$ref_patients_event_free_rate),
+         c(tte_tbl_R_data[[11]]$comp1_patients_event_free_rate),
+         c(tte_tbl_R_data[[11]]$comp2_patients_event_free_rate), format = "xx.xx"),
     rrow("95% CI", indent=6,
-         c(tte_tbl_R_data[[9]]$ref_patients_event_free_rate_lcl,tte_tbl_R_data[[9]]$ref_patients_event_free_rate_ucl),
-         c(tte_tbl_R_data[[9]]$comp1_patients_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp1_patients_event_free_rate_ucl),
-         c(tte_tbl_R_data[[9]]$comp2_patients_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp2_patients_event_free_rate_ucl),
+         c(tte_tbl_R_data[[11]]$ref_patients_event_free_rate_lcl,tte_tbl_R_data[[11]]$ref_patients_event_free_rate_ucl),
+         c(tte_tbl_R_data[[11]]$comp1_patients_event_free_rate_lcl,tte_tbl_R_data[[11]]$comp1_patients_event_free_rate_ucl),
+         c(tte_tbl_R_data[[11]]$comp2_patients_event_free_rate_lcl,tte_tbl_R_data[[11]]$comp2_patients_event_free_rate_ucl),
          format = "(xx.xx, xx.xx)"),
     rrow("Difference in Event Free Rate", indent=4,
-         NULL, c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate), 
-         c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate), format = "xx.xx"),
+         NULL, c(tte_tbl_R_data[[11]]$comp1_ref_diff_event_free_rate), 
+         c(tte_tbl_R_data[[11]]$comp2_ref_diff_event_free_rate), format = "xx.xx"),
     rrow("95% CI", indent=6,
-         NULL, c(tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp1_ref_diff_event_free_rate_ucl),
-         c(tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[9]]$comp2_ref_diff_event_free_rate_ucl), format = "(xx.xx, xx.xx)"),
+         NULL, c(tte_tbl_R_data[[11]]$comp1_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[11]]$comp1_ref_diff_event_free_rate_ucl),
+         c(tte_tbl_R_data[[11]]$comp2_ref_diff_event_free_rate_lcl,tte_tbl_R_data[[11]]$comp2_ref_diff_event_free_rate_ucl), format = "(xx.xx, xx.xx)"),
     rrow("p-value (Z-test)", indent=4,
-         NULL, c(tte_tbl_R_data[[9]]$p_comp1_ref_diff_event_free_rate), c(tte_tbl_R_data[[9]]$p_comp2_ref_diff_event_free_rate), format = "xx.xxxx")
+         NULL, c(tte_tbl_R_data[[11]]$p_comp1_ref_diff_event_free_rate), c(tte_tbl_R_data[[11]]$p_comp2_ref_diff_event_free_rate), format = "xx.xxxx")
   )
   
   return(tte_tbl_R)
