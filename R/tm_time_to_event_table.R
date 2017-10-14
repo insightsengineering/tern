@@ -53,15 +53,11 @@
 #' 
 #' teal.oncology::Viewer(tte_tbl_stream)
 #' 
-#' teal.oncology::compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
+#' teal.oncology::compare_rtables(tbl, tte_tbl_stream)
 #' 
 #' }
 #' 
 #' To do ... 
-#' - Add "Earliest contributing event" columns. 
-#' - atezo.data 
-#'   - update the table
-#'   - make it match if possible
 #' - create the teal module ... e.g. ...
 #'   https://github.roche.com/Rpackages/teal.oncology/blob/songy24-forestpl/R/tm_forestplot_tte.R#L314
 #'
