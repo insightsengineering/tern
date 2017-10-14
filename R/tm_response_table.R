@@ -9,8 +9,6 @@
 #' @param arm.comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
 #' @param arm.comp.combine Boolean value, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
 #'                       \code{FALSE} if want each of the non-ref arms to be a separate comparison group
-#' @param incl_missing Boolean value, \code{TRUE} if missing values should be considered non-responders, 
-#'                     \code{FALSE} if missing response should be removed from analysis
 #'                     
 #' @export
 #' 
@@ -27,59 +25,78 @@
 #' library(PropCIs)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
+#' source("R/combine_arm.R")
+#' source("R/rtable.R")
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re) %>% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) %>% 
 #'        filter(PARAMCD == "BESRSPI")
 #' 
-#' #Test params
-#' value.resp   = c("CR","PR")
-#' value.nresp  = c("SD", "NON CR/PD", "PD", "NE")
-#' arm.ref      = "DUMMY B"
-#' arm.comp     = c("DUMMY A", "DUMMY C")
-#' arm.comp.combine = F
-#' incl_missing = T
+#' #If want to include missing as non-responders
+#' ARS$AVALC[ARS$AVALC==""] <- "NE"
 #' 
-#' if (incl_missing) {
-#'   ARS$AVALC[ARS$AVALC==""] <- "NE"
-#' }
-#' 
-#' ARS_f <- ARS %>% filter(ARM %in% c(arm.ref, arm.comp) & AVALC %in% c(value.resp, value.nresp))
-#' 
-#' response = ARS_f$AVALC
-#' arm      = ARS_f$ARM
-#' 
-#' response_table(response, arm, arm.ref, arm.comp, arm.comp.combine=F, value.resp, value.nresp)
+#' response_table(response = ARS$AVALC, 
+#'                arm      = ARS$ARM, 
+#'                arm.ref  = "DUMMY B", 
+#'                arm.comp.combine=F)
 #' 
 #'  
 #' }
 #' 
-#' 
 response_table <- function(response, 
+                           value.resp       = c("CR","PR"),
+                           value.nresp      = c("SD", "NON CR/PD", "PD", "NE"),
                            arm, 
                            arm.ref, 
                            arm.comp         = setdiff(arm, arm.ref),
                            arm.comp.combine = T,
-                           value.resp,
-                           value.nresp,
                            style = 1
                            ) {
   
-  #Full list of response values to test for
-  value_test <- c(value.resp, value.nresp)
+  #####################
+  # Argument checking #
+  #####################
   
-  #Recode arm variable to reference and comparison group(s)
-  ARM <- combine_arm(arm, arm.ref, arm.comp, arm.comp.combine)
+  #Check length of input variables matches #
+  if (length(arm) != length(response) ) stop("Length for arm and response variables does not match, please check data")
+  
+  
+  # Check there are 2+ unique levels in arm variable for comparison ---#
+  if (length(levels(factor(arm))) < 2){
+    stop("Invalid arm variable selected. Minimum 2 unique levels required for arm variable.")
+  }
+  
+  
+  ############################
+  # Format data for analysis #
+  ############################
+  value_for_test <- c(value.resp, value.nresp)
+  arm_for_test   <- combine_arm(arm, arm.ref, arm.comp, arm.comp.combine)
+  rsp_for_test   <- response %in% value_for_test
+  
+  data_for_test <- subset(
+    data.frame(arm=arm_for_test, response),
+    (!is.na(arm_for_test) & rsp_for_test == TRUE)
+  )
+  
+  #Final arm and response data vectors for analysis
+  ARM <- data_for_test$arm
+  RESP <- data_for_test$resp
+  
+  
+  #####################
+  # Math calculation  #
+  #####################
   
   # Split response data into tree by ARM
   # Rate calculation for Responder/Non-responders
-  rate_result <- Map(calc_rate, split(response, ARM), list(c(value.resp)))
+  rate_result <- Map(calc_rate, split(RESP, ARM), list(c(value.resp)))
   
   #Rate calculation by each response value
-  data_byvalue <- data.frame(rep(list(response),6))
-  names(data_byvalue) <- value_test
+  data_byvalue <- data.frame(rep(list(RESP),6))
+  names(data_byvalue) <- value_for_test
   
   rate_result_byvalue <- lapply(split(data_byvalue, ARM), function(x){
-    Map(calc_rate, x, value_test)
+    Map(calc_rate, x, value_for_test)
   })
 
 
@@ -146,7 +163,7 @@ response_table <- function(response,
                          )
   
   out_byvalue_rate <- unlist(
-    lapply(as.list(1:length(value_test)), function(i) {
+    lapply(as.list(1:length(value_for_test)), function(i) {
       
       #Extract response value short name
       label <- sapply(rate_result_byvalue, names)[i]
@@ -174,9 +191,7 @@ response_table <- function(response,
     
   )
   
-  return(tbl)
-  Viewer(tbl)
-  
+  tbl
 }
 
 #########################################################################
@@ -284,6 +299,7 @@ print_diffor <- function(x,y) rcell(x[[y]], format = "xx.xx")
 #'                     \code{FALSE} if missing response should be removed from analysis
 #' @param style Table display style, \code{1} , \code{2}
 #' 
+#' @example 
 #' \dontrun{
 #' library(dplyr)
 #' library(shiny)
@@ -292,28 +308,23 @@ print_diffor <- function(x,y) rcell(x[[y]], format = "xx.xx")
 #' library(PropCIs)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
+#' source("R/rtable.R")
+#' source("R/combine_arm.R")
 #' 
-#' ARS <- ars(com.roche.cdt30019.go29436.re) %>% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) %>% 
-#'        filter(PARAMCD == "BESRSPI")
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' 
-#' ARS$AVALC[ARS$AVALC==""] <- "NE"
-#' 
-#' #Test params
-#' value.resp   = c("CR","PR")
-#' value.nresp  = c("SD", "NON CR/PD", "PD", "NE")
-#' arm.ref      = "DUMMY A"
-#' arm.comp     = c("DUMMY B", "DUMMY C")
-#' arm.comp.combine = T
-#' 
-#' ARS_f <- ARS %>% filter(ARM %in% c(arm.ref, arm.comp) & AVALC %in% c(value.resp, value.nresp))
-#' 
-#' #Test params
-#' response = ARS_f$AVALC
-#' arm      = ARS_f$ARM
-#'  
+#' response_table_ADAM(ASL, ARS,
+#'                     paramcd = "BESRSPI",
+#'                     arm.ref = "DUMMY C",
+#'                     arm.comp = c("DUMMY A", "DUMMY B"),
+#'                     arm.comp.combine = T,
+#'                     value.resp = c("CR", "PR"),
+#'                     value.nresp = c("SD", "NON CR/PD", "PD", "NE"),
+#'                     incl.missing = TRUE
+#'                     )
 #' }
-
-
+#' 
 response_table_ADAM <- function(ASL, ARS,
                                 paramcd          = "BESRSPI",
                                 arm.var          = "ARM",
@@ -330,9 +341,9 @@ response_table_ADAM <- function(ASL, ARS,
   ASL %needs% c("USUBJID", "STUDYID", arm.var)
   ARS %needs% c("USUBJID", "STUDYID", "PARAMCD", "AVALC")
   
-  #Select obs needed to analysis, merge ASL/ARS to create analysis dataset
+  #--- Select obs needed to analysis, merge ASL/ARS to create analysis dataset ---#
   #Filter on selected PARAMCD, and ARM in arm.ref/comp
-  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm.var))            %>% filter(get(arm_var) %in% c(arm.ref,arm.comp))
+  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm.var))            %>% filter(get(arm.var) %in% c(arm.ref,arm.comp))
   ARS_f <- ARS %>% select(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == paramcd)
   ANL <- merge(ASL_f, ARS_f, by=c("USUBJID", "STUDYID"))
   
@@ -345,10 +356,25 @@ response_table_ADAM <- function(ASL, ARS,
     }
   }
 
-  #Filter on AVALC in value.rsp/nrsp
+  #Check responder/non-responder values are in controlled terminology #
+  # Controlled codelist, check responder/non-responder values and response data only contain controlled codelist
+  value.all = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
+  if (any(!c(value.resp, value.nresp) %in% value.all)) {
+    stop("Invalid response or non-response values selected, they should only contain controlled terms such as: ", toString(val_all))
+  }
+  if (any(!ANL$AVALC %in% value.all)) {
+    stop("Incorrect PARAMCD selected or data contain invalid response values. Check that input data only contain controlled terms such as: ", toString(value.all))
+  }
+  
+  # Check values selected for responder/non-responder exist in input data
+  if (!all(value.resp %in% ANL$AVALC)) stop("Invalid responder value selected. Not all responder values are present in input data")
+  if (!all(value.nresp %in% ANL$AVALC)) stop("Invalid non-responder values selected. Not all non-responder values are present in input data")
+  
+  
+  #--- Filter on AVALC in value.rsp/nrsp ---#
   ANL_f <- ANL %>% filter(AVALC %in% c(value.resp, value.nresp))
   
-  #Check dataset is valid
+  #Check input dataset is valid
   if (nrow(ANL_f) <= 0) {
     stop("No data left after filtering. Please check ARM or PARAMCD is selected correctly.")
   }
@@ -365,7 +391,7 @@ response_table_ADAM <- function(ASL, ARS,
     arm              = ANL_f[[arm.var]],
     arm.ref          = arm.ref,
     arm.comp         = arm.comp,
-    arm.comp.combine = arm.com.combine,
+    arm.comp.combine = arm.comp.combine,
     style            = style
   )
   
