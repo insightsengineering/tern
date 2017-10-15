@@ -7,8 +7,10 @@
 #' @param arm Arm information data
 #' @param arm.ref Character vector, defining which arm(s) from the list of arms should be used as reference group
 #' @param arm.comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
-#' @param arm.comp.combine Boolean value, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
-#'                       \code{FALSE} if want each of the non-ref arms to be a separate comparison group
+#' @param arm.comp.combine Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
+#'                                  \code{FALSE} if want each of the non-ref arms to be a separate comparison group
+#' @param style Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
+#'                              \code{2} if want to display rates, difference in rate and odds ratio for each response value category.
 #'                     
 #' @export
 #' 
@@ -34,12 +36,10 @@
 #' #If want to include missing as non-responders
 #' ARS$AVALC[ARS$AVALC==""] <- "NE"
 #' 
-#' response_table(response = ARS$AVALC, 
-#'                arm      = ARS$ARM, 
-#'                arm.ref  = "DUMMY B", 
-#'                arm.comp.combine=F)
-#' 
-#'  
+#' response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F)
+#' response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T)
+#' response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F, style = 2)
+#' response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T, style = 2)
 #' }
 #' 
 response_table <- function(response, 
@@ -59,12 +59,16 @@ response_table <- function(response,
   #Check length of input variables matches #
   if (length(arm) != length(response) ) stop("Length for arm and response variables does not match, please check data")
   
-  
   # Check there are 2+ unique levels in arm variable for comparison ---#
   if (length(levels(factor(arm))) < 2){
     stop("Invalid arm variable selected. Minimum 2 unique levels required for arm variable.")
   }
-  
+  if (!is.logical(arm.comp.combine)) {
+    stop("arm.comp.combine parameter must be logical value T or F")
+  }
+  if (!style %in% c(1,2)) {
+    stop("Style must equal to 1 or 2")
+  }
   
   ############################
   # Format data for analysis #
@@ -94,18 +98,41 @@ response_table <- function(response,
   #Rate calculation by each response value
   data_byvalue <- data.frame(rep(list(RESP),6))
   names(data_byvalue) <- value_for_test
-  
   rate_result_byvalue <- lapply(split(data_byvalue, ARM), function(x){
     Map(calc_rate, x, value_for_test)
   })
 
 
-  #Diff in rate and OR calculation for Responder/Non-responders
-  diffor_result <- lapply(rate_result, function(x) {
-    calc_diffor(x, rate_result[[1]])
+  #Depending on number of comparison arms, parameters for output display settings
+  #centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
+  coltotal = length(rate_result)
+  if (arm.comp.combine || length(arm.comp) < 2) {
+    colstart = 2; colsize = 2
+  } else {
+    colstart = 1; colsize = 1
+  }
+  
+  #Calculation for diff in rate and OR for Responder/Non-responders
+  diffor_result <- lapply(as.list(colstart:coltotal), function(i) {
+    calc_diffor(rate_result[[i]], rate_result[[1]])
   })
-
-
+  names(diffor_result) <- names(rate_result)[c(colstart:coltotal)]
+  #If more than one comparison arm (display aligned by column), remove numbers from first(reference) column
+  if (arm.comp.combine==FALSE & length(arm.comp) >= 2) {
+    diffor_result[[1]] <- rapply(diffor_result[[1]],function(x) NULL, how = "list")
+  }
+  
+  #If style 2 selected, calculate diff in rate and OR calculation by each response value
+  if (style == 2) {
+    diffor_result_byvalue <- lapply(as.list(colstart:coltotal), function(i) {
+      Map(calc_diffor, rate_result_byvalue[[i]], rate_result_byvalue[[1]])
+    })
+    names(diffor_result_byvalue) <- names(rate_result_byvalue)[c(colstart:coltotal)]
+    if (arm.comp.combine == FALSE & length(arm.comp) >= 2) {
+      diffor_result_byvalue[[1]] <- rapply(diffor_result_byvalue[[1]], function(x) NULL, how = "list")
+    }
+  }
+  
   ##########################################
   # Build output data structure with rtable#
   ##########################################
@@ -123,36 +150,22 @@ response_table <- function(response,
     do.call(rrow, c("Responders",     lapply(rate_result, print_np))),
     do.call(rrow, c("Non-Responders", lapply(rate_result, function(x) rcell(c(x$n_nresp, x$p_nresp))))),
     rrow(),
-    do.call(rrow, c("95% CI for Response Rates (Clopper-Pearson)", lapply(rate_result, print_ci, "ci"))),
+    do.call(rrow, c("95% CI for Response Rates (Clopper-Pearson)", lapply(rate_result, print_ci, "ci", 1))),
     rrow()
   )
   
   #--- Responder/Non-responder section - diff in rates and OR ---#
   #Depending on number of comparison arms, display centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
-  if (arm.comp.combine || length(arm.comp) < 2) {
-    out_resp_diffor <- list(
-      rrow("Difference in Response Rates", rcell(diffor_result[[2]]$diff,   format = "xx.xx", colspan = 2)),
-      rrow("95% CI (Wald)", indent = 1, rcell(diffor_result[[2]]$diffci, format = "(xx.xx, xx.xx)", colspan = 2)),
-      rrow("p-value (Cochran-Mantel-Haenszel)", rcell(diffor_result[[2]]$diffp, format = "xx.xxx", colspan = 2)),
-      rrow(),
-      rrow("Odds Ratio", rcell(diffor_result[[2]]$or, format = "xx.xx", colspan = 2)),
-      rrow("95% CI", indent = 1, rcell(diffor_result[[2]]$orci, format = "(xx.xx, xx.xx)", colspan = 2)),
-      rrow()
-    )
-  } else {
-    diffor_result[[1]] <- rapply(diffor_result[[1]],function(x) if (length(x) > 1) {rep(NULL,2)} else {NULL}, how = "list")
-    out_resp_diffor <- list(
-      do.call(rrow, c("Difference in Response Rates", lapply(diffor_result, print_diffor, "diff"))),
-      do.call(rrow, c("95% CI (Wald)", indent = 1,    lapply(diffor_result, print_ci, "diffci"))),
-      do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxx")))),
-      rrow(),
-      do.call(rrow, c("Odds Ratio",                   lapply(diffor_result, print_diffor, "or"))),
-      do.call(rrow, c("95% CI", indent = 1,           lapply(diffor_result, print_ci, "orci"))),
-      rrow()
-    )
-  }
+  out_resp_diffor <- list(
+    do.call(rrow, c("Difference in Response Rates", lapply(diffor_result, print_diffor, "diff", colsize))),
+    do.call(rrow, c("95% CI (Wald)", indent = 1,    lapply(diffor_result, print_ci, "diffci", colsize))),
+    do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxx", colspan = colsize)))),
+    rrow(),
+    do.call(rrow, c("Odds Ratio",                   lapply(diffor_result, print_diffor, "or", colsize))),
+    do.call(rrow, c("95% CI", indent = 1,           lapply(diffor_result, print_ci, "orci", colsize))),
+    rrow()
+  )
   
-
   #--- Section for each response value - counts and 95% CI ---#
   rsp_full_label <- list(CR          = "Complete Response (CR)",
                          PR          = "Partial Response (PR)",
@@ -162,25 +175,47 @@ response_table <- function(response,
                          NE          = "Missing or unevaluable"
                          )
   
+  
   out_byvalue_rate <- unlist(
     lapply(as.list(1:length(value_for_test)), function(i) {
-      
       #Extract response value short name
       label <- sapply(rate_result_byvalue, names)[i]
       
-      list(
-        do.call(rrow, c(unname(rsp_full_label[label]),
-                        lapply(sapply(rate_result_byvalue, function(x) x[i]), print_np))),
-        #If response value is NE, do not display 95% CI
-        if (label != "NE") {
-          do.call(rrow, c("95% CI",
-                          indent = 1,
-                          lapply(sapply(rate_result_byvalue, function(x) x[i]), print_ci, "ci")))
-        } else {rrow()} ,
-        rrow()
-      )
-    }), recursive = F)
-  
+      #Display counts and percentage row
+      part1 <-list(do.call(rrow, c(unname(rsp_full_label[label]),
+                                   lapply(sapply(rate_result_byvalue, function(x) x[i]), print_np))))
+      
+      #If response value is NE, do not display 95% CI and difference in rate rows
+      if (label != "NE") {
+        if (style == 2) {
+          part2 <- list(
+            do.call(rrow, c("95% CI", indent = 1,
+                            lapply(sapply(rate_result_byvalue, function(x) x[i]), print_ci, "ci", 1))),
+            rrow(),
+            do.call(rrow, c(paste("Difference in",label, "rate"), indent = 1,
+                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), print_diffor, "diff", colsize))),
+            do.call(rrow, c(paste("95% CI for difference in", label, "rate"), indent = 1,
+                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), print_ci, "diffci", colsize))),
+            do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", indent = 1,
+                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), function (x) rcell(x$diffp, format = "xx.xxx", colspan=colsize))))
+          )
+        } else {
+          part2 <- list(do.call(rrow, c("95% CI", indent = 1,
+                                        lapply(sapply(rate_result_byvalue, function(x) x[i]), print_ci, "ci", 1))))
+        }
+      } else {
+        part2 <- NULL
+      }
+      
+      #Last empty row
+      part3 <- list(rrow())
+      
+      #Combine all rows to be parsed by unlist function
+      c(part1, part2, part3)
+      
+    }), recursive = F
+  )
+
   
   #Put all sections together to display table
   tbl <- do.call(rtable,c(out_header,
@@ -188,8 +223,7 @@ response_table <- function(response,
                           out_resp_diffor,
                           out_byvalue_rate
                          )
-    
-  )
+                 )
   
   tbl
 }
@@ -257,7 +291,8 @@ calc_diffor <- function(comp,ref) {
 #' Helper functions to format rcells for various display
 #' 
 #' @param x list produced by calc_rate/calc_diffor function
-#' @param y name of element to display 
+#' @param y name of element to display
+#' @param z colspan for the cell
 #' 
 #' @export
 #' 
@@ -270,14 +305,14 @@ calc_diffor <- function(comp,ref) {
 #' diffor <- calc_diffor(b_rate, a_rate)
 #' 
 #' print_np(a_rate)
-#' print_ci(a_rate, "ci")
-#' print_ci(diffor, "diffci")
-#' print_diffor(diffor, "diff")
-#' print_diffor(diffor, "or")
+#' print_ci(a_rate, "ci", 2)
+#' print_ci(diffor, "diffci", 2)
+#' print_diffor(diffor, "diff", 1)
+#' print_diffor(diffor, "or", 1)
 #' 
 print_np <- function(x) rcell(c(x$n_resp, x$p_resp))
-print_ci <- function(x,y) rcell(x[[y]], format = "(xx.xx, xx.xx)")
-print_diffor <- function(x,y) rcell(x[[y]], format = "xx.xx")
+print_ci <- function(x,y,z) rcell(x[[y]], format = "(xx.xx, xx.xx)", colspan = z)
+print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
 
 
 ##################################################################################
@@ -291,13 +326,14 @@ print_diffor <- function(x,y) rcell(x[[y]], format = "xx.xx")
 #' @param arm.var Name of variable with arm information
 #' @param arm.ref Character vector, defining which arm(s) from the list of arms should be used as reference group
 #' @param arm.comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
-#' @param arm.comp.combine Boolean value, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
-#'                       \code{FALSE} if want each of the non-ref arms to be a separate comparison group
+#' @param arm.comp.combine Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
+#'                                  \code{FALSE} if want each of the non-ref arms to be a separate comparison group
 #' @param value.rsp Character vector, defining list of response values to be used as responders
 #' @param value.nrsp Character vector, defining list of response values to be used as non-responders
-#' @param incl_missing Boolean value, \code{TRUE} if missing values should be considered non-responders, 
-#'                     \code{FALSE} if missing response should be removed from analysis
-#' @param style Table display style, \code{1} , \code{2}
+#' @param incl_missing Logical, \code{TRUE} if missing values should be considered non-responders, 
+#'                              \code{FALSE} if missing response should be removed from analysis
+#' @param style Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
+#'                              \code{2} if want to display rates, difference in rate and odds ratio for each response value category.
 #' 
 #' @example 
 #' \dontrun{
@@ -321,7 +357,8 @@ print_diffor <- function(x,y) rcell(x[[y]], format = "xx.xx")
 #'                     arm.comp.combine = T,
 #'                     value.resp = c("CR", "PR"),
 #'                     value.nresp = c("SD", "NON CR/PD", "PD", "NE"),
-#'                     incl.missing = TRUE
+#'                     incl.missing = TRUE,
+#'                     style = 2
 #'                     )
 #' }
 #' 
@@ -341,6 +378,17 @@ response_table_ADAM <- function(ASL, ARS,
   ASL %needs% c("USUBJID", "STUDYID", arm.var)
   ARS %needs% c("USUBJID", "STUDYID", "PARAMCD", "AVALC")
   
+  if (!is.logical(arm.comp.combine)) {
+    stop("arm.comp.combine parameter must be logical value T or F")
+  }
+  if (!is.logical(incl.missing)) {
+    stop("incl.missing parameter must be logical value T or F")
+  }
+  if (!style %in% c(1,2)) {
+    stop("Style must equal to 1 or 2")
+  }
+  
+  
   #--- Select obs needed to analysis, merge ASL/ARS to create analysis dataset ---#
   #Filter on selected PARAMCD, and ARM in arm.ref/comp
   ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm.var))            %>% filter(get(arm.var) %in% c(arm.ref,arm.comp))
@@ -348,7 +396,7 @@ response_table_ADAM <- function(ASL, ARS,
   ANL <- merge(ASL_f, ARS_f, by=c("USUBJID", "STUDYID"))
   
   #If want to include missing as non-responders, check NE is in value.nrsp and recode data
-  if (isTRUE(incl.missing)) {
+  if (incl.missing == TRUE) {
     if (!"NE" %in% value.nresp) {
       stop("In order to include missing as non-responder, value.nrsp must contain NE")
     } else {
