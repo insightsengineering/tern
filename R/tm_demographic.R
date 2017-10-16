@@ -34,18 +34,38 @@
 #' tbl_expected <- get_demographic_table(com.roche.cdt30019.go29436.re)
 #' Viewer(tbl_expected)
 #' 
+#' # order factor levels if they exist
+#' of <- function(x, ...) {
+#'   lvls <- if (is.factor(x)) levels(x) else unique(x)
+#'   olvls <- intersect(unlist(list(...)), lvls)
+#'   factor(as.character(x), levels = c(olvls, setdiff(lvls, olvls)))
+#' }
+#' add_lbl <- function(lbl, x) {
+#'   structure(x, label = lbl)
+#' }
+#' lbl <- function(x) {
+#'   attr(x, "label")
+#' }
 #' 
-#' ADSL <- ASL %>% filter(ITTFL == 'Y') 
+#' ADSL <- ASL %>%
+#'  filter(ITTWTFL == 'Y') %>%
+#'  mutate(ARM = of(ARM, "DUMMY C", "DUMMY B", "DUMMY A")) %>%
+#'  mutate(SEX = add_lbl(lbl(SEX), recode_factor(SEX, M = "MALE", F = "FEMALE")))
+#'
+#' 
 #' 
 #' tbl <- demographic_table(
 #'    data = ADSL,
 #'    arm_var = "ARM",
-#'    all.patients = TRUE
+#'    all.patients = TRUE,
+#'    group_by = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
+#'      "ethnic", "race", "bwt", "tobhx", "hist", "EGFRMUT",
+#'      "alkmut", "krasmut", "becog"))
 #' )
 #' Viewer(tbl)
 #' 
 #' compare_rtables(tbl, tbl_expected)
-#'
+#' 
 #' # if all is good then
 #' tbl <- tbl_expected
 #' compare_rtables(tbl, tbl_expected)
@@ -77,6 +97,12 @@ demographic_table <- function(data,
   
   var_collection <- data[group_by_vars]
   type <- lapply(var_collection, function(var) if(is.numeric(var)) "numeric" else "categorical")
+  
+  var_lables <- unlist(Map(function(var, varname) {
+    label <- attr(var, "label")
+    if (is.null(label)) varname else label
+  }, var_collection, names(var_collection)))
+    
   
   ## x <- var_collection[[1]]
   var_col_info <- Map(function(x, xtype) {
@@ -129,16 +155,16 @@ demographic_table <- function(data,
       col.names = paste0(levels(arm), "\n", paste0("(N=",n, ")")),
       format = "xx"
     ),
-    Filter(function(x)!is.null(x), unlist(Map(function(rows_for_var, var) {
+    Filter(function(x)!is.null(x), unlist(Map(function(rows_for_var, var, label) {
       c(
         list(
           if (first.row) {first.row <<- FALSE; NULL} else  rrow(),
-          rrow(var)
+          rrow(label)
         ),
         Map(function(ri, category) {
           do.call(rrow, c(list(row.name = category, indent = 1), ri))
         }, rows_for_var, names(rows_for_var))
       )
-    }, var_row_info, names(var_row_info)), recursive = FALSE))
+    }, var_row_info, names(var_row_info), var_lables), recursive = FALSE))
   ))
 }
