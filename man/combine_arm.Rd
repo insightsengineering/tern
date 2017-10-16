@@ -4,14 +4,18 @@
 \alias{combine_arm}
 \title{Combine Arms to Baseline and Comparison Arms}
 \usage{
-combine_arm(arm, arm.ref, arm.comp = setdiff(arm, arm.ref))
+combine_arm(arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
+  arm.comp.combine = T)
 }
 \arguments{
 \item{arm}{vector with arm information}
 
 \item{arm.ref}{values in arm that are combined to the reference group}
 
-\item{arm.comp}{values in arm that are combined to the comparison group}
+\item{arm.comp}{values in arm to be used as the comparison group(s)}
+
+\item{arm.comp.combine}{Boolean value, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
+\code{FALSE} if want each of the non-ref arms to be a separate comparison group}
 }
 \description{
 Combine groups in arms to reference and comparison groups in order to use it
@@ -19,14 +23,15 @@ in \code{\link[survival]{survfit}} and \code{\link{glm}}.
 }
 \examples{
 
-combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"))
+combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp.combine = T)
+combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp.combine = F)
 
-combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp = "C")
-
+combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp = "C", arm.comp.combine = T)
+combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B"), arm.comp = "C", arm.comp.combine = F)
 
 combine_arm(arm = LETTERS[1:4], arm.ref = c("A", "B", "R"), arm.comp = "C")
 
 }
 \author{
-songy24
+songy24 liaoc10
 }
