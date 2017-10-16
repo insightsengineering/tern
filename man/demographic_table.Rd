@@ -61,7 +61,7 @@ tbl <- demographic_table(
    data = ADSL,
    arm_var = "ARM",
    all.patients = TRUE,
-   group_by = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
+   group_by_vars = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
      "ethnic", "race", "bwt", "tobhx", "hist", "EGFRMUT",
      "alkmut", "krasmut", "becog"))
 )
