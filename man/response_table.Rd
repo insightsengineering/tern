@@ -4,8 +4,9 @@
 \alias{response_table}
 \title{Create the Response Table}
 \usage{
-response_table(response, arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
-  incl_missing)
+response_table(response, value.resp = c("CR", "PR"), value.nresp = c("SD",
+  "NON CR/PD", "PD", "NE"), arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
+  arm.comp.combine = T, style = 1)
 }
 \arguments{
 \item{response}{Tumor response data}
@@ -16,62 +17,48 @@ response_table(response, arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
 
 \item{arm.comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
 
-\item{incl_missing}{Boolean value, \code{TRUE} if missing values should be considered non-responders, 
-\code{FALSE} if missing response should be removed from analysis}
+\item{arm.comp.combine}{Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
+\code{FALSE} if want each of the non-ref arms to be a separate comparison group}
 
-\item{val_rsp}{Character vector, defining list of response values to be used as responders}
+\item{style}{Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
+\code{2} if want to display rates, difference in rate and odds ratio for each response value category.}
 
-\item{val_nrsp}{Character vector, defining list of response values to be used as non-responders}
+\item{value.rsp}{Character vector, defining list of response values to be used as responders}
+
+\item{value.nrsp}{Character vector, defining list of response values to be used as non-responders}
 }
 \description{
 Create the Response Table
+}
+\details{
+We use the \code{PropCIs} to calculate the CIs because...
 }
 \examples{
 
 
 \dontrun{
-library(atezo.data)
 library(dplyr)
-'\%needs\%' <- teal.oncology:::'\%needs\%'
-
-ASL <- asl(com.roche.cdt30019.go29436.re)
-ARS <- ars(com.roche.cdt30019.go29436.re)
-
-ARS_f <- ARS \%>\%
- filter(PARAMCD == "BESRSPI") \%>\%
- mutate(is_response = vapply(AVALC, function(xi) {
-   if (is.na(xi) || xi == "") {
-     FALSE
-   } else if (xi \%in\% c("CR","PR")) {
-     TRUE
-   } else if (xi \%in\%  c("SD", "NON CR/PD", "PD", "NE")) {
-     FALSE
-   } else {
-     NA
-   }
- }, logical(1))) 
- 
- ARS_f$is_response[is.na(ARS_f$is_response)] <- FALSE
- 
-
-ARS_f$is_response
-
-val_rsp      = c("CR","PR"),
-val_nrsp     = c("SD", "NON CR/PD", "PD", "NE"),
+library(shiny)
+library(atezo.data)
+library(teal.oncology)
+library(PropCIs)
 
 
-tbl <- response_table(
-   response     = ARS_f$is_response,
-   arm          = ARS_f$ARM,
-   arm.ref      = "DUMMY A",
-   group_by     = ARS_f$AVALC,
-   group_by_incl_missing = TRUE
-)
+ARS <- ars(com.roche.cdt30019.go29436.re) \%>\% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) \%>\% 
+       filter(PARAMCD == "BESRSPI")
 
-tbl
+#If want to include missing as non-responders
+ARS$AVALC[ARS$AVALC==""] <- "NE"
 
-Viewer(tbl)
+response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F)
+response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T)
+response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F, style = 2)
+response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T, style = 2)
+}
 
-} 
 
+'\%needs\%' <- teal.oncology:::'\%needs\%' # for debugging purpuses
+}
+\author{
+Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
 }

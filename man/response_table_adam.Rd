@@ -4,45 +4,37 @@
 \alias{response_table_ADAM}
 \title{Response Table with ADaM data structure}
 \usage{
-response_table_ADAM(ASL, ARS, response_par = "BESRSPI", arm_var = "ARM",
-  arm.ref, arm.comp, val_rsp = c("CR", "PR"), val_nrsp = c("SD",
-  "NON CR/PD", "PD", "NE"), incl_missing = T)
+response_table_ADAM(ASL, ARS, paramcd = "BESRSPI", arm.var = "ARM", arm.ref,
+  arm.comp, arm.comp.combine = TRUE, value.resp = c("CR", "PR"),
+  value.nresp = c("SD", "NON CR/PD", "PD", "NE"), incl.missing = TRUE,
+  style = 1)
 }
 \arguments{
-\item{ASL}{ASL dataset with following variables: USUBJID, STUDYID, the specified grouping variable}
+\item{ASL}{dataset with following variables: USUBJID, STUDYID, the specified grouping variable}
 
 \item{ARS}{ARS dataset containing the following variables: USUBJID, STUDYID, PARAMCD, AVALC}
 
-\item{arm_var}{Name of the variable to use as testing arms}
+\item{paramcd}{Name of overall response parameter}
+
+\item{arm.var}{Name of variable with arm information}
 
 \item{arm.ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
 
 \item{arm.comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
 
-\item{val_rsp}{Character vector, defining list of response values to be used as responders}
+\item{arm.comp.combine}{Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
+\code{FALSE} if want each of the non-ref arms to be a separate comparison group}
 
-\item{val_nrsp}{Character vector, defining list of response values to be used as non-responders}
+\item{style}{Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
+\code{2} if want to display rates, difference in rate and odds ratio for each response value category.}
 
-\item{incl_missing}{Boolean value, \code{TRUE} if missing values should be considered non-responders, 
+\item{value.rsp}{Character vector, defining list of response values to be used as responders}
+
+\item{value.nrsp}{Character vector, defining list of response values to be used as non-responders}
+
+\item{incl_missing}{Logical, \code{TRUE} if missing values should be considered non-responders, 
 \code{FALSE} if missing response should be removed from analysis}
 }
 \description{
 Response Table with ADaM data structure
-}
-\examples{
-
-\dontrun{
-library(atezo.data)
-'\%needs\%' <- teal.oncology:::'\%needs\%'
-source("C:/Users/liaoc10/Desktop/teal.onco_miscfiles/rtable.R")
-
-ASL <- asl(com.roche.cdt30019.go29436.re)
-ARS <- ars(com.roche.cdt30019.go29436.re)
-
-response_table_ADAM(ASL, ARS, 
-                    arm.ref = "DUMMY A", 
-                    arm.comp = "DUMMY B")
-
-}
-
 }
