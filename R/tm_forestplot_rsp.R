@@ -16,19 +16,24 @@
 #' 
 #' \dontrun{
 #' library(atezo.data)
-#' library(dplyr)
+#' library(dplyr) 
+#' library(grid)
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "BESRSPI") %>% filter(ITTWTFL == "Y")
-#' ASL_f <- ASL %>% filter(ITTWTFL == "Y")
+#' surv_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
+#' Viewer(surv_tbl_stream )
 #' 
-#' ASL_f$BAGED <- ifelse(ASL_f$BAGE <= median(ASL_f$BAGE), "<=median", ">median")
-#' 
+#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#'
+#' ARS_f_resp <- ARS_f %>% filter(AVALC %in% c("CR", "PR"))
+#' ARS_f_IC1 <- ARS_f %>% filter(TCLEVEL == "1")
+#'
 #' group_by <- merge(
 #'  ARS_f[c("USUBJID", "STUDYID")],
-#'  ASL_f[c("USUBJID", "STUDYID", "ICLEVEL", "ICLVL1", "TC3IC3")],
+#'  ASL_f[c("USUBJID", "STUDYID", "TCLEVEL", "ICLEVEL", "TC3IC3")],
 #'  all.y = TRUE, all.x = FALSE
 #' )
 #' 
@@ -39,11 +44,14 @@
 #'           event = ARS_f$AVALC %in% c("CR","PR"),
 #'           arm = ARS_f$ARM, 
 #'           group_by = group_by[, -c(1,2), drop=FALSE],
-#'           arm.ref = "DUMMY A",
-#'           arm.comp = "DUMMY C"
+#'           arm.ref = "DUMMY C",
+#'           arm.comp = "DUMMY A"
 #' )
 #' Viewer(tbl)
+#' 
+#' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
 #' }
+#' 
 #' 
 #'   
 glm_subgroup <- function(response, event,
@@ -70,15 +78,17 @@ glm_subgroup <- function(response, event,
   
   #head(glm_data)
   
+  # var = names(group_by)[1]
   # split data into a tree for data
   # where each leaf is a data.frame with 
   # the data to compute the survival analysis with
   data_list <- c(
     list(ALL = list(ALL = glm_data)),
     lapply(group_by, function(var) {
-      lapply(setNames(unique(var[var != ""]), unique(var[var != ""])), function(value) {
-        glm_data[var == value , , drop= FALSE] 
+      sub_data <- lapply(setNames(unique(var[var != ""]), unique(var[var != ""])), function(value) {
+         glm_data[var == value , , drop= FALSE] 
       })
+      sub_data[order(names(sub_data),decreasing = F)]
     })
   )
   
@@ -101,9 +111,9 @@ glm_subgroup <- function(response, event,
   
   additonal_args <- list(
     col.names = c("Total n",
-                  "n", "n Responder", "Responder Rate (%)",
-                  "n", "n Responder", "Responder Rate (%)",
-                  "Odds Ratio", "95% CI", "p value"),
+                  "n", "n\nResponder", "Responder Rate\n(%)",
+                  "n", "n\nResponder", "Responder Rate\n(%)",
+                  "Odds Ratio", "95% CI"),
     format = "xx"
   )
   
@@ -129,13 +139,12 @@ glm_subgroup <- function(response, event,
             x$resp_ref_n + x$resp_comp_n, # total n
             x$resp_ref_n,
             x$resp_ref_event,
-            rcell(x$resp_ref_event / (x$resp_ref_n + x$resp_ref_event), format = "xx.x"),
+            rcell(x$resp_ref_event / x$resp_ref_n * 100, format = "xx.x"),
             x$resp_comp_n,
             x$resp_comp_event,
-            rcell(x$resp_comp_event / (x$resp_comp_n + x$resp_comp_event), format = "xx.x"),
+            rcell(x$resp_comp_event / x$resp_comp_n * 100, format = "xx.x"),
             rcell(x$glm_or, format = "xx.xx"),
             rcell(c(x$glm_lcl, x$glm_ucl), format = "(xx.xx, xx.xx)"),
-            rcell(x$glm_pval, format = "xx.xx"),
             indent = if (header_row_name[1] == "ALL") 0 else 1
           )
         )
@@ -182,10 +191,13 @@ glm_results <- function(data){
   
   #Logistic Model
   if (length(levels(as.factor(as.character(data$arm)))) == 2){
-  glm_sum  <- summary(glm(event ~ arm, family=binomial(link='logit'), data = data))
+  glm_model <- glm(event ~ arm, family=binomial(link='logit'), data = data)
+  glm_sum  <- summary(glm_model )
   glm_or   <- exp(glm_sum$coefficient[2,1])
-  glm_lcl  <- exp(glm_sum$coefficient[2,1]-1.96*sqrt(glm_sum$coefficient[2,2]))
-  glm_ucl  <- exp(glm_sum$coefficient[2,1]+1.96*sqrt(glm_sum$coefficient[2,2]))
+ # glm_lcl  <- exp(glm_sum$coefficient[2,1]-1.96*sqrt(glm_sum$coefficient[2,2]))
+ # glm_ucl  <- exp(glm_sum$coefficient[2,1]+1.96*sqrt(glm_sum$coefficient[2,2]))
+  glm_lcl  <- exp(confint(glm_model)[2,1])
+  glm_ucl  <- exp(confint(glm_model)[2,2])
   glm_pval <- glm_sum$coefficients[2,4]
   
   resp_table <- data.frame(resp_ref_n, resp_comp_n, 
