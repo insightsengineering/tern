@@ -4,8 +4,8 @@
 \alias{surv_subgroup}
 \title{alternative tablist}
 \usage{
-surv_subgroup(time_to_event, event, arm, arm.ref, arm.comp, group_by,
-  covariates = NULL)
+surv_subgroup(time_to_event, event, arm, arm.ref, arm.comp = setdiff(arm,
+  arm.ref), group_by, covariates = NULL)
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -31,6 +31,12 @@ alternative tablist
 \dontrun{
 library(atezo.data)
 library(dplyr)
+library(survival)
+
+'\%needs\%' <- teal.oncology:::'\%needs\%'
+
+surv_tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
+Viewer(surv_tbl_stream )
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -47,15 +53,22 @@ group_by <- merge(
 
 head(group_by)
 
-surv_subgroup(
+tbl <- surv_subgroup(
    time_to_event = ATE_f$AVAL,
    event = ATE_f$CNSR == 0,
    arm = ATE_f$ARM, 
    group_by = group_by[, -c(1,2), drop=FALSE],
-   arm.ref = "DUMMY A",
-   arm.comp = "DUMMY B"
+   arm.ref = "DUMMY A"
 )
+tbl
+Viewer(tbl)
+
+compare_rtables(tbl, surv_tbl_stream)
+
+plot(tbl)
+
 
 }
-  
+
+# surv_subgroup(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
 }
