@@ -50,10 +50,34 @@ ARS <- ars(com.roche.cdt30019.go29436.re) \%>\% select(c("USUBJID", "STUDYID", "
 #If want to include missing as non-responders
 ARS$AVALC[ARS$AVALC==""] <- "NE"
 
-response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F)
+
+tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
+Viewer(tbl_stream)
+
+tbl <- response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F)
+Viewer(tbl)
+
 response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T)
 response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F, style = 2)
 response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T, style = 2)
+
+
+ars_f2 <-  ars(com.roche.cdt30019.go29436.re) \%>\%
+ filter(ITTGEFL=='Y', ITTWTFL=='Y', PARAMCD=='OVRSPI')
+
+tbl <- response_table(
+  response = vapply(ars_f2$AVALC, function(x) {if (x == "") "NE" else x}, character(1)),
+  arm = ars_f2$ARM,
+  arm.ref = "DUMMY C",
+  arm.comp.combine = FALSE
+)
+
+Viewer(tbl)
+
+compare_rtables(tbl, tbl_stream)
+
+
+Arm variable is armcd1
 }
 
 

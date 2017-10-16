@@ -364,7 +364,7 @@ print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
 #' @param style Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
 #'                              \code{2} if want to display rates, difference in rate and odds ratio for each response value category.
 #' 
-#' @example 
+#' @examples
 #' \dontrun{
 #' library(dplyr)
 #' library(shiny)
