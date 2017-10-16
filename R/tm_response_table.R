@@ -8,7 +8,6 @@
 #' \donotrun{
 #' library(atezo.data)
 #' library(dplyr)
-#' library(survival)
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -19,8 +18,8 @@
 #'   modules = root_modules(
 #'     tm_variable_browser(),
 #'     tm_data_table(),
-#'     tm_forest_response(
-#'        label = "Forest Survival",
+#'     tm_response_table(
+#'        label = "Response Table",
 #'        paramcd = "OVRSPI",
 #'        paramcd_choices = unique(ARS$PARAMCD),
 #'        response = "CR",
@@ -37,7 +36,7 @@
 #' 
 #'   
 #' } 
-tm_forest_response <- function(label,
+tm_response_table <- function(label,
                                paramcd,
                                paramcd_choices = paramcd,                               
                                arm.ref,
@@ -55,14 +54,14 @@ tm_forest_response <- function(label,
   
   module(
     label = label,
-    server = srv_forest_response,
-    ui = ui_forest_response,
+    server = srv_response_table,
+    ui = ui_response_table,
     ui_args = args,
     filters = "ARS"
   )
 }
 
-ui_forest_response <- function(id, label,
+ui_response_table <- function(id, label,
                                paramcd,
                                paramcd_choices = paramcd,
                                arm.ref,
@@ -84,10 +83,9 @@ ui_forest_response <- function(id, label,
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ARS")),
       optionalSelectInput(ns("paramcd"), "PARAMCD", paramcd_choices, paramcd, multiple = FALSE),
-      optionalSelectInput(ns("response"), "Response", response_choices, response, multiple = TRUE),
+      optionalSelectInput(ns("responses"), "Responses", response_choices, response, multiple = TRUE),
       optionalSelectInput(ns("ref_arm"), "Reference Group", arm.ref_choices, arm.ref, multiple = TRUE),
-      optionalSelectInput(ns("treat_arm"), "Treatment Group", arm.comp_choices, arm.comp, multiple = TRUE),
-      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE)
+      optionalSelectInput(ns("treat_arm"), "Treatment Group", arm.comp_choices, arm.comp, multiple = TRUE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
@@ -95,7 +93,7 @@ ui_forest_response <- function(id, label,
   )
 } 
 
-srv_forest_response <- function(input, output, session, datasets) {
+srv_response_table <- function(input, output, session, datasets) {
   
   output$forest_plot <- renderUI({
     
@@ -106,8 +104,7 @@ srv_forest_response <- function(input, output, session, datasets) {
     
     
     paramcd <- input$paramcd
-    response <- input$response
-    subgroup_var <- input$subgroup_var
+    responses <- input$responses
     ref_arm <- input$ref_arm
     treat_arm <- input$treat_arm
     
@@ -118,8 +115,8 @@ srv_forest_response <- function(input, output, session, datasets) {
     validate(need(length(intersect(ref_arm, treat_arm)) == 0,
                   "reference and treatment group cannot overlap"))
     
-    validate(need(!is.null(response) && all(response %in% ARS_filtered$AVALC),
-                  "response AVALC does not exist"))
+    validate(need(!is.null(responses) && all(responses %in% ARS_filtered$AVALC),
+                  "responses AVALC does not exist"))
     
     validate(need(!is.null(paramcd) && paramcd %in% ARS_filtered$PARAMCD,
                   "PARAMCD does not exist"))
@@ -130,26 +127,19 @@ srv_forest_response <- function(input, output, session, datasets) {
     
     validate(need(nrow(ARS_f) > 0, "no data left"))
     
-    ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+    # teal:::as.global(ARS_f)
+    # teal:::as.global(responses)
+    # teal:::as.global(ref_arm)
+    # teal:::as.global(treat_arm)
     
-    validate(need(all(subgroup_var %in% names(ASL)),
-                  "some baseline risk variables are not valid"))
-    
-    
-    
-    group_by <- merge(
-      ARS_f[c("USUBJID", "STUDYID")],
-      ASL[c("USUBJID", "STUDYID", subgroup_var)],
-      all.x = TRUE, all.y = FALSE
-    )
-    
-    tbl <- glm_subgroup(
-      response = ARS_f$AVAL,
-      event = ARS_f$AVALC %in% response,
-      arm = ARS_f$ARM, 
-      group_by = group_by[, -c(1,2), drop=FALSE],
+    tbl <- response_table(
+      response = ARS_f$AVALC,
+      value.resp = responses,
+      value.nresp = setdiff(ARS_f$AVALC, responses),
+      arm = ARS_f$ARM,
       arm.ref = ref_arm,
-      arm.comp = treat_arm
+      arm.comp = treat_arm,
+      arm.comp.combine = TRUE
     )
     
     as_html(tbl)

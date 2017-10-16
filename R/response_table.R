@@ -126,7 +126,7 @@ response_table <- function(response,
   rate_result <- Map(calc_rate, split(RESP, ARM), list(c(value.resp)))
   
   #Rate calculation by each response value
-  data_byvalue <- data.frame(rep(list(RESP),6))
+  data_byvalue <- data.frame(rep(list(RESP), length(value.resp) + length(value.nresp)))
   names(data_byvalue) <- value_for_test
   rate_result_byvalue <- lapply(split(data_byvalue, ARM), function(x){
     Map(calc_rate, x, value_for_test)
