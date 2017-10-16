@@ -42,6 +42,7 @@
 #'    arm_var = "ARM",
 #'    all.patients = TRUE
 #' )
+#' Viewer(tbl)
 #' 
 #' compare_rtables(tbl, tbl_expected)
 #'
@@ -62,6 +63,7 @@ demographic_table <- function(data,
   data %needs% c(arm_var, group_by_vars)
   
   arm <- factor(data[[arm_var]])
+  if (any(is.na(arm))) stop("currently cannot deal with missing values in arm")
   
   if (all.patients) {
     if ("All Patients" %in% names(arm)) stop("if argument all.patients = TRUE then there cannot be an arm 'All Patients'")
@@ -81,20 +83,34 @@ demographic_table <- function(data,
     if (xtype == "numeric") {
       ## then return the n, mean median, and range
       df <- data.frame(x = x, arm = arm) %>% filter(!is.na(x))
+      
       lapply(split(df, df$arm), function(dfi) {
-        n <- nrow(dfi)
-        c(list(n = n), lapply(
-          split(dfi, dfi$arm), function(dfii) {
-            xii <- dfii$x
-            lapply(c(length, mean, sd, median, range), function(fun)fun(xii))
-          }))
+        xii <- dfi$x
+        
+        #lapply(c(length, mean, sd, median, range), function(fun)fun(xii))
+        list(
+          "n" = rcell(length(xii), format = "xx"),
+          "Mean (SD)" = rcell(c(mean(xii), sd(xii)), format = "xx.x (xx.x)"),
+          "Median" = rcell(median(xii), format = "xx.x"),
+          "Min - Max" = rcell(range(xii), format = "xx.xx - xx.xx")
+        )
       })
-    } else if (xtype == "categorial") {
+    } else if (xtype == "categorical") {
       ## categorical count
       df <- data.frame(x = factor(x), arm = arm) %>% filter(!is.na(x))
+      
       lapply(split(df, df$arm), function(dfi) {
-        n <- nrow(dfi)
-        c(list(n = n), lapply(split(dfi, dfi$x), function(dfii) list(n_cat = nrow(dfii), p_cat = nrow(dfii)/n)))
+        xii <- dfi$x
+        n <- length(xii)
+        c(
+          list(
+            "n" = rcell(n, format = "xx")
+          ),
+          lapply(split(dfi, dfi$x), function(dfii) {
+            nii <- nrow(dfii)
+            rcell(c(nii, nii/n), format = "xx (xx.xx%)")
+          })
+        )
       })
     } else {
       stop("unknown type ", xtype)
@@ -103,31 +119,26 @@ demographic_table <- function(data,
   
   var_row_info <- lapply(var_col_info, list_transpose)
   
-  rtable_args1 <- list(
-    col.names = levels(arm),
-    format = "xx"
-  )
+  n <- vapply(var_row_info[[1]][[1]], as.vector, numeric(1))
   
-  # ri <- var_row_info[[1]]; var <- "SEX"
+  ## create the rtable object
   first.row <- TRUE
-  rrow_collection <- unlist(Map(function(ri, var) {
-    
-    l <- c(
-      list(
-        if (first.row) NULL else rrow(),
-        rrow(var)
-      ),
-      lapply(ri)
-      rrow("n", ..., indent = 1)
-    )
-    
-    first.row <<- FALSE
-    l
-  }, var_row_info, names(var_row_info)), recursive = FALSE)
   
-  
-  #do.call(rtable, c(list(col.names = ...), rrow_collection))
-  
-  
-  row_info
+  do.call(rtable, c(
+    list(
+      col.names = paste0(levels(arm), "\n", paste0("(N=",n, ")")),
+      format = "xx"
+    ),
+    Filter(function(x)!is.null(x), unlist(Map(function(rows_for_var, var) {
+      c(
+        list(
+          if (first.row) {first.row <<- FALSE; NULL} else  rrow(),
+          rrow(var)
+        ),
+        Map(function(ri, category) {
+          do.call(rrow, c(list(row.name = category, indent = 1), ri))
+        }, rows_for_var, names(rows_for_var))
+      )
+    }, var_row_info, names(var_row_info)), recursive = FALSE))
+  ))
 }
