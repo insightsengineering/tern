@@ -4,7 +4,7 @@
 \alias{compare_rtables}
 \title{Corpare two rtables}
 \usage{
-compare_rtables(object, expected, tol = 0.1)
+compare_rtables(object, expected, tol = 0.1, comp.attr = TRUE)
 }
 \arguments{
 \item{object}{rtable to test}
@@ -12,6 +12,8 @@ compare_rtables(object, expected, tol = 0.1)
 \item{expected}{rtable expected}
 
 \item{tol}{numerical tolorance}
+
+\item{comp.attr}{boolean compare attributes}
 }
 \description{
 Prints a matrix where \code{.} means cell matches, \code{X} means cell does 
@@ -46,6 +48,8 @@ object <- rtable(
 )
 
 compare_rtables(object, expected)
+
+compare_rtables(object, expected, comp.attr = FALSE)
 
 object <- rtable(
    col.names = c("ARM A\\nN=100", "ARM B\\nN=200"),
