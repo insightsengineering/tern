@@ -30,19 +30,24 @@ alternative tablist
 
 \dontrun{
 library(atezo.data)
-library(dplyr)
+library(dplyr) 
+library(grid)
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
-ARS_f <- ARS \%>\% filter(PARAMCD == "BESRSPI") \%>\% filter(ITTWTFL == "Y")
-ASL_f <- ASL \%>\% filter(ITTWTFL == "Y")
+surv_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
+Viewer(surv_tbl_stream )
 
-ASL_f$BAGED <- ifelse(ASL_f$BAGE <= median(ASL_f$BAGE), "<=median", ">median")
+ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") \%>\% filter(ITTWTFL == "Y") \%>\% filter(ARM \%in\% c("DUMMY A", "DUMMY C"))
+ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% filter(ARM \%in\% c("DUMMY A", "DUMMY C"))
+
+ARS_f_resp <- ARS_f \%>\% filter(AVALC \%in\% c("CR", "PR"))
+ARS_f_IC1 <- ARS_f \%>\% filter(TCLEVEL == "1")
 
 group_by <- merge(
  ARS_f[c("USUBJID", "STUDYID")],
- ASL_f[c("USUBJID", "STUDYID", "ICLEVEL", "ICLVL1", "TC3IC3")],
+ ASL_f[c("USUBJID", "STUDYID", "TCLEVEL", "ICLEVEL", "TC3IC3")],
  all.y = TRUE, all.x = FALSE
 )
 
@@ -53,11 +58,14 @@ tbl <- glm_subgroup(
           event = ARS_f$AVALC \%in\% c("CR","PR"),
           arm = ARS_f$ARM, 
           group_by = group_by[, -c(1,2), drop=FALSE],
-          arm.ref = "DUMMY A",
-          arm.comp = "DUMMY C"
+          arm.ref = "DUMMY C",
+          arm.comp = "DUMMY A"
 )
 Viewer(tbl)
+
+compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
 }
+
 
   
 }
