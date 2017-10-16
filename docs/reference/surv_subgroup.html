@@ -97,10 +97,14 @@
 
     
     <p>alternative tablist</p>
+<p>alternative tablist</p>
     
 
-    <pre class="usage"><span class='fu'>surv_subgroup</span>(<span class='no'>time_to_event</span>, <span class='no'>event</span>, <span class='no'>arm</span>, <span class='no'>arm.ref</span>, <span class='no'>arm.comp</span>, <span class='no'>group_by</span>,
-  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>surv_subgroup</span>(<span class='no'>time_to_event</span>, <span class='no'>event</span>, <span class='no'>arm</span>, <span class='no'>arm.ref</span>, <span class='kw'>arm.comp</span> <span class='kw'>=</span> <span class='fu'>setdiff</span>(<span class='no'>arm</span>,
+  <span class='no'>arm.ref</span>), <span class='no'>group_by</span>, <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>surv_subgroup</span>(<span class='no'>time_to_event</span>, <span class='no'>event</span>, <span class='no'>arm</span>, <span class='no'>arm.ref</span>, <span class='kw'>arm.comp</span> <span class='kw'>=</span> <span class='fu'>setdiff</span>(<span class='no'>arm</span>,
+  <span class='no'>arm.ref</span>), <span class='no'>group_by</span>, <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -132,6 +136,33 @@ as the comparison</p></td>
       <th>group_by</th>
       <td><p>data frame with one column per grouping</p></td>
     </tr>
+    <tr>
+      <th>time_to_event</th>
+      <td><p>time to event data</p></td>
+    </tr>
+    <tr>
+      <th>event</th>
+      <td><p>is boolean, <code>TRUE</code> if event, <code>FALSE</code> if time_to_event
+is censored</p></td>
+    </tr>
+    <tr>
+      <th>group_by</th>
+      <td><p>data frame with one column per grouping</p></td>
+    </tr>
+    <tr>
+      <th>arm</th>
+      <td><p>vector with arm information</p></td>
+    </tr>
+    <tr>
+      <th>arm.ref</th>
+      <td><p>a character vector defining which arms in arm should be taken 
+as the reference</p></td>
+    </tr>
+    <tr>
+      <th>arm.comp</th>
+      <td><p>a character vector defining which arms in arm should be taken 
+as the comparison</p></td>
+    </tr>
     </table>
     
 
@@ -140,6 +171,12 @@ as the comparison</p></td>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>atezo.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>survival</span>)
+
+<span class='st'>'%needs%'</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>teal.oncology</span><span class='kw ns'>:::</span><span class='st'>'%needs%'</span>
+
+<span class='no'>surv_tbl_stream</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/atezo.data/topics/get_forest_survival_table'>get_forest_survival_table</a></span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>surv_tbl_stream</span> )
 
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'>ate</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'>asl</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
@@ -156,16 +193,72 @@ as the comparison</p></td>
 
 <span class='fu'>head</span>(<span class='no'>group_by</span>)
 
-<span class='fu'>surv_subgroup</span>(
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>surv_subgroup</span>(
    <span class='kw'>time_to_event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>AVAL</span>,
    <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
    <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>ARM</span>,
    <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='no'>group_by</span>[, -<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>],
-   <span class='kw'>arm.ref</span> <span class='kw'>=</span> <span class='st'>"DUMMY A"</span>,
-   <span class='kw'>arm.comp</span> <span class='kw'>=</span> <span class='st'>"DUMMY B"</span>
+   <span class='kw'>arm.ref</span> <span class='kw'>=</span> <span class='st'>"DUMMY A"</span>
+)
+<span class='no'>tbl</span>
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl</span>)
+
+<span class='fu'><a href='compare_rtables.html'>compare_rtables</a></span>(<span class='no'>tbl</span>, <span class='no'>surv_tbl_stream</span>)
+
+<span class='fu'>plot</span>(<span class='no'>tbl</span>)
+
+
+<span class='co'># }</span><div class='input'>
+# surv_subgroup(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
+
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>atezo.data</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>survival</span>)
+
+<span class='st'>'%needs%'</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>teal.oncology</span><span class='kw ns'>:::</span><span class='st'>'%needs%'</span>
+
+<span class='no'>surv_tbl_stream</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/atezo.data/topics/get_forest_survival_table'>get_forest_survival_table</a></span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>surv_tbl_stream</span> )
+
+<span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'>ate</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'>asl</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+
+<span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='no'>ATE</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ITTWTFL</span> <span class='kw'>==</span> <span class='st'>"Y"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ARM</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"DUMMY A"</span>, <span class='st'>"DUMMY C"</span>))
+<span class='no'>ASL_f</span> <span class='kw'>&lt;-</span> <span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ITTWTFL</span> <span class='kw'>==</span> <span class='st'>"Y"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ARM</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"DUMMY A"</span>, <span class='st'>"DUMMY C"</span>))
+
+
+<span class='no'>group_by</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(
+ <span class='no'>ATE_f</span>[<span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>)],
+ <span class='no'>ASL_f</span>[<span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>, <span class='st'>"SEX"</span>, <span class='st'>"MLIVER"</span>, <span class='st'>"TCICLVL2"</span>, <span class='st'>"AGE4CAT"</span>, <span class='st'>"RACE"</span>)],
+ <span class='kw'>all.y</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>all.x</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
-<span class='co'># }</span><div class='input'>  
+<span class='no'>group_by</span>$<span class='no'>MLIVER</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>MLIVER</span>, <span class='fu'>levels</span>(<span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>MLIVER</span>))[<span class='fu'>c</span>(<span class='fl'>2</span>, <span class='fl'>1</span>)])
+<span class='no'>group_by</span>$<span class='no'>TCICLVL2</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>TCICLVL2</span>, <span class='fu'>levels</span>(<span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>TCICLVL2</span>))[<span class='fu'>c</span>(<span class='fl'>2</span>, <span class='fl'>1</span>)])
+<span class='no'>group_by</span>$<span class='no'>AGE4CAT</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>AGE4CAT</span>, <span class='fu'>levels</span>(<span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>AGE4CAT</span>))[<span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>2</span>)])
+<span class='no'>group_by</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>RACE</span>, <span class='fu'>levels</span>(<span class='fu'>factor</span>(<span class='no'>group_by</span>$<span class='no'>RACE</span>))[<span class='fu'>c</span>(<span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>5</span>)])
+
+<span class='fu'>head</span>(<span class='no'>group_by</span>)
+
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>surv_subgroup</span>(
+   <span class='kw'>time_to_event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>AVAL</span>,
+   <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
+   <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>ARM</span>,
+   <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='no'>group_by</span>[, -<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>],
+   <span class='kw'>arm.ref</span> <span class='kw'>=</span> <span class='st'>"DUMMY C"</span>,
+   <span class='kw'>arm.comp</span> <span class='kw'>=</span> <span class='st'>"DUMMY A"</span>
+)
+<span class='no'>tbl</span>
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl</span>)
+
+<span class='fu'><a href='compare_rtables.html'>compare_rtables</a></span>(<span class='no'>tbl</span>, <span class='no'>surv_tbl_stream</span>, <span class='kw'>comp.attr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>plot</span>(<span class='no'>tbl</span>)
+
+
+<span class='co'># }</span><div class='input'>
+# surv_subgroup(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -99,7 +99,8 @@
     <p>Similiar as in STREAM</p>
     
 
-    <pre class="usage"><span class='fu'>demographic_table</span>(<span class='no'>ADSL</span>)</pre>
+    <pre class="usage"><span class='fu'>demographic_table</span>(<span class='no'>data</span>, <span class='kw'>arm_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>all.patients</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>group_by_vars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"AGE"</span>, <span class='st'>"RACE"</span>, <span class='st'>"ETHNIC"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -126,19 +127,53 @@ and SEX</p></td>
    <span class='kw'>stringAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
-<span class='fu'>demographic_table</span>(<span class='no'>ASL</span>)</div><div class='output co'>#&gt;            
-#&gt;             study 1
-#&gt;   F              18
-#&gt;   M              22
-#&gt;   UNDEFINED      33</div><div class='input'>
+<span class='fu'>demographic_table</span>(<span class='no'>ASL</span>)</div><div class='output co'>#&gt; <span class='error'>Error in data %needs% c(arm_var, group_by_vars): variables ARM, RACE, ETHNIC do not exist</span></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>atezo.data</span>)
-<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'>asl</span>(<span class='no'>com.roche.atezo.cdpt7722.wo29637</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
 
-<span class='fu'>demographic_table</span>(<span class='no'>ADSL</span>)
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'>asl</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='no'>tbl_expected</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/atezo.data/topics/get_demographic_table'>get_demographic_table</a></span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl_expected</span>)
+
+<span class='co'># order factor levels if they exist</span>
+<span class='no'>of</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>...</span>) {
+  <span class='no'>lvls</span> <span class='kw'>&lt;-</span> <span class='kw'>if</span> (<span class='fu'>is.factor</span>(<span class='no'>x</span>)) <span class='fu'>levels</span>(<span class='no'>x</span>) <span class='kw'>else</span> <span class='fu'>unique</span>(<span class='no'>x</span>)
+  <span class='no'>olvls</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/setops.html'>intersect</a></span>(<span class='fu'>unlist</span>(<span class='fu'>list</span>(<span class='no'>...</span>)), <span class='no'>lvls</span>)
+  <span class='fu'>factor</span>(<span class='fu'>as.character</span>(<span class='no'>x</span>), <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>olvls</span>, <span class='fu'><a href='http://dplyr.tidyverse.org/reference/setops.html'>setdiff</a></span>(<span class='no'>lvls</span>, <span class='no'>olvls</span>)))
+}
+<span class='no'>add_lbl</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>lbl</span>, <span class='no'>x</span>) {
+  <span class='fu'>structure</span>(<span class='no'>x</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>lbl</span>)
+}
+<span class='no'>lbl</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
+  <span class='fu'>attr</span>(<span class='no'>x</span>, <span class='st'>"label"</span>)
+}
+
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='no'>ASL</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ITTWTFL</span> <span class='kw'>==</span> <span class='st'>'Y'</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>of</span>(<span class='no'>ARM</span>, <span class='st'>"DUMMY C"</span>, <span class='st'>"DUMMY B"</span>, <span class='st'>"DUMMY A"</span>)) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>add_lbl</span>(<span class='fu'>lbl</span>(<span class='no'>SEX</span>), <span class='fu'><a href='http://dplyr.tidyverse.org/reference/recode.html'>recode_factor</a></span>(<span class='no'>SEX</span>, <span class='kw'>M</span> <span class='kw'>=</span> <span class='st'>"MALE"</span>, <span class='kw'>F</span> <span class='kw'>=</span> <span class='st'>"FEMALE"</span>)))
+
+
+
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>demographic_table</span>(
+   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ADSL</span>,
+   <span class='kw'>arm_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
+   <span class='kw'>all.patients</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+   <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>toupper</span>(<span class='fu'>c</span>(<span class='st'>"sex"</span>, <span class='st'>"mliver"</span>, <span class='st'>"tciclvl2"</span>, <span class='st'>"bage"</span>, <span class='st'>"age4cat"</span>,
+     <span class='st'>"ethnic"</span>, <span class='st'>"race"</span>, <span class='st'>"bwt"</span>, <span class='st'>"tobhx"</span>, <span class='st'>"hist"</span>, <span class='st'>"EGFRMUT"</span>,
+     <span class='st'>"alkmut"</span>, <span class='st'>"krasmut"</span>, <span class='st'>"becog"</span>))
+)
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl</span>)
+
+<span class='fu'><a href='compare_rtables.html'>compare_rtables</a></span>(<span class='no'>tbl</span>, <span class='no'>tbl_expected</span>)
+
+<span class='co'># if all is good then</span>
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='no'>tbl_expected</span>
+<span class='fu'><a href='compare_rtables.html'>compare_rtables</a></span>(<span class='no'>tbl</span>, <span class='no'>tbl_expected</span>)
+
 <span class='co'># }</span><div class='input'>
-
-</div></pre>
+<span class='no'>`%needs%`</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>teal.oncology</span><span class='kw ns'>:::</span><span class='no'>`%needs%`</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
