@@ -74,43 +74,56 @@ demographic_table <- function(data,
   ## get a list with each variables tht we want to summarize
   
   var_collection <- data[group_by_vars]
+  type <- lapply(var_collection, function(var) if(is.numeric(var)) "numeric" else "categorical")
   
   ## x <- var_collection[[1]]
-  row_info <- lapply(var_collection, function(x) {
-     
-
-
-    if (is.numeric(x)) {
+  var_col_info <- Map(function(x, xtype) {
+    if (xtype == "numeric") {
       ## then return the n, mean median, and range
       df <- data.frame(x = x, arm = arm) %>% filter(!is.na(x))
       lapply(split(df, df$arm), function(dfi) {
         n <- nrow(dfi)
         c(list(n = n), lapply(
-          split(dfi, dfi$x), function(dfii) {
+          split(dfi, dfi$arm), function(dfii) {
             xii <- dfii$x
             lapply(c(length, mean, sd, median, range), function(fun)fun(xii))
           }))
       })
-    } else {
+    } else if (xtype == "categorial") {
       ## categorical count
       df <- data.frame(x = factor(x), arm = arm) %>% filter(!is.na(x))
       lapply(split(df, df$arm), function(dfi) {
         n <- nrow(dfi)
         c(list(n = n), lapply(split(dfi, dfi$x), function(dfii) list(n_cat = nrow(dfii), p_cat = nrow(dfii)/n)))
       })
+    } else {
+      stop("unknown type ", xtype)
     }
-  })
+  }, var_collection, type)
   
-  #first.row <- TRUE
-  #rrow_collection <- unlist(lapply(row_info, function(ri) {
-  #  l <- list(
-  #    if (first.row) NULL else rrow(),
-  #    rrow("Sex", ...),
-  #    rrow("n", ..., indent = 1)
-  #  )
-  #  first.row <<- FALSE
-  #  l
-  #}), recursive = FALSE)
+  var_row_info <- lapply(var_col_info, list_transpose)
+  
+  rtable_args1 <- list(
+    col.names = levels(arm),
+    format = "xx"
+  )
+  
+  # ri <- var_row_info[[1]]; var <- "SEX"
+  first.row <- TRUE
+  rrow_collection <- unlist(Map(function(ri, var) {
+    
+    l <- c(
+      list(
+        if (first.row) NULL else rrow(),
+        rrow(var)
+      ),
+      lapply(ri)
+      rrow("n", ..., indent = 1)
+    )
+    
+    first.row <<- FALSE
+    l
+  }, var_row_info, names(var_row_info)), recursive = FALSE)
   
   
   #do.call(rtable, c(list(col.names = ...), rrow_collection))

@@ -29,7 +29,7 @@ list_transpose <- function(x) {
   
   # length at depth 2
   n2 <- unique(unlist(lapply(x, length)))
-  if (length(n2) != 1) stop("the nested lists are not of consistent length")
+  if (length(n2) != 1) stop("the nested lists are not of consistent length: ", paste(n2, collapse=", "))
   
   el_names <- names(x[[1]])
   same_el_names <- vapply(x[-1], function(xi) identical(el_names, names(xi)), logical(1))
