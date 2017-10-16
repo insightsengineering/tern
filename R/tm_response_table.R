@@ -61,8 +61,11 @@
 #' 
 #' Viewer(tbl)
 #' 
+#' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 #' compare_rtables(tbl, tbl_stream)
 #' 
+#' tbl[2,3]
+#' tbl_stream[2,3]
 #' 
 #' Arm variable is armcd1
 #' }
@@ -168,8 +171,7 @@ response_table <- function(response,
     col.names = paste(names(rate_result), 
                       paste0("(N=", unlist(lapply(rate_result, '[[', "N")),")"), 
                       sep="\n"),
-    format = "xx (xx.x%)",
-    rrow()
+    format = "xx (xx.x%)"
   )
   
   #--- Responder/Non-responder section - counts and 95% CI ---#
