@@ -6,7 +6,7 @@
 #' @param time_to_event time to event values
 #' @param event boolean, \code{TRUE} if event and \code{FALSE} if censored
 #' @param arm.ref character: reference arm 
-#' 
+#' @param stratum_df a data frame for stratification factor
 #' 
 #' @importFrom survival survfit Surv coxph
 #' @import dplyr
@@ -27,11 +27,21 @@
 #' ATE <-  ate(com.roche.cdt30019.go29436.re)
 #' 
 #' ATE_filtered <- ATE %>% filter(PARAMCD == "OS")
+#' 
+#' 
+#'  kmPlot(
+#'    time_to_event = ATE_filtered$AVAL,
+#'    event = ATE_filtered$CNSR == 0,
+#'    arm = ATE_filtered$ARM,
+#'    arm.ref =  "DUMMY C" 
+#'    )
+#'    
 #' kmPlot(
 #'    time_to_event = ATE_filtered$AVAL,
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
-#'    arm.ref =  "DUMMY B"  
+#'    arm.ref =  "DUMMY C" ,
+#'    stratum_df = ATE_filtered[c("SEX")] 
 #'    )
 #'    
 #' kmPlot(
@@ -39,6 +49,7 @@
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
 #'    facet_by = ATE_filtered$SEX,
+#'    stratum_df = ATE_filtered[c("RACE", "HIST")], 
 #'    arm.ref =  "DUMMY B" ,
 #'    arm.rest =  c("DUMMY A", "DUMMY C" )
 #'    )
@@ -46,37 +57,31 @@
 
 
 kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
-                    stratum = NULL, facet_by = NULL, n_col = 1,   ... ){
+                    stratum_df = NULL, facet_by = NULL, n_col = 1,   ... ){
   
   n <- length(time_to_event)
   if (length(event) != n) stop("event has wrong length")
   if (length(arm) != n) stop("arm has wrong length")
   arm_for_model <- arm_for_model2(arm, arm.ref, arm.rest)
+  cox_data <- data.frame(
+    time_to_event,
+    event,
+    arm = arm_for_model
+  )
+  
+  if (!is.null(stratum_df)) cox_data <- data.frame(cox_data, stratum_df)
+  if (!is.null(facet_by)) cox_data <- data.frame(cox_data, facet_by)
+  cox_data <- subset(cox_data, arm %in% c(paste(arm.ref, collapse = "/"), arm.rest))
+  stratum.names <- names(stratum_df)
   
   if (is.null(facet_by)){
-    cox_data <- subset(
-      data.frame(
-        time_to_event,
-        event,
-        arm = arm_for_model
-      ), arm %in% c(paste(arm.ref, collapse = "/"), arm.rest)
-    )
-    surv.plot <- kmPlot_anno(cox_data, ...)
-    
+     surv.plot <- kmPlot_anno( cox_data,
+                              stratum.names = stratum.names  ,...)
   } else{
-    cox_data <- subset(
-      data.frame(
-        time_to_event,
-        event,
-        arm = arm_for_model,
-        facet_by
-      ), arm %in% c(paste(arm.ref, collapse = "/"), arm.rest)
-    )
-    
     facet_lev <- unique(cox_data$facet_by)
     plot_list <- lapply(facet_lev, function(lev){
-     
-      plot.out <- kmPlot_anno(cox_data %>% filter(facet_by == lev), ...)
+      plot.out <- kmPlot_anno(cox_data %>% filter(facet_by == lev), 
+                              stratum.names = stratum.names, ...)
       newtitle <- paste0(plot.out$plot$labels$title, " : (",  lev, ")")
       plot.out$plot <- plot.out$plot + ggtitle(newtitle)
       plot.out
@@ -117,7 +122,7 @@ arm_for_model2 <- function(arm, arm.ref, arm.rest){
 #'  
 #'  
 
-kmPlot_anno <- function(data, 
+kmPlot_anno <- function(data, stratum.names = NULL,
                         cox.tie = "efron", conf.int = FALSE, plot.median = FALSE, 
                         plot.nrisk = TRUE, time.interval = 4, nrisk.height = 0.25, size.nrisk = 4,
                         plot.cens = TRUE, size.cens = 4.5, shape.cens = "+",
@@ -142,7 +147,7 @@ kmPlot_anno <- function(data,
 
 
   
-  surv.plot <- ggsurvplot(surv.fit, data = data,
+  surv.plot <- ggsurvplot(surv.fit, data = data, 
                           break.time.by = time.interval, conf.int = conf.int,
                           surv.median.line = med.line,
                           risk.table =  plot.nrisk, risk.table.title = "No. of Patients at Risk",
@@ -155,7 +160,14 @@ kmPlot_anno <- function(data,
                           title = plot.title, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab )
   
   km_sum <- summary(surv.fit, data = data, conf.type = "plain")$table
-  cox_sum <- summary(coxph(Surv(time_to_event, event) ~ arm , data = data, ties = cox.tie))
+  if (is.null(stratum.names)){
+    cox_sum <- summary(coxph(Surv(time_to_event, event) ~ arm , data = data, ties = cox.tie))
+    model.label <- c("Cox PH: ", "Unstratified")  
+  } else{
+    obj = paste0("Surv(time_to_event, event) ~ arm + strata(", paste(stratum.names, collapse = ","), ")")
+    cox_sum <- summary(coxph(as.formula(obj), data = data), ties = cox.tie)
+    model.label <- c("Cox PH: ", paste0("Stratified by ", paste(stratum.names, collapse = " ,")))
+  }
 
   upxstart  <- diff(xlim)*xystats.up[1]
   upxend    <- diff(xlim)*(xystats.up[1] + xyinterval.up[1]*length(arm.lev))
@@ -179,7 +191,7 @@ kmPlot_anno <- function(data,
                                      annotate("text",x = seq(upxstart, upxend, by = upx.by),
                                               y = upystart - 3*upy.by, label = medci.label, hjust = 0, size = size.stats)
 
-  model.label <- c("Cox PH:", "Unstratified")  ### need to update if stratum is not NULL
+  
   compare.label <- c("", arm.lev[-1])
   hr.label <-  c("HR", as.numeric(round(cox_sum$coefficients[,"exp(coef)"], 2)))
   hrci.label <- c("95% CI(HR)",

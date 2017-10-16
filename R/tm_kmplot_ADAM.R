@@ -8,7 +8,6 @@
 #' @examples 
 #' 
 #' \dontrun{
-#' ### copy the code and save it as file app.R
 #' library(atezo.data)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
@@ -20,10 +19,12 @@
 #'     tm_variable_browser(),
 #'     tm_kmplot_ADAM(
 #'        label = "KM PLOT",
-#'        reference_arm = ASL$ARM[1],
-#'        reference_arm_choices = unique(ASL$ARM),
-#'        tratement_var_choices = "ARM",
-#'        endpoint_choices = c("OS", "PFS")
+#'        tratement_var_choices = c("ARM", "ARMCD"),
+#'        endpoint_choices = c("OS", "PFSINV"),
+#'        facet_var = "TOBHX",
+#'        facet_var_choices = c("SEX", "RACE", "TOBHX"),
+#'        strat_var = "HIST",
+#'        strat_var_choices = c("SEX", "MLIVER", "TC2IC2", "HIST")
 #'     )  
 #'   )
 #' )
@@ -33,16 +34,14 @@
  
 
 tm_kmplot_ADAM <- function(label,
-                           reference_arm,
-                           reference_arm_choices = reference_arm,
                            treatment_var = "ARM",
                            tratement_var_choices = treatment_var,
                            endpoint = "OS",
                            endpoint_choices = endpoint,
-                           strat_vars = NULL,
-                           strat_var_choices = strat_vars,
                            facet_var = NULL,
                            facet_var_choices = facet_var,
+                           strat_var = NULL,
+                           strat_var_choices = strat_var,
                            plot_height=700
                            ){
   
@@ -60,13 +59,11 @@ tm_kmplot_ADAM <- function(label,
 ui_kmplot_ADAM <- function(
   id, 
   label,
-  reference_arm,
-  reference_arm_choices = reference_arm,
   treatment_var = "ARM",
   tratement_var_choices = treatment_var,
   endpoint = "OS",
   endpoint_choices = endpoint,
-  strat_vars = NULL,
+  strat_var = NULL,
   strat_var_choices = strat_var,
   facet_var = NULL,
   facet_var_choices = facet_var,
@@ -82,12 +79,12 @@ ui_kmplot_ADAM <- function(
                   selected = treatment_var, multiple = FALSE),
       optionalSelectInput(ns("tteout"), "Time to Event (Endpoint)", choices = endpoint_choices, 
                           selected = endpoint, multiple = FALSE),
-      optionalSelectInput(ns("strat"), "Stratify by", choices = strat_vars, 
-                          selected = strat_var_choices, multiple = FALSE),
+      optionalSelectInput(ns("strat"), "Stratify by", choices = strat_var_choices, 
+                          selected = strat_var, multiple = TRUE),
       optionalSelectInput(ns("facetby"), "Facet Plots by:", choices = facet_var_choices, 
-                          selected = facet_var, multiple = FALSE),
-      optionalSelectInput(ns("refarm"), "Reference Arm", choices = reference_arm_choices, 
-                  selected = reference_arm, multiple = TRUE),
+                          selected = facet_var, multiple = TRUE),
+      selectInput(ns("refarm"), "Reference Arm", choices = NULL, 
+                  selected = NULL, multiple = TRUE),
       tags$label("Plot Settings", class = "text-primary"),
       sliderInput(ns("plotht"), "Plot Height", min=400, max=3000, step = 10, value = plot_height)
     )
@@ -104,25 +101,13 @@ srv_kmplot_ADAM <- function(input, output, session, datasets){
   })
  
   
-#  observe({
-#    ANL <- ATE_Filtered()
-#    chs <- as.list(colnames(ANL))
-#    updateSelectInput(session,  "armvar" , choices = chs, selected = "ARM")
-#    updateSelectInput(session, "tteout", choices = unique(ANL[["PARAMCD"]]), selected = "OS")
-#
-#    updateSelectInput(session, "facetby", choices = chs, selected = NULL)
-#    
-#  })
-  
-#  ns <- session$ns
-#  observe({
-#    if (length(input$armvar) != 0){
-#      ANL <- ATE_Filtered()
-#      updateSelectInput(session, "refarm", choices = unique(ANL[[input$armvar]]), 
-#                        selected = ANL[[input$armvar]] %>% unique() %>% sort() %>% "["(1))
-#    }
-#    
-#  })
+ observe({
+   ANL <- ATE_Filtered()
+   chs <- as.list(colnames(ANL))
+   updateSelectInput(session,  "refarm" , choices = unique(ANL[[input$armvar]]), 
+                     selected = ANL[[input$armvar]] %>% unique() %>% sort() %>% "["(1))
+
+ })
   
 
   output$outplot <- renderUI({
@@ -142,25 +127,25 @@ srv_kmplot_ADAM <- function(input, output, session, datasets){
     armvar <- input$armvar
     facetby <- input$facetby
     refarm <- input$refarm
-    
-    teal:::as.global(refarm)
-    teal:::as.global(ANL)
-    teal:::as.global(facetby)
-    teal:::as.global(armvar)
-
+    strat <- input$strat
+    # teal:::as.global(refarm)
+    # teal:::as.global(ANL)
+    # teal:::as.global(facetby)
+    # teal:::as.global(armvar)
+    # teal:::as.global(strat)
     
     validate(need(nrow(ANL) > 10, "Need more than 10 observations"))
     validate(need(armvar %in% names(ANL), "armvar is not in ANL"))
-    validate(need(facetby == "" || facetby %in% names(ANL), "facet by not correct"))
+    validate(need(is.null(facetby)  || facetby %in% names(ANL), "facet by not correct"))
     validate(need(refarm %in% ANL[[armvar]], "reference arm does not exist in left over ARM values"))
 
     kmPlot(
       time_to_event = ANL[["AVAL"]],
       event = ANL[["CNSR"]] == 0,
       arm = ANL[[armvar]],
-      facet_by = if (length(facetby)!=0) ANL[[facetby]] else NULL,
+      facet_by = if (length(facetby) != 0) ANL[[facetby]] else NULL,
+      stratum_df = if (length(strat) != 0) ANL[strat] else NULL,
       arm.ref = refarm  
     )
-    
   })
 }

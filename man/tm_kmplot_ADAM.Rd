@@ -4,7 +4,11 @@
 \alias{tm_kmplot_ADAM}
 \title{teal module for KM plot}
 \usage{
-tm_kmplot_ADAM(label)
+tm_kmplot_ADAM(label, treatment_var = "ARM",
+  tratement_var_choices = treatment_var, endpoint = "OS",
+  endpoint_choices = endpoint, facet_var = NULL,
+  facet_var_choices = facet_var, strat_var = NULL,
+  strat_var_choices = strat_var, plot_height = 700)
 }
 \description{
 teal module for KM plot
@@ -12,17 +16,24 @@ teal module for KM plot
 \examples{
 
 \dontrun{
-### copy the code and save it as file app.R
 library(atezo.data)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ## Initialize Teal
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),
- modules = root_modules(
+  modules = root_modules(
     tm_data_table(),
     tm_variable_browser(),
-    tm_kmplot_ADAM( label = "KM PLOT" ) 
+    tm_kmplot_ADAM(
+       label = "KM PLOT",
+       tratement_var_choices = c("ARM", "ARMCD"),
+       endpoint_choices = c("OS", "PFSINV"),
+       facet_var = "TOBHX",
+       facet_var_choices = c("SEX", "RACE", "TOBHX"),
+       strat_var = "HIST",
+       strat_var_choices = c("SEX", "MLIVER", "TC2IC2", "HIST")
+    )  
   )
 )
 ## Initiate Shiny App

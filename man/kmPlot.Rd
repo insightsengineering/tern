@@ -5,7 +5,7 @@
 \title{kmPlot}
 \usage{
 kmPlot(time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
-  stratum = NULL, facet_by = NULL, n_col = 1, ...)
+  stratum_df = NULL, facet_by = NULL, n_col = 1, ...)
 }
 \arguments{
 \item{time_to_event}{time to event values}
@@ -13,6 +13,8 @@ kmPlot(time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
 \item{event}{boolean, \code{TRUE} if event and \code{FALSE} if censored}
 
 \item{arm.ref}{character: reference arm}
+
+\item{stratum_df}{a data frame for stratification factor}
 }
 \description{
 descr
@@ -29,11 +31,21 @@ library(survminer)
 ATE <-  ate(com.roche.cdt30019.go29436.re)
 
 ATE_filtered <- ATE \%>\% filter(PARAMCD == "OS")
+
+
+ kmPlot(
+   time_to_event = ATE_filtered$AVAL,
+   event = ATE_filtered$CNSR == 0,
+   arm = ATE_filtered$ARM,
+   arm.ref =  "DUMMY C" 
+   )
+   
 kmPlot(
    time_to_event = ATE_filtered$AVAL,
    event = ATE_filtered$CNSR == 0,
    arm = ATE_filtered$ARM,
-   arm.ref =  "DUMMY B"  
+   arm.ref =  "DUMMY C" ,
+   stratum_df = ATE_filtered[c("SEX")] 
    )
    
 kmPlot(
@@ -41,6 +53,7 @@ kmPlot(
    event = ATE_filtered$CNSR == 0,
    arm = ATE_filtered$ARM,
    facet_by = ATE_filtered$SEX,
+   stratum_df = ATE_filtered[c("RACE", "HIST")], 
    arm.ref =  "DUMMY B" ,
    arm.rest =  c("DUMMY A", "DUMMY C" )
    )
