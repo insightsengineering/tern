@@ -122,7 +122,7 @@ srv_time_to_event_table <- function(input, output, session, datasets) {
     
     validate(need(nrow(ATE_f) > 15, "need at least 15 data points"))
     
-    validate(need(all(strata_var %in% names(ATE)),
+    validate(need(all(strata_var %in% names(ATE_f)),
                   "some baseline risk variables are not valid"))
     
     tbl <- time_to_event_table(
