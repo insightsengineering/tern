@@ -15,11 +15,15 @@ Depends:
   teal
 Imports:
   grid,
-  ggplot2
+  ggplot2,
+  survminer,
+  dplyr,
+  shiny,
+  PropCIs
 Suggests:
   testthat,
-    knitr,
-    rmarkdown
+  knitr,
+  rmarkdown
 License: Copyright Roche
 Encoding: UTF-8
 LazyData: true
