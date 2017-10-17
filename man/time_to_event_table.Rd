@@ -4,8 +4,8 @@
 \alias{time_to_event_table}
 \title{Time to Event Table}
 \usage{
-time_to_event_table(time_to_event, event, arm, big_n_arm, arm.ref, comp1.arm,
-  comp2.arm, strata1, strata2, strata3, time_point, desc_event)
+time_to_event_table(time_to_event, event, is_earliest_contr_event_death, arm,
+  arm.ref, strata_data)
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -22,49 +22,35 @@ This is the description of the function
 \examples{
 \dontrun{
 
-library(teal.oncology)
 library(atezo.data)
 library(dplyr)
 library(survival)
-library(broom)
-library(stringr)
-library(readr)
-
+ 
 ASL <- atezo.data::asl(com.roche.cdt30019.go29436.re)
 ATE <- atezo.data::ate(com.roche.cdt30019.go29436.re)
 
-tte_tbl_stream <- atezo.data::get_time_to_event_table(com.roche.cdt30019.go29436.re)
+tte_tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
+Viewer(tte_tbl_stream)
 
-ASL_f <- dplyr::filter(ASL,ITTFL == "Y")
-        
-ATE_f <- dplyr::filter(ATE,ITTFL == "Y" & PARAMCD == "OS")
+ATE_f <- ATE \%>\% filter(ITTFL == "Y", PARAMCD == "OS")
 
 tbl <- time_to_event_table(
   time_to_event = ATE_f$AVAL,
-  event = ifelse(is.na(ATE_f$CNSR),NA,
-                 ifelse(ATE_f$CNSR==1,0,1)),
+  event = ATE_f$CNSR == 0,
   arm = ATE_f$ARM1,
-  big_n_arm = ASL_f$ARM1,
+  is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
   arm.ref = "DUMMY C",
-  comp1.arm = "DUMMY B",
-  comp2.arm = "DUMMY A",
-  strata1 = as.factor(ATE_f$SEX),
-  strata2 = as.factor(ATE_f$MLIVER),
-  strata3 = as.factor(ATE_f$TCICLVL2),
-  time_point = as.numeric(6),
-  desc_event = ATE_f$EVNTDESC
+  strata_data = ATE_f \%>\% select(SEX, MLIVER, TCICLVL2)
 )
 
-teal.oncology::Viewer(tbl)
+Viewer(tbl)
 
-teal.oncology::Viewer(tte_tbl_stream)
+Viewer(tte_tbl_stream)
 
-teal.oncology::compare_rtables(tbl, tte_tbl_stream)
+compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
 
+tbl[13,1]
+tte_tbl_stream[13,1]
 }
-
-To do ... 
-- create the teal module ... e.g. ...
-  https://github.roche.com/Rpackages/teal.oncology/blob/songy24-forestpl/R/tm_forestplot_tte.R#L314
 
 }

@@ -49,20 +49,16 @@
 #'
 time_to_event_table <- function(time_to_event, event,
                                 is_earliest_contr_event_death,
-                                arm, arm.ref, strata_data) {
+                                arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
+                                strata_data) {
   
   # Argument Checking #
   n <- length(time_to_event)
   if (length(event) != n) stop("event has incorrect length!")
   if (length(arm) != n) stop("arm has incorrect length!")
-  if (!(arm.ref %in% arm)) stop("arm.ref is not in arm!")
-  if (length(arm.ref)!=1) stop("reference arm should have length 1!")
-
+  
   if (is.null(strata_data)) stop("need strata_data")
   if (nrow(strata_data) != n) stop("strata_data wrong")
-  
-  
-  arm.comp <- setdiff(arm, arm.ref)
   
   ARM <- combine_arm(arm, arm.ref, arm.comp, arm.comp.combine = FALSE)
  

@@ -18,3 +18,16 @@ an object of class \code{shiny.tag}
 \description{
 The returned html object can be immediately used in shiny and rmarkdown
 }
+\examples{
+
+tbl <- rtable(
+  col.names = LETTERS[1:3],
+  format = "xx",
+  rrow("r1", 1,2,3),
+  rrow("r2", 4,3,2, indent = 1),
+  rrow("r3", indent = 2)
+)
+
+as_html(tbl)
+
+}
