@@ -100,6 +100,7 @@ srv_forest_response <- function(input, output, session, datasets) {
   output$forest_plot <- renderUI({
     
     ARS_filtered <- datasets$get_data("ARS", reactive = TRUE, filtered = TRUE)
+    ASL_filtered <- datasets$get_data("ASL", reactive = TRUE, filtered = TRUE)
     
     validate(need(!is.null(ARS_filtered) && is.data.frame(ARS_filtered), "no data left"))
     validate(need(nrow(ARS_filtered) > 0 , "no observations left"))
@@ -130,16 +131,16 @@ srv_forest_response <- function(input, output, session, datasets) {
     
     validate(need(nrow(ARS_f) > 0, "no data left"))
     
-    ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+    ASL_filtered$BAGED <- ifelse(ASL_filtered$BAGE <= median(ASL_filtered$BAGE), "<=median", ">median")
     
-    validate(need(all(subgroup_var %in% names(ASL)),
+    validate(need(all(subgroup_var %in% names(ASL_filtered)),
                   "some baseline risk variables are not valid"))
     
     
     
     group_by <- merge(
       ARS_f[c("USUBJID", "STUDYID")],
-      ASL[c("USUBJID", "STUDYID", subgroup_var)],
+      ASL_filtered[c("USUBJID", "STUDYID", subgroup_var)],
       all.x = TRUE, all.y = FALSE
     )
     

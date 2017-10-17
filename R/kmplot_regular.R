@@ -13,6 +13,7 @@
 #' @import ggplot2
 #' @import survminer
 #' 
+#' @importFrom survival strata
 #' @export
 #' 
 #' @examples 

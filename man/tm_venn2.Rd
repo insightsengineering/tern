@@ -6,7 +6,8 @@
 \usage{
 tm_venn2(label, dataname, bm1_var, bm2_var, bm1_var_choices = bm1_var,
   bm2_var_choices = bm2_var, plot_height = c(600, 200, 2000), alpha = c(1,
-  0, 1), pre_output = NULL, post_output = NULL)
+  0, 1), pre_output = shiny::tags$p("NAs get currently removed"),
+  post_output = NULL)
 }
 \description{
 Venn2 teal module
@@ -24,6 +25,7 @@ ASL <- do.call(data.frame, c(
   list(USUBJID = paste("ID", 1:N),STUDYID = "1"), sample_bm_data
 ))
 
+\dontrun{
 x <- teal::init(
   data = list(ASL = ASL),
   modules = root_modules(
@@ -33,4 +35,5 @@ x <- teal::init(
   )
 )   
 shinyApp(x$ui, x$server)     
+}
 }

@@ -55,10 +55,11 @@ venn2 <- function(x, y, xlab, ylab) {
   if (!is.logical(x) || !is.logical(y)) stop("x and y need to be boolean")
   
   # what to do with NA?
-  if (any(is.na(c(x, y)))) stop("can currently not deal with NA")
-
-  x <- factor(x, levels = c(FALSE, TRUE))
-  y <- factor(y, levels = c(FALSE, TRUE))
+  # if (any(is.na(c(x, y)))) stop("can currently not deal with NA")
+  sel <- !is.na(x) & !is.na(y)
+  
+  x <- factor(x, levels = c(FALSE, TRUE))[sel]
+  y <- factor(y, levels = c(FALSE, TRUE))[sel]
     
   abs <- table(x, y)
   per <- abs/length(x)
@@ -241,6 +242,7 @@ plot.venn2 <- function(x, ...) {
 #'   list(USUBJID = paste("ID", 1:N),STUDYID = "1"), sample_bm_data
 #' ))
 #' 
+#' \dontrun{
 #' x <- teal::init(
 #'   data = list(ASL = ASL),
 #'   modules = root_modules(
@@ -250,12 +252,14 @@ plot.venn2 <- function(x, ...) {
 #'   )
 #' )   
 #' shinyApp(x$ui, x$server)     
+#' }
 tm_venn2 <- function(label, dataname, bm1_var, bm2_var,
                      bm1_var_choices = bm1_var,
                      bm2_var_choices = bm2_var,
                      plot_height = c(600, 200, 2000),
                      alpha = c(1, 0, 1),
-                     pre_output = NULL, post_output = NULL) {
+                     pre_output = shiny::tags$p("NAs get currently removed"),
+                     post_output = NULL) {
   
   args <- as.list(environment())
   

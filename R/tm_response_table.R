@@ -24,7 +24,6 @@
 #'        paramcd_choices = unique(ARS$PARAMCD),
 #'        response = "CR",
 #'        response_choices = unique(ARS$AVALC),
-#'        subgroup_var = c("BAGED", "SEX", "BECOG"),
 #'        arm.ref = arms[1],
 #'        arm.ref_choices = arms,
 #'        arm.comp = arms[-1],
@@ -43,8 +42,6 @@ tm_response_table <- function(label,
                                arm.ref_choices = arm.ref,
                                arm.comp,
                                arm.comp_choices = arm.comp,
-                               subgroup_var,
-                               subgroup_var_choices = subgroup_var,
                                response,
                                response_choices = response,
                                plot_height = c(600, 200, 2000),
@@ -68,8 +65,6 @@ ui_response_table <- function(id, label,
                                arm.ref_choices = arm.ref,
                                arm.comp,
                                arm.comp_choices = arm.comp,
-                               subgroup_var,
-                               subgroup_var_choices = subgroup_var,
                                response = "OS",
                                response_choices = "OS",
                                plot_height,
@@ -107,8 +102,6 @@ srv_response_table <- function(input, output, session, datasets) {
     responses <- input$responses
     ref_arm <- input$ref_arm
     treat_arm <- input$treat_arm
-    
-    teal:::as.global(subgroup_var)
     
     validate(need(!is.null(treat_arm) && !is.null(ref_arm),
                   "need at least one treatment and one reference arm"))
