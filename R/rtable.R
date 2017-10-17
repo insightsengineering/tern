@@ -296,6 +296,19 @@ names.rtable <- function(x) {
 #' 
 #' 
 #' @export
+#' 
+#' @examples 
+#' 
+#' tbl <- rtable(
+#'   col.names = LETTERS[1:3],
+#'   format = "xx",
+#'   rrow("r1", 1,2,3),
+#'   rrow("r2", 4,3,2, indent = 1),
+#'   rrow("r3", indent = 2)
+#' )
+#' 
+#' as_html(tbl)
+#' 
 as_html <- function(x, ...) {
   UseMethod("as_html")  
 }
@@ -355,7 +368,11 @@ as_html.rrow <- function(x, ncol, ...) {
   }
   
   if (indent>0) {
-    cells[[1]]$attribs <- c(cells[[1]]$attribs, list(style=paste0("padding-left: ", indent*3, "ch")))
+    if (length(x) == 0) {
+      cells$attribs <- c(cells$attribs, list(style=paste0("padding-left: ", indent*3, "ch")))
+    } else {
+      cells[[1]]$attribs <- c(cells[[1]]$attribs, list(style=paste0("padding-left: ", indent*3, "ch")))
+    }
   }
   
   tags$tr(cells)
