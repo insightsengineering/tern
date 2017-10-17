@@ -20,23 +20,18 @@
 #' library(atezo.data)
 #' library(dplyr)
 #' library(survival)
-#' library(broom)
-#' library(stringr)
-#' library(readr)
-#' 
+#'  
 #' ASL <- atezo.data::asl(com.roche.cdt30019.go29436.re)
 #' ATE <- atezo.data::ate(com.roche.cdt30019.go29436.re)
 #' 
-#' tte_tbl_stream <- atezo.data::get_time_to_event_table(com.roche.cdt30019.go29436.re)
-#'
-#' ASL_f <- dplyr::filter(ASL,ITTFL == "Y")
-#'         
-#' ATE_f <- dplyr::filter(ATE,ITTFL == "Y" & PARAMCD == "OS")
+#' tte_tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
+#' Viewer(tte_tbl_stream)
+#' 
+#' ATE_f <- ATE %>% filter(ITTFL == "Y", PARAMCD == "OS")
 #' 
 #' tbl <- time_to_event_table(
 #'   time_to_event = ATE_f$AVAL,
-#'   event = ifelse(is.na(ATE_f$CNSR),NA,
-#'                  ifelse(ATE_f$CNSR==1,0,1)),
+#'   event = ATE_f$CNSR == 0,
 #'   arm = ATE_f$ARM1,
 #'   big_n_arm = ASL_f$ARM1,
 #'   arm.ref = "DUMMY C",
@@ -56,13 +51,14 @@
 #' teal.oncology::compare_rtables(tbl, tte_tbl_stream)
 #' 
 #' }
-#' 
-#' To do ... 
-#' - create the teal module ... e.g. ...
-#'   https://github.roche.com/Rpackages/teal.oncology/blob/songy24-forestpl/R/tm_forestplot_tte.R#L314
 #'
+time_to_event_table <- function(time_to_event, event, arm, arm.ref, arm.comp) {
+  
+  
+}
    
-time_to_event_table <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
+
+time_to_event_table2 <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
                                 strata1,strata2,strata3,time_point,desc_event) {
 
   # Argument Checking #
