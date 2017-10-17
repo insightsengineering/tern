@@ -9,14 +9,13 @@
 #' @return a named list with one element per row where each element contains the
 #'   data for the row
 #'
-#' @importFrom survival Surv survfit 
+#' @importFrom survival Surv survfit survdiff
 #' @export
 #' 
 #' 
 #' @examples 
 #' \dontrun{
 #' 
-#' library(teal.oncology)
 #' library(atezo.data)
 #' library(dplyr)
 #' library(survival)
@@ -33,40 +32,171 @@
 #'   time_to_event = ATE_f$AVAL,
 #'   event = ATE_f$CNSR == 0,
 #'   arm = ATE_f$ARM1,
-#'   big_n_arm = ASL_f$ARM1,
+#'   is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
 #'   arm.ref = "DUMMY C",
-#'   comp1.arm = "DUMMY B",
-#'   comp2.arm = "DUMMY A",
-#'   strata1 = as.factor(ATE_f$SEX),
-#'   strata2 = as.factor(ATE_f$MLIVER),
-#'   strata3 = as.factor(ATE_f$TCICLVL2),
-#'   time_point = as.numeric(6),
-#'   desc_event = ATE_f$EVNTDESC
+#'   strata_data = ATE_f %>% select(SEX, MLIVER, TCICLVL2)
 #' )
 #' 
-#' teal.oncology::Viewer(tbl)
+#' Viewer(tbl)
 #' 
-#' teal.oncology::Viewer(tte_tbl_stream)
+#' Viewer(tte_tbl_stream)
 #' 
-#' teal.oncology::compare_rtables(tbl, tte_tbl_stream)
+#' compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
 #' 
+#' tbl[13,1]
+#' tte_tbl_stream[13,1]
 #' }
 #'
-time_to_event_table <- function(time_to_event, event, arm, arm.ref, arm.comp) {
+time_to_event_table <- function(time_to_event, event,
+                                is_earliest_contr_event_death,
+                                arm, arm.ref, strata_data) {
   
-  
-}
-   
-
-time_to_event_table2 <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
-                                strata1,strata2,strata3,time_point,desc_event) {
-
   # Argument Checking #
   n <- length(time_to_event)
   if (length(event) != n) stop("event has incorrect length!")
   if (length(arm) != n) stop("arm has incorrect length!")
   if (!(arm.ref %in% arm)) stop("arm.ref is not in arm!")
   if (length(arm.ref)!=1) stop("reference arm should have length 1!")
+
+  if (is.null(strata_data)) stop("need strata_data")
+  if (nrow(strata_data) != n) stop("strata_data wrong")
+  
+  
+  arm.comp <- setdiff(arm, arm.ref)
+  
+  ARM <- combine_arm(arm, arm.ref, arm.comp, arm.comp.combine = FALSE)
+ 
+  N <- tapply(ARM, ARM, length)
+  
+  patients_with_event <- tapply(event, ARM, function(x) {
+    c(sum(x), sum(x)/length(x))
+  }, simplify = FALSE)
+  
+  early_death <- tapply(is_earliest_contr_event_death, ARM, sum)
+  
+  patients_wo_event <- tapply(event, ARM, function(x) {
+    c(sum(!x), sum(!x)/length(x))
+  }, simplify = FALSE)
+   
+  ## Time to Event (Months)
+  surv_km_fit <- survival::survfit(
+    formula = Surv(time_to_event, event) ~ ARM, 
+    conf.type="plain"
+  )
+  
+  srv_tbl <- summary(surv_km_fit)$table
+  med <- as.list(srv_tbl[, "median"])
+  ci <- Map(function(x,y)c(x,y), srv_tbl[, "0.95LCL"], srv_tbl[, "0.95UCL"])
+  
+  srv_qt_tbl <- quantile(surv_km_fit)$quantile
+  qnt <- Map(function(x,y)c(x,y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
+  rng <- lapply(split(data.frame(time_to_event, event), ARM), function(df) {
+    range(df$time_to_event[!df$event])
+  })
+  
+  
+  # Unstratified Analysis
+  ref_lvl <- levels(ARM)[1]
+  
+  strata_vars <- names(strata_data)
+  if (any(strata_vars %in% c('tte', 'evnt', "arm"))) stop("illegal stata variable names 'tte', 'evnt', 'arm'")
+    
+  df <- cbind(data.frame(tte = time_to_event, evnt = event, arm = ARM), strata_data)
+  
+  strata_formula <- as.formula(
+    paste("Surv(tte, evnt) ~ arm + strata(", paste(strata_vars, collapse = ","), ")")
+  )
+  
+  fits <- lapply(levels(ARM)[-1], function(lvl) {
+    dfi <- df[df$arm %in% c(ref_lvl, lvl), ]
+    dfi$arm <- factor(dfi$arm, levels = c(ref_lvl, lvl))
+    
+    list(
+      us_diff = survdiff(Surv(tte, evnt) ~ arm, rho=0, data = dfi),
+      us_ph = coxph(Surv(tte, evnt) ~ arm, data = dfi),
+      str_diff = survdiff(strata_formula, data = dfi),
+      str_ph = coxph(strata_formula, data = dfi)
+    )
+  })
+  
+  us_p <- lapply(fits, function(fit) {
+    ft <- fit$us_diff
+    pchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
+  })
+  
+  us_hr <- lapply(fits, function(fit) {
+    ft <- fit$us_ph
+    (summary(ft)$conf.int)[1,1]
+  })
+  
+  us_ci <- lapply(fits, function(fit) {
+    ft <- fit$us_ph
+    (summary(ft)$conf.int)[1,3:4]
+  })
+  
+
+  # Stratified Analysis
+  str_p <- lapply(fits, function(fit) {
+    ft <- fit$str_diff
+    pchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
+  })
+  
+  str_hr <- lapply(fits, function(fit) {
+    ft <- fit$str_ph
+    (summary(ft)$conf.int)[1,1]
+  })
+  
+  str_ci <- lapply(fits, function(fit) {
+    ft <- fit$str_ph
+    (summary(ft)$conf.int)[1,3:4]
+  })
+  
+  
+  lrrow <- function(row.name, l, ...) {
+    do.call(rrow, c(list(row.name = row.name, ...), l))
+  }
+  
+  rtable(
+    col.names = paste0(levels(ARM), "\n", paste0("(N=", N,")")),
+    format = "xx.xxx",
+    lrrow("Patients with event (%)", patients_with_event, format = "xx (xx.xx%)"),
+    rrow("Earliest contributing event", indent = 1),
+    lrrow("Death", early_death, indent = 2),
+    lrrow("Patients without event (%)", patients_wo_event, format = "xx (xx.xx%)"),
+    rrow(),
+    rrow("Time to Event (Months)"),
+    lrrow("Median", med, indent = 1),
+    lrrow("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
+    lrrow("25% and 75%−ile", qnt, indent = 1, format = "xx.x, xx.x"),
+    lrrow("Range", rng, indent = 1, format = "xx.x to xx.x"),
+    rrow(),
+    rrow("Unstratified Analysis"),
+    lrrow("p-value (log-rank)", c(list(NULL), us_p), indent = 1, format = "xx.xxx"),
+    rrow(),
+    lrrow("Hazard Ratio", c(list(NULL), us_hr), indent = 1, format = "xx.xx"),
+    lrrow("95% CI", c(list(NULL), us_ci), indent = 2, format = "(xx.xx, xx.xx)"),
+    rrow(),
+    rrow("Stratified Analysis"),
+    lrrow("p-value (log-rank)", c(list(NULL), str_p), indent = 1, format = "xx.xxx"),
+    rrow(),
+    lrrow("Hazard Ratio", c(list(NULL), str_hr), indent = 1, format = "xx.xx"),
+    lrrow("95% CI", c(list(NULL), str_ci), indent = 2, format = "(xx.xx, xx.xx)")
+  )
+  
+}
+
+
+
+
+
+
+
+
+
+time_to_event_table2 <- function(time_to_event,event,arm,big_n_arm,arm.ref,comp1.arm,comp2.arm,
+                                strata1,strata2,strata3,time_point,desc_event) {
+
+ 
 
   ARM <- factor(arm, levels = c(arm.ref, setdiff(arm, arm.ref)))
   
