@@ -172,13 +172,21 @@ surv_subgroup <- function(time_to_event, event,
 #' plot
 #' 
 #' @import grid
+#' @importFrom 
 #' @export
 plot.forest_survival <- function(x, ...) {
   
-  grid.newpage()
+
+  # library(forestplot)
+  #
+  # use the forstplot R package and 
+  # extract the information used for the forestplot function
+  # from the rtable
   
-  grid.text("Plot of a forst survival table")
   
+  #grid.newpage()
+  #grid.text("Plot of a forest survival table")
+
   
 }
 

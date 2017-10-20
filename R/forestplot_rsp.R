@@ -50,6 +50,9 @@
 #' Viewer(tbl)
 #' 
 #' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
+#' 
+#' plot(tbl)
+#' 
 #' }
 #' 
 #' 
@@ -154,6 +157,7 @@ glm_subgroup <- function(response, event,
   
   
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
+  
   
   tbl
  # Viewer(tbl)
