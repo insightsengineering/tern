@@ -29,10 +29,11 @@
 #' library(atezo.data)
 #' library(teal.oncology)
 #' library(PropCIs)
+#' library(forcats)
 #' 
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re) %>% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) %>% 
-#'        filter(PARAMCD == "BESRSPI")
+#'        filter(PARAMCD == "OVRSPI")
 #' 
 #' #If want to include missing as non-responders
 #' ARS$AVALC[ARS$AVALC==""] <- "NE"
@@ -76,9 +77,6 @@ response_table <- function(response,
                            value.resp       = c("CR","PR"),
                            value.nresp      = c("SD", "NON CR/PD", "PD", "NE"),
                            arm, 
-                           arm.ref, 
-                           arm.comp         = setdiff(arm, arm.ref),
-                           arm.comp.combine = T,
                            style = 1
                            ) {
   
@@ -93,9 +91,6 @@ response_table <- function(response,
   if (length(levels(factor(arm))) < 2){
     stop("Invalid arm variable selected. Minimum 2 unique levels required for arm variable.")
   }
-  if (!is.logical(arm.comp.combine)) {
-    stop("arm.comp.combine parameter must be logical value T or F")
-  }
   if (!style %in% c(1,2)) {
     stop("Style must equal to 1 or 2")
   }
@@ -103,13 +98,27 @@ response_table <- function(response,
   ############################
   # Format data for analysis #
   ############################
+  rsp_for_test   <- response %in% c(value.resp, value.nresp)
+  
+  #Reorder response/non-response values - controlled codelist first, NE last
+  resp_order <- c("CR", "PR", "SD", "NON CR/PD", "PD")
+  
+  value_reorder <- lapply(list(value.resp, value.nresp), function(x) {
+    getorder <- match(x, resp_order)
+    getna <- which(is.na(getorder))
+    getorder[getna] <- getna + 10
+    getorder[which(x == "NE")] <- 99
+    xreorder <- x[order(getorder)]
+    xreorder
+  })
+  
+  value.resp <- value_reorder[[1]]
+  value.nresp <- value_reorder[[2]]
   value_for_test <- c(value.resp, value.nresp)
-  arm_for_test   <- combine_arm(arm, arm.ref, arm.comp, arm.comp.combine)
-  rsp_for_test   <- response %in% value_for_test
   
   data_for_test <- subset(
-    data.frame(arm=arm_for_test, response),
-    (!is.na(arm_for_test) & rsp_for_test == TRUE)
+    data.frame(arm, response),
+    (!is.na(arm) & rsp_for_test == TRUE)
   )
   
   #Final arm and response data vectors for analysis
@@ -126,7 +135,7 @@ response_table <- function(response,
   rate_result <- Map(calc_rate, split(RESP, ARM), list(c(value.resp)))
   
   #Rate calculation by each response value
-  data_byvalue <- data.frame(rep(list(RESP), length(value.resp) + length(value.nresp)))
+  data_byvalue <- data.frame(rep(list(RESP), length(value_for_test)))
   names(data_byvalue) <- value_for_test
   rate_result_byvalue <- lapply(split(data_byvalue, ARM), function(x){
     Map(calc_rate, x, value_for_test)
@@ -136,7 +145,7 @@ response_table <- function(response,
   #Depending on number of comparison arms, parameters for output display settings
   #centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
   coltotal = length(rate_result)
-  if (arm.comp.combine || length(arm.comp) < 2) {
+  if (length(levels(ARM)) < 3) {
     colstart = 2; colsize = 2
   } else {
     colstart = 1; colsize = 1
@@ -148,7 +157,7 @@ response_table <- function(response,
   })
   names(diffor_result) <- names(rate_result)[c(colstart:coltotal)]
   #If more than one comparison arm (display aligned by column), remove numbers from first(reference) column
-  if (arm.comp.combine==FALSE & length(arm.comp) >= 2) {
+  if (length(levels(factor(ARM))) > 2) {
     diffor_result[[1]] <- rapply(diffor_result[[1]],function(x) NULL, how = "list")
   }
   
@@ -158,7 +167,7 @@ response_table <- function(response,
       Map(calc_diffor, rate_result_byvalue[[i]], rate_result_byvalue[[1]])
     })
     names(diffor_result_byvalue) <- names(rate_result_byvalue)[c(colstart:coltotal)]
-    if (arm.comp.combine == FALSE & length(arm.comp) >= 2) {
+    if (length(levels(factor(ARM))) > 2) {
       diffor_result_byvalue[[1]] <- rapply(diffor_result_byvalue[[1]], function(x) NULL, how = "list")
     }
   }
@@ -188,7 +197,7 @@ response_table <- function(response,
   out_resp_diffor <- list(
     do.call(rrow, c("Difference in Response Rates", lapply(diffor_result, print_diffor, "diff", colsize))),
     do.call(rrow, c("95% CI (Wald)", indent = 1,    lapply(diffor_result, print_ci, "diffci", colsize))),
-    do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxx", colspan = colsize)))),
+    do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize)))),
     rrow(),
     do.call(rrow, c("Odds Ratio",                   lapply(diffor_result, print_diffor, "or", colsize))),
     do.call(rrow, c("95% CI", indent = 1,           lapply(diffor_result, print_ci, "orci", colsize))),
@@ -196,6 +205,7 @@ response_table <- function(response,
   )
   
   #--- Section for each response value - counts and 95% CI ---#
+  #Display full labels for responses in controlled codelist 
   rsp_full_label <- list(CR          = "Complete Response (CR)",
                          PR          = "Partial Response (PR)",
                          SD          = "Stable Disease (SD)",
@@ -208,14 +218,16 @@ response_table <- function(response,
   out_byvalue_rate <- unlist(
     lapply(as.list(1:length(value_for_test)), function(i) {
       #Extract response value short name
-      label <- sapply(rate_result_byvalue, names)[i]
+      rspname <- sapply(rate_result_byvalue, names)[i]
+      if (rspname %in% names(rsp_full_label)) {
+        label <- unname(rsp_full_label[rspname])
+      } else {label <- rspname}
       
       #Display counts and percentage row
-      part1 <-list(do.call(rrow, c(unname(rsp_full_label[label]),
-                                   lapply(sapply(rate_result_byvalue, function(x) x[i]), print_np))))
+      part1 <-list(do.call(rrow, c(label,lapply(sapply(rate_result_byvalue, function(x) x[i]), print_np))))
       
       #If response value is NE, do not display 95% CI and difference in rate rows
-      if (label != "NE") {
+      if (rspname != "NE") {
         if (style == 2) {
           part2 <- list(
             do.call(rrow, c("95% CI", indent = 1,
@@ -226,7 +238,7 @@ response_table <- function(response,
             do.call(rrow, c(paste("95% CI for difference in", label, "rate"), indent = 1,
                             lapply(sapply(diffor_result_byvalue, function(x) x[i]), print_ci, "diffci", colsize))),
             do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", indent = 1,
-                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), function (x) rcell(x$diffp, format = "xx.xxx", colspan=colsize))))
+                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), function (x) rcell(x$diffp, format = "xx.xxxx", colspan=colsize))))
           )
         } else {
           part2 <- list(do.call(rrow, c("95% CI", indent = 1,

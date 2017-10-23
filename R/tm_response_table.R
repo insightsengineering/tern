@@ -1,5 +1,5 @@
 
-#' Forest Response Plot teal module
+#' Response Table teal module
 #' 
 #' @export
 #' 
@@ -8,13 +8,14 @@
 #' \donotrun{
 #' library(atezo.data)
 #' library(dplyr)
+#' library(forcats)
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
 #' options(teal_logging = FALSE)
 #' 
-#' arms <- unique(ASL$ARM)
+#' 
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ARS = ARS),
 #'   modules = root_modules(
@@ -24,12 +25,8 @@
 #'        label = "Response Table",
 #'        paramcd = "OVRSPI",
 #'        paramcd_choices = unique(ARS$PARAMCD),
-#'        response = "CR",
-#'        response_choices = unique(ARS$AVALC),
-#'        arm.ref = arms[1],
-#'        arm.ref_choices = arms,
-#'        arm.comp = arms[-1],
-#'        arm.comp_choices = arms
+#'        arm.var = "ARM",
+#'        arm.var_choices = c("ARM", "ARMCD")
 #'    )
 #'   )
 #' )   
@@ -38,17 +35,10 @@
 #'   
 #' } 
 tm_response_table <- function(label,
-                               paramcd,
+                               paramcd = "OVRSPI",
                                paramcd_choices = paramcd,
-                               arm_var = "ARM",
-                               arm_var_choices = arm_var,
-                               arm.ref,
-                               arm.ref_choices = arm.ref,
-                               arm.comp,
-                               arm.comp_choices = arm.comp,
-                               response,
-                               response_choices = response,
-                               plot_height = c(600, 200, 2000),
+                               arm.var = "ARM",
+                               arm.var_choices = arm.var,
                                pre_output = NULL, post_output = NULL) {
   
   args <- as.list(environment())
@@ -63,21 +53,13 @@ tm_response_table <- function(label,
 }
 
 ui_response_table <- function(id, label,
-                               paramcd,
+                               paramcd = "OVRSPI",
                                paramcd_choices = paramcd,
-                               arm_var = "ARM",
-                               arm_var_choices = arm_var,
-                               arm.ref,
-                               arm.ref_choices = arm.ref,
-                               arm.comp,
-                               arm.comp_choices = arm.comp,
-                               response = "OS",
-                               response_choices = "OS",
-                               plot_height,
+                               arm.var = "ARM",
+                               arm.var_choices = arm.var,
                                pre_output,
                                post_output) {
   ns <- NS(id)
-  
   
   
   standard_layout(
@@ -85,88 +67,126 @@ ui_response_table <- function(id, label,
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ARS")),
-      optionalSelectInput(ns("paramcd"), div("PARAMCD", tags$br(), helpText("some help text here")), paramcd_choices, paramcd, multiple = FALSE),
-      optionalSelectInput(ns("responses"), "Responses", response_choices, response, multiple = TRUE),
-      optionalSelectInput(ns("ref_arm"), "Reference Group", arm.ref_choices, arm.ref, multiple = TRUE),
-      optionalSelectInput(ns("treat_arm"), "Treatment Group", arm.comp_choices, arm.comp, multiple = TRUE)
+      optionalSelectInput(ns("paramcd"), div("PARAMCD", tags$br(), helpText("Select one type of response to analyze.")), 
+                          paramcd_choices, paramcd, multiple = FALSE),
+      selectInput(ns("responders"), "Responders", 
+                  choices = NULL, selected = NULL, multiple = TRUE),
+      checkboxInput(ns("incl_missing"), "Include missing as non-responders?", value = TRUE),
+      
+      optionalSelectInput(ns("var_arm"), div("Grouping Variable", tags$br(), helpText("Select one variable to use for grouping")), 
+                          arm.var_choices, arm.var, multiple = FALSE),
+      selectInput(ns("ref_arm"), "Reference Group", 
+                          choices = NULL, selected = NULL, multiple = TRUE),
+      helpText("Reference groups automatically combined into a single group if more than one value selected."),
+      selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
+      checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
     post_output = post_output
   )
-} 
+}
 
 srv_response_table <- function(input, output, session, datasets) {
+
+  # Deal With Reactivity/Inputs
+  ARS_filtered <- reactive({
+    ARS_f <- datasets$get_data("ARS", reactive = TRUE, filtered = TRUE)
+    ARS_f
+  })
+  
+  # Update UI choices depending on selection of previous options
+  observe({
+    ANL <- ARS_filtered()
+    updateSelectInput(session, "responders", 
+                      choices = unique(ANL$AVALC[ANL$PARAMCD == input$paramcd]),
+                      selected = c("CR", "PR"))
+    updateSelectInput(session, "responders", 
+                      choices = unique(ANL$AVALC[ANL$PARAMCD == input$paramcd]),
+                      selected = c("CR", "PR"))
+    updateSelectInput(session, "ref_arm", choices = unique(ANL[[input$var_arm]]),
+                      selected = ANL[[input$var_arm]] %>% unique %>% sort %>% "["(1))
+    updateSelectInput(session, "comp_arm", choices = unique(ANL[[input$var_arm]]),
+                      selected = ANL[[input$var_arm]] %>% unique %>% sort %>% "["(-1))
+    
+  })
+
   
   output$response_table <- renderUI({
     
-    
-    # Deal With Reactivity/Inputs
-    ARS_filtered <- datasets$get_data("ARS", reactive = TRUE, filtered = TRUE)
-    
+    ARS_filtered <- ARS_filtered()
+  
     paramcd <- input$paramcd
-    responses <- input$responses
+    responders <- input$responders
+    incl_missing <- input$incl_missing
+    var_arm <- input$var_arm
     ref_arm <- input$ref_arm
-    treat_arm <- input$treat_arm
+    comp_arm <- input$comp_arm
+    combine_arm <- input$combine_arm
     
     
     # Validate your input
     validate(need(!is.null(ARS_filtered) && is.data.frame(ARS_filtered), "no data left"))
     validate(need(nrow(ARS_filtered) > 0 , "no observations left"))
     
-    validate(need(!is.null(treat_arm) && !is.null(ref_arm),
-                  "need at least one treatment and one reference arm"))
-    validate(need(length(intersect(ref_arm, treat_arm)) == 0,
-                  "reference and treatment group cannot overlap"))
-    
-    validate(need(!is.null(responses) && all(responses %in% ARS_filtered$AVALC),
-                  "responses AVALC does not exist"))
-    
     validate(need(!is.null(paramcd) && paramcd %in% ARS_filtered$PARAMCD,
                   "PARAMCD does not exist"))
     
-    print("------- HELLO WORLD ----------")
+    validate(need(!is.null(comp_arm) && !is.null(ref_arm),
+                  "need at least one treatment and one reference arm"))
+    validate(need(length(intersect(ref_arm, comp_arm)) == 0,
+                  "reference and treatment group cannot overlap"))
+    
+    validate(need(!is.null(responders) && all(responders %in% ARS_filtered$AVALC),
+                  "responders AVALC does not exist"))
+    
+    # Assign inputs to global
     teal:::as.global(ARS_filtered)
-    teal:::as.global(responses)
-    teal:::as.global(ref_arm)
-    teal:::as.global(treat_arm)
     teal:::as.global(paramcd)
-    
-    ## Do your computations
-    
-    
-    ## you need to add the encodings
-    ARS_f <- ARS_filtered %>% filter(PARAMCD == paramcd, ARM %in% c(ref_arm, treat_arm))
-    validate(need(nrow(ARS_f) > 0, "no data left"))
-    
+    teal:::as.global(responders)
+    teal:::as.global(incl_missing)
+    teal:::as.global(var_arm)
+    teal:::as.global(ref_arm)
+    teal:::as.global(comp_arm)
+    teal:::as.global(combine_arm)
     
     
-    ARM <- factor(ARS_f[['ARM']])
+    # Get final analysis dataset
+    ANL <- ARS_filtered %>% filter(PARAMCD == paramcd, get(var_arm) %in% c(ref_arm, comp_arm))
+    validate(need(nrow(ANL) > 0, "no data left"))
     
-    #' library(forcats)
-    #' 
-    # # Make dummy B as a reference 
-    # fct_relevel(ARM, "DUMMY B")
-    # 
-    # # Collapse Factors
-    # fct_collapse(ARM, "DUMMY A/B" = c("DUMMY A", "DUMMY B"))
-    # 
-    # # rename a level
-    # fct_recode(ARM, "Treat ARM" = "DUMMY A")
-    # 
-    # # only want dummy a vs dummy b
-    # ARS_f2 <- ARS_f[ARM %in% c("DUMMY A", "DUMMY B"), ]
-    # ARS_f2$ARM  
+    #--- Manipulation of response and arm variables ---#
+    # Recode/filter responses if want to include missing as non-responders
+    if (incl_missing == TRUE) {
+      ANL$AVALC[ANL$AVALC==""] <- "NE"
+    } else {
+      ANL <- ANL %>% filter(AVALC != "")
+    }
+    
+    # Recode grouping according to ref_arm, comp_arm and combine_arm settings
+    arm1 <- factor(ANL[[var_arm]])
+  
+    if (length(ref_arm) > 1) {
+      refname <- paste0(ref_arm, collapse = "/")
+      arm2 <- fct_collapse(arm1, refs = ref_arm)
+      levels(arm2)[which(levels(arm2)=="refs")] <- refname
+    } else {
+      arm2 <- fct_relevel(arm1, ref_arm)
+    }
+    
+    if (length(comp_arm) > 1 && combine_arm == TRUE) {
+      compname <- paste0(comp_arm, collapse = "/")
+      ARM <- fct_collapse(arm2, comps = comp_arm)
+      levels(ARM)[which(levels(ARM)=="comps")] <- compname
+    } else {
+      ARM <- arm2
+    }
 
-    
     tbl <- response_table(
-      response = ARS_f$AVALC,
-      value.resp = responses,
-      value.nresp = setdiff(ARS_f$AVALC, responses),
-      arm = ARM,
-      arm.ref = ref_arm,
-      arm.comp = treat_arm,
-      arm.comp.combine = TRUE
+      response = ANL$AVALC,
+      value.resp = responders,
+      value.nresp = setdiff(ANL$AVALC, responders),
+      arm = ARM
     )
     
     as_html(tbl)
