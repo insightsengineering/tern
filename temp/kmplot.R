@@ -1,7 +1,7 @@
 
+(cases)
 
-
-
+# control functions
 settings_coxph <- function(
   ties = "exact",
   ...
@@ -54,7 +54,8 @@ ANL <- ATE %>%
 ANL$ARM
 
 fit <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL)
-plot(fit)
+
+survival:::plot.survfit(fit, mark.time = TRUE)
 
 
 df <- data.frame(
@@ -64,7 +65,6 @@ df <- data.frame(
   strata = rep(names(fit$strata), fit$strata)
 )
 df_s <- split(df, df$strata)
-
 
 
 col_pal <- col_factor("Set1", domain = names(df_s))
@@ -92,7 +92,7 @@ Map(function(x, col) {
     x = c(0, rep(x$time, each = 2)),
     y = c(rep(c(1, head(x$surv, -1)), each = 2), tail(x$surv, 1)),
     default.units = "native",
-    gp = gpar(col = col)
+    gp = gpar(col = col, lwd = 2)
   )
 }, df_s, col_pal(names(df_s)))
 
