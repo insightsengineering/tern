@@ -22,30 +22,32 @@
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' surv_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
-#' Viewer(surv_tbl_stream )
+#' resp_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
+#' Viewer(resp_tbl_stream )
 #' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
+#'                  filter(ITTWTFL == "Y") %>% 
+#'                  filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
+#'                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
 #' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
 #'
 #' ARS_f_resp <- ARS_f %>% filter(AVALC %in% c("CR", "PR"))
 #' ARS_f_IC1 <- ARS_f %>% filter(TCLEVEL == "1")
 #'
-#' group_by <- merge(
-#'  ARS_f[c("USUBJID", "STUDYID")],
-#'  ASL_f[c("USUBJID", "STUDYID", "TCLEVEL", "ICLEVEL", "TC3IC3")],
-#'  all.y = TRUE, all.x = FALSE
-#' )
+#' 
+#'group_by <- ARS_f[c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3")]
+#' names(group_by) <- c(Reduce(cbind,lapply(group_by, function(x){attr(x,"label")})))
 #' 
 #' head(group_by)
 #' 
-#' tbl <- glm_subgroup(
+#' # Dummy C First (comparison in survfit and glm)
+#' arm <- fct_relevel(ATE_f$ARM, "DUMMY C")
+#' 
+#' tbl <- forest_rsp(
 #'           response = ARS_f$AVAL,
 #'           event = ARS_f$AVALC %in% c("CR","PR"),
-#'           arm = ARS_f$ARM, 
-#'           group_by = group_by[, -c(1,2), drop=FALSE],
-#'           arm.ref = "DUMMY C",
-#'           arm.comp = "DUMMY A"
+#'           arm = arm, 
+#'           group_by = group_by[, -c(1,2), drop=FALSE]
 #' )
 #' Viewer(tbl)
 #' 
@@ -57,9 +59,8 @@
 #' 
 #' 
 #'   
-glm_subgroup <- function(response, event,
-                         arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
-                         group_by, covariARSs = NULL) {
+forest_rsp <- function(response, event,
+                         arm, group_by, covariARSs = NULL) {
   
   # argument checking
   n <- length(response)
@@ -69,15 +70,7 @@ glm_subgroup <- function(response, event,
   if (nrow(group_by) != n) stop("group_by has wrong number of rows")
   
   
-  arm_for_model <- combine_arm(arm, arm.ref, arm.comp)
-  
-  glm_data <- subset(
-    data.frame(
-      response,
-      event,
-      arm = arm_for_model
-    ), !is.na(arm_for_model)
-  )
+  glm_data <- data.frame(response, event,arm)
   
   #head(glm_data)
   
@@ -218,7 +211,7 @@ glm_results <- function(data){
 #' 
 #' @export
 #' 
-#' @inheritParams glm_subgroup
+#' @inheritParams forest_rsp
 #' @param ASL asl data frame
 #' @param ARS data frame
 #' 
@@ -236,14 +229,14 @@ glm_results <- function(data){
 #' 
 #' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 #' 
-#' glm_subgroup_ADAM(
+#' forest_rsp_ADAM(
 #'   ASL, ARS,
 #'   groupvar = c("SEX", "BECOG", "COUNTRY"),
 #'   arm.ref = "DUMMY A", arm.comp = "DUMMY B"
 #' )
 #'   
 #' }
-glm_subgroup_ADAM <- function(ASL, ARS,
+forest_rsp_ADAM <- function(ASL, ARS,
                               outcome = "Overall Survival",
                               groupvar,
                               arm.ref,
@@ -268,7 +261,7 @@ glm_subgroup_ADAM <- function(ASL, ARS,
     all.x = TRUE, all.y = FALSE
   )
   
-  glm_subgroup(
+  forest_rsp(
     time_to_event = ARS_f[[time_to_event.var]],
     event = if(negARS.event.var) !ARS_f[[event.var]] else ARS_f[[event.var]],
     arm = ARS_f[[arm.var]], 
