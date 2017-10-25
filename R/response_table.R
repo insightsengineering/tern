@@ -237,7 +237,7 @@ response_table <- function(response,
                             lapply(sapply(diffor_result_byvalue, function(x) x[i]), print_diffor, "diff", colsize))),
             do.call(rrow, c(paste("95% CI for difference in", label, "rate"), indent = 1,
                             lapply(sapply(diffor_result_byvalue, function(x) x[i]), print_ci, "diffci", colsize))),
-            do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", indent = 1,
+            do.call(rrow, c("p-value", indent = 1,
                             lapply(sapply(diffor_result_byvalue, function(x) x[i]), function (x) rcell(x$diffp, format = "xx.xxxx", colspan=colsize))))
           )
         } else {
