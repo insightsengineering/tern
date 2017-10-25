@@ -21,6 +21,8 @@
 #' library(atezo.data)
 #' library(dplyr)
 #' library(survival)
+#' library(forcats)
+#' library(forestplot) 
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' 
@@ -30,34 +32,43 @@
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
-#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% 
+#'              filter(ITTWTFL == "Y") %>% 
+#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
+#'              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARM"))
+#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% 
+#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>% 
+#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "BECOG"))
 #' 
-#' 
-#' group_by <- merge(
-#'  ATE_f[c("USUBJID", "STUDYID")],
-#'  ASL_f[c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE")],
-#'  all.y = TRUE, all.x = FALSE
-#' )
-#' 
-#' group_by$MLIVER <- factor(group_by$MLIVER, levels(factor(group_by$MLIVER))[c(2, 1)])
-#' group_by$TCICLVL2 <- factor(group_by$TCICLVL2, levels(factor(group_by$TCICLVL2))[c(2, 1)])
-#' group_by$AGE4CAT <- factor(group_by$AGE4CAT, levels(factor(group_by$AGE4CAT))[c(1, 3, 4, 2)])
-#' group_by$RACE <- factor(group_by$RACE, levels(factor(group_by$RACE))[c(2, 3, 6, 1, 4, 5)])
+#'
+#' group_by <- left_join(ASL_f, ATE_f %>% select(c("USUBJID", "STUDYID")))
+#' old_grp_names <- names(group_by) 
+#' new_grp_names <- c(Reduce(cbind,lapply(group_by, function(x){
+#'      if (is.null(attr(x,"label"))) NA else attr(x,"label")
+#'       })
+#'      ))
+#' names(group_by) <- ifelse (is.na (new_grp_names), old_grp_names, new_grp_names)
 #' 
 #' head(group_by)
 #' 
-#' tbl <- surv_subgroup(
+#' # Dummy C First (comparison in survfit and glm)
+#' arm <- fct_relevel(ATE_f$ARM, "DUMMY C")
+#' 
+#' # Collapse Factors
+#' # fct_collapse(arm, "ARM A/B" = c("ARM A", "ARM B"))
+#' # rename a level
+#' # arm <- fct_recode(ATE_f$ARM, "Treat ARM" = "DUMMY A")
+#' 
+#' tbl <- forest_tte(
 #'    time_to_event = ATE_f$AVAL,
 #'    event = ATE_f$CNSR == 0,
-#'    arm = ATE_f$ARM, 
 #'    group_by = group_by[, -c(1,2), drop=FALSE],
-#'    arm.ref = "DUMMY C",
-#'    arm.comp = "DUMMY A"
+#'    arm = arm
 #' )
+#' tbl <- forest_tte_table(tbl)
 #' tbl
 #' Viewer(tbl)
-#' 
+#' fplot <- forest_tte_plot(tbl)
 #' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
 #' 
 #' plot(tbl)
@@ -65,10 +76,9 @@
 #' 
 #' }
 #' 
-#' # surv_subgroup(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
-surv_subgroup <- function(time_to_event, event, 
-                          arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
-                          group_by, covariates = NULL) {
+#' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
+forest_tte <- function(time_to_event, event, 
+                          arm, group_by, covariates = NULL) {
   
   # argument checking
   n <- length(time_to_event)
@@ -78,15 +88,10 @@ surv_subgroup <- function(time_to_event, event,
   if (nrow(group_by) != n) stop("group_by has wrong number of rows")
   if (any(grepl(".", group_by, fixed = TRUE))) stop("no . are allowed in the group_by variable names")
   
-  arm_for_model <- combine_arm(arm, arm.ref, arm.comp)
-  
-  cox_data <- subset(
-    data.frame(
+  cox_data <- data.frame(
       time_to_event,
       event,
-      arm = arm_for_model
-    ), !is.na(arm_for_model)
-  )
+      arm = arm)
   
   # split data into a tree for data
   # where each leaf is a data.frame with 
@@ -95,6 +100,8 @@ surv_subgroup <- function(time_to_event, event,
     list(ALL = list(ALL = cox_data)),
     lapply(group_by, function(var) {
       sub_data <- cbind(cox_data, var)
+      sub_data <- subset(sub_data, var != "")
+      sub_data$var <- as.factor(as.character(sub_data$var))
       lapply(split(sub_data, sub_data$var), function(x){
         x[,-4]
       })
@@ -115,7 +122,10 @@ surv_subgroup <- function(time_to_event, event,
   results_survival2 <- unlist(results_survival, recursive = FALSE)
   X <- Reduce(rbind, results_survival2)
   row.names(X) <-names(results_survival2)
+  X
+}
 
+forest_tte_table <- function(X){
   additonal_args <- list(
     col.names = c("Total n",
                   "n", "events", "Median Events\n(Months)",
@@ -159,33 +169,54 @@ surv_subgroup <- function(time_to_event, event,
       recursive = FALSE)
   )
   
-  
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
 
   # Viewer(tbl)
   class(tbl) <- c("forest_survival", "forest_table", class(tbl))
 
   tbl
-}
+  }
+
 
 
 #' plot
 #' 
-#' @import grid
-#' @importFrom 
+#' @importFrom grid forestplot
 #' @export
-plot.forest_survival <- function(x, ...) {
+forest_tte_plot <- function(x) {
   
-
-  # library(forestplot)
-  #
-  # use the forstplot R package and 
-  # extract the information used for the forestplot function
-  # from the rtable
+  cochrane_from_rmeta <- 
+    structure(list(
+      mean  = c(NA, NA, X$cox_hr), 
+      lower = c(NA, NA, X$cox_lcl),
+      upper = c(NA, NA, X$cox_ucl)),
+      .Names = c("hr", "lower", "upper"), 
+      row.names = c(NA, -nrow(X)-2), 
+      class = "data.frame")
   
+  i <- regexpr(".", row.names(X), fixed = TRUE)
+  rname <- substr(row.names(X), 1, i-1)
+  catname <- substr(row.names(X), i+1, nchar(row.names(X)))
   
-  #grid.newpage()
-  #grid.text("Plot of a forest survival table")
+  tabletext<-cbind(
+    
+    c("", "", catname),
+    c("Total", "(n)", c(X$km_comp_n + X$km_ref_n)),
+    # c("n", "(Reference)", X$km_ref_n),
+    # c("Events", "(Reference)", X$km_ref_event),
+    # c("Median (Month)", "(Reference)", round(X$km_ref_median,2)),
+    # c("n", "(Treatment)", X$km_comp_n),
+    # c("Events", "(Treatment)", X$km_comp_event),
+    # c("Median (Month)", "(Treatment)", round(X$km_comp_median,2)),
+    c("Hazard", "Ratio", round(X$cox_hr, 2)),
+    c("95%", "C.I", paste(round(X$cox_lcl, 2), ", ",round(X$cox_ucl, 2))))
+  
+  forestplot(tabletext, 
+             cochrane_from_rmeta,new_page = TRUE,
+             is.summary=c(TRUE,TRUE,rep(FALSE,nrow(X))),
+             clip=c(0.1,2.5),
+             graphwidth = unit(8, "cm") ,
+             col=fpColors(box="royalblue",line="darkblue", summary="royalblue"))
 
   
 }
@@ -256,7 +287,7 @@ survival_results <- function(data){
 #' 
 #' @export
 #' 
-#' @inheritParams surv_subgroup
+#' @inheritParams forest_tte
 #' @param ASL asl data frame
 #' @param ATE data frame
 #' 
@@ -274,14 +305,14 @@ survival_results <- function(data){
 #' 
 #' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 #' 
-#' surv_subgroup_ADAM(
+#' forest_tte_ADAM(
 #'   ASL, ATE,
 #'   groupvar = c("SEX", "BECOG", "COUNTRY"),
 #'   arm.ref = "DUMMY A", arm.comp = "DUMMY B"
 #' )
 #'   
 #' }
-surv_subgroup_ADAM <- function(ASL, ATE,
+forest_tte_ADAM <- function(ASL, ATE,
                                outcome = "Overall Survival",
                                groupvar,
                                arm.ref,
@@ -306,7 +337,7 @@ surv_subgroup_ADAM <- function(ASL, ATE,
     all.x = TRUE, all.y = FALSE
   )
   
-  surv_subgroup(
+  forest_tte(
     time_to_event = ATE_f[[time_to_event.var]],
     event = if(negate.event.var) !ATE_f[[event.var]] else ATE_f[[event.var]],
     arm = ATE_f[[arm.var]], 
