@@ -69,13 +69,13 @@ arm <- fct_relevel(ATE_f$ARM, "DUMMY C")
 # rename a level
 # arm <- fct_recode(ATE_f$ARM, "Treat ARM" = "DUMMY A")
 
-tbl <- forest_tte(
+X <- forest_tte(
    time_to_event = ATE_f$AVAL,
    event = ATE_f$CNSR == 0,
    group_by = group_by[, -c(1,2), drop=FALSE],
    arm = arm
 )
-tbl <- forest_tte_table(tbl)
+tbl <- forest_tte_table(X)
 tbl
 Viewer(tbl)
 fplot <- forest_tte_plot(tbl)
