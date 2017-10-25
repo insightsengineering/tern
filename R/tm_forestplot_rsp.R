@@ -20,7 +20,7 @@
 #'     tm_variable_browser(),
 #'     tm_data_table(),
 #'     tm_forest_response(
-#'        label = "Forest Survival",
+#'        label = "Forest Response",
 #'        paramcd = "OVRSPI",
 #'        paramcd_choices = unique(ARS$PARAMCD),
 #'        response = "CR",
@@ -127,7 +127,8 @@ srv_forest_response <- function(input, output, session, datasets) {
     
     
     ## you need to add the encodings
-    ARS_f <- ARS_filtered %>% filter(PARAMCD == paramcd, ARM %in% c(ref_arm, treat_arm))
+    ARS_f <- ARS_filtered %>% filter(PARAMCD == paramcd) %>%
+      select(c("STUDYID", "USUBJID", "PARAMCD", "AVAL", "AVALC"))
     
     validate(need(nrow(ARS_f) > 0, "no data left"))
     
@@ -136,21 +137,30 @@ srv_forest_response <- function(input, output, session, datasets) {
     validate(need(all(subgroup_var %in% names(ASL_filtered)),
                   "some baseline risk variables are not valid"))
     
+    ASL_f <- ASL_filtered %>% 
+      filter(ARM %in% c(ref_arm, treat_arm)) %>% 
+      select("STUDYID", "USUBJID", "ARM", subgroup_var) 
     
+    validate(need(all(subgroup_var %in% names(ASL_f)),
+                  "some subgroup variables are not valid"))
+    ARS_f <- inner_join(ASL_f, ARS_f, by = c("STUDYID","USUBJID"))
     
-    group_by <- merge(
-      ARS_f[c("USUBJID", "STUDYID")],
-      ASL_filtered[c("USUBJID", "STUDYID", subgroup_var)],
-      all.x = TRUE, all.y = FALSE
-    )
+    validate(need(all(c(ref_arm, treat_arm) %in% ARS_f$ARM), "data needs to include at least one patient from the reference and comparison arm"))  
     
-    tbl <- glm_subgroup(
+    group_by <- ARS_f %>% select(c("USUBJID", "STUDYID", subgroup_var))
+    head(group_by)
+    ## add
+    ## the arm combine & filtering and converting to a factor here...paste0(ref_arm, collapse = "/")
+    ## using forcats
+    arm <- fct_collapse(ARS_f$ARM, ref_arm = ref_arm, treat_arm = treat_arm)
+    arm <- ifelse (arm == "ref_arm", paste0(ref_arm, collapse = "/"), paste0(treat_arm, collapse = "/")) 
+    arm <- fct_relevel(arm, paste0(ref_arm, collapse = "/"))
+    
+    tbl <- forest_rsp(
       response = ARS_f$AVAL,
       event = ARS_f$AVALC %in% response,
-      arm = ARS_f$ARM, 
-      group_by = group_by[, -c(1,2), drop=FALSE],
-      arm.ref = ref_arm,
-      arm.comp = treat_arm
+      arm = arm, 
+      group_by = group_by[, -c(1,2), drop=FALSE]
     )
     
     as_html(tbl)
