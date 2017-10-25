@@ -97,10 +97,8 @@ srv_response_table <- function(input, output, session, datasets) {
   
   # Update UI choices depending on selection of previous options
   observe({
-    ANL <- ARS_filtered()
-    updateSelectInput(session, "responders", 
-                      choices = unique(ANL$AVALC[ANL$PARAMCD == input$paramcd]),
-                      selected = c("CR", "PR"))
+    input$paramcd
+    ANL <- datasets$get_data("ARS", filtered = FALSE, reactive = FALSE)
     updateSelectInput(session, "responders", 
                       choices = unique(ANL$AVALC[ANL$PARAMCD == input$paramcd]),
                       selected = c("CR", "PR"))

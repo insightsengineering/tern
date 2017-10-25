@@ -197,7 +197,7 @@ response_table <- function(response,
   out_resp_diffor <- list(
     do.call(rrow, c("Difference in Response Rates", lapply(diffor_result, print_diffor, "diff", colsize))),
     do.call(rrow, c("95% CI (Wald)", indent = 1,    lapply(diffor_result, print_ci, "diffci", colsize))),
-    do.call(rrow, c("p-value (Cochran-Mantel-Haenszel)", lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize)))),
+    do.call(rrow, c("p-value", lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize)))),
     rrow(),
     do.call(rrow, c("Odds Ratio",                   lapply(diffor_result, print_diffor, "or", colsize))),
     do.call(rrow, c("95% CI", indent = 1,           lapply(diffor_result, print_ci, "orci", colsize))),
