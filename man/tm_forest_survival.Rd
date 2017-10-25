@@ -5,8 +5,8 @@
 \title{Forest Survival Plot teal module}
 \usage{
 tm_forest_survival(label, arm.ref, arm.ref_choices = arm.ref, arm.comp,
-  arm.comp_choices = arm.comp, baseline_risk,
-  baseline_risk_choices = baseline_risk, endpoint = "OS",
+  arm.comp_choices = arm.comp, subgroup_var,
+  subgroup_var_choices = subgroup_var, endpoint = "OS",
   endpoint_choices = "OS", plot_height = c(600, 200, 2000),
   pre_output = NULL, post_output = NULL)
 }
@@ -24,17 +24,17 @@ library(survival)
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
+options(teal_logging = FALSE)
+
 arms <- unique(ASL$ARM)
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),
   modules = root_modules(
-    tm_variable_browser(),
-    tm_data_table(),
     tm_forest_survival(
        label = "Forest Survival",
        endpoint = "OS",
        endpoint_choices = unique(ATE$PARAMCD),
-       baseline_risk = c("BAGED", "SEX", "BECOG"),
+       subgroup_var = c("BAGED", "SEX", "BECOG"),
        arm.ref = arms[1],
        arm.ref_choices = arms,
        arm.comp = arms[-1],

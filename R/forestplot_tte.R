@@ -59,13 +59,13 @@
 #' # rename a level
 #' # arm <- fct_recode(ATE_f$ARM, "Treat ARM" = "DUMMY A")
 #' 
-#' tbl <- forest_tte(
+#' X <- forest_tte(
 #'    time_to_event = ATE_f$AVAL,
 #'    event = ATE_f$CNSR == 0,
 #'    group_by = group_by[, -c(1,2), drop=FALSE],
 #'    arm = arm
 #' )
-#' tbl <- forest_tte_table(tbl)
+#' tbl <- forest_tte_table(X)
 #' tbl
 #' Viewer(tbl)
 #' fplot <- forest_tte_plot(tbl)
@@ -78,7 +78,7 @@
 #' 
 #' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
 forest_tte <- function(time_to_event, event, 
-                          arm, group_by, covariates = NULL) {
+                       arm, group_by, covariates = NULL) {
   
   # argument checking
   n <- length(time_to_event)
@@ -89,9 +89,9 @@ forest_tte <- function(time_to_event, event,
   if (any(grepl(".", group_by, fixed = TRUE))) stop("no . are allowed in the group_by variable names")
   
   cox_data <- data.frame(
-      time_to_event,
-      event,
-      arm = arm)
+    time_to_event,
+    event,
+    arm = arm)
   
   # split data into a tree for data
   # where each leaf is a data.frame with 
@@ -117,7 +117,7 @@ forest_tte <- function(time_to_event, event,
     })
   })
   
-
+  
   # reduce results into a table
   results_survival2 <- unlist(results_survival, recursive = FALSE)
   X <- Reduce(rbind, results_survival2)
@@ -125,6 +125,8 @@ forest_tte <- function(time_to_event, event,
   X
 }
 
+
+#' @export
 forest_tte_table <- function(X){
   additonal_args <- list(
     col.names = c("Total n",
@@ -144,7 +146,7 @@ forest_tte_table <- function(X){
         
         i <- regexpr(".", rname, fixed = TRUE)
         header_row_name <- c(substr(rname, 1, i-1), substring(rname, i+1))
-
+        
         is_new_category <- header_row_name[1] != last_header
         last_header <<- header_row_name[1]
         
@@ -170,18 +172,17 @@ forest_tte_table <- function(X){
   )
   
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
-
+  
   # Viewer(tbl)
   class(tbl) <- c("forest_survival", "forest_table", class(tbl))
-
+  
   tbl
-  }
-
+}
 
 
 #' plot
 #' 
-#' @importFrom grid forestplot
+#' @importFrom forestplot forestplot
 #' @export
 forest_tte_plot <- function(x) {
   
@@ -217,14 +218,90 @@ forest_tte_plot <- function(x) {
              clip=c(0.1,2.5),
              graphwidth = unit(8, "cm") ,
              col=fpColors(box="royalblue",line="darkblue", summary="royalblue"))
-
+  
   
 }
 
 
 
-   # survival_results(data_for_value[[1]])
-   # data = data_for_value[[1]]
+forest_tte_plot2 <- function(x) {
+  
+  library(grid)
+
+  padx <- unit(1, "lines")
+  
+  vp <- vpTree(
+    parent = viewport(
+      name = "forestplot",
+      layout = grid.layout(
+        nrow = 1, ncol = 5,
+        widths = unit.c(
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xx.xx") + 2 * padx,
+          stringWidth("xx.xx - xx.xx") + 2 * padx,
+          unit(1, "null")
+        )
+      )
+    ),
+    children = vpList(
+      viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
+      viewport(name = "col_2", layout.pos.col=2, layout.pos.row=1),
+      viewport(name = "col_3", layout.pos.col=3, layout.pos.row=1),
+      viewport(name = "col_4", layout.pos.col=4, layout.pos.row=1),
+      dataViewport(name = "col_5", layout.pos.col=5, layout.pos.row=1,
+                   xData = c(0,1), yData = c(0,1))
+    )
+  )
+  
+  
+  grid.newpage()
+  pushViewport(plotViewport(margins = c(4,4,4,4)))
+  grid.rect()
+  
+  pushViewport(vp)
+  
+  grid.ls(viewports = TRUE)
+  seekViewport("forestplot")
+
+  # need once
+  grid.rect(vp = vpPath("col_5"), gp = gpar(fill = "gray80"))
+  grid.xaxis(vp = vpPath("col_5"))
+  grid.lines(x = unit(c(.5,.5), "native"), y = unit(c(0,1), "npc"), vp = vpPath("col_5"),
+             gp = gpar(lty = 2))  
+  
+  # need for every row
+  draw_row(1, 9, "AAA", "BBB", "xx.xx", "xx.xx - xx.xx", c(.5, .2, .7))
+  
+  draw_row(2, 9, "TTT", "BBB", "xx.xx", "xx.xx - xx.xx", c(.2, .1, .4), TRUE)
+  draw_row(3, 9, "iii", "BBB", "xx.xx", "xx.xx - xx.xx", c(.6, .3, .7))
+  draw_row(4, 9, "", "fsdsfd", "xx.xx", "xx.xx - xx.xx", c(.8, .7, .9))
+  draw_row(5, 9, "", "fsdd", "xx.xx", "xx.xx - xx.xx", c(.45, .3, .6))
+  
+  
+}
+
+
+draw_row <- function(i,n, x1, x2, x3, x4, x5, add_hline = FALSE) {
+  ypos <- unit(1 - i/(n+1), "npc")
+  grid.text(x1, y = ypos, vp = vpPath("col_1"))
+  grid.text(x2, y = ypos, vp = vpPath("col_2"))
+  grid.text(x3, y = ypos, vp = vpPath("col_3"))
+  grid.text(x4, y = ypos, vp = vpPath("col_4"))
+  
+  grid.lines(x = unit(x5[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_5"))  
+  grid.circle(x = unit(x5[1], "native"), y = ypos, r = unit(1/3, "lines"), vp = vpPath("col_5"),
+              gp = gpar(fill = "black"))
+  
+  
+  if (add_hline) {
+    grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"))
+  }
+  
+}
+
+# survival_results(data_for_value[[1]])
+# data = data_for_value[[1]]
 survival_results <- function(data){
   
   # KM Estimate
@@ -258,7 +335,7 @@ survival_results <- function(data){
     km_ref_median <- ifelse (is.na(km_sum[1, 7]), -999, km_sum[1, 7])
     km_comp_median <- ifelse (is.na(km_sum[2, 7]), -999, km_sum[2, 7])
   } else stop("Invalid Arm Counts")
-    
+  
   # Cox Model
   # Three Scenarios: 
   # 1. both arms have events; 
@@ -276,11 +353,11 @@ survival_results <- function(data){
     cox_ucl  <- -999
     cox_pval <- -999
   }
-
+  
   surv_table <- data.frame(km_ref_n, km_comp_n, 
-                         km_ref_event, km_comp_event, 
-                         km_ref_median, km_comp_median, 
-                         cox_hr, cox_lcl, cox_ucl)
+                           km_ref_event, km_comp_event, 
+                           km_ref_median, km_comp_median, 
+                           cox_hr, cox_lcl, cox_ucl)
 }
 
 #' Forest Plot Numbers for Survival data with ADAM data structure
@@ -313,13 +390,13 @@ survival_results <- function(data){
 #'   
 #' }
 forest_tte_ADAM <- function(ASL, ATE,
-                               outcome = "Overall Survival",
-                               groupvar,
-                               arm.ref,
-                               arm.comp,
-                               arm.var = "ARM",
-                               time_to_event.var = "AVAL",
-                               event.var = "CNSR", negate.event.var = TRUE) {
+                            outcome = "Overall Survival",
+                            groupvar,
+                            arm.ref,
+                            arm.comp,
+                            arm.var = "ARM",
+                            time_to_event.var = "AVAL",
+                            event.var = "CNSR", negate.event.var = TRUE) {
   
   ATE %needs% c("USUBJID", "STUDYID", "PARAM", time_to_event.var, event.var)
   ASL %needs% c("USUBJID", "STUDYID", groupvar, arm.var)
@@ -330,7 +407,7 @@ forest_tte_ADAM <- function(ASL, ATE,
   ATE_f <- ATE %>% filter(PARAM == outcome)
   
   if (nrow(ATE_f) <= 0) stop("ATE data left after filtering")
-   
+  
   group_by <- merge(
     ATE_f[c("USUBJID", "STUDYID")],
     ASL[c("USUBJID", "STUDYID", groupvar)],

@@ -4,9 +4,10 @@
 \alias{tm_time_to_event_table}
 \title{Time To Event Table teal module}
 \usage{
-tm_time_to_event_table(label, arm.ref, arm.ref_choices = arm.ref, strata_var,
-  strata_var_choices = strata_var, endpoint = "OS",
-  endpoint_choices = "OS", pre_output = NULL, post_output = NULL)
+tm_time_to_event_table(label, arm.ref, arm.ref_choices = arm.ref, arm.comp,
+  arm.comp_choices = arm.comp, strata_var, strata_var_choices = strata_var,
+  endpoint = "OS", endpoint_choices = "OS", pre_output = NULL,
+  post_output = NULL)
 }
 \description{
 Time To Event Table teal module
@@ -29,12 +30,14 @@ x <- teal::init(
     tm_variable_browser(),
     tm_data_table(),
     tm_time_to_event_table(
-       label = "Forest Survival",
+       label = "Time To Event Table",
        endpoint = "OS",
        endpoint_choices = unique(ATE$PARAMCD),
        strata_var = c("SEX", "MLIVER", "TCICLVL2"),
        arm.ref = arms[1],
-       arm.ref_choices = arms
+       arm.ref_choices = arms,
+       arm.comp = arms[-1],
+       arm.comp_choices = arms
    )
   )
 )   

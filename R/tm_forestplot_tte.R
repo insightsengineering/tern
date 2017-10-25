@@ -83,7 +83,7 @@ ui_forest_survival <- function(id, label,
   ## use helpText to explain your user interface
   
   standard_layout(
-    output = uiOutput(ns("forest_plot")),
+    output = plotOutput(ns("forest_plot")),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ATE")),
@@ -102,7 +102,7 @@ srv_forest_survival <- function(input, output, session, datasets) {
   
   
   
-  output$forest_plot <- renderUI({
+  output$forest_plot <- renderPlot({
     
     ## 1: Assign your reactive values to variables
     ATE_filtered <- datasets$get_data("ATE", reactive = TRUE, filtered = TRUE)
@@ -184,6 +184,8 @@ srv_forest_survival <- function(input, output, session, datasets) {
       group_by = group_by[, -c(1,2), drop=FALSE]
     )
     
-    as_html(tbl)
+    #as_html(tbl)
+    
+    forest_tte_plot(tbl)
   })
 }

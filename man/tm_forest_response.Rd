@@ -31,7 +31,7 @@ x <- teal::init(
     tm_variable_browser(),
     tm_data_table(),
     tm_forest_response(
-       label = "Forest Survival",
+       label = "Forest Response",
        paramcd = "OVRSPI",
        paramcd_choices = unique(ARS$PARAMCD),
        response = "CR",
