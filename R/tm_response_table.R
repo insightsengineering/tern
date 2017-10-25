@@ -1,5 +1,21 @@
 
-#' Response Table teal module
+#' @title Response Table Teal Module
+#' 
+#' @description
+#' This modules ...
+#' 
+#' @inheritParams teal::standard_layout
+#' @param label label of ..
+#' @param paramcd filter the rows in ARS given the paramcd value
+#' @param paramcd_choices choices of possible poaramcd
+#' @param arm.var variable name for ARM variable in ASL
+#' @param arm.var_choices choices of arm variables
+#'
+#'
+#' @details 
+#' If necessary write more about that module here....
+#' 
+#' @return an \code{\link[teal]{module}} object
 #' 
 #' @export
 #' 
@@ -52,6 +68,15 @@ tm_response_table <- function(label,
   )
 }
 
+
+#' UI part for response table teal module
+#' 
+#' @inheritParams tm_response_table
+#' @param id namespace id
+#' 
+#' 
+#' @noRd
+#' 
 ui_response_table <- function(id, label,
                                paramcd = "OVRSPI",
                                paramcd_choices = paramcd,
@@ -139,14 +164,14 @@ srv_response_table <- function(input, output, session, datasets) {
                   "responders AVALC does not exist"))
     
     # Assign inputs to global
-    teal:::as.global(ARS_filtered)
-    teal:::as.global(paramcd)
-    teal:::as.global(responders)
-    teal:::as.global(incl_missing)
-    teal:::as.global(var_arm)
-    teal:::as.global(ref_arm)
-    teal:::as.global(comp_arm)
-    teal:::as.global(combine_arm)
+    # teal:::as.global(ARS_filtered)
+    # teal:::as.global(paramcd)
+    # teal:::as.global(responders)
+    # teal:::as.global(incl_missing)
+    # teal:::as.global(var_arm)
+    # teal:::as.global(ref_arm)
+    # teal:::as.global(comp_arm)
+    # teal:::as.global(combine_arm)
     
     
     # Get final analysis dataset

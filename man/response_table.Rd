@@ -5,20 +5,12 @@
 \title{Create the Response Table}
 \usage{
 response_table(response, value.resp = c("CR", "PR"), value.nresp = c("SD",
-  "NON CR/PD", "PD", "NE"), arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
-  arm.comp.combine = T, style = 1)
+  "NON CR/PD", "PD", "NE"), arm, style = 1)
 }
 \arguments{
 \item{response}{Tumor response data}
 
 \item{arm}{Arm information data}
-
-\item{arm.ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
-
-\item{arm.comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
-
-\item{arm.comp.combine}{Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
-\code{FALSE} if want each of the non-ref arms to be a separate comparison group}
 
 \item{style}{Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
 \code{2} if want to display rates, difference in rate and odds ratio for each response value category.}
@@ -26,6 +18,13 @@ response_table(response, value.resp = c("CR", "PR"), value.nresp = c("SD",
 \item{value.rsp}{Character vector, defining list of response values to be used as responders}
 
 \item{value.nrsp}{Character vector, defining list of response values to be used as non-responders}
+
+\item{arm.ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
+
+\item{arm.comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
+
+\item{arm.comp.combine}{Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
+\code{FALSE} if want each of the non-ref arms to be a separate comparison group}
 }
 \description{
 Create the Response Table
@@ -42,10 +41,11 @@ library(shiny)
 library(atezo.data)
 library(teal.oncology)
 library(PropCIs)
+library(forcats)
 
 
 ARS <- ars(com.roche.cdt30019.go29436.re) \%>\% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) \%>\% 
-       filter(PARAMCD == "BESRSPI")
+       filter(PARAMCD == "OVRSPI")
 
 #If want to include missing as non-responders
 ARS$AVALC[ARS$AVALC==""] <- "NE"

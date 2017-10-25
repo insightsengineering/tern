@@ -5,7 +5,7 @@
 \title{Time to Event Table}
 \usage{
 time_to_event_table(time_to_event, event, is_earliest_contr_event_death, arm,
-  arm.ref, strata_data)
+  arm.ref, arm.comp = setdiff(arm, arm.ref), strata_data)
 }
 \arguments{
 \item{time_to_event}{time to event data}
