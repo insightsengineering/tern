@@ -2,15 +2,39 @@
 % Please edit documentation in R/tm_response_table.R
 \name{tm_response_table}
 \alias{tm_response_table}
-\title{Forest Response Plot teal module}
+\title{Response Table Teal Module}
 \usage{
-tm_response_table(label, paramcd, paramcd_choices = paramcd, arm.ref,
-  arm.ref_choices = arm.ref, arm.comp, arm.comp_choices = arm.comp,
-  response, response_choices = response, plot_height = c(600, 200, 2000),
-  pre_output = NULL, post_output = NULL)
+tm_response_table(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
+  arm.var = "ARM", arm.var_choices = arm.var, pre_output = NULL,
+  post_output = NULL)
+}
+\arguments{
+\item{label}{label of ..}
+
+\item{paramcd}{filter the rows in ARS given the paramcd value}
+
+\item{paramcd_choices}{choices of possible poaramcd}
+
+\item{arm.var}{variable name for ARM variable in ASL}
+
+\item{arm.var_choices}{choices of arm variables}
+
+\item{pre_output}{optional, \code{shiny.tag} with text placed before the
+output to put the output into context. For example the
+\code{\link[shiny]{helpText}} elements are useful.}
+
+\item{post_output}{optional, \code{shiny.tag} with text placed before the
+output to put the output into context. For example the
+\code{\link[shiny]{helpText}} elements are useful.}
+}
+\value{
+an \code{\link[teal]{module}} object
 }
 \description{
-Forest Response Plot teal module
+This modules ...
+}
+\details{
+If necessary write more about that module here....
 }
 \examples{
  
@@ -18,11 +42,14 @@ Forest Response Plot teal module
 \\donotrun{
 library(atezo.data)
 library(dplyr)
+library(forcats)
 
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
-arms <- unique(ASL$ARM)
+options(teal_logging = FALSE)
+
+
 x <- teal::init(
   data = list(ASL = ASL, ARS = ARS),
   modules = root_modules(
@@ -32,12 +59,8 @@ x <- teal::init(
        label = "Response Table",
        paramcd = "OVRSPI",
        paramcd_choices = unique(ARS$PARAMCD),
-       response = "CR",
-       response_choices = unique(ARS$AVALC),
-       arm.ref = arms[1],
-       arm.ref_choices = arms,
-       arm.comp = arms[-1],
-       arm.comp_choices = arms
+       arm.var = "ARM",
+       arm.var_choices = c("ARM", "ARMCD")
    )
   )
 )   
