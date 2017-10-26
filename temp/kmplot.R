@@ -115,29 +115,31 @@ grid.rect()
 
 
 
-xpos <- c(5, 10, 20)
+xpos <- seq(2, 28, by = 2)
 
-Map(function(x, ypos, strata) {
+Map(function(x, ypos, strata, col) {
   
   n.r <- vapply(xpos, function(xi) {
     i <- tail(which(x$time <= xi), 1)
-    x$n.risk[i]
+    x$n.risk[i] - x$n.censor[i] - x$n.event[i]
   }, numeric(1))
   
   grid.text(
     label = n.r,
     x = unit(xpos, "native"),
-    y = unit(ypos, "npc")
+    y = unit(ypos, "npc"),
+    gp = gpar(col = col)
   )
   
   grid.text(
     label = strata,
     x = unit(-9, "lines"),
     y = unit(ypos, "npc"),
-    just = c("left", "center")
+    just = c("left", "center"),
+    gp = gpar(col = col)
   )
   
-}, df_s, 1 - 1:length(df_s)/(length(df_s) + 1), names(df_s))
+}, df_s, 1 - 1:length(df_s)/(length(df_s) + 1), names(df_s), col_pal(names(df_s)))
 
 
 
