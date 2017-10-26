@@ -54,7 +54,7 @@ ANL <- ATE %>%
 
 fit <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL)
 
-survival:::plot.survfit(fit, mark.time = TRUE)
+survminer::ggsurvplot(fit, risk.table = TRUE, break.time.by = 2)
 
 
 df <- data.frame(
