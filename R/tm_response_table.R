@@ -209,10 +209,11 @@ srv_response_table <- function(input, output, session, datasets) {
   
     if (length(ref_arm) > 1) {
       refname <- paste0(ref_arm, collapse = "/")
-      arm2 <- fct_collapse(arm1, refs = ref_arm)
+      armtmp <- fct_collapse(arm1, refs = ref_arm)
+      arm2 <- fct_relevel(armtmp, "refs", comp_arm)
       levels(arm2)[which(levels(arm2)=="refs")] <- refname
     } else {
-      arm2 <- fct_relevel(arm1, ref_arm)
+      arm2 <- fct_relevel(arm1, ref_arm, comp_arm)
     }
     
     if (length(comp_arm) > 1 && combine_arm == TRUE) {
