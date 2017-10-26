@@ -1,19 +1,20 @@
-
 #' @title Response Table Teal Module
 #' 
 #' @description
-#' This modules ...
+#' This module produces a response summary table that matches the STREAM template rspt01
 #' 
 #' @inheritParams teal::standard_layout
-#' @param label label of ..
+#' @param label full name label of module
 #' @param paramcd filter the rows in ARS given the paramcd value
 #' @param paramcd_choices choices of possible poaramcd
 #' @param arm.var variable name for ARM variable in ASL
 #' @param arm.var_choices choices of arm variables
-#'
-#'
+#' 
 #' @details 
-#' If necessary write more about that module here....
+#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
+#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
+#' Package \code{forcats} used to re-format arm data into leveled factors. 
+#' Reference arms automatically combined if multiple arms selected as reference group. 
 #' 
 #' @return an \code{\link[teal]{module}} object
 #' 
@@ -40,9 +41,11 @@
 #'     tm_response_table(
 #'        label = "Response Table",
 #'        paramcd = "OVRSPI",
-#'        paramcd_choices = unique(ARS$PARAMCD),
+#'        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
+#'        #paramcd_choices = unique(ARS$PARAMCD),
 #'        arm.var = "ARM",
 #'        arm.var_choices = c("ARM", "ARMCD")
+#'        #arm.var_choices = names(ASL)
 #'    )
 #'   )
 #' )   
@@ -74,6 +77,9 @@ tm_response_table <- function(label,
 #' @inheritParams tm_response_table
 #' @param id namespace id
 #' 
+#' @details 
+#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
+#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
 #' 
 #' @noRd
 #' 
@@ -112,6 +118,18 @@ ui_response_table <- function(id, label,
   )
 }
 
+#' Server part for response table teal module
+#' 
+#' @inheritParams tm_response_table
+#' @param id namespace id
+#' 
+#' @details 
+#' Selection for standard UI inputs \code{responders}, \code{ref_arm} and \code{comp_arm} are updated upon selection of \code{paramcd} and \code{arm.var}.
+#' Package \code{forcats} used to re-format arm data into leveled factors. 
+#' Reference arms automatically combined if multiple arms selected as reference group. 
+#' 
+#' @noRd
+#' 
 srv_response_table <- function(input, output, session, datasets) {
 
   # Deal With Reactivity/Inputs
