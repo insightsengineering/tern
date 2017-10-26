@@ -1,27 +1,27 @@
 
-(cases)
-
-# control functions
-settings_coxph <- function(
-  ties = "exact",
-  ...
-) {
-  
-  c(as.list(environment()), list(...))
-  
-}
-
-
-tte_tbl <- function(formula, data, ...) {
-  
-  coxph_args <- settings_coxph(...)
-  
-  do.call(coxph, c(list(formula = formula, data = data), coxph_args))
-  
-}
-
-tte_tbl(Surv(AVAL, 1-CNSR) ~ ARM +  RACE + strata(SEX), data = ANL)
-
+# (cases)
+# 
+# # control functions
+# settings_coxph <- function(
+#   ties = "exact",
+#   ...
+# ) {
+#   
+#   c(as.list(environment()), list(...))
+#   
+# }
+# 
+# 
+# tte_tbl <- function(formula, data, ...) {
+#   
+#   coxph_args <- settings_coxph(...)
+#   
+#   do.call(coxph, c(list(formula = formula, data = data), coxph_args))
+#   
+# }
+# 
+# tte_tbl(Surv(AVAL, 1-CNSR) ~ ARM +  RACE + strata(SEX), data = ANL)
+# 
 
 
 ### 
@@ -51,7 +51,6 @@ ANL <- ATE %>%
   mutate(ARM = factor(ARM)) %>%
   mutate(ARM = fct_relevel(ARM, "DUMMY C"))
 
-ANL$ARM
 
 fit <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL)
 
@@ -62,6 +61,11 @@ df <- data.frame(
   time = fit$time,
   surv = fit$surv,
   n.risk = fit$n.risk,
+  n.censor = fit$n.censor,
+  n.event = fit$n.event,
+  std.err = fit$std.err,
+  upper = fit$upper,
+  lower = fit$lower,
   strata = rep(names(fit$strata), fit$strata)
 )
 df_s <- split(df, df$strata)
@@ -71,8 +75,6 @@ col_pal <- col_factor("Set1", domain = names(df_s))
 
 grid.newpage()
 pushViewport(plotViewport(margins = c(3, 10, 2, 2)))
-
-# grid.rect()
 
 pushViewport(viewport(layout = grid.layout(
   nrow = 3, ncol = 1,
@@ -92,8 +94,14 @@ Map(function(x, col) {
     x = c(0, rep(x$time, each = 2)),
     y = c(rep(c(1, head(x$surv, -1)), each = 2), tail(x$surv, 1)),
     default.units = "native",
-    gp = gpar(col = col, lwd = 2)
+    gp = gpar(col = col)
   )
+  grid.points( 
+    x = x[x$n.censor !=0, "time"],
+    y = x[x$n.censor !=0, "surv"],
+    pch = 3, 
+    size = unit(0.5, "char"),
+    gp = gpar(col = col))
 }, df_s, col_pal(names(df_s)))
 
 popViewport(2)
