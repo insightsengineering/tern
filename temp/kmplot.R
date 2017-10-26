@@ -106,6 +106,13 @@ Map(function(x, col) {
 
 popViewport(2)
 
+pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 2))
+grid.text(label = "No of Patients at Risk",
+          x = unit(0.1, "npc"),
+          y = unit(0.3, "npc"),
+          just = "right")
+popViewport(1)
+
 pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 3))
 
 pushViewport(dataViewport(xData = df$time, yData = c(0,1)))
@@ -115,13 +122,18 @@ grid.rect()
 
 
 
-xpos <- seq(2, 28, by = 2)
+xpos <- seq(0, 28, by = 2)
 
 Map(function(x, ypos, strata, col) {
   
   n.r <- vapply(xpos, function(xi) {
-    i <- tail(which(x$time <= xi), 1)
-    x$n.risk[i] - x$n.censor[i] - x$n.event[i]
+     if (xi == 0){
+       i <- head(which(x$time >= xi), 1)
+       x$n.risk[i]
+     } else{
+       i <- tail(which(x$time <= xi), 1)
+       x$n.risk[i] - x$n.censor[i] - x$n.event[i]
+     }
   }, numeric(1))
   
   grid.text(
