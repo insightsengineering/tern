@@ -135,9 +135,11 @@ xpos <- seq(0, 28, by = 2)
 Map(function(x, ypos, strata, col) {
   
   n.r <- vapply(xpos, function(xi) {
-     if (xi == 0){
+     if (xi <= min(x$time)){
        i <- head(which(x$time >= xi), 1)
        x$n.risk[i]
+     } else if (xi > max(x$time)){
+       NA
      } else{
        i <- tail(which(x$time <= xi), 1)
        x$n.risk[i] - x$n.censor[i] - x$n.event[i]
@@ -145,7 +147,7 @@ Map(function(x, ypos, strata, col) {
   }, numeric(1))
   
   grid.text(
-    label = n.r,
+    label = ifelse(!is.na(n.r), as.character(n.r), " "),
     x = unit(xpos, "native"),
     y = unit(ypos, "npc"),
     gp = gpar(col = col)
@@ -160,6 +162,7 @@ Map(function(x, ypos, strata, col) {
   )
   
 }, df_s, 1 - 1:length(df_s)/(length(df_s) + 1), names(df_s), col_pal(names(df_s)))
+
 
 
 
