@@ -102,7 +102,15 @@ Map(function(x, col) {
     pch = 3, 
     size = unit(0.5, "char"),
     gp = gpar(col = col))
+  
 }, df_s, col_pal(names(df_s)))
+
+
+grid.text(
+  label = "Survival Probability",
+  x = unit(-9, "lines"),
+  rot = 90
+)
 
 popViewport(2)
 
