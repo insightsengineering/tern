@@ -26,44 +26,54 @@
 #' library(PropCIs)
 #' library(forcats)
 #' 
+#' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' 
-#' ARS <- ars(com.roche.cdt30019.go29436.re) %>% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) %>% 
-#'        filter(PARAMCD == "OVRSPI")
+#' ref_arm = "DUMMY C"
+#' comp_arm = c("DUMMY B", "DUMMY A")
+#' combine_arm = FALSE
+#' responders = c("CR", "PR")
+#' 
+#' ANL <- ARS %>% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) %>% 
+#'        filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM %in% c(ref_arm, comp_arm))
 #' 
 #' #If want to include missing as non-responders
-#' ARS$AVALC[ARS$AVALC==""] <- "NE"
+#' ANL$AVALC[ANL$AVALC==""] <- "NE"
 #' 
-#' 
-#' tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
-#' Viewer(tbl_stream)
-#' 
-#' tbl <- response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F)
-#' Viewer(tbl)
-#' 
-#' response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T)
-#' response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F, style = 2)
-#' response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T, style = 2)
-#' 
-#' 
-#' ars_f2 <-  ars(com.roche.cdt30019.go29436.re) %>%
-#'  filter(ITTGEFL=='Y', ITTWTFL=='Y', PARAMCD=='OVRSPI')
-#' 
+#' arm1 <- factor(ANL$ARM)
+#'
+#' if (length(ref_arm) > 1) {
+#'  refname <- paste0(ref_arm, collapse = "/")
+#'  armtmp <- fct_collapse(arm1, refs = ref_arm)
+#'  arm2 <- fct_relevel(armtmp, "refs", comp_arm)
+#'  levels(arm2)[which(levels(arm2)=="refs")] <- refname
+#' } else {
+#'  arm2 <- fct_relevel(arm1, ref_arm, comp_arm)
+#' }
+#'
+#' if (length(comp_arm) > 1 && combine_arm == TRUE) {
+#'  compname <- paste0(comp_arm, collapse = "/")
+#'  ARM <- fct_collapse(arm2, comps = comp_arm)
+#'  levels(ARM)[which(levels(ARM)=="comps")] <- compname
+#' } else {
+#'  ARM <- arm2
+#' }
+#'
 #' tbl <- response_table(
-#'   response = vapply(ars_f2$AVALC, function(x) {if (x == "") "NE" else x}, character(1)),
-#'   arm = ars_f2$ARM,
-#'   arm.ref = "DUMMY C",
-#'   arm.comp.combine = FALSE
+#'  response = ANL$AVALC,
+#'  value.resp = c("CR", "PR"),
+#'  value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
+#'  arm = ARM
 #' )
 #' 
 #' Viewer(tbl)
 #' 
-#' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-#' compare_rtables(tbl, tbl_stream)
 #' 
-#' tbl[2,3]
-#' tbl_stream[2,3]
+#' #style 2 
+#' tbl2 <- response_table(response = ANL$AVALC, 
+#'                        arm = ARM,
+#'                        style =2)
+#' Viewer(tbl2)
 #' 
-#' Arm variable is armcd1
 #' }
 #' 
 #' 
