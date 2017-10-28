@@ -9,6 +9,9 @@
 #' library(atezo.data)
 #' library(dplyr)
 #' library(survival)
+#' library(shiny)
+#' library(forcats)
+#' library(teal.oncology)
 #' 
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -186,6 +189,6 @@ srv_forest_survival <- function(input, output, session, datasets) {
     
     #as_html(tbl)
     
-    forest_tte_plot(tbl)
+    forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
   })
 }

@@ -181,7 +181,6 @@ forest_tte_table <- function(X){
 
 #' plot
 #' 
-#' @importFrom grid
 #' @export
 #x <- tbl
 forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
