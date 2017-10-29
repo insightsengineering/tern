@@ -20,7 +20,6 @@
 #' \dontrun{
 #' library(atezo.data)
 #' library(dplyr)
-#' library(survival)
 #' library(forcats)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
@@ -67,8 +66,10 @@
 #' tbl <- forest_tte_table(X)
 #' tbl
 #' Viewer(tbl)
-#' fplot <- forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
+#' 
 #' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
+#' 
+#' fplot <- forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
 #' 
 #' plot(tbl)
 #' 
@@ -181,21 +182,20 @@ forest_tte_table <- function(X){
 
 #' plot
 #' 
+#' @import grid
+#' 
 #' @export
 #x <- tbl
-forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
-  
-  library(grid)
+forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
+                            padx = unit(.5, "lines"), cex = 1) {
 
-  padx <- unit(1, "lines")
-  
   vp <- vpTree(
     parent = viewport(
       name = "forestplot",
       layout = grid.layout(
         nrow = 1, ncol = 11,
         widths = unit.c(
-          stringWidth("xxxxxxxxxx") + 13 * padx,
+          stringWidth("Baseline Risk Factors") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
@@ -207,7 +207,8 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
           stringWidth("xx.xx - xx.xx") + 2 * padx,
           unit(1, "null")
         )
-      )
+      ),
+      gp = gpar(cex = cex)
     ),
     children = vpList(
       viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
@@ -227,11 +228,11 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
   
   grid.newpage()
    
- pushViewport(plotViewport(margins = c(2,2,2,2)))
+  pushViewport(plotViewport(margins = c(3,2,1,2)))
   
   pushViewport(vp)
   
-  grid.ls(viewports = TRUE)
+  # grid.ls(viewports = TRUE)
   seekViewport("forestplot")
 
   # need once
@@ -240,7 +241,7 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
              gp = gpar(lty = 2))  
   
   # Add Header
-  draw_header(2, nrow(X), "Baseline Risk Factors","Total n", "n", "Events", "Median\n(Months)", "n", "Events", "Median\n(Months)", "Hazard\nRatio", "95% Wald\nCI", arm.ref,arm.comp)
+  draw_header(2, nrow(x), "Baseline Risk Factors","Total n", "n", "Events", "Median\n(Months)", "n", "Events", "Median\n(Months)", "Hazard\nRatio", "95% Wald\nCI", arm.ref,arm.comp)
   
   # Add table contents
   for (i in 1:nrow(x)){
@@ -259,7 +260,7 @@ draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) 
   ypos <- unit(1 - i/(n+5), "npc")
   grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
   grid.text(x12, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
-  grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x1, x = unit(0, "npc"), y = ypos, vp = vpPath("col_1"), just = "left", gp = gpar(fontsize = 10, fontface = 2))
   grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2))
   grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2))
   grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10, fontface = 2))
@@ -283,7 +284,13 @@ draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) 
 
 draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hline = FALSE, fontface = 1) {
   ypos <- unit(1 - i/(n+5), "npc")
-  grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10 , fontface = fontface))
+  
+  indent_x1 <- if (fontface == 1 && x1 != "ALL") 1 else 0
+  
+  grid.text(x1, x = unit(0, "npc") + unit(indent_x1, "lines"),
+            y = ypos, vp = vpPath("col_1"),
+            gp = gpar(fontsize = 10 , fontface = fontface),
+            just = "left")
   grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10 , fontface = fontface))
   grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10 , fontface = fontface))
   grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10 , fontface = fontface))
