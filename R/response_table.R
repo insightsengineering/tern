@@ -1,11 +1,14 @@
 #' Response Table Caclulation Function 
 #' 
 #' @param response Tumor response data
-#' @param value.rsp Character vector, defining list of response values to be used as responders
-#' @param value.nrsp Character vector, defining list of response values to be used as non-responders
+#' @param value.rsp Character vector, defining list of response values to be
+#'   used as responders
+#' @param value.nrsp Character vector, defining list of response values to be
+#'   used as non-responders
 #' @param arm Arm information data as factor
-#' @param style Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
-#'                              \code{2} if want to display rates, difference in rate and odds ratio for each response value category.
+#' @param style Must be 1 or 2, \code{1} if only want to display rates summary
+#'   for each response value category, \code{2} if want to display rates,
+#'   difference in rate and odds ratio for each response value category.
 #'
 #'                     
 #' @details 
@@ -20,44 +23,30 @@
 #' 
 #' \dontrun{
 #' library(dplyr)
-#' library(shiny)
 #' library(atezo.data)
 #' library(teal.oncology)
-#' library(PropCIs)
 #' library(forcats)
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
+#' 
+#' tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
+#' Viewer(tbl_stream)
 #' 
 #' ref_arm = "DUMMY C"
 #' comp_arm = c("DUMMY B", "DUMMY A")
 #' combine_arm = FALSE
 #' responders = c("CR", "PR")
 #' 
-#' ANL <- ARS %>% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) %>% 
-#'        filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM %in% c(ref_arm, comp_arm))
+#' ANL <- ARS %>% 
+#'   filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM %in% c(ref_arm, comp_arm)) %>%
+#'   select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
 #' 
-#' #If want to include missing as non-responders
+#' # If want to include missing as non-responders
 #' ANL$AVALC[ANL$AVALC==""] <- "NE"
 #' 
 #' arm1 <- factor(ANL$ARM)
-#'
-#' if (length(ref_arm) > 1) {
-#'  refname <- paste0(ref_arm, collapse = "/")
-#'  armtmp <- fct_collapse(arm1, refs = ref_arm)
-#'  arm2 <- fct_relevel(armtmp, "refs", comp_arm)
-#'  levels(arm2)[which(levels(arm2)=="refs")] <- refname
-#' } else {
-#'  arm2 <- fct_relevel(arm1, ref_arm, comp_arm)
-#' }
-#'
-#' if (length(comp_arm) > 1 && combine_arm == TRUE) {
-#'  compname <- paste0(comp_arm, collapse = "/")
-#'  ARM <- fct_collapse(arm2, comps = comp_arm)
-#'  levels(ARM)[which(levels(ARM)=="comps")] <- compname
-#' } else {
-#'  ARM <- arm2
-#' }
-#'
+#' ARM <- fct_relevel(arm1, ref_arm, comp_arm)
+#' 
 #' tbl <- response_table(
 #'  response = ANL$AVALC,
 #'  value.resp = c("CR", "PR"),
@@ -67,11 +56,23 @@
 #' 
 #' Viewer(tbl)
 #' 
+#' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+#' 
+#' 
+#' # different layout
+#' ref_arm = c("DUMMY C", "DUMMY B")
+#' comp_arm = c( "DUMMY A")
+#' combine_arm = FALSE
+#' responders = c("CR", "PR")
+#' 
+#' refname <- paste0(ref_arm, collapse = "/")
+#' ARM <- do.call(fct_collapse, setNames(list(arm1, ref_arm), c("f", refname))) %>%
+#'   fct_relevel(refname, comp_arm)
 #' 
 #' #style 2 
 #' tbl2 <- response_table(response = ANL$AVALC, 
 #'                        arm = ARM,
-#'                        style =2)
+#'                        style = 2)
 #' Viewer(tbl2)
 #' 
 #' }
@@ -202,7 +203,7 @@ response_table <- function(response,
   out_resp_diffor <- list(
     do.call(rrow, c("Difference in Response Rates", lapply(diffor_result, print_diffor, "diff", colsize))),
     do.call(rrow, c("95% CI (Wald)", indent = 1,    lapply(diffor_result, print_ci, "diffci", colsize))),
-    do.call(rrow, c("p-value", lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize)))),
+    do.call(rrow, c("p-value", indent = 1, lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize)))),
     rrow(),
     do.call(rrow, c("Odds Ratio",                   lapply(diffor_result, print_diffor, "or", colsize))),
     do.call(rrow, c("95% CI", indent = 1,           lapply(diffor_result, print_ci, "orci", colsize))),
@@ -304,11 +305,12 @@ calc_rate <- function(x, value) {
   )
 }
 
-#' Calculate difference in rates and odds ratio between two lists produced by calc_rate function
+#' Calculate difference in rates and odds ratio between two lists produced by
+#' calc_rate function
 #' 
 #' @param comp list produced by calc_rate function for comparison arm
 #' @param ref list produced by calc_rate function for reference arm
-#' 
+#'   
 #' @importFrom PropCIs orscoreci
 #' @export
 #' 
@@ -365,22 +367,31 @@ print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
 ##################################################################################
 ##################################################################################
 
-#' Response Table with ADaM data structure 
+#' Response Table with ADaM data structure
 #' 
-#' @param ASL dataset with following variables: USUBJID, STUDYID, the specified grouping variable
-#' @param ARS ARS dataset containing the following variables: USUBJID, STUDYID, PARAMCD, AVALC
+#' @param ASL dataset with following variables: USUBJID, STUDYID, the specified
+#'   grouping variable
+#' @param ARS ARS dataset containing the following variables: USUBJID, STUDYID,
+#'   PARAMCD, AVALC
 #' @param paramcd Name of overall response parameter
 #' @param arm.var Name of variable with arm information
-#' @param arm.ref Character vector, defining which arm(s) from the list of arms should be used as reference group
-#' @param arm.comp Character vector, defining which arm(s) from the list of arms should be used as comparison group
-#' @param arm.comp.combine Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
-#'                                  \code{FALSE} if want each of the non-ref arms to be a separate comparison group
-#' @param value.rsp Character vector, defining list of response values to be used as responders
-#' @param value.nrsp Character vector, defining list of response values to be used as non-responders
-#' @param incl.missing Logical, \code{TRUE} if missing values should be considered non-responders, 
-#'                              \code{FALSE} if missing response should be removed from analysis
-#' @param style Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
-#'                              \code{2} if want to display rates, difference in rate and odds ratio for each response value category.
+#' @param arm.ref Character vector, defining which arm(s) from the list of arms
+#'   should be used as reference group
+#' @param arm.comp Character vector, defining which arm(s) from the list of arms
+#'   should be used as comparison group
+#' @param arm.comp.combine Logical, \code{TRUE} if want all non-ref arms to be
+#'   combined into one comparison group, \code{FALSE} if want each of the
+#'   non-ref arms to be a separate comparison group
+#' @param value.rsp Character vector, defining list of response values to be
+#'   used as responders
+#' @param value.nrsp Character vector, defining list of response values to be
+#'   used as non-responders
+#' @param incl.missing Logical, \code{TRUE} if missing values should be
+#'   considered non-responders, \code{FALSE} if missing response should be
+#'   removed from analysis
+#' @param style Must be 1 or 2, \code{1} if only want to display rates summary
+#'   for each response value category, \code{2} if want to display rates,
+#'   difference in rate and odds ratio for each response value category.
 #' 
 #' @details 
 #' Package \code{forcats} was used to re-format arm data into leveled factors.
@@ -389,19 +400,16 @@ print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
 #' @examples
 #' \dontrun{
 #' library(dplyr)
-#' library(shiny)
 #' library(atezo.data)
 #' library(teal.oncology)
 #' library(forcats)
-#' library(PropCIs)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
-#' source("R/rtable.R")
 #' 
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' 
-#' response_table_ADAM(ASL, ARS,
+#' teal.oncology:::response_table_ADAM(ASL, ARS,
 #'                     paramcd = "OVRSPI",
 #'                     arm.ref = "DUMMY C",
 #'                     arm.comp = c("DUMMY A", "DUMMY B"),

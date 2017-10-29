@@ -9,7 +9,7 @@ tm_response_table(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
   post_output = NULL)
 }
 \arguments{
-\item{label}{label of ..}
+\item{label}{full name label of module}
 
 \item{paramcd}{filter the rows in ARS given the paramcd value}
 
@@ -31,10 +31,13 @@ output to put the output into context. For example the
 an \code{\link[teal]{module}} object
 }
 \description{
-This modules ...
+This module produces a response summary table that matches the STREAM template rspt01
 }
 \details{
-If necessary write more about that module here....
+Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
+Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
+Package \code{forcats} used to re-format arm data into leveled factors. 
+Reference arms automatically combined if multiple arms selected as reference group.
 }
 \examples{
  
@@ -58,9 +61,11 @@ x <- teal::init(
     tm_response_table(
        label = "Response Table",
        paramcd = "OVRSPI",
-       paramcd_choices = unique(ARS$PARAMCD),
+       paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
+       #paramcd_choices = unique(ARS$PARAMCD),
        arm.var = "ARM",
        arm.var_choices = c("ARM", "ARMCD")
+       #arm.var_choices = names(ASL)
    )
   )
 )   
