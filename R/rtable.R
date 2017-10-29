@@ -745,9 +745,13 @@ padstr <- function(x, n, just = c("center", "left", "right")) {
   
   just <- match.arg(just)
   
+  if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))
+  if (is.na(n) || !is.numeric(n) || n < 0) stop("n needs to be numeric and > 0")
+  
   if (is.na(x)) x <- ""
   
   nc <- nchar(x)
+  
   if (n < nc) stop(x, " has more than ", n, " characters")
   
   switch(
