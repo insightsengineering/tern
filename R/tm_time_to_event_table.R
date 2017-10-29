@@ -92,18 +92,18 @@ srv_time_to_event_table <- function(input, output, session, datasets) {
   
   
   output$tte_table <- renderUI({
-    
+
+    # resolve all reactive expressions    
     ATE_filtered <- datasets$get_data("ATE", reactive = TRUE, filtered = TRUE)
-    
-    validate(need(!is.null(ATE_filtered) && is.data.frame(ATE_filtered), "no data left"))
-    validate(need(nrow(ATE_filtered) > 0 , "no observations left"))
-    
-    
+
     endpoint <- input$endpoint
     strata_var <- input$strata_var
     ref_arm <- input$ref_arm
     treat_arm <- input$treat_arm
     
+    # then validate your input values
+    validate(need(!is.null(ATE_filtered) && is.data.frame(ATE_filtered), "no data left"))
+    validate(need(nrow(ATE_filtered) > 10 , "need more than 10 observations to calculate the table"))
     
     validate(need(!is.null(strata_var), "need strata variables"))
              
@@ -112,16 +112,25 @@ srv_time_to_event_table <- function(input, output, session, datasets) {
     validate(need(length(intersect(ref_arm, treat_arm)) == 0,
                   "reference and treatment group cannot overlap"))
     
-        
     validate(need(endpoint %in% ATE_filtered$PARAMCD, "time to event PARAMCD does not exist"))
     
     
+    ## Now comes the static analysis code
+    ## this is what you see 1:1 on the "show R code" code
+    
+    print(" -- pass here in tte table ---")
+    teal:::as.global(ATE_filtered)
+    teal:::as.global(endpoint)
+    teal:::as.global(strata_var)
+    teal:::as.global(ref_arm)
+    teal:::as.global(treat_arm)
+    
     ## you need to add the encodings
     
-    ATE_f <- ATE_filtered %>% filter(PARAMCD == endpoint, ARM %in% c(ref_arm, treat_arm))
+    ATE_f <- ATE_filtered %>%
+      filter(PARAMCD == endpoint, ARM %in% c(ref_arm, treat_arm))
     
     validate(need(nrow(ATE_f) > 15, "need at least 15 data points"))
-    
     validate(need(all(strata_var %in% names(ATE_f)),
                   "some baseline risk variables are not valid"))
     
