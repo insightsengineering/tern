@@ -178,7 +178,7 @@ srv_forest_survival <- function(input, output, session, datasets) {
     arm <- ifelse (arm == "ref_arm", paste0(ref_arm, collapse = "/"), paste0(treat_arm, collapse = "/")) 
     arm <- fct_relevel(arm, paste0(ref_arm, collapse = "/"))
     
-    tbl <- forest_tte(
+    X <- forest_tte(
       time_to_event = ATE_f$AVAL,
       event = ATE_f$CNSR == 0,
       arm = arm, 
@@ -187,6 +187,6 @@ srv_forest_survival <- function(input, output, session, datasets) {
     
     #as_html(tbl)
     
-    forest_tte_plot(forest_tte_table(tbl), levels(arm)[1], levels(arm)[2], cex = 1.5)
+    forest_tte_plot(forest_tte_table(X), levels(arm)[1], levels(arm)[2], cex = 1.5)
   })
 }

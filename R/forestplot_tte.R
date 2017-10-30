@@ -195,7 +195,7 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
       layout = grid.layout(
         nrow = 1, ncol = 11,
         widths = unit.c(
-          stringWidth("Baseline Risk Factors") + 2 * padx,
+          stringWidth("Baseline Risk Factors") + 1 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
