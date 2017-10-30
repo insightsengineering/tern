@@ -67,6 +67,7 @@ Viewer(tbl)
 compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
 
 plot(tbl)
+forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
 
 }
 

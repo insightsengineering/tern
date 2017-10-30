@@ -18,11 +18,9 @@ Forest Survival Plot teal module
 
 \\donotrun{
 library(atezo.data)
-library(dplyr)
-library(survival)
-library(shiny)
-library(forcats)
 library(teal.oncology)
+library(dplyr)
+library(forcats)
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)

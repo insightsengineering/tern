@@ -5,7 +5,7 @@
 \title{plot}
 \usage{
 forest_tte_plot(x, arm.ref = "Reference", arm.comp = "Treatment",
-  padx = unit(0.5, "lines"))
+  padx = unit(0.5, "lines"), cex = 1)
 }
 \description{
 plot
