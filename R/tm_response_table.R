@@ -194,18 +194,20 @@ srv_response_table <- function(input, output, session, datasets) {
                   "responders AVALC does not exist"))
     
     # Assign inputs to global
-     teal:::as.global(ARS_filtered)
-     teal:::as.global(paramcd)
-     teal:::as.global(responders)
-     teal:::as.global(incl_missing)
-     teal:::as.global(var_arm)
-     teal:::as.global(ref_arm)
-     teal:::as.global(comp_arm)
-     teal:::as.global(combine_arm)
+    # teal:::as.global(ARS_filtered)
+    # teal:::as.global(paramcd)
+    # teal:::as.global(responders)
+    # teal:::as.global(incl_missing)
+    # teal:::as.global(var_arm)
+    # teal:::as.global(ref_arm)
+    # teal:::as.global(comp_arm)
+    # teal:::as.global(combine_arm)
     
     
     # Get final analysis dataset
-    ANL <- ARS_filtered %>% filter(., PARAMCD == paramcd, .[[var_arm]] %in% c(ref_arm, comp_arm))
+    ANL1 <- ARS_filtered %>% filter(PARAMCD == paramcd)
+     
+    ANL <- ANL1[ANL1[[var_arm]] %in% c(ref_arm, comp_arm), ]
   
     validate(need(nrow(ANL) > 0, "no data left"))
     
