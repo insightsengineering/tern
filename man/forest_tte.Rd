@@ -30,9 +30,7 @@ alternative tablist
 \dontrun{
 library(atezo.data)
 library(dplyr)
-library(survival)
 library(forcats)
-library(forestplot) 
 
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 
@@ -48,7 +46,7 @@ ATE_f <- ATE \%>\% filter(PARAMCD == "OS") \%>\%
              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARM"))
 ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% 
              filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\% 
-             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "BECOG"))
+             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "BECOG"))
 
 
 group_by <- left_join(ASL_f, ATE_f \%>\% select(c("USUBJID", "STUDYID")))
@@ -78,8 +76,10 @@ X <- forest_tte(
 tbl <- forest_tte_table(X)
 tbl
 Viewer(tbl)
-fplot <- forest_tte_plot(tbl)
+
 compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
+
+fplot <- forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
 
 plot(tbl)
 

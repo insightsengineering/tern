@@ -7,11 +7,9 @@
 #' 
 #' \donotrun{
 #' library(atezo.data)
-#' library(dplyr)
-#' library(survival)
-#' library(shiny)
-#' library(forcats)
 #' library(teal.oncology)
+#' library(dplyr)
+#' library(forcats)
 #' 
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -86,7 +84,7 @@ ui_forest_survival <- function(id, label,
   ## use helpText to explain your user interface
   
   standard_layout(
-    output = plotOutput(ns("forest_plot")),
+    output = plotOutput(ns("forest_plot"), height = "700px"),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ATE")),
@@ -163,7 +161,7 @@ srv_forest_survival <- function(input, output, session, datasets) {
     validate(need(all(c(ref_arm, treat_arm) %in% ATE_f$ARM), "data needs to include at least one patient from the reference and comparison arm"))  
     
     group_by <- ATE_f %>% select(c("USUBJID", "STUDYID", subgroup_var))
-    head(group_by)
+    # head(group_by)
 
     # group_by <- merge(
     #   ATE_f[c("USUBJID", "STUDYID")],
@@ -189,6 +187,6 @@ srv_forest_survival <- function(input, output, session, datasets) {
     
     #as_html(tbl)
     
-    forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
+    forest_tte_plot(forest_tte_table(tbl), levels(arm)[1], levels(arm)[2], cex = 1.5)
   })
 }

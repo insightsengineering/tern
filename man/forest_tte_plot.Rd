@@ -4,7 +4,8 @@
 \alias{forest_tte_plot}
 \title{plot}
 \usage{
-forest_tte_plot(x)
+forest_tte_plot(x, arm.ref = "Reference", arm.comp = "Treatment",
+  padx = unit(0.5, "lines"))
 }
 \description{
 plot
