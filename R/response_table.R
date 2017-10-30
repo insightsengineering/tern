@@ -449,7 +449,7 @@ response_table_ADAM <- function(ASL, ARS,
   
   #--- Select obs needed to analysis, merge ASL/ARS to create analysis dataset ---#
   #Filter on selected PARAMCD, and ARM in arm.ref/comp
-  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm.var))            %>% filter(get(arm.var) %in% c(arm.ref,arm.comp))
+  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm.var))            %>% filter(UQE(as.name(arm.var)) %in% c(arm.ref,arm.comp))
   ARS_f <- ARS %>% select(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == paramcd)
   ANL <- merge(ASL_f, ARS_f, by=c("USUBJID", "STUDYID"))
   

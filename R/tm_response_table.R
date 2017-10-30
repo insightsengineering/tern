@@ -128,6 +128,9 @@ ui_response_table <- function(id, label,
 #' Package \code{forcats} used to re-format arm data into leveled factors. 
 #' Reference arms automatically combined if multiple arms selected as reference group. 
 #' 
+#' @importFrom forcats fct_relevel fct_collapse
+#' @importFrom rlang UQE
+#' 
 #' @noRd
 #' 
 srv_response_table <- function(input, output, session, datasets) {
@@ -193,7 +196,7 @@ srv_response_table <- function(input, output, session, datasets) {
     
     
     # Get final analysis dataset
-    ANL <- ARS_filtered %>% filter(PARAMCD == paramcd, get(var_arm) %in% c(ref_arm, comp_arm))
+    ANL <- ARS_filtered %>% filter(PARAMCD == paramcd, UQE(as.name(var_arm)) %in% c(ref_arm, comp_arm))
     validate(need(nrow(ANL) > 0, "no data left"))
     
     #--- Manipulation of response and arm variables ---#
