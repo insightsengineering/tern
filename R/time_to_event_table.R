@@ -20,8 +20,8 @@
 #' library(dplyr)
 #' library(forcats)
 #'  
-#' ASL <- atezo.data::asl(com.roche.cdt30019.go29436.re)
-#' ATE <- atezo.data::ate(com.roche.cdt30019.go29436.re)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' 
 #' tte_tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
 #' Viewer(tte_tbl_stream)
@@ -97,13 +97,12 @@ time_to_event_table <- function(time_to_event, event, arm,
   # Unstratified Analysis
   ref_lvl <- levels(ARM)[1]
   
-  strata_vars <- names(strata_data)
-  if (any(strata_vars %in% c('tte', 'evnt', "arm"))) stop("illegal stata variable names 'tte', 'evnt', 'arm'")
+  if (any( c('tte', 'evnt', "arm") %in% names(strata_data))) stop("illegal stata variable names 'tte', 'evnt', 'arm'")
     
   df <- cbind(data.frame(tte = time_to_event, evnt = event, arm = ARM), strata_data)
   
   strata_formula <- as.formula(
-    paste("Surv(tte, evnt) ~ arm + strata(", paste(strata_vars, collapse = ","), ")")
+    paste("Surv(tte, evnt) ~ arm + strata(", paste(names(strata_data), collapse = ","), ")")
   )
   
   # create survival fit of comparison arm vs. reference arm
