@@ -46,7 +46,8 @@ tm_forest_survival <- function(label,
                                endpoint = "OS",
                                endpoint_choices = "OS",
                                plot_height = c(600, 200, 2000),
-                               pre_output = NULL, post_output = NULL) {
+                               pre_output = helpText("graph needs to be of a certain width to be useful"),
+                               post_output = NULL) {
   
   # arm_var
   # arm_var_choices
