@@ -520,7 +520,7 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
 
     switch(
       format,
-      "xx" = as.character(x),
+      "xx" = if (is.na(x)) "NA" else as.character(x),
       "xx." = as.character(round(x, 0)),
       "xx.x" = as.character(round(x, 1)),
       "xx.xx" = as.character(round(x, 2)),
@@ -657,6 +657,7 @@ toString.rtable <- function(x, gap = 8, indent.unit = 2) {
   nchar_col <- ceiling(max(unlist(lapply(c(list(header_row), x), function(row) {
     lapply(row, function(cell) {
       nc <- nchar(unlist(strsplit(format_rcell(cell, output = "ascii"), "\n", fixed = TRUE)))
+      nc[is.na(nc)] <- 0
       nc / attr(cell, "colspan")
     })
   }))))
@@ -742,7 +743,7 @@ row_to_str <- function(row, nchar_rownames, nchar_col, gap, indent.unit) {
 
 
 padstr <- function(x, n, just = c("center", "left", "right")) {
-  
+
   just <- match.arg(just)
   
   if (is.na(x)) x <- ""
