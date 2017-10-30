@@ -97,14 +97,13 @@
 
     
     <p>Forest Survival Plot teal module</p>
-<p>Forest Survival Plot teal module</p>
     
 
-    <pre class="usage"><span class='fu'>tm_forest_survival</span>(<span class='no'>label</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"OS"</span>, <span class='kw'>endpoint_choices</span> <span class='kw'>=</span> <span class='st'>"OS"</span>,
-  <span class='kw'>plot_height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>600</span>, <span class='fl'>200</span>, <span class='fl'>2000</span>), <span class='kw'>pre_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>post_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>tm_forest_survival</span>(<span class='no'>label</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"OS"</span>, <span class='kw'>endpoint_choices</span> <span class='kw'>=</span> <span class='st'>"OS"</span>,
-  <span class='kw'>plot_height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>600</span>, <span class='fl'>200</span>, <span class='fl'>2000</span>), <span class='kw'>pre_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>post_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>tm_forest_survival</span>(<span class='no'>label</span>, <span class='no'>arm.ref</span>, <span class='kw'>arm.ref_choices</span> <span class='kw'>=</span> <span class='no'>arm.ref</span>, <span class='no'>arm.comp</span>,
+  <span class='kw'>arm.comp_choices</span> <span class='kw'>=</span> <span class='no'>arm.comp</span>, <span class='no'>baseline_risk</span>,
+  <span class='kw'>baseline_risk_choices</span> <span class='kw'>=</span> <span class='no'>baseline_risk</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"OS"</span>,
+  <span class='kw'>endpoint_choices</span> <span class='kw'>=</span> <span class='st'>"OS"</span>, <span class='kw'>plot_height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>600</span>, <span class='fl'>200</span>, <span class='fl'>2000</span>),
+  <span class='kw'>pre_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>post_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
         
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -118,7 +117,7 @@ library(survival)
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
-
+arms <- unique(ASL$ARM)
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),
   modules = root_modules(
@@ -127,34 +126,12 @@ x <- teal::init(
     tm_forest_survival(
        label = "Forest Survival",
        endpoint = "OS",
-       endpoint_choices = unique(ATE$PARAMCD)
-   )
-  )
-)   
-shinyApp(x$ui, x$server) 
-
-  
-} 
- 
-
-\donotrun{
-library(atezo.data)
-library(dplyr)
-library(survival)
-
-ATE <- ate(com.roche.cdt30019.go29436.re)
-ASL <- asl(com.roche.cdt30019.go29436.re)
-
-
-x <- teal::init(
-  data = list(ASL = ASL, ATE = ATE),
-  modules = root_modules(
-    tm_variable_browser(),
-    tm_data_table(),
-    tm_forest_survival(
-       label = "Forest Survival",
-       endpoint = "OS",
-       endpoint_choices = unique(ATE$PARAMCD)
+       endpoint_choices = unique(ATE$PARAMCD),
+       baseline_risk = c("BAGED", "SEX", "BECOG"),
+       arm.ref = arms[1],
+       arm.ref_choices = arms,
+       arm.comp = arms[-1],
+       arm.comp_choices = arms
    )
   )
 )   

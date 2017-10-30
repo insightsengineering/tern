@@ -145,7 +145,7 @@ as the comparison</p></td>
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'>ars</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'>asl</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
 
-<span class='no'>surv_tbl_stream</span> <span class='kw'>&lt;-</span> <span class='fu'>get_forest_response_table</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='no'>surv_tbl_stream</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/atezo.data/topics/get_forest_response_table'>get_forest_response_table</a></span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
 <span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>surv_tbl_stream</span> )
 
 <span class='no'>ARS_f</span> <span class='kw'>&lt;-</span> <span class='no'>ARS</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ITTWTFL</span> <span class='kw'>==</span> <span class='st'>"Y"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ARM</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"DUMMY A"</span>, <span class='st'>"DUMMY C"</span>))
