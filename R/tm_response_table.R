@@ -1,7 +1,8 @@
 #' @title Response Table Teal Module
 #' 
 #' @description
-#' This module produces a response summary table that matches the STREAM template rspt01
+#' This module produces a response summary table that matches the STREAM
+#' template rspt01
 #' 
 #' @inheritParams teal::standard_layout
 #' @param label full name label of module
@@ -11,18 +12,26 @@
 #' @param arm.var_choices choices of arm variables
 #' 
 #' @details 
-#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
-#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
-#' Package \code{forcats} used to re-format arm data into leveled factors. 
-#' Reference arms automatically combined if multiple arms selected as reference group. 
+#' Additional standard UI inputs include \code{responders}, \code{incl_missing}
+#' (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm}
+#' (default FALSE).
+#' 
+#' Default values of the inputs \code{var_arm}, \code{ref_arm} and
+#' \code{comp_arm} are set to NULL, and updated accordingly based on seletion of
+#' \code{paramcd} and \code{arm.var}.
+#' 
+#' Package \code{forcats} used to re-format arm data into leveled factors.
+#' 
+#' Reference arms automatically combined if multiple arms selected as reference
+#' group.
+#' 
 #' 
 #' @return an \code{\link[teal]{module}} object
 #' 
 #' @export
 #' 
 #' @examples  
-#' 
-#' \donotrun{
+#' \dontrun{
 #' library(atezo.data)
 #' library(dplyr)
 #' library(forcats)
@@ -185,18 +194,19 @@ srv_response_table <- function(input, output, session, datasets) {
                   "responders AVALC does not exist"))
     
     # Assign inputs to global
-    # teal:::as.global(ARS_filtered)
-    # teal:::as.global(paramcd)
-    # teal:::as.global(responders)
-    # teal:::as.global(incl_missing)
-    # teal:::as.global(var_arm)
-    # teal:::as.global(ref_arm)
-    # teal:::as.global(comp_arm)
-    # teal:::as.global(combine_arm)
+     teal:::as.global(ARS_filtered)
+     teal:::as.global(paramcd)
+     teal:::as.global(responders)
+     teal:::as.global(incl_missing)
+     teal:::as.global(var_arm)
+     teal:::as.global(ref_arm)
+     teal:::as.global(comp_arm)
+     teal:::as.global(combine_arm)
     
     
     # Get final analysis dataset
-    ANL <- ARS_filtered %>% filter(PARAMCD == paramcd, UQE(as.name(var_arm)) %in% c(ref_arm, comp_arm))
+    ANL <- ARS_filtered %>% filter(., PARAMCD == paramcd, .[[var_arm]] %in% c(ref_arm, comp_arm))
+  
     validate(need(nrow(ANL) > 0, "no data left"))
     
     #--- Manipulation of response and arm variables ---#
