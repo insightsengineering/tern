@@ -4,7 +4,7 @@
 #' @param time_to_event time to event data
 #' @param event is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
 #'   is censored
-#' @param group_by data frame with one column per grouping
+#' @param group_data data frame with one column per grouping
 #' @param arm vector with arm information
 #' @param arm.ref a character vector defining which arms in arm should be taken 
 #'   as the reference
@@ -20,6 +20,7 @@
 #' \dontrun{
 #' library(atezo.data)
 #' library(dplyr)
+#' library(forcats)
 #' library(survival)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
@@ -30,71 +31,69 @@
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
-#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% 
+#'              filter(ITTWTFL == "Y") %>% 
+#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
+#'              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
+#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% 
+#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>% 
+#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "BECOG"))
 #' 
+#'
+#' group_data <- left_join(ASL_f, ATE_f %>% select(c("USUBJID", "STUDYID")))
+#' names(group_data) <- labels_over_names(group_data)
+#' head(group_data)
 #' 
-#' group_by <- merge(
-#'  ATE_f[c("USUBJID", "STUDYID")],
-#'  ASL_f[c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE")],
-#'  all.y = TRUE, all.x = FALSE
-#' )
+#' # Dummy C First (comparison in survfit and glm)
+#' arm <- fct_relevel(ATE_f$ARMCD, "C")
 #' 
-#' group_by$MLIVER <- factor(group_by$MLIVER, levels(factor(group_by$MLIVER))[c(2, 1)])
-#' group_by$TCICLVL2 <- factor(group_by$TCICLVL2, levels(factor(group_by$TCICLVL2))[c(2, 1)])
-#' group_by$AGE4CAT <- factor(group_by$AGE4CAT, levels(factor(group_by$AGE4CAT))[c(1, 3, 4, 2)])
-#' group_by$RACE <- factor(group_by$RACE, levels(factor(group_by$RACE))[c(2, 3, 6, 1, 4, 5)])
+#' # Collapse Factors
+#' # fct_collapse(arm, "ARM A/B" = c("ARM A", "ARM B"))
+#' # rename a level
+#' # arm <- fct_recode(ATE_f$ARM, "Treat ARM" = "DUMMY A")
 #' 
-#' head(group_by)
-#' 
-#' tbl <- surv_subgroup(
+#' tbl <- forest_tte(
 #'    time_to_event = ATE_f$AVAL,
 #'    event = ATE_f$CNSR == 0,
-#'    arm = ATE_f$ARM, 
-#'    group_by = group_by[, -c(1,2), drop=FALSE],
-#'    arm.ref = "DUMMY C",
-#'    arm.comp = "DUMMY A"
+#'    group_data = group_data[, -c(1,2), drop=FALSE],
+#'    arm = arm
 #' )
-#' tbl
 #' Viewer(tbl)
 #' 
 #' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
 #' 
-#' plot(tbl)
+#' forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
+#' 
 #' 
 #' 
 #' }
 #' 
-#' # surv_subgroup(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
-surv_subgroup <- function(time_to_event, event, 
-                          arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
-                          group_by, covariates = NULL) {
+#' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
+forest_tte <- function(time_to_event, event, 
+                       arm, group_data, covariates = NULL) {
   
   # argument checking
   n <- length(time_to_event)
   if (length(event) != n) stop("event has wrong length")
   if (length(arm) != n) stop("arm has wrong length")
-  if (!is.data.frame(group_by)) stop("group_by is expected to be a data.frame")
-  if (nrow(group_by) != n) stop("group_by has wrong number of rows")
-  if (any(grepl(".", group_by, fixed = TRUE))) stop("no . are allowed in the group_by variable names")
+  if (!is.data.frame(group_data)) stop("group_data is expected to be a data.frame")
+  if (nrow(group_data) != n) stop("group_data has wrong number of rows")
+  if (any(grepl(".", group_data, fixed = TRUE))) stop("no . are allowed in the group_data variable names")
   
-  arm_for_model <- combine_arm(arm, arm.ref, arm.comp)
-  
-  cox_data <- subset(
-    data.frame(
-      time_to_event,
-      event,
-      arm = arm_for_model
-    ), !is.na(arm_for_model)
-  )
+  cox_data <- data.frame(
+    time_to_event,
+    event,
+    arm = arm)
   
   # split data into a tree for data
   # where each leaf is a data.frame with 
   # the data to compute the survival analysis with
   data_list <- c(
     list(ALL = list(ALL = cox_data)),
-    lapply(group_by, function(var) {
+    lapply(group_data, function(var) {
       sub_data <- cbind(cox_data, var)
+      sub_data <- subset(sub_data, var != "")
+      sub_data$var <- as.factor(as.character(sub_data$var))
       lapply(split(sub_data, sub_data$var), function(x){
         x[,-4]
       })
@@ -110,7 +109,7 @@ surv_subgroup <- function(time_to_event, event,
     })
   })
   
-
+  
   # reduce results into a table
   results_survival2 <- unlist(results_survival, recursive = FALSE)
   X <- Reduce(rbind, results_survival2)
@@ -134,7 +133,7 @@ surv_subgroup <- function(time_to_event, event,
         
         i <- regexpr(".", rname, fixed = TRUE)
         header_row_name <- c(substr(rname, 1, i-1), substring(rname, i+1))
-
+        
         is_new_category <- header_row_name[1] != last_header
         last_header <<- header_row_name[1]
         
@@ -159,12 +158,11 @@ surv_subgroup <- function(time_to_event, event,
       recursive = FALSE)
   )
   
-  
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
-
+  
   # Viewer(tbl)
   class(tbl) <- c("forest_survival", "forest_table", class(tbl))
-
+  
   tbl
 }
 
@@ -172,20 +170,139 @@ surv_subgroup <- function(time_to_event, event,
 #' plot
 #' 
 #' @import grid
+#' 
 #' @export
-plot.forest_survival <- function(x, ...) {
+#x <- tbl
+forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
+                            padx = unit(.5, "lines"), cex = 1) {
+
+  vp <- vpTree(
+    parent = viewport(
+      name = "forestplot",
+      layout = grid.layout(
+        nrow = 1, ncol = 11,
+        widths = unit.c(
+          stringWidth("Baseline Risk Factors        ") + 1 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xx.xx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xx.xx") + 2 * padx,
+          stringWidth("xx.xx") + 2 * padx,
+          stringWidth("xx.xx - xx.xx") + 2 * padx,
+          unit(1, "null")
+        )
+      ),
+      gp = gpar(cex = cex)
+    ),
+    children = vpList(
+      viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
+      viewport(name = "col_2", layout.pos.col=2, layout.pos.row=1),
+      viewport(name = "col_3", layout.pos.col=3, layout.pos.row=1),
+      viewport(name = "col_4", layout.pos.col=4, layout.pos.row=1),
+      viewport(name = "col_5", layout.pos.col=5, layout.pos.row=1),
+      viewport(name = "col_6", layout.pos.col=6, layout.pos.row=1),
+      viewport(name = "col_7", layout.pos.col=7, layout.pos.row=1),
+      viewport(name = "col_8", layout.pos.col=8, layout.pos.row=1),
+      viewport(name = "col_9", layout.pos.col=9, layout.pos.row=1),
+      viewport(name = "col_10", layout.pos.col=10, layout.pos.row=1),
+      dataViewport(name = "col_11", layout.pos.col=11, layout.pos.row=1,
+                   xData = c(-2,2), yData = c(0,1))
+    )
+  )
   
   grid.newpage()
+   
+  pushViewport(plotViewport(margins = c(3,2,1,2)))
   
-  grid.text("Plot of a forst survival table")
+  pushViewport(vp)
   
+  # grid.ls(viewports = TRUE)
+  seekViewport("forestplot")
+
+  # need once
+  grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))
+  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0, 1- 2/nrow(x)), "npc"), vp = vpPath("col_11"),
+             gp = gpar(lty = 2))  
+  
+  # Add Header
+  draw_header(2, nrow(x), "Baseline Risk Factors","Total n", "n", "Events", "Median\n(Months)", "n", "Events", "Median\n(Months)", "Hazard\nRatio", "95% Wald\nCI", arm.ref,arm.comp)
+  
+  # Add table contents
+  for (i in 1:nrow(x)){
+   if (!is.null(x[i,1])) {
+     draw_row(i+4, nrow(x), row.names(x)[i], x[i, 1], x[i, 2], x[i, 3], round(x[i, 4], 1), x[i, 5], x[i, 6], 
+              round(x[i, 7], 1), round(x[i, 8], 2), paste("(", paste(round(x[i, 9],2), collapse = ", "), ")", sep = ""), c(log(abs(x[i,8])), log(abs(x[i,9]))), TRUE)
+   } else if (is.null(x[i,1]) & row.names(x)[i] != "") {
+     draw_row(i+4, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE, 2)
+   } else {
+     draw_row(i+4, nrow(x), "", "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE,2)
+   }
+  }
+}
+
+draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
+  ypos <- unit(1 - i/(n+5), "npc")
+  grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(x12, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(x1, x = unit(0, "npc"), y = ypos, vp = vpPath("col_1"), just = "left", gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(paste(x11, "\nBetter"), x = unit(-1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(paste(x12, "\nBetter"), x = unit(1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
+  grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
+
+}
+
+draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hline = FALSE, fontface = 1) {
+  ypos <- unit(1 - i/(n+5), "npc")
+  
+  indent_x1 <- if (fontface == 1 && x1 != "ALL") 1 else 0
+  
+  grid.text(x1, x = unit(0, "npc") + unit(indent_x1, "lines"),
+            y = ypos, vp = vpPath("col_1"),
+            gp = gpar(fontsize = 10 , fontface = fontface),
+            just = "left")
+  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 , fontface = fontface))
+ # grid.text(x11, y = ypos, vp = vpPath("col_11"))
+  
+  
+  grid.lines(x = unit(x11[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_11"), gp =gpar(lwd = 2))  
+  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/3.5, "lines"), vp = vpPath("col_11"),
+              gp = gpar(fill = "blue"))
+  
+  
+  if (add_hline) {
+    grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"), gp = gpar(col = "grey", lty = 1, lwd = 0.3))
+  }
   
 }
 
-
-
-   # survival_results(data_for_value[[1]])
-   # data = data_for_value[[1]]
+# survival_results(data_for_value[[1]])
+# data = data_for_value[[1]]
 survival_results <- function(data){
   
   # KM Estimate
@@ -200,26 +317,26 @@ survival_results <- function(data){
     km_comp_n <- 0
     km_ref_event <- km_sum[4]
     km_comp_event <- 0
-    km_ref_median <- ifelse (is.na(km_sum[7]), -999, km_sum[7])
-    km_comp_median <- -999
+    km_ref_median <- km_sum[7]
+    km_comp_median <- NA
   } else if (arm_freq[names(arm_freq) == levels(data$arm)[1]] == 0){
     km_sum <- as.data.frame(t(summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table))
     km_ref_n <- 0
     km_comp_n <- km_sum[1]
     km_ref_event <- 0
     km_comp_event <- km_sum[4]
-    km_ref_median <- -999
-    km_comp_median <- ifelse (is.na(km_sum[7]), -999, km_sum[7])
+    km_ref_median <- NA
+    km_comp_median <- km_sum[7]
   } else if (arm_freq[names(arm_freq) == levels(data$arm)[2]] * arm_freq[names(arm_freq) == levels(data$arm)[1]] > 0){
     km_sum <- summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table
     km_ref_n <- km_sum[1, 1]
     km_comp_n <- km_sum[2,1]
     km_ref_event <- km_sum[1, 4]
     km_comp_event <- km_sum[2, 4]
-    km_ref_median <- ifelse (is.na(km_sum[1, 7]), -999, km_sum[1, 7])
-    km_comp_median <- ifelse (is.na(km_sum[2, 7]), -999, km_sum[2, 7])
+    km_ref_median <- km_sum[1, 7]
+    km_comp_median <- km_sum[2, 7]
   } else stop("Invalid Arm Counts")
-    
+  
   # Cox Model
   # Three Scenarios: 
   # 1. both arms have events; 
@@ -227,28 +344,28 @@ survival_results <- function(data){
   # 3. data has only one arm.
   if (nrow(km_sum) == 2 & km_ref_event * km_comp_event > 0){
     cox_sum  <- summary(coxph(Surv(time_to_event,event) ~ arm, data = data))
-    cox_hr   <- ifelse (is.na(cox_sum$conf.int[1]), -999, cox_sum$conf.int[1])
-    cox_lcl  <- ifelse (is.na(cox_sum$conf.int[1]), -999, cox_sum$conf.int[3])
-    cox_ucl  <- ifelse (is.na(cox_sum$conf.int[1]), -999, cox_sum$conf.int[4])
-    cox_pval <- ifelse (is.na(cox_sum$conf.int[1]), -999, cox_sum$conf.int[5])
+    cox_hr   <- cox_sum$conf.int[1]
+    cox_lcl  <- cox_sum$conf.int[3]
+    cox_ucl  <- cox_sum$conf.int[4]
+    cox_pval <- cox_sum$conf.int[5]
   } else {
-    cox_hr   <- -999
-    cox_lcl  <- -999
-    cox_ucl  <- -999
-    cox_pval <- -999
+    cox_hr   <- NA
+    cox_lcl  <- NA
+    cox_ucl  <- NA
+    cox_pval <- NA
   }
-
+  
   surv_table <- data.frame(km_ref_n, km_comp_n, 
-                         km_ref_event, km_comp_event, 
-                         km_ref_median, km_comp_median, 
-                         cox_hr, cox_lcl, cox_ucl)
+                           km_ref_event, km_comp_event, 
+                           km_ref_median, km_comp_median, 
+                           cox_hr, cox_lcl, cox_ucl)
 }
 
 #' Forest Plot Numbers for Survival data with ADAM data structure
 #' 
 #' @export
 #' 
-#' @inheritParams surv_subgroup
+#' @inheritParams forest_tte
 #' @param ASL asl data frame
 #' @param ATE data frame
 #' 
@@ -266,21 +383,21 @@ survival_results <- function(data){
 #' 
 #' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 #' 
-#' surv_subgroup_ADAM(
+#' forest_tte_ADAM(
 #'   ASL, ATE,
 #'   groupvar = c("SEX", "BECOG", "COUNTRY"),
 #'   arm.ref = "DUMMY A", arm.comp = "DUMMY B"
 #' )
 #'   
 #' }
-surv_subgroup_ADAM <- function(ASL, ATE,
-                               outcome = "Overall Survival",
-                               groupvar,
-                               arm.ref,
-                               arm.comp,
-                               arm.var = "ARM",
-                               time_to_event.var = "AVAL",
-                               event.var = "CNSR", negate.event.var = TRUE) {
+forest_tte_ADAM <- function(ASL, ATE,
+                            outcome = "Overall Survival",
+                            groupvar,
+                            arm.ref,
+                            arm.comp,
+                            arm.var = "ARM",
+                            time_to_event.var = "AVAL",
+                            event.var = "CNSR", negate.event.var = TRUE) {
   
   ATE %needs% c("USUBJID", "STUDYID", "PARAM", time_to_event.var, event.var)
   ASL %needs% c("USUBJID", "STUDYID", groupvar, arm.var)
@@ -291,18 +408,18 @@ surv_subgroup_ADAM <- function(ASL, ATE,
   ATE_f <- ATE %>% filter(PARAM == outcome)
   
   if (nrow(ATE_f) <= 0) stop("ATE data left after filtering")
-   
-  group_by <- merge(
+  
+  group_data <- merge(
     ATE_f[c("USUBJID", "STUDYID")],
     ASL[c("USUBJID", "STUDYID", groupvar)],
     all.x = TRUE, all.y = FALSE
   )
   
-  surv_subgroup(
+  forest_tte(
     time_to_event = ATE_f[[time_to_event.var]],
     event = if(negate.event.var) !ATE_f[[event.var]] else ATE_f[[event.var]],
     arm = ATE_f[[arm.var]], 
-    group_by = group_by[, -c(1,2), drop=FALSE],
+    group_data = group_data[, -c(1,2), drop=FALSE],
     arm.ref = arm.ref,
     arm.comp = arm.comp
   )
