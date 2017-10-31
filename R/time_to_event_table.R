@@ -226,7 +226,7 @@ time_to_event_table <- function(time_to_event, event, arm,
       lrrow("95% CI", c(list(NULL), us_ci), indent = 2, format = "(xx.xx, xx.xx)"),
       rrow(),
       rrow("Stratified Analysis"),
-      lrrow("p-value (log-rank)", c(list(NULL), str_p), indent = 1, format = "xx.xxx"),
+      lrrow("p-value (log-rank) -- CAUTION", c(list(NULL), str_p), indent = 1, format = "xx.xxx"),
       rrow(),
       lrrow("Hazard Ratio", c(list(NULL), str_hr), indent = 1, format = "xx.xx"),
       lrrow("95% CI", c(list(NULL), str_ci), indent = 2, format = "(xx.xx, xx.xx)") 
