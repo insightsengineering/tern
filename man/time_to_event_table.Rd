@@ -4,8 +4,8 @@
 \alias{time_to_event_table}
 \title{Time to Event Table}
 \usage{
-time_to_event_table(time_to_event, event, is_earliest_contr_event_death, arm,
-  arm.ref, arm.comp = setdiff(arm, arm.ref), strata_data)
+time_to_event_table(time_to_event, event, arm, is_earliest_contr_event_death,
+  strata_data, time_points)
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -24,28 +24,31 @@ This is the description of the function
 
 library(atezo.data)
 library(dplyr)
-library(survival)
+library(forcats)
  
-ASL <- atezo.data::asl(com.roche.cdt30019.go29436.re)
-ATE <- atezo.data::ate(com.roche.cdt30019.go29436.re)
+ASL <- asl(com.roche.cdt30019.go29436.re)
+ATE <- ate(com.roche.cdt30019.go29436.re)
 
 tte_tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
 Viewer(tte_tbl_stream)
 
-ATE_f <- ATE \%>\% filter(ITTFL == "Y", PARAMCD == "OS")
+ATE_f <- ATE \%>\%
+ filter(ITTFL == "Y", PARAMCD == "OS") \%>\%
+ mutate(ARM_ANL = fct_relevel(ARM1, "DUMMY C", "DUMMY B", "DUMMY A"))
+
 
 tbl <- time_to_event_table(
   time_to_event = ATE_f$AVAL,
   event = ATE_f$CNSR == 0,
-  arm = ATE_f$ARM1,
+  arm = ATE_f$ARM_ANL,
   is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
-  arm.ref = "DUMMY C",
-  strata_data = ATE_f \%>\% select(SEX, MLIVER, TCICLVL2)
+  strata_data = ATE_f \%>\% select(SEX, MLIVER, TCICLVL2),
+  time_points = setNames(6, paste(6, "Months"))
 )
 
 Viewer(tbl)
 
-Viewer(tte_tbl_stream)
+Viewer(tbl, tte_tbl_stream)
 
 compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
 

@@ -11,24 +11,25 @@
 #' library(dplyr)
 #' library(survival)
 #' 
+#' 
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' arms <- unique(ASL$ARM)
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ATE = ATE),
 #'   modules = root_modules(
-#'     tm_variable_browser(),
-#'     tm_data_table(),
 #'     tm_time_to_event_table(
 #'        label = "Time To Event Table",
-#'        endpoint = "OS",
-#'        endpoint_choices = unique(ATE$PARAMCD),
-#'        strata_var = c("SEX", "MLIVER", "TCICLVL2"),
-#'        arm.ref = arms[1],
-#'        arm.ref_choices = arms,
-#'        arm.comp = arms[-1],
-#'        arm.comp_choices = arms
+#'        time_points = 6,
+#'        time_points_choices = c(6, 8),
+#'        time_points_unit = "months",
+#'        arm_var = "ARM",
+#'        arm_var_choices = c("ARM", "ARMCD"),
+#'        ref_arm = "DUMMY C",
+#'        paramcd = "OS",
+#'        paramcd_choices = unique(ATE$PARAMCD),
+#'        strata_var = "SEX",
+#'        strata_var_choices = c("SEX", "MLIVER", "TCICLVL2")
 #'    )
 #'   )
 #' )   
@@ -37,15 +38,17 @@
 #'   
 #' } 
 tm_time_to_event_table <- function(label,
-                               arm.ref,
-                               arm.ref_choices = arm.ref,
-                               arm.comp,
-                               arm.comp_choices = arm.comp,
-                               strata_var,
-                               strata_var_choices = strata_var,
-                               endpoint = "OS",
-                               endpoint_choices = "OS",
-                               pre_output = NULL, post_output = NULL) {
+                                   time_points,
+                                   time_points_choices = time_points,
+                                   time_points_unit = "months",
+                                   arm_var = "ARM",
+                                   arm_var_choices = arm_var,
+                                   ref_arm = NULL,
+                                   strata_var = NULL,
+                                   strata_var_choices = strata_var,
+                                   paramcd = "OS",
+                                   paramcd_choices = paramcd,
+                                   pre_output = NULL, post_output = NULL) {
   
   args <- as.list(environment())
   
@@ -54,21 +57,23 @@ tm_time_to_event_table <- function(label,
     server = srv_time_to_event_table,
     ui = ui_time_to_event_table,
     ui_args = args,
+    server_args = list(ref_arm = ref_arm, time_points_unit = time_points_unit),
     filters = "ATE"
   )
 }
 
 ui_time_to_event_table <- function(id, label,
-                               arm.ref,
-                               arm.ref_choices = arm.ref,
-                               arm.comp,
-                               arm.comp_choices = arm.comp,
-                               strata_var,
-                               strata_var_choices = strata_var,
-                               endpoint = "OS",
-                               endpoint_choices = "OS",
-                               pre_output,
-                               post_output) {
+                                   time_points,
+                                   time_points_choices,
+                                   time_points_unit = "months",
+                                   arm_var = "ARM",
+                                   arm_var_choices = arm_var,
+                                   ref_arm = NULL,
+                                   strata_var = NULL,
+                                   strata_var_choices = strata_var,
+                                   paramcd = "OS",
+                                   paramcd_choices = paramcd,
+                                   pre_output = NULL, post_output = NULL) {
   ns <- NS(id)
   
   standard_layout(
@@ -76,10 +81,15 @@ ui_time_to_event_table <- function(id, label,
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ATE")),
-      optionalSelectInput(ns("endpoint"), "Time to Event", endpoint_choices, endpoint, multiple = FALSE),
-      optionalSelectInput(ns("ref_arm"), "Reference Group", arm.ref_choices, arm.ref, multiple = TRUE),
-      optionalSelectInput(ns("treat_arm"), "Treatment Group", arm.comp_choices, arm.comp, multiple = TRUE),
-      optionalSelectInput(ns("strata_var"), "Stratify by", strata_var_choices, strata_var, multiple = TRUE)
+      optionalSelectInput(ns("paramcd"), "PARAMCD", paramcd_choices, paramcd, multiple = FALSE),
+      helpText("PARAMCD selects the endpoint"),
+      optionalSelectInput(ns("arm_var"), "ARM", arm_var_choices, arm_var, multiple = FALSE),
+      selectInput(ns("ref_arm"), "Reference Group", choices = NULL, selected = NULL, multiple = TRUE),
+      helpText("Reference groups automatically combined into a single group if more than one value selected."),
+      selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
+      checkboxInput(ns("combine_comp_arms"), "Combine all comparison groups?", value = FALSE),
+      optionalSelectInput(ns("strata_var"), "Stratify by", strata_var_choices, strata_var, multiple = TRUE),
+      optionalSelectInput(ns("time_points"), "Time Points", time_points_choices, time_points, multiple = TRUE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
@@ -87,51 +97,109 @@ ui_time_to_event_table <- function(id, label,
   )
 } 
 
-srv_time_to_event_table <- function(input, output, session, datasets) {
+srv_time_to_event_table <- function(input, output, session, datasets, ref_arm = NULL, time_points_unit = "months") {
+  
+  
+  observe({
+    arm_var <- input$arm_var
+    
+    ATE <- datasets$get_data("ATE", filtered = FALSE, reactive = "FALSE")
+    
+    arm <- ATE[[arm_var]]
+    arms <- if (is.factor(arm)) levels(arm) else unique(arm)
+     
+    if (!is.null(arms)) {
+      ref_arm <- if (!is.null(ref_arm) && all(ref_arm %in% arms)) {
+        ref_arm
+      } else {
+        arms[1]
+      }
+      comp_arm <- setdiff(arms, ref_arm)
+    } else {
+      ref_arm <- NULL
+      comp_arm <- NULL
+    }
+    updateSelectInput(session, "ref_arm", selected = ref_arm, choices = arms)
+    updateSelectInput(session, "comp_arm", selected = comp_arm, choices = arms)
+  })
   
   
   
   output$tte_table <- renderUI({
-    
+
+    # resolve all reactive expressions    
     ATE_filtered <- datasets$get_data("ATE", reactive = TRUE, filtered = TRUE)
-    
-    validate(need(!is.null(ATE_filtered) && is.data.frame(ATE_filtered), "no data left"))
-    validate(need(nrow(ATE_filtered) > 0 , "no observations left"))
-    
-    
-    endpoint <- input$endpoint
+
+    paramcd <- input$paramcd
     strata_var <- input$strata_var
+    arm_var <- input$arm_var
     ref_arm <- input$ref_arm
-    treat_arm <- input$treat_arm
+    comp_arm <- input$comp_arm
+    combine_comp_arms <- input$combine_comp_arms
+    time_points <- input$time_points
     
+    # teal:::as.global(ATE_filtered)
+    # teal:::as.global(paramcd)
+    # teal:::as.global(strata_var)
+    # teal:::as.global(arm_var)
+    # teal:::as.global(ref_arm)
+    # teal:::as.global(comp_arm)
+    # teal:::as.global(combine_comp_arms)
+    # teal:::as.global(time_points)
+    
+    # then validate your input values
+    validate(need(!is.null(ATE_filtered) && is.data.frame(ATE_filtered), "no data left"))
+    validate(need(nrow(ATE_filtered) > 10 , "need more than 10 observations to calculate the table"))
+    
+    validate(need(ATE_filtered[[arm_var]], "no valid arm selected"))
     
     validate(need(!is.null(strata_var), "need strata variables"))
              
-    validate(need(!is.null(treat_arm) && !is.null(ref_arm),
-                  "need at least one treatment and one reference arm"))
-    validate(need(length(intersect(ref_arm, treat_arm)) == 0,
+    validate(need(!is.null(ref_arm) && !is.null(comp_arm),
+                  "need at least one reference and one comparison arm"))
+    validate(need(length(intersect(ref_arm, comp_arm)) == 0,
                   "reference and treatment group cannot overlap"))
     
-        
-    validate(need(endpoint %in% ATE_filtered$PARAMCD, "time to event PARAMCD does not exist"))
+    validate(need(paramcd %in% ATE_filtered$PARAMCD, "selected PARAMCD not in ATE"))
+    validate(need(combine_arm, "need combine arm information"))
     
+    validate(need(all(strata_var %in% names(ATE_filtered)),
+                  "some baseline risk variables are not valid"))
+    
+    
+    ## Now comes the static analysis code
     
     ## you need to add the encodings
-    
-    ATE_f <- ATE_filtered %>% filter(PARAMCD == endpoint, ARM %in% c(ref_arm, treat_arm))
+    ATE_f <- ATE_filtered %>%
+      filter(PARAMCD == paramcd, ARM %in% c(ref_arm, comp_arm))
     
     validate(need(nrow(ATE_f) > 15, "need at least 15 data points"))
     
-    validate(need(all(strata_var %in% names(ATE_f)),
-                  "some baseline risk variables are not valid"))
+    arm <- ATE_f[[arm_var]]
+    
+    if (length(ref_arm)>1) {
+      new_ref_arm <- paste(ref_arm, collapse = "/")
+      arm <- do.call(fct_collapse, setNames(list(arm, ref_arm), c("f", new_ref_arm)))
+      ref_arm <- new_ref_arm
+    }
+    
+    if (combine_comp_arms) {
+      arm <- do.call(fct_collapse, setNames(list(arm, comp_arm), c("f", paste(comp_arm, collapse = "/"))))
+    }
+    
+    arm <- fct_relevel(arm, ref_arm)
+    
+    if (!is.null(time_points)) {
+      time_points <- setNames(as.numeric(time_points), paste(time_points, time_points_unit))
+    }
     
     tbl <- time_to_event_table(
       time_to_event = ATE_f$AVAL,
       event = ATE_f$CNSR == 0,
-      arm = ATE_f$ARM,
+      arm = arm,
       is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
-      arm.ref = ref_arm,
-      strata_data = ATE_f[strata_var]
+      strata_data = ATE_f[strata_var],
+      time_points = time_points
     )
     
     as_html(tbl)

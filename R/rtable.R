@@ -392,12 +392,28 @@ as_html.rrow <- function(x, ncol, ...) {
 #' 
 #' 
 #' @export
-Viewer <- function(x, row.names.bold = FALSE) {
+Viewer <- function(x, y = NULL, row.names.bold = FALSE) {
   if (!is(x, "rtable")) stop("x is expected to be an rtable")
+  if (!is.null(y) && !is(y, "rtable")) stop("y is expected to be an rtable if specified")
+  
   
   viewer <- getOption("viewer")
   
-  tbl_html <- as_html(x)
+  tbl_html <- if (is.null(y)) {
+    as_html(x)
+  } else {
+    htmltools::tags$div(
+      class = ".container-fluid",
+      htmltools::tags$div(
+        class= "col-xs-6",
+        as_html(x)
+      ),
+      htmltools::tags$div(
+        class= "col-xs-6",
+        as_html(y)
+      )
+    )
+  }
   
   sandbox_folder <- file.path(tempdir(), "rtable")
   
@@ -419,9 +435,6 @@ Viewer <- function(x, row.names.bold = FALSE) {
     }
   }
   
-  
-  html_tbl <- as_html(x)
-  
   html_bs <- tags$html(
     lang="en",
     tags$head(
@@ -432,7 +445,7 @@ Viewer <- function(x, row.names.bold = FALSE) {
       tags$link(href="css/bootstrap.min.css", rel="stylesheet")
     ),
     tags$body(
-      html_tbl
+      tbl_html
     )
   )
   
