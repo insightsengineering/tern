@@ -9,11 +9,13 @@
 #' library(atezo.data)
 #' library(dplyr)
 #' library(survival)
+#' library(forcats)
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
+#'  
+#' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 #' 
-#' arms <- unique(ASL$ARM)
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ARS = ARS),
 #'   modules = root_modules(
@@ -23,6 +25,7 @@
 #'        label = "Forest Response",
 #'        paramcd = "OVRSPI",
 #'        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
+#'        plot_height = c(600, 200, 2000),
 #'        subgroup_var = c("BAGED", "SEX", "BECOG"),
 #'        arm_var = "ARM",
 #'        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
@@ -64,6 +67,7 @@ ui_forest_response <- function(id, label,
                                arm_var_choices = arm_var,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
+                               plot_height,
                                pre_output,
                                post_output) {
   ns <- NS(id)
@@ -150,8 +154,6 @@ srv_forest_response <- function(input, output, session, datasets) {
     
     validate(need(nrow(ARS_f) > 0, "no data left"))
     
-    ASL_filtered$BAGED <- ifelse(ASL_filtered$BAGE <= median(ASL_filtered$BAGE), "<=median", ">median")
-    
     validate(need(all(subgroup_var %in% names(ASL_filtered)), "some baseline risk variables are not valid"))
     
     ASL_f <- ASL_filtered %>% select("STUDYID", "USUBJID", subgroup_var) 
@@ -180,6 +182,6 @@ srv_forest_response <- function(input, output, session, datasets) {
       group_data = group_data[, -c(1,2), drop=FALSE]
     )
     
-    forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2], cex = 1.1)
+    forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2], cex = 1.3)
   })
 }

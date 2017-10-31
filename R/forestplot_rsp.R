@@ -1,16 +1,13 @@
 #' alternative tablist
 #'
-#' @param time_to_event Response data
-#' @param event is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
-#'   is censored
-#' @param group_data data frame with one column per grouping
+#' @param response Tumor Response data
+#' @param event is boolean, \code{TRUE} if responder, \code{FALSE} if non-responder
+#' @param group_data data frame with one column per sub-group variable
 #' @param arm vector with arm information
-#' @param arm.ref a character vector defining which arms in arm should be taken 
-#'   as the reference
-#' @param arm.comp a character vector defining which arms in arm should be taken 
-#'   as the comparison
 #' 
 #' @export
+#' 
+#' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
 #' @examples 
 #' 
@@ -18,6 +15,7 @@
 #' library(atezo.data)
 #' library(dplyr) 
 #' library(grid)
+#' library(teal.oncology)
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -30,12 +28,8 @@
 #'                  filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
 #'                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
 #' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
-#'
-#' ARS_f_resp <- ARS_f %>% filter(AVALC %in% c("CR", "PR"))
-#' ARS_f_IC1 <- ARS_f %>% filter(TCLEVEL == "1")
-#'
 #' 
-#'group_data <- ARS_f[c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3")]
+#'group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
 #' names(group_data) <- labels_over_names(group_data)
 #' 
 #' head(group_data)
@@ -70,9 +64,7 @@ forest_rsp <- function(response, event,
   
   
   glm_data <- data.frame(response, event,arm)
-  
-  #head(glm_data)
-  
+
   # var = names(group_data)[1]
   # split data into a tree for data
   # where each leaf is a data.frame with 
@@ -89,7 +81,7 @@ forest_rsp <- function(response, event,
   
   #varname=data_list$TC3IC3
   #data_for_value = varname[1]
-  # apply the glm analysis
+  #apply the glm analysis
   results_glm <- lapply(data_list, function(varname) {
     lapply(varname, function(data_for_value) {
       glm_results(data_for_value)
@@ -101,9 +93,6 @@ forest_rsp <- function(response, event,
   X <- Reduce(rbind, results_glm2)
   row.names(X) <-names(results_glm2)
   
-  
-  # X <- results_glm2
-  
   additonal_args <- list(
     col.names = c("Total n",
                   "n", "n\nResponder", "Responder Rate\n(%)",
@@ -114,6 +103,7 @@ forest_rsp <- function(response, event,
   
   # rname <- rownames(X)[1]
   # x <- split(X, 1:nrow(X))[[1]]
+  # resolve the result data.frame to rtable 
   last_header <- "ALL"
   rrow_collection <- Filter(
     function(x)!is.null(x),
@@ -147,7 +137,6 @@ forest_rsp <- function(response, event,
       recursive = FALSE)
   )
   
-  
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
   
   
@@ -155,10 +144,18 @@ forest_rsp <- function(response, event,
  # Viewer(tbl)
 }
 
-#' plot
+# Forest plot using grid
+#' Forest plot (table + graph)
+#' 
+#' @param x rtable from forest_rsp function
+#' @param arm.ref string used to label reference arm
+#' @param arm.comp string used to label comparable arm
+#' @param cex muliplier
+#' 
+#' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
 #' @export
-#x <- tbl
+#' 
 forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1) {
   
   library(grid)
@@ -211,7 +208,7 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", ce
   grid.ls(viewports = TRUE)
   seekViewport("forestplot")
   
-  # need once
+  # need once: mid-line OR = 1
   grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))
   grid.lines(x = unit(c(0,0), "native"), y = unit(c(0,1), "npc"), vp = vpPath("col_11"),
              gp = gpar(lty = 2))  
@@ -232,6 +229,8 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", ce
   }
 }
 
+
+#Helper Functions
 draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
   ypos <- unit(1 - i/(n+5), "npc")
   grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
@@ -274,7 +273,7 @@ draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hlin
   
   
   grid.lines(x = unit(x11[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_11"), gp =gpar(lwd = 2))  
-  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/4, "lines"), vp = vpPath("col_11"),
+  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/3.5, "lines"), vp = vpPath("col_11"),
               gp = gpar(fill = "blue"))
   
   
@@ -322,66 +321,3 @@ glm_results <- function(data){
   }
 }
 
-#' Forest Plot Numbers for Survival data with ADAM data structure
-#' 
-#' @export
-#' 
-#' @inheritParams forest_rsp
-#' @param ASL asl data frame
-#' @param ARS data frame
-#' 
-#' @importFrom dplyr %>% filter
-#' 
-#' @examples 
-#' \dontrun{
-#' 
-#' rm(list = ls())
-#' library(ARSzo.data)
-#' library(dplyr)
-#' 
-#' ARS <- ARS(com.roche.cdt30019.go29436.re)
-#' ASL <- asl(com.roche.cdt30019.go29436.re)
-#' 
-#' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
-#' 
-#' forest_rsp_ADAM(
-#'   ASL, ARS,
-#'   groupvar = c("SEX", "BECOG", "COUNTRY"),
-#'   arm.ref = "DUMMY A", arm.comp = "DUMMY B"
-#' )
-#'   
-#' }
-forest_rsp_ADAM <- function(ASL, ARS,
-                              outcome = "Overall Survival",
-                              groupvar,
-                              arm.ref,
-                              arm.comp,
-                              arm.var = "ARM",
-                              time_to_event.var = "AVAL",
-                              event.var = "CNSR", negARS.event.var = TRUE) {
-  
-  ARS %needs% c("USUBJID", "STUDYID", "PARAM", time_to_event.var, event.var)
-  ASL %needs% c("USUBJID", "STUDYID", groupvar, arm.var)
-  
-  event <- ARS[[event.var]]
-  if (!(is.numeric(event) || is.logical(event))) stop("event var needs to be numeric or boolean")  
-  
-  ARS_f <- ARS %>% filter(PARAM == outcome)
-  
-  if (nrow(ARS_f) <= 0) stop("ARS data left after filtering")
-  
-  group_data <- merge(
-    ARS_f[c("USUBJID", "STUDYID")],
-    ASL[c("USUBJID", "STUDYID", groupvar)],
-    all.x = TRUE, all.y = FALSE
-  )
-  
-  forest_rsp(
-    time_to_event = ARS_f[[time_to_event.var]],
-    event = if(negARS.event.var) !ARS_f[[event.var]] else ARS_f[[event.var]],
-    arm = ARS_f[[arm.var]], 
-    group_data = group_data[, -c(1,2), drop=FALSE],
-    arm.ref = arm.ref,
-    arm.comp = arm.comp
-  )
-}
