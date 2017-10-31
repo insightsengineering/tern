@@ -3,7 +3,7 @@
 #' @param time_to_event Response data
 #' @param event is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
 #'   is censored
-#' @param group_by data frame with one column per grouping
+#' @param group_data data frame with one column per grouping
 #' @param arm vector with arm information
 #' @param arm.ref a character vector defining which arms in arm should be taken 
 #'   as the reference
@@ -35,10 +35,10 @@
 #' ARS_f_IC1 <- ARS_f %>% filter(TCLEVEL == "1")
 #'
 #' 
-#'group_by <- ARS_f[c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3")]
-#' names(group_by) <- c(Reduce(cbind,lapply(group_by, function(x){attr(x,"label")})))
+#'group_data <- ARS_f[c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3")]
+#' names(group_data) <- labels_over_names(group_data)
 #' 
-#' head(group_by)
+#' head(group_data)
 #' 
 #' # Dummy C First (comparison in survfit and glm)
 #' arm <- fct_relevel(ATE_f$ARM, "DUMMY C")
@@ -47,13 +47,11 @@
 #'           response = ARS_f$AVAL,
 #'           event = ARS_f$AVALC %in% c("CR","PR"),
 #'           arm = arm, 
-#'           group_by = group_by[, -c(1,2), drop=FALSE]
+#'           group_data = group_data[, -c(1,2), drop=FALSE]
 #' )
 #' Viewer(tbl)
 #' 
 #' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
-#' 
-#' plot(tbl)
 #' forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
 #' 
 #' }
@@ -61,27 +59,27 @@
 #' 
 #'   
 forest_rsp <- function(response, event,
-                         arm, group_by, covariARSs = NULL) {
+                         arm, group_data, covariARSs = NULL) {
   
   # argument checking
   n <- length(response)
   if (length(event) != n) stop("event has wrong length")
   if (length(arm) != n) stop("arm has wrong length")
-  if (!is.data.frame(group_by)) stop("group_by is expected to be a data.frame")
-  if (nrow(group_by) != n) stop("group_by has wrong number of rows")
+  if (!is.data.frame(group_data)) stop("group_data is expected to be a data.frame")
+  if (nrow(group_data) != n) stop("group_data has wrong number of rows")
   
   
   glm_data <- data.frame(response, event,arm)
   
   #head(glm_data)
   
-  # var = names(group_by)[1]
+  # var = names(group_data)[1]
   # split data into a tree for data
   # where each leaf is a data.frame with 
   # the data to compute the survival analysis with
   data_list <- c(
     list(ALL = list(ALL = glm_data)),
-    lapply(group_by, function(var) {
+    lapply(group_data, function(var) {
       sub_data <- lapply(setNames(unique(var[var != ""]), unique(var[var != ""])), function(value) {
          glm_data[var == value , , drop= FALSE] 
       })
@@ -161,7 +159,7 @@ forest_rsp <- function(response, event,
 #' 
 #' @export
 #x <- tbl
-forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
+forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1) {
   
   library(grid)
   
@@ -173,7 +171,7 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
       layout = grid.layout(
         nrow = 1, ncol = 11,
         widths = unit.c(
-          stringWidth("xxxxxxxxxx") + 13 * padx,
+          stringWidth("Baseline Risk Factors  ") + 1 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
@@ -185,7 +183,8 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment") {
           stringWidth("xx.xx - xx.xx") + 2 * padx,
           unit(1, "null")
         )
-      )
+      ),
+      gp = gpar(cex = cex)
     ),
     children = vpList(
       viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
@@ -309,8 +308,6 @@ glm_results <- function(data){
   glm_model <- glm(event ~ arm, family=binomial(link='logit'), data = data)
   glm_sum  <- summary(glm_model )
   glm_or   <- exp(glm_sum$coefficient[2,1])
- # glm_lcl  <- exp(glm_sum$coefficient[2,1]-1.96*sqrt(glm_sum$coefficient[2,2]))
- # glm_ucl  <- exp(glm_sum$coefficient[2,1]+1.96*sqrt(glm_sum$coefficient[2,2]))
   glm_lcl  <- exp(confint(glm_model)[2,1])
   glm_ucl  <- exp(confint(glm_model)[2,2])
   glm_pval <- glm_sum$coefficients[2,4]
@@ -321,7 +318,7 @@ glm_results <- function(data){
   }else {
   resp_table <- data.frame(resp_ref_n, resp_comp_n, 
                              resp_ref_event, resp_comp_event, 
-                             glm_or = -999, glm_lcl = -999, glm_ucl = -999, glm_pval = -999)
+                             glm_or = NA, glm_lcl = NA, glm_ucl = NA, glm_pval = NA)
   }
 }
 
@@ -373,7 +370,7 @@ forest_rsp_ADAM <- function(ASL, ARS,
   
   if (nrow(ARS_f) <= 0) stop("ARS data left after filtering")
   
-  group_by <- merge(
+  group_data <- merge(
     ARS_f[c("USUBJID", "STUDYID")],
     ASL[c("USUBJID", "STUDYID", groupvar)],
     all.x = TRUE, all.y = FALSE
@@ -383,7 +380,7 @@ forest_rsp_ADAM <- function(ASL, ARS,
     time_to_event = ARS_f[[time_to_event.var]],
     event = if(negARS.event.var) !ARS_f[[event.var]] else ARS_f[[event.var]],
     arm = ARS_f[[arm.var]], 
-    group_by = group_by[, -c(1,2), drop=FALSE],
+    group_data = group_data[, -c(1,2), drop=FALSE],
     arm.ref = arm.ref,
     arm.comp = arm.comp
   )
