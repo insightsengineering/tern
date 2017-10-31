@@ -35,7 +35,7 @@
 #' head(group_data)
 #' 
 #' # Dummy C First (comparison in survfit and glm)
-#' arm <- fct_relevel(ATE_f$ARM, "DUMMY C")
+#' arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
 #' 
 #' tbl <- forest_rsp(
 #'           response = ARS_f$AVAL,
@@ -154,11 +154,12 @@ forest_rsp <- function(response, event,
 #' 
 #' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
+#' @import grid
+#' 
 #' @export
 #' 
 forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1) {
-  
-  library(grid)
+
   
   padx <- unit(1, "lines")
   
@@ -201,20 +202,20 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", ce
   
   grid.newpage()
   
-  pushViewport(plotViewport(margins = c(2,2,2,2)))
+  pushViewport(plotViewport(margins = c(3,2,1,2)))
   
   pushViewport(vp)
   
-  grid.ls(viewports = TRUE)
+  # grid.ls(viewports = TRUE)
   seekViewport("forestplot")
   
   # need once: mid-line OR = 1
   grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))
-  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0,1), "npc"), vp = vpPath("col_11"),
+  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0,1-2/nrow(x)), "npc"), vp = vpPath("col_11"),
              gp = gpar(lty = 2))  
   
   # Add Header
-  draw_header(2, nrow(X), "Baseline Risk Factors","Total n", "n", "n\nResponder", "Responder\nRate (%)", "n", "n\nResponder", "Responder\nRate (%)", "Odds\nRatio", "95%\nCI", arm.ref,arm.comp)
+  draw_header(2, nrow(x), "Baseline Risk Factors","Total n", "n", "n\nResponder", "Responder\nRate (%)", "n", "n\nResponder", "Responder\nRate (%)", "Odds\nRatio", "95%\nCI", arm.ref,arm.comp)
   
   # Add table contents
   for (i in 1:nrow(x)){

@@ -4,23 +4,16 @@
 \alias{forest_rsp}
 \title{alternative tablist}
 \usage{
-forest_rsp(response, event, arm, group_by, covariARSs = NULL)
+forest_rsp(response, event, arm, group_data, covariARSs = NULL)
 }
 \arguments{
-\item{event}{is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
-is censored}
+\item{response}{Tumor Response data}
+
+\item{event}{is boolean, \code{TRUE} if responder, \code{FALSE} if non-responder}
 
 \item{arm}{vector with arm information}
 
-\item{group_by}{data frame with one column per grouping}
-
-\item{time_to_event}{Response data}
-
-\item{arm.ref}{a character vector defining which arms in arm should be taken 
-as the reference}
-
-\item{arm.comp}{a character vector defining which arms in arm should be taken 
-as the comparison}
+\item{group_data}{data frame with one column per sub-group variable}
 }
 \description{
 alternative tablist
@@ -31,6 +24,7 @@ alternative tablist
 library(atezo.data)
 library(dplyr) 
 library(grid)
+library(teal.oncology)
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -44,33 +38,30 @@ ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") \%>\%
                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
 ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% filter(ARM \%in\% c("DUMMY A", "DUMMY C"))
 
-ARS_f_resp <- ARS_f \%>\% filter(AVALC \%in\% c("CR", "PR"))
-ARS_f_IC1 <- ARS_f \%>\% filter(TCLEVEL == "1")
+group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
+names(group_data) <- labels_over_names(group_data)
 
-
-group_by <- ARS_f[c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3")]
-names(group_by) <- c(Reduce(cbind,lapply(group_by, function(x){attr(x,"label")})))
-
-head(group_by)
+head(group_data)
 
 # Dummy C First (comparison in survfit and glm)
-arm <- fct_relevel(ATE_f$ARM, "DUMMY C")
+arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
 
 tbl <- forest_rsp(
           response = ARS_f$AVAL,
           event = ARS_f$AVALC \%in\% c("CR","PR"),
           arm = arm, 
-          group_by = group_by[, -c(1,2), drop=FALSE]
+          group_data = group_data[, -c(1,2), drop=FALSE]
 )
 Viewer(tbl)
 
 compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
-
-plot(tbl)
 forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
 
 }
 
 
   
+}
+\author{
+Yuyao Song (songy24), \email{yuyao.song@roche.com}
 }

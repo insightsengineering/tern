@@ -4,7 +4,7 @@
 \alias{forest_tte}
 \title{alternative tablist}
 \usage{
-forest_tte(time_to_event, event, arm, group_by, covariates = NULL)
+forest_tte(time_to_event, event, arm, group_data, covariates = NULL)
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -14,7 +14,7 @@ is censored}
 
 \item{arm}{vector with arm information}
 
-\item{group_by}{data frame with one column per grouping}
+\item{group_data}{data frame with one column per grouping}
 
 \item{arm.ref}{a character vector defining which arms in arm should be taken 
 as the reference}
@@ -31,6 +31,7 @@ alternative tablist
 library(atezo.data)
 library(dplyr)
 library(forcats)
+library(survival)
 
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 
@@ -43,45 +44,36 @@ ASL <- asl(com.roche.cdt30019.go29436.re)
 ATE_f <- ATE \%>\% filter(PARAMCD == "OS") \%>\% 
              filter(ITTWTFL == "Y") \%>\% 
              filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\%
-             select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARM"))
+             select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
 ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% 
              filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\% 
              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "BECOG"))
 
 
-group_by <- left_join(ASL_f, ATE_f \%>\% select(c("USUBJID", "STUDYID")))
-old_grp_names <- names(group_by) 
-new_grp_names <- c(Reduce(cbind,lapply(group_by, function(x){
-     if (is.null(attr(x,"label"))) NA else attr(x,"label")
-      })
-     ))
-names(group_by) <- ifelse (is.na (new_grp_names), old_grp_names, new_grp_names)
-
-head(group_by)
+group_data <- left_join(ASL_f, ATE_f \%>\% select(c("USUBJID", "STUDYID")))
+names(group_data) <- labels_over_names(group_data)
+head(group_data)
 
 # Dummy C First (comparison in survfit and glm)
-arm <- fct_relevel(ATE_f$ARM, "DUMMY C")
+arm <- fct_relevel(ATE_f$ARMCD, "C")
 
 # Collapse Factors
 # fct_collapse(arm, "ARM A/B" = c("ARM A", "ARM B"))
 # rename a level
 # arm <- fct_recode(ATE_f$ARM, "Treat ARM" = "DUMMY A")
 
-X <- forest_tte(
+tbl <- forest_tte(
    time_to_event = ATE_f$AVAL,
    event = ATE_f$CNSR == 0,
-   group_by = group_by[, -c(1,2), drop=FALSE],
+   group_data = group_data[, -c(1,2), drop=FALSE],
    arm = arm
 )
-tbl <- forest_tte_table(X)
-tbl
 Viewer(tbl)
 
 compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
 
-fplot <- forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
+forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
 
-plot(tbl)
 
 
 }

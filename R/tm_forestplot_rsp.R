@@ -45,7 +45,7 @@ tm_forest_response <- function(label,
                                arm_var_choices = arm_var,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
-                               plot_height = c(600, 200, 2000),
+                               plot_height = c(700, 200, 2000),
                                pre_output = helpText("graph needs to be of a certain width to be displayed"),
                                post_output = NULL){
   
@@ -73,7 +73,7 @@ ui_forest_response <- function(id, label,
   ns <- NS(id)
   
   standard_layout(
-    output = plotOutput(ns("forest_plot"), height = "700px"),
+    output = uiOutput(ns("plot_ui")),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ARS")),
@@ -88,7 +88,9 @@ ui_forest_response <- function(id, label,
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Arm", choices = NULL, selected = NULL, multiple = TRUE),
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
-      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE)
+      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE),
+      tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;"),
+      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
@@ -97,6 +99,14 @@ ui_forest_response <- function(id, label,
 } 
 
 srv_forest_response <- function(input, output, session, datasets) {
+  
+  ## dynamic plot height
+  output$plot_ui <- renderUI({
+    plot_height <- input$plot_height
+    validate(need(plot_height, "need valid plot height"))
+    plotOutput(session$ns("forest_plot"), height=plot_height)
+  })
+  
   
   # Deal With Reactivity/Inputs
   ARS_filtered <- reactive({
@@ -133,8 +143,7 @@ srv_forest_response <- function(input, output, session, datasets) {
     arm_var <- input$arm_var
     ref_arm <- input$ref_arm
     comp_arm <- input$comp_arm
-    
-    teal:::as.global(subgroup_var)
+    subgroup_var <- input$subgroup_var
     
     validate(need(!is.null(comp_arm) && !is.null(ref_arm),
                   "need at least one treatment and one reference arm"))

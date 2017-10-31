@@ -4,11 +4,11 @@
 \alias{tm_forest_survival}
 \title{Forest Survival Plot teal module}
 \usage{
-tm_forest_survival(label, arm.ref, arm.ref_choices = arm.ref, arm.comp,
-  arm.comp_choices = arm.comp, subgroup_var,
-  subgroup_var_choices = subgroup_var, endpoint = "OS",
-  endpoint_choices = "OS", plot_height = c(600, 200, 2000),
-  pre_output = NULL, post_output = NULL)
+tm_forest_survival(label, arm_var = "ARM", arm_var_choices = arm_var,
+  subgroup_var, subgroup_var_choices = subgroup_var, paramcd = "OS",
+  paramcd_choices = paramcd, plot_height = c(600, 200, 2000),
+  pre_output = helpText("graph needs to be of a certain width to be displayed"),
+  post_output = NULL)
 }
 \description{
 Forest Survival Plot teal module
@@ -24,6 +24,7 @@ library(forcats)
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
+ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 
 options(teal_logging = FALSE)
 
@@ -33,13 +34,11 @@ x <- teal::init(
   modules = root_modules(
     tm_forest_survival(
        label = "Forest Survival",
-       endpoint = "OS",
-       endpoint_choices = unique(ATE$PARAMCD),
+       paramcd = "OS",
+       paramcd_choices = unique(ATE$PARAMCD),
        subgroup_var = c("BAGED", "SEX", "BECOG"),
-       arm.ref = arms[1],
-       arm.ref_choices = arms,
-       arm.comp = arms[-1],
-       arm.comp_choices = arms
+       arm_var = "ARM",
+       arm_var_choices = c("ARM", "ARMCD", "ACTARM")
    )
   )
 )   

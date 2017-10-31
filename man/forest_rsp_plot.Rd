@@ -2,10 +2,22 @@
 % Please edit documentation in R/forestplot_rsp.R
 \name{forest_rsp_plot}
 \alias{forest_rsp_plot}
-\title{plot}
+\title{Forest plot (table + graph)}
 \usage{
-forest_rsp_plot(x, arm.ref = "Reference", arm.comp = "Treatment")
+forest_rsp_plot(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1)
+}
+\arguments{
+\item{x}{rtable from forest_rsp function}
+
+\item{arm.ref}{string used to label reference arm}
+
+\item{arm.comp}{string used to label comparable arm}
+
+\item{cex}{muliplier}
 }
 \description{
-plot
+Forest plot (table + graph)
+}
+\author{
+Yuyao Song (songy24), \email{yuyao.song@roche.com}
 }

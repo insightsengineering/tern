@@ -224,7 +224,7 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
 
   # need once
   grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))
-  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0,1), "npc"), vp = vpPath("col_11"),
+  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0, 1- 2/nrow(x)), "npc"), vp = vpPath("col_11"),
              gp = gpar(lty = 2))  
   
   # Add Header

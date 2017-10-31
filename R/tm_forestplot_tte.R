@@ -74,7 +74,7 @@ ui_forest_survival <- function(id, label,
   ## use helpText to explain your user interface
   
   standard_layout(
-    output = plotOutput(ns("forest_plot"), height = "700px"),
+    output = uiOutput(ns("plot_ui")),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ATE")),
@@ -87,7 +87,9 @@ ui_forest_survival <- function(id, label,
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Arm", choices = NULL, selected = NULL, multiple = TRUE),
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
-      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE)
+      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE),
+      tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;"),
+      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
@@ -96,6 +98,14 @@ ui_forest_survival <- function(id, label,
 } 
 
 srv_forest_survival <- function(input, output, session, datasets) {
+  
+  ## dynamic plot height
+  output$plot_ui <- renderUI({
+    plot_height <- input$plot_height
+    validate(need(plot_height, "need valid plot height"))
+    plotOutput(session$ns("forest_plot"), height=plot_height)
+  })
+  
   
   # Deal With Reactivity/Inputs
   ATE_filtered <- reactive({
