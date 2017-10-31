@@ -15,11 +15,12 @@
 #' x <- teal::init(
 #'   data = list(ASL = ASL),
 #'   modules = root_modules(
-#'     tm_variable_browser(),
-#'     tm_data_table(),
 #'     tm_demographic_table(
 #'        label = "Demographic Table",
-#'        group_by_vars = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
+#'        arm_var = "ARM",
+#'        arm_var_choices = c("ARM", "ARMCD"),
+#'        summarize_vars =  toupper(c("sex", "mliver", "tciclvl2")),
+#'        summarize_vars_choices = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
 #'             "ethnic", "race", "bwt", "tobhx", "hist", "EGFRMUT",
 #'             "alkmut", "krasmut", "becog"))
 #'    )
@@ -32,8 +33,10 @@
 #' 
 #' 
 tm_demographic_table <- function(label,
-                                 group_by_vars,
-                                 group_by_vars_choices = group_by_vars,
+                                 arm_var,
+                                 arm_var_choices = arm_var,
+                                 summarize_vars,
+                                 summarize_vars_choices = summarize_vars,
                                  pre_output = NULL, post_output = NULL) {
 
   args <- as.list(environment())
@@ -50,8 +53,10 @@ tm_demographic_table <- function(label,
 
 ui_demographic_table <- function(id,
                                  label,
-                                 group_by_vars,
-                                 group_by_vars_choices = group_by_vars,
+                                 arm_var,
+                                 arm_var_choices = arm_var,
+                                 summarize_vars,
+                                 summarize_vars_choices = summarize_vars,
                                  pre_output = NULL, post_output = NULL) {
   
   ns <- NS(id)
@@ -60,8 +65,9 @@ ui_demographic_table <- function(id,
     output = uiOutput(ns("demographic_table")),
     encoding =  div(
       tags$label("Encodings", class="text-primary"),
-      helpText("Analysis data:", tags$code("ARS")),
-      optionalSelectInput(ns("group_by_vars"), "For variables", group_by_vars_choices, group_by_vars, multiple = TRUE)
+      helpText("Analysis data:", tags$code("ASL")),
+      optionalSelectInput(ns("arm_var"), "Arm Variable", arm_var_choices, arm_var, multiple = FALSE),
+      optionalSelectInput(ns("summarize_vars"), "Summarize Variables", summarize_vars_choices, summarize_vars, multiple = TRUE)
     ),
     pre_output = pre_output,
     post_output = post_output
@@ -75,17 +81,24 @@ srv_demographic_table <- function(input, output, session, datasets) {
     
     ASL_filtered <- datasets$get_data("ASL", reactive = TRUE, filtered = TRUE)
     
-    group_by_vars <- input$group_by_vars
+    arm_var <- input$arm_var
+    summarize_vars <- input$summarize_vars
     
-    validate(need(!is.null(group_by_vars), "please select 'for variables'"))
-    validate(need(all(group_by_vars %in% names(ASL_filtered)), "not all variables"))
+    # teal:::as.global(ASL_filtered)
+    # teal:::as.global(arm_var)
+    # teal:::as.global(summarize_vars)
+  
+    
+    validate(need(!is.null(summarize_vars), "please select 'summarize variables'"))
+    validate(need(all(summarize_vars %in% names(ASL_filtered)), "not all variables available"))
     validate(need(nrow(ASL_filtered) > 10, "Need more than 10 patients to make the table"))
+    validate(need(ASL_filtered[[arm_var]], "Arm variable does not exist"))
     
     tbl <- demographic_table(
       data = ASL_filtered,
       arm_var = "ARM",
       all.patients = TRUE,
-      group_by_vars = group_by_vars
+      group_by_vars = summarize_vars
     )
     
     as_html(tbl)
