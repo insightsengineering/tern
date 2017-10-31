@@ -2,6 +2,7 @@
 #' 
 #' 
 #' @import grid
+#' @import survival
 #' @importFrom scales col_factor
 #' @export
 #' 
@@ -12,7 +13,7 @@
 #' library(atezo.data)
 #' library(dplyr)
 #' library(forcats)
-#' 
+#' library(survival)
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' 
 #' ANL <- ATE %>%
@@ -22,7 +23,7 @@
 #' 
 #' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL)
 #' 
-#' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE)
+#' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add_km = TRUE)
 #' 
 #' 
 #' ## facet by row
@@ -56,7 +57,12 @@
 #' #survminer::ggsurvplot(fit, risk.table = TRUE, break.time.by = 2)
 #' 
 #' }
-kmplot <- function(formula_km, data, add_coxph = FALSE, formula_coxph = formula_km, add = FALSE) {
+#' 
+kmplot <- function(formula_km, data, add_km = FALSE, 
+                   add_coxph = FALSE, formula_coxph = formula_km, 
+                   info_coxph = "Cox Proportional Model: Unstratified Analysis",
+                   add = FALSE, 
+                   title = "Kaplan - Meier Plot") {
   
   fit <- survfit(formula_km, data = data)
 
@@ -100,7 +106,7 @@ kmplot <- function(formula_km, data, add_coxph = FALSE, formula_coxph = formula_
   grid.xaxis()
   grid.yaxis()
   grid.rect()
-  
+  grid.text(title, y = unit(1, "npc") + unit(1, "lines"), gp = gpar(fontface = "bold", fontsize = 16))
   
   Map(function(x, col) {
     grid.lines(
@@ -153,27 +159,42 @@ kmplot <- function(formula_km, data, add_coxph = FALSE, formula_coxph = formula_
       )
     )
     tblstr <- toString(tbl, gap = 2)
-
-    grid.text(label = paste0("Cox Proportional model:\n", tblstr),
+    lab <- paste0(info_coxph, "\n", tblstr)
+    grid.text(label = lab,
               x = unit(1, "lines"), y = unit(1, "lines"),
               just = c("left", "bottom"),
               gp = gpar(fontfamily = "mono")
               )
     
-    lab <- paste0("Cox Proportional model:\n", tblstr)
-    grid.text(label = lab,
-              x = unit(1, "npc") - stringWidth(lab) - unit(1, "lines"),
+
+  }
+  
+  if (add_km){
+    kminfo <- summary(fit)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
+    skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
+    tblkm <- do.call(
+      rtable,
+      c(
+        list(col.names = c("N", "median", "95% CI for median")),
+        lapply(skminfo, function(xi) {
+          rrow(
+            row.name = rownames(xi),
+            rcell(xi$records, format = "xx"),
+            rcell(xi$median, format = "xx.xx"),
+            rcell(c(xi$`0.95LCL`, xi$`0.95UCL`), format = "(xx.xx, xx.xx)")
+          )
+        })
+      )
+    )
+    tblstr2 <- toString(tblkm, gap = 1)
+     
+    grid.text(label = tblstr2,
+              x = unit(1, "npc") - stringWidth(tblstr2) - unit(1, "lines"),
               y = unit(1, "npc") -  unit(1, "lines"),
               just = c("left", "top"),
               gp = gpar(fontfamily = "mono")
     )
   }
-  
-
-  
-  
-  
-  
   ## Number of patients at Risk
   popViewport(2)
   
