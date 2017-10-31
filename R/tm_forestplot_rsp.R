@@ -22,14 +22,10 @@
 #'     tm_forest_response(
 #'        label = "Forest Response",
 #'        paramcd = "OVRSPI",
-#'        paramcd_choices = unique(ARS$PARAMCD),
-#'        response = "CR",
-#'        response_choices = unique(ARS$AVALC),
+#'        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
 #'        subgroup_var = c("BAGED", "SEX", "BECOG"),
-#'        arm.ref = arms[1],
-#'        arm.ref_choices = arms,
-#'        arm.comp = arms[-1],
-#'        arm.comp_choices = arms
+#'        arm_var = "ARM",
+#'        arm_var_choices = c("ARM", "ARMCD")
 #'    )
 #'   )
 #' )   
@@ -37,19 +33,16 @@
 #' 
 #'   
 #' } 
+
+
 tm_forest_response <- function(label,
-                               paramcd,
-                               paramcd_choices = paramcd,                               
-                               arm.ref,
-                               arm.ref_choices = arm.ref,
-                               arm.comp,
-                               arm.comp_choices = arm.comp,
+                               paramcd = "OVRSPI",
+                               paramcd_choices = paramcd,
+                               arm_var = "ARM",
+                               arm_var_choices = arm_var,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
-                               response,
-                               response_choices = response,
-                               plot_height = c(600, 200, 2000),
-                               pre_output = NULL, post_output = NULL) {
+                               pre_output = NULL, post_output = NULL){
   
   args <- as.list(environment())
   
@@ -63,30 +56,32 @@ tm_forest_response <- function(label,
 }
 
 ui_forest_response <- function(id, label,
-                               paramcd,
+                               paramcd = "OVRSPI",
                                paramcd_choices = paramcd,
-                               arm.ref,
-                               arm.ref_choices = arm.ref,
-                               arm.comp,
-                               arm.comp_choices = arm.comp,
+                               arm_var = "ARM",
+                               arm_var_choices = arm_var,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
-                               response = "OS",
-                               response_choices = "OS",
-                               plot_height,
                                pre_output,
                                post_output) {
   ns <- NS(id)
   
   standard_layout(
-    output = uiOutput(ns("forest_plot")),
+    output = plotOutput(ns("forest_plot"), height = "700px"),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ARS")),
-      optionalSelectInput(ns("paramcd"), "PARAMCD", paramcd_choices, paramcd, multiple = FALSE),
-      optionalSelectInput(ns("response"), "Response", response_choices, response, multiple = TRUE),
-      optionalSelectInput(ns("ref_arm"), "Reference Group", arm.ref_choices, arm.ref, multiple = TRUE),
-      optionalSelectInput(ns("treat_arm"), "Treatment Group", arm.comp_choices, arm.comp, multiple = TRUE),
+      optionalSelectInput(ns("paramcd"), div("PARAMCD", tags$br(), helpText("Select one type of response to analyze.")), 
+                          paramcd_choices, paramcd, multiple = FALSE),
+      selectInput(ns("responders"), "Responders", 
+                  choices = NULL, selected = NULL, multiple = TRUE),
+      optionalSelectInput(ns("arm_var"), div("Arm Variable", tags$br(), helpText("Select one variable to use for comparison")), 
+                                                                                        arm_var_choices, arm_var, multiple = FALSE),
+      selectInput(ns("ref_arm"), "Reference Arm", 
+                  choices = NULL, selected = NULL, multiple = TRUE),
+      helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
+      selectInput(ns("comp_arm"), "Comparison Arm", choices = NULL, selected = NULL, multiple = TRUE),
+      helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
       optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
@@ -97,9 +92,30 @@ ui_forest_response <- function(id, label,
 
 srv_forest_response <- function(input, output, session, datasets) {
   
-  output$forest_plot <- renderUI({
+  # Deal With Reactivity/Inputs
+  ARS_filtered <- reactive({
+    ARS_f <- datasets$get_data("ARS", reactive = TRUE, filtered = TRUE)
+    ARS_f
+  })
+  
+  # Update UI choices depending on selection of previous options
+  observe({
+    input$paramcd
+    ANL <- datasets$get_data("ARS", filtered = FALSE, reactive = FALSE)
+    updateSelectInput(session, "responders", 
+                      choices = unique(ANL$AVALC[ANL$PARAMCD == input$paramcd]),
+                      selected = c("CR", "PR"))
+    updateSelectInput(session, "ref_arm", choices = unique(ANL[[input$arm_var]]),
+                      selected = ANL[[input$arm_var]] %>% unique %>% sort %>% "["(1))
+    updateSelectInput(session, "comp_arm", choices = unique(ANL[[input$arm_var]]),
+                      selected = ANL[[input$arm_var]] %>% unique %>% sort %>% "["(-1))
     
-    ARS_filtered <- datasets$get_data("ARS", reactive = TRUE, filtered = TRUE)
+  })
+  
+  
+  output$forest_plot <- renderPlot({
+    
+    ARS_filtered <- ARS_filtered()
     ASL_filtered <- datasets$get_data("ASL", reactive = TRUE, filtered = TRUE)
     
     validate(need(!is.null(ARS_filtered) && is.data.frame(ARS_filtered), "no data left"))
@@ -107,62 +123,61 @@ srv_forest_response <- function(input, output, session, datasets) {
     
     
     paramcd <- input$paramcd
-    response <- input$response
-    subgroup_var <- input$subgroup_var
+    responders <- input$responders
+    arm_var <- input$arm_var
     ref_arm <- input$ref_arm
-    treat_arm <- input$treat_arm
+    comp_arm <- input$comp_arm
     
     teal:::as.global(subgroup_var)
     
-    validate(need(!is.null(treat_arm) && !is.null(ref_arm),
+    validate(need(!is.null(comp_arm) && !is.null(ref_arm),
                   "need at least one treatment and one reference arm"))
-    validate(need(length(intersect(ref_arm, treat_arm)) == 0,
+    validate(need(length(intersect(ref_arm, comp_arm)) == 0,
                   "reference and treatment group cannot overlap"))
     
-    validate(need(!is.null(response) && all(response %in% ARS_filtered$AVALC),
+    validate(need(!is.null(responders) && all(responders %in% ARS_filtered$AVALC),
                   "response AVALC does not exist"))
     
     validate(need(!is.null(paramcd) && paramcd %in% ARS_filtered$PARAMCD,
                   "PARAMCD does not exist"))
     
     
-    ## you need to add the encodings
-    ARS_f <- ARS_filtered %>% filter(PARAMCD == paramcd) %>%
-      select(c("STUDYID", "USUBJID", "PARAMCD", "AVAL", "AVALC"))
+    ## Get final datasets
+    ARS_filtered$arm_var <- ARS_filtered[[arm_var]]
+    ARS_f <- ARS_filtered %>% filter(PARAMCD == paramcd & arm_var %in% c(ref_arm, comp_arm)) 
     
     validate(need(nrow(ARS_f) > 0, "no data left"))
     
     ASL_filtered$BAGED <- ifelse(ASL_filtered$BAGE <= median(ASL_filtered$BAGE), "<=median", ">median")
     
-    validate(need(all(subgroup_var %in% names(ASL_filtered)),
-                  "some baseline risk variables are not valid"))
+    validate(need(all(subgroup_var %in% names(ASL_filtered)), "some baseline risk variables are not valid"))
     
-    ASL_f <- ASL_filtered %>% 
-      filter(ARM %in% c(ref_arm, treat_arm)) %>% 
-      select("STUDYID", "USUBJID", "ARM", subgroup_var) 
+    ASL_f <- ASL_filtered %>% select("STUDYID", "USUBJID", subgroup_var) 
     
-    validate(need(all(subgroup_var %in% names(ASL_f)),
-                  "some subgroup variables are not valid"))
-    ARS_f <- inner_join(ASL_f, ARS_f, by = c("STUDYID","USUBJID"))
+    validate(need(all(subgroup_var %in% names(ASL_f)), "some subgroup variables are not valid"))
     
-    validate(need(all(c(ref_arm, treat_arm) %in% ARS_f$ARM), "data needs to include at least one patient from the reference and comparison arm"))  
+    ARS_anl <- inner_join(ASL_f %>% select("STUDYID", "USUBJID") , ARS_f, by = c("STUDYID","USUBJID"))
     
-    group_by <- ARS_f %>% select(c("USUBJID", "STUDYID", subgroup_var))
-    head(group_by)
+    validate(need(all(c(ref_arm, comp_arm) %in% ARS_f$arm_var), "data needs to include at least one patient from the reference and comparison arm"))  
+    
+    #Filter ASL to get the grouping variables
+    group_data <- inner_join(ASL_f, ARS_f %>% select(c("USUBJID", "STUDYID")), by = c("STUDYID","USUBJID"))
+    names(group_data) <- labels_over_names(group_data)
+    head(group_data)
     ## add
     ## the arm combine & filtering and converting to a factor here...paste0(ref_arm, collapse = "/")
     ## using forcats
-    arm <- fct_collapse(ARS_f$ARM, ref_arm = ref_arm, treat_arm = treat_arm)
-    arm <- ifelse (arm == "ref_arm", paste0(ref_arm, collapse = "/"), paste0(treat_arm, collapse = "/")) 
+    arm <- fct_collapse(ARS_anl$arm_var, ref_arm = ref_arm, comp_arm = comp_arm)
+    arm <- ifelse (arm == "ref_arm", paste0(ref_arm, collapse = "/"), paste0(comp_arm, collapse = "/")) 
     arm <- fct_relevel(arm, paste0(ref_arm, collapse = "/"))
     
     tbl <- forest_rsp(
-      response = ARS_f$AVAL,
-      event = ARS_f$AVALC %in% response,
+      response = ARS_anl$AVAL,
+      event = ARS_anl$AVALC %in% responders,
       arm = arm, 
-      group_by = group_by[, -c(1,2), drop=FALSE]
+      group_data = group_data[, -c(1,2), drop=FALSE]
     )
     
-    as_html(tbl)
+    forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2], cex = 1.1)
   })
 }
