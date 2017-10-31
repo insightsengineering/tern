@@ -31,18 +31,26 @@ output to put the output into context. For example the
 an \code{\link[teal]{module}} object
 }
 \description{
-This module produces a response summary table that matches the STREAM template rspt01
+This module produces a response summary table that matches the STREAM
+template rspt01
 }
 \details{
-Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
-Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
-Package \code{forcats} used to re-format arm data into leveled factors. 
-Reference arms automatically combined if multiple arms selected as reference group.
+Additional standard UI inputs include \code{responders}, \code{incl_missing}
+(default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm}
+(default FALSE).
+
+Default values of the inputs \code{var_arm}, \code{ref_arm} and
+\code{comp_arm} are set to NULL, and updated accordingly based on seletion of
+\code{paramcd} and \code{arm.var}.
+
+Package \code{forcats} used to re-format arm data into leveled factors.
+
+Reference arms automatically combined if multiple arms selected as reference
+group.
 }
 \examples{
  
-
-\\donotrun{
+\dontrun{
 library(atezo.data)
 library(dplyr)
 library(forcats)

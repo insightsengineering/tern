@@ -6,7 +6,7 @@
 \usage{
 tm_forest_response(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
   arm_var = "ARM", arm_var_choices = arm_var, subgroup_var,
-  subgroup_var_choices = subgroup_var, plot_height = c(600, 200, 2000),
+  subgroup_var_choices = subgroup_var, plot_height = c(700, 200, 2000),
   pre_output = helpText("graph needs to be of a certain width to be displayed"),
   post_output = NULL)
 }
