@@ -43,6 +43,7 @@ tm_forest_survival <- function(label,
                                paramcd = "OS",
                                paramcd_choices = paramcd,
                                plot_height = c(600, 200, 2000),
+                               cex = 1.5,
                                pre_output = helpText("graph needs to be of a certain width to be displayed"),
                                post_output = NULL) {
   
@@ -54,6 +55,7 @@ tm_forest_survival <- function(label,
     server = srv_forest_survival,
     ui = ui_forest_survival,
     ui_args = args,
+    server_args = list(cex = cex),
     filters = "ATE"
   )
 }
@@ -66,6 +68,7 @@ ui_forest_survival <- function(id, label,
                                paramcd = "OS",
                                paramcd_choices = paramcd,
                                plot_height,
+                               cex,
                                pre_output,
                                post_output) {
   ns <- NS(id)
@@ -97,7 +100,7 @@ ui_forest_survival <- function(id, label,
   )
 } 
 
-srv_forest_survival <- function(input, output, session, datasets) {
+srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
   
   ## dynamic plot height
   output$plot_ui <- renderUI({
@@ -137,12 +140,12 @@ srv_forest_survival <- function(input, output, session, datasets) {
     comp_arm <- input$comp_arm
     
     
-    teal:::as.global(ATE_filtered)
-    teal:::as.global(ASL_filtered)
-    teal:::as.global(paramcd)
-    teal:::as.global(subgroup_var)
-    teal:::as.global(ref_arm)
-    teal:::as.global(comp_arm)
+    # teal:::as.global(ATE_filtered)
+    # teal:::as.global(ASL_filtered)
+    # teal:::as.global(paramcd)
+    # teal:::as.global(subgroup_var)
+    # teal:::as.global(ref_arm)
+    # teal:::as.global(comp_arm)
     
     ## 2: Validate if your inputs can produce the requested output
     
@@ -156,8 +159,6 @@ srv_forest_survival <- function(input, output, session, datasets) {
     
     validate(need(paramcd %in% ATE_filtered$PARAMCD, "time to event PARAMCD does not exist"))
     
-    
-    print(" ---------- passing by -------------")
     
     ## 3: Do your static code (this should also run in rmarkdown)
     
@@ -197,6 +198,6 @@ srv_forest_survival <- function(input, output, session, datasets) {
     
     #as_html(tbl)
     
-    forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2], cex = 1.5)
+    forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2], cex = cex)
   })
 }

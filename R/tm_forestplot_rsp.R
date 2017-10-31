@@ -46,6 +46,7 @@ tm_forest_response <- function(label,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
                                plot_height = c(700, 200, 2000),
+                               cex = 1.5,
                                pre_output = helpText("graph needs to be of a certain width to be displayed"),
                                post_output = NULL){
   
@@ -56,6 +57,7 @@ tm_forest_response <- function(label,
     server = srv_forest_response,
     ui = ui_forest_response,
     ui_args = args,
+    server_args = list(cex = cex),
     filters = "ARS"
   )
 }
@@ -68,6 +70,7 @@ ui_forest_response <- function(id, label,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
                                plot_height,
+                               cex = 1.5,
                                pre_output,
                                post_output) {
   ns <- NS(id)
@@ -98,7 +101,7 @@ ui_forest_response <- function(id, label,
   )
 } 
 
-srv_forest_response <- function(input, output, session, datasets) {
+srv_forest_response <- function(input, output, session, datasets, cex = 1.5) {
   
   ## dynamic plot height
   output$plot_ui <- renderUI({
@@ -191,6 +194,6 @@ srv_forest_response <- function(input, output, session, datasets) {
       group_data = group_data[, -c(1,2), drop=FALSE]
     )
     
-    forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2], cex = 1.3)
+    forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2], cex = cex)
   })
 }
