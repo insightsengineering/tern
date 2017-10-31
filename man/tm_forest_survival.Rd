@@ -6,7 +6,7 @@
 \usage{
 tm_forest_survival(label, arm_var = "ARM", arm_var_choices = arm_var,
   subgroup_var, subgroup_var_choices = subgroup_var, paramcd = "OS",
-  paramcd_choices = paramcd, plot_height = c(600, 200, 2000),
+  paramcd_choices = paramcd, plot_height = c(600, 200, 2000), cex = 1.5,
   pre_output = helpText("graph needs to be of a certain width to be displayed"),
   post_output = NULL)
 }
