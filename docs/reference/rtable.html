@@ -140,22 +140,22 @@ In future we would like to add a <code>toGridGrob</code> function.</p>
   <span class='kw'>col.names</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Treatement\nN=100"</span>, <span class='st'>"Comparison\nN=300"</span>),
   <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"xx (xx.xx%)"</span>,
   <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"Response"</span>, <span class='fu'>c</span>(<span class='fl'>104</span>, <span class='fl'>.2</span>), <span class='fu'>c</span>(<span class='fl'>100</span>, <span class='fl'>.4</span>)),
-  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"Non-Response"</span>, <span class='fu'>c</span>(<span class='fl'>23</span>, <span class='fl'>.4</span>), <span class='fu'>c</span>(<span class='fl'>43</span>, <span class='fl'>.5</span>)),
+  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"Non-Response"</span>, <span class='fu'>c</span>(<span class='fl'>23</span>, <span class='fl'>.4</span>), <span class='fu'>c</span>(<span class='fl'>43</span>, <span class='fl'>.5432432423423</span>)),
   <span class='fu'><a href='rrow.html'>rrow</a></span>(),
   <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"this is a very long section header"</span>),
   <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"HR"</span>, <span class='fu'><a href='rcell.html'>rcell</a></span>(<span class='fl'>3.23</span>, <span class='st'>"xx.xx"</span>, <span class='kw'>colspan</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
   <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"95% CI"</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='fu'><a href='rcell.html'>rcell</a></span>(<span class='fu'>c</span>(<span class='fl'>2.432</span>, <span class='fl'>4.3214</span>), <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"(xx.x, xx.x)"</span>, <span class='kw'>colspan</span> <span class='kw'>=</span> <span class='fl'>2</span>))
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                           Treatement        Comparison
-#&gt;                                             N=100             N=300   
-#&gt; ----------------------------------------------------------------------
-#&gt; Response                                  104 (20%)         100 (40%) 
-#&gt; Non-Response                               23 (40%)          43 (50%) 
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                           Treatement         Comparison 
+#&gt;                                              N=100              N=300   
+#&gt; ------------------------------------------------------------------------
+#&gt; Response                                   104 (20%)          100 (40%) 
+#&gt; Non-Response                               23 (40%)          43 (54.32%)
 #&gt; 
 #&gt; this is a very long section header
-#&gt; HR                                                    3.23            
-#&gt;   95% CI                                           (2.4, 4.3)         </div><div class='input'>
+#&gt; HR                                                     3.23             
+#&gt;   95% CI                                            (2.4, 4.3)          </div><div class='input'>
 <span class='fu'>row.names</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt; [1] "Response"                           "Non-Response"                      
 #&gt; [3] ""                                   "this is a very long section header"
 #&gt; [5] "HR"                                 "95% CI"                            </div><div class='input'><span class='fu'>names</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt; [1] "Treatement\nN=100" "Comparison\nN=300"</div><div class='input'>
@@ -211,7 +211,7 @@ In future we would like to add a <code>toGridGrob</code> function.</p>
 #&gt;   &lt;tr&gt;
 #&gt;     &lt;td class="rowname" align="left"&gt;Non-Response&lt;/td&gt;
 #&gt;     &lt;td align="center"&gt;23 (40%)&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;43 (50%)&lt;/td&gt;
+#&gt;     &lt;td align="center"&gt;43 (54.32%)&lt;/td&gt;
 #&gt;   &lt;/tr&gt;
 #&gt;   &lt;tr&gt;
 #&gt;     &lt;td colspan="3" class="rowname" align="left"&gt;&lt;/td&gt;

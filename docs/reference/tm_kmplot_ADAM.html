@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Helper functions to format rcells for various display — print_np • teal.oncology</title>
+<title>teal module for KM plot — tm_kmplot_ADAM • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -92,86 +92,53 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Helper functions to format rcells for various display</h1>
+    <h1>teal module for KM plot</h1>
     </div>
 
     
-    <p>Helper functions to format rcells for various display</p>
+    <p>teal module for KM plot</p>
     
 
-    <pre class="usage"><span class='fu'>print_np</span>(<span class='no'>x</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>list produced by calc_rate/calc_diffor function</p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>name of element to display</p></td>
-    </tr>
-    <tr>
-      <th>z</th>
-      <td><p>colspan for the cell</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>tm_kmplot_ADAM</span>(<span class='no'>label</span>, <span class='kw'>treatment_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
+  <span class='kw'>tratement_var_choices</span> <span class='kw'>=</span> <span class='no'>treatment_var</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"OS"</span>,
+  <span class='kw'>endpoint_choices</span> <span class='kw'>=</span> <span class='no'>endpoint</span>, <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>facet_var_choices</span> <span class='kw'>=</span> <span class='no'>facet_var</span>, <span class='kw'>strat_var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>strat_var_choices</span> <span class='kw'>=</span> <span class='no'>strat_var</span>, <span class='kw'>plot_height</span> <span class='kw'>=</span> <span class='fl'>700</span>)</pre>
+        
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>a_rate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calc_rate.html'>calc_rate</a></span>(<span class='no'>LETTERS</span>[<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>20</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='no'>T</span>)], <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"A"</span>)
-<span class='no'>b_rate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calc_rate.html'>calc_rate</a></span>(<span class='no'>LETTERS</span>[<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>20</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='no'>T</span>)], <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"A"</span>)
-<span class='no'>diffor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calc_diffor.html'>calc_diffor</a></span>(<span class='no'>b_rate</span>, <span class='no'>a_rate</span>)
-
-<span class='fu'>print_np</span>(<span class='no'>a_rate</span>)</div><div class='output co'>#&gt; [1] 6.0 0.3
-#&gt; attr(,"colspan")
-#&gt; [1] 1
-#&gt; attr(,"class")
-#&gt; [1] "rcell"</div><div class='input'><span class='fu'>print_ci</span>(<span class='no'>a_rate</span>, <span class='st'>"ci"</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 11.89316 54.27892
-#&gt; attr(,"conf.level")
-#&gt; [1] 0.95
-#&gt; attr(,"format")
-#&gt; [1] "(xx.xx, xx.xx)"
-#&gt; attr(,"colspan")
-#&gt; [1] 2
-#&gt; attr(,"class")
-#&gt; [1] "rcell"</div><div class='input'><span class='fu'>print_ci</span>(<span class='no'>diffor</span>, <span class='st'>"diffci"</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] -19.39946  39.39946
-#&gt; attr(,"conf.level")
-#&gt; [1] 0.95
-#&gt; attr(,"format")
-#&gt; [1] "(xx.xx, xx.xx)"
-#&gt; attr(,"colspan")
-#&gt; [1] 2
-#&gt; attr(,"class")
-#&gt; [1] "rcell"</div><div class='input'><span class='fu'>print_diffor</span>(<span class='no'>diffor</span>, <span class='st'>"diff"</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; prop 1 
-#&gt;     10 
-#&gt; attr(,"format")
-#&gt; [1] "xx.xx"
-#&gt; attr(,"colspan")
-#&gt; [1] 1
-#&gt; attr(,"class")
-#&gt; [1] "rcell"</div><div class='input'><span class='fu'>print_diffor</span>(<span class='no'>diffor</span>, <span class='st'>"or"</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] 1.555556
-#&gt; attr(,"format")
-#&gt; [1] "xx.xx"
-#&gt; attr(,"colspan")
-#&gt; [1] 1
-#&gt; attr(,"class")
-#&gt; [1] "rcell"</div><div class='input'>
-</div></pre>
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>atezo.data</span>)
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'>asl</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'>ate</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='co'>## Initialize Teal</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>teal</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/teal/topics/init'>init</a></span>(
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>ASL</span> <span class='kw'>=</span> <span class='no'>ASL</span>, <span class='kw'>ATE</span> <span class='kw'>=</span> <span class='no'>ATE</span>),
+  <span class='kw'>modules</span> <span class='kw'>=</span> <span class='fu'>root_modules</span>(
+    <span class='fu'>tm_data_table</span>(),
+    <span class='fu'>tm_variable_browser</span>(),
+    <span class='fu'>tm_kmplot_ADAM</span>(
+       <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"KM PLOT"</span>,
+       <span class='kw'>tratement_var_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARM"</span>, <span class='st'>"ARMCD"</span>),
+       <span class='kw'>endpoint_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"OS"</span>, <span class='st'>"PFSINV"</span>),
+       <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"TOBHX"</span>,
+       <span class='kw'>facet_var_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>, <span class='st'>"TOBHX"</span>),
+       <span class='kw'>strat_var</span> <span class='kw'>=</span> <span class='st'>"HIST"</span>,
+       <span class='kw'>strat_var_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"MLIVER"</span>, <span class='st'>"TC2IC2"</span>, <span class='st'>"HIST"</span>)
+    )
+  )
+)
+<span class='co'>## Initiate Shiny App</span>
+<span class='fu'>shinyApp</span>(<span class='kw'>ui</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>ui</span>, <span class='kw'>server</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>server</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
             
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-Chendi Liao (liaoc10), <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.com</a>
 
   </div>
 </div>

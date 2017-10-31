@@ -1,16 +1,13 @@
 #' alternative tablist
 #'
-#' @param time_to_event Response data
-#' @param event is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
-#'   is censored
-#' @param group_by data frame with one column per grouping
+#' @param response Tumor Response data
+#' @param event is boolean, \code{TRUE} if responder, \code{FALSE} if non-responder
+#' @param group_data data frame with one column per sub-group variable
 #' @param arm vector with arm information
-#' @param arm.ref a character vector defining which arms in arm should be taken 
-#'   as the reference
-#' @param arm.comp a character vector defining which arms in arm should be taken 
-#'   as the comparison
 #' 
 #' @export
+#' 
+#' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
 #' @examples 
 #' 
@@ -18,73 +15,63 @@
 #' library(atezo.data)
 #' library(dplyr) 
 #' library(grid)
+#' library(teal.oncology)
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' surv_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
-#' Viewer(surv_tbl_stream )
+#' resp_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
+#' Viewer(resp_tbl_stream )
 #' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
+#'                  filter(ITTWTFL == "Y") %>% 
+#'                  filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
+#'                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
 #' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
-#'
-#' ARS_f_resp <- ARS_f %>% filter(AVALC %in% c("CR", "PR"))
-#' ARS_f_IC1 <- ARS_f %>% filter(TCLEVEL == "1")
-#'
-#' group_by <- merge(
-#'  ARS_f[c("USUBJID", "STUDYID")],
-#'  ASL_f[c("USUBJID", "STUDYID", "TCLEVEL", "ICLEVEL", "TC3IC3")],
-#'  all.y = TRUE, all.x = FALSE
-#' )
 #' 
-#' head(group_by)
+#'group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
+#' names(group_data) <- labels_over_names(group_data)
 #' 
-#' tbl <- glm_subgroup(
+#' head(group_data)
+#' 
+#' # Dummy C First (comparison in survfit and glm)
+#' arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
+#' 
+#' tbl <- forest_rsp(
 #'           response = ARS_f$AVAL,
 #'           event = ARS_f$AVALC %in% c("CR","PR"),
-#'           arm = ARS_f$ARM, 
-#'           group_by = group_by[, -c(1,2), drop=FALSE],
-#'           arm.ref = "DUMMY C",
-#'           arm.comp = "DUMMY A"
+#'           arm = arm, 
+#'           group_data = group_data[, -c(1,2), drop=FALSE]
 #' )
 #' Viewer(tbl)
 #' 
 #' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
+#' forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
+#' 
 #' }
 #' 
 #' 
 #'   
-glm_subgroup <- function(response, event,
-                         arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
-                         group_by, covariARSs = NULL) {
+forest_rsp <- function(response, event,
+                         arm, group_data, covariARSs = NULL) {
   
   # argument checking
   n <- length(response)
   if (length(event) != n) stop("event has wrong length")
   if (length(arm) != n) stop("arm has wrong length")
-  if (!is.data.frame(group_by)) stop("group_by is expected to be a data.frame")
-  if (nrow(group_by) != n) stop("group_by has wrong number of rows")
+  if (!is.data.frame(group_data)) stop("group_data is expected to be a data.frame")
+  if (nrow(group_data) != n) stop("group_data has wrong number of rows")
   
   
-  arm_for_model <- combine_arm(arm, arm.ref, arm.comp)
-  
-  glm_data <- subset(
-    data.frame(
-      response,
-      event,
-      arm = arm_for_model
-    ), !is.na(arm_for_model)
-  )
-  
-  #head(glm_data)
-  
-  # var = names(group_by)[1]
+  glm_data <- data.frame(response, event,arm)
+
+  # var = names(group_data)[1]
   # split data into a tree for data
   # where each leaf is a data.frame with 
   # the data to compute the survival analysis with
   data_list <- c(
     list(ALL = list(ALL = glm_data)),
-    lapply(group_by, function(var) {
+    lapply(group_data, function(var) {
       sub_data <- lapply(setNames(unique(var[var != ""]), unique(var[var != ""])), function(value) {
          glm_data[var == value , , drop= FALSE] 
       })
@@ -94,7 +81,7 @@ glm_subgroup <- function(response, event,
   
   #varname=data_list$TC3IC3
   #data_for_value = varname[1]
-  # apply the glm analysis
+  #apply the glm analysis
   results_glm <- lapply(data_list, function(varname) {
     lapply(varname, function(data_for_value) {
       glm_results(data_for_value)
@@ -106,9 +93,6 @@ glm_subgroup <- function(response, event,
   X <- Reduce(rbind, results_glm2)
   row.names(X) <-names(results_glm2)
   
-  
-  # X <- results_glm2
-  
   additonal_args <- list(
     col.names = c("Total n",
                   "n", "n\nResponder", "Responder Rate\n(%)",
@@ -119,6 +103,7 @@ glm_subgroup <- function(response, event,
   
   # rname <- rownames(X)[1]
   # x <- split(X, 1:nrow(X))[[1]]
+  # resolve the result data.frame to rtable 
   last_header <- "ALL"
   rrow_collection <- Filter(
     function(x)!is.null(x),
@@ -152,21 +137,150 @@ glm_subgroup <- function(response, event,
       recursive = FALSE)
   )
   
-  
   tbl <- do.call(rtable, c(additonal_args, rrow_collection))
+  
   
   tbl
  # Viewer(tbl)
 }
 
-
+# Forest plot using grid
+#' Forest plot (table + graph)
+#' 
+#' @param x rtable from forest_rsp function
+#' @param arm.ref string used to label reference arm
+#' @param arm.comp string used to label comparable arm
+#' @param cex muliplier
+#' 
+#' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
+#' 
+#' @import grid
+#' 
 #' @export
-plot.forest_response <- function(x, ...) {
+#' 
+forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1) {
+
+  
+  padx <- unit(1, "lines")
+  
+  vp <- vpTree(
+    parent = viewport(
+      name = "forestplot",
+      layout = grid.layout(
+        nrow = 1, ncol = 11,
+        widths = unit.c(
+          stringWidth("Baseline Risk Factors  ") + 1 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xx.xx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xxxxx") + 2 * padx,
+          stringWidth("xx.xx") + 2 * padx,
+          stringWidth("xx.xx") + 2 * padx,
+          stringWidth("xx.xx - xx.xx") + 2 * padx,
+          unit(1, "null")
+        )
+      ),
+      gp = gpar(cex = cex)
+    ),
+    children = vpList(
+      viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
+      viewport(name = "col_2", layout.pos.col=2, layout.pos.row=1),
+      viewport(name = "col_3", layout.pos.col=3, layout.pos.row=1),
+      viewport(name = "col_4", layout.pos.col=4, layout.pos.row=1),
+      viewport(name = "col_5", layout.pos.col=5, layout.pos.row=1),
+      viewport(name = "col_6", layout.pos.col=6, layout.pos.row=1),
+      viewport(name = "col_7", layout.pos.col=7, layout.pos.row=1),
+      viewport(name = "col_8", layout.pos.col=8, layout.pos.row=1),
+      viewport(name = "col_9", layout.pos.col=9, layout.pos.row=1),
+      viewport(name = "col_10", layout.pos.col=10, layout.pos.row=1),
+      dataViewport(name = "col_11", layout.pos.col=11, layout.pos.row=1,
+                   xData = c(-2,2), yData = c(0,1))
+    )
+  )
   
   grid.newpage()
   
-  grid.text("Plot of a forst response table")
+  pushViewport(plotViewport(margins = c(3,2,1,2)))
   
+  pushViewport(vp)
+  
+  # grid.ls(viewports = TRUE)
+  seekViewport("forestplot")
+  
+  # need once: mid-line OR = 1
+  grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))
+  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0,1-2/nrow(x)), "npc"), vp = vpPath("col_11"),
+             gp = gpar(lty = 2))  
+  
+  # Add Header
+  draw_header(2, nrow(x), "Baseline Risk Factors","Total n", "n", "n\nResponder", "Responder\nRate (%)", "n", "n\nResponder", "Responder\nRate (%)", "Odds\nRatio", "95%\nCI", arm.ref,arm.comp)
+  
+  # Add table contents
+  for (i in 1:nrow(x)){
+    if (!is.null(x[i,1])) {
+      draw_row(i+4, nrow(x), row.names(x)[i], x[i, 1], x[i, 2], x[i, 3], round(x[i, 4], 1), x[i, 5], x[i, 6], 
+               round(x[i, 7], 1), round(x[i, 8], 2), paste("(", paste(round(x[i, 9],2), collapse = ", "), ")", sep = ""), c(log(abs(x[i,8])), log(abs(x[i,9]))), TRUE)
+    } else if (is.null(x[i,1]) & row.names(x)[i] != "") {
+      draw_row(i+4, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE, 2)
+    } else {
+      draw_row(i+4, nrow(x), "", "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE,2)
+    }
+  }
+}
+
+
+#Helper Functions
+draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
+  ypos <- unit(1 - i/(n+5), "npc")
+  grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(x12, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(paste(x11, "\nBetter"), x = unit(-1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.text(paste(x12, "\nBetter"), x = unit(1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
+  grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
+  
+}
+
+draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hline = FALSE, fontface = 1) {
+  ypos <- unit(1 - i/(n+5), "npc")
+  grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10 , fontface = fontface))
+  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 , fontface = fontface))
+  # grid.text(x11, y = ypos, vp = vpPath("col_11"))
+  
+  
+  grid.lines(x = unit(x11[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_11"), gp =gpar(lwd = 2))  
+  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/3.5, "lines"), vp = vpPath("col_11"),
+              gp = gpar(fill = "blue"))
+  
+  
+  if (add_hline) {
+    grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"), gp = gpar(col = "grey", lty = 1, lwd = 0.3))
+  }
   
 }
 
@@ -194,8 +308,6 @@ glm_results <- function(data){
   glm_model <- glm(event ~ arm, family=binomial(link='logit'), data = data)
   glm_sum  <- summary(glm_model )
   glm_or   <- exp(glm_sum$coefficient[2,1])
- # glm_lcl  <- exp(glm_sum$coefficient[2,1]-1.96*sqrt(glm_sum$coefficient[2,2]))
- # glm_ucl  <- exp(glm_sum$coefficient[2,1]+1.96*sqrt(glm_sum$coefficient[2,2]))
   glm_lcl  <- exp(confint(glm_model)[2,1])
   glm_ucl  <- exp(confint(glm_model)[2,2])
   glm_pval <- glm_sum$coefficients[2,4]
@@ -210,66 +322,3 @@ glm_results <- function(data){
   }
 }
 
-#' Forest Plot Numbers for Survival data with ADAM data structure
-#' 
-#' @export
-#' 
-#' @inheritParams glm_subgroup
-#' @param ASL asl data frame
-#' @param ARS data frame
-#' 
-#' @importFrom dplyr %>% filter
-#' 
-#' @examples 
-#' \dontrun{
-#' 
-#' rm(list = ls())
-#' library(ARSzo.data)
-#' library(dplyr)
-#' 
-#' ARS <- ARS(com.roche.cdt30019.go29436.re)
-#' ASL <- asl(com.roche.cdt30019.go29436.re)
-#' 
-#' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
-#' 
-#' glm_subgroup_ADAM(
-#'   ASL, ARS,
-#'   groupvar = c("SEX", "BECOG", "COUNTRY"),
-#'   arm.ref = "DUMMY A", arm.comp = "DUMMY B"
-#' )
-#'   
-#' }
-glm_subgroup_ADAM <- function(ASL, ARS,
-                              outcome = "Overall Survival",
-                              groupvar,
-                              arm.ref,
-                              arm.comp,
-                              arm.var = "ARM",
-                              time_to_event.var = "AVAL",
-                              event.var = "CNSR", negARS.event.var = TRUE) {
-  
-  ARS %needs% c("USUBJID", "STUDYID", "PARAM", time_to_event.var, event.var)
-  ASL %needs% c("USUBJID", "STUDYID", groupvar, arm.var)
-  
-  event <- ARS[[event.var]]
-  if (!(is.numeric(event) || is.logical(event))) stop("event var needs to be numeric or boolean")  
-  
-  ARS_f <- ARS %>% filter(PARAM == outcome)
-  
-  if (nrow(ARS_f) <= 0) stop("ARS data left after filtering")
-  
-  group_by <- merge(
-    ARS_f[c("USUBJID", "STUDYID")],
-    ASL[c("USUBJID", "STUDYID", groupvar)],
-    all.x = TRUE, all.y = FALSE
-  )
-  
-  glm_subgroup(
-    time_to_event = ARS_f[[time_to_event.var]],
-    event = if(negARS.event.var) !ARS_f[[event.var]] else ARS_f[[event.var]],
-    arm = ARS_f[[arm.var]], 
-    group_by = group_by[, -c(1,2), drop=FALSE],
-    arm.ref = arm.ref,
-    arm.comp = arm.comp
-  )
-}

@@ -15,11 +15,13 @@ Depends:
   teal
 Imports:
   grid,
+  rlang,
   ggplot2,
   survminer,
   dplyr,
   shiny,
-  PropCIs
+  PropCIs,
+  forcats
 Suggests:
   testthat,
   knitr,

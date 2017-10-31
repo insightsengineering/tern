@@ -4,11 +4,11 @@
 \alias{tm_forest_response}
 \title{Forest Response Plot teal module}
 \usage{
-tm_forest_response(label, paramcd, paramcd_choices = paramcd, arm.ref,
-  arm.ref_choices = arm.ref, arm.comp, arm.comp_choices = arm.comp,
-  subgroup_var, subgroup_var_choices = subgroup_var, response,
-  response_choices = response, plot_height = c(600, 200, 2000),
-  pre_output = NULL, post_output = NULL)
+tm_forest_response(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
+  arm_var = "ARM", arm_var_choices = arm_var, subgroup_var,
+  subgroup_var_choices = subgroup_var, plot_height = c(700, 200, 2000),
+  pre_output = helpText("graph needs to be of a certain width to be displayed"),
+  post_output = NULL)
 }
 \description{
 Forest Response Plot teal module
@@ -20,27 +20,26 @@ Forest Response Plot teal module
 library(atezo.data)
 library(dplyr)
 library(survival)
+library(forcats)
 
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
+ 
+ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 
-arms <- unique(ASL$ARM)
 x <- teal::init(
   data = list(ASL = ASL, ARS = ARS),
   modules = root_modules(
     tm_variable_browser(),
     tm_data_table(),
     tm_forest_response(
-       label = "Forest Survival",
+       label = "Forest Response",
        paramcd = "OVRSPI",
-       paramcd_choices = unique(ARS$PARAMCD),
-       response = "CR",
-       response_choices = unique(ARS$AVALC),
+       paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
+       plot_height = c(600, 200, 2000),
        subgroup_var = c("BAGED", "SEX", "BECOG"),
-       arm.ref = arms[1],
-       arm.ref_choices = arms,
-       arm.comp = arms[-1],
-       arm.comp_choices = arms
+       arm_var = "ARM",
+       arm_var_choices = c("ARM", "ARMCD", "ACTARM")
    )
   )
 )   

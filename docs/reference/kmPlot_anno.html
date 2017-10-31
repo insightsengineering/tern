@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate difference in rates and odds ratio between two lists produced by
-calc_rate function — calc_diffor • teal.oncology</title>
+<title>Statistics from KM estimators and Cox PH modeling — kmPlot_anno • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -93,69 +92,29 @@ calc_rate function — calc_diffor • teal.oncology</title>
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate difference in rates and odds ratio between two lists produced by
-calc_rate function</h1>
+    <h1>Statistics from KM estimators and Cox PH modeling</h1>
     </div>
 
     
-    <p>Calculate difference in rates and odds ratio between two lists produced by
-calc_rate function</p>
+    <p>Statistics from KM estimators and Cox PH modeling</p>
     
 
-    <pre class="usage"><span class='fu'>calc_diffor</span>(<span class='no'>comp</span>, <span class='no'>ref</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>comp</th>
-      <td><p>list produced by calc_rate function for comparison arm</p></td>
-    </tr>
-    <tr>
-      <th>ref</th>
-      <td><p>list produced by calc_rate function for reference arm</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>kmPlot_anno</span>(<span class='no'>data</span>, <span class='kw'>stratum.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cox.tie</span> <span class='kw'>=</span> <span class='st'>"efron"</span>,
+  <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>plot.median</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>plot.nrisk</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>time.interval</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>nrisk.height</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size.nrisk</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>plot.cens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size.cens</span> <span class='kw'>=</span> <span class='fl'>4.5</span>, <span class='kw'>shape.cens</span> <span class='kw'>=</span> <span class='st'>"+"</span>,
+  <span class='kw'>plot.stats</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size.stats</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>xystats.up</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.7</span>, <span class='fl'>0.8</span>),
+  <span class='kw'>xyinterval.up</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.08</span>, <span class='fl'>0.06</span>), <span class='kw'>xystats.lo</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.05</span>, <span class='fl'>0.3</span>),
+  <span class='kw'>xyinterval.lo</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.07</span>, <span class='fl'>0.06</span>), <span class='kw'>line.color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>line.type</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>line.width</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='st'>"Kaplan-Meier Plot"</span>, <span class='kw'>legend.pos</span> <span class='kw'>=</span> <span class='st'>"none"</span>)</pre>
+        
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='no'>LETTERS</span>[<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>20</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='no'>T</span>)]
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='no'>LETTERS</span>[<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>20</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='no'>T</span>)]
-<span class='no'>a_rate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calc_rate.html'>calc_rate</a></span>(<span class='no'>a</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"A"</span>)
-<span class='no'>b_rate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calc_rate.html'>calc_rate</a></span>(<span class='no'>b</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"A"</span>)
-<span class='fu'>calc_diffor</span>(<span class='no'>b_rate</span>, <span class='no'>a_rate</span>)</div><div class='output co'>#&gt; $diff
-#&gt; prop 1 
-#&gt;    -10 
-#&gt; 
-#&gt; $diffci
-#&gt; [1] -38.23301  18.23301
-#&gt; attr(,"conf.level")
-#&gt; [1] 0.95
-#&gt; 
-#&gt; $diffp
-#&gt; [1] 0.490153
-#&gt; 
-#&gt; $or
-#&gt; [1] 0.6190476
-#&gt; 
-#&gt; $orci
-#&gt; [1] 0.1621455 2.3800262
-#&gt; attr(,"conf.level")
-#&gt; [1] 0.95
-#&gt; </div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    
-Chendi Liao (liaoc10), <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.com</a>
+                </ul>
 
   </div>
 </div>

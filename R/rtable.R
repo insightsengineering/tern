@@ -32,7 +32,7 @@
 #'   col.names = c("Treatement\nN=100", "Comparison\nN=300"),
 #'   format = "xx (xx.xx%)",
 #'   rrow("Response", c(104, .2), c(100, .4)),
-#'   rrow("Non-Response", c(23, .4344234232343223), c(43, .5)),
+#'   rrow("Non-Response", c(23, .4), c(43, .5432432423423)),
 #'   rrow(),
 #'   rrow("this is a very long section header"),
 #'   rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
@@ -533,7 +533,7 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
 
     switch(
       format,
-      "xx" = as.character(x),
+      "xx" = if (is.na(x)) "NA" else as.character(x),
       "xx." = as.character(round(x, 0)),
       "xx.x" = as.character(round(x, 1)),
       "xx.xx" = as.character(round(x, 2)),
@@ -670,6 +670,7 @@ toString.rtable <- function(x, gap = 8, indent.unit = 2) {
   nchar_col <- ceiling(max(unlist(lapply(c(list(header_row), x), function(row) {
     lapply(row, function(cell) {
       nc <- nchar(unlist(strsplit(format_rcell(cell, output = "ascii"), "\n", fixed = TRUE)))
+      nc[is.na(nc)] <- 0
       nc / attr(cell, "colspan")
     })
   }))))
@@ -755,7 +756,7 @@ row_to_str <- function(row, nchar_rownames, nchar_col, gap, indent.unit) {
 
 
 padstr <- function(x, n, just = c("center", "left", "right")) {
-  
+
   just <- match.arg(just)
   
   if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))

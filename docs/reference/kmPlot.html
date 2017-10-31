@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Time to Event Table — time_to_event_table • teal.oncology</title>
+<title>kmPlot — kmPlot • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -92,76 +92,84 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Time to Event Table</h1>
+    <h1>kmPlot</h1>
     </div>
 
     
-    <p>This is the description of the function</p>
+    <p>descr</p>
     
 
-    <pre class="usage"><span class='fu'>time_to_event_table</span>(<span class='no'>time_to_event</span>, <span class='no'>event</span>, <span class='no'>is_earliest_contr_event_death</span>, <span class='no'>arm</span>,
-  <span class='no'>arm.ref</span>, <span class='kw'>arm.comp</span> <span class='kw'>=</span> <span class='fu'>setdiff</span>(<span class='no'>arm</span>, <span class='no'>arm.ref</span>), <span class='no'>strata_data</span>)</pre>
+    <pre class="usage"><span class='fu'>kmPlot</span>(<span class='no'>time_to_event</span>, <span class='no'>event</span>, <span class='no'>arm</span>, <span class='no'>arm.ref</span>, <span class='kw'>arm.rest</span> <span class='kw'>=</span> <span class='fu'>setdiff</span>(<span class='no'>arm</span>, <span class='no'>arm.ref</span>),
+  <span class='kw'>stratum_df</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_col</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>time_to_event</th>
-      <td><p>time to event data</p></td>
+      <td><p>time to event values</p></td>
     </tr>
     <tr>
-      <th>is_event</th>
-      <td><p>boolean with <code>TRUE</code> if event and <code>FALSE</code> if censored</p></td>
+      <th>event</th>
+      <td><p>boolean, <code>TRUE</code> if event and <code>FALSE</code> if censored</p></td>
+    </tr>
+    <tr>
+      <th>arm.ref</th>
+      <td><p>character: reference arm</p></td>
+    </tr>
+    <tr>
+      <th>stratum_df</th>
+      <td><p>a data frame for stratification factor</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a named list with one element per row where each element contains the
-  data for the row</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>atezo.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
 <span class='fu'>library</span>(<span class='no'>survival</span>)
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>survminer</span>)
 
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>atezo.data</span><span class='kw ns'>::</span><span class='fu'>asl</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
-<span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>atezo.data</span><span class='kw ns'>::</span><span class='fu'>ate</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='no'>ATE</span> <span class='kw'>&lt;-</span>  <span class='fu'>ate</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
 
-<span class='no'>tte_tbl_stream</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/atezo.data/topics/get_time_to_event_table'>get_time_to_event_table</a></span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
-<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tte_tbl_stream</span>)
+<span class='no'>ATE_filtered</span> <span class='kw'>&lt;-</span> <span class='no'>ATE</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
-<span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='no'>ATE</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ITTFL</span> <span class='kw'>==</span> <span class='st'>"Y"</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>time_to_event_table</span>(
-  <span class='kw'>time_to_event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>AVAL</span>,
-  <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
-  <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>ARM1</span>,
-  <span class='kw'>is_earliest_contr_event_death</span> <span class='kw'>=</span> <span class='no'>ATE_f</span>$<span class='no'>EVNTDESC</span> <span class='kw'>==</span> <span class='st'>"Death"</span>,
-  <span class='kw'>arm.ref</span> <span class='kw'>=</span> <span class='st'>"DUMMY C"</span>,
-  <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ATE_f</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>SEX</span>, <span class='no'>MLIVER</span>, <span class='no'>TCICLVL2</span>)
-)
+ <span class='fu'>kmPlot</span>(
+   <span class='kw'>time_to_event</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>AVAL</span>,
+   <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
+   <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>ARM</span>,
+   <span class='kw'>arm.ref</span> <span class='kw'>=</span>  <span class='st'>"DUMMY C"</span>
+   )
 
-<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl</span>)
+<span class='fu'>kmPlot</span>(
+   <span class='kw'>time_to_event</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>AVAL</span>,
+   <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
+   <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>ARM</span>,
+   <span class='kw'>arm.ref</span> <span class='kw'>=</span>  <span class='st'>"DUMMY C"</span> ,
+   <span class='kw'>stratum_df</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>[<span class='fu'>c</span>(<span class='st'>"SEX"</span>)]
+   )
 
-<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tte_tbl_stream</span>)
+<span class='fu'>kmPlot</span>(
+   <span class='kw'>time_to_event</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>AVAL</span>,
+   <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
+   <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>ARM</span>,
+   <span class='kw'>facet_by</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>$<span class='no'>SEX</span>,
+   <span class='kw'>stratum_df</span> <span class='kw'>=</span> <span class='no'>ATE_filtered</span>[<span class='fu'>c</span>(<span class='st'>"RACE"</span>, <span class='st'>"HIST"</span>)],
+   <span class='kw'>arm.ref</span> <span class='kw'>=</span>  <span class='st'>"DUMMY B"</span> ,
+   <span class='kw'>arm.rest</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='st'>"DUMMY A"</span>, <span class='st'>"DUMMY C"</span> )
+   )
 
-<span class='fu'><a href='compare_rtables.html'>compare_rtables</a></span>(<span class='no'>tbl</span>, <span class='no'>tte_tbl_stream</span>, <span class='kw'>comp.attr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='no'>tbl</span>[<span class='fl'>13</span>,<span class='fl'>1</span>]
-<span class='no'>tte_tbl_stream</span>[<span class='fl'>13</span>,<span class='fl'>1</span>]
-<span class='co'># }</span><div class='input'>
-</div></pre>
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
