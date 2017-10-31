@@ -1,60 +1,10 @@
-
-# (cases)
-# 
-# # control functions
-# settings_coxph <- function(
-#   ties = "exact",
-#   ...
-# ) {
-#   
-#   c(as.list(environment()), list(...))
-#   
-# }
-# 
-# 
-# tte_tbl <- function(formula, data, ...) {
-#   
-#   coxph_args <- settings_coxph(...)
-#   
-#   do.call(coxph, c(list(formula = formula, data = data), coxph_args))
-#   
-# }
-# 
-# tte_tbl(Surv(AVAL, 1-CNSR) ~ ARM +  RACE + strata(SEX), data = ANL)
-# 
-
-
-### 
-
-# kmplot <- function() {}
-# forest_tte <- function() {}
-# tte_tbl(Surv(AVAl, 1-CNSR) ~ ARM +  RACE + strata(SEX, AAA), data = ATE)
-# ATE$ARM <- factor(ATE$ARM, levels = "ref")
-# kmplot(Surv(AVAl, 1-CNSR) ~ ARM +  RACE + strata(SEX, AAA), data = ATE)
-# forest_tte(Surv(AVAl, 1-CNSR) ~ ARM +  RACE + strata(SEX, AAA), data = ATE )
-# coxph() 
-
-
-library(forcats)
-library(atezo.data)
-library(dplyr)
-library(survival)
-library(grid)
-library(scales)
-library(forcats)
-
-
-
-
-#survminer::ggsurvplot(fit, risk.table = TRUE, break.time.by = 2)
-
-
-
 #' our fast km plot
 #' 
 #' 
 #' @import grid
 #' @importFrom scales col_factor
+#' @export
+#' 
 #' 
 #' @examples 
 #' 
@@ -70,13 +20,47 @@ library(forcats)
 #'   select(AVAL, CNSR, ARM, SEX, RACE, MLIVER) %>%
 #'   mutate(ARM = fct_relevel(ARM, "DUMMY C"))
 #' 
-#' fit <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL)
+#' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL)
 #' 
-#' kmplot2(fit)
+#' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE)
+#' 
+#' 
+#' ## facet by row
+#' nplots <- 2
+#' # new plot
+#' grid.newpage()
+#' 
+#' # margins
+#' pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
+#' 
+#' # layout
+#' pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
+#'    heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
+#' )))
+#' 
+#' # now add first plot
+#' pushViewport(viewport(layout.pos.row = 1))
+#' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add = TRUE)
+#' popViewport()
+#' 
+#' #pushViewport(viewport(layout.pos.row = 2))
+#' #grid.rect(gp = gpar(fill = "thistle"))
+#' #popViewport()
+#' 
+#' pushViewport(viewport(layout.pos.row = 3))
+#' grid.text("MY TITLE", y = unit(1, "npc") + unit(1, "lines"), gp = gpar(fontface = "bold", fontsize = 16))
+#' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add = TRUE)
+#' popViewport()
+#' 
+#' 
+#' #survminer::ggsurvplot(fit, risk.table = TRUE, break.time.by = 2)
+#' 
 #' }
-kmplot2 <- function(fit) {
+kmplot <- function(formula_km, data, add_coxph = FALSE, formula_coxph = formula_km, add = FALSE) {
   
-  if(!is(fit, "survfit")) stop("expect an object of class survfit")
+  fit <- survfit(formula_km, data = data)
+
+  
   if (length(fit$strata) > 9) stop("unfortunately we currently do not have more than 9 colors to encode different stratas")
   
   # extract kmplot relevant data
@@ -99,9 +83,11 @@ kmplot2 <- function(fit) {
   col_pal <- col_factor("Set1", domain = names(df_s))  
   
 
-  # now do the plotting  
-  grid.newpage()
-  pushViewport(plotViewport(margins = c(3, 10, 2, 2)))
+  # now do the plotting
+  if(!add) {
+    grid.newpage()
+    pushViewport(plotViewport(margins = c(3, 10, 2, 2)))    
+  }
   
   pushViewport(viewport(layout = grid.layout(
     nrow = 3, ncol = 1,
@@ -139,6 +125,56 @@ kmplot2 <- function(fit) {
     rot = 90
   )
   
+  ## add coxph
+  if (add_coxph) {
+    fitcox <- coxph(formula_coxph, data = data)
+    
+    sfit <- summary(fitcox)
+    
+    hr <- sfit$coefficients[, "exp(coef)"]
+    ci <- sfit$conf.int[, c("lower .95", "upper .95")]
+    pvalues <- sfit$coefficients[, "Pr(>|z|)"]
+  
+    info <- cbind(hr, ci, pvalues)
+    sinfo <- split(as.data.frame(info), 1:nrow(info))
+    
+    tbl <- do.call(
+      rtable,
+      c(
+        list(col.names = c("HR", "95% CI of HR", "p-value")),
+        lapply(sinfo, function(xi) {
+          rrow(
+            row.name = rownames(xi),
+            rcell(xi$hr, format = "xx.xx"),
+            rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xx, xx.xx)"),
+            rcell(xi$pvalues, format = "xx.xxx")
+          )
+        })
+      )
+    )
+    tblstr <- toString(tbl, gap = 2)
+
+    grid.text(label = paste0("Cox Proportional model:\n", tblstr),
+              x = unit(1, "lines"), y = unit(1, "lines"),
+              just = c("left", "bottom"),
+              gp = gpar(fontfamily = "mono")
+              )
+    
+    lab <- paste0("Cox Proportional model:\n", tblstr)
+    grid.text(label = lab,
+              x = unit(1, "npc") - stringWidth(lab) - unit(1, "lines"),
+              y = unit(1, "npc") -  unit(1, "lines"),
+              just = c("left", "top"),
+              gp = gpar(fontfamily = "mono")
+    )
+  }
+  
+
+  
+  
+  
+  
+  ## Number of patients at Risk
   popViewport(2)
   
   pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 2))
@@ -190,6 +226,7 @@ kmplot2 <- function(fit) {
     
   }, df_s, 1 - 1:length(df_s)/(length(df_s) + 1), names(df_s), col_pal(names(df_s)))
   
+  popViewport(3)
 }
 
 
