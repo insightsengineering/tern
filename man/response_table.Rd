@@ -2,85 +2,89 @@
 % Please edit documentation in R/response_table.R
 \name{response_table}
 \alias{response_table}
-\title{Create the Response Table}
+\title{Response Table Caclulation Function}
 \usage{
 response_table(response, value.resp = c("CR", "PR"), value.nresp = c("SD",
-  "NON CR/PD", "PD", "NE"), arm, arm.ref, arm.comp = setdiff(arm, arm.ref),
-  arm.comp.combine = T, style = 1)
+  "NON CR/PD", "PD", "NE"), arm, style = 1)
 }
 \arguments{
 \item{response}{Tumor response data}
 
-\item{arm}{Arm information data}
+\item{arm}{Arm information data as factor}
 
-\item{arm.ref}{Character vector, defining which arm(s) from the list of arms should be used as reference group}
+\item{style}{Must be 1 or 2, \code{1} if only want to display rates summary
+for each response value category, \code{2} if want to display rates,
+difference in rate and odds ratio for each response value category.}
 
-\item{arm.comp}{Character vector, defining which arm(s) from the list of arms should be used as comparison group}
+\item{value.rsp}{Character vector, defining list of response values to be
+used as responders}
 
-\item{arm.comp.combine}{Logical, \code{TRUE} if want all non-ref arms to be combined into one comparison group, 
-\code{FALSE} if want each of the non-ref arms to be a separate comparison group}
-
-\item{style}{Must be 1 or 2, \code{1} if only want to display rates summary for each response value category,
-\code{2} if want to display rates, difference in rate and odds ratio for each response value category.}
-
-\item{value.rsp}{Character vector, defining list of response values to be used as responders}
-
-\item{value.nrsp}{Character vector, defining list of response values to be used as non-responders}
+\item{value.nrsp}{Character vector, defining list of response values to be
+used as non-responders}
 }
 \description{
-Create the Response Table
+Response Table Caclulation Function
 }
 \details{
-We use the \code{PropCIs} to calculate the CIs because...
+We use the \code{PropCIs} package to calculate the CIs for odds ratio
 }
 \examples{
 
 
 \dontrun{
 library(dplyr)
-library(shiny)
 library(atezo.data)
 library(teal.oncology)
-library(PropCIs)
+library(forcats)
 
-
-ARS <- ars(com.roche.cdt30019.go29436.re) \%>\% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) \%>\% 
-       filter(PARAMCD == "BESRSPI")
-
-#If want to include missing as non-responders
-ARS$AVALC[ARS$AVALC==""] <- "NE"
-
+ARS <- ars(com.roche.cdt30019.go29436.re)
 
 tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
 Viewer(tbl_stream)
 
-tbl <- response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F)
-Viewer(tbl)
+ref_arm = "DUMMY C"
+comp_arm = c("DUMMY B", "DUMMY A")
+combine_arm = FALSE
+responders = c("CR", "PR")
 
-response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T)
-response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F, style = 2)
-response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T, style = 2)
+ANL <- ARS \%>\% 
+  filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM \%in\% c(ref_arm, comp_arm)) \%>\%
+  select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
 
+# If want to include missing as non-responders
+ANL$AVALC[ANL$AVALC==""] <- "NE"
 
-ars_f2 <-  ars(com.roche.cdt30019.go29436.re) \%>\%
- filter(ITTGEFL=='Y', ITTWTFL=='Y', PARAMCD=='OVRSPI')
+arm1 <- factor(ANL$ARM)
+ARM <- fct_relevel(arm1, ref_arm, comp_arm)
 
 tbl <- response_table(
-  response = vapply(ars_f2$AVALC, function(x) {if (x == "") "NE" else x}, character(1)),
-  arm = ars_f2$ARM,
-  arm.ref = "DUMMY C",
-  arm.comp.combine = FALSE
+ response = ANL$AVALC,
+ value.resp = c("CR", "PR"),
+ value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
+ arm = ARM
 )
 
 Viewer(tbl)
 
 compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-compare_rtables(tbl, tbl_stream)
 
-tbl[2,3]
-tbl_stream[2,3]
 
-Arm variable is armcd1
+# different layout
+ref_arm = c("DUMMY C", "DUMMY B")
+comp_arm = c( "DUMMY A")
+combine_arm = FALSE
+responders = c("CR", "PR")
+
+refname <- paste0(ref_arm, collapse = "/")
+ARM <- do.call(fct_collapse, setNames(list(arm1, ref_arm), c("f", refname))) \%>\%
+  fct_relevel(refname, comp_arm)
+
+#style 2 
+tbl2 <- response_table(response = ANL$AVALC, 
+                       arm = ARM,
+                       style = 2)
+Viewer(tbl2)
+
 }
 
 

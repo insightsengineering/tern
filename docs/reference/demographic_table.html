@@ -118,16 +118,42 @@ and SEX</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+    <pre class="examples"><div class='input'>
+<span class='fu'>library</span>(<span class='no'>forcats</span>)
+
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>100</span>
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
    <span class='kw'>USUBJID</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"id-"</span>, <span class='fl'>1</span>:<span class='no'>n</span>),
    <span class='kw'>STUDYID</span> <span class='kw'>=</span> <span class='st'>"study 1"</span>,
+   <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>paste</span>(<span class='st'>"ARM"</span>, <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>]), <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
    <span class='kw'>AGE</span> <span class='kw'>=</span> <span class='fl'>40</span> + <span class='fu'>rnorm</span>(<span class='no'>n</span>, <span class='fl'>0</span>, <span class='fl'>20</span>),
    <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"UNDEFINED"</span>, <span class='fl'>NA</span>), <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
    <span class='kw'>stringAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
-<span class='fu'>demographic_table</span>(<span class='no'>ASL</span>)</div><div class='output co'>#&gt; <span class='error'>Error in data %needs% c(arm_var, group_by_vars): variables ARM, RACE, ETHNIC do not exist</span></div><div class='input'>
+<span class='co'># control the label</span>
+<span class='fu'>attr</span>(<span class='no'>ASL</span>$<span class='no'>AGE</span>, <span class='st'>"label"</span>) <span class='kw'>&lt;-</span> <span class='st'>"Age of patient"</span>
+<span class='fu'>attr</span>(<span class='no'>ASL</span>$<span class='no'>SEX</span>, <span class='st'>"label"</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='co'># control categorical order</span>
+<span class='no'>ASL</span>$<span class='no'>SEX</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/forcats/topics/fct_relevel'>fct_relevel</a></span>(<span class='no'>ASL</span>$<span class='no'>SEX</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>, <span class='st'>"UNDEFINED"</span>)
+
+<span class='co'># control arm order</span>
+<span class='no'>ASL</span>$<span class='no'>ARM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/forcats/topics/fct_relevel'>fct_relevel</a></span>(<span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>, <span class='st'>"ARM C"</span>)
+
+<span class='fu'>demographic_table</span>(<span class='no'>ASL</span>, <span class='kw'>group_by_vars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"AGE"</span>))</div><div class='output co'>#&gt;                          ARM B               ARM A               ARM C            All Patients
+#&gt;                          (N=26)              (N=34)              (N=20)              (N=80)   
+#&gt; ----------------------------------------------------------------------------------------------
+#&gt; SEX
+#&gt;   n                        26                  34                  20                  80     
+#&gt;   M                    6 (23.08%)         13 (38.24%)           8 (40%)           27 (33.75%) 
+#&gt;   F                    9 (34.62%)         12 (35.29%)           5 (25%)            26 (32.5%) 
+#&gt;   UNDEFINED           11 (42.31%)          9 (26.47%)           7 (35%)           27 (33.75%) 
+#&gt; 
+#&gt; Age of patient
+#&gt;   n                        33                  40                  27                 100     
+#&gt;   Mean (SD)           44.5 (19.1)         43.4 (22.4)         45.8 (21.5)         44.4 (20.9) 
+#&gt;   Median                   44                  41                 45.9                44.2    
+#&gt;   Min - Max           5.73 - 83.18        0.41 - 82.53        8.23 - 82.25        0.41 - 83.18</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>atezo.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
@@ -160,7 +186,7 @@ and SEX</p></td>
    <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ADSL</span>,
    <span class='kw'>arm_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
    <span class='kw'>all.patients</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-   <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>toupper</span>(<span class='fu'>c</span>(<span class='st'>"sex"</span>, <span class='st'>"mliver"</span>, <span class='st'>"tciclvl2"</span>, <span class='st'>"bage"</span>, <span class='st'>"age4cat"</span>,
+   <span class='kw'>group_by_vars</span> <span class='kw'>=</span> <span class='fu'>toupper</span>(<span class='fu'>c</span>(<span class='st'>"sex"</span>, <span class='st'>"mliver"</span>, <span class='st'>"tciclvl2"</span>, <span class='st'>"bage"</span>, <span class='st'>"age4cat"</span>,
      <span class='st'>"ethnic"</span>, <span class='st'>"race"</span>, <span class='st'>"bwt"</span>, <span class='st'>"tobhx"</span>, <span class='st'>"hist"</span>, <span class='st'>"EGFRMUT"</span>,
      <span class='st'>"alkmut"</span>, <span class='st'>"krasmut"</span>, <span class='st'>"becog"</span>))
 )

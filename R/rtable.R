@@ -32,7 +32,7 @@
 #'   col.names = c("Treatement\nN=100", "Comparison\nN=300"),
 #'   format = "xx (xx.xx%)",
 #'   rrow("Response", c(104, .2), c(100, .4)),
-#'   rrow("Non-Response", c(23, .4), c(43, .5)),
+#'   rrow("Non-Response", c(23, .4), c(43, .5432432423423)),
 #'   rrow(),
 #'   rrow("this is a very long section header"),
 #'   rrow("HR", rcell(3.23, "xx.xx", colspan = 2)),
@@ -746,9 +746,13 @@ padstr <- function(x, n, just = c("center", "left", "right")) {
 
   just <- match.arg(just)
   
+  if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))
+  if (is.na(n) || !is.numeric(n) || n < 0) stop("n needs to be numeric and > 0")
+  
   if (is.na(x)) x <- ""
   
   nc <- nchar(x)
+  
   if (n < nc) stop(x, " has more than ", n, " characters")
   
   switch(

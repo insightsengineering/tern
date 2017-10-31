@@ -2,7 +2,8 @@
 % Please edit documentation in R/response_table.R
 \name{calc_diffor}
 \alias{calc_diffor}
-\title{Calculate difference in rates and odds ratio between two lists produced by calc_rate function}
+\title{Calculate difference in rates and odds ratio between two lists produced by
+calc_rate function}
 \usage{
 calc_diffor(comp, ref)
 }
@@ -12,7 +13,8 @@ calc_diffor(comp, ref)
 \item{ref}{list produced by calc_rate function for reference arm}
 }
 \description{
-Calculate difference in rates and odds ratio between two lists produced by calc_rate function
+Calculate difference in rates and odds ratio between two lists produced by
+calc_rate function
 }
 \examples{
 a <- LETTERS[sample(1:3, 20, replace=T)]
