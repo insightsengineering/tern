@@ -13,6 +13,7 @@
 #' 
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 #' 
 #' options(teal_logging = FALSE)
 #' 
@@ -155,9 +156,6 @@ srv_forest_survival <- function(input, output, session, datasets) {
     ATE_f <- ATE_filtered %>% filter(PARAMCD == paramcd & arm_var %in% c(ref_arm, comp_arm))
     
     validate(need(nrow(ATE_f) > 0, "no data left"))
-    
-    
-    ASL_filtered$BAGED <- ifelse(ASL_filtered$BAGE <= median(ASL_filtered$BAGE), "<=median", ">median")
     
     validate(need(all(subgroup_var %in% names(ASL_filtered)), "some baseline risk variables are not valid"))
     

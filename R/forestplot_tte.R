@@ -291,7 +291,7 @@ draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hlin
   
   
   grid.lines(x = unit(x11[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_11"), gp =gpar(lwd = 2))  
-  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/4, "lines"), vp = vpPath("col_11"),
+  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/3.5, "lines"), vp = vpPath("col_11"),
               gp = gpar(fill = "blue"))
   
   
