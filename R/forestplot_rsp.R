@@ -223,7 +223,7 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", ce
   for (i in 1:nrow(x)){
     if (!is.null(x[i,1])) {
       draw_row(i+4, nrow(x), row.names(x)[i], x[i, 1], x[i, 2], x[i, 3], round(x[i, 4], 1), x[i, 5], x[i, 6], 
-               round(x[i, 7], 1), round(x[i, 8], 2), paste(round(x[i, 9],2), collapse = ", "), c(log(abs(x[i,8])), log(abs(x[i,9]))), TRUE)
+               round(x[i, 7], 1), round(x[i, 8], 2), paste("(", paste(round(x[i, 9],2), collapse = ", "), ")", sep = ""), c(log(abs(x[i,8])), log(abs(x[i,9]))), TRUE)
     } else if (is.null(x[i,1]) & row.names(x)[i] != "") {
       draw_row(i+4, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE, 2)
     } else {
@@ -274,7 +274,7 @@ draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hlin
   
   
   grid.lines(x = unit(x11[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_11"), gp =gpar(lwd = 2))  
-  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/3, "lines"), vp = vpPath("col_11"),
+  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/4, "lines"), vp = vpPath("col_11"),
               gp = gpar(fill = "blue"))
   
   
