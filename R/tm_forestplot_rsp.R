@@ -25,7 +25,7 @@
 #'        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
 #'        subgroup_var = c("BAGED", "SEX", "BECOG"),
 #'        arm_var = "ARM",
-#'        arm_var_choices = c("ARM", "ARMCD")
+#'        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
 #'    )
 #'   )
 #' )   
@@ -42,7 +42,9 @@ tm_forest_response <- function(label,
                                arm_var_choices = arm_var,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
-                               pre_output = NULL, post_output = NULL){
+                               plot_height = c(600, 200, 2000),
+                               pre_output = helpText("graph needs to be of a certain width to be displayed"),
+                               post_output = NULL){
   
   args <- as.list(environment())
   
@@ -158,7 +160,7 @@ srv_forest_response <- function(input, output, session, datasets) {
     
     ARS_anl <- inner_join(ASL_f %>% select("STUDYID", "USUBJID") , ARS_f, by = c("STUDYID","USUBJID"))
     
-    validate(need(all(c(ref_arm, comp_arm) %in% ARS_f$arm_var), "data needs to include at least one patient from the reference and comparison arm"))  
+    validate(need(all(c(ref_arm, comp_arm) %in% ARS_anl$arm_var), "data needs to include at least one patient from the reference and comparison arm"))  
     
     #Filter ASL to get the grouping variables
     group_data <- inner_join(ASL_f, ARS_f %>% select(c("USUBJID", "STUDYID")), by = c("STUDYID","USUBJID"))
