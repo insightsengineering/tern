@@ -168,16 +168,16 @@ srv_forest_response <- function(input, output, session, datasets, cex = 1.5) {
     
     validate(need(all(subgroup_var %in% names(ASL_filtered)), "some baseline risk variables are not valid"))
     
-    ASL_f <- ASL_filtered %>% select("STUDYID", "USUBJID", subgroup_var) 
+    ASL_f <- ASL_filtered[c("STUDYID", "USUBJID", subgroup_var)]
     
     validate(need(all(subgroup_var %in% names(ASL_f)), "some subgroup variables are not valid"))
     
-    ARS_anl <- inner_join(ASL_f %>% select("STUDYID", "USUBJID") , ARS_f, by = c("STUDYID","USUBJID"))
+    ARS_anl <- inner_join(ASL_f %>% select(STUDYID, USUBJID) , ARS_f, by = c("STUDYID","USUBJID"))
     
     validate(need(all(c(ref_arm, comp_arm) %in% ARS_anl$arm_var), "data needs to include at least one patient from the reference and comparison arm"))  
     
     #Filter ASL to get the grouping variables
-    group_data <- inner_join(ASL_f, ARS_f %>% select(c("USUBJID", "STUDYID")), by = c("STUDYID","USUBJID"))
+    group_data <- inner_join(ASL_f, ARS_f %>% select(USUBJID, STUDYID), by = c("STUDYID","USUBJID"))
     names(group_data) <- labels_over_names(group_data)
     head(group_data)
     ## add
