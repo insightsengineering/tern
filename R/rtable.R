@@ -319,7 +319,7 @@ as_html.default <- function(x, ...) {
 }
 
 #' @export
-as_html.rtable <- function(x, ...) {
+as_html.rtable <- function(x, class = "table table-condensed table-hover", ...) {
   
   ncol <- ncol(x)
   
@@ -332,7 +332,7 @@ as_html.rtable <- function(x, ...) {
   })
   
   tags$table(
-    class = "table table-condensed",
+    class = class,
     ...,
     tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th, align="center", class="text-center"))), 
     lapply(x, as_html, ncol = ncol)
