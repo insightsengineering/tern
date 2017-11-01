@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create the Response Table — response_table • teal.oncology</title>
+<title>Response Table Caclulation Function — response_table • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -92,16 +92,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create the Response Table</h1>
+    <h1>Response Table Caclulation Function</h1>
     </div>
 
     
-    <p>Create the Response Table</p>
+    <p>Response Table Caclulation Function</p>
     
 
     <pre class="usage"><span class='fu'>response_table</span>(<span class='no'>response</span>, <span class='kw'>value.resp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>), <span class='kw'>value.nresp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"SD"</span>,
-  <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>), <span class='no'>arm</span>, <span class='no'>arm.ref</span>, <span class='kw'>arm.comp</span> <span class='kw'>=</span> <span class='fu'>setdiff</span>(<span class='no'>arm</span>, <span class='no'>arm.ref</span>),
-  <span class='kw'>arm.comp.combine</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>), <span class='no'>arm</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -112,91 +111,89 @@
     </tr>
     <tr>
       <th>arm</th>
-      <td><p>Arm information data</p></td>
-    </tr>
-    <tr>
-      <th>arm.ref</th>
-      <td><p>Character vector, defining which arm(s) from the list of arms should be used as reference group</p></td>
-    </tr>
-    <tr>
-      <th>arm.comp</th>
-      <td><p>Character vector, defining which arm(s) from the list of arms should be used as comparison group</p></td>
-    </tr>
-    <tr>
-      <th>arm.comp.combine</th>
-      <td><p>Logical, <code>TRUE</code> if want all non-ref arms to be combined into one comparison group, 
-<code>FALSE</code> if want each of the non-ref arms to be a separate comparison group</p></td>
+      <td><p>Arm information data as factor</p></td>
     </tr>
     <tr>
       <th>style</th>
-      <td><p>Must be 1 or 2, <code>1</code> if only want to display rates summary for each response value category,
-<code>2</code> if want to display rates, difference in rate and odds ratio for each response value category.</p></td>
+      <td><p>Must be 1 or 2, <code>1</code> if only want to display rates summary
+for each response value category, <code>2</code> if want to display rates,
+difference in rate and odds ratio for each response value category.</p></td>
     </tr>
     <tr>
       <th>value.rsp</th>
-      <td><p>Character vector, defining list of response values to be used as responders</p></td>
+      <td><p>Character vector, defining list of response values to be
+used as responders</p></td>
     </tr>
     <tr>
       <th>value.nrsp</th>
-      <td><p>Character vector, defining list of response values to be used as non-responders</p></td>
+      <td><p>Character vector, defining list of response values to be
+used as non-responders</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>We use the <code>PropCIs</code> to calculate the CIs because...</p>
+    <p>We use the <code>PropCIs</code> package to calculate the CIs for odds ratio</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 
-</div># NOT RUN {
-library(dplyr)
-library(shiny)
-library(atezo.data)
-library(teal.oncology)
-library(PropCIs)
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>atezo.data</span>)
+<span class='fu'>library</span>(<span class='no'>teal.oncology</span>)
+<span class='fu'>library</span>(<span class='no'>forcats</span>)
 
+<span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'>ars</span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
 
-ARS <- ars(com.roche.cdt30019.go29436.re) %>% select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC")) %>% 
-       filter(PARAMCD == "BESRSPI")
+<span class='no'>tbl_stream</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/atezo.data/topics/get_response_table'>get_response_table</a></span>(<span class='no'>com.roche.cdt30019.go29436.re</span>)
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl_stream</span>)
 
-#If want to include missing as non-responders
-ARS$AVALC[ARS$AVALC==""] <- "NE"
+<span class='no'>ref_arm</span> <span class='kw'>=</span> <span class='st'>"DUMMY C"</span>
+<span class='no'>comp_arm</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"DUMMY B"</span>, <span class='st'>"DUMMY A"</span>)
+<span class='no'>combine_arm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+<span class='no'>responders</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>)
 
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='no'>ARS</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>, <span class='no'>ITTGEFL</span><span class='kw'>==</span><span class='st'>'Y'</span>, <span class='no'>ITTWTFL</span><span class='kw'>==</span><span class='st'>'Y'</span>, <span class='no'>ARM</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='no'>ref_arm</span>, <span class='no'>comp_arm</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>, <span class='st'>"ARM"</span>, <span class='st'>"PARAMCD"</span>, <span class='st'>"AVALC"</span>))
 
-tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
-Viewer(tbl_stream)
+<span class='co'># If want to include missing as non-responders</span>
+<span class='no'>ANL</span>$<span class='no'>AVALC</span>[<span class='no'>ANL</span>$<span class='no'>AVALC</span><span class='kw'>==</span><span class='st'>""</span>] <span class='kw'>&lt;-</span> <span class='st'>"NE"</span>
 
-tbl <- response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F)
-Viewer(tbl)
+<span class='no'>arm1</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>)
+<span class='no'>ARM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/forcats/topics/fct_relevel'>fct_relevel</a></span>(<span class='no'>arm1</span>, <span class='no'>ref_arm</span>, <span class='no'>comp_arm</span>)
 
-response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T)
-response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=F, style = 2)
-response_table(response = ARS$AVALC, arm = ARS$ARM, arm.ref = "DUMMY B", arm.comp.combine=T, style = 2)
-
-
-ars_f2 <-  ars(com.roche.cdt30019.go29436.re) %>%
- filter(ITTGEFL=='Y', ITTWTFL=='Y', PARAMCD=='OVRSPI')
-
-tbl <- response_table(
-  response = vapply(ars_f2$AVALC, function(x) {if (x == "") "NE" else x}, character(1)),
-  arm = ars_f2$ARM,
-  arm.ref = "DUMMY C",
-  arm.comp.combine = FALSE
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>response_table</span>(
+ <span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span>,
+ <span class='kw'>value.resp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
+ <span class='kw'>value.nresp</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/setops.html'>setdiff</a></span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>)),
+ <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ARM</span>
 )
 
-Viewer(tbl)
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl</span>)
 
-compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-compare_rtables(tbl, tbl_stream)
+<span class='fu'><a href='compare_rtables.html'>compare_rtables</a></span>(<span class='no'>tbl</span>, <span class='no'>tbl_stream</span>, <span class='kw'>comp.attr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-tbl[2,3]
-tbl_stream[2,3]
 
-Arm variable is armcd1
-# }
-<div class='input'>
+<span class='co'># different layout</span>
+<span class='no'>ref_arm</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"DUMMY C"</span>, <span class='st'>"DUMMY B"</span>)
+<span class='no'>comp_arm</span> <span class='kw'>=</span> <span class='fu'>c</span>( <span class='st'>"DUMMY A"</span>)
+<span class='no'>combine_arm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+<span class='no'>responders</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>)
+
+<span class='no'>refname</span> <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='no'>ref_arm</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"/"</span>)
+<span class='no'>ARM</span> <span class='kw'>&lt;-</span> <span class='fu'>do.call</span>(<span class='no'>fct_collapse</span>, <span class='fu'>setNames</span>(<span class='fu'>list</span>(<span class='no'>arm1</span>, <span class='no'>ref_arm</span>), <span class='fu'>c</span>(<span class='st'>"f"</span>, <span class='no'>refname</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/forcats/topics/fct_relevel'>fct_relevel</a></span>(<span class='no'>refname</span>, <span class='no'>comp_arm</span>)
+
+<span class='co'>#style 2 </span>
+<span class='no'>tbl2</span> <span class='kw'>&lt;-</span> <span class='fu'>response_table</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span>,
+                       <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ARM</span>,
+                       <span class='kw'>style</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'><a href='Viewer.html'>Viewer</a></span>(<span class='no'>tbl2</span>)
+
+<span class='co'># }</span><div class='input'>
 
 <span class='st'>'%needs%'</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>teal.oncology</span><span class='kw ns'>:::</span><span class='st'>'%needs%'</span> <span class='co'># for debugging purpuses</span></div></pre>
   </div>

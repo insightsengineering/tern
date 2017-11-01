@@ -3,7 +3,7 @@
 #' 
 #' @import grid
 #' @import survival
-#' @importFrom scales col_factor
+#' @importFrom scales col_factor 
 #' @export
 #' 
 #' 

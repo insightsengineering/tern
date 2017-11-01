@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert an <code><a href='rtable.html'>rtable</a></code> object to an <code>shiny.tag</code> html
-representation of the <code><a href='rtable.html'>rtable</a></code> — as_html • teal.oncology</title>
+<title>Response Table Teal Module — tm_response_table • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -93,68 +92,104 @@ representation of the <code><a href='rtable.html'>rtable</a></code> — as_html 
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert an <code><a href='rtable.html'>rtable</a></code> object to an <code>shiny.tag</code> html
-representation of the <code><a href='rtable.html'>rtable</a></code></h1>
+    <h1>Response Table Teal Module</h1>
     </div>
 
     
-    <p>The returned html object can be immediately used in shiny and rmarkdown</p>
+    <p>This module produces a response summary table that matches the STREAM template rspt01</p>
     
 
-    <pre class="usage"><span class='fu'>as_html</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tm_response_table</span>(<span class='no'>label</span>, <span class='kw'>paramcd</span> <span class='kw'>=</span> <span class='st'>"OVRSPI"</span>, <span class='kw'>paramcd_choices</span> <span class='kw'>=</span> <span class='no'>paramcd</span>,
+  <span class='kw'>arm.var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>arm.var_choices</span> <span class='kw'>=</span> <span class='no'>arm.var</span>, <span class='kw'>pre_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>post_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>an <code><a href='rtable.html'>rtable</a></code> object</p></td>
+      <th>label</th>
+      <td><p>full name label of module</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>arguments passed as attributes to the table html objet</p></td>
+      <th>paramcd</th>
+      <td><p>filter the rows in ARS given the paramcd value</p></td>
+    </tr>
+    <tr>
+      <th>paramcd_choices</th>
+      <td><p>choices of possible poaramcd</p></td>
+    </tr>
+    <tr>
+      <th>arm.var</th>
+      <td><p>variable name for ARM variable in ASL</p></td>
+    </tr>
+    <tr>
+      <th>arm.var_choices</th>
+      <td><p>choices of arm variables</p></td>
+    </tr>
+    <tr>
+      <th>pre_output</th>
+      <td><p>optional, <code>shiny.tag</code> with text placed before the
+output to put the output into context. For example the
+<code><a href='http://www.rdocumentation.org/packages/shiny/topics/helpText'>helpText</a></code> elements are useful.</p></td>
+    </tr>
+    <tr>
+      <th>post_output</th>
+      <td><p>optional, <code>shiny.tag</code> with text placed before the
+output to put the output into context. For example the
+<code><a href='http://www.rdocumentation.org/packages/shiny/topics/helpText'>helpText</a></code> elements are useful.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of class <code>shiny.tag</code></p>
+    <p>an <code><a href='http://www.rdocumentation.org/packages/teal/topics/module'>module</a></code> object</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Additional standard UI inputs include <code>responders</code>, <code>incl_missing</code> (default TRUE), <code>ref_arm</code>, <code>comp_arm</code> and <code>combin_arm</code> (default FALSE)
+Default values of the inputs <code>var_arm</code>, <code>ref_arm</code> and <code>comp_arm</code> are set to NULL, and updated accordingly based on seletion of <code>paramcd</code> and <code>arm.var</code>
+Package <code>forcats</code> used to re-format arm data into leveled factors. 
+Reference arms automatically combined if multiple arms selected as reference group.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rtable.html'>rtable</a></span>(
-  <span class='kw'>col.names</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
-  <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"xx"</span>,
-  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"r1"</span>, <span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
-  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"r2"</span>, <span class='fl'>4</span>,<span class='fl'>3</span>,<span class='fl'>2</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>1</span>),
-  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"r3"</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-)
+    <pre class="examples"><div class='input'> 
 
-<span class='fu'>as_html</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt; &lt;table class="table"&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;th&gt;&lt;/th&gt;
-#&gt;     &lt;th align="center" class="text-center"&gt;A&lt;/th&gt;
-#&gt;     &lt;th align="center" class="text-center"&gt;B&lt;/th&gt;
-#&gt;     &lt;th align="center" class="text-center"&gt;C&lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;td class="rowname" align="left"&gt;r1&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;1&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;2&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;3&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;td class="rowname" align="left" style="padding-left: 3ch"&gt;r2&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;4&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;3&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;2&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;td colspan="4" class="rowname" align="left" style="padding-left: 6ch"&gt;r3&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
-</div></pre>
+\donotrun{
+library(atezo.data)
+library(dplyr)
+library(forcats)
+
+ARS <- ars(com.roche.cdt30019.go29436.re)
+ASL <- asl(com.roche.cdt30019.go29436.re)
+
+options(teal_logging = FALSE)
+
+
+x <- teal::init(
+  data = list(ASL = ASL, ARS = ARS),
+  modules = root_modules(
+    tm_variable_browser(),
+    tm_data_table(),
+    tm_response_table(
+       label = "Response Table",
+       paramcd = "OVRSPI",
+       paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
+       #paramcd_choices = unique(ARS$PARAMCD),
+       arm.var = "ARM",
+       arm.var_choices = c("ARM", "ARMCD")
+       #arm.var_choices = names(ASL)
+   )
+  )
+)   
+shinyApp(x$ui, x$server) 
+
+  
+} 
+</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:3:1: unexpected input</span>
+#&gt; <span class='error'>2: </span>
+#&gt; <span class='error'>3: \</span>
+#&gt; <span class='error'>   ^</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -162,6 +197,8 @@ representation of the <code><a href='rtable.html'>rtable</a></code></h1>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

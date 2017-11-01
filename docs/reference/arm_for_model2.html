@@ -6,8 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate difference in rates and odds ratio between two lists produced by
-calc_rate function — calc_diffor • teal.oncology</title>
+<title>update Function from tm_forestplot.R. Suggest to put function arm_for_model2 in R script for uitility functions
+re-factor arm variable by input arm.ref and arm.rest — arm_for_model2 • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -93,69 +93,23 @@ calc_rate function — calc_diffor • teal.oncology</title>
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate difference in rates and odds ratio between two lists produced by
-calc_rate function</h1>
+    <h1>update Function from tm_forestplot.R. Suggest to put function arm_for_model2 in R script for uitility functions
+re-factor arm variable by input arm.ref and arm.rest</h1>
     </div>
 
     
-    <p>Calculate difference in rates and odds ratio between two lists produced by
-calc_rate function</p>
+    <p>update Function from tm_forestplot.R. Suggest to put function arm_for_model2 in R script for uitility functions
+re-factor arm variable by input arm.ref and arm.rest</p>
     
 
-    <pre class="usage"><span class='fu'>calc_diffor</span>(<span class='no'>comp</span>, <span class='no'>ref</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>comp</th>
-      <td><p>list produced by calc_rate function for comparison arm</p></td>
-    </tr>
-    <tr>
-      <th>ref</th>
-      <td><p>list produced by calc_rate function for reference arm</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>arm_for_model2</span>(<span class='no'>arm</span>, <span class='no'>arm.ref</span>, <span class='no'>arm.rest</span>)</pre>
+        
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='no'>LETTERS</span>[<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>20</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='no'>T</span>)]
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='no'>LETTERS</span>[<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>20</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='no'>T</span>)]
-<span class='no'>a_rate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calc_rate.html'>calc_rate</a></span>(<span class='no'>a</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"A"</span>)
-<span class='no'>b_rate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calc_rate.html'>calc_rate</a></span>(<span class='no'>b</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"A"</span>)
-<span class='fu'>calc_diffor</span>(<span class='no'>b_rate</span>, <span class='no'>a_rate</span>)</div><div class='output co'>#&gt; $diff
-#&gt; prop 1 
-#&gt;    -10 
-#&gt; 
-#&gt; $diffci
-#&gt; [1] -38.23301  18.23301
-#&gt; attr(,"conf.level")
-#&gt; [1] 0.95
-#&gt; 
-#&gt; $diffp
-#&gt; [1] 0.490153
-#&gt; 
-#&gt; $or
-#&gt; [1] 0.6190476
-#&gt; 
-#&gt; $orci
-#&gt; [1] 0.1621455 2.3800262
-#&gt; attr(,"conf.level")
-#&gt; [1] 0.95
-#&gt; </div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    
-Chendi Liao (liaoc10), <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.com</a>
+                </ul>
 
   </div>
 </div>

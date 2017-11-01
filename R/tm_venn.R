@@ -297,8 +297,8 @@ ui_venn2 <- function(id, label, dataname, bm1_var, bm2_var,
       } else {
         tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;")
       },
-      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE),
-      optionalSliderInputValMinMax(ns("alpha"), "opacity", alpha, ticks = FALSE)
+      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
+      #optionalSliderInputValMinMax(ns("alpha"), "opacity", alpha, ticks = FALSE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
@@ -325,7 +325,6 @@ srv_venn2 <- function(input, output, session, datasets, dataname) {
     
     bm1_var <- input$bm1_var
     bm2_var <- input$bm2_var
-    alpha <- input$alpha
 
     validate(need(bm1_var != bm2_var, "Please choose different Biomarker 1 and 2"))
     
