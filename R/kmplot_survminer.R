@@ -1,5 +1,5 @@
 
-#' kmPlot
+#' kmplot_survminer
 #' 
 #' descr
 #' 
@@ -10,8 +10,6 @@
 #' 
 #' @importFrom survival survfit Surv coxph
 #' @import dplyr
-#' @import ggplot2
-#' @import survminer
 #' 
 #' @importFrom survival strata
 #' @export
@@ -21,23 +19,20 @@
 #' \dontrun{
 #' library(atezo.data)
 #' library(dplyr)
-#' library(survival)
-#' library(ggplot2)
-#' library(survminer)
 #' 
 #' ATE <-  ate(com.roche.cdt30019.go29436.re)
 #' 
 #' ATE_filtered <- ATE %>% filter(PARAMCD == "OS")
 #' 
 #' 
-#'  kmPlot(
+#'  kmplot_survminer(
 #'    time_to_event = ATE_filtered$AVAL,
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
 #'    arm.ref =  "DUMMY C" 
 #'    )
 #'    
-#' kmPlot(
+#' kmplot_survminer(
 #'    time_to_event = ATE_filtered$AVAL,
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
@@ -45,7 +40,7 @@
 #'    stratum_df = ATE_filtered[c("SEX")] 
 #'    )
 #'    
-#' kmPlot(
+#' kmplot_survminer(
 #'    time_to_event = ATE_filtered$AVAL,
 #'    event = ATE_filtered$CNSR == 0,
 #'    arm = ATE_filtered$ARM,
@@ -55,11 +50,12 @@
 #'    arm.rest =  c("DUMMY A", "DUMMY C" )
 #'    )
 #'  }
-
-
-kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
+kmplot_survminer <- function( time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, arm.ref),
                     stratum_df = NULL, facet_by = NULL, n_col = 1,   ... ){
   
+  
+
+
   n <- length(time_to_event)
   if (length(event) != n) stop("event has wrong length")
   if (length(arm) != n) stop("arm has wrong length")
@@ -76,20 +72,20 @@ kmPlot <- function( time_to_event, event, arm, arm.ref, arm.rest = setdiff(arm, 
   stratum.names <- names(stratum_df)
   
   if (is.null(facet_by)){
-     surv.plot <- kmPlot_anno( cox_data,
+     surv.plot <- kmplot_survminer_annotate( cox_data,
                               stratum.names = stratum.names  ,...)
   } else{
     facet_lev <- unique(cox_data$facet_by)
     plot_list <- lapply(facet_lev, function(lev){
-      plot.out <- kmPlot_anno(cox_data %>% filter(facet_by == lev), 
+      plot.out <- kmplot_survminer_annotate(cox_data %>% filter(facet_by == lev), 
                               stratum.names = stratum.names, ...)
       newtitle <- paste0(plot.out$plot$labels$title, " : (",  lev, ")")
-      plot.out$plot <- plot.out$plot + ggtitle(newtitle)
+      plot.out$plot <- plot.out$plot + ggplot2::ggtitle(newtitle)
       plot.out
     })
     n_row <- ceiling(length(facet_lev)/n_col)
     
-    surv.plot <-  arrange_ggsurvplots(plot_list, ncol = n_col, nrow = n_row )
+    surv.plot <-  survminer::arrange_ggsurvplots(plot_list, ncol = n_col, nrow = n_row )
    
   }
   
@@ -123,7 +119,7 @@ arm_for_model2 <- function(arm, arm.ref, arm.rest){
 #'  
 #'  
 
-kmPlot_anno <- function(data, stratum.names = NULL,
+kmplot_survminer_annotate <- function(data, stratum.names = NULL,
                         cox.tie = "efron", conf.int = FALSE, plot.median = FALSE, 
                         plot.nrisk = TRUE, time.interval = 4, nrisk.height = 0.25, size.nrisk = 4,
                         plot.cens = TRUE, size.cens = 4.5, shape.cens = "+",
@@ -133,6 +129,14 @@ kmPlot_anno <- function(data, stratum.names = NULL,
                         line.color = NULL, line.type = 1, line.width = 1,
                         xlab = NULL, ylab = NULL, xlim = NULL, ylim = NULL, plot.title = "Kaplan-Meier Plot",
                         legend.pos = "none" ){
+  
+  for (pkg in c("ggplot2", "survminer")) {
+    if (!requireNamespace(pkg, quietly = TRUE)) {
+      stop(pkg, " package needed for this function to work. Please install it.",
+           call. = FALSE)
+    }
+  }
+  
   surv.fit <- survfit(Surv(time_to_event, event) ~ arm , data = data)
   arm.lev <- levels(data$arm)
   if (is.null(line.color))    line.color <- seq(1, length(arm.lev))
@@ -148,17 +152,17 @@ kmPlot_anno <- function(data, stratum.names = NULL,
 
 
   
-  surv.plot <- ggsurvplot(surv.fit, data = data, 
-                          break.time.by = time.interval, conf.int = conf.int,
-                          surv.median.line = med.line,
-                          risk.table =  plot.nrisk, risk.table.title = "No. of Patients at Risk",
-                          risk.table.col = "strata", risk.table.height = nrisk.height,
-                          risk.table.fontsize = size.nrisk,
-                          censor = plot.cens, censor.size = size.cens, censor.shape = shape.cens,
-                          legend = legend.pos, legend.labs = arm.lev,
-                          legend.title = "",
-                          palette = line.color, linetype = line.type, size = line.width,
-                          title = plot.title, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab )
+  surv.plot <- survminer::ggsurvplot(surv.fit, data = data, 
+                                     break.time.by = time.interval, conf.int = conf.int,
+                                     surv.median.line = med.line,
+                                     risk.table =  plot.nrisk, risk.table.title = "No. of Patients at Risk",
+                                     risk.table.col = "strata", risk.table.height = nrisk.height,
+                                     risk.table.fontsize = size.nrisk,
+                                     censor = plot.cens, censor.size = size.cens, censor.shape = shape.cens,
+                                     legend = legend.pos, legend.labs = arm.lev,
+                                     legend.title = "",
+                                     palette = line.color, linetype = line.type, size = line.width,
+                                     title = plot.title, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab )
   
   km_sum <- summary(surv.fit, data = data, conf.type = "plain")$table
   if (is.null(stratum.names)){
@@ -182,46 +186,51 @@ kmPlot_anno <- function(data, stratum.names = NULL,
   med.label <- c('Median(KM)', med)
   medci <- paste0("(", round(km_sum[ , "0.95LCL"], 2),"; ", round(km_sum[ , "0.95UCL"], 2), ")")
   medci.label <- c('95% CI', medci)
-  surv.plot$plot <- surv.plot$plot + annotate("text", x = seq(upxstart, upxend, by = upx.by),
-                                              y = upystart, label = lev.label, hjust = 0, size = size.stats) +
-                                     annotate("text", x = seq(upxstart, upxend, by = upx.by),
-                                              y = upystart - upy.by, label = N.label, hjust = 0, size = size.stats) +
-
-                                     annotate("text", x = seq(upxstart, upxend, by = upx.by),
-                                              y = upystart - 2*upy.by, label = med.label, hjust = 0, size = size.stats) +
-                                     annotate("text",x = seq(upxstart, upxend, by = upx.by),
-                                              y = upystart - 3*upy.by, label = medci.label, hjust = 0, size = size.stats)
-
+  
+  
+  
+  surv.plot$plot <- surv.plot$plot + 
+    ggplot2::annotate("text", x = seq(upxstart, upxend, by = upx.by),
+                      y = upystart, label = lev.label, hjust = 0, size = size.stats) +
+    ggplot2::annotate("text", x = seq(upxstart, upxend, by = upx.by),
+                      y = upystart - upy.by, label = N.label, hjust = 0, size = size.stats) +
+    
+    ggplot2::annotate("text", x = seq(upxstart, upxend, by = upx.by),
+                      y = upystart - 2*upy.by, label = med.label, hjust = 0, size = size.stats) +
+    ggplot2::annotate("text",x = seq(upxstart, upxend, by = upx.by),
+                      y = upystart - 3*upy.by, label = medci.label, hjust = 0, size = size.stats)
+  
   
   compare.label <- c("", arm.lev[-1])
   hr.label <-  c("HR", as.numeric(round(cox_sum$coefficients[,"exp(coef)"], 2)))
   hrci.label <- c("95% CI(HR)",
-           paste0("(", as.numeric(round(cox_sum$conf.int[,"lower .95"], 2)), "; ",
-                  as.numeric(round(cox_sum$conf.int[,"upper .95"], 2)), ")"))
+                  paste0("(", as.numeric(round(cox_sum$conf.int[,"lower .95"], 2)), "; ",
+                         as.numeric(round(cox_sum$conf.int[,"upper .95"], 2)), ")"))
   pval <- as.numeric(cox_sum$coefficients[, "Pr(>|z|)"])
   pval.label <- c("p-value", ifelse(pval <= 0.0001, '<0.001', round(pval, 3)))
-
-
+  
+  
   loxstart  <- diff(xlim)*xystats.lo[1]
   lox.by    <- diff(xlim)*xyinterval.lo[1]
   loystart  <- diff(ylim)*xystats.lo[2]
   loyend    <- diff(ylim)*(xystats.lo[2] - xyinterval.lo[2]*(length(arm.lev) -1))
   loy.by    <- diff(ylim)*xyinterval.lo[2]
-  surv.plot$plot <- surv.plot$plot + annotate("text", x = loxstart,
-                                              y = seq(loystart, loyend, by = -loy.by),
-                                              label = compare.label, vjust = 0, size = size.stats) +
-                                     annotate("text", x = loxstart + lox.by,
-                                              y = seq(loystart, loyend, by = -loy.by), label = hr.label,
-                                              vjust=0, size = size.stats) +
-                                     annotate("text", x = loxstart + 2*lox.by,
-                                              y = seq(loystart, loyend, by = -loy.by), label = hrci.label,
-                                              vjust=0, size = size.stats) +
-                                     annotate("text", x = loxstart + 3*lox.by,
-                                              y = seq(loystart, loyend, by = -loy.by), label = pval.label,
-                                              vjust=0, size = size.stats) +
-                                     annotate("text", x = c(loxstart, loxstart + lox.by),
-                                              y = loystart + loy.by, label = model.label,
-                                              vjust = 0, size = size.stats)
+  surv.plot$plot <- surv.plot$plot + 
+    ggplot2::annotate("text", x = loxstart,
+                      y = seq(loystart, loyend, by = -loy.by),
+                      label = compare.label, vjust = 0, size = size.stats) +
+    ggplot2::annotate("text", x = loxstart + lox.by,
+             y = seq(loystart, loyend, by = -loy.by), label = hr.label,
+             vjust=0, size = size.stats) +
+    ggplot2::annotate("text", x = loxstart + 2*lox.by,
+             y = seq(loystart, loyend, by = -loy.by), label = hrci.label,
+             vjust=0, size = size.stats) +
+    ggplot2::annotate("text", x = loxstart + 3*lox.by,
+             y = seq(loystart, loyend, by = -loy.by), label = pval.label,
+             vjust=0, size = size.stats) +
+    ggplot2::annotate("text", x = c(loxstart, loxstart + lox.by),
+                      y = loystart + loy.by, label = model.label,
+                      vjust = 0, size = size.stats)
   return(surv.plot)
 }
 
