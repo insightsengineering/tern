@@ -49,7 +49,7 @@ responders = c("CR", "PR")
 
 ANL <- ARS \%>\% 
   filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM \%in\% c(ref_arm, comp_arm)) \%>\%
-  select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
+  select_(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
 
 # If want to include missing as non-responders
 ANL$AVALC[ANL$AVALC==""] <- "NE"

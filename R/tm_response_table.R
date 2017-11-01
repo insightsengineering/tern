@@ -138,7 +138,6 @@ ui_response_table <- function(id, label,
 #' Reference arms automatically combined if multiple arms selected as reference group. 
 #' 
 #' @importFrom forcats fct_relevel fct_collapse
-#' @importFrom rlang UQE
 #' 
 #' @noRd
 #' 

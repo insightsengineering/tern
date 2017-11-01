@@ -39,7 +39,7 @@
 #' 
 #' ANL <- ARS %>% 
 #'   filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM %in% c(ref_arm, comp_arm)) %>%
-#'   select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
+#'   select_(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
 #' 
 #' # If want to include missing as non-responders
 #' ANL$AVALC[ANL$AVALC==""] <- "NE"
@@ -449,8 +449,10 @@ response_table_ADAM <- function(ASL, ARS,
   
   #--- Select obs needed to analysis, merge ASL/ARS to create analysis dataset ---#
   #Filter on selected PARAMCD, and ARM in arm.ref/comp
-  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm.var))            %>% filter(UQE(as.name(arm.var)) %in% c(arm.ref,arm.comp))
-  ARS_f <- ARS %>% select(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == paramcd)
+  ASL_f <- ASL %>% select_(c("USUBJID", "STUDYID", arm.var)) %>% 
+    subset(., subset = .[[arm.var]] %in% c(arm.ref,arm.comp))
+  
+  ARS_f <- ARS %>% select_(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == paramcd)
   ANL <- merge(ASL_f, ARS_f, by=c("USUBJID", "STUDYID"))
   
   # Recode/filter responses if want to include missing as non-responders
