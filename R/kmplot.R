@@ -154,9 +154,9 @@ kmplot <- function(formula_km, data, add_km = TRUE,
         lapply(sinfo, function(xi) {
           rrow(
             row.name = rownames(xi),
-            rcell(xi$hr, format = "xx.xx"),
+            rcell(xi$'exp(coef)', format = "xx.xx"),
             rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xx, xx.xx)"),
-            rcell(xi$pvalues, format = "xx.xxx")
+            rcell(xi$'Pr(>|z|)', format = "xx.xxx")
           )
         })
       )
