@@ -8,7 +8,7 @@ tm_kmplot(label, treatment_var = "ARM",
   tratement_var_choices = treatment_var, endpoint = "OS",
   endpoint_choices = endpoint, facet_var = NULL,
   facet_var_choices = facet_var, strat_var = NULL,
-  strat_var_choices = strat_var, plot_height = 700)
+  strat_var_choices = strat_var, plot_height = c(1200, 400, 5000))
 }
 \description{
 teal module for new KM plot
@@ -23,8 +23,6 @@ ATE <- ate(com.roche.cdt30019.go29436.re)
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),
   modules = root_modules(
-    tm_data_table(),
-    tm_variable_browser(),
     tm_kmplot(
        label = "KM PLOT",
        tratement_var_choices = c("ARM", "ARMCD"),
@@ -39,4 +37,5 @@ x <- teal::init(
 ## Initiate Shiny App
 shinyApp(ui = x$ui, server = x$server)
 }
+
 }
