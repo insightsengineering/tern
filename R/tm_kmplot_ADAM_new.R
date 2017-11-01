@@ -110,7 +110,7 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
     updateSelectInput(session,  "ref_arm" , choices = unique(ANL[[input$var_arm]]), 
                       selected = ANL[[input$var_arm]] %>% unique() %>% sort() %>% "["(1))
     updateSelectInput(session, "comp_arm", choices = unique(ANL[[input$var_arm]]),
-                      selected = ANL[[input$var_arm]] %>% unique %>% sort %>% "["(-1))
+                      selected = ANL[[input$var_arm]] %>% unique() %>% sort() %>% "["(-1))
     
   })
   
@@ -127,18 +127,20 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
   
   output$kmplot <- renderPlot({
     ATE_Filtered <- ATE_Filtered()
-    ANL <- ATE_Filtered %>% filter(PARAMCD == input$tteout)
+    
+    tteout <- input$tteout
+    ANL <- ATE_Filtered %>% filter(PARAMCD == tteout) 
+    
     
     var_arm <- input$var_arm
     facetby <- input$facetby
     ref_arm <- input$ref_arm
+    comp_arm <- input$comp_arm
     strat <- input$strat
     combine_arm <- input$combine_arm
-    # teal:::as.global(ref_arm)
-    # teal:::as.global(ANL)
-    # teal:::as.global(facetby)
-    # teal:::as.global(var_arm)
-    # teal:::as.global(strat)
+    
+    ANL <- ANL %>% subset(ANL[[var_arm]] %in% c(ref_arm, comp_arm))
+
     
     validate(need(nrow(ANL) > 10, "Need more than 10 observations"))
     validate(need(var_arm %in% names(ANL), "var_arm is not in ANL"))
@@ -167,7 +169,7 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
       formula_coxph <- as.formula(
         paste0("Surv(AVAL, 1-CNSR) ~", var_arm ,  "+ strata(", paste(strat, collapse = ","), ")")
       )
-      info_coxph <- paste0("Cox Proportional Model: Stratified by", paste(strat, collapse = ","))
+      info_coxph <- paste0("Cox Proportional Model: Stratified by ", paste(strat, collapse = ","))
     } else{
       formula_coxph <- formula_km
       info_coxph <- "Cox Proportional Model: Unstratified Analysis"

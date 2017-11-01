@@ -137,9 +137,12 @@ kmplot <- function(formula_km, data, add_km = TRUE,
     
     sfit <- summary(fitcox)
     
-    hr <- sfit$coefficients[, "exp(coef)"]
-    ci <- sfit$conf.int[, c("lower .95", "upper .95")]
-    pvalues <- sfit$coefficients[, "Pr(>|z|)"]
+    hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
+     
+    ci <- sfit$conf.int[, c("lower .95", "upper .95"), drop = FALSE]  
+     
+    pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
+    
   
     info <- cbind(hr, ci, pvalues)
     sinfo <- split(as.data.frame(info), 1:nrow(info))
