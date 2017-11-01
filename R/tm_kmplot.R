@@ -15,9 +15,7 @@
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ATE = ATE),
 #'   modules = root_modules(
-#'     tm_data_table(),
-#'     tm_variable_browser(),
-#'     tm_kmplot_ADAM2(
+#'     tm_kmplot(
 #'        label = "KM PLOT",
 #'        tratement_var_choices = c("ARM", "ARMCD"),
 #'        endpoint_choices = c("OS", "PFSINV"),
@@ -31,9 +29,8 @@
 #' ## Initiate Shiny App
 #' shinyApp(ui = x$ui, server = x$server)
 #' }
-
-
-tm_kmplot_ADAM2 <- function(label,
+#' 
+tm_kmplot <- function(label,
                            treatment_var = "ARM",
                            tratement_var_choices = treatment_var,
                            endpoint = "OS",
@@ -42,7 +39,7 @@ tm_kmplot_ADAM2 <- function(label,
                            facet_var_choices = facet_var,
                            strat_var = NULL,
                            strat_var_choices = strat_var,
-                           plot_height=700
+                           plot_height = c(1200, 400, 5000)
 ){
   
   args <- as.list(environment())
@@ -50,13 +47,13 @@ tm_kmplot_ADAM2 <- function(label,
   module(
     label = label,
     filters = "ATE",
-    server = srv_kmplot_ADAM2,
-    ui = ui_kmplot_ADAM2,
+    server = srv_kmplot,
+    ui = ui_kmplot,
     ui_args = args
   )
 }
 
-ui_kmplot_ADAM2 <- function(
+ui_kmplot <- function(
   id, 
   label,
   treatment_var = "ARM",
@@ -67,11 +64,11 @@ ui_kmplot_ADAM2 <- function(
   strat_var_choices = strat_var,
   facet_var = NULL,
   facet_var_choices = facet_var,
-  plot_height=700) {
+  plot_height = c(700, 400, 3000)) {
   
   ns <- NS(id)
   
-  standard_layout(    output = uiOutput(ns("outplot")),
+  standard_layout(    output = uiOutput(ns("plot_ui")),
                       encoding = div(
                         tags$label("Encodings", class = "text-primary"),
                         helpText("Analysis Data: ", tags$code("ATE")),
@@ -89,20 +86,28 @@ ui_kmplot_ADAM2 <- function(
                         selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
                         checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
                         tags$label("Plot Settings", class = "text-primary"),
-                        sliderInput(ns("plotht"), "Plot Height", min=400, max=3000, step = 10, value = plot_height)
+                        optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
                       )
                       
   )
 }
 
 
-srv_kmplot_ADAM2 <- function(input, output, session, datasets){
+srv_kmplot <- function(input, output, session, datasets) {
+  
+  
+  ## dynamic plot height
+  output$plot_ui <- renderUI({
+    plot_height <- input$plot_height
+    validate(need(plot_height, "need valid plot height"))
+    plotOutput(session$ns("kmplot"), height=plot_height)
+  })
+  
   ATE_Filtered <- reactive({
     ATE_F <- datasets$get_data("ATE", filtered = TRUE, reactive = TRUE)
     validate(need(ATE_F, "Need ATE data"))
     ATE_F
   })
-  
   
   observe({
     ANL <- ATE_Filtered()
@@ -112,16 +117,6 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
     updateSelectInput(session, "comp_arm", choices = unique(ANL[[input$var_arm]]),
                       selected = ANL[[input$var_arm]] %>% unique() %>% sort() %>% "["(-1))
     
-  })
-  
-  
-  output$outplot <- renderUI({
-    
-    plot_height <- input$plotht
-    
-    validate(need(plot_height, "need valid plot height"))
-    
-    plotOutput(session$ns("kmplot"), width = "100%", height=plot_height)
   })
   
   
@@ -139,12 +134,15 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
     strat <- input$strat
     combine_arm <- input$combine_arm
     
+    # teal:::as.global(ATE_Filtered)
     # teal:::as.global(var_arm)
     # teal:::as.global(ANL)
     # teal:::as.global(facetby)
     # teal:::as.global(ref_arm)
     # teal:::as.global(strat)
     # teal:::as.global(comp_arm)
+    # teal:::as.global(combine_arm)
+    
     validate(need(nrow(ANL) > 10, "Need more than 10 observations"))
     validate(need(var_arm %in% names(ANL), "var_arm is not in ANL"))
     validate(need(is.null(facetby)  || facetby %in% names(ANL), "facet by not correct"))
@@ -185,25 +183,40 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
              info_coxph,
              add = FALSE, 
              title = "Kaplan - Meier Plot")
-    } else{
-      nplots <- length(unique(ANL[[facetby]]))
-      dfs <- split(ANL, ANL[[facetby]])
+    } else {
+      
+      facet_df <- ANL[facetby]
+      
+      n_unique <- sum(!duplicated(facet_df))
+
+      lab <- Map(function(var, x) paste0(var, "= '", x,"'"), facetby, facet_df) %>%
+        unname() %>%
+        Reduce(function(x, y) paste(x, y, sep = ", "), .) %>%
+        unlist() %>%
+        factor()
+      
+      if (length(unique(lab)) != n_unique) stop("algorithm error")  
+  
+      dfs <- split(ANL, lab)
+      
+      nplots <- n_unique
       grid.newpage()
       pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
       pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
         heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
          )))
       
-      Map(function(i) {
+      Map(function(dfi, i, label) {
         pushViewport(viewport(layout.pos.row = i*2 - 1))
-        kmplot(formula_km, data = dfs[[i]], add_km = TRUE,
-               add_coxph = TRUE, formula_coxph,
-               info_coxph,
-               add = TRUE,
-               title = paste0("Kaplan - Meier Plot for ", unique(dfs[[i]][[facetby]])))
+        kmplot(
+          formula_km, data = dfi, add_km = TRUE,
+          add_coxph = TRUE, formula_coxph,
+          info_coxph,
+          add = TRUE,
+          title = paste0("Kaplan - Meier Plot for: ", label)
+        )
         popViewport()
-      }, 1:length(dfs))
-      
+      }, dfs, 1:length(dfs), levels(lab))
        
     }
  
