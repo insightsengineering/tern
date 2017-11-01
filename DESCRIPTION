@@ -15,9 +15,6 @@ Depends:
   teal
 Imports:
   grid,
-  rlang,
-  ggplot2,
-  survminer,
   dplyr,
   shiny,
   PropCIs,
@@ -25,7 +22,9 @@ Imports:
 Suggests:
   testthat,
   knitr,
-  rmarkdown
+  rmarkdown,
+  ggplot2,
+  survminer,
 License: Copyright Roche
 Encoding: UTF-8
 LazyData: true
