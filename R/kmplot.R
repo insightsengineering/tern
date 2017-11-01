@@ -27,7 +27,7 @@
 #' 
 #' 
 #' ## facet by row
-#' nplots <- 2
+#' nplots <- 4
 #' # new plot
 #' grid.newpage()
 #' 
@@ -58,8 +58,8 @@
 #' 
 #' }
 #' 
-kmplot <- function(formula_km, data, add_km = FALSE, 
-                   add_coxph = FALSE, formula_coxph = formula_km, 
+kmplot <- function(formula_km, data, add_km = TRUE, 
+                   add_coxph = TRUE, formula_coxph = formula_km, 
                    info_coxph = "Cox Proportional Model: Unstratified Analysis",
                    add = FALSE, 
                    title = "Kaplan - Meier Plot") {
@@ -163,7 +163,7 @@ kmplot <- function(formula_km, data, add_km = FALSE,
     grid.text(label = lab,
               x = unit(1, "lines"), y = unit(1, "lines"),
               just = c("left", "bottom"),
-              gp = gpar(fontfamily = "mono")
+              gp = gpar(fontfamily = "mono", fontsize = 8)
               )
     
 
@@ -192,9 +192,15 @@ kmplot <- function(formula_km, data, add_km = FALSE,
               x = unit(1, "npc") - stringWidth(tblstr2) - unit(1, "lines"),
               y = unit(1, "npc") -  unit(1, "lines"),
               just = c("left", "top"),
-              gp = gpar(fontfamily = "mono")
+              gp = gpar(fontfamily = "mono", fontsize = 8)
     )
   }
+  
+
+  
+  
+  
+  
   ## Number of patients at Risk
   popViewport(2)
   
