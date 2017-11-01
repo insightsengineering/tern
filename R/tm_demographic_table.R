@@ -94,12 +94,14 @@ srv_demographic_table <- function(input, output, session, datasets) {
     validate(need(nrow(ASL_filtered) > 10, "Need more than 10 patients to make the table"))
     validate(need(ASL_filtered[[arm_var]], "Arm variable does not exist"))
     
-    tbl <- demographic_table(
+    tbl <- try(demographic_table(
       data = ASL_filtered,
       arm_var = "ARM",
       all.patients = TRUE,
       group_by_vars = summarize_vars
-    )
+    ))
+    
+    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate demographic table"))
     
     as_html(tbl)
   })

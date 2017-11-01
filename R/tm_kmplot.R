@@ -124,9 +124,6 @@ srv_kmplot <- function(input, output, session, datasets) {
     ATE_Filtered <- ATE_Filtered()
     
     tteout <- input$tteout
-    ANL <- ATE_Filtered %>% filter(PARAMCD == tteout) 
-    
-    
     var_arm <- input$var_arm
     facetby <- input$facetby
     ref_arm <- input$ref_arm
@@ -142,11 +139,21 @@ srv_kmplot <- function(input, output, session, datasets) {
     # teal:::as.global(strat)
     # teal:::as.global(comp_arm)
     # teal:::as.global(combine_arm)
+
+    validate(need(!is.null(comp_arm), "select at least one comparison arm"))
+    validate(need(!is.null(ref_arm), "select at least one reference arm"))
+    validate(need(length(intersect(ref_arm, comp_arm)) == 0,
+                  "reference and treatment group cannot overlap"))
+    validate(need(var_arm %in% names(ATE_Filtered), "var_arm is not in ATE"))
+    validate(need(is.null(facetby)  || facetby %in% names(ATE_Filtered), "facet by not correct"))
+    validate(need(ref_arm %in% ATE_Filtered[[var_arm]], "reference arm does not exist in left over ARM values"))
+
+    
+    
+    ANL1 <- ATE_Filtered %>% filter(PARAMCD == tteout) 
+    ANL <- ANL1[ANL1[[var_arm]] %in% c(comp_arm, ref_arm) , ]
     
     validate(need(nrow(ANL) > 10, "Need more than 10 observations"))
-    validate(need(var_arm %in% names(ANL), "var_arm is not in ANL"))
-    validate(need(is.null(facetby)  || facetby %in% names(ANL), "facet by not correct"))
-    validate(need(ref_arm %in% ANL[[var_arm]], "reference arm does not exist in left over ARM values"))
    
     
     

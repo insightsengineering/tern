@@ -4,6 +4,9 @@
 #' 
 #' @export
 #' 
+#' 
+#' @importFrom forcats fct_collapse fct_relevel
+#' 
 #' @examples  
 #' 
 #' \donotrun{
@@ -161,7 +164,7 @@ srv_time_to_event_table <- function(input, output, session, datasets, ref_arm = 
                   "reference and treatment group cannot overlap"))
     
     validate(need(paramcd %in% ATE_filtered$PARAMCD, "selected PARAMCD not in ATE"))
-    validate(need(combine_arm, "need combine arm information"))
+    validate(need(is.logical(combine_comp_arms), "need combine arm information"))
     
     validate(need(all(strata_var %in% names(ATE_filtered)),
                   "some baseline risk variables are not valid"))
@@ -193,14 +196,16 @@ srv_time_to_event_table <- function(input, output, session, datasets, ref_arm = 
       time_points <- setNames(as.numeric(time_points), paste(time_points, time_points_unit))
     }
     
-    tbl <- time_to_event_table(
+    tbl <- try(time_to_event_table(
       time_to_event = ATE_f$AVAL,
       event = ATE_f$CNSR == 0,
       arm = arm,
       is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
       strata_data = ATE_f[strata_var],
       time_points = time_points
-    )
+    ))
+    
+    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate time to event table"))
     
     as_html(tbl)
   })

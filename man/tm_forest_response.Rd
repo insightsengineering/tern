@@ -31,8 +31,6 @@ ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
 x <- teal::init(
   data = list(ASL = ASL, ARS = ARS),
   modules = root_modules(
-    tm_variable_browser(),
-    tm_data_table(),
     tm_forest_response(
        label = "Forest Response",
        paramcd = "OVRSPI",

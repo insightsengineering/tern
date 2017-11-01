@@ -239,12 +239,14 @@ srv_response_table <- function(input, output, session, datasets) {
       ARM <- arm2
     }
 
-    tbl <- response_table(
+    tbl <- try(response_table(
       response = ANL$AVALC,
       value.resp = responders,
       value.nresp = setdiff(ANL$AVALC, responders),
       arm = ARM
-    )
+    ))
+    
+    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate response table"))
     
     as_html(tbl)
   })

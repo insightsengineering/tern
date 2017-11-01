@@ -218,8 +218,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   
   
   
-  
-  xpos <- seq(0, 28, by = 2)
+  xpos <- seq(0, floor(max(df$time)), length.out = 10)
   
   Map(function(x, ypos, strata, col) {
     

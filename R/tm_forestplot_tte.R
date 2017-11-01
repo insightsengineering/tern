@@ -140,12 +140,12 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
     comp_arm <- input$comp_arm
     
     
-    # teal:::as.global(ATE_filtered)
-    # teal:::as.global(ASL_filtered)
-    # teal:::as.global(paramcd)
-    # teal:::as.global(subgroup_var)
-    # teal:::as.global(ref_arm)
-    # teal:::as.global(comp_arm)
+    teal:::as.global(ATE_filtered)
+    teal:::as.global(ASL_filtered)
+    teal:::as.global(paramcd)
+    teal:::as.global(subgroup_var)
+    teal:::as.global(ref_arm)
+    teal:::as.global(comp_arm)
     
     ## 2: Validate if your inputs can produce the requested output
     
@@ -167,20 +167,23 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
     ATE_f <- ATE_filtered %>% filter(PARAMCD == paramcd & arm_var %in% c(ref_arm, comp_arm))
     
     validate(need(nrow(ATE_f) > 0, "no data left"))
-    
     validate(need(all(subgroup_var %in% names(ASL_filtered)), "some baseline risk variables are not valid"))
+    validate(need(all(c(ref_arm, comp_arm) %in% ATE_f$arm_var), "data needs to include at least one patient from the reference and comparison arm"))  
+    
     
     ASL_f <- ASL_filtered[c("STUDYID", "USUBJID", subgroup_var)]
-    
     validate(need(all(subgroup_var %in% names(ASL_f)), "some subgroup variables are not valid"))
-    ATE_anl <- inner_join(ASL_f %>% select(STUDYID, USUBJID) , ATE_f, by = c("STUDYID","USUBJID"))
-    
-    validate(need(all(c(ref_arm, comp_arm) %in% ATE_anl$arm_var), "data needs to include at least one patient from the reference and comparison arm"))  
+
     
     #Filter ASL to get the grouping variables
-    group_data <- inner_join(ASL_f, ATE_f %>% select(USUBJID, STUDYID), by = c("STUDYID","USUBJID"))
+    group_data <- merge(
+      x = ASL_f,
+      y = ATE_f %>% select(USUBJID, STUDYID),
+      by = c("STUDYID","USUBJID"),
+      all.x = FALSE,
+      all.y = TRUE
+    )
     names(group_data) <- labels_over_names(group_data)
-    head(group_data)
     
     ## add
     ## the arm combine & filtering and converting to a factor here...paste0(ref_arm, collapse = "/")
@@ -189,12 +192,14 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
     arm <- ifelse (arm == "ref_arm", paste0(ref_arm, collapse = "/"), paste0(comp_arm, collapse = "/")) 
     arm <- fct_relevel(arm, paste0(ref_arm, collapse = "/"))
     
-    tbl <- forest_tte(
+    tbl <- try(forest_tte(
       time_to_event = ATE_f$AVAL,
       event = ATE_f$CNSR == 0,
       arm = arm, 
       group_data = group_data[, -c(1,2), drop=FALSE]
-    )
+    ))
+    
+    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate forest table"))
     
     #as_html(tbl)
     
