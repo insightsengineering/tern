@@ -21,7 +21,7 @@
 #'        label = "KM PLOT",
 #'        tratement_var_choices = c("ARM", "ARMCD"),
 #'        endpoint_choices = c("OS", "PFSINV"),
-#'        facet_var = "TOBHX",
+#'        facet_var = "SEX",
 #'        facet_var_choices = c("SEX", "RACE", "TOBHX"),
 #'        strat_var = "HIST",
 #'        strat_var_choices = c("SEX", "MLIVER", "TC2IC2", "HIST")
@@ -139,9 +139,12 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
     strat <- input$strat
     combine_arm <- input$combine_arm
     
-    ANL <- ANL %>% subset(ANL[[var_arm]] %in% c(ref_arm, comp_arm))
-
-    
+    # teal:::as.global(var_arm)
+    # teal:::as.global(ANL)
+    # teal:::as.global(facetby)
+    # teal:::as.global(ref_arm)
+    # teal:::as.global(strat)
+    # teal:::as.global(comp_arm)
     validate(need(nrow(ANL) > 10, "Need more than 10 observations"))
     validate(need(var_arm %in% names(ANL), "var_arm is not in ANL"))
     validate(need(is.null(facetby)  || facetby %in% names(ANL), "facet by not correct"))
@@ -176,11 +179,34 @@ srv_kmplot_ADAM2 <- function(input, output, session, datasets){
     }
 
      
-    kmplot(formula_km, data = ANL, add_km = TRUE, 
-                       add_coxph = TRUE, formula_coxph, 
-                       info_coxph,
-                       add = FALSE, 
-                       title = "Kaplan - Meier Plot")
+    if (length(facetby) == 0){
+      kmplot(formula_km, data = ANL, add_km = TRUE, 
+             add_coxph = TRUE, formula_coxph, 
+             info_coxph,
+             add = FALSE, 
+             title = "Kaplan - Meier Plot")
+    } else{
+      nplots <- length(unique(ANL[[facetby]]))
+      dfs <- split(ANL, ANL[[facetby]])
+      grid.newpage()
+      pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
+      pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
+        heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
+         )))
+      
+      Map(function(i) {
+        pushViewport(viewport(layout.pos.row = i*2 - 1))
+        kmplot(formula_km, data = dfs[[i]], add_km = TRUE,
+               add_coxph = TRUE, formula_coxph,
+               info_coxph,
+               add = TRUE,
+               title = paste0("Kaplan - Meier Plot for ", unique(dfs[[i]][[facetby]])))
+        popViewport()
+      }, 1:length(dfs))
+      
+       
+    }
  
   })
 }
+

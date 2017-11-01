@@ -27,7 +27,7 @@
 #' 
 #' 
 #' ## facet by row
-#' nplots <- 4
+#' nplots <- 2
 #' # new plot
 #' grid.newpage()
 #' 
