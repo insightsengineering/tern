@@ -80,7 +80,7 @@ ui_time_to_event_table <- function(id, label,
   ns <- NS(id)
   
   standard_layout(
-    output = uiOutput(ns("tte_table")),
+    output = whiteSmallWell(uiOutput(ns("tte_table"))),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ATE")),

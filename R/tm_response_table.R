@@ -103,7 +103,7 @@ ui_response_table <- function(id, label,
   
   
   standard_layout(
-    output = uiOutput(ns("response_table")),
+    output = whiteSmallWell(uiOutput(ns("response_table"))),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ARS")),

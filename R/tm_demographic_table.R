@@ -62,7 +62,7 @@ ui_demographic_table <- function(id,
   ns <- NS(id)
   
   standard_layout(
-    output = uiOutput(ns("demographic_table")),
+    output = whiteSmallWell(uiOutput(ns("demographic_table"))),
     encoding =  div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ASL")),

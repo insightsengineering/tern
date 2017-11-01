@@ -332,7 +332,7 @@ as_html.rtable <- function(x, ...) {
   })
   
   tags$table(
-    class = "table",
+    class = "table table-condensed",
     ...,
     tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th, align="center", class="text-center"))), 
     lapply(x, as_html, ncol = ncol)
