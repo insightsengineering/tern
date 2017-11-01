@@ -61,13 +61,13 @@
 kmplot <- function(formula_km, data, add_km = TRUE, 
                    add_coxph = TRUE, formula_coxph = formula_km, 
                    info_coxph = "Cox Proportional Model: Unstratified Analysis",
-                   add = FALSE, 
+                   add = FALSE,
                    title = "Kaplan - Meier Plot") {
   
   fit <- survfit(formula_km, data = data)
 
-  
-  if (length(fit$strata) > 9) stop("unfortunately we currently do not have more than 9 colors to encode different stratas")
+  nstrata <- length(fit$strata)
+  if (nstrata > 9) stop("unfortunately we currently do not have more than 9 colors to encode different stratas")
   
   # extract kmplot relevant data
   df <- data.frame(
@@ -87,17 +87,16 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   
   # get the color pallete
   col_pal <- col_factor("Set1", domain = names(df_s))  
-  
 
   # now do the plotting
   if(!add) {
     grid.newpage()
-    pushViewport(plotViewport(margins = c(3, 10, 2, 2)))    
+    pushViewport(plotViewport(margins = c(3, 10, 3, 2)))    
   }
   
   pushViewport(viewport(layout = grid.layout(
     nrow = 3, ncol = 1,
-    heights = unit(c(5, 4, 3), c("null", "lines", "null")),
+    heights = unit(c(5, 5, nstrata*1.1+4), c("null", "lines", "lines")),
     widths = unit(1, "npc"))))
   
   pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
@@ -127,7 +126,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   
   grid.text(
     label = "Survival Probability",
-    x = unit(-9, "lines"),
+    x = unit(-3.5, "lines"),
     rot = 90
   )
   
@@ -198,23 +197,19 @@ kmplot <- function(formula_km, data, add_km = TRUE,
               gp = gpar(fontfamily = "mono", fontsize = 8)
     )
   }
-  
 
-  
+  popViewport(2)  
   
   
   
   ## Number of patients at Risk
-  popViewport(2)
-  
-  pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 2))
-  grid.text(label = "No of Patients at Risk",
-            x = unit(0.1, "npc"),
-            y = unit(0.3, "npc"),
-            just = "right")
-  popViewport(1)
-  
+
   pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 3))
+  
+  grid.text(label = "Number of Patients at Risk",
+            x = unit(0, "npc"),
+            y = unit(1, "npc") + unit(1, "lines"),
+            just = "left")
   
   pushViewport(dataViewport(xData = df$time, yData = c(0,1)))
   grid.xaxis()
