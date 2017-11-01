@@ -22,7 +22,7 @@
 #'        tratement_var_choices = c("ARM", "ARMCD"),
 #'        endpoint_choices = c("OS", "PFSINV"),
 #'        facet_var = "SEX",
-#'        facet_var_choices = c("SEX", "RACE", "TOBHX"),
+#'        facet_var_choices = c("SEX", "TOBHX"),
 #'        strat_var = "HIST",
 #'        strat_var_choices = c("SEX", "MLIVER", "TC2IC2", "HIST")
 #'     )  
