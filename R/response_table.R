@@ -6,13 +6,22 @@
 #' @param value.nrsp Character vector, defining list of response values to be
 #'   used as non-responders
 #' @param arm Arm information data as factor
+#' @param strata_data data for stratification factors (categorical variables) 
 #' @param style Must be 1 or 2, \code{1} if only want to display rates summary
 #'   for each response value category, \code{2} if want to display rates,
 #'   difference in rate and odds ratio for each response value category.
 #'
 #'                     
 #' @details 
-#' We use the \code{PropCIs} package to calculate the CIs for odds ratio                                  
+#' We use the \code{epiR} package to compute 2-by-2 contingency table statistics
+#' and analysis with stratification factors.
+#' 
+#' If no stratification, chi-squared test is performed by default to test for
+#' equality of proportions in response rate between reference and comparison arms.
+#' 
+#' If stratification factors are added, Cochran-Mantel-Haensel test statistics are 
+#' reported for the test of equal proportions, odds ratio and its corresponding 
+#' 95% confidence interval.                           
 #'                                                                                    
 #' @export
 #' 
@@ -26,21 +35,22 @@
 #' library(atezo.data)
 #' library(teal.oncology)
 #' library(forcats)
+#' library(epiR)
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
-#' Viewer(tbl_stream)
-#' 
+#' paramcd = "OVRSPI"
+#' var_arm = "ARM"
 #' ref_arm = "DUMMY C"
 #' comp_arm = c("DUMMY B", "DUMMY A")
 #' combine_arm = FALSE
 #' responders = c("CR", "PR")
+#' var_strata = NULL
 #' 
 #' ANL <- ARS %>% 
-#'   filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM %in% c(ref_arm, comp_arm)) %>%
-#'   select(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
-#' 
+#'   filter(PARAMCD == paramcd, ARM %in% c(ref_arm, comp_arm))
+#'   
 #' # If want to include missing as non-responders
 #' ANL$AVALC[ANL$AVALC==""] <- "NE"
 #' 
@@ -51,27 +61,39 @@
 #'  response = ANL$AVALC,
 #'  value.resp = c("CR", "PR"),
 #'  value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
-#'  arm = ARM
+#'  arm = ARM,
+#'  strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL,
+#'  style = 1
 #' )
 #' 
 #' Viewer(tbl)
+#' #clean up
+#' rm(paramcd, var_arm, ref_arm, comp_arm, combine_arm, responders, var_strata) 
 #' 
-#' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+#' #tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
+#' #Viewer(tbl_stream)
+#' #compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 #' 
 #' 
-#' # different layout
+#' # Example 2
+#' paramcd = "OVRSPI"
+#' var_arm = "ARM"
 #' ref_arm = c("DUMMY C", "DUMMY B")
-#' comp_arm = c( "DUMMY A")
-#' combine_arm = FALSE
+#' comp_arm = "DUMMY A"
+#' combine_arm = TRUE
 #' responders = c("CR", "PR")
+#' var_strata = "SEX"
 #' 
 #' refname <- paste0(ref_arm, collapse = "/")
 #' ARM <- do.call(fct_collapse, setNames(list(arm1, ref_arm), c("f", refname))) %>%
 #'   fct_relevel(refname, comp_arm)
 #' 
 #' #style 2 
-#' tbl2 <- response_table(response = ANL$AVALC, 
+#' tbl2 <- response_table(response = ANL$AVALC,
+#'                        value.resp = c("CR", "PR"),
+#'                        value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
 #'                        arm = ARM,
+#'                        strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL,
 #'                        style = 2)
 #' Viewer(tbl2)
 #' 
@@ -83,6 +105,7 @@ response_table <- function(response,
                            value.resp       = c("CR","PR"),
                            value.nresp      = c("SD", "NON CR/PD", "PD", "NE"),
                            arm, 
+                           strata_data      = NULL, 
                            style = 1
                            ) {
   
@@ -91,8 +114,13 @@ response_table <- function(response,
   #####################
   
   #Check length of input variables matches #
-  if (length(arm) != length(response) ) stop("Length for arm and response variables does not match, please check data")
-  
+  n <- length(response)
+  if (length(arm) != n) stop("Length for arm and response variables does not match, please check data")
+  if (!is.null(strata_data)) {
+    if (nrow(strata_data) != n) stop("Length of strata_data does not match length of response variable, please check data")
+    if (any(rowSums(is.na(strata_data) | strata_data == "") != 0)) stop("Cannot have NA or missing values in stratification factor")
+  }
+
   # Check there are 2+ unique levels in arm variable for comparison ---#
   if (length(levels(factor(arm))) < 2){
     stop("Invalid arm variable selected. Minimum 2 unique levels required for arm variable.")
@@ -121,92 +149,158 @@ response_table <- function(response,
   value.resp <- value_reorder[[1]]
   value.nresp <- value_reorder[[2]]
   value_for_test <- c(value.resp, value.nresp)
-  
-  data_for_test <- subset(
-    data.frame(arm, response),
-    (!is.na(arm) & rsp_for_test == TRUE)
-  )
-  
-  #Final arm and response data vectors for analysis
-  ARM <- data_for_test$arm
-  RESP <- data_for_test$resp
-  
+
+  df <- data.frame(arm, response)
+  if (!is.null(strata_data)) {
+    strata_name <- names(strata_data)
+    strata <- do.call(paste, c(as.data.frame(strata_data), sep="/"))
+    df <- data.frame(df, strata)
+  }
+  df <- subset(df, !is.na(arm) & rsp_for_test == TRUE)
+
+  #Final arm vectors for analysis
+  ARM <- df$arm
+  arm_lvl <- levels(ARM)
   
   #####################
   # Math calculation  #
   #####################
   
   # Split response data into tree by ARM
-  # Rate calculation for Responder/Non-responders
-  rate_result <- Map(calc_rate, split(RESP, ARM), list(c(value.resp)))
+  # Rate and CI calculation   
+  value_list <- c(list(c(value.resp)), as.list(value_for_test))
+  names(value_list) <- c("Responders", value_for_test)
   
-  #Rate calculation by each response value
-  data_byvalue <- data.frame(rep(list(RESP), length(value_for_test)))
-  names(data_byvalue) <- value_for_test
-  rate_result_byvalue <- lapply(split(data_byvalue, ARM), function(x){
-    Map(calc_rate, x, value_for_test)
-  })
-
-
-  #Depending on number of comparison arms, parameters for output display settings
-  #centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
-  coltotal = length(rate_result)
-  if (length(levels(ARM)) < 3) {
-    colstart = 2; colsize = 2
-  } else {
-    colstart = 1; colsize = 1
-  }
-  
-  #Calculation for diff in rate and OR for Responder/Non-responders
-  diffor_result <- lapply(as.list(colstart:coltotal), function(i) {
-    calc_diffor(rate_result[[i]], rate_result[[1]])
-  })
-  names(diffor_result) <- names(rate_result)[c(colstart:coltotal)]
-  #If more than one comparison arm (display aligned by column), remove numbers from first(reference) column
-  if (length(levels(factor(ARM))) > 2) {
-    diffor_result[[1]] <- rapply(diffor_result[[1]],function(x) NULL, how = "list")
-  }
-  
-  #If style 2 selected, calculate diff in rate and OR calculation by each response value
-  if (style == 2) {
-    diffor_result_byvalue <- lapply(as.list(colstart:coltotal), function(i) {
-      Map(calc_diffor, rate_result_byvalue[[i]], rate_result_byvalue[[1]])
+  rate_result <- lapply(split(df$response, ARM), function(x){
+    lapply(value_list, function(y) {
+      N       <- length(x)
+      n_resp  <- sum(x %in% y)
+      ratestats    <- binom.test(n_resp, N)
+      
+      list(
+        N       = N,
+        n_resp  = n_resp,
+        n_nresp = N-n_resp,
+        p_resp  = n_resp/N,
+        p_nresp = (N-n_resp)/N,
+        ci      = ratestats$conf.int*100
+      )
     })
-    names(diffor_result_byvalue) <- names(rate_result_byvalue)[c(colstart:coltotal)]
-    if (length(levels(factor(ARM))) > 2) {
-      diffor_result_byvalue[[1]] <- rapply(diffor_result_byvalue[[1]], function(x) NULL, how = "list")
-    }
+  })
+
+
+  #Calculation for diff in rate and OR for Responder/Non-responders
+  coltotal = length(arm_lvl)
+  comparm_list <- as.list(arm_lvl[2:coltotal])
+  names(comparm_list) <- arm_lvl[2:coltotal]
+  if (style == 1) {
+    value_list <- list(value.resp)
+    names(value_list) <- "Responders"
+  } else if (style == 2) {
+    value_list <- c(list(value.resp), as.list(value.resp))
+    names(value_list) <- c("Responders", value.resp)
+  }
+  
+  diffor_result <- lapply(comparm_list, function(i) {
+    lapply(value_list, function(j) {
+      df.diffor <- df %>% 
+        filter(arm %in% c(levels(df$arm)[1], i)) %>% 
+        mutate(arm = droplevels(arm),
+               final.arm = fct_relevel(arm, i, levels(df$arm)[1]),
+               resp = fct_collapse(response, "Responder" = j, "Non-Responder" = setdiff(response, j)),
+               final.resp = fct_relevel(resp, "Responder", "Non-Responder"))
+      
+      if (!exists("strata_name")) {
+        #If no strata
+        df.table <- table(df.diffor[c("final.arm", "final.resp")])
+        if (any(df.table ==0)) stop("At least one cell has frequency of 0, please check data")
+        df.test  <- epi.2by2(df.table, method = "cohort.count",
+                             conf.level = 0.95, outcome = "as.columns")
+        list(
+          diff   = unlist(df.test$res$ARisk.crude.wald[1]),
+          diffci = unlist(df.test$res$ARisk.crude.wald[2:3]),
+          diffp  = unlist(df.test$res$chisq.crude[3]),
+          or     = unlist(df.test$res$OR.crude.wald[1]),
+          orci   = unlist(df.test$res$OR.crude.wald[2:3])
+        )
+      } else {
+        #If strata is requested
+        df.table <- table(df.diffor[c("final.arm", "final.resp", "strata")])
+        if (any(df.table ==0)) stop("At least one cell in one of the stratum has frequency of 0, please check data")
+        df.test  <- epi.2by2(df.table, method = "cohort.count",
+                             conf.level = 0.95, outcome = "as.columns")
+        list(
+          diff   = unlist(unname(df.test$res$ARisk.crude.wald[1])),
+          diffci = unlist(unname(df.test$res$ARisk.crude.wald[2:3])),
+          diffp  = unlist(unname(df.test$res$chisq.mh[3])),
+          or     = unlist(unname(df.test$res$OR.mh.wald[1])),
+          orci   = unlist(unname(df.test$res$OR.mh.wald[2:3]))
+        )
+      }
+    })
+  })
+  
+  if (!exists("strata_name")) {
+    method <- " (Chi-squared)"
+    notation <- ""
+  } else {
+    method <- " (Cochran-Mantel-Haenszel)"
+    notation <- ifelse((length(strata_name) > 1 | length(levels(factor(strata))) > 3), "*^", "*")
   }
   
   ##########################################
   # Build output data structure with rtable#
   ##########################################
+  rate_resp <- lapply(rate_result, '[[', 1)
+  rate_byvalue <- lapply(rate_result, '[', c(-1))
+  diffor_resp <- lapply(diffor_result, '[[', 1)
+  if (style == 2) diffor_byvalue <- lapply(diffor_result, '[', c(-1))
+  
+  #Depending on number of comparison arms, parameters for output display settings
+  #centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
+  colsize = ifelse(coltotal > 2, 1, 2)
+  if (coltotal > 2) {
+    diffor_resp <- c(list(fill=NULL), diffor_resp)
+    if (exists("diffor_byvalue")) {
+      diffor_byvalue <- c(list(fill=NULL), diffor_byvalue)
+    }
+  }
+  
+  #Helper functions for display with rtable
+  lrrow <- function(row.name, l, ...) {
+    do.call(rrow, c(list(row.name = row.name, ...), l))
+  }
+  print_np <- function(x) rcell(c(x$n_resp, x$p_resp))
+  print_ci <- function(x,y,z) rcell(x[[y]], format = "(xx.xx, xx.xx)", colspan = z)
+  print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
+  
   #--- Header Section ---#
   out_header <-  list(
-    col.names = paste(names(rate_result), 
-                      paste0("(N=", unlist(lapply(rate_result, '[[', "N")),")"), 
+    col.names = paste(arm_lvl, 
+                      paste0("(N=", unlist(lapply(rate_resp, '[[', "N")),")"), 
                       sep="\n"),
     format = "xx (xx.x%)"
   )
   
   #--- Responder/Non-responder section - counts and 95% CI ---#
-  out_resp_rate  <- list(
-    do.call(rrow, c("Responders",     lapply(rate_result, print_np))),
-    do.call(rrow, c("Non-Responders", lapply(rate_result, function(x) rcell(c(x$n_nresp, x$p_nresp))))),
+  out_rate_resp  <- list(
+    lrrow("Responders", lapply(rate_resp, print_np)),
+    lrrow("Non-Responders", lapply(rate_resp, function(x) rcell(c(x$n_nresp, x$p_nresp)))),
     rrow(),
-    do.call(rrow, c("95% CI for Response Rates (Clopper-Pearson)", lapply(rate_result, print_ci, "ci", 1))),
+    lrrow("95% CI for Response Rates (Clopper-Pearson)", lapply(rate_resp, print_ci, "ci", 1)),
     rrow()
   )
   
   #--- Responder/Non-responder section - diff in rates and OR ---#
   #Depending on number of comparison arms, display centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
-  out_resp_diffor <- list(
-    do.call(rrow, c("Difference in Response Rates", lapply(diffor_result, print_diffor, "diff", colsize))),
-    do.call(rrow, c("95% CI (Wald)", indent = 1,    lapply(diffor_result, print_ci, "diffci", colsize))),
-    do.call(rrow, c("p-value", indent = 1, lapply(diffor_result, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize)))),
+  out_diffor_resp <- list(
+    lrrow("Difference in Response Rates", lapply(diffor_resp, print_diffor, "diff", colsize)),
+    lrrow("95% CI for difference in response rates (Wald)", indent = 1, lapply(diffor_resp, print_ci, "diffci", colsize)),
+    lrrow(paste0("p-value", notation, method), indent = 1,      
+          lapply(diffor_resp, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize))),
     rrow(),
-    do.call(rrow, c("Odds Ratio",                   lapply(diffor_result, print_diffor, "or", colsize))),
-    do.call(rrow, c("95% CI", indent = 1,           lapply(diffor_result, print_ci, "orci", colsize))),
+    lrrow(paste0("Odds Ratio", notation),         lapply(diffor_resp, print_diffor, "or", colsize)),
+    lrrow(paste0("95% CI", notation), indent = 1, lapply(diffor_resp, print_ci, "orci", colsize)),
     rrow()
   )
   
@@ -221,56 +315,71 @@ response_table <- function(response,
                          )
   
   
-  out_byvalue_rate <- unlist(
+  out_byvalue <- unlist(
     lapply(as.list(1:length(value_for_test)), function(i) {
       #Extract response value short name
-      rspname <- sapply(rate_result_byvalue, names)[i]
+      rspname <- sapply(rate_byvalue, names)[i]
       if (rspname %in% names(rsp_full_label)) {
         label <- unname(rsp_full_label[rspname])
       } else {label <- rspname}
       
       #Display counts and percentage row
-      part1 <-list(do.call(rrow, c(label,lapply(sapply(rate_result_byvalue, function(x) x[i]), print_np))))
+      part1 <-list(lrrow(label,lapply(lapply(rate_byvalue, '[[', i), print_np)))
       
       #If response value is NE, do not display 95% CI and difference in rate rows
       if (rspname != "NE") {
-        if (style == 2) {
+        if (style == 2 & rspname %in% value.resp) {
           part2 <- list(
-            do.call(rrow, c("95% CI", indent = 1,
-                            lapply(sapply(rate_result_byvalue, function(x) x[i]), print_ci, "ci", 1))),
+            lrrow("95% CI (Wald)", lapply(lapply(rate_byvalue, '[[', i), print_ci, "ci", 1), indent = 1),
             rrow(),
-            do.call(rrow, c(paste("Difference in",label, "rate"), indent = 1,
-                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), print_diffor, "diff", colsize))),
-            do.call(rrow, c(paste("95% CI for difference in", label, "rate"), indent = 1,
-                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), print_ci, "diffci", colsize))),
-            do.call(rrow, c("p-value", indent = 1,
-                            lapply(sapply(diffor_result_byvalue, function(x) x[i]), function (x) rcell(x$diffp, format = "xx.xxxx", colspan=colsize))))
+            lrrow(paste("Difference in",label, "rate"), 
+                  lapply(lapply(diffor_byvalue, '[[', i), print_diffor, "diff", colsize), indent = 1),
+            lrrow(paste("95% CI for difference in", rspname, "rate"), 
+                  lapply(lapply(diffor_byvalue, '[[', i), print_ci, "diffci", colsize), indent = 1),
+            lrrow(paste0("p-value", notation, method), 
+                  lapply(lapply(diffor_byvalue, '[[', i), 
+                         function (x) rcell(x$diffp, format = "xx.xxxx", colspan=colsize)),indent = 1)
           )
         } else {
-          part2 <- list(do.call(rrow, c("95% CI", indent = 1,
-                                        lapply(sapply(rate_result_byvalue, function(x) x[i]), print_ci, "ci", 1))))
+          part2 <- list(lrrow("95% CI (Wald)", 
+                              lapply(lapply(rate_byvalue, '[[', i), print_ci, "ci", 1), indent = 1))
         }
       } else {
         part2 <- NULL
       }
       
-      #Last empty row
+      #Last row - either empty or notation for stratification
       part3 <- list(rrow())
-      
+
       #Combine all rows to be parsed by unlist function
       c(part1, part2, part3)
       
     }), recursive = F
   )
-
   
+  #--- Footer section, if any for notes on stratification ---#
+  out_footer <- NULL
+  if (grepl("\\*", notation)) {
+    n_strata <- length(strata_name)
+    out_footer <- c(out_footer,
+                    list(rrow(paste("* Model stratified by", 
+                                    ifelse(n_strata < 2, strata_name, 
+                                           paste(paste(strata_name[-(n_strata)], collapse = ", "), "and", strata_name[(n_strata)]))
+                         ))))
+  }
+  if (grepl("\\^", notation)) {
+    out_footer <- c(out_footer,
+                    list(rrow("^ CAUTION! Multiple factors or more than 3 strata present. 
+                              Make sure sample size within each stratum is sufficient for analysis.")))
+  }
+
   #Put all sections together to display table
   tbl <- do.call(rtable,c(out_header,
-                          out_resp_rate,
-                          out_resp_diffor,
-                          out_byvalue_rate
-                         )
-                 )
+                          out_rate_resp,
+                          out_diffor_resp,
+                          out_byvalue,
+                          out_footer
+                ))
   
   tbl
 }
@@ -278,65 +387,6 @@ response_table <- function(response,
 #########################################################################
 # Helper functions                                                      #
 #########################################################################
-#' Function to calculate counts and percentage for rates
-#' 
-#' @param x vector with response information
-#' @param value name of the response value to compute statistics for
-#' 
-#' @export
-#' 
-#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
-#' 
-#' @examples 
-#' calc_rate(LETTERS[sample(1:3, 10, replace=T)], value = "A")
-#' 
-calc_rate <- function(x, value) {
-  N       <- length(x)
-  n_resp  <- sum(x %in% value)
-  ratestats    <- binom.test(n_resp, N)
-  
-  list(
-    N       = N,
-    n_resp  = n_resp,
-    n_nresp = N-n_resp,
-    p_resp  = n_resp/N,
-    p_nresp = (N-n_resp)/N,
-    ci      = ratestats$conf.int*100
-  )
-}
-
-#' Calculate difference in rates and odds ratio between two lists produced by
-#' calc_rate function
-#' 
-#' @param comp list produced by calc_rate function for comparison arm
-#' @param ref list produced by calc_rate function for reference arm
-#'   
-#' @importFrom PropCIs orscoreci
-#' @export
-#' 
-#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
-#' 
-#' @examples 
-#' a <- LETTERS[sample(1:3, 20, replace=T)]
-#' b <- LETTERS[sample(1:3, 20, replace=T)]
-#' a_rate <- calc_rate(a, value = "A")
-#' b_rate <- calc_rate(b, value = "A")
-#' calc_diffor(b_rate, a_rate)
-#' 
-calc_diffor <- function(comp,ref) {
-  diffstats <- prop.test(matrix(c(comp$n_resp, ref$n_resp, comp$n_nresp, ref$n_nresp), ncol=2), correct=F)
-  orstats   <- (comp$n_resp * ref$n_nresp)/(ref$n_resp * comp$n_nresp)
-  orcistats <- orscoreci(comp$n_resp, comp$N, ref$n_resp,ref$N, conf.level=0.95)
-  
-  list(
-    diff   = (diffstats$estimate[1] - diffstats$estimate[2])*100,
-    diffci = diffstats$conf.int*100,
-    diffp  = diffstats$p.value,
-    or     = orstats,
-    orci   = orcistats$conf.int
-  )
-}
-
 #' Helper functions to format rcells for various display
 #' 
 #' @param x list produced by calc_rate/calc_diffor function
@@ -389,13 +439,16 @@ print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
 #' @param incl.missing Logical, \code{TRUE} if missing values should be
 #'   considered non-responders, \code{FALSE} if missing response should be
 #'   removed from analysis
+#' @param strata Character vector, defining stratification factor for stratified 
+#'   analysis, default is NULL 
 #' @param style Must be 1 or 2, \code{1} if only want to display rates summary
 #'   for each response value category, \code{2} if want to display rates,
 #'   difference in rate and odds ratio for each response value category.
 #' 
 #' @details 
 #' Package \code{forcats} was used to re-format arm data into leveled factors.
-#' Package \code{PropCIs} was used to calculate the CIs for odds ratio.
+#' Package \code{epiR} was used to compute 2-by-2 contingency table statistics
+#' and analysis with stratification factors.
 #' 
 #' @examples
 #' \dontrun{
@@ -403,6 +456,7 @@ print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
 #' library(atezo.data)
 #' library(teal.oncology)
 #' library(forcats)
+#' library(epiR)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' 
@@ -417,6 +471,7 @@ print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
 #'                     value.resp = c("CR", "PR"),
 #'                     value.nresp = c("SD", "NON CR/PD", "PD", "NE"),
 #'                     incl.missing = TRUE,
+#'                     strata.var = "SEX",
 #'                     style = 1
 #'                     )
 #' }
@@ -430,11 +485,12 @@ response_table_ADAM <- function(ASL, ARS,
                                 value.resp       = c("CR","PR"),
                                 value.nresp      = c("SD", "NON CR/PD", "PD", "NE"),
                                 incl.missing     = TRUE,
+                                strata.var       = NULL,
                                 style            = 1
                                 ) {
   
   #Check all required variables are present in ADaM
-  ASL %needs% c("USUBJID", "STUDYID", arm.var)
+  ASL %needs% c("USUBJID", "STUDYID", arm.var, strata.var)
   ARS %needs% c("USUBJID", "STUDYID", "PARAMCD", "AVALC")
   
   if (!is.logical(arm.comp.combine)) {
@@ -449,8 +505,9 @@ response_table_ADAM <- function(ASL, ARS,
   
   #--- Select obs needed to analysis, merge ASL/ARS to create analysis dataset ---#
   #Filter on selected PARAMCD, and ARM in arm.ref/comp
-  ASL_f <- ASL %>% select(c("USUBJID", "STUDYID", arm.var))            %>% filter(get(arm.var) %in% c(arm.ref,arm.comp))
-  ARS_f <- ARS %>% select(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == paramcd)
+  ASL_f <- ASL %>% select_(c("USUBJID", "STUDYID", arm.var)) %>% 
+    subset(., subset = .[[arm.var]] %in% c(arm.ref,arm.comp))
+  ARS_f <- ARS %>% select_(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == paramcd)
   ANL <- merge(ASL_f, ARS_f, by=c("USUBJID", "STUDYID"))
   
   # Recode/filter responses if want to include missing as non-responders
@@ -512,6 +569,7 @@ response_table_ADAM <- function(ASL, ARS,
     value.resp       = value.resp,
     value.nresp      = value.nresp,
     arm              = ARM,
+    strata_data      = if (is.null(strata)) ANL_f[strata] else NULL,
     style            = style
   )
   
