@@ -96,7 +96,7 @@ srv_demographic_table <- function(input, output, session, datasets) {
     
     tbl <- try(demographic_table(
       data = ASL_filtered,
-      arm_var = "ARM",
+      arm_var = arm_var,
       all.patients = TRUE,
       group_by_vars = summarize_vars
     ))
