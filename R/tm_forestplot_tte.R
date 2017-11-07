@@ -1,7 +1,21 @@
 
-#' Forest Survival Plot teal module
+#' Forest Survival Plot Teal Module
+#' 
+#' @param label a character string displayed as module label 
+#' @param arm_var default variable name used as the arm variable
+#' @param arm_var_choices a character vector for the choices of \code{arm_var} 
+#' @param subgroup_var a vector of variable names used as the default subgroups
+#' @param subgroup_var_choicesa a vector of variable names to choose the \code{subgroup_var} from
+#' @param paramcd default enpoint from PARAMCD
+#' @param paramcd_choices a vector of possible \code{paramcd}
+#' @param plot_height height of the forest plot
+#' @param cex multiplier applied to overall fontsize
+#' @param pre_output text displayed at the top of the plot
+#' @param post_output text displayed at the bottom of the plot
 #' 
 #' @export
+#' 
+#' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
 #' @examples  
 #' 
@@ -123,7 +137,7 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
     updateSelectInput(session, "ref_arm", choices = unique(ANL[[input$arm_var]]),
                       selected = ANL[[input$arm_var]] %>% unique %>% sort %>% "["(1))
     updateSelectInput(session, "comp_arm", choices = unique(ANL[[input$arm_var]]),
-                      selected = ANL[[input$arm_var]] %>% unique %>% sort %>% "["(-1))
+                      selected = ANL[[input$arm_var]] %>% unique %>% sort %>% "["(2))
     
   })
   
