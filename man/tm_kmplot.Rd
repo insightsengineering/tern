@@ -2,35 +2,71 @@
 % Please edit documentation in R/tm_kmplot.R
 \name{tm_kmplot}
 \alias{tm_kmplot}
-\title{teal module for new KM plot}
+\title{teal module for Kaplan-Meier Plot from grid}
 \usage{
 tm_kmplot(label, treatment_var = "ARM",
-  tratement_var_choices = treatment_var, endpoint = "OS",
+  treatment_var_choices = treatment_var, endpoint = "OS",
   endpoint_choices = endpoint, facet_var = NULL,
-  facet_var_choices = facet_var, strat_var = NULL,
-  strat_var_choices = strat_var, plot_height = c(1200, 400, 5000))
+  facet_var_choices = facet_var, strata_var = NULL,
+  strata_var_choices = strata_var, plot_height = c(1200, 400, 5000))
+}
+\arguments{
+\item{label}{unique name for tabpanel}
+
+\item{treatment_var}{parameter for seperating curves}
+
+\item{treatment_var_choices}{options for \code{treatment_var}}
+
+\item{endpoint}{selected endpoint from ADaM variable \code{PARAMCD}}
+
+\item{endpoint_choices}{options for \code{endpoint}}
+
+\item{facet_var}{parameter for facet plotting}
+
+\item{facet_var_choices}{options for \code{facet_var}}
+
+\item{strata_var}{parameter for stratification analysis in Cox PH model}
+
+\item{strata_var_choices}{options for \code{strata_var}}
+
+\item{plot_height}{plot height specification}
 }
 \description{
-teal module for new KM plot
+This is teal module produces a grid style KM plot for data with ADaM structure
 }
 \examples{
 
 \dontrun{
-library(atezo.data)
-ASL <- asl(com.roche.cdt30019.go29436.re)
-ATE <- ate(com.roche.cdt30019.go29436.re)
+ASL <- data.frame(USUBJID = paste0("GO99999-", sprintf("\%03d",seq(1:200))) ,
+                  STUDYID = rep("GO99999", 200),
+                 ARM = sample(LETTERS[1:3], 200, TRUE),
+                 ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
+                 SEX = sample(c("M","F"), 200, TRUE),
+                 RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+                 ECOG = sample(c(0, 1), 200, TRUE)
+                 )
+                 
+ATE <- data.frame(USUBJID = rep(paste0("GO99999-", sprintf("\%03d",seq(1:200))), 2) ,
+                  STUDYID = rep("GO99999", 400),
+                  PARAMCD = rep(c("OS", "PFS"), each = 200),
+                  AVAL = abs(rnorm(400)), 
+                 CNSR = sample(c(0, 1), 400, TRUE)
+                 )
+
+ATE <- merge(ATE, ASL, by = c("USUBJID", "STUDYID"))
+                 
 ## Initialize Teal
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),
   modules = root_modules(
     tm_kmplot(
        label = "KM PLOT",
-       tratement_var_choices = c("ARM", "ARMCD"),
-       endpoint_choices = c("OS", "PFSINV"),
+       treatment_var_choices = c("ARM", "ARMCD"),
+       endpoint_choices = c("OS", "PFS"),
        facet_var = "SEX",
-       facet_var_choices = c("SEX", "TOBHX"),
-       strat_var = "HIST",
-       strat_var_choices = c("SEX", "MLIVER", "TC2IC2", "HIST")
+       facet_var_choices = c("SEX", "ECOG"),
+       strata_var = "RACE",
+       strata_var_choices = c("SEX", "RACE", "ECOG")
     )  
   )
 )

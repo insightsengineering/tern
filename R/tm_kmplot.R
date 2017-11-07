@@ -1,4 +1,17 @@
-#' teal module for new KM plot
+#' teal module for Kaplan-Meier Plot from grid 
+#' 
+#' This is teal module produces a grid style KM plot for data with ADaM structure
+#' 
+#' @param label unique name for tabpanel
+#' @param treatment_var parameter for seperating curves
+#' @param treatment_var_choices options for \code{treatment_var}
+#' @param endpoint selected endpoint from ADaM variable \code{PARAMCD}
+#' @param endpoint_choices options for \code{endpoint}
+#' @param facet_var parameter for facet plotting
+#' @param facet_var_choices options for \code{facet_var}
+#' @param strata_var parameter for stratification analysis in Cox PH model
+#' @param strata_var_choices options for \code{strata_var}
+#' @param plot_height plot height specification
 #' 
 #' @import shiny
 #' @import teal
@@ -8,21 +21,36 @@
 #' @examples 
 #' 
 #' \dontrun{
-#' library(atezo.data)
-#' ASL <- asl(com.roche.cdt30019.go29436.re)
-#' ATE <- ate(com.roche.cdt30019.go29436.re)
+#' ASL <- data.frame(USUBJID = paste0("GO99999-", sprintf("%03d",seq(1:200))) ,
+#'                   STUDYID = rep("GO99999", 200),
+#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
+#'                  ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
+#'                  SEX = sample(c("M","F"), 200, TRUE),
+#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+#'                  ECOG = sample(c(0, 1), 200, TRUE)
+#'                  )
+#'                  
+#' ATE <- data.frame(USUBJID = rep(paste0("GO99999-", sprintf("%03d",seq(1:200))), 2) ,
+#'                   STUDYID = rep("GO99999", 400),
+#'                   PARAMCD = rep(c("OS", "PFS"), each = 200),
+#'                   AVAL = abs(rnorm(400)), 
+#'                  CNSR = sample(c(0, 1), 400, TRUE)
+#'                  )
+#' 
+#' ATE <- merge(ATE, ASL, by = c("USUBJID", "STUDYID"))
+#'                  
 #' ## Initialize Teal
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ATE = ATE),
 #'   modules = root_modules(
 #'     tm_kmplot(
 #'        label = "KM PLOT",
-#'        tratement_var_choices = c("ARM", "ARMCD"),
-#'        endpoint_choices = c("OS", "PFSINV"),
+#'        treatment_var_choices = c("ARM", "ARMCD"),
+#'        endpoint_choices = c("OS", "PFS"),
 #'        facet_var = "SEX",
-#'        facet_var_choices = c("SEX", "TOBHX"),
-#'        strat_var = "HIST",
-#'        strat_var_choices = c("SEX", "MLIVER", "TC2IC2", "HIST")
+#'        facet_var_choices = c("SEX", "ECOG"),
+#'        strata_var = "RACE",
+#'        strata_var_choices = c("SEX", "RACE", "ECOG")
 #'     )  
 #'   )
 #' )
@@ -32,13 +60,13 @@
 #' 
 tm_kmplot <- function(label,
                            treatment_var = "ARM",
-                           tratement_var_choices = treatment_var,
+                           treatment_var_choices = treatment_var,
                            endpoint = "OS",
                            endpoint_choices = endpoint,
                            facet_var = NULL,
                            facet_var_choices = facet_var,
-                           strat_var = NULL,
-                           strat_var_choices = strat_var,
+                           strata_var = NULL,
+                           strata_var_choices = strata_var,
                            plot_height = c(1200, 400, 5000)
 ){
   
@@ -57,11 +85,11 @@ ui_kmplot <- function(
   id, 
   label,
   treatment_var = "ARM",
-  tratement_var_choices = treatment_var,
+  treatment_var_choices = treatment_var,
   endpoint = "OS",
   endpoint_choices = endpoint,
-  strat_var = NULL,
-  strat_var_choices = strat_var,
+  strata_var = NULL,
+  strata_var_choices = strata_var,
   facet_var = NULL,
   facet_var_choices = facet_var,
   plot_height = c(700, 400, 3000)) {
@@ -72,12 +100,12 @@ ui_kmplot <- function(
                       encoding = div(
                         tags$label("Encodings", class = "text-primary"),
                         helpText("Analysis Data: ", tags$code("ATE")),
-                        optionalSelectInput(ns("var_arm"), "Treatment Variable", choices = tratement_var_choices,
+                        optionalSelectInput(ns("var_arm"), "Treatment Variable", choices = treatment_var_choices,
                                             selected = treatment_var, multiple = FALSE),
                         optionalSelectInput(ns("tteout"), "Time to Event (Endpoint)", choices = endpoint_choices, 
                                             selected = endpoint, multiple = FALSE),
-                        optionalSelectInput(ns("strat"), "Stratify by", choices = strat_var_choices, 
-                                            selected = strat_var, multiple = TRUE),
+                        optionalSelectInput(ns("strat"), "Stratify by", choices = strata_var_choices, 
+                                            selected = strata_var, multiple = TRUE),
                         optionalSelectInput(ns("facetby"), "Facet Plots by:", choices = facet_var_choices, 
                                             selected = facet_var, multiple = TRUE),
                         selectInput(ns("ref_arm"), "Reference Arm", choices = NULL, 
