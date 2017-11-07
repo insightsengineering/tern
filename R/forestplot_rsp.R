@@ -1,9 +1,13 @@
-#' alternative tablist
+#' Response Forest Plot Table
 #'
 #' @param response Tumor Response data
 #' @param event is boolean, \code{TRUE} if responder, \code{FALSE} if non-responder
 #' @param group_data data frame with one column per sub-group variable
 #' @param arm vector with arm information
+#' @param covariates set to NULL; currently not available for multivariate survival analysis
+#' 
+#' @details 
+#' Logistic model is used for odds ratio calculation
 #' 
 #' @export
 #' 
@@ -20,21 +24,17 @@
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' resp_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
-#' Viewer(resp_tbl_stream )
-#' 
 #' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
 #'                  filter(ITTWTFL == "Y") %>% 
 #'                  filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
 #'                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
 #' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
 #' 
-#'group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
+#' group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
 #' names(group_data) <- labels_over_names(group_data)
 #' 
 #' head(group_data)
 #' 
-#' # Dummy C First (comparison in survfit and glm)
 #' arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
 #' 
 #' tbl <- forest_rsp(
@@ -45,15 +45,12 @@
 #' )
 #' Viewer(tbl)
 #' 
-#' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
-#' forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
-#' 
 #' }
 #' 
 #' 
 #'   
 forest_rsp <- function(response, event,
-                         arm, group_data, covariARSs = NULL) {
+                         arm, group_data, covariates = NULL) {
   
   # argument checking
   n <- length(response)
@@ -150,7 +147,8 @@ forest_rsp <- function(response, event,
 #' @param x rtable from forest_rsp function
 #' @param arm.ref string used to label reference arm
 #' @param arm.comp string used to label comparable arm
-#' @param cex muliplier
+#' @param padx gap between two columns
+#' @param cex multiplier applied to overall fontsize
 #' 
 #' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
@@ -158,10 +156,43 @@ forest_rsp <- function(response, event,
 #' 
 #' @export
 #' 
-forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1) {
+#' @examples 
+#' 
+#' \dontrun{
+#' library(atezo.data)
+#' library(dplyr) 
+#' library(grid)
+#' library(teal.oncology)
+#' '%needs%' <- teal.oncology:::'%needs%'
+#' ARS <- ars(com.roche.cdt30019.go29436.re)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' 
+#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
+#'                  filter(ITTWTFL == "Y") %>% 
+#'                  filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
+#'                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
+#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#' 
+#' group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
+#' names(group_data) <- labels_over_names(group_data)
+#' 
+#' head(group_data)
+#' 
+#' arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
+#' 
+#' tbl <- forest_rsp(
+#'           response = ARS_f$AVAL,
+#'           event = ARS_f$AVALC %in% c("CR","PR"),
+#'           arm = arm, 
+#'           group_data = group_data[, -c(1,2), drop=FALSE]
+#' )
+#' 
+#' forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
+#' 
+#' }
+forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", padx = unit(1.5, "lines"), cex = 1) {
 
-  
-  padx <- unit(1, "lines")
+
   
   vp <- vpTree(
     parent = viewport(
@@ -223,9 +254,9 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", ce
       draw_row(i+4, nrow(x), row.names(x)[i], x[i, 1], x[i, 2], x[i, 3], round(x[i, 4], 1), x[i, 5], x[i, 6], 
                round(x[i, 7], 1), round(x[i, 8], 2), paste("(", paste(round(x[i, 9],2), collapse = ", "), ")", sep = ""), c(log(abs(x[i,8])), log(abs(x[i,9]))), TRUE)
     } else if (is.null(x[i,1]) & row.names(x)[i] != "") {
-      draw_row(i+4, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE, 2)
+      draw_row(i+4, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(NA, NA, NA), FALSE, 2)
     } else {
-      draw_row(i+4, nrow(x), "", "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE,2)
+      draw_row(i+4, nrow(x), "", "", "", "", "", "", "", "", "", "", c(NA, NA, NA), FALSE,2)
     }
   }
 }
@@ -270,13 +301,43 @@ draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hlin
   grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10 , fontface = fontface))
   grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10 , fontface = fontface))
   grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 , fontface = fontface))
-  # grid.text(x11, y = ypos, vp = vpPath("col_11"))
   
-  
-  grid.lines(x = unit(x11[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_11"), gp =gpar(lwd = 2))  
-  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/3.5, "lines"), vp = vpPath("col_11"),
-              gp = gpar(fill = "blue"))
-  
+  #Only draw if the CI is within the range of 0.1-10
+  if (!is.na(x11[1]) & x11[2] <= log(10) & x11[3] >= log(0.1)){
+    if ((is.na(x11[2])| x11[2] < log(0.1)) & x11[3] <= log(10) ){
+      grid.lines(x = unit(c(log(0.1), x11[3]), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first"), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[2] >= log(0.1) & (is.na(x11[3])| x11[3] > log(10))){
+      grid.lines(x = unit(c(x11[2], log(10)), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last"), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[2] >= log(0.1) & x11[3] <= log(10) ){
+      grid.lines(x = unit(c(x11[2], x11[3]), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[2] < log(0.1) & x11[3] > log(10) ){
+      grid.lines(x = unit(c(log(0.1), log(10)), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both"), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[1] >= log(0.1) & x11[1] <= log(10)){
+      grid.circle(x = unit(x11[1], "native"),
+                  y = ypos, r = unit(1/3.5, "lines"), 
+                  vp = vpPath("col_11"),
+                  gp = gpar(col = "blue", fill = "blue"))
+    }
+  }  
   
   if (add_hline) {
     grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"), gp = gpar(col = "grey", lty = 1, lwd = 0.3))
