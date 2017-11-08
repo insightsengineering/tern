@@ -35,6 +35,9 @@
 #' 
 #' # draw single plot on device page
 #' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = OS , add_coxph = TRUE, add_km = TRUE, add = FALSE)
+#' 
+#' 
+#' library(grid)
 #' # new plot page
 #' grid.newpage()
 #' kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, 
