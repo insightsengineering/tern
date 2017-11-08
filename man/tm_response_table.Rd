@@ -5,8 +5,8 @@
 \title{Response Table Teal Module}
 \usage{
 tm_response_table(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
-  arm.var = "ARM", arm.var_choices = arm.var, pre_output = NULL,
-  post_output = NULL)
+  arm.var = "ARM", arm.var_choices = arm.var, strata.var = NULL,
+  strata.var_choices = strata.var, pre_output = NULL, post_output = NULL)
 }
 \arguments{
 \item{label}{full name label of module}
@@ -15,9 +15,13 @@ tm_response_table(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
 
 \item{paramcd_choices}{choices of possible poaramcd}
 
-\item{arm.var}{variable name for ARM variable in ASL}
+\item{arm.var}{selected variable to use as arms}
 
 \item{arm.var_choices}{choices of arm variables}
+
+\item{strata.var}{categorical variable name(s) for stratified model}
+
+\item{strata.var_choices}{choices of stratification factors}
 
 \item{pre_output}{optional, \code{shiny.tag} with text placed before the
 output to put the output into context. For example the
@@ -35,25 +39,26 @@ This module produces a response summary table that matches the STREAM
 template rspt01
 }
 \details{
-Additional standard UI inputs include \code{responders}, \code{incl_missing}
-(default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm}
-(default FALSE).
+Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), 
+\code{ref_arm}, \code{comp_arm} and \code{combine_arm} (default FALSE)
 
-Default values of the inputs \code{var_arm}, \code{ref_arm} and
-\code{comp_arm} are set to NULL, and updated accordingly based on seletion of
-\code{paramcd} and \code{arm.var}.
+Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} 
+are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
 
-Package \code{forcats} used to re-format arm data into leveled factors.
+Package \code{forcats} used to re-format arm data into leveled factors. 
 
-Reference arms automatically combined if multiple arms selected as reference
-group.
+Reference arms automatically combined if multiple arms selected as reference group.
 }
 \examples{
  
-\dontrun{
+
+\\donotrun{
 library(atezo.data)
 library(dplyr)
+library(teal.oncology)
 library(forcats)
+library(epiR)
+
 
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -72,8 +77,11 @@ x <- teal::init(
        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
        #paramcd_choices = unique(ARS$PARAMCD),
        arm.var = "ARM",
-       arm.var_choices = c("ARM", "ARMCD")
-       #arm.var_choices = names(ASL)
+       arm.var_choices = c("ARM", "ARMCD"),
+       #arm.var_choices = names(ARS),
+       strata.var = NULL,
+       strata.var_choices = c("SEX", "TC1IC1", "TC2IC2", "TC3IC3", "TCIC4GRP",
+                              "AGE4CAT", "AGEGRP", "AGE65", "TOBHX")
    )
   )
 )   

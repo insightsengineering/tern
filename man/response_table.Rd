@@ -5,12 +5,14 @@
 \title{Response Table Caclulation Function}
 \usage{
 response_table(response, value.resp = c("CR", "PR"), value.nresp = c("SD",
-  "NON CR/PD", "PD", "NE"), arm, style = 1)
+  "NON CR/PD", "PD", "NE"), arm, strata_data = NULL, style = 1)
 }
 \arguments{
 \item{response}{Tumor response data}
 
 \item{arm}{Arm information data as factor}
+
+\item{strata_data}{data for stratification factors (categorical variables)}
 
 \item{style}{Must be 1 or 2, \code{1} if only want to display rates summary
 for each response value category, \code{2} if want to display rates,
@@ -26,7 +28,15 @@ used as non-responders}
 Response Table Caclulation Function
 }
 \details{
-We use the \code{PropCIs} package to calculate the CIs for odds ratio
+We use the \code{epiR} package to compute 2-by-2 contingency table statistics
+and analysis with stratification factors.
+
+If no stratification, chi-squared test is performed by default to test for
+equality of proportions in response rate between reference and comparison arms.
+
+If stratification factors are added, Cochran-Mantel-Haensel test statistics are 
+reported for the test of equal proportions, odds ratio and its corresponding 
+95% confidence interval.
 }
 \examples{
 
@@ -36,21 +46,43 @@ library(dplyr)
 library(atezo.data)
 library(teal.oncology)
 library(forcats)
+library(epiR)
 
 ARS <- ars(com.roche.cdt30019.go29436.re)
+ASL <- asl(com.roche.cdt30019.go29436.re)
+
+
+# Stream example
 
 tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
 Viewer(tbl_stream)
 
+ANL <- ARS \%>\% filter(PARAMCD == "OVRSPI", ITTGEFL == 'Y', ITTWTFL == 'Y')
+
+tbl <- response_table(
+ response = ANL$AVALC,
+ value.resp = c("CR", "PR"),
+ value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
+ arm = fct_relevel(ANL$ARMCD1, "C", "B", "A")
+)
+
+compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+
+
+
+# Other examples
+
+paramcd = "OVRSPI"
+var_arm = "ARM"
 ref_arm = "DUMMY C"
 comp_arm = c("DUMMY B", "DUMMY A")
 combine_arm = FALSE
 responders = c("CR", "PR")
+var_strata = NULL
 
 ANL <- ARS \%>\% 
-  filter(PARAMCD == "OVRSPI", ITTGEFL=='Y', ITTWTFL=='Y', ARM \%in\% c(ref_arm, comp_arm)) \%>\%
-  select_(c("USUBJID", "STUDYID", "ARM", "PARAMCD", "AVALC"))
-
+  filter(PARAMCD == paramcd, ARM \%in\% c(ref_arm, comp_arm))
+  
 # If want to include missing as non-responders
 ANL$AVALC[ANL$AVALC==""] <- "NE"
 
@@ -61,27 +93,35 @@ tbl <- response_table(
  response = ANL$AVALC,
  value.resp = c("CR", "PR"),
  value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
- arm = ARM
+ arm = ARM,
+ strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL,
+ style = 1
 )
 
 Viewer(tbl)
+#clean up
+rm(paramcd, var_arm, ref_arm, comp_arm, combine_arm, responders, var_strata) 
 
-compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 
-
-# different layout
+# Example 2
+paramcd = "OVRSPI"
+var_arm = "ARM"
 ref_arm = c("DUMMY C", "DUMMY B")
-comp_arm = c( "DUMMY A")
-combine_arm = FALSE
+comp_arm = "DUMMY A"
+combine_arm = TRUE
 responders = c("CR", "PR")
+var_strata = "SEX"
 
 refname <- paste0(ref_arm, collapse = "/")
 ARM <- do.call(fct_collapse, setNames(list(arm1, ref_arm), c("f", refname))) \%>\%
   fct_relevel(refname, comp_arm)
 
 #style 2 
-tbl2 <- response_table(response = ANL$AVALC, 
+tbl2 <- response_table(response = ANL$AVALC,
+                       value.resp = c("CR", "PR"),
+                       value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
                        arm = ARM,
+                       strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL,
                        style = 2)
 Viewer(tbl2)
 
