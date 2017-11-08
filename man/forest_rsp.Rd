@@ -2,9 +2,9 @@
 % Please edit documentation in R/forestplot_rsp.R
 \name{forest_rsp}
 \alias{forest_rsp}
-\title{alternative tablist}
+\title{Response Forest Plot Table}
 \usage{
-forest_rsp(response, event, arm, group_data, covariARSs = NULL)
+forest_rsp(response, event, arm, group_data, covariates = NULL)
 }
 \arguments{
 \item{response}{Tumor Response data}
@@ -14,9 +14,14 @@ forest_rsp(response, event, arm, group_data, covariARSs = NULL)
 \item{arm}{vector with arm information}
 
 \item{group_data}{data frame with one column per sub-group variable}
+
+\item{covariates}{set to NULL; currently not available for multivariate survival analysis}
 }
 \description{
-alternative tablist
+Response Forest Plot Table
+}
+\details{
+Logistic model is used for odds ratio calculation
 }
 \examples{
 
@@ -29,9 +34,6 @@ library(teal.oncology)
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
-resp_tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
-Viewer(resp_tbl_stream )
-
 ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") \%>\% 
                  filter(ITTWTFL == "Y") \%>\% 
                  filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\%
@@ -43,7 +45,6 @@ names(group_data) <- labels_over_names(group_data)
 
 head(group_data)
 
-# Dummy C First (comparison in survfit and glm)
 arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
 
 tbl <- forest_rsp(
@@ -53,9 +54,6 @@ tbl <- forest_rsp(
           group_data = group_data[, -c(1,2), drop=FALSE]
 )
 Viewer(tbl)
-
-compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
-forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
 
 }
 

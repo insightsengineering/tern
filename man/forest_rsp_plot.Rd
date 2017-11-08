@@ -4,7 +4,8 @@
 \alias{forest_rsp_plot}
 \title{Forest plot (table + graph)}
 \usage{
-forest_rsp_plot(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1)
+forest_rsp_plot(x, arm.ref = "Reference", arm.comp = "Treatment",
+  padx = unit(1.5, "lines"), cex = 1)
 }
 \arguments{
 \item{x}{rtable from forest_rsp function}
@@ -13,10 +14,47 @@ forest_rsp_plot(x, arm.ref = "Reference", arm.comp = "Treatment", cex = 1)
 
 \item{arm.comp}{string used to label comparable arm}
 
-\item{cex}{muliplier}
+\item{padx}{gap between two columns}
+
+\item{cex}{multiplier applied to overall fontsize}
 }
 \description{
 Forest plot (table + graph)
+}
+\examples{
+
+\dontrun{
+library(atezo.data)
+library(dplyr) 
+library(grid)
+library(teal.oncology)
+'\%needs\%' <- teal.oncology:::'\%needs\%'
+ARS <- ars(com.roche.cdt30019.go29436.re)
+ASL <- asl(com.roche.cdt30019.go29436.re)
+
+ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") \%>\% 
+                 filter(ITTWTFL == "Y") \%>\% 
+                 filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\%
+                 select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
+ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% filter(ARM \%in\% c("DUMMY A", "DUMMY C"))
+
+group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
+names(group_data) <- labels_over_names(group_data)
+
+head(group_data)
+
+arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
+
+tbl <- forest_rsp(
+          response = ARS_f$AVAL,
+          event = ARS_f$AVALC \%in\% c("CR","PR"),
+          arm = arm, 
+          group_data = group_data[, -c(1,2), drop=FALSE]
+)
+
+forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
+
+}
 }
 \author{
 Yuyao Song (songy24), \email{yuyao.song@roche.com}

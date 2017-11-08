@@ -12,12 +12,6 @@ forest_tte_ADAM(ASL, ATE, outcome = "Overall Survival", groupvar, arm.ref,
 \item{ASL}{asl data frame}
 
 \item{ATE}{data frame}
-
-\item{arm.ref}{a character vector defining which arms in arm should be taken 
-as the reference}
-
-\item{arm.comp}{a character vector defining which arms in arm should be taken 
-as the comparison}
 }
 \description{
 Forest Plot Numbers for Survival data with ADAM data structure

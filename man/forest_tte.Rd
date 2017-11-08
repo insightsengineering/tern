@@ -2,7 +2,7 @@
 % Please edit documentation in R/forestplot_tte.R
 \name{forest_tte}
 \alias{forest_tte}
-\title{alternative tablist}
+\title{Time-to-event Forest Plot Table}
 \usage{
 forest_tte(time_to_event, event, arm, group_data, covariates = NULL)
 }
@@ -16,14 +16,13 @@ is censored}
 
 \item{group_data}{data frame with one column per grouping}
 
-\item{arm.ref}{a character vector defining which arms in arm should be taken 
-as the reference}
-
-\item{arm.comp}{a character vector defining which arms in arm should be taken 
-as the comparison}
+\item{covariates}{set to NULL; currently not available for multivariate survival analysis}
 }
 \description{
-alternative tablist
+Time-to-event Forest Plot Table
+}
+\details{
+Cox PH model is used for hazard ratio calculation
 }
 \examples{
 
@@ -32,11 +31,9 @@ library(atezo.data)
 library(dplyr)
 library(forcats)
 library(survival)
+library(teal.oncology)
 
 '\%needs\%' <- teal.oncology:::'\%needs\%'
-
-surv_tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
-Viewer(surv_tbl_stream )
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -47,20 +44,14 @@ ATE_f <- ATE \%>\% filter(PARAMCD == "OS") \%>\%
              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
 ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% 
              filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\% 
-             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "BECOG"))
+             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "AGE4CAT", "BECOG"))
 
 
 group_data <- left_join(ASL_f, ATE_f \%>\% select(c("USUBJID", "STUDYID")))
 names(group_data) <- labels_over_names(group_data)
 head(group_data)
 
-# Dummy C First (comparison in survfit and glm)
 arm <- fct_relevel(ATE_f$ARMCD, "C")
-
-# Collapse Factors
-# fct_collapse(arm, "ARM A/B" = c("ARM A", "ARM B"))
-# rename a level
-# arm <- fct_recode(ATE_f$ARM, "Treat ARM" = "DUMMY A")
 
 tbl <- forest_tte(
    time_to_event = ATE_f$AVAL,
@@ -70,13 +61,10 @@ tbl <- forest_tte(
 )
 Viewer(tbl)
 
-compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
-
-forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
-
-
-
 }
 
 # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
+}
+\author{
+Yuyao Song (songy24), \email{yuyao.song@roche.com}
 }

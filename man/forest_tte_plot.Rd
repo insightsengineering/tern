@@ -2,11 +2,69 @@
 % Please edit documentation in R/forestplot_tte.R
 \name{forest_tte_plot}
 \alias{forest_tte_plot}
-\title{plot}
+\title{Time-to-event Forest Plot}
 \usage{
 forest_tte_plot(x, arm.ref = "Reference", arm.comp = "Treatment",
   padx = unit(0.5, "lines"), cex = 1)
 }
+\arguments{
+\item{x}{time-to-event forest plot table from function \code{forest_tte}}
+
+\item{arm.ref}{Label displayed in the forest plot for reference arm}
+
+\item{padx}{gap between two columns}
+
+\item{cex}{multiplier applied to overall fontsize}
+
+\item{arm.ref}{Label displayed in the forest plot for comparison arm}
+}
 \description{
-plot
+Time-to-event Forest Plot
+}
+\details{
+This function can only be applied to the rtable output from \code{forest_tte}.
+}
+\examples{
+
+\dontrun{
+library(atezo.data)
+library(dplyr)
+library(forcats)
+library(survival)
+library(teal.oncology)
+
+'\%needs\%' <- teal.oncology:::'\%needs\%'
+
+ATE <- ate(com.roche.cdt30019.go29436.re)
+ASL <- asl(com.roche.cdt30019.go29436.re)
+
+ATE_f <- ATE \%>\% filter(PARAMCD == "OS") \%>\% 
+             filter(ITTWTFL == "Y") \%>\% 
+             filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\%
+             select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
+ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% 
+             filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\% 
+             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "AGE4CAT", "BECOG"))
+
+
+group_data <- left_join(ASL_f, ATE_f \%>\% select(c("USUBJID", "STUDYID")))
+names(group_data) <- labels_over_names(group_data)
+head(group_data)
+
+arm <- fct_relevel(ATE_f$ARMCD, "C")
+
+tbl <- forest_tte(
+   time_to_event = ATE_f$AVAL,
+   event = ATE_f$CNSR == 0,
+   group_data = group_data[, -c(1,2), drop=FALSE],
+   arm = arm
+)
+
+forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
+
+}
+
+}
+\author{
+Yuyao Song (songy24), \email{yuyao.song@roche.com}
 }

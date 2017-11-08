@@ -11,16 +11,38 @@ tm_forest_response(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
   pre_output = helpText("graph needs to be of a certain width to be displayed"),
   post_output = NULL)
 }
+\arguments{
+\item{label}{a character string displayed as module label}
+
+\item{paramcd}{default response type from PARAMCD}
+
+\item{paramcd_choices}{a vector of possible \code{paramcd}}
+
+\item{arm_var}{default variable name used as the arm variable}
+
+\item{arm_var_choices}{a character vector for the choices of \code{arm_var}}
+
+\item{subgroup_var}{a vector of variable names used as the default subgroups}
+
+\item{subgroup_var_choices}{a vector of variable names to choose the \code{subgroup_var} from}
+
+\item{plot_height}{height of the forest plot}
+
+\item{cex}{multiplier applied to overall fontsize}
+
+\item{pre_output}{text displayed at the top of the plot}
+
+\item{post_output}{text displayed at the bottom of the plot}
+}
 \description{
 Forest Response Plot teal module
 }
 \examples{
- 
+  
 
 \\donotrun{
 library(atezo.data)
 library(dplyr)
-library(survival)
 library(forcats)
 
 ARS <- ars(com.roche.cdt30019.go29436.re)
@@ -46,4 +68,7 @@ shinyApp(x$ui, x$server)
 
   
 } 
+}
+\author{
+Yuyao Song (songy24), \email{yuyao.song@roche.com}
 }
