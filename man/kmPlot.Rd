@@ -2,40 +2,67 @@
 % Please edit documentation in R/kmplot.R
 \name{kmplot}
 \alias{kmplot}
-\title{our fast km plot}
+\title{Kaplan-Meier Plot using grid plotting}
 \usage{
 kmplot(formula_km, data, add_km = TRUE, add_coxph = TRUE,
   formula_coxph = formula_km,
   info_coxph = "Cox Proportional Model: Unstratified Analysis", add = FALSE,
   title = "Kaplan - Meier Plot")
 }
+\arguments{
+\item{formula_km}{formula specified for Kaplan-Meier curves}
+
+\item{data}{analysis data set}
+
+\item{add_km}{boolean, \code{TRUE} if annotated with KM estimators and \code{FALSE} if not}
+
+\item{add_coxph}{boolean, \code{TRUE} if annotated with Cox PH estimators and \code{FALSE} if not}
+
+\item{formula_coxph}{formula specified for Cox PH model, default is the same as input for \code{formula_km}}
+
+\item{info_coxph}{label information for Cox PH model}
+
+\item{add}{boolean, \code{TRUE} if draw multiple plots on the same device page\code{FALSE} if only draw single plot per page}
+
+\item{title}{title for plot}
+}
 \description{
-our fast km plot
+Plotting directly from object returned by formula, also annotated with product-limit estimtors and 
+Cox PH model estimators.
 }
 \examples{
 
 \dontrun{
-library(atezo.data)
 library(dplyr)
 library(forcats)
 library(survival)
-ATE <- ate(com.roche.cdt30019.go29436.re)
+# Dummy Data
+OS <- data.frame(AVAL = abs(rnorm(200)), 
+                 CNSR = sample(c(0, 1), 200, TRUE), 
+                 ARM = sample(LETTERS[1:3], 200, TRUE),
+                 SEX = sample(c("M","F"), 200, TRUE),
+                 RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+                 ECOG = sample(c(0, 1), 200, TRUE))
 
-ANL <- ATE \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  select(AVAL, CNSR, ARM, SEX, RACE, MLIVER) \%>\%
-  mutate(ARM = fct_relevel(ARM, "DUMMY C"))
-
-kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL)
-
-kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add_km = TRUE)
+# draw single plot on device page
+kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = OS , add_coxph = TRUE, add_km = TRUE, add = FALSE)
 
 
-## facet by row
-nplots <- 2
-# new plot
+library(grid)
+# new plot page
 grid.newpage()
+kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, 
+       data = OS , 
+       formula_coxph = Surv(AVAL, 1-CNSR) ~ ARM + strata(SEX),
+       add_coxph = TRUE, add_km = TRUE, add = FALSE,
+       info_coxph = "Cox Proportional Model: Stratified by SEX")
 
+## facet by variable SEX, arrange plots by row
+lev <- unique(OS$SEX)
+nplots <- length(lev)
+dfs <- split(OS, OS$SEX)
+# new plot page
+grid.newpage()
 # margins
 pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
 
@@ -43,23 +70,19 @@ pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
 pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
    heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
 )))
+Map(function(dfi, i, label) {
+   pushViewport(viewport(layout.pos.row = i*2 - 1))
+   kmplot(
+       formula_km = Surv(AVAL, 1-CNSR) ~ ARM, 
+       data = dfi, add_km = TRUE,
+       add_coxph = TRUE,
+       formula_coxph = Surv(AVAL, 1-CNSR) ~ ARM,
+       add = TRUE,
+       title = paste0("Kaplan - Meier Plot for: ", label)
+        )
+   popViewport()
+ }, dfs, 1:length(dfs), lev)
 
-# now add first plot
-pushViewport(viewport(layout.pos.row = 1))
-kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add = TRUE)
-popViewport()
-
-#pushViewport(viewport(layout.pos.row = 2))
-#grid.rect(gp = gpar(fill = "thistle"))
-#popViewport()
-
-pushViewport(viewport(layout.pos.row = 3))
-grid.text("MY TITLE", y = unit(1, "npc") + unit(1, "lines"), gp = gpar(fontface = "bold", fontsize = 16))
-kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add = TRUE)
-popViewport()
-
-
-#survminer::ggsurvplot(fit, risk.table = TRUE, break.time.by = 2)
 
 }
 
