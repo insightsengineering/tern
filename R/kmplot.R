@@ -81,7 +81,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
                    add = FALSE,
                    title = "Kaplan - Meier Plot") {
   
-  fit <- survfit(formula_km, data = data)
+  fit <- survfit(formula_km, data = data, conf.type = "plain")
 
   nstrata <- length(fit$strata)
   if (nstrata > 9) stop("unfortunately we currently do not have more than 9 colors to encode different stratas")
@@ -118,8 +118,9 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   
   pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
   
+  xpos <- seq(0, ceiling(max(df$time)), by = floor(ceiling(max(df$time))/10))
   pushViewport(dataViewport(xData = df$time, yData = c(0,1)))
-  grid.xaxis()
+  grid.xaxis(at = xpos)
   grid.yaxis()
   grid.rect()
   grid.text(title, y = unit(1, "npc") + unit(1, "lines"), gp = gpar(fontface = "bold", fontsize = 16))
@@ -229,12 +230,14 @@ kmplot <- function(formula_km, data, add_km = TRUE,
             just = "left")
   
   pushViewport(dataViewport(xData = df$time, yData = c(0,1)))
-  grid.xaxis()
+  
+  
+  grid.xaxis(at = xpos)
   grid.rect()
   
   
   
-  xpos <- seq(0, floor(max(df$time)), length.out = 10)
+
   
   Map(function(x, ypos, strata, col) {
     
