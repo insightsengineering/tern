@@ -319,7 +319,7 @@ as_html.default <- function(x, ...) {
 }
 
 #' @export
-as_html.rtable <- function(x, ...) {
+as_html.rtable <- function(x, class = "table table-condensed table-hover", ...) {
   
   ncol <- ncol(x)
   
@@ -332,7 +332,7 @@ as_html.rtable <- function(x, ...) {
   })
   
   tags$table(
-    class = "table",
+    class = class,
     ...,
     tags$tr(tagList(tags$th(""), lapply(col_headers, tags$th, align="center", class="text-center"))), 
     lapply(x, as_html, ncol = ncol)
@@ -392,12 +392,28 @@ as_html.rrow <- function(x, ncol, ...) {
 #' 
 #' 
 #' @export
-Viewer <- function(x, row.names.bold = FALSE) {
+Viewer <- function(x, y = NULL, row.names.bold = FALSE) {
   if (!is(x, "rtable")) stop("x is expected to be an rtable")
+  if (!is.null(y) && !is(y, "rtable")) stop("y is expected to be an rtable if specified")
+  
   
   viewer <- getOption("viewer")
   
-  tbl_html <- as_html(x)
+  tbl_html <- if (is.null(y)) {
+    as_html(x)
+  } else {
+    htmltools::tags$div(
+      class = ".container-fluid",
+      htmltools::tags$div(
+        class= "col-xs-6",
+        as_html(x)
+      ),
+      htmltools::tags$div(
+        class= "col-xs-6",
+        as_html(y)
+      )
+    )
+  }
   
   sandbox_folder <- file.path(tempdir(), "rtable")
   
@@ -419,9 +435,6 @@ Viewer <- function(x, row.names.bold = FALSE) {
     }
   }
   
-  
-  html_tbl <- as_html(x)
-  
   html_bs <- tags$html(
     lang="en",
     tags$head(
@@ -432,7 +445,7 @@ Viewer <- function(x, row.names.bold = FALSE) {
       tags$link(href="css/bootstrap.min.css", rel="stylesheet")
     ),
     tags$body(
-      html_tbl
+      tbl_html
     )
   )
   
@@ -520,7 +533,7 @@ format_rcell <- function(x, format, output = c("html", "ascii")) {
 
     switch(
       format,
-      "xx" = as.character(x),
+      "xx" = if (is.na(x)) "NA" else as.character(x),
       "xx." = as.character(round(x, 0)),
       "xx.x" = as.character(round(x, 1)),
       "xx.xx" = as.character(round(x, 2)),
@@ -657,6 +670,7 @@ toString.rtable <- function(x, gap = 8, indent.unit = 2) {
   nchar_col <- ceiling(max(unlist(lapply(c(list(header_row), x), function(row) {
     lapply(row, function(cell) {
       nc <- nchar(unlist(strsplit(format_rcell(cell, output = "ascii"), "\n", fixed = TRUE)))
+      nc[is.na(nc)] <- 0
       nc / attr(cell, "colspan")
     })
   }))))
@@ -742,7 +756,7 @@ row_to_str <- function(row, nchar_rownames, nchar_col, gap, indent.unit) {
 
 
 padstr <- function(x, n, just = c("center", "left", "right")) {
-  
+
   just <- match.arg(just)
   
   if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))

@@ -4,9 +4,9 @@
 \alias{tm_demographic_table}
 \title{Demographic Table Teal Module}
 \usage{
-tm_demographic_table(label, group_by_vars,
-  group_by_vars_choices = group_by_vars, pre_output = NULL,
-  post_output = NULL)
+tm_demographic_table(label, arm_var, arm_var_choices = arm_var,
+  summarize_vars, summarize_vars_choices = summarize_vars,
+  pre_output = NULL, post_output = NULL)
 }
 \description{
 Demographic Table Teal Module
@@ -22,11 +22,12 @@ ASL <- asl(com.roche.cdt30019.go29436.re)
 x <- teal::init(
   data = list(ASL = ASL),
   modules = root_modules(
-    tm_variable_browser(),
-    tm_data_table(),
     tm_demographic_table(
        label = "Demographic Table",
-       group_by_vars = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
+       arm_var = "ARM",
+       arm_var_choices = c("ARM", "ARMCD"),
+       summarize_vars =  toupper(c("sex", "mliver", "tciclvl2")),
+       summarize_vars_choices = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
             "ethnic", "race", "bwt", "tobhx", "hist", "EGFRMUT",
             "alkmut", "krasmut", "becog"))
    )

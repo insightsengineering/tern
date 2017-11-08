@@ -4,9 +4,10 @@
 \alias{tm_time_to_event_table}
 \title{Time To Event Table teal module}
 \usage{
-tm_time_to_event_table(label, arm.ref, arm.ref_choices = arm.ref, arm.comp,
-  arm.comp_choices = arm.comp, strata_var, strata_var_choices = strata_var,
-  endpoint = "OS", endpoint_choices = "OS", pre_output = NULL,
+tm_time_to_event_table(label, time_points, time_points_choices = time_points,
+  time_points_unit = "months", arm_var = "ARM", arm_var_choices = arm_var,
+  ref_arm = NULL, strata_var = NULL, strata_var_choices = strata_var,
+  paramcd = "OS", paramcd_choices = paramcd, pre_output = NULL,
   post_output = NULL)
 }
 \description{
@@ -20,24 +21,25 @@ library(atezo.data)
 library(dplyr)
 library(survival)
 
+
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
-arms <- unique(ASL$ARM)
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),
   modules = root_modules(
-    tm_variable_browser(),
-    tm_data_table(),
     tm_time_to_event_table(
        label = "Time To Event Table",
-       endpoint = "OS",
-       endpoint_choices = unique(ATE$PARAMCD),
-       strata_var = c("SEX", "MLIVER", "TCICLVL2"),
-       arm.ref = arms[1],
-       arm.ref_choices = arms,
-       arm.comp = arms[-1],
-       arm.comp_choices = arms
+       time_points = 6,
+       time_points_choices = c(6, 8),
+       time_points_unit = "months",
+       arm_var = "ARM",
+       arm_var_choices = c("ARM", "ARMCD"),
+       ref_arm = "DUMMY C",
+       paramcd = "OS",
+       paramcd_choices = unique(ATE$PARAMCD),
+       strata_var = "SEX",
+       strata_var_choices = c("SEX", "MLIVER", "TCICLVL2")
    )
   )
 )   

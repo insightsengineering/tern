@@ -5,7 +5,7 @@
 \title{Dispaly an \code{\link{rtable}} object in the Viewer pane in RStudio or in a
 browser}
 \usage{
-Viewer(x, row.names.bold = FALSE)
+Viewer(x, y = NULL, row.names.bold = FALSE)
 }
 \arguments{
 \item{x}{an \code{\link{rtable}} object}

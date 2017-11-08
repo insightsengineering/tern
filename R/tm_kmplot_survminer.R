@@ -15,9 +15,7 @@
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ATE = ATE),
 #'   modules = root_modules(
-#'     tm_data_table(),
-#'     tm_variable_browser(),
-#'     tm_kmplot_ADAM(
+#'     tm_kmplot_survminer(
 #'        label = "KM PLOT",
 #'        tratement_var_choices = c("ARM", "ARMCD"),
 #'        endpoint_choices = c("OS", "PFSINV"),
@@ -31,9 +29,8 @@
 #' ## Initiate Shiny App
 #' shinyApp(ui = x$ui, server = x$server)
 #' }
- 
-
-tm_kmplot_ADAM <- function(label,
+#' 
+tm_kmplot_survminer <- function(label,
                            treatment_var = "ARM",
                            tratement_var_choices = treatment_var,
                            endpoint = "OS",
@@ -50,13 +47,13 @@ tm_kmplot_ADAM <- function(label,
   module(
     label = label,
     filters = "ATE",
-    server = srv_kmplot_ADAM,
-    ui = ui_kmplot_ADAM,
+    server = srv_kmplot_survminer,
+    ui = ui_kmplot_survminer,
     ui_args = args
   )
 }
 
-ui_kmplot_ADAM <- function(
+ui_kmplot_survminer <- function(
   id, 
   label,
   treatment_var = "ARM",
@@ -93,7 +90,7 @@ ui_kmplot_ADAM <- function(
 }
 
 
-srv_kmplot_ADAM <- function(input, output, session, datasets){
+srv_kmplot_survminer <- function(input, output, session, datasets){
   ATE_Filtered <- reactive({
     ATE_F <- datasets$get_data("ATE", filtered = TRUE, reactive = TRUE)
     validate(need(ATE_F, "Need ATE data"))
@@ -139,7 +136,7 @@ srv_kmplot_ADAM <- function(input, output, session, datasets){
     validate(need(is.null(facetby)  || facetby %in% names(ANL), "facet by not correct"))
     validate(need(refarm %in% ANL[[armvar]], "reference arm does not exist in left over ARM values"))
 
-    kmPlot(
+    kmplot_survminer(
       time_to_event = ANL[["AVAL"]],
       event = ANL[["CNSR"]] == 0,
       arm = ANL[[armvar]],

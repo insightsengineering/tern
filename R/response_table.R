@@ -40,6 +40,27 @@
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
+#' 
+#' # Stream example
+#' 
+#' tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
+#' Viewer(tbl_stream)
+#' 
+#' ANL <- ARS %>% filter(PARAMCD == "OVRSPI", ITTGEFL == 'Y', ITTWTFL == 'Y')
+#' 
+#' tbl <- response_table(
+#'  response = ANL$AVALC,
+#'  value.resp = c("CR", "PR"),
+#'  value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
+#'  arm = fct_relevel(ANL$ARMCD1, "C", "B", "A")
+#' )
+#' 
+#' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+#' 
+#' 
+#' 
+#' # Other examples
+#' 
 #' paramcd = "OVRSPI"
 #' var_arm = "ARM"
 #' ref_arm = "DUMMY C"
@@ -69,10 +90,6 @@
 #' Viewer(tbl)
 #' #clean up
 #' rm(paramcd, var_arm, ref_arm, comp_arm, combine_arm, responders, var_strata) 
-#' 
-#' #tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
-#' #Viewer(tbl_stream)
-#' #compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 #' 
 #' 
 #' # Example 2
@@ -507,6 +524,7 @@ response_table_ADAM <- function(ASL, ARS,
   #Filter on selected PARAMCD, and ARM in arm.ref/comp
   ASL_f <- ASL %>% select_(c("USUBJID", "STUDYID", arm.var)) %>% 
     subset(., subset = .[[arm.var]] %in% c(arm.ref,arm.comp))
+  
   ARS_f <- ARS %>% select_(c("USUBJID", "STUDYID", "PARAMCD", "AVALC")) %>% filter(PARAMCD == paramcd)
   ANL <- merge(ASL_f, ARS_f, by=c("USUBJID", "STUDYID"))
   

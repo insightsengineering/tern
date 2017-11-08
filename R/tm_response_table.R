@@ -1,7 +1,8 @@
 #' @title Response Table Teal Module
 #' 
 #' @description
-#' This module produces a response summary table that matches the STREAM template rspt01
+#' This module produces a response summary table that matches the STREAM
+#' template rspt01
 #' 
 #' @inheritParams teal::standard_layout
 #' @param label full name label of module
@@ -30,7 +31,6 @@
 #' @examples  
 #' 
 #' \donotrun{
-#' library(shiny)
 #' library(atezo.data)
 #' library(dplyr)
 #' library(teal.oncology)
@@ -115,7 +115,7 @@ ui_response_table <- function(id, label,
   
   
   standard_layout(
-    output = uiOutput(ns("response_table")),
+    output = whiteSmallWell(uiOutput(ns("response_table"))),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ARS")),
@@ -155,6 +155,8 @@ ui_response_table <- function(id, label,
 #' 
 #' Package \code{forcats} used to re-format arm data into leveled factors. 
 #' Reference arms automatically combined if multiple arms selected as reference group. 
+#' 
+#' @importFrom forcats fct_relevel fct_collapse
 #' 
 #' @noRd
 #' 
@@ -228,8 +230,9 @@ srv_response_table <- function(input, output, session, datasets) {
     
     # Get final analysis dataset
     ANL1 <- ARS_filtered %>% filter(PARAMCD == paramcd)
-    ANL <- ANL1[ANL1[[var_arm]] %in% c(ref_arm, comp_arm),]
-      
+
+    ANL <- ANL1[ANL1[[var_arm]] %in% c(ref_arm, comp_arm), ]
+  
     validate(need(nrow(ANL) > 0, "no data left"))
 
     #--- Manipulation of response and arm variables ---#
@@ -259,15 +262,15 @@ srv_response_table <- function(input, output, session, datasets) {
     } else {
       ARM <- arm2
     }
-    
-    tbl <- response_table(
-      response    = ANL$AVALC,
-      value.resp  = responders,
-      value.nresp = setdiff(ANL$AVALC, responders),
-      arm         = ARM,
-      strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL
-    )
 
+    tbl <- try(response_table(
+      response = ANL$AVALC,
+      value.resp = responders,
+      value.nresp = setdiff(ANL$AVALC, responders),
+      arm = ARM,
+      strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL
+    ))
+    
     if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate response table"))
     
     as_html(tbl)

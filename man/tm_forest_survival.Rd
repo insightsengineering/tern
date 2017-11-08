@@ -4,11 +4,11 @@
 \alias{tm_forest_survival}
 \title{Forest Survival Plot teal module}
 \usage{
-tm_forest_survival(label, arm.ref, arm.ref_choices = arm.ref, arm.comp,
-  arm.comp_choices = arm.comp, baseline_risk,
-  baseline_risk_choices = baseline_risk, endpoint = "OS",
-  endpoint_choices = "OS", plot_height = c(600, 200, 2000),
-  pre_output = NULL, post_output = NULL)
+tm_forest_survival(label, arm_var = "ARM", arm_var_choices = arm_var,
+  subgroup_var, subgroup_var_choices = subgroup_var, paramcd = "OS",
+  paramcd_choices = paramcd, plot_height = c(600, 200, 2000), cex = 1.5,
+  pre_output = helpText("graph needs to be of a certain width to be displayed"),
+  post_output = NULL)
 }
 \description{
 Forest Survival Plot teal module
@@ -18,27 +18,27 @@ Forest Survival Plot teal module
 
 \\donotrun{
 library(atezo.data)
+library(teal.oncology)
 library(dplyr)
-library(survival)
+library(forcats)
 
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
+ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+
+options(teal_logging = FALSE)
 
 arms <- unique(ASL$ARM)
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),
   modules = root_modules(
-    tm_variable_browser(),
-    tm_data_table(),
     tm_forest_survival(
        label = "Forest Survival",
-       endpoint = "OS",
-       endpoint_choices = unique(ATE$PARAMCD),
-       baseline_risk = c("BAGED", "SEX", "BECOG"),
-       arm.ref = arms[1],
-       arm.ref_choices = arms,
-       arm.comp = arms[-1],
-       arm.comp_choices = arms
+       paramcd = "OS",
+       paramcd_choices = unique(ATE$PARAMCD),
+       subgroup_var = c("BAGED", "SEX", "BECOG"),
+       arm_var = "ARM",
+       arm_var_choices = c("ARM", "ARMCD", "ACTARM")
    )
   )
 )   

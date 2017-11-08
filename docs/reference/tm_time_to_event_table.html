@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert an <code><a href='rtable.html'>rtable</a></code> object to an <code>shiny.tag</code> html
-representation of the <code><a href='rtable.html'>rtable</a></code> — as_html • teal.oncology</title>
+<title>Time To Event Table teal module — tm_time_to_event_table • teal.oncology</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -93,76 +92,61 @@ representation of the <code><a href='rtable.html'>rtable</a></code> — as_html 
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert an <code><a href='rtable.html'>rtable</a></code> object to an <code>shiny.tag</code> html
-representation of the <code><a href='rtable.html'>rtable</a></code></h1>
+    <h1>Time To Event Table teal module</h1>
     </div>
 
     
-    <p>The returned html object can be immediately used in shiny and rmarkdown</p>
+    <p>Time To Event Table teal module</p>
     
 
-    <pre class="usage"><span class='fu'>as_html</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>an <code><a href='rtable.html'>rtable</a></code> object</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>arguments passed as attributes to the table html objet</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>an object of class <code>shiny.tag</code></p>
-    
+    <pre class="usage"><span class='fu'>tm_time_to_event_table</span>(<span class='no'>label</span>, <span class='no'>arm.ref</span>, <span class='kw'>arm.ref_choices</span> <span class='kw'>=</span> <span class='no'>arm.ref</span>, <span class='no'>arm.comp</span>,
+  <span class='kw'>arm.comp_choices</span> <span class='kw'>=</span> <span class='no'>arm.comp</span>, <span class='no'>strata_var</span>, <span class='kw'>strata_var_choices</span> <span class='kw'>=</span> <span class='no'>strata_var</span>,
+  <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"OS"</span>, <span class='kw'>endpoint_choices</span> <span class='kw'>=</span> <span class='st'>"OS"</span>, <span class='kw'>pre_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>post_output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+        
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rtable.html'>rtable</a></span>(
-  <span class='kw'>col.names</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
-  <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"xx"</span>,
-  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"r1"</span>, <span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
-  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"r2"</span>, <span class='fl'>4</span>,<span class='fl'>3</span>,<span class='fl'>2</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>1</span>),
-  <span class='fu'><a href='rrow.html'>rrow</a></span>(<span class='st'>"r3"</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-)
+    <pre class="examples"><div class='input'> 
 
-<span class='fu'>as_html</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt; &lt;table class="table"&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;th&gt;&lt;/th&gt;
-#&gt;     &lt;th align="center" class="text-center"&gt;A&lt;/th&gt;
-#&gt;     &lt;th align="center" class="text-center"&gt;B&lt;/th&gt;
-#&gt;     &lt;th align="center" class="text-center"&gt;C&lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;td class="rowname" align="left"&gt;r1&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;1&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;2&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;3&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;td class="rowname" align="left" style="padding-left: 3ch"&gt;r2&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;4&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;3&lt;/td&gt;
-#&gt;     &lt;td align="center"&gt;2&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;     &lt;td colspan="4" class="rowname" align="left" style="padding-left: 6ch"&gt;r3&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
-</div></pre>
+\donotrun{
+library(atezo.data)
+library(dplyr)
+library(survival)
+
+ATE <- ate(com.roche.cdt30019.go29436.re)
+ASL <- asl(com.roche.cdt30019.go29436.re)
+
+arms <- unique(ASL$ARM)
+x <- teal::init(
+  data = list(ASL = ASL, ATE = ATE),
+  modules = root_modules(
+    tm_variable_browser(),
+    tm_data_table(),
+    tm_time_to_event_table(
+       label = "Time To Event Table",
+       endpoint = "OS",
+       endpoint_choices = unique(ATE$PARAMCD),
+       strata_var = c("SEX", "MLIVER", "TCICLVL2"),
+       arm.ref = arms[1],
+       arm.ref_choices = arms,
+       arm.comp = arms[-1],
+       arm.comp_choices = arms
+   )
+  )
+)   
+shinyApp(x$ui, x$server) 
+
+  
+} 
+</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:3:1: unexpected input</span>
+#&gt; <span class='error'>2: </span>
+#&gt; <span class='error'>3: \</span>
+#&gt; <span class='error'>   ^</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
