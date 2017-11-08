@@ -7,7 +7,7 @@
 response_table_ADAM(ASL, ARS, paramcd = "OVRSPI", arm.var = "ARM", arm.ref,
   arm.comp, arm.comp.combine = TRUE, value.resp = c("CR", "PR"),
   value.nresp = c("SD", "NON CR/PD", "PD", "NE"), incl.missing = TRUE,
-  style = 1)
+  strata.var = NULL, style = 1)
 }
 \arguments{
 \item{ASL}{dataset with following variables: USUBJID, STUDYID, the specified
@@ -43,13 +43,17 @@ used as responders}
 
 \item{value.nrsp}{Character vector, defining list of response values to be
 used as non-responders}
+
+\item{strata}{Character vector, defining stratification factor for stratified 
+analysis, default is NULL}
 }
 \description{
 Response Table with ADaM data structure
 }
 \details{
 Package \code{forcats} was used to re-format arm data into leveled factors.
-Package \code{PropCIs} was used to calculate the CIs for odds ratio.
+Package \code{epiR} was used to compute 2-by-2 contingency table statistics
+and analysis with stratification factors.
 }
 \examples{
 \dontrun{
@@ -57,6 +61,7 @@ library(dplyr)
 library(atezo.data)
 library(teal.oncology)
 library(forcats)
+library(epiR)
 
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 
@@ -71,6 +76,7 @@ teal.oncology:::response_table_ADAM(ASL, ARS,
                     value.resp = c("CR", "PR"),
                     value.nresp = c("SD", "NON CR/PD", "PD", "NE"),
                     incl.missing = TRUE,
+                    strata.var = "SEX",
                     style = 1
                     )
 }

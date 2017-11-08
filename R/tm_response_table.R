@@ -8,33 +8,35 @@
 #' @param label full name label of module
 #' @param paramcd filter the rows in ARS given the paramcd value
 #' @param paramcd_choices choices of possible poaramcd
-#' @param arm.var variable name for ARM variable in ASL
+#' @param arm.var selected variable to use as arms
 #' @param arm.var_choices choices of arm variables
+#' @param strata.var categorical variable name(s) for stratified model
+#' @param strata.var_choices choices of stratification factors 
 #' 
 #' @details 
-#' Additional standard UI inputs include \code{responders}, \code{incl_missing}
-#' (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm}
-#' (default FALSE).
+#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), 
+#' \code{ref_arm}, \code{comp_arm} and \code{combine_arm} (default FALSE)
 #' 
-#' Default values of the inputs \code{var_arm}, \code{ref_arm} and
-#' \code{comp_arm} are set to NULL, and updated accordingly based on seletion of
-#' \code{paramcd} and \code{arm.var}.
+#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} 
+#' are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
 #' 
-#' Package \code{forcats} used to re-format arm data into leveled factors.
+#' Package \code{forcats} used to re-format arm data into leveled factors. 
 #' 
-#' Reference arms automatically combined if multiple arms selected as reference
-#' group.
-#' 
+#' Reference arms automatically combined if multiple arms selected as reference group. 
 #' 
 #' @return an \code{\link[teal]{module}} object
 #' 
 #' @export
 #' 
 #' @examples  
-#' \dontrun{
+#' 
+#' \donotrun{
 #' library(atezo.data)
 #' library(dplyr)
+#' library(teal.oncology)
 #' library(forcats)
+#' library(epiR)
+#' 
 #' 
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -53,8 +55,11 @@
 #'        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
 #'        #paramcd_choices = unique(ARS$PARAMCD),
 #'        arm.var = "ARM",
-#'        arm.var_choices = c("ARM", "ARMCD")
-#'        #arm.var_choices = names(ASL)
+#'        arm.var_choices = c("ARM", "ARMCD"),
+#'        #arm.var_choices = names(ARS),
+#'        strata.var = NULL,
+#'        strata.var_choices = c("SEX", "TC1IC1", "TC2IC2", "TC3IC3", "TCIC4GRP",
+#'                               "AGE4CAT", "AGEGRP", "AGE65", "TOBHX")
 #'    )
 #'   )
 #' )   
@@ -63,11 +68,13 @@
 #'   
 #' } 
 tm_response_table <- function(label,
-                               paramcd = "OVRSPI",
-                               paramcd_choices = paramcd,
-                               arm.var = "ARM",
-                               arm.var_choices = arm.var,
-                               pre_output = NULL, post_output = NULL) {
+                              paramcd = "OVRSPI",
+                              paramcd_choices = paramcd,
+                              arm.var = "ARM",
+                              arm.var_choices = arm.var,
+                              strata.var = NULL,
+                              strata.var_choices = strata.var,
+                              pre_output = NULL, post_output = NULL) {
   
   args <- as.list(environment())
   
@@ -87,18 +94,23 @@ tm_response_table <- function(label,
 #' @param id namespace id
 #' 
 #' @details 
-#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
-#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
+#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), 
+#' \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
+#' 
+#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, 
+#' and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
 #' 
 #' @noRd
 #' 
 ui_response_table <- function(id, label,
-                               paramcd = "OVRSPI",
-                               paramcd_choices = paramcd,
-                               arm.var = "ARM",
-                               arm.var_choices = arm.var,
-                               pre_output,
-                               post_output) {
+                              paramcd = "OVRSPI",
+                              paramcd_choices = paramcd,
+                              arm.var = "ARM",
+                              arm.var_choices = arm.var,
+                              strata.var = NULL,
+                              strata.var_choices = strata.var,
+                              pre_output,
+                              post_output) {
   ns <- NS(id)
   
   
@@ -107,19 +119,24 @@ ui_response_table <- function(id, label,
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ARS")),
+      #Response related parameters
       optionalSelectInput(ns("paramcd"), div("PARAMCD", tags$br(), helpText("Select one type of response to analyze.")), 
                           paramcd_choices, paramcd, multiple = FALSE),
       selectInput(ns("responders"), "Responders", 
                   choices = NULL, selected = NULL, multiple = TRUE),
       checkboxInput(ns("incl_missing"), "Include missing as non-responders?", value = TRUE),
-      
+      #Arm related parameters
       optionalSelectInput(ns("var_arm"), div("Grouping Variable", tags$br(), helpText("Select one variable to use for grouping")), 
                           arm.var_choices, arm.var, multiple = FALSE),
       selectInput(ns("ref_arm"), "Reference Group", 
                           choices = NULL, selected = NULL, multiple = TRUE),
       helpText("Reference groups automatically combined into a single group if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
-      checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE)
+      checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
+      #Stratification related parameters
+      selectInput(ns("var_strata"), div("Stratification Factors", tags$br(), helpText("Categorical variable(s) only")), 
+                  choices = strata.var_choices, selected = strata.var, multiple = TRUE)
+      
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
@@ -133,7 +150,9 @@ ui_response_table <- function(id, label,
 #' @param id namespace id
 #' 
 #' @details 
-#' Selection for standard UI inputs \code{responders}, \code{ref_arm} and \code{comp_arm} are updated upon selection of \code{paramcd} and \code{arm.var}.
+#' Selection for standard UI inputs \code{responders}, \code{ref_arm} and \code{comp_arm} 
+#' are updated upon selection of \code{paramcd} and \code{arm.var}.
+#' 
 #' Package \code{forcats} used to re-format arm data into leveled factors. 
 #' Reference arms automatically combined if multiple arms selected as reference group. 
 #' 
@@ -167,7 +186,7 @@ srv_response_table <- function(input, output, session, datasets) {
   output$response_table <- renderUI({
     
     ARS_filtered <- ARS_filtered()
-  
+    
     paramcd <- input$paramcd
     responders <- input$responders
     incl_missing <- input$incl_missing
@@ -175,6 +194,7 @@ srv_response_table <- function(input, output, session, datasets) {
     ref_arm <- input$ref_arm
     comp_arm <- input$comp_arm
     combine_arm <- input$combine_arm
+    var_strata <- input$var_strata
     
     
     # Validate your input
@@ -184,13 +204,17 @@ srv_response_table <- function(input, output, session, datasets) {
     validate(need(!is.null(paramcd) && paramcd %in% ARS_filtered$PARAMCD,
                   "PARAMCD does not exist"))
     
+    validate(need(!is.null(responders) && all(responders %in% ARS_filtered$AVALC),
+                  "responders AVALC does not exist"))
+   
     validate(need(!is.null(comp_arm) && !is.null(ref_arm),
                   "need at least one treatment and one reference arm"))
     validate(need(length(intersect(ref_arm, comp_arm)) == 0,
                   "reference and treatment group cannot overlap"))
     
-    validate(need(!is.null(responders) && all(responders %in% ARS_filtered$AVALC),
-                  "responders AVALC does not exist"))
+    validate(need(all(c(ref_arm, comp_arm) %in% ARS_filtered[[var_arm]]), "arm variable not found in ARS"))
+    
+    validate(need(all(var_strata %in% names(ARS_filtered)), "stratification factor not found in ARS"))
     
     # Assign inputs to global
     # teal:::as.global(ARS_filtered)
@@ -201,15 +225,16 @@ srv_response_table <- function(input, output, session, datasets) {
     # teal:::as.global(ref_arm)
     # teal:::as.global(comp_arm)
     # teal:::as.global(combine_arm)
+    # teal:::as.global(var_strata)
     
     
     # Get final analysis dataset
     ANL1 <- ARS_filtered %>% filter(PARAMCD == paramcd)
-     
+
     ANL <- ANL1[ANL1[[var_arm]] %in% c(ref_arm, comp_arm), ]
   
     validate(need(nrow(ANL) > 0, "no data left"))
-    
+
     #--- Manipulation of response and arm variables ---#
     # Recode/filter responses if want to include missing as non-responders
     if (incl_missing == TRUE) {
@@ -242,7 +267,8 @@ srv_response_table <- function(input, output, session, datasets) {
       response = ANL$AVALC,
       value.resp = responders,
       value.nresp = setdiff(ANL$AVALC, responders),
-      arm = ARM
+      arm = ARM,
+      strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL
     ))
     
     if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate response table"))
