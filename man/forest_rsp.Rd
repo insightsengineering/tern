@@ -30,6 +30,7 @@ library(atezo.data)
 library(dplyr) 
 library(grid)
 library(teal.oncology)
+library(forcats)
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)

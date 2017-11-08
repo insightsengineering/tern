@@ -20,6 +20,7 @@
 #' library(dplyr) 
 #' library(grid)
 #' library(teal.oncology)
+#' library(forcats)
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -163,6 +164,7 @@ forest_rsp <- function(response, event,
 #' library(dplyr) 
 #' library(grid)
 #' library(teal.oncology)
+#' library(forcats)
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -262,89 +264,89 @@ forest_rsp_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment", pa
 }
 
 
-#Helper Functions
-draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
-  ypos <- unit(1 - i/(n+5), "npc")
-  grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
-  grid.text(x12, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
-  grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 ,fontface = 2))
-  grid.text(paste(x11, "\nBetter"), x = unit(-1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(paste(x12, "\nBetter"), x = unit(1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
-  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
-  grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
-  
-}
-
-draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hline = FALSE, fontface = 1) {
-  ypos <- unit(1 - i/(n+5), "npc")
-  grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10 , fontface = fontface))
-  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 , fontface = fontface))
-  
-  #Only draw if the CI is within the range of 0.1-10
-  if (!is.na(x11[1]) & x11[2] <= log(10) & x11[3] >= log(0.1)){
-    if ((is.na(x11[2])| x11[2] < log(0.1)) & x11[3] <= log(10) ){
-      grid.lines(x = unit(c(log(0.1), x11[3]), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first"), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
-    }
-    if (x11[2] >= log(0.1) & (is.na(x11[3])| x11[3] > log(10))){
-      grid.lines(x = unit(c(x11[2], log(10)), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last"), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
-    }
-    if (x11[2] >= log(0.1) & x11[3] <= log(10) ){
-      grid.lines(x = unit(c(x11[2], x11[3]), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
-    }
-    if (x11[2] < log(0.1) & x11[3] > log(10) ){
-      grid.lines(x = unit(c(log(0.1), log(10)), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both"), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
-    }
-    if (x11[1] >= log(0.1) & x11[1] <= log(10)){
-      grid.circle(x = unit(x11[1], "native"),
-                  y = ypos, r = unit(1/3.5, "lines"), 
-                  vp = vpPath("col_11"),
-                  gp = gpar(col = "blue", fill = "blue"))
-    }
-  }  
-  
-  if (add_hline) {
-    grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"), gp = gpar(col = "grey", lty = 1, lwd = 0.3))
-  }
-  
-}
-
+# #Helper Functions
+# draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
+#   ypos <- unit(1 - i/(n+5), "npc")
+#   grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
+#   grid.text(x12, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
+#   grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 ,fontface = 2))
+#   grid.text(paste(x11, "\nBetter"), x = unit(-1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.text(paste(x12, "\nBetter"), x = unit(1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+#   grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
+#   grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
+#   grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
+#   grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
+#   grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
+#   grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
+#   grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
+#   
+# }
+# 
+# draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hline = FALSE, fontface = 1) {
+#   ypos <- unit(1 - i/(n+5), "npc")
+#   grid.text(x1, y = ypos, vp = vpPath("col_1"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 , fontface = fontface))
+#   
+#   #Only draw if the CI is within the range of 0.1-10
+#   if (!is.na(x11[1]) & x11[2] <= log(10) & x11[3] >= log(0.1)){
+#     if ((is.na(x11[2])| x11[2] < log(0.1)) & x11[3] <= log(10) ){
+#       grid.lines(x = unit(c(log(0.1), x11[3]), "native"), 
+#                  y = unit.c(ypos, ypos), 
+#                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first"), 
+#                  vp = vpPath("col_11"), 
+#                  gp =gpar(col = "blue", lwd = 2)) 
+#     }
+#     if (x11[2] >= log(0.1) & (is.na(x11[3])| x11[3] > log(10))){
+#       grid.lines(x = unit(c(x11[2], log(10)), "native"), 
+#                  y = unit.c(ypos, ypos), 
+#                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last"), 
+#                  vp = vpPath("col_11"), 
+#                  gp =gpar(col = "blue", lwd = 2)) 
+#     }
+#     if (x11[2] >= log(0.1) & x11[3] <= log(10) ){
+#       grid.lines(x = unit(c(x11[2], x11[3]), "native"), 
+#                  y = unit.c(ypos, ypos), 
+#                  vp = vpPath("col_11"), 
+#                  gp =gpar(col = "blue", lwd = 2)) 
+#     }
+#     if (x11[2] < log(0.1) & x11[3] > log(10) ){
+#       grid.lines(x = unit(c(log(0.1), log(10)), "native"), 
+#                  y = unit.c(ypos, ypos), 
+#                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both"), 
+#                  vp = vpPath("col_11"), 
+#                  gp =gpar(col = "blue", lwd = 2)) 
+#     }
+#     if (x11[1] >= log(0.1) & x11[1] <= log(10)){
+#       grid.circle(x = unit(x11[1], "native"),
+#                   y = ypos, r = unit(1/3.5, "lines"), 
+#                   vp = vpPath("col_11"),
+#                   gp = gpar(col = "blue", fill = "blue"))
+#     }
+#   }  
+#   
+#   if (add_hline) {
+#     grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"), gp = gpar(col = "grey", lty = 1, lwd = 0.3))
+#   }
+#   
+# }
+# 
 
 #' glm_results(data_for_value)
 #' data = data_for_value 

@@ -18,13 +18,14 @@ Imports:
   dplyr,
   shiny,
   PropCIs,
-  forcats
+  forcats,
+  epiR
 Suggests:
   testthat,
   knitr,
   rmarkdown,
   ggplot2,
-  survminer,
+  survminer
 License: Copyright Roche
 Encoding: UTF-8
 LazyData: true

@@ -327,36 +327,37 @@ draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hlin
   grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10 , fontface = fontface))
   grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 , fontface = fontface))
 
+
   #Only draw if the CI is within the range of 0.1-10
-  if (!is.na(x11[1]) & x11[2] <= log(10) & x11[3] >= log(0.1)){
-    if ((is.na(x11[2])| x11[2] < log(0.1)) & x11[3] <= log(10) ){
+  if (!any(is.na(x11)) && !is.na(x11[1]) && x11[2] <= log(10) && x11[3] >= log(0.1)){
+    if ((is.na(x11[2]) || x11[2] < log(0.1)) && x11[3] <= log(10) ){
       grid.lines(x = unit(c(log(0.1), x11[3]), "native"), 
                  y = unit.c(ypos, ypos), 
                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first"), 
                  vp = vpPath("col_11"), 
                  gp =gpar(col = "blue", lwd = 2)) 
     }
-    if (x11[2] >= log(0.1) & (is.na(x11[3])| x11[3] > log(10))){
+    if (x11[2] >= log(0.1) && (is.na(x11[3]) || x11[3] > log(10))){
       grid.lines(x = unit(c(x11[2], log(10)), "native"), 
                  y = unit.c(ypos, ypos), 
                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last"), 
                  vp = vpPath("col_11"), 
                  gp =gpar(col = "blue", lwd = 2)) 
     }
-    if (x11[2] >= log(0.1) & x11[3] <= log(10) ){
+    if (x11[2] >= log(0.1) && x11[3] <= log(10) ){
       grid.lines(x = unit(c(x11[2], x11[3]), "native"), 
                  y = unit.c(ypos, ypos), 
                  vp = vpPath("col_11"), 
                  gp =gpar(col = "blue", lwd = 2)) 
     }
-    if (x11[2] < log(0.1) & x11[3] > log(10) ){
+    if (x11[2] < log(0.1) && x11[3] > log(10) ){
       grid.lines(x = unit(c(log(0.1), log(10)), "native"), 
                  y = unit.c(ypos, ypos), 
                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both"), 
                  vp = vpPath("col_11"), 
                  gp =gpar(col = "blue", lwd = 2)) 
     }
-    if (x11[1] >= log(0.1) & x11[1] <= log(10)){
+    if (x11[1] >= log(0.1) && x11[1] <= log(10)){
       grid.circle(x = unit(x11[1], "native"),
                   y = ypos, r = unit(1/3.5, "lines"), 
                   vp = vpPath("col_11"),
