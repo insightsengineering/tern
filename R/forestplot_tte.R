@@ -1,19 +1,21 @@
 
-#' alternative tablist
+#' Time-to-event Forest Plot Table
 #'
 #' @param time_to_event time to event data
 #' @param event is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
 #'   is censored
 #' @param group_data data frame with one column per grouping
 #' @param arm vector with arm information
-#' @param arm.ref a character vector defining which arms in arm should be taken 
-#'   as the reference
-#' @param arm.comp a character vector defining which arms in arm should be taken 
-#'   as the comparison
+#' @param covariates set to NULL; currently not available for multivariate survival analysis
 #' 
-#' 
+#' @details
+#' Cox PH model is used for hazard ratio calculation
+#'  
 #' @importFrom survival survfit Surv coxph
+#' 
 #' @export
+#' 
+#' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
 #' @examples 
 #' 
@@ -22,11 +24,9 @@
 #' library(dplyr)
 #' library(forcats)
 #' library(survival)
+#' library(teal.oncology)
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%'
-#' 
-#' surv_tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
-#' Viewer(surv_tbl_stream )
 #' 
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
@@ -37,20 +37,14 @@
 #'              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
 #' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% 
 #'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>% 
-#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "BECOG"))
+#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "AGE4CAT", "BECOG"))
 #' 
 #'
 #' group_data <- left_join(ASL_f, ATE_f %>% select(c("USUBJID", "STUDYID")))
 #' names(group_data) <- labels_over_names(group_data)
 #' head(group_data)
 #' 
-#' # Dummy C First (comparison in survfit and glm)
 #' arm <- fct_relevel(ATE_f$ARMCD, "C")
-#' 
-#' # Collapse Factors
-#' # fct_collapse(arm, "ARM A/B" = c("ARM A", "ARM B"))
-#' # rename a level
-#' # arm <- fct_recode(ATE_f$ARM, "Treat ARM" = "DUMMY A")
 #' 
 #' tbl <- forest_tte(
 #'    time_to_event = ATE_f$AVAL,
@@ -59,12 +53,6 @@
 #'    arm = arm
 #' )
 #' Viewer(tbl)
-#' 
-#' compare_rtables(tbl, surv_tbl_stream, comp.attr = FALSE)
-#' 
-#' forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
-#' 
-#' 
 #' 
 #' }
 #' 
@@ -166,12 +154,63 @@ forest_tte <- function(time_to_event, event,
   tbl
 }
 
-
-#' plot
+#' Time-to-event Forest Plot
+#'
+#' @param x time-to-event forest plot table from function \code{forest_tte} 
+#' @param arm.ref Label displayed in the forest plot for reference arm
+#' @param arm.ref Label displayed in the forest plot for comparison arm
+#' @param padx gap between two columns
+#' @param cex multiplier applied to overall fontsize
 #' 
+#' @details
+#' This function can only be applied to the rtable output from \code{forest_tte}.
+#'  
 #' @import grid
 #' 
 #' @export
+#' 
+#' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' library(atezo.data)
+#' library(dplyr)
+#' library(forcats)
+#' library(survival)
+#' library(teal.oncology)
+#' 
+#' '%needs%' <- teal.oncology:::'%needs%'
+#' 
+#' ATE <- ate(com.roche.cdt30019.go29436.re)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' 
+#' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% 
+#'              filter(ITTWTFL == "Y") %>% 
+#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
+#'              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
+#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% 
+#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>% 
+#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "AGE4CAT", "BECOG"))
+#' 
+#'
+#' group_data <- left_join(ASL_f, ATE_f %>% select(c("USUBJID", "STUDYID")))
+#' names(group_data) <- labels_over_names(group_data)
+#' head(group_data)
+#' 
+#' arm <- fct_relevel(ATE_f$ARMCD, "C")
+#' 
+#' tbl <- forest_tte(
+#'    time_to_event = ATE_f$AVAL,
+#'    event = ATE_f$CNSR == 0,
+#'    group_data = group_data[, -c(1,2), drop=FALSE],
+#'    arm = arm
+#' )
+#' 
+#' forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
+#' 
+#' }
+#' 
 #x <- tbl
 forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
                             padx = unit(.5, "lines"), cex = 1) {
@@ -236,9 +275,9 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
      draw_row(i+4, nrow(x), row.names(x)[i], x[i, 1], x[i, 2], x[i, 3], round(x[i, 4], 1), x[i, 5], x[i, 6], 
               round(x[i, 7], 1), round(x[i, 8], 2), paste("(", paste(round(x[i, 9],2), collapse = ", "), ")", sep = ""), c(log(abs(x[i,8])), log(abs(x[i,9]))), TRUE)
    } else if (is.null(x[i,1]) & row.names(x)[i] != "") {
-     draw_row(i+4, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE, 2)
+     draw_row(i+4, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(NA, NA, NA), FALSE, 2)
    } else {
-     draw_row(i+4, nrow(x), "", "", "", "", "", "", "", "", "", "", c(-999, -999), FALSE,2)
+     draw_row(i+4, nrow(x), "", "", "", "", "", "", "", "", "", "", c(NA, NA, NA), FALSE,2)
    }
   }
 }
@@ -259,13 +298,13 @@ draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) 
   grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 ,fontface = 2))
   grid.text(paste(x11, "\nBetter"), x = unit(-1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
   grid.text(paste(x12, "\nBetter"), x = unit(1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
-  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.25/(n+5),1-1.25/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
-  grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
+  grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(1.5*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
 
 }
 
@@ -287,14 +326,43 @@ draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hlin
   grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10 , fontface = fontface))
   grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10 , fontface = fontface))
   grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 , fontface = fontface))
- # grid.text(x11, y = ypos, vp = vpPath("col_11"))
-  
-  
-  grid.lines(x = unit(x11[2:3], "native"), y = unit.c(ypos, ypos), vp = vpPath("col_11"), gp =gpar(lwd = 2))  
-  grid.circle(x = unit(x11[1], "native"), y = ypos, r = unit(1/3.5, "lines"), vp = vpPath("col_11"),
-              gp = gpar(fill = "blue"))
-  
-  
+
+  #Only draw if the CI is within the range of 0.1-10
+  if (!is.na(x11[1]) & x11[2] <= log(10) & x11[3] >= log(0.1)){
+    if ((is.na(x11[2])| x11[2] < log(0.1)) & x11[3] <= log(10) ){
+      grid.lines(x = unit(c(log(0.1), x11[3]), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first"), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[2] >= log(0.1) & (is.na(x11[3])| x11[3] > log(10))){
+      grid.lines(x = unit(c(x11[2], log(10)), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last"), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[2] >= log(0.1) & x11[3] <= log(10) ){
+      grid.lines(x = unit(c(x11[2], x11[3]), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[2] < log(0.1) & x11[3] > log(10) ){
+      grid.lines(x = unit(c(log(0.1), log(10)), "native"), 
+                 y = unit.c(ypos, ypos), 
+                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both"), 
+                 vp = vpPath("col_11"), 
+                 gp =gpar(col = "blue", lwd = 2)) 
+    }
+    if (x11[1] >= log(0.1) & x11[1] <= log(10)){
+      grid.circle(x = unit(x11[1], "native"),
+                  y = ypos, r = unit(1/3.5, "lines"), 
+                  vp = vpPath("col_11"),
+                  gp = gpar(col = "blue", fill = "blue"))
+    }
+  }    
   if (add_hline) {
     grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"), gp = gpar(col = "grey", lty = 1, lwd = 0.3))
   }
