@@ -46,13 +46,15 @@
 #' tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
 #' Viewer(tbl_stream)
 #' 
-#' ANL <- ARS %>% filter(PARAMCD == "OVRSPI", ITTGEFL == 'Y', ITTWTFL == 'Y')
-#' 
+#' ANL <- ARS %>% 
+#'   filter(PARAMCD == "OVRSPI", ITTGEFL == 'Y', ITTWTFL == 'Y') %>%
+#'   mutate(AVALC = ifelse(AVALC == "", "NE", AVALC))
+#'
 #' tbl <- response_table(
 #'  response = ANL$AVALC,
 #'  value.resp = c("CR", "PR"),
 #'  value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
-#'  arm = fct_relevel(ANL$ARMCD1, "C", "B", "A")
+#'  arm = fct_relevel(ANL$ARMCD, "C", "B", "A")
 #' )
 #' 
 #' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
@@ -223,9 +225,10 @@ response_table <- function(response,
       df.diffor <- df %>% 
         filter(arm %in% c(levels(df$arm)[1], i)) %>% 
         mutate(arm = droplevels(arm),
+               response = droplevels(response),
                final.arm = fct_relevel(arm, i, levels(df$arm)[1]),
-               resp = fct_collapse(response, "Responder" = j, "Non-Responder" = setdiff(response, j)),
-               final.resp = fct_relevel(resp, "Responder", "Non-Responder"))
+               resp = fct_collapse(response, "Responders" = j, "Non-Responders" = setdiff(response, j)),
+               final.resp = fct_relevel(resp, "Responders", "Non-Responders"))
       
       if (!exists("strata_name")) {
         #If no strata
