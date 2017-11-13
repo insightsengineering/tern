@@ -134,7 +134,9 @@ ui_response_table <- function(id, label,
       selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
       checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
       #Stratification related parameters
-      selectInput(ns("var_strata"), div("Stratification Factors", tags$br(), helpText("Categorical variable(s) only")), 
+      selectInput(ns("var_strata"), div("Stratification Factors",
+                                        tags$br(),
+                                        helpText("Categorical variable(s) only. Currently taken from ", tags$code("ARS"), ".")), 
                   choices = strata.var_choices, selected = strata.var, multiple = TRUE)
       
     ),
@@ -271,7 +273,7 @@ srv_response_table <- function(input, output, session, datasets) {
       strata_data = if (!is.null(var_strata)) ANL[var_strata] else NULL
     ))
     
-    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate response table"))
+    if (is(tbl, "try-error")) validate(need(FALSE, paste0("could not calculate response table:\n\n", tbl)))
     
     as_html(tbl)
   })

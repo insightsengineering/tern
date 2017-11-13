@@ -58,6 +58,8 @@
 #'  arm = fct_relevel(ANL$ARMCD, "C", "B", "A")
 #' )
 #' 
+#' Viewer(tbl, tbl_stream)
+#' 
 #' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 #' 
 #' 
