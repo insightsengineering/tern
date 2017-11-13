@@ -91,7 +91,8 @@ ui_time_to_event_table <- function(id, label,
       helpText("Reference groups automatically combined into a single group if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
       checkboxInput(ns("combine_comp_arms"), "Combine all comparison groups?", value = FALSE),
-      optionalSelectInput(ns("strata_var"), "Stratify by", strata_var_choices, strata_var, multiple = TRUE),
+      optionalSelectInput(ns("strata_var"), div("Stratify by", tags$br(), helpText("Currently taken from", tags$code("ATE"), ".")),
+                          strata_var_choices, strata_var, multiple = TRUE),
       optionalSelectInput(ns("time_points"), "Time Points", time_points_choices, time_points, multiple = TRUE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
@@ -205,7 +206,7 @@ srv_time_to_event_table <- function(input, output, session, datasets, ref_arm = 
       time_points = time_points
     ))
     
-    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate time to event table"))
+    if (is(tbl, "try-error")) validate(need(FALSE, paste0("could not calculate time to event table:\n\n", tbl)))
     
     as_html(tbl)
   })
