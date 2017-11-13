@@ -1,7 +1,7 @@
 #' @title Response Table Teal Module
 #' 
 #' @description
-#' This module produces a response summary table that matches the STREAM
+#' This module produces a response summary table that matches the STREAM 
 #' template rspt01
 #' 
 #' @inheritParams teal::standard_layout
@@ -13,19 +13,21 @@
 #' @param strata.var categorical variable name(s) for stratified model
 #' @param strata.var_choices choices of stratification factors 
 #' 
-#' @details 
-#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), 
-#' \code{ref_arm}, \code{comp_arm} and \code{combine_arm} (default FALSE)
+#' @details Additional standard UI inputs include \code{responders},
+#' \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and
+#' \code{combine_arm} (default FALSE)
 #' 
-#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} 
-#' are set to NULL, and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
+#' Default values of the inputs \code{var_arm}, \code{ref_arm} and
+#' \code{comp_arm} are set to NULL, and updated accordingly based on seletion of
+#' \code{paramcd} and \code{arm.var}
 #' 
-#' Package \code{forcats} used to re-format arm data into leveled factors. 
+#' Package \code{forcats} used to re-format arm data into leveled factors.
 #' 
-#' Reference arms automatically combined if multiple arms selected as reference group. 
+#' Reference arms automatically combined if multiple arms selected as reference
+#' group.
 #' 
 #' @return an \code{\link[teal]{module}} object
-#' 
+#'   
 #' @export
 #' 
 #' @examples  
@@ -92,13 +94,14 @@ tm_response_table <- function(label,
 #' 
 #' @inheritParams tm_response_table
 #' @param id namespace id
+#'   
+#' @details Additional standard UI inputs include \code{responders},
+#' \code{incl_missing} (default TRUE), \code{ref_arm}, \code{comp_arm} and
+#' \code{combin_arm} (default FALSE)
 #' 
-#' @details 
-#' Additional standard UI inputs include \code{responders}, \code{incl_missing} (default TRUE), 
-#' \code{ref_arm}, \code{comp_arm} and \code{combin_arm} (default FALSE)
-#' 
-#' Default values of the inputs \code{var_arm}, \code{ref_arm} and \code{comp_arm} are set to NULL, 
-#' and updated accordingly based on seletion of \code{paramcd} and \code{arm.var}
+#' Default values of the inputs \code{var_arm}, \code{ref_arm} and
+#' \code{comp_arm} are set to NULL, and updated accordingly based on seletion of
+#' \code{paramcd} and \code{arm.var}
 #' 
 #' @noRd
 #' 
@@ -152,11 +155,14 @@ ui_response_table <- function(id, label,
 #' @param id namespace id
 #' 
 #' @details 
-#' Selection for standard UI inputs \code{responders}, \code{ref_arm} and \code{comp_arm} 
-#' are updated upon selection of \code{paramcd} and \code{arm.var}.
+#' 
+#' Selection for standard UI inputs \code{responders}, \code{ref_arm} and
+#' \code{comp_arm} are updated upon selection of \code{paramcd} and
+#' \code{arm.var}.
 #' 
 #' Package \code{forcats} used to re-format arm data into leveled factors. 
-#' Reference arms automatically combined if multiple arms selected as reference group. 
+#' Reference arms automatically combined if multiple arms selected as reference
+#' group.
 #' 
 #' @importFrom forcats fct_relevel fct_collapse
 #' 
