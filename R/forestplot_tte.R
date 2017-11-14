@@ -31,6 +31,10 @@
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
+#' tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
+#' Viewer(tbl_stream)
+#' 
+#' 
 #' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% 
 #'              filter(ITTWTFL == "Y") %>% 
 #'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
@@ -53,6 +57,11 @@
 #'    arm = arm
 #' )
 #' Viewer(tbl)
+#' 
+#' Viewer(tbl, tbl_stream)
+#' 
+#' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+#' 
 #' 
 #' }
 #' 
@@ -207,7 +216,8 @@ forest_tte <- function(time_to_event, event,
 #'    arm = arm
 #' )
 #' 
-#' forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2])
+#' library(grid)
+#' forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2], padx=unit(0, "lines"))
 #' 
 #' }
 #' 
@@ -215,13 +225,17 @@ forest_tte <- function(time_to_event, event,
 forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
                             padx = unit(.5, "lines"), cex = 1) {
 
+  
+  rn <- c("Baseline Risk Factors", row.names(x))
+  
+  
   vp <- vpTree(
     parent = viewport(
       name = "forestplot",
       layout = grid.layout(
         nrow = 1, ncol = 11,
         widths = unit.c(
-          stringWidth("Baseline Risk Factors        ") + 1 * padx,
+          stringWidth(rn[which.max(nchar(rn))]) + 1 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
           stringWidth("xxxxx") + 2 * padx,
@@ -254,20 +268,24 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
   
   grid.newpage()
    
-  pushViewport(plotViewport(margins = c(3,2,1,2)))
+  pushViewport(plotViewport(margins = c(3,2,20,2)))
+  
   
   pushViewport(vp)
+
+  
   
   # grid.ls(viewports = TRUE)
   seekViewport("forestplot")
 
+  # Add Header
+  draw_header("Baseline Risk Factors","Total n", "n", "Events", "Median\n(Months)", "n", "Events", "Median\n(Months)", "Hazard\nRatio", "95% Wald\nCI", arm.ref,arm.comp)
+  
   # need once
   grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))
   grid.lines(x = unit(c(0,0), "native"), y = unit(c(0, 1- 2/nrow(x)), "npc"), vp = vpPath("col_11"),
              gp = gpar(lty = 2))  
   
-  # Add Header
-  draw_header(2, nrow(x), "Baseline Risk Factors","Total n", "n", "Events", "Median\n(Months)", "n", "Events", "Median\n(Months)", "Hazard\nRatio", "95% Wald\nCI", arm.ref,arm.comp)
   
   # Add table contents
   for (i in 1:nrow(x)){
@@ -282,29 +300,32 @@ forest_tte_plot <- function(x, arm.ref = "Reference", arm.comp = "Treatment",
   }
 }
 
-draw_header <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
-  ypos <- unit(1 - i/(n+5), "npc")
-  grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
-  grid.text(x12, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
+draw_header <- function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
+  
+  
+  ypos = unit(1, "npc")+unit(1, "lines")
+
+  # grid.text(x11, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2), rot = 90, just = c("left", "center"))
+  # grid.text(x12, x = unit(0.5, "native"), y = unit(1 - 1/(n+5), "npc"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2), rot = 90, just = c("left", "center"))
   grid.text(x1, x = unit(0, "npc"), y = ypos, vp = vpPath("col_1"), just = "left", gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 ,fontface = 2))
-  grid.text(paste(x11, "\nBetter"), x = unit(-1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.text(paste(x12, "\nBetter"), x = unit(1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
-  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
-  grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(1.5*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
+  grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x4, y = ypos, vp = vpPath("col_4"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x5, y = ypos, vp = vpPath("col_5"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x6, y = ypos, vp = vpPath("col_6"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x7, y = ypos, vp = vpPath("col_7"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x8, y = ypos, vp = vpPath("col_8"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x9, y = ypos, vp = vpPath("col_9"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
+  grid.text(x10, y = ypos, vp = vpPath("col_10"), gp = gpar(fontsize = 10 ,fontface = 2), rot = 90, just = c("left", "center"))
+  # grid.text(paste(x11, "\nBetter"), x = unit(-1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+  # grid.text(paste(x12, "\nBetter"), x = unit(1, "native"), y = ypos, vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
+  # grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2)) 
+  # grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
+  # grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
+  # grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2)) 
+  # grid.lines(x = unit(c(0,1), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2)) 
+  # grid.lines(x = unit(c(0,0.95), "native"), y = unit(c(1-1.4/(n+5),1-1.4/(n+5)), "npc"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))  
+  # grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(1.5*n), "npc"), gp = gpar(col = "black", lty = 1, lwd = 2))
 
 }
 

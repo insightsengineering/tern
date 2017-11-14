@@ -38,6 +38,10 @@ library(teal.oncology)
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
+tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
+Viewer(tbl_stream)
+
+
 ATE_f <- ATE \%>\% filter(PARAMCD == "OS") \%>\% 
              filter(ITTWTFL == "Y") \%>\% 
              filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\%
@@ -60,6 +64,11 @@ tbl <- forest_tte(
    arm = arm
 )
 Viewer(tbl)
+
+Viewer(tbl, tbl_stream)
+
+compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+
 
 }
 

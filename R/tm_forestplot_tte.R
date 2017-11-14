@@ -39,7 +39,7 @@
 #'        label = "Forest Survival",
 #'        paramcd = "OS",
 #'        paramcd_choices = unique(ATE$PARAMCD),
-#'        subgroup_var = c("BAGED", "SEX", "BECOG"),
+#'        subgroup_var = c("BAGED", "SEX", "BECOG", "RACE"),
 #'        arm_var = "ARM",
 #'        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
 #'    )
@@ -104,7 +104,8 @@ ui_forest_survival <- function(id, label,
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Arm", choices = NULL, selected = NULL, multiple = TRUE),
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
-      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE),
+      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE,
+                          label_help = helpText("are taken from", tags$code("ASL"))),
       tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;"),
       optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
     ),
@@ -141,8 +142,13 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
     
   })
   
-  
+
+  ## need asl labels for labelling the plots
+  temp_ASL <- datasets$get_data("ASL", filtered=FALSE, reactive = FALSE)  
+  ASL_labels <- unlist(Filter(function(x)!is.null(x), sapply(temp_ASL, function(v) attr(v, "label"))))
+
   output$forest_plot <- renderPlot({
+    
     
     ATE_filtered <- ATE_filtered()
     ASL_filtered <- datasets$get_data("ASL", reactive = TRUE, filtered = TRUE)
@@ -197,7 +203,12 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
       all.x = FALSE,
       all.y = TRUE
     )
-    names(group_data) <- labels_over_names(group_data)
+    
+    names(group_data) <- labels_over_names(add_labels(group_data, ASL_labels))
+    
+    
+
+    
     
     ## add
     ## the arm combine & filtering and converting to a factor here...paste0(ref_arm, collapse = "/")
@@ -213,7 +224,7 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
       group_data = group_data[, -c(1,2), drop=FALSE]
     ))
     
-    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate forest table"))
+    if (is(tbl, "try-error")) validate(need(FALSE, paste0("could not calculate forest table:\n\n", tbl)))
     
     #as_html(tbl)
     

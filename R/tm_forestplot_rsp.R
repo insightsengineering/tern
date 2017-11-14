@@ -20,6 +20,7 @@
 #' @examples   
 #' 
 #' \donotrun{
+#' library(teal.oncology)
 #' library(atezo.data)
 #' library(dplyr)
 #' library(forcats)
@@ -38,6 +39,7 @@
 #'        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
 #'        plot_height = c(600, 200, 2000),
 #'        subgroup_var = c("BAGED", "SEX", "BECOG"),
+#'        subgroup_var_choices = names(ASL),
 #'        arm_var = "ARM",
 #'        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
 #'    )
@@ -102,7 +104,8 @@ ui_forest_response <- function(id, label,
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Arm", choices = NULL, selected = NULL, multiple = TRUE),
       helpText("Multiple arms automatically combined into a single arm if more than one value selected."),
-      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE),
+      optionalSelectInput(ns("subgroup_var"), "Subgroup Variables", subgroup_var_choices, subgroup_var, multiple = TRUE,
+                          label_help = helpText("are taken from", tags$code("ASL"))),
       tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;"),
       optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
     ),
@@ -209,7 +212,7 @@ srv_forest_response <- function(input, output, session, datasets, cex = 1.5) {
       group_data = group_data[, -c(1,2), drop=FALSE]
     ))
     
-    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate forest table"))
+    if (is(tbl, "try-error")) validate(need(FALSE, paste0("could not calculate forest table:\n\n", tbl)))
     
     
     forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2], cex = cex)

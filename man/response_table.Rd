@@ -57,14 +57,18 @@ ASL <- asl(com.roche.cdt30019.go29436.re)
 tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
 Viewer(tbl_stream)
 
-ANL <- ARS \%>\% filter(PARAMCD == "OVRSPI", ITTGEFL == 'Y', ITTWTFL == 'Y')
+ANL <- ARS \%>\% 
+  filter(PARAMCD == "OVRSPI", ITTGEFL == 'Y', ITTWTFL == 'Y') \%>\%
+  mutate(AVALC = ifelse(AVALC == "", "NE", AVALC))
 
 tbl <- response_table(
  response = ANL$AVALC,
  value.resp = c("CR", "PR"),
  value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
- arm = fct_relevel(ANL$ARMCD1, "C", "B", "A")
+ arm = fct_relevel(ANL$ARMCD, "C", "B", "A")
 )
+
+Viewer(tbl, tbl_stream)
 
 compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 
