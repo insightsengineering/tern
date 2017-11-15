@@ -63,7 +63,7 @@ Viewer(tbl, tbl_stream)
 compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 
 library(grid)
-forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2], padx=unit(0, "lines"))
+forest_rsp_plot(tbl, arm.ref = "ReferenceAAAvery longtitle", arm.comp = "Treatment AAAverylongtitle", padx=unit(0, "lines"))
 
 }
 }

@@ -15,8 +15,8 @@ Venn2 teal module
 \examples{
  
 
+\dontrun{
 N <- 100
-
 var_biomarkers <- paste0("B", 1:10) 
 sample_bm_data <- lapply(1:10, function(x)sample(c(TRUE, FALSE), N, replace = TRUE))
 names(sample_bm_data) <- var_biomarkers
@@ -25,7 +25,6 @@ ASL <- do.call(data.frame, c(
   list(USUBJID = paste("ID", 1:N),STUDYID = "1"), sample_bm_data
 ))
 
-\dontrun{
 x <- teal::init(
   data = list(ASL = ASL),
   modules = root_modules(
@@ -35,5 +34,6 @@ x <- teal::init(
   )
 )   
 shinyApp(x$ui, x$server)     
+
 }
 }

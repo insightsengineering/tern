@@ -45,7 +45,7 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  ECOG = sample(c(0, 1), 200, TRUE))
 
 # draw single plot on device page
-kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = OS , add_coxph = TRUE, add_km = TRUE, add = FALSE)
+kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, add_coxph = TRUE, add_km = TRUE)
 
 
 library(grid)
@@ -61,10 +61,10 @@ kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM,
 lev <- unique(OS$SEX)
 nplots <- length(lev)
 dfs <- split(OS, OS$SEX)
+
 # new plot page
 grid.newpage()
 # margins
-pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
 
 # layout
 pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,

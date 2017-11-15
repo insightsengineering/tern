@@ -4,8 +4,8 @@
 \alias{forest_tte_plot}
 \title{Time-to-event Forest Plot}
 \usage{
-forest_tte_plot(x, arm.ref = "ReferenceAAAvery longtitle",
-  arm.comp = "Treatment AAAverylongtitle", padx = unit(0, "lines"),
+forest_tte_plot(x, arm.ref = "ReferenceAAA verylongtitle",
+  arm.comp = "TreatmentAAA verylongtitle", padx = unit(0, "lines"),
   cex = 1)
 }
 \arguments{
@@ -77,6 +77,7 @@ compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 
 library(grid)
 forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2], padx=unit(0, "lines"))
+
 
 }
 
