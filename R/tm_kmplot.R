@@ -21,24 +21,29 @@
 #' @examples 
 #' 
 #' \dontrun{
-#' ASL <- data.frame(USUBJID = paste0("GO99999-", sprintf("%03d",seq(1:200))) ,
-#'                   STUDYID = rep("GO99999", 200),
-#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
-#'                  ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
-#'                  SEX = sample(c("M","F"), 200, TRUE),
-#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'                  ECOG = sample(c(0, 1), 200, TRUE)
-#'                  )
+#' 
+#' ASL <- data.frame(
+#'   USUBJID = paste0("GO99999-", sprintf("%03d", seq(1:200))) ,
+#'   STUDYID = rep("GO99999", 200),
+#'   ARM = sample(LETTERS[1:3], 200, TRUE),
+#'   ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
+#'   SEX = sample(c("M","F"), 200, TRUE),
+#'   RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+#'   ECOG = sample(c(0, 1), 200, TRUE)
+#' )
 #'                  
-#' ATE <- data.frame(USUBJID = rep(paste0("GO99999-", sprintf("%03d",seq(1:200))), 2) ,
-#'                   STUDYID = rep("GO99999", 400),
-#'                   PARAMCD = rep(c("OS", "PFS"), each = 200),
-#'                   AVAL = abs(rnorm(400)), 
-#'                  CNSR = sample(c(0, 1), 400, TRUE)
-#'                  )
+#' ATE <- data.frame(
+#'   USUBJID = rep(paste0("GO99999-", sprintf("%03d",seq(1:200))), 2) ,
+#'   STUDYID = rep("GO99999", 400),
+#'   PARAMCD = rep(c("OS", "PFS"), each = 200),
+#'   AVAL = abs(rnorm(400)) * 3, 
+#'   CNSR = sample(c(0, 1), 400, TRUE)
+#' )
 #' 
 #' ATE <- merge(ATE, ASL, by = c("USUBJID", "STUDYID"))
-#'                  
+#' 
+#' head(ATE)                 
+#' 
 #' ## Initialize Teal
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ATE = ATE),
@@ -59,15 +64,17 @@
 #' }
 #' 
 tm_kmplot <- function(label,
-                           treatment_var = "ARM",
-                           treatment_var_choices = treatment_var,
-                           endpoint = "OS",
-                           endpoint_choices = endpoint,
-                           facet_var = NULL,
-                           facet_var_choices = facet_var,
-                           strata_var = NULL,
-                           strata_var_choices = strata_var,
-                           plot_height = c(1200, 400, 5000)
+                      treatment_var = "ARM",
+                      treatment_var_choices = treatment_var,
+                      endpoint = "OS",
+                      endpoint_choices = endpoint,
+                      facet_var = NULL,
+                      facet_var_choices = facet_var,
+                      strata_var = NULL,
+                      strata_var_choices = strata_var,
+                      plot_height = c(1200, 400, 5000),
+                      pre_output = helpText("x-axes for different factes may not have the same scale"),
+                      post_output = NULL
 ){
   
   args <- as.list(environment())
@@ -92,31 +99,38 @@ ui_kmplot <- function(
   strata_var_choices = strata_var,
   facet_var = NULL,
   facet_var_choices = facet_var,
-  plot_height = c(700, 400, 3000)) {
+  plot_height = c(700, 400, 3000),
+  pre_output = NULL,
+  post_output = NULL
+  ) {
   
   ns <- NS(id)
   
-  standard_layout(    output = uiOutput(ns("plot_ui")),
-                      encoding = div(
-                        tags$label("Encodings", class = "text-primary"),
-                        helpText("Analysis Data: ", tags$code("ATE")),
-                        optionalSelectInput(ns("var_arm"), "Treatment Variable", choices = treatment_var_choices,
-                                            selected = treatment_var, multiple = FALSE),
-                        optionalSelectInput(ns("tteout"), "Time to Event (Endpoint)", choices = endpoint_choices, 
-                                            selected = endpoint, multiple = FALSE),
-                        optionalSelectInput(ns("strat"), "Stratify by", choices = strata_var_choices, 
-                                            selected = strata_var, multiple = TRUE),
-                        optionalSelectInput(ns("facetby"), "Facet Plots by:", choices = facet_var_choices, 
-                                            selected = facet_var, multiple = TRUE),
-                        selectInput(ns("ref_arm"), "Reference Arm", choices = NULL, 
-                                    selected = NULL, multiple = TRUE),
-                        helpText("Reference groups automatically combined into a single group if more than one value selected."),
-                        selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
-                        checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
-                        tags$label("Plot Settings", class = "text-primary"),
-                        optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
-                      )
-                      
+  standard_layout(
+    output = uiOutput(ns("plot_ui")),
+    encoding = div(
+      tags$label("Encodings", class = "text-primary"),
+      helpText("Analysis Data: ", tags$code("ATE")),
+      optionalSelectInput(ns("var_arm"), "Treatment Variable", choices = treatment_var_choices,
+                          selected = treatment_var, multiple = FALSE),
+      optionalSelectInput(ns("tteout"), "Time to Event (Endpoint)", choices = endpoint_choices, 
+                          selected = endpoint, multiple = FALSE),
+      optionalSelectInput(ns("strat"), "Stratify by", choices = strata_var_choices, 
+                          selected = strata_var, multiple = TRUE,
+                          label_help = helpText("currently taken from", tags$code("ATE"))),
+      optionalSelectInput(ns("facetby"), "Facet Plots by:", choices = facet_var_choices, 
+                          selected = facet_var, multiple = TRUE,
+                          label_help = helpText("currently taken from", tags$code("ATE"))),
+      selectInput(ns("ref_arm"), "Reference Arm", choices = NULL, 
+                  selected = NULL, multiple = TRUE),
+      helpText("Reference groups automatically combined into a single group if more than one value selected."),
+      selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
+      checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
+      tags$label("Plot Settings", class = "text-primary"),
+      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
+    ),
+    pre_output = pre_output,
+    post_output = post_output
   )
 }
 
@@ -235,10 +249,12 @@ srv_kmplot <- function(input, output, session, datasets) {
       dfs <- split(ANL, lab)
       
       nplots <- n_unique
+      
       grid.newpage()
-      pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
+      
+      pushViewport(plotViewport(margin = c(1, 1, 1, 1)))
       pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
-        heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
+        heights = unit(head(rep(c(1, 2), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
          )))
       
       Map(function(dfi, i, label) {

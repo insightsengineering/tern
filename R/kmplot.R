@@ -34,7 +34,7 @@
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' 
 #' # draw single plot on device page
-#' kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = OS , add_coxph = TRUE, add_km = TRUE, add = FALSE)
+#' kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, add_coxph = TRUE, add_km = TRUE)
 #' 
 #' 
 #' library(grid)
@@ -50,10 +50,10 @@
 #' lev <- unique(OS$SEX)
 #' nplots <- length(lev)
 #' dfs <- split(OS, OS$SEX)
+#' 
 #' # new plot page
 #' grid.newpage()
 #' # margins
-#' pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
 #' 
 #' # layout
 #' pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
@@ -105,20 +105,29 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   # get the color pallete
   col_pal <- col_factor("Set1", domain = names(df_s))  
 
+  
+  ## get max label width in lines
+  tmp.labels <- names(fit$strata)
+  tmp.label <- tmp.labels[which.max(nchar(tmp.labels))[1]]
+  nlines_labels <- convertWidth(stringWidth(tmp.label), "lines", TRUE) + 2
+  
   # now do the plotting
   if(!add) {
     grid.newpage()
-    pushViewport(plotViewport(margins = c(3, 10, 3, 2)))    
   }
+  pushViewport(plotViewport(margins = c(3, max(nlines_labels, 4), 3, 2)))
   
-  pushViewport(viewport(layout = grid.layout(
-    nrow = 3, ncol = 1,
-    heights = unit(c(5, 5, nstrata*1.1+4), c("null", "lines", "lines")),
-    widths = unit(1, "npc"))))
+  pushViewport(viewport(
+    layout = grid.layout(
+      nrow = 3, ncol = 1,
+      heights = unit(c(5, 5, nstrata*1.1+4), c("null", "lines", "lines")),
+      widths = unit(1, "npc"))
+    )
+  )
   
   pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
   
-  xpos <- seq(0, ceiling(max(df$time)), by = floor(ceiling(max(df$time))/10))
+  xpos <- seq(0, floor(max(df$time)), by = max(1, floor(max(df$time)/10)))
   pushViewport(dataViewport(xData = df$time, yData = c(0,1)))
   grid.xaxis(at = xpos)
   grid.yaxis()
@@ -180,11 +189,12 @@ kmplot <- function(formula_km, data, add_km = TRUE,
     )
     tblstr <- toString(tbl, gap = 2)
     lab <- paste0(info_coxph, "\n", tblstr)
-    grid.text(label = lab,
-              x = unit(1, "lines"), y = unit(1, "lines"),
-              just = c("left", "bottom"),
-              gp = gpar(fontfamily = "mono", fontsize = 8)
-              )
+    grid.text(
+      label = lab,
+      x = unit(1, "lines"), y = unit(1, "lines"),
+      just = c("left", "bottom"),
+      gp = gpar(fontfamily = "mono", fontsize = 8)
+    )
     
 
   }
@@ -262,7 +272,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
     
     grid.text(
       label = strata,
-      x = unit(-9, "lines"),
+      x = unit(-nlines_labels + 1, "lines"),
       y = unit(ypos, "npc"),
       just = c("left", "center"),
       gp = gpar(col = col)
@@ -270,7 +280,8 @@ kmplot <- function(formula_km, data, add_km = TRUE,
     
   }, df_s, 1 - 1:length(df_s)/(length(df_s) + 1), names(df_s), col_pal(names(df_s)))
   
-  popViewport(3)
+  popViewport(4)
+  
 }
 
 
