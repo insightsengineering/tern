@@ -128,7 +128,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
   
   xpos <- seq(0, floor(max(df$time)), by = max(1, floor(max(df$time)/10)))
-  pushViewport(dataViewport(xData = df$time, yData = c(0,1)))
+  pushViewport(dataViewport(xData = c(0, df$time), yData = c(0,1)))
   grid.xaxis(at = xpos)
   grid.yaxis()
   grid.rect()
@@ -239,7 +239,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
             y = unit(1, "npc") + unit(1, "lines"),
             just = "left")
   
-  pushViewport(dataViewport(xData = df$time, yData = c(0,1)))
+  pushViewport(dataViewport(xData = c(0, df$time), yData = c(0,1)))
   
   
   grid.xaxis(at = xpos)
