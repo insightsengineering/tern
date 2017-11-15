@@ -240,10 +240,11 @@ forest_tte <- function(time_to_event, event,
 #' library(grid)
 #' forest_tte_plot(tbl, levels(arm)[1], levels(arm)[2], padx=unit(0, "lines"))
 #' 
+#' 
 #' }
 #' 
 #x <- tbl
-forest_tte_plot <- function(x, arm.ref = "ReferenceAAAvery longtitle", arm.comp = "Treatment AAAverylongtitle",
+forest_tte_plot <- function(x, arm.ref = "ReferenceAAA verylongtitle", arm.comp = "TreatmentAAA verylongtitle",
                             padx = unit(0, "lines"), cex = 1) {
 
   
@@ -297,15 +298,11 @@ forest_tte_plot <- function(x, arm.ref = "ReferenceAAAvery longtitle", arm.comp 
   # grid.ls(viewports = TRUE)
   seekViewport("forestplot")
   
-  arm.ref <- "DUMMY C this is a test"
-  unlist(strsplit(arm.ref, " ", fixed = TRUE))
+  arm.ref <- wrap_text(arm.ref, width = unit(3, "cm"), collapse = "\n")
+  arm.comp <- wrap_text(arm.comp, width = unit(3, "cm"), collapse = "\n")
   
-  
-  
-  arm.ref <- 
-    
-    gsub( " ", "\n", arm.ref)
-  arm.comp = gsub( " ", "\n", arm.comp)
+  # arm.ref <- gsub( " ", "\n", arm.ref)
+  # arm.comp <- gsub( " ", "\n", arm.comp)
 
   # Add Header
   draw_header_tte(x1 = "Baseline Risk Factors",x2 = "Total n", x3 = "n", x4 = "Events", x5 = "Median (months)", x6 = "n", x7 = "Events", x8 = "Median (months)", x9 = "Hazard Ratio", x10 = "95% Wald CI", x11 = arm.ref, x12 = arm.comp)
@@ -335,8 +332,8 @@ draw_header_tte <- function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
   
   ypos = unit(1, "npc")+unit(1, "lines")
 
-  grid.text(x11, x = unit(0.5, "native"), y = ypos + unit(7 + str_count(x11, "\n"), "lines"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
-  grid.text(x12, x = unit(0.5, "native"), y = ypos + unit(7 + str_count(x12, "\n"), "lines"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(x11, x = unit(0.5, "native"), y = ypos + unit(7.75 + str_count(x11, "\n"), "lines"), vp = vpPath("col_4"), gp = gpar(fontsize = 10 ,fontface = 2))
+  grid.text(x12, x = unit(0.5, "native"), y = ypos + unit(7.75 + str_count(x12, "\n"), "lines"), vp = vpPath("col_7"), gp = gpar(fontsize = 10 ,fontface = 2))
   grid.text(x1, x = unit(0, "npc"), y = ypos + unit(0.5, "lines"), vp = vpPath("col_1"), just = "left", gp = gpar(fontsize = 10, fontface = 2))
   grid.text(x2, y = ypos, vp = vpPath("col_2"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
   grid.text(x3, y = ypos, vp = vpPath("col_3"), gp = gpar(fontsize = 10, fontface = 2), rot = 90, just = c("left", "center"))
@@ -351,12 +348,12 @@ draw_header_tte <- function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) {
   grid.text("Better", x = unit(1.0, "native"), y = ypos + unit(.5, "lines"), vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
   grid.text(x11, x = unit(-1.0, "native"), y = ypos + unit(str_count(x11, "\n") + 1.5, "lines"), vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
   grid.text(x12, x = unit(1.0, "native"), y = ypos + unit(str_count(x12, "\n") + 1.5, "lines"), vp = vpPath("col_11"), gp = gpar(fontsize = 10, fontface = 2))
-  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.5, "lines"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2))
-  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.5, "lines"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
-  grid.lines(x = unit(c(0,0.95), "native"), y = ypos + unit(5.5, "lines"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
-  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.5, "lines"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2))
-  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.5, "lines"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2))
-  grid.lines(x = unit(c(0,0.95), "native"), y = ypos + unit(5.5, "lines"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.75, "lines"), vp = vpPath("col_3"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.75, "lines"), vp = vpPath("col_4"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,0.9), "native"), y = ypos + unit(5.75, "lines"), vp = vpPath("col_5"), gp = gpar(lty = 1, lwd = 2)) 
+  grid.lines(x = unit(c(0.1,1), "native"), y = ypos + unit(5.75, "lines"), vp = vpPath("col_6"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.75, "lines"), vp = vpPath("col_7"), gp = gpar(lty = 1, lwd = 2))
+  grid.lines(x = unit(c(0,1), "native"), y = ypos + unit(5.75, "lines"), vp = vpPath("col_8"), gp = gpar(lty = 1, lwd = 2))
   grid.lines(unit(c(0,1), "npc"), y = ypos - unit(0.5, "lines"), gp = gpar(col = "black", lty = 1, lwd = 2))
 
 }

@@ -10,6 +10,8 @@
 #' 
 #' @importFrom grid convertWidth gpar grobWidth textGrob
 #' 
+#' @export
+#' 
 #' @author Adrian Waddell
 #' 
 #' @examples

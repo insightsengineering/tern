@@ -24,6 +24,10 @@ return splitted text that fits onto page width
 \examples{
 library(grid)
 text <- "This is a test with many words and more"
-wrap_text(txt = text, width = unit(4, "cm"))
+teal.oncology:::wrap_text(txt = text, width = unit(4, "cm"), collapse = "\\n")
+teal.oncology:::wrap_text(txt = text, width = unit(5, "cm"), collapse = "\\n")
 
+}
+\author{
+Adrian Waddell
 }
