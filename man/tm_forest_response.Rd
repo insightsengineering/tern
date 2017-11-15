@@ -41,6 +41,7 @@ Forest Response Plot teal module
   
 
 \\donotrun{
+library(teal.oncology)
 library(atezo.data)
 library(dplyr)
 library(forcats)
@@ -59,6 +60,7 @@ x <- teal::init(
        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
        plot_height = c(600, 200, 2000),
        subgroup_var = c("BAGED", "SEX", "BECOG"),
+       subgroup_var_choices = names(ASL),
        arm_var = "ARM",
        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
    )
