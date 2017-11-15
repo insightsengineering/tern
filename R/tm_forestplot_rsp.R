@@ -145,6 +145,9 @@ srv_forest_response <- function(input, output, session, datasets, cex = 1.5) {
     
   })
   
+  ## need asl labels for labelling the plots
+  temp_ASL <- datasets$get_data("ASL", filtered=FALSE, reactive = FALSE)  
+  ASL_labels <- unlist(Filter(function(x)!is.null(x), sapply(temp_ASL, function(v) attr(v, "label"))))
   
   output$forest_plot <- renderPlot({
     
@@ -196,7 +199,7 @@ srv_forest_response <- function(input, output, session, datasets, cex = 1.5) {
       all.x = FALSE,
       all.y = TRUE
     )
-    names(group_data) <- labels_over_names(group_data)
+    names(group_data) <- labels_over_names(add_labels(group_data, ASL_labels))
     
     ## add
     ## the arm combine & filtering and converting to a factor here...paste0(ref_arm, collapse = "/")

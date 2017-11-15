@@ -39,7 +39,8 @@
 #'        label = "Forest Survival",
 #'        paramcd = "OS",
 #'        paramcd_choices = unique(ATE$PARAMCD),
-#'        subgroup_var = c("BAGED", "SEX", "BECOG", "RACE"),
+#'        subgroup_var = c("BAGED", "SEX", "AGE4CAT"),
+#'        subgroup_var_choices = names(ASL),
 #'        arm_var = "ARM",
 #'        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
 #'    )
@@ -160,12 +161,12 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
     comp_arm <- input$comp_arm
     
     
-    teal:::as.global(ATE_filtered)
-    teal:::as.global(ASL_filtered)
-    teal:::as.global(paramcd)
-    teal:::as.global(subgroup_var)
-    teal:::as.global(ref_arm)
-    teal:::as.global(comp_arm)
+    # teal:::as.global(ATE_filtered)
+    # teal:::as.global(ASL_filtered)
+    # teal:::as.global(paramcd)
+    # teal:::as.global(subgroup_var)
+    # teal:::as.global(ref_arm)
+    # teal:::as.global(comp_arm)
     
     ## 2: Validate if your inputs can produce the requested output
     
