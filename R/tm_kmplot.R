@@ -226,51 +226,55 @@ srv_kmplot <- function(input, output, session, datasets) {
     }
 
      
-    if (length(facetby) == 0){
-      kmplot(formula_km, data = ANL, add_km = TRUE, 
-             add_coxph = TRUE, formula_coxph, 
-             info_coxph,
-             add = FALSE, 
-             title = "Kaplan - Meier Plot")
-    } else {
-      
-      facet_df <- ANL[facetby]
-      
-      n_unique <- sum(!duplicated(facet_df))
-
-      lab <- Map(function(var, x) paste0(var, "= '", x,"'"), facetby, facet_df) %>%
-        unname() %>%
-        Reduce(function(x, y) paste(x, y, sep = ", "), .) %>%
-        unlist() %>%
-        factor()
-      
-      if (length(unique(lab)) != n_unique) stop("algorithm error")  
-  
-      dfs <- split(ANL, lab)
-      
-      nplots <- n_unique
-      
-      grid.newpage()
-      
-      pushViewport(plotViewport(margin = c(1, 1, 1, 1)))
-      pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
-        heights = unit(head(rep(c(1, 2), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
-         )))
-      
-      Map(function(dfi, i, label) {
-        pushViewport(viewport(layout.pos.row = i*2 - 1))
-        kmplot(
-          formula_km, data = dfi, add_km = TRUE,
-          add_coxph = TRUE, formula_coxph,
-          info_coxph,
-          add = TRUE,
-          title = paste0("Kaplan - Meier Plot for: ", label)
-        )
-        popViewport()
-      }, dfs, 1:length(dfs), levels(lab))
-       
-    }
- 
+    results <- try({
+      if (length(facetby) == 0){
+        kmplot(formula_km, data = ANL, add_km = TRUE, 
+               add_coxph = TRUE, formula_coxph, 
+               info_coxph,
+               add = FALSE, 
+               title = "Kaplan - Meier Plot")
+      } else {
+        
+        facet_df <- ANL[facetby]
+        
+        n_unique <- sum(!duplicated(facet_df))
+        
+        lab <- Map(function(var, x) paste0(var, "= '", x,"'"), facetby, facet_df) %>%
+          unname() %>%
+          Reduce(function(x, y) paste(x, y, sep = ", "), .) %>%
+          unlist() %>%
+          factor()
+        
+        if (length(unique(lab)) != n_unique) stop("algorithm error")  
+        
+        dfs <- split(ANL, lab)
+        
+        nplots <- n_unique
+        
+        grid.newpage()
+        
+        pushViewport(plotViewport(margin = c(1, 1, 1, 1)))
+        pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
+                                                   heights = unit(head(rep(c(1, 2), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
+        )))
+        
+        Map(function(dfi, i, label) {
+          pushViewport(viewport(layout.pos.row = i*2 - 1))
+          kmplot(
+            formula_km, data = dfi, add_km = TRUE,
+            add_coxph = TRUE, formula_coxph,
+            info_coxph,
+            add = TRUE,
+            title = paste0("Kaplan - Meier Plot for: ", label)
+          )
+          popViewport()
+        }, dfs, 1:length(dfs), levels(lab))
+      }
+      TRUE
+    })
+    
+    if (is(results, "try-error")) validate(need(FALSE, paste0("Could not calculate kmplots\n\n", results)))
+    
   })
 }
 
