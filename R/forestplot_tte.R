@@ -67,6 +67,7 @@
 #' 
 #' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 #' 
+#' forest_tte_plot(tbl)
 #' 
 #' }
 #' 
@@ -296,8 +297,14 @@ forest_tte_plot <- function(x, arm.ref = "ReferenceAAAvery longtitle", arm.comp 
   # grid.ls(viewports = TRUE)
   seekViewport("forestplot")
   
+  arm.ref <- "DUMMY C this is a test"
+  unlist(strsplit(arm.ref, " ", fixed = TRUE))
   
-  arm.ref = gsub( " ", "\n", arm.ref)
+  
+  
+  arm.ref <- 
+    
+    gsub( " ", "\n", arm.ref)
   arm.comp = gsub( " ", "\n", arm.comp)
 
   # Add Header
