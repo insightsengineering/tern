@@ -269,8 +269,7 @@ forest_tte_plot <- function(x, arm.ref = "ReferenceAAA verylongtitle", arm.comp 
           stringWidth("xx.xx - xx.xx") + 2 * padx,
           unit(1, "null")
         )
-      ),
-      gp = gpar(cex = cex)
+      )
     ),
     children = vpList(
       viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
@@ -289,17 +288,17 @@ forest_tte_plot <- function(x, arm.ref = "ReferenceAAA verylongtitle", arm.comp 
   )
   
   grid.newpage()
-   
-  pushViewport(plotViewport(margins = c(3,2,14,2)))
+  pushViewport(viewport(gp = gpar(cex = cex))) 
   
+  pushViewport(plotViewport(margins = c(3,2,10,2)))
   
   pushViewport(vp)
   
   # grid.ls(viewports = TRUE)
   seekViewport("forestplot")
   
-  arm.ref <- wrap_text(arm.ref, width = unit(3, "cm"), collapse = "\n")
-  arm.comp <- wrap_text(arm.comp, width = unit(3, "cm"), collapse = "\n")
+  arm.ref <- wrap_text(arm.ref, width = unit(4, "cm"), collapse = "\n")
+  arm.comp <- wrap_text(arm.comp, width = unit(4, "cm"), collapse = "\n")
   
   # arm.ref <- gsub( " ", "\n", arm.ref)
   # arm.comp <- gsub( " ", "\n", arm.comp)

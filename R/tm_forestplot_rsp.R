@@ -59,7 +59,7 @@ tm_forest_response <- function(label,
                                subgroup_var,
                                subgroup_var_choices = subgroup_var,
                                plot_height = c(700, 200, 2000),
-                               cex = 1.5,
+                               cex = 1.3,
                                pre_output = helpText("graph needs to be of a certain width to be displayed"),
                                post_output = NULL){
   

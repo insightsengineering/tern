@@ -226,8 +226,7 @@ forest_rsp_plot <- function(x, arm.ref = "ReferenceAAAvery longtitle", arm.comp 
           stringWidth("xx.xx - xx.xx") + 2 * padx,
           unit(1, "null")
         )
-      ),
-      gp = gpar(cex = cex)
+      )
     ),
     children = vpList(
       viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
@@ -246,8 +245,9 @@ forest_rsp_plot <- function(x, arm.ref = "ReferenceAAAvery longtitle", arm.comp 
   )
   
   grid.newpage()
+  pushViewport(viewport(gp = gpar(cex = cex)))
   
-  pushViewport(plotViewport(margins = c(3,2,14,2)))
+  pushViewport(plotViewport(margins = c(3,2,10,2)))
   
   pushViewport(vp)
   
@@ -255,8 +255,8 @@ forest_rsp_plot <- function(x, arm.ref = "ReferenceAAAvery longtitle", arm.comp 
   seekViewport("forestplot")
   
   # break arm labels to muliple lines as needed
-  arm.ref <- wrap_text(arm.ref, width = unit(3, "cm"), collapse = "\n")
-  arm.comp <- wrap_text(arm.comp, width = unit(3, "cm"), collapse = "\n")
+  arm.ref <- wrap_text(arm.ref, width = unit(4, "cm"), collapse = "\n")
+  arm.comp <- wrap_text(arm.comp, width = unit(4, "cm"), collapse = "\n")
   
   # need once: mid-line OR = 1
   grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))

@@ -58,7 +58,7 @@ tm_forest_survival <- function(label,
                                paramcd = "OS",
                                paramcd_choices = paramcd,
                                plot_height = c(600, 200, 2000),
-                               cex = 1.5,
+                               cex = 1.3,
                                pre_output = helpText("graph needs to be of a certain width to be displayed"),
                                post_output = NULL) {
   
