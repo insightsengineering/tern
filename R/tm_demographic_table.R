@@ -101,7 +101,7 @@ srv_demographic_table <- function(input, output, session, datasets) {
       group_by_vars = summarize_vars
     ))
     
-    if (is(tbl, "try-error")) validate(need(FALSE, "could not calculate demographic table"))
+    if (is(tbl, "try-error")) validate(need(FALSE, paste0("could not calculate demographic table:\n\n", tbl)))
     
     as_html(tbl)
   })
