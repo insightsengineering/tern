@@ -290,7 +290,7 @@ forest_tte_plot <- function(x, arm.ref = "ReferenceAAA verylongtitle", arm.comp 
   grid.newpage()
   pushViewport(viewport(gp = gpar(cex = cex))) 
   
-  pushViewport(plotViewport(margins = c(3,2,10,2)))
+  pushViewport(plotViewport(margins = c(3,2,14,2)))
   
   pushViewport(vp)
   
