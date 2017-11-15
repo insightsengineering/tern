@@ -129,18 +129,19 @@ ui_response_table <- function(id, label,
                   choices = NULL, selected = NULL, multiple = TRUE),
       checkboxInput(ns("incl_missing"), "Include missing as non-responders?", value = TRUE),
       #Arm related parameters
-      optionalSelectInput(ns("var_arm"), div("Grouping Variable", tags$br(), helpText("Select one variable to use for grouping")), 
-                          arm.var_choices, arm.var, multiple = FALSE),
+      optionalSelectInput(ns("var_arm"), "Grouping Variable", 
+                          arm.var_choices, arm.var, multiple = FALSE,
+                          label_help = helpText("Select one variable to use for grouping")),
       selectInput(ns("ref_arm"), "Reference Group", 
                           choices = NULL, selected = NULL, multiple = TRUE),
       helpText("Reference groups automatically combined into a single group if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
       checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
       #Stratification related parameters
-      selectInput(ns("var_strata"), div("Stratification Factors",
-                                        tags$br(),
-                                        helpText("Categorical variable(s) only. Currently taken from ", tags$code("ARS"), ".")), 
-                  choices = strata.var_choices, selected = strata.var, multiple = TRUE)
+      optionalSelectInput(ns("var_strata"), "Stratification Factors",
+                  choices = strata.var_choices, selected = strata.var, multiple = TRUE,
+                  label_help = helpText("Categorical variable(s) only. Currently taken from ", tags$code("ARS"))
+                  )
       
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
