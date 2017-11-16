@@ -24,14 +24,17 @@
 #' '%needs%' <- teal.oncology:::'%needs%'
 #' ARS <- ars(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' ASL$temp <- c(rep("A", 200), rep("B", 250), rep(NA,1202-450))
 #' 
 #' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
-#'                  filter(ITTWTFL == "Y") %>% 
+#'                  filter(ITTWTFL == "N") %>% 
 #'                  filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
 #'                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
-#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
+#' ASL_f <- ASL %>% filter(ITTWTFL == "N") %>% 
+#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>% 
+#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "temp"))
 #' 
-#' group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
+#' group_data <- left_join(ASL_f, ATE_f %>% select(c("USUBJID", "STUDYID")))
 #' names(group_data) <- labels_over_names(group_data)
 #' 
 #' head(group_data)
@@ -66,14 +69,29 @@ forest_rsp <- function(response, event,
   # var = names(group_data)[1]
   # split data into a tree for data
   # where each leaf is a data.frame with 
-  # the data to compute the survival analysis with
+  # the data to compute the glm analysis with
+  # data_list <- c(
+  #   list(ALL = list(ALL = glm_data)),
+  #   lapply(group_data, function(var) {
+  #     sub_data <- lapply(setNames(unique(var[var != ""]), unique(var[var != ""])), function(value) {
+  #        glm_data[var == value , , drop= FALSE] 
+  #     })
+  #     sub_data[order(names(sub_data),decreasing = F)]
+  #   })
+  # )
+  
   data_list <- c(
     list(ALL = list(ALL = glm_data)),
     lapply(group_data, function(var) {
-      sub_data <- lapply(setNames(unique(var[var != ""]), unique(var[var != ""])), function(value) {
-         glm_data[var == value , , drop= FALSE] 
+      sub_data <- cbind(glm_data, var)
+      sub_data <- subset(sub_data, var != "")
+      #sub_data <- sub_data %>% filter(var != "")
+      if ("" %in% levels(sub_data$var)) sub_data$var <- factor(sub_data$var, levels = levels(sub_data$var)[-which(levels(sub_data$var) == "")])
+      #   sub_data$var <- as.factor(as.character(sub_data$var))
+      sub_data$var <- as.factor(sub_data$var)
+      lapply(split(sub_data, sub_data$var), function(x){
+        x[,-4]
       })
-      sub_data[order(names(sub_data),decreasing = F)]
     })
   )
   
