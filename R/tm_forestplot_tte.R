@@ -139,7 +139,7 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
     arm_var <- input$arm_var
     
     
-    arm_choices <- unique(ANL[[arm_var]])
+    arm_choices <- sort(unique(ANL[[arm_var]]))
     validate(need(arm_choices, "select arm variable"))
     
     sel_ref <- arm_choices[1]
