@@ -42,8 +42,11 @@
 #' 
 #' ATE <- merge(ATE, ASL, by = c("USUBJID", "STUDYID"))
 #' 
-#' head(ATE)                 
-#' 
+#' head(ATE)    
+#' ### Use Atezo Test data             
+#' library(atezo.data)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ## Initialize Teal
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ATE = ATE),

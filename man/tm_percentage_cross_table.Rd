@@ -4,8 +4,8 @@
 \alias{tm_percentage_cross_table}
 \title{Cross table based on rtables}
 \usage{
-tm_percentage_cross_table(label = "Cross Table", x_var, v_var_choices, y_var,
-  y_var_choices)
+tm_percentage_cross_table(label = "Cross Table", x_var,
+  x_var_choices = x_var, y_var, y_var_choices = y_var)
 }
 \description{
 Cross table based on rtables
@@ -24,7 +24,7 @@ ASL <- data.frame(
 x <- teal::init(
   data = list(ASL = ASL),
   modules = root_modules(
-    tm_percentage_cross_table("Cross Table", "x", "y")
+    tm_percentage_cross_table("Cross Table", x_var = "x", y_var = "y")
   )
 )
 
