@@ -31,6 +31,8 @@
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
+#' ASL$temp <- c(rep("A", 500), rep("B", 450), rep("",1202-950))
+#' 
 #' tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
 #' Viewer(tbl_stream)
 #' 
@@ -41,7 +43,7 @@
 #'              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
 #' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% 
 #'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>% 
-#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE"))
+#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "temp"))
 #' 
 #'
 #' group_data <- left_join(ASL_f, ATE_f %>% select(c("USUBJID", "STUDYID")))
@@ -95,7 +97,9 @@ forest_tte <- function(time_to_event, event,
     list(ALL = list(ALL = cox_data)),
     lapply(group_data, function(var) {
       sub_data <- cbind(cox_data, var)
-      sub_data <- subset(sub_data, var != "")
+    #  sub_data <- subset(sub_data, var != "")
+      sub_data <- sub_data %>% filter(var != "")
+      if ("" %in% levels(sub_data$var)) sub_data$var <- factor(sub_data$var, levels = levels(sub_data$var)[-which(levels(sub_data$var) == "")])
    #   sub_data$var <- as.factor(as.character(sub_data$var))
       sub_data$var <- as.factor(sub_data$var)
       lapply(split(sub_data, sub_data$var), function(x){
@@ -103,7 +107,7 @@ forest_tte <- function(time_to_event, event,
       })
     })
   )
-  
+
   # varname=data_list$RACE
   # data_for_value = varname[4]
   # apply the survival analysis
