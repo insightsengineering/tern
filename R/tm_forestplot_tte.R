@@ -136,10 +136,17 @@ srv_forest_survival <- function(input, output, session, datasets, cex = 1.5) {
   observe({
     input$paramcd
     ANL <- datasets$get_data("ATE", filtered = FALSE, reactive = FALSE)
-    updateSelectInput(session, "ref_arm", choices = unique(ANL[[input$arm_var]]),
-                      selected = ANL[[input$arm_var]] %>% unique %>% sort %>% "["(1))
-    updateSelectInput(session, "comp_arm", choices = unique(ANL[[input$arm_var]]),
-                      selected = ANL[[input$arm_var]] %>% unique %>% sort %>% "["(2))
+    arm_var <- input$arm_var
+    
+    
+    arm_choices <- unique(ANL[[arm_var]])
+    validate(need(arm_choices, "select arm variable"))
+    
+    sel_ref <- arm_choices[1]
+    sel_comp <- if (length(arm_choices)>=2) arm_choices[2] else NULL
+
+    updateSelectInput(session, "ref_arm", choices = arm_choices, selected = sel_ref)
+    updateSelectInput(session, "comp_arm", choices = arm_choices, selected = sel_comp)
     
   })
   
