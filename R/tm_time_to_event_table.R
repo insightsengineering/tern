@@ -173,12 +173,15 @@ srv_time_to_event_table <- function(input, output, session, datasets, ref_arm = 
     
     
     ## Now comes the static analysis code
-    
+   
     ## you need to add the encodings
     ATE_f <- ATE_filtered %>%
-      filter(PARAMCD == paramcd, ARM %in% c(ref_arm, comp_arm))
+      filter(PARAMCD == paramcd)
+    
+    ATE_f <- ATE_f[ATE_f[[arm_var]] %in% c(ref_arm, comp_arm), ]
     
     validate(need(nrow(ATE_f) > 15, "need at least 15 data points"))
+    
     
     arm <- ATE_f[[arm_var]]
     
