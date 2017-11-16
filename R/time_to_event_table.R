@@ -116,16 +116,16 @@ time_to_event_table <- function(time_to_event, event, arm,
     ## use coxph score for log-rank
     ## 
     list(
-      us_diff = survdiff(Surv(tte, evnt) ~ arm, rho=0, data = dfi),
+      # us_diff = survdiff(Surv(tte, evnt) ~ arm, rho=0, data = dfi),
       us_ph = coxph(Surv(tte, evnt) ~ arm, data = dfi),
-      str_diff = survdiff(strata_formula, data = dfi),
+      # str_diff = survdiff(strata_formula, data = dfi),
       str_ph = coxph(strata_formula, data = dfi)
     )
   })
   
   us_p <- lapply(fits, function(fit) {
-    ft <- fit$us_diff
-    pchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
+    ft <- fit$us_ph
+    summary(ft)$sctest["pvalue"] # from survdiffpchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
   })
   
   us_hr <- lapply(fits, function(fit) {
@@ -141,8 +141,8 @@ time_to_event_table <- function(time_to_event, event, arm,
 
   # Stratified Analysis
   str_p <- lapply(fits, function(fit) {
-    ft <- fit$str_diff
-    pchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
+    ft <- fit$str_ph
+    summary(ft)$sctest["pvalue"] #pchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
   })
   
   str_hr <- lapply(fits, function(fit) {
@@ -226,7 +226,7 @@ time_to_event_table <- function(time_to_event, event, arm,
       lrrow("95% CI", c(list(NULL), us_ci), indent = 2, format = "(xx.xx, xx.xx)"),
       rrow(),
       rrow("Stratified Analysis"),
-      lrrow("p-value (log-rank) -- CAUTION", c(list(NULL), str_p), indent = 1, format = "xx.xxx"),
+      lrrow("p-value (log-rank)", c(list(NULL), str_p), indent = 1, format = "xx.xxx"),
       rrow(),
       lrrow("Hazard Ratio", c(list(NULL), str_hr), indent = 1, format = "xx.xx"),
       lrrow("95% CI", c(list(NULL), str_ci), indent = 2, format = "(xx.xx, xx.xx)") 
