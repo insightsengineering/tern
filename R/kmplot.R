@@ -169,20 +169,24 @@ kmplot <- function(formula_km, data, add_km = TRUE,
      
     pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
     
+    #### add score test p-value for overall model
+    scpval <- sfit$sctest["pvalue"] %>% rep(., nrow(pvalues)) %>% as.matrix
+    colnames(scpval) <- "scorepval"
   
-    info <- cbind(hr, ci, pvalues)
+    info <- cbind(hr, ci, pvalues, scpval)
     sinfo <- split(as.data.frame(info), 1:nrow(info))
     
     tbl <- do.call(
       rtable,
       c(
-        list(col.names = c("HR", "95% CI of HR", "p-value")),
+        list(col.names = c("HR", "95% CI of HR", "Wald p-value", "Overall Score p-val")),
         lapply(sinfo, function(xi) {
           rrow(
             row.name = rownames(xi),
             rcell(xi$'exp(coef)', format = "xx.xx"),
             rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xx, xx.xx)"),
-            rcell(xi$'Pr(>|z|)', format = "xx.xxx")
+            rcell(xi$'Pr(>|z|)', format = "xx.xxxx"),
+            rcell(xi$'scorepval', format = "xx.xxxx")
           )
         })
       )
