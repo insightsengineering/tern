@@ -60,7 +60,7 @@ ui_percentage_cross_table <- function(id,
   ns <- NS(id)
   
   standard_layout(
-    output = uiOutput(ns("table")),
+    output = whiteSmallWell(uiOutput(ns("table"))),
     encoding = div(
       helpText("Dataset:", tags$code("ASL")),
       optionalSelectInput(ns("x_var"), "x var", x_var_choices, x_var),
