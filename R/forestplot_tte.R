@@ -31,7 +31,7 @@
 #' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ASL <- asl(com.roche.cdt30019.go29436.re)
 #' 
-#' ASL$temp <- c(rep("A", 500), rep("B", 450), rep("",1202-950))
+#' ASL$temp <- c(rep("A", 200), rep("B", 250), rep(NA,1202-450))
 #' 
 #' tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
 #' Viewer(tbl_stream)
@@ -51,7 +51,7 @@
 #' group_data$TCICLVL2 <- factor(group_data$TCICLVL2, levels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"), labels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"))#' 
 #' group_data$SEX <- factor(group_data$SEX, levels = c("F", "M"), labels = c("FEMALE", "MALE"))
 #' group_data$AGE4CAT <- factor(group_data$AGE4CAT, levels = c("<65", "65 to 74", "75 to 84", ">=85"), labels = c("<65", "65 to 74", "75 to 84", ">=85"))
-#' group_data$RACE <- factor(group_data$RACE, levels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"), labels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", NA))
+#' group_data$RACE <- factor(group_data$RACE, levels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"), labels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"))
 #' names(group_data) <- labels_over_names(group_data)
 #' head(group_data)
 #' 
@@ -97,8 +97,8 @@ forest_tte <- function(time_to_event, event,
     list(ALL = list(ALL = cox_data)),
     lapply(group_data, function(var) {
       sub_data <- cbind(cox_data, var)
-    #  sub_data <- subset(sub_data, var != "")
-      sub_data <- sub_data %>% filter(var != "")
+      sub_data <- subset(sub_data, var != "")
+      #sub_data <- sub_data %>% filter(var != "")
       if ("" %in% levels(sub_data$var)) sub_data$var <- factor(sub_data$var, levels = levels(sub_data$var)[-which(levels(sub_data$var) == "")])
    #   sub_data$var <- as.factor(as.character(sub_data$var))
       sub_data$var <- as.factor(sub_data$var)
@@ -122,6 +122,10 @@ forest_tte <- function(time_to_event, event,
   results_survival2 <- unlist(results_survival, recursive = FALSE)
   X <- Reduce(rbind, results_survival2)
   row.names(X) <-names(results_survival2)
+  
+ ## for debugging
+ # rtab <- results_survival2[[1]]
+ # for (i in 2:length(results_survival2)) {rtab <- rbind(rtab,results_survival2[[i]])}
 
   additonal_args <- list(
     col.names = c("Total n",
@@ -208,6 +212,8 @@ forest_tte <- function(time_to_event, event,
 #' tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
 #' Viewer(tbl_stream)
 #' 
+#' ASL$temp <- c(rep("A", 500), rep("B", 450), rep(NA,1202-950))
+#' 
 #' 
 #' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% 
 #'              filter(ITTWTFL == "Y") %>% 
@@ -223,7 +229,7 @@ forest_tte <- function(time_to_event, event,
 #' group_data$TCICLVL2 <- factor(group_data$TCICLVL2, levels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"), labels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"))#' 
 #' group_data$SEX <- factor(group_data$SEX, levels = c("F", "M"), labels = c("FEMALE", "MALE"))
 #' group_data$AGE4CAT <- factor(group_data$AGE4CAT, levels = c("<65", "65 to 74", "75 to 84", ">=85"), labels = c("<65", "65 to 74", "75 to 84", ">=85"))
-#' group_data$RACE <- factor(group_data$RACE, levels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"), labels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", NA))
+#' group_data$RACE <- factor(group_data$RACE, levels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"), labels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"))
 #' names(group_data) <- labels_over_names(group_data)
 #' head(group_data)
 #' 
@@ -436,20 +442,20 @@ survival_results <- function(data){
   arm_freq <- table(data$arm) 
   if (arm_freq[names(arm_freq) == levels(data$arm)[2]] == 0){
     km_sum <- as.data.frame(t(summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table))
-    km_ref_n <- km_sum[1]
+    km_ref_n <- as.numeric(km_sum[1])
     km_comp_n <- 0
-    km_ref_event <- km_sum[4]
+    km_ref_event <- as.numeric(km_sum[4])
     km_comp_event <- 0
-    km_ref_median <- km_sum[7]
+    km_ref_median <- as.numeric(km_sum[7])
     km_comp_median <- NA
   } else if (arm_freq[names(arm_freq) == levels(data$arm)[1]] == 0){
     km_sum <- as.data.frame(t(summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table))
     km_ref_n <- 0
-    km_comp_n <- km_sum[1]
+    km_comp_n <- as.numeric(km_sum[1])
     km_ref_event <- 0
-    km_comp_event <- km_sum[4]
+    km_comp_event <- as.numeric(km_sum[4])
     km_ref_median <- NA
-    km_comp_median <- km_sum[7]
+    km_comp_median <- as.numeric(km_sum[7])
   } else if (arm_freq[names(arm_freq) == levels(data$arm)[2]] * arm_freq[names(arm_freq) == levels(data$arm)[1]] > 0){
     km_sum <- summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table
     km_ref_n <- km_sum[1, 1]
