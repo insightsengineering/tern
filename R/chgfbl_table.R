@@ -28,9 +28,17 @@
 #' ASL_f <- ASL %>% select(STUDYID, USUBJID, ARM, ARMCD)
 #' AQS_f <- AQS %>% select(STUDYID, USUBJID, PARAMCD, PARAM, AVAL, AVISIT, AVISITN, ADY, ABLFL, APBFL, CHG, BASE)
 #'  
-#' ANL <- inner_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID"))
+#' ANL <- inner_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) %>% filter(PARAMCD == "MDASI23")
 #' 
-
+#' # now 
+#' chng_data <- ... # you already have this # do not export
+#' change_table(chng_data) # split by arm_name make columns and then combine
+#' change_plot(chng_data) # group_by(arm_name) make plotA
+#' 
+#' # maybe in future
+#' chng_table <- table...
+#' change_plot(chng_table)
+#' 
 chgfbl_table <- function(data = ANL,
                          arm_var = "ARM",
                          group_by = c("MDASI23", "FATIGI")
@@ -40,12 +48,12 @@ chgfbl_table <- function(data = ANL,
   # Argument checking #
   #####################
   if (any(is.na(data[[arm_var]]))) stop("currently cannot deal with missing values in arm")
-  if (any(group_by %in% unique(data$PARAMCD))) stop("Selected parameters not found in analysis data")
+  if (!all(group_by %in% unique(data$PARAMCD))) stop("Selected parameters not found in analysis data")
   
   testdupvars <- c("STUDYID", "USUBJID",arm_var,"PARAMCD", "PARAM", "AVISIT", "AVISITN")
   
   #Remove any duplicated records and filter on param values
-  data_f <- data[!duplicated(data[testdupvars]),c(testdupvars, "AVAL", "CHG")] %>% 
+  data_f <- data[!duplicated(data[testdupvars]), c(testdupvars, "AVAL", "CHG")] %>% 
     filter(PARAMCD %in% group_by)
   attr(data_f$CHG, "label") <- attr(data_f$AVAL, "label")
   
@@ -71,7 +79,24 @@ chgfbl_table <- function(data = ANL,
     select(arm_name, n:visit, param)
 
   
+  df.s <- split(df.final, df.final$arm_name)
+
+  ## every line in dfi is a point on the plot 
+  dfi <- df.s[[1]]
+  
+  # and a column in rtables lets make this later
+  # coli <- apply(dfi, 1, FUN = function(row) {
+  #   list(
+  #     rrow("name", indent = 1, ...),
+  #     ...
+  #   )
+  # })
+  # cbind(col1, col2, col3)
+  
+  
+  
   #Formatting into rtable object
+  split(df.final, df.final$param)
   outsum <- lapply(split(df.final, df.final$param), function(x) {
       lapply(lapply(split(x, x$visit), function(xi) {
         lapply(split(xi, xi$arm_name), function(xii) {
@@ -85,6 +110,8 @@ chgfbl_table <- function(data = ANL,
       }), list_transpose)
     })
       
+  
+  
   
   
  
@@ -114,5 +141,5 @@ chgfbl_table <- function(data = ANL,
 }
 
 
-ifelse(type == "AVAL", paste0(data_f[[arm_var]], "\nValue at Visit"), paste0(data_f[[arm_var]], "\nChange from Baseline"))
+# ifelse(type == "AVAL", paste0(data_f[[arm_var]], "\nValue at Visit"), paste0(data_f[[arm_var]], "\nChange from Baseline"))
 
