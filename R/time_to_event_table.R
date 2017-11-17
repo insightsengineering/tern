@@ -220,16 +220,16 @@ time_to_event_table <- function(time_to_event, event, arm,
       lrrow("Range", rng, indent = 1, format = "xx.x to xx.x"),
       rrow(),
       rrow("Unstratified Analysis"),
-      lrrow("p-value (log-rank)", c(list(NULL), us_p), indent = 1, format = "xx.xxx"),
+      lrrow("p-value (log-rank)", c(list(NULL), us_p), indent = 1, format = "xx.xxxx"),
       rrow(),
-      lrrow("Hazard Ratio", c(list(NULL), us_hr), indent = 1, format = "xx.xx"),
-      lrrow("95% CI", c(list(NULL), us_ci), indent = 2, format = "(xx.xx, xx.xx)"),
+      lrrow("Hazard Ratio", c(list(NULL), us_hr), indent = 1, format = "xx.xxxx"),
+      lrrow("95% CI", c(list(NULL), us_ci), indent = 2, format = "(xx.xxxx, xx.xxxx)"),
       rrow(),
       rrow("Stratified Analysis"),
-      lrrow("p-value (log-rank)", c(list(NULL), str_p), indent = 1, format = "xx.xxx"),
+      lrrow("p-value (log-rank)", c(list(NULL), str_p), indent = 1, format = "xx.xxxx"),
       rrow(),
-      lrrow("Hazard Ratio", c(list(NULL), str_hr), indent = 1, format = "xx.xx"),
-      lrrow("95% CI", c(list(NULL), str_ci), indent = 2, format = "(xx.xx, xx.xx)") 
+      lrrow("Hazard Ratio", c(list(NULL), str_hr), indent = 1, format = "xx.xxxx"),
+      lrrow("95% CI", c(list(NULL), str_ci), indent = 2, format = "(xx.xxxx, xx.xxxx)") 
     ),
     rrows_tp
   )

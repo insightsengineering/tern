@@ -183,8 +183,8 @@ kmplot <- function(formula_km, data, add_km = TRUE,
         lapply(sinfo, function(xi) {
           rrow(
             row.name = rownames(xi),
-            rcell(xi$'exp(coef)', format = "xx.xx"),
-            rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xx, xx.xx)"),
+            rcell(xi$'exp(coef)', format = "xx.xxxx"),
+            rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
             rcell(xi$'Pr(>|z|)', format = "xx.xxxx"),
             rcell(xi$'scorepval', format = "xx.xxxx")
           )
