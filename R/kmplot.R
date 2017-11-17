@@ -191,7 +191,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
         })
       )
     )
-    tblstr <- toString(tbl, gap = 0)
+    tblstr <- toString(tbl, gap = 1)
     lab <- paste0(info_coxph, "\n", tblstr)
     grid.text(
       label = lab,
@@ -220,7 +220,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
         })
       )
     )
-    tblstr2 <- toString(tblkm, gap = 0)
+    tblstr2 <- toString(tblkm, gap = 1)
      
     grid.text(label = tblstr2,
               x = unit(1, "npc") - stringWidth(tblstr2) - unit(1, "lines"),
