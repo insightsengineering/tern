@@ -78,7 +78,7 @@ tm_chgfbl_plot <- function(label,
                            errbar = "SE",
                            errbar_choices = errbar,
                            ref_line_txt = NULL,
-                           #plot_height = c(600, 200, 2000),
+                           plot_height = c(600, 200, 2000),
                            pre_output = NULL, post_output = NULL
                            ){
   
@@ -116,7 +116,7 @@ ui_chgfbl_plot <- function(id,
                            errbar = "SE",
                            errbar_choices = errbar,
                            ref_line_txt = NULL,
-                           #plot_height,
+                           plot_height,
                            pre_output = NULL, post_output = NULL
                            ) {
   
@@ -124,7 +124,7 @@ ui_chgfbl_plot <- function(id,
   ns <- NS(id)
   
   standard_layout(
-    output = uiOutput(ns("chgfbl_plot")),
+    output = uiOutput(ns("plot_ui")),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ASL"), tags$code("AQS")),
@@ -138,9 +138,11 @@ ui_chgfbl_plot <- function(id,
       optionalSelectInput(ns("ytype"), div("Y-axis value type", tags$br(), helpText("Select one type of value to plot on y-axis")), 
                           ytype_choices, ytype, multiple = FALSE),
       optionalSelectInput(ns("errbar"), div("Error bar type", tags$br(), helpText("Select the type of error bar to display")), 
-                          errbar_choices, errbar, multiple = FALSE)
+                          errbar_choices, errbar, multiple = FALSE),
       #textInput(ns("ref_line_txt"), div("Reference Line(s)", tags$br(), helpText("Enter numeric value(s) of the horizontal reference lines, separated by comma")))
-      #optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
+      
+      tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;"),
+      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
     pre_output = pre_output,
@@ -162,14 +164,14 @@ ui_chgfbl_plot <- function(id,
 #' 
 srv_chgfbl_plot <- function(input, output, session, datasets) {
   
-  # ## dynamic plot height
-  # output$plot_ui <- renderUI({
-  #   plot_height <- input$plot_height
-  #   validate(need(plot_height, "need valid plot height"))
-  #   plotOutput(session$ns("chgfblplot"), height=plot_height)
-  # })
+  ## dynamic plot height
+  output$plot_ui <- renderUI({
+    plot_height <- input$plot_height
+    validate(need(plot_height, "need valid plot height"))
+    plotOutput(session$ns("chgfbl_plot"), height=plot_height)
+  })
   
-  output$chgfbl_plot <- renderUI({
+  output$chgfbl_plot <- renderPlot({
     
     ASL_filtered <- datasets$get_data("ASL", reactive = TRUE, filtered = TRUE)
     AQS_filtered <- datasets$get_data("AQS", reactive = TRUE, filtered = TRUE)
