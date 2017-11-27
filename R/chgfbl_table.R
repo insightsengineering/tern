@@ -19,6 +19,7 @@
 #' library(tidyr)
 #' library(atezo.data)
 #' library(teal.oncology)
+#' library(forcats)
 #' library(gridExtra)
 #' 
 #' ASL <- asl(com.roche.cdpt7722.wo29637.rl)
@@ -135,7 +136,7 @@ chgfbl_plot <- function(data,
     mutate(ll = mean - errval,
            ul = mean + errval,
            visitlab = fct_relabel(visit, shorten_visit), 
-           arm_short = gsub(" ", "\n", arm))
+           arm_short = unlist(lapply(as.character(arm), reflow, limit=15)))
   
   
   if (ytype == "AVAL") {
@@ -164,9 +165,9 @@ chgfbl_plot <- function(data,
   
   #display count at each visit table as separate plot
   t <- ggplot(plotdat, aes(x = visitlab, y = fct_rev(factor(arm_short)), label = n, color = arm)) +
-    geom_text(size = 2.5) + theme_bw() + 
-    labs(subtitle = "Number of subjects at each visit") +
-    theme(legend.position="none", 
+    geom_text(size = 2.5) + theme_bw() +
+    labs(subtitle = "Number of subjects at each visit")
+  t1 <- t + theme(legend.position="none", 
           axis.title.y = element_blank(),
           axis.text.y = element_text(color = rev(unique(ggplot_build(t)$data[[1]]$colour)), face = "bold"),
           axis.text.x = element_blank(), 
@@ -175,7 +176,7 @@ chgfbl_plot <- function(data,
           panel.grid = element_blank()) 
   
   #wrap plot and table into grobs, and align left margins
-  glist <- lapply(list(plot=p, text=t), ggplotGrob)
+  glist <- lapply(list(plot=p, text=t1), ggplotGrob)
   leftmar <- do.call(unit.pmax, lapply(glist, "[[", "widths"))
   glist.aligned <- lapply(glist, function(x) {
     x$widths <- leftmar
@@ -184,6 +185,7 @@ chgfbl_plot <- function(data,
   
   
   #Plot the two grobs using grid.arrange
+  grid.newpage()
   do.call(grid.arrange, c(glist.aligned, 
                           list(ncol=1), 
                           list(heights=c(8,length(unique(plotdat$arm))))))
@@ -233,7 +235,7 @@ chgfbl_table <- function(data) {
   ##########################################3
   colname.n <- rep(unlist(out_sum[[1]][[2]]), each = 2)
   colname.txt <- names(colname.n) %>%
-    gsub(" ", "\n", .) %>%
+    vapply(function(x) reflow(x, limit = 15), character(1)) %>%
     sub("_.*$", "", .) %>%
     paste(c("Value at Visit", ifelse(col2type == "CHG", "Change from\nBaseline", 
                                      ifelse(col2type == "PCHG", "% Change from\nBaseline", NA_character_))), sep="\n")
@@ -266,3 +268,34 @@ chgfbl_table <- function(data) {
 # })
 # cbind(col1, col2, col3)
 
+
+
+#' Helper function to line break
+#' x = "hellO-world abcerewerwere testing "
+#' reflow(x)
+reflow <- function(x, 
+                    delim = " ", 
+                    limit = NULL) {
+  xsplit <- unlist(strsplit(x, delim))
+  ctxt = ""
+  n = 0
+  
+  if (is.null(limit)) {limit <- max(unlist(lapply(xsplit, nchar)))}
+  
+  for (i in xsplit) {
+    if (nchar(i) > limit) {
+      ctxt <- ifelse(n, paste0(ctxt, "\n", i, "\n"), paste0(ctxt, i, "\n"))
+      n = 0
+    } else if ((n + nchar(i)) > limit) {
+      ctxt <- paste0(ctxt, "\n", i)
+      n = nchar(i)
+    } else {
+      ctxt <- ifelse(n, paste0(ctxt, delim, i), paste0(ctxt, i))
+      n = n + nchar(i)
+    }
+  }
+  
+  outtxt <- ifelse(substring(ctxt, nchar(ctxt)) == "\n", substr(ctxt, 1, nchar(ctxt)-1), ctxt)
+  
+  outtxt
+}
