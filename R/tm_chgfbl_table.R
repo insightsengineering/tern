@@ -44,7 +44,7 @@
 #'        paramcd = "FATIGI",
 #'        paramcd_choices = unique(AQS$PARAMCD),
 #'        arm_var = "ARM",
-#'        arm_var_choices = c("ARM", "ARMCD", "AGE65"),
+#'        arm_var_choices = c("ARM", "ARMCD", "AGE65", "ICC"),
 #'    ))
 #' )   
 #' shinyApp(x$ui, x$server) 
