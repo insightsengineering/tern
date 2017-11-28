@@ -33,8 +33,8 @@
 #' ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) %>% filter(PARAMCD == "MDASI23")
 #' 
 #' df <- chgfbl_data(data = ANL)
-#' chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", arm_label = "Treatment Arm", ref_line = c(2, -2))
-#' chgfbl_plot(data = df, ytype = "AVAL", errbar = "SD", arm_label = "Treatment Arm", ref_line = 3)
+#' chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
+#' chgfbl_plot(data = df, ytype = "AVAL", errbar = "SD", ref_line = 3, n_rotate = T)
 #' 
 #' tbl <- chgfbl_table(data=df)
 #' Viewer(tbl)
@@ -101,9 +101,11 @@ chgfbl_data <- function(data,
 chgfbl_plot <- function(data,
                         ytype = "CHG",
                         errbar = "SE",
-                        arm_label = "Treatment Arms",
-                        ref_line = NULL) {
+                        ref_line = NULL,
+                        fontsize = 20,
+                        n_rotate = TRUE) {
   
+  ## Calculate height of error bar depending on errbar type selection
   if (errbar == "SD") {
     data$errval = data$sd
   } else if (errbar == "SE") {
@@ -112,7 +114,7 @@ chgfbl_plot <- function(data,
     data$errval = 1.96*data$sd/sqrt(data$n)
   } else {data$errval = NA}
   
-  
+  ## Shorten visit names 
   visitcd <- data.frame(keywd = character(0), shortkey = character(0), stringsAsFactors = FALSE) %>%
     mapply(c, .,
            c("RANDOMIZATION", "R"), 
@@ -132,40 +134,49 @@ chgfbl_plot <- function(data,
     x
   }
 
+  ## Final data used for plotting
+  # ll/ul = lower or upper bounds of error bar
+  # visitlab = shortened visit name to display on x-axis
+  # arm_short = shortened/re-formated arm name to display in table
   plotdat <- data %>% filter(type == ytype) %>%
     mutate(ll = mean - errval,
            ul = mean + errval,
            visitlab = fct_relabel(visit, shorten_visit), 
            arm_short = unlist(lapply(as.character(arm), reflow, limit=15)))
   
-  
+  ## Depending on y-axis variable, reference line at 0 plotted for CHG/PCHG, none plotted for AVAL by default
   if (ytype == "AVAL") {
-    ylabel = "Value at Visit"
+    ylabel <- "Value at Visit"
+    refs <- ifelse(!is.null(ref_line), list(geom_hline(yintercept = ref_line, color = "grey75", linetype = 2, size = 1)), list(NULL))
   } else if (ytype == "CHG") {
-    ylabel = "Change from Baseline"
+    ylabel <- "Change from Baseline"
+    refs <- list(geom_hline(yintercept = 0, color = "grey75", size = 1),
+      geom_hline(yintercept = c(ref_line, 0), color = "grey75", linetype = 2, size = 1))
   } else if (ytype == "PCHG") {
-    ylabel = "% Change from Baseline"
+    ylabel <- "% Change from Baseline"
+    refs <- list(geom_hline(yintercept = 0, color = "grey75", size = 1),
+      geom_hline(yintercept = c(ref_line, 0), color = "grey75", linetype = 2, size = 1))
   }
   
-  # move second group .05 to the left and right
+  # move second group .2 to the left and right
   pd <- position_dodge(0.2) 
   
   #make change from baseline plot
   p <- ggplot(plotdat, aes(x = visitlab, y = mean, group = arm, color= arm)) + 
-    geom_hline(yintercept = 0, color = "grey75", size = 1) +
-    geom_hline(yintercept = ifelse(!is.null(ref_line),ref_line, 0), color = "grey75", linetype = 2, size = 1) +
+    refs +
     geom_line(position=pd, size = 1) + 
     geom_point(position=pd) + 
     geom_errorbar(data = plotdat, aes(ymin = ll, ymax = ul), position=pd) +
-    theme_bw() + labs(color = arm_label, x = "Visits", y = ylabel ) +
+    theme_bw() + labs(x = "Visits", y = ylabel ) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           legend.position = "none", legend.background = element_rect(fill="grey95"),
           legend.direction = "horizontal", legend.title = element_text(face="bold"),
-          axis.text.x = element_text(angle = 90))
+          axis.text.x = element_text(angle = 90, vjust = 0.5), 
+          text = element_text(size=fontsize))
   
   #display count at each visit table as separate plot
   t <- ggplot(plotdat, aes(x = visitlab, y = fct_rev(factor(arm_short)), label = n, color = arm)) +
-    geom_text(size = 2.5) + theme_bw() +
+    geom_text(aes(angle = ifelse(isTRUE(n_rotate),90,0)), size = fontsize*0.3) + theme_bw() +
     labs(subtitle = "Number of subjects at each visit")
   t1 <- t + theme(legend.position="none", 
           axis.title.y = element_blank(),
@@ -173,7 +184,8 @@ chgfbl_plot <- function(data,
           axis.text.x = element_blank(), 
           axis.title.x = element_blank(), 
           axis.ticks.x = element_blank(),
-          panel.grid = element_blank()) 
+          panel.grid = element_blank(), 
+          text = element_text(size=fontsize)) 
   
   #wrap plot and table into grobs, and align left margins
   glist <- lapply(list(plot=p, text=t1), ggplotGrob)
