@@ -1,18 +1,15 @@
 #' Change from Baseline Table Caclulation Function 
 #' 
+#' 
 #' @param response Tumor response data
 #' @param arm Arm information data as factor
-#' @param 
-#'                     
-#' @details 
-#'       
-                                                                                
+#' 
+#' 
 #' @export
 #' 
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
 #' 
 #' @examples 
-#' 
 #' 
 #' \dontrun{
 #' library(dplyr)
@@ -49,7 +46,7 @@
 #' # chng_table <- table...
 #' # change_plot(chng_table)
 #' # selection for chg_var can be "CHG" or "PCHG"
-#' 
+#' }
 chgfbl_data <- function(data,
                         arm_var = "ARM"
                         ) {

@@ -11,9 +11,9 @@
 #' @param arm_var_choices choices of arm variables
 #' @param arm_label label to display on plot for the selected arm variable
 #' @param ytype selected type of value to plot for y-axis
-#' @param ytype_choices choices of possible ytype: AVAL=value at visit, CHG = change from baseline, PCHG = % change from baseline
+#' @param ytype_choices choices of possible ytype: AVAL=value at visit, CHG = change from baseline, PCHG = \% change from baseline
 #' @param errbar selected type of error bar for the plot
-#' @param errbar_choices choices of types of error bar: SE = standarnd error, SD = standard deviation, 95CI = 95% confidence interval of the mean
+#' @param errbar_choices choices of types of error bar: SE = standarnd error, SD = standard deviation, 95CI = 95\% confidence interval of the mean
 #' @param ref_line_txt horizontal reference lines to display on plot, entered as text separated by comma
 #' @param plot_height height of the change from baseline plot
 #' @param cex multiplier applied to overall fontsize
@@ -46,6 +46,10 @@
 #' options(teal_logging = FALSE)
 #' 
 #' 
+#' is_dpl <- duplicated(AQS$PARAMCD)
+#'  
+#' paramcd_choices <- setNames(AQS$PARAMCD[!is_dpl], paste(AQS$PARAMCD[!is_dpl], AQS$PARAM[!is_dpl], sep = " - "))
+#' 
 #' x <- teal::init(
 #'   data = list(ASL = ASL, AQS = AQS),
 #'   modules = root_modules(
@@ -54,7 +58,7 @@
 #'     tm_chgfbl_plot(
 #'        label = "Change from Baseline Plot",
 #'        paramcd = "FATIGI",
-#'        paramcd_choices = unique(AQS$PARAMCD),
+#'        paramcd_choices = paramcd_choices,
 #'        arm_var = "ARM",
 #'        arm_var_choices = c("ARM", "ARMCD", "AGE65", "ICC"),
 #'        ytype = "CHG",
