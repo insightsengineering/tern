@@ -43,21 +43,21 @@ itable(data, x = time , y = arm, FUN = function(dfij) {
 })
 
 
-dm_table <- function(data, vars, by, FUN = ...) {
+dm_table <- function(data, anl_var, by_row_var=NULL, by_col_var, FUN = ...) {
   
   gather(data, vars)
   itable(data, x = ... , y = by, FUN )
   
 }
 
-visit_table <- function(data, value_var, visit_var, arm_var) {
+visit_table <- function(data, value_var, visit_var, arm_var, FUN) {
   
   ...
   itable()
 }
 
 
-visit_table_bl <- function(data, value_var, chngbl_var, visit_var, arm_var) {
+visit_table_bl <- function(data, value_var, chngbl_var, visit_var, arm_var, FUN) {
   
   ...
   itable()
