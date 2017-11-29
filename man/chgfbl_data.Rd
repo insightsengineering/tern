@@ -36,7 +36,7 @@ AQS_f <- AQS \%>\% select(STUDYID, USUBJID, PARAMCD, PARAM, AVAL, AVISIT, AVISIT
 #AVALU variable not available in AQS
 #AQS_f$AVALU <- "kg/m^2"
 
-ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) \%>\% filter(PARAMCD == "MDASI23")
+ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) \%>\% filter(PARAMCD == "FATIGI")
 
 df <- chgfbl_data(data = ANL)
 chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)

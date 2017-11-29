@@ -11,18 +11,13 @@
 #' @param arm_var_choices choices of arm variables
 #' @param arm_label label to display on plot for the selected arm variable
 #' @param ytype selected type of value to plot for y-axis
-#' @param ytype_choices choices of possible ytype: AVAL=value at visit, CHG =
-#'   change from baseline, PCHG = \% change from baseline
+#' @param ytype_choices choices of possible ytype: AVAL=value at visit, CHG = change from baseline, PCHG = \% change from baseline
 #' @param errbar selected type of error bar for the plot
-#' @param errbar_choices choices of types of error bar: SE = standarnd error, SD
-#'   = standard deviation, 95CI = 95\% confidence interval of the mean
-#' @param ref_line_txt horizontal reference lines to display on plot, entered as
-#'   text separated by comma
+#' @param errbar_choices choices of types of error bar: SE = standarnd error, SD = standard deviation, 95CI = 95\% confidence interval of the mean
+#' @param ref_line_txt horizontal reference lines to display on plot, entered as text separated by comma
 #' @param plot_height height of the change from baseline plot
-#' @param font_size font size to use for text in plot
-#' @param n_rotate Default \code{FALSE} display text in frequency table
-#'   horizontally, or \code{TRUE} to display text veritically
-#'   
+#' @param font_sie fontsize to pass to plotting function
+#' 
 #'   
 #' @details Package \code{forcats} used to re-format arm data into leveled
 #' factors.
@@ -70,11 +65,9 @@
 #'        arm_var = "ARM",
 #'        arm_var_choices = arm_var_choices_labelled,
 #'        ytype = "CHG",
-#'        ytype_choices = setNames(c("CHG", "AVAL"), 
-#'                        paste(c("CHG", "AVAL"), c("Change from Baseline", "Value at Visit"),sep=" - ")),
+#'        ytype_choices = c("CHG", "AVAL"),
 #'        errbar = "SE",
-#'        errbar_choices = c("SE", "SD", "95CI", "IQR"),
-#'        ref_line_txt = "2, -2"
+#'        errbar_choices = c("SE", "SD", "95CI", "IQR")
 #'    ))
 #' )   
 #' shinyApp(x$ui, x$server)
@@ -92,10 +85,10 @@ tm_chgfbl_plot <- function(label,
                            errbar_choices = errbar,
                            ref_line_txt = NULL,
                            plot_height = c(800, 400, 2000),
-                           font_size = c(16, 8, 30),
+                           font_size = c(20, 10, 30),
                            n_rotate = TRUE,
                            pre_output = NULL, post_output = NULL
-                           ){
+){
   
   args <- as.list(environment())
   
@@ -134,7 +127,7 @@ ui_chgfbl_plot <- function(id,
                            font_size, 
                            n_rotate,
                            pre_output = NULL, post_output = NULL
-                           ) {
+) {
   
   
   ns <- NS(id)
@@ -149,18 +142,19 @@ ui_chgfbl_plot <- function(id,
                           paramcd_choices, paramcd, multiple = FALSE),
       optionalSelectInput(ns("arm_var"), div("Grouping Variable", tags$br(), helpText("Select one variable to use for grouping")), 
                           arm_var_choices, arm_var, multiple = FALSE),
-      #textInput(ns("arm_label"), label = div("Grouping Variable Label", tags$br(), helpText("Enter the label for grouping variable to display on plot")),
-      #           value = arm_label),
       
       optionalSelectInput(ns("ytype"), div("Y-axis value type", tags$br(), helpText("Select one type of value to plot on y-axis")), 
                           ytype_choices, ytype, multiple = FALSE),
       optionalSelectInput(ns("errbar"), div("Error bar type", tags$br(), helpText("Select the type of error bar to display")), 
                           errbar_choices, errbar, multiple = FALSE),
-      textInput(ns("ref_line_txt"), label = div("Reference Line(s)", tags$br(), 
-                                                helpText("Enter numeric value(s) of the horizontal reference lines, separated by comma")), value = ref_line_txt),
+      textInput(ns("ref_line_txt"), 
+                label = div("Reference Line(s)", tags$br(), 
+                            helpText("Enter numeric value(s) of horizontal reference lines, separated by comma (eg. -2, 1)")), 
+                value = ref_line_txt),
       
       tags$label("Plot Settings", class="text-primary", style="margin-top: 15px;"),
       optionalSliderInputValMinMax(ns("plot_height"), "Plot height", plot_height, ticks = FALSE),
+      sliderInput(ns("y_range"), label = "Y-axis range to display", min = 0, max = 1, value = c(0,1)),
       optionalSliderInputValMinMax(ns("font_size"), "Text font size", font_size, ticks = FALSE),
       checkboxInput(ns("n_rotate"), "Display frequency table vertically?", value = n_rotate)
     ),
@@ -184,6 +178,30 @@ ui_chgfbl_plot <- function(id,
 #' 
 srv_chgfbl_plot <- function(input, output, session, datasets) {
   
+  # Deal With Reactivity/Inputs
+  ASL_filtered <- reactive({
+    ASL_f <- datasets$get_data("ASL", reactive = TRUE, filtered = TRUE)
+    ASL_f
+  })
+  
+  AQS_filtered <- reactive({
+    AQS_f <- datasets$get_data("AQS", reactive = TRUE, filtered = TRUE)
+    AQS_f
+  })
+  
+  # Update UI choices depending on selection of previous options
+  observe({
+    input$paramcd
+    input$ytype
+    
+    ANL <- datasets$get_data("AQS", filtered = FALSE, reactive = FALSE) %>% filter(PARAMCD == input$paramcd)
+    
+    updateSliderInput(session, "y_range", 
+                        min = -ceiling(max(abs(ANL[[input$ytype]]), na.rm=T))*1.5, 
+                        max = ceiling(max(abs(ANL[[input$ytype]]), na.rm=T))*1.5, 
+                        value = c(floor(min(ANL[[input$ytype]], na.rm=T)), ceiling(max(ANL[[input$ytype]], na.rm=T))))
+  })
+  
   ## dynamic plot height
   output$plot_ui <- renderUI({
     plot_height <- input$plot_height
@@ -193,8 +211,8 @@ srv_chgfbl_plot <- function(input, output, session, datasets) {
   
   output$chgfbl_plot <- renderPlot({
     
-    ASL_filtered <- datasets$get_data("ASL", reactive = TRUE, filtered = TRUE)
-    AQS_filtered <- datasets$get_data("AQS", reactive = TRUE, filtered = TRUE)
+    ASL_filtered <- ASL_filtered()
+    AQS_filtered <- AQS_filtered()
     
     paramcd      <- input$paramcd
     arm_var      <- input$arm_var
@@ -202,7 +220,10 @@ srv_chgfbl_plot <- function(input, output, session, datasets) {
     errbar       <- input$errbar
     ref_line_txt <- input$ref_line_txt
     font_size    <- input$font_size
+    y_range      <- input$y_range
     n_rotate     <- input$n_rotate
+    
+    print(y_range)
     
     # Validating inputs
     validate(need(!is.null(AQS_filtered) && is.data.frame(AQS_filtered), "no data left"))
@@ -226,7 +247,7 @@ srv_chgfbl_plot <- function(input, output, session, datasets) {
       ref_line <- as.numeric(unlist(strsplit(ref_line_txt, ",")))
       validate(need(all(!is.na(ref_line)), "Not all values entered for reference line(s) were numeric"))
     } else {ref_line <- NULL}
-
+    
     
     ## Create change from baseline data to be used for plot function
     df <- chgfbl_data(data = ANL,
@@ -237,12 +258,11 @@ srv_chgfbl_plot <- function(input, output, session, datasets) {
                 ytype = ytype,
                 errbar = errbar,
                 ref_line = ref_line,
-                fontsize = font_size, 
+                fontsize = font_size,
+                yrange = y_range,
                 n_rotate = n_rotate
     )
     
     #if (is(plot, "try-error")) validate(need(FALSE, paste0("could not create change from baseline plot:\n\n", plot)))
-
-    
   })
 }

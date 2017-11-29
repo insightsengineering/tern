@@ -29,7 +29,7 @@
 #' #AVALU variable not available in AQS
 #' #AQS_f$AVALU <- "kg/m^2"
 #' 
-#' ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) %>% filter(PARAMCD == "MDASI23")
+#' ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) %>% filter(PARAMCD == "FATIGI")
 #' 
 #' df <- chgfbl_data(data = ANL)
 #' chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
@@ -72,6 +72,8 @@ chgfbl_data <- function(data,
   df <- gather(data_f, type, value, c("AVAL", "CHG")) %>%
     mutate(arm = factor(.[[arm_var]]),
            arm_name = factor(paste(.[[arm_var]], type, sep="_")))
+  
+  if (all(is.na(df$value))) stop("Check data - there are no valid observations for the selected parameters")
   
   df.sum <- df %>% filter(!is.na(value)) %>%
     group_by(arm_name, arm, type, PARAMCD, PARAM, AVALU, AVISIT, AVISITN) %>%

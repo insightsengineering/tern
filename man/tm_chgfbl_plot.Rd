@@ -7,7 +7,7 @@
 tm_chgfbl_plot(label, paramcd, paramcd_choices = paramcd, arm_var = "ARM",
   arm_var_choices = arm_var, ytype = "CHG", ytype_choices = ytype,
   errbar = "SE", errbar_choices = errbar, ref_line_txt = NULL,
-  plot_height = c(800, 400, 2000), font_size = c(16, 8, 30),
+  plot_height = c(800, 400, 2000), font_size = c(20, 10, 30),
   n_rotate = TRUE, pre_output = NULL, post_output = NULL)
 }
 \arguments{
@@ -23,23 +23,15 @@ tm_chgfbl_plot(label, paramcd, paramcd_choices = paramcd, arm_var = "ARM",
 
 \item{ytype}{selected type of value to plot for y-axis}
 
-\item{ytype_choices}{choices of possible ytype: AVAL=value at visit, CHG =
-change from baseline, PCHG = \% change from baseline}
+\item{ytype_choices}{choices of possible ytype: AVAL=value at visit, CHG = change from baseline, PCHG = \% change from baseline}
 
 \item{errbar}{selected type of error bar for the plot}
 
-\item{errbar_choices}{choices of types of error bar: SE = standarnd error, SD
-= standard deviation, 95CI = 95\% confidence interval of the mean}
+\item{errbar_choices}{choices of types of error bar: SE = standarnd error, SD = standard deviation, 95CI = 95\% confidence interval of the mean}
 
-\item{ref_line_txt}{horizontal reference lines to display on plot, entered as
-text separated by comma}
+\item{ref_line_txt}{horizontal reference lines to display on plot, entered as text separated by comma}
 
 \item{plot_height}{height of the change from baseline plot}
-
-\item{font_size}{font size to use for text in plot}
-
-\item{n_rotate}{Default \code{FALSE} display text in frequency table
-horizontally, or \code{TRUE} to display text veritically}
 
 \item{pre_output}{optional, \code{shiny.tag} with text placed before the
 output to put the output into context. For example the
@@ -50,6 +42,8 @@ output to put the output into context. For example the
 \code{\link[shiny]{helpText}} elements are useful.}
 
 \item{arm_label}{label to display on plot for the selected arm variable}
+
+\item{font_sie}{fontsize to pass to plotting function}
 }
 \value{
 an \code{\link[teal]{module}} object
@@ -100,11 +94,9 @@ x <- teal::init(
        arm_var = "ARM",
        arm_var_choices = arm_var_choices_labelled,
        ytype = "CHG",
-       ytype_choices = setNames(c("CHG", "AVAL"), 
-                       paste(c("CHG", "AVAL"), c("Change from Baseline", "Value at Visit"),sep=" - ")),
+       ytype_choices = c("CHG", "AVAL"),
        errbar = "SE",
-       errbar_choices = c("SE", "SD", "95CI", "IQR"),
-       ref_line_txt = "2, -2"
+       errbar_choices = c("SE", "SD", "95CI", "IQR")
    ))
 )   
 shinyApp(x$ui, x$server)
