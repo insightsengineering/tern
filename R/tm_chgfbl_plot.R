@@ -11,13 +11,18 @@
 #' @param arm_var_choices choices of arm variables
 #' @param arm_label label to display on plot for the selected arm variable
 #' @param ytype selected type of value to plot for y-axis
-#' @param ytype_choices choices of possible ytype: AVAL=value at visit, CHG = change from baseline, PCHG = \% change from baseline
+#' @param ytype_choices choices of possible ytype: AVAL=value at visit, CHG =
+#'   change from baseline, PCHG = \% change from baseline
 #' @param errbar selected type of error bar for the plot
-#' @param errbar_choices choices of types of error bar: SE = standarnd error, SD = standard deviation, 95CI = 95\% confidence interval of the mean
-#' @param ref_line_txt horizontal reference lines to display on plot, entered as text separated by comma
+#' @param errbar_choices choices of types of error bar: SE = standarnd error, SD
+#'   = standard deviation, 95CI = 95\% confidence interval of the mean
+#' @param ref_line_txt horizontal reference lines to display on plot, entered as
+#'   text separated by comma
 #' @param plot_height height of the change from baseline plot
-#' @param cex multiplier applied to overall fontsize
-#' 
+#' @param font_size font size to use for text in plot
+#' @param n_rotate Default \code{FALSE} display text in frequency table
+#'   horizontally, or \code{TRUE} to display text veritically
+#'   
 #'   
 #' @details Package \code{forcats} used to re-format arm data into leveled
 #' factors.
@@ -45,10 +50,13 @@
 #' 
 #' options(teal_logging = FALSE)
 #' 
+#' parammap <- unique(AQS[c("PARAM", "PARAMCD")]) 
+#' paramcd_choices_labelled <- setNames(parammap$PARAMCD, paste(parammap$PARAMCD, parammap$PARAM, sep = " - "))
 #' 
-#' is_dpl <- duplicated(AQS$PARAMCD)
-#'  
-#' paramcd_choices <- setNames(AQS$PARAMCD[!is_dpl], paste(AQS$PARAMCD[!is_dpl], AQS$PARAM[!is_dpl], sep = " - "))
+#' arm_var_choices_list <- c("ARM", "ARMCD", "AGE65", "SEX", "HSTSTYP", "PMETA", 
+#'                           "IC","ICC", "TCC", "ICCAT1", "ICCAT2", "ICCAT3", "BIO2ICL")
+#' arm_var_choices_labelled <- setNames(arm_var_choices_list, 
+#'                             paste(arm_var_choices_list, labels_over_names(ASL[arm_var_choices_list]), sep=" - "))
 #' 
 #' x <- teal::init(
 #'   data = list(ASL = ASL, AQS = AQS),
@@ -58,13 +66,14 @@
 #'     tm_chgfbl_plot(
 #'        label = "Change from Baseline Plot",
 #'        paramcd = "FATIGI",
-#'        paramcd_choices = paramcd_choices,
+#'        paramcd_choices = paramcd_choices_labelled,
 #'        arm_var = "ARM",
-#'        arm_var_choices = c("ARM", "ARMCD", "AGE65", "ICC"),
+#'        arm_var_choices = arm_var_choices_labelled,
 #'        ytype = "CHG",
-#'        ytype_choices = c("CHG", "AVAL"),
+#'        ytype_choices = setNames(c("CHG", "AVAL"), 
+#'                        paste(c("CHG", "AVAL"), c("Change from Baseline", "Value at Visit"),sep=" - ")),
 #'        errbar = "SE",
-#'        errbar_choices = c("SE", "95CI"),
+#'        errbar_choices = c("SE", "SD", "95CI", "IQR"),
 #'        ref_line_txt = "2, -2"
 #'    ))
 #' )   
@@ -83,7 +92,7 @@ tm_chgfbl_plot <- function(label,
                            errbar_choices = errbar,
                            ref_line_txt = NULL,
                            plot_height = c(800, 400, 2000),
-                           font_size = c(20, 10, 30),
+                           font_size = c(16, 8, 30),
                            n_rotate = TRUE,
                            pre_output = NULL, post_output = NULL
                            ){

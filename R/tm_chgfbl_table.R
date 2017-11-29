@@ -33,6 +33,14 @@
 #' 
 #' options(teal_logging = FALSE)
 #' 
+#' parammap <- unique(AQS[c("PARAM", "PARAMCD")]) 
+#' paramcd_choices_labelled <- setNames(parammap$PARAMCD, paste(parammap$PARAMCD, parammap$PARAM, sep = " - "))
+#' 
+#' arm_var_choices_list <- c("ARM", "ARMCD", "AGE65", "SEX", "HSTSTYP", "PMETA", 
+#'                           "IC","ICC", "TCC", "ICCAT1", "ICCAT2", "ICCAT3", "BIO2ICL")
+#' arm_var_choices_labelled <- setNames(arm_var_choices_list, 
+#'                             paste(arm_var_choices_list, labels_over_names(ASL[arm_var_choices_list]), sep=" - "))
+#' 
 #' 
 #' x <- teal::init(
 #'   data = list(ASL = ASL, AQS = AQS),
@@ -42,9 +50,9 @@
 #'     tm_chgfbl_table(
 #'        label = "Change from Baseline Table",
 #'        paramcd = "FATIGI",
-#'        paramcd_choices = unique(AQS$PARAMCD),
+#'        paramcd_choices = paramcd_choices_labelled,
 #'        arm_var = "ARM",
-#'        arm_var_choices = c("ARM", "ARMCD", "AGE65", "ICC"),
+#'        arm_var_choices = arm_var_choices_labelled,
 #'    ))
 #' )   
 #' shinyApp(x$ui, x$server) 
@@ -92,7 +100,7 @@ ui_chgfbl_table <- function(id, label,
   ns <- NS(id)
  
   standard_layout(
-    output = uiOutput(ns("chgfbl_table")),
+    output = whiteSmallWell(uiOutput(ns("chgfbl_table"))),
     encoding = div(
       tags$label("Encodings", class="text-primary"),
       helpText("Analysis data:", tags$code("ASL"), tags$code("AQS")),

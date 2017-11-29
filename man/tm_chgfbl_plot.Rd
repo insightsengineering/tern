@@ -7,9 +7,8 @@
 tm_chgfbl_plot(label, paramcd, paramcd_choices = paramcd, arm_var = "ARM",
   arm_var_choices = arm_var, ytype = "CHG", ytype_choices = ytype,
   errbar = "SE", errbar_choices = errbar, ref_line_txt = NULL,
-  plot_height = c(800, 400, 2000), font_size = c(20, 10, 30),
-  y_range = c(0, 1, 0.1, 0.9), n_rotate = TRUE, pre_output = NULL,
-  post_output = NULL)
+  plot_height = c(800, 400, 2000), font_size = c(16, 8, 30),
+  n_rotate = TRUE, pre_output = NULL, post_output = NULL)
 }
 \arguments{
 \item{label}{full name label of module}
@@ -24,15 +23,23 @@ tm_chgfbl_plot(label, paramcd, paramcd_choices = paramcd, arm_var = "ARM",
 
 \item{ytype}{selected type of value to plot for y-axis}
 
-\item{ytype_choices}{choices of possible ytype: AVAL=value at visit, CHG = change from baseline, PCHG = \% change from baseline}
+\item{ytype_choices}{choices of possible ytype: AVAL=value at visit, CHG =
+change from baseline, PCHG = \% change from baseline}
 
 \item{errbar}{selected type of error bar for the plot}
 
-\item{errbar_choices}{choices of types of error bar: SE = standarnd error, SD = standard deviation, 95CI = 95\% confidence interval of the mean}
+\item{errbar_choices}{choices of types of error bar: SE = standarnd error, SD
+= standard deviation, 95CI = 95\% confidence interval of the mean}
 
-\item{ref_line_txt}{horizontal reference lines to display on plot, entered as text separated by comma}
+\item{ref_line_txt}{horizontal reference lines to display on plot, entered as
+text separated by comma}
 
 \item{plot_height}{height of the change from baseline plot}
+
+\item{font_size}{font size to use for text in plot}
+
+\item{n_rotate}{Default \code{FALSE} display text in frequency table
+horizontally, or \code{TRUE} to display text veritically}
 
 \item{pre_output}{optional, \code{shiny.tag} with text placed before the
 output to put the output into context. For example the
@@ -43,8 +50,6 @@ output to put the output into context. For example the
 \code{\link[shiny]{helpText}} elements are useful.}
 
 \item{arm_label}{label to display on plot for the selected arm variable}
-
-\item{cex}{multiplier applied to overall fontsize}
 }
 \value{
 an \code{\link[teal]{module}} object
@@ -75,10 +80,13 @@ AQS <- aqs(com.roche.cdpt7722.wo29637.rl)
 
 options(teal_logging = FALSE)
 
+parammap <- unique(AQS[c("PARAM", "PARAMCD")]) 
+paramcd_choices_labelled <- setNames(parammap$PARAMCD, paste(parammap$PARAMCD, parammap$PARAM, sep = " - "))
 
-is_dpl <- duplicated(AQS$PARAMCD)
- 
-paramcd_choices <- setNames(AQS$PARAMCD[!is_dpl], paste(AQS$PARAMCD[!is_dpl], AQS$PARAM[!is_dpl], sep = " - "))
+arm_var_choices_list <- c("ARM", "ARMCD", "AGE65", "SEX", "HSTSTYP", "PMETA", 
+                          "IC","ICC", "TCC", "ICCAT1", "ICCAT2", "ICCAT3", "BIO2ICL")
+arm_var_choices_labelled <- setNames(arm_var_choices_list, 
+                            paste(arm_var_choices_list, labels_over_names(ASL[arm_var_choices_list]), sep=" - "))
 
 x <- teal::init(
   data = list(ASL = ASL, AQS = AQS),
@@ -88,13 +96,14 @@ x <- teal::init(
     tm_chgfbl_plot(
        label = "Change from Baseline Plot",
        paramcd = "FATIGI",
-       paramcd_choices = paramcd_choices,
+       paramcd_choices = paramcd_choices_labelled,
        arm_var = "ARM",
-       arm_var_choices = c("ARM", "ARMCD", "AGE65", "ICC"),
+       arm_var_choices = arm_var_choices_labelled,
        ytype = "CHG",
-       ytype_choices = c("CHG", "AVAL"),
+       ytype_choices = setNames(c("CHG", "AVAL"), 
+                       paste(c("CHG", "AVAL"), c("Change from Baseline", "Value at Visit"),sep=" - ")),
        errbar = "SE",
-       errbar_choices = c("SE", "95CI"),
+       errbar_choices = c("SE", "SD", "95CI", "IQR"),
        ref_line_txt = "2, -2"
    ))
 )   

@@ -139,14 +139,21 @@ chgfbl_plot <- function(data,
   
   ## Calculate height of error bar depending on errbar type selection
   if (errbar == "SD") {
-    data$errval = data$sd
+    data$ll = data$mean - data$sd
+    data$ul = data$mean + data$sd
     errbar_name = "Standard Deviation"
   } else if (errbar == "SE") {
-    data$errval = data$sd/sqrt(data$n)
+    data$ll = data$mean - data$sd/sqrt(data$n)
+    data$ul = data$mean + data$sd/sqrt(data$n)
     errbar_name = "Standard Error of the Mean"
   } else if (errbar == "95CI") {
-    data$errval = 1.96*data$sd/sqrt(data$n)
+    data$ll = data$mean - 1.96*data$sd/sqrt(data$n)
+    data$ul = data$mean + 1.96*data$sd/sqrt(data$n)
     errbar_name = "95% Confidence Interval of the Mean"
+  } else if (errbar == "IQR") {
+    data$ll = data$q1
+    data$ul = data$q3
+    errbar_name = "Interquartile Range"
   } else {data$errval = NA}
   
   ## Shorten visit names 
@@ -174,9 +181,7 @@ chgfbl_plot <- function(data,
   # visitlab = shortened visit name to display on x-axis
   # arm_short = shortened/re-formated arm name to display in table
   plotdat <- data %>% filter(type == ytype) %>%
-    mutate(ll = mean - errval,
-           ul = mean + errval,
-           visitlab = fct_relabel(visit, shorten_visit), 
+    mutate(visitlab = fct_relabel(visit, shorten_visit), 
            arm_short = unlist(lapply(as.character(arm), reflow, limit=15)))
   
   ## Dynamically generate y-axis label
