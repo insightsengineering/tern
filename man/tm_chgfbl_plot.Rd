@@ -8,7 +8,8 @@ tm_chgfbl_plot(label, paramcd, paramcd_choices = paramcd, arm_var = "ARM",
   arm_var_choices = arm_var, ytype = "CHG", ytype_choices = ytype,
   errbar = "SE", errbar_choices = errbar, ref_line_txt = NULL,
   plot_height = c(800, 400, 2000), font_size = c(20, 10, 30),
-  n_rotate = TRUE, pre_output = NULL, post_output = NULL)
+  y_range = c(0, 1, 0.1, 0.9), n_rotate = TRUE, pre_output = NULL,
+  post_output = NULL)
 }
 \arguments{
 \item{label}{full name label of module}
@@ -75,6 +76,10 @@ AQS <- aqs(com.roche.cdpt7722.wo29637.rl)
 options(teal_logging = FALSE)
 
 
+is_dpl <- duplicated(AQS$PARAMCD)
+ 
+paramcd_choices <- setNames(AQS$PARAMCD[!is_dpl], paste(AQS$PARAMCD[!is_dpl], AQS$PARAM[!is_dpl], sep = " - "))
+
 x <- teal::init(
   data = list(ASL = ASL, AQS = AQS),
   modules = root_modules(
@@ -83,7 +88,7 @@ x <- teal::init(
     tm_chgfbl_plot(
        label = "Change from Baseline Plot",
        paramcd = "FATIGI",
-       paramcd_choices = unique(AQS$PARAMCD),
+       paramcd_choices = paramcd_choices,
        arm_var = "ARM",
        arm_var_choices = c("ARM", "ARMCD", "AGE65", "ICC"),
        ytype = "CHG",

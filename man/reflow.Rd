@@ -2,14 +2,31 @@
 % Please edit documentation in R/chgfbl_table.R
 \name{reflow}
 \alias{reflow}
-\title{Helper function to line break
-x = "hellO-world abcerewerwere testing "
-reflow(x)}
+\title{Helper functions to re-format and reflow long arm/grouping labels by inserting
+line breaks}
 \usage{
 reflow(x, delim = " ", limit = NULL)
 }
+\arguments{
+\item{x}{input single string}
+
+\item{delim}{delimiter, default is space}
+
+\item{limit}{number of characters allowed before inserting line break,
+default is the maximum length of longest word}
+}
 \description{
-Helper function to line break
+Helper functions to re-format and reflow long arm/grouping labels by inserting
+line breaks
+}
+\examples{
+
 x = "hellO-world abcerewerwere testing "
 reflow(x)
+reflow(x, delim = "-")
+reflow(x, limit= 9)
+
+}
+\author{
+Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
 }

@@ -7,9 +7,9 @@
 chgfbl_data(data, arm_var = "ARM")
 }
 \arguments{
-\item{response}{Tumor response data}
+\item{data}{input data}
 
-\item{arm}{Arm information data as factor}
+\item{arm_var}{variable to use for arm/grouping}
 }
 \description{
 Change from Baseline Table Caclulation Function
@@ -22,6 +22,8 @@ library(tidyr)
 library(atezo.data)
 library(teal.oncology)
 library(forcats)
+library(ggplot2)
+library(grid)
 library(gridExtra)
 
 ASL <- asl(com.roche.cdpt7722.wo29637.rl)
@@ -31,12 +33,14 @@ AQS <- aqs(com.roche.cdpt7722.wo29637.rl)
 
 ASL_f <- ASL \%>\% select(STUDYID, USUBJID, ARM, ARMCD)
 AQS_f <- AQS \%>\% select(STUDYID, USUBJID, PARAMCD, PARAM, AVAL, AVISIT, AVISITN, ADY, ABLFL, APBFL, CHG, BASE)
- 
+#AVALU variable not available in AQS
+#AQS_f$AVALU <- "kg/m^2"
+
 ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) \%>\% filter(PARAMCD == "MDASI23")
 
 df <- chgfbl_data(data = ANL)
 chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
-chgfbl_plot(data = df, ytype = "AVAL", errbar = "SD", ref_line = 3, n_rotate = T)
+chgfbl_plot(data = df, ytype = "AVAL", errbar = "95CI", ref_line = 3, yrange = c(0,3), n_rotate = T)
 
 tbl <- chgfbl_table(data=df)
 Viewer(tbl)
