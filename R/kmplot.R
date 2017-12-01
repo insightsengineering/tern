@@ -9,7 +9,9 @@
 #' @param add_coxph boolean, \code{TRUE} if annotated with Cox PH estimators and \code{FALSE} if not
 #' @param formula_coxph formula specified for Cox PH model, default is the same as input for \code{formula_km}
 #' @param info_coxph label information for Cox PH model
+#' @param cox_ties ties handling method for Cox PH model. options are "efron", "breslow" and "exact"
 #' @param add boolean, \code{TRUE} if draw multiple plots on the same device page\code{FALSE} if only draw single plot per page
+#' @param xaxis_by scale of x-axis
 #' @param title title for plot
 #' 
 #' @import grid
@@ -78,7 +80,9 @@
 kmplot <- function(formula_km, data, add_km = TRUE, 
                    add_coxph = TRUE, formula_coxph = formula_km, 
                    info_coxph = "Cox Proportional Model: Unstratified Analysis",
+                   cox_ties = "exact",
                    add = FALSE,
+                   xaxis_by = NULL, 
                    title = "Kaplan - Meier Plot") {
   
   fit <- survfit(formula_km, data = data, conf.type = "plain")
@@ -127,7 +131,9 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   
   pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
   
-  xpos <- seq(0, floor(max(df$time)), by = max(1, floor(max(df$time)/10)))
+  xpos <- seq(0, floor(max(df$time)), by = ifelse(is.null(xaxis_by), 
+                                                  max(1, floor(max(df$time)/10)), 
+                                                  xaxis_by))
   pushViewport(dataViewport(xData = c(0, df$time), yData = c(0,1)))
   grid.xaxis(at = xpos)
   grid.yaxis()
@@ -159,7 +165,7 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   
   ## add coxph
   if (add_coxph) {
-    fitcox <- coxph(formula_coxph, data = data)
+    fitcox <- coxph(formula_coxph, data = data, ties = cox_ties)
     
     sfit <- summary(fitcox)
     
@@ -221,9 +227,13 @@ kmplot <- function(formula_km, data, add_km = TRUE,
       )
     )
     tblstr2 <- toString(tblkm, gap = 1)
-     
-    grid.text(label = tblstr2,
-              x = unit(1, "npc") - stringWidth(tblstr2) - unit(1, "lines"),
+    ##### add log-rank test for modeling as coxph
+    mdl <- survdiff(formula_coxph, data = data)
+    logr_p <- pchisq(mdl$chisq, length(mdl$n) - 1, lower.tail = FALSE)
+    lab2 <- paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\n", tblstr2)
+    
+    grid.text(label = lab2,
+              x = unit(1, "npc") - stringWidth(lab2) - unit(1, "lines"),
               y = unit(1, "npc") -  unit(1, "lines"),
               just = c("left", "top"),
               gp = gpar(fontfamily = "mono", fontsize = 8)
@@ -248,10 +258,6 @@ kmplot <- function(formula_km, data, add_km = TRUE,
   
   grid.xaxis(at = xpos)
   grid.rect()
-  
-  
-  
-
   
   Map(function(x, ypos, strata, col) {
     
