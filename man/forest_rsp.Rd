@@ -34,14 +34,17 @@ library(forcats)
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
+ASL$temp <- c(rep("A", 200), rep("B", 250), rep(NA,1202-450))
 
 ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") \%>\% 
-                 filter(ITTWTFL == "Y") \%>\% 
+                 filter(ITTWTFL == "N") \%>\% 
                  filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\%
                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
-ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% filter(ARM \%in\% c("DUMMY A", "DUMMY C"))
+ASL_f <- ASL \%>\% filter(ITTWTFL == "N") \%>\% 
+             filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\% 
+             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "temp"))
 
-group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
+group_data <- left_join(ASL_f, ATE_f \%>\% select(c("USUBJID", "STUDYID")))
 names(group_data) <- labels_over_names(group_data)
 
 head(group_data)

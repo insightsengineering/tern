@@ -38,6 +38,8 @@ library(teal.oncology)
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 
+ASL$temp <- c(rep("A", 200), rep("B", 250), rep(NA,1202-450))
+
 tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
 Viewer(tbl_stream)
 
@@ -48,7 +50,7 @@ ATE_f <- ATE \%>\% filter(PARAMCD == "OS") \%>\%
              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
 ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% 
              filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\% 
-             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE"))
+             select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "temp"))
 
 
 group_data <- left_join(ASL_f, ATE_f \%>\% select(c("USUBJID", "STUDYID")))
@@ -56,7 +58,7 @@ group_data$MLIVER <- factor(group_data$MLIVER, levels = c("Y", "N"), labels = c(
 group_data$TCICLVL2 <- factor(group_data$TCICLVL2, levels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"), labels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"))#' 
 group_data$SEX <- factor(group_data$SEX, levels = c("F", "M"), labels = c("FEMALE", "MALE"))
 group_data$AGE4CAT <- factor(group_data$AGE4CAT, levels = c("<65", "65 to 74", "75 to 84", ">=85"), labels = c("<65", "65 to 74", "75 to 84", ">=85"))
-group_data$RACE <- factor(group_data$RACE, levels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"), labels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", NA))
+group_data$RACE <- factor(group_data$RACE, levels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"), labels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"))
 names(group_data) <- labels_over_names(group_data)
 head(group_data)
 

@@ -6,7 +6,8 @@
 \usage{
 kmplot(formula_km, data, add_km = TRUE, add_coxph = TRUE,
   formula_coxph = formula_km,
-  info_coxph = "Cox Proportional Model: Unstratified Analysis", add = FALSE,
+  info_coxph = "Cox Proportional Model: Unstratified Analysis",
+  cox_ties = "exact", add = FALSE, xaxis_by = NULL,
   title = "Kaplan - Meier Plot")
 }
 \arguments{
@@ -22,7 +23,11 @@ kmplot(formula_km, data, add_km = TRUE, add_coxph = TRUE,
 
 \item{info_coxph}{label information for Cox PH model}
 
+\item{cox_ties}{ties handling method for Cox PH model. options are "efron", "breslow" and "exact"}
+
 \item{add}{boolean, \code{TRUE} if draw multiple plots on the same device page\code{FALSE} if only draw single plot per page}
+
+\item{xaxis_by}{scale of x-axis}
 
 \item{title}{title for plot}
 }
