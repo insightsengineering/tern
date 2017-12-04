@@ -91,8 +91,9 @@ ui_time_to_event_table <- function(id, label,
       helpText("Reference groups automatically combined into a single group if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
       checkboxInput(ns("combine_comp_arms"), "Combine all comparison groups?", value = FALSE),
-      optionalSelectInput(ns("strata_var"), div("Stratify by", tags$br(), helpText("Currently taken from", tags$code("ATE"), ".")),
-                          strata_var_choices, strata_var, multiple = TRUE),
+      optionalSelectInput(ns("strata_var"), "Stratify by",
+                          strata_var_choices, strata_var, multiple = TRUE,
+                          label_help = helpText("crrently taken from ", tags$code("ATE"))),
       optionalSelectInput(ns("time_points"), "Time Points", time_points_choices, time_points, multiple = TRUE)
     ),
     #forms = actionButton(ns("show_rcode"), "Show R Code", width = "100%"),
@@ -172,12 +173,15 @@ srv_time_to_event_table <- function(input, output, session, datasets, ref_arm = 
     
     
     ## Now comes the static analysis code
-    
+   
     ## you need to add the encodings
     ATE_f <- ATE_filtered %>%
-      filter(PARAMCD == paramcd, ARM %in% c(ref_arm, comp_arm))
+      filter(PARAMCD == paramcd)
+    
+    ATE_f <- ATE_f[ATE_f[[arm_var]] %in% c(ref_arm, comp_arm), ]
     
     validate(need(nrow(ATE_f) > 15, "need at least 15 data points"))
+    
     
     arm <- ATE_f[[arm_var]]
     

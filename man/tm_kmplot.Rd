@@ -8,7 +8,9 @@ tm_kmplot(label, treatment_var = "ARM",
   treatment_var_choices = treatment_var, endpoint = "OS",
   endpoint_choices = endpoint, facet_var = NULL,
   facet_var_choices = facet_var, strata_var = NULL,
-  strata_var_choices = strata_var, plot_height = c(1200, 400, 5000))
+  strata_var_choices = strata_var, plot_height = c(1200, 400, 5000),
+  pre_output = helpText("x-axes for different factes may not have the same scale"),
+  post_output = NULL)
 }
 \arguments{
 \item{label}{unique name for tabpanel}
@@ -37,24 +39,32 @@ This is teal module produces a grid style KM plot for data with ADaM structure
 \examples{
 
 \dontrun{
-ASL <- data.frame(USUBJID = paste0("GO99999-", sprintf("\%03d",seq(1:200))) ,
-                  STUDYID = rep("GO99999", 200),
-                 ARM = sample(LETTERS[1:3], 200, TRUE),
-                 ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
-                 SEX = sample(c("M","F"), 200, TRUE),
-                 RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-                 ECOG = sample(c(0, 1), 200, TRUE)
-                 )
+
+ASL <- data.frame(
+  USUBJID = paste0("GO99999-", sprintf("\%03d", seq(1:200))) ,
+  STUDYID = rep("GO99999", 200),
+  ARM = sample(LETTERS[1:3], 200, TRUE),
+  ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
+  SEX = sample(c("M","F"), 200, TRUE),
+  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+  ECOG = sample(c(0, 1), 200, TRUE)
+)
                  
-ATE <- data.frame(USUBJID = rep(paste0("GO99999-", sprintf("\%03d",seq(1:200))), 2) ,
-                  STUDYID = rep("GO99999", 400),
-                  PARAMCD = rep(c("OS", "PFS"), each = 200),
-                  AVAL = abs(rnorm(400)), 
-                 CNSR = sample(c(0, 1), 400, TRUE)
-                 )
+ATE <- data.frame(
+  USUBJID = rep(paste0("GO99999-", sprintf("\%03d",seq(1:200))), 2) ,
+  STUDYID = rep("GO99999", 400),
+  PARAMCD = rep(c("OS", "PFS"), each = 200),
+  AVAL = abs(rnorm(400)) * 3, 
+  CNSR = sample(c(0, 1), 400, TRUE)
+)
 
 ATE <- merge(ATE, ASL, by = c("USUBJID", "STUDYID"))
-                 
+
+head(ATE)    
+### Use Atezo Test data             
+library(atezo.data)
+ASL <- asl(com.roche.cdt30019.go29436.re)
+ATE <- ate(com.roche.cdt30019.go29436.re)
 ## Initialize Teal
 x <- teal::init(
   data = list(ASL = ASL, ATE = ATE),

@@ -6,7 +6,7 @@
 \usage{
 tm_forest_survival(label, arm_var = "ARM", arm_var_choices = arm_var,
   subgroup_var, subgroup_var_choices = subgroup_var, paramcd = "OS",
-  paramcd_choices = paramcd, plot_height = c(600, 200, 2000), cex = 1.5,
+  paramcd_choices = paramcd, plot_height = c(600, 200, 2000), cex = 1.3,
   pre_output = helpText("graph needs to be of a certain width to be displayed"),
   post_output = NULL)
 }
@@ -48,6 +48,7 @@ library(forcats)
 ATE <- ate(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
 ASL$BAGED <- ifelse(ASL$BAGE <= median(ASL$BAGE), "<=median", ">median")
+ASL$temp <- c(rep("A", 200), rep("B", 250), rep(NA,1202-450))
 
 options(teal_logging = FALSE)
 
@@ -59,7 +60,8 @@ x <- teal::init(
        label = "Forest Survival",
        paramcd = "OS",
        paramcd_choices = unique(ATE$PARAMCD),
-       subgroup_var = c("BAGED", "SEX", "BECOG"),
+       subgroup_var = c("BAGED", "SEX", "AGE4CAT"),
+       subgroup_var_choices = names(ASL),
        arm_var = "ARM",
        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
    )

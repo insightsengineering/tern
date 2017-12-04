@@ -7,7 +7,7 @@
 tm_forest_response(label, paramcd = "OVRSPI", paramcd_choices = paramcd,
   arm_var = "ARM", arm_var_choices = arm_var, subgroup_var,
   subgroup_var_choices = subgroup_var, plot_height = c(700, 200, 2000),
-  cex = 1.5,
+  cex = 1.3,
   pre_output = helpText("graph needs to be of a certain width to be displayed"),
   post_output = NULL)
 }
@@ -41,6 +41,7 @@ Forest Response Plot teal module
   
 
 \\donotrun{
+library(teal.oncology)
 library(atezo.data)
 library(dplyr)
 library(forcats)
@@ -59,6 +60,7 @@ x <- teal::init(
        paramcd_choices = c("BESRSPI","LSTASDI","MBESRSPI","MLSTASDI","OVRSPI"),
        plot_height = c(600, 200, 2000),
        subgroup_var = c("BAGED", "SEX", "BECOG"),
+       subgroup_var_choices = names(ASL),
        arm_var = "ARM",
        arm_var_choices = c("ARM", "ARMCD", "ACTARM")
    )

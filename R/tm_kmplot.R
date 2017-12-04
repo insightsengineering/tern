@@ -21,24 +21,32 @@
 #' @examples 
 #' 
 #' \dontrun{
-#' ASL <- data.frame(USUBJID = paste0("GO99999-", sprintf("%03d",seq(1:200))) ,
-#'                   STUDYID = rep("GO99999", 200),
-#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
-#'                  ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
-#'                  SEX = sample(c("M","F"), 200, TRUE),
-#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'                  ECOG = sample(c(0, 1), 200, TRUE)
-#'                  )
+#' 
+#' ASL <- data.frame(
+#'   USUBJID = paste0("GO99999-", sprintf("%03d", seq(1:200))) ,
+#'   STUDYID = rep("GO99999", 200),
+#'   ARM = sample(LETTERS[1:3], 200, TRUE),
+#'   ARMCD = sample(c("C1", "C2", "C3"), 200, TRUE),
+#'   SEX = sample(c("M","F"), 200, TRUE),
+#'   RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+#'   ECOG = sample(c(0, 1), 200, TRUE)
+#' )
 #'                  
-#' ATE <- data.frame(USUBJID = rep(paste0("GO99999-", sprintf("%03d",seq(1:200))), 2) ,
-#'                   STUDYID = rep("GO99999", 400),
-#'                   PARAMCD = rep(c("OS", "PFS"), each = 200),
-#'                   AVAL = abs(rnorm(400)), 
-#'                  CNSR = sample(c(0, 1), 400, TRUE)
-#'                  )
+#' ATE <- data.frame(
+#'   USUBJID = rep(paste0("GO99999-", sprintf("%03d",seq(1:200))), 2) ,
+#'   STUDYID = rep("GO99999", 400),
+#'   PARAMCD = rep(c("OS", "PFS"), each = 200),
+#'   AVAL = abs(rnorm(400)) * 3, 
+#'   CNSR = sample(c(0, 1), 400, TRUE)
+#' )
 #' 
 #' ATE <- merge(ATE, ASL, by = c("USUBJID", "STUDYID"))
-#'                  
+#' 
+#' head(ATE)    
+#' ### Use Atezo Test data             
+#' library(atezo.data)
+#' ASL <- asl(com.roche.cdt30019.go29436.re)
+#' ATE <- ate(com.roche.cdt30019.go29436.re)
 #' ## Initialize Teal
 #' x <- teal::init(
 #'   data = list(ASL = ASL, ATE = ATE),
@@ -59,15 +67,17 @@
 #' }
 #' 
 tm_kmplot <- function(label,
-                           treatment_var = "ARM",
-                           treatment_var_choices = treatment_var,
-                           endpoint = "OS",
-                           endpoint_choices = endpoint,
-                           facet_var = NULL,
-                           facet_var_choices = facet_var,
-                           strata_var = NULL,
-                           strata_var_choices = strata_var,
-                           plot_height = c(1200, 400, 5000)
+                      treatment_var = "ARM",
+                      treatment_var_choices = treatment_var,
+                      endpoint = "OS",
+                      endpoint_choices = endpoint,
+                      facet_var = NULL,
+                      facet_var_choices = facet_var,
+                      strata_var = NULL,
+                      strata_var_choices = strata_var,
+                      plot_height = c(1200, 400, 5000),
+                      pre_output = helpText("x-axes for different factes may not have the same scale"),
+                      post_output = NULL
 ){
   
   args <- as.list(environment())
@@ -92,31 +102,40 @@ ui_kmplot <- function(
   strata_var_choices = strata_var,
   facet_var = NULL,
   facet_var_choices = facet_var,
-  plot_height = c(700, 400, 3000)) {
+  plot_height = c(700, 400, 3000),
+  pre_output = NULL,
+  post_output = NULL
+  ) {
   
   ns <- NS(id)
   
-  standard_layout(    output = uiOutput(ns("plot_ui")),
-                      encoding = div(
-                        tags$label("Encodings", class = "text-primary"),
-                        helpText("Analysis Data: ", tags$code("ATE")),
-                        optionalSelectInput(ns("var_arm"), "Treatment Variable", choices = treatment_var_choices,
-                                            selected = treatment_var, multiple = FALSE),
-                        optionalSelectInput(ns("tteout"), "Time to Event (Endpoint)", choices = endpoint_choices, 
-                                            selected = endpoint, multiple = FALSE),
-                        optionalSelectInput(ns("strat"), "Stratify by", choices = strata_var_choices, 
-                                            selected = strata_var, multiple = TRUE),
-                        optionalSelectInput(ns("facetby"), "Facet Plots by:", choices = facet_var_choices, 
-                                            selected = facet_var, multiple = TRUE),
-                        selectInput(ns("ref_arm"), "Reference Arm", choices = NULL, 
-                                    selected = NULL, multiple = TRUE),
-                        helpText("Reference groups automatically combined into a single group if more than one value selected."),
-                        selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
-                        checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
-                        tags$label("Plot Settings", class = "text-primary"),
-                        optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
-                      )
-                      
+  standard_layout(
+    output = uiOutput(ns("plot_ui")),
+    encoding = div(
+      tags$label("Encodings", class = "text-primary"),
+      helpText("Analysis Data: ", tags$code("ATE")),
+      optionalSelectInput(ns("var_arm"), "Treatment Variable", choices = treatment_var_choices,
+                          selected = treatment_var, multiple = FALSE),
+      optionalSelectInput(ns("tteout"), "Time to Event (Endpoint)", choices = endpoint_choices, 
+                          selected = endpoint, multiple = FALSE),
+      optionalSelectInput(ns("strat"), "Stratify by", choices = strata_var_choices, 
+                          selected = strata_var, multiple = TRUE,
+                          label_help = helpText("currently taken from", tags$code("ATE"))),
+      optionalSelectInput(ns("facetby"), "Facet Plots by:", choices = facet_var_choices, 
+                          selected = facet_var, multiple = TRUE,
+                          label_help = helpText("currently taken from", tags$code("ATE"))),
+      selectInput(ns("ref_arm"), "Reference Arm", choices = NULL, 
+                  selected = NULL, multiple = TRUE),
+      helpText("Reference groups automatically combined into a single group if more than one value selected."),
+      selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
+      checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
+      optionalSelectInput(ns("timeunit"), "Time Unit", choices = c("DAYS", "WEEKS","MONTHS", "YEARS"), 
+                          selected = "MONTHS", multiple = FALSE),
+      tags$label("Plot Settings", class = "text-primary"),
+      optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
+    ),
+    pre_output = pre_output,
+    post_output = post_output
   )
 }
 
@@ -158,7 +177,7 @@ srv_kmplot <- function(input, output, session, datasets) {
     comp_arm <- input$comp_arm
     strat <- input$strat
     combine_arm <- input$combine_arm
-    
+    timeunit <- input$timeunit
     # teal:::as.global(ATE_Filtered)
     # teal:::as.global(var_arm)
     # teal:::as.global(ANL)
@@ -183,7 +202,34 @@ srv_kmplot <- function(input, output, session, datasets) {
     
     validate(need(nrow(ANL) > 10, "Need more than 10 observations"))
    
-    
+    timeu <- unique(ANL[["AVALU"]])
+    validate(need(length(timeu) <= 1, "NOT unique time unit"))
+    validate(need(toupper(timeu) %in% c("DAYS", "WEEKS", "MONTHS", "YEARS"), "Time unit is not standard"))
+    if (toupper(timeu) == "DAYS"){
+      ANL[["AVAL"]] <- switch(timeunit, 
+                              "DAYS" = ANL[["AVAL"]],
+                              "WEEKS" = ANL[["AVAL"]]/7,
+                              "MONTHS" = ANL[["AVAL"]]/30.4375,
+                              "YEARS" = ANL[["AVAL"]]/365.25)
+    } else if (toupper(timeu) == "WEEKS"){
+      ANL[["AVAL"]] <- switch(timeunit, 
+                              "DAYS" = ANL[["AVAL"]]*7,
+                              "WEEKS" = ANL[["AVAL"]],
+                              "MONTHS" = ANL[["AVAL"]]*7/30.4375,
+                              "YEARS" = ANL[["AVAL"]]*7/365.25)
+    } else if (toupper(timeu) == "MONTHS"){
+      ANL[["AVAL"]] <- switch(timeunit, 
+                              "DAYS" = ANL[["AVAL"]]*30.4375,
+                              "WEEKS" = ANL[["AVAL"]]*30.4375/7,
+                              "MONTHS" = ANL[["AVAL"]],
+                              "YEARS" = ANL[["AVAL"]]*30.4375/365.25)
+    } else if (toupper(timeu) == "YEARS"){
+      ANL[["AVAL"]] <- switch(timeunit, 
+                              "DAYS" = ANL[["AVAL"]]*365.25,
+                              "WEEKS" = ANL[["AVAL"]]*365.25/7,
+                              "MONTHS" = ANL[["AVAL"]]*365.25/30.4375,
+                              "YEARS" = ANL[["AVAL"]])
+    }
     
     if (length(ref_arm)>1) {
       new_ref_arm <- paste(ref_arm, collapse = "/")
@@ -212,49 +258,59 @@ srv_kmplot <- function(input, output, session, datasets) {
     }
 
      
-    if (length(facetby) == 0){
-      kmplot(formula_km, data = ANL, add_km = TRUE, 
-             add_coxph = TRUE, formula_coxph, 
-             info_coxph,
-             add = FALSE, 
-             title = "Kaplan - Meier Plot")
-    } else {
-      
-      facet_df <- ANL[facetby]
-      
-      n_unique <- sum(!duplicated(facet_df))
-
-      lab <- Map(function(var, x) paste0(var, "= '", x,"'"), facetby, facet_df) %>%
-        unname() %>%
-        Reduce(function(x, y) paste(x, y, sep = ", "), .) %>%
-        unlist() %>%
-        factor()
-      
-      if (length(unique(lab)) != n_unique) stop("algorithm error")  
-  
-      dfs <- split(ANL, lab)
-      
-      nplots <- n_unique
-      grid.newpage()
-      pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
-      pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
-        heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
-         )))
-      
-      Map(function(dfi, i, label) {
-        pushViewport(viewport(layout.pos.row = i*2 - 1))
-        kmplot(
-          formula_km, data = dfi, add_km = TRUE,
-          add_coxph = TRUE, formula_coxph,
-          info_coxph,
-          add = TRUE,
-          title = paste0("Kaplan - Meier Plot for: ", label)
-        )
-        popViewport()
-      }, dfs, 1:length(dfs), levels(lab))
-       
-    }
- 
+    results <- try({
+      if (length(facetby) == 0){
+        kmplot(formula_km, data = ANL, add_km = TRUE, 
+               add_coxph = TRUE, formula_coxph, 
+               info_coxph,
+               add = FALSE, 
+               title = "Kaplan - Meier Plot")
+      } else {
+        
+        facet_df <- ANL[facetby]
+        
+        n_unique <- sum(!duplicated(facet_df))
+        
+        lab <- Map(function(var, x) paste0(var, "= '", x,"'"), facetby, facet_df) %>%
+          unname() %>%
+          Reduce(function(x, y) paste(x, y, sep = ", "), .) %>%
+          unlist() %>%
+          factor()
+        
+        if (length(unique(lab)) != n_unique) stop("algorithm error")  
+        
+        dfs <- split(ANL, lab)
+        
+        nplots <- n_unique
+        
+        grid.newpage()
+        
+        pushViewport(plotViewport(margin = c(1, 1, 1, 1)))
+        pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
+                                                   heights = unit(head(rep(c(1, 2), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
+        )))
+        
+        max_min <- sapply(dfs, function(x){ max(x[["AVAL"]], na.rm = TRUE)}) %>% min(.) 
+        xaxis_by <- max(1, floor(max_min/10))
+        
+        Map(function(dfi, i, label) {
+          pushViewport(viewport(layout.pos.row = i*2 - 1))
+          kmplot(
+            formula_km, data = dfi, add_km = TRUE,
+            add_coxph = TRUE, formula_coxph,
+            info_coxph,
+            add = TRUE,
+            xaxis_by = xaxis_by,
+            title = paste0("Kaplan - Meier Plot for: ", label)
+          )
+          popViewport()
+        }, dfs, 1:length(dfs), levels(lab))
+      }
+      TRUE
+    })
+    
+    if (is(results, "try-error")) validate(need(FALSE, paste0("Could not calculate kmplots\n\n", results)))
+    
   })
 }
 

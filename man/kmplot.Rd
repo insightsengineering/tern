@@ -6,7 +6,8 @@
 \usage{
 kmplot(formula_km, data, add_km = TRUE, add_coxph = TRUE,
   formula_coxph = formula_km,
-  info_coxph = "Cox Proportional Model: Unstratified Analysis", add = FALSE,
+  info_coxph = "Cox Proportional Model: Unstratified Analysis",
+  cox_ties = "exact", add = FALSE, xaxis_by = NULL,
   title = "Kaplan - Meier Plot")
 }
 \arguments{
@@ -22,7 +23,11 @@ kmplot(formula_km, data, add_km = TRUE, add_coxph = TRUE,
 
 \item{info_coxph}{label information for Cox PH model}
 
+\item{cox_ties}{ties handling method for Cox PH model. options are "efron", "breslow" and "exact"}
+
 \item{add}{boolean, \code{TRUE} if draw multiple plots on the same device page\code{FALSE} if only draw single plot per page}
+
+\item{xaxis_by}{scale of x-axis}
 
 \item{title}{title for plot}
 }
@@ -45,7 +50,7 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  ECOG = sample(c(0, 1), 200, TRUE))
 
 # draw single plot on device page
-kmplot(Surv(AVAL, 1-CNSR) ~ ARM, data = OS , add_coxph = TRUE, add_km = TRUE, add = FALSE)
+kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, add_coxph = TRUE, add_km = TRUE)
 
 
 library(grid)
@@ -61,10 +66,10 @@ kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM,
 lev <- unique(OS$SEX)
 nplots <- length(lev)
 dfs <- split(OS, OS$SEX)
+
 # new plot page
 grid.newpage()
 # margins
-pushViewport(plotViewport(margin = c(3, 10, 2, 2)))
 
 # layout
 pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,

@@ -4,8 +4,9 @@
 \alias{forest_rsp_plot}
 \title{Forest plot (table + graph)}
 \usage{
-forest_rsp_plot(x, arm.ref = "Reference", arm.comp = "Treatment",
-  padx = unit(1.5, "lines"), cex = 1)
+forest_rsp_plot(x, arm.ref = "ReferenceAAAvery longtitle",
+  arm.comp = "Treatment AAAverylongtitle", padx = unit(0, "lines"),
+  cex = 1)
 }
 \arguments{
 \item{x}{rtable from forest_rsp function}
@@ -29,9 +30,13 @@ library(dplyr)
 library(grid)
 library(teal.oncology)
 library(forcats)
+
 '\%needs\%' <- teal.oncology:::'\%needs\%'
 ARS <- ars(com.roche.cdt30019.go29436.re)
 ASL <- asl(com.roche.cdt30019.go29436.re)
+
+tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
+Viewer(tbl_stream)
 
 ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") \%>\% 
                  filter(ITTWTFL == "Y") \%>\% 
@@ -53,7 +58,12 @@ tbl <- forest_rsp(
           group_data = group_data[, -c(1,2), drop=FALSE]
 )
 
-forest_rsp_plot(tbl, levels(arm)[1], levels(arm)[2])
+Viewer(tbl, tbl_stream)
+
+compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+
+library(grid)
+forest_rsp_plot(tbl, arm.ref = "ReferenceAAAvery longtitle", arm.comp = "Treatment AAAverylongtitle", padx=unit(0, "lines"))
 
 }
 }

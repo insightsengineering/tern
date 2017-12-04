@@ -232,8 +232,8 @@ plot.venn2 <- function(x, ...) {
 #' 
 #' @examples  
 #' 
+#' \dontrun{
 #' N <- 100
-#' 
 #' var_biomarkers <- paste0("B", 1:10) 
 #' sample_bm_data <- lapply(1:10, function(x)sample(c(TRUE, FALSE), N, replace = TRUE))
 #' names(sample_bm_data) <- var_biomarkers
@@ -242,7 +242,6 @@ plot.venn2 <- function(x, ...) {
 #'   list(USUBJID = paste("ID", 1:N),STUDYID = "1"), sample_bm_data
 #' ))
 #' 
-#' \dontrun{
 #' x <- teal::init(
 #'   data = list(ASL = ASL),
 #'   modules = root_modules(
@@ -252,6 +251,7 @@ plot.venn2 <- function(x, ...) {
 #'   )
 #' )   
 #' shinyApp(x$ui, x$server)     
+#' 
 #' }
 tm_venn2 <- function(label, dataname, bm1_var, bm2_var,
                      bm1_var_choices = bm1_var,
@@ -334,8 +334,10 @@ srv_venn2 <- function(input, output, session, datasets, dataname) {
     validate(need(!is.null(bm1), "biomarker 1 does not exist"))
     validate(need(!is.null(bm2), "biomarker 2 does not exist"))
     
-    x <- venn2(bm1, bm2, bm1_var, bm2_var)
-    
+    x <- try(venn2(bm1, bm2, bm1_var, bm2_var), silent = TRUE)
+
+    if (is(x, "try-error")) validate(need(FALSE, paste0("could not calculate cross table:\n\n", x)))
+      
     plot(x)
   })
 }
