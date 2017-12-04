@@ -87,7 +87,8 @@ tm_chgfbl_plot <- function(label,
                            plot_height = c(800, 400, 2000),
                            font_size = c(20, 10, 30),
                            n_rotate = TRUE,
-                           pre_output = NULL, post_output = NULL
+                           pre_output = helpText("Note that currently missing values are omitted. Grouping legend can be found in the table"),
+                           post_output = NULL
 ){
   
   args <- as.list(environment())
@@ -241,6 +242,7 @@ srv_chgfbl_plot <- function(input, output, session, datasets) {
     
     ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID"))
     validate(need(nrow(ANL) > 0, "no data left"))
+    validate(need(sum(!is.na(ANL$AVAL)) > 10, paste("need at least 10 non-missing data points for AVAL if PARAMCD == ", paramcd)))
     
     #If refernece lines are requested
     if (!is.null(ref_line_txt)) {
@@ -263,6 +265,8 @@ srv_chgfbl_plot <- function(input, output, session, datasets) {
                 n_rotate = n_rotate
     )
     
-    #if (is(plot, "try-error")) validate(need(FALSE, paste0("could not create change from baseline plot:\n\n", plot)))
+  
+    # if (is(p, "try-error")) validate(need(FALSE, paste0("could not create change from baseline plot:\n\n", p)))
+    
   })
 }

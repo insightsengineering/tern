@@ -8,7 +8,9 @@ tm_chgfbl_plot(label, paramcd, paramcd_choices = paramcd, arm_var = "ARM",
   arm_var_choices = arm_var, ytype = "CHG", ytype_choices = ytype,
   errbar = "SE", errbar_choices = errbar, ref_line_txt = NULL,
   plot_height = c(800, 400, 2000), font_size = c(20, 10, 30),
-  n_rotate = TRUE, pre_output = NULL, post_output = NULL)
+  n_rotate = TRUE,
+  pre_output = helpText("Note that currently missing values are omitted"),
+  post_output = NULL)
 }
 \arguments{
 \item{label}{full name label of module}
