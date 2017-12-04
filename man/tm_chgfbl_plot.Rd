@@ -9,7 +9,7 @@ tm_chgfbl_plot(label, paramcd, paramcd_choices = paramcd, arm_var = "ARM",
   errbar = "SE", errbar_choices = errbar, ref_line_txt = NULL,
   plot_height = c(800, 400, 2000), font_size = c(20, 10, 30),
   n_rotate = TRUE,
-  pre_output = helpText("Note that currently missing values are omitted"),
+  pre_output = helpText("Note that currently missing values are omitted. Grouping legend can be found in the table"),
   post_output = NULL)
 }
 \arguments{
