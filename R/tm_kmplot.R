@@ -129,8 +129,8 @@ ui_kmplot <- function(
       helpText("Reference groups automatically combined into a single group if more than one value selected."),
       selectInput(ns("comp_arm"), "Comparison Group", choices = NULL, selected = NULL, multiple = TRUE),
       checkboxInput(ns("combine_arm"), "Combine all comparison groups?", value = FALSE),
-      optionalSelectInput(ns("timeunit"), "Time Unit", choices = c("DAYS", "WEEKS","MONTHS", "YEARS"), 
-                          selected = "MONTHS", multiple = FALSE),
+      #optionalSelectInput(ns("timeunit"), "Time Unit", choices = c("DAYS", "WEEKS","MONTHS", "YEARS"), 
+      #                    selected = "MONTHS", multiple = FALSE),
       tags$label("Plot Settings", class = "text-primary"),
       optionalSliderInputValMinMax(ns("plot_height"), "plot height", plot_height, ticks = FALSE)
     ),
@@ -177,7 +177,8 @@ srv_kmplot <- function(input, output, session, datasets) {
     comp_arm <- input$comp_arm
     strat <- input$strat
     combine_arm <- input$combine_arm
-    timeunit <- input$timeunit
+    # timeunit <- input$timeunit
+    
     # teal:::as.global(ATE_Filtered)
     # teal:::as.global(var_arm)
     # teal:::as.global(ANL)
@@ -202,34 +203,35 @@ srv_kmplot <- function(input, output, session, datasets) {
     
     validate(need(nrow(ANL) > 10, "Need more than 10 observations"))
    
-    timeu <- unique(ANL[["AVALU"]])
-    validate(need(length(timeu) <= 1, "NOT unique time unit"))
-    validate(need(toupper(timeu) %in% c("DAYS", "WEEKS", "MONTHS", "YEARS"), "Time unit is not standard"))
-    if (toupper(timeu) == "DAYS"){
-      ANL[["AVAL"]] <- switch(timeunit, 
-                              "DAYS" = ANL[["AVAL"]],
-                              "WEEKS" = ANL[["AVAL"]]/7,
-                              "MONTHS" = ANL[["AVAL"]]/30.4375,
-                              "YEARS" = ANL[["AVAL"]]/365.25)
-    } else if (toupper(timeu) == "WEEKS"){
-      ANL[["AVAL"]] <- switch(timeunit, 
-                              "DAYS" = ANL[["AVAL"]]*7,
-                              "WEEKS" = ANL[["AVAL"]],
-                              "MONTHS" = ANL[["AVAL"]]*7/30.4375,
-                              "YEARS" = ANL[["AVAL"]]*7/365.25)
-    } else if (toupper(timeu) == "MONTHS"){
-      ANL[["AVAL"]] <- switch(timeunit, 
-                              "DAYS" = ANL[["AVAL"]]*30.4375,
-                              "WEEKS" = ANL[["AVAL"]]*30.4375/7,
-                              "MONTHS" = ANL[["AVAL"]],
-                              "YEARS" = ANL[["AVAL"]]*30.4375/365.25)
-    } else if (toupper(timeu) == "YEARS"){
-      ANL[["AVAL"]] <- switch(timeunit, 
-                              "DAYS" = ANL[["AVAL"]]*365.25,
-                              "WEEKS" = ANL[["AVAL"]]*365.25/7,
-                              "MONTHS" = ANL[["AVAL"]]*365.25/30.4375,
-                              "YEARS" = ANL[["AVAL"]])
-    }
+    
+#    timeu <- unique(ANL[["AVALU"]])
+#    validate(need(length(timeu) <= 1, "NOT unique time unit"))
+#    validate(need(toupper(timeu) %in% c("DAYS", "WEEKS", "MONTHS", "YEARS"), "Time unit is not standard"))
+#    if (toupper(timeu) == "DAYS"){
+#      ANL[["AVAL"]] <- switch(timeunit, 
+#                              "DAYS" = ANL[["AVAL"]],
+#                              "WEEKS" = ANL[["AVAL"]]/7,
+#                              "MONTHS" = ANL[["AVAL"]]/30.4375,
+#                              "YEARS" = ANL[["AVAL"]]/365.25)
+#    } else if (toupper(timeu) == "WEEKS"){
+#      ANL[["AVAL"]] <- switch(timeunit, 
+#                              "DAYS" = ANL[["AVAL"]]*7,
+#                              "WEEKS" = ANL[["AVAL"]],
+#                              "MONTHS" = ANL[["AVAL"]]*7/30.4375,
+#                              "YEARS" = ANL[["AVAL"]]*7/365.25)
+#    } else if (toupper(timeu) == "MONTHS"){
+#      ANL[["AVAL"]] <- switch(timeunit, 
+#                              "DAYS" = ANL[["AVAL"]]*30.4375,
+#                              "WEEKS" = ANL[["AVAL"]]*30.4375/7,
+#                              "MONTHS" = ANL[["AVAL"]],
+#                              "YEARS" = ANL[["AVAL"]]*30.4375/365.25)
+#    } else if (toupper(timeu) == "YEARS"){
+#      ANL[["AVAL"]] <- switch(timeunit, 
+#                              "DAYS" = ANL[["AVAL"]]*365.25,
+#                              "WEEKS" = ANL[["AVAL"]]*365.25/7,
+#                              "MONTHS" = ANL[["AVAL"]]*365.25/30.4375,
+#                              "YEARS" = ANL[["AVAL"]])
+#    }
     
     if (length(ref_arm)>1) {
       new_ref_arm <- paste(ref_arm, collapse = "/")
