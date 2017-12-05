@@ -19,7 +19,10 @@ Imports:
   shiny,
   PropCIs,
   forcats,
-  epiR
+  ggplot2,
+  gridExtra,
+  tidyr,
+  forcats
 Suggests:
   testthat,
   knitr,

@@ -3,6 +3,9 @@
 #' @param data input data 
 #' @param arm_var variable to use for arm/grouping 
 #' 
+#' @importFrom tidyr gather
+#' @import forcats
+#' 
 #' @export
 #' 
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
@@ -39,6 +42,17 @@
 #' Viewer(tbl)
 #' 
 #' 
+#' 
+#' \dontrun{
+#' library(random.cdisc.data)
+#' library(dplyr)
+#' ASL <- radam("ASL")
+#' ANL <- merge(ASL, radam("AQS", ADSL = ASL)) %>% filter(PARAMCD == "FATIGI")
+#' 
+#' df <- chgfbl_data(data = ANL)
+#' chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
+#' 
+#' }
 #' # now 
 #' # chng_data <- ... # you already have this # do not export
 #' # change_table(chng_data) # split by arm_name make columns and then combine
@@ -114,7 +128,10 @@ chgfbl_data <- function(data,
 #' @param fontsize Font size of text to be displayed on the plot
 #' @param n_rotate logical value, \code{FALSE} is default, if \code{TRUE} text
 #'   in the frequency table is rotated 90 degrees counterclockwise.
-#'   
+#'
+#' @import ggplot2
+#' @importFrom gridExtra grid.arrange  
+#' 
 #' @export
 #' 
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}

@@ -46,6 +46,17 @@ tbl <- chgfbl_table(data=df)
 Viewer(tbl)
 
 
+
+\dontrun{
+library(random.cdisc.data)
+library(dplyr)
+ASL <- radam("ASL")
+ANL <- merge(ASL, radam("AQS", ADSL = ASL)) \%>\% filter(PARAMCD == "FATIGI")
+
+df <- chgfbl_data(data = ANL)
+chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
+
+}
 # now 
 # chng_data <- ... # you already have this # do not export
 # change_table(chng_data) # split by arm_name make columns and then combine
