@@ -34,10 +34,11 @@
 #' tbl <- time_to_event_table(
 #'   time_to_event = ATE_f$AVAL,
 #'   event = ATE_f$CNSR == 0,
+#'   earliest_contributing_event = ATE_f$EVNTDESC,
 #'   arm = ATE_f$ARM_ANL,
-#'   is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
 #'   strata_data = ATE_f %>% select(SEX, MLIVER, TCICLVL2),
-#'   time_points = setNames(6, paste(6, "Months"))
+#'   time_points = 6,
+#'   time_unit = "month"
 #' )
 #' 
 #' Viewer(tbl)
@@ -51,9 +52,11 @@
 #' }
 #'
 time_to_event_table <- function(time_to_event, event, arm,
-                                is_earliest_contr_event_death,
+                                earliest_contributing_event,
                                 strata_data,
-                                time_points) {
+                                time_points,
+                                time_unit = "month",
+                                ties = "exact") {
   
   # Argument Checking #
   n <- length(time_to_event)
@@ -63,6 +66,8 @@ time_to_event_table <- function(time_to_event, event, arm,
   if (is.null(strata_data)) stop("need strata_data")
   if (nrow(strata_data) != n) stop("strata_data wrong")
   
+  if (length(earliest_contributing_event) != n) stop("earliest_contributing_event has wrong length") 
+  
   ARM <- arm
  
   N <- tapply(ARM, ARM, length)
@@ -71,7 +76,29 @@ time_to_event_table <- function(time_to_event, event, arm,
     c(sum(x), sum(x)/length(x))
   }, simplify = FALSE)
   
-  early_death <- tapply(is_earliest_contr_event_death, ARM, sum)
+  
+  # earliest contributing event
+
+  df_event <- data.frame(
+    event = earliest_contributing_event,
+    arm = ARM,
+    stringsAsFactors = FALSE
+  ) 
+  
+  l_event <- lapply(split(df_event, df_event$event), function(x) {
+    tapply(x$event, x$arm, length, simplify = FALSE)
+  })
+
+  r_event <- Map(function(x, name) {
+    do.call(rrow, c(
+      list(
+        row.name = name,
+        indent = 2, 
+        format = "xx"
+      ),
+      x
+    )) 
+  }, l_event, names(l_event))
   
   patients_wo_event <- tapply(event, ARM, function(x) {
     c(sum(!x), sum(!x)/length(x))
@@ -92,7 +119,13 @@ time_to_event_table <- function(time_to_event, event, arm,
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
   qnt <- Map(function(x,y)c(x,y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
   rng <- lapply(split(data.frame(time_to_event, event), ARM), function(df) {
-    range(df$time_to_event[!df$event])
+    
+    # is min and max from cnsr
+    rng_arm <- range(df$time_to_event)
+    # max_cnsr <- max(df$time_to_event[!df$event])
+    #attr(rng_arm, is_max_from_cnsr = rng_arm == max_cnsr)
+   
+    rng_arm 
   })
   
   
@@ -116,16 +149,16 @@ time_to_event_table <- function(time_to_event, event, arm,
     ## use coxph score for log-rank
     ## 
     list(
-      # us_diff = survdiff(Surv(tte, evnt) ~ arm, rho=0, data = dfi),
-      us_ph = coxph(Surv(tte, evnt) ~ arm, data = dfi),
-      # str_diff = survdiff(strata_formula, data = dfi),
-      str_ph = coxph(strata_formula, data = dfi)
+      us_diff = survdiff(Surv(tte, evnt) ~ arm, data = dfi),
+      us_ph = coxph(Surv(tte, evnt) ~ arm, data = dfi, ties = ties),
+      str_diff = survdiff(strata_formula, data = dfi),
+      str_ph = coxph(strata_formula, data = dfi, ties = ties)
     )
   })
   
   us_p <- lapply(fits, function(fit) {
-    ft <- fit$us_ph
-    summary(ft)$sctest["pvalue"] # from survdiffpchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
+    ft <- fit$us_diff
+    pchisq(ft$chisq, length(ft$n) - 1, lower.tail = FALSE)
   })
   
   us_hr <- lapply(fits, function(fit) {
@@ -141,8 +174,10 @@ time_to_event_table <- function(time_to_event, event, arm,
 
   # Stratified Analysis
   str_p <- lapply(fits, function(fit) {
-    ft <- fit$str_ph
-    summary(ft)$sctest["pvalue"] #pchisq(ft$chisq, length(ft$n)-1, lower.tail = FALSE)
+    ft <- fit$str_diff
+    
+    #summary(ft)$sctest["pvalue"]    
+    pchisq(ft$chisq, length(ft$n) - 1, lower.tail = FALSE)
   })
   
   str_hr <- lapply(fits, function(fit) {
@@ -169,7 +204,9 @@ time_to_event_table <- function(time_to_event, event, arm,
   s_df_tp <- split(df_tp, df_tp$time)
   
   ## dfi <- s_df_tp[[1]]; time_point = time_points[1]
-  l_tp_rows <- Map(function(dfi, time_point, name) {
+  l_tp_rows <- Map(function(dfi, time_point) {
+    
+    name <- paste(time_point, if(time_point == 1) time_unit else paste0(time_unit, "s"))
     
     if (!all(dfi$time == time_point)) stop("time points do not match")
     
@@ -190,7 +227,7 @@ time_to_event_table <- function(time_to_event, event, arm,
       lrrow("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2),
       rrow()
     )
-  }, s_df_tp, time_points, if (is.null(names(time_points))) time_points else names(time_points))  
+  }, s_df_tp, time_points)  
 
   rrows_tp_part <- unlist(l_tp_rows, recursive = FALSE)
   
@@ -209,11 +246,13 @@ time_to_event_table <- function(time_to_event, event, arm,
       col.names = paste0(levels(ARM), "\n", paste0("(N=", N,")")),
       format = "xx.xxx",
       lrrow("Patients with event (%)", patients_with_event, format = "xx (xx.xx%)"),
-      rrow("Earliest contributing event", indent = 1),
-      lrrow("Death", early_death, indent = 2),
+      rrow("Earliest contributing event", indent = 1)
+    ),
+    r_event,
+    list(
       lrrow("Patients without event (%)", patients_wo_event, format = "xx (xx.xx%)"),
       rrow(),
-      rrow("Time to Event (Months)"),
+      rrow(paste0("Time to Event (", time_unit, "s)")),
       lrrow("Median", med, indent = 1),
       lrrow("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
       lrrow("25% and 75%−ile", qnt, indent = 1, format = "xx.x, xx.x"),

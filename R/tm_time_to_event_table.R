@@ -205,7 +205,7 @@ srv_time_to_event_table <- function(input, output, session, datasets, ref_arm = 
       time_to_event = ATE_f$AVAL,
       event = ATE_f$CNSR == 0,
       arm = arm,
-      is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
+      earliest_contributing_event = ATE_f$EVNTDESC,
       strata_data = ATE_f[strata_var],
       time_points = time_points
     ))

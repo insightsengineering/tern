@@ -4,8 +4,8 @@
 \alias{time_to_event_table}
 \title{Time to Event Table}
 \usage{
-time_to_event_table(time_to_event, event, arm, is_earliest_contr_event_death,
-  strata_data, time_points)
+time_to_event_table(time_to_event, event, arm, earliest_contributing_event,
+  strata_data, time_points, time_unit = "month", ties = "exact")
 }
 \arguments{
 \item{time_to_event}{time to event data}
@@ -40,10 +40,11 @@ ATE_f <- ATE \%>\%
 tbl <- time_to_event_table(
   time_to_event = ATE_f$AVAL,
   event = ATE_f$CNSR == 0,
+  earliest_contributing_event = ATE_f$EVNTDESC,
   arm = ATE_f$ARM_ANL,
-  is_earliest_contr_event_death = ATE_f$EVNTDESC == "Death",
   strata_data = ATE_f \%>\% select(SEX, MLIVER, TCICLVL2),
-  time_points = setNames(6, paste(6, "Months"))
+  time_points = 6,
+  time_unit = "month"
 )
 
 Viewer(tbl)
