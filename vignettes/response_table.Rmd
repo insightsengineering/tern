@@ -1,0 +1,46 @@
+---
+title: "response_table"
+author: "Chendi"
+date: "11/17/2017"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+```{r}
+
+N <- 100
+N_A <- floor(N/3)
+N_B <- N - floor(N/3)
+
+df <- data.frame(
+  USUBJID = paste0("id-", 1:N),
+  ARM = rep(c("A", "B"), c(N_A, N_B)),
+  response =  c(sample(c(T,F), N_A, TRUE , prob = c(.6, .4)), sample(c(T,F), N_B, TRUE,  prob = c(.7, .3))),
+  s1 = sample(c("s11", "s12", "s13"), N, TRUE)
+)
+
+head(df)
+```
+
+
+## Analysis with epiR
+
+```{r}
+
+```
+
+## Analysis with glm and mantelhaen.test and prop.test
+
+
+```{r}
+
+```
+
+

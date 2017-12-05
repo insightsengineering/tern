@@ -129,7 +129,7 @@ response_table <- function(response,
                            arm, 
                            strata_data      = NULL, 
                            style = 1
-                           ) {
+) {
   
   #####################
   # Argument checking #
@@ -142,7 +142,7 @@ response_table <- function(response,
     if (nrow(strata_data) != n) stop("Length of strata_data does not match length of response variable, please check data")
     if (any(rowSums(is.na(strata_data) | strata_data == "") != 0)) stop("Cannot have NA or missing values in stratification factor")
   }
-
+  
   # Check there are 2+ unique levels in arm variable for comparison ---#
   if (length(levels(factor(arm))) < 2){
     stop("Invalid arm variable selected. Minimum 2 unique levels required for arm variable.")
@@ -171,7 +171,7 @@ response_table <- function(response,
   value.resp <- value_reorder[[1]]
   value.nresp <- value_reorder[[2]]
   value_for_test <- c(value.resp, value.nresp)
-
+  
   df <- data.frame(arm, response)
   if (!is.null(strata_data)) {
     strata_name <- names(strata_data)
@@ -179,7 +179,7 @@ response_table <- function(response,
     df <- data.frame(df, strata)
   }
   df <- subset(df, !is.na(arm) & rsp_for_test == TRUE)
-
+  
   #Final arm vectors for analysis
   ARM <- df$arm
   arm_lvl <- levels(ARM)
@@ -209,8 +209,8 @@ response_table <- function(response,
       )
     })
   })
-
-
+  
+  
   #Calculation for diff in rate and OR for Responder/Non-responders
   coltotal = length(arm_lvl)
   comparm_list <- as.list(arm_lvl[2:coltotal])
@@ -223,6 +223,23 @@ response_table <- function(response,
     names(value_list) <- c("Responders", value.resp)
   }
   
+  
+  #Helper functions to calculate OR and conf.int
+  odds.ratio <- function(x, pad.zeros=FALSE, conf.level=0.95) {
+    if (pad.zeros) {
+      if (any(x==0)) x <- x + 0.5
+    }
+    theta <- x[1,1] * x[2,2] / ( x[2,1] * x[1,2] )
+    ASE <- sqrt(sum(1/x))
+    CI <- exp(log(theta)
+              + c(-1,1) * qnorm(0.5*(1+conf.level)) *ASE )
+    list(estimator=theta,
+         ASE=ASE,
+         conf.interval=CI,
+         conf.level=conf.level)
+  }
+  
+  
   diffor_result <- lapply(comparm_list, function(i) {
     lapply(value_list, function(j) {
       df.diffor <- df %>% 
@@ -233,42 +250,55 @@ response_table <- function(response,
                resp = fct_collapse(response, "Responders" = j, "Non-Responders" = setdiff(response, j)),
                final.resp = fct_relevel(resp, "Responders", "Non-Responders"))
       
+      
+      df.table.diff <- table(df.diffor[c("final.arm", "final.resp")])
+      df.test.nocorr <- prop.test(df.table.diff, correct = F)
+      df.test.corr   <- prop.test(df.table.diff, correct = T)
+      
+      result_diffpart <- list(
+        diff   = unname(df.test.nocorr$estimate[1]-df.test.nocorr$estimate[2])*100,
+        diffci.nocorr = unname(df.test.nocorr$conf.int)*100,
+        diffci.corr   = unname(df.test.corr$conf.int)*100
+      )
+      
       if (!exists("strata_name")) {
-        #If no strata
-        df.table <- table(df.diffor[c("final.arm", "final.resp")])
-        if (any(df.table ==0)) stop("At least one cell has frequency of 0, please check data")
-        df.test  <- epi.2by2(df.table, method = "cohort.count",
-                             conf.level = 0.95, outcome = "as.columns")
-        list(
-          diff   = unlist(df.test$res$ARisk.crude.wald[1]),
-          diffci = unlist(df.test$res$ARisk.crude.wald[2:3]),
-          diffp  = unlist(df.test$res$chisq.crude[3]),
-          or     = unlist(df.test$res$OR.crude.wald[1]),
-          orci   = unlist(df.test$res$OR.crude.wald[2:3])
-        )
+        #If no strata, use Chi-square test
+        df.test.OR <- odds.ratio(df.table.diff)
+        
+        c(result_diffpart,
+          list(
+            diffp  = df.test.nocorr$p.value,
+            or     = unname(df.test.OR$estimator),
+            orci   = unname(df.test.OR$conf.interval),
+            warning = ifelse(any(df.table.diff <= 30), "#", NA)
+          ))
       } else {
-        #If strata is requested
-        df.table <- table(df.diffor[c("final.arm", "final.resp", "strata")])
-        if (any(df.table ==0)) stop("At least one cell in one of the stratum has frequency of 0, please check data")
-        df.test  <- epi.2by2(df.table, method = "cohort.count",
-                             conf.level = 0.95, outcome = "as.columns")
-        list(
-          diff   = unlist(unname(df.test$res$ARisk.crude.wald[1])),
-          diffci = unlist(unname(df.test$res$ARisk.crude.wald[2:3])),
-          diffp  = unlist(unname(df.test$res$chisq.mh[3])),
-          or     = unlist(unname(df.test$res$OR.mh.wald[1])),
-          orci   = unlist(unname(df.test$res$OR.mh.wald[2:3]))
-        )
+        #If strata is requested, using CMH
+        df.table.OR <- table(df.diffor[c("final.arm", "final.resp", "strata")])
+        df.test.OR     <- mantelhaen.test(df.table.OR, correct = F)
+        
+        c(result_diffpart,
+          list(
+            diffp  = df.test.OR$p.value,
+            or     = unname(df.test.OR$estimate),
+            orci   = unname(df.test.OR$conf.int),
+            warning = ifelse(any(df.table.diff <= 5) | any(df.table.OR <= 5), "#", NA)
+          ))
       }
     })
   })
   
+  lowcount_warning <- ("#" %in% unlist(diffor_result)[grepl("warning", names(unlist(diffor_result)))])
+  
   if (!exists("strata_name")) {
     method <- " (Chi-squared)"
-    notation <- ""
+    notation <- ifelse(lowcount_warning, "#", "")
+    warning <- ifelse(lowcount_warning, "#", "")
   } else {
     method <- " (Cochran-Mantel-Haenszel)"
-    notation <- ifelse((length(strata_name) > 1 | length(levels(factor(strata))) > 3), "*^", "*")
+    notation <- paste0("*",
+                       ifelse((length(strata_name) > 1 | length(levels(factor(strata))) > 3), "^", ""))
+    warning <- ifelse(lowcount_warning, "#", "")
   }
   
   ##########################################
@@ -318,8 +348,11 @@ response_table <- function(response,
   #Depending on number of comparison arms, display centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
   out_diffor_resp <- list(
     lrrow("Difference in Response Rates", lapply(diffor_resp, print_diffor, "diff", colsize)),
-    lrrow("95% CI for difference in response rates (Wald)", indent = 1, lapply(diffor_resp, print_ci, "diffci", colsize)),
-    lrrow(paste0("p-value", notation, method), indent = 1,      
+    lrrow(paste0("95% CI for difference (Wald without correction)", warning), 
+          indent = 1, lapply(diffor_resp, print_ci, "diffci.nocorr", colsize)),
+    lrrow(paste0("95% CI for difference (Wald with continuity correction)", warning), 
+          indent = 1, lapply(diffor_resp, print_ci, "diffci.corr", colsize)),
+    lrrow(paste0("p-value", notation, warning, method), indent = 1,      
           lapply(diffor_resp, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize))),
     rrow(),
     lrrow(paste0("Odds Ratio", notation),         lapply(diffor_resp, print_diffor, "or", colsize)),
@@ -335,7 +368,7 @@ response_table <- function(response,
                          `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
                          PD          = "Progressive Disease (PD)",
                          NE          = "Missing or unevaluable"
-                         )
+  )
   
   
   out_byvalue <- unlist(
@@ -357,9 +390,9 @@ response_table <- function(response,
             rrow(),
             lrrow(paste("Difference in",label, "rate"), 
                   lapply(lapply(diffor_byvalue, '[[', i), print_diffor, "diff", colsize), indent = 1),
-            lrrow(paste("95% CI for difference in", rspname, "rate"), 
-                  lapply(lapply(diffor_byvalue, '[[', i), print_ci, "diffci", colsize), indent = 1),
-            lrrow(paste0("p-value", notation, method), 
+            lrrow(paste0("95% CI for difference in ", rspname, " rate (Wald)", warning), 
+                  lapply(lapply(diffor_byvalue, '[[', i), print_ci, "diffci.nocorr", colsize), indent = 1),
+            lrrow(paste0("p-value", notation, warning, method), 
                   lapply(lapply(diffor_byvalue, '[[', i), 
                          function (x) rcell(x$diffp, format = "xx.xxxx", colspan=colsize)),indent = 1)
           )
@@ -373,7 +406,7 @@ response_table <- function(response,
       
       #Last row - either empty or notation for stratification
       part3 <- list(rrow())
-
+      
       #Combine all rows to be parsed by unlist function
       c(part1, part2, part3)
       
@@ -388,24 +421,28 @@ response_table <- function(response,
                     list(rrow(paste("* Model stratified by", 
                                     ifelse(n_strata < 2, strata_name, 
                                            paste(paste(strata_name[-(n_strata)], collapse = ", "), "and", strata_name[(n_strata)]))
-                         ))))
+                    ))))
   }
   if (grepl("\\^", notation)) {
     out_footer <- c(out_footer,
                     list(rrow("^ CAUTION! Multiple factors or more than 3 strata present. 
                               Make sure sample size within each stratum is sufficient for analysis.")))
   }
-
+  if (grepl("\\#", warning)) {
+    out_footer <- c(out_footer,
+                    list(rrow("# USE WITH CAUTION! One or more cells has a frequency count of <= 5.")))
+  }
   #Put all sections together to display table
   tbl <- do.call(rtable,c(out_header,
                           out_rate_resp,
                           out_diffor_resp,
                           out_byvalue,
                           out_footer
-                ))
+  ))
   
   tbl
 }
+
 
 #########################################################################
 # Helper functions                                                      #
