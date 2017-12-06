@@ -11,7 +11,7 @@ This R package contains analysis code to create TLGs used in clinical trials.
 You need to install the `rtables` package before installing the `tern` package
 
 ``` r
-devtools::install_git("https://github.com/Roche/rtables")
+devtools::install_github("Roche/rtables")
 
 devtools::install_git(
   url = "http://github.roche.com/Rpackages/tern.git",
@@ -19,7 +19,5 @@ devtools::install_git(
   upgrade_dependencies = FALSE
 )
 ```
-
-
 
 [ghs]: http://pages.github.roche.com/Rpackages/tern
