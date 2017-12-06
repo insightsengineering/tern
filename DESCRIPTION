@@ -1,5 +1,5 @@
-Package: teal.oncology
-Title: Teal Modules useful for analyzing clinical oncology trials data
+Package: tern
+Title: Analysis Code
 Version: 0.0.1
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
@@ -9,7 +9,7 @@ Authors@R: c(
   person("Chendi", "Liao", email = "", role = c("aut")),
   person("Xiao", "Mu Yo", email = "", role = c("aut"))
   )
-Description: Teal modules
+Description: TLG creation
 Depends:
   R (>= 3.3),
   teal
