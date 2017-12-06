@@ -1,4 +1,4 @@
-url: https://pages.github.roche.com/Rpackages/teal.oncology
+url: https://pages.github.roche.com/Rpackages/tern
 
 template:
   params:
@@ -7,4 +7,4 @@ template:
 navbar:
   right:
     - icon: fa-github
-      href: https://github.roche.com/Rpackages/teal.oncology
+      href: https://github.roche.com/Rpackages/tern

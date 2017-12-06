@@ -20,6 +20,27 @@ a named list with one element per row where each element contains the
 This is the description of the function
 }
 \examples{
+
+library(random.cdisc.data)
+library(forcats)
+
+ASL <- radam("ASL")
+ATE <- merge(ASL, radam("ATE", ADSL = ASL))
+
+ATE_f <- subset(ATE, PARAMCD == "OS")
+
+tbl <- time_to_event_table(
+  time_to_event = ATE_f$AVAL,
+  event = ATE_f$CNSR == 0,
+  earliest_contributing_event = ATE_f$EVNTDESC,
+  arm = factor(ATE_f$ARM),
+  strata_data = ATE_f \%>\% select(SEX, RACE),
+  time_points = 6,
+  time_unit = "month"
+)
+
+tbl
+
 \dontrun{
 
 library(atezo.data)

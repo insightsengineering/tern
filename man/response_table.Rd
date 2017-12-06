@@ -40,6 +40,23 @@ reported for the test of equal proportions, odds ratio and its corresponding
 }
 \examples{
 
+library(random.cdisc.data)
+library(forcats)
+
+ASL <- radam("ASL")
+ARS <- radam("ARS", ADSL = ASL)
+
+ANL <- merge(ASL, ARS) \%>\% 
+  filter(PARAMCD == "OVRSPI")
+
+tbl <- response_table(
+ response = ANL$AVALC,
+ value.resp = c("CR", "PR"),
+ value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
+ arm = fct_relevel(factor(ANL$ARMCD), "ARM B", "ARM A")
+)
+
+tbl
 
 \dontrun{
 library(dplyr)

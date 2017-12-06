@@ -14,6 +14,27 @@
 #' 
 #' 
 #' @examples 
+#' 
+#' library(random.cdisc.data)
+#' library(forcats)
+#' 
+#' ASL <- radam("ASL")
+#' ATE <- merge(ASL, radam("ATE", ADSL = ASL))
+#' 
+#' ATE_f <- subset(ATE, PARAMCD == "OS")
+#' 
+#' tbl <- time_to_event_table(
+#'   time_to_event = ATE_f$AVAL,
+#'   event = ATE_f$CNSR == 0,
+#'   earliest_contributing_event = ATE_f$EVNTDESC,
+#'   arm = factor(ATE_f$ARM),
+#'   strata_data = ATE_f %>% select(SEX, RACE),
+#'   time_points = 6,
+#'   time_unit = "month"
+#' )
+#' 
+#' tbl
+#' 
 #' \dontrun{
 #' 
 #' library(atezo.data)
@@ -67,6 +88,8 @@ time_to_event_table <- function(time_to_event, event, arm,
   if (nrow(strata_data) != n) stop("strata_data wrong")
   
   if (length(earliest_contributing_event) != n) stop("earliest_contributing_event has wrong length") 
+  
+  if (!is.factor(arm)) stop("Argument ARM needs to be a factor")
   
   ARM <- arm
  

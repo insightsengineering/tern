@@ -14,6 +14,12 @@ You need to install the `rtables` package before installing the `tern` package
 devtools::install_github("Roche/rtables")
 
 devtools::install_git(
+  url = "http://github.roche.com/Rpackages/random.cdisc.data.git",
+  build_vignettes = TRUE,
+  upgrade_dependencies = FALSE
+)
+
+devtools::install_git(
   url = "http://github.roche.com/Rpackages/tern.git",
   build_vignettes = TRUE,
   upgrade_dependencies = FALSE

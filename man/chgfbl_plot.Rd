@@ -35,6 +35,17 @@ mean plot using ggplot2 and gridExtra
 }
 \examples{
 
+library(tern)
+library(random.cdisc.data)
+
+ASL <- radam("ASL")
+
+ANL <- merge(ASL, radam("AQS", ADSL = ASL)) \%>\% 
+   filter(PARAMCD == "FATIGI")
+
+df <- chgfbl_data(data = ANL)
+chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
+
 }
 \author{
 Chendi Liao (liaoc10), \email{chendi.liao@roche.com}

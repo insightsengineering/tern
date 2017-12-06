@@ -4,8 +4,10 @@
 #' 
 #' Similiar as in STREAM
 #' 
-#' @param ADSL ADSL dataset with the following variables: USUBJID, STUDYID, AGE,
-#'   and SEX
+#' @param data data frame,
+#' @param arm_var variable to split by columnn
+#' @param all.patients boolean, add column with all patients
+#' @param group_by_vars variables to be summarized
 #' 
 #' @details
 #' Give a detailed description of what this function does.
@@ -16,29 +18,24 @@
 #' 
 #' @examples 
 #' 
+#' library(tern)
+#' library(random.cdisc.data)
 #' library(forcats)
 #' 
-#' n <- 100
-#' ASL <- data.frame(
-#'    USUBJID = paste0("id-", 1:n),
-#'    STUDYID = "study 1",
-#'    ARM = sample(paste("ARM", LETTERS[1:3]), n, replace = TRUE),
-#'    AGE = 40 + rnorm(n, 0, 20),
-#'    SEX = sample(c("M", "F", "UNDEFINED", NA), n, replace = TRUE),
-#'    stringAsFactors = FALSE
-#' )
+#' ASL <- radam("ASL")
 #' 
 #' # control the label
-#' attr(ASL$AGE, "label") <- "Age of patient"
+#' attr(ASL$BAGE, "label") <- "Baseline Age of patient"
 #' attr(ASL$SEX, "label")
 #' 
 #' # control categorical order
 #' ASL$SEX <- fct_relevel(ASL$SEX, "M", "F", "UNDEFINED")
 #' 
 #' # control arm order
-#' ASL$ARM <- fct_relevel(ASL$ARM, "ARM B", "ARM A", "ARM C")
+#' ASL$ARM <- fct_relevel(ASL$ARM, "ARM B", "ARM A")
 #' 
-#' demographic_table(ASL, group_by_vars = c("SEX", "AGE"))
+#' demographic_table(ASL, group_by_vars = c("SEX", "BAGE"))
+#' 
 #' 
 #' \dontrun{
 #' library(atezo.data)

@@ -24,6 +24,24 @@ Forest plot (table + graph)
 }
 \examples{
 
+library(random.cdisc.data)
+ASL <- radam("ASL")
+ARS <- radam("ARS", ADSL = ASL)
+
+ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") 
+
+ASL_f <- right_join(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, ARM),
+                        ARS_f \%>\% select(USUBJID, STUDYID))
+
+tbl <- forest_rsp(
+  response = ARS_f$AVAL,
+  event = ARS_f$AVALC \%in\% c("CR","PR"),
+  arm = ASL_f$ARM, 
+  group_data = ASL_f \%>\% select("SEX", "RACE")
+)
+
+forest_rsp_plot(tbl)
+
 \dontrun{
 library(atezo.data)
 library(dplyr) 

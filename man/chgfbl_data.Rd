@@ -16,6 +16,16 @@ Change from Baseline Table Caclulation Function
 }
 \examples{
 
+library(tern)
+library(random.cdisc.data)
+
+ASL <- radam("ASL")
+
+AQS <- merge(ASL, radam("AQS", ADSL = ASL)) \%>\% 
+   filter(PARAMCD == "FATIGI")
+
+df <- chgfbl_data(data = ANL)
+
 \dontrun{
 library(dplyr)
 library(tidyr)

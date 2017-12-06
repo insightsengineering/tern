@@ -27,6 +27,24 @@ This function can only be applied to the rtable output from \code{forest_tte}.
 }
 \examples{
 
+library(random.cdisc.data)
+ASL <- radam("ASL")
+ATE <- radam("ATE", ADSL = ASL)
+
+ATE_f <- ATE \%>\% filter(PARAMCD == "OS") 
+
+ASL_f <- right_join(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, ARM),
+                        ATE_f \%>\% select(USUBJID, STUDYID))
+
+tbl <- forest_rsp(
+  response = ATE_f$AVAL,
+  event = ATE_f$CNSR == 0,
+  arm = ASL_f$ARM, 
+  group_data = ASL_f \%>\% select("SEX", "RACE")
+)
+
+forest_tte_plot(tbl)
+
 \dontrun{
 library(atezo.data)
 library(dplyr)

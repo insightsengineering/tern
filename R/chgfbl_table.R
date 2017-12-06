@@ -12,6 +12,16 @@
 #' 
 #' @examples 
 #' 
+#' library(tern)
+#' library(random.cdisc.data)
+#' 
+#' ASL <- radam("ASL")
+#' 
+#' AQS <- merge(ASL, radam("AQS", ADSL = ASL)) %>% 
+#'    filter(PARAMCD == "FATIGI")
+#' 
+#' df <- chgfbl_data(data = ANL)
+#' 
 #' \dontrun{
 #' library(dplyr)
 #' library(tidyr)
@@ -137,6 +147,17 @@ chgfbl_data <- function(data,
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
 #'   
 #' @examples
+#' 
+#' library(tern)
+#' library(random.cdisc.data)
+#' 
+#' ASL <- radam("ASL")
+#' 
+#' ANL <- merge(ASL, radam("AQS", ADSL = ASL)) %>% 
+#'    filter(PARAMCD == "FATIGI")
+#' 
+#' df <- chgfbl_data(data = ANL)
+#' chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
 #' 
 chgfbl_plot <- function(data,
                         ytype = "CHG",
@@ -296,6 +317,17 @@ chgfbl_plot <- function(data,
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
 #'   
 #' @examples
+#' 
+#' library(tern)
+#' library(random.cdisc.data)
+#' 
+#' ASL <- radam("ASL")
+#' 
+#' ANL <- merge(ASL, radam("AQS", ADSL = ASL)) %>% 
+#'    filter(PARAMCD == "FATIGI")
+#' 
+#' df <- chgfbl_data(data = ANL)
+#' chgfbl_table(df)
 #' 
 chgfbl_table <- function(data) {
   

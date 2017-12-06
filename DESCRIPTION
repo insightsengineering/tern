@@ -12,11 +12,11 @@ Authors@R: c(
 Description: TLG creation
 Depends:
   R (>= 3.3),
-  rtables
+  rtables,
+  dplyr,
+  tidyr
 Imports:
   grid,
-  dplyr,
-  tidyr,
   forcats,
   ggplot2,
   gridExtra

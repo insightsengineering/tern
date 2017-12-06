@@ -15,18 +15,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 
-N <- 100
-N_A <- floor(N/3)
-N_B <- N - floor(N/3)
+library(random.cdisc.data)
 
-df <- data.frame(
-  USUBJID = paste0("id-", 1:N),
-  ARM = rep(c("A", "B"), c(N_A, N_B)),
-  response =  c(sample(c(T,F), N_A, TRUE , prob = c(.6, .4)), sample(c(T,F), N_B, TRUE,  prob = c(.7, .3))),
-  s1 = sample(c("s11", "s12", "s13"), N, TRUE)
-)
+ASL <- radam("ASL")
+ARS <- radam("ARS", ADSL = ASL)
 
-head(df)
+head(ARS)
 ```
 
 

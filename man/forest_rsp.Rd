@@ -9,13 +9,15 @@ forest_rsp(response, event, arm, group_data, covariates = NULL)
 \arguments{
 \item{response}{Tumor Response data}
 
-\item{event}{is boolean, \code{TRUE} if responder, \code{FALSE} if non-responder}
+\item{event}{is boolean, \code{TRUE} if responder, \code{FALSE} if
+non-responder}
 
 \item{arm}{vector with arm information}
 
 \item{group_data}{data frame with one column per sub-group variable}
 
-\item{covariates}{set to NULL; currently not available for multivariate survival analysis}
+\item{covariates}{set to NULL; currently not available for multivariate
+survival analysis}
 }
 \description{
 Response Forest Plot Table
@@ -24,6 +26,24 @@ Response Forest Plot Table
 Logistic model is used for odds ratio calculation
 }
 \examples{
+
+library(random.cdisc.data)
+ASL <- radam("ASL")
+ARS <- radam("ARS", ADSL = ASL)
+
+ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") 
+
+ASL_f <- right_join(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, ARM),
+                        ARS_f \%>\% select(USUBJID, STUDYID))
+
+tbl <- forest_rsp(
+  response = ARS_f$AVAL,
+  event = ARS_f$AVALC \%in\% c("CR","PR"),
+  arm = ASL_f$ARM, 
+  group_data = ASL_f \%>\% select("SEX", "RACE")
+)
+
+tbl
 
 \dontrun{
 library(atezo.data)
