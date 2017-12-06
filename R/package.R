@@ -1,5 +1,5 @@
 
-#' Teal Modules useful in Oncology
+#' TLG creation functions
 #' 
 #' 
 "_PACKAGE"
