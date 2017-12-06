@@ -11,12 +11,10 @@ Authors@R: c(
   )
 Description: TLG creation
 Depends:
-  R (>= 3.3),
-  teal
+  R (>= 3.3)
 Imports:
   grid,
   dplyr,
-  shiny,
   PropCIs,
   forcats,
   ggplot2,
