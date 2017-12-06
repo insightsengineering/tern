@@ -23,7 +23,6 @@
 #' reported for the test of equal proportions, odds ratio and its corresponding 
 #' 95% confidence interval.                           
 #' 
-#' @importFrom epiR epi.2by2                                                                                   
 #' @export
 #' 
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
