@@ -54,9 +54,11 @@
 #'  stringsAsFactors = FALSE
 #' )
 #' 
+#' \dontrun{
 #' View(X)
 #' 
 #' names(X)
+#' }
 #' 
 labels_over_names <- function(df) {
   

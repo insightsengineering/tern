@@ -21,8 +21,10 @@ X <- data.frame(
  stringsAsFactors = FALSE
 )
 
+\dontrun{
 View(X)
 
 names(X)
+}
 
 }
