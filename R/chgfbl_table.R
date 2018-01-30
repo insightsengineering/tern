@@ -93,7 +93,7 @@ chgfbl_data <- function(data,
   attr(data_f$CHG, "label") <- attr(data_f$AVAL, "label")
   
   #Convert AVAL and CHG from wide to long format
-  df <- gather(data_f, type, value, c("AVAL", "CHG")) %>%
+  df <- gather(data_f, type, value, AVAL, CHG) %>%
     mutate(arm = factor(.[[arm_var]]),
            arm_name = factor(paste(.[[arm_var]], type, sep="_")))
   
