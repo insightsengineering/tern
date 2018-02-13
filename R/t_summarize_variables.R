@@ -29,7 +29,7 @@
 #' attr(ASL$SEX, "label")
 #' 
 #' # control categorical order
-#' ASL$SEX <- fct_relevel(ASL$SEX, "M", "F", "UNDEFINED")
+#' ASL$SEX <- fct_relevel(ASL$SEX, "M", "F")
 #' 
 #' # control arm order
 #' ASL$ARM <- fct_relevel(ASL$ARM, "ARM B", "ARM A")
@@ -112,7 +112,7 @@ t_summarize_variables <- function(data, col_by, total = NULL) {
     } else {
       # treat as factor
       rtabulate(
-        x = factor(var),
+        x = as.factor(var),
         col_by = col_by,
         FUN = function(x_cell, x_row, x_col) {
           if (length(x_col) > 0) length(x_cell) * c(1, 1/length(x_col)) else rcell("-", format = "xx")
