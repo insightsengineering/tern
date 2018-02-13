@@ -83,24 +83,26 @@ t_tte <- function(tte,
                   ties = "exact") {
   
   # Argument Checking
-  n <- length(tte)
-  if (length(is_event) != n) stop("event has incorrect length!")
+  check_same_N(tte = tte, is_event = is_event,
+               event_descr = event_descr, col_by = col_by,
+               strata_data = strata_data)
 
-  if (!is.factor(col_by)) stop("col_by needs to be a factor")  
-  if (length(col_by) != n) stop("col_by has incorrect length!")
+  check_col_by(col_by, 2)
+  check_strata_data(strata_data)
+  
+  if (!is.null(event_descr) && !is.factor(event_descr))
+    stop("event_descr is required to be a factor") 
 
-  if (!is.null(event_descr) && length(event_descr) != n) stop("event_descr has wrong length") 
-  if (!is.null(strata_data) && nrow(strata_data) != n) stop("strata_data has wrong dimension")
+  if (!is.null(time_points) && !is.numeric(time_points))
+    stop("time_points is required to be numeric")
+
 
   N <- tapply(col_by, col_by, length)
   
-  empty_row_table <- rtable(header = levels(col_by), rrow())
-  
   # Event Table
   # ###########
-  fun_log <- function(x) sum(x) * c(1, 1/length(x))
   tbl_event <- rbind(
-    rtabulate(is_event, col_by, fun_log, format = "xx.xx (xx.xx%)",
+    rtabulate(is_event, col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)"),
     if (!is.null(event_descr)) {
       rbind(
@@ -110,7 +112,7 @@ t_tte <- function(tte,
     } else {
       NULL
     },
-    rtabulate(!is_event, col_by,  fun_log, format = "xx.xx (xx.xx%)",
+    rtabulate(!is_event, col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)")
   )
    
@@ -166,9 +168,10 @@ t_tte <- function(tte,
       )
     })
     
-    pval <- c(list(NULL), lapply(values, `[[`, "pval"))
-    hr <- c(list(NULL), lapply(values, `[[`, "hr"))
-    hr_ci <- c(list(NULL), lapply(values, `[[`, "hr_ci"))
+    # first column is empty
+    pval <- start_with_NULL(lapply(values, `[[`, "pval"))
+    hr <- start_with_NULL(lapply(values, `[[`, "hr"))
+    hr_ci <- start_with_NULL(lapply(values, `[[`, "hr_ci"))
     
     rtable(
       header = levels(arm),
@@ -248,26 +251,24 @@ t_tte <- function(tte,
         rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
       )
     }, s_df_tp, time_points)  
-    
+
     rbind(
-      rtable(header = levels(col_by), rrow("Time Point Analysis")),
-      Reduce(function(x,y) {
-        rbind(x, empty_row_table, y)
-      }, tp_rtables)
+      rtable(header = levels(col_by), rrow("Time Point Analysis")),    
+      stack_rtables_l(tp_rtables)      
     )
   }
   
   ## Now Stack Tables together
-  Reduce(
-    function(x,y) {
-      rbind(x, empty_row_table, y)
-    },
-    list(
-      tbl_event,
-      tbl_tte,
-      tbl_stratified,
-      tbl_unstratified,
-      tbl_timepoints
-    )
+  tbl <- stack_rtables(
+    tbl_event,
+    tbl_tte,
+    tbl_stratified,
+    tbl_unstratified,
+    tbl_timepoints
   )
+  
+  # add N to header 
+  names(tbl) <- paste(names(tbl), paste("N =", unlist(N)), sep = "\n")
+
+  tbl
 }

@@ -23,6 +23,8 @@
 #' reported for the test of equal proportions, odds ratio and its corresponding 
 #' 95% confidence interval.                           
 #' 
+#' 
+#' @importFrom stats binom.test
 #' @export
 #' 
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
@@ -38,11 +40,11 @@
 #' ANL <- merge(ASL, ARS) %>% 
 #'   filter(PARAMCD == "OVRSPI")
 #'
-#' tbl <- response_table(
-#'  response = ANL$AVALC,
-#'  value.resp = c("CR", "PR"),
-#'  value.nresp = setdiff(ANL$AVALC, c("CR", "PR")),
-#'  arm = fct_relevel(factor(ANL$ARMCD), "ARM B", "ARM A")
+#' tbl <- t_rsp(
+#'  rsp = ANL$AVALC %in% c("CR", "PR"),
+#'  col_by = fct_relevel(factor(ANL$ARMCD), "ARM B", "ARM A"),
+#'  parition_rsp_by = factor(ANL$AVALC, levels =  c("CR", "PR", "SD", "NON CR/PD", "PD")),
+#'  strata_data = NULL
 #' )
 #' 
 #' tbl
@@ -139,324 +141,115 @@
 #' 
 #' 
 #' '%needs%' <- teal.oncology:::'%needs%' # for debugging purpuses
-response_table <- function(response, 
-                           value.resp       = c("CR","PR"),
-                           value.nresp      = c("SD", "NON CR/PD", "PD", "NE"),
-                           arm, 
-                           strata_data      = NULL, 
-                           style = 1
-) {
+#' 
+#'   #Reorder response/non-response values - controlled codelist first, NE last
+#'
+#  resp_order <-
+t_rsp <- function(
+  rsp,
+  col_by,
+  parition_rsp_by = NULL,
+  strata_data = NULL) {
   
-  #####################
-  # Argument checking #
-  #####################
+  # Argument checking
+  # #################
+  check_same_N(rsp = rsp, col_by = col_by, parition_rsp_by = parition_rsp_by, strata_data = strata_data)
   
-  #Check length of input variables matches #
-  n <- length(response)
-  if (length(arm) != n) stop("Length for arm and response variables does not match, please check data")
-  if (!is.null(strata_data)) {
-    if (nrow(strata_data) != n) stop("Length of strata_data does not match length of response variable, please check data")
-    if (any(rowSums(is.na(strata_data) | strata_data == "") != 0)) stop("Cannot have NA or missing values in stratification factor")
-  }
+  if (!is.logical(rsp)) stop("rsp is expected to be logical")
+  if (any(is.na(rsp))) stop("rsp can not have any NAs")
+  check_col_by(col_by, min_num_levels = 2)
+  check_strata_data(strata_data)
   
-  # Check there are 2+ unique levels in arm variable for comparison ---#
-  if (length(levels(factor(arm))) < 2){
-    stop("Invalid arm variable selected. Minimum 2 unique levels required for arm variable.")
-  }
-  if (!style %in% c(1,2)) {
-    stop("Style must equal to 1 or 2")
-  }
+  # Responder table
+  tbl_response <- rbind(
+    rtabulate(rsp, col_by = col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+              row.name = "Responders"),
+    rtabulate(!rsp, col_by = col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+              row.name = "Non-Responders")
+  )
   
-  ############################
-  # Format data for analysis #
-  ############################
-  rsp_for_test   <- response %in% c(value.resp, value.nresp)
+  # Response Rate
+  tbl_clopper_pearson <- rtabulate(
+    x = rsp, col_by = col_by,
+    function(x) { binom.test(sum(x), length(x))$conf.int * 100 },
+    format = "(xx.xx, xx.xx)",
+    row.name = "95% CI for Response Rates (Clopper-Pearson)"
+  )
   
-  #Reorder response/non-response values - controlled codelist first, NE last
-  resp_order <- c("CR", "PR", "SD", "NON CR/PD", "PD")
-  
-  value_reorder <- lapply(list(value.resp, value.nresp), function(x) {
-    getorder <- match(x, resp_order)
-    getna <- which(is.na(getorder))
-    getorder[getna] <- getna + 10
-    getorder[which(x == "NE")] <- 99
-    xreorder <- x[order(getorder)]
-    xreorder
-  })
-  
-  value.resp <- value_reorder[[1]]
-  value.nresp <- value_reorder[[2]]
-  value_for_test <- c(value.resp, value.nresp)
-  
-  df <- data.frame(arm, response)
-  if (!is.null(strata_data)) {
-    strata_name <- names(strata_data)
-    strata <- do.call(paste, c(as.data.frame(strata_data), sep="/"))
-    df <- data.frame(df, strata)
-  }
-  df <- subset(df, !is.na(arm) & rsp_for_test == TRUE)
-  
-  #Final arm vectors for analysis
-  ARM <- df$arm
-  arm_lvl <- levels(ARM)
-  
-  #####################
-  # Math calculation  #
-  #####################
-  
-  # Split response data into tree by ARM
-  # Rate and CI calculation   
-  value_list <- c(list(c(value.resp)), as.list(value_for_test))
-  names(value_list) <- c("Responders", value_for_test)
-  
-  rate_result <- lapply(split(df$response, ARM), function(x){
-    lapply(value_list, function(y) {
-      N       <- length(x)
-      n_resp  <- sum(x %in% y)
-      ratestats    <- binom.test(n_resp, N)
-      
-      list(
-        N       = N,
-        n_resp  = n_resp,
-        n_nresp = N-n_resp,
-        p_resp  = n_resp/N,
-        p_nresp = (N-n_resp)/N,
-        ci      = ratestats$conf.int*100
-      )
-    })
-  })
-  
-  
-  #Calculation for diff in rate and OR for Responder/Non-responders
-  coltotal = length(arm_lvl)
-  comparm_list <- as.list(arm_lvl[2:coltotal])
-  names(comparm_list) <- arm_lvl[2:coltotal]
-  if (style == 1) {
-    value_list <- list(value.resp)
-    names(value_list) <- "Responders"
-  } else if (style == 2) {
-    value_list <- c(list(value.resp), as.list(value.resp))
-    names(value_list) <- c("Responders", value.resp)
-  }
-  
-  
-  #Helper functions to calculate OR and conf.int
-  odds.ratio <- function(x, pad.zeros=FALSE, conf.level=0.95) {
-    if (pad.zeros) {
-      if (any(x==0)) x <- x + 0.5
+  # Difference in Response Rates
+  tbl_difference <- rbind(
+    
+    tabulate_pairwise(rsp, col_by, function(x, by) {
+      diff(tapply(x, by, mean))
+    }, format = "xx.xx", row.name = "Difference in Response Rates"),
+    
+    # wald test without continuety correction
+    tabulate_pairwise(rsp, col_by, function(x, by) {
+      rcell("add logic")
+    },
+    indent = 1,
+    row.name = "95% CI for difference (Wald without correction)"),
+    
+    # wald test with  continuety correction
+    tabulate_pairwise(rsp, col_by, function(x, by) {
+      rcell("add logic")
+    }, 
+    indent = 1,
+    row.name = "95% CI for difference (Wald with continuity correction)"),
+    
+    # p-value dependent on strata_data
+    if (is.null(strata_data)) {
+      tabulate_pairwise(rsp, col_by, function(x, by) {
+        rcell("add logic")
+      }, 
+      indent = 1,
+      row.name = "p-value (Chi-squared)")
+    } else {
+      tabulate_pairwise(rsp, col_by, function(x, by) {
+        rcell("add logic")
+      }, 
+      indent = 1,
+      row.name = "p-value (Cochran-Mantel-Haenszel)")
     }
-    theta <- x[1,1] * x[2,2] / ( x[2,1] * x[1,2] )
-    ASE <- sqrt(sum(1/x))
-    CI <- exp(log(theta)
-              + c(-1,1) * qnorm(0.5*(1+conf.level)) *ASE )
-    list(estimator=theta,
-         ASE=ASE,
-         conf.interval=CI,
-         conf.level=conf.level)
-  }
+  )
+  
+  # Odds Ratio
+  tbl_odds_ratio <- rbind(
+    rtable(header = levels(col_by), rrow("odds ratio table"))
+  )
   
   
-  diffor_result <- lapply(comparm_list, function(i) {
-    lapply(value_list, function(j) {
-      df.diffor <- df %>% 
-        filter(arm %in% c(levels(df$arm)[1], i)) %>% 
-        mutate(arm = droplevels(arm),
-               response = droplevels(response),
-               final.arm = fct_relevel(arm, i, levels(df$arm)[1]),
-               resp = fct_collapse(response, "Responders" = j, "Non-Responders" = setdiff(response, j)),
-               final.resp = fct_relevel(resp, "Responders", "Non-Responders"))
-      
-      
-      df.table.diff <- table(df.diffor[c("final.arm", "final.resp")])
-      df.test.nocorr <- prop.test(df.table.diff, correct = F)
-      df.test.corr   <- prop.test(df.table.diff, correct = T)
-      
-      result_diffpart <- list(
-        diff   = unname(df.test.nocorr$estimate[1]-df.test.nocorr$estimate[2])*100,
-        diffci.nocorr = unname(df.test.nocorr$conf.int)*100,
-        diffci.corr   = unname(df.test.corr$conf.int)*100
-      )
-      
-      if (!exists("strata_name")) {
-        #If no strata, use Chi-square test
-        df.test.OR <- odds.ratio(df.table.diff)
-        
-        c(result_diffpart,
-          list(
-            diffp  = df.test.nocorr$p.value,
-            or     = unname(df.test.OR$estimator),
-            orci   = unname(df.test.OR$conf.interval),
-            warning = ifelse(any(df.table.diff <= 30), "#", NA)
-          ))
-      } else {
-        #If strata is requested, using CMH
-        df.table.OR <- table(df.diffor[c("final.arm", "final.resp", "strata")])
-        df.test.OR     <- mantelhaen.test(df.table.OR, correct = F)
-        
-        c(result_diffpart,
-          list(
-            diffp  = df.test.OR$p.value,
-            or     = unname(df.test.OR$estimate),
-            orci   = unname(df.test.OR$conf.int),
-            warning = ifelse(any(df.table.diff <= 5) | any(df.table.OR <= 5), "#", NA)
-          ))
-      }
-    })
-  })
+  # Partition
   
-  lowcount_warning <- ("#" %in% unlist(diffor_result)[grepl("warning", names(unlist(diffor_result)))])
-  
-  if (!exists("strata_name")) {
-    method <- " (Chi-squared)"
-    notation <- ifelse(lowcount_warning, "#", "")
-    warning <- ifelse(lowcount_warning, "#", "")
+  tbl_partition <- if (is.null(parition_rsp_by)) {
+    NULL
   } else {
-    method <- " (Cochran-Mantel-Haenszel)"
-    notation <- paste0("*",
-                       ifelse((length(strata_name) > 1 | length(levels(factor(strata))) > 3), "^", ""))
-    warning <- ifelse(lowcount_warning, "#", "")
+    df <- data.frame(rsp = rsp, col_by = col_by)
+    df.split <- split(df, parition_rsp_by, drop = FALSE)
+    
+    tbls_part <- Map(function(dfi, name) {
+      rbind(
+        rtabulate(dfi$rsp, dfi$col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+                  row.name = name),
+        rtabulate(dfi$rsp, dfi$col_by, function(x) rcell("to be done"), format = "xx",
+                  row.name = "95% CI (Wald)", indent = 1)
+      )
+    }, df.split, names(df.split))
+    
+    
+    stack_rtables_l(tbls_part)
   }
   
-  ##########################################
-  # Build output data structure with rtable#
-  ##########################################
-  rate_resp <- lapply(rate_result, '[[', 1)
-  rate_byvalue <- lapply(rate_result, '[', c(-1))
-  diffor_resp <- lapply(diffor_result, '[[', 1)
-  if (style == 2) diffor_byvalue <- lapply(diffor_result, '[', c(-1))
   
-  #Depending on number of comparison arms, parameters for output display settings
-  #centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
-  colsize = ifelse(coltotal > 2, 1, 2)
-  if (coltotal > 2) {
-    diffor_resp <- c(list(fill=NULL), diffor_resp)
-    if (exists("diffor_byvalue")) {
-      diffor_byvalue <- c(list(fill=NULL), diffor_byvalue)
-    }
-  }
-  
-  #Helper functions for display with rtable
-  lrrow <- function(row.name, l, ...) {
-    do.call(rrow, c(list(row.name = row.name, ...), l))
-  }
-  print_np <- function(x) rcell(c(x$n_resp, x$p_resp))
-  print_ci <- function(x,y,z) rcell(x[[y]], format = "(xx.xx, xx.xx)", colspan = z)
-  print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
-  
-  #--- Header Section ---#
-  out_header <-  list(
-    col.names = paste(arm_lvl, 
-                      paste0("(N=", unlist(lapply(rate_resp, '[[', "N")),")"), 
-                      sep="\n"),
-    format = "xx (xx.x%)"
+  stack_rtables(
+    tbl_response,
+    tbl_clopper_pearson,
+    tbl_difference,
+    tbl_odds_ratio,
+    tbl_partition
   )
   
-  #--- Responder/Non-responder section - counts and 95% CI ---#
-  out_rate_resp  <- list(
-    lrrow("Responders", lapply(rate_resp, print_np)),
-    lrrow("Non-Responders", lapply(rate_resp, function(x) rcell(c(x$n_nresp, x$p_nresp)))),
-    rrow(),
-    lrrow("95% CI for Response Rates (Clopper-Pearson)", lapply(rate_resp, print_ci, "ci", 1)),
-    rrow()
-  )
-  
-  #--- Responder/Non-responder section - diff in rates and OR ---#
-  #Depending on number of comparison arms, display centered (if only 1 comp arm) or aligned in column (if more than 1 comp arm)
-  out_diffor_resp <- list(
-    lrrow("Difference in Response Rates", lapply(diffor_resp, print_diffor, "diff", colsize)),
-    lrrow(paste0("95% CI for difference (Wald without correction)", warning), 
-          indent = 1, lapply(diffor_resp, print_ci, "diffci.nocorr", colsize)),
-    lrrow(paste0("95% CI for difference (Wald with continuity correction)", warning), 
-          indent = 1, lapply(diffor_resp, print_ci, "diffci.corr", colsize)),
-    lrrow(paste0("p-value", notation, warning, method), indent = 1,      
-          lapply(diffor_resp, function (x) rcell(x$diffp, format = "xx.xxxx", colspan = colsize))),
-    rrow(),
-    lrrow(paste0("Odds Ratio", notation),         lapply(diffor_resp, print_diffor, "or", colsize)),
-    lrrow(paste0("95% CI", notation), indent = 1, lapply(diffor_resp, print_ci, "orci", colsize)),
-    rrow()
-  )
-  
-  #--- Section for each response value - counts and 95% CI ---#
-  #Display full labels for responses in controlled codelist 
-  rsp_full_label <- list(CR          = "Complete Response (CR)",
-                         PR          = "Partial Response (PR)",
-                         SD          = "Stable Disease (SD)",
-                         `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
-                         PD          = "Progressive Disease (PD)",
-                         NE          = "Missing or unevaluable"
-  )
-  
-  
-  out_byvalue <- unlist(
-    lapply(as.list(1:length(value_for_test)), function(i) {
-      #Extract response value short name
-      rspname <- sapply(rate_byvalue, names)[i]
-      if (rspname %in% names(rsp_full_label)) {
-        label <- unname(rsp_full_label[rspname])
-      } else {label <- rspname}
-      
-      #Display counts and percentage row
-      part1 <-list(lrrow(label,lapply(lapply(rate_byvalue, '[[', i), print_np)))
-      
-      #If response value is NE, do not display 95% CI and difference in rate rows
-      if (rspname != "NE") {
-        if (style == 2 & rspname %in% value.resp) {
-          part2 <- list(
-            lrrow("95% CI (Wald)", lapply(lapply(rate_byvalue, '[[', i), print_ci, "ci", 1), indent = 1),
-            rrow(),
-            lrrow(paste("Difference in",label, "rate"), 
-                  lapply(lapply(diffor_byvalue, '[[', i), print_diffor, "diff", colsize), indent = 1),
-            lrrow(paste0("95% CI for difference in ", rspname, " rate (Wald)", warning), 
-                  lapply(lapply(diffor_byvalue, '[[', i), print_ci, "diffci.nocorr", colsize), indent = 1),
-            lrrow(paste0("p-value", notation, warning, method), 
-                  lapply(lapply(diffor_byvalue, '[[', i), 
-                         function (x) rcell(x$diffp, format = "xx.xxxx", colspan=colsize)),indent = 1)
-          )
-        } else {
-          part2 <- list(lrrow("95% CI (Wald)", 
-                              lapply(lapply(rate_byvalue, '[[', i), print_ci, "ci", 1), indent = 1))
-        }
-      } else {
-        part2 <- NULL
-      }
-      
-      #Last row - either empty or notation for stratification
-      part3 <- list(rrow())
-      
-      #Combine all rows to be parsed by unlist function
-      c(part1, part2, part3)
-      
-    }), recursive = F
-  )
-  
-  #--- Footer section, if any for notes on stratification ---#
-  out_footer <- NULL
-  if (grepl("\\*", notation)) {
-    n_strata <- length(strata_name)
-    out_footer <- c(out_footer,
-                    list(rrow(paste("* Model stratified by", 
-                                    ifelse(n_strata < 2, strata_name, 
-                                           paste(paste(strata_name[-(n_strata)], collapse = ", "), "and", strata_name[(n_strata)]))
-                    ))))
-  }
-  if (grepl("\\^", notation)) {
-    out_footer <- c(out_footer,
-                    list(rrow("^ CAUTION! Multiple factors or more than 3 strata present. 
-                              Make sure sample size within each stratum is sufficient for analysis.")))
-  }
-  if (grepl("\\#", warning)) {
-    out_footer <- c(out_footer,
-                    list(rrow("# USE WITH CAUTION! One or more cells has a frequency count of <= 5.")))
-  }
-  #Put all sections together to display table
-  tbl <- do.call(rtable,c(out_header,
-                          out_rate_resp,
-                          out_diffor_resp,
-                          out_byvalue,
-                          out_footer
-  ))
-  
-  tbl
+
 }
 
 
@@ -469,7 +262,6 @@ response_table <- function(response,
 #' @param y name of element to display
 #' @param z colspan for the cell
 #' 
-#' @export
 #' 
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
 #' 
@@ -650,4 +442,27 @@ response_table_ADAM <- function(ASL, ARS,
     style            = style
   )
   
+}
+
+
+
+
+tmp <- function() {
+  
+  ## ???
+  value_reorder <- lapply(list(value.resp, value.nresp), function(x) {
+    getorder <- match(x, resp_order)
+    getna <- which(is.na(getorder))
+    getorder[getna] <- getna + 10
+    getorder[which(x == "NE")] <- 99
+    xreorder <- x[order(getorder)]
+    xreorder
+  })
+  
+  value.resp <- value_reorder[[1]]
+  value.nresp <- value_reorder[[2]]
+  value_for_test <- c(value.resp, value.nresp)
+ 
+  
+   
 }

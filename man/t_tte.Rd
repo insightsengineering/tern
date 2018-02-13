@@ -60,11 +60,11 @@ ATE_f <- ATE \%>\%
 
 
 tbl <- t_tte(
-  time_to_event = ATE_f$AVAL,
-  event = ATE_f$CNSR == 0,
-  earliest_contributing_event = ATE_f$EVNTDESC,
-  arm = ATE_f$ARM_ANL,
-  strata_data = ATE_f \%>\% select(SEX, MLIVER, TCICLVL2),
+  tte = ATE_f$AVAL,
+  is_event = ATE_f$CNSR == 0,
+  event_descr = ATE_f$EVNTDESC,
+  col_by = ATE_f$ARM_ANL,
+  strata_data = ATE_f[, c('SEX', 'MLIVER', 'TCICLVL2')],
   time_points = 6,
   time_unit = "month"
 )

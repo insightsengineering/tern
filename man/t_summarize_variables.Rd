@@ -35,7 +35,7 @@ attr(ASL$BAGE, "label") <- "Baseline Age of patient"
 attr(ASL$SEX, "label")
 
 # control categorical order
-ASL$SEX <- fct_relevel(ASL$SEX, "M", "F", "UNDEFINED")
+ASL$SEX <- fct_relevel(ASL$SEX, "M", "F")
 
 # control arm order
 ASL$ARM <- fct_relevel(ASL$ARM, "ARM B", "ARM A")

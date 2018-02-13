@@ -85,12 +85,13 @@
 #' }
 #' 
 t_summarize_variables <- function(data, col_by, total = NULL) {
-  
-  if (!is.data.frame(data)) stop("data is expected to be a data frame")
-  if (!is.no_by(col_by) && nrow(data) != length(col_by)) stop("dimension missmatch col_by")
-  
-  if (!is.no_by(col_by) && !is.factor(col_by)) col_by <- as.factor(col_by) 
-  
+
+  # Check Arguments
+  if (!is.data.frame(data)) stop("data is expected to be a data frame")  
+  check_same_N(data = data, col_by = col_by, omit.NULL = FALSE)
+  check_col_by(col_by, 1)
+
+  # If total column is requested stack the data and change col_by accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
     if (length(total) != 1) stop("total must be either NULL or a single string")
