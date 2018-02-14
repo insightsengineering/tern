@@ -1,4 +1,3 @@
-# Forest plot using grid
 #' Forest plot (table + graph)
 #' 
 #' @param x rtable from forest_rsp function or from forest_tte function
@@ -16,6 +15,32 @@
 #' @export
 #' 
 #' @examples 
+#' 
+#' library(random.cdisc.data)
+#' 
+#' ASL <- radam("ASL")
+#' ATE <- radam("ATE", ADSL = ASL)
+#' 
+#' ATE_f <- ATE %>% filter(PARAMCD == "OS") 
+#' 
+#' ANL <- merge(ASL %>% select(USUBJID, STUDYID, SEX, RACE, ARM), ATE_f)
+#' 
+#' tbl <- t_forest_tte(
+#'   tte = ANL$AVAL,
+#'   is_event = ANL$CNSR == 0,
+#'   col_by = factor(ANL$ARM), 
+#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+#' )
+#' 
+#' g <- g_forest(tbl = tbl, i_col_est = 8, i_col_ci = 9, header_forest = c("Treatement Better", "Comparison Better"))
+#' 
+#' library(grid)
+#' grid.newpage()
+#' grid.draw(g)
+#' 
+#' 
+#' 
+#' 
 #' 
 #' library(random.cdisc.data)
 #' ASL <- radam("ASL")
@@ -75,11 +100,9 @@
 #' g_forest(tbl, arm.ref = "ReferenceAAAvery longtitle", arm.comp = "Treatment AAAverylongtitle", padx=unit(0, "lines"))
 #' 
 #' }
-g_forest <- function(x, arm.ref = "ReferenceAAAvery longtitle", arm.comp = "Treatment AAAverylongtitle", 
-                     anl.model = "logistic", time.unit = "month", padx = unit(0, "lines"), cex = 1) {
+g_forest <- function(tbl, i_col_est, i_col_ci, header_forest, padx = unit(0, "lines"), cex = 1) {
   
-  rn <- c("Baseline Risk Factors", row.names(x))
-  
+
   
   vp <- vpTree(
     parent = viewport(

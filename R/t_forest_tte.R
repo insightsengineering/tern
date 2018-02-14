@@ -94,7 +94,7 @@
 #' }
 #' 
 #' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
-t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, total = 'ALL', time_unit = "month") {
+t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, total = 'ALL', time_unit = "month", na.omit.group = TRUE) {
   
   
   check_same_N(tte = tte, is_event = is_event, group_data = group_data)
@@ -158,7 +158,8 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, total = 'ALL'
     # where each leaf is a data.frame with 
     # the data to compute the survival analysis with
     data_tree <- lapply(group_data, function(var) {
-      split(cox_data, var, drop = FALSE)
+      dt <- if (na.omit.group) subset(cox_data, !is.na(var)) else cox_data
+      split(dt, var, drop = FALSE)
     })
   
     list_of_tables <- Map(function(dfs, varname) {
