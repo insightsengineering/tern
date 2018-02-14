@@ -27,7 +27,7 @@
 #' tbl <- t_tte(
 #'   tte = ATE_f$AVAL,
 #'   is_event = ATE_f$CNSR == 0,
-#'   event_descr = ATE_f$EVNTDESC,
+#'   event_descr = factor(ATE_f$EVNTDESC),
 #'   col_by = factor(ATE_f$ARM),
 #'   strata_data = ATE_f[, c('SEX', 'RACE')],
 #'   time_points = 6,

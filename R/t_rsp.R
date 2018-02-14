@@ -183,7 +183,7 @@ t_rsp <- function(
       diff(tapply(x, by, mean))
     }, format = "xx.xx", row.name = "Difference in Response Rates"),
     
-    # wald test without continuety correction
+    # wald test without continuity correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
       rcell("add logic")
     },
@@ -237,7 +237,7 @@ t_rsp <- function(
     }, df.split, names(df.split))
     
     
-    stack_rtables_l(tbls_part)
+    stack_rtables_l(tbls_part) 
   }
   
   
