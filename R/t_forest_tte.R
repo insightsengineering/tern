@@ -93,9 +93,10 @@
 #' 
 #' }
 #' 
-#' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
-t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, total = 'ALL', time_unit = "month", na.omit.group = TRUE) {
+#' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM +  strata(BECOG) + group_data(A, B, D), data = ATE))
+t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, strata_data = NULL, total = 'ALL', time_unit = "month", na.omit.group = TRUE) {
   
+  if (!is.null(strata_data)) stop("strata_data argument is currently not implemented")
   
   check_same_N(tte = tte, is_event = is_event, group_data = group_data)
   check_col_by(col_by)
