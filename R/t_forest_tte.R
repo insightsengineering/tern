@@ -20,22 +20,22 @@
 #' @examples 
 #' 
 #' library(random.cdisc.data)
+#' 
 #' ASL <- radam("ASL")
 #' ATE <- radam("ATE", ADSL = ASL)
 #' 
 #' ATE_f <- ATE %>% filter(PARAMCD == "OS") 
 #' 
-#' ASL_f <- right_join(ASL %>% select(USUBJID, STUDYID, SEX, RACE, ARM),
-#'                         ATE_f %>% select(USUBJID, STUDYID))
+#' ANL <- merge(ASL %>% select(USUBJID, STUDYID, SEX, RACE, ARM), ATE_f)
 #' 
-#' tbl <- forest_rsp(
-#'   response = ATE_f$AVAL,
-#'   event = ATE_f$CNSR == 0,
-#'   arm = ASL_f$ARM, 
-#'   group_data = ASL_f %>% select("SEX", "RACE")
+#' tbl <- t_forest_tte(
+#'   tte = ANL$AVAL,
+#'   is_event = ANL$CNSR == 0,
+#'   col_by = factor(ANL$ARM), 
+#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 #' )
 #' 
-#' tbl
+#' Viewer(tbl)
 #' 
 #' 
 #' 
@@ -94,108 +94,97 @@
 #' }
 #' 
 #' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM + SEX, data = ATE))
-t_forest_tte <- function(time_to_event, event, 
-                       arm, group_data, covariates = NULL) {
+t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, total = 'ALL', time_unit = "month") {
   
-  # argument checking
-  n <- length(time_to_event)
-  if (length(event) != n) stop("event has wrong length")
-  if (length(arm) != n) stop("arm has wrong length")
-  if (!is.data.frame(group_data)) stop("group_data is expected to be a data.frame")
-  if (nrow(group_data) != n) stop("group_data has wrong number of rows")
-  if (any(grepl(".", group_data, fixed = TRUE))) stop("no . are allowed in the group_data variable names")
   
-  cox_data <- data.frame(
-    time_to_event,
-    event,
-    arm = arm)
+  check_same_N(tte = tte, is_event = is_event, group_data = group_data)
+  check_col_by(col_by)
+  if (length(levels(col_by)) != 2) stop("col_by can only have two levels")
   
-  # split data into a tree for data
-  # where each leaf is a data.frame with 
-  # the data to compute the survival analysis with
-  data_list <- c(
-    list(ALL = list(ALL = cox_data)),
-    lapply(group_data, function(var) {
-      sub_data <- cbind(cox_data, var)
-      sub_data <- subset(sub_data, var != "")
-      #sub_data <- sub_data %>% filter(var != "")
-      if ("" %in% levels(sub_data$var)) sub_data$var <- factor(sub_data$var, levels = levels(sub_data$var)[-which(levels(sub_data$var) == "")])
-   #   sub_data$var <- as.factor(as.character(sub_data$var))
-      sub_data$var <- as.factor(sub_data$var)
-      lapply(split(sub_data, sub_data$var), function(x){
-        x[,-4]
-      })
+  ## note that there is no missing
+  check_data_frame(group_data) # change name of check_strata_data
+  if (!is.null(group_data)) {
+    is_fct <- vapply(group_data, is.factor, logical(1)) 
+    if (!all(is_fct)) stop("not all variables in group_data are factors: ", paste(names(is_fct)[!is_fct], collapse = ", "))
+  }
+  
+  
+  # Derive Output
+  cox_data <- data.frame(time_to_event = tte, event = is_event, arm = col_by)
+  
+  # table_header <- rheader(
+  #   rrow(row.name = "",
+  #        rcell(""),
+  #        rcell(levels(col_by)[1], colspan = 3),
+  #        rcell(levels(col_by)[2], colspan = 3),
+  #        rcell(""),
+  #        rcell("")
+  #   ),
+  #   rrow(row.name = "Baseline Risk Factors",
+  #        "Total n",
+  #        "n", "Events", paste0("Median (", time_unit, ")"),
+  #        "n", "Events", paste0("Median (", time_unit, ")"),
+  #        "Hazard Ratio",
+  #        "95% Wald CI"
+  #   )
+  # )
+  
+  table_header  <- rheader(
+    rrow(row.name = "Baseline Risk Factors",
+         "Total n",
+         "n", "Events", paste0("Median (", time_unit, ")"),
+         "n", "Events", paste0("Median (", time_unit, ")"),
+         "Hazard Ratio",
+         "95% Wald CI"
+    )
+  )
+  
+  tbl_total <- if(is.null(total)) {
+    NULL
+  } else {
+    rtable(header = table_header, rrowl(row.name = total, 
+      format_survival_analysis(
+        survival_results(cox_data)
+      )
+    )) 
+  }
+  
+  
+  tbl_group_data <- if (is.null(group_data)) {
+    NULL
+  } else {
+    
+    # split data into a tree for data
+    # where each leaf is a data.frame with 
+    # the data to compute the survival analysis with
+    data_tree <- lapply(group_data, function(var) {
+      split(cox_data, var, drop = FALSE)
     })
+  
+    list_of_tables <- Map(function(dfs, varname) {
+      tbls_var <- Map(function(dfi, level) {
+        rtable(header = table_header,
+               rrowl(
+                 row.name = level,
+                 indent = 1,
+                 format_survival_analysis(
+                   survival_results(dfi)
+                 )
+               )) 
+      }, dfs, names(dfs))
+      rbind(
+        rtable(header = table_header, rrow(row.name = varname)),
+        Reduce(rbind, tbls_var)
+      )
+    }, data_tree, names(data_tree))
+    
+    stack_rtables_l(list_of_tables)
+  }
+  
+  stack_rtables(
+    tbl_total,
+    tbl_group_data
   )
-
-  # varname=data_list$RACE
-  # data_for_value = varname[4]
-  # apply the survival analysis
-  results_survival <- lapply(data_list, function(varname) {
-    lapply(varname, function(data_for_value) {
-      survival_results(data_for_value)
-    })
-  })
-  
-  
-  # reduce results into a table
-  results_survival2 <- unlist(results_survival, recursive = FALSE)
-  X <- Reduce(rbind, results_survival2)
-  row.names(X) <-names(results_survival2)
-  
- ## for debugging
- # rtab <- results_survival2[[1]]
- # for (i in 2:length(results_survival2)) {rtab <- rbind(rtab,results_survival2[[i]])}
-
-  additonal_args <- list(
-    col.names = c("Total n",
-                  "n", "events", "Median Events\n(Months)",
-                  "n", "events", "Median Events\n(Months)",
-                  "Hazard Ratio", "95% Wald\nCI"),
-    format = "xx"
-  )
-  
-  # rname <- rownames(X)[3]
-  # x <- split(X, 1:nrow(X))[[1]]
-  last_header <- "ALL"
-  rrow_collection <- Filter(
-    function(x)!is.null(x),
-    unlist(
-      Map(function(x, rname) {
-        
-        i <- regexpr(".", rname, fixed = TRUE)
-        header_row_name <- c(substr(rname, 1, i-1), substring(rname, i+1))
-        
-        is_new_category <- header_row_name[1] != last_header
-        last_header <<- header_row_name[1]
-        
-        list(
-          if (is_new_category) rrow() else NULL,
-          if (is_new_category) rrow(last_header) else NULL,
-          rrow(
-            row.name = header_row_name[2],
-            x$km_ref_n + x$km_comp_n, # total n
-            x$km_ref_n,
-            x$km_ref_event,
-            rcell(x$km_ref_median, format = "xx.x"),
-            x$km_comp_n,
-            x$km_comp_event,
-            rcell(x$km_comp_median, format = "xx.x"),
-            rcell(x$cox_hr, format = "xx.xx"),
-            rcell(c(x$cox_lcl, x$cox_ucl), format = "(xx.xx, xx.xx)"),
-            indent = if (header_row_name[1] == "ALL") 0 else 1
-          )
-        )
-      }, split(X, 1:nrow(X)), rownames(X)),
-      recursive = FALSE)
-  )
-  
-  tbl <- do.call(rtable, c(additonal_args, rrow_collection))
-  
-  # Viewer(tbl)
-  class(tbl) <- c("forest_survival", "forest_table", class(tbl))
-  
-  tbl
 }
 
 # survival_results(data_for_value[[1]])
@@ -251,9 +240,31 @@ survival_results <- function(data){
     cox_ucl  <- NA
     cox_pval <- NA
   }
-  
-  surv_table <- data.frame(km_ref_n, km_comp_n, 
-                           km_ref_event, km_comp_event, 
-                           km_ref_median, km_comp_median, 
-                           cox_hr, cox_lcl, cox_ucl)
+
+  list(
+    total_n = nrow(data),
+    ref_n  = km_ref_n,
+    ref_events = km_ref_event,
+    ref_median = km_ref_median,
+    comp_n = km_comp_n,
+    comp_events = km_comp_event,
+    comp_median = km_comp_median,
+    cox_hr = cox_hr,
+    cox_lcl = cox_lcl,
+    cox_ucl = cox_ucl
+  )
+}
+
+format_survival_analysis <- function(x) {
+  list(
+    rcell(x[["total_n"]], "xx"),
+    rcell(x[["ref_n"]], "xx"),
+    rcell(x[["ref_events"]], "xx"),
+    rcell(x[["ref_median"]], "xx"),
+    rcell(x[["comp_n"]], "xx"), 
+    rcell(x[["comp_events"]], "xx"),
+    rcell(x[["comp_median"]], "xx"),
+    rcell(x[["cox_hr"]], format = "xx.xx"),
+    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
+  )
 }

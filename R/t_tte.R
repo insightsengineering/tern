@@ -88,7 +88,7 @@ t_tte <- function(tte,
                strata_data = strata_data)
 
   check_col_by(col_by, 2)
-  check_strata_data(strata_data)
+  check_data_frame(strata_data)
   
   if (!is.null(event_descr) && !is.factor(event_descr))
     stop("event_descr is required to be a factor") 

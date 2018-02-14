@@ -39,10 +39,14 @@ check_same_N_l <- function(x) {
 #' @param n number of expected rows
 #' 
 #' 
-check_strata_data <- function(x) {
+check_data_frame <- function(x) {
+
+  xname <- deparse(substitute(x))
+  
+  if (any(grepl(".", x, fixed = TRUE))) stop("no . are allowed in the strata_data variable names")
   
   if (!is.null(x)) {
-    if (!is.data.frame(x)) stop("strata_data needs to be either NULL or a data.frame")
+    if (!is.data.frame(x)) stop(xname, " needs to be either NULL or a data.frame")
     
     is_missing <- vapply(x, function(var) {
       if (is.numeric(var)) {
@@ -52,7 +56,7 @@ check_strata_data <- function(x) {
       }
     }, logical(1))
     
-    if (any(is_missing)) stop("strata_data can not have any missing values (NA or '')")
+    if (any(is_missing)) stop(xname, " can not have any missing values (NA or '')")
   }  
   
   TRUE 

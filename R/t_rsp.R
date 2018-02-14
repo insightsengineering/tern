@@ -158,7 +158,7 @@ t_rsp <- function(
   if (!is.logical(rsp)) stop("rsp is expected to be logical")
   if (any(is.na(rsp))) stop("rsp can not have any NAs")
   check_col_by(col_by, min_num_levels = 2)
-  check_strata_data(strata_data)
+  check_data_frame(strata_data)
   
   # Responder table
   tbl_response <- rbind(
