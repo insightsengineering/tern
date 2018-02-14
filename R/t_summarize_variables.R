@@ -29,7 +29,7 @@
 #' attr(ASL$SEX, "label")
 #' 
 #' # control categorical order
-#' ASL$SEX <- fct_relevel(ASL$SEX, "M", "F", "UNDEFINED")
+#' ASL$SEX <- fct_relevel(ASL$SEX, "M", "F")
 #' 
 #' # control arm order
 #' ASL$ARM <- fct_relevel(ASL$ARM, "ARM B", "ARM A")
@@ -85,12 +85,13 @@
 #' }
 #' 
 t_summarize_variables <- function(data, col_by, total = NULL) {
-  
-  if (!is.data.frame(data)) stop("data is expected to be a data frame")
-  if (!is.no_by(col_by) && nrow(data) != length(col_by)) stop("dimension missmatch col_by")
-  
-  if (!is.no_by(col_by) && !is.factor(col_by)) col_by <- as.factor(col_by) 
-  
+
+  # Check Arguments
+  if (!is.data.frame(data)) stop("data is expected to be a data frame")  
+  check_same_N(data = data, col_by = col_by, omit.NULL = FALSE)
+  check_col_by(col_by, 1)
+
+  # If total column is requested stack the data and change col_by accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
     if (length(total) != 1) stop("total must be either NULL or a single string")
@@ -112,7 +113,7 @@ t_summarize_variables <- function(data, col_by, total = NULL) {
     } else {
       # treat as factor
       rtabulate(
-        x = factor(var),
+        x = as.factor(var),
         col_by = col_by,
         FUN = function(x_cell, x_row, x_col) {
           if (length(x_col) > 0) length(x_cell) * c(1, 1/length(x_col)) else rcell("-", format = "xx")
