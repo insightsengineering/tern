@@ -45,48 +45,6 @@ tbl <- forest_rsp(
 
 tbl
 
-\dontrun{
-library(atezo.data)
-library(dplyr) 
-library(grid)
-library(teal.oncology)
-library(forcats)
-devtools::install_github("Roche/rtables")
-'\%needs\%' <- teal.oncology:::'\%needs\%'
-ARS <- ars(com.roche.cdt30019.go29436.re)
-ASL <- asl(com.roche.cdt30019.go29436.re)
-ASL$temp <- c(rep("A", 200), rep("B", 250), rep(NA,1202-450))
-
-ASL_f <- subset(ASL, 
-                subset = (ITTWTFL == "N" & ARM \%in\% c("DUMMY A", "DUMMY C")), 
-                select = c("USUBJID", "STUDYID", "ARM", "ARMCD", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "temp") )
-ARS_f <- subset(ARS, 
-                subset = (PARAMCD == "OVRSPI"),
-                select = c("STUDYID", "USUBJID", "PARAMCD", "PARAM", "AVAL", "AVALC"))
-ANL <- merge(ASL_f, ARS_f, by = c("STUDYID", "USUBJID"), all.x = TRUE, all.y = FALSE)
-
-group_data <- subset(ASL_f, select = c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE"))
-
-for(x in names(group_data)){
-  attr(group_data[[x]], "label") <- attr(ASL[[x]], "label")
-}   
-
-names(group_data) <- labels_over_names(group_data)
-
-head(group_data)
-
-arm <- fct_relevel(ASL_f$ARM, "DUMMY C")
-
-tbl <- forest_rsp(
-          response = ANL$AVAL,
-          event = ANL$AVALC \%in\% c("CR","PR"),
-          arm = arm, 
-          group_data = group_data[, -c(1,2), drop=FALSE]
-)
-Viewer(tbl)
-
-}
-
 
   
 }

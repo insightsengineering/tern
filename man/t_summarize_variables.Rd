@@ -46,50 +46,6 @@ t_summarize_variables(iris \%>\% select(-Species), col_by  = iris$Species)
 
 t_summarize_variables(iris \%>\% select(-Species), col_by  = no_by("All Species"))
 
-\dontrun{
-library(tern)
-library(atezo.data)
-library(dplyr)
-
-ASL <- asl(com.roche.cdt30019.go29436.re)
-tbl_expected <- get_demographic_table(com.roche.cdt30019.go29436.re)
-Viewer(tbl_expected)
-
-# order factor levels if they exist
-of <- function(x, ...) {
-  lvls <- if (is.factor(x)) levels(x) else unique(x)
-  olvls <- intersect(unlist(list(...)), lvls)
-  factor(as.character(x), levels = c(olvls, setdiff(lvls, olvls)))
-}
-add_lbl <- function(lbl, x) {
-  structure(x, label = lbl)
-}
-lbl <- function(x) {
-  attr(x, "label")
-}
-
-ADSL <- ASL \%>\%
- filter(ITTWTFL == 'Y') \%>\%
- mutate(ARM = of(ARM, "DUMMY C", "DUMMY B", "DUMMY A")) \%>\%
- mutate(SEX = add_lbl(lbl(SEX), recode_factor(SEX, M = "MALE", F = "FEMALE")))
-
-tbl <- t_summarize_variables(
-   data = subset(ADSL, select = toupper(c("sex", "mliver", "tciclvl2", "bage", "age4cat",
-     "ethnic", "race", "bwt", "tobhx", "hist", "EGFRMUT",
-     "alkmut", "krasmut", "becog"))),
-   col_by = ADSL$ARM,
-   total = "All Patients"
-)
-Viewer(tbl)
-
-compare_rtables(tbl, tbl_expected)
-
-# if all is good then
-tbl <- tbl_expected
-compare_rtables(tbl, tbl_expected)
-
-}
-
 }
 \author{
 Adrian Waddell \email{adrian.waddell@roche.com} and Xiao Yu Mo (mox5), \email{xiao_yu.mo@roche.com}

@@ -4,11 +4,14 @@
 \alias{g_forest}
 \title{Forest plot (table + graph)}
 \usage{
-g_forest(x, arm.ref = "ReferenceAAAvery longtitle",
-  arm.comp = "Treatment AAAverylongtitle", anl.model = "logistic",
-  time.unit = "month", padx = unit(0, "lines"), cex = 1)
+g_forest(tbl, i_col_est, i_col_ci, header_forest, padx = unit(0, "lines"),
+  cex = 1)
 }
 \arguments{
+\item{padx}{gap between two columns}
+
+\item{cex}{multiplier applied to overall fontsize}
+
 \item{x}{rtable from forest_rsp function or from forest_tte function}
 
 \item{arm.ref}{string used to label reference arm}
@@ -18,15 +21,37 @@ g_forest(x, arm.ref = "ReferenceAAAvery longtitle",
 \item{anl.model}{the regression method used for analysis. Valid options are \t{survival} and \t{logistic}}
 
 \item{time.unit}{string used to display the unit of median survival time. default is "month".}
-
-\item{padx}{gap between two columns}
-
-\item{cex}{multiplier applied to overall fontsize}
 }
 \description{
 Forest plot (table + graph)
 }
 \examples{
+
+library(random.cdisc.data)
+
+ASL <- radam("ASL")
+ATE <- radam("ATE", ADSL = ASL)
+
+ATE_f <- ATE \%>\% filter(PARAMCD == "OS") 
+
+ANL <- merge(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, ARM), ATE_f)
+
+tbl <- t_forest_tte(
+  tte = ANL$AVAL,
+  is_event = ANL$CNSR == 0,
+  col_by = factor(ANL$ARM), 
+  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+)
+
+g <- g_forest(tbl = tbl, i_col_est = 8, i_col_ci = 9, header_forest = c("Treatement Better", "Comparison Better"))
+
+library(grid)
+grid.newpage()
+grid.draw(g)
+
+
+
+
 
 library(random.cdisc.data)
 ASL <- radam("ASL")
@@ -46,46 +71,6 @@ tbl <- t_forest_rsp(
 
 g_forest(tbl)
 
-\dontrun{
-library(atezo.data)
-library(dplyr) 
-library(grid)
-library(teal.oncology)
-library(forcats)
-
-'\%needs\%' <- teal.oncology:::'\%needs\%'
-ARS <- ars(com.roche.cdt30019.go29436.re)
-ASL <- asl(com.roche.cdt30019.go29436.re)
-
-tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
-Viewer(tbl_stream)
-
-ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") \%>\% 
-                 filter(ITTWTFL == "Y") \%>\% 
-                 filter(ARM \%in\% c("DUMMY A", "DUMMY C")) \%>\%
-                 select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
-ASL_f <- ASL \%>\% filter(ITTWTFL == "Y") \%>\% filter(ARM \%in\% c("DUMMY A", "DUMMY C"))
-
-group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
-names(group_data) <- labels_over_names(group_data)
-
-head(group_data)
-
-arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
-
-tbl <- t_forest_rsp(
-          response = ARS_f$AVAL,
-          event = ARS_f$AVALC \%in\% c("CR","PR"),
-          arm = arm, 
-          group_data = group_data[, -c(1,2), drop=FALSE]
-)
-
-Viewer(tbl)
-
-library(grid)
-g_forest(tbl, arm.ref = "ReferenceAAAvery longtitle", arm.comp = "Treatment AAAverylongtitle", padx=unit(0, "lines"))
-
-}
 }
 \author{
 Yuyao Song (songy24), \email{yuyao.song@roche.com}

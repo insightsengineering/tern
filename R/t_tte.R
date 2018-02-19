@@ -36,43 +36,6 @@
 #' 
 #' tbl
 #' 
-#' \dontrun{
-#' 
-#' library(atezo.data)
-#' library(dplyr)
-#' library(forcats)
-#'  
-#' ASL <- asl(com.roche.cdt30019.go29436.re)
-#' ATE <- ate(com.roche.cdt30019.go29436.re)
-#' 
-#' tte_tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
-#' Viewer(tte_tbl_stream)
-#' 
-#' ATE_f <- ATE %>%
-#'  filter(ITTFL == "Y", PARAMCD == "OS") %>%
-#'  mutate(ARM_ANL = fct_relevel(ARM1, "DUMMY C", "DUMMY B", "DUMMY A"))
-#' 
-#' 
-#' tbl <- t_tte(
-#'   tte = ATE_f$AVAL,
-#'   is_event = ATE_f$CNSR == 0,
-#'   event_descr = ATE_f$EVNTDESC,
-#'   col_by = ATE_f$ARM_ANL,
-#'   strata_data = ATE_f[, c('SEX', 'MLIVER', 'TCICLVL2')],
-#'   time_points = 6,
-#'   time_unit = "month"
-#' )
-#' 
-#' Viewer(tbl)
-#' 
-#' Viewer(tbl, tte_tbl_stream)
-#' 
-#' compare_rtables(tbl, tte_tbl_stream, comp.attr = FALSE)
-#' 
-#' tbl[13,1]
-#' tte_tbl_stream[13,1]
-#' }
-#'
 t_tte <- function(tte,
                   is_event,
                   event_descr,

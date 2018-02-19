@@ -60,46 +60,6 @@
 #' 
 #' g_forest(tbl)
 #' 
-#' \dontrun{
-#' library(atezo.data)
-#' library(dplyr) 
-#' library(grid)
-#' library(teal.oncology)
-#' library(forcats)
-#' 
-#' '%needs%' <- teal.oncology:::'%needs%'
-#' ARS <- ars(com.roche.cdt30019.go29436.re)
-#' ASL <- asl(com.roche.cdt30019.go29436.re)
-#' 
-#' tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
-#' Viewer(tbl_stream)
-#' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
-#'                  filter(ITTWTFL == "Y") %>% 
-#'                  filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
-#'                  select(c("USUBJID", "STUDYID", "SEX", "ICLEVEL", "TC3IC3", "ARM", "AVAL", "AVALC"))
-#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% filter(ARM %in% c("DUMMY A", "DUMMY C"))
-#' 
-#' group_data <- ARS_f[c("USUBJID", "STUDYID", "ICLEVEL", "TC3IC3")]
-#' names(group_data) <- labels_over_names(group_data)
-#' 
-#' head(group_data)
-#' 
-#' arm <- fct_relevel(ARS_f$ARM, "DUMMY C")
-#' 
-#' tbl <- t_forest_rsp(
-#'           response = ARS_f$AVAL,
-#'           event = ARS_f$AVALC %in% c("CR","PR"),
-#'           arm = arm, 
-#'           group_data = group_data[, -c(1,2), drop=FALSE]
-#' )
-#' 
-#' Viewer(tbl)
-#' 
-#' library(grid)
-#' g_forest(tbl, arm.ref = "ReferenceAAAvery longtitle", arm.comp = "Treatment AAAverylongtitle", padx=unit(0, "lines"))
-#' 
-#' }
 g_forest <- function(tbl, i_col_est, i_col_ci, header_forest, padx = unit(0, "lines"), cex = 1) {
   
 
