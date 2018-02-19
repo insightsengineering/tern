@@ -2,16 +2,33 @@
 #' 
 #' This is the description of the function
 #' 
-#' @param time_to_event time to event data
-#' @param is_event boolean with \code{TRUE} if event and \code{FALSE} if censored
+#' @template param_tte
+#' @template param_is_event 
+#' @param event_descr a factor that partitions the the events into earliest
+#'   contributing event
+#' @param strata_data a data frame with factors that are used for
+#'   stratification. If \code{NULL} then no stratified analysis is displayed.
+#' @param time_points numeric vector with times displayed in the time point
+#'   analysis, if \code{NULL} this section of the table will be omitted
+#' @param time_unit a string with the unit of the \code{tte} argument
+#' @param ties passed forward to \code{\link[survival]{coxph}}
 #' 
-#' 
-#' @return a named list with one element per row where each element contains the
-#'   data for the row
+#' @details 
+#' The time to event section is derived from a a kaplan meier estimator for the
+#' model \code{Surv(tte, is_event) ~ col_by}.
 #'
-#' @importFrom survival Surv survfit survdiff
-#' @export
+#' The stratified and unstratified analysis is evaluated pair-wise (reference to
+#' comparison) and \code{\link[survival]{survdiff}} is used to get the p-value
+#' whereas \code{\link[survival]{coxph}} is used to calculate the hazard ratio
+#' and confidence interval.
+#'
+#' The time point analysis is based on the kaplan meier estimator.
 #' 
+#' @template return_rtable
+#' 
+#' @importFrom survival Surv survfit survdiff
+#' 
+#' @export
 #' 
 #' @examples 
 #' 
@@ -22,7 +39,6 @@
 #' ATE <- merge(ASL, radam("ATE", ADSL = ASL))
 #' 
 #' ATE_f <- subset(ATE, PARAMCD == "OS")
-#' 
 #' 
 #' tbl <- t_tte(
 #'   tte = ATE_f$AVAL,
