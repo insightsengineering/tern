@@ -66,9 +66,9 @@ t_rsp <- function(
   
   # Responder table
   tbl_response <- rbind(
-    rtabulate(rsp, col_by = col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+    rtabulate(rsp, col_by = col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Responders"),
-    rtabulate(!rsp, col_by = col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+    rtabulate(!rsp, col_by = col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Non-Responders")
   )
   
@@ -133,7 +133,7 @@ t_rsp <- function(
     
     tbls_part <- Map(function(dfi, name) {
       rbind(
-        rtabulate(dfi$rsp, dfi$col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+        rtabulate(dfi$rsp, dfi$col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
                   row.name = name),
         rtabulate(dfi$rsp, dfi$col_by, function(x) rcell("to be done"), format = "xx",
                   row.name = "95% CI (Wald)", indent = 1)

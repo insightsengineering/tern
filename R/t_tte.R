@@ -65,7 +65,7 @@ t_tte <- function(tte,
   # Event Table
   # ###########
   tbl_event <- rbind(
-    rtabulate(is_event, col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+    rtabulate(is_event, col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)"),
     if (!is.null(event_descr)) {
       rbind(
@@ -75,7 +75,7 @@ t_tte <- function(tte,
     } else {
       NULL
     },
-    rtabulate(!is_event, col_by, success_and_proportion, format = "xx.xx (xx.xx%)",
+    rtabulate(!is_event, col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)")
   )
    
