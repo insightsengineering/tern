@@ -1,12 +1,12 @@
 
 #' Time-to-event Forest Plot Table
 #'
-#' @param time_to_event time to event data
-#' @param event is boolean, \code{TRUE} if event, \code{FALSE} if time_to_event
+#' @param tte time to event data
+#' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 #'   is censored
 #' @param group_data data frame with one column per grouping
-#' @param arm vector with arm information
-#' @param covariates set to NULL; currently not available for multivariate survival analysis
+#' @param col_by factor with reference and comparison group information, the
+#'   first \code{level} indicates the reference group
 #' 
 #' @details
 #' Cox PH model is used for hazard ratio calculation
@@ -37,63 +37,6 @@
 #' 
 #' Viewer(tbl)
 #' 
-#' 
-#' 
-#' \dontrun{
-#' library(atezo.data)
-#' library(dplyr)
-#' library(forcats)
-#' library(survival)
-#' library(teal.oncology)
-#' 
-#' '%needs%' <- teal.oncology:::'%needs%'
-#' 
-#' ATE <- ate(com.roche.cdt30019.go29436.re)
-#' ASL <- asl(com.roche.cdt30019.go29436.re)
-#' 
-#' ASL$temp <- c(rep("A", 200), rep("B", 250), rep(NA,1202-450))
-#' 
-#' tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
-#' Viewer(tbl_stream)
-#' 
-#' 
-#' ATE_f <- ATE %>% filter(PARAMCD == "OS") %>% 
-#'              filter(ITTWTFL == "Y") %>% 
-#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>%
-#'              select(c("USUBJID", "STUDYID", "AVAL", "CNSR", "ARMCD"))
-#' ASL_f <- ASL %>% filter(ITTWTFL == "Y") %>% 
-#'              filter(ARM %in% c("DUMMY A", "DUMMY C")) %>% 
-#'              select(c("USUBJID", "STUDYID", "SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE", "temp"))
-#' 
-#'
-#' group_data <- left_join(ASL_f, ATE_f %>% select(c("USUBJID", "STUDYID")))
-#' group_data$MLIVER <- factor(group_data$MLIVER, levels = c("Y", "N"), labels = c("Yes", "No"))
-#' group_data$TCICLVL2 <- factor(group_data$TCICLVL2, levels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"), labels = c("TC3 or IC2/3", "TC0/1/2 and IC0/1"))#' 
-#' group_data$SEX <- factor(group_data$SEX, levels = c("F", "M"), labels = c("FEMALE", "MALE"))
-#' group_data$AGE4CAT <- factor(group_data$AGE4CAT, levels = c("<65", "65 to 74", "75 to 84", ">=85"), labels = c("<65", "65 to 74", "75 to 84", ">=85"))
-#' group_data$RACE <- factor(group_data$RACE, levels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"), labels = c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "UNKNOWN"))
-#' names(group_data) <- labels_over_names(group_data)
-#' head(group_data)
-#' 
-#' arm <- fct_relevel(ATE_f$ARMCD, "C")
-#' 
-#' tbl <- forest_tte(
-#'    time_to_event = ATE_f$AVAL,
-#'    event = ATE_f$CNSR == 0,
-#'    group_data = group_data[, -c(1,2), drop=FALSE],
-#'    arm = arm
-#' )
-#' Viewer(tbl)
-#' 
-#' Viewer(tbl, tbl_stream)
-#' 
-#' compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-#' 
-#' forest_tte_plot(tbl)
-#' 
-#' }
-#' 
-#' # forest_tte(Surv(AVAL ~ I(CNSR != 'N') ~ ARM +  strata(BECOG) + group_data(A, B, D), data = ATE))
 t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, strata_data = NULL, total = 'ALL', time_unit = "month", na.omit.group = TRUE) {
   
   if (!is.null(strata_data)) stop("strata_data argument is currently not implemented")
@@ -113,31 +56,21 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, strata_data =
   # Derive Output
   cox_data <- data.frame(time_to_event = tte, event = is_event, arm = col_by)
   
-  # table_header <- rheader(
-  #   rrow(row.name = "",
-  #        rcell(""),
-  #        rcell(levels(col_by)[1], colspan = 3),
-  #        rcell(levels(col_by)[2], colspan = 3),
-  #        rcell(""),
-  #        rcell("")
-  #   ),
-  #   rrow(row.name = "Baseline Risk Factors",
-  #        "Total n",
-  #        "n", "Events", paste0("Median (", time_unit, ")"),
-  #        "n", "Events", paste0("Median (", time_unit, ")"),
-  #        "Hazard Ratio",
-  #        "95% Wald CI"
-  #   )
-  # )
-  
-  table_header  <- rheader(
-    rrow(row.name = "Baseline Risk Factors",
-         "Total n",
-         "n", "Events", paste0("Median (", time_unit, ")"),
-         "n", "Events", paste0("Median (", time_unit, ")"),
-         "Hazard Ratio",
-         "95% Wald CI"
-    )
+  table_header <- rheader(
+   rrow(row.name = "",
+        rcell(NULL),
+        rcell(levels(col_by)[1], colspan = 3),
+        rcell(levels(col_by)[2], colspan = 3),
+        rcell(NULL),
+        rcell(NULL)
+   ),
+   rrow(row.name = "Baseline Risk Factors",
+        "Total n",
+        "n", "Events", paste0("Median (", time_unit, ")"),
+        "n", "Events", paste0("Median (", time_unit, ")"),
+        "Hazard Ratio",
+        "95% Wald CI"
+   )
   )
   
   tbl_total <- if(is.null(total)) {
