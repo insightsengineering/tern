@@ -29,7 +29,7 @@
 #'   earliest_contributing_event = ATE_f$EVNTDESC,
 #'   arm = factor(ATE_f$ARM),
 #'   strata_data = ATE_f %>% select(SEX, RACE),
-#'   time_points = 6,
+#'   time_points = c(2, 6, 2000),
 #'   time_unit = "month"
 #' )
 #' 
@@ -224,32 +224,42 @@ time_to_event_table <- function(time_to_event, event, arm,
     do.call(rrow, c(list(row.name = row.name, ...), l))
   }
 
-  s_df_tp <- split(df_tp, df_tp$time)
+  s_df_tp <- split(df_tp, factor(df_tp$time, levels=time_points), drop = FALSE)
   
   ## dfi <- s_df_tp[[1]]; time_point = time_points[1]
   l_tp_rows <- Map(function(dfi, time_point) {
+
     
     name <- paste(time_point, if(time_point == 1) time_unit else paste0(time_unit, "s"))
     
-    if (!all(dfi$time == time_point)) stop("time points do not match")
     
-    d <- dfi$surv[-1] - dfi$surv[1]
-    sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
-    
-    # z-test
-    l.ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
-    pval <- 2*(1 - pnorm(abs(d)/sd))
-  
-    list(
-      rrow(name, indent = 1),
-      lrrow("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
-      lrrow("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-      lrrow("95% CI",  as.data.frame(t(dfi[c("lower", "upper")]*100)), format = "(xx.xx, xx.xx)", indent = 3),
-      lrrow("Difference in Event Free Rate", c(list(NULL), as.list(d*100)), format = "xx.xx", indent = 2),
-      lrrow("95% CI", c(list(NULL), lapply(l.ci, function(x) 100*x)), format = "(xx.xx, xx.xx)", indent = 3),
-      lrrow("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2),
-      rrow()
-    )
+    if (nrow(dfi) == 0) {
+      list(
+        rrow(name, indent = 1),
+        rrow("-- no data", indent = 2),
+        rrow()
+      )
+    } else {
+      if (!all(dfi$time == time_point)) stop("time points do not match")
+      
+      d <- dfi$surv[-1] - dfi$surv[1]
+      sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
+      
+      # z-test
+      l.ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
+      pval <- 2*(1 - pnorm(abs(d)/sd))
+      
+      list(
+        rrow(name, indent = 1),
+        lrrow("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
+        lrrow("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
+        lrrow("95% CI",  as.data.frame(t(dfi[c("lower", "upper")]*100)), format = "(xx.xx, xx.xx)", indent = 3),
+        lrrow("Difference in Event Free Rate", c(list(NULL), as.list(d*100)), format = "xx.xx", indent = 2),
+        lrrow("95% CI", c(list(NULL), lapply(l.ci, function(x) 100*x)), format = "(xx.xx, xx.xx)", indent = 3),
+        lrrow("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2),
+        rrow()
+      )
+    }
   }, s_df_tp, time_points)  
 
   rrows_tp_part <- unlist(l_tp_rows, recursive = FALSE)
