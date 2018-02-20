@@ -46,7 +46,7 @@
 #'   event_descr = factor(ATE_f$EVNTDESC),
 #'   col_by = factor(ATE_f$ARM),
 #'   strata_data = ATE_f[, c('SEX', 'RACE')],
-#'   time_points = 6,
+#'   time_points = c(6, 2000),
 #'   time_unit = "month"
 #' )
 #' 
@@ -203,32 +203,42 @@ t_tte <- function(tte,
     tp <- summary(surv_km_fit, times = time_points)
   
     df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "strata", "std.err")])
-    s_df_tp <- split(df_tp, df_tp$time)
+    s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
     
     ## dfi <- s_df_tp[[1]]; time_point = time_points[1]
     tp_rtables <- Map(function(dfi, time_point) {
       
       name <- paste(time_point, if(time_point == 1) time_unit else paste0(time_unit, "s"))
       
-      if (!all(dfi$time == time_point)) stop("time points do not match")
       
-      d <- dfi$surv[-1] - dfi$surv[1]
-      sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
-      
-      # z-test
-      l.ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
-      pval <- 2*(1 - pnorm(abs(d)/sd))
-      
-      rtable(
-        header = levels(col_by),
-        rrow(name, indent = 1),
-        rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
-        rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-        rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")]*100)), format = "(xx.xx, xx.xx)", indent = 3),
-        rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d*100)), format = "xx.xx", indent = 2),
-        rrowl("95% CI", c(list(NULL), lapply(l.ci, function(x) 100*x)), format = "(xx.xx, xx.xx)", indent = 3),
-        rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
-      )
+      if (nrow(dfi) == 0) {
+        rtable(
+          header = levels(col_by),
+          rrow(name, indent = 1),
+          rrow("-- no data", indent = 2)
+        )
+      } else {
+        
+        if (!all(dfi$time == time_point)) stop("time points do not match")
+        
+        d <- dfi$surv[-1] - dfi$surv[1]
+        sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
+        
+        # z-test
+        l.ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
+        pval <- 2*(1 - pnorm(abs(d)/sd))
+        
+        rtable(
+          header = levels(col_by),
+          rrow(name, indent = 1),
+          rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
+          rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
+          rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")]*100)), format = "(xx.xx, xx.xx)", indent = 3),
+          rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d*100)), format = "xx.xx", indent = 2),
+          rrowl("95% CI", c(list(NULL), lapply(l.ci, function(x) 100*x)), format = "(xx.xx, xx.xx)", indent = 3),
+          rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
+        )
+      }
     }, s_df_tp, time_points)  
 
     rbind(
