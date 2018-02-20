@@ -195,10 +195,10 @@ format_survival_analysis <- function(x) {
     rcell(x[["total_n"]], "xx"),
     rcell(x[["ref_n"]], "xx"),
     rcell(x[["ref_events"]], "xx"),
-    rcell(x[["ref_median"]], "xx"),
+    rcell(x[["ref_median"]], "xx.xx"),
     rcell(x[["comp_n"]], "xx"), 
     rcell(x[["comp_events"]], "xx"),
-    rcell(x[["comp_median"]], "xx"),
+    rcell(x[["comp_median"]], "xx.xx"),
     rcell(x[["cox_hr"]], format = "xx.xx"),
     rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
   )

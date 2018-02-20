@@ -1,12 +1,14 @@
 
 
-#' Transpose a list by changing depht 2 elements with depth 1 elements
+#' Transpose a list by changing depth 2 elements with depth 1 elements
 #' 
 #' @export
 #' 
 #' @param x list of lists or list of vectors
 #' 
 #' @return list of lists
+#' 
+#' @noRd
 #' 
 #' @examples 
 #' 

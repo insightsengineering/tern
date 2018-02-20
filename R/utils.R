@@ -38,6 +38,93 @@
 }
 
 
+#' Return Ordered Dataset so that a set of variables match exactly
+#' 
+#' This function is useful to ensure that two datasets have the same subjects
+#' ordered in the same way
+#' 
+#' @param x data set to reorder
+#' @param ref reference data set
+#' @param key variables that define a unique patient
+#' 
+#' @export
+#'  
+#' @examples 
+#' 
+#' A <- data.frame(USUBJID=paste0("id-",1:10), STUDYID = "A", stringsAsFactors = FALSE)
+#' B <- data.frame(USUBJID=paste0("id-",10:1), STUDYID = "A", stringsAsFactors = FALSE)
+#'  
+#' reorder_to_match_id(A, B)
+#' 
+#' \dontrun{
+#' C <- data.frame(USUBJID=paste0("id-",1:9), STUDYID = "A")
+#' reorder_to_match_id(A, C)
+#'
+#' D <- B
+#' D$STUDYID[3] <- "B"
+#' reorder_to_match_id(A, D)
+#' 
+#' E <- B
+#' E$USUBJID[2] <- "id-10"
+#' reorder_to_match_id(A, E)
+#' }
+#' 
+#' 
+reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
+  
+  if (nrow(x) != nrow(ref)) stop("dimension missmatch")
+  if (!all(key %in% names(x))) stop("x has not all keys")
+  if (!all(key %in% names(ref))) stop("ref has not all keys")
+
+  if (any(is.na(x[key]))) stop("no missing values allows in x[,key]")
+  if (any(is.na(ref[key]))) stop("no missing values allows in ref[,key]")
+
+  if (any(duplicated(ref[, key]))) stop("key is not unique")
+  
+  x_ord <- do.call(order, x[key])
+  ref_ord <- do.call(order, ref[key])
+  
+  out <- x[x_ord[order(ref_ord)],]
+  
+  is_same <- unlist(Map(function(v1, v2) {
+    all(v1 == v2)
+  }, out[key], ref[key]))
+  
+  if (!all(is_same)) stop("not same ids")
+  
+  out
+}
+
+
+#' Combine factor levels
+#' 
+#' 
+#' @export
+#' 
+#' @examples 
+#' x <- factor(letters[1:5], levels = letters[5:1])
+#' combine_levels(x, levels = c('a', 'b') )
+#' 
+#' combine_levels(x, c('e', 'b'))
+#' 
+combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
+  
+  if (!is.factor(x)) stop("x is required to be a factor")
+  
+  if (!all(levels %in% levels(x))) {
+    stop("not all levels are part of levels(x)")
+  }
+  
+  lvls <- levels(x)
+  
+  lvls[lvls %in% levels] <- new_level
+  
+  levels(x) <- lvls
+  
+  x
+}
+
+
 #' return a vector with the variable labels and names if variable labels do not exist
 #' 
 #' 
@@ -133,5 +220,6 @@ stack_rtables <- function(..., nrow_pad = 1) {
 stack_rtables_l <- function(x) {
   do.call(stack_rtables, x)
 }
+
 
 
