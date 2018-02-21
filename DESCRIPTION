@@ -3,6 +3,7 @@ Title: Analysis Code
 Version: 0.0.1
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
+  person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = c("ctb")),
   person("Heng", "Wang", email = "", role = c("aut")),
   person("Mark", "Rothe", email = "", role = c("aut")),
   person("Yuyao", "Song", email = "", role = c("aut")),
