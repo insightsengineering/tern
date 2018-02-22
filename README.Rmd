@@ -1,0 +1,37 @@
+---
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+```
+
+[Project Website][ghs]
+
+# tern
+
+This R package contains analysis code to create TLGs used in clinical trials.
+
+
+# Installation
+
+Copy paste the following code into your `R` console:
+
+```{r echo=FALSE, message=FALSE}
+library(tern)
+```
+
+```{r echo=FALSE, comment=""}
+install_tern(eval = FALSE)
+```
+
+
+[ghs]: http://pages.github.roche.com/Rpackages/tern

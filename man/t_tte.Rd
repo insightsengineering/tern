@@ -58,7 +58,7 @@ tbl <- t_tte(
   event_descr = factor(ATE_f$EVNTDESC),
   col_by = factor(ATE_f$ARM),
   strata_data = ATE_f[, c('SEX', 'RACE')],
-  time_points = 6,
+  time_points = c(6, 2000),
   time_unit = "month"
 )
 

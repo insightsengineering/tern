@@ -1,29 +1,20 @@
 
-[Project Website][ghs]
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+[Project Website](http://pages.github.roche.com/Rpackages/tern)
 
-# tern
+tern
+====
 
 This R package contains analysis code to create TLGs used in clinical trials.
 
-
-# Installation
+Installation
+============
 
 You need to install the `rtables` package before installing the `tern` package
 
-``` r
-devtools::install_github("Roche/rtables")
-
-devtools::install_git(
-  url = "http://github.roche.com/Rpackages/random.cdisc.data.git",
-  build_vignettes = TRUE,
-  upgrade_dependencies = FALSE
-)
-
-devtools::install_git(
-  url = "http://github.roche.com/Rpackages/tern.git",
-  build_vignettes = TRUE,
-  upgrade_dependencies = FALSE
-)
-```
-
-[ghs]: http://pages.github.roche.com/Rpackages/tern
+    {
+        devtools::install_git("Rpackages/random.cdisc.data", ref = "v0.0.1", 
+            host = "https://github.roche.com/api/v3")
+        devtools::install_github("Roche/rtables", ref = "v0.0.1")
+        devtools::install_git("Rpackages/tern", ref = "v0.0.1", host = "https://github.roche.com/api/v3")
+    }

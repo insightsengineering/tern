@@ -20,4 +20,9 @@ Authors:
   \item Xiao Mu Yo
 }
 
+Other contributors:
+\itemize{
+  \item Audrey Boruvka \email{audrey.boruvka@roche.com} [contributor]
+}
+
 }
