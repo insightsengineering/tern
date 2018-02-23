@@ -19,7 +19,6 @@
 #' 
 #' @examples 
 #' 
-#' devtools::install_github("Rpackages/random.cdisc.data", host='https://github.roche.com/api/v3')
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
@@ -37,7 +36,7 @@
 #'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 #' )
 #' 
-#' Viewer(tbl)
+#' tbl
 #' 
 t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, strata_data = NULL, total = 'ALL', time_unit = "month", na.omit.group = TRUE) {
   

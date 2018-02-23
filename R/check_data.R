@@ -65,13 +65,15 @@ check_data_frame <- function(x) {
 
 check_col_by <- function(x, min_num_levels = 2) {
   
-  if (!is.factor(x)) stop("col_by needs to be a factor")
+  if (!is(x, "no_by") && !is.factor(x)) stop("col_by needs to be a factor")
   if (any(is.na(x))) stop("col_by can not have any missing data")
   
   #if (any(table(x)<=0)) stop("data is required for all levels of col_by")
   
-  if (length(levels(x)) < min_num_levels) stop("col_by is required to have at least", min_num_levels, "levels")
- 
+  if (!(min_num_levels == 1 && is(x, "no_by"))) {
+    if (length(levels(x)) < min_num_levels) stop("col_by is required to have at least", min_num_levels, "levels")
+  }
+
   TRUE
 }
 

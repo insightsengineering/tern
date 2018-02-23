@@ -44,8 +44,11 @@ t_summarize_variables <- function(data, col_by, total = NULL) {
 
   # Check Arguments
   if (!is.data.frame(data)) stop("data is expected to be a data frame")  
-  check_same_N(data = data, col_by = col_by, omit.NULL = FALSE)
-  check_col_by(col_by, 1)
+  
+  if (!is(col_by, "no_by")) {
+    check_same_N(data = data, col_by = col_by, omit.NULL = FALSE)
+    check_col_by(col_by, 1)
+  } 
 
   # If total column is requested stack the data and change col_by accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column

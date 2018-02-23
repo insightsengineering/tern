@@ -26,7 +26,6 @@ Cox PH model is used for hazard ratio calculation
 }
 \examples{
 
-devtools::install_github("Rpackages/random.cdisc.data", host='https://github.roche.com/api/v3')
 library(random.cdisc.data)
 library(dplyr)
 
@@ -44,7 +43,7 @@ tbl <- t_forest_tte(
   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 )
 
-Viewer(tbl)
+tbl
 
 }
 \author{

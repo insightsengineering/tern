@@ -132,20 +132,9 @@ first <code>level</code> indicates the reference group</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw pkg'>devtools</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/devtools/topics/install_github'>install_github</a></span>(<span class='st'>"Rpackages/random.cdisc.data"</span>, <span class='kw'>host</span><span class='kw'>=</span><span class='st'>'https://github.roche.com/api/v3'</span>)</div><div class='output co'>#&gt; <span class='message'>Downloading GitHub repo Rpackages/random.cdisc.data@master</span>
-#&gt; <span class='message'>from URL https://github.roche.com/api/v3/repos/Rpackages/random.cdisc.data/zipball/master</span></div><div class='output co'>#&gt; <span class='message'>Installing random.cdisc.data</span></div><div class='output co'>#&gt; <span class='message'>'/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file --no-environ  \</span>
-#&gt; <span class='message'>  --no-save --no-restore --quiet CMD INSTALL  \</span>
-#&gt; <span class='message'>  '/private/var/folders/jv/2nxz4lrn7h7c7tkt4qk51xqm0000gn/T/RtmpuHGZxb/devtools182ee3afd8ad4/Rpackages-random.cdisc.data-309810b'  \</span>
-#&gt; <span class='message'>  --library='/Library/Frameworks/R.framework/Versions/3.4/Resources/library'  \</span>
-#&gt; <span class='message'>  --install-tests </span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>Reloading installed random.cdisc.data</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-<span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tern’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    current_vars</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
+<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 
@@ -160,7 +149,22 @@ first <code>level</code> indicates the reference group</p></td>
   <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>))
 )
 
-<span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div></pre>
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                    ARM A                                                             ARM B                                                                       
+#&gt; Baseline Risk Factors                                 Total n                  n                   Events            Median (month)              n                   Events            Median (month)         Hazard Ratio          95% Wald CI  
+#&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                     100                    46                    30                  106.82                  54                    30                  103.38                 1.03              (0.61, 1.72) 
+#&gt; 
+#&gt; SEX
+#&gt;   F                                                      58                    27                    19                  106.82                  31                    15                  103.38                 0.99              (0.49, 1.98) 
+#&gt;   M                                                      42                    19                    11                  85.85                   23                    15                  79.99                  1.11              (0.5, 2.47)  
+#&gt; 
+#&gt; RACE
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                       25                    11                    6                   141.48                  14                    8                   86.27                   2                (0.6, 6.69)  
+#&gt;   ASIAN                                                  15                    6                     3                   106.82                  9                     5                   62.77                  2.34              (0.44, 12.4) 
+#&gt;   BLACK OR AFRICAN AMERICAN                              18                    5                     2                                           13                    7                   120.08                 1.45              (0.3, 6.99)  
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              18                    10                    9                   110.9                   8                     2                                          0.68              (0.12, 3.73) 
+#&gt;   WHITE                                                  24                    14                    10                  34.62                   10                    8                   95.09                  0.55              (0.2, 1.54)  </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

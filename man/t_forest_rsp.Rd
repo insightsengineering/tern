@@ -30,7 +30,6 @@ ASL$PSUEDO <- ASL$SEX
 
 ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") 
 ANL <- merge(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, PSUEDO, ARM), ARS_f)
-head(ANL)
 
 tbl <- t_forest_rsp(
   rsp = ANL$AVALC \%in\% c("CR", "PR"),
@@ -38,7 +37,7 @@ tbl <- t_forest_rsp(
   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 )
 
-Viewer(tbl)
+tbl
    
 }
 \author{
