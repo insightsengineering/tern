@@ -1,12 +1,9 @@
 #' Response Forest Plot Table
 #'
-#' @param response Tumor Response data
-#' @param event is boolean, \code{TRUE} if responder, \code{FALSE} if
-#'   non-responder
-#' @param group_data data frame with one column per sub-group variable
-#' @param arm vector with arm information
-#' @param covariates set to NULL; currently not available for multivariate
-#'   survival analysis
+#' @param rep Tumor Response data
+#' @param group_data data frame with one column per grouping variable
+#' @param col_by factor with reference and comparison group information, the
+#'   first \code{level} indicates the reference group
 #'   
 #' @details 
 #' Logistic model is used for odds ratio calculation
@@ -20,128 +17,110 @@
 #' library(random.cdisc.data)
 #' ASL <- radam("ASL")
 #' ARS <- radam("ARS", ADSL = ASL)
+#' ASL$PSUEDO <- ASL$SEX
 #' 
 #' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") 
+#' ANL <- merge(ASL %>% select(USUBJID, STUDYID, SEX, RACE, PSUEDO, ARM), ARS_f)
+#' head(ANL)
 #' 
-#' ASL_f <- right_join(ASL %>% select(USUBJID, STUDYID, SEX, RACE, ARM),
-#'                         ARS_f %>% select(USUBJID, STUDYID))
-#' 
-#' tbl <- forest_rsp(
-#'   response = ARS_f$AVAL,
-#'   event = ARS_f$AVALC %in% c("CR","PR"),
-#'   arm = ASL_f$ARM, 
-#'   group_data = ASL_f %>% select("SEX", "RACE")
+#' tbl <- t_forest_rsp(
+#'   rsp = ANL$AVALC %in% c("CR", "PR"),
+#'   col_by = factor(ANL$ARM), 
+#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 #' )
 #' 
-#' tbl
-#' 
-#' 
-#'   
-t_forest_rsp <- function(response, event,
-                         arm, group_data, covariates = NULL) {
+#' Viewer(tbl)
+#'    
+t_forest_rsp <- function(rsp, col_by, group_data = NULL, total = 'ALL', na.omit.group = TRUE) {
   
-  # argument checking
-  n <- length(response)
-  if (length(event) != n) stop("event has wrong length")
-  if (length(arm) != n) stop("arm has wrong length")
-  if (length(levels(arm)) <2) stop("need at least two levels in arm for logistic regression") 
-  if (!is.data.frame(group_data)) stop("group_data is expected to be a data.frame")
-  if (nrow(group_data) != n) stop("group_data has wrong number of rows")
+  check_same_N(rsp = rsp, col_by = col_by, group_data = group_data)
+  check_col_by(col_by)
+  if (length(levels(col_by)) != 2) stop("col_by can only have two levels")
+  
+  ## note that there is no missing
+  check_data_frame(group_data) # change name of check_strata_data
+  if (!is.null(group_data)) {
+    is_fct <- vapply(group_data, is.factor, logical(1)) 
+    if (!all(is_fct)) stop("not all variables in group_data are factors: ", paste(names(is_fct)[!is_fct], collapse = ", "))
+  }
+  
+  glm_data <- data.frame(response = rsp, arm = col_by)
+  
+  table_header <- rheader(
+    rrow(row.name = "",
+         rcell(NULL),
+         rcell(levels(col_by)[1], colspan = 3),
+         rcell(levels(col_by)[2], colspan = 3),
+         rcell(NULL),
+         rcell(NULL)
+    ),
+    rrow(row.name = "Baseline Risk Factors",
+         "Total n",
+         "n", "Responders", "Response.Rate",
+         "n", "Responders", "Response.Rate",
+         "Odds Ratio",
+         "95% CI"
+    )
+  )
+  
+  tbl_total <- if(is.null(total)) {
+    NULL
+  } else {
+    rtable(header = table_header, 
+           rrowl(row.name = total, 
+                 format_logistic(
+                     glm_results(glm_data)
+                 )
+    )) 
+  }
   
   
-  glm_data <- data.frame(response, event,arm)
-
-  #Split data to subgroup lists. e.g. data$SEX$FEMALE
-  data_list <- c(
-    list(ALL = list(ALL = glm_data)),
-    lapply(group_data, function(var) {
-      sub_data <- cbind(glm_data, var)
-      sub_data <- subset(sub_data, var != "")
-      if ("" %in% levels(sub_data$var)) sub_data$var <- factor(sub_data$var, levels = levels(sub_data$var)[-which(levels(sub_data$var) == "")])
-      sub_data$var <- as.factor(sub_data$var)
-      lapply(split(sub_data, sub_data$var), function(x){
-        x[,-4]
-      })
+  tbl_group_data <- if (is.null(group_data)) {
+    NULL
+  } else {
+    
+    # split data into a tree for data
+    # where each leaf is a data.frame with 
+    # the data to compute the survival analysis with
+    data_tree <- lapply(group_data, function(var) {
+      dt <- if (na.omit.group) subset(glm_data, !is.na(var)) else glm_data
+      split(dt, var, drop = FALSE)
     })
+    
+    list_of_tables <- Map(function(dfs, varname) {
+      tbls_var <- Map(function(dfi, level) {
+        rtable(header = table_header,
+               rrowl(
+                 row.name = level,
+                 indent = 1,
+                 format_logistic(
+                   glm_results(dfi)
+                 )
+               )) 
+      }, dfs, names(dfs))
+      rbind(
+        rtable(header = table_header, rrow(row.name = varname)),
+        Reduce(rbind, tbls_var)
+      )
+    }, data_tree, names(data_tree))
+    
+    stack_rtables_l(list_of_tables)
+  }
+  
+  stack_rtables(
+    tbl_total,
+    tbl_group_data
   )
-  
-  #varname=data_list$AGE4CAT
-  #data_for_value = varname[[4]]
-  #apply the glm analysis
-  results_glm <- lapply(data_list, function(varname) {
-    lapply(varname, function(data_for_value) {
-      glm_results(data_for_value)
-    })
-  })
-  
-  # reduce results into a table
-  results_glm2 <- unlist(results_glm, recursive = FALSE)
-  X <- Reduce(rbind, results_glm2)
-  row.names(X) <-names(results_glm2)
-  
-  additonal_args <- list(
-    col.names = c("Total n",
-                  "n", "n\nResponder", "Responder Rate\n(%)",
-                  "n", "n\nResponder", "Responder Rate\n(%)",
-                  "Odds Ratio", "95% CI"),
-    format = "xx"
-  )
-  
-  # rname <- rownames(X)[1]
-  # x <- split(X, 1:nrow(X))[[1]]
-  # resolve the result data.frame to rtable 
-  last_header <- "ALL"
-  rrow_collection <- Filter(
-    function(x)!is.null(x),
-    unlist(
-      Map(function(x, rname) {
-        
-        i <- regexpr(".", rname, fixed = TRUE)
-        header_row_name <- c(substr(rname, 1, i-1), substring(rname, i+1))
-        
-        is_new_category <- header_row_name[1] != last_header
-        last_header <<- header_row_name[1]
-        
-        list(
-          if (is_new_category) rrow() else NULL,
-          if (is_new_category) rrow(last_header) else NULL,
-             rrow(
-              row.name = header_row_name[2],
-              x$resp_ref_n + x$resp_comp_n, # total n
-              x$resp_ref_n,
-              x$resp_ref_event,
-              rcell(x$resp_ref_event / x$resp_ref_n * 100, format = "xx.x"),
-              x$resp_comp_n,
-              x$resp_comp_event,
-              rcell(x$resp_comp_event / x$resp_comp_n * 100, format = "xx.x"),
-              if (x$glm_or > 999.99 & !is.na(x$glm_or)) {
-                rcell(">999.99", format = "xx")
-                } else {
-                rcell(x$glm_or, format = "xx.xx")
-                },
-              rcell(c(x$glm_lcl, x$glm_ucl), format = "(xx.xx, xx.xx)"),
-              indent = if (header_row_name[1] == "ALL") 0 else 1
-            )
-        )
-      }, split(X, 1:nrow(X)), rownames(X)),
-      recursive = FALSE)
-  )
-  
-  tbl <- do.call(rtable, c(additonal_args, rrow_collection))
-  
-  tbl
- # Viewer(tbl)
-}
+}  
 
-
-#' glm_results(data_for_value)
-#' data = data_for_value 
+#' glm_results(glm_data)
+#' data = glm_data 
 glm_results <- function(data){
   
   #Response Rate
   resp_n <- setNames(table(data$arm), c("resp_ref_n", "resp_comp_n"))
 
-  tbl_freq <- table(data$event,data$arm)
+  tbl_freq <- table(data$response,data$arm)
   resp_ref_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[1]]
   resp_comp_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[2]]
   if (length(resp_ref_event)==0) resp_ref_event = 0
@@ -149,7 +128,7 @@ glm_results <- function(data){
   
   #Logistic Model
   if (length(levels(factor(data$arm))) == 2){
-     glm_model <- glm(event ~ arm, family=binomial(link='logit'), data = data)
+     glm_model <- glm(response ~ arm, family=binomial(link='logit'), data = data)
      glm_sum  <- summary(glm_model )
      #glm_or   <- ifelse(exp(glm_sum$coefficient[2,1]) > 999, ">999.99", exp(glm_sum$coefficient[2,1]))
      glm_or   <- exp(glm_sum$coefficient[2,1])
@@ -165,5 +144,19 @@ glm_results <- function(data){
                              resp_ref_event, resp_comp_event, 
                              glm_or = NA, glm_lcl = NA, glm_ucl = NA, glm_pval = NA)
   }
+  resp_table
 }
 
+format_logistic <- function(x) {
+  list(
+    rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
+    rcell(x[["resp_ref_n"]], "xx"),
+    rcell(x[["resp_ref_event"]], "xx"),
+    rcell(x[["resp_ref_event"]] / x[["resp_ref_n"]], "xx.xx"),
+    rcell(x[["resp_comp_n"]], "xx"),
+    rcell(x[["resp_comp_event"]], "xx"),
+    rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
+    rcell(x[["glm_or"]], format = "xx"),
+    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = "(xx.xx, xx.xx)")
+  )
+}

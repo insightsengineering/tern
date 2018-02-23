@@ -19,7 +19,9 @@
 #' 
 #' @examples 
 #' 
+#' devtools::install_github("Rpackages/random.cdisc.data", host='https://github.roche.com/api/v3')
 #' library(random.cdisc.data)
+#' library(dplyr)
 #' 
 #' ASL <- radam("ASL")
 #' ATE <- radam("ATE", ADSL = ASL)
@@ -192,7 +194,7 @@ survival_results <- function(data){
 
 format_survival_analysis <- function(x) {
   list(
-    rcell(x[["total_n"]], "xx"),
+    rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
     rcell(x[["ref_n"]], "xx"),
     rcell(x[["ref_events"]], "xx"),
     rcell(x[["ref_median"]], "xx.xx"),
