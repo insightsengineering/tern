@@ -1,10 +1,12 @@
 #' Forest plot (table + graph)
-#' 
+#'
 #' @param x rtable from forest_rsp function or from forest_tte function
 #' @param arm.ref string used to label reference arm
 #' @param arm.comp string used to label comparable arm
-#' @param anl.model the regression method used for analysis. Valid options are \t{survival} and \t{logistic}
-#' @param time.unit string used to display the unit of median survival time. default is "month". 
+#' @param anl.model the regression method used for analysis. Valid options are
+#'   \code{survival} and \code{logistic}
+#' @param time.unit string used to display the unit of median survival time.
+#'   default is "month".
 #' @param padx gap between two columns
 #' @param cex multiplier applied to overall fontsize
 #' 

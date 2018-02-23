@@ -18,9 +18,11 @@ g_forest(tbl, i_col_est, i_col_ci, header_forest, padx = unit(0, "lines"),
 
 \item{arm.comp}{string used to label comparable arm}
 
-\item{anl.model}{the regression method used for analysis. Valid options are \t{survival} and \t{logistic}}
+\item{anl.model}{the regression method used for analysis. Valid options are
+\code{survival} and \code{logistic}}
 
-\item{time.unit}{string used to display the unit of median survival time. default is "month".}
+\item{time.unit}{string used to display the unit of median survival time.
+default is "month".}
 }
 \description{
 Forest plot (table + graph)

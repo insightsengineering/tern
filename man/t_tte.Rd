@@ -4,19 +4,12 @@
 \alias{t_tte}
 \title{Time to Event Table}
 \usage{
-t_tte(tte, is_event, event_descr, col_by, strata_data, time_points,
-  time_unit = "month", ties = "exact")
+t_tte(formula, data, event_descr, time_points, time_unit = "month",
+  ties = "exact")
 }
 \arguments{
-\item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
-
-\item{is_event}{boolean with \code{TRUE} if event and \code{FALSE} if censored}
-
 \item{event_descr}{a factor that partitions the the events into earliest
 contributing event}
-
-\item{strata_data}{a data frame with factors that are used for
-stratification. If \code{NULL} then no stratified analysis is displayed.}
 
 \item{time_points}{numeric vector with times displayed in the time point
 analysis, if \code{NULL} this section of the table will be omitted}
@@ -24,6 +17,13 @@ analysis, if \code{NULL} this section of the table will be omitted}
 \item{time_unit}{a string with the unit of the \code{tte} argument}
 
 \item{ties}{passed forward to \code{\link[survival]{coxph}}}
+
+\item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
+
+\item{is_event}{boolean with \code{TRUE} if event and \code{FALSE} if censored}
+
+\item{strata_data}{a data frame with factors that are used for
+stratification. If \code{NULL} then no stratified analysis is displayed.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -48,20 +48,20 @@ library(random.cdisc.data)
 library(forcats)
 
 ASL <- radam("ASL")
-ATE <- merge(ASL, radam("ATE", ADSL = ASL))
+ATE <- radam("ATE", ADSL = ASL)
 
 ATE_f <- subset(ATE, PARAMCD == "OS")
+ 
+ANL <- merge(ASL, ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
 
 tbl <- t_tte(
-  tte = ATE_f$AVAL,
-  is_event = ATE_f$CNSR == 0,
-  event_descr = factor(ATE_f$EVNTDESC),
-  col_by = factor(ATE_f$ARM),
-  strata_data = ATE_f[, c('SEX', 'RACE')],
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+  data = ANL,
   time_points = c(6, 2000),
   time_unit = "month"
 )
 
 tbl
+
 
 }

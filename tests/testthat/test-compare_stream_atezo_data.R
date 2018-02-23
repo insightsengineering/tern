@@ -1,10 +1,10 @@
+
 context("compare stream outputs for atezo data in the atezo.data R package")
 
 # read about testthat (hadley wickham)
 #   - unit test (read only a bit about the philosophy)
 library(testthat)
 library(tern)
-
 library(atezo.data)
 library(dplyr)
 

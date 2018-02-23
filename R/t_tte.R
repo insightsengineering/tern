@@ -36,82 +36,98 @@
 #' library(forcats)
 #' 
 #' ASL <- radam("ASL")
-#' ATE <- merge(ASL, radam("ATE", ADSL = ASL))
+#' ATE <- radam("ATE", ADSL = ASL)
 #' 
 #' ATE_f <- subset(ATE, PARAMCD == "OS")
+#'  
+#' ANL <- merge(ASL, ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
+#' 
 #' 
 #' tbl <- t_tte(
-#'   tte = ATE_f$AVAL,
-#'   is_event = ATE_f$CNSR == 0,
-#'   event_descr = factor(ATE_f$EVNTDESC),
-#'   col_by = factor(ATE_f$ARM),
-#'   strata_data = ATE_f[, c('SEX', 'RACE')],
+#'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+#'   data = ANL,
+#'   event_descr = factor(EVNTDESC),
 #'   time_points = c(6, 2000),
 #'   time_unit = "month"
 #' )
 #' 
 #' tbl
 #' 
-t_tte <- function(tte,
-                  is_event,
+#' 
+t_tte <- function(formula,
+                  data,
                   event_descr,
-                  col_by,
-                  strata_data,
                   time_points,
                   time_unit = "month",
                   ties = "exact") {
   
-  # Argument Checking
-  check_same_N(tte = tte, is_event = is_event,
-               event_descr = event_descr, col_by = col_by,
-               strata_data = strata_data)
-
-  check_col_by(col_by, 2)
-  check_data_frame(strata_data)
+  cl <- match.call()
   
+  if (!is.data.frame(data)) stop("data needs to be a data.frame")
+  
+  # extracted data
+  tm <- t_tte_terms(formula, cl, data, parent.frame())
+  
+  tte <- tm$tte
+  is_event <- as.logical(tm$event)
+  arm <- tm$arm
+  event_descr <- if (missing(event_descr)) {
+    NULL
+  } else {
+    eval(substitute(event_descr), data, parent.frame())
+  }
+  
+  
+  # Argument Checking
+  check_same_N(is_event = is_event, event_descr = event_descr, arm = arm)
+  check_col_by(arm, 2)
   if (!is.null(event_descr) && !is.factor(event_descr))
     stop("event_descr is required to be a factor") 
-
   if (!is.null(time_points) && !is.numeric(time_points))
     stop("time_points is required to be numeric")
+  
+  # Calculate elements of the table
 
-
-  N <- tapply(col_by, col_by, length)
   
   # Event Table
   # ###########
   tbl_event <- rbind(
-    rtabulate(is_event, col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
+    rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)"),
     if (!is.null(event_descr)) {
       rbind(
-        rtable(levels(col_by), rrow("Earliest Contributing Event", indent = 1)),
-        rtabulate(as.factor(event_descr), col_by, length, indent = 2)      
+        rtable(levels(arm), rrow("Earliest Contributing Event", indent = 1)),
+        rtabulate(as.factor(event_descr), arm, length, indent = 2)      
       )
     } else {
       NULL
     },
-    rtabulate(!is_event, col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
+    rtabulate(!is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)")
   )
-   
+  
+  
   # Time to Event
   # #############
+  f <- tm$formula_nostrata
+  environment(f) <- environment()
+  
   surv_km_fit <- survfit(
-    formula = Surv(tte, is_event) ~ col_by, 
+    formula = f,
+    data = data,
     conf.type = "plain"
   )
-  
+
   srv_tbl <- summary(surv_km_fit)$table
   med <- as.list(srv_tbl[, "median"])
   ci <- Map(function(x,y) c(x,y), srv_tbl[, "0.95LCL"], srv_tbl[, "0.95UCL"])
   
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
   qnt <- Map(function(x,y) c(x,y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
-  rng <- lapply(split(data.frame(tte, is_event), col_by), range)
+  rng <- lapply(split(data.frame(tte, is_event), arm), range)
   
   tbl_tte <- rtable(
-    header = levels(col_by),
+    header = levels(arm),
     rrow(paste0("Time to Event (", time_unit, "s)")),
     rrowl("Median", med, format = "xx.xx", indent = 1),
     rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
@@ -120,25 +136,26 @@ t_tte <- function(tte,
   )
   
   
+  
   # Unstratified Analysis
   # #####################
-
+  
   # this function is reused for stratified analysis
-  survival_anl <- function(formula, data, arm_var, label) {
+  survival_anl <- function(formula, label) {
     
-    arm <- data[[arm_var]]
     reference_level <- levels(arm)[1]
     comparison_levels <- levels(arm)[-1]
     
     # create survival fit of comparison arm vs. reference arm
     values <- lapply(comparison_levels, function(lvl) {
       
-      dfi <- subset(data, arm %in% c(reference_level, lvl))
-      dfi$arm <- factor(dfi$arm, levels = c(reference_level, lvl))
+      df_i <- subset(data, arm %in% c(reference_level, lvl))
+      
+      environment(formula) <- environment()
       
       ## for log-rank test: use coxph score for log-rank
-      fit_survdiff <- survdiff(formula, data = dfi)
-      fit_coxph <- coxph(formula, data = dfi, ties = ties)
+      fit_survdiff <- survdiff(formula, data = df_i)
+      fit_coxph <- coxph(formula, data = df_i, ties = ties) # weights are not supported if ties = 'exact'
       
       list(
         pval = pchisq(fit_survdiff$chisq, length(fit_survdiff$n) - 1, lower.tail = FALSE),
@@ -162,33 +179,18 @@ t_tte <- function(tte,
     )
   }
   
-  ANL <- data.frame(tte = tte, event = is_event, arm = col_by)
-  
   tbl_unstratified <- survival_anl(
-    formula = Surv(tte, event) ~ arm,
-    data = ANL,
-    arm_var = "arm",
+    formula = tm$formula_nostrata,
     label = "Unstratified Analysis"
   )
   
   # Stratified Analysis
   # ###################
-  tbl_stratified <- if (is.null(strata_data)) {
+  tbl_stratified <- if (is.null(tm$formula_strata)) {
     NULL
   } else {
-    
-    if (length(intersect(names(ANL), names(strata_data))) != 0) {
-      stop("illegal strata variable names 'tte', 'event', 'arm'")      
-    }
-
-    ANL_stratified <- cbind(ANL, strata_data)
-    
-    tbl_stratified <- survival_anl(
-      formula = as.formula(
-        paste("Surv(tte, event) ~ arm + strata(", paste(names(strata_data), collapse = ","), ")")
-      ),
-      data = ANL_stratified,
-      arm_var = "arm",
+    survival_anl(
+      formula = tm$formula_strata,
       label = "Stratified Analysis"
     )
   }
@@ -201,7 +203,7 @@ t_tte <- function(tte,
   } else {
     
     tp <- summary(surv_km_fit, times = time_points)
-  
+    
     df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "strata", "std.err")])
     s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
     
@@ -213,7 +215,7 @@ t_tte <- function(tte,
       
       if (nrow(dfi) == 0) {
         rtable(
-          header = levels(col_by),
+          header = levels(arm),
           rrow(name, indent = 1),
           rrow("-- no data", indent = 2)
         )
@@ -229,7 +231,7 @@ t_tte <- function(tte,
         pval <- 2*(1 - pnorm(abs(d)/sd))
         
         rtable(
-          header = levels(col_by),
+          header = levels(arm),
           rrow(name, indent = 1),
           rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
           rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
@@ -240,13 +242,13 @@ t_tte <- function(tte,
         )
       }
     }, s_df_tp, time_points)  
-
+    
     rbind(
-      rtable(header = levels(col_by), rrow("Time Point Analysis")),    
+      rtable(header = levels(arm), rrow("Time Point Analysis")),    
       stack_rtables_l(tp_rtables)      
     )
+    
   }
-  
   ## Now Stack Tables together
   tbl <- stack_rtables(
     tbl_event,
@@ -257,7 +259,54 @@ t_tte <- function(tte,
   )
   
   # add N to header 
-  names(tbl) <- paste(names(tbl), paste("N =", unlist(N)), sep = "\n")
-
+  N <- tapply(arm, arm, length)
+  rheader(tbl) <- rheader(
+    rrowl("", levels(arm)),
+    rrowl("", paste0("(N=",N,")"))
+  )
+  
   tbl
+}
+
+
+t_tte_terms <- function(formula, cl, data, env) {
+  # extract information
+  mf <- cl
+  mt <- terms(formula, specials = c("arm", "strata", "cluster", "tt"),
+              data = data)
+  if (!all(all.vars(attr(mt, "variables")) %in% names(data)))
+    stop("All formula variables must appear in 'data'")
+  irsp <- attr(mt, "response")
+  istr <- attr(mt, "specials")$strata
+  iarm <- attr(mt, "specials")$arm
+  if (is.null(irsp) | is.null(iarm))
+    stop("formula must include a response and arm")
+  if (is.null(istr)) {
+    uf <- formula
+    f <- NULL
+  } else {
+    uf <- drop_special(mt, "strata")
+    f <- formula
+  }
+  m <- match(c("formula", "data", "weights"), names(mf), 0L)
+  
+  mf <- mf[c(1L, m)]
+  mf[[1L]] <- quote(stats::model.frame)
+  mf$na.action <- quote(stats::na.omit)
+  
+  mf <- eval(mf, env)
+  if (!inherits(mf[, irsp], "Surv"))
+    stop("Response is not a 'Surv' object")
+  if (attr(mf[, irsp], "type") != "right")
+    stop("Response is not a right-censored 'Surv' object")
+  
+  list(
+    tte = mf[, irsp][, "time"],
+    event = mf[, irsp][, "status"],
+    arm = mf[, iarm],
+    formula_strata = f,
+    formula_nostrata = uf,
+    model_frame  = mf
+  )
+
 }
