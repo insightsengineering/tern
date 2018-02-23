@@ -4,20 +4,16 @@
 \alias{t_forest_rsp}
 \title{Response Forest Plot Table}
 \usage{
-t_forest_rsp(response, event, arm, group_data, covariates = NULL)
+t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
+  na.omit.group = TRUE)
 }
 \arguments{
-\item{response}{Tumor Response data}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group}
 
-\item{event}{is boolean, \code{TRUE} if responder, \code{FALSE} if
-non-responder}
+\item{group_data}{data frame with one column per grouping variable}
 
-\item{arm}{vector with arm information}
-
-\item{group_data}{data frame with one column per sub-group variable}
-
-\item{covariates}{set to NULL; currently not available for multivariate
-survival analysis}
+\item{rep}{Tumor Response data}
 }
 \description{
 Response Forest Plot Table
@@ -30,23 +26,20 @@ Logistic model is used for odds ratio calculation
 library(random.cdisc.data)
 ASL <- radam("ASL")
 ARS <- radam("ARS", ADSL = ASL)
+ASL$PSUEDO <- ASL$SEX
 
 ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") 
+ANL <- merge(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, PSUEDO, ARM), ARS_f)
+head(ANL)
 
-ASL_f <- right_join(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, ARM),
-                        ARS_f \%>\% select(USUBJID, STUDYID))
-
-tbl <- forest_rsp(
-  response = ARS_f$AVAL,
-  event = ARS_f$AVALC \%in\% c("CR","PR"),
-  arm = ASL_f$ARM, 
-  group_data = ASL_f \%>\% select("SEX", "RACE")
+tbl <- t_forest_rsp(
+  rsp = ANL$AVALC \%in\% c("CR", "PR"),
+  col_by = factor(ANL$ARM), 
+  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 )
 
-tbl
-
-
-  
+Viewer(tbl)
+   
 }
 \author{
 Yuyao Song (songy24), \email{yuyao.song@roche.com}

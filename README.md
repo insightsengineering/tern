@@ -10,7 +10,7 @@ This R package contains analysis code to create TLGs used in clinical trials.
 Installation
 ============
 
-You need to install the `rtables` package before installing the `tern` package
+Copy paste the following code into your `R` console:
 
     {
         devtools::install_git("Rpackages/random.cdisc.data", ref = "v0.0.1", 

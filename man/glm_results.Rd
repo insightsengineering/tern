@@ -2,12 +2,12 @@
 % Please edit documentation in R/t_forest_rsp.R
 \name{glm_results}
 \alias{glm_results}
-\title{glm_results(data_for_value)
-data = data_for_value}
+\title{glm_results(glm_data)
+data = glm_data}
 \usage{
 glm_results(data)
 }
 \description{
-glm_results(data_for_value)
-data = data_for_value
+glm_results(glm_data)
+data = glm_data
 }

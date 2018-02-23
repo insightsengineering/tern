@@ -23,6 +23,8 @@ labels <- setNames(c("a var", "b var"), c("a", "b"))
 
 X <- add_labels(df, labels)
 
-View(X)
+\dontrun{
+View(X) 
+}
 
 }

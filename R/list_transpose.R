@@ -12,6 +12,7 @@
 #' 
 #' @examples 
 #' 
+#' \dontrun{
 #' x <- list(c1 = 1:3, c2 = 11:13, c3 = 111:113)
 #' list_transpose(x)
 #' 
@@ -27,6 +28,7 @@
 #' 
 #' x <- list(c1 = 1:3) 
 #' list_transpose(x)
+#' }
 list_transpose <- function(x) {
   
   # length at depth 2

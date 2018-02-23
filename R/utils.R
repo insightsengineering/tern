@@ -171,7 +171,9 @@ labels_over_names <- function(df) {
 #' 
 #' X <- add_labels(df, labels)
 #' 
-#' View(X)
+#' \dontrun{
+#' View(X) 
+#' }
 #' 
 add_labels <- function(df, labels) {
   for (name in names(df)) {

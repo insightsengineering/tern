@@ -49,7 +49,10 @@
 #' chgfbl_plot(data = df, ytype = "AVAL", errbar = "95CI", ref_line = 3, yrange = c(0,3), n_rotate = T)
 #' 
 #' tbl <- chgfbl_table(data=df)
+#' 
+#' \dontrun{
 #' Viewer(tbl)
+#' }
 #' 
 #' 
 #' 

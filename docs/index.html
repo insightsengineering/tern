@@ -15,7 +15,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-vignette">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -67,8 +67,13 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9">
     
+
+    
+    
+<div class="contents">
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <div id="tern" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
@@ -78,26 +83,20 @@
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
-<p>You need to install the <code>rtables</code> package before installing the <code>tern</code> package</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"Roche/rtables"</span>)
-
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_git">install_git</a></span>(
-  <span class="dt">url =</span> <span class="st">"http://github.roche.com/Rpackages/random.cdisc.data.git"</span>,
-  <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>,
-  <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>
-)
-
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_git">install_git</a></span>(
-  <span class="dt">url =</span> <span class="st">"http://github.roche.com/Rpackages/tern.git"</span>,
-  <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>,
-  <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>
-)</code></pre></div>
+<p>Copy paste the following code into your <code>R</code> console:</p>
+<pre><code>{
+    devtools::install_git("Rpackages/random.cdisc.data", ref = "v0.0.1", 
+        host = "https://github.roche.com/api/v3")
+    devtools::install_github("Roche/rtables", ref = "v0.0.1")
+    devtools::install_git("Rpackages/tern", ref = "v0.0.1", host = "https://github.roche.com/api/v3")
+}</code></pre>
 </div>
-
+</div>
   </div>
 
-  <div class="col-md-3" id="sidebar">
-    <h2>License</h2>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>License</h2>
 <p>Copyright Roche</p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
@@ -107,12 +106,14 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <li>Yuyao Song <br><small class="roles"> Author </small> </li>
 <li>Chendi Liao <br><small class="roles"> Author </small> </li>
 <li>Xiao Mu Yo <br><small class="roles"> Author </small> </li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="http://pages.github.roche.com/Rpackages/tern">Project Website</a></li>
 </ul>
 </div>
+
 </div>
 
 

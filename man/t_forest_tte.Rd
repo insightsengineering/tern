@@ -26,7 +26,9 @@ Cox PH model is used for hazard ratio calculation
 }
 \examples{
 
+devtools::install_github("Rpackages/random.cdisc.data", host='https://github.roche.com/api/v3')
 library(random.cdisc.data)
+library(dplyr)
 
 ASL <- radam("ASL")
 ATE <- radam("ATE", ADSL = ASL)

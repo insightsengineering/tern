@@ -15,16 +15,11 @@ reference:
       - tern-package
   - title: Tables
     contents:
-      - demographic_table
-      - forest_rsp
-      - forest_tte
-      - response_table
-      - time_to_event_table
+      - starts_with("t_")
       - chgfbl_table
   - title: Plots
     contents:
-      - forest_rsp_plot
-      - forest_tte_plot
+      - starts_with("g_")
       - kmplot
       - chgfbl_plot
   - title: Data Helper Functions
@@ -37,7 +32,6 @@ reference:
     contents:
       - '%needs%'
       - labels_over_names
-      - list_transpose
       - print_np
       - reflow
       - wrap_text
@@ -45,7 +39,6 @@ reference:
   - title: To be Deprecated
     desc: The following functions are to be removed in an upcoming tern release
     contents:
-      - forest_tte_ADAM
       - kmplot_survminer
       - response_table_ADAM
       - arm_for_model2
