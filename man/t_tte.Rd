@@ -8,8 +8,17 @@ t_tte(formula, data, event_descr, time_points, time_unit = "month",
   ties = "exact")
 }
 \arguments{
+\item{formula}{a survival formula, the arm variable needs to be wrapped in
+\code{arm()}. The \code{strata()} special will only be used for the
+stratified analysis. If there is not \code{strata} specification then the
+stratified analysis is omitted.}
+
+\item{data}{a \code{data.frame} with all the variable that are used in
+\code{formula}}
+
 \item{event_descr}{a factor that partitions the the events into earliest
-contributing event}
+contributing event. The variable name can be provided unquoted in which
+case it is looked up in \code{data} and then the calling environment.}
 
 \item{time_points}{numeric vector with times displayed in the time point
 analysis, if \code{NULL} this section of the table will be omitted}
@@ -17,23 +26,17 @@ analysis, if \code{NULL} this section of the table will be omitted}
 \item{time_unit}{a string with the unit of the \code{tte} argument}
 
 \item{ties}{passed forward to \code{\link[survival]{coxph}}}
-
-\item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
-
-\item{is_event}{boolean with \code{TRUE} if event and \code{FALSE} if censored}
-
-\item{strata_data}{a data frame with factors that are used for
-stratification. If \code{NULL} then no stratified analysis is displayed.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-This is the description of the function
+The time to event table summarizes time to event data with different models
+as described in the details section.
 }
 \details{
-The time to event section is derived from a a kaplan meier estimator for the
-model \code{Surv(tte, is_event) ~ col_by}.
+The time to event section is derived from a kaplan meier estimator for the
+\code{formula} argument with the strata special dropped.
 
 The stratified and unstratified analysis is evaluated pair-wise (reference to
 comparison) and \code{\link[survival]{survdiff}} is used to get the p-value
@@ -43,7 +46,6 @@ and confidence interval.
 The time point analysis is based on the kaplan meier estimator.
 }
 \examples{
-
 library(random.cdisc.data)
 library(forcats)
 
@@ -64,6 +66,5 @@ tbl <- t_tte(
 )
 
 tbl
-
 
 }

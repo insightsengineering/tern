@@ -1,21 +1,25 @@
 #' Time to Event Table
 #' 
-#' This is the description of the function
+#' The time to event table summarizes time to event data with different models
+#' as described in the details section.
 #' 
-#' @template param_tte
-#' @template param_is_event 
+#' @param formula a survival formula, the arm variable needs to be wrapped in
+#'   \code{arm()}. The \code{strata()} special will only be used for the
+#'   stratified analysis. If there is not \code{strata} specification then the
+#'   stratified analysis is omitted.
+#' @param data a \code{data.frame} with all the variable that are used in
+#'   \code{formula}
 #' @param event_descr a factor that partitions the the events into earliest
-#'   contributing event
-#' @param strata_data a data frame with factors that are used for
-#'   stratification. If \code{NULL} then no stratified analysis is displayed.
+#'   contributing event. The variable name can be provided unquoted in which
+#'   case it is looked up in \code{data} and then the calling environment.
 #' @param time_points numeric vector with times displayed in the time point
 #'   analysis, if \code{NULL} this section of the table will be omitted
 #' @param time_unit a string with the unit of the \code{tte} argument
 #' @param ties passed forward to \code{\link[survival]{coxph}}
 #' 
 #' @details 
-#' The time to event section is derived from a a kaplan meier estimator for the
-#' model \code{Surv(tte, is_event) ~ col_by}.
+#' The time to event section is derived from a kaplan meier estimator for the
+#' \code{formula} argument with the strata special dropped.
 #'
 #' The stratified and unstratified analysis is evaluated pair-wise (reference to
 #' comparison) and \code{\link[survival]{survdiff}} is used to get the p-value
@@ -26,12 +30,9 @@
 #' 
 #' @template return_rtable
 #' 
-#' @importFrom survival Surv survfit survdiff
-#' 
 #' @export
 #' 
 #' @examples 
-#' 
 #' library(random.cdisc.data)
 #' library(forcats)
 #' 
@@ -52,7 +53,6 @@
 #' )
 #' 
 #' tbl
-#' 
 #' 
 t_tte <- function(formula,
                   data,
@@ -91,13 +91,15 @@ t_tte <- function(formula,
   
   # Event Table
   # ###########
+  
   tbl_event <- rbind(
     rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)"),
     if (!is.null(event_descr)) {
       rbind(
         rtable(levels(arm), rrow("Earliest Contributing Event", indent = 1)),
-        rtabulate(as.factor(event_descr), arm, length, indent = 2)      
+        rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event], 
+                  length, indent = 2)
       )
     } else {
       NULL
