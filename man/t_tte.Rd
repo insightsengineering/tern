@@ -54,9 +54,11 @@ ATE_f <- subset(ATE, PARAMCD == "OS")
  
 ANL <- merge(ASL, ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
 
+
 tbl <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
   data = ANL,
+  event_descr = factor(EVNTDESC),
   time_points = c(6, 2000),
   time_unit = "month"
 )

@@ -66,7 +66,7 @@ t_tte <- function(formula,
   if (!is.data.frame(data)) stop("data needs to be a data.frame")
   
   # extracted data
-  tm <- t_tte_terms(formula, cl, data, parent.frame())
+  tm <- t_tte_items(formula, cl, data, parent.frame())
   
   tte <- tm$tte
   is_event <- as.logical(tm$event)
@@ -269,7 +269,7 @@ t_tte <- function(formula,
 }
 
 
-t_tte_terms <- function(formula, cl, data, env) {
+t_tte_items <- function(formula, cl, data, env) {
   # extract information
   mf <- cl
   mt <- terms(formula, specials = c("arm", "strata", "cluster", "tt"),
