@@ -5,12 +5,26 @@
 #' Similiar as the demographic table in STREAM
 #' 
 #' @inheritParams rtables::rtabulate.numeric
-#' @param data data frame
+#' @param data data frame with variables to be summarized as described in the
+#'   details section. If the variable has a \code{label} attribute then it will
+#'   be used for the row name.
 #' @param total if not \code{NULL} then it must be a string and an addition
 #'   column will be added with the overall summaries
 #'   
 #' @details
-#' Give a detailed description of what this function does.
+#' Every variable in \code{data} will be mapped to a summary table of that
+#' variable and the tables for all variables will be stacked.
+#' 
+#' Currently we distinguish the summary by the variable type
+#' 
+#' \describe{
+#'   \item{numneric}{\emph{n}, \emph{Mean (SD)}, \emph{Median}, \emph{Min-Max}
+#'   will be derived for each factor in \code{col_by}}
+#'   \item{non-numeric}{will be converted to a factor (if it isn't already) and
+#'   the number subjects in a cell and the percentage within the \code{col_by}
+#'   level will be calculated}
+#' }
+#' 
 #' 
 #' @export
 #' 
@@ -18,27 +32,24 @@
 #' 
 #' @examples 
 #' 
-#' library(tern)
 #' library(random.cdisc.data)
-#' library(forcats)
 #' 
 #' ASL <- radam("ASL")
 #' 
 #' # control the label
 #' attr(ASL$BAGE, "label") <- "Baseline Age of patient"
-#' attr(ASL$SEX, "label")
 #' 
 #' # control categorical order
-#' ASL$SEX <- fct_relevel(ASL$SEX, "M", "F")
+#' ASL$SEX <- relevel(ASL$SEX, "M", "F")
 #' 
 #' # control arm order
-#' ASL$ARM <- fct_relevel(ASL$ARM, "ARM B", "ARM A")
+#' ASL$ARM <- relevel(ASL$ARM, "ARM B", "ARM A")
 #' 
-#' t_summarize_variables(ASL %>% select(SEX, BAGE), col_by = ASL$ARM, total = "All Patients")
+#' t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
 #' 
-#' t_summarize_variables(iris %>% select(-Species), col_by  = iris$Species)
+#' t_summarize_variables(iris[, -5], col_by  = iris$Species)
 #' 
-#' t_summarize_variables(iris %>% select(-Species), col_by  = no_by("All Species"))
+#' t_summarize_variables(iris, col_by  = no_by("All Species"))
 #' 
 t_summarize_variables <- function(data, col_by, total = NULL) {
 

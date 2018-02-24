@@ -106,6 +106,11 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>rsp</th>
+      <td><p>boolean, <code>TRUE</code> if subject is a responder <code>FALSE</code>
+otherwise</p></td>
+    </tr>
+    <tr>
       <th>col_by</th>
       <td><p>factor with reference and comparison group information, the
 first <code>level</code> indicates the reference group</p></td>
@@ -115,47 +120,65 @@ first <code>level</code> indicates the reference group</p></td>
       <td><p>data frame with one column per grouping variable</p></td>
     </tr>
     <tr>
-      <th>rep</th>
-      <td><p>Tumor Response data</p></td>
+      <th>total</th>
+      <td><p>character with the row name of the analysis run on all data. If
+<code>NULL</code> analysis is omitted</p></td>
+    </tr>
+    <tr>
+      <th>na.omit.group</th>
+      <td><p>boolean, do not list NAs</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code> object</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Logistic model is used for odds ratio calculation</p>
+    <p>Logistic model is used for odds ratio calculation.</p>
+<p>The returned table contains one row per analysis applied on a subset of data
+(indicated by the row name). The analysis is summarized with the following 8
+columns:</p><dl class='dl-horizontal'>
+  <dt>1</dt><dd><p><em>Total n</em> the total number of subjects used for analysis</p></dd>
+  <dt>1-3</dt><dd><p>analysis for reference arm, <em>n</em>, <em>Responders</em>,
+  <code>Response.Rate</code></p></dd>
+  <dt>4-6</dt><dd><p>same analysis as for reference arm now for comparison arm</p></dd>
+  <dt>7</dt><dd><p><em>Odds Ratio</em></p></dd>
+  <dt>8</dt><dd><p><em>95 % CI</em></p></dd>
+</dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
+
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
-<span class='no'>ASL</span>$<span class='no'>PSUEDO</span> <span class='kw'>&lt;-</span> <span class='no'>ASL</span>$<span class='no'>SEX</span>
 
-<span class='no'>ARS_f</span> <span class='kw'>&lt;-</span> <span class='no'>ARS</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>)
-<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'>select</span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>, <span class='no'>SEX</span>, <span class='no'>RACE</span>, <span class='no'>PSUEDO</span>, <span class='no'>ARM</span>), <span class='no'>ARS_f</span>)
+<span class='no'>ARS_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>)
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ARS_f</span>)
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_forest_rsp</span>(
   <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
-  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>))
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                            ARM A                                                                      ARM B                                                                                 
-#&gt; Baseline Risk Factors                                   Total n                     n                   Responders              Response.Rate                  n                   Responders              Response.Rate             Odds Ratio                 95% CI      
-#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                       100                      54                       22                      0.41                      46                       22                      0.48               1.33333333333334            (0.6, 2.96)   
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                  ARM A                                                          ARM B                                                                   
+#&gt; Baseline Risk Factors                                 Total n                 n               Responders          Response.Rate              n               Responders          Response.Rate         Odds Ratio             95% CI    
+#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                     100                  42                   14                  0.33                  58                   19                  0.33                 0.97             (0.42, 2.29) 
 #&gt; 
 #&gt; SEX
-#&gt;   F                                                       54                       27                       13                      0.48                      27                       14                      0.52               1.15976331360821            (0.4, 3.41)   
-#&gt;   M                                                       46                       27                        9                      0.33                      19                        8                      0.42               1.45454545454516           (0.43, 4.96)   
+#&gt;   F                                                     44                   17                    5                  0.29                  27                    6                  0.22                 0.69             (0.17, 2.83) 
+#&gt;   M                                                     56                   25                    9                  0.36                  31                   13                  0.42                 1.28             (0.44, 3.88) 
 #&gt; 
 #&gt; RACE
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                        18                        5                        0                        0                       13                        6                      0.46               99127537.5638092              (0, NA)     
-#&gt;   ASIAN                                                   25                       16                        8                       0.5                       9                        6                      0.67               1.99999999999959           (0.38, 12.26)  
-#&gt;   BLACK OR AFRICAN AMERICAN                               18                       12                        6                       0.5                       6                        2                      0.33               0.500000000000101          (0.05, 3.66)   
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER               22                       13                        5                      0.38                       9                        4                      0.44                     1.28                 (0.22, 7.42)   
-#&gt;   WHITE                                                   17                        8                        3                      0.38                       9                        4                      0.44               1.33333333333333           (0.19, 10.07)  </div><div class='input'>   
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      20                    8                    3                  0.38                  12                    4                  0.33                 0.83             (0.13, 5.77) 
+#&gt;   ASIAN                                                 18                    9                    6                  0.67                   9                    1                  0.11                 0.06               (0, 0.57)  
+#&gt;   BLACK OR AFRICAN AMERICAN                             20                    7                    2                  0.29                  13                    5                  0.38                 1.56             (0.23, 13.99)
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             24                   12                    2                  0.17                  12                    4                  0.33                  2.5             (0.38, 21.6) 
+#&gt;   WHITE                                                 18                    6                    1                  0.17                  12                    5                  0.42                 3.57             (0.4, 80.15) </div><div class='input'>   
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -163,6 +186,8 @@ first <code>level</code> indicates the reference group</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>

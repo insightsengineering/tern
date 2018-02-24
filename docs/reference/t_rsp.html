@@ -105,82 +105,77 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>rsp</th>
+      <td><p>boolean, <code>TRUE</code> if subject is a responder <code>FALSE</code>
+otherwise</p></td>
+    </tr>
+    <tr>
+      <th>col_by</th>
+      <td><p>factor with reference and comparison group information, the
+first <code>level</code> indicates the reference group</p></td>
+    </tr>
+    <tr>
+      <th>parition_rsp_by</th>
+      <td><p>factor to partition <code>rsp</code> and run additional
+analysis</p></td>
+    </tr>
+    <tr>
       <th>strata_data</th>
-      <td><p>data for stratification factors (categorical variables)</p></td>
-    </tr>
-    <tr>
-      <th>response</th>
-      <td><p>Tumor response data</p></td>
-    </tr>
-    <tr>
-      <th>value.rsp</th>
-      <td><p>Character vector, defining list of response values to be
-used as responders</p></td>
-    </tr>
-    <tr>
-      <th>value.nrsp</th>
-      <td><p>Character vector, defining list of response values to be
-used as non-responders</p></td>
-    </tr>
-    <tr>
-      <th>arm</th>
-      <td><p>Arm information data as factor</p></td>
-    </tr>
-    <tr>
-      <th>style</th>
-      <td><p>Must be 1 or 2, <code>1</code> if only want to display rates summary
-for each response value category, <code>2</code> if want to display rates,
-difference in rate and odds ratio for each response value category.</p></td>
+      <td><p>data for stratification factors (categorical variables),
+if <code>NULL</code> no stratified analysis is performed</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code> object</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>We use the <code>epiR</code> package to compute 2-by-2 contingency table statistics
 and analysis with stratification factors.</p>
 <p>If no stratification, chi-squared test is performed by default to test for
-equality of proportions in response rate between reference and comparison arms.</p>
-<p>If stratification factors are added, Cochran-Mantel-Haensel test statistics are 
-reported for the test of equal proportions, odds ratio and its corresponding 
-95<!-- % confidence interval. --></p>
+equality of proportions in response rate between reference and comparison
+arms.</p>
+<p>If stratification factors are added, Cochran-Mantel-Haensel test statistics
+are reported for the test of equal proportions, odds ratio and its
+corresponding 95<!-- % confidence interval. --></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-<span class='fu'>library</span>(<span class='no'>forcats</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 
-<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ARS</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>)
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>))
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
- <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/forcats/topics/fct_relevel'>fct_relevel</a></span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>),
+ <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>),
  <span class='kw'>parition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>)),
  <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )
 
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM A     
 #&gt; -----------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        16 (35.56%)           23 (41.82%)  
-#&gt; Non-Responders                                                    29 (64.44%)           32 (58.18%)  
+#&gt; Responders                                                        19 (32.76%)           14 (33.33%)  
+#&gt; Non-Responders                                                    39 (67.24%)           28 (66.67%)  
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (21.87, 51.22)        (28.65, 55.89)
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (21.01, 46.34)        (19.57, 49.55)
 #&gt; 
-#&gt; Difference in Response Rates                                                                0.06     
+#&gt; Difference in Response Rates                                                                0.01     
 #&gt;   95% CI for difference (Wald without correction)                                        add logic   
 #&gt;   95% CI for difference (Wald with continuity correction)                                add logic   
 #&gt;   p-value (Chi-squared)                                                                  add logic   
 #&gt; 
 #&gt; odds ratio table
 #&gt; 
-#&gt; CR                                                                 10 (100%)             14 (100%)   
+#&gt; CR                                                                  9 (100%)              4 (100%)   
 #&gt;   95% CI (Wald)                                                    to be done            to be done  
 #&gt; 
-#&gt; PR                                                                  6 (100%)              9 (100%)   
+#&gt; PR                                                                 10 (100%)             10 (100%)   
 #&gt;   95% CI (Wald)                                                    to be done            to be done  
 #&gt; 
 #&gt; SD                                                                   0 (0%)                0 (0%)    
@@ -198,6 +193,8 @@ reported for the test of equal proportions, odds ratio and its corresponding
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>

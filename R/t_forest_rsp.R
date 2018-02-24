@@ -1,32 +1,47 @@
 #' Response Forest Plot Table
 #'
-#' @param rsp boolean, \code{TRUE} if subject is a responder \code{FALSE}
-#'   otherwise
+#' @template param_rsp
+#' @template param_col_by
 #' @param group_data data frame with one column per grouping variable
-#' @param col_by factor with reference and comparison group information, the
-#'   first \code{level} indicates the reference group
-#'   
+#' @param total character with the row name of the analysis run on all data. If
+#'   \code{NULL} analysis is omitted
+#' @param na.omit.group boolean, do not list NAs
+#'    
 #' @details 
-#' Logistic model is used for odds ratio calculation
+#' Logistic model is used for odds ratio calculation.
+#' 
+#' The returned table contains one row per analysis applied on a subset of data
+#' (indicated by the row name). The analysis is summarized with the following 8
+#' columns:
+#' 
+#' \describe{
+#'   \item{1}{\emph{Total n} the total number of subjects used for analysis}
+#'   \item{1-3}{analysis for reference arm, \emph{n}, \emph{Responders},
+#'   \code{Response.Rate}}
+#'   \item{4-6}{same analysis as for reference arm now for comparison arm}
+#'   \item{7}{\emph{Odds Ratio}}
+#'   \item{8}{\emph{95 \% CI}}
+#' }
+#' 
+#' @template return_rtable 
 #' 
 #' @export
 #' 
 #' @author Yuyao Song (songy24), \email{yuyao.song@roche.com}
 #' 
 #' @examples 
-#' 
 #' library(random.cdisc.data)
+#' 
 #' ASL <- radam("ASL")
 #' ARS <- radam("ARS", ADSL = ASL)
-#' ASL$PSUEDO <- ASL$SEX
 #' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") 
-#' ANL <- merge(ASL %>% select(USUBJID, STUDYID, SEX, RACE, PSUEDO, ARM), ARS_f)
+#' ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
+#' ANL <- merge(ASL, ARS_f)
 #' 
 #' tbl <- t_forest_rsp(
 #'   rsp = ANL$AVALC %in% c("CR", "PR"),
-#'   col_by = factor(ANL$ARM), 
-#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+#'   col_by = ANL$ARM, 
+#'   group_data = ANL[, c("SEX", "RACE")]
 #' )
 #' 
 #' tbl
@@ -156,7 +171,7 @@ format_logistic <- function(x) {
     rcell(x[["resp_comp_n"]], "xx"),
     rcell(x[["resp_comp_event"]], "xx"),
     rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
-    rcell(x[["glm_or"]], format = "xx"),
+    rcell(x[["glm_or"]], format = "xx.xx"),
     rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = "(xx.xx, xx.xx)")
   )
 }

@@ -128,25 +128,28 @@ first <code>level</code> indicates the reference group</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Cox PH model is used for hazard ratio calculation</p>
+    <p>The returned table contains one row per analysis applied on a subset of data
+(indicated by the row name). The analysis is summarized with the following 8
+columns:</p><dl class='dl-horizontal'>
+  <dt>1</dt><dd><p><em>Total n</em> the total number of subjects used for analysis</p></dd>
+  <dt>1-3</dt><dd><p>analysis for reference arm, <em>n</em>, <em>Events</em>,
+  <code>Median (moneth)</code></p></dd>
+  <dt>4-6</dt><dd><p>same analysis as for reference arm now for comparison arm</p></dd>
+  <dt>7</dt><dd><p><em>Hazard Ratio</em></p></dd>
+  <dt>8</dt><dd><p><em>95% Wald CI</em></p></dd>
+</dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-<span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tern’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    current_vars</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
+
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 
-<span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='no'>ATE</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
+<span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ATE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
-<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>, <span class='no'>SEX</span>, <span class='no'>RACE</span>, <span class='no'>ARM</span>), <span class='no'>ATE_f</span>)
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ATE_f</span>)
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_forest_tte</span>(
   <span class='kw'>tte</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVAL</span>,
@@ -158,18 +161,18 @@ first <code>level</code> indicates the reference group</p></td>
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                    ARM A                                                             ARM B                                                                       
 #&gt; Baseline Risk Factors                                 Total n                  n                   Events            Median (month)              n                   Events            Median (month)         Hazard Ratio          95% Wald CI  
 #&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                     100                    46                    30                  106.82                  54                    30                  103.38                 1.03              (0.61, 1.72) 
+#&gt; ALL                                                     100                    42                    23                  133.99                  58                    28                  105.59                 1.17              (0.67, 2.04) 
 #&gt; 
 #&gt; SEX
-#&gt;   F                                                      58                    27                    19                  106.82                  31                    15                  103.38                 0.99              (0.49, 1.98) 
-#&gt;   M                                                      42                    19                    11                  85.85                   23                    15                  79.99                  1.11              (0.5, 2.47)  
+#&gt;   F                                                      44                    17                    9                   170.86                  27                    11                  111.97                 1.07              (0.44, 2.64) 
+#&gt;   M                                                      56                    25                    14                  128.51                  31                    17                  105.59                 1.33              (0.65, 2.73) 
 #&gt; 
 #&gt; RACE
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                       25                    11                    6                   141.48                  14                    8                   86.27                   2                (0.6, 6.69)  
-#&gt;   ASIAN                                                  15                    6                     3                   106.82                  9                     5                   62.77                  2.34              (0.44, 12.4) 
-#&gt;   BLACK OR AFRICAN AMERICAN                              18                    5                     2                                           13                    7                   120.08                 1.45              (0.3, 6.99)  
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              18                    10                    9                   110.9                   8                     2                                          0.68              (0.12, 3.73) 
-#&gt;   WHITE                                                  24                    14                    10                  34.62                   10                    8                   95.09                  0.55              (0.2, 1.54)  </div><div class='input'>
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                       20                    8                     7                   70.96                   12                    8                   93.03                  0.66              (0.23, 1.9)  
+#&gt;   ASIAN                                                  18                    9                     5                   177.21                  9                     4                   127.86                 1.31              (0.32, 5.36) 
+#&gt;   BLACK OR AFRICAN AMERICAN                              20                    7                     3                   170.86                  13                    6                   96.72                  1.47              (0.36, 6.05) 
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              24                    12                    6                   201.56                  12                    6                   402.9                  0.91              (0.28, 3.03) 
+#&gt;   WHITE                                                  18                    6                     2                   133.99                  12                    4                   30.46                  1.09              (0.18, 6.61) </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

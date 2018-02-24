@@ -8,33 +8,54 @@ t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
   na.omit.group = TRUE)
 }
 \arguments{
+\item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
+otherwise}
+
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group}
 
 \item{group_data}{data frame with one column per grouping variable}
 
-\item{rep}{Tumor Response data}
+\item{total}{character with the row name of the analysis run on all data. If
+\code{NULL} analysis is omitted}
+
+\item{na.omit.group}{boolean, do not list NAs}
+}
+\value{
+an \code{\link[rtables]{rtable}} object
 }
 \description{
 Response Forest Plot Table
 }
 \details{
-Logistic model is used for odds ratio calculation
+Logistic model is used for odds ratio calculation.
+
+The returned table contains one row per analysis applied on a subset of data
+(indicated by the row name). The analysis is summarized with the following 8
+columns:
+
+\describe{
+  \item{1}{\emph{Total n} the total number of subjects used for analysis}
+  \item{1-3}{analysis for reference arm, \emph{n}, \emph{Responders},
+  \code{Response.Rate}}
+  \item{4-6}{same analysis as for reference arm now for comparison arm}
+  \item{7}{\emph{Odds Ratio}}
+  \item{8}{\emph{95 \% CI}}
+}
 }
 \examples{
-
 library(random.cdisc.data)
+
 ASL <- radam("ASL")
 ARS <- radam("ARS", ADSL = ASL)
-ASL$PSUEDO <- ASL$SEX
 
-ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") 
-ANL <- merge(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, PSUEDO, ARM), ARS_f)
+ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
+ANL <- merge(ASL, ARS_f)
 
 tbl <- t_forest_rsp(
   rsp = ANL$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ANL$ARM), 
-  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+  col_by = ANL$ARM, 
+  group_data = ANL[, c("SEX", "RACE")]
 )
 
 tbl

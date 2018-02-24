@@ -7,21 +7,20 @@
 t_rsp(rsp, col_by, parition_rsp_by = NULL, strata_data = NULL)
 }
 \arguments{
-\item{strata_data}{data for stratification factors (categorical variables)}
+\item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
+otherwise}
 
-\item{response}{Tumor response data}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group}
 
-\item{value.rsp}{Character vector, defining list of response values to be
-used as responders}
+\item{parition_rsp_by}{factor to partition \code{rsp} and run additional
+analysis}
 
-\item{value.nrsp}{Character vector, defining list of response values to be
-used as non-responders}
-
-\item{arm}{Arm information data as factor}
-
-\item{style}{Must be 1 or 2, \code{1} if only want to display rates summary
-for each response value category, \code{2} if want to display rates,
-difference in rate and odds ratio for each response value category.}
+\item{strata_data}{data for stratification factors (categorical variables),
+if \code{NULL} no stratified analysis is performed}
+}
+\value{
+an \code{\link[rtables]{rtable}} object
 }
 \description{
 Response Table Caclulation Function
@@ -31,26 +30,25 @@ We use the \code{epiR} package to compute 2-by-2 contingency table statistics
 and analysis with stratification factors.
 
 If no stratification, chi-squared test is performed by default to test for
-equality of proportions in response rate between reference and comparison arms.
+equality of proportions in response rate between reference and comparison
+arms.
 
-If stratification factors are added, Cochran-Mantel-Haensel test statistics are 
-reported for the test of equal proportions, odds ratio and its corresponding 
-95% confidence interval.
+If stratification factors are added, Cochran-Mantel-Haensel test statistics
+are reported for the test of equal proportions, odds ratio and its
+corresponding 95% confidence interval.
 }
 \examples{
 
 library(random.cdisc.data)
-library(forcats)
 
 ASL <- radam("ASL")
 ARS <- radam("ARS", ADSL = ASL)
 
-ANL <- merge(ASL, ARS) \%>\% 
-  filter(PARAMCD == "OVRSPI")
+ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
 
 tbl <- t_rsp(
  rsp = ANL$AVALC \%in\% c("CR", "PR"),
- col_by = fct_relevel(factor(ANL$ARMCD), "ARM B", "ARM A"),
+ col_by = relevel(factor(ANL$ARMCD), "ARM B", "ARM A"),
  parition_rsp_by = factor(ANL$AVALC, levels =  c("CR", "PR", "SD", "NON CR/PD", "PD")),
  strata_data = NULL
 )
