@@ -1,12 +1,12 @@
-#' Forest plot (table + graph)
+#' Forest plot 
+#' 
+#' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
+#' column with a single value and a column with 2 values
 #'
-#' @param x rtable from forest_rsp function or from forest_tte function
-#' @param arm.ref string used to label reference arm
-#' @param arm.comp string used to label comparable arm
-#' @param anl.model the regression method used for analysis. Valid options are
-#'   \code{survival} and \code{logistic}
-#' @param time.unit string used to display the unit of median survival time.
-#'   default is "month".
+#' @param tbl an rtable object
+#' @param i_col_est column index with estimator 
+#' @param i_col_ci column index with confidence intervals
+#' @param header_forest how to label the forest
 #' @param padx gap between two columns
 #' @param cex multiplier applied to overall fontsize
 #' 
@@ -23,9 +23,9 @@
 #' ASL <- radam("ASL")
 #' ATE <- radam("ATE", ADSL = ASL)
 #' 
-#' ATE_f <- ATE %>% filter(PARAMCD == "OS") 
+#' ATE_f <- subset(ATE, PARAMCD == "OS") 
 #' 
-#' ANL <- merge(ASL %>% select(USUBJID, STUDYID, SEX, RACE, ARM), ATE_f)
+#' ANL <- merge(ASL, ATE_f)
 #' 
 #' tbl <- t_forest_tte(
 #'   tte = ANL$AVAL,
@@ -34,233 +34,237 @@
 #'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 #' )
 #' 
-#' g <- g_forest(tbl = tbl, i_col_est = 8, i_col_ci = 9, header_forest = c("Treatement Better", "Comparison Better"))
+#' g <- g_forest(
+#'   tbl = tbl,
+#'   i_col_est = 8,
+#'   i_col_ci = 9,
+#'   header_forest = c("Treatement Better", "Comparison Better")
+#' )
 #' 
 #' library(grid)
 #' grid.newpage()
 #' grid.draw(g)
 #' 
 #' 
-#' 
-#' 
-#' 
-#' library(random.cdisc.data)
-#' ASL <- radam("ASL")
-#' ARS <- radam("ARS", ADSL = ASL)
-#' 
-#' ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") 
-#' 
-#' ASL_f <- right_join(ASL %>% select(USUBJID, STUDYID, SEX, RACE, ARM),
-#'                         ARS_f %>% select(USUBJID, STUDYID))
-#' 
-#' tbl <- t_forest_rsp(
-#'   response = ARS_f$AVAL,
-#'   event = ARS_f$AVALC %in% c("CR","PR"),
-#'   arm = ASL_f$ARM, 
-#'   group_data = ASL_f %>% select("SEX", "RACE")
-#' )
-#' 
-#' g_forest(tbl)
-#' 
-g_forest <- function(tbl, i_col_est, i_col_ci, header_forest, padx = unit(0, "lines"), cex = 1) {
+g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "lines")) {
   
-
+  ## args to add
+  # xlim <- NULL
+   width <- NULL
+   
   
-  vp <- vpTree(
-    parent = viewport(
-      name = "forestplot",
-      layout = grid.layout(
-        nrow = 1, ncol = 11,
-        widths = unit.c(
-          stringWidth(rn[which.max(nchar(rn))]) + 1 * padx,
-          stringWidth("xxxxx") + 2 * padx,
-          stringWidth("xxxxx") + 2 * padx,
-          stringWidth("xxxxx") + 2 * padx,
-          stringWidth("xx.xx") + 2 * padx,
-          stringWidth("xxxxx") + 2 * padx,
-          stringWidth("xxxxx") + 2 * padx,
-          stringWidth("xx.xx") + 2 * padx,
-          stringWidth("xx.xx") + 2 * padx,
-          stringWidth("xx.xx - xx.xx") + 2 * padx,
-          unit(1, "null")
-        )
-      )
-    ),
-    children = vpList(
-      viewport(name = "col_1", layout.pos.col=1, layout.pos.row=1),
-      viewport(name = "col_2", layout.pos.col=2, layout.pos.row=1),
-      viewport(name = "col_3", layout.pos.col=3, layout.pos.row=1),
-      viewport(name = "col_4", layout.pos.col=4, layout.pos.row=1),
-      viewport(name = "col_5", layout.pos.col=5, layout.pos.row=1),
-      viewport(name = "col_6", layout.pos.col=6, layout.pos.row=1),
-      viewport(name = "col_7", layout.pos.col=7, layout.pos.row=1),
-      viewport(name = "col_8", layout.pos.col=8, layout.pos.row=1),
-      viewport(name = "col_9", layout.pos.col=9, layout.pos.row=1),
-      viewport(name = "col_10", layout.pos.col=10, layout.pos.row=1),
-      dataViewport(name = "col_11", layout.pos.col=11, layout.pos.row=1,
-                   xData = c(-2,2), yData = c(0,1))
+  # start with the plotting code
+  nr <- nrow(tbl)
+  nc <- ncol(tbl)
+  
+  if (!(i_col_est > 0 && i_col_est <= nc)) stop("i_col_est out of bounds")
+  if (!(i_col_ci > 0 && i_col_ci <= nc)) stop("i_col_ci out of bounds")
+  
+  if (!(is.character(header_forest) && length(header_forest) == 2))
+    stop("header_forest is required to be a character vector of length two")
+  
+  if (!is.null(width) && !is(width, "unit")) stop("width currently needs to be NULL or an object of class unit")
+  
+ # if (missing(xlim)) {
+ #   vals <- unlist(lapply(seq_len(nr), function(i) c(tbl[i,i_col_ci], tbl[i, i_col_est])))
+ #   xlim <- extendrange(vals)
+ # }
+  
+  # for now lets make the table part fix-width and the forst part flexible width
+  # (expanding)
+  rn <- c(indented_row.names(tbl, 2), indented_row.names(rheader(tbl)))
+  longest_row_name <- rn[which.max(vapply(rn, nchar, numeric(1)))]
+  width_row_names <- unit(1, "strwidth", longest_row_name)
+  
+  if (is.null(width)) {
+    width <- do.call(unit.c, lapply(seq_len(nc), function(j) {
+      do.call(unit.pmax, lapply(seq_len(nr), function(i) stringWidth(format_rcell(tbl[i,j], output = "ascii")))) + padx
+    }))
+  }
+  
+  if (length(width) != nc) stop("widths specifications wrong dimension")
+  
+  col_layout <- grid.layout(
+    nrow = 1, ncol = 11,
+    widths = unit.c(
+      width_row_names,
+      width,
+      unit(1, "null") # for forest plot
     )
   )
   
+  xlim <- log(c(0.1, 10))
+  col_vps <- do.call(vpList, c(
+    list(viewport(name = "row.names", layout.pos.col=1, layout.pos.row=1)),
+    lapply(1:nc, function(i) {
+      viewport(name = paste0("col_", i), layout.pos.col=i+1, layout.pos.row=1)
+    }),
+    list(dataViewport(name = "forest", layout.pos.col=nc+2, layout.pos.row=1,
+                      xscale = xlim, yscale = c(0,1)))
+  ))
+  
+  header_line_factor <- 1.1
+  vp <- vpStack(
+    viewport(name = "gpar_user", gp = gpar()), # user settings (later to be added as an argument)
+    plotViewport(name = "margins", margins = c(3,2,2,2)),
+    vpTree(
+      parent = viewport(name = "header_body_layout", layout = grid.layout(
+        nrow = 3, ncol = 1,
+        heights = unit.c(unit((nrow(header(tbl))+1)*header_line_factor, "lines"),
+                         unit(nrow(tbl)*header_line_factor, "lines"),
+                         unit(1, "null"))
+      )),
+      children = vpList(
+        vpTree(
+          parent = viewport(name = "header", layout = col_layout, layout.pos.col=1, layout.pos.row=1,
+                            gp = gpar(fontface = "bold")),
+          children = col_vps
+        ),
+        vpTree(
+          parent = viewport(name = "body", layout = col_layout, layout.pos.col=1, layout.pos.row=2),
+          children = col_vps
+        ),
+        viewport(name = "space_filler", layout.pos.col=1, layout.pos.row=3)
+      ) 
+    )
+  )
+  # grid.newpage(); showViewport(vp)
+
+  
+  # this API of rtables is currently missing, so we use the underlying data
+  # structure
+  draw_row <- function(row, y) {
+    
+    if (!is(row, "rrow")) stop("object of class rrow expected")
+    
+    row_name <- paste0(strrep(" ", 2* attr(row, "indent")), attr(row, "row.name"))
+    
+    if (!is.null(row_name) && row_name != "") {
+      grid.text(label=row_name, x=unit(0, "npc"), y = y,
+                just = c("left", "center"), vp = vpPath("row.names"))      
+    }
+    
+    if (length(row) > 0) {
+      j <- 1
+      for (k in 1:length(row)) {
+        cell <- row[[k]]
+        cs <- attr(cell, "colspan")
+        cell_ascii <- format_rcell(cell, output = "ascii")
+        
+        if (is.na(cell_ascii)) cell_ascii <- "<NA>"
+        
+        if (cell_ascii != "") {
+          vp_cell <- if (cs == 1) {
+            grid.text(label = cell_ascii, x = unit(0.5, "npc"), y = y,
+                      just = c("center", "center"), vp = vpPath(paste0("col_", j)))
+          } else {
+            x0 <- grobX(paste0("center_col_", j), 0)
+            x1 <- grobX(paste0("center_col_", j+cs-1), 0)
+            grid.text(label = cell_ascii, x = x0 + 0.5 * (x1 - x0), y = y)
+          }
+          
+        }
+        j <- j + cs
+      }
+    }      
+  }
+
+  
+  
   grid.newpage()
-  pushViewport(viewport(gp = gpar(cex = cex)))
-  
-  pushViewport(plotViewport(margins = c(3,2,14,2)))
-  
   pushViewport(vp)
-  
+  upViewport()
+  downViewport(vpPath("header"), strict = TRUE)# need to go to body: current.viewport()
+  ## create anchor points
+  for (j in 1:nc) {
+    grid.null(name = paste0("center_col_", j), vp = vpPath(paste0("col_", j)))
+  }
+  upViewport()
+
   # grid.ls(viewports = TRUE)
-  seekViewport("forestplot")
+  # showViewport(current.viewport())
+  # current.viewport()
+
+  # draw header
+  downViewport(vpPath("header"), strict = TRUE)
+  
+  # grid.rect(gp = gpar(fill = "gray90", col = NA))
+  h <- header(tbl)
+  nrh <- nrow(h)
+  y_header <- unit(1, "npc") - unit( (1:nrh - .5) *header_line_factor, "lines") 
+  for (i in 1:nrow(h)) {
+    draw_row(h[[i]], y = y_header[i] )
+  } 
+  upViewport()
+
+  
+  # draw the table body
+  downViewport(vpPath("body"))
+  y_body <- unit(1, "npc") - unit((1:nr - .5) *header_line_factor, "lines")
+  for (i in 1:nr) {
+    draw_row(tbl[[i]], y_body[i])
+  }
+  
+  # now draw the forest
+  downViewport(vpPath("forest"), strict = TRUE)
   
   # break arm labels to muliple lines as needed
-  arm.ref <- wrap_text(arm.ref, width = unit(4, "cm"), collapse = "\n")
-  arm.comp <- wrap_text(arm.comp, width = unit(4, "cm"), collapse = "\n")
+  header_left <- wrap_text(header_forest[1], width = unit(4, "cm"), collapse = "\n")
+  header_right <- wrap_text(header_forest[2], width = unit(4, "cm"), collapse = "\n")
   
   # need once: mid-line OR/HR = 1
-  grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)), label = c(0.1, 0.5, 1, 2, 5, 10), vp = vpPath("col_11"))
-  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0, 1), "npc"), vp = vpPath("col_11"),
-             gp = gpar(lty = 2))  
+  grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)),
+             label = c(0.1, 0.5, 1, 2, 5, 10))
+  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0, 1), "npc"),
+             gp = gpar(lty = 2))
   
-  # Add Header
-  if(anl.model == "logistic"){
-    draw_header("Baseline Risk Factors","Total n", "n", "Resp.n", "Resp.Rate (%)", "n", "Resp.n", "Resp.Rate (%)", "Odds Ratio", "95% CI", arm.ref,arm.comp)
-  } else {
-    draw_header("Baseline Risk Factors","Total n", "n", "Events", paste("Median", " (", time.unit, ")", sep = ""), 
-                    "n", "Events", paste("Median", " (", time.unit, ")", sep = ""), "Hazard Ratio", "95% CI", arm.comp, arm.ref, hazard.ratio = TRUE)
-  }
-  
-  # Add table contents
-  for (i in 1:nrow(x)){
-    if (!is.null(x[i,1])) {
-      x1 <- row.names(x)[i]; x2 <- x[i, 1]; x3 <- x[i, 2]; x4 <- x[i, 3]; x5 <- round(x[i, 4], 1); x6 <- x[i, 5]; x7 <- x[i, 6]; x8 <- round(x[i, 7], 1); 
-      x9 <- ifelse(is.numeric(x[i, 8]),  round(x[i, 8], 2), x[i, 8]) 
-      x10 <- paste("(", paste(round(x[i, 9],2), collapse = ", "), ")", sep = "")
-      if (is.numeric(x[i, 8])) x11 <-  c(log(abs(x[i,8])), log(abs(x[i,9]))) else x11 <- c(999.99, log(abs(x[i,9])))
-      draw_row(i, nrow(x), x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hline = TRUE, fontface = 1)
-    } else if (is.null(x[i,1]) & row.names(x)[i] != "") {
-      draw_row(i, nrow(x), row.names(x)[i], "", "", "", "", "", "", "", "", "", c(NA, NA, NA), FALSE, 2)
-    } else {
-      draw_row(i, nrow(x), "", "", "", "", "", "", "", "", "", "", c(NA, NA, NA), FALSE,2)
-    }
-  }
-}
-
-draw_header <- function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, hazard.ratio= FALSE) {
-  
-  library(stringr)
-  
-  ypos = unit(1, "npc")+unit(1, "lines")
-
-  #Baseline Risk factor header
-  grid.text(x1, 
-            x = unit(0, "npc"), 
-            y = ypos + unit(0.5, "lines"), 
-            vp = vpPath("col_1"), 
-            just = "left", 
-            gp = gpar(fontsize = 10, fontface = 2))
-  
-  #Statistics column header
-  mapply(function(panel, i) grid.text(i, 
-                                      y = ypos, 
-                                      vp = vpPath(panel), 
-                                      gp = gpar(fontsize = 10, fontface = 2), 
-                                      rot = 90, 
-                                      just = c("left", "center")),
-         paste("col", c(2:10), sep = "_"), c(x2, x3, x4, x5, x6, x7, x8, x9, x10), SIMPLIFY =FALSE, USE.NAMES = FALSE)
-  
-  #Treatment Arms as column headers
-  mapply(function(panels, i) grid.text(i,
-                                       x = unit(0.5, "native"),
-                                       y = ypos + unit(6.75 + str_count(i, "\n"), "lines"),
-                                       vp = vpPath(ifelse(hazard.ratio == FALSE, panels[1], panels[2])),
-                                       gp = gpar(fontsize = 10 ,fontface = 2)),
-        list(c("col_4", "col_7"), c("col_7", "col_4")), c(x11, x12), SIMPLIFY =FALSE, USE.NAMES = FALSE)
-  
-  #Statistics header dividing lines between ARM and header
-  mapply(function(panel, loc) grid.lines(x = unit(loc, "native"), 
-                                         y = ypos + unit(5, "lines"), 
-                                         vp = vpPath(panel), 
-                                         gp = gpar(lty = 1, lwd = 2)),
-         paste("col", c(3:8), sep = "_"), list(c(0, 1), c(0, 1), c(0,0.9), c(0.1,1), c(0,1), c(0,1)), SIMPLIFY =FALSE, USE.NAMES = FALSE)
-  
-  #Line between header and table
-  grid.lines(unit(c(0,1), "npc"),
-             y = ypos - unit(0.5, "lines"), 
-             gp = gpar(col = "black", lty = 1, lwd = 2))
-  
- 
-  #Forest plot header
-  mapply(function(loc, i) {
-                grid.text(i, 
-                          x = unit(loc, "native"), 
-                          y = ypos + unit(str_count(i, "\n") + 1.5, "lines"),
-                          vp = vpPath("col_11"), 
-                          gp = gpar(fontsize = 10, fontface = 2))
-                grid.text("Better", 
-                          x = unit(loc, "native"), 
-                          y = ypos + unit(.5, "lines"),
-                          vp = vpPath("col_11"), 
-                          gp = gpar(fontsize = 10, fontface = 2))},
-         c(-1, 1), c(x11, x12), SIMPLIFY =FALSE, USE.NAMES = FALSE)
-
-
-}
-
-draw_row <- function(i,n, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, add_hline = FALSE, fontface = 1) {
-  ypos <- unit(1 - i/(n+1), "npc")
-  
-  indent_x1 <- if (fontface == 1 && x1 != "ALL") 1 else 0
-  
-  grid.text(x1, 
-            x = unit(0, "npc") + unit(indent_x1, "lines"),
-            y = ypos, vp = vpPath("col_1"),
-            gp = gpar(fontsize = 10 , fontface = fontface),
-            just = "left")
-  
-  mapply(function(panel, i) grid.text(i, 
-                                      y = ypos, 
-                                      vp = vpPath(panel), 
-                                      gp = gpar(fontsize = 10 , fontface = fontface)),
-         paste("col", c(2:10), sep = "_"), c(x2, x3, x4, x5, x6, x7, x8, x9, x10), SIMPLIFY =FALSE, USE.NAMES = FALSE)
   
   #Only draw if the CI is within the range of 0.1-10
-  if (!any(is.na(x11)) && !is.na(x11[1]) && x11[2] <= log(10) && x11[3] >= log(0.1)){
-    if ((is.na(x11[2]) || x11[2] < log(0.1)) && x11[3] <= log(10) ){
-      grid.lines(x = unit(c(log(0.1), x11[3]), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first"), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
+  draw_point_line <- function(x, ci, y, gp = gpar(col = "blue", fill = "blue")) {
+    # line
+    if (all(!is.na(ci)) && ci[2] > xlim[1] && ci[1] < xlim[2]) {
+      
+      # -
+      if (ci[1] >= xlim[1] && ci[2] <= xlim[2] ){
+        grid.lines(x = unit(c(ci[1], ci[2]), "native"), 
+                   y = unit.c(y, y), gp = gp) 
+      } else if (ci[1] < xlim[1] && ci[2] > xlim[2] ){
+        # <->
+        grid.lines(x = unit(ylim, "native"), 
+                   y = unit.c(y, y), gp = gp,
+                   arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both")) 
+      } else if ( ci[1] < xlim[1] && ci[2] <= xlim[2] ){
+        # <- 
+        grid.lines(x = unit(c(xlim[1], ci[2]), "native"), 
+                   y = unit.c(y, y), gp = gp, 
+                   arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first")) 
+      } else if (ci[1] >= xlim[1] && ci[2] > xlim[2]){
+        # ->
+        grid.lines(x = unit(c(ci[1], xlim[2]), "native"), 
+                   y = unit.c(y, y), gp = gp, 
+                   arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last")) 
+      }
+    }  
+    
+    if (!is.na(x) && x >= xlim[1] && x <= xlim[2]){
+      grid.circle(x = unit(x, "native"), gp = gp,
+                  y = y, r = unit(1/3.5, "lines"))
     }
-    if (x11[2] >= log(0.1) && (is.na(x11[3]) || x11[3] > log(10))){
-      grid.lines(x = unit(c(x11[2], log(10)), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last"), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
-    }
-    if (x11[2] >= log(0.1) && x11[3] <= log(10) ){
-      grid.lines(x = unit(c(x11[2], x11[3]), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
-    }
-    if (x11[2] < log(0.1) && x11[3] > log(10) ){
-      grid.lines(x = unit(c(log(0.1), log(10)), "native"), 
-                 y = unit.c(ypos, ypos), 
-                 arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both"), 
-                 vp = vpPath("col_11"), 
-                 gp =gpar(col = "blue", lwd = 2)) 
-    }
-    if (x11[1] >= log(0.1) && x11[1] <= log(10)){
-      grid.circle(x = unit(x11[1], "native"),
-                  y = ypos, r = unit(1/3.5, "lines"), 
-                  vp = vpPath("col_11"),
-                  gp = gpar(col = "blue", fill = "blue"))
-    }
-  }    
-  if (add_hline) {
-    grid.lines(unit(c(0,1), "npc"), y = unit.c(ypos, ypos) - unit(1/(2*n-2), "npc"), gp = gpar(col = "grey", lty = 1, lwd = 0.3))
   }
+  
+  
+  for (i in 1:nr) {
+    est <- tbl[i, i_col_est]
+    ci <-  tbl[i, i_col_ci]
+    if (!is.null(est) && !is.null(ci)) {
+      draw_point_line(x = log(est), ci = log(ci), y = y_body[i])
+    }
+  }
+  upViewport(2)
+
+  # Add header
+  downViewport(vpPath("header", "forest"), strict = TRUE)
+  grid.text(header_left, x = unit(0, "native") - unit(1, "lines"), just = c("right", "center"))
+  grid.text(header_right, x = unit(0, "native") + unit(1, "lines"), just = c("left", "center"))
   
 }

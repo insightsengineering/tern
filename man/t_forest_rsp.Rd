@@ -31,16 +31,16 @@ Response Forest Plot Table
 Logistic model is used for odds ratio calculation.
 
 The returned table contains one row per analysis applied on a subset of data
-(indicated by the row name). The analysis is summarized with the following 8
+(indicated by the row name). The analysis is summarized with the following 9
 columns:
 
 \describe{
   \item{1}{\emph{Total n} the total number of subjects used for analysis}
-  \item{1-3}{analysis for reference arm, \emph{n}, \emph{Responders},
+  \item{3-4}{analysis for reference arm, \emph{n}, \emph{Responders},
   \code{Response.Rate}}
-  \item{4-6}{same analysis as for reference arm now for comparison arm}
-  \item{7}{\emph{Odds Ratio}}
-  \item{8}{\emph{95 \% CI}}
+  \item{5-7}{same analysis as for reference arm now for comparison arm}
+  \item{8}{\emph{Odds Ratio}}
+  \item{9}{\emph{95 \% CI}}
 }
 }
 \examples{

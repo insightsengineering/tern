@@ -32,6 +32,9 @@
 #' 
 #' @export
 #' 
+#' @author Mark Rothe (rothem1), Adrian Waddell (waddella,
+#'   \email{adrian.waddell@roche.com})
+#' 
 #' @examples 
 #' library(random.cdisc.data)
 #' 
@@ -261,7 +264,7 @@ t_tte <- function(formula,
   
   # add N to header 
   N <- tapply(arm, arm, length)
-  rheader(tbl) <- rheader(
+  header(tbl) <- rheader(
     rrowl("", levels(arm)),
     rrowl("", paste0("(N=",N,")"))
   )

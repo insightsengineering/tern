@@ -156,7 +156,6 @@ and confidence interval.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-<span class='fu'>library</span>(<span class='no'>forcats</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
@@ -175,41 +174,41 @@ and confidence interval.</p>
 )
 
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B      
-#&gt;                                               (N=50)                  (N=50)     
+#&gt;                                               (N=53)                  (N=47)     
 #&gt; ---------------------------------------------------------------------------------
-#&gt; Patients without event (%)                   24 (48%)                23 (46%)    
+#&gt; Patients without event (%)                 19 (35.85%)             28 (59.57%)   
 #&gt;   Earliest Contributing Event
-#&gt;     Death                                       7                       6        
-#&gt;     Disease Progression                         6                       9        
-#&gt;     First Response                              11                      8        
-#&gt; Patients without event (%)                   26 (52%)                27 (54%)    
+#&gt;     Death                                       7                       10       
+#&gt;     Disease Progression                         6                       10       
+#&gt;     First Response                              6                       8        
+#&gt; Patients without event (%)                 34 (64.15%)             19 (40.43%)   
 #&gt; 
 #&gt; Time to Event (months)
-#&gt;   Median                                      176.16                  120.25     
-#&gt;     95% CI                                (108.4, 267.4)           (68, 201.1)   
-#&gt;   25% and 75%−ile                          85.3, 267.4             52.1, 225.7   
-#&gt;   Range                                     0 to 296.1              0 to 384.5   
+#&gt;   Median                                      265.71                  86.09      
+#&gt;     95% CI                                 (102.7, NA)            (65.7, 173.3)  
+#&gt;   25% and 75%−ile                            80.4, NA              45.9, 263.1   
+#&gt;   Range                                     0 to 409.8              0 to 573.3   
 #&gt; 
 #&gt; Stratified Analysis
-#&gt;   p-value (log-rank)                                                  0.3142     
+#&gt;   p-value (log-rank)                                                  0.0227     
 #&gt; 
-#&gt;   Hazard Ratio                                                        1.3521     
-#&gt;     95% CI                                                       (0.7499, 2.4381)
+#&gt;   Hazard Ratio                                                        1.9704     
+#&gt;     95% CI                                                       (1.088, 3.5686) 
 #&gt; 
 #&gt; Unstratified Analysis
-#&gt;   p-value (log-rank)                                                  0.3468     
+#&gt;   p-value (log-rank)                                                  0.0265     
 #&gt; 
-#&gt;   Hazard Ratio                                                        1.3228     
-#&gt;     95% CI                                                       (0.7372, 2.3734)
+#&gt;   Hazard Ratio                                                        1.9247     
+#&gt;     95% CI                                                       (1.0682, 3.4678)
 #&gt; 
 #&gt; Time Point Analysis
 #&gt;   6 months
-#&gt;     Patients remaining at risk                  47                      45       
-#&gt;     Event Free Rate (%)                       97.96%                  97.92%     
-#&gt;       95% CI                                (94, 100)              (93.88, 100)  
-#&gt;     Difference in Event Free Rate                                     -0.04      
-#&gt;       95% CI                                                       (-5.7, 5.61)  
-#&gt;     p-value (Z-test)                                                  0.9882     
+#&gt;     Patients remaining at risk                  51                      44       
+#&gt;     Event Free Rate (%)                        100%                   95.7%      
+#&gt;       95% CI                                (100, 100)             (89.86, 100)  
+#&gt;     Difference in Event Free Rate                                      -4.3      
+#&gt;       95% CI                                                      (-10.14, 1.53) 
+#&gt;     p-value (Z-test)                                                  0.1483     
 #&gt; 
 #&gt;   2000 months
 #&gt;     -- no data</div><div class='input'>
@@ -226,6 +225,11 @@ and confidence interval.</p>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Mark Rothe (rothem1), Adrian Waddell (waddella,
+  <a href='mailto:adrian.waddell@roche.com'>adrian.waddell@roche.com</a>)
 
   </div>
 </div>

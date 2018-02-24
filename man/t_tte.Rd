@@ -47,7 +47,6 @@ The time point analysis is based on the kaplan meier estimator.
 }
 \examples{
 library(random.cdisc.data)
-library(forcats)
 
 ASL <- radam("ASL")
 ATE <- radam("ATE", ADSL = ASL)
@@ -67,4 +66,8 @@ tbl <- t_tte(
 
 tbl
 
+}
+\author{
+Mark Rothe (rothem1), Adrian Waddell (waddella,
+  \email{adrian.waddell@roche.com})
 }

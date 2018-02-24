@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forest plot (table + graph) — g_forest • tern</title>
+<title>Forest plot — g_forest • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -92,19 +92,36 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forest plot (table + graph)</h1>
+    <h1>Forest plot</h1>
     </div>
 
     
-    <p>Forest plot (table + graph)</p>
+    <p>Create a forest plot from any <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code> object that has a
+column with a single value and a column with 2 values</p>
     
 
     <pre class="usage"><span class='fu'>g_forest</span>(<span class='no'>tbl</span>, <span class='no'>i_col_est</span>, <span class='no'>i_col_ci</span>, <span class='no'>header_forest</span>, <span class='kw'>padx</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0</span>, <span class='st'>"lines"</span>),
-  <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>widths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>tbl</th>
+      <td><p>an rtable object</p></td>
+    </tr>
+    <tr>
+      <th>i_col_est</th>
+      <td><p>column index with estimator</p></td>
+    </tr>
+    <tr>
+      <th>i_col_ci</th>
+      <td><p>column index with confidence intervals</p></td>
+    </tr>
+    <tr>
+      <th>header_forest</th>
+      <td><p>how to label the forest</p></td>
+    </tr>
     <tr>
       <th>padx</th>
       <td><p>gap between two columns</p></td>
@@ -112,28 +129,6 @@
     <tr>
       <th>cex</th>
       <td><p>multiplier applied to overall fontsize</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>rtable from forest_rsp function or from forest_tte function</p></td>
-    </tr>
-    <tr>
-      <th>arm.ref</th>
-      <td><p>string used to label reference arm</p></td>
-    </tr>
-    <tr>
-      <th>arm.comp</th>
-      <td><p>string used to label comparable arm</p></td>
-    </tr>
-    <tr>
-      <th>anl.model</th>
-      <td><p>the regression method used for analysis. Valid options are
-<code>survival</code> and <code>logistic</code></p></td>
-    </tr>
-    <tr>
-      <th>time.unit</th>
-      <td><p>string used to display the unit of median survival time.
-default is "month".</p></td>
     </tr>
     </table>
     
@@ -145,9 +140,9 @@ default is "month".</p></td>
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 
-<span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='no'>ATE</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
+<span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ATE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
-<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'>select</span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>, <span class='no'>SEX</span>, <span class='no'>RACE</span>, <span class='no'>ARM</span>), <span class='no'>ATE_f</span>)
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ATE_f</span>)
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='t_forest_tte.html'>t_forest_tte</a></span>(
   <span class='kw'>tte</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVAL</span>,
@@ -156,29 +151,16 @@ default is "month".</p></td>
   <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>))
 )
 
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>g_forest</span>(<span class='kw'>tbl</span> <span class='kw'>=</span> <span class='no'>tbl</span>, <span class='kw'>i_col_est</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>i_col_ci</span> <span class='kw'>=</span> <span class='fl'>9</span>, <span class='kw'>header_forest</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Treatement Better"</span>, <span class='st'>"Comparison Better"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in stringWidth(rn[which.max(nchar(rn))]): object 'rn' not found</span></div><div class='input'>
+<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>g_forest</span>(
+  <span class='kw'>tbl</span> <span class='kw'>=</span> <span class='no'>tbl</span>,
+  <span class='kw'>i_col_est</span> <span class='kw'>=</span> <span class='fl'>8</span>,
+  <span class='kw'>i_col_ci</span> <span class='kw'>=</span> <span class='fl'>9</span>,
+  <span class='kw'>header_forest</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Treatement Better"</span>, <span class='st'>"Comparison Better"</span>)
+)</div><div class='output co'>#&gt; <span class='error'>Error in g_forest(tbl = tbl, i_col_est = 8, i_col_ci = 9, header_forest = c("Treatement Better",     "Comparison Better")): i_col_ci out of bounds</span></div><div class='input'>
 <span class='fu'>library</span>(<span class='no'>grid</span>)
 <span class='fu'><a href='http://www.rdocumentation.org/packages/grid/topics/grid.newpage'>grid.newpage</a></span>()
 <span class='fu'><a href='http://www.rdocumentation.org/packages/grid/topics/grid.draw'>grid.draw</a></span>(<span class='no'>g</span>)</div><div class='output co'>#&gt; <span class='error'>Error in grid.draw(g): object 'g' not found</span></div><div class='input'>
 
-
-
-
-<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
-<span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
-
-<span class='no'>ARS_f</span> <span class='kw'>&lt;-</span> <span class='no'>ARS</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>)
-
-<span class='no'>ASL_f</span> <span class='kw'>&lt;-</span> <span class='fu'>right_join</span>(<span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'>select</span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>, <span class='no'>SEX</span>, <span class='no'>RACE</span>, <span class='no'>ARM</span>),
-                        <span class='no'>ARS_f</span> <span class='kw'>%&gt;%</span> <span class='fu'>select</span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>))</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("USUBJID", "STUDYID")</span></div><div class='input'>
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='t_forest_rsp.html'>t_forest_rsp</a></span>(
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>ARS_f</span>$<span class='no'>AVAL</span>,
-  <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>ARS_f</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>,<span class='st'>"PR"</span>),
-  <span class='kw'>arm</span> <span class='kw'>=</span> <span class='no'>ASL_f</span>$<span class='no'>ARM</span>,
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ASL_f</span> <span class='kw'>%&gt;%</span> <span class='fu'>select</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)
-)</div><div class='output co'>#&gt; <span class='error'>Error in t_forest_rsp(response = ARS_f$AVAL, event = ARS_f$AVALC %in%     c("CR", "PR"), arm = ASL_f$ARM, group_data = ASL_f %&gt;% select("SEX",     "RACE")): unused arguments (response = ARS_f$AVAL, event = ARS_f$AVALC %in% c("CR", "PR"), arm = ASL_f$ARM)</span></div><div class='input'>
-<span class='fu'>g_forest</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt; <span class='error'>Error in stringWidth(rn[which.max(nchar(rn))]): object 'rn' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -159,8 +159,14 @@ Cox PH model estimators.</p>
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>, <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>)))
 
-<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ATE</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>))
-<span class='fu'>kmplot</span>(<span class='kw'>formula_km</span> <span class='kw'>=</span> <span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>, <span class='kw'>add_coxph</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>add_km</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in kmplot(formula_km = Surv(AVAL, 1 - CNSR) ~ ARM, data = ANL, add_coxph = TRUE,     add_km = TRUE): could not find function "kmplot"</span></div><div class='input'>
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'>subset</span>(<span class='no'>ATE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>))
+
+<span class='fu'>g_km</span>(
+   <span class='kw'>formula_km</span> <span class='kw'>=</span> <span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>,
+   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>,
+   <span class='kw'>add_coxph</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+   <span class='kw'>add_km</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</div><div class='img'><img src='g_km-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
@@ -224,6 +230,10 @@ Cox PH model estimators.</p>
             
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Heng Wang (wangh107, <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>)
 
   </div>
 </div>

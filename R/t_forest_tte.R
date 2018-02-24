@@ -13,16 +13,16 @@
 #'
 #'
 #' The returned table contains one row per analysis applied on a subset of data
-#' (indicated by the row name). The analysis is summarized with the following 8
+#' (indicated by the row name). The analysis is summarized with the following 9
 #' columns:
 #' 
 #' \describe{
 #'   \item{1}{\emph{Total n} the total number of subjects used for analysis}
-#'   \item{1-3}{analysis for reference arm, \emph{n}, \emph{Events},
+#'   \item{2-4}{analysis for reference arm, \emph{n}, \emph{Events},
 #'   \code{Median (moneth)}}
-#'   \item{4-6}{same analysis as for reference arm now for comparison arm}
-#'   \item{7}{\emph{Hazard Ratio}}
-#'   \item{8}{\emph{95\% Wald CI}}
+#'   \item{5-7}{same analysis as for reference arm now for comparison arm}
+#'   \item{8}{\emph{Hazard Ratio}}
+#'   \item{9}{\emph{95\% Wald CI}}
 #' }
 #'
 #' 

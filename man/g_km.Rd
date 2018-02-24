@@ -42,8 +42,14 @@ library(random.cdisc.data)
 ASL <- radam("ASL")
 ATE <- radam("ATE", ADSL = ASL, start_with = list(ECOG = c(0, 1)))
 
-ANL <- merge(ASL, ATE \%>\% filter(PARAMCD == "OS"))
-kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add_km = TRUE)
+ANL <- merge(ASL, subset(ATE, PARAMCD == "OS"))
+
+g_km(
+   formula_km = Surv(AVAL, 1-CNSR) ~ ARM,
+   data = ANL, 
+   add_coxph = TRUE,
+   add_km = TRUE
+)
 
 
 \dontrun{
@@ -100,4 +106,7 @@ Map(function(dfi, i, label) {
 
 }
 
+}
+\author{
+Heng Wang (wangh107, \email{wang.heng@gene.com})
 }

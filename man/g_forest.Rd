@@ -2,30 +2,26 @@
 % Please edit documentation in R/g_forest.R
 \name{g_forest}
 \alias{g_forest}
-\title{Forest plot (table + graph)}
+\title{Forest plot}
 \usage{
-g_forest(tbl, i_col_est, i_col_ci, header_forest, padx = unit(0, "lines"),
-  cex = 1)
+g_forest(tbl, i_col_est, i_col_ci, header_forest, padx = unit(1, "lines"))
 }
 \arguments{
+\item{tbl}{an rtable object}
+
+\item{i_col_est}{column index with estimator}
+
+\item{i_col_ci}{column index with confidence intervals}
+
+\item{header_forest}{how to label the forest}
+
 \item{padx}{gap between two columns}
 
 \item{cex}{multiplier applied to overall fontsize}
-
-\item{x}{rtable from forest_rsp function or from forest_tte function}
-
-\item{arm.ref}{string used to label reference arm}
-
-\item{arm.comp}{string used to label comparable arm}
-
-\item{anl.model}{the regression method used for analysis. Valid options are
-\code{survival} and \code{logistic}}
-
-\item{time.unit}{string used to display the unit of median survival time.
-default is "month".}
 }
 \description{
-Forest plot (table + graph)
+Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
+column with a single value and a column with 2 values
 }
 \examples{
 
@@ -34,9 +30,9 @@ library(random.cdisc.data)
 ASL <- radam("ASL")
 ATE <- radam("ATE", ADSL = ASL)
 
-ATE_f <- ATE \%>\% filter(PARAMCD == "OS") 
+ATE_f <- subset(ATE, PARAMCD == "OS") 
 
-ANL <- merge(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, ARM), ATE_f)
+ANL <- merge(ASL, ATE_f)
 
 tbl <- t_forest_tte(
   tte = ANL$AVAL,
@@ -45,33 +41,17 @@ tbl <- t_forest_tte(
   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 )
 
-g <- g_forest(tbl = tbl, i_col_est = 8, i_col_ci = 9, header_forest = c("Treatement Better", "Comparison Better"))
+g <- g_forest(
+  tbl = tbl,
+  i_col_est = 8,
+  i_col_ci = 9,
+  header_forest = c("Treatement Better", "Comparison Better")
+)
 
 library(grid)
 grid.newpage()
 grid.draw(g)
 
-
-
-
-
-library(random.cdisc.data)
-ASL <- radam("ASL")
-ARS <- radam("ARS", ADSL = ASL)
-
-ARS_f <- ARS \%>\% filter(PARAMCD == "OVRSPI") 
-
-ASL_f <- right_join(ASL \%>\% select(USUBJID, STUDYID, SEX, RACE, ARM),
-                        ARS_f \%>\% select(USUBJID, STUDYID))
-
-tbl <- t_forest_rsp(
-  response = ARS_f$AVAL,
-  event = ARS_f$AVALC \%in\% c("CR","PR"),
-  arm = ASL_f$ARM, 
-  group_data = ASL_f \%>\% select("SEX", "RACE")
-)
-
-g_forest(tbl)
 
 }
 \author{

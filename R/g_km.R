@@ -20,6 +20,7 @@
 #' 
 #' @export
 #' 
+#' @author Heng Wang (wangh107, \email{wang.heng@gene.com})
 #' 
 #' @examples 
 #' 
@@ -28,8 +29,14 @@
 #' ASL <- radam("ASL")
 #' ATE <- radam("ATE", ADSL = ASL, start_with = list(ECOG = c(0, 1)))
 #' 
-#' ANL <- merge(ASL, ATE %>% filter(PARAMCD == "OS"))
-#' kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, add_coxph = TRUE, add_km = TRUE)
+#' ANL <- merge(ASL, subset(ATE, PARAMCD == "OS"))
+#' 
+#' g_km(
+#'    formula_km = Surv(AVAL, 1-CNSR) ~ ARM,
+#'    data = ANL, 
+#'    add_coxph = TRUE,
+#'    add_km = TRUE
+#' )
 #' 
 #' 
 #' \dontrun{
@@ -86,13 +93,14 @@
 #' 
 #' }
 #' 
-g_km <- function(formula_km, data, add_km = TRUE, 
-                   add_coxph = TRUE, formula_coxph = formula_km, 
-                   info_coxph = "Cox Proportional Model: Unstratified Analysis",
-                   cox_ties = "exact",
-                   add = FALSE,
-                   xaxis_by = NULL, 
-                   title = "Kaplan - Meier Plot") {
+g_km <- function(formula_km,
+                 data, add_km = TRUE, 
+                 add_coxph = TRUE, formula_coxph = formula_km, 
+                 info_coxph = "Cox Proportional Model: Unstratified Analysis",
+                 cox_ties = "exact",
+                 add = FALSE,
+                 xaxis_by = NULL, 
+                 title = "Kaplan - Meier Plot") {
   
   fit <- survfit(formula_km, data = data, conf.type = "plain")
 
@@ -191,21 +199,21 @@ g_km <- function(formula_km, data, add_km = TRUE,
     info <- cbind(hr, ci, pvalues, scpval)
     sinfo <- split(as.data.frame(info), 1:nrow(info))
     
-    tbl <- do.call(
-      rtable,
-      c(
-        list(col.names = c("HR", "95% CI of HR", "Wald p-value", "Overall Score p-val")),
-        lapply(sinfo, function(xi) {
-          rrow(
-            row.name = rownames(xi),
-            rcell(xi$'exp(coef)', format = "xx.xxxx"),
-            rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
-            rcell(xi$'Pr(>|z|)', format = "xx.xxxx"),
-            rcell(xi$'scorepval', format = "xx.xxxx")
-          )
-        })
+    rows <- lapply(sinfo, function(xi) {
+      rrow(
+        row.name = rownames(xi),
+        rcell(xi$'exp(coef)', format = "xx.xxxx"),
+        rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
+        rcell(xi$'Pr(>|z|)', format = "xx.xxxx"),
+        rcell(xi$'scorepval', format = "xx.xxxx")
       )
+    })
+    
+    tbl <- rtablel(
+      header =  c("HR", "95% CI of HR", "Wald p-value", "Overall Score p-val"),
+      rows
     )
+
     tblstr <- toString(tbl, gap = 1)
     lab <- paste0(info_coxph, "\n", tblstr)
     grid.text(
@@ -214,27 +222,28 @@ g_km <- function(formula_km, data, add_km = TRUE,
       just = c("left", "bottom"),
       gp = gpar(fontfamily = "mono", fontsize = 8)
     )
-    
 
   }
   
   if (add_km){
     kminfo <- summary(fit)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
     skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
-    tblkm <- do.call(
-      rtable,
-      c(
-        list(col.names = c("N", "median", "95% CI for median")),
-        lapply(skminfo, function(xi) {
-          rrow(
-            row.name = rownames(xi),
-            rcell(xi$records, format = "xx"),
-            rcell(xi$median, format = "xx.xx"),
-            rcell(c(xi$`0.95LCL`, xi$`0.95UCL`), format = "(xx.xx, xx.xx)")
-          )
-        })
+    
+    rows <- lapply(skminfo, function(xi) {
+      rrow(
+        row.name = rownames(xi),
+        rcell(xi$records, format = "xx"),
+        rcell(xi$median, format = "xx.xx"),
+        rcell(c(xi$`0.95LCL`, xi$`0.95UCL`), format = "(xx.xx, xx.xx)")
       )
+    })
+    
+    
+    tblkm <- rtablel(
+      header = c("N", "median", "95% CI for median"),
+      rows
     )
+
     tblstr2 <- toString(tblkm, gap = 1)
     ##### add log-rank test for modeling as coxph
     mdl <- survdiff(formula_coxph, data = data)
