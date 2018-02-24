@@ -179,7 +179,31 @@ column will be added with the overall summaries</p></td>
 #&gt;   Mean (SD)         0.25 (0.11)        1.33 (0.2)         2.03 (0.27)
 #&gt;   Median                0.2                1.3                 2     
 #&gt;   Min - Max          0.1 - 0.6           1 - 1.8           1.4 - 2.5 </div><div class='input'>
-<span class='fu'>t_summarize_variables</span>(<span class='no'>iris</span> <span class='kw'>%&gt;%</span> <span class='fu'>select</span>(-<span class='no'>Species</span>), <span class='kw'>col_by</span>  <span class='kw'>=</span> <span class='fu'>no_by</span>(<span class='st'>"All Species"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in check_same_N(data = data, col_by = col_by, omit.NULL = FALSE): dimension missmatch:col_bydo not have N=150</span></div><div class='input'>
+<span class='fu'>t_summarize_variables</span>(<span class='no'>iris</span> <span class='kw'>%&gt;%</span> <span class='fu'>select</span>(-<span class='no'>Species</span>), <span class='kw'>col_by</span>  <span class='kw'>=</span> <span class='fu'>no_by</span>(<span class='st'>"All Species"</span>))</div><div class='output co'>#&gt;                     All Species
+#&gt; -------------------------------
+#&gt; Sepal.Length
+#&gt;   n                     150    
+#&gt;   Mean (SD)         5.84 (0.83)
+#&gt;   Median                5.8    
+#&gt;   Min - Max          4.3 - 7.9 
+#&gt; 
+#&gt; Sepal.Width
+#&gt;   n                     150    
+#&gt;   Mean (SD)         3.06 (0.44)
+#&gt;   Median                 3     
+#&gt;   Min - Max           2 - 4.4  
+#&gt; 
+#&gt; Petal.Length
+#&gt;   n                     150    
+#&gt;   Mean (SD)         3.76 (1.77)
+#&gt;   Median               4.35    
+#&gt;   Min - Max           1 - 6.9  
+#&gt; 
+#&gt; Petal.Width
+#&gt;   n                     150    
+#&gt;   Mean (SD)         1.2 (0.76) 
+#&gt;   Median                1.3    
+#&gt;   Min - Max          0.1 - 2.5 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

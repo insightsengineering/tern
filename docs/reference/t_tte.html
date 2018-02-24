@@ -172,12 +172,47 @@ and confidence interval.</p>
   <span class='kw'>event_descr</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>EVNTDESC</span>),
   <span class='kw'>time_points</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>2000</span>),
   <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in check_col_by(arm, 2): col_by needs to be a factor</span></div><div class='input'>
-<span class='no'>tbl</span></div><div class='output co'>#&gt; function (src, ...) 
-#&gt; {
-#&gt;     UseMethod("tbl")
-#&gt; }
-#&gt; &lt;environment: namespace:dplyr&gt;</div><div class='input'>
+)
+
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B      
+#&gt;                                               (N=50)                  (N=50)     
+#&gt; ---------------------------------------------------------------------------------
+#&gt; Patients without event (%)                   24 (48%)                23 (46%)    
+#&gt;   Earliest Contributing Event
+#&gt;     Death                                       7                       6        
+#&gt;     Disease Progression                         6                       9        
+#&gt;     First Response                              11                      8        
+#&gt; Patients without event (%)                   26 (52%)                27 (54%)    
+#&gt; 
+#&gt; Time to Event (months)
+#&gt;   Median                                      176.16                  120.25     
+#&gt;     95% CI                                (108.4, 267.4)           (68, 201.1)   
+#&gt;   25% and 75%−ile                          85.3, 267.4             52.1, 225.7   
+#&gt;   Range                                     0 to 296.1              0 to 384.5   
+#&gt; 
+#&gt; Stratified Analysis
+#&gt;   p-value (log-rank)                                                  0.3142     
+#&gt; 
+#&gt;   Hazard Ratio                                                        1.3521     
+#&gt;     95% CI                                                       (0.7499, 2.4381)
+#&gt; 
+#&gt; Unstratified Analysis
+#&gt;   p-value (log-rank)                                                  0.3468     
+#&gt; 
+#&gt;   Hazard Ratio                                                        1.3228     
+#&gt;     95% CI                                                       (0.7372, 2.3734)
+#&gt; 
+#&gt; Time Point Analysis
+#&gt;   6 months
+#&gt;     Patients remaining at risk                  47                      45       
+#&gt;     Event Free Rate (%)                       97.96%                  97.92%     
+#&gt;       95% CI                                (94, 100)              (93.88, 100)  
+#&gt;     Difference in Event Free Rate                                     -0.04      
+#&gt;       95% CI                                                       (-5.7, 5.61)  
+#&gt;     p-value (Z-test)                                                  0.9882     
+#&gt; 
+#&gt;   2000 months
+#&gt;     -- no data</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

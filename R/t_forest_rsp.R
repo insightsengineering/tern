@@ -1,6 +1,7 @@
 #' Response Forest Plot Table
 #'
-#' @param rep Tumor Response data
+#' @param rsp boolean, \code{TRUE} if subject is a responder \code{FALSE}
+#'   otherwise
 #' @param group_data data frame with one column per grouping variable
 #' @param col_by factor with reference and comparison group information, the
 #'   first \code{level} indicates the reference group
