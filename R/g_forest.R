@@ -21,6 +21,7 @@
 #' library(random.cdisc.data)
 #' 
 #' ASL <- radam("ASL")
+#' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
 #' ATE <- radam("ATE", ADSL = ASL)
 #' 
 #' ATE_f <- subset(ATE, PARAMCD == "OS") 
@@ -31,19 +32,17 @@
 #'   tte = ANL$AVAL,
 #'   is_event = ANL$CNSR == 0,
 #'   col_by = factor(ANL$ARM), 
-#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+#'   dense_header = TRUE
 #' )
 #' 
-#' g <- g_forest(
+#' ## note plot requires a certain width
+#' g_forest(
 #'   tbl = tbl,
 #'   i_col_est = 8,
 #'   i_col_ci = 9,
-#'   header_forest = c("Treatement Better", "Comparison Better")
+#'   header_forest = c("Treatement\nBetter", "Comparison\nBetter")
 #' )
-#' 
-#' library(grid)
-#' grid.newpage()
-#' grid.draw(g)
 #' 
 #' 
 g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "lines")) {
@@ -72,14 +71,25 @@ g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "l
   
   # for now lets make the table part fix-width and the forst part flexible width
   # (expanding)
-  rn <- c(indented_row.names(tbl, 2), indented_row.names(rheader(tbl)))
+  rn <- c(indented_row.names(tbl, 2), indented_row.names(header(tbl), 2))
   longest_row_name <- rn[which.max(vapply(rn, nchar, numeric(1)))]
   width_row_names <- unit(1, "strwidth", longest_row_name)
   
+  h <- header(tbl)
+  nrh <- nrow(h)
   if (is.null(width)) {
     width <- do.call(unit.c, lapply(seq_len(nc), function(j) {
-      do.call(unit.pmax, lapply(seq_len(nr), function(i) stringWidth(format_rcell(tbl[i,j], output = "ascii")))) + padx
-    }))
+      
+      width_body <- do.call(unit.pmax, lapply(seq_len(nr), function(i) {
+          stringWidth(format_rcell(tbl[i,j], output = "ascii")) + padx
+      }))
+      
+      width_header <- do.call(unit.pmax, lapply(seq_len(nrh), function(i) {
+        stringWidth(format_rcell(h[i,j], output = "ascii")) + padx
+      }))
+
+      unit.pmax(width_body, width_header)
+   }))
   }
   
   if (length(width) != nc) stop("widths specifications wrong dimension")
@@ -116,8 +126,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "l
       )),
       children = vpList(
         vpTree(
-          parent = viewport(name = "header", layout = col_layout, layout.pos.col=1, layout.pos.row=1,
-                            gp = gpar(fontface = "bold")),
+          parent = viewport(name = "header", layout = col_layout, layout.pos.col=1, layout.pos.row=1),
           children = col_vps
         ),
         vpTree(
@@ -133,7 +142,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "l
   
   # this API of rtables is currently missing, so we use the underlying data
   # structure
-  draw_row <- function(row, y) {
+  draw_row <- function(row, y, underline_colspan = FALSE) {
     
     if (!is(row, "rrow")) stop("object of class rrow expected")
     
@@ -151,7 +160,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "l
         cs <- attr(cell, "colspan")
         cell_ascii <- format_rcell(cell, output = "ascii")
         
-        if (is.na(cell_ascii)) cell_ascii <- "<NA>"
+        if (is.na(cell_ascii)) cell_ascii <- "NA"
         
         if (cell_ascii != "") {
           vp_cell <- if (cs == 1) {
@@ -161,6 +170,12 @@ g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "l
             x0 <- grobX(paste0("center_col_", j), 0)
             x1 <- grobX(paste0("center_col_", j+cs-1), 0)
             grid.text(label = cell_ascii, x = x0 + 0.5 * (x1 - x0), y = y)
+            
+            if (underline_colspan) {
+              x0 <- grobX(paste0("left_col_", j), 0)
+              x1 <- grobX(paste0("right_col_", j+cs-1), 0)
+              grid.lines(x = unit.c(x0 + 0.2*padx, x1 - 0.2*padx), y = y - unit(header_line_factor/2, "lines"))
+            }
           }
           
         }
@@ -178,7 +193,10 @@ g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "l
   ## create anchor points
   for (j in 1:nc) {
     grid.null(name = paste0("center_col_", j), vp = vpPath(paste0("col_", j)))
+    grid.null(x=unit(0, "npc"), name = paste0("left_col_", j), vp = vpPath(paste0("col_", j)))
+    grid.null(x=unit(1, "npc"), name = paste0("right_col_", j), vp = vpPath(paste0("col_", j)))
   }
+  grid.lines(x = unit(c(0,1), "npc"), y = unit(c(0.5, 0.5), "lines"))
   upViewport()
 
   # grid.ls(viewports = TRUE)
@@ -193,7 +211,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "l
   nrh <- nrow(h)
   y_header <- unit(1, "npc") - unit( (1:nrh - .5) *header_line_factor, "lines") 
   for (i in 1:nrow(h)) {
-    draw_row(h[[i]], y = y_header[i] )
+    draw_row(h[[i]], y = y_header[i], TRUE )
   } 
   upViewport()
 

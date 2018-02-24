@@ -50,7 +50,10 @@
 #' 
 #' tbl
 #' 
-t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, strata_data = NULL, total = 'ALL', time_unit = "month", na.omit.group = TRUE) {
+t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
+                         strata_data = NULL, total = 'ALL', time_unit = "month",
+                         na.omit.group = TRUE,
+                         dense_header = FALSE) {
   
   if (!is.null(strata_data)) stop("strata_data argument is currently not implemented")
   
@@ -69,22 +72,50 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL, strata_data =
   # Derive Output
   cox_data <- data.frame(time_to_event = tte, event = is_event, arm = col_by)
   
-  table_header <- rheader(
-   rrow(row.name = "",
-        rcell(NULL),
-        rcell(levels(col_by)[1], colspan = 3),
-        rcell(levels(col_by)[2], colspan = 3),
-        rcell(NULL),
-        rcell(NULL)
-   ),
-   rrow(row.name = "Baseline Risk Factors",
-        "Total n",
-        "n", "Events", paste0("Median (", time_unit, ")"),
-        "n", "Events", paste0("Median (", time_unit, ")"),
-        "Hazard Ratio",
-        "95% Wald CI"
-   )
-  )
+  table_header <- if (dense_header) {
+    rheader(
+      rrow(row.name = "",
+           rcell(NULL),
+           rcell(levels(col_by)[1], colspan = 3),
+           rcell(levels(col_by)[2], colspan = 3),
+           rcell(NULL),
+           rcell(NULL)
+      ),
+      rrowl("", lapply(1:9, function(i) "")),
+      rrow(row.name = "Baseline Risk",
+           "Total",
+           "n", "Events", "Median",
+           "n", "Events", "Median",
+           "Hazard",
+           "95%"
+      ),
+      rrow(row.name = "Factors",
+           "n",
+           "", "", paste0("(", time_unit, ")"),
+           "", "", paste0("(", time_unit, ")"),
+           "Ratio",
+           "Wald CI"
+      )
+    )
+  } else {
+    rheader(
+      rrow(row.name = "",
+           rcell(NULL),
+           rcell(levels(col_by)[1], colspan = 3),
+           rcell(levels(col_by)[2], colspan = 3),
+           rcell(NULL),
+           rcell(NULL)
+      ),
+      rrow(row.name = "Baseline Risk Factors",
+           "Total n",
+           "n", "Events", paste0("Median (", time_unit, ")"),
+           "n", "Events", paste0("Median (", time_unit, ")"),
+           "Hazard Ratio",
+           "95% Wald CI"
+      )
+    )
+  }  
+  
   
   tbl_total <- if(is.null(total)) {
     NULL

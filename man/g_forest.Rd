@@ -28,6 +28,7 @@ column with a single value and a column with 2 values
 library(random.cdisc.data)
 
 ASL <- radam("ASL")
+ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
 ATE <- radam("ATE", ADSL = ASL)
 
 ATE_f <- subset(ATE, PARAMCD == "OS") 
@@ -41,17 +42,12 @@ tbl <- t_forest_tte(
   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 )
 
-g <- g_forest(
+g_forest(
   tbl = tbl,
   i_col_est = 8,
   i_col_ci = 9,
   header_forest = c("Treatement Better", "Comparison Better")
 )
-
-library(grid)
-grid.newpage()
-grid.draw(g)
-
 
 }
 \author{
