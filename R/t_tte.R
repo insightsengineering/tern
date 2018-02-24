@@ -34,7 +34,6 @@
 #' 
 #' @examples 
 #' library(random.cdisc.data)
-#' library(forcats)
 #' 
 #' ASL <- radam("ASL")
 #' ATE <- radam("ATE", ADSL = ASL)

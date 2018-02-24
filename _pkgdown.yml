@@ -20,7 +20,6 @@ reference:
   - title: Plots
     contents:
       - starts_with("g_")
-      - kmplot
       - chgfbl_plot
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data

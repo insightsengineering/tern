@@ -24,7 +24,6 @@
 #' @examples 
 #' 
 #' library(random.cdisc.data)
-#' library(survival)
 #' 
 #' ASL <- radam("ASL")
 #' ATE <- radam("ATE", ADSL = ASL, start_with = list(ECOG = c(0, 1)))
@@ -87,7 +86,7 @@
 #' 
 #' }
 #' 
-kmplot <- function(formula_km, data, add_km = TRUE, 
+g_km <- function(formula_km, data, add_km = TRUE, 
                    add_coxph = TRUE, formula_coxph = formula_km, 
                    info_coxph = "Cox Proportional Model: Unstratified Analysis",
                    cox_ties = "exact",
