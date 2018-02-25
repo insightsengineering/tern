@@ -4,7 +4,8 @@
 \alias{t_summarize_variables}
 \title{Table of Variable Summaries}
 \usage{
-t_summarize_variables(data, col_by, total = NULL)
+t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
+  useNA_factors = c("no", "ifany", "always"))
 }
 \arguments{
 \item{data}{data frame with variables to be summarized as described in the
@@ -17,6 +18,11 @@ the \code{\link{no_by}} function.}
 
 \item{total}{if not \code{NULL} then it must be a string and an addition
 column will be added with the overall summaries}
+
+\item{drop_levels}{boolean, drop zero-count levels for factors}
+
+\item{useNA_factors}{forwarded to \code{useNA} of
+\code{\link[rtables]{rtabulate.factor}}}
 }
 \description{
 Similiar as the demographic table in STREAM
@@ -42,15 +48,22 @@ library(random.cdisc.data)
 ASL <- radam("ASL")
 
 # control the label
-attr(ASL$BAGE, "label") <- "Baseline Age of patient"
+ASL <- var_relabel(ASL, BAGE = "Baseline Age of patient")
 
 # control categorical order
 ASL$SEX <- relevel(ASL$SEX, "M", "F")
 
-# control arm order
-ASL$ARM <- relevel(ASL$ARM, "ARM B", "ARM A")
-
 t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
+
+t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
+                      useNA_factors = 'always')
+
+ASL$SEX[1:10] <- NA
+
+t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
+                      useNA_factors = 'ifany')
+
+# with iris data
 
 t_summarize_variables(iris[, -5], col_by  = iris$Species)
 

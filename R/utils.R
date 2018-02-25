@@ -24,7 +24,7 @@
 var_labels <- function(x, fill = FALSE) {
   if (!is(x, "data.frame")) stop("x must be a data.frame")
   
-  labels <- unlist(Map(function(var, name) {
+  unlist(Map(function(var, name) {
     lbl <- attr(var, "label")
     
     if (is.null(lbl)) {
@@ -275,8 +275,6 @@ start_with_NULL <- function(x) {
 #' 
 #' @param ... rtbale objects
 #' 
-#' @export
-#' 
 #' 
 stack_rtables <- function(..., nrow_pad = 1) {
   
@@ -298,10 +296,12 @@ stack_rtables <- function(..., nrow_pad = 1) {
   }
 }
 
-#' @export
 stack_rtables_l <- function(x) {
   do.call(stack_rtables, x)
 }
 
-
+wrap_with <- function(x, left, right, as_list = TRUE) {
+  lbls <- paste0(left, x, right)
+  if (as_list) as.list(lbls) else lbls
+}
 
