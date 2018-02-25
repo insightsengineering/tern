@@ -1,4 +1,112 @@
 
+#' Get Label Attributes of Variables in a \code{data.frame}
+#' 
+#' Variable labels can be stored as a \code{label} attribute for each variable.
+#' This functions returns a named character vector with the variabel labels
+#' (empty sting if not specified)
+#' 
+#' @param x a \code{data.frame} oject
+#' @param fill boolean, if \code{label} attribute does not exist for a variable
+#'   then for \code{fill = TRUE} the variable name and for \code{fill=FALSE} an
+#'   empty string is returned.
+#' 
+#' @return a named character vector with the variable labels, the names
+#'   correspond to the variable names
+#' 
+#' @export
+#' 
+#' @examples 
+#' x <- iris
+#' var_labels(x)
+#' var_labels(x) <- paste("label for", names(iris))
+#' var_labels(x)    
+#' 
+var_labels <- function(x, fill = FALSE) {
+  if (!is(x, "data.frame")) stop("x must be a data.frame")
+  
+  labels <- unlist(Map(function(var, name) {
+    lbl <- attr(var, "label")
+    
+    if (is.null(lbl)) {
+      if (fill) name else ""
+    } else {
+      if (!is.character(lbl) && !(length(lbl) == 1)) 
+        stop("label for variable ", name, "is not a character string")
+      lbl
+    }
+  }, x, names(x)))
+}
+
+
+#' Set Label Attributes of All Variables in a \code{data.frame}
+#' 
+#' Variable labels can be stored as a \code{label} attribute for each variable.
+#' This functions sets all variable labels in a \code{data.frame}
+#' 
+#' @inheritParams var_labels
+#' @param ... name-valeu pairs, where name corresponds to a variable name in
+#'   \code{x} and the value to the new variable label
+#' 
+#' @return modifies the variable labels of \code{x}
+#' 
+#' @export
+#' 
+#' @examples
+#' x <- iris
+#' var_labels(x)
+#' var_labels(x) <- paste("label for", names(iris))
+#' var_labels(x)
+#' 
+#' \dontrun{
+#' View(x) # in RStudio data viewer labels are displayed
+#' }
+`var_labels<-` <- function(x, value) {
+  if (!is(x, "data.frame")) stop("x must be a data.frame")
+  if (!is.character(value)) stop("values must be of type character")
+  if (ncol(x) != length(value)) stop("dimension missmatch")
+  
+  for (j in seq_along(x)) {
+    attr(x[[j]], "label") <- value[j]
+  }
+  x
+}
+
+#' Copy and Change Variable Labels of a \code{data.frame}
+#' 
+#' Relabel a subset of the variables
+#' 
+#' @inheritParams var_labels<-
+#' 
+#' @return a copy of \code{x} with changed labels according to \code{...}
+#'  
+#' @export
+#' 
+#' @examples 
+#' x <- var_relabel(iris, Sepal.Length = "Sepal Length of iris flower")
+#' var_labels(x)
+#' 
+var_relabel <- function(x, ...) {
+  if (!is(x, "data.frame")) stop("x must be a data.frame")
+  
+  dots <- list(...)
+  varnames <- names(dots)
+  if (is.null(varnames)) stop("missing variable declarations")
+  
+  map_varnames <- match(varnames, names(x))
+  if (any(is.na(map_varnames)))
+    stop("variables: ", paste(varnames[is.na(map_varnames)], collapse = ", "), " not found" )
+  if (any(vapply(dots, Negate(is.character), logical(1))))
+    stop("all variable labels must be of type character")
+    
+  for (i in seq_along(map_varnames)) {
+    attr(x[[map_varnames[[i]]]], "label") <-  dots[[i]]
+  }
+  
+  x
+}
+
+  
+  
 #' Check if list or data.frame has elements/variables
 #' 
 #' Checks if list names exist and throws an error otherwise
@@ -126,37 +234,6 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
   x
 }
 
-
-#' return a vector with the variable labels and names if variable labels do not exist
-#' 
-#' 
-#' @param df data.frame object
-#' 
-#' @noRd
-#' 
-#' @examples 
-#' 
-#' X <- data.frame(
-#'  a = structure(1:4, label = "label for a"),
-#'  b = 3:6,
-#'  d = structure(letters[1:4], label = "label for d"),
-#'  stringsAsFactors = FALSE
-#' )
-#' 
-#' \dontrun{
-#' View(X)
-#' 
-#' names(X)
-#' }
-#' 
-labels_over_names <- function(df) {
-  
-  as.vector(unlist(Map(function(var, varname) {
-    label <- attr(var, "label")
-    if (!is.null(label)) label else varname
-  }, df, names(df))))
-  
-}
 
 #' re-attach labels to variables
 #' 

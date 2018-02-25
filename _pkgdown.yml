@@ -24,5 +24,11 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - var_labels
+      - var_labels<-
+      - var_relabel
+      - reorder_to_match_id
       - chgfbl_data
+
+      
 
