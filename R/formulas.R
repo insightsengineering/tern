@@ -40,4 +40,8 @@ drop_special <- function(terms, special) {
 #' 
 #' @author boruvkaa
 #' 
-arm <- identity
+arm <- function(x) {
+  structure(x, varname = deparse(substitute(x)))
+}
+
+

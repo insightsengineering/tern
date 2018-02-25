@@ -191,7 +191,34 @@ if (require("atezo.data", quietly = TRUE)) {
   
   test_that("response table", {
     
+    tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
     
+    # Viewer(tbl_stream)
+    
+    ASL_f <- ASL %>%
+      filter(ITTFL == "Y")
+    
+    
+    ATE_f <- ATE %>%
+      filter(PARAMCD == "OS")
+  
+    ANL <- left_join(ASL_f, ATE_f, by = c("USUBJID", "STUDYID"))  %>%
+      select(ARM, AVAL, CNSR, SEX, MLIVER, TCICLVL2, EVNTDESC) %>%
+      na.omit()
+    
+    tbl <- t_tte(
+      formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX, MLIVER, TCICLVL2),
+      data = ANL,
+      event_descr = factor(EVNTDESC),
+      time_points = c(6),
+      time_unit = "month"
+    )
+    
+    # Viewer(tbl, tbl_stream)
+    
+    comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    
+    expect_true(any(comp != "."), "t_tte is not exactly like STREAM")
     
   })
   

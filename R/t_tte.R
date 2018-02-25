@@ -153,18 +153,24 @@ t_tte <- function(formula,
     # create survival fit of comparison arm vs. reference arm
     values <- lapply(comparison_levels, function(lvl) {
       
-      df_i <- subset(data, arm %in% c(reference_level, lvl))
+      df_i <- data[arm %in% c(reference_level, lvl), , drop = FALSE]
+
+      varname <- attr(arm, "varname")
+      df_i[[varname]] <- droplevels(df_i[[varname]])
       
       environment(formula) <- environment()
       
       ## for log-rank test: use coxph score for log-rank
       fit_survdiff <- survdiff(formula, data = df_i)
-      fit_coxph <- coxph(formula, data = df_i, ties = ties) # weights are not supported if ties = 'exact'
+      fit_coxph <- tryCatch(
+        coxph(formula, data = df_i, ties = ties), # weights are not supported if ties = 'exact'
+        error = function(e) null
+      )
       
       list(
         pval = pchisq(fit_survdiff$chisq, length(fit_survdiff$n) - 1, lower.tail = FALSE),
-        hr = (summary(fit_coxph)$conf.int)[1, 1],
-        hr_ci = (summary(fit_coxph)$conf.int)[1, 3:4]
+        hr = if (is.null(fit_coxph)) NA else (summary(fit_coxph)$conf.int)[1, 1],
+        hr_ci = if (is.null(fit_coxph)) c(NA, NA) else (summary(fit_coxph)$conf.int)[1, 3:4]
       )
     })
     
@@ -257,8 +263,8 @@ t_tte <- function(formula,
   tbl <- stack_rtables(
     tbl_event,
     tbl_tte,
-    tbl_stratified,
     tbl_unstratified,
+    tbl_stratified,
     tbl_timepoints
   )
   
