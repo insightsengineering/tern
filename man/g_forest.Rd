@@ -54,5 +54,5 @@ g_forest(
 
 }
 \author{
-Yuyao Song (songy24), \email{yuyao.song@roche.com}
+Yuyao Song (songy24) \email{yuyao.song@roche.com}
 }

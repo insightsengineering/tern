@@ -28,7 +28,7 @@
 #' 
 #' @export
 #' 
-#' @author Adrian Waddell \email{adrian.waddell@roche.com} and Xiao Yu Mo (mox5), \email{xiao_yu.mo@roche.com}
+#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 #' 
 #' @examples 
 #' 

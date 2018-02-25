@@ -17,7 +17,7 @@ reference:
     contents:
       - starts_with("t_")
       - chgfbl_table
-  - title: Plots
+  - title: Graphs
     contents:
       - starts_with("g_")
       - chgfbl_plot

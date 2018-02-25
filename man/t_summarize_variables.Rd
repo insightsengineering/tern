@@ -58,5 +58,5 @@ t_summarize_variables(iris, col_by  = no_by("All Species"))
 
 }
 \author{
-Adrian Waddell \email{adrian.waddell@roche.com} and Xiao Yu Mo (mox5), \email{xiao_yu.mo@roche.com}
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

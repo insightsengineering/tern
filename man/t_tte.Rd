@@ -68,6 +68,6 @@ tbl
 
 }
 \author{
-Mark Rothe (rothem1), Adrian Waddell (waddella,
-  \email{adrian.waddell@roche.com})
+Mark Rothe (rothem1), Adrian Waddell (waddella)
+  \email{adrian.waddell@roche.com}
 }

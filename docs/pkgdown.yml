@@ -1,6 +1,5 @@
 urls:
   reference: https://pages.github.roche.com/Rpackages/tern/reference
   article: https://pages.github.roche.com/Rpackages/tern/articles
-articles:
-  response_table: response_table.html
+articles: {}
 

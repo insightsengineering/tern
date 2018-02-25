@@ -20,7 +20,7 @@
 #' 
 #' @export
 #' 
-#' @author Heng Wang (wangh107, \email{wang.heng@gene.com})
+#' @author Heng Wang (wangh107) \email{wang.heng@gene.com}
 #' 
 #' @examples 
 #' 

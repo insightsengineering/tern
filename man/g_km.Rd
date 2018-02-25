@@ -108,5 +108,5 @@ Map(function(dfi, i, label) {
 
 }
 \author{
-Heng Wang (wangh107, \email{wang.heng@gene.com})
+Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

@@ -163,7 +163,7 @@ t_rsp <- function(
 #' @param z colspan for the cell
 #' 
 #' 
-#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
+#' @author Chendi Liao (liaoc10) \email{chendi.liao@roche.com}
 #' @noRd
 #' 
 #' @examples 

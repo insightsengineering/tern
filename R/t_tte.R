@@ -32,8 +32,8 @@
 #' 
 #' @export
 #' 
-#' @author Mark Rothe (rothem1), Adrian Waddell (waddella,
-#'   \email{adrian.waddell@roche.com})
+#' @author Mark Rothe (rothem1), Adrian Waddell (waddella)
+#'   \email{adrian.waddell@roche.com}
 #' 
 #' @examples 
 #' library(random.cdisc.data)
