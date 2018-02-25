@@ -99,13 +99,8 @@ if (require("atezo.data", quietly = TRUE)) {
     # Viewer(tbl, tbl_stream)
     comp <- compare_rtables(tbl, tbl_stream, tol = .1, comp.attr = FALSE)
     
-    tbl[31,1][2] - tbl_stream[31,1][2]
-    
-    expect_identical(tbl, tbl_stream, "tables are not identical")
-    
-    #  expect_identical(names(tbl), names(tbl_stream), "table headers missmatch")
-    #  expect_identical(dim(tbl), dim(tbl_stream), "dimension missmatch")
-    
+    expect_true(all(comp == "."), "demographic table does not match")
+
     
   })
   
@@ -116,8 +111,5 @@ if (require("atezo.data", quietly = TRUE)) {
     
     
   })
-  
-  
-  
   
 }
