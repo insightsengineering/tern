@@ -128,8 +128,8 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL, total = 'ALL', na.omit.
   )
 }  
 
-#' glm_results(glm_data)
-#' data = glm_data 
+# glm_results(glm_data)
+# data = glm_data 
 glm_results <- function(data){
   
   #Response Rate

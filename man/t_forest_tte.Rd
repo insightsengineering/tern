@@ -5,7 +5,8 @@
 \title{Time-to-event Forest Plot Table}
 \usage{
 t_forest_tte(tte, is_event, col_by, group_data = NULL, strata_data = NULL,
-  total = "ALL", time_unit = "month", na.omit.group = TRUE)
+  total = "ALL", time_unit = "month", na.omit.group = TRUE,
+  dense_header = FALSE)
 }
 \arguments{
 \item{tte}{time to event data}

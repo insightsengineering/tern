@@ -416,7 +416,7 @@ chgfbl_table <- function(data) {
 #' @param limit number of characters allowed before inserting line break,
 #'   default is the maximum length of longest word
 #'   
-#' @export
+#' @noRd
 #' 
 #' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
 #'   

@@ -10,6 +10,8 @@
 #' 
 #' @author Adrian Waddell (waddella), \email{adrian.waddell@roche.com}
 #' 
+#' @noRd
+#' 
 #' @examples 
 #' \dontrun{
 #' # function is not exported
@@ -130,7 +132,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' 
 #' @param df data.frame object
 #' 
-#' @export
+#' @noRd
 #' 
 #' @examples 
 #' 
@@ -161,6 +163,7 @@ labels_over_names <- function(df) {
 #' @param df a data.frame
 #' @param labels a named vector with the labels. names are variable names
 #' 
+#' @noRd
 #' 
 #' @examples
 #' 

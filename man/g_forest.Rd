@@ -39,15 +39,18 @@ tbl <- t_forest_tte(
   tte = ANL$AVAL,
   is_event = ANL$CNSR == 0,
   col_by = factor(ANL$ARM), 
-  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+  dense_header = TRUE
 )
 
+## note plot requires a certain width
 g_forest(
   tbl = tbl,
   i_col_est = 8,
   i_col_ci = 9,
-  header_forest = c("Treatement Better", "Comparison Better")
+  header_forest = c("Treatement\\nBetter", "Comparison\\nBetter")
 )
+
 
 }
 \author{
