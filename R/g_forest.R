@@ -10,7 +10,7 @@
 #' @param padx gap between two columns
 #' @param cex multiplier applied to overall fontsize
 #' 
-#' @author Yuyao Song (songy24) \email{yuyao.song@roche.com}
+#' @template author_song24
 #' 
 #' @import grid
 #' 

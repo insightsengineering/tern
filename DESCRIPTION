@@ -4,11 +4,11 @@ Version: 0.0.1
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = c("ctb")),
-  person("Heng", "Wang", email = "", role = c("aut")),
-  person("Mark", "Rothe", email = "", role = c("aut")),
-  person("Yuyao", "Song", email = "", role = c("aut")),
-  person("Chendi", "Liao", email = "", role = c("aut")),
-  person("Xiao", "Mu Yo", email = "", role = c("aut"))
+  person("Heng", "Wang", email = "wang.heng@gene.com", role = c("aut")),
+  person("Mark", "Rothe", role = c("aut")),
+  person("Yuyao", "Song", email = "yuyao.song@roche.com", role = c("aut")),
+  person("Chendi", "Liao", email = "chendi.liao@roche.com", role = c("aut")),
+  person("Xiao", "Mu Yo", role = c("aut"))
   )
 Description: TLG creation
 Depends:

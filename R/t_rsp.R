@@ -25,7 +25,7 @@
 #' 
 #' @export
 #' 
-#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
+#' @template author_liaoc10
 #' 
 #' @examples 
 #' 
@@ -163,7 +163,8 @@ t_rsp <- function(
 #' @param z colspan for the cell
 #' 
 #' 
-#' @author Chendi Liao (liaoc10) \email{chendi.liao@roche.com}
+#' @template author_liaoc10
+#' 
 #' @noRd
 #' 
 #' @examples 

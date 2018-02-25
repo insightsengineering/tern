@@ -28,7 +28,7 @@
 #' 
 #' @export
 #' 
-#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+#' @template author_waddella
 #' 
 #' @examples 
 #' 
