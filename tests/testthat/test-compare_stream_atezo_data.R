@@ -189,7 +189,7 @@ if (require("atezo.data", quietly = TRUE)) {
     
   })  
   
-  test_that("response table", {
+  test_that("time to event table", {
     
     tbl_stream <- get_time_to_event_table(com.roche.cdt30019.go29436.re)
     
@@ -198,13 +198,10 @@ if (require("atezo.data", quietly = TRUE)) {
     ASL_f <- ASL %>%
       filter(ITTFL == "Y")
     
-    
     ATE_f <- ATE %>%
       filter(PARAMCD == "OS")
   
-    ANL <- left_join(ASL_f, ATE_f, by = c("USUBJID", "STUDYID"))  %>%
-      select(ARM, AVAL, CNSR, SEX, MLIVER, TCICLVL2, EVNTDESC) %>%
-      na.omit()
+    ANL <- left_join(ASL_f, ATE_f, by = c("USUBJID", "STUDYID")) 
     
     tbl <- t_tte(
       formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX, MLIVER, TCICLVL2),
@@ -221,5 +218,35 @@ if (require("atezo.data", quietly = TRUE)) {
     expect_true(any(comp != "."), "t_tte is not exactly like STREAM")
     
   })
+  
+  
+  test_that("response table", {
+    
+    tbl_stream <- get_response_table(com.roche.cdt30019.go29436.re)
+  
+    # Viewer(tbl_stream)
+    
+    ASL_f <- ASL %>%
+      filter(ITTGEFL == "Y", ITTWTFL == "Y")
+    
+    ARS_f <- ARS %>%
+      filter(PARAMCD == "OVRSPI")
+    
+    ANL <- left_join(ASL_f, ARS_f, by = c("USUBJID", "STUDYID"))
+    
+    tbl <- t_rsp(
+      rsp = ANL$AVALC %in% c("CR", "PR"),
+      col_by = ANL$ARM,
+      parition_rsp_by = fct_relevel(ANL$AVALC, "CR", "PR", "SD", "NON CR/PD", "PD")
+    )
+    
+    # Viewer(tbl)
+    # Viewer(tbl, tbl_stream)
+    comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    expect_true(any(comp != "."), "t_rsp is not exactly like STREAM")
+    
+  })
+  
+  
   
 }
