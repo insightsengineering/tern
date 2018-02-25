@@ -39,7 +39,7 @@ check_same_N_l <- function(x) {
 #' @param n number of expected rows
 #' 
 #' 
-check_data_frame <- function(x) {
+check_data_frame <- function(x, allow_missing = FALSE) {
 
   xname <- deparse(substitute(x))
   
@@ -48,15 +48,17 @@ check_data_frame <- function(x) {
   if (!is.null(x)) {
     if (!is.data.frame(x)) stop(xname, " needs to be either NULL or a data.frame")
     
-    is_missing <- vapply(x, function(var) {
-      if (is.numeric(var)) {
-        any(is.na(var))
-      } else {
-        any(is.na(var)) || any(var == "")
-      }
-    }, logical(1))
-    
-    if (any(is_missing)) stop(xname, " can not have any missing values (NA or '')")
+    if (!allow_missing) {
+      is_missing <- vapply(x, function(var) {
+        if (is.numeric(var)) {
+          any(is.na(var))
+        } else {
+          any(is.na(var)) || any(var == "")
+        }
+      }, logical(1))
+      
+      if (any(is_missing)) stop(xname, " can not have any missing values (NA or '')")
+    }
   }  
   
   TRUE 

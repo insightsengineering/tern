@@ -17,60 +17,54 @@ if (require("atezo.data", quietly = TRUE)) {
     do.call(fct_relevel, c(list(x1), as.list(names(dots))))
   }
   
-  test_that("demographic table", {
-    
-    ASL <- asl(com.roche.cdt30019.go29436.re)
-    tbl_stream <- get_demographic_table(com.roche.cdt30019.go29436.re)
-    
-    ASL_f <- ASL %>%
-      select(ARM, ITTWTFL, SEX, MLIVER, TCICLVL2, BAGE, AGE4CAT, ETHNIC,
-             RACE, BWT, TOBHX, HIST, EGFRMUT, ALKMUT,KRASMUT, BECOG) %>%
-      mutate_all(function(x) {
-        if (is.factor(x)) {
-          x[x == ""] <- NA
-          x <- droplevels(x, "")
-        } else if(is.character(x)) {
-          x[x == ""] <- NA
-        }
-        x
-      }) %>%
-      mutate(
-        ARM = fct_relevel(ARM, "DUMMY C", "DUMMY B", "DUMMY A"),
-        SEX = fct_rr(SEX, Male = "M", Female = "F"),
-        MLIVER = fct_rr(MLIVER, Yes = "Y", No = "N"),
-        TCICLVL2 = fct_relevel(TCICLVL2, "TC3 or IC2/3", "TC0/1/2 and IC0/1"),
-        AGE4CAT = fct_relevel(AGE4CAT, "<65", "65 to 74", "75 to 84", ">=85"),
-        ETHNIC = fct_rr(ETHNIC, "Hispanic or Latino" ="HISPANIC OR LATINO",
-                        "Not Hispanic or Latino" = "NOT HISPANIC OR LATINO",
-                        "Not reported" = "NOT REPORTED",
-                        "Unknown" = "UNKNOWN"),
-        RACE = fct_rr(RACE,
-                      "American Indian or Alaska Native" = "AMERICAN INDIAN OR ALASKA NATIVE",
-                      "Asian" = "ASIAN",
-                      "Black or African American" = "BLACK OR AFRICAN AMERICAN",
-                      "White" = "WHITE",
-                      "Multiple" = "MULTIPLE",
+  # Pre - Processing (factor level order, factor labels, variable labels)
+  ASL_raw <- asl(com.roche.cdt30019.go29436.re) 
+  
+  ASL <- ASL_raw %>%
+    mutate_all(function(x) {
+      if (is.factor(x)) {
+        x[x == ""] <- NA
+        x <- droplevels(x, "")
+      } else if(is.character(x)) {
+        x[x == ""] <- NA
+      }
+      x
+    }) %>%
+    mutate(
+      ARM = fct_relevel(ARM, "DUMMY C", "DUMMY B", "DUMMY A"),
+      SEX = fct_rr(SEX, Male = "M", Female = "F"),
+      MLIVER = fct_rr(MLIVER, Yes = "Y", No = "N"),
+      TCLEVEL = fct_relevel(TCLEVEL, "0", "1", "2", "3"),
+      TCICLVL2 = fct_relevel(TCICLVL2, "TC3 or IC2/3", "TC0/1/2 and IC0/1"),
+      AGE4CAT = fct_relevel(AGE4CAT, "<65", "65 to 74", "75 to 84", ">=85"),
+      ETHNIC = fct_rr(ETHNIC, "Hispanic or Latino" ="HISPANIC OR LATINO",
+                      "Not Hispanic or Latino" = "NOT HISPANIC OR LATINO",
+                      "Not reported" = "NOT REPORTED",
                       "Unknown" = "UNKNOWN"),
-        TOBHX = fct_rr(TOBHX, Never = "NEVER", Current = "CURRENT", Previous = "PREVIOUS"),
-        HIST = fct_rr(HIST,
-                      "Adenocarcinoma" = "Adenocarcinoma",
-                      "Adenocarcinoma With Neuroendocrine Features" = "Adenocarcinoma with neuroendocrine features",
-                      "Adenosquamous" = "Adenosquamous" ,
-                      "Bronchioloalveolar Carcinoma" = "Bronchioloalveolar carcinoma",
-                      "Large Cell" = "Large cell",
-                      "Sarcomatoid" = "Sarcomatoid",
-                      "Undifferentiated" = "Undifferentiated",
-                      "NA" = "NA",
-                      "Unknown" = "Unknown"
-                      ),
-        EGFRMUT = fct_rr(EGFRMUT, Positive = "POSITIVE", Negative = "NEGATIVE", Unknown = "UNKNOWN"),
-        ALKMUT = fct_rr(ALKMUT, Positive = "POSITIVE", Negative = "NEGATIVE", Unknown = "UNKNOWN"),
-        KRASMUT = fct_rr(KRASMUT, Positive = "POSITIVE", Negative = "NEGATIVE", Unknown = "UNKNOWN"),
-        BECOG = fct_relevel(BECOG, "0", "1")
-      ) %>%
-      filter(ITTWTFL == 'Y') 
-    
-    ASL_f <- var_relabel(ASL_f,
+      RACE = fct_rr(RACE,
+                    "American Indian or Alaska Native" = "AMERICAN INDIAN OR ALASKA NATIVE",
+                    "Asian" = "ASIAN",
+                    "Black or African American" = "BLACK OR AFRICAN AMERICAN",
+                    "White" = "WHITE",
+                    "Multiple" = "MULTIPLE",
+                    "Unknown" = "UNKNOWN"),
+      TOBHX = fct_rr(TOBHX, Never = "NEVER", Current = "CURRENT", Previous = "PREVIOUS"),
+      HIST = fct_rr(HIST,
+                    "Adenocarcinoma" = "Adenocarcinoma",
+                    "Adenocarcinoma With Neuroendocrine Features" = "Adenocarcinoma with neuroendocrine features",
+                    "Adenosquamous" = "Adenosquamous" ,
+                    "Bronchioloalveolar Carcinoma" = "Bronchioloalveolar carcinoma",
+                    "Large Cell" = "Large cell",
+                    "Sarcomatoid" = "Sarcomatoid",
+                    "Undifferentiated" = "Undifferentiated",
+                    "NA" = "NA",
+                    "Unknown" = "Unknown"
+      ),
+      EGFRMUT = fct_rr(EGFRMUT, Positive = "POSITIVE", Negative = "NEGATIVE", Unknown = "UNKNOWN"),
+      ALKMUT = fct_rr(ALKMUT, Positive = "POSITIVE", Negative = "NEGATIVE", Unknown = "UNKNOWN"),
+      KRASMUT = fct_rr(KRASMUT, Positive = "POSITIVE", Negative = "NEGATIVE", Unknown = "UNKNOWN"),
+      BECOG = fct_relevel(BECOG, "0", "1")
+    ) %>%  var_relabel(
       SEX = "Sex",
       MLIVER = "Liver Metastasis at Enrollment",
       TCICLVL2 = "TC/IC Strat Factor from IxRS Group 2",
@@ -86,10 +80,23 @@ if (require("atezo.data", quietly = TRUE)) {
       KRASMUT = "KRAS Mutation Status",
       BECOG = "Baseline ECOG"
     )
+  
+  
+  ARS <- ars(com.roche.cdt30019.go29436.re) %>%
+    drop_shared_variables(ASL, c("USUBJID", "STUDYID"))
+  
+  test_that("demographic table", {
+    
+    tbl_stream <- get_demographic_table(com.roche.cdt30019.go29436.re)
+    
+    ASL_f <- ASL %>%
+      filter(ITTWTFL == 'Y') %>%
+      select(ARM, SEX, MLIVER, TCICLVL2, BAGE, AGE4CAT, ETHNIC,
+             RACE, BWT, TOBHX, HIST, EGFRMUT, ALKMUT,KRASMUT, BECOG)
     # var_labels(ASL_f)
     
     tbl <- t_summarize_variables(
-      data = ASL_f[, -c(1:2)],
+      data = ASL_f[, -1],
       col_by = ASL_f$ARM,
       total = "All Patients",
       drop_levels = TRUE,
@@ -105,9 +112,46 @@ if (require("atezo.data", quietly = TRUE)) {
   })
   
   
+  test_that("forest response", {
+    
+    tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
+  
+    ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
+                    select(USUBJID, STUDYID, AVAL, AVALC)
+  
+    ASL_f <- ASL %>% 
+      filter(ITTWTFL == "Y") %>% 
+      filter(ARMCD %in% c("A", "C")) %>%
+      select(USUBJID, STUDYID, ARM, SEX, MLIVER, ICLEVEL, TCLEVEL, TCICLVL2, TC3IC3, AGE4CAT, RACE)
+    
+    ANL <- left_join(ASL_f, ARS_f, by = c('USUBJID', 'STUDYID'))
+    
+    # names(group_data)
+    
+    ANL$TC3IC3[ANL$TC3IC3 == "UNKNOWN"] <- NA
+    ANL$TC3IC3 <- relevel(droplevels(factor(ANL$TC3IC3)),
+                          "TC3 or IC3", "0/1/2 and IC0/1/2")
+    
+    arm <- droplevels(fct_relevel(ANL$ARM, "DUMMY C"))
+    
+    tbl <- t_forest_rsp(
+      rsp = ANL$AVALC %in% c("CR","PR"),
+      col_by = arm,
+      group_data = ANL[, c("TCLEVEL", "ICLEVEL", "TC3IC3")],
+      total = "All Patients"
+    )
+    
+    # Viewer(tbl, tbl_stream)
+    
+    comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    
+    expect_true(all(comp == "."), "forest response table is not correct")
+    
+  })
   
   
   test_that("response table", {
+    
     
     
   })

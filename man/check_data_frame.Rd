@@ -4,7 +4,7 @@
 \alias{check_data_frame}
 \title{Check strata_data}
 \usage{
-check_data_frame(x)
+check_data_frame(x, allow_missing = FALSE)
 }
 \arguments{
 \item{x}{data.frame with valid stratification data}

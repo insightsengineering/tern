@@ -305,3 +305,42 @@ wrap_with <- function(x, left, right, as_list = TRUE) {
   if (as_list) as.list(lbls) else lbls
 }
 
+all_as_factor <- function(x) {
+  if (!is(x, "data.frame")) stop("x needs to be a data.frame")
+  
+  is_fct <- vapply(x, is.factor, logical(1))
+  
+  if (!all(is_fct)) {
+    for (i in which(!is_fct)) {
+      x[[i]] <- structure(as.factor(x[[i]]), label = attr(x[[i]], "label"))
+    }
+  }
+  x
+}
+
+#' Remove Shared Variables
+#' 
+#' Variables are considered shared if they have the same variable name
+#' 
+#' @param x a data.frame
+#' @param y a data.frame
+#' @param keep optional, a vector with variable names that should not be removed
+#' 
+#' @return a data.frame
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' drop_shared_variables(iris, iris[, 1:3])
+#' 
+drop_shared_variables <- function(x, y, keep) {
+  
+  if(!is.data.frame(x)) stop("x must be a data.frame")
+  if(!is.data.frame(y)) stop("y must be a data.frame")
+  
+  if (missing(keep)) keep <- character(0)
+  
+  x[, !(names(x) %in% setdiff(names(y), keep)), drop = FALSE]
+}
+

@@ -46,20 +46,19 @@
 #' 
 #' tbl
 #'    
-t_forest_rsp <- function(rsp, col_by, group_data = NULL, total = 'ALL', na.omit.group = TRUE) {
+t_forest_rsp <- function(rsp, col_by, group_data = NULL,
+                         total = 'ALL', na.omit.group = TRUE) {
   
+  if (!is.logical(rsp)) stop("rsp is required to be boolean")
   check_same_N(rsp = rsp, col_by = col_by, group_data = group_data)
+  
   check_col_by(col_by)
   if (length(levels(col_by)) != 2) stop("col_by can only have two levels")
   
-  ## note that there is no missing
-  check_data_frame(group_data) # change name of check_strata_data
   if (!is.null(group_data)) {
-    is_fct <- vapply(group_data, is.factor, logical(1)) 
-    if (!all(is_fct)) stop("not all variables in group_data are factors: ", paste(names(is_fct)[!is_fct], collapse = ", "))
+    check_data_frame(group_data, allow_missing = TRUE)
+    group_data <- all_as_factor(group_data)
   }
-  
-  glm_data <- data.frame(response = rsp, arm = col_by)
   
   table_header <- rheader(
     rrow(row.name = "",
@@ -77,6 +76,8 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL, total = 'ALL', na.omit.
          "95% CI"
     )
   )
+  
+  glm_data <- data.frame(response = rsp, arm = col_by)
   
   tbl_total <- if(is.null(total)) {
     NULL
@@ -101,8 +102,10 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL, total = 'ALL', na.omit.
       dt <- if (na.omit.group) subset(glm_data, !is.na(var)) else glm_data
       split(dt, var, drop = FALSE)
     })
+    names(data_tree) <- var_labels(group_data, fill = TRUE)
     
-    list_of_tables <- Map(function(dfs, varname) {
+    list_of_tables <- Map(function(dfs, varlabel) {
+      
       tbls_var <- Map(function(dfi, level) {
         rtable(header = table_header,
                rrowl(
@@ -113,8 +116,9 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL, total = 'ALL', na.omit.
                  )
                )) 
       }, dfs, names(dfs))
+      
       rbind(
-        rtable(header = table_header, rrow(row.name = varname)),
+        rtable(header = table_header, rrow(row.name = varlabel)),
         Reduce(rbind, tbls_var)
       )
     }, data_tree, names(data_tree))
@@ -142,19 +146,39 @@ glm_results <- function(data){
   if (length(resp_comp_event)==0) resp_comp_event = 0
   
   #Logistic Model
-  if (length(levels(factor(data$arm))) == 2){
-     glm_model <- glm(response ~ arm, family=binomial(link='logit'), data = data)
-     glm_sum  <- summary(glm_model )
-     #glm_or   <- ifelse(exp(glm_sum$coefficient[2,1]) > 999, ">999.99", exp(glm_sum$coefficient[2,1]))
-     glm_or   <- exp(glm_sum$coefficient[2,1])
-     glm_lcl  <- suppressWarnings(exp(suppressMessages(confint(glm_model)[2,1])))
-     glm_ucl  <- suppressWarnings(exp(suppressMessages(confint(glm_model)[2,2])))
-     glm_pval <- glm_sum$coefficients[2,4]
-  
-  resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2], 
-                           resp_ref_event, resp_comp_event, 
-                           glm_or, glm_lcl, glm_ucl, glm_pval)
-  }else {
+  if (length(levels(factor(data$arm))) == 2) {
+     glm_fit <- try(
+       glm(response ~ arm, family=binomial(link='logit'), data = data)
+     )
+     
+     if (is(glm_fit, "try-error")) {
+       glm_or <- NA; glm_lcl <- NA; glm_ucl <- NA; glm_pval <- NA
+     } else {
+       glm_sum  <- summary(glm_fit)
+       #glm_or   <- ifelse(exp(glm_sum$coefficient[2,1]) > 999, ">999.99", exp(glm_sum$coefficient[2,1]))
+       glm_or   <- exp(glm_sum$coefficient[2,1])
+       
+       suppressWarnings(
+         suppressMessages({
+           glm_lcl  <- tryCatch(
+             exp(confint(glm_fit)[2,1]),
+             error = function(e) NA
+           )
+           
+           glm_ucl  <- tryCatch(
+             exp(confint(glm_fit)[2,2]),
+             error = function(e) NA
+           )
+         })
+       )
+       
+       glm_pval <- glm_sum$coefficients[2,4]
+     }
+     
+     resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2], 
+                              resp_ref_event, resp_comp_event, 
+                              glm_or, glm_lcl, glm_ucl, glm_pval)
+  } else {
   resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2],  
                              resp_ref_event, resp_comp_event, 
                              glm_or = NA, glm_lcl = NA, glm_ucl = NA, glm_pval = NA)
