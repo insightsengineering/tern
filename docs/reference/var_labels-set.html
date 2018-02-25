@@ -111,13 +111,9 @@ This functions sets all variable labels in a <code>data.frame</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span>
-<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species 
-#&gt;           ""           ""           ""           ""           "" </div><div class='input'><span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='fu'>paste</span>(<span class='st'>"label for"</span>, <span class='fu'>names</span>(<span class='no'>iris</span>))
-<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;             Sepal.Length              Sepal.Width             Petal.Length 
-#&gt; "label for Sepal.Length"  "label for Sepal.Width" "label for Petal.Length" 
-#&gt;              Petal.Width                  Species 
-#&gt;  "label for Petal.Width"      "label for Species" </div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='fu'>paste</span>(<span class='st'>"label for"</span>, <span class='fu'>names</span>(<span class='no'>iris</span>))
+<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>x</span>)</div><span class='co'># NOT RUN {</span>
 <span class='fu'>View</span>(<span class='no'>x</span>) <span class='co'># in RStudio data viewer labels are displayed</span>
 <span class='co'># }</span></pre>
   </div>

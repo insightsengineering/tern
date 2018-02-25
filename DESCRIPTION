@@ -17,17 +17,12 @@ Depends:
   survival
 Imports:
   grid,
-  dplyr,
-  tidyr,
-  forcats,
-  ggplot2,
-  gridExtra
+  ggplot2
 Suggests:
   random.cdisc.data,
   testthat,
   knitr,
-  rmarkdown,
-  survminer
+  rmarkdown
 License: Copyright Roche
 Encoding: UTF-8
 LazyData: true
