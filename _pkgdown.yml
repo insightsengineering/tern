@@ -27,6 +27,7 @@ reference:
       - var_labels
       - var_labels<-
       - var_relabel
+      - drop_shared_variables
       - reorder_to_match_id
       - chgfbl_data
 

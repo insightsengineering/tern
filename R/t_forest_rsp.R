@@ -99,9 +99,10 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
     # where each leaf is a data.frame with 
     # the data to compute the survival analysis with
     data_tree <- lapply(group_data, function(var) {
-      dt <- if (na.omit.group) subset(glm_data, !is.na(var)) else glm_data
-      split(dt, var, drop = FALSE)
+      if (!na.omit.group) var <- na_as_level(var)
+      split(glm_data, var, drop = FALSE)
     })
+    
     names(data_tree) <- var_labels(group_data, fill = TRUE)
     
     list_of_tables <- Map(function(dfs, varlabel) {

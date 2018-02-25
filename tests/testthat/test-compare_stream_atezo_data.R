@@ -85,6 +85,10 @@ if (require("atezo.data", quietly = TRUE)) {
   ARS <- ars(com.roche.cdt30019.go29436.re) %>%
     drop_shared_variables(ASL, c("USUBJID", "STUDYID"))
   
+  ATE <- ate(com.roche.cdt30019.go29436.re) %>%
+    drop_shared_variables(ASL, c("USUBJID", "STUDYID"))
+  
+  
   test_that("demographic table", {
     
     tbl_stream <- get_demographic_table(com.roche.cdt30019.go29436.re)
@@ -143,12 +147,47 @@ if (require("atezo.data", quietly = TRUE)) {
     
     # Viewer(tbl, tbl_stream)
     
-    comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    comp <- compare_rtables(tbl, tbl_stream, tol = 0.1, comp.attr = FALSE)
     
     expect_true(all(comp == "."), "forest response table is not correct")
     
   })
+
+  test_that("forest time to event", {
+    
+    tbl_stream <- get_forest_survival_table(com.roche.cdt30019.go29436.re)
+    
+    #Viewer(tbl_stream)
+    
+    ASL_f <- ASL %>%
+      filter(ARMCD1 %in% c("C", "A"), ITTWTFL == 'Y')
+    
+    ATE_f <- ATE %>%
+      filter(PARAMCD == "OS")
+
+
+    ANL <- merge(ASL_f, ATE_f, by = c("USUBJID", "STUDYID"))
   
+    ANL$SEX <- fct_relevel(ANL$SEX, "Female")
+    ANL$RACE[!(ANL$RACE %in% c("Asian", "Black or African American", "White"))] <- NA
+    ANL$RACE <- droplevels(ANL$RACE)
+    
+    
+    tbl <- t_forest_tte(
+      tte = ANL$AVAL,
+      is_event = !ANL$CNSR,
+      col_by = droplevels(ANL$ARM),
+      group_data = ANL[, c("SEX", "MLIVER", "TCICLVL2", "AGE4CAT", "RACE")]
+    )
+  
+    # Viewer(tbl)
+    # Viewer(tbl, tbl_stream)
+    
+    comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    
+    expect_true(all(comp == "."), "forest tte is not the same")
+    
+  })  
   
   test_that("response table", {
     

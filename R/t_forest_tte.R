@@ -61,17 +61,12 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
   check_col_by(col_by)
   if (length(levels(col_by)) != 2) stop("col_by can only have two levels")
   
-  ## note that there is no missing
-  check_data_frame(group_data) # change name of check_strata_data
   if (!is.null(group_data)) {
-    is_fct <- vapply(group_data, is.factor, logical(1)) 
-    if (!all(is_fct)) stop("not all variables in group_data are factors: ", paste(names(is_fct)[!is_fct], collapse = ", "))
+    check_data_frame(group_data, allow_missing = TRUE)
+    group_data <- all_as_factor(group_data)
   }
   
-  
   # Derive Output
-  cox_data <- data.frame(time_to_event = tte, event = is_event, arm = col_by)
-  
   table_header <- if (dense_header) {
     rheader(
       rrow(row.name = "",
@@ -116,6 +111,7 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
     )
   }  
   
+  cox_data <- data.frame(time_to_event = tte, event = is_event, arm = col_by)
   
   tbl_total <- if(is.null(total)) {
     NULL
@@ -136,8 +132,8 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
     # where each leaf is a data.frame with 
     # the data to compute the survival analysis with
     data_tree <- lapply(group_data, function(var) {
-      dt <- if (na.omit.group) subset(cox_data, !is.na(var)) else cox_data
-      split(dt, var, drop = FALSE)
+      if (!na.omit.group) var <- na_as_level(var)
+      split(cox_data, var, drop = FALSE)
     })
   
     list_of_tables <- Map(function(dfs, varname) {
