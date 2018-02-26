@@ -6,9 +6,8 @@
 #' (empty sting if not specified)
 #' 
 #' @param x a \code{data.frame} oject
-#' @param fill boolean, if \code{label} attribute does not exist for a variable
-#'   then for \code{fill = TRUE} the variable name and for \code{fill=FALSE} an
-#'   empty string is returned.
+#' @param fill boolean in case the \code{label} attribute does not exist if
+#'   \code{TRUE} the variable names is returned, otherwise \code{NA}
 #' 
 #' @return a named character vector with the variable labels, the names
 #'   correspond to the variable names
@@ -22,30 +21,37 @@
 #' var_labels(x)    
 #' 
 var_labels <- function(x, fill = FALSE) {
+  
   if (!is(x, "data.frame")) stop("x must be a data.frame")
   
-  unlist(Map(function(var, name) {
+  y <- Map(function(var, name) {
     lbl <- attr(var, "label")
     
     if (is.null(lbl)) {
-      if (fill) name else ""
+      if (fill) name else NA_character_
     } else {
       if (!is.character(lbl) && !(length(lbl) == 1)) 
         stop("label for variable ", name, "is not a character string")
-      lbl
+      as.vector(lbl)
     }
-  }, x, names(x)))
+    
+  }, x, names(x))
+
+  labels <- unlist(y, recursive = FALSE, use.names = TRUE) 
+  
+  if (!is.character(labels)) stop("label extraction failed")
+  
+  labels
+    
 }
 
 
 #' Set Label Attributes of All Variables in a \code{data.frame}
 #' 
 #' Variable labels can be stored as a \code{label} attribute for each variable.
-#' This functions sets all variable labels in a \code{data.frame}
+#' This functions sets all non-missing variable labels in a \code{data.frame}
 #' 
 #' @inheritParams var_labels
-#' @param ... name-valeu pairs, where name corresponds to a variable name in
-#'   \code{x} and the value to the new variable label
 #' 
 #' @return modifies the variable labels of \code{x}
 #' 
@@ -66,7 +72,9 @@ var_labels <- function(x, fill = FALSE) {
   if (ncol(x) != length(value)) stop("dimension missmatch")
   
   for (j in seq_along(x)) {
-    attr(x[[j]], "label") <- value[j]
+    if (!is.na(value[j])) {
+      attr(x[[j]], "label") <- value[j]
+    }
   }
   x
 }
@@ -76,7 +84,9 @@ var_labels <- function(x, fill = FALSE) {
 #' Relabel a subset of the variables
 #' 
 #' @inheritParams var_labels<-
-#' 
+#' @param ... name-valeu pairs, where name corresponds to a variable name in
+#'   \code{x} and the value to the new variable label
+#'   
 #' @return a copy of \code{x} with changed labels according to \code{...}
 #'  
 #' @export
@@ -341,7 +351,13 @@ drop_shared_variables <- function(x, y, keep) {
   
   if (missing(keep)) keep <- character(0)
   
-  x[, !(names(x) %in% setdiff(names(y), keep)), drop = FALSE]
+  df <- x[, !(names(x) %in% setdiff(names(y), keep)), drop = FALSE]
+  
+  for (a in c("md5sum", "source", "access_by", "accessed_on")) {
+     attr(df, a) <- attr(x, a)
+  }
+  
+  df
 }
 
 na_as_level <- function(x, na_level = "NA") {

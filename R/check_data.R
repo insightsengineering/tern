@@ -20,7 +20,7 @@ check_same_N <- function(..., omit.NULL = TRUE) {
   
   if (length(unique(N)) > 1) {
     sel <- which(N != N[1])
-    stop("dimension missmatch:", paste(names(N)[sel], collapse = ", "), "do not have N=", N[1])
+    stop("dimension missmatch:", paste(names(N)[sel], collapse = ", "), " do not have N=", N[1])
   }
   
   TRUE

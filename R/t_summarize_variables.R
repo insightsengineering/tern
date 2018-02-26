@@ -86,7 +86,7 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
     var_labels(data) <- lbls
   }
   
-  rtables_vars <- Map(function(var, varname) {
+  rtables_vars <- Map(function(var, varlabel) {
     tbl_summary <- if (is.numeric(var)) {
       rbind(
         rtabulate(var, col_by, n_not_na, row.name = "n", indent = 1),
@@ -113,15 +113,11 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
       )
     }
     
-    # Add label row
-    label <- attr(var, "label")
-    if (is.null(label)) label <- varname
-    
     rbind(
-      rtable(header = names(tbl_summary), rrow(label)),
+      rtable(header = names(tbl_summary), rrow(row.name = varlabel)),
       tbl_summary
     )
-  }, data, names(data))
+  }, data, var_labels(data, fill = TRUE))
   
   tbl <- stack_rtables_l(rtables_vars)
   
