@@ -31,16 +31,18 @@
 #' 
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radam("ASL")
+#' ASL <- radam("ASL", start_with = list(RACE = c("white", "asian")))
 #' ARS <- radam("ARS", ADSL = ASL)
+#' 
+#' ASL$RACE <- factor(ASL$RACE)
 #' 
 #' ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
 #'
 #' tbl <- t_rsp(
 #'  rsp = ANL$AVALC %in% c("CR", "PR"),
 #'  col_by = relevel(factor(ANL$ARMCD), "ARM B", "ARM A"),
-#'  parition_rsp_by = factor(ANL$AVALC, levels =  c("CR", "PR", "SD", "NON CR/PD", "PD")),
-#'  strata_data = NULL
+#'  parition_rsp_by = relevel(factor(ANL$AVALC), "CR", "PR", "SD", "NON CR/PD", "PD"),
+#'  strata_data = ANL[, c("SEX", "RACE")]
 #' )
 #' 
 #' tbl
@@ -58,7 +60,11 @@ t_rsp <- function(
   if (!is.logical(rsp)) stop("rsp is expected to be logical")
   if (any(is.na(rsp))) stop("rsp can not have any NAs")
   check_col_by(col_by, min_num_levels = 2)
-  check_data_frame(strata_data)
+  
+  if (!is.null(strata_data)) {
+    check_data_frame(strata_data)
+  }
+
   
   # Responder table
   tbl_response <- rbind(
@@ -70,7 +76,8 @@ t_rsp <- function(
   
   # Response Rate
   tbl_clopper_pearson <- rtabulate(
-    x = rsp, col_by = col_by,
+    x = rsp,
+    col_by = col_by,
     function(x) { binom.test(sum(x), length(x))$conf.int * 100 },
     format = "(xx.xx, xx.xx)",
     row.name = "95% CI for Response Rates (Clopper-Pearson)"
@@ -78,21 +85,31 @@ t_rsp <- function(
   
   # Difference in Response Rates
   tbl_difference <- rbind(
-    
+    # by is a factor with two levels: 1 ref arm, 2nd comp arm
     tabulate_pairwise(rsp, col_by, function(x, by) {
       diff(tapply(x, by, mean))
     }, format = "xx.xx", row.name = "Difference in Response Rates"),
     
     # wald test without continuity correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
-      rcell("add logic")
+      
+      t_wc <- prop.test(x = tapply(x, by, sum),
+                        n = tapply(x, by, length),
+                        correct = FALSE)
+      
+      rcell(t_wc$conf.int, format = "(xx.xx, xx.xx)")
     },
     indent = 1,
     row.name = "95% CI for difference (Wald without correction)"),
     
     # wald test with  continuety correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
-      rcell("add logic")
+      
+      t_wc <- prop.test(x = tapply(x, by, sum),
+                        n = tapply(x, by, length),
+                        correct = TRUE)
+      
+      rcell(t_wc$conf.int, format = "(xx.xx, xx.xx)")
     }, 
     indent = 1,
     row.name = "95% CI for difference (Wald with continuity correction)"),
@@ -100,13 +117,31 @@ t_rsp <- function(
     # p-value dependent on strata_data
     if (is.null(strata_data)) {
       tabulate_pairwise(rsp, col_by, function(x, by) {
-        rcell("add logic")
+        
+        
+        t_wc <- prop.test(x = tapply(x, by, sum),
+                          n = tapply(x, by, length),
+                          correct = FALSE)
+        
+        rcell(t_wc$p.value, format = "xx.xxxx")
+        
       }, 
       indent = 1,
       row.name = "p-value (Chi-squared)")
     } else {
       tabulate_pairwise(rsp, col_by, function(x, by) {
-        rcell("add logic")
+        
+        strat <- do.call(strata, strata_data)
+        
+        if (any(tapply(rsp, strat, length)<5)) {
+          rcell("<5 data points")
+        } else {
+          t.tbl <- table(col_by, rsp, strat)
+          t_m <- mantelhaen.test(t.tbl, correct = FALSE)
+          
+          rcell(t_m$p.value, format = "xx.xxxx")
+        }
+        
       }, 
       indent = 1,
       row.name = "p-value (Cochran-Mantel-Haenszel)")
@@ -115,7 +150,49 @@ t_rsp <- function(
   
   # Odds Ratio
   tbl_odds_ratio <- rbind(
-    rtable(header = levels(col_by), rrow("odds ratio table"))
+    tabulate_pairwise(rsp, col_by, function(x, by) {
+      if (!is.null(strata_data)) {
+        
+        fit <- odds.ratio(table(by, x))
+        rcell(fit$estimator, "xx.xx")
+        
+      } else {
+        
+        strat <- do.call(strata, strata_data)
+        
+        if (any(tapply(rsp, strat, length)<5)) {
+          rcell("<5 data points")
+        } else {
+          t.tbl <- table(col_by, rsp, strat)
+          t_m <- mantelhaen.test(t.tbl, correct = FALSE)
+          
+          rcell(t_m$estimate, format = "xx.xx")
+        }
+        
+        
+      }
+    }, row.name = "Odds Ratio"),
+    tabulate_pairwise(rsp, col_by, function(x, by) {
+      if (!is.null(strata_data)) {
+        
+        fit <- odds.ratio(table(by, x))
+        rcell(fit$conf.interval, "(xx.xxxx, xx.xxxx)")
+        
+      } else {
+        
+        strat <- do.call(strata, strata_data)
+        
+        if (any(tapply(rsp, strat, length)<5)) {
+          rcell("<5 data points")
+        } else {
+          t.tbl <- table(col_by, rsp, strat)
+          t_m <- mantelhaen.test(t.tbl, correct = FALSE)
+          
+          rcell(t_m$conf.int, format = "(xx.xxx, xx.xxx)")
+        }
+        
+      }
+    }, row.name = "95% CI", indent = 1)
   )
   
   
@@ -125,16 +202,26 @@ t_rsp <- function(
     NULL
   } else {
     df <- data.frame(rsp = rsp, col_by = col_by)
+    
     df.split <- split(df, parition_rsp_by, drop = FALSE)
     
+    
+    perc <- 0 # percentage over arm 
     tbls_part <- Map(function(dfi, name) {
       rbind(
-        rtabulate(dfi$rsp, dfi$col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
+        rtabulate(dfi$rsp, dfi$col_by, function(x) c(sum(x), perc),
+                  format = "xx.xx (xx.xx%)",
                   row.name = name),
-        rtabulate(dfi$rsp, dfi$col_by, function(x) rcell("to be done"), format = "xx",
-                  row.name = "95% CI (Wald)", indent = 1)
+        rtabulate(dfi$rsp, dfi$col_by, function(x) {
+          ## n per arm
+          #rcell(binom.test(sum(x), nrow(df))$conf.int * 100, "(xx.xx, xx.xx)")
+          
+          rcell("-")
+          
+        }, format = "xx",
+        row.name = "95% CI (Wald)", indent = 1)
       )
-    }, df.split, names(df.split))
+    }, df.split.p, names(df.split.p))
     
     
     stack_rtables_l(tbls_part) 
@@ -152,33 +239,30 @@ t_rsp <- function(
 
 }
 
-
-#########################################################################
-# Helper functions                                                      #
-#########################################################################
-#' Helper functions to format rcells for various display
+#' calculate odds ratio
 #' 
-#' @param x list produced by calc_rate/calc_diffor function
-#' @param y name of element to display
-#' @param z colspan for the cell
-#' 
-#' 
-#' @template author_liaoc10
+#' @param x ...
+#' @param pad.zeros ...
+#' @param conf.level
 #' 
 #' @noRd
 #' 
 #' @examples 
 #' 
-#' a_rate <- calc_rate(LETTERS[sample(1:3, 20, replace=T)], value = "A")
-#' b_rate <- calc_rate(LETTERS[sample(1:3, 20, replace=T)], value = "A")
-#' diffor <- calc_diffor(b_rate, a_rate)
 #' 
-#' print_np(a_rate)
-#' print_ci(a_rate, "ci", 2)
-#' print_ci(diffor, "diffci", 2)
-#' print_diffor(diffor, "diff", 1)
-#' print_diffor(diffor, "or", 1)
-#' 
-print_np <- function(x) rcell(c(x$n_resp, x$p_resp))
-print_ci <- function(x,y,z) rcell(x[[y]], format = "(xx.xx, xx.xx)", colspan = z)
-print_diffor <- function(x,y,z) rcell(x[[y]], format = "xx.xx", colspan = z)
+odds.ratio <- function(x, pad.zeros=FALSE, conf.level=0.95) {
+  if (pad.zeros) {
+    if (any(x==0)) x <- x + 0.5
+  }
+  
+  theta <- x[1,1] * x[2,2] / ( x[2,1] * x[1,2] )
+  ASE <- sqrt(sum(1/x))
+  CI <- exp(log(theta) + c(-1,1) * qnorm(0.5*(1+conf.level)) * ASE )
+  
+  list(
+    estimator = theta,
+    ASE = ASE,
+    conf.interval = CI,
+    conf.level = conf.level
+  )
+}

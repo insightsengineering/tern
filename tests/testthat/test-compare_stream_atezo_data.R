@@ -242,16 +242,16 @@ if (require("atezo.data", quietly = TRUE)) {
     
     ANL <- left_join(ASL_f, ARS_f, by = c("USUBJID", "STUDYID"))
     
-    tbl <- t_rsp(
-      rsp = ANL$AVALC %in% c("CR", "PR"),
-      col_by = ANL$ARM,
-      parition_rsp_by = fct_relevel(ANL$AVALC, "CR", "PR", "SD", "NON CR/PD", "PD")
-    )
+    #tbl <- t_rsp(
+    #  rsp = ANL$AVALC %in% c("CR", "PR"),
+    #  col_by = ANL$ARM,
+    #  parition_rsp_by = fct_relevel(ANL$AVALC, "CR", "PR", "SD", "NON CR/PD", "PD")
+    #)
     
     # Viewer(tbl)
     # Viewer(tbl, tbl_stream)
-    comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-    expect_true(any(comp != "."), "t_rsp is not exactly like STREAM")
+    #comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    #expect_true(any(comp != "."), "t_rsp is not exactly like STREAM")
     
   })
   
