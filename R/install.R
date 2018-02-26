@@ -85,9 +85,9 @@ install_tern <- function(ref = NULL, dependencies = c('all', 'depends', 'none'),
   }
   
   cl_all <- bquote({
-    devtools::install_git("Rpackages/random.cdisc.data", ref = .(ref_rcd), host='https://github.roche.com/api/v3')
+    devtools::install_github("Rpackages/random.cdisc.data", ref = .(ref_rcd), host='https://github.roche.com/api/v3')
     devtools::install_github("Roche/rtables", ref = .(ref_rtables))
-    devtools::install_git("Rpackages/tern", ref = .(ref), host='https://github.roche.com/api/v3')
+    devtools::install_github("Rpackages/tern", ref = .(ref), host='https://github.roche.com/api/v3')
   })
 
   
