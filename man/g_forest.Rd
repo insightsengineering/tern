@@ -51,6 +51,36 @@ g_forest(
   header_forest = c("Treatement\\nBetter", "Comparison\\nBetter")
 )
 
+# For response table
+
+ASL <- radam("ASL")
+ARS <- radam("ARS", ADSL = ASL)
+
+ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
+ANL <- merge(ASL, ARS_f)
+
+tbl <- t_forest_rsp(
+  rsp = ANL$AVALC \%in\% c("CR", "PR"),
+  col_by = ANL$ARM, 
+  group_data = ANL[, c("SEX", "RACE")]
+)
+
+tbl
+
+
+
+
+
+# Works with any rtable
+
+tbl <- rtable(
+  header = c("E", "CI"),
+  rrow("", 1, c(.8, 1.2)),
+  rrow("", 1.2, c(1.1, 1.4))
+)
+
+g_forest(tbl, 1, 2, c("Hello", "World"))
+
 
 }
 \author{

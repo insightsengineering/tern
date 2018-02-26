@@ -9,9 +9,8 @@ var_labels(x, fill = FALSE)
 \arguments{
 \item{x}{a \code{data.frame} oject}
 
-\item{fill}{boolean, if \code{label} attribute does not exist for a variable
-then for \code{fill = TRUE} the variable name and for \code{fill=FALSE} an
-empty string is returned.}
+\item{fill}{boolean in case the \code{label} attribute does not exist if
+\code{TRUE} the variable names is returned, otherwise \code{NA}}
 }
 \value{
 a named character vector with the variable labels, the names

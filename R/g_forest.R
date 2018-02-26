@@ -32,8 +32,7 @@
 #'   tte = ANL$AVAL,
 #'   is_event = ANL$CNSR == 0,
 #'   col_by = factor(ANL$ARM), 
-#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
-#'   dense_header = TRUE
+#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
 #' )
 #' 
 #' ## note plot requires a certain width
@@ -43,6 +42,36 @@
 #'   i_col_ci = 9,
 #'   header_forest = c("Treatement\nBetter", "Comparison\nBetter")
 #' )
+#' 
+#' # For response table
+#' 
+#' ASL <- radam("ASL")
+#' ARS <- radam("ARS", ADSL = ASL)
+#' 
+#' ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
+#' ANL <- merge(ASL, ARS_f)
+#' 
+#' tbl <- t_forest_rsp(
+#'   rsp = ANL$AVALC %in% c("CR", "PR"),
+#'   col_by = ANL$ARM, 
+#'   group_data = ANL[, c("SEX", "RACE")]
+#' )
+#' 
+#' tbl
+#' 
+#' 
+#' 
+#' 
+#' 
+#' # Works with any rtable
+#' 
+#' tbl <- rtable(
+#'   header = c("E", "CI"),
+#'   rrow("", 1, c(.8, 1.2)),
+#'   rrow("", 1.2, c(1.1, 1.4))
+#' )
+#' 
+#' g_forest(tbl, 1, 2, c("Hello", "World"))
 #' 
 #' 
 g_forest <- function(tbl, i_col_est, i_col_ci, header_forest,  padx = unit(1, "lines")) {

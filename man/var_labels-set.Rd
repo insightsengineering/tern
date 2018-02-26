@@ -8,16 +8,13 @@ var_labels(x) <- value
 }
 \arguments{
 \item{x}{a \code{data.frame} oject}
-
-\item{...}{name-valeu pairs, where name corresponds to a variable name in
-\code{x} and the value to the new variable label}
 }
 \value{
 modifies the variable labels of \code{x}
 }
 \description{
 Variable labels can be stored as a \code{label} attribute for each variable.
-This functions sets all variable labels in a \code{data.frame}
+This functions sets all non-missing variable labels in a \code{data.frame}
 }
 \examples{
 x <- iris

@@ -45,7 +45,8 @@
 #'   tte = ANL$AVAL,
 #'   is_event = ANL$CNSR == 0,
 #'   col_by = factor(ANL$ARM), 
-#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+#'   dense_header = TRUE
 #' )
 #' 
 #' tbl
@@ -70,13 +71,12 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
   table_header <- if (dense_header) {
     rheader(
       rrow(row.name = "",
-           rcell(NULL),
+           NULL,
            rcell(levels(col_by)[1], colspan = 3),
            rcell(levels(col_by)[2], colspan = 3),
-           rcell(NULL),
-           rcell(NULL)
+           NULL,
+           NULL
       ),
-      rrowl("", lapply(1:9, function(i) "")),
       rrow(row.name = "Baseline Risk",
            "Total",
            "n", "Events", "Median",
@@ -136,6 +136,8 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
       split(cox_data, var, drop = FALSE)
     })
   
+    names(data_tree) <- var_labels(group_data, fill = TRUE)
+    
     list_of_tables <- Map(function(dfs, varname) {
       tbls_var <- Map(function(dfi, level) {
         rtable(header = table_header,

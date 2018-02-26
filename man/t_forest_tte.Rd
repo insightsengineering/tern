@@ -54,7 +54,8 @@ tbl <- t_forest_tte(
   tte = ANL$AVAL,
   is_event = ANL$CNSR == 0,
   col_by = factor(ANL$ARM), 
-  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+  dense_header = TRUE
 )
 
 tbl

@@ -48,9 +48,10 @@ The time point analysis is based on the kaplan meier estimator.
 \examples{
 library(random.cdisc.data)
 
-ASL <- radam("ASL")
+ASL <- radam("ASL", start_with = list(ARM = paste("ARM", LETTERS[1:3])))
 ATE <- radam("ATE", ADSL = ASL)
 
+ASL$ARM <- as.factor(ASL$ARM)
 ATE_f <- subset(ATE, PARAMCD == "OS")
 
 ANL <- merge(ASL, ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))

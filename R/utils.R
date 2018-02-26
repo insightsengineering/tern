@@ -361,7 +361,7 @@ drop_shared_variables <- function(x, y, keep) {
 }
 
 na_as_level <- function(x, na_level = "NA") {
-  if (is.factor(x)) stop("x is required to be a factor")
+  if (!is.factor(x)) stop("x is required to be a factor")
   
   if (any(is.na(x))) {
     if (na_level %in% levels(x)) stop(na_level, " can not be a level of x")

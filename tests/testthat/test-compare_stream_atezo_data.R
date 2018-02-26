@@ -1,4 +1,12 @@
 
+#' for debugging run:
+#' @examples 
+#' library(atezo.data)
+#' library(testthat)
+#' library(tern)
+#' library(dplyr)
+#' library(forcats)
+
 if (require("atezo.data", quietly = TRUE)) {
 
   context("compare stream outputs for atezo data in the atezo.data R package")
@@ -6,10 +14,7 @@ if (require("atezo.data", quietly = TRUE)) {
   require("dplyr") || stop("dplyr is needed for the atezo.data tests")
   require("forcats") || stop("forcats is needed for the atezo.data tests")
   
-  # for debugging run 
-  # library(testthat)
-  # library(tern)
-  
+
   
   fct_rr <- function(x, ...) {
     dots <- list(...)
@@ -92,6 +97,7 @@ if (require("atezo.data", quietly = TRUE)) {
   test_that("demographic table", {
     
     tbl_stream <- get_demographic_table(com.roche.cdt30019.go29436.re)
+    # Viewer(tbl_stream)
     
     ASL_f <- ASL %>%
       filter(ITTWTFL == 'Y') %>%
@@ -148,7 +154,7 @@ if (require("atezo.data", quietly = TRUE)) {
     # Viewer(tbl, tbl_stream)
     
     comp <- compare_rtables(tbl, tbl_stream, tol = 0.1, comp.attr = FALSE)
-    
+
     expect_true(all(comp == "."), "forest response table is not correct")
     
   })
@@ -184,6 +190,8 @@ if (require("atezo.data", quietly = TRUE)) {
     # Viewer(tbl, tbl_stream)
     
     comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    
+    # comp[19, 8] <- "." # because ...
     
     expect_true(all(comp == "."), "forest tte is not the same")
     

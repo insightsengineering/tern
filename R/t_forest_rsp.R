@@ -103,7 +103,7 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
       split(glm_data, var, drop = FALSE)
     })
     
-    names(data_tree) <- var_labels(group_data, fill = TRUE)
+    names(data_tree) <- var_labels(data_tree, fill = TRUE)
     
     list_of_tables <- Map(function(dfs, varlabel) {
       
