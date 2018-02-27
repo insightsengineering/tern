@@ -155,7 +155,7 @@ t_rsp <- function(
   # Odds Ratio
   tbl_odds_ratio <- rbind(
     tabulate_pairwise(rsp, col_by, function(x, by) {
-      if (!is.null(strata_data)) {
+      if (is.null(strata_data)) {
         
         fit <- odds.ratio(table(by, x))
         rcell(fit$estimator, "xx.xx")
@@ -176,7 +176,7 @@ t_rsp <- function(
       }
     }, row.name = "Odds Ratio"),
     tabulate_pairwise(rsp, col_by, function(x, by) {
-      if (!is.null(strata_data)) {
+      if (is.null(strata_data)) {
         
         fit <- odds.ratio(table(by, x))
         rcell(fit$conf.interval, "(xx.xxxx, xx.xxxx)")
@@ -212,16 +212,25 @@ t_rsp <- function(
     
     values <- lapply(split(col_by, parition_rsp_by, drop = FALSE),
       function(x) {
-        x.x <- split(x, x)
-        vals <- lapply(x.x, function(y) {
-          n_arm <- sum(col_by == as.character(y[1]))
+        
+        x <- factor(x, levels = levels(col_by))
+        x.x <- split(x, x, drop = FALSE)
+        
+        vals <- Map(function(y, arm) {
+          
+          n_arm <- sum(col_by == arm)
           n_y <- length(y)
           
-          list(
-            n_p = rcell(n_y * c(1, 1/n_arm), "xx.xx (xx.xx%)"),
-            ci = rcell(binom.test(n_y, n_arm)$conf.int * 100, "(xx.xx, xx.xx)")
-          )
-        })
+          if (is.na(n_arm) || n_arm == 0) {
+            list(n_p = rcell("-"), ci = rcell("-"))
+          } else {
+            list(
+              n_p = rcell(n_y * c(1, 1/n_arm), "xx.xx (xx.xx%)"),
+              ci = rcell(binom.test(n_y, n_arm)$conf.int * 100, "(xx.xx, xx.xx)")
+            )
+          }
+        }, x.x, names(x.x))
+        
       }
     )
     
@@ -230,14 +239,15 @@ t_rsp <- function(
         header = levels(col_by),
         rrowl(name, lapply(vals, `[[`, "n_p")),
         rrowl("95% CI (Wald)", lapply(vals, `[[`, "ci"), indent = 1)
-      )  
+      ) 
+      
     }, values, names(values))
     
     stack_rtables_l(tbls_part) 
   }
   
   
-  stack_rtables(
+  tbl <- stack_rtables(
     tbl_response,
     tbl_clopper_pearson,
     tbl_difference,
@@ -245,7 +255,14 @@ t_rsp <- function(
     tbl_partition
   )
   
-
+  # add N to header 
+  N <- tapply(col_by, col_by, length)
+  header(tbl) <- rheader(
+    rrowl("", levels(col_by)),
+    rrowl("", paste0("(N=",N,")"))
+  )
+  
+  tbl
 }
 
 #' calculate odds ratio
