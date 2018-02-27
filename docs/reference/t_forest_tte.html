@@ -144,24 +144,26 @@ columns:</p><dl class='dl-horizontal'>
   <span class='kw'>tte</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVAL</span>,
   <span class='kw'>is_event</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>))
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>)),
+  <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                    ARM A                                                             ARM B                                                                       
-#&gt; Baseline Risk Factors                                 Total n                  n                   Events            Median (month)              n                   Events            Median (month)         Hazard Ratio          95% Wald CI  
-#&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                     100                    56                    28                  113.39                  44                    23                  124.45                 1.2               (0.68, 2.11) 
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                               ARM A                                                       ARM B                                                                
+#&gt; Baseline Risk                                         Total                 n                 Events              Median                n                 Events              Median              Hazard               95%     
+#&gt; Factors                                                 n                                                        (month)                                                     (month)              Ratio              Wald CI   
+#&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                    100                  46                  30                106.82                54                  30                103.38               1.03            (0.61, 1.72)
 #&gt; 
 #&gt; SEX
-#&gt;   F                                                      46                    22                    12                  106.42                  24                    12                  191.15                 0.84              (0.36, 1.96) 
-#&gt;   M                                                      54                    34                    16                  152.91                  20                    11                  121.6                  1.34              (0.62, 2.93) 
+#&gt;   F                                                     58                  27                  19                106.82                31                  15                103.38               0.99            (0.49, 1.98)
+#&gt;   M                                                     42                  19                  11                85.85                 23                  15                79.99                1.11            (0.5, 2.47) 
 #&gt; 
 #&gt; RACE
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                       17                    6                     2                                           11                    7                   186.91                 0.74              (0.12, 4.47) 
-#&gt;   ASIAN                                                  26                    17                    7                   94.97                   9                     6                   118.45                 1.23              (0.38, 3.98) 
-#&gt;   BLACK OR AFRICAN AMERICAN                              22                    14                    7                   152.91                  8                     3                   284.56                 1.09              (0.27, 4.45) 
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              17                    9                     5                   113.39                  8                     3                   132.32                 1.01              (0.22, 4.53) 
-#&gt;   WHITE                                                  18                    10                    7                   98.04                   8                     4                   124.45                 0.95              (0.27, 3.3)  </div><div class='input'>
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      25                  11                  6                 141.48                14                  8                 86.27                 2              (0.6, 6.69) 
+#&gt;   ASIAN                                                 15                  6                   3                 106.82                9                   5                 62.77                2.34            (0.44, 12.4)
+#&gt;   BLACK OR AFRICAN AMERICAN                             18                  5                   2                                       13                  7                 120.08               1.45            (0.3, 6.99) 
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             18                  10                  9                 110.9                 8                   2                                      0.68            (0.12, 3.73)
+#&gt;   WHITE                                                 24                  14                  10                34.62                 10                  8                 95.09                0.55            (0.2, 1.54) </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

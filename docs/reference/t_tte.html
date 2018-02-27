@@ -145,9 +145,10 @@ and confidence interval.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"ARM"</span>, <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>])))
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 
+<span class='no'>ASL</span>$<span class='no'>ARM</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>(<span class='no'>ASL</span>$<span class='no'>ARM</span>)
 <span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ATE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ATE_f</span>, <span class='kw'>all.x</span> <span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>all.y</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>))
@@ -161,42 +162,42 @@ and confidence interval.</p>
   <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B      
-#&gt;                                               (N=61)                  (N=39)     
-#&gt; ---------------------------------------------------------------------------------
-#&gt; Patients without event (%)                 27 (44.26%)             20 (51.28%)   
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B                   ARM C      
+#&gt;                                               (N=36)                  (N=25)                  (N=39)     
+#&gt; ---------------------------------------------------------------------------------------------------------
+#&gt; Patients without event (%)                 19 (52.78%)               12 (48%)              20 (51.28%)   
 #&gt;   Earliest Contributing Event
-#&gt;     Death                                       8                       5        
-#&gt;     Disease Progression                         7                       8        
-#&gt;     First Response                              12                      7        
-#&gt; Patients without event (%)                 34 (55.74%)             19 (48.72%)   
+#&gt;     Death                                       7                       10                      8        
+#&gt;     Disease Progression                         5                       2                       6        
+#&gt;     First Response                              7                       0                       6        
+#&gt; Patients without event (%)                 17 (47.22%)               13 (52%)              19 (48.72%)   
 #&gt; 
 #&gt; Time to Event (months)
-#&gt;   Median                                      144.13                  100.2      
-#&gt;     95% CI                                (122.1, 363.2)           (69, 209.6)   
-#&gt;   25% and 75%−ile                          98.1, 363.2              62, 294.4    
-#&gt;   Range                                     0 to 368.6              0 to 336.3   
+#&gt;   Median                                      176.16                  201.06                  106.33     
+#&gt;     95% CI                                (147.2, 218.6)          (77.9, 231.1)           (43.5, 149.5)  
+#&gt;   25% and 75%−ile                          108.4, 220.5            76.3, 231.1             35.7, 236.9   
+#&gt;   Range                                     0 to 480.6              0 to 241.2              0 to 308.8   
 #&gt; 
 #&gt; Unstratified Analysis
-#&gt;   p-value (log-rank)                                                  0.0703     
+#&gt;   p-value (log-rank)                                                  0.6022                  0.1406     
 #&gt; 
-#&gt;   Hazard Ratio                                                        1.7146     
-#&gt;     95% CI                                                       (0.9496, 3.0956)
+#&gt;   Hazard Ratio                                                        1.221                   1.6172     
+#&gt;     95% CI                                                       (0.5755, 2.5905)        (0.8483, 3.0829)
 #&gt; 
 #&gt; Stratified Analysis
-#&gt;   p-value (log-rank)                                                  0.0713     
+#&gt;   p-value (log-rank)                                                  0.794                   0.1843     
 #&gt; 
-#&gt;   Hazard Ratio                                                        1.7188     
-#&gt;     95% CI                                                       (0.9477, 3.1171)
+#&gt;   Hazard Ratio                                                        1.108                   1.558      
+#&gt;     95% CI                                                       (0.5129, 2.3938)        (0.8057, 3.0126)
 #&gt; 
 #&gt; Time Point Analysis
 #&gt;   6 months
-#&gt;     Patients remaining at risk                  61                      35       
-#&gt;     Event Free Rate (%)                        100%                   97.37%     
-#&gt;       95% CI                                (100, 100)             (92.28, 100)  
-#&gt;     Difference in Event Free Rate                                     -2.63      
-#&gt;       95% CI                                                      (-7.72, 2.46)  
-#&gt;     p-value (Z-test)                                                  0.3109     
+#&gt;     Patients remaining at risk                  32                      23                      36       
+#&gt;     Event Free Rate (%)                       97.14%                  95.83%                  97.3%      
+#&gt;       95% CI                               (91.62, 100)            (87.84, 100)            (92.07, 100)  
+#&gt;     Difference in Event Free Rate                                     -1.31                    0.15      
+#&gt;       95% CI                                                      (-11.02, 8.41)          (-7.45, 7.75)  
+#&gt;     p-value (Z-test)                                                  0.7916                  0.9682     
 #&gt; 
 #&gt;   2000 months
 #&gt;     -- no data</div><div class='input'>

@@ -136,8 +136,7 @@ column with a single value and a column with 2 values</p>
   <span class='kw'>tte</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVAL</span>,
   <span class='kw'>is_event</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>)),
-  <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>))
 )
 
 <span class='co'>## note plot requires a certain width</span>
@@ -147,6 +146,48 @@ column with a single value and a column with 2 values</p>
   <span class='kw'>i_col_ci</span> <span class='kw'>=</span> <span class='fl'>9</span>,
   <span class='kw'>header_forest</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Treatement\nBetter"</span>, <span class='st'>"Comparison\nBetter"</span>)
 )</div><div class='img'><img src='g_forest-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='co'># For response table</span>
+
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
+<span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
+
+<span class='no'>ARS_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>)
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ARS_f</span>)
+
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='t_forest_rsp.html'>t_forest_rsp</a></span>(
+  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]
+)
+
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                  ARM A                                                          ARM B                                                                   
+#&gt; Baseline Risk Factors                                 Total n                 n               Responders          Response.Rate              n               Responders          Response.Rate         Odds Ratio             95% CI    
+#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                     100                  43                   16                  0.37                  57                   23                   0.4                 1.14              (0.51, 2.6) 
+#&gt; 
+#&gt; SEX
+#&gt;   F                                                     49                   16                    7                  0.44                  33                   13                  0.39                 0.84             (0.25, 2.86) 
+#&gt;   M                                                     51                   27                    9                  0.33                  24                   10                  0.42                 1.43             (0.46, 4.54) 
+#&gt; 
+#&gt; RACE
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      24                    9                    7                  0.78                  15                    8                  0.53                 0.33             (0.04, 1.92) 
+#&gt;   ASIAN                                                 18                   13                    4                  0.31                   5                    2                   0.4                  1.5             (0.15, 13.13)
+#&gt;   BLACK OR AFRICAN AMERICAN                             19                   10                    1                   0.1                   9                    4                  0.44                  7.2             (0.79, 163.6)
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             16                    6                    2                  0.33                  10                    3                   0.3                 0.86              (0.1, 8.71) 
+#&gt;   WHITE                                                 23                    5                    2                   0.4                  18                    6                  0.33                 0.75              (0.1, 6.88) </div><div class='input'>
+
+
+
+
+<span class='co'># Works with any rtable</span>
+
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>rtable</span>(
+  <span class='kw'>header</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"E"</span>, <span class='st'>"CI"</span>),
+  <span class='fu'>rrow</span>(<span class='st'>""</span>, <span class='fl'>1</span>, <span class='fu'>c</span>(<span class='fl'>.8</span>, <span class='fl'>1.2</span>)),
+  <span class='fu'>rrow</span>(<span class='st'>""</span>, <span class='fl'>1.2</span>, <span class='fu'>c</span>(<span class='fl'>1.1</span>, <span class='fl'>1.4</span>))
+)
+
+<span class='fu'>g_forest</span>(<span class='no'>tbl</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fu'>c</span>(<span class='st'>"Hello"</span>, <span class='st'>"World"</span>))</div><div class='img'><img src='g_forest-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 
 </div></pre>
   </div>

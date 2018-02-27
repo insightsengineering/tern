@@ -31,9 +31,10 @@
 #' 
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radam("ASL", start_with = list(RACE = c("white", "asian")))
+#' ASL <- radam("ASL", N = 1000, start_with = list(RACE = c("white", "asian")))
 #' ARS <- radam("ARS", ADSL = ASL)
 #' 
+#' ASL$ARM <- factor(sample(LETTERS[1:3], nrow(ASL), TRUE))
 #' ASL$RACE <- factor(ASL$RACE)
 #' 
 #' ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
@@ -41,7 +42,7 @@
 #' tbl <- t_rsp(
 #'  rsp = ANL$AVALC %in% c("CR", "PR"),
 #'  col_by = relevel(factor(ANL$ARMCD), "ARM B", "ARM A"),
-#'  parition_rsp_by = relevel(factor(ANL$AVALC), "CR", "PR", "SD", "NON CR/PD", "PD"),
+#'  parition_rsp_by = droplevels(factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE"))),
 #'  strata_data = ANL[, c("SEX", "RACE")]
 #' )
 #' 
@@ -78,7 +79,9 @@ t_rsp <- function(
   tbl_clopper_pearson <- rtabulate(
     x = rsp,
     col_by = col_by,
-    function(x) { binom.test(sum(x), length(x))$conf.int * 100 },
+    function(x) {
+      binom.test(sum(x), length(x))$conf.int * 100 
+    },
     format = "(xx.xx, xx.xx)",
     row.name = "95% CI for Response Rates (Clopper-Pearson)"
   )
@@ -87,7 +90,9 @@ t_rsp <- function(
   tbl_difference <- rbind(
     # by is a factor with two levels: 1 ref arm, 2nd comp arm
     tabulate_pairwise(rsp, col_by, function(x, by) {
+      
       diff(tapply(x, by, mean))
+      
     }, format = "xx.xx", row.name = "Difference in Response Rates"),
     
     # wald test without continuity correction
@@ -124,7 +129,6 @@ t_rsp <- function(
                           correct = FALSE)
         
         rcell(t_wc$p.value, format = "xx.xxxx")
-        
       }, 
       indent = 1,
       row.name = "p-value (Chi-squared)")
@@ -169,7 +173,6 @@ t_rsp <- function(
           rcell(t_m$estimate, format = "xx.xx")
         }
         
-        
       }
     }, row.name = "Odds Ratio"),
     tabulate_pairwise(rsp, col_by, function(x, by) {
@@ -197,32 +200,38 @@ t_rsp <- function(
   
   
   # Partition
-  
+
+
   tbl_partition <- if (is.null(parition_rsp_by)) {
     NULL
   } else {
+    
     df <- data.frame(rsp = rsp, col_by = col_by)
-    
     df.split <- split(df, parition_rsp_by, drop = FALSE)
+  
     
-    
-    perc <- 0 # percentage over arm 
-    tbls_part <- Map(function(dfi, name) {
-      rbind(
-        rtabulate(dfi$rsp, dfi$col_by, function(x) c(sum(x), perc),
-                  format = "xx.xx (xx.xx%)",
-                  row.name = name),
-        rtabulate(dfi$rsp, dfi$col_by, function(x) {
-          ## n per arm
-          #rcell(binom.test(sum(x), nrow(df))$conf.int * 100, "(xx.xx, xx.xx)")
+    values <- lapply(split(col_by, parition_rsp_by, drop = FALSE),
+      function(x) {
+        x.x <- split(x, x)
+        vals <- lapply(x.x, function(y) {
+          n_arm <- sum(col_by == as.character(y[1]))
+          n_y <- length(y)
           
-          rcell("-")
-          
-        }, format = "xx",
-        row.name = "95% CI (Wald)", indent = 1)
-      )
-    }, df.split.p, names(df.split.p))
+          list(
+            n_p = rcell(n_y * c(1, 1/n_arm), "xx.xx (xx.xx%)"),
+            ci = rcell(binom.test(n_y, n_arm)$conf.int * 100, "(xx.xx, xx.xx)")
+          )
+        })
+      }
+    )
     
+    tbls_part <- Map(function(vals, name) {
+      rtable(
+        header = levels(col_by),
+        rrowl(name, lapply(vals, `[[`, "n_p")),
+        rrowl("95% CI (Wald)", lapply(vals, `[[`, "ci"), indent = 1)
+      )  
+    }, values, names(values))
     
     stack_rtables_l(tbls_part) 
   }

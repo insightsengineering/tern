@@ -13,8 +13,9 @@ Installation
 Copy paste the following code into your `R` console:
 
     {
-        devtools::install_git("Rpackages/random.cdisc.data", ref = "v0.0.1", 
+        devtools::install_github("Rpackages/random.cdisc.data", ref = "v0.0.1", 
             host = "https://github.roche.com/api/v3")
         devtools::install_github("Roche/rtables", ref = "v0.0.1")
-        devtools::install_git("Rpackages/tern", ref = "v0.0.1", host = "https://github.roche.com/api/v3")
+        devtools::install_github("Rpackages/tern", ref = "v0.0.1", 
+            host = "https://github.roche.com/api/v3")
     }

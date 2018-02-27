@@ -134,46 +134,49 @@ corresponding 95<!-- % confidence interval. --></p>
     <pre class="examples"><div class='input'>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
+
+<span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>)
 
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>))
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>),
- <span class='kw'>parition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>)),
- <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+ <span class='kw'>parition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>), <span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>),
+ <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM A     
-#&gt; -----------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        20 (43.48%)           22 (40.74%)  
-#&gt; Non-Responders                                                    26 (56.52%)           32 (59.26%)  
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                       ARM B                   ARM A      
+#&gt; ---------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                           18 (40%)              19 (34.55%)   
+#&gt; Non-Responders                                                       27 (60%)              36 (65.45%)   
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (28.93, 58.89)        (27.57, 54.97)
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                       (25.7, 55.67)           (22.24, 48.58) 
 #&gt; 
-#&gt; Difference in Response Rates                                                               -0.03     
-#&gt;   95% CI for difference (Wald without correction)                                        add logic   
-#&gt;   95% CI for difference (Wald with continuity correction)                                add logic   
-#&gt;   p-value (Chi-squared)                                                                  add logic   
+#&gt; Difference in Response Rates                                                                  -0.05      
+#&gt;   95% CI for difference (Wald without correction)                                         (-0.14, 0.25)  
+#&gt;   95% CI for difference (Wald with continuity correction)                                 (-0.16, 0.27)  
+#&gt;   p-value (Cochran-Mantel-Haenszel)                                                           0.5443     
 #&gt; 
-#&gt; odds ratio table
+#&gt; Odds Ratio                                                                                     0.79      
+#&gt;   95% CI                                                                                 (0.3503, 1.7889)
 #&gt; 
-#&gt; CR                                                                  8 (100%)             10 (100%)   
-#&gt;   95% CI (Wald)                                                    to be done            to be done  
+#&gt; CR                                                                   11 (0%)                  7 (0%)     
+#&gt;   95% CI (Wald)                                                         -                       -        
 #&gt; 
-#&gt; PR                                                                 12 (100%)             12 (100%)   
-#&gt;   95% CI (Wald)                                                    to be done            to be done  
+#&gt; NE                                                                    0 (0%)                  0 (0%)     
+#&gt;   95% CI (Wald)                                                         -                       -        
 #&gt; 
-#&gt; SD                                                                   0 (0%)                0 (0%)    
-#&gt;   95% CI (Wald)                                                    to be done            to be done  
+#&gt; PD                                                                    0 (0%)                  0 (0%)     
+#&gt;   95% CI (Wald)                                                         -                       -        
 #&gt; 
-#&gt; NON CR/PD                                                           0 (NaN%)              0 (NaN%)   
-#&gt;   95% CI (Wald)                                                    to be done            to be done  
+#&gt; PR                                                                    7 (0%)                 12 (0%)     
+#&gt;   95% CI (Wald)                                                         -                       -        
 #&gt; 
-#&gt; PD                                                                   0 (0%)                0 (0%)    
-#&gt;   95% CI (Wald)                                                    to be done            to be done  </div><div class='input'>
+#&gt; SD                                                                    0 (0%)                  0 (0%)     
+#&gt;   95% CI (Wald)                                                         -                       -        </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

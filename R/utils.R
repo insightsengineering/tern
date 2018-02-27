@@ -371,3 +371,17 @@ na_as_level <- function(x, na_level = "NA") {
   x
 }
 
+as.global <- function(...) {
+  
+  dots <- substitute(list(...))[-1]
+  names <- sapply(dots, deparse)
+  
+  args <- list(...)
+  
+  ge <- globalenv()
+  
+  Map(function(x, name) {
+    ge[[name]] <- x
+  }, args, names)
+  
+}
