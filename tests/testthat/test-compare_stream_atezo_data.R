@@ -251,7 +251,7 @@ if (require("atezo.data", quietly = TRUE)) {
       parition_rsp_by = avalc
     )
     
-    tbl_no_missing_ci <- tbl[1:(nrow(tbl) -1), ]
+    tbl_no_missing_ci <- tbl[-nrow(tbl), ]
     
     # Viewer(tbl_no_missing_ci)
     # Viewer(tbl_no_missing_ci, tbl_stream)
