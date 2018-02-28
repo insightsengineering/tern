@@ -1,5 +1,7 @@
 #' Response Table Caclulation Function 
 #' 
+#' TODO: Description
+#' 
 #' @template param_rsp
 #' @template param_col_by
 #' @param parition_rsp_by factor to partition \code{rsp} and run additional
@@ -8,9 +10,7 @@
 #'   if \code{NULL} no stratified analysis is performed
 #' 
 #' @details 
-#' We use the \code{epiR} package to compute 2-by-2 contingency table statistics
-#' and analysis with stratification factors.
-#'
+#' 
 #' If no stratification, chi-squared test is performed by default to test for
 #' equality of proportions in response rate between reference and comparison
 #' arms.

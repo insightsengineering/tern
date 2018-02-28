@@ -111,8 +111,9 @@
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 
 <span class='no'>AQS</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"AQS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)) <span class='kw'>%&gt;%</span>
-   <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"FATIGI"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='error'>Error in filter(., PARAMCD == "FATIGI"): object 'PARAMCD' not found</span></div><div class='input'>
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>chgfbl_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>)</div><div class='output co'>#&gt; <span class='error'>Error in chgfbl_data(data = ANL): object 'ANL' not found</span></div><div class='input'>
+   <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"FATIGI"</span>)
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>chgfbl_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>)</div><div class='output co'>#&gt; <span class='error'>Error: Columns `ABLFL`, `CHG` not found</span></div><div class='input'>
 </div># NOT RUN {
 library(dplyr)
 library(tidyr)
