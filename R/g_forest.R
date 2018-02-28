@@ -385,7 +385,8 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
       editGrob(g_header, vp = vpPath("vp_header_body_layout", "vp_header")),
       editGrob(g_col_anchors, vp = vpPath("vp_header_body_layout", "vp_body")),
       editGrob(g_body, vp = vpPath("vp_header_body_layout", "vp_body")),
-      rectGrob(vp = vpPath("vp_header_body_layout", "vp_body"))
+      xaxisGrob(name = "xaxis", vp = vpPath("vp_header_body_layout", "vp_body", "vp_forest")),
+      editGrob(g_forest, vp = vpPath("vp_header_body_layout", "vp_body"))
     ),
     childrenvp = vp_table,
     vp = vpStack(
