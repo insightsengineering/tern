@@ -91,18 +91,16 @@ t_rsp <- function(
     # by is a factor with two levels: 1 ref arm, 2nd comp arm
     tabulate_pairwise(rsp, col_by, function(x, by) {
       
-      diff(tapply(x, by, mean))
+      diff(tapply(x, by, mean)) * 100
       
-    }, format = "xx.xx", row.name = "Difference in Response Rates"),
+    }, format = "xx.xx", row.name = "Difference in Response Rates (x100)"),
     
     # wald test without continuity correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
+
+      t_wc <- prop.test(table(x, by), correct = FALSE)
       
-      t_wc <- prop.test(x = tapply(x, by, sum),
-                        n = tapply(x, by, length),
-                        correct = FALSE)
-      
-      rcell(t_wc$conf.int, format = "(xx.xx, xx.xx)")
+      rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
     },
     indent = 1,
     row.name = "95% CI for difference (Wald without correction)"),
@@ -110,9 +108,11 @@ t_rsp <- function(
     # wald test with  continuety correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
       
-      t_wc <- prop.test(x = tapply(x, by, sum),
-                        n = tapply(x, by, length),
-                        correct = TRUE)
+#      t_wc <- prop.test(x = tapply(x, by, sum),
+#                        n = tapply(x, by, length),
+#                        correct = TRUE)
+      
+      t_wc <- prop.test(table(x, by), correct = TRUE)
       
       rcell(t_wc$conf.int, format = "(xx.xx, xx.xx)")
     }, 
