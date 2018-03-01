@@ -81,8 +81,8 @@
 #' tbl <- rtable(
 #'   header = rheader(rrow("", rcell("A", colspan = 2))
 #'   ),
-#'   rrow("", 1, c(.8, 1.2)),
-#'   rrow("", 1.2, c(1.1, 1.4))
+#'   rrow("row 1", 1, c(.8, 1.2)),
+#'   rrow("row 2", 1.2, c(1.1, 1.4))
 #' )
 #' 
 #' g_forest(
@@ -187,11 +187,11 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
     widths = unit.c(
       width_row.names,
       widths,
-      unit(1, "null") # for forest plot
+      unit(1, "null") # remaining space for forest plot
     )
   )
   
-  col_vps <- do.call(vpList, c(
+  col_vp_list <- do.call(vpList, c(
     list(viewport(name = "vp_row.names", layout.pos.col=1, layout.pos.row=1)),
     lapply(1:nc, function(i) {
       viewport(name = paste0("vp_col_", i), layout.pos.col=i+1, layout.pos.row=1)
@@ -200,6 +200,17 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
                       xscale = xlim, yscale = c(0,1)))
   ))
   
+  
+  gn_anchors <- do.call(gList, lapply(seq_len(nc), function(j) {
+    vp <- vpPath(paste0("vp_col_", j))
+    gList(
+      nullGrob(name = paste0("center_col_", j), vp = vp),
+      nullGrob(x=unit(0, "npc"), name = paste0("left_col_", j), vp = vp),
+      nullGrob(x=unit(1, "npc"), name = paste0("right_col_", j), vp = vp)   
+    )
+  }))
+  
+
   
   gL_col_anchors <- do.call(gList, lapply(seq_len(nc), function(j) {
     vp <- vpPath(paste0("vp_col_", j))
@@ -214,6 +225,28 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   }))
 
 
+  tbl_grob <- gTree(
+    children = gList(
+      gn_anchors
+    ),
+    childrenvp = col_vp_list,
+    vp = viewport(name = "vp_table_layout", layout = col_layout),
+    name = "tbl_grob"
+  )
+  
+  
+  
+  grid.ls(viewports = TRUE)
+  grid.edit(gPath("tbl_grob", "AAA"))
+  
+  grid.text("Hello World", x = grobX("center_col_2",0))
+
+  grid.text("Hello World", x = grobX("center_col_2",0))
+  
+  grid.newpage();
+  grid.draw(tbl_grob)
+  
+  showViewport()
   
   tbl_grob <- gTree(
     children = gList(
@@ -259,6 +292,8 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   
   grid.ls(viewports = TRUE)
   grid.ls()
+  
+  
   header_line_factor <- 1.1
   
   # the rtables API is currently not well enough developped in order to
@@ -318,12 +353,9 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
               x0 <- grobX(paste0("left_col_", j), 0)
               x1 <- grobX(paste0("right_col_", j+cs-1), 0)
               
-              gTree(
-                children = gList(
-                  lab,
-                  linesGrob(x = unit.c(x0 + 0.2*padx, x1 - 0.2*padx), y = y - unit(header_line_factor/2, "lines"))
-                ),
-                name = cell_name
+              gList(
+                lab,
+                linesGrob(x = unit.c(x0 + 0.2*padx, x1 - 0.2*padx), y = y - unit(header_line_factor/2, "lines"))
               )
             }
           }
