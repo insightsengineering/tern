@@ -78,9 +78,24 @@
 #'   header_forest = c("Hello", "World")
 #' )
 #' 
+#' tbl <- rtable(
+#'   header = rheader(rrow("", rcell("A", colspan = 2))
+#'   ),
+#'   rrow("", 1, c(.8, 1.2)),
+#'   rrow("", 1.2, c(1.1, 1.4))
+#' )
+#' 
+#' g_forest(
+#'   tbl = tbl,
+#'   i_col_est = 1,
+#'   i_col_ci = 2,
+#'   header_forest = c("Hello", "World")
+#' )
+#' 
+#' 
 #' 
 g_forest <- function(tbl, i_col_est, i_col_ci,
-                     header_forest,
+                     header_forest = c("", ""),
                      xlim = NULL,
                      log = FALSE,
                      widths = NULL,
@@ -168,7 +183,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   
   # now start with the grid layouts
   col_layout <- grid.layout(
-    nrow = 1, ncol = 11,
+    nrow = 1, ncol = nc + 2,
     widths = unit.c(
       width_row.names,
       widths,
@@ -185,30 +200,66 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
                       xscale = xlim, yscale = c(0,1)))
   ))
   
-  header_line_factor <- 1.1
   
-  vp_table <- vpTree(
-    parent = viewport(
-      name = "vp_header_body_layout",
-      layout = grid.layout(
-        nrow = 3, ncol = 1,
-        heights = unit.c(unit((nrow(tbl_header) + 1)*header_line_factor, "lines"),
-                         unit(nrow(tbl)*header_line_factor, "lines"),
-                         unit(1, "null"))
-      )),
-    children = vpList(
-      vpTree(
-        parent = viewport(name = "vp_header", layout = col_layout, layout.pos.col=1, layout.pos.row=1),
-        children = col_vps
+  gL_col_anchors <- do.call(gList, lapply(seq_len(nc), function(j) {
+    vp <- vpPath(paste0("vp_col_", j))
+    gTree(
+      children = gList(
+        nullGrob(name = paste0("center_col_", j), vp = vp),
+        nullGrob(x=unit(0, "npc"), name = paste0("left_col_", j), vp = vp),
+        nullGrob(x=unit(1, "npc"), name = paste0("right_col_", j), vp = vp)        
       ),
-      vpTree(
-        parent = viewport(name = "vp_body", layout = col_layout, layout.pos.col=1, layout.pos.row=2),
-        children = col_vps
-      ),
-      viewport(name = "vp_space_filler", layout.pos.col=1, layout.pos.row=3)
-    ) 
+      name = paste0("column_", j, "_anchors")
+    )
+  }))
+
+
+  
+  tbl_grob <- gTree(
+    children = gList(
+      nullGrob(name = "AAA", vp = vpPath("vp_forest"))
+    ), #gL_col_anchors,
+    childrenvp = col_vps,
+    vp = viewport(name = "vp_table_layout", layout = col_layout),
+    name = "tbl_grob"
   )
-  # grid.newpage(); showViewport(vp_table)
+  
+  # grid.ls(tbl_grob, viewports = TRUE)
+  # grid.ls(tbl_grob, grobs = FALSE, viewports = TRUE)
+
+?grid.ls
+  
+  a <- gTree(children = gList(rectGrob()), vp=plotViewport(name = "a_margins"))  
+  tbl_grob <- gTree(
+    children = gList(a),
+    vp = plotViewport(name = "margins")
+  )
+  
+  grid.newpage();
+  grid.draw(tbl_grob)
+  grid.draw(a)
+  
+  showViewport()
+  #showGrob()
+  
+  grid.text("hello World",
+            unit(0, "npc"),
+            vp = vpPath("vp_table_layout", "vp_col_2"), 
+            just = c("left", "bottom"))
+  
+  seekViewport("vp_table_layout")
+  upViewport(0)
+
+  grid.null(name = "AAA", vp = vpPath("vp_table_layout", "vp_forest"))  
+  
+  grid.text("hello grobX",
+            x = grobX("AAA", 0),
+            just = c("left", "bottom"))
+  
+  
+  grid.ls(viewports = TRUE)
+  grid.ls()
+  header_line_factor <- 1.1
   
   # the rtables API is currently not well enough developped in order to
   # draw the table without knowing the underlying data structure
@@ -257,7 +308,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
             )
           } else {
             x0 <- grobX(paste0("center_col_", j), 0)
-            x1 <- grobX(paste0("center_col_", j+cs-1), 0)
+            x1 <- grobX(paste0("center_col_", j + cs-1), 0)
             
             lab <- textGrob(label = cell_ascii, x = x0 + 0.5 * (x1 - x0), y = y)
             
@@ -342,13 +393,18 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   
   # now create the grobs
   nr_h <- nrow(tbl_header)
-  y_header <- unit(1, "npc") - unit( (1:nr_h - .5) *header_line_factor, "lines") 
+  y_header <- unit(1, "npc") - unit( (1:nr_h - .5) * header_line_factor , "lines") 
   l_g_header_rows <- lapply(seq_len(nr_h), function(i) rowGrob(tbl_header[[i]], y_header[i], TRUE, paste0("header_row_", i)))
+  
   g_header <- gTree(
+    tbl_grob,
     children = do.call(gList, l_g_header_rows),
+    childrenvp =  vpPath("vp_table_layout"),
     name = "header_table_content"
   )
   
+  # grid.ls(g_header, viewports = TRUE)
+  # grid.newpage(); grid.draw(g_header)
   
   y_body <- unit(1, "npc") - unit((1:nr - .5) *header_line_factor, "lines")
   l_g_body_rows <- lapply(seq_len(nr), function(i) rowGrob(tbl[[i]], y_body[i], paste0("row_", i)))
@@ -365,28 +421,32 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
     name = "body_forest_content"
   )
   
-  g_col_anchors <-  gTree(
-    children = do.call(gList, lapply(seq_len(nc), function(j) {
-    gTree(
-      children = gList(
-        nullGrob(name = paste0("center_col_", j)),
-        nullGrob(x=unit(0, "npc"), name = paste0("left_col_", j)),
-        nullGrob(x=unit(1, "npc"), name = paste0("right_col_", j))
-      ),
-      vp =  vpPath(paste0("vp_col_", j)),
-      name = paste0("column_", j, "_anchors")
-    )
-  })))
-  
-  
+
   p <- gTree(
     children = gList(
-      editGrob(g_col_anchors, vp = vpPath("vp_header_body_layout", "vp_header")),
-      editGrob(g_header, vp = vpPath("vp_header_body_layout", "vp_header")),
-      editGrob(g_col_anchors, vp = vpPath("vp_header_body_layout", "vp_body")),
-      editGrob(g_body, vp = vpPath("vp_header_body_layout", "vp_body")),
-      xaxisGrob(name = "xaxis", vp = vpPath("vp_header_body_layout", "vp_body", "vp_forest")),
-      editGrob(g_forest, vp = vpPath("vp_header_body_layout", "vp_body"))
+      editGrob(g_col_anchors, vp = vpPath("vp_header_body_layout", "vp_header"))
+#      rectGrob(grobX("center_col_2",0), grobY("center_col_2",0), 
+#               unit(1, "lines"), unit(1, "lines"),
+#               vp = vpPath("vp_header_body_layout", "vp_header", "vp_col_2"))
+      #editGrob(g_header, vp = vpPath("vp_header_body_layout", "vp_header"))
+#      linesGrob(y = unit(0, "npc"), vp = vpPath("vp_header_body_layout", "vp_header")),
+#      editGrob(g_col_anchors, vp = vpPath("vp_header_body_layout", "vp_body")),
+#      editGrob(g_body, vp = vpPath("vp_header_body_layout", "vp_body")),
+#      xaxisGrob(name = "xaxis", vp = vpPath("vp_header_body_layout", "vp_body", "vp_forest")),
+#      editGrob(g_forest, vp = vpPath("vp_header_body_layout", "vp_body")),
+#      gTree(
+#        children = gList(
+#          textGrob(name = "forest_header_left", label = header_forest[1],
+#                   x = unit(1, "lines"), just = c("left", "center"),
+#                   y = unit(.5, "npc")),
+#          textGrob(name = "forest_header_right", label = header_forest[2],
+#                   x = unit(1, "npc"), just = c("right", "center"),
+#                   y = unit(.5, "npc"))
+#        ),
+#        name = "forest_header",
+#        vp = vpPath("vp_header_body_layout", "vp_header", "vp_forest")
+#      )
+
     ),
     childrenvp = vp_table,
     vp = vpStack(
@@ -395,114 +455,11 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
     )
   )
   
-  grid.ls(p, viewports = TRUE)
-
-  grid.newpage(); grid.draw(p)
-    
-  p <- gTree(
-    children = gList(
-      rectGrob(name = "a"), 
-      rectGrob(name = "b"), 
-      rectGrob(name = "c")
-    ),
-    name = "row1"
-  )
+  # grid.ls(p, viewports = TRUE)
   
-  
-  grid.ls(p, viewports = TRUE)
-  
-  grid.newpage(); grid.draw(p)
-  showViewport()
-  grid.ls(viewports = TRUE)
-  
-    
-  p <- gTree(
-    nullGrob(),
-    childrenvp = vp_table,
-    children = do.call(gList, lapply(seq_along(nc), function(j) {
-      
-      # "gpar_user", "margins", "header_body_layout", 
-      vp_path <-  vpPath("body", paste0("col_", j))
-      
-      nullGrob(name = paste0("center_col_", j), vp = vp_path)
-      nullGrob(x=unit(0, "npc"), name = paste0("left_col_", j), vp = vp_path)
-      nullGrob(x=unit(1, "npc"), name = paste0("right_col_", j), vp = vp_path)
-    })),
-    vp = 
-  )
-  # grid.newpage(); grid.draw(plot_setup)
-  
-  grid.ls(plot_setup, viewports = TRUE)
-  
-  # 
-  
-  grid.newpage()
-  pushViewport(vp)
-  upViewport()
-  downViewport(vpPath("header"), strict = TRUE)# need to go to body: current.viewport()
-  ## create anchor points
-  for (j in 1:nc) {
-    grid.null(name = paste0("center_col_", j), vp = vpPath(paste0("col_", j)))
-    grid.null(x=unit(0, "npc"), name = paste0("left_col_", j), vp = vpPath(paste0("col_", j)))
-    grid.null(x=unit(1, "npc"), name = paste0("right_col_", j), vp = vpPath(paste0("col_", j)))
-  }
-  grid.lines(x = unit(c(0,1), "npc"), y = unit(c(0.5, 0.5), "lines"))
-  upViewport()
-  
-  # grid.ls(viewports = TRUE)
-  # showViewport(current.viewport())
-  # current.viewport()
-  
-  # draw header
-  downViewport(vpPath("header"), strict = TRUE)
-  
-  # grid.rect(gp = gpar(fill = "gray90", col = NA))
-  tbl_header <- header(tbl)
-  nrh <- nrow(tbl_header)
-  y_header <- unit(1, "npc") - unit( (1:nrh - .5) *header_line_factor, "lines") 
-  for (i in 1:nrow(tbl_header)) {
-    draw_row(tbl_header[[i]], y = y_header[i], TRUE )
-  } 
-  upViewport()
-  
-  
-  # draw the table body
-  downViewport(vpPath("body"))
-  y_body <- unit(1, "npc") - unit((1:nr - .5) *header_line_factor, "lines")
-  for (i in 1:nr) {
-    draw_row(tbl[[i]], y_body[i])
+  if (draw) {
+    grid.newpage(); grid.draw(p)    
   }
   
-  # now draw the forest
-  downViewport(vpPath("forest"), strict = TRUE)
-  
-  # break arm labels to muliple lines as needed
-  header_left <- wrap_text(header_forest[1], width = unit(4, "cm"), collapse = "\n")
-  header_right <- wrap_text(header_forest[2], width = unit(4, "cm"), collapse = "\n")
-  
-  # need once: mid-line OR/HR = 1
-  grid.xaxis(at = c(log(0.1), log(0.5), log(1), log(2), log(5), log(10)),
-             label = c(0.1, 0.5, 1, 2, 5, 10))
-  grid.lines(x = unit(c(0,0), "native"), y = unit(c(0, 1), "npc"),
-             gp = gpar(lty = 2))
-  
-  
-  #Only draw if the CI is within the range of 0.1-10
-  
-  
-  
-  for (i in 1:nr) {
-    est <- tbl[i, i_col_est]
-    ci <-  tbl[i, i_col_ci]
-    if (!is.null(est) && !is.null(ci)) {
-      draw_point_line(x = log(est), ci = log(ci), y = y_body[i])
-    }
-  }
-  upViewport(2)
-  
-  # Add header
-  downViewport(vpPath("header", "forest"), strict = TRUE)
-  grid.text(header_left, x = unit(0, "native") - unit(1, "lines"), just = c("right", "center"))
-  grid.text(header_right, x = unit(0, "native") + unit(1, "lines"), just = c("left", "center"))
-  
+  invisible(p)
 }
