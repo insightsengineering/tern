@@ -35,12 +35,20 @@ The returned table contains one row per analysis applied on a subset of data
 columns:
 
 \describe{
-  \item{1}{\emph{Total n} the total number of subjects used for analysis}
-  \item{3-4}{analysis for reference arm, \emph{n}, \emph{Responders},
-  \code{Response.Rate}}
-  \item{5-7}{same analysis as for reference arm now for comparison arm}
-  \item{8}{\emph{Odds Ratio}}
-  \item{9}{\emph{95 \% CI}}
+  \item{1}{\emph{Total n} the total number of subjects included in analysis population}
+  \item{3-4}{Summary of responders in reference arm, \emph{n} and \emph{Responders} are the 
+  total number of patients and the number of responders in reference arm, respectively.
+  \code{Response.Rate} is the percentage of responders in reference arm.}
+  \item{5-7}{same statistics as for reference arm now for comparison arm}
+  \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying 
+  univariate logistic regression with binary response status (responder or non-responder) 
+  as the the outcome and arm variable as the explanatory variable. Odds ratio greater than 1 
+  indicates better performance in comparison arm; odds ratio less than 1 indicates better performance in reference arm.}
+  \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of uncertainty 
+  around the measure of effect (Odds Ratio). Because only a small sample of the overall 
+  population is included in the analysis, by having an upper and lower confidence limit 
+  we can infer that the true treatment effect lies in between. If the 95% confidence interval 
+  includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
 }
 }
 \examples{
@@ -54,11 +62,12 @@ ANL <- merge(ASL, ARS_f)
 
 tbl <- t_forest_rsp(
   rsp = ANL$AVALC \%in\% c("CR", "PR"),
-  col_by = ANL$ARM, 
+  col_by = factor(ANL$ARM), 
   group_data = ANL[, c("SEX", "RACE")]
 )
 
 tbl
+Viewer(tbl)
    
 }
 \author{
