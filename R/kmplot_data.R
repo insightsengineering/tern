@@ -227,3 +227,60 @@ coxphAnnoData <- function(formula_coxph, data, cox_ties = "exact", info_coxph = 
   lab <- paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\n", tblstr3)
   return(lab)
 }
+
+
+
+#' Prepare Independent Cox PH model annotation data with rtable format
+#' 
+#' An rtable format of Indedendent Cox PH model (spcially for IMPower 131 study) data for further annotation on top of Kaplan-Meier grob
+#' 
+#' @param formula_coxph formula specified for Cox PH model.
+#' @param data_list a list of analysis data set.
+#' @param cox_ties ties handling method for Cox PH model. options are "efron", "breslow" and "exact".
+#' @param info_coxph label information for Cox PH model.
+#' 
+#' @import survival
+#' @import rtables
+#' 
+#' @export
+
+
+coxphAnnoImpower131 <- function(formula_coxph, data_list, cox_ties = "exact", info_coxph = "Cox Porportional Model"){
+  
+  sinfo <- sapply(data_list, function(x){
+    fitcox <- coxph(formula_coxph, data = x, ties = cox_ties)
+    
+    sfit <- summary(fitcox)
+    
+    hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
+    
+    ci <- sfit$conf.int[, c("lower .95", "upper .95"), drop = FALSE]  
+    
+    pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
+    
+    scpval <- sfit$sctest["pvalue"] %>% rep(., nrow(pvalues)) %>% as.matrix
+    colnames(scpval) <- "scorepval"
+    
+    info <- cbind(hr, ci, pvalues, scpval)
+    sinfo <- split(as.data.frame(info), 1:nrow(info))
+  })
+  
+  tbl <- do.call(
+    rtable,
+    c(
+      list(col.names = c("HR*", "95% CI of HR*", "Wald p-value*",  "Score p-val*")),
+      lapply(sinfo, function(xi) {
+        rrow(
+          row.name = rownames(xi),
+          rcell(xi$'exp(coef)', format = "xx.xxxx"),
+          rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
+          rcell(xi$'Pr(>|z|)', format = "xx.xxxx"),
+          rcell(xi$'scorepval', format = "xx.xxxx")
+        )
+      })
+    )
+  )
+  tblstr <- toString(tbl, gap = 1)
+  tblstr2 <- paste0(info_coxph, "\n", tblstr, "\n *From Seperate Model for each Comparision group")
+  return(tblstr2)
+}
