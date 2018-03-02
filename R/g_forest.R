@@ -59,7 +59,12 @@
 #' 
 #' tbl
 #' 
-#' 
+#' g_forest(
+#'   tbl = tbl,
+#'   i_col_est = 8,
+#'   i_col_ci = 9,
+#'   header_forest = c("Comparison\nBetter", "Treatement\nBetter")
+#' )
 #' 
 #' 
 #' 
@@ -96,12 +101,15 @@
 #' 
 #' 
 #' 
-g_forest <- function(tbl, i_col_est, i_col_ci,
+g_forest <- function(tbl,
+                     i_col_est,
+                     i_col_ci,
                      header_forest = c("", ""),
                      xlim = NULL,
                      log = FALSE,
-                     widths = NULL,
+                     width_columns = NULL,
                      width_row.names = NULL,
+                     width_forest = unit(1, "null"),
                      padx = unit(1, "lines"),
                      draw = TRUE) {
   
@@ -115,7 +123,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   if (!(is.character(header_forest) && length(header_forest) == 2))
     stop("header_forest is required to be a character vector of length two")
   
-  if (!is.null(widths) && !is(widths, "unit"))
+  if (!is.null(width_columns) && !is(width_columns, "unit"))
     stop("widths currently needs to be NULL or an object of class unit")
   
   if (!is.null(width_row.names) && !is(width_row.names, "unit"))
@@ -159,17 +167,17 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   
   
   # for now lets make the table part fix-width and the forst part flexible width
-  if (!is.null(widths)) {
-    if (length(widths) == nc) {
+  if (!is.null(width_columns)) {
+    if (length(width_columns) == nc ) {
       # do nothing
-    } else if (length(widths == 1)) {
-      widths <- unit.rep(widths, nc)
+    } else if (length(width_columns) == 1) {
+      width_columns <- unit.rep(width_columns, nc)
     } else {
       stop("length of widths must be either 1 or the number of columns of tbl") 
     }
   } else {
     # calculate widths
-    widths <- do.call(unit.c, lapply(seq_len(nc), function(j) {
+    width_columns <- do.call(unit.c, lapply(seq_len(nc), function(j) {
       width_body <- do.call(unit.pmax, lapply(seq_len(nr), function(i) {
         stringWidth(format_rcell(tbl[i,j], output = "ascii")) + padx
       }))
@@ -193,14 +201,14 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
         nrow = 1, ncol = nc + 2,
         widths = unit.c(
           width_row.names + padx,
-          widths+padx,
+          width_columns + padx,
           unit(1, "null") # remaining space for forest plot
         )
       )
     ),
     children = do.call(vpList, c(
       list(viewport(name = "vp_row.names", layout.pos.col=1, layout.pos.row=1)),
-      lapply(1:nc, function(i) {
+      lapply(seq_len(nc), function(i) {
         viewport(name = paste0("vp_col_", i), layout.pos.col=i+1, layout.pos.row=1)
       }),
       list(dataViewport(name = "vp_forest", layout.pos.col=nc+2, layout.pos.row=1,
@@ -210,29 +218,28 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   
   # showViewport(vp_col_layout)
   gl_anchors <- gList(
-    nullGrob(name = "left_row.names", vp =  vpPath("vp_col_layout", "vp_row.names")),
+    nullGrob(name = "left_row.names", x = unit(0, "npc"), vp =  vpPath("vp_col_layout", "vp_row.names")),
     do.call(gList, lapply(seq_len(nc), function(j) {
       vp <- vpPath("vp_col_layout", paste0("vp_col_", j))
       gList(
-        nullGrob(name = paste0("center_col_", j), vp = vp),
-        nullGrob(x=unit(0, "npc"), name = paste0("left_col_", j), vp = vp),
-        nullGrob(x=unit(1, "npc"), name = paste0("right_col_", j), vp = vp)   
+        nullGrob(x=unit(.5, "npc"), name = paste0("center_col_", j), vp = vp),
+        nullGrob(x=unit(0, "npc"),  name = paste0("left_col_", j), vp = vp),
+        nullGrob(x=unit(1, "npc"),  name = paste0("right_col_", j), vp = vp)   
       )
     }))
   )
   # vp_col_layout & gl_anchors are then used to make the
   # table header and body, e.g.
   # p <- gTree(
-  #   children = gList(
-  #     gl_anchors,
-  #     textGrob("Hello World", vp = vpPath("vp_col_layout", "vp_forest")),
-  #     rectGrob(x= grobX("center_col_2", 0), width = unit(1, "lines"), height = unit(1, "lines"))
-  #   ),
-  #   childrenvp = vp_col_layout
+  #  children = gList(
+  #    gl_anchors,
+  #    textGrob("Hello World", vp = vpPath("vp_col_layout", "vp_forest")),
+  #    rectGrob(x= grobX("center_col_2", 0), width = unit(1, "lines"),
+  #             height = unit(1, "lines"))
+  #  ),
+  #  childrenvp = vp_col_layout
   # )
   # grid.newpage(); grid.draw(p)
-  
-  
   
   header_line_factor <- get.gpar("lineheight")$lineheight
   
@@ -249,8 +256,8 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
     g.rowname <- if (!is.null(row_name) && row_name != "") {
       textGrob(
         name = "row.name",
-        label=row_name,
-        x= grobX("left_row.names", 0),
+        label = row_name,
+        x = grobX("left_row.names", 0),
         y = y,
         just = c("left", "center")
       )
@@ -261,18 +268,22 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
     gl.cols <- if (!(length(row) > 0)) {
       list(NULL)
     } else {
+      
       j <- 1 # column index of cell
-      lapply(1:length(row), function (k) {
+      
+      lapply(seq_along(row), function(k) {
         
         cell <- row[[k]]
         cs <- attr(cell, "colspan")
+        if (is.null(cs)) cs <- 1
+        
         cell_ascii <- format_rcell(cell, output = "ascii")
         
         if (is.na(cell_ascii)) cell_ascii <- "NA"
         
         cell_name <- paste0("cell-col-", j)
 
-        cell.grob <- if (cell_ascii == "") {
+        cell.grob <- if (identical(cell_ascii, "")) {
           NULL
         } else {
           if (cs == 1) {
@@ -291,6 +302,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
               label = cell_ascii,
               x = x0 + 0.5 * (x1 - x0),
               y = y,
+              just = c("center", "center"),
               name = cell_name
             )
             
@@ -303,7 +315,7 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
               gList(
                 lab,
                 linesGrob(x = unit.c(x0 + 0.2*padx, x1 - 0.2*padx),
-                          y = y - unit(.5, "lines"))
+                          y = rep(y - unit(.5, "lines")), 2)
               )
             }
           }
@@ -368,12 +380,11 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
   
   
   # now create the grobs
-  y_header <- unit(1, "npc") - unit( 1:nr_h * header_line_factor , "lines") 
+  y_header <- unit(1, "npc") - unit( seq_len(nr_h) * header_line_factor , "lines") 
   l_g_header_rows <- do.call(gList, lapply(seq_len(nr_h), function(i) {
-    rowGrob(tbl_header[[i]], y_header[i], TRUE)
-    }
-  ))
-  
+    rowGrob(tbl_header[[i]], y_header[i],  underline_colspan = TRUE)
+  }))
+
   p_header <- gTree(
     children = gList(
       gl_anchors,
@@ -382,14 +393,20 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
     childrenvp = vp_col_layout
   )
   # grid.newpage(); grid.draw(p_header)
+  #showGrob(p_header)
+  
+  #grid.text("c1", x = grobX("center_col_1",0), vp = "vp_col_layout")
+  
+  #grid.ls(viewports = TRUE)
   
   # grid.ls(p_header, viewports = TRUE)
   # grid.newpage(); grid.draw(p_header)
   
-  y_body <- unit(1, "npc") - unit(1:nr * header_line_factor, "lines")
+  y_body <- unit(1, "npc") - unit(seq_len(nr) * header_line_factor, "lines")
   l_g_body_rows <- do.call(gList, lapply(seq_len(nr), function(i) {
-    rowGrob(tbl[[i]], y_body[i], paste0("row_", i)) 
+    rowGrob(tbl[[i]], y_body[i], underline_colspan = FALSE) 
   }))
+  
   l_g_forest_rows <- do.call(gList, lapply(seq_len(nr), function(i) {
     pointLineGrob(x_e[i], x_ci[[i]], y_body[i],
                   vp = vpPath("vp_col_layout", "vp_forest")) 
@@ -417,7 +434,8 @@ g_forest <- function(tbl, i_col_est, i_col_ci,
     vp = vpStack(plotViewport(margins = c(2, 1, 1, 1)),
                  viewport(layout = grid.layout(
       nrow = 4, ncol = 1,
-      heights = unit(c(header_line_factor*nr_h+2, 2, header_line_factor * nr+2, 1),
+      heights = unit(c(header_line_factor*nr_h+2, 2,
+                       header_line_factor * nr+2, 1),
                      c("lines", "lines", "lines", "null"))
     )))
   )
