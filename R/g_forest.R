@@ -446,3 +446,169 @@ g_forest <- function(tbl,
   
   invisible(p_table)
 }
+
+
+#' forest plot grob
+#' 
+#' @export
+#' 
+#' @param tbl an \code{\link[rtables]{rtable}} object
+#' @param x coordinate of point
+#' @param lower lower bound of ci
+#' @param upper upper bound of ci
+#' @param xlim x limits for x-scales
+#' @param width_row.name \code{\link[grid]{unit}} object with width for row
+#'   names. If \code{NULL} the widths get automatically calculated.
+#' @param width_columns \code{\link[grid]{unit}} object with widths for the
+#'   table columns. If \code{NULL} the widths get automatically calculated.
+#' @param width_forest \code{\link[grid]{unit}} object with width for the
+#'   forest column. If \code{NULL} the widths get automatically calculated.
+#'   
+#' 
+#' @details 
+#' The heights get automatically determined
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' tbl <- rtable(
+#'   header = rheader(
+#'    rrow("", "E", rcell("CI", colspan = 2)),
+#'    rrow("", "A", "B", "C")
+#'   ),
+#'   rrow("row 1", 1, 0.8, 1.1),
+#'   rrow("row 2", 1.4, 0.8, 1.6)
+#' )
+#' 
+forestGrob <- function(tbl, x, lower, upper,
+                       xlim = NULL,
+                       width_row.name = NULL,
+                       width_columns = NULL,
+                       width_forest = unit(1, "null"), 
+                       name=NULL, gp=NULL, vp=NULL) {
+
+  
+  
+}
+
+
+forestViewport <- function(tbl, width_row.name, width_columns, width_forest = unit(1, "null"),
+                           gap_column = unit(1, "lines"), gap.header = unit(1, "lines")) {
+  
+  if (!is(tbl, "rtable")) stop("tbl needs to be an rtable object")
+  if (!is.null(widths) && !is(widths, "unit")) stop("widths needs to be NULL or a unit object")
+  
+  nr <- nrow(tbl)
+  nc <- ncol(tbl)
+  
+  h <- header(tbl)
+  nr_h <- nrow(h)
+
+  
+  # widths for row name, cols, forest
+  
+  if (is.null(width_row.names)) {
+    
+    all_row_names <- c(indented_row.names(tbl, 2),
+                       indented_row.names(tbl_header, 2))
+    
+    longest_row_name <- all_row_names[which.max(vapply(all_row_names, nchar, numeric(1)))]    
+    
+    width_row.names <- stringWidth(longest_row_name)
+  }
+  
+  
+  if (!is.null(width_columns)) {
+    if (length(width_columns) == nc ) {
+      # do nothing
+    } else if (length(width_columns) == 1) {
+      width_columns <- unit.rep(width_columns, nc)
+    } else {
+      stop("length of width_columns must be either 1 or the number of columns of tbl") 
+    }
+  } else {
+    width_columns <- do.call(unit.c, lapply(seq_len(nc), function(j) {
+      
+      width_body <- do.call(unit.pmax, lapply(seq_len(nr), function(i) {
+        stringWidth(format_rcell(tbl[i,j], output = "ascii")) + padx
+      }))
+      
+      width_header <- do.call(unit.pmax, lapply(seq_len(nr_h), function(i) {
+        stringWidth(format_rcell(tbl_header[i,j], output = "ascii")) + padx
+      }))
+      
+      unit.pmax(width_body, width_header)
+    }))
+  }
+  
+  
+  
+  
+  widths <- NULL
+  
+  
+  
+  height_header_rows <- NULL
+  height_body_rows <- NULL
+  
+  
+  nc_g <- nc + 2 # number of columns incl. row names and forest
+  
+  height_header <-NULL
+  height_body <- NULL
+  
+
+  vpTree(
+    parent = viewport(layout = grid.layout(
+      nrow = 3, ncol = 1, name="vp_table_layout",
+      heights = unit.c(height_header, gap_column, height_body))
+    ),
+    children = vpList(
+      vpForestTablePart(nr_h, nc_g, widths, height_header_rows, "vp_header"),
+      vpForestTablePart(nr, nc_g, widths, height_body_rows, "vp_body")
+    )
+  )
+  
+}
+
+
+vpForestTablePart <- function(nrow, ncol, widths, heights, name) {
+  vpTree(
+    viewport(layout = grid.layout(nrow = nrow, ncol = ncol), name = name,
+             widths = widths, heights = heights),
+    children = gList(
+      do.call(vpList, lapply(seq_len(nrow), function(i) {
+        viewport(layout.pos.row = i, layout.pos.col = 1, name = paste0("rowname-",i))
+      })),
+      do.call(vpList, apply(expand.grid(seq_len(nrow), seq_len(ncol-2)), 1, function(x) {
+        i <- x[1]; j <- x[2]
+        viewport(layout.pos.row = i, layout.pos.col = j+1, name = paste0("cell-",i,"-",j))
+      })),
+      do.call(vpList, lapply(seq_len(nrow), function(i) {
+        viewport(layout.pos.row = i, layout.pos.col = ncol, name = paste0("forest-",i))
+      }))
+    )
+  )
+}
+
+
+grid.forest <- function(...) {
+  grid.draw(forestGrob(...))
+}
+
+validDetails.forest <- function(x) {
+  
+  if (!is(x$tbl, "rtable")) stop("tbl needs to be an object of class rtable")
+  nr <- nrow(x$tbl)
+  
+  if (!is.numeric(x$x))
+  
+  
+  
+  x
+}
+
+g_forest <- function() {
+  
+}
