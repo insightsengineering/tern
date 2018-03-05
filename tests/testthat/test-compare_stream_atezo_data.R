@@ -242,8 +242,9 @@ if (require("atezo.data", quietly = TRUE)) {
     
     ANL <- left_join(ASL_f, ARS_f, by = c("USUBJID", "STUDYID"))
     
-    avalc <- fct_relevel(ANL$AVALC, "CR", "PR", "SD", "PD") %>% 
-      fct_collapse("Missing or unevaluable" = c("NE", ""))
+    avalc <- fct_collapse(ANL$AVALC, "Missing or unevaluable" = c("NE", "")) %>%
+      factor(levels = c("CR", "PR", "SD", "PD", "Missing or unevaluable"))
+    
     
     tbl <- t_rsp(
       rsp = ANL$AVALC %in% c("CR", "PR"),
