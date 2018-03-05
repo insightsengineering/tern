@@ -2,9 +2,9 @@
 % Please edit documentation in R/t_rsp.R
 \name{t_rsp}
 \alias{t_rsp}
-\title{Response Table Caclulation Function}
+\title{Response Table}
 \usage{
-t_rsp(rsp, col_by, parition_rsp_by = NULL, strata_data = NULL)
+t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL)
 }
 \arguments{
 \item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
@@ -13,47 +13,69 @@ otherwise}
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group}
 
-\item{parition_rsp_by}{factor to partition \code{rsp} and run additional
-analysis}
+\item{partition_rsp_by}{factor with one or more response categories, generate
+additional statistics partitioned by each response categories. If 
+\code{NULL}, tabulation by each response categories will not be performed.}
 
-\item{strata_data}{data for stratification factors (categorical variables),
-if \code{NULL} no stratified analysis is performed}
+\item{strata_data}{data for stratification factors (categorical variables). 
+If \code{NULL}, no stratified analysis is performed. See details for 
+further explanation.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-TODO: Description
+The response table function summarizes response data by groups. The function 
+produces frequency counts and rates for responders and each response 
+categories, as well as conducts comparisons between groups' response rates 
+and odds ratio.
 }
 \details{
-If no stratification, chi-squared test is performed by default to test for
-equality of proportions in response rate between reference and comparison
-arms.
-
-If stratification factors are added, Cochran-Mantel-Haensel test statistics
-are reported for the test of equal proportions, odds ratio and its
-corresponding 95% confidence interval.
+For the test of difference in response rates, Wald confidence 
+  interval with and without continuity correction are both reported. If no 
+  stratification factors are specified, Chi-squared test is performed by 
+  default to test for equality of proportions in response rate between 
+  reference and comparison groups. If stratification factors are added, 
+  Cochran-Mantel-Haensel test is performed instead. Statistics from the 
+  stratificaiton-adjusted test will be reported for the p-value of test of 
+  equal proportions, odds ratio and its corresponding 95\% confidence 
+  interval.
+  
+  The display order of response categories in partitioned statistics section 
+  inherits the factor level order of \code{partition_rsp_by}. Use 
+  \code{\link[base]{factor()}} and its \code{levels} argument to include or 
+  exclude response categories and arrange display order. If response values 
+  contains missing or "Not Evaluable (NE)", 95\% confidence interval will not
+  be calculated.
 }
 \examples{
 
 library(random.cdisc.data)
 
-ASL <- radam("ASL", N = 1000, start_with = list(RACE = c("white", "asian")))
+ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000, start_with = list(RACE = c("white", "asian")))
 ARS <- radam("ARS", ADSL = ASL)
-
-ASL$ARM <- factor(sample(LETTERS[1:3], nrow(ASL), TRUE))
-ASL$RACE <- factor(ASL$RACE)
-
 ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
 
+# Example 1 - ARM B as reference
+#             "NON CR/PD" response category dropped from partition section since no observations
+#             model with no stratifiaction factors, Chi-square test is performed
 tbl <- t_rsp(
  rsp = ANL$AVALC \%in\% c("CR", "PR"),
- col_by = relevel(factor(ANL$ARMCD), "ARM B", "ARM A"),
- parition_rsp_by = droplevels(factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE"))),
- strata_data = ANL[, c("SEX", "RACE")]
+ col_by = relevel(factor(ANL$ARMCD), "ARM B"),
+ partition_rsp_by = droplevels(factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")))
 )
+tbl; Viewer(tbl)
 
-tbl
+# Example 2 - ARM B as reference, ARM C displayed before ARM A
+#             "NON CR/PD" response category displayed in partition section, "NE" responses are not displayed 
+#             model with two stratifiaction factors, CMH test performed
+tbl2 <- t_rsp(
+ rsp = ANL$AVALC \%in\% c("CR", "PR"),
+ col_by = factor(ANL$ARMCD, c("ARM B", "ARM C", "ARM A")),
+ partition_rsp_by = factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
+ strata_data = ANL[c("SEX","RACE")]
+)
+tbl2; Viewer(tbl2)
 
 }
 \author{
