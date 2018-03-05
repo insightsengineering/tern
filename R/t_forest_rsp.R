@@ -54,10 +54,14 @@
 #' )
 #' 
 #' tbl
+#' 
+#' \dontrun{
 #' Viewer(tbl)
+#' }
 #'    
 t_forest_rsp <- function(rsp, col_by, group_data = NULL,
-                         total = 'ALL', na.omit.group = TRUE) {
+                         total = 'ALL', na.omit.group = TRUE,
+                         dense_header = FALSE) {
   
   if (!is.logical(rsp)) stop("rsp is required to be boolean")
   check_same_N(rsp = rsp, col_by = col_by, group_data = group_data)
@@ -70,22 +74,46 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
     group_data <- all_as_factor(group_data)
   }
   
-  table_header <- rheader(
-    rrow(row.name = "",
-         rcell(NULL),
-         rcell(levels(col_by)[1], colspan = 3),
-         rcell(levels(col_by)[2], colspan = 3),
-         rcell(NULL),
-         rcell(NULL)
-    ),
-    rrow(row.name = "Baseline Risk Factors",
-         "Total n",
-         "n", "Responders", "Response.Rate",
-         "n", "Responders", "Response.Rate",
-         "Odds Ratio",
-         "95% CI"
+  table_header <- if (dense_header) {
+    rheader(
+      rrow(row.name = "",
+           rcell(NULL),
+           rcell(levels(col_by)[1], colspan = 3),
+           rcell(levels(col_by)[2], colspan = 3),
+           rcell(NULL),
+           rcell(NULL)
+      ),
+      rrow(row.name = "Baseline",
+           "Total",
+           "", "", "Response",
+           "", "", "Response",
+           "Odds", ""),
+      rrow(row.name = "Risk Factors",
+           "n",
+           "n", "Responders", "Rate",
+           "n", "Responders", "Rate",
+           "Ratio",
+           "95% CI"
+      )
+    )    
+  } else {
+    rheader(
+      rrow(row.name = "",
+           rcell(NULL),
+           rcell(levels(col_by)[1], colspan = 3),
+           rcell(levels(col_by)[2], colspan = 3),
+           rcell(NULL),
+           rcell(NULL)
+      ),
+      rrow(row.name = "Baseline Risk Factors",
+           "Total n",
+           "n", "Responders", "Response.Rate",
+           "n", "Responders", "Response.Rate",
+           "Odds Ratio",
+           "95% CI"
+      )
     )
-  )
+  }
   
   glm_data <- data.frame(response = rsp, arm = col_by)
   
