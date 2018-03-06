@@ -116,7 +116,7 @@ if (require("atezo.data", quietly = TRUE)) {
     # Viewer(tbl, tbl_stream)
     comp <- compare_rtables(tbl, tbl_stream, tol = .1, comp.attr = FALSE)
     
-    expect_true(all(comp == "."), "demographic table does not match")
+    expect_true(all(comp == "."), "t_summarize_variables does not provide the same results as stream")
 
     
   })
@@ -155,7 +155,7 @@ if (require("atezo.data", quietly = TRUE)) {
     
     comp <- compare_rtables(tbl, tbl_stream, tol = 0.1, comp.attr = FALSE)
 
-    expect_true(all(comp == "."), "forest response table is not correct")
+    expect_true(all(comp == "."), "t_forest_rsp does not provide the same results as stream")
     
   })
 
@@ -199,7 +199,8 @@ if (require("atezo.data", quietly = TRUE)) {
                        # i.e., t{i} = 12.91 and t{i+1} is missing. Thus, t_{i} + t_{i+1}/2 is then missing. 
                        # However  in R, 12.91 is taken as the median survival time.
      
-    expect_true(all(comp == "."), "forest tte is not the same")
+    expect_true(all(comp == "."), "t_forest_tte  does not provide the same results as stream")
+
     
   })  
   
@@ -229,7 +230,7 @@ if (require("atezo.data", quietly = TRUE)) {
     
     comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
     
-    expect_true(any(comp != "."), "t_tte is not exactly like STREAM")
+    expect_true(all(comp == "."), "t_tte  does not provide the same results as stream")
     
   })
   
@@ -248,16 +249,34 @@ if (require("atezo.data", quietly = TRUE)) {
     
     ANL <- left_join(ASL_f, ARS_f, by = c("USUBJID", "STUDYID"))
     
+    avalc <- fct_collapse(ANL$AVALC, "Missing or unevaluable" = c("NE", "")) %>%
+      factor(levels = c("CR", "PR", "SD", "PD", "Missing or unevaluable"))
+    
+    
     tbl <- t_rsp(
       rsp = ANL$AVALC %in% c("CR", "PR"),
       col_by = factor(ANL$ARMCD1, levels = c("C", "B", "A")),
-      parition_rsp_by = fct_relevel(ANL$AVALC, "CR", "PR", "SD", "NON CR/PD", "PD")
+      partition_rsp_by = avalc
     )
     
-    # Viewer(tbl)
-    # Viewer(tbl, tbl_stream)
-    #comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-    #expect_true(any(comp != "."), "t_rsp is not exactly like STREAM")
+    # tbl_no_missing_ci <- tbl[-nrow(tbl), ]
+    # Viewer(tbl_no_missing_ci)
+    # Viewer(tbl_no_missing_ci, tbl_stream)
+    # comp <- compare_rtables(tbl_no_missing_ci, tbl_stream, comp.attr = FALSE)
+    
+    # row8 CI with correction for rate difference not reported in STREAM table
+    comp <- compare_rtables(tbl[-8], tbl_stream, comp.attr = FALSE)
+    
+    comp[7,1] <- "." # empty cell, compare_rtables should not report this
+    comp[7,2] <- "." # method used in tbl_stream is incorrect according to communications with Jennifer
+    comp[8,1] <- "." # empty cell, compare_rtables should not report this
+    comp[10,1] <- "." # # empty cell, compare_rtables should not report this
+    comp[11,1] <- "." # # empty cell, compare_rtables should not report this
+    
+    # str(tbl[9,1])
+    # str(tbl_stream[8,1])
+    
+    expect_true(all(comp == "."), "t_rsp  does not provide the same results as stream")
     
   })
   

@@ -5,7 +5,7 @@
 \title{Response Forest Plot Table}
 \usage{
 t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
-  na.omit.group = TRUE)
+  na.omit.group = TRUE, dense_header = FALSE)
 }
 \arguments{
 \item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
@@ -66,7 +66,10 @@ tbl <- t_forest_rsp(
 )
 
 tbl
+
+\dontrun{
 Viewer(tbl)
+}
    
 }
 \author{

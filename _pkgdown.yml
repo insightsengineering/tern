@@ -18,7 +18,7 @@ reference:
       - starts_with("t_")
   - title: Graphs
     contents:
-      - starts_with("g_")
+      - g_forest
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
@@ -27,7 +27,3 @@ reference:
       - var_relabel
       - drop_shared_variables
       - reorder_to_match_id
-
-
-      
-
