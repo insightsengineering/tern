@@ -142,7 +142,7 @@ kmAnnoData <- function(formula_km, data ){
   tblkm <- do.call(
     rtable,
     c(
-      list(col.names = c("N", "median", "95% CI for median")),
+      list(header = c("N", "median", "95% CI for median")),
       lapply(skminfo, function(xi) {
         rrow(
           row.name = rownames(xi),
@@ -204,7 +204,7 @@ coxphAnnoData <- function(formula_coxph, data, cox_ties = "exact", info_coxph = 
   tbl <- do.call(
     rtable,
     c(
-      list(col.names = c("HR", "95% CI of HR", "Wald p-value")),
+      list(header = c("HR", "95% CI of HR", "Wald p-value")),
       lapply(sinfo, function(xi) {
         rrow(
           row.name = rownames(xi),
@@ -268,7 +268,7 @@ coxphAnnoImpower131 <- function(formula_coxph, data_list, cox_ties = "exact", in
   tbl <- do.call(
     rtable,
     c(
-      list(col.names = c("HR*", "95% CI of HR*", "Wald p-value*",  "Score p-val*")),
+      list(header = c("HR*", "95% CI of HR*", "Wald p-value*",  "Score p-val*")),
       lapply(sinfo, function(xi) {
         rrow(
           row.name = rownames(xi),
