@@ -9,10 +9,10 @@
 #'   first \code{level} indicates the reference group
 #' 
 #' @details
-#' Cox PH model is used for hazard ratio calculation
+#' Cox propotionl hazard model is used for hazard ratio calculation
 #'
 #'
-#' The returned table contains one row per analysis applied on a subset of data
+#' The returned table contains one row per analysis within a subgroup of data
 #' (indicated by the row name). The analysis is summarized with the following 9
 #' columns:
 #' 
@@ -21,7 +21,7 @@
 #'   \item{2-4}{Survival statistics for reference arm, \emph{n} and \emph{Events} are the total number of patients and the number of events in reference arm, respectively.
 #'   \code{Median (month)} is the survival time estimated by Kaplan-Meier method. Time unit can be modified per study needs.}
 #'   \item{5-7}{same analysis as for reference arm now for comparison arm}
-#'   \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison versus the reference group.
+#'   \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison group versus that in the reference group.
 #'    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio. 
 #'   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when comparion arm is better. }
 #'   \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty 
@@ -56,6 +56,7 @@
 #' )
 #' 
 #' tbl
+#' Viewer(tbl)
 #' 
 t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
                          strata_data = NULL, total = 'ALL', time_unit = "month",
@@ -212,7 +213,7 @@ survival_results <- function(data){
   # 2. at least one of the two arms have no events
   # 3. data has only one arm.
   if (nrow(km_sum) == 2 & km_ref_event * km_comp_event > 0){
-    cox_sum  <- summary(coxph(Surv(time_to_event,event) ~ arm, data = data))
+    cox_sum  <- suppressWarnings(summary(coxph(Surv(time_to_event,event) ~ arm, data = data)))
     cox_hr   <- cox_sum$conf.int[1]
     cox_lcl  <- cox_sum$conf.int[3]
     cox_ucl  <- cox_sum$conf.int[4]

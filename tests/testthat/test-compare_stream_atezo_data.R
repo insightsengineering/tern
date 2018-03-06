@@ -125,7 +125,7 @@ if (require("atezo.data", quietly = TRUE)) {
   test_that("forest response", {
     
     tbl_stream <- get_forest_response_table(com.roche.cdt30019.go29436.re)
-  
+    #Viewer(tbl_stream)
     ARS_f <- ARS %>% filter(PARAMCD == "OVRSPI") %>% 
                     select(USUBJID, STUDYID, AVAL, AVALC)
   
@@ -191,9 +191,16 @@ if (require("atezo.data", quietly = TRUE)) {
     
     comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
     
-    # comp[19, 8] <- "." # because ...
-    
+    comp[19, 8] <- "." # because atezo.data assigned (0, -999) to not evaluable CI, whilst t_forest_tte function returned NAs.
+    comp[19, 9] <- "." # because atezo.data assigned (0, -999) to not evaluable CI, whilst t_forest_tte function returned NAs.
+    comp[23, 4] <- "." # because the estiamtion rule in R and SAS for median survival time is different. In SAS, 
+                       # If S_hat is exactly equal to 0.50 from t_{i} to t_{i+1} , the first quartile is taken to be t_{i} + t_{i+1}/2.
+                       # In atezo.data, white and caucasian group DUMMY C, for time = 12.91, S_t = 0.5, and there is no event after that,
+                       # i.e., t{i} = 12.91 and t{i+1} is missing. Thus, t_{i} + t_{i+1}/2 is then missing. 
+                       # However  in R, 12.91 is taken as the median survival time.
+     
     expect_true(all(comp == "."), "t_forest_tte  does not provide the same results as stream")
+
     
   })  
   
