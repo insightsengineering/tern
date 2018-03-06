@@ -124,25 +124,30 @@ first <code>level</code> indicates the reference group</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Logistic model is used for odds ratio calculation.</p>
-<p>The returned table contains one row per analysis applied on a subset of data
-(indicated by the row name). The analysis is summarized with the following 9
-columns:</p><dl class='dl-horizontal'>
-  <dt>1</dt><dd><p><em>Total n</em> the total number of subjects included in analysis population</p></dd>
-  <dt>3-4</dt><dd><p>Summary of responders in reference arm, <em>n</em> and <em>Responders</em> are the 
-  total number of patients and the number of responders in reference arm, respectively.
-  <code>Response.Rate</code> is the percentage of responders in reference arm.</p></dd>
-  <dt>5-7</dt><dd><p>same statistics as for reference arm now for comparison arm</p></dd>
-  <dt>8</dt><dd><p><em>Odds Ratio</em> ranges from 0 to infinity, estimated by applying 
-  univariate logistic regression with binary response status (responder or non-responder) 
-  as the the outcome and arm variable as the explanatory variable. Odds ratio greater than 1 
-  indicates better performance in comparison arm; odds ratio less than 1 indicates better performance in reference arm.</p></dd>
-  <dt>9</dt><dd><p><em>95 % CI</em> The 95<!-- % confidence interval indicates the level of uncertainty  -->
-  around the measure of effect (Odds Ratio). Because only a small sample of the overall 
-  population is included in the analysis, by having an upper and lower confidence limit 
-  we can infer that the true treatment effect lies in between. If the 95<!-- % confidence interval  -->
-  includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.</p></dd>
-</dl>
+    <p>Logistic regression is used for odds ratio calculation.</p>
+<p>Each row in the returned table contains the analysis statistics for a
+subgroup of data (indicated by the row name). The summary table is consist of
+the following 9 columns:</p><dl class='dl-horizontal'>
+    <dt>1</dt><dd><p><em>Total n</em> the total number of subjects included in analysis
+  population</p></dd>
+    <dt>3-4</dt><dd><p>Summary of responders in reference arm, <em>n</em> and
+  <em>Responders</em> are the total number of patients and the number of
+  responders in reference arm, respectively. <code>Response.Rate</code> is the
+  percentage of responders in reference arm.</p></dd>
+    <dt>5-7</dt><dd><p>same statistics as for reference arm now for comparison arm</p></dd>
+    <dt>8</dt><dd><p><em>Odds Ratio</em> ranges from 0 to infinity, estimated by applying
+  univariate logistic regression. Binary response status (responder or
+  non-responder) is the outcome and arm is the explanatory variable. Odds
+  ratio greater than 1 indicates better performance in comparison arm; odds
+  ratio less than 1 indicates better performance in reference arm.</p></dd>
+    <dt>9</dt><dd><p><em>95 % CI</em> The 95<!-- % confidence interval indicates the level of -->
+  uncertainty around the measure of effect (Odds Ratio). Because only a small
+  sample of the overall population is included in the analysis, by having an
+  upper and lower confidence limit we can infer that the true treatment
+  effect lies in between. If the 95<!-- % confidence interval includes 1, then we -->
+  say that the difference between two arms is not significant at a
+  significance level of 0.05.</p></dd>
+    </dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -150,14 +155,14 @@ columns:</p><dl class='dl-horizontal'>
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
-
+<span class='no'>ASL</span>$<span class='st'>'FAKE Name &gt; -1.3 Flag'</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'Y'</span>, <span class='st'>'N'</span>), <span class='fl'>50</span>)
 <span class='no'>ARS_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>)
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ARS_f</span>)
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_forest_rsp</span>(
   <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>, <span class='st'>"FAKE Name &gt; -1.3 Flag"</span>)]
 )
 
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                  ARM A                                                          ARM B                                                                   
@@ -174,7 +179,11 @@ columns:</p><dl class='dl-horizontal'>
 #&gt;   ASIAN                                                 25                   16                    8                   0.5                   9                    6                  0.67                   2              (0.38, 12.26)
 #&gt;   BLACK OR AFRICAN AMERICAN                             18                   12                    6                   0.5                   6                    2                  0.33                  0.5             (0.05, 3.66) 
 #&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             22                   13                    5                  0.38                   9                    4                  0.44                 1.28             (0.22, 7.42) 
-#&gt;   WHITE                                                 17                    8                    3                  0.38                   9                    4                  0.44                 1.33             (0.19, 10.07)</div><div class='input'>
+#&gt;   WHITE                                                 17                    8                    3                  0.38                   9                    4                  0.44                 1.33             (0.19, 10.07)
+#&gt; 
+#&gt; FAKE Name &gt; -1.3 Flag
+#&gt;   N                                                     50                   25                    7                  0.28                  25                   10                   0.4                 1.71             (0.53, 5.79) 
+#&gt;   Y                                                     50                   29                   15                  0.52                  21                   12                  0.57                 1.24              (0.4, 3.92) </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span><div class='input'>   

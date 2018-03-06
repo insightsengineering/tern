@@ -116,15 +116,15 @@ first <code>level</code> indicates the reference group</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Cox PH model is used for hazard ratio calculation</p>
-    <p>The returned table contains one row per analysis applied on a subset of data
+    <p>Cox propotionl hazard model is used for hazard ratio calculation</p>
+    <p>The returned table contains one row per analysis within a subgroup of data
 (indicated by the row name). The analysis is summarized with the following 9
 columns:</p><dl class='dl-horizontal'>
   <dt>1</dt><dd><p><em>Total n</em> the total number of subjects included in analysis population</p></dd>
   <dt>2-4</dt><dd><p>Survival statistics for reference arm, <em>n</em> and <em>Events</em> are the total number of patients and the number of events in reference arm, respectively.
   <code>Median (month)</code> is the survival time estimated by Kaplan-Meier method. Time unit can be modified per study needs.</p></dd>
   <dt>5-7</dt><dd><p>same analysis as for reference arm now for comparison arm</p></dd>
-  <dt>8</dt><dd><p><em>Hazard Ratio</em> ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison versus the reference group.
+  <dt>8</dt><dd><p><em>Hazard Ratio</em> ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison group versus that in the reference group.
    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio. 
   Hazard ratio &gt; 1 implies better treatment effect in reference arm, and hazard ratio &lt; 1 when comparion arm is better.</p></dd>
   <dt>9</dt><dd><p><em>95% Wald CI</em> The 95<!-- % confidence interval indicates the level of uncertainty  -->
@@ -169,8 +169,7 @@ columns:</p><dl class='dl-horizontal'>
 #&gt;   ASIAN                                                 15                  6                   3                 106.82                9                   5                 62.77                2.34            (0.44, 12.4)
 #&gt;   BLACK OR AFRICAN AMERICAN                             18                  5                   2                                       13                  7                 120.08               1.45            (0.3, 6.99) 
 #&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             18                  10                  9                 110.9                 8                   2                                      0.68            (0.12, 3.73)
-#&gt;   WHITE                                                 24                  14                  10                34.62                 10                  8                 95.09                0.55            (0.2, 1.54) </div><div class='input'>
-</div></pre>
+#&gt;   WHITE                                                 24                  14                  10                34.62                 10                  8                 95.09                0.55            (0.2, 1.54) </div><div class='input'><span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
