@@ -13,11 +13,12 @@ Authors@R: c(
 Description: TLG creation
 Depends:
   R (>= 3.3),
-  rtables,
-  survival
-Imports:
+  survival,
   grid,
-  ggplot2
+  rtables
+Imports:
+  ggplot2,
+  scales
 Suggests:
   random.cdisc.data,
   testthat,

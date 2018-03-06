@@ -18,8 +18,6 @@ Return a list of data for primitive element of grid drawing
 }
 \examples{
 
-library(survival)
-library(scales)
 
 OS <- data.frame(AVAL = abs(rnorm(200)), 
                  CNSR = sample(c(0, 1), 200, TRUE), 
@@ -28,4 +26,6 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
 kmCurveData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+
+
 }

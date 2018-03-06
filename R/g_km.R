@@ -12,9 +12,6 @@
 #' @export
 #' 
 #' @examples 
-#' library(survival)
-#' library(scales)
-#' library(grid)
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
 #'                  ARM = sample(LETTERS[1:3], 200, TRUE),
@@ -22,8 +19,8 @@
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' kmGrob(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
-
-kmGrob <- function(title = "Kaplan - Meier Plot", ...){
+#' 
+kmGrob <- function(title = "Kaplan - Meier Plot", ...) {
   
   curve_data <- kmCurveData(...)
   nlines_labels <- curve_data$nlines_labels
@@ -114,10 +111,6 @@ kmGrob <- function(title = "Kaplan - Meier Plot", ...){
 #' @export
 #' 
 #' @examples 
-#' library(grid)
-#' library(survival)
-#' library(rtables)
-#' library(scales)
 #' library(dplyr)
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
@@ -133,7 +126,8 @@ kmGrob <- function(title = "Kaplan - Meier Plot", ...){
 #'          just = c("left", "bottom"),
 #'          tbl = cox_tbl ) %>% 
 #'          grid.draw()
-
+#'          
+#'          
 addTable <- function(kmgrob, vp, x = unit(0.5, "npc") , y = unit(0.5, "npc"), 
                      tbl, just = c("left", "top")){
    

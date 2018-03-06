@@ -20,8 +20,6 @@ coxphAnnoData(formula_coxph, data, cox_ties = "exact",
 An rtable format of Cox PH model data for further annotation on top of Kaplan-Meier grob
 }
 \examples{
-library(survival)
-library(rtables)
 
 OS <- data.frame(AVAL = abs(rnorm(200)), 
                  CNSR = sample(c(0, 1), 200, TRUE), 
@@ -30,4 +28,6 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
 coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+
+
 }

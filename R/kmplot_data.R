@@ -14,8 +14,6 @@
 #' 
 #' @examples 
 #' 
-#' library(survival)
-#' library(scales)
 #' 
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
@@ -24,9 +22,9 @@
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' kmCurveData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
-
-
-kmCurveData <- function(formula_km, data, xaxis_by = NULL){
+#' 
+#' 
+kmCurveData <- function(formula_km, data, xaxis_by = NULL) {
   
   fit <- survfit(formula_km, data = data, conf.type = "plain")
   ngroup <- length(fit$strata)
@@ -93,7 +91,7 @@ kmCurveData <- function(formula_km, data, xaxis_by = NULL){
     x[x$n.censor !=0, "surv"]
   })
   
-  col_pal <- col_factor("Set1", domain = names(df_s))
+  col_pal <- scales::col_factor("Set1", domain = names(df_s))
   col <- col_pal(names(df_s))
   return(list(nlines_labels = nlines_labels,
               xpos = xpos,
@@ -123,8 +121,6 @@ kmCurveData <- function(formula_km, data, xaxis_by = NULL){
 #' @export
 #' 
 #' @examples 
-#' library(survival)
-#' library(rtables)
 #' 
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
@@ -133,8 +129,8 @@ kmCurveData <- function(formula_km, data, xaxis_by = NULL){
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' kmAnnoData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
-
-kmAnnoData <- function(formula_km, data ){
+#' 
+kmAnnoData <- function(formula_km, data) {
   
   fit <- survfit(formula_km, data = data, conf.type = "plain")
   kminfo <- summary(fit)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
@@ -174,8 +170,6 @@ kmAnnoData <- function(formula_km, data ){
 #' @export
 #' 
 #' @examples 
-#' library(survival)
-#' library(rtables)
 #' 
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
@@ -184,7 +178,8 @@ kmAnnoData <- function(formula_km, data ){
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
-
+#' 
+#' 
 coxphAnnoData <- function(formula_coxph, data, cox_ties = "exact", info_coxph = "Cox Porportional Model"){
   
   fitcox <- coxph(formula_coxph, data = data, ties = cox_ties)
@@ -229,58 +224,3 @@ coxphAnnoData <- function(formula_coxph, data, cox_ties = "exact", info_coxph = 
 }
 
 
-
-#' Prepare Independent Cox PH model annotation data with rtable format
-#' 
-#' An rtable format of Indedendent Cox PH model (spcially for IMPower 131 study) data for further annotation on top of Kaplan-Meier grob
-#' 
-#' @param formula_coxph formula specified for Cox PH model.
-#' @param data_list a list of analysis data set.
-#' @param cox_ties ties handling method for Cox PH model. options are "efron", "breslow" and "exact".
-#' @param info_coxph label information for Cox PH model.
-#' 
-#' @import survival
-#' @import rtables
-#' 
-#' @export
-
-
-coxphAnnoImpower131 <- function(formula_coxph, data_list, cox_ties = "exact", info_coxph = "Cox Porportional Model"){
-  
-  sinfo <- sapply(data_list, function(x){
-    fitcox <- coxph(formula_coxph, data = x, ties = cox_ties)
-    
-    sfit <- summary(fitcox)
-    
-    hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
-    
-    ci <- sfit$conf.int[, c("lower .95", "upper .95"), drop = FALSE]  
-    
-    pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
-    
-    scpval <- sfit$sctest["pvalue"] %>% rep(., nrow(pvalues)) %>% as.matrix
-    colnames(scpval) <- "scorepval"
-    
-    info <- cbind(hr, ci, pvalues, scpval)
-    sinfo <- split(as.data.frame(info), 1:nrow(info))
-  })
-  
-  tbl <- do.call(
-    rtable,
-    c(
-      list(header = c("HR*", "95% CI of HR*", "Wald p-value*",  "Score p-val*")),
-      lapply(sinfo, function(xi) {
-        rrow(
-          row.name = rownames(xi),
-          rcell(xi$'exp(coef)', format = "xx.xxxx"),
-          rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
-          rcell(xi$'Pr(>|z|)', format = "xx.xxxx"),
-          rcell(xi$'scorepval', format = "xx.xxxx")
-        )
-      })
-    )
-  )
-  tblstr <- toString(tbl, gap = 1)
-  tblstr2 <- paste0(info_coxph, "\n", tblstr, "\n *From Seperate Model for each Comparision group")
-  return(tblstr2)
-}

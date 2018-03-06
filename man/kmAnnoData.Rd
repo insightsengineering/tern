@@ -15,8 +15,6 @@ kmAnnoData(formula_km, data)
 An rtable format of KM model data for further annotation on top of Kaplan-Meier grob
 }
 \examples{
-library(survival)
-library(rtables)
 
 OS <- data.frame(AVAL = abs(rnorm(200)), 
                  CNSR = sample(c(0, 1), 200, TRUE), 
@@ -25,4 +23,5 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
 kmAnnoData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+
 }

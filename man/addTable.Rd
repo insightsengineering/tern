@@ -24,9 +24,6 @@ addTable(kmgrob, vp, x = unit(0.5, "npc"), y = unit(0.5, "npc"), tbl,
 utility function to edit a grid grob by adding a text grob
 }
 \examples{
-library(grid)
-library(survival)
-library(rtables)
 library(scales)
 library(dplyr)
 OS <- data.frame(AVAL = abs(rnorm(200)), 
@@ -43,4 +40,6 @@ addTable(a_kmgrob,
          just = c("left", "bottom"),
          tbl = cox_tbl ) \%>\% 
          grid.draw()
+         
+         
 }

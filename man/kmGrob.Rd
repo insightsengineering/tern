@@ -15,9 +15,6 @@ kmGrob(title = "Kaplan - Meier Plot", ...)
 create a grid graphical object for basic KM plot using data from a call of function \code{kmCurveData}
 }
 \examples{
-library(survival)
-library(scales)
-library(grid)
 OS <- data.frame(AVAL = abs(rnorm(200)), 
                  CNSR = sample(c(0, 1), 200, TRUE), 
                  ARM = sample(LETTERS[1:3], 200, TRUE),
@@ -25,4 +22,5 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
 kmGrob(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+
 }
