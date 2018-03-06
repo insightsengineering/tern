@@ -65,6 +65,7 @@ tbl <- t_forest_tte(
 )
 
 tbl
+Viewer(tbl)
 
 }
 \author{
