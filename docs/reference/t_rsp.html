@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Response Table Caclulation Function — t_rsp • tern</title>
+<title>Response Table — t_rsp • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -80,14 +80,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Response Table Caclulation Function</h1>
+    <h1>Response Table</h1>
     </div>
 
     
-    <p>TODO: Description</p>
+    <p>The response table function summarizes response data by groups. The function 
+produces frequency counts and rates for responders and each response 
+categories, as well as conducts comparisons between groups' response rates 
+and odds ratio.</p>
     
 
-    <pre class="usage"><span class='fu'>t_rsp</span>(<span class='no'>rsp</span>, <span class='no'>col_by</span>, <span class='kw'>parition_rsp_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>t_rsp</span>(<span class='no'>rsp</span>, <span class='no'>col_by</span>, <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -103,14 +106,16 @@ otherwise</p></td>
 first <code>level</code> indicates the reference group</p></td>
     </tr>
     <tr>
-      <th>parition_rsp_by</th>
-      <td><p>factor to partition <code>rsp</code> and run additional
-analysis</p></td>
+      <th>partition_rsp_by</th>
+      <td><p>factor with one or more response categories, generate
+additional statistics partitioned by each response categories. If 
+<code>NULL</code>, tabulation by each response categories will not be performed.</p></td>
     </tr>
     <tr>
       <th>strata_data</th>
-      <td><p>data for stratification factors (categorical variables),
-if <code>NULL</code> no stratified analysis is performed</p></td>
+      <td><p>data for stratification factors (categorical variables). 
+If <code>NULL</code>, no stratified analysis is performed. See details for 
+further explanation.</p></td>
     </tr>
     </table>
     
@@ -120,63 +125,112 @@ if <code>NULL</code> no stratified analysis is performed</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If no stratification, chi-squared test is performed by default to test for
-equality of proportions in response rate between reference and comparison
-arms.</p>
-<p>If stratification factors are added, Cochran-Mantel-Haensel test statistics
-are reported for the test of equal proportions, odds ratio and its
-corresponding 95<!-- % confidence interval. --></p>
+    <p>For the test of difference in response rates, Wald confidence 
+  interval with and without continuity correction are both reported. If no 
+  stratification factors are specified, Chi-squared test is performed by 
+  default to test for equality of proportions in response rate between 
+  reference and comparison groups. If stratification factors are added, 
+  Cochran-Mantel-Haensel test is performed instead. Statistics from the 
+  stratificaiton-adjusted test will be reported for the p-value of test of 
+  equal proportions, odds ratio and its corresponding 95% confidence 
+  interval.</p>  
+<p>The display order of response categories in partitioned statistics section 
+  inherits the factor level order of <code>partition_rsp_by</code>. Use 
+  <code>factor()</code> and its <code>levels</code> argument to include or 
+  exclude response categories and arrange display order. If response values 
+  contains missing or "Not Evaluable (NE)", 95% confidence interval will not
+  be calculated.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>arm_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
-
-<span class='no'>ASL</span>$<span class='no'>ARM</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fu'>nrow</span>(<span class='no'>ASL</span>), <span class='fl'>TRUE</span>))
-<span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>)
-
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>))
 
+<span class='co'># Example 1 - ARM B as reference</span>
+<span class='co'>#             "NON CR/PD" response category dropped from partition section since no observations</span>
+<span class='co'>#             model with no stratifiaction factors, Chi-square test is performed</span>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
- <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>),
- <span class='kw'>parition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>))),
- <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]
+ <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>),
+ <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)))
 )
-
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM A     
-#&gt;                                                                     (N=494)               (N=506)    
-#&gt; -----------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        183 (37.04%)          180 (35.57%) 
-#&gt; Non-Responders                                                    311 (62.96%)          326 (64.43%) 
+<span class='no'>tbl</span>; <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt;                                                                      ARM B                 ARM A                 ARM C     
+#&gt;                                                                     (N=299)               (N=354)               (N=347)    
+#&gt; ---------------------------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                        100 (33.44%)          133 (37.57%)          130 (37.46%) 
+#&gt; Non-Responders                                                    199 (66.56%)          221 (62.43%)          217 (62.54%) 
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (32.77, 41.47)        (31.4, 39.92) 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (28.12, 39.1)         (32.51, 42.84)        (32.35, 42.79)
 #&gt; 
-#&gt; Difference in Response Rates (x100)                                                        -1.47     
-#&gt;   95% CI for difference (Wald without correction)                                      (-8.03, 4.85) 
-#&gt;   95% CI for difference (Wald with continuity correction)                              (-0.08, 0.05) 
-#&gt;   p-value (Cochran-Mantel-Haenszel)                                                    &lt;5 data points
+#&gt; Difference in Response Rates (%)                                                            4.13                  4.02     
+#&gt;   95% CI for difference (Wald without correction)                                      (-3.49, 12.41)        (-3.65, 12.36)
+#&gt;   95% CI for difference (Wald with continuity correction)                              (-3.82, 12.75)        (-3.98, 12.7) 
+#&gt;   p-value (Chi-squared)                                                                    0.2729                0.2874    
 #&gt; 
-#&gt; Odds Ratio                                                                             &lt;5 data points
-#&gt;   95% CI                                                                               &lt;5 data points
+#&gt; Odds Ratio                                                                                  1.2                   1.19     
+#&gt;   95% CI                                                                                (0.87, 1.65)          (0.86, 1.65) 
 #&gt; 
-#&gt; CR                                                                99 (20.04%)           102 (20.16%) 
-#&gt;   95% CI (Wald)                                                  (16.6, 23.85)         (16.75, 23.92)
+#&gt; Complete Response (CR)                                            60 (20.07%)           77 (21.75%)           64 (18.44%)  
+#&gt;   95% CI                                                         (15.68, 25.06)        (17.56, 26.42)        (14.5, 22.93) 
 #&gt; 
-#&gt; PR                                                                  84 (17%)            78 (15.42%)  
-#&gt;   95% CI (Wald)                                                  (13.8, 20.61)         (12.38, 18.86)
+#&gt; Partial Response (PR)                                             40 (13.38%)           56 (15.82%)           66 (19.02%)  
+#&gt;   95% CI                                                         (9.73, 17.77)         (12.18, 20.05)        (15.03, 23.55)
 #&gt; 
-#&gt; SD                                                                116 (23.48%)          131 (25.89%) 
-#&gt;   95% CI (Wald)                                                  (19.81, 27.47)        (22.12, 29.94)
+#&gt; Stable Disease (SD)                                               78 (26.09%)           93 (26.27%)            76 (21.9%)  
+#&gt;   95% CI                                                         (21.2, 31.45)         (21.76, 31.18)        (17.66, 26.63)
 #&gt; 
-#&gt; PD                                                                100 (20.24%)          102 (20.16%) 
-#&gt;   95% CI (Wald)                                                  (16.79, 24.06)        (16.75, 23.92)
+#&gt; Progressive Disease (PD)                                           64 (21.4%)           65 (18.36%)           73 (21.04%)  
+#&gt;   95% CI                                                         (16.89, 26.49)        (14.47, 22.8)         (16.87, 25.71)
 #&gt; 
-#&gt; NE                                                                95 (19.23%)           93 (18.38%)  
-#&gt;   95% CI (Wald)                                                  (15.85, 22.99)        (15.1, 22.03) </div><div class='input'>
+#&gt; Not Evaluable (NE)                                                57 (19.06%)            63 (17.8%)            68 (19.6%)  
+#&gt; 
+#&gt; 
+#&gt; </div><div class='input'>
+<span class='co'># Example 2 - ARM B as reference, ARM C displayed before ARM A</span>
+<span class='co'>#             "NON CR/PD" response category displayed in partition section, "NE" responses are not displayed </span>
+<span class='co'>#             model with two stratifiaction factors, CMH test performed</span>
+<span class='no'>tbl2</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
+ <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
+ <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>, <span class='fu'>c</span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>, <span class='st'>"ARM A"</span>)),
+ <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>)),
+ <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"SEX"</span>,<span class='st'>"RACE"</span>)]
+)
+<span class='no'>tbl2</span>; <span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)</div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
+#&gt;                                                                     (N=299)               (N=347)               (N=354)    
+#&gt; ---------------------------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                        100 (33.44%)          130 (37.46%)          133 (37.57%) 
+#&gt; Non-Responders                                                    199 (66.56%)          217 (62.54%)          221 (62.43%) 
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (28.12, 39.1)         (32.35, 42.79)        (32.51, 42.84)
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                            4.02                  4.13     
+#&gt;   95% CI for difference (Wald without correction)                                      (-3.65, 12.36)        (-3.49, 12.41)
+#&gt;   95% CI for difference (Wald with continuity correction)                              (-3.98, 12.7)         (-3.82, 12.75)
+#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                   &lt;5 data points        &lt;5 data points
+#&gt; 
+#&gt; Odds Ratio*                                                                            &lt;5 data points        &lt;5 data points
+#&gt;   95% CI                                                                               &lt;5 data points        &lt;5 data points
+#&gt; 
+#&gt; Complete Response (CR)                                            60 (20.07%)           64 (18.44%)           77 (21.75%)  
+#&gt;   95% CI                                                         (15.68, 25.06)        (14.5, 22.93)         (17.56, 26.42)
+#&gt; 
+#&gt; Partial Response (PR)                                             40 (13.38%)           66 (19.02%)           56 (15.82%)  
+#&gt;   95% CI                                                         (9.73, 17.77)         (15.03, 23.55)        (12.18, 20.05)
+#&gt; 
+#&gt; Stable Disease (SD)                                               78 (26.09%)            76 (21.9%)           93 (26.27%)  
+#&gt;   95% CI                                                         (21.2, 31.45)         (17.66, 26.63)        (21.76, 31.18)
+#&gt; 
+#&gt; Non-CR or Non-PD (NON CR/PD)                                           0                     0                     0       
+#&gt;   95% CI                                                               -                     -                     -       
+#&gt; 
+#&gt; Progressive Disease (PD)                                           64 (21.4%)           73 (21.04%)           65 (18.36%)  
+#&gt;   95% CI                                                         (16.89, 26.49)        (16.87, 25.71)        (14.47, 22.8) 
+#&gt; 
+#&gt; * Model stratified by SEX and RACE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

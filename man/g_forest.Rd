@@ -30,6 +30,9 @@ right of \code{vline}, respectively. If \code{vline=NULL} then
 \item{x_at}{numeric vector with x tick locations, if \code{NULL} they get
 automatically chosen}
 
+\item{width_row.names}{\code{\link[grid]{unit}} object with width for row
+names. If \code{NULL} the widths get automatically calculated.}
+
 \item{width_columns}{\code{\link[grid]{unit}} object with widths for the
 table columns. If \code{NULL} the widths get automatically calculated.}
 
@@ -39,9 +42,6 @@ column. If \code{NULL} the widths get automatically calculated.}
 \item{draw}{boolean, should plot be drawn}
 
 \item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
-
-\item{width_row.name}{\code{\link[grid]{unit}} object with width for row
-names. If \code{NULL} the widths get automatically calculated.}
 }
 \description{
 Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
