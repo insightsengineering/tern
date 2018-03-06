@@ -385,7 +385,7 @@ cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
             gList(
               lab,
               linesGrob(
-                x = unit(c(.1, .9), "npc"),
+                x = unit.c(unit(.2, "lines"), unit(1, "npc") - unit(.2, "lines")),
                 y = unit(c(0,0), "npc"),
                 vp = vp_joined_cols
               )

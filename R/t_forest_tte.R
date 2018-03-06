@@ -93,8 +93,8 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
       ),
       rrow(row.name = "Factors",
            "n",
-           "", "", paste0("(", time_unit, ")"),
-           "", "", paste0("(", time_unit, ")"),
+           NULL, NULL, paste0("(", time_unit, ")"),
+           NULL, NULL, paste0("(", time_unit, ")"),
            "Ratio",
            "Wald CI"
       )
@@ -102,11 +102,11 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
   } else {
     rheader(
       rrow(row.name = "",
-           rcell(NULL),
+           NULL,
            rcell(levels(col_by)[1], colspan = 3),
            rcell(levels(col_by)[2], colspan = 3),
-           rcell(NULL),
-           rcell(NULL)
+           NULL,
+           NULL
       ),
       rrow(row.name = "Baseline Risk Factors",
            "Total n",

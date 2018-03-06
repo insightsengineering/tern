@@ -88,17 +88,17 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   table_header <- if (dense_header) {
     rheader(
       rrow(row.name = "",
-           rcell(NULL),
+           NULL,
            rcell(levels(col_by)[1], colspan = 3),
            rcell(levels(col_by)[2], colspan = 3),
-           rcell(NULL),
-           rcell(NULL)
+           NULL,
+           NULL
       ),
       rrow(row.name = "Baseline",
            "Total",
-           "", "", "Response",
-           "", "", "Response",
-           "Odds", ""),
+           NULL, NULL, "Response",
+           NULL, NULL, "Response",
+           "Odds", NULL),
       rrow(row.name = "Risk Factors",
            "n",
            "n", "Responders", "Rate",
@@ -110,11 +110,11 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   } else {
     rheader(
       rrow(row.name = "",
-           rcell(NULL),
+           NULL,
            rcell(levels(col_by)[1], colspan = 3),
            rcell(levels(col_by)[2], colspan = 3),
-           rcell(NULL),
-           rcell(NULL)
+           NULL,
+           NULL
       ),
       rrow(row.name = "Baseline Risk Factors",
            "Total n",
