@@ -8,10 +8,10 @@
 #' @param na.omit.group boolean, do not list NAs
 #'    
 #' @details 
-#' Logistic model is used for odds ratio calculation.
+#' Logistic regression is used for odds ratio calculation.
 #' 
-#' The returned table contains one row per analysis applied on a subset of data
-#' (indicated by the row name). The analysis is summarized with the following 9
+#' Each row in the returned table contains the analysis statistics for a subgroup of data
+#' (indicated by the row name). The summary table is consist of the following 9
 #' columns:
 #' 
 #' \describe{
@@ -21,8 +21,7 @@
 #'   \code{Response.Rate} is the percentage of responders in reference arm.}
 #'   \item{5-7}{same statistics as for reference arm now for comparison arm}
 #'   \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying 
-#'   univariate logistic regression with binary response status (responder or non-responder) 
-#'   as the the outcome and arm variable as the explanatory variable. Odds ratio greater than 1 
+#'   univariate logistic regression. Binary response status (responder or non-responder) is the outcome and arm is the explanatory variable. Odds ratio greater than 1 
 #'   indicates better performance in comparison arm; odds ratio less than 1 indicates better performance in reference arm.}
 #'   \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of uncertainty 
 #'   around the measure of effect (Odds Ratio). Because only a small sample of the overall 
@@ -43,14 +42,14 @@
 #' 
 #' ASL <- radam("ASL")
 #' ARS <- radam("ARS", ADSL = ASL)
-#' 
+#' ASL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 #' ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
 #' ANL <- merge(ASL, ARS_f)
 #' 
 #' tbl <- t_forest_rsp(
 #'   rsp = ANL$AVALC %in% c("CR", "PR"),
 #'   col_by = factor(ANL$ARM), 
-#'   group_data = ANL[, c("SEX", "RACE")]
+#'   group_data = ANL[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
 #' )
 #' 
 #' tbl
