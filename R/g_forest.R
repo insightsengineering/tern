@@ -438,19 +438,26 @@ g_forest <- function(tbl,
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #' 
-#' x <- c(.2, .3, .1)
+#' x <- c(.4, .9, 7)
 #' lower <- x - .2
-#' upper <- x + .3
+#' upper <- x + 2
 #' 
-#' forestGrob(tbl, x, lower, upper)
+#' forestGrob(tbl, x, lower, upper, vline = 1, forest_header = c("A", "B"),
+#'   x_at = c( .1 , 1, 10), xlim = c(0.1, 10), logx = TRUE,
+#'   vp = plotViewport(margins = c(1, 1, 1, 1))
+#' )
 #' 
-forestGrob <- function(tbl, x, lower, upper,
-                       xlim = NULL,
+forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
+                       xlim = NULL, logx = FALSE, x_at = NULL,
                        width_row.names = NULL,
                        width_columns = NULL,
                        width_forest = unit(1, "null"), 
                        name=NULL, gp=NULL, vp=NULL) {
 
+  
+  if (is.null(vline) && !is.null(forest_header)) stop("if vline is null then forest_header needs to be NULL")
+  if (!is.null(forest_header) && length(forest_header) != 2) stop("length of forest_header needs to be 2")
+  if (!is.null(vline) && length(vline) != 1) stop("length of vline needs to be 1")
   
   nr <- nrow(tbl)
   if (length(x) != nr) stop("dimension missmatch x")
@@ -458,6 +465,28 @@ forestGrob <- function(tbl, x, lower, upper,
   if (length(upper) != nr) stop("dimension missmatch upper")
 
   if (is.null(xlim)) xlim <- extendrange(c(x, lower, upper))
+  
+  
+  if (logx) {
+
+    if (is.null(x_at)) {
+      x_at <- pretty(log(na.omit(c(x, lower, upper))))
+      x_labels <- exp(x_at)
+    } else {
+      x_labels <- x_at
+      x_at <- log(x_at)
+    }
+    
+    xlim <- log(xlim)
+    x <- log(x)
+    lower <- log(lower)
+    upper <- log(upper)
+     
+    if (!is.null(vline)) vline <- log(vline)
+    
+  } else {
+    x_labels <- TRUE
+  }
   
   dataForestVp <- dataViewport(xlim, c(0,1))
   
@@ -473,17 +502,49 @@ forestGrob <- function(tbl, x, lower, upper,
         vp = vpPath("vp_table_layout", "vp_body")
       ),
       linesGrob(unit(c(0,1), "npc"), y = unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
+      # forest part
+      if (is.null(vline)) {
+        NULL
+      } else {
+        gTree(
+          children = gList(
+            gTree(
+              children = gList(
+                gTree(
+                  children = gList(
+                    textGrob(forest_header[1], x = unit(vline, "native") - unit(1, "lines"), just = c("right", "center")),
+                    textGrob(forest_header[2], x = unit(vline, "native") + unit(1, "lines"), just = c("left", "center"))
+                  ),
+                  vp = dataForestVp
+                )
+              ),
+              vp = viewport(layout.pos.col = nrow(tbl) + 2)
+            )
+          ),
+          vp = vpPath("vp_table_layout", "vp_header")
+        )
+      },
+      gTree(
+        children = gList(
+          gTree(
+            children = gList(
+              rectGrob(gp = gpar(col = "gray90", fill = "gray90")),
+              if (is.null(vline)) NULL else linesGrob(x = unit(rep(vline, 2), "native"),
+                                                      y = unit(c(0,1), "npc"),
+                                                      gp = gpar(lwd = 2),
+                                                      vp = dataForestVp),
+              xaxisGrob(at = x_at,  label = x_labels, vp = dataForestVp)
+            ),
+            vp = viewport(layout.pos.col = ncol(tbl) + 2)
+          )
+        ),
+        vp = vpPath("vp_table_layout", "vp_body")
+      ),
       gTree(
         children = do.call('gList', Map( function(xi, li, ui, row_index) {
           forest_dot_line(xi, li, ui, row_index, xlim, datavp = dataForestVp)
         }, x, lower, upper, 1:length(x))),
         vp = vpPath("vp_table_layout", "vp_body")
-      ),
-      gTree(
-        children = gList(
-          xaxisGrob(vp = dataForestVp)
-        ),
-        vp = vpPath("vp_table_layout", "vp_body", paste0("forest-", nrow(tbl)))
       )
     ),
     childrenvp = forestViewport(tbl, width_row.names, width_columns, width_forest),
