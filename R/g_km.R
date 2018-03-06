@@ -1,315 +1,148 @@
-#' Kaplan-Meier Plot using grid plotting
+#' Define a kmplot grob
 #' 
-#' Plotting directly from object returned by formula, also annotated with product-limit estimtors and 
-#' Cox PH model estimators.
+#' create a grid graphical object for basic KM plot using data from a call of function \code{kmCurveData}
 #' 
-#' @param formula_km formula specified for Kaplan-Meier curves
-#' @param data analysis data set
-#' @param add_km boolean, \code{TRUE} if annotated with KM estimators and \code{FALSE} if not
-#' @param add_coxph boolean, \code{TRUE} if annotated with Cox PH estimators and \code{FALSE} if not
-#' @param formula_coxph formula specified for Cox PH model, default is the same as input for \code{formula_km}
-#' @param info_coxph label information for Cox PH model
-#' @param cox_ties ties handling method for Cox PH model. options are "efron", "breslow" and "exact"
-#' @param add boolean, \code{TRUE} if draw multiple plots on the same device page\code{FALSE} if only draw single plot per page
-#' @param xaxis_by scale of x-axis
-#' @param title title for plot
+#' @param title title for plot.
+#' @param ... All other arguments will be passed to a call to the \code{kmCurveData()} function.
 #' 
-#' @import grid
 #' @import survival
 #' @importFrom scales col_factor
+#' @import grid
 #' 
 #' @export
 #' 
-#' @template author_wangh107
-#' 
 #' @examples 
-#' 
-#' library(random.cdisc.data)
-#' 
-#' ASL <- radam("ASL")
-#' ATE <- radam("ATE", ADSL = ASL, start_with = list(ECOG = c(0, 1)))
-#' 
-#' ANL <- merge(ASL, subset(ATE, PARAMCD == "OS"))
-#' 
-#' g_km(
-#'    formula_km = Surv(AVAL, 1-CNSR) ~ ARM,
-#'    data = ANL, 
-#'    add_coxph = TRUE,
-#'    add_km = TRUE
-#' )
-#' 
-#' 
-#' \dontrun{
-#' library(dplyr)
-#' library(forcats)
 #' library(survival)
-#' # Dummy Data
+#' library(scales)
+#' library(grid)
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
 #'                  ARM = sample(LETTERS[1:3], 200, TRUE),
 #'                  SEX = sample(c("M","F"), 200, TRUE),
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' 
-#' # draw single plot on device page
-#' kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, add_coxph = TRUE, add_km = TRUE)
-#' 
-#' 
-#' library(grid)
-#' # new plot page
-#' grid.newpage()
-#' kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, 
-#'        data = OS , 
-#'        formula_coxph = Surv(AVAL, 1-CNSR) ~ ARM + strata(SEX),
-#'        add_coxph = TRUE, add_km = TRUE, add = FALSE,
-#'        info_coxph = "Cox Proportional Model: Stratified by SEX")
-#' 
-#' ## facet by variable SEX, arrange plots by row
-#' lev <- unique(OS$SEX)
-#' nplots <- length(lev)
-#' dfs <- split(OS, OS$SEX)
-#' 
-#' # new plot page
-#' grid.newpage()
-#' # margins
-#' 
-#' # layout
-#' pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
-#'    heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
-#' )))
-#' Map(function(dfi, i, label) {
-#'    pushViewport(viewport(layout.pos.row = i*2 - 1))
-#'    kmplot(
-#'        formula_km = Surv(AVAL, 1-CNSR) ~ ARM, 
-#'        data = dfi, add_km = TRUE,
-#'        add_coxph = TRUE,
-#'        formula_coxph = Surv(AVAL, 1-CNSR) ~ ARM,
-#'        add = TRUE,
-#'        title = paste0("Kaplan - Meier Plot for: ", label)
-#'         )
-#'    popViewport()
-#'  }, dfs, 1:length(dfs), lev)
-#' 
-#' 
-#' }
-#' 
-g_km <- function(formula_km,
-                 data, add_km = TRUE, 
-                 add_coxph = TRUE, formula_coxph = formula_km, 
-                 info_coxph = "Cox Proportional Model: Unstratified Analysis",
-                 cox_ties = "exact",
-                 add = FALSE,
-                 xaxis_by = NULL, 
-                 title = "Kaplan - Meier Plot") {
-  
-  fit <- survfit(formula_km, data = data, conf.type = "plain")
+#' kmGrob(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
 
-  nstrata <- length(fit$strata)
-  if (nstrata > 9) stop("unfortunately we currently do not have more than 9 colors to encode different stratas")
+kmGrob <- function(title = "Kaplan - Meier Plot", ...){
   
-  # extract kmplot relevant data
-  df <- data.frame(
-    time = fit$time,
-    surv = fit$surv,
-    n.risk = fit$n.risk,
-    n.censor = fit$n.censor,
-    n.event = fit$n.event,
-    std.err = fit$std.err,
-    upper = fit$upper,
-    lower = fit$lower,
-    strata = factor(rep(names(fit$strata), fit$strata), levels = names(fit$strata))
-  )
+  curve_data <- kmCurveData(...)
+  nlines_labels <- curve_data$nlines_labels
+  xpos <- curve_data$xpos
+  group <- curve_data$group
+  xData <- curve_data$xData
+  lines_x <- curve_data$lines_x
+  lines_y <- curve_data$lines_y
+  points_x <- curve_data$points_x
+  points_y <- curve_data$points_y
+  col_pal <- curve_data$col
+  ypos <- curve_data$ypos
+  pt_risk <- curve_data$pt_risk
   
-  # split by strata
-  df_s <- split(df, df$strata)
+  vpplot <- plotViewport(margins = c(3, max(nlines_labels, 4), 3, 2),
+                         layout = grid.layout(
+                           nrow = 3, ncol = 1, widths = unit(1, "npc"),
+                           heights = unit(c(5, 5, length(group)*1.1+4), c("null", "lines", "lines"))),
+                         name = "plotarea")
+  vpcurve <- dataViewport(xData = xData, yData = c(0,1),
+                          layout.pos.col = 1, layout.pos.row = 1, name = "topcurve")
+  vptable <- viewport(layout.pos.col = 1, layout.pos.row = 3, name = "bottomtable")
   
-  # get the color pallete
-  col_pal <- col_factor("Set1", domain = names(df_s))  
-
+  vprisk <- dataViewport(xData = xData, yData = c(0,1), name = "risktable")
   
-  ## get max label width in lines
-  tmp.labels <- names(fit$strata)
-  tmp.label <- tmp.labels[which.max(nchar(tmp.labels))[1]]
-  nlines_labels <- convertWidth(stringWidth(tmp.label), "lines", TRUE) + 2
+  vptree <- vpTree(vpplot, vpList(vpcurve, vpStack(vptable,  vprisk)))
   
-  # now do the plotting
-  if(!add) {
-    grid.newpage()
-  }
-  pushViewport(plotViewport(margins = c(3, max(nlines_labels, 4), 3, 2)))
+  lines <- mapply(function(x, y, col){
+    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col, lwd = 3), vp = vpPath("plotarea", "topcurve"))
+  }, lines_x, lines_y, col_pal, SIMPLIFY = FALSE)
   
-  pushViewport(viewport(
-    layout = grid.layout(
-      nrow = 3, ncol = 1,
-      heights = unit(c(5, 5, nstrata*1.1+4), c("null", "lines", "lines")),
-      widths = unit(1, "npc"))
-    )
-  )
+  points <- mapply(function(x, y, col){
+    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col), vp = vpPath("plotarea", "topcurve"))
+  }, points_x, points_y, col_pal, SIMPLIFY = FALSE)
   
-  pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 1))
+  ptnumber <- mapply(function(y, col, risk){
+    textGrob( label = ifelse(!is.na(risk), as.character(risk), " "),
+              x = unit(xpos, "native"),
+              y = unit(y, "npc"),
+              gp = gpar(col = col),
+              vp = vpPath("plotarea", "bottomtable",  "risktable"))
+  }, ypos, col_pal, pt_risk, SIMPLIFY = FALSE)
   
-  xpos <- seq(0, floor(max(df$time)), by = ifelse(is.null(xaxis_by), 
-                                                  max(1, floor(max(df$time)/10)), 
-                                                  xaxis_by))
-  pushViewport(dataViewport(xData = c(0, df$time), yData = c(0,1)))
-  grid.xaxis(at = xpos)
-  grid.yaxis()
-  grid.rect()
-  grid.text(title, y = unit(1, "npc") + unit(1, "lines"), gp = gpar(fontface = "bold", fontsize = 16))
+  grplabel <-  mapply(function(y, col, grp){
+    textGrob( label = grp,
+              x = unit(-nlines_labels + 1, "lines"),
+              y = unit(y, "npc"),
+              just = c("left", "center"),
+              gp = gpar(col = col),
+              vp =  vpPath("plotarea", "bottomtable",  "risktable"))
+  }, ypos, col_pal, names(group), SIMPLIFY = FALSE)
   
-  Map(function(x, col) {
-    grid.lines(
-      x = c(0, rep(x$time, each = 2)),
-      y = c(rep(c(1, head(x$surv, -1)), each = 2), tail(x$surv, 1)),
-      default.units = "native",
-      gp = gpar(col = col)
-    )
-    grid.points( 
-      x = x[x$n.censor !=0, "time"],
-      y = x[x$n.censor !=0, "surv"],
-      pch = 3, 
-      size = unit(0.5, "char"),
-      gp = gpar(col = col))
-    
-  }, df_s, col_pal(names(df_s)))
-  
-  
-  grid.text(
-    label = "Survival Probability",
-    x = unit(-3.5, "lines"),
-    rot = 90
-  )
-  
-  ## add coxph
-  if (add_coxph) {
-    fitcox <- coxph(formula_coxph, data = data, ties = cox_ties)
-    
-    sfit <- summary(fitcox)
-    
-    hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
-     
-    ci <- sfit$conf.int[, c("lower .95", "upper .95"), drop = FALSE]  
-     
-    pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
-    
-    #### add score test p-value for overall model
-    scpval <- sfit$sctest["pvalue"] %>% rep(., nrow(pvalues)) %>% as.matrix
-    colnames(scpval) <- "scorepval"
-  
-    info <- cbind(hr, ci, pvalues, scpval)
-    sinfo <- split(as.data.frame(info), 1:nrow(info))
-    
-    rows <- lapply(sinfo, function(xi) {
-      rrow(
-        row.name = rownames(xi),
-        rcell(xi$'exp(coef)', format = "xx.xxxx"),
-        rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
-        rcell(xi$'Pr(>|z|)', format = "xx.xxxx"),
-        rcell(xi$'scorepval', format = "xx.xxxx")
-      )
-    })
-    
-    tbl <- rtablel(
-      header =  c("HR", "95% CI of HR", "Wald p-value", "Overall Score p-val"),
-      rows
-    )
-
-    tblstr <- toString(tbl, gap = 1)
-    lab <- paste0(info_coxph, "\n", tblstr)
-    grid.text(
-      label = lab,
-      x = unit(1, "lines"), y = unit(1, "lines"),
-      just = c("left", "bottom"),
-      gp = gpar(fontfamily = "mono", fontsize = 8)
-    )
-
-  }
-  
-  if (add_km){
-    kminfo <- summary(fit)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
-    skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
-    
-    rows <- lapply(skminfo, function(xi) {
-      rrow(
-        row.name = rownames(xi),
-        rcell(xi$records, format = "xx"),
-        rcell(xi$median, format = "xx.xx"),
-        rcell(c(xi$`0.95LCL`, xi$`0.95UCL`), format = "(xx.xx, xx.xx)")
-      )
-    })
-    
-    
-    tblkm <- rtablel(
-      header = c("N", "median", "95% CI for median"),
-      rows
-    )
-
-    tblstr2 <- toString(tblkm, gap = 1)
-    ##### add log-rank test for modeling as coxph
-    mdl <- survdiff(formula_coxph, data = data)
-    logr_p <- pchisq(mdl$chisq, length(mdl$n) - 1, lower.tail = FALSE)
-    lab2 <- paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\n", tblstr2)
-    
-    grid.text(label = lab2,
-              x = unit(1, "npc") - stringWidth(lab2) - unit(1, "lines"),
-              y = unit(1, "npc") -  unit(1, "lines"),
-              just = c("left", "top"),
-              gp = gpar(fontfamily = "mono", fontsize = 8)
-    )
-  }
-
-  popViewport(2)  
-  
-  
-  
-  ## Number of patients at Risk
-
-  pushViewport(viewport(layout.pos.col = 1, layout.pos.row = 3))
-  
-  grid.text(label = "Number of Patients at Risk",
-            x = unit(0, "npc"),
-            y = unit(1, "npc") + unit(1, "lines"),
-            just = "left")
-  
-  pushViewport(dataViewport(xData = c(0, df$time), yData = c(0,1)))
-  
-  
-  grid.xaxis(at = xpos)
-  grid.rect()
-  
-  Map(function(x, ypos, strata, col) {
-    
-    n.r <- vapply(xpos, function(xi) {
-      if (xi <= min(x$time)){
-        i <- head(which(x$time >= xi), 1)
-        x$n.risk[i]
-      } else if (xi > max(x$time)){
-        NA
-      } else{
-        i <- tail(which(x$time <= xi), 1)
-        x$n.risk[i] - x$n.censor[i] - x$n.event[i]
-      }
-    }, numeric(1))
-    
-    grid.text(
-      label = ifelse(!is.na(n.r), as.character(n.r), " "),
-      x = unit(xpos, "native"),
-      y = unit(ypos, "npc"),
-      gp = gpar(col = col)
-    )
-    
-    grid.text(
-      label = strata,
-      x = unit(-nlines_labels + 1, "lines"),
-      y = unit(ypos, "npc"),
-      just = c("left", "center"),
-      gp = gpar(col = col)
-    )
-    
-  }, df_s, 1 - 1:length(df_s)/(length(df_s) + 1), names(df_s), col_pal(names(df_s)))
-  
-  popViewport(4)
-  
+  gTree(childrenvp = vptree,
+        children =   do.call("gList", 
+                             c(list( xaxisGrob(at = xpos, vp = vpPath("plotarea", "topcurve")),
+                                     yaxisGrob(vp = vpPath("plotarea", "topcurve")),
+                                     rectGrob(vp = vpPath("plotarea", "topcurve")),
+                                     textGrob(title, y = unit(1, "npc") + unit(1, "lines"), 
+                                              gp = gpar(fontface = "bold", fontsize = 16), vp = vpPath("plotarea", "topcurve")),
+                                     textGrob("Survival Probability", x = unit(-3.5, "lines"), rot = 90, vp = vpPath("plotarea", "topcurve")), 
+                                     textGrob(label = "Number of Patients at Risk",
+                                              x = unit(0, "npc"),
+                                              y = unit(1, "npc") + unit(1, "lines"),
+                                              just = "left", vp = vpPath("plotarea", "bottomtable")),
+                                     xaxisGrob(at = xpos, vp = vpPath("plotarea", "bottomtable",  "risktable")), 
+                                     rectGrob(vp = vpPath("plotarea", "bottomtable",  "risktable"))),
+                               lines,
+                               points,
+                               ptnumber,
+                               grplabel)),
+        cl = "kmGrob")
 }
 
+
+#' Add text annotation on top of a kmgrob
+#' 
+#' utility function to edit a grid grob by adding a text grob 
+#' 
+#' @param kmgrob a kmGrob for further editing.
+#' @param vp a Grid veiwport object for annotating a text grob.
+#' @param x A numeric vector or unit object specifying x-values.
+#' @param y A numeric vector or unit object specifying y-values.
+#' @param tbl An rtable.
+#' @param just The justification of the text relative to its (x, y) location.
+#' 
+#' @import grid
+#' 
+#' @export
+#' 
+#' @examples 
+#' library(grid)
+#' library(survival)
+#' library(rtables)
+#' library(scales)
+#' library(dplyr)
+#' OS <- data.frame(AVAL = abs(rnorm(200)), 
+#'                  CNSR = sample(c(0, 1), 200, TRUE), 
+#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
+#'                  SEX = sample(c("M","F"), 200, TRUE),
+#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+#'                  ECOG = sample(c(0, 1), 200, TRUE))
+#' a_kmgrob <- kmGrob(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, xaxis_by = 0.5)
+#' cox_tbl <- coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+#' addTable(a_kmgrob, 
+#'          vp = vpPath("plotarea", "topcurve"), 
+#'          x= unit(1, "lines"), y = unit(1, "lines"),
+#'          just = c("left", "bottom"),
+#'          tbl = cox_tbl ) %>% 
+#'          grid.draw()
+
+addTable <- function(kmgrob, vp, x = unit(0.5, "npc") , y = unit(0.5, "npc"), 
+                     tbl, just = c("left", "top")){
+   
+  addGrob(kmgrob,
+          textGrob(label = tbl, 
+                   x = x,
+                   y = y,
+                   just = just,
+                   gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"),
+                   vp = vp))
+}
 
