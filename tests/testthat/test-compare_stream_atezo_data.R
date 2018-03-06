@@ -242,31 +242,32 @@ if (require("atezo.data", quietly = TRUE)) {
     
     ANL <- left_join(ASL_f, ARS_f, by = c("USUBJID", "STUDYID"))
     
-    avalc <- fct_relevel(ANL$AVALC, "CR", "PR", "SD", "PD") %>% 
-      fct_collapse("Missing or unevaluable" = c("NE", "NON-CR/NON-PD", ""))
+    avalc <- fct_collapse(ANL$AVALC, "Missing or unevaluable" = c("NE", "")) %>%
+      factor(levels = c("CR", "PR", "SD", "PD", "Missing or unevaluable"))
+    
     
     tbl <- t_rsp(
       rsp = ANL$AVALC %in% c("CR", "PR"),
       col_by = factor(ANL$ARMCD1, levels = c("C", "B", "A")),
-      parition_rsp_by = avalc
+      partition_rsp_by = avalc
     )
     
-    tbl_no_missing_ci <- tbl[1:(nrow(tbl) -1), ]
-    
+    # tbl_no_missing_ci <- tbl[-nrow(tbl), ]
     # Viewer(tbl_no_missing_ci)
     # Viewer(tbl_no_missing_ci, tbl_stream)
+    # comp <- compare_rtables(tbl_no_missing_ci, tbl_stream, comp.attr = FALSE)
     
-    
-    comp <- compare_rtables(tbl_no_missing_ci, tbl_stream, comp.attr = FALSE)
+    # row8 CI with correction for rate difference not reported in STREAM table
+    comp <- compare_rtables(tbl[-8], tbl_stream, comp.attr = FALSE)
     
     comp[7,1] <- "." # empty cell, compare_rtables should not report this
-    comp[8,1:3] <- "." # empty row, ci is not there in STREAM table
-    comp[9,1] <- "." # empty cell, compare_rtables should not report this
+    comp[7,2] <- "." # method used in tbl_stream is incorrect according to communications with Jennifer
+    comp[8,1] <- "." # empty cell, compare_rtables should not report this
+    comp[10,1] <- "." # # empty cell, compare_rtables should not report this
     comp[11,1] <- "." # # empty cell, compare_rtables should not report this
-    comp[12,1] <- "." # # empty cell, compare_rtables should not report this
     
-    # str(tbl_no_missing_ci[12,1])
-    # str(tbl_stream[12,1])
+    # str(tbl[9,1])
+    # str(tbl_stream[8,1])
     
     expect_true(all(comp == "."), "t_rsp  does not provide the same results as stream")
     

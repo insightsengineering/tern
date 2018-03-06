@@ -15,13 +15,22 @@
 #' columns:
 #' 
 #' \describe{
-#'   \item{1}{\emph{Total n} the total number of subjects used for analysis}
-#'   \item{3-4}{analysis for reference arm, \emph{n}, \emph{Responders},
-#'   \code{Response.Rate}}
-#'   \item{5-7}{same analysis as for reference arm now for comparison arm}
-#'   \item{8}{\emph{Odds Ratio}}
-#'   \item{9}{\emph{95 \% CI}}
+#'   \item{1}{\emph{Total n} the total number of subjects included in analysis population}
+#'   \item{3-4}{Summary of responders in reference arm, \emph{n} and \emph{Responders} are the 
+#'   total number of patients and the number of responders in reference arm, respectively.
+#'   \code{Response.Rate} is the percentage of responders in reference arm.}
+#'   \item{5-7}{same statistics as for reference arm now for comparison arm}
+#'   \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying 
+#'   univariate logistic regression with binary response status (responder or non-responder) 
+#'   as the the outcome and arm variable as the explanatory variable. Odds ratio greater than 1 
+#'   indicates better performance in comparison arm; odds ratio less than 1 indicates better performance in reference arm.}
+#'   \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of uncertainty 
+#'   around the measure of effect (Odds Ratio). Because only a small sample of the overall 
+#'   population is included in the analysis, by having an upper and lower confidence limit 
+#'   we can infer that the true treatment effect lies in between. If the 95% confidence interval 
+#'   includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
 #' }
+#' 
 #' 
 #' @template return_rtable 
 #' 
@@ -40,14 +49,19 @@
 #' 
 #' tbl <- t_forest_rsp(
 #'   rsp = ANL$AVALC %in% c("CR", "PR"),
-#'   col_by = ANL$ARM, 
+#'   col_by = factor(ANL$ARM), 
 #'   group_data = ANL[, c("SEX", "RACE")]
 #' )
 #' 
 #' tbl
+#' 
+#' \dontrun{
+#' Viewer(tbl)
+#' }
 #'    
 t_forest_rsp <- function(rsp, col_by, group_data = NULL,
-                         total = 'ALL', na.omit.group = TRUE) {
+                         total = 'ALL', na.omit.group = TRUE,
+                         dense_header = FALSE) {
   
   if (!is.logical(rsp)) stop("rsp is required to be boolean")
   check_same_N(rsp = rsp, col_by = col_by, group_data = group_data)
@@ -60,22 +74,46 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
     group_data <- all_as_factor(group_data)
   }
   
-  table_header <- rheader(
-    rrow(row.name = "",
-         rcell(NULL),
-         rcell(levels(col_by)[1], colspan = 3),
-         rcell(levels(col_by)[2], colspan = 3),
-         rcell(NULL),
-         rcell(NULL)
-    ),
-    rrow(row.name = "Baseline Risk Factors",
-         "Total n",
-         "n", "Responders", "Response.Rate",
-         "n", "Responders", "Response.Rate",
-         "Odds Ratio",
-         "95% CI"
+  table_header <- if (dense_header) {
+    rheader(
+      rrow(row.name = "",
+           rcell(NULL),
+           rcell(levels(col_by)[1], colspan = 3),
+           rcell(levels(col_by)[2], colspan = 3),
+           rcell(NULL),
+           rcell(NULL)
+      ),
+      rrow(row.name = "Baseline",
+           "Total",
+           "", "", "Response",
+           "", "", "Response",
+           "Odds", ""),
+      rrow(row.name = "Risk Factors",
+           "n",
+           "n", "Responders", "Rate",
+           "n", "Responders", "Rate",
+           "Ratio",
+           "95% CI"
+      )
+    )    
+  } else {
+    rheader(
+      rrow(row.name = "",
+           rcell(NULL),
+           rcell(levels(col_by)[1], colspan = 3),
+           rcell(levels(col_by)[2], colspan = 3),
+           rcell(NULL),
+           rcell(NULL)
+      ),
+      rrow(row.name = "Baseline Risk Factors",
+           "Total n",
+           "n", "Responders", "Response.Rate",
+           "n", "Responders", "Response.Rate",
+           "Odds Ratio",
+           "95% CI"
+      )
     )
-  )
+  }
   
   glm_data <- data.frame(response = rsp, arm = col_by)
   
@@ -85,9 +123,9 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
     rtable(header = table_header, 
            rrowl(row.name = total, 
                  format_logistic(
-                     glm_results(glm_data)
+                   glm_results(glm_data)
                  )
-    )) 
+           )) 
   }
   
   
@@ -139,7 +177,7 @@ glm_results <- function(data){
   
   #Response Rate
   resp_n <- setNames(table(data$arm), c("resp_ref_n", "resp_comp_n"))
-
+  
   tbl_freq <- table(data$response,data$arm)
   resp_ref_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[1]]
   resp_comp_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[2]]
@@ -148,39 +186,39 @@ glm_results <- function(data){
   
   #Logistic Model
   if (length(levels(factor(data$arm))) == 2) {
-     glm_fit <- try(
-       glm(response ~ arm, family=binomial(link='logit'), data = data)
-     )
-     
-     if (is(glm_fit, "try-error")) {
-       glm_or <- NA; glm_lcl <- NA; glm_ucl <- NA; glm_pval <- NA
-     } else {
-       glm_sum  <- summary(glm_fit)
-       #glm_or   <- ifelse(exp(glm_sum$coefficient[2,1]) > 999, ">999.99", exp(glm_sum$coefficient[2,1]))
-       glm_or   <- exp(glm_sum$coefficient[2,1])
-       
-       suppressWarnings(
-         suppressMessages({
-           glm_lcl  <- tryCatch(
-             exp(confint(glm_fit)[2,1]),
-             error = function(e) NA
-           )
-           
-           glm_ucl  <- tryCatch(
-             exp(confint(glm_fit)[2,2]),
-             error = function(e) NA
-           )
-         })
-       )
-       
-       glm_pval <- glm_sum$coefficients[2,4]
-     }
-     
-     resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2], 
-                              resp_ref_event, resp_comp_event, 
-                              glm_or, glm_lcl, glm_ucl, glm_pval)
+    glm_fit <- try(
+      glm(response ~ arm, family=binomial(link='logit'), data = data)
+    )
+    
+    if (is(glm_fit, "try-error")) {
+      glm_or <- NA; glm_lcl <- NA; glm_ucl <- NA; glm_pval <- NA
+    } else {
+      glm_sum  <- summary(glm_fit)
+      #glm_or   <- ifelse(exp(glm_sum$coefficient[2,1]) > 999, ">999.99", exp(glm_sum$coefficient[2,1]))
+      glm_or   <- exp(glm_sum$coefficient[2,1])
+      
+      suppressWarnings(
+        suppressMessages({
+          glm_lcl  <- tryCatch(
+            exp(confint(glm_fit)[2,1]),
+            error = function(e) NA
+          )
+          
+          glm_ucl  <- tryCatch(
+            exp(confint(glm_fit)[2,2]),
+            error = function(e) NA
+          )
+        })
+      )
+      
+      glm_pval <- glm_sum$coefficients[2,4]
+    }
+    
+    resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2], 
+                             resp_ref_event, resp_comp_event, 
+                             glm_or, glm_lcl, glm_ucl, glm_pval)
   } else {
-  resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2],  
+    resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2],  
                              resp_ref_event, resp_comp_event, 
                              glm_or = NA, glm_lcl = NA, glm_ucl = NA, glm_pval = NA)
   }
