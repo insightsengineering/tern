@@ -19,6 +19,44 @@
 #' 
 #' 
 #' 
+
+library(rtables)
+help(p = rtables)
+
+load('InputVads.Rdata')
+# safety-evaluable patients
+asl <- ASL[ASL$SAFFL == 'Y', c("USUBJID", "TRT02AN")]
+
+asl$TRT02AN <- as.factor(asl$TRT02AN)
+levs <- c('Stage 1\nCohort 1'
+, 'Stage 1\nCohort 2'
+, 'Stage 1\nCohort 3'
+, 'Stage 2\nMCRC'
+, 'Stage 2\nNSCLC'
+, 'Stage 2\nMELANOMA'
+, 'Stage 2\nBIOPSY'
+, 'Stage 2\nBIOPSY ALT')
+
+levels(asl$TRT02AN) <- c(levs)
+
+
+# treatment-emergent AEs
+aae <- AAE[AAE$TRTEMFL == 'Y', c("USUBJID", "AEBODSYS", "AEDECOD", "AETOXGR")]
+
+aae <- merge(asl, aae, by = 'USUBJID')
+
+# build a header with N counts
+# "group\n(N=x)" format
+
+head0 <- vapply(seq_along(table(asl$TRT02AN))
+       , function(x) paste0(names(head0[x]), '\n', '(N=', head0[x], ')')
+       , FUN.VALUE = character(1))
+
+
+rtable(header = c("\nMedDRA System Organ Class\n  MedDRA Preferred Term", "\n\nNCI CTCAE Grade", head0[1:5]))
+
+
+
 t_aae <- function() {
   
   ## ARM always needs to be a factor
