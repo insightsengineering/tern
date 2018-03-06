@@ -332,51 +332,7 @@ g_forest <- function(tbl,
     )
   }
   
-  pointLineGrob <- function(x, ci, y = unit(.5, "npc"), gp = gpar(col = "blue", fill = "blue"), vp=NULL) {
-    
-    if (is.na(x) && is.null(ci)) {
-      NULL
-    } else {
-      # line
-      g.line <- if (all(!is.na(ci)) && ci[2] > xlim[1] && ci[1] < xlim[2]) {
-        # -
-        if (ci[1] >= xlim[1] && ci[2] <= xlim[2] ){
-          linesGrob(x = unit(c(ci[1], ci[2]), "native"), 
-                     y = unit.c(y, y)) 
-        } else if (ci[1] < xlim[1] && ci[2] > xlim[2] ){
-          # <->
-          linesGrob(x = unit(ylim, "native"), 
-                     y = unit.c(y, y),
-                     arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both")) 
-        } else if ( ci[1] < xlim[1] && ci[2] <= xlim[2] ){
-          # <- 
-          linesGrob(x = unit(c(xlim[1], ci[2]), "native"), 
-                     y = unit.c(y, y), 
-                     arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first")) 
-        } else if (ci[1] >= xlim[1] && ci[2] > xlim[2]){
-          # ->
-          linesGrob(x = unit(c(ci[1], xlim[2]), "native"), 
-                     y = unit.c(y, y), 
-                     arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last")) 
-        }
-      } else {
-        NULL
-      }  
-      
-      g.circle <- if (!is.na(x) && x >= xlim[1] && x <= xlim[2]) {
-        circleGrob(
-          x = unit(x, "native"), 
-          y = y, r = unit(1/3.5, "lines"), 
-          name = "point"
-        )
-      }
-    
-      gList(
-        if (is.null(g.line)) NULL else editGrob(g.line, gp = gp, vp = vp),
-        if (is.null(g.circle)) NULL else editGrob(g.circle, gp = gp, vp = vp)
-      )
-    }
-  }
+  
   
   
   # now create the grobs
@@ -482,7 +438,11 @@ g_forest <- function(tbl,
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #' 
-#' forestGrob(tbl)
+#' x <- c(.2, .3, .1)
+#' lower <- x - .2
+#' upper <- x + .3
+#' 
+#' forestGrob(tbl, x, lower, upper)
 #' 
 forestGrob <- function(tbl, x, lower, upper,
                        xlim = NULL,
@@ -491,6 +451,16 @@ forestGrob <- function(tbl, x, lower, upper,
                        width_forest = unit(1, "null"), 
                        name=NULL, gp=NULL, vp=NULL) {
 
+  
+  nr <- nrow(tbl)
+  if (length(x) != nr) stop("dimension missmatch x")
+  if (length(lower) != nr) stop("dimension missmatch lower")
+  if (length(upper) != nr) stop("dimension missmatch upper")
+
+  if (is.null(xlim)) xlim <- extendrange(c(x, lower, upper))
+  
+  dataForestVp <- dataViewport(xlim, c(0,1))
+  
   g_forest <- gTree(
     name = name,
     children = gList(
@@ -501,14 +471,25 @@ forestGrob <- function(tbl, x, lower, upper,
       gTree(
         children = do.call('gList', Map(cell_in_rows, tbl, 1:nrow(tbl))),
         vp = vpPath("vp_table_layout", "vp_body")
+      ),
+      linesGrob(unit(c(0,1), "npc"), y = unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
+      gTree(
+        children = do.call('gList', Map( function(xi, li, ui, row_index) {
+          forest_dot_line(xi, li, ui, row_index, xlim, datavp = dataForestVp)
+        }, x, lower, upper, 1:length(x))),
+        vp = vpPath("vp_table_layout", "vp_body")
+      ),
+      gTree(
+        children = gList(
+          xaxisGrob(vp = dataForestVp)
+        ),
+        vp = vpPath("vp_table_layout", "vp_body", paste0("forest-", nrow(tbl)))
       )
     ),
     childrenvp = forestViewport(tbl, width_row.names, width_columns, width_forest),
     vp = vp,
     gp = gp
   )
-  
-  
 
   grid.newpage()
   grid.draw(g_forest)
@@ -604,7 +585,62 @@ cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
   )
 }
 
-
+forest_dot_line <- function(x, lower, upper, row_index, xlim, datavp) {
+  
+  ci <- c(lower, upper)
+  
+  if (any(!is.na(c(x, ci)))) {
+    # line
+    y <- unit(c(0.5, 0.5), "npc")
+    
+    g.line <- if (all(!is.na(ci)) && ci[2] > xlim[1] && ci[1] < xlim[2]) {
+      # -
+      if (ci[1] >= xlim[1] && ci[2] <= xlim[2] ){
+        linesGrob(x = unit(c(ci[1], ci[2]), "native"), y = y) 
+      } else if (ci[1] < xlim[1] && ci[2] > xlim[2] ){
+        # <->
+        linesGrob(x = unit(ylim, "native"), y = y,
+                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both")) 
+      } else if ( ci[1] < xlim[1] && ci[2] <= xlim[2] ){
+        # <- 
+        linesGrob(x = unit(c(xlim[1], ci[2]), "native"), y = y, 
+                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "first")) 
+      } else if (ci[1] >= xlim[1] && ci[2] > xlim[2]){
+        # ->
+        linesGrob(x = unit(c(ci[1], xlim[2]), "native"), y = y, 
+                  arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "last")) 
+      }
+    } else {
+      NULL
+    }  
+    
+    g.circle <- if (!is.na(x) && x >= xlim[1] && x <= xlim[2]) {
+      circleGrob(
+        x = unit(x, "native"), 
+        y = y, r = unit(1/3.5, "lines"), 
+        name = "point"
+      )
+    } else {
+      NULL
+    }
+    
+    gTree(
+      children = gList(
+        gTree(
+          children = gList(gList(        
+            g.line,
+            g.circle
+          )),
+          vp = datavp,
+          gp = gpar(col = "blue", fill = "blue")
+        )
+      ),
+      vp = vpPath(paste0("forest-", row_index))
+    )
+  } else {
+    NULL
+  }
+}
 
 
 #' Create A viewport tree for the forest plot
@@ -713,7 +749,8 @@ forestViewport <- function(tbl, width_row.names = NULL, width_columns = NULL, wi
     ),
     children = vpList(
       vpForestTablePart(nr_h, nc_g, 1, 1, widths, height_header_rows, "vp_header"),
-      vpForestTablePart(nr, nc_g, 3, 1, widths, height_body_rows, "vp_body")
+      vpForestTablePart(nr, nc_g, 3, 1, widths, height_body_rows, "vp_body"),
+      viewport(name = "vp_spacer", layout.pos.row = 2, layout.pos.col = 1)
     )
   )
   vp_tbl
