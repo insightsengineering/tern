@@ -41,9 +41,10 @@ corresponding 95% confidence interval.
 
 library(random.cdisc.data)
 
-ASL <- radam("ASL", start_with = list(RACE = c("white", "asian")))
+ASL <- radam("ASL", N = 1000, start_with = list(RACE = c("white", "asian")))
 ARS <- radam("ARS", ADSL = ASL)
 
+ASL$ARM <- factor(sample(LETTERS[1:3], nrow(ASL), TRUE))
 ASL$RACE <- factor(ASL$RACE)
 
 ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
@@ -51,7 +52,7 @@ ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
 tbl <- t_rsp(
  rsp = ANL$AVALC \%in\% c("CR", "PR"),
  col_by = relevel(factor(ANL$ARMCD), "ARM B", "ARM A"),
- parition_rsp_by = relevel(factor(ANL$AVALC), "CR", "PR", "SD", "NON CR/PD", "PD"),
+ parition_rsp_by = droplevels(factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE"))),
  strata_data = ANL[, c("SEX", "RACE")]
 )
 

@@ -4,7 +4,9 @@
 \alias{g_forest}
 \title{Forest plot}
 \usage{
-g_forest(tbl, i_col_est, i_col_ci, header_forest, padx = unit(1, "lines"))
+g_forest(tbl, i_col_est, i_col_ci, header_forest = c("", ""), xlim = NULL,
+  log = FALSE, width_columns = NULL, width_row.names = NULL,
+  width_forest = unit(1, "null"), padx = unit(1, "lines"), draw = TRUE)
 }
 \arguments{
 \item{tbl}{an rtable object}
@@ -66,7 +68,12 @@ tbl <- t_forest_rsp(
 
 tbl
 
-
+g_forest(
+  tbl = tbl,
+  i_col_est = 8,
+  i_col_ci = 9,
+  header_forest = c("Comparison\\nBetter", "Treatement\\nBetter")
+)
 
 
 
@@ -78,7 +85,29 @@ tbl <- rtable(
   rrow("", 1.2, c(1.1, 1.4))
 )
 
-g_forest(tbl, 1, 2, c("Hello", "World"))
+g_forest(
+  tbl = tbl,
+  i_col_est = 1,
+  i_col_ci = 2,
+  header_forest = c("Hello", "World")
+)
+
+tbl <- rtable(
+  header = rheader(
+    rrow("", rcell("A", colspan = 2)),
+    rrow("", "c1", "c2")
+  ),
+  rrow("row 1", 1, c(.8, 1.2)),
+  rrow("row 2", 1.2, c(1.1, 1.4))
+)
+
+g_forest(
+  tbl = tbl,
+  i_col_est = 1,
+  i_col_ci = 2,
+  header_forest = c("Hello", "World")
+)
+
 
 
 }
