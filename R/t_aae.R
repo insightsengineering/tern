@@ -15,17 +15,28 @@
 #' AAE <- rgda::get_data("BCE", "/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat")
 #' ASL <- rgda::get_data("BCE", "/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat")
 #' 
+#' 
+#' AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
+#' ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
+#'
+#' save(AAE, ASL, file = 'InputVads.Rdata')
+#' load('InputVads.Rdata')
+#' 
 #' }
 #' 
+#' help(p = rtables)
 #' 
 #' 
 
-library(rtables)
-help(p = rtables)
 
 load('InputVads.Rdata')
+library(rtables)
+
 # safety-evaluable patients
-asl <- ASL[ASL$SAFFL == 'Y', c("USUBJID", "TRT02AN")]
+asl <- ASL[
+  ASL$SAFFL == 'Y'
+  , c("USUBJID", "TRT02AN")
+]
 
 asl$TRT02AN <- as.factor(asl$TRT02AN)
 levs <- c('Stage 1\nCohort 1'
@@ -45,46 +56,65 @@ aae <- AAE[AAE$TRTEMFL == 'Y', c("USUBJID", "AEBODSYS", "AEDECOD", "AETOXGR")]
 
 aae <- merge(asl, aae, by = 'USUBJID')
 
+# N for totals and header
+TotNandHead <- table(asl$TRT02AN)
+
 # build a header with N counts
 # "group\n(N=x)" format
 
-head0 <- vapply(seq_along(table(asl$TRT02AN))
-       , function(x) paste0(names(head0[x]), '\n', '(N=', head0[x], ')')
-       , FUN.VALUE = character(1))
+head0 <- vapply(
+  seq_along(TotNandHead)
+  , function(x) {
+    paste0(names(TotNandHead)[x], '\n', '(N=', TotNandHead[x], ')')
+  }
+  , FUN.VALUE = character(1)
+)
+
+# header
+rtable(header = c("\nMedDRA System Organ Class\n  MedDRA Preferred Term", "\n\nNCI CTCAE Grade", head0[1:2]))
+
+# - Any Grade -
+# number of subjects (%)
+AnyGrade <- Map(
+  function(aepats, totals){
+    count <- length(unique(aepats))
+    percent <- count /totals
+    c(count, percent)
+  }
+  , aepats = split(aae$USUBJID, aae$TRT02AN)
+  , totals = TotNandHead
+)
 
 
-rtable(header = c("\nMedDRA System Organ Class\n  MedDRA Preferred Term", "\n\nNCI CTCAE Grade", head0[1:5]))
 
 
-
-t_aae <- function() {
-  
-  ## ARM always needs to be a factor
-  
-  ## do not use AAE and ASL as arguments
-  ## think of cdisc independent arguments
-  
-  df_tot_at_lease_one_ae <- merge(ASL[, c("USUBJID", "STUDYID")], AAE[, ...]) # aae USUBJID has NA
-  
-  tbl_at_lease_one_ae <- rtabulate(df_tot_at_lease_one_ae$"<var with NA>", function(x) {
-    sum(x, na.rm = TRUE) * c(1, 1/length(x))
-  }, row.name = "...")
-  
-  ## 
-  tbl_n_ae <- rtabulate(AAE$USUBJID, col_by = AAE$ARM, length)
-
-  
-  ## Now create a list of tables, one table per term
-  ## for now lets just create class - term structure
-  ## we can look later into generalizing this to any depth
-  df <- AAE[, c("USUBJID", "AESOC", "ARM", "AETERM")]
-  
-  # use factor levels for ordering
-  df.s <- split(df, AAE$AESOC)
-  
-  lapply(df.s, function(df_i) {
-    rtabulate(df_i, col_var = "ARM", )
-  })
-
-    
-}
+# 
+# t_aae <- function() {
+#   
+#   ## ARM always needs to be a factor
+#   
+#   ## do not use AAE and ASL as arguments
+#   ## think of cdisc independent arguments
+#   
+#   df_tot_at_lease_one_ae <- merge(ASL[, c("USUBJID", "STUDYID")], AAE[, ...]) # aae USUBJID has NA
+#   
+#   tbl_at_lease_one_ae <- rtabulate(df_tot_at_lease_one_ae$"<var with NA>", function(x) {
+#     sum(x, na.rm = TRUE) * c(1, 1/length(x))
+#   }, row.name = "...")
+#   
+#   ## 
+#   tbl_n_ae <- rtabulate(AAE$USUBJID, col_by = AAE$ARM, length)
+# 
+#   
+#   ## Now create a list of tables, one table per term
+#   ## for now lets just create class - term structure
+#   ## we can look later into generalizing this to any depth
+#   df <- AAE[, c("USUBJID", "AESOC", "ARM", "AETERM")]
+#   
+#   # use factor levels for ordering
+#   df.s <- split(df, AAE$AESOC)
+#   
+#   lapply(df.s, function(df_i) {
+#     rtabulate(df_i, col_var = "ARM", )
+#   })
+# }
