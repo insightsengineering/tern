@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Change from Baseline Table Caclulation Function — chgfbl_data • tern</title>
+<title>Define a kmplot grob — kmGrob • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -80,95 +80,38 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Change from Baseline Table Caclulation Function</h1>
+    <h1>Define a kmplot grob</h1>
     </div>
 
     
-    <p>Change from Baseline Table Caclulation Function</p>
+    <p>create a grid graphical object for basic KM plot using data from a call of function <code>kmCurveData</code></p>
     
 
-    <pre class="usage"><span class='fu'>chgfbl_data</span>(<span class='no'>data</span>, <span class='kw'>arm_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>)</pre>
+    <pre class="usage"><span class='fu'>kmGrob</span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kaplan - Meier Plot"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>input data</p></td>
+      <th>title</th>
+      <td><p>title for plot.</p></td>
     </tr>
     <tr>
-      <th>arm_var</th>
-      <td><p>variable to use for arm/grouping</p></td>
+      <th>...</th>
+      <td><p>All other arguments will be passed to a call to the <code><a href='kmCurveData.html'>kmCurveData()</a></code> function.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>library</span>(<span class='no'>tern</span>)
-<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
-
-<span class='no'>AQS</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"AQS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)) <span class='kw'>%&gt;%</span>
-   <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"FATIGI"</span>)
-
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>chgfbl_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>)</div><div class='output co'>#&gt; <span class='error'>Error in chgfbl_data(data = ANL): object 'ANL' not found</span></div><div class='input'>
-</div># NOT RUN {
-library(dplyr)
-library(tidyr)
-library(atezo.data)
-library(teal.oncology)
-library(forcats)
-library(ggplot2)
-library(grid)
-library(gridExtra)
-
-ASL <- asl(com.roche.cdpt7722.wo29637.rl)
-AQS <- aqs(com.roche.cdpt7722.wo29637.rl)
-
-#parammap <- unique(AQS[c("PARAM", "PARAMCD")]) 
-
-ASL_f <- ASL %>% select(STUDYID, USUBJID, ARM, ARMCD)
-AQS_f <- AQS %>% select(STUDYID, USUBJID, PARAMCD, PARAM, AVAL, AVISIT, AVISITN, ADY, ABLFL, APBFL, CHG, BASE)
-#AVALU variable not available in AQS
-#AQS_f$AVALU <- "kg/m^2"
-
-ANL <- left_join(ASL_f, AQS_f, by = c("STUDYID", "USUBJID")) %>% filter(PARAMCD == "FATIGI")
-
-df <- chgfbl_data(data = ANL)
-chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
-chgfbl_plot(data = df, ytype = "AVAL", errbar = "95CI", ref_line = 3, yrange = c(0,3), n_rotate = T)
-
-tbl <- chgfbl_table(data=df)
-
-\dontrun{
-Viewer(tbl)
-}
-
-
-
-\dontrun{
-library(random.cdisc.data)
-library(dplyr)
-ASL <- radam("ASL")
-ANL <- merge(ASL, radam("AQS", ADSL = ASL)) %>% filter(PARAMCD == "FATIGI")
-
-df <- chgfbl_data(data = ANL)
-chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
-
-}
-# now 
-# chng_data <- ... # you already have this # do not export
-# change_table(chng_data) # split by arm_name make columns and then combine
-# change_plot(chng_data) # group_by(arm_name) make plotA
-
-# maybe in future
-# chng_table <- table...
-# change_plot(chng_table)
-# selection for chg_var can be "CHG" or "PCHG"
-# }
-</pre>
+    <pre class="examples"><div class='input'><span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
+                 <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>))
+<span class='fu'>kmGrob</span>(<span class='kw'>formula_km</span> <span class='kw'>=</span> <span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; kmGrob[GRID.kmGrob.236] </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -177,10 +120,6 @@ chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsi
             
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-Chendi Liao (liaoc10), <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.com</a>
 
   </div>
 </div>

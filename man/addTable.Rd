@@ -24,7 +24,6 @@ addTable(kmgrob, vp, x = unit(0.5, "npc"), y = unit(0.5, "npc"), tbl,
 utility function to edit a grid grob by adding a text grob
 }
 \examples{
-library(scales)
 library(dplyr)
 OS <- data.frame(AVAL = abs(rnorm(200)), 
                  CNSR = sample(c(0, 1), 200, TRUE), 
