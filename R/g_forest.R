@@ -261,11 +261,11 @@ forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
     name = name,
     children = gList(
       gTree(
-        children = do.call('gList', Map(function(row, i) cell_in_rows(row, i, TRUE), header(tbl), 1:nrow(header(tbl))), USE.NAMES = FALSE),
+        children = do.call('gList', Map(function(row, i) cell_in_rows(row, i, TRUE), header(tbl), 1:nrow(header(tbl)), USE.NAMES = FALSE)),
         vp = vpPath("vp_table_layout", "vp_header")
       ),
       gTree(
-        children = do.call('gList', Map(cell_in_rows, tbl, 1:nrow(tbl)), USE.NAMES = FALSE),
+        children = do.call('gList', Map(cell_in_rows, tbl, 1:nrow(tbl), USE.NAMES = FALSE)),
         vp = vpPath("vp_table_layout", "vp_body")
       ),
       linesGrob(unit(c(0,1), "npc"), y = unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
@@ -305,7 +305,7 @@ forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
       gTree(
        children = do.call('gList', Map( function(xi, li, ui, row_index) {
          forest_dot_line(xi, li, ui, row_index, xlim, datavp = dataForestVp)
-       }, x, lower, upper, 1:length(x)), USE.NAMES = FALSE),
+       }, x, lower, upper, 1:length(x), USE.NAMES = FALSE)),
        vp = vpPath("vp_table_layout", "vp_body")
       )
     ),
