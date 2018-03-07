@@ -82,6 +82,12 @@ t_tte <- function(formula,
   
   
   # Argument Checking
+  if (length(tte) != nrow(data)) {
+    stop("some of the following variable contain missing values:\n   ",
+         sub("^list", "", deparse(attr(terms(formula), "variables"))),
+         "\nmissing data in for the survival analysis is currently disabled")    
+  }
+
   check_same_N(is_event = is_event, event_descr = event_descr, arm = arm)
   check_col_by(arm, 2)
   if (!is.null(event_descr) && !is.factor(event_descr))
