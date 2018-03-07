@@ -530,7 +530,17 @@ forestViewport <- function(tbl, width_row.names = NULL, width_columns = NULL, wi
       }))
       
       width_header <- do.call(unit.pmax, lapply(seq_len(nr_h), function(i) {
-        stringWidth(format_rcell(tbl_header[i,j], output = "ascii"))
+        
+        # for now we avoide the multicolumn cell to get the column width
+        cell <- tbl_header[i,j]
+        cs <- attr(cell, "colspan")
+        if (is.null(cs)) cs <- 1
+        if (cs == 1) {
+          stringWidth(format_rcell(cell, output = "ascii"))
+        } else {
+          unit(1, "lines")
+        }
+        
       }))
       
       unit.pmax(width_body, width_header)
