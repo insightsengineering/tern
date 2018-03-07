@@ -261,7 +261,9 @@ forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
     name = name,
     children = gList(
       gTree(
-        children = do.call('gList', Map(function(row, i) cell_in_rows(row, i, TRUE), header(tbl), 1:nrow(header(tbl)), USE.NAMES = FALSE)),
+        children = do.call('gList', Map(function(row, i) {
+          cell_in_rows(row, i, TRUE)
+        }, header(tbl), 1:nrow(header(tbl)), USE.NAMES = FALSE)),
         vp = vpPath("vp_table_layout", "vp_header")
       ),
       gTree(
@@ -303,7 +305,7 @@ forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
        vp = vpPath("vp_table_layout", "vp_body")
       ),
       gTree(
-       children = do.call('gList', Map( function(xi, li, ui, row_index) {
+       children = do.call('gList', Map(function(xi, li, ui, row_index) {
          forest_dot_line(xi, li, ui, row_index, xlim, datavp = dataForestVp)
        }, x, lower, upper, 1:length(x), USE.NAMES = FALSE)),
        vp = vpPath("vp_table_layout", "vp_body")
@@ -420,7 +422,7 @@ forest_dot_line <- function(x, lower, upper, row_index, xlim, datavp) {
         linesGrob(x = unit(c(ci[1], ci[2]), "native"), y = y) 
       } else if (ci[1] < xlim[1] && ci[2] > xlim[2] ){
         # <->
-        linesGrob(x = unit(ylim, "native"), y = y,
+        linesGrob(x = unit(xlim, "native"), y = y,
                   arrow = arrow(angle = 30, length = unit(0.5, "lines"), ends = "both")) 
       } else if ( ci[1] < xlim[1] && ci[2] <= xlim[2] ){
         # <- 
