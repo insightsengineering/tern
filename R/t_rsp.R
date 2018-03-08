@@ -64,7 +64,7 @@
 #'  rsp = ANL$AVALC %in% c("CR", "PR"),
 #'  col_by = factor(ANL$ARMCD, c("ARM B", "ARM C", "ARM A")),
 #'  partition_rsp_by = factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
-#'  strata_data = ANL[c("SEX","RACE")]
+#'  strata_data = ANL[c("RACE")]
 #' )
 #' tbl2; Viewer(tbl2)
 #' 
@@ -159,7 +159,9 @@ t_rsp <- function(
           rcell("<5 data points")
         } else {
           t.tbl <- table(col_by, rsp, strat)
-          t_m <- mantelhaen.test(t.tbl, correct = FALSE)
+          t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
+          
+          t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
           
           rcell(t_m$p.value, format = "xx.xxxx")
         }
