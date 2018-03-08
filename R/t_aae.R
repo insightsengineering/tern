@@ -62,7 +62,7 @@ TotNandHead <- table(asl$TRT02AN)
 # build a header with N counts
 # "group\n(N=x)" format
 
-head0 <- vapply(
+head <- vapply(
   seq_along(TotNandHead)
   , function(x) {
     paste0(names(TotNandHead)[x], '\n', '(N=', TotNandHead[x], ')')
@@ -70,20 +70,81 @@ head0 <- vapply(
   , FUN.VALUE = character(1)
 )
 
-# header
-rtable(header = c("\nMedDRA System Organ Class\n  MedDRA Preferred Term", "\n\nNCI CTCAE Grade", head0[1:2]))
+head <- append(c('MedDRA System Organ Class\n  MedDRA Preferred Term', 'NCI CTCAE Grade'), head)
+names(head) <- paste0('var', seq_along(1:length(head)))
 
 # - Any Grade -
 # number of subjects (%)
-AnyGrade <- Map(
+AnyGrade <- mapply(
   function(aepats, totals){
-    count <- length(unique(aepats))
-    percent <- count /totals
-    c(count, percent)
+    count <- as.integer(length(unique(aepats)))
+    percent <- round(count / totals, 2)
+    paste(count, percent)
+    
   }
   , aepats = split(aae$USUBJID, aae$TRT02AN)
   , totals = TotNandHead
 )
+
+
+AnyGrade <- append(c('- Any adverse events -', '- Any Grade -'), AnyGrade)
+
+# grade rows
+# Number of patients in GroupX with highest grade of all AEs equals one, two, ...
+# need to keep the hight grade for each patient
+
+MaxToxGr <- vapply(
+  split(aae$AETOXGR, aae$USUBJID)
+  , function(x){
+    max(as.integer(x))
+  }
+  , FUN.VALUE = integer(1)
+)
+
+data.frame(USUBJID = names(MaxToxGr), AETOXGR = MaxToxGr, row.names = NULL)
+
+
+
+
+dt <- as.data.frame(rbind(head, AnyGrade), stringsAsFactors = FALSE)
+
+
+
+
+# 
+# # preparing anygrade row for parsing as rrow, c(x, x)
+# t <- vapply(
+#   AnyGrade
+#   , function(x){
+#     paste0('c(', x[1], ', ', x[2], ')')
+#   }
+#   , FUN.VALUE = character(1)
+# )
+# 
+# 
+# tx <- paste0("rrow('- Any adverse events -', '- Any Grade -', ", paste0(t[1:2], collapse = ', '), ')')
+# 
+# 
+# # header
+# # "MedDRA System Organ Class\n  MedDRA Preferred Term"
+# # we need this as a column header for first column
+# rtable(
+#   header = c("\n\nNCI CTCAE Grade", head0[1:2])
+#   , format = "xx (xx.xx%)"
+#   , rrow('- Any adverse events -', '- Any Grade -', c(1, 2), c(1, 2))
+#   , eval(parse(text = "rrow('- Any adverse events -', '- Any Grade -', c(1, 2), c(1, 2))"))
+#   , eval(parse(text = tx))
+# )
+# 
+# 
+# eval(parse(text = "rrow('- Any adverse events -', '- Any Grade -', c(1, 2), c(1, 2)"))
+# 
+# rtable(
+#   header = c("Treatement\nN=100", "Comparison\nN=300"),
+#   format = "xx (xx.xx%)",
+#   rrow("A", c(104, .2), c(100, .4)),
+#   rrow("B", c(23, .4), c(43, .5))
+# )
 
 
 
@@ -118,3 +179,13 @@ AnyGrade <- Map(
 #     rtabulate(df_i, col_var = "ARM", )
 #   })
 # }
+
+
+
+
+
+
+
+
+
+
