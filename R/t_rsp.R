@@ -120,7 +120,7 @@ t_rsp <- function(
     # wald test without continuity correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
 
-      t_wc <- prop.test(table(x, by), correct = FALSE)
+      t_wc <- prop.test(table(by, x), correct = FALSE)
       
       rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
     },
@@ -130,7 +130,7 @@ t_rsp <- function(
     # wald test with  continuety correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
       
-      t_wc <- prop.test(table(x, by), correct = TRUE)
+      t_wc <- prop.test(table(by, x), correct = TRUE)
       
       rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
     }, 
@@ -142,9 +142,7 @@ t_rsp <- function(
       tabulate_pairwise(rsp, col_by, function(x, by) {
         
         
-        t_wc <- prop.test(x = tapply(x, by, sum),
-                          n = tapply(x, by, length),
-                          correct = FALSE)
+        t_wc <- prop.test(table(by,x), correct = FALSE)
         
         rcell(t_wc$p.value, format = "xx.xxxx")
       }, 
