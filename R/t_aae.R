@@ -1,4 +1,3 @@
-
 #' Adverse Events Table
 #' 
 #' 
@@ -29,8 +28,14 @@
 #' 
 
 
+# data prep ---------------------------------------------------------------
+
+
 load('InputVads.Rdata')
 library(rtables)
+
+# precision for rounding
+RoundPrec <- 4
 
 # safety-evaluable patients
 asl <- ASL[
@@ -39,22 +44,28 @@ asl <- ASL[
 ]
 
 asl$TRT02AN <- as.factor(asl$TRT02AN)
-levs <- c('Stage 1\nCohort 1'
-, 'Stage 1\nCohort 2'
-, 'Stage 1\nCohort 3'
-, 'Stage 2\nMCRC'
-, 'Stage 2\nNSCLC'
-, 'Stage 2\nMELANOMA'
-, 'Stage 2\nBIOPSY'
-, 'Stage 2\nBIOPSY ALT')
+levs <- c('Stage 1 Cohort 1'
+, 'Stage 1 Cohort 2'
+, 'Stage 1 Cohort 3'
+, 'Stage 2 MCRC'
+, 'Stage 2 NSCLC'
+, 'Stage 2 MELANOMA'
+, 'Stage 2 BIOPSY'
+, 'Stage 2 BIOPSY ALT')
 
 levels(asl$TRT02AN) <- c(levs)
 
 
 # treatment-emergent AEs
-aae <- AAE[AAE$TRTEMFL == 'Y', c("USUBJID", "AEBODSYS", "AEDECOD", "AETOXGR")]
+AAE$AEBODSYS <- ifelse(AAE$AEBODSYS == '',  'UNCODED', AAE$AEBODSYS)
+AAE$AEDECOD <- ifelse(AAE$AEDECOD == '',  AAE$AETERM, AAE$AEDECOD)
+
+aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y', c("USUBJID", "AEBODSYS", "AEDECOD", "AETOXGR")]
 
 aae <- merge(asl, aae, by = 'USUBJID')
+
+# Table section -----------------------------------------------------------
+
 
 # N for totals and header
 TotNandHead <- table(asl$TRT02AN)
@@ -72,13 +83,14 @@ head <- vapply(
 
 head <- append(c('MedDRA System Organ Class\n  MedDRA Preferred Term', 'NCI CTCAE Grade'), head)
 names(head) <- paste0('var', seq_along(1:length(head)))
+######################
 
 # - Any Grade -
 # number of subjects (%)
 AnyGrade <- mapply(
   function(aepats, totals){
     count <- as.integer(length(unique(aepats)))
-    percent <- round(count / totals, 2)
+    percent <- round(count / totals, RoundPrec)
     paste(count, percent)
     
   }
@@ -88,6 +100,8 @@ AnyGrade <- mapply(
 
 
 AnyGrade <- append(c('- Any adverse events -', '- Any Grade -'), AnyGrade)
+######################
+
 
 # grade rows
 # Number of patients in GroupX with highest grade of all AEs equals one, two, ...
@@ -101,14 +115,134 @@ MaxToxGr <- vapply(
   , FUN.VALUE = integer(1)
 )
 
-data.frame(USUBJID = names(MaxToxGr), AETOXGR = MaxToxGr, row.names = NULL)
+# need group names from asl
+d1 <- merge(
+  asl
+  , data.frame(USUBJID = names(MaxToxGr), AETOXGR = factor(MaxToxGr), row.names = NULL)
+  , all.x = TRUE
+)
+
+l1 <- Map(
+  function(aepats, totals){
+    count <- table(aepats)
+    percent <- round(count / totals, RoundPrec)
+    paste(count, percent)
+  }
+  , aepats = split(d1$AETOXGR, d1$TRT02AN)
+  , totals = TotNandHead
+)
+
+AnyGradeByGrade <- cbind('', levels(d1$AETOXGR), Reduce(cbind, l1))
+######################
+
+# - Overall - - Any Grade - SOC
+# number of subjects (%)
+
+GetAnyGradeBySMTH <- function(splvar) {
+  
+  # split subject id by groups
+  AnyGradeSoc <- vapply(
+    split(aae$USUBJID, aae[c(splvar, 'TRT02AN')])
+    , function(x){
+      length(unique(x))
+    }
+    , FUN.VALUE = numeric(1)
+  )
+  
+  d <- data.frame(grps = names(AnyGradeSoc), vals = AnyGradeSoc, row.names = NULL)
+  
+  # separating group and arm into columns
+  d$arm <- gsub('(^.*\\.)', replacement = '', x = d$grps)
+  d$soc <- gsub('(\\..*)', replacement = '', x = d$grps)
+  # need percentage out of N
+  d <- merge(d, data.frame(arm = names(TotNandHead), total = TotNandHead))
+  d$vals <- paste(d$vals, round(d$vals / d$total.Freq, RoundPrec))
+  
+  # transpose long to wide to have arms as columns
+  ld <- Map(
+    function(x){
+      df <- d[d$arm == x, 'vals']
+      df
+    }
+    , x = levels(asl$TRT02AN)
+  )
+  cbind(unique(d$soc), '- Any Grade -', Reduce(cbind, ld))
+}
 
 
 
+AnyGradeSoc <-GetAnyGradeBySMTH(splvar = 'AEBODSYS')
+######################
 
-dt <- as.data.frame(rbind(head, AnyGrade), stringsAsFactors = FALSE)
+# - Overall - - Any Grade - pref term
+
+AnyGradePT <-GetAnyGradeBySMTH(splvar = 'AEDECOD')
+
+######################
+
+# grade rows by soc, pt
+
+MaxToxGr <- vapply(
+  split(aae$AETOXGR, aae[c('AEBODSYS', 'USUBJID')])
+  , function(x){
+      if (length(x) != 0) {
+        max(as.integer(x))
+      } else -99L
+  }
+  , FUN.VALUE = integer(1)
+)
+
+# separating group and arm into columns
+d <- data.frame(grps = names(MaxToxGr), vals = MaxToxGr, row.names = NULL)
+d$soc <- gsub('(\\..*)', replacement = '', x = d$grps)
+d$USUBJID <- gsub('(^[^.]*)(\\.)(.*)', replacement = '\\3', x = d$grps)
+d$vals <- ifelse(d$vals == -99, NA, d$vals)
+d$vals <- factor(d$vals, levels = c('1', '2', '3', '4', '5'))
+
+# need group names from asl
+d1 <- merge(
+  data.frame(arm = asl$TRT02AN, USUBJID = asl$USUBJID)
+  , data.frame(USUBJID = d$USUBJID, soc = d$soc, AETOXGR = d$vals, row.names = NULL)
+  , all.x = TRUE
+)
+
+l1 <- Map(
+  function(aepats, totals){
+    count <- table(aepats)
+    percent <- round(count / totals, RoundPrec)
+    paste(count, percent)
+  }
+  , aepats = split(d1$AETOXGR, d1[c('arm', 'soc')])
+  , totals = TotNandHead
+)
 
 
+df <- as.data.frame(cbind(grps = names(l1), Reduce(rbind, l1)))
+# separating group and arm into columns
+df$arm <- gsub('(\\..*)', replacement = '', x = df$grps)
+df$soc <- gsub('(^[^.]*)(\\.)(.*)', replacement = '\\3', x = df$grps)
+df <- df[, !names(df) %in% 'grps']
+names(df) <- c(paste0('V', 1:5), 'arm', 'soc')
+
+
+df2 <- reshape(df, direction = "long", varying = 1:5, sep = "")
+df2$val <- as.character(df2$V)
+
+
+# transpose long to wide to have arms as columns
+ld <- Map(
+  function(x){
+    df <- df2[df2$arm == x, c('val')]
+    df
+  }
+  , x = levels(asl$TRT02AN)
+)
+
+OverallGrades <- cbind(unique(df2$soc), 1:5, Reduce(cbind, ld))
+
+######################
+
+final <- rbind(head, AnyGrade, AnyGradeByGrade, AnyGradeSoc, AnyGradePT, OverallGrades)
 
 
 # 
