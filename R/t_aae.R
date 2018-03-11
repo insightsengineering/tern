@@ -32,255 +32,254 @@
 
 
 load('InputVads.Rdata')
-library(rtables)
+# library(rtables)
 
 # precision for rounding
 RoundPrec <- 4
 
+# need all patients column for sorting and display
+aslALL <- ASL
+aslALL$USUBJID <- paste(aslALL$USUBJID, '-ALL')
+aslALL$TRT02AN <- 99
+
+ASLALL <- rbind(ASL, aslALL)
+
 # safety-evaluable patients
-asl <- ASL[
-  ASL$SAFFL == 'Y'
+asl <- ASLALL[
+  ASLALL$SAFFL == 'Y'
   , c("USUBJID", "TRT02AN")
 ]
 
+
 asl$TRT02AN <- as.factor(asl$TRT02AN)
-levs <- c('Stage 1 Cohort 1'
-, 'Stage 1 Cohort 2'
-, 'Stage 1 Cohort 3'
-, 'Stage 2 MCRC'
-, 'Stage 2 NSCLC'
-, 'Stage 2 MELANOMA'
-, 'Stage 2 BIOPSY'
-, 'Stage 2 BIOPSY ALT')
+levs <- c(
+  'Stage 1 Cohort 1'
+  , 'Stage 1 Cohort 2'
+  , 'Stage 1 Cohort 3'
+  , 'Stage 2 MCRC'
+  , 'Stage 2 NSCLC'
+  , 'Stage 2 MELANOMA'
+  , 'Stage 2 BIOPSY'
+  , 'Stage 2 BIOPSY ALT'
+  , 'All Patients'
+)
 
 levels(asl$TRT02AN) <- c(levs)
 
-
+# AAE
+# need all patients column for sorting and display
+aaeALL <- AAE
+aaeALL$USUBJID <- paste(aaeALL$USUBJID, '-ALL')
+AAEALL <- rbind(AAE, aaeALL)
 # treatment-emergent AEs
-AAE$AEBODSYS <- ifelse(AAE$AEBODSYS == '',  'UNCODED', AAE$AEBODSYS)
-AAE$AEDECOD <- ifelse(AAE$AEDECOD == '',  AAE$AETERM, AAE$AEDECOD)
-
-aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y', c("USUBJID", "AEBODSYS", "AEDECOD", "AETOXGR")]
-
+AAEALL$AEBODSYS <- ifelse(AAEALL$AEBODSYS == '',  'UNCODED', AAEALL$AEBODSYS)
+AAEALL$AEDECOD <- ifelse(AAEALL$AEDECOD == '',  paste0(AAEALL$AETERM, '*'), AAEALL$AEDECOD)
+aae <- AAEALL[AAEALL$TRTEMFL == 'Y' & AAEALL$ANLFL == 'Y', c("USUBJID", "AEBODSYS", "AEDECOD", "AETOXGR")]
 aae <- merge(asl, aae, by = 'USUBJID')
+aae$SOC_AEDECOD <- paste0(aae$AEBODSYS, '@', aae$AEDECOD)
+
 
 # Table section -----------------------------------------------------------
 
+# merges totals to df and pastes count with derived proportion
+MergeTotalGetPercent <- function(dt) {
+  dt <- merge(dt, TotNandHead)
+  # need totals for percentages
+  dt$val <- paste(dt$USUBJID, round(dt$USUBJID / dt$total, RoundPrec))
+  dt
+}
 
 # N for totals and header
-TotNandHead <- table(asl$TRT02AN)
+TblTot <- table(asl$TRT02AN)
+TotNandHead <- as.data.frame(TblTot)
+names(TotNandHead) <- c('TRT02AN', 'total')
 
 # build a header with N counts
 # "group\n(N=x)" format
 
+
+# head --------------------------------------------------------------------
 head <- vapply(
-  seq_along(TotNandHead)
+  seq_along(TblTot)
   , function(x) {
-    paste0(names(TotNandHead)[x], '\n', '(N=', TotNandHead[x], ')')
+      paste0(names(TblTot)[x], '\n', '(N=', TblTot[x], ')')
   }
   , FUN.VALUE = character(1)
 )
 
 head <- append(c('MedDRA System Organ Class\n  MedDRA Preferred Term', 'NCI CTCAE Grade'), head)
-names(head) <- paste0('var', seq_along(1:length(head)))
-######################
-
-# - Any Grade -
-# number of subjects (%)
-AnyGrade <- mapply(
-  function(aepats, totals){
-    count <- as.integer(length(unique(aepats)))
-    percent <- round(count / totals, RoundPrec)
-    paste(count, percent)
-    
-  }
-  , aepats = split(aae$USUBJID, aae$TRT02AN)
-  , totals = TotNandHead
-)
-
-
-AnyGrade <- append(c('- Any adverse events -', '- Any Grade -'), AnyGrade)
+Head <- as.data.frame(t(head), stringsAsFactors = FALSE)
+Head$ord <- 0
+Head$ordPT <- 0
 ######################
 
 
-# grade rows
-# Number of patients in GroupX with highest grade of all AEs equals one, two, ...
-# need to keep the hight grade for each patient
+# any adverse event - any grade -------------------------------------------
+a1 <- aggregate(USUBJID ~ TRT02AN, data = aae, FUN = function(x) length(unique(x)))
+a1 <- MergeTotalGetPercent(a1)
+# this order is necessary so that reshape correctly places column and grades
+a2 <- a1[order(a1$TRT02AN),]
+a2$id <- rep(1, nrow(a2))
 
-MaxToxGr <- vapply(
-  split(aae$AETOXGR, aae$USUBJID)
-  , function(x){
-    max(as.integer(x))
-  }
-  , FUN.VALUE = integer(1)
+a3 <- reshape(
+  data = a2[, c("TRT02AN", "val", "id")]
+  , idvar = 'id', timevar = 'TRT02AN'
+  , direction = 'wide', v.names = 'val'
 )
 
-# need group names from asl
-d1 <- merge(
-  asl
-  , data.frame(USUBJID = names(MaxToxGr), AETOXGR = factor(MaxToxGr), row.names = NULL)
-  , all.x = TRUE
-)
+a3 <- a3[, !names(a3) %in% 'id']
 
-l1 <- Map(
-  function(aepats, totals){
-    count <- table(aepats)
-    percent <- round(count / totals, RoundPrec)
-    paste(count, percent)
-  }
-  , aepats = split(d1$AETOXGR, d1$TRT02AN)
-  , totals = TotNandHead
-)
-
-AnyGradeByGrade <- cbind('', levels(d1$AETOXGR), Reduce(cbind, l1))
+AnyGrade <- cbind('- Any adverse events -', '- Any Grade -', a3)
+AnyGrade$ord <- 0
+AnyGrade$ordPT <- 0
 ######################
 
-# - Overall - - Any Grade - SOC
-# number of subjects (%)
 
-GetAnyGradeBySMTH <- function(splvar) {
-  
-  # split subject id by groups
-  AnyGradeSoc <- vapply(
-    split(aae$USUBJID, aae[c(splvar, 'TRT02AN')])
-    , function(x){
-      length(unique(x))
-    }
-    , FUN.VALUE = numeric(1)
-  )
-  
-  d <- data.frame(grps = names(AnyGradeSoc), vals = AnyGradeSoc, row.names = NULL)
-  
-  # separating group and arm into columns
-  d$arm <- gsub('(^.*\\.)', replacement = '', x = d$grps)
-  d$soc <- gsub('(\\..*)', replacement = '', x = d$grps)
-  # need percentage out of N
-  d <- merge(d, data.frame(arm = names(TotNandHead), total = TotNandHead))
-  d$vals <- paste(d$vals, round(d$vals / d$total.Freq, RoundPrec))
-  
-  # transpose long to wide to have arms as columns
-  ld <- Map(
-    function(x){
-      df <- d[d$arm == x, 'vals']
-      df
-    }
-    , x = levels(asl$TRT02AN)
-  )
-  cbind(unique(d$soc), '- Any Grade -', Reduce(cbind, ld))
-}
+# any adverse event - by grades -------------------------------------------
+b1 <- aggregate(AETOXGR ~ TRT02AN + USUBJID, data = aae, FUN = max, drop = TRUE)
+b2 <- aggregate(USUBJID ~ TRT02AN + AETOXGR, data = b1, FUN = length, drop = FALSE)
+b2 <- MergeTotalGetPercent(b2)
+# this order is necessary so that reshape correctly places column and grades
+b2 <- b2[order(b2$TRT02AN, b2$AETOXGR),]
 
+b3 <- reshape(
+  data = b2[, c("TRT02AN", "AETOXGR", "val")]
+  , idvar = c('AETOXGR'), timevar = 'TRT02AN'
+  , direction = 'wide', v.names = 'val'
+)
 
-
-AnyGradeSoc <-GetAnyGradeBySMTH(splvar = 'AEBODSYS')
+AnyAEByGrade <- cbind('', b3)
+AnyAEByGrade$ord <- 0
+AnyAEByGrade$ordPT <- 0
 ######################
 
-# - Overall - - Any Grade - pref term
 
-AnyGradePT <-GetAnyGradeBySMTH(splvar = 'AEDECOD')
+# soc - any grade ---------------------------------------------------------
+c1 <- aggregate(USUBJID ~ TRT02AN + AEBODSYS, data = aae
+                , FUN = function(x) length(unique(x))
+                , drop = FALSE)
+c1 <- MergeTotalGetPercent(c1)
+# this order is necessary so that reshape correctly places column and grades
+c2 <- c1[order(c1$TRT02AN),]
 
+c3 <- reshape(
+  data = c2[, c("TRT02AN", "AEBODSYS", "val")]
+  , idvar = 'AEBODSYS', timevar = 'TRT02AN'
+  , direction = 'wide', v.names = 'val'
+)
+# extract total count for ordering
+# descending by total patients counts, break ties by soc name 
+c3 <- c3[order(-as.integer(sub(pattern = '(^\\d+)(\\s.*)'
+               , replacement = '\\1', c3$`val.All Patients`))
+               , c3$AEBODSYS),]
+c3$ord <- 1:nrow(c3)
+c3$ordPT <- 0
+
+AnyGradeSoc <- cbind(c3[1], '- Any Grade -', c3[2:(ncol(c3))])
 ######################
 
-# grade rows by soc, pt
+# pt - any grade ----------------------------------------------------------
+d1 <- aggregate(USUBJID ~ TRT02AN + SOC_AEDECOD, data = aae
+                , FUN = function(x) length(unique(x))
+                , drop = FALSE)
 
-MaxToxGr <- vapply(
-  split(aae$AETOXGR, aae[c('AEBODSYS', 'USUBJID')])
-  , function(x){
-      if (length(x) != 0) {
-        max(as.integer(x))
-      } else -99L
-  }
-  , FUN.VALUE = integer(1)
+d1 <- MergeTotalGetPercent(d1)
+# this order is necessary so that reshape correctly places column and grades
+d2 <- d1[order(d1$TRT02AN),]
+
+d3 <- reshape(
+  data = d2[, c("TRT02AN", "SOC_AEDECOD", "val")]
+  , idvar = 'SOC_AEDECOD', timevar = 'TRT02AN'
+  , direction = 'wide', v.names = 'val'
 )
 
-# separating group and arm into columns
-d <- data.frame(grps = names(MaxToxGr), vals = MaxToxGr, row.names = NULL)
-d$soc <- gsub('(\\..*)', replacement = '', x = d$grps)
-d$USUBJID <- gsub('(^[^.]*)(\\.)(.*)', replacement = '\\3', x = d$grps)
-d$vals <- ifelse(d$vals == -99, NA, d$vals)
-d$vals <- factor(d$vals, levels = c('1', '2', '3', '4', '5'))
+# split soc and term
+d3$AEBODSYS <- sub(pattern = '(.+)(@)(.+)', '\\1', d3$SOC_AEDECOD)
+d3$AEDECOD <- sub(pattern = '(.+)(@)(.+)', '\\3', d3$SOC_AEDECOD)
 
-# need group names from asl
-d1 <- merge(
-  data.frame(arm = asl$TRT02AN, USUBJID = asl$USUBJID)
-  , data.frame(USUBJID = d$USUBJID, soc = d$soc, AETOXGR = d$vals, row.names = NULL)
-  , all.x = TRUE
-)
+# merging order from any grade soc
+d4 <- merge(d3, AnyGradeSoc[, c("AEBODSYS", "ord")])
 
-l1 <- Map(
-  function(aepats, totals){
-    count <- table(aepats)
-    percent <- round(count / totals, RoundPrec)
-    paste(count, percent)
-  }
-  , aepats = split(d1$AETOXGR, d1[c('arm', 'soc')])
-  , totals = TotNandHead
-)
+# extract total count for ordering
+d4 <- d4[order(d4$ord, -as.integer(sub(pattern = '(^\\d+)(\\s.*)'
+              , replacement = '\\1', d4$`val.All Patients`))
+              , d4$AEDECOD),]
+d4$ordPT <- 1:nrow(d4)
+d4 <- d4[, !names(d4) %in% c("AEBODSYS", "SOC_AEDECOD")]
+d5 <- d4[, c("AEDECOD", names(d4)[!names(d4) %in% c("AEDECOD")])]
 
 
-df <- as.data.frame(cbind(grps = names(l1), Reduce(rbind, l1)))
-# separating group and arm into columns
-df$arm <- gsub('(\\..*)', replacement = '', x = df$grps)
-df$soc <- gsub('(^[^.]*)(\\.)(.*)', replacement = '\\3', x = df$grps)
-df <- df[, !names(df) %in% 'grps']
-names(df) <- c(paste0('V', 1:5), 'arm', 'soc')
-
-
-df2 <- reshape(df, direction = "long", varying = 1:5, sep = "")
-df2$val <- as.character(df2$V)
-
-
-# transpose long to wide to have arms as columns
-ld <- Map(
-  function(x){
-    df <- df2[df2$arm == x, c('val')]
-    df
-  }
-  , x = levels(asl$TRT02AN)
-)
-
-OverallGrades <- cbind(unique(df2$soc), 1:5, Reduce(cbind, ld))
+AnyGradePT <- cbind(d5[1], '- Any Grade -', d5[2:(ncol(d5))])
 
 ######################
 
-final <- rbind(head, AnyGrade, AnyGradeByGrade, AnyGradeSoc, AnyGradePT, OverallGrades)
+# grade rows by soc -------------------------------------------------------
+x1 <- aggregate(AETOXGR ~ TRT02AN + AEBODSYS + USUBJID, data = aae, FUN = max, drop = TRUE)
+x2 <- aggregate(USUBJID ~ TRT02AN + AEBODSYS + AETOXGR, data = x1, FUN = length, drop = FALSE)
+x2 <- MergeTotalGetPercent(x2)
+# this order is necessary so that reshape correctly places column and grades
+x2 <- x2[order(x2$TRT02AN, x2$AETOXGR),]
+
+x3 <- reshape(
+  data = x2[, c("TRT02AN", "AEBODSYS", "AETOXGR", "val")]
+  , idvar = c('AEBODSYS', 'AETOXGR'), timevar = 'TRT02AN'
+  , direction = 'wide', v.names = 'val'
+)
+
+# merging order from any grad soc
+x4 <- merge(x3, AnyGradeSoc[, c("AEBODSYS", "ord")])
+x4 <- x4[order(x4$AEBODSYS, x4$AETOXGR),]
+x4$ordPT <- 0.5
+x4$AEBODSYS <- ''
+
+SocByGrade <- x4
+#############################
+
+# grade rows by pt --------------------------------------------------------
+y1 <- aggregate(AETOXGR ~ TRT02AN + SOC_AEDECOD + USUBJID, data = aae, FUN = max, drop = TRUE)
+y2 <- aggregate(USUBJID ~ TRT02AN + SOC_AEDECOD + AETOXGR, data = y1, FUN = length, drop = FALSE)
+y2 <- MergeTotalGetPercent(y2)
+# this order is necessary so that reshape correctly places column and grades
+y2 <- y2[order(y2$TRT02AN, y2$AETOXGR),]
+
+y3 <- reshape(
+  data = y2[, c("TRT02AN", "SOC_AEDECOD", "AETOXGR", "val")]
+  , idvar = c('SOC_AEDECOD', 'AETOXGR'), timevar = 'TRT02AN'
+  , direction = 'wide', v.names = 'val'
+)
+
+# split soc and term
+y3$AEBODSYS <- sub(pattern = '(.+)(@)(.+)', '\\1', y3$SOC_AEDECOD)
+y3$AEDECOD <- sub(pattern = '(.+)(@)(.+)', '\\3', y3$SOC_AEDECOD)
+
+# merging order from any grade soc
+y4 <- merge(y3, AnyGradeSoc[, c("AEBODSYS", "ord")])
+# merging order from any grade pt
+y4 <- merge(y4, AnyGradePT[, c("AEDECOD", "ord", "ordPT")])
+y4$ordPT <- y4$ordPT + 0.5
+y4 <- y4[order(y4$AEDECOD, y4$AETOXGR),]
+
+y4 <- y4[, !names(y4) %in% c("AEBODSYS", "SOC_AEDECOD")]
+y5 <- y4[, c("AEDECOD", names(y4)[!names(y4) %in% c("AEDECOD", "ord", "ordPT")], c("ord", "ordPT"))]
+y5$AEDECOD <- ''
+
+PTByGrade <- y5
 
 
-# 
-# # preparing anygrade row for parsing as rrow, c(x, x)
-# t <- vapply(
-#   AnyGrade
-#   , function(x){
-#     paste0('c(', x[1], ', ', x[2], ')')
-#   }
-#   , FUN.VALUE = character(1)
-# )
-# 
-# 
-# tx <- paste0("rrow('- Any adverse events -', '- Any Grade -', ", paste0(t[1:2], collapse = ', '), ')')
-# 
-# 
-# # header
-# # "MedDRA System Organ Class\n  MedDRA Preferred Term"
-# # we need this as a column header for first column
-# rtable(
-#   header = c("\n\nNCI CTCAE Grade", head0[1:2])
-#   , format = "xx (xx.xx%)"
-#   , rrow('- Any adverse events -', '- Any Grade -', c(1, 2), c(1, 2))
-#   , eval(parse(text = "rrow('- Any adverse events -', '- Any Grade -', c(1, 2), c(1, 2))"))
-#   , eval(parse(text = tx))
-# )
-# 
-# 
-# eval(parse(text = "rrow('- Any adverse events -', '- Any Grade -', c(1, 2), c(1, 2)"))
-# 
-# rtable(
-#   header = c("Treatement\nN=100", "Comparison\nN=300"),
-#   format = "xx (xx.xx%)",
-#   rrow("A", c(104, .2), c(100, .4)),
-#   rrow("B", c(23, .4), c(43, .5))
-# )
+names(Head) <- paste0('c', 1:length(Head))
+names(AnyGrade) <- paste0('c', 1:length(AnyGrade))
+names(AnyAEByGrade) <- paste0('c', 1:length(AnyAEByGrade))
+names(AnyGradeSoc) <- paste0('c', 1:length(AnyGradeSoc))
+names(AnyGradePT) <- paste0('c', 1:length(AnyGradePT))
+names(SocByGrade) <- paste0('c', 1:length(SocByGrade))
+names(PTByGrade) <- paste0('c', 1:length(PTByGrade))
 
+tt <- rbind(Head, AnyGrade, AnyAEByGrade, AnyGradeSoc, AnyGradePT, SocByGrade, PTByGrade)
+tt$c1 <- ifelse(tt$c12 > 0 & tt$c13 == 0, paste0(tt$c1, '\n- Overall -'), tt$c1)
+final <- tt[order(tt$c12, tt$c13), !names(tt) %in% c('c12', 'c13')]
 
+View(final)
+#############################
 
 
 # 
