@@ -2,8 +2,7 @@
 #' 
 #' Return a list of data for primitive element of grid drawing
 #' 
-#' @param formula_km formula specified for Kaplan-Meier curves.
-#' @param data analysis data set.
+#' @param fit_km a class "survfit" object.
 #' @param xaxis_by break interval of x-axis.
 #' 
 #' @import survival
@@ -21,31 +20,33 @@
 #'                  SEX = sample(c("M","F"), 200, TRUE),
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' kmCurveData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' kmCurveData(fit_km)
 #' 
 #' 
-kmCurveData <- function(formula_km, data, xaxis_by = NULL) {
+kmCurveData <- function(fit_km, xaxis_by = NULL) {
   
-  fit <- survfit(formula_km, data = data, conf.type = "plain")
-  ngroup <- length(fit$strata)
+  if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
+   
+  ngroup <- length(fit_km$strata)
   if (ngroup > 9) stop("unfortunately we currently do not have more than 9 colors to encode different groups")
   
   # extract kmplot relevant data
   df <- data.frame(
-    time = fit$time,
-    surv = fit$surv,
-    n.risk = fit$n.risk,
-    n.censor = fit$n.censor,
-    n.event = fit$n.event,
-    std.err = fit$std.err,
-    upper = fit$upper,
-    lower = fit$lower,
-    group = factor(rep(names(fit$strata), fit$strata), levels = names(fit$strata))
+    time = fit_km$time,
+    surv = fit_km$surv,
+    n.risk = fit_km$n.risk,
+    n.censor = fit_km$n.censor,
+    n.event = fit_km$n.event,
+    std.err = fit_km$std.err,
+    upper = fit_km$upper,
+    lower = fit_km$lower,
+    group = factor(rep(names(fit_km$strata), fit_km$strata), levels = names(fit_km$strata))
   )
   
   # split by group
   df_s <- split(df, df$group)
-  group <- fit$strata
+  group <- fit_km$strata
   
   ### width of label in Risk table
   tmp.labels <- names(group)
@@ -92,7 +93,7 @@ kmCurveData <- function(formula_km, data, xaxis_by = NULL) {
   })
   
   col_pal <- scales::col_factor("Set1", domain = names(df_s))
-  col <- col_pal(names(df_s))
+  colpal <- col_pal(names(df_s))
   return(list(nlines_labels = nlines_labels,
               xpos = xpos,
               xData = xData,
@@ -100,7 +101,7 @@ kmCurveData <- function(formula_km, data, xaxis_by = NULL) {
               lines_y = lines_y,
               points_x = points_x,
               points_y = points_y,
-              col_pal = col,
+              colpal = colpal,
               group = group,
               ypos = ypos,
               pt_risk = pt_risk))
@@ -112,8 +113,7 @@ kmCurveData <- function(formula_km, data, xaxis_by = NULL) {
 #' 
 #' An rtable format of KM model data for further annotation on top of Kaplan-Meier grob
 #' 
-#' @param formula_km formula specified for Kaplan-Meier curves.
-#' @param data analysis data set.
+#' @param fit_km a class "survfit" object.
 #' 
 #' @import survival
 #' @import rtables
@@ -128,12 +128,13 @@ kmCurveData <- function(formula_km, data, xaxis_by = NULL) {
 #'                  SEX = sample(c("M","F"), 200, TRUE),
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' kmAnnoData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' kmAnnoData(fit_km)
 #' 
-kmAnnoData <- function(formula_km, data) {
-  
-  fit <- survfit(formula_km, data = data, conf.type = "plain")
-  kminfo <- summary(fit)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
+#' 
+kmAnnoData <- function(fit_km) {
+  if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
+  kminfo <- summary(fit_km)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
   skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
   tblkm <- do.call(
     rtable,
@@ -159,9 +160,7 @@ kmAnnoData <- function(formula_km, data) {
 #' 
 #' An rtable format of Cox PH model data for further annotation on top of Kaplan-Meier grob
 #' 
-#' @param formula_coxph formula specified for Cox PH model.
-#' @param data analysis data set.
-#' @param cox_ties ties handling method for Cox PH model. options are "efron", "breslow" and "exact".
+#' @param fit_coxph a class "coxph" object.
 #' @param info_coxph label information for Cox PH model.
 #' 
 #' @import survival
@@ -177,14 +176,18 @@ kmAnnoData <- function(formula_km, data) {
 #'                  SEX = sample(c("M","F"), 200, TRUE),
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+#' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
+#' anno <- coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+#' anno
+#' ### add more annotation, e.g. Add log-rank test from a survdiff object
+#' surv_diff <- survdiff(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+#' logr_p <- pchisq(surv_diff$chisq, length(surv_dff$n) - 1, lower.tail = FALSE) 
+#' anno_new <- anno %>% paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\n", .)
 #' 
-#' 
-coxphAnnoData <- function(formula_coxph, data, cox_ties = "exact", info_coxph = "Cox Porportional Model"){
+coxphAnnoData <- function(fit_coxph, info_coxph = "Cox Porportional Model"){
   
-  fitcox <- coxph(formula_coxph, data = data, ties = cox_ties)
-  
-  sfit <- summary(fitcox)
+  if (!is(fit_coxph, "coxph")) stop("fit_km needs to be of class coxph")
+  sfit <- summary(fit_coxph)
   
   hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
   
@@ -215,12 +218,7 @@ coxphAnnoData <- function(formula_coxph, data, cox_ties = "exact", info_coxph = 
   #### add score test p-value for overall model
   scpval <- sfit$sctest["pvalue"] %>% round(digits = 4) %>% paste0("Overall Score p-value: ", . )
   tblstr3 <- paste0(scpval, "\n", tblstr2)
-  
-  ##### add log-rank test for modeling formula same as coxph
-  mdl <- survdiff(formula_coxph, data = data)
-  logr_p <- pchisq(mdl$chisq, length(mdl$n) - 1, lower.tail = FALSE)
-  lab <- paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\n", tblstr3)
-  return(lab)
+  tblstr3
 }
 
 

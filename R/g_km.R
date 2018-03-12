@@ -18,80 +18,73 @@
 #'                  SEX = sample(c("M","F"), 200, TRUE),
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' kmGrob(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' kmGrob(fit_km = fit_km)
 #' 
-kmGrob <- function(title = "Kaplan - Meier Plot", ...) {
+kmGrob <- function(title = "Kaplan - Meier Plot", fit_km, xaxis_by = NULL ) {
   
-  curve_data <- kmCurveData(...)
-  nlines_labels <- curve_data$nlines_labels
-  xpos <- curve_data$xpos
-  group <- curve_data$group
-  xData <- curve_data$xData
-  lines_x <- curve_data$lines_x
-  lines_y <- curve_data$lines_y
-  points_x <- curve_data$points_x
-  points_y <- curve_data$points_y
-  col_pal <- curve_data$col
-  ypos <- curve_data$ypos
-  pt_risk <- curve_data$pt_risk
+  cd <- kmCurveData(fit_km = fit_km, xaxis_by = xaxis_by)
+ 
   
-  vpplot <- plotViewport(margins = c(3, max(nlines_labels, 4), 3, 2),
+  vpplot <- plotViewport(margins = c(3, max(cd$nlines_labels, 4), 3, 2),
                          layout = grid.layout(
                            nrow = 3, ncol = 1, widths = unit(1, "npc"),
-                           heights = unit(c(5, 5, length(group)*1.1+4), c("null", "lines", "lines"))),
-                         name = "plotarea")
-  vpcurve <- dataViewport(xData = xData, yData = c(0,1),
-                          layout.pos.col = 1, layout.pos.row = 1, name = "topcurve")
-  vptable <- viewport(layout.pos.col = 1, layout.pos.row = 3, name = "bottomtable")
+                           heights = unit(c(5, 5, length(cd$group)*1.1+4), c("null", "lines", "lines"))),
+                         name = "plotArea")
+  vpcurve <- dataViewport(xData = cd$xData, yData = c(0,1),
+                          layout.pos.col = 1, layout.pos.row = 1, name = "topCurve")
+  vptable <- viewport(layout.pos.col = 1, layout.pos.row = 3, name = "bottomTable")
   
-  vprisk <- dataViewport(xData = xData, yData = c(0,1), name = "risktable")
+  vprisk <- dataViewport(xData = cd$xData, yData = c(0,1), name = "riskTable")
   
   vptree <- vpTree(vpplot, vpList(vpcurve, vpStack(vptable,  vprisk)))
   
-  lines <- mapply(function(x, y, col){
-    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col, lwd = 3), vp = vpPath("plotarea", "topcurve"))
-  }, lines_x, lines_y, col_pal, SIMPLIFY = FALSE)
+  lines <- Map(function(x, y, col){
+    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col, lwd = 3), vp = vpPath("plotArea", "topCurve"))
+  }, cd$lines_x, cd$lines_y, cd$colpal)
   
-  points <- mapply(function(x, y, col){
-    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col), vp = vpPath("plotarea", "topcurve"))
-  }, points_x, points_y, col_pal, SIMPLIFY = FALSE)
+  points <- Map(function(x, y, col){
+    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col), vp = vpPath("plotArea", "topCurve"))
+  }, cd$points_x, cd$points_y, cd$colpal )
   
-  ptnumber <- mapply(function(y, col, risk){
+  ptnumber <- Map(function(y, col, risk){
     textGrob( label = ifelse(!is.na(risk), as.character(risk), " "),
-              x = unit(xpos, "native"),
+              x = unit(cd$xpos, "native"),
               y = unit(y, "npc"),
               gp = gpar(col = col),
-              vp = vpPath("plotarea", "bottomtable",  "risktable"))
-  }, ypos, col_pal, pt_risk, SIMPLIFY = FALSE)
+              vp = vpPath("plotArea", "bottomTable",  "riskTable"))
+  }, cd$ypos, cd$colpal, cd$pt_risk )
   
-  grplabel <-  mapply(function(y, col, grp){
+  grplabel <-  Map(function(y, col, grp){
     textGrob( label = grp,
-              x = unit(-nlines_labels + 1, "lines"),
+              x = unit(-cd$nlines_labels + 1, "lines"),
               y = unit(y, "npc"),
               just = c("left", "center"),
               gp = gpar(col = col),
-              vp =  vpPath("plotarea", "bottomtable",  "risktable"))
-  }, ypos, col_pal, names(group), SIMPLIFY = FALSE)
+              vp =  vpPath("plotArea", "bottomTable",  "riskTable"))
+  }, cd$ypos, cd$colpal, names(cd$group) )
   
   gTree(childrenvp = vptree,
-        children =   do.call("gList", 
-                             c(list( xaxisGrob(at = xpos, vp = vpPath("plotarea", "topcurve")),
-                                     yaxisGrob(vp = vpPath("plotarea", "topcurve")),
-                                     rectGrob(vp = vpPath("plotarea", "topcurve")),
-                                     textGrob(title, y = unit(1, "npc") + unit(1, "lines"), 
-                                              gp = gpar(fontface = "bold", fontsize = 16), vp = vpPath("plotarea", "topcurve")),
-                                     textGrob("Survival Probability", x = unit(-3.5, "lines"), rot = 90, vp = vpPath("plotarea", "topcurve")), 
-                                     textGrob(label = "Number of Patients at Risk",
-                                              x = unit(0, "npc"),
-                                              y = unit(1, "npc") + unit(1, "lines"),
-                                              just = "left", vp = vpPath("plotarea", "bottomtable")),
-                                     xaxisGrob(at = xpos, vp = vpPath("plotarea", "bottomtable",  "risktable")), 
-                                     rectGrob(vp = vpPath("plotarea", "bottomtable",  "risktable"))),
-                               lines,
-                               points,
-                               ptnumber,
-                               grplabel)),
-        cl = "kmGrob")
+                     children =   do.call("gList", 
+                                          c(list( xaxisGrob(at = cd$xpos, vp = vpPath("plotArea", "topCurve")),
+                                                  yaxisGrob(vp = vpPath("plotArea", "topCurve")),
+                                                  rectGrob(vp = vpPath("plotArea", "topCurve")),
+                                                  textGrob(title, y = unit(1, "npc") + unit(1, "lines"), 
+                                                           gp = gpar(fontface = "bold", fontsize = 16), vp = vpPath("plotArea", "topCurve")),
+                                                  textGrob("Survival Probability", x = unit(-3.5, "lines"), rot = 90, vp = vpPath("plotArea", "topCurve")), 
+                                                  textGrob(label = "Number of Patients at Risk",
+                                                           x = unit(0, "npc"),
+                                                           y = unit(1, "npc") + unit(1, "lines"),
+                                                           just = "left", vp = vpPath("plotArea", "bottomTable")),
+                                                  xaxisGrob(at = cd$xpos, vp = vpPath("plotArea", "bottomTable",  "riskTable")), 
+                                                  rectGrob(vp = vpPath("plotArea", "bottomTable",  "riskTable"))),
+                                            lines,
+                                            points,
+                                            ptnumber,
+                                            grplabel)),
+                  #   gp = gp, vp = vp, name = name,
+                     cl = "kmGrob")
+  
 }
 
 
@@ -118,10 +111,12 @@ kmGrob <- function(title = "Kaplan - Meier Plot", ...) {
 #'                  SEX = sample(c("M","F"), 200, TRUE),
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' a_kmgrob <- kmGrob(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, xaxis_by = 0.5)
-#' cox_tbl <- coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' a_kmgrob <- kmGrob(fit_km, xaxis_by = 0.5)
+#' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
+#' cox_tbl <- coxphAnnoData(fit_coxph)
 #' addTable(a_kmgrob, 
-#'          vp = vpPath("plotarea", "topcurve"), 
+#'          vp = vpPath("plotArea", "topCurve"), 
 #'          x= unit(1, "lines"), y = unit(1, "lines"),
 #'          just = c("left", "bottom"),
 #'          tbl = cox_tbl ) %>% 
