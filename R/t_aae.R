@@ -26,7 +26,30 @@
 #' help(p = rtables)
 #' 
 #' 
+t_aae <- function(soc, pt, grade, col_by) {
+  
+  df <- data.frame(soc, grade, col_by) 
+  
 
+  tbl_all <- rtabulate()
+  
+  tbls_parts <- lapply(df, soc )
+  
+  rbind(
+    # tbl all
+    
+    # tbls by soc
+    
+  )
+  
+  
+  
+}
+
+
+
+
+aae_tmp <- function() {
 
 # data prep ---------------------------------------------------------------
 
@@ -314,7 +337,7 @@ View(final)
 # }
 
 
-
+}
 
 
 
