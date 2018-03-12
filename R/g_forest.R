@@ -560,9 +560,9 @@ forestViewport <- function(tbl, width_row.names = NULL, width_columns = NULL, wi
   get_num_lines_per_row <- function(x) {
     vapply(lapply(x, function(row) {
       
-      cell_text <- unlist(Filter(Negate(is.null), lapply(row, function (cell) {
+      cell_text <- c(attr(row, "row.name"), unlist(Filter(Negate(is.null), lapply(row, function (cell) {
         format_rcell(cell, output = "ascii")
-      })))
+      }))))
       
       if (is.null(cell_text)) 1 else vapply(strsplit(cell_text, "\n"), length, numeric(1))
       
