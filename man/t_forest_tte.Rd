@@ -5,8 +5,8 @@
 \title{Time-to-event Forest Plot Table}
 \usage{
 t_forest_tte(tte, is_event, col_by, group_data = NULL, strata_data = NULL,
-  total = "ALL", time_unit = "month", na.omit.group = TRUE,
-  dense_header = FALSE)
+  total = "ALL", time_unit = "month", ties = "exact",
+  na.omit.group = TRUE, dense_header = FALSE)
 }
 \arguments{
 \item{tte}{time to event data}
@@ -61,11 +61,13 @@ tbl <- t_forest_tte(
   is_event = ANL$CNSR == 0,
   col_by = factor(ANL$ARM), 
   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+  ties = "exact",
   dense_header = TRUE
 )
 
 tbl
 Viewer(tbl)
+
 
 }
 \author{
