@@ -68,6 +68,33 @@ tbl <- t_forest_tte(
 tbl
 Viewer(tbl)
 
+<<<<<<< HEAD
+=======
+# RealWorld example
+library(haven)
+ASL <- read_sas("Y:/cdt30099/s30081i/libraries/aslpd.sas7bdat")
+ARS <- read_sas("Y:/cdt30099/s30081i/libraries/ars.sas7bdat")
+ATE <- read_sas("Y:/cdt30099/s30081i/libraries/ate.sas7bdat")
+APDTE <- read_sas("Y:/cdt30099/s30081i/libraries/apdte.sas7bdat")
+
+ATE <- rbind(ATE, APDTE)
+ARS <- merge(ARS, subset(ASL, select = c("STUDYID", "USUBJID", "STRAT1", "STRAT2", "STRAT3")), by = c("STUDYID", "USUBJID"))
+ATE <- merge(ATE, subset(ASL, select = c("STUDYID", "USUBJID", "STRAT1", "STRAT2", "STRAT3")), by = c("STUDYID", "USUBJID"))
+
+ATE_f <- subset(ATE, PARAMCD == "OS") 
+ANL <- merge(ASL, ATE_f)
+
+tbl <- t_forest_tte(
+  tte = ANL$AVAL,
+  is_event = ANL$CNSR == 0,
+  col_by = factor(ANL$ARM), 
+  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+  dense_header = TRUE
+)
+
+tbl
+Viewer(tbl)
+>>>>>>> c67f28868e17998f3fe957bf83e421b2847dade7
 
 }
 \author{
