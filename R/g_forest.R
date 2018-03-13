@@ -332,6 +332,10 @@ cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
     indent <- attr(row, "indent")
     if (is.null(indent)) indent <- 0
     
+    if (indent > 0) {
+      row_name <- gsub("\n", paste0("\n", strrep(" ", 2 * (indent+1) + 1)), row_name, fixed = TRUE)
+    }
+    
     vp_name_rn <- paste0("rowname-", row_index)
     textGrob(
       name = vp_name_rn,
