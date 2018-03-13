@@ -226,7 +226,7 @@ forest_tte <- function(time_to_event, event,
 #' ASL_f <- right_join(ASL %>% select(USUBJID, STUDYID, SEX, RACE, ARM),
 #'                         ATE_f %>% select(USUBJID, STUDYID))
 #' 
-#' tbl <- forest_rsp(
+#' tbl <- forest_tte(
 #'   response = ATE_f$AVAL,
 #'   event = ATE_f$CNSR == 0,
 #'   arm = ASL_f$ARM, 
@@ -494,7 +494,7 @@ survival_results <- function(data){
     km_ref_median <- NA
     km_comp_median <- as.numeric(km_sum[7])
   } else if (arm_freq[names(arm_freq) == levels(data$arm)[2]] * arm_freq[names(arm_freq) == levels(data$arm)[1]] > 0){
-    km_sum <- summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table
+    km_sum <-  summary(survfit(Surv(time_to_event,event) ~ arm, data = data))$table
     km_ref_n <- km_sum[1, 1]
     km_comp_n <- km_sum[2,1]
     km_ref_event <- km_sum[1, 4]
@@ -509,7 +509,7 @@ survival_results <- function(data){
   # 2. at least one of the two arms have no events
   # 3. data has only one arm.
   if (nrow(km_sum) == 2 & km_ref_event * km_comp_event > 0){
-    cox_sum  <- summary(coxph(Surv(time_to_event,event) ~ arm, data = data))
+    cox_sum  <- summary(coxph(Surv(time_to_event,event) ~ arm, data = data, ties = "exact"))
     cox_hr   <- cox_sum$conf.int[1]
     cox_lcl  <- cox_sum$conf.int[3]
     cox_ucl  <- cox_sum$conf.int[4]
