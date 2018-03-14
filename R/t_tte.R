@@ -103,7 +103,7 @@ t_tte <- function(formula,
   
   tbl_event <- rbind(
     rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name = "Patients without event (%)"),
+              row.name = "Patients with event (%)"),
     if (!is.null(event_descr)) {
       rbind(
         rtable(levels(arm), rrow("Earliest Contributing Event", indent = 1)),
