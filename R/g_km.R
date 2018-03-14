@@ -28,7 +28,7 @@
 #' 
 #' ATE_f <- subset(ATE, PARAMCD == "OS") 
 #' 
-#' ANL <- merge(ASL, ATE_f)
+#' ANL <- merge(ASL, ATE_f, by = c("USUBJID", "STUDYID"))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
 #' ### basic KM plot
 #' g_km(fit_km = fit_km)
