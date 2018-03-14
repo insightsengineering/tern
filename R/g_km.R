@@ -1,9 +1,93 @@
+#' Kaplan-Meier Plot
+#' 
+#' Create a KM plot for any \code{survfit} object.
+#' 
+#' @param fit_km a class "survfit" object.
+#' @param xaxis_break break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param title title for plot.
+#' @param anno_km a list of parameters for adding annotation from a survfit object.
+#' @param anno_coxph a list of parameters for adding annotation from a coxph object.
+#' @param draw boolean, should plot be drawn.
+#' @param newpage boolean if \code{draw=TRUE} should plot be drawn on a new page.
+#' 
+#' @import dplyr
+#' @import survival
+#' @import rtables
+#' @import grid
+#' 
+#' @export
+#' 
+#' @examples 
+#' library(random.cdisc.data)
+#' 
+#' ASL <- radam("ASL")
+#' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
+#' ATE <- radam("ATE", ADSL = ASL)
+#' 
+#' ATE_f <- subset(ATE, PARAMCD == "OS") 
+#' 
+#' ANL <- merge(ASL, ATE_f)
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
+#' ### basic KM plot
+#' g_km(fit_km = fit_km)
+#' 
+#' ### KM plot with coxph annotation only
+#' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ANL, ties = "exact")
+#' g_km(fit_km = fit_km, 
+#'      anno_coxph = list(show = TRUE, fit_coxph = fit_coxph))
+#'      
+#' ### KM plot with both KM and coxph annotations   
+#' g_km(fit_km = fit_km, 
+#'      anno_km = list(show = TRUE, fit_km = fit_km),
+#'      anno_coxph = list(show = TRUE, fit_coxph = fit_coxph))     
+
+g_km <- function(fit_km, xaxis_break = NULL, title = "Kaplan - Meier Plot",
+                 anno_km = list(show = FALSE, fit_km = NULL),
+                 anno_coxph = list(show = FALSE, fit_coxph = NULL, info_coxph = "Cox Porportional Model"),
+                 draw = TRUE, newpage = TRUE){
+  
+  if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
+  grobKm <- kmGrob(fit_km = fit_km, xaxis_break = xaxis_break, title = title)
+  
+  if (anno_km$show){
+    if (!is.null(anno_km$fit_km)){
+      if (!is(anno_km$fit_km, "survfit")) stop("fit_km needs to be of class survfit")
+      annokm <- kmAnnoData(anno_km$fit_km)
+      grobKm <- grobKm %>% addTable(., 
+                                    tbl = annokm,
+                                    x = unit(1, "npc") - stringWidth(annokm) - unit(1, "lines"),
+                                    y = unit(1, "npc") -  unit(1, "lines"),
+                                    just = c("left", "top"))
+    }
+  }
+  
+  if (anno_coxph$show){
+    if (!is.null(anno_coxph$fit_coxph)){
+      if (!is(anno_coxph$fit_coxph, "coxph")) stop("fit_coxph needs to be of class coxph")
+      annocoxph <- coxphAnnoData(anno_coxph$fit_coxph, info_coxph = anno_coxph$info_coxph)
+      grobKm <- grobKm %>% addTable(.,
+                                    tbl = annocoxph,
+                                    x= unit(1, "lines"), y = unit(1, "lines"),
+                                    just = c("left", "bottom"))
+    }
+  }
+  
+  if (draw) {
+    if (newpage) grid.newpage()
+    grid.draw(grobKm)
+  }
+  invisible(grobKm)
+}
+
+ 
+
 #' Define a kmplot grob
 #' 
-#' create a grid graphical object for basic KM plot using data from a call of function \code{kmCurveData}
+#' create a grid graphical object for basic KM plot from a \code{survfit} object.
 #' 
+#' @param fit_km a class "survfit" object.
+#' @param xaxis_break break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' @param title title for plot.
-#' @param ... All other arguments will be passed to a call to the \code{kmCurveData()} function.
 #' 
 #' @import survival
 #' @importFrom scales col_factor
@@ -19,11 +103,13 @@
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-#' kmGrob(fit_km = fit_km)
+#' kmGrob(fit_km = fit_km, xaxis_break = c(0.5, 0.8, 1.5))
 #' 
-kmGrob <- function(title = "Kaplan - Meier Plot", fit_km, xaxis_by = NULL ) {
+kmGrob <- function(fit_km, xaxis_break = NULL, title = "Kaplan - Meier Plot", 
+                   gp = NULL, vp = NULL, name = NULL) {
   
-  cd <- kmCurveData(fit_km = fit_km, xaxis_by = xaxis_by)
+  if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
+  cd <- kmCurveData(fit_km = fit_km, xaxis_break = xaxis_break)
  
   
   vpplot <- plotViewport(margins = c(3, max(cd$nlines_labels, 4), 3, 2),
@@ -64,7 +150,7 @@ kmGrob <- function(title = "Kaplan - Meier Plot", fit_km, xaxis_by = NULL ) {
               vp =  vpPath("plotArea", "bottomTable",  "riskTable"))
   }, cd$ypos, cd$colpal, names(cd$group) )
   
-  gTree(childrenvp = vptree,
+  g_kmplot <-  gTree(childrenvp = vptree,
                      children =   do.call("gList", 
                                           c(list( xaxisGrob(at = cd$xpos, vp = vpPath("plotArea", "topCurve")),
                                                   yaxisGrob(vp = vpPath("plotArea", "topCurve")),
@@ -82,8 +168,9 @@ kmGrob <- function(title = "Kaplan - Meier Plot", fit_km, xaxis_by = NULL ) {
                                             points,
                                             ptnumber,
                                             grplabel)),
-                  #   gp = gp, vp = vp, name = name,
-                     cl = "kmGrob")
+                    gp = gp, vp = vp, name = name,
+                    cl = "kmGrob")
+   g_kmplot
   
 }
 
@@ -93,11 +180,11 @@ kmGrob <- function(title = "Kaplan - Meier Plot", fit_km, xaxis_by = NULL ) {
 #' utility function to edit a grid grob by adding a text grob 
 #' 
 #' @param kmgrob a kmGrob for further editing.
-#' @param vp a Grid veiwport object for annotating a text grob.
+#' @param tbl An rtable.
 #' @param x A numeric vector or unit object specifying x-values.
 #' @param y A numeric vector or unit object specifying y-values.
-#' @param tbl An rtable.
 #' @param just The justification of the text relative to its (x, y) location.
+#' @param vp a Grid veiwport object for annotating a text grob.
 #' 
 #' @import grid
 #' 
@@ -112,7 +199,7 @@ kmGrob <- function(title = "Kaplan - Meier Plot", fit_km, xaxis_by = NULL ) {
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-#' a_kmgrob <- kmGrob(fit_km, xaxis_by = 0.5)
+#' a_kmgrob <- kmGrob(fit_km, xaxis_break = 0.5)
 #' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
 #' cox_tbl <- coxphAnnoData(fit_coxph)
 #' addTable(a_kmgrob, 
@@ -123,8 +210,8 @@ kmGrob <- function(title = "Kaplan - Meier Plot", fit_km, xaxis_by = NULL ) {
 #'          grid.draw()
 #'          
 #'          
-addTable <- function(kmgrob, vp, x = unit(0.5, "npc") , y = unit(0.5, "npc"), 
-                     tbl, just = c("left", "top")){
+addTable <- function(kmgrob, tbl, x = unit(0.5, "npc") , y = unit(0.5, "npc"), 
+                      just = c("left", "top"), vp = vpPath("plotArea", "topCurve")){
    
   addGrob(kmgrob,
           textGrob(label = tbl, 
@@ -135,3 +222,55 @@ addTable <- function(kmgrob, vp, x = unit(0.5, "npc") , y = unit(0.5, "npc"),
                    vp = vp))
 }
 
+
+#' Draw plot of a grob or list of grobs
+#' 
+#' utility function to draw a grob or a list of grobs
+#' 
+#' @param grobs a grob or a list of grobs.
+#' @param ncol number of plots per column.
+#' @param newpage boolean if \code{draw=TRUE} should plot be drawn on a new page
+#' 
+#' @import gridExtra
+#' @import grid
+#' @import dplyr
+#' 
+#' @export
+#' 
+#' @examples 
+#' library(dplyr)
+#' library(gridExtra)
+#' library(grid)
+#' ptext <- textGrob("test text here")
+#' prect <- rectGrob(width = unit(0.5, "npc"), height = unit(0.5, "npc"))
+#' grobDraw(ptext)
+#' grobDraw(prect)
+#' grobDraw(list(ptext, prect))
+       
+      
+grobDraw <- function(grobs, ncol = 1,  newpage = TRUE){
+  
+  if (newpage) grid.newpage()
+  
+  if (is(grobs, "grob")) {
+    grobs %>% grid.draw()
+  } else if (is(grobs, "list")){
+    if (length(grobs) < 1){
+      stop("grobs can't be a list of NULL")
+    } else {
+      
+      gl <- Map(function(x){
+        is(x, "grob")
+      }, grobs)
+      
+      if (all(gl)){
+        arrangeGrob(grobs = grobs, ncol = ncol) %>% grid.draw()
+      } else {
+        stop("all list elements must be grob")
+      }
+    }
+  } else {
+    stop("grobs can only be a grob or list of grobs")
+  }
+  
+}

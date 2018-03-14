@@ -3,7 +3,7 @@
 #' Return a list of data for primitive element of grid drawing
 #' 
 #' @param fit_km a class "survfit" object.
-#' @param xaxis_by break interval of x-axis.
+#' @param xaxis_break break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' 
 #' @import survival
 #' @importFrom scales col_factor
@@ -21,10 +21,10 @@
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-#' kmCurveData(fit_km)
+#' kmCurveData(fit_km, xaxis_break = c(0.5, 0.8, 1.5))
 #' 
 #' 
-kmCurveData <- function(fit_km, xaxis_by = NULL) {
+kmCurveData <- function(fit_km, xaxis_break = NULL) {
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
    
@@ -55,9 +55,13 @@ kmCurveData <- function(fit_km, xaxis_by = NULL) {
   
   
   ### interval in x-axis
-  xpos <- seq(0, floor(max(df$time)), by = ifelse(is.null(xaxis_by), 
-                                                  max(1, floor(max(df$time)/10)), 
-                                                  xaxis_by))
+  if (length(xaxis_break) <= 1){
+    xpos <- seq(0, floor(max(df$time)), by = ifelse(is.null(xaxis_break), 
+                                                    max(1, floor(max(df$time)/10)), 
+                                                    xaxis_break))
+  } else {
+    xpos <-  c(0, xaxis_break)
+  }
   
   ypos <- 1 - 1:length(df_s)/(length(df_s) + 1)
   
@@ -177,16 +181,17 @@ kmAnnoData <- function(fit_km) {
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
-#' anno <- coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+#' anno <- coxphAnnoData(fit_coxph)
 #' anno
 #' ### add more annotation, e.g. Add log-rank test from a survdiff object
 #' surv_diff <- survdiff(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
-#' logr_p <- pchisq(surv_diff$chisq, length(surv_dff$n) - 1, lower.tail = FALSE) 
+#' logr_p <- pchisq(surv_diff$chisq, length(surv_diff$n) - 1, lower.tail = FALSE) 
 #' anno_new <- anno %>% paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\n", .)
 #' 
-coxphAnnoData <- function(fit_coxph, info_coxph = "Cox Porportional Model"){
+
+coxphAnnoData <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
   
-  if (!is(fit_coxph, "coxph")) stop("fit_km needs to be of class coxph")
+  if (!is(fit_coxph, "coxph")) stop("fit_coxph needs to be of class coxph")
   sfit <- summary(fit_coxph)
   
   hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
@@ -214,6 +219,7 @@ coxphAnnoData <- function(fit_coxph, info_coxph = "Cox Porportional Model"){
     )
   )
   tblstr <- toString(tbl, gap = 1)
+  if (is.null(info_coxph)) info_coxph <- "Cox Porportional Hazard Model"
   tblstr2 <- paste0(info_coxph, "\n", tblstr)
   #### add score test p-value for overall model
   scpval <- sfit$sctest["pvalue"] %>% round(digits = 4) %>% paste0("Overall Score p-value: ", . )
