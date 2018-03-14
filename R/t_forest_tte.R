@@ -160,7 +160,7 @@ t_forest_tte <- function(tte,
                  row.name = level,
                  indent = 1,
                  format_survival_analysis(
-                   survival_results(dfi)
+                   survival_results(dfi, ties)
                  )
                )) 
       }, dfs, names(dfs))
@@ -257,6 +257,7 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
     rcell(x[["cox_hr"]], format = "xx.xx"),
+    #ifelse(x[["cox_hr"]] <= 999, rcell(x[["cox_hr"]], format = "xx.xx"), rcell( 999, format = "xx.xx")),
     rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
   )
 }
