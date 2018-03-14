@@ -5,10 +5,12 @@
 #' @param fit_km a class "survfit" object.
 #' @param xaxis_break break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' @param title title for plot.
-#' @param anno_km a list of parameters for adding annotation from a survfit object.
-#' @param anno_coxph a list of parameters for adding annotation from a coxph object.
 #' @param draw boolean, should plot be drawn.
 #' @param newpage boolean if \code{draw=TRUE} should plot be drawn on a new page.
+#' @param anno_km_show show annotation from a survfit object.
+#' @param anno_coxph_show show annotation from a coxph object.
+#' @param anno_coxph_fit a class "coxph" object.
+#' @param anno_coxph_info label information for Cox PH model.
 #' 
 #' @import dplyr
 #' @import survival
@@ -34,37 +36,37 @@
 #' ### KM plot with coxph annotation only
 #' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ANL, ties = "exact")
 #' g_km(fit_km = fit_km, 
-#'      anno_coxph = list(show = TRUE, fit_coxph = fit_coxph))
+#'      anno_coxph_show = TRUE,
+#'      anno_coxph_fit = fit_coxph) 
 #'      
 #' ### KM plot with both KM and coxph annotations   
 #' g_km(fit_km = fit_km, 
-#'      anno_km = list(show = TRUE, fit_km = fit_km),
-#'      anno_coxph = list(show = TRUE, fit_coxph = fit_coxph))     
+#'      anno_km_show = TRUE,
+#'      anno_coxph_show = TRUE,
+#'      anno_coxph_fit = fit_coxph )     
 
 g_km <- function(fit_km, xaxis_break = NULL, title = "Kaplan - Meier Plot",
-                 anno_km = list(show = FALSE, fit_km = NULL),
-                 anno_coxph = list(show = FALSE, fit_coxph = NULL, info_coxph = "Cox Porportional Model"),
-                 draw = TRUE, newpage = TRUE){
+                 draw = TRUE, newpage = TRUE,
+                 anno_km_show = FALSE, 
+                 anno_coxph_show = FALSE,
+                 anno_coxph_fit = NULL,
+                 anno_coxph_info = "Cox Porportional Model"){
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
   grobKm <- kmGrob(fit_km = fit_km, xaxis_break = xaxis_break, title = title)
   
-  if (anno_km$show){
-    if (!is.null(anno_km$fit_km)){
-      if (!is(anno_km$fit_km, "survfit")) stop("fit_km needs to be of class survfit")
-      annokm <- kmAnnoData(anno_km$fit_km)
-      grobKm <- grobKm %>% addTable(., 
-                                    tbl = annokm,
-                                    x = unit(1, "npc") - stringWidth(annokm) - unit(1, "lines"),
-                                    y = unit(1, "npc") -  unit(1, "lines"),
-                                    just = c("left", "top"))
-    }
+  if (anno_km_show){
+    annokm <- kmAnnoData(fit_km)
+    grobKm <- grobKm %>% addTable(., 
+                                  tbl = annokm,
+                                  x = unit(1, "npc") - stringWidth(annokm) - unit(1, "lines"),
+                                  y = unit(1, "npc") -  unit(1, "lines"),
+                                  just = c("left", "top"))
   }
   
-  if (anno_coxph$show){
-    if (!is.null(anno_coxph$fit_coxph)){
-      if (!is(anno_coxph$fit_coxph, "coxph")) stop("fit_coxph needs to be of class coxph")
-      annocoxph <- coxphAnnoData(anno_coxph$fit_coxph, info_coxph = anno_coxph$info_coxph)
+  if (anno_coxph_show){
+    if (!is.null(anno_coxph_fit)){
+      annocoxph <- coxphAnnoData(anno_coxph_fit, info_coxph = anno_coxph_info )
       grobKm <- grobKm %>% addTable(.,
                                     tbl = annocoxph,
                                     x= unit(1, "lines"), y = unit(1, "lines"),
