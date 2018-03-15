@@ -16,15 +16,6 @@
 #' ASL <- rgda::get_data("BCE", "/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat")
 #' 
 #' 
-#' tbl <- t_aae(
-#'    usubjid = AAE$USUBJID,
-#'    soc = AAE$AEBODSYS,
-#'    grade = as.numeric(AAE$AETOXGR),
-#'    grande_range = c(1,5),
-#'    col_by = factor(AAE$TRT02AN)
-#' )
-#' 
-#' 
 #' # -------------------
 #' 
 #' library(rocheBCE)
@@ -45,7 +36,6 @@
 #' 
 #' # safety-evaluable patients
 #' asl <- ASLALL[ASLALL$SAFFL == "Y", c("USUBJID", "TRT02AN")]
-#' asl$TRT02AN <- as.factor(asl$TRT02AN)
 #' 
 #' # AAE
 #' # need all patients column for sorting and display
@@ -55,24 +45,41 @@
 #' # treatment-emergent AEs
 #' AAEALL$AEBODSYS <- ifelse(AAEALL$AEBODSYS == '',  'UNCODED', AAEALL$AEBODSYS)
 #' AAEALL$AEDECOD <- ifelse(AAEALL$AEDECOD == '',  paste0(AAEALL$AETERM, '*'), AAEALL$AEDECOD)
-#' aae <- AAEALL[AAEALL$TRTEMFL == 'Y' & AAEALL$ANLFL == 'Y', c("USUBJID", "AEBODSYS", "AEDECOD", "AETOXGR")]
+#' aae <- AAEALL[AAEALL$TRTEMFL == 'Y' & AAEALL$ANLFL == 'Y', !names(AAE) %in% ('TRT02AN')]
 #' aae <- merge(asl, aae, by = 'USUBJID')
-#' aae$SOC_AEDECOD <- paste0(aae$AEBODSYS, '@', aae$AEDECOD)
-#' aae$TRT02AN <- as.factor(aae$TRT02AN)
-t_aae <- function(usubjid, soc, grade, col_by) {
-  
+#' 
+#' tbl <- t_aae(
+#'    asl = asl,
+#'    aae = aae,
+#'    col_by = "TRT02AN",
+#'    usubjid = "USUBJID",
+#'    soc = "AEBODSYS",
+#'    grade = "AETOXGR",
+#'    grade_range = c(1,5),
+#' )
+t_aae <- function(asl, usubjid, soc, grade, grade_range, col_by) {
   
   # check argument validity and consisency
-  if (any(is.na(col_by))) stop("no NA's allowed in col_by")
+  if (any(is.na(aae[[col_by]]))) stop("In aae data no NA's allowed in col_by")
+  if (any(is.na(asl[[col_by]]))) stop("In asl data no NA's allowed in col_by")
   
+  # data prep
+  usubjidv <- aae[[usubjid]]
+  socv <- aae[[soc]]
+  gradev <- as.numeric(aae[[grade]])
+  col_byv <- aae[[col_by]]
+  
+  df <- data.frame(usubjidv, socv, gradev, col_by = factor(col_byv), stringsAsFactors = FALSE)
+  
+  # total N for each group from subject level dataset
+  # double brackets are used to get a vector instead of 1 column df
+  # otherwise tapply does not work
+  N <- tapply(asl[[usubjid]], asl[[col_by]], function(x) (length(!duplicated(x))))
   
   # start tabulating
 
-  df <- data.frame(usubjid, soc, grade, col_by, stringsAsFactors = FALSE)
-  
-  df_i <- subset(df, soc == soc[1])
-  
-  N <- tapply(df$usubjid, col_by, function(x) (length(!duplicated(x))))
+  #TODO a subset for testing needs to be removed
+  df_i <- df[df$socv == df$socv[1],]
   
   
   # x_cell <- split(df_i, df_i$col_by)[[1]]
@@ -86,15 +93,31 @@ t_aae <- function(usubjid, soc, grade, col_by) {
     }
   }
   
+  
+  count_perc <- function(x_cell) {
+    .GlobalEnv$xxxx <- x_cell
+    N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
+    if (N_i > 0) {
+      n <- sum(!duplicated(x_cell$usubjid)) # number of patients with at least one ae
+      n * c(1, 1 / N[x_cell$col_by[1]]) # obtaining the total and getting percentage
+    } else {
+      rcell(0, format = "xx")
+    }
+  }
+  
   tbl_all <- rtabulate(df_i, row_by_var = no_by("any grade"), col_by_var = "col_by", count_perc, format = "xx (xx.xx%)")
   
-  df_i_max_grade <- aggregate(grade ~ col_by + usubjid, data = df_i, FUN = max, drop = TRUE, na.rm=TRUE)
-  df_i_max_grade$grade_f <- factor(df_i_max_grade$grade, levels = seq(grande_range[1], grande_range[2], by = 1))
+  df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = df_i, FUN = max, drop = TRUE, na.rm=TRUE)
+  df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev, levels = seq(grade_range[1], grade_range[2], by = 1))
   tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f", col_by_var = "col_by", count_perc, format = "xx (xx.xx%)")
-  
-
 }
 
+rbind(
+  tbl_all,
+  tbl_by_grade
+)
+
+Viewer(tbl_all)
 
 # TotN <- table(asl$TRT02AN)
 # 

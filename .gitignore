@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 .DS_Store
+InputVads.Rdata
+t_ae_ctc_SE.out
