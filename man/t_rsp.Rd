@@ -73,7 +73,7 @@ tbl2 <- t_rsp(
  rsp = ANL$AVALC \%in\% c("CR", "PR"),
  col_by = factor(ANL$ARMCD, c("ARM B", "ARM C", "ARM A")),
  partition_rsp_by = factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
- strata_data = ANL[c("SEX","RACE")]
+ strata_data = ANL[c("RACE")]
 )
 tbl2; Viewer(tbl2)
 

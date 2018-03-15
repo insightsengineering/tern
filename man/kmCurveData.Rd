@@ -4,14 +4,12 @@
 \alias{kmCurveData}
 \title{Prepare necessary data for Kaplan-Meier Plot}
 \usage{
-kmCurveData(formula_km, data, xaxis_by = NULL)
+kmCurveData(fit_km, xaxis_break = NULL)
 }
 \arguments{
-\item{formula_km}{formula specified for Kaplan-Meier curves.}
+\item{fit_km}{a class "survfit" object.}
 
-\item{data}{analysis data set.}
-
-\item{xaxis_by}{break interval of x-axis.}
+\item{xaxis_break}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
 }
 \description{
 Return a list of data for primitive element of grid drawing
@@ -25,7 +23,8 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  SEX = sample(c("M","F"), 200, TRUE),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
-kmCurveData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+kmCurveData(fit_km, xaxis_break = c(0.5, 0.8, 1.5))
 
 
 }

@@ -4,15 +4,10 @@
 \alias{coxphAnnoData}
 \title{Prepare Cox PH model annotation data with rtable format}
 \usage{
-coxphAnnoData(formula_coxph, data, cox_ties = "exact",
-  info_coxph = "Cox Porportional Model")
+coxphAnnoData(fit_coxph, info_coxph = "Cox Porportional Hazard Model")
 }
 \arguments{
-\item{formula_coxph}{formula specified for Cox PH model.}
-
-\item{data}{analysis data set.}
-
-\item{cox_ties}{ties handling method for Cox PH model. options are "efron", "breslow" and "exact".}
+\item{fit_coxph}{a class "coxph" object.}
 
 \item{info_coxph}{label information for Cox PH model.}
 }
@@ -27,7 +22,12 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  SEX = sample(c("M","F"), 200, TRUE),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
-coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
-
+fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
+anno <- coxphAnnoData(fit_coxph)
+anno
+### add more annotation, e.g. Add log-rank test from a survdiff object
+surv_diff <- survdiff(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+logr_p <- pchisq(surv_diff$chisq, length(surv_diff$n) - 1, lower.tail = FALSE) 
+anno_new <- anno \%>\% paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\\n", .)
 
 }

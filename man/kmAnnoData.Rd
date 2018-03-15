@@ -4,12 +4,10 @@
 \alias{kmAnnoData}
 \title{Prepare K-M model annotation data with rtable format}
 \usage{
-kmAnnoData(formula_km, data)
+kmAnnoData(fit_km)
 }
 \arguments{
-\item{formula_km}{formula specified for Kaplan-Meier curves.}
-
-\item{data}{analysis data set.}
+\item{fit_km}{a class "survfit" object.}
 }
 \description{
 An rtable format of KM model data for further annotation on top of Kaplan-Meier grob
@@ -22,6 +20,8 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  SEX = sample(c("M","F"), 200, TRUE),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
-kmAnnoData(Surv(AVAL, 1-CNSR) ~ ARM, data = OS)
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+kmAnnoData(fit_km)
+
 
 }

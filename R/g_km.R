@@ -2,7 +2,7 @@
 #' 
 #' Create a KM plot for any \code{survfit} object.
 #' 
-#' @param fit_km a class "survfit" object.
+#' @param fit_km a class \code{\link[survival]{survfit}} object.
 #' @param xaxis_break break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' @param title title for plot.
 #' @param draw boolean, should plot be drawn.

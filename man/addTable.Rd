@@ -4,21 +4,21 @@
 \alias{addTable}
 \title{Add text annotation on top of a kmgrob}
 \usage{
-addTable(kmgrob, vp, x = unit(0.5, "npc"), y = unit(0.5, "npc"), tbl,
-  just = c("left", "top"))
+addTable(kmgrob, tbl, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
+  just = c("left", "top"), vp = vpPath("plotArea", "topCurve"))
 }
 \arguments{
 \item{kmgrob}{a kmGrob for further editing.}
 
-\item{vp}{a Grid veiwport object for annotating a text grob.}
+\item{tbl}{An rtable.}
 
 \item{x}{A numeric vector or unit object specifying x-values.}
 
 \item{y}{A numeric vector or unit object specifying y-values.}
 
-\item{tbl}{An rtable.}
-
 \item{just}{The justification of the text relative to its (x, y) location.}
+
+\item{vp}{a Grid veiwport object for annotating a text grob.}
 }
 \description{
 utility function to edit a grid grob by adding a text grob
@@ -31,10 +31,12 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  SEX = sample(c("M","F"), 200, TRUE),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
-a_kmgrob <- kmGrob(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, xaxis_by = 0.5)
-cox_tbl <- coxphAnnoData(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+a_kmgrob <- kmGrob(fit_km, xaxis_break = 0.5)
+fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
+cox_tbl <- coxphAnnoData(fit_coxph)
 addTable(a_kmgrob, 
-         vp = vpPath("plotarea", "topcurve"), 
+         vp = vpPath("plotArea", "topCurve"), 
          x= unit(1, "lines"), y = unit(1, "lines"),
          just = c("left", "bottom"),
          tbl = cox_tbl ) \%>\% 
