@@ -19,11 +19,11 @@
 #' # -------------------
 #' 
 #' library(rocheBCE)
-#' library(rtables)
 #' AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
 #' ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
-#'
 #' save(AAE, ASL, file = 'InputVads.Rdata')
+#'
+#' library(rtables)
 #' load('InputVads.Rdata')
 #' 
 #' 
@@ -51,13 +51,15 @@
 #' tbl <- t_aae(
 #'    asl = asl,
 #'    aae = aae,
-#'    col_by = "TRT02AN",
 #'    usubjid = "USUBJID",
 #'    soc = "AEBODSYS",
 #'    grade = "AETOXGR",
 #'    grade_range = c(1,5),
+#'    col_by = "TRT02AN"
 #' )
-t_aae <- function(asl, usubjid, soc, grade, grade_range, col_by) {
+#' 
+#' Viewer
+t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
   
   # check argument validity and consisency
   if (any(is.na(aae[[col_by]]))) stop("In aae data no NA's allowed in col_by")
@@ -78,24 +80,8 @@ t_aae <- function(asl, usubjid, soc, grade, grade_range, col_by) {
   
   # start tabulating
 
-  #TODO a subset for testing needs to be removed
-  df_i <- df[df$socv == df$socv[1],]
-  
-  
-  # x_cell <- split(df_i, df_i$col_by)[[1]]
+  # checks if there is any case and derives counts (percentage), otherwise 0
   count_perc <- function(x_cell) {
-    N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
-    if (isTRUE(N_i > 0)) {
-      n <- sum(!duplicated(x_cell$usubjid)) # number of patients with at least one ae
-      n * c(1, 1 / N_i)        
-    } else {
-      rcell(c(0, 0), format = "xx (xx%)")
-    }
-  }
-  
-  
-  count_perc <- function(x_cell) {
-    .GlobalEnv$xxxx <- x_cell
     N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
     if (N_i > 0) {
       n <- sum(!duplicated(x_cell$usubjid)) # number of patients with at least one ae
@@ -105,19 +91,68 @@ t_aae <- function(asl, usubjid, soc, grade, grade_range, col_by) {
     }
   }
   
-  tbl_all <- rtabulate(df_i, row_by_var = no_by("any grade"), col_by_var = "col_by", count_perc, format = "xx (xx.xx%)")
+  dt <- df[df$socv == df$socv[1],]
   
-  df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = df_i, FUN = max, drop = TRUE, na.rm=TRUE)
-  df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev, levels = seq(grade_range[1], grade_range[2], by = 1))
-  tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f", col_by_var = "col_by", count_perc, format = "xx (xx.xx%)")
+  # derives the any grade and by grades rows
+  DeriveCore <- function(dt) {
+    # any grade row  
+    tbl_all <- rtabulate(dt, row_by_var = no_by("- any grade - "), col_by_var = "col_by", count_perc, format = "xx (xx.x%)")
+    
+    # by grades rows
+    # need the highest grade per patient and grade variable should be a vector
+    df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = dt, FUN = max, drop = TRUE, na.rm=TRUE)
+    # need factor grade for rtabulate
+    df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev, levels = seq(grade_range[1], grade_range[2], by = 1))
+    tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f", col_by_var = "col_by", count_perc, format = "xx (xx.x%)")
+    
+    rbind(tbl_all, tbl_by_grade)
+  }
+  
+
+# Any adverse events ------------------------------------------------------
+
+  
+  AnyAE <- rbind(
+    rtable(header = names(N), rrowl('- Any adverse events -', rep(' ', length(N)))),
+    DeriveCore(df)
+  )
+  
+
+# SOC chunks --------------------------------------------------------------
+
+  # sapply preserves names of soc
+  SocChunks_list <- sapply(unique(df$socv), simplify = FALSE,
+                      function(SocName) DeriveCore(df[df$socv == SocName,]))
+  
+  # need to order by overall soc counts
+  # need total from any grad all patients, the last column of the first row is all patients count
+  SocOrder <- sort(vapply(names(SocChunks_list), function(x) SocChunks_list[[x]][1, length(N)][1], FUN.VALUE = numeric(1)), decreasing = TRUE)
+  ###########################
+  ###########################
+  ###########################
+  # ordering should be by decreasing count and then break ties by names, now only by count is implemented
+  ###########################
+  ###########################
+  ###########################
+  # names are already in SocChunks_list because of that using USE.NAMES = FALSE
+  SocChunks_list_ordered <- sapply(names(SocOrder), function(x) SocChunks_list[x], USE.NAMES = FALSE)
+  
+  
+  # need soc and - overall - on a separate row
+  SocChunks <- sapply(names(SocChunks_list_ordered), simplify = FALSE,
+         function(x) {
+           rbind(
+             rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
+             rtable(header = names(N), rrowl('- Overall -', rep(' ', length(N)))),
+             SocChunks_list_ordered[[x]]
+           )})
+  
+  rbind(
+    AnyAE,
+    socs <- Reduce(rbind, SocChunks)
+  )
 }
 
-rbind(
-  tbl_all,
-  tbl_by_grade
-)
-
-Viewer(tbl_all)
 
 # TotN <- table(asl$TRT02AN)
 # 
