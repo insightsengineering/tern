@@ -58,7 +58,7 @@
 #'    col_by = "TRT02AN"
 #' )
 #' 
-#' Viewer
+#' Viewer(tbl)
 t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
   
   # check argument validity and consisency
