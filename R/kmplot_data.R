@@ -2,14 +2,13 @@
 #' 
 #' Return a list of data for primitive element of grid drawing
 #' 
-#' @param fit_km a class "survfit" object.
-#' @param xaxis_break break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param fit_km a class \code{\link{survfit}} object.
+#' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' 
 #' @import survival
 #' @importFrom scales col_factor
 #' 
-#' @export
-#' 
+#' @export 
 #' 
 #' @examples 
 #' 
@@ -21,10 +20,10 @@
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-#' kmCurveData(fit_km, xaxis_break = c(0.5, 0.8, 1.5))
+#' kmCurveData(fit_km, xticks = c(0.5, 0.8, 1.5))
 #' 
 #' 
-kmCurveData <- function(fit_km, xaxis_break = NULL) {
+kmCurveData <- function(fit_km, xticks = NULL) {
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
    
@@ -55,12 +54,12 @@ kmCurveData <- function(fit_km, xaxis_break = NULL) {
   
   
   ### interval in x-axis
-  if (length(xaxis_break) <= 1){
-    xpos <- seq(0, floor(max(df$time)), by = ifelse(is.null(xaxis_break), 
+  if (length(xticks) <= 1){
+    xpos <- seq(0, floor(max(df$time)), by = ifelse(is.null(xticks), 
                                                     max(1, floor(max(df$time)/10)), 
-                                                    xaxis_break))
+                                                    xticks))
   } else {
-    xpos <-  c(0, xaxis_break)
+    xpos <-  c(0, xticks)
   }
   
   ypos <- 1 - 1:length(df_s)/(length(df_s) + 1)
@@ -115,9 +114,9 @@ kmCurveData <- function(fit_km, xaxis_break = NULL) {
 
 #' Prepare K-M model annotation data with rtable format
 #' 
-#' An rtable format of KM model data for further annotation on top of Kaplan-Meier grob
+#' An \code{\link[rtables]{rtable}} format of KM model data for further annotation on top of Kaplan-Meier grob
 #' 
-#' @param fit_km a class "survfit" object.
+#' @param fit_km a class \code{\link{survfit}} object.
 #' 
 #' @import survival
 #' @import rtables
@@ -126,6 +125,8 @@ kmCurveData <- function(fit_km, xaxis_break = NULL) {
 #' 
 #' @examples 
 #' 
+#' library(dplyr)
+#' library(rtables)
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
 #'                  ARM = sample(LETTERS[1:3], 200, TRUE),
@@ -133,14 +134,14 @@ kmCurveData <- function(fit_km, xaxis_break = NULL) {
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-#' kmAnnoData(fit_km)
+#' tbl <- t_km(fit_km)
+#' Viewer(tbl)
 #' 
-#' 
-kmAnnoData <- function(fit_km) {
+t_km <- function(fit_km) {
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
   kminfo <- summary(fit_km)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
   skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
-  tblkm <- do.call(
+  tbl  <- do.call(
     rtable,
     c(
       list(header = c("N", "median", "95% CI for median")),
@@ -154,17 +155,16 @@ kmAnnoData <- function(fit_km) {
       })
     )
   )
-  tblstr <- toString(tblkm, gap = 1)
-  return(tblstr)
+ tbl 
 }
 
 
 
 #' Prepare Cox PH model annotation data with rtable format
 #' 
-#' An rtable format of Cox PH model data for further annotation on top of Kaplan-Meier grob
+#' An \code{\link[rtables]{rtable}} format of \code{\link{coxph}} object for further annotation on top of Kaplan-Meier grob
 #' 
-#' @param fit_coxph a class "coxph" object.
+#' @param fit_coxph a class \code{\link{coxph}} object.
 #' @param info_coxph label information for Cox PH model.
 #' 
 #' @import survival
@@ -173,7 +173,8 @@ kmAnnoData <- function(fit_km) {
 #' @export
 #' 
 #' @examples 
-#' 
+#' library(dplyr)
+#' library(rtables)
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
 #'                  ARM = sample(LETTERS[1:3], 200, TRUE),
@@ -181,15 +182,11 @@ kmAnnoData <- function(fit_km) {
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
-#' anno <- coxphAnnoData(fit_coxph)
-#' anno
-#' ### add more annotation, e.g. Add log-rank test from a survdiff object
-#' surv_diff <- survdiff(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS)
-#' logr_p <- pchisq(surv_diff$chisq, length(surv_diff$n) - 1, lower.tail = FALSE) 
-#' anno_new <- anno %>% paste0(paste0("Log-rank test p-value: ", as.character(round(logr_p, 4))), "\n", .)
+#' tbl <- t_coxph(fit_coxph)
+#' Viewer(tbl)
 #' 
 
-coxphAnnoData <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
+t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
   
   if (!is(fit_coxph, "coxph")) stop("fit_coxph needs to be of class coxph")
   sfit <- summary(fit_coxph)
@@ -218,13 +215,7 @@ coxphAnnoData <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model
       })
     )
   )
-  tblstr <- toString(tbl, gap = 1)
-  if (is.null(info_coxph)) info_coxph <- "Cox Porportional Hazard Model"
-  tblstr2 <- paste0(info_coxph, "\n", tblstr)
-  #### add score test p-value for overall model
-  scpval <- sfit$sctest["pvalue"] %>% round(digits = 4) %>% paste0("Overall Score p-value: ", . )
-  tblstr3 <- paste0(scpval, "\n", tblstr2)
-  tblstr3
+ tbl
 }
 
 
