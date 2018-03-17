@@ -13,6 +13,7 @@
 #' @import survival
 #' @import rtables
 #' @import grid
+#' @importFrom gridExtra arrangeGrob
 #' 
 #' @export
 #' 
