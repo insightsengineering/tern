@@ -125,15 +125,10 @@ t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
                       function(SocName) DeriveCore(df[df$socv == SocName,]))
   
   # need to order by overall soc counts
-  # need total from any grad all patients, the last column of the first row is all patients count
-  SocOrder <- sort(vapply(names(SocChunks_list), function(x) SocChunks_list[[x]][1, length(N)][1], FUN.VALUE = numeric(1)), decreasing = TRUE)
-  ###########################
-  ###########################
-  ###########################
-  # ordering should be by decreasing count and then break ties by names, now only by count is implemented
-  ###########################
-  ###########################
-  ###########################
+  # need total from any grade all patients, the last column of the first row is all patients count
+  # break ties by alphabetical order of socs
+  SocVector <- vapply(names(SocChunks_list), function(x) SocChunks_list[[x]][1, length(N)][1], FUN.VALUE = numeric(1))
+  SocOrder <- SocVector[order(-SocVector, names(SocVector))]
   # names are already in SocChunks_list because of that using USE.NAMES = FALSE
   SocChunks_list_ordered <- sapply(names(SocOrder), function(x) SocChunks_list[x], USE.NAMES = FALSE)
   
@@ -152,121 +147,6 @@ t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
     socs <- Reduce(rbind, SocChunks)
   )
 }
-
-
-# TotN <- table(asl$TRT02AN)
-# 
-# rtabulate(x = asl, col_by_var = "TRT02AN", row_by_var = no_by('NCI CTCAE Grade'), function(x) {
-#   paste0("N=", nrow(x))
-# })
-# 
-# # - Any adverse events - by grade-----------------------------------------
-# 
-# # need highest grade per patient
-# b1 <- aggregate(AETOXGR ~ TRT02AN + USUBJID, data = aae, FUN = max, drop = TRUE)
-# # need factor for rtabulate
-# b1$AETOXGRF <- as.factor(b1$AETOXGR)
-# x <- rtabulate(x = b1, col_by_var = "TRT02AN", row_by_var = "AETOXGRF", function(x) {
-#   
-#   
-#   
-#   tmp <- c(nrow(x), nrow(x)/TotN[unique(x$TRT02AN)])
-#   
-#   .GlobalEnv$xxxx <- tmp
-#   
-#   tmp
-#   
-#   length(xxxx)
-#   
-# }, format = "xx.xx (xx.xx%)")
-# 
-# str(x[1,1])
-# 
-# # soc by grade-------------------------------------------------------------
-# 
-# # need highest grade per soc per patient
-# df <- aggregate(AETOXGR ~ TRT02AN + AEBODSYS + USUBJID, data = aae, FUN = max, drop = TRUE)
-# # need factor for rtabulate
-# df$AETOXGRF <- as.factor(df$AETOXGR)
-# 
-# df.sp <- split(df, df$AEBODSYS, drop = FALSE)
-# 
-# df.sp.tab <- lapply(df.sp, function(df_i) {
-#   rtabulate(x = df_i, col_by_var = "TRT02AN", row_by_var = "AETOXGRF", FUN = nrow)
-# })
-# 
-# 
-# rtabulate(df.s[[1]]$USUBJID, col_by,  function(x_cell_usubjid) length(x_cell_ubsubjid) * c(1, 1/N_ARM))
-# 
-# 
-# 
-# 
-# df <- data.frame(soc, grade, col_by)
-# 
-# df.s <- split(df, soc, drop=FALSE)
-# 
-# 
-# rbind(
-#   rtabulate(df.s[[1]]$USUBJID, col_by,  function(x_cell_usubjid) length(x_cell_ubsubjid) * c(1, 1/N_ARM)),
-#   rtabulate(df.s[[1]], row_by_var = "grade", col_by_var = "col_by", function(x_cell) {
-#     nrow(x_cell) * c(1, 1/N_ARM)
-#   }, format = "xx xx.xx%")
-# )
-# 
-# 
-# 
-# t_aae <- function(soc, pt, grade, col_by) {
-#   
-#   df <- data.frame(soc, grade, col_by) 
-#   
-# 
-#   tbl_all <- rtabulate()
-#   
-#   tbls_parts <- lapply(df, soc )
-#   
-#   rbind(
-#     # tbl all
-#     
-#     # tbls by soc
-#     
-#   )
-#   
-#   
-#   
-# }
-# 
-
-
-# 
-# t_aae <- function() {
-#   
-#   ## ARM always needs to be a factor
-#   
-#   ## do not use AAE and ASL as arguments
-#   ## think of cdisc independent arguments
-#   
-#   df_tot_at_lease_one_ae <- merge(ASL[, c("USUBJID", "STUDYID")], AAE[, ...]) # aae USUBJID has NA
-#   
-#   tbl_at_lease_one_ae <- rtabulate(df_tot_at_lease_one_ae$"<var with NA>", function(x) {
-#     sum(x, na.rm = TRUE) * c(1, 1/length(x))
-#   }, row.name = "...")
-#   
-#   ## 
-#   tbl_n_ae <- rtabulate(AAE$USUBJID, col_by = AAE$ARM, length)
-# 
-#   
-#   ## Now create a list of tables, one table per term
-#   ## for now lets just create class - term structure
-#   ## we can look later into generalizing this to any depth
-#   df <- AAE[, c("USUBJID", "AESOC", "ARM", "AETERM")]
-#   
-#   # use factor levels for ordering
-#   df.s <- split(df, AAE$AESOC)
-#   
-#   lapply(df.s, function(df_i) {
-#     rtabulate(df_i, col_var = "ARM", )
-#   })
-# }
 
 
 
