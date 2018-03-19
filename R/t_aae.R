@@ -112,7 +112,7 @@ t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
     
     # by grades rows
     # need the highest grade per patient and grade variable should be a vector
-    df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = dt, FUN = max, drop = TRUE, na.rm=TRUE)
+    df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = dt, FUN = max, drop = TRUE, na.rm = TRUE)
     # need factor grade for rtabulate
     df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev, levels = seq(grade_range[1], grade_range[2], by = 1))
     tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f", col_by_var = "col_by", count_perc, format = "xx (xx.x%)")
@@ -155,16 +155,16 @@ t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
   
 # PT chunks ---------------------------------------------------------------
 
-  # sapply preserves names of pt
   # there is a potential that the same PT can be under different SOC so need
-  # to combine the soce and pt as a new name and this will also help with linking
+  # to combine the soc and pt as a new name and this will also help with linking
   # back to soc for sorting and stacking
   df$socv_ptv <- paste0(df$socv, '@', df$ptv)
 
+  ###### THE SLOWESET PART #####
   # sapply preserves names of term as names of list items
   PTChunks_list <- sapply(unique(df$socv_ptv), simplify = FALSE,
                            function(SocName) DeriveCore(df[df$socv_ptv == SocName,]))
-
+  
 
   # need to sort pt within soc and place them under soc chunks
   # need total from any grade all patients, the last column of the first row is all patients count
@@ -173,6 +173,12 @@ t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
   PTOrder <- PTVector[order(-PTVector, names(PTVector))]
   # rebuilding the list by choosing items in the desired order
   PTChunks_list_ordered <- PTChunks_list[names(PTOrder)]
+  # need a copy to preserve soc pt combo name for attribute name2
+  PTChunks_list_ordered_for_attr <- PTChunks_list_ordered
+  
+  # for display purposes need to get rid of the soc part, creating name2 attrib
+  # which will be used after merging
+  names(PTChunks_list_ordered) <- sub('^(.{1,})(@)(.{1,}$)', '\\3', names(PTChunks_list_ordered))
   
   # need PT on a separate row
   PTChunks <- sapply(names(PTChunks_list_ordered), simplify = FALSE,
@@ -181,11 +187,15 @@ t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
                           rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
                           PTChunks_list_ordered[[x]]
                         )})
+  # reattaching soc as a name2 attr for merging with soc
+  for (i in seq_along(PTChunks)) {
+    attr(PTChunks[[i]], 'name2') <- sub('^(.{1,})(@)(.{1,}$)', '\\1', names(PTChunks_list_ordered_for_attr))[i]
+  }
   
-
+  
 # soc and pt together -----------------------------------------------------
 
-  
+  ##### SECOND SLOWEST PART #########
   # build a 3rd list that will use soc names from soc list to choose from 
   # soc list (SocChunks) and pt list (PTChunks) in an order from soc list
   
@@ -194,7 +204,7 @@ t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
       SocChunks[[x]],
       # extracting soc part from combined soc pt name and checking against soc
       # need to rbind together so that it becomes one rtable
-      Reduce(rbind, PTChunks[sub('^(.{1,})(@)(.{1,}$)', '\\1', names(PTChunks)) == x])
+      Reduce(rbind, PTChunks[vapply(PTChunks, function(x) attr(x, 'name2'), character(1)) == x])
     )
   }, simplify = FALSE)
 
