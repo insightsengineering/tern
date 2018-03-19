@@ -17,7 +17,8 @@
 #' 
 #' 
 #' # -------------------
-#' 
+#' # the following example should reproduce table
+#' file.show('/opt/BIOSTAT/prod/s28363v/reports/t_ae_ctc_ALLWD_SE.out')
 #' library(rocheBCE)
 #' AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
 #' ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
@@ -53,32 +54,40 @@
 #'    aae = aae,
 #'    usubjid = "USUBJID",
 #'    soc = "AEBODSYS",
+#'    pt = "AEDECOD",
 #'    grade = "AETOXGR",
 #'    grade_range = c(1,5),
 #'    col_by = "TRT02AN"
 #' )
 #' 
 #' Viewer(tbl)
-t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
+t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
   
-  # check argument validity and consisency
+
+# check argument validity and consisency ----------------------------------
+
+
   if (any(is.na(aae[[col_by]]))) stop("In aae data no NA's allowed in col_by")
   if (any(is.na(asl[[col_by]]))) stop("In asl data no NA's allowed in col_by")
-  
-  # data prep
+
+# data prep ---------------------------------------------------------------
+
   usubjidv <- aae[[usubjid]]
   socv <- aae[[soc]]
+  ptv <- aae[[pt]]
   gradev <- as.numeric(aae[[grade]])
   col_byv <- aae[[col_by]]
   
-  df <- data.frame(usubjidv, socv, gradev, col_by = factor(col_byv), stringsAsFactors = FALSE)
+  df <- data.frame(usubjidv, socv, ptv, gradev, col_by = factor(col_byv), stringsAsFactors = FALSE)
   
   # total N for each group from subject level dataset
   # double brackets are used to get a vector instead of 1 column df
   # otherwise tapply does not work
   N <- tapply(asl[[usubjid]], asl[[col_by]], function(x) (length(!duplicated(x))))
   
-  # start tabulating
+
+# start tabulating --------------------------------------------------------
+
 
   # checks if there is any case and derives counts (percentage), otherwise 0
   count_perc <- function(x_cell) {
@@ -93,6 +102,9 @@ t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
   
   dt <- df[df$socv == df$socv[1],]
   
+
+# core function -----------------------------------------------------------
+
   # derives the any grade and by grades rows
   DeriveCore <- function(dt) {
     # any grade row  
@@ -120,7 +132,7 @@ t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
 
 # SOC chunks --------------------------------------------------------------
 
-  # sapply preserves names of soc
+  # sapply preserves names of term as names of list items
   SocChunks_list <- sapply(unique(df$socv), simplify = FALSE,
                       function(SocName) DeriveCore(df[df$socv == SocName,]))
   
@@ -129,9 +141,8 @@ t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
   # break ties by alphabetical order of socs
   SocVector <- vapply(names(SocChunks_list), function(x) SocChunks_list[[x]][1, length(N)][1], FUN.VALUE = numeric(1))
   SocOrder <- SocVector[order(-SocVector, names(SocVector))]
-  # names are already in SocChunks_list because of that using USE.NAMES = FALSE
-  SocChunks_list_ordered <- sapply(names(SocOrder), function(x) SocChunks_list[x], USE.NAMES = FALSE)
-  
+  # rebuilding the list by choosing items in the desired order
+  SocChunks_list_ordered <- SocChunks_list[names(SocOrder)]
   
   # need soc and - overall - on a separate row
   SocChunks <- sapply(names(SocChunks_list_ordered), simplify = FALSE,
@@ -142,15 +153,55 @@ t_aae <- function(asl, aae, usubjid, soc, grade, grade_range, col_by) {
              SocChunks_list_ordered[[x]]
            )})
   
+# PT chunks ---------------------------------------------------------------
+
+  # sapply preserves names of pt
+  # there is a potential that the same PT can be under different SOC so need
+  # to combine the soce and pt as a new name and this will also help with linking
+  # back to soc for sorting and stacking
+  df$socv_ptv <- paste0(df$socv, '@', df$ptv)
+
+  # sapply preserves names of term as names of list items
+  PTChunks_list <- sapply(unique(df$socv_ptv), simplify = FALSE,
+                           function(SocName) DeriveCore(df[df$socv_ptv == SocName,]))
+
+
+  # need to sort pt within soc and place them under soc chunks
+  # need total from any grade all patients, the last column of the first row is all patients count
+  # break ties by alphabetical order of socs
+  PTVector <- vapply(names(PTChunks_list), function(x) PTChunks_list[[x]][1, length(N)][1], FUN.VALUE = numeric(1))
+  PTOrder <- PTVector[order(-PTVector, names(PTVector))]
+  # rebuilding the list by choosing items in the desired order
+  PTChunks_list_ordered <- PTChunks_list[names(PTOrder)]
+  
+  # need PT on a separate row
+  PTChunks <- sapply(names(PTChunks_list_ordered), simplify = FALSE,
+                      function(x) {
+                        rbind(
+                          rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
+                          PTChunks_list_ordered[[x]]
+                        )})
+  
+
+# soc and pt together -----------------------------------------------------
+
+  
+  # build a 3rd list that will use soc names from soc list to choose from 
+  # soc list (SocChunks) and pt list (PTChunks) in an order from soc list
+  
+  SocPTChunks <- sapply(names(SocChunks), function(x){
+    rbind(
+      SocChunks[[x]],
+      # extracting soc part from combined soc pt name and checking against soc
+      # need to rbind together so that it becomes one rtable
+      Reduce(rbind, PTChunks[sub('^(.{1,})(@)(.{1,}$)', '\\1', names(PTChunks)) == x])
+    )
+  }, simplify = FALSE)
+
   rbind(
     AnyAE,
-    socs <- Reduce(rbind, SocChunks)
+    Reduce(rbind, SocPTChunks)
   )
+  
 }
-
-
-
-
-
-
 
