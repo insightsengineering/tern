@@ -24,7 +24,8 @@ Suggests:
   random.cdisc.data,
   testthat,
   knitr,
-  rmarkdown
+  rmarkdown,
+  forcats
 License: Copyright Roche
 Encoding: UTF-8
 LazyData: true

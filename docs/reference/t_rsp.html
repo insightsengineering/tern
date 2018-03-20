@@ -159,34 +159,34 @@ further explanation.</p></td>
  <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)))
 )
 <span class='no'>tbl</span>; <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt;                                                                      ARM B                 ARM A                 ARM C     
-#&gt;                                                                     (N=319)               (N=333)               (N=348)    
+#&gt;                                                                     (N=350)               (N=325)               (N=325)    
 #&gt; ---------------------------------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        119 (37.3%)           139 (41.74%)          149 (42.82%) 
-#&gt; Non-Responders                                                    200 (62.7%)           194 (58.26%)          199 (57.18%) 
+#&gt; Responders                                                        145 (41.43%)          126 (38.77%)          141 (43.38%) 
+#&gt; Non-Responders                                                    205 (58.57%)          199 (61.23%)          184 (56.62%) 
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (31.98, 42.87)        (36.39, 47.24)        (37.55, 48.2) 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (36.22, 46.79)        (33.44, 44.3)         (37.92, 48.97)
 #&gt; 
-#&gt; Difference in Response Rates (%)                                                            4.44                  5.51     
-#&gt;   95% CI for difference (Wald without correction)                                      (-3.2, 12.47)         (-1.99, 13.43)
-#&gt;   95% CI for difference (Wald with continuity correction)                              (-3.52, 12.79)        (-2.3, 13.74) 
-#&gt;   p-value (Chi-squared)                                                                    0.2467                0.1469    
+#&gt; Difference in Response Rates (%)                                                           -2.66                  1.96     
+#&gt;   95% CI for difference (Wald without correction)                                      (-10.05, 4.74)         (-5.5, 9.42) 
+#&gt;   95% CI for difference (Wald with continuity correction)                              (-10.35, 5.03)         (-5.8, 9.71) 
+#&gt;   p-value (Chi-squared)                                                                    0.4813                0.6073    
 #&gt; 
-#&gt; Odds Ratio                                                                                  1.2                   1.26     
-#&gt;   95% CI                                                                                (0.88, 1.65)          (0.92, 1.72) 
+#&gt; Odds Ratio                                                                                  0.9                   1.08     
+#&gt;   95% CI                                                                                (0.66, 1.22)          (0.8, 1.47)  
 #&gt; 
-#&gt; Complete Response (CR)                                            66 (20.69%)           64 (19.22%)           72 (20.69%)  
-#&gt;   95% CI                                                         (16.38, 25.55)        (15.13, 23.87)        (16.56, 25.33)
+#&gt; Complete Response (CR)                                            65 (18.57%)           60 (18.46%)           62 (19.08%)  
+#&gt;   95% CI                                                         (14.64, 23.05)        (14.39, 23.11)        (14.95, 23.78)
 #&gt; 
-#&gt; Partial Response (PR)                                             53 (16.61%)           75 (22.52%)           77 (22.13%)  
-#&gt;   95% CI                                                         (12.7, 21.16)         (18.15, 27.39)        (17.87, 26.86)
+#&gt; Partial Response (PR)                                             80 (22.86%)           66 (20.31%)           79 (24.31%)  
+#&gt;   95% CI                                                         (18.56, 27.62)        (16.07, 25.1)         (19.74, 29.35)
 #&gt; 
-#&gt; Stable Disease (SD)                                               72 (22.57%)           57 (17.12%)            55 (15.8%)  
-#&gt;   95% CI                                                         (18.1, 27.56)         (13.23, 21.6)         (12.13, 20.07)
+#&gt; Stable Disease (SD)                                               73 (20.86%)           57 (17.54%)           63 (19.38%)  
+#&gt;   95% CI                                                         (16.72, 25.5)         (13.56, 22.12)        (15.23, 24.11)
 #&gt; 
-#&gt; Progressive Disease (PD)                                          61 (19.12%)           80 (24.02%)           65 (18.68%)  
-#&gt;   95% CI                                                         (14.95, 23.87)        (19.53, 28.98)        (14.72, 23.18)
+#&gt; Progressive Disease (PD)                                          69 (19.71%)           74 (22.77%)           71 (21.85%)  
+#&gt;   95% CI                                                         (15.68, 24.27)        (18.32, 27.72)        (17.47, 26.74)
 #&gt; 
-#&gt; Not Evaluable (NE)                                                  67 (21%)            57 (17.12%)            79 (22.7%)  
+#&gt; Not Evaluable (NE)                                                  63 (18%)            68 (20.92%)           50 (15.38%)  
 #&gt; 
 #&gt; 
 #&gt; </div><div class='input'>
@@ -197,40 +197,40 @@ further explanation.</p></td>
  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>, <span class='fu'>c</span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>, <span class='st'>"ARM A"</span>)),
  <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>)),
- <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"SEX"</span>,<span class='st'>"RACE"</span>)]
+ <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"RACE"</span>)]
 )
 <span class='no'>tbl2</span>; <span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)</div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
-#&gt;                                                                     (N=319)               (N=348)               (N=333)    
+#&gt;                                                                     (N=350)               (N=325)               (N=325)    
 #&gt; ---------------------------------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        119 (37.3%)           149 (42.82%)          139 (41.74%) 
-#&gt; Non-Responders                                                    200 (62.7%)           199 (57.18%)          194 (58.26%) 
+#&gt; Responders                                                        145 (41.43%)          141 (43.38%)          126 (38.77%) 
+#&gt; Non-Responders                                                    205 (58.57%)          184 (56.62%)          199 (61.23%) 
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (31.98, 42.87)        (37.55, 48.2)         (36.39, 47.24)
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (36.22, 46.79)        (37.92, 48.97)        (33.44, 44.3) 
 #&gt; 
-#&gt; Difference in Response Rates (%)                                                            5.51                  4.44     
-#&gt;   95% CI for difference (Wald without correction)                                      (-1.99, 13.43)        (-3.2, 12.47) 
-#&gt;   95% CI for difference (Wald with continuity correction)                              (-2.3, 13.74)         (-3.52, 12.79)
-#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                       0.281                 0.281     
+#&gt; Difference in Response Rates (%)                                                            1.96                 -2.66     
+#&gt;   95% CI for difference (Wald without correction)                                       (-5.5, 9.42)         (-10.05, 4.74)
+#&gt;   95% CI for difference (Wald with continuity correction)                               (-5.8, 9.71)         (-10.35, 5.03)
+#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                       0.5803                0.5175    
 #&gt; 
-#&gt; Odds Ratio*                                                                                 1.27                  1.22     
-#&gt;   95% CI                                                                                (0.93, 1.74)          (0.89, 1.67) 
+#&gt; Odds Ratio*                                                                                 1.09                  0.9      
+#&gt;   95% CI                                                                                (0.8, 1.48)           (0.66, 1.23) 
 #&gt; 
-#&gt; Complete Response (CR)                                            66 (20.69%)           72 (20.69%)           64 (19.22%)  
-#&gt;   95% CI                                                         (16.38, 25.55)        (16.56, 25.33)        (15.13, 23.87)
+#&gt; Complete Response (CR)                                            65 (18.57%)           62 (19.08%)           60 (18.46%)  
+#&gt;   95% CI                                                         (14.64, 23.05)        (14.95, 23.78)        (14.39, 23.11)
 #&gt; 
-#&gt; Partial Response (PR)                                             53 (16.61%)           77 (22.13%)           75 (22.52%)  
-#&gt;   95% CI                                                         (12.7, 21.16)         (17.87, 26.86)        (18.15, 27.39)
+#&gt; Partial Response (PR)                                             80 (22.86%)           79 (24.31%)           66 (20.31%)  
+#&gt;   95% CI                                                         (18.56, 27.62)        (19.74, 29.35)        (16.07, 25.1) 
 #&gt; 
-#&gt; Stable Disease (SD)                                               72 (22.57%)            55 (15.8%)           57 (17.12%)  
-#&gt;   95% CI                                                         (18.1, 27.56)         (12.13, 20.07)        (13.23, 21.6) 
+#&gt; Stable Disease (SD)                                               73 (20.86%)           63 (19.38%)           57 (17.54%)  
+#&gt;   95% CI                                                         (16.72, 25.5)         (15.23, 24.11)        (13.56, 22.12)
 #&gt; 
 #&gt; Non-CR or Non-PD (NON CR/PD)                                           0                     0                     0       
 #&gt;   95% CI                                                               -                     -                     -       
 #&gt; 
-#&gt; Progressive Disease (PD)                                          61 (19.12%)           65 (18.68%)           80 (24.02%)  
-#&gt;   95% CI                                                         (14.95, 23.87)        (14.72, 23.18)        (19.53, 28.98)
+#&gt; Progressive Disease (PD)                                          69 (19.71%)           71 (21.85%)           74 (22.77%)  
+#&gt;   95% CI                                                         (15.68, 24.27)        (17.47, 26.74)        (18.32, 27.72)
 #&gt; 
-#&gt; * Model stratified by SEX and RACE</div><div class='input'>
+#&gt; * Model stratified by RACE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Define a kmplot grob — kmGrob • tern</title>
+<title>Prepare Cox PH model annotation data with rtable format — t_coxph • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -80,48 +80,41 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Define a kmplot grob</h1>
+    <h1>Prepare Cox PH model annotation data with rtable format</h1>
     </div>
 
     
-    <p>create a grid graphical object for basic KM plot from a <code>survfit</code> object.</p>
+    <p>An <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code> format of <code>coxph</code> object for further annotation on top of Kaplan-Meier grob</p>
     
 
-    <pre class="usage"><span class='fu'>kmGrob</span>(<span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kaplan - Meier Plot"</span>,
-  <span class='kw'>gp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>vp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>, <span class='kw'>info_coxph</span> <span class='kw'>=</span> <span class='st'>"Cox Porportional Hazard Model"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fit_km</th>
-      <td><p>a class <code>survfit</code> object.</p></td>
+      <th>fit_coxph</th>
+      <td><p>a class <code>coxph</code> object.</p></td>
     </tr>
     <tr>
-      <th>col</th>
-      <td><p>a vector of color for each line.</p></td>
-    </tr>
-    <tr>
-      <th>xticks</th>
-      <td><p>break interval of x-axis. It takes a numeric vector or <code>NULL</code>.</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>title for plot.</p></td>
+      <th>info_coxph</th>
+      <td><p>label information for Cox PH model.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
-                 <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-                 <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-                 <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-                 <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-                 <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>))
-<span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
-<span class='fu'>kmGrob</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.5</span>, <span class='fl'>0.8</span>, <span class='fl'>1.5</span>))</div><div class='output co'>#&gt; kmGrob[GRID.kmGrob.269] </div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>rtables</span>)
+<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
+                 <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>))
+<span class='no'>fit_coxph</span> <span class='kw'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span> + <span class='fu'>strata</span>(<span class='no'>RACE</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>)
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>)
+<span class='fu'><a href='http://www.rdocumentation.org/packages/rtables/topics/Viewer'>Viewer</a></span>(<span class='no'>tbl</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

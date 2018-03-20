@@ -88,8 +88,8 @@
     
 
     <pre class="usage"><span class='fu'>t_forest_tte</span>(<span class='no'>tte</span>, <span class='no'>is_event</span>, <span class='no'>col_by</span>, <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"ALL"</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>, <span class='kw'>na.omit.group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"ALL"</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>,
+  <span class='kw'>na.omit.group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -151,26 +151,27 @@ columns:</p><dl class='dl-horizontal'>
   <span class='kw'>is_event</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),
   <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'>as.data.frame</span>(<span class='fu'>lapply</span>(<span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>)),
+  <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>,
   <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                  ARM A                                                          ARM B                                                                   
-#&gt; Baseline Risk                                          Total                  n                 Events               Median                  n                 Events               Median               Hazard                 95%     
-#&gt; Factors                                                  n                                                           (month)                                                        (month)               Ratio               Wald CI   
-#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                     100                  46                   30                 152.63                 54                   28                 116.48                0.86             (0.51, 1.47) 
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                               ARM A                                                       ARM B                                                                
+#&gt; Baseline Risk                                         Total                 n                 Events              Median                n                 Events              Median              Hazard               95%     
+#&gt; Factors                                                 n                                                        (month)                                                     (month)              Ratio              Wald CI   
+#&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                    100                  53                  31                145.59                47                  25                124.8                1.36            (0.79, 2.34)
 #&gt; 
 #&gt; SEX
-#&gt;   F                                                     55                   25                   17                 129.58                 30                   15                 137.66                0.98             (0.48, 2.01) 
-#&gt;   M                                                     44                   21                   13                 152.63                 23                   12                 131.95                0.75             (0.33, 1.68) 
-#&gt;   U                                                      1                    0                    0                                         1                    1                 116.48                                   (NA, NA)   
+#&gt;   F                                                     48                  22                  11                145.59                26                  15                126.93               1.17            (0.53, 2.57)
+#&gt;   M                                                     51                  31                  20                157.97                20                  9                 124.8                1.66            (0.69, 3.99)
+#&gt;   U                                                     1                   0                   0                                       1                   1                 21.75                                  (NA, NA)  
 #&gt; 
 #&gt; RACE
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      16                    2                    2                 227.44                 14                    8                 137.66                0.79             (0.15, 4.06) 
-#&gt;   ASIAN                                                 19                   12                    8                  121.5                  7                    3                 116.48                0.66             (0.17, 2.55) 
-#&gt;   BLACK OR AFRICAN AMERICAN                             15                    8                    6                 172.04                  7                    3                                       2.18             (0.36, 13.15)
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             28                   15                    8                 152.63                 13                    5                 131.95                0.78             (0.25, 2.42) 
-#&gt;   WHITE                                                 22                    9                    6                 121.34                 13                    9                  93.99                1.37             (0.48, 3.91) </div><div class='input'><span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div></pre>
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      23                  8                   4                 488.87                15                  6                 131.95               2.03            (0.48, 8.55)
+#&gt;   ASIAN                                                 18                  12                  5                 157.97                6                   3                 122.11               1.77            (0.39, 8.01)
+#&gt;   BLACK OR AFRICAN AMERICAN                             19                  12                  6                 180.52                7                   5                 126.93               2.07            (0.55, 7.82)
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             23                  14                  10                120.46                9                   4                 181.77               0.44            (0.12, 1.64)
+#&gt;   WHITE                                                 17                  7                   6                 46.85                 10                  7                 67.97                1.01            (0.33, 3.05)</div><div class='input'><span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

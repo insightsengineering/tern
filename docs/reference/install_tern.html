@@ -127,13 +127,7 @@ recommended package versions.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>install_tern</span>(<span class='kw'>eval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; {
-#&gt;     devtools::install_github("Rpackages/random.cdisc.data", ref = "v0.0.1", 
-#&gt;         host = "https://github.roche.com/api/v3")
-#&gt;     devtools::install_github("Roche/rtables", ref = "v0.0.1")
-#&gt;     devtools::install_github("Rpackages/tern", ref = "v0.0.1", 
-#&gt;         host = "https://github.roche.com/api/v3")
-#&gt; }</div><div class='input'><span class='fu'>install_tern</span>(<span class='st'>'master'</span>, <span class='st'>'depends'</span>, <span class='kw'>eval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; {
+    <pre class="examples"><div class='input'><span class='fu'>install_tern</span>(<span class='kw'>eval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in install_tern(eval = FALSE): no recommended version combination for tern v0.5.0 is  stored in the current installed package tern</span></div><div class='input'><span class='fu'>install_tern</span>(<span class='st'>'master'</span>, <span class='st'>'depends'</span>, <span class='kw'>eval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; {
 #&gt;     devtools::install_github("Roche/rtables", ref = "master")
 #&gt;     devtools::install_github("Rpackages/tern", ref = "master", 
 #&gt;         host = "https://github.roche.com/api/v3")
