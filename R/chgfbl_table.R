@@ -378,7 +378,7 @@ chgfbl_table <- function(data) {
   
   #--- Header Section ---#
   out_header <- list(
-    col.names = paste0(colname.txt, '\n', "(N=", colname.n, ")"),
+    header = paste0(colname.txt, '\n', "(N=", colname.n, ")"),
     format = "xx")
   
   
