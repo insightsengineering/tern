@@ -24,30 +24,14 @@
 #' ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
 #' save(AAE, ASL, file = 'InputVads.Rdata')
 #'
-#' library(rtables)
 #' load('InputVads.Rdata')
 #' 
-#' 
-#' # need all patients column for sorting and display
-#' aslALL <- ASL
-#' aslALL$USUBJID <- paste(aslALL$USUBJID, '-ALL')
-#' aslALL$TRT02AN <- 99
-#' 
-#' ASLALL <- rbind(ASL, aslALL)
-#' 
 #' # safety-evaluable patients
-#' asl <- ASLALL[ASLALL$SAFFL == "Y", c("USUBJID", "TRT02AN")]
+#' asl <- ASL[ASL$SAFFL == "Y", c("USUBJID", "TRT02AN")]
 #' 
-#' # AAE
-#' # need all patients column for sorting and display
-#' aaeALL <- AAE
-#' aaeALL$USUBJID <- paste(aaeALL$USUBJID, '-ALL')
-#' AAEALL <- rbind(AAE, aaeALL)
 #' # treatment-emergent AEs
-#' AAEALL$AEBODSYS <- ifelse(AAEALL$AEBODSYS == '',  'UNCODED', AAEALL$AEBODSYS)
-#' AAEALL$AEDECOD <- ifelse(AAEALL$AEDECOD == '',  paste0(AAEALL$AETERM, '*'), AAEALL$AEDECOD)
-#' aae <- AAEALL[AAEALL$TRTEMFL == 'Y' & AAEALL$ANLFL == 'Y', !names(AAE) %in% ('TRT02AN')]
-#' aae <- merge(asl, aae, by = 'USUBJID')
+#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y', !names(AAE) %in% ('TRT02AN')]
+#' 
 #' 
 #' tbl <- t_aae(
 #'    asl = asl,
@@ -55,23 +39,38 @@
 #'    usubjid = "USUBJID",
 #'    soc = "AEBODSYS",
 #'    pt = "AEDECOD",
+#'    rawpt = "AETERM",
 #'    grade = "AETOXGR",
 #'    grade_range = c(1,5),
 #'    col_by = "TRT02AN"
 #' )
 #' 
 #' Viewer(tbl)
-t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
+t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by) {
   
-
 # check argument validity and consisency ----------------------------------
 
-
-  if (any(is.na(aae[[col_by]]))) stop("In aae data no NA's allowed in col_by")
   if (any(is.na(asl[[col_by]]))) stop("In asl data no NA's allowed in col_by")
 
 # data prep ---------------------------------------------------------------
 
+  # need all patients column for sorting and display
+  aslALL <- asl
+  aslALL[[usubjid]] <- paste(aslALL[[usubjid]], '-ALL')
+  aslALL[[col_by]] <- 99
+  asl <- rbind(asl, aslALL)
+  
+  # need all patients column for sorting and display
+  aaeALL <- aae
+  aaeALL[[usubjid]] <- paste(aaeALL[[usubjid]], '-ALL')
+  aae <- rbind(aae, aaeALL)
+  
+  aae <- merge(asl, aae, by = 'USUBJID')
+  
+  # AEs with missing soc or pt code
+  aae[[soc]] <- ifelse(aae[[soc]] == '',  'UNCODED', aae[[soc]])
+  aae[[pt]] <- ifelse(aae[[pt]] == '',  paste0(aae[[rawpt]], '*'), aae[[pt]])
+  
   usubjidv <- aae[[usubjid]]
   socv <- aae[[soc]]
   ptv <- aae[[pt]]
@@ -99,8 +98,6 @@ t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
       rcell(0, format = "xx")
     }
   }
-  
-  dt <- df[df$socv == df$socv[1],]
   
 
 # core function -----------------------------------------------------------
@@ -214,4 +211,3 @@ t_aae <- function(asl, aae, usubjid, soc, pt, grade, grade_range, col_by) {
   )
   
 }
-
