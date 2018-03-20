@@ -1,6 +1,6 @@
 Package: tern
 Title: Analysis Code
-Version: 0.0.1
+Version: 0.5.0
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = c("ctb")),
@@ -15,10 +15,11 @@ Depends:
   R (>= 3.3),
   survival,
   grid,
-  rtables
+  rtables (>= 0.1)
 Imports:
   ggplot2,
-  scales
+  scales,
+  gridExtra
 Suggests:
   random.cdisc.data,
   testthat,

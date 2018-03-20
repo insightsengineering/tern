@@ -17,7 +17,8 @@
 recomended_version_combinations <- function() {
   x <- matrix(
     c(
-      "v0.0.1",     "v0.0.1",    "v0.0.1"
+      "v0.0.1",     "v0.0.1",    "v0.0.1",
+      "v0.0.5",     "v0.0.1",    "v0.0.5"
     ),
     dimnames = list(NULL, c("tern", "rtables", "random.cdisc.data")),
     byrow = TRUE,
@@ -67,7 +68,7 @@ install_tern <- function(ref = NULL, dependencies = c('all', 'depends', 'none'),
     ref <- paste0("v", packageDescription("tern")[['Version']])
   }
   
-  if (!grepl("^v", ref) && !(ref %in% c('devel', 'master'))) stop("ref needs to be either a version, NULL, 'master', or 'devel'")
+  #if (!grepl("^v", ref) && !(ref %in% c('devel', 'master'))) stop("ref needs to be either a version, NULL, 'master', or 'devel'")
   
   if (grepl("^v", ref)) {
     rec_versions <- recomended_version_combinations()

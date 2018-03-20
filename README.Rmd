@@ -30,7 +30,7 @@ library(tern)
 ```
 
 ```{r echo=FALSE, comment=""}
-install_tern(eval = FALSE)
+install_tern(ref="release-0.5.0", eval = FALSE)
 ```
 
 
