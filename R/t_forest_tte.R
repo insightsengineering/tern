@@ -52,14 +52,22 @@
 #'   is_event = ANL$CNSR == 0,
 #'   col_by = factor(ANL$ARM), 
 #'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+#'   ties = "exact",
 #'   dense_header = TRUE
 #' )
 #' 
 #' tbl
 #' Viewer(tbl)
 #' 
-t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
-                         strata_data = NULL, total = 'ALL', time_unit = "month",
+#' 
+t_forest_tte <- function(tte, 
+                         is_event, 
+                         col_by, 
+                         group_data = NULL,
+                         strata_data = NULL, 
+                         total = 'ALL', 
+                         time_unit = "month",
+                         ties = "exact",
                          na.omit.group = TRUE,
                          dense_header = FALSE) {
   
@@ -125,7 +133,7 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
   } else {
     rtable(header = table_header, rrowl(row.name = total, 
       format_survival_analysis(
-        survival_results(cox_data)
+        survival_results(cox_data, ties)
       )
     )) 
   }
@@ -152,7 +160,7 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
                  row.name = level,
                  indent = 1,
                  format_survival_analysis(
-                   survival_results(dfi)
+                   survival_results(dfi, ties)
                  )
                )) 
       }, dfs, names(dfs))
@@ -173,7 +181,7 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
 
 # survival_results(data_for_value[[1]])
 # data = data_for_value[[1]]
-survival_results <- function(data){
+survival_results <- function(data, ties){
   
   # KM Estimate
   # Three scenarios:
@@ -213,7 +221,7 @@ survival_results <- function(data){
   # 2. at least one of the two arms have no events
   # 3. data has only one arm.
   if (nrow(km_sum) == 2 & km_ref_event * km_comp_event > 0){
-    cox_sum  <- suppressWarnings(summary(coxph(Surv(time_to_event,event) ~ arm, data = data)))
+    cox_sum  <- suppressWarnings(summary(coxph(Surv(time_to_event,event) ~ arm, data = data, ties = ties)))
     cox_hr   <- cox_sum$conf.int[1]
     cox_lcl  <- cox_sum$conf.int[3]
     cox_ucl  <- cox_sum$conf.int[4]
@@ -249,6 +257,7 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
     rcell(x[["cox_hr"]], format = "xx.xx"),
+    #ifelse(x[["cox_hr"]] <= 999, rcell(x[["cox_hr"]], format = "xx.xx"), rcell( 999, format = "xx.xx")),
     rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
   )
 }
