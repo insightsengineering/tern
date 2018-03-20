@@ -4,32 +4,24 @@
 \alias{g_km}
 \title{Kaplan-Meier Plot}
 \usage{
-g_km(fit_km, xaxis_break = NULL, title = "Kaplan - Meier Plot",
-  draw = TRUE, newpage = TRUE, anno_km_show = FALSE,
-  anno_coxph_show = FALSE, anno_coxph_fit = NULL,
-  anno_coxph_info = "Cox Porportional Model")
+g_km(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
+  draw = TRUE, newpage = TRUE)
 }
 \arguments{
-\item{fit_km}{a class \code{\link[survival]{survfit}} object.}
+\item{fit_km}{a class \code{\link{survfit}} object.}
 
-\item{xaxis_break}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
+\item{col}{a vector of color for each line.}
+
+\item{xticks}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
 
 \item{title}{title for plot.}
 
 \item{draw}{boolean, should plot be drawn.}
 
 \item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page.}
-
-\item{anno_km_show}{show annotation from a survfit object.}
-
-\item{anno_coxph_show}{show annotation from a coxph object.}
-
-\item{anno_coxph_fit}{a class "coxph" object.}
-
-\item{anno_coxph_info}{label information for Cox PH model.}
 }
 \description{
-Create a KM plot for any \code{survfit} object.
+Create a KM plot for any \code{\link{survfit}} object.
 }
 \examples{
 library(random.cdisc.data)
@@ -42,18 +34,6 @@ ATE_f <- subset(ATE, PARAMCD == "OS")
 
 ANL <- merge(ASL, ATE_f, by = c("USUBJID", "STUDYID"))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
-### basic KM plot
 g_km(fit_km = fit_km)
-
-### KM plot with coxph annotation only
-fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ANL, ties = "exact")
-g_km(fit_km = fit_km, 
-     anno_coxph_show = TRUE,
-     anno_coxph_fit = fit_coxph) 
-     
-### KM plot with both KM and coxph annotations   
-g_km(fit_km = fit_km, 
-     anno_km_show = TRUE,
-     anno_coxph_show = TRUE,
-     anno_coxph_fit = fit_coxph )     
+ g_km(fit_km = fit_km, col = c("black", "red"))
 }

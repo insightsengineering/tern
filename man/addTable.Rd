@@ -10,7 +10,7 @@ addTable(kmgrob, tbl, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
 \arguments{
 \item{kmgrob}{a kmGrob for further editing.}
 
-\item{tbl}{An rtable.}
+\item{tbl}{An \code{\link[rtables]{rtable}}.}
 
 \item{x}{A numeric vector or unit object specifying x-values.}
 
@@ -32,7 +32,7 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-a_kmgrob <- kmGrob(fit_km, xaxis_break = 0.5)
+a_kmgrob <- kmGrob(fit_km, xticks = 0.5)
 fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
 cox_tbl <- coxphAnnoData(fit_coxph)
 addTable(a_kmgrob, 

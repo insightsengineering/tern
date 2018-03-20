@@ -4,18 +4,20 @@
 \alias{kmGrob}
 \title{Define a kmplot grob}
 \usage{
-kmGrob(fit_km, xaxis_break = NULL, title = "Kaplan - Meier Plot",
+kmGrob(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
   gp = NULL, vp = NULL, name = NULL)
 }
 \arguments{
-\item{fit_km}{a class "survfit" object.}
+\item{fit_km}{a class \code{\link{survfit}} object.}
 
-\item{xaxis_break}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
+\item{col}{a vector of color for each line.}
+
+\item{xticks}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
 
 \item{title}{title for plot.}
 }
 \description{
-create a grid graphical object for basic KM plot from a \code{survfit} object.
+create a grid graphical object for basic KM plot from a \code{\link{survfit}} object.
 }
 \examples{
 OS <- data.frame(AVAL = abs(rnorm(200)), 
@@ -25,6 +27,6 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-kmGrob(fit_km = fit_km, xaxis_break = c(0.5, 0.8, 1.5))
+kmGrob(fit_km = fit_km, xticks = c(0.5, 0.8, 1.5))
 
 }
