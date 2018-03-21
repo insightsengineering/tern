@@ -10,12 +10,11 @@ t_km(fit_km)
 \item{fit_km}{a class \code{\link{survfit}} object.}
 }
 \description{
-An \code{\link[rtables]{rtable}} format of KM model data for further annotation on top of Kaplan-Meier grob
+An \code{\link[rtables]{rtable}} format of KM model data for further
+annotation on top of Kaplan-Meier grob
 }
 \examples{
 
-library(dplyr)
-library(rtables)
 OS <- data.frame(AVAL = abs(rnorm(200)), 
                  CNSR = sample(c(0, 1), 200, TRUE), 
                  ARM = sample(LETTERS[1:3], 200, TRUE),
@@ -26,4 +25,7 @@ fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
 tbl <- t_km(fit_km)
 Viewer(tbl)
 
+}
+\author{
+Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

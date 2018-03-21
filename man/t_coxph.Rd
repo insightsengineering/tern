@@ -12,11 +12,11 @@ t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model")
 \item{info_coxph}{label information for Cox PH model.}
 }
 \description{
-An \code{\link[rtables]{rtable}} format of \code{\link{coxph}} object for further annotation on top of Kaplan-Meier grob
+An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
+object for further annotation on top of Kaplan-Meier grob
 }
 \examples{
-library(dplyr)
-library(rtables)
+
 OS <- data.frame(AVAL = abs(rnorm(200)), 
                  CNSR = sample(c(0, 1), 200, TRUE), 
                  ARM = sample(LETTERS[1:3], 200, TRUE),
@@ -27,4 +27,7 @@ fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "e
 tbl <- t_coxph(fit_coxph)
 Viewer(tbl)
 
+}
+\author{
+Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

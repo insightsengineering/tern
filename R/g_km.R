@@ -1,17 +1,16 @@
 #' Kaplan-Meier Plot
 #' 
-#' Create a KM plot for any \code{\link{survfit}} object.
+#' Create a KM plot for any \code{\link[survival]{survfit}} object.
 #' 
+#' @inheritParams g_forest
 #' @param fit_km a class \code{\link{survfit}} object.
 #' @param col a vector of color for each line.
-#' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
-#' @param title title for plot.
-#' @param draw boolean, should plot be drawn.
-#' @param newpage boolean if \code{draw=TRUE} should plot be drawn on a new page.
+#' @param xticks break interval of x-axis. It takes a numeric vector or
+#'   \code{NULL}.
+#'   
 #' 
-#' @import dplyr
-#' @import survival
-#' @import rtables
+#' @template author_wangh107
+#' 
 #' @import grid
 #' @importFrom gridExtra arrangeGrob
 #' 
@@ -57,10 +56,10 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' @param title title for plot.
 #' 
-#' @import survival
 #' @importFrom scales col_factor
 #' @import grid
 #' 
+#' @noRd
 #' 
 #' @examples 
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
@@ -155,6 +154,9 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
 #' @param y A numeric vector or unit object specifying y-values.
 #' @param just The justification of the text relative to its (x, y) location.
 #' @param vp a Grid veiwport object for annotating a text grob.
+#' 
+#' 
+#' @template author_wangh107
 #' 
 #' @import grid
 #' 
