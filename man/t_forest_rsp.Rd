@@ -8,24 +8,28 @@ t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
   na.omit.group = TRUE, dense_header = FALSE)
 }
 \arguments{
-\item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
-otherwise}
+\item{rsp}{is a boolean vector. If \code{TRUE}, observation is a response, otherwise, \code{FALSE}.}
 
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group}
 
-\item{group_data}{data frame with one column per grouping variable}
+\item{group_data}{data frame with one column per grouping}
 
 \item{total}{character with the row name of the analysis run on all data. If
-\code{NULL} analysis is omitted}
+\code{NULL} analysis is omitted.}
 
-\item{na.omit.group}{boolean, do not list NAs}
+\item{na.omit.group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
+
+\item{dense_header}{Display the table headers in mulitple rows. Default is \code{FALSE}.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-Response Forest Plot Table
+The Response forest plot table summarizes response data by groups. 
+The function returns sample sizes and responder counts and response rates for each analysis 
+arm, as well as a odds ratio and the corresponding 95\% confidence interval 
+from a univariate logistic model.
 }
 \details{
 Logistic regression is used for odds ratio calculation.

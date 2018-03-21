@@ -1,11 +1,12 @@
 #' Response Forest Plot Table
+#' 
+#' The Response forest plot table summarizes response data by groups. 
+#' The function returns sample sizes and responder counts and response rates for each analysis 
+#' arm, as well as a odds ratio and the corresponding 95\% confidence interval 
+#' from a univariate logistic model.
 #'
-#' @template param_rsp
-#' @template param_col_by
-#' @param group_data data frame with one column per grouping variable
-#' @param total character with the row name of the analysis run on all data. If
-#'   \code{NULL} analysis is omitted
-#' @param na.omit.group boolean, do not list NAs
+#' @inheritParams t_forest_tte 
+#' @param rsp is a boolean vector. If \code{TRUE}, observation is a response, otherwise, \code{FALSE}. 
 #'    
 #' @details 
 #' Logistic regression is used for odds ratio calculation.

@@ -1,13 +1,24 @@
 
 #' Time-to-event Forest Plot Table
 #'
-#' @param tte time to event data
+#'The time-to-event forest plot table summarizes time-to-event data by groups. 
+#'The function returns event counts and median survival time for each analysis 
+#'arm, as well as a hazard ratio and the corresponding 95\% confidence interval 
+#'from a Cox proportional hazard model.
+#'
+#' @param tte a vector of time to event data
 #' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 #'   is censored
 #' @param group_data data frame with one column per grouping
 #' @param col_by factor with reference and comparison group information, the
 #'   first \code{level} indicates the reference group
-#' 
+#' @param total character with the row name of the analysis run on all data. If
+#'   \code{NULL} analysis is omitted.
+#' @param time_unit The unit of median survival time. Default is \code{months}.
+#' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
+#' @param na.omit.group is boolean. Default is \code{TRUE}, do not display NA's as a category. 
+#' @param dense_header Display the table headers in mulitple rows. Default is \code{FALSE}. 
+
 #' @details
 #' Cox propotionl hazard model is used for hazard ratio calculation
 #'
@@ -132,9 +143,9 @@ t_forest_tte <- function(tte,
     NULL
   } else {
     rtable(header = table_header, rrowl(row.name = total, 
-      format_survival_analysis(
-        survival_results(cox_data, ties)
-      )
+                                        format_survival_analysis(
+                                          survival_results(cox_data, ties)
+                                        )
     )) 
   }
   
@@ -150,7 +161,7 @@ t_forest_tte <- function(tte,
       if (!na.omit.group) var <- na_as_level(var)
       split(cox_data, var, drop = FALSE)
     })
-  
+    
     names(data_tree) <- var_labels(group_data, fill = TRUE)
     
     list_of_tables <- Map(function(dfs, varname) {
@@ -232,7 +243,7 @@ survival_results <- function(data, ties){
     cox_ucl  <- NA
     cox_pval <- NA
   }
-
+  
   list(
     total_n = nrow(data),
     ref_n  = km_ref_n,
