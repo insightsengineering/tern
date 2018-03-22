@@ -58,13 +58,12 @@ t_summarize_by_visit <- function(data, visit, col_by) {
 #  check_col_by(col_by, 1)
   
   df <- data.frame(data, col_by)
-  df_s <- split(df, visit)
+  df_byv <- split(df, visit)
   
-
-  #dfi <- df_s[[1]]
-  #visit_name <- names(df_s)[1]
-  tbls <- Map(function(dfi, visit_name) {
-    tbl_i <- rbind(
+  #dfi <- df_byv[[1]]
+  #visit_name <- names(df_byv)[1]
+  rtables_byv <- Map(function(dfi, visit_name) {
+    tbl_byv <- rbind(
       rtable(header = levels(col_by), rrow(visit_name)),
       rtabulate(dfi$data, dfi$col_by, n_not_na3, row.name = "n", indent = 1),
       rtabulate(dfi$data, dfi$col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", indent = 1),
@@ -72,12 +71,17 @@ t_summarize_by_visit <- function(data, visit, col_by) {
       rtabulate(dfi$data, dfi$col_by, iqr_num3, row.name = "IQR", indent = 1, format = "xx.xx - xx.xx"),
       rtabulate(dfi$data, dfi$col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max", indent = 1)
     )
-    dfi_s <- split(dfi, dfi$col_by)
-    
-    tbl_i
-  }, df_s, names(df_s))
+    tbl_byv
+  }, df_byv, names(df_byv))
   
-  stack_rtables_l(tbls)
+  tbl <- stack_rtables_l(rtables_byv)
+  
+  header(tbl) <- rheader(
+    rrowl("", as.list(levels(col_by))),
+    rrowl("", wrap_with(tapply(col_by, col_by, length), "(N=", ")"))
+  )
+  
+  tbl
   
 }
 
