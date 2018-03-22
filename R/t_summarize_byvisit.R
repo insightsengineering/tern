@@ -37,14 +37,14 @@
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
 #' 
-#' t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM)
-#' t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM)
+#' t_summarize_byvisit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM)
+#' t_summarize_byvisit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM)
 #' 
 #' # Add label to variable instead showing variable name
 #' ANL <- var_relabel(ANL, AVAL = "Value at\nVisit", CHG = "Change from\nBaseline", PCHG = "Percent Change\nfrom Baseline")
-#' t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM)
+#' t_summarize_byvisit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM)
 #' 
-t_summarize_by_visit <- function(data, visit, col_by) {
+t_summarize_byvisit <- function(data, visit, col_by) {
   
   # Check Arguments
   check_same_N(data = data, col_by = col_by, omit.NULL = FALSE)
