@@ -8,17 +8,10 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' devtools::install_github("Rpackages/rgda", host = "https://github.roche.com/api/v3")
-#' 
-#' library(rtables)
-#' 
-#' AAE <- rgda::get_data("BCE", "/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat")
-#' ASL <- rgda::get_data("BCE", "/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat")
-#' 
 #' 
 #' # -------------------
 #' # the following example should reproduce table
-#' file.show('/opt/BIOSTAT/prod/s28363v/reports/t_ae_ctc_ALLWD_SE.out')
+#' file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
 #' library(rocheBCE)
 #' AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
 #' ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
@@ -27,13 +20,15 @@
 #' load('InputVads.Rdata')
 #' 
 #' # safety-evaluable patients
-#' asl <- ASL[ASL$SAFFL == "Y", c("USUBJID", "TRT02AN")]
+#' asl <- ASL[ASL$SAFFL == "Y", c("USUBJID", "TRT02AN", "TRT02A", "TUMTYPE", "TRTSDTM")]
+#' asl$TUMTYPE <- ifelse(asl$TUMTYPE == '', 'OTHER', asl$TUMTYPE)
+#' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), ]
 #' 
-#' # treatment-emergent AEs
-#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y', !names(AAE) %in% ('TRT02AN')]
+#' # treatment-emergent AEs and atezo related
+#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', ]
 #' 
 #' 
-#' tbl <- t_aae(
+#' tbl <- t_ae_ctc(
 #'    asl = asl,
 #'    aae = aae,
 #'    usubjid = "USUBJID",
@@ -42,11 +37,11 @@
 #'    rawpt = "AETERM",
 #'    grade = "AETOXGR",
 #'    grade_range = c(1,5),
-#'    col_by = "TRT02AN"
+#'    col_by = "TUMTYPE"
 #' )
 #' 
 #' Viewer(tbl)
-t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by) {
+t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by) {
   
 # check argument validity and consisency ----------------------------------
 
@@ -57,15 +52,17 @@ t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by)
   # need all patients column for sorting and display
   aslALL <- asl
   aslALL[[usubjid]] <- paste(aslALL[[usubjid]], '-ALL')
-  aslALL[[col_by]] <- 99
+  aslALL[[col_by]] <- 'All Patients'
   asl <- rbind(asl, aslALL)
+  # all patients column should be factor and the rightmost column
+  asl$col_byf <- factor(asl[[col_by]], c(sort(unique(asl[[col_by]])[unique(asl[[col_by]]) != 'All Patients']), 'All Patients'))
   
   # need all patients column for sorting and display
   aaeALL <- aae
   aaeALL[[usubjid]] <- paste(aaeALL[[usubjid]], '-ALL')
   aae <- rbind(aae, aaeALL)
   
-  aae <- merge(asl, aae, by = 'USUBJID')
+  aae <- merge(asl, aae, by = usubjid)
   
   # AEs with missing soc or pt code
   aae[[soc]] <- ifelse(aae[[soc]] == '',  'UNCODED', aae[[soc]])
@@ -75,18 +72,18 @@ t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by)
   socv <- aae[[soc]]
   ptv <- aae[[pt]]
   gradev <- as.numeric(aae[[grade]])
-  col_byv <- aae[[col_by]]
   
-  df <- data.frame(usubjidv, socv, ptv, gradev, col_by = factor(col_byv), stringsAsFactors = FALSE)
+  df <- data.frame(usubjidv, socv, ptv, gradev, col_by = aae$col_byf, stringsAsFactors = FALSE)
   
   # total N for each group from subject level dataset
   # double brackets are used to get a vector instead of 1 column df
   # otherwise tapply does not work
-  N <- tapply(asl[[usubjid]], asl[[col_by]], function(x) (length(!duplicated(x))))
+  N <- tapply(asl[[usubjid]],
+              # all patients column should be factor and the rightmost column
+              asl$col_byf,
+              function(x) (length(!duplicated(x))))
   
-
 # start tabulating --------------------------------------------------------
-
 
   # checks if there is any case and derives counts (percentage), otherwise 0
   count_perc <- function(x_cell) {
@@ -99,7 +96,6 @@ t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by)
     }
   }
   
-
 # core function -----------------------------------------------------------
 
   # derives the any grade and by grades rows
@@ -116,17 +112,14 @@ t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by)
     
     rbind(tbl_all, tbl_by_grade)
   }
-  
 
 # Any adverse events ------------------------------------------------------
-
   
   AnyAE <- rbind(
     rtable(header = names(N), rrowl('- Any adverse events -', rep(' ', length(N)))),
     DeriveCore(df)
   )
   
-
 # SOC chunks --------------------------------------------------------------
 
   # sapply preserves names of term as names of list items
@@ -189,7 +182,6 @@ t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by)
     attr(PTChunks[[i]], 'name2') <- sub('^(.{1,})(@)(.{1,}$)', '\\1', names(PTChunks_list_ordered_for_attr))[i]
   }
   
-  
 # soc and pt together -----------------------------------------------------
 
   ##### SECOND SLOWEST PART #########
@@ -205,9 +197,16 @@ t_aae <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by)
     )
   }, simplify = FALSE)
 
-  rbind(
+
+# Format header by including N = ------------------------------------------
+
+  final <- rbind(
+    rtable(header = names(N), rrowl('MedDRA Preferred Term', paste0('(N=', N, ')'))),
+    rtable(header = names(N),  rrowl('NCI CTCAE Grade', rep(' ', length(N)))),
     AnyAE,
     Reduce(rbind, SocPTChunks)
   )
   
+  header(final) <- rrowl('MedDRA System Organ Class', names(N))
+  final
 }
