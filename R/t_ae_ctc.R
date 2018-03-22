@@ -49,13 +49,18 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
 
 # data prep ---------------------------------------------------------------
 
+  # indentation number for grades
+  indent_num <- 15
+  
   # need all patients column for sorting and display
   aslALL <- asl
   aslALL[[usubjid]] <- paste(aslALL[[usubjid]], '-ALL')
   aslALL[[col_by]] <- 'All Patients'
   asl <- rbind(asl, aslALL)
   # all patients column should be factor and the rightmost column
-  asl$col_byf <- factor(asl[[col_by]], c(sort(unique(asl[[col_by]])[unique(asl[[col_by]]) != 'All Patients']), 'All Patients'))
+  asl$col_byf <- factor(asl[[col_by]],
+                        c(sort(unique(asl[[col_by]])[unique(asl[[col_by]]) != 'All Patients']),
+                          'All Patients'))
   
   # need all patients column for sorting and display
   aaeALL <- aae
@@ -101,14 +106,21 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
   # derives the any grade and by grades rows
   DeriveCore <- function(dt) {
     # any grade row  
-    tbl_all <- rtabulate(dt, row_by_var = no_by("- any grade - "), col_by_var = "col_by", count_perc, format = "xx (xx.x%)")
+    tbl_all <- rtabulate(dt, row_by_var = no_by("- any grade - "),
+                         col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
+                         indent = indent_num)
     
     # by grades rows
     # need the highest grade per patient and grade variable should be a vector
-    df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = dt, FUN = max, drop = TRUE, na.rm = TRUE)
+    df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = dt, FUN = max,
+                                drop = TRUE, na.rm = TRUE)
     # need factor grade for rtabulate
-    df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev, levels = seq(grade_range[1], grade_range[2], by = 1))
-    tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f", col_by_var = "col_by", count_perc, format = "xx (xx.x%)")
+    df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev,
+                                     levels = seq(grade_range[1],
+                                                  grade_range[2], by = 1))
+    tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f",
+                              col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
+                              indent = indent_num)
     
     rbind(tbl_all, tbl_by_grade)
   }
@@ -127,9 +139,12 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
                       function(SocName) DeriveCore(df[df$socv == SocName,]))
   
   # need to order by overall soc counts
-  # need total from any grade all patients, the last column of the first row is all patients count
+  # need total from any grade all patients, the last column of the first row
+  #  is all patients count
   # break ties by alphabetical order of socs
-  SocVector <- vapply(names(SocChunks_list), function(x) SocChunks_list[[x]][1, length(N)][1], FUN.VALUE = numeric(1))
+  SocVector <- vapply(names(SocChunks_list),
+                      function(x) SocChunks_list[[x]][1, length(N)][1],
+                      FUN.VALUE = numeric(1))
   SocOrder <- SocVector[order(-SocVector, names(SocVector))]
   # rebuilding the list by choosing items in the desired order
   SocChunks_list_ordered <- SocChunks_list[names(SocOrder)]
@@ -139,7 +154,8 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
          function(x) {
            rbind(
              rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
-             rtable(header = names(N), rrowl('- Overall -', rep(' ', length(N)))),
+             rtable(header = names(N),
+                    rrowl('- Overall -', rep(' ', length(N)), indent = 1)),
              SocChunks_list_ordered[[x]]
            )})
   
@@ -157,9 +173,12 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
   
 
   # need to sort pt within soc and place them under soc chunks
-  # need total from any grade all patients, the last column of the first row is all patients count
+  # need total from any grade all patients, the last column of the first row is
+  # all patients count
   # break ties by alphabetical order of socs
-  PTVector <- vapply(names(PTChunks_list), function(x) PTChunks_list[[x]][1, length(N)][1], FUN.VALUE = numeric(1))
+  PTVector <- vapply(names(PTChunks_list),
+                     function(x) PTChunks_list[[x]][1, length(N)][1],
+                     FUN.VALUE = numeric(1))
   PTOrder <- PTVector[order(-PTVector, names(PTVector))]
   # rebuilding the list by choosing items in the desired order
   PTChunks_list_ordered <- PTChunks_list[names(PTOrder)]
@@ -168,18 +187,20 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
   
   # for display purposes need to get rid of the soc part, creating name2 attrib
   # which will be used after merging
-  names(PTChunks_list_ordered) <- sub('^(.{1,})(@)(.{1,}$)', '\\3', names(PTChunks_list_ordered))
+  names(PTChunks_list_ordered) <- sub('^(.{1,})(@)(.{1,}$)', '\\3',
+                                      names(PTChunks_list_ordered))
   
   # need PT on a separate row
   PTChunks <- sapply(names(PTChunks_list_ordered), simplify = FALSE,
                       function(x) {
                         rbind(
-                          rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
+                          rtable(header = names(N), rrowl(x, rep(' ', length(N)), indent = 1)),
                           PTChunks_list_ordered[[x]]
                         )})
   # reattaching soc as a name2 attr for merging with soc
   for (i in seq_along(PTChunks)) {
-    attr(PTChunks[[i]], 'name2') <- sub('^(.{1,})(@)(.{1,}$)', '\\1', names(PTChunks_list_ordered_for_attr))[i]
+    attr(PTChunks[[i]], 'name2') <- sub('^(.{1,})(@)(.{1,}$)', '\\1',
+                                        names(PTChunks_list_ordered_for_attr))[i]
   }
   
 # soc and pt together -----------------------------------------------------
@@ -193,7 +214,8 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
       SocChunks[[x]],
       # extracting soc part from combined soc pt name and checking against soc
       # need to rbind together so that it becomes one rtable
-      Reduce(rbind, PTChunks[vapply(PTChunks, function(x) attr(x, 'name2'), character(1)) == x])
+      Reduce(rbind, PTChunks[vapply(PTChunks, function(x) attr(x, 'name2'),
+                                    character(1)) == x])
     )
   }, simplify = FALSE)
 
@@ -201,12 +223,14 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_
 # Format header by including N = ------------------------------------------
 
   final <- rbind(
-    rtable(header = names(N), rrowl('MedDRA Preferred Term', paste0('(N=', N, ')'))),
-    rtable(header = names(N),  rrowl('NCI CTCAE Grade', rep(' ', length(N)))),
+    rtable(header = c(names(N)),
+           rrowl(NULL, paste0('(N=', N, ')')),
+           rrowl('MedDRA System Organ Class', rep(' ', length(N))),
+           rrowl('MedDRA Preferred Term', rep(' ', length(N)), indent = 1),
+           rrowl('NCI CTCAE Grade', rep(' ', length(N)), indent = indent_num)),
     AnyAE,
     Reduce(rbind, SocPTChunks)
   )
   
-  header(final) <- rrowl('MedDRA System Organ Class', names(N))
   final
 }
