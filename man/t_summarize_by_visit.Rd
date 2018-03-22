@@ -2,12 +2,30 @@
 % Please edit documentation in R/t_summarize_by_visit.R
 \name{t_summarize_by_visit}
 \alias{t_summarize_by_visit}
-\title{Summarize Information by Visit}
+\title{Summary Table by Visit}
 \usage{
-t_summarize_by_visit(x, visit, col_by, fitst_as_blank = TRUE)
+t_summarize_by_visit(data, visit, col_by)
+}
+\arguments{
+\item{data}{data frame with numerical variables to be summarized. If the 
+variable has a \code{label} attribute then it will be used as the column 
+name.}
+
+\item{visit}{factor with visit names ordered by desired display order in the
+stacked table.}
+
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group}
+}
+\value{
+an \code{\link[rtables]{rtable}} object
 }
 \description{
-Summarize Information by Visit
+This function summarizes test results or change from baseline statistics by 
+visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01.
+}
+\details{
+
 }
 \examples{
 
@@ -18,17 +36,25 @@ ANL <- expand.grid(
 )
 ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
-ANL$CHG[ANL$VISIT == 1] <- NA
+ANL$CHG[ANL$VISIT == "visit 1"] <- NA
 
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
 
+ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit", CHG = "Change from\\nBaseline")
 
 
-t_summarize_by_visit(x = ANL$AVAL, visit = ANL$VISIT, col_by = ANL$ARM)
 
-t_summarize_by_visit(x = ANL$CHG, ANL$VISIT, ANL$ARM)
+t_summarize_by_visit(data = ANL$AVAL, visit = ANL$VISIT, col_by = ANL$ARM)
 
-t_summarize_by_visit(x = c(ANL$AVAL, ANL$CHG), visit = c(ANL$VISIT, ANL$VISIT), factor(rep(ANL$ARM, ANL$ARM), levels=<...>)
+t_summarize_by_visit(data = ANL$CHG, visit = ANL$VISIT, col_by = ANL$ARM)
 
+arm <- as.character(ANL$ARM)
+ARM <- factor(c(arm, paste0(arm,"-chng")), levels = c("ARM A", "ARM A-chng", "ARM B", "ARM B-chng"))
+
+t_summarize_by_visit(data = c(ANL$AVAL, ANL$CHG), visit = rep(ANL$VISIT, 2), ARM)
+
+}
+\author{
+Chendi Liao (liaoc10) \email{chendi.liao@roche.com}
 }
