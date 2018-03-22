@@ -37,22 +37,17 @@ ANL <- expand.grid(
 ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 ANL$CHG[ANL$VISIT == "visit 1"] <- NA
+ANL$PCHG <- ANL$CHG/ANL$AVAL*100
 
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
 
-ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit", CHG = "Change from\\nBaseline")
+t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM)
+t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM)
 
-
-
-t_summarize_by_visit(data = ANL$AVAL, visit = ANL$VISIT, col_by = ANL$ARM)
-
-t_summarize_by_visit(data = ANL$CHG, visit = ANL$VISIT, col_by = ANL$ARM)
-
-arm <- as.character(ANL$ARM)
-ARM <- factor(c(arm, paste0(arm,"-chng")), levels = c("ARM A", "ARM A-chng", "ARM B", "ARM B-chng"))
-
-t_summarize_by_visit(data = c(ANL$AVAL, ANL$CHG), visit = rep(ANL$VISIT, 2), ARM)
+# Add label to variable instead showing variable name
+ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit", CHG = "Change from\\nBaseline", PCHG = "Percent Change\\nfrom Baseline")
+t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM)
 
 }
 \author{

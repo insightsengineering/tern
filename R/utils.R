@@ -5,7 +5,7 @@
 #' This functions returns a named character vector with the variabel labels
 #' (empty sting if not specified)
 #' 
-#' @param x a \code{data.frame} oject
+#' @param x a \code{data.frame} object
 #' @param fill boolean in case the \code{label} attribute does not exist if
 #'   \code{TRUE} the variable names is returned, otherwise \code{NA}
 #' 
@@ -115,8 +115,27 @@ var_relabel <- function(x, ...) {
   x
 }
 
-  
-  
+
+#' Remove Variable Labels of a \code{data.frame}
+#' 
+#' Removing labels attributes from a variables in a data frame
+#' 
+#' @param x a \code{data.frame} object
+#' 
+#' @return the same data frame as \code{x} stripped of variable labels 
+#' 
+#' @export
+#' 
+#' @examples 
+#' x <- var_labels_remove(iris)
+#' 
+var_labels_remove <- function(x) {
+  if (!is(x, "data.frame")) stop("x must be a data.frame")
+  for (i in 1:ncol(x)) attr(x[[i]], "label") <- NULL
+  x
+}
+
+
 #' Check if list or data.frame has elements/variables
 #' 
 #' Checks if list names exist and throws an error otherwise

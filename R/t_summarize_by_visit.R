@@ -32,36 +32,57 @@
 #' ANL$AVAL <- rnorm(nrow(ANL))
 #' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 #' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
+#' ANL$PCHG <- ANL$CHG/ANL$AVAL*100
 #' 
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
 #' 
-#' ANL <- var_relabel(ANL, AVAL = "Value at\nVisit", CHG = "Change from\nBaseline")
+#' t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM)
+#' t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM)
 #' 
-#' 
-#' 
-#' t_summarize_by_visit(data = ANL$AVAL, visit = ANL$VISIT, col_by = ANL$ARM)
-#' 
-#' t_summarize_by_visit(data = ANL$CHG, visit = ANL$VISIT, col_by = ANL$ARM)
-#' 
-#' arm <- as.character(ANL$ARM)
-#' ARM <- factor(c(arm, paste0(arm,"-chng")), levels = c("ARM A", "ARM A-chng", "ARM B", "ARM B-chng"))
-#' 
-#' t_summarize_by_visit(data = c(ANL$AVAL, ANL$CHG), visit = rep(ANL$VISIT, 2), ARM)
+#' # Add label to variable instead showing variable name
+#' ANL <- var_relabel(ANL, AVAL = "Value at\nVisit", CHG = "Change from\nBaseline", PCHG = "Percent Change\nfrom Baseline")
+#' t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM)
 #' 
 t_summarize_by_visit <- function(data, visit, col_by) {
   
   # Check Arguments
-#  check_same_N(data = data, col_by = col_by, omit.NULL = FALSE)
-#  if (!is.data.frame(data)) stop("data is expected to be a data frame")  
-#  if (!is.factor(visit)) stop("visit is expected to be a factor")
-#  check_col_by(col_by, 1)
+  check_same_N(data = data, col_by = col_by, omit.NULL = FALSE)
+  if (!is.data.frame(data)) stop("data is expected to be a data frame")
+  if (!is.factor(visit)) stop("visit is expected to be a factor")
+  check_col_by(col_by, 1)
+  if (!all(vapply(data, is.numeric, logical(1)))) stop("variables in data need to be numerical")
   
+  # Extracting variable metadata
+  bigN <- tapply(col_by, col_by, length)
+  topcol_label <- levels(col_by)
+  topcol_n <- length(topcol_label)
+  subcol_name <- names(data)
+  subcol_n <- length(data)
+  subcol_label <- var_labels(data, fill = TRUE)
+  
+  # Ensure no label attribute attached for stack function to work
+  data <- var_labels_remove(data)
+  
+  # creating new data input, stack the variables in long-format
+  stack_data <- stack(data)
+  data <- stack_data$value
+  
+  # creating new visit input, stacked by as many times as number of variables specified in data
+  visit <- rep(visit,subcol_n)
+  
+  # creating new col_by input, stacked by as many times as number of variables specified in data, releveled by arm and subcolumns
+  topcol <- rep(col_by,subcol_n)
+  new_colby <- paste(topcol, stack_data$ind, sep="-")
+  col_by_levels <- paste(rep(topcol_label, each=subcol_n), rep(subcol_name, topcol_n), sep="-")
+  col_by <- factor(new_colby, levels = col_by_levels)
+    
+
+  #Split into lists for each column
   df <- data.frame(data, col_by)
   df_byv <- split(df, visit)
   
-  #dfi <- df_byv[[1]]
-  #visit_name <- names(df_byv)[1]
+  # Creating summary tables
   rtables_byv <- Map(function(dfi, visit_name) {
     tbl_byv <- rbind(
       rtable(header = levels(col_by), rrow(visit_name)),
@@ -76,9 +97,11 @@ t_summarize_by_visit <- function(data, visit, col_by) {
   
   tbl <- stack_rtables_l(rtables_byv)
   
+  # Adding headers
   header(tbl) <- rheader(
-    rrowl("", as.list(levels(col_by))),
-    rrowl("", wrap_with(tapply(col_by, col_by, length), "(N=", ")"))
+    rrowl("", lapply(topcol_label, function(x) rcell(x, colspan = subcol_n))),
+    rrowl("", lapply(wrap_with(bigN, "(N=", ")"), function(x) rcell(x, colspan = subcol_n))),
+    rrowl("", rep(subcol_label, length(topcol_label)))
   )
   
   tbl
