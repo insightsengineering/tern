@@ -1,16 +1,57 @@
-#' Adverse Events Table
+#' Adverse Events by Highest NCI CTCAE Grade Table 
 #' 
+#' \code{t_ae_ctc} returns Adverse Events by Highest NCI CTCAE Grade Table.
 #' 
+#' @author Edgar Manukyan (manukyae)
 #' 
-#' @author Edgar
+#' @param asl a subject-level data frame (one row per subject) with at least the
+#'  following variables present: 1. unique subject identifier, 2. group that
+#'  will be used for a column header. 
+#' @param aae a data frame with adverse events with at least the following
+#'  variables present: 1. unique subject identifier, 2. preferred term, 3. raw
+#'  term (investigator text), 3. system organ class, 4. grade. 
+#' @param usubjid character string representing name of unique subject identifier
+#'  variable.
+#' @param soc character string representing name of system organ class variable.
+#' @param pt character string representing name of preferred term variable.
+#' @param rawpt character string representing name of raw term (investigator 
+#'  text) variable.
+#' @param grade character string representing name of grade of adverse event 
+#'  variable.
+#' @param grade_range range of grades in a form of \code{c(x, y)}, default is 
+#'  \code{c(1, 5)}. This only has effect on which grades are displayed and 
+#'  assures a proper fill in for grades, otherwise no sub-setting of \code{aae} 
+#'  data #' frame is done. See 'Details'.
+#' @param col_by character string representing name of group variable that will 
+#'  be used for a column header.
 #' 
-#' @export
+#' @details 
+#' \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
+#'  intensity for system organ class (SOC) and overall rows and includes 
+#'  percentages based on the total number of patients in the column heading 
+#'  (i.e. "N=nnn"). At the preferred term (PT) level, multiple events within a 
+#'  patient of the same PT are counted once using the greatest intensity 
+#'  reported.
 #' 
+#' \code{t_ae_ctc} orders data by "All Patients" column from the most commonly
+#'  reported SOC to the least frequent one. Within SOC, it sorts by decreasing
+#'  frequency of PT.   
+#' 
+#' \code{t_ae_ctc} re-codes missing SOC with 'UNCODED' and missing PT with raw 
+#'  term (investigator text) followed by (*).    
+#'  
+#' \code{t_ae_ctc} fills in \code{col_by} and \code{grade} with \code{0} value in case
+#'  there was no AEs reported for particular \code{col_by} and/or \code{grade} 
+#'  category. Use \code{grade_range} to modify displayed grades, e.g. 
+#'  \code{grade_range = c(3, 5)} will only display grades 3, 4, and 5. Please be
+#'  aware that this is only for display purposes and does not sub-set \code{aae}
+#'  data frame. One needs to sub-set \code{aae} before providing it to 
+#'  \code{t_ae_ctc}.
 #' @examples 
-#' \dontrun{
+#' \dontrun
+#' {
 #' 
-#' # -------------------
-#' # the following example should reproduce table
+#' # the following example should reproduce table t_ae_ctc_ATEZOREL_SENBX.out
 #' file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
 #' library(rocheBCE)
 #' AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
@@ -19,14 +60,13 @@
 #'
 #' load('InputVads.Rdata')
 #' 
-#' # safety-evaluable patients
-#' asl <- ASL[ASL$SAFFL == "Y", c("USUBJID", "TRT02AN", "TRT02A", "TUMTYPE", "TRTSDTM")]
+#' # filter subject-level dataset
+#' asl <- ASL[ASL$SAFFL == "Y", c("USUBJID", "TUMTYPE", "TRTSDTM", "TRT02AN")]
 #' asl$TUMTYPE <- ifelse(asl$TUMTYPE == '', 'OTHER', asl$TUMTYPE)
 #' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), ]
 #' 
-#' # treatment-emergent AEs and atezo related
+#' # filter adverse events dataset
 #' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', ]
-#' 
 #' 
 #' tbl <- t_ae_ctc(
 #'    asl = asl,
@@ -36,17 +76,24 @@
 #'    pt = "AEDECOD",
 #'    rawpt = "AETERM",
 #'    grade = "AETOXGR",
-#'    grade_range = c(1,5),
+#'    grade_range = c(1, 5),
 #'    col_by = "TUMTYPE"
 #' )
 #' 
 #' Viewer(tbl)
-t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range, col_by) {
+#' }
+t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range = c(1, 5), col_by) {
   
-# check argument validity and consisency ----------------------------------
+# check argument validity and consitency ----------------------------------
 
-  if (any(is.na(asl[[col_by]]))) stop("In asl data no NA's allowed in col_by")
-
+  if (!is.data.frame(asl)) stop("asl needs to be a data.frame")
+  if (!is.data.frame(asl)) stop("asl needs to be a data.frame")
+  if (!is.vector(grade_range) || !length(grade_range) == 2) stop("grade_range needs to be a vector with 2 values")
+  if (any(is.na(asl[[col_by]]))) stop("In asl data no NA's are allowed for col_by")
+  if (any(asl[[col_by]] %in% c('', ' '))) stop("In asl data no missing values are allowed for col_by")
+  if (any(is.na(aae[[rawpt]]))) stop("In aae data no NA's are allowed for rawpt")
+  if (any(aae[[rawpt]] %in% c('', ' '))) stop("In aae data no missing values are allowed for rawpt")
+  
 # data prep ---------------------------------------------------------------
 
   # indentation number for grades
