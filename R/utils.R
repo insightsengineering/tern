@@ -404,3 +404,50 @@ as.global <- function(...) {
   }, args, names)
   
 }
+
+#' Helper functions to re-format and reflow long arm/grouping labels by inserting
+#' line breaks
+#' 
+#' @param x input single string
+#' @param delim delimiter, default is space
+#' @param limit number of characters allowed before inserting line break,
+#'   default is the maximum length of longest word
+#'   
+#' @noRd
+#' 
+#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
+#'   
+#' @examples 
+#' 
+#' x = "hellO-world abcerewerwere testing "
+#' reflow(x)
+#' reflow(x, delim = "-")
+#' reflow(x, limit= 9)
+#' 
+reflow <- function(x, 
+                   delim = " ", 
+                   limit = NULL) {
+  
+  xsplit <- unlist(strsplit(x, delim))
+  ctxt = ""
+  n = 0
+  
+  if (is.null(limit)) {limit <- max(unlist(lapply(xsplit, nchar)))}
+  
+  for (i in xsplit) {
+    if (nchar(i) > limit) {
+      ctxt <- ifelse(n, paste0(ctxt, "\n", i, "\n"), paste0(ctxt, i, "\n"))
+      n = 0
+    } else if ((n + nchar(i)) > limit) {
+      ctxt <- paste0(ctxt, "\n", i)
+      n = nchar(i)
+    } else {
+      ctxt <- ifelse(n, paste0(ctxt, delim, i), paste0(ctxt, i))
+      n = n + nchar(i)
+    }
+  }
+  
+  outtxt <- ifelse(substring(ctxt, nchar(ctxt)) == "\n", substr(ctxt, 1, nchar(ctxt)-1), ctxt)
+  
+  outtxt
+}

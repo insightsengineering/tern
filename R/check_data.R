@@ -85,3 +85,25 @@ check_is_event <- function(x) {
   
   TRUE
 }
+
+
+check_is_factor <- function(x, allow_NA = TRUE) {
+  
+  if (!is.factor(x)) stop(deparse(substitute(x))," needs to be a factor")
+  if (!allow_NA) {
+    if (any(is.na(x))) stop(deparse(substitute(x))," cannot have any missing data")
+  }
+  
+  TRUE
+}
+
+
+check_is_numeric <- function(x, allow_NA = TRUE) {
+  
+  if (!is.numeric(x)) stop(deparse(substitute(x))," needs to be numerical")
+  if (!allow_NA) {
+    if (any(is.na(x))) stop(deparse(substitute(x))," cannot have any missing data")
+  }
+
+  TRUE
+}
