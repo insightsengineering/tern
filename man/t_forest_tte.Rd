@@ -9,7 +9,7 @@ t_forest_tte(tte, is_event, col_by, group_data = NULL, strata_data = NULL,
   na.omit.group = TRUE, dense_header = FALSE)
 }
 \arguments{
-\item{tte}{time to event data}
+\item{tte}{a vector of time to event data}
 
 \item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
@@ -18,9 +18,23 @@ is censored}
 first \code{level} indicates the reference group}
 
 \item{group_data}{data frame with one column per grouping}
+
+\item{total}{character with the row name of the analysis run on all data. If
+\code{NULL} analysis is omitted.}
+
+\item{time_unit}{The unit of median survival time. Default is \code{months}.}
+
+\item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
+
+\item{na.omit.group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
+
+\item{dense_header}{Display the table headers in mulitple rows. Default is \code{FALSE}.}
 }
 \description{
-Time-to-event Forest Plot Table
+The time-to-event forest plot table summarizes time-to-event data by groups. 
+The function returns event counts and median survival time for each analysis 
+arm, as well as a hazard ratio and the corresponding 95\% confidence interval 
+from a Cox proportional hazard model.
 }
 \details{
 Cox propotionl hazard model is used for hazard ratio calculation
