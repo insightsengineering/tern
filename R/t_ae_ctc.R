@@ -21,7 +21,7 @@
 #' @param grade_range range of grades in a form of \code{c(x, y)}, default is 
 #'  \code{c(1, 5)}. This only has effect on which grades are displayed and 
 #'  assures a proper fill in for grades, otherwise no sub-setting of \code{aae} 
-#'  data #' frame is done. See 'Details'.
+#'  data frame is done. See 'Details'.
 #' @param col_by character string representing name of group variable that will 
 #'  be used for a column header.
 #' 
