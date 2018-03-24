@@ -7,7 +7,7 @@
 var_labels(x) <- value
 }
 \arguments{
-\item{x}{a \code{data.frame} oject}
+\item{x}{a \code{data.frame} object}
 }
 \value{
 modifies the variable labels of \code{x}

@@ -5,7 +5,7 @@
 #' This functions returns a named character vector with the variabel labels
 #' (empty sting if not specified)
 #' 
-#' @param x a \code{data.frame} oject
+#' @param x a \code{data.frame} object
 #' @param fill boolean in case the \code{label} attribute does not exist if
 #'   \code{TRUE} the variable names is returned, otherwise \code{NA}
 #' 
@@ -115,8 +115,27 @@ var_relabel <- function(x, ...) {
   x
 }
 
-  
-  
+
+#' Remove Variable Labels of a \code{data.frame}
+#' 
+#' Removing labels attributes from a variables in a data frame
+#' 
+#' @param x a \code{data.frame} object
+#' 
+#' @return the same data frame as \code{x} stripped of variable labels 
+#' 
+#' @export
+#' 
+#' @examples 
+#' x <- var_labels_remove(iris)
+#' 
+var_labels_remove <- function(x) {
+  if (!is(x, "data.frame")) stop("x must be a data.frame")
+  for (i in 1:ncol(x)) attr(x[[i]], "label") <- NULL
+  x
+}
+
+
 #' Check if list or data.frame has elements/variables
 #' 
 #' Checks if list names exist and throws an error otherwise
@@ -384,4 +403,51 @@ as.global <- function(...) {
     ge[[name]] <- x
   }, args, names)
   
+}
+
+#' Helper functions to re-format and reflow long arm/grouping labels by inserting
+#' line breaks
+#' 
+#' @param x input single string
+#' @param delim delimiter, default is space
+#' @param limit number of characters allowed before inserting line break,
+#'   default is the maximum length of longest word
+#'   
+#' @noRd
+#' 
+#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
+#'   
+#' @examples 
+#' 
+#' x = "hellO-world abcerewerwere testing "
+#' reflow(x)
+#' reflow(x, delim = "-")
+#' reflow(x, limit= 9)
+#' 
+reflow <- function(x, 
+                   delim = " ", 
+                   limit = NULL) {
+  
+  xsplit <- unlist(strsplit(x, delim))
+  ctxt = ""
+  n = 0
+  
+  if (is.null(limit)) {limit <- max(unlist(lapply(xsplit, nchar)))}
+  
+  for (i in xsplit) {
+    if (nchar(i) > limit) {
+      ctxt <- ifelse(n, paste0(ctxt, "\n", i, "\n"), paste0(ctxt, i, "\n"))
+      n = 0
+    } else if ((n + nchar(i)) > limit) {
+      ctxt <- paste0(ctxt, "\n", i)
+      n = nchar(i)
+    } else {
+      ctxt <- ifelse(n, paste0(ctxt, delim, i), paste0(ctxt, i))
+      n = n + nchar(i)
+    }
+  }
+  
+  outtxt <- ifelse(substring(ctxt, nchar(ctxt)) == "\n", substr(ctxt, 1, nchar(ctxt)-1), ctxt)
+  
+  outtxt
 }

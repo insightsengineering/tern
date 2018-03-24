@@ -7,7 +7,7 @@
 var_labels(x, fill = FALSE)
 }
 \arguments{
-\item{x}{a \code{data.frame} oject}
+\item{x}{a \code{data.frame} object}
 
 \item{fill}{boolean in case the \code{label} attribute does not exist if
 \code{TRUE} the variable names is returned, otherwise \code{NA}}
