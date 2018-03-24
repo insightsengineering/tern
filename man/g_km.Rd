@@ -8,12 +8,14 @@ g_km(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
   draw = TRUE, newpage = TRUE)
 }
 \arguments{
-\item{fit_km}{a class \code{\link{survfit}} object.}
+\item{fit_km}{a class \code{\link{survfit}} object}
 
-\item{col}{a vector of color for each line.}
+\item{col}{a vector of color for each line}
 
 \item{xticks}{break interval of x-axis. It takes a numeric vector or
 \code{NULL}.}
+
+\item{title}{plot title}
 
 \item{draw}{boolean, should plot be drawn}
 
@@ -35,8 +37,11 @@ ATE_f <- subset(ATE, PARAMCD == "OS")
 
 ANL <- merge(ASL, ATE_f, by = c("USUBJID", "STUDYID"))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
+
 g_km(fit_km = fit_km)
- g_km(fit_km = fit_km, col = c("black", "red"))
+
+g_km(fit_km = fit_km, col = c("black", "red"))
+ 
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

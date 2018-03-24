@@ -110,7 +110,12 @@ annotation on top of Kaplan-Meier grob</p>
                  <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>))
 <span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)
-<span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div></pre>
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                      N                     median              95% CI for median
+#&gt; --------------------------------------------------------------------------------
+#&gt; ARM=A               72                      1.35                   (1, 1.69)    
+#&gt; ARM=B               55                      1.22                 (0.82, 1.75)   
+#&gt; ARM=C               73                      1.04                 (0.84, 1.47)   </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -129,7 +134,7 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

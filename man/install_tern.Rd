@@ -34,7 +34,9 @@ rapidly and we currently do not guarantee backwards compatibility. Therefore
 recommended package versions.
 }
 \examples{
+\dontrun{
 install_tern(eval = FALSE)
 install_tern('master', 'depends', eval = FALSE)
 install_tern('devel', 'none', eval = FALSE)
+}
 }

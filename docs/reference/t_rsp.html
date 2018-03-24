@@ -136,7 +136,7 @@ further explanation.</p></td>
   interval.</p>  
 <p>The display order of response categories in partitioned statistics section 
   inherits the factor level order of <code>partition_rsp_by</code>. Use 
-  <code>factor()</code> and its <code>levels</code> argument to include or 
+  <code><a href='http://www.rdocumentation.org/packages/base/topics/factor'>factor</a></code> and its <code>levels</code> argument to include or 
   exclude response categories and arrange display order. If response values 
   contains missing or "Not Evaluable (NE)", 95% confidence interval will not
   be calculated.</p>
@@ -146,60 +146,33 @@ further explanation.</p></td>
     <pre class="examples"><div class='input'>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>arm_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>arm_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+   <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>))
 
 <span class='co'># Example 1 - ARM B as reference</span>
-<span class='co'>#             "NON CR/PD" response category dropped from partition section since no observations</span>
-<span class='co'>#             model with no stratifiaction factors, Chi-square test is performed</span>
+<span class='co'>#    "NON CR/PD" response category dropped from partition section since no observations</span>
+<span class='co'>#     model with no stratifiaction factors, Chi-square test is performed</span>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>),
- <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)))
-)
-<span class='no'>tbl</span>; <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div><div class='output co'>#&gt;                                                                      ARM B                 ARM A                 ARM C     
-#&gt;                                                                     (N=349)               (N=345)               (N=306)    
-#&gt; ---------------------------------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        127 (36.39%)          148 (42.9%)           116 (37.91%) 
-#&gt; Non-Responders                                                    222 (63.61%)          197 (57.1%)           190 (62.09%) 
-#&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (31.33, 41.68)        (37.61, 48.31)        (32.45, 43.6) 
-#&gt; 
-#&gt; Difference in Response Rates (%)                                                            6.51                  1.52     
-#&gt;   95% CI for difference (Wald without correction)                                      (-0.75, 13.77)         (-5.9, 8.94) 
-#&gt;   95% CI for difference (Wald with continuity correction)                              (-1.04, 14.06)        (-6.21, 9.24) 
-#&gt;   p-value (Chi-squared)                                                                    0.0796                0.6881    
-#&gt; 
-#&gt; Odds Ratio                                                                                  1.31                  1.07     
-#&gt;   95% CI                                                                                (0.97, 1.78)          (0.78, 1.47) 
-#&gt; 
-#&gt; Complete Response (CR)                                            55 (15.76%)           88 (25.51%)           68 (22.22%)  
-#&gt;   95% CI                                                         (12.1, 20.01)         (20.99, 30.45)        (17.69, 27.3) 
-#&gt; 
-#&gt; Partial Response (PR)                                             72 (20.63%)           60 (17.39%)           48 (15.69%)  
-#&gt;   95% CI                                                         (16.51, 25.26)        (13.54, 21.81)        (11.8, 20.25) 
-#&gt; 
-#&gt; Stable Disease (SD)                                               62 (17.77%)           65 (18.84%)           54 (17.65%)  
-#&gt;   95% CI                                                         (13.9, 22.19)         (14.85, 23.37)        (13.54, 22.39)
-#&gt; 
-#&gt; Progressive Disease (PD)                                          72 (20.63%)            59 (17.1%)           66 (21.57%)  
-#&gt;   95% CI                                                         (16.51, 25.26)        (13.28, 21.5)         (17.09, 26.61)
-#&gt; 
-#&gt; Not Evaluable (NE)                                                88 (25.21%)           73 (21.16%)           70 (22.88%)  
-#&gt; 
-#&gt; 
-#&gt; </div><div class='input'>
+ <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(
+   <span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)
+ ))
+)</div><span class='co'># NOT RUN {</span>
+<span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
+<span class='co'># }</span><div class='input'>
 <span class='co'># Example 2 - ARM B as reference, ARM C displayed before ARM A</span>
-<span class='co'>#             "NON CR/PD" response category displayed in partition section, "NE" responses are not displayed </span>
-<span class='co'>#             model with two stratifiaction factors, CMH test performed</span>
+<span class='co'>#    "NON CR/PD" response category displayed in partition section, "NE" responses</span>
+<span class='co'>#     are not displayed model with two stratifiaction factors, CMH test performed</span>
 <span class='no'>tbl2</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>, <span class='fu'>c</span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>, <span class='st'>"ARM A"</span>)),
  <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>)),
  <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"RACE"</span>)]
 )
-<span class='no'>tbl2</span>; <span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)</div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
+<span class='no'>tbl2</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
 #&gt;                                                                     (N=349)               (N=306)               (N=345)    
 #&gt; ---------------------------------------------------------------------------------------------------------------------------
 #&gt; Responders                                                        127 (36.39%)          116 (37.91%)          148 (42.9%)  
@@ -230,8 +203,9 @@ further explanation.</p></td>
 #&gt; Progressive Disease (PD)                                          72 (20.63%)           66 (21.57%)            59 (17.1%)  
 #&gt;   95% CI                                                         (16.51, 25.26)        (17.09, 26.61)        (13.28, 21.5) 
 #&gt; 
-#&gt; * Model stratified by RACE</div><div class='input'>
-</div></pre>
+#&gt; * Model stratified by RACE</div><span class='co'># NOT RUN {</span>
+<span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -254,7 +228,7 @@ Chendi Liao (liaoc10) <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.c
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

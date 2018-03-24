@@ -163,7 +163,9 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
-<span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>sapply</span>(<span class='fu'>as.character</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) <span class='kw'>if</span> (<span class='fu'>nchar</span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'>paste0</span>(<span class='fu'>substr</span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>))
+<span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>sapply</span>(<span class='fu'>as.character</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) {
+ <span class='kw'>if</span> (<span class='fu'>nchar</span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'>paste0</span>(<span class='fu'>substr</span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>
+}))
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 
 <span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ATE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
@@ -279,7 +281,7 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

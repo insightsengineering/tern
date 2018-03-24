@@ -84,7 +84,10 @@
     </div>
 
     
-    <p>Time-to-event Forest Plot Table</p>
+    <p>The time-to-event forest plot table summarizes time-to-event data by groups. 
+The function returns event counts and median survival time for each analysis 
+arm, as well as a hazard ratio and the corresponding 95% confidence interval 
+from a Cox proportional hazard model.</p>
     
 
     <pre class="usage"><span class='fu'>t_forest_tte</span>(<span class='no'>tte</span>, <span class='no'>is_event</span>, <span class='no'>col_by</span>, <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -96,7 +99,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tte</th>
-      <td><p>time to event data</p></td>
+      <td><p>a vector of time to event data</p></td>
     </tr>
     <tr>
       <th>is_event</th>
@@ -110,7 +113,32 @@ first <code>level</code> indicates the reference group</p></td>
     </tr>
     <tr>
       <th>group_data</th>
-      <td><p>data frame with one column per grouping</p></td>
+      <td><p>data frame with one variable per grouping</p></td>
+    </tr>
+    <tr>
+      <th>strata_data</th>
+      <td><p>data frame with stratification variables</p></td>
+    </tr>
+    <tr>
+      <th>total</th>
+      <td><p>character with the row name of the analysis run on all data. If
+<code>NULL</code> analysis is omitted.</p></td>
+    </tr>
+    <tr>
+      <th>time_unit</th>
+      <td><p>The unit of median survival time. Default is <code>months</code>.</p></td>
+    </tr>
+    <tr>
+      <th>ties</th>
+      <td><p>the method used for tie handling in <code><a href='http://www.rdocumentation.org/packages/survival/topics/coxph'>coxph</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>na.omit.group</th>
+      <td><p>is boolean. Default is <code>TRUE</code>, do not display NA's as a category.</p></td>
+    </tr>
+    <tr>
+      <th>dense_header</th>
+      <td><p>Display the table headers in mulitple rows. Default is <code>FALSE</code>.</p></td>
     </tr>
     </table>
     
@@ -191,7 +219,7 @@ Yuyao Song (songy24) <a href='mailto:yuyao.song@roche.com'>yuyao.song@roche.com<
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

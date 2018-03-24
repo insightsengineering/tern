@@ -97,9 +97,10 @@ as described in the details section.</p>
     <tr>
       <th>formula</th>
       <td><p>a survival formula, the arm variable needs to be wrapped in
-<code><a href='arm.html'>arm()</a></code>. The <code>strata()</code> special will only be used for the
-stratified analysis. If there is not <code>strata</code> specification then the
-stratified analysis is omitted.</p></td>
+<code><a href='arm.html'>arm</a></code>. The <code><a href='http://www.rdocumentation.org/packages/survival/topics/strata'>strata</a></code> special will only be
+used for the stratified analysis. If there is not
+<code><a href='http://www.rdocumentation.org/packages/survival/topics/strata'>strata</a></code> specification then the stratified analysis
+is omitted.</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -163,41 +164,41 @@ and confidence interval.</p>
 )
 
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B                   ARM C      
-#&gt;                                               (N=39)                  (N=37)                  (N=24)     
+#&gt;                                               (N=36)                  (N=22)                  (N=42)     
 #&gt; ---------------------------------------------------------------------------------------------------------
-#&gt; Patients with event (%)                    17 (43.59%)             20 (54.05%)             10 (41.67%)   
+#&gt; Patients with event (%)                      18 (50%)              13 (59.09%)             23 (54.76%)   
 #&gt;   Earliest Contributing Event
-#&gt;     Death                                       9                       9                       5        
-#&gt;     Disease Progression                         4                       5                       1        
-#&gt;     First Response                              4                       6                       4        
-#&gt; Patients without event (%)                 22 (56.41%)             17 (45.95%)             14 (58.33%)   
+#&gt;     Death                                       6                       5                       7        
+#&gt;     Disease Progression                         8                       4                       9        
+#&gt;     First Response                              4                       4                       7        
+#&gt; Patients without event (%)                   18 (50%)               9 (40.91%)             19 (45.24%)   
 #&gt; 
 #&gt; Time to Event (months)
-#&gt;   Median                                      170.1                   93.23                   106.17     
-#&gt;     95% CI                                 (123, 307.6)           (52.9, 141.1)           (62.2, 132.9)  
-#&gt;   25% and 75%−ile                          64.8, 307.6             47.8, 166.9             62.2, 132.9   
-#&gt;   Range                                     0 to 326.9              0 to 220.8              0 to 179.5   
+#&gt;   Median                                      85.58                   120.44                  103.67     
+#&gt;     95% CI                                (60.6, 225.4)           (80.1, 166.7)           (63.3, 186.4)  
+#&gt;   25% and 75%-ile                           47, 225.4              63.7, 166.7             46.3, 247.5   
+#&gt;   Range                                      0 to 246               0 to 258.4              0 to 336.3   
 #&gt; 
 #&gt; Unstratified Analysis
-#&gt;   p-value (log-rank)                                                  0.008                   0.0864     
+#&gt;   p-value (log-rank)                                                  0.9792                  0.5992     
 #&gt; 
-#&gt;   Hazard Ratio                                                        2.5085                  2.0651     
-#&gt;     95% CI                                                       (1.2466, 5.0477)        (0.887, 4.8082) 
+#&gt;   Hazard Ratio                                                        0.9903                  0.8442     
+#&gt;     95% CI                                                       (0.4757, 2.0617)        (0.4485, 1.5889)
 #&gt; 
 #&gt; Stratified Analysis
-#&gt;   p-value (log-rank)                                                  0.0162                  0.0684     
+#&gt;   p-value (log-rank)                                                  0.7323                  0.739      
 #&gt; 
-#&gt;   Hazard Ratio                                                        2.3301                  2.1706     
-#&gt;     95% CI                                                       (1.1487, 4.7265)        (0.9266, 5.0849)
+#&gt;   Hazard Ratio                                                        0.8772                  0.8978     
+#&gt;     95% CI                                                       (0.4141, 1.8585)        (0.4761, 1.6932)
 #&gt; 
 #&gt; Time Point Analysis
 #&gt;   6 months
-#&gt;     Patients remaining at risk                  37                      35                      20       
-#&gt;     Event Free Rate (%)                       97.37%                  94.59%                  91.27%     
-#&gt;       95% CI                               (92.28, 100)            (87.31, 100)            (79.69, 100)  
-#&gt;     Difference in Event Free Rate                                     -2.77                    -6.1      
-#&gt;       95% CI                                                      (-11.66, 6.11)          (-18.75, 6.55) 
-#&gt;     p-value (Z-test)                                                  0.5407                  0.3448     
+#&gt;     Patients remaining at risk                  35                      20                      41       
+#&gt;     Event Free Rate (%)                       97.22%                  95.45%                   100%      
+#&gt;       95% CI                               (91.85, 100)            (86.75, 100)             (100, 100)   
+#&gt;     Difference in Event Free Rate                                     -1.77                    2.78      
+#&gt;       95% CI                                                      (-11.99, 8.46)          (-2.59, 8.15)  
+#&gt;     p-value (Z-test)                                                  0.7348                  0.3105     
 #&gt; 
 #&gt;   2000 months
 #&gt;     -- no data</div><div class='input'>
@@ -226,7 +227,7 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

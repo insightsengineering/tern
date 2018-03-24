@@ -95,16 +95,20 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fit_km</th>
-      <td><p>a class <code>survfit</code> object.</p></td>
+      <td><p>a class <code>survfit</code> object</p></td>
     </tr>
     <tr>
       <th>col</th>
-      <td><p>a vector of color for each line.</p></td>
+      <td><p>a vector of color for each line</p></td>
     </tr>
     <tr>
       <th>xticks</th>
       <td><p>break interval of x-axis. It takes a numeric vector or
 <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>plot title</p></td>
     </tr>
     <tr>
       <th>draw</th>
@@ -121,14 +125,19 @@
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
-<span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>sapply</span>(<span class='fu'>as.character</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) <span class='kw'>if</span> (<span class='fu'>nchar</span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'>paste0</span>(<span class='fu'>substr</span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>))
+<span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>sapply</span>(<span class='fu'>as.character</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) {
+   <span class='kw'>if</span> (<span class='fu'>nchar</span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'>paste0</span>(<span class='fu'>substr</span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>
+}))
 <span class='no'>ATE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ATE"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
 
 <span class='no'>ATE_f</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>ATE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ATE_f</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>))
 <span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
-<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>)</div><div class='img'><img src='g_km-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'> <span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"black"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_km-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+
+<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>)</div><div class='img'><img src='g_km-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"black"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_km-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'> 
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -147,7 +156,7 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
