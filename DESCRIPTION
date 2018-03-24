@@ -27,7 +27,6 @@ Imports:
 Suggests:
   random.cdisc.data,
   dplyr,
-  devtools,
   testthat,
   knitr,
   rmarkdown,
