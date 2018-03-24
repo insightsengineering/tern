@@ -1,4 +1,9 @@
-library(testthat)
-library(teal.oncology)
 
-test_check("teal.oncology")
+
+
+if (requireNamespace("testthat", quietly = TRUE)) {
+  library(tern)
+  library(testthat)
+  test_check("tern")  
+}
+

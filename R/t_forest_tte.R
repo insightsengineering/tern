@@ -9,7 +9,8 @@
 #' @param tte a vector of time to event data
 #' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 #'   is censored
-#' @param group_data data frame with one column per grouping
+#' @param group_data data frame with one variable per grouping
+#' @param strata_data data frame with stratification variables
 #' @param col_by factor with reference and comparison group information, the
 #'   first \code{level} indicates the reference group
 #' @param total character with the row name of the analysis run on all data. If

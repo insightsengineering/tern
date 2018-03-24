@@ -25,6 +25,7 @@ This R package contains analysis code to create TLGs used in clinical trials.
 
 Copy paste the following code into your `R` console:
 
+
 ```{r echo=FALSE, message=FALSE}
 library(tern)
 ```

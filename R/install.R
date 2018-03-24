@@ -58,9 +58,11 @@ recomended_version_combinations <- function() {
 #' @export
 #' 
 #' @examples 
+#' \dontrun{
 #' install_tern(eval = FALSE)
 #' install_tern('master', 'depends', eval = FALSE)
 #' install_tern('devel', 'none', eval = FALSE)
+#' }
 install_tern <- function(ref = NULL, dependencies = c('all', 'depends', 'none'), eval = TRUE) {
   
   dependencies <- match.arg(dependencies)

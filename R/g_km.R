@@ -3,10 +3,11 @@
 #' Create a KM plot for any \code{\link[survival]{survfit}} object.
 #' 
 #' @inheritParams g_forest
-#' @param fit_km a class \code{\link{survfit}} object.
-#' @param col a vector of color for each line.
+#' @param fit_km a class \code{\link{survfit}} object
+#' @param col a vector of color for each line
 #' @param xticks break interval of x-axis. It takes a numeric vector or
 #'   \code{NULL}.
+#' @param title plot title
 #'   
 #' 
 #' @template author_wangh107
@@ -29,10 +30,11 @@
 #' 
 #' ANL <- merge(ASL, ATE_f, by = c("USUBJID", "STUDYID"))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
+#' 
 #' g_km(fit_km = fit_km)
-#'  g_km(fit_km = fit_km, col = c("black", "red"))
-   
-
+#' 
+#' g_km(fit_km = fit_km, col = c("black", "red"))
+#'  
 g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
                  draw = TRUE, newpage = TRUE ){
   

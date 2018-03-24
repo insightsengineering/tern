@@ -52,6 +52,7 @@ var_labels <- function(x, fill = FALSE) {
 #' This functions sets all non-missing variable labels in a \code{data.frame}
 #' 
 #' @inheritParams var_labels
+#' @param value new variable labels, \code{NA} removes the variable label
 #' 
 #' @return modifies the variable labels of \code{x}
 #' 
@@ -72,10 +73,9 @@ var_labels <- function(x, fill = FALSE) {
   if (ncol(x) != length(value)) stop("dimension missmatch")
   
   for (j in seq_along(x)) {
-    if (!is.na(value[j])) {
-      attr(x[[j]], "label") <- value[j]
-    }
+    attr(x[[j]], "label") <- if (!is.na(value[j])) value[j] else NULL
   }
+  
   x
 }
 
@@ -235,8 +235,14 @@ reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
 }
 
 
-#' Combine factor levels
+#' Combine Factor Levels
 #' 
+#' 
+#' @param x factor
+#' @param levels level names to be combined
+#' @param new_level name of new level
+#' 
+#' @return a factor
 #' 
 #' @export
 #' 
@@ -303,6 +309,9 @@ start_with_NULL <- function(x) {
 #' Stack rtables with rbind and add empy rows between tables
 #' 
 #' @param ... rtbale objects
+#' @param nrpw_pad number of empty rows between tables in \code{...}
+#' 
+#' @noRd
 #' 
 #' 
 stack_rtables <- function(..., nrow_pad = 1) {

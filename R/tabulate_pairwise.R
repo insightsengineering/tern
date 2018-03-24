@@ -1,6 +1,8 @@
 
 #' Calculate statistics Pairwise with reference level
 #' 
+#' 
+#' @inheritParams rtables::rrow
 #' @param x a vector
 #' @param col_by a factor first level is taken as reference level
 #' @param FUN a function with two arguments, first argument is the subset of x

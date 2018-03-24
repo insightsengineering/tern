@@ -1,4 +1,3 @@
-library(testthat)
 
 context("test change from baseline table")
 
@@ -52,7 +51,7 @@ test_that("summary by visit table", {
   # call t_summarize_byvisit function
   df <- CO2 %>% mutate(Visit = factor(ifelse(grepl("Mn|Qn1", Plant), "Visit last", gsub("Qc|Qn|Mc", "Visit ", Plant))))
   
-  tbl <- t_summarize_byvisit(data = df[c("conc", "uptake")], 
+  tbl <- t_summarize_by_visit(data = df[c("conc", "uptake")], 
                              visit = df$Visit, 
                              col_by = df$Type)
   

@@ -7,14 +7,15 @@
 #' library(dplyr)
 #' library(forcats)
 
-if (require("atezo.data", quietly = TRUE)) {
+if (requireNamespace("atezo.data", quietly = TRUE) && 
+    requireNamespace("dplyr", quietly = TRUE) && 
+    requireNamespace("forcats", quietly = TRUE)) {
 
   context("compare stream outputs for atezo data in the atezo.data R package")
-  
-  require("dplyr") || stop("dplyr is needed for the atezo.data tests")
-  require("forcats") || stop("forcats is needed for the atezo.data tests")
-  
 
+  library(atezo.data)
+  library(dplyr)
+  library(forcats)
   
   fct_rr <- function(x, ...) {
     dots <- list(...)
