@@ -52,7 +52,8 @@ For the test of difference in response rates, Wald confidence
 
 library(random.cdisc.data)
 
-ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000, start_with = list(RACE = c("white", "asian")))
+ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000,
+   start_with = list(RACE = c("white", "asian")))
 ARS <- radam("ARS", ADSL = ASL)
 ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
 
@@ -64,7 +65,9 @@ tbl <- t_rsp(
  col_by = relevel(factor(ANL$ARMCD), "ARM B"),
  partition_rsp_by = droplevels(factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")))
 )
-tbl; Viewer(tbl)
+\dontrun{
+Viewer(tbl)
+} 
 
 # Example 2 - ARM B as reference, ARM C displayed before ARM A
 #             "NON CR/PD" response category displayed in partition section, "NE" responses are not displayed 
@@ -75,8 +78,10 @@ tbl2 <- t_rsp(
  partition_rsp_by = factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
  strata_data = ANL[c("RACE")]
 )
-tbl2; Viewer(tbl2)
-
+tbl2
+\dontrun{
+Viewer(tbl2)
+} 
 }
 \author{
 Chendi Liao (liaoc10) \email{chendi.liao@roche.com}

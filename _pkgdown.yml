@@ -18,7 +18,11 @@ reference:
       - starts_with("t_")
   - title: Graphs
     contents:
-      - g_forest
+      - starts_with("g_")
+  - title: Graphs Helper Functions
+    desc: these functions are useful to modify graphs
+    contents:
+      - addTable
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:

@@ -14,9 +14,9 @@ TLG creation functions
 Authors:
 \itemize{
   \item Heng Wang \email{wang.heng@gene.com}
-  \item Mark Rothe
   \item Yuyao Song \email{yuyao.song@roche.com}
   \item Chendi Liao \email{chendi.liao@roche.com}
+  \item Mark Rothe
   \item Xiao Mu Yo
 }
 
