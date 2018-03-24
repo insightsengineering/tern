@@ -4,9 +4,10 @@
 #' as described in the details section.
 #' 
 #' @param formula a survival formula, the arm variable needs to be wrapped in
-#'   \code{arm()}. The \code{strata()} special will only be used for the
-#'   stratified analysis. If there is not \code{strata} specification then the
-#'   stratified analysis is omitted.
+#'   \code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
+#'   used for the stratified analysis. If there is not
+#'   \code{\link[survival]{strata}} specification then the stratified analysis
+#'   is omitted.
 #' @param data a \code{data.frame} with all the variable that are used in
 #'   \code{formula}
 #' @param event_descr a factor that partitions the the events into earliest
@@ -142,7 +143,7 @@ t_tte <- function(formula,
     rrow(paste0("Time to Event (", time_unit, "s)")),
     rrowl("Median", med, format = "xx.xx", indent = 1),
     rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
-    rrowl("25% and 75%−ile", qnt, indent = 1, format = "xx.x, xx.x"),
+    rrowl("25% and 75%-ile", qnt, indent = 1, format = "xx.x, xx.x"),
     rrowl("Range", rng, indent = 1, format = "xx.x to xx.x")  
   )
   
