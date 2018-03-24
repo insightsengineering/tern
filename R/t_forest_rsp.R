@@ -183,8 +183,13 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   )
 }  
 
-# glm_results(glm_data)
-# data = glm_data 
+#' fit glm models for forest plot rsp
+#' 
+#' @noRd
+#' 
+#' @importFrom stats setNames glm binomial confint 
+#' 
+#' 
 glm_results <- function(data){
   
   #Response Rate

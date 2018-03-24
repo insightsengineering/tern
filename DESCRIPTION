@@ -17,12 +17,17 @@ Depends:
   grid,
   rtables (>= 0.1)
 Imports:
+  methods,
+  utils,
+  stats,
+  grDevices,
   ggplot2,
   scales,
   gridExtra
 Suggests:
   random.cdisc.data,
   dplyr,
+  devtools,
   testthat,
   knitr,
   rmarkdown,

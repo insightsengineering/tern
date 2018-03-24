@@ -31,6 +31,7 @@
 #' 
 #' @template return_rtable
 #' 
+#' @importFrom stats terms quantile pchisq qnorm pnorm 
 #' @export
 #' 
 #' @author Mark Rothe (rothem1)
@@ -172,7 +173,7 @@ t_tte <- function(formula,
       fit_survdiff <- survdiff(formula, data = df_i)
       fit_coxph <- tryCatch(
         coxph(formula, data = df_i, ties = ties), # weights are not supported if ties = 'exact'
-        error = function(e) null
+        error = function(e) NULL
       )
       
       list(

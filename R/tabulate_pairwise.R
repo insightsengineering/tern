@@ -7,6 +7,8 @@
 #'   and the second argument is a factor with two levels from col_by
 #' @param ... arguments passed to rrow
 #' 
+#' 
+#' @importFrom stats relevel
 #' @export
 #'    
 #' @template author_waddella    

@@ -20,7 +20,9 @@
 #' library(random.cdisc.data)
 #' 
 #' ASL <- radam("ASL")
-#' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
+#' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
+#'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+#' }))
 #' ATE <- radam("ATE", ADSL = ASL)
 #' 
 #' ATE_f <- subset(ATE, PARAMCD == "OS") 
@@ -151,9 +153,8 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
 #' @param fit_km a class \code{\link{survfit}} object.
 #' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' 
-#' @import survival
 #' @importFrom scales col_factor
-#' 
+#' @importFrom utils head tail  
 #' 
 #' @noRd
 #' 

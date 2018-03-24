@@ -1,5 +1,17 @@
 
-# dots <- list(SL = iris$Sepal.Length, iris = iris, b = iris$Species, aaa = NULL) 
+#' check if elements ... have the same dimension
+#' 
+#' @param ... data.frames or vectors
+#' @param omit.NULL are \code{NULL} elements in \code{...} to be omitted from the check?
+#' 
+#' @importFrom stats na.omit
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' \dontrun{
+#' dots <- list(SL = iris$Sepal.Length, iris = iris, b = iris$Species, aaa = NULL)  
+#' }
 check_same_N <- function(..., omit.NULL = TRUE) {
   
   dots <- list(...)

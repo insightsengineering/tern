@@ -26,7 +26,7 @@
 #'   
 #'   The display order of response categories in partitioned statistics section 
 #'   inherits the factor level order of \code{partition_rsp_by}. Use 
-#'   \code{\link[base]{factor()}} and its \code{levels} argument to include or 
+#'   \code{\link[base]{factor}} and its \code{levels} argument to include or 
 #'   exclude response categories and arrange display order. If response values 
 #'   contains missing or "Not Evaluable (NE)", 95\% confidence interval will not
 #'   be calculated.
@@ -49,12 +49,14 @@
 #' ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
 #' 
 #' # Example 1 - ARM B as reference
-#' #             "NON CR/PD" response category dropped from partition section since no observations
-#' #             model with no stratifiaction factors, Chi-square test is performed
+#' #    "NON CR/PD" response category dropped from partition section since no observations
+#' #     model with no stratifiaction factors, Chi-square test is performed
 #' tbl <- t_rsp(
 #'  rsp = ANL$AVALC %in% c("CR", "PR"),
 #'  col_by = relevel(factor(ANL$ARMCD), "ARM B"),
-#'  partition_rsp_by = droplevels(factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")))
+#'  partition_rsp_by = droplevels(factor(
+#'    ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
+#'  ))
 #' )
 #' \dontrun{
 #' Viewer(tbl)

@@ -22,6 +22,12 @@ range_t <- function(x, na.rm = TRUE) {
   range(x, na.rm = TRUE)
 }
 
+#' get inter-quantile range
+#' 
+#' @noRd
+#' 
+#' @importFrom stats quantile sd median qnorm 
+#' 
 iqr_num <- function(x, na.rm = TRUE) {
   quantile(x, probs = c(.25, .75), na.rm = TRUE)
 }

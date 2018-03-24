@@ -2,7 +2,6 @@
 
 #' Matrix with dependency info
 #' 
-#' @export
 #' 
 #' @return a data.frame with a column for each dependent package and the rows
 #'   correspond to recommended version combinations
@@ -53,6 +52,8 @@ recomended_version_combinations <- function() {
 #' \code{install_<pkg>} functions which provide install instructions for
 #' recommended package versions.
 #' 
+#' 
+#' @importFrom utils packageDescription
 #' 
 #' @export
 #' 

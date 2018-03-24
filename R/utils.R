@@ -334,6 +334,13 @@ wrap_with <- function(x, left, right, as_list = TRUE) {
   if (as_list) as.list(lbls) else lbls
 }
 
+#' check if all elements in x are factors
+#' 
+#' @param x data.frame
+#' 
+#' @importFrom methods is
+#' 
+#' @noRd
 all_as_factor <- function(x) {
   if (!is(x, "data.frame")) stop("x needs to be a data.frame")
   

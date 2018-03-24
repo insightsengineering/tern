@@ -26,7 +26,9 @@ Create a KM plot for any \code{\link[survival]{survfit}} object.
 library(random.cdisc.data)
 
 ASL <- radam("ASL")
-ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
+ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
+   if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+}))
 ATE <- radam("ATE", ADSL = ASL)
 
 ATE_f <- subset(ATE, PARAMCD == "OS") 
