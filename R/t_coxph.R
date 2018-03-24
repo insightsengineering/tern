@@ -28,33 +28,29 @@
 t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
   
   if (!is(fit_coxph, "coxph")) stop("fit_coxph needs to be of class coxph")
+  
   sfit <- summary(fit_coxph)
   
   hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
-  
   ci <- sfit$conf.int[, c("lower .95", "upper .95"), drop = FALSE]  
-  
   pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
   
   
   info <- cbind(hr, ci, pvalues)
   sinfo <- split(as.data.frame(info), 1:nrow(info))
   
-  tbl <- do.call(
-    rtable,
-    c(
-      list(header = c("HR", "95% CI of HR", "Wald p-value")),
-      lapply(sinfo, function(xi) {
-        rrow(
-          row.name = rownames(xi),
-          rcell(xi$'exp(coef)', format = "xx.xxxx"),
-          rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
-          rcell(xi$'Pr(>|z|)', format = "xx.xxxx")
-        )
-      })
-    )
+  rtablel(
+    header = c("HR", "95% CI of HR", "Wald p-value"),
+    lapply(sinfo, function(xi) {
+      rrow(
+        row.name = rownames(xi),
+        rcell(xi$'exp(coef)', format = "xx.xxxx"),
+        rcell(c(xi$`lower .95`, xi$`upper .95`), format = "(xx.xxxx, xx.xxxx)"),
+        rcell(xi$'Pr(>|z|)', format = "xx.xxxx")
+      )
+    })
   )
-  tbl
+  
 }
 
 
