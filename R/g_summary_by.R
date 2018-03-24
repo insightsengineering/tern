@@ -18,14 +18,13 @@
 #' @param draw boolean should plot be drawn
 #' @param newpage boolean should plot be drawn on newpage
 #' 
-#' @retrun grob
-#' 
 #' @import ggplot2
-#' @importFrom gridExtra grid.arrange  
+#' @importFrom gridExtra grid.arrange
+#' 
 #' @template author_liaoc10
 #' 
-#' #@export
 #' @noRd
+#' 
 #' @examples
 #'  
 #' library(tern)

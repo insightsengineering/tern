@@ -8,10 +8,10 @@ t_summarize_byvisit(data, visit, col_by)
 }
 \arguments{
 \item{data}{data frame with numerical variables to be summarized. If the 
-variable has a \code{label} attribute then it will be used as the column 
-name.}
+variable has a \code{label} attribute then it will be used as the 
+sub-header column name.}
 
-\item{visit}{factor with visit names ordered by desired display order in the
+\item{visit}{factor with visit names ordered by desired display order in the 
 stacked table.}
 
 \item{col_by}{factor with reference and comparison group information, the
@@ -25,10 +25,17 @@ This function summarizes test results or change from baseline statistics by
 visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01.
 }
 \details{
-
+Every variable in \code{data} will be mapped to a sub-column under 
+  \code{col_by} column. Multiple variables will be shown side-by-side with
+  the variable label (if present) or variable name as the sub-column header.
+  
+  Currently \emph{n}, \emph{Mean (SD)}, \emph{Median}, \emph{IQR} and 
+  \emph{Min-Max} will be derived for each variable from \code{data} per each 
+  factor in \code{col_by}.
 }
 \examples{
 
+# EXAMPLE 1
 ANL <- expand.grid(
   USUBJID = paste0("p-",1:100),
   VISIT = paste0("visit ", 1:10),
@@ -48,6 +55,19 @@ t_summarize_byvisit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM)
 # Add label to variable instead showing variable name
 ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit", CHG = "Change from\\nBaseline", PCHG = "Percent Change\\nfrom Baseline")
 t_summarize_byvisit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM)
+
+
+# EXAMPLE 2
+library(random.cdisc.ata)
+library(dplyr)
+
+AQS <- radam("AQS") \%>\% filter(PARAMCD == "BFIALL") \%>\% 
+   mutate(ARM = factor(sample(c("ARM A", "ARM B", "ARM C"), nrow(.), replace = TRUE)))
+AQS$AVISIT <- factor(AQS$AVISIT, levels = unique(AQS$AVISIT))
+
+tbl <- t_summarize_byvisit(data = AQS[c("AVAL", "CHG")], visit = AQS$AVISIT, col_by = AQS$ARM)
+Viewer(tbl)
+
 
 }
 \author{
