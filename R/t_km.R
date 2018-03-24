@@ -26,22 +26,21 @@
 #' tbl
 #' 
 t_km <- function(fit_km) {
+  
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
+  
   kminfo <- summary(fit_km)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
   skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
-  tbl  <- do.call(
-    rtable,
-    c(
-      list(header = c("N", "median", "95% CI for median")),
-      lapply(skminfo, function(xi) {
-        rrow(
-          row.name = rownames(xi),
-          rcell(xi$records, format = "xx"),
-          rcell(xi$median, format = "xx.xx"),
-          rcell(c(xi$`0.95LCL`, xi$`0.95UCL`), format = "(xx.xx, xx.xx)")
-        )
-      })
-    )
+  
+  rtablel(
+    header = c("N", "median", "95% CI for median"),
+    lapply(skminfo, function(xi) {
+      rrow(
+        row.name = rownames(xi),
+        rcell(xi$records, format = "xx"),
+        rcell(xi$median, format = "xx.xx"),
+        rcell(c(xi$`0.95LCL`, xi$`0.95UCL`), format = "(xx.xx, xx.xx)")
+      )
+    })
   )
-  tbl 
 }
