@@ -4,21 +4,21 @@
 \alias{addTable}
 \title{Add text annotation on top of a kmgrob}
 \usage{
-addTable(kmgrob, tbl, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
+addTable(grob, tbl, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
   just = c("left", "top"), vp = vpPath("plotArea", "topCurve"))
 }
 \arguments{
-\item{kmgrob}{a kmGrob for further editing.}
+\item{grob}{a kmGrob for further editing}
 
-\item{tbl}{An \code{\link[rtables]{rtable}}.}
+\item{tbl}{an \code{\link[rtables]{rtable}}}
 
-\item{x}{A numeric vector or unit object specifying x-values.}
+\item{x}{numeric vector or unit object specifying x-values}
 
-\item{y}{A numeric vector or unit object specifying y-values.}
+\item{y}{numeric vector or unit object specifying y-values}
 
-\item{just}{The justification of the text relative to its (x, y) location.}
+\item{just}{The justification of the text relative to its (x, y) location}
 
-\item{vp}{a Grid veiwport object for annotating a text grob.}
+\item{vp}{grid viewport object for annotating a text grob}
 }
 \description{
 utility function to edit a grid grob by adding a text grob
@@ -31,18 +31,26 @@ OS <- data.frame(AVAL = abs(rnorm(200)),
                  SEX = sample(c("M","F"), 200, TRUE),
                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
                  ECOG = sample(c(0, 1), 200, TRUE))
+
+                                    
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-a_kmgrob <- kmGrob(fit_km, xticks = 0.5)
+
+a_kmgrob <- g_km(fit_km, xticks = 0.5, draw = FALSE)
+
 fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
-cox_tbl <- coxphAnnoData(fit_coxph)
-addTable(a_kmgrob, 
-         vp = vpPath("plotArea", "topCurve"), 
-         x= unit(1, "lines"), y = unit(1, "lines"),
-         just = c("left", "bottom"),
-         tbl = cox_tbl ) \%>\% 
-         grid.draw()
-         
-         
+cox_tbl <- t_coxph(fit_coxph)
+
+p_tbl <- addTable(
+  a_kmgrob, 
+  vp = vpPath("plotArea", "topCurve"), 
+  x= unit(1, "lines"), y = unit(1, "lines"),
+  just = c("left", "bottom"),
+  tbl = cox_tbl 
+)
+
+grid.newpage()
+grid.draw(p_tbl)
+
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}
