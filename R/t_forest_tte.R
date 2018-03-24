@@ -1,5 +1,5 @@
 
-#' Time-to-event Forest Plot Table
+#' Time-to-event Table as used for Forest Plot
 #'
 #'The time-to-event forest plot table summarizes time-to-event data by groups. 
 #'The function returns event counts and median survival time for each analysis 

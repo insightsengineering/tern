@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_km.R
 \name{t_km}
 \alias{t_km}
-\title{Prepare K-M model annotation data with rtable format}
+\title{Kaplan Meier Fit Summary Table}
 \usage{
 t_km(fit_km)
 }

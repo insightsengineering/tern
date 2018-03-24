@@ -1,4 +1,4 @@
-#' Prepare K-M model annotation data with rtable format
+#' Kaplan Meier Fit Summary Table
 #' 
 #' An \code{\link[rtables]{rtable}} format of KM model data for further
 #' annotation on top of Kaplan-Meier grob

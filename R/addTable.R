@@ -1,4 +1,4 @@
-#' Add text annotation on top of a kmgrob
+#' Add an rtable as Text Annotation to a Gird Grob
 #' 
 #' utility function to edit a grid grob by adding a text grob 
 #' 

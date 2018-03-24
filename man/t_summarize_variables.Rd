@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_summarize_variables.R
 \name{t_summarize_variables}
 \alias{t_summarize_variables}
-\title{Table of Variable Summaries}
+\title{Variables Summary Table}
 \usage{
 t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
   useNA_factors = c("no", "ifany", "always"))

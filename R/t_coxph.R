@@ -1,4 +1,4 @@
-#' Prepare Cox PH model annotation data with rtable format
+#' Proportional Hazards Regression Model Fit Summary Table
 #' 
 #' An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
 #' object for further annotation on top of Kaplan-Meier grob

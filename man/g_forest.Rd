@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_forest.R
 \name{g_forest}
 \alias{g_forest}
-\title{Forest plot}
+\title{Create a Forest Plot based on a Table}
 \usage{
 g_forest(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
   xlim = NULL, logx = FALSE, x_at = NULL, width_row.names = NULL,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_forest_tte.R
 \name{t_forest_tte}
 \alias{t_forest_tte}
-\title{Time-to-event Forest Plot Table}
+\title{Time-to-event Table as used for Forest Plot}
 \usage{
 t_forest_tte(tte, is_event, col_by, group_data = NULL, strata_data = NULL,
   total = "ALL", time_unit = "month", ties = "exact",

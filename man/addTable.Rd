@@ -2,7 +2,7 @@
 % Please edit documentation in R/addTable.R
 \name{addTable}
 \alias{addTable}
-\title{Add text annotation on top of a kmgrob}
+\title{Add an rtable as Text Annotation to a Gird Grob}
 \usage{
 addTable(grob, tbl, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
   just = c("left", "top"), vp = vpPath("plotArea", "topCurve"))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_coxph.R
 \name{t_coxph}
 \alias{t_coxph}
-\title{Prepare Cox PH model annotation data with rtable format}
+\title{Proportional Hazards Regression Model Fit Summary Table}
 \usage{
 t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model")
 }
