@@ -8,7 +8,11 @@
 #' @import survival
 #' @importFrom scales col_factor
 #' 
-#' @export 
+#' 
+#' @noRd
+#' 
+#' @template author_wangh107
+#' 
 #' 
 #' @examples 
 #' 
@@ -114,19 +118,21 @@ kmCurveData <- function(fit_km, xticks = NULL) {
 
 #' Prepare K-M model annotation data with rtable format
 #' 
-#' An \code{\link[rtables]{rtable}} format of KM model data for further annotation on top of Kaplan-Meier grob
+#' An \code{\link[rtables]{rtable}} format of KM model data for further
+#' annotation on top of Kaplan-Meier grob
 #' 
 #' @param fit_km a class \code{\link{survfit}} object.
 #' 
-#' @import survival
+#' 
+#' @template author_wangh107
+#' 
 #' @import rtables
 #' 
 #' @export
 #' 
+#' 
 #' @examples 
 #' 
-#' library(dplyr)
-#' library(rtables)
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
 #'                  ARM = sample(LETTERS[1:3], 200, TRUE),
@@ -162,7 +168,8 @@ t_km <- function(fit_km) {
 
 #' Prepare Cox PH model annotation data with rtable format
 #' 
-#' An \code{\link[rtables]{rtable}} format of \code{\link{coxph}} object for further annotation on top of Kaplan-Meier grob
+#' An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
+#' object for further annotation on top of Kaplan-Meier grob
 #' 
 #' @param fit_coxph a class \code{\link{coxph}} object.
 #' @param info_coxph label information for Cox PH model.
@@ -172,9 +179,10 @@ t_km <- function(fit_km) {
 #' 
 #' @export
 #' 
+#' @template author_wangh107
+#' 
 #' @examples 
-#' library(dplyr)
-#' library(rtables)
+#' 
 #' OS <- data.frame(AVAL = abs(rnorm(200)), 
 #'                  CNSR = sample(c(0, 1), 200, TRUE), 
 #'                  ARM = sample(LETTERS[1:3], 200, TRUE),

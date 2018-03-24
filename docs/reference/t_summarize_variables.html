@@ -147,53 +147,50 @@ variable and the tables for all variables will be stacked.</p>
 <span class='no'>ASL</span>$<span class='no'>SEX</span> <span class='kw'>&lt;-</span> <span class='fu'>relevel</span>(<span class='no'>ASL</span>$<span class='no'>SEX</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>)
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=45)               (N=55)               (N=100)   
+#&gt;                                   (N=48)               (N=52)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 45                   55                   100     
-#&gt;   M                             21 (46.67%)          25 (45.45%)           46 (46%)   
-#&gt;   F                             23 (51.11%)          30 (54.55%)           53 (53%)   
-#&gt;   UNDIFFERENTIATED               1 (2.22%)             0 (0%)               1 (1%)    
+#&gt;   n                                 48                   52                   100     
+#&gt;   M                              24 (50%)            27 (51.92%)           51 (51%)   
+#&gt;   F                              24 (50%)            25 (48.08%)           49 (49%)   
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 45                   55                   100     
-#&gt;   Mean (SD)                    43.2 (13.62)         43.42 (12.2)         43.32 (12.79)
-#&gt;   Median                            41                   44                  42.5     
-#&gt;   Min - Max                       13 - 72              18 - 72              13 - 72   </div><div class='input'>
+#&gt;   n                                 48                   52                   100     
+#&gt;   Mean (SD)                    44.08 (15.26)        38.12 (15.14)        40.98 (15.41)
+#&gt;   Median                            43                   36                   38      
+#&gt;   Min - Max                       11 - 89              11 - 79              11 - 89   </div><div class='input'>
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>'always'</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=45)               (N=55)               (N=100)   
+#&gt;                                   (N=48)               (N=52)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 45                   55                   100     
-#&gt;   M                             21 (46.67%)          25 (45.45%)           46 (46%)   
-#&gt;   F                             23 (51.11%)          30 (54.55%)           53 (53%)   
-#&gt;   UNDIFFERENTIATED               1 (2.22%)             0 (0%)               1 (1%)    
+#&gt;   n                                 48                   52                   100     
+#&gt;   M                              24 (50%)            27 (51.92%)           51 (51%)   
+#&gt;   F                              24 (50%)            25 (48.08%)           49 (49%)   
 #&gt;   NA                              0 (0%)               0 (0%)               0 (0%)    
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 45                   55                   100     
-#&gt;   Mean (SD)                    43.2 (13.62)         43.42 (12.2)         43.32 (12.79)
-#&gt;   Median                            41                   44                  42.5     
-#&gt;   Min - Max                       13 - 72              18 - 72              13 - 72   </div><div class='input'>
+#&gt;   n                                 48                   52                   100     
+#&gt;   Mean (SD)                    44.08 (15.26)        38.12 (15.14)        40.98 (15.41)
+#&gt;   Median                            43                   36                   38      
+#&gt;   Min - Max                       11 - 89              11 - 79              11 - 89   </div><div class='input'>
 <span class='no'>ASL</span>$<span class='no'>SEX</span>[<span class='fl'>1</span>:<span class='fl'>10</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>'ifany'</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=45)               (N=55)               (N=100)   
+#&gt;                                   (N=48)               (N=52)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 40                   50                   90      
-#&gt;   M                              18 (40%)            23 (41.82%)           41 (41%)   
-#&gt;   F                             21 (46.67%)          27 (49.09%)           48 (48%)   
-#&gt;   UNDIFFERENTIATED               1 (2.22%)             0 (0%)               1 (1%)    
-#&gt;   NA                            5 (11.11%)            5 (9.09%)            10 (10%)   
+#&gt;   n                                 43                   47                   90      
+#&gt;   M                             21 (43.75%)          24 (46.15%)           45 (45%)   
+#&gt;   F                             22 (45.83%)          23 (44.23%)           45 (45%)   
+#&gt;   NA                            5 (10.42%)            5 (9.62%)            10 (10%)   
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 45                   55                   100     
-#&gt;   Mean (SD)                    43.2 (13.62)         43.42 (12.2)         43.32 (12.79)
-#&gt;   Median                            41                   44                  42.5     
-#&gt;   Min - Max                       13 - 72              18 - 72              13 - 72   </div><div class='input'>
+#&gt;   n                                 48                   52                   100     
+#&gt;   Mean (SD)                    44.08 (15.26)        38.12 (15.14)        40.98 (15.41)
+#&gt;   Median                            43                   36                   38      
+#&gt;   Min - Max                       11 - 89              11 - 79              11 - 89   </div><div class='input'>
 <span class='co'># with iris data</span>
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>iris</span>[, -<span class='fl'>5</span>], <span class='kw'>col_by</span>  <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='output co'>#&gt;                       setosa           versicolor          virginica 

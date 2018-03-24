@@ -12,9 +12,9 @@ t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
 details section. If the variable has a \code{label} attribute then it will
 be used for the row name.}
 
-\item{col_by}{a vector of length \code{nrow(x)} that defines which levels in
-\code{col_by} define a column. If data should not be split into columns use
-the \code{\link{no_by}} function.}
+\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
+which levels in \code{col_by} define a column. If data should not be split
+into columns use the \code{\link{no_by}} function.}
 
 \item{total}{if not \code{NULL} then it must be a string and an addition
 column will be added with the overall summaries}

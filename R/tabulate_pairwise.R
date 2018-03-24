@@ -9,6 +9,8 @@
 #' 
 #' @export
 #'    
+#' @template author_waddella    
+#'
 #' @return an rtable
 #' 
 #' @examples 

@@ -36,8 +36,8 @@ check_same_N_l <- function(x) {
 #' strata_data can be NULL or 
 #' 
 #' @param x data.frame with valid stratification data
-#' @param n number of expected rows
 #' 
+#' @noRd
 #' 
 check_data_frame <- function(x, allow_missing = FALSE) {
 

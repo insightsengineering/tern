@@ -36,6 +36,8 @@ drop_special <- function(terms, special) {
 #' 
 #' We use \code{arm} to in tern formulas
 #' 
+#' @param x arm information
+#' 
 #' @export
 #' 
 #' @author boruvkaa

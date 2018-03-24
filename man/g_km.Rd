@@ -12,16 +12,15 @@ g_km(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
 
 \item{col}{a vector of color for each line.}
 
-\item{xticks}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
+\item{xticks}{break interval of x-axis. It takes a numeric vector or
+\code{NULL}.}
 
-\item{title}{title for plot.}
+\item{draw}{boolean, should plot be drawn}
 
-\item{draw}{boolean, should plot be drawn.}
-
-\item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page.}
+\item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
 }
 \description{
-Create a KM plot for any \code{\link{survfit}} object.
+Create a KM plot for any \code{\link[survival]{survfit}} object.
 }
 \examples{
 library(random.cdisc.data)
@@ -36,4 +35,7 @@ ANL <- merge(ASL, ATE_f, by = c("USUBJID", "STUDYID"))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
 g_km(fit_km = fit_km)
  g_km(fit_km = fit_km, col = c("black", "red"))
+}
+\author{
+Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

@@ -31,3 +31,6 @@ tabulate_pairwise(
 )
 
 }
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+}

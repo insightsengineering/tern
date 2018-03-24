@@ -6,6 +6,9 @@
 \usage{
 arm(x)
 }
+\arguments{
+\item{x}{arm information}
+}
 \description{
 We use \code{arm} to in tern formulas
 }
