@@ -18,13 +18,16 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Function reference" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,12 +50,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -60,17 +67,8 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/response_table.html">response_table</a>
-    </li>
-  </ul>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -92,10 +90,7 @@
       <div class="row">
   <div class="col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.0.1</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
     <div class="contents">
@@ -130,73 +125,85 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="demographic_table.html">demographic_table</a></code> </p>
+            <p><code><a href="t_coxph.html">t_coxph()</a></code> </p>
           </td>
-          <td><p>Create Demographics Table from ADSL data</p></td>
+          <td><p>Proportional Hazards Regression Model Fit Summary Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="forest_rsp.html">forest_rsp</a></code> </p>
+            <p><code><a href="t_forest_rsp.html">t_forest_rsp()</a></code> </p>
           </td>
-          <td><p>Response Forest Plot Table</p></td>
+          <td><p>Response Table as used for Forest Plot</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="forest_tte.html">forest_tte</a></code> </p>
+            <p><code><a href="t_forest_tte.html">t_forest_tte()</a></code> </p>
           </td>
-          <td><p>Time-to-event Forest Plot Table</p></td>
+          <td><p>Time-to-event Table as used for Forest Plot</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="response_table.html">response_table</a></code> </p>
+            <p><code><a href="t_km.html">t_km()</a></code> </p>
           </td>
-          <td><p>Response Table Caclulation Function</p></td>
+          <td><p>Kaplan Meier Fit Summary Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="time_to_event_table.html">time_to_event_table</a></code> </p>
+            <p><code><a href="t_rsp.html">t_rsp()</a></code> </p>
+          </td>
+          <td><p>Response Table</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="t_summarize_by_visit.html">t_summarize_by_visit()</a></code> </p>
+          </td>
+          <td><p>Summary Table by Visit</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="t_summarize_variables.html">t_summarize_variables()</a></code> </p>
+          </td>
+          <td><p>Variables Summary Table</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="t_tte.html">t_tte()</a></code> </p>
           </td>
           <td><p>Time to Event Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="chgfbl_table.html">chgfbl_table</a></code> </p>
-          </td>
-          <td><p>Wrap data generated from <code>chgfbl_data</code> into rtable format, to create a
-test result and change from baseline by visit summary table</p></td>
         </tr>
       </tbody><tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-plots" class="hasAnchor"><a href="#section-plots" class="anchor"></a>Plots</h2>
+            <h2 id="section-graphs" class="hasAnchor"><a href="#section-graphs" class="anchor"></a>Graphs</h2>
             <p class="section-desc"></p>
           </th>
         </tr>
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="forest_rsp_plot.html">forest_rsp_plot</a></code> </p>
+            <p><code><a href="g_forest.html">g_forest()</a></code> </p>
           </td>
-          <td><p>Forest plot (table + graph)</p></td>
+          <td><p>Create a Forest Plot based on a Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="forest_tte_plot.html">forest_tte_plot</a></code> </p>
+            <p><code><a href="g_km.html">g_km()</a></code> </p>
           </td>
-          <td><p>Time-to-event Forest Plot</p></td>
-        </tr><tr>
+          <td><p>Kaplan-Meier Plot</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-graphs-helper-functions" class="hasAnchor"><a href="#section-graphs-helper-functions" class="anchor"></a>Graphs Helper Functions</h2>
+            <p class="section-desc"><p>these functions are useful to modify graphs</p></p>
+          </th>
+        </tr>
+        <tr>
           <!--  -->
           <td>
-            <p><code><a href="kmplot.html">kmplot</a></code> </p>
+            <p><code><a href="addTable.html">addTable()</a></code> </p>
           </td>
-          <td><p>Kaplan-Meier Plot using grid plotting</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="chgfbl_plot.html">chgfbl_plot</a></code> </p>
-          </td>
-          <td><p>Plotting data generated from <code>chgfbl_data</code> into change from baseline
-mean plot using ggplot2 and gridExtra</p></td>
+          <td><p>Add an rtable as Text Annotation to a Gird Grob</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -208,106 +215,33 @@ mean plot using ggplot2 and gridExtra</p></td>
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="glm_results.html">glm_results</a></code> </p>
+            <p><code><a href="var_labels.html">var_labels()</a></code> </p>
           </td>
-          <td><p>glm_results(data_for_value)
-data = data_for_value</p></td>
+          <td><p>Get Label Attributes of Variables in a <code>data.frame</code></p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="kmplot_survminer_annotate.html">kmplot_survminer_annotate</a></code> </p>
+            <p><code><a href="var_labels-set.html">`var_labels<-`()</a></code> </p>
           </td>
-          <td><p>Statistics from KM estimators and Cox PH modeling</p></td>
+          <td><p>Set Label Attributes of All Variables in a <code>data.frame</code></p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="chgfbl_data.html">chgfbl_data</a></code> </p>
+            <p><code><a href="var_relabel.html">var_relabel()</a></code> </p>
           </td>
-          <td><p>Change from Baseline Table Caclulation Function</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-utility-functions" class="hasAnchor"><a href="#section-utility-functions" class="anchor"></a>Utility functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="grapes-needs-grapes.html">%needs%</a></code> </p>
-          </td>
-          <td><p>Check if list or data.frame has elements/variables</p></td>
+          <td><p>Copy and Change Variable Labels of a <code>data.frame</code></p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="labels_over_names.html">labels_over_names</a></code> </p>
+            <p><code><a href="drop_shared_variables.html">drop_shared_variables()</a></code> </p>
           </td>
-          <td><p>return a vector with the variable labels and names if variable labels do not exist</p></td>
+          <td><p>Remove Shared Variables</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="list_transpose.html">list_transpose</a></code> </p>
+            <p><code><a href="reorder_to_match_id.html">reorder_to_match_id()</a></code> </p>
           </td>
-          <td><p>Transpose a list by changing depht 2 elements with depth 1 elements</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print_np.html">print_np</a></code> </p>
-          </td>
-          <td><p>Helper functions to format rcells for various display</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="reflow.html">reflow</a></code> </p>
-          </td>
-          <td><p>Helper functions to re-format and reflow long arm/grouping labels by inserting
-line breaks</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="wrap_text.html">wrap_text</a></code> </p>
-          </td>
-          <td><p>return splitted text that fits onto page width</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="add_labels.html">add_labels</a></code> </p>
-          </td>
-          <td><p>re-attach labels to variables</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-to-be-deprecated" class="hasAnchor"><a href="#section-to-be-deprecated" class="anchor"></a>To be Deprecated</h2>
-            <p class="section-desc"><p>The following functions are to be removed in an upcoming tern release</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="forest_tte_ADAM.html">forest_tte_ADAM</a></code> </p>
-          </td>
-          <td><p>Forest Plot Numbers for Survival data with ADAM data structure</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="kmplot_survminer.html">kmplot_survminer</a></code> </p>
-          </td>
-          <td><p>kmplot_survminer</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="response_table_ADAM.html">response_table_ADAM</a></code> </p>
-          </td>
-          <td><p>Response Table with ADaM data structure</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arm_for_model2.html">arm_for_model2</a></code> </p>
-          </td>
-          <td><p>update Function from tm_forestplot.R. Suggest to put function arm_for_model2 in R script for uitility functions
-re-factor arm variable by input arm.ref and arm.rest</p></td>
+          <td><p>Return Ordered Dataset so that a set of variables match exactly</p></td>
         </tr>
       </tbody>
       </table>
@@ -319,21 +253,20 @@ re-factor arm variable by input arm.ref and arm.rest</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-"></a></li>
       <li><a href="#section-tables">Tables</a></li>
-      <li><a href="#section-plots">Plots</a></li>
+      <li><a href="#section-graphs">Graphs</a></li>
+      <li><a href="#section-graphs-helper-functions">Graphs Helper Functions</a></li>
       <li><a href="#section-data-helper-functions">Data Helper Functions</a></li>
-      <li><a href="#section-utility-functions">Utility functions</a></li>
-      <li><a href="#section-to-be-deprecated">To be Deprecated</a></li>
     </ul>
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -341,3 +274,4 @@ re-factor arm variable by input arm.ref and arm.rest</p></td>
 
   </body>
 </html>
+

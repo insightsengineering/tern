@@ -1,36 +1,43 @@
 Package: tern
 Title: Analysis Code
-Version: 0.0.1
+Version: 0.5.0
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
-  person("Heng", "Wang", email = "", role = c("aut")),
-  person("Mark", "Rothe", email = "", role = c("aut")),
-  person("Yuyao", "Song", email = "", role = c("aut")),
-  person("Chendi", "Liao", email = "", role = c("aut")),
-  person("Xiao", "Mu Yo", email = "", role = c("aut"))
+  person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = c("ctb")),
+  person("Heng", "Wang", email = "wang.heng@gene.com", role = c("aut")),
+  person("Yuyao", "Song", email = "yuyao.song@roche.com", role = c("aut")),
+  person("Chendi", "Liao", email = "chendi.liao@roche.com", role = c("aut")),
+  person("Mark", "Rothe", role = c("aut")),
+  person("Xiao", "Mu Yo", role = c("aut"))
   )
 Description: TLG creation
 Depends:
   R (>= 3.3),
-  rtables,
-  dplyr,
-  tidyr
-Imports:
+  survival,
   grid,
-  forcats,
+  rtables (>= 0.1)
+Imports:
+  methods,
+  utils,
+  stats,
+  grDevices,
   ggplot2,
+  scales,
   gridExtra
 Suggests:
   random.cdisc.data,
+  dplyr,
   testthat,
   knitr,
   rmarkdown,
-  survminer
+  forcats
 License: Copyright Roche
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
+URL: https://pages.github.roche.com/Rpackages/tern/, https://github.roche.com/Rpackages/tern/
+BugReports: https://github.roche.com/Rpackages/tern/issues
 Additional_repositories: 
   https://github.com/Roche/rtables,
   https://github.roche.com/Rpackages/random.cdisc.data

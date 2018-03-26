@@ -8,16 +8,30 @@
 \description{
 TLG creation functions
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://pages.github.roche.com/Rpackages/tern/}
+  \item \url{https://github.roche.com/Rpackages/tern/}
+  \item Report bugs at \url{https://github.roche.com/Rpackages/tern/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Adrian Waddell \email{adrian.waddell@roche.com}
 
 Authors:
 \itemize{
-  \item Heng Wang
+  \item Heng Wang \email{wang.heng@gene.com}
+  \item Yuyao Song \email{yuyao.song@roche.com}
+  \item Chendi Liao \email{chendi.liao@roche.com}
   \item Mark Rothe
-  \item Yuyao Song
-  \item Chendi Liao
   \item Xiao Mu Yo
+}
+
+Other contributors:
+\itemize{
+  \item Audrey Boruvka \email{audrey.boruvka@roche.com} [contributor]
 }
 
 }

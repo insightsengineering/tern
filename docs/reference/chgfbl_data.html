@@ -60,18 +60,6 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/response_table.html">response_table</a>
-    </li>
-  </ul>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -125,7 +113,7 @@
 <span class='no'>AQS</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"AQS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)) <span class='kw'>%&gt;%</span>
    <span class='fu'>filter</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"FATIGI"</span>)
 
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>chgfbl_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>)</div><div class='output co'>#&gt; <span class='error'>Error in chgfbl_data(data = ANL): object 'ANL' not found</span></div><div class='input'>
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>chgfbl_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>)</div><div class='output co'>#&gt; <span class='error'>Error in `[.data.frame`(data, !duplicated(data[testdupvars]), c(testdupvars,     "ABLFL", "AVAL", "AVALU", "CHG")): undefined columns selected</span></div><div class='input'>
 </div># NOT RUN {
 library(dplyr)
 library(tidyr)
@@ -153,7 +141,10 @@ chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsi
 chgfbl_plot(data = df, ytype = "AVAL", errbar = "95CI", ref_line = 3, yrange = c(0,3), n_rotate = T)
 
 tbl <- chgfbl_table(data=df)
+
+\dontrun{
 Viewer(tbl)
+}
 
 
 
