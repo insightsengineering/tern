@@ -18,13 +18,20 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Create a Forest Plot based on a Table — g_forest" />
+
+<meta property="og:description" content="Create a forest plot from any rtable object that has a
+column with a single value and a column with 2 values" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +54,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -81,6 +95,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a Forest Plot based on a Table</h1>
+    
     </div>
 
     
@@ -93,7 +108,7 @@ column with a single value and a column with 2 values</p>
   <span class='kw'>width_columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width_forest</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1</span>, <span class='st'>"null"</span>), <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -189,7 +204,7 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
   <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>.1</span>, <span class='fl'>10</span>),
   <span class='kw'>logx</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>x_at</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>.1</span>, <span class='fl'>1</span>, <span class='fl'>10</span>)
-)</div><div class='img'><img src='g_forest-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='g_forest-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># For response table</span>
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
@@ -228,7 +243,7 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
   <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>.1</span>, <span class='fl'>10</span>),
   <span class='kw'>logx</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>x_at</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>.1</span>, <span class='fl'>1</span>, <span class='fl'>10</span>)
-)</div><div class='img'><img src='g_forest-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='g_forest-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 
 <span class='co'># Works with any rtable</span>
@@ -243,7 +258,7 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
   <span class='kw'>tbl</span> <span class='kw'>=</span> <span class='no'>tbl</span>,
   <span class='kw'>col_x</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>col_ci</span> <span class='kw'>=</span> <span class='fl'>2</span>
-)</div><div class='img'><img src='g_forest-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='g_forest-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>rtable</span>(
   <span class='kw'>header</span> <span class='kw'>=</span> <span class='fu'>rheader</span>(
     <span class='fu'>rrow</span>(<span class='st'>""</span>, <span class='fu'>rcell</span>(<span class='st'>"A"</span>, <span class='kw'>colspan</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
@@ -259,7 +274,7 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
   <span class='kw'>col_ci</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>vline</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>forest_header</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Hello"</span>, <span class='st'>"World"</span>)
-)</div><div class='img'><img src='g_forest-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='g_forest-4.png' alt='' width='700' height='433' /></div><div class='input'>
 
 
 </div></pre>
@@ -285,7 +300,7 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -293,3 +308,4 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
   </body>
 </html>
+

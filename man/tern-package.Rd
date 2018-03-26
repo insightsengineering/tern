@@ -8,6 +8,15 @@
 \description{
 TLG creation functions
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://pages.github.roche.com/Rpackages/tern/}
+  \item \url{https://github.roche.com/Rpackages/tern/}
+  \item Report bugs at \url{https://github.roche.com/Rpackages/tern/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Adrian Waddell \email{adrian.waddell@roche.com}
 

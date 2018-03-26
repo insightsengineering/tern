@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Response Table as used for Forest Plot — t_forest_rsp" />
+
+<meta property="og:description" content="The Response forest plot table summarizes response data by groups. The
+function returns sample sizes and responder counts and response rates for
+each analysis arm, as well as a odds ratio and the corresponding 95%
+confidence interval from a univariate logistic model." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +56,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -81,6 +97,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Response Table as used for Forest Plot</h1>
+    
     </div>
 
     
@@ -93,7 +110,7 @@ confidence interval from a univariate logistic model.</p>
     <pre class="usage"><span class='fu'>t_forest_rsp</span>(<span class='no'>rsp</span>, <span class='no'>col_by</span>, <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"ALL"</span>,
   <span class='kw'>na.omit.group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -134,7 +151,8 @@ first <code>level</code> indicates the reference group</p></td>
     <p>Logistic regression is used for odds ratio calculation.</p>
 <p>Each row in the returned table contains the analysis statistics for a
 subgroup of data (indicated by the row name). The summary table is consist of
-the following 9 columns:</p><dl class='dl-horizontal'>
+the following 9 columns:</p>
+<dl class='dl-horizontal'>
     <dt>1</dt><dd><p><em>Total n</em> the total number of subjects included in analysis
   population</p></dd>
     <dt>3-4</dt><dd><p>Summary of responders in reference arm, <em>n</em> and
@@ -221,7 +239,7 @@ Yuyao Song (songy24) <a href='mailto:yuyao.song@roche.com'>yuyao.song@roche.com<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -229,3 +247,4 @@ Yuyao Song (songy24) <a href='mailto:yuyao.song@roche.com'>yuyao.song@roche.com<
 
   </body>
 </html>
+

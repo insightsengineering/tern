@@ -1,5 +1,8 @@
+pandoc: 1.19.2.1
+pkgdown: 0.1.0.9000
+pkgdown_sha: ~
+articles: []
 urls:
   reference: https://pages.github.roche.com/Rpackages/tern/reference
   article: https://pages.github.roche.com/Rpackages/tern/articles
-articles: {}
 
