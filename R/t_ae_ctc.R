@@ -47,15 +47,20 @@
 #'  aware that this is only for display purposes and does not sub-set \code{aae}
 #'  data frame. One needs to sub-set \code{aae} before providing it to 
 #'  \code{t_ae_ctc}.
+#'  
+#' @export
+#'  
+#'  
 #' @examples 
 #' \dontrun
 #' {
 #' 
+#' library(rgda)
 #' # the following example should reproduce table t_ae_ctc_ATEZOREL_SENBX.out
 #' file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
 #' library(rocheBCE)
-#' AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
-#' ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
+#' AAE <- get_data("BCE", '/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
+#' ASL <- get_data("BCE", '/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
 #' save(AAE, ASL, file = 'InputVads.Rdata')
 #'
 #' load('InputVads.Rdata')
@@ -66,7 +71,7 @@
 #' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), ]
 #' 
 #' # filter adverse events dataset
-#' aae <- AAE[AAE$TRTEMFL == 'U' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', ]
+#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', ]
 #' 
 #' tbl <- t_ae_ctc(
 #'    asl = asl,
@@ -81,8 +86,55 @@
 #' )
 #' 
 #' Viewer(tbl)
+#'  
+#' # tables
+#' rtable(
+#'   header = rheader(
+#'     rrow("MedDRA System Organ Class", "Arm A", "Arm B"),
+#'     rrow("MedDRA Preferred Term", "N=10", "N=20", indent = 1)
+#'   ),
+#'   rrow("ABC", 1,2),
+#'   rrow(NULL, 3, 4)
+#' )
+#' 
 #' }
-t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range = c(1, 5), col_by) {
+#'
+#' 
+t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_range = range(grade)) {
+  
+  # checks
+
+  col_by_n <- tapply()
+  
+  df <- na.omit(data.frame(class = class, term = term, ...)) # think about na.omit
+  
+  # split up data
+  # - class
+  # - term
+  
+  sum_fun <- function(x) {
+    
+    
+    rtbl
+  }
+  
+  l_t_class <- split(df, df$class, function(df_cl) {
+    l_t_term <- split(df_cl, df_cl$term, function(df_cl_term) {
+      rbind(
+         rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = no_by(""), sum_fun),
+         rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = "grade", sum_fun)
+      )
+    })
+    
+    ## logic to figure out sort_order
+    l_t_term[sort_order]
+  })
+  
+  ## logic to figure out sort_order2
+  do.call(stack_rtables, l_t_class[sort_order2])
+  
+  
+#t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range = c(1, 5), col_by) {
   
 # check argument validity and consitency ----------------------------------
 
