@@ -66,7 +66,7 @@
 #' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), ]
 #' 
 #' # filter adverse events dataset
-#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', ]
+#' aae <- AAE[AAE$TRTEMFL == 'U' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', ]
 #' 
 #' tbl <- t_ae_ctc(
 #'    asl = asl,
@@ -87,7 +87,9 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range = c(1
 # check argument validity and consitency ----------------------------------
 
   if (!is.data.frame(asl)) stop("asl needs to be a data.frame")
-  if (!is.data.frame(asl)) stop("asl needs to be a data.frame")
+  if (!is.data.frame(aae)) stop("aae needs to be a data.frame")
+  if (nrow(aae) == 0) stop("there are no records in aae for this subset")
+  if (nrow(asl) == 0) stop("there are no records in asl for this subset")
   if (!is.vector(grade_range) || !length(grade_range) == 2) stop("grade_range needs to be a vector with 2 values")
   if (any(is.na(asl[[col_by]]))) stop("In asl data no NA's are allowed for col_by")
   if (any(asl[[col_by]] %in% c('', ' '))) stop("In asl data no missing values are allowed for col_by")
@@ -115,6 +117,8 @@ t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range = c(1
   aae <- rbind(aae, aaeALL)
   
   aae <- merge(asl, aae, by = usubjid)
+  
+  
   
   # AEs with missing soc or pt code
   aae[[soc]] <- ifelse(aae[[soc]] == '',  'UNCODED', aae[[soc]])
