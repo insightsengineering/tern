@@ -26,7 +26,7 @@
 #'   
 #'   The display order of response categories in partitioned statistics section 
 #'   inherits the factor level order of \code{partition_rsp_by}. Use 
-#'   \code{\link[base]{factor()}} and its \code{levels} argument to include or 
+#'   \code{\link[base]{factor}} and its \code{levels} argument to include or 
 #'   exclude response categories and arrange display order. If response values 
 #'   contains missing or "Not Evaluable (NE)", 95\% confidence interval will not
 #'   be calculated.
@@ -43,31 +43,38 @@
 #' 
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000, start_with = list(RACE = c("white", "asian")))
+#' ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000,
+#'    start_with = list(RACE = c("white", "asian")))
 #' ARS <- radam("ARS", ADSL = ASL)
 #' ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
 #' 
 #' # Example 1 - ARM B as reference
-#' #             "NON CR/PD" response category dropped from partition section since no observations
-#' #             model with no stratifiaction factors, Chi-square test is performed
+#' #    "NON CR/PD" response category dropped from partition section since no observations
+#' #     model with no stratifiaction factors, Chi-square test is performed
 #' tbl <- t_rsp(
 #'  rsp = ANL$AVALC %in% c("CR", "PR"),
 #'  col_by = relevel(factor(ANL$ARMCD), "ARM B"),
-#'  partition_rsp_by = droplevels(factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")))
+#'  partition_rsp_by = droplevels(factor(
+#'    ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
+#'  ))
 #' )
-#' tbl; Viewer(tbl)
+#' \dontrun{
+#' Viewer(tbl)
+#' } 
 #' 
 #' # Example 2 - ARM B as reference, ARM C displayed before ARM A
-#' #             "NON CR/PD" response category displayed in partition section, "NE" responses are not displayed 
-#' #             model with two stratifiaction factors, CMH test performed
+#' #    "NON CR/PD" response category displayed in partition section, "NE" responses
+#' #     are not displayed model with two stratifiaction factors, CMH test performed
 #' tbl2 <- t_rsp(
 #'  rsp = ANL$AVALC %in% c("CR", "PR"),
 #'  col_by = factor(ANL$ARMCD, c("ARM B", "ARM C", "ARM A")),
 #'  partition_rsp_by = factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
-#'  strata_data = ANL[c("SEX","RACE")]
+#'  strata_data = ANL[c("RACE")]
 #' )
-#' tbl2; Viewer(tbl2)
-#' 
+#' tbl2
+#' \dontrun{
+#' Viewer(tbl2)
+#' } 
 t_rsp <- function(
   rsp,
   col_by,
@@ -120,7 +127,7 @@ t_rsp <- function(
     # wald test without continuity correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
 
-      t_wc <- prop.test(table(x, by), correct = FALSE)
+      t_wc <- prop.test(table(by, x), correct = FALSE)
       
       rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
     },
@@ -130,7 +137,7 @@ t_rsp <- function(
     # wald test with  continuety correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
       
-      t_wc <- prop.test(table(x, by), correct = TRUE)
+      t_wc <- prop.test(table(by, x), correct = TRUE)
       
       rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
     }, 
@@ -142,9 +149,7 @@ t_rsp <- function(
       tabulate_pairwise(rsp, col_by, function(x, by) {
         
         
-        t_wc <- prop.test(x = tapply(x, by, sum),
-                          n = tapply(x, by, length),
-                          correct = FALSE)
+        t_wc <- prop.test(table(by,x), correct = FALSE)
         
         rcell(t_wc$p.value, format = "xx.xxxx")
       }, 
@@ -159,7 +164,9 @@ t_rsp <- function(
           rcell("<5 data points")
         } else {
           t.tbl <- table(col_by, rsp, strat)
-          t_m <- mantelhaen.test(t.tbl, correct = FALSE)
+          t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
+          
+          t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
           
           rcell(t_m$p.value, format = "xx.xxxx")
         }
@@ -186,7 +193,9 @@ t_rsp <- function(
           rcell("<5 data points")
         } else {
           t.tbl <- table(col_by, rsp, strat)
-          t_m <- mantelhaen.test(t.tbl, correct = FALSE)
+          t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
+          
+          t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
           
           rcell(t_m$estimate, format = "xx.xx")
         }
@@ -208,7 +217,9 @@ t_rsp <- function(
           rcell("<5 data points")
         } else {
           t.tbl <- table(col_by, rsp, strat)
-          t_m <- mantelhaen.test(t.tbl, correct = FALSE)
+          t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
+          
+          t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
       
           rcell(t_m$conf.int, format = "(xx.xx, xx.xx)")
         }

@@ -4,9 +4,10 @@
 #' as described in the details section.
 #' 
 #' @param formula a survival formula, the arm variable needs to be wrapped in
-#'   \code{arm()}. The \code{strata()} special will only be used for the
-#'   stratified analysis. If there is not \code{strata} specification then the
-#'   stratified analysis is omitted.
+#'   \code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
+#'   used for the stratified analysis. If there is not
+#'   \code{\link[survival]{strata}} specification then the stratified analysis
+#'   is omitted.
 #' @param data a \code{data.frame} with all the variable that are used in
 #'   \code{formula}
 #' @param event_descr a factor that partitions the the events into earliest
@@ -30,6 +31,7 @@
 #' 
 #' @template return_rtable
 #' 
+#' @importFrom stats terms quantile pchisq qnorm pnorm 
 #' @export
 #' 
 #' @author Mark Rothe (rothem1)
@@ -82,6 +84,12 @@ t_tte <- function(formula,
   
   
   # Argument Checking
+  if (length(tte) != nrow(data)) {
+    stop("some of the following variable contain missing values:\n   ",
+         sub("^list", "", deparse(attr(terms(formula), "variables"))),
+         "\nmissing data in for the survival analysis is currently disabled")    
+  }
+
   check_same_N(is_event = is_event, event_descr = event_descr, arm = arm)
   check_col_by(arm, 2)
   if (!is.null(event_descr) && !is.factor(event_descr))
@@ -97,7 +105,7 @@ t_tte <- function(formula,
   
   tbl_event <- rbind(
     rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name = "Patients without event (%)"),
+              row.name = "Patients with event (%)"),
     if (!is.null(event_descr)) {
       rbind(
         rtable(levels(arm), rrow("Earliest Contributing Event", indent = 1)),
@@ -136,7 +144,7 @@ t_tte <- function(formula,
     rrow(paste0("Time to Event (", time_unit, "s)")),
     rrowl("Median", med, format = "xx.xx", indent = 1),
     rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
-    rrowl("25% and 75%−ile", qnt, indent = 1, format = "xx.x, xx.x"),
+    rrowl("25% and 75%-ile", qnt, indent = 1, format = "xx.x, xx.x"),
     rrowl("Range", rng, indent = 1, format = "xx.x to xx.x")  
   )
   
@@ -165,7 +173,7 @@ t_tte <- function(formula,
       fit_survdiff <- survdiff(formula, data = df_i)
       fit_coxph <- tryCatch(
         coxph(formula, data = df_i, ties = ties), # weights are not supported if ties = 'exact'
-        error = function(e) null
+        error = function(e) NULL
       )
       
       list(
@@ -213,46 +221,62 @@ t_tte <- function(formula,
     NULL
   } else {
     
-    tp <- summary(surv_km_fit, times = time_points)
+    tp <- try(summary(surv_km_fit, times = time_points), silent = TRUE)
     
-    df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "strata", "std.err")])
-    s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
     
-    ## dfi <- s_df_tp[[1]]; time_point = time_points[1]
-    tp_rtables <- Map(function(dfi, time_point) {
+    tp_rtables <- if (is(tp, "try-error")) {
       
-      name <- paste(time_point, if(time_point == 1) time_unit else paste0(time_unit, "s"))
-      
-      
-      if (nrow(dfi) == 0) {
+      list(
         rtable(
           header = levels(arm),
-          rrow(name, indent = 1),
+          rrow(paste("time points: ", paste(time_points, collapse = ", ")), indent = 1),
           rrow("-- no data", indent = 2)
         )
-      } else {
+      )
+      
+    } else {
+      
+      df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "strata", "std.err")])
+      s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
+      
+      ## dfi <- s_df_tp[[1]]; time_point = time_points[1]
+      Map(function(dfi, time_point) {
         
-        if (!all(dfi$time == time_point)) stop("time points do not match")
+        name <- paste(time_point, if(time_point == 1) time_unit else paste0(time_unit, "s"))
         
-        d <- dfi$surv[-1] - dfi$surv[1]
-        sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
         
-        # z-test
-        l.ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
-        pval <- 2*(1 - pnorm(abs(d)/sd))
-        
-        rtable(
-          header = levels(arm),
-          rrow(name, indent = 1),
-          rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
-          rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-          rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")]*100)), format = "(xx.xx, xx.xx)", indent = 3),
-          rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d*100)), format = "xx.xx", indent = 2),
-          rrowl("95% CI", c(list(NULL), lapply(l.ci, function(x) 100*x)), format = "(xx.xx, xx.xx)", indent = 3),
-          rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
-        )
-      }
-    }, s_df_tp, time_points)  
+        if (nrow(dfi) <= 1) {
+          rtable(
+            header = levels(arm),
+            rrow(name, indent = 1),
+            rrow(if (nrow(dfi) == 0) "-- no data" else "-- not enough data", indent = 2)
+          )
+        } else {
+          
+          if (!all(dfi$time == time_point)) stop("time points do not match")
+          
+          d <- dfi$surv[-1] - dfi$surv[1]
+          sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
+          
+          # z-test
+          l.ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
+          pval <- 2*(1 - pnorm(abs(d)/sd))
+          
+          rtable(
+            header = levels(arm),
+            rrow(name, indent = 1),
+            rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
+            rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
+            rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")]*100)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d*100)), format = "xx.xx", indent = 2),
+            rrowl("95% CI", c(list(NULL), lapply(l.ci, function(x) 100*x)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
+          )
+        }
+      }, s_df_tp, time_points)  
+    }
+    
+    
     
     rbind(
       rtable(header = levels(arm), rrow("Time Point Analysis")),    

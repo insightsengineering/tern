@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Table of Variable Summaries — t_summarize_variables • tern</title>
+<title>Variables Summary Table — t_summarize_variables • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,19 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Variables Summary Table — t_summarize_variables" />
+
+<meta property="og:description" content="Similiar as the demographic table in STREAM" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +53,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -80,7 +93,8 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Table of Variable Summaries</h1>
+    <h1>Variables Summary Table</h1>
+    
     </div>
 
     
@@ -90,7 +104,7 @@
     <pre class="usage"><span class='fu'>t_summarize_variables</span>(<span class='no'>data</span>, <span class='no'>col_by</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop_levels</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"no"</span>, <span class='st'>"ifany"</span>, <span class='st'>"always"</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -101,9 +115,9 @@ be used for the row name.</p></td>
     </tr>
     <tr>
       <th>col_by</th>
-      <td><p>a vector of length <code>nrow(x)</code> that defines which levels in
-<code>col_by</code> define a column. If data should not be split into columns use
-the <code>no_by</code> function.</p></td>
+      <td><p>a <code>factor</code> of length <code>nrow(x)</code> that defines
+which levels in <code>col_by</code> define a column. If data should not be split
+into columns use the <code>no_by</code> function.</p></td>
     </tr>
     <tr>
       <th>total</th>
@@ -125,7 +139,8 @@ column will be added with the overall summaries</p></td>
 
     <p>Every variable in <code>data</code> will be mapped to a summary table of that
 variable and the tables for all variables will be stacked.</p>
-<p>Currently we distinguish the summary by the variable type</p><dl class='dl-horizontal'>
+<p>Currently we distinguish the summary by the variable type</p>
+<dl class='dl-horizontal'>
   <dt>numneric</dt><dd><p><em>n</em>, <em>Mean (SD)</em>, <em>Median</em>, <em>Min-Max</em>
   will be derived for each factor in <code>col_by</code></p></dd>
   <dt>non-numeric</dt><dd><p>will be converted to a factor (if it isn't already) and
@@ -147,50 +162,50 @@ variable and the tables for all variables will be stacked.</p>
 <span class='no'>ASL</span>$<span class='no'>SEX</span> <span class='kw'>&lt;-</span> <span class='fu'>relevel</span>(<span class='no'>ASL</span>$<span class='no'>SEX</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>)
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=43)               (N=57)               (N=100)   
+#&gt;                                   (N=50)               (N=50)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 43                   57                   100     
-#&gt;   M                             20 (46.51%)          29 (50.88%)           49 (49%)   
-#&gt;   F                             23 (53.49%)          28 (49.12%)           51 (51%)   
+#&gt;   n                                 50                   50                   100     
+#&gt;   M                              27 (54%)             33 (66%)             60 (60%)   
+#&gt;   F                              23 (46%)             17 (34%)             40 (40%)   
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 43                   57                   100     
-#&gt;   Mean (SD)                    41.42 (14.05)        45.63 (14.82)        43.82 (14.57)
-#&gt;   Median                            40                   46                   42      
-#&gt;   Min - Max                       12 - 76              13 - 74              12 - 76   </div><div class='input'>
+#&gt;   n                                 50                   50                   100     
+#&gt;   Mean (SD)                    43.08 (12.71)        41.98 (12.05)        42.53 (12.33)
+#&gt;   Median                           43.5                  45                   45      
+#&gt;   Min - Max                       17 - 69              15 - 67              15 - 69   </div><div class='input'>
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>'always'</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=43)               (N=57)               (N=100)   
+#&gt;                                   (N=50)               (N=50)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 43                   57                   100     
-#&gt;   M                             20 (46.51%)          29 (50.88%)           49 (49%)   
-#&gt;   F                             23 (53.49%)          28 (49.12%)           51 (51%)   
+#&gt;   n                                 50                   50                   100     
+#&gt;   M                              27 (54%)             33 (66%)             60 (60%)   
+#&gt;   F                              23 (46%)             17 (34%)             40 (40%)   
 #&gt;   NA                              0 (0%)               0 (0%)               0 (0%)    
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 43                   57                   100     
-#&gt;   Mean (SD)                    41.42 (14.05)        45.63 (14.82)        43.82 (14.57)
-#&gt;   Median                            40                   46                   42      
-#&gt;   Min - Max                       12 - 76              13 - 74              12 - 76   </div><div class='input'>
+#&gt;   n                                 50                   50                   100     
+#&gt;   Mean (SD)                    43.08 (12.71)        41.98 (12.05)        42.53 (12.33)
+#&gt;   Median                           43.5                  45                   45      
+#&gt;   Min - Max                       17 - 69              15 - 67              15 - 69   </div><div class='input'>
 <span class='no'>ASL</span>$<span class='no'>SEX</span>[<span class='fl'>1</span>:<span class='fl'>10</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>'ifany'</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=43)               (N=57)               (N=100)   
+#&gt;                                   (N=50)               (N=50)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 37                   53                   90      
-#&gt;   M                             18 (41.86%)          27 (47.37%)           45 (45%)   
-#&gt;   F                             19 (44.19%)          26 (45.61%)           45 (45%)   
-#&gt;   NA                            6 (13.95%)            4 (7.02%)            10 (10%)   
+#&gt;   n                                 47                   43                   90      
+#&gt;   M                              27 (54%)             29 (58%)             56 (56%)   
+#&gt;   F                              20 (40%)             14 (28%)             34 (34%)   
+#&gt;   NA                              3 (6%)               7 (14%)             10 (10%)   
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 43                   57                   100     
-#&gt;   Mean (SD)                    41.42 (14.05)        45.63 (14.82)        43.82 (14.57)
-#&gt;   Median                            40                   46                   42      
-#&gt;   Min - Max                       12 - 76              13 - 74              12 - 76   </div><div class='input'>
+#&gt;   n                                 50                   50                   100     
+#&gt;   Mean (SD)                    43.08 (12.71)        41.98 (12.05)        42.53 (12.33)
+#&gt;   Median                           43.5                  45                   45      
+#&gt;   Min - Max                       17 - 69              15 - 67              15 - 69   </div><div class='input'>
 <span class='co'># with iris data</span>
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>iris</span>[, -<span class='fl'>5</span>], <span class='kw'>col_by</span>  <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='output co'>#&gt;                       setosa           versicolor          virginica 
@@ -272,11 +287,11 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -284,3 +299,4 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
   </body>
 </html>
+

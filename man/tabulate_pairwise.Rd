@@ -14,6 +14,8 @@ tabulate_pairwise(x, col_by, FUN, row.name, ...)
 \item{FUN}{a function with two arguments, first argument is the subset of x
 and the second argument is a factor with two levels from col_by}
 
+\item{row.name}{string with row name}
+
 \item{...}{arguments passed to rrow}
 }
 \value{
@@ -30,4 +32,7 @@ tabulate_pairwise(
   row.name = "diff mean"
 )
 
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

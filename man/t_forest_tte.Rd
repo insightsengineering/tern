@@ -2,14 +2,14 @@
 % Please edit documentation in R/t_forest_tte.R
 \name{t_forest_tte}
 \alias{t_forest_tte}
-\title{Time-to-event Forest Plot Table}
+\title{Time-to-event Table as used for Forest Plot}
 \usage{
 t_forest_tte(tte, is_event, col_by, group_data = NULL, strata_data = NULL,
-  total = "ALL", time_unit = "month", na.omit.group = TRUE,
-  dense_header = FALSE)
+  total = "ALL", time_unit = "month", ties = "exact",
+  na.omit.group = TRUE, dense_header = FALSE)
 }
 \arguments{
-\item{tte}{time to event data}
+\item{tte}{a vector of time to event data}
 
 \item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
@@ -17,16 +17,32 @@ is censored}
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group}
 
-\item{group_data}{data frame with one column per grouping}
+\item{group_data}{data frame with one variable per grouping}
+
+\item{strata_data}{data frame with stratification variables}
+
+\item{total}{character with the row name of the analysis run on all data. If
+\code{NULL} analysis is omitted.}
+
+\item{time_unit}{The unit of median survival time. Default is \code{months}.}
+
+\item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
+
+\item{na.omit.group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
+
+\item{dense_header}{Display the table headers in mulitple rows. Default is \code{FALSE}.}
 }
 \description{
-Time-to-event Forest Plot Table
+The time-to-event forest plot table summarizes time-to-event data by groups. 
+The function returns event counts and median survival time for each analysis 
+arm, as well as a hazard ratio and the corresponding 95\% confidence interval 
+from a Cox proportional hazard model.
 }
 \details{
-Cox PH model is used for hazard ratio calculation
+Cox propotionl hazard model is used for hazard ratio calculation
 
 
-The returned table contains one row per analysis applied on a subset of data
+The returned table contains one row per analysis within a subgroup of data
 (indicated by the row name). The analysis is summarized with the following 9
 columns:
 
@@ -35,7 +51,7 @@ columns:
   \item{2-4}{Survival statistics for reference arm, \emph{n} and \emph{Events} are the total number of patients and the number of events in reference arm, respectively.
   \code{Median (month)} is the survival time estimated by Kaplan-Meier method. Time unit can be modified per study needs.}
   \item{5-7}{same analysis as for reference arm now for comparison arm}
-  \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison versus the reference group.
+  \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison group versus that in the reference group.
    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio. 
   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when comparion arm is better. }
   \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty 
@@ -61,10 +77,13 @@ tbl <- t_forest_tte(
   is_event = ANL$CNSR == 0,
   col_by = factor(ANL$ARM), 
   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+  ties = "exact",
   dense_header = TRUE
 )
 
 tbl
+Viewer(tbl)
+
 
 }
 \author{

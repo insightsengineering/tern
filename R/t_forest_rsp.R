@@ -1,34 +1,47 @@
-#' Response Forest Plot Table
+#' Response Table as used for Forest Plot
+#' 
+#' The Response forest plot table summarizes response data by groups. The
+#' function returns sample sizes and responder counts and response rates for
+#' each analysis arm, as well as a odds ratio and the corresponding 95\%
+#' confidence interval from a univariate logistic model.
 #'
-#' @template param_rsp
-#' @template param_col_by
-#' @param group_data data frame with one column per grouping variable
-#' @param total character with the row name of the analysis run on all data. If
-#'   \code{NULL} analysis is omitted
-#' @param na.omit.group boolean, do not list NAs
+#' @inheritParams t_forest_tte 
+#' @param rsp is a boolean vector. If \code{TRUE}, observation is a response,
+#'   otherwise, \code{FALSE}.
 #'    
 #' @details 
-#' Logistic model is used for odds ratio calculation.
-#' 
-#' The returned table contains one row per analysis applied on a subset of data
-#' (indicated by the row name). The analysis is summarized with the following 9
-#' columns:
+#' Logistic regression is used for odds ratio calculation.
+#'
+#' Each row in the returned table contains the analysis statistics for a
+#' subgroup of data (indicated by the row name). The summary table is consist of
+#' the following 9 columns:
 #' 
 #' \describe{
-#'   \item{1}{\emph{Total n} the total number of subjects included in analysis population}
-#'   \item{3-4}{Summary of responders in reference arm, \emph{n} and \emph{Responders} are the 
-#'   total number of patients and the number of responders in reference arm, respectively.
-#'   \code{Response.Rate} is the percentage of responders in reference arm.}
+#' 
+#'   \item{1}{\emph{Total n} the total number of subjects included in analysis
+#'   population}
+#'
+#'   \item{3-4}{Summary of responders in reference arm, \emph{n} and
+#'   \emph{Responders} are the total number of patients and the number of
+#'   responders in reference arm, respectively. \code{Response.Rate} is the
+#'   percentage of responders in reference arm.}
+#'
 #'   \item{5-7}{same statistics as for reference arm now for comparison arm}
-#'   \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying 
-#'   univariate logistic regression with binary response status (responder or non-responder) 
-#'   as the the outcome and arm variable as the explanatory variable. Odds ratio greater than 1 
-#'   indicates better performance in comparison arm; odds ratio less than 1 indicates better performance in reference arm.}
-#'   \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of uncertainty 
-#'   around the measure of effect (Odds Ratio). Because only a small sample of the overall 
-#'   population is included in the analysis, by having an upper and lower confidence limit 
-#'   we can infer that the true treatment effect lies in between. If the 95% confidence interval 
-#'   includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
+#'
+#'   \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying
+#'   univariate logistic regression. Binary response status (responder or
+#'   non-responder) is the outcome and arm is the explanatory variable. Odds
+#'   ratio greater than 1 indicates better performance in comparison arm; odds
+#'   ratio less than 1 indicates better performance in reference arm.}
+#'
+#'   \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of
+#'   uncertainty around the measure of effect (Odds Ratio). Because only a small
+#'   sample of the overall population is included in the analysis, by having an
+#'   upper and lower confidence limit we can infer that the true treatment
+#'   effect lies in between. If the 95% confidence interval includes 1, then we
+#'   say that the difference between two arms is not significant at a
+#'   significance level of 0.05.}
+#'   
 #' }
 #' 
 #' 
@@ -43,14 +56,14 @@
 #' 
 #' ASL <- radam("ASL")
 #' ARS <- radam("ARS", ADSL = ASL)
-#' 
+#' ASL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 #' ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
 #' ANL <- merge(ASL, ARS_f)
 #' 
 #' tbl <- t_forest_rsp(
 #'   rsp = ANL$AVALC %in% c("CR", "PR"),
 #'   col_by = factor(ANL$ARM), 
-#'   group_data = ANL[, c("SEX", "RACE")]
+#'   group_data = ANL[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
 #' )
 #' 
 #' tbl
@@ -77,17 +90,17 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   table_header <- if (dense_header) {
     rheader(
       rrow(row.name = "",
-           rcell(NULL),
+           NULL,
            rcell(levels(col_by)[1], colspan = 3),
            rcell(levels(col_by)[2], colspan = 3),
-           rcell(NULL),
-           rcell(NULL)
+           NULL,
+           NULL
       ),
       rrow(row.name = "Baseline",
            "Total",
-           "", "", "Response",
-           "", "", "Response",
-           "Odds", ""),
+           NULL, NULL, "Response",
+           NULL, NULL, "Response",
+           "Odds", NULL),
       rrow(row.name = "Risk Factors",
            "n",
            "n", "Responders", "Rate",
@@ -99,11 +112,11 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   } else {
     rheader(
       rrow(row.name = "",
-           rcell(NULL),
+           NULL,
            rcell(levels(col_by)[1], colspan = 3),
            rcell(levels(col_by)[2], colspan = 3),
-           rcell(NULL),
-           rcell(NULL)
+           NULL,
+           NULL
       ),
       rrow(row.name = "Baseline Risk Factors",
            "Total n",
@@ -171,8 +184,13 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   )
 }  
 
-# glm_results(glm_data)
-# data = glm_data 
+#' fit glm models for forest plot rsp
+#' 
+#' @noRd
+#' 
+#' @importFrom stats setNames glm binomial confint 
+#' 
+#' 
 glm_results <- function(data){
   
   #Response Rate

@@ -18,13 +18,16 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Function reference" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +50,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -80,10 +90,7 @@
       <div class="row">
   <div class="col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.0.1</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
     <div class="contents">
@@ -118,31 +125,49 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="t_forest_rsp.html">t_forest_rsp</a></code> </p>
+            <p><code><a href="t_coxph.html">t_coxph()</a></code> </p>
           </td>
-          <td><p>Response Forest Plot Table</p></td>
+          <td><p>Proportional Hazards Regression Model Fit Summary Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="t_forest_tte.html">t_forest_tte</a></code> </p>
+            <p><code><a href="t_forest_rsp.html">t_forest_rsp()</a></code> </p>
           </td>
-          <td><p>Time-to-event Forest Plot Table</p></td>
+          <td><p>Response Table as used for Forest Plot</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="t_rsp.html">t_rsp</a></code> </p>
+            <p><code><a href="t_forest_tte.html">t_forest_tte()</a></code> </p>
           </td>
-          <td><p>Response Table Caclulation Function</p></td>
+          <td><p>Time-to-event Table as used for Forest Plot</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="t_summarize_variables.html">t_summarize_variables</a></code> </p>
+            <p><code><a href="t_km.html">t_km()</a></code> </p>
           </td>
-          <td><p>Table of Variable Summaries</p></td>
+          <td><p>Kaplan Meier Fit Summary Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="t_tte.html">t_tte</a></code> </p>
+            <p><code><a href="t_rsp.html">t_rsp()</a></code> </p>
+          </td>
+          <td><p>Response Table</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="t_summarize_by_visit.html">t_summarize_by_visit()</a></code> </p>
+          </td>
+          <td><p>Summary Table by Visit</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="t_summarize_variables.html">t_summarize_variables()</a></code> </p>
+          </td>
+          <td><p>Variables Summary Table</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="t_tte.html">t_tte()</a></code> </p>
           </td>
           <td><p>Time to Event Table</p></td>
         </tr>
@@ -156,15 +181,29 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="g_forest.html">g_forest</a></code> </p>
+            <p><code><a href="g_forest.html">g_forest()</a></code> </p>
           </td>
-          <td><p>Forest plot</p></td>
+          <td><p>Create a Forest Plot based on a Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="g_km.html">g_km</a></code> </p>
+            <p><code><a href="g_km.html">g_km()</a></code> </p>
           </td>
-          <td><p>Kaplan-Meier Plot using grid plotting</p></td>
+          <td><p>Kaplan-Meier Plot</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-graphs-helper-functions" class="hasAnchor"><a href="#section-graphs-helper-functions" class="anchor"></a>Graphs Helper Functions</h2>
+            <p class="section-desc"><p>these functions are useful to modify graphs</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="addTable.html">addTable()</a></code> </p>
+          </td>
+          <td><p>Add an rtable as Text Annotation to a Gird Grob</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -176,31 +215,31 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="var_labels.html">var_labels</a></code> </p>
+            <p><code><a href="var_labels.html">var_labels()</a></code> </p>
           </td>
           <td><p>Get Label Attributes of Variables in a <code>data.frame</code></p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="var_labels-set.html">var_labels<-</a></code> </p>
+            <p><code><a href="var_labels-set.html">`var_labels<-`()</a></code> </p>
           </td>
           <td><p>Set Label Attributes of All Variables in a <code>data.frame</code></p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="var_relabel.html">var_relabel</a></code> </p>
+            <p><code><a href="var_relabel.html">var_relabel()</a></code> </p>
           </td>
           <td><p>Copy and Change Variable Labels of a <code>data.frame</code></p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="drop_shared_variables.html">drop_shared_variables</a></code> </p>
+            <p><code><a href="drop_shared_variables.html">drop_shared_variables()</a></code> </p>
           </td>
           <td><p>Remove Shared Variables</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="reorder_to_match_id.html">reorder_to_match_id</a></code> </p>
+            <p><code><a href="reorder_to_match_id.html">reorder_to_match_id()</a></code> </p>
           </td>
           <td><p>Return Ordered Dataset so that a set of variables match exactly</p></td>
         </tr>
@@ -215,6 +254,7 @@
       <li><a href="#section-"></a></li>
       <li><a href="#section-tables">Tables</a></li>
       <li><a href="#section-graphs">Graphs</a></li>
+      <li><a href="#section-graphs-helper-functions">Graphs Helper Functions</a></li>
       <li><a href="#section-data-helper-functions">Data Helper Functions</a></li>
     </ul>
   </div>
@@ -222,11 +262,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -234,3 +274,4 @@
 
   </body>
 </html>
+

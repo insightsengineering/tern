@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Response Table Caclulation Function — t_rsp • tern</title>
+<title>Response Table — t_rsp • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Response Table — t_rsp" />
+
+<meta property="og:description" content="The response table function summarizes response data by groups. The function 
+produces frequency counts and rates for responders and each response 
+categories, as well as conducts comparisons between groups' response rates 
+and odds ratio." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +56,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -80,16 +96,20 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Response Table Caclulation Function</h1>
+    <h1>Response Table</h1>
+    
     </div>
 
     
-    <p>TODO: Description</p>
+    <p>The response table function summarizes response data by groups. The function 
+produces frequency counts and rates for responders and each response 
+categories, as well as conducts comparisons between groups' response rates 
+and odds ratio.</p>
     
 
-    <pre class="usage"><span class='fu'>t_rsp</span>(<span class='no'>rsp</span>, <span class='no'>col_by</span>, <span class='kw'>parition_rsp_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>t_rsp</span>(<span class='no'>rsp</span>, <span class='no'>col_by</span>, <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -103,14 +123,16 @@ otherwise</p></td>
 first <code>level</code> indicates the reference group</p></td>
     </tr>
     <tr>
-      <th>parition_rsp_by</th>
-      <td><p>factor to partition <code>rsp</code> and run additional
-analysis</p></td>
+      <th>partition_rsp_by</th>
+      <td><p>factor with one or more response categories, generate
+additional statistics partitioned by each response categories. If 
+<code>NULL</code>, tabulation by each response categories will not be performed.</p></td>
     </tr>
     <tr>
       <th>strata_data</th>
-      <td><p>data for stratification factors (categorical variables),
-if <code>NULL</code> no stratified analysis is performed</p></td>
+      <td><p>data for stratification factors (categorical variables). 
+If <code>NULL</code>, no stratified analysis is performed. See details for 
+further explanation.</p></td>
     </tr>
     </table>
     
@@ -120,64 +142,87 @@ if <code>NULL</code> no stratified analysis is performed</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If no stratification, chi-squared test is performed by default to test for
-equality of proportions in response rate between reference and comparison
-arms.</p>
-<p>If stratification factors are added, Cochran-Mantel-Haensel test statistics
-are reported for the test of equal proportions, odds ratio and its
-corresponding 95<!-- % confidence interval. --></p>
+    <p>For the test of difference in response rates, Wald confidence 
+  interval with and without continuity correction are both reported. If no 
+  stratification factors are specified, Chi-squared test is performed by 
+  default to test for equality of proportions in response rate between 
+  reference and comparison groups. If stratification factors are added, 
+  Cochran-Mantel-Haensel test is performed instead. Statistics from the 
+  stratificaiton-adjusted test will be reported for the p-value of test of 
+  equal proportions, odds ratio and its corresponding 95% confidence 
+  interval.</p>  
+<p>The display order of response categories in partitioned statistics section 
+  inherits the factor level order of <code>partition_rsp_by</code>. Use 
+  <code><a href='http://www.rdocumentation.org/packages/base/topics/factor'>factor</a></code> and its <code>levels</code> argument to include or 
+  exclude response categories and arrange display order. If response values 
+  contains missing or "Not Evaluable (NE)", 95% confidence interval will not
+  be calculated.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 
-<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>arm_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+   <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
-
-<span class='no'>ASL</span>$<span class='no'>ARM</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fu'>nrow</span>(<span class='no'>ASL</span>), <span class='fl'>TRUE</span>))
-<span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>)
-
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='fu'>subset</span>(<span class='no'>ARS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRSPI"</span>))
 
+<span class='co'># Example 1 - ARM B as reference</span>
+<span class='co'>#    "NON CR/PD" response category dropped from partition section since no observations</span>
+<span class='co'>#     model with no stratifiaction factors, Chi-square test is performed</span>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
  <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
- <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>),
- <span class='kw'>parition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>))),
- <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]
+ <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>relevel</span>(<span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>), <span class='st'>"ARM B"</span>),
+ <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(
+   <span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)
+ ))
+)</div><span class='co'># NOT RUN {</span>
+<span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
+<span class='co'># }</span><div class='input'>
+<span class='co'># Example 2 - ARM B as reference, ARM C displayed before ARM A</span>
+<span class='co'>#    "NON CR/PD" response category displayed in partition section, "NE" responses</span>
+<span class='co'>#     are not displayed model with two stratifiaction factors, CMH test performed</span>
+<span class='no'>tbl2</span> <span class='kw'>&lt;-</span> <span class='fu'>t_rsp</span>(
+ <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
+ <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARMCD</span>, <span class='fu'>c</span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>, <span class='st'>"ARM A"</span>)),
+ <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>)),
+ <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"RACE"</span>)]
 )
-
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM A     
-#&gt;                                                                     (N=494)               (N=506)    
-#&gt; -----------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        183 (37.04%)          180 (35.57%) 
-#&gt; Non-Responders                                                    311 (62.96%)          326 (64.43%) 
+<span class='no'>tbl2</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
+#&gt;                                                                     (N=349)               (N=306)               (N=345)    
+#&gt; ---------------------------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                        127 (36.39%)          116 (37.91%)          148 (42.9%)  
+#&gt; Non-Responders                                                    222 (63.61%)          190 (62.09%)          197 (57.1%)  
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (32.77, 41.47)        (31.4, 39.92) 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (31.33, 41.68)        (32.45, 43.6)         (37.61, 48.31)
 #&gt; 
-#&gt; Difference in Response Rates (x100)                                                        -1.47     
-#&gt;   95% CI for difference (Wald without correction)                                      (-8.03, 4.85) 
-#&gt;   95% CI for difference (Wald with continuity correction)                              (-0.08, 0.05) 
-#&gt;   p-value (Cochran-Mantel-Haenszel)                                                    &lt;5 data points
+#&gt; Difference in Response Rates (%)                                                            1.52                  6.51     
+#&gt;   95% CI for difference (Wald without correction)                                       (-5.9, 8.94)         (-0.75, 13.77)
+#&gt;   95% CI for difference (Wald with continuity correction)                              (-6.21, 9.24)         (-1.04, 14.06)
+#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                       0.6891                0.092     
 #&gt; 
-#&gt; Odds Ratio                                                                             &lt;5 data points
-#&gt;   95% CI                                                                               &lt;5 data points
+#&gt; Odds Ratio*                                                                                 1.07                  1.3      
+#&gt;   95% CI                                                                                (0.78, 1.47)          (0.96, 1.77) 
 #&gt; 
-#&gt; CR                                                                99 (20.04%)           102 (20.16%) 
-#&gt;   95% CI (Wald)                                                  (16.6, 23.85)         (16.75, 23.92)
+#&gt; Complete Response (CR)                                            55 (15.76%)           68 (22.22%)           88 (25.51%)  
+#&gt;   95% CI                                                         (12.1, 20.01)         (17.69, 27.3)         (20.99, 30.45)
 #&gt; 
-#&gt; PR                                                                  84 (17%)            78 (15.42%)  
-#&gt;   95% CI (Wald)                                                  (13.8, 20.61)         (12.38, 18.86)
+#&gt; Partial Response (PR)                                             72 (20.63%)           48 (15.69%)           60 (17.39%)  
+#&gt;   95% CI                                                         (16.51, 25.26)        (11.8, 20.25)         (13.54, 21.81)
 #&gt; 
-#&gt; SD                                                                116 (23.48%)          131 (25.89%) 
-#&gt;   95% CI (Wald)                                                  (19.81, 27.47)        (22.12, 29.94)
+#&gt; Stable Disease (SD)                                               62 (17.77%)           54 (17.65%)           65 (18.84%)  
+#&gt;   95% CI                                                         (13.9, 22.19)         (13.54, 22.39)        (14.85, 23.37)
 #&gt; 
-#&gt; PD                                                                100 (20.24%)          102 (20.16%) 
-#&gt;   95% CI (Wald)                                                  (16.79, 24.06)        (16.75, 23.92)
+#&gt; Non-CR or Non-PD (NON CR/PD)                                           0                     0                     0       
+#&gt;   95% CI                                                               -                     -                     -       
 #&gt; 
-#&gt; NE                                                                95 (19.23%)           93 (18.38%)  
-#&gt;   95% CI (Wald)                                                  (15.85, 22.99)        (15.1, 22.03) </div><div class='input'>
-</div></pre>
+#&gt; Progressive Disease (PD)                                          72 (20.63%)           66 (21.57%)            59 (17.1%)  
+#&gt;   95% CI                                                         (16.51, 25.26)        (17.09, 26.61)        (13.28, 21.5) 
+#&gt; 
+#&gt; * Model stratified by RACE</div><span class='co'># NOT RUN {</span>
+<span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -200,11 +245,11 @@ Chendi Liao (liaoc10) <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.c
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -212,3 +257,4 @@ Chendi Liao (liaoc10) <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.c
 
   </body>
 </html>
+

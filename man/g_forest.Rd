@@ -2,22 +2,46 @@
 % Please edit documentation in R/g_forest.R
 \name{g_forest}
 \alias{g_forest}
-\title{Forest plot}
+\title{Create a Forest Plot based on a Table}
 \usage{
-g_forest(tbl, i_col_est, i_col_ci, header_forest, padx = unit(1, "lines"))
+g_forest(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
+  xlim = NULL, logx = FALSE, x_at = NULL, width_row.names = NULL,
+  width_columns = NULL, width_forest = unit(1, "null"), draw = TRUE,
+  newpage = TRUE)
 }
 \arguments{
 \item{tbl}{an rtable object}
 
-\item{i_col_est}{column index with estimator}
+\item{col_x}{column index with estimator}
 
-\item{i_col_ci}{column index with confidence intervals}
+\item{col_ci}{column index with confidence intervals}
 
-\item{header_forest}{how to label the forest}
+\item{vline}{x coordinate for vertical line, if \code{NULL} then the line is
+omitted}
 
-\item{padx}{gap between two columns}
+\item{forest_header}{character vector of length 2, diplayed to the left and
+right of \code{vline}, respectively. If \code{vline=NULL} then
+\code{forest_header} needs to be \code{NULL} too}
 
-\item{cex}{multiplier applied to overall fontsize}
+\item{xlim}{x limits for x-scales}
+
+\item{logx}{boolean for showing x-values on logrithm scale}
+
+\item{x_at}{numeric vector with x tick locations, if \code{NULL} they get
+automatically chosen}
+
+\item{width_row.names}{\code{\link[grid]{unit}} object with width for row
+names. If \code{NULL} the widths get automatically calculated.}
+
+\item{width_columns}{\code{\link[grid]{unit}} object with widths for the
+table columns. If \code{NULL} the widths get automatically calculated.}
+
+\item{width_forest}{\code{\link[grid]{unit}} object with width for the forest
+column. If \code{NULL} the widths get automatically calculated.}
+
+\item{draw}{boolean, should plot be drawn}
+
+\item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
 }
 \description{
 Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
@@ -28,7 +52,9 @@ column with a single value and a column with 2 values
 library(random.cdisc.data)
 
 ASL <- radam("ASL")
-ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
+ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
+ if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+}))
 ATE <- radam("ATE", ADSL = ASL)
 
 ATE_f <- subset(ATE, PARAMCD == "OS") 
@@ -45,9 +71,13 @@ tbl <- t_forest_tte(
 ## note plot requires a certain width
 g_forest(
   tbl = tbl,
-  i_col_est = 8,
-  i_col_ci = 9,
-  header_forest = c("Treatement\\nBetter", "Comparison\\nBetter")
+  col_x = 8,
+  col_ci = 9,
+  vline = 1,
+  forest_header = c("Treatement\\nBetter", "Comparison\\nBetter"),
+  xlim = c(.1, 10),
+  logx = TRUE,
+  x_at = c(.1, 1, 10)
 )
 
 # For response table
@@ -66,7 +96,16 @@ tbl <- t_forest_rsp(
 
 tbl
 
-
+g_forest(
+  tbl = tbl,
+  col_x = 8,
+  col_ci = 9,
+  vline = 1,
+  forest_header = c("Comparison\\nBetter", "Treatement\\nBetter"),
+  xlim = c(.1, 10),
+  logx = TRUE,
+  x_at = c(.1, 1, 10)
+)
 
 
 
@@ -78,10 +117,32 @@ tbl <- rtable(
   rrow("", 1.2, c(1.1, 1.4))
 )
 
-g_forest(tbl, 1, 2, c("Hello", "World"))
+g_forest(
+  tbl = tbl,
+  col_x = 1,
+  col_ci = 2
+)
+
+tbl <- rtable(
+  header = rheader(
+    rrow("", rcell("A", colspan = 2)),
+    rrow("", "c1", "c2")
+  ),
+  rrow("row 1", 1, c(.8, 1.2)),
+  rrow("row 2", 1.2, c(1.1, 1.4))
+)
+
+g_forest(
+  tbl = tbl,
+  col_x = 1,
+  col_ci = 2,
+  vline = 1,
+  forest_header = c("Hello", "World")
+)
+
 
 
 }
 \author{
-Yuyao Song (songy24) \email{yuyao.song@roche.com}
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

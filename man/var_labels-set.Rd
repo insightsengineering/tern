@@ -7,7 +7,9 @@
 var_labels(x) <- value
 }
 \arguments{
-\item{x}{a \code{data.frame} oject}
+\item{x}{a \code{data.frame} object}
+
+\item{value}{new variable labels, \code{NA} removes the variable label}
 }
 \value{
 modifies the variable labels of \code{x}

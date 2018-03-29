@@ -18,13 +18,20 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Time to Event Table — t_tte" />
+
+<meta property="og:description" content="The time to event table summarizes time to event data with different models
+as described in the details section." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +54,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -81,6 +95,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Time to Event Table</h1>
+    
     </div>
 
     
@@ -91,15 +106,16 @@ as described in the details section.</p>
     <pre class="usage"><span class='fu'>t_tte</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>event_descr</span>, <span class='no'>time_points</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>,
   <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>formula</th>
       <td><p>a survival formula, the arm variable needs to be wrapped in
-<code><a href='arm.html'>arm()</a></code>. The <code>strata()</code> special will only be used for the
-stratified analysis. If there is not <code>strata</code> specification then the
-stratified analysis is omitted.</p></td>
+<code><a href='arm.html'>arm</a></code>. The <code><a href='http://www.rdocumentation.org/packages/survival/topics/strata'>strata</a></code> special will only be
+used for the stratified analysis. If there is not
+<code><a href='http://www.rdocumentation.org/packages/survival/topics/strata'>strata</a></code> specification then the stratified analysis
+is omitted.</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -163,41 +179,41 @@ and confidence interval.</p>
 )
 
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B                   ARM C      
-#&gt;                                               (N=36)                  (N=35)                  (N=29)     
+#&gt;                                               (N=36)                  (N=22)                  (N=42)     
 #&gt; ---------------------------------------------------------------------------------------------------------
-#&gt; Patients without event (%)                 15 (41.67%)             15 (42.86%)             11 (37.93%)   
+#&gt; Patients with event (%)                      18 (50%)              13 (59.09%)             23 (54.76%)   
 #&gt;   Earliest Contributing Event
-#&gt;     Death                                       7                       4                       3        
-#&gt;     Disease Progression                         3                       8                       6        
-#&gt;     First Response                              5                       3                       2        
-#&gt; Patients without event (%)                 21 (58.33%)             20 (57.14%)             18 (62.07%)   
+#&gt;     Death                                       6                       5                       7        
+#&gt;     Disease Progression                         8                       4                       9        
+#&gt;     First Response                              4                       4                       7        
+#&gt; Patients without event (%)                   18 (50%)               9 (40.91%)             19 (45.24%)   
 #&gt; 
 #&gt; Time to Event (months)
-#&gt;   Median                                      130.25                  173.79                  207.48     
-#&gt;     95% CI                                  (87.1, NA)            (60.7, 215.9)             (79.4, NA)   
-#&gt;   25% and 75%−ile                            52.3, NA              44.6, 215.9             41.5, 237.9   
-#&gt;   Range                                     0 to 437.2              0 to 430.8              0 to 402.7   
+#&gt;   Median                                      85.58                   120.44                  103.67     
+#&gt;     95% CI                                (60.6, 225.4)           (80.1, 166.7)           (63.3, 186.4)  
+#&gt;   25% and 75%-ile                           47, 225.4              63.7, 166.7             46.3, 247.5   
+#&gt;   Range                                      0 to 246               0 to 258.4              0 to 336.3   
 #&gt; 
 #&gt; Unstratified Analysis
-#&gt;   p-value (log-rank)                                                  0.6733                  0.7738     
+#&gt;   p-value (log-rank)                                                  0.9792                  0.5992     
 #&gt; 
-#&gt;   Hazard Ratio                                                        1.1682                  1.1218     
-#&gt;     95% CI                                                       (0.5668, 2.4076)        (0.5121, 2.4573)
+#&gt;   Hazard Ratio                                                        0.9903                  0.8442     
+#&gt;     95% CI                                                       (0.4757, 2.0617)        (0.4485, 1.5889)
 #&gt; 
 #&gt; Stratified Analysis
-#&gt;   p-value (log-rank)                                                  0.7877                  0.7478     
+#&gt;   p-value (log-rank)                                                  0.7323                  0.739      
 #&gt; 
-#&gt;   Hazard Ratio                                                        1.1046                  1.1402     
-#&gt;     95% CI                                                       (0.5354, 2.2785)        (0.5123, 2.5376)
+#&gt;   Hazard Ratio                                                        0.8772                  0.8978     
+#&gt;     95% CI                                                       (0.4141, 1.8585)        (0.4761, 1.6932)
 #&gt; 
 #&gt; Time Point Analysis
 #&gt;   6 months
-#&gt;     Patients remaining at risk                  31                      32                      27       
-#&gt;     Event Free Rate (%)                        100%                   96.97%                  96.43%     
-#&gt;       95% CI                                (100, 100)             (91.12, 100)            (89.55, 100)  
-#&gt;     Difference in Event Free Rate                                     -3.03                   -3.57      
-#&gt;       95% CI                                                      (-8.88, 2.82)           (-10.45, 3.3)  
-#&gt;     p-value (Z-test)                                                  0.3099                  0.3085     
+#&gt;     Patients remaining at risk                  35                      20                      41       
+#&gt;     Event Free Rate (%)                       97.22%                  95.45%                   100%      
+#&gt;       95% CI                               (91.85, 100)            (86.75, 100)             (100, 100)   
+#&gt;     Difference in Event Free Rate                                     -1.77                    2.78      
+#&gt;       95% CI                                                      (-11.99, 8.46)          (-2.59, 8.15)  
+#&gt;     p-value (Z-test)                                                  0.7348                  0.3105     
 #&gt; 
 #&gt;   2000 months
 #&gt;     -- no data</div><div class='input'>
@@ -226,11 +242,11 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -238,3 +254,4 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
   </body>
 </html>
+

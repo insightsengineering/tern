@@ -1,5 +1,17 @@
 
-# dots <- list(SL = iris$Sepal.Length, iris = iris, b = iris$Species, aaa = NULL) 
+#' check if elements ... have the same dimension
+#' 
+#' @param ... data.frames or vectors
+#' @param omit.NULL are \code{NULL} elements in \code{...} to be omitted from the check?
+#' 
+#' @importFrom stats na.omit
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' \dontrun{
+#' dots <- list(SL = iris$Sepal.Length, iris = iris, b = iris$Species, aaa = NULL)  
+#' }
 check_same_N <- function(..., omit.NULL = TRUE) {
   
   dots <- list(...)
@@ -36,14 +48,12 @@ check_same_N_l <- function(x) {
 #' strata_data can be NULL or 
 #' 
 #' @param x data.frame with valid stratification data
-#' @param n number of expected rows
 #' 
+#' @noRd
 #' 
 check_data_frame <- function(x, allow_missing = FALSE) {
 
   xname <- deparse(substitute(x))
-  
-  if (any(grepl(".", x, fixed = TRUE))) stop("no . are allowed in the strata_data variable names")
   
   if (!is.null(x)) {
     if (!is.data.frame(x)) stop(xname, " needs to be either NULL or a data.frame")
@@ -85,5 +95,27 @@ check_is_event <- function(x) {
   if (!is.logical(x)) stop("is_event needs to be of type logical")
   if (any(is.na(x))) stop("is_event can not have any missing data")
   
+  TRUE
+}
+
+
+check_is_factor <- function(x, allow_NA = TRUE) {
+  
+  if (!is.factor(x)) stop(deparse(substitute(x))," needs to be a factor")
+  if (!allow_NA) {
+    if (any(is.na(x))) stop(deparse(substitute(x))," cannot have any missing data")
+  }
+  
+  TRUE
+}
+
+
+check_is_numeric <- function(x, allow_NA = TRUE) {
+  
+  if (!is.numeric(x)) stop(deparse(substitute(x))," needs to be numerical")
+  if (!allow_NA) {
+    if (any(is.na(x))) stop(deparse(substitute(x))," cannot have any missing data")
+  }
+
   TRUE
 }

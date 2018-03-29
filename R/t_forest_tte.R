@@ -1,18 +1,30 @@
 
-#' Time-to-event Forest Plot Table
+#' Time-to-event Table as used for Forest Plot
 #'
-#' @param tte time to event data
+#'The time-to-event forest plot table summarizes time-to-event data by groups. 
+#'The function returns event counts and median survival time for each analysis 
+#'arm, as well as a hazard ratio and the corresponding 95\% confidence interval 
+#'from a Cox proportional hazard model.
+#'
+#' @param tte a vector of time to event data
 #' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 #'   is censored
-#' @param group_data data frame with one column per grouping
+#' @param group_data data frame with one variable per grouping
+#' @param strata_data data frame with stratification variables
 #' @param col_by factor with reference and comparison group information, the
 #'   first \code{level} indicates the reference group
-#' 
+#' @param total character with the row name of the analysis run on all data. If
+#'   \code{NULL} analysis is omitted.
+#' @param time_unit The unit of median survival time. Default is \code{months}.
+#' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
+#' @param na.omit.group is boolean. Default is \code{TRUE}, do not display NA's as a category. 
+#' @param dense_header Display the table headers in mulitple rows. Default is \code{FALSE}. 
+
 #' @details
-#' Cox PH model is used for hazard ratio calculation
+#' Cox propotionl hazard model is used for hazard ratio calculation
 #'
 #'
-#' The returned table contains one row per analysis applied on a subset of data
+#' The returned table contains one row per analysis within a subgroup of data
 #' (indicated by the row name). The analysis is summarized with the following 9
 #' columns:
 #' 
@@ -21,7 +33,7 @@
 #'   \item{2-4}{Survival statistics for reference arm, \emph{n} and \emph{Events} are the total number of patients and the number of events in reference arm, respectively.
 #'   \code{Median (month)} is the survival time estimated by Kaplan-Meier method. Time unit can be modified per study needs.}
 #'   \item{5-7}{same analysis as for reference arm now for comparison arm}
-#'   \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison versus the reference group.
+#'   \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison group versus that in the reference group.
 #'    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio. 
 #'   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when comparion arm is better. }
 #'   \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty 
@@ -52,13 +64,22 @@
 #'   is_event = ANL$CNSR == 0,
 #'   col_by = factor(ANL$ARM), 
 #'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+#'   ties = "exact",
 #'   dense_header = TRUE
 #' )
 #' 
 #' tbl
+#' Viewer(tbl)
 #' 
-t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
-                         strata_data = NULL, total = 'ALL', time_unit = "month",
+#' 
+t_forest_tte <- function(tte, 
+                         is_event, 
+                         col_by, 
+                         group_data = NULL,
+                         strata_data = NULL, 
+                         total = 'ALL', 
+                         time_unit = "month",
+                         ties = "exact",
                          na.omit.group = TRUE,
                          dense_header = FALSE) {
   
@@ -92,8 +113,8 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
       ),
       rrow(row.name = "Factors",
            "n",
-           "", "", paste0("(", time_unit, ")"),
-           "", "", paste0("(", time_unit, ")"),
+           NULL, NULL, paste0("(", time_unit, ")"),
+           NULL, NULL, paste0("(", time_unit, ")"),
            "Ratio",
            "Wald CI"
       )
@@ -101,11 +122,11 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
   } else {
     rheader(
       rrow(row.name = "",
-           rcell(NULL),
+           NULL,
            rcell(levels(col_by)[1], colspan = 3),
            rcell(levels(col_by)[2], colspan = 3),
-           rcell(NULL),
-           rcell(NULL)
+           NULL,
+           NULL
       ),
       rrow(row.name = "Baseline Risk Factors",
            "Total n",
@@ -123,9 +144,9 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
     NULL
   } else {
     rtable(header = table_header, rrowl(row.name = total, 
-      format_survival_analysis(
-        survival_results(cox_data)
-      )
+                                        format_survival_analysis(
+                                          survival_results(cox_data, ties)
+                                        )
     )) 
   }
   
@@ -141,7 +162,7 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
       if (!na.omit.group) var <- na_as_level(var)
       split(cox_data, var, drop = FALSE)
     })
-  
+    
     names(data_tree) <- var_labels(group_data, fill = TRUE)
     
     list_of_tables <- Map(function(dfs, varname) {
@@ -151,7 +172,7 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
                  row.name = level,
                  indent = 1,
                  format_survival_analysis(
-                   survival_results(dfi)
+                   survival_results(dfi, ties)
                  )
                )) 
       }, dfs, names(dfs))
@@ -172,7 +193,7 @@ t_forest_tte <- function(tte, is_event, col_by, group_data = NULL,
 
 # survival_results(data_for_value[[1]])
 # data = data_for_value[[1]]
-survival_results <- function(data){
+survival_results <- function(data, ties){
   
   # KM Estimate
   # Three scenarios:
@@ -212,7 +233,7 @@ survival_results <- function(data){
   # 2. at least one of the two arms have no events
   # 3. data has only one arm.
   if (nrow(km_sum) == 2 & km_ref_event * km_comp_event > 0){
-    cox_sum  <- summary(coxph(Surv(time_to_event,event) ~ arm, data = data))
+    cox_sum  <- suppressWarnings(summary(coxph(Surv(time_to_event,event) ~ arm, data = data, ties = ties)))
     cox_hr   <- cox_sum$conf.int[1]
     cox_lcl  <- cox_sum$conf.int[3]
     cox_ucl  <- cox_sum$conf.int[4]
@@ -223,7 +244,7 @@ survival_results <- function(data){
     cox_ucl  <- NA
     cox_pval <- NA
   }
-
+  
   list(
     total_n = nrow(data),
     ref_n  = km_ref_n,
@@ -248,6 +269,7 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
     rcell(x[["cox_hr"]], format = "xx.xx"),
+    #ifelse(x[["cox_hr"]] <= 999, rcell(x[["cox_hr"]], format = "xx.xx"), rcell( 999, format = "xx.xx")),
     rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
   )
 }

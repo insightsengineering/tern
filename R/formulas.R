@@ -10,6 +10,8 @@
 #' 
 #' @noRd
 #' 
+#' @importFrom stats update.formula as.formula 
+#' 
 #' @author boruvkaa
 #' 
 #' @examples 
@@ -35,6 +37,8 @@ drop_special <- function(terms, special) {
 #' Indentity function to indicate specials in formulas
 #' 
 #' We use \code{arm} to in tern formulas
+#' 
+#' @param x arm information
 #' 
 #' @export
 #' 

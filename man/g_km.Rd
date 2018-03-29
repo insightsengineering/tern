@@ -2,110 +2,46 @@
 % Please edit documentation in R/g_km.R
 \name{g_km}
 \alias{g_km}
-\title{Kaplan-Meier Plot using grid plotting}
+\title{Kaplan-Meier Plot}
 \usage{
-g_km(formula_km, data, add_km = TRUE, add_coxph = TRUE,
-  formula_coxph = formula_km,
-  info_coxph = "Cox Proportional Model: Unstratified Analysis",
-  cox_ties = "exact", add = FALSE, xaxis_by = NULL,
-  title = "Kaplan - Meier Plot")
+g_km(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
+  draw = TRUE, newpage = TRUE)
 }
 \arguments{
-\item{formula_km}{formula specified for Kaplan-Meier curves}
+\item{fit_km}{a class \code{\link{survfit}} object}
 
-\item{data}{analysis data set}
+\item{col}{a vector of color for each line}
 
-\item{add_km}{boolean, \code{TRUE} if annotated with KM estimators and \code{FALSE} if not}
+\item{xticks}{break interval of x-axis. It takes a numeric vector or
+\code{NULL}.}
 
-\item{add_coxph}{boolean, \code{TRUE} if annotated with Cox PH estimators and \code{FALSE} if not}
+\item{title}{plot title}
 
-\item{formula_coxph}{formula specified for Cox PH model, default is the same as input for \code{formula_km}}
+\item{draw}{boolean, should plot be drawn}
 
-\item{info_coxph}{label information for Cox PH model}
-
-\item{cox_ties}{ties handling method for Cox PH model. options are "efron", "breslow" and "exact"}
-
-\item{add}{boolean, \code{TRUE} if draw multiple plots on the same device page\code{FALSE} if only draw single plot per page}
-
-\item{xaxis_by}{scale of x-axis}
-
-\item{title}{title for plot}
+\item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
 }
 \description{
-Plotting directly from object returned by formula, also annotated with product-limit estimtors and 
-Cox PH model estimators.
+Create a KM plot for any \code{\link[survival]{survfit}} object.
 }
 \examples{
-
 library(random.cdisc.data)
 
 ASL <- radam("ASL")
-ATE <- radam("ATE", ADSL = ASL, start_with = list(ECOG = c(0, 1)))
+ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
+   if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+}))
+ATE <- radam("ATE", ADSL = ASL)
 
-ANL <- merge(ASL, subset(ATE, PARAMCD == "OS"))
+ATE_f <- subset(ATE, PARAMCD == "OS") 
 
-g_km(
-   formula_km = Surv(AVAL, 1-CNSR) ~ ARM,
-   data = ANL, 
-   add_coxph = TRUE,
-   add_km = TRUE
-)
+ANL <- merge(ASL, ATE_f, by = c("USUBJID", "STUDYID"))
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
 
+g_km(fit_km = fit_km)
 
-\dontrun{
-library(dplyr)
-library(forcats)
-library(survival)
-# Dummy Data
-OS <- data.frame(AVAL = abs(rnorm(200)), 
-                 CNSR = sample(c(0, 1), 200, TRUE), 
-                 ARM = sample(LETTERS[1:3], 200, TRUE),
-                 SEX = sample(c("M","F"), 200, TRUE),
-                 RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-                 ECOG = sample(c(0, 1), 200, TRUE))
-
-# draw single plot on device page
-kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, data = OS, add_coxph = TRUE, add_km = TRUE)
-
-
-library(grid)
-# new plot page
-grid.newpage()
-kmplot(formula_km = Surv(AVAL, 1-CNSR) ~ ARM, 
-       data = OS , 
-       formula_coxph = Surv(AVAL, 1-CNSR) ~ ARM + strata(SEX),
-       add_coxph = TRUE, add_km = TRUE, add = FALSE,
-       info_coxph = "Cox Proportional Model: Stratified by SEX")
-
-## facet by variable SEX, arrange plots by row
-lev <- unique(OS$SEX)
-nplots <- length(lev)
-dfs <- split(OS, OS$SEX)
-
-# new plot page
-grid.newpage()
-# margins
-
-# layout
-pushViewport(viewport(layout = grid.layout(ncol = 1, nrow = 2*nplots-1,
-   heights = unit(head(rep(c(1, 7), nplots), -1), head(rep(c("null", "lines"), nplots), -1))
-)))
-Map(function(dfi, i, label) {
-   pushViewport(viewport(layout.pos.row = i*2 - 1))
-   kmplot(
-       formula_km = Surv(AVAL, 1-CNSR) ~ ARM, 
-       data = dfi, add_km = TRUE,
-       add_coxph = TRUE,
-       formula_coxph = Surv(AVAL, 1-CNSR) ~ ARM,
-       add = TRUE,
-       title = paste0("Kaplan - Meier Plot for: ", label)
-        )
-   popViewport()
- }, dfs, 1:length(dfs), lev)
-
-
-}
-
+g_km(fit_km = fit_km, col = c("black", "red"))
+ 
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}
