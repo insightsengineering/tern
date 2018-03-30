@@ -118,8 +118,11 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
     rtbl
   }
   
-  l_t_class <- split(df, df$class, function(df_cl) {
-    l_t_term <- split(df_cl, df_cl$term, function(df_cl_term) {
+  
+  l_t_class <- lapply(split(df, df$class), function(df_cl) {
+    
+    l_t_term <- lapply(split(df_cl, df_cl$term), function(df_cl_term) {
+      
       rbind(
          rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = no_by(""), sum_fun),
          rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = "grade", sum_fun)
@@ -128,6 +131,7 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
     
     ## logic to figure out sort_order
     l_t_term[sort_order]
+    
   })
   
   ## logic to figure out sort_order2
