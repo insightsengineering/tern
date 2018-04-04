@@ -113,8 +113,6 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
   # - term
   
   sum_fun <- function(x) {
-    
-    
     rtbl
   }
   
@@ -169,9 +167,7 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
   aae <- rbind(aae, aaeALL)
   
   aae <- merge(asl, aae, by = usubjid)
-  
-  
-  
+
   # AEs with missing soc or pt code
   aae[[soc]] <- ifelse(aae[[soc]] == '',  'UNCODED', aae[[soc]])
   aae[[pt]] <- ifelse(aae[[pt]] == '',  paste0(aae[[rawpt]], '*'), aae[[pt]])
@@ -182,6 +178,25 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
   gradev <- as.numeric(aae[[grade]])
   
   df <- data.frame(usubjidv, socv, ptv, gradev, col_by = aae$col_byf, stringsAsFactors = FALSE)
+  df <- df[df$socv %in% c('VASCULAR DISORDERS', 'BLOOD AND LYMPHATIC SYSTEM DISORDERS'), ]
+  
+  
+  
+  l_t_class <- split(df, df$class, function(df_cl) {
+    l_t_term <- split(df_cl, df_cl$term, function(df_cl_term) {
+      rbind(
+        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = no_by(""), sum_fun),
+        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = "grade", sum_fun)
+      )
+    })
+    
+    ## logic to figure out sort_order
+    l_t_term[sort_order]
+  })
+  
+  
+  
+  
   
   # total N for each group from subject level dataset
   # double brackets are used to get a vector instead of 1 column df
@@ -237,6 +252,9 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
   
 # SOC chunks --------------------------------------------------------------
 
+  SocChunks_list[1]
+  
+  
   # sapply preserves names of term as names of list items
   SocChunks_list <- sapply(unique(df$socv), simplify = FALSE,
                       function(SocName) DeriveCore(df[df$socv == SocName,]))
