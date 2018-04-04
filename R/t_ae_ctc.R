@@ -71,7 +71,8 @@
 #' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), ]
 #' 
 #' # filter adverse events dataset
-#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', ]
+#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y' &
+#'  AAE$AEBODSYS %in% c("GASTROINTESTINAL DISORDERS", "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS"), ]
 #' 
 #' tbl <- t_ae_ctc(
 #'    asl = asl,
@@ -97,10 +98,60 @@
 #'   rrow(NULL, 3, 4)
 #' )
 #' 
-#' }
 #'
+#' class = aae$AEBODSYS
+#' term =  aae$AEDECOD
+#' grade = aae$AETOXGR
+#' subjid = aae$USUBJID
+#' col_by = aae$TUMTYPE
+#' col_by_for_n = asl$TUMTYPE
 #' 
-t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_range = range(grade)) {
+
+
+t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "all patient", grade_range = range(grade)) {
+  
+  table(col_by_for_n)
+  
+  # total N for each group from subject level dataset
+  N <- tapply(col_by_for_n,
+              # all patients column should be factor and the rightmost column
+              asl$col_byf,
+              function(x) (length(!duplicated(x))))
+  
+  
+  # first change empty char strings into NA, then apply this
+  df <- na.omit(data.frame(class = class,
+                           term = term,
+                           subjid = subjid,
+                           grade = grade,
+                           col_by = col_by,
+                           stringsAsFactors = FALSE))
+  
+  tl <- lapply(split(df, df$class), function(df_cl){
+    # df_cl
+    lapply(split(df_cl, df_cl$term), function(df_cl_term){
+      df_cl_term
+    })
+  })
+  
+  
+  
+  l_t_class <- lapply(split(df, df$class), function(df_cl) {
+    
+    l_t_term <- lapply(split(df_cl, df_cl$term), function(df_cl_term) {
+      
+      rbind(
+        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = no_by(""), sum_fun),
+        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = "grade", sum_fun)
+      )
+    })
+    
+    ## logic to figure out sort_order
+    l_t_term[sort_order]
+    
+  })
+  
+}
   
   # checks
 
@@ -115,6 +166,13 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
   sum_fun <- function(x) {
     rtbl
   }
+  
+  
+  
+  
+  
+  
+  
   
   
   l_t_class <- lapply(split(df, df$class), function(df_cl) {
@@ -185,21 +243,7 @@ t_ae <- function(class, term, grade, id, col_by, total = "all patient", grade_ra
   df <- df[df$socv %in% c('VASCULAR DISORDERS', 'BLOOD AND LYMPHATIC SYSTEM DISORDERS'), ]
   
   
-  
-  l_t_class <- split(df, df$class, function(df_cl) {
-    l_t_term <- split(df_cl, df_cl$term, function(df_cl_term) {
-      rbind(
-        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = no_by(""), sum_fun),
-        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = "grade", sum_fun)
-      )
-    })
-    
-    ## logic to figure out sort_order
-    l_t_term[sort_order]
-  })
-  
-  
-  
+
   
   
   # total N for each group from subject level dataset
