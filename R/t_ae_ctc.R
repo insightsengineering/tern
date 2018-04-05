@@ -4,49 +4,46 @@
 #' 
 #' @author Edgar Manukyan (manukyae)
 #' 
-#' @param asl a subject-level data frame (one row per subject) with at least the
-#'  following variables present: 1. unique subject identifier, 2. group that
-#'  will be used for a column header. 
-#' @param aae a data frame with adverse events with at least the following
-#'  variables present: 1. unique subject identifier, 2. preferred term, 3. raw
-#'  term (investigator text), 3. system organ class, 4. grade. 
-#' @param usubjid character string representing name of unique subject identifier
+#' @param class character string representing name of system organ class variable.
+#' @param term character string representing name of preferred term variable.
+#' @param id character string representing name of unique subject identifier
 #'  variable.
-#' @param soc character string representing name of system organ class variable.
-#' @param pt character string representing name of preferred term variable.
-#' @param rawpt character string representing name of raw term (investigator 
-#'  text) variable.
 #' @param grade character string representing name of grade of adverse event 
 #'  variable.
+#' @param col_by character string representing name of group variable that will 
+#'  be used for a column header. \code{col_by} can not be missing.
+#' @param total character string that will be used as a label for a column with 
+#'  pooled total population, default is "All Patients".
 #' @param grade_range range of grades in a form of \code{c(x, y)}, default is 
 #'  \code{c(1, 5)}. This only has effect on which grades are displayed and 
-#'  assures a proper fill in for grades, otherwise no sub-setting of \code{aae} 
-#'  data frame is done. See 'Details'.
-#' @param col_by character string representing name of group variable that will 
-#'  be used for a column header.
+#'  assures a proper fill in for grades, otherwise no sub-setting of data is 
+#'  done. See 'Details'.
 #' 
 #' @details 
 #' \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
 #'  intensity for system organ class (SOC) and overall rows and includes 
 #'  percentages based on the total number of patients in the column heading 
-#'  (i.e. "N=nnn"). At the preferred term (PT) level, multiple events within a 
-#'  patient of the same PT are counted once using the greatest intensity 
-#'  reported.
+#'  (i.e. "N=nnn"). If the inention is to use patients number from subject level
+#'  dataset as N for percentage calculation then adeverse events dataset should
+#'  be left joined to subject level dataset and the \code{col_by} variable should
+#'  be dropped from adverse events dataset, see the example. Otherwise, N will be
+#'  derived usind adverse events dataset. At the preferred term (PT) level,
+#'  multiple events within a patient of the same PT are counted once using the
+#'  greatest intensity reported. 
 #' 
 #' \code{t_ae_ctc} orders data by "All Patients" column from the most commonly
 #'  reported SOC to the least frequent one. Within SOC, it sorts by decreasing
 #'  frequency of PT.   
 #' 
-#' \code{t_ae_ctc} re-codes missing SOC with 'UNCODED' and missing PT with raw 
-#'  term (investigator text) followed by (*).    
+#' \code{t_ae_ctc} removes any non-complete records, e.g. if class or term are 
+#'  missing.
 #'  
-#' \code{t_ae_ctc} fills in \code{col_by} and \code{grade} with \code{0} value in case
-#'  there was no AEs reported for particular \code{col_by} and/or \code{grade} 
-#'  category. Use \code{grade_range} to modify displayed grades, e.g. 
+#' \code{t_ae_ctc} fills in \code{col_by} and \code{grade} with \code{0} value 
+#' in case there was no AEs reported for particular \code{col_by} and/or 
+#' \code{grade} category. Use \code{grade_range} to modify displayed grades, e.g. 
 #'  \code{grade_range = c(3, 5)} will only display grades 3, 4, and 5. Please be
-#'  aware that this is only for display purposes and does not sub-set \code{aae}
-#'  data frame. One needs to sub-set \code{aae} before providing it to 
-#'  \code{t_ae_ctc}.
+#'  aware that this is only for display purposes and does not sub-set data. One 
+#'  needs to sub-set data before providing it to \code{t_ae_ctc}.
 #'  
 #' @export
 #'  
@@ -55,220 +52,99 @@
 #' \dontrun
 #' {
 #' 
-#' library(rgda)
 #' # the following example should reproduce table t_ae_ctc_ATEZOREL_SENBX.out
 #' file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
+#' 
 #' library(rocheBCE)
-#' AAE <- get_data("BCE", '/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
-#' ASL <- get_data("BCE", '/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
-#' save(AAE, ASL, file = 'InputVads.Rdata')
-#'
-#' load('InputVads.Rdata')
+#' AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
+#' ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
 #' 
 #' # filter subject-level dataset
 #' asl <- ASL[ASL$SAFFL == "Y", c("USUBJID", "TUMTYPE", "TRTSDTM", "TRT02AN")]
 #' asl$TUMTYPE <- ifelse(asl$TUMTYPE == '', 'OTHER', asl$TUMTYPE)
-#' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), ]
+#' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & 
+#' (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), c('USUBJID', 'TUMTYPE')]
 #' 
 #' # filter adverse events dataset
-#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y' &
-#'  AAE$AEBODSYS %in% c("GASTROINTESTINAL DISORDERS", "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS"), ]
+#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y' & trimws(AAE$TUMTYPE) != 'NON-SMALL CELL LUNG',
+#'  !names(AAE) %in% 'TUMTYPE']
 #' 
+#' # left join subject-level dataset with adverse events
+#' aae <- merge(asl, aae, by = c('USUBJID'), all.x = TRUE)
+#'
 #' tbl <- t_ae_ctc(
-#'    asl = asl,
-#'    aae = aae,
-#'    usubjid = "USUBJID",
-#'    soc = "AEBODSYS",
-#'    pt = "AEDECOD",
-#'    rawpt = "AETERM",
-#'    grade = "AETOXGR",
-#'    grade_range = c(1, 5),
-#'    col_by = "TUMTYPE"
+#'  class = aae$AEBODSYS,
+#'  term =  aae$AEDECOD,
+#'  id = aae$USUBJID,
+#'  grade = aae$AETOXGR,
+#'  col_by = aae$TUMTYPE,
+#'  total = "All Patients",
+#'  grade_range = c(1, 5)
 #' )
 #' 
 #' Viewer(tbl)
-#'  
-#' # tables
-#' rtable(
-#'   header = rheader(
-#'     rrow("MedDRA System Organ Class", "Arm A", "Arm B"),
-#'     rrow("MedDRA Preferred Term", "N=10", "N=20", indent = 1)
-#'   ),
-#'   rrow("ABC", 1,2),
-#'   rrow(NULL, 3, 4)
-#' )
+#' }
 #' 
-#'
-#' class = aae$AEBODSYS
-#' term =  aae$AEDECOD
-#' grade = aae$AETOXGR
-#' subjid = aae$USUBJID
-#' col_by = aae$TUMTYPE
-#' col_by_for_n = asl$TUMTYPE
-#' 
-
-
-t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "all patient", grade_range = range(grade)) {
-  
-  table(col_by_for_n)
-  
-  # total N for each group from subject level dataset
-  N <- tapply(col_by_for_n,
-              # all patients column should be factor and the rightmost column
-              asl$col_byf,
-              function(x) (length(!duplicated(x))))
-  
-  
-  # first change empty char strings into NA, then apply this
-  df <- na.omit(data.frame(class = class,
-                           term = term,
-                           subjid = subjid,
-                           grade = grade,
-                           col_by = col_by,
-                           stringsAsFactors = FALSE))
-  
-  tl <- lapply(split(df, df$class), function(df_cl){
-    # df_cl
-    lapply(split(df_cl, df_cl$term), function(df_cl_term){
-      df_cl_term
-    })
-  })
-  
-  
-  
-  l_t_class <- lapply(split(df, df$class), function(df_cl) {
-    
-    l_t_term <- lapply(split(df_cl, df_cl$term), function(df_cl_term) {
-      
-      rbind(
-        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = no_by(""), sum_fun),
-        rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = "grade", sum_fun)
-      )
-    })
-    
-    ## logic to figure out sort_order
-    l_t_term[sort_order]
-    
-  })
-  
-}
-  
-  # checks
-
-  col_by_n <- tapply()
-  
-  df <- na.omit(data.frame(class = class, term = term, ...)) # think about na.omit
-  
-  # split up data
-  # - class
-  # - term
-  
-  sum_fun <- function(x) {
-    rtbl
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  l_t_class <- lapply(split(df, df$class), function(df_cl) {
-    
-    l_t_term <- lapply(split(df_cl, df_cl$term), function(df_cl_term) {
-      
-      rbind(
-         rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = no_by(""), sum_fun),
-         rtabulate(df_cl_term, col_by_var = "col_by", row_by_var = "grade", sum_fun)
-      )
-    })
-    
-    ## logic to figure out sort_order
-    l_t_term[sort_order]
-    
-  })
-  
-  ## logic to figure out sort_order2
-  do.call(stack_rtables, l_t_class[sort_order2])
-  
-  
-#t_ae_ctc <- function(asl, aae, usubjid, soc, pt, rawpt, grade, grade_range = c(1, 5), col_by) {
+t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_range) {
   
 # check argument validity and consitency ----------------------------------
-
-  if (!is.data.frame(asl)) stop("asl needs to be a data.frame")
-  if (!is.data.frame(aae)) stop("aae needs to be a data.frame")
-  if (nrow(aae) == 0) stop("there are no records in aae for this subset")
-  if (nrow(asl) == 0) stop("there are no records in asl for this subset")
-  if (!is.vector(grade_range) || !length(grade_range) == 2) stop("grade_range needs to be a vector with 2 values")
-  if (any(is.na(asl[[col_by]]))) stop("In asl data no NA's are allowed for col_by")
-  if (any(asl[[col_by]] %in% c('', ' '))) stop("In asl data no missing values are allowed for col_by")
-  if (any(is.na(aae[[rawpt]]))) stop("In aae data no NA's are allowed for rawpt")
-  if (any(aae[[rawpt]] %in% c('', ' '))) stop("In aae data no missing values are allowed for rawpt")
   
-# data prep ---------------------------------------------------------------
-
+  if (length(class) == 0) stop("there are no records in aae for this subset")
+  if (!is.vector(grade_range) || !length(grade_range) == 2) 
+    stop("grade_range needs to be a vector with 2 values")
+  if (any(is.na(col_by)) | sum(col_by == '') > 0) stop("No NA's are allowed for col_by")
+  
   # indentation number for grades
   indent_num <- 15
   
-  # need all patients column for sorting and display
-  aslALL <- asl
-  aslALL[[usubjid]] <- paste(aslALL[[usubjid]], '-ALL')
-  aslALL[[col_by]] <- 'All Patients'
-  asl <- rbind(asl, aslALL)
+
+# data prep ---------------------------------------------------------------
+  
+  df <- data.frame(class = class,
+                           term = term,
+                           subjid = id,
+                           gradev = grade,
+                           col_by = col_by,
+                           stringsAsFactors = FALSE)
+  
+  # adding All Patients
+  dfall <- df
+  dfall$subjid <- paste(dfall$subjid, '-ALL')
+  dfall$col_by <- 'All Patients'
+  
+  df <- rbind(df, dfall)
+  
   # all patients column should be factor and the rightmost column
-  asl$col_byf <- factor(asl[[col_by]],
-                        c(sort(unique(asl[[col_by]])[unique(asl[[col_by]]) != 'All Patients']),
+  df$col_by <- factor(df$col_by,
+                        c(sort(unique(df$col_by)[unique(df$col_by) != 'All Patients']),
                           'All Patients'))
   
-  # need all patients column for sorting and display
-  aaeALL <- aae
-  aaeALL[[usubjid]] <- paste(aaeALL[[usubjid]], '-ALL')
-  aae <- rbind(aae, aaeALL)
+  # total N for column header
+  N <- tapply(df$subjid, df$col_by, function(x) (sum(!duplicated(x))))
   
-  aae <- merge(asl, aae, by = usubjid)
+  
+  # need to remove extra records that came from subject level data
+  # also any record that is missing soc or term
+  df$class <- ifelse(df$class == '', NA, df$class)
+  df$term <- ifelse(df$class == '', NA, df$term)
 
-  # AEs with missing soc or pt code
-  aae[[soc]] <- ifelse(aae[[soc]] == '',  'UNCODED', aae[[soc]])
-  aae[[pt]] <- ifelse(aae[[pt]] == '',  paste0(aae[[rawpt]], '*'), aae[[pt]])
+  df <- na.omit(df)
   
-  usubjidv <- aae[[usubjid]]
-  socv <- aae[[soc]]
-  ptv <- aae[[pt]]
-  gradev <- as.numeric(aae[[grade]])
+  # start tabulating --------------------------------------------------------
   
-  df <- data.frame(usubjidv, socv, ptv, gradev, col_by = aae$col_byf, stringsAsFactors = FALSE)
-  df <- df[df$socv %in% c('VASCULAR DISORDERS', 'BLOOD AND LYMPHATIC SYSTEM DISORDERS'), ]
-  
-  
-
-  
-  
-  # total N for each group from subject level dataset
-  # double brackets are used to get a vector instead of 1 column df
-  # otherwise tapply does not work
-  N <- tapply(asl[[usubjid]],
-              # all patients column should be factor and the rightmost column
-              asl$col_byf,
-              function(x) (length(!duplicated(x))))
-  
-# start tabulating --------------------------------------------------------
-
   # checks if there is any case and derives counts (percentage), otherwise 0
   count_perc <- function(x_cell) {
     N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
     if (N_i > 0) {
-      n <- sum(!duplicated(x_cell$usubjid)) # number of patients with at least one ae
+      n <- sum(!duplicated(x_cell$subjid)) # number of patients with at least one ae
       n * c(1, 1 / N[x_cell$col_by[1]]) # obtaining the total and getting percentage
     } else {
       rcell(0, format = "xx")
     }
   }
   
-# core function -----------------------------------------------------------
-
+  # core function -----------------------------------------------------------
+  
   # derives the any grade and by grades rows
   DeriveCore <- function(dt) {
     # any grade row  
@@ -278,7 +154,7 @@ t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "
     
     # by grades rows
     # need the highest grade per patient and grade variable should be a vector
-    df_i_max_grade <- aggregate(gradev ~ col_by + usubjidv, data = dt, FUN = max,
+    df_i_max_grade <- aggregate(gradev ~ col_by + subjid, data = dt, FUN = max,
                                 drop = TRUE, na.rm = TRUE)
     # need factor grade for rtabulate
     df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev,
@@ -290,7 +166,7 @@ t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "
     
     rbind(tbl_all, tbl_by_grade)
   }
-
+  
 # Any adverse events ------------------------------------------------------
   
   AnyAE <- rbind(
@@ -298,14 +174,11 @@ t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "
     DeriveCore(df)
   )
   
-# SOC chunks --------------------------------------------------------------
+# SOC Overall chunks ---------------------------------------------------------
 
-  SocChunks_list[1]
-  
-  
   # sapply preserves names of term as names of list items
-  SocChunks_list <- sapply(unique(df$socv), simplify = FALSE,
-                      function(SocName) DeriveCore(df[df$socv == SocName,]))
+  SocChunks_list <- sapply(unique(df$class), simplify = FALSE,
+                      function(SocName) DeriveCore(df[df$class == SocName,]))
   
   # need to order by overall soc counts
   # need total from any grade all patients, the last column of the first row
@@ -314,7 +187,9 @@ t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "
   SocVector <- vapply(names(SocChunks_list),
                       function(x) SocChunks_list[[x]][1, length(N)][1],
                       FUN.VALUE = numeric(1))
+  
   SocOrder <- SocVector[order(-SocVector, names(SocVector))]
+  
   # rebuilding the list by choosing items in the desired order
   SocChunks_list_ordered <- SocChunks_list[names(SocOrder)]
   
@@ -333,7 +208,7 @@ t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "
   # there is a potential that the same PT can be under different SOC so need
   # to combine the soc and pt as a new name and this will also help with linking
   # back to soc for sorting and stacking
-  df$socv_ptv <- paste0(df$socv, '@', df$ptv)
+  df$socv_ptv <- paste0(df$class, '@', df$term)
 
   ###### THE SLOWESET PART #####
   # sapply preserves names of term as names of list items
@@ -360,12 +235,13 @@ t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "
                                       names(PTChunks_list_ordered))
   
   # need PT on a separate row
-  PTChunks <- sapply(names(PTChunks_list_ordered), simplify = FALSE,
-                      function(x) {
-                        rbind(
-                          rtable(header = names(N), rrowl(x, rep(' ', length(N)), indent = 1)),
-                          PTChunks_list_ordered[[x]]
-                        )})
+  PTChunks <- sapply(
+    names(PTChunks_list_ordered), simplify = FALSE,
+      function(x) {
+        rbind(
+          rtable(header = names(N), rrowl(x, rep(' ', length(N)), indent = 1)),
+          PTChunks_list_ordered[[x]])
+        })
   # reattaching soc as a name2 attr for merging with soc
   for (i in seq_along(PTChunks)) {
     attr(PTChunks[[i]], 'name2') <- sub('^(.{1,})(@)(.{1,}$)', '\\1',
@@ -387,7 +263,6 @@ t_ae <- function(class, term, subjid, grade, id, col_by, col_by_for_n, total = "
                                     character(1)) == x])
     )
   }, simplify = FALSE)
-
 
 # Format header by including N = ------------------------------------------
 
