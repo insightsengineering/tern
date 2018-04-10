@@ -238,15 +238,23 @@ glm_results <- function(data){
 }
 
 format_logistic <- function(x) {
-  list(
-    rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
-    rcell(x[["resp_ref_n"]], "xx"),
-    rcell(x[["resp_ref_event"]], "xx"),
-    rcell(x[["resp_ref_event"]] / x[["resp_ref_n"]], "xx.xx"),
-    rcell(x[["resp_comp_n"]], "xx"),
-    rcell(x[["resp_comp_event"]], "xx"),
-    rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
-    rcell(x[["glm_or"]], format = "xx.xx"),
-    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = "(xx.xx, xx.xx)")
-  )
+  x[["glm_or"]] <- ifelse(x[["glm_or"]] > 999.99, 999.999, x[["glm_or"]])
+  x[["glm_ucl"]] <- ifelse(!is.na(x[['glm_ucl']]) & x[['glm_ucl']] > 999.99, 999.999, x[["glm_ucl"]])
+  
+    list(
+      rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
+      rcell(x[["resp_ref_n"]], "xx"),
+      rcell(x[["resp_ref_event"]], "xx"),
+      rcell(x[["resp_ref_event"]] / x[["resp_ref_n"]], "xx.xx"),
+      rcell(x[["resp_comp_n"]], "xx"),
+      rcell(x[["resp_comp_event"]], "xx"),
+      rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
+      rcell(x[["glm_or"]], format = "xx.xx"),
+      rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = "(xx.xx, xx.xx)")
+    )
 }
+# 
+# ifelse(!is.na(x[['glm_ucl']]) & x[['glm_ucl']] > 999.99,
+#        rcell(c("lowe", "> 999.99"), format = "(xx.xx, xx.xx)"),
+#        rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = "(xx.xx, xx.xx)"))
+ 
