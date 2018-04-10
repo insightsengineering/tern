@@ -267,8 +267,11 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_n"]], "xx"), 
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
-    rcell(x[["cox_hr"]], format = "xx.xx"),
-    #ifelse(x[["cox_hr"]] <= 999, rcell(x[["cox_hr"]], format = "xx.xx"), rcell( 999, format = "xx.xx")),
-    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
+    if(!is.na(x[['cox_hr']]) & x[["cox_hr"]] > 999.99) {rcell(">999.99", format = "xx")} else {rcell(x[["cox_hr"]], format = "xx.xx")},
+    if(!is.na(x[['cox_ucl']]) & x[["cox_ucl"]] > 999.99){
+      rcell(c(round(x[['cox_lcl']], 2), ", >999.99"), format = "(xx, xx)")
+    } else{
+      rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
+    }
   )
 }
