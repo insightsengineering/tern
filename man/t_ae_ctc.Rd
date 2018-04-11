@@ -18,7 +18,7 @@ variable.}
 variable.}
 
 \item{col_by}{character string representing name of group variable that will 
-be used for a column header. \code{col_by} can not be missing.}
+be used for a column header. \code{col_by}, can not be missing.}
 
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients".}
@@ -39,7 +39,7 @@ done. See 'Details'.}
  dataset as N for percentage calculation then adeverse events dataset should
  be left joined to subject level dataset and the \code{col_by} variable should
  be dropped from adverse events dataset, see the example. Otherwise, N will be
- derived usind adverse events dataset. At the preferred term (PT) level,
+ derived using adverse events dataset. At the preferred term (PT) level,
  multiple events within a patient of the same PT are counted once using the
  greatest intensity reported. 
 
@@ -58,9 +58,7 @@ in case there was no AEs reported for particular \code{col_by} and/or
  needs to sub-set data before providing it to \code{t_ae_ctc}.
 }
 \examples{
-\dontrun
-{
-
+\dontrun{
 # the following example should reproduce table t_ae_ctc_ATEZOREL_SENBX.out
 file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
 
@@ -74,9 +72,8 @@ asl$TUMTYPE <- ifelse(asl$TUMTYPE == '', 'OTHER', asl$TUMTYPE)
 asl <- asl[!(asl$TRT02AN \%in\% c(7, 8)) & 
 (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), c('USUBJID', 'TUMTYPE')]
 
-# filter adverse events dataset
-aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y' & trimws(AAE$TUMTYPE) != 'NON-SMALL CELL LUNG',
- !names(AAE) \%in\% 'TUMTYPE']
+# filter adverse events dataset and drop the col_by variable
+aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', !names(AAE) \%in\% 'TUMTYPE']
 
 # left join subject-level dataset with adverse events
 aae <- merge(asl, aae, by = c('USUBJID'), all.x = TRUE)
@@ -93,7 +90,6 @@ tbl <- t_ae_ctc(
 
 Viewer(tbl)
 }
-
 }
 \author{
 Edgar Manukyan (manukyae)

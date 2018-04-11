@@ -11,7 +11,7 @@
 #' @param grade character string representing name of grade of adverse event 
 #'  variable.
 #' @param col_by character string representing name of group variable that will 
-#'  be used for a column header. \code{col_by} can not be missing.
+#'  be used for a column header. \code{col_by}, can not be missing.
 #' @param total character string that will be used as a label for a column with 
 #'  pooled total population, default is "All Patients".
 #' @param grade_range range of grades in a form of \code{c(x, y)}, default is 
@@ -27,7 +27,7 @@
 #'  dataset as N for percentage calculation then adeverse events dataset should
 #'  be left joined to subject level dataset and the \code{col_by} variable should
 #'  be dropped from adverse events dataset, see the example. Otherwise, N will be
-#'  derived usind adverse events dataset. At the preferred term (PT) level,
+#'  derived using adverse events dataset. At the preferred term (PT) level,
 #'  multiple events within a patient of the same PT are counted once using the
 #'  greatest intensity reported. 
 #' 
@@ -49,9 +49,7 @@
 #'  
 #'  
 #' @examples 
-#' \dontrun
-#' {
-#' 
+#' \dontrun{
 #' # the following example should reproduce table t_ae_ctc_ATEZOREL_SENBX.out
 #' file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
 #' 
@@ -65,9 +63,8 @@
 #' asl <- asl[!(asl$TRT02AN %in% c(7, 8)) & 
 #' (as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), c('USUBJID', 'TUMTYPE')]
 #' 
-#' # filter adverse events dataset
-#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y' & trimws(AAE$TUMTYPE) != 'NON-SMALL CELL LUNG',
-#'  !names(AAE) %in% 'TUMTYPE']
+#' # filter adverse events dataset and drop the col_by variable
+#' aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', !names(AAE) %in% 'TUMTYPE']
 #' 
 #' # left join subject-level dataset with adverse events
 #' aae <- merge(asl, aae, by = c('USUBJID'), all.x = TRUE)
@@ -84,28 +81,23 @@
 #' 
 #' Viewer(tbl)
 #' }
-#' 
 t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_range) {
   
-# check argument validity and consitency ----------------------------------
+  # check argument validity and consitency ----------------------------------
   
   if (length(class) == 0) stop("there are no records in aae for this subset")
   if (!is.vector(grade_range) || !length(grade_range) == 2) 
     stop("grade_range needs to be a vector with 2 values")
   if (any(is.na(col_by)) | sum(col_by == '') > 0) stop("No NA's are allowed for col_by")
   
-  # indentation number for grades
-  indent_num <- 15
-  
-
-# data prep ---------------------------------------------------------------
+  # data prep ---------------------------------------------------------------
   
   df <- data.frame(class = class,
-                           term = term,
-                           subjid = id,
-                           gradev = grade,
-                           col_by = col_by,
-                           stringsAsFactors = FALSE)
+                   term = term,
+                   subjid = id,
+                   gradev = grade,
+                   col_by = col_by,
+                   stringsAsFactors = FALSE)
   
   # adding All Patients
   dfall <- df
@@ -116,21 +108,31 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   
   # all patients column should be factor and the rightmost column
   df$col_by <- factor(df$col_by,
-                        c(sort(unique(df$col_by)[unique(df$col_by) != 'All Patients']),
-                          'All Patients'))
+                      c(sort(unique(df$col_by)[unique(df$col_by) != 'All Patients']),
+                        'All Patients'))
   
   # total N for column header
   N <- tapply(df$subjid, df$col_by, function(x) (sum(!duplicated(x))))
-  
   
   # need to remove extra records that came from subject level data
   # also any record that is missing soc or term
   df$class <- ifelse(df$class == '', NA, df$class)
   df$term <- ifelse(df$class == '', NA, df$term)
-
+  
   df <- na.omit(df)
   
+  # need to duplicate rows for each class to calculate overall class chunks
+  df_overall_class <- df
+  df_overall_class$term <- '- Overall -'
+  
+  df <- rbind(df, df_overall_class)
+  
+  # need the length of longest term for proper indentation
+  term_max_length <- max(nchar(trimws(unique(df$term))))
+  
   # start tabulating --------------------------------------------------------
+  
+  ## funcitons 
   
   # checks if there is any case and derives counts (percentage), otherwise 0
   count_perc <- function(x_cell) {
@@ -143,14 +145,16 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     }
   }
   
-  # core function -----------------------------------------------------------
+  # core function 
   
   # derives the any grade and by grades rows
-  DeriveCore <- function(dt) {
+  DeriveCore <- function(dt, nms) {
     # any grade row  
-    tbl_all <- rtabulate(dt, row_by_var = no_by("- any grade - "),
+    # need to make gap between term and -any grade- to be equal term_max_length
+    # after concat of 1, term
+    tbl_all <- rtabulate(dt, row_by_var = no_by(paste(nms, paste0(rep(' ', term_max_length - nchar(trimws(nms))), collapse = ''), '- any grade -	')),
                          col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
-                         indent = indent_num)
+                         indent = 1)
     
     # by grades rows
     # need the highest grade per patient and grade variable should be a vector
@@ -162,118 +166,84 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
                                                   grade_range[2], by = 1))
     tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f",
                               col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
-                              indent = indent_num)
+                              # 19 difference was the closest 
+                              indent = term_max_length - 19)
     
     rbind(tbl_all, tbl_by_grade)
   }
   
-# Any adverse events ------------------------------------------------------
   
-  AnyAE <- rbind(
-    rtable(header = names(N), rrowl('- Any adverse events -', rep(' ', length(N)))),
-    DeriveCore(df)
-  )
+  # sort function 
   
-# SOC Overall chunks ---------------------------------------------------------
-
-  # sapply preserves names of term as names of list items
-  SocChunks_list <- sapply(unique(df$class), simplify = FALSE,
-                      function(SocName) DeriveCore(df[df$class == SocName,]))
-  
-  # need to order by overall soc counts
+  # need to order by overall soc/term counts
   # need total from any grade all patients, the last column of the first row
   #  is all patients count
-  # break ties by alphabetical order of socs
-  SocVector <- vapply(names(SocChunks_list),
-                      function(x) SocChunks_list[[x]][1, length(N)][1],
-                      FUN.VALUE = numeric(1))
-  
-  SocOrder <- SocVector[order(-SocVector, names(SocVector))]
-  
-  # rebuilding the list by choosing items in the desired order
-  SocChunks_list_ordered <- SocChunks_list[names(SocOrder)]
-  
-  # need soc and - overall - on a separate row
-  SocChunks <- sapply(names(SocChunks_list_ordered), simplify = FALSE,
-         function(x) {
-           rbind(
-             rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
-             rtable(header = names(N),
-                    rrowl('- Overall -', rep(' ', length(N)), indent = 1)),
-             SocChunks_list_ordered[[x]]
-           )})
-  
-# PT chunks ---------------------------------------------------------------
-
-  # there is a potential that the same PT can be under different SOC so need
-  # to combine the soc and pt as a new name and this will also help with linking
-  # back to soc for sorting and stacking
-  df$socv_ptv <- paste0(df$class, '@', df$term)
-
-  ###### THE SLOWESET PART #####
-  # sapply preserves names of term as names of list items
-  PTChunks_list <- sapply(unique(df$socv_ptv), simplify = FALSE,
-                           function(SocName) DeriveCore(df[df$socv_ptv == SocName,]))
-  
-
-  # need to sort pt within soc and place them under soc chunks
-  # need total from any grade all patients, the last column of the first row is
-  # all patients count
-  # break ties by alphabetical order of socs
-  PTVector <- vapply(names(PTChunks_list),
-                     function(x) PTChunks_list[[x]][1, length(N)][1],
-                     FUN.VALUE = numeric(1))
-  PTOrder <- PTVector[order(-PTVector, names(PTVector))]
-  # rebuilding the list by choosing items in the desired order
-  PTChunks_list_ordered <- PTChunks_list[names(PTOrder)]
-  # need a copy to preserve soc pt combo name for attribute name2
-  PTChunks_list_ordered_for_attr <- PTChunks_list_ordered
-  
-  # for display purposes need to get rid of the soc part, creating name2 attrib
-  # which will be used after merging
-  names(PTChunks_list_ordered) <- sub('^(.{1,})(@)(.{1,}$)', '\\3',
-                                      names(PTChunks_list_ordered))
-  
-  # need PT on a separate row
-  PTChunks <- sapply(
-    names(PTChunks_list_ordered), simplify = FALSE,
-      function(x) {
-        rbind(
-          rtable(header = names(N), rrowl(x, rep(' ', length(N)), indent = 1)),
-          PTChunks_list_ordered[[x]])
-        })
-  # reattaching soc as a name2 attr for merging with soc
-  for (i in seq_along(PTChunks)) {
-    attr(PTChunks[[i]], 'name2') <- sub('^(.{1,})(@)(.{1,}$)', '\\1',
-                                        names(PTChunks_list_ordered_for_attr))[i]
+  # break ties by alphabetical order of pt
+  order_term_class <- function(term_list, classord = FALSE) {
+    PTVector <- vapply(names(term_list),
+                       function(x) {
+                         # need for sorting the class
+                         if (classord) l_t_terms[[x]][[1]][1, length(N)][1]
+                         # need for sorting terms 
+                         else  term_list[[x]][1, length(N)][1]
+                       },
+                       FUN.VALUE = numeric(1))
+    
+    PTOrder <- PTVector[order( - PTVector, names(PTVector))]
+    list_ordered <- term_list[names(PTOrder)]
+    list_ordered
   }
   
-# soc and pt together -----------------------------------------------------
-
-  ##### SECOND SLOWEST PART #########
-  # build a 3rd list that will use soc names from soc list to choose from 
-  # soc list (SocChunks) and pt list (PTChunks) in an order from soc list
+  ## end of functions
   
-  SocPTChunks <- sapply(names(SocChunks), function(x){
-    rbind(
-      SocChunks[[x]],
-      # extracting soc part from combined soc pt name and checking against soc
-      # need to rbind together so that it becomes one rtable
-      Reduce(rbind, PTChunks[vapply(PTChunks, function(x) attr(x, 'name2'),
-                                    character(1)) == x])
+  # class and term chunks
+  
+  l_t_terms <- lapply(split(df, df$class), function(df_cl) {
+    
+    terms_s <- split(df_cl, df_cl$term)
+    
+    l_t_term_raw <- Map(
+      function(df_cl_term, nms) {DeriveCore(df_cl_term, nms)},
+      terms_s,
+      names(terms_s)
     )
-  }, simplify = FALSE)
-
-# Format header by including N = ------------------------------------------
-
+    
+    # sorting by total counts and then by terms
+    order_term_class(l_t_term_raw)
+  })
+  
+  # sorting by total counts and then by class
+  l_t_terms_classes_sorted <- order_term_class(l_t_terms, classord = TRUE)
+  
+  # stack term chunks together within class
+  l_t_terms_classes_sorted_stacked <- lapply(l_t_terms_classes_sorted, function(x) {
+    Reduce(rbind, x)
+  })
+  
+  # need class on a separate row
+  l_t_terms_classes_sorted_soc <- sapply(names(l_t_terms_classes_sorted_stacked), simplify = FALSE,
+                                         function(x) {
+                                           rbind(
+                                             rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
+                                             l_t_terms_classes_sorted_stacked[[x]]
+                                           )})
+  
+  # need to stacke altogether
+  pre_final <- Reduce(rbind, l_t_terms_classes_sorted_soc)
+  
+  # Any adverse events ------------------------------------------------------
+  AnyAE <- DeriveCore(df, nms = '- Any adverse events -')  
+  
+  # Format header by including N = ------------------------------------------
+  
   final <- rbind(
     rtable(header = c(names(N)),
            rrowl(NULL, paste0('(N=', N, ')')),
            rrowl('MedDRA System Organ Class', rep(' ', length(N))),
            rrowl('MedDRA Preferred Term', rep(' ', length(N)), indent = 1),
-           rrowl('NCI CTCAE Grade', rep(' ', length(N)), indent = indent_num)),
+           rrowl('NCI CTCAE Grade', rep(' ', length(N)), indent = term_max_length - 19)),
     AnyAE,
-    Reduce(rbind, SocPTChunks)
+    pre_final
   )
   
   final
