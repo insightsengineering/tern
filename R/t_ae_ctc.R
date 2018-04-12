@@ -74,7 +74,7 @@
 #'  term =  aae$AEDECOD,
 #'  id = aae$USUBJID,
 #'  grade = aae$AETOXGR,
-#'  col_by = aae$TUMTYPE,
+#'  col_by = factor(aae$TUMTYPE),
 #'  total = "All Patients",
 #'  grade_range = c(1, 5)
 #' )
@@ -84,11 +84,11 @@
 t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_range) {
   
   # check argument validity and consitency ----------------------------------
-  
-  if (length(class) == 0) stop("there are no records in aae for this subset")
   if (!is.vector(grade_range) || !length(grade_range) == 2) 
     stop("grade_range needs to be a vector with 2 values")
-  if (any(is.na(col_by)) | sum(col_by == '') > 0) stop("No NA's are allowed for col_by")
+  
+  check_col_by(col_by, min_num_levels = 2)
+  if (total %in% levels(col_by)) stop('...')
   
   # data prep ---------------------------------------------------------------
   
@@ -98,18 +98,13 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
                    gradev = grade,
                    col_by = col_by,
                    stringsAsFactors = FALSE)
-  
+
   # adding All Patients
   dfall <- df
-  dfall$subjid <- paste(dfall$subjid, '-ALL')
-  dfall$col_by <- 'All Patients'
+  dfall$subjid <- paste0(dfall$subjid, '-ALL')
+  dfall$col_by <- total
   
   df <- rbind(df, dfall)
-  
-  # all patients column should be factor and the rightmost column
-  df$col_by <- factor(df$col_by,
-                      c(sort(unique(df$col_by)[unique(df$col_by) != 'All Patients']),
-                        'All Patients'))
   
   # total N for column header
   N <- tapply(df$subjid, df$col_by, function(x) (sum(!duplicated(x))))
