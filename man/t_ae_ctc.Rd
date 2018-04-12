@@ -7,18 +7,16 @@
 t_ae_ctc(class, term, id, grade, col_by, total = "All Patients", grade_range)
 }
 \arguments{
-\item{class}{character string representing name of system organ class variable.}
+\item{class}{system organ class variable.}
 
-\item{term}{character string representing name of preferred term variable.}
+\item{term}{preferred term variable.}
 
-\item{id}{character string representing name of unique subject identifier
-variable.}
+\item{id}{unique subject identifier variable.}
 
-\item{grade}{character string representing name of grade of adverse event 
-variable.}
+\item{grade}{grade of adverse event variable.}
 
-\item{col_by}{character string representing name of group variable that will 
-be used for a column header. \code{col_by}, can not be missing.}
+\item{col_by}{group variable that will be used for a column header. \code{col_by}
+has to be a factor and can not be missing. See 'Examples'.}
 
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients".}
@@ -83,7 +81,7 @@ tbl <- t_ae_ctc(
  term =  aae$AEDECOD,
  id = aae$USUBJID,
  grade = aae$AETOXGR,
- col_by = aae$TUMTYPE,
+ col_by = factor(aae$TUMTYPE),
  total = "All Patients",
  grade_range = c(1, 5)
 )

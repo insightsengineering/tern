@@ -4,14 +4,12 @@
 #' 
 #' @author Edgar Manukyan (manukyae)
 #' 
-#' @param class character string representing name of system organ class variable.
-#' @param term character string representing name of preferred term variable.
-#' @param id character string representing name of unique subject identifier
-#'  variable.
-#' @param grade character string representing name of grade of adverse event 
-#'  variable.
-#' @param col_by character string representing name of group variable that will 
-#'  be used for a column header. \code{col_by}, can not be missing.
+#' @param class system organ class variable.
+#' @param term preferred term variable.
+#' @param id unique subject identifier variable.
+#' @param grade grade of adverse event variable.
+#' @param col_by group variable that will be used for a column header. \code{col_by}
+#'  has to be a factor and can not be missing. See 'Examples'.
 #' @param total character string that will be used as a label for a column with 
 #'  pooled total population, default is "All Patients".
 #' @param grade_range range of grades in a form of \code{c(x, y)}, default is 
@@ -87,8 +85,9 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   if (!is.vector(grade_range) || !length(grade_range) == 2) 
     stop("grade_range needs to be a vector with 2 values")
   
-  check_col_by(col_by, min_num_levels = 2)
-  if (total %in% levels(col_by)) stop('...')
+  check_col_by(col_by, min_num_levels = 1)
+  if (total %in% levels(col_by)) stop(paste('col_by can not have', total,
+                                            'group. t_ae_cts will derive it.'))
   
   # data prep ---------------------------------------------------------------
   
@@ -101,7 +100,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
 
   # adding All Patients
   dfall <- df
-  dfall$subjid <- paste0(dfall$subjid, '-ALL')
+  dfall$subjid <- paste(dfall$subjid, total)
   dfall$col_by <- total
   
   df <- rbind(df, dfall)
@@ -110,7 +109,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   N <- tapply(df$subjid, df$col_by, function(x) (sum(!duplicated(x))))
   
   # need to remove extra records that came from subject level data
-  # also any record that is missing soc or term
+  # when left join was done. also any record that is missing class or term
   df$class <- ifelse(df$class == '', NA, df$class)
   df$term <- ifelse(df$class == '', NA, df$term)
   
@@ -139,9 +138,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
       rcell(0, format = "xx")
     }
   }
-  
-  # core function 
-  
+
   # derives the any grade and by grades rows
   DeriveCore <- function(dt, nms) {
     # any grade row  
@@ -223,7 +220,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
                                              l_t_terms_classes_sorted_stacked[[x]]
                                            )})
   
-  # need to stacke altogether
+  # stack altogether
   pre_final <- Reduce(rbind, l_t_terms_classes_sorted_soc)
   
   # Any adverse events ------------------------------------------------------
