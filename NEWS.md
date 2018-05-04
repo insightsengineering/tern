@@ -4,6 +4,7 @@
 ## Package Internal Changes
 
 * added function `compound_table`
+* In forest plot functions, added formatting to display extreme values to ">999.9"." 
 
 # tern 0.5.0
 
