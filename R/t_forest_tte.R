@@ -260,11 +260,7 @@ survival_results <- function(data, ties){
 
 format_survival_analysis <- function(x) {
   format.hr <- ifelse(!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9, ">999.9",  "xx.xx")
-<<<<<<< HEAD
   format.ci <- ifelse(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
-=======
-  format.ci <- ifelse(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9,  "(%.2f, >999.9)",  "(%.2f, %.2f)")
->>>>>>> 4d6739bdc2246cde9aa146ad1c837654abf4f94e
   list(
     rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
     rcell(x[["ref_n"]], "xx"),
@@ -274,10 +270,6 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
     rcell(x[["cox_hr"]], format.hr),
-<<<<<<< HEAD
     rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = eval(format.ci))
-=======
-    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = sprintf_format(format.ci))
->>>>>>> 4d6739bdc2246cde9aa146ad1c837654abf4f94e
   )
 }
