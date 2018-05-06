@@ -122,7 +122,10 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   df <- rbind(df, df_overall_class)
   
   # need the length of longest term for proper indentation
-  term_max_length <- max(nchar(trimws(unique(df$term))))
+  term_max_length <- max(nchar(trimws(c(unique(df$term), '- Any adverse events -', 'MedDRA Preferred Term'))))
+  # indent doubles number of chars for unknown reason
+  indmax <- term_max_length / 1.75
+
   
   # start tabulating --------------------------------------------------------
   
@@ -144,7 +147,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     # any grade row  
     # need to make gap between term and -any grade- to be equal term_max_length
     # after concat of 1, term
-    tbl_all <- rtabulate(dt, row_by_var = no_by(paste(nms, paste0(rep(' ', term_max_length - nchar(trimws(nms))), collapse = ''), '- any grade -	')),
+    tbl_all <- rtabulate(dt, row_by_var = no_by(paste(nms, paste0(rep(' ', term_max_length - nchar(trimws(nms))), collapse = ''), '- Any Grade -')),
                          col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
                          indent = 1)
     
@@ -159,7 +162,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f",
                               col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
                               # 19 difference was the closest 
-                              indent = term_max_length - 19)
+                              indent = indmax)
     
     rbind(tbl_all, tbl_by_grade)
   }
@@ -216,7 +219,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   l_t_terms_classes_sorted_soc <- sapply(names(l_t_terms_classes_sorted_stacked), simplify = FALSE,
                                          function(x) {
                                            rbind(
-                                             rtable(header = names(N), rrowl(x, rep(' ', length(N)))),
+                                             rtable(header = names(N), rrow(), rrow(x)),
                                              l_t_terms_classes_sorted_stacked[[x]]
                                            )})
   
@@ -229,14 +232,18 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   # Format header by including N = ------------------------------------------
   
   final <- rbind(
-    rtable(header = c(names(N)),
-           rrowl(NULL, paste0('(N=', N, ')')),
-           rrowl('MedDRA System Organ Class', rep(' ', length(N))),
-           rrowl('MedDRA Preferred Term', rep(' ', length(N)), indent = 1),
-           rrowl('NCI CTCAE Grade', rep(' ', length(N)), indent = term_max_length - 19)),
+    rtable(
+      header = c(names(N)),
+      rrow('MedDRA System Organ Class'),
+      rrow('MedDRA Preferred Term', indent = 1),
+      rrow('NCI CTCAE Grade', indent = indmax),
+      rrow()
+    ),
     AnyAE,
     pre_final
   )
+  
+  header(final) = c(NULL, paste0(names(N), '\n', '(N=', N, ')'))
   
   final
 }
