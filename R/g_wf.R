@@ -1,3 +1,7 @@
+
+if (FALSE) {
+
+
 library(grid)
 library(haven)
 library(dplyr)
@@ -158,3 +162,5 @@ grid.rect(x = unit(0.1, "npc"), y = unit(0.1 + 0.8/length(color_resp), "npc"),
 g_wf <- function(id, y, col, xlab, ylab, legend, add_text = TRUE, add_days)
   
 ggplot(cabbage_exp, aes(x = interaction(Date, Cultivar), y = Weight)) + geom_col() + geom_text(aes(label = Weight), vjust = -0.2)
+
+}
