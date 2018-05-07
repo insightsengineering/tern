@@ -71,7 +71,6 @@
 #' tbl
 #' Viewer(tbl)
 #' 
-#' 
 t_forest_tte <- function(tte, 
                          is_event, 
                          col_by, 
@@ -260,6 +259,8 @@ survival_results <- function(data, ties){
 }
 
 format_survival_analysis <- function(x) {
+  format.hr <- ifelse(!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9, ">999.9",  "xx.xx")
+  format.ci <- ifelse(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
   list(
     rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
     rcell(x[["ref_n"]], "xx"),
@@ -268,8 +269,7 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_n"]], "xx"), 
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
-    rcell(x[["cox_hr"]], format = "xx.xx"),
-    #ifelse(x[["cox_hr"]] <= 999, rcell(x[["cox_hr"]], format = "xx.xx"), rcell( 999, format = "xx.xx")),
-    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
+    rcell(x[["cox_hr"]], format.hr),
+    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = eval(format.ci))
   )
 }
