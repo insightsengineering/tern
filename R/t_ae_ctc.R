@@ -189,44 +189,11 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   # class and term chunks
   df_s <- lapply(split(df, df$class), function(dfi) split(dfi, dfi$term))
   
-  # df_cl_term <- df_s[[1]][[1]]
-  # term_i <- names(df_s[[1]])[1]
+  # x <- df_s[[1]][[1]]
   l_t_terms <- lapply(df_s, function(df_s_cl) {
-     Map(
-      function(df_i, term_i) {
-        
-        # any grade row
-        tbl_all <- rtabulate(
-          df_i,
-          row_by_var = no_by('- Any Grade -'),
-          col_by_var = "col_by", 
-          FUN = ae_ctc_count_perc,
-          format = "xx (xx.x%)",
-          indent = 1,
-          N = N
-        )
-        
-        # need the highest grade per patient and grade variable should be a vector
-        df_i_max_grade <- aggregate(gradev ~ col_by + subjid, data = df_i, FUN = max,
-                                    drop = TRUE, na.rm = TRUE)
-        # need factor grade for rtabulate
-        df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev, levels = grade_levels)
-        
-        # by grades
-        tbl_by_grade <- rtabulate(
-          df_i_max_grade,
-          row_by_var = "grade_f",
-          col_by_var = "col_by", 
-          FUN = ae_ctc_count_perc,
-          format = "xx (xx.x%)",
-          indent = 2,
-          N = N
-        )
-        
-        rbind(tbl_all, tbl_by_grade)
-      },
-      df_s_cl, names(df_s_cl)
-    )
+    lapply(df_s_cl, function(df_i) {
+        t_count_max(df_i$gradedev, df_i$subjid, df_i$col_by,  col_N = unname(N), any = "- Any Grade -")
+    })
   })
   
   # now sort tables
@@ -277,16 +244,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
 }
 
 
-# checks if there is any case and derives counts (percentage), otherwise 0
-ae_ctc_count_perc <- function(x_cell, N) {
-  N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
-  if (N_i > 0) {
-    n <- sum(!duplicated(x_cell$subjid)) # number of patients with at least one ae
-    n * c(1, 1 / N[x_cell$col_by[1]]) # obtaining the total and getting percentage
-  } else {
-    rcell(0, format = "xx")
-  }
-}
+
 
 
 # need to order by overall soc/term counts
@@ -308,3 +266,84 @@ ae_ctc_order_term_class <- function(term_list, classord = FALSE) {
   list_ordered
 }
 
+
+
+#' Count Max per Id Per Once
+#' 
+#' E.g. as used in count ...
+#' 
+#' @param x a numeric vector 
+#' @param id character or factor
+#' @param col_by (inherit)
+#' @param levels domain of x
+#' @param col_N divider for percentage based on level of col_by
+#' @param any add row that counts any occurance
+#' 
+#' 
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' id <- c(1,1,2,2,3,3,3,4)
+#' t_count_max(
+#'   x =  c(1,2,3,2,1,1,2,3),
+#'   id = id,
+#'   col_by = factor(LETTERS[id]),
+#'   col_N = c(4,3,5,3)
+#' )
+t_count_max <- function(x, id, col_by,  col_N, levels = seq(min(x), max(x)), any = "-Any-") {
+  
+  if (!is.numeric(x)) stop("x is required to be numeric")
+  if (any(is.na(x))) stop("no NA allowed in x")
+  
+  if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
+  
+  df <- data.frame(x, id, col_by, stringsAsFactors = FALSE)
+  
+  tbl_any <- if (!is.null(any)) {
+    rtabulate(
+      df,
+      row_by_var = no_by(any),
+      col_by_var = "col_by", 
+      FUN = ae_count_perc,
+      N = col_N,
+      format = "xx (xx.x%)"
+    )
+  } else {
+    NULL
+  }
+  
+  
+  df_max <- aggregate(x ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
+  df_max$x_fct <- factor(df_max$x, levels = levels)
+  
+  tbl_x <- rtabulate(
+    df_max,
+    row_by_var = "x_fct",
+    col_by_var = "col_by", 
+    FUN = ae_count_perc,
+    N = col_N,
+    format = "xx (xx.x%)"
+  )
+  
+  tbl <- rbind(tbl_any, tbl_x)
+  
+  header(tbl) <- rheader(
+    rrowl("", levels(col_by)),
+    rrowl("", unname(col_N), format = "(N=xx)")
+  )
+  
+  tbl
+}
+
+
+# checks if there is any case and derives counts (percentage), otherwise 0
+ae_count_perc <- function(x_cell, N) {
+  N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
+  if (N_i > 0) {
+    n <- sum(!duplicated(x_cell$id)) # number of patients with at least one ae
+    n * c(1, 1 / N_i) # obtaining the total and getting percentage
+  } else {
+    rcell(0, format = "xx")
+  }
+}
