@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_ae_ctc.R
 \name{t_ae_ctc}
 \alias{t_ae_ctc}
-\title{Adverse Events by Highest NCI CTCAE Grade Table}
+\title{Adverse Events Table by Highest NCI CTCAE Grade}
 \usage{
 t_ae_ctc(class, term, id, grade, col_by, total = "All Patients", grade_range)
 }
@@ -27,7 +27,7 @@ assures a proper fill in for grades, otherwise no sub-setting of data is
 done. See 'Details'.}
 }
 \description{
-\code{t_ae_ctc} returns Adverse Events by Highest NCI CTCAE Grade Table.
+\code{t_ae_ctc} returns adverse events sorted by highest NCI CTCAE grade.
 }
 \details{
 \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
@@ -90,5 +90,5 @@ Viewer(tbl)
 }
 }
 \author{
-Edgar Manukyan (manukyae)
+Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}
 }

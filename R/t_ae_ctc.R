@@ -1,8 +1,6 @@
-#' Adverse Events by Highest NCI CTCAE Grade Table 
+#' Adverse Events Table by Highest NCI CTCAE Grade
 #' 
-#' \code{t_ae_ctc} returns Adverse Events by Highest NCI CTCAE Grade Table.
-#' 
-#' @author Edgar Manukyan (manukyae)
+#' \code{t_ae_ctc} returns adverse events sorted by highest NCI CTCAE grade.
 #' 
 #' @param class system organ class variable.
 #' @param term preferred term variable.
@@ -44,9 +42,74 @@
 #'  needs to sub-set data before providing it to \code{t_ae_ctc}.
 #'  
 #' @export
+#' 
+#' @template author_manukyae
 #'  
 #'  
 #' @examples 
+#' # Simple example
+#' library(tibble)
+#' library(dplyr)
+#' ASL <- tibble(
+#'   USUBJID = paste0("id-", 1:10),
+#'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
+#' )
+#' 
+#' 
+ae_lookup <- tribble(
+~CLASS,         ~TERM,   ~GRADE,
+"cl A",   "trm A_1/2",        1,
+"cl A",   "trm A_2/2",        2,  
+"cl B",   "trm B_1/3",        2,
+"cl B",   "trm B_2/3",        3,
+"cl B",   "trm B_3/3",        1,
+"cl C",   "trm C_1/1",        1
+)
+
+AAE <- cbind(
+  tibble(
+    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
+  ),
+  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
+)
+
+ANL <- left_join(ASL, AAE, by = "USUBJID")
+
+tbl <- t_ae_ctc(
+  class = ANL$CLASS,
+  term =  ANL$TERM,
+  id = ANL$USUBJID,
+  grade = ANL$GRADE,
+  col_by = factor(ANL$ARM),
+  total = "All Patients",
+  grade_range = c(1, 3)
+)
+
+tbl
+#' 
+#' 
+#' 
+#' library(random.cdisc.data)
+#' 
+#' ASL <- radam("ASL")
+#' AAE <- radam("AAE", ADSL = ASL)
+#' 
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
+#' 
+#' tbl <- with(ANL,
+#'             t_ae_ctc(
+#'               class = ANL$AEBODSYS,
+#'               term =  ANL$AEDECOD,
+#'               id = ANL$USUBJID,
+#'               grade = ANL$AETOXGR,
+#'               col_by = factor(ANL$ARM),
+#'               total = "All Patients",
+#'               grade_range = c(1, 5)
+#'             )
+#' )
+#' 
+#' tbl
+#' 
 #' \dontrun{
 #' # the following example should reproduce table t_ae_ctc_ATEZOREL_SENBX.out
 #' file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
@@ -83,14 +146,20 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   
   # check argument validity and consitency ----------------------------------
   if (!is.vector(grade_range) || !length(grade_range) == 2) 
-    stop("grade_range needs to be a vector with 2 values")
+    stop("grade_range needs to be a numeric vector with 2 values")
+  
+  if (grade_range[1] > min(grade, na.rm = TRUE) || grade_range[2] < max(grade, na.rm = TRUE))
+    stop("some grade values are not in grade_range")
   
   check_col_by(col_by, min_num_levels = 1)
-  if (total %in% levels(col_by)) stop(paste('col_by can not have', total,
-                                            'group. t_ae_cts will derive it.'))
+  if (total %in% levels(col_by)) 
+    stop(paste('col_by can not have', total, 'group. t_ae_cts will derive it.'))
+  
+  if (any("- Overall -" %in% term)) stop("'- Overall -' is not a valid term")
+  
+  grade_levels <- seq(grade_range[1], grade_range[2])
   
   # data prep ---------------------------------------------------------------
-  
   df <- data.frame(class = class,
                    term = term,
                    subjid = id,
@@ -99,113 +168,71 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
                    stringsAsFactors = FALSE)
 
   # adding All Patients
-  dfall <- df
-  dfall$subjid <- paste(dfall$subjid, total)
-  dfall$col_by <- total
-  
-  df <- rbind(df, dfall)
+  df <- duplicate_with_var(df, subjid = paste(df$subjid, "-", total), col_by = total)
   
   # total N for column header
   N <- tapply(df$subjid, df$col_by, function(x) (sum(!duplicated(x))))
   
   # need to remove extra records that came from subject level data
   # when left join was done. also any record that is missing class or term
-  df$class <- ifelse(df$class == '', NA, df$class)
-  df$term <- ifelse(df$class == '', NA, df$term)
+  is_class_or_term_missing <- is.na(df$class) | is.na(df$term) | df$class == '' | df$term == ''
+  df$class[is_class_or_term_missing] <- NA
+  df$term[is_class_or_term_missing] <- NA
   
   df <- na.omit(df)
   
   # need to duplicate rows for each class to calculate overall class chunks
-  df_overall_class <- df
-  df_overall_class$term <- '- Overall -'
-  
-  df <- rbind(df, df_overall_class)
-  
-  # need the length of longest term for proper indentation
-  term_max_length <- max(nchar(trimws(c(unique(df$term), '- Any adverse events -', 'MedDRA Preferred Term'))))
-  # indent doubles number of chars for unknown reason
-  indmax <- term_max_length / 1.75
-
+  #df <- duplicate_with_var(df, term = "- Overall -")
   
   # start tabulating --------------------------------------------------------
   
-  ## funcitons 
-  
-  # checks if there is any case and derives counts (percentage), otherwise 0
-  count_perc <- function(x_cell) {
-    N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
-    if (N_i > 0) {
-      n <- sum(!duplicated(x_cell$subjid)) # number of patients with at least one ae
-      n * c(1, 1 / N[x_cell$col_by[1]]) # obtaining the total and getting percentage
-    } else {
-      rcell(0, format = "xx")
-    }
-  }
-
-  # derives the any grade and by grades rows
-  DeriveCore <- function(dt, nms) {
-    # any grade row  
-    # need to make gap between term and -any grade- to be equal term_max_length
-    # after concat of 1, term
-    tbl_all <- rtabulate(dt, row_by_var = no_by(paste(nms, paste0(rep(' ', term_max_length - nchar(trimws(nms))), collapse = ''), '- Any Grade -')),
-                         col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
-                         indent = 1)
-    
-    # by grades rows
-    # need the highest grade per patient and grade variable should be a vector
-    df_i_max_grade <- aggregate(gradev ~ col_by + subjid, data = dt, FUN = max,
-                                drop = TRUE, na.rm = TRUE)
-    # need factor grade for rtabulate
-    df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev,
-                                     levels = seq(grade_range[1],
-                                                  grade_range[2], by = 1))
-    tbl_by_grade <- rtabulate(df_i_max_grade, row_by_var = "grade_f",
-                              col_by_var = "col_by", count_perc, format = "xx (xx.x%)",
-                              # 19 difference was the closest 
-                              indent = indmax)
-    
-    rbind(tbl_all, tbl_by_grade)
-  }
-  
-  
-  # sort function 
-  
-  # need to order by overall soc/term counts
-  # need total from any grade all patients, the last column of the first row
-  #  is all patients count
-  # break ties by alphabetical order of pt
-  order_term_class <- function(term_list, classord = FALSE) {
-    PTVector <- vapply(names(term_list),
-                       function(x) {
-                         # need for sorting the class
-                         if (classord) l_t_terms[[x]][[1]][1, length(N)][1]
-                         # need for sorting terms 
-                         else  term_list[[x]][1, length(N)][1]
-                       },
-                       FUN.VALUE = numeric(1))
-    
-    PTOrder <- PTVector[order( - PTVector, names(PTVector))]
-    list_ordered <- term_list[names(PTOrder)]
-    list_ordered
-  }
-  
-  ## end of functions
-  
   # class and term chunks
+  df_s <- lapply(split(df, df$class), function(dfi) split(dfi, dfi$term))
   
-  l_t_terms <- lapply(split(df, df$class), function(df_cl) {
-    
-    terms_s <- split(df_cl, df_cl$term)
-    
-    l_t_term_raw <- Map(
-      function(df_cl_term, nms) {DeriveCore(df_cl_term, nms)},
-      terms_s,
-      names(terms_s)
+  # df_cl_term <- df_s[[1]][[1]]
+  # term_i <- names(df_s[[1]])[1]
+  l_t_terms <- lapply(df_s, function(df_s_cl) {
+     Map(
+      function(df_i, term_i) {
+        
+        # any grade row
+        tbl_all <- rtabulate(
+          df_i,
+          row_by_var = no_by('- Any Grade -'),
+          col_by_var = "col_by", 
+          FUN = ae_ctc_count_perc,
+          format = "xx (xx.x%)",
+          indent = 1,
+          N = N
+        )
+        
+        # need the highest grade per patient and grade variable should be a vector
+        df_i_max_grade <- aggregate(gradev ~ col_by + subjid, data = df_i, FUN = max,
+                                    drop = TRUE, na.rm = TRUE)
+        # need factor grade for rtabulate
+        df_i_max_grade$grade_f <- factor(df_i_max_grade$gradev, levels = grade_levels)
+        
+        # by grades
+        tbl_by_grade <- rtabulate(
+          df_i_max_grade,
+          row_by_var = "grade_f",
+          col_by_var = "col_by", 
+          FUN = ae_ctc_count_perc,
+          format = "xx (xx.x%)",
+          indent = 2,
+          N = N
+        )
+        
+        rbind(tbl_all, tbl_by_grade)
+      },
+      df_s_cl, names(df_s_cl)
     )
-    
-    # sorting by total counts and then by terms
-    order_term_class(l_t_term_raw)
   })
+  
+  # now sort tables
+  
+  # sorting by total counts and then by terms
+  order_term_class(l_t_term_raw)
   
   # sorting by total counts and then by class
   l_t_terms_classes_sorted <- order_term_class(l_t_terms, classord = TRUE)
@@ -246,4 +273,38 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   header(final) = c(NULL, paste0(names(N), '\n', '(N=', N, ')'))
   
   final
+  
 }
+
+
+# checks if there is any case and derives counts (percentage), otherwise 0
+ae_ctc_count_perc <- function(x_cell, N) {
+  N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
+  if (N_i > 0) {
+    n <- sum(!duplicated(x_cell$subjid)) # number of patients with at least one ae
+    n * c(1, 1 / N[x_cell$col_by[1]]) # obtaining the total and getting percentage
+  } else {
+    rcell(0, format = "xx")
+  }
+}
+
+
+# need to order by overall soc/term counts
+# need total from any grade all patients, the last column of the first row
+#  is all patients count
+# break ties by alphabetical order of pt
+ae_ctc_order_term_class <- function(term_list, classord = FALSE) {
+  PTVector <- vapply(names(term_list),
+                     function(x) {
+                       # need for sorting the class
+                       if (classord) l_t_terms[[x]][[1]][1, length(N)][1]
+                       # need for sorting terms 
+                       else  term_list[[x]][1, length(N)][1]
+                     },
+                     FUN.VALUE = numeric(1))
+  
+  PTOrder <- PTVector[order( - PTVector, names(PTVector))]
+  list_ordered <- term_list[names(PTOrder)]
+  list_ordered
+}
+
