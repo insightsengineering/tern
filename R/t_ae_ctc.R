@@ -56,36 +56,35 @@
 #' )
 #' 
 #' 
-ae_lookup <- tribble(
-~CLASS,         ~TERM,   ~GRADE,
-"cl A",   "trm A_1/2",        1,
-"cl A",   "trm A_2/2",        2,  
-"cl B",   "trm B_1/3",        2,
-"cl B",   "trm B_2/3",        3,
-"cl B",   "trm B_3/3",        1,
-"cl C",   "trm C_1/1",        1
-)
-
-AAE <- cbind(
-  tibble(
-    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-  ),
-  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-)
-
-ANL <- left_join(ASL, AAE, by = "USUBJID")
-
-tbl <- t_ae_ctc(
-  class = ANL$CLASS,
-  term =  ANL$TERM,
-  id = ANL$USUBJID,
-  grade = ANL$GRADE,
-  col_by = factor(ANL$ARM),
-  total = "All Patients",
-  grade_range = c(1, 3)
-)
-
-tbl
+#' ae_lookup <- tribble(
+#' ~CLASS,         ~TERM,   ~GRADE,
+#' "cl A",   "trm A_1/2",        1,
+#' "cl A",   "trm A_2/2",        2,  
+#' "cl B",   "trm B_1/3",        2,
+#' "cl B",   "trm B_2/3",        3,
+#' "cl B",   "trm B_3/3",        1,
+#' "cl C",   "trm C_1/1",        1
+#' )
+#' 
+#' AAE <- cbind(
+#'   tibble(
+#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
+#'   ),
+#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
+#' )
+#' 
+#' ANL <- left_join(ASL, AAE, by = "USUBJID")
+#' 
+#' tbl <- t_ae_ctc(
+#'   class = ANL$CLASS,
+#'   term =  ANL$TERM,
+#'   id = ANL$USUBJID,
+#'   grade = ANL$GRADE,
+#'   col_by = factor(ANL$ARM),
+#'   total = "All Patients"
+#' )
+#' 
+#' tbl
 #' 
 #' 
 #' 
@@ -142,22 +141,14 @@ tbl
 #' 
 #' Viewer(tbl)
 #' }
-t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_range) {
+t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_levels=1:5) {
   
   # check argument validity and consitency ----------------------------------
-  if (!is.vector(grade_range) || !length(grade_range) == 2) 
-    stop("grade_range needs to be a numeric vector with 2 values")
-  
-  if (grade_range[1] > min(grade, na.rm = TRUE) || grade_range[2] < max(grade, na.rm = TRUE))
-    stop("some grade values are not in grade_range")
-  
   check_col_by(col_by, min_num_levels = 1)
   if (total %in% levels(col_by)) 
     stop(paste('col_by can not have', total, 'group. t_ae_cts will derive it.'))
   
   if (any("- Overall -" %in% term)) stop("'- Overall -' is not a valid term")
-  
-  grade_levels <- seq(grade_range[1], grade_range[2])
   
   # data prep ---------------------------------------------------------------
   df <- data.frame(class = class,
@@ -185,18 +176,60 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   #df <- duplicate_with_var(df, term = "- Overall -")
   
   # start tabulating --------------------------------------------------------
+  n_cols <- nlevels(col_by)
   
   # class and term chunks
-  df_s <- lapply(split(df, df$class), function(dfi) split(dfi, dfi$term))
-  
-  # x <- df_s[[1]][[1]]
-  l_t_terms <- lapply(df_s, function(df_s_cl) {
-    lapply(df_s_cl, function(df_i) {
-        t_count_max(df_i$gradedev, df_i$subjid, df_i$col_by,  col_N = unname(N), any = "- Any Grade -")
+  l_t_class_terms <- lapply(split(df, df$class), function(df_s_cl) {
+    
+    df_s_cl_term <- c(
+      list("- Overall -" = df_s_cl),
+      split(df_s_cl, df_s_cl$term)      
+    )
+    
+    l_t_terms <- lapply(df_s_cl_term, function(df_i) {
+
+      t_max_grade_per_id(
+        grade = df_i$gradev,
+        id = df_i$subjid,
+        col_by = df_i$col_by,
+        col_N = N,
+        grade_levels = grade_levels,
+        any_grade = "- Any Grade -"
+      )
+      
     })
+    
+    # sort terms by any grade and total
+    N_total_any <- vapply(l_t_terms, function(tbl) {
+      tbl[1, n_cols][1]
+    }, numeric(1))
+    
+    l_t_terms[c(1, setdiff(order(N_total_any), 1))]
   })
   
   # now sort tables
+  N_total_overall <- vapply(l_t_class_terms, function(tbl) {
+    tbl[[1]][1, n_cols][1]
+  }, numeric(1))
+  
+  l_t_class_terms_sorted <- l_t_class_terms[order(N_total_overall)]
+  
+  tbl_overall <- t_max_grade_per_id(
+    grade = df$gradev,
+    id = df$subjid,
+    col_by = df$col_by,
+    col_N = N,
+    grade_levels = grade_levels,
+    any_grade = "- Any Grade -"
+  )
+  
+  tbls <- c(list("- Overall -" = list("- Overall -" = tbl_overall)), l_t_class_terms_sorted)
+  tbl <- do.call(stack_rtables, unlist(tbls, recursive = FALSE))
+  
+  tbl
+}
+
+if(FALSE) {
   
   # sorting by total counts and then by terms
   order_term_class(l_t_term_raw)
@@ -245,8 +278,6 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
 
 
 
-
-
 # need to order by overall soc/term counts
 # need total from any grade all patients, the last column of the first row
 #  is all patients count
@@ -268,44 +299,86 @@ ae_ctc_order_term_class <- function(term_list, classord = FALSE) {
 
 
 
-#' Count Max per Id Per Once
+#' Tabulate Max Grade per Id by Col_by
 #' 
 #' E.g. as used in count ...
 #' 
-#' @param x a numeric vector 
-#' @param id character or factor
-#' @param col_by (inherit)
-#' @param levels domain of x
 #' @param col_N divider for percentage based on level of col_by
-#' @param any add row that counts any occurance
+#' @param any_grade add row that counts any occurance
 #' 
 #' 
+#' @export
 #' 
-#' @noRd
 #' 
 #' @examples 
+#' 
+#' t_max_grade_per_id(
+#'   grade =  c(1,2,3),
+#'   id = c(1,1,1),
+#'   col_by = factor(rep("A", 3))
+#' )
+#' 
+#' 
 #' id <- c(1,1,2,2,3,3,3,4)
-#' t_count_max(
-#'   x =  c(1,2,3,2,1,1,2,3),
+#' t_max_grade_per_id(
+#'   grade =  c(1,2,3,2,1,1,2,3),
 #'   id = id,
 #'   col_by = factor(LETTERS[id]),
 #'   col_N = c(4,3,5,3)
 #' )
-t_count_max <- function(x, id, col_by,  col_N, levels = seq(min(x), max(x)), any = "-Any-") {
+#' 
+#' t_max_grade_per_id(
+#'   grade =  c(1,2,3,2,1,1,2,3),
+#'   id = id,
+#'   col_by = factor(LETTERS[id])
+#' )
+#' 
+#' \dontrun{
+#' t_max_grade_per_id(
+#'   grade =  c(1,2,3),
+#'   id = c(1,2,2),
+#'   col_by = factor(LETTERS[1:3])
+#' )
+#' }
+#' 
+#' t_max_grade_per_id(
+#'   grade =  c(1,2,NA),
+#'   id = c(1,2,3),
+#'   col_by = factor(LETTERS[1:3])
+#' )
+#' 
+t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
+                               grade_levels = NULL,
+                               any_grade = "-Any Grade-") {
   
-  if (!is.numeric(x)) stop("x is required to be numeric")
-  if (any(is.na(x))) stop("no NA allowed in x")
+  if (!is.numeric(grade)) stop("grade is required to be numeric")
+  if (any(is.na(id)) || any(is.na(col_by))) stop("no NA allowed in id and col_by")
+  
+  if (is.null(grade_levels)) grade_levels <- seq(1, max(grade, na.rm = TRUE))
+  if (length(setdiff(grade, grade_levels))) stop("grades exist that are not in grade_levels")
+
+  df <- data.frame(grade, id, col_by, stringsAsFactors = FALSE)
+
+  df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
+  df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
+  if (any(duplicated(df_max$id))) stop("every id can only have one col_by")
+  
+  if (is.null(col_N) || !is.null(any_grade)) {
+    df_id <- df[!duplicated(df$id), ]    
+  }
+  
+  if (is.null(col_N)) {
+    col_N <- table(df_id$col_by)
+  }
   
   if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
   
-  df <- data.frame(x, id, col_by, stringsAsFactors = FALSE)
-  
-  tbl_any <- if (!is.null(any)) {
+  tbl_any <- if (!is.null(any_grade)) {
     rtabulate(
-      df,
-      row_by_var = no_by(any),
+      na.omit(df_id),
+      row_by_var = no_by(any_grade),
       col_by_var = "col_by", 
-      FUN = ae_count_perc,
+      FUN = count_perc_col_N,
       N = col_N,
       format = "xx (xx.x%)"
     )
@@ -313,15 +386,11 @@ t_count_max <- function(x, id, col_by,  col_N, levels = seq(min(x), max(x)), any
     NULL
   }
   
-  
-  df_max <- aggregate(x ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
-  df_max$x_fct <- factor(df_max$x, levels = levels)
-  
   tbl_x <- rtabulate(
-    df_max,
-    row_by_var = "x_fct",
+    na.omit(df_max),
+    row_by_var = "fct_grade",
     col_by_var = "col_by", 
-    FUN = ae_count_perc,
+    FUN = count_perc_col_N,
     N = col_N,
     format = "xx (xx.x%)"
   )
@@ -336,13 +405,11 @@ t_count_max <- function(x, id, col_by,  col_N, levels = seq(min(x), max(x)), any
   tbl
 }
 
-
 # checks if there is any case and derives counts (percentage), otherwise 0
-ae_count_perc <- function(x_cell, N) {
+count_perc_col_N <- function(x_cell, N) {
   N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
   if (N_i > 0) {
-    n <- sum(!duplicated(x_cell$id)) # number of patients with at least one ae
-    n * c(1, 1 / N_i) # obtaining the total and getting percentage
+    length(x_cell$id) * c(1, 1 / N_i) # obtaining the total and getting percentage
   } else {
     rcell(0, format = "xx")
   }
