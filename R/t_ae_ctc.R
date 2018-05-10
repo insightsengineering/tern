@@ -204,7 +204,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
       tbl[1, n_cols][1]
     }, numeric(1))
     
-    l_t_terms[c(1, setdiff(order(N_total_any), 1))]
+    l_t_terms[c(1, setdiff(order(N_total_any, decreasing = TRUE), 1))]
   })
   
   # now sort tables
@@ -212,7 +212,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     tbl[[1]][1, n_cols][1]
   }, numeric(1))
   
-  l_t_class_terms_sorted <- l_t_class_terms[order(N_total_overall)]
+  l_t_class_terms_sorted <- l_t_class_terms[order(N_total_overall, decreasing = TRUE)]
   
   tbl_overall <- t_max_grade_per_id(
     grade = df$gradev,
@@ -223,80 +223,85 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     any_grade = "- Any Grade -"
   )
   
-  tbls <- c(list("- Overall -" = list("- Overall -" = tbl_overall)), l_t_class_terms_sorted)
-  tbl <- do.call(stack_rtables, unlist(tbls, recursive = FALSE))
+  tbls_all <- c(
+    list("- Any adverse events -" = list("- Overall -" = tbl_overall)),
+    l_t_class_terms_sorted
+  )
+  
+  tbls_class <- Map(function(tbls_i, class_i) {
+    lt1 <- Map(shift_label_table, tbls_i, names(tbls_i))
+    t2 <- do.call(stack_rtables, lt1)
+    add_ae_class(indent_table(t2, 1), class_i)
+  }, tbls_all, names(tbls_all))
+    
+  
+  tbl <- do.call(stack_rtables, tbls_class)
+  
+  attr(attr(tbl, "header")[[1]], "row.name") <- 'MedDRA System Organ Class'
+  attr(attr(tbl, "header")[[2]], "row.name") <- 'MedDRA Preferred Term'
+  attr(attr(tbl, "header")[[2]], "indent") <- 1
+  
+  attr(tbl, "header")[[2]][[1]] <- rcell('NCI CTCAE Grade')
+  attr(tbl, "header")[[1]][[1]] <- rcell(NULL)
   
   tbl
 }
 
-if(FALSE) {
-  
-  # sorting by total counts and then by terms
-  order_term_class(l_t_term_raw)
-  
-  # sorting by total counts and then by class
-  l_t_terms_classes_sorted <- order_term_class(l_t_terms, classord = TRUE)
-  
-  # stack term chunks together within class
-  l_t_terms_classes_sorted_stacked <- lapply(l_t_terms_classes_sorted, function(x) {
-    Reduce(rbind, x)
-  })
-  
-  # need class on a separate row
-  l_t_terms_classes_sorted_soc <- sapply(names(l_t_terms_classes_sorted_stacked), simplify = FALSE,
-                                         function(x) {
-                                           rbind(
-                                             rtable(header = names(N), rrow(), rrow(x)),
-                                             l_t_terms_classes_sorted_stacked[[x]]
-                                           )})
-  
-  # stack altogether
-  pre_final <- Reduce(rbind, l_t_terms_classes_sorted_soc)
-  
-  # Any adverse events ------------------------------------------------------
-  AnyAE <- DeriveCore(df, nms = '- Any adverse events -')  
-  
-  # Format header by including N = ------------------------------------------
-  
-  final <- rbind(
-    rtable(
-      header = c(names(N)),
-      rrow('MedDRA System Organ Class'),
-      rrow('MedDRA Preferred Term', indent = 1),
-      rrow('NCI CTCAE Grade', indent = indmax),
-      rrow()
-    ),
-    AnyAE,
-    pre_final
+indent_table <- function(x, n) {
+  for (i in 1:nrow(x)) {
+    attr(x[[i]], "indent") <- attr(x[[i]], "indent") + n
+  }
+  x
+}
+
+shift_label_table <- function(tbl, term) {
+  t_grade <- rtablel(rheader(rrow("", "."), rrow("", "Grade")), c(lapply(row.names(tbl), function(xi) rrow("", xi))))
+  attr(t_grade[[1]], "row.name") <- term
+  cbind_rtables(t_grade, tbl)
+}
+
+add_ae_class <- function(tbl, class) {
+  rbind(
+    rtable(header(tbl), rrow(class)),
+    tbl
   )
-  
-  header(final) = c(NULL, paste0(names(N), '\n', '(N=', N, ')'))
-  
-  final
-  
 }
 
 
-
-# need to order by overall soc/term counts
-# need total from any grade all patients, the last column of the first row
-#  is all patients count
-# break ties by alphabetical order of pt
-ae_ctc_order_term_class <- function(term_list, classord = FALSE) {
-  PTVector <- vapply(names(term_list),
-                     function(x) {
-                       # need for sorting the class
-                       if (classord) l_t_terms[[x]][[1]][1, length(N)][1]
-                       # need for sorting terms 
-                       else  term_list[[x]][1, length(N)][1]
-                     },
-                     FUN.VALUE = numeric(1))
+#' cbind two rtables
+#' 
+#' @examples 
+#' x <- rtable(c("A", "B"), rrow("x row 1", 1,2), rrow("x row 2", 3, 4))
+#' 
+#' y <- rtable("C", rrow("y row 1", 5), rrow("y row 2", 6))
+#' 
+#' 
+#' cbind_rtables(x, y)
+#' 
+cbind_rtables <- function(x, y) {
+  if (!is(x, "rtable") || !is(y, "rtable")) stop("x and y are not both rtables")
   
-  PTOrder <- PTVector[order( - PTVector, names(PTVector))]
-  list_ordered <- term_list[names(PTOrder)]
-  list_ordered
+  if(nrow(x) != nrow(y)) stop("number of rows missmatch")
+  
+  header_x <- header(x)
+  header_y <- header(y)
+  
+  if(nrow(header_x) != nrow(header_y)) stop("number of rows missmatch in header")
+  
+  header <- do.call(rheader, combine_rrows(header_x, header_y))
+
+  body <- combine_rrows(unclass(x), unclass(y))
+  
+  rtablel(header, body)
 }
 
+combine_rrows <- function(x,y) {
+  
+  Map(function(xi, yi) {
+    rrowl(attr(xi, "row.name"), c(xi, yi))
+  }, x, y)
+  
+}
 
 
 #' Tabulate Max Grade per Id by Col_by
