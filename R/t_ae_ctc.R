@@ -1,6 +1,7 @@
 #' Adverse Events Table by Highest NCI CTCAE Grade
 #' 
-#' \code{t_ae_ctc} returns adverse events sorted by highest NCI CTCAE grade.
+#' \code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
+#'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
 #' 
 #' @param class system organ class variable.
 #' @param term preferred term variable.
@@ -10,16 +11,14 @@
 #'  has to be a factor and can not be missing. See 'Examples'.
 #' @param total character string that will be used as a label for a column with 
 #'  pooled total population, default is "All Patients".
-#' @param grade_range range of grades in a form of \code{c(x, y)}, default is 
-#'  \code{c(1, 5)}. This only has effect on which grades are displayed and 
-#'  assures a proper fill in for grades, otherwise no sub-setting of data is 
-#'  done. See 'Details'.
+#' @param grade_levels range of grades in a form of \code{x:y}, default is 
+#'  \code{1:5}. This assures a proper fill in for grades, see 'Details'.
 #' 
 #' @details 
 #' \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
 #'  intensity for system organ class (SOC) and overall rows and includes 
 #'  percentages based on the total number of patients in the column heading 
-#'  (i.e. "N=nnn"). If the inention is to use patients number from subject level
+#'  (i.e. "N=nnn"). If the intention is to use patients number from subject level
 #'  dataset as N for percentage calculation then adeverse events dataset should
 #'  be left joined to subject level dataset and the \code{col_by} variable should
 #'  be dropped from adverse events dataset, see the example. Otherwise, N will be
@@ -27,23 +26,24 @@
 #'  multiple events within a patient of the same PT are counted once using the
 #'  greatest intensity reported. 
 #' 
+#' \code{t_ae_ctc} removes any non-complete records, e.g. if class or term are 
+#'  missing. If the intent is to preserve such records, then impute missing 
+#'  values before using \code{t_ae_ctc}.
+#'      
 #' \code{t_ae_ctc} orders data by "All Patients" column from the most commonly
 #'  reported SOC to the least frequent one. Within SOC, it sorts by decreasing
-#'  frequency of PT.   
+#'  frequency of PT. It brakes ties using SOC/PT names in alphabetical order.   
 #' 
-#' \code{t_ae_ctc} removes any non-complete records, e.g. if class or term are 
-#'  missing.
-#'  
 #' \code{t_ae_ctc} fills in \code{col_by} and \code{grade} with \code{0} value 
 #' in case there was no AEs reported for particular \code{col_by} and/or 
-#' \code{grade} category. Use \code{grade_range} to modify displayed grades, e.g. 
-#'  \code{grade_range = c(3, 5)} will only display grades 3, 4, and 5. Please be
-#'  aware that this is only for display purposes and does not sub-set data. One 
-#'  needs to sub-set data before providing it to \code{t_ae_ctc}.
+#' \code{grade} category. Use \code{grade_levels} to modify the range of existing
+#' grades. If data does not have any records with \code{grade} 5 and the intent 
+#' is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 #'  
 #' @export
 #' 
 #' @template author_manukyae
+#' @template author_waddella
 #'  
 #'  
 #' @examples 
@@ -86,24 +86,22 @@
 #' 
 #' tbl
 #' 
-#' 
-#' 
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radam("ASL")
+#' ASL <- radam("ASL", N = 10)
 #' AAE <- radam("AAE", ADSL = ASL)
 #' 
 #' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
 #' 
 #' tbl <- with(ANL,
 #'             t_ae_ctc(
-#'               class = ANL$AEBODSYS,
-#'               term =  ANL$AEDECOD,
-#'               id = ANL$USUBJID,
-#'               grade = ANL$AETOXGR,
-#'               col_by = factor(ANL$ARM),
+#'               class = AEBODSYS,
+#'               term =  AEDECOD,
+#'               id = USUBJID,
+#'               grade = AETOXGR,
+#'               col_by = factor(ARM),
 #'               total = "All Patients",
-#'               grade_range = c(1, 5)
+#'               grade_levels = 1:5
 #'             )
 #' )
 #' 
@@ -133,22 +131,23 @@
 #'  class = aae$AEBODSYS,
 #'  term =  aae$AEDECOD,
 #'  id = aae$USUBJID,
-#'  grade = aae$AETOXGR,
+#'  grade = as.numeric(aae$AETOXGR),
 #'  col_by = factor(aae$TUMTYPE),
 #'  total = "All Patients",
-#'  grade_range = c(1, 5)
+#'  grade_levels = 1:4
 #' )
 #' 
 #' Viewer(tbl)
 #' }
-t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_levels=1:5) {
+t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_levels = 1:5) {
   
   # check argument validity and consitency ----------------------------------
   check_col_by(col_by, min_num_levels = 1)
   if (total %in% levels(col_by)) 
     stop(paste('col_by can not have', total, 'group. t_ae_cts will derive it.'))
   
-  if (any("- Overall -" %in% term)) stop("'- Overall -' is not a valid term")
+  if (any("- Overall -" %in% term)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
+  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
   # data prep ---------------------------------------------------------------
   df <- data.frame(class = class,
@@ -157,7 +156,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
                    gradev = grade,
                    col_by = col_by,
                    stringsAsFactors = FALSE)
-
+  
   # adding All Patients
   df <- duplicate_with_var(df, subjid = paste(df$subjid, "-", total), col_by = total)
   
@@ -172,9 +171,6 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   
   df <- na.omit(df)
   
-  # need to duplicate rows for each class to calculate overall class chunks
-  #df <- duplicate_with_var(df, term = "- Overall -")
-  
   # start tabulating --------------------------------------------------------
   n_cols <- nlevels(col_by)
   
@@ -187,7 +183,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     )
     
     l_t_terms <- lapply(df_s_cl_term, function(df_i) {
-
+      
       t_max_grade_per_id(
         grade = df_i$gradev,
         id = df_i$subjid,
@@ -201,7 +197,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     
     # sort terms by any grade and total
     N_total_any <- vapply(l_t_terms, function(tbl) {
-      tbl[1, n_cols][1]
+      tbl[1, n_cols + 1][1]
     }, numeric(1))
     
     l_t_terms[c(1, setdiff(order(N_total_any, decreasing = TRUE), 1))]
@@ -209,7 +205,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   
   # now sort tables
   N_total_overall <- vapply(l_t_class_terms, function(tbl) {
-    tbl[[1]][1, n_cols][1]
+    tbl[[1]][1, n_cols + 1][1]
   }, numeric(1))
   
   l_t_class_terms_sorted <- l_t_class_terms[order(N_total_overall, decreasing = TRUE)]
@@ -233,7 +229,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     t2 <- do.call(stack_rtables, lt1)
     add_ae_class(indent_table(t2, 1), class_i)
   }, tbls_all, names(tbls_all))
-    
+  
   
   tbl <- do.call(stack_rtables, tbls_class)
   
@@ -289,7 +285,7 @@ cbind_rtables <- function(x, y) {
   if(nrow(header_x) != nrow(header_y)) stop("number of rows missmatch in header")
   
   header <- do.call(rheader, combine_rrows(header_x, header_y))
-
+  
   body <- combine_rrows(unclass(x), unclass(y))
   
   rtablel(header, body)
@@ -304,15 +300,14 @@ combine_rrows <- function(x,y) {
 }
 
 
-#' Tabulate Max Grade per Id by Col_by
-#' 
-#' E.g. as used in count ...
-#' 
-#' @param col_N divider for percentage based on level of col_by
-#' @param any_grade add row that counts any occurance
-#' 
-#' 
-#' @export
+#' Tabulate maximum grade per id by col_by
+#'  
+#' @param grade a numeric vector with grade values
+#' @param id an vector with id values
+#' @param col_by a factor with values used for column names
+#' @param col_N a vector with total n for each level of col_by
+#' @param grade_levels a numeric vector used for naming rows for each level of grade 
+#' @param any_grade add a row that counts any occurrence, it is named -Any Grade- by default 
 #' 
 #' 
 #' @examples 
@@ -361,9 +356,9 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
   
   if (is.null(grade_levels)) grade_levels <- seq(1, max(grade, na.rm = TRUE))
   if (length(setdiff(grade, grade_levels))) stop("grades exist that are not in grade_levels")
-
+  
   df <- data.frame(grade, id, col_by, stringsAsFactors = FALSE)
-
+  
   df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
   df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
   if (any(duplicated(df_max$id))) stop("every id can only have one col_by")

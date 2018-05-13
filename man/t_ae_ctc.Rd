@@ -4,7 +4,8 @@
 \alias{t_ae_ctc}
 \title{Adverse Events Table by Highest NCI CTCAE Grade}
 \usage{
-t_ae_ctc(class, term, id, grade, col_by, total = "All Patients", grade_range)
+t_ae_ctc(class, term, id, grade, col_by, total = "All Patients",
+  grade_levels = 1:5)
 }
 \arguments{
 \item{class}{system organ class variable.}
@@ -21,19 +22,18 @@ has to be a factor and can not be missing. See 'Examples'.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients".}
 
-\item{grade_range}{range of grades in a form of \code{c(x, y)}, default is 
-\code{c(1, 5)}. This only has effect on which grades are displayed and 
-assures a proper fill in for grades, otherwise no sub-setting of data is 
-done. See 'Details'.}
+\item{grade_levels}{range of grades in a form of \code{x:y}, default is 
+\code{1:5}. This assures a proper fill in for grades, see 'Details'.}
 }
 \description{
-\code{t_ae_ctc} returns adverse events sorted by highest NCI CTCAE grade.
+\code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
+ Institute) CTCAE (common terminology criteria for adverse avents) grade.
 }
 \details{
 \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
  intensity for system organ class (SOC) and overall rows and includes 
  percentages based on the total number of patients in the column heading 
- (i.e. "N=nnn"). If the inention is to use patients number from subject level
+ (i.e. "N=nnn"). If the intention is to use patients number from subject level
  dataset as N for percentage calculation then adeverse events dataset should
  be left joined to subject level dataset and the \code{col_by} variable should
  be dropped from adverse events dataset, see the example. Otherwise, N will be
@@ -41,19 +41,19 @@ done. See 'Details'.}
  multiple events within a patient of the same PT are counted once using the
  greatest intensity reported. 
 
+\code{t_ae_ctc} removes any non-complete records, e.g. if class or term are 
+ missing. If the intent is to preserve such records, then impute missing 
+ values before using \code{t_ae_ctc}.
+     
 \code{t_ae_ctc} orders data by "All Patients" column from the most commonly
  reported SOC to the least frequent one. Within SOC, it sorts by decreasing
- frequency of PT.   
+ frequency of PT. It brakes ties using SOC/PT names in alphabetical order.   
 
-\code{t_ae_ctc} removes any non-complete records, e.g. if class or term are 
- missing.
- 
 \code{t_ae_ctc} fills in \code{col_by} and \code{grade} with \code{0} value 
 in case there was no AEs reported for particular \code{col_by} and/or 
-\code{grade} category. Use \code{grade_range} to modify displayed grades, e.g. 
- \code{grade_range = c(3, 5)} will only display grades 3, 4, and 5. Please be
- aware that this is only for display purposes and does not sub-set data. One 
- needs to sub-set data before providing it to \code{t_ae_ctc}.
+\code{grade} category. Use \code{grade_levels} to modify the range of existing
+grades. If data does not have any records with \code{grade} 5 and the intent 
+is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 }
 \examples{
 # Simple example
@@ -90,30 +90,27 @@ tbl <- t_ae_ctc(
   id = ANL$USUBJID,
   grade = ANL$GRADE,
   col_by = factor(ANL$ARM),
-  total = "All Patients",
-  grade_range = c(1, 3)
+  total = "All Patients"
 )
 
 tbl
 
-
-
 library(random.cdisc.data)
 
-ASL <- radam("ASL")
+ASL <- radam("ASL", N = 10)
 AAE <- radam("AAE", ADSL = ASL)
 
 ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
 
 tbl <- with(ANL,
             t_ae_ctc(
-              class = ANL$AEBODSYS,
-              term =  ANL$AEDECOD,
-              id = ANL$USUBJID,
-              grade = ANL$AETOXGR,
-              col_by = factor(ANL$ARM),
+              class = AEBODSYS,
+              term =  AEDECOD,
+              id = USUBJID,
+              grade = AETOXGR,
+              col_by = factor(ARM),
               total = "All Patients",
-              grade_range = c(1, 5)
+              grade_levels = 1:5
             )
 )
 
@@ -143,10 +140,10 @@ tbl <- t_ae_ctc(
  class = aae$AEBODSYS,
  term =  aae$AEDECOD,
  id = aae$USUBJID,
- grade = aae$AETOXGR,
+ grade = as.numeric(aae$AETOXGR),
  col_by = factor(aae$TUMTYPE),
  total = "All Patients",
- grade_range = c(1, 5)
+ grade_levels = 1:5
 )
 
 Viewer(tbl)
@@ -154,4 +151,6 @@ Viewer(tbl)
 }
 \author{
 Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}
+
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

@@ -2,28 +2,36 @@
 % Please edit documentation in R/t_ae_ctc.R
 \name{t_max_grade_per_id}
 \alias{t_max_grade_per_id}
-\title{Count Max per Id Per Once}
+\title{Tabulate maximum grade per id by col_by}
 \usage{
 t_max_grade_per_id(grade, id, col_by, col_N = NULL, grade_levels = NULL,
   any_grade = "-Any Grade-")
 }
 \arguments{
-\item{id}{character or factor}
+\item{grade}{a numeric vector with grade values}
 
-\item{col_by}{(inherit)}
+\item{id}{an vector with id values}
 
-\item{col_N}{divider for percentage based on level of col_by}
+\item{col_by}{a factor with values used for column names}
 
-\item{x}{a numeric vector}
+\item{col_N}{a vector with total n for each level of col_by}
 
-\item{levels}{domain of x}
+\item{grade_levels}{a numeric vector used for naming rows for each level of grade}
 
-\item{any}{add row that counts any occurance}
+\item{any_grade}{add a row that counts any occurrence, it is named -Any Grade- by default}
 }
 \description{
-E.g. as used in count ...
+Tabulate maximum grade per id by col_by
 }
 \examples{
+
+t_max_grade_per_id(
+  grade =  c(1,2,3),
+  id = c(1,1,1),
+  col_by = factor(rep("A", 3))
+)
+
+
 id <- c(1,1,2,2,3,3,3,4)
 t_max_grade_per_id(
   grade =  c(1,2,3,2,1,1,2,3),
@@ -45,4 +53,11 @@ t_max_grade_per_id(
   col_by = factor(LETTERS[1:3])
 )
 }
+
+t_max_grade_per_id(
+  grade =  c(1,2,NA),
+  id = c(1,2,3),
+  col_by = factor(LETTERS[1:3])
+)
+
 }
