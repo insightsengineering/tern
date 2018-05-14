@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_ae_ctc.R
 \name{t_max_grade_per_id}
 \alias{t_max_grade_per_id}
-\title{Tabulate maximum grade per id by col_by}
+\title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
 t_max_grade_per_id(grade, id, col_by, col_N = NULL, grade_levels = NULL,
   any_grade = "-Any Grade-")
@@ -14,14 +14,16 @@ t_max_grade_per_id(grade, id, col_by, col_N = NULL, grade_levels = NULL,
 
 \item{col_by}{a factor with values used for column names}
 
-\item{col_N}{a vector with total n for each level of col_by}
+\item{col_N}{a vector with total n for each level of \code{col_by}}
 
-\item{grade_levels}{a numeric vector used for naming rows for each level of grade}
+\item{grade_levels}{a numeric vector used for naming rows for each level of
+grade}
 
-\item{any_grade}{add a row that counts any occurrence, it is named -Any Grade- by default}
+\item{any_grade}{add a row that counts any occurrence, it is named \code{-Any
+Grade-} by default}
 }
 \description{
-Tabulate maximum grade per id by col_by
+This function is used for deriving adverse events tables.
 }
 \examples{
 

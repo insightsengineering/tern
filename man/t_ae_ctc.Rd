@@ -12,7 +12,9 @@ t_ae_ctc(class, term, id, grade, col_by, total = "All Patients",
 
 \item{term}{preferred term variable.}
 
-\item{id}{unique subject identifier variable.}
+\item{id}{unique subject identifier variable. If a particular subject has no
+adverse event then the subject \code{id} should be listed where
+\code{class} and \code{term} should be set to missing (i.e. \code{NA}).}
 
 \item{grade}{grade of adverse event variable.}
 
@@ -22,8 +24,9 @@ has to be a factor and can not be missing. See 'Examples'.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients".}
 
-\item{grade_levels}{range of grades in a form of \code{x:y}, default is 
-\code{1:5}. This assures a proper fill in for grades, see 'Details'.}
+\item{grade_levels}{ordered values of possible of grades in a form of
+\code{x:y}, default is \code{1:5}. This assures a proper fill in for
+grades, see 'Details'.}
 }
 \description{
 \code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
@@ -90,12 +93,15 @@ tbl <- t_ae_ctc(
   id = ANL$USUBJID,
   grade = ANL$GRADE,
   col_by = factor(ANL$ARM),
-  total = "All Patients"
+  total = "All Patients",
+  grade_levels = 1:3
 )
 
 tbl
 
+
 library(random.cdisc.data)
+library(dplyr)
 
 ASL <- radam("ASL", N = 10)
 AAE <- radam("AAE", ADSL = ASL)
@@ -116,38 +122,6 @@ tbl <- with(ANL,
 
 tbl
 
-\dontrun{
-# the following example should reproduce table t_ae_ctc_ATEZOREL_SENBX.out
-file.show('/opt/BIOSTAT/prod/cdpt7805/s28363v/reports/t_ae_ctc_ATEZOREL_SENBX.out')
-
-library(rocheBCE)
-AAE <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/xaae.sas7bdat')
-ASL <- read_bce('/opt/BIOSTAT/prod/s28363v/libraries/asl.sas7bdat')
-
-# filter subject-level dataset
-asl <- ASL[ASL$SAFFL == "Y", c("USUBJID", "TUMTYPE", "TRTSDTM", "TRT02AN")]
-asl$TUMTYPE <- ifelse(asl$TUMTYPE == '', 'OTHER', asl$TUMTYPE)
-asl <- asl[!(asl$TRT02AN \%in\% c(7, 8)) & 
-(as.Date(asl$TRTSDTM) <= as.Date('2016-10-12')), c('USUBJID', 'TUMTYPE')]
-
-# filter adverse events dataset and drop the col_by variable
-aae <- AAE[AAE$TRTEMFL == 'Y' & AAE$ANLFL == 'Y' & AAE$AEREL1 == 'Y', !names(AAE) \%in\% 'TUMTYPE']
-
-# left join subject-level dataset with adverse events
-aae <- merge(asl, aae, by = c('USUBJID'), all.x = TRUE)
-
-tbl <- t_ae_ctc(
- class = aae$AEBODSYS,
- term =  aae$AEDECOD,
- id = aae$USUBJID,
- grade = as.numeric(aae$AETOXGR),
- col_by = factor(aae$TUMTYPE),
- total = "All Patients",
- grade_levels = 1:5
-)
-
-Viewer(tbl)
-}
 }
 \author{
 Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}
