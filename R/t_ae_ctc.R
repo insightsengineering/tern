@@ -217,18 +217,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   tbl
 }
 
-indent_table <- function(x, n) {
-  for (i in 1:nrow(x)) {
-    attr(x[[i]], "indent") <- attr(x[[i]], "indent") + n
-  }
-  x
-}
 
-shift_label_table <- function(tbl, term) {
-  t_grade <- rtablel(rheader(rrow("", "."), rrow("", "Grade")), c(lapply(row.names(tbl), function(xi) rrow("", xi))))
-  attr(t_grade[[1]], "row.name") <- term
-  cbind_rtables(t_grade, tbl)
-}
 
 add_ae_class <- function(tbl, class) {
   rbind(
@@ -237,41 +226,6 @@ add_ae_class <- function(tbl, class) {
   )
 }
 
-
-#' cbind two rtables
-#' 
-#' @examples 
-#' x <- rtable(c("A", "B"), rrow("x row 1", 1,2), rrow("x row 2", 3, 4))
-#' 
-#' y <- rtable("C", rrow("y row 1", 5), rrow("y row 2", 6))
-#' 
-#' 
-#' cbind_rtables(x, y)
-#' 
-cbind_rtables <- function(x, y) {
-  if (!is(x, "rtable") || !is(y, "rtable")) stop("x and y are not both rtables")
-  
-  if(nrow(x) != nrow(y)) stop("number of rows missmatch")
-  
-  header_x <- header(x)
-  header_y <- header(y)
-  
-  if(nrow(header_x) != nrow(header_y)) stop("number of rows missmatch in header")
-  
-  header <- do.call(rheader, combine_rrows(header_x, header_y))
-  
-  body <- combine_rrows(unclass(x), unclass(y))
-  
-  rtablel(header, body)
-}
-
-combine_rrows <- function(x,y) {
-  
-  Map(function(xi, yi) {
-    rrowl(attr(xi, "row.name"), c(xi, yi))
-  }, x, y)
-  
-}
 
 
 #' Tabulate maximum grade per id by \code{col_by}
@@ -383,12 +337,4 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
   tbl
 }
 
-# checks if there is any case and derives counts (percentage), otherwise 0
-count_perc_col_N <- function(x_cell, N) {
-  N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
-  if (N_i > 0) {
-    length(x_cell$id) * c(1, 1 / N_i) # obtaining the total and getting percentage
-  } else {
-    rcell(0, format = "xx")
-  }
-}
+
