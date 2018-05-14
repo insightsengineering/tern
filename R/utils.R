@@ -513,3 +513,31 @@ reflow <- function(x,
   
   outtxt
 }
+
+
+#' stack a modified version of a data frame
+#'
+#' essenially rbind(X,modified(X)). this is useful for example when a total
+#' column is needed.
+#'
+#' @param X a data.frame
+#' @param ... key=value pairs, where the key refers to a variable in X and value
+#'   is the valueof the variable in modified(X)
+#'   
+#' @noRd
+#' 
+#' @examples 
+#' 
+#' duplicate_with_var(iris, Species = "Total")
+#' 
+duplicate_with_var <- function(X, ...) {
+  dots <- list(...)
+  nms <- names(dots)
+  if (is.null(nms) || !all(nms %in% names(X)))
+    stop("not all names in ... are existent or in X")
+  X_copy <- X
+  for (var in nms) {
+    X_copy[[var]] <- dots[[var]]
+  }
+  rbind(X, X_copy)
+}
