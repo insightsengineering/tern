@@ -139,7 +139,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   
   # need to remove extra records that came from subject level data
   # when left join was done. also any record that is missing class or term
-  is_class_or_term_missing <- is.na(df$class) | is.na(df$term) | df$class == '' | df$term == ''
+  is_class_or_term_missing <- df$class == '' | df$term == ''
   df$class[is_class_or_term_missing] <- NA
   df$term[is_class_or_term_missing] <- NA
   
@@ -174,7 +174,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
       tbl[1, n_cols + 1][1]
     }, numeric(1))
     
-    l_t_terms[c(1, setdiff(order(N_total_any, decreasing = TRUE), 1))]
+    l_t_terms[c(1, setdiff(order(-N_total_any, names(l_t_terms), decreasing = FALSE), 1))]
   })
   
   # now sort tables
@@ -182,7 +182,7 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
     tbl[[1]][1, n_cols + 1][1]
   }, numeric(1))
   
-  l_t_class_terms_sorted <- l_t_class_terms[order(N_total_overall, decreasing = TRUE)]
+  l_t_class_terms_sorted <- l_t_class_terms[order(-N_total_overall, names(l_t_class_terms), decreasing = FALSE)]
   
   tbl_overall <- t_max_grade_per_id(
     grade = df$gradev,
