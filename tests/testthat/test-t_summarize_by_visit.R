@@ -40,7 +40,7 @@ test_that("summary by visit table", {
   
   header(tbl_stream) <- rheader(
     rrow("", rcell("Quebec", colspan = 2), rcell("Mississippi", colspan = 2)),
-    rrow("", rcell("(N=42)", colspan = 2), rcell("(N=42)", colspan = 2)),
+    rrow("", rcell("(N=14)", colspan = 2), rcell("(N=21)", colspan = 2)),
     rrow("", "conc", "uptake", "conc", "uptake")
   )
   
@@ -49,11 +49,13 @@ test_that("summary by visit table", {
 
   
   # call t_summarize_byvisit function
-  df <- CO2 %>% mutate(Visit = factor(ifelse(grepl("Mn|Qn1", Plant), "Visit last", gsub("Qc|Qn|Mc", "Visit ", Plant))))
+  df <- CO2 %>% mutate(Visit = factor(ifelse(grepl("Mn|Qn1", Plant), "Visit last", gsub("Qc|Qn|Mc", "Visit ", Plant)))) %>%
+    group_by(Visit) %>% mutate(ID = 1:n()) %>% ungroup()
   
   tbl <- t_summarize_by_visit(data = df[c("conc", "uptake")], 
                              visit = df$Visit, 
-                             col_by = df$Type)
+                             col_by = df$Type, 
+                             id = df$ID)
   
   
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
