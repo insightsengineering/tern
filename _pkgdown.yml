@@ -13,7 +13,7 @@ reference:
   - title:
     contents:
       - tern-package
-  - title: GDSR Tables
+  - title: Compound Tables
     desc: These tables are often compound tables that are found in the GDSR templates.
     contents:
       - t_ae_ctc
@@ -23,7 +23,7 @@ reference:
       - t_summarize_by_visit
       - t_summarize_variables
       - t_tte
-  - title: GDSR Graphs
+  - title: Compound Graphs
     contents:
       - starts_with("g_")
   - title: Elementary Tables
