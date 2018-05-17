@@ -100,6 +100,7 @@ g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NU
           legend.box.background = element_rect(colour = "black")
         )
     }
+  p
 
 
 }
