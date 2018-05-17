@@ -2,36 +2,33 @@
 % Please edit documentation in R/g_wf.R
 \name{g_wf}
 \alias{g_wf}
-\title{Forest plot}
+\title{Horizontal Waterfall Plot}
 \usage{
-g_wf(data, id_var, y, col_var, xlab = "ID", ylab = "Value",
-  title = "Waterfall Plot", legend.title = "", add_var = NULL)
+g_wf(y, id = 1:length(y), col = "steelblue", xlab = "ID",
+  ylab = "Value", legend.title = NULL)
 }
 \arguments{
-\item{data}{data frame}
-
-\item{id_var}{ID variable name used as the x-axis label for each bar from \code{data}}
-
 \item{y}{variable name of the numeric vector to be plotted from \code{data}}
-
-\item{col_var}{name of the categorical variable for bar coloring and legend from \code{data}}
 
 \item{xlab}{x label. Default is \code{ID}.}
 
 \item{ylab}{y label. Default is \code{Value}.}
 
-\item{title}{A string to be displayed as plot title.}
-
 \item{legend.title}{A string to be displayed as legend title.}
+
+\item{data}{data frame}
+
+\item{id_var}{ID variable name used as the x-axis label for each bar from \code{data}}
+
+\item{col_var}{name of the categorical variable for bar coloring and legend from \code{data}}
+
+\item{title}{A string to be displayed as plot title.}
 
 \item{add_id}{variables to be added to the summary table.}
 }
 \description{
-Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
-column with a single value and a column with 2 values
-}
-\details{
-id, y, col_var, xlab = "ID", ylab = "Value", title, legend.title, add_id = NULL
+The waterfall plot visualizes a quatity \code{y} ordered by value with some
+markup
 }
 \examples{
 
@@ -50,9 +47,23 @@ apchg <- ARS_f \%>\%
   mutate(pchg = rnorm(100, 10, 50))
   # Merge pchange and besr response
 asld <- right_join(apchg, ASL_f \%>\% select(STUDYID, USUBJID, SEX, ARMCD))
-asld <- asld[c(1:30),]
+
+
+asld <- head(asld, 30)
+
 head(asld)
-g_wf(data = asld, id_var = "USUBJID", y = "pchg", col_var = "AVALC", add_var = c("SEX"))
+
+with(asld,
+  g_wf(
+    y = asld$pchg,
+    id = asld$USUBJID,
+    col = asld$AVALC,
+    
+  )
+)
+
+
+
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

@@ -1,9 +1,8 @@
-#' Forest plot 
+#' Horizontal Waterfall Plot
 #' 
-#' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
-#' column with a single value and a column with 2 values
+#' The waterfall plot visualizes a quatity \code{y} ordered by value with some
+#' markup
 #' 
-#' id, y, col_var, xlab = "ID", ylab = "Value", title, legend.title, add_id = NULL
 #'
 #' @param data data frame 
 #' @param id_var ID variable name used as the x-axis label for each bar from \code{data}
@@ -38,68 +37,69 @@
 #'   mutate(pchg = rnorm(100, 10, 50))
 #'   # Merge pchange and besr response
 #' asld <- right_join(apchg, ASL_f %>% select(STUDYID, USUBJID, SEX, ARMCD))
-#' asld <- asld[c(1:30),]
+#' 
+#' 
+#' asld <- head(asld, 30)
+#' 
 #' head(asld)
-#' g_wf(data = asld, id_var = "USUBJID", y = "pchg", col_var = "AVALC", add_var = c("SEX"))
-g_wf <- function(data, id_var, y, col_var, xlab = "ID", ylab = "Value", title = "Waterfall Plot", legend.title = "", add_var = NULL){
+#' 
+#' g_wf(
+#'   height = asld$pchg,
+#'   id = asld$USUBJID,
+#'   col = asld$AVALC
+#' )
+#' 
+#' g_wf(
+#'   height = asld$pchg,
+#'   id = paste("asdfdsfdsfsd",asld$USUBJID),
+#'   col = asld$AVALC
+#' )
+#' g_wf(
+#'   height = asld$pchg,
+#'   id = paste("asdfdsfdsfsd",asld$USUBJID)
+#' )
+#' 
+g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NULL){
   
-  #check_same_N(id_var = id_var, y = y, col_var = col_var, add_var = add_var)
-  plot_data <- data.frame(id = data[[id_var]], y = data[[y]], col_var = data[[col_var]])
-  y <- plot_data$y
-  id <- plot_data$id
+  check_same_N(y=height, id=id)
   
-  wf <- ggplot(plot_data, aes(x = reorder(id, -y), y = y, fill = col_var)) +
+  xlabel <- deparse(substitute(id))
+  ylabel <- deparse(substitute(height))
+  
+  col.label <- if (!missing(col)) deparse(substitute(col))
+  
+  xlab <- if (is.null(xlab)) xlabel else xlab
+  ylab <- if (is.null(ylab)) ylabel else ylab
+  col.legend.title <- if (is.null(col.legend.title)) col.label else col.legend.title
+  
+  
+  plot_data <- data.frame(
+    height = height,
+    id = as.character(id),
+    col = if (is.null(col)) "gray90" else to_n(col, length(height)),
+    stringsAsFactors = FALSE
+  )
+  
+  plot_data_ord <- plot_data[order(plot_data$height, decreasing = TRUE), ]
+  
+  p <- ggplot(plot_data_ord, aes(x = factor(id, levels=id), y = height, fill = col)) +
+    geom_col() + 
+    geom_text(label = format(plot_data_ord$height, digits=2),
+              vjust = ifelse(plot_data_ord$height >= 0, -0.5, 1.5)) +
     xlab(xlab) +
     ylab(ylab) + 
-    ylim(min(y) + min(y)/10, max(y) + max(y)/10) +
-    labs(fill = paste0("Response")) +
-    ggtitle(title) + 
-    geom_col() + 
-    geom_text(y = y + (1/30 * (max(y) - min(y) + (max(y) - min(y))/10)) * sign(y),
-              label = format(y, digits=2),
-              size = 2.5) +
-    theme(axis.text.x = element_text(angle = 0, size = 8),
-          axis.title.y = element_text(size = 10),
-          axis.title.x = element_text(size = 10),
-          legend.title = element_text(size = 8, face = "bold"),
-          legend.text = element_text(size = 8),
-          plot.margin = unit(c(1,2,1,1), "lines"))
+    theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = .5)) 
 
-  if(!is.null(add_var)){
-    table_data <- data.frame(id = id, value = y, data[add_var])
-    table_data$v.name <- table_data$id
-    
-    table_data_t <- reshape(table_data, 
-                            varying = list(c("id", add_var)), 
-                            idvar = "v.name", 
-                            times = c("id", add_var), timevar = "var", direction = "long")
-    
-    data_table <- ggplot(table_data_t, aes(x = reorder(v.name, -value), y = factor(var, levels = c(add_var, "id")), label = format(table_data_t[,4]))) +
-      geom_text(size = 2.5) + theme_bw() +
-      xlab(NULL) + 
-      theme(panel.grid.major = element_blank(), legend.position = "none",panel.border = element_blank(), 
-            axis.title = element_blank(), 
-            axis.text.x = element_blank(), 
-            axis.text.y = element_text(face = "bold", size = 8),
-            axis.ticks = element_blank()) +
-      theme(plot.margin = unit(c(0, 5,0,1), "lines"))
-    data_table
-    Layout <- grid.layout(nrow = 2, ncol = 1, heights = unit(c(2,
-                                                               0.5), c("null", "null")))
-    grid.show.layout(Layout)
-    vplayout <- function(...) {
-      grid.newpage()
-      pushViewport(viewport(layout = Layout))
+    if (!is.null(col)) {
+      p <- p +
+        labs(fill = col.legend.title) +
+        theme(
+          legend.position="bottom",
+          legend.background = element_blank(),
+          legend.title = element_text(face="bold"),
+          legend.box.background = element_rect(colour = "black")
+        )
     }
-    
-    
-    subplot <- function(x, y) viewport(layout.pos.row = x,
-                                       layout.pos.col = y)
-    mmplot <- function(a, b) {
-      vplayout()
-      print(a, vp = subplot(1, 1))
-      print(b, vp = subplot(2, 1))
-    }
-    mmplot(wf, data_table)
-  } else wf
+
+
 }
