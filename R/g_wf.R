@@ -5,14 +5,15 @@
 #' 
 #' id, y, col_var, xlab = "ID", ylab = "Value", title, legend.title, add_id = NULL
 #'
-#' @param id ID variable used as the x-axis label for each bar
-#' @param y numeric vector to be plotted
-#' @param  col_var categorical vector for bar coloring and legend
+#' @param data data frame 
+#' @param id_var ID variable name used as the x-axis label for each bar from \code{data}
+#' @param y  variable name of the numeric vector to be plotted from \code{data}
+#' @param  col_var name of the categorical variable for bar coloring and legend from \code{data}
 #' @param xlab x label. Default is \code{ID}.
 #' @param ylab y label. Default is \code{Value}.
 #' @param title A string to be displayed as plot title.
 #' @param legend.title A string to be displayed as legend title.
-#' @param add_id vector of the same length as \code{id} to be added to bar label.
+#' @param add_id variables to be added to the summary table.
 #' 
 #' @template author_songy24
 #' 
