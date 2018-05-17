@@ -15,7 +15,7 @@
 #' @param legend.title A string to be displayed as legend title.
 #' @param add_id variables to be added to the summary table.
 #' 
-#' @template author_songy24
+#' @template author_song24
 #' 
 #' @import ggplot2
 #' 
@@ -41,7 +41,6 @@
 #' asld <- asld[c(1:30),]
 #' head(asld)
 #' g_wf(data = asld, id_var = "USUBJID", y = "pchg", col_var = "AVALC", add_var = c("SEX"))
-
 g_wf <- function(data, id_var, y, col_var, xlab = "ID", ylab = "Value", title = "Waterfall Plot", legend.title = "", add_var = NULL){
   
   #check_same_N(id_var = id_var, y = y, col_var = col_var, add_var = add_var)
@@ -54,7 +53,7 @@ g_wf <- function(data, id_var, y, col_var, xlab = "ID", ylab = "Value", title = 
     ylab(ylab) + 
     ylim(min(y) + min(y)/10, max(y) + max(y)/10) +
     labs(fill = paste0("Response")) +
-    ggtitle(main) + 
+    ggtitle(title) + 
     geom_col() + 
     geom_text(y = y + (1/30 * (max(y) - min(y) + (max(y) - min(y))/10)) * sign(y),
               label = format(y, digits=2),
