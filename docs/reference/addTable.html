@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add text annotation on top of a kmgrob — addTable • tern</title>
+<title>Add an rtable as Text Annotation to a Gird Grob — addTable • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,19 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Add an rtable as Text Annotation to a Gird Grob — addTable" />
+
+<meta property="og:description" content="utility function to edit a grid grob by adding a text grob" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +53,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tern</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tern</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -80,68 +93,74 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add text annotation on top of a kmgrob</h1>
+    <h1>Add an rtable as Text Annotation to a Gird Grob</h1>
+    
     </div>
 
     
     <p>utility function to edit a grid grob by adding a text grob</p>
     
 
-    <pre class="usage"><span class='fu'>addTable</span>(<span class='no'>kmgrob</span>, <span class='no'>tbl</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"npc"</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"npc"</span>),
+    <pre class="usage"><span class='fu'>addTable</span>(<span class='no'>grob</span>, <span class='no'>tbl</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"npc"</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"npc"</span>),
   <span class='kw'>just</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"left"</span>, <span class='st'>"top"</span>), <span class='kw'>vp</span> <span class='kw'>=</span> <span class='fu'>vpPath</span>(<span class='st'>"plotArea"</span>, <span class='st'>"topCurve"</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>kmgrob</th>
-      <td><p>a kmGrob for further editing.</p></td>
+      <th>grob</th>
+      <td><p>a kmGrob for further editing</p></td>
     </tr>
     <tr>
       <th>tbl</th>
-      <td><p>An <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code>.</p></td>
+      <td><p>an <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code></p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>A numeric vector or unit object specifying x-values.</p></td>
+      <td><p>numeric vector or unit object specifying x-values</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>A numeric vector or unit object specifying y-values.</p></td>
+      <td><p>numeric vector or unit object specifying y-values</p></td>
     </tr>
     <tr>
       <th>just</th>
-      <td><p>The justification of the text relative to its (x, y) location.</p></td>
+      <td><p>The justification of the text relative to its (x, y) location</p></td>
     </tr>
     <tr>
       <th>vp</th>
-      <td><p>a Grid veiwport object for annotating a text grob.</p></td>
+      <td><p>grid viewport object for annotating a text grob</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
                  <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
                  <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
                  <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
                  <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
                  <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>))
+
+
 <span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
-<span class='no'>a_kmgrob</span> <span class='kw'>&lt;-</span> <span class='fu'>kmGrob</span>(<span class='no'>fit_km</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+
+<span class='no'>a_kmgrob</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='g_km.html'>g_km</a></span>(<span class='no'>fit_km</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
 <span class='no'>fit_coxph</span> <span class='kw'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span> + <span class='fu'>strata</span>(<span class='no'>RACE</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>)
-<span class='no'>cox_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>coxphAnnoData</span>(<span class='no'>fit_coxph</span>)</div><div class='output co'>#&gt; <span class='error'>Error in coxphAnnoData(fit_coxph): could not find function "coxphAnnoData"</span></div><div class='input'><span class='fu'>addTable</span>(<span class='no'>a_kmgrob</span>,
-         <span class='kw'>vp</span> <span class='kw'>=</span> <span class='fu'>vpPath</span>(<span class='st'>"plotArea"</span>, <span class='st'>"topCurve"</span>),
-         <span class='kw'>x</span><span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1</span>, <span class='st'>"lines"</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1</span>, <span class='st'>"lines"</span>),
-         <span class='kw'>just</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"left"</span>, <span class='st'>"bottom"</span>),
-         <span class='kw'>tbl</span> <span class='kw'>=</span> <span class='no'>cox_tbl</span> ) <span class='kw'>%&gt;%</span>
-         <span class='fu'>grid.draw</span>()</div><div class='output co'>#&gt; <span class='error'>Error in toString(tbl, gap = 1): object 'cox_tbl' not found</span></div><div class='input'>         
-         
+<span class='no'>cox_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='t_coxph.html'>t_coxph</a></span>(<span class='no'>fit_coxph</span>)
+
+<span class='no'>p_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>addTable</span>(
+  <span class='no'>a_kmgrob</span>,
+  <span class='kw'>vp</span> <span class='kw'>=</span> <span class='fu'>vpPath</span>(<span class='st'>"plotArea"</span>, <span class='st'>"topCurve"</span>),
+  <span class='kw'>x</span><span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1</span>, <span class='st'>"lines"</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1</span>, <span class='st'>"lines"</span>),
+  <span class='kw'>just</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"left"</span>, <span class='st'>"bottom"</span>),
+  <span class='kw'>tbl</span> <span class='kw'>=</span> <span class='no'>cox_tbl</span>
+)
+
+<span class='fu'>grid.newpage</span>()
+<span class='fu'>grid.draw</span>(<span class='no'>p_tbl</span>)</div><div class='img'><img src='addTable-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -161,11 +180,11 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Mark Rothe, Yuyao Song, Chendi Liao, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -173,3 +192,4 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
   </body>
 </html>
+

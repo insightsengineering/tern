@@ -9,9 +9,10 @@ t_tte(formula, data, event_descr, time_points, time_unit = "month",
 }
 \arguments{
 \item{formula}{a survival formula, the arm variable needs to be wrapped in
-\code{arm()}. The \code{strata()} special will only be used for the
-stratified analysis. If there is not \code{strata} specification then the
-stratified analysis is omitted.}
+\code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
+used for the stratified analysis. If there is not
+\code{\link[survival]{strata}} specification then the stratified analysis
+is omitted.}
 
 \item{data}{a \code{data.frame} with all the variable that are used in
 \code{formula}}

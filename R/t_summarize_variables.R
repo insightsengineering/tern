@@ -1,6 +1,6 @@
 
 
-#' Table of Variable Summaries
+#' Variables Summary Table
 #' 
 #' Similiar as the demographic table in STREAM
 #' 

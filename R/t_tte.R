@@ -4,9 +4,10 @@
 #' as described in the details section.
 #' 
 #' @param formula a survival formula, the arm variable needs to be wrapped in
-#'   \code{arm()}. The \code{strata()} special will only be used for the
-#'   stratified analysis. If there is not \code{strata} specification then the
-#'   stratified analysis is omitted.
+#'   \code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
+#'   used for the stratified analysis. If there is not
+#'   \code{\link[survival]{strata}} specification then the stratified analysis
+#'   is omitted.
 #' @param data a \code{data.frame} with all the variable that are used in
 #'   \code{formula}
 #' @param event_descr a factor that partitions the the events into earliest
@@ -30,6 +31,7 @@
 #' 
 #' @template return_rtable
 #' 
+#' @importFrom stats terms quantile pchisq qnorm pnorm 
 #' @export
 #' 
 #' @author Mark Rothe (rothem1)
@@ -135,14 +137,14 @@ t_tte <- function(formula,
   
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
   qnt <- Map(function(x,y) c(x,y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
-  rng <- lapply(split(data.frame(tte, is_event), arm), range)
+  rng <- lapply(split(data.frame(tte, is_event), arm), function(x) range(x$tte[x$is_event], na.rm = TRUE))
   
   tbl_tte <- rtable(
     header = levels(arm),
     rrow(paste0("Time to Event (", time_unit, "s)")),
     rrowl("Median", med, format = "xx.xx", indent = 1),
     rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
-    rrowl("25% and 75%−ile", qnt, indent = 1, format = "xx.x, xx.x"),
+    rrowl("25% and 75%-ile", qnt, indent = 1, format = "xx.x, xx.x"),
     rrowl("Range", rng, indent = 1, format = "xx.x to xx.x")  
   )
   
@@ -171,7 +173,7 @@ t_tte <- function(formula,
       fit_survdiff <- survdiff(formula, data = df_i)
       fit_coxph <- tryCatch(
         coxph(formula, data = df_i, ties = ties), # weights are not supported if ties = 'exact'
-        error = function(e) null
+        error = function(e) NULL
       )
       
       list(

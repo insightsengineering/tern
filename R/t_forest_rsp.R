@@ -1,12 +1,13 @@
-#' Response Forest Plot Table
+#' Response Table as used for Forest Plot
 #' 
-#' The Response forest plot table summarizes response data by groups. 
-#' The function returns sample sizes and responder counts and response rates for each analysis 
-#' arm, as well as a odds ratio and the corresponding 95\% confidence interval 
-#' from a univariate logistic model.
+#' The Response forest plot table summarizes response data by groups. The
+#' function returns sample sizes and responder counts and response rates for
+#' each analysis arm, as well as a odds ratio and the corresponding 95\%
+#' confidence interval from a univariate logistic model.
 #'
 #' @inheritParams t_forest_tte 
-#' @param rsp is a boolean vector. If \code{TRUE}, observation is a response, otherwise, \code{FALSE}. 
+#' @param rsp is a boolean vector. If \code{TRUE}, observation is a response,
+#'   otherwise, \code{FALSE}.
 #'    
 #' @details 
 #' Logistic regression is used for odds ratio calculation.
@@ -183,8 +184,13 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   )
 }  
 
-# glm_results(glm_data)
-# data = glm_data 
+#' fit glm models for forest plot rsp
+#' 
+#' @noRd
+#' 
+#' @importFrom stats setNames glm binomial confint 
+#' 
+#' 
 glm_results <- function(data){
   
   #Response Rate
@@ -238,21 +244,17 @@ glm_results <- function(data){
 }
 
 format_logistic <- function(x) {
-  
-    list(
-      rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
-      rcell(x[["resp_ref_n"]], "xx"),
-      rcell(x[["resp_ref_event"]], "xx"),
-      rcell(x[["resp_ref_event"]] / x[["resp_ref_n"]], "xx.xx"),
-      rcell(x[["resp_comp_n"]], "xx"),
-      rcell(x[["resp_comp_event"]], "xx"),
-      rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
-      if(!is.na(x[['glm_or']]) & x[["glm_or"]] > 999.99) {rcell(">999.99", format = "xx")} else {rcell(x[["glm_or"]], format = "xx.xx")},
-      if(!is.na(x[['glm_ucl']]) & x[["glm_ucl"]] > 999.99){
-        rcell(c(round(x[['glm_lcl']], 2), ", >999.99"), format = "(xx, xx)")
-        } else{
-        rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = "(xx.xx, xx.xx)")
-          }
-    )
+  format.or <- ifelse(!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9, ">999.9",  "xx.xx")
+  format.ci <- ifelse(!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
+  list(
+    rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
+    rcell(x[["resp_ref_n"]], "xx"),
+    rcell(x[["resp_ref_event"]], "xx"),
+    rcell(x[["resp_ref_event"]] / x[["resp_ref_n"]], "xx.xx"),
+    rcell(x[["resp_comp_n"]], "xx"),
+    rcell(x[["resp_comp_event"]], "xx"),
+    rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
+    rcell(x[["glm_or"]], format = format.or),
+    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = eval(format.ci))
+  )
 }
- 

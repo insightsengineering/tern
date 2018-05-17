@@ -5,7 +5,7 @@
 #' This functions returns a named character vector with the variabel labels
 #' (empty sting if not specified)
 #' 
-#' @param x a \code{data.frame} oject
+#' @param x a \code{data.frame} object
 #' @param fill boolean in case the \code{label} attribute does not exist if
 #'   \code{TRUE} the variable names is returned, otherwise \code{NA}
 #' 
@@ -52,6 +52,7 @@ var_labels <- function(x, fill = FALSE) {
 #' This functions sets all non-missing variable labels in a \code{data.frame}
 #' 
 #' @inheritParams var_labels
+#' @param value new variable labels, \code{NA} removes the variable label
 #' 
 #' @return modifies the variable labels of \code{x}
 #' 
@@ -72,10 +73,9 @@ var_labels <- function(x, fill = FALSE) {
   if (ncol(x) != length(value)) stop("dimension missmatch")
   
   for (j in seq_along(x)) {
-    if (!is.na(value[j])) {
-      attr(x[[j]], "label") <- value[j]
-    }
+    attr(x[[j]], "label") <- if (!is.na(value[j])) value[j] else NULL
   }
+  
   x
 }
 
@@ -115,8 +115,27 @@ var_relabel <- function(x, ...) {
   x
 }
 
-  
-  
+
+#' Remove Variable Labels of a \code{data.frame}
+#' 
+#' Removing labels attributes from a variables in a data frame
+#' 
+#' @param x a \code{data.frame} object
+#' 
+#' @return the same data frame as \code{x} stripped of variable labels 
+#' 
+#' @export
+#' 
+#' @examples 
+#' x <- var_labels_remove(iris)
+#' 
+var_labels_remove <- function(x) {
+  if (!is(x, "data.frame")) stop("x must be a data.frame")
+  for (i in 1:ncol(x)) attr(x[[i]], "label") <- NULL
+  x
+}
+
+
 #' Check if list or data.frame has elements/variables
 #' 
 #' Checks if list names exist and throws an error otherwise
@@ -216,8 +235,14 @@ reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
 }
 
 
-#' Combine factor levels
+#' Combine Factor Levels
 #' 
+#' 
+#' @param x factor
+#' @param levels level names to be combined
+#' @param new_level name of new level
+#' 
+#' @return a factor
 #' 
 #' @export
 #' 
@@ -284,6 +309,9 @@ start_with_NULL <- function(x) {
 #' Stack rtables with rbind and add empy rows between tables
 #' 
 #' @param ... rtbale objects
+#' @param nrow_pad number of empty rows between tables in \code{...}
+#' 
+#' @noRd
 #' 
 #' 
 stack_rtables <- function(..., nrow_pad = 1) {
@@ -310,11 +338,64 @@ stack_rtables_l <- function(x) {
   do.call(stack_rtables, x)
 }
 
+
+
+#' Calculate and Stack Tables
+#' 
+#' 
+#' @param funs list of functions or vector with function names to create the
+#'   tables
+#' @param ... union of named arguments for all the functions defined in
+#'   \code{funs}
+#' @param nrow_pad number of empty rows between tables
+#' 
+#' @noRd
+#' 
+#' @author Adrian Waddell
+#' 
+#' @examples
+#' t_tbl1 <- function(x, by, na.rm = TRUE) rtabulate(x, by, mean, format = "xx.xx")
+#' t_tbl2 <- function(x, by) rtabulate(x, by, sd, format = "xx.xx")
+#' t_tbl3 <- function(x, by) rtabulate(x, by, range, format = "xx.xx - xx.xx")
+#' 
+#' 
+#' t_tbl <- function(x, by, na.rm) {
+#'  compound_table(
+#'    funs = c("t_tbl1", "t_tbl2", "t_tbl3"), 
+#'    x = iris$Sepal.Length,
+#'    by = iris$Species,
+#'    na.rm = FALSE
+#'  )
+#' }
+#' 
+compound_table <- function(funs, ..., nrow_pad = 1) {
+  
+  dots <- list(...)
+  
+  tbls <- lapply(funs, function(fun) {
+    
+    f <- match.fun(fun)
+    
+    do.call(f, dots[names(dots) %in% names(formals(f))])
+    
+  })
+  
+  do.call(tern:::stack_rtables, c(tbls, list(nrow_pad = nrow_pad)))
+  
+}
+
 wrap_with <- function(x, left, right, as_list = TRUE) {
   lbls <- paste0(left, x, right)
   if (as_list) as.list(lbls) else lbls
 }
 
+#' check if all elements in x are factors
+#' 
+#' @param x data.frame
+#' 
+#' @importFrom methods is
+#' 
+#' @noRd
 all_as_factor <- function(x) {
   if (!is(x, "data.frame")) stop("x needs to be a data.frame")
   
@@ -384,4 +465,79 @@ as.global <- function(...) {
     ge[[name]] <- x
   }, args, names)
   
+}
+
+#' Helper functions to re-format and reflow long arm/grouping labels by inserting
+#' line breaks
+#' 
+#' @param x input single string
+#' @param delim delimiter, default is space
+#' @param limit number of characters allowed before inserting line break,
+#'   default is the maximum length of longest word
+#'   
+#' @noRd
+#' 
+#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
+#'   
+#' @examples 
+#' 
+#' x = "hellO-world abcerewerwere testing "
+#' reflow(x)
+#' reflow(x, delim = "-")
+#' reflow(x, limit= 9)
+#' 
+reflow <- function(x, 
+                   delim = " ", 
+                   limit = NULL) {
+  
+  xsplit <- unlist(strsplit(x, delim))
+  ctxt = ""
+  n = 0
+  
+  if (is.null(limit)) {limit <- max(unlist(lapply(xsplit, nchar)))}
+  
+  for (i in xsplit) {
+    if (nchar(i) > limit) {
+      ctxt <- ifelse(n, paste0(ctxt, "\n", i, "\n"), paste0(ctxt, i, "\n"))
+      n = 0
+    } else if ((n + nchar(i)) > limit) {
+      ctxt <- paste0(ctxt, "\n", i)
+      n = nchar(i)
+    } else {
+      ctxt <- ifelse(n, paste0(ctxt, delim, i), paste0(ctxt, i))
+      n = n + nchar(i)
+    }
+  }
+  
+  outtxt <- ifelse(substring(ctxt, nchar(ctxt)) == "\n", substr(ctxt, 1, nchar(ctxt)-1), ctxt)
+  
+  outtxt
+}
+
+
+#' stack a modified version of a data frame
+#'
+#' essenially rbind(X,modified(X)). this is useful for example when a total
+#' column is needed.
+#'
+#' @param X a data.frame
+#' @param ... key=value pairs, where the key refers to a variable in X and value
+#'   is the valueof the variable in modified(X)
+#'   
+#' @noRd
+#' 
+#' @examples 
+#' 
+#' duplicate_with_var(iris, Species = "Total")
+#' 
+duplicate_with_var <- function(X, ...) {
+  dots <- list(...)
+  nms <- names(dots)
+  if (is.null(nms) || !all(nms %in% names(X)))
+    stop("not all names in ... are existent or in X")
+  X_copy <- X
+  for (var in nms) {
+    X_copy[[var]] <- dots[[var]]
+  }
+  rbind(X, X_copy)
 }

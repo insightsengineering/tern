@@ -1,4 +1,4 @@
-#' Forest plot 
+#' Create a Forest Plot based on a Table
 #' 
 #' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
 #' column with a single value and a column with 2 values
@@ -35,7 +35,9 @@
 #' library(random.cdisc.data)
 #' 
 #' ASL <- radam("ASL")
-#' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
+#' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
+#'  if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+#' }))
 #' ATE <- radam("ATE", ADSL = ASL)
 #' 
 #' ATE_f <- subset(ATE, PARAMCD == "OS") 
@@ -473,6 +475,8 @@ forest_dot_line <- function(x, lower, upper, row_index, xlim, datavp) {
 #' Create A viewport tree for the forest plot
 #' 
 #' @noRd
+#' 
+#' @importFrom grDevices extendrange
 #' 
 #' @examples 
 #' \dontrun{

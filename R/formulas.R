@@ -10,6 +10,8 @@
 #' 
 #' @noRd
 #' 
+#' @importFrom stats update.formula as.formula 
+#' 
 #' @author boruvkaa
 #' 
 #' @examples 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_forest.R
 \name{g_forest}
 \alias{g_forest}
-\title{Forest plot}
+\title{Create a Forest Plot based on a Table}
 \usage{
 g_forest(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
   xlim = NULL, logx = FALSE, x_at = NULL, width_row.names = NULL,
@@ -52,7 +52,9 @@ column with a single value and a column with 2 values
 library(random.cdisc.data)
 
 ASL <- radam("ASL")
-ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x))
+ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
+ if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+}))
 ATE <- radam("ATE", ADSL = ASL)
 
 ATE_f <- subset(ATE, PARAMCD == "OS") 

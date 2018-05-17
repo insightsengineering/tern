@@ -1,5 +1,5 @@
 
-#' Time-to-event Forest Plot Table
+#' Time-to-event Table as used for Forest Plot
 #'
 #'The time-to-event forest plot table summarizes time-to-event data by groups. 
 #'The function returns event counts and median survival time for each analysis 
@@ -9,7 +9,8 @@
 #' @param tte a vector of time to event data
 #' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 #'   is censored
-#' @param group_data data frame with one column per grouping
+#' @param group_data data frame with one variable per grouping
+#' @param strata_data data frame with stratification variables
 #' @param col_by factor with reference and comparison group information, the
 #'   first \code{level} indicates the reference group
 #' @param total character with the row name of the analysis run on all data. If
@@ -69,7 +70,6 @@
 #' 
 #' tbl
 #' Viewer(tbl)
-#' 
 #' 
 t_forest_tte <- function(tte, 
                          is_event, 
@@ -259,6 +259,8 @@ survival_results <- function(data, ties){
 }
 
 format_survival_analysis <- function(x) {
+  format.hr <- ifelse(!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9, ">999.9",  "xx.xx")
+  format.ci <- ifelse(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
   list(
     rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
     rcell(x[["ref_n"]], "xx"),
@@ -267,11 +269,7 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_n"]], "xx"), 
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
-    if(!is.na(x[['cox_hr']]) & x[["cox_hr"]] > 999.99) {rcell(">999.99", format = "xx")} else {rcell(x[["cox_hr"]], format = "xx.xx")},
-    if(!is.na(x[['cox_ucl']]) & x[["cox_ucl"]] > 999.99){
-      rcell(c(round(x[['cox_lcl']], 2), ", >999.99"), format = "(xx, xx)")
-    } else{
-      rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = "(xx.xx, xx.xx)")
-    }
+    rcell(x[["cox_hr"]], format.hr),
+    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = eval(format.ci))
   )
 }

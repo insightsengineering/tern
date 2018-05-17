@@ -2,18 +2,19 @@
 % Please edit documentation in R/t_forest_rsp.R
 \name{t_forest_rsp}
 \alias{t_forest_rsp}
-\title{Response Forest Plot Table}
+\title{Response Table as used for Forest Plot}
 \usage{
 t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
   na.omit.group = TRUE, dense_header = FALSE)
 }
 \arguments{
-\item{rsp}{is a boolean vector. If \code{TRUE}, observation is a response, otherwise, \code{FALSE}.}
+\item{rsp}{is a boolean vector. If \code{TRUE}, observation is a response,
+otherwise, \code{FALSE}.}
 
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group}
 
-\item{group_data}{data frame with one column per grouping}
+\item{group_data}{data frame with one variable per grouping}
 
 \item{total}{character with the row name of the analysis run on all data. If
 \code{NULL} analysis is omitted.}
@@ -26,10 +27,10 @@ first \code{level} indicates the reference group}
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-The Response forest plot table summarizes response data by groups. 
-The function returns sample sizes and responder counts and response rates for each analysis 
-arm, as well as a odds ratio and the corresponding 95\% confidence interval 
-from a univariate logistic model.
+The Response forest plot table summarizes response data by groups. The
+function returns sample sizes and responder counts and response rates for
+each analysis arm, as well as a odds ratio and the corresponding 95\%
+confidence interval from a univariate logistic model.
 }
 \details{
 Logistic regression is used for odds ratio calculation.

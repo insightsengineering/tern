@@ -2,12 +2,22 @@
 % Please edit documentation in R/utils.R
 \name{combine_levels}
 \alias{combine_levels}
-\title{Combine factor levels}
+\title{Combine Factor Levels}
 \usage{
 combine_levels(x, levels, new_level = paste(levels, collapse = "/"))
 }
+\arguments{
+\item{x}{factor}
+
+\item{levels}{level names to be combined}
+
+\item{new_level}{name of new level}
+}
+\value{
+a factor
+}
 \description{
-Combine factor levels
+Combine Factor Levels
 }
 \examples{
 x <- factor(letters[1:5], levels = letters[5:1])
