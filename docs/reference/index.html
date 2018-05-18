@@ -52,7 +52,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -118,16 +118,16 @@
       </tbody><tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-compound-tables" class="hasAnchor"><a href="#section-compound-tables" class="anchor"></a>Compound Tables</h2>
-            <p class="section-desc"><p>These tables are often compound tables that are found in the GDSR templates.</p></p>
+            <h2 id="section-tables" class="hasAnchor"><a href="#section-tables" class="anchor"></a>Tables</h2>
+            <p class="section-desc"></p>
           </th>
         </tr>
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="t_ae_ctc.html">t_ae_ctc()</a></code> </p>
+            <p><code><a href="t_coxph.html">t_coxph()</a></code> </p>
           </td>
-          <td><p>Adverse Events Table by Highest NCI CTCAE Grade</p></td>
+          <td><p>Proportional Hazards Regression Model Fit Summary Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -140,6 +140,12 @@
             <p><code><a href="t_forest_tte.html">t_forest_tte()</a></code> </p>
           </td>
           <td><p>Time-to-event Table as used for Forest Plot</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="t_km.html">t_km()</a></code> </p>
+          </td>
+          <td><p>Kaplan Meier Fit Summary Table</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -168,7 +174,7 @@
       </tbody><tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-compound-graphs" class="hasAnchor"><a href="#section-compound-graphs" class="anchor"></a>Compound Graphs</h2>
+            <h2 id="section-graphs" class="hasAnchor"><a href="#section-graphs" class="anchor"></a>Graphs</h2>
             <p class="section-desc"></p>
           </th>
         </tr>
@@ -184,32 +190,6 @@
             <p><code><a href="g_km.html">g_km()</a></code> </p>
           </td>
           <td><p>Kaplan-Meier Plot</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-elementary-tables" class="hasAnchor"><a href="#section-elementary-tables" class="anchor"></a>Elementary Tables</h2>
-            <p class="section-desc"><p>These are tables that are often used in compound tables or graphs.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_coxph.html">t_coxph()</a></code> </p>
-          </td>
-          <td><p>Proportional Hazards Regression Model Fit Summary Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_km.html">t_km()</a></code> </p>
-          </td>
-          <td><p>Kaplan Meier Fit Summary Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_max_grade_per_id.html">t_max_grade_per_id()</a></code> </p>
-          </td>
-          <td><p>Tabulate maximum grade per id by <code>col_by</code></p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -272,9 +252,8 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-"></a></li>
-      <li><a href="#section-compound-tables">Compound Tables</a></li>
-      <li><a href="#section-compound-graphs">Compound Graphs</a></li>
-      <li><a href="#section-elementary-tables">Elementary Tables</a></li>
+      <li><a href="#section-tables">Tables</a></li>
+      <li><a href="#section-graphs">Graphs</a></li>
       <li><a href="#section-graphs-helper-functions">Graphs Helper Functions</a></li>
       <li><a href="#section-data-helper-functions">Data Helper Functions</a></li>
     </ul>
@@ -283,7 +262,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
