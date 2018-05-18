@@ -9,8 +9,9 @@
 #'   sub-header column name.
 #' @param visit factor with visit names ordered by desired display order in the 
 #'   stacked table.
+#' @param id unique subject identifier variable.
 #' @template param_col_by
-#'  
+#' 
 #' @template return_rtable
 #' 
 #' @template author_liaoc10
@@ -42,14 +43,14 @@
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
 #' 
-#' t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM)
-#' t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM)
+#' t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
+#' t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
 #' 
 #' # Add label to variable instead showing variable name
 #' ANL <- var_relabel(ANL, AVAL = "Value at\nVisit",
 #'                         CHG = "Change from\nBaseline",
 #'                         PCHG = "Percent Change\nfrom Baseline")
-#' t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM)
+#' t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
 #' 
 #' 
 #' # EXAMPLE 2
@@ -63,13 +64,13 @@
 #'      AVISIT = factor(AVISIT, levels = unique(AVISIT))
 #'    )
 #'
-#' tbl <- t_summarize_by_visit(data = AQS[c("AVAL", "CHG")], visit = AQS$AVISIT, col_by = AQS$ARM)
+#' tbl <- t_summarize_by_visit(data = AQS[c("AVAL", "CHG")], visit = AQS$AVISIT, col_by = AQS$ARM, id = AQS$USUBJID)
 #' tbl
 #' \dontrun{
 #' Viewer(tbl)
 #' }
 #' 
-t_summarize_by_visit <- function(data, visit, col_by) {
+t_summarize_by_visit <- function(data, visit, id, col_by) {
   
   # Check Arguments
   check_same_N(data = data, col_by = col_by, omit.NULL = TRUE)
@@ -79,7 +80,9 @@ t_summarize_by_visit <- function(data, visit, col_by) {
   vapply(data, check_is_numeric, logical(1))
   
   # Extracting variable metadata
-  bigN <- tapply(col_by, col_by, length)
+  # total N for column header
+  bigN <- tapply(id, col_by, function(x) (sum(!duplicated(x))))
+  
   topcol_label <- levels(col_by)
   topcol_n <- length(topcol_label)
   subcol_name <- names(data)
