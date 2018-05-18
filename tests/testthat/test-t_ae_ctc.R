@@ -184,6 +184,8 @@ test_that("adverse events sorted by highest NCI CTCAE grade", {
   
   tbl <- t_ae_ctc(class = ANL$AEBODSYS, term = ANL$AEDECOD, id = ANL$USUBJID, grade = ANL$AETOXGR, col_by = factor(ANL$TRT02AN))
   
-  compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+  comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+  
+  expect_true(all(comp == "."), "t_ae_ctc does not provide the same results as stream")
   
 })

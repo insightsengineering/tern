@@ -58,7 +58,7 @@ test_that("summary by visit table", {
   # Viewer(tbl, tbl_stream)
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
   
-  expect_true(all(comp == "."), "t_rsp  does not provide the same results as stream")
+  expect_true(all(comp == "."), "t_summarize_by_visit does not provide the same results as stream")
 
 })
 
