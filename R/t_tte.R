@@ -137,7 +137,7 @@ t_tte <- function(formula,
   
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
   qnt <- Map(function(x,y) c(x,y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
-  rng <- lapply(split(data.frame(tte, is_event), arm), range)
+  rng <- lapply(split(data.frame(tte, is_event), arm), function(x) range(x$tte[x$is_event], na.rm = TRUE))
   
   tbl_tte <- rtable(
     header = levels(arm),

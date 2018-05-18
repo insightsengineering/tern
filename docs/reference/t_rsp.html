@@ -58,7 +58,7 @@ and odds ratio." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -190,35 +190,35 @@ further explanation.</p></td>
  <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"RACE"</span>)]
 )
 <span class='no'>tbl2</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
-#&gt;                                                                     (N=349)               (N=306)               (N=345)    
+#&gt;                                                                     (N=344)               (N=305)               (N=351)    
 #&gt; ---------------------------------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        127 (36.39%)          116 (37.91%)          148 (42.9%)  
-#&gt; Non-Responders                                                    222 (63.61%)          190 (62.09%)          197 (57.1%)  
+#&gt; Responders                                                        149 (43.31%)          126 (41.31%)          158 (45.01%) 
+#&gt; Non-Responders                                                    195 (56.69%)          179 (58.69%)          193 (54.99%) 
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (31.33, 41.68)        (32.45, 43.6)         (37.61, 48.31)
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (38.01, 48.73)        (35.73, 47.06)        (39.73, 50.38)
 #&gt; 
-#&gt; Difference in Response Rates (%)                                                            1.52                  6.51     
-#&gt;   95% CI for difference (Wald without correction)                                       (-5.9, 8.94)         (-0.75, 13.77)
-#&gt;   95% CI for difference (Wald with continuity correction)                              (-6.21, 9.24)         (-1.04, 14.06)
-#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                       0.6891                0.092     
+#&gt; Difference in Response Rates (%)                                                             -2                   1.7      
+#&gt;   95% CI for difference (Wald without correction)                                      (-9.62, 5.61)         (-5.68, 9.08) 
+#&gt;   95% CI for difference (Wald with continuity correction)                              (-9.92, 5.92)         (-5.97, 9.37) 
+#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                       0.6068                0.6539    
 #&gt; 
-#&gt; Odds Ratio*                                                                                 1.07                  1.3      
-#&gt;   95% CI                                                                                (0.78, 1.47)          (0.96, 1.77) 
+#&gt; Odds Ratio*                                                                                 0.92                  1.07     
+#&gt;   95% CI                                                                                (0.67, 1.26)          (0.79, 1.45) 
 #&gt; 
-#&gt; Complete Response (CR)                                            55 (15.76%)           68 (22.22%)           88 (25.51%)  
-#&gt;   95% CI                                                         (12.1, 20.01)         (17.69, 27.3)         (20.99, 30.45)
+#&gt; Complete Response (CR)                                            74 (21.51%)           62 (20.33%)           85 (24.22%)  
+#&gt;   95% CI                                                         (17.29, 26.24)        (15.96, 25.29)        (19.83, 29.05)
 #&gt; 
-#&gt; Partial Response (PR)                                             72 (20.63%)           48 (15.69%)           60 (17.39%)  
-#&gt;   95% CI                                                         (16.51, 25.26)        (11.8, 20.25)         (13.54, 21.81)
+#&gt; Partial Response (PR)                                              75 (21.8%)           64 (20.98%)            73 (20.8%)  
+#&gt;   95% CI                                                         (17.55, 26.54)        (16.55, 25.99)        (16.67, 25.42)
 #&gt; 
-#&gt; Stable Disease (SD)                                               62 (17.77%)           54 (17.65%)           65 (18.84%)  
-#&gt;   95% CI                                                         (13.9, 22.19)         (13.54, 22.39)        (14.85, 23.37)
+#&gt; Stable Disease (SD)                                                54 (15.7%)             61 (20%)             66 (18.8%)  
+#&gt;   95% CI                                                         (12.02, 19.98)        (15.66, 24.94)        (14.85, 23.29)
 #&gt; 
 #&gt; Non-CR or Non-PD (NON CR/PD)                                           0                     0                     0       
 #&gt;   95% CI                                                               -                     -                     -       
 #&gt; 
-#&gt; Progressive Disease (PD)                                          72 (20.63%)           66 (21.57%)            59 (17.1%)  
-#&gt;   95% CI                                                         (16.51, 25.26)        (17.09, 26.61)        (13.28, 21.5) 
+#&gt; Progressive Disease (PD)                                          70 (20.35%)           58 (19.02%)           65 (18.52%)  
+#&gt;   95% CI                                                          (16.22, 25)          (14.77, 23.88)        (14.59, 22.98)
 #&gt; 
 #&gt; * Model stratified by RACE</div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)
@@ -245,7 +245,7 @@ Chendi Liao (liaoc10) <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.c
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

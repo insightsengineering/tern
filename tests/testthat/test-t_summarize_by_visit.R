@@ -47,7 +47,7 @@ test_that("summary by visit table", {
   # Viewer(tbl_stream)
   
 
-  
+  library(dplyr)
   # call t_summarize_byvisit function
   df <- CO2 %>% mutate(Visit = factor(ifelse(grepl("Mn|Qn1", Plant), "Visit last", gsub("Qc|Qn|Mc", "Visit ", Plant))))
   
@@ -55,10 +55,10 @@ test_that("summary by visit table", {
                              visit = df$Visit, 
                              col_by = df$Type)
   
-  
+  # Viewer(tbl, tbl_stream)
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
   
-  expect_true(all(comp == "."), "t_rsp  does not provide the same results as stream")
+  expect_true(all(comp == "."), "t_summarize_by_visit does not provide the same results as stream")
 
 })
 

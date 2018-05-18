@@ -84,7 +84,6 @@ tbl <- t_forest_tte(
 tbl
 Viewer(tbl)
 
-
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

@@ -56,7 +56,7 @@ column with a single value and a column with 2 values" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -219,21 +219,21 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
   <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                                                     ARM A                                                                                                    ARM B                                                                                                                    
-#&gt; Baseline Risk Factors                                        Total n                               n                             Responders                        Response.Rate                            n                             Responders                        Response.Rate                       Odds Ratio                           95% CI           
-#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                            100                                40                                 19                                0.48                                60                                 24                                 0.4                               0.74                           (0.33, 1.65)        
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                  ARM A                                                          ARM B                                                                   
+#&gt; Baseline Risk Factors                                 Total n                 n               Responders          Response.Rate              n               Responders          Response.Rate         Odds Ratio             95% CI    
+#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                     100                  40                   19                  0.48                  60                   24                   0.4                 0.74             (0.33, 1.65) 
 #&gt; 
 #&gt; SEX
-#&gt;   F                                                            52                                 19                                  9                                0.47                                33                                 11                                0.33                               0.56                           (0.17, 1.77)        
-#&gt;   M                                                            48                                 21                                 10                                0.48                                27                                 13                                0.48                               1.02                           (0.32, 3.23)        
+#&gt;   F                                                     52                   19                    9                  0.47                  33                   11                  0.33                 0.56             (0.17, 1.77) 
+#&gt;   M                                                     48                   21                   10                  0.48                  27                   13                  0.48                 1.02             (0.32, 3.23) 
 #&gt; 
 #&gt; RACE
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                             24                                 11                                  7                                0.64                                13                                  7                                0.54                               0.67                           (0.12, 3.42)        
-#&gt;   ASIAN                                                        18                                  8                                  4                                 0.5                                10                                  5                                 0.5                                 1                            (0.15, 6.65)        
-#&gt;   BLACK OR AFRICAN AMERICAN                                    15                                  7                                  3                                0.43                                 8                                  0                                  0                                  0                     (NA, 3.59303518857813e+211)
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER                    27                                 10                                  3                                 0.3                                17                                  9                                0.53                               2.62                           (0.53, 15.6)        
-#&gt;   WHITE                                                        16                                  4                                  2                                 0.5                                12                                  3                                0.25                               0.33                           (0.03, 3.78)        </div><div class='input'>
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      24                   11                    7                  0.64                  13                    7                  0.54                 0.67             (0.12, 3.42) 
+#&gt;   ASIAN                                                 18                    8                    4                   0.5                  10                    5                   0.5                   1              (0.15, 6.65) 
+#&gt;   BLACK OR AFRICAN AMERICAN                             15                    7                    3                  0.43                   8                    0                    0                    0              (NA, &gt;999.9) 
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             27                   10                    3                   0.3                  17                    9                  0.53                 2.62             (0.53, 15.6) 
+#&gt;   WHITE                                                 16                    4                    2                   0.5                  12                    3                  0.25                 0.33             (0.03, 3.78) </div><div class='input'>
 <span class='fu'>g_forest</span>(
   <span class='kw'>tbl</span> <span class='kw'>=</span> <span class='no'>tbl</span>,
   <span class='kw'>col_x</span> <span class='kw'>=</span> <span class='fl'>8</span>,
@@ -296,7 +296,7 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

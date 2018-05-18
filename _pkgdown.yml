@@ -13,12 +13,25 @@ reference:
   - title:
     contents:
       - tern-package
-  - title: Tables
+  - title: Compound Tables
+    desc: These tables are often compound tables that are found in the GDSR templates.
     contents:
-      - starts_with("t_")
-  - title: Graphs
+      - t_ae_ctc
+      - t_forest_rsp
+      - t_forest_tte
+      - t_rsp
+      - t_summarize_by_visit
+      - t_summarize_variables
+      - t_tte
+  - title: Compound Graphs
     contents:
       - starts_with("g_")
+  - title: Elementary Tables
+    desc: These are tables that are often used in compound tables or graphs.
+    contents:
+      - t_coxph
+      - t_km
+      - t_max_grade_per_id
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
     contents:

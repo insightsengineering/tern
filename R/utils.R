@@ -309,7 +309,7 @@ start_with_NULL <- function(x) {
 #' Stack rtables with rbind and add empy rows between tables
 #' 
 #' @param ... rtbale objects
-#' @param nrpw_pad number of empty rows between tables in \code{...}
+#' @param nrow_pad number of empty rows between tables in \code{...}
 #' 
 #' @noRd
 #' 
@@ -336,6 +336,52 @@ stack_rtables <- function(..., nrow_pad = 1) {
 
 stack_rtables_l <- function(x) {
   do.call(stack_rtables, x)
+}
+
+
+
+#' Calculate and Stack Tables
+#' 
+#' 
+#' @param funs list of functions or vector with function names to create the
+#'   tables
+#' @param ... union of named arguments for all the functions defined in
+#'   \code{funs}
+#' @param nrow_pad number of empty rows between tables
+#' 
+#' @noRd
+#' 
+#' @author Adrian Waddell
+#' 
+#' @examples
+#' t_tbl1 <- function(x, by, na.rm = TRUE) rtabulate(x, by, mean, format = "xx.xx")
+#' t_tbl2 <- function(x, by) rtabulate(x, by, sd, format = "xx.xx")
+#' t_tbl3 <- function(x, by) rtabulate(x, by, range, format = "xx.xx - xx.xx")
+#' 
+#' 
+#' t_tbl <- function(x, by, na.rm) {
+#'  compound_table(
+#'    funs = c("t_tbl1", "t_tbl2", "t_tbl3"), 
+#'    x = iris$Sepal.Length,
+#'    by = iris$Species,
+#'    na.rm = FALSE
+#'  )
+#' }
+#' 
+compound_table <- function(funs, ..., nrow_pad = 1) {
+  
+  dots <- list(...)
+  
+  tbls <- lapply(funs, function(fun) {
+    
+    f <- match.fun(fun)
+    
+    do.call(f, dots[names(dots) %in% names(formals(f))])
+    
+  })
+  
+  do.call(tern:::stack_rtables, c(tbls, list(nrow_pad = nrow_pad)))
+  
 }
 
 wrap_with <- function(x, left, right, as_list = TRUE) {
@@ -466,4 +512,32 @@ reflow <- function(x,
   outtxt <- ifelse(substring(ctxt, nchar(ctxt)) == "\n", substr(ctxt, 1, nchar(ctxt)-1), ctxt)
   
   outtxt
+}
+
+
+#' stack a modified version of a data frame
+#'
+#' essenially rbind(X,modified(X)). this is useful for example when a total
+#' column is needed.
+#'
+#' @param X a data.frame
+#' @param ... key=value pairs, where the key refers to a variable in X and value
+#'   is the valueof the variable in modified(X)
+#'   
+#' @noRd
+#' 
+#' @examples 
+#' 
+#' duplicate_with_var(iris, Species = "Total")
+#' 
+duplicate_with_var <- function(X, ...) {
+  dots <- list(...)
+  nms <- names(dots)
+  if (is.null(nms) || !all(nms %in% names(X)))
+    stop("not all names in ... are existent or in X")
+  X_copy <- X
+  for (var in nms) {
+    X_copy[[var]] <- dots[[var]]
+  }
+  rbind(X, X_copy)
 }

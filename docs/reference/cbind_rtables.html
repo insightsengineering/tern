@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Combine Factor Levels — combine_levels • tern</title>
+<title>cbind two rtables — cbind_rtables • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Combine Factor Levels — combine_levels" />
+<meta property="og:title" content="cbind two rtables — cbind_rtables" />
 
-<meta property="og:description" content="Combine Factor Levels" />
+<meta property="og:description" content="cbind two rtables" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -93,53 +93,33 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Combine Factor Levels</h1>
+    <h1>cbind two rtables</h1>
     
     </div>
 
     
-    <p>Combine Factor Levels</p>
+    <p>cbind two rtables</p>
     
 
-    <pre class="usage"><span class='fu'>combine_levels</span>(<span class='no'>x</span>, <span class='no'>levels</span>, <span class='kw'>new_level</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>levels</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"/"</span>))</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>factor</p></td>
-    </tr>
-    <tr>
-      <th>levels</th>
-      <td><p>level names to be combined</p></td>
-    </tr>
-    <tr>
-      <th>new_level</th>
-      <td><p>name of new level</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a factor</p>
-    
+    <pre class="usage"><span class='fu'>cbind_rtables</span>(<span class='no'>x</span>, <span class='no'>y</span>)</pre>
+        
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>levels</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>5</span>:<span class='fl'>1</span>])
-<span class='fu'>combine_levels</span>(<span class='no'>x</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'a'</span>, <span class='st'>'b'</span>) )</div><div class='output co'>#&gt; [1] a/b a/b c   d   e  
-#&gt; Levels: e d c a/b</div><div class='input'>
-<span class='fu'>combine_levels</span>(<span class='no'>x</span>, <span class='fu'>c</span>(<span class='st'>'e'</span>, <span class='st'>'b'</span>))</div><div class='output co'>#&gt; [1] a   e/b c   d   e/b
-#&gt; Levels: e/b d c a</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rtable</span>(<span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='fu'>rrow</span>(<span class='st'>"x row 1"</span>, <span class='fl'>1</span>,<span class='fl'>2</span>), <span class='fu'>rrow</span>(<span class='st'>"x row 2"</span>, <span class='fl'>3</span>, <span class='fl'>4</span>))
+
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rtable</span>(<span class='st'>"C"</span>, <span class='fu'>rrow</span>(<span class='st'>"y row 1"</span>, <span class='fl'>5</span>), <span class='fu'>rrow</span>(<span class='st'>"y row 2"</span>, <span class='fl'>6</span>))
+
+
+<span class='fu'>cbind_rtables</span>(<span class='no'>x</span>, <span class='no'>y</span>)</div><div class='output co'>#&gt;                A        B        C
+#&gt; ----------------------------------
+#&gt; x row 1        1        2        5
+#&gt; x row 2        3        4        6</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
