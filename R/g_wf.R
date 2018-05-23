@@ -52,14 +52,17 @@
 #' g_wf(
 #'   height = asld$pchg,
 #'   id = paste("asdfdsfdsfsd",asld$USUBJID),
-#'   col = asld$AVALC
+#'   col = asld$SEX
 #' )
 #' g_wf(
 #'   height = asld$pchg,
-#'   id = paste("asdfdsfdsfsd",asld$USUBJID)
+#'   id = paste("asdfdsfdsfsd",asld$USUBJID),
+#'   xlab = "ID",
+#'   ylab = "Percentage Change",
+#'   plot.title = "Lahahah"
 #' )
 #' 
-g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NULL){
+g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NULL, plot.title = NULL){
   
   check_same_N(y=height, id=id)
   
@@ -99,6 +102,11 @@ g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NU
           legend.title = element_text(face="bold"),
           legend.box.background = element_rect(colour = "black")
         )
+    }
+    if (!is.null(plot.title)) {
+      p <- p +
+        labs( title = plot.title) +
+        theme(plot.title = element_text(face = "bold"))
     }
   p
 
