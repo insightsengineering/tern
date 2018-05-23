@@ -61,7 +61,7 @@
 #' 
 g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NULL, plot.title = NULL){
   
-  check_same_N(y=height, id=id, col = col)
+  if (!is.null(col)) check_same_N(height = height, id=id, col = col) else check_same_N(height = height, id=id)
   
   xlabel <- deparse(substitute(id))
   ylabel <- deparse(substitute(height))
