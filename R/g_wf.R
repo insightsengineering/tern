@@ -67,7 +67,7 @@
 #'   title = "Waterfall plot"
 #' )
 #' 
-g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NULL, title = NULL){
+g_waterfall <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NULL, title = NULL){
   
   if (!is.null(col)) check_same_N(height = height, id=id, col = col) else check_same_N(height = height, id=id)
   
