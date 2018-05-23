@@ -56,10 +56,13 @@ t_max_grade_per_id(
 )
 }
 
+\dontrun{
+# throws an error because grade NA is not in grade_levels 
 t_max_grade_per_id(
   grade =  c(1,2,NA),
   id = c(1,2,3),
   col_by = factor(LETTERS[1:3])
 )
+}
 
 }

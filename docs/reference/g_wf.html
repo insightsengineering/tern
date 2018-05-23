@@ -27,7 +27,7 @@
 <script src="../pkgdown.js"></script>
 <meta property="og:title" content="Horizontal Waterfall Plot — g_wf" />
 
-<meta property="og:description" content="The waterfall plot visualizes a quatity y ordered by value with some
+<meta property="og:description" content="This basic waterfall plot visualizes a quatity height ordered by value with some
 markup" />
 <meta name="twitter:card" content="summary" />
 
@@ -99,7 +99,7 @@ markup" />
     </div>
 
     
-    <p>The waterfall plot visualizes a quatity <code>y</code> ordered by value with some
+    <p>This basic waterfall plot visualizes a quatity <code>height</code> ordered by value with some
 markup</p>
     
 
@@ -110,6 +110,18 @@ markup</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>height</th>
+      <td><p>numeric vector to be plotted as the waterfall bars</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>vector of IDs used as the x-axis label for the waterall bars</p></td>
+    </tr>
+    <tr>
+      <th>col</th>
+      <td><p>vector of a categorical variable for bar coloring</p></td>
+    </tr>
+    <tr>
       <th>xlab</th>
       <td><p>x label. Default is <code>ID</code>.</p></td>
     </tr>
@@ -118,38 +130,22 @@ markup</p>
       <td><p>y label. Default is <code>Value</code>.</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>data frame</p></td>
-    </tr>
-    <tr>
-      <th>id_var</th>
-      <td><p>ID variable name used as the x-axis label for each bar from <code>data</code></p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>variable name of the numeric vector to be plotted from <code>data</code></p></td>
-    </tr>
-    <tr>
-      <th>col_var</th>
-      <td><p>name of the categorical variable for bar coloring and legend from <code>data</code></p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>A string to be displayed as plot title.</p></td>
-    </tr>
-    <tr>
-      <th>legend.title</th>
+      <th>col.legend.title</th>
       <td><p>A string to be displayed as legend title.</p></td>
     </tr>
     <tr>
-      <th>add_id</th>
-      <td><p>variables to be added to the summary table.</p></td>
+      <th>plot.title</th>
+      <td><p>A string to be displayed as plot title.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
+
+<span class='fu'>g_wf</span>(<span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>5</span>,-<span class='fl'>1</span>), <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>])</div><div class='img'><img src='g_wf-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_wf</span>(<span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>5</span>,-<span class='fl'>1</span>), <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"red"</span>, <span class='st'>"green"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_wf-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
 
@@ -179,18 +175,19 @@ markup</p>
   <span class='kw'>height</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>pchg</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>AVALC</span>
-)</div><div class='img'><img src='g_wf-1.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='img'><img src='g_wf-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>g_wf</span>(
   <span class='kw'>height</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>pchg</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"asdfdsfdsfsd"</span>,<span class='no'>asld</span>$<span class='no'>USUBJID</span>),
   <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>SEX</span>
-)</div><div class='img'><img src='g_wf-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>g_wf</span>(
+)</div><div class='img'><img src='g_wf-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_wf</span>(
   <span class='kw'>height</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>pchg</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"asdfdsfdsfsd"</span>,<span class='no'>asld</span>$<span class='no'>USUBJID</span>),
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Percentage Change"</span>,
-  <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='st'>"Lahahah"</span>
-)</div><div class='img'><img src='g_wf-3.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='st'>"Waterfall plot"</span>
+)</div><div class='output co'>#&gt; <span class='error'>Error in g_wf(height = asld$pchg, id = paste("asdfdsfdsfsd", asld$USUBJID),     xlab = "ID", ylab = "Percentage Change", plot.title = "Waterfall plot"): unused argument (plot.title = "Waterfall plot")</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

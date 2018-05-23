@@ -82,7 +82,10 @@ tbl <- t_forest_tte(
 )
 
 tbl
+
+\dontrun{
 Viewer(tbl)
+}
 
 }
 \author{

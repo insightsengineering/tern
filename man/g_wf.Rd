@@ -8,29 +8,31 @@ g_wf(height, id, col = NULL, xlab = NULL, ylab = NULL,
   col.legend.title = NULL, plot.title = NULL)
 }
 \arguments{
+\item{height}{numeric vector to be plotted as the waterfall bars}
+
+\item{id}{vector of IDs used as the x-axis label for the waterall bars}
+
+\item{col}{vector of a categorical variable for bar coloring}
+
 \item{xlab}{x label. Default is \code{ID}.}
 
 \item{ylab}{y label. Default is \code{Value}.}
 
-\item{data}{data frame}
+\item{col.legend.title}{A string to be displayed as legend title.}
 
-\item{id_var}{ID variable name used as the x-axis label for each bar from \code{data}}
-
-\item{y}{variable name of the numeric vector to be plotted from \code{data}}
-
-\item{col_var}{name of the categorical variable for bar coloring and legend from \code{data}}
-
-\item{title}{A string to be displayed as plot title.}
-
-\item{legend.title}{A string to be displayed as legend title.}
-
-\item{add_id}{variables to be added to the summary table.}
+\item{plot.title}{A string to be displayed as plot title.}
 }
 \description{
-The waterfall plot visualizes a quatity \code{y} ordered by value with some
+This basic waterfall plot visualizes a quatity \code{height} ordered by value with some
 markup
 }
 \examples{
+
+
+g_wf(height = c(3,5,-1), id = letters[1:3])
+
+g_wf(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"))
+
 
 library(random.cdisc.data)
 library(dplyr)
@@ -64,12 +66,13 @@ g_wf(
   id = paste("asdfdsfdsfsd",asld$USUBJID),
   col = asld$SEX
 )
+
 g_wf(
   height = asld$pchg,
   id = paste("asdfdsfdsfsd",asld$USUBJID),
   xlab = "ID",
   ylab = "Percentage Change",
-  plot.title = "Lahahah"
+  plot.title = "Waterfall plot"
 )
 
 }

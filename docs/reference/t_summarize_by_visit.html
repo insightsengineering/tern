@@ -103,7 +103,7 @@ visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01." />
 visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01.</p>
     
 
-    <pre class="usage"><span class='fu'>t_summarize_by_visit</span>(<span class='no'>data</span>, <span class='no'>visit</span>, <span class='no'>col_by</span>)</pre>
+    <pre class="usage"><span class='fu'>t_summarize_by_visit</span>(<span class='no'>data</span>, <span class='no'>visit</span>, <span class='no'>id</span>, <span class='no'>col_by</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -118,6 +118,10 @@ sub-header column name.</p></td>
       <th>visit</th>
       <td><p>factor with visit names ordered by desired display order in the 
 stacked table.</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>unique subject identifier variable.</p></td>
     </tr>
     <tr>
       <th>col_by</th>
@@ -156,8 +160,8 @@ first <code>level</code> indicates the reference group</p></td>
 <span class='no'>ANL</span>$<span class='no'>ARM</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>)
 <span class='no'>ANL</span>$<span class='no'>VISIT</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>VISIT</span>)
 
-<span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>)</div><div class='output co'>#&gt;                       ARM A               ARM B    
-#&gt;                      (N=1000)            (N=1000)  
+<span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>)</div><div class='output co'>#&gt;                       ARM A               ARM B    
+#&gt;                      (N=100)             (N=100)   
 #&gt; ---------------------------------------------------
 #&gt; visit 1
 #&gt;   n                    100                 100     
@@ -227,8 +231,8 @@ first <code>level</code> indicates the reference group</p></td>
 #&gt;   Mean (SD)          0 (0.99)          -0.1 (1.14) 
 #&gt;   Median               0.07               -0.13    
 #&gt;   IQR              -0.69 - 0.52        -0.88 - 0.79
-#&gt;   Min - Max        -2.36 - 2.53        -2.58 - 2.31</div><div class='input'><span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"PCHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>)</div><div class='output co'>#&gt;                            ARM A                        ARM B        
-#&gt;                          (N=1000)                     (N=1000)       
+#&gt;   Min - Max        -2.36 - 2.53        -2.58 - 2.31</div><div class='input'><span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"PCHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>)</div><div class='output co'>#&gt;                            ARM A                        ARM B        
+#&gt;                           (N=100)                      (N=100)       
 #&gt; ---------------------------------------------------------------------
 #&gt; visit 1
 #&gt;   n                          0                            0          
@@ -303,8 +307,8 @@ first <code>level</code> indicates the reference group</p></td>
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='var_relabel.html'>var_relabel</a></span>(<span class='no'>ANL</span>, <span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='st'>"Value at\nVisit"</span>,
                         <span class='kw'>CHG</span> <span class='kw'>=</span> <span class='st'>"Change from\nBaseline"</span>,
                         <span class='kw'>PCHG</span> <span class='kw'>=</span> <span class='st'>"Percent Change\nfrom Baseline"</span>)
-<span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>)</div><div class='output co'>#&gt;                                 ARM A                                   ARM B              
-#&gt;                                (N=1000)                                (N=1000)            
+<span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>)</div><div class='output co'>#&gt;                                 ARM A                                   ARM B              
+#&gt;                                (N=100)                                 (N=100)             
 #&gt;                      Value at          Change from           Value at          Change from 
 #&gt;                       Visit              Baseline             Visit              Baseline  
 #&gt; -------------------------------------------------------------------------------------------
@@ -389,9 +393,9 @@ first <code>level</code> indicates the reference group</p></td>
      <span class='kw'>AVISIT</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>AVISIT</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>unique</span>(<span class='no'>AVISIT</span>))
    )
 
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>AQS</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>AVISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>ARM</span>)
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>AQS</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>AVISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>ARM</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>USUBJID</span>)
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                  ARM A                                     ARM B                                     ARM C               
-#&gt;                                 (N=232)                                   (N=217)                                   (N=247)              
+#&gt;                                  (N=89)                                    (N=87)                                    (N=90)              
 #&gt;                        AVAL                  CHG                 AVAL                  CHG                 AVAL                  CHG     
 #&gt; -----------------------------------------------------------------------------------------------------------------------------------------
 #&gt; WEEK 1
