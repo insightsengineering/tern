@@ -127,12 +127,12 @@ t_summarize_by_visit <- function(data, visit, col_by) {
   if (subcol_n == 1) {
     header(tbl) <- rheader(
       rrowl("", lapply(topcol_label, function(x) rcell(x, colspan = subcol_n))),
-      rrowl("", lapply(wrap_with(bigN, "(N=", ")"), function(x) rcell(x, colspan = subcol_n)))
+      rrowl("", lapply(bigN, function(x) rcell(x, format = "(N=xx)", colspan = subcol_n)))
     )
   } else {
     header(tbl) <- rheader(
       rrowl("", lapply(topcol_label, function(x) rcell(x, colspan = subcol_n))),
-      rrowl("", lapply(wrap_with(bigN, "(N=", ")"), function(x) rcell(x, colspan = subcol_n))),
+      rrowl("", lapply(bigN, function(x) rcell(x, format = "(N=xx)", colspan = subcol_n))),
       rrowl("", rep(subcol_label, topcol_n))
     )
   }

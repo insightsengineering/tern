@@ -69,7 +69,10 @@
 #' )
 #' 
 #' tbl
+#' 
+#' \dontrun{
 #' Viewer(tbl)
+#' }
 #' 
 t_forest_tte <- function(tte, 
                          is_event, 

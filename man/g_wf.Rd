@@ -4,25 +4,25 @@
 \alias{g_wf}
 \title{Horizontal Waterfall Plot}
 \usage{
-g_wf(y, id = 1:length(y), col = "steelblue", xlab = "ID",
-  ylab = "Value", legend.title = NULL)
+g_wf(height, id, col = NULL, xlab = NULL, ylab = NULL,
+  col.legend.title = NULL, plot.title = NULL)
 }
 \arguments{
-\item{y}{variable name of the numeric vector to be plotted from \code{data}}
-
 \item{xlab}{x label. Default is \code{ID}.}
 
 \item{ylab}{y label. Default is \code{Value}.}
-
-\item{legend.title}{A string to be displayed as legend title.}
 
 \item{data}{data frame}
 
 \item{id_var}{ID variable name used as the x-axis label for each bar from \code{data}}
 
+\item{y}{variable name of the numeric vector to be plotted from \code{data}}
+
 \item{col_var}{name of the categorical variable for bar coloring and legend from \code{data}}
 
 \item{title}{A string to be displayed as plot title.}
+
+\item{legend.title}{A string to be displayed as legend title.}
 
 \item{add_id}{variables to be added to the summary table.}
 }
@@ -53,16 +53,24 @@ asld <- head(asld, 30)
 
 head(asld)
 
-with(asld,
-  g_wf(
-    y = asld$pchg,
-    id = asld$USUBJID,
-    col = asld$AVALC,
-    
-  )
+g_wf(
+  height = asld$pchg,
+  id = asld$USUBJID,
+  col = asld$AVALC
 )
 
-
+g_wf(
+  height = asld$pchg,
+  id = paste("asdfdsfdsfsd",asld$USUBJID),
+  col = asld$SEX
+)
+g_wf(
+  height = asld$pchg,
+  id = paste("asdfdsfdsfsd",asld$USUBJID),
+  xlab = "ID",
+  ylab = "Percentage Change",
+  plot.title = "Lahahah"
+)
 
 }
 \author{

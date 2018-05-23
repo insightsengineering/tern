@@ -315,7 +315,7 @@ t_rsp <- function(
   N <- tapply(col_by, col_by, length)
   header(tbl) <- rheader(
     rrowl("", levels(col_by)),
-    rrowl("", paste0("(N=",N,")"))
+    rrowl("", N, format="(N=xx)")
   )
   
   tbl

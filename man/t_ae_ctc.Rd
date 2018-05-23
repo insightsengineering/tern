@@ -62,6 +62,7 @@ is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 # Simple example
 library(tibble)
 library(dplyr)
+
 ASL <- tibble(
   USUBJID = paste0("id-", 1:10),
   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])

@@ -274,11 +274,14 @@ add_ae_class <- function(tbl, class) {
 #' )
 #' }
 #' 
+#' \dontrun{
+#' # throws an error because grade NA is not in grade_levels
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,NA),
 #'   id = c(1,2,3),
 #'   col_by = factor(LETTERS[1:3])
 #' )
+#' }
 #' 
 t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
                                grade_levels = NULL,

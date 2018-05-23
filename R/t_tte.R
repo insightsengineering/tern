@@ -297,7 +297,7 @@ t_tte <- function(formula,
   N <- tapply(arm, arm, length)
   header(tbl) <- rheader(
     rrowl("", levels(arm)),
-    rrowl("", paste0("(N=",N,")"))
+    rrowl("", N, format="(N=xx)")
   )
   
   tbl
