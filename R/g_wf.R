@@ -9,7 +9,7 @@
 #' @param xlab x label. Default is \code{ID}.
 #' @param ylab y label. Default is \code{Value}.
 #' @param plot.title A string to be displayed as plot title.
-#' @param legend.title A string to be displayed as legend title.
+#' @param col.legend.title A string to be displayed as legend title.
 #' 
 #' @template author_song24
 #' 
