@@ -1,18 +1,15 @@
 #' Horizontal Waterfall Plot
 #' 
-#' The waterfall plot visualizes a quatity \code{y} ordered by value with some
+#' This basic waterfall plot visualizes a quatity \code{height} ordered by value with some
 #' markup
-#' 
 #'
-#' @param data data frame 
-#' @param id_var ID variable name used as the x-axis label for each bar from \code{data}
-#' @param y  variable name of the numeric vector to be plotted from \code{data}
-#' @param  col_var name of the categorical variable for bar coloring and legend from \code{data}
+#' @param id vector of IDs used as the x-axis label for the waterall bars 
+#' @param height  numeric vector to be plotted as the waterfall bars
+#' @param col vector of a categorical variable for bar coloring
 #' @param xlab x label. Default is \code{ID}.
 #' @param ylab y label. Default is \code{Value}.
-#' @param title A string to be displayed as plot title.
+#' @param plot.title A string to be displayed as plot title.
 #' @param legend.title A string to be displayed as legend title.
-#' @param add_id variables to be added to the summary table.
 #' 
 #' @template author_song24
 #' 
@@ -59,12 +56,12 @@
 #'   id = paste("asdfdsfdsfsd",asld$USUBJID),
 #'   xlab = "ID",
 #'   ylab = "Percentage Change",
-#'   plot.title = "Lahahah"
+#'   plot.title = "Waterfall plot"
 #' )
 #' 
 g_wf <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.title=NULL, plot.title = NULL){
   
-  check_same_N(y=height, id=id)
+  check_same_N(y=height, id=id, col = col)
   
   xlabel <- deparse(substitute(id))
   ylabel <- deparse(substitute(height))
