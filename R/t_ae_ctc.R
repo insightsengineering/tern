@@ -53,6 +53,7 @@
 #' # Simple example
 #' library(tibble)
 #' library(dplyr)
+#' 
 #' ASL <- tibble(
 #'   USUBJID = paste0("id-", 1:10),
 #'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
@@ -123,6 +124,9 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   if (any("- Overall -" %in% term)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
+  if (any(class == "", na.rm = TRUE)) stop("empty string is not a valid class, please use NA if data is missing")
+  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
+  
   # data prep ---------------------------------------------------------------
   df <- data.frame(class = class,
                    term = term,
@@ -139,10 +143,6 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   
   # need to remove extra records that came from subject level data
   # when left join was done. also any record that is missing class or term
-  is_class_or_term_missing <- df$class == '' | df$term == ''
-  df$class[is_class_or_term_missing] <- NA
-  df$term[is_class_or_term_missing] <- NA
-  
   df <- na.omit(df)
   
   # start tabulating --------------------------------------------------------
@@ -274,11 +274,14 @@ add_ae_class <- function(tbl, class) {
 #' )
 #' }
 #' 
+#' \dontrun{
+#' # throws an error because grade NA is not in grade_levels 
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,NA),
 #'   id = c(1,2,3),
 #'   col_by = factor(LETTERS[1:3])
 #' )
+#' }
 #' 
 t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
                                grade_levels = NULL,

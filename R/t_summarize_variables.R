@@ -129,7 +129,7 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
   } else {
     rheader(
       rrowl("", as.list(levels(col_by))),
-      rrowl("", wrap_with(tapply(col_by, col_by, length), "(N=", ")"))
+      rrowl("", tapply(col_by, col_by, length), format = "(N=xx)")
     )
   }
 

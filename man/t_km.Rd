@@ -15,12 +15,15 @@ annotation on top of Kaplan-Meier grob
 }
 \examples{
 
-OS <- data.frame(AVAL = abs(rnorm(200)), 
-                 CNSR = sample(c(0, 1), 200, TRUE), 
-                 ARM = sample(LETTERS[1:3], 200, TRUE),
-                 SEX = sample(c("M","F"), 200, TRUE),
-                 RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-                 ECOG = sample(c(0, 1), 200, TRUE))
+OS <- data.frame(
+  AVAL = abs(rnorm(200)), 
+  CNSR = sample(c(0, 1), 200, TRUE), 
+  ARM = sample(LETTERS[1:3], 200, TRUE),
+  SEX = sample(c("M","F"), 200, TRUE),
+  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+  ECOG = sample(c(0, 1), 200, TRUE)
+)
+                 
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
 tbl <- t_km(fit_km)
 tbl

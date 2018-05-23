@@ -16,6 +16,7 @@ Depends:
   R (>= 3.3),
   survival,
   grid,
+  ggplot2,
   rtables (>= 0.1)
 Imports:
   methods,
