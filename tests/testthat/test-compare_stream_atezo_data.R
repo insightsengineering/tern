@@ -229,7 +229,7 @@ if (requireNamespace("atezo.data", quietly = TRUE) &&
     
     # Viewer(tbl, tbl_stream)
     
-    comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
+    comp <- compare_rtables(tbl[-11,], tbl_stream, comp.attr = FALSE)
     
     comp[15, 1] <- "." # empty cell
     comp[16, 1] <- "." # empty cell

@@ -182,6 +182,9 @@ test_that("adverse events sorted by highest NCI CTCAE grade", {
   attr(attr(tbl_stream, "header")[[2]], "row.name") <- 'MedDRA Preferred Term'
   attr(attr(tbl_stream, "header")[[2]], "indent") <- 1
   
+  ANL$AEBODSYS[ANL$AEBODSYS == ""] <- NA
+  ANL$AEDECOD[ANL$AEDECOD == ""] <- NA
+  
   tbl <- t_ae_ctc(class = ANL$AEBODSYS, term = ANL$AEDECOD, id = ANL$USUBJID, grade = ANL$AETOXGR, col_by = factor(ANL$TRT02AN))
   
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
