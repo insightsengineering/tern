@@ -68,6 +68,9 @@ tbl <- t_tte(
 
 tbl
 
+\dontrun{
+Viewer(tbl)
+}
 }
 \author{
 Mark Rothe (rothem1)

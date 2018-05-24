@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Horizontal Waterfall Plot — g_wf • tern</title>
+<title>Horizontal Waterfall Plot — g_waterfall • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,11 +25,13 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Horizontal Waterfall Plot — g_wf" />
+<meta property="og:title" content="Horizontal Waterfall Plot — g_waterfall" />
 
 <meta property="og:description" content="This basic waterfall plot visualizes a quatity height ordered by value with some
 markup" />
 <meta name="twitter:card" content="summary" />
+
+<meta name="robots" content="noindex">
 
 
 <!-- mathjax -->
@@ -56,7 +58,7 @@ markup" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
+        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.1.1</span>
       </span>
     </div>
 
@@ -103,8 +105,8 @@ markup" />
 markup</p>
     
 
-    <pre class="usage"><span class='fu'>g_wf</span>(<span class='no'>height</span>, <span class='no'>id</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>col.legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>g_waterfall</span>(<span class='no'>height</span>, <span class='no'>id</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>col.legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,7 +136,7 @@ markup</p>
       <td><p>A string to be displayed as legend title.</p></td>
     </tr>
     <tr>
-      <th>plot.title</th>
+      <th>title</th>
       <td><p>A string to be displayed as plot title.</p></td>
     </tr>
     </table>
@@ -143,8 +145,8 @@ markup</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 
-<span class='fu'>g_wf</span>(<span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>5</span>,-<span class='fl'>1</span>), <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>])</div><div class='img'><img src='g_wf-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_wf</span>(<span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>5</span>,-<span class='fl'>1</span>), <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"red"</span>, <span class='st'>"green"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_wf-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_waterfall</span>(<span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>5</span>,-<span class='fl'>1</span>), <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>])</div><div class='img'><img src='g_waterfall-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_waterfall</span>(<span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>5</span>,-<span class='fl'>1</span>), <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"red"</span>, <span class='st'>"green"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_waterfall-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
@@ -171,23 +173,23 @@ markup</p>
 #&gt; 4   id-11 STUDY A  OVRINV label OVRINV    CR    1  29.840661   F ARM B
 #&gt; 5   id-12 STUDY A  OVRINV label OVRINV    NE    6  22.223775   F ARM A
 #&gt; 6   id-13 STUDY A  OVRINV label OVRINV    CR    1  41.371879   M ARM B</div><div class='input'>
-<span class='fu'>g_wf</span>(
+<span class='fu'>g_waterfall</span>(
   <span class='kw'>height</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>pchg</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>AVALC</span>
-)</div><div class='img'><img src='g_wf-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_wf</span>(
+)</div><div class='img'><img src='g_waterfall-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_waterfall</span>(
   <span class='kw'>height</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>pchg</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"asdfdsfdsfsd"</span>,<span class='no'>asld</span>$<span class='no'>USUBJID</span>),
   <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>SEX</span>
-)</div><div class='img'><img src='g_wf-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_wf</span>(
+)</div><div class='img'><img src='g_waterfall-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_waterfall</span>(
   <span class='kw'>height</span> <span class='kw'>=</span> <span class='no'>asld</span>$<span class='no'>pchg</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"asdfdsfdsfsd"</span>,<span class='no'>asld</span>$<span class='no'>USUBJID</span>),
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Percentage Change"</span>,
-  <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='st'>"Waterfall plot"</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in g_wf(height = asld$pchg, id = paste("asdfdsfdsfsd", asld$USUBJID),     xlab = "ID", ylab = "Percentage Change", plot.title = "Waterfall plot"): unused argument (plot.title = "Waterfall plot")</span></div><div class='input'>
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Waterfall plot"</span>
+)</div><div class='img'><img src='g_waterfall-5.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

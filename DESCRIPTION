@@ -1,6 +1,6 @@
 Package: tern
 Title: Analysis Code
-Version: 0.5.1
+Version: 0.5.1.1
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = c("ctb")),

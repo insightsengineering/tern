@@ -58,7 +58,7 @@ from a Cox proportional hazard model." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -201,26 +201,22 @@ columns:</p>
   <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                               ARM A                                                       ARM B                                                                
-#&gt; Baseline Risk                                         Total                 n                 Events              Median                n                 Events              Median              Hazard               95%     
-#&gt; Factors                                                 n                                                        (month)                                                     (month)              Ratio              Wald CI   
-#&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                    100                  48                  25                118.35                52                  28                86.13                1.39            (0.8, 2.39) 
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                  ARM A                                                          ARM B                                                                   
+#&gt; Baseline Risk                                          Total                  n                 Events               Median                  n                 Events               Median               Hazard                 95%     
+#&gt; Factors                                                  n                                                           (month)                                                        (month)               Ratio               Wald CI   
+#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                     100                  58                   36                 110.93                 42                   24                  74.93                1.57             (0.92, 2.67) 
 #&gt; 
 #&gt; SEX
-#&gt;   F                                                     54                  27                  14                191.48                27                  15                86.13                1.39            (0.65, 2.94)
-#&gt;   M                                                     46                  21                  11                118.35                25                  13                40.53                1.4             (0.63, 3.14)
+#&gt;   F                                                     47                   24                   16                 102.06                 23                   15                  83.37                1.52             (0.74, 3.14) 
+#&gt;   M                                                     53                   34                   20                 131.11                 19                    9                  74.93                1.27             (0.55, 2.96) 
 #&gt; 
 #&gt; RACE
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      21                  12                  4                                       9                   6                 67.85                2.16            (0.6, 7.72) 
-#&gt;   ASIAN                                                 17                  11                  8                 88.47                 6                   3                 39.02                1.19            (0.3, 4.66) 
-#&gt;   BLACK OR AFRICAN AMERICAN                             18                  2                   1                 28.14                 16                  8                 65.71                0.64            (0.07, 5.49)
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             25                  14                  8                 118.35                11                  5                 186.57               0.75            (0.22, 2.51)
-#&gt;   WHITE                                                 19                  9                   4                 287.61                10                  6                 65.25                1.79            (0.44, 7.23)</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      17                    8                    5                 106.48                  9                    7                  74.93                1.95              (0.56, 6.8) 
+#&gt;   ASIAN                                                 27                   14                   11                 111.45                 13                    6                  63.08                1.28             (0.43, 3.82) 
+#&gt;   BLACK OR AFRICAN AMERICAN                             23                   15                    6                 147.79                  8                    4                  58.09                3.78             (0.83, 17.26)
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER             11                    8                    6                  81.12                  3                    2                  79.5                 1.76             (0.31, 9.85) 
+#&gt;   WHITE                                                 22                   13                    8                 192.64                  9                    5                  83.37                1.77              (0.5, 6.28) </div><div class='input'><span class='fu'>Viewer</span>(<span class='no'>tbl</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -241,7 +237,7 @@ Yuyao Song (songy24) <a href='mailto:yuyao.song@roche.com'>yuyao.song@roche.com<
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

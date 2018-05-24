@@ -56,7 +56,7 @@ object for further annotation on top of Kaplan-Meier grob" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -121,21 +121,18 @@ object for further annotation on top of Kaplan-Meier grob</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-  <span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
-  <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>)
-)
-
+<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
+                 <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
+                 <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>))
 <span class='no'>fit_coxph</span> <span class='kw'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span> + <span class='fu'>strata</span>(<span class='no'>RACE</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>)
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>)
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                    HR                 95% CI of HR            Wald p-value  
 #&gt; ----------------------------------------------------------------------------
-#&gt; ARMB             1.0724             (0.6427, 1.7895)             0.789      
-#&gt; ARMC             1.5915             (0.9981, 2.5378)             0.0509     </div><div class='input'>
+#&gt; ARMB             1.1437             (0.6787, 1.9274)             0.614      
+#&gt; ARMC             1.4129             (0.8587, 2.325)              0.1737     </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -155,7 +152,7 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">
