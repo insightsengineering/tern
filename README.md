@@ -28,15 +28,17 @@ Stable Version
 devtools::install_github(
   repo = "Rpackages/random.cdisc.data",
   ref = "v0.1.0", 
-  host = "https://github.roche.com/api/v3"
+  host = "https://github.roche.com/api/v3",
+  upgrade_dependencies = FALSE
 )
 
-devtools::install_github("Roche/rtables", ref = "v0.1.0")
+devtools::install_github("Roche/rtables", ref = "v0.1.0", upgrade_dependencies = FALSE)
 
 devtools::install_github(
   repo = "Rpackages/tern",
   ref = "v0.5.0", 
-  host = "https://github.roche.com/api/v3"
+  host = "https://github.roche.com/api/v3",
+  upgrade_dependencies = FALSE
 )
 ```
 
@@ -49,15 +51,17 @@ To install the current development version of `tern` run:
 devtools::install_github(
   repo = "Rpackages/random.cdisc.data",
   ref = "master", 
-  host = "https://github.roche.com/api/v3"
+  host = "https://github.roche.com/api/v3",
+  upgrade_dependencies = FALSE
 )
 
-devtools::install_github("Roche/rtables", ref = "devel")
+devtools::install_github("Roche/rtables", ref = "devel", upgrade_dependencies = FALSE)
 
 devtools::install_github(
   repo = "Rpackages/tern",
   ref = "master", 
-  host = "https://github.roche.com/api/v3"
+  host = "https://github.roche.com/api/v3",
+  upgrade_dependencies = FALSE
 )
 ```
 
