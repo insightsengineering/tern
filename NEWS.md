@@ -3,9 +3,9 @@
 
 ## New TLGs
 
-* `t_ae_ctc`, `t_max_grade_per_id`
-* `g_waterfall`
-
+* `t_ae_ctc`: Adverse Events Table by Highest NCI CTCAE Grade
+* `t_max_grade_per_id`: Tabulate maximum grade per id by col_by
+* `g_waterfall`: Horizontal Waterfall Plot
 
 ## TLG changes
 
