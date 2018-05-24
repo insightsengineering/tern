@@ -21,9 +21,9 @@
 #' @examples 
 #' 
 #' 
-#' g_wf(height = c(3,5,-1), id = letters[1:3])
+#' g_waterfall(height = c(3,5,-1), id = letters[1:3])
 #' 
-#' g_wf(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"))
+#' g_waterfall(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"))
 #'
 #' 
 #' library(random.cdisc.data)
@@ -47,19 +47,19 @@
 #' 
 #' head(asld)
 #' 
-#' g_wf(
+#' g_waterfall(
 #'   height = asld$pchg,
 #'   id = asld$USUBJID,
 #'   col = asld$AVALC
 #' )
 #' 
-#' g_wf(
+#' g_waterfall(
 #'   height = asld$pchg,
 #'   id = paste("asdfdsfdsfsd",asld$USUBJID),
 #'   col = asld$SEX
 #' )
 #' 
-#' g_wf(
+#' g_waterfall(
 #'   height = asld$pchg,
 #'   id = paste("asdfdsfdsfsd",asld$USUBJID),
 #'   xlab = "ID",
