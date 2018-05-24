@@ -1,6 +1,8 @@
 
 -   [tern](#tern)
 -   [Installation](#installation)
+    -   [Stable Version](#stable-version)
+    -   [Development Version](#development-version)
 -   [Development](#development)
     -   [Issues](#issues)
     -   [Collaboration](#collaboration)
@@ -19,7 +21,8 @@ The `tern` R package contains analysis functions to create tables, listings and 
 Installation
 ============
 
-To install the current stable version version of `tern` run:
+Stable Version
+--------------
 
 ``` r
 devtools::install_github(
@@ -28,7 +31,7 @@ devtools::install_github(
   host = "https://github.roche.com/api/v3"
 )
 
-devtools::install_github("Roche/rtables", ref = "v0.0.1")
+devtools::install_github("Roche/rtables", ref = "v0.1.0")
 
 devtools::install_github(
   repo = "Rpackages/tern",
@@ -37,14 +40,25 @@ devtools::install_github(
 )
 ```
 
-If you would like to try the current `devel` version then run:
+Development Version
+-------------------
+
+To install the current development version of `tern` run:
 
 ``` r
-devtools::install_github("Rpackages/random.cdisc.data", "devel", host = "https://github.roche.com/api/v3")
+devtools::install_github(
+  repo = "Rpackages/random.cdisc.data",
+  ref = "master", 
+  host = "https://github.roche.com/api/v3"
+)
 
 devtools::install_github("Roche/rtables", ref = "devel")
 
-devtools::install_github("Rpackages/tern", "devel", host = "https://github.roche.com/api/v3")
+devtools::install_github(
+  repo = "Rpackages/tern",
+  ref = "master", 
+  host = "https://github.roche.com/api/v3"
+)
 ```
 
 Development
@@ -66,7 +80,7 @@ We would like `tern` to be a collaborative effort and your contributions are wel
 
 -   talk to the repsective function authors before you start working on changes other than bug fixes or documentation examples (this includes argument changes)
 
--   talk to [Adrian Waddell](mailto:adrian.waddell@roche.com) if you would like to contribute a new output to `tern`
+-   see in our [planned TLGs project page](https://github.roche.com/Rpackages/tern/projects/3) whether the TLG you need has been requested or is already under development. Otherwise talk to [Adrian Waddell](mailto:adrian.waddell@roche.com) if you urgently need a TLG or if you would like to contribute a new output to `tern`
 
     -   please have a look at the [R code](https://github.roche.com/Rpackages/tern/tree/master/R) of a couple of functions in `tern`. If you are new to `R` or do not want to spend the effort to create similarly general and robust functions then please consider contributing to the [osprey](https://github.roche.com/Rpackages/osprey) R package.
 
