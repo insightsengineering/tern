@@ -9,6 +9,9 @@ navbar:
     - icon: fa-github
       href: https://github.roche.com/Rpackages/tern
 
+development:
+  mode: devel
+
 reference:
   - title:
     contents:

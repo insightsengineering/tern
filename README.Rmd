@@ -27,9 +27,9 @@ the [teal.tern](https://github.roche.com/Rpackages/teal.oncology) R package.
 
 * However you can use `tern` for exploratory analysis and for quality control
 
-# Installation
+# Installation 
 
-To install the current stable version version of `tern` run:
+## Stable Version
 
 ```{r eval=FALSE}
 devtools::install_github(
@@ -43,6 +43,26 @@ devtools::install_github("Roche/rtables", ref = "v0.1.0")
 devtools::install_github(
   repo = "Rpackages/tern",
   ref = "v0.5.0", 
+  host = "https://github.roche.com/api/v3"
+)
+```
+
+## Development Version
+
+To install the current development version of `tern` run:
+
+```{r eval=FALSE}
+devtools::install_github(
+  repo = "Rpackages/random.cdisc.data",
+  ref = "master", 
+  host = "https://github.roche.com/api/v3"
+)
+
+devtools::install_github("Roche/rtables", ref = "devel")
+
+devtools::install_github(
+  repo = "Rpackages/tern",
+  ref = "master", 
   host = "https://github.roche.com/api/v3"
 )
 ```
@@ -76,8 +96,11 @@ contributions:
 * talk to the repsective function authors before you start working on changes
 other than bug fixes or documentation examples (this includes argument changes)
 
-* talk to [Adrian Waddell](mailto:adrian.waddell@roche.com) if you would like to
-contribute a new output to `tern`
+* see in our [planned TLGs project
+page](https://github.roche.com/Rpackages/tern/projects/3) whether the TLG you
+need has been requested or is already under development. Otherwise talk to
+[Adrian Waddell](mailto:adrian.waddell@roche.com) if you urgently need a TLG or
+if you would like to contribute a new output to `tern`
  
       - please have a look at the [R
       code](https://github.roche.com/Rpackages/tern/tree/master/R) of a couple

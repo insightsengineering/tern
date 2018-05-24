@@ -4,7 +4,7 @@
 \alias{t_summarize_by_visit}
 \title{Summary Table by Visit}
 \usage{
-t_summarize_by_visit(data, visit, col_by)
+t_summarize_by_visit(data, visit, id, col_by)
 }
 \arguments{
 \item{data}{data frame with numerical variables to be summarized. If the 
@@ -13,6 +13,8 @@ sub-header column name.}
 
 \item{visit}{factor with visit names ordered by desired display order in the 
 stacked table.}
+
+\item{id}{unique subject identifier variable.}
 
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group}
@@ -49,14 +51,14 @@ ANL$PCHG <- ANL$CHG/ANL$AVAL*100
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
 
-t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM)
-t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM)
+t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
+t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
 
 # Add label to variable instead showing variable name
 ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit",
                         CHG = "Change from\\nBaseline",
                         PCHG = "Percent Change\\nfrom Baseline")
-t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM)
+t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
 
 
 # EXAMPLE 2
@@ -70,7 +72,7 @@ AQS <- radam("AQS") \%>\%
      AVISIT = factor(AVISIT, levels = unique(AVISIT))
    )
 
-tbl <- t_summarize_by_visit(data = AQS[c("AVAL", "CHG")], visit = AQS$AVISIT, col_by = AQS$ARM)
+tbl <- t_summarize_by_visit(data = AQS[c("AVAL", "CHG")], visit = AQS$AVISIT, col_by = AQS$ARM, id = AQS$USUBJID)
 tbl
 \dontrun{
 Viewer(tbl)

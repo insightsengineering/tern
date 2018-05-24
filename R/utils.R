@@ -536,8 +536,24 @@ duplicate_with_var <- function(X, ...) {
   if (is.null(nms) || !all(nms %in% names(X)))
     stop("not all names in ... are existent or in X")
   X_copy <- X
+  vl <- var_labels(X)
   for (var in nms) {
     X_copy[[var]] <- dots[[var]]
   }
-  rbind(X, X_copy)
+  Y <- rbind(X, X_copy)
+  var_labels(Y) <- vl
+  Y
+}
+
+
+to_n <- function(x, n) {
+  if (is.null(x)) {
+    NULL
+  } else if (length(x)==1) {
+    rep(x, n)
+  } else if (length(x) == n) {
+    x
+  } else {
+    stop("dimension missmatch")
+  }
 }
