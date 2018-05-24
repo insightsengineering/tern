@@ -59,6 +59,9 @@
 #' 
 #' tbl
 #' 
+#' \dontrun{
+#' Viewer(tbl)
+#' }
 t_tte <- function(formula,
                   data,
                   event_descr,
@@ -137,7 +140,14 @@ t_tte <- function(formula,
   
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
   qnt <- Map(function(x,y) c(x,y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
-  rng <- lapply(split(data.frame(tte, is_event), arm), function(x) range(x$tte[x$is_event], na.rm = TRUE))
+  
+  rng_c <- lapply(split(data.frame(tte, is_event), arm), function(x) {
+    range(x$tte[!x$is_event], na.rm = TRUE)
+  })
+  rng_e <- lapply(split(data.frame(tte, is_event), arm), function(x) {
+    range(x$tte[x$is_event], na.rm = TRUE)
+  })
+    
   
   tbl_tte <- rtable(
     header = levels(arm),
@@ -145,10 +155,9 @@ t_tte <- function(formula,
     rrowl("Median", med, format = "xx.xx", indent = 1),
     rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
     rrowl("25% and 75%-ile", qnt, indent = 1, format = "xx.x, xx.x"),
-    rrowl("Range", rng, indent = 1, format = "xx.x to xx.x")  
+    rrowl("Range (censored)", rng_c, indent = 1, format = "xx.x to xx.x") ,
+    rrowl("Range (event)", rng_e, indent = 1, format = "xx.x to xx.x")  
   )
-  
-  
   
   # Unstratified Analysis
   # #####################
