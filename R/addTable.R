@@ -1,4 +1,4 @@
-#' Add an rtable as Text Annotation to a Gird Grob
+#' Add an rtable as Text Annotation to a Grid Grob
 #' 
 #' utility function to edit a grid grob by adding a text grob 
 #' 

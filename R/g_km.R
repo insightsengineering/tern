@@ -8,6 +8,7 @@
 #' @param xticks break interval of x-axis. It takes a numeric vector or
 #'   \code{NULL}.
 #' @param title plot title
+#' @param time_unit a string with the unit of survival time
 #'   
 #' 
 #' @template author_wangh107
@@ -35,11 +36,14 @@
 #' 
 #' g_km(fit_km = fit_km, col = c("black", "red"))
 #'  
-g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
+#' g_km(fit_km, time_unit = "Duration (Days)")
+#' 
+g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", time_unit = "Days",
                  draw = TRUE, newpage = TRUE ){
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
-  grobKm <- kmGrob(fit_km = fit_km, col = col, xticks = xticks, title = title)
+  grobKm <- kmGrob(fit_km = fit_km, col = col, xticks = xticks, title = title, time_unit = time_unit)
  
   
   if (draw) {
@@ -59,6 +63,7 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #' @param col a vector of color for each line.
 #' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' @param title title for plot.
+#' @param time_unit a string with the unit of survival time
 #' 
 #' @importFrom scales col_factor
 #' @import grid
@@ -75,7 +80,7 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
 #' kmGrob(fit_km = fit_km, xticks = c(0.5, 0.8, 1.5))
 #' 
-kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", 
+kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", time_unit = "Days",
                    gp = NULL, vp = NULL, name = NULL) {
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
@@ -87,16 +92,17 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
   
   vpplot <- plotViewport(margins = c(3, max(cd$nlines_labels, 4), 3, 2),
                          layout = grid.layout(
-                           nrow = 3, ncol = 1, widths = unit(1, "npc"),
-                           heights = unit(c(5, 5, length(cd$group)*1.1+4), c("null", "lines", "lines"))),
+                           nrow = 4, ncol = 1, widths = unit(1, "npc"),
+                           heights = unit(c(5, 5, length(cd$group)*1.1+4, 3), c("null", "lines", "lines", "lines"))),
                          name = "plotArea")
   vpcurve <- dataViewport(xData = cd$xData, yData = c(0,1),
                           layout.pos.col = 1, layout.pos.row = 1, name = "topCurve")
   vptable <- viewport(layout.pos.col = 1, layout.pos.row = 3, name = "bottomTable")
   
   vprisk <- dataViewport(xData = cd$xData, yData = c(0,1), name = "riskTable")
+  vplabel <- viewport(layout.pos.col = 1, layout.pos.row = 4, name = "timeLabel")
   
-  vptree <- vpTree(vpplot, vpList(vpcurve, vpStack(vptable,  vprisk)))
+  vptree <- vpTree(vpplot, vpList(vpcurve, vpStack(vptable, vprisk), vplabel))
   
   lines <- Map(function(x, y, col){
     linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col, lwd = 3), vp = vpPath("plotArea", "topCurve"))
@@ -136,7 +142,13 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
                                                            y = unit(1, "npc") + unit(1, "lines"),
                                                            just = "left", vp = vpPath("plotArea", "bottomTable")),
                                                   xaxisGrob(at = cd$xpos, vp = vpPath("plotArea", "bottomTable",  "riskTable")), 
-                                                  rectGrob(vp = vpPath("plotArea", "bottomTable",  "riskTable"))),
+                                                  rectGrob(vp = vpPath("plotArea", "bottomTable",  "riskTable")),
+                                                  textGrob(time_unit, 
+                                                           x = unit(0.5, "npc"),
+                                                           y = unit(0, "npc"), 
+                                                           just = "top",
+                                                           vp = vpPath("plotArea", "timeLabel"))),
+                                            
                                             lines,
                                             points,
                                             ptnumber,
@@ -184,21 +196,42 @@ kmCurveData <- function(fit_km, xticks = NULL) {
   if (ngroup > 9) stop("unfortunately we currently do not have more than 9 colors to encode different groups")
   
   # extract kmplot relevant data
-  df <- data.frame(
-    time = fit_km$time,
-    surv = fit_km$surv,
-    n.risk = fit_km$n.risk,
-    n.censor = fit_km$n.censor,
-    n.event = fit_km$n.event,
-    std.err = fit_km$std.err,
-    upper = fit_km$upper,
-    lower = fit_km$lower,
-    group = factor(rep(names(fit_km$strata), fit_km$strata), levels = names(fit_km$strata))
-  )
+  if (is.null(fit_km$strata)) {
+     
+    df <- data.frame(
+      time = fit_km$time,
+      surv = fit_km$surv,
+      n.risk = fit_km$n.risk,
+      n.censor = fit_km$n.censor,
+      n.event = fit_km$n.event,
+      std.err = fit_km$std.err,
+      upper = fit_km$upper,
+      lower = fit_km$lower,
+      group = rep("All", length(fit_km$time))
+    )
+    
+    group <- "All"
+    names(group) <- "All"
+  } else {
+     
+    df <- data.frame(
+      time = fit_km$time,
+      surv = fit_km$surv,
+      n.risk = fit_km$n.risk,
+      n.censor = fit_km$n.censor,
+      n.event = fit_km$n.event,
+      std.err = fit_km$std.err,
+      upper = fit_km$upper,
+      lower = fit_km$lower,
+      group = factor(rep(names(fit_km$strata), fit_km$strata), levels = names(fit_km$strata))
+    )
+    
+    group <- fit_km$strata
+  }
   
   # split by group
   df_s <- split(df, df$group)
-  group <- fit_km$strata
+  
   
   ### width of label in Risk table
   tmp.labels <- names(group)

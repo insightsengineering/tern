@@ -27,12 +27,23 @@
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
 #' tbl <- t_km(fit_km)
 #' tbl
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = OS, conf.type = "plain")
+#' t_km(fit_km)
 #' 
 t_km <- function(fit_km) {
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
+  sumtable <- summary(fit_km)$table
+  if (is.null(dim(sumtable))){
+    kminfo <- sumtable[c("records", "median", "0.95LCL", "0.95UCL")]
+    names(kminfo) <- c("records", "median", "LCL", "UCL")
+    kminfo <- data.frame(as.list(kminfo))
+    rownames(kminfo) <- "All"
+  } else {
+    kminfo <- summary(fit_km)$table[ , c("records", "median", "0.95LCL", "0.95UCL"), drop = FALSE]
+    colnames(kminfo) <-  c("records", "median", "LCL", "UCL")
+  }
   
-  kminfo <- summary(fit_km)$table[ , c("records", "median", "0.95LCL", "0.95UCL")]
   skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
   
   rtablel(
@@ -42,7 +53,7 @@ t_km <- function(fit_km) {
         row.name = rownames(xi),
         rcell(xi$records, format = "xx"),
         rcell(xi$median, format = "xx.xx"),
-        rcell(c(xi$`0.95LCL`, xi$`0.95UCL`), format = "(xx.xx, xx.xx)")
+        rcell(c(xi$`LCL`, xi$`UCL`), format = "(xx.xx, xx.xx)")
       )
     })
   )
