@@ -8,7 +8,7 @@
 #' @param xticks break interval of x-axis. It takes a numeric vector or
 #'   \code{NULL}.
 #' @param title plot title
-#' @param xlab a string with the unit of survival time
+#' @param xlab a string for label of x-axis
 #'   
 #' 
 #' @template author_wangh107
@@ -63,7 +63,7 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #' @param col a vector of color for each line.
 #' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' @param title title for plot.
-#' @param xlab a string with the unit of survival time
+#' @param xlab a string for label of x-axis
 #' 
 #' @importFrom scales col_factor
 #' @import grid
