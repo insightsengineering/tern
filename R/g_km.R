@@ -8,7 +8,7 @@
 #' @param xticks break interval of x-axis. It takes a numeric vector or
 #'   \code{NULL}.
 #' @param title plot title
-#' @param time_unit a string with the unit of survival time
+#' @param xlab a string with the unit of survival time
 #'   
 #' 
 #' @template author_wangh107
@@ -37,13 +37,13 @@
 #' g_km(fit_km = fit_km, col = c("black", "red"))
 #'  
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
-#' g_km(fit_km, time_unit = "Duration (Days)")
+#' g_km(fit_km, xlab = "Duration (Days)")
 #' 
-g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", time_unit = "Days",
+g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", xlab = "Days",
                  draw = TRUE, newpage = TRUE ){
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
-  grobKm <- kmGrob(fit_km = fit_km, col = col, xticks = xticks, title = title, time_unit = time_unit)
+  grobKm <- kmGrob(fit_km = fit_km, col = col, xticks = xticks, title = title, xlab = xlab)
  
   
   if (draw) {
@@ -63,7 +63,7 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #' @param col a vector of color for each line.
 #' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
 #' @param title title for plot.
-#' @param time_unit a string with the unit of survival time
+#' @param xlab a string with the unit of survival time
 #' 
 #' @importFrom scales col_factor
 #' @import grid
@@ -80,7 +80,7 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
 #' kmGrob(fit_km = fit_km, xticks = c(0.5, 0.8, 1.5))
 #' 
-kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", time_unit = "Days",
+kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", xlab = "Days",
                    gp = NULL, vp = NULL, name = NULL) {
   
   if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
@@ -143,7 +143,7 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
                                                            just = "left", vp = vpPath("plotArea", "bottomTable")),
                                                   xaxisGrob(at = cd$xpos, vp = vpPath("plotArea", "bottomTable",  "riskTable")), 
                                                   rectGrob(vp = vpPath("plotArea", "bottomTable",  "riskTable")),
-                                                  textGrob(time_unit, 
+                                                  textGrob(xlab, 
                                                            x = unit(0.5, "npc"),
                                                            y = unit(0, "npc"), 
                                                            just = "top",
