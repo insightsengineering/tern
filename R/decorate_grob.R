@@ -1,36 +1,49 @@
-#' Create a grob with titles, footnotes, pages, and plot
+#' Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob
 #'
-#' This is a wrapper function to label a grid, ggplot, or lattice plot grob with
-#' title, footnote, and pages.
+#' This function is useful to label grid grobs (also ggplot2, and lattice plots)
+#' with title, footnote, and page nuumbers.
 #'
-#' @param grob a grid grob object, optionally \code{NULL}
-#' @param titles character string or vector of character strings. Vector elements
-#'   are separated by a newline.
-#' @param footnotes character string or vector of character strings. Vector
-#'   elements are separated by a newline.
-#' @param page page number, if NULL then no page number is displayed
+#' @param grob a grid grob object, optionally \code{NULL} if ongly a grob with
+#'   the decoration should be shown.
+#' @param titles vector of character strings. Vector elements are separated by a
+#'   newline and strings are wrapped according to the page with.
+#' @param footnotes vector of character string. Same rules as for \code{titles}.
+#' @param page page number, if NULL then no page number is displayed.
 #' @param npages if page is not NULL then the total number of pages in the plot
-#'   is expected
-#' @param max_char if not null, title and footnotes get split to not exceed the
-#'   max_char number of characters per title and footnote line.
+#'   is expected.
 #' @param border boolean, whether a a border should be drawn around the plot or
-#'   not
-#' @param border_padding if border is TRUE then this expects a unit object with
-#'   the padding
-#' @param margins a unit vector with margins (bottom, left, top, right)
+#'   not.
+#' @param border_padding if border is \code{TRUE} then this expects a unit
+#'   object with the padding.
+#' @param margins a unit vector with outer margins (bottom, left, top, right).
 #' @param pady \code{\link{unit}} object with space between title and plot and
 #'   plot and footnote.
 #' @param gp a gpar object for all of the plot
 #' @param gp_footnote a gpar object for the footnote and page grob
 #'
-#' @return a grid grob (gTree)
+#' @return a grid grob (gTree) 
 #'
 #' @export
 #'
 #' @examples
 #'
-#' titles <- "Edgar Anderson's Iris Data\nThis famous (Fisher's or Anderson's) iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris."
-#' footnotes <- "The species are Iris setosa, versicolor, and virginica.\niris is a data frame with 150 cases (rows) and 5 variables (columns) named Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
+#' titles <- c(
+#'   "Edgar Anderson's Iris Data",
+#'   paste(
+#'     "This famous (Fisher's or Anderson's) iris data set gives the measurements",
+#'      "in centimeters of the variables sepal length and width and petal length",
+#'      "and width, respectively, for 50 flowers from each of 3 species of iris."
+#'   )
+#'  )
+#'   
+#' footnotes <- c(
+#'   "The species are Iris setosa, versicolor, and virginica.",
+#'   paste(
+#'   "iris is a data frame with 150 cases (rows) and 5 variables (columns) named",
+#'   "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
+#'   )
+#' )
+#'   
 #'
 #' ## empty plot
 #' grid.newpage()
@@ -100,24 +113,36 @@
 #'   )
 #' )
 decorate_grob <- function(grob,
-                         titles,
-                         footnotes,
-                         page = NULL,
-                         npages = NULL,
-                         max_char = 100,
-                         border = TRUE,
-                         border_padding = unit(rep(1, 4), "lines"),
-                         margins = unit(c(2, 1.5, 3, 1.5), "cm"),
-                         pady = unit(0.8, "lines"),
-                         gp = NULL,
-                         gp_footnote = gpar(fontsize = 8)) {
+                          titles,
+                          footnotes,
+                          page = NULL,
+                          npages = NULL,
+                          outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"),
+                          plot_margins = unit(rep(1.1, 4), "lines"),
+                          plot_padding = unit(rep(1.1, 4), "lines"),
+                          bbox_plot = TRUE,
+                          gp = NULL,
+                          gp_footnote = NULL,
+                          vp = NULL) {
   
-  if (!is.grob(grob) && !is.null(grob)) stop("grob argument is expected to be a grob object or NULL")
+  if (!is.grob(grob) && !is.null(grob)) stop("grob argument is expected to be a grid grob object or NULL")
   
-  plotViewport(
-    name = "margins",
-    margins = convertUnit(margins, "lines", valueOnly = TRUE)
-  )
+  if (!is.character(titles)) stop("argument titles is not of type character")
+  if (!is.character(footnotes)) stop("argument footnotes is not of type character")
+  if (!is.numeric(page) && !is.null(page)) stop("page is not numeric or NULL")
+  if (!is.numeric(npages) && !is.null(npages)) stop("npages is not numeric or NULL")
+  
+  if (!is.unit(outer_margins) && length(outer_margins) != 4)
+    stop("margins needs to be a unit object of length 4 (bottom, left, top, right)")
+  if (!is.unit(plot_margins) && length(plot_margins) != 4)
+    stop("plot_margins needs to be a unit object of length 4 (bottom, left, top, right)")
+  if (!is.unit(plot_padding) && length(plot_padding) != 4)
+    stop("plot_padding needs to be a unit object of length 4 (bottom, left, top, right)")
+  
+  
+  
+  
+  
   
   titles <- paste(wrap.text(titles, gp = gp), collapse = "\n")
   footnotes <- paste(wrap.text(footnotes, gp = gp_footnote), collapse = "\n")
@@ -184,6 +209,73 @@ decorate_grob <- function(grob,
     ),
     gp = gp
   )
+}
+
+
+splitString <- function(text) {
+  
+  availwidth <- convertWidth(unit(1, "npc"), "in", valueOnly = TRUE)
+  textwidth <- convertWidth(stringWidth(text), "in", valueOnly = TRUE)
+  strings <- strsplit(text, " ")[[1]]
+  
+  if (textwidth <= availwidth || length(strings) == 1) {
+    text
+  } else {
+    gapwidth <- stringWidth(" ")
+    newstring <- strings[1]
+    linewidth <- stringWidth(newstring)
+    
+    for (i in 2:length(words)) {
+      width <- stringWidth(strings[i])
+      if (convertWidth(linewidth + gapwidth + width, "in", valueOnly = TRUE) < availwidth) {
+        sep <- " "
+        linewidth <- linewidth + gapwidth + width
+      } else {
+        sep <- "\n"
+        linewidth <- width
+      }
+      newstring <- paste(newstring, strings[i], sep = sep)
+    }
+    newstring
+  }
+} 
+
+#' Split Text According To Available Text Width
+#' 
+#' Dynamically wrap text
+#' 
+#' @param text character string
+#' @param ... passed on to \code{\link{grob}}
+#' 
+#' @details
+#' This code is taken from R Graphics by Paul Murell, 2nd edition
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' 
+#' grid.newpage()
+#' pushViewport(plotViewport())
+#' grid.rect()
+#' grid.draw(splitTextGrob(text = paste(
+#'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
+#'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
+#'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
+#'   "elementum sem tempus. Morbi quis arcu condimentum, maximus lorem id,",
+#'   "tristique ante. Nullam a nunc dui. Fusce quis lacus nec ante dignissim",
+#'   "faucibus nec vitae tellus. Suspendisse mollis et sapien eu ornare. Vestibulum",
+#'   "placerat neque nec justo efficitur, ornare varius nulla imperdiet. Nunc justo",
+#'   "sapien, vestibulum eget efficitur eget, porttitor id ante. Nulla tempor",
+#'   "luctus massa id elementum. Praesent dictum, neque vitae vestibulum malesuada,",
+#'   "nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."
+#' )))
+#' 
+splitTextGrob <- function(text, ...) {
+  grob(text = text, cl = "splitText", ...)
+}
+
+drawDetails.splitText <- function(x, recording) {
+  grid.text(splitString(x$text), x = 0, y = 1, just = c("left", "top"))
 }
 
 
