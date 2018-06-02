@@ -61,13 +61,13 @@
 #' 
 #' 
 #' ae_lookup <- tribble(
-#' ~CLASS,         ~TERM,   ~GRADE,
-#' "cl A",   "trm A_1/2",        1,
-#' "cl A",   "trm A_2/2",        2,  
-#' "cl B",   "trm B_1/3",        2,
-#' "cl B",   "trm B_2/3",        3,
-#' "cl B",   "trm B_3/3",        1,
-#' "cl C",   "trm C_1/1",        1
+#'   ~CLASS,         ~TERM,   ~GRADE,
+#'   "cl A",   "trm A_1/2",        1,
+#'   "cl A",   "trm A_2/2",        2,  
+#'   "cl B",   "trm B_1/3",        2,
+#'   "cl B",   "trm B_2/3",        3,
+#'   "cl B",   "trm B_3/3",        1,
+#'   "cl C",   "trm C_1/1",        1
 #' )
 #' 
 #' AAE <- cbind(
@@ -142,7 +142,15 @@ t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", gra
   N <- tapply(df$subjid, df$col_by, function(x) (sum(!duplicated(x))))
   
   # need to remove extra records that came from subject level data
-  # when left join was done. also any record that is missing class or term
+  # when left join was done. 
+  # currently class, term and grade can not be individually missing
+  has_partial_missing <- apply(df[, -c(3,5)], 1, function(row) {
+      is_na <- is.na(row)
+      xor(any(is_na), all(is_na))
+  })
+  if (any(has_partial_missing))
+    stop("partial missing data in rows of [class, term, grade] is currently not supported")
+  
   df <- na.omit(df)
   
   # start tabulating --------------------------------------------------------
