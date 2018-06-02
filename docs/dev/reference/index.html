@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Function reference" />
 
 <meta name="robots" content="noindex">
@@ -82,6 +85,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,191 +93,189 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
       <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-" class="hasAnchor"><a href="#section-" class="anchor"></a></h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tern-package.html">tern-package</a></code> </p>
-          </td>
-          <td><p>TLG creation functions</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-compound-tables" class="hasAnchor"><a href="#section-compound-tables" class="anchor"></a>Compound Tables</h2>
-            <p class="section-desc"><p>These tables are often compound tables that are found in the GDSR templates.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_ae_ctc.html">t_ae_ctc()</a></code> </p>
-          </td>
-          <td><p>Adverse Events Table by Highest NCI CTCAE Grade</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_forest_rsp.html">t_forest_rsp()</a></code> </p>
-          </td>
-          <td><p>Response Table as used for Forest Plot</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_forest_tte.html">t_forest_tte()</a></code> </p>
-          </td>
-          <td><p>Time-to-event Table as used for Forest Plot</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_rsp.html">t_rsp()</a></code> </p>
-          </td>
-          <td><p>Response Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_summarize_by_visit.html">t_summarize_by_visit()</a></code> </p>
-          </td>
-          <td><p>Summary Table by Visit</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_summarize_variables.html">t_summarize_variables()</a></code> </p>
-          </td>
-          <td><p>Variables Summary Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_tte.html">t_tte()</a></code> </p>
-          </td>
-          <td><p>Time to Event Table</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-compound-graphs" class="hasAnchor"><a href="#section-compound-graphs" class="anchor"></a>Compound Graphs</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="g_forest.html">g_forest()</a></code> </p>
-          </td>
-          <td><p>Create a Forest Plot based on a Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="g_km.html">g_km()</a></code> </p>
-          </td>
-          <td><p>Kaplan-Meier Plot</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="g_waterfall.html">g_waterfall()</a></code> </p>
-          </td>
-          <td><p>Horizontal Waterfall Plot</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-elementary-tables" class="hasAnchor"><a href="#section-elementary-tables" class="anchor"></a>Elementary Tables</h2>
-            <p class="section-desc"><p>These are tables that are often used in compound tables or graphs.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_coxph.html">t_coxph()</a></code> </p>
-          </td>
-          <td><p>Proportional Hazards Regression Model Fit Summary Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_km.html">t_km()</a></code> </p>
-          </td>
-          <td><p>Kaplan Meier Fit Summary Table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="t_max_grade_per_id.html">t_max_grade_per_id()</a></code> </p>
-          </td>
-          <td><p>Tabulate maximum grade per id by <code>col_by</code></p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-graphs-helper-functions" class="hasAnchor"><a href="#section-graphs-helper-functions" class="anchor"></a>Graphs Helper Functions</h2>
-            <p class="section-desc"><p>these functions are useful to modify graphs</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="addTable.html">addTable()</a></code> </p>
-          </td>
-          <td><p>Add an rtable as Text Annotation to a Gird Grob</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-data-helper-functions" class="hasAnchor"><a href="#section-data-helper-functions" class="anchor"></a>Data Helper Functions</h2>
-            <p class="section-desc"><p>these functions are used by other functions to derive data</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="var_labels.html">var_labels()</a></code> </p>
-          </td>
-          <td><p>Get Label Attributes of Variables in a <code>data.frame</code></p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="var_labels-set.html">`var_labels<-`()</a></code> </p>
-          </td>
-          <td><p>Set Label Attributes of All Variables in a <code>data.frame</code></p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="var_relabel.html">var_relabel()</a></code> </p>
-          </td>
-          <td><p>Copy and Change Variable Labels of a <code>data.frame</code></p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drop_shared_variables.html">drop_shared_variables()</a></code> </p>
-          </td>
-          <td><p>Remove Shared Variables</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="reorder_to_match_id.html">reorder_to_match_id()</a></code> </p>
-          </td>
-          <td><p>Return Ordered Dataset so that a set of variables match exactly</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-" class="hasAnchor"><a href="#section-" class="anchor"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="tern-package.html">tern-package</a></code> </p>
+        </td>
+        <td><p>TLG creation functions</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-compound-tables" class="hasAnchor"><a href="#section-compound-tables" class="anchor"></a>Compound Tables</h2>
+          <p class="section-desc"><p>These tables are often compound tables that are found in the GDSR templates.</p></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_ae_ctc.html">t_ae_ctc()</a></code> </p>
+        </td>
+        <td><p>Adverse Events Table by Highest NCI CTCAE Grade</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_forest_rsp.html">t_forest_rsp()</a></code> </p>
+        </td>
+        <td><p>Response Table as used for Forest Plot</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_forest_tte.html">t_forest_tte()</a></code> </p>
+        </td>
+        <td><p>Time-to-event Table as used for Forest Plot</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_rsp.html">t_rsp()</a></code> </p>
+        </td>
+        <td><p>Response Table</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_summarize_by_visit.html">t_summarize_by_visit()</a></code> </p>
+        </td>
+        <td><p>Summary Table by Visit</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_summarize_variables.html">t_summarize_variables()</a></code> </p>
+        </td>
+        <td><p>Variables Summary Table</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_tte.html">t_tte()</a></code> </p>
+        </td>
+        <td><p>Time to Event Table</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-compound-graphs" class="hasAnchor"><a href="#section-compound-graphs" class="anchor"></a>Compound Graphs</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="g_forest.html">g_forest()</a></code> </p>
+        </td>
+        <td><p>Create a Forest Plot based on a Table</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="g_km.html">g_km()</a></code> </p>
+        </td>
+        <td><p>Kaplan-Meier Plot</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="g_waterfall.html">g_waterfall()</a></code> </p>
+        </td>
+        <td><p>Horizontal Waterfall Plot</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-elementary-tables" class="hasAnchor"><a href="#section-elementary-tables" class="anchor"></a>Elementary Tables</h2>
+          <p class="section-desc"><p>These are tables that are often used in compound tables or graphs.</p></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_coxph.html">t_coxph()</a></code> </p>
+        </td>
+        <td><p>Proportional Hazards Regression Model Fit Summary Table</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_km.html">t_km()</a></code> </p>
+        </td>
+        <td><p>Kaplan Meier Fit Summary Table</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="t_max_grade_per_id.html">t_max_grade_per_id()</a></code> </p>
+        </td>
+        <td><p>Tabulate maximum grade per id by <code>col_by</code></p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-graphs-helper-functions" class="hasAnchor"><a href="#section-graphs-helper-functions" class="anchor"></a>Graphs Helper Functions</h2>
+          <p class="section-desc"><p>these functions are useful to modify graphs</p></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="addTable.html">addTable()</a></code> </p>
+        </td>
+        <td><p>Add an rtable as Text Annotation to a Grid Grob</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-helper-functions" class="hasAnchor"><a href="#section-data-helper-functions" class="anchor"></a>Data Helper Functions</h2>
+          <p class="section-desc"><p>these functions are used by other functions to derive data</p></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="var_labels.html">var_labels()</a></code> </p>
+        </td>
+        <td><p>Get Label Attributes of Variables in a <code>data.frame</code></p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="var_labels-set.html">`var_labels<-`()</a></code> </p>
+        </td>
+        <td><p>Set Label Attributes of All Variables in a <code>data.frame</code></p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="var_relabel.html">var_relabel()</a></code> </p>
+        </td>
+        <td><p>Copy and Change Variable Labels of a <code>data.frame</code></p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="drop_shared_variables.html">drop_shared_variables()</a></code> </p>
+        </td>
+        <td><p>Remove Shared Variables</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="reorder_to_match_id.html">reorder_to_match_id()</a></code> </p>
+        </td>
+        <td><p>Return Ordered Dataset so that a set of variables match exactly</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -300,6 +302,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

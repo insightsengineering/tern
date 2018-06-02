@@ -5,7 +5,7 @@
 \title{Kaplan-Meier Plot}
 \usage{
 g_km(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
-  draw = TRUE, newpage = TRUE)
+  xlab = "Days", draw = TRUE, newpage = TRUE)
 }
 \arguments{
 \item{fit_km}{a class \code{\link{survfit}} object}
@@ -16,6 +16,8 @@ g_km(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
 \code{NULL}.}
 
 \item{title}{plot title}
+
+\item{xlab}{a string for label of x-axis}
 
 \item{draw}{boolean, should plot be drawn}
 
@@ -42,6 +44,9 @@ g_km(fit_km = fit_km)
 
 g_km(fit_km = fit_km, col = c("black", "red"))
  
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
+g_km(fit_km, xlab = "Duration (Days)")
+
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}
