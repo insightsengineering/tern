@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Kaplan-Meier Plot — g_km" />
 
 <meta property="og:description" content="Create a KM plot for any survfit object." />
@@ -85,6 +88,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,19 +96,22 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Kaplan-Meier Plot</h1>
     
+    <div class="hidden name"><code>g_km.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Create a KM plot for any <code><a href='http://www.rdocumentation.org/packages/survival/topics/survfit'>survfit</a></code> object.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kaplan - Meier Plot"</span>,
-  <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Days"</span>, <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -125,6 +132,10 @@
     <tr>
       <th>title</th>
       <td><p>plot title</p></td>
+    </tr>
+    <tr>
+      <th>xlab</th>
+      <td><p>a string for label of x-axis</p></td>
     </tr>
     <tr>
       <th>draw</th>
@@ -152,7 +163,9 @@
 <span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
 
 <span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>)</div><div class='img'><img src='g_km-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"black"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_km-2.png' alt='' width='700' height='433' /></div><div class='input'> 
+<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"black"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_km-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
+<span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Duration (Days)"</span>)</div><div class='img'><img src='g_km-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -181,6 +194,8 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

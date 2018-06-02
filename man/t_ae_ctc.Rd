@@ -70,13 +70,13 @@ ASL <- tibble(
 
 
 ae_lookup <- tribble(
-~CLASS,         ~TERM,   ~GRADE,
-"cl A",   "trm A_1/2",        1,
-"cl A",   "trm A_2/2",        2,  
-"cl B",   "trm B_1/3",        2,
-"cl B",   "trm B_2/3",        3,
-"cl B",   "trm B_3/3",        1,
-"cl C",   "trm C_1/1",        1
+  ~CLASS,         ~TERM,   ~GRADE,
+  "cl A",   "trm A_1/2",        1,
+  "cl A",   "trm A_2/2",        2,  
+  "cl B",   "trm B_1/3",        2,
+  "cl B",   "trm B_2/3",        3,
+  "cl B",   "trm B_3/3",        1,
+  "cl C",   "trm C_1/1",        1
 )
 
 AAE <- cbind(

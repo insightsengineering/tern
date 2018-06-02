@@ -27,6 +27,8 @@ OS <- data.frame(
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
 tbl <- t_km(fit_km)
 tbl
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = OS, conf.type = "plain")
+t_km(fit_km)
 
 }
 \author{

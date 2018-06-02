@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Kaplan Meier Fit Summary Table — t_km" />
 
 <meta property="og:description" content="An rtable format of KM model data for further
@@ -86,6 +89,7 @@ annotation on top of Kaplan-Meier grob" />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -93,17 +97,20 @@ annotation on top of Kaplan-Meier grob" />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Kaplan Meier Fit Summary Table</h1>
     
+    <div class="hidden name"><code>t_km.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>An <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code> format of KM model data for further
 annotation on top of Kaplan-Meier grob</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>t_km</span>(<span class='no'>fit_km</span>)</pre>
     
@@ -132,9 +139,12 @@ annotation on top of Kaplan-Meier grob</p>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                      N                     median              95% CI for median
 #&gt; --------------------------------------------------------------------------------
-#&gt; ARM=A               62                      0.93                 (0.81, 1.58)   
-#&gt; ARM=B               69                      1.17                 (0.77, 1.78)   
-#&gt; ARM=C               69                      1.52                 (1.08, 1.79)   </div><div class='input'>
+#&gt; ARM=A               71                      1.09                 (0.82, 1.34)   
+#&gt; ARM=B               55                      1.39                 (0.86, 1.75)   
+#&gt; ARM=C               74                      1.04                 (0.74, 1.29)   </div><div class='input'><span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
+<span class='fu'>t_km</span>(<span class='no'>fit_km</span>)</div><div class='output co'>#&gt;                    N                     median              95% CI for median
+#&gt; ------------------------------------------------------------------------------
+#&gt; All               200                     1.13                   (1, 1.29)    </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -163,6 +173,8 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>
