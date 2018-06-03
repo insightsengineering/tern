@@ -24,7 +24,9 @@
 #' @return a grid grob (gTree) 
 #'
 #' @export
-#'
+#' 
+#' @template author_waddella
+#' 
 #' @examples
 #'
 #' titles <- c(
@@ -115,15 +117,51 @@
 decorate_grob <- function(grob,
                           titles,
                           footnotes,
-                          page = NULL,
-                          npages = NULL,
+                          page = "",
+                          width_titles = unit(1, "npc"),
+                          width_footnotes = unit(1, "npc") - stringWidth(page),
+                          border = TRUE,
+                          margin = unit(rep(1, 4), "lines"),
+                          padding = unit(rep(1, 4), "lines"),
                           outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"),
-                          plot_margins = unit(rep(1.1, 4), "lines"),
-                          plot_padding = unit(rep(1.1, 4), "lines"),
-                          bbox_plot = TRUE,
-                          gp = NULL,
+                          gp_titles = NULL,
                           gp_footnote = NULL,
+                          name = NULL,
+                          gp = NULL,
                           vp = NULL) {
+  
+  gTree(
+    grob = grob,
+    titles = titles,
+    footnotes = footnotes,
+    page = page,
+    width_titles = width_titles,
+    width_footnotes = width_footnotes,
+    border = border,
+    margin = margin,
+    padding = padding,
+    outer_margins = outer_margins,
+    gp_titles = gp_titles,
+    gp_footnote = gp_footnote,
+    
+    children = gList(
+      gTree(
+        children = gList(
+          gTree(
+            
+            names = "titles"
+          )
+        ),
+        childrenvp = viewport(layout = grid.layout(1,3)),
+        name = "titles_grob_footnotes"
+      )
+    ),
+    childrenvp = plotViewport(margins = outer_margins),
+    name = name,
+    gp = gp,
+    vp = vp,
+    cl = "decoratedGrob"
+  )
   
   if (!is.grob(grob) && !is.null(grob)) stop("grob argument is expected to be a grid grob object or NULL")
   
@@ -211,10 +249,11 @@ decorate_grob <- function(grob,
   )
 }
 
-
-splitString <- function(text) {
+# Adapted from Paul Murell R Graphics 2nd Edition
+# https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
+splitString <- function(text, width) {
   
-  availwidth <- convertWidth(unit(1, "npc"), "in", valueOnly = TRUE)
+  availwidth <- convertWidth(width, "in", valueOnly = TRUE)
   textwidth <- convertWidth(stringWidth(text), "in", valueOnly = TRUE)
   strings <- strsplit(text, " ")[[1]]
   
@@ -225,14 +264,14 @@ splitString <- function(text) {
     newstring <- strings[1]
     linewidth <- stringWidth(newstring)
     
-    for (i in 2:length(words)) {
-      width <- stringWidth(strings[i])
-      if (convertWidth(linewidth + gapwidth + width, "in", valueOnly = TRUE) < availwidth) {
+    for (i in 2:length(strings)) {
+      str_width <- stringWidth(strings[i])
+      if (convertWidth(linewidth + gapwidth + str_width, "in", valueOnly = TRUE) < availwidth) {
         sep <- " "
-        linewidth <- linewidth + gapwidth + width
+        linewidth <- linewidth + gapwidth + str_width
       } else {
         sep <- "\n"
-        linewidth <- width
+        linewidth <- str_width
       }
       newstring <- paste(newstring, strings[i], sep = sep)
     }
@@ -245,6 +284,7 @@ splitString <- function(text) {
 #' Dynamically wrap text
 #' 
 #' @param text character string
+#' @param width a unit object specifying max width of text
 #' @param ... passed on to \code{\link{grob}}
 #' 
 #' @details
@@ -253,11 +293,7 @@ splitString <- function(text) {
 #' @noRd
 #' 
 #' @examples 
-#' 
-#' grid.newpage()
-#' pushViewport(plotViewport())
-#' grid.rect()
-#' grid.draw(splitTextGrob(text = paste(
+#' sg <- splitTextGrob(text = paste(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
 #'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
 #'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
@@ -268,14 +304,51 @@ splitString <- function(text) {
 #'   "sapien, vestibulum eget efficitur eget, porttitor id ante. Nulla tempor",
 #'   "luctus massa id elementum. Praesent dictum, neque vitae vestibulum malesuada,",
 #'   "nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."
-#' )))
+#' ))
 #' 
-splitTextGrob <- function(text, ...) {
-  grob(text = text, cl = "splitText", ...)
+#' grobHeight(sg)
+#' 
+#' grid.newpage()
+#' pushViewport(plotViewport())
+#' grid.rect()
+#' grid.draw(sg)
+#' 
+#' grid.rect(x = 0, y = unit(1, "npc"),
+#'  height = grobHeight(sg), width = unit(1, "cm"),
+#'   just = c("left", "top"), gp = gpar(fill = "red")
+#' )
+#' 
+#' # stack splitTextGrob
+#' grid.newpage()
+#' pushViewport(plotViewport())
+#' grid.rect()
+#' 
+#' 
+splitTextGrob <- function(text, x = unit(.5, "npc"), y = unit(.5, "npc"),
+                          width = unit(1, "npc"),  just = c("center", "center"), ...) {
+  grob(text = text, x = x, y = y, width = width, just = just, cl = "splitText", ...)
+}
+
+validDetails.splitText <- function(x) {
+  if (!is.character(x$text) || !(length(x$text) == 1))
+    stop("text is supposed to be of type character and have length 1")
+  
+  if (!is.unit(x$width) || !(length(x$width) == 1))
+    stop("width is supposed to be a unit object of length 1")
+  
+  x
+}
+
+heightDetails.splitText <- function(x) {
+  stringHeight(splitString(x$text))
+}
+
+widthDetails.splitText <- function(x) {
+  x$width
 }
 
 drawDetails.splitText <- function(x, recording) {
-  grid.text(splitString(x$text), x = 0, y = 1, just = c("left", "top"))
+  grid.text(splitString(x$text, x$width), x = x$x, y = x$y, just = x$just)
 }
 
 
@@ -344,72 +417,3 @@ decorate_grob_set <- function(grobs, ...) {
   lapply(grobs, lgf)
 }
 
-#' Return split text that fits onto page width
-#'
-#'
-#' @param txt string (or vector of strins) to be split in multiple lines, not that
-#' \code{'\n'} is also split into to lines
-#' @param width max with of string, by default the width of the current viewport
-#' @param gp graphical parameters for text
-#'
-#'
-#' @return a vector with the new strings
-#'
-#' @examples
-#'
-#' library(grid)
-#' grid.newpage()
-#' pushViewport(plotViewport())
-#' grid.rect()
-#' text <- "g_uefg_ex02_il05_ip11_CABRTR72_NIS DRAFT Individual Patient Calculated ABR Bar Chart, Treated bleeds, intra−patient comparison, NIS"
-#' grid.text(paste(wrap.text(text), collapse = "\n"), just = "left", x = unit(0, "npc"))
-wrap.text <- function(txt,
-                      width=convertWidth(unit(1,'npc'), 'inch', TRUE),
-                      gp=gpar()) {
-  
-  if (length(txt) == 0) return(character(0))
-  
-  gstringWidth <- function(label) {
-    vapply(label,
-           function(lab) convertWidth(grobWidth(textGrob(lab, gp=gp)), 'inch', TRUE),
-           numeric(1)
-    )
-  }
-  
-  space_width <- gstringWidth(" ")
-  width_s <- width - space_width
-  
-  # splits a string into multiple strings that fit
-  splitstr <- function(str) {
-    if (gstringWidth(str) > width_s) {
-      strs <- unlist(strsplit(str, " ", fixed=TRUE))
-      n <- length(strs)
-      
-      if (n <= 1) {
-        str
-      } else {
-        strsw <- gstringWidth(strs) + space_width
-        part <- rep(NA_integer_, n)
-        # string partition
-        k <- 1
-        part[1] <- k
-        s <- strsw[1] # current width
-        for (i in 2:n) {
-          if (s + strsw[i] > width_s) {
-            k <- k + 1
-            s <- strsw[i]
-          } else {
-            s <- s + strsw[i]
-          }
-          part[i] <- k
-        }
-        as.vector(tapply(strs, part, function(x)paste(x, collapse = " "), simplify = TRUE))
-      }
-    } else {
-      str
-    }
-  }
-  strs_to_split <- unlist(Map(function(x)if (length(x) == 0) "" else x, strsplit(txt, "\n", fixed = TRUE)))
-  
-  unlist(Map(function(str) splitstr(str), strs_to_split), use.names = FALSE)
-}
