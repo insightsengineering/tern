@@ -283,6 +283,7 @@ splitString <- function(text, width) {
 #' 
 #' Dynamically wrap text
 #' 
+#' @inheritParams grid::grid.text
 #' @param text character string
 #' @param width a unit object specifying max width of text
 #' @param ... passed on to \code{\link{grob}}
@@ -290,7 +291,7 @@ splitString <- function(text, width) {
 #' @details
 #' This code is taken from R Graphics by Paul Murell, 2nd edition
 #' 
-#' @noRd
+#' @export
 #' 
 #' @examples 
 #' sg <- splitTextGrob(text = paste(
@@ -313,9 +314,8 @@ splitString <- function(text, width) {
 #' grid.rect()
 #' grid.draw(sg)
 #' 
-#' grid.rect(x = 0, y = unit(1, "npc"),
-#'  height = grobHeight(sg), width = unit(1, "cm"),
-#'   just = c("left", "top"), gp = gpar(fill = "red")
+#' grid.rect(
+#'  height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 #' )
 #' 
 #' # stack splitTextGrob
@@ -329,6 +329,7 @@ splitTextGrob <- function(text, x = unit(.5, "npc"), y = unit(.5, "npc"),
   grob(text = text, x = x, y = y, width = width, just = just, cl = "splitText", ...)
 }
 
+#' @export
 validDetails.splitText <- function(x) {
   if (!is.character(x$text) || !(length(x$text) == 1))
     stop("text is supposed to be of type character and have length 1")
@@ -339,14 +340,17 @@ validDetails.splitText <- function(x) {
   x
 }
 
+#' @export
 heightDetails.splitText <- function(x) {
-  stringHeight(splitString(x$text))
+  stringHeight(splitString(x$text, x$width))
 }
 
+#' @export
 widthDetails.splitText <- function(x) {
   x$width
 }
 
+#' @export
 drawDetails.splitText <- function(x, recording) {
   grid.text(splitString(x$text, x$width), x = x$x, y = x$y, just = x$just)
 }
