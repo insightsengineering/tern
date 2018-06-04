@@ -90,6 +90,6 @@ We would like `tern` to be a collaborative effort and your contributions are wel
 
 ### Creating Pull Requests
 
--   Please make pull requests to the `devel` branch (i.e. base is devel)
-    -   [Heng Wang](mailto:wang.heng@gene.com), [Yuyao Song](mailto:yuyao.song@roche.com), [Chendi Liao](mailto:chendi.liao@roche.com), and [Adrian Waddell](mailto:adrian.waddell@roche.com) can accept pull requests to the `devel` branch
--   We then make new releases on the master branch once the `devel` branch has been thoroughly tested
+-   Please make pull requests to the `master` branch (i.e. base is master)
+
+-   We then make new tagged releases on the master branch once the `master` branch has been thoroughly tested
