@@ -152,7 +152,7 @@ var_labels_remove <- function(x) {
 #' @examples 
 #' \dontrun{
 #' # function is not exported
-#' `%needs%` <- teal.oncology:::`%needs%`
+#' `%needs%` <- teal.tern:::`%needs%`
 #' 
 #' iris %needs% c("Sepal.Length", "Petal.Width")
 #' 
@@ -380,7 +380,7 @@ compound_table <- function(funs, ..., nrow_pad = 1) {
     
   })
   
-  do.call(tern:::stack_rtables, c(tbls, list(nrow_pad = nrow_pad)))
+  do.call(stack_rtables, c(tbls, list(nrow_pad = nrow_pad)))
   
 }
 

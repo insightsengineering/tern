@@ -58,7 +58,12 @@ t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM,
 ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit",
                         CHG = "Change from\\nBaseline",
                         PCHG = "Percent Change\\nfrom Baseline")
-t_summarize_by_visit(data = ANL[c("AVAL", "CHG")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
+t_summarize_by_visit(
+  data = ANL[c("AVAL", "CHG")],
+  visit = ANL$VISIT,
+  col_by = ANL$ARM,
+  id = ANL$USUBJID
+)
 
 
 # EXAMPLE 2
@@ -72,7 +77,12 @@ AQS <- radam("AQS") \%>\%
      AVISIT = factor(AVISIT, levels = unique(AVISIT))
    )
 
-tbl <- t_summarize_by_visit(data = AQS[c("AVAL", "CHG")], visit = AQS$AVISIT, col_by = AQS$ARM, id = AQS$USUBJID)
+tbl <- t_summarize_by_visit(
+  data = AQS[c("AVAL", "CHG")],
+  visit = AQS$AVISIT,
+  col_by = AQS$ARM,
+  id = AQS$USUBJID
+)
 tbl
 \dontrun{
 Viewer(tbl)

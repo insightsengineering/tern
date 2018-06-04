@@ -249,6 +249,7 @@ add_ae_class <- function(tbl, class) {
 #' @param any_grade add a row that counts any occurrence, it is named \code{-Any
 #'   Grade-} by default
 #' 
+#' @importFrom stats aggregate
 #' @export
 #' 
 #' @examples 

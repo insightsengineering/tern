@@ -11,7 +11,7 @@ Authors@R: c(
   person("Mark", "Rothe", role = c("aut")),
   person("Xiao", "Mu Yo", role = c("aut"))
   )
-Description: TLG creation
+Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
 Depends:
   R (>= 3.3),
   survival,
@@ -27,6 +27,7 @@ Imports:
   gridExtra
 Suggests:
   random.cdisc.data,
+  tibble,
   dplyr,
   testthat,
   knitr,

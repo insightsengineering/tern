@@ -15,6 +15,7 @@ shift_label_table <- function(tbl, term) {
 
 
 #' cbind two rtables
+#' @noRd
 #' 
 #' @examples 
 #' x <- rtable(c("A", "B"), rrow("x row 1", 1,2), rrow("x row 2", 3, 4))
