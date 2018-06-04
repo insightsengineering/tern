@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Time-to-event Table as used for Forest Plot — t_forest_tte" />
 
 <meta property="og:description" content="The time-to-event forest plot table summarizes time-to-event data by groups. 
@@ -88,6 +91,7 @@ from a Cox proportional hazard model." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -95,19 +99,22 @@ from a Cox proportional hazard model." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Time-to-event Table as used for Forest Plot</h1>
     
+    <div class="hidden name"><code>t_forest_tte.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>The time-to-event forest plot table summarizes time-to-event data by groups. 
 The function returns event counts and median survival time for each analysis 
 arm, as well as a hazard ratio and the corresponding 95% confidence interval 
 from a Cox proportional hazard model.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>t_forest_tte</span>(<span class='no'>tte</span>, <span class='no'>is_event</span>, <span class='no'>col_by</span>, <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"ALL"</span>, <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>,
@@ -252,6 +259,8 @@ Yuyao Song (songy24) <a href='mailto:yuyao.song@roche.com'>yuyao.song@roche.com<
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

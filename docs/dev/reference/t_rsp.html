@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Response Table — t_rsp" />
 
 <meta property="og:description" content="The response table function summarizes response data by groups. The function 
@@ -88,6 +91,7 @@ and odds ratio." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -95,19 +99,22 @@ and odds ratio." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Response Table</h1>
     
+    <div class="hidden name"><code>t_rsp.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>The response table function summarizes response data by groups. The function 
 produces frequency counts and rates for responders and each response 
 categories, as well as conducts comparisons between groups' response rates 
 and odds ratio.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>t_rsp</span>(<span class='no'>rsp</span>, <span class='no'>col_by</span>, <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
@@ -179,7 +186,9 @@ further explanation.</p></td>
  <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(
    <span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)
  ))
-)</div><span class='co'># NOT RUN {</span>
+)</div><div class='output co'>#&gt; Called from: eval(expr, p)
+#&gt; debug at /Users/waddella/Desktop/tern/R/t_rsp.R#86: check_same_N(rsp = rsp, col_by = col_by, partition_rsp_by = partition_rsp_by, 
+#&gt;     strata_data = strata_data)</div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span><div class='input'>
 <span class='co'># Example 2 - ARM B as reference, ARM C displayed before ARM A</span>
@@ -256,6 +265,8 @@ Chendi Liao (liaoc10) <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.c
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

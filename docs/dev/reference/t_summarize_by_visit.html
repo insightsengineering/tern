@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Summary Table by Visit — t_summarize_by_visit" />
 
 <meta property="og:description" content="This function summarizes test results or change from baseline statistics by 
@@ -86,6 +89,7 @@ visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -93,17 +97,20 @@ visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Summary Table by Visit</h1>
     
+    <div class="hidden name"><code>t_summarize_by_visit.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This function summarizes test results or change from baseline statistics by 
 visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>t_summarize_by_visit</span>(<span class='no'>data</span>, <span class='no'>visit</span>, <span class='no'>id</span>, <span class='no'>col_by</span>)</pre>
     
@@ -309,7 +316,12 @@ first <code>level</code> indicates the reference group</p></td>
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='var_relabel.html'>var_relabel</a></span>(<span class='no'>ANL</span>, <span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='st'>"Value at\nVisit"</span>,
                         <span class='kw'>CHG</span> <span class='kw'>=</span> <span class='st'>"Change from\nBaseline"</span>,
                         <span class='kw'>PCHG</span> <span class='kw'>=</span> <span class='st'>"Percent Change\nfrom Baseline"</span>)
-<span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>)</div><div class='output co'>#&gt;                                 ARM A                                   ARM B              
+<span class='fu'>t_summarize_by_visit</span>(
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)],
+  <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>VISIT</span>,
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>
+)</div><div class='output co'>#&gt;                                 ARM A                                   ARM B              
 #&gt;                                (N=100)                                 (N=100)             
 #&gt;                      Value at          Change from           Value at          Change from 
 #&gt;                       Visit              Baseline             Visit              Baseline  
@@ -395,7 +407,12 @@ first <code>level</code> indicates the reference group</p></td>
      <span class='kw'>AVISIT</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>AVISIT</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>unique</span>(<span class='no'>AVISIT</span>))
    )
 
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_summarize_by_visit</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>AQS</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)], <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>AVISIT</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>ARM</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>USUBJID</span>)
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_summarize_by_visit</span>(
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>AQS</span>[<span class='fu'>c</span>(<span class='st'>"AVAL"</span>, <span class='st'>"CHG"</span>)],
+  <span class='kw'>visit</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>AVISIT</span>,
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>ARM</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>AQS</span>$<span class='no'>USUBJID</span>
+)
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                  ARM A                                     ARM B                                     ARM C               
 #&gt;                                  (N=89)                                    (N=87)                                    (N=90)              
 #&gt;                        AVAL                  CHG                 AVAL                  CHG                 AVAL                  CHG     
@@ -510,6 +527,8 @@ Chendi Liao (liaoc10) <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.c
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Variables Summary Table — t_summarize_variables" />
 
 <meta property="og:description" content="Similiar as the demographic table in STREAM" />
@@ -85,6 +88,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,16 +96,19 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Variables Summary Table</h1>
     
+    <div class="hidden name"><code>t_summarize_variables.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Similiar as the demographic table in STREAM</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>t_summarize_variables</span>(<span class='no'>data</span>, <span class='no'>col_by</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop_levels</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"no"</span>, <span class='st'>"ifany"</span>, <span class='st'>"always"</span>))</pre>
@@ -186,7 +193,7 @@ variable and the tables for all variables will be stacked.</p>
 #&gt;   M                             30 (56.6%)           29 (61.7%)            59 (59%)   
 #&gt;   F                             22 (41.51%)          18 (38.3%)            40 (40%)   
 #&gt;   U                              1 (1.89%)             0 (0%)               1 (1%)    
-#&gt;   NA                              0 (0%)               0 (0%)               0 (0%)    
+#&gt;   &lt;NA&gt;                            0 (0%)               0 (0%)               0 (0%)    
 #&gt; 
 #&gt; Baseline Age of patient
 #&gt;   n                                 53                   47                   100     
@@ -200,11 +207,11 @@ variable and the tables for all variables will be stacked.</p>
 #&gt;                                   (N=53)               (N=47)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 49                   41                   90      
+#&gt;   n                                 53                   47                   100     
 #&gt;   M                             28 (52.83%)          25 (53.19%)           53 (53%)   
 #&gt;   F                             20 (37.74%)          16 (34.04%)           36 (36%)   
 #&gt;   U                              1 (1.89%)             0 (0%)               1 (1%)    
-#&gt;   NA                             4 (7.55%)           6 (12.77%)            10 (10%)   
+#&gt;   &lt;NA&gt;                           4 (7.55%)           6 (12.77%)            10 (10%)   
 #&gt; 
 #&gt; Baseline Age of patient
 #&gt;   n                                 53                   47                   100     
@@ -271,6 +278,25 @@ variable and the tables for all variables will be stacked.</p>
 #&gt;   setosa            50 (33.33%)
 #&gt;   versicolor        50 (33.33%)
 #&gt;   virginica         50 (33.33%)</div><div class='input'>
+
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='fl'>NA</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>))
+<span class='no'>cb</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"I"</span>, <span class='st'>"I"</span>, <span class='st'>"I"</span>, <span class='st'>"II"</span>, <span class='st'>"II"</span>))
+
+<span class='fu'>t_summarize_variables</span>(<span class='fu'>data.frame</span>(<span class='no'>x</span>), <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>cb</span>)</div><div class='output co'>#&gt;               I             II   
+#&gt;             (N=3)          (N=2) 
+#&gt; ---------------------------------
+#&gt; x
+#&gt;   n           2              2   
+#&gt;   A        1 (50%)        1 (50%)
+#&gt;   B        1 (50%)        1 (50%)</div><div class='input'>
+<span class='fu'>t_summarize_variables</span>(<span class='fu'>data.frame</span>(<span class='no'>x</span>), <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>cb</span>, <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>"ifany"</span>)</div><div class='output co'>#&gt;                   I                 II    
+#&gt;                 (N=3)             (N=2)   
+#&gt; ------------------------------------------
+#&gt; x
+#&gt;   n               3                 2     
+#&gt;   A           1 (33.33%)         1 (50%)  
+#&gt;   B           1 (33.33%)         1 (50%)  
+#&gt;   &lt;NA&gt;        1 (33.33%)          0 (0%)  </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -301,6 +327,8 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>
