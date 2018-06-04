@@ -9,7 +9,13 @@
 
 ## TLG changes
 
-* `t_tte` now shows two rows with ranges for event and censored times, respectively.
+* `t_tte` now shows two rows with ranges for event and censored times,
+respectively.
+
+## Bug Fixes
+
+* `t_summarise_variables` uses now `n` instead of `N` as a denominator for
+calculating percentages for factors.
 
 ## Package Internal Changes
 
