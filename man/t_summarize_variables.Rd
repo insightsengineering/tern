@@ -69,6 +69,14 @@ t_summarize_variables(iris[, -5], col_by  = iris$Species)
 
 t_summarize_variables(iris, col_by  = no_by("All Species"))
 
+
+x <- factor(c("A", NA, "B", "B", "A"))
+cb <- factor(c("I", "I", "I", "II", "II"))
+
+t_summarize_variables(data.frame(x), col_by = cb)
+
+t_summarize_variables(data.frame(x), col_by = cb, useNA_factors = "ifany")
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

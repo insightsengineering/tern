@@ -61,7 +61,16 @@
 #' 
 #' t_summarize_variables(iris, col_by  = no_by("All Species"))
 #' 
-t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE, useNA_factors = c("no", "ifany", "always")) {
+#' 
+#' x <- factor(c("A", NA, "B", "B", "A"))
+#' cb <- factor(c("I", "I", "I", "II", "II"))
+#' 
+#' t_summarize_variables(data.frame(x), col_by = cb)
+#' 
+#' t_summarize_variables(data.frame(x), col_by = cb, useNA_factors = "ifany")
+#' 
+t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE,
+                                  useNA_factors = c("no", "ifany", "always")) {
 
   useNA_factors <- match.arg(useNA_factors)
   
@@ -89,21 +98,21 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
   rtables_vars <- Map(function(var, varlabel) {
     tbl_summary <- if (is.numeric(var)) {
       rbind(
-        rtabulate(var, col_by, n_not_na, row.name = "n", indent = 1),
+        rtabulate(var, col_by, count_n, row.name = "n", indent = 1),
         rtabulate(var, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", indent = 1),
-        rtabulate(var, col_by, median_t, row.name = "Median", indent = 1),
-        rtabulate(var, col_by, range_t, format = "xx.xx - xx.xx", row.name = "Min - Max", indent = 1)
+        rtabulate(var, col_by, median, row.name = "Median", indent = 1, na.rm = TRUE),
+        rtabulate(var, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", indent = 1, na.rm = TRUE)
       )
     } else {
       # treat as factor
       var_fct <- if (drop_levels) droplevels(as.factor(var)) else as.factor(var)
       rbind(
-        rtabulate(as.numeric(var_fct), col_by, n_not_na, row.name = "n", indent = 1),
+        rtabulate(as.numeric(var_fct), col_by, count_n, row.name = "n", indent = 1, na.rm = useNA_factors == "no"),
         rtabulate(
           x = var_fct,
           col_by = col_by,
           FUN = function(x_cell, x_row, x_col) {
-            if (length(x_col) > 0) length(x_cell) * c(1, 1/length(x_col)) else rcell("-", format = "xx")
+            if (length(x_col) > 0) length(x_cell) * c(1, 1/sum(!is.na(x_col))) else rcell("-", format = "xx")
           },
           row_col_data_args = TRUE,
           useNA = useNA_factors,
