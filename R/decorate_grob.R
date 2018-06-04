@@ -322,17 +322,28 @@ splitString <- function(text, width) {
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
+#' grid.draw(splitTextGrob(c("Hello, this is a test", "and yet another test"), just = c("left", "top"), x = 0, y = 1))
 #' 
 #' 
 splitTextGrob <- function(text, x = unit(.5, "npc"), y = unit(.5, "npc"),
                           width = unit(1, "npc"),  just = c("center", "center"), ...) {
+
+  if (!is.unit(width) || !(length(width) == 1))
+    stop("width is supposed to be a unit object of length 1")
+  
+  ## if it is a fixed unit then we do not need to recalculate when viewport resized
+  if (attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts",
+                                 "dida", "cicero", "scaledpts")) {
+    attr(text, "fixed_text") <- paste(vapply(text, splitString, character(1), width = width), collapse = "\n")
+  }
+  
   grob(text = text, x = x, y = y, width = width, just = just, cl = "splitText", ...)
 }
 
 #' @export
 validDetails.splitText <- function(x) {
-  if (!is.character(x$text) || !(length(x$text) == 1))
-    stop("text is supposed to be of type character and have length 1")
+  if (!is.character(x$text))
+    stop("text is supposed to be of type character")
   
   if (!is.unit(x$width) || !(length(x$width) == 1))
     stop("width is supposed to be a unit object of length 1")
@@ -342,7 +353,12 @@ validDetails.splitText <- function(x) {
 
 #' @export
 heightDetails.splitText <- function(x) {
-  stringHeight(splitString(x$text, x$width))
+  txt <- if (!is.null(attr(x$text, "fixed_text"))) {
+    attr(x$text, "fixed_text")
+  } else {
+    paste(vapply(x$text, splitString, character(1), width = x$width), collapse = "\n")
+  }
+  stringHeight(txt)
 }
 
 #' @export
@@ -352,10 +368,14 @@ widthDetails.splitText <- function(x) {
 
 #' @export
 drawDetails.splitText <- function(x, recording) {
-  grid.text(splitString(x$text, x$width), x = x$x, y = x$y, just = x$just)
+  txt <- if (!is.null(attr(x$text, "fixed_text"))) {
+    attr(x$text, "fixed_text")
+  } else {
+    paste(vapply(x$text, splitString, character(1), width = x$width), collapse = "\n")
+  }
+  grid.text(txt, x = x$x, y = x$y, just = x$just)
 }
-
-
+ 
 #' Automatically updates page number
 #'
 #' @param ... passed on to decorate_grob
