@@ -2,25 +2,24 @@
 #'
 #' This function is useful to label grid grobs (also ggplot2, and lattice plots)
 #' with title, footnote, and page nuumbers.
-#'
+#' 
+#' @inheritParams grid::grob
 #' @param grob a grid grob object, optionally \code{NULL} if ongly a grob with
 #'   the decoration should be shown.
 #' @param titles vector of character strings. Vector elements are separated by a
 #'   newline and strings are wrapped according to the page with.
 #' @param footnotes vector of character string. Same rules as for \code{titles}.
-#' @param page page number, if NULL then no page number is displayed.
-#' @param npages if page is not NULL then the total number of pages in the plot
-#'   is expected.
+#' @param page string with page numeration, if NULL then no page number is displayed.
+#' @param width_titles unit object
+#' @param width_footnotes unit object
 #' @param border boolean, whether a a border should be drawn around the plot or
 #'   not.
-#' @param border_padding if border is \code{TRUE} then this expects a unit
-#'   object with the padding.
-#' @param margins a unit vector with outer margins (bottom, left, top, right).
-#' @param pady \code{\link{unit}} object with space between title and plot and
-#'   plot and footnote.
-#' @param gp a gpar object for all of the plot
-#' @param gp_footnote a gpar object for the footnote and page grob
-#'
+#' @param margins unit object of length 4
+#' @param padding  unit object of length 4
+#' @param outer_margins  unit object of length 4
+#' @param gp_titles a gpar object
+#' @param gp_footnotes a gpar object
+#' 
 #' @return a grid grob (gTree) 
 #'
 #' @export
@@ -54,8 +53,7 @@
 #'     NULL,
 #'     titles = titles,
 #'     footnotes = footnotes,
-#'     page = 4,
-#'     npages = 10
+#'     page = "Page 4 of 10"
 #'   )
 #' )
 #'
@@ -79,8 +77,7 @@
 #'     grob = p,
 #'     titles = titles,
 #'     footnotes = footnotes,
-#'     page = 1,
-#'     npage = 1
+#'     page = "Page 6 of 129"
 #'   )
 #' )
 #'
@@ -95,8 +92,7 @@
 #'     grob = p,
 #'     titles = titles,
 #'     footnotes = footnotes,
-#'     page = 1,
-#'     npage = 1
+#'     page =  "Page 6 of 129"
 #'   )
 #' )
 #'
@@ -110,8 +106,7 @@
 #'     grob = p,
 #'     titles = titles,
 #'     footnotes = footnotes,
-#'     page = 1,
-#'     npage = 1
+#'     page = "Page 6 of 129"
 #'   )
 #' )
 decorate_grob <- function(grob,
@@ -121,16 +116,25 @@ decorate_grob <- function(grob,
                           width_titles = unit(1, "npc"),
                           width_footnotes = unit(1, "npc") - stringWidth(page),
                           border = TRUE,
-                          margin = unit(rep(1, 4), "lines"),
+                          margins = unit(c(1,0,1,0), "lines"),
                           padding = unit(rep(1, 4), "lines"),
                           outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"),
-                          gp_titles = NULL,
-                          gp_footnote = NULL,
+                          gp_titles = gpar(),
+                          gp_footnotes = gpar(),
                           name = NULL,
-                          gp = NULL,
+                          gp = gpar(),
                           vp = NULL) {
   
-  gTree(
+  st_titles <- splitTextGrob(titles, x = 0, y = 1, just = c("left", "top"), width = width_titles,
+                             vp = viewport(layout.pos.row = 1, layout.pos.col = 1),
+                             gp = gp_titles)
+  
+  
+  st_footnotes <- splitTextGrob(footnotes, x = 0, y = 1, just = c("left", "top"), width = width_footnotes,
+                                vp = viewport(layout.pos.row = 3, layout.pos.col = 1),
+                                gp = gp_footnotes)
+  
+  g <- gTree(
     grob = grob,
     titles = titles,
     footnotes = footnotes,
@@ -138,116 +142,85 @@ decorate_grob <- function(grob,
     width_titles = width_titles,
     width_footnotes = width_footnotes,
     border = border,
-    margin = margin,
+    margins = margins,
     padding = padding,
     outer_margins = outer_margins,
     gp_titles = gp_titles,
-    gp_footnote = gp_footnote,
+    gp_footnotes = gp_footnotes,
     
     children = gList(
       gTree(
         children = gList(
+          st_titles,
           gTree(
-            
-            names = "titles"
-          )
+            children = gList(
+              rectGrob(),
+              gTree(
+                children = gList(
+                  grob
+                ), 
+                vp = plotViewport(margins = padding)
+              )
+            ),
+            vp = vpStack(viewport(layout.pos.row = 2, layout.pos.col = 1), plotViewport(margins = margins))
+          ),
+          st_footnotes,
+          textGrob(page, x = 1, y = 0, just = c("right", "bottom"),
+                   vp = viewport(layout.pos.row = 3, layout.pos.col = 1),
+                   gp = gp_footnotes)
         ),
-        childrenvp = viewport(layout = grid.layout(1,3)),
-        name = "titles_grob_footnotes"
+        childrenvp = ,
+        name = "titles_grob_footnotes",
+        vp = vpStack(
+          plotViewport(margins = outer_margins),
+          viewport(layout = grid.layout(nrow = 3, ncol = 1,
+                                        heights = unit.c(
+                                          grobHeight(st_titles),
+                                          unit(1, "null"),
+                                          grobHeight(st_footnotes)
+                                        )))
+        )
       )
     ),
-    childrenvp = plotViewport(margins = outer_margins),
     name = name,
     gp = gp,
     vp = vp,
     cl = "decoratedGrob"
   )
-  
-  if (!is.grob(grob) && !is.null(grob)) stop("grob argument is expected to be a grid grob object or NULL")
-  
-  if (!is.character(titles)) stop("argument titles is not of type character")
-  if (!is.character(footnotes)) stop("argument footnotes is not of type character")
-  if (!is.numeric(page) && !is.null(page)) stop("page is not numeric or NULL")
-  if (!is.numeric(npages) && !is.null(npages)) stop("npages is not numeric or NULL")
-  
-  if (!is.unit(outer_margins) && length(outer_margins) != 4)
-    stop("margins needs to be a unit object of length 4 (bottom, left, top, right)")
-  if (!is.unit(plot_margins) && length(plot_margins) != 4)
-    stop("plot_margins needs to be a unit object of length 4 (bottom, left, top, right)")
-  if (!is.unit(plot_padding) && length(plot_padding) != 4)
-    stop("plot_padding needs to be a unit object of length 4 (bottom, left, top, right)")
-  
-  
-  
-  
-  
-  
-  titles <- paste(wrap.text(titles, gp = gp), collapse = "\n")
-  footnotes <- paste(wrap.text(footnotes, gp = gp_footnote), collapse = "\n")
-  
-  titles_grob <- textGrob(titles, x = unit(0, "npc"), just = "left",
-                          vp = viewport(layout.pos.col = 1, layout.pos.row = 1))
-  
-  page_grob <- if (!is.null(page)) {
-    if (is.null(npages)) stop("npages expected")
-    if (length(page) != 1) stop("page is expected to be of length 1")
-    textGrob(paste("Page", page, "of", npages), x = unit(1, "npc"), y = unit(0, "npc"), just = c("right", "bottom"), gp = gp_footnote)
-  } else {
-    NULL
-  }
-  
-  footnotes_grob <- textGrob(footnotes, x = unit(0, "npc"), y = unit(0, "npc"), just = c("left", "bottom"), gp = gp_footnote)
-  
-  footnotes_page_grob <- gTree(
-    children = gList(footnotes_grob, page_grob),
-    viewport(name = "vp_footnotes", layout.pos.col = 1, layout.pos.row = 5)
-  )
-  
-  decorated_plot_grob <- if (border) {
-    gTree(
-      children = gList(
-        rectGrob(),
-        gTree(
-          children = gList(grob),
-          vp = plotViewport(name = "vp_main_plot", margins = convertUnit(border_padding, "lines", valueOnly = TRUE))
-        )
-      ),
-      vp = viewport(layout.pos.col = 1, layout.pos.row = 3)
-    )
-  } else {
-    editGrob(grob, vp = viewport(name = "vp_main_plot", layout.pos.col = 1, layout.pos.row = 3))
-  }
-  
-  gTree(
-    children = gList(
-      titles_grob,
-      decorated_plot_grob,
-      footnotes_page_grob
-    ),
-    vp = vpStack(
-      plotViewport(
-        name = "margins",
-        margins = convertUnit(margins, "lines", valueOnly = TRUE)
-      ),
-      viewport(
-        name = "vp_toplevel_layout",
-        layout = grid.layout(
-          nrow = 5,
-          ncol = 1,
-          heights = unit.c(
-            unit(1, "grobheight", titles_grob),
-            pady,
-            unit(1,"null"),
-            pady,
-            unit.pmax(unit(1, "grobheight", footnotes_grob),
-                      unit(1, "grobheight", if (is.null(page_grob)) nullGrob() else page_grob))
-          )
-        )
-      )
-    ),
-    gp = gp
-  )
 }
+
+
+#' @export
+validDetails.decoratedGrob <- function(x) {
+  
+  if (!is.grob(x$grob) && !is.null(x$grob))
+    stop("grob argument is expected to be a grid grob object or NULL")
+  
+  if (!is.character(x$titles)) stop("argument titles is not of type character")
+  if (!is.character(x$footnotes)) stop("argument footnotes is not of type character")
+  if (!is.character(x$page) && length(x$page) == 1) stop("page is not a character of length 1")
+  
+  if (!is.unit(x$outer_margins) && length(x$outer_margins) != 4)
+    stop("outer_margins needs to be a unit object of length 4 (bottom, left, top, right)")
+  if (!is.unit(x$margins) && length(x$margins) != 4)
+    stop("margins needs to be a unit object of length 4 (bottom, left, top, right)")
+  if (!is.unit(x$padding) && length(x$padding) != 4)
+    stop("padding needs to be a unit object of length 4 (bottom, left, top, right)")
+  
+  x
+}
+
+
+#' @export
+widthDetails.decoratedGrob <- function(x) {
+  unit(1, "null")
+}
+
+#' @export
+heightDetails.decoratedGrob <- function(x) {
+  unit(1, "null")
+}
+
 
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
@@ -325,19 +298,27 @@ splitString <- function(text, width) {
 #' grid.draw(splitTextGrob(c("Hello, this is a test", "and yet another test"), just = c("left", "top"), x = 0, y = 1))
 #' 
 #' 
-splitTextGrob <- function(text, x = unit(.5, "npc"), y = unit(.5, "npc"),
-                          width = unit(1, "npc"),  just = c("center", "center"), ...) {
+splitTextGrob <- function(text, x = unit(0.5, "npc"), y = unit(0.5, "npc"), width = unit(1, "npc"),
+                          just = "centre", hjust = NULL, vjust = NULL, 
+                          default.units = "npc", name = NULL, gp = gpar(), vp = NULL) {
 
+  if (!is.unit(x)) 
+    x <- unit(x, default.units)
+  if (!is.unit(y)) 
+    y <- unit(y, default.units)
+  
   if (!is.unit(width) || !(length(width) == 1))
     stop("width is supposed to be a unit object of length 1")
   
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
-  if (attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts",
+  if (!is(width, "unit.arithmetic") && attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts",
                                  "dida", "cicero", "scaledpts")) {
     attr(text, "fixed_text") <- paste(vapply(text, splitString, character(1), width = width), collapse = "\n")
   }
-  
-  grob(text = text, x = x, y = y, width = width, just = just, cl = "splitText", ...)
+
+  grob(text = text, x = x, y = y, width = width, just = just, hjust = hjust, 
+       vjust = vjust, rot = 0, check.overlap = FALSE, 
+       name = name, gp = gp, vp = vp, cl = "splitText")
 }
 
 #' @export
@@ -373,14 +354,19 @@ drawDetails.splitText <- function(x, recording) {
   } else {
     paste(vapply(x$text, splitString, character(1), width = x$width), collapse = "\n")
   }
-  grid.text(txt, x = x$x, y = x$y, just = x$just)
+  
+  x$width <- NULL
+  x$label <- txt
+  x$text <- NULL
+  class(x) <- c("text", class(x)[-1])
+  
+  grid.draw(x)
 }
  
 #' Automatically updates page number
 #'
 #' @param ... passed on to decorate_grob
 #'
-#' @export
 #'
 #' @return closure that increments the page number
 #'
@@ -415,8 +401,6 @@ decorate_grob_factory <- function(...) {
 #'
 #' this uses the decorate_grob_factory
 #'
-#'
-#' @export
 #'
 #' @examples
 #' g <- with(iris, {

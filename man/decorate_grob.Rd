@@ -2,57 +2,78 @@
 % Please edit documentation in R/decorate_grob.R
 \name{decorate_grob}
 \alias{decorate_grob}
-\title{Create a grob with titles, footnotes, pages, and plot}
+\title{Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob}
 \usage{
-decorate_grob(grob, titles, footnotes, page = NULL, npages = NULL,
-  max_char = 100, border = TRUE, border_padding = unit(rep(1, 4),
-  "lines"), margins = unit(c(2, 1.5, 3, 1.5), "cm"), pady = unit(0.8,
-  "lines"), gp = NULL, gp_footnote = gpar(fontsize = 8))
+decorate_grob(grob, titles, footnotes, page = "", width_titles = unit(1,
+  "npc"), width_footnotes = unit(1, "npc") - stringWidth(page),
+  border = TRUE, margins = unit(c(1, 0, 1, 0), "lines"),
+  padding = unit(rep(1, 4), "lines"), outer_margins = unit(c(2, 1.5, 3,
+  1.5), "cm"), gp_titles = gpar(), gp_footnotes = gpar(), name = NULL,
+  gp = gpar(), vp = NULL)
 }
 \arguments{
-\item{grob}{a grid grob object, optionally \code{NULL}}
+\item{grob}{a grid grob object, optionally \code{NULL} if ongly a grob with
+the decoration should be shown.}
 
-\item{titles}{character string or vector of character strings. Vector elements
-are separated by a newline.}
+\item{titles}{vector of character strings. Vector elements are separated by a
+newline and strings are wrapped according to the page with.}
 
-\item{footnotes}{character string or vector of character strings. Vector
-elements are separated by a newline.}
+\item{footnotes}{vector of character string. Same rules as for \code{titles}.}
 
-\item{page}{page number, if NULL then no page number is displayed}
+\item{page}{string with page numeration, if NULL then no page number is displayed.}
 
-\item{npages}{if page is not NULL then the total number of pages in the plot
-is expected}
+\item{width_titles}{unit object}
 
-\item{max_char}{if not null, title and footnotes get split to not exceed the
-max_char number of characters per title and footnote line.}
+\item{width_footnotes}{unit object}
 
 \item{border}{boolean, whether a a border should be drawn around the plot or
-not}
+not.}
 
-\item{border_padding}{if border is TRUE then this expects a unit object with
-the padding}
+\item{margins}{unit object of length 4}
 
-\item{margins}{a unit vector with margins (bottom, left, top, right)}
+\item{padding}{unit object of length 4}
 
-\item{pady}{\code{\link{unit}} object with space between title and plot and
-plot and footnote.}
+\item{outer_margins}{unit object of length 4}
 
-\item{gp}{a gpar object for all of the plot}
+\item{gp_titles}{a gpar object}
 
-\item{gp_footnote}{a gpar object for the footnote and page grob}
+\item{gp_footnotes}{a gpar object}
+
+\item{name}{a character identifier for the grob.  Used to find the
+    grob on the display list and/or as a child of another grob. }
+
+\item{gp}{A gpar object, typically the output
+    from a call to the function \code{gpar}.  This is basically
+    a list of graphical parameter settings.}
+
+\item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
 }
 \value{
 a grid grob (gTree)
 }
 \description{
-This is a wrapper function to label a grid, ggplot, or lattice plot grob with
-title, footnote, and pages.
+This function is useful to label grid grobs (also ggplot2, and lattice plots)
+with title, footnote, and page nuumbers.
 }
 \examples{
 
-library(grid)
-titles <- "Edgar Anderson's Iris Data\\nThis famous (Fisher's or Anderson's) iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris."
-footnotes <- "The species are Iris setosa, versicolor, and virginica.\\niris is a data frame with 150 cases (rows) and 5 variables (columns) named Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
+titles <- c(
+  "Edgar Anderson's Iris Data",
+  paste(
+    "This famous (Fisher's or Anderson's) iris data set gives the measurements",
+     "in centimeters of the variables sepal length and width and petal length",
+     "and width, respectively, for 50 flowers from each of 3 species of iris."
+  )
+ )
+  
+footnotes <- c(
+  "The species are Iris setosa, versicolor, and virginica.",
+  paste(
+  "iris is a data frame with 150 cases (rows) and 5 variables (columns) named",
+  "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
+  )
+)
+  
 
 ## empty plot
 grid.newpage()
@@ -61,8 +82,7 @@ grid.draw(
     NULL,
     titles = titles,
     footnotes = footnotes,
-    page = 4,
-    npages = 10
+    page = "Page 4 of 10"
   )
 )
 
@@ -86,8 +106,7 @@ grid.draw(
     grob = p,
     titles = titles,
     footnotes = footnotes,
-    page = 1,
-    npage = 1
+    page = "Page 6 of 129"
   )
 )
 
@@ -102,8 +121,7 @@ grid.draw(
     grob = p,
     titles = titles,
     footnotes = footnotes,
-    page = 1,
-    npage = 1
+    page =  "Page 6 of 129"
   )
 )
 
@@ -117,8 +135,10 @@ grid.draw(
     grob = p,
     titles = titles,
     footnotes = footnotes,
-    page = 1,
-    npage = 1
+    page = "Page 6 of 129"
   )
 )
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }
