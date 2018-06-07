@@ -144,3 +144,71 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
 
   tbl
 }
+
+
+
+
+#' Summarize Numeric Variables
+#' 
+#' Tabulate the number on non-missing observations, mean, sd, median, and range
+#' for different groups.
+#' 
+#' @inheritParams rtables::rtabulate.numeric
+#' @param x numeric variable
+#' 
+#' @template return_rtable
+#' 
+#' @export
+#' @template author_waddella
+#' 
+#' @examples 
+#' 
+#' t_summarize_numeric(iris$Sepal.Length, iris$Species)
+#' 
+t_summarize_numeric <- function(x, col_by) {
+  rbind(
+    rtabulate(x, col_by, count_n, row.name = "n"),
+    rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
+    rtabulate(x, col_by, median, row.name = "Median", na.rm = TRUE),
+    rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE)
+  )
+}
+
+#' Summarize Categorical Data
+#' 
+#' Tabulate the number on non-missing observations, number of per level and
+#' percentage
+#' 
+#' @inheritParams rtables::rtabulate.factor
+#' @param x numeric variable
+#' @param perc_denominator either n or N for calculating the level associated
+#'   percentage.
+#' 
+#' @template return_rtable
+#' 
+#' @export
+#' @template author_waddella
+#' 
+#' @examples 
+#' 
+#' t_summarize_factor(iris$Species, iris$Species)
+#' 
+t_summarize_factor <- function(x, col_by, useNA = c("no", "ifany", "always"), perc_denominator = c("n", "N")) {
+  
+  
+  rbind(
+    rtabulate(as.numeric(var_fct), col_by, count_n, row.name = "n", indent = 1, na.rm = useNA_factors == "no"),
+    rtabulate(
+      x = var_fct,
+      col_by = col_by,
+      FUN = function(x_cell, x_row, x_col) {
+        if (length(x_col) > 0) length(x_cell) * c(1, 1/sum(!is.na(x_col))) else rcell("-", format = "xx")
+      },
+      row_col_data_args = TRUE,
+      useNA = useNA_factors,
+      format = "xx (xx.xx%)"
+    )
+  )
+}
+
+
