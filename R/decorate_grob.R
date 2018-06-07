@@ -120,7 +120,7 @@ decorate_grob <- function(grob,
                           padding = unit(rep(1, 4), "lines"),
                           outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"),
                           gp_titles = gpar(),
-                          gp_footnotes = gpar(),
+                          gp_footnotes = gpar(fontsize = 8),
                           name = NULL,
                           gp = gpar(),
                           vp = NULL) {
