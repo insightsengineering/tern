@@ -55,6 +55,16 @@ a grid grob (gTree)
 This function is useful to label grid grobs (also ggplot2, and lattice plots)
 with title, footnote, and page nuumbers.
 }
+\details{
+The titles and footnotes will be ragged, i.e. each title will be wrapped
+individually.
+
+\if{html}{
+The layout can be illustrated as follows:
+
+\figure{decorate_grob.png}{options: alt="decorate_grob layout"}
+}
+}
 \examples{
 
 titles <- c(

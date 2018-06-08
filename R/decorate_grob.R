@@ -20,6 +20,16 @@
 #' @param gp_titles a gpar object
 #' @param gp_footnotes a gpar object
 #' 
+#' @details 
+#' The titles and footnotes will be ragged, i.e. each title will be wrapped
+#' individually.
+#' 
+#' \if{html}{
+#' The layout can be illustrated as follows:
+#' 
+#' \figure{decorate_grob.png}{options: alt="decorate_grob layout"}
+#' }
+#' 
 #' @return a grid grob (gTree) 
 #'
 #' @export
