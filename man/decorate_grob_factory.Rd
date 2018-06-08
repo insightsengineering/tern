@@ -4,10 +4,12 @@
 \alias{decorate_grob_factory}
 \title{Automatically updates page number}
 \usage{
-decorate_grob_factory(...)
+decorate_grob_factory(npages, ...)
 }
 \arguments{
-\item{...}{passed on to decorate_grob}
+\item{npages}{number of pages in total}
+
+\item{...}{passed on to \code{\link{decorate_grob}}}
 }
 \value{
 closure that increments the page number
@@ -28,4 +30,7 @@ grid.newpage(); grid.draw(pf(NULL))
 \dontrun{
 grid.newpage(); grid.draw(pf(NULL))
 }
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

@@ -8,8 +8,8 @@ decorate_grob(grob, titles, footnotes, page = "", width_titles = unit(1,
   "npc"), width_footnotes = unit(1, "npc") - stringWidth(page),
   border = TRUE, margins = unit(c(1, 0, 1, 0), "lines"),
   padding = unit(rep(1, 4), "lines"), outer_margins = unit(c(2, 1.5, 3,
-  1.5), "cm"), gp_titles = gpar(), gp_footnotes = gpar(), name = NULL,
-  gp = gpar(), vp = NULL)
+  1.5), "cm"), gp_titles = gpar(), gp_footnotes = gpar(fontsize = 8),
+  name = NULL, gp = gpar(), vp = NULL)
 }
 \arguments{
 \item{grob}{a grid grob object, optionally \code{NULL} if ongly a grob with

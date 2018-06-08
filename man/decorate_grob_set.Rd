@@ -6,6 +6,11 @@
 \usage{
 decorate_grob_set(grobs, ...)
 }
+\arguments{
+\item{grobs}{a list of grid grobs}
+
+\item{...}{arguments passed on to \code{\link{decorate_grob}}}
+}
 \description{
 this uses the decorate_grob_factory
 }
@@ -24,4 +29,7 @@ lg <- decorate_grob_set(grobs = g, titles = "Hello\\nOne\\nTwo\\nThree", footnot
 grid.newpage(); grid.draw(lg[[1]])
 grid.newpage(); grid.draw(lg[[2]])
 grid.newpage(); grid.draw(lg[[6]])
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

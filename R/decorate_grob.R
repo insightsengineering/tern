@@ -365,11 +365,16 @@ drawDetails.splitText <- function(x, recording) {
  
 #' Automatically updates page number
 #'
-#' @param ... passed on to decorate_grob
+#' @param npages number of pages in total
+#' @param ... passed on to \code{\link{decorate_grob}}
 #'
 #'
 #' @return closure that increments the page number
-#'
+#' 
+#' @export
+#' 
+#' @template author_waddella
+#' 
 #' @examples
 #' pf <- decorate_grob_factory(
 #'   titles = "This is a test\nHello World",
@@ -383,16 +388,13 @@ drawDetails.splitText <- function(x, recording) {
 #' \dontrun{
 #' grid.newpage(); grid.draw(pf(NULL))
 #' }
-decorate_grob_factory <- function(...) {
-  args <- list(...)
-  if (is.null(args$npages)) stop("nages needs to be specified")
+decorate_grob_factory <- function(npages, ...) {
   
-  npages <- args$npages
   current_page <- 0
   function(grob) {
     current_page <<- current_page + 1
     if (current_page > npages) stop(paste("current page is", current_page, "but max.", npages, "specified."))
-    decorate_grob(grob = grob, page = current_page, ...)
+    decorate_grob(grob = grob, page = paste("Page", current_page, "of", npages), ...)
   }
 }
 
@@ -400,8 +402,15 @@ decorate_grob_factory <- function(...) {
 #' Decorate all a set of grobs and add the page numbering
 #'
 #' this uses the decorate_grob_factory
-#'
-#'
+#' 
+#' @param grobs a list of grid grobs
+#' @param ... arguments passed on to \code{\link{decorate_grob}}
+#' 
+#' 
+#' @export
+#' 
+#' @template author_waddella
+#' 
 #' @examples
 #' g <- with(iris, {
 #'   list(
@@ -418,8 +427,6 @@ decorate_grob_factory <- function(...) {
 #' grid.newpage(); grid.draw(lg[[2]])
 #' grid.newpage(); grid.draw(lg[[6]])
 decorate_grob_set <- function(grobs, ...) {
-  args <- list(...)
-  if (!is.null(args$plot_grob)) stop("do not use the plot_grob argument for this function.")
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)
   lapply(grobs, lgf)
