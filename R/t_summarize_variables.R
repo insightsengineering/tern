@@ -163,7 +163,7 @@ t_summarize_numeric <- function(x, col_by) {
 #' 
 #' 
 #' x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
-#' cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F"))
+#' cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))
 #' 
 #' t_summarize_factor(x, cb)
 #' 
