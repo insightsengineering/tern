@@ -70,9 +70,11 @@
 #' t_summarize_variables(data.frame(x), col_by = cb, useNA_factors = "ifany")
 #' 
 t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE,
-                                  useNA_factors = c("no", "ifany", "always")) {
+                                  useNA_factors = c("no", "ifany", "always"),
+                                  denominator = c("n", "N")) {
 
   useNA_factors <- match.arg(useNA_factors)
+  denominator <- match.arg(denominator)
   
   # Check Arguments
   if (!is.data.frame(data)) stop("data is expected to be a data frame")  
@@ -101,11 +103,11 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
     } else {
       # treat as factor
       var_fct <- if (drop_levels) droplevels(as.factor(var)) else as.factor(var)
-      t_summarize_factor(var_fct, col_by, useNA = useNA_factors)
+      t_summarize_factor(var_fct, col_by, useNA = useNA_factors, denominator = denominator)
     }
     
     rbind(
-      rtable(header = names(tbl_summary), rrow(row.name = varlabel)),
+      rtable(header = header(tbl_summary), rrow(row.name = varlabel)),
       indent_table(tbl_summary, 1)
     )
   }, data, var_labels(data, fill = TRUE))
@@ -149,7 +151,7 @@ t_summarize_numeric <- function(x, col_by) {
 #' 
 #' @inheritParams rtables::rtabulate.factor
 #' @param x numeric variable
-#' @param perc_denominator either n or N for calculating the level associated
+#' @param denominator either n or N for calculating the level associated
 #'   percentage.
 #' 
 #' @template return_rtable
@@ -167,10 +169,27 @@ t_summarize_numeric <- function(x, col_by) {
 #' 
 #' t_summarize_factor(x, cb)
 #' 
+#' t_summarize_factor(x, cb, useNA = "always")
+#' 
+#' t_summarize_factor(x, cb, denominator = "N")
+#' 
+#' t_summarize_factor(x, cb, useNA = "always",  denominator = "N")
+#' 
+#' t_summarize_factor(droplevels(x), cb, useNA = "always",  denominator = "N")
+#' 
+#' 
+#' 
 t_summarize_factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
-                               perc_denominator = c("n", "N")) {
+                               denominator = c("n", "N")) {
   
   useNA <- match.arg(useNA)
+  denominator <- match.arg(denominator)
+  
+  d <- if (denominator == "n") {
+    function(x) sum(!is.na(x))
+  } else {
+    length
+  }
   
   rbind(
     rtabulate(as.numeric(x), col_by, count_n, row.name = "n", na.rm = useNA == "no"),
@@ -178,7 +197,7 @@ t_summarize_factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
       x = x,
       col_by = col_by,
       FUN = function(x_cell, x_row, x_col) {
-        if (length(x_col) > 0) length(x_cell) * c(1, 1/sum(!is.na(x_col))) else rcell("-", format = "xx")
+        if (length(x_col) > 0) length(x_cell) * c(1, 1/d(x_col)) else rcell("-", format = "xx")
       },
       row_col_data_args = TRUE,
       useNA = useNA,
