@@ -69,7 +69,8 @@
 #' 
 #' t_summarize_variables(data.frame(x), col_by = cb, useNA_factors = "ifany")
 #' 
-t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE,
+t_summarize_variables <- function(data, col_by, total = NULL,
+                                  drop_levels = TRUE,
                                   useNA_factors = c("no", "ifany", "always"),
                                   denominator = c("n", "N")) {
 
@@ -176,8 +177,6 @@ t_summarize_numeric <- function(x, col_by) {
 #' t_summarize_factor(x, cb, useNA = "always",  denominator = "N")
 #' 
 #' t_summarize_factor(droplevels(x), cb, useNA = "always",  denominator = "N")
-#' 
-#' 
 #' 
 t_summarize_factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
                                denominator = c("n", "N")) {

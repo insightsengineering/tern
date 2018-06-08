@@ -5,7 +5,7 @@
 \title{Variables Summary Table}
 \usage{
 t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
-  useNA_factors = c("no", "ifany", "always"))
+  useNA_factors = c("no", "ifany", "always"), denominator = c("n", "N"))
 }
 \arguments{
 \item{data}{data frame with variables to be summarized as described in the

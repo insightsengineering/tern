@@ -5,7 +5,7 @@
 \title{Summarize Categorical Data}
 \usage{
 t_summarize_factor(x, col_by, useNA = c("no", "ifany", "always"),
-  perc_denominator = c("n", "N"))
+  denominator = c("n", "N"))
 }
 \arguments{
 \item{x}{numeric variable}
@@ -18,7 +18,7 @@ into columns use the \code{\link{no_by}} function.}
 turned into a factor level \code{"NA"}, if \code{FALSE} then the \code{NA}
 values in \code{x} get dropped.}
 
-\item{perc_denominator}{either n or N for calculating the level associated
+\item{denominator}{either n or N for calculating the level associated
 percentage.}
 }
 \value{
@@ -34,9 +34,17 @@ t_summarize_factor(iris$Species, iris$Species)
 
 
 x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
-cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F"))
+cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))
 
 t_summarize_factor(x, cb)
+
+t_summarize_factor(x, cb, useNA = "always")
+
+t_summarize_factor(x, cb, denominator = "N")
+
+t_summarize_factor(x, cb, useNA = "always",  denominator = "N")
+
+t_summarize_factor(droplevels(x), cb, useNA = "always",  denominator = "N")
 
 }
 \author{
