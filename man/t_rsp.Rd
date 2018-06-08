@@ -84,6 +84,17 @@ tbl2
 \dontrun{
 Viewer(tbl2)
 } 
+
+
+
+ANL <- data.frame(
+rsp = c(TRUE, FALSE),
+arm = rep(c("A", "B"), each = 200)
+)
+
+t_rsp(rsp = ANL$rsp, col_by = factor(ANL$arm))
+
+
 }
 \author{
 Chendi Liao (liaoc10) \email{chendi.liao@roche.com}
