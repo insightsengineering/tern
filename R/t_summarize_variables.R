@@ -97,52 +97,20 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
   
   rtables_vars <- Map(function(var, varlabel) {
     tbl_summary <- if (is.numeric(var)) {
-      rbind(
-        rtabulate(var, col_by, count_n, row.name = "n", indent = 1),
-        rtabulate(var, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", indent = 1),
-        rtabulate(var, col_by, median, row.name = "Median", indent = 1, na.rm = TRUE),
-        rtabulate(var, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", indent = 1, na.rm = TRUE)
-      )
+      t_summarize_numeric(var, col_by)
     } else {
       # treat as factor
       var_fct <- if (drop_levels) droplevels(as.factor(var)) else as.factor(var)
-      rbind(
-        rtabulate(as.numeric(var_fct), col_by, count_n, row.name = "n", indent = 1, na.rm = useNA_factors == "no"),
-        rtabulate(
-          x = var_fct,
-          col_by = col_by,
-          FUN = function(x_cell, x_row, x_col) {
-            if (length(x_col) > 0) length(x_cell) * c(1, 1/sum(!is.na(x_col))) else rcell("-", format = "xx")
-          },
-          row_col_data_args = TRUE,
-          useNA = useNA_factors,
-          format = "xx (xx.xx%)",
-          indent = 1
-        )
-      )
+      t_summarize_factor(var_fct, col_by, useNA = useNA_factors)
     }
     
     rbind(
       rtable(header = names(tbl_summary), rrow(row.name = varlabel)),
-      tbl_summary
+      indent_table(tbl_summary, 1)
     )
   }, data, var_labels(data, fill = TRUE))
   
-  tbl <- stack_rtables_l(rtables_vars)
-  
-  header(tbl) <- if (is(col_by, "no_by")) {
-    rheader(
-      rrow("", col_by),
-      rrowl("", wrap_with(nrow(data), "(N=", ")"))
-    )    
-  } else {
-    rheader(
-      rrowl("", as.list(levels(col_by))),
-      rrowl("", tapply(col_by, col_by, length), format = "(N=xx)")
-    )
-  }
-
-  tbl
+  stack_rtables_l(rtables_vars)
 }
 
 
@@ -193,19 +161,27 @@ t_summarize_numeric <- function(x, col_by) {
 #' 
 #' t_summarize_factor(iris$Species, iris$Species)
 #' 
-t_summarize_factor <- function(x, col_by, useNA = c("no", "ifany", "always"), perc_denominator = c("n", "N")) {
+#' 
+#' x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
+#' cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F"))
+#' 
+#' t_summarize_factor(x, cb)
+#' 
+t_summarize_factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
+                               perc_denominator = c("n", "N")) {
   
+  useNA <- match.arg(useNA)
   
   rbind(
-    rtabulate(as.numeric(var_fct), col_by, count_n, row.name = "n", indent = 1, na.rm = useNA_factors == "no"),
+    rtabulate(as.numeric(x), col_by, count_n, row.name = "n", na.rm = useNA == "no"),
     rtabulate(
-      x = var_fct,
+      x = x,
       col_by = col_by,
       FUN = function(x_cell, x_row, x_col) {
         if (length(x_col) > 0) length(x_cell) * c(1, 1/sum(!is.na(x_col))) else rcell("-", format = "xx")
       },
       row_col_data_args = TRUE,
-      useNA = useNA_factors,
+      useNA = useNA,
       format = "xx (xx.xx%)"
     )
   )
