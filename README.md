@@ -55,7 +55,7 @@ devtools::install_github(
   upgrade_dependencies = FALSE
 )
 
-devtools::install_github("Roche/rtables", ref = "devel", upgrade_dependencies = FALSE)
+devtools::install_github("Roche/rtables", ref = "master", upgrade_dependencies = FALSE)
 
 devtools::install_github(
   repo = "Rpackages/tern",
