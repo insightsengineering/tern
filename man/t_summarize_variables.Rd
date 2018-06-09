@@ -2,10 +2,70 @@
 % Please edit documentation in R/t_summarize_variables.R
 \name{t_summarize_variables}
 \alias{t_summarize_variables}
+\alias{t_summarize_variables}
 \title{Summarize Variables}
 \usage{
-t_summarize_variables(x, col_by, total, ...)
+t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
+  useNA_factors = c("no", "ifany", "always"))
+
+t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
+  useNA_factors = c("no", "ifany", "always"))
+}
+\arguments{
+\item{data}{data frame with variables to be summarized as described in the
+details section. If the variable has a \code{label} attribute then it will
+be used for the row name.}
+
+\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
+which levels in \code{col_by} define a column. If data should not be split
+into columns use the \code{\link{no_by}} function.}
+
+\item{total}{if not \code{NULL} then it must be a string and an addition
+column will be added with the overall summaries}
+
+\item{drop_levels}{boolean, drop zero-count levels for factors}
+
+\item{useNA_factors}{forwarded to \code{useNA} of
+\code{\link[rtables]{t_summary.factor}}}
 }
 \description{
 Summarize Variables
+
+Similiar as the demographic table in STREAM. This funtion is deprecated,
+please use \code{\link{t_summary}} instead.
+}
+\details{
+Every variable in \code{data} will be mapped to a summary table of that
+variable and the tables for all variables will be stacked.
+
+Note that this function is deprecated, please use \code{\link{t_summary}}
+instead.
+}
+\examples{
+
+library(random.cdisc.data)
+
+ASL <- radam("ASL")
+
+# control the label
+ASL <- var_relabel(ASL, BAGE = "Baseline Age of patient")
+
+# control categorical order
+ASL$SEX <- relevel(ASL$SEX, "M", "F")
+
+t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
+
+t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
+                      useNA_factors = 'always')
+
+
+}
+\seealso{
+\code{\link{t_summary}}, \code{\link{t_summary.data.frame}},
+  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

@@ -7,7 +7,7 @@
 \method{t_summary}{character}(x, col_by, ...)
 }
 \arguments{
-\item{x}{numeric variable}
+\item{x}{a character vector}
 
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split

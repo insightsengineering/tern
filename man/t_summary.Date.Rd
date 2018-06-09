@@ -7,7 +7,7 @@
 \method{t_summary}{Date}(x, col_by, ...)
 }
 \arguments{
-\item{x}{an object to dispatch on}
+\item{x}{a Date object}
 
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split

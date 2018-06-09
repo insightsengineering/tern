@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -35,7 +37,6 @@ as described in the details section." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
-
 
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -185,48 +186,12 @@ and confidence interval.</p>
   <span class='kw'>event_descr</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>EVNTDESC</span>),
   <span class='kw'>time_points</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>2000</span>),
   <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>
-)
-
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B                   ARM C      
-#&gt;                                               (N=28)                  (N=36)                  (N=36)     
-#&gt; ---------------------------------------------------------------------------------------------------------
-#&gt; Patients with event (%)                    15 (53.57%)             20 (55.56%)             13 (36.11%)   
-#&gt;   Earliest Contributing Event
-#&gt;     Death                                       6                       8                       5        
-#&gt;     Disease Progression                         5                       7                       2        
-#&gt;     First Response                              4                       5                       6        
-#&gt; Patients without event (%)                 13 (46.43%)             16 (44.44%)             23 (63.89%)   
-#&gt; 
-#&gt; Time to Event (months)
-#&gt;   Median                                      121.83                  89.03                              
-#&gt;     95% CI                                (37.7, 165.8)           (63.5, 261.6)            (119.5, NA)   
-#&gt;   25% and 75%-ile                          37.7, 165.8             50.7, 261.6               21.3, NA    
-#&gt;   Range (censored)                           3 to 219              1.3 to 370.3            15 to 420.2   
-#&gt;   Range (event)                             5.3 to 194             1.2 to 312.4            1.8 to 131.9  
-#&gt; 
-#&gt; Unstratified Analysis
-#&gt;   p-value (log-rank)                                                  0.4698                  0.2532     
-#&gt; 
-#&gt;   Hazard Ratio                                                        0.7755                  0.6487     
-#&gt;     95% CI                                                       (0.3884, 1.5482)        (0.307, 1.3705) 
-#&gt; 
-#&gt; Stratified Analysis
-#&gt;   p-value (log-rank)                                                  0.4626                  0.2235     
-#&gt; 
-#&gt;   Hazard Ratio                                                        0.7712                  0.6304     
-#&gt;     95% CI                                                       (0.3849, 1.5452)        (0.2981, 1.3335)
-#&gt; 
-#&gt; Time Point Analysis
-#&gt;   6 months
-#&gt;     Patients remaining at risk                  24                      34                      33       
-#&gt;     Event Free Rate (%)                        96%                    97.22%                  91.67%     
-#&gt;       95% CI                               (88.32, 100)            (91.85, 100)            (82.64, 100)  
-#&gt;     Difference in Event Free Rate                                      1.22                   -4.33      
-#&gt;       95% CI                                                      (-8.15, 10.59)          (-16.19, 7.52) 
-#&gt;     p-value (Z-test)                                                  0.7982                  0.4737     
-#&gt; 
-#&gt;   2000 months
-#&gt;     -- no data</div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='error'>Error in rbind(deparse.level, ...): not all rtables have the same header</span></div><div class='input'>
+<span class='no'>tbl</span></div><div class='output co'>#&gt; function (src, ...) 
+#&gt; {
+#&gt;     UseMethod("tbl")
+#&gt; }
+#&gt; &lt;environment: namespace:dplyr&gt;</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span></pre>

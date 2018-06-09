@@ -44,7 +44,7 @@ t_summary(x, cb, denominator = "N")
 
 t_summary(x, cb, useNA = "always",  denominator = "N")
 
-t_summary(droplevels(x), cb, useNA = "always",  denominator = "N")
+t_summary(x, cb, useNA = "always",  denominator = "n")
 
 }
 \author{

@@ -8,11 +8,14 @@
   row.name.FALSE = "FALSE", denominator = c("n", "N"), ...)
 }
 \arguments{
-\item{x}{an object to dispatch on}
+\item{x}{a factor}
 
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
+
+\item{denominator}{either n or N for calculating the level associated
+percentage.}
 
 \item{...}{arguments passed on to \code{\link{t_summary.factor}}}
 }
