@@ -174,7 +174,7 @@ t_summary.numeric <- function(x, col_by, ...) {
 #' 
 #' t_summary(x, cb, useNA = "always",  denominator = "N")
 #' 
-#' t_summary(droplevels(x), cb, useNA = "always",  denominator = "N")
+#' t_summary(x, cb, useNA = "always",  denominator = "n")
 #' 
 t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), ...) {
@@ -188,8 +188,8 @@ t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
     length
   }
   
-  rbind(
-    rtabulate(as.numeric(x), col_by, count_n, row.name = "n", na.rm = useNA == "no"),
+  tbl <- rbind(
+    rtabulate(as.numeric(x), col_by, count_n, row.name = "n"),
     rtabulate(
       x = x,
       col_by = col_by,
@@ -197,10 +197,15 @@ t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
         if (length(x_col) > 0) length(x_cell) * c(1, 1/d(x_col)) else rcell("-", format = "xx")
       },
       row_col_data_args = TRUE,
-      useNA = useNA,
       format = "xx (xx.xx%)"
     )
   )
+  
+  if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
+    tbl <- insert_rrow(tbl, rrowl("<NA>", tapply(x, col_by, function(x)sum(is.na(x))), format = "xx"), nrow(tbl)+1)
+  } 
+
+  tbl
 }
 
 #' Summarize Character Data
