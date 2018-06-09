@@ -2,8 +2,12 @@
 % Please edit documentation in R/t_summarize_variables.R
 \name{t_summarize_variables}
 \alias{t_summarize_variables}
-\title{Variables Summary Table}
+\alias{t_summarize_variables}
+\title{Summarize Variables}
 \usage{
+t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
+  useNA_factors = c("no", "ifany", "always"))
+
 t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
   useNA_factors = c("no", "ifany", "always"))
 }
@@ -22,24 +26,20 @@ column will be added with the overall summaries}
 \item{drop_levels}{boolean, drop zero-count levels for factors}
 
 \item{useNA_factors}{forwarded to \code{useNA} of
-\code{\link[rtables]{rtabulate.factor}}}
+\code{\link[rtables]{t_summary.factor}}}
 }
 \description{
-Similiar as the demographic table in STREAM
+Summarize Variables
+
+Similiar as the demographic table in STREAM. This funtion is deprecated,
+please use \code{\link{t_summary}} instead.
 }
 \details{
 Every variable in \code{data} will be mapped to a summary table of that
 variable and the tables for all variables will be stacked.
 
-Currently we distinguish the summary by the variable type
-
-\describe{
-  \item{numneric}{\emph{n}, \emph{Mean (SD)}, \emph{Median}, \emph{Min-Max}
-  will be derived for each factor in \code{col_by}}
-  \item{non-numeric}{will be converted to a factor (if it isn't already) and
-  the number subjects in a cell and the percentage within the \code{col_by}
-  level will be calculated}
-}
+Note that this function is deprecated, please use \code{\link{t_summary}}
+instead.
 }
 \examples{
 
@@ -58,25 +58,13 @@ t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Pa
 t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
                       useNA_factors = 'always')
 
-ASL$SEX[1:10] <- NA
 
-t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-                      useNA_factors = 'ifany')
-
-# with iris data
-
-t_summarize_variables(iris[, -5], col_by  = iris$Species)
-
-t_summarize_variables(iris, col_by  = no_by("All Species"))
-
-
-x <- factor(c("A", NA, "B", "B", "A"))
-cb <- factor(c("I", "I", "I", "II", "II"))
-
-t_summarize_variables(data.frame(x), col_by = cb)
-
-t_summarize_variables(data.frame(x), col_by = cb, useNA_factors = "ifany")
-
+}
+\seealso{
+\code{\link{t_summary}}, \code{\link{t_summary.data.frame}},
+  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

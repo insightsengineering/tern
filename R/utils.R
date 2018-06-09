@@ -533,7 +533,7 @@ reflow <- function(x,
 duplicate_with_var <- function(X, ...) {
   dots <- list(...)
   nms <- names(dots)
-  if (is.null(nms) || !all(nms %in% names(X)))
+  if (length(nms) > 1 && (is.null(nms) || !all(nms %in% names(X))))
     stop("not all names in ... are existent or in X")
   X_copy <- X
   vl <- var_labels(X)
