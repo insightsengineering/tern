@@ -179,19 +179,54 @@ and confidence interval.</p>
 
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='no'>ASL</span>, <span class='no'>ATE_f</span>, <span class='kw'>all.x</span> <span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>all.y</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>))
 
-
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_tte</span>(
   <span class='kw'>formula</span> <span class='kw'>=</span> <span class='fu'>Surv</span>(<span class='no'>AVAL</span>, !<span class='no'>CNSR</span>) ~ <span class='fu'><a href='arm.html'>arm</a></span>(<span class='no'>ARM</span>) + <span class='fu'>strata</span>(<span class='no'>SEX</span>),
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>,
   <span class='kw'>event_descr</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>EVNTDESC</span>),
   <span class='kw'>time_points</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>2000</span>),
   <span class='kw'>time_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in rbind(deparse.level, ...): not all rtables have the same header</span></div><div class='input'>
-<span class='no'>tbl</span></div><div class='output co'>#&gt; function (src, ...) 
-#&gt; {
-#&gt;     UseMethod("tbl")
-#&gt; }
-#&gt; &lt;environment: namespace:dplyr&gt;</div><div class='input'>
+)
+
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                               ARM A                   ARM B                   ARM C      
+#&gt;                                               (N=33)                  (N=35)                  (N=32)     
+#&gt; ---------------------------------------------------------------------------------------------------------
+#&gt; Patients with event (%)                    19 (57.58%)             17 (48.57%)             17 (53.12%)   
+#&gt;   Earliest Contributing Event
+#&gt;     Death                                       3                       8                       8        
+#&gt;     Disease Progression                         8                       6                       3        
+#&gt;     First Response                              8                       3                       6        
+#&gt; Patients without event (%)                 14 (42.42%)             18 (51.43%)             15 (46.88%)   
+#&gt; 
+#&gt; Time to Event (months)
+#&gt;   Median                                       82.5                   91.46                   102.81     
+#&gt;     95% CI                                (48.5, 222.1)           (76.4, 219.9)           (25.3, 154.4)  
+#&gt;   25% and 75%-ile                          38.1, 222.1             68.8, 219.9             24.5, 154.4   
+#&gt;   Range (censored)                         9.2 to 300.7            0.1 to 373.5             1 to 238.1   
+#&gt;   Range (event)                            1.7 to 225.1            5.1 to 402.9            1.9 to 154.4  
+#&gt; 
+#&gt; Unstratified Analysis
+#&gt;   p-value (log-rank)                                                  0.6161                  0.5686     
+#&gt; 
+#&gt;   Hazard Ratio                                                        0.843                   1.2115     
+#&gt;     95% CI                                                       (0.4321, 1.6447)        (0.6258, 2.3456)
+#&gt; 
+#&gt; Stratified Analysis
+#&gt;   p-value (log-rank)                                                  0.8141                  0.4732     
+#&gt; 
+#&gt;   Hazard Ratio                                                        0.9198                  1.2815     
+#&gt;     95% CI                                                       (0.4579, 1.8475)        (0.6496, 2.5283)
+#&gt; 
+#&gt; Time Point Analysis
+#&gt;   6 months
+#&gt;     Patients remaining at risk                  32                      30                      30       
+#&gt;     Event Free Rate (%)                       96.97%                  96.77%                  96.77%     
+#&gt;       95% CI                               (91.12, 100)            (90.55, 100)            (90.55, 100)  
+#&gt;     Difference in Event Free Rate                                      -0.2                    -0.2      
+#&gt;       95% CI                                                      (-8.73, 8.34)           (-8.73, 8.34)  
+#&gt;     p-value (Z-test)                                                  0.9642                  0.9642     
+#&gt; 
+#&gt;   2000 months
+#&gt;     -- no data</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span></pre>

@@ -111,7 +111,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>tabulate_pairwise</span>(<span class='no'>x</span>, <span class='no'>col_by</span>, <span class='no'>FUN</span>, <span class='no'>row.name</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tabulate_pairwise</span>(<span class='no'>x</span>, <span class='no'>col_by</span>, <span class='no'>FUN</span>, <span class='no'>row.name</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,8 +134,16 @@ and the second argument is a factor with two levels from col_by</p></td>
       <td><p>string with row name</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>arguments passed to rrow</p></td>
+      <th>format</th>
+      <td><p>a valid format string or a format function for
+<code>rcell</code>s. To get a list of all valid format strings use
+<code>list_rcell_format_labels</code>. If format is <code>NULL</code> then the elements
+of a cell get pasted separated by a comma.</p></td>
+    </tr>
+    <tr>
+      <th>indent</th>
+      <td><p>non-negative integer where 0 means that the row should not be
+indented</p></td>
     </tr>
     </table>
     
@@ -151,6 +159,7 @@ and the second argument is a factor with two levels from col_by</p></td>
   <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>xi</span>, <span class='no'>col_by_i</span>) <span class='fu'>diff</span>(<span class='fu'>tapply</span>(<span class='no'>xi</span>, <span class='no'>col_by_i</span>, <span class='no'>mean</span>)),
   <span class='kw'>row.name</span> <span class='kw'>=</span> <span class='st'>"diff mean"</span>
 )</div><div class='output co'>#&gt;                    setosa          versicolor        virginica 
+#&gt;                    (N=50)            (N=50)            (N=50)  
 #&gt; ---------------------------------------------------------------
 #&gt; diff mean                             0.93             1.582   </div><div class='input'>
 </div></pre>

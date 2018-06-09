@@ -50,6 +50,9 @@ For the test of difference in response rates, Wald confidence
 }
 \examples{
 
+t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
+
+
 library(random.cdisc.data)
 
 ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000,
@@ -67,6 +70,7 @@ tbl <- t_rsp(
    ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
  ))
 )
+tbl
 \dontrun{
 Viewer(tbl)
 } 
