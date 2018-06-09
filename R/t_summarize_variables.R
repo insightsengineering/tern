@@ -1,27 +1,16 @@
 
-
-#' Summarize Variables
-#' 
-#' @export
-#' 
-#' 
-#' 
-t_summarize_variables <- function(x, col_by, total, ...) {
-  t_summary(x, col_by, total, ...)
-}
-
 #' Variables Summary Table
 #' 
 #' Similiar as the demographic table in STREAM. This funtion is deprecated,
 #' please use \code{\link{t_summary}} instead.
 #' 
+#' @inheritParams t_summary.factor
 #' @inheritParams t_summary.data.frame
 #' @param data data frame with variables to be summarized as described in the
 #'   details section. If the variable has a \code{label} attribute then it will
 #'   be used for the row name.
-#' @param drop_levels boolean, drop zero-count levels for factors
 #' @param useNA_factors forwarded to \code{useNA} of
-#'   \code{\link[rtables]{t_summary.factor}}
+#'   \code{\link{t_summary.factor}}
 #'  
 #' @details
 #' Every variable in \code{data} will be mapped to a summary table of that
@@ -71,11 +60,5 @@ t_summarize_variables <- function(data, col_by, total = NULL, drop_levels = TRUE
     check_col_by(col_by, 1)
   } 
   
-  if (drop_levels) {
-    for (i in which(is.factor(data))) {
-      data[[i]] <- droplevels(data[[i]])
-    }
-  }
-  
-  t_summary(x = data, col_by = col_by, total = NULL, useNa = useNA_factors)
+  t_summary(x = data, col_by = col_by, total = NULL, useNa = useNA_factors, drop_levels=drop_levels)
 }

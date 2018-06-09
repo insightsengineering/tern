@@ -66,3 +66,4 @@ reference:
     desc: these functions will be removed in future releases of tern
     contents:
       - t_summarize_variables
+      - t_summarize_by_visit

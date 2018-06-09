@@ -5,7 +5,7 @@
 \title{Summarize Categorical Data}
 \usage{
 \method{t_summary}{factor}(x, col_by, useNA = c("no", "ifany", "always"),
-  denominator = c("n", "N"), ...)
+  denominator = c("n", "N"), drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -18,6 +18,8 @@ into columns use the \code{\link{no_by}} function.}
 
 \item{denominator}{either n or N for calculating the level associated
 percentage.}
+
+\item{drop_levels}{boolean whether to drio zero count levels}
 
 \item{...}{not used arguments}
 }

@@ -129,6 +129,14 @@ which levels in <code>col_by</code> define a column. If data should not be split
 into columns use the <code>no_by</code> function.</p></td>
     </tr>
     <tr>
+      <th>row.name.TRUE</th>
+      <td><p>character string with row.name for TRUE summary</p></td>
+    </tr>
+    <tr>
+      <th>row.name.FALSE</th>
+      <td><p>character string with row.name for FALSE summary</p></td>
+    </tr>
+    <tr>
       <th>denominator</th>
       <td><p>either n or N for calculating the level associated
 percentage.</p></td>
@@ -141,13 +149,20 @@ percentage.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='fu'>c</span>(<span class='no'>T</span>,<span class='no'>F</span>,<span class='fl'>NA</span>,<span class='no'>T</span>,<span class='no'>F</span>,<span class='no'>F</span>,<span class='no'>F</span>,<span class='no'>T</span>), <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>2</span>)]))</div><div class='output co'>#&gt;                  A                 B                 C     
+    <pre class="examples"><div class='input'><span class='fu'><a href='t_summary.html'>t_summary</a></span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>NA</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>TRUE</span>),
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>2</span>)])
+)</div><div class='output co'>#&gt;                  A                 B                 C     
 #&gt;                (N=3)             (N=3)             (N=2)   
 #&gt; -----------------------------------------------------------
 #&gt; n                2                 3                 2     
 #&gt; TRUE          1 (50%)          2 (66.67%)          0 (0%)  
 #&gt; FALSE         1 (50%)          1 (33.33%)         2 (100%) </div><div class='input'>
-<span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='fu'>c</span>(<span class='no'>T</span>,<span class='no'>F</span>,<span class='fl'>NA</span>,<span class='no'>T</span>,<span class='no'>F</span>,<span class='no'>F</span>,<span class='no'>F</span>,<span class='no'>T</span>), <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>2</span>)]), <span class='kw'>denominator</span> <span class='kw'>=</span> <span class='st'>"N"</span>)</div><div class='output co'>#&gt;                  A                 B                 C     
+<span class='fu'><a href='t_summary.html'>t_summary</a></span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>NA</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>TRUE</span>),
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>2</span>)]),
+  <span class='kw'>denominator</span> <span class='kw'>=</span> <span class='st'>"N"</span>
+)</div><div class='output co'>#&gt;                  A                 B                 C     
 #&gt;                (N=3)             (N=3)             (N=2)   
 #&gt; -----------------------------------------------------------
 #&gt; n                2                 3                 2     

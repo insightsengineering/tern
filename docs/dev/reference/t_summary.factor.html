@@ -115,7 +115,7 @@ percentage</p>
 
     <pre class="usage"><span class='co'># S3 method for factor</span>
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>x</span>, <span class='no'>col_by</span>, <span class='kw'>useNA</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"no"</span>, <span class='st'>"ifany"</span>, <span class='st'>"always"</span>),
-  <span class='kw'>denominator</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"n"</span>, <span class='st'>"N"</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>denominator</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"n"</span>, <span class='st'>"N"</span>), <span class='kw'>drop_levels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,6 +138,10 @@ into columns use the <code>no_by</code> function.</p></td>
       <th>denominator</th>
       <td><p>either n or N for calculating the level associated
 percentage.</p></td>
+    </tr>
+    <tr>
+      <th>drop_levels</th>
+      <td><p>boolean whether to drio zero count levels</p></td>
     </tr>
     <tr>
       <th>...</th>

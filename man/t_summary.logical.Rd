@@ -14,6 +14,10 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
+\item{row.name.TRUE}{character string with row.name for TRUE summary}
+
+\item{row.name.FALSE}{character string with row.name for FALSE summary}
+
 \item{denominator}{either n or N for calculating the level associated
 percentage.}
 
@@ -23,9 +27,16 @@ percentage.}
 Summarize Boolean Data
 }
 \examples{
-t_summary(c(T,F,NA,T,F,F,F,T), factor(LETTERS[c(1,1,1,2,2,3,3,2)]))
+t_summary(
+  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
+)
 
-t_summary(c(T,F,NA,T,F,F,F,T), factor(LETTERS[c(1,1,1,2,2,3,3,2)]), denominator = "N")
+t_summary(
+  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
+  denominator = "N"
+)
 
 }
 \author{

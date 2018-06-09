@@ -162,6 +162,7 @@ t_summary.numeric <- function(x, col_by, ...) {
 #' @param useNA choose whether missing data (NAs) should be displayed as a level
 #' @param denominator either n or N for calculating the level associated
 #'   percentage.
+#' @param drop_levels boolean whether to drio zero count levels
 #' 
 #' @template return_rtable
 #' 
@@ -187,10 +188,12 @@ t_summary.numeric <- function(x, col_by, ...) {
 #' t_summary(x, cb, useNA = "always",  denominator = "n")
 #' 
 t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
-                             denominator = c("n", "N"), ...) {
+                             denominator = c("n", "N"), drop_levels = FALSE, ...) {
   
   useNA <- match.arg(useNA)
   denominator <- match.arg(denominator)
+  
+  if (drop_levels) x <- droplevels(x)
   
   d <- if (denominator == "n") {
     function(x) sum(!is.na(x))
@@ -262,6 +265,8 @@ t_summary.Date <- function(x, col_by, ...) {
 #' 
 #' @inheritParams t_summary.factor
 #' @param x a factor
+#' @param row.name.TRUE character string with row.name for TRUE summary
+#' @param row.name.FALSE character string with row.name for FALSE summary
 #' @param ... arguments passed on to \code{\link{t_summary.factor}}
 #' 
 #' @template author_waddella
@@ -269,9 +274,16 @@ t_summary.Date <- function(x, col_by, ...) {
 #' @export
 #' 
 #' @examples 
-#' t_summary(c(T,F,NA,T,F,F,F,T), factor(LETTERS[c(1,1,1,2,2,3,3,2)]))
+#' t_summary(
+#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
+#' )
 #' 
-#' t_summary(c(T,F,NA,T,F,F,F,T), factor(LETTERS[c(1,1,1,2,2,3,3,2)]), denominator = "N")
+#' t_summary(
+#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
+#'   denominator = "N"
+#' )
 #' 
 t_summary.logical <- function(x, col_by, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", denominator = c("n", "N"), ...) {
 

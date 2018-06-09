@@ -81,7 +81,10 @@ grid.rect(
 grid.newpage()
 pushViewport(plotViewport())
 grid.rect()
-grid.draw(splitTextGrob(c("Hello, this is a test", "and yet another test"), just = c("left", "top"), x = 0, y = 1))
+grid.draw(splitTextGrob(
+  c("Hello, this is a test", "and yet another test"),
+  just = c("left", "top"), x = 0, y = 1
+))
 
 
 }

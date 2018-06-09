@@ -15,6 +15,7 @@ decorate_grob_set(grobs, ...)
 this uses the decorate_grob_factory
 }
 \examples{
+library(ggplot2)
 g <- with(iris, {
   list(
     ggplotGrob(qplot(Sepal.Length, Sepal.Width, col=Species)),

@@ -50,6 +50,7 @@
 #' ANL <- var_relabel(ANL, AVAL = "Value at\nVisit",
 #'                         CHG = "Change from\nBaseline",
 #'                         PCHG = "Percent Change\nfrom Baseline")
+#'                         
 #' t_summarize_by_visit(
 #'   data = ANL[c("AVAL", "CHG")],
 #'   visit = ANL$VISIT,
@@ -123,14 +124,13 @@ t_summarize_by_visit <- function(data, visit, id, col_by) {
   # Creating summary tables
   rtables_byv <- Map(function(dfi, visit_name) {
     tbl_byv <- rbind(
-      rtable(header = levels(col_by), rrow(visit_name)),
-      rtabulate(dfi$data, dfi$col_by, n_not_na3, row.name = "n", indent = 1),
-      rtabulate(dfi$data, dfi$col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", indent = 1),
-      rtabulate(dfi$data, dfi$col_by, median_t3, row.name = "Median", indent = 1, format = "xx.xx"),
-      rtabulate(dfi$data, dfi$col_by, iqr_num3, row.name = "IQR", indent = 1, format = "xx.xx - xx.xx"),
-      rtabulate(dfi$data, dfi$col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max", indent = 1)
+      rtabulate(dfi$data, dfi$col_by, n_not_na3, row.name = "n", indent = 1, col_total=NULL),
+      rtabulate(dfi$data, dfi$col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", indent = 1, col_total=NULL),
+      rtabulate(dfi$data, dfi$col_by, median_t3, row.name = "Median", indent = 1, format = "xx.xx", col_total=NULL),
+      rtabulate(dfi$data, dfi$col_by, iqr_num3, row.name = "IQR", indent = 1, format = "xx.xx - xx.xx", col_total=NULL),
+      rtabulate(dfi$data, dfi$col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max", indent = 1, col_total=NULL)
     )
-    tbl_byv
+    insert_rrow(tbl_byv, rrow(visit_name))
   }, df_byv, names(df_byv))
   
   tbl <- stack_rtables_l(rtables_byv)

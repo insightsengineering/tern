@@ -32,7 +32,8 @@ Suggests:
   testthat,
   knitr,
   rmarkdown,
-  forcats
+  forcats,
+  lattice
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true

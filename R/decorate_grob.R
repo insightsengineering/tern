@@ -305,7 +305,10 @@ splitString <- function(text, width) {
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
-#' grid.draw(splitTextGrob(c("Hello, this is a test", "and yet another test"), just = c("left", "top"), x = 0, y = 1))
+#' grid.draw(splitTextGrob(
+#'   c("Hello, this is a test", "and yet another test"),
+#'   just = c("left", "top"), x = 0, y = 1
+#' ))
 #' 
 #' 
 splitTextGrob <- function(text, x = unit(0.5, "npc"), y = unit(0.5, "npc"), width = unit(1, "npc"),
@@ -422,6 +425,7 @@ decorate_grob_factory <- function(npages, ...) {
 #' @template author_waddella
 #' 
 #' @examples
+#' library(ggplot2)
 #' g <- with(iris, {
 #'   list(
 #'     ggplotGrob(qplot(Sepal.Length, Sepal.Width, col=Species)),

@@ -2,12 +2,8 @@
 % Please edit documentation in R/t_summarize_variables.R
 \name{t_summarize_variables}
 \alias{t_summarize_variables}
-\alias{t_summarize_variables}
-\title{Summarize Variables}
+\title{Variables Summary Table}
 \usage{
-t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
-  useNA_factors = c("no", "ifany", "always"))
-
 t_summarize_variables(data, col_by, total = NULL, drop_levels = TRUE,
   useNA_factors = c("no", "ifany", "always"))
 }
@@ -23,14 +19,12 @@ into columns use the \code{\link{no_by}} function.}
 \item{total}{if not \code{NULL} then it must be a string and an addition
 column will be added with the overall summaries}
 
-\item{drop_levels}{boolean, drop zero-count levels for factors}
+\item{drop_levels}{boolean whether to drio zero count levels}
 
 \item{useNA_factors}{forwarded to \code{useNA} of
-\code{\link[rtables]{t_summary.factor}}}
+\code{\link{t_summary.factor}}}
 }
 \description{
-Summarize Variables
-
 Similiar as the demographic table in STREAM. This funtion is deprecated,
 please use \code{\link{t_summary}} instead.
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarize Variables — t_summarize_variables • tern</title>
+<title>Variables Summary Table — t_summarize_variables • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Summarize Variables — t_summarize_variables" />
+<meta property="og:title" content="Variables Summary Table — t_summarize_variables" />
 
-<meta property="og:description" content="Summarize Variables
-Similiar as the demographic table in STREAM. This funtion is deprecated,
+<meta property="og:description" content="Similiar as the demographic table in STREAM. This funtion is deprecated,
 please use t_summary instead." />
 <meta name="twitter:card" content="summary" />
 
@@ -102,23 +101,19 @@ please use t_summary instead." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Summarize Variables</h1>
+    <h1>Variables Summary Table</h1>
     
     <div class="hidden name"><code>t_summarize_variables.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Summarize Variables</p>
-<p>Similiar as the demographic table in STREAM. This funtion is deprecated,
+    <p>Similiar as the demographic table in STREAM. This funtion is deprecated,
 please use <code><a href='t_summary.html'>t_summary</a></code> instead.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>t_summarize_variables</span>(<span class='no'>data</span>, <span class='no'>col_by</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop_levels</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"no"</span>, <span class='st'>"ifany"</span>, <span class='st'>"always"</span>))
-
-<span class='fu'>t_summarize_variables</span>(<span class='no'>data</span>, <span class='no'>col_by</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop_levels</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"no"</span>, <span class='st'>"ifany"</span>, <span class='st'>"always"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -143,12 +138,12 @@ column will be added with the overall summaries</p></td>
     </tr>
     <tr>
       <th>drop_levels</th>
-      <td><p>boolean, drop zero-count levels for factors</p></td>
+      <td><p>boolean whether to drio zero count levels</p></td>
     </tr>
     <tr>
       <th>useNA_factors</th>
       <td><p>forwarded to <code>useNA</code> of
-<code>t_summary.factor</code></p></td>
+<code><a href='t_summary.factor.html'>t_summary.factor</a></code></p></td>
     </tr>
     </table>
     
@@ -180,34 +175,32 @@ instead.</p>
 <span class='no'>ASL</span>$<span class='no'>SEX</span> <span class='kw'>&lt;-</span> <span class='fu'>relevel</span>(<span class='no'>ASL</span>$<span class='no'>SEX</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>)
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: t_summarize_variables is deprecated, please use t_summary instead.</span></div><div class='output co'>#&gt;                                    ARM A                ARM B    
-#&gt;                                   (N=53)               (N=47)    
+#&gt;                                   (N=42)               (N=58)    
 #&gt; -----------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 53                   47      
-#&gt;   M                             30 (56.6%)           29 (61.7%)  
-#&gt;   F                             22 (41.51%)          18 (38.3%)  
-#&gt;   U                              1 (1.89%)             0 (0%)    
+#&gt;   n                                 42                   58      
+#&gt;   M                             25 (59.52%)          31 (53.45%) 
+#&gt;   F                             17 (40.48%)          27 (46.55%) 
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 53                   47      
-#&gt;   Mean (SD)                    37.51 (13.47)        43.72 (15.32)
-#&gt;   Median                            36                   42      
-#&gt;   Min - Max                       11 - 64              16 - 81   </div><div class='input'>
+#&gt;   n                                 42                   58      
+#&gt;   Mean (SD)                    40.81 (16.06)        42.83 (14.18)
+#&gt;   Median                            41                   42      
+#&gt;   Min - Max                       12 - 81              15 - 82   </div><div class='input'>
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>'always'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: t_summarize_variables is deprecated, please use t_summary instead.</span></div><div class='output co'>#&gt;                                    ARM A                ARM B    
-#&gt;                                   (N=53)               (N=47)    
+#&gt;                                   (N=42)               (N=58)    
 #&gt; -----------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 53                   47      
-#&gt;   M                             30 (56.6%)           29 (61.7%)  
-#&gt;   F                             22 (41.51%)          18 (38.3%)  
-#&gt;   U                              1 (1.89%)             0 (0%)    
+#&gt;   n                                 42                   58      
+#&gt;   M                             25 (59.52%)          31 (53.45%) 
+#&gt;   F                             17 (40.48%)          27 (46.55%) 
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 53                   47      
-#&gt;   Mean (SD)                    37.51 (13.47)        43.72 (15.32)
-#&gt;   Median                            36                   42      
-#&gt;   Min - Max                       11 - 64              16 - 81   </div><div class='input'>
+#&gt;   n                                 42                   58      
+#&gt;   Mean (SD)                    40.81 (16.06)        42.83 (14.18)
+#&gt;   Median                            41                   42      
+#&gt;   Min - Max                       12 - 81              15 - 82   </div><div class='input'>
 
 </div></pre>
   </div>
