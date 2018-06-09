@@ -18,3 +18,14 @@ into columns use the \code{\link{no_by}} function.}
 \description{
 Summarize an Object for Different Groups
 }
+\details{
+Note that N refers to the number of observations and n refers to the numer of
+non-missing observations
+}
+\examples{
+t_summary(iris[-5], iris$Species)
+
+t_summary(iris$Sepal.Length, iris$Species)
+
+with(iris, t_summary(Sepal.Length > mean(Sepal.Length), iris$Species))
+}

@@ -7,8 +7,18 @@
 #' @param x an object to dispatch on
 #' @param ... arguments passed on to methods
 #' 
+#' @details 
+#' Note that N refers to the number of observations and n refers to the numer of
+#' non-missing observations
+#' 
 #' @export
 #' 
+#' @examples 
+#' t_summary(iris[-5], iris$Species)
+#' 
+#' t_summary(iris$Sepal.Length, iris$Species)
+#' 
+#' with(iris, t_summary(Sepal.Length > mean(Sepal.Length), iris$Species))
 t_summary <- function(x, col_by, ...) {
   UseMethod("t_summary", x)
 }
