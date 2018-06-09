@@ -91,11 +91,8 @@ t_summarize_variables <- function(data, col_by, total = NULL,
     if (length(total) != 1) stop("total must be either NULL or a single string")
     if (total %in% col_by) stop("total cannot be an level in col_by")
 
-    n <- nrow(data)
-    lbls <- var_labels(data)
-    data <- rbind(data, data)
-    col_by <- factor(c(as.character(col_by), rep(total, n)), levels = c(levels(col_by), total))
-    var_labels(data) <- lbls
+    data <- duplicate_with_var(data)
+    col_by <- factor(c(as.character(col_by), rep(total, length(col_by))), levels = c(levels(col_by), total))
   }
   
   rtables_vars <- Map(function(var, varlabel) {
@@ -107,10 +104,8 @@ t_summarize_variables <- function(data, col_by, total = NULL,
       t_summarize_factor(var_fct, col_by, useNA = useNA_factors, denominator = denominator)
     }
     
-    rbind(
-      rtable(header = header(tbl_summary), rrow(row.name = varlabel)),
-      indent_table(tbl_summary, 1)
-    )
+    insert_rrow(indent_table(tbl_summary, 1), rrow(varlabel))
+    
   }, data, var_labels(data, fill = TRUE))
   
   stack_rtables_l(rtables_vars)
@@ -177,6 +172,8 @@ t_summarize_numeric <- function(x, col_by) {
 #' t_summarize_factor(x, cb, useNA = "always",  denominator = "N")
 #' 
 #' t_summarize_factor(droplevels(x), cb, useNA = "always",  denominator = "N")
+#' 
+#' t_summarize_factor(factor(letters[1:2]), factor(c(LETTERS[1:3])))
 #' 
 t_summarize_factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
                                denominator = c("n", "N")) {
