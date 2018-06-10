@@ -58,6 +58,7 @@ t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM,
 ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit",
                         CHG = "Change from\\nBaseline",
                         PCHG = "Percent Change\\nfrom Baseline")
+                        
 t_summarize_by_visit(
   data = ANL[c("AVAL", "CHG")],
   visit = ANL$VISIT,

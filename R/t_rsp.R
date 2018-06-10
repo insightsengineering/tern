@@ -41,6 +41,9 @@
 #'   
 #' @examples 
 #' 
+#' t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
+#' 
+#' 
 #' library(random.cdisc.data)
 #' 
 #' ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000,
@@ -58,6 +61,7 @@
 #'    ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
 #'  ))
 #' )
+#' tbl
 #' \dontrun{
 #' Viewer(tbl)
 #' } 
@@ -310,7 +314,7 @@ t_rsp <- function(
     
     tbls_part <- Map(function(vals, name) {
       rtable(
-        header = levels(col_by),
+        header = header(tbl_response),
         rrowl(name, lapply(vals, `[[`, "n_p")),
         if (name %in% c("Not Evaluable (NE)", "Missing or unevaluable", "Missing")) {rrow(NULL)
           } else {rrowl("95% CI", lapply(vals, `[[`, "ci"), indent = 1)}
@@ -323,13 +327,14 @@ t_rsp <- function(
   
   
   #--- Footer section, if any for notes on stratification ---#
-  if (is.null(strata_data)) {
-    tbl_footer <- rtable(header = levels(col_by), rrow(NULL))
+  tbl_footer <- if (is.null(strata_data)) {
+     NULL
   } else {
     n_strata <- length(strata_data)
-    tbl_footer <- rtable(header = levels(col_by), rrow(paste("* Model stratified by", 
-                             ifelse(n_strata < 2, names(strata_data), 
-                                    paste(paste(names(strata_data)[-(n_strata)], collapse = ", "), "and", names(strata_data)[(n_strata)]))
+    rtable(header = header(tbl_response),
+           rrow(paste("* Model stratified by", 
+                      ifelse(n_strata < 2, names(strata_data), 
+                             paste(paste(names(strata_data)[-(n_strata)], collapse = ", "), "and", names(strata_data)[(n_strata)]))
     )))
   }
   
@@ -341,13 +346,6 @@ t_rsp <- function(
     tbl_odds_ratio,
     tbl_partition,
     tbl_footer
-  )
-  
-  # add N to header 
-  N <- tapply(col_by, col_by, length)
-  header(tbl) <- rheader(
-    rrowl("", levels(col_by)),
-    rrowl("", N)
   )
   
   tbl

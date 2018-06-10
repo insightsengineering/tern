@@ -14,6 +14,40 @@ shift_label_table <- function(tbl, term) {
 }
 
 
+
+#' insert rrows at a specific location
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' tbl <- rtabulate(iris$Sepal.Length, iris$Species)
+#' 
+#' insert_rrow(tbl, rrow("Hello World"))
+insert_rrow <- function(tbl, rrow, at=1) {
+  
+  if (!is(tbl, "rtable")) stop("tbl is expected to be an rtable")
+  if (!is(rrow, "rrow")) stop("rrow is expected to be an rrow")
+  
+  nr <- nrow(tbl)
+  if (at <= 0 || at > nr+1) stop("at is not in [1, nrow(tbl)+1]")
+  
+  if (length(rrow) != 0 && length(rrow) != ncol(tbl)) stop("rrow has wrong number of colums")
+  
+  header <- header(tbl)
+  
+  attributes(tbl) <- NULL
+  body <- if (at == 1) {
+    c(list(rrow), tbl)
+  } else if (at == (nr+1)) {
+    c(tbl, list(rrow))
+  } else {
+    c(tbl[1:(at-1)], rrow, tbl[(at+1):nr])
+  }
+  
+  rtablel(header, body)
+  
+}
+
 #' cbind two rtables
 #' @noRd
 #' 
@@ -40,6 +74,7 @@ cbind_rtables <- function(x, y) {
   body <- combine_rrows(unclass(x), unclass(y))
   
   rtablel(header, body)
+
 }
 
 combine_rrows <- function(x,y) {

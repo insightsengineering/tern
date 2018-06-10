@@ -106,12 +106,11 @@ if (requireNamespace("atezo.data", quietly = TRUE) &&
              RACE, BWT, TOBHX, HIST, EGFRMUT, ALKMUT,KRASMUT, BECOG)
     # var_labels(ASL_f)
     
-    tbl <- t_summarize_variables(
-      data = ASL_f[, -1],
+    tbl <- t_summary(
+      x = ASL_f[, -1],
       col_by = ASL_f$ARM,
       total = "All Patients",
-      drop_levels = TRUE,
-      useNA_factors = 'no'
+      drop_levels = TRUE
     )
     
     # Viewer(tbl, tbl_stream)
@@ -275,8 +274,7 @@ if (requireNamespace("atezo.data", quietly = TRUE) &&
     # comp <- compare_rtables(tbl_no_missing_ci, tbl_stream, comp.attr = FALSE)
     
     # row8 CI with correction for rate difference not reported in STREAM table
-    n <- nrow(tbl)
-    comp <- compare_rtables(tbl[-(n - 0:2), ], tbl_stream, comp.attr = FALSE)
+    comp <- compare_rtables(tbl[1:nrow(tbl_stream), ], tbl_stream, comp.attr = FALSE)
     
     comp[7,1] <- "." # empty cell, compare_rtables should not report this
     comp[7,2] <- "." # method used in tbl_stream is incorrect according to communications with Jennifer

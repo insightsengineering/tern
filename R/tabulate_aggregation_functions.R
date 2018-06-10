@@ -1,9 +1,12 @@
 
 # Collection of reusable function that can be reused in rtabulate
 
-positives_and_proportion <- function(x) {
+positives_and_proportion <- function(x, na.rm = TRUE) {
   if (!is.logical(x)) stop("x is required to be logical")
-  sum(x) * c(1, 1/length(x))
+  
+  
+  n <- if (na.rm) sum(!is.na(x)) else length(x)
+  sum(x, na.rm=TRUE) * c(1, 1/n)
 }
 
 

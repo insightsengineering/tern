@@ -19,12 +19,12 @@ reference:
   - title: Compound Tables
     desc: These tables are often compound tables that are found in the GDSR templates.
     contents:
+      - t_summary
+      - t_summary.data.frame
       - t_ae_ctc
       - t_forest_rsp
       - t_forest_tte
       - t_rsp
-      - t_summarize_by_visit
-      - t_summarize_variables
       - t_tte
   - title: Compound Graphs
     contents:
@@ -32,12 +32,25 @@ reference:
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
     contents:
+      - t_summary.numeric
+      - t_summary.factor
+      - t_summary.logical
+      - t_summary.character
+      - t_summary.Date
       - t_coxph
       - t_km
       - t_max_grade_per_id
+  - title: Analysis Helper Functions
+    desc: these functions are used by other functions to derive data
+    contents:
+      - arm
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
     contents:
+      - decorate_grob
+      - decorate_grob_factory
+      - decorate_grob_set
+      - splitTextGrob
       - addTable
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
@@ -45,5 +58,12 @@ reference:
       - var_labels
       - var_labels<-
       - var_relabel
+      - var_labels_remove
+      - combine_levels
       - drop_shared_variables
       - reorder_to_match_id
+  - title: Deprecated functions
+    desc: these functions will be removed in future releases of tern
+    contents:
+      - t_summarize_variables
+      - t_summarize_by_visit

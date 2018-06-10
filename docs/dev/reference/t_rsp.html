@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -37,7 +39,6 @@ and odds ratio." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
-
 
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -170,8 +171,28 @@ further explanation.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
+<span class='fu'>t_rsp</span>(<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>), <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>100</span>)))</div><div class='output co'>#&gt;                                                                         A                      B       
+#&gt;                                                                      (N=100)                (N=100)    
+#&gt; -------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                          56 (56%)               40 (40%)    
+#&gt; Non-Responders                                                      44 (44%)               60 (60%)    
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (45.72, 65.92)         (30.33, 50.28) 
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                              -16      
+#&gt;   95% CI for difference (Wald without correction)                                       (-29.67, -2.33)
+#&gt;   95% CI for difference (Wald with continuity correction)                               (-30.67, -1.33)
+#&gt;   p-value (Chi-squared)                                                                     0.0235     
+#&gt; 
+#&gt; Odds Ratio                                                                                   0.52      
+#&gt;   95% CI                                                                                  (0.3, 0.92)  </div><div class='input'>
 
+<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>arm_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
    <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
@@ -186,9 +207,37 @@ further explanation.</p></td>
  <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'>droplevels</span>(<span class='fu'>factor</span>(
    <span class='no'>ANL</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)
  ))
-)</div><div class='output co'>#&gt; Called from: eval(expr, p)
-#&gt; debug at /Users/waddella/Desktop/tern/R/t_rsp.R#86: check_same_N(rsp = rsp, col_by = col_by, partition_rsp_by = partition_rsp_by, 
-#&gt;     strata_data = strata_data)</div><span class='co'># NOT RUN {</span>
+)
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM A                 ARM C     
+#&gt;                                                                     (N=349)               (N=321)               (N=330)    
+#&gt; ---------------------------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                        144 (41.26%)          128 (39.88%)          121 (36.67%) 
+#&gt; Non-Responders                                                    205 (58.74%)          193 (60.12%)          209 (63.33%) 
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (36.05, 46.63)        (34.48, 45.46)        (31.46, 42.12)
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                           -1.39                 -4.59     
+#&gt;   95% CI for difference (Wald without correction)                                      (-8.83, 6.06)         (-11.92, 2.73)
+#&gt;   95% CI for difference (Wald with continuity correction)                              (-9.13, 6.35)         (-12.22, 3.03)
+#&gt;   p-value (Chi-squared)                                                                    0.7153                 0.22     
+#&gt; 
+#&gt; Odds Ratio                                                                                  0.94                  0.82     
+#&gt;   95% CI                                                                                (0.69, 1.29)          (0.61, 1.12) 
+#&gt; 
+#&gt; Complete Response (CR)                                            75 (21.49%)           62 (19.31%)           51 (15.45%)  
+#&gt;   95% CI                                                         (17.3, 26.18)         (15.14, 24.06)        (11.73, 19.81)
+#&gt; 
+#&gt; Partial Response (PR)                                             69 (19.77%)           66 (20.56%)           70 (21.21%)  
+#&gt;   95% CI                                                         (15.72, 24.34)        (16.27, 25.4)         (16.93, 26.02)
+#&gt; 
+#&gt; Stable Disease (SD)                                               64 (18.34%)           64 (19.94%)           74 (22.42%)  
+#&gt;   95% CI                                                         (14.42, 22.8)         (15.71, 24.73)        (18.04, 27.31)
+#&gt; 
+#&gt; Progressive Disease (PD)                                          69 (19.77%)           62 (19.31%)           61 (18.48%)  
+#&gt;   95% CI                                                         (15.72, 24.34)        (15.14, 24.06)        (14.44, 23.1) 
+#&gt; 
+#&gt; Not Evaluable (NE)                                                72 (20.63%)           67 (20.87%)           74 (22.42%)  
+#&gt; </div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span><div class='input'>
 <span class='co'># Example 2 - ARM B as reference, ARM C displayed before ARM A</span>
@@ -201,39 +250,63 @@ further explanation.</p></td>
  <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ANL</span>[<span class='fu'>c</span>(<span class='st'>"RACE"</span>)]
 )
 <span class='no'>tbl2</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
-#&gt;                                                                     (N=327)               (N=322)               (N=351)    
+#&gt;                                                                     (N=349)               (N=330)               (N=321)    
 #&gt; ---------------------------------------------------------------------------------------------------------------------------
-#&gt; Responders                                                        130 (39.76%)          123 (38.2%)           128 (36.47%) 
-#&gt; Non-Responders                                                    197 (60.24%)          199 (61.8%)           223 (63.53%) 
+#&gt; Responders                                                        144 (41.26%)          121 (36.67%)          128 (39.88%) 
+#&gt; Non-Responders                                                    205 (58.74%)          209 (63.33%)          193 (60.12%) 
 #&gt; 
-#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (34.41, 45.29)        (32.87, 43.75)        (31.42, 41.74)
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (36.05, 46.63)        (31.46, 42.12)        (34.48, 45.46)
 #&gt; 
-#&gt; Difference in Response Rates (%)                                                           -1.56                 -3.29     
-#&gt;   95% CI for difference (Wald without correction)                                      (-9.06, 5.95)         (-10.6, 4.03) 
-#&gt;   95% CI for difference (Wald with continuity correction)                              (-9.37, 6.25)         (-10.9, 4.32) 
-#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                       0.6862                0.363     
+#&gt; Difference in Response Rates (%)                                                           -4.59                 -1.39     
+#&gt;   95% CI for difference (Wald without correction)                                      (-11.92, 2.73)        (-8.83, 6.06) 
+#&gt;   95% CI for difference (Wald with continuity correction)                              (-12.22, 3.03)        (-9.13, 6.35) 
+#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                         -                     -       
 #&gt; 
-#&gt; Odds Ratio*                                                                                 0.94                  0.87     
-#&gt;   95% CI                                                                                (0.68, 1.28)          (0.63, 1.18) 
+#&gt; Odds Ratio*                                                                                  -                     -       
+#&gt;   95% CI                                                                                     -                     -       
 #&gt; 
-#&gt; Complete Response (CR)                                            65 (19.88%)           62 (19.25%)           68 (19.37%)  
-#&gt;   95% CI                                                         (15.69, 24.62)        (15.09, 23.99)        (15.37, 23.9) 
+#&gt; Complete Response (CR)                                            75 (21.49%)           51 (15.45%)           62 (19.31%)  
+#&gt;   95% CI                                                         (17.3, 26.18)         (11.73, 19.81)        (15.14, 24.06)
 #&gt; 
-#&gt; Partial Response (PR)                                             65 (19.88%)           61 (18.94%)           60 (17.09%)  
-#&gt;   95% CI                                                         (15.69, 24.62)        (14.81, 23.66)        (13.31, 21.45)
+#&gt; Partial Response (PR)                                             69 (19.77%)           70 (21.21%)           66 (20.56%)  
+#&gt;   95% CI                                                         (15.72, 24.34)        (16.93, 26.02)        (16.27, 25.4) 
 #&gt; 
-#&gt; Stable Disease (SD)                                               74 (22.63%)           65 (20.19%)           67 (19.09%)  
-#&gt;   95% CI                                                         (18.21, 27.56)        (15.94, 24.99)        (15.11, 23.6) 
+#&gt; Stable Disease (SD)                                               64 (18.34%)           74 (22.42%)           64 (19.94%)  
+#&gt;   95% CI                                                         (14.42, 22.8)         (18.04, 27.31)        (15.71, 24.73)
 #&gt; 
 #&gt; Non-CR or Non-PD (NON CR/PD)                                           0                     0                     0       
 #&gt;   95% CI                                                               -                     -                     -       
 #&gt; 
-#&gt; Progressive Disease (PD)                                          61 (18.65%)           73 (22.67%)            86 (24.5%)  
-#&gt;   95% CI                                                         (14.58, 23.31)        (18.21, 27.64)        (20.09, 29.35)
+#&gt; Progressive Disease (PD)                                          69 (19.77%)           61 (18.48%)           62 (19.31%)  
+#&gt;   95% CI                                                         (15.72, 24.34)        (14.44, 23.1)         (15.14, 24.06)
 #&gt; 
 #&gt; * Model stratified by RACE</div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)
-<span class='co'># }</span></pre>
+<span class='co'># }</span><div class='input'>
+
+<span class='co'># Example 3 - when all observations are non-responders</span>
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
+<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+<span class='kw'>arm</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>200</span>)
+)
+
+<span class='fu'>t_rsp</span>(<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>rsp</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>arm</span>))</div><div class='output co'>#&gt;                                                                      A                 B     
+#&gt;                                                                   (N=200)           (N=200)  
+#&gt; ---------------------------------------------------------------------------------------------
+#&gt; Responders                                                         0 (0%)            0 (0%)  
+#&gt; Non-Responders                                                   200 (100%)        200 (100%)
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (0, 1.83)         (0, 1.83) 
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                       0     
+#&gt;   95% CI for difference (Wald without correction)                                      -     
+#&gt;   95% CI for difference (Wald with continuity correction)                              -     
+#&gt;   p-value (Chi-squared)                                                                -     
+#&gt; 
+#&gt; Odds Ratio                                                                             -     
+#&gt;   95% CI                                                                               -     </div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

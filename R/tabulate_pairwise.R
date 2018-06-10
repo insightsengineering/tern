@@ -7,7 +7,6 @@
 #' @param col_by a factor first level is taken as reference level
 #' @param FUN a function with two arguments, first argument is the subset of x
 #'   and the second argument is a factor with two levels from col_by
-#' @param ... arguments passed to rrow
 #' 
 #' 
 #' @importFrom stats relevel
@@ -25,14 +24,12 @@
 #'   row.name = "diff mean"
 #' )
 #' 
-tabulate_pairwise <- function(x, col_by, FUN, row.name, ...) {
+tabulate_pairwise <- function(x, col_by, FUN, row.name, format=NULL, indent = 0) {
 
   if (!is.atomic(x) && !is.data.frame(x)) stop("currently x is required to be a vector or data.frame")
   if (!is.factor(col_by)) stop("col_by is expected to be a factor")
   if (length(levels(col_by)) < 2) stop("col_by requires least two levels") 
   if (any(is.na(col_by))) stop("currently no NAs allowed in col_by")
-  
-  dots <- list(...)
   
   ref_level <- levels(col_by)[1]
   
@@ -48,8 +45,8 @@ tabulate_pairwise <- function(x, col_by, FUN, row.name, ...) {
   })
   
   rtable(
-    header = levels(col_by),
-    rrowl(row.name = row.name, c(list(NULL), row_data), dots)    
+    header = rtables:::rtabulate_header(col_by, length(x)),
+    rrowl(row.name = row.name, c(list(NULL), row_data), format = format, indent = indent )    
   )
 }
 

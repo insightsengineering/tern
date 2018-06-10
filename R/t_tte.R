@@ -48,7 +48,6 @@
 #' 
 #' ANL <- merge(ASL, ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
 #' 
-#' 
 #' tbl <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
 #'   data = ANL,
@@ -103,6 +102,8 @@ t_tte <- function(formula,
   # Calculate elements of the table
 
   
+  header <- rtables:::rtabulate_header(arm, length(arm))
+  
   # Event Table
   # ###########
   
@@ -110,11 +111,11 @@ t_tte <- function(formula,
     rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients with event (%)"),
     if (!is.null(event_descr)) {
-      rbind(
-        rtable(levels(arm), rrow("Earliest Contributing Event", indent = 1)),
-        rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event], 
-                  length, indent = 2)
-      )
+      tbl_early_event <- rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event], 
+                                   length, indent = 2)
+      
+      header(tbl_early_event) <- header
+      insert_rrow(tbl_early_event, rrow("Earliest Contributing Event", indent = 1))
     } else {
       NULL
     },
@@ -150,7 +151,7 @@ t_tte <- function(formula,
     
   
   tbl_tte <- rtable(
-    header = levels(arm),
+    header = header,
     rrow(paste0("Time to Event (", time_unit, "s)")),
     rrowl("Median", med, format = "xx.xx", indent = 1),
     rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
@@ -198,7 +199,7 @@ t_tte <- function(formula,
     hr_ci <- start_with_NULL(lapply(values, `[[`, "hr_ci"))
     
     rtable(
-      header = levels(arm),
+      header = header,
       rrow(label),
       rrowl("p-value (log-rank)", pval, indent = 1, format = "xx.xxxx"),
       rrow(),
@@ -237,7 +238,7 @@ t_tte <- function(formula,
       
       list(
         rtable(
-          header = levels(arm),
+          header = header,
           rrow(paste("time points: ", paste(time_points, collapse = ", ")), indent = 1),
           rrow("-- no data", indent = 2)
         )
@@ -256,7 +257,7 @@ t_tte <- function(formula,
         
         if (nrow(dfi) <= 1) {
           rtable(
-            header = levels(arm),
+            header = header,
             rrow(name, indent = 1),
             rrow(if (nrow(dfi) == 0) "-- no data" else "-- not enough data", indent = 2)
           )
@@ -272,7 +273,7 @@ t_tte <- function(formula,
           pval <- 2*(1 - pnorm(abs(d)/sd))
           
           rtable(
-            header = levels(arm),
+            header = header,
             rrow(name, indent = 1),
             rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
             rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
@@ -284,11 +285,9 @@ t_tte <- function(formula,
         }
       }, s_df_tp, time_points)  
     }
-    
-    
-    
+
     rbind(
-      rtable(header = levels(arm), rrow("Time Point Analysis")),    
+      rtable(header = header, rrow("Time Point Analysis")),    
       stack_rtables_l(tp_rtables)      
     )
     
@@ -300,13 +299,6 @@ t_tte <- function(formula,
     tbl_unstratified,
     tbl_stratified,
     tbl_timepoints
-  )
-  
-  # add N to header 
-  N <- tapply(arm, arm, length)
-  header(tbl) <- rheader(
-    rrowl("", levels(arm)),
-    rrowl("", N, format="(N=xx)")
   )
   
   tbl
