@@ -22,6 +22,7 @@ respectively.
 ">999.9".
 * `t_summarise_variables` uses now `n` instead of `N` as a denominator for
 calculating percentages for factors by default.
+* `t_rsp` now works when all response values are `TRUE` or `FALSE`
 
 ## Deprecated Functions
 

@@ -187,8 +187,12 @@ further explanation.</p></td>
 #&gt; Odds Ratio                                                                                   0.52      
 #&gt;   95% CI                                                                                  (0.3, 0.92)  </div><div class='input'>
 
-<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-
+<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>, <span class='kw'>arm_choices</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARM A"</span>, <span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
    <span class='kw'>start_with</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"asian"</span>)))
 <span class='no'>ARS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ARS"</span>, <span class='kw'>ADSL</span> <span class='kw'>=</span> <span class='no'>ASL</span>)
@@ -256,10 +260,10 @@ further explanation.</p></td>
 #&gt; Difference in Response Rates (%)                                                           -4.59                 -1.39     
 #&gt;   95% CI for difference (Wald without correction)                                      (-11.92, 2.73)        (-8.83, 6.06) 
 #&gt;   95% CI for difference (Wald with continuity correction)                              (-12.22, 3.03)        (-9.13, 6.35) 
-#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                       0.2224                0.7283    
+#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                         -                     -       
 #&gt; 
-#&gt; Odds Ratio*                                                                                 0.83                  0.95     
-#&gt;   95% CI                                                                                (0.61, 1.12)          (0.69, 1.29) 
+#&gt; Odds Ratio*                                                                                  -                     -       
+#&gt;   95% CI                                                                                     -                     -       
 #&gt; 
 #&gt; Complete Response (CR)                                            75 (21.49%)           51 (15.45%)           62 (19.31%)  
 #&gt;   95% CI                                                         (17.3, 26.18)         (11.73, 19.81)        (15.14, 24.06)
@@ -278,7 +282,31 @@ further explanation.</p></td>
 #&gt; 
 #&gt; * Model stratified by RACE</div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)
-<span class='co'># }</span></pre>
+<span class='co'># }</span><div class='input'>
+
+<span class='co'># Example 3 - when all observations are non-responders</span>
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
+<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+<span class='kw'>arm</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>200</span>)
+)
+
+<span class='fu'>t_rsp</span>(<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>rsp</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>arm</span>))</div><div class='output co'>#&gt;                                                                      A                 B     
+#&gt;                                                                   (N=200)           (N=200)  
+#&gt; ---------------------------------------------------------------------------------------------
+#&gt; Responders                                                         0 (0%)            0 (0%)  
+#&gt; Non-Responders                                                   200 (100%)        200 (100%)
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (0, 1.83)         (0, 1.83) 
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                       0     
+#&gt;   95% CI for difference (Wald without correction)                                      -     
+#&gt;   95% CI for difference (Wald with continuity correction)                              -     
+#&gt;   p-value (Chi-squared)                                                                -     
+#&gt; 
+#&gt; Odds Ratio                                                                             -     
+#&gt;   95% CI                                                                               -     </div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

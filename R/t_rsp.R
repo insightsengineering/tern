@@ -79,6 +79,17 @@
 #' \dontrun{
 #' Viewer(tbl2)
 #' } 
+#' 
+#' 
+#' # Example 3 - when all observations are non-responders
+#' ANL <- data.frame(
+#' rsp = FALSE,
+#' arm = rep(c("A", "B"), each = 200)
+#' )
+#' 
+#' t_rsp(rsp = ANL$rsp, col_by = factor(ANL$arm))
+#' 
+#' 
 t_rsp <- function(
   rsp,
   col_by,
@@ -130,10 +141,14 @@ t_rsp <- function(
     
     # wald test without continuity correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
-
-      t_wc <- prop.test(table(by, x), correct = FALSE)
       
-      rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
+      t.tbl <- table(by, x)
+      if (all(dim(t.tbl) == 2)) {
+        t_wc <- prop.test(t.tbl, correct = FALSE)
+        rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
+      } else {
+        rcell("-")
+      }
     },
     indent = 1,
     row.name = "95% CI for difference (Wald without correction)"),
@@ -141,9 +156,13 @@ t_rsp <- function(
     # wald test with  continuety correction
     tabulate_pairwise(rsp, col_by, function(x, by) {
       
-      t_wc <- prop.test(table(by, x), correct = TRUE)
-      
-      rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
+      t.tbl <- table(by, x)
+      if (all(dim(t.tbl) == 2)) {
+        t_wc <- prop.test(t.tbl, correct = TRUE)
+        rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
+      } else {
+        rcell("-")
+      }
     }, 
     indent = 1,
     row.name = "95% CI for difference (Wald with continuity correction)"),
@@ -152,10 +171,13 @@ t_rsp <- function(
     if (is.null(strata_data)) {
       tabulate_pairwise(rsp, col_by, function(x, by) {
         
-        
-        t_wc <- prop.test(table(by,x), correct = FALSE)
-        
-        rcell(t_wc$p.value, format = "xx.xxxx")
+        t.tbl <- table(by, x)
+        if (all(dim(t.tbl) == 2)) {
+          t_wc <- prop.test(table(by,x), correct = FALSE)
+          rcell(t_wc$p.value, format = "xx.xxxx")
+        } else {
+          rcell("-")
+        }
       }, 
       indent = 1,
       row.name = "p-value (Chi-squared)")
@@ -168,13 +190,14 @@ t_rsp <- function(
           rcell("<5 data points")
         } else {
           t.tbl <- table(col_by, rsp, strat)
-          t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
-          
-          t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
-          
-          rcell(t_m$p.value, format = "xx.xxxx")
+          if (all(dim(t.tbl)[1:2] == 2)) {
+            t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
+            t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
+            rcell(t_m$p.value, format = "xx.xxxx")
+          } else {
+            rcell("-")
+          }
         }
-        
       }, 
       indent = 1,
       row.name = "p-value (Cochran-Mantel-Haenszel)*")
@@ -185,10 +208,13 @@ t_rsp <- function(
   tbl_odds_ratio <- rbind(
     tabulate_pairwise(rsp, col_by, function(x, by) {
       if (is.null(strata_data)) {
-        
-        fit <- odds.ratio(table(by, x))
-        rcell(fit$estimator, "xx.xx")
-        
+        t.tbl <- table(by, x)
+        if (all(dim(t.tbl) == 2)) {
+          fit <- odds.ratio(t.tbl)
+          rcell(fit$estimator, "xx.xx")
+        } else {
+          rcell("-")
+        }
       } else {
         
         strat <- do.call(strata, strata_data)
@@ -197,37 +223,43 @@ t_rsp <- function(
           rcell("<5 data points")
         } else {
           t.tbl <- table(col_by, rsp, strat)
-          t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
-          
-          t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
-          
-          rcell(t_m$estimate, format = "xx.xx")
+          if (all(dim(t.tbl)[1:2] == 2)) {
+            t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
+            t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
+            rcell(t_m$estimate, format = "xx.xx")
+          } else {
+            rcell("-")
+          }
         }
-        
       }
     }, row.name = ifelse(is.null(strata_data), "Odds Ratio", "Odds Ratio*")),
     
     tabulate_pairwise(rsp, col_by, function(x, by) {
       if (is.null(strata_data)) {
-        
-        fit <- odds.ratio(table(by, x))
-        rcell(fit$conf.int, "(xx.xx, xx.xx)")
+        t.tbl <- table(by, x)
+        if (all(dim(t.tbl) == 2)) {
+          fit <- odds.ratio(table(by, x))
+          rcell(fit$conf.int, "(xx.xx, xx.xx)")
+        } else {
+          rcell("-")
+        }
         
       } else {
-        
+  
         strat <- do.call(strata, strata_data)
         
         if (any(tapply(rsp, strat, length)<5)) {
           rcell("<5 data points")
         } else {
           t.tbl <- table(col_by, rsp, strat)
-          t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
-          
-          t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
-      
-          rcell(t_m$conf.int, format = "(xx.xx, xx.xx)")
+          if (all(dim(t.tbl)[1:2] == 2)) {
+            t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by),,]
+            t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
+            rcell(t_m$conf.int, format = "(xx.xx, xx.xx)")
+          } else {
+            rcell("-")
+          }
         }
-        
       }
     }, row.name = "95% CI", indent = 1)
   )
