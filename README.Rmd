@@ -130,4 +130,8 @@ if you would like to contribute a new output to `tern`
 has been thoroughly tested
 
 
+# Presentations
+
+* [Stats Software Initiative - R Series. June 18, 2018](https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing)
+
 [ghs]: http://pages.github.roche.com/Rpackages/tern

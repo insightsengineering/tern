@@ -7,6 +7,7 @@
     -   [Issues](#issues)
     -   [Collaboration](#collaboration)
         -   [Creating Pull Requests](#creating-pull-requests)
+-   [Presentations](#presentations)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 tern
@@ -99,3 +100,8 @@ We would like `tern` to be a collaborative effort and your contributions are wel
 -   Please make pull requests to the `master` branch (i.e. base is master)
 
 -   We then make new tagged releases on the master branch once the `master` branch has been thoroughly tested
+
+Presentations
+=============
+
+-   [Stats Software Initiative - R Series. June 18, 2018](https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing)
