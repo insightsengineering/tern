@@ -21,11 +21,20 @@ knitr::opts_chunk$set(
 The `tern` R package contains analysis functions to create tables, listings and
 graphs (TLGs) as used in clinical trials. We also provide
 [teal](https://github.roche.com/Rpackages/teal) modules for outputs in `tern` in
-the [teal.tern](https://github.roche.com/Rpackages/teal.oncology) R package.
+the [teal.tern](https://github.roche.com/Rpackages/teal.tern) R package.
 
 * Note that currently **tern may not be used for regulatory submissions**
 
 * However you can use `tern` for exploratory analysis and for quality control
+
+There are two versions of this web-manual:
+
+* development version: [https://pages.github.roche.com/Rpackages/tern/dev/](https://pages.github.roche.com/Rpackages/tern/dev/)
+
+
+* stable relase version: [https://pages.github.roche.com/Rpackages/tern/](https://pages.github.roche.com/Rpackages/tern/)
+
+
 
 # Installation 
 
