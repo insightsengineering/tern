@@ -147,7 +147,7 @@ t_summary.numeric <- function(x, col_by, ...) {
   rbind(
     rtabulate(x, col_by, count_n, row.name = "n"),
     rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
-    rtabulate(x, col_by, median, row.name = "Median", na.rm = TRUE),
+    rtabulate(x, col_by, median, row.name = "Median", format="xx.xx", na.rm = TRUE),
     rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE)
   )
 }
