@@ -14,6 +14,32 @@ shift_label_table <- function(tbl, term) {
 }
 
 
+row_names_as_col <- function(tbl, header_label) {
+  
+  nr_h <- nrow(header(tbl))
+  
+  if (missing(header_label)) {
+    header_label <- rep("", nr_h)
+  } else {
+    if (length(header_label) != nr_h) stop("dimension missmatch")
+  }
+  
+  h <- do.call(rheader, lapply(header_label, function(x) rrow("", x)))
+  
+  tbl_rn <- rtablel(header = h, c(lapply(row.names(tbl), function(xi) rrow("", xi))))
+  cbind_rtables(tbl_rn, tbl)
+}
+
+
+fast_rbind <- function(...) {
+  dots <- Filter(Negate(is.null), list(...))
+  
+  if (!all(unlist(lapply(dots, is, "rtable")))) stop("not all elements are of type rtable")
+  
+  body <- unlist(dots, recursive = FALSE)
+  
+  rtablel(header = header(dots[[1]]), body)
+}
 
 #' insert rrows at a specific location
 #' 
