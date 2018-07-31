@@ -257,10 +257,7 @@ t_ae <- function(
 #' 
 #' stack_rtables_d2(l_tbls)
 #' 
-#' do.call(rbind, unlist(l_tbls, recursive = FALSE))
-#' 
-#' rbindl(unlist(l_tbls))
-#' 
+#' do.call(fast_stack_rtables, x)
 #' 
 #' 'MedDRA System Organ Class'
 #'  'MedDRA Preferred Term'
@@ -358,12 +355,40 @@ lt_ae_max_grade_d2 <- function(class, term, id, grade, col_by,
     
   }, df_by_class, names(df_by_class) )
   
+  ###### Add any adverse event
+  tbl_overall <- t_max_grade_per_id(
+    grade = df$grade,
+    id = df$id,
+    col_by = df$col_by,
+    col_N = col_N,
+    grade_levels = grade_levels,
+    any_grade = "- Any Grade -"
+  )
+  tbl_overall <- row_names_as_col(tbl_overall)
+  attr(tbl_overall, "header")[[2]][[1]] <- rcell(grade_label)
+  attr(tbl_overall, "header")[[1]][[1]] <- rcell(NULL)
+  
+  attr(attr(tbl_overall, "header")[[1]], "row.name") <- class_label
+  attr(attr(tbl_overall, "header")[[2]], "row.name") <- term_label
+  attr(attr(tbl_overall, "header")[[2]], "indent") <- 1
+  row.names(tbl_overall)[1] <- "- Overall -"
+  tbl_overall <-  fast_rbind(
+    rtable(header(tbl_overall), rrow("- Any adverse events -")), 
+    indent_table(tbl_overall, 1)
+  )
+  tbls_all <- c(
+    list("- Any adverse events -" = list("- Overall -" = tbl_overall)),
+    l_t_class_terms
+  )
+  
 }
 
 #' @export
 stack_rtables_d2 <- function(x) {
-  
-  l_d1 <- lapply(x, function(xi) {
+  nam <- names(x)
+  x1 <- x[nam[nam != "- Any adverse events -"]]
+  x2 <- x[["- Any adverse events -"]]
+  l_d1 <- lapply(x1, function(xi) {
     
     tbls <- Map(function(tbl, i) {
       if (i == 1) tbl else tbl[-1, ]
@@ -372,5 +397,8 @@ stack_rtables_d2 <- function(x) {
     do.call(fast_stack_rtables, tbls)
   })
   
-  do.call(fast_stack_rtables, l_d1)
+  do.call(fast_stack_rtables, c(x2, l_d1))
 }
+
+
+
