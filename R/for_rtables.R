@@ -1,5 +1,60 @@
 # the functions in this document should eventually be moved to the rtables project
 
+
+#' Stack rtables with rbind and add empy rows between tables
+#' 
+#' @param ... rtbale objects
+#' @param nrow_pad number of empty rows between tables in \code{...}
+#' 
+#' @noRd
+#' 
+#' 
+stack_rtables <- function(..., nrow_pad = 1) {
+  
+  tbls <- Filter(Negate(is.null), list(...))
+  
+  if (length(tbls) > 0) {
+    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
+    
+    header <- attr(tbls[[1]], "header")
+    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
+    
+    Reduce(
+      function(x, y) rbind(x, tbl_with_empty_rows, y),
+      tbls
+    )
+    
+  } else {
+    list()
+  }
+}
+
+stack_rtables_l <- function(x) {
+  do.call(stack_rtables, x)
+}
+
+
+fast_stack_rtables <- function(..., nrow_pad = 1) {
+  
+  tbls <- Filter(Negate(is.null), list(...))
+  
+  if (length(tbls) > 0) {
+    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
+    
+    header <- header(tbls[[1]])
+    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
+    
+    Reduce(
+      function(x, y) rbind(x, tbl_with_empty_rows, y),
+      tbls
+    )
+    
+  } else {
+    list()
+  }
+}
+
+
 indent_table <- function(x, n) {
   for (i in 1:nrow(x)) {
     attr(x[[i]], "indent") <- attr(x[[i]], "indent") + n
@@ -28,6 +83,11 @@ row_names_as_col <- function(tbl, header_label) {
   
   tbl_rn <- rtablel(header = h, c(lapply(row.names(tbl), function(xi) rrow("", xi))))
   cbind_rtables(tbl_rn, tbl)
+}
+
+#' @export
+unlist.rtable <- function(x, ...) {
+  x
 }
 
 
