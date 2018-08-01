@@ -33,7 +33,7 @@ stack_rtables_l <- function(x) {
   do.call(stack_rtables, x)
 }
 
-
+#' @export
 fast_stack_rtables <- function(..., nrow_pad = 1) {
   
   tbls <- Filter(Negate(is.null), list(...))
