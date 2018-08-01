@@ -562,6 +562,8 @@ stack_rtables_d2 <- function(x) {
   do.call(fast_stack_rtables, c(x2, l_d1))
 }
 
+#' Count unique id
+#' 
 #' @examples 
 #' tbl <- t_one_count_per_id(
 #'   id = ANL$USUBJID,
@@ -595,15 +597,11 @@ t_one_count_per_id <- function(id, col_by, col_N){
   tbl_x
 }
 
-# count_col_N <- function(x_cell, N) {
-#   N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
-#   if (N_i > 0) {
-#     length(x_cell$id) # obtaining the total
-#   } else {
-#     rcell(0, format = "xx")
-#   }
-# }
+ 
 
+
+#' Count events
+#' 
 #' @examples 
 #' tbl <- t_event_count(
 #'   id = ANL$USUBJID,
@@ -636,6 +634,9 @@ t_event_count <- function(id, col_by, col_N){
   tbl_x
 }
 
+
+#' By class By Term
+#'
 #' @examples 
 #' l_tbls <- lt_ae_class_term(
 #'   class = ANL$CLASS,
@@ -770,3 +771,87 @@ lt_ae_class_term <- function(class, term, id,  col_by,
 }
 
  
+
+
+#' Only By Term
+#'
+#' @examples 
+#' l_tbls <- lt_ae_term( 
+#'   term =  ANL$TERM,
+#'   id = ANL$USUBJID,
+#'   col_by = factor(ANL$ARM),
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = "All Patients",
+#'   term_label = "MedDRA Preferred Term"
+#' )
+#' do.call(fast_stack_rtables, l_tbls)
+#' @export
+
+lt_ae_term <- function(  term, id,  col_by, 
+                             col_N = tapply(col_by, col_by, length),
+                             total = "All Patients", 
+                             term_label){
+ 
+  if (missing(term_label)) term_label <- deparse(substitute(term))
+  # check argument validity and consitency ----------------------------------
+  check_col_by(col_by, min_num_levels = 1)
+  if (total %in% levels(col_by)) 
+    stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
+  
+  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae  derives All Patients column")
+  
+  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
+  
+  # data prep ---------------------------------------------------------------
+  df <- data.frame(term = term,
+                   id = id,
+                   col_by = col_by,
+                   stringsAsFactors = FALSE)
+  
+  if (any(is.na(df)))
+    stop("partial missing data in rows of [term] is currently not supported")
+  
+  # adding All Patients
+  df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
+  
+  col_N <- c(col_N, sum(col_N))
+  
+  # term chunks
+ 
+  
+  df_by_term <- split(df, df$term) 
+  
+  l_t_terms <- Map(function(df_term, term_i) {
+    
+    tbl <- t_one_count_per_id(
+      id = df_term$id,
+      col_by = df_term$col_by,
+      col_N = col_N
+    )
+    row.names(tbl)[1] <- term_i
+    attr(attr(tbl, "header")[[2]], "row.name") <- term_label
+    tbl
+  }, df_by_term, names(df_by_term))
+  
+  #### Add overall total
+  tbl_event <- t_event_count(
+    id = df$id,
+    col_by = df$col_by,
+    col_N = col_N)
+  attr(attr(tbl_event, "header")[[2]], "row.name") <- term_label
+  row.names(tbl_event)[1] <- "Overall total number of events"
+  
+  
+  tbl_per_id <- t_one_count_per_id(
+    id = df$id,
+    col_by = df$col_by,
+    col_N = col_N
+  )  
+  attr(attr(tbl_per_id, "header")[[2]], "row.name") <- term_label
+  row.names(tbl_per_id)[1] <- "Total number of patients with at least one adverse event"
+  c(list(
+    "Total number of patients with at least one adverse event" = tbl_per_id,
+    "Overall total number of events" = tbl_event
+  ), l_t_terms)
+}
+
