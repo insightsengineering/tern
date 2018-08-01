@@ -257,8 +257,6 @@ t_ae <- function(
 #' 
 #' stack_rtables_d2(l_tbls)
 #' 
-#' do.call(fast_stack_rtables, x)
-#' 
 #' 'MedDRA System Organ Class'
 #'  'MedDRA Preferred Term'
 #' 
@@ -376,8 +374,9 @@ lt_ae_max_grade_d2 <- function(class, term, id, grade, col_by,
     rtable(header(tbl_overall), rrow("- Any adverse events -")), 
     indent_table(tbl_overall, 1)
   )
-  tbls_all <- c(
-    list("- Any adverse events -" = list("- Overall -" = tbl_overall)),
+  
+  c(
+    list("- Any adverse events -" = tbl_overall),
     l_t_class_terms
   )
   
@@ -386,8 +385,13 @@ lt_ae_max_grade_d2 <- function(class, term, id, grade, col_by,
 #' @export
 stack_rtables_d2 <- function(x) {
   nam <- names(x)
-  x1 <- x[nam[nam != "- Any adverse events -"]]
-  x2 <- x[["- Any adverse events -"]]
+  x1 <- x[nam[!(nam %in% c("- Any adverse events -",
+                           "Total number of patients with at least one adverse event",
+                           "Overall total number of events") )]]
+  x2 <- x[nam[nam %in% c("- Any adverse events -",
+                         "Total number of patients with at least one adverse event",
+                         "Overall total number of events")]]
+
   l_d1 <- lapply(x1, function(xi) {
     
     tbls <- Map(function(tbl, i) {
@@ -400,5 +404,215 @@ stack_rtables_d2 <- function(x) {
   do.call(fast_stack_rtables, c(x2, l_d1))
 }
 
+#' @examples 
+#' tbl <- t_one_count_per_id(
+#'   id = ANL$USUBJID,
+#'   col_by = factor(ANL$ARM),
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length)
+#' )
+#' 
+#' @export
+#' 
+t_one_count_per_id <- function(id, col_by, col_N){
+  if (any(is.na(id)) || any(is.na(col_by))) stop("no NA allowed in id and col_by")
+  if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
+  df <- data.frame(
+    id = id,
+    col_by = col_by,
+    stringsAsFactors = FALSE
+  )
+  df <- df[!duplicated(df$id), ]
+  tbl_x <- rtabulate(
+    na.omit(df),
+    row_by_var = no_by(""),
+    col_by_var = "col_by", 
+    FUN = count_perc_col_N,
+    N = col_N,
+    format = "xx (xx.x%)"
+  )
+  header(tbl_x) <- rheader(
+    rrowl("", levels(df$col_by)),
+    rrowl("", unname(col_N), format = "(N=xx)")
+  )
+  tbl_x
+}
+
+count_col_N <- function(x_cell, N) {
+  N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
+  if (N_i > 0) {
+    length(x_cell$id) # obtaining the total
+  } else {
+    rcell(0, format = "xx")
+  }
+}
+
+#' @examples 
+#' tbl <- t_event_count(
+#'   id = ANL$USUBJID,
+#'   col_by = factor(ANL$ARM),
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length)
+#' )
+#' 
+#' @export
+#' 
+t_event_count <- function(id, col_by, col_N){
+  if (any(is.na(id)) || any(is.na(col_by))) stop("no NA allowed in id and col_by")
+  if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
+  df <- data.frame(
+    id = id,
+    col_by = col_by,
+    stringsAsFactors = FALSE
+  )
+  tbl_x <- rtabulate(
+    na.omit(df),
+    row_by_var = no_by(""),
+    col_by_var = "col_by", 
+    FUN = count_col_N,
+    N = col_N,
+    format = "xx"
+  )
+  header(tbl_x) <- rheader(
+    rrowl("", levels(df$col_by)),
+    rrowl("", unname(col_N), format = "(N=xx)")
+  )
+  tbl_x
+}
+
+#' @examples 
+#' l_tbls <- lt_ae_class_term(
+#'   class = ANL$CLASS,
+#'   term =  ANL$TERM,
+#'   id = ANL$USUBJID,
+#'   col_by = factor(ANL$ARM),
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = "All Patients"
+#' )
+#' stack_rtables_d2(l_tbls)
+#' 
+#' @export
+
+lt_ae_class_term <- function(class, term, id,  col_by, 
+                             col_N = tapply(col_by, col_by, length),
+                             total = "All Patients",
+                             class_label,
+                             term_label){
+  if (missing(class_label)) class_label <- deparse(substitute(class))
+  if (missing(term_label)) term_label <- deparse(substitute(term))
+  # check argument validity and consitency ----------------------------------
+  check_col_by(col_by, min_num_levels = 1)
+  if (total %in% levels(col_by)) 
+    stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
+
+  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae  derives All Patients column")
+  
+  if (any(class == "", na.rm = TRUE)) stop("empty string is not a valid class, please use NA if data is missing")
+  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
+  
+  # data prep ---------------------------------------------------------------
+  df <- data.frame(class = class,
+                   term = term,
+                   id = id,
+                   col_by = col_by,
+                   stringsAsFactors = FALSE)
+  
+  if (any(is.na(df)))
+    stop("partial missing data in rows of [class, term] is currently not supported")
+  
+  # adding All Patients
+  df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
+  
+  col_N <- c(col_N, sum(col_N))
+  
+  # class and term chunks
+  
+  df_by_class <- split(df, df$class)
+  
+
+  l_t_class_terms <- Map(function(df_cl, class_i) {
+  tbl_cl_event <- t_event_count(
+    id = df_cl$id,
+    col_by = df_cl$col_by,
+    col_N = col_N)
+  attr(attr(tbl_cl_event, "header")[[1]], "row.name") <- class_label
+  attr(attr(tbl_cl_event, "header")[[2]], "row.name") <- term_label
+  attr(attr(tbl_cl_event, "header")[[2]], "indent") <- 1
+  row.names(tbl_cl_event)[1] <- "Total number of events"
+  tbl_cl_event <- fast_rbind(
+    rtable(header(tbl_cl_event), rrow(class_i)),
+    indent_table(tbl_cl_event, 1)
+  )
+  
+  tbl_cl_per_id <- t_one_count_per_id(
+    id = df_cl$id,
+    col_by = df_cl$col_by,
+    col_N = col_N
+  )  
+  attr(attr(tbl_cl_per_id, "header")[[1]], "row.name") <- class_label
+  attr(attr(tbl_cl_per_id, "header")[[2]], "row.name") <- term_label
+  attr(attr(tbl_cl_per_id, "header")[[2]], "indent") <- 1
+  row.names(tbl_cl_per_id)[1] <- "Total number of patients with at least one adverse event"
+  tbl_cl_per_id <- fast_rbind(
+    rtable(header(tbl_cl_per_id), rrow(class_i)),
+    indent_table(tbl_cl_per_id, 1)
+  )
+    df_by_term <- split(df_cl, df_cl$term) 
+    
+    l_t_terms <- Map(function(df_term, term_i) {
+
+      tbl <- t_one_count_per_id(
+        id = df_term$id,
+        col_by = df_term$col_by,
+        col_N = col_N
+      )
+      row.names(tbl)[1] <- term_i
+      ## add class term
+      tbl <- fast_rbind(
+        rtable(header(tbl), rrow(class_i)),
+        indent_table(tbl, 1)
+      )
+      attr(attr(tbl, "header")[[1]], "row.name") <- class_label
+      attr(attr(tbl, "header")[[2]], "row.name") <- term_label
+      attr(attr(tbl, "header")[[2]], "indent") <- 1
+      
+      
+      tbl
+      
+      
+    }, df_by_term, names(df_by_term))
+    
+  l_t_terms <- c(list("Total number of patients with at least one adverse event" = tbl_cl_per_id,
+                      "Total number of events" = tbl_cl_event),
+                 l_t_terms)  
+  }, df_by_class, names(df_by_class) )
+  
+  #### Add overall total
+  tbl_event <- t_event_count(
+    id = df$id,
+    col_by = df$col_by,
+    col_N = col_N)
+  attr(attr(tbl_event, "header")[[1]], "row.name") <- class_label
+  attr(attr(tbl_event, "header")[[2]], "row.name") <- term_label
+  attr(attr(tbl_event, "header")[[2]], "indent") <- 1
+  row.names(tbl_event)[1] <- "Overall total number of events"
+  
+  
+  tbl_per_id <- t_one_count_per_id(
+    id = df$id,
+    col_by = df$col_by,
+    col_N = col_N
+  )  
+  attr(attr(tbl_per_id, "header")[[1]], "row.name") <- class_label
+  attr(attr(tbl_per_id, "header")[[2]], "row.name") <- term_label
+  attr(attr(tbl_per_id, "header")[[2]], "indent") <- 1
+  row.names(tbl_per_id)[1] <- "Total number of patients with at least one adverse event"
+  c(list(
+    "Total number of patients with at least one adverse event" = tbl_per_id,
+    "Overall total number of events" = tbl_event
+  ), l_t_class_terms)
+}
 
 
+
+
+
+ 
