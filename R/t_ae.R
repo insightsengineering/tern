@@ -252,21 +252,27 @@ t_ae <- function(
 #'   col_by = factor(ANL$ARM),
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients",
-#'   grade_levels = 1:5
+#'   grade_levels = 1:5,
+#'   class_label = 'MedDRA System Organ Class',
+#'   term_label = 'MedDRA Preferred Term'
 #' )
 #' 
 #' stack_rtables_d2(l_tbls)
-#' 
+#'
 #' 'MedDRA System Organ Class'
 #'  'MedDRA Preferred Term'
-#' 
-lt_ae_max_grade_d2 <- function(class, term, id, grade, col_by, 
-                  col_N = tapply(col_by, col_by, length),
-                  total = "All Patients",
-                  grade_levels,
-                  class_label,
-                  term_label,
-                  grade_label) {
+
+lt_ae_max_grade_d2 <- function(class, 
+                               term, 
+                               id, 
+                               grade, 
+                               col_by, 
+                               col_N = tapply(col_by, col_by, length),
+                               total = "All Patients",
+                               grade_levels,
+                               class_label,
+                               term_label,
+                               grade_label) {
   
   
   if (missing(class_label)) class_label <- deparse(substitute(class))
@@ -297,9 +303,10 @@ lt_ae_max_grade_d2 <- function(class, term, id, grade, col_by,
     stop("partial missing data in rows of [class, term, grade] is currently not supported")
   
   # adding All Patients
-  df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
-  
-  col_N <- c(col_N, sum(col_N))
+  if(!is.null(total)){
+    df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
+    col_N <- c(col_N, sum(col_N)) 
+  }
   
   # start tabulating --------------------------------------------------------
   
@@ -344,9 +351,7 @@ lt_ae_max_grade_d2 <- function(class, term, id, grade, col_by,
       attr(attr(tbl, "header")[[2]], "row.name") <- term_label
       attr(attr(tbl, "header")[[2]], "indent") <- 1
       
-      
       tbl
-      
       
     }, df_by_term, names(df_by_term))
     
@@ -382,6 +387,158 @@ lt_ae_max_grade_d2 <- function(class, term, id, grade, col_by,
   
 }
 
+
+#' list of tables (d1)
+#' 
+#' Creates a list of tables with a depth of 1.
+#' 
+#' 
+#' @export
+#' 
+#' @examples 
+#' # Simple example
+#' library(tibble)
+#' library(dplyr)
+#' 
+#' ASL <- tibble(
+#'   USUBJID = paste0("id-", 1:10),
+#'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
+#' )
+#' 
+#' 
+#' ae_lookup <- tribble(
+#'   ~CLASS,         ~TERM,   ~GRADE,
+#'   "cl A",   "trm A_1/2",        1,
+#'   "cl A",   "trm A_2/2",        2,  
+#'   "cl B",   "trm B_1/3",        2,
+#'   "cl B",   "trm B_2/3",        3,
+#'   "cl B",   "trm B_3/3",        1,
+#'   "cl C",   "trm C_1/1",        1
+#' )
+#' 
+#' AAE <- cbind(
+#'   tibble(
+#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
+#'   ),
+#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
+#' )
+#' 
+#' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
+#' 
+#' l_tbls <- lt_ae_max_grade_d1(
+#'   term = ANL$CLASS,
+#'   id = ANL$USUBJID,
+#'   grade = ANL$GRADE,
+#'   col_by = factor(ANL$ARM),
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = "All Patients",
+#'   grade_levels = 1:5,
+#'   term_label = 'MedDRA Preferred Term',
+#' )
+#' 
+#' do.call(fast_stack_rtables, l_tbls)
+#' 
+#' 
+#' 
+lt_ae_max_grade_d1 <- function(term, 
+                               id, 
+                               grade, 
+                               col_by, 
+                               col_N = tapply(col_by, col_by, length),
+                               total = "All Patients",
+                               grade_levels,
+                               term_label,
+                               grade_label) {
+  
+  
+  if (missing(term_label)) term_label <- deparse(substitute(term))
+  if (missing(grade_label)) grade_label <- deparse(substitute(grade))
+  
+  # check argument validity and consitency ----------------------------------
+  check_col_by(col_by, min_num_levels = 1)
+  if (total %in% levels(col_by)) 
+    stop(paste('col_by can not have', total, 'group. t_ae_cts will derive it.'))
+  
+  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
+  
+  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid class, please use NA if data is missing")
+  
+  # data prep ---------------------------------------------------------------
+  df <- data.frame(term = term,
+                   id = id,
+                   grade = grade,
+                   col_by = col_by,
+                   stringsAsFactors = FALSE)
+  
+  if (any(is.na(df)))
+    stop("partial missing data in rows of [class, grade] is currently not supported")
+  
+  # adding All Patients
+  if(!is.null(total)){
+    df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
+    col_N <- c(col_N, sum(col_N)) 
+  }
+  
+  # start tabulating --------------------------------------------------------
+  # term chunk
+    df_by_term <- split(df, df$term)
+
+    
+    l_t_term <- Map(function(df_term, term_i) {
+      
+      tbl_raw <- t_max_grade_per_id(
+        grade = df_term$grade,
+        id = df_term$id,
+        col_by = df_term$col_by,
+        col_N = col_N,
+        grade_levels = grade_levels,
+        any_grade = "- Any Grade -"
+      )
+      
+      ## move rownames to column
+      tbl <- row_names_as_col(tbl_raw)
+      
+      row.names(tbl)[1] <- term_i
+      
+      attr(tbl, "header")[[2]][[1]] <- rcell(grade_label)
+      attr(tbl, "header")[[1]][[1]] <- rcell(NULL)
+      
+      attr(attr(tbl, "header")[[1]], "row.name") <- term_label
+      attr(attr(tbl, "header")[[2]], "indent") <- 1
+      
+      tbl
+      
+    }, df_by_term, names(df_by_term))
+    
+    ###### Add any adverse event
+    tbl_overall <- t_max_grade_per_id(
+      grade = df$grade,
+      id = df$id,
+      col_by = df$col_by,
+      col_N = col_N,
+      grade_levels = grade_levels,
+      any_grade = "- Any Grade -"
+    )
+    tbl_overall <- row_names_as_col(tbl_overall)
+    attr(tbl_overall, "header")[[2]][[1]] <- rcell(grade_label)
+    attr(tbl_overall, "header")[[1]][[1]] <- rcell(NULL)
+    
+    attr(attr(tbl_overall, "header")[[1]], "row.name") <- term_label
+    attr(attr(tbl_overall, "header")[[2]], "indent") <- 1
+    row.names(tbl_overall)[1] <- "- Overall -"
+    tbl_overall <-  fast_rbind(
+      rtable(header(tbl_overall), rrow("- Any adverse events -")), 
+      indent_table(tbl_overall, 1)
+    )
+    c(
+      list("- Any adverse events -" =  tbl_overall),
+      l_t_term
+    )
+  
+}
+
+
+
 #' @export
 stack_rtables_d2 <- function(x) {
   nam <- names(x)
@@ -393,6 +550,7 @@ stack_rtables_d2 <- function(x) {
                          "Overall total number of events")]]
 
   l_d1 <- lapply(x1, function(xi) {
+
     
     tbls <- Map(function(tbl, i) {
       if (i == 1) tbl else tbl[-1, ]
@@ -437,14 +595,14 @@ t_one_count_per_id <- function(id, col_by, col_N){
   tbl_x
 }
 
-count_col_N <- function(x_cell, N) {
-  N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
-  if (N_i > 0) {
-    length(x_cell$id) # obtaining the total
-  } else {
-    rcell(0, format = "xx")
-  }
-}
+# count_col_N <- function(x_cell, N) {
+#   N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
+#   if (N_i > 0) {
+#     length(x_cell$id) # obtaining the total
+#   } else {
+#     rcell(0, format = "xx")
+#   }
+# }
 
 #' @examples 
 #' tbl <- t_event_count(
@@ -610,9 +768,5 @@ lt_ae_class_term <- function(class, term, id,  col_by,
     "Overall total number of events" = tbl_event
   ), l_t_class_terms)
 }
-
-
-
-
 
  
