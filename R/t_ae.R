@@ -1,212 +1,3 @@
-#' Adverse Events Table by Highest NCI CTCAE Grade
-#' 
-#' \code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
-#'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
-#' 
-#' @param class system organ class variable.
-#' @param term preferred term variable.
-#' @param id unique subject identifier variable. If a particular subject has no
-#'   adverse event then the subject \code{id} should be listed where
-#'   \code{class} and \code{term} should be set to missing (i.e. \code{NA}).
-#' @param grade grade of adverse event variable.
-#' @param col_by group variable that will be used for a column header. \code{col_by}
-#'  has to be a factor and can not be missing. See 'Examples'.
-#' @param total character string that will be used as a label for a column with 
-#'  pooled total population, default is "All Patients".
-#' @param grade_levels ordered values of possible of grades in a form of
-#'   \code{x:y}, default is \code{1:5}. This assures a proper fill in for
-#'   grades, see 'Details'.
-#' 
-#' @details 
-#' \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
-#'  intensity for system organ class (SOC) and overall rows and includes 
-#'  percentages based on the total number of patients in the column heading 
-#'  (i.e. "N=nnn"). If the intention is to use patients number from subject level
-#'  dataset as N for percentage calculation then adeverse events dataset should
-#'  be left joined to subject level dataset and the \code{col_by} variable should
-#'  be dropped from adverse events dataset, see the example. Otherwise, N will be
-#'  derived using adverse events dataset. At the preferred term (PT) level,
-#'  multiple events within a patient of the same PT are counted once using the
-#'  greatest intensity reported. 
-#' 
-#' \code{t_ae_ctc} removes any non-complete records, e.g. if class or term are 
-#'  missing. If the intent is to preserve such records, then impute missing 
-#'  values before using \code{t_ae_ctc}.
-#'      
-#' \code{t_ae_ctc} orders data by "All Patients" column from the most commonly
-#'  reported SOC to the least frequent one. Within SOC, it sorts by decreasing
-#'  frequency of PT. It brakes ties using SOC/PT names in alphabetical order.   
-#' 
-#' \code{t_ae_ctc} fills in \code{col_by} and \code{grade} with \code{0} value 
-#' in case there was no AEs reported for particular \code{col_by} and/or 
-#' \code{grade} category. Use \code{grade_levels} to modify the range of existing
-#' grades. If data does not have any records with \code{grade} 5 and the intent 
-#' is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
-#'  
-#' @export
-#' 
-#' @template author_manukyae
-#' @template author_waddella
-#'  
-#'  
-#' @examples 
-#' # Simple example
-#' library(tibble)
-#' library(dplyr)
-#' 
-#' ASL <- tibble(
-#'   USUBJID = paste0("id-", 1:10),
-#'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
-#' )
-#' 
-#' 
-#' ae_lookup <- tribble(
-#'   ~CLASS,         ~TERM,   ~GRADE,
-#'   "cl A",   "trm A_1/2",        1,
-#'   "cl A",   "trm A_2/2",        2,  
-#'   "cl B",   "trm B_1/3",        2,
-#'   "cl B",   "trm B_2/3",        3,
-#'   "cl B",   "trm B_3/3",        1,
-#'   "cl C",   "trm C_1/1",        1
-#' )
-#' 
-#' AAE <- cbind(
-#'   tibble(
-#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-#'   ),
-#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-#' )
-#' 
-#' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
-#' 
-#' tbl <- t_ae(
-#'   class = ANL$CLASS,
-#'   term =  ANL$TERM,
-#'   id = ANL$USUBJID,
-#'   grade = ANL$GRADE,
-#'   col_by = factor(ANL$ARM),
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients"
-#' )
-#' 
-#' tbl
-#' 
-#' 
-#' library(random.cdisc.data)
-#' library(dplyr)
-#' 
-#' ASL <- radam("ASL", N = 10)
-#' AAE <- radam("AAE", ADSL = ASL)
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
-#' 
-#' tbl <- with(ANL,
-#'             t_ae_ctc(
-#'               class = AEBODSYS,
-#'               term =  AEDECOD,
-#'               id = USUBJID,
-#'               grade = AETOXGR,
-#'               col_by = factor(ARM),
-#'               total = "All Patients",
-#'               grade_levels = 1:5
-#'             )
-#' )
-#' 
-#' tbl
-#' 
-#' 
-#' 
-#' 
-#' 
-#' 
-#' 
-#' ##
-#' 
-#' 
-#' t_ae(class ~ col_by | id, data = df)
-#' 
-#' t_ae(class )
-#' 
-#' 
-#' 
-#' t_ae(formula = class * term ~ col_by, data = ANL, with_any = TRUE)
-#' 
-#' t_ae_ctc(formula = class * term * grade ~ col_by | usubjid, data = ANL)
-#'
-#' split(data, interaction(class, term, grade))
-#' y ~ x
-#' 
-#' 
-#' t_ae_overall()
-#' 
-#' 
-t_ae <- function(
-                 ) {
-  
-
-  
-  
-  ## sorting
-
-  
-  # sort terms by any grade and total
-  l_t_class_sterms <- lapply(l_t_class_terms, function(l_t_terms) {
-    ## TODO: if no TOTAL sum over row
-    N_total_any <- vapply(l_t_terms, function(tbl) {
-      tbl[1, ncol(tbl)][1]
-    }, numeric(1))
-    l_t_terms[c(1, setdiff(order(-N_total_any, names(l_t_terms), decreasing = FALSE), 1))]
-  })
-  
-  
-  # now sort class
-  N_total_overall <- vapply(l_t_class_sterms, function(l_t_terms) {
-    tbl_any <- l_t_terms[[1]]
-    tbl_any[1, ncol(tbl_any)][1]
-  }, numeric(1))
-  l_t_sclass_sterm <- l_t_class_sterms[order(-N_total_overall, names(l_t_class_terms), decreasing = FALSE)]
-  
-  tbl_overall <- t_max_grade_per_id(
-    grade = df$grade,
-    id = df$id,
-    col_by = df$col_by,
-    col_N = col_N,
-    grade_levels = grade_levels,
-    any_grade = "- Any Grade -"
-  )
-  tbl_overall <- row_names_as_col(tbl_overall)
-  attr(tbl_overall, "header")[[2]][[1]] <- rcell(grade_label)
-  attr(tbl_overall, "header")[[1]][[1]] <- rcell(NULL)
-  
-  tbls_all <- c(
-    list("- Any adverse events -" = list("- Overall -" = tbl_overall)),
-    l_t_sclass_sterm
-  )
-  
-  
-  
-  ## Either return list of tables or stacked tables
-  
-  if (TRUE) {
-    tbls <- Map(function(l_tbls_class, class_name) {
-      tbl_class <- do.call(fast_rbind, l_tbls_class)
-      tbl <- fast_rbind(
-        rtable(header(tbl_class), rrow(class_name)),
-        indent_table(tbl_class, 1)
-      )
-      attr(attr(tbl, "header")[[1]], "row.name") <- 'MedDRA System Organ Class'
-      attr(attr(tbl, "header")[[2]], "row.name") <- 'MedDRA Preferred Term'
-      attr(attr(tbl, "header")[[2]], "indent") <- 1
-      tbl
-    }, tbls_all, names(tbls_all))
-    
-    do.call(fast_rbind, tbls)
-    
-  } else {
-    tbls_all
-  }
-  
-}
 
 
 #' list of tables
@@ -426,7 +217,7 @@ lt_ae_max_grade_d2 <- function(class,
 #' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
 #' 
 #' l_tbls <- lt_ae_max_grade_d1(
-#'   term = ANL$CLASS,
+#'   term = ANL$TERM,
 #'   id = ANL$USUBJID,
 #'   grade = ANL$GRADE,
 #'   col_by = factor(ANL$ARM),
@@ -538,8 +329,12 @@ lt_ae_max_grade_d1 <- function(term,
 }
 
 
-
+#' stack rtables in nested list depth 2 (-1 row)
+#' 
 #' @export
+#' 
+#' 
+#' 
 stack_rtables_d2 <- function(x) {
   nam <- names(x)
   x1 <- x[nam[!(nam %in% c("- Any adverse events -",
@@ -572,6 +367,15 @@ stack_rtables_d2 <- function(x) {
 #' )
 #' 
 #' @export
+#' 
+#' 
+#' @examples 
+#' 
+#' t_one_count_per_id(
+#'  id = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10)
+#' )
 #' 
 t_one_count_per_id <- function(id, col_by, col_N){
   if (any(is.na(id)) || any(is.na(col_by))) stop("no NA allowed in id and col_by")
@@ -611,6 +415,14 @@ t_one_count_per_id <- function(id, col_by, col_N){
 #' 
 #' @export
 #' 
+#' @examples 
+#' 
+#' t_event_count(
+#'  id = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10)
+#' )
+#' 
 t_event_count <- function(id, col_by, col_N){
   if (any(is.na(id)) || any(is.na(col_by))) stop("no NA allowed in id and col_by")
   if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
@@ -637,7 +449,40 @@ t_event_count <- function(id, col_by, col_N){
 
 #' By class By Term
 #'
+#'
+#' @export
+#' 
 #' @examples 
+#' 
+#' # Simple example
+#' library(tibble)
+#' library(dplyr)
+#' 
+#' ASL <- tibble(
+#'   USUBJID = paste0("id-", 1:10),
+#'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
+#' )
+#' 
+#' 
+#' ae_lookup <- tribble(
+#'   ~CLASS,         ~TERM,   ~GRADE,
+#'   "cl A",   "trm A_1/2",        1,
+#'   "cl A",   "trm A_2/2",        2,  
+#'   "cl B",   "trm B_1/3",        2,
+#'   "cl B",   "trm B_2/3",        3,
+#'   "cl B",   "trm B_3/3",        1,
+#'   "cl C",   "trm C_1/1",        1
+#' )
+#' 
+#' AAE <- cbind(
+#'   tibble(
+#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
+#'   ),
+#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
+#' )
+#' 
+#' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
+#' 
 #' l_tbls <- lt_ae_class_term(
 #'   class = ANL$CLASS,
 #'   term =  ANL$TERM,
@@ -648,8 +493,6 @@ t_event_count <- function(id, col_by, col_N){
 #' )
 #' stack_rtables_d2(l_tbls)
 #' 
-#' @export
-
 lt_ae_class_term <- function(class, term, id,  col_by, 
                              col_N = tapply(col_by, col_by, length),
                              total = "All Patients",
@@ -776,6 +619,8 @@ lt_ae_class_term <- function(class, term, id,  col_by,
 #' Only By Term
 #'
 #' @examples 
+#' 
+#' 
 #' l_tbls <- lt_ae_term( 
 #'   term =  ANL$TERM,
 #'   id = ANL$USUBJID,
@@ -787,7 +632,7 @@ lt_ae_class_term <- function(class, term, id,  col_by,
 #' do.call(fast_stack_rtables, l_tbls)
 #' @export
 
-lt_ae_term <- function(  term, id,  col_by, 
+lt_ae_term <- function(term, id,  col_by, 
                              col_N = tapply(col_by, col_by, length),
                              total = "All Patients", 
                              term_label){
