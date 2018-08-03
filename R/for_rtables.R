@@ -90,15 +90,31 @@ unlist.rtable <- function(x, ...) {
   x
 }
 
-
+#' hack to faster bind multiple tables
+#' 
+#' @norRd
+#' 
+#' 
+#' @examples 
+#' 
+#' t1 <- rtabulate(iris$Sepal.Length, factor(iris$Species))
+#' t2 <- rtabulate(iris$Sepal.Width, factor(iris$Species))
+#' 
+#' tern:::fast_rbind(t1, t2)
+#' 
 fast_rbind <- function(...) {
   dots <- Filter(Negate(is.null), list(...))
   
   if (!all(unlist(lapply(dots, is, "rtable")))) stop("not all elements are of type rtable")
   
-  body <- unlist(dots, recursive = FALSE)
+  tbl <- unlist(dots, recursive = FALSE)
   
-  rtablel(header = header(dots[[1]]), body)
+  attr(tbl, "header") <- header(dots[[1]])
+  attr(tbl, "nrow") <- length(tbl)
+  attr(tbl, "ncol") <- ncol(dots[[1]])
+  class(tbl) <- "rtable"
+  
+  tbl
 }
 
 #' insert rrows at a specific location

@@ -56,6 +56,29 @@ l_tbls <- lt_ae_max_grade_d2(
 
 stack_rtables_d2(l_tbls)
 
-'MedDRA System Organ Class'
- 'MedDRA Preferred Term'
+
+\dontrun{
+  ASL <- osprey::rADSL
+  AAE <- osprey::rADAE
+  
+  head(AAE)
+  
+l_tbls <- lt_ae_max_grade_d2(
+  class = AAE$AESOC,
+  term =  AAE$AEDECOD,
+  id = AAE$USUBJID,
+  grade = as.numeric(AAE$AETOXGR),
+  col_by = factor(AAE$ARM),
+  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  total = "All Patients",
+  grade_levels = 1:5,
+  class_label = 'MedDRA System Organ Class',
+  term_label = 'MedDRA Preferred Term'
+)
+
+tbl <- stack_rtables_d2(l_tbls)
+
+Viewer(tbl  )
+  
+}
 }

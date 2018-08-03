@@ -41,7 +41,7 @@ AAE <- cbind(
 ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
 
 l_tbls <- lt_ae_max_grade_d1(
-  term = ANL$CLASS,
+  term = ANL$TERM,
   id = ANL$USUBJID,
   grade = ANL$GRADE,
   col_by = factor(ANL$ARM),

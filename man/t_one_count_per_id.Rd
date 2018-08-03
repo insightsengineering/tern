@@ -16,4 +16,11 @@ tbl <- t_one_count_per_id(
   col_N = tapply(ASL$ARM, ASL$ARM, length)
 )
 
+
+t_one_count_per_id(
+ id = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10)
+)
+
 }

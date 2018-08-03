@@ -11,6 +11,36 @@ lt_ae_class_term(class, term, id, col_by, col_N = tapply(col_by, col_by,
 By class By Term
 }
 \examples{
+
+# Simple example
+library(tibble)
+library(dplyr)
+
+ASL <- tibble(
+  USUBJID = paste0("id-", 1:10),
+  ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
+)
+
+
+ae_lookup <- tribble(
+  ~CLASS,         ~TERM,   ~GRADE,
+  "cl A",   "trm A_1/2",        1,
+  "cl A",   "trm A_2/2",        2,  
+  "cl B",   "trm B_1/3",        2,
+  "cl B",   "trm B_2/3",        3,
+  "cl B",   "trm B_3/3",        1,
+  "cl C",   "trm C_1/1",        1
+)
+
+AAE <- cbind(
+  tibble(
+    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
+  ),
+  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
+)
+
+ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
+
 l_tbls <- lt_ae_class_term(
   class = ANL$CLASS,
   term =  ANL$TERM,

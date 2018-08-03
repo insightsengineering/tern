@@ -11,6 +11,8 @@ lt_ae_term(term, id, col_by, col_N = tapply(col_by, col_by, length),
 Only By Term
 }
 \examples{
+
+
 l_tbls <- lt_ae_term( 
   term =  ANL$TERM,
   id = ANL$USUBJID,
