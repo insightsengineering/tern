@@ -55,6 +55,58 @@ fast_stack_rtables <- function(..., nrow_pad = 1) {
 }
 
 
+#' Unlist a Nested Lists with rtables as leafes
+#' 
+#' Often it is useful to flatten a nested lists with rtables as leafes to a list
+#' of rtables. The algorithm used is a depth first tree traversal.
+#' 
+#' @param x a nested list of with rtables as leaf object
+#' 
+#' @return a list of rtables
+#' 
+#' @export
+#' 
+#' 
+#' @examples 
+#' 
+#' l_tbls <- list(
+#'   list(
+#'      rtabulate(iris$Sepal.Length, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Length, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Sepal.Width, iris$Species, mean)
+#'   )  
+#' )
+#' 
+#' unlist_rtables(l_tbls)
+#' 
+unlist_rtables <- function(x) {
+  
+  n <- 0
+  incr_n_if_rtable <- function(x) {
+    if (is(x, "rtable")) n <<- n + 1 else lapply(x, incr_n_if_rtable)
+  }
+  incr_n_if_rtable(x)
+  
+  i <- 1
+  tbls <- vector(mode = "list", length = n)
+  
+  add_tbls <- function(x) {
+    if (is(x, "rtable")) {
+      tbls[[i]] <<- x
+      i <<- i + 1
+    } else {
+      lapply(x, add_tbls)
+    }
+  }  
+  
+  if (n > 0) add_tbls(x)
+  
+  tbls
+  
+}
+
 indent_table <- function(x, n) {
   for (i in 1:nrow(x)) {
     attr(x[[i]], "indent") <- attr(x[[i]], "indent") + n
@@ -86,13 +138,13 @@ row_names_as_col <- function(tbl, header_label) {
 }
 
 #' @export
-unlist.rtable <- function(x, ...) {
+unlist.rtable <- function(x, recursive = TRUE, use.names = TRUE) {
   x
 }
 
 #' hack to faster bind multiple tables
 #' 
-#' @norRd
+#' @noRd
 #' 
 #' 
 #' @examples 

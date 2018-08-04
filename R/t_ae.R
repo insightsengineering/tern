@@ -1,7 +1,28 @@
 
 
-#' list of tables
+#' List of Adverse Events Terms Tables by Highest Grade 
 #' 
+#' \code{lt_ae_grade} returns a nested list of adverse events tables by max
+#' grade (\code{\link{t_max_grade_per_id}}).
+#' 
+#' @param class class information as character or factor vector
+#' @param term term information as character or factor vector, however factor
+#'   levels are not repeated by class, only terms with count > 1 are listed per
+#'   class
+#' @param id unique subject identifier. If a particular subject has no adverse
+#'   event then that information needs to be added to the \code{col_N} argument.
+#' @param grade grade of adverse event as numeric
+#' @param col_by group variable that will be used for a column header. \code{col_by}
+#'  has to be a factor and can not be missing. See 'Examples'.
+#' @param col_N numeric vector with information of the number of patients in the
+#'   levels of \code{col_by}. This is useful if there are patients that have no
+#'   adverse events can be accounted for with this argument.
+#' @param total character string that will be used as a label for a column with 
+#'  pooled total population, default is "All Patients".
+#' @param grade_levels numeric, ordered values of possible of grades in a form
+#'   of \code{x:y}, default is \code{1:5}.
+#'   
+#' @return rtable
 #' 
 #' @export
 #' 
@@ -14,7 +35,6 @@
 #'   USUBJID = paste0("id-", 1:10),
 #'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
 #' )
-#' 
 #' 
 #' ae_lookup <- tribble(
 #'   ~CLASS,         ~TERM,   ~GRADE,
@@ -35,7 +55,7 @@
 #' 
 #' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
 #' 
-#' l_tbls <- lt_ae_max_grade_d2(
+#' l_tbls <- lt_ae_max_grade_per_id_per_class_term(
 #'   class = ANL$CLASS,
 #'   term =  ANL$TERM,
 #'   id = ANL$USUBJID,
@@ -48,16 +68,19 @@
 #'   term_label = 'MedDRA Preferred Term'
 #' )
 #' 
-#' stack_rtables_d2(l_tbls)
-#'
+#' do.call(tern:::fast_stack_rtables,
+#'   tern:::unlist_rtables(
+#'     tern:::nl_remove_n_first_rrows(l_tbls)
+#'   )
+#' )
 #'
 #' \dontrun{
-#'   ASL <- osprey::rADSL
-#'   AAE <- osprey::rADAE
+#' ASL <- osprey::rADSL
+#' AAE <- osprey::rADAE
 #'   
-#'   head(AAE)
+#' head(AAE)
 #'   
-#' l_tbls <- lt_ae_max_grade_d2(
+#' l_tbls <- lt_ae_max_grade_per_id_per_class_term(
 #'   class = AAE$AESOC,
 #'   term =  AAE$AEDECOD,
 #'   id = AAE$USUBJID,
@@ -84,17 +107,18 @@
 #' Viewer(tbl  )
 #'   
 #' }
-lt_ae_max_grade_d2 <- function(class, 
-                               term, 
-                               id, 
-                               grade, 
-                               col_by, 
-                               col_N = tapply(col_by, col_by, length),
-                               total = "All Patients",
-                               grade_levels,
-                               class_label,
-                               term_label,
-                               grade_label) {
+lt_ae_max_grade_per_id_per_class_term <- function(
+  class, 
+  term, 
+  id, 
+  grade, 
+  col_by, 
+  col_N = tapply(col_by, col_by, length),
+  total = "All Patients",
+  grade_levels,
+  class_label,
+  term_label,
+  grade_label) {
   
   
   if (missing(class_label)) class_label <- deparse(substitute(class))
@@ -114,12 +138,14 @@ lt_ae_max_grade_d2 <- function(class,
   if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
   # data prep ---------------------------------------------------------------
-  df <- data.frame(class = class,
-                   term = term,
-                   id = id,
-                   grade = grade,
-                   col_by = col_by,
-                   stringsAsFactors = FALSE)
+  df <- data.frame(
+    class = class,
+    term = term,
+    id = id,
+    grade = grade,
+    col_by = col_by,
+    stringsAsFactors = FALSE
+  )
   
   if (any(is.na(df)))
     stop("partial missing data in rows of [class, term, grade] is currently not supported")
@@ -127,25 +153,31 @@ lt_ae_max_grade_d2 <- function(class,
   # adding All Patients
   if(!is.null(total)){
     df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
-    col_N <- c(col_N, sum(col_N)) 
-  }
+    col_N <- c(col_N, sum(col_N))
+  } 
   
-  # start tabulating --------------------------------------------------------
+  # start tabulatings ---------------------------------------------------------------
   
+  # create nested list with data used for creating the sub tables
+  df_class_term <- c(
+    list("- Any adverse events -" = list( "- Overall -" = df)),
+    lapply(split(df, df$class), function(x) {
+      c(
+        list("- Overall -" = x),
+        split(x, x$term)      
+      )
+    })
+  )
   
-  # class and term chunks
-  
-  df_by_class <- split(df, df$class)
-
-  
-  l_t_class_terms <- Map(function(df_cl, class_i) {
+  tbl_header <- rheader(
+    rrowl(class_label, c(list(NULL), as.list(levels(df$col_by)))),
+    rrowl(term_label, c(list(rcell(grade_label, format="xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
+  )
     
-    df_by_term <- c(
-      list("- Overall -" = df_cl),
-      split(df_cl, df_cl$term)      
-    )
-    
-    l_t_terms <- Map(function(df_term, term_i) {
+  
+  # now create the tables
+  l_t_class_terms <- Map(function(df_terms, class_name) {
+    l_t_terms <- Map(function(df_term, term_name) {
       
       tbl_raw <- t_max_grade_per_id(
         grade = df_term$grade,
@@ -158,62 +190,29 @@ lt_ae_max_grade_d2 <- function(class,
       
       ## move rownames to column
       tbl <- row_names_as_col(tbl_raw)
-      
-      row.names(tbl)[1] <- term_i
-      
-      attr(tbl, "header")[[2]][[1]] <- rcell(grade_label)
-      attr(tbl, "header")[[1]][[1]] <- rcell(NULL)
-      
-      ## add class term
+      row.names(tbl)[1] <- term_name
       tbl <- fast_rbind(
-        rtable(header(tbl), rrow(class_i)),
+        rtable(header(tbl), rrow(class_name)),
         indent_table(tbl, 1)
       )
-      attr(attr(tbl, "header")[[1]], "row.name") <- class_label
-      attr(attr(tbl, "header")[[2]], "row.name") <- term_label
-      attr(attr(tbl, "header")[[2]], "indent") <- 1
+      attr(tbl, "header") <- tbl_header
       
       tbl
       
-    }, df_by_term, names(df_by_term))
-    
-    
-  }, df_by_class, names(df_by_class) )
+    }, df_terms, names(df_terms))
+  }, df_class_term, names(df_class_term) )
   
-  ###### Add any adverse event
-  tbl_overall <- t_max_grade_per_id(
-    grade = df$grade,
-    id = df$id,
-    col_by = df$col_by,
-    col_N = col_N,
-    grade_levels = grade_levels,
-    any_grade = "- Any Grade -"
-  )
-  tbl_overall <- row_names_as_col(tbl_overall)
-  attr(tbl_overall, "header")[[2]][[1]] <- rcell(grade_label)
-  attr(tbl_overall, "header")[[1]][[1]] <- rcell(NULL)
-  
-  attr(attr(tbl_overall, "header")[[1]], "row.name") <- class_label
-  attr(attr(tbl_overall, "header")[[2]], "row.name") <- term_label
-  attr(attr(tbl_overall, "header")[[2]], "indent") <- 1
-  row.names(tbl_overall)[1] <- "- Overall -"
-  tbl_overall <-  fast_rbind(
-    rtable(header(tbl_overall), rrow("- Any adverse events -")), 
-    indent_table(tbl_overall, 1)
-  )
-  
-  c(
-    list("- Any adverse events -" = tbl_overall),
-    l_t_class_terms
-  )
+  l_t_class_terms
   
 }
 
 
-#' list of tables (d1)
+#' List of Adverse Events Terms Tables 
 #' 
-#' Creates a list of tables with a depth of 1.
+#' Returns a nested list of adverse events tables by max grade
+#' (\code{\link{t_max_grade_per_id}}).
 #' 
+#' @inheritParams lt_ae_max_grade_per_id_per_class_term
 #' 
 #' @export
 #' 
@@ -224,9 +223,8 @@ lt_ae_max_grade_d2 <- function(class,
 #' 
 #' ASL <- tibble(
 #'   USUBJID = paste0("id-", 1:10),
-#'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
+#'   ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
 #' )
-#' 
 #' 
 #' ae_lookup <- tribble(
 #'   ~CLASS,         ~TERM,   ~GRADE,
@@ -247,11 +245,11 @@ lt_ae_max_grade_d2 <- function(class,
 #' 
 #' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
 #' 
-#' l_tbls <- lt_ae_max_grade_d1(
+#' l_tbls <- lt_ae_max_grade_per_id_per_term(
 #'   term = ANL$TERM,
 #'   id = ANL$USUBJID,
 #'   grade = ANL$GRADE,
-#'   col_by = factor(ANL$ARM),
+#'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients",
 #'   grade_levels = 1:5,
@@ -262,15 +260,15 @@ lt_ae_max_grade_d2 <- function(class,
 #' 
 #' 
 #' 
-lt_ae_max_grade_d1 <- function(term, 
-                               id, 
-                               grade, 
-                               col_by, 
-                               col_N = tapply(col_by, col_by, length),
-                               total = "All Patients",
-                               grade_levels,
-                               term_label,
-                               grade_label) {
+lt_ae_max_grade_per_id_per_term <- function(term, 
+                                            id, 
+                                            grade, 
+                                            col_by, 
+                                            col_N = tapply(col_by, col_by, length),
+                                            total = "All Patients",
+                                            grade_levels,
+                                            term_label,
+                                            grade_label) {
   
   
   if (missing(term_label)) term_label <- deparse(substitute(term))
@@ -286,11 +284,13 @@ lt_ae_max_grade_d1 <- function(term,
   if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid class, please use NA if data is missing")
   
   # data prep ---------------------------------------------------------------
-  df <- data.frame(term = term,
-                   id = id,
-                   grade = grade,
-                   col_by = col_by,
-                   stringsAsFactors = FALSE)
+  df <- data.frame(
+    term = term,
+    id = id,
+    grade = grade,
+    col_by = col_by,
+    stringsAsFactors = FALSE
+  )
   
   if (any(is.na(df)))
     stop("partial missing data in rows of [class, grade] is currently not supported")
@@ -302,62 +302,152 @@ lt_ae_max_grade_d1 <- function(term,
   }
   
   # start tabulating --------------------------------------------------------
-  # term chunk
-    df_by_term <- split(df, df$term)
-
+  
+  df_terms <- c(
+    list("- Overall -" = df),
+    split(df, df$term)      
+  )
+  
+  l_t_terms <- Map(function(df_term, term_i) {
     
-    l_t_term <- Map(function(df_term, term_i) {
-      
-      tbl_raw <- t_max_grade_per_id(
-        grade = df_term$grade,
-        id = df_term$id,
-        col_by = df_term$col_by,
-        col_N = col_N,
-        grade_levels = grade_levels,
-        any_grade = "- Any Grade -"
-      )
-      
-      ## move rownames to column
-      tbl <- row_names_as_col(tbl_raw)
-      
-      row.names(tbl)[1] <- term_i
-      
-      attr(tbl, "header")[[2]][[1]] <- rcell(grade_label)
-      attr(tbl, "header")[[1]][[1]] <- rcell(NULL)
-      
-      attr(attr(tbl, "header")[[1]], "row.name") <- term_label
-      attr(attr(tbl, "header")[[2]], "indent") <- 1
-      
-      tbl
-      
-    }, df_by_term, names(df_by_term))
-    
-    ###### Add any adverse event
-    tbl_overall <- t_max_grade_per_id(
-      grade = df$grade,
-      id = df$id,
-      col_by = df$col_by,
+    tbl_raw <- t_max_grade_per_id(
+      grade = df_term$grade,
+      id = df_term$id,
+      col_by = df_term$col_by,
       col_N = col_N,
       grade_levels = grade_levels,
       any_grade = "- Any Grade -"
     )
-    tbl_overall <- row_names_as_col(tbl_overall)
-    attr(tbl_overall, "header")[[2]][[1]] <- rcell(grade_label)
-    attr(tbl_overall, "header")[[1]][[1]] <- rcell(NULL)
     
-    attr(attr(tbl_overall, "header")[[1]], "row.name") <- term_label
-    attr(attr(tbl_overall, "header")[[2]], "indent") <- 1
-    row.names(tbl_overall)[1] <- "- Overall -"
-    tbl_overall <-  fast_rbind(
-      rtable(header(tbl_overall), rrow("- Any adverse events -")), 
-      indent_table(tbl_overall, 1)
-    )
-    c(
-      list("- Any adverse events -" =  tbl_overall),
-      l_t_term
-    )
+    ## move rownames to column
+    tbl <- row_names_as_col(tbl_raw)
+    
+    row.names(tbl)[1] <- term_i
+    
+    attr(tbl, "header")[[2]][[1]] <- rcell(grade_label)
+    attr(tbl, "header")[[1]][[1]] <- rcell(NULL)
+    
+    attr(attr(tbl, "header")[[1]], "row.name") <- term_label
+    attr(attr(tbl, "header")[[2]], "indent") <- 1
+    
+    tbl
+    
+  }, df_terms, names(df_terms))
+  
+  l_t_terms
+}
+
+
+
+#' remove firs n rows in a list of lists of rtables
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' 
+#' tbl <- rbind(
+#'    rtabulate(iris$Sepal.Length, iris$Species, mean),
+#'    rtabulate(iris$Sepal.Length, iris$Species, sd)
+#' )
+#' 
+#' l_tbls <- list(
+#'   list(
+#'     tbl, tbl, tbl
+#'   ),
+#'   list(
+#'     tbl, tbl
+#'   )  
+#' )
+#' 
+#' tern:::nl_remove_n_first_rrows(l_tbls, n = 1, 2)
+#' 
+nl_remove_n_first_rrows <- function(x, n=1, lower_childindex_threshold = 0) {
+  lapply(x, function(xi) {
+    i <- 0
+    lapply(xi, function(xii) {
+      i <<- i + 1
+      if (i >= lower_childindex_threshold) xii[-seq(1, n, by = 1),] else xii
+    })
+  })
+}
+
+#' map siblings of child
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' 
+#' 
+map_rhs_siblings_of_child <- function(tree, child_depth, child_nr, FUN, ...) {
+ 
+  if (child_depth < 1) stop("child_depth must be >= 1")
+  
+  depth <- 0
+  
+  map_in_tree <- function(x) {
+    depth <<- depth + 1
+    if (depth == child_depth) {
+       c(x[1:child_nr], lapply(x[seq(child_nr, length(x))], FUN, ...))
+    } else {
+      map_in_tree(x)
+    }
+  }
+  
+  map_in_tree(x)
+}
+
+
+#' Stack Tables Stored in a nested list of depth 2
+#' 
+#' This function expects a list with lists of rtables to be stacked. Sometimes
+#' these tables have repeated information at the top and hence the firs n rows
+#' can be optionally removed from the tables that are not first in the lists.
+#' 
+#' @param x list with lists of rtables
+#' @param n number of rows to remove from tables that that are not first in the
+#'   nested lists
+#' 
+#' @return rtable
+#' 
+#' @template author_waddella
+#' 
+#' @export
+#' 
+#' @examples
+#' 
+#' l_tbls <- list(
+#'   list(
+#'      rtabulate(iris$Sepal.Length, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Length, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Sepal.Width, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Width, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Petal.Length, iris$Species, mean),
+#'      rtabulate(iris$Petal.Length, iris$Species, sd)
+#'   )   
+#' )
+#' 
+#' recursive_stack_rtables(l_tbls)
+#' 
+recursive_stack_rtables <- function(x) {
+  
+  tbls <- unlist_rtables(x)
+  
+  if (!all(vapply(tbls, is, logical(1), "rtable"))) stop("not all elements are rtables")
+  
+  do.call(fast_stack_rtables, tbls)
   
 }
+
+
+
+
+
+
+
 
 
 #' stack rtables in nested list depth 2 (-1 row)

@@ -116,111 +116,23 @@
 #' 
 t_ae_ctc <- function(class, term, id, grade, col_by, total = "All Patients", grade_levels = 1:5) {
   
-  # check argument validity and consitency ----------------------------------
-  check_col_by(col_by, min_num_levels = 1)
-  if (total %in% levels(col_by)) 
-    stop(paste('col_by can not have', total, 'group. t_ae_cts will derive it.'))
   
-  if (any("- Overall -" %in% term)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
-  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
-  if (any(class == "", na.rm = TRUE)) stop("empty string is not a valid class, please use NA if data is missing")
-  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
-  # data prep ---------------------------------------------------------------
-  df <- data.frame(class = class,
-                   term = term,
-                   subjid = id,
-                   gradev = grade,
-                   col_by = col_by,
-                   stringsAsFactors = FALSE)
+  # sort terms by any grade and total
+  N_total_any <- vapply(l_t_terms, function(tbl) {
+    tbl[1, n_cols + 1][1]
+  }, numeric(1))
   
-  # adding All Patients
-  df <- duplicate_with_var(df, subjid = paste(df$subjid, "-", total), col_by = total)
+  l_t_terms[c(1, setdiff(order(-N_total_any, names(l_t_terms), decreasing = FALSE), 1))]
   
-  # total N for column header
-  N <- tapply(df$subjid, df$col_by, function(x) (sum(!duplicated(x))))
-  
-  # need to remove extra records that came from subject level data
-  # when left join was done. 
-  # currently class, term and grade can not be individually missing
-  has_partial_missing <- apply(df[, -c(3,5)], 1, function(row) {
-      is_na <- is.na(row)
-      xor(any(is_na), all(is_na))
-  })
-  if (any(has_partial_missing))
-    stop("partial missing data in rows of [class, term, grade] is currently not supported")
-  
-  df <- na.omit(df)
-  
-  # start tabulating --------------------------------------------------------
-  n_cols <- nlevels(col_by)
-  
-  # class and term chunks
-  l_t_class_terms <- lapply(split(df, df$class), function(df_s_cl) {
-    
-    df_s_cl_term <- c(
-      list("- Overall -" = df_s_cl),
-      split(df_s_cl, df_s_cl$term)      
-    )
-    
-    l_t_terms <- lapply(df_s_cl_term, function(df_i) {
-      
-      t_max_grade_per_id(
-        grade = df_i$gradev,
-        id = df_i$subjid,
-        col_by = df_i$col_by,
-        col_N = N,
-        grade_levels = grade_levels,
-        any_grade = "- Any Grade -"
-      )
-      
-    })
-    
-    # sort terms by any grade and total
-    N_total_any <- vapply(l_t_terms, function(tbl) {
-      tbl[1, n_cols + 1][1]
-    }, numeric(1))
-    
-    l_t_terms[c(1, setdiff(order(-N_total_any, names(l_t_terms), decreasing = FALSE), 1))]
-  })
-  
-  # now sort tables
+  # now sort tables by class total
   N_total_overall <- vapply(l_t_class_terms, function(tbl) {
     tbl[[1]][1, n_cols + 1][1]
   }, numeric(1))
   
   l_t_class_terms_sorted <- l_t_class_terms[order(-N_total_overall, names(l_t_class_terms), decreasing = FALSE)]
   
-  tbl_overall <- t_max_grade_per_id(
-    grade = df$gradev,
-    id = df$subjid,
-    col_by = df$col_by,
-    col_N = N,
-    grade_levels = grade_levels,
-    any_grade = "- Any Grade -"
-  )
-  
-  tbls_all <- c(
-    list("- Any adverse events -" = list("- Overall -" = tbl_overall)),
-    l_t_class_terms_sorted
-  )
-  
-  tbls_class <- Map(function(tbls_i, class_i) {
-    lt1 <- Map(shift_label_table, tbls_i, names(tbls_i))
-    t2 <- do.call(stack_rtables, lt1)
-    add_ae_class(indent_table(t2, 1), class_i)
-  }, tbls_all, names(tbls_all))
-  
-  
-  tbl <- do.call(stack_rtables, tbls_class)
-  
-  attr(attr(tbl, "header")[[1]], "row.name") <- 'MedDRA System Organ Class'
-  attr(attr(tbl, "header")[[2]], "row.name") <- 'MedDRA Preferred Term'
-  attr(attr(tbl, "header")[[2]], "indent") <- 1
-  
-  attr(tbl, "header")[[2]][[1]] <- rcell('NCI CTCAE Grade')
-  attr(tbl, "header")[[1]][[1]] <- rcell(NULL)
   
   tbl
 }
@@ -342,6 +254,7 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
   
   tbl <- rbind(tbl_any, tbl_x)
   
+  ## add (N=xx) row to header
   header(tbl) <- rheader(
     rrowl("", levels(col_by)),
     rrowl("", unname(col_N), format = "(N=xx)")
