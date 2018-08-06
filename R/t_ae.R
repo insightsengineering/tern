@@ -5,6 +5,11 @@
 #' 
 #' @inheritParams lt_ae_class_term
 #' 
+#' @details this is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
+#'   (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html})
+#'
+#' @return \code{rtable} object 
+#'
 #' @export
 #' 
 #' @template author_waddella
@@ -54,7 +59,7 @@
 #' 
 #' tbl
 #' 
-#' 
+#' # Example using dummy data
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
@@ -139,7 +144,7 @@ t_ae <- function(class, term, id, col_by, col_N, total = "All Patients") {
 #' as nested lists. 
 #'  
 #' @param grade a numeric vector with grade values
-#' @param id an vector with id values
+#' @param id a vector with id values
 #' @param col_by a factor with values used for column names
 #' @param col_N a vector with total n for each level of \code{col_by}
 #' @param grade_levels a numeric vector used for naming rows for each level of
@@ -179,6 +184,7 @@ t_ae <- function(class, term, id, col_by, col_N, total = "All Patients") {
 #' )
 #' 
 #' \dontrun{
+#' # throws an error because each id can only have one col_by
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,3),
 #'   id = c(1,2,2),

@@ -31,7 +31,12 @@
 #' \code{grade} category. Use \code{grade_levels} to modify the range of existing
 #' grades. If data does not have any records with \code{grade} 5 and the intent 
 #' is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
+#' 
+#' This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet04)}
+#'   (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html})
 #'  
+#' @return \code{rtable} object
+#' 
 #' @export
 #' 
 #' @template author_manukyae
@@ -82,7 +87,7 @@
 #' 
 #' tbl
 #' 
-#' 
+#' # Example using dummy data
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 

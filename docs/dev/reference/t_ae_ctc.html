@@ -162,6 +162,10 @@ of <code>x:y</code>, default is <code>1:5</code>.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>rtable</code> object</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>t_ae_ctc</code> counts patients according to adverse events (AEs) of greatest
@@ -185,6 +189,8 @@ in case there was no AEs reported for particular <code>col_by</code> and/or
 <code>grade</code> category. Use <code>grade_levels</code> to modify the range of existing
 grades. If data does not have any records with <code>grade</code> 5 and the intent 
 is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
+<p>This is an equivalent of the STREAM output <code>%stream_t_summary(templates = aet04)</code>
+  (<a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html'>http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html</a>)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -284,7 +290,7 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
 #&gt;                                        1                1 (33.3%)            1 (14.3%)             2 (20%)   
 #&gt;                                        2                    0                    0                    0      
 #&gt;                                        3                    0                    0                    0      </div><div class='input'>
-
+<span class='co'># Example using dummy data</span>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
 
@@ -789,6 +795,8 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>

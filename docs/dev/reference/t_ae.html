@@ -150,6 +150,15 @@ the only columns of interest then total should be <code>NULL</code></p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>rtable</code> object</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>this is an equivalent of the STREAM output <code>%stream_t_summary(templates = aet02)</code>
+  (<a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html'>http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html</a>)</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Simple example</span>
@@ -214,7 +223,7 @@ the only columns of interest then total should be <code>NULL</code></p></td>
 #&gt;   Total number of events                                                       1                   1                   2      
 #&gt;   Total number of patients with at least one adverse event                 1 (33.33%)          1 (14.29%)           2 (20%)   
 #&gt;   trm C_1/1                                                                1 (33.33%)          1 (14.29%)           2 (20%)   </div><div class='input'>
-
+<span class='co'># Example using dummy data</span>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
 
@@ -376,7 +385,11 @@ the only columns of interest then total should be <code>NULL</code></p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

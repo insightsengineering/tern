@@ -33,6 +33,9 @@ the only columns of interest then total should be \code{NULL}}
 \item{grade_levels}{numeric, ordered values of possible of grades in a form
 of \code{x:y}, default is \code{1:5}.}
 }
+\value{
+\code{rtable} object
+}
 \description{
 \code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
  Institute) CTCAE (common terminology criteria for adverse avents) grade.
@@ -62,6 +65,9 @@ in case there was no AEs reported for particular \code{col_by} and/or
 \code{grade} category. Use \code{grade_levels} to modify the range of existing
 grades. If data does not have any records with \code{grade} 5 and the intent 
 is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
+
+This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet04)}
+  (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html})
 }
 \examples{
 # Simple example
@@ -106,7 +112,7 @@ tbl <- t_ae_ctc(
 
 tbl
 
-
+# Example using dummy data
 library(random.cdisc.data)
 library(dplyr)
 

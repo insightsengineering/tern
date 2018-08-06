@@ -125,7 +125,7 @@ as nested lists.</p>
     </tr>
     <tr>
       <th>id</th>
-      <td><p>an vector with id values</p></td>
+      <td><p>a vector with id values</p></td>
     </tr>
     <tr>
       <th>col_by</th>
@@ -187,6 +187,7 @@ Grade-</code> by default</p></td>
 #&gt; 2                  1 (100%)           0            1 (100%)           0    
 #&gt; 3                     0            1 (100%)           0            1 (100%)</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
+<span class='co'># throws an error because each id can only have one col_by</span>
 <span class='fu'>t_max_grade_per_id</span>(
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>),

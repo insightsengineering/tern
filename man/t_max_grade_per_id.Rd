@@ -10,7 +10,7 @@ t_max_grade_per_id(grade, id, col_by, col_N = NULL, grade_levels = NULL,
 \arguments{
 \item{grade}{a numeric vector with grade values}
 
-\item{id}{an vector with id values}
+\item{id}{a vector with id values}
 
 \item{col_by}{a factor with values used for column names}
 
@@ -50,6 +50,7 @@ t_max_grade_per_id(
 )
 
 \dontrun{
+# throws an error because each id can only have one col_by
 t_max_grade_per_id(
   grade =  c(1,2,3),
   id = c(1,2,2),

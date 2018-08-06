@@ -27,8 +27,15 @@ adverse events can be accounted for with this argument.}
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
 }
+\value{
+\code{rtable} object
+}
 \description{
 \code{t_ae} returns adverse events summary table that corresponds to STREAM template AET02
+}
+\details{
+this is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
+  (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html})
 }
 \examples{
 # Simple example
@@ -71,7 +78,7 @@ tbl <- t_ae(
 
 tbl
 
-
+# Example using dummy data
 library(random.cdisc.data)
 library(dplyr)
 
