@@ -11,15 +11,42 @@ lt_ae_term(term, id, col_by, col_N = tapply(col_by, col_by, length),
 Only By Term
 }
 \examples{
+library(tibble)
+library(dplyr)
+
+ASL <- tibble(
+  USUBJID = paste0("id-", 1:10),
+  ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
+)
+
+
+ae_lookup <- tribble(
+  ~CLASS,         ~TERM,   ~GRADE,
+  "cl A",   "trm A_1/2",        1,
+  "cl A",   "trm A_2/2",        2,  
+  "cl B",   "trm B_1/3",        2,
+  "cl B",   "trm B_2/3",        3,
+  "cl B",   "trm B_3/3",        1,
+  "cl C",   "trm C_1/1",        1
+)
+
+AAE <- cbind(
+  tibble(
+    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
+  ),
+  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
+)
+
+ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
 
 
 l_tbls <- lt_ae_term( 
   term =  ANL$TERM,
   id = ANL$USUBJID,
-  col_by = factor(ANL$ARM),
+  col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients",
   term_label = "MedDRA Preferred Term"
 )
-do.call(fast_stack_rtables, l_tbls)
+
 }

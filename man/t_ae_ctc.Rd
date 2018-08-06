@@ -4,7 +4,7 @@
 \alias{t_ae_ctc}
 \title{Adverse Events Table by Highest NCI CTCAE Grade}
 \usage{
-t_ae_ctc(class, term, id, grade, col_by, total = "All Patients",
+t_ae_ctc(class, term, id, grade, col_by, col_N, total = "All Patients",
   grade_levels = 1:5)
 }
 \arguments{
@@ -65,7 +65,7 @@ library(dplyr)
 
 ASL <- tibble(
   USUBJID = paste0("id-", 1:10),
-  ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
+  ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
 )
 
 
@@ -86,14 +86,15 @@ AAE <- cbind(
   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
 )
 
-ANL <- left_join(ASL, AAE, by = "USUBJID")
+ANL <- left_join(AAE, ASL, by = "USUBJID")
 
 tbl <- t_ae_ctc(
   class = ANL$CLASS,
   term =  ANL$TERM,
   id = ANL$USUBJID,
   grade = ANL$GRADE,
-  col_by = factor(ANL$ARM),
+  col_by = ANL$ARM,
+  col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients",
   grade_levels = 1:3
 )

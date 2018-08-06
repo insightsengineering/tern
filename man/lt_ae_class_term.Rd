@@ -18,7 +18,7 @@ library(dplyr)
 
 ASL <- tibble(
   USUBJID = paste0("id-", 1:10),
-  ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
+  ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
 )
 
 
@@ -45,7 +45,7 @@ l_tbls <- lt_ae_class_term(
   class = ANL$CLASS,
   term =  ANL$TERM,
   id = ANL$USUBJID,
-  col_by = factor(ANL$ARM),
+  col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients"
 )
