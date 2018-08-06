@@ -1,9 +1,142 @@
 
+#' Adverse Events by System Organ Class and Preferred Term
+#'
+#' \code{t_ae} returns adverse events summary table that corresponds to STREAM template AET02
+#' 
+#' @inheritParams lt_ae_class_term
+#' 
+#' @export
+#' 
+#' @template author_waddella
+#' @template author_zhanc107
+#' @template author_wangh107
+#' @template author_qit3
+#'  
+#'  
+#' @examples 
+#' # Simple example
+#' library(tibble)
+#' library(dplyr)
+#' 
+#' ASL <- tibble(
+#'   USUBJID = paste0("id-", 1:10),
+#'   ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
+#' )
+#' 
+#' 
+#' ae_lookup <- tribble(
+#'   ~CLASS,         ~TERM,   ~GRADE,
+#'   "cl A",   "trm A_1/2",        1,
+#'   "cl A",   "trm A_2/2",        2,  
+#'   "cl B",   "trm B_1/3",        2,
+#'   "cl B",   "trm B_2/3",        3,
+#'   "cl B",   "trm B_3/3",        1,
+#'   "cl C",   "trm C_1/1",        1
+#' )
+#' 
+#' AAE <- cbind(
+#'   tibble(
+#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
+#'   ),
+#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
+#' )
+#' 
+#' ANL <- left_join(AAE, ASL, by = "USUBJID")
+#' 
+#' tbl <- t_ae(
+#'   class = ANL$CLASS,
+#'   term =  ANL$TERM,
+#'   id = ANL$USUBJID,
+#'   col_by = ANL$ARM,
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = "All Patients"
+#' )
+#' 
+#' tbl
+#' 
+#' 
+#' library(random.cdisc.data)
+#' library(dplyr)
+#' 
+#' ASL <- radam("ASL", N = 10)
+#' AAE <- radam("AAE", ADSL = ASL)
+#' 
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
+#' 
+#' tbl <- with(ANL,
+#'             t_ae(
+#'               class = AEBODSYS,
+#'               term =  AEDECOD,
+#'               id = USUBJID,
+#'               col_by = factor(ARM),
+#'               total = "All Patients"
+#'             )
+#' )
+#' 
+#' tbl
+#' 
+t_ae <- function(class, term, id, col_by, col_N, total = "All Patients") {
+  
+  
+  if (missing(col_N)) col_N <- tapply(col_by, col_by, length)
+  
+  l_tbls <- lt_ae_class_term(
+    class = class,
+    term = term,
+    id = id,
+    col_by = col_by,
+    col_N = col_N,
+    total = total,
+    class_label = 'MedDRA System Organ Class',
+    term_label = 'MedDRA Preferred Term'
+  )
+  
+  n_cols <- ncol(l_tbls[[1]])
+  if(!is.null(total))
+    n_cols <- n_cols-1
+  
+  l_s_terms <- lapply(l_tbls, function(tbls) {
+    # sort terms by any term (sum of col_by levels)
+    N_total_any <- vapply(tbls[2:nrow(tbls)], function(tbl) {
+      a <- 0
+      for(i in c(1:n_cols)){
+        if(!is.na(tbl[[i]][1])){
+          a <- a + tbl[[i]][1]
+        }
+      }
+      a
+    }, numeric(1))
+    
+    tbls[c(1, (sort.int(-N_total_any, index.return=TRUE)[[2]])+1)]
+    
+  })
+  
+  
+  # now sort tables by class total (sum of col_by levels)
+  N_total_overall <- lapply(l_tbls, function(tbl) {
+    a <- 0
+    for(i in c(1:n_cols)){
+      if(!is.na(tbl[2, i][1])){
+        a <- a + tbl[2, i][1]
+      }
+    }
+    a
+  })
+  
+  l_tbls_sorted <- l_s_terms[order(-unlist(N_total_overall), names(l_s_terms), decreasing = FALSE)]
+  
+  
+  # Now Stack them
+  recursive_stack_rtables(l_tbls_sorted)
+}
+
+
 # Elementary Tables Used for AE tables ----
 
 #' Tabulate maximum grade per id by \code{col_by}
 #' 
-#' This function is used for deriving adverse events tables.
+#' This function is used for deriving adverse events tables, these are returned
+#' as nested lists. 
 #'  
 #' @param grade a numeric vector with grade values
 #' @param id an vector with id values
@@ -16,6 +149,11 @@
 #' 
 #' @importFrom stats aggregate
 #' @export
+#' 
+#' @template author_waddella
+#' @template author_zhanc107
+#' @template author_wangh107
+#' @template author_qit3
 #' 
 #' @examples 
 #' 
@@ -128,6 +266,11 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
 #' 
 #' @export
 #' 
+#' @template author_waddella
+#' @template author_zhanc107
+#' @template author_wangh107
+#' @template author_qit3
+#' 
 #' @examples 
 #' 
 #' t_count_unique(
@@ -161,10 +304,9 @@ t_count_unique <- function(x, col_by, col_N = NULL, row.name = "number of unique
 
 # Create Nested Lists of Tables that Compose AE tables ----
 
-
 #' List of Adverse Events Terms Tables by Highest Grade 
 #' 
-#' \code{lt_ae_grade} returns a nested list of adverse events tables by max
+#' \code{lt_ae_max_grade_class_term} returns a nested list of adverse events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #' 
 #' @param class class information as character or factor vector
@@ -180,13 +322,25 @@ t_count_unique <- function(x, col_by, col_N = NULL, row.name = "number of unique
 #'   levels of \code{col_by}. This is useful if there are patients that have no
 #'   adverse events can be accounted for with this argument.
 #' @param total character string that will be used as a label for a column with 
-#'  pooled total population, default is "All Patients".
+#'  pooled total population, default is "All Patients". If the levels of col_by are 
+#'  the only columns of interest then total should be \code{NULL}
 #' @param grade_levels numeric, ordered values of possible of grades in a form
 #'   of \code{x:y}, default is \code{1:5}.
+#' @param class_label character string that will be used as a label in the column 
+#'   heade for the class
+#' @param term_label character string that will be used as a label in the column 
+#'   heade for the term
+#' @param grade_label character string that will be used as a label in the column 
+#'   heade for the grade
 #'   
 #' @return rtable
 #' 
 #' @export
+#' 
+#' @template author_waddella
+#' @template author_zhanc107
+#' @template author_wangh107
+#' @template author_qit3
 #' 
 #' @examples 
 #' # Simple example
@@ -290,8 +444,6 @@ lt_ae_max_grade_class_term <- function(
   
   # check argument validity and consitency 
   check_col_by(col_by, min_num_levels = 1)
-  if (total %in% levels(col_by)) 
-    stop(paste('col_by can not have', total, 'group. t_ae_cts will derive it.'))
   
   if (any("- Overall -" %in% term)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
@@ -314,6 +466,9 @@ lt_ae_max_grade_class_term <- function(
   
   # adding All Patients
   if(!is.null(total)){
+    if (total %in% levels(col_by)) 
+      stop(paste('col_by can not have', total, 'group. t_ae_ctc will derive it.'))
+    
     df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
     col_N <- c(col_N, sum(col_N))
   } 
@@ -367,14 +522,19 @@ lt_ae_max_grade_class_term <- function(
 }
 
 
-#' List of Adverse Events Terms Tables 
+#' List of Adverse Events Terms Tables By Highest Grade (Term only)
 #' 
-#' Returns a nested list of adverse events tables by max grade
-#' (\code{\link{t_max_grade_per_id}}).
+#' \code{lt_ae_max_grade_term} returns a nested list of adverse events tables by max
+#' grade (\code{\link{t_max_grade_per_id}}).
 #' 
 #' @inheritParams lt_ae_max_grade_class_term
 #' 
 #' @export
+#' 
+#' @template author_waddella
+#' @template author_zhanc107
+#' @template author_wangh107
+#' @template author_qit3
 #' 
 #' @examples 
 #' # Simple example
@@ -436,8 +596,6 @@ lt_ae_max_grade_term <- function(term,
   
   # check argument validity and consitency 
   check_col_by(col_by, min_num_levels = 1)
-  if (total %in% levels(col_by)) 
-    stop(paste('col_by can not have', total, 'group. t_ae_cts will derive it.'))
   
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
@@ -457,6 +615,9 @@ lt_ae_max_grade_term <- function(term,
   
   # adding All Patients
   if(!is.null(total)){
+    if (total %in% levels(col_by)) 
+      stop(paste('col_by can not have', total, 'group. t_ae_ctc will derive it.'))
+    
     df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
     col_N <- c(col_N, sum(col_N)) 
   }
@@ -495,13 +656,37 @@ lt_ae_max_grade_term <- function(term,
 }
 
 
-
-
-
-#' By class By Term
+#' List of Adverse Events Terms Tables 
+#' 
+#' \code{lt_ae_max_grade_class_term} returns a nested list of adverse events tables 
+#' by unique id (\code{\link{t_count_unique}}).
 #'
+#'
+#' @param class class information as character or factor vector
+#' @param term term information as character or factor vector, however factor
+#'   levels are not repeated by class, only terms with count > 1 are listed per
+#'   class
+#' @param id unique subject identifier. If a particular subject has no adverse
+#'   event then that information needs to be added to the \code{col_N} argument.
+#' @param col_by group variable that will be used for a column header. \code{col_by}
+#'  has to be a factor and can not be missing. See 'Examples'.
+#' @param col_N numeric vector with information of the number of patients in the
+#'   levels of \code{col_by}. This is useful if there are patients that have no
+#'   adverse events can be accounted for with this argument.
+#' @param total character string that will be used as a label for a column with 
+#'  pooled total population, default is "All Patients". If the levels of col_by are 
+#'  the only columns of interest then total should be \code{NULL}
+#' @param class_label character string that will be used as a label in the column 
+#'   heade for the class
+#' @param term_label character string that will be used as a label in the column 
+#'   heade for the term
 #'
 #' @export
+#' 
+#' @template author_waddella
+#' @template author_zhanc107
+#' @template author_wangh107
+#' @template author_qit3
 #' 
 #' @examples 
 #' 
@@ -556,9 +741,6 @@ lt_ae_class_term <- function(class, term, id,  col_by,
   # check argument validity and consitency
   check_col_by(col_by, min_num_levels = 1)
   
-  if (total %in% levels(col_by)) 
-    stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
-  
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae  derives All Patients column")
   
   if (any(class == "", na.rm = TRUE)) stop("empty string is not a valid class, please use NA if data is missing")
@@ -578,6 +760,9 @@ lt_ae_class_term <- function(class, term, id,  col_by,
   
   # adding All Patients
   if (!is.null(total)) {
+    if (total %in% levels(col_by)) 
+      stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
+    
     df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
     col_N <- c(col_N, sum(col_N))
   }
@@ -641,10 +826,19 @@ lt_ae_class_term <- function(class, term, id,  col_by,
 
 
 
-#' Only By Term
+#' List of Adverse Events Terms Tables (Term only)
 #'
+#' \code{lt_ae_term} returns a nested list of adverse events tables by unique id
+#'  (\code{\link{t_count_unique}}).
+#'
+#' @inheritParams lt_ae_class_term 
 #'
 #' @export
+#' 
+#' @template author_waddella
+#' @template author_zhanc107
+#' @template author_wangh107
+#' @template author_qit3
 #' 
 #' @examples 
 #' library(tibble)
@@ -685,7 +879,9 @@ lt_ae_class_term <- function(class, term, id,  col_by,
 #'   term_label = "MedDRA Preferred Term"
 #' )
 #' 
-lt_ae_term <- function(term, id,  col_by, 
+lt_ae_term <- function(term, 
+                       id, 
+                       col_by, 
                        col_N = tapply(col_by, col_by, length),
                        total = "All Patients", 
                        term_label){
@@ -694,9 +890,6 @@ lt_ae_term <- function(term, id,  col_by,
 
     # check argument validity and consitency 
   check_col_by(col_by, min_num_levels = 1)
-  
-  if (total %in% levels(col_by)) 
-    stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
   
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae  derives All Patients column")
   
@@ -715,6 +908,9 @@ lt_ae_term <- function(term, id,  col_by,
   
   # adding All Patients
   if (!is.null(total)) {
+    if (total %in% levels(col_by)) 
+      stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
+    
     df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
     col_N <- c(col_N, sum(col_N))
   }

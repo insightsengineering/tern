@@ -1,21 +1,10 @@
+
 #' Adverse Events Table by Highest NCI CTCAE Grade
 #' 
 #' \code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
 #'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
 #' 
-#' @param class system organ class variable.
-#' @param term preferred term variable.
-#' @param id unique subject identifier variable. If a particular subject has no
-#'   adverse event then the subject \code{id} should be listed where
-#'   \code{class} and \code{term} should be set to missing (i.e. \code{NA}).
-#' @param grade grade of adverse event variable.
-#' @param col_by group variable that will be used for a column header. \code{col_by}
-#'  has to be a factor and can not be missing. See 'Examples'.
-#' @param total character string that will be used as a label for a column with 
-#'  pooled total population, default is "All Patients".
-#' @param grade_levels ordered values of possible of grades in a form of
-#'   \code{x:y}, default is \code{1:5}. This assures a proper fill in for
-#'   grades, see 'Details'.
+#' @inheritParams lt_ae_max_grade_class_term
 #' 
 #' @details 
 #' \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
@@ -47,6 +36,7 @@
 #' 
 #' @template author_manukyae
 #' @template author_waddella
+#' @template author_zhanc107
 #'  
 #'  
 #' @examples 
@@ -118,7 +108,7 @@
 t_ae_ctc <- function(class, term, id, grade, col_by, col_N, total = "All Patients", grade_levels = 1:5) {
   
   
-  if (missing(col_N)) col_N <- tapply(col_by, col_y, length)
+  if (missing(col_N)) col_N <- tapply(col_by, col_by, length)
   
   l_tbls <- lt_ae_max_grade_class_term(
     class = class,
@@ -135,21 +125,31 @@ t_ae_ctc <- function(class, term, id, grade, col_by, col_N, total = "All Patient
   )
   
   n_cols <- ncol(l_tbls[[1]][[1]])
+  if(!is.null(total))
+    n_cols <- n_cols-1
     
   l_s_terms <- lapply(l_tbls, function(tbls) {
     
-    # sort terms by any grade and total
+    # sort terms by any grade (sum of col_by levels)
     N_total_any <- vapply(tbls, function(tbl) {
-      tbl[2, n_cols][1]
+      a <- 0
+      for(i in c(2:n_cols)){
+        a <- a + tbl[2, i][1]
+      }
+      a
     }, numeric(1))
     
     tbls[c(1, setdiff(order(-N_total_any, names(tbls), decreasing = FALSE), 1))]
     
   })
   
-  # now sort tables by class total
+  # now sort tables by class (sum of col_by levels)
   N_total_overall <- vapply(l_s_terms, function(tbl) {
-    tbl[[1]][2, n_cols][1]
+    a <- 0
+    for(i in c(2:n_cols)){
+      a <- a + tbl[[1]][2, i][1]
+    }
+    a
   }, numeric(1))
   
   l_tbls_sorted <- l_s_terms[order(-N_total_overall, names(l_s_terms), decreasing = FALSE)]
@@ -158,8 +158,3 @@ t_ae_ctc <- function(class, term, id, grade, col_by, col_N, total = "All Patient
   # Now Stack them
   recursive_stack_rtables(nl_remove_n_first_rrows(l_tbls_sorted,1,2))
 }
-
-
-
-
-
