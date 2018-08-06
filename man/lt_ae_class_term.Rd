@@ -2,13 +2,41 @@
 % Please edit documentation in R/t_ae.R
 \name{lt_ae_class_term}
 \alias{lt_ae_class_term}
-\title{By class By Term}
+\title{List of Adverse Events Terms Tables}
 \usage{
 lt_ae_class_term(class, term, id, col_by, col_N = tapply(col_by, col_by,
   length), total = "All Patients", class_label, term_label)
 }
+\arguments{
+\item{class}{class information as character or factor vector}
+
+\item{term}{term information as character or factor vector, however factor
+levels are not repeated by class, only terms with count > 1 are listed per
+class}
+
+\item{id}{unique subject identifier. If a particular subject has no adverse
+event then that information needs to be added to the \code{col_N} argument.}
+
+\item{col_by}{group variable that will be used for a column header. \code{col_by}
+has to be a factor and can not be missing. See 'Examples'.}
+
+\item{col_N}{numeric vector with information of the number of patients in the
+levels of \code{col_by}. This is useful if there are patients that have no
+adverse events can be accounted for with this argument.}
+
+\item{total}{character string that will be used as a label for a column with 
+pooled total population, default is "All Patients". If the levels of col_by are 
+the only columns of interest then total should be \code{NULL}}
+
+\item{class_label}{character string that will be used as a label in the column 
+heade for the class}
+
+\item{term_label}{character string that will be used as a label in the column 
+heade for the term}
+}
 \description{
-By class By Term
+\code{lt_ae_max_grade_class_term} returns a nested list of adverse events tables 
+by unique id (\code{\link{t_count_unique}}).
 }
 \examples{
 
@@ -49,6 +77,15 @@ l_tbls <- lt_ae_class_term(
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients"
 )
-stack_rtables_d2(l_tbls)
+recursive_stack_rtables(l_tbls)
 
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+
+Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
+
+Heng Wang (wangh107) \email{wang.heng@gene.com}
+
+Ting Qi (qit3) \email{qit3@gene.com}
 }

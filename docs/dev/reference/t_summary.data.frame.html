@@ -163,49 +163,49 @@ column will be added with the overall summaries</p></td>
 <span class='no'>ASL</span>$<span class='no'>SEX</span> <span class='kw'>&lt;-</span> <span class='fu'>relevel</span>(<span class='no'>ASL</span>$<span class='no'>SEX</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>)
 
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=52)               (N=48)               (N=100)   
+#&gt;                                   (N=49)               (N=51)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 52                   48                   100     
-#&gt;   M                             23 (44.23%)          25 (52.08%)           48 (48%)   
-#&gt;   F                             29 (55.77%)          23 (47.92%)           52 (52%)   
+#&gt;   n                                 49                   51                   100     
+#&gt;   M                             26 (53.06%)          30 (58.82%)           56 (56%)   
+#&gt;   F                             23 (46.94%)          21 (41.18%)           44 (44%)   
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 52                   48                   100     
-#&gt;   Mean (SD)                    42.65 (11.05)        38.04 (11.91)        40.44 (11.65)
-#&gt;   Median                           42.5                  40                   41      
-#&gt;   Min - Max                       12 - 63              12 - 64              12 - 64   </div><div class='input'>
+#&gt;   n                                 49                   51                   100     
+#&gt;   Mean (SD)                    41.57 (13.22)        37.22 (13.72)        39.35 (13.59)
+#&gt;   Median                            40                   39                  39.5     
+#&gt;   Min - Max                       15 - 77              11 - 66              11 - 77   </div><div class='input'>
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA</span> <span class='kw'>=</span> <span class='st'>'always'</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=52)               (N=48)               (N=100)   
+#&gt;                                   (N=49)               (N=51)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 52                   48                   100     
-#&gt;   M                             23 (44.23%)          25 (52.08%)           48 (48%)   
-#&gt;   F                             29 (55.77%)          23 (47.92%)           52 (52%)   
+#&gt;   n                                 49                   51                   100     
+#&gt;   M                             26 (53.06%)          30 (58.82%)           56 (56%)   
+#&gt;   F                             23 (46.94%)          21 (41.18%)           44 (44%)   
 #&gt;   &lt;NA&gt;                               0                    0                    0      
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 52                   48                   100     
-#&gt;   Mean (SD)                    42.65 (11.05)        38.04 (11.91)        40.44 (11.65)
-#&gt;   Median                           42.5                  40                   41      
-#&gt;   Min - Max                       12 - 63              12 - 64              12 - 64   </div><div class='input'>
+#&gt;   n                                 49                   51                   100     
+#&gt;   Mean (SD)                    41.57 (13.22)        37.22 (13.72)        39.35 (13.59)
+#&gt;   Median                            40                   39                  39.5     
+#&gt;   Min - Max                       15 - 77              11 - 66              11 - 77   </div><div class='input'>
 <span class='no'>ASL</span>$<span class='no'>SEX</span>[<span class='fl'>1</span>:<span class='fl'>10</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
 
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>'ifany'</span>)</div><div class='output co'>#&gt;                                    ARM A                ARM B            All Patients 
-#&gt;                                   (N=52)               (N=48)               (N=100)   
+#&gt;                                   (N=49)               (N=51)               (N=100)   
 #&gt; --------------------------------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 48                   42                   90      
-#&gt;   M                             22 (45.83%)          25 (59.52%)          47 (52.22%) 
-#&gt;   F                             26 (54.17%)          17 (40.48%)          43 (47.78%) 
+#&gt;   n                                 43                   47                   90      
+#&gt;   M                             23 (53.49%)          27 (57.45%)          50 (55.56%) 
+#&gt;   F                             20 (46.51%)          20 (42.55%)          40 (44.44%) 
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 52                   48                   100     
-#&gt;   Mean (SD)                    42.65 (11.05)        38.04 (11.91)        40.44 (11.65)
-#&gt;   Median                           42.5                  40                   41      
-#&gt;   Min - Max                       12 - 63              12 - 64              12 - 64   </div><div class='input'>
+#&gt;   n                                 49                   51                   100     
+#&gt;   Mean (SD)                    41.57 (13.22)        37.22 (13.72)        39.35 (13.59)
+#&gt;   Median                            40                   39                  39.5     
+#&gt;   Min - Max                       15 - 77              11 - 66              11 - 77   </div><div class='input'>
 <span class='co'># with iris data</span>
 
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>iris</span>[, -<span class='fl'>5</span>], <span class='kw'>col_by</span>  <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='output co'>#&gt;                       setosa           versicolor          virginica 

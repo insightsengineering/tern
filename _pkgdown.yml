@@ -26,6 +26,8 @@ reference:
       - t_forest_tte
       - t_rsp
       - t_tte
+      - t_ae
+      - t_ae_ctc
   - title: Compound Graphs
     contents:
       - starts_with("g_")
@@ -40,6 +42,18 @@ reference:
       - t_coxph
       - t_km
       - t_max_grade_per_id
+      - t_count_unique
+  - title: Table Helper functions
+    desc: these functions create nested lists of tables
+    contents:
+    - lt_ae_max_grade_class_term
+    - lt_ae_max_grade_term
+    - lt_ae_class_term
+    - lt_ae_term
+  - title: Rtable Helper Functions
+    desc: these functions are additional rtable functions
+    contents:
+      - recursive_stack_rtables
   - title: Analysis Helper Functions
     desc: these functions are used by other functions to derive data
     contents:

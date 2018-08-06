@@ -10,6 +10,9 @@ t_count_unique(x, col_by, col_N = NULL,
 \arguments{
 \item{x}{a vector}
 
+\item{col_by}{group variable that will be used for a column header. \code{col_by}
+has to be a factor and can not be missing. See 'Examples'.}
+
 \item{col_N}{associated number of elements per level of \code{col_by}}
 }
 \value{
@@ -26,4 +29,13 @@ t_count_unique(
  col_N = c(2, 4, 10)
 )
 
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+
+Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
+
+Heng Wang (wangh107) \email{wang.heng@gene.com}
+
+Ting Qi (qit3) \email{qit3@gene.com}
 }

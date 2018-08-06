@@ -28,16 +28,26 @@ levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
 \item{total}{character string that will be used as a label for a column with 
-pooled total population, default is "All Patients".}
+pooled total population, default is "All Patients". If the levels of col_by are 
+the only columns of interest then total should be \code{NULL}}
 
 \item{grade_levels}{numeric, ordered values of possible of grades in a form
 of \code{x:y}, default is \code{1:5}.}
+
+\item{class_label}{character string that will be used as a label in the column 
+heade for the class}
+
+\item{term_label}{character string that will be used as a label in the column 
+heade for the term}
+
+\item{grade_label}{character string that will be used as a label in the column 
+heade for the grade}
 }
 \value{
 rtable
 }
 \description{
-\code{lt_ae_grade} returns a nested list of adverse events tables by max
+\code{lt_ae_max_grade_class_term} returns a nested list of adverse events tables by max
 grade (\code{\link{t_max_grade_per_id}}).
 }
 \examples{
@@ -121,4 +131,13 @@ tbl <- stack_rtables_d2=(l_tbls)
 Viewer(tbl  )
   
 }
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+
+Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
+
+Heng Wang (wangh107) \email{wang.heng@gene.com}
+
+Ting Qi (qit3) \email{qit3@gene.com}
 }

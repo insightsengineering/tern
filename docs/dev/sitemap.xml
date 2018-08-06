@@ -34,13 +34,40 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/g_waterfall.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_ae_class_term.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_ae_max_grade_class_term.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_ae_max_grade_term.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_ae_term.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/recursive_stack_rtables.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/reorder_to_match_id.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/splitTextGrob.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tabulate_pairwise.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tern-package.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_ae.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_ae_ctc.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_count_unique.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_coxph.html</loc>
@@ -67,16 +94,13 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summarize_variables.html</loc>
   </url>
   <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.Date.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.html</loc>
-  </url>
-  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.character.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.data.frame.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.Date.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.default.html</loc>
@@ -91,13 +115,13 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.numeric.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_tte.html</loc>
   </url>
   <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tabulate_pairwise.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tern-package.html</loc>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/unlist_rtables.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/var_labels-set.html</loc>

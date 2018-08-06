@@ -140,12 +140,12 @@ annotation on top of Kaplan-Meier grob</p>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                      N                     median              95% CI for median
 #&gt; --------------------------------------------------------------------------------
-#&gt; ARM=A               62                      0.93                 (0.81, 1.58)   
-#&gt; ARM=B               69                      1.17                 (0.77, 1.78)   
-#&gt; ARM=C               69                      1.52                 (1.08, 1.79)   </div><div class='input'><span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
+#&gt; ARM=A               68                      0.91                 (0.75, 1.02)   
+#&gt; ARM=B               72                       1.1                  (0.9, 1.48)   
+#&gt; ARM=C               60                      1.16                  (0.96, 1.7)   </div><div class='input'><span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
 <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)</div><div class='output co'>#&gt;                    N                     median              95% CI for median
 #&gt; ------------------------------------------------------------------------------
-#&gt; All               200                     1.17                 (0.94, 1.52)   </div><div class='input'>
+#&gt; All               200                     1.04                 (0.93, 1.23)   </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Proportional Hazards Regression Model Fit Summary Table — t_coxph • tern</title>
+<title>Stack Tables Stored in a nested list of depth 2 — recursive_stack_rtables • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Proportional Hazards Regression Model Fit Summary Table — t_coxph" />
+<meta property="og:title" content="Stack Tables Stored in a nested list of depth 2 — recursive_stack_rtables" />
 
-<meta property="og:description" content="An rtable format of coxph
-object for further annotation on top of Kaplan-Meier grob" />
+<meta property="og:description" content="This function expects a list with lists of rtables to be stacked. Sometimes
+these tables have repeated information at the top and hence the firs n rows
+can be optionally removed from the tables that are not first in the lists." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -101,64 +102,86 @@ object for further annotation on top of Kaplan-Meier grob" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Proportional Hazards Regression Model Fit Summary Table</h1>
+    <h1>Stack Tables Stored in a nested list of depth 2</h1>
     
-    <div class="hidden name"><code>t_coxph.Rd</code></div>
+    <div class="hidden name"><code>recursive_stack_rtables.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>An <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code> format of <code><a href='http://www.rdocumentation.org/packages/survival/topics/coxph'>coxph</a></code>
-object for further annotation on top of Kaplan-Meier grob</p>
+    <p>This function expects a list with lists of rtables to be stacked. Sometimes
+these tables have repeated information at the top and hence the firs n rows
+can be optionally removed from the tables that are not first in the lists.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>, <span class='kw'>info_coxph</span> <span class='kw'>=</span> <span class='st'>"Cox Porportional Hazard Model"</span>)</pre>
+    <pre class="usage"><span class='fu'>recursive_stack_rtables</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fit_coxph</th>
-      <td><p>a class <code>coxph</code> object.</p></td>
+      <th>x</th>
+      <td><p>list with lists of rtables</p></td>
     </tr>
     <tr>
-      <th>info_coxph</th>
-      <td><p>label information for Cox PH model.</p></td>
+      <th>n</th>
+      <td><p>number of rows to remove from tables that that are not first in the
+nested lists</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>rtable</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-  <span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
-  <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>)
+<span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
+  <span class='fu'>list</span>(
+     <span class='fu'>rtabulate</span>(<span class='no'>iris</span>$<span class='no'>Sepal.Length</span>, <span class='no'>iris</span>$<span class='no'>Species</span>, <span class='no'>mean</span>),
+     <span class='fu'>rtabulate</span>(<span class='no'>iris</span>$<span class='no'>Sepal.Length</span>, <span class='no'>iris</span>$<span class='no'>Species</span>, <span class='no'>sd</span>)
+  ),
+  <span class='fu'>list</span>(
+     <span class='fu'>rtabulate</span>(<span class='no'>iris</span>$<span class='no'>Sepal.Width</span>, <span class='no'>iris</span>$<span class='no'>Species</span>, <span class='no'>mean</span>),
+     <span class='fu'>rtabulate</span>(<span class='no'>iris</span>$<span class='no'>Sepal.Width</span>, <span class='no'>iris</span>$<span class='no'>Species</span>, <span class='no'>sd</span>)
+  ),
+  <span class='fu'>list</span>(
+     <span class='fu'>rtabulate</span>(<span class='no'>iris</span>$<span class='no'>Petal.Length</span>, <span class='no'>iris</span>$<span class='no'>Species</span>, <span class='no'>mean</span>),
+     <span class='fu'>rtabulate</span>(<span class='no'>iris</span>$<span class='no'>Petal.Length</span>, <span class='no'>iris</span>$<span class='no'>Species</span>, <span class='no'>sd</span>)
+  )
 )
 
-<span class='no'>fit_coxph</span> <span class='kw'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span> + <span class='fu'>strata</span>(<span class='no'>RACE</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>)
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>)
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                    HR                 95% CI of HR            Wald p-value  
-#&gt; ----------------------------------------------------------------------------
-#&gt; ARMB             0.8446             (0.5234, 1.363)              0.4892     
-#&gt; ARMC             0.8321             (0.4906, 1.4111)             0.4952     </div><div class='input'>
+<span class='fu'>recursive_stack_rtables</span>(<span class='no'>l_tbls</span>)</div><div class='output co'>#&gt;                  setosa                 versicolor                virginica    
+#&gt;                  (N=50)                   (N=50)                   (N=50)      
+#&gt; -------------------------------------------------------------------------------
+#&gt; mean              5.006                    5.936                    6.588      
+#&gt; 
+#&gt; sd          0.352489687213451        0.516171147063863        0.635879593274432
+#&gt; 
+#&gt; mean              3.428                    2.77                     2.974      
+#&gt; 
+#&gt; sd          0.379064369096289        0.313798323378411        0.322496638172637
+#&gt; 
+#&gt; mean              1.462                    4.26                     5.552      
+#&gt; 
+#&gt; sd          0.173663996480184        0.469910977239958        0.551894695663983</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
     
-Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
+Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.waddell@roche.com</a>
 
   </div>
 </div>

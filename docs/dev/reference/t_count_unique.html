@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Proportional Hazards Regression Model Fit Summary Table — t_coxph • tern</title>
+<title>Count Unique Elements Per Cell — t_count_unique • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Proportional Hazards Regression Model Fit Summary Table — t_coxph" />
+<meta property="og:title" content="Count Unique Elements Per Cell — t_count_unique" />
 
-<meta property="og:description" content="An rtable format of coxph
-object for further annotation on top of Kaplan-Meier grob" />
+<meta property="og:description" content="Count the number of unique elements per cell." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -101,64 +100,74 @@ object for further annotation on top of Kaplan-Meier grob" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Proportional Hazards Regression Model Fit Summary Table</h1>
+    <h1>Count Unique Elements Per Cell</h1>
     
-    <div class="hidden name"><code>t_coxph.Rd</code></div>
+    <div class="hidden name"><code>t_count_unique.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>An <code><a href='http://www.rdocumentation.org/packages/rtables/topics/rtable'>rtable</a></code> format of <code><a href='http://www.rdocumentation.org/packages/survival/topics/coxph'>coxph</a></code>
-object for further annotation on top of Kaplan-Meier grob</p>
+    <p>Count the number of unique elements per cell.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>, <span class='kw'>info_coxph</span> <span class='kw'>=</span> <span class='st'>"Cox Porportional Hazard Model"</span>)</pre>
+    <pre class="usage"><span class='fu'>t_count_unique</span>(<span class='no'>x</span>, <span class='no'>col_by</span>, <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>row.name</span> <span class='kw'>=</span> <span class='st'>"number of unique elements"</span>, <span class='kw'>indent</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fit_coxph</th>
-      <td><p>a class <code>coxph</code> object.</p></td>
+      <th>x</th>
+      <td><p>a vector</p></td>
     </tr>
     <tr>
-      <th>info_coxph</th>
-      <td><p>label information for Cox PH model.</p></td>
+      <th>col_by</th>
+      <td><p>group variable that will be used for a column header. <code>col_by</code>
+has to be a factor and can not be missing. See 'Examples'.</p></td>
+    </tr>
+    <tr>
+      <th>col_N</th>
+      <td><p>associated number of elements per level of <code>col_by</code></p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an rtable</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-  <span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fl'>200</span>)),
-  <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>)
-)
-
-<span class='no'>fit_coxph</span> <span class='kw'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span> + <span class='fu'>strata</span>(<span class='no'>RACE</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>)
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>)
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                    HR                 95% CI of HR            Wald p-value  
-#&gt; ----------------------------------------------------------------------------
-#&gt; ARMB             0.8446             (0.5234, 1.363)              0.4892     
-#&gt; ARMC             0.8321             (0.4906, 1.4111)             0.4952     </div><div class='input'>
+<span class='fu'>t_count_unique</span>(
+ <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"id"</span>, <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"-"</span>),
+ <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>)),
+ <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>10</span>)
+)</div><div class='output co'>#&gt;                                     A               B               C    
+#&gt;                                   (N=2)           (N=4)           (N=10) 
+#&gt; -------------------------------------------------------------------------
+#&gt; number of unique elements        2 (100%)        1 (25%)         1 (10%) </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
     
+Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.waddell@roche.com</a>
+
+Carolyn Zhang (zhanc107) <a href='mailto:carolyn.zhang@duke.edu'>carolyn.zhang@duke.edu</a>
+
 Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
+
+Ting Qi (qit3) <a href='mailto:qit3@gene.com'>qit3@gene.com</a>
 
   </div>
 </div>

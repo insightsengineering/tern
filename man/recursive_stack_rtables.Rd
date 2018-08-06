@@ -8,9 +8,6 @@ recursive_stack_rtables(x)
 }
 \arguments{
 \item{x}{list with lists of rtables}
-
-\item{n}{number of rows to remove from tables that that are not first in the
-nested lists}
 }
 \value{
 rtable

@@ -23,7 +23,8 @@ grade}
 Grade-} by default}
 }
 \description{
-This function is used for deriving adverse events tables.
+This function is used for deriving adverse events tables, these are returned
+as nested lists.
 }
 \examples{
 
@@ -65,4 +66,13 @@ t_max_grade_per_id(
 )
 }
 
+}
+\author{
+Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+
+Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
+
+Heng Wang (wangh107) \email{wang.heng@gene.com}
+
+Ting Qi (qit3) \email{qit3@gene.com}
 }

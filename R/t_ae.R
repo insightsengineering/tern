@@ -260,6 +260,8 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
 #' 
 #' @inheritParams rtables::rtabulate
 #' @param x a vector
+#' @param col_by group variable that will be used for a column header. \code{col_by}
+#'  has to be a factor and can not be missing. See 'Examples'.
 #' @param col_N associated number of elements per level of \code{col_by}
 #' 
 #' @return an rtable
@@ -727,7 +729,7 @@ lt_ae_max_grade_term <- function(term,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients"
 #' )
-#' stack_rtables_d2(l_tbls)
+#' recursive_stack_rtables(l_tbls)
 #' 
 lt_ae_class_term <- function(class, term, id,  col_by, 
                              col_N = tapply(col_by, col_by, length),
@@ -775,8 +777,6 @@ lt_ae_class_term <- function(class, term, id,  col_by,
   )
   
   #  "Overall total number of events"
-  # 
-
   tbl_header <- rheader(
     rrowl(class_label, levels(df$col_by)),
     rrowl(term_label, col_N, format = "(N=xx)", indent = 1)
@@ -822,7 +822,6 @@ lt_ae_class_term <- function(class, term, id,  col_by,
   
   tbls 
 }
-
 
 
 
@@ -878,6 +877,8 @@ lt_ae_class_term <- function(class, term, id,  col_by,
 #'   total = "All Patients",
 #'   term_label = "MedDRA Preferred Term"
 #' )
+#' 
+#' fast_stack_rtables(l_tbls)
 #' 
 lt_ae_term <- function(term, 
                        id, 
@@ -998,8 +999,6 @@ nl_remove_n_first_rrows <- function(x, n=1, lower_childindex_threshold = 0) {
 #' can be optionally removed from the tables that are not first in the lists.
 #' 
 #' @param x list with lists of rtables
-#' @param n number of rows to remove from tables that that are not first in the
-#'   nested lists
 #' 
 #' @return rtable
 #' 

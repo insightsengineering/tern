@@ -8,25 +8,30 @@ t_ae_ctc(class, term, id, grade, col_by, col_N, total = "All Patients",
   grade_levels = 1:5)
 }
 \arguments{
-\item{class}{system organ class variable.}
+\item{class}{class information as character or factor vector}
 
-\item{term}{preferred term variable.}
+\item{term}{term information as character or factor vector, however factor
+levels are not repeated by class, only terms with count > 1 are listed per
+class}
 
-\item{id}{unique subject identifier variable. If a particular subject has no
-adverse event then the subject \code{id} should be listed where
-\code{class} and \code{term} should be set to missing (i.e. \code{NA}).}
+\item{id}{unique subject identifier. If a particular subject has no adverse
+event then that information needs to be added to the \code{col_N} argument.}
 
-\item{grade}{grade of adverse event variable.}
+\item{grade}{grade of adverse event as numeric}
 
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
 
-\item{total}{character string that will be used as a label for a column with 
-pooled total population, default is "All Patients".}
+\item{col_N}{numeric vector with information of the number of patients in the
+levels of \code{col_by}. This is useful if there are patients that have no
+adverse events can be accounted for with this argument.}
 
-\item{grade_levels}{ordered values of possible of grades in a form of
-\code{x:y}, default is \code{1:5}. This assures a proper fill in for
-grades, see 'Details'.}
+\item{total}{character string that will be used as a label for a column with 
+pooled total population, default is "All Patients". If the levels of col_by are 
+the only columns of interest then total should be \code{NULL}}
+
+\item{grade_levels}{numeric, ordered values of possible of grades in a form
+of \code{x:y}, default is \code{1:5}.}
 }
 \description{
 \code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
@@ -129,4 +134,6 @@ tbl
 Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}
 
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+
+Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
 }
