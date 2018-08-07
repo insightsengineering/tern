@@ -34,7 +34,8 @@
 #' 
 #' This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet04)}
 #'   (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html})
-#' @details this is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_bygrade(templates = aet04)}
+#' 
+#' This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_bygrade(templates = aet04)}
 #'   (\url{<https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501>})
 #'  
 #' @return \code{rtable} object

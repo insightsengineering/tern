@@ -34,8 +34,11 @@ the only columns of interest then total should be \code{NULL}}
 \code{t_ae} returns adverse events summary table that corresponds to STREAM template AET02
 }
 \details{
-this is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
+This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
   (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html})
+
+This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_basic(templates = aet02)}
+  (\url{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342})
 }
 \examples{
 # Simple example
