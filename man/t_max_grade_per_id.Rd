@@ -23,7 +23,7 @@ grade}
 Grade-} by default}
 }
 \description{
-This function is used for deriving adverse events tables, these are returned
+\code{t_max_grade_per_id} is used for deriving adverse events tables, these are returned
 as nested lists.
 }
 \examples{

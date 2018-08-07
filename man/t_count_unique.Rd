@@ -19,7 +19,7 @@ has to be a factor and can not be missing. See 'Examples'.}
 an rtable
 }
 \description{
-Count the number of unique elements per cell.
+\code{t_count_unique} counts the number of unique elements per cell.
 }
 \examples{
 

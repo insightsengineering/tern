@@ -144,7 +144,7 @@ t_ae <- function(class, term, id, col_by, col_N, total = "All Patients") {
 
 #' Tabulate maximum grade per id by \code{col_by}
 #' 
-#' This function is used for deriving adverse events tables, these are returned
+#' \code{t_max_grade_per_id} is used for deriving adverse events tables, these are returned
 #' as nested lists. 
 #'  
 #' @param grade a numeric vector with grade values
@@ -266,7 +266,7 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
 
 #' Count Unique Elements Per Cell
 #' 
-#' Count the number of unique elements per cell.
+#' \code{t_count_unique} counts the number of unique elements per cell.
 #' 
 #' @inheritParams rtables::rtabulate
 #' @param x a vector
@@ -969,7 +969,7 @@ lt_ae_term <- function(term,
 # Helper Functions Used to Convert the Nested Lists to Single AE tables ----
 
 
-#' remove firs n rows in a list of lists of rtables
+#' Remove first n rows in a list of lists of rtables
 #' 
 #' @noRd
 #' 
@@ -1004,8 +1004,8 @@ nl_remove_n_first_rrows <- function(x, n=1, lower_childindex_threshold = 0) {
 
 #' Stack Tables Stored in a nested list of depth 2
 #' 
-#' This function expects a list with lists of rtables to be stacked. Sometimes
-#' these tables have repeated information at the top and hence the firs n rows
+#' \code{recursive_stack_rtables} expects a list with lists of rtables to be stacked. Sometimes
+#' these tables have repeated information at the top and hence the first n rows
 #' can be optionally removed from the tables that are not first in the lists.
 #' 
 #' @param x list with lists of rtables

@@ -13,8 +13,8 @@ recursive_stack_rtables(x)
 rtable
 }
 \description{
-This function expects a list with lists of rtables to be stacked. Sometimes
-these tables have repeated information at the top and hence the firs n rows
+\code{recursive_stack_rtables} expects a list with lists of rtables to be stacked. Sometimes
+these tables have repeated information at the top and hence the first n rows
 can be optionally removed from the tables that are not first in the lists.
 }
 \examples{
