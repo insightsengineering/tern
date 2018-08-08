@@ -4,18 +4,21 @@
 \alias{lt_ae_max_grade_term}
 \title{List of Adverse Events Terms Tables By Highest Grade (Term only)}
 \usage{
-lt_ae_max_grade_term(term, id, grade, col_by, col_N = tapply(col_by, col_by,
-  length), total = "All Patients", grade_levels, term_label, grade_label)
+lt_ae_max_grade_term(terms_all, id, grade, col_by, col_N = tapply(col_by,
+  col_by, length), total = "All Patients", grade_levels)
 }
 \arguments{
-\item{term}{term information as character or factor vector, however factor
+\item{terms_all}{term information as character or factor dataframe, however factor
 levels are not repeated by class, only terms with count > 1 are listed per
-class}
+class. Currently \code{terms_all} can only be a dataframe with 1 column.
+\code{var_relabel} is used as the character string used as a label in the column header
+for each term.}
 
 \item{id}{unique subject identifier. If a particular subject has no adverse
 event then that information needs to be added to the \code{col_N} argument.}
 
-\item{grade}{grade of adverse event as numeric}
+\item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character 
+string used as a label in the column header for each grade.}
 
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
@@ -30,12 +33,6 @@ the only columns of interest then total should be \code{NULL}}
 
 \item{grade_levels}{numeric, ordered values of possible of grades in a form
 of \code{x:y}, default is \code{1:5}.}
-
-\item{term_label}{character string that will be used as a label in the column 
-heade for the term}
-
-\item{grade_label}{character string that will be used as a label in the column 
-heade for the grade}
 }
 \description{
 \code{lt_ae_max_grade_term} returns a nested list of adverse events tables by max
@@ -70,19 +67,35 @@ AAE <- cbind(
 
 ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
 
+terms_all <- data.frame(term = ANL$TERM, stringsAsFactors = FALSE)
+var_labels(terms_all) <- 'MedDRA Preferred Term'
+grade <- data.frame(grade = ANL$GRADE, stringsAsFactors = FALSE)
+var_labels(grade) <- 'Grade'
+
 l_tbls <- lt_ae_max_grade_term(
-  term = ANL$TERM,
+  terms_all = terms_all,
   id = ANL$USUBJID,
-  grade = ANL$GRADE,
+  grade = grade,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients",
-  grade_levels = 1:5,
-  term_label = 'MedDRA Preferred Term',
+  grade_levels = 1:5
 )
 
 do.call(fast_stack_rtables, l_tbls)
 
+\dontrun{
+#throws an error because term is not a dataframe
+l_tbls <- lt_ae_max_grade_term(
+  terms_all = ANL$TERM,
+  id = ANL$USUBJID,
+  grade = grade,
+  col_by = ANL$ARM,
+  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  total = "All Patients",
+  grade_levels = 1:5
+)
+}
 
 
 }

@@ -4,15 +4,15 @@
 \alias{lt_ae_class_term}
 \title{List of Adverse Events Terms Tables}
 \usage{
-lt_ae_class_term(class, term, id, col_by, col_N = tapply(col_by, col_by,
-  length), total = "All Patients", class_label, term_label)
+lt_ae_class_term(terms_all, id, col_by, col_N = tapply(col_by, col_by,
+  length), total = "All Patients")
 }
 \arguments{
-\item{class}{class information as character or factor vector}
-
-\item{term}{term information as character or factor vector, however factor
+\item{terms_all}{term information as character or factor dataframe, however factor
 levels are not repeated by class, only terms with count > 1 are listed per
-class}
+class. Currently \code{terms_all} can only be a dataframe with 2 columns.
+\code{var_relabel} is used as the character string used as a label in the column header
+for each term.}
 
 \item{id}{unique subject identifier. If a particular subject has no adverse
 event then that information needs to be added to the \code{col_N} argument.}
@@ -27,12 +27,6 @@ adverse events can be accounted for with this argument.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
-
-\item{class_label}{character string that will be used as a label in the column 
-heade for the class}
-
-\item{term_label}{character string that will be used as a label in the column 
-heade for the term}
 }
 \description{
 \code{lt_ae_max_grade_class_term} returns a nested list of adverse events tables 
@@ -69,15 +63,30 @@ AAE <- cbind(
 
 ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
 
+terms_all <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
+var_labels(terms_all) <- c("Class label", "Term label")
+
 l_tbls <- lt_ae_class_term(
-  class = ANL$CLASS,
-  term =  ANL$TERM,
+  terms_all = terms_all,
   id = ANL$USUBJID,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients"
 )
 recursive_stack_rtables(l_tbls)
+
+
+
+\dontrun{
+#throws an error because terms_all is not a dataframe
+l_tbls <- lt_ae_class_term(
+  terms_all =  ANL$TERM,
+  id = ANL$USUBJID,
+  col_by = ANL$ARM,
+  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  total = "All Patients"
+)
+}
 
 }
 \author{

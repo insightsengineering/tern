@@ -1,13 +1,13 @@
 
 #' Adverse Events Table by Highest NCI CTCAE Grade
 #' 
-#' \code{t_ae_ctc} returns adverse events sorted by highest NCI (National Cancer
+#' \code{t_events_per_term_grade_id} returns adverse events sorted by highest NCI (National Cancer
 #'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
 #' 
 #' @inheritParams lt_ae_max_grade_class_term
 #' 
 #' @details 
-#' \code{t_ae_ctc} counts patients according to adverse events (AEs) of greatest
+#' \code{t_events_per_term_grade_id} counts patients according to adverse events (AEs) of greatest
 #'  intensity for system organ class (SOC) and overall rows and includes 
 #'  percentages based on the total number of patients in the column heading 
 #'  (i.e. "N=nnn"). If the intention is to use patients number from subject level
@@ -18,15 +18,15 @@
 #'  multiple events within a patient of the same PT are counted once using the
 #'  greatest intensity reported. 
 #' 
-#' \code{t_ae_ctc} removes any non-complete records, e.g. if class or term are 
+#' \code{t_events_per_term_grade_id} removes any non-complete records, e.g. if class or term are 
 #'  missing. If the intent is to preserve such records, then impute missing 
-#'  values before using \code{t_ae_ctc}.
+#'  values before using \code{t_events_per_term_grade_id}.
 #'      
-#' \code{t_ae_ctc} orders data by "All Patients" column from the most commonly
+#' \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
 #'  reported SOC to the least frequent one. Within SOC, it sorts by decreasing
 #'  frequency of PT. It brakes ties using SOC/PT names in alphabetical order.   
 #' 
-#' \code{t_ae_ctc} fills in \code{col_by} and \code{grade} with \code{0} value 
+#' \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value 
 #' in case there was no AEs reported for particular \code{col_by} and/or 
 #' \code{grade} category. Use \code{grade_levels} to modify the range of existing
 #' grades. If data does not have any records with \code{grade} 5 and the intent 
@@ -77,11 +77,15 @@
 #' 
 #' ANL <- left_join(AAE, ASL, by = "USUBJID")
 #' 
-#' tbl <- t_ae_ctc(
-#'   class = ANL$CLASS,
-#'   term =  ANL$TERM,
+#' terms_all <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
+#' var_labels(terms_all) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
+#' grade <- data.frame(grade = as.numeric(ANL$GRADE), stringsAsFactors = FALSE)
+#' var_labels(grade) <- "Grade"
+#' 
+#' tbl <- t_events_per_term_grade_id(
+#'   terms_all = terms_all,
 #'   id = ANL$USUBJID,
-#'   grade = ANL$GRADE,
+#'   grade = grade,
 #'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients",
@@ -99,37 +103,36 @@
 #' 
 #' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
 #' 
-#' tbl <- with(ANL,
-#'             t_ae_ctc(
-#'               class = AEBODSYS,
-#'               term =  AEDECOD,
-#'               id = USUBJID,
-#'               grade = AETOXGR,
-#'               col_by = factor(ARM),
+#' terms_all <- data.frame(class = ANL$AEBODSYS, term = ANL$AEDECOD, stringsAsFactors = FALSE)
+#' var_labels(terms_all) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
+#' grade <- data.frame(grade = as.numeric(ANL$AETOXGR), stringsAsFactors = FALSE)
+#' var_labels(grade) <- "Grade"
+#' 
+#' tbl <- t_events_per_term_grade_id(
+#'               terms_all = terms_all,
+#'               id = ANL$USUBJID,
+#'               grade = grade,
+#'               col_by = factor(ANL$ARM),
 #'               total = "All Patients",
 #'               grade_levels = 1:5
 #'             )
-#' )
 #' 
 #' tbl
 #' 
-t_ae_ctc <- function(class, term, id, grade, col_by, col_N, total = "All Patients", grade_levels = 1:5) {
+t_events_per_term_grade_id <- function(terms_all, id, grade, col_by, col_N, total = "All Patients", grade_levels = 1:5) {
   
   
   if (missing(col_N)) col_N <- tapply(col_by, col_by, length)
+  if(!is.data.frame(terms_all) || ncol(terms_all) != 2) stop("terms_all must be a dataframe with two columns")
   
   l_tbls <- lt_ae_max_grade_class_term(
-    class = class,
-    term = term,
+    terms_all = terms_all,
     id = id,
     grade = grade,
     col_by = col_by,
     col_N = col_N,
     total = total,
-    grade_levels = grade_levels,
-    class_label = 'MedDRA System Organ Class',
-    term_label = 'MedDRA Preferred Term',
-    grade_label = "Grade"
+    grade_levels = grade_levels
   )
   
   n_cols <- ncol(l_tbls[[1]][[1]])

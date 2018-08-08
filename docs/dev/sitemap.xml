@@ -61,16 +61,19 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/tern-package.html</loc>
   </url>
   <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_ae.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_ae_ctc.html</loc>
-  </url>
-  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_count_unique.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_coxph.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_events_per_term_grade_id.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_events_per_term_id.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_events_summary.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_forest_rsp.html</loc>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Adverse Events by System Organ Class and Preferred Term — t_ae • tern</title>
+<title>Adverse Events by System Organ Class and Preferred Term — t_events_per_term_id • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Adverse Events by System Organ Class and Preferred Term — t_ae" />
+<meta property="og:title" content="Adverse Events by System Organ Class and Preferred Term — t_events_per_term_id" />
 
-<meta property="og:description" content="t_ae returns adverse events summary table that corresponds to STREAM template AET02" />
+<meta property="og:description" content="t_events_per_term_id returns adverse events summary table that corresponds to STREAM template AET02" />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -102,16 +102,16 @@
     <div class="page-header">
     <h1>Adverse Events by System Organ Class and Preferred Term</h1>
     
-    <div class="hidden name"><code>t_ae.Rd</code></div>
+    <div class="hidden name"><code>t_events_per_term_id.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>t_ae</code> returns adverse events summary table that corresponds to STREAM template AET02</p>
+    <p><code>t_events_per_term_id</code> returns adverse events summary table that corresponds to STREAM template AET02</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_ae</span>(<span class='no'>terms_all</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</pre>
+    <pre class="usage"><span class='fu'>t_events_per_term_id</span>(<span class='no'>terms_all</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,7 +193,7 @@ the only columns of interest then total should be <code>NULL</code></p></td>
 <span class='no'>terms_all</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>CLASS</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>TERM</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms_all</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'MedDRA System Organ Class'</span>, <span class='st'>'MedDRA Preferred Term'</span>)
 
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_ae</span>(
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_events_per_term_id</span>(
   <span class='kw'>terms_all</span> <span class='kw'>=</span> <span class='no'>terms_all</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
@@ -237,149 +237,151 @@ the only columns of interest then total should be <code>NULL</code></p></td>
 <span class='no'>terms_all</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AEBODSYS</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AEDECOD</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms_all</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'MedDRA System Organ Class'</span>, <span class='st'>'MedDRA Preferred Term'</span>)
 
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_ae</span>(<span class='kw'>terms_all</span> <span class='kw'>=</span> <span class='no'>terms_all</span>,
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_events_per_term_id</span>(<span class='kw'>terms_all</span> <span class='kw'>=</span> <span class='no'>terms_all</span>,
             <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
             <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),
             <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>
             )
 
 <span class='no'>tbl</span></div><div class='output co'>#&gt; MedDRA System Organ Class                                                     ARM A               ARM B            All Patients
-#&gt;   MedDRA Preferred Term                                                       (N=49)              (N=10)              (N=59)   
+#&gt;   MedDRA Preferred Term                                                       (N=40)              (N=23)              (N=63)   
 #&gt; -------------------------------------------------------------------------------------------------------------------------------
 #&gt; - Any Adverse Event -
-#&gt;   Overall total number of events                                                49                  10                  59     
-#&gt;   Overall total number of patients with at least one adverse event          9 (18.37%)           1 (10%)           10 (16.95%) 
+#&gt;   Overall total number of events                                                40                  23                  63     
+#&gt;   Overall total number of patients with at least one adverse event           6 (15%)            4 (17.39%)         10 (15.87%) 
 #&gt; 
 #&gt; Investigations
-#&gt;   Total number of events                                                        12                  3                   15     
-#&gt;   Total number of patients with at least one adverse event                  5 (10.2%)            1 (10%)            6 (10.17%) 
-#&gt;   Carbon dioxide combining power decreased                                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Ehrlichia test                                                            1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Prekallikrein test                                                        1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Chest scan                                                                1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Biopsy heart normal                                                       1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Xanthochromia                                                             1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Bile culture                                                              1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Secretion gastric absent                                                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Blood cholinesterase                                                      1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Anti-glomerular basement membrane antibody                                1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Metamyelocyte count                                                       1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Physical thyroid examination                                                0 (0%)             1 (10%)            1 (1.69%)  
-#&gt;   CSF specific gravity                                                        0 (0%)             1 (10%)            1 (1.69%)  
-#&gt;   Fluoride increased                                                          0 (0%)             1 (10%)            1 (1.69%)  
-#&gt;   Blood bromide                                                             1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt;   Total number of events                                                        6                   7                   13     
+#&gt;   Total number of patients with at least one adverse event                  5 (12.5%)           4 (17.39%)          9 (14.29%) 
+#&gt;   Hepcidin test                                                               0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Peripheral nervous system function test abnormal                           1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Matrix metalloproteinase-3                                                  0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Urine cotinine test negative                                                0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Model for end stage liver disease score                                     0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Renal scan                                                                 1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   CSF neutrophil count decreased                                             1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Cytomegalovirus test                                                        0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Iron binding capacity unsaturated increased                                1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Visual evoked potentials abnormal                                          1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Blood lead abnormal                                                        1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Troponin T normal                                                           0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Carbon monoxide diffusing capacity                                          0 (0%)            1 (4.35%)           1 (1.59%)  
 #&gt; 
-#&gt; Injury, poisoning and procedural complications
-#&gt;   Total number of events                                                        3                   2                   5      
-#&gt;   Total number of patients with at least one adverse event                  3 (6.12%)            1 (10%)            4 (6.78%)  
-#&gt;   Graft ischaemia                                                           1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Cutaneous loxoscelism                                                     1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Skin graft detachment                                                     1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Puncture site pain                                                          0 (0%)             1 (10%)            1 (1.69%)  
-#&gt;   Aqueous humour leakage                                                      0 (0%)             1 (10%)            1 (1.69%)  
-#&gt; 
-#&gt; Respiratory, thoracic and mediastinal disorders
-#&gt;   Total number of events                                                        4                   1                   5      
-#&gt;   Total number of patients with at least one adverse event                  4 (8.16%)            1 (10%)            5 (8.47%)  
-#&gt;   Respiratory tract oedema                                                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Tracheal ulcer                                                            1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Reactive airways dysfunction syndrome                                     1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Portopulmonary hypertension                                                 0 (0%)             1 (10%)            1 (1.69%)  
-#&gt;   Young's syndrome                                                          1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt; 
-#&gt; Nervous system disorders
-#&gt;   Total number of events                                                        2                   2                   4      
-#&gt;   Total number of patients with at least one adverse event                  2 (4.08%)            1 (10%)            3 (5.08%)  
-#&gt;   Intracranial aneurysm                                                     1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Spinal meningioma malignant                                               1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Cerebral toxoplasmosis                                                      0 (0%)             1 (10%)            1 (1.69%)  
-#&gt;   Glycogen storage disease type III                                           0 (0%)             1 (10%)            1 (1.69%)  
-#&gt; 
-#&gt; Skin and subcutaneous tissue disorders
-#&gt;   Total number of events                                                        4                   NA                  4      
-#&gt;   Total number of patients with at least one adverse event                  3 (6.12%)             0 (0%)            3 (5.08%)  
-#&gt;   Administration site eczema                                                1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Erythema elevatum diutinum                                                1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Eyelid rash                                                               1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Eyelid bleeding                                                           1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt; 
-#&gt; Surgical and medical procedures
-#&gt;   Total number of events                                                        3                   1                   4      
-#&gt;   Total number of patients with at least one adverse event                  2 (4.08%)            1 (10%)            3 (5.08%)  
-#&gt;   Fiducial marker placement                                                 1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Therapeutic nerve ablation                                                1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Muscle reattachment                                                       1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Myopia correction                                                           0 (0%)             1 (10%)            1 (1.69%)  
-#&gt; 
-#&gt; Gastrointestinal disorders
-#&gt;   Total number of events                                                        3                   NA                  3      
-#&gt;   Total number of patients with at least one adverse event                  2 (4.08%)             0 (0%)            2 (3.39%)  
-#&gt;   Abdominal wall anomaly                                                    1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Gastroenteritis paracolon bacillus                                        1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Eosinophilic oesophagitis                                                 1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt; Infections and infestations
+#&gt;   Total number of events                                                        4                   2                   6      
+#&gt;   Total number of patients with at least one adverse event                   4 (10%)            1 (4.35%)           5 (7.94%)  
+#&gt;   Prostate infection                                                         1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Cholecystitis infective                                                    1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Malignant syphilis                                                         1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Pyelonephritis acute                                                       1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Ear tuberculosis                                                            0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Milker's nodules                                                            0 (0%)            1 (4.35%)           1 (1.59%)  
 #&gt; 
 #&gt; General disorders and administration site conditions
-#&gt;   Total number of events                                                        3                   NA                  3      
-#&gt;   Total number of patients with at least one adverse event                  3 (6.12%)             0 (0%)            3 (5.08%)  
-#&gt;   Postoperative hernia                                                      1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Pelvic fibrosis                                                           1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Vessel puncture site inflammation                                         1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt;   Total number of events                                                        3                   2                   5      
+#&gt;   Total number of patients with at least one adverse event                   3 (7.5%)            2 (8.7%)           5 (7.94%)  
+#&gt;   Administration site photosensitivity reaction                               0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Deficiency of the interleukin-1 receptor antagonist                        1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Drug interaction                                                           1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Vaccination site cyst                                                      1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Infusion site abscess sterile                                               0 (0%)            1 (4.35%)           1 (1.59%)  
 #&gt; 
-#&gt; Musculoskeletal and connective tissue disorders
-#&gt;   Total number of events                                                        3                   NA                  3      
-#&gt;   Total number of patients with at least one adverse event                  3 (6.12%)             0 (0%)            3 (5.08%)  
-#&gt;   Gout                                                                      1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Serotonin syndrome                                                        1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Myopathy endocrine                                                        1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt; Gastrointestinal disorders
+#&gt;   Total number of events                                                        3                   1                   4      
+#&gt;   Total number of patients with at least one adverse event                   3 (7.5%)           1 (4.35%)           4 (6.35%)  
+#&gt;   Defaecation disorder                                                       1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Tongue disorder                                                            1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Mouth haemorrhage                                                          1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Peritoneal lesion                                                           0 (0%)            1 (4.35%)           1 (1.59%)  
 #&gt; 
-#&gt; Vascular disorders
-#&gt;   Total number of events                                                        3                   NA                  3      
-#&gt;   Total number of patients with at least one adverse event                  2 (4.08%)             0 (0%)            2 (3.39%)  
-#&gt;   Aortic wall hypertrophy                                                   1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Portal fibrosis                                                           1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Stomatitis haemorrhagic                                                   1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt; Injury, poisoning and procedural complications
+#&gt;   Total number of events                                                        2                   2                   4      
+#&gt;   Total number of patients with at least one adverse event                   1 (2.5%)           1 (4.35%)           2 (3.17%)  
+#&gt;   Radiation neuropathy                                                       1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Catheter site abscess                                                      1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Application site scar                                                       0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Application site photosensitivity reaction                                  0 (0%)            1 (4.35%)           1 (1.59%)  
 #&gt; 
-#&gt; Congenital, familial and genetic disorders
+#&gt; Neoplasms benign, malignant and unspecified (incl cysts and polyps)
+#&gt;   Total number of events                                                        3                   1                   4      
+#&gt;   Total number of patients with at least one adverse event                   3 (7.5%)           1 (4.35%)           4 (6.35%)  
+#&gt;   Malignant neoplasm of spermatic cord                                       1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Benign laryngeal neoplasm                                                   0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Testicular teratoma benign                                                 1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Chondromatosis                                                             1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Nervous system disorders
+#&gt;   Total number of events                                                        3                   NA                  3      
+#&gt;   Total number of patients with at least one adverse event                   3 (7.5%)             0 (0%)            3 (4.76%)  
+#&gt;   Idioglossia                                                                1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Parkinsonian crisis                                                        1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Psychiatric disorders
+#&gt;   Total number of events                                                        2                   1                   3      
+#&gt;   Total number of patients with at least one adverse event                    2 (5%)            1 (4.35%)           3 (4.76%)  
+#&gt;   Change in sustained attention                                               0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Thermophobia                                                               1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Delayed sleep phase                                                        1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Surgical and medical procedures
+#&gt;   Total number of events                                                        1                   2                   3      
+#&gt;   Total number of patients with at least one adverse event                   1 (2.5%)            2 (8.7%)           3 (4.76%)  
+#&gt;   Low-level laser therapy                                                     0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Intra-uterine contraceptive device                                          0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Adrenocortical steroid therapy                                             1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Blood and lymphatic system disorders
 #&gt;   Total number of events                                                        2                   NA                  2      
-#&gt;   Total number of patients with at least one adverse event                  2 (4.08%)             0 (0%)            2 (3.39%)  
-#&gt;   Congenital hearing disorder                                               1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Extrarenal pelvis                                                         1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt; 
-#&gt; Immune system disorders
-#&gt;   Total number of events                                                        1                   1                   2      
-#&gt;   Total number of patients with at least one adverse event                  1 (2.04%)            1 (10%)            2 (3.39%)  
-#&gt;   Tongue oedema                                                             1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Implant site urticaria                                                      0 (0%)             1 (10%)            1 (1.69%)  
+#&gt;   Total number of patients with at least one adverse event                    2 (5%)              0 (0%)            2 (3.17%)  
+#&gt;   Malignant histiocytosis                                                    1 (2.5%)             0 (0%)            1 (1.59%)  
 #&gt; 
 #&gt; Cardiac disorders
-#&gt;   Total number of events                                                        1                   NA                  1      
-#&gt;   Total number of patients with at least one adverse event                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Corrected transposition of great vessels                                  1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt;   Total number of events                                                        2                   NA                  2      
+#&gt;   Total number of patients with at least one adverse event                    2 (5%)              0 (0%)            2 (3.17%)  
+#&gt;   Foetal heart rate disorder                                                 1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Immune system disorders
+#&gt;   Total number of events                                                        NA                  2                   2      
+#&gt;   Total number of patients with at least one adverse event                    0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Reaction to preservatives                                                   0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt; 
+#&gt; Musculoskeletal and connective tissue disorders
+#&gt;   Total number of events                                                        1                   1                   2      
+#&gt;   Total number of patients with at least one adverse event                   1 (2.5%)           1 (4.35%)           2 (3.17%)  
+#&gt;   Extraskeletal ossification                                                  0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt;   Perichondritis                                                             1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Reproductive system and breast disorders
+#&gt;   Total number of events                                                        2                   NA                  2      
+#&gt;   Total number of patients with at least one adverse event                    2 (5%)              0 (0%)            2 (3.17%)  
+#&gt;   Vaginal cancer stage I                                                     1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Social circumstances
+#&gt;   Total number of events                                                        1                   1                   2      
+#&gt;   Total number of patients with at least one adverse event                   1 (2.5%)           1 (4.35%)           2 (3.17%)  
+#&gt;   Circumcised                                                                1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt;   Refusal of treatment by patient                                             0 (0%)            1 (4.35%)           1 (1.59%)  
+#&gt; 
+#&gt; Vascular disorders
+#&gt;   Total number of events                                                        2                   NA                  2      
+#&gt;   Total number of patients with at least one adverse event                    2 (5%)              0 (0%)            2 (3.17%)  
+#&gt;   Pulmonary contusion                                                        1 (2.5%)             0 (0%)            1 (1.59%)  
+#&gt; 
+#&gt; Congenital, familial and genetic disorders
+#&gt;   Total number of events                                                        NA                  1                   1      
+#&gt;   Total number of patients with at least one adverse event                    0 (0%)            1 (4.35%)           1 (1.59%)  
 #&gt; 
 #&gt; Endocrine disorders
 #&gt;   Total number of events                                                        1                   NA                  1      
-#&gt;   Total number of patients with at least one adverse event                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Growth accelerated                                                        1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt;   Total number of patients with at least one adverse event                   1 (2.5%)             0 (0%)            1 (1.59%)  
 #&gt; 
-#&gt; Hepatobiliary disorders
+#&gt; Respiratory, thoracic and mediastinal disorders
 #&gt;   Total number of events                                                        1                   NA                  1      
-#&gt;   Total number of patients with at least one adverse event                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Hepatitis B reactivation                                                  1 (2.04%)             0 (0%)            1 (1.69%)  
+#&gt;   Total number of patients with at least one adverse event                   1 (2.5%)             0 (0%)            1 (1.59%)  
 #&gt; 
-#&gt; Infections and infestations
+#&gt; Skin and subcutaneous tissue disorders
 #&gt;   Total number of events                                                        1                   NA                  1      
-#&gt;   Total number of patients with at least one adverse event                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Infective pericardial effusion                                            1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt; 
-#&gt; Metabolism and nutrition disorders
-#&gt;   Total number of events                                                        1                   NA                  1      
-#&gt;   Total number of patients with at least one adverse event                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Abnormal weight gain                                                      1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt; 
-#&gt; Neoplasms benign, malignant and unspecified (incl cysts and polyps)
-#&gt;   Total number of events                                                        1                   NA                  1      
-#&gt;   Total number of patients with at least one adverse event                  1 (2.04%)             0 (0%)            1 (1.69%)  
-#&gt;   Malignant nipple neoplasm male                                            1 (2.04%)             0 (0%)            1 (1.69%)  </div><div class='input'>
+#&gt;   Total number of patients with at least one adverse event                   1 (2.5%)             0 (0%)            1 (1.59%)  </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

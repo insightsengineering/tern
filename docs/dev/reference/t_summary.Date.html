@@ -135,15 +135,15 @@ into columns use the <code>no_by</code> function.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>today</span> <span class='kw'>&lt;-</span> <span class='fu'>Sys.Date</span>())</div><div class='output co'>#&gt; [1] "2018-08-07"</div><div class='input'>(<span class='no'>tenweeks</span> <span class='kw'>&lt;-</span> <span class='fu'>seq</span>(<span class='no'>today</span>, <span class='kw'>length.out</span><span class='kw'>=</span><span class='fl'>10</span>, <span class='kw'>by</span><span class='kw'>=</span><span class='st'>"1 week"</span>))</div><div class='output co'>#&gt;  [1] "2018-08-07" "2018-08-14" "2018-08-21" "2018-08-28" "2018-09-04"
-#&gt;  [6] "2018-09-11" "2018-09-18" "2018-09-25" "2018-10-02" "2018-10-09"</div><div class='input'><span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>tenweeks</span>, <span class='fu'>no_by</span>(<span class='st'>"all"</span>))</div><div class='output co'>#&gt;                                 all           
+    <pre class="examples"><div class='input'>(<span class='no'>today</span> <span class='kw'>&lt;-</span> <span class='fu'>Sys.Date</span>())</div><div class='output co'>#&gt; [1] "2018-08-08"</div><div class='input'>(<span class='no'>tenweeks</span> <span class='kw'>&lt;-</span> <span class='fu'>seq</span>(<span class='no'>today</span>, <span class='kw'>length.out</span><span class='kw'>=</span><span class='fl'>10</span>, <span class='kw'>by</span><span class='kw'>=</span><span class='st'>"1 week"</span>))</div><div class='output co'>#&gt;  [1] "2018-08-08" "2018-08-15" "2018-08-22" "2018-08-29" "2018-09-05"
+#&gt;  [6] "2018-09-12" "2018-09-19" "2018-09-26" "2018-10-03" "2018-10-10"</div><div class='input'><span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>tenweeks</span>, <span class='fu'>no_by</span>(<span class='st'>"all"</span>))</div><div class='output co'>#&gt;                                 all           
 #&gt;                                (N=10)         
 #&gt; ----------------------------------------------
-#&gt; range of dates        2018-08-07 to 2018-10-09</div><div class='input'>
+#&gt; range of dates        2018-08-08 to 2018-10-10</div><div class='input'>
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>tenweeks</span>, <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>4</span>)]))</div><div class='output co'>#&gt;                                  A                               B                               C                               D            
 #&gt;                                (N=3)                           (N=2)                           (N=3)                           (N=2)          
 #&gt; ----------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; range of dates        2018-08-07 to 2018-08-21        2018-08-28 to 2018-09-04        2018-09-11 to 2018-09-25        2018-10-02 to 2018-10-09</div></pre>
+#&gt; range of dates        2018-08-08 to 2018-08-22        2018-08-29 to 2018-09-05        2018-09-12 to 2018-09-26        2018-10-03 to 2018-10-10</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
