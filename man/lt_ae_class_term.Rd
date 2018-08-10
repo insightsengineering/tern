@@ -4,13 +4,13 @@
 \alias{lt_ae_class_term}
 \title{List of Adverse Events Terms Tables}
 \usage{
-lt_ae_class_term(terms_all, id, col_by, col_N = tapply(col_by, col_by,
-  length), total = "All Patients")
+lt_ae_class_term(terms, id, col_by, col_N = tapply(col_by, col_by, length),
+  total = "All Patients")
 }
 \arguments{
-\item{terms_all}{term information as character or factor dataframe, however factor
+\item{terms}{term information as character or factor dataframe, however factor
 levels are not repeated by class, only terms with count > 1 are listed per
-class. Currently \code{terms_all} can only be a dataframe with 2 columns.
+class. Currently \code{terms} can only be a dataframe with 2 columns.
 \code{var_relabel} is used as the character string used as a label in the column header
 for each term.}
 
@@ -63,11 +63,11 @@ AAE <- cbind(
 
 ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
 
-terms_all <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-var_labels(terms_all) <- c("Class label", "Term label")
+terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
+var_labels(terms) <- c("Class label", "Term label")
 
 l_tbls <- lt_ae_class_term(
-  terms_all = terms_all,
+  terms = terms,
   id = ANL$USUBJID,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
@@ -78,9 +78,9 @@ recursive_stack_rtables(l_tbls)
 
 
 \dontrun{
-#throws an error because terms_all is not a dataframe
+#throws an error because terms is not a dataframe
 l_tbls <- lt_ae_class_term(
-  terms_all =  ANL$TERM,
+  terms =  ANL$TERM,
   id = ANL$USUBJID,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),

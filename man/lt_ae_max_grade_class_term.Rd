@@ -4,14 +4,13 @@
 \alias{lt_ae_max_grade_class_term}
 \title{List of Adverse Events Terms Tables by Highest Grade}
 \usage{
-lt_ae_max_grade_class_term(terms_all, id, grade, col_by,
-  col_N = tapply(col_by, col_by, length), total = "All Patients",
-  grade_levels)
+lt_ae_max_grade_class_term(terms, id, grade, col_by, col_N = tapply(col_by,
+  col_by, length), total = "All Patients", grade_levels)
 }
 \arguments{
-\item{terms_all}{term information as character or factor dataframe, however factor
+\item{terms}{term information as character or factor dataframe, however factor
 levels are not repeated by class, only terms with count > 1 are listed per
-class. Currently \code{terms_all} can only be a dataframe with 2 columns.
+class. Currently \code{terms} can only be a dataframe with 2 columns.
 \code{var_relabel} is used as the character string used as a label in the column header
 for each term.}
 
@@ -71,13 +70,13 @@ AAE <- cbind(
 
 ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
 
-terms_all <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-var_labels(terms_all) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
+terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
+var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
 grade <- data.frame(grade = ANL$GRADE, stringsAsFactors = FALSE)
 var_labels(grade) <- "Grade"
 
 l_tbls <- lt_ae_max_grade_class_term(
-  terms_all = terms_all,
+  terms = terms,
   id = ANL$USUBJID,
   grade = grade,
   col_by = factor(ANL$ARM),
@@ -98,13 +97,13 @@ AAE <- osprey::rADAE
   
 head(AAE)
 
-terms_all <- data.frame(class = AAE$AESOC, term = AAE$AEDECOD, stringsAsFactors = FALSE)
-var_labels(terms_all) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
+terms <- data.frame(class = AAE$AESOC, term = AAE$AEDECOD, stringsAsFactors = FALSE)
+var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
 grade <- data.frame(grade = as.numeric(AAE$AETOXGR), stringsAsFactors = FALSE)
 var_labels(grade) <- "Grade"
 
 l_tbls <- lt_ae_max_grade_class_term(
-  terms_all = terms_all,
+  terms = terms,
   id = AAE$USUBJID,
   grade = grade,
   col_by = factor(AAE$ARM),

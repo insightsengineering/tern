@@ -113,17 +113,17 @@ grade (<code><a href='t_max_grade_per_id.html'>t_max_grade_per_id</a></code>).</
     
     </div>
 
-    <pre class="usage"><span class='fu'>lt_ae_max_grade_term</span>(<span class='no'>terms_all</span>, <span class='no'>id</span>, <span class='no'>grade</span>, <span class='no'>col_by</span>, <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>tapply</span>(<span class='no'>col_by</span>,
-  <span class='no'>col_by</span>, <span class='no'>length</span>), <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>, <span class='no'>grade_levels</span>)</pre>
+    <pre class="usage"><span class='fu'>lt_ae_max_grade_term</span>(<span class='no'>terms</span>, <span class='no'>id</span>, <span class='no'>grade</span>, <span class='no'>col_by</span>, <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>tapply</span>(<span class='no'>col_by</span>, <span class='no'>col_by</span>,
+  <span class='no'>length</span>), <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>, <span class='no'>grade_levels</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>terms_all</th>
+      <th>terms</th>
       <td><p>term information as character or factor dataframe, however factor
 levels are not repeated by class, only terms with count &gt; 1 are listed per
-class. Currently <code>terms_all</code> can only be a dataframe with 1 column.
+class. Currently <code>terms</code> can only be a dataframe with 1 column.
 <code>var_relabel</code> is used as the character string used as a label in the column header
 for each term.</p></td>
     </tr>
@@ -191,13 +191,13 @@ of <code>x:y</code>, default is <code>1:5</code>.</p></td>
 
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>AAE</span>, <span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"ARM"</span>)], <span class='kw'>by</span> <span class='kw'>=</span><span class='st'>"USUBJID"</span>)
 
-<span class='no'>terms_all</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>TERM</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms_all</span>) <span class='kw'>&lt;-</span> <span class='st'>'MedDRA Preferred Term'</span>
+<span class='no'>terms</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>TERM</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms</span>) <span class='kw'>&lt;-</span> <span class='st'>'MedDRA Preferred Term'</span>
 <span class='no'>grade</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>grade</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>GRADE</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>grade</span>) <span class='kw'>&lt;-</span> <span class='st'>'Grade'</span>
 
 <span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='fu'>lt_ae_max_grade_term</span>(
-  <span class='kw'>terms_all</span> <span class='kw'>=</span> <span class='no'>terms_all</span>,
+  <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>terms</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>grade</span> <span class='kw'>=</span> <span class='no'>grade</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
@@ -260,7 +260,7 @@ of <code>x:y</code>, default is <code>1:5</code>.</p></td>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'>#throws an error because term is not a dataframe</span>
 <span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='fu'>lt_ae_max_grade_term</span>(
-  <span class='kw'>terms_all</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>TERM</span>,
+  <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>TERM</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>grade</span> <span class='kw'>=</span> <span class='no'>grade</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,

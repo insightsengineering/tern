@@ -113,17 +113,17 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_events_per_term_grade_id</span>(<span class='no'>terms_all</span>, <span class='no'>id</span>, <span class='no'>grade</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>,
+    <pre class="usage"><span class='fu'>t_events_per_term_grade_id</span>(<span class='no'>terms</span>, <span class='no'>id</span>, <span class='no'>grade</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>,
   <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>, <span class='kw'>grade_levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>terms_all</th>
+      <th>terms</th>
       <td><p>term information as character or factor dataframe, however factor
 levels are not repeated by class, only terms with count &gt; 1 are listed per
-class. Currently <code>terms_all</code> can only be a dataframe with 2 columns.
+class. Currently <code>terms</code> can only be a dataframe with 2 columns.
 <code>var_relabel</code> is used as the character string used as a label in the column header
 for each term.</p></td>
     </tr>
@@ -224,13 +224,13 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
 
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>AAE</span>, <span class='no'>ASL</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"USUBJID"</span>)
 
-<span class='no'>terms_all</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>CLASS</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>TERM</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms_all</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'MedDRA System Organ Class'</span>, <span class='st'>'MedDRA Preferred Term'</span>)
+<span class='no'>terms</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>CLASS</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>TERM</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'MedDRA System Organ Class'</span>, <span class='st'>'MedDRA Preferred Term'</span>)
 <span class='no'>grade</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>grade</span> <span class='kw'>=</span> <span class='fu'>as.numeric</span>(<span class='no'>ANL</span>$<span class='no'>GRADE</span>), <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>grade</span>) <span class='kw'>&lt;-</span> <span class='st'>"Grade"</span>
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_events_per_term_grade_id</span>(
-  <span class='kw'>terms_all</span> <span class='kw'>=</span> <span class='no'>terms_all</span>,
+  <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>terms</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>grade</span> <span class='kw'>=</span> <span class='no'>grade</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
@@ -304,13 +304,13 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
 
 <span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>AAE</span>, <span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>, <span class='no'>ARM</span>), <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"STUDYID"</span>, <span class='st'>"USUBJID"</span>))
 
-<span class='no'>terms_all</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AEBODSYS</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AEDECOD</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms_all</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'MedDRA System Organ Class'</span>, <span class='st'>'MedDRA Preferred Term'</span>)
+<span class='no'>terms</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AEBODSYS</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>AEDECOD</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>terms</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'MedDRA System Organ Class'</span>, <span class='st'>'MedDRA Preferred Term'</span>)
 <span class='no'>grade</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>grade</span> <span class='kw'>=</span> <span class='fu'>as.numeric</span>(<span class='no'>ANL</span>$<span class='no'>AETOXGR</span>), <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='var_labels.html'>var_labels</a></span>(<span class='no'>grade</span>) <span class='kw'>&lt;-</span> <span class='st'>"Grade"</span>
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_events_per_term_grade_id</span>(
-              <span class='kw'>terms_all</span> <span class='kw'>=</span> <span class='no'>terms_all</span>,
+              <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>terms</span>,
               <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
               <span class='kw'>grade</span> <span class='kw'>=</span> <span class='no'>grade</span>,
               <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),

@@ -4,12 +4,12 @@
 \alias{t_events_per_term_id}
 \title{Adverse Events by System Organ Class and Preferred Term}
 \usage{
-t_events_per_term_id(terms_all, id, col_by, col_N, total = "All Patients")
+t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients")
 }
 \arguments{
-\item{terms_all}{term information as character or factor dataframe, however factor
+\item{terms}{term information as character or factor dataframe, however factor
 levels are not repeated by class, only terms with count > 1 are listed per
-class. Currently \code{terms_all} can only be a dataframe with 2 columns.
+class. Currently \code{terms} can only be a dataframe with 2 columns.
 \code{var_relabel} is used as the character string used as a label in the column header
 for each term.}
 
@@ -70,11 +70,11 @@ AAE <- cbind(
 
 ANL <- left_join(AAE, ASL, by = "USUBJID")
 
-terms_all <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-var_labels(terms_all) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
+terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
+var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
 
 tbl <- t_events_per_term_id(
-  terms_all = terms_all,
+  terms = terms,
   id = ANL$USUBJID,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
@@ -92,10 +92,10 @@ AAE <- radam("AAE", ADSL = ASL)
 
 ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
 
-terms_all <- data.frame(class = ANL$AEBODSYS, term = ANL$AEDECOD, stringsAsFactors = FALSE)
-var_labels(terms_all) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
+terms <- data.frame(class = ANL$AEBODSYS, term = ANL$AEDECOD, stringsAsFactors = FALSE)
+var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
 
-tbl <- t_events_per_term_id(terms_all = terms_all,
+tbl <- t_events_per_term_id(terms = terms,
             id = ANL$USUBJID,
             col_by = factor(ANL$ARM),
             total = "All Patients"
