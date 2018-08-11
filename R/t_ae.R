@@ -5,6 +5,11 @@
 #' \code{t_events_per_term_grade_id} returns adverse events sorted by highest NCI (National Cancer
 #'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
 #' 
+#' @param terms term information as character or factor vector or dataframe, however factor
+#'   levels are not repeated by class, only terms with count > 1 are listed per
+#'   class. Currently \code{terms} can only be a vector or dataframe with 1/2 column.
+#'   \code{var_relabel} is used as the character string used as a label in the column header
+#'   for each term.
 #' @inheritParams lt_ae_max_grade_class_term
 #' 
 #' @details 
@@ -46,7 +51,7 @@
 #' @template author_manukyae
 #' @template author_waddella
 #' @template author_zhanc107
-#'  
+#' @template author_wangh107 
 #'  
 #' @examples 
 #' # Simple example
@@ -95,6 +100,22 @@
 #' 
 #' tbl
 #' 
+#' terms <- data.frame(term = ANL$TERM, stringsAsFactors = FALSE)
+#' var_labels(terms) <-  'MedDRA Preferred Term'
+#' #terms <- ANL$TERM
+#' #attr(terms, "label") <- 'MedDRA Preferred Term' 
+#' tbl2 <- t_events_per_term_grade_id(
+#'   terms = terms,
+#'   id = ANL$USUBJID,
+#'   grade = grade,
+#'   col_by = ANL$ARM,
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = "All Patients",
+#'   grade_levels = 1:3
+#' )
+#' 
+#' tbl2
+#' 
 #' # Example using dummy data
 #' library(random.cdisc.data)
 #' library(dplyr)
@@ -121,9 +142,41 @@
 #' tbl
 #' 
 t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = "All Patients", grade_levels = 1:5) {
-#NEED TO ADD OPTION FOR SINGLE DEPTH  
+
   
   if (missing(col_N)) col_N <- tapply(col_by, col_by, length)
+  
+  if (is.null(terms)) stop("terms can't be NULL")
+  if (is(terms, "vector")){
+    label <- attr(terms, "label")
+    terms <- data.frame(term = terms, stringsAsFactors = FALSE)
+    if (!is.null(label)) var_labels(terms) <- label
+  }  
+  
+  if (is(terms, "data.frame") && ncol(terms) == 1){
+    l_tbls <- lt_ae_max_grade_term(
+      terms = terms,
+      id = id,
+      grade = grade,
+      col_by = col_by,
+      col_N = col_N,
+      total = total,
+      grade_levels = grade_levels
+    )
+    n_cols <- ncol(l_tbls[[1]])
+    if(!is.null(total)) n_cols <- n_cols-1
+    
+    N_total_any <- vapply(l_tbls, function(tbl) {
+      a <- 0
+      for(i in c(2:n_cols)){
+        a <- a + tbl[1, i][1]
+      }
+      a
+    }, numeric(1))
+    l_tbls <- l_tbls[c(1, setdiff(order(-N_total_any, names(l_tbls), decreasing = FALSE), 1))]
+    return(recursive_stack_rtables(l_tbls)) 
+  }
+  
   if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
   
   l_tbls <- lt_ae_max_grade_class_term(
@@ -172,10 +225,14 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 }
 
 
-#' Adverse Events by System Organ Class and Preferred Term
+#' Adverse Events by System Organ Class and/or Preferred Term
 #'
 #' \code{t_events_per_term_id} returns adverse events summary table that corresponds to STREAM template AET02
-#' 
+#' @param terms term information as character or factor vector or dataframe, however factor
+#'   levels are not repeated by class, only terms with count > 1 are listed per
+#'   class. Currently \code{terms} can only be a vector or dataframe with 1/2 column.
+#'   \code{var_relabel} is used as the character string used as a label in the column header
+#'   for each term.
 #' @inheritParams lt_ae_class_term
 #' 
 #' @details 
@@ -237,6 +294,18 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' )
 #' 
 #' tbl
+#' # One Term
+#' terms <-  data.frame(term = ANL$TERM)
+#' var_labels(terms) <- 'MedDRA Preferred Term'
+#' #terms <- ANL$TERM
+#' #attr(terms, "label") <- 'MedDRA Preferred Term'
+#' tbl2 <- t_events_per_term_id(terms = terms,
+#'             id = ANL$USUBJID,
+#'             col_by = factor(ANL$ARM),
+#'             total = NULL
+#'             )
+#' 
+#' tbl2
 #' 
 #' # Example using dummy data
 #' library(random.cdisc.data)
@@ -259,9 +328,38 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' tbl
 #' 
 t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients") {
-#NEED TO ADD OPTION FOR SINGLE DEPTH  
-  
+ 
   if (missing(col_N)) col_N <- tapply(col_by, col_by, length)
+  if (is.null(terms)) stop("terms can't be NULL")
+  if (is(terms, "vector")){
+    label <- attr(terms, "label")
+    terms <- data.frame(term = terms, stringsAsFactors = FALSE)
+    if (!is.null(label)) var_labels(terms) <- label
+  }  
+  
+  if (is(terms, "data.frame") && ncol(terms) == 1){
+    l_tbls <- lt_ae_term(
+      terms = terms,
+      id = id,
+      col_by = col_by,
+      col_N = col_N,
+      total = total
+    )
+    n_cols <- ncol(l_tbls)
+    if(!is.null(total)) n_cols <- n_cols-1
+    N_total_any <- vapply(l_tbls[3:nrow(l_tbls)], function(tbl) {
+      a <- 0
+      for(i in c(1:n_cols)){
+        a <- a + tbl[[i]][1]
+      }
+      a
+    }, numeric(1))
+    l_tbls <- l_tbls[c(1:2, (sort.int(-N_total_any, index.return=TRUE)[[2]]) + 2)]
+    return(l_tbls)
+  }
+
+  
+  
   if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
   
   l_tbls <- lt_ae_class_term(
@@ -615,7 +713,6 @@ t_events_summary <- function(x,
 #'   
 #' @return rtable
 #' 
-#' @export
 #' 
 #' @template author_waddella
 #' @template author_zhanc107
@@ -811,8 +908,6 @@ lt_ae_max_grade_class_term <- function(terms,
 #'   for each term. 
 #' @inheritParams lt_ae_max_grade_class_term
 #' 
-#' @export
-#' 
 #' @template author_waddella
 #' @template author_zhanc107
 #' @template author_wangh107
@@ -981,8 +1076,6 @@ lt_ae_max_grade_term <- function(terms,
 #'  pooled total population, default is "All Patients". If the levels of col_by are 
 #'  the only columns of interest then total should be \code{NULL}
 #'
-#' @export
-#' 
 #' @template author_waddella
 #' @template author_zhanc107
 #' @template author_wangh107
@@ -1156,7 +1249,6 @@ lt_ae_class_term <- function(terms,
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term
 #'
-#' @export
 #' 
 #' @template author_waddella
 #' @template author_zhanc107
