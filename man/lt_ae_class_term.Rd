@@ -34,59 +34,22 @@ by unique id (\code{\link{t_count_unique}}).
 }
 \examples{
 
-# Simple example
-library(tibble)
 library(dplyr)
+library(random.cdisc.data)
 
-ASL <- tibble(
-  USUBJID = paste0("id-", 1:10),
-  ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
-)
+ASL <- rasl(10, seed = 1)
+AAE <- raae(ASL, 4, seed = 2)
 
+ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 
-ae_lookup <- tribble(
-  ~CLASS,         ~TERM,   ~GRADE,
-  "cl A",   "trm A_1/2",        1,
-  "cl A",   "trm A_2/2",        2,  
-  "cl B",   "trm B_1/3",        2,
-  "cl B",   "trm B_2/3",        3,
-  "cl B",   "trm B_3/3",        1,
-  "cl C",   "trm C_1/1",        1
-)
-
-AAE <- cbind(
-  tibble(
-    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-  ),
-  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-)
-
-ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
-
-terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-var_labels(terms) <- c("Class label", "Term label")
-
-l_tbls <- lt_ae_class_term(
-  terms = terms,
+l_tbls <- tern:::lt_ae_class_term(
+  terms = ANL[, c("AEBODSYS", "AEDECOD")],
   id = ANL$USUBJID,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients"
 )
 recursive_stack_rtables(l_tbls)
-
-
-
-\dontrun{
-#throws an error because terms is not a dataframe
-l_tbls <- lt_ae_class_term(
-  terms =  ANL$TERM,
-  id = ANL$USUBJID,
-  col_by = ANL$ARM,
-  col_N = tapply(ASL$ARM, ASL$ARM, length),
-  total = "All Patients"
-)
-}
 
 }
 \author{

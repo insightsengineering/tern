@@ -42,44 +42,20 @@ rtable
 grade (\code{\link{t_max_grade_per_id}}).
 }
 \examples{
-# Simple example
-library(tibble)
+
 library(dplyr)
+library(random.cdisc.data)
 
-ASL <- tibble(
-  USUBJID = paste0("id-", 1:10),
-  ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
-)
+ASL <- rasl(10, seed = 1)
+AAE <- raae(ASL, 4, seed = 2)
 
-ae_lookup <- tribble(
-  ~CLASS,         ~TERM,   ~GRADE,
-  "cl A",   "trm A_1/2",        1,
-  "cl A",   "trm A_2/2",        2,  
-  "cl B",   "trm B_1/3",        2,
-  "cl B",   "trm B_2/3",        3,
-  "cl B",   "trm B_3/3",        1,
-  "cl C",   "trm C_1/1",        1
-)
+ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 
-AAE <- cbind(
-  tibble(
-    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-  ),
-  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-)
-
-ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
-
-terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-grade <- data.frame(grade = ANL$GRADE, stringsAsFactors = FALSE)
-var_labels(grade) <- "Grade"
-
-l_tbls <- lt_ae_max_grade_class_term(
-  terms = terms,
+l_tbls <- tern:::lt_ae_max_grade_class_term(
+  terms = ANL \%>\% select(AEBODSYS, AEDECOD),
   id = ANL$USUBJID,
-  grade = grade,
-  col_by = factor(ANL$ARM),
+  grade = ANL$AETOXGR,
+  col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients",
   grade_levels = 1:5
@@ -91,36 +67,6 @@ do.call(tern:::fast_stack_rtables,
   )
 )
 
-\dontrun{
-ASL <- osprey::rADSL
-AAE <- osprey::rADAE
-  
-head(AAE)
-
-terms <- data.frame(class = AAE$AESOC, term = AAE$AEDECOD, stringsAsFactors = FALSE)
-var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-grade <- data.frame(grade = as.numeric(AAE$AETOXGR), stringsAsFactors = FALSE)
-var_labels(grade) <- "Grade"
-
-l_tbls <- lt_ae_max_grade_class_term(
-  terms = terms,
-  id = AAE$USUBJID,
-  grade = grade,
-  col_by = factor(AAE$ARM),
-  col_N = tapply(ASL$ARM, ASL$ARM, length),
-  total = "All Patients",
-  grade_levels = 1:5
-)
-
-tbls2 <- unlist(l_tbls, recursive = FALSE)
-
-which(sapply(tbls2, class) != "rtable")
-tbl_out <- do.call(tern:::fast_rbind, Filter(function(x) is(x, "rtable"), tbls2))
-
-Viewer(tbl_out)
-print(tbl_out) 
-  
-}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

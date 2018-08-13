@@ -8,9 +8,9 @@ t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels = 1:5)
 }
 \arguments{
-\item{terms}{term information as character or factor dataframe, however factor
+\item{terms}{term information as character or factor vector or dataframe, however factor
 levels are not repeated by class, only terms with count > 1 are listed per
-class. Currently \code{terms} can only be a dataframe with 2 columns.
+class. Currently \code{terms} can only be a vector or dataframe with 1/2 column.
 \code{var_relabel} is used as the character string used as a label in the column header
 for each term.}
 
@@ -74,76 +74,40 @@ This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_bygrade(
   (\url{<https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501>})
 }
 \examples{
-# Simple example
-library(tibble)
+
 library(dplyr)
+library(random.cdisc.data)
 
-ASL <- tibble(
-  USUBJID = paste0("id-", 1:10),
-  ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
+ASL <- rasl(10, seed = 1)
+AAE <- raae(ASL, 4, seed = 2)
+
+ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
+  var_relabel(
+    AEBODSYS = 'MedDRA System Organ Class',
+    AEDECOD = 'MedDRA Preferred Term',
+    AETOXGR = 'GRADE'
 )
 
-
-ae_lookup <- tribble(
-  ~CLASS,         ~TERM,   ~GRADE,
-  "cl A",   "trm A_1/2",        1,
-  "cl A",   "trm A_2/2",        2,  
-  "cl B",   "trm B_1/3",        2,
-  "cl B",   "trm B_2/3",        3,
-  "cl B",   "trm B_3/3",        1,
-  "cl C",   "trm C_1/1",        1
-)
-
-AAE <- cbind(
-  tibble(
-    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-  ),
-  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-)
-
-ANL <- left_join(AAE, ASL, by = "USUBJID")
-
-terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-grade <- data.frame(grade = as.numeric(ANL$GRADE), stringsAsFactors = FALSE)
-var_labels(grade) <- "Grade"
-
-tbl <- t_events_per_term_grade_id(
-  terms = terms,
+t_events_per_term_grade_id(
+  terms = ANL$AEDECOD,
   id = ANL$USUBJID,
-  grade = grade,
+  grade = ANL$AETOXGR,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
   total = "All Patients",
-  grade_levels = 1:3
+  grade_levels = 1:5
 )
 
-tbl
+t_events_per_term_grade_id(
+  terms = ANL \%>\% select(AEBODSYS, AEDECOD),
+  id = ANL$USUBJID,
+  grade = ANL$AETOXGR,
+  col_by = ANL$ARM,
+  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  total = "All Patients",
+  grade_levels = 1:5
+)
 
-# Example using dummy data
-library(random.cdisc.data)
-library(dplyr)
-
-ASL <- radam("ASL", N = 10)
-AAE <- radam("AAE", ADSL = ASL)
-
-ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
-
-terms <- data.frame(class = ANL$AEBODSYS, term = ANL$AEDECOD, stringsAsFactors = FALSE)
-var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-grade <- data.frame(grade = as.numeric(ANL$AETOXGR), stringsAsFactors = FALSE)
-var_labels(grade) <- "Grade"
-
-tbl <- t_events_per_term_grade_id(
-              terms = terms,
-              id = ANL$USUBJID,
-              grade = grade,
-              col_by = factor(ANL$ARM),
-              total = "All Patients",
-              grade_levels = 1:5
-            )
-
-tbl
 
 }
 \author{
@@ -152,4 +116,6 @@ Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 
 Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
+
+Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

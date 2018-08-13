@@ -4,16 +4,10 @@
 \alias{lt_ae_term}
 \title{List of Adverse Events Terms Tables (Term only)}
 \usage{
-lt_ae_term(terms, id, col_by, col_N = tapply(col_by, col_by, length),
+lt_ae_term(term, id, col_by, col_N = tapply(col_by, col_by, length),
   total = "All Patients")
 }
 \arguments{
-\item{terms}{term information as character or factor dataframe, however factor
-levels are not repeated by class, only terms with count > 1 are listed per
-class. Currently \code{terms} can only be a dataframe with either 1 column.
-\code{var_relabel} is used as the character string used as a label in the column header
-for each term}
-
 \item{id}{unique subject identifier. If a particular subject has no adverse
 event then that information needs to be added to the \code{col_N} argument.}
 
@@ -27,45 +21,30 @@ adverse events can be accounted for with this argument.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
+
+\item{terms}{term information as character or factor dataframe, however factor
+levels are not repeated by class, only terms with count > 1 are listed per
+class. Currently \code{terms} can only be a dataframe with either 1 column.
+\code{var_relabel} is used as the character string used as a label in the column header
+for each term}
 }
 \description{
 \code{lt_ae_term} returns a nested list of adverse events tables by unique id
  (\code{\link{t_count_unique}}).
 }
 \examples{
-library(tibble)
+
+
 library(dplyr)
+library(random.cdisc.data)
 
-ASL <- tibble(
-  USUBJID = paste0("id-", 1:10),
-  ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
-)
+ASL <- rasl(10, seed = 1)
+AAE <- raae(ASL, 4, seed = 2)
 
-
-ae_lookup <- tribble(
-  ~CLASS,         ~TERM,   ~GRADE,
-  "cl A",   "trm A_1/2",        1,
-  "cl A",   "trm A_2/2",        2,  
-  "cl B",   "trm B_1/3",        2,
-  "cl B",   "trm B_2/3",        3,
-  "cl B",   "trm B_3/3",        1,
-  "cl C",   "trm C_1/1",        1
-)
-
-AAE <- cbind(
-  tibble(
-    USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-  ),
-  ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-)
-
-ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
-
-terms <- data.frame(term = ANL$TERM, stringsAsFactors = FALSE)
-var_labels(terms) <- "MedDRA Preferred Term"
-
-l_tbls <- lt_ae_term( 
-  terms =  terms,
+ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
+ 
+l_tbls <- tern:::lt_ae_term( 
+  term =  with_label(ANL$AEDECOD, "MedDRA Preferred Term"),
   id = ANL$USUBJID,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),
@@ -77,7 +56,7 @@ fast_stack_rtables(l_tbls)
 \dontrun{
 #throws an error because terms is not a dataframe 
 l_tbls <- lt_ae_term( 
-  terms =  ANL$TERM,
+  term =  ANL$TERM,
   id = ANL$USUBJID,
   col_by = ANL$ARM,
   col_N = tapply(ASL$ARM, ASL$ARM, length),

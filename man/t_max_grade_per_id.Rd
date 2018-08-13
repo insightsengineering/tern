@@ -4,7 +4,7 @@
 \alias{t_max_grade_per_id}
 \title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
-t_max_grade_per_id(grade, id, col_by, col_N = NULL, grade_levels = NULL,
+t_max_grade_per_id(grade, id, col_by, col_N, grade_levels = NULL,
   any_grade = "-Any Grade-")
 }
 \arguments{
@@ -33,7 +33,6 @@ t_max_grade_per_id(
   id = c(1,1,1),
   col_by = factor(rep("A", 3))
 )
-
 
 id <- c(1,1,2,2,3,3,3,4)
 t_max_grade_per_id(

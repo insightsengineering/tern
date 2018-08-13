@@ -4,13 +4,11 @@
 \alias{t_events_summary}
 \title{Summary table for events}
 \usage{
-t_events_summary(x, id, col_by, col_N = tapply(col_by, col_by, length),
+t_events_summary(term, id, col_by, col_N,
   total_events = "Total number of events",
   subjects_with_events = "Total number of patients with at least one adverse event")
 }
 \arguments{
-\item{x}{a character vector with optional label attribute}
-
 \item{id}{unique subject identifier. If a particular subject has no adverse 
 event then that information needs to be added to the \code{col_N} argument.}
 
@@ -26,6 +24,8 @@ removed.}
 \item{subjects_with_events}{character string that will be used as a label in
 the row for the total number with at least one event. If this is
 \code{NULL} then this row will be removed.}
+
+\item{x}{a character vector with optional label attribute}
 }
 \value{
 an rtable
@@ -35,24 +35,29 @@ an rtable
 }
 \examples{
 
-x <- structure(c("t1", "t1", "t2", "t2", "t2"), label = "MedDRA Preferred Term")
-
-#NEED TO CHANGE X TO BE A FACTOR
 t_events_summary(
- x = x,
- id = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
+ term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
+ id = c(1, 4, 2, 3, 3),
  col_by = factor(c("A", "A", "B", "C", "C")),
- col_N = c(2, 4, 10))
+ col_N = c(2, 4, 10)
+)
 
-\dontrun{
-#throws an error because x is not a dataframe
+
 t_events_summary(
- x = c("t1", "t1", "t2", "t2", "t2"),
- id = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
+ term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
+ id = c(1, 4, 2, 3, 3),
  col_by = factor(c("A", "A", "B", "C", "C")),
- col_N = c(2, 4, 10))
-}
+ col_N = c(2, 4, 10),
+ total_events = NULL
+)
 
+
+t_events_summary(
+ term = NULL,
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10)
+)
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

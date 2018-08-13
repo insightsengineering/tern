@@ -54,108 +54,53 @@
 #' @template author_wangh107 
 #'  
 #' @examples 
-#' # Simple example
-#' library(tibble)
+#' 
 #' library(dplyr)
-#' 
-#' ASL <- tibble(
-#'   USUBJID = paste0("id-", 1:10),
-#'   ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
-#' )
-#' 
-#' 
-#' ae_lookup <- tribble(
-#'   ~CLASS,         ~TERM,   ~GRADE,
-#'   "cl A",   "trm A_1/2",        1,
-#'   "cl A",   "trm A_2/2",        2,  
-#'   "cl B",   "trm B_1/3",        2,
-#'   "cl B",   "trm B_2/3",        3,
-#'   "cl B",   "trm B_3/3",        1,
-#'   "cl C",   "trm C_1/1",        1
-#' )
-#' 
-#' AAE <- cbind(
-#'   tibble(
-#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-#'   ),
-#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-#' )
-#' 
-#' ANL <- left_join(AAE, ASL, by = "USUBJID")
-#' 
-#' terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-#' var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-#' grade <- data.frame(grade = as.numeric(ANL$GRADE), stringsAsFactors = FALSE)
-#' var_labels(grade) <- "Grade"
-#' 
-#' tbl <- t_events_per_term_grade_id(
-#'   terms = terms,
-#'   id = ANL$USUBJID,
-#'   grade = grade,
-#'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients",
-#'   grade_levels = 1:3
-#' )
-#' 
-#' tbl
-#' 
-#' terms <- data.frame(term = ANL$TERM, stringsAsFactors = FALSE)
-#' var_labels(terms) <-  'MedDRA Preferred Term'
-#' #terms <- ANL$TERM
-#' #attr(terms, "label") <- 'MedDRA Preferred Term' 
-#' tbl2 <- t_events_per_term_grade_id(
-#'   terms = terms,
-#'   id = ANL$USUBJID,
-#'   grade = grade,
-#'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients",
-#'   grade_levels = 1:3
-#' )
-#' 
-#' tbl2
-#' 
-#' # Example using dummy data
 #' library(random.cdisc.data)
-#' library(dplyr)
 #' 
-#' ASL <- radam("ASL", N = 10)
-#' AAE <- radam("AAE", ADSL = ASL)
+#' ASL <- rasl(10, seed = 1)
+#' AAE <- raae(ASL, 4, seed = 2)
 #' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) %>%
+#'   var_relabel(
+#'     AEBODSYS = 'MedDRA System Organ Class',
+#'     AEDECOD = 'MedDRA Preferred Term',
+#'     AETOXGR = 'GRADE'
+#' )
 #' 
-#' terms <- data.frame(class = ANL$AEBODSYS, term = ANL$AEDECOD, stringsAsFactors = FALSE)
-#' var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-#' grade <- data.frame(grade = as.numeric(ANL$AETOXGR), stringsAsFactors = FALSE)
-#' var_labels(grade) <- "Grade"
+#' t_events_per_term_grade_id(
+#'   terms = ANL$AEDECOD,
+#'   id = ANL$USUBJID,
+#'   grade = ANL$AETOXGR,
+#'   col_by = ANL$ARM,
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = "All Patients",
+#'   grade_levels = 1:5
+#' )
 #' 
-#' tbl <- t_events_per_term_grade_id(
-#'               terms = terms,
-#'               id = ANL$USUBJID,
-#'               grade = grade,
-#'               col_by = factor(ANL$ARM),
-#'               total = "All Patients",
-#'               grade_levels = 1:5
-#'             )
+#' t_events_per_term_grade_id(
+#'   terms = ANL %>% select(AEBODSYS, AEDECOD),
+#'   id = ANL$USUBJID,
+#'   grade = ANL$AETOXGR,
+#'   col_by = ANL$ARM,
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = "All Patients",
+#'   grade_levels = 1:5
+#' )
 #' 
-#' tbl
 #' 
 t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = "All Patients", grade_levels = 1:5) {
-
-  
-  if (missing(col_N)) col_N <- tapply(col_by, col_by, length)
   
   if (is.null(terms)) stop("terms can't be NULL")
-  if (is(terms, "vector")){
-    label <- attr(terms, "label")
+  if (is.atomic(terms)) {
     terms <- data.frame(term = terms, stringsAsFactors = FALSE)
-    if (!is.null(label)) var_labels(terms) <- label
-  }  
+  } else if (!is.data.frame(terms)) {
+    stop("terms needs to be either a vector or a data.frame")
+  }
   
-  if (is(terms, "data.frame") && ncol(terms) == 1){
+  if (ncol(terms) == 1) {
     l_tbls <- lt_ae_max_grade_term(
-      terms = terms,
+      term = terms[[1]],
       id = id,
       grade = grade,
       col_by = col_by,
@@ -174,66 +119,71 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
       a
     }, numeric(1))
     l_tbls <- l_tbls[c(1, setdiff(order(-N_total_any, names(l_tbls), decreasing = FALSE), 1))]
-    return(recursive_stack_rtables(l_tbls)) 
-  }
-  
-  if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
-  
-  l_tbls <- lt_ae_max_grade_class_term(
-    terms = terms,
-    id = id,
-    grade = grade,
-    col_by = col_by,
-    col_N = col_N,
-    total = total,
-    grade_levels = grade_levels
-  )
-  
-  n_cols <- ncol(l_tbls[[1]][[1]])
-  if(!is.null(total))
-    n_cols <- n_cols-1
-  
-  l_s_terms <- lapply(l_tbls, function(tbls) {
     
-    # sort terms by any grade (sum of col_by levels)
-    N_total_any <- vapply(tbls, function(tbl) {
+    recursive_stack_rtables(l_tbls) 
+  } else if (ncol(terms) == 2) {
+    
+    l_tbls <- lt_ae_max_grade_class_term(
+      terms = terms,
+      id = id,
+      grade = grade,
+      col_by = col_by,
+      col_N = col_N,
+      total = total,
+      grade_levels = grade_levels
+    )
+    
+    n_cols <- ncol(l_tbls[[1]][[1]])
+    if(!is.null(total))
+      n_cols <- n_cols-1
+    
+    l_s_terms <- lapply(l_tbls, function(tbls) {
+      
+      # sort terms by any grade (sum of col_by levels)
+      N_total_any <- vapply(tbls, function(tbl) {
+        a <- 0
+        for(i in c(2:n_cols)){
+          a <- a + tbl[2, i][1]
+        }
+        a
+      }, numeric(1))
+      
+      tbls[c(1, setdiff(order(-N_total_any, names(tbls), decreasing = FALSE), 1))]
+      
+    })
+    
+    # now sort tables by class (sum of col_by levels)
+    N_total_overall <- vapply(l_s_terms, function(tbl) {
       a <- 0
       for(i in c(2:n_cols)){
-        a <- a + tbl[2, i][1]
+        a <- a + tbl[[1]][2, i][1]
       }
       a
     }, numeric(1))
     
-    tbls[c(1, setdiff(order(-N_total_any, names(tbls), decreasing = FALSE), 1))]
+    l_tbls_sorted <- l_s_terms[order(-N_total_overall, names(l_s_terms), decreasing = FALSE)]
     
-  })
+    # Now Stack them
+    recursive_stack_rtables(nl_remove_n_first_rrows(l_tbls_sorted,1,2))
+  } else {
+    stop("currently one or two terms are summported")
+  }
   
-  # now sort tables by class (sum of col_by levels)
-  N_total_overall <- vapply(l_s_terms, function(tbl) {
-    a <- 0
-    for(i in c(2:n_cols)){
-      a <- a + tbl[[1]][2, i][1]
-    }
-    a
-  }, numeric(1))
-  
-  l_tbls_sorted <- l_s_terms[order(-N_total_overall, names(l_s_terms), decreasing = FALSE)]
-  
-  
-  # Now Stack them
-  recursive_stack_rtables(nl_remove_n_first_rrows(l_tbls_sorted,1,2))
 }
 
 
 #' Adverse Events by System Organ Class and/or Preferred Term
 #'
-#' \code{t_events_per_term_id} returns adverse events summary table that corresponds to STREAM template AET02
-#' @param terms term information as character or factor vector or dataframe, however factor
-#'   levels are not repeated by class, only terms with count > 1 are listed per
-#'   class. Currently \code{terms} can only be a vector or dataframe with 1/2 column.
-#'   \code{var_relabel} is used as the character string used as a label in the column header
-#'   for each term.
+#' \code{t_events_per_term_id} returns adverse events summary table that
+#' corresponds to STREAM template AET02
+#'
+#'
 #' @inheritParams lt_ae_class_term
+#' @param terms term information as character or factor vector or dataframe,
+#'   however factor levels are not repeated by class, only terms with count > 1
+#'   are listed per class. Currently \code{terms} can only be a vector or
+#'   dataframe with 1/2 column. \code{var_relabel} is used as the character
+#'   string used as a label in the column header for each term.
 #' 
 #' @details 
 #' This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
@@ -253,83 +203,39 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #'  
 #'  
 #' @examples 
-#' # Simple example
-#' library(tibble)
+#'
 #' library(dplyr)
+#' library(random.cdisc.data)
 #' 
-#' ASL <- tibble(
-#'   USUBJID = paste0("id-", 1:10),
-#'   ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
+#' ASL <- rasl(10, seed = 1)
+#' AAE <- raae(ASL, 4, seed = 2)
+#' 
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) %>%
+#'   var_relabel(
+#'     AEBODSYS = 'MedDRA System Organ Class',
+#'     AEDECOD = 'MedDRA Preferred Term',
+#'     AETOXGR = 'GRADE'
 #' )
 #' 
-#' 
-#' ae_lookup <- tribble(
-#'   ~CLASS,         ~TERM,   ~GRADE,
-#'   "cl A",   "trm A_1/2",        1,
-#'   "cl A",   "trm A_2/2",        2,  
-#'   "cl B",   "trm B_1/3",        2,
-#'   "cl B",   "trm B_2/3",        3,
-#'   "cl B",   "trm B_3/3",        1,
-#'   "cl C",   "trm C_1/1",        1
+#' t_events_per_term_id(
+#'   terms = ANL$AEDECOD,
+#'   id = ANL$USUBJID,
+#'   col_by = ANL$ARM,
+#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   total = NULL
 #' )
 #' 
-#' AAE <- cbind(
-#'   tibble(
-#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-#'   ),
-#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-#' )
-#' 
-#' ANL <- left_join(AAE, ASL, by = "USUBJID")
-#' 
-#' terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-#' var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-#' 
-#' tbl <- t_events_per_term_id(
-#'   terms = terms,
+#' t_events_per_term_id(
+#'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients"
 #' )
 #' 
-#' tbl
-#' # One Term
-#' terms <-  data.frame(term = ANL$TERM)
-#' var_labels(terms) <- 'MedDRA Preferred Term'
-#' #terms <- ANL$TERM
-#' #attr(terms, "label") <- 'MedDRA Preferred Term'
-#' tbl2 <- t_events_per_term_id(terms = terms,
-#'             id = ANL$USUBJID,
-#'             col_by = factor(ANL$ARM),
-#'             total = NULL
-#'             )
-#' 
-#' tbl2
-#' 
-#' # Example using dummy data
-#' library(random.cdisc.data)
-#' library(dplyr)
-#' 
-#' ASL <- radam("ASL", N = 10)
-#' AAE <- radam("AAE", ADSL = ASL)
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("STUDYID", "USUBJID"))
-#' 
-#' terms <- data.frame(class = ANL$AEBODSYS, term = ANL$AEDECOD, stringsAsFactors = FALSE)
-#' var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-#' 
-#' tbl <- t_events_per_term_id(terms = terms,
-#'             id = ANL$USUBJID,
-#'             col_by = factor(ANL$ARM),
-#'             total = "All Patients"
-#'             )
-#' 
-#' tbl
 #' 
 t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients") {
  
-  if (missing(col_N)) col_N <- tapply(col_by, col_by, length)
   if (is.null(terms)) stop("terms can't be NULL")
   if (is(terms, "vector")){
     label <- attr(terms, "label")
@@ -339,7 +245,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
   
   if (is(terms, "data.frame") && ncol(terms) == 1){
     l_tbls <- lt_ae_term(
-      terms = terms,
+      term = terms,
       id = id,
       col_by = col_by,
       col_N = col_N,
@@ -440,7 +346,6 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
 #'   col_by = factor(rep("A", 3))
 #' )
 #' 
-#' 
 #' id <- c(1,1,2,2,3,3,3,4)
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,3,2,1,1,2,3),
@@ -473,7 +378,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
 #' )
 #' }
 #' 
-t_max_grade_per_id <- function(grade, id, col_by, col_N = NULL,
+t_max_grade_per_id <- function(grade, id, col_by, col_N,
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
   
@@ -610,76 +515,89 @@ t_count_unique <- function(x, col_by, col_N = NULL, row.name = "number of unique
 #' 
 #' @examples 
 #' 
-#' x <- structure(c("t1", "t1", "t2", "t2", "t2"), label = "MedDRA Preferred Term")
-#' 
-#' #NEED TO CHANGE X TO BE A FACTOR
 #' t_events_summary(
-#'  x = x,
-#'  id = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
+#'  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_N = c(2, 4, 10))
+#'  col_N = c(2, 4, 10)
+#' )
 #' 
-#' \dontrun{
-#' #throws an error because x is not a dataframe
+#' 
 #' t_events_summary(
-#'  x = c("t1", "t1", "t2", "t2", "t2"),
-#'  id = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
+#'  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_N = c(2, 4, 10))
-#' }
+#'  col_N = c(2, 4, 10),
+#'  total_events = NULL
+#' )
 #' 
-t_events_summary <- function(x, 
+#' 
+#' t_events_summary(
+#'  term = NULL,
+#'  id = c(1, 4, 2, 3, 3),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10)
+#' )
+t_events_summary <- function(term, 
                              id, 
                              col_by, 
-                             col_N = tapply(col_by, col_by, length), 
+                             col_N, 
                              total_events = "Total number of events", 
                              subjects_with_events = "Total number of patients with at least one adverse event"){
-  
-  if (any(is.na(x)) || any(is.na(id)) || any(is.na(col_by))) stop("no NA allowed in x, id, and col_by")
-  
-  label <- attr(x, "label")
-  if(is.null(label)) label <- deparse(substitute(label))
-  
-  df <- data.frame(x = x, id = id, col_by = col_by, stringsAsFactors = FALSE)
-  
-  if (is.null(col_N)) {
-    col_N <- table(df_id$col_by)
+
+  df <- if (is.null(term)) {
+    data.frame(id = id, col_by = col_by, stringsAsFactors = FALSE)
+  } else {
+    data.frame(x = term, id = id, col_by = col_by, stringsAsFactors = FALSE)
   }
+  
+  if (any(is.na(df))) stop("no NA allowed in x, id, and col_by")
+  
+  term_label <- if (is.null(label(term))) deparse(substitute(label)) else label(term)
+
   if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
   
   tbl_header <- rheader(
-    rrowl(label, col_N, format = "(N=xx)")
+    rrowl("", levels(col_by)),
+    rrowl(term_label, col_N, format = "(N=xx)")
   )
-  
-  tbl_events <- NULL
-  if(!is.null(total_events)){
-    tbl_events <- rtable(
+
+  tbl_events <- if( !is.null(total_events)) {
+    rtable(
       header = tbl_header,
       rrowl(total_events, tapply(df$col_by, df$col_by, length))
     )
+  } else {
+    NULL
   }
   
-  tbl_at_least_one <- NULL
-  if(!is.null(subjects_with_events)){
-    tbl_at_least_one <- t_count_unique(
+  tbl_at_least_one <- if( !is.null(subjects_with_events)) {
+   t_count_unique(
       x = df$id,
       col_by = df$col_by,
       col_N = col_N,
       row.name = subjects_with_events,
       indent = 0
     )
+  } else {
+    NULL
   }
   
-  tbls <- lapply(split(df, df$x), function(x) {
-    t_count_unique(
-      x = x$id,
-      col_by = x$col_by,
-      col_N = col_N,
-      row.name = x$x[1],
-      indent = 0
-    )
-  })
-  tbls <- do.call(fast_rbind, tbls)
+  
+  tbls <- if (!is.null(df$x)) {
+    tmp_tbls <- lapply(split(df, df$x), function(x) {
+      t_count_unique(
+        x = x$id,
+        col_by = x$col_by,
+        col_N = col_N,
+        row.name = x$x[1],
+        indent = 0
+      )
+    })
+    do.call(fast_rbind, tmp_tbls)
+  } else {
+    NULL
+  }
 
   fast_rbind(tbl_events, tbl_at_least_one, tbls) 
 }
@@ -720,44 +638,20 @@ t_events_summary <- function(x,
 #' @template author_qit3
 #' 
 #' @examples 
-#' # Simple example
-#' library(tibble)
+#' 
 #' library(dplyr)
+#' library(random.cdisc.data)
 #' 
-#' ASL <- tibble(
-#'   USUBJID = paste0("id-", 1:10),
-#'   ARM = paste("ARM", LETTERS[rep(c(1,2), c(3,7))])
-#' )
+#' ASL <- rasl(10, seed = 1)
+#' AAE <- raae(ASL, 4, seed = 2)
 #' 
-#' ae_lookup <- tribble(
-#'   ~CLASS,         ~TERM,   ~GRADE,
-#'   "cl A",   "trm A_1/2",        1,
-#'   "cl A",   "trm A_2/2",        2,  
-#'   "cl B",   "trm B_1/3",        2,
-#'   "cl B",   "trm B_2/3",        3,
-#'   "cl B",   "trm B_3/3",        1,
-#'   "cl C",   "trm C_1/1",        1
-#' )
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 #' 
-#' AAE <- cbind(
-#'   tibble(
-#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-#'   ),
-#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-#' )
-#' 
-#' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
-#' 
-#' terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-#' var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-#' grade <- data.frame(grade = ANL$GRADE, stringsAsFactors = FALSE)
-#' var_labels(grade) <- "Grade"
-#' 
-#' l_tbls <- lt_ae_max_grade_class_term(
-#'   terms = terms,
+#' l_tbls <- tern:::lt_ae_max_grade_class_term(
+#'   terms = ANL %>% select(AEBODSYS, AEDECOD),
 #'   id = ANL$USUBJID,
-#'   grade = grade,
-#'   col_by = factor(ANL$ARM),
+#'   grade = ANL$AETOXGR,
+#'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
@@ -769,36 +663,6 @@ t_events_summary <- function(x,
 #'   )
 #' )
 #'
-#' \dontrun{
-#' ASL <- osprey::rADSL
-#' AAE <- osprey::rADAE
-#'   
-#' head(AAE)
-#'
-#' terms <- data.frame(class = AAE$AESOC, term = AAE$AEDECOD, stringsAsFactors = FALSE)
-#' var_labels(terms) <- c('MedDRA System Organ Class', 'MedDRA Preferred Term')
-#' grade <- data.frame(grade = as.numeric(AAE$AETOXGR), stringsAsFactors = FALSE)
-#' var_labels(grade) <- "Grade"
-#' 
-#' l_tbls <- lt_ae_max_grade_class_term(
-#'   terms = terms,
-#'   id = AAE$USUBJID,
-#'   grade = grade,
-#'   col_by = factor(AAE$ARM),
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients",
-#'   grade_levels = 1:5
-#' )
-#' 
-#' tbls2 <- unlist(l_tbls, recursive = FALSE)
-#' 
-#' which(sapply(tbls2, class) != "rtable")
-#' tbl_out <- do.call(tern:::fast_rbind, Filter(function(x) is(x, "rtable"), tbls2))
-#' 
-#' Viewer(tbl_out)
-#' print(tbl_out) 
-#'   
-#' }
 lt_ae_max_grade_class_term <- function(terms, 
                                        id, 
                                        grade, 
@@ -816,19 +680,18 @@ lt_ae_max_grade_class_term <- function(terms,
   if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
   if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
-  if(!is.data.frame(grade) || ncol(grade) != 1) stop("grade must be a dataframe with a single column")
   
   class_label <- var_labels(terms)[1]
   term_label <- var_labels(terms)[2]
-  grade_label <- var_labels(grade)
+  grade_label <- attr(grade, "label")
   if(is.na(term_label)) class_label <- deparse(substitute(class))
   if(is.na(term_label)) term_label <- deparse(substitute(term))
   if(is.na(grade_label)) grade_label <- deparse(substitute(grade))
   
   # data prep
   df <- data.frame(
-    class = terms[1],
-    term = terms[2],
+    class = terms[[1]],
+    term = terms[[2]],
     id = id,
     grade = grade,
     col_by = col_by,
@@ -901,11 +764,10 @@ lt_ae_max_grade_class_term <- function(terms,
 #' \code{lt_ae_max_grade_term} returns a nested list of adverse events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #' 
-#' @param terms term information as character or factor dataframe, however factor
-#'   levels are not repeated by class, only terms with count > 1 are listed per
-#'   class. Currently \code{terms} can only be a dataframe with 1 column.
-#'   \code{var_relabel} is used as the character string used as a label in the column header
-#'   for each term. 
+#' @param term term information as character or factor, however factor levels
+#'   are not repeated by class, only terms with count > 1 are listed per class.
+#'   \code{var_relabel} is used as the character string used as a label in the
+#'   column header for each term.
 #' @inheritParams lt_ae_max_grade_class_term
 #' 
 #' @template author_waddella
@@ -914,43 +776,19 @@ lt_ae_max_grade_class_term <- function(terms,
 #' @template author_qit3
 #' 
 #' @examples 
-#' # Simple example
-#' library(tibble)
+#' 
 #' library(dplyr)
+#' library(random.cdisc.data)
 #' 
-#' ASL <- tibble(
-#'   USUBJID = paste0("id-", 1:10),
-#'   ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
-#' )
+#' ASL <- rasl(10, seed = 1)
+#' AAE <- raae(ASL, 4, seed = 2)
 #' 
-#' ae_lookup <- tribble(
-#'   ~CLASS,         ~TERM,   ~GRADE,
-#'   "cl A",   "trm A_1/2",        1,
-#'   "cl A",   "trm A_2/2",        2,  
-#'   "cl B",   "trm B_1/3",        2,
-#'   "cl B",   "trm B_2/3",        3,
-#'   "cl B",   "trm B_3/3",        1,
-#'   "cl C",   "trm C_1/1",        1
-#' )
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 #' 
-#' AAE <- cbind(
-#'   tibble(
-#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-#'   ),
-#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-#' )
-#' 
-#' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID")
-#' 
-#' terms <- data.frame(term = ANL$TERM, stringsAsFactors = FALSE)
-#' var_labels(terms) <- 'MedDRA Preferred Term'
-#' grade <- data.frame(grade = ANL$GRADE, stringsAsFactors = FALSE)
-#' var_labels(grade) <- 'Grade'
-#' 
-#' l_tbls <- lt_ae_max_grade_term(
-#'   terms = terms,
+#' l_tbls <- tern:::lt_ae_max_grade_term(
+#'   term = ANL$AEDECOD,
 #'   id = ANL$USUBJID,
-#'   grade = grade,
+#'   grade = ANL$AETOXGR,
 #'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients",
@@ -959,25 +797,11 @@ lt_ae_max_grade_class_term <- function(terms,
 #' 
 #' do.call(fast_stack_rtables, l_tbls)
 #' 
-#' \dontrun{
-#' #throws an error because term is not a dataframe
-#' l_tbls <- lt_ae_max_grade_term(
-#'   terms = ANL$TERM,
-#'   id = ANL$USUBJID,
-#'   grade = grade,
-#'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients",
-#'   grade_levels = 1:5
-#' )
-#' }
-#' 
-#' 
-lt_ae_max_grade_term <- function(terms, 
+lt_ae_max_grade_term <- function(term, 
                                  id, 
                                  grade, 
                                  col_by, 
-                                 col_N = tapply(col_by, col_by, length),
+                                 col_N,
                                  total = "All Patients",
                                  grade_levels) {
   
@@ -987,21 +811,17 @@ lt_ae_max_grade_term <- function(terms,
   
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
-  if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
+  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
-  if(!is.data.frame(terms) || ncol(terms) != 1) stop("terms must be a dataframe with a single column")
-  if(!is.data.frame(grade) || ncol(grade) != 1) stop("grade must be a dataframe with a single column")
+  term_label <- attr(term, "label")
+  grade_label <- attr(grade, "label")
   
-  term_label <- var_labels(terms)
-  grade_label <- var_labels(grade)
-  if(is.na(term_label))
-    term_label <- deparse(substitute(term))
-  if(is.na(grade_label))
-    grade_label <- deparse(substitute(grade))
+  if(is.null(term_label)) term_label <- deparse(substitute(term))
+  if(is.null(grade_label)) grade_label <- deparse(substitute(grade))
   
   # data prep
   df <- data.frame(
-    term = terms[1],
+    term = term,
     id = id,
     grade = grade,
     col_by = col_by,
@@ -1083,59 +903,22 @@ lt_ae_max_grade_term <- function(terms,
 #' 
 #' @examples 
 #' 
-#' # Simple example
-#' library(tibble)
 #' library(dplyr)
+#' library(random.cdisc.data)
 #' 
-#' ASL <- tibble(
-#'   USUBJID = paste0("id-", 1:10),
-#'   ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
-#' )
+#' ASL <- rasl(10, seed = 1)
+#' AAE <- raae(ASL, 4, seed = 2)
 #' 
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 #' 
-#' ae_lookup <- tribble(
-#'   ~CLASS,         ~TERM,   ~GRADE,
-#'   "cl A",   "trm A_1/2",        1,
-#'   "cl A",   "trm A_2/2",        2,  
-#'   "cl B",   "trm B_1/3",        2,
-#'   "cl B",   "trm B_2/3",        3,
-#'   "cl B",   "trm B_3/3",        1,
-#'   "cl C",   "trm C_1/1",        1
-#' )
-#' 
-#' AAE <- cbind(
-#'   tibble(
-#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-#'   ),
-#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-#' )
-#' 
-#' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
-#' 
-#' terms <- data.frame(class = ANL$CLASS, term = ANL$TERM, stringsAsFactors = FALSE)
-#' var_labels(terms) <- c("Class label", "Term label")
-#' 
-#' l_tbls <- lt_ae_class_term(
-#'   terms = terms,
+#' l_tbls <- tern:::lt_ae_class_term(
+#'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
 #'   total = "All Patients"
 #' )
 #' recursive_stack_rtables(l_tbls)
-#' 
-#' 
-#' 
-#' \dontrun{
-#' #throws an error because terms is not a dataframe
-#' l_tbls <- lt_ae_class_term(
-#'   terms =  ANL$TERM,
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients"
-#' )
-#' }
 #' 
 lt_ae_class_term <- function(terms, 
                              id,  
@@ -1162,8 +945,8 @@ lt_ae_class_term <- function(terms,
   
   # data prep
   df <- data.frame(
-    class = terms[1],
-    term = terms[2],
+    class = terms[[1]],
+    term = terms[[2]],
     id = id,
     col_by = col_by,
     stringsAsFactors = FALSE
@@ -1256,39 +1039,18 @@ lt_ae_class_term <- function(terms,
 #' @template author_qit3
 #' 
 #' @examples 
-#' library(tibble)
+#' 
+#' 
 #' library(dplyr)
+#' library(random.cdisc.data)
 #' 
-#' ASL <- tibble(
-#'   USUBJID = paste0("id-", 1:10),
-#'   ARM = factor(paste("ARM", LETTERS[rep(c(1,2), c(3,7))]))
-#' )
+#' ASL <- rasl(10, seed = 1)
+#' AAE <- raae(ASL, 4, seed = 2)
 #' 
-#' 
-#' ae_lookup <- tribble(
-#'   ~CLASS,         ~TERM,   ~GRADE,
-#'   "cl A",   "trm A_1/2",        1,
-#'   "cl A",   "trm A_2/2",        2,  
-#'   "cl B",   "trm B_1/3",        2,
-#'   "cl B",   "trm B_2/3",        3,
-#'   "cl B",   "trm B_3/3",        1,
-#'   "cl C",   "trm C_1/1",        1
-#' )
-#' 
-#' AAE <- cbind(
-#'   tibble(
-#'     USUBJID = ASL$USUBJID[c(2,2,2,3,3,4,4,4,4,5,6,6,7,7)]
-#'   ),
-#'   ae_lookup[c(1,1,2,6,4,2,2,3,4,2,1,5,4,6),]
-#' )
-#' 
-#' ANL <- left_join(AAE, ASL[, c("USUBJID", "ARM")], by ="USUBJID") 
-#' 
-#' terms <- data.frame(term = ANL$TERM, stringsAsFactors = FALSE)
-#' var_labels(terms) <- "MedDRA Preferred Term"
-#' 
-#' l_tbls <- lt_ae_term( 
-#'   terms =  terms,
+#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
+#'  
+#' l_tbls <- tern:::lt_ae_term( 
+#'   term =  with_label(ANL$AEDECOD, "MedDRA Preferred Term"),
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
@@ -1300,7 +1062,7 @@ lt_ae_class_term <- function(terms,
 #' \dontrun{
 #' #throws an error because terms is not a dataframe 
 #' l_tbls <- lt_ae_term( 
-#'   terms =  ANL$TERM,
+#'   term =  ANL$TERM,
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
 #'   col_N = tapply(ASL$ARM, ASL$ARM, length),
@@ -1309,7 +1071,7 @@ lt_ae_class_term <- function(terms,
 #' 
 #' }
 #' 
-lt_ae_term <- function(terms, 
+lt_ae_term <- function(term, 
                        id, 
                        col_by, 
                        col_N = tapply(col_by, col_by, length),
@@ -1318,19 +1080,11 @@ lt_ae_term <- function(terms,
   # check argument validity and consitency 
   check_col_by(col_by, min_num_levels = 1)
   
-  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae  derives All Patients column")
-  
-  if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
-  
-  if(!is.data.frame(terms) || ncol(terms) != 1) stop("terms must be a dataframe with a single column")
-  
-  term_label <- var_labels(terms)
-  if(is.na(term_label))
-    term_label <- deparse(substitute(term))
+  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
   # data prep 
   df <- data.frame(
-    term = terms[1],
+    term = term,
     id = id,
     col_by = col_by,
     stringsAsFactors = FALSE
@@ -1341,31 +1095,30 @@ lt_ae_term <- function(terms,
   
   # adding All Patients
   if (!is.null(total)) {
-    if (total %in% levels(col_by)) 
-      stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
+    if (total %in% col_by) 
+      stop('The total label ,"', total, '" is not allowed as it already exists as a level in col_by')
     
     df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
     col_N <- c(col_N, sum(col_N))
   }
   
-  
+  term_label <- if(is.null(label(term))) deparse(substitute(term)) else label(term)
   tbl_header <- rheader(
     rrowl("", levels(df$col_by)),
-    rrowl(term_label, col_N, format = "(N=xx)", indent = 1)
+    rrowl(term_label, col_N, format = "(N=xx)")
   )
   
   
   tbl_start <- rtable(
     header = tbl_header,
-    rrowl("Total number of events", tapply(df$col_by, df$col_by, length) , indent = 1)
+    rrowl("Total number of events", tapply(df$col_by, df$col_by, length))
   )
   
   tbl_tot_unique <- t_count_unique(
     x = df$id,
     col_by = df$col_by,
     col_N = col_N,
-    row.name = "Total number of patients with at least one adverse event",
-    indent = 1
+    row.name = "Total number of patients with at least one adverse event"
   )
   
   tbl_terms <- if (!is.null(df$term)) {
@@ -1374,8 +1127,7 @@ lt_ae_term <- function(terms,
         x = x$id,
         col_by = x$col_by,
         col_N = col_N,
-        row.name = x$term[1],
-        indent = 1
+        row.name = x$term[1]
       )
     })
     do.call(fast_rbind, tbls)

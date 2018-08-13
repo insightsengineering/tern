@@ -1,4 +1,32 @@
 
+#' Get label attribute
+#' 
+#' Labels are often attached to variables in data.frames.
+#' 
+#' @param x an object
+#' 
+#' @return the label attribute of an object
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' x <- structure(c(1,2,3), label = "Test")
+#' label(x)
+#' 
+label <- function(x) {
+  attr(x, "label")
+}
+
+#' Return an object with a particular label attribute
+#' 
+#' 
+#' @export
+with_label <- function(x, label) {
+  attr(x, "label") <- label
+  x
+}
+
 #' Get Label Attributes of Variables in a \code{data.frame}
 #' 
 #' Variable labels can be stored as a \code{label} attribute for each variable.
