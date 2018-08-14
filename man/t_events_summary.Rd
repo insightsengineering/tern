@@ -9,6 +9,8 @@ t_events_summary(term, id, col_by, col_N,
   subjects_with_events = "Total number of patients with at least one adverse event")
 }
 \arguments{
+\item{term}{a character vector with optional label attribute}
+
 \item{id}{unique subject identifier. If a particular subject has no adverse 
 event then that information needs to be added to the \code{col_N} argument.}
 
@@ -24,8 +26,6 @@ removed.}
 \item{subjects_with_events}{character string that will be used as a label in
 the row for the total number with at least one event. If this is
 \code{NULL} then this row will be removed.}
-
-\item{x}{a character vector with optional label attribute}
 }
 \value{
 an rtable

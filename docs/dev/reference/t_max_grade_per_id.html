@@ -113,7 +113,7 @@ as nested lists.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_max_grade_per_id</span>(<span class='no'>grade</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>grade_levels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>t_max_grade_per_id</span>(<span class='no'>grade</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>grade_levels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>any_grade</span> <span class='kw'>=</span> <span class='st'>"-Any Grade-"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -154,14 +154,7 @@ Grade-</code> by default</p></td>
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>),
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='st'>"A"</span>, <span class='fl'>3</span>))
-)</div><div class='output co'>#&gt;                       A    
-#&gt;                     (N=1)  
-#&gt; ---------------------------
-#&gt; -Any Grade-        1 (100%)
-#&gt; 1                     0    
-#&gt; 2                     0    
-#&gt; 3                  1 (100%)</div><div class='input'>
-
+)</div><div class='output co'>#&gt; <span class='error'>Error in t_max_grade_per_id(grade = c(1, 2, 3), id = c(1, 1, 1), col_by = factor(rep("A",     3))): argument "col_N" is missing, with no default</span></div><div class='input'>
 <span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>4</span>)
 <span class='fu'>t_max_grade_per_id</span>(
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
@@ -179,13 +172,7 @@ Grade-</code> by default</p></td>
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>id</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='no'>id</span>])
-)</div><div class='output co'>#&gt;                       A               B               C               D    
-#&gt;                     (N=1)           (N=1)           (N=1)           (N=1)  
-#&gt; ---------------------------------------------------------------------------
-#&gt; -Any Grade-        1 (100%)        1 (100%)        1 (100%)        1 (100%)
-#&gt; 1                     0               0               0               0    
-#&gt; 2                  1 (100%)           0            1 (100%)           0    
-#&gt; 3                     0            1 (100%)           0            1 (100%)</div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='error'>Error in t_max_grade_per_id(grade = c(1, 2, 3, 2, 1, 1, 2, 3), id = id,     col_by = factor(LETTERS[id])): argument "col_N" is missing, with no default</span></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># throws an error because each id can only have one col_by</span>
 <span class='fu'>t_max_grade_per_id</span>(

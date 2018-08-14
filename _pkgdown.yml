@@ -49,7 +49,6 @@ reference:
     - lt_ae_max_grade_class_term
     - lt_ae_max_grade_term
     - lt_ae_class_term
-    - lt_ae_term
   - title: Analysis Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
@@ -65,13 +64,15 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - combine_levels
+      - drop_shared_variables
+      - reorder_to_match_id
+      - label
+      - with_label
       - var_labels
       - var_labels<-
       - var_relabel
       - var_labels_remove
-      - combine_levels
-      - drop_shared_variables
-      - reorder_to_match_id
   - title: Deprecated functions
     desc: these functions will be removed in future releases of tern
     contents:

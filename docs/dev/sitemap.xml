@@ -34,6 +34,9 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/g_waterfall.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/label.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_ae_class_term.html</loc>
   </url>
   <url>
@@ -41,9 +44,6 @@
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_ae_max_grade_term.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_ae_term.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/recursive_stack_rtables.html</loc>
@@ -137,5 +137,8 @@
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/var_relabel.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/with_label.html</loc>
   </url>
 </urlset>

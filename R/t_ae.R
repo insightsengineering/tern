@@ -237,14 +237,12 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients") {
  
   if (is.null(terms)) stop("terms can't be NULL")
-  if (is(terms, "vector")){
-    label <- attr(terms, "label")
-    terms <- data.frame(term = terms, stringsAsFactors = FALSE)
-    if (!is.null(label)) var_labels(terms) <- label
+  if (is.data.frame(terms) && ncol(terms) == 1) {
+    terms <- terms[[1]]
   }  
   
-  if (is(terms, "data.frame") && ncol(terms) == 1){
-    l_tbls <- lt_ae_term(
+  tbls <- if (is.atomic(terms)){
+    l_tbls <- t_events_summary(
       term = terms,
       id = id,
       col_by = col_by,
@@ -260,57 +258,57 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
       }
       a
     }, numeric(1))
-    l_tbls <- l_tbls[c(1:2, (sort.int(-N_total_any, index.return=TRUE)[[2]]) + 2)]
-    return(l_tbls)
-  }
-
-  
-  
-  if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
-  
-  l_tbls <- lt_ae_class_term(
-    terms = terms,
-    id = id,
-    col_by = col_by,
-    col_N = col_N,
-    total = total
-  )
-  
-  n_cols <- ncol(l_tbls[[1]])
-  if(!is.null(total))
-    n_cols <- n_cols-1
-  
-  l_s_terms <- lapply(l_tbls, function(tbls) {
-    # sort terms by any term (sum of col_by levels)
-    N_total_any <- vapply(tbls[2:nrow(tbls)], function(tbl) {
+    
+    l_tbls[c(1:2, (sort.int(-N_total_any, index.return=TRUE)[[2]]) + 2)]
+    
+  } else if (ncol(terms) == 2) {
+    l_tbls <- lt_ae_class_term(
+      terms = terms,
+      id = id,
+      col_by = col_by,
+      col_N = col_N,
+      total = total
+    )
+    
+    n_cols <- ncol(l_tbls[[1]])
+    if(!is.null(total))
+      n_cols <- n_cols-1
+    
+    l_s_terms <- lapply(l_tbls, function(tbls) {
+      # sort terms by any term (sum of col_by levels)
+      N_total_any <- vapply(tbls[2:nrow(tbls)], function(tbl) {
+        a <- 0
+        for(i in c(1:n_cols)){
+          a <- a + tbl[[i]][1]
+        }
+        a
+      }, numeric(1))
+      
+      tbls[c(1, (sort.int(-N_total_any, index.return=TRUE)[[2]])+1)]
+      
+    })
+    
+    
+    # now sort tables by class total (sum of col_by levels)
+    N_total_overall <- lapply(l_tbls, function(tbl) {
       a <- 0
       for(i in c(1:n_cols)){
-        a <- a + tbl[[i]][1]
+        if(!is.na(tbl[2, i][1])){
+          a <- a + tbl[2, i][1]
+        }
       }
       a
-    }, numeric(1))
+    })
     
-    tbls[c(1, (sort.int(-N_total_any, index.return=TRUE)[[2]])+1)]
+    l_s_terms[order(-unlist(N_total_overall), names(l_s_terms), decreasing = FALSE)]
     
-  })
-  
-  
-  # now sort tables by class total (sum of col_by levels)
-  N_total_overall <- lapply(l_tbls, function(tbl) {
-    a <- 0
-    for(i in c(1:n_cols)){
-      if(!is.na(tbl[2, i][1])){
-        a <- a + tbl[2, i][1]
-      }
-    }
-    a
-  })
-  
-  l_tbls_sorted <- l_s_terms[order(-unlist(N_total_overall), names(l_s_terms), decreasing = FALSE)]
-  
-  
+  } else {
+    stop("currently only one or two terms are supported")
+  }
+
   # Now Stack them
-  recursive_stack_rtables(l_tbls_sorted)
+  recursive_stack_rtables(tbls)    
+
 }
 
 
@@ -491,7 +489,7 @@ t_count_unique <- function(x, col_by, col_N = NULL, row.name = "number of unique
 #' 
 #' \code{t_events_summary} counts the number of unique elements per cell.
 #' 
-#' @param x a character vector with optional label attribute
+#' @param term a character vector with optional label attribute
 #' @param id unique subject identifier. If a particular subject has no adverse 
 #'   event then that information needs to be added to the \code{col_N} argument.
 #' @param col_by group variable that will be used for a column header.
@@ -545,6 +543,8 @@ t_events_summary <- function(term,
                              total_events = "Total number of events", 
                              subjects_with_events = "Total number of patients with at least one adverse event"){
 
+  if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
+  
   df <- if (is.null(term)) {
     data.frame(id = id, col_by = col_by, stringsAsFactors = FALSE)
   } else {
@@ -554,8 +554,6 @@ t_events_summary <- function(term,
   if (any(is.na(df))) stop("no NA allowed in x, id, and col_by")
   
   term_label <- if (is.null(label(term))) deparse(substitute(label)) else label(term)
-
-  if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
   
   tbl_header <- rheader(
     rrowl("", levels(col_by)),
@@ -675,15 +673,16 @@ lt_ae_max_grade_class_term <- function(terms,
   check_col_by(col_by, min_num_levels = 1)
   
   if (any("- Overall -" %in% terms)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
-  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
+  if (any(total %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
   if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
   if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
   
-  class_label <- var_labels(terms)[1]
-  term_label <- var_labels(terms)[2]
-  grade_label <- attr(grade, "label")
+  class_label <- label(terms[[1]])
+  term_label <- label(terms[[2]])
+  grade_label <- label(grade)
+  
   if(is.na(term_label)) class_label <- deparse(substitute(class))
   if(is.na(term_label)) term_label <- deparse(substitute(term))
   if(is.na(grade_label)) grade_label <- deparse(substitute(grade))
@@ -929,19 +928,15 @@ lt_ae_class_term <- function(terms,
   # check argument validity and consitency
   check_col_by(col_by, min_num_levels = 1)
   
-  if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae  derives All Patients column")
-  
   if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
   if(!is.data.frame(terms) || ncol(terms) != 2) 
     stop("terms must be a dataframe with two columns")
   
-  class_label <- var_labels(terms)[1]
-  term_label <- var_labels(terms)[2]
-  if(is.na(class_label))
-    class_label <- deparse(substitute(class))
-  if(is.na(term_label))
-    term_label <- deparse(substitute(term))
+  class_label <- label(terms[[1]])
+  term_label <- label(terms[[2]])
+  if(is.na(class_label)) class_label <- deparse(substitute(class))
+  if(is.na(term_label)) term_label <- deparse(substitute(term))
   
   # data prep
   df <- data.frame(
@@ -979,39 +974,19 @@ lt_ae_class_term <- function(terms,
   
   tbls <- Map(function(df_terms, class_i) {
     
-    tbl_start <- rtable(
-      header = tbl_header,
-      rrow(class_i),
-      rrowl("Total number of events", tapply(df_terms$col_by, df_terms$col_by, length) , indent = 1)
-    )
-    
-    tbl_tot_unique <- t_count_unique(
-      x = df_terms$id,
+    tbl_i <- t_events_summary(
+      term = df_terms$term,
+      id = df_terms$id,
       col_by = df_terms$col_by,
-      col_N = col_N,
-      row.name = "Total number of patients with at least one adverse event",
-      indent = 1
+      col_N = col_N
     )
     
-    tbl_terms <- if (!is.null(df_terms$term)) {
-      tbls <- lapply(split(df_terms, factor(df_terms$term, levels = unique(df_terms$term))), function(x) {
-        t_count_unique(
-          x = x$id,
-          col_by = x$col_by,
-          col_N = col_N,
-          row.name = x$term[1],
-          indent = 1
-        )
-      })
-      do.call(fast_rbind, tbls)
-    } else {
-      NULL
-    }
-    
-    fast_rbind(tbl_start, tbl_tot_unique, tbl_terms)
+    fast_rbind(
+      rtable(header = header(tbl_i), rrow(class_i)),
+      indent_table(tbl_i, 1)
+    )
     
   }, df_class, names(df_class))
-  
   
   row.names(tbls[[1]])[2:3] <- c("Overall total number of events", "Overall total number of patients with at least one adverse event")
   
@@ -1020,124 +995,6 @@ lt_ae_class_term <- function(terms,
 
 
 
-#' List of Adverse Events Terms Tables (Term only)
-#'
-#' \code{lt_ae_term} returns a nested list of adverse events tables by unique id
-#'  (\code{\link{t_count_unique}}).
-#'
-#' @inheritParams lt_ae_class_term 
-#' @param terms term information as character or factor dataframe, however factor
-#'   levels are not repeated by class, only terms with count > 1 are listed per
-#'   class. Currently \code{terms} can only be a dataframe with either 1 column.
-#'   \code{var_relabel} is used as the character string used as a label in the column header
-#'   for each term
-#'
-#' 
-#' @template author_waddella
-#' @template author_zhanc107
-#' @template author_wangh107
-#' @template author_qit3
-#' 
-#' @examples 
-#' 
-#' 
-#' library(dplyr)
-#' library(random.cdisc.data)
-#' 
-#' ASL <- rasl(10, seed = 1)
-#' AAE <- raae(ASL, 4, seed = 2)
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
-#'  
-#' l_tbls <- tern:::lt_ae_term( 
-#'   term =  with_label(ANL$AEDECOD, "MedDRA Preferred Term"),
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients"
-#' )
-#' 
-#' fast_stack_rtables(l_tbls)
-#' 
-#' \dontrun{
-#' #throws an error because terms is not a dataframe 
-#' l_tbls <- lt_ae_term( 
-#'   term =  ANL$TERM,
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
-#'   total = "All Patients"
-#' )
-#' 
-#' }
-#' 
-lt_ae_term <- function(term, 
-                       id, 
-                       col_by, 
-                       col_N = tapply(col_by, col_by, length),
-                       total = "All Patients"){
-  
-  # check argument validity and consitency 
-  check_col_by(col_by, min_num_levels = 1)
-  
-  if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
-  
-  # data prep 
-  df <- data.frame(
-    term = term,
-    id = id,
-    col_by = col_by,
-    stringsAsFactors = FALSE
-  )
-  
-  if (any(is.na(df)))
-    stop("partial missing data in rows of [term] is currently not supported")
-  
-  # adding All Patients
-  if (!is.null(total)) {
-    if (total %in% col_by) 
-      stop('The total label ,"', total, '" is not allowed as it already exists as a level in col_by')
-    
-    df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
-    col_N <- c(col_N, sum(col_N))
-  }
-  
-  term_label <- if(is.null(label(term))) deparse(substitute(term)) else label(term)
-  tbl_header <- rheader(
-    rrowl("", levels(df$col_by)),
-    rrowl(term_label, col_N, format = "(N=xx)")
-  )
-  
-  
-  tbl_start <- rtable(
-    header = tbl_header,
-    rrowl("Total number of events", tapply(df$col_by, df$col_by, length))
-  )
-  
-  tbl_tot_unique <- t_count_unique(
-    x = df$id,
-    col_by = df$col_by,
-    col_N = col_N,
-    row.name = "Total number of patients with at least one adverse event"
-  )
-  
-  tbl_terms <- if (!is.null(df$term)) {
-    tbls <- lapply(split(df, factor(df$term, levels = unique(df$term))), function(x) {
-      t_count_unique(
-        x = x$id,
-        col_by = x$col_by,
-        col_N = col_N,
-        row.name = x$term[1]
-      )
-    })
-    do.call(fast_rbind, tbls)
-  } else {
-    NULL
-  }
-  
-  fast_rbind(tbl_start, tbl_tot_unique, tbl_terms)
-  
-}
 
 
 # Helper Functions Used to Convert the Nested Lists to Single AE tables ----
