@@ -1,13 +1,19 @@
 # STREAM AE tables ----
 
-#' Adverse Events Table by Highest NCI CTCAE Grade
+#' Adverse Events by Highest NCI CTCAE Grade
 #' 
-#' \code{t_events_per_term_grade_id} returns adverse events sorted by highest NCI (National Cancer
+#' This function summaries number of unique subjects 
+#' by highest NCI CTCAE grade and one AE term (i.e. Preferred Term), 
+#' or by highest NCI CTCAE grade and
+#' one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).
+#'
+#' The function returns Adverse Events table sorted by highest NCI (National Cancer
 #'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
 #' 
-#' @param terms term information as character or factor vector or dataframe, however factor
-#'   levels are not repeated by class, only terms with count > 1 are listed per
-#'   class. Currently \code{terms} can only be a vector or dataframe with 1/2 column.
+#' @param terms character or factor vector, or dataframe; 
+#'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
+#'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
+#'   column should be lower level term.
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term.
 #' @inheritParams lt_events_per_term_grade_id_2
@@ -44,7 +50,7 @@
 #' This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_bygrade(templates = aet04)}
 #'   (\url{<https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501>})
 #'  
-#' @return \code{rtable} object
+#' @return an \code{\link{rtable}} object
 #' 
 #' @export
 #' 
@@ -172,18 +178,20 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 }
 
 
-#' Adverse Events by System Organ Class and/or Preferred Term
+#' Adverse Events by Preferred Term
 #'
-#' \code{t_events_per_term_id} returns adverse events summary table that
-#' corresponds to STREAM template AET02
+#' This function summaries number of unique subjects with Adverse Events and total number of events
+#' by one AE term like Preferred Term, or by
+#' one higher level term and one lower level term such as by System Organ Class and Preffered Term.
 #'
 #'
 #' @inheritParams lt_events_per_term_id_2
-#' @param terms term information as character or factor vector or dataframe,
-#'   however factor levels are not repeated by class, only terms with count > 1
-#'   are listed per class. Currently \code{terms} can only be a vector or
-#'   dataframe with 1/2 column. \code{var_relabel} is used as the character
-#'   string used as a label in the column header for each term.
+#' @param terms character or factor vector, or dataframe; 
+#'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
+#'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
+#'   column should be lower level term.
+#'   \code{var_relabel} is used as the character string used as a label in the column header
+#'   for each term.
 #' 
 #' @details 
 #' This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
@@ -192,7 +200,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_basic(templates = aet02)}
 #'   (\url{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342})
 #'
-#' @return \code{rtable} object 
+#' @return an \code{\link{rtable}} object 
 #'
 #' @export
 #' 
@@ -616,8 +624,8 @@ t_events_summary <- function(term,
 #'   class. Currently \code{terms} can only be a dataframe with 2 columns.
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term. 
-#' @param id unique subject identifier. If a particular subject has no adverse
-#'   event then that information needs to be added to the \code{col_N} argument.
+#' @param id vector of subject identifier. Length of \code{id} must be the same as the
+#'   length or number of rows of \code{terms}.
 #' @param grade grade of adverse event as numeric. \code{var_relabel} is used as the character 
 #'   string used as a label in the column header for each grade. 
 #' @param col_by group variable that will be used for a column header. \code{col_by}
@@ -908,8 +916,8 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   class. Currently \code{terms} can only be a dataframe with 2 columns.
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term. 
-#' @param id unique subject identifier. If a particular subject has no adverse
-#'   event then that information needs to be added to the \code{col_N} argument.
+#' @param id vector of subject identifier. Length of \code{id} must be the same as the
+#'   length or number of rows of \code{terms}.
 #' @param col_by group variable that will be used for a column header. \code{col_by}
 #'  has to be a factor and can not be missing. See 'Examples'.
 #' @param col_N numeric vector with information of the number of patients in the
