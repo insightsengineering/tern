@@ -10,7 +10,7 @@
 #'   class. Currently \code{terms} can only be a vector or dataframe with 1/2 column.
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term.
-#' @inheritParams lt_ae_max_grade_class_term
+#' @inheritParams lt_events_per_term_grade_id_2
 #' 
 #' @details 
 #' \code{t_events_per_term_grade_id} counts patients according to adverse events (AEs) of greatest
@@ -99,7 +99,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
   }
   
   if (ncol(terms) == 1) {
-    l_tbls <- lt_ae_max_grade_term(
+    l_tbls <- lt_events_per_term_grade_id_1(
       term = terms[[1]],
       id = id,
       grade = grade,
@@ -123,7 +123,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
     recursive_stack_rtables(l_tbls) 
   } else if (ncol(terms) == 2) {
     
-    l_tbls <- lt_ae_max_grade_class_term(
+    l_tbls <- lt_events_per_term_grade_id_2(
       terms = terms,
       id = id,
       grade = grade,
@@ -178,7 +178,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' corresponds to STREAM template AET02
 #'
 #'
-#' @inheritParams lt_ae_class_term
+#' @inheritParams lt_events_per_term_id_2
 #' @param terms term information as character or factor vector or dataframe,
 #'   however factor levels are not repeated by class, only terms with count > 1
 #'   are listed per class. Currently \code{terms} can only be a vector or
@@ -262,7 +262,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
     l_tbls[c(1:2, (sort.int(-N_total_any, index.return=TRUE)[[2]]) + 2)]
     
   } else if (ncol(terms) == 2) {
-    l_tbls <- lt_ae_class_term(
+    l_tbls <- lt_events_per_term_id_2(
       terms = terms,
       id = id,
       col_by = col_by,
@@ -606,7 +606,7 @@ t_events_summary <- function(term,
 
 #' List of Adverse Events Terms Tables by Highest Grade 
 #' 
-#' \code{lt_ae_max_grade_class_term} returns a nested list of adverse events tables by max
+#' \code{lt_events_per_term_grade_id_2} returns a nested list of adverse events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #' 
 #' @param terms term information as character or factor dataframe, however factor
@@ -628,7 +628,17 @@ t_events_summary <- function(term,
 #'  the only columns of interest then total should be \code{NULL}
 #' @param grade_levels numeric, ordered values of possible of grades in a form
 #'   of \code{x:y}, default is \code{1:5}.
-#'   
+#' 
+#' 
+#' @details 
+#' \if{html}{
+#' 
+#' The data is split and table functions are applied to leaf nodes as follows:
+#' 
+#' \figure{lt_events_per_term_grade_id_2.png}{options: alt="lt_events_per_term_grade_id_2 layout"}
+#' }
+#' 
+#' 
 #' @return rtable
 #' 
 #' 
@@ -647,7 +657,7 @@ t_events_summary <- function(term,
 #' 
 #' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 #' 
-#' l_tbls <- tern:::lt_ae_max_grade_class_term(
+#' l_tbls <- tern:::lt_events_per_term_grade_id_2(
 #'   terms = ANL %>% select(AEBODSYS, AEDECOD),
 #'   id = ANL$USUBJID,
 #'   grade = ANL$AETOXGR,
@@ -663,7 +673,7 @@ t_events_summary <- function(term,
 #'   )
 #' )
 #'
-lt_ae_max_grade_class_term <- function(terms, 
+lt_events_per_term_grade_id_2 <- function(terms, 
                                        id, 
                                        grade, 
                                        col_by, 
@@ -762,14 +772,24 @@ lt_ae_max_grade_class_term <- function(terms,
 
 #' List of Adverse Events Terms Tables By Highest Grade (Term only)
 #' 
-#' \code{lt_ae_max_grade_term} returns a nested list of adverse events tables by max
+#' \code{lt_events_per_term_grade_id_1} returns a nested list of adverse events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #' 
+#' 
+#' @inheritParams lt_events_per_term_grade_id_2
 #' @param term term information as character or factor, however factor levels
 #'   are not repeated by class, only terms with count > 1 are listed per class.
 #'   \code{var_relabel} is used as the character string used as a label in the
 #'   column header for each term.
-#' @inheritParams lt_ae_max_grade_class_term
+#' 
+#' 
+#' @details 
+#' \if{html}{
+#' 
+#' The data is split and table functions are applied to leaf nodes as follows:
+#' 
+#' \figure{lt_events_per_term_grade_id_1.png}{options: alt="lt_events_per_term_grade_id_1 layout"}
+#' }
 #' 
 #' @template author_waddella
 #' @template author_zhanc107
@@ -786,7 +806,7 @@ lt_ae_max_grade_class_term <- function(terms,
 #' 
 #' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 #' 
-#' l_tbls <- tern:::lt_ae_max_grade_term(
+#' l_tbls <- tern:::lt_events_per_term_grade_id_1(
 #'   term = ANL$AEDECOD,
 #'   id = ANL$USUBJID,
 #'   grade = ANL$AETOXGR,
@@ -798,7 +818,7 @@ lt_ae_max_grade_class_term <- function(terms,
 #' 
 #' do.call(fast_stack_rtables, l_tbls)
 #' 
-lt_ae_max_grade_term <- function(term, 
+lt_events_per_term_grade_id_1 <- function(term, 
                                  id, 
                                  grade, 
                                  col_by, 
@@ -877,7 +897,7 @@ lt_ae_max_grade_term <- function(term,
 
 #' List of Adverse Events Terms Tables 
 #' 
-#' \code{lt_ae_max_grade_class_term} returns a nested list of adverse events tables 
+#' \code{lt_events_per_term_grade_id_2} returns a nested list of adverse events tables 
 #' by unique id (\code{\link{t_count_unique}}).
 #'
 #'
@@ -896,7 +916,16 @@ lt_ae_max_grade_term <- function(term,
 #' @param total character string that will be used as a label for a column with 
 #'  pooled total population, default is "All Patients". If the levels of col_by are 
 #'  the only columns of interest then total should be \code{NULL}
-#'
+#' 
+#' 
+#' @details 
+#' \if{html}{
+#' 
+#' The data is split and table functions are applied to leaf nodes as follows:
+#' 
+#' \figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
+#' }
+#' 
 #' @template author_waddella
 #' @template author_zhanc107
 #' @template author_wangh107
@@ -912,7 +941,7 @@ lt_ae_max_grade_term <- function(term,
 #' 
 #' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
 #' 
-#' l_tbls <- tern:::lt_ae_class_term(
+#' l_tbls <- tern:::lt_events_per_term_id_2(
 #'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
@@ -921,7 +950,7 @@ lt_ae_max_grade_term <- function(term,
 #' )
 #' recursive_stack_rtables(l_tbls)
 #' 
-lt_ae_class_term <- function(terms, 
+lt_events_per_term_id_2 <- function(terms, 
                              id,  
                              col_by, 
                              col_N,
@@ -1047,7 +1076,6 @@ nl_remove_n_first_rrows <- function(x, n=1, lower_childindex_threshold = 0) {
 #' 
 #' @template author_waddella
 #' 
-#' @export
 #' 
 #' @examples
 #' 

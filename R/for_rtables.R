@@ -64,9 +64,6 @@ fast_stack_rtables <- function(..., nrow_pad = 1) {
 #' 
 #' @return a list of rtables
 #' 
-#' @export
-#' 
-#' 
 #' @examples 
 #' 
 #' l_tbls <- list(
