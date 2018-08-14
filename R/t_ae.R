@@ -73,7 +73,7 @@
 #'   id = ANL$USUBJID,
 #'   grade = ANL$AETOXGR,
 #'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   col_N = table(ASL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -83,7 +83,7 @@
 #'   id = ANL$USUBJID,
 #'   grade = ANL$AETOXGR,
 #'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   col_N = table(ASL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -221,7 +221,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #'   terms = ANL$AEDECOD,
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   col_N = table(ASL$ARM),
 #'   total = NULL
 #' )
 #' 
@@ -229,7 +229,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   col_N = table(ASL$ARM),
 #'   total = "All Patients"
 #' )
 #' 
@@ -341,7 +341,8 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,3),
 #'   id = c(1,1,1),
-#'   col_by = factor(rep("A", 3))
+#'   col_by = factor(rep("A", 3)),
+#'   col_N = 3
 #' )
 #' 
 #' id <- c(1,1,2,2,3,3,3,4)
@@ -355,7 +356,8 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,3,2,1,1,2,3),
 #'   id = id,
-#'   col_by = factor(LETTERS[id])
+#'   col_by = factor(LETTERS[id]),
+#'   col_N = c(4,3,5,4)
 #' )
 #' 
 #' \dontrun{
@@ -462,24 +464,24 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N,
 #'  col_N = c(2, 4, 10)
 #' )
 #' 
-t_count_unique <- function(x, col_by, col_N = NULL, row.name = "number of unique elements", indent = 0) {
+t_count_unique <- function(x, col_by, col_N = NULL, na.rm = TRUE, row.name = "number of unique elements", indent = 0) {
   
   check_col_by(col_by, 1)
   
-  if (any(is.na(x))) stop("x does currently not support NAs")
-  
   if (is.null(col_N)) {
-    col_N <- tapply(col_by, col_by, length)
+    col_N <- table(col_by)
   } else {
     if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
   }
   
-  counts <- tapply(x, col_by, function(x)length(unique(x)))
-  counts[is.na(counts)] = 0
+  counts <- vapply(split(x, col_by), function(xi) {
+    if (na.rm) xi <- na.omit(xi)
+    length(unique(xi))
+  }, numeric(1))
   percentage <- counts/col_N
   
   rtable(
-    rheader(rrowl("",levels(col_by)), rrowl("", col_N, format = "(N=xx)")),
+    rheader(rrowl("", levels(col_by)), rrowl("", col_N, format = "(N=xx)")),
     rrowl(as.character(row.name), Map(c, counts, percentage), format= "xx.xx (xx.xx%)", indent = indent)
   )
   
@@ -563,7 +565,7 @@ t_events_summary <- function(term,
   tbl_events <- if( !is.null(total_events)) {
     rtable(
       header = tbl_header,
-      rrowl(total_events, tapply(df$col_by, df$col_by, length))
+      rrowl(total_events, table(df$col_by))
     )
   } else {
     NULL
@@ -650,7 +652,7 @@ t_events_summary <- function(term,
 #'   id = ANL$USUBJID,
 #'   grade = ANL$AETOXGR,
 #'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   col_N = table(ASL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -665,7 +667,7 @@ lt_ae_max_grade_class_term <- function(terms,
                                        id, 
                                        grade, 
                                        col_by, 
-                                       col_N = tapply(col_by, col_by, length),
+                                       col_N,
                                        total = "All Patients",
                                        grade_levels) {
   
@@ -789,7 +791,7 @@ lt_ae_max_grade_class_term <- function(terms,
 #'   id = ANL$USUBJID,
 #'   grade = ANL$AETOXGR,
 #'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   col_N = table(ASL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -914,7 +916,7 @@ lt_ae_max_grade_term <- function(term,
 #'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
-#'   col_N = tapply(ASL$ARM, ASL$ARM, length),
+#'   col_N = table(ASL$ARM),
 #'   total = "All Patients"
 #' )
 #' recursive_stack_rtables(l_tbls)
@@ -922,7 +924,7 @@ lt_ae_max_grade_term <- function(term,
 lt_ae_class_term <- function(terms, 
                              id,  
                              col_by, 
-                             col_N = tapply(col_by, col_by, length),
+                             col_N,
                              total = "All Patients"){
   
   # check argument validity and consitency
@@ -1075,3 +1077,4 @@ recursive_stack_rtables <- function(x) {
   do.call(fast_stack_rtables, tbls)
   
 }
+

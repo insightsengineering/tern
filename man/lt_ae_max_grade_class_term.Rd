@@ -4,8 +4,8 @@
 \alias{lt_ae_max_grade_class_term}
 \title{List of Adverse Events Terms Tables by Highest Grade}
 \usage{
-lt_ae_max_grade_class_term(terms, id, grade, col_by, col_N = tapply(col_by,
-  col_by, length), total = "All Patients", grade_levels)
+lt_ae_max_grade_class_term(terms, id, grade, col_by, col_N,
+  total = "All Patients", grade_levels)
 }
 \arguments{
 \item{terms}{term information as character or factor dataframe, however factor
@@ -56,7 +56,7 @@ l_tbls <- tern:::lt_ae_max_grade_class_term(
   id = ANL$USUBJID,
   grade = ANL$AETOXGR,
   col_by = ANL$ARM,
-  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  col_N = table(ASL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )

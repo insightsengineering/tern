@@ -4,8 +4,7 @@
 \alias{lt_ae_class_term}
 \title{List of Adverse Events Terms Tables}
 \usage{
-lt_ae_class_term(terms, id, col_by, col_N = tapply(col_by, col_by, length),
-  total = "All Patients")
+lt_ae_class_term(terms, id, col_by, col_N, total = "All Patients")
 }
 \arguments{
 \item{terms}{term information as character or factor dataframe, however factor
@@ -46,7 +45,7 @@ l_tbls <- tern:::lt_ae_class_term(
   terms = ANL[, c("AEBODSYS", "AEDECOD")],
   id = ANL$USUBJID,
   col_by = ANL$ARM,
-  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  col_N = table(ASL$ARM),
   total = "All Patients"
 )
 recursive_stack_rtables(l_tbls)

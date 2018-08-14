@@ -4,7 +4,7 @@
 \alias{t_count_unique}
 \title{Count Unique Elements Per Cell}
 \usage{
-t_count_unique(x, col_by, col_N = NULL,
+t_count_unique(x, col_by, col_N = NULL, na.rm = TRUE,
   row.name = "number of unique elements", indent = 0)
 }
 \arguments{

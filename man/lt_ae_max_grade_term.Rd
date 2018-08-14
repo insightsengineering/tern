@@ -52,7 +52,7 @@ l_tbls <- tern:::lt_ae_max_grade_term(
   id = ANL$USUBJID,
   grade = ANL$AETOXGR,
   col_by = ANL$ARM,
-  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  col_N = table(ASL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )

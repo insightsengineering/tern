@@ -31,7 +31,8 @@ as nested lists.
 t_max_grade_per_id(
   grade =  c(1,2,3),
   id = c(1,1,1),
-  col_by = factor(rep("A", 3))
+  col_by = factor(rep("A", 3)),
+  col_N = 3
 )
 
 id <- c(1,1,2,2,3,3,3,4)
@@ -45,7 +46,8 @@ t_max_grade_per_id(
 t_max_grade_per_id(
   grade =  c(1,2,3,2,1,1,2,3),
   id = id,
-  col_by = factor(LETTERS[id])
+  col_by = factor(LETTERS[id]),
+  col_N = c(4,3,5,4)
 )
 
 \dontrun{

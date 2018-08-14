@@ -93,7 +93,7 @@ t_events_per_term_grade_id(
   id = ANL$USUBJID,
   grade = ANL$AETOXGR,
   col_by = ANL$ARM,
-  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  col_N = table(ASL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )
@@ -103,7 +103,7 @@ t_events_per_term_grade_id(
   id = ANL$USUBJID,
   grade = ANL$AETOXGR,
   col_by = ANL$ARM,
-  col_N = tapply(ASL$ARM, ASL$ARM, length),
+  col_N = table(ASL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )
