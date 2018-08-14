@@ -11,10 +11,10 @@
 #' @export
 #' 
 #' @examples 
-#' grid.newpage()
 #' g1 <- circleGrob(gp = gpar(col = "blue"))
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
+#' grid.newpage()
 #' grid.draw(grobs_stack(g1, g2, g3))
 #' 
 #' grid.newpage()
@@ -76,10 +76,10 @@ grobs_stack <- function(..., padding = unit(2, "line"), vp = NULL, gp = NULL, na
 #' @export
 #' 
 #' @examples 
-#' grid.newpage()
 #' g1 <- circleGrob(gp = gpar(col = "blue"))
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
+#' grid.newpage()
 #' grid.draw(grobs_arrange(g1, g2, g3, nrow = 2))
 #' 
 #' grid.newpage()
@@ -161,5 +161,21 @@ grobs_arrange <- function(..., ncol = NULL, nrow = NULL,
 }
 
 
-
+#' @describeIn  grobs_arrange draw on the current device
+#' @param newpage drow on new page
+#' @inheritParams grobs_arrange
+#' @export
+#' 
+#' @examples 
+#' g1 <- circleGrob(gp = gpar(col = "blue"))
+#' g2 <- circleGrob(gp = gpar(col = "red"))
+#' g3 <- textGrob("TEST TEXT")
+#' grobs_draw(g1, g2, g3, nrow = 2)
+#' 
+grobs_draw <- function(..., newpage = TRUE){
+  if (newpage) grid.newpage()
+  mgrobs <- grobs_arrange(...)
+  grid.draw(mgrobs)
+  invisible(mgrobs)
+}
 
