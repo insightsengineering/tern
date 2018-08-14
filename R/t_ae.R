@@ -583,6 +583,8 @@ t_events_summary <- function(term,
     NULL
   }
   
+  if (!is.null(tbl_at_least_one)) attr(tbl_at_least_one, "header") <- tbl_header
+  
   
   tbls <- if (!is.null(df$x)) {
     tmp_tbls <- lapply(split(df, df$x), function(x) {
@@ -948,7 +950,7 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   col_N = table(ASL$ARM),
 #'   total = "All Patients"
 #' )
-#' recursive_stack_rtables(l_tbls)
+#' do.call(fast_stack_rtables, l_tbls)
 #' 
 lt_events_per_term_id_2 <- function(terms, 
                              id,  
@@ -1011,9 +1013,9 @@ lt_events_per_term_id_2 <- function(terms,
       col_by = df_terms$col_by,
       col_N = col_N
     )
-    
+     
     fast_rbind(
-      rtable(header = header(tbl_i), rrow(class_i)),
+      rtable(header = tbl_header, rrow(class_i)),
       indent_table(tbl_i, 1)
     )
     
