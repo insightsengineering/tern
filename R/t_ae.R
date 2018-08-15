@@ -6,9 +6,6 @@
 #' by highest NCI CTCAE grade and one level AE term (i.e. Preferred Term), 
 #' or by highest NCI CTCAE grade and
 #' one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).
-#'
-#' The function returns Adverse Events table sorted by highest NCI (National Cancer
-#'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
 #' 
 #' @param terms character or factor vector, or dataframe to represent events information; 
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
