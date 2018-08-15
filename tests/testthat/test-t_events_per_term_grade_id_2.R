@@ -1,7 +1,7 @@
 
-context("test adverse events sorted by highest NCI CTCAE grade")
+context("test adverse events sorted by highest NCI CTCAE grade (class and term)")
 
-test_that("adverse events sorted by highest NCI CTCAE grade", {
+test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
   
   ANL <- read.table(header = TRUE, sep = ';', stringsAsFactors = FALSE, text = '
                     "USUBJID";"TRT02AN";"AETOXGR";"AEBODSYS";"AEDECOD"
@@ -106,6 +106,8 @@ test_that("adverse events sorted by highest NCI CTCAE grade", {
                     "AB12345-275992-2520";"B";"1";"SKIN AND SUBCUTANEOUS TISSUE DISORDERS";"DERMATITIS ACNEIFORM"'
   )
   
+  ASL <- unique(ANL[, c('USUBJID','TRT02AN')])
+  
   tbl_stream <- rtable(
     header = rheader(
       rrowl("", "", c('A', 'B', 'All Patients')),
@@ -184,11 +186,23 @@ test_that("adverse events sorted by highest NCI CTCAE grade", {
   
   ANL$AEBODSYS[ANL$AEBODSYS == ""] <- NA
   ANL$AEDECOD[ANL$AEDECOD == ""] <- NA
+  ANL <- ANL %>%
+    filter(!is.na(AETOXGR)) %>%
+    var_relabel(
+      AEBODSYS = 'MedDRA System Organ Class',
+      AEDECOD = 'MedDRA Preferred Term',
+      AETOXGR = 'NCI CTCAE Grade')
   
-  tbl <- t_ae_ctc(class = ANL$AEBODSYS, term = ANL$AEDECOD, id = ANL$USUBJID, grade = ANL$AETOXGR, col_by = factor(ANL$TRT02AN))
-  
+  tbl <- t_events_per_term_grade_id(terms = ANL %>% select(AEBODSYS, AEDECOD),
+                                    id = ANL$USUBJID,
+                                    grade = ANL$AETOXGR,
+                                    col_by = as.factor(ANL$TRT02AN),
+                                    col_N = table(ASL$TRT02AN),
+                                    total = "All Patients",
+                                    grade_levels = 1:5)
+    
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
   
-  expect_true(all(comp == "."), "t_ae_ctc does not provide the same results as stream")
+  expect_true(all(comp == "."), "t_events_per_term_grade_id does not provide the same results as stream")
   
 })
