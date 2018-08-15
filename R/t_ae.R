@@ -2,15 +2,15 @@
 
 #' Adverse Events by Highest NCI CTCAE Grade
 #' 
-#' This function summaries number of unique subjects 
-#' by highest NCI CTCAE grade and one AE term (i.e. Preferred Term), 
+#' This function summarizes number of unique subjects 
+#' by highest NCI CTCAE grade and one level AE term (i.e. Preferred Term), 
 #' or by highest NCI CTCAE grade and
 #' one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).
 #'
 #' The function returns Adverse Events table sorted by highest NCI (National Cancer
 #'  Institute) CTCAE (common terminology criteria for adverse avents) grade.
 #' 
-#' @param terms character or factor vector, or dataframe; 
+#' @param terms character or factor vector, or dataframe to represent events information; 
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 #'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
 #'   column should be lower level term.
@@ -180,13 +180,13 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 
 #' Adverse Events by Preferred Term
 #'
-#' This function summaries number of unique subjects with Adverse Events and total number of events
-#' by one AE term like Preferred Term, or by
+#' This function summarizes number of unique subjects with Adverse Events and total number of events
+#' by one level AE term like Preferred Term, or by
 #' one higher level term and one lower level term such as by System Organ Class and Preffered Term.
 #'
 #'
 #' @inheritParams lt_events_per_term_id_2
-#' @param terms character or factor vector, or dataframe; 
+#' @param terms character or factor vector, or dataframe to represent events information; 
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 #'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
 #'   column should be lower level term.
