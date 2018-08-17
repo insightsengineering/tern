@@ -97,13 +97,9 @@ grobs_arrange <- function(..., grobs = list(...), ncol = NULL, nrow = NULL,
   
   if (is.null(ncol) && is.null(nrow)){
     ncol <- 1 
-  }
-  
-  if (!is.null(ncol) && is.null(nrow)){
+  } else if (!is.null(ncol) && is.null(nrow)){
     nrow <- ceiling(length(grobs)/ncol)
-  }
-  
-  if (is.null(ncol) && !is.null(nrow)){
+  }else if (is.null(ncol) && !is.null(nrow)){
     ncol <- ceiling(length(grobs)/nrow)
   }
   
@@ -112,7 +108,7 @@ grobs_arrange <- function(..., grobs = list(...), ncol = NULL, nrow = NULL,
   }
   
   if (ncol == 1)
-    return(grobs_stack(..., padding = padding_ht, vp = vp, gp = gp, name = name))
+    return(grobs_stack(..., grobs = grobs, padding = padding_ht, vp = vp, gp = gp, name = name))
   
   n_col <- 2*ncol - 1
   n_row <- 2*nrow - 1
@@ -165,7 +161,7 @@ grobs_arrange <- function(..., grobs = list(...), ncol = NULL, nrow = NULL,
 #' g1 <- circleGrob(gp = gpar(col = "blue"))
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
-#' grobs_draw(g1, g2, g3, nrow = 2)
+#' grobs_draw(grobs = list(g1, g2, g3), nrow = 2)
 #' 
 grobs_draw <- function(..., newpage = TRUE){
   if (newpage) grid.newpage()
