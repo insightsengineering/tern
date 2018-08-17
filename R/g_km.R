@@ -19,7 +19,7 @@
 #' 
 #' @examples 
 #' library(random.cdisc.data)
-#' 
+#' library(tern)
 #' ASL <- radam("ASL")
 #' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
 #'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
@@ -115,11 +115,11 @@ kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
   vp_tree <- vpTree(main_vp, vpList(topcurve_vp, table_vp, xlab_vp))
   
   lines <- Map(function(x, y, col_i, lty_i){
-    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col_i, lwd = 3, lty = lty_i), vp = vpPath(" plotArea", "topCurve"))
+    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col_i, lwd = 3, lty = lty_i), vp = vpPath("plotArea", "topCurve"))
   }, cd$lines_x, cd$lines_y,  col, lty)
   
   points <- Map(function(x, y, col_i){
-    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col_i), vp = vpPath(" plotArea", "topCurve"))
+    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col_i), vp = vpPath("plotArea", "topCurve"))
   }, cd$points_x, cd$points_y, col)
   
   ptnumber <- Map(function(y, col_i, risk){

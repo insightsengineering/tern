@@ -96,7 +96,8 @@ grobs_arrange <- function(..., grobs = list(...), ncol = NULL, nrow = NULL,
   if (length(grobs) == 1) return(grobs[[1]])
   
   if (is.null(ncol) && is.null(nrow)){
-    ncol <- 1 
+    ncol <- 1
+    nrow <- ceiling(length(grobs)/ncol)
   } else if (!is.null(ncol) && is.null(nrow)){
     nrow <- ceiling(length(grobs)/ncol)
   }else if (is.null(ncol) && !is.null(nrow)){
