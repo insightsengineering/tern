@@ -104,7 +104,7 @@ kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
                          layout = grid.layout(
                            nrow = 4, ncol = 1, widths = unit(1, "npc"),
                            heights = unit(c(5, 5, length(cd$group) +4, 3), c("null", "lines", "lines", "lines"))),
-                         name = "mainKmPlot")
+                         name = " plotArea")
   topcurve_vp <- dataViewport(xData = cd$xData, yData = c(0,1),
                           layout.pos.col = 1, layout.pos.row = 1, name = "topCurve")
   
@@ -115,11 +115,11 @@ kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
   vp_tree <- vpTree(main_vp, vpList(topcurve_vp, table_vp, xlab_vp))
   
   lines <- Map(function(x, y, col_i, lty_i){
-    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col_i, lwd = 3, lty = lty_i), vp = vpPath("mainKmPlot", "topCurve"))
+    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col_i, lwd = 3, lty = lty_i), vp = vpPath(" plotArea", "topCurve"))
   }, cd$lines_x, cd$lines_y,  col, lty)
   
   points <- Map(function(x, y, col_i){
-    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col_i), vp = vpPath("mainKmPlot", "topCurve"))
+    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col_i), vp = vpPath(" plotArea", "topCurve"))
   }, cd$points_x, cd$points_y, col)
   
   ptnumber <- Map(function(y, col_i, risk){
@@ -127,7 +127,7 @@ kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
               x = unit(cd$xpos, "native"),
               y = unit(y, "npc"),
               gp = gpar(col = col_i),
-              vp = vpPath("mainKmPlot", "riskTable"))
+              vp = vpPath(" plotArea", "riskTable"))
   }, cd$ypos, col, cd$pt_risk )
   
   grplabel <-  Map(function(y, col_i, grp){
@@ -136,28 +136,28 @@ kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
               y = unit(y, "npc"),
               just = c("left", "center"),
               gp = gpar(col = col_i),
-              vp =  vpPath("mainKmPlot", "riskTable"))
+              vp =  vpPath(" plotArea", "riskTable"))
   }, cd$ypos, col, names(cd$group) )
   
                gTree(childrenvp = vp_tree,
                      children =   do.call("gList", 
-                                          c(list( xaxisGrob(at = cd$xpos, vp = vpPath("mainKmPlot", "topCurve")),
-                                                  yaxisGrob(vp = vpPath("mainKmPlot", "topCurve")),
-                                                  rectGrob(vp = vpPath("mainKmPlot", "topCurve")),
+                                          c(list( xaxisGrob(at = cd$xpos, vp = vpPath(" plotArea", "topCurve")),
+                                                  yaxisGrob(vp = vpPath(" plotArea", "topCurve")),
+                                                  rectGrob(vp = vpPath(" plotArea", "topCurve")),
                                                   textGrob(title, y = unit(1, "npc") + unit(1, "lines"), 
-                                                           gp = gpar(fontface = "bold", fontsize = 16), vp = vpPath("mainKmPlot", "topCurve")),
-                                                  textGrob("Survival Probability", x = unit(-3.5, "lines"), rot = 90, vp = vpPath("mainKmPlot", "topCurve")), 
+                                                           gp = gpar(fontface = "bold", fontsize = 16), vp = vpPath(" plotArea", "topCurve")),
+                                                  textGrob("Survival Probability", x = unit(-3.5, "lines"), rot = 90, vp = vpPath(" plotArea", "topCurve")), 
                                                   textGrob(label = "Number of Patients at Risk",
                                                            x = unit(0, "npc"),
                                                            y = unit(1, "npc") + unit(1, "lines"),
-                                                           just = "left", vp = vpPath("mainKmPlot", "riskTable")),
-                                                  xaxisGrob(at = cd$xpos, vp = vpPath("mainKmPlot",   "riskTable")), 
-                                                  rectGrob(vp = vpPath("mainKmPlot",   "riskTable")),
+                                                           just = "left", vp = vpPath(" plotArea", "riskTable")),
+                                                  xaxisGrob(at = cd$xpos, vp = vpPath(" plotArea",   "riskTable")), 
+                                                  rectGrob(vp = vpPath(" plotArea",   "riskTable")),
                                                   textGrob(xlab, 
                                                            x = unit(0.5, "npc"),
                                                            y = unit(0, "npc"), 
                                                            just = "top",
-                                                           vp = vpPath("mainKmPlot", "timeUnit"))),
+                                                           vp = vpPath(" plotArea", "timeUnit"))),
                                             
                                             lines,
                                             points,

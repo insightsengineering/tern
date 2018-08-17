@@ -3,6 +3,7 @@
 #' Stack grobs as a new grob with 1 column and multiple rows layout 
 #' 
 #' @param ... grobs. 
+#' @param grobs list of grobs.
 #' @param padding unit of length 1, space between each grob.
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #' @param name a character identifier for the grob.
@@ -22,9 +23,7 @@
 #' vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
 #' grid.draw(grobs_stack(g1, g2, g3, vp = vp1))
 #' 
-grobs_stack <- function(..., padding = unit(2, "line"), vp = NULL, gp = NULL, name = NULL){
-  
-  grobs <- list(...)
+grobs_stack <- function(..., grobs = list(...), padding = unit(2, "line"), vp = NULL, gp = NULL, name = NULL){
   
   if (!all(vapply(grobs, is, logical(1), "grob"))) stop("not all objects are of class grob")
   
@@ -65,13 +64,12 @@ grobs_stack <- function(..., padding = unit(2, "line"), vp = NULL, gp = NULL, na
 #' 
 #' Arrange grobs as a new grob with n*m (rows*cols) layout 
 #' 
-#' @param ... grobs. 
+#' @inheritParams grobs_stack
 #' @param ncol number of columns in layout.
 #' @param nrow number of rows in layout.
 #' @param padding_ht unit of length 1, vertical space between each grob.
 #' @param padding_wt unit of length 1, horizontal space between each grob. Default is 
 #'    \code{padding_ht}.
-#' @inheritParams grobs_stack
 #' 
 #' @export
 #' 
@@ -90,12 +88,9 @@ grobs_stack <- function(..., padding = unit(2, "line"), vp = NULL, gp = NULL, na
 #' vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
 #' grid.draw(grobs_arrange(g1, g2, g3, ncol = 2, vp = vp1))
 #' 
-grobs_arrange <- function(..., ncol = NULL, nrow = NULL,
-                          padding_ht = unit(2, "line"), padding_wt = padding_ht,
+grobs_arrange <- function(..., grobs = list(...), ncol = NULL, nrow = NULL,
+                          padding_ht = unit(2, "line"), padding_wt =unit(2, "line"),
                           vp = NULL, gp = NULL, name = NULL){
-  
-  grobs <- list(...)
-
   if (!all(vapply(grobs, is, logical(1), "grob"))) stop("not all objects are of class grob")
   
   if (length(grobs) == 1) return(grobs[[1]])
