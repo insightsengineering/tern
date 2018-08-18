@@ -1,5 +1,5 @@
 
-context("test adverse events sorted by highest NCI CTCAE grade (class and term)")
+context("test adverse events sorted by highest NCI CTCAE grade (term only)")
 
 library(dplyr)
 
@@ -115,21 +115,12 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
       rrowl("", "", c('A', 'B', 'All Patients')),
       rrowl("", 'NCI CTCAE Grade', c('(N=6)', '(N=59)', '(N=65)'))
     ),
-    rrow('- Any adverse events -'),
     rrow('- Overall -', '- Any Grade -', rcell(c(5, .833), 'xx (xx.x%)'), rcell(c(32, .542), 'xx (xx.x%)'), rcell(c(37, .569), 'xx (xx.x%)'), indent = 1),
     rrow('', '1', rcell(c(4, .667), 'xx (xx.x%)'),  rcell(c(14, .237), 'xx (xx.x%)'),  rcell(c(18, .277), 'xx (xx.x%)')),
     rrow('', '2', rcell(c(1, .167), 'xx (xx.x%)'),  rcell(c(12, .203), 'xx (xx.x%)'),  rcell(c(13, .200), 'xx (xx.x%)')),
     rrow('', '3', rcell(c(0)),  rcell(c(5, .085), 'xx (xx.x%)'),  rcell(c(5, .077), 'xx (xx.x%)')),
     rrow('', '4', rcell(c(0)), rcell(c(0)), rcell(c(0))),
     rrow('', '5', rcell(c(0)), rcell(c(1, .017), 'xx (xx.x%)'),  rcell(c(1, .015), 'xx (xx.x%)')),
-    rrow(),
-    rrow('SKIN AND SUBCUTANEOUS TISSUE DISORDERS'),
-    rrow('- Overall -', '- Any Grade -', rcell(c(5, .833), 'xx (xx.x%)'), rcell(c(19, .322), 'xx (xx.x%)'), rcell(c(24, .369), 'xx (xx.x%)'), indent = 1),
-    rrow('', '1', rcell(c(4, .667), 'xx (xx.x%)'),  rcell(c(9, .153), 'xx (xx.x%)'),  rcell(c(13, .200), 'xx (xx.x%)')),
-    rrow('', '2', rcell(c(1, .167), 'xx (xx.x%)'),  rcell(c(8, .136), 'xx (xx.x%)'),  rcell(c(9, .138), 'xx (xx.x%)')),
-    rrow('', '3', rcell(c(0)),  rcell(c(2, .034), 'xx (xx.x%)'),  rcell(c(2, .031), 'xx (xx.x%)')),
-    rrow('', '4', rcell(c(0)), rcell(c(0)), rcell(c(0))),
-    rrow('', '5', rcell(c(0)), rcell(c(0)), rcell(c(0))),
     rrow(),
     rrow('DERMATITIS ACNEIFORM', '- Any Grade -', rcell(c(1, .167), 'xx (xx.x%)'), rcell(c(15, .254), 'xx (xx.x%)'), rcell(c(16, .246), 'xx (xx.x%)'), indent = 1),
     rrow('', '1', rcell(c(1, .167), 'xx (xx.x%)'),  rcell(c(8, .136), 'xx (xx.x%)'),  rcell(c(9, .138), 'xx (xx.x%)')),
@@ -138,25 +129,17 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
     rrow('', '4', rcell(c(0)), rcell(c(0)), rcell(c(0))),
     rrow('', '5', rcell(c(0)), rcell(c(0)), rcell(c(0))),
     rrow(),
-    rrow('RASH MACULO-PAPULAR', '- Any Grade -', rcell(c(4, .667), 'xx (xx.x%)'), rcell(c(8, .136), 'xx (xx.x%)'), rcell(c(12, .185), 'xx (xx.x%)'), indent = 1),
-    rrow('', '1', rcell(c(3, .500), 'xx (xx.x%)'),  rcell(c(4, .068), 'xx (xx.x%)'),  rcell(c(7, .108), 'xx (xx.x%)')),
-    rrow('', '2', rcell(c(1, .167), 'xx (xx.x%)'),  rcell(c(2, .034), 'xx (xx.x%)'),  rcell(c(3, .046), 'xx (xx.x%)')),
-    rrow('', '3', rcell(c(0)), rcell(c(2, .034), 'xx (xx.x%)'), rcell(c(2, .031), 'xx (xx.x%)')),
-    rrow('', '4', rcell(c(0)), rcell(c(0)), rcell(c(0))),
-    rrow('', '5', rcell(c(0)), rcell(c(0)), rcell(c(0))),
-    rrow(),
-    rrow('GASTROINTESTINAL DISORDERS'),
-    rrow('- Overall -', '- Any Grade -', rcell(c(2, .333), 'xx (xx.x%)'), rcell(c(19, .322), 'xx (xx.x%)'), rcell(c(21, .323), 'xx (xx.x%)'), indent = 1),
-    rrow('', '1', rcell(c(2, .333), 'xx (xx.x%)'),  rcell(c(8, .136), 'xx (xx.x%)'),  rcell(c(10, .154), 'xx (xx.x%)')),
-    rrow('', '2', rcell(c(0)),  rcell(c(7, .119), 'xx (xx.x%)'),  rcell(c(7, .108), 'xx (xx.x%)')),
-    rrow('', '3', rcell(c(0)),  rcell(c(3, .051), 'xx (xx.x%)'),  rcell(c(3, .046), 'xx (xx.x%)')),
-    rrow('', '4', rcell(c(0)), rcell(c(0)), rcell(c(0))),
-    rrow('', '5', rcell(c(0)), rcell(c(1, .017), 'xx (xx.x%)'), rcell(c(1, .015), 'xx (xx.x%)')),
-    rrow(),
     rrow('CONSTIPATION', '- Any Grade -', rcell(c(1, .167), 'xx (xx.x%)'), rcell(c(11, .186), 'xx (xx.x%)'), rcell(c(12, .185), 'xx (xx.x%)'), indent = 1),
     rrow('', '1', rcell(c(1, .167), 'xx (xx.x%)'),  rcell(c(7, .119), 'xx (xx.x%)'),  rcell(c(8, .123), 'xx (xx.x%)')),
     rrow('', '2', rcell(c(0)), rcell(c(4, .068), 'xx (xx.x%)'), rcell(c(4, .062), 'xx (xx.x%)')),
     rrow('', '3', rcell(c(0)), rcell(c(0)), rcell(c(0))),
+    rrow('', '4', rcell(c(0)), rcell(c(0)), rcell(c(0))),
+    rrow('', '5', rcell(c(0)), rcell(c(0)), rcell(c(0))),
+    rrow(),
+    rrow('RASH MACULO-PAPULAR', '- Any Grade -', rcell(c(4, .667), 'xx (xx.x%)'), rcell(c(8, .136), 'xx (xx.x%)'), rcell(c(12, .185), 'xx (xx.x%)'), indent = 1),
+    rrow('', '1', rcell(c(3, .500), 'xx (xx.x%)'),  rcell(c(4, .068), 'xx (xx.x%)'),  rcell(c(7, .108), 'xx (xx.x%)')),
+    rrow('', '2', rcell(c(1, .167), 'xx (xx.x%)'),  rcell(c(2, .034), 'xx (xx.x%)'),  rcell(c(3, .046), 'xx (xx.x%)')),
+    rrow('', '3', rcell(c(0)), rcell(c(2, .034), 'xx (xx.x%)'), rcell(c(2, .031), 'xx (xx.x%)')),
     rrow('', '4', rcell(c(0)), rcell(c(0)), rcell(c(0))),
     rrow('', '5', rcell(c(0)), rcell(c(0)), rcell(c(0))),
     rrow(),
@@ -182,7 +165,6 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
     rrow('', '5', rcell(c(0)), rcell(c(1, .017), 'xx (xx.x%)'), rcell(c(1, .015), 'xx (xx.x%)'))
   )
   
-  attr(attr(tbl_stream, "header")[[1]], "row.name") <- 'MedDRA System Organ Class'
   attr(attr(tbl_stream, "header")[[2]], "row.name") <- 'MedDRA Preferred Term'
   attr(attr(tbl_stream, "header")[[2]], "indent") <- 1
   
@@ -195,14 +177,14 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
       AEDECOD = 'MedDRA Preferred Term',
       AETOXGR = 'NCI CTCAE Grade')
   
-  tbl <- t_events_per_term_grade_id(terms = ANL %>% select(AEBODSYS, AEDECOD),
+  tbl <- t_events_per_term_grade_id(terms = ANL$AEDECOD,
                                     id = ANL$USUBJID,
                                     grade = ANL$AETOXGR,
                                     col_by = as.factor(ANL$TRT02AN),
                                     col_N = table(ASL$TRT02AN),
                                     total = "All Patients",
                                     grade_levels = 1:5)
-    
+  
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
   
   expect_true(all(comp == "."), "t_events_per_term_grade_id does not provide the same results as stream")
