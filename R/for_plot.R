@@ -18,10 +18,16 @@
 #' grid.newpage()
 #' grid.draw(grobs_stack(g1, g2, g3))
 #' 
+#' showViewport()
+#' 
 #' grid.newpage()
 #' pushViewport(viewport(layout = grid.layout(1,2)))
 #' vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
-#' grid.draw(grobs_stack(g1, g2, g3, vp = vp1))
+#' grid.draw(grobs_stack(g1, g2, g3, vp = vp1, name = "test"))
+#' 
+#' showViewport()
+#' grid.ls(grobs = TRUE, viewports = TRUE)
+#' 
 #' 
 grobs_stack <- function(..., grobs = list(...), padding = unit(2, "line"), vp = NULL, gp = NULL, name = NULL){
   
@@ -74,11 +80,20 @@ grobs_stack <- function(..., grobs = list(...), padding = unit(2, "line"), vp = 
 #' @export
 #' 
 #' @examples 
+#' 
+#' num <- lapply(1:9, textGrob)
+#' grid.newpage()
+#' grid.draw(grobs_arrange(grobs = num, ncol = 2))
+#' 
+#' showViewport()
+#' 
 #' g1 <- circleGrob(gp = gpar(col = "blue"))
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
 #' grid.newpage()
 #' grid.draw(grobs_arrange(g1, g2, g3, nrow = 2))
+#' 
+#' showViewport()
 #' 
 #' grid.newpage()
 #' grid.draw(grobs_arrange(g1, g2, g3, ncol = 3))
@@ -87,6 +102,8 @@ grobs_stack <- function(..., grobs = list(...), padding = unit(2, "line"), vp = 
 #' pushViewport(viewport(layout = grid.layout(1,2)))
 #' vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
 #' grid.draw(grobs_arrange(g1, g2, g3, ncol = 2, vp = vp1))
+#' 
+#' showViewport()
 #' 
 grobs_arrange <- function(..., grobs = list(...), ncol = NULL, nrow = NULL,
                           padding_ht = unit(2, "line"), padding_wt =unit(2, "line"),
@@ -109,7 +126,7 @@ grobs_arrange <- function(..., grobs = list(...), ncol = NULL, nrow = NULL,
   }
   
   if (ncol == 1)
-    return(grobs_stack(..., grobs = grobs, padding = padding_ht, vp = vp, gp = gp, name = name))
+    return(grobs_stack(grobs = grobs, padding = padding_ht, vp = vp, gp = gp, name = name))
   
   n_col <- 2*ncol - 1
   n_row <- 2*nrow - 1
@@ -171,4 +188,19 @@ grobs_draw <- function(..., newpage = TRUE){
   invisible(mgrobs)
 }
 
+
+#' alternative suggestion
+#' draw_grob(arrange_grob())
+#' 
+#' ... %>%
+#'   arrange_grob() %>%
+#'   draw_grob()
+#' 
+draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
+  
+  if (newpage) grid.newpage()
+  if (!is.null(vp)) pushViewport(vp)
+  grid.draw(grob)
+  
+}
 
