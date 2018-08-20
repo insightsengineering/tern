@@ -695,9 +695,9 @@ lt_events_per_term_grade_id_2 <- function(terms,
   term_label <- label(terms[[2]])
   grade_label <- label(grade)
   
-  if(is.na(term_label)) class_label <- deparse(substitute(class))
-  if(is.na(term_label)) term_label <- deparse(substitute(term))
-  if(is.na(grade_label)) grade_label <- deparse(substitute(grade))
+  if(is.null(term_label)) class_label <- deparse(substitute(class))
+  if(is.null(term_label)) term_label <- deparse(substitute(term))
+  if(is.null(grade_label)) grade_label <- deparse(substitute(grade))
   
   # data prep
   df <- data.frame(
@@ -966,8 +966,8 @@ lt_events_per_term_id_2 <- function(terms,
   
   class_label <- label(terms[[1]])
   term_label <- label(terms[[2]])
-  if(is.na(class_label)) class_label <- deparse(substitute(class))
-  if(is.na(term_label)) term_label <- deparse(substitute(term))
+  if(is.null(class_label)) class_label <- deparse(substitute(class))
+  if(is.null(term_label)) term_label <- deparse(substitute(term))
   
   # data prep
   df <- data.frame(
