@@ -2,19 +2,20 @@
 % Please edit documentation in R/t_ae.R
 \name{t_events_per_term_id}
 \alias{t_events_per_term_id}
-\title{Adverse Events by System Organ Class and/or Preferred Term}
+\title{Adverse Events by Preferred Term}
 \usage{
 t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients")
 }
 \arguments{
-\item{terms}{term information as character or factor vector or dataframe,
-however factor levels are not repeated by class, only terms with count > 1
-are listed per class. Currently \code{terms} can only be a vector or
-dataframe with 1/2 column. \code{var_relabel} is used as the character
-string used as a label in the column header for each term.}
+\item{terms}{character or factor vector, or dataframe to represent events information; 
+Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
+For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
+column should be lower level term.
+\code{var_relabel} is used as the character string used as a label in the column header
+for each term.}
 
-\item{id}{unique subject identifier. If a particular subject has no adverse
-event then that information needs to be added to the \code{col_N} argument.}
+\item{id}{vector of subject identifier. Length of \code{id} must be the same as the
+length or number of rows of \code{terms}.}
 
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
@@ -28,11 +29,12 @@ pooled total population, default is "All Patients". If the levels of col_by are
 the only columns of interest then total should be \code{NULL}}
 }
 \value{
-\code{rtable} object
+an \code{\link{rtable}} object
 }
 \description{
-\code{t_events_per_term_id} returns adverse events summary table that
-corresponds to STREAM template AET02
+This function summarizes number of unique subjects with Adverse Events and total number of events
+by one level AE term like Preferred Term, or by
+one higher level term and one lower level term such as by System Organ Class and Preffered Term.
 }
 \details{
 This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}

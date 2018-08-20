@@ -2,20 +2,21 @@
 % Please edit documentation in R/t_ae.R
 \name{t_events_per_term_grade_id}
 \alias{t_events_per_term_grade_id}
-\title{Adverse Events Table by Highest NCI CTCAE Grade}
+\title{Adverse Events by Highest NCI CTCAE Grade}
 \usage{
 t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels = 1:5)
 }
 \arguments{
-\item{terms}{term information as character or factor vector or dataframe, however factor
-levels are not repeated by class, only terms with count > 1 are listed per
-class. Currently \code{terms} can only be a vector or dataframe with 1/2 column.
+\item{terms}{character or factor vector, or dataframe to represent events information; 
+Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
+For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
+column should be lower level term.
 \code{var_relabel} is used as the character string used as a label in the column header
 for each term.}
 
-\item{id}{unique subject identifier. If a particular subject has no adverse
-event then that information needs to be added to the \code{col_N} argument.}
+\item{id}{vector of subject identifier. Length of \code{id} must be the same as the
+length or number of rows of \code{terms}.}
 
 \item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character 
 string used as a label in the column header for each grade.}
@@ -35,11 +36,13 @@ the only columns of interest then total should be \code{NULL}}
 of \code{x:y}, default is \code{1:5}.}
 }
 \value{
-\code{rtable} object
+an \code{\link{rtable}} object
 }
 \description{
-\code{t_events_per_term_grade_id} returns adverse events sorted by highest NCI (National Cancer
- Institute) CTCAE (common terminology criteria for adverse avents) grade.
+This function summarizes number of unique subjects 
+by highest NCI CTCAE grade and one level AE term (i.e. Preferred Term), 
+or by highest NCI CTCAE grade and
+one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).
 }
 \details{
 \code{t_events_per_term_grade_id} counts patients according to adverse events (AEs) of greatest

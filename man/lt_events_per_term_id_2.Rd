@@ -13,8 +13,8 @@ class. Currently \code{terms} can only be a dataframe with 2 columns.
 \code{var_relabel} is used as the character string used as a label in the column header
 for each term.}
 
-\item{id}{unique subject identifier. If a particular subject has no adverse
-event then that information needs to be added to the \code{col_N} argument.}
+\item{id}{vector of subject identifier. Length of \code{id} must be the same as the
+length or number of rows of \code{terms}.}
 
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
@@ -56,7 +56,7 @@ l_tbls <- tern:::lt_events_per_term_id_2(
   col_N = table(ASL$ARM),
   total = "All Patients"
 )
-recursive_stack_rtables(l_tbls)
+do.call(fast_stack_rtables, l_tbls)
 
 }
 \author{

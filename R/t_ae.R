@@ -7,13 +7,14 @@
 #' or by highest NCI CTCAE grade and
 #' one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).
 #' 
+#' 
+#' @inheritParams lt_events_per_term_grade_id_2
 #' @param terms character or factor vector, or dataframe to represent events information; 
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 #'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
 #'   column should be lower level term.
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term.
-#' @inheritParams lt_events_per_term_grade_id_2
 #' 
 #' @details 
 #' \code{t_events_per_term_grade_id} counts patients according to adverse events (AEs) of greatest

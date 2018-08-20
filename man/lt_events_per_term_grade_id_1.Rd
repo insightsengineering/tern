@@ -13,8 +13,8 @@ are not repeated by class, only terms with count > 1 are listed per class.
 \code{var_relabel} is used as the character string used as a label in the
 column header for each term.}
 
-\item{id}{unique subject identifier. If a particular subject has no adverse
-event then that information needs to be added to the \code{col_N} argument.}
+\item{id}{vector of subject identifier. Length of \code{id} must be the same as the
+length or number of rows of \code{terms}.}
 
 \item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character 
 string used as a label in the column header for each grade.}
