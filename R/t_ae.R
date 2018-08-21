@@ -1,12 +1,13 @@
 # STREAM AE tables ----
 
-#' Adverse Events by Highest NCI CTCAE Grade
+#' Events by Highest Grade Table
 #' 
-#' This function summarizes number of unique subjects 
-#' by highest NCI CTCAE grade and one level AE term (i.e. Preferred Term), 
-#' or by highest NCI CTCAE grade and
-#' one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).
-#' 
+#' This function summarizes number of unique subjects by highest grade and events term(s).
+#' Events \code{terms} can be one level term or two level terms (one higher level and one lower level).
+#' An implementation example is to apply \code{t_events_per_term_grade_id} on Adverse Event Data 
+#' to create Adverse Events by Highest NCI CTCAE grade table 
+#' (AET04, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
+#' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}). 
 #' 
 #' @inheritParams lt_events_per_term_grade_id_2
 #' @param terms character or factor vector, or dataframe to represent events information; 
@@ -17,38 +18,30 @@
 #'   for each term.
 #' 
 #' @details 
-#' \code{t_events_per_term_grade_id} counts patients according to adverse events (AEs) of greatest
-#'  intensity for system organ class (SOC) and overall rows and includes 
-#'  percentages based on the total number of patients in the column heading 
-#'  (i.e. "N=nnn"). If the intention is to use patients number from subject level
-#'  dataset as N for percentage calculation then adeverse events dataset should
-#'  be left joined to subject level dataset and the \code{col_by} variable should
-#'  be dropped from adverse events dataset, see the example. Otherwise, N will be
-#'  derived using adverse events dataset. At the preferred term (PT) level,
-#'  multiple events within a patient of the same PT are counted once using the
+#' \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects 
+#' in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+#' get N for percentage calculation from either events dataset or additional dataset like
+#' subject level dataset. See the example.  
+#' 
+#' Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term 
+#' (if \code{terms} is two levels) are counted once using the
 #'  greatest intensity reported. 
 #' 
-#' \code{t_events_per_term_grade_id} removes any non-complete records, e.g. if class or term are 
-#'  missing. If the intent is to preserve such records, then impute missing 
-#'  values before using \code{t_events_per_term_grade_id}.
+#' \code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has NA's), 
+#' e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_grade_id}.
 #'      
 #' \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
-#'  reported SOC to the least frequent one. Within SOC, it sorts by decreasing
-#'  frequency of PT. It brakes ties using SOC/PT names in alphabetical order.   
+#'  reported higher level term to the least frequent one. Within each group of higher level term, 
+#'  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.   
 #' 
 #' \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value 
-#' in case there was no AEs reported for particular \code{col_by} and/or 
+#' in case there was no events reported for particular \code{col_by} and/or 
 #' \code{grade} category. Use \code{grade_levels} to modify the range of existing
 #' grades. If data does not have any records with \code{grade} 5 and the intent 
 #' is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 #' 
-#' This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet04)}
-#'   (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html})
-#' 
-#' This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_bygrade(templates = aet04)}
-#'   (\url{<https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501>})
 #'  
-#' @return an \code{\link{rtable}} object
+#' @return an \code{\link{rtable}} object.
 #' 
 #' @export
 #' 
@@ -176,13 +169,20 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 }
 
 
-#' Adverse Events by Preferred Term
+#' Basic Events Table
 #'
-#' This function summarizes number of unique subjects with Adverse Events and total number of events
-#' by one level AE term like Preferred Term, or by
-#' one higher level term and one lower level term such as by System Organ Class and Preffered Term.
+#' This function summarizes number of unique subjects with events and total number of events.
+#' It creates basic summary of events and can be used for any events data like Adverse Events,
+#' concomitant medication, medical history, etc.
+#' Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data 
+#' to create Adverse Events summary table 
+#' (AET02, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
+#' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17} ),
+#' or apply on Concomitatant Medication data to create Concomitant Treatment summary table
+#' (CMT01, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
+#' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 #'
-#'
+#' 
 #' @inheritParams lt_events_per_term_id_2
 #' @param terms character or factor vector, or dataframe to represent events information; 
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
@@ -192,13 +192,22 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #'   for each term.
 #' 
 #' @details 
-#' This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
-#'   (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html})
+#' \code{t_events_per_term_id} includes percentages based on the total number of subjects 
+#' in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+#' get N for percentage calculation from either events dataset or additional dataset such as
+#' subject level dataset. See the example.  
 #' 
-#' This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_basic(templates = aet02)}
-#'   (\url{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342})
+#' Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term 
+#' (if \code{terms} is two levels) are counted once when counting number of subjects. 
+#' 
+#' \code{t_events_per_term_id} doesn't deal with data with any non-complete records (has NA's), 
+#' e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_id}.
+#'      
+#' \code{t_events_per_term_id} orders data by "All Patients" column from the most commonly
+#'  reported higher level term to the least frequent one. Within each group of higher level term, 
+#'  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order. 
 #'
-#' @return an \code{\link{rtable}} object 
+#' @return an \code{\link{rtable}} object. 
 #'
 #' @export
 #' 
@@ -610,11 +619,11 @@ t_events_summary <- function(term,
   fast_rbind(tbl_events, tbl_at_least_one, tbls) 
 }
 
-# Create Nested Lists of Tables that Compose AE tables ----
+# Create Nested Lists of Tables that Compose Events tables ----
 
-#' List of Adverse Events Terms Tables by Highest Grade 
+#' List of Events Terms Tables by Highest Grade 
 #' 
-#' \code{lt_events_per_term_grade_id_2} returns a nested list of adverse events tables by max
+#' \code{lt_events_per_term_grade_id_2} returns a nested list of events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #' 
 #' @param terms term information as character or factor dataframe, however factor
@@ -778,9 +787,9 @@ lt_events_per_term_grade_id_2 <- function(terms,
 }
 
 
-#' List of Adverse Events Terms Tables By Highest Grade (Term only)
+#' List of Events Terms Tables By Highest Grade (One Level Term only)
 #' 
-#' \code{lt_events_per_term_grade_id_1} returns a nested list of adverse events tables by max
+#' \code{lt_events_per_term_grade_id_1} returns a nested list of events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #' 
 #' 
@@ -903,9 +912,9 @@ lt_events_per_term_grade_id_1 <- function(term,
 }
 
 
-#' List of Adverse Events Terms Tables 
+#' List of Events Terms Tables 
 #' 
-#' \code{lt_events_per_term_grade_id_2} returns a nested list of adverse events tables 
+#' \code{lt_events_per_term_grade_id_2} returns a nested list of events tables 
 #' by unique id (\code{\link{t_count_unique}}).
 #'
 #'
