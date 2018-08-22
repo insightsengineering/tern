@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_ae.R
 \name{lt_events_per_term_grade_id_2}
 \alias{lt_events_per_term_grade_id_2}
-\title{List of Adverse Events Terms Tables by Highest Grade}
+\title{List of Events Terms Tables by Highest Grade}
 \usage{
 lt_events_per_term_grade_id_2(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels)
@@ -38,7 +38,7 @@ of \code{x:y}, default is \code{1:5}.}
 rtable
 }
 \description{
-\code{lt_events_per_term_grade_id_2} returns a nested list of adverse events tables by max
+\code{lt_events_per_term_grade_id_2} returns a nested list of events tables by max
 grade (\code{\link{t_max_grade_per_id}}).
 }
 \details{

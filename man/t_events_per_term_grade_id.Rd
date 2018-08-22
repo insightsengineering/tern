@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_ae.R
 \name{t_events_per_term_grade_id}
 \alias{t_events_per_term_grade_id}
-\title{Adverse Events by Highest NCI CTCAE Grade}
+\title{Events by Highest Grade Table}
 \usage{
 t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels = 1:5)
@@ -36,45 +36,38 @@ the only columns of interest then total should be \code{NULL}}
 of \code{x:y}, default is \code{1:5}.}
 }
 \value{
-an \code{\link{rtable}} object
+an \code{\link{rtable}} object.
 }
 \description{
-This function summarizes number of unique subjects 
-by highest NCI CTCAE grade and one level AE term (i.e. Preferred Term), 
-or by highest NCI CTCAE grade and
-one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).
+This function summarizes number of unique subjects by highest grade and events term(s).
+Events \code{terms} can be one level term or two level terms (one higher level and one lower level).
+An implementation example is to apply \code{t_events_per_term_grade_id} on Adverse Event Data 
+to create Adverse Events by Highest NCI CTCAE grade table 
+(AET04, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
+\href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
 }
 \details{
-\code{t_events_per_term_grade_id} counts patients according to adverse events (AEs) of greatest
- intensity for system organ class (SOC) and overall rows and includes 
- percentages based on the total number of patients in the column heading 
- (i.e. "N=nnn"). If the intention is to use patients number from subject level
- dataset as N for percentage calculation then adeverse events dataset should
- be left joined to subject level dataset and the \code{col_by} variable should
- be dropped from adverse events dataset, see the example. Otherwise, N will be
- derived using adverse events dataset. At the preferred term (PT) level,
- multiple events within a patient of the same PT are counted once using the
+\code{t_events_per_term_grade_id} includes percentages based on the total number of subjects 
+in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+get N for percentage calculation from either events dataset or additional dataset like
+subject level dataset. See the example.  
+
+Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term 
+(if \code{terms} is two levels) are counted once using the
  greatest intensity reported. 
 
-\code{t_events_per_term_grade_id} removes any non-complete records, e.g. if class or term are 
- missing. If the intent is to preserve such records, then impute missing 
- values before using \code{t_events_per_term_grade_id}.
+\code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has NA's), 
+e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_grade_id}.
      
 \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
- reported SOC to the least frequent one. Within SOC, it sorts by decreasing
- frequency of PT. It brakes ties using SOC/PT names in alphabetical order.   
+ reported higher level term to the least frequent one. Within each group of higher level term, 
+ it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.   
 
 \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value 
-in case there was no AEs reported for particular \code{col_by} and/or 
+in case there was no events reported for particular \code{col_by} and/or 
 \code{grade} category. Use \code{grade_levels} to modify the range of existing
 grades. If data does not have any records with \code{grade} 5 and the intent 
 is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
-
-This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet04)}
-  (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html})
-
-This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_bygrade(templates = aet04)}
-  (\url{<https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501>})
 }
 \examples{
 

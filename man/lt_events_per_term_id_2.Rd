@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_ae.R
 \name{lt_events_per_term_id_2}
 \alias{lt_events_per_term_id_2}
-\title{List of Adverse Events Terms Tables}
+\title{List of Events Terms Tables}
 \usage{
 lt_events_per_term_id_2(terms, id, col_by, col_N, total = "All Patients")
 }
@@ -28,7 +28,7 @@ pooled total population, default is "All Patients". If the levels of col_by are
 the only columns of interest then total should be \code{NULL}}
 }
 \description{
-\code{lt_events_per_term_grade_id_2} returns a nested list of adverse events tables 
+\code{lt_events_per_term_grade_id_2} returns a nested list of events tables 
 by unique id (\code{\link{t_count_unique}}).
 }
 \details{

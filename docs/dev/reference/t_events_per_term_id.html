@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Adverse Events by Preferred Term — t_events_per_term_id • tern</title>
+<title>Basic Events Table — t_events_per_term_id • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,11 +30,18 @@
 
 
 
-<meta property="og:title" content="Adverse Events by Preferred Term — t_events_per_term_id" />
+<meta property="og:title" content="Basic Events Table — t_events_per_term_id" />
 
-<meta property="og:description" content="This function summarizes number of unique subjects with Adverse Events and total number of events
-by one level AE term like Preferred Term, or by
-one higher level term and one lower level term such as by System Organ Class and Preffered Term." />
+<meta property="og:description" content="This function summarizes number of unique subjects with events and total number of events.
+It creates basic summary of events and can be used for any events data like Adverse Events,
+concomitant medication, medical history, etc.
+Implementation examples are to apply t_events_per_term_id on Adverse Event data 
+to create Adverse Events summary table 
+(AET02, STREAM2.x,
+STREAM1.17 ),
+or apply on Concomitatant Medication data to create Concomitant Treatment summary table
+(CMT01, STREAM2.x,
+STREAM1.17)." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -102,16 +109,23 @@ one higher level term and one lower level term such as by System Organ Class and
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Adverse Events by Preferred Term</h1>
+    <h1>Basic Events Table</h1>
     
     <div class="hidden name"><code>t_events_per_term_id.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function summarizes number of unique subjects with Adverse Events and total number of events
-by one level AE term like Preferred Term, or by
-one higher level term and one lower level term such as by System Organ Class and Preffered Term.</p>
+    <p>This function summarizes number of unique subjects with events and total number of events.
+It creates basic summary of events and can be used for any events data like Adverse Events,
+concomitant medication, medical history, etc.
+Implementation examples are to apply <code>t_events_per_term_id</code> on Adverse Event data 
+to create Adverse Events summary table 
+(AET02, <a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02'>STREAM2.x</a>,
+<a href='https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342'>STREAM1.17</a> ),
+or apply on Concomitatant Medication data to create Concomitant Treatment summary table
+(CMT01, <a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01'>STREAM2.x</a>,
+<a href='https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342'>STREAM1.17</a>).</p>
     
     </div>
 
@@ -155,14 +169,21 @@ the only columns of interest then total should be <code>NULL</code></p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an <code>rtable</code> object</p>
+    <p>an <code>rtable</code> object.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is an equivalent of the STREAM output <code>%stream_t_summary(templates = aet02)</code>
-  (<a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html'>http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html</a>)</p>
-<p>This is an equivalent of the STREAM 1.17 output <code>%stream_t_events_basic(templates = aet02)</code>
-  (<a href='https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342'>https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342</a>)</p>
+    <p><code>t_events_per_term_id</code> includes percentages based on the total number of subjects 
+in the column heading (i.e. "N=nnn"). <code>col_N</code> can be explicitly specified to
+get N for percentage calculation from either events dataset or additional dataset such as
+subject level dataset. See the example.</p>
+<p>Multiple events within a subject of the same term (if <code>terms</code> is one level) or lower level term 
+(if <code>terms</code> is two levels) are counted once when counting number of subjects.</p>
+<p><code>t_events_per_term_id</code> doesn't deal with data with any non-complete records (has NA's), 
+e.g. if any terms are missing. Impute missing values before using <code>t_events_per_term_id</code>.</p>     
+<p><code>t_events_per_term_id</code> orders data by "All Patients" column from the most commonly
+ reported higher level term to the least frequent one. Within each group of higher level term, 
+ it sorts by decreasing frequency of lower level term. It brakes ties using <code>terms</code> names in alphabetical order.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

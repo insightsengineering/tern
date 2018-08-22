@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Adverse Events by Highest NCI CTCAE Grade — t_events_per_term_grade_id • tern</title>
+<title>Events by Highest Grade Table — t_events_per_term_grade_id • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,12 +30,14 @@
 
 
 
-<meta property="og:title" content="Adverse Events by Highest NCI CTCAE Grade — t_events_per_term_grade_id" />
+<meta property="og:title" content="Events by Highest Grade Table — t_events_per_term_grade_id" />
 
-<meta property="og:description" content="This function summarizes number of unique subjects 
-by highest NCI CTCAE grade and one level AE term (i.e. Preferred Term), 
-or by highest NCI CTCAE grade and
-one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term)." />
+<meta property="og:description" content="This function summarizes number of unique subjects by highest grade and events term(s).
+Events terms can be one level term or two level terms (one higher level and one lower level).
+An implementation example is to apply t_events_per_term_grade_id on Adverse Event Data 
+to create Adverse Events by Highest NCI CTCAE grade table 
+(AET04, STREAM2.x,
+STREAM1.17)." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -103,17 +105,19 @@ one higher level term (i.e. System Organ Class) and one lower level term (i.e. P
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Adverse Events by Highest NCI CTCAE Grade</h1>
+    <h1>Events by Highest Grade Table</h1>
     
     <div class="hidden name"><code>t_events_per_term_grade_id.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function summarizes number of unique subjects 
-by highest NCI CTCAE grade and one level AE term (i.e. Preferred Term), 
-or by highest NCI CTCAE grade and
-one higher level term (i.e. System Organ Class) and one lower level term (i.e. Preffered Term).</p>
+    <p>This function summarizes number of unique subjects by highest grade and events term(s).
+Events <code>terms</code> can be one level term or two level terms (one higher level and one lower level).
+An implementation example is to apply <code>t_events_per_term_grade_id</code> on Adverse Event Data 
+to create Adverse Events by Highest NCI CTCAE grade table 
+(AET04, <a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html'>STREAM2.x</a>,
+<a href='https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501'>STREAM1.17</a>).</p>
     
     </div>
 
@@ -168,35 +172,27 @@ of <code>x:y</code>, default is <code>1:5</code>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an <code>rtable</code> object</p>
+    <p>an <code>rtable</code> object.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>t_events_per_term_grade_id</code> counts patients according to adverse events (AEs) of greatest
- intensity for system organ class (SOC) and overall rows and includes 
- percentages based on the total number of patients in the column heading 
- (i.e. "N=nnn"). If the intention is to use patients number from subject level
- dataset as N for percentage calculation then adeverse events dataset should
- be left joined to subject level dataset and the <code>col_by</code> variable should
- be dropped from adverse events dataset, see the example. Otherwise, N will be
- derived using adverse events dataset. At the preferred term (PT) level,
- multiple events within a patient of the same PT are counted once using the
+    <p><code>t_events_per_term_grade_id</code> includes percentages based on the total number of subjects 
+in the column heading (i.e. "N=nnn"). <code>col_N</code> can be explicitly specified to
+get N for percentage calculation from either events dataset or additional dataset like
+subject level dataset. See the example.</p>
+<p>Multiple events within a subject of the same term (if <code>terms</code> is one level) or lower level term 
+(if <code>terms</code> is two levels) are counted once using the
  greatest intensity reported.</p>
-<p><code>t_events_per_term_grade_id</code> removes any non-complete records, e.g. if class or term are 
- missing. If the intent is to preserve such records, then impute missing 
- values before using <code>t_events_per_term_grade_id</code>.</p>     
+<p><code>t_events_per_term_grade_id</code> doesn't deal with data with any non-complete records (has NA's), 
+e.g. if any terms are missing. Impute missing values before using <code>t_events_per_term_grade_id</code>.</p>     
 <p><code>t_events_per_term_grade_id</code> orders data by "All Patients" column from the most commonly
- reported SOC to the least frequent one. Within SOC, it sorts by decreasing
- frequency of PT. It brakes ties using SOC/PT names in alphabetical order.</p>
+ reported higher level term to the least frequent one. Within each group of higher level term, 
+ it sorts by decreasing frequency of lower level term. It brakes ties using <code>terms</code> names in alphabetical order.</p>
 <p><code>t_events_per_term_grade_id</code> fills in <code>col_by</code> and <code>grade</code> with <code>0</code> value 
-in case there was no AEs reported for particular <code>col_by</code> and/or 
+in case there was no events reported for particular <code>col_by</code> and/or 
 <code>grade</code> category. Use <code>grade_levels</code> to modify the range of existing
 grades. If data does not have any records with <code>grade</code> 5 and the intent 
 is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
-<p>This is an equivalent of the STREAM output <code>%stream_t_summary(templates = aet04)</code>
-  (<a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html'>http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html</a>)</p>
-<p>This is an equivalent of the STREAM 1.17 output <code>%stream_t_events_bygrade(templates = aet04)</code>
-  (<a href='&lt;https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501&gt;'>&lt;https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501&gt;</a>)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

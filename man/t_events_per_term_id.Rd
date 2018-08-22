@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_ae.R
 \name{t_events_per_term_id}
 \alias{t_events_per_term_id}
-\title{Adverse Events by Preferred Term}
+\title{Basic Events Table}
 \usage{
 t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients")
 }
@@ -29,19 +29,35 @@ pooled total population, default is "All Patients". If the levels of col_by are
 the only columns of interest then total should be \code{NULL}}
 }
 \value{
-an \code{\link{rtable}} object
+an \code{\link{rtable}} object.
 }
 \description{
-This function summarizes number of unique subjects with Adverse Events and total number of events
-by one level AE term like Preferred Term, or by
-one higher level term and one lower level term such as by System Organ Class and Preffered Term.
+This function summarizes number of unique subjects with events and total number of events.
+It creates basic summary of events and can be used for any events data like Adverse Events,
+concomitant medication, medical history, etc.
+Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data 
+to create Adverse Events summary table 
+(AET02, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
+\href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17} ),
+or apply on Concomitatant Medication data to create Concomitant Treatment summary table
+(CMT01, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
+\href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 }
 \details{
-This is an equivalent of the STREAM output \code{\%stream_t_summary(templates = aet02)}
-  (\url{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html})
+\code{t_events_per_term_id} includes percentages based on the total number of subjects 
+in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+get N for percentage calculation from either events dataset or additional dataset such as
+subject level dataset. See the example.  
 
-This is an equivalent of the STREAM 1.17 output \code{\%stream_t_events_basic(templates = aet02)}
-  (\url{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342})
+Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term 
+(if \code{terms} is two levels) are counted once when counting number of subjects. 
+
+\code{t_events_per_term_id} doesn't deal with data with any non-complete records (has NA's), 
+e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_id}.
+     
+\code{t_events_per_term_id} orders data by "All Patients" column from the most commonly
+ reported higher level term to the least frequent one. Within each group of higher level term, 
+ it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.
 }
 \examples{
 
