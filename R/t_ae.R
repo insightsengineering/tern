@@ -237,7 +237,8 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
 #'   col_N = table(ASL$ARM),
-#'   total = NULL
+#'   total = NULL,
+#'   event_name = "adverse event"
 #' )
 #' 
 #' t_events_per_term_id(
