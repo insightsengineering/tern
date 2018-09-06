@@ -4,7 +4,8 @@
 \alias{lt_events_per_term_id_2}
 \title{List of Events Terms Tables}
 \usage{
-lt_events_per_term_id_2(terms, id, col_by, col_N, total = "All Patients")
+lt_events_per_term_id_2(terms, id, col_by, col_N, total = "All Patients",
+  event_name = "event")
 }
 \arguments{
 \item{terms}{term information as character or factor dataframe, however factor
@@ -26,6 +27,8 @@ adverse events can be accounted for with this argument.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
+
+\item{event_name}{character name of events. Default is "event".}
 }
 \description{
 \code{lt_events_per_term_grade_id_2} returns a nested list of events tables 
@@ -47,7 +50,12 @@ library(random.cdisc.data)
 ASL <- rasl(10, seed = 1)
 AAE <- raae(ASL, 4, seed = 2)
 
-ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
+ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
+  var_relabel(
+    AEBODSYS = 'MedDRA System Organ Class',
+    AEDECOD = 'MedDRA Preferred Term',
+    AETOXGR = 'GRADE'
+)
 
 l_tbls <- tern:::lt_events_per_term_id_2(
   terms = ANL[, c("AEBODSYS", "AEDECOD")],
@@ -57,6 +65,16 @@ l_tbls <- tern:::lt_events_per_term_id_2(
   total = "All Patients"
 )
 do.call(fast_stack_rtables, l_tbls)
+
+l_tbls <- tern:::lt_events_per_term_id_2(
+  terms = ANL[, c("AEBODSYS", "AEDECOD")],
+  id = ANL$USUBJID,
+  col_by = ANL$ARM,
+  col_N = table(ASL$ARM),
+  total = NULL
+)
+do.call(fast_stack_rtables, l_tbls)
+
 
 }
 \author{

@@ -113,7 +113,8 @@ by unique id (<code><a href='t_count_unique.html'>t_count_unique</a></code>).</p
     
     </div>
 
-    <pre class="usage"><span class='fu'>lt_events_per_term_id_2</span>(<span class='no'>terms</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</pre>
+    <pre class="usage"><span class='fu'>lt_events_per_term_id_2</span>(<span class='no'>terms</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
+  <span class='kw'>event_name</span> <span class='kw'>=</span> <span class='st'>"event"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,6 +149,10 @@ adverse events can be accounted for with this argument.</p></td>
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be <code>NULL</code></p></td>
     </tr>
+    <tr>
+      <th>event_name</th>
+      <td><p>character name of events. Default is "event".</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -164,7 +169,12 @@ the only columns of interest then total should be <code>NULL</code></p></td>
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/rasl'>rasl</a></span>(<span class='fl'>10</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>AAE</span> <span class='kw'>&lt;-</span> <span class='fu'>raae</span>(<span class='no'>ASL</span>, <span class='fl'>4</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>AAE</span>, <span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>, <span class='no'>ARM</span>), <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>))
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>AAE</span>, <span class='no'>ASL</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>USUBJID</span>, <span class='no'>STUDYID</span>, <span class='no'>ARM</span>), <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"USUBJID"</span>, <span class='st'>"STUDYID"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='var_relabel.html'>var_relabel</a></span>(
+    <span class='kw'>AEBODSYS</span> <span class='kw'>=</span> <span class='st'>'MedDRA System Organ Class'</span>,
+    <span class='kw'>AEDECOD</span> <span class='kw'>=</span> <span class='st'>'MedDRA Preferred Term'</span>,
+    <span class='kw'>AETOXGR</span> <span class='kw'>=</span> <span class='st'>'GRADE'</span>
+)
 
 <span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_id_2.html'>lt_events_per_term_id_2</a></span>(
   <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"AEBODSYS"</span>, <span class='st'>"AEDECOD"</span>)],
@@ -173,30 +183,62 @@ the only columns of interest then total should be <code>NULL</code></p></td>
   <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>table</span>(<span class='no'>ASL</span>$<span class='no'>ARM</span>),
   <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>
 )
-<span class='fu'>do.call</span>(<span class='no'>fast_stack_rtables</span>, <span class='no'>l_tbls</span>)</div><div class='output co'>#&gt; Body System or Organ Class                                                  A: Drug X             B: Placebo          C: Combination         All Patients 
-#&gt;   Dictionary-Derived Term                                                     (N=1)                 (N=4)                 (N=5)                 (N=10)    
-#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; - Any Adverse Event -
-#&gt;   Overall total number of events                                                1                     5                     10                    16      
-#&gt;   Overall total number of patients with at least one adverse event           1 (100%)              2 (50%)               4 (80%)               7 (70%)    
+<span class='fu'>do.call</span>(<span class='no'>fast_stack_rtables</span>, <span class='no'>l_tbls</span>)</div><div class='output co'>#&gt; MedDRA System Organ Class                                   A: Drug X             B: Placebo          C: Combination         All Patients 
+#&gt;   MedDRA Preferred Term                                       (N=1)                 (N=4)                 (N=5)                 (N=10)    
+#&gt; ------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; - Any event -
+#&gt;   Total number of patients with at least one event           1 (100%)              2 (50%)               4 (80%)               7 (70%)    
+#&gt;   Total number of events                                        1                     5                     10                    16      
 #&gt; 
 #&gt; cl A
-#&gt;   Total number of events                                                        0                     2                     2                     4       
-#&gt;   Total number of patients with at least one adverse event                    0 (0%)               2 (50%)               2 (40%)               4 (40%)    
-#&gt;   trm A_1/2                                                                   0 (0%)                0 (0%)               2 (40%)               2 (20%)    
-#&gt;   trm A_2/2                                                                   0 (0%)               2 (50%)                0 (0%)               2 (20%)    
+#&gt;   Total number of patients with at least one event            0 (0%)               2 (50%)               2 (40%)               4 (40%)    
+#&gt;   Total number of events                                        0                     2                     2                     4       
+#&gt;   trm A_1/2                                                   0 (0%)                0 (0%)               2 (40%)               2 (20%)    
+#&gt;   trm A_2/2                                                   0 (0%)               2 (50%)                0 (0%)               2 (20%)    
 #&gt; 
 #&gt; cl B
-#&gt;   Total number of events                                                        1                     2                     4                     7       
-#&gt;   Total number of patients with at least one adverse event                   1 (100%)              2 (50%)               3 (60%)               6 (60%)    
-#&gt;   trm B_1/3                                                                  1 (100%)               0 (0%)               3 (60%)               4 (40%)    
-#&gt;   trm B_2/3                                                                   0 (0%)               1 (25%)               1 (20%)               2 (20%)    
-#&gt;   trm B_3/3                                                                   0 (0%)               1 (25%)                0 (0%)               1 (10%)    
+#&gt;   Total number of patients with at least one event           1 (100%)              2 (50%)               3 (60%)               6 (60%)    
+#&gt;   Total number of events                                        1                     2                     4                     7       
+#&gt;   trm B_1/3                                                  1 (100%)               0 (0%)               3 (60%)               4 (40%)    
+#&gt;   trm B_2/3                                                   0 (0%)               1 (25%)               1 (20%)               2 (20%)    
+#&gt;   trm B_3/3                                                   0 (0%)               1 (25%)                0 (0%)               1 (10%)    
 #&gt; 
 #&gt; cl C
-#&gt;   Total number of events                                                        0                     1                     4                     5       
-#&gt;   Total number of patients with at least one adverse event                    0 (0%)               1 (25%)               3 (60%)               4 (40%)    
-#&gt;   trm C_1/1                                                                   0 (0%)               1 (25%)               3 (60%)               4 (40%)    </div><div class='input'>
+#&gt;   Total number of patients with at least one event            0 (0%)               1 (25%)               3 (60%)               4 (40%)    
+#&gt;   Total number of events                                        0                     1                     4                     5       
+#&gt;   trm C_1/1                                                   0 (0%)               1 (25%)               3 (60%)               4 (40%)    </div><div class='input'>
+<span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_id_2.html'>lt_events_per_term_id_2</a></span>(
+  <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"AEBODSYS"</span>, <span class='st'>"AEDECOD"</span>)],
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
+  <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>table</span>(<span class='no'>ASL</span>$<span class='no'>ARM</span>),
+  <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
+<span class='fu'>do.call</span>(<span class='no'>fast_stack_rtables</span>, <span class='no'>l_tbls</span>)</div><div class='output co'>#&gt; MedDRA System Organ Class                                   A: Drug X             B: Placebo          C: Combination
+#&gt;   MedDRA Preferred Term                                       (N=1)                 (N=4)                 (N=5)     
+#&gt; --------------------------------------------------------------------------------------------------------------------
+#&gt; - Any event -
+#&gt;   Total number of patients with at least one event           1 (100%)              2 (50%)               4 (80%)    
+#&gt;   Total number of events                                        1                     5                     10      
+#&gt; 
+#&gt; cl A
+#&gt;   Total number of patients with at least one event            0 (0%)               2 (50%)               2 (40%)    
+#&gt;   Total number of events                                        0                     2                     2       
+#&gt;   trm A_1/2                                                   0 (0%)                0 (0%)               2 (40%)    
+#&gt;   trm A_2/2                                                   0 (0%)               2 (50%)                0 (0%)    
+#&gt; 
+#&gt; cl B
+#&gt;   Total number of patients with at least one event           1 (100%)              2 (50%)               3 (60%)    
+#&gt;   Total number of events                                        1                     2                     4       
+#&gt;   trm B_1/3                                                  1 (100%)               0 (0%)               3 (60%)    
+#&gt;   trm B_2/3                                                   0 (0%)               1 (25%)               1 (20%)    
+#&gt;   trm B_3/3                                                   0 (0%)               1 (25%)                0 (0%)    
+#&gt; 
+#&gt; cl C
+#&gt;   Total number of patients with at least one event            0 (0%)               1 (25%)               3 (60%)    
+#&gt;   Total number of events                                        0                     1                     4       
+#&gt;   trm C_1/1                                                   0 (0%)               1 (25%)               3 (60%)    </div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

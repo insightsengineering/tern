@@ -4,7 +4,8 @@
 \alias{t_events_per_term_id}
 \title{Basic Events Table}
 \usage{
-t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients")
+t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients",
+  event_name = "event")
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information; 
@@ -27,6 +28,8 @@ adverse events can be accounted for with this argument.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
+
+\item{event_name}{character name of events. Default is "event".}
 }
 \value{
 an \code{\link{rtable}} object.
@@ -90,6 +93,21 @@ t_events_per_term_id(
   total = "All Patients"
 )
 
+ACM <- racm(ASL, 5, seed = 4)
+ANL <- left_join(ACM, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
+       filter(CMTIREL == "CONCOMITANT") \%>\%
+  var_relabel(
+    CMCLAS = 'Medication Class',
+    CMDECOD = 'Standardized Medication Name'
+)    
+t_events_per_term_id(
+  terms = ANL[, c("CMCLAS", "CMDECOD")],
+  id = ANL$USUBJID,
+  col_by = ANL$ARM,
+  col_N = table(ASL$ARM),
+  total = "All Patients",
+  event_name = "treatment"
+) 
 
 }
 \author{
