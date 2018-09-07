@@ -111,28 +111,32 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kaplan - Meier Plot"</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Days"</span>, <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kaplan - Meier Plot"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Days"</span>, <span class='kw'>gp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>vp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fit_km</th>
-      <td><p>a class <code>survfit</code> object</p></td>
-    </tr>
-    <tr>
-      <th>col</th>
-      <td><p>a vector of color for each line</p></td>
+      <td><p>a class <code>survfit</code> object.</p></td>
     </tr>
     <tr>
       <th>xticks</th>
-      <td><p>break interval of x-axis. It takes a numeric vector or
-<code>NULL</code>.</p></td>
+      <td><p>break interval of x-axis. It takes a numeric vector or <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>col</th>
+      <td><p>a vector of color for each line.</p></td>
+    </tr>
+    <tr>
+      <th>lty</th>
+      <td><p>a vector of line type for each curve.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>plot title</p></td>
+      <td><p>title for plot.</p></td>
     </tr>
     <tr>
       <th>xlab</th>
@@ -140,18 +144,18 @@
     </tr>
     <tr>
       <th>draw</th>
-      <td><p>boolean, should plot be drawn</p></td>
+      <td><p>draw the plot on device.</p></td>
     </tr>
     <tr>
       <th>newpage</th>
-      <td><p>boolean if <code>draw=TRUE</code> should plot be drawn on a new page</p></td>
+      <td><p>open a new draw page.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-
+<span class='fu'>library</span>(<span class='no'>tern</span>)
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radam'>radam</a></span>(<span class='st'>"ASL"</span>)
 <span class='no'>ASL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>sapply</span>(<span class='fu'>as.character</span>(<span class='no'>ASL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) {
    <span class='kw'>if</span> (<span class='fu'>nchar</span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'>paste0</span>(<span class='fu'>substr</span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>
@@ -166,7 +170,7 @@
 <span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>)</div><div class='img'><img src='g_km-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"black"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='g_km-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANL</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
-<span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Duration (Days)"</span>)</div><div class='img'><img src='g_km-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Duration (Days)"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>)</div><div class='img'><img src='g_km-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

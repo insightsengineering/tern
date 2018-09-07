@@ -2,25 +2,24 @@
 #' 
 #' Create a KM plot for any \code{\link[survival]{survfit}} object.
 #' 
-#' @inheritParams g_forest
-#' @param fit_km a class \code{\link{survfit}} object
-#' @param col a vector of color for each line
-#' @param xticks break interval of x-axis. It takes a numeric vector or
-#'   \code{NULL}.
-#' @param title plot title
+#' @param fit_km a class \code{\link{survfit}} object.
+#' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param col a vector of color for each line.
+#' @param lty a vector of line type for each curve.
+#' @param title title for plot.
 #' @param xlab a string for label of x-axis
-#'   
+#' @param draw draw the plot on device.
+#' @param newpage open a new draw page.
 #' 
 #' @template author_wangh107
 #' 
 #' @import grid
-#' @importFrom gridExtra arrangeGrob
 #' 
 #' @export
 #' 
 #' @examples 
 #' library(random.cdisc.data)
-#' 
+#' library(tern)
 #' ASL <- radam("ASL")
 #' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
 #'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
@@ -37,13 +36,16 @@
 #' g_km(fit_km = fit_km, col = c("black", "red"))
 #'  
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
-#' g_km(fit_km, xlab = "Duration (Days)")
+#' g_km(fit_km, xlab = "Duration (Days)", col = "blue", lty = "dashed")
 #' 
-g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", xlab = "Days",
+g_km <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
+                 title = "Kaplan - Meier Plot", xlab = "Days",
+                 gp = NULL, vp = NULL, name = NULL,
                  draw = TRUE, newpage = TRUE ){
-  
-  if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
-  grobKm <- kmGrob(fit_km = fit_km, col = col, xticks = xticks, title = title, xlab = xlab)
+
+  grobKm <- kmGrob(fit_km = fit_km,  xticks = xticks, col = col, lty = lty,
+                   title = title, xlab = xlab,
+                   gp = gp, vp = vp, name = name)
  
   
   if (draw) {
@@ -60,8 +62,9 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #' create a grid graphical object for basic KM plot from a \code{\link{survfit}} object.
 #' 
 #' @param fit_km a class \code{\link{survfit}} object.
-#' @param col a vector of color for each line.
 #' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param col a vector of color for each line.
+#' @param lty a vector of line type for each curve.
 #' @param title title for plot.
 #' @param xlab a string for label of x-axis
 #' 
@@ -78,58 +81,65 @@ g_km <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-#' kmGrob(fit_km = fit_km, xticks = c(0.5, 0.8, 1.5))
+#' tern:::kmGrob(fit_km = fit_km, xticks = c(0.5, 0.8, 1.5))
 #' 
-kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot", xlab = "Days",
+kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
+                   title = "Kaplan - Meier Plot", xlab = "Days",
                    gp = NULL, vp = NULL, name = NULL) {
   
-  if (!is(fit_km, "survfit")) stop("fit_km needs to be of class survfit")
   cd <- kmCurveData(fit_km = fit_km, xticks = xticks)
+  
   if (!is.null(col)) {
     if (length(col) != length(cd$group)) stop("Number of color is not equal to number of lines")
-    cd$colpal <- col
+  } else {
+    col_pal <- scales::col_factor("Set1", domain = names(cd$group))
+    col <- col_pal(names(cd$group))
   }
   
-  vpplot <- plotViewport(margins = c(3, max(cd$nlines_labels, 4), 3, 2),
+  if (!is.null(lty)){
+    if (length(lty) != length(cd$group)) stop("Number of line type is not equal to number of lines")
+  } else lty <- rep("solid", length(cd$group))
+
+  main_vp <- plotViewport(margins = c(3, max(cd$nlines_labels, 4), 3, 2),
                          layout = grid.layout(
                            nrow = 4, ncol = 1, widths = unit(1, "npc"),
-                           heights = unit(c(5, 5, length(cd$group)*1.1+4, 3), c("null", "lines", "lines", "lines"))),
+                           heights = unit(c(5, 5, length(cd$group) +4, 3), c("null", "lines", "lines", "lines"))),
                          name = "plotArea")
-  vpcurve <- dataViewport(xData = cd$xData, yData = c(0,1),
+  topcurve_vp <- dataViewport(xData = cd$xData, yData = c(0,1),
                           layout.pos.col = 1, layout.pos.row = 1, name = "topCurve")
-  vptable <- viewport(layout.pos.col = 1, layout.pos.row = 3, name = "bottomTable")
   
-  vprisk <- dataViewport(xData = cd$xData, yData = c(0,1), name = "riskTable")
-  vplabel <- viewport(layout.pos.col = 1, layout.pos.row = 4, name = "timeLabel")
+  table_vp <- dataViewport(xData = cd$xData, yData = c(0,1), 
+                         layout.pos.col = 1, layout.pos.row = 3, name = "riskTable")
+  xlab_vp <- viewport(layout.pos.col = 1, layout.pos.row = 4, name = "timeUnit")
   
-  vptree <- vpTree(vpplot, vpList(vpcurve, vpStack(vptable, vprisk), vplabel))
+  vp_tree <- vpTree(main_vp, vpList(topcurve_vp, table_vp, xlab_vp))
   
-  lines <- Map(function(x, y, col){
-    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col, lwd = 3), vp = vpPath("plotArea", "topCurve"))
-  }, cd$lines_x, cd$lines_y, cd$colpal)
+  lines <- Map(function(x, y, col_i, lty_i){
+    linesGrob(x = x, y = y, default.units = "native", gp = gpar(col = col_i, lwd = 3, lty = lty_i), vp = vpPath("plotArea", "topCurve"))
+  }, cd$lines_x, cd$lines_y,  col, lty)
   
-  points <- Map(function(x, y, col){
-    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col), vp = vpPath("plotArea", "topCurve"))
-  }, cd$points_x, cd$points_y, cd$colpal )
+  points <- Map(function(x, y, col_i){
+    pointsGrob(x = x, y = y, pch = 3, size = unit(0.5, "char"), gp = gpar(col = col_i), vp = vpPath("plotArea", "topCurve"))
+  }, cd$points_x, cd$points_y, col)
   
-  ptnumber <- Map(function(y, col, risk){
+  ptnumber <- Map(function(y, col_i, risk){
     textGrob( label = ifelse(!is.na(risk), as.character(risk), " "),
               x = unit(cd$xpos, "native"),
               y = unit(y, "npc"),
-              gp = gpar(col = col),
-              vp = vpPath("plotArea", "bottomTable",  "riskTable"))
-  }, cd$ypos, cd$colpal, cd$pt_risk )
+              gp = gpar(col = col_i),
+              vp = vpPath("plotArea", "riskTable"))
+  }, cd$ypos, col, cd$pt_risk )
   
-  grplabel <-  Map(function(y, col, grp){
+  grplabel <-  Map(function(y, col_i, grp){
     textGrob( label = grp,
               x = unit(-cd$nlines_labels + 1, "lines"),
               y = unit(y, "npc"),
               just = c("left", "center"),
-              gp = gpar(col = col),
-              vp =  vpPath("plotArea", "bottomTable",  "riskTable"))
-  }, cd$ypos, cd$colpal, names(cd$group) )
+              gp = gpar(col = col_i),
+              vp =  vpPath("plotArea", "riskTable"))
+  }, cd$ypos, col, names(cd$group) )
   
-  g_kmplot <-  gTree(childrenvp = vptree,
+               gTree(childrenvp = vp_tree,
                      children =   do.call("gList", 
                                           c(list( xaxisGrob(at = cd$xpos, vp = vpPath("plotArea", "topCurve")),
                                                   yaxisGrob(vp = vpPath("plotArea", "topCurve")),
@@ -140,14 +150,14 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
                                                   textGrob(label = "Number of Patients at Risk",
                                                            x = unit(0, "npc"),
                                                            y = unit(1, "npc") + unit(1, "lines"),
-                                                           just = "left", vp = vpPath("plotArea", "bottomTable")),
-                                                  xaxisGrob(at = cd$xpos, vp = vpPath("plotArea", "bottomTable",  "riskTable")), 
-                                                  rectGrob(vp = vpPath("plotArea", "bottomTable",  "riskTable")),
+                                                           just = "left", vp = vpPath("plotArea", "riskTable")),
+                                                  xaxisGrob(at = cd$xpos, vp = vpPath("plotArea",   "riskTable")), 
+                                                  rectGrob(vp = vpPath("plotArea",   "riskTable")),
                                                   textGrob(xlab, 
                                                            x = unit(0.5, "npc"),
                                                            y = unit(0, "npc"), 
                                                            just = "top",
-                                                           vp = vpPath("plotArea", "timeLabel"))),
+                                                           vp = vpPath("plotArea", "timeUnit"))),
                                             
                                             lines,
                                             points,
@@ -155,7 +165,7 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
                                             grplabel)),
                     gp = gp, vp = vp, name = name,
                     cl = "kmGrob")
-   g_kmplot
+  
   
 }
 
@@ -185,7 +195,7 @@ kmGrob <- function(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Pl
 #'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
 #'                  ECOG = sample(c(0, 1), 200, TRUE))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
-#' kmCurveData(fit_km, xticks = c(0.5, 0.8, 1.5))
+#' tern:::kmCurveData(fit_km, xticks = c(0.5, 0.8, 1.5))
 #' 
 #' 
 kmCurveData <- function(fit_km, xticks = NULL) {
@@ -280,9 +290,7 @@ kmCurveData <- function(fit_km, xticks = NULL) {
   points_y <- lapply(df_s, function(x){
     x[x$n.censor !=0, "surv"]
   })
-  
-  col_pal <- scales::col_factor("Set1", domain = names(df_s))
-  colpal <- col_pal(names(df_s))
+
   return(list(nlines_labels = nlines_labels,
               xpos = xpos,
               xData = xData,
@@ -290,7 +298,6 @@ kmCurveData <- function(fit_km, xticks = NULL) {
               lines_y = lines_y,
               points_x = points_x,
               points_y = points_y,
-              colpal = colpal,
               group = group,
               ypos = ypos,
               pt_risk = pt_risk))

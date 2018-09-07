@@ -4,31 +4,33 @@
 \alias{g_km}
 \title{Kaplan-Meier Plot}
 \usage{
-g_km(fit_km, col = NULL, xticks = NULL, title = "Kaplan - Meier Plot",
-  xlab = "Days", draw = TRUE, newpage = TRUE)
+g_km(fit_km, xticks = NULL, col = NULL, lty = NULL,
+  title = "Kaplan - Meier Plot", xlab = "Days", gp = NULL, vp = NULL,
+  name = NULL, draw = TRUE, newpage = TRUE)
 }
 \arguments{
-\item{fit_km}{a class \code{\link{survfit}} object}
+\item{fit_km}{a class \code{\link{survfit}} object.}
 
-\item{col}{a vector of color for each line}
+\item{xticks}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
 
-\item{xticks}{break interval of x-axis. It takes a numeric vector or
-\code{NULL}.}
+\item{col}{a vector of color for each line.}
 
-\item{title}{plot title}
+\item{lty}{a vector of line type for each curve.}
+
+\item{title}{title for plot.}
 
 \item{xlab}{a string for label of x-axis}
 
-\item{draw}{boolean, should plot be drawn}
+\item{draw}{draw the plot on device.}
 
-\item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
+\item{newpage}{open a new draw page.}
 }
 \description{
 Create a KM plot for any \code{\link[survival]{survfit}} object.
 }
 \examples{
 library(random.cdisc.data)
-
+library(tern)
 ASL <- radam("ASL")
 ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
@@ -45,7 +47,7 @@ g_km(fit_km = fit_km)
 g_km(fit_km = fit_km, col = c("black", "red"))
  
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
-g_km(fit_km, xlab = "Duration (Days)")
+g_km(fit_km, xlab = "Duration (Days)", col = "blue", lty = "dashed")
 
 }
 \author{

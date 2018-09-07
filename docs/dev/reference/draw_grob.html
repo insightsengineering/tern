@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TLG creation functions — tern-package • tern</title>
+<title>Draw grob 
+Draw grob on device page — draw_grob • tern</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +31,11 @@
 
 
 
-<meta property="og:title" content="TLG creation functions — tern-package" />
+<meta property="og:title" content="Draw grob 
+Draw grob on device page — draw_grob" />
 
-<meta property="og:description" content="TLG creation functions" />
+<meta property="og:description" content="Draw grob 
+Draw grob on device page" />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -100,56 +103,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>TLG creation functions</h1>
+    <h1>Draw grob 
+Draw grob on device page</h1>
     
-    <div class="hidden name"><code>tern-package.Rd</code></div>
+    <div class="hidden name"><code>draw_grob.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>TLG creation functions</p>
+    <p>Draw grob 
+Draw grob on device page</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://pages.github.roche.com/Rpackages/tern/'>https://pages.github.roche.com/Rpackages/tern/</a></p></li>
-<li><p><a href='https://github.roche.com/Rpackages/tern/'>https://github.roche.com/Rpackages/tern/</a></p></li>
-<li><p>Report bugs at <a href='https://github.roche.com/Rpackages/tern/issues'>https://github.roche.com/Rpackages/tern/issues</a></p></li>
-</ul></div>
+    <pre class="usage"><span class='fu'>draw_grob</span>(<span class='no'>grob</span>, <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>vp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>grob</th>
+      <td><p>grid object</p></td>
+    </tr>
+    <tr>
+      <th>newpage</th>
+      <td><p>draw on a new page</p></td>
+    </tr>
+    <tr>
+      <th>vp</th>
+      <td><p>a <code>viewport</code> object (or <code>NULL</code>).</p></td>
+    </tr>
+    </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='no'>rect</span> <span class='kw'>&lt;-</span> <span class='fu'>rectGrob</span>(<span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"npc"</span>), <span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"npc"</span>))
+<span class='no'>rect</span> <span class='kw'>%&gt;%</span> <span class='fu'>draw_grob</span>(<span class='kw'>vp</span> <span class='kw'>=</span> <span class='fu'>viewport</span>(<span class='kw'>angle</span> <span class='kw'>=</span> <span class='fl'>45</span>))</div><div class='img'><img src='draw_grob-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>num</span> <span class='kw'>&lt;-</span> <span class='fu'>lapply</span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='no'>textGrob</span>)
+<span class='no'>num</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='arrange_grobs.html'>arrange_grobs</a></span>(<span class='kw'>grobs</span> <span class='kw'>=</span> <span class='no'>.</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>draw_grob</span>()</div><div class='input'><span class='fu'>showViewport</span>()</div><div class='img'><img src='draw_grob-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    
-<strong>Maintainer</strong>: Adrian Waddell <a href='mailto:adrian.waddell@roche.com'>adrian.waddell@roche.com</a>
-
-Authors:
-<ul>
-<li><p>Heng Wang <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a></p></li>
-<li><p>Yuyao Song <a href='mailto:yuyao.song@roche.com'>yuyao.song@roche.com</a></p></li>
-<li><p>Chendi Liao <a href='mailto:chendi.liao@roche.com'>chendi.liao@roche.com</a></p></li>
-<li><p>Edgar Manukyan <a href='mailto:edgar.manukyan@roche.com'>edgar.manukyan@roche.com</a></p></li>
-<li><p>Ting Qi <a href='mailto:qit3@gene.com'>qit3@gene.com</a></p></li>
-<li><p>Carolyn Zhang <a href='mailto:carolyn.zhang@duke.ed'>carolyn.zhang@duke.ed</a></p></li>
-<li><p>Mark Rothe</p></li>
-<li><p>Xiao Mu Yo</p></li>
-</ul>
-
-Other contributors:
-<ul>
-<li><p>Audrey Boruvka <a href='mailto:audrey.boruvka@roche.com'>audrey.boruvka@roche.com</a> [contributor]</p></li>
-</ul>
-
+      <li><a href="#arguments">Arguments</a></li>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
