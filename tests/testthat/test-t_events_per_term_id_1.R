@@ -178,17 +178,16 @@ test_that("adverse events by terms (term only)", {
     ),
     rrow('Total number of patients with at least one adverse event', rcell(c(23, .719), 'xx (xx.x%)'), rcell(c(19, .679), 'xx (xx.x%)'), rcell(c(42, .700), 'xx (xx.x%)')),
     rrow('Overall total number of events', rcell(c(58)), rcell(c(40)), rcell(c(98))),
-    rrow('VOMITING', rcell(c(17, .531), 'xx (xx.x%)'), rcell(c(8, .286), 'xx (xx.x%)'), rcell(c(25, .417), 'xx (xx.x%)'), indent = 1),
-    rrow('ABNOMINAL PAIN', rcell(c(6, .188), 'xx (xx.x%)'), rcell(c(5, .179), 'xx (xx.x%)'), rcell(c(11, .183), 'xx (xx.x%)'), indent = 1),
-    rrow('STOMATITIS', rcell(c(5, .156), 'xx (xx.x%)'), rcell(c(6, .214), 'xx (xx.x%)'), rcell(c(11, .183), 'xx (xx.x%)'), indent = 1),
-    rrow('UPPER RESPIRATORY TRACT INFECTION', rcell(c(1, .031), 'xx (xx.x%)'), rcell(c(5, .179), 'xx (xx.x%)'), rcell(c(6, .100), 'xx (xx.x%)'), indent = 1),
-    rrow('INFLUENZA', rcell(c(1, .031), 'xx (xx.x%)'), rcell(0), rcell(c(1, .017), 'xx (xx.x%)'), indent = 1)
+    rrow('VOMITING', rcell(c(17, .531), 'xx (xx.x%)'), rcell(c(8, .286), 'xx (xx.x%)'), rcell(c(25, .417), 'xx (xx.x%)')),
+    rrow('ABNOMINAL PAIN', rcell(c(6, .188), 'xx (xx.x%)'), rcell(c(5, .179), 'xx (xx.x%)'), rcell(c(11, .183), 'xx (xx.x%)')),
+    rrow('STOMATITIS', rcell(c(5, .156), 'xx (xx.x%)'), rcell(c(6, .214), 'xx (xx.x%)'), rcell(c(11, .183), 'xx (xx.x%)')),
+    rrow('UPPER RESPIRATORY TRACT INFECTION', rcell(c(1, .031), 'xx (xx.x%)'), rcell(c(5, .179), 'xx (xx.x%)'), rcell(c(6, .100), 'xx (xx.x%)')),
+    rrow('INFLUENZA', rcell(c(1, .031), 'xx (xx.x%)'), rcell(0), rcell(c(1, .017), 'xx (xx.x%)'))
     
   )
   
   attr(attr(tbl_stream, "header")[[2]], "row.name") <- 'MedDRA Preferred Term'
-  attr(attr(tbl_stream, "header")[[2]], "indent") <- 1
-  
+
   ANL$AEBODSYS[ANL$AEBODSYS == ""] <- NA
   ANL$AEDECOD[ANL$AEDECOD == ""] <- NA
   ANL <- ANL %>%

@@ -177,8 +177,8 @@ test_that("adverse events by terms (class and term)", {
       rrowl("", c('(N=32)', '(N=28)', '(N=60)'))
     ),
     rrow('- Any event -'),
-    rrow('Total number of patients with at least one adverse event', rcell(c(23, .719), 'xx (xx.x%)'), rcell(c(19, .679), 'xx (xx.x%)'), rcell(c(42, .700), 'xx (xx.x%)')),
-    rrow('Overall total number of events', rcell(c(58)), rcell(c(40)), rcell(c(98))),
+    rrow('Total number of patients with at least one adverse event', rcell(c(23, .719), 'xx (xx.x%)'), rcell(c(19, .679), 'xx (xx.x%)'), rcell(c(42, .700), 'xx (xx.x%)'), indent = 1),
+    rrow('Overall total number of events', rcell(c(58)), rcell(c(40)), rcell(c(98)), indent = 1),
     rrow(),
     rrow('GASTROINTESTINAL DISORDERS'),
     rrow('Total number of patients with at least one adverse event', rcell(c(21, .656), 'xx (xx.x%)'), rcell(c(15, .536), 'xx (xx.x%)'), rcell(c(36, .600), 'xx (xx.x%)'), indent = 1),
