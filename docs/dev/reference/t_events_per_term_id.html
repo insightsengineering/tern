@@ -70,7 +70,7 @@ STREAM1.17)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.1</span>
+        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.2</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@ or apply on Concomitatant Medication data to create Concomitant Treatment summar
     </div>
 
     <pre class="usage"><span class='fu'>t_events_per_term_id</span>(<span class='no'>terms</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
-  <span class='kw'>event_name</span> <span class='kw'>=</span> <span class='st'>"event"</span>)</pre>
+  <span class='kw'>event_type</span> <span class='kw'>=</span> <span class='st'>"event"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,10 +165,6 @@ adverse events can be accounted for with this argument.</p></td>
       <td><p>character string that will be used as a label for a column with 
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be <code>NULL</code></p></td>
-    </tr>
-    <tr>
-      <th>event_name</th>
-      <td><p>character name of events. Default is "event".</p></td>
     </tr>
     </table>
     
@@ -211,18 +207,19 @@ e.g. if any terms are missing. Impute missing values before using <code>t_events
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
   <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>table</span>(<span class='no'>ASL</span>$<span class='no'>ARM</span>),
-  <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</div><div class='output co'>#&gt;                                                           A: Drug X             B: Placebo          C: Combination
-#&gt; MedDRA Preferred Term                                       (N=1)                 (N=4)                 (N=5)     
-#&gt; ------------------------------------------------------------------------------------------------------------------
-#&gt; Total number of patients with at least one event           1 (100%)              2 (50%)               4 (80%)    
-#&gt; Total number of events                                        1                     5                     10      
-#&gt; trm B_1/3                                                  1 (100%)               0 (0%)               3 (60%)    
-#&gt; trm C_1/1                                                   0 (0%)               1 (25%)               3 (60%)    
-#&gt; trm A_1/2                                                   0 (0%)                0 (0%)               2 (40%)    
-#&gt; trm A_2/2                                                   0 (0%)               2 (50%)                0 (0%)    
-#&gt; trm B_2/3                                                   0 (0%)               1 (25%)               1 (20%)    
-#&gt; trm B_3/3                                                   0 (0%)               1 (25%)                0 (0%)    </div><div class='input'>
+  <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>event_type</span> <span class='kw'>=</span> <span class='st'>"adverse event"</span>
+)</div><div class='output co'>#&gt;                                                                   A: Drug X             B: Placebo          C: Combination
+#&gt; MedDRA Preferred Term                                               (N=1)                 (N=4)                 (N=5)     
+#&gt; --------------------------------------------------------------------------------------------------------------------------
+#&gt; Total number of patients with at least one adverse event           1 (100%)              2 (50%)               4 (80%)    
+#&gt; Total number of adverse events                                        1                     5                     10      
+#&gt; trm B_1/3                                                          1 (100%)               0 (0%)               3 (60%)    
+#&gt; trm C_1/1                                                           0 (0%)               1 (25%)               3 (60%)    
+#&gt; trm A_1/2                                                           0 (0%)                0 (0%)               2 (40%)    
+#&gt; trm A_2/2                                                           0 (0%)               2 (50%)                0 (0%)    
+#&gt; trm B_2/3                                                           0 (0%)               1 (25%)               1 (20%)    
+#&gt; trm B_3/3                                                           0 (0%)               1 (25%)                0 (0%)    </div><div class='input'>
 <span class='fu'>t_events_per_term_id</span>(
   <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ANL</span>[, <span class='fu'>c</span>(<span class='st'>"AEBODSYS"</span>, <span class='st'>"AEDECOD"</span>)],
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
@@ -266,7 +263,7 @@ e.g. if any terms are missing. Impute missing values before using <code>t_events
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
   <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>table</span>(<span class='no'>ASL</span>$<span class='no'>ARM</span>),
   <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
-  <span class='kw'>event_name</span> <span class='kw'>=</span> <span class='st'>"treatment"</span>
+  <span class='kw'>event_type</span> <span class='kw'>=</span> <span class='st'>"treatment"</span>
 )</div><div class='output co'>#&gt; Medication Class                                                A: Drug X             B: Placebo          C: Combination         All Patients 
 #&gt;   Standardized Medication Name                                    (N=1)                 (N=4)                 (N=5)                 (N=10)    
 #&gt; ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -319,7 +316,7 @@ Ting Qi (qit3) <a href='mailto:qit3@gene.com'>qit3@gene.com</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Ting Qi, Carolyn Zhang, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

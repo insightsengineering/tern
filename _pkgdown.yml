@@ -72,8 +72,8 @@ reference:
     contents:
       - t_summarize_variables
       - t_summarize_by_visit
-  - title: Table Helper functions
-    desc: these functions create nested lists of tables
+  - title: Non-exported Functions
+    desc: the documentation for those unexported functions is useful for developers
     contents:
       - lt_events_per_term_id_2
       - lt_events_per_term_grade_id_1
