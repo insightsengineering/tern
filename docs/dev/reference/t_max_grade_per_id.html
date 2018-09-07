@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Tabulate maximum grade per id by <code>col_by</code> — t_max_grade_per_id" />
 
-<meta property="og:description" content="This function is used for deriving adverse events tables." />
+<meta property="og:description" content="t_max_grade_per_id is used for deriving adverse events tables, these are returned
+as nested lists." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -61,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.1</span>
+        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.2</span>
       </span>
     </div>
 
@@ -107,11 +108,12 @@
 
     <div class="ref-description">
     
-    <p>This function is used for deriving adverse events tables.</p>
+    <p><code>t_max_grade_per_id</code> is used for deriving adverse events tables, these are returned
+as nested lists.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_max_grade_per_id</span>(<span class='no'>grade</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>grade_levels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>t_max_grade_per_id</span>(<span class='no'>grade</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>grade_levels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>any_grade</span> <span class='kw'>=</span> <span class='st'>"-Any Grade-"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -123,7 +125,7 @@
     </tr>
     <tr>
       <th>id</th>
-      <td><p>an vector with id values</p></td>
+      <td><p>a vector with id values</p></td>
     </tr>
     <tr>
       <th>col_by</th>
@@ -151,15 +153,15 @@ Grade-</code> by default</p></td>
 <span class='fu'>t_max_grade_per_id</span>(
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>),
-  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='st'>"A"</span>, <span class='fl'>3</span>))
-)</div><div class='output co'>#&gt;                       A    
-#&gt;                     (N=1)  
-#&gt; ---------------------------
-#&gt; -Any Grade-        1 (100%)
-#&gt; 1                     0    
-#&gt; 2                     0    
-#&gt; 3                  1 (100%)</div><div class='input'>
-
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='st'>"A"</span>, <span class='fl'>3</span>)),
+  <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fl'>3</span>
+)</div><div class='output co'>#&gt;                        A    
+#&gt;                      (N=3)  
+#&gt; ----------------------------
+#&gt; -Any Grade-        1 (33.3%)
+#&gt; 1                      0    
+#&gt; 2                      0    
+#&gt; 3                  1 (33.3%)</div><div class='input'>
 <span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>4</span>)
 <span class='fu'>t_max_grade_per_id</span>(
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
@@ -176,15 +178,17 @@ Grade-</code> by default</p></td>
 <span class='fu'>t_max_grade_per_id</span>(
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>id</span>,
-  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='no'>id</span>])
-)</div><div class='output co'>#&gt;                       A               B               C               D    
-#&gt;                     (N=1)           (N=1)           (N=1)           (N=1)  
-#&gt; ---------------------------------------------------------------------------
-#&gt; -Any Grade-        1 (100%)        1 (100%)        1 (100%)        1 (100%)
-#&gt; 1                     0               0               0               0    
-#&gt; 2                  1 (100%)           0            1 (100%)           0    
-#&gt; 3                     0            1 (100%)           0            1 (100%)</div><div class='input'>
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>LETTERS</span>[<span class='no'>id</span>]),
+  <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>,<span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>4</span>)
+)</div><div class='output co'>#&gt;                        A                B                C                D    
+#&gt;                      (N=4)            (N=3)            (N=5)            (N=4)  
+#&gt; -------------------------------------------------------------------------------
+#&gt; -Any Grade-         1 (25%)         1 (33.3%)         1 (20%)          1 (25%) 
+#&gt; 1                      0                0                0                0    
+#&gt; 2                   1 (25%)             0             1 (20%)             0    
+#&gt; 3                      0            1 (33.3%)            0             1 (25%) </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
+<span class='co'># throws an error because each id can only have one col_by</span>
 <span class='fu'>t_max_grade_per_id</span>(
   <span class='kw'>grade</span> <span class='kw'>=</span>  <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>),
@@ -209,12 +213,22 @@ Grade-</code> by default</p></td>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
+    <h2>Author</h2>
+    
+Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.waddell@roche.com</a>
+
+Carolyn Zhang (zhanc107) <a href='mailto:carolyn.zhang@duke.edu'>carolyn.zhang@duke.edu</a>
+
+Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
+
+Ting Qi (qit3) <a href='mailto:qit3@gene.com'>qit3@gene.com</a>
+
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Ting Qi, Carolyn Zhang, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

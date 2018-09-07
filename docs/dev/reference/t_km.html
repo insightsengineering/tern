@@ -62,7 +62,7 @@ annotation on top of Kaplan-Meier grob" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.1</span>
+        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.2</span>
       </span>
     </div>
 
@@ -140,12 +140,12 @@ annotation on top of Kaplan-Meier grob</p>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                      N                     median              95% CI for median
 #&gt; --------------------------------------------------------------------------------
-#&gt; ARM=A               62                      0.93                 (0.81, 1.58)   
-#&gt; ARM=B               69                      1.17                 (0.77, 1.78)   
-#&gt; ARM=C               69                      1.52                 (1.08, 1.79)   </div><div class='input'><span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
+#&gt; ARM=A               64                      1.11                 (0.85, 1.22)   
+#&gt; ARM=B               72                      1.19                 (0.85, 1.45)   
+#&gt; ARM=C               64                      1.33                  (0.77, 2.1)   </div><div class='input'><span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
 <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)</div><div class='output co'>#&gt;                    N                     median              95% CI for median
 #&gt; ------------------------------------------------------------------------------
-#&gt; All               200                     1.17                 (0.94, 1.52)   </div><div class='input'>
+#&gt; All               200                     1.13                 (0.96, 1.39)   </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -165,7 +165,7 @@ Heng Wang (wangh107) <a href='mailto:wang.heng@gene.com'>wang.heng@gene.com</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Ting Qi, Carolyn Zhang, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

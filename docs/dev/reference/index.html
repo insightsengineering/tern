@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.1</span>
+        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.2</span>
       </span>
     </div>
 
@@ -144,12 +144,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="t_ae_ctc.html">t_ae_ctc()</a></code> </p>
-        </td>
-        <td><p>Adverse Events Table by Highest NCI CTCAE Grade</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="t_forest_rsp.html">t_forest_rsp()</a></code> </p>
         </td>
         <td><p>Response Table as used for Forest Plot</p></td>
@@ -171,6 +165,18 @@
           <p><code><a href="t_tte.html">t_tte()</a></code> </p>
         </td>
         <td><p>Time to Event Table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="t_events_per_term_id.html">t_events_per_term_id()</a></code> </p>
+        </td>
+        <td><p>Basic Events Table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="t_events_per_term_grade_id.html">t_events_per_term_grade_id()</a></code> </p>
+        </td>
+        <td><p>Events by Highest Grade Table</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -253,6 +259,18 @@
           <p><code><a href="t_max_grade_per_id.html">t_max_grade_per_id()</a></code> </p>
         </td>
         <td><p>Tabulate maximum grade per id by <code>col_by</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="t_count_unique.html">t_count_unique()</a></code> </p>
+        </td>
+        <td><p>Count Unique Elements Per Cell</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="t_events_summary.html">t_events_summary()</a></code> </p>
+        </td>
+        <td><p>Summary table for events</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -316,6 +334,36 @@
       <tr>
         
         <td>
+          <p><code><a href="combine_levels.html">combine_levels()</a></code> </p>
+        </td>
+        <td><p>Combine Factor Levels</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drop_shared_variables.html">drop_shared_variables()</a></code> </p>
+        </td>
+        <td><p>Remove Shared Variables</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reorder_to_match_id.html">reorder_to_match_id()</a></code> </p>
+        </td>
+        <td><p>Return Ordered Dataset so that a set of variables match exactly</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="label.html">label()</a></code> </p>
+        </td>
+        <td><p>Get label attribute</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="with_label.html">with_label()</a></code> </p>
+        </td>
+        <td><p>Return an object with a particular label attribute</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="var_labels.html">var_labels()</a></code> </p>
         </td>
         <td><p>Get Label Attributes of Variables in a <code>data.frame</code></p></td>
@@ -337,24 +385,6 @@
           <p><code><a href="var_labels_remove.html">var_labels_remove()</a></code> </p>
         </td>
         <td><p>Remove Variable Labels of a <code>data.frame</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="combine_levels.html">combine_levels()</a></code> </p>
-        </td>
-        <td><p>Combine Factor Levels</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="drop_shared_variables.html">drop_shared_variables()</a></code> </p>
-        </td>
-        <td><p>Remove Shared Variables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="reorder_to_match_id.html">reorder_to_match_id()</a></code> </p>
-        </td>
-        <td><p>Return Ordered Dataset so that a set of variables match exactly</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -376,6 +406,32 @@
         </td>
         <td><p>Summary Table by Visit</p></td>
       </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-non-exported-functions" class="hasAnchor"><a href="#section-non-exported-functions" class="anchor"></a>Non-exported Functions</h2>
+          <p class="section-desc"><p>the documentation for those unexported functions is useful for developers</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="lt_events_per_term_id_2.html">lt_events_per_term_id_2()</a></code> </p>
+        </td>
+        <td><p>List of Events Terms Tables</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="lt_events_per_term_grade_id_1.html">lt_events_per_term_grade_id_1()</a></code> </p>
+        </td>
+        <td><p>List of Events Terms Tables By Highest Grade (One Level Term only)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="lt_events_per_term_grade_id_2.html">lt_events_per_term_grade_id_2()</a></code> </p>
+        </td>
+        <td><p>List of Events Terms Tables by Highest Grade</p></td>
+      </tr>
     </tbody>
     </table>
   </div>
@@ -391,13 +447,14 @@
       <li><a href="#section-graphs-helper-functions">Graphs Helper Functions</a></li>
       <li><a href="#section-data-helper-functions">Data Helper Functions</a></li>
       <li><a href="#section-deprecated-functions">Deprecated functions</a></li>
+      <li><a href="#section-non-exported-functions">Non-exported Functions</a></li>
     </ul>
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Ting Qi, Carolyn Zhang, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

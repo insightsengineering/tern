@@ -62,7 +62,7 @@ please use t_summary instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.1</span>
+        <span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development package">0.5.0.2</span>
       </span>
     </div>
 
@@ -175,32 +175,34 @@ instead.</p>
 <span class='no'>ASL</span>$<span class='no'>SEX</span> <span class='kw'>&lt;-</span> <span class='fu'>relevel</span>(<span class='no'>ASL</span>$<span class='no'>SEX</span>, <span class='st'>"M"</span>, <span class='st'>"F"</span>)
 
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: t_summarize_variables is deprecated, please use t_summary instead.</span></div><div class='output co'>#&gt;                                    ARM A                ARM B    
-#&gt;                                   (N=42)               (N=58)    
+#&gt;                                   (N=46)               (N=54)    
 #&gt; -----------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 42                   58      
-#&gt;   M                             25 (59.52%)          31 (53.45%) 
-#&gt;   F                             17 (40.48%)          27 (46.55%) 
+#&gt;   n                                 46                   54      
+#&gt;   M                             18 (39.13%)          31 (57.41%) 
+#&gt;   F                             28 (60.87%)          22 (40.74%) 
+#&gt;   UNDIFFERENTIATED                0 (0%)              1 (1.85%)  
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 42                   58      
-#&gt;   Mean (SD)                    40.81 (16.06)        42.83 (14.18)
-#&gt;   Median                            41                   42      
-#&gt;   Min - Max                       12 - 81              15 - 82   </div><div class='input'>
+#&gt;   n                                 46                   54      
+#&gt;   Mean (SD)                    38.2 (16.17)         42.35 (14.41)
+#&gt;   Median                            41                   43      
+#&gt;   Min - Max                       13 - 77              13 - 72   </div><div class='input'>
 <span class='fu'>t_summarize_variables</span>(<span class='no'>ASL</span>[, <span class='fu'>c</span>(<span class='st'>"SEX"</span>, <span class='st'>"BAGE"</span>)], <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
                       <span class='kw'>useNA_factors</span> <span class='kw'>=</span> <span class='st'>'always'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: t_summarize_variables is deprecated, please use t_summary instead.</span></div><div class='output co'>#&gt;                                    ARM A                ARM B    
-#&gt;                                   (N=42)               (N=58)    
+#&gt;                                   (N=46)               (N=54)    
 #&gt; -----------------------------------------------------------------
 #&gt; SEX
-#&gt;   n                                 42                   58      
-#&gt;   M                             25 (59.52%)          31 (53.45%) 
-#&gt;   F                             17 (40.48%)          27 (46.55%) 
+#&gt;   n                                 46                   54      
+#&gt;   M                             18 (39.13%)          31 (57.41%) 
+#&gt;   F                             28 (60.87%)          22 (40.74%) 
+#&gt;   UNDIFFERENTIATED                0 (0%)              1 (1.85%)  
 #&gt; 
 #&gt; Baseline Age of patient
-#&gt;   n                                 42                   58      
-#&gt;   Mean (SD)                    40.81 (16.06)        42.83 (14.18)
-#&gt;   Median                            41                   42      
-#&gt;   Min - Max                       12 - 81              15 - 82   </div><div class='input'>
+#&gt;   n                                 46                   54      
+#&gt;   Mean (SD)                    38.2 (16.17)         42.35 (14.41)
+#&gt;   Median                            41                   43      
+#&gt;   Min - Max                       13 - 77              13 - 72   </div><div class='input'>
 
 </div></pre>
   </div>
@@ -225,7 +227,7 @@ Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.wadde
 
       <footer>
       <div class="copyright">
-  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Mark Rothe, Xiao Mu Yo.</p>
+  <p>Developed by Adrian Waddell, Heng Wang, Yuyao Song, Chendi Liao, Edgar Manukyan, Ting Qi, Carolyn Zhang, Mark Rothe, Xiao Mu Yo.</p>
 </div>
 
 <div class="pkgdown">

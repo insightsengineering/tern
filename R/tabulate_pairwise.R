@@ -10,7 +10,6 @@
 #' 
 #' 
 #' @importFrom stats relevel
-#' @export
 #'    
 #' @template author_waddella    
 #'

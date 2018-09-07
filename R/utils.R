@@ -1,4 +1,32 @@
 
+#' Get label attribute
+#' 
+#' Labels are often attached to variables in data.frames.
+#' 
+#' @param x an object
+#' 
+#' @return the label attribute of an object
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' x <- structure(c(1,2,3), label = "Test")
+#' label(x)
+#' 
+label <- function(x) {
+  attr(x, "label")
+}
+
+#' Return an object with a particular label attribute
+#' 
+#' 
+#' @export
+with_label <- function(x, label) {
+  attr(x, "label") <- label
+  x
+}
+
 #' Get Label Attributes of Variables in a \code{data.frame}
 #' 
 #' Variable labels can be stored as a \code{label} attribute for each variable.
@@ -306,39 +334,6 @@ start_with_NULL <- function(x) {
   c(list(NULL), x)
 }
 
-#' Stack rtables with rbind and add empy rows between tables
-#' 
-#' @param ... rtbale objects
-#' @param nrow_pad number of empty rows between tables in \code{...}
-#' 
-#' @noRd
-#' 
-#' 
-stack_rtables <- function(..., nrow_pad = 1) {
-  
-  tbls <- Filter(Negate(is.null), list(...))
-  
-  if (length(tbls) > 0) {
-    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
-    
-    header <- attr(tbls[[1]], "header")
-    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
-    
-    Reduce(
-      function(x, y) rbind(x, tbl_with_empty_rows, y),
-      tbls
-    )
-    
-  } else {
-    list()
-  }
-}
-
-stack_rtables_l <- function(x) {
-  do.call(stack_rtables, x)
-}
-
-
 
 #' Calculate and Stack Tables
 #' 
@@ -557,3 +552,4 @@ to_n <- function(x, n) {
     stop("dimension missmatch")
   }
 }
+

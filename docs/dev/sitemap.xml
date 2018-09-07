@@ -34,16 +34,40 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/g_waterfall.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/label.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_grade_id_1.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_grade_id_2.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_id_2.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/recursive_stack_rtables.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/reorder_to_match_id.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/splitTextGrob.html</loc>
   </url>
   <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_ae_ctc.html</loc>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_count_unique.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_coxph.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_events_per_term_grade_id.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_events_per_term_id.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_events_summary.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_forest_rsp.html</loc>
@@ -100,6 +124,9 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/tern-package.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/unlist_rtables.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/var_labels-set.html</loc>
   </url>
   <url>
@@ -110,5 +137,8 @@
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/var_relabel.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/with_label.html</loc>
   </url>
 </urlset>
