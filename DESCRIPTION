@@ -1,15 +1,17 @@
 Package: tern
 Title: Analysis Code
-Version: 0.5.0.1
+Version: 0.5.0.2
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
-  person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = c("ctb")),
-  person("Heng", "Wang", email = "wang.heng@gene.com", role = c("aut")),
-  person("Yuyao", "Song", email = "yuyao.song@roche.com", role = c("aut")),
-  person("Chendi", "Liao", email = "chendi.liao@roche.com", role = c("aut")),
-  person("Edgar", "Manukyan", email = "edgar.manukyan@roche.com", role = c("aut")),
-  person("Mark", "Rothe", role = c("aut")),
-  person("Xiao", "Mu Yo", role = c("aut"))
+  person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
+  person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
+  person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
+  person("Chendi", "Liao", email = "chendi.liao@roche.com", role = "aut"),
+  person("Edgar", "Manukyan", email = "edgar.manukyan@roche.com", role = "aut"),
+  person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
+  person("Carolyn", "Zhang", email = "carolyn.zhang@duke.ed", role = "aut"),
+  person("Mark", "Rothe", role = "aut"),
+  person("Xiao", "Mu Yo", role = "aut")
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
 Depends:

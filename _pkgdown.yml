@@ -21,11 +21,12 @@ reference:
     contents:
       - t_summary
       - t_summary.data.frame
-      - t_ae_ctc
       - t_forest_rsp
       - t_forest_tte
       - t_rsp
       - t_tte
+      - t_events_per_term_id
+      - t_events_per_term_grade_id
   - title: Compound Graphs
     contents:
       - starts_with("g_")
@@ -40,6 +41,8 @@ reference:
       - t_coxph
       - t_km
       - t_max_grade_per_id
+      - t_count_unique
+      - t_events_summary
   - title: Analysis Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
@@ -55,15 +58,23 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - combine_levels
+      - drop_shared_variables
+      - reorder_to_match_id
+      - label
+      - with_label
       - var_labels
       - var_labels<-
       - var_relabel
       - var_labels_remove
-      - combine_levels
-      - drop_shared_variables
-      - reorder_to_match_id
   - title: Deprecated functions
     desc: these functions will be removed in future releases of tern
     contents:
       - t_summarize_variables
       - t_summarize_by_visit
+  - title: Non-exported Functions
+    desc: the documentation for those unexported functions is useful for developers
+    contents:
+      - lt_events_per_term_id_2
+      - lt_events_per_term_grade_id_1
+      - lt_events_per_term_grade_id_2

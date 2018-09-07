@@ -1,5 +1,152 @@
 # the functions in this document should eventually be moved to the rtables project
 
+
+#' Stack Tables Stored in a nested list of depth 2
+#' 
+#' \code{recursive_stack_rtables} expects a list with lists of rtables to be stacked. Sometimes
+#' these tables have repeated information at the top and hence the first n rows
+#' can be optionally removed from the tables that are not first in the lists.
+#' 
+#' @param x list with lists of rtables
+#' 
+#' @return rtable
+#' 
+#' @template author_waddella
+#' 
+#' 
+#' @examples
+#' 
+#' l_tbls <- list(
+#'   list(
+#'      rtabulate(iris$Sepal.Length, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Length, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Sepal.Width, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Width, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Petal.Length, iris$Species, mean),
+#'      rtabulate(iris$Petal.Length, iris$Species, sd)
+#'   )   
+#' )
+#' 
+#' recursive_stack_rtables(l_tbls)
+#' 
+recursive_stack_rtables <- function(x) {
+  
+  tbls <- unlist_rtables(x)
+  
+  if (!all(vapply(tbls, is, logical(1), "rtable"))) stop("not all elements are rtables")
+  
+  do.call(fast_stack_rtables, tbls)
+  
+}
+
+
+#' Stack rtables with rbind and add empy rows between tables
+#' 
+#' @param ... rtbale objects
+#' @param nrow_pad number of empty rows between tables in \code{...}
+#' 
+#' @noRd
+#' 
+#' 
+stack_rtables <- function(..., nrow_pad = 1) {
+  
+  tbls <- Filter(Negate(is.null), list(...))
+  
+  if (length(tbls) > 0) {
+    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
+    
+    header <- attr(tbls[[1]], "header")
+    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
+    
+    Reduce(
+      function(x, y) rbind(x, tbl_with_empty_rows, y),
+      tbls
+    )
+    
+  } else {
+    list()
+  }
+}
+
+stack_rtables_l <- function(x) {
+  do.call(stack_rtables, x)
+}
+
+#' @export
+fast_stack_rtables <- function(..., nrow_pad = 1) {
+  
+  tbls <- Filter(Negate(is.null), list(...))
+  
+  if (length(tbls) > 0) {
+    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
+    
+    header <- header(tbls[[1]])
+    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
+    
+    Reduce(
+      function(x, y) rbind(x, tbl_with_empty_rows, y),
+      tbls
+    )
+    
+  } else {
+    list()
+  }
+}
+
+
+#' Unlist a Nested Lists with rtables as leafes
+#' 
+#' Often it is useful to flatten a nested lists with rtables as leafes to a list
+#' of rtables. The algorithm used is a depth first tree traversal.
+#' 
+#' @param x a nested list of with rtables as leaf object
+#' 
+#' @return a list of rtables
+#' 
+#' @examples 
+#' 
+#' l_tbls <- list(
+#'   list(
+#'      rtabulate(iris$Sepal.Length, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Length, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Sepal.Width, iris$Species, mean)
+#'   )  
+#' )
+#' 
+#' unlist_rtables(l_tbls)
+#' 
+unlist_rtables <- function(x) {
+  
+  n <- 0
+  incr_n_if_rtable <- function(x) {
+    if (is(x, "rtable")) n <<- n + 1 else lapply(x, incr_n_if_rtable)
+  }
+  incr_n_if_rtable(x)
+  
+  i <- 1
+  tbls <- vector(mode = "list", length = n)
+  
+  add_tbls <- function(x) {
+    if (is(x, "rtable")) {
+      tbls[[i]] <<- x
+      i <<- i + 1
+    } else {
+      lapply(x, add_tbls)
+    }
+  }  
+  
+  if (n > 0) add_tbls(x)
+  
+  tbls
+  
+}
+
 indent_table <- function(x, n) {
   for (i in 1:nrow(x)) {
     attr(x[[i]], "indent") <- attr(x[[i]], "indent") + n
@@ -14,6 +161,53 @@ shift_label_table <- function(tbl, term) {
 }
 
 
+row_names_as_col <- function(tbl, header_label) {
+  
+  nr_h <- nrow(header(tbl))
+  
+  if (missing(header_label)) {
+    header_label <- rep("", nr_h)
+  } else {
+    if (length(header_label) != nr_h) stop("dimension missmatch")
+  }
+  
+  h <- do.call(rheader, lapply(header_label, function(x) rrow("", x)))
+  
+  tbl_rn <- rtablel(header = h, c(lapply(row.names(tbl), function(xi) rrow("", xi))))
+  cbind_rtables(tbl_rn, tbl)
+}
+
+#' @export
+unlist.rtable <- function(x, recursive = TRUE, use.names = TRUE) {
+  x
+}
+
+#' hack to faster bind multiple tables
+#' 
+#' @noRd
+#' 
+#' 
+#' @examples 
+#' 
+#' t1 <- rtabulate(iris$Sepal.Length, factor(iris$Species))
+#' t2 <- rtabulate(iris$Sepal.Width, factor(iris$Species))
+#' 
+#' tern:::fast_rbind(t1, t2)
+#' 
+fast_rbind <- function(...) {
+  dots <- Filter(Negate(is.null), list(...))
+  
+  if (!all(unlist(lapply(dots, is, "rtable")))) stop("not all elements are of type rtable")
+  
+  tbl <- unlist(dots, recursive = FALSE)
+  
+  attr(tbl, "header") <- header(dots[[1]])
+  attr(tbl, "nrow") <- length(tbl)
+  attr(tbl, "ncol") <- ncol(dots[[1]])
+  class(tbl) <- "rtable"
+  
+  tbl
+}
 
 #' insert rrows at a specific location
 #' 

@@ -113,7 +113,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_ae_ctc</span>(<span class='no'>class</span>, <span class='no'>term</span>, <span class='no'>id</span>, <span class='no'>grade</span>, <span class='no'>col_by</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
+    <pre class="usage"><span class='fu'>t_ae_ctc</span>(<span class='no'>class</span>, <span class='no'>term</span>, <span class='no'>id</span>, <span class='no'>grade</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
   <span class='kw'>grade_levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -121,21 +121,22 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>class</th>
-      <td><p>system organ class variable.</p></td>
+      <td><p>class information as character or factor vector</p></td>
     </tr>
     <tr>
       <th>term</th>
-      <td><p>preferred term variable.</p></td>
+      <td><p>term information as character or factor vector, however factor
+levels are not repeated by class, only terms with count &gt; 1 are listed per
+class</p></td>
     </tr>
     <tr>
       <th>id</th>
-      <td><p>unique subject identifier variable. If a particular subject has no
-adverse event then the subject <code>id</code> should be listed where
-<code>class</code> and <code>term</code> should be set to missing (i.e. <code>NA</code>).</p></td>
+      <td><p>unique subject identifier. If a particular subject has no adverse
+event then that information needs to be added to the <code>col_N</code> argument.</p></td>
     </tr>
     <tr>
       <th>grade</th>
-      <td><p>grade of adverse event variable.</p></td>
+      <td><p>grade of adverse event as numeric</p></td>
     </tr>
     <tr>
       <th>col_by</th>
@@ -143,17 +144,27 @@ adverse event then the subject <code>id</code> should be listed where
 has to be a factor and can not be missing. See 'Examples'.</p></td>
     </tr>
     <tr>
+      <th>col_N</th>
+      <td><p>numeric vector with information of the number of patients in the
+levels of <code>col_by</code>. This is useful if there are patients that have no
+adverse events can be accounted for with this argument.</p></td>
+    </tr>
+    <tr>
       <th>total</th>
       <td><p>character string that will be used as a label for a column with 
-pooled total population, default is "All Patients".</p></td>
+pooled total population, default is "All Patients". If the levels of col_by are 
+the only columns of interest then total should be <code>NULL</code></p></td>
     </tr>
     <tr>
       <th>grade_levels</th>
-      <td><p>ordered values of possible of grades in a form of
-<code>x:y</code>, default is <code>1:5</code>. This assures a proper fill in for
-grades, see 'Details'.</p></td>
+      <td><p>numeric, ordered values of possible of grades in a form
+of <code>x:y</code>, default is <code>1:5</code>.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>rtable</code> object</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -178,6 +189,10 @@ in case there was no AEs reported for particular <code>col_by</code> and/or
 <code>grade</code> category. Use <code>grade_levels</code> to modify the range of existing
 grades. If data does not have any records with <code>grade</code> 5 and the intent 
 is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
+<p>This is an equivalent of the STREAM output <code>%stream_t_summary(templates = aet04)</code>
+  (<a href='http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html'>http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html</a>)</p>
+<p>This is an equivalent of the STREAM 1.17 output <code>%stream_t_events_bygrade(templates = aet04)</code>
+  (<a href='&lt;https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501&gt;'>&lt;https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501&gt;</a>)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -187,7 +202,7 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
   <span class='kw'>USUBJID</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"id-"</span>, <span class='fl'>1</span>:<span class='fl'>10</span>),
-  <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"ARM"</span>, <span class='no'>LETTERS</span>[<span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>7</span>))])
+  <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>paste</span>(<span class='st'>"ARM"</span>, <span class='no'>LETTERS</span>[<span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>7</span>))]))
 )
 
 
@@ -208,75 +223,76 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
   <span class='no'>ae_lookup</span>[<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>5</span>,<span class='fl'>4</span>,<span class='fl'>6</span>),]
 )
 
-<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>ASL</span>, <span class='no'>AAE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"USUBJID"</span>)
+<span class='no'>ANL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>AAE</span>, <span class='no'>ASL</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"USUBJID"</span>)
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_ae_ctc</span>(
   <span class='kw'>class</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>CLASS</span>,
   <span class='kw'>term</span> <span class='kw'>=</span>  <span class='no'>ANL</span>$<span class='no'>TERM</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>grade</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>GRADE</span>,
-  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ANL</span>$<span class='no'>ARM</span>),
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ANL</span>$<span class='no'>ARM</span>,
+  <span class='kw'>col_N</span> <span class='kw'>=</span> <span class='fu'>tapply</span>(<span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='no'>ASL</span>$<span class='no'>ARM</span>, <span class='no'>length</span>),
   <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
   <span class='kw'>grade_levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt; MedDRA System Organ Class                                    ARM A                  ARM B              All Patients  
-#&gt;   MedDRA Preferred Term          NCI CTCAE Grade             (N=3)                  (N=7)                 (N=10)     
-#&gt; ---------------------------------------------------------------------------------------------------------------------
+<span class='no'>tbl</span></div><div class='output co'>#&gt; MedDRA System Organ Class                                 ARM A                ARM B            All Patients 
+#&gt;   MedDRA Preferred Term              Grade                (N=3)                (N=7)               (N=10)    
+#&gt; -------------------------------------------------------------------------------------------------------------
 #&gt; - Any adverse events -
-#&gt;   - Overall -                     - Any Grade -            2 (66.7%)              4 (57.1%)               6 (60%)    
-#&gt;                                         1                      0                  1 (14.3%)               1 (10%)    
-#&gt;                                         2                  1 (33.3%)              1 (14.3%)               2 (20%)    
-#&gt;                                         3                  1 (33.3%)              2 (28.6%)               3 (30%)    
+#&gt;   - Overall -                    - Any Grade -          2 (66.7%)            4 (57.1%)             6 (60%)   
+#&gt;                                        1                    0                1 (14.3%)             1 (10%)   
+#&gt;                                        2                1 (33.3%)            1 (14.3%)             2 (20%)   
+#&gt;                                        3                1 (33.3%)            2 (28.6%)             3 (30%)   
 #&gt; 
 #&gt; cl A
-#&gt;   - Overall -                     - Any Grade -            1 (33.3%)              3 (42.9%)               4 (40%)    
-#&gt;                                         1                      0                  1 (14.3%)               1 (10%)    
-#&gt;                                         2                  1 (33.3%)              2 (28.6%)               3 (30%)    
-#&gt;                                         3                      0                      0                      0       
+#&gt;   - Overall -                    - Any Grade -          1 (33.3%)            3 (42.9%)             4 (40%)   
+#&gt;                                        1                    0                1 (14.3%)             1 (10%)   
+#&gt;                                        2                1 (33.3%)            2 (28.6%)             3 (30%)   
+#&gt;                                        3                    0                    0                    0      
 #&gt; 
-#&gt;   trm A_2/2                       - Any Grade -            1 (33.3%)              2 (28.6%)               3 (30%)    
-#&gt;                                         1                      0                      0                      0       
-#&gt;                                         2                  1 (33.3%)              2 (28.6%)               3 (30%)    
-#&gt;                                         3                      0                      0                      0       
+#&gt;   trm A_2/2                      - Any Grade -          1 (33.3%)            2 (28.6%)             3 (30%)   
+#&gt;                                        1                    0                    0                    0      
+#&gt;                                        2                1 (33.3%)            2 (28.6%)             3 (30%)   
+#&gt;                                        3                    0                    0                    0      
 #&gt; 
-#&gt;   trm A_1/2                       - Any Grade -            1 (33.3%)              1 (14.3%)               2 (20%)    
-#&gt;                                         1                  1 (33.3%)              1 (14.3%)               2 (20%)    
-#&gt;                                         2                      0                      0                      0       
-#&gt;                                         3                      0                      0                      0       
+#&gt;   trm A_1/2                      - Any Grade -          1 (33.3%)            1 (14.3%)             2 (20%)   
+#&gt;                                        1                1 (33.3%)            1 (14.3%)             2 (20%)   
+#&gt;                                        2                    0                    0                    0      
+#&gt;                                        3                    0                    0                    0      
 #&gt; 
 #&gt; cl B
-#&gt;   - Overall -                     - Any Grade -            1 (33.3%)              3 (42.9%)               4 (40%)    
-#&gt;                                         1                      0                  1 (14.3%)               1 (10%)    
-#&gt;                                         2                      0                      0                      0       
-#&gt;                                         3                  1 (33.3%)              2 (28.6%)               3 (30%)    
+#&gt;   - Overall -                    - Any Grade -          1 (33.3%)            3 (42.9%)             4 (40%)   
+#&gt;                                        1                    0                1 (14.3%)             1 (10%)   
+#&gt;                                        2                    0                    0                    0      
+#&gt;                                        3                1 (33.3%)            2 (28.6%)             3 (30%)   
 #&gt; 
-#&gt;   trm B_2/3                       - Any Grade -            1 (33.3%)              2 (28.6%)               3 (30%)    
-#&gt;                                         1                      0                      0                      0       
-#&gt;                                         2                      0                      0                      0       
-#&gt;                                         3                  1 (33.3%)              2 (28.6%)               3 (30%)    
+#&gt;   trm B_2/3                      - Any Grade -          1 (33.3%)            2 (28.6%)             3 (30%)   
+#&gt;                                        1                    0                    0                    0      
+#&gt;                                        2                    0                    0                    0      
+#&gt;                                        3                1 (33.3%)            2 (28.6%)             3 (30%)   
 #&gt; 
-#&gt;   trm B_1/3                       - Any Grade -                0                  1 (14.3%)               1 (10%)    
-#&gt;                                         1                      0                      0                      0       
-#&gt;                                         2                      0                  1 (14.3%)               1 (10%)    
-#&gt;                                         3                      0                      0                      0       
+#&gt;   trm B_1/3                      - Any Grade -              0                1 (14.3%)             1 (10%)   
+#&gt;                                        1                    0                    0                    0      
+#&gt;                                        2                    0                1 (14.3%)             1 (10%)   
+#&gt;                                        3                    0                    0                    0      
 #&gt; 
-#&gt;   trm B_3/3                       - Any Grade -                0                  1 (14.3%)               1 (10%)    
-#&gt;                                         1                      0                  1 (14.3%)               1 (10%)    
-#&gt;                                         2                      0                      0                      0       
-#&gt;                                         3                      0                      0                      0       
+#&gt;   trm B_3/3                      - Any Grade -              0                1 (14.3%)             1 (10%)   
+#&gt;                                        1                    0                1 (14.3%)             1 (10%)   
+#&gt;                                        2                    0                    0                    0      
+#&gt;                                        3                    0                    0                    0      
 #&gt; 
 #&gt; cl C
-#&gt;   - Overall -                     - Any Grade -            1 (33.3%)              1 (14.3%)               2 (20%)    
-#&gt;                                         1                  1 (33.3%)              1 (14.3%)               2 (20%)    
-#&gt;                                         2                      0                      0                      0       
-#&gt;                                         3                      0                      0                      0       
+#&gt;   - Overall -                    - Any Grade -          1 (33.3%)            1 (14.3%)             2 (20%)   
+#&gt;                                        1                1 (33.3%)            1 (14.3%)             2 (20%)   
+#&gt;                                        2                    0                    0                    0      
+#&gt;                                        3                    0                    0                    0      
 #&gt; 
-#&gt;   trm C_1/1                       - Any Grade -            1 (33.3%)              1 (14.3%)               2 (20%)    
-#&gt;                                         1                  1 (33.3%)              1 (14.3%)               2 (20%)    
-#&gt;                                         2                      0                      0                      0       
-#&gt;                                         3                      0                      0                      0       </div><div class='input'>
-
+#&gt;   trm C_1/1                      - Any Grade -          1 (33.3%)            1 (14.3%)             2 (20%)   
+#&gt;                                        1                1 (33.3%)            1 (14.3%)             2 (20%)   
+#&gt;                                        2                    0                    0                    0      
+#&gt;                                        3                    0                    0                    0      </div><div class='input'>
+<span class='co'># Example using dummy data</span>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
 
@@ -297,573 +313,483 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
             )
 )
 
-<span class='no'>tbl</span></div><div class='output co'>#&gt; MedDRA System Organ Class                                                                              ARM A                  ARM B              All Patients  
-#&gt;   MedDRA Preferred Term                                                    NCI CTCAE Grade             (N=9)                  (N=1)                 (N=10)     
-#&gt; ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+<span class='no'>tbl</span></div><div class='output co'>#&gt; MedDRA System Organ Class                                                                           ARM A                ARM B            All Patients 
+#&gt;   MedDRA Preferred Term                                                        Grade               (N=14)               (N=31)               (N=45)    
+#&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------
 #&gt; - Any adverse events -
-#&gt;   - Overall -                                                               - Any Grade -            9 (100%)               1 (100%)               10 (100%)   
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   5                  7 (77.8%)              1 (100%)                8 (80%)    
+#&gt;   - Overall -                                                              - Any Grade -          3 (21.4%)            7 (22.6%)           10 (22.2%)  
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                2 (6.5%)             2 (4.4%)   
+#&gt;                                                                                  5                3 (21.4%)            4 (12.9%)            7 (15.6%)  
 #&gt; 
 #&gt; Investigations
-#&gt;   - Overall -                                                               - Any Grade -            5 (55.6%)              1 (100%)                6 (60%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                  2 (22.2%)              1 (100%)                3 (30%)    
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Anti-glomerular basement membrane antibody                                - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Bile culture                                                              - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Biopsy heart normal                                                       - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Blood bromide                                                             - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Blood cholinesterase                                                      - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Carbon dioxide combining power decreased                                  - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Chest scan                                                                - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   CSF specific gravity                                                      - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Ehrlichia test                                                            - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Fluoride increased                                                        - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Metamyelocyte count                                                       - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Physical thyroid examination                                              - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Prekallikrein test                                                        - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Secretion gastric absent                                                  - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Xanthochromia                                                             - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Respiratory, thoracic and mediastinal disorders
-#&gt;   - Overall -                                                               - Any Grade -            4 (44.4%)              1 (100%)                5 (50%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  3 (33.3%)              1 (100%)                4 (40%)    
-#&gt; 
-#&gt;   Portopulmonary hypertension                                               - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                  1 (100%)                1 (10%)    
-#&gt; 
-#&gt;   Reactive airways dysfunction syndrome                                     - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Respiratory tract oedema                                                  - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Tracheal ulcer                                                            - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Young's syndrome                                                          - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt; Injury, poisoning and procedural complications
-#&gt;   - Overall -                                                               - Any Grade -            3 (33.3%)              1 (100%)                4 (40%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                  1 (11.1%)              1 (100%)                2 (20%)    
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Aqueous humour leakage                                                    - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Cutaneous loxoscelism                                                     - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Graft ischaemia                                                           - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Puncture site pain                                                        - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Skin graft detachment                                                     - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; General disorders and administration site conditions
-#&gt;   - Overall -                                                               - Any Grade -            3 (33.3%)                  0                   3 (30%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  2 (22.2%)                  0                   2 (20%)    
-#&gt; 
-#&gt;   Pelvic fibrosis                                                           - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Postoperative hernia                                                      - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Vessel puncture site inflammation                                         - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Musculoskeletal and connective tissue disorders
-#&gt;   - Overall -                                                               - Any Grade -            3 (33.3%)                  0                   3 (30%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Gout                                                                      - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Myopathy endocrine                                                        - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Serotonin syndrome                                                        - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Nervous system disorders
-#&gt;   - Overall -                                                               - Any Grade -            2 (22.2%)              1 (100%)                3 (30%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                  1 (100%)                1 (10%)    
-#&gt; 
-#&gt;   Cerebral toxoplasmosis                                                    - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Glycogen storage disease type III                                         - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                  1 (100%)                1 (10%)    
-#&gt; 
-#&gt;   Intracranial aneurysm                                                     - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Spinal meningioma malignant                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Skin and subcutaneous tissue disorders
-#&gt;   - Overall -                                                               - Any Grade -            3 (33.3%)                  0                   3 (30%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Administration site eczema                                                - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Erythema elevatum diutinum                                                - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Eyelid bleeding                                                           - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Eyelid rash                                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Surgical and medical procedures
-#&gt;   - Overall -                                                               - Any Grade -            2 (22.2%)              1 (100%)                3 (30%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Fiducial marker placement                                                 - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Muscle reattachment                                                       - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Myopia correction                                                         - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Therapeutic nerve ablation                                                - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Congenital, familial and genetic disorders
-#&gt;   - Overall -                                                               - Any Grade -            2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Congenital hearing disorder                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Extrarenal pelvis                                                         - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Gastrointestinal disorders
-#&gt;   - Overall -                                                               - Any Grade -            2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Abdominal wall anomaly                                                    - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Eosinophilic oesophagitis                                                 - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Gastroenteritis paracolon bacillus                                        - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt; Immune system disorders
-#&gt;   - Overall -                                                               - Any Grade -            1 (11.1%)              1 (100%)                2 (20%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt;   Implant site urticaria                                                    - Any Grade -                0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                  1 (100%)                1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Tongue oedema                                                             - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                  1 (11.1%)                  0                   1 (10%)    
-#&gt; 
-#&gt; Vascular disorders
-#&gt;   - Overall -                                                               - Any Grade -            2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  2 (22.2%)                  0                   2 (20%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Aortic wall hypertrophy                                                   - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Portal fibrosis                                                           - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Stomatitis haemorrhagic                                                   - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Cardiac disorders
-#&gt;   - Overall -                                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Corrected transposition of great vessels                                  - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt; Endocrine disorders
-#&gt;   - Overall -                                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
-#&gt; 
-#&gt;   Growth accelerated                                                        - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt;   - Overall -                                                              - Any Grade -          2 (14.3%)            5 (16.1%)            7 (15.6%)  
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                2 (6.5%)             2 (4.4%)   
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                2 (14.3%)            2 (6.5%)             4 (8.9%)   
+#&gt; 
+#&gt;   Blood bicarbonate                                                        - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                1 (3.2%)             1 (2.2%)   
+#&gt; 
+#&gt;   Blood creatine phosphokinase MM normal                                   - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Kleihauer-Betke test negative                                            - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Lasegue's test negative                                                  - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Metamyelocyte percentage increased                                       - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                1 (7.1%)                 0                1 (2.2%)   
+#&gt; 
+#&gt;   Radioallergosorbent test positive                                        - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Serum procollagen type III N-terminal propeptide decreased               - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                1 (7.1%)                 0                1 (2.2%)   
+#&gt; 
+#&gt;   Trial of void                                                            - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                1 (3.2%)             1 (2.2%)   
+#&gt; 
+#&gt;   Venogram                                                                 - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                1 (3.2%)             1 (2.2%)   
 #&gt; 
 #&gt; Hepatobiliary disorders
-#&gt;   - Overall -                                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)             3 (9.7%)             4 (8.9%)   
+#&gt;                                                                                  1                1 (7.1%)             1 (3.2%)             2 (4.4%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                2 (6.5%)             2 (4.4%)   
+#&gt;                                                                                  5                    0                    0                    0      
 #&gt; 
-#&gt;   Hepatitis B reactivation                                                  - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt;   Cholangiectasis congenital                                               - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
 #&gt; 
-#&gt; Infections and infestations
-#&gt;   - Overall -                                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt;   Gallbladder mucocoele                                                    - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
 #&gt; 
-#&gt;   Infective pericardial effusion                                            - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt;   Gallbladder necrosis                                                     - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
 #&gt; 
-#&gt; Metabolism and nutrition disorders
-#&gt;   - Overall -                                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt;   Porphyria non-acute                                                      - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
 #&gt; 
-#&gt;   Abnormal weight gain                                                      - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   4                      0                      0                      0       
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt; Gastrointestinal disorders
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)             2 (6.5%)             3 (6.7%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Ankyloglossia acquired                                                   - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Gingival disorder                                                        - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Supernumerary teeth                                                      - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Injury, poisoning and procedural complications
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)             2 (6.5%)             3 (6.7%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                1 (7.1%)                 0                1 (2.2%)   
+#&gt; 
+#&gt;   Catheter site induration                                                 - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                1 (7.1%)                 0                1 (2.2%)   
+#&gt; 
+#&gt;   Dislocation of sternum                                                   - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Implant site atrophy                                                     - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
 #&gt; 
 #&gt; Neoplasms benign, malignant and unspecified (incl cysts and polyps)
-#&gt;   - Overall -                                                               - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       
+#&gt;   - Overall -                                                              - Any Grade -          2 (14.3%)            1 (3.2%)             3 (6.7%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                2 (14.3%)                0                2 (4.4%)   
 #&gt; 
-#&gt;   Malignant nipple neoplasm male                                            - Any Grade -            1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   1                      0                      0                      0       
-#&gt;                                                                                   2                      0                      0                      0       
-#&gt;                                                                                   3                      0                      0                      0       
-#&gt;                                                                                   4                  1 (11.1%)                  0                   1 (10%)    
-#&gt;                                                                                   5                      0                      0                      0       </div><div class='input'>
+#&gt;   Embryonal rhabdomyosarcoma                                               - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Follicle centre lymphoma diffuse small cell lymphoma stage IV            - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                1 (7.1%)                 0                1 (2.2%)   
+#&gt; 
+#&gt;   Intracranial germ cell tumour                                            - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Malignant neoplasm of choroid                                            - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                1 (7.1%)                 0                1 (2.2%)   
+#&gt; 
+#&gt; Infections and infestations
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)             1 (3.2%)             2 (4.4%)   
+#&gt;                                                                                  1                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Bubonic plague                                                           - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Naegleria infection                                                      - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Musculoskeletal and connective tissue disorders
+#&gt;   - Overall -                                                              - Any Grade -              0                2 (6.5%)             2 (4.4%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Alveolar bone resorption                                                 - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Arthritis fungal                                                         - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Trismus                                                                  - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Nervous system disorders
+#&gt;   - Overall -                                                              - Any Grade -              0                2 (6.5%)             2 (4.4%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Areflexia                                                                - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Malignant neoplasm of spinal cord                                        - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Psychiatric disorders
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)             1 (3.2%)             2 (4.4%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Dyssomnia                                                                - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Trisomy 17                                                               - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Skin and subcutaneous tissue disorders
+#&gt;   - Overall -                                                              - Any Grade -              0                2 (6.5%)             2 (4.4%)   
+#&gt;                                                                                  1                    0                2 (6.5%)             2 (4.4%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Atypical fibroxanthoma                                                   - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Mycosis fungoides recurrent                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Surgical and medical procedures
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)             1 (3.2%)             2 (4.4%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  5                    0                1 (3.2%)             1 (2.2%)   
+#&gt; 
+#&gt;   Complete oral rehabilitation                                             - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                1 (3.2%)             1 (2.2%)   
+#&gt; 
+#&gt;   Exchange blood transfusion                                               - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Congenital, familial and genetic disorders
+#&gt;   - Overall -                                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Supernumerary vertebra                                                   - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Ear and labyrinth disorders
+#&gt;   - Overall -                                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Autophony                                                                - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Endocrine disorders
+#&gt;   - Overall -                                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Post procedural hypothyroidism                                           - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; General disorders and administration site conditions
+#&gt;   - Overall -                                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Infusion site irritation                                                 - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Vaccination site joint pain                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Immune system disorders
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Interferon gamma receptor deficiency                                     - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Pregnancy, puerperium and perinatal conditions
+#&gt;   - Overall -                                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Second trimester pregnancy                                               - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Renal and urinary disorders
+#&gt;   - Overall -                                                              - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt;   Thrombotic microangiopathy                                               - Any Grade -          1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  1                1 (7.1%)                 0                1 (2.2%)   
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                    0                    0      
+#&gt; 
+#&gt; Vascular disorders
+#&gt;   - Overall -                                                              - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                1 (3.2%)             1 (2.2%)   
+#&gt; 
+#&gt;   Cerebellar embolism                                                      - Any Grade -              0                1 (3.2%)             1 (2.2%)   
+#&gt;                                                                                  1                    0                    0                    0      
+#&gt;                                                                                  2                    0                    0                    0      
+#&gt;                                                                                  3                    0                    0                    0      
+#&gt;                                                                                  4                    0                    0                    0      
+#&gt;                                                                                  5                    0                1 (3.2%)             1 (2.2%)   </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -871,6 +797,8 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -881,6 +809,8 @@ is to show only grades 1-4 rows then use <code>grade_levels = 1:4</code>.</p>
 Edgar Manukyan (manukyae) <a href='mailto:edgar.manukyan@roche.com'>edgar.manukyan@roche.com</a>
 
 Adrian Waddell (waddella) <a href='mailto:adrian.waddell@roche.com'>adrian.waddell@roche.com</a>
+
+Carolyn Zhang (zhanc107) <a href='mailto:carolyn.zhang@duke.edu'>carolyn.zhang@duke.edu</a>
 
   </div>
 </div>
