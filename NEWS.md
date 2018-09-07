@@ -14,6 +14,7 @@ used for the Adverse Events & Concomitant Treatment Tables
 ## New Helper Functions
 
 * `decorate_grob`, `decorate_grob_set`, `decorate_grob_factory`, `splitTextGrob`
+* `stack_grobs`, `arrange_grobs`, `draw_grob`
 
 ## TLG changes
 
