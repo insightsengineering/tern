@@ -238,7 +238,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #'   col_by = ANL$ARM,
 #'   col_N = table(ASL$ARM),
 #'   total = NULL,
-#'   event_name = "adverse event"
+#'   event_type = "adverse event"
 #' )
 #' 
 #' t_events_per_term_id(
@@ -262,18 +262,18 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #'   col_by = ANL$ARM,
 #'   col_N = table(ASL$ARM),
 #'   total = "All Patients",
-#'   event_name = "treatment"
+#'   event_type = "treatment"
 #' ) 
 #' 
-t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients", event_name = "event") {
+t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients", event_type = "event") {
  
   if (is.null(terms)) stop("terms can't be NULL")
   if (is.data.frame(terms) && ncol(terms) == 1) {
     terms <- terms[[1]]
   }  
   
-  total_events = paste0("Total number of ", event_name, "s")
-  subjects_with_events = paste("Total number of patients with at least one", event_name)
+  total_events = paste0("Total number of ", event_type, "s")
+  subjects_with_events = paste("Total number of patients with at least one", event_type)
   
   tbls <- if (is.atomic(terms)){
     
@@ -314,7 +314,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
       col_by = col_by,
       col_N = col_N,
       total = total, 
-      event_name = event_name
+      event_name = event_type
     )
     
     n_cols <- ncol(l_tbls[[1]])
