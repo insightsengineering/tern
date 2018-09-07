@@ -10,6 +10,9 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/arm.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/arrange_grobs.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/combine_levels.html</loc>
   </url>
   <url>
@@ -20,6 +23,9 @@
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/decorate_grob_set.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/draw_grob.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/drop_shared_variables.html</loc>
@@ -53,6 +59,9 @@
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/splitTextGrob.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/stack_grobs.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_count_unique.html</loc>

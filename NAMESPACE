@@ -31,12 +31,8 @@ export(g_waterfall)
 export(label)
 export(reorder_to_match_id)
 export(splitTextGrob)
-<<<<<<< HEAD
 export(stack_grobs)
-export(t_ae_ctc)
-=======
 export(t_count_unique)
->>>>>>> master
 export(t_coxph)
 export(t_events_per_term_grade_id)
 export(t_events_per_term_id)
