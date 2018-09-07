@@ -5,8 +5,10 @@
 
 * `t_summary` and methods for `data.frame`, `numeric`, `logical`, `character`,
 `factor`, and `Date` objects
-* `t_ae_ctc`: Adverse Events Table by Highest NCI CTCAE Grade
-* `t_max_grade_per_id`: Tabulate maximum grade per id by col_by
+* `t_events_per_term_id`, `t_events_per_term_grade_id`: Adverse Events &
+Concomitant Treatment Tables
+* `t_max_grade_per_id`, `t_count_unique`, `t_events_summary` elementary tables
+used for the Adverse Events & Concomitant Treatment Tables
 * `g_waterfall`: Horizontal Waterfall Plot
 
 ## New Helper Functions
