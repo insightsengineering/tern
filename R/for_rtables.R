@@ -1,6 +1,49 @@
 # the functions in this document should eventually be moved to the rtables project
 
 
+#' Stack Tables Stored in a nested list of depth 2
+#' 
+#' \code{recursive_stack_rtables} expects a list with lists of rtables to be stacked. Sometimes
+#' these tables have repeated information at the top and hence the first n rows
+#' can be optionally removed from the tables that are not first in the lists.
+#' 
+#' @param x list with lists of rtables
+#' 
+#' @return rtable
+#' 
+#' @template author_waddella
+#' 
+#' 
+#' @examples
+#' 
+#' l_tbls <- list(
+#'   list(
+#'      rtabulate(iris$Sepal.Length, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Length, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Sepal.Width, iris$Species, mean),
+#'      rtabulate(iris$Sepal.Width, iris$Species, sd)
+#'   ),
+#'   list(
+#'      rtabulate(iris$Petal.Length, iris$Species, mean),
+#'      rtabulate(iris$Petal.Length, iris$Species, sd)
+#'   )   
+#' )
+#' 
+#' recursive_stack_rtables(l_tbls)
+#' 
+recursive_stack_rtables <- function(x) {
+  
+  tbls <- unlist_rtables(x)
+  
+  if (!all(vapply(tbls, is, logical(1), "rtable"))) stop("not all elements are rtables")
+  
+  do.call(fast_stack_rtables, tbls)
+  
+}
+
+
 #' Stack rtables with rbind and add empy rows between tables
 #' 
 #' @param ... rtbale objects

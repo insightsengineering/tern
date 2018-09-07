@@ -5,7 +5,7 @@
 \title{Basic Events Table}
 \usage{
 t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients",
-  event_name = "event")
+  event_type = "event")
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information; 
@@ -28,8 +28,6 @@ adverse events can be accounted for with this argument.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
-
-\item{event_name}{character name of events. Default is "event".}
 }
 \value{
 an \code{\link{rtable}} object.
@@ -83,7 +81,7 @@ t_events_per_term_id(
   col_by = ANL$ARM,
   col_N = table(ASL$ARM),
   total = NULL,
-  event_name = "adverse event"
+  event_type = "adverse event"
 )
 
 t_events_per_term_id(
@@ -107,7 +105,7 @@ t_events_per_term_id(
   col_by = ANL$ARM,
   col_N = table(ASL$ARM),
   total = "All Patients",
-  event_name = "treatment"
+  event_type = "treatment"
 ) 
 
 }
