@@ -314,7 +314,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
       col_by = col_by,
       col_N = col_N,
       total = total, 
-      event_name = event_type
+      event_type = event_type
     )
     
     n_cols <- ncol(l_tbls[[1]])
@@ -966,7 +966,8 @@ lt_events_per_term_grade_id_1 <- function(term,
 #' @param total character string that will be used as a label for a column with 
 #'  pooled total population, default is "All Patients". If the levels of col_by are 
 #'  the only columns of interest then total should be \code{NULL}
-#' @param event_name character name of events. Default is "event".
+#' @param event_type type of event that is summarized (e.g. adverse event,
+#'   treatment). Default is "event".
 #' 
 #' @details 
 #' \if{html}{
@@ -1020,7 +1021,7 @@ lt_events_per_term_id_2 <- function(terms,
                              col_by, 
                              col_N,
                              total = "All Patients", 
-                             event_name = "event"){
+                             event_type = "event"){
   
   # check argument validity and consitency
   check_col_by(col_by, min_num_levels = 1)
@@ -1035,8 +1036,8 @@ lt_events_per_term_id_2 <- function(terms,
   if(is.null(class_label)) class_label <- deparse(substitute(class))
   if(is.null(term_label)) term_label <- deparse(substitute(term))
   
-  total_events <- paste0("Total number of ", event_name, "s")
-  subjects_with_events <- paste("Total number of patients with at least one", event_name)
+  total_events <- paste0("Total number of ", event_type, "s")
+  subjects_with_events <- paste("Total number of patients with at least one", event_type)
   
   # data prep
   df <- data.frame(
@@ -1061,7 +1062,7 @@ lt_events_per_term_id_2 <- function(terms,
   
   # list("- Any adverse events -" = list( "- Overall -" = df))
   # class and term chunks
-  top_label = paste0("- Any ", event_name, " -")
+  top_label = paste0("- Any ", event_type, " -")
   df_class <- c(
     setNames(list(df[, -2]), top_label),
     split(df, df$class)

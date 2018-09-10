@@ -28,6 +28,9 @@ adverse events can be accounted for with this argument.}
 \item{total}{character string that will be used as a label for a column with 
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
+
+\item{event_type}{type of event that is summarized (e.g. adverse event,
+treatment). Default is "event".}
 }
 \value{
 an \code{\link{rtable}} object.
