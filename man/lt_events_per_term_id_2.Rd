@@ -5,7 +5,7 @@
 \title{List of Events Terms Tables}
 \usage{
 lt_events_per_term_id_2(terms, id, col_by, col_N, total = "All Patients",
-  event_name = "event")
+  event_type = "event")
 }
 \arguments{
 \item{terms}{term information as character or factor dataframe, however factor
@@ -28,7 +28,8 @@ adverse events can be accounted for with this argument.}
 pooled total population, default is "All Patients". If the levels of col_by are 
 the only columns of interest then total should be \code{NULL}}
 
-\item{event_name}{character name of events. Default is "event".}
+\item{event_type}{type of event that is summarized (e.g. adverse event,
+treatment). Default is "event".}
 }
 \description{
 \code{lt_events_per_term_grade_id_2} returns a nested list of events tables 

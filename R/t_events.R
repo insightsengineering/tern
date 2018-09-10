@@ -966,7 +966,8 @@ lt_events_per_term_grade_id_1 <- function(term,
 #' @param total character string that will be used as a label for a column with 
 #'  pooled total population, default is "All Patients". If the levels of col_by are 
 #'  the only columns of interest then total should be \code{NULL}
-#' @param event_type character name of events. Default is "event".
+#' @param event_type type of event that is summarized (e.g. adverse event,
+#'   treatment). Default is "event".
 #' 
 #' @details 
 #' \if{html}{

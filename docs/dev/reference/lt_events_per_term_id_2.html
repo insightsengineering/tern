@@ -114,7 +114,7 @@ by unique id (<code><a href='t_count_unique.html'>t_count_unique</a></code>).</p
     </div>
 
     <pre class="usage"><span class='fu'>lt_events_per_term_id_2</span>(<span class='no'>terms</span>, <span class='no'>id</span>, <span class='no'>col_by</span>, <span class='no'>col_N</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>,
-  <span class='kw'>event_name</span> <span class='kw'>=</span> <span class='st'>"event"</span>)</pre>
+  <span class='kw'>event_type</span> <span class='kw'>=</span> <span class='st'>"event"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,8 +150,9 @@ pooled total population, default is "All Patients". If the levels of col_by are
 the only columns of interest then total should be <code>NULL</code></p></td>
     </tr>
     <tr>
-      <th>event_name</th>
-      <td><p>character name of events. Default is "event".</p></td>
+      <th>event_type</th>
+      <td><p>type of event that is summarized (e.g. adverse event,
+treatment). Default is "event".</p></td>
     </tr>
     </table>
     
