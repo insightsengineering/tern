@@ -16,7 +16,7 @@
 #'   x = sample(c(TRUE, FALSE), 100, TRUE),
 #'   by = factor(sample(paste("day", 1:5), 100, TRUE)),
 #'   col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE))
-#'   col_n = table(rep(paste("ARM", LETTERS[1:3]), 10))
+#'   col_N = table(rep(paste("ARM", LETTERS[1:3]), 10))
 #' )
 #' 
 #' # need more examples for tables that can be found in STREAM
