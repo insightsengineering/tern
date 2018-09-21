@@ -16,13 +16,14 @@
 #' @return an rtable
 #' 
 #' @examples 
+#' \dontrun{
 #' tabulate_pairwise(
 #'   x = iris$Sepal.Length,
 #'   col_by = iris$Species,
 #'   FUN = function(xi, col_by_i) diff(tapply(xi, col_by_i, mean)),
 #'   row.name = "diff mean"
 #' )
-#' 
+#' }
 tabulate_pairwise <- function(x, col_by, FUN, row.name, format=NULL, indent = 0) {
 
   if (!is.atomic(x) && !is.data.frame(x)) stop("currently x is required to be a vector or data.frame")

@@ -28,6 +28,6 @@ l_tbls <- list(
   )  
 )
 
-unlist_rtables(l_tbls)
+tern:::unlist_rtables(l_tbls)
 
 }

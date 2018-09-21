@@ -34,7 +34,7 @@ l_tbls <- list(
   )   
 )
 
-recursive_stack_rtables(l_tbls)
+tern:::recursive_stack_rtables(l_tbls)
 
 }
 \author{
