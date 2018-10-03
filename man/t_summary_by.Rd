@@ -9,11 +9,13 @@ t_summary_by(x, by, col_by, col_N, total = NULL, ...)
 \arguments{
 \item{x}{vector}
 
-\item{by}{vector}
+\item{by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define the summary sub-groups in the table.}
 
-\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
-which levels in \code{col_by} define a column. If data should not be split
-into columns use the \code{\link{no_by}} function.}
+\item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by} define the columns in the table.}
+
+\item{col_N}{a \code{table} object with the reference population used for the header of the table. See examples below.}
+
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{...}{arguments passed on to methods}
 }

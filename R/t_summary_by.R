@@ -5,7 +5,11 @@
 #' 
 #' @inheritParams t_summary
 #' @param x vector
-#' @param by  vector
+#' @param by  a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define the summary sub-groups in the table.
+#' @param col_by a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by} define the columns in the table.
+#' @param col_N a \code{table} object with the reference population used for the header of the table. See examples below.
+#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
+#' @param ... arguments passed on to methods
 #' 
 #' @export
 #' 
