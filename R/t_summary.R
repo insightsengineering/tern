@@ -38,10 +38,10 @@ t_summary <- function(x, col_by, ...) {
 #' @examples 
 #' 
 #' t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
-t_summary.default <- function(x, col_by, ...) {
+t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
   
   rtable(
-    header = rtables:::rtabulate_header(col_by, length(x)),
+    header = rtables:::rtabulate_header(col_by, col_N),
     rrowl(paste("no t_summary method for class:", class(x)), lapply(levels(col_by), function(x)rcell("-")))
   )
 }

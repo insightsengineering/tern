@@ -4,7 +4,7 @@
 \alias{t_summary.default}
 \title{Return an rtable with a no Method Message}
 \usage{
-\method{t_summary}{default}(x, col_by, ...)
+\method{t_summary}{default}(x, col_by, col_N = table(col_by), ...)
 }
 \arguments{
 \item{x}{an object to dispatch on}
