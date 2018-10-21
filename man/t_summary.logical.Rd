@@ -4,22 +4,24 @@
 \alias{t_summary.logical}
 \title{Summarize Boolean Data}
 \usage{
-\method{t_summary}{logical}(x, col_by, row.name.TRUE = "TRUE",
-  row.name.FALSE = "FALSE", denominator = c("n", "N"), ...)
+\method{t_summary}{logical}(x, col_by, col_N = table(col_by),
+  row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...)
 }
 \arguments{
-\item{x}{a factor}
+\item{x}{a logical vector}
 
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
+\item{col_N}{The column total for each column. If specified then
+\code{\link{col_N}()} can be used on the cell data in order to retrieve the
+column total. If \code{NULL} then no header row for the column is
+displayed.}
+
 \item{row.name.TRUE}{character string with row.name for TRUE summary}
 
 \item{row.name.FALSE}{character string with row.name for FALSE summary}
-
-\item{denominator}{either n or N for calculating the level associated
-percentage.}
 
 \item{...}{arguments passed on to \code{\link{t_summary.factor}}}
 }

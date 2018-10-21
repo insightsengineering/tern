@@ -19,7 +19,7 @@ into columns use the \code{\link{no_by}} function.}
 \item{total}{if not \code{NULL} then it must be a string and an addition
 column will be added with the overall summaries}
 
-\item{drop_levels}{boolean whether to drio zero count levels}
+\item{drop_levels}{boolean whether to drop zero count levels}
 
 \item{useNA_factors}{forwarded to \code{useNA} of
 \code{\link{t_summary.factor}}}

@@ -4,7 +4,7 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, ...)
+\method{t_summary}{numeric}(x, col_by, col_N = table(col_by), ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -13,18 +13,25 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
+\item{col_N}{The column total for each column. If specified then
+\code{\link{col_N}()} can be used on the cell data in order to retrieve the
+column total. If \code{NULL} then no header row for the column is
+displayed.}
+
 \item{...}{arguments passed to \code{FUN}}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-Tabulate the number on non-missing observations, mean, sd, median, and range
+Tabulate the number of non-missing observations, mean, sd, median, and range
 for different groups.
 }
 \examples{
 
 t_summary(iris$Sepal.Length, iris$Species)
+
+t_summary(iris$Sepal.Length, no_by("All Species"), col_N = length(iris$Sepal.Length) )
 
 }
 \author{
