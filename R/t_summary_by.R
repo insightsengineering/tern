@@ -1,7 +1,7 @@
 #' Summarize an Object for Different Groups with by Variable
 #' 
 #' 
-#' description
+#' Summarize an Object for Different Groups with by Variable
 #' 
 #' @inheritParams t_summary
 #' @param x vector
@@ -25,31 +25,42 @@
 #' )
 #' 
 #' t_summary_by(
-#'   x = sample(1:20, 100, TRUE),
+#'   x = sample(c(TRUE, FALSE), 100, TRUE),
 #'   by = factor(sample(paste("day", 1:5), 100, TRUE)),
 #'   col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE)),
 #'   col_N = table(rep(paste("ARM", LETTERS[1:3]), 10)),
-#'   total = "All Patients"
+#'   total = "All Patients",
+#'   denominator = "N"
 #' )
 #' 
+#' 
 #' ANL <- data.frame(
-#'  aval = sample(c(TRUE, FALSE), 100, TRUE),
+#'  aval = sample(letters[1:5], 100, TRUE),
 #'  avisit = factor(sample(c(
 #'    "Screening", "Day 5", "Day 10"
 #'  ), 100, TRUE), levels = c("Screening", "Day 5", "Day 10")),
 #'  col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE))
 #' )
 #' ANL <- var_relabel(ANL, aval = "Analysis Value", avisit = "Analysis Visit" )
+#' levels(ANL$aval) <- c(levels(ANL$aval), "z")
 #' 
 #' t_summary_by(
 #'   x = ANL$aval,
 #'   by = ANL$avisit,
 #'   col_by = ANL$col_by,
-#'   col_N = table(rep(paste("ARM", LETTERS[1:3]), 10))
+#'   col_N = c(10, 15, 20)
 #' )
 #' 
-#' # TODO: add more examples for tables that can be found in STREAM
-#' 
+#' t_summary_by(
+#'   x = ANL$aval,
+#'   by = ANL$avisit,
+#'   col_by = ANL$col_by,
+#'   col_N = c(10, 15, 20),
+#'   total = "All",
+#'   denominator = "N",
+#'   drop_levels = TRUE
+#' )
+
 
 t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   
@@ -87,7 +98,7 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   tbl_head <- rheader(rrowl("", levels(col_by)))
   
   tbls <- Map(function(df_i, by_i) {
-    tbl <- t_summary(df_i$x, df_i$col_by, ...)
+    tbl <- t_summary(df_i$x, df_i$col_by, col_N = col_N, ...)
     header(tbl) <- tbl_head
 
     # add the row name for by and indent

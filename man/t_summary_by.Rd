@@ -20,7 +20,7 @@ t_summary_by(x, by, col_by, col_N, total = NULL, ...)
 \item{...}{arguments passed on to methods}
 }
 \description{
-description
+Summarize an Object for Different Groups with by Variable
 }
 \examples{
 
@@ -33,29 +33,39 @@ t_summary_by(
 )
 
 t_summary_by(
-  x = sample(1:20, 100, TRUE),
+  x = sample(c(TRUE, FALSE), 100, TRUE),
   by = factor(sample(paste("day", 1:5), 100, TRUE)),
   col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE)),
   col_N = table(rep(paste("ARM", LETTERS[1:3]), 10)),
-  total = "All Patients"
+  total = "All Patients",
+  denominator = "N"
 )
 
+
 ANL <- data.frame(
- aval = sample(c(TRUE, FALSE), 100, TRUE),
+ aval = sample(letters[1:5], 100, TRUE),
  avisit = factor(sample(c(
    "Screening", "Day 5", "Day 10"
  ), 100, TRUE), levels = c("Screening", "Day 5", "Day 10")),
  col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE))
 )
 ANL <- var_relabel(ANL, aval = "Analysis Value", avisit = "Analysis Visit" )
+levels(ANL$aval) <- c(levels(ANL$aval), "z")
 
 t_summary_by(
   x = ANL$aval,
   by = ANL$avisit,
   col_by = ANL$col_by,
-  col_N = table(rep(paste("ARM", LETTERS[1:3]), 10))
+  col_N = c(10, 15, 20)
 )
 
-# TODO: add more examples for tables that can be found in STREAM
-
+t_summary_by(
+  x = ANL$aval,
+  by = ANL$avisit,
+  col_by = ANL$col_by,
+  col_N = c(10, 15, 20),
+  total = "All",
+  denominator = "N",
+  drop_levels = TRUE
+)
 }
