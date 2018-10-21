@@ -19,7 +19,7 @@
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
 #' with(iris, t_summary(Sepal.Length > mean(Sepal.Length), iris$Species))
-t_summary <- function(x, col_by, ...) {
+t_summary <- function(x, col_by, col_N, ...) {
   UseMethod("t_summary", x)
 }
 
@@ -38,6 +38,7 @@ t_summary <- function(x, col_by, ...) {
 #' @examples 
 #' 
 #' t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
+#' 
 t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
   
   rtable(
@@ -83,17 +84,22 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
 #'                       useNA = 'always')
+#'                       
+#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, col_N = table(c(ASL$ARM, ASL$ARM)), 
+#'                        total = "All Patients", useNA = 'always')
 #' 
 #' ASL$SEX[1:10] <- NA
 #' 
 #' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-#'                       useNA_factors = 'ifany')
-#' 
+#'                       useNA = 'ifany')
+#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
+#'                       denominator = "N", useNA = 'ifany')
+#'                       
 #' # with iris data
 #' 
 #' t_summary(iris[, -5], col_by  = iris$Species)
 #' 
-#' t_summary(iris, col_by  = no_by("All Species"))
+#' t_summary(iris, col_by  = no_by("All Species"), col_N = nrow(iris))
 #' 
 #' 
 #' x <- factor(c("A", NA, "B", "B", "A"))
@@ -103,24 +109,26 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' t_summary(data.frame(x), col_by = cb, useNA = "ifany")
 #' 
-t_summary.data.frame <- function(x, col_by, total = NULL, ...) {
+t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, ...) {
   
-  # If total column is requested stack the data and change col_by accordingly 
+  # If total column is requested stack the data and change col_by and col_N accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
     if (length(total) != 1) stop("total must be either NULL or a single string")
     if (total %in% col_by) stop("total cannot be an level in col_by")
     
+    col_N <- c(col_N, sum(col_N)) 
+
     x <- duplicate_with_var(x)
     col_by <- factor(c(as.character(col_by), rep(total, length(col_by))), levels = c(levels(col_by), total))
   }
+
+   rtables_vars <- Map(function(var, varlabel) {
+     tbl <- t_summary(x=var, col_by=col_by, col_N = col_N, ...)
+     insert_rrow(indent_table(tbl, 1), rrow(varlabel))
+   }, x, var_labels(x, fill = TRUE))
   
-  rtables_vars <- Map(function(var, varlabel) {
-    tbl <- t_summary(x=var, col_by=col_by, ...) 
-    insert_rrow(indent_table(tbl, 1), rrow(varlabel))
-  }, x, var_labels(x, fill = TRUE))
-  
-  stack_rtables_l(rtables_vars)
+   stack_rtables_l(rtables_vars)
 }
 
 
@@ -128,7 +136,7 @@ t_summary.data.frame <- function(x, col_by, total = NULL, ...) {
 
 #' Summarize Numeric Variables
 #' 
-#' Tabulate the number on non-missing observations, mean, sd, median, and range
+#' Tabulate the number of non-missing observations, mean, sd, median, and range
 #' for different groups.
 #' 
 #' @inheritParams rtables::rtabulate.numeric
@@ -143,26 +151,30 @@ t_summary.data.frame <- function(x, col_by, total = NULL, ...) {
 #' 
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
-t_summary.numeric <- function(x, col_by, ...) {
+#' t_summary(iris$Sepal.Length, no_by("All Species"), col_N = length(iris$Sepal.Length) )
+#'
+t_summary.numeric <- function(x, col_by, col_N = table(col_by), ...) {
+  
   rbind(
-    rtabulate(x, col_by, count_n, row.name = "n"),
-    rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
-    rtabulate(x, col_by, median, row.name = "Median", format="xx.xx", na.rm = TRUE),
-    rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE)
+    rtabulate(x, col_by, count_n, row.name = "n", col_N = col_N),
+    rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", col_N = col_N),
+    rtabulate(x, col_by, median, row.name = "Median", format="xx.xx", na.rm = TRUE, col_N = col_N),
+    rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE, col_N = col_N)
   )
 }
 
 #' Summarize Categorical Data
 #' 
-#' Tabulate the number on non-missing observations, number of per level and
-#' percentage
+#' Tabulate the number of non-missing observations, number of observations per level and
+#' percentage.
 #' 
 #' @inheritParams t_summary.default
 #' @param x numeric variable
 #' @param useNA choose whether missing data (NAs) should be displayed as a level
 #' @param denominator either n or N for calculating the level associated
-#'   percentage.
-#' @param drop_levels boolean whether to drio zero count levels
+#'   percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
+#'   With option n, the number of non-missing records from \code{x} is used as the denominator. 
+#' @param drop_levels boolean whether to drop zero count levels
 #' 
 #' @template return_rtable
 #' 
@@ -187,7 +199,7 @@ t_summary.numeric <- function(x, col_by, ...) {
 #' 
 #' t_summary(x, cb, useNA = "always",  denominator = "n")
 #' 
-t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
+t_summary.factor <- function(x, col_by, col_N = table(col_by), useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), drop_levels = FALSE, ...) {
   
   useNA <- match.arg(useNA)
@@ -195,28 +207,30 @@ t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
   
   if (drop_levels) x <- droplevels(x)
   
+  
   d <- if (denominator == "n") {
-    function(x) sum(!is.na(x))
+    function(x_cell, x_col) sum(!is.na(x_col))
   } else {
-    length
+    function(x_cell, x_col) col_N(x_cell)
   }
   
   tbl <- rbind(
-    rtabulate(as.numeric(x), col_by, count_n, row.name = "n"),
+    rtabulate(as.numeric(x), col_by, count_n, row.name = "n", col_N = col_N),
     rtabulate(
       x = x,
       col_by = col_by,
       FUN = function(x_cell, x_row, x_col) {
-        if (length(x_col) > 0) length(x_cell) * c(1, 1/d(x_col)) else rcell("-", format = "xx")
+        if (length(x_col) > 0) length(x_cell) * c(1, 1/d(x_cell, x_col)) else rcell("-", format = "xx")
       },
       row_col_data_args = TRUE,
-      format = "xx (xx.xx%)"
+      format = "xx (xx.xx%)",
+      col_N = col_N
     )
   )
   
   if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
     tbl <- insert_rrow(tbl, rrowl("<NA>", tapply(x, col_by, function(x)sum(is.na(x))), format = "xx"), nrow(tbl)+1)
-  } 
+  }
 
   tbl
 }
@@ -232,8 +246,8 @@ t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
 #' @template author_waddella
 #' 
 #' @export
-t_summary.character <- function(x, col_by, ...) {
-  t_summary(as.factor(x), col_by, ...)
+t_summary.character <- function(x, col_by, col_N = table(col_by), ...) {
+  t_summary(as.factor(x), col_by, col_N, ...)
 }
 
 #' Summarize Date Data
@@ -251,20 +265,23 @@ t_summary.character <- function(x, col_by, ...) {
 #' @examples 
 #' (today <- Sys.Date())
 #' (tenweeks <- seq(today, length.out=10, by="1 week")) 
-#' t_summary(tenweeks, no_by("all"))
+#' t_summary(tenweeks, no_by("all"), length(tenweeks))
 #' 
 #' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
-t_summary.Date <- function(x, col_by, ...) {
-  rtables:::rtabulate_default(x, col_by, FUN = function(x) {
+#' 
+t_summary.Date <- function(x, col_by, col_N = table(col_by), ...) {
+  
+  rtables:::rtabulate_default(x, col_by, col_N = col_N, FUN = function(x) {
     paste(range(na.omit(x)), collapse = " to ")
   }, row.name = "range of dates", ...)
+  
 }
 
 #' Summarize Boolean Data
 #' 
 #' 
 #' @inheritParams t_summary.factor
-#' @param x a factor
+#' @param x a logical vector
 #' @param row.name.TRUE character string with row.name for TRUE summary
 #' @param row.name.FALSE character string with row.name for FALSE summary
 #' @param ... arguments passed on to \code{\link{t_summary.factor}}
@@ -285,15 +302,8 @@ t_summary.Date <- function(x, col_by, ...) {
 #'   denominator = "N"
 #' )
 #' 
-t_summary.logical <- function(x, col_by, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", denominator = c("n", "N"), ...) {
-
-  denominator <- match.arg(denominator)
+t_summary.logical <- function(x, col_by, col_N = table(col_by), row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...) {
   
-  rbind(
-    rtabulate(x, col_by, count_n, row.name = "n", format="xx"),
-    rtabulate(x, col_by = col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name =  row.name.TRUE, na.rm = denominator == "n"),
-    rtabulate(!x, col_by = col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name = row.name.FALSE, na.rm = denominator == "n")
-  )
+  xf <- factor(x, levels=c(TRUE, FALSE), labels=c(row.name.TRUE, row.name.FALSE))
+  t_summary(xf, col_by, col_N, ...)
 }
