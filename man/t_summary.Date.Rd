@@ -4,7 +4,8 @@
 \alias{t_summary.Date}
 \title{Summarize Date Data}
 \usage{
-\method{t_summary}{Date}(x, col_by, col_N = table(col_by), ...)
+\method{t_summary}{Date}(x, col_by, col_N = table(col_by), total = NULL,
+  ...)
 }
 \arguments{
 \item{x}{a Date object}
@@ -29,6 +30,8 @@ Currently treated as for factors
 t_summary(tenweeks, no_by("all"), length(tenweeks))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
+
+t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
 
 }
 \author{

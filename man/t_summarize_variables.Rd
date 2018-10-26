@@ -16,8 +16,7 @@ be used for the row name.}
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{total}{if not \code{NULL} then it must be a string and an addition
-column will be added with the overall summaries}
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 

@@ -4,7 +4,7 @@
 \alias{t_summary.logical}
 \title{Summarize Boolean Data}
 \usage{
-\method{t_summary}{logical}(x, col_by, col_N = table(col_by),
+\method{t_summary}{logical}(x, col_by, col_N = table(col_by), total = NULL,
   row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...)
 }
 \arguments{
@@ -14,10 +14,9 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each column. If specified then
-\code{\link{col_N}()} can be used on the cell data in order to retrieve the
-column total. If \code{NULL} then no header row for the column is
-displayed.}
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{row.name.TRUE}{character string with row.name for TRUE summary}
 
@@ -38,6 +37,13 @@ t_summary(
   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
   denominator = "N"
+)
+
+t_summary(
+  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
+  denominator = "N",
+  total = "All"
 )
 
 }
