@@ -41,11 +41,14 @@ t_summary <- function(x, col_by, col_N, ...) {
 #' 
 t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
   
-  rtable(
-    header = rtables:::rtabulate_header(col_by, col_N),
+  tbl <- rtable(
     rrowl(paste("no t_summary method for class:", class(x)), lapply(levels(col_by), function(x)rcell("-")))
   )
+  header_add_N(tbl, col_N)
+  
 }
+
+
 
 #' Variables Summary Table
 #' 
@@ -254,7 +257,7 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
   if (denominator == "n" & !is.no_by(col_by) ) {
     denom <- table(col_by[!is.na(x)])
   } else if (denominator == "n" & is.no_by(col_by) ){
-    denom <- table(!is.na(x))
+    denom <- table(rep(col_by,  sum(!is.na(x)) ))
   } else {
     denom <- col_N
   }
@@ -273,7 +276,14 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
   )
   
   if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
-    tbl <- insert_rrow(tbl, rrowl("<NA>", tapply(x, col_by, function(x)sum(is.na(x))), format = "xx"), nrow(tbl)+1)
+    
+    if(is.no_by(col_by)){
+      NA_row <- sum(is.na(x))
+    } else {
+      NA_row <- tapply(x, col_by, function(x)sum(is.na(x)))
+    }
+    
+    tbl <- insert_rrow(tbl, rrowl("<NA>", NA_row, format = "xx"), nrow(tbl)+1)
   }
   
   header_add_N(tbl, col_N)
