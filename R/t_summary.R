@@ -42,6 +42,7 @@ t_summary <- function(x, col_by, col_N, ...) {
 t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
   
   tbl <- rtable(
+    header = levels(col_by),
     rrowl(paste("no t_summary method for class:", class(x)), lapply(levels(col_by), function(x)rcell("-")))
   )
   header_add_N(tbl, col_N)
