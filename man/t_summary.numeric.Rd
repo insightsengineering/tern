@@ -4,7 +4,8 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, col_N = table(col_by), ...)
+\method{t_summary}{numeric}(x, col_by, col_N = table(col_by), total = NULL,
+  ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -13,10 +14,9 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each column. If specified then
-\code{\link{col_N}()} can be used on the cell data in order to retrieve the
-column total. If \code{NULL} then no header row for the column is
-displayed.}
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{...}{arguments passed to \code{FUN}}
 }
@@ -30,6 +30,10 @@ for different groups.
 \examples{
 
 t_summary(iris$Sepal.Length, iris$Species)
+
+t_summary(iris$Sepal.Length, iris$Species, col_N = table(iris$Species))
+
+t_summary(iris$Sepal.Length, iris$Species, total = "All Species")
 
 t_summary(iris$Sepal.Length, no_by("All Species"), col_N = length(iris$Sepal.Length) )
 

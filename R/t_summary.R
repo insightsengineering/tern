@@ -41,11 +41,15 @@ t_summary <- function(x, col_by, col_N, ...) {
 #' 
 t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
   
-  rtable(
-    header = rtables:::rtabulate_header(col_by, col_N),
+  tbl <- rtable(
+    header = levels(col_by),
     rrowl(paste("no t_summary method for class:", class(x)), lapply(levels(col_by), function(x)rcell("-")))
   )
+  header_add_N(tbl, col_N)
+  
 }
+
+
 
 #' Variables Summary Table
 #' 
@@ -141,7 +145,8 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 #' 
 #' @inheritParams rtables::rtabulate.numeric
 #' @param x numeric variable
-#' 
+#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
+#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @template return_rtable
 #' 
 #' @export
@@ -151,16 +156,39 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 #' 
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
+#' t_summary(iris$Sepal.Length, iris$Species, col_N = table(iris$Species))
+#' 
+#' t_summary(iris$Sepal.Length, iris$Species, total = "All Species")
+#' 
 #' t_summary(iris$Sepal.Length, no_by("All Species"), col_N = length(iris$Sepal.Length) )
 #'
-t_summary.numeric <- function(x, col_by, col_N = table(col_by), ...) {
+t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
   
-  rbind(
-    rtabulate(x, col_by, count_n, row.name = "n", col_N = col_N),
-    rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", col_N = col_N),
-    rtabulate(x, col_by, median, row.name = "Median", format="xx.xx", na.rm = TRUE, col_N = col_N),
-    rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE, col_N = col_N)
+  if ( length(x)==length(col_by)){
+    df <- data.frame(x = x, col_by = col_by)    
+  }
+  
+  # If total column is requested stack the data and change by, col_by and col_N accordingly
+  if (!is.null(total) && !is.no_by(col_by)) { ## add total column
+    
+    if (length(total) != 1) stop("total must be either NULL or a single string")
+    if (total %in% col_by) stop("total cannot be an level in col_by")
+    
+    df <- duplicate_with_var(df, col_by = total)
+    df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
+    x <- df$x
+    col_N <- c(col_N, sum(col_N)) 
+    col_by <- df$col_by
+  }
+  
+  tbl <- rbind(
+    rtabulate(x, col_by, count_n, row.name = "n"),
+    rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
+    rtabulate(x, col_by, median, row.name = "Median", format="xx.xx", na.rm = TRUE),
+    rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE)
   )
+  
+  header_add_N(tbl, col_N)
 }
 
 #' Summarize Categorical Data
@@ -170,6 +198,8 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' @inheritParams t_summary.default
 #' @param x numeric variable
+#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
+#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @param useNA choose whether missing data (NAs) should be displayed as a level
 #' @param denominator either n or N for calculating the level associated
 #'   percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
@@ -185,6 +215,7 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' t_summary(iris$Species, iris$Species)
 #' 
+#' t_summary(iris$Species, iris$Species, total = "All Species")
 #' 
 #' x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
 #' cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))
@@ -199,7 +230,7 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' t_summary(x, cb, useNA = "always",  denominator = "n")
 #' 
-t_summary.factor <- function(x, col_by, col_N = table(col_by), useNA = c("no", "ifany", "always"),
+t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), drop_levels = FALSE, ...) {
   
   useNA <- match.arg(useNA)
@@ -207,32 +238,57 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), useNA = c("no", "
   
   if (drop_levels) x <- droplevels(x)
   
+  if ( length(x)==length(col_by)){
+    df <- data.frame(x = x, col_by = col_by)    
+  }
   
-  d <- if (denominator == "n") {
-    function(x_cell, x_col) sum(!is.na(x_col))
+  # If total column is requested stack the data and change by, col_by and col_N accordingly
+  if (!is.null(total) && !is.no_by(col_by)) { ## add total column
+    
+    if (length(total) != 1) stop("total must be either NULL or a single string")
+    if (total %in% col_by) stop("total cannot be an level in col_by")
+    
+    df <- duplicate_with_var(df, col_by = total)
+    df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
+    x <- df$x
+    col_N <- c(col_N, sum(col_N)) 
+    col_by <- df$col_by
+  }
+  
+  if (denominator == "n" & !is.no_by(col_by) ) {
+    denom <- table(col_by[!is.na(x)])
+  } else if (denominator == "n" & is.no_by(col_by) ){
+    denom <- table(rep(col_by,  sum(!is.na(x)) ))
   } else {
-    function(x_cell, x_col) col_N(x_cell)
+    denom <- col_N
   }
   
   tbl <- rbind(
-    rtabulate(as.numeric(x), col_by, count_n, row.name = "n", col_N = col_N),
+    rtabulate(as.numeric(x), col_by, count_n, row.name = "n"),
     rtabulate(
       x = x,
       col_by = col_by,
-      FUN = function(x_cell, x_row, x_col) {
-        if (length(x_col) > 0) length(x_cell) * c(1, 1/d(x_cell, x_col)) else rcell("-", format = "xx")
+      FUN = function(x_cell, denom) {
+        if (length(x_cell) > 0) length(x_cell) * c(1, 1/denom) else rcell("-", format = "xx")
       },
-      row_col_data_args = TRUE,
       format = "xx (xx.xx%)",
-      col_N = col_N
+      col_wise_args = list(denom = denom)
     )
   )
   
   if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
-    tbl <- insert_rrow(tbl, rrowl("<NA>", tapply(x, col_by, function(x)sum(is.na(x))), format = "xx"), nrow(tbl)+1)
+    
+    if(is.no_by(col_by)){
+      NA_row <- sum(is.na(x))
+    } else {
+      NA_row <- tapply(x, col_by, function(x)sum(is.na(x)))
+    }
+    
+    tbl <- insert_rrow(tbl, rrowl("<NA>", NA_row, format = "xx"), nrow(tbl)+1)
   }
+  
+  header_add_N(tbl, col_N)
 
-  tbl
 }
 
 #' Summarize Character Data
@@ -246,8 +302,8 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), useNA = c("no", "
 #' @template author_waddella
 #' 
 #' @export
-t_summary.character <- function(x, col_by, col_N = table(col_by), ...) {
-  t_summary(as.factor(x), col_by, col_N, ...)
+t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
+  t_summary(as.factor(x), col_by, col_N, total, ...)
 }
 
 #' Summarize Date Data
@@ -269,11 +325,32 @@ t_summary.character <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 #' 
-t_summary.Date <- function(x, col_by, col_N = table(col_by), ...) {
+#' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
+#' 
+t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...) {
   
-  rtables:::rtabulate_default(x, col_by, col_N = col_N, FUN = function(x) {
+  if ( length(x)==length(col_by)){
+    df <- data.frame(x = x, col_by = col_by)    
+  }
+  
+  # If total column is requested stack the data and change by, col_by and col_N accordingly
+  if (!is.null(total) && !is.no_by(col_by)) { ## add total column
+    
+    if (length(total) != 1) stop("total must be either NULL or a single string")
+    if (total %in% col_by) stop("total cannot be an level in col_by")
+    
+    df <- duplicate_with_var(df, col_by = total)
+    df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
+    x <- df$x
+    col_N <- c(col_N, sum(col_N)) 
+    col_by <- df$col_by
+  }
+  
+  tbl <- rtables:::rtabulate_default(x, col_by, FUN = function(x) {
     paste(range(na.omit(x)), collapse = " to ")
   }, row.name = "range of dates", ...)
+  
+  header_add_N(tbl, col_N)
   
 }
 
@@ -302,8 +379,15 @@ t_summary.Date <- function(x, col_by, col_N = table(col_by), ...) {
 #'   denominator = "N"
 #' )
 #' 
-t_summary.logical <- function(x, col_by, col_N = table(col_by), row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...) {
+#' t_summary(
+#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
+#'   denominator = "N",
+#'   total = "All"
+#' )
+#' 
+t_summary.logical <- function(x, col_by, col_N = table(col_by), total = NULL, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...) {
   
   xf <- factor(x, levels=c(TRUE, FALSE), labels=c(row.name.TRUE, row.name.FALSE))
-  t_summary(xf, col_by, col_N, ...)
+  t_summary(xf, col_by, col_N, total, ...)
 }
