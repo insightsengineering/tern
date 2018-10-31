@@ -4,9 +4,9 @@
 \alias{t_forest_tte}
 \title{Time-to-event Table as used for Forest Plot}
 \usage{
-t_forest_tte(tte, is_event, col_by, group_data = NULL, strata_data = NULL,
-  total = "ALL", time_unit = "month", ties = "exact",
-  na.omit.group = TRUE, dense_header = FALSE)
+t_forest_tte(tte, is_event, col_by, group_data = NULL,
+  strata_data = NULL, total = "ALL", time_unit = "month",
+  ties = "exact", na.omit.group = TRUE, dense_header = FALSE)
 }
 \arguments{
 \item{tte}{a vector of time to event data}

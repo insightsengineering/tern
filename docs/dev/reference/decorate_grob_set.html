@@ -76,6 +76,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/missing-data.html">Missing Data</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -131,12 +143,12 @@
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>iris</span>, {
   <span class='fu'>list</span>(
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplotGrob'>ggplotGrob</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplotGrob'>ggplotGrob</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Petal.Length</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplotGrob'>ggplotGrob</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Petal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplotGrob'>ggplotGrob</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplotGrob'>ggplotGrob</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>Sepal.Width</span>, <span class='no'>Petal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplotGrob'>ggplotGrob</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>))
+    <span class='fu'><a href='ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span>(<span class='fu'><a href='ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
+    <span class='fu'><a href='ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span>(<span class='fu'><a href='ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Petal.Length</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
+    <span class='fu'><a href='ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span>(<span class='fu'><a href='ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Petal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
+    <span class='fu'><a href='ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span>(<span class='fu'><a href='ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
+    <span class='fu'><a href='ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span>(<span class='fu'><a href='ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='no'>Sepal.Width</span>, <span class='no'>Petal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>)),
+    <span class='fu'><a href='ggplot2.tidyverse.org/reference/ggplotGrob.html'>ggplotGrob</a></span>(<span class='fu'><a href='ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>Species</span>))
   )
 })
 <span class='no'>lg</span> <span class='kw'>&lt;-</span> <span class='fu'>decorate_grob_set</span>(<span class='kw'>grobs</span> <span class='kw'>=</span> <span class='no'>g</span>, <span class='kw'>titles</span> <span class='kw'>=</span> <span class='st'>"Hello\nOne\nTwo\nThree"</span>, <span class='kw'>footnotes</span> <span class='kw'>=</span> <span class='st'>""</span>)
