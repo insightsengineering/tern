@@ -68,14 +68,15 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   if (!is.factor(by)) stop("by is required to be factor")
   if (any(is.na(by))) stop("no NA allowed in by")
   
+  # paste(deparse(susbstitute(by)), sep = "\n"), ...
   by_lbl <- label(by)
   x_lbl <- label(x)
   if(is.null(by_lbl)) by_lbl <- ""
   if(is.null(x_lbl)) x_lbl <- ""
   
   
-  if ( length(x)==length(by) & length(x)==length(col_by)){
-    df <- data.frame(x = x, by = by, col_by = col_by)    
+  if ( length(x)==length(by) && length(x)==length(col_by)){
+    df <- data.frame(x = x, by = by, col_by = col_by, stringsAsFactors = FALSE)    
   } else{
     stop(paste0("Lengths of vectors differ. The length of x is ", length(x), ", length of by is ", length(by), ", length of col_by is ", length(col_by), "."))
   }
@@ -93,7 +94,7 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
      col_N <- c(col_N, sum(col_N)) 
    }
   
-  df_s <- split(df, by)
+  df_s <- split(df, by, drop = FALSE)
 
   tbl_head <- rheader(rrowl("", levels(col_by)))
   
