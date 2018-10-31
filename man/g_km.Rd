@@ -5,8 +5,8 @@
 \title{Kaplan-Meier Plot}
 \usage{
 g_km(fit_km, xticks = NULL, col = NULL, lty = NULL,
-  title = "Kaplan - Meier Plot", xlab = "Days", gp = NULL, vp = NULL,
-  name = NULL, draw = TRUE, newpage = TRUE)
+  title = "Kaplan - Meier Plot", xlab = "Days", gp = NULL,
+  vp = NULL, name = NULL, draw = TRUE, newpage = TRUE)
 }
 \arguments{
 \item{fit_km}{a class \code{\link{survfit}} object.}
