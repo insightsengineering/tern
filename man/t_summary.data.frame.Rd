@@ -34,45 +34,33 @@ Every variable in \code{x} will be mapped to a summary table using
 \code{\link{t_summary}} and then be stacked.
 }
 \examples{
+# with iris data
+t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
 
-ASL <- radam("ASL")
+t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
 
 # control the label
-ASL <- var_relabel(ASL, BAGE = "Baseline Age of patient")
+ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
 
 # control categorical order
-ASL$SEX <- relevel(ASL$SEX, "M", "F")
+ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 
-t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
-
-t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-                      useNA = 'always')
-                      
-t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, col_N = table(c(ASL$ARM, ASL$ARM)), 
-                       total = "All Patients", useNA = 'always')
-
-ASL$SEX[1:10] <- NA
-
-t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-                      useNA = 'ifany')
-t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-                      denominator = "N", useNA = 'ifany')
-                      
-# with iris data
-
-t_summary(iris[, -5], col_by  = iris$Species)
-
-t_summary(iris, col_by  = no_by("All Species"), col_N = nrow(iris))
-
-
-x <- factor(c("A", NA, "B", "B", "A"))
-cb <- factor(c("I", "I", "I", "II", "II"))
-
-t_summary(x, col_by = cb)
-
-t_summary(data.frame(x), col_by = cb, useNA = "ifany")
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+         useNA = 'always')
+         
+ADSL$SEX[1:10] <- NA
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", 
+         useNA = 'ifany')
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+         denominator = "N", useNA = 'ifany')
+         
+ADSL_AGE65 <- ADSL \%>\% filter(AGE > 65)
+t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients", 
+         col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
 
 }
 \seealso{

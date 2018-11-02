@@ -4,9 +4,9 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(x, col_by, col_N = table(col_by), total = NULL,
-  useNA = c("no", "ifany", "always"), denominator = c("n", "N"),
-  drop_levels = FALSE, ...)
+\method{t_summary}{factor}(x, col_by, col_N = table(col_by),
+  total = NULL, useNA = c("no", "ifany", "always"),
+  denominator = c("n", "N"), drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -37,24 +37,19 @@ Tabulate the number of non-missing observations, number of observations per leve
 percentage.
 }
 \examples{
-
+# with iris data
 t_summary(iris$Species, iris$Species)
 
-t_summary(iris$Species, iris$Species, total = "All Species")
+library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
 
-x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
-cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))
+t_summary(ADSL$SEX, ADSL$ARM, total = "All")
+t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 
-t_summary(x, cb)
-
-t_summary(x, cb, useNA = "always")
-
-t_summary(x, cb, denominator = "N")
-
-t_summary(x, cb, useNA = "always",  denominator = "N")
-
-t_summary(x, cb, useNA = "always",  denominator = "n")
-
+ADSL$SEX[1:10] <- NA
+t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "ifany")
+t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany")
+ 
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

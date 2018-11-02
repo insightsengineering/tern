@@ -14,11 +14,15 @@
 #' @export
 #' 
 #' @examples 
-#' t_summary(iris[-5], iris$Species)
-#' 
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
-#' with(iris, t_summary(Sepal.Length > mean(Sepal.Length), iris$Species))
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
+#' 
+#' t_summary(ADSL$AGE, ADSL$ARMCD)
+#' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
+#' with(ADSL, t_summary(AGE > 65, ARMCD))
+#' 
 t_summary <- function(x, col_by, col_N, ...) {
   UseMethod("t_summary", x)
 }
@@ -36,7 +40,6 @@ t_summary <- function(x, col_by, col_N, ...) {
 #' @template author_waddella
 #' 
 #' @examples 
-#' 
 #' t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
 #' 
 t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
@@ -73,45 +76,33 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' 
 #' @examples 
+#' # with iris data
+#' t_summary(iris$Sepal.Length, iris$Species)
 #' 
 #' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
 #' 
-#' ASL <- radam("ASL")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
 #' 
 #' # control the label
-#' ASL <- var_relabel(ASL, BAGE = "Baseline Age of patient")
+#' ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
 #' 
 #' # control categorical order
-#' ASL$SEX <- relevel(ASL$SEX, "M", "F")
+#' ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 #' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
-#' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-#'                       useNA = 'always')
-#'                       
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, col_N = table(c(ASL$ARM, ASL$ARM)), 
-#'                        total = "All Patients", useNA = 'always')
-#' 
-#' ASL$SEX[1:10] <- NA
-#' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-#'                       useNA = 'ifany')
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-#'                       denominator = "N", useNA = 'ifany')
-#'                       
-#' # with iris data
-#' 
-#' t_summary(iris[, -5], col_by  = iris$Species)
-#' 
-#' t_summary(iris, col_by  = no_by("All Species"), col_N = nrow(iris))
-#' 
-#' 
-#' x <- factor(c("A", NA, "B", "B", "A"))
-#' cb <- factor(c("I", "I", "I", "II", "II"))
-#' 
-#' t_summary(x, col_by = cb)
-#' 
-#' t_summary(data.frame(x), col_by = cb, useNA = "ifany")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+#'          useNA = 'always')
+#'          
+#' ADSL$SEX[1:10] <- NA
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", 
+#'          useNA = 'ifany')
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+#'          denominator = "N", useNA = 'ifany')
+#'          
+#' ADSL_AGE65 <- ADSL %>% filter(AGE > 65)
+#' t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients", 
+#'          col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
 #' 
 t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, ...) {
   
@@ -153,15 +144,18 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 #' @template author_waddella
 #' 
 #' @examples 
-#' 
+#' # with iris data
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
-#' t_summary(iris$Sepal.Length, iris$Species, col_N = table(iris$Species))
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
 #' 
-#' t_summary(iris$Sepal.Length, iris$Species, total = "All Species")
+#' t_summary(ADSL$AGE, ADSL$ARM)
+#' t_summary(ADSL$AGE, ADSL$ARM, total = "All")
 #' 
-#' t_summary(iris$Sepal.Length, no_by("All Species"), col_N = length(iris$Sepal.Length) )
-#'
+#' ADSL$AGE[1:10] <- NA
+#' t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
+#' 
 t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
   
   if ( length(x)==length(col_by)){
@@ -212,24 +206,19 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ..
 #' @template author_waddella
 #' 
 #' @examples 
-#' 
+#' # with iris data
 #' t_summary(iris$Species, iris$Species)
 #' 
-#' t_summary(iris$Species, iris$Species, total = "All Species")
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
 #' 
-#' x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
-#' cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))
+#' t_summary(ADSL$SEX, ADSL$ARM, total = "All")
+#' t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 #' 
-#' t_summary(x, cb)
-#' 
-#' t_summary(x, cb, useNA = "always")
-#' 
-#' t_summary(x, cb, denominator = "N")
-#' 
-#' t_summary(x, cb, useNA = "always",  denominator = "N")
-#' 
-#' t_summary(x, cb, useNA = "always",  denominator = "n")
-#' 
+#' ADSL$SEX[1:10] <- NA
+#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "ifany")
+#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany")
+#'  
 t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), drop_levels = FALSE, ...) {
   
@@ -369,23 +358,20 @@ t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...)
 #' 
 #' @examples 
 #' t_summary(
-#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
+#'  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+#'  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
 #' )
 #' 
-#' t_summary(
-#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
-#'   denominator = "N"
-#' )
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
 #' 
-#' t_summary(
-#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
-#'   denominator = "N",
-#'   total = "All"
-#' )
+#' ADSL$AGE[1:10] <- NA
 #' 
+#' with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
+#' with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany", 
+#'                    row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
+#' 
+
 t_summary.logical <- function(x, col_by, col_N = table(col_by), total = NULL, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...) {
   
   xf <- factor(x, levels=c(TRUE, FALSE), labels=c(row.name.TRUE, row.name.FALSE))

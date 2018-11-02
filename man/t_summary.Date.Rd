@@ -4,8 +4,8 @@
 \alias{t_summary.Date}
 \title{Summarize Date Data}
 \usage{
-\method{t_summary}{Date}(x, col_by, col_N = table(col_by), total = NULL,
-  ...)
+\method{t_summary}{Date}(x, col_by, col_N = table(col_by),
+  total = NULL, ...)
 }
 \arguments{
 \item{x}{a Date object}

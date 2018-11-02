@@ -25,7 +25,6 @@ If there is no explicit method for an object an rtable with one row with an
 appropriate message is returned.
 }
 \examples{
-
 t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
 
 }
