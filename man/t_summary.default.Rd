@@ -4,7 +4,7 @@
 \alias{t_summary.default}
 \title{Return an rtable with a no Method Message}
 \usage{
-\method{t_summary}{default}(x, col_by, ...)
+\method{t_summary}{default}(x, col_by, col_N = table(col_by), ...)
 }
 \arguments{
 \item{x}{an object to dispatch on}
@@ -12,6 +12,11 @@
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
+
+\item{col_N}{The column total for each column. If specified then
+\code{\link{col_N}()} can be used on the cell data in order to retrieve the
+column total. If \code{NULL} then no header row for the column is
+displayed.}
 
 \item{...}{not used arguments}
 }
@@ -22,6 +27,7 @@ appropriate message is returned.
 \examples{
 
 t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

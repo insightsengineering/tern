@@ -4,8 +4,9 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(x, col_by, useNA = c("no", "ifany", "always"),
-  denominator = c("n", "N"), drop_levels = FALSE, ...)
+\method{t_summary}{factor}(x, col_by, col_N = table(col_by), total = NULL,
+  useNA = c("no", "ifany", "always"), denominator = c("n", "N"),
+  drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -14,12 +15,17 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level}
 
 \item{denominator}{either n or N for calculating the level associated
-percentage.}
+percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
+With option n, the number of non-missing records from \code{x} is used as the denominator.}
 
-\item{drop_levels}{boolean whether to drio zero count levels}
+\item{drop_levels}{boolean whether to drop zero count levels}
 
 \item{...}{not used arguments}
 }
@@ -27,13 +33,14 @@ percentage.}
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-Tabulate the number on non-missing observations, number of per level and
-percentage
+Tabulate the number of non-missing observations, number of observations per level and
+percentage.
 }
 \examples{
 
 t_summary(iris$Species, iris$Species)
 
+t_summary(iris$Species, iris$Species, total = "All Species")
 
 x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
 cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))

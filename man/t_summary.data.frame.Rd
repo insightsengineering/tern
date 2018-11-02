@@ -4,7 +4,8 @@
 \alias{t_summary.data.frame}
 \title{Variables Summary Table}
 \usage{
-\method{t_summary}{data.frame}(x, col_by, total = NULL, ...)
+\method{t_summary}{data.frame}(x, col_by, col_N = table(col_by),
+  total = NULL, ...)
 }
 \arguments{
 \item{x}{data frame with variables to be summarized as described in the
@@ -14,6 +15,11 @@ be used for the row name.}
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
+
+\item{col_N}{The column total for each column. If specified then
+\code{\link{col_N}()} can be used on the cell data in order to retrieve the
+column total. If \code{NULL} then no header row for the column is
+displayed.}
 
 \item{total}{if not \code{NULL} then it must be a string and an addition
 column will be added with the overall summaries}
@@ -43,17 +49,22 @@ t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
 
 t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
                       useNA = 'always')
+                      
+t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, col_N = table(c(ASL$ARM, ASL$ARM)), 
+                       total = "All Patients", useNA = 'always')
 
 ASL$SEX[1:10] <- NA
 
 t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-                      useNA_factors = 'ifany')
-
+                      useNA = 'ifany')
+t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
+                      denominator = "N", useNA = 'ifany')
+                      
 # with iris data
 
 t_summary(iris[, -5], col_by  = iris$Species)
 
-t_summary(iris, col_by  = no_by("All Species"))
+t_summary(iris, col_by  = no_by("All Species"), col_N = nrow(iris))
 
 
 x <- factor(c("A", NA, "B", "B", "A"))
