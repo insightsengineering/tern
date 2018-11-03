@@ -109,8 +109,8 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
   # If total column is requested stack the data and change col_by and col_N accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
-    if (length(total) != 1) stop("total must be either NULL or a single string")
-    if (total %in% col_by) stop("total cannot be an level in col_by")
+    length(total) == 1 || stop("total must be either NULL or a single string")
+    !(total %in% col_by) || stop("total cannot be an level in col_by")
     
     col_N <- c(col_N, sum(col_N)) 
 
@@ -159,14 +159,14 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
   
   if ( length(x)==length(col_by)){
-    df <- data.frame(x = x, col_by = col_by)    
+    df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)    
   }
   
   # If total column is requested stack the data and change by, col_by and col_N accordingly
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
-    if (length(total) != 1) stop("total must be either NULL or a single string")
-    if (total %in% col_by) stop("total cannot be an level in col_by")
+    length(total) == 1 || stop("total must be either NULL or a single string")
+    !(total %in% col_by) || stop("total cannot be an level in col_by")
     
     df <- duplicate_with_var(df, col_by = total)
     df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
@@ -216,8 +216,8 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ..
 #' t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 #' 
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "ifany")
-#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany")
+#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
+#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
 #'  
 t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), drop_levels = FALSE, ...) {
@@ -227,16 +227,17 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
   
   if (drop_levels) x <- droplevels(x)
   
-  if ( length(x)==length(col_by)){
-    df <- data.frame(x = x, col_by = col_by)    
+  if (!is.no_by(col_by)){
+    length(x)==length(col_by) || stop("dimension missmatch x and col_by")
   }
   
-  # If total column is requested stack the data and change by, col_by and col_N accordingly
+  # If total column is requested stack the data and change col_by and col_N accordingly
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
-    if (length(total) != 1) stop("total must be either NULL or a single string")
-    if (total %in% col_by) stop("total cannot be an level in col_by")
+    length(total) == 1 || stop("total must be either NULL or a single string")
+    !(total %in% col_by) || stop("total cannot be an level in col_by")
     
+    df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)  
     df <- duplicate_with_var(df, col_by = total)
     df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
     x <- df$x
@@ -244,9 +245,9 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
     col_by <- df$col_by
   }
   
-  if (denominator == "n" & !is.no_by(col_by) ) {
+  if (denominator == "n" && !is.no_by(col_by) ) {
     denom <- table(col_by[!is.na(x)])
-  } else if (denominator == "n" & is.no_by(col_by) ){
+  } else if (denominator == "n" && is.no_by(col_by) ){
     denom <- table(rep(col_by,  sum(!is.na(x)) ))
   } else {
     denom <- col_N
@@ -264,15 +265,13 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
       col_wise_args = list(denom = denom)
     )
   )
-  
+
   if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
-    
     if(is.no_by(col_by)){
       NA_row <- sum(is.na(x))
     } else {
       NA_row <- tapply(x, col_by, function(x)sum(is.na(x)))
     }
-    
     tbl <- insert_rrow(tbl, rrowl("<NA>", NA_row, format = "xx"), nrow(tbl)+1)
   }
   
@@ -319,14 +318,14 @@ t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, 
 t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...) {
   
   if ( length(x)==length(col_by)){
-    df <- data.frame(x = x, col_by = col_by)    
+    df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)    
   }
   
   # If total column is requested stack the data and change by, col_by and col_N accordingly
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
-    if (length(total) != 1) stop("total must be either NULL or a single string")
-    if (total %in% col_by) stop("total cannot be an level in col_by")
+    length(total) == 1 || stop("total must be either NULL or a single string")
+    !(total %in% col_by) || stop("total cannot be an level in col_by")
     
     df <- duplicate_with_var(df, col_by = total)
     df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))

@@ -47,8 +47,8 @@ t_summary(ADSL$SEX, ADSL$ARM, total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 
 ADSL$SEX[1:10] <- NA
-t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "ifany")
-t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany")
+t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
+t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
  
 }
 \author{
