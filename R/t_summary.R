@@ -108,14 +108,10 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
   
   # If total column is requested stack the data and change col_by and col_N accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
-    
-    length(total) == 1 || stop("total must be either NULL or a single string")
-    !(total %in% col_by) || stop("total cannot be an level in col_by")
-    
-    col_N <- c(col_N, sum(col_N)) 
-
-    x <- duplicate_with_var(x)
-    col_by <- factor(c(as.character(col_by), rep(total, length(col_by))), levels = c(levels(col_by), total))
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
   }
 
    rtables_vars <- Map(function(var, varlabel) {
@@ -158,21 +154,17 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 #' 
 t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
   
-  if ( length(x)==length(col_by)){
-    df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)    
+  if (!is.no_by(col_by)){
+    length(x)==length(col_by) || stop("dimension missmatch x and col_by")
   }
   
-  # If total column is requested stack the data and change by, col_by and col_N accordingly
+    # If total column is requested stack the data and change by, col_by and col_N accordingly
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
-    length(total) == 1 || stop("total must be either NULL or a single string")
-    !(total %in% col_by) || stop("total cannot be an level in col_by")
-    
-    df <- duplicate_with_var(df, col_by = total)
-    df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
-    x <- df$x
-    col_N <- c(col_N, sum(col_N)) 
-    col_by <- df$col_by
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
   }
   
   tbl <- rbind(
@@ -234,16 +226,11 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
   # If total column is requested stack the data and change col_by and col_N accordingly
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
-    length(total) == 1 || stop("total must be either NULL or a single string")
-    !(total %in% col_by) || stop("total cannot be an level in col_by")
-    
-    df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)  
-    df <- duplicate_with_var(df, col_by = total)
-    df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
-    x <- df$x
-    col_N <- c(col_N, sum(col_N)) 
-    col_by <- df$col_by
-  }
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
+    } 
   
   if (denominator == "n" && !is.no_by(col_by) ) {
     denom <- table(col_by[!is.na(x)])
@@ -324,14 +311,10 @@ t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...)
   # If total column is requested stack the data and change by, col_by and col_N accordingly
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     
-    length(total) == 1 || stop("total must be either NULL or a single string")
-    !(total %in% col_by) || stop("total cannot be an level in col_by")
-    
-    df <- duplicate_with_var(df, col_by = total)
-    df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
-    x <- df$x
-    col_N <- c(col_N, sum(col_N)) 
-    col_by <- df$col_by
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
   }
   
   tbl <- rtables:::rtabulate_default(x, col_by, FUN = function(x) {

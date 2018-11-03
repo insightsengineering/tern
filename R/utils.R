@@ -553,3 +553,86 @@ to_n <- function(x, n) {
   }
 }
 
+
+#' Duplicate an object to create total group
+#'
+#' Used to duplicate data in order to create a total column in a table.
+#'
+#' @param x an object to dispatch on
+#' @param ... arguments passed on to methods
+#' 
+#' @noRd
+add_total <- function(x, ... ) {
+  UseMethod("add_total", x)
+}
+
+#' Duplicate vector 
+#' 
+#' @inheritParams add_total
+#' @param x a vector
+#' @param col_by a factor the same length as \code{x}
+#' @param total_level a label that is used as a new factor level in the duplicated \code{col_by}
+#' @param col_N a numeric vector with length equal to the number of levels of \code{col_by}.
+#' It is used to build the row in the table header with (N=xx).
+#' 
+#' @details 
+#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' # factor
+#' temp_f <- add_total(x=iris$Species, col_by = iris$Species, total_level = "All") 
+#' # numeric
+#' temp_n <- add_total(x=iris$Sepal.Length, col_by = iris$Species, total_level = "All") 
+
+add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_by)) {
+  
+  !(total_level %in% levels(col_by)) || stop("total level exists in col_by")
+  length(x)==length(col_by) || stop("dimension missmatch x and col_by") 
+
+  col_N <- c(col_N, sum(col_N))
+  names(col_N)[length(col_N)] <- total_level
+  
+  cb_levels <- c(levels(col_by), total_level)
+  col_by <- factor(c(as.character(col_by), rep(total_level, length(x))), cb_levels)
+  
+  list(
+    x = rep(x, 2),
+    col_by = col_by,
+    col_N = col_N
+  )  
+}
+
+#' Duplicate data frame 
+#' 
+#' @inheritParams add_total.default
+#' @param x a data frame
+#' 
+#' @details 
+#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' 
+#' temp <- add_total(x=iris[, c("Sepal.Length", "Sepal.Width")], col_by = iris$Species, total_level = "All") 
+#' 
+add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(col_by) ) {
+  
+  vl <- var_labels(x)
+  y <- rbind(x, x)
+  var_labels(y) <- vl
+  
+  cb_levels <- c(levels(col_by), total_level)
+  col_by <- factor(c(as.character(col_by), rep(total_level, nrow(x))), cb_levels)
+  
+  col_N <- c(col_N, sum(col_N))
+  names(col_N)[length(col_N)] = total_level
+  
+  list(
+    x = y,
+    col_by = col_by, 
+    col_N = col_N
+  )
+}
