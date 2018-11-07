@@ -27,19 +27,10 @@
 #' 
 #' @examples
 #'  
-#' library(tern)
 #' library(random.cdisc.data)
+#' library(ggplot2)
+#' library(gridExtra)
 #' 
-#' ASL <- radam("ASL")
-#' 
-#' ANL <- merge(ASL, radam("AQS", ADSL = ASL)) %>% 
-#'    filter(PARAMCD == "FATIGI")
-#' 
-#' df <- chgfbl_data(data = ANL)
-#' 
-#' chgfbl_plot(data = df, ytype = "CHG", errbar = "SE", ref_line = c(2, -2), fontsize = 14)
-#' 
-
 #' 
 #' \dontrun{
 #' ANL <- expand.grid(
@@ -61,7 +52,6 @@
 #' g_summary_by(
 #'  x = ANL$VISIT, y = ANL$MEDIAN, group = ANL$ARM,
 #'  y_lower = ANL$Q1, y_upper = ANL$Q3, n_visit = ANL$NVIS,
-#'  ylim = c(5, 15), yline_at = c(10),
 #'  xlab = "Visit", ylab = "Mean Result", nlab = "Number of subject at each visit",
 #'  title = "Plot of mean and IQR" 
 #' )

@@ -1,5 +1,3 @@
-
-
 #' Summarize an Object for Different Groups
 #' 
 #' 
@@ -76,7 +74,7 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radam("ASL")
+#' ASL <- radsl()
 #' 
 #' # control the label
 #' ASL <- var_relabel(ASL, BAGE = "Baseline Age of patient")
@@ -84,9 +82,9 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' # control categorical order
 #' ASL$SEX <- relevel(ASL$SEX, "M", "F")
 #' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
+#' t_summary(ASL[, c("SEX", "AGE")], col_by = ASL$ARM, total = "All Patients")
 #' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
+#' t_summary(ASL[, c("SEX", "AGE")], col_by = ASL$ARM, total = "All Patients",
 #'                       useNA = 'always')
 #'                       
 #' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, col_N = table(c(ASL$ARM, ASL$ARM)), 
