@@ -1,5 +1,3 @@
-
-
 #' Summarize an Object for Different Groups
 #' 
 #' 

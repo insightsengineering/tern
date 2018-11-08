@@ -55,8 +55,8 @@
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
-#' ASL <- rasl(10, seed = 1)
-#' AAE <- raae(ASL, 4, seed = 2)
+#' ASL <- radsl(10, seed = 1)
+#' AAE <- radae(ASL, 4, seed = 2)
 #' 
 #' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) %>%
 #'   var_relabel(
