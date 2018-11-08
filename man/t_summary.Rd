@@ -28,9 +28,13 @@ Note that N refers to the number of observations and n refers to the numer of
 non-missing observations
 }
 \examples{
-t_summary(iris[-5], iris$Species)
-
 t_summary(iris$Sepal.Length, iris$Species)
 
-with(iris, t_summary(Sepal.Length > mean(Sepal.Length), iris$Species))
+library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
+
+t_summary(ADSL$AGE, ADSL$ARMCD)
+t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
+with(ADSL, t_summary(AGE > 65, ARMCD))
+
 }

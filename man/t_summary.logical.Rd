@@ -4,8 +4,9 @@
 \alias{t_summary.logical}
 \title{Summarize Boolean Data}
 \usage{
-\method{t_summary}{logical}(x, col_by, col_N = table(col_by), total = NULL,
-  row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...)
+\method{t_summary}{logical}(x, col_by, col_N = table(col_by),
+  total = NULL, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE",
+  ...)
 }
 \arguments{
 \item{x}{a logical vector}
@@ -29,22 +30,18 @@ Summarize Boolean Data
 }
 \examples{
 t_summary(
-  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
+ x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+ col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
 )
 
-t_summary(
-  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
-  denominator = "N"
-)
+library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
 
-t_summary(
-  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
-  denominator = "N",
-  total = "All"
-)
+ADSL$AGE[1:10] <- NA
+
+with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
+with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany", 
+                   row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 
 }
 \author{

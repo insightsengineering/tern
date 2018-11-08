@@ -54,11 +54,10 @@ t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), 
 
 
 library(random.cdisc.data)
+ASL <- radsl(N = 1000)
 
-ASL <- radam("ASL", arm_choices = c("ARM A", "ARM B", "ARM C"), N = 1000,
-   start_with = list(RACE = c("white", "asian")))
-ARS <- radam("ARS", ADSL = ASL)
-ANL <- merge(ASL, subset(ARS, PARAMCD == "OVRSPI"))
+ARS <- radrs(ADSL = ASL)
+ANL <- merge(ASL, subset(ARS, PARAMCD == "BESRSPI"))
 
 # Example 1 - ARM B as reference
 #    "NON CR/PD" response category dropped from partition section since no observations

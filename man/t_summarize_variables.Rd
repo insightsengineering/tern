@@ -38,17 +38,14 @@ instead.
 
 library(random.cdisc.data)
 
-ASL <- radam("ASL")
-
-# control the label
-ASL <- var_relabel(ASL, BAGE = "Baseline Age of patient")
+ASL <- radsl()
 
 # control categorical order
 ASL$SEX <- relevel(ASL$SEX, "M", "F")
 
-t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
+t_summarize_variables(ASL[, c("SEX", "AGE")], col_by = ASL$ARM, total = "All Patients")
 
-t_summarize_variables(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
+t_summarize_variables(ASL[, c("SEX", "AGE")], col_by = ASL$ARM, total = "All Patients",
                       useNA_factors = 'always')
 
 

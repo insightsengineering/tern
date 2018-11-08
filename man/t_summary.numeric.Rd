@@ -4,8 +4,8 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, col_N = table(col_by), total = NULL,
-  ...)
+\method{t_summary}{numeric}(x, col_by, col_N = table(col_by),
+  total = NULL, ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -28,14 +28,17 @@ Tabulate the number of non-missing observations, mean, sd, median, and range
 for different groups.
 }
 \examples{
-
+# with iris data
 t_summary(iris$Sepal.Length, iris$Species)
 
-t_summary(iris$Sepal.Length, iris$Species, col_N = table(iris$Species))
+library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
 
-t_summary(iris$Sepal.Length, iris$Species, total = "All Species")
+t_summary(ADSL$AGE, ADSL$ARM)
+t_summary(ADSL$AGE, ADSL$ARM, total = "All")
 
-t_summary(iris$Sepal.Length, no_by("All Species"), col_N = length(iris$Sepal.Length) )
+ADSL$AGE[1:10] <- NA
+t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
 
 }
 \author{
