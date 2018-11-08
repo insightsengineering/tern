@@ -70,12 +70,12 @@ the following 9 columns:
 \examples{
 library(random.cdisc.data)
 
-ASL <- radam("ASL")
-ARS <- radam("ARS", ADSL = ASL)
+ASL <- radsl()
+ARS <- radrs(ADSL = ASL)
 ASL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
-ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
+ARS_f <- subset(ARS, PARAMCD == "BESRSPI")
 ANL <- merge(ASL, ARS_f)
-
+ANL <- ANL \%>\% filter(ARM != 'C: Combination')
 tbl <- t_forest_rsp(
   rsp = ANL$AVALC \%in\% c("CR", "PR"),
   col_by = factor(ANL$ARM), 

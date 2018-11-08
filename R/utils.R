@@ -588,6 +588,8 @@ add_total <- function(x, ... ) {
 
 add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_by)) {
   
+  is.atomic(x) || stop ("x is not atomic")
+  
   !(total_level %in% levels(col_by)) || stop("total level exists in col_by")
   length(x)==length(col_by) || stop("dimension missmatch x and col_by") 
 

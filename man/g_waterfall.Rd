@@ -23,7 +23,7 @@ g_waterfall(height, id, col = NULL, xlab = NULL, ylab = NULL,
 \item{title}{A string to be displayed as plot title.}
 }
 \description{
-This basic waterfall plot visualizes a quatity \code{height} ordered by value with some
+This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
 markup
 }
 \examples{
@@ -37,8 +37,8 @@ g_waterfall(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"
 library(random.cdisc.data)
 library(dplyr)
 
-ASL <- radam("ASL")
-ARS <- radam("ARS", ADSL = ASL)
+ASL <- radsl()
+ARS <- radrs(ADSL = ASL)
 
 ARS_f <- subset(ARS, PARAMCD == "OVRINV")
 
@@ -46,14 +46,13 @@ ASL_f <- ASL \%>\%
   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 
 apchg <- ARS_f \%>\%
-  mutate(pchg = rnorm(100, 10, 50))
+  mutate(pchg = rnorm(1200, 10, 50))
   # Merge pchange and besr response
-asld <- right_join(apchg, ASL_f \%>\% select(STUDYID, USUBJID, SEX, ARMCD))
+asld <- right_join(apchg, ASL_f \%>\% select(STUDYID, USUBJID, SEX, ARMCD),by="USUBJID")
 
 
 asld <- head(asld, 30)
-
-head(asld)
+asld <- asld[!duplicated(asld$USUBJID),]#' head(asld)
 
 g_waterfall(
   height = asld$pchg,

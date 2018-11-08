@@ -31,20 +31,21 @@ Create a KM plot for any \code{\link[survival]{survfit}} object.
 \examples{
 library(random.cdisc.data)
 library(tern)
-ASL <- radam("ASL")
+ASL <- radsl()
 ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
 }))
-ATE <- radam("ATE", ADSL = ASL)
+ATE <- radte(ADSL = ASL)
 
 ATE_f <- subset(ATE, PARAMCD == "OS") 
 
-ANL <- merge(ASL, ATE_f, by = c("USUBJID", "STUDYID"))
+ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
+ ATE_f, by = c("USUBJID", "STUDYID"))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
 
 g_km(fit_km = fit_km)
 
-g_km(fit_km = fit_km, col = c("black", "red"))
+g_km(fit_km = fit_km, col = c("black", "red", "blue"))
  
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
 g_km(fit_km, xlab = "Duration (Days)", col = "blue", lty = "dashed")

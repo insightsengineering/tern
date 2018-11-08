@@ -71,7 +71,8 @@ t_summarize_by_visit(
 library(random.cdisc.data)
 library(dplyr)
 
-AQS <- radam("AQS") \%>\%
+ASL <- radsl()
+AQS <- radqs(ASL) \%>\%
    filter(PARAMCD == "BFIALL") \%>\% 
    mutate(
      ARM = factor(sample(c("ARM A", "ARM B", "ARM C"), nrow(.), replace = TRUE)),
