@@ -52,12 +52,13 @@
 #' 
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radam("ASL")
-#' ATE <- radam("ATE", ADSL = ASL)
+#' ASL <- radsl()
+#' ATE <- radte(ADSL = ASL)
 #' 
-#' ATE_f <- subset(ATE, PARAMCD == "OS") 
+#' ATE_f <- subset(ATE, PARAMCD == "OS" & ARM %in% c("ARM B", "ARM A")) 
 #' 
-#' ANL <- merge(ASL, ATE_f)
+#' ANL <- merge(ASL[, c("USUBJID","SEX", "RACE")], ATE_f,by="USUBJID")  
+#' 
 #' 
 #' tbl <- t_forest_tte(
 #'   tte = ANL$AVAL,
