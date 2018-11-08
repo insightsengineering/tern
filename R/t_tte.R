@@ -40,7 +40,6 @@
 #' @examples 
 #' library(random.cdisc.data)
 #' ASL <- radsl()
-#' ASL <- radsl(start_with = list(ARM = paste("ARM", LETTERS[1:3])))
 #' ATE <- radte(ADSL = ASL)
 #' 
 #' ATE_f <- subset(ATE, PARAMCD == "OS")
