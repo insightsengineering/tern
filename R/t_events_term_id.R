@@ -96,7 +96,7 @@
 #'   event_type = "treatment"
 #' ) 
 #' 
-t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients", 
+t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total = "All Patients", 
                                  event_type = "event") {
   
   if (is.null(terms)) stop("terms can't be NULL")
@@ -113,8 +113,11 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
     if (!is.null(total)) {
       if (total %in% levels(col_by)) 
         stop(paste('col_by can not have', total, 'group.'))
-      df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
-      col_N <- c(col_N, sum(col_N)) 
+      tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
+      df <- tmp$x
+      df$col_by <- tmp$col_by
+      df$id <- paste(df$id, "-", df$col_by)
+      col_N <- tmp$col_N
     }
     
     l_tbls <- t_events_summary(
@@ -469,8 +472,11 @@ lt_events_per_term_id_2 <- function(terms,
   if (!is.null(total)) {
     if (total %in% levels(col_by)) 
       stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
-    df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
-    col_N <- c(col_N, sum(col_N)) 
+    tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
+    df <- tmp$x
+    df$col_by <- tmp$col_by
+    df$id <- paste(df$id, "-", df$col_by)
+    col_N <- tmp$col_N
   }
   
   # list("- Any adverse events -" = list( "- Overall -" = df))

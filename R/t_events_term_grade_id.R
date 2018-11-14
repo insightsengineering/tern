@@ -281,8 +281,11 @@ lt_events_per_term_grade_id_2 <- function(terms,
     if (total %in% levels(col_by)) 
       stop(paste('col_by can not have', total, 'group. t_ae_ctc will derive it.'))
     
-    df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
-    col_N <- c(col_N, sum(col_N))
+    tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
+    df <- tmp$x
+    df$col_by <- tmp$col_by
+    df$id <- paste(df$id, "-", df$col_by)
+    col_N <- tmp$col_N
   } 
   
   # start tabulatings
@@ -427,8 +430,11 @@ lt_events_per_term_grade_id_1 <- function(term,
   if(!is.null(total)){
     if (total %in% levels(col_by)) 
       stop(paste('col_by can not have', total, 'group. t_ae_ctc will derive it.'))
-    df <- duplicate_with_var(df, id = paste(df$id, "-", total), col_by = total)
-    col_N <- c(col_N, sum(col_N)) 
+    tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
+    df <- tmp$x
+    df$col_by <- tmp$col_by
+    df$id <- paste(df$id, "-", df$col_by)
+    col_N <- tmp$col_N
   }
   
   # start tabulating
