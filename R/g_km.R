@@ -63,7 +63,7 @@ g_km <- function(fit_km,  xticks = NULL, col = NA, lty = 1, lwd = 1,
     plotViewport(margins = c(3, max(nlines_labels, 4), 3, 2),
                  layout = grid.layout(
                    nrow = 4, ncol = 1, widths = unit(1, "npc"),
-                   heights = unit(c(5, 5, length(kmdata$group) + 4, 3), c("null", "lines", "lines", "lines"))
+                   heights = unit(c(5, 5, length(kmdata$group) + 2, 3), c("null", "lines", "lines", "lines"))
                  ), name = "mainPlot"),
     vpList(
       viewport(layout.pos.row = 1, layout.pos.col = 1, name = "kmCurve"),
