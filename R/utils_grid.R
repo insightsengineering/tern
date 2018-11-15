@@ -195,3 +195,73 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   
 }
 
+
+#' Label Panel Grob
+#' Create a panel style plotting of labels
+#' 
+#' @param label a vector of plot contents.
+#' @param x a vector of xticks for each label to be plotted.
+#' @param group a vector of group indicators each label content belongs to. It's a factor.
+#' @param name name of grob.
+#' @param gp graphical paramter.
+#' @param vp a \code{\link{viewport}}.
+#' 
+#' @export
+#' 
+#' @examples 
+#' label <- c("a", "b", "c", "d", "T", "R", "E", "G")
+#' x <- rep(1:4, 2)
+#' group <- factor(rep(c("GROUP1", "GROUP_new"), each = 4))
+#' grid.newpage()
+#' grid.draw(labelPanelGrob(label, x, group))
+#' grid.newpage()
+#' pushViewport(plotViewport())
+#' grid.draw(labelPanelGrob(label, x, group))
+#' 
+#' label <- 1:18
+#' x <- c(rep(1:4, 2), rep(1:5, 2))
+#' group <- factor(c(rep(c("G1", "G2"), each = 4), rep(c("G3", "G4"), each = 5)))
+#' col <- c( "black", "blue", "red","green" )
+#' 
+#' g <- labelPanelGrob(label, x, group, col)
+#' grid.newpage()
+#' pushViewport(plotViewport())
+#' grid.draw(g)
+#' 
+#' g <- addGrob(g, xaxisGrob(at = unique(x), vp = "labelPlot"))
+#' grid.newpage()
+#' pushViewport(plotViewport())
+#' grid.draw(g)
+#'
+
+
+
+labelPanelGrob <- function(label, x, group, col = NA,
+                           name = NULL, gp = NULL, vp = NULL){
+  
+  is.factor(group) || stop("group is required to be a factor")
+  length(label) == length(x) || stop("lengths of label and x are not equal")
+  length(label) == length(group) || stop("lengths of label and group are not equal")
+  grp <- levels(group)
+  if (length(col) == 1){
+    if (is.na(col)){
+      col_pal <- scales::col_factor("Set1", domain = grp)
+      col <- col_pal(grp)
+    } else col <- rep(col, length(grp))
+  } else{
+    if (length(col) != length(grp)) stop("length of col is not equal to number of lines")
+  }
+  names(col) <- grp
+
+  gTree(
+    label = label, x = x, group = group, vp = vp, name = name, gp = gp,
+    childrenvp = dataViewport(xData = x, yData = c(0, 1), name = "labelPlot") , 
+    children = gList(
+      rectGrob(vp = "labelPlot"  ),
+      textGrob(label, x = unit(x, "native"),
+               y = unit(as.numeric(group)/(nlevels(group)+1), "npc"),
+               gp = gpar(col = col[group]),
+               vp = "labelPlot" ) 
+    ),
+    cl = "labelPanel")
+}
