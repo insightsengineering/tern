@@ -229,12 +229,14 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
 #' grid.draw(g)
 #' 
 #' g <- addGrob(g, xaxisGrob(at = unique(x), vp = "labelPlot"))
+#' g <- addGrob(g, textGrob(levels(group), x = unit(-3, "lines"),
+#'                          y = unit(1:nlevels(group)/(nlevels(group)+1), "npc"),
+#'                          just = "left",  gp = gpar(col = col),
+#'                           vp = "labelPlot"))
 #' grid.newpage()
-#' pushViewport(plotViewport())
+#' pushViewport(plotViewport(margins = c(5, 4, 4, 2)))
 #' grid.draw(g)
 #'
-
-
 
 labelPanelGrob <- function(label, x, group, col = NA,
                            name = NULL, gp = NULL, vp = NULL){
@@ -243,15 +245,7 @@ labelPanelGrob <- function(label, x, group, col = NA,
   length(label) == length(x) || stop("lengths of label and x are not equal")
   length(label) == length(group) || stop("lengths of label and group are not equal")
   grp <- levels(group)
-  if (length(col) == 1){
-    if (is.na(col)){
-      col_pal <- scales::col_factor("Set1", domain = grp)
-      col <- col_pal(grp)
-    } else col <- rep(col, length(grp))
-  } else{
-    if (length(col) != length(grp)) stop("length of col is not equal to number of lines")
-  }
-  names(col) <- grp
+  col <- to_group_color(col, grp)
 
   gTree(
     label = label, x = x, group = group, vp = vp, name = name, gp = gp,
@@ -264,4 +258,24 @@ labelPanelGrob <- function(label, x, group, col = NA,
                vp = "labelPlot" ) 
     ),
     cl = "labelPanel")
+}
+
+
+to_group_color <- function(col, grps) {
+  if (is.null(col) || is.null(grps)) {
+    stop("col and grps can not be NULL")
+  } else if (length(col)==1) {
+    if (is.na(col)){
+      col_pal <- scales::col_factor("Set1", domain = grps)
+      col <- col_pal(grps)
+    } else {
+      col <- rep(col, length(grps))
+    }
+  } else if (length(col) == length(grps)) {
+    col
+  } else {
+    stop("dimension missmatch")
+  }
+  names(col) <- grps
+  col
 }
