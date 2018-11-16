@@ -30,8 +30,7 @@ iqr_num <- function(x, na.rm = TRUE) {
 
 
 # checks if there is any case and derives counts (percentage), otherwise 0
-count_perc_col_N <- function(x_cell, N) {
-  N_i <- if (nrow(x_cell) == 0) 0 else N[x_cell$col_by[1]]
+count_perc_col_N <- function(x_cell, N_i) {
   if (N_i > 0) {
     length(x_cell$id) * c(1, 1 / N_i) # obtaining the total and getting percentage
   } else {
