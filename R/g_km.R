@@ -28,6 +28,7 @@
 #' @examples 
 #' library(random.cdisc.data)
 #' library(tern)
+#' library(dplyr)
 #' ASL <- radsl()
 #' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
 #'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
@@ -40,18 +41,26 @@
 #'  ATE_f, by = c("USUBJID", "STUDYID"))
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
 #' 
-#' g_km(fit_km = fit_km)
+#' p <- g_km(fit_km = fit_km)
+#' p
 #' 
-#' g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3))
-#'  
+#' p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3))
+#' p <- p +  textGrob(label = toString(tern:::t_km(fit_km), gap = 1), 
+#'                    x = unit(0.5, "npc"),
+#'                    y = unit(0.9, "npc"),
+#'                    just = c("left", "top"),
+#'                    gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
+#' p <- p + textGrob(label = "ADD MORE EXAMPLE")
+#' p
+#' 
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
-#' g_km(fit_km, xlab = "Duration (Days)", col = "green" )
+#' p <- g_km(fit_km, xlab = "Duration (Days)", col = "green" )
+#' p
 #' 
 g_km <- function(fit_km,  xticks = NULL, col = NA, lty = 1, lwd = 1,
                  censor.show = TRUE, pch = 3, size = unit(0.5, "char"),
                  title = "Kaplan - Meier Plot", xlab = "Days", ylab = "Survival Probability",
-                 gp = NULL, vp = NULL, name = NULL,
-                 draw = TRUE, newpage = TRUE){
+                 gp = NULL, vp = NULL, name = NULL ){
   
   kmdata <- kmCurveData(fit_km = fit_km, xticks = xticks)
   ### margins
@@ -62,13 +71,13 @@ g_km <- function(fit_km,  xticks = NULL, col = NA, lty = 1, lwd = 1,
   childrenvp <- vpTree(
     plotViewport(margins = c(3, max(nlines_labels, 4), 3, 2),
                  layout = grid.layout(
-                   nrow = 4, ncol = 1, widths = unit(1, "npc"),
-                   heights = unit(c(5, 5, length(kmdata$group) + 2, 3), c("null", "lines", "lines", "lines"))
+                   nrow = 3, ncol = 1, widths = unit(1, "npc"),
+                   heights = unit(c(5, 8, length(kmdata$group) + 2), c("null", "lines", "lines"))
                  ), name = "mainPlot"),
     vpList(
       viewport(layout.pos.row = 1, layout.pos.col = 1, name = "kmCurve"),
-      viewport(layout.pos.row = 3, layout.pos.col = 1, name = "riskTable"),
-      viewport(layout.pos.row = 4, layout.pos.col = 1, name = "xLab")
+      viewport(layout.pos.row = 2, layout.pos.col = 1, name = "xLab"),
+      viewport(layout.pos.row = 3, layout.pos.col = 1, name = "riskTable")
     )
   )
   
@@ -95,6 +104,8 @@ g_km <- function(fit_km,  xticks = NULL, col = NA, lty = 1, lwd = 1,
                        textGrob(title, y = unit(1, "npc") + unit(1, "lines"), 
                                 gp = gpar(fontface = "bold", fontsize = 16), 
                                 vp = vpPath("mainPlot", "kmCurve", "curvePlot")),
+                       textGrob(xlab, x = unit(0.5, "npc"), y = unit(0.5, "npc"), 
+                                just = "top", vp = vpPath("mainPlot", "xLab")),
                        riskgrob,
                        textGrob(levels(group), x = unit(-nlines_labels + 1, "lines"),
                                 y = unit(1:nlevels(group)/(nlevels(group)+1), "npc"),
@@ -104,15 +115,10 @@ g_km <- function(fit_km,  xticks = NULL, col = NA, lty = 1, lwd = 1,
                                 x = unit(0, "npc"),
                                 y = unit(1, "npc") + unit(1, "lines"),
                                 just = "left", vp = vpPath("mainPlot", "riskTable", "labelPlot")),
-                       xaxisGrob(at = unique(x), vp = vpPath("mainPlot", "riskTable", "labelPlot")),
-                       textGrob(xlab, x = unit(0.5, "npc"), y = unit(0, "npc"), 
-                                just = "top", vp = vpPath("mainPlot", "xLab"))
+                       xaxisGrob(at = unique(x), vp = vpPath("mainPlot", "riskTable", "labelPlot"))
+
                      ),
                      cl = "kmGrob")
-  if (draw){
-    if (newpage) grid.newpage()
-    grid.draw(kmGrob)
-  }
   invisible(kmGrob)
 }
 
@@ -202,7 +208,7 @@ kmCurveGrob <- function(kmdata, fit_km,  xticks = NULL,
   
   gTree(
     kmdata = kmdata, vp = vp, name = name, gp = gp,
-    childrenvp = dataViewport(xData = kmdata$xData, yData = c(0, 1), name = "curvePlot"),
+    childrenvp = dataViewport(xData = kmdata$xpos, yData = c(0, 1), name = "curvePlot"),
     children = do.call("gList",
                        c(list(
                          xaxisGrob(at = kmdata$xpos, vp = "curvePlot"),
@@ -307,7 +313,7 @@ kmCurveData <- function(fit_km, xticks = NULL) {
   })
   
   
-  xData <- c(0, df$time)
+  #xData <- c(0, df$time)
   lines_x <- lapply(df_s, function(x){
     c(0, rep(x$time, each = 2))
   })
@@ -324,7 +330,7 @@ kmCurveData <- function(fit_km, xticks = NULL) {
   })
 
   structure(list(xpos = xpos,
-                 xData = xData,
+                # xData = xData,
                  lines_x = lines_x, 
                  lines_y = lines_y,
                  points_x = points_x,
@@ -334,4 +340,18 @@ kmCurveData <- function(fit_km, xticks = NULL) {
             class = "kmCurveData")
 }
 
+#' @export
+`+.kmGrob` <- function(x, y){
+  is(x, "kmGrob") || stop("x must be a kmGrob")
+  is(y, "grob") || stop("y must be a grob")
+  structure(
+    addGrob(x, gTree(children = gList(y), vp = vpPath("mainPlot", "kmCurve", "curvePlot"))),
+    class = class(x)
+  )
+}
 
+#' @export
+print.grob <- function(x){
+  grid.newpage()
+  grid.draw(x)
+}

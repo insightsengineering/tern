@@ -4,22 +4,39 @@
 \alias{g_km}
 \title{Kaplan-Meier Plot}
 \usage{
-g_km(fit_km, xticks = NULL, col = NULL, lty = NULL,
-  title = "Kaplan - Meier Plot", xlab = "Days", gp = NULL,
-  vp = NULL, name = NULL, draw = TRUE, newpage = TRUE)
+g_km(fit_km, xticks = NULL, col = NA, lty = 1, lwd = 1,
+  censor.show = TRUE, pch = 3, size = unit(0.5, "char"),
+  title = "Kaplan - Meier Plot", xlab = "Days",
+  ylab = "Survival Probability", gp = NULL, vp = NULL, name = NULL)
 }
 \arguments{
 \item{fit_km}{a class \code{\link{survfit}} object.}
 
 \item{xticks}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
 
-\item{col}{a vector of color for each line.}
+\item{col}{line color.}
 
-\item{lty}{a vector of line type for each curve.}
+\item{lty}{line type.}
+
+\item{lwd}{line width.}
+
+\item{censor.show}{\code{TRUE/FALSE} to show censored.}
+
+\item{pch}{point type for censored.}
+
+\item{size}{size of censored point, a class of \code{unit}.}
 
 \item{title}{title for plot.}
 
 \item{xlab}{a string for label of x-axis}
+
+\item{ylab}{a string for label of y-axis.}
+
+\item{gp}{a abject of class \code{gpar}.}
+
+\item{vp}{a grid \code{viewport}.}
+
+\item{name}{A character value to uniquely identify the object.}
 
 \item{draw}{draw the plot on device.}
 
@@ -31,6 +48,7 @@ Create a KM plot for any \code{\link[survival]{survfit}} object.
 \examples{
 library(random.cdisc.data)
 library(tern)
+library(dplyr)
 ASL <- radsl()
 ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
@@ -43,12 +61,21 @@ ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
  ATE_f, by = c("USUBJID", "STUDYID"))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
 
-g_km(fit_km = fit_km)
+p <- g_km(fit_km = fit_km)
+p
 
-g_km(fit_km = fit_km, col = c("black", "red", "blue"))
- 
+p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3))
+p <- p +  textGrob(label = toString(tern:::t_km(fit_km), gap = 1), 
+                   x = unit(0.5, "npc"),
+                   y = unit(0.9, "npc"),
+                   just = c("left", "top"),
+                   gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
+p <- p + textGrob(label = "ADD MORE EXAMPLE")
+p
+
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
-g_km(fit_km, xlab = "Duration (Days)", col = "blue", lty = "dashed")
+p <- g_km(fit_km, xlab = "Duration (Days)", col = "green" )
+p
 
 }
 \author{
