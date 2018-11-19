@@ -351,7 +351,7 @@ kmCurveData <- function(fit_km, xticks = NULL) {
 }
 
 #' @export
-print.grob <- function(x){
+print.kmGrob <- function(x){
   grid.newpage()
   grid.draw(x)
 }
