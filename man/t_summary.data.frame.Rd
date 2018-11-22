@@ -33,6 +33,7 @@ Every variable in \code{x} will be mapped to a summary table using
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
+library(dplyr)
 ADSL <- radsl(N = 100, seed = 1) 
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))

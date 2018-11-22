@@ -78,6 +78,7 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
 #' library(random.cdisc.data)
+#' library(dplyr)
 #' ADSL <- radsl(N = 100, seed = 1) 
 #' 
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
@@ -104,6 +105,9 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, ...) {
   
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
+  
   # If total column is requested stack the data and change col_by and col_N accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
@@ -117,7 +121,7 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
      insert_rrow(indent_table(tbl, 1), rrow(varlabel))
    }, x, var_labels(x, fill = TRUE))
   
-   stack_rtables_l(rtables_vars)
+   rbindl_rtables(rtables_vars, gap = 1)
 }
 
 
@@ -151,6 +155,9 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 #' t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
 #' 
 t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   if (!is.no_by(col_by)){
     length(x)==length(col_by) || stop("dimension missmatch x and col_by")
@@ -211,6 +218,9 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ..
 #'  
 t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), drop_levels = FALSE, ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   useNA <- match.arg(useNA)
   denominator <- match.arg(denominator)
@@ -301,6 +311,9 @@ t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, 
 #' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
 #' 
 t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   if ( length(x)==length(col_by)){
     df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)    
