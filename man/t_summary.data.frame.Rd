@@ -16,11 +16,6 @@ be used for the row name.}
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each column. If specified then
-\code{\link{col_N}()} can be used on the cell data in order to retrieve the
-column total. If \code{NULL} then no header row for the column is
-displayed.}
-
 \item{total}{if not \code{NULL} then it must be a string and an addition
 column will be added with the overall summaries}
 
