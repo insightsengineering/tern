@@ -82,6 +82,8 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   # check the arguments
   is.factor(by) || stop("by is required to be factor")
   !any(is.na(by)) || stop("no NA allowed in by")
+  check_col_by(col_by, col_N, min_num_levels = 1)
+  
   
   by_lbl <- label(by)
   x_lbl <- label(x)
@@ -123,7 +125,7 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
     header(tbl) <- tbl_head
 
     # add the row name for by and indent
-    tbl <- fast_rbind(
+    tbl <- rbind(
       rtable(tbl_head,
              rrow(by_i)),
       indent_table(tbl, 1)
@@ -132,7 +134,7 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   }, df_s, names(df_s))
 
   # use N= from col_N
-  tbls <- do.call(stack_rtables, tbls)
+  tbls <- rbindl_rtables(tbls, gap = 1)
 
   # append labels from X and BY to overall heading
   tbl_header <- rheader(
