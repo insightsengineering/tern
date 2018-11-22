@@ -34,13 +34,8 @@
 #' tern:::recursive_stack_rtables(l_tbls)
 #' 
 recursive_stack_rtables <- function(x) {
-  
   tbls <- unlist_rtables(x)
-  
-  if (!all(vapply(tbls, is, logical(1), "rtable"))) stop("not all elements are rtables")
-  
-  do.call(fast_stack_rtables, tbls)
-  
+  rbindl_rtables(tbls, gap = 1)
 }
 
 
@@ -54,47 +49,22 @@ recursive_stack_rtables <- function(x) {
 #' 
 stack_rtables <- function(..., nrow_pad = 1) {
   
-  tbls <- Filter(Negate(is.null), list(...))
+  warning("please use rbind.rtable")
+  rbind(..., gap = nrow_pad)
   
-  if (length(tbls) > 0) {
-    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
-    
-    header <- attr(tbls[[1]], "header")
-    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
-    
-    Reduce(
-      function(x, y) rbind(x, tbl_with_empty_rows, y),
-      tbls
-    )
-    
-  } else {
-    list()
-  }
 }
 
 stack_rtables_l <- function(x) {
-  do.call(stack_rtables, x)
+  warning("please use rbindl_rtables")
+  rbindl_rtables(x, gap = 1)
 }
 
 #' @export
 fast_stack_rtables <- function(..., nrow_pad = 1) {
   
-  tbls <- Filter(Negate(is.null), list(...))
+  warning("please use rbind.rtable")
+  rbind(..., gap = nrow_pad)
   
-  if (length(tbls) > 0) {
-    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
-    
-    header <- header(tbls[[1]])
-    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
-    
-    Reduce(
-      function(x, y) rbind(x, tbl_with_empty_rows, y),
-      tbls
-    )
-    
-  } else {
-    list()
-  }
 }
 
 
@@ -195,18 +165,8 @@ unlist.rtable <- function(x, recursive = TRUE, use.names = TRUE) {
 #' tern:::fast_rbind(t1, t2)
 #' 
 fast_rbind <- function(...) {
-  dots <- Filter(Negate(is.null), list(...))
-  
-  if (!all(unlist(lapply(dots, is, "rtable")))) stop("not all elements are of type rtable")
-  
-  tbl <- unlist(dots, recursive = FALSE)
-  
-  attr(tbl, "header") <- header(dots[[1]])
-  attr(tbl, "nrow") <- length(tbl)
-  attr(tbl, "ncol") <- ncol(dots[[1]])
-  class(tbl) <- "rtable"
-  
-  tbl
+  warning("please use rbind.rtable")
+  rbind(...)
 }
 
 #' insert rrows at a specific location

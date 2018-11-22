@@ -246,7 +246,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
                                           grade_levels) {
   
   # check argument validity and consitency 
-  check_col_by(col_by, min_num_levels = 1)
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   if (any("- Overall -" %in% terms)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
   if (any(total %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
@@ -402,7 +402,7 @@ lt_events_per_term_grade_id_1 <- function(term,
   
   
   # check argument validity and consitency 
-  check_col_by(col_by, min_num_levels = 1)
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
@@ -540,23 +540,30 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = table(col_by),
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
   
-  if (!is.numeric(grade)) stop("grade is required to be numeric")
-  if (any(is.na(id)) || any(is.na(col_by))) stop("no NA allowed in id and col_by")
+  check_col_by(col_by, col_N, 1)
+  stopifnot(is.numeric(grade))
+  stopifnot(has_no_NA(id))
   
-  if (is.null(grade_levels)) grade_levels <- seq(1, max(grade, na.rm = TRUE))
-  if (length(setdiff(grade, grade_levels))) stop("grades exist that are not in grade_levels")
+  if (is.null(grade_levels)) 
+    grade_levels <- seq(1, max(grade, na.rm = TRUE))
+  
+  if (length(setdiff(grade, grade_levels)) > 0) 
+    stop("grades exist that are not in grade_levels")
   
   df <- data.frame(grade, id, col_by, stringsAsFactors = FALSE)
   
+
   df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
-  df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
-  if (any(duplicated(df_max$id))) stop("every id can only have one col_by")
   
+  if (any(duplicated(df_max$id))) 
+    stop("every id can only have one col_by")
+  
+  df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
+  
+  ## TODO: Heng, why do you do this?
   if (is.null(col_N) || !is.null(any_grade)) {
     df_id <- df[!duplicated(df$id), ]    
   }
-  
-  if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
   
   tbl_any <- if (!is.null(any_grade)) {
     rtabulate(

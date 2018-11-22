@@ -79,8 +79,8 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
   if (!is.logical(rsp)) stop("rsp is required to be boolean")
   check_same_N(rsp = rsp, col_by = col_by, group_data = group_data)
   
-  check_col_by(col_by)
-  if (length(levels(col_by)) != 2) stop("col_by can only have two levels")
+  check_col_by(col_by, table(col_by), 2)
+  if (nlevels(col_by) != 2) stop("col_by can only have two levels")
   
   if (!is.null(group_data)) {
     check_data_frame(group_data, allow_missing = TRUE)

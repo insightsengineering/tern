@@ -75,16 +75,19 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 
-check_col_by <- function(x, min_num_levels = 2) {
+check_col_by <- function(col_by, col_N, min_num_levels = 2) {
   
-  if (!is(x, "no_by") && !is.factor(x)) stop("col_by needs to be a factor")
-  if (any(is.na(x)) || any(x == '')) stop("col_by can not have any missing data")
+  if (!is(col_by, "no_by") && !is.factor(col_by))
+    stop("col_by needs to be a factor")
   
-  #if (any(table(x)<=0)) stop("data is required for all levels of col_by")
+  if (any(is.na(col_by)) || '' %in% levels(col_by))
+    stop("col_by can not have any missing data or have a level with an empty string")
   
-  if (!(min_num_levels == 1 && is(x, "no_by"))) {
-    if (length(levels(x)) < min_num_levels) stop("col_by is required to have at least", min_num_levels, "levels")
-  }
+  if (length(col_N) != nlevels(col_by))
+    stop("col_N has not the same length as there are levels in col_by")
+  
+  if (nlevels(col_by) < min_num_levels)
+    stop(paste("at least", min_num_levels, "expected in col_by but got", nlevels(col_by)))
 
   TRUE
 }

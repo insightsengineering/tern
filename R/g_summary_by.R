@@ -67,7 +67,7 @@ g_summary_by <- function(x, y, group,
   #Argument check
   check_same_N(x = x, y = y, group = group, 
                y_lower = y_lower, y_upper = y_upper, n_visit = n_visit, omit.NULL = FALSE)
-  check_col_by(group, 1)
+  check_col_by(group, table(group), 1)
   check_is_numeric(y)
   # allow y_lower y_upper n_visit y_refline y_range to be NULL?
   # x can be either factor or numeric?
