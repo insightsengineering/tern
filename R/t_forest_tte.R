@@ -89,8 +89,8 @@ t_forest_tte <- function(tte,
   if (!is.null(strata_data)) stop("strata_data argument is currently not implemented")
   
   check_same_N(tte = tte, is_event = is_event, group_data = group_data)
-  check_col_by(col_by)
-  if (length(levels(col_by)) != 2) stop("col_by can only have two levels")
+  check_col_by(col_by, table(col_by), 2)
+  if (nlevels(col_by) != 2) stop("col_by can only have two levels")
   
   if (!is.null(group_data)) {
     check_data_frame(group_data, allow_missing = TRUE)

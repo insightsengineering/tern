@@ -87,8 +87,10 @@ t_summarize_by_visit <- function(data, visit, id, col_by) {
   # Check Arguments
   check_same_N(data = data, col_by = col_by, omit.NULL = TRUE)
   if (!is.data.frame(data)) stop("data is expected to be a data frame")
+  
   check_is_factor(visit, allow_NA = FALSE)
-  check_col_by(col_by, 1)
+  check_col_by(col_by, table(col_N), 1)
+  
   vapply(data, check_is_numeric, logical(1))
   
   # Extracting variable metadata

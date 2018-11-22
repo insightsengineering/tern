@@ -92,7 +92,7 @@ t_tte <- function(formula,
   }
 
   check_same_N(is_event = is_event, event_descr = event_descr, arm = arm)
-  check_col_by(arm, 2)
+  check_col_by(arm, table(arm), 2)
   if (!is.null(event_descr) && !is.factor(event_descr))
     stop("event_descr is required to be a factor") 
   if (!is.null(time_points) && !is.numeric(time_points))

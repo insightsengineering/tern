@@ -638,3 +638,10 @@ add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(c
     col_N = col_N
   )
 }
+
+has_no_NA <- function(x) {
+  !any(is.na(x))
+}
+
+
+

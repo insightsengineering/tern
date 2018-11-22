@@ -227,9 +227,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total
 t_count_unique <- function(x, col_by, col_N = table(col_by), na.rm = TRUE, 
                            row.name = "number of unique elements", indent = 0) {
   
-  check_col_by(col_by, 1)
-  
-  if (nlevels(col_by) != length(col_N)) stop("dimension missmatch levels(col_by) and length of col_N")
+  check_col_by(col_by, col_N, 1)
   
   counts <- vapply(split(x, col_by), function(xi) {
     if (na.rm) xi <- na.omit(xi)
@@ -441,7 +439,7 @@ lt_events_per_term_id_2 <- function(terms,
                                     event_type = "event"){
   
   # check argument validity and consitency
-  check_col_by(col_by, min_num_levels = 1)
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
