@@ -390,7 +390,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
 #'   grade_levels = 1:5
 #' )
 #' 
-#' do.call(fast_stack_rtables, l_tbls)
+#' rbindl_rtables(l_tbls, gap = 1)
 #' 
 lt_events_per_term_grade_id_1 <- function(term, 
                                           id, 
@@ -400,21 +400,18 @@ lt_events_per_term_grade_id_1 <- function(term,
                                           total = "All Patients",
                                           grade_levels) {
   
-  
-  # check argument validity and consitency 
   check_col_by(col_by, col_N, min_num_levels = 1)
   
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
   if (any(term == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
-  term_label <- attr(term, "label")
-  grade_label <- attr(grade, "label")
+  term_label <- label(term)
+  grade_label <- label(grade)
   
   if(is.null(term_label)) term_label <- deparse(substitute(term))
   if(is.null(grade_label)) grade_label <- deparse(substitute(grade))
   
-  # data prep
   df <- data.frame(
     term = term,
     id = id,
@@ -559,17 +556,15 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = table(col_by),
     stop("every id can only have one col_by")
   
   df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
-  
-  ## TODO: Heng, why do you do this?
-  if (is.null(col_N) || !is.null(any_grade)) {
-    df_id <- df[!duplicated(df$id), ]    
-  }
-  
+
   tbl_any <- if (!is.null(any_grade)) {
+    ## TODO: Heng why do we allow this (na.omit)?
+    df_no_NA <- na.omit(df)
+    df_no_NA_id <- df_no_NA[!duplicated(df_no_NA$id), ]    
     rtabulate(
-      x = na.omit(df_id),
+      x = df_no_NA_id,
       row_by = no_by(any_grade),
-      col_by = na.omit(df_id)$col_by, 
+      col_by = df_no_NA_id$col_by, 
       FUN = count_perc_col_N,
       format = "xx (xx.x%)",
       col_wise_args = list(N = col_N)   
@@ -578,10 +573,12 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = table(col_by),
     NULL
   }
   
+  
+  df_max_no_NA <- na.omit(df_max)
   tbl_x <- rtabulate(
-    x = na.omit(df_max),
-    row_by  = na.omit(df_max)$fct_grade,
-    col_by  = na.omit(df_max)$col_by, 
+    x = df_max_no_NA,
+    row_by  = df_max_no_NA$fct_grade,
+    col_by  = df_max_no_NA$col_by, 
     FUN = count_perc_col_N,
     format = "xx (xx.x%)",
     col_wise_args = list(N = col_N)
@@ -589,7 +586,6 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N = table(col_by),
   
   tbl <- rbind(tbl_any, tbl_x)
   
-  ## add (N=xx) row to header
   header_add_N(tbl, col_N)
   
 }
