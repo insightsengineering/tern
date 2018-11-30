@@ -59,7 +59,6 @@ stack_rtables_l <- function(x) {
   rbindl_rtables(x, gap = 1)
 }
 
-#' @export
 fast_stack_rtables <- function(..., nrow_pad = 1) {
   
   warning("please use rbind.rtable")
@@ -147,7 +146,7 @@ row_names_as_col <- function(tbl, header_label) {
   cbind_rtables(tbl_rn, tbl)
 }
 
-#' @export
+
 unlist.rtable <- function(x, recursive = TRUE, use.names = TRUE) {
   x
 }

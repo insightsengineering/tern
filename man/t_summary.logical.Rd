@@ -26,7 +26,7 @@ into columns use the \code{\link{no_by}} function.}
 \item{...}{arguments passed on to \code{\link{t_summary.factor}}}
 }
 \description{
-Summarize Boolean Data
+Boolean data will be converted to factor
 }
 \examples{
 t_summary(

@@ -9,7 +9,7 @@
   denominator = c("n", "N"), drop_levels = FALSE, ...)
 }
 \arguments{
-\item{x}{numeric variable}
+\item{x}{factor variable}
 
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split
@@ -19,7 +19,7 @@ into columns use the \code{\link{no_by}} function.}
 
 \item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
-\item{useNA}{choose whether missing data (NAs) should be displayed as a level}
+\item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
 \item{denominator}{either n or N for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator. 

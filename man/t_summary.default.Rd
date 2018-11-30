@@ -13,6 +13,8 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+
 \item{...}{not used arguments}
 }
 \description{

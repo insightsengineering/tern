@@ -69,7 +69,8 @@ t_summary_by(
  total = "All Patients"
 )
 
-ANL$AVALCAT1 <- factor(ifelse(ANL$AVAL >= 0, "Positive", "Negative"), levels = c("Positive", "Negative"))
+ANL$AVALCAT1 <- factor(ifelse(ANL$AVAL >= 0, "Positive", "Negative"), 
+  levels = c("Positive", "Negative"))
 ANL <- var_relabel(ANL, AVALCAT1 = "Result" )  
 
 t_summary_by(
