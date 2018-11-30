@@ -4,7 +4,7 @@
 \alias{t_summarize_by_visit}
 \title{Summary Table by Visit}
 \usage{
-t_summarize_by_visit(data, visit, id, col_by)
+t_summarize_by_visit(data, visit, id, col_by, col_N)
 }
 \arguments{
 \item{data}{data frame with numerical variables to be summarized. If the 
@@ -18,6 +18,8 @@ stacked table.}
 
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group}
+
+\item{col_N}{a \code{table} object with the reference population used for the header of the table.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -51,8 +53,12 @@ ANL$PCHG <- ANL$CHG/ANL$AVAL*100
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
 
-t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
-t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM, id = ANL$USUBJID)
+ASL <- unique(ANL[, c("USUBJID","ARM")])
+
+t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM, 
+  id = ANL$USUBJID, col_N = table(ASL$ARM))
+t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM, 
+  id = ANL$USUBJID, col_N = table(ASL$ARM))
 
 # Add label to variable instead showing variable name
 ANL <- var_relabel(ANL, AVAL = "Value at\\nVisit",
@@ -63,7 +69,8 @@ t_summarize_by_visit(
   data = ANL[c("AVAL", "CHG")],
   visit = ANL$VISIT,
   col_by = ANL$ARM,
-  id = ANL$USUBJID
+  id = ANL$USUBJID,
+  col_N = table(ASL$ARM)
 )
 
 
@@ -83,7 +90,8 @@ tbl <- t_summarize_by_visit(
   data = AQS[c("AVAL", "CHG")],
   visit = AQS$AVISIT,
   col_by = AQS$ARM,
-  id = AQS$USUBJID
+  id = AQS$USUBJID,
+  col_N = table(ASL$ARM)
 )
 tbl
 \dontrun{
