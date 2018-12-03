@@ -22,3 +22,7 @@ for `t_tte` and `tabulate_pairwise`
   - `g_km` 'gp' 'vp' 'name'
   - `t_count_unique` 'na.rm' 'row.name' 'indent'
   - `with_label` 'x' 'label
+
+- Documentation:
+  - add `@seealso` section to every function documentation
+  
