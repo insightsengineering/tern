@@ -3,11 +3,9 @@
 #' 
 #' @inheritParams rtables::rtabulate.numeric
 #' @param x an object to dispatch on
+#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
 #' @param ... arguments passed on to methods
 #' 
-#' @details 
-#' Note that N refers to the number of observations and n refers to the numer of
-#' non-missing observations
 #' 
 #' @export
 #' 
@@ -21,7 +19,7 @@
 #' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
 #' with(ADSL, t_summary(AGE > 65, ARMCD))
 #' 
-t_summary <- function(x, col_by, col_N, ...) {
+t_summary <- function(x, col_by, col_N = table(col_by), ...) {
   UseMethod("t_summary", x)
 }
 
@@ -62,7 +60,8 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #'   be used for the row name.
 #' @param total if not \code{NULL} then it must be a string and an addition
 #'   column will be added with the overall summaries
-#'  
+#' @param ... arguments passed on to methods
+#'
 #' @details
 #' Every variable in \code{x} will be mapped to a summary table using
 #' \code{\link{t_summary}} and then be stacked.
@@ -78,6 +77,7 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
 #' library(random.cdisc.data)
+#' library(dplyr)
 #' ADSL <- radsl(N = 100, seed = 1) 
 #' 
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
@@ -104,6 +104,9 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' 
 t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, ...) {
   
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
+  
   # If total column is requested stack the data and change col_by and col_N accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
     tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
@@ -117,7 +120,7 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
      insert_rrow(indent_table(tbl, 1), rrow(varlabel))
    }, x, var_labels(x, fill = TRUE))
   
-   stack_rtables_l(rtables_vars)
+   rbindl_rtables(rtables_vars, gap = 1)
 }
 
 
@@ -152,6 +155,9 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 #' 
 t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
   
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
+  
   if (!is.no_by(col_by)){
     length(x)==length(col_by) || stop("dimension missmatch x and col_by")
   }
@@ -181,10 +187,9 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ..
 #' percentage.
 #' 
 #' @inheritParams t_summary.default
-#' @param x numeric variable
-#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
+#' @param x factor variable
 #' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
-#' @param useNA choose whether missing data (NAs) should be displayed as a level
+#' @param useNA choose whether missing data (NAs) should be displayed as a level.
 #' @param denominator either n or N for calculating the level associated
 #'   percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
 #'   With option n, the number of non-missing records from \code{x} is used as the denominator. 
@@ -211,6 +216,9 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ..
 #'  
 t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), drop_levels = FALSE, ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   useNA <- match.arg(useNA)
   denominator <- match.arg(denominator)
@@ -266,7 +274,7 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
 
 #' Summarize Character Data
 #' 
-#' Currently treated as for factors
+#' Currently treated as factors
 #' 
 #' @inheritParams t_summary.factor
 #' @param x a character vector
@@ -281,11 +289,11 @@ t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, 
 
 #' Summarize Date Data
 #' 
-#' Currently treated as for factors
+#' Tabulate the range of dates.
 #' 
-#' @inheritParams t_summary
+#' @inheritParams t_summary.default
 #' @param x a Date object
-#' @param ... arguments passed on to \code{\link{t_summary.factor}}
+#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' 
 #' @template author_waddella
 #' 
@@ -301,6 +309,9 @@ t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, 
 #' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
 #' 
 t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   if ( length(x)==length(col_by)){
     df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)    
@@ -325,13 +336,14 @@ t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...)
 
 #' Summarize Boolean Data
 #' 
+#' Boolean data will be converted to factor
 #' 
 #' @inheritParams t_summary.factor
 #' @param x a logical vector
 #' @param row.name.TRUE character string with row.name for TRUE summary
 #' @param row.name.FALSE character string with row.name for FALSE summary
 #' @param ... arguments passed on to \code{\link{t_summary.factor}}
-#' 
+#
 #' @template author_waddella
 #' 
 #' @export

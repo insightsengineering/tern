@@ -21,7 +21,7 @@ into columns use the \code{\link{no_by}} function.}
 \item{...}{arguments passed on to \code{\link{t_summary.factor}}}
 }
 \description{
-Currently treated as for factors
+Currently treated as factors
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

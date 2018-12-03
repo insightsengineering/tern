@@ -65,7 +65,7 @@ l_tbls <- tern:::lt_events_per_term_grade_id_1(
   grade_levels = 1:5
 )
 
-do.call(fast_stack_rtables, l_tbls)
+rbindl_rtables(l_tbls, gap = 1)
 
 }
 \author{

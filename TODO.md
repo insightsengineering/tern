@@ -14,4 +14,11 @@
 
 - use `# TODO:` as a tag to mark actions or clarifications.
 
+- Resolve warning Missing object imported by a ':::' call: `rtables:::rtabulate_header`
+for `t_tte` and `tabulate_pairwise`
     
+- Document arguments:
+
+  - `g_km` 'gp' 'vp' 'name'
+  - `t_count_unique` 'na.rm' 'row.name' 'indent'
+  - `with_label` 'x' 'label
