@@ -1,6 +1,6 @@
 
 
-# TODO for release 0.5.1
+# TODO for release v0.5.1
 
 - table functions should use `col_N` arguments
     - use new `check_col_by` with `col_N` argument
