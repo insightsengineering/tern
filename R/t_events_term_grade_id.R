@@ -234,7 +234,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N = table(c
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
-#' recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
+#' tern:::recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
 #' 
 #'
 lt_events_per_term_grade_id_2 <- function(terms, 
@@ -323,7 +323,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
       ## move rownames to column
       tbl <- row_names_as_col(tbl_raw)
       row.names(tbl)[1] <- term_name
-      tbl <- fast_rbind(
+      tbl <- rbind(
         rtable(header(tbl), rrow(class_name)),
         indent_table(tbl, 1)
       )
