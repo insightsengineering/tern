@@ -68,7 +68,7 @@ l_tbls <- tern:::lt_events_per_term_grade_id_2(
   total = "All Patients",
   grade_levels = 1:5
 )
-recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
+tern:::recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
 
 
 }

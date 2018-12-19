@@ -71,6 +71,15 @@
 #' )
 #' 
 #' t_events_per_term_id(
+#'   terms = ANL$AEDECOD,
+#'   id = ANL$USUBJID,
+#'   col_by = ANL$ARM,
+#'   col_N = table(ASL$ARM),
+#'   total = "All Patients",
+#'   event_type = "adverse event"
+#' )
+#' 
+#' t_events_per_term_id(
 #'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
 #'   id = ANL$USUBJID,
 #'   col_by = ANL$ARM,
@@ -99,28 +108,29 @@
 t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total = "All Patients", 
                                  event_type = "event") {
   
+  check_col_by(col_by, col_N, 1, total)
   if (is.null(terms)) stop("terms can't be NULL")
   if (is.data.frame(terms) && ncol(terms) == 1) {
     terms <- terms[[1]]
   }  
   
-  total_events = paste0("Total number of ", event_type, "s")
-  subjects_with_events = paste("Total number of patients with at least one", event_type)
+  total_events <- paste0("Total number of ", event_type, "s")
+  subjects_with_events <- paste("Total number of patients with at least one", event_type)
   
-  tbls <- if (is.atomic(terms)){
+  order_indecies <- if(is.null(total)) c(0, 1) else c(nlevels(col_by) + 1, 1)
+  
+  tbls <- if (is.atomic(terms)) {
     
     df <- data.frame(term = terms, id = id, col_by = col_by, stringsAsFactors = FALSE)
+    
     if (!is.null(total)) {
-      if (total %in% levels(col_by)) 
-        stop(paste('col_by can not have', total, 'group.'))
-      tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
-      df <- tmp$x
-      df$col_by <- tmp$col_by
-      df$id <- paste(df$id, "-", df$col_by)
-      col_N <- tmp$col_N
+      .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+      col_N <- .t$col_N
+      df <- data.frame(term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by), 
+                       col_by = .t$col_by, stringsAsFactors = FALSE)
     }
     
-    l_tbls <- t_events_summary(
+    tbl <- t_events_summary(
       term = df$term,
       id = df$id,
       col_by = df$col_by,
@@ -129,19 +139,15 @@ t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total
       subjects_with_events = subjects_with_events 
     )
     
-    n_cols <- ncol(l_tbls)
-    if(!is.null(total)) n_cols <- n_cols-1
-    N_total_any <- vapply(l_tbls[3:nrow(l_tbls)], function(tbl) {
-      a <- 0
-      for(i in c(1:n_cols)){
-        a <- a + tbl[[i]][1]
-      }
-      a
-    }, numeric(1))
-    
-    l_tbls[c(1:2, (sort.int(-N_total_any, index.return=TRUE)[[2]]) + 2)]
+    if (nrow(tbl) > 2) {
+      ord_rrows <- order_rrows(tbl[-c(1,2), ], indices = order_indecies, decreasing = TRUE)
+      tbl[c(1, 2, ord_rrows+2), ]
+    } else {
+      tbl
+    }
     
   } else if (ncol(terms) == 2) {
+    
     l_tbls <- lt_events_per_term_id_2(
       terms = terms,
       id = id,
@@ -151,45 +157,21 @@ t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total
       event_type = event_type
     )
     
-    n_cols <- ncol(l_tbls[[1]])
-    if(!is.null(total))
-      n_cols <- n_cols-1
-    
-    l_s_terms <- lapply(l_tbls[-1], function(tbls) {
-      # sort terms by any term (sum of col_by levels)
-      N_total_any <- vapply(tbls[4:nrow(tbls)], function(tbl) {
-        a <- 0
-        for(i in c(1:n_cols)){
-          a <- a + tbl[[i]][1]
-        }
-        a
-      }, numeric(1))
-      
-      tbls[c(1:3, (sort.int(-N_total_any, index.return=TRUE)[[2]])+3)]
-      
-      
-    })
-    
-    
-    # now sort tables by class total (sum of col_by levels)
-    N_total_overall <- lapply(l_tbls[-1], function(tbl) {
-      a <- 0
-      for(i in c(1:n_cols)){
-        if(!is.na(tbl[2, i][1])){
-          a <- a + tbl[2, i][1]
-        }
+    l_tbls_o <- lapply(l_tbls, function(tbl) {
+      if (nrow(tbl) > 3) {
+        ord_rrows <- order_rrows(tbl[-c(1:3), ], indices = order_indecies, decreasing = TRUE)
+        tbl[c(1:3, ord_rrows + 3), ] # as label row exists
+      } else {
+        tbl
       }
-      a
     })
     
-    c(l_tbls[1], l_s_terms[order(-unlist(N_total_overall), names(l_s_terms), decreasing = FALSE)])
-    
+    sort_rtables_tree(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
     
   } else {
     stop("currently only one or two terms are supported")
   }
   
-  # Now Stack them
   recursive_stack_rtables(tbls)    
   
 }
@@ -344,13 +326,14 @@ t_events_summary <- function(term,
         indent = 0
       )
     })
-    do.call(fast_rbind, tmp_tbls)
+    rbindl_rtables(tmp_tbls)
   } else {
     NULL
   }
   
-  tbl <-  fast_rbind( tbl_at_least_one, tbl_events, tbls) 
-  tbl <- header_add_N(tbl, col_N)
+  tbl <-  rbind(tbl_at_least_one, tbl_events, tbls) 
+  
+  # add label
   header(tbl) <- rheader(
     header(tbl)[[1]],
     rrowl(term_label, header(tbl)[[2]])
@@ -419,7 +402,7 @@ t_events_summary <- function(term,
 #'   col_N = table(ASL$ARM),
 #'   total = "All Patients"
 #' )
-#' do.call(fast_stack_rtables, l_tbls)
+#' rbindl_rtables(l_tbls)
 #' 
 #' l_tbls <- tern:::lt_events_per_term_id_2(
 #'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
@@ -428,7 +411,7 @@ t_events_summary <- function(term,
 #'   col_N = table(ASL$ARM),
 #'   total = NULL
 #' )
-#' do.call(fast_stack_rtables, l_tbls)
+#' rbindl_rtables(l_tbls)
 #' 
 #' 
 lt_events_per_term_id_2 <- function(terms, 
@@ -439,7 +422,7 @@ lt_events_per_term_id_2 <- function(terms,
                                     event_type = "event"){
   
   # check argument validity and consitency
-  check_col_by(col_by, col_N, min_num_levels = 1)
+  check_col_by(col_by, col_N, min_num_levels = 1, total)
   
   if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
   
@@ -463,23 +446,20 @@ lt_events_per_term_id_2 <- function(terms,
     stringsAsFactors = FALSE
   )
   
+  if (!is.null(total)) {
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N
+    df <- data.frame(class = .t$x$class, term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by), 
+                     col_by = .t$col_by, stringsAsFactors = FALSE)
+  }
+  
   if (any(is.na(df)))
     stop("partial missing data in rows of [class, term] is currently not supported")
   
-  # adding All Patients
-  if (!is.null(total)) {
-    if (total %in% levels(col_by)) 
-      stop(paste('col_by can not have', total, 'group. t_ae will derive it.'))
-    tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
-    df <- tmp$x
-    df$col_by <- tmp$col_by
-    df$id <- paste(df$id, "-", df$col_by)
-    col_N <- tmp$col_N
-  }
   
   # list("- Any adverse events -" = list( "- Overall -" = df))
   # class and term chunks
-  top_label = paste0("- Any ", event_type, " -")
+  top_label <- paste0("- Any ", event_type, " -")
   df_class <- c(
     setNames(list(df[, -2]), top_label),
     split(df, df$class)
@@ -501,14 +481,13 @@ lt_events_per_term_id_2 <- function(terms,
       subjects_with_events = subjects_with_events
     )
     
-    tbl_i <- fast_rbind(
+    tbl_i <- rbind(
       rtable(header = tbl_header, rrow(class_i)),
       indent_table(tbl_i, 1)
     )
-    tbl_i <- header_add_N(tbl_i, col_N)
     header(tbl_i) <- rheader(
       header(tbl_i)[[1]],
-      rrowl(term_label, header(tbl_i)[[2]], indent = 1)
+      rrowl(term_label, col_N, format = "(N=xx)", indent = 1)
     )
     tbl_i
     

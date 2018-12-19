@@ -581,11 +581,12 @@ add_total <- function(x, ... ) {
 #' @noRd
 #' 
 #' @examples 
+#' \dontrun{
 #' # factor
 #' temp_f <- add_total(x=iris$Species, col_by = iris$Species, total_level = "All") 
 #' # numeric
 #' temp_n <- add_total(x=iris$Sepal.Length, col_by = iris$Species, total_level = "All") 
-
+#' }
 add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_by)) {
   
   is.atomic(x) || stop ("x is not atomic")
@@ -617,9 +618,9 @@ add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_
 #' @noRd
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' temp <- add_total(x=iris[, c("Sepal.Length", "Sepal.Width")], col_by = iris$Species, total_level = "All") 
-#' 
+#' }
 add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(col_by) ) {
   
   vl <- var_labels(x)

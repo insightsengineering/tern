@@ -74,8 +74,8 @@ check_data_frame <- function(x, allow_missing = FALSE) {
   TRUE 
 }
 
-
-check_col_by <- function(col_by, col_N, min_num_levels = 2) {
+# if total is non-null then it can not be in the levels of col_by
+check_col_by <- function(col_by, col_N, min_num_levels = 2, total = NULL) {
   
   if (!is(col_by, "no_by") && !is.factor(col_by))
     stop("col_by needs to be a factor")
@@ -89,6 +89,9 @@ check_col_by <- function(col_by, col_N, min_num_levels = 2) {
   if (nlevels(col_by) < min_num_levels)
     stop(paste("at least", min_num_levels, "expected in col_by but got", nlevels(col_by)))
 
+  if (!is.null(total) && total %in% levels(col_by))
+    stop("total level cannot exist as a level in col_by")
+  
   TRUE
 }
 
