@@ -246,13 +246,11 @@ lt_events_per_term_grade_id_2 <- function(terms,
                                           grade_levels) {
   
   # check argument validity and consitency 
-  check_col_by(col_by, col_N, min_num_levels = 1)
+  check_col_by(col_by, col_N, min_num_levels = 1, total)
   
   if (any("- Overall -" %in% terms)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
-  if (any(total %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
-  
+    
   if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
-  
   if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
   
   class_label <- label(terms[[1]])
@@ -277,16 +275,14 @@ lt_events_per_term_grade_id_2 <- function(terms,
     stop("partial missing data in rows of [class, term, grade] is currently not supported")
   
   # adding All Patients
-  if(!is.null(total)){
-    if (total %in% levels(col_by)) 
-      stop(paste('col_by can not have', total, 'group. t_ae_ctc will derive it.'))
-    
-    tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
-    df <- tmp$x
-    df$col_by <- tmp$col_by
-    df$id <- paste(df$id, "-", df$col_by)
-    col_N <- tmp$col_N
-  } 
+  if (!is.null(total)) {
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N
+    df <- data.frame(class = .t$x$class, term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by), 
+                     grade = .t$x$grade,
+                     col_by = .t$col_by, stringsAsFactors = FALSE)
+  }
+  
   
   # start tabulatings
   
@@ -301,10 +297,10 @@ lt_events_per_term_grade_id_2 <- function(terms,
     })
   )
   
-  # tbl_header <- rheader(
-  #   rrowl(class_label, c(list(NULL), as.list(levels(df$col_by)))),
-  #   rrowl(term_label, c(list(rcell(grade_label, format="xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
-  # )
+  tbl_header <- rheader(
+    rrowl(class_label, c(list(NULL), as.list(levels(df$col_by)))),
+    rrowl(term_label, c(list(rcell(grade_label, format="xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
+  )
   
   
   # now create the tables
@@ -323,20 +319,11 @@ lt_events_per_term_grade_id_2 <- function(terms,
       ## move rownames to column
       tbl <- row_names_as_col(tbl_raw)
       row.names(tbl)[1] <- term_name
-      tbl <- rbind(
-        rtable(header(tbl), rrow(class_name)),
+      
+      rbind(
+        rtable(tbl_header, rrow(class_name)),
         indent_table(tbl, 1)
       )
-      
-      header(tbl) <- rheader(
-        rrowl(class_label, header(tbl)[[1]]),
-        rrowl(term_label, c(grade_label, header(tbl)[[2]][-1]), indent = 1)
-      )
-      
-      tbl
-    #  attr(tbl, "header") <- tbl_header
-      
-      tbl
       
     }, df_terms, names(df_terms))
   }, df_class_term, names(df_class_term) )
