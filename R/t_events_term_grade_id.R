@@ -95,6 +95,14 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N = table(c
     stop("terms needs to be either a vector or a data.frame")
   }
   
+  irow <- ncol(terms)
+  sort_index <-  if (is.null(total)) {
+    # because the first column is the grade level
+    function(tbli) sum(vapply(tbli[[irow]][2:ncol(tbli)], `[`, numeric(1), 1))
+  } else {
+    c(irow, nlevels(col_by) + 2, 1)
+  }
+    
   if (ncol(terms) == 1) {
     l_tbls <- lt_events_per_term_grade_id_1(
       term = terms[[1]],
@@ -105,19 +113,10 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N = table(c
       total = total,
       grade_levels = grade_levels
     )
-    n_cols <- ncol(l_tbls[[1]])
-    if(!is.null(total)) n_cols <- n_cols-1
     
-    N_total_any <- vapply(l_tbls, function(tbl) {
-      a <- 0
-      for(i in c(2:n_cols)){
-        a <- a + tbl[1, i][1]
-      }
-      a
-    }, numeric(1))
-    l_tbls <- l_tbls[c(1, setdiff(order(-N_total_any, names(l_tbls), decreasing = FALSE), 1))]
+    order_tbls <- order_rtables(l_tbls, indices = sort_index, decreasing = TRUE)
+    recursive_stack_rtables(l_tbls[c(1, setdiff(order_tbls, 1))]) 
     
-    recursive_stack_rtables(l_tbls) 
   } else if (ncol(terms) == 2) {
     
     l_tbls <- lt_events_per_term_grade_id_2(
@@ -129,39 +128,19 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N = table(c
       total = total,
       grade_levels = grade_levels
     )
+    # l_tbls is of type list(all = list(tbl_overallm), cl_1 = list(tbl_overall, tbl_term_a, ...), ...)
     
-    n_cols <- ncol(l_tbls[[1]][[1]])
-    if(!is.null(total))
-      n_cols <- n_cols-1
-    
-    l_s_terms <- lapply(l_tbls, function(tbls) {
-      
-      # sort terms by any grade (sum of col_by levels)
-      N_total_any <- vapply(tbls, function(tbl) {
-        a <- 0
-        for(i in c(2:n_cols)){
-          a <- a + tbl[2, i][1]
-        }
-        a
-      }, numeric(1))
-      
-      tbls[c(1, setdiff(order(-N_total_any, names(tbls), decreasing = FALSE), 1))]
-      
+    # sort tables by term frequency
+    l_s_terms <- lapply(l_tbls, function(l_tbls_i) {
+      order_tbls_i <- order_rtables(l_tbls_i, indices = sort_index, decreasing = TRUE)
+      l_tbls_i[c(1, setdiff(order_tbls_i, 1))]
     })
     
-    # now sort tables by class (sum of col_by levels)
-    N_total_overall <- vapply(l_s_terms, function(tbl) {
-      a <- 0
-      for(i in c(2:n_cols)){
-        a <- a + tbl[[1]][2, i][1]
-      }
-      a
-    }, numeric(1))
+    order_class <- order_rtables(lapply(l_s_terms, `[[`, 1), indices = sort_index, decreasing = TRUE)
+
+    l_tbls_sorted <- l_s_terms[c(1, setdiff(order_class, 1))]
     
-    l_tbls_sorted <- l_s_terms[order(-N_total_overall, names(l_s_terms), decreasing = FALSE)]
-    
-    # Now Stack them
-    recursive_stack_rtables(nl_remove_n_first_rrows(l_tbls_sorted,1,2))
+    recursive_stack_rtables(nl_remove_n_first_rrows(l_tbls_sorted, 1, 2))
   } else {
     stop("currently one or two terms are summported")
   }
@@ -246,13 +225,11 @@ lt_events_per_term_grade_id_2 <- function(terms,
                                           grade_levels) {
   
   # check argument validity and consitency 
-  check_col_by(col_by, col_N, min_num_levels = 1)
+  check_col_by(col_by, col_N, min_num_levels = 1, total)
   
   if (any("- Overall -" %in% terms)) stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
-  if (any(total %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
-  
+    
   if (any(terms == "", na.rm = TRUE)) stop("empty string is not a valid term, please use NA if data is missing")
-  
   if(!is.data.frame(terms) || ncol(terms) != 2) stop("terms must be a dataframe with two columns")
   
   class_label <- label(terms[[1]])
@@ -277,16 +254,14 @@ lt_events_per_term_grade_id_2 <- function(terms,
     stop("partial missing data in rows of [class, term, grade] is currently not supported")
   
   # adding All Patients
-  if(!is.null(total)){
-    if (total %in% levels(col_by)) 
-      stop(paste('col_by can not have', total, 'group. t_ae_ctc will derive it.'))
-    
-    tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
-    df <- tmp$x
-    df$col_by <- tmp$col_by
-    df$id <- paste(df$id, "-", df$col_by)
-    col_N <- tmp$col_N
-  } 
+  if (!is.null(total)) {
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N
+    df <- data.frame(class = .t$x$class, term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by), 
+                     grade = .t$x$grade,
+                     col_by = .t$col_by, stringsAsFactors = FALSE)
+  }
+  
   
   # start tabulatings
   
@@ -301,10 +276,10 @@ lt_events_per_term_grade_id_2 <- function(terms,
     })
   )
   
-  # tbl_header <- rheader(
-  #   rrowl(class_label, c(list(NULL), as.list(levels(df$col_by)))),
-  #   rrowl(term_label, c(list(rcell(grade_label, format="xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
-  # )
+  tbl_header <- rheader(
+    rrowl(class_label, c(list(NULL), as.list(levels(df$col_by)))),
+    rrowl(term_label, c(list(rcell(grade_label, format="xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
+  )
   
   
   # now create the tables
@@ -323,20 +298,11 @@ lt_events_per_term_grade_id_2 <- function(terms,
       ## move rownames to column
       tbl <- row_names_as_col(tbl_raw)
       row.names(tbl)[1] <- term_name
-      tbl <- rbind(
-        rtable(header(tbl), rrow(class_name)),
+      
+      rbind(
+        rtable(tbl_header, rrow(class_name)),
         indent_table(tbl, 1)
       )
-      
-      header(tbl) <- rheader(
-        rrowl(class_label, header(tbl)[[1]]),
-        rrowl(term_label, c(grade_label, header(tbl)[[2]][-1]), indent = 1)
-      )
-      
-      tbl
-    #  attr(tbl, "header") <- tbl_header
-      
-      tbl
       
     }, df_terms, names(df_terms))
   }, df_class_term, names(df_class_term) )
@@ -400,7 +366,7 @@ lt_events_per_term_grade_id_1 <- function(term,
                                           total = "All Patients",
                                           grade_levels) {
   
-  check_col_by(col_by, col_N, min_num_levels = 1)
+  check_col_by(col_by, col_N, min_num_levels = 1, total)
   
   if (any("All Patients" %in% col_by)) stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
   
@@ -423,24 +389,28 @@ lt_events_per_term_grade_id_1 <- function(term,
   if (any(is.na(df)))
     stop("partial missing data in rows of [class, grade] is currently not supported")
   
-  # adding All Patients
-  if(!is.null(total)){
-    if (total %in% levels(col_by)) 
-      stop(paste('col_by can not have', total, 'group. t_ae_ctc will derive it.'))
-    tmp <- add_total(x = df, col_by = df$col_by, total_level = total, col_N = col_N)
-    df <- tmp$x
-    df$col_by <- tmp$col_by
-    df$id <- paste(df$id, "-", df$col_by)
-    col_N <- tmp$col_N
+  
+  if (!is.null(total)) {
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N
+    df <- data.frame(term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by), 
+                     grade = .t$x$grade,
+                     col_by = .t$col_by, stringsAsFactors = FALSE)
   }
   
-  # start tabulating
   
+  # start tabulating
   df_terms <- c(
     list("- Overall -" = df),
     split(df, df$term)      
   )
 
+  
+  tbl_header <- rheader(
+    rrowl("", c("", levels(df$col_by))),
+    rrowl(term_label, c(list(rcell(grade_label, format = NULL)), setNames(as.list(col_N), NULL)), format = "(N=xx)")
+  )
+  
   Map(function(df_term, term_i) {
     
     tbl_raw <- t_max_grade_per_id(
@@ -454,10 +424,7 @@ lt_events_per_term_grade_id_1 <- function(term,
     
     tbl <- row_names_as_col(tbl_raw)
     row.names(tbl)[1] <- term_i
-    header(tbl) <- rheader(
-      header(tbl)[[1]],
-      rrowl(term_label, c(grade_label,header(tbl)[[2]][-1]))
-    )
+    header(tbl) <- tbl_header
   
     tbl
     

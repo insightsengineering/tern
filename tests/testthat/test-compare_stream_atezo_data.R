@@ -7,7 +7,7 @@
 #' library(dplyr)
 #' library(forcats)
 
-if (requireNamespace("atezo.data", quietly = TRUE) && 
+if (FALSE && requireNamespace("atezo.data", quietly = TRUE) && 
     requireNamespace("dplyr", quietly = TRUE) && 
     requireNamespace("forcats", quietly = TRUE)) {
 

@@ -88,6 +88,15 @@ t_events_per_term_id(
 )
 
 t_events_per_term_id(
+  terms = ANL$AEDECOD,
+  id = ANL$USUBJID,
+  col_by = ANL$ARM,
+  col_N = table(ASL$ARM),
+  total = "All Patients",
+  event_type = "adverse event"
+)
+
+t_events_per_term_id(
   terms = ANL[, c("AEBODSYS", "AEDECOD")],
   id = ANL$USUBJID,
   col_by = ANL$ARM,
