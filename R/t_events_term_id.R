@@ -166,7 +166,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total
       }
     })
     
-    sort_rtables_tree(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
+    sort_rtables(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
     
   } else {
     stop("currently only one or two terms are supported")

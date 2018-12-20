@@ -65,7 +65,7 @@ l_tbls <- tern:::lt_events_per_term_id_2(
   col_N = table(ASL$ARM),
   total = "All Patients"
 )
-do.call(fast_stack_rtables, l_tbls)
+rbindl_rtables(l_tbls)
 
 l_tbls <- tern:::lt_events_per_term_id_2(
   terms = ANL[, c("AEBODSYS", "AEDECOD")],
@@ -74,7 +74,7 @@ l_tbls <- tern:::lt_events_per_term_id_2(
   col_N = table(ASL$ARM),
   total = NULL
 )
-do.call(fast_stack_rtables, l_tbls)
+rbindl_rtables(l_tbls)
 
 
 }
