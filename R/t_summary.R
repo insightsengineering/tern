@@ -9,6 +9,10 @@
 #' 
 #' @export
 #' 
+#' 
+#' @seealso \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.boolean}}, \code{\link{t_summary_by}}
+#' 
 #' @examples 
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
