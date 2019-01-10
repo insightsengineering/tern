@@ -105,7 +105,7 @@
 #'   event_type = "treatment"
 #' ) 
 #' 
-t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total = "All Patients", 
+t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients", 
                                  event_type = "event") {
   
   check_col_by(col_by, col_N, 1, total)
@@ -206,7 +206,7 @@ t_events_per_term_id <- function(terms, id, col_by, col_N = table(col_by), total
 #'  col_N = c(2, 4, 10)
 #' )
 #' 
-t_count_unique <- function(x, col_by, col_N = table(col_by), na.rm = TRUE, 
+t_count_unique <- function(x, col_by, col_N, na.rm = TRUE, 
                            row.name = "number of unique elements", indent = 0) {
   
   check_col_by(col_by, col_N, 1)
@@ -279,7 +279,7 @@ t_count_unique <- function(x, col_by, col_N = table(col_by), na.rm = TRUE,
 t_events_summary <- function(term, 
                              id, 
                              col_by, 
-                             col_N = table(col_by), 
+                             col_N, 
                              total_events = "Total number of events", 
                              subjects_with_events = "Total number of patients with at least one adverse event"){
   
@@ -417,7 +417,7 @@ t_events_summary <- function(term,
 lt_events_per_term_id_2 <- function(terms, 
                                     id,  
                                     col_by, 
-                                    col_N = table(col_by),
+                                    col_N,
                                     total = "All Patients", 
                                     event_type = "event"){
   

@@ -4,8 +4,8 @@
 \alias{t_max_grade_per_id}
 \title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
-t_max_grade_per_id(grade, id, col_by, col_N = table(col_by),
-  grade_levels = NULL, any_grade = "-Any Grade-")
+t_max_grade_per_id(grade, id, col_by, col_N, grade_levels = NULL,
+  any_grade = "-Any Grade-")
 }
 \arguments{
 \item{grade}{a numeric vector with grade values}
@@ -55,7 +55,8 @@ t_max_grade_per_id(
 t_max_grade_per_id(
   grade =  c(1,2,3),
   id = c(1,2,2),
-  col_by = factor(LETTERS[1:3])
+  col_by = factor(LETTERS[1:3]),
+  col_N = c(15, 10, 12)
 )
 }
 
@@ -64,7 +65,8 @@ t_max_grade_per_id(
 t_max_grade_per_id(
   grade =  c(1,2,NA),
   id = c(1,2,3),
-  col_by = factor(LETTERS[1:3])
+  col_by = factor(LETTERS[1:3]),
+  col_N = c(15, 10, 12)
 )
 }
 

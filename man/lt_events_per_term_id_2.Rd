@@ -4,8 +4,8 @@
 \alias{lt_events_per_term_id_2}
 \title{List of Events Terms Tables}
 \usage{
-lt_events_per_term_id_2(terms, id, col_by, col_N = table(col_by),
-  total = "All Patients", event_type = "event")
+lt_events_per_term_id_2(terms, id, col_by, col_N, total = "All Patients",
+  event_type = "event")
 }
 \arguments{
 \item{terms}{term information as character or factor dataframe, however factor

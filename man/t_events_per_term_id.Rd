@@ -4,8 +4,8 @@
 \alias{t_events_per_term_id}
 \title{Basic Events Table}
 \usage{
-t_events_per_term_id(terms, id, col_by, col_N = table(col_by),
-  total = "All Patients", event_type = "event")
+t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients",
+  event_type = "event")
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information; 

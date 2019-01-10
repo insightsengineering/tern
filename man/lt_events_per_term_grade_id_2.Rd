@@ -4,8 +4,8 @@
 \alias{lt_events_per_term_grade_id_2}
 \title{List of Events Terms Tables by Highest Grade}
 \usage{
-lt_events_per_term_grade_id_2(terms, id, grade, col_by,
-  col_N = table(col_N), total = "All Patients", grade_levels)
+lt_events_per_term_grade_id_2(terms, id, grade, col_by, col_N,
+  total = "All Patients", grade_levels)
 }
 \arguments{
 \item{terms}{term information as character or factor dataframe, however factor

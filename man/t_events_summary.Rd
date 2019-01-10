@@ -4,7 +4,7 @@
 \alias{t_events_summary}
 \title{Summary table for events}
 \usage{
-t_events_summary(term, id, col_by, col_N = table(col_by),
+t_events_summary(term, id, col_by, col_N,
   total_events = "Total number of events",
   subjects_with_events = "Total number of patients with at least one adverse event")
 }
