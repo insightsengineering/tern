@@ -185,12 +185,13 @@ t_forest_tte <- function(tte,
       )
     }, data_tree, names(data_tree))
     
-    stack_rtables_l(list_of_tables)
+    rbindl_rtables(list_of_tables, gap = 1)
   }
   
-  stack_rtables(
+  rbind(
     tbl_total,
-    tbl_group_data
+    tbl_group_data,
+    gap = 1
   )
 }
 

@@ -101,7 +101,8 @@ t_tte <- function(formula,
   # Calculate elements of the table
 
   
-  header <- rtables:::rtabulate_header(arm, length(arm))
+  header <- rheader(rrowl("", levels(arm)))
+  #  rtables:::rtabulate_header(arm, length(arm))
   
   # Event Table
   # ###########
@@ -287,17 +288,18 @@ t_tte <- function(formula,
 
     rbind(
       rtable(header = header, rrow("Time Point Analysis")),    
-      stack_rtables_l(tp_rtables)      
+      rbindl_rtables(tp_rtables, gap = 1)      
     )
     
   }
   ## Now Stack Tables together
-  tbl <- stack_rtables(
+  tbl <- rbind(
     tbl_event,
     tbl_tte,
     tbl_unstratified,
     tbl_stratified,
-    tbl_timepoints
+    tbl_timepoints,
+    gap = 1
   )
   
   tbl
