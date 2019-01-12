@@ -14,6 +14,14 @@ t_count_unique(x, col_by, col_N, na.rm = TRUE,
 has to be a factor and can not be missing. See 'Examples'.}
 
 \item{col_N}{associated number of elements per level of \code{col_by}}
+
+\item{na.rm}{a logical value indicating whether \code{NA} values should be 
+removed from \code{x} pror to counting the unique elements per cell}
+
+\item{row.name}{a string with the row name to disply in the summary table
+that is returned. Default is "number of unique elements."}
+
+\item{indent}{non-negative integer where 0 means that the row should not be indented}
 }
 \value{
 an rtable
@@ -29,6 +37,14 @@ t_count_unique(
  col_N = c(2, 4, 10)
 )
 
+t_count_unique(
+ x = c(1, 4, 2, 3, 3, NA),
+ col_by = factor(c("A", "A", "B", "C", "C", "C")),
+ col_N = c(2, 4, 10),
+ row.name = "Unique Records",
+ indent = 1,
+ na.rm = FALSE
+)
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

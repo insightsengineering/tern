@@ -11,17 +11,25 @@
 #' 
 #' @examples 
 #' 
-#' x <- structure(c(1,2,3), label = "Test")
+#' x <- with_label(c(1,2,3), label = "Test")
 #' label(x)
 #' 
 label <- function(x) {
   attr(x, "label")
 }
 
-#' Return an object with a particular label attribute
+#' Return an object with a label attribute
 #' 
+#' @param x an object
+#' @param label label attribute to to attached to  \code{x}
 #' 
 #' @export
+#' 
+#' @examples 
+#' 
+#' x <- with_label(c(1,2,3), label = "Test")
+#' label(x)
+#' 
 with_label <- function(x, label) {
   attr(x, "label") <- label
   x

@@ -69,6 +69,7 @@ the following 9 columns:
 }
 \examples{
 library(random.cdisc.data)
+library(dplyr)
 
 ASL <- radsl()
 ARS <- radrs(ADSL = ASL)
