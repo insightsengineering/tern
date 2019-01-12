@@ -44,8 +44,10 @@ tabulate_pairwise <- function(x, col_by, FUN, row.name, format=NULL, indent = 0)
     FUN(x_sel, col_by_sel)
   })
   
+  header <- rheader(rrowl("", levels(col_by)))
+  
   rtable(
-    header = rtables:::rtabulate_header(col_by, length(x)),
+    header = header,
     rrowl(row.name = row.name, c(list(NULL), row_data), format = format, indent = indent )    
   )
 }

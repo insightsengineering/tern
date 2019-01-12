@@ -102,7 +102,8 @@ t_rsp <- function(
   if (!is.logical(rsp)) stop("rsp is expected to be logical")
   if (any(is.na(rsp))) stop("rsp can not have any NAs")
   
-  check_col_by(col_by, min_num_levels = 2)
+  col_N <- table(col_by)
+  check_col_by(col_by, col_N, min_num_levels = 2)
   
   if (!is.null(strata_data)) {
     check_data_frame(strata_data)
@@ -321,7 +322,7 @@ t_rsp <- function(
       
     }, values, values_label)
     
-    stack_rtables_l(tbls_part) 
+    rbindl_rtables(tbls_part, gap = 1) 
   }
   
   
@@ -338,16 +339,18 @@ t_rsp <- function(
   }
   
   
-  tbl <- stack_rtables(
+  tbl <- rbind(
     tbl_response,
     tbl_clopper_pearson,
     tbl_difference,
     tbl_odds_ratio,
     tbl_partition,
-    tbl_footer
+    tbl_footer,
+    gap = 1
   )
   
-  tbl
+  header_add_N(tbl, col_N)
+  
 }
 
 #' Function to calculate odds ratio and confidence interval
