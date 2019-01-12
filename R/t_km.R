@@ -12,6 +12,7 @@
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{g_km}}
 #' 
 #' @examples 
 #' 

@@ -31,6 +31,9 @@ fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = OS, conf.type = "plain")
 t_km(fit_km)
 
 }
+\seealso{
+\code{\link{g_km}}
+}
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

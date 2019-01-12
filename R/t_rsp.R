@@ -38,7 +38,9 @@
 #' @export
 #' 
 #' @template author_liaoc10
-#'   
+#'
+#' @seealso \code{\link{t_forest_rsp}}
+#'       
 #' @examples 
 #' 
 #' t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))

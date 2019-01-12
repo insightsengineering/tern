@@ -13,6 +13,8 @@
 #' 
 #' @template author_wangh107
 #' 
+#' @seealso \code{\link{t_tte}}, \code{\link{t_forest_tte}}
+#' 
 #' @examples 
 #' 
 #' OS <- data.frame(

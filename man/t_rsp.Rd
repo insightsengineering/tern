@@ -99,6 +99,9 @@ t_rsp(rsp = ANL$rsp, col_by = factor(ANL$arm))
 
 
 }
+\seealso{
+\code{\link{t_forest_rsp}}
+}
 \author{
 Chendi Liao (liaoc10) \email{chendi.liao@roche.com}
 }

@@ -90,6 +90,9 @@ Viewer(tbl)
 }
    
 }
+\seealso{
+\code{\link{t_rsp}}
+}
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}
 }

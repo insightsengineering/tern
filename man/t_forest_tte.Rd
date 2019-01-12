@@ -89,6 +89,9 @@ Viewer(tbl)
 }
 
 }
+\seealso{
+\code{\link{t_tte}}
+}
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}
 }

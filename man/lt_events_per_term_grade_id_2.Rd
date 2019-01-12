@@ -72,6 +72,10 @@ tern:::recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
 
 
 }
+\seealso{
+\code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
+  \code{\link{lt_events_per_term_grade_id_1}}, \code{\link{t_events_per_term_id}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 

@@ -45,7 +45,9 @@
 #' @template author_wangh107
 #' @template author_qit3
 #'  
-#'  
+#' @seealso \code{\link{t_count_unique}}, \code{\link{t_events_summary}},
+#'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}   
+#' 
 #' @examples 
 #'
 #' library(dplyr)
@@ -202,6 +204,9 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
 #' @template author_wangh107
 #' @template author_qit3
 #' 
+#' @seealso \code{\link{t_events_per_term_id}}, \code{\link{t_events_summary}},
+#'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+#'   
 #' @examples 
 #' 
 #' t_count_unique(
@@ -264,6 +269,9 @@ t_count_unique <- function(x, col_by, col_N, na.rm = TRUE,
 #' @template author_wangh107
 #' @template author_qit3
 #' 
+#' @seealso \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},
+#'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}   
+#'   
 #' @examples 
 #' 
 #' t_events_summary(
@@ -393,6 +401,9 @@ t_events_summary <- function(term,
 #' @template author_wangh107
 #' @template author_qit3
 #' 
+#' @seealso \code{\link{t_events_per_term_id}}, \code{\link{t_count_unique}}, 
+#'   \code{\link{t_events_summary}}, \code{\link{t_events_per_term_grade_id}}   
+#'   
 #' @examples 
 #' 
 #' library(dplyr)

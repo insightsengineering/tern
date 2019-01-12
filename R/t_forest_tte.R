@@ -48,6 +48,8 @@
 #' 
 #' @template author_song24
 #' 
+#' @seealso \code{\link{t_tte}}
+#' 
 #' @examples 
 #' 
 #' library(random.cdisc.data)

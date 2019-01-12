@@ -37,6 +37,8 @@
 #' @author Mark Rothe (rothem1)
 #' @template author_waddella
 #' 
+#' @seealso \code{\link{t_forest_tte}}
+#' 
 #' @examples 
 #' library(random.cdisc.data)
 #' ASL <- radsl()

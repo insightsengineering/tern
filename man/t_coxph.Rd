@@ -31,6 +31,9 @@ tbl <- t_coxph(fit_coxph)
 tbl
 
 }
+\seealso{
+\code{\link{t_tte}}, \code{\link{t_forest_tte}}
+}
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

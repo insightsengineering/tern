@@ -51,6 +51,8 @@
 #' 
 #' @template author_song24
 #' 
+#' @seealso \code{\link{t_rsp}}
+#'  
 #' @examples 
 #' library(random.cdisc.data)
 #' library(dplyr)
