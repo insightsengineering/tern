@@ -35,8 +35,8 @@ ADSL <- radsl()
 ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
 }))
-ADTTE <- radtte(ADSL)
 
+ADTTE <- radtte(ADSL)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
 
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
@@ -46,6 +46,7 @@ g_km(fit_km = fit_km)
 g_km(fit_km = fit_km, col = c("black", "red", "blue"))
  
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ADTTE, conf.type = "plain")
+
 g_km(fit_km, xlab = "Duration (Days)", col = "blue", lty = "dashed")
 
 }

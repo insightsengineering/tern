@@ -52,10 +52,6 @@ ADSL <- radsl()
 
 ADTTE <- radtte(ADSL)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
-
-ATE_f$ARM <- as.factor(ASL$ARM)
-ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
- ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
  
 tbl <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),

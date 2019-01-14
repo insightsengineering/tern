@@ -140,25 +140,28 @@ annotation on top of Kaplan-Meier grob</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(
-  <span class='kw'>AVAL</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>200</span>)),
-  <span class='kw'>CNSR</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>SEX</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>RACE</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"AA"</span>, <span class='st'>"BB"</span>, <span class='st'>"CC"</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>ECOG</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>)
-)
+    <pre class="examples"><div class='input'><span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'>radsl</span>()
+<span class='no'>ADSL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>sapply</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>ADSL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) {
+   <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nchar'>nchar</a></span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substr'>substr</a></span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>
+}))
 
-<span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
+<span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'>radtte</span>(<span class='no'>ADSL</span>)
+<span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADTTE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
+
+<span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)
-<span class='no'>tbl</span></div><div class='output co'>#&gt;                      N                     median              95% CI for median
-#&gt; --------------------------------------------------------------------------------
-#&gt; ARM=A               67                      1.09                 (0.74, 1.39)   
-#&gt; ARM=B               62                      1.12                 (0.87, 1.43)   
-#&gt; ARM=C               71                      1.46                 (1.17, 1.62)   </div><div class='input'><span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>OS</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                   N                     median              95% CI for median
+#&gt; ---------------------------------------------------------------------------------------------
+#&gt; ARM=A: Drug X                    135                     78.05                (55.2, 114.1)  
+#&gt; ARM=B: Placebo                   144                     79.04               (55.4, 109.03)  
+#&gt; ARM=C: Combination               121                     72.7                (55.95, 99.12)  </div><div class='input'><span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
 <span class='fu'>t_km</span>(<span class='no'>fit_km</span>)</div><div class='output co'>#&gt;                    N                     median              95% CI for median
 #&gt; ------------------------------------------------------------------------------
-#&gt; All               200                     1.22                 (1.09, 1.46)   </div><div class='input'>
+#&gt; All               400                     76.69               (64.15, 95.42)  </div><div class='input'><span class='no'>tbl</span></div><div class='output co'>#&gt;                                   N                     median              95% CI for median
+#&gt; ---------------------------------------------------------------------------------------------
+#&gt; ARM=A: Drug X                    135                     78.05                (55.2, 114.1)  
+#&gt; ARM=B: Placebo                   144                     79.04               (55.4, 109.03)  
+#&gt; ARM=C: Combination               121                     72.7                (55.95, 99.12)  </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
