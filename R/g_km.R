@@ -24,8 +24,8 @@
 #' ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
 #'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
 #' }))
-#' ADTTE <- radtte(ADSL)
 #' 
+#' ADTTE <- radtte(ADSL)
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
 #' 
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
@@ -35,6 +35,7 @@
 #' g_km(fit_km = fit_km, col = c("black", "red", "blue"))
 #'  
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ADTTE, conf.type = "plain")
+#' 
 #' g_km(fit_km, xlab = "Duration (Days)", col = "blue", lty = "dashed")
 #' 
 g_km <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
@@ -70,13 +71,14 @@ g_km <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
 #' @noRd
 #' 
 #' @examples 
-#' OS <- data.frame(AVAL = abs(rnorm(200)), 
-#'                  CNSR = sample(c(0, 1), 200, TRUE), 
-#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
-#'                  SEX = sample(c("M","F"), 200, TRUE),
-#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
+#' 
+#' ADTTE <- radtte(ADSL)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
+#'  
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
+#' 
 #' tern:::kmGrob(fit_km = fit_km, xticks = c(0.5, 0.8, 1.5))
 #' 
 kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
@@ -162,7 +164,6 @@ kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
         gp = gp, vp = vp, name = name,
         cl = "kmGrob")
   
-  
 }
 
 #' Prepare necessary data for Kaplan-Meier Plot 
@@ -180,13 +181,14 @@ kmGrob <- function(fit_km,  xticks = NULL, col = NULL, lty = NULL,
 #' @template author_wangh107
 #' 
 #' @examples
-#' OS <- data.frame(AVAL = abs(rnorm(200)), 
-#'                  CNSR = sample(c(0, 1), 200, TRUE), 
-#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
-#'                  SEX = sample(c("M","F"), 200, TRUE),
-#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'                  ECOG = sample(c(0, 1), 200, TRUE))
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
+#' 
+#' ADTTE <- radtte(ADSL)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
+#' 
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
+#' 
 #' tern:::kmCurveData(fit_km, xticks = c(0.5, 0.8, 1.5))
 #' 
 kmCurveData <- function(fit_km, xticks = NULL) {
