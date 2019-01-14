@@ -70,16 +70,17 @@ the following 9 columns:
 \examples{
 library(random.cdisc.data)
 
-ASL <- radsl()
-ARS <- radrs(ADSL = ASL)
-ASL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
-ARS_f <- subset(ARS, PARAMCD == "BESRSPI")
-ANL <- merge(ASL, ARS_f)
-ANL <- ANL \%>\% filter(ARM != 'C: Combination')
+ADSL <- radsl()
+ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
+
+ADRS <- radrs(ADSL)
+ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\% 
+  filter(ARM != 'C: Combination')
+  
 tbl <- t_forest_rsp(
-  rsp = ANL$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ANL$ARM), 
-  group_data = ANL[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = factor(ADRS_f$ARM), 
+  group_data = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
 )
 
 tbl

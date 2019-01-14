@@ -27,7 +27,6 @@ Grade-} by default}
 as nested lists.
 }
 \examples{
-
 t_max_grade_per_id(
   grade =  c(1,2,3),
   id = c(1,1,1),

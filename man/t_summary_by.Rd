@@ -27,7 +27,6 @@ For every level of the variable \code{by} a summary table using \code{\link{t_su
 The individual tables are then stacked together.
 }
 \examples{
-
 library(dplyr)
 library(random.cdisc.data)
 
@@ -59,24 +58,22 @@ ADSL <- ADSL \%>\% select(STUDYID, USUBJID, ARMCD)
 ADQS <- radqs(ADSL, seed = 2)
 ADQS_f <- ADQS \%>\% filter(PARAMCD=="BFIALL")
 
-ANL <- left_join(ADQS_f, ADSL, by = c("STUDYID", "USUBJID"))
-
 t_summary_by(
- x = ANL$AVAL,
- by = ANL$AVISIT,
- col_by = ANL$ARMCD,
+ x = ADQS_f$AVAL,
+ by = ADQS_f$AVISIT,
+ col_by = ADQS_f$ARMCD,
  col_N = table(ADSL$ARMCD),
  total = "All Patients"
 )
 
-ANL$AVALCAT1 <- factor(ifelse(ANL$AVAL >= 0, "Positive", "Negative"), 
+ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"), 
   levels = c("Positive", "Negative"))
-ANL <- var_relabel(ANL, AVALCAT1 = "Result" )  
+ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )  
 
 t_summary_by(
- x = ANL$AVALCAT1,
- by = ANL$AVISIT,
- col_by = ANL$ARMCD,
+ x = ADQS_f$AVALCAT1,
+ by = ADQS_f$AVISIT,
+ col_by = ADQS_f$ARMCD,
  col_N = table(ADSL$ARMCD),
  total = "All Patients"
 )

@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_events_term_grade_id.R
 \name{t_events_per_term_grade_id}
 \alias{t_events_per_term_grade_id}
-\title{Events by Highest Grade Table}
+\title{STREAM AE tables ----}
 \usage{
 t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels = 1:5)
@@ -39,14 +39,17 @@ of \code{x:y}, default is \code{1:5}.}
 an \code{\link{rtable}} object.
 }
 \description{
+Events by Highest Grade Table
+}
+\details{
 This function summarizes number of unique subjects by highest grade and events term(s).
 Events \code{terms} can be one level term or two level terms (one higher level and one lower level).
 An implementation example is to apply \code{t_events_per_term_grade_id} on Adverse Event Data 
 to create Adverse Events by Highest NCI CTCAE grade table 
 (AET04, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
-}
-\details{
+
+
 \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects 
 in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset like
@@ -70,36 +73,28 @@ grades. If data does not have any records with \code{grade} 5 and the intent
 is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 }
 \examples{
-
 library(dplyr)
 library(random.cdisc.data)
 
-ASL <- radsl(10, seed = 1)
-AAE <- radae(ASL, 4, seed = 2)
-
-ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
-  var_relabel(
-    AEBODSYS = 'MedDRA System Organ Class',
-    AEDECOD = 'MedDRA Preferred Term',
-    AETOXGR = 'GRADE'
-)
+ADSL <- radsl(10, seed = 1)
+ADAE <- radae(ADSL, 4, seed = 2)
 
 t_events_per_term_grade_id(
-  terms = ANL$AEDECOD,
-  id = ANL$USUBJID,
-  grade = ANL$AETOXGR,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )
 
 t_events_per_term_grade_id(
-  terms = ANL \%>\% select(AEBODSYS, AEDECOD),
-  id = ANL$USUBJID,
-  grade = ANL$AETOXGR,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )

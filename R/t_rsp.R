@@ -40,24 +40,22 @@
 #' @template author_liaoc10
 #'   
 #' @examples 
-#' 
 #' t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
 #' 
-#' 
 #' library(random.cdisc.data)
-#' ASL <- radsl(N = 1000)
+#' ADSL <- radsl(N = 1000)
 #' 
-#' ARS <- radrs(ADSL = ASL)
-#' ANL <- merge(ASL, subset(ARS, PARAMCD == "BESRSPI"))
+#' ADRS <- radrs(ADSL)
+#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI")
 #' 
 #' # Example 1 - ARM B as reference
 #' #    "NON CR/PD" response category dropped from partition section since no observations
 #' #     model with no stratifiaction factors, Chi-square test is performed
 #' tbl <- t_rsp(
-#'  rsp = ANL$AVALC %in% c("CR", "PR"),
-#'  col_by = relevel(factor(ANL$ARMCD), "ARM B"),
+#'  rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#'  col_by = relevel(factor(ADRS_f$ARMCD), "ARM B"),
 #'  partition_rsp_by = droplevels(factor(
-#'    ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
+#'    ADRS_f$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
 #'  ))
 #' )
 #' tbl
@@ -69,24 +67,23 @@
 #' #    "NON CR/PD" response category displayed in partition section, "NE" responses
 #' #     are not displayed model with two stratifiaction factors, CMH test performed
 #' tbl2 <- t_rsp(
-#'  rsp = ANL$AVALC %in% c("CR", "PR"),
-#'  col_by = factor(ANL$ARMCD, c("ARM B", "ARM C", "ARM A")),
-#'  partition_rsp_by = factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
-#'  strata_data = ANL[c("RACE")]
+#'  rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#'  col_by = factor(ADRS_f$ARMCD, c("ARM B", "ARM C", "ARM A")),
+#'  partition_rsp_by = factor(ADRS_f$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
+#'  strata_data = ADRS_f[c("RACE")]
 #' )
 #' tbl2
 #' \dontrun{
 #' Viewer(tbl2)
 #' } 
 #' 
-#' 
 #' # Example 3 - when all observations are non-responders
-#' ANL <- data.frame(
+#' ADRS <- data.frame(
 #' rsp = FALSE,
 #' arm = rep(c("A", "B"), each = 200)
 #' )
 #' 
-#' t_rsp(rsp = ANL$rsp, col_by = factor(ANL$arm))
+#' t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
 #' 
 #' 
 t_rsp <- function(
@@ -215,7 +212,6 @@ t_rsp <- function(
           rcell("-")
         }
       } else {
-        
         strat <- do.call(strata, strata_data)
         
         if (any(tapply(rsp, strat, length)<5)) {
@@ -244,7 +240,6 @@ t_rsp <- function(
         }
         
       } else {
-  
         strat <- do.call(strata, strata_data)
         
         if (any(tapply(rsp, strat, length)<5)) {
@@ -263,12 +258,10 @@ t_rsp <- function(
     }, row.name = "95% CI", indent = 1)
   )
   
-  
   # Partition by response categories
   tbl_partition <- if (is.null(partition_rsp_by)) {
     NULL
   } else {
-    
     values <- lapply(split(col_by, partition_rsp_by, drop = FALSE),
       function(x) {
         
@@ -296,7 +289,7 @@ t_rsp <- function(
       }
     )
     
-    #Display full labels for responses in controlled codelist 
+    # Display full labels for responses in controlled codelist 
     rsp_full_label <- c(CR          = "Complete Response (CR)",
                         PR          = "Partial Response (PR)",
                         SD          = "Stable Disease (SD)",
@@ -324,7 +317,6 @@ t_rsp <- function(
     stack_rtables_l(tbls_part) 
   }
   
-  
   #--- Footer section, if any for notes on stratification ---#
   tbl_footer <- if (is.null(strata_data)) {
      NULL
@@ -336,7 +328,6 @@ t_rsp <- function(
                              paste(paste(names(strata_data)[-(n_strata)], collapse = ", "), "and", names(strata_data)[(n_strata)]))
     )))
   }
-  
   
   tbl <- stack_rtables(
     tbl_response,
@@ -358,14 +349,13 @@ t_rsp <- function(
 #' @noRd
 #' 
 #' @examples 
-#' 
 #' odds.ratio(table(mtcars$vs, mtcars$am))
 #' odds.ratio(matrix(c(12,6,7,7), nrow=2, byrow=T), conf.level = 0.90)
 #' 
 odds.ratio <- function(x, conf.level=0.95) {
 
   theta <- x[1,1] * x[2,2] / ( x[2,1] * x[1,2] )
-  #Asymptotic standard error
+  # Asymptotic standard error
   ASE <- sqrt(sum(1/x))
   CI <- exp(log(theta) + c(-1,1) * qnorm(0.5*(1+conf.level)) * ASE )
   

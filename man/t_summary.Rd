@@ -32,6 +32,5 @@ with(ADSL, t_summary(AGE > 65, ARMCD))
 
 }
 \seealso{
-\code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
-  \code{\link{t_summary.boolean}}, \code{\link{t_summary_by}}
+\code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}}, \code{\link{t_summary_by}}
 }

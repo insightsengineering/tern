@@ -5,16 +5,13 @@
 #' 
 #' @param fit_km a class \code{\link{survfit}} object.
 #' 
-#' 
 #' @template author_wangh107
 #' 
 #' @import rtables
 #' 
 #' @export
 #' 
-#' 
-#' @examples 
-#' 
+#' @examples
 #' OS <- data.frame(
 #'   AVAL = abs(rnorm(200)), 
 #'   CNSR = sample(c(0, 1), 200, TRUE), 

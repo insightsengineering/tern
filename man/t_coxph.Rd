@@ -16,7 +16,6 @@ An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
 object for further annotation on top of Kaplan-Meier grob
 }
 \examples{
-
 OS <- data.frame(
   AVAL = abs(rnorm(200)), 
   CNSR = sample(c(0, 1), 200, TRUE), 

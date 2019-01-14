@@ -14,7 +14,6 @@
 #' @template author_wangh107
 #' 
 #' @examples 
-#' 
 #' OS <- data.frame(
 #'   AVAL = abs(rnorm(200)), 
 #'   CNSR = sample(c(0, 1), 200, TRUE), 
@@ -36,8 +35,7 @@ t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
   
   hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
   ci <- sfit$conf.int[, c("lower .95", "upper .95"), drop = FALSE]  
-  pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
-  
+  pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]
   
   info <- cbind(hr, ci, pvalues)
   sinfo <- split(as.data.frame(info), 1:nrow(info))
@@ -55,5 +53,3 @@ t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
   )
   
 }
-
-

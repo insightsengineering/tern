@@ -11,7 +11,6 @@
 #' (CMT01, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 #'
-#' 
 #' @inheritParams lt_events_per_term_id_2
 #' @param terms character or factor vector, or dataframe to represent events information; 
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
@@ -45,62 +44,49 @@
 #' @template author_wangh107
 #' @template author_qit3
 #'  
-#'  
-#' @examples 
-#'
+#' @examples
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radsl(10, seed = 1)
-#' AAE <- radae(ASL, 4, seed = 2)
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) %>%
-#'   var_relabel(
-#'     AEBODSYS = 'MedDRA System Organ Class',
-#'     AEDECOD = 'MedDRA Preferred Term',
-#'     AETOXGR = 'GRADE'
-#' )
+#' ADSL <- radsl(10, seed = 1)
+#' ADAE <- radae(ADSL, 4, seed = 2)
 #' 
 #' t_events_per_term_id(
-#'   terms = ANL$AEDECOD,
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = NULL,
 #'   event_type = "adverse event"
 #' )
 #' 
 #' t_events_per_term_id(
-#'   terms = ANL$AEDECOD,
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   event_type = "adverse event"
 #' )
 #' 
 #' t_events_per_term_id(
-#'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+#'   id = ADAE$USUBJID,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients"
 #' )
 #' 
-#' 
-#' ASL <- radsl(10, seed = 1)
-#' ACM <- radcm(ASL, 5, seed = 4)
-#' ANL <- left_join(ACM, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) %>%
-#'        filter(CMTIREL == "CONCOMITANT") %>%
-#'   var_relabel(
-#'     CMCLAS = 'Medication Class',
-#'     CMDECOD = 'Standardized Medication Name'
-#' )    
+#' ADSL <- radsl(10, seed = 1)
+#' ADCM <- radcm(ADSL, 5, seed = 4)
+#' ADCM <- ADCM %>%
+#'        filter(ATIREL == "CONCOMITANT")
+#'        
 #' t_events_per_term_id(
-#'   terms = ANL[, c("CMCLAS", "CMDECOD")],
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADCM[, c("CMCLAS", "CMDECOD")],
+#'   id = ADCM$USUBJID,
+#'   col_by = ADCM$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   event_type = "treatment"
 #' ) 
@@ -175,8 +161,6 @@ t_events_per_term_id <- function(terms, id, col_by, col_N, total = "All Patients
   recursive_stack_rtables(tbls)    
   
 }
-
-
 
 # Elementary Tables Used for AE tables ----
 #' Count Unique Elements Per Cell
@@ -260,7 +244,6 @@ t_count_unique <- function(x, col_by, col_N, na.rm = TRUE,
 #'  col_N = c(2, 4, 10)
 #' )
 #' 
-#' 
 #' t_events_summary(
 #'  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
 #'  id = c(1, 4, 2, 3, 3),
@@ -269,13 +252,13 @@ t_count_unique <- function(x, col_by, col_N, na.rm = TRUE,
 #'  total_events = NULL
 #' )
 #' 
-#' 
 #' t_events_summary(
 #'  term = NULL,
 #'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
 #'  col_N = c(2, 4, 10)
 #' )
+#' 
 t_events_summary <- function(term, 
                              id, 
                              col_by, 
@@ -341,7 +324,6 @@ t_events_summary <- function(term,
   tbl
 }
 
-
 # Create Nested Lists of Tables that Compose Events tables ----
 #' List of Events Terms Tables 
 #' 
@@ -385,35 +367,27 @@ t_events_summary <- function(term,
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radsl(10 , see = 4 )
-#' AAE <- radae(ASL, seed = 4 )
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) %>%
-#'   var_relabel(
-#'     AEBODSYS = 'MedDRA System Organ Class',
-#'     AEDECOD = 'MedDRA Preferred Term',
-#'     AETOXGR = 'GRADE'
-#' )
+#' ADSL <- radsl(10 , see = 4 )
+#' ADAE <- radae(ADSL, seed = 4 )
 #' 
 #' l_tbls <- tern:::lt_events_per_term_id_2(
-#'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+#'   id = ADAE$USUBJID,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients"
 #' )
 #' rbindl_rtables(l_tbls)
 #' 
 #' l_tbls <- tern:::lt_events_per_term_id_2(
-#'   terms = ANL[, c("AEBODSYS", "AEDECOD")],
-#'   id = ANL$USUBJID,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+#'   id = ADAE$USUBJID,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = NULL
 #' )
 #' rbindl_rtables(l_tbls)
-#' 
-#' 
+#'
 lt_events_per_term_id_2 <- function(terms, 
                                     id,  
                                     col_by, 
@@ -498,19 +472,13 @@ lt_events_per_term_id_2 <- function(terms,
   tbls
 }
 
-
-
-
-
 # Helper Functions Used to Convert the Nested Lists to Single AE tables ----
-
 
 #' Remove first n rows in a list of lists of rtables
 #' 
 #' @noRd
 #' 
 #' @examples 
-#' 
 #' tbl <- rbind(
 #'    rtabulate(iris$Sepal.Length, iris$Species, mean),
 #'    rtabulate(iris$Sepal.Length, iris$Species, sd)
@@ -536,4 +504,3 @@ nl_remove_n_first_rrows <- function(x, n=1, lower_childindex_threshold = 0) {
     })
   })
 }
-
