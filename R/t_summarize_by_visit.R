@@ -27,7 +27,8 @@
 #'   factor in \code{col_by}.
 #'  
 #' @importFrom utils stack
-#' @export   
+#' 
+#' @noRd   
 #'   
 #' @examples
 #' # EXAMPLE 1
