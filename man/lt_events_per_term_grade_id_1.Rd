@@ -65,6 +65,10 @@ l_tbls <- tern:::lt_events_per_term_grade_id_1(
 rbindl_rtables(l_tbls, gap = 1)
 
 }
+\seealso{
+\code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
+  \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 

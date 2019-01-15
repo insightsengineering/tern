@@ -41,6 +41,12 @@ ADSL$AGE[1:10] <- NA
 t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
 
 }
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

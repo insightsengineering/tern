@@ -69,6 +69,7 @@ the following 9 columns:
 }
 \examples{
 library(random.cdisc.data)
+library(dplyr)
 
 ADSL <- radsl()
 ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
@@ -89,6 +90,9 @@ tbl
 Viewer(tbl)
 }
    
+}
+\seealso{
+\code{\link{t_rsp}}
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

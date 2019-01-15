@@ -7,7 +7,10 @@
 #' 
 #' @export
 #' 
-#' @seealso \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}}, \code{\link{t_summary_by}}
+#' @seealso \code{\link{t_summary.data.frame}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #' 
 #' @examples 
 #' t_summary(iris$Sepal.Length, iris$Species)
@@ -67,7 +70,11 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #' @export
 #' 
 #' @template author_waddella
-#' @seealso \code{\link{t_summary}}, \code{\link{t_summary.factor}}, \code{\link{t_summary.numeric}}
+#' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #' 
 #' @examples 
 #' # with iris data
@@ -134,6 +141,11 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
 #' @export
 #' @template author_waddella
 #' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
 #' @examples 
 #' # with iris data
 #' t_summary(iris$Sepal.Length, iris$Species)
@@ -193,6 +205,12 @@ t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ..
 #' 
 #' @export
 #' @template author_waddella
+#' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.numeric}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
 #' 
 #' @examples 
 #' # with iris data
@@ -277,6 +295,13 @@ t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, use
 #' @template author_waddella
 #' 
 #' @export
+#' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary_by}}
+#'   
+
 t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
   t_summary(as.factor(x), col_by, col_N, total, ...)
 }
@@ -293,6 +318,12 @@ t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, 
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.numeric}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
+#'   
 #' @examples 
 #' (today <- Sys.Date())
 #' (tenweeks <- seq(today, length.out=10, by="1 week")) 
@@ -342,6 +373,11 @@ t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...)
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
 #' @examples 
 #' t_summary(
 #'  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),

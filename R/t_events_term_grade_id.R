@@ -1,5 +1,5 @@
-#' STREAM AE tables ----
-#' 
+# STREAM AE tables ----
+
 #' Events by Highest Grade Table
 #' 
 #' This function summarizes number of unique subjects by highest grade and events term(s).
@@ -48,7 +48,10 @@
 #' @template author_waddella
 #' @template author_zhanc107
 #' @template author_wangh107 
-#'  
+#'
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{lt_events_per_term_grade_id_1}},
+#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}   
+#'   
 #' @examples 
 #' library(dplyr)
 #' library(random.cdisc.data)
@@ -180,7 +183,11 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' @template author_wangh107
 #' @template author_qit3
 #' 
-#' @examples
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
+#'   \code{\link{lt_events_per_term_grade_id_1}}, \code{\link{t_events_per_term_id}}   
+#' 
+#' @examples 
+#' 
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
@@ -314,6 +321,9 @@ lt_events_per_term_grade_id_2 <- function(terms,
 #' @template author_wangh107
 #' @template author_qit3
 #' 
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
+#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}   
+#'
 #' @examples 
 #' library(dplyr)
 #' library(random.cdisc.data)
@@ -429,6 +439,9 @@ lt_events_per_term_grade_id_1 <- function(term,
 #' @template author_wangh107
 #' @template author_qit3
 #' 
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
+#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{lt_events_per_term_grade_id_1}}   
+#'   
 #' @examples 
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,3),

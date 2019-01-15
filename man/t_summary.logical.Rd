@@ -44,6 +44,12 @@ with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "i
                    row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 
 }
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

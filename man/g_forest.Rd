@@ -134,6 +134,9 @@ g_forest(
 )
 
 }
+\seealso{
+\code{\link{t_forest_tte}}, \code{\link{t_forest_rsp}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

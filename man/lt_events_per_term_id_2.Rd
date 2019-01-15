@@ -70,6 +70,10 @@ l_tbls <- tern:::lt_events_per_term_id_2(
 rbindl_rtables(l_tbls)
 
 }
+\seealso{
+\code{\link{t_events_per_term_id}}, \code{\link{t_count_unique}}, 
+  \code{\link{t_events_summary}}, \code{\link{t_events_per_term_grade_id}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 

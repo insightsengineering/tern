@@ -64,6 +64,7 @@ e.g. if any terms are missing. Impute missing values before using \code{t_events
  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.
 }
 \examples{
+
 library(dplyr)
 library(random.cdisc.data)
 
@@ -110,6 +111,10 @@ t_events_per_term_id(
   event_type = "treatment"
 ) 
 
+}
+\seealso{
+\code{\link{t_count_unique}}, \code{\link{t_events_summary}},
+  \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_events_term_grade_id.R
 \name{t_events_per_term_grade_id}
 \alias{t_events_per_term_grade_id}
-\title{STREAM AE tables ----}
+\title{Events by Highest Grade Table}
 \usage{
 t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels = 1:5)
@@ -39,17 +39,14 @@ of \code{x:y}, default is \code{1:5}.}
 an \code{\link{rtable}} object.
 }
 \description{
-Events by Highest Grade Table
-}
-\details{
 This function summarizes number of unique subjects by highest grade and events term(s).
 Events \code{terms} can be one level term or two level terms (one higher level and one lower level).
 An implementation example is to apply \code{t_events_per_term_grade_id} on Adverse Event Data 
 to create Adverse Events by Highest NCI CTCAE grade table 
 (AET04, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
-
-
+}
+\details{
 \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects 
 in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset like
@@ -100,6 +97,10 @@ t_events_per_term_grade_id(
 )
 
 
+}
+\seealso{
+\code{\link{t_max_grade_per_id}}, \code{\link{lt_events_per_term_grade_id_1}},
+  \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}
 }
 \author{
 Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}

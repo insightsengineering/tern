@@ -51,6 +51,12 @@ t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
  
 }
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.numeric}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

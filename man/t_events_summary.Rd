@@ -58,6 +58,10 @@ t_events_summary(
 )
 
 }
+\seealso{
+\code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},
+  \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 

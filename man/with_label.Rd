@@ -2,10 +2,21 @@
 % Please edit documentation in R/utils.R
 \name{with_label}
 \alias{with_label}
-\title{Return an object with a particular label attribute}
+\title{Return an object with a label attribute}
 \usage{
 with_label(x, label)
 }
+\arguments{
+\item{x}{an object}
+
+\item{label}{label attribute to to attached to  \code{x}}
+}
 \description{
-Return an object with a particular label attribute
+Return an object with a label attribute
+}
+\examples{
+
+x <- with_label(c(1,2,3), label = "Test")
+label(x)
+
 }

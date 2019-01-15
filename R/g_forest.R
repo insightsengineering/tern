@@ -30,6 +30,8 @@
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{t_forest_tte}}, \code{\link{t_forest_rsp}}
+#' 
 #' @examples 
 #' library(random.cdisc.data)
 #' 

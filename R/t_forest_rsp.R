@@ -50,8 +50,11 @@
 #' 
 #' @template author_song24
 #' 
+#' @seealso \code{\link{t_rsp}}
+#'  
 #' @examples 
 #' library(random.cdisc.data)
+#' library(dplyr)
 #' 
 #' ADSL <- radsl()
 #' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)

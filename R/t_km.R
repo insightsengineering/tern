@@ -11,6 +11,8 @@
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{g_km}}
+#' 
 #' @examples
 #' ADSL <- radsl()
 #' ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {

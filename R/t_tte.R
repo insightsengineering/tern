@@ -37,6 +37,8 @@
 #' @author Mark Rothe (rothem1)
 #' @template author_waddella
 #' 
+#' @seealso \code{\link{t_forest_tte}}
+#' 
 #' @examples 
 #' library(random.cdisc.data)
 #' ADSL <- radsl()
@@ -89,7 +91,8 @@ t_tte <- function(formula,
   }
 
   check_same_N(is_event = is_event, event_descr = event_descr, arm = arm)
-  check_col_by(arm, table(arm), 2)
+  col_N <- table(arm)
+  check_col_by(arm, col_N, 2)
   if (!is.null(event_descr) && !is.factor(event_descr))
     stop("event_descr is required to be a factor") 
   if (!is.null(time_points) && !is.numeric(time_points))
@@ -98,8 +101,7 @@ t_tte <- function(formula,
   # Calculate elements of the table
 
   header <- rheader(rrowl("", levels(arm)))
-  #  rtables:::rtabulate_header(arm, length(arm))
-  
+
   # Event Table
   # ###########
   
@@ -296,7 +298,8 @@ t_tte <- function(formula,
     gap = 1
   )
   
-  tbl
+  header_add_N(tbl, col_N)
+  
 }
 
 t_tte_items <- function(formula, cl, data, env) {

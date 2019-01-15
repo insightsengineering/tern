@@ -33,6 +33,12 @@ t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
 
 }
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.numeric}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+}
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

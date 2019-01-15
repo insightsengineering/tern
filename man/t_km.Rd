@@ -30,6 +30,9 @@ t_km(fit_km)
 tbl
 
 }
+\seealso{
+\code{\link{g_km}}
+}
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}
 }
