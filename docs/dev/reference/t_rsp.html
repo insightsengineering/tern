@@ -182,9 +182,27 @@ further explanation.</p></td>
   contains missing or "Not Evaluable (NE)", 95% confidence interval will not
   be calculated.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='t_forest_rsp.html'>t_forest_rsp</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>t_rsp</span>(<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>), <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>100</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in check_col_by(col_by, min_num_levels = 2): argument "col_N" is missing, with no default</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>t_rsp</span>(<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='fl'>200</span>, <span class='fl'>TRUE</span>), <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>100</span>)))</div><div class='output co'>#&gt;                                                                         A                      B       
+#&gt;                                                                      (N=100)                (N=100)    
+#&gt; -------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                          47 (47%)               47 (47%)    
+#&gt; Non-Responders                                                      53 (53%)               53 (53%)    
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (36.94, 57.24)         (36.94, 57.24) 
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                               0       
+#&gt;   95% CI for difference (Wald without correction)                                       (-13.83, 13.83)
+#&gt;   95% CI for difference (Wald with continuity correction)                               (-13.83, 13.83)
+#&gt;   p-value (Chi-squared)                                                                        1       
+#&gt; 
+#&gt; Odds Ratio                                                                                     1       
+#&gt;   95% CI                                                                                 (0.57, 1.74)  </div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
 <span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
 
@@ -200,12 +218,31 @@ further explanation.</p></td>
  <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/droplevels'>droplevels</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(
    <span class='no'>ADRS_f</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NE"</span>)
  ))
-)</div><div class='output co'>#&gt; <span class='error'>Error in check_col_by(col_by, min_num_levels = 2): argument "col_N" is missing, with no default</span></div><div class='input'><span class='no'>tbl</span></div><div class='output co'>#&gt; function (src, ...) 
-#&gt; {
-#&gt;     UseMethod("tbl")
-#&gt; }
-#&gt; &lt;bytecode: 0x000000000ac363c8&gt;
-#&gt; &lt;environment: namespace:dplyr&gt;</div><span class='co'># NOT RUN {</span>
+)
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM A                 ARM C     
+#&gt;                                                                     (N=329)               (N=342)               (N=329)    
+#&gt; ---------------------------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                        242 (73.56%)          328 (95.91%)          320 (97.26%) 
+#&gt; Non-Responders                                                    87 (26.44%)            14 (4.09%)            9 (2.74%)   
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (68.44, 78.24)        (93.23, 97.74)        (94.87, 98.74)
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                           22.35                 23.71     
+#&gt;   95% CI for difference (Wald without correction)                                      (17.14, 27.56)        (18.63, 28.79)
+#&gt;   95% CI for difference (Wald with continuity correction)                              (16.84, 27.86)        (18.32, 29.09)
+#&gt;   p-value (Chi-squared)                                                                      0                     0       
+#&gt; 
+#&gt; Odds Ratio                                                                                  8.42                 12.78     
+#&gt;   95% CI                                                                               (4.68, 15.17)          (6.31, 25.9) 
+#&gt; 
+#&gt; Complete Response (CR)                                            178 (54.1%)           236 (69.01%)          274 (83.28%) 
+#&gt;   95% CI                                                         (48.55, 59.58)        (63.81, 73.87)        (78.8, 87.15) 
+#&gt; 
+#&gt; Partial Response (PR)                                             64 (19.45%)            92 (26.9%)           46 (13.98%)  
+#&gt;   95% CI                                                         (15.32, 24.15)        (22.27, 31.93)        (10.42, 18.21)
+#&gt; 
+#&gt; Stable Disease (SD)                                               87 (26.44%)            14 (4.09%)            9 (2.74%)   
+#&gt;   95% CI                                                         (21.76, 31.56)         (2.26, 6.77)          (1.26, 5.13) </div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span><div class='input'>
 <span class='co'># Example 2 - ARM B as reference, ARM C displayed before ARM A</span>
@@ -216,7 +253,39 @@ further explanation.</p></td>
  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>ADRS_f</span>$<span class='no'>ARMCD</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM C"</span>, <span class='st'>"ARM A"</span>)),
  <span class='kw'>partition_rsp_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>ADRS_f</span>$<span class='no'>AVALC</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>, <span class='st'>"SD"</span>, <span class='st'>"NON CR/PD"</span>, <span class='st'>"PD"</span>)),
  <span class='kw'>strata_data</span> <span class='kw'>=</span> <span class='no'>ADRS_f</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"RACE"</span>)]
-)</div><div class='output co'>#&gt; <span class='error'>Error in check_col_by(col_by, min_num_levels = 2): argument "col_N" is missing, with no default</span></div><div class='input'><span class='no'>tbl2</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'tbl2' not found</span></div><span class='co'># NOT RUN {</span>
+)
+<span class='no'>tbl2</span></div><div class='output co'>#&gt;                                                                      ARM B                 ARM C                 ARM A     
+#&gt;                                                                     (N=329)               (N=329)               (N=342)    
+#&gt; ---------------------------------------------------------------------------------------------------------------------------
+#&gt; Responders                                                        242 (73.56%)          320 (97.26%)          328 (95.91%) 
+#&gt; Non-Responders                                                    87 (26.44%)            9 (2.74%)             14 (4.09%)  
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (68.44, 78.24)        (94.87, 98.74)        (93.23, 97.74)
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                           23.71                 22.35     
+#&gt;   95% CI for difference (Wald without correction)                                      (18.63, 28.79)        (17.14, 27.56)
+#&gt;   95% CI for difference (Wald with continuity correction)                              (18.32, 29.09)        (16.84, 27.86)
+#&gt;   p-value (Cochran-Mantel-Haenszel)*                                                   &lt;5 data points        &lt;5 data points
+#&gt; 
+#&gt; Odds Ratio*                                                                            &lt;5 data points        &lt;5 data points
+#&gt;   95% CI                                                                               &lt;5 data points        &lt;5 data points
+#&gt; 
+#&gt; Complete Response (CR)                                            178 (54.1%)           274 (83.28%)          236 (69.01%) 
+#&gt;   95% CI                                                         (48.55, 59.58)        (78.8, 87.15)         (63.81, 73.87)
+#&gt; 
+#&gt; Partial Response (PR)                                             64 (19.45%)           46 (13.98%)            92 (26.9%)  
+#&gt;   95% CI                                                         (15.32, 24.15)        (10.42, 18.21)        (22.27, 31.93)
+#&gt; 
+#&gt; Stable Disease (SD)                                               87 (26.44%)            9 (2.74%)             14 (4.09%)  
+#&gt;   95% CI                                                         (21.76, 31.56)         (1.26, 5.13)          (2.26, 6.77) 
+#&gt; 
+#&gt; Non-CR or Non-PD (NON CR/PD)                                           0                     0                     0       
+#&gt;   95% CI                                                               -                     -                     -       
+#&gt; 
+#&gt; Progressive Disease (PD)                                               0                     0                     0       
+#&gt;   95% CI                                                               -                     -                     -       
+#&gt; 
+#&gt; * Model stratified by RACE</div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl2</span>)
 <span class='co'># }</span><div class='input'>
 <span class='co'># Example 3 - when all observations are non-responders</span>
@@ -225,7 +294,21 @@ further explanation.</p></td>
 <span class='kw'>arm</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>200</span>)
 )
 
-<span class='fu'>t_rsp</span>(<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ADRS</span>$<span class='no'>rsp</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>ADRS</span>$<span class='no'>arm</span>))</div><div class='output co'>#&gt; <span class='error'>Error in check_col_by(col_by, min_num_levels = 2): argument "col_N" is missing, with no default</span></div><div class='input'>
+<span class='fu'>t_rsp</span>(<span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ADRS</span>$<span class='no'>rsp</span>, <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>ADRS</span>$<span class='no'>arm</span>))</div><div class='output co'>#&gt;                                                                      A                 B     
+#&gt;                                                                   (N=200)           (N=200)  
+#&gt; ---------------------------------------------------------------------------------------------
+#&gt; Responders                                                         0 (0%)            0 (0%)  
+#&gt; Non-Responders                                                   200 (100%)        200 (100%)
+#&gt; 
+#&gt; 95% CI for Response Rates (Clopper-Pearson)                      (0, 1.83)         (0, 1.83) 
+#&gt; 
+#&gt; Difference in Response Rates (%)                                                       0     
+#&gt;   95% CI for difference (Wald without correction)                                      -     
+#&gt;   95% CI for difference (Wald with continuity correction)                              -     
+#&gt;   p-value (Chi-squared)                                                                -     
+#&gt; 
+#&gt; Odds Ratio                                                                             -     
+#&gt;   95% CI                                                                               -     </div><div class='input'>
 
 </div></pre>
   </div>
@@ -237,6 +320,8 @@ further explanation.</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

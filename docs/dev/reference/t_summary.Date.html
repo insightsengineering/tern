@@ -156,28 +156,37 @@ into columns use the <code>no_by</code> function.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='t_summary.html'>t_summary</a></code>,
+  <code><a href='t_summary.data.frame.html'>t_summary.data.frame</a></code>, <code><a href='t_summary.factor.html'>t_summary.factor</a></code>,
+  <code><a href='t_summary.logical.html'>t_summary.logical</a></code>, <code><a href='t_summary.numeric.html'>t_summary.numeric</a></code>,
+  <code><a href='t_summary.character.html'>t_summary.character</a></code>, <code><a href='t_summary_by.html'>t_summary_by</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>today</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>())</div><div class='output co'>#&gt; [1] "2019-01-14"</div><div class='input'>(<span class='no'>tenweeks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(<span class='no'>today</span>, <span class='kw'>length.out</span><span class='kw'>=</span><span class='fl'>10</span>, <span class='kw'>by</span><span class='kw'>=</span><span class='st'>"1 week"</span>))</div><div class='output co'>#&gt;  [1] "2019-01-14" "2019-01-21" "2019-01-28" "2019-02-04" "2019-02-11"
-#&gt;  [6] "2019-02-18" "2019-02-25" "2019-03-04" "2019-03-11" "2019-03-18"</div><div class='input'><span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>tenweeks</span>, <span class='fu'>no_by</span>(<span class='st'>"all"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>tenweeks</span>))</div><div class='output co'>#&gt;                                 all           
+    <pre class="examples"><div class='input'>(<span class='no'>today</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>())</div><div class='output co'>#&gt; [1] "2019-01-16"</div><div class='input'>(<span class='no'>tenweeks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(<span class='no'>today</span>, <span class='kw'>length.out</span><span class='kw'>=</span><span class='fl'>10</span>, <span class='kw'>by</span><span class='kw'>=</span><span class='st'>"1 week"</span>))</div><div class='output co'>#&gt;  [1] "2019-01-16" "2019-01-23" "2019-01-30" "2019-02-06" "2019-02-13"
+#&gt;  [6] "2019-02-20" "2019-02-27" "2019-03-06" "2019-03-13" "2019-03-20"</div><div class='input'><span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>tenweeks</span>, <span class='fu'>no_by</span>(<span class='st'>"all"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>tenweeks</span>))</div><div class='output co'>#&gt;                                 all           
 #&gt;                                (N=10)         
 #&gt; ----------------------------------------------
-#&gt; range of dates        2019-01-14 to 2019-03-18</div><div class='input'>
+#&gt; range of dates        2019-01-16 to 2019-03-20</div><div class='input'>
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>tenweeks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>LETTERS</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>4</span>)]))</div><div class='output co'>#&gt;                                  A                               B                               C                               D            
 #&gt;                                (N=3)                           (N=2)                           (N=3)                           (N=2)          
 #&gt; ----------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; range of dates        2019-01-14 to 2019-01-28        2019-02-04 to 2019-02-11        2019-02-18 to 2019-03-04        2019-03-11 to 2019-03-18</div><div class='input'>
+#&gt; range of dates        2019-01-16 to 2019-01-30        2019-02-06 to 2019-02-13        2019-02-20 to 2019-03-06        2019-03-13 to 2019-03-20</div><div class='input'>
 <span class='fu'><a href='t_summary.html'>t_summary</a></span>(<span class='no'>tenweeks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>LETTERS</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>4</span>)]), <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All"</span>)</div><div class='output co'>#&gt;                                  A                               B                               C                               D                              All           
 #&gt;                                (N=3)                           (N=2)                           (N=3)                           (N=2)                           (N=10)         
 #&gt; ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; range of dates        2019-01-14 to 2019-01-28        2019-02-04 to 2019-02-11        2019-02-18 to 2019-03-04        2019-03-11 to 2019-03-18        2019-01-14 to 2019-03-18</div><div class='input'>
+#&gt; range of dates        2019-01-16 to 2019-01-30        2019-02-06 to 2019-02-13        2019-02-20 to 2019-03-06        2019-03-13 to 2019-03-20        2019-01-16 to 2019-03-20</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

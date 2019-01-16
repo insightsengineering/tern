@@ -204,20 +204,25 @@ columns:</p>
   includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.</p></dd>
 </dl>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='t_tte.html'>t_tte</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>()
 
 <span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radtte'>radtte</a></span>(<span class='no'>ADSL</span>)
-<span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADTTE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span> <span class='kw'>&amp;</span> <span class='no'>ARMCD</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>))
+<span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ADTTE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>, <span class='no'>ARMCD</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>))
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_forest_tte</span>(
   <span class='kw'>tte</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>$<span class='no'>AVAL</span>,
   <span class='kw'>is_event</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>ADTTE_f</span>$<span class='no'>ARM</span>),
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>ADTTE_f</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>)),
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)],
   <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>,
   <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
@@ -228,13 +233,13 @@ columns:</p>
 #&gt; -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #&gt; ALL                                                    266                 143                  87                111.99               123                 103                82.46                1.05            (0.78, 1.4) 
 #&gt; 
-#&gt; SEX
+#&gt; Sex
 #&gt;   F                                                    119                  66                  43                83.54                 53                  47                69.01                0.87            (0.56, 1.35)
 #&gt;   M                                                    141                  74                  44                115.11                67                  54                84.84                1.11            (0.74, 1.66)
 #&gt;   U                                                     3                   1                   0                                       2                   1                 13.98                                  (NA, NA)  
 #&gt;   UNDIFFERENTIATED                                      3                   2                   0                                       1                   1                 82.88                                  (NA, NA)  
 #&gt; 
-#&gt; RACE
+#&gt; Race
 #&gt;   ASIAN                                                138                  75                  48                115.11                63                  53                 85.6                1.09            (0.73, 1.63)
 #&gt;   BLACK OR AFRICAN AMERICAN                             68                  40                  22                120.61                28                  24                78.51                1.09            (0.59, 2.02)
 #&gt;   WHITE                                                 39                  20                  14                53.56                 19                  15                69.01                0.87            (0.42, 1.8) 
@@ -254,6 +259,8 @@ columns:</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -205,9 +205,15 @@ e.g. if any terms are missing. Impute missing values before using <code>t_events
  reported higher level term to the least frequent one. Within each group of higher level term, 
  it sorts by decreasing frequency of lower level term. It brakes ties using <code>terms</code> names in alphabetical order.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='t_count_unique.html'>t_count_unique</a></code>, <code><a href='t_events_summary.html'>t_events_summary</a></code>,
+  <code><a href='lt_events_per_term_id_2.html'>lt_events_per_term_id_2</a></code>, <code><a href='t_events_per_term_grade_id.html'>t_events_per_term_grade_id</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
 
 <span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='fl'>10</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
@@ -324,6 +330,8 @@ e.g. if any terms are missing. Impute missing values before using <code>t_events
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
