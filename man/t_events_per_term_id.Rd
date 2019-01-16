@@ -68,56 +68,45 @@ e.g. if any terms are missing. Impute missing values before using \code{t_events
 library(dplyr)
 library(random.cdisc.data)
 
-ASL <- radsl(10, seed = 1)
-AAE <- radae(ASL, 4, seed = 2)
-
-ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
-  var_relabel(
-    AEBODSYS = 'MedDRA System Organ Class',
-    AEDECOD = 'MedDRA Preferred Term',
-    AETOXGR = 'GRADE'
-)
+ADSL <- radsl(10, seed = 1)
+ADAE <- radae(ADSL, 4, seed = 2)
 
 t_events_per_term_id(
-  terms = ANL$AEDECOD,
-  id = ANL$USUBJID,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = NULL,
   event_type = "adverse event"
 )
 
 t_events_per_term_id(
-  terms = ANL$AEDECOD,
-  id = ANL$USUBJID,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   event_type = "adverse event"
 )
 
 t_events_per_term_id(
-  terms = ANL[, c("AEBODSYS", "AEDECOD")],
-  id = ANL$USUBJID,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients"
 )
 
-
-ASL <- radsl(10, seed = 1)
-ACM <- radcm(ASL, 5, seed = 4)
-ANL <- left_join(ACM, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
-       filter(CMTIREL == "CONCOMITANT") \%>\%
-  var_relabel(
-    CMCLAS = 'Medication Class',
-    CMDECOD = 'Standardized Medication Name'
-)    
+ADSL <- radsl(10, seed = 1)
+ADCM <- radcm(ADSL, 5, seed = 4)
+ADCM <- ADCM \%>\%
+       filter(ATIREL == "CONCOMITANT")
+       
 t_events_per_term_id(
-  terms = ANL[, c("CMCLAS", "CMDECOD")],
-  id = ANL$USUBJID,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADCM[, c("CMCLAS", "CMDECOD")],
+  id = ADCM$USUBJID,
+  col_by = ADCM$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   event_type = "treatment"
 ) 

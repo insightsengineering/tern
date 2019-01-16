@@ -1,4 +1,3 @@
-
 #' Time-to-event Table as used for Forest Plot
 #'
 #'The time-to-event forest plot table summarizes time-to-event data by groups. 
@@ -19,10 +18,9 @@
 #' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
 #' @param na.omit.group is boolean. Default is \code{TRUE}, do not display NA's as a category. 
 #' @param dense_header Display the table headers in mulitple rows. Default is \code{FALSE}. 
-
+#' 
 #' @details
 #' Cox propotionl hazard model is used for hazard ratio calculation
-#'
 #'
 #' The returned table contains one row per analysis within a subgroup of data
 #' (indicated by the row name). The analysis is summarized with the following 9
@@ -42,7 +40,6 @@
 #'   we can infer that the true treatment effect lies in between. If the 95% confidence interval 
 #'   includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
 #' }
-#'
 #' 
 #' @export
 #' 
@@ -51,22 +48,19 @@
 #' @seealso \code{\link{t_tte}}
 #' 
 #' @examples 
-#' 
 #' library(random.cdisc.data)
+#' library(dplyr)
 #' 
-#' ASL <- radsl()
-#' ATE <- radte(ADSL = ASL)
+#' ADSL <- radsl()
 #' 
-#' ATE_f <- subset(ATE, PARAMCD == "OS" & ARM %in% c("ARM B", "ARM A")) 
-#' 
-#' ANL <- merge(ASL[, c("USUBJID","SEX", "RACE")], ATE_f,by="USUBJID")  
-#' 
+#' ADTTE <- radtte(ADSL)
+#' ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) 
 #' 
 #' tbl <- t_forest_tte(
-#'   tte = ANL$AVAL,
-#'   is_event = ANL$CNSR == 0,
-#'   col_by = factor(ANL$ARM), 
-#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+#'   tte = ADTTE_f$AVAL,
+#'   is_event = ADTTE_f$CNSR == 0,
+#'   col_by = factor(ADTTE_f$ARM), 
+#'   group_data = ADTTE_f[, c("SEX", "RACE")],
 #'   ties = "exact",
 #'   dense_header = TRUE
 #' )
@@ -266,8 +260,11 @@ survival_results <- function(data, ties){
 }
 
 format_survival_analysis <- function(x) {
-  format.hr <- ifelse(!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9, ">999.9",  "xx.xx")
-  format.ci <- ifelse(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
+  format.hr <- if(!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9) ">999.9" else  "xx.xx"
+  
+  format.ci <- if(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9)
+    sprintf_format("(%.2f, >999.9)") else "(xx.xx, xx.xx)"
+  
   list(
     rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
     rcell(x[["ref_n"]], "xx"),
@@ -277,6 +274,7 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
     rcell(x[["cox_hr"]], format.hr),
-    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = eval(format.ci))
+    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = format.ci)
   )
+
 }

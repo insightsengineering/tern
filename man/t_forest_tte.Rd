@@ -41,7 +41,6 @@ from a Cox proportional hazard model.
 \details{
 Cox propotionl hazard model is used for hazard ratio calculation
 
-
 The returned table contains one row per analysis within a subgroup of data
 (indicated by the row name). The analysis is summarized with the following 9
 columns:
@@ -62,22 +61,19 @@ columns:
 }
 }
 \examples{
-
 library(random.cdisc.data)
+library(dplyr)
 
-ASL <- radsl()
-ATE <- radte(ADSL = ASL)
+ADSL <- radsl()
 
-ATE_f <- subset(ATE, PARAMCD == "OS" & ARM \%in\% c("ARM B", "ARM A")) 
-
-ANL <- merge(ASL[, c("USUBJID","SEX", "RACE")], ATE_f,by="USUBJID")  
-
+ADTTE <- radtte(ADSL)
+ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD \%in\% c("ARM B", "ARM A")) 
 
 tbl <- t_forest_tte(
-  tte = ANL$AVAL,
-  is_event = ANL$CNSR == 0,
-  col_by = factor(ANL$ARM), 
-  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+  tte = ADTTE_f$AVAL,
+  is_event = ADTTE_f$CNSR == 0,
+  col_by = factor(ADTTE_f$ARM), 
+  group_data = ADTTE_f[, c("SEX", "RACE")],
   ties = "exact",
   dense_header = TRUE
 )

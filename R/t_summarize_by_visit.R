@@ -27,10 +27,10 @@
 #'   factor in \code{col_by}.
 #'  
 #' @importFrom utils stack
-#' @export   
-#'   
-#' @examples 
 #' 
+#' @noRd   
+#'   
+#' @examples
 #' # EXAMPLE 1
 #' ANL <- expand.grid(
 #'   USUBJID = paste0("p-",1:100),
@@ -47,43 +47,44 @@
 #' 
 #' ASL <- unique(ANL[, c("USUBJID","ARM")])
 #' 
-#' t_summarize_by_visit(data = ANL[c("AVAL")], visit = ANL$VISIT, col_by = ANL$ARM, 
-#'   id = ANL$USUBJID, col_N = table(ASL$ARM))
-#' t_summarize_by_visit(data = ANL[c("PCHG")], visit = ANL$VISIT, col_by = ANL$ARM, 
-#'   id = ANL$USUBJID, col_N = table(ASL$ARM))
+#' ADSL <- radsl()
+#' ADVS <- radvs(ADSL)
 #' 
-#' # Add label to variable instead showing variable name
-#' ANL <- var_relabel(ANL, AVAL = "Value at\nVisit",
-#'                         CHG = "Change from\nBaseline",
-#'                         PCHG = "Percent Change\nfrom Baseline")
+#' t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM, 
+#'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
+#'   
+#' t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM, 
+#'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
+#' 
+#' # DO NOT THINK WE NEED THIS BLOCK AS LABELS ALREADY AVAILABLE
+#' # ADDED THIS NOTE GIVEN FINDING OF ATTRIBUTES BEING REMOVED
+#' #Add label to variable instead showing variable name
+#' #ANL <- var_relabel(ANL, AVAL = "Value at\nVisit",
+#'  #                       CHG = "Change from\nBaseline",
+#'   #                      PCHG = "Percent Change\nfrom Baseline")
 #'                         
 #' t_summarize_by_visit(
-#'   data = ANL[c("AVAL", "CHG")],
-#'   visit = ANL$VISIT,
-#'   col_by = ANL$ARM,
-#'   id = ANL$USUBJID,
-#'   col_N = table(ASL$ARM)
+#'   data = ADVS[c("AVAL", "CHG")],
+#'   visit = ADVS$AVISIT,
+#'   col_by = ADVS$ARM,
+#'   id = ADVS$USUBJID,
+#'   col_N = table(ADSL$ARM)
 #' )
-#' 
 #' 
 #' # EXAMPLE 2
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
-#' ASL <- radsl()
-#' AQS <- radqs(ASL) %>%
-#'    filter(PARAMCD == "BFIALL") %>% 
-#'    mutate(
-#'      ARM = factor(sample(c("ARM A", "ARM B", "ARM C"), nrow(.), replace = TRUE)),
-#'      AVISIT = factor(AVISIT, levels = unique(AVISIT))
-#'    )
+#' ADSL <- radsl()
+#' ADQS <- radqs(ADSL) %>%
+#'    filter(PARAMCD == "BFIALL")
 #'
 #' tbl <- t_summarize_by_visit(
-#'   data = AQS[c("AVAL", "CHG")],
-#'   visit = AQS$AVISIT,
-#'   col_by = AQS$ARM,
-#'   id = AQS$USUBJID,
-#'   col_N = table(ASL$ARM)
+#'   data = ADQS[c("AVAL", "CHG")],
+#'   visit = ADQS$AVISIT,
+#'   col_by = ADQS$ARM,
+#'   id = ADQS$USUBJID,
+#'   col_N = table(ADSL$ARM)
 #' )
 #' tbl
 #' \dontrun{
@@ -122,9 +123,8 @@ t_summarize_by_visit <- function(data, visit, id, col_by, col_N) {
   new_colby <- paste(topcol, stack_data$ind, sep="-")
   col_by_levels <- paste(rep(topcol_label, each=subcol_n), rep(subcol_name, topcol_n), sep="-")
   col_by <- factor(new_colby, levels = col_by_levels)
-    
-
-  #Split into lists for each column
+  
+  # Split into lists for each column
   df <- data.frame(data, col_by)
   df_byv <- split(df, visit)
   
@@ -142,8 +142,7 @@ t_summarize_by_visit <- function(data, visit, id, col_by, col_N) {
   
   tbl <- rbindl_rtables(rtables_byv, gap=1)
   
-  
-  #Add top header, if more than one subcolumn add sub headers
+  # Add top header, if more than one subcolumn add sub headers
   if (subcol_n == 1) {
     header(tbl) <- rheader(
       rrowl("", lapply(topcol_label, function(x) rcell(x, colspan = subcol_n))),
@@ -160,4 +159,3 @@ t_summarize_by_visit <- function(data, visit, id, col_by, col_N) {
   tbl
   
 }
-

@@ -1,11 +1,9 @@
 #' Summarize an Object for Different Groups
 #' 
-#' 
 #' @inheritParams rtables::rtabulate.numeric
 #' @param x an object to dispatch on
 #' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
 #' @param ... arguments passed on to methods
-#' 
 #' 
 #' @export
 #' 
@@ -53,8 +51,6 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
   
 }
 
-
-
 #' Variables Summary Table
 #' 
 #' Similiar as the demographic table in STREAM
@@ -79,7 +75,6 @@ t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
 #'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
 #'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
 #'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
-#' 
 #' 
 #' @examples 
 #' # with iris data
@@ -131,9 +126,6 @@ t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, .
   
    rbindl_rtables(rtables_vars, gap = 1)
 }
-
-
-
 
 #' Summarize Numeric Variables
 #' 
@@ -401,7 +393,6 @@ t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...)
 #' with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany", 
 #'                    row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 #' 
-
 t_summary.logical <- function(x, col_by, col_N = table(col_by), total = NULL, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...) {
   
   xf <- factor(x, levels=c(TRUE, FALSE), labels=c(row.name.TRUE, row.name.FALSE))

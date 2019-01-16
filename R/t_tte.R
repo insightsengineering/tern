@@ -41,17 +41,14 @@
 #' 
 #' @examples 
 #' library(random.cdisc.data)
-#' ASL <- radsl()
-#' ATE <- radte(ADSL = ASL)
+#' ADSL <- radsl()
 #' 
-#' ATE_f <- subset(ATE, PARAMCD == "OS")
-#' ATE_f$ARM <- as.factor(ASL$ARM)
-#' ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
-#'  ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
+#' ADTTE <- radtte(ADSL)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'  
 #' tbl <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
-#'   data = ANL,
+#'   data = ADTTE_f,
 #'   event_descr = factor(EVNTDESC),
 #'   time_points = c(6, 2000),
 #'   time_unit = "month"
@@ -62,6 +59,7 @@
 #' \dontrun{
 #' Viewer(tbl)
 #' }
+#' 
 t_tte <- function(formula,
                   data,
                   event_descr,
@@ -85,7 +83,6 @@ t_tte <- function(formula,
     eval(substitute(event_descr), data, parent.frame())
   }
   
-  
   # Argument Checking
   if (length(tte) != nrow(data)) {
     stop("some of the following variable contain missing values:\n   ",
@@ -103,7 +100,6 @@ t_tte <- function(formula,
   
   # Calculate elements of the table
 
-  
   header <- rheader(rrowl("", levels(arm)))
 
   # Event Table
@@ -124,7 +120,6 @@ t_tte <- function(formula,
     rtabulate(!is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)")
   )
-  
   
   # Time to Event
   # #############
@@ -151,7 +146,6 @@ t_tte <- function(formula,
     range(x$tte[x$is_event], na.rm = TRUE)
   })
     
-  
   tbl_tte <- rtable(
     header = header,
     rrow(paste0("Time to Event (", time_unit, "s)")),
@@ -307,7 +301,6 @@ t_tte <- function(formula,
   header_add_N(tbl, col_N)
   
 }
-
 
 t_tte_items <- function(formula, cl, data, env) {
   # extract information

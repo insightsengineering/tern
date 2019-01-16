@@ -13,20 +13,16 @@
 #' 
 #' @template author_wangh107
 #' 
-#' @seealso \code{\link{t_tte}}, \code{\link{t_forest_tte}}
+#' @examples
+#' ADSL <- radsl()
+#' ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
+#'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+#' }))
 #' 
-#' @examples 
-#' 
-#' OS <- data.frame(
-#'   AVAL = abs(rnorm(200)), 
-#'   CNSR = sample(c(0, 1), 200, TRUE), 
-#'   ARM = sample(LETTERS[1:3], 200, TRUE),
-#'   SEX = sample(c("M","F"), 200, TRUE),
-#'   RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'   ECOG = sample(c(0, 1), 200, TRUE)
-#' )
+#' ADTTE <- radtte(ADSL)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
 #'                  
-#' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
+#' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
 #' tbl <- t_coxph(fit_coxph)
 #' tbl
 #' 
@@ -38,8 +34,7 @@ t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
   
   hr <- sfit$coefficients[, "exp(coef)", drop = FALSE]  
   ci <- sfit$conf.int[, c("lower .95", "upper .95"), drop = FALSE]  
-  pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]  
-  
+  pvalues <- sfit$coefficients[, "Pr(>|z|)", drop = FALSE]
   
   info <- cbind(hr, ci, pvalues)
   sinfo <- split(as.data.frame(info), 1:nrow(info))
@@ -57,5 +52,3 @@ t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model"){
   )
   
 }
-
-

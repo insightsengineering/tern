@@ -9,26 +9,26 @@
 #' @param just The justification of the text relative to its (x, y) location
 #' @param vp grid viewport object for annotating a text grob
 #' 
-#' 
 #' @template author_wangh107
 #' 
 #' @export
 #' 
 #' @examples 
 #' library(dplyr)
-#' OS <- data.frame(AVAL = abs(rnorm(200)), 
-#'                  CNSR = sample(c(0, 1), 200, TRUE), 
-#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
-#'                  SEX = sample(c("M","F"), 200, TRUE),
-#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'                  ECOG = sample(c(0, 1), 200, TRUE))
+#' library(random.cdisc.data)
+#' ADSL <- radsl()
+#' ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
+#'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+#' }))
 #' 
+#' ADTTE <- radtte(ADSL)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
 #'                                     
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
 #' 
 #' a_kmgrob <- g_km(fit_km, xticks = 0.5, draw = FALSE)
 #' 
-#' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
+#' fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
 #' cox_tbl <- t_coxph(fit_coxph)
 #' 
 #' p_tbl <- addTable(
@@ -54,5 +54,3 @@ addTable <- function(grob, tbl, x = unit(0.5, "npc") , y = unit(0.5, "npc"),
                    gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"),
                    vp = vp))
 }
-
-

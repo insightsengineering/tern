@@ -46,21 +46,18 @@ The data is split and table functions are applied to leaf nodes as follows:
 }
 }
 \examples{
-
 library(dplyr)
 library(random.cdisc.data)
 
-ASL <- radsl(10, seed = 1)
-AAE <- radae(ASL, 4, seed = 2)
-
-ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
+ADSL <- radsl(10, seed = 1)
+ADAE <- radae(ADSL, 4, seed = 2)
 
 l_tbls <- tern:::lt_events_per_term_grade_id_1(
-  term = ANL$AEDECOD,
-  id = ANL$USUBJID,
-  grade = ANL$AETOXGR,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  term = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )

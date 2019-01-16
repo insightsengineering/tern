@@ -42,7 +42,6 @@ t_events_summary(
  col_N = c(2, 4, 10)
 )
 
-
 t_events_summary(
  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
  id = c(1, 4, 2, 3, 3),
@@ -51,13 +50,13 @@ t_events_summary(
  total_events = NULL
 )
 
-
 t_events_summary(
  term = NULL,
  id = c(1, 4, 2, 3, 3),
  col_by = factor(c("A", "A", "B", "C", "C")),
  col_N = c(2, 4, 10)
 )
+
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},

@@ -70,36 +70,28 @@ grades. If data does not have any records with \code{grade} 5 and the intent
 is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 }
 \examples{
-
 library(dplyr)
 library(random.cdisc.data)
 
-ASL <- radsl(10, seed = 1)
-AAE <- radae(ASL, 4, seed = 2)
-
-ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
-  var_relabel(
-    AEBODSYS = 'MedDRA System Organ Class',
-    AEDECOD = 'MedDRA Preferred Term',
-    AETOXGR = 'GRADE'
-)
+ADSL <- radsl(10, seed = 1)
+ADAE <- radae(ADSL, 4, seed = 2)
 
 t_events_per_term_grade_id(
-  terms = ANL$AEDECOD,
-  id = ANL$USUBJID,
-  grade = ANL$AETOXGR,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )
 
 t_events_per_term_grade_id(
-  terms = ANL \%>\% select(AEBODSYS, AEDECOD),
-  id = ANL$USUBJID,
-  grade = ANL$AETOXGR,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )

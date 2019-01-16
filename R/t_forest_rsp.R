@@ -44,7 +44,6 @@
 #'   
 #' }
 #' 
-#' 
 #' @template return_rtable 
 #' 
 #' @export
@@ -57,16 +56,17 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
-#' ASL <- radsl()
-#' ARS <- radrs(ADSL = ASL)
-#' ASL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
-#' ARS_f <- subset(ARS, PARAMCD == "BESRSPI")
-#' ANL <- merge(ASL, ARS_f)
-#' ANL <- ANL %>% filter(ARM != 'C: Combination')
+#' ADSL <- radsl()
+#' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
+#' 
+#' ADRS <- radrs(ADSL)
+#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>% 
+#'   filter(ARM != 'C: Combination')
+#'   
 #' tbl <- t_forest_rsp(
-#'   rsp = ANL$AVALC %in% c("CR", "PR"),
-#'   col_by = factor(ANL$ARM), 
-#'   group_data = ANL[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
+#'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#'   col_by = factor(ADRS_f$ARM), 
+#'   group_data = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
 #' )
 #' 
 #' tbl
@@ -144,7 +144,6 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
            )) 
   }
   
-  
   tbl_group_data <- if (is.null(group_data)) {
     NULL
   } else {
@@ -197,7 +196,7 @@ t_forest_rsp <- function(rsp, col_by, group_data = NULL,
 #' 
 glm_results <- function(data){
   
-  #Response Rate
+  # Response Rate
   resp_n <- setNames(table(data$arm), c("resp_ref_n", "resp_comp_n"))
   
   tbl_freq <- table(data$response,data$arm)
@@ -206,7 +205,7 @@ glm_results <- function(data){
   if (length(resp_ref_event)==0) resp_ref_event = 0
   if (length(resp_comp_event)==0) resp_comp_event = 0
   
-  #Logistic Model
+  # Logistic Model
   if (length(levels(factor(data$arm))) == 2) {
     glm_fit <- try(
       glm(response ~ arm, family=binomial(link='logit'), data = data)
@@ -248,8 +247,9 @@ glm_results <- function(data){
 }
 
 format_logistic <- function(x) {
-  format.or <- ifelse(!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9, ">999.9",  "xx.xx")
-  format.ci <- ifelse(!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
+  format.or <- if(!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9) ">999.9" else "xx.xx"
+  format.ci <- if(!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9)
+    sprintf_format("(%.2f, >999.9)") else "(xx.xx, xx.xx)"
   list(
     rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
     rcell(x[["resp_ref_n"]], "xx"),
@@ -259,6 +259,6 @@ format_logistic <- function(x) {
     rcell(x[["resp_comp_event"]], "xx"),
     rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
     rcell(x[["glm_or"]], format = format.or),
-    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = eval(format.ci))
+    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = format.ci)
   )
 }

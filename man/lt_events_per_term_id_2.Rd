@@ -48,34 +48,26 @@ The data is split and table functions are applied to leaf nodes as follows:
 library(dplyr)
 library(random.cdisc.data)
 
-ASL <- radsl(10 , see = 4 )
-AAE <- radae(ASL, seed = 4 )
-
-ANL <- left_join(AAE, ASL \%>\% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) \%>\%
-  var_relabel(
-    AEBODSYS = 'MedDRA System Organ Class',
-    AEDECOD = 'MedDRA Preferred Term',
-    AETOXGR = 'GRADE'
-)
+ADSL <- radsl(10 , see = 4 )
+ADAE <- radae(ADSL, seed = 4 )
 
 l_tbls <- tern:::lt_events_per_term_id_2(
-  terms = ANL[, c("AEBODSYS", "AEDECOD")],
-  id = ANL$USUBJID,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = "All Patients"
 )
 rbindl_rtables(l_tbls)
 
 l_tbls <- tern:::lt_events_per_term_id_2(
-  terms = ANL[, c("AEBODSYS", "AEDECOD")],
-  id = ANL$USUBJID,
-  col_by = ANL$ARM,
-  col_N = table(ASL$ARM),
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
   total = NULL
 )
 rbindl_rtables(l_tbls)
-
 
 }
 \seealso{

@@ -40,7 +40,6 @@
 #' grades. If data does not have any records with \code{grade} 5 and the intent 
 #' is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 #' 
-#'  
 #' @return an \code{\link{rtable}} object.
 #' 
 #' @export
@@ -54,36 +53,28 @@
 #'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}   
 #'   
 #' @examples 
-#' 
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radsl(10, seed = 1)
-#' AAE <- radae(ASL, 4, seed = 2)
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID")) %>%
-#'   var_relabel(
-#'     AEBODSYS = 'MedDRA System Organ Class',
-#'     AEDECOD = 'MedDRA Preferred Term',
-#'     AETOXGR = 'GRADE'
-#' )
+#' ADSL <- radsl(10, seed = 1)
+#' ADAE <- radae(ADSL, 4, seed = 2)
 #' 
 #' t_events_per_term_grade_id(
-#'   terms = ANL$AEDECOD,
-#'   id = ANL$USUBJID,
-#'   grade = ANL$AETOXGR,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
 #' 
 #' t_events_per_term_grade_id(
-#'   terms = ANL %>% select(AEBODSYS, AEDECOD),
-#'   id = ANL$USUBJID,
-#'   grade = ANL$AETOXGR,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -150,8 +141,6 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
   
 }
 
-
-
 # Create Nested Lists of Tables that Compose Events tables ----
 
 #' List of Events Terms Tables by Highest Grade 
@@ -179,7 +168,6 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' @param grade_levels numeric, ordered values of possible of grades in a form
 #'   of \code{x:y}, default is \code{1:5}.
 #' 
-#' 
 #' @details 
 #' \if{html}{
 #' 
@@ -188,9 +176,7 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' \figure{lt_events_per_term_grade_id_2.png}{options: alt="lt_events_per_term_grade_id_2 layout"}
 #' }
 #' 
-#' 
 #' @return rtable
-#' 
 #' 
 #' @template author_waddella
 #' @template author_zhanc107
@@ -205,22 +191,19 @@ t_events_per_term_grade_id <- function(terms, id, grade, col_by, col_N, total = 
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radsl(10, seed = 1)
-#' AAE <- radae(ASL, 4, seed = 2)
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
+#' ADSL <- radsl(10, seed = 1)
+#' ADAE <- radae(ADSL, 4, seed = 2)
 #' 
 #' l_tbls <- tern:::lt_events_per_term_grade_id_2(
-#'   terms = ANL %>% select(AEBODSYS, AEDECOD),
-#'   id = ANL$USUBJID,
-#'   grade = ANL$AETOXGR,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
 #' tern:::recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
-#' 
 #'
 lt_events_per_term_grade_id_2 <- function(terms, 
                                           id, 
@@ -268,7 +251,6 @@ lt_events_per_term_grade_id_2 <- function(terms,
                      col_by = .t$col_by, stringsAsFactors = FALSE)
   }
   
-  
   # start tabulatings
   
   # create nested list with data used for creating the sub tables
@@ -287,7 +269,6 @@ lt_events_per_term_grade_id_2 <- function(terms,
     rrowl(term_label, c(list(rcell(grade_label, format="xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
   )
   
-  
   # now create the tables
   Map(function(df_terms, class_name) {
     Map(function(df_term, term_name) {
@@ -301,7 +282,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
         any_grade = "- Any Grade -"
       )
       
-      ## move rownames to column
+      # move rownames to column
       tbl <- row_names_as_col(tbl_raw)
       row.names(tbl)[1] <- term_name
       
@@ -315,7 +296,6 @@ lt_events_per_term_grade_id_2 <- function(terms,
   
 }
 
-
 #' List of Events Terms Tables By Highest Grade (One Level Term only)
 #' 
 #' \code{lt_events_per_term_grade_id_1} returns a nested list of events tables by max
@@ -327,7 +307,6 @@ lt_events_per_term_grade_id_2 <- function(terms,
 #'   are not repeated by class, only terms with count > 1 are listed per class.
 #'   \code{var_relabel} is used as the character string used as a label in the
 #'   column header for each term.
-#' 
 #' 
 #' @details 
 #' \if{html}{
@@ -346,21 +325,18 @@ lt_events_per_term_grade_id_2 <- function(terms,
 #'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}   
 #'
 #' @examples 
-#' 
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
-#' ASL <- radsl(10, seed = 1)
-#' AAE <- radae(ASL, 4, seed = 2)
-#' 
-#' ANL <- left_join(AAE, ASL %>% select(USUBJID, STUDYID, ARM), by = c("USUBJID", "STUDYID"))
+#' ADSL <- radsl(10, seed = 1)
+#' ADAE <- radae(ADSL, 4, seed = 2)
 #' 
 #' l_tbls <- tern:::lt_events_per_term_grade_id_1(
-#'   term = ANL$AEDECOD,
-#'   id = ANL$USUBJID,
-#'   grade = ANL$AETOXGR,
-#'   col_by = ANL$ARM,
-#'   col_N = table(ASL$ARM),
+#'   term = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -407,14 +383,12 @@ lt_events_per_term_grade_id_1 <- function(term,
                      col_by = .t$col_by, stringsAsFactors = FALSE)
   }
   
-  
   # start tabulating
   df_terms <- c(
     list("- Overall -" = df),
     split(df, df$term)      
   )
 
-  
   tbl_header <- rheader(
     rrowl("", c("", levels(df$col_by))),
     rrowl(term_label, c(list(rcell(grade_label, format = NULL)), setNames(as.list(col_N), NULL)), format = "(N=xx)")
@@ -440,8 +414,6 @@ lt_events_per_term_grade_id_1 <- function(term,
   }, df_terms, names(df_terms))
   
 }
-
-
 
 # Elementary Tables Used for AE tables ----
 
@@ -471,7 +443,6 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{lt_events_per_term_grade_id_1}}   
 #'   
 #' @examples 
-#' 
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,3),
 #'   id = c(1,1,1),
@@ -529,7 +500,6 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N,
     stop("grades exist that are not in grade_levels")
   
   df <- data.frame(grade, id, col_by, stringsAsFactors = FALSE)
-  
 
   df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
   
@@ -539,7 +509,7 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N,
   df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
 
   tbl_any <- if (!is.null(any_grade)) {
-    ## TODO: Heng why do we allow this (na.omit)?
+    # TODO: Heng why do we allow this (na.omit)?
     df_no_NA <- na.omit(df)
     df_no_NA_id <- df_no_NA[!duplicated(df_no_NA$id), ]    
     rtabulate(
@@ -553,7 +523,6 @@ t_max_grade_per_id <- function(grade, id, col_by, col_N,
   } else {
     NULL
   }
-  
   
   df_max_no_NA <- na.omit(df_max)
   tbl_x <- rtabulate(

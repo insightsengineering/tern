@@ -48,27 +48,23 @@ Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
 column with a single value and a column with 2 values
 }
 \examples{
-
 library(random.cdisc.data)
 
-ASL <- radsl()
-ATE <- radte(ADSL = ASL)
+ADSL <- radsl()
+ADTTE <- radtte(ADSL)
 
-ATE_f <- subset(ATE, PARAMCD == "OS" & ARM \%in\% c("ARM B", "ARM A")) 
-
-ANL <- merge(ASL[, c("USUBJID","SEX", "RACE")], ATE_f,by="USUBJID")  
-
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) 
 
 tbl <- t_forest_tte(
-  tte = ANL$AVAL,
-  is_event = ANL$CNSR == 0,
-  col_by = factor(ANL$ARM), 
-  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor)),
+  tte = ADTTE_f$AVAL,
+  is_event = ADTTE_f$CNSR == 0,
+  col_by = factor(ADTTE_f$ARM), 
+  group_data = ADTTE_f[, c("SEX", "RACE")], # note factors required
   ties = "exact",
   dense_header = TRUE
 )
 
-## note plot requires a certain width
+# note plot requires a certain width
 g_forest(
   tbl = tbl,
   col_x = 8,
@@ -82,17 +78,15 @@ g_forest(
 
 # For response table
 
-ASL <- radsl()
-ARS <- radrs(ADSL = ASL)
+ADSL <- radsl()
+ADRS <- radrs(ADSL)
 
-ARS_f <- subset(ARS, PARAMCD == "OVRINV")
-ANL <- merge(ASL[, c("USUBJID","SEX", "RACE","ARM")], ARS_f,by="USUBJID")  
-ANL <- subset(ANL,ARM \%in\% c("A: Drug X","B: Placebo"))
+ADRS_f <- subset(ADRS, PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B"))
 
 tbl <- t_forest_rsp(
-  rsp = ANL$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ANL$ARM), 
-  group_data = ANL[, c("SEX", "RACE")]
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = factor(ADRS_f$ARM), 
+  group_data = ADRS_f[, c("SEX", "RACE")]
 )
 
 tbl
@@ -107,8 +101,6 @@ g_forest(
   logx = TRUE,
   x_at = c(.1, 1, 10)
 )
-
-
 
 # Works with any rtable
 
@@ -140,8 +132,6 @@ g_forest(
   vline = 1,
   forest_header = c("Hello", "World")
 )
-
-
 
 }
 \seealso{

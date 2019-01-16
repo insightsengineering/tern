@@ -48,17 +48,14 @@ The time point analysis is based on the kaplan meier estimator.
 }
 \examples{
 library(random.cdisc.data)
-ASL <- radsl()
-ATE <- radte(ADSL = ASL)
+ADSL <- radsl()
 
-ATE_f <- subset(ATE, PARAMCD == "OS")
-ATE_f$ARM <- as.factor(ASL$ARM)
-ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
- ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
+ADTTE <- radtte(ADSL)
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
  
 tbl <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
-  data = ANL,
+  data = ADTTE_f,
   event_descr = factor(EVNTDESC),
   time_points = c(6, 2000),
   time_unit = "month"
@@ -69,6 +66,7 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
+
 }
 \seealso{
 \code{\link{t_forest_tte}}

@@ -21,6 +21,7 @@ reference:
     contents:
       - t_summary
       - t_summary.data.frame
+      - t_summary_by
       - t_forest_rsp
       - t_forest_tte
       - t_rsp
@@ -70,11 +71,6 @@ reference:
       - var_labels<-
       - var_relabel
       - var_labels_remove
-  - title: Deprecated functions
-    desc: these functions will be removed in future releases of tern
-    contents:
-      - t_summarize_variables
-      - t_summarize_by_visit
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:

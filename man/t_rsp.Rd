@@ -49,24 +49,22 @@ For the test of difference in response rates, Wald confidence
   be calculated.
 }
 \examples{
-
 t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
 
-
 library(random.cdisc.data)
-ASL <- radsl(N = 1000)
+ADSL <- radsl(N = 1000)
 
-ARS <- radrs(ADSL = ASL)
-ANL <- merge(ASL, subset(ARS, PARAMCD == "BESRSPI"))
+ADRS <- radrs(ADSL)
+ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI")
 
 # Example 1 - ARM B as reference
 #    "NON CR/PD" response category dropped from partition section since no observations
 #     model with no stratifiaction factors, Chi-square test is performed
 tbl <- t_rsp(
- rsp = ANL$AVALC \%in\% c("CR", "PR"),
- col_by = relevel(factor(ANL$ARMCD), "ARM B"),
+ rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+ col_by = relevel(factor(ADRS_f$ARMCD), "ARM B"),
  partition_rsp_by = droplevels(factor(
-   ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
+   ADRS_f$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
  ))
 )
 tbl
@@ -78,24 +76,23 @@ Viewer(tbl)
 #    "NON CR/PD" response category displayed in partition section, "NE" responses
 #     are not displayed model with two stratifiaction factors, CMH test performed
 tbl2 <- t_rsp(
- rsp = ANL$AVALC \%in\% c("CR", "PR"),
- col_by = factor(ANL$ARMCD, c("ARM B", "ARM C", "ARM A")),
- partition_rsp_by = factor(ANL$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
- strata_data = ANL[c("RACE")]
+ rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+ col_by = factor(ADRS_f$ARMCD, c("ARM B", "ARM C", "ARM A")),
+ partition_rsp_by = factor(ADRS_f$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
+ strata_data = ADRS_f[c("RACE")]
 )
 tbl2
 \dontrun{
 Viewer(tbl2)
 } 
 
-
 # Example 3 - when all observations are non-responders
-ANL <- data.frame(
+ADRS <- data.frame(
 rsp = FALSE,
 arm = rep(c("A", "B"), each = 200)
 )
 
-t_rsp(rsp = ANL$rsp, col_by = factor(ANL$arm))
+t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
 
 
 }

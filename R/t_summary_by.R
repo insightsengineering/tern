@@ -1,8 +1,5 @@
 #' Summarize an Object for Different Groups with by Variable
 #' 
-#' 
-#' Summarize an Object for Different Groups with by Variable
-#' 
 #' @inheritParams t_summary
 #' @param x vector
 #' @param by  a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define the summary sub-groups in the table.
@@ -23,7 +20,6 @@
 #'   \code{\link{t_summary.character}}
 #'   
 #' @examples 
-#' 
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
@@ -55,37 +51,33 @@
 #' ADQS <- radqs(ADSL, seed = 2)
 #' ADQS_f <- ADQS %>% filter(PARAMCD=="BFIALL")
 #' 
-#' ANL <- left_join(ADQS_f, ADSL, by = c("STUDYID", "USUBJID"))
-#' 
 #' t_summary_by(
-#'  x = ANL$AVAL,
-#'  by = ANL$AVISIT,
-#'  col_by = ANL$ARMCD,
+#'  x = ADQS_f$AVAL,
+#'  by = ADQS_f$AVISIT,
+#'  col_by = ADQS_f$ARMCD,
 #'  col_N = table(ADSL$ARMCD),
 #'  total = "All Patients"
 #' )
 #' 
-#' ANL$AVALCAT1 <- factor(ifelse(ANL$AVAL >= 0, "Positive", "Negative"), 
+#' ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"), 
 #'   levels = c("Positive", "Negative"))
-#' ANL <- var_relabel(ANL, AVALCAT1 = "Result" )  
+#' ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )  
 #' 
 #' t_summary_by(
-#'  x = ANL$AVALCAT1,
-#'  by = ANL$AVISIT,
-#'  col_by = ANL$ARMCD,
+#'  x = ADQS_f$AVALCAT1,
+#'  by = ADQS_f$AVISIT,
+#'  col_by = ADQS_f$ARMCD,
 #'  col_N = table(ADSL$ARMCD),
 #'  total = "All Patients"
 #' )
 #'
-
 t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   
   # check the arguments
   is.factor(by) || stop("by is required to be factor")
   !any(is.na(by)) || stop("no NA allowed in by")
   check_col_by(col_by, col_N, min_num_levels = 1)
-  
-  
+
   by_lbl <- label(by)
   x_lbl <- label(x)
   if(is.null(by_lbl)) by_lbl <- paste(deparse(substitute(by)), sep = "\n")
