@@ -44,7 +44,7 @@
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = factor(ADTTE_f$ARM), 
-#'   group_data = as.data.frame(lapply(ADTTE_f[, c("SEX", "RACE")], as.factor)),
+#'   group_data = ADTTE_f[, c("SEX", "RACE")], # note factors required
 #'   ties = "exact",
 #'   dense_header = TRUE
 #' )

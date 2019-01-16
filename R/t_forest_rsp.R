@@ -247,8 +247,9 @@ glm_results <- function(data){
 }
 
 format_logistic <- function(x) {
-  format.or <- ifelse(!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9, ">999.9",  "xx.xx")
-  format.ci <- ifelse(!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
+  format.or <- if(!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9) ">999.9" else "xx.xx"
+  format.ci <- if(!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9)
+    sprintf_format("(%.2f, >999.9)") else "(xx.xx, xx.xx)"
   list(
     rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
     rcell(x[["resp_ref_n"]], "xx"),
@@ -258,6 +259,6 @@ format_logistic <- function(x) {
     rcell(x[["resp_comp_event"]], "xx"),
     rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
     rcell(x[["glm_or"]], format = format.or),
-    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = eval(format.ci))
+    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = format.ci)
   )
 }

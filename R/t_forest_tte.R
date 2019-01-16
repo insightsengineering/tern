@@ -49,17 +49,18 @@
 #' 
 #' @examples 
 #' library(random.cdisc.data)
+#' library(dplyr)
 #' 
 #' ADSL <- radsl()
 #' 
 #' ADTTE <- radtte(ADSL)
-#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS" & ARMCD %in% c("ARM B", "ARM A")) 
+#' ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) 
 #' 
 #' tbl <- t_forest_tte(
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = factor(ADTTE_f$ARM), 
-#'   group_data = as.data.frame(lapply(ADTTE_f[, c("SEX", "RACE")], as.factor)),
+#'   group_data = ADTTE_f[, c("SEX", "RACE")],
 #'   ties = "exact",
 #'   dense_header = TRUE
 #' )
@@ -259,8 +260,11 @@ survival_results <- function(data, ties){
 }
 
 format_survival_analysis <- function(x) {
-  format.hr <- ifelse(!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9, ">999.9",  "xx.xx")
-  format.ci <- ifelse(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9,  expression(sprintf_format("(%.2f, >999.9)")),  expression("(xx.xx, xx.xx)"))
+  format.hr <- if(!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9) ">999.9" else  "xx.xx"
+  
+  format.ci <- if(!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9)
+    sprintf_format("(%.2f, >999.9)") else "(xx.xx, xx.xx)"
+  
   list(
     rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
     rcell(x[["ref_n"]], "xx"),
@@ -270,6 +274,7 @@ format_survival_analysis <- function(x) {
     rcell(x[["comp_events"]], "xx"),
     rcell(x[["comp_median"]], "xx.xx"),
     rcell(x[["cox_hr"]], format.hr),
-    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = eval(format.ci))
+    rcell(c(x[['cox_lcl']], x[["cox_ucl"]]), format = format.ci)
   )
+
 }
