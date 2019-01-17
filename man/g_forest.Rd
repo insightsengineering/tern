@@ -49,11 +49,14 @@ column with a single value and a column with 2 values
 }
 \examples{
 library(random.cdisc.data)
+library(dplyr)
 
 ADSL <- radsl()
 ADTTE <- radtte(ADSL)
 
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) 
+ADTTE_f <- ADTTE \%>\% 
+  filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
+  droplevels()
 
 tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
@@ -81,7 +84,9 @@ g_forest(
 ADSL <- radsl()
 ADRS <- radrs(ADSL)
 
-ADRS_f <- subset(ADRS, PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B"))
+ADRS_f <- ADRS \%>\% 
+  filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
+  droplevels()
 
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),

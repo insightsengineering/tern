@@ -16,6 +16,8 @@ An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
 object for further annotation on top of Kaplan-Meier grob
 }
 \examples{
+
+library(random.cdisc.data)
 ADSL <- radsl()
 ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x

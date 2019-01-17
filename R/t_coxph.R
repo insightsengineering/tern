@@ -14,6 +14,8 @@
 #' @template author_wangh107
 #' 
 #' @examples
+#' 
+#' library(random.cdisc.data)
 #' ADSL <- radsl()
 #' ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
 #'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x

@@ -54,7 +54,8 @@
 #' ADSL <- radsl()
 #' 
 #' ADTTE <- radtte(ADSL)
-#' ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) 
+#' ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) %>%
+#'   droplevels()  
 #' 
 #' tbl <- t_forest_tte(
 #'   tte = ADTTE_f$AVAL,

@@ -14,6 +14,8 @@ An \code{\link[rtables]{rtable}} format of KM model data for further
 annotation on top of Kaplan-Meier grob
 }
 \examples{
+
+library(random.cdisc.data)
 ADSL <- radsl()
 ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
@@ -25,8 +27,9 @@ ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
 tbl <- t_km(fit_km)
 tbl
+
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ADTTE_f, conf.type = "plain")
-t_km(fit_km)
+tbl <- t_km(fit_km)
 tbl
 
 }
