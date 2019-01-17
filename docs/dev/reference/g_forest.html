@@ -203,17 +203,20 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 
-<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>()
-<span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radtte'>radtte</a></span>(<span class='no'>ADSL</span>)
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radtte'>radtte</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADTTE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span> <span class='kw'>&amp;</span> <span class='no'>ARMCD</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>))
+<span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='no'>ADTTE</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span> <span class='kw'>&amp;</span> <span class='no'>ARMCD</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ARM B"</span>, <span class='st'>"ARM A"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARMCD</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/droplevels'>droplevels</a></span>(<span class='no'>ARMCD</span>))
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='t_forest_tte.html'>t_forest_tte</a></span>(
   <span class='kw'>tte</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>$<span class='no'>AVAL</span>,
   <span class='kw'>is_event</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>ADTTE_f</span>$<span class='no'>ARM</span>),
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>ADTTE_f</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='no'>as.factor</span>)),
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)], <span class='co'># note factors required</span>
   <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>,
   <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</div><div class='output co'>#&gt; <span class='error'>Error in time[[i]] &lt;- sort(unique(y[who, 1])): attempt to select less than one element in integerOneIndex</span></div><div class='input'>
@@ -230,10 +233,12 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
 )</div><div class='output co'>#&gt; <span class='error'>Error in g_forest(tbl = tbl, col_x = 8, col_ci = 9, vline = 1, forest_header = c("Treatement\nBetter",     "Comparison\nBetter"), xlim = c(0.1, 10), logx = TRUE, x_at = c(0.1,     1, 10)): tbl needs to be of class rtable</span></div><div class='input'>
 <span class='co'># For response table</span>
 
-<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>()
-<span class='no'>ADRS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radrs'>radrs</a></span>(<span class='no'>ADSL</span>)
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>ADRS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radrs'>radrs</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='no'>ADRS_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADRS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRINV"</span> <span class='kw'>&amp;</span> <span class='no'>ARMCD</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ARM A"</span>,<span class='st'>"ARM B"</span>))
+<span class='no'>ADRS_f</span> <span class='kw'>&lt;-</span> <span class='no'>ADRS</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OVRINV"</span> <span class='kw'>&amp;</span> <span class='no'>ARMCD</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ARM A"</span>,<span class='st'>"ARM B"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARMCD</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/droplevels'>droplevels</a></span>(<span class='no'>ARMCD</span>))
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='t_forest_rsp.html'>t_forest_rsp</a></span>(
   <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ADRS_f</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
@@ -244,23 +249,23 @@ column. If <code>NULL</code> the widths get automatically calculated.</p></td>
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                A: Drug X                                                     B: Placebo                                                                 
 #&gt; Baseline Risk Factors                                 Total n                 n               Responders          Response.Rate              n               Responders          Response.Rate         Odds Ratio             95% CI    
 #&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                     855                  408                  191                 0.47                  447                  135                  0.3                 0.49             (0.37, 0.65) 
+#&gt; ALL                                                     825                  426                  197                 0.46                  399                  111                 0.28                 0.45              (0.33, 0.6) 
 #&gt; 
-#&gt; SEX
-#&gt;   F                                                     450                  198                  92                  0.46                  252                  84                  0.33                 0.58             (0.39, 0.84) 
-#&gt;   M                                                     393                  204                  96                  0.47                  189                  51                  0.27                 0.42             (0.27, 0.63) 
-#&gt;   U                                                      9                    3                    2                  0.67                   6                    0                    0                    0              (NA, &gt;999.9) 
-#&gt;   UNDIFFERENTIATED                                       3                    3                    1                  0.33                   0                    0                   NaN                                    (NA, NA)   
+#&gt; Sex
+#&gt;   F                                                     408                  207                  98                  0.47                  201                  57                  0.28                 0.44             (0.29, 0.66) 
+#&gt;   M                                                     393                  204                  90                  0.44                  189                  51                  0.27                 0.47             (0.31, 0.71) 
+#&gt;   U                                                     15                    6                    4                  0.67                   9                    3                  0.33                 0.25             (0.02, 2.07) 
+#&gt;   UNDIFFERENTIATED                                       9                    9                    5                  0.56                   0                    0                   NaN                                    (NA, NA)   
 #&gt; 
-#&gt; RACE
-#&gt;   ASIAN                                                 453                  213                  101                 0.47                  240                  70                  0.29                 0.46             (0.31, 0.67) 
-#&gt;   BLACK OR AFRICAN AMERICAN                             213                  108                  47                  0.44                  105                  33                  0.31                 0.59             (0.34, 1.04) 
-#&gt;   WHITE                                                 144                  63                   30                  0.48                  81                   26                  0.32                 0.52             (0.26, 1.02) 
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      39                   21                   11                  0.52                  18                    5                  0.28                 0.35             (0.09, 1.29) 
-#&gt;   MULTIPLE                                               0                    0                    0                   NaN                   0                    0                   NaN                                    (NA, NA)   
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              6                    3                    2                  0.67                   3                    1                  0.33                 0.25               (0, 6.56)  
+#&gt; Race
+#&gt;   ASIAN                                                 498                  276                  128                 0.46                  222                  61                  0.27                 0.44              (0.3, 0.64) 
+#&gt;   BLACK OR AFRICAN AMERICAN                             168                  78                   39                   0.5                  90                   26                  0.29                 0.41             (0.21, 0.76) 
+#&gt;   WHITE                                                 111                  54                   21                  0.39                  57                   16                  0.28                 0.61             (0.27, 1.35) 
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      36                   12                    6                   0.5                  24                    5                  0.21                 0.26             (0.06, 1.16) 
+#&gt;   MULTIPLE                                               3                    0                    0                   NaN                   3                    2                  0.67                                    (NA, NA)   
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              6                    6                    3                   0.5                   0                    0                   NaN                                    (NA, NA)   
 #&gt;   OTHER                                                  0                    0                    0                   NaN                   0                    0                   NaN                                    (NA, NA)   
-#&gt;   UNKNOWN                                                0                    0                    0                   NaN                   0                    0                   NaN                                    (NA, NA)   </div><div class='input'>
+#&gt;   UNKNOWN                                                3                    0                    0                   NaN                   3                    1                  0.33                                    (NA, NA)   </div><div class='input'>
 <span class='fu'>g_forest</span>(
   <span class='kw'>tbl</span> <span class='kw'>=</span> <span class='no'>tbl</span>,
   <span class='kw'>col_x</span> <span class='kw'>=</span> <span class='fl'>8</span>,

@@ -207,12 +207,13 @@ the following 9 columns:</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 
-<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>()
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>ADSL</span>$<span class='st'>'FAKE Name &gt; -1.3 Flag'</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'Y'</span>, <span class='st'>'N'</span>), <span class='fl'>50</span>)
 
-<span class='no'>ADRS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radrs'>radrs</a></span>(<span class='no'>ADSL</span>)
+<span class='no'>ADRS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radrs'>radrs</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ADRS_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADRS</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"BESRSPI"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ARM</span> <span class='kw'>!=</span> <span class='st'>'C: Combination'</span>)
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>ARM</span> <span class='kw'>!=</span> <span class='st'>'C: Combination'</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/droplevels'>droplevels</a></span>(<span class='no'>ARM</span>))
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_forest_rsp</span>(
   <span class='kw'>rsp</span> <span class='kw'>=</span> <span class='no'>ADRS_f</span>$<span class='no'>AVALC</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>),
@@ -223,27 +224,27 @@ the following 9 columns:</p>
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                A: Drug X                                                     B: Placebo                                                                 
 #&gt; Baseline Risk Factors                                 Total n                 n               Responders          Response.Rate              n               Responders          Response.Rate         Odds Ratio             95% CI    
 #&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#&gt; ALL                                                     270                  132                  124                 0.94                  138                  108                 0.78                 0.23              (0.1, 0.51) 
+#&gt; ALL                                                     275                  142                  137                 0.96                  133                  87                  0.65                 0.07             (0.02, 0.17) 
 #&gt; 
 #&gt; SEX
-#&gt;   F                                                     117                  65                   59                  0.91                  52                   37                  0.71                 0.25             (0.08, 0.68) 
-#&gt;   M                                                     149                  66                   64                  0.97                  83                   68                  0.82                 0.14             (0.02, 0.53) 
-#&gt;   U                                                      3                    1                    1                    1                    2                    2                    1                    1                (NA, NA)   
-#&gt;   UNDIFFERENTIATED                                       1                    0                    0                   NaN                   1                    1                    1                                     (NA, NA)   
+#&gt;   F                                                     136                  69                   66                  0.96                  67                   44                  0.66                 0.09             (0.02, 0.27) 
+#&gt;   M                                                     131                  68                   66                  0.97                  63                   40                  0.63                 0.05             (0.01, 0.19) 
+#&gt;   U                                                      5                    2                    2                    1                    3                    3                    1                    1                (NA, NA)   
+#&gt;   UNDIFFERENTIATED                                       3                    3                    3                    1                    0                    0                   NaN                                    (NA, NA)   
 #&gt; 
 #&gt; RACE
-#&gt;   ASIAN                                                 148                  70                   67                  0.96                  78                   63                  0.81                 0.19              (0.04, 0.6) 
-#&gt;   BLACK OR AFRICAN AMERICAN                             55                   25                   23                  0.92                  30                   23                  0.77                 0.29             (0.04, 1.33) 
-#&gt;   WHITE                                                 51                   32                   30                  0.94                  19                   15                  0.79                 0.25             (0.03, 1.43) 
-#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      13                    5                    4                   0.8                   8                    5                  0.62                 0.42              (0.02, 4.9) 
-#&gt;   MULTIPLE                                               2                    0                    0                   NaN                   2                    1                   0.5                                    (NA, NA)   
-#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              0                    0                    0                   NaN                   0                    0                   NaN                                    (NA, NA)   
+#&gt;   ASIAN                                                 166                  92                   89                  0.97                  74                   51                  0.69                 0.07             (0.02, 0.23) 
+#&gt;   BLACK OR AFRICAN AMERICAN                             56                   26                   26                    1                   30                   18                   0.6                   0              (NA, &gt;999.9) 
+#&gt;   WHITE                                                 37                   18                   16                  0.89                  19                   11                  0.58                 0.17             (0.02, 0.84) 
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      12                    4                    4                    1                    8                    5                  0.62                   0              (NA, &gt;999.9) 
+#&gt;   MULTIPLE                                               1                    0                    0                   NaN                   1                    1                    1                                     (NA, NA)   
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              2                    2                    2                    1                    0                    0                   NaN                                    (NA, NA)   
 #&gt;   OTHER                                                  0                    0                    0                   NaN                   0                    0                   NaN                                    (NA, NA)   
 #&gt;   UNKNOWN                                                1                    0                    0                   NaN                   1                    1                    1                                     (NA, NA)   
 #&gt; 
 #&gt; FAKE Name &gt; -1.3 Flag
-#&gt;   N                                                     134                  62                   61                  0.98                  72                   52                  0.72                 0.04               (0, 0.22)  
-#&gt;   Y                                                     136                  70                   63                   0.9                  66                   56                  0.85                 0.62             (0.21, 1.73) </div><div class='input'>
+#&gt;   N                                                     137                  69                   67                  0.97                  68                   42                  0.62                 0.05             (0.01, 0.17) 
+#&gt;   Y                                                     138                  73                   70                  0.96                  65                   45                  0.69                  0.1              (0.02, 0.3) </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span><div class='input'>   

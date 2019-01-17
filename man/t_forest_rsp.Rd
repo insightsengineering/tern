@@ -71,13 +71,13 @@ the following 9 columns:
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl()
+ADSL <- radsl(seed = 1)
 ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 
-ADRS <- radrs(ADSL)
+ADRS <- radrs(ADSL, seed = 2)
 ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\% 
   filter(ARM != 'C: Combination') \%>\%
-  droplevels()
+  mutate(ARM = droplevels(ARM))
   
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),

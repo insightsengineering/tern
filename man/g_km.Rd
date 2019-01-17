@@ -31,12 +31,12 @@ Create a KM plot for any \code{\link[survival]{survfit}} object.
 \examples{
 library(random.cdisc.data)
 library(tern)
-ADSL <- radsl()
+ADSL <- radsl(seed = 1)
 ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
 }))
 
-ADTTE <- radtte(ADSL)
+ADTTE <- radtte(ADSL, seed = 2)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
 
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")

@@ -393,8 +393,8 @@ t_events_summary <- function(term,
 #' library(dplyr)
 #' library(random.cdisc.data)
 #' 
-#' ADSL <- radsl(10 , see = 4 )
-#' ADAE <- radae(ADSL, seed = 4 )
+#' ADSL <- radsl(10 , seed = 1)
+#' ADAE <- radae(ADSL, seed = 2)
 #' 
 #' l_tbls <- tern:::lt_events_per_term_id_2(
 #'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
