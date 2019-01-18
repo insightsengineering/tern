@@ -51,11 +51,11 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
-#' ADSL <- radsl()
+#' ADSL <- radsl(seed = 1)
 #' 
-#' ADTTE <- radtte(ADSL)
+#' ADTTE <- radtte(ADSL, seed = 2)
 #' ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) %>%
-#'   droplevels()  
+#'   mutate(ARMCD = droplevels(ARMCD))  
 #' 
 #' tbl <- t_forest_tte(
 #'   tte = ADTTE_f$AVAL,

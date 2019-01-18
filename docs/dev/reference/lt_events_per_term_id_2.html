@@ -186,8 +186,8 @@ treatment). Default is "event".</p></td>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
 
-<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='fl'>10</span> , <span class='kw'>see</span> <span class='kw'>=</span> <span class='fl'>4</span> )
-<span class='no'>ADAE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radae'>radae</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>4</span> )
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='fl'>10</span> , <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>ADAE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radae'>radae</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
 <span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_id_2.html'>lt_events_per_term_id_2</a></span>(
   <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ADAE</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"AEBODSYS"</span>, <span class='st'>"AEDECOD"</span>)],
@@ -197,26 +197,26 @@ treatment). Default is "event".</p></td>
   <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"All Patients"</span>
 )
 <span class='fu'>rbindl_rtables</span>(<span class='no'>l_tbls</span>)</div><div class='output co'>#&gt; Body System or Organ Class                                  A: Drug X             B: Placebo          C: Combination         All Patients 
-#&gt;   Dictionary-Derived Term                                     (N=2)                 (N=2)                 (N=6)                 (N=10)    
+#&gt;   Dictionary-Derived Term                                     (N=4)                 (N=5)                 (N=1)                 (N=10)    
 #&gt; ------------------------------------------------------------------------------------------------------------------------------------------
 #&gt; - Any event -
-#&gt;   Total number of patients with at least one event           2 (100%)              2 (100%)              6 (100%)             10 (100%)   
-#&gt;   Total number of events                                        7                     12                    48                    67      
+#&gt;   Total number of patients with at least one event           4 (100%)              5 (100%)              1 (100%)             10 (100%)   
+#&gt;   Total number of events                                        23                    24                    1                     48      
 #&gt; cl A
-#&gt;   Total number of patients with at least one event           1 (50%)               2 (100%)             5 (83.33%)             8 (80%)    
-#&gt;   Total number of events                                        1                     6                     10                    17      
-#&gt;   trm A_1/2                                                   0 (0%)               2 (100%)              3 (50%)               5 (50%)    
-#&gt;   trm A_2/2                                                  1 (50%)               2 (100%)             5 (83.33%)             8 (80%)    
+#&gt;   Total number of patients with at least one event           3 (75%)               2 (40%)                0 (0%)               5 (50%)    
+#&gt;   Total number of events                                        10                    5                     0                     15      
+#&gt;   trm A_1/2                                                  3 (75%)               2 (40%)                0 (0%)               5 (50%)    
+#&gt;   trm A_2/2                                                  2 (50%)               1 (20%)                0 (0%)               3 (30%)    
 #&gt; cl B
-#&gt;   Total number of patients with at least one event           1 (50%)               2 (100%)              6 (100%)              9 (90%)    
-#&gt;   Total number of events                                        5                     3                     27                    35      
-#&gt;   trm B_1/3                                                  1 (50%)                0 (0%)              5 (83.33%)             6 (60%)    
-#&gt;   trm B_2/3                                                   0 (0%)                0 (0%)              5 (83.33%)             5 (50%)    
-#&gt;   trm B_3/3                                                  1 (50%)               2 (100%)             5 (83.33%)             8 (80%)    
+#&gt;   Total number of patients with at least one event           3 (75%)               4 (80%)                0 (0%)               7 (70%)    
+#&gt;   Total number of events                                        9                     13                    0                     22      
+#&gt;   trm B_1/3                                                  1 (25%)               2 (40%)                0 (0%)               3 (30%)    
+#&gt;   trm B_2/3                                                  2 (50%)               3 (60%)                0 (0%)               5 (50%)    
+#&gt;   trm B_3/3                                                  2 (50%)               4 (80%)                0 (0%)               6 (60%)    
 #&gt; cl C
-#&gt;   Total number of patients with at least one event           1 (50%)               1 (50%)               6 (100%)              8 (80%)    
-#&gt;   Total number of events                                        1                     3                     11                    15      
-#&gt;   trm C_1/1                                                  1 (50%)               1 (50%)               6 (100%)              8 (80%)    </div><div class='input'>
+#&gt;   Total number of patients with at least one event           3 (75%)               4 (80%)               1 (100%)              8 (80%)    
+#&gt;   Total number of events                                        4                     6                     1                     11      
+#&gt;   trm C_1/1                                                  3 (75%)               4 (80%)               1 (100%)              8 (80%)    </div><div class='input'>
 <span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_id_2.html'>lt_events_per_term_id_2</a></span>(
   <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ADAE</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"AEBODSYS"</span>, <span class='st'>"AEDECOD"</span>)],
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ADAE</span>$<span class='no'>USUBJID</span>,
@@ -225,26 +225,26 @@ treatment). Default is "event".</p></td>
   <span class='kw'>total</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )
 <span class='fu'>rbindl_rtables</span>(<span class='no'>l_tbls</span>)</div><div class='output co'>#&gt; Body System or Organ Class                                  A: Drug X             B: Placebo          C: Combination
-#&gt;   Dictionary-Derived Term                                     (N=2)                 (N=2)                 (N=6)     
+#&gt;   Dictionary-Derived Term                                     (N=4)                 (N=5)                 (N=1)     
 #&gt; --------------------------------------------------------------------------------------------------------------------
 #&gt; - Any event -
-#&gt;   Total number of patients with at least one event           2 (100%)              2 (100%)              6 (100%)   
-#&gt;   Total number of events                                        7                     12                    48      
+#&gt;   Total number of patients with at least one event           4 (100%)              5 (100%)              1 (100%)   
+#&gt;   Total number of events                                        23                    24                    1       
 #&gt; cl A
-#&gt;   Total number of patients with at least one event           1 (50%)               2 (100%)             5 (83.33%)  
-#&gt;   Total number of events                                        1                     6                     10      
-#&gt;   trm A_1/2                                                   0 (0%)               2 (100%)              3 (50%)    
-#&gt;   trm A_2/2                                                  1 (50%)               2 (100%)             5 (83.33%)  
+#&gt;   Total number of patients with at least one event           3 (75%)               2 (40%)                0 (0%)    
+#&gt;   Total number of events                                        10                    5                     0       
+#&gt;   trm A_1/2                                                  3 (75%)               2 (40%)                0 (0%)    
+#&gt;   trm A_2/2                                                  2 (50%)               1 (20%)                0 (0%)    
 #&gt; cl B
-#&gt;   Total number of patients with at least one event           1 (50%)               2 (100%)              6 (100%)   
-#&gt;   Total number of events                                        5                     3                     27      
-#&gt;   trm B_1/3                                                  1 (50%)                0 (0%)              5 (83.33%)  
-#&gt;   trm B_2/3                                                   0 (0%)                0 (0%)              5 (83.33%)  
-#&gt;   trm B_3/3                                                  1 (50%)               2 (100%)             5 (83.33%)  
+#&gt;   Total number of patients with at least one event           3 (75%)               4 (80%)                0 (0%)    
+#&gt;   Total number of events                                        9                     13                    0       
+#&gt;   trm B_1/3                                                  1 (25%)               2 (40%)                0 (0%)    
+#&gt;   trm B_2/3                                                  2 (50%)               3 (60%)                0 (0%)    
+#&gt;   trm B_3/3                                                  2 (50%)               4 (80%)                0 (0%)    
 #&gt; cl C
-#&gt;   Total number of patients with at least one event           1 (50%)               1 (50%)               6 (100%)   
-#&gt;   Total number of events                                        1                     3                     11      
-#&gt;   trm C_1/1                                                  1 (50%)               1 (50%)               6 (100%)   </div><div class='input'>
+#&gt;   Total number of patients with at least one event           3 (75%)               4 (80%)               1 (100%)   
+#&gt;   Total number of events                                        4                     6                     1       
+#&gt;   trm C_1/1                                                  3 (75%)               4 (80%)               1 (100%)   </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

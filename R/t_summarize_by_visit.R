@@ -47,8 +47,8 @@
 #' 
 #' ASL <- unique(ANL[, c("USUBJID","ARM")])
 #' 
-#' ADSL <- radsl()
-#' ADVS <- radvs(ADSL)
+#' ADSL <- radsl(seed = 1)
+#' ADVS <- radvs(ADSL, seed = 2)
 #' 
 #' t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM, 
 #'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
@@ -75,8 +75,8 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
-#' ADSL <- radsl()
-#' ADQS <- radqs(ADSL) %>%
+#' ADSL <- radsl(seed = 1)
+#' ADQS <- radqs(ADSL, seed = 2) %>%
 #'    filter(PARAMCD == "BFIALL")
 #'
 #' tbl <- t_summarize_by_visit(

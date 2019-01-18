@@ -45,9 +45,9 @@
 #' t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
 #' 
 #' library(random.cdisc.data)
-#' ADSL <- radsl(N = 1000)
+#' ADSL <- radsl(N = 1000, seed = 1)
 #' 
-#' ADRS <- radrs(ADSL)
+#' ADRS <- radrs(ADSL, seed = 2)
 #' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI")
 #' 
 #' # Example 1 - ARM B as reference

@@ -41,9 +41,9 @@
 #' 
 #' @examples 
 #' library(random.cdisc.data)
-#' ADSL <- radsl()
+#' ADSL <- radsl(seed = 1)
 #' 
-#' ADTTE <- radtte(ADSL)
+#' ADTTE <- radtte(ADSL, seed = 2)
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'  
 #' tbl <- t_tte(

@@ -34,11 +34,11 @@ g_waterfall(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl()
+ADSL <- radsl(seed = 1)
 ADSL_f <- ADSL \%>\%
   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
   
-ADRS <- radrs(ADSL)
+ADRS <- radrs(ADSL, seed = 2)
 ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") \%>\% 
    mutate(pchg = rnorm(1200, 10, 50))
 

@@ -188,9 +188,9 @@ and confidence interval.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
-<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>()
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radtte'>radtte</a></span>(<span class='no'>ADSL</span>)
+<span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radtte'>radtte</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADTTE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_tte</span>(
@@ -202,44 +202,44 @@ and confidence interval.</p>
 )
 
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                             A: Drug X               B: Placebo            C: Combination 
-#&gt;                                              (N=136)                 (N=127)                 (N=137)     
+#&gt;                                              (N=142)                 (N=133)                 (N=125)     
 #&gt; ---------------------------------------------------------------------------------------------------------
-#&gt; Patients with event (%)                    93 (68.38%)             97 (76.38%)             72 (52.55%)   
+#&gt; Patients with event (%)                    97 (68.31%)             112 (84.21%)             76 (60.8%)   
 #&gt;   Earliest Contributing Event
-#&gt;     Adverse Event                               16                      18                      18       
-#&gt;     Death                                       22                      22                      8        
-#&gt;     Disease Progression                         14                      26                      17       
-#&gt;     Last Date Known To Be Alive                 21                      15                      17       
-#&gt;     Last Tumor Assessment                       20                      16                      12       
-#&gt; Patients without event (%)                 43 (31.62%)             30 (23.62%)             65 (47.45%)   
+#&gt;     Adverse Event                               23                      20                      13       
+#&gt;     Death                                       17                      18                      16       
+#&gt;     Disease Progression                         15                      19                      13       
+#&gt;     Last Date Known To Be Alive                 23                      27                      20       
+#&gt;     Last Tumor Assessment                       19                      28                      14       
+#&gt; Patients without event (%)                 45 (31.69%)             21 (15.79%)              49 (39.2%)   
 #&gt; 
 #&gt; Time to Event (months)
-#&gt;   Median                                      72.87                   78.67                   70.63      
-#&gt;     95% CI                                 (57.2, 97.1)            (62.1, 98.4)           (53.3, 101.9)  
-#&gt;   25% and 75%-ile                          41.3, 128.1             33.4, 149.7             25.2, 152.6   
-#&gt;   Range (censored)                         0.4 to 417.7            1.7 to 370.5            0.4 to 165.9  
-#&gt;   Range (event)                            0.4 to 330.7            1.6 to 466.8             0 to 316.2   
+#&gt;   Median                                      79.52                   72.34                   64.69      
+#&gt;     95% CI                                (60.6, 119.2)            (55.7, 94.9)            (54.6, 87.7)  
+#&gt;   25% and 75%-ile                          36.1, 159.8             31.8, 144.7             35.2, 150.3   
+#&gt;   Range (censored)                         0.2 to 333.3            3.7 to 318.9             0.3 to 316   
+#&gt;   Range (event)                             0.8 to 389             0.2 to 491.5              1 to 248    
 #&gt; 
 #&gt; Unstratified Analysis
-#&gt;   p-value (log-rank)                                                  0.4651                  0.8457     
+#&gt;   p-value (log-rank)                                                  0.2414                  0.3386     
 #&gt; 
-#&gt;   Hazard Ratio                                                        0.8988                  1.0315     
-#&gt;     95% CI                                                       (0.675, 1.1969)         (0.7548, 1.4095)
+#&gt;   Hazard Ratio                                                        1.1769                   1.16      
+#&gt;     95% CI                                                       (0.8959, 1.5461)        (0.8557, 1.5724)
 #&gt; 
 #&gt; Stratified Analysis
-#&gt;   p-value (log-rank)                                                  0.538                   0.9427     
+#&gt;   p-value (log-rank)                                                  0.1348                  0.3446     
 #&gt; 
-#&gt;   Hazard Ratio                                                        0.9124                  1.0115     
-#&gt;     95% CI                                                       (0.6814, 1.2217)         (0.74, 1.3827) 
+#&gt;   Hazard Ratio                                                        1.2347                  1.1591     
+#&gt;     95% CI                                                       (0.9362, 1.6283)        (0.8532, 1.5748)
 #&gt; 
 #&gt; Time Point Analysis
 #&gt;   6 months
-#&gt;     Patients remaining at risk                 125                     120                     122       
-#&gt;     Event Free Rate (%)                       96.99%                  96.82%                  97.76%     
-#&gt;       95% CI                              (94.09, 99.9)           (93.75, 99.89)           (95.26, 100)  
-#&gt;     Difference in Event Free Rate                                     -0.17                    0.77      
-#&gt;       95% CI                                                       (-4.4, 4.05)           (-3.06, 4.61)  
-#&gt;     p-value (Z-test)                                                  0.9363                  0.6923     
+#&gt;     Patients remaining at risk                 130                     127                     110       
+#&gt;     Event Free Rate (%)                       94.26%                  96.23%                  92.63%     
+#&gt;       95% CI                              (90.4, 98.12)           (92.99, 99.47)           (88, 97.27)   
+#&gt;     Difference in Event Free Rate                                      1.97                   -1.63      
+#&gt;       95% CI                                                      (-3.08, 7.01)            (-7.66, 4.4)  
+#&gt;     p-value (Z-test)                                                  0.4447                  0.5964     
 #&gt; 
 #&gt;   2000 months
 #&gt;     -- no data</div><div class='input'>

@@ -144,20 +144,22 @@ object for further annotation on top of Kaplan-Meier grob</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'>radsl</span>()
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>ADSL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>sapply</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>ADSL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) {
    <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nchar'>nchar</a></span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substr'>substr</a></span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>
 }))
 
-<span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'>radtte</span>(<span class='no'>ADSL</span>)
+<span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radtte'>radtte</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADTTE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
 <span class='no'>fit_coxph</span> <span class='kw'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span> + <span class='fu'>strata</span>(<span class='no'>RACE</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>)
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_coxph</span>(<span class='no'>fit_coxph</span>)
 <span class='no'>tbl</span></div><div class='output co'>#&gt;                                 HR                 95% CI of HR            Wald p-value  
 #&gt; -----------------------------------------------------------------------------------------
-#&gt; ARMB: Placebo                 1.3044             (0.9721, 1.7504)             0.0765     
-#&gt; ARMC: Combination             1.3344             (0.9566, 1.8614)             0.0893     </div><div class='input'>
+#&gt; ARMB: Placebo                 1.1641             (0.8792, 1.5414)             0.2888     
+#&gt; ARMC: Combination             1.1507             (0.8462, 1.5647)             0.3709     </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

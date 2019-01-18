@@ -36,12 +36,12 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
-#' ADSL <- radsl()
-#' ADTTE <- radtte(ADSL)
+#' ADSL <- radsl(seed = 1)
+#' ADTTE <- radtte(ADSL, seed = 2)
 #' 
 #' ADTTE_f <- ADTTE %>% 
 #'   filter(PARAMCD == "OS" & ARMCD %in% c("ARM B", "ARM A")) %>%
-#'   droplevels()
+#'   mutate(ARMCD = droplevels(ARMCD))
 #' 
 #' tbl <- t_forest_tte(
 #'   tte = ADTTE_f$AVAL,
@@ -66,12 +66,12 @@
 #' 
 #' # For response table
 #' 
-#' ADSL <- radsl()
-#' ADRS <- radrs(ADSL)
+#' ADSL <- radsl(seed = 1)
+#' ADRS <- radrs(ADSL, seed = 2)
 #' 
 #' ADRS_f <- ADRS %>% 
 #'   filter(PARAMCD == "OVRINV" & ARMCD %in% c("ARM A","ARM B")) %>%
-#'   droplevels()
+#'   mutate(ARMCD = droplevels(ARMCD))
 #' 
 #' tbl <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
