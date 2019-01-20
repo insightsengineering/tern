@@ -206,7 +206,7 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
 #' @param gp graphical paramter.
 #' @param vp a \code{\link{viewport}}.
 #' 
-#' @export
+#' @noRd
 #' 
 #' @examples 
 #' label <- c("a", "b", "c", "d", "T", "R", "E", "G")

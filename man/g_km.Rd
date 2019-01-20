@@ -62,20 +62,23 @@ ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
 
 p <- g_km(fit_km = fit_km)
-p
+grid.newpage()
+grid.draw(p)
 
 p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3))
-p <- p +  textGrob(label = toString(tern:::t_km(fit_km), gap = 1), 
+y <-  textGrob(label = toString(tern:::t_km(fit_km), gap = 1), 
                    x = unit(0.5, "npc"),
                    y = unit(0.9, "npc"),
                    just = c("left", "top"),
                    gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
-p <- p + textGrob(label = "ADD MORE EXAMPLE")
-p
+p <- addGrob(p, gTree(children = gList(y), vp = vpPath("mainPlot", "kmCurve", "curvePlot")))                  
+grid.newpage()
+grid.draw(p)
 
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
 p <- g_km(fit_km, xlab = "Duration (Days)", col = "green" )
-p
+grid.newpage()
+grid.draw(p)
 
 }
 \author{
