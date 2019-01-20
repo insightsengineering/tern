@@ -7,7 +7,8 @@
 g_km(fit_km, xticks = NULL, col = NA, lty = 1, lwd = 1,
   censor.show = TRUE, pch = 3, size = unit(0.5, "char"),
   title = "Kaplan - Meier Plot", xlab = "Days",
-  ylab = "Survival Probability", gp = NULL, vp = NULL, name = NULL)
+  ylab = "Survival Probability", draw = TRUE, newpage = TRUE,
+  gp = NULL, vp = NULL, name = NULL)
 }
 \arguments{
 \item{fit_km}{a class \code{\link{survfit}} object.}
@@ -32,15 +33,15 @@ g_km(fit_km, xticks = NULL, col = NA, lty = 1, lwd = 1,
 
 \item{ylab}{a string for label of y-axis.}
 
+\item{draw}{draw the plot on device.}
+
+\item{newpage}{open a new draw page.}
+
 \item{gp}{a abject of class \code{gpar}.}
 
 \item{vp}{a grid \code{viewport}.}
 
 \item{name}{A character value to uniquely identify the object.}
-
-\item{draw}{draw the plot on device.}
-
-\item{newpage}{open a new draw page.}
 }
 \description{
 Create a KM plot for any \code{\link[survival]{survfit}} object.
@@ -60,12 +61,9 @@ ATE_f <- subset(ATE, PARAMCD == "OS")
 ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
  ATE_f, by = c("USUBJID", "STUDYID"))
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
+g_km(fit_km = fit_km)
 
-p <- g_km(fit_km = fit_km)
-grid.newpage()
-grid.draw(p)
-
-p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3))
+p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3), draw = FALSE)
 y <-  textGrob(label = toString(tern:::t_km(fit_km), gap = 1), 
                    x = unit(0.5, "npc"),
                    y = unit(0.9, "npc"),
@@ -76,9 +74,7 @@ grid.newpage()
 grid.draw(p)
 
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
-p <- g_km(fit_km, xlab = "Duration (Days)", col = "green" )
-grid.newpage()
-grid.draw(p)
+g_km(fit_km, xlab = "Duration (Days)", col = "green" )
 
 }
 \author{
