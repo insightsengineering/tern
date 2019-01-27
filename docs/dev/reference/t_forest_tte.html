@@ -222,17 +222,32 @@ columns:</p>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_forest_tte</span>(
   <span class='kw'>tte</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>$<span class='no'>AVAL</span>,
   <span class='kw'>is_event</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>$<span class='no'>CNSR</span> <span class='kw'>==</span> <span class='fl'>0</span>,
-  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>ADTTE_f</span>$<span class='no'>ARM</span>),
-  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)],
+  <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>$<span class='no'>ARMCD</span>,
+  <span class='kw'>group_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/droplevels'>droplevels</a></span>(<span class='no'>ADTTE_f</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"SEX"</span>, <span class='st'>"RACE"</span>)]),
   <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"exact"</span>,
   <span class='kw'>dense_header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in time[[i]] &lt;- sort(unique(y[who, 1])): attempt to select less than one element in integerOneIndex</span></div><div class='input'>
-<span class='no'>tbl</span></div><div class='output co'>#&gt; function (src, ...) 
-#&gt; {
-#&gt;     UseMethod("tbl")
-#&gt; }
-#&gt; &lt;bytecode: 0x7fad4b47b730&gt;
-#&gt; &lt;environment: namespace:dplyr&gt;</div><div class='input'>
+)
+
+<span class='no'>tbl</span></div><div class='output co'>#&gt;                                                                                                  ARM A                                                          ARM B                                                                   
+#&gt; Baseline Risk                                          Total                  n                 Events               Median                  n                 Events               Median               Hazard                 95%     
+#&gt; Factors                                                  n                                                           (month)                                                        (month)               Ratio               Wald CI   
+#&gt; ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#&gt; ALL                                                     275                  142                  97                  79.52                 133                  112                 72.34                1.18              (0.9, 1.55) 
+#&gt; 
+#&gt; SEX
+#&gt;   F                                                     136                  69                   50                  84.28                 67                   58                  72.72                1.23              (0.83, 1.8) 
+#&gt;   M                                                     131                  68                   45                  60.7                  63                   52                  72.34                1.22             (0.82, 1.83) 
+#&gt;   U                                                      5                    2                    1                  71.55                  3                    2                  36.17                2.27             (0.19, 26.54)
+#&gt;   UNDIFFERENTIATED                                       3                    3                    1                                         0                    0                                                          (NA, NA)   
+#&gt; 
+#&gt; RACE
+#&gt;   ASIAN                                                 166                  92                   64                  70.33                 74                   63                  72.72                1.08             (0.76, 1.53) 
+#&gt;   BLACK OR AFRICAN AMERICAN                             56                   26                   17                  84.28                 30                   26                  86.22                1.43             (0.75, 2.71) 
+#&gt;   WHITE                                                 37                   18                   12                 112.19                 19                   15                  55.73                1.33              (0.61, 2.9) 
+#&gt;   AMERICAN INDIAN OR ALASKA NATIVE                      12                    4                    2                  98.66                  8                    6                  96.77                0.82             (0.15, 4.48) 
+#&gt;   MULTIPLE                                               1                    0                    0                                         1                    1                  35.03                                   (NA, NA)   
+#&gt;   NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER              2                    2                    2                 112.47                  0                    0                                                          (NA, NA)   
+#&gt;   UNKNOWN                                                1                    0                    0                                         1                    1                  70.21                                   (NA, NA)   </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>Viewer</span>(<span class='no'>tbl</span>)
 <span class='co'># }</span><div class='input'>
