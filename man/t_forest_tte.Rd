@@ -73,8 +73,8 @@ ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD \%in\% c("ARM B", "ARM A")) \%>\
 tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
-  col_by = factor(ADTTE_f$ARM), 
-  group_data = ADTTE_f[, c("SEX", "RACE")],
+  col_by = ADTTE_f$ARMCD, 
+  group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
   dense_header = TRUE
 )
