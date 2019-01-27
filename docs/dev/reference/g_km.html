@@ -125,9 +125,11 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kaplan - Meier Plot"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Days"</span>, <span class='kw'>gp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>vp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>censor.show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"char"</span>),
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kaplan - Meier Plot"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Days"</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Survival Probability"</span>, <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>newpage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>gp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>vp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,11 +144,27 @@
     </tr>
     <tr>
       <th>col</th>
-      <td><p>a vector of color for each line.</p></td>
+      <td><p>line color.</p></td>
     </tr>
     <tr>
       <th>lty</th>
-      <td><p>a vector of line type for each curve.</p></td>
+      <td><p>line type.</p></td>
+    </tr>
+    <tr>
+      <th>lwd</th>
+      <td><p>line width.</p></td>
+    </tr>
+    <tr>
+      <th>censor.show</th>
+      <td><p><code>TRUE/FALSE</code> to show censored.</p></td>
+    </tr>
+    <tr>
+      <th>pch</th>
+      <td><p>point type for censored.</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>size of censored point, a class of <code>unit</code>.</p></td>
     </tr>
     <tr>
       <th>title</th>
@@ -157,6 +175,10 @@
       <td><p>a string for label of x-axis</p></td>
     </tr>
     <tr>
+      <th>ylab</th>
+      <td><p>a string for label of y-axis.</p></td>
+    </tr>
+    <tr>
       <th>draw</th>
       <td><p>draw the plot on device.</p></td>
     </tr>
@@ -164,27 +186,50 @@
       <th>newpage</th>
       <td><p>open a new draw page.</p></td>
     </tr>
+    <tr>
+      <th>gp</th>
+      <td><p>a abject of class <code>gpar</code>.</p></td>
+    </tr>
+    <tr>
+      <th>vp</th>
+      <td><p>a grid <code>viewport</code>.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>A character value to uniquely identify the object.</p></td>
+    </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tern</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+
+
 <span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>ADSL</span>$<span class='no'>RACE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>sapply</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>ADSL</span>$<span class='no'>RACE</span>), <span class='kw'>function</span>(<span class='no'>x</span>) {
-   <span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nchar'>nchar</a></span>(<span class='no'>x</span>)<span class='kw'>&gt;</span><span class='fl'>9</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substr'>substr</a></span>(<span class='no'>x</span>, <span class='fl'>1</span>,<span class='fl'>9</span>), <span class='st'>"..."</span>) <span class='kw'>else</span> <span class='no'>x</span>
-}))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/levels'>levels</a></span>(<span class='no'>ADSL</span>$<span class='no'>RACE</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strtrim'>strtrim</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/levels'>levels</a></span>(<span class='no'>ADSL</span>$<span class='no'>RACE</span>), <span class='fl'>10</span>)
 
 <span class='no'>ADTTE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radtte'>radtte</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ADTTE_f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>ADTTE</span>, <span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"OS"</span>)
 
 <span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='no'>ARM</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ADTTE_f</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
 
-<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>)</div><div class='img'><img src='g_km-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"black"</span>, <span class='st'>"red"</span>, <span class='st'>"blue"</span>))</div><div class='img'><img src='g_km-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>fit_km</span> <span class='kw'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='no'>AVAL</span>, <span class='fl'>1</span>-<span class='no'>CNSR</span>) ~ <span class='fl'>1</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ADTTE</span>, <span class='kw'>conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>)
+<span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>)</div><div class='img'><img src='g_km-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>fit_km</span>)</div><div class='img'><img src='g_km-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>g_km</span>(<span class='kw'>fit_km</span> <span class='kw'>=</span> <span class='no'>fit_km</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"black"</span>, <span class='st'>"red"</span>, <span class='st'>"blue"</span>), <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Duration (Days)"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>)</div><div class='img'><img src='g_km-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>g_tkm</span> <span class='kw'>&lt;-</span>  <span class='fu'>textGrob</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/toString'>toString</a></span>(<span class='fu'><a href='t_km.html'>t_km</a></span>(<span class='no'>fit_km</span>), <span class='kw'>gap</span> <span class='kw'>=</span> <span class='fl'>1</span>),
+                   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1</span>, <span class='st'>"npc"</span>) - <span class='fu'>unit</span>(<span class='fl'>2</span>, <span class='st'>"lines"</span>),
+                   <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1</span>, <span class='st'>"npc"</span>) - <span class='fu'>unit</span>(<span class='fl'>2</span>, <span class='st'>"lines"</span>),
+                   <span class='kw'>just</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"right"</span>, <span class='st'>"top"</span>),
+                   <span class='kw'>gp</span> <span class='kw'>=</span> <span class='fu'>gpar</span>(<span class='kw'>fontfamily</span> <span class='kw'>=</span> <span class='st'>'mono'</span>, <span class='kw'>fontsize</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>fontface</span> <span class='kw'>=</span> <span class='st'>"bold"</span>))
+
+<span class='no'>p_t</span> <span class='kw'>&lt;-</span> <span class='fu'>addGrob</span>(<span class='no'>p</span>, <span class='fu'>gTree</span>(<span class='kw'>children</span> <span class='kw'>=</span> <span class='fu'>gList</span>(<span class='no'>g_tkm</span>),
+               <span class='kw'>vp</span> <span class='kw'>=</span> <span class='fu'>vpPath</span>(<span class='st'>"mainPlot"</span>, <span class='st'>"kmCurve"</span>, <span class='st'>"curvePlot"</span>)))
+
+<span class='fu'>grid.newpage</span>()
+<span class='fu'>grid.draw</span>(<span class='no'>p_t</span>)</div><div class='img'><img src='g_km-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>g_km</span>(<span class='no'>fit_km</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Duration (Days)"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>)</div><div class='img'><img src='g_km-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

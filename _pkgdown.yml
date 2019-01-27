@@ -58,7 +58,6 @@ reference:
       - stack_grobs
       - arrange_grobs
       - draw_grob
-      - addTable
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
