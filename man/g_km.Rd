@@ -4,26 +4,44 @@
 \alias{g_km}
 \title{Kaplan-Meier Plot}
 \usage{
-g_km(fit_km, xticks = NULL, col = NULL, lty = NULL,
-  title = "Kaplan - Meier Plot", xlab = "Days", gp = NULL,
-  vp = NULL, name = NULL, draw = TRUE, newpage = TRUE)
+g_km(fit_km, xticks = NULL, col = NA, lty = 1, lwd = 1,
+  censor.show = TRUE, pch = 3, size = unit(0.5, "char"),
+  title = "Kaplan - Meier Plot", xlab = "Days",
+  ylab = "Survival Probability", draw = TRUE, newpage = TRUE,
+  gp = NULL, vp = NULL, name = NULL)
 }
 \arguments{
 \item{fit_km}{a class \code{\link{survfit}} object.}
 
 \item{xticks}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
 
-\item{col}{a vector of color for each line.}
+\item{col}{line color.}
 
-\item{lty}{a vector of line type for each curve.}
+\item{lty}{line type.}
+
+\item{lwd}{line width.}
+
+\item{censor.show}{\code{TRUE/FALSE} to show censored.}
+
+\item{pch}{point type for censored.}
+
+\item{size}{size of censored point, a class of \code{unit}.}
 
 \item{title}{title for plot.}
 
 \item{xlab}{a string for label of x-axis}
 
+\item{ylab}{a string for label of y-axis.}
+
 \item{draw}{draw the plot on device.}
 
 \item{newpage}{open a new draw page.}
+
+\item{gp}{a abject of class \code{gpar}.}
+
+\item{vp}{a grid \code{viewport}.}
+
+\item{name}{A character value to uniquely identify the object.}
 }
 \description{
 Create a KM plot for any \code{\link[survival]{survfit}} object.
@@ -31,10 +49,11 @@ Create a KM plot for any \code{\link[survival]{survfit}} object.
 \examples{
 library(random.cdisc.data)
 library(tern)
+library(dplyr)
+
+
 ADSL <- radsl(seed = 1)
-ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
-   if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
-}))
+levels(ADSL$RACE) <- strtrim(levels(ADSL$RACE), 10)
 
 ADTTE <- radtte(ADSL, seed = 2)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
@@ -42,12 +61,23 @@ ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
 
 g_km(fit_km = fit_km)
+plot(fit_km)
 
-g_km(fit_km = fit_km, col = c("black", "red", "blue"))
- 
-fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ADTTE, conf.type = "plain")
+p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3), draw = FALSE)
 
-g_km(fit_km, xlab = "Duration (Days)", col = "blue", lty = "dashed")
+g_tkm <-  textGrob(label = toString(t_km(fit_km), gap = 1), 
+                   x = unit(1, "npc") - unit(2, "lines"),
+                   y = unit(1, "npc") - unit(2, "lines"),
+                   just = c("right", "top"),
+                   gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
+                   
+p_t <- addGrob(p, gTree(children = gList(g_tkm),
+               vp = vpPath("mainPlot", "kmCurve", "curvePlot")))
+                                 
+grid.newpage()
+grid.draw(p_t)
+
+g_km(fit_km, xlab = "Duration (Days)", col = "green")
 
 }
 \author{
