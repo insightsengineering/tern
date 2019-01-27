@@ -50,7 +50,9 @@
 #'                    just = c("right", "top"),
 #'                    gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
 #'                    
-#' p_t <- addGrob(p, gTree(children = gList(g_tkm), vp = vpPath("mainPlot", "kmCurve", "curvePlot")))                  
+#' p_t <- addGrob(p, gTree(children = gList(g_tkm),
+#'                vp = vpPath("mainPlot", "kmCurve", "curvePlot")))
+#'                                  
 #' grid.newpage()
 #' grid.draw(p_t)
 #' 

@@ -51,31 +51,33 @@ library(random.cdisc.data)
 library(tern)
 library(dplyr)
 
-ASL <- radsl(seed = 1)
-ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
-   if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
-}))
-ATE <- radte(ADSL = ASL)
 
-ATE_f <- subset(ATE, PARAMCD == "OS") 
+ADSL <- radsl(seed = 1)
+levels(ADSL$RACE) <- strtrim(levels(ADSL$RACE), 10)
 
-ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
- ATE_f, by = c("USUBJID", "STUDYID"))
-fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ANL, conf.type = "plain")
+ADTTE <- radtte(ADSL, seed = 2)
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
+
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
+
 g_km(fit_km = fit_km)
+plot(fit_km)
 
 p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3), draw = FALSE)
-y <-  textGrob(label = toString(tern:::t_km(fit_km), gap = 1), 
-                   x = unit(0.5, "npc"),
-                   y = unit(0.9, "npc"),
-                   just = c("left", "top"),
-                   gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
-p <- addGrob(p, gTree(children = gList(y), vp = vpPath("mainPlot", "kmCurve", "curvePlot")))                  
-grid.newpage()
-grid.draw(p)
 
-fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ANL, conf.type = "plain")
-g_km(fit_km, xlab = "Duration (Days)", col = "green" )
+g_tkm <-  textGrob(label = toString(t_km(fit_km), gap = 1), 
+                   x = unit(1, "npc") - unit(2, "lines"),
+                   y = unit(1, "npc") - unit(2, "lines"),
+                   just = c("right", "top"),
+                   gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
+                   
+p_t <- addGrob(p, gTree(children = gList(g_tkm),
+               vp = vpPath("mainPlot", "kmCurve", "curvePlot")))
+                                 
+grid.newpage()
+grid.draw(p_t)
+
+g_km(fit_km, xlab = "Duration (Days)", col = "green")
 
 }
 \author{
