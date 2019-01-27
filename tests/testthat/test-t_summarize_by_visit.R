@@ -1,4 +1,3 @@
-
 context("test change from baseline table")
 
 test_that("summary by visit table", {
@@ -46,22 +45,22 @@ test_that("summary by visit table", {
   
   # Viewer(tbl_stream)
   
-
+  
   library(dplyr)
   # call t_summarize_byvisit function
   df <- CO2 %>% mutate(Visit = factor(ifelse(grepl("Mn|Qn1", Plant), "Visit last", gsub("Qc|Qn|Mc", "Visit ", Plant)))) %>%
     group_by(Visit) %>% mutate(ID = 1:n()) %>% ungroup()
   
+  pop <- unique(df[, c("ID","Type")])
   tbl <- t_summarize_by_visit(data = df[c("conc", "uptake")], 
-                             visit = df$Visit, 
-                             col_by = df$Type, 
-                             id = df$ID)
+                              visit = df$Visit, 
+                              col_by = df$Type, 
+                              id = df$ID,
+                              col_N = table(pop$Type))
   
   # Viewer(tbl, tbl_stream)
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
   
   expect_true(all(comp == "."), "t_summarize_by_visit does not provide the same results as stream")
-
+  
 })
-
-

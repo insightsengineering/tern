@@ -29,7 +29,8 @@
 #' library(random.cdisc.data)
 #' library(tern)
 #' library(dplyr)
-#' ASL <- radsl()
+#' 
+#' ASL <- radsl(seed = 1)
 #' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
 #'    if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
 #' }))

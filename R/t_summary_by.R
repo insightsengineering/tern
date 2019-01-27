@@ -1,8 +1,5 @@
 #' Summarize an Object for Different Groups with by Variable
 #' 
-#' 
-#' Summarize an Object for Different Groups with by Variable
-#' 
 #' @inheritParams t_summary
 #' @param x vector
 #' @param by  a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define the summary sub-groups in the table.
@@ -11,69 +8,80 @@
 #' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @param ... arguments passed on to methods
 #' 
+#' @details
+#' For every level of the variable \code{by} a summary table using \code{\link{t_summary}} will be created.
+#' The individual tables are then stacked together.
+#' 
 #' @export
 #' 
-#' 
+#' @seealso \code{\link{t_summary}}, \code{\link{t_summary.data.frame}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}
+#'   
 #' @examples 
+#' library(dplyr)
+#' library(random.cdisc.data)
+#' 
+#' ADSL <- radsl(N = 30, seed = 1) 
 #' 
 #' t_summary_by(
-#'   x = sample(c(TRUE, FALSE), 100, TRUE),
-#'   by = factor(sample(paste("day", 1:5), 100, TRUE)),
-#'   col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE)),
-#'   col_N = table(rep(paste("ARM", LETTERS[1:3]), 10)),
-#'   total = "All Patients"
+#'  x = ADSL$SEX,
+#'  by = ADSL$COUNTRY,
+#'  col_by = ADSL$ARMCD,
+#'  col_N = table(ADSL$ARMCD),
+#'  total = "All Patients",
+#'  drop_levels = TRUE
 #' )
+#' 
+#' ADSL$SEX[1:5] <- NA
 #' 
 #' t_summary_by(
-#'   x = sample(c(TRUE, FALSE), 100, TRUE),
-#'   by = factor(sample(paste("day", 1:5), 100, TRUE)),
-#'   col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE)),
-#'   col_N = table(rep(paste("ARM", LETTERS[1:3]), 10)),
-#'   total = "All Patients",
-#'   denominator = "N"
+#'  x = ADSL$SEX,
+#'  by = ADSL$COUNTRY,
+#'  col_by = ADSL$ARMCD,
+#'  col_N = table(ADSL$ARMCD),
+#'  total = "All Patients",
+#'  drop_levels = TRUE,
+#'  useNA = "ifany"
 #' )
 #' 
+#' ADSL <- ADSL %>% select(STUDYID, USUBJID, ARMCD)
 #' 
-#' ANL <- data.frame(
-#'  aval = sample(letters[1:5], 100, TRUE),
-#'  avisit = factor(sample(c(
-#'    "Screening", "Day 5", "Day 10"
-#'  ), 100, TRUE), levels = c("Screening", "Day 5", "Day 10")),
-#'  col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE))
-#' )
-#' ANL <- var_relabel(ANL, aval = "Analysis Value", avisit = "Analysis Visit" )
-#' levels(ANL$aval) <- c(levels(ANL$aval), "z")
+#' ADQS <- radqs(ADSL, seed = 2)
+#' ADQS_f <- ADQS %>% filter(PARAMCD=="BFIALL")
 #' 
 #' t_summary_by(
-#'   x = ANL$aval,
-#'   by = ANL$avisit,
-#'   col_by = ANL$col_by,
-#'   col_N = c(10, 15, 20)
+#'  x = ADQS_f$AVAL,
+#'  by = ADQS_f$AVISIT,
+#'  col_by = ADQS_f$ARMCD,
+#'  col_N = table(ADSL$ARMCD),
+#'  total = "All Patients"
 #' )
 #' 
+#' ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"), 
+#'   levels = c("Positive", "Negative"))
+#' ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )  
+#' 
 #' t_summary_by(
-#'   x = ANL$aval,
-#'   by = ANL$avisit,
-#'   col_by = ANL$col_by,
-#'   col_N = c(10, 15, 20),
-#'   total = "All",
-#'   denominator = "N",
-#'   drop_levels = TRUE
+#'  x = ADQS_f$AVALCAT1,
+#'  by = ADQS_f$AVISIT,
+#'  col_by = ADQS_f$ARMCD,
+#'  col_N = table(ADSL$ARMCD),
+#'  total = "All Patients"
 #' )
-
-
+#'
 t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   
   # check the arguments
-  if (!is.factor(by)) stop("by is required to be factor")
-  if (any(is.na(by))) stop("no NA allowed in by")
-  
-  # paste(deparse(susbstitute(by)), sep = "\n"), ...
+  is.factor(by) || stop("by is required to be factor")
+  !any(is.na(by)) || stop("no NA allowed in by")
+  check_col_by(col_by, col_N, min_num_levels = 1)
+
   by_lbl <- label(by)
   x_lbl <- label(x)
-  if(is.null(by_lbl)) by_lbl <- ""
-  if(is.null(x_lbl)) x_lbl <- ""
-  
+  if(is.null(by_lbl)) by_lbl <- paste(deparse(substitute(by)), sep = "\n")
+  if(is.null(x_lbl)) x_lbl <- paste(deparse(substitute(x)), sep = "\n")
   
   if ( length(x)==length(by) && length(x)==length(col_by)){
     df <- data.frame(x = x, by = by, col_by = col_by, stringsAsFactors = FALSE)    
@@ -84,14 +92,21 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   # If total column is requested stack the data and change by, col_by and col_N accordingly
    if (!is.null(total) && !is.no_by(col_by)) { ## add total column
 
-     if (length(total) != 1) stop("total must be either NULL or a single string")
-     if (total %in% col_by) stop("total cannot be an level in col_by")
+     length(total)== 1 || stop("total must be either NULL or a single string")
+     !(total %in% col_by) || stop("total cannot be an level in col_by")
 
-     df <- duplicate_with_var(df, col_by = total)
-     df$col_by <- factor(df$col_by, levels = c(levels(col_by), total))
-     col_by <- df$col_by
-     by <- df$by
-     col_N <- c(col_N, sum(col_N)) 
+     # duplicate x, col_by and col_N
+     tmp1 <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+     # duplicate by variable
+     tmp2 <- add_total(x=by, col_by = col_by, total_level = total, col_N = col_N)
+
+     x <- tmp1$x
+     col_by <- tmp1$col_by
+     col_N <- tmp1$col_N
+     by <- tmp2$x
+     
+     df <- data.frame(x = x, by = by, col_by = col_by, stringsAsFactors = FALSE) 
+      
    }
   
   df_s <- split(df, by, drop = FALSE)
@@ -103,7 +118,7 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
     header(tbl) <- tbl_head
 
     # add the row name for by and indent
-    tbl <- fast_rbind(
+    tbl <- rbind(
       rtable(tbl_head,
              rrow(by_i)),
       indent_table(tbl, 1)
@@ -112,7 +127,7 @@ t_summary_by <- function(x, by, col_by, col_N, total = NULL, ...) {
   }, df_s, names(df_s))
 
   # use N= from col_N
-  tbls <- do.call(stack_rtables, tbls)
+  tbls <- rbindl_rtables(tbls, gap = 1)
 
   # append labels from X and BY to overall heading
   tbl_header <- rheader(

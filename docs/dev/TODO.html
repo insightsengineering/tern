@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Indentity function to indicate specials in formulas — arm • tern</title>
+<title>TODO for release v0.5.1 • tern</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -25,15 +25,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Indentity function to indicate specials in formulas — arm" />
-
-<meta property="og:description" content="We use arm to in tern formulas" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="TODO for release v0.5.1" />
 
 <meta name="robots" content="noindex">
 
@@ -50,7 +47,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -62,7 +59,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">tern</a>
+        <a class="navbar-link" href="index.html">tern</a>
         <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.0.3</span>
       </span>
     </div>
@@ -70,13 +67,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -86,12 +83,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/missing-data.html">Missing Data</a>
+      <a href="articles/missing-data.html">Missing Data</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -112,42 +109,44 @@
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Indentity function to indicate specials in formulas</h1>
-    
-    <div class="hidden name"><code>arm.Rd</code></div>
+      <h1>TODO for release v0.5.1</h1>
     </div>
 
-    <div class="ref-description">
-    
-    <p>We use <code>arm</code> to in tern formulas</p>
-    
-    </div>
+<div id="todo-for-release-v0-5-1" class="section level1">
 
-    <pre class="usage"><span class='fu'>arm</span>(<span class='no'>x</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>arm information</p></td>
-    </tr>
-    </table>
-    
-
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-                </ul>
-
-    <h2>Author</h2>
-    <p>boruvkaa</p>
-  </div>
+<ul>
+<li>table functions should use <code>col_N</code> arguments
+<ul>
+<li>use new <code>check_col_by</code> with <code>col_N</code> argument</li>
+</ul>
+</li>
+<li>
+<p>use <code>rbind.rtable</code> and <code>rbindl_rtables</code> with the <code>gap</code> argument instead of the <code>*stack*</code> functions in tern</p>
+<ul>
+<li>may check with <code>grep -R --include=*.R "check_col_by" ./</code>
+</li>
+</ul>
+</li>
+<li><p>use new <code>rtabulate</code> version in combination with <code>header_add_N</code></p></li>
+<li><p>use <code># TODO:</code> as a tag to mark actions or clarifications.</p></li>
+<li><p>Resolve warning Missing object imported by a ‘:::’ call: <code>rtables:::rtabulate_header</code> for <code>t_tte</code> and <code>tabulate_pairwise</code></p></li>
+<li><p>Document arguments:</p></li>
+<li>
+<code>g_km</code> ‘gp’ ‘vp’ ‘name’</li>
+<li>
+<code>t_count_unique</code> ‘na.rm’ ‘row.name’ ‘indent’</li>
+<li><p><code>with_label</code> ‘x’ ’label</p></li>
+<li>Documentation:</li>
+<li><p>add <code>@seealso</code> section to every function documentation</p></li>
+</ul>
 </div>
+
+  </div>
+
+</div>
+
 
       <footer>
       <div class="copyright">

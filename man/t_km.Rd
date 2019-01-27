@@ -15,21 +15,26 @@ annotation on top of Kaplan-Meier grob
 }
 \examples{
 
-OS <- data.frame(
-  AVAL = abs(rnorm(200)), 
-  CNSR = sample(c(0, 1), 200, TRUE), 
-  ARM = sample(LETTERS[1:3], 200, TRUE),
-  SEX = sample(c("M","F"), 200, TRUE),
-  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-  ECOG = sample(c(0, 1), 200, TRUE)
-)
+library(random.cdisc.data)
+ADSL <- radsl(seed = 1)
+ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
+   if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+}))
+
+ADTTE <- radtte(ADSL, seed = 2)
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
                  
-fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
 tbl <- t_km(fit_km)
 tbl
-fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = OS, conf.type = "plain")
-t_km(fit_km)
 
+fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ADTTE_f, conf.type = "plain")
+tbl <- t_km(fit_km)
+tbl
+
+}
+\seealso{
+\code{\link{g_km}}
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

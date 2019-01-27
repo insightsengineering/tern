@@ -37,19 +37,18 @@
 #' @author Mark Rothe (rothem1)
 #' @template author_waddella
 #' 
+#' @seealso \code{\link{t_forest_tte}}
+#' 
 #' @examples 
 #' library(random.cdisc.data)
-#' ASL <- radsl()
-#' ATE <- radte(ADSL = ASL)
+#' ADSL <- radsl(seed = 1)
 #' 
-#' ATE_f <- subset(ATE, PARAMCD == "OS")
-#' ATE_f$ARM <- as.factor(ASL$ARM)
-#' ANL <- merge(ASL[,c("USUBJID", "STUDYID", "SEX")],
-#'  ATE_f, all.x =TRUE, all.y = FALSE, by = c("USUBJID", "STUDYID"))
+#' ADTTE <- radtte(ADSL, seed = 2)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'  
 #' tbl <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
-#'   data = ANL,
+#'   data = ADTTE_f,
 #'   event_descr = factor(EVNTDESC),
 #'   time_points = c(6, 2000),
 #'   time_unit = "month"
@@ -60,6 +59,7 @@
 #' \dontrun{
 #' Viewer(tbl)
 #' }
+#' 
 t_tte <- function(formula,
                   data,
                   event_descr,
@@ -83,7 +83,6 @@ t_tte <- function(formula,
     eval(substitute(event_descr), data, parent.frame())
   }
   
-  
   # Argument Checking
   if (length(tte) != nrow(data)) {
     stop("some of the following variable contain missing values:\n   ",
@@ -92,7 +91,8 @@ t_tte <- function(formula,
   }
 
   check_same_N(is_event = is_event, event_descr = event_descr, arm = arm)
-  check_col_by(arm, 2)
+  col_N <- table(arm)
+  check_col_by(arm, col_N, 2)
   if (!is.null(event_descr) && !is.factor(event_descr))
     stop("event_descr is required to be a factor") 
   if (!is.null(time_points) && !is.numeric(time_points))
@@ -100,9 +100,8 @@ t_tte <- function(formula,
   
   # Calculate elements of the table
 
-  
-  header <- rtables:::rtabulate_header(arm, length(arm))
-  
+  header <- rheader(rrowl("", levels(arm)))
+
   # Event Table
   # ###########
   
@@ -121,7 +120,6 @@ t_tte <- function(formula,
     rtabulate(!is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)")
   )
-  
   
   # Time to Event
   # #############
@@ -148,7 +146,6 @@ t_tte <- function(formula,
     range(x$tte[x$is_event], na.rm = TRUE)
   })
     
-  
   tbl_tte <- rtable(
     header = header,
     rrow(paste0("Time to Event (", time_unit, "s)")),
@@ -287,22 +284,23 @@ t_tte <- function(formula,
 
     rbind(
       rtable(header = header, rrow("Time Point Analysis")),    
-      stack_rtables_l(tp_rtables)      
+      rbindl_rtables(tp_rtables, gap = 1)      
     )
     
   }
   ## Now Stack Tables together
-  tbl <- stack_rtables(
+  tbl <- rbind(
     tbl_event,
     tbl_tte,
     tbl_unstratified,
     tbl_stratified,
-    tbl_timepoints
+    tbl_timepoints,
+    gap = 1
   )
   
-  tbl
+  header_add_N(tbl, col_N)
+  
 }
-
 
 t_tte_items <- function(formula, cl, data, env) {
   # extract information

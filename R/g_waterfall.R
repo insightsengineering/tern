@@ -19,48 +19,46 @@
 #' @export
 #' 
 #' @examples 
-#' 
-#' 
 #' g_waterfall(height = c(3,5,-1), id = letters[1:3])
 #' 
 #' g_waterfall(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"))
 #'
-#' 
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' 
-#' ASL <- radsl()
-#' ARS <- radrs(ADSL = ASL)
-#' 
-#' ARS_f <- subset(ARS, PARAMCD == "OVRINV")
-#' 
-#' ASL_f <- ASL %>%
+#' ADSL <- radsl(seed = 1)
+#' ADSL_f <- ADSL %>%
 #'   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
-#'
-#' apchg <- ARS_f %>%
-#'   mutate(pchg = rnorm(1200, 10, 50))
-#'   # Merge pchange and besr response
-#' asld <- right_join(apchg, ASL_f %>% select(STUDYID, USUBJID, SEX, ARMCD),by="USUBJID")
+#'   
+#' ADRS <- radrs(ADSL, seed = 2)
+#' ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") %>% 
+#'    mutate(pchg = rnorm(1200, 10, 50))
 #' 
-#' 
-#' asld <- head(asld, 30)
-#' asld <- asld[!duplicated(asld$USUBJID),]#' head(asld)
+#' ADRS_f <- head(ADRS_f, 30)
+#' ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID),]
+#' head(ADRS_f)
 #' 
 #' g_waterfall(
-#'   height = asld$pchg,
-#'   id = asld$USUBJID,
-#'   col = asld$AVALC
+#'   height = ADRS_f$pchg,
+#'   id = ADRS_f$USUBJID,
+#'   col = ADRS_f$AVALC
 #' )
 #' 
 #' g_waterfall(
-#'   height = asld$pchg,
-#'   id = paste("asdfdsfdsfsd",asld$USUBJID),
-#'   col = asld$SEX
+#'   height = ADRS_f$pchg,
+#'   id = ADRS_f$USUBJID,
+#'   col = ADRS_f$AVALC
 #' )
 #' 
 #' g_waterfall(
-#'   height = asld$pchg,
-#'   id = paste("asdfdsfdsfsd",asld$USUBJID),
+#'   height = ADRS_f$pchg,
+#'   id = paste("asdfdsfdsfsd",ADRS_f$USUBJID),
+#'   col = ADRS_f$SEX
+#' )
+#' 
+#' g_waterfall(
+#'   height = ADRS_f$pchg,
+#'   id = paste("asdfdsfdsfsd",ADRS_f$USUBJID),
 #'   xlab = "ID",
 #'   ylab = "Percentage Change",
 #'   title = "Waterfall plot"
@@ -78,7 +76,6 @@ g_waterfall <- function(height, id, col=NULL, xlab=NULL, ylab=NULL, col.legend.t
   xlab <- if (is.null(xlab)) xlabel else xlab
   ylab <- if (is.null(ylab)) ylabel else ylab
   col.legend.title <- if (is.null(col.legend.title)) col.label else col.legend.title
-  
   
   plot_data <- data.frame(
     height = height,

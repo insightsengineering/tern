@@ -22,50 +22,66 @@ t_summary_by(x, by, col_by, col_N, total = NULL, ...)
 \description{
 Summarize an Object for Different Groups with by Variable
 }
+\details{
+For every level of the variable \code{by} a summary table using \code{\link{t_summary}} will be created.
+The individual tables are then stacked together.
+}
 \examples{
+library(dplyr)
+library(random.cdisc.data)
+
+ADSL <- radsl(N = 30, seed = 1) 
 
 t_summary_by(
-  x = sample(c(TRUE, FALSE), 100, TRUE),
-  by = factor(sample(paste("day", 1:5), 100, TRUE)),
-  col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE)),
-  col_N = table(rep(paste("ARM", LETTERS[1:3]), 10)),
-  total = "All Patients"
+ x = ADSL$SEX,
+ by = ADSL$COUNTRY,
+ col_by = ADSL$ARMCD,
+ col_N = table(ADSL$ARMCD),
+ total = "All Patients",
+ drop_levels = TRUE
 )
+
+ADSL$SEX[1:5] <- NA
 
 t_summary_by(
-  x = sample(c(TRUE, FALSE), 100, TRUE),
-  by = factor(sample(paste("day", 1:5), 100, TRUE)),
-  col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE)),
-  col_N = table(rep(paste("ARM", LETTERS[1:3]), 10)),
-  total = "All Patients",
-  denominator = "N"
+ x = ADSL$SEX,
+ by = ADSL$COUNTRY,
+ col_by = ADSL$ARMCD,
+ col_N = table(ADSL$ARMCD),
+ total = "All Patients",
+ drop_levels = TRUE,
+ useNA = "ifany"
 )
 
+ADSL <- ADSL \%>\% select(STUDYID, USUBJID, ARMCD)
 
-ANL <- data.frame(
- aval = sample(letters[1:5], 100, TRUE),
- avisit = factor(sample(c(
-   "Screening", "Day 5", "Day 10"
- ), 100, TRUE), levels = c("Screening", "Day 5", "Day 10")),
- col_by = factor(sample(paste("ARM", LETTERS[1:3]), 100, TRUE))
-)
-ANL <- var_relabel(ANL, aval = "Analysis Value", avisit = "Analysis Visit" )
-levels(ANL$aval) <- c(levels(ANL$aval), "z")
+ADQS <- radqs(ADSL, seed = 2)
+ADQS_f <- ADQS \%>\% filter(PARAMCD=="BFIALL")
 
 t_summary_by(
-  x = ANL$aval,
-  by = ANL$avisit,
-  col_by = ANL$col_by,
-  col_N = c(10, 15, 20)
+ x = ADQS_f$AVAL,
+ by = ADQS_f$AVISIT,
+ col_by = ADQS_f$ARMCD,
+ col_N = table(ADSL$ARMCD),
+ total = "All Patients"
 )
 
+ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"), 
+  levels = c("Positive", "Negative"))
+ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )  
+
 t_summary_by(
-  x = ANL$aval,
-  by = ANL$avisit,
-  col_by = ANL$col_by,
-  col_N = c(10, 15, 20),
-  total = "All",
-  denominator = "N",
-  drop_levels = TRUE
+ x = ADQS_f$AVALCAT1,
+ by = ADQS_f$AVISIT,
+ col_by = ADQS_f$ARMCD,
+ col_N = table(ADSL$ARMCD),
+ total = "All Patients"
 )
+
+}
+\seealso{
+\code{\link{t_summary}}, \code{\link{t_summary.data.frame}},
+  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}
 }

@@ -16,15 +16,12 @@ be used for the row name.}
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each column. If specified then
-\code{\link{col_N}()} can be used on the cell data in order to retrieve the
-column total. If \code{NULL} then no header row for the column is
-displayed.}
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
 
 \item{total}{if not \code{NULL} then it must be a string and an addition
 column will be added with the overall summaries}
 
-\item{...}{not used arguments}
+\item{...}{arguments passed on to methods}
 }
 \description{
 Similiar as the demographic table in STREAM
@@ -38,6 +35,7 @@ Every variable in \code{x} will be mapped to a summary table using
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
+library(dplyr)
 ADSL <- radsl(N = 100, seed = 1) 
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
@@ -64,7 +62,10 @@ t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
 
 }
 \seealso{
-\code{\link{t_summary}}, \code{\link{t_summary.factor}}, \code{\link{t_summary.numeric}}
+\code{\link{t_summary}},
+  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

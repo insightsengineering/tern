@@ -17,7 +17,7 @@ Labels are often attached to variables in data.frames.
 }
 \examples{
 
-x <- structure(c(1,2,3), label = "Test")
+x <- with_label(c(1,2,3), label = "Test")
 label(x)
 
 }

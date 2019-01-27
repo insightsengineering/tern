@@ -11,17 +11,25 @@
 #' 
 #' @examples 
 #' 
-#' x <- structure(c(1,2,3), label = "Test")
+#' x <- with_label(c(1,2,3), label = "Test")
 #' label(x)
 #' 
 label <- function(x) {
   attr(x, "label")
 }
 
-#' Return an object with a particular label attribute
+#' Return an object with a label attribute
 #' 
+#' @param x an object
+#' @param label label attribute to to attached to  \code{x}
 #' 
 #' @export
+#' 
+#' @examples 
+#' 
+#' x <- with_label(c(1,2,3), label = "Test")
+#' label(x)
+#' 
 with_label <- function(x, label) {
   attr(x, "label") <- label
   x
@@ -510,37 +518,6 @@ reflow <- function(x,
 }
 
 
-#' stack a modified version of a data frame
-#'
-#' essenially rbind(X,modified(X)). this is useful for example when a total
-#' column is needed.
-#'
-#' @param X a data.frame
-#' @param ... key=value pairs, where the key refers to a variable in X and value
-#'   is the valueof the variable in modified(X)
-#'   
-#' @noRd
-#' 
-#' @examples 
-#' 
-#' duplicate_with_var(iris, Species = "Total")
-#' 
-duplicate_with_var <- function(X, ...) {
-  dots <- list(...)
-  nms <- names(dots)
-  if (length(nms) > 1 && (is.null(nms) || !all(nms %in% names(X))))
-    stop("not all names in ... are existent or in X")
-  X_copy <- X
-  vl <- var_labels(X)
-  for (var in nms) {
-    X_copy[[var]] <- dots[[var]]
-  }
-  Y <- rbind(X, X_copy)
-  var_labels(Y) <- vl
-  Y
-}
-
-
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -581,11 +558,12 @@ add_total <- function(x, ... ) {
 #' @noRd
 #' 
 #' @examples 
+#' \dontrun{
 #' # factor
 #' temp_f <- add_total(x=iris$Species, col_by = iris$Species, total_level = "All") 
 #' # numeric
 #' temp_n <- add_total(x=iris$Sepal.Length, col_by = iris$Species, total_level = "All") 
-
+#' }
 add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_by)) {
   
   is.atomic(x) || stop ("x is not atomic")
@@ -617,9 +595,9 @@ add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_
 #' @noRd
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' temp <- add_total(x=iris[, c("Sepal.Length", "Sepal.Width")], col_by = iris$Species, total_level = "All") 
-#' 
+#' }
 add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(col_by) ) {
   
   vl <- var_labels(x)
@@ -638,3 +616,10 @@ add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(c
     col_N = col_N
   )
 }
+
+has_no_NA <- function(x) {
+  !any(is.na(x))
+}
+
+
+

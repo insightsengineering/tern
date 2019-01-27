@@ -14,15 +14,14 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each column. If specified then
-\code{\link{col_N}()} can be used on the cell data in order to retrieve the
-column total. If \code{NULL} then no header row for the column is
-displayed.}
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
 
-\item{...}{arguments passed on to \code{\link{t_summary.factor}}}
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+
+\item{...}{not used arguments}
 }
 \description{
-Currently treated as for factors
+Tabulate the range of dates.
 }
 \examples{
 (today <- Sys.Date())
@@ -33,6 +32,12 @@ t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
 
+}
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.numeric}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

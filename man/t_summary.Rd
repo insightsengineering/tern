@@ -4,7 +4,7 @@
 \alias{t_summary}
 \title{Summarize an Object for Different Groups}
 \usage{
-t_summary(x, col_by, col_N, ...)
+t_summary(x, col_by, col_N = table(col_by), ...)
 }
 \arguments{
 \item{x}{an object to dispatch on}
@@ -13,19 +13,12 @@ t_summary(x, col_by, col_N, ...)
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each column. If specified then
-\code{\link{col_N}()} can be used on the cell data in order to retrieve the
-column total. If \code{NULL} then no header row for the column is
-displayed.}
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
 
 \item{...}{arguments passed on to methods}
 }
 \description{
 Summarize an Object for Different Groups
-}
-\details{
-Note that N refers to the number of observations and n refers to the numer of
-non-missing observations
 }
 \examples{
 t_summary(iris$Sepal.Length, iris$Species)
@@ -37,4 +30,10 @@ t_summary(ADSL$AGE, ADSL$ARMCD)
 t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
 with(ADSL, t_summary(AGE > 65, ARMCD))
 
+}
+\seealso{
+\code{\link{t_summary.data.frame}},
+  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 }

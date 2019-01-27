@@ -64,6 +64,12 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/stack_grobs.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tabulate_pairwise.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tern-package.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_count_unique.html</loc>
   </url>
   <url>
@@ -94,22 +100,13 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_rsp.html</loc>
   </url>
   <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summarize_by_visit.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summarize_variables.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.Date.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.html</loc>
-  </url>
-  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.character.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.data.frame.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.Date.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.default.html</loc>
@@ -124,13 +121,13 @@
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.numeric.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_summary_by.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/t_tte.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tabulate_pairwise.html</loc>
-  </url>
-  <url>
-    <loc>https://pages.github.roche.com/Rpackages/tern/reference/tern-package.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/tern/reference/unlist_rtables.html</loc>
