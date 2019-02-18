@@ -64,7 +64,7 @@ by unique id (t_count_unique)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.0.3</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.6.0</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@ by unique id (t_count_unique)." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.roche.com/Rpackages/tern">
+  <a href="https://github.roche.com/NEST/tern">
     <span class="fa fa-github"></span>
      
   </a>
@@ -189,7 +189,7 @@ treatment). Default is "event".</p></td>
 <span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='fl'>10</span> , <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>ADAE</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/random.cdisc.data/topics/radae'>radae</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_id_2.html'>lt_events_per_term_id_2</a></span>(
+<span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/tern/topics/lt_events_per_term_id_2'>lt_events_per_term_id_2</a></span>(
   <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ADAE</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"AEBODSYS"</span>, <span class='st'>"AEDECOD"</span>)],
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ADAE</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ADAE</span>$<span class='no'>ARM</span>,
@@ -217,7 +217,7 @@ treatment). Default is "event".</p></td>
 #&gt;   Total number of patients with at least one event           3 (75%)               4 (80%)               1 (100%)              8 (80%)    
 #&gt;   Total number of events                                        4                     6                     1                     11      
 #&gt;   trm C_1/1                                                  3 (75%)               4 (80%)               1 (100%)              8 (80%)    </div><div class='input'>
-<span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://pages.github.roche.com/Rpackages/tern/reference/lt_events_per_term_id_2.html'>lt_events_per_term_id_2</a></span>(
+<span class='no'>l_tbls</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tern</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/tern/topics/lt_events_per_term_id_2'>lt_events_per_term_id_2</a></span>(
   <span class='kw'>terms</span> <span class='kw'>=</span> <span class='no'>ADAE</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"AEBODSYS"</span>, <span class='st'>"AEDECOD"</span>)],
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>ADAE</span>$<span class='no'>USUBJID</span>,
   <span class='kw'>col_by</span> <span class='kw'>=</span> <span class='no'>ADAE</span>$<span class='no'>ARM</span>,

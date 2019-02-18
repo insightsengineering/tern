@@ -188,7 +188,7 @@ var_labels_remove <- function(x) {
 #' @examples 
 #' \dontrun{
 #' # function is not exported
-#' `%needs%` <- teal.tern:::`%needs%`
+#' `%needs%` <- teal.modules.clinical:::`%needs%`
 #' 
 #' iris %needs% c("Sepal.Length", "Petal.Width")
 #' 

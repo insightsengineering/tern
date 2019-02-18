@@ -4,6 +4,6 @@ pkgdown_sha: ~
 articles:
   missing-data: missing-data.html
 urls:
-  reference: https://pages.github.roche.com/Rpackages/tern/reference
-  article: https://pages.github.roche.com/Rpackages/tern/articles
+  reference: https://pages.github.roche.com/NEST/tern/reference
+  article: https://pages.github.roche.com/NEST/tern/articles
 

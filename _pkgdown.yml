@@ -1,4 +1,4 @@
-url: https://pages.github.roche.com/Rpackages/tern
+url: https://pages.github.roche.com/NEST/tern
 
 template:
   params:
@@ -7,7 +7,7 @@ template:
 navbar:
   right:
     - icon: fa-github
-      href: https://github.roche.com/Rpackages/tern
+      href: https://github.roche.com/NEST/tern
 
 development:
   mode: devel

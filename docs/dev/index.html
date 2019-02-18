@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tern</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.0.3</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.6.0</span>
       </span>
     </div>
 
@@ -64,7 +64,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.roche.com/Rpackages/tern">
+  <a href="https://github.roche.com/NEST/tern">
     <span class="fa fa-github"></span>
      
   </a>
@@ -88,15 +88,15 @@
 <div id="tern" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#tern" class="anchor"></a>tern</h1></div>
-<p>The <code>tern</code> R package contains analysis functions to create tables, listings and graphs (TLGs) as used in clinical trials. We also provide <a href="https://github.roche.com/Rpackages/teal">teal</a> modules for outputs in <code>tern</code> in the <a href="https://github.roche.com/Rpackages/teal.tern">teal.tern</a> R package.</p>
+<p>The <code>tern</code> R package contains analysis functions to create tables, listings and graphs (TLGs) as used in clinical trials. We also provide <a href="https://github.roche.com/NEST/teal">teal</a> modules for outputs in <code>tern</code> in the <a href="https://github.roche.com/NEST/teal.modules.clinical">teal.modules.clinical</a> R package.</p>
 <ul>
 <li><p>Note that currently <strong>tern may not be used for regulatory submissions</strong></p></li>
 <li><p>However you can use <code>tern</code> for exploratory analysis and for quality control</p></li>
 </ul>
 <p>There are two versions of this web-manual:</p>
 <ul>
-<li><p>development version: <a href="https://pages.github.roche.com/Rpackages/tern/dev/" class="uri">https://pages.github.roche.com/Rpackages/tern/dev/</a></p></li>
-<li><p>stable relase version: <a href="https://pages.github.roche.com/Rpackages/tern/" class="uri">https://pages.github.roche.com/Rpackages/tern/</a></p></li>
+<li><p>development version: <a href="https://pages.github.roche.com/NEST/tern/dev/" class="uri">https://pages.github.roche.com/NEST/tern/dev/</a></p></li>
+<li><p>stable relase version: <a href="https://pages.github.roche.com/NEST/tern/" class="uri">https://pages.github.roche.com/NEST/tern/</a></p></li>
 </ul>
 </div>
 <div id="installation" class="section level1">
@@ -105,18 +105,18 @@
 <div id="stable-version" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stable-version" class="anchor"></a>Stable Version</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(
-  <span class="dt">repo =</span> <span class="st">"Rpackages/random.cdisc.data"</span>,
-  <span class="dt">ref =</span> <span class="st">"v0.1.0"</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(
+  <span class="dt">repo =</span> <span class="st">"NEST/random.cdisc.data"</span>,
+  <span class="dt">ref =</span> <span class="st">"master"</span>, 
   <span class="dt">host =</span> <span class="st">"https://github.roche.com/api/v3"</span>,
   <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>
 )
 
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"Roche/rtables"</span>, <span class="dt">ref =</span> <span class="st">"v0.1.0"</span>, <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>)
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"Roche/rtables"</span>, <span class="dt">ref =</span> <span class="st">"master"</span>)
 
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(
-  <span class="dt">repo =</span> <span class="st">"Rpackages/tern"</span>,
-  <span class="dt">ref =</span> <span class="st">"v0.5.0"</span>, 
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(
+  <span class="dt">repo =</span> <span class="st">"NEST/tern"</span>,
+  <span class="dt">ref =</span> <span class="st">"master"</span>, 
   <span class="dt">host =</span> <span class="st">"https://github.roche.com/api/v3"</span>,
   <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>
 )</code></pre></div>
@@ -125,18 +125,18 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <h2 class="hasAnchor">
 <a href="#development-version" class="anchor"></a>Development Version</h2>
 <p>To install the current development version of <code>tern</code> run:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(
-  <span class="dt">repo =</span> <span class="st">"Rpackages/random.cdisc.data"</span>,
-  <span class="dt">ref =</span> <span class="st">"master"</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(
+  <span class="dt">repo =</span> <span class="st">"NEST/random.cdisc.data"</span>,
+  <span class="dt">ref =</span> <span class="st">"devel"</span>, 
   <span class="dt">host =</span> <span class="st">"https://github.roche.com/api/v3"</span>,
   <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>
 )
 
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"Roche/rtables"</span>, <span class="dt">ref =</span> <span class="st">"master"</span>, <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>)
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"Roche/rtables"</span>, <span class="dt">ref =</span> <span class="st">"devel"</span>)
 
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(
-  <span class="dt">repo =</span> <span class="st">"Rpackages/tern"</span>,
-  <span class="dt">ref =</span> <span class="st">"master"</span>, 
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(
+  <span class="dt">repo =</span> <span class="st">"NEST/tern"</span>,
+  <span class="dt">ref =</span> <span class="st">"devel"</span>, 
   <span class="dt">host =</span> <span class="st">"https://github.roche.com/api/v3"</span>,
   <span class="dt">upgrade_dependencies =</span> <span class="ot">FALSE</span>
 )</code></pre></div>
@@ -148,7 +148,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <div id="issues" class="section level2">
 <h2 class="hasAnchor">
 <a href="#issues" class="anchor"></a>Issues</h2>
-<p>We hope that <code>tern</code> is useful for your everyday work. If you would like more TLGs or you need more configuration options for the existing functions then please fill out a <a href="https://github.roche.com/Rpackages/tern/issues">github issue</a> with your request and the reason/context for your request.</p>
+<p>We hope that <code>tern</code> is useful for your everyday work. If you would like more TLGs or you need more configuration options for the existing functions then please fill out a <a href="https://github.roche.com/NEST/tern/issues">github issue</a> with your request and the reason/context for your request.</p>
 <ul>
 <li><p>Please do not submit issues with ideas for useful features for current <code>tern</code> functions if you do not necessarily need them for your project. We are aware that many of <code>tern</code>’s functions would benefit from additional arguments in order to control the outputs in more detail. However, we would like to avoid argument explosion and one way to do that is to get more experience with <code>tern</code> <em>in the field</em> and then slowly grow the flexibility based on need.</p></li>
 <li><p>Please do not paste outputs with sensitive information into the issues. If possible make a miniamal working example with <code>random.cdisc.data</code> data.</p></li>
@@ -159,11 +159,10 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <a href="#collaboration" class="anchor"></a>Collaboration</h2>
 <p>We would like <code>tern</code> to be a collaborative effort and your contributions are welcome! However please read the following points before you make any contributions:</p>
 <ul>
-<li><p>talk to the repsective function authors before you start working on changes other than bug fixes or documentation examples (this includes argument changes)</p></li>
 <li>
-<p>see in our <a href="https://github.roche.com/Rpackages/tern/projects/3">planned TLGs project page</a> whether the TLG you need has been requested or is already under development. Otherwise talk to <a href="mailto:adrian.waddell@roche.com">Adrian Waddell</a> if you urgently need a TLG or if you would like to contribute a new output to <code>tern</code></p>
+<p>talk to the repsective function authors before you start working on changes other than bug fixes or documentation examples (this includes argument changes)</p>
 <ul>
-<li>please have a look at the <a href="https://github.roche.com/Rpackages/tern/tree/master/R">R code</a> of a couple of functions in <code>tern</code>. If you are new to <code>R</code> or do not want to spend the effort to create similarly general and robust functions then please consider contributing to the <a href="https://github.roche.com/Rpackages/osprey">osprey</a> R package.</li>
+<li>please have a look at the <a href="https://github.roche.com/NEST/tern/tree/master/R">R code</a> of a couple of functions in <code>tern</code>. If you are new to <code>R</code> or do not want to spend the effort to create similarly general and robust functions then please consider contributing to the <a href="https://github.roche.com/Rpackages/osprey">osprey</a> R package.</li>
 </ul>
 </li>
 </ul>
@@ -190,7 +189,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Report a bug at <br><a href="https://github.roche.com/Rpackages/tern/issues">https://​github.roche.com/​Rpackages/​tern/​issues</a>
+<li>Report a bug at <br><a href="https://github.roche.com/NEST/tern/issues">https://​github.roche.com/​NEST/​tern/​issues</a>
 </li>
 </ul>
 </div>
