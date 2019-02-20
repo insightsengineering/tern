@@ -1,3 +1,12 @@
+# tern 0.6.0
+
+* Removed `addTable`, `t_summarize_by_visit`, `t_summarize_variables` functions.
+* Moved to private `fast_stack_rtables`, `unlist.rtable` functions.
+* Added `t_summary_by` function.
+* Refactor of `g_km` function, renamed `kmGrob` into `kmCurveGrob`.
+* Refactor of `t_events_per_term_grade_id` family functions.
+* Updated examples
+
 
 # tern 0.5.0.3 
 

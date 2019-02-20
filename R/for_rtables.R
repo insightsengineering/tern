@@ -13,6 +13,7 @@
 #' 
 #' @template author_waddella
 #' 
+#' @noRd 
 #' 
 #' @examples
 #' 
@@ -75,6 +76,8 @@ fast_stack_rtables <- function(..., nrow_pad = 1) {
 #' @param x a nested list of with rtables as leaf object
 #' 
 #' @return a list of rtables
+#' 
+#' @noRd
 #' 
 #' @examples 
 #' 
