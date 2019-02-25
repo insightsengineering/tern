@@ -11,9 +11,9 @@ Table, Listings, and Graphs (TLG) library for common outputs used in clinical tr
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pages.github.roche.com/Rpackages/tern/}
-  \item \url{https://github.roche.com/Rpackages/tern/}
-  \item Report bugs at \url{https://github.roche.com/Rpackages/tern/issues}
+  \item \url{https://pages.github.roche.com/NEST/tern/}
+  \item \url{https://github.roche.com/NEST/tern/}
+  \item Report bugs at \url{https://github.roche.com/NEST/tern/issues}
 }
 
 }
@@ -25,6 +25,7 @@ Authors:
   \item Heng Wang \email{wang.heng@gene.com}
   \item Yuyao Song \email{yuyao.song@roche.com}
   \item Chendi Liao \email{chendi.liao@roche.com}
+  \item Jana Stoilova \email{jana.stoilova@roche.com}
   \item Edgar Manukyan \email{edgar.manukyan@roche.com}
   \item Ting Qi \email{qit3@gene.com}
   \item Carolyn Zhang \email{carolyn.zhang@duke.ed}

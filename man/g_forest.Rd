@@ -48,27 +48,26 @@ Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
 column with a single value and a column with 2 values
 }
 \examples{
-
 library(random.cdisc.data)
+library(dplyr)
 
-ASL <- radam("ASL")
-ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
- if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
-}))
-ATE <- radam("ATE", ADSL = ASL)
+ADSL <- radsl(seed = 1)
+ADTTE <- radtte(ADSL, seed = 2)
 
-ATE_f <- subset(ATE, PARAMCD == "OS") 
-
-ANL <- merge(ASL, ATE_f)
+ADTTE_f <- ADTTE \%>\% 
+  filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
+  mutate(ARMCD = droplevels(ARMCD))
 
 tbl <- t_forest_tte(
-  tte = ANL$AVAL,
-  is_event = ANL$CNSR == 0,
-  col_by = factor(ANL$ARM), 
-  group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+  tte = ADTTE_f$AVAL,
+  is_event = ADTTE_f$CNSR == 0,
+  col_by = ADTTE_f$ARMCD, 
+  group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
+  ties = "exact",
+  dense_header = TRUE
 )
 
-## note plot requires a certain width
+# note plot requires a certain width
 g_forest(
   tbl = tbl,
   col_x = 8,
@@ -82,16 +81,17 @@ g_forest(
 
 # For response table
 
-ASL <- radam("ASL")
-ARS <- radam("ARS", ADSL = ASL)
+ADSL <- radsl(seed = 1)
+ADRS <- radrs(ADSL, seed = 2)
 
-ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
-ANL <- merge(ASL, ARS_f)
+ADRS_f <- ADRS \%>\% 
+  filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
+  mutate(ARMCD = droplevels(ARMCD))
 
 tbl <- t_forest_rsp(
-  rsp = ANL$AVALC \%in\% c("CR", "PR"),
-  col_by = ANL$ARM, 
-  group_data = ANL[, c("SEX", "RACE")]
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = factor(ADRS_f$ARM), 
+  group_data = ADRS_f[, c("SEX", "RACE")]
 )
 
 tbl
@@ -106,8 +106,6 @@ g_forest(
   logx = TRUE,
   x_at = c(.1, 1, 10)
 )
-
-
 
 # Works with any rtable
 
@@ -140,8 +138,9 @@ g_forest(
   forest_header = c("Hello", "World")
 )
 
-
-
+}
+\seealso{
+\code{\link{t_forest_tte}}, \code{\link{t_forest_rsp}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

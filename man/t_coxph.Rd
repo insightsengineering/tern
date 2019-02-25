@@ -17,16 +17,16 @@ object for further annotation on top of Kaplan-Meier grob
 }
 \examples{
 
-OS <- data.frame(
-  AVAL = abs(rnorm(200)), 
-  CNSR = sample(c(0, 1), 200, TRUE), 
-  ARM = sample(LETTERS[1:3], 200, TRUE),
-  SEX = sample(c("M","F"), 200, TRUE),
-  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-  ECOG = sample(c(0, 1), 200, TRUE)
-)
+library(random.cdisc.data)
+ADSL <- radsl(seed = 1)
+ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
+   if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+}))
+
+ADTTE <- radtte(ADSL, seed = 2)
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
                  
-fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = OS, ties = "exact")
+fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
 tbl <- t_coxph(fit_coxph)
 tbl
 

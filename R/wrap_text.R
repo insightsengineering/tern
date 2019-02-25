@@ -17,8 +17,8 @@
 #' @examples
 #' library(grid)
 #' text <- "This is a test with many words and more"
-#' teal.oncology:::wrap_text(txt = text, width = unit(4, "cm"), collapse = "\n")
-#' teal.oncology:::wrap_text(txt = text, width = unit(5, "cm"), collapse = "\n")
+#' teal.modules.clinical:::wrap_text(txt = text, width = unit(4, "cm"), collapse = "\n")
+#' teal.modules.clinical:::wrap_text(txt = text, width = unit(5, "cm"), collapse = "\n")
 #' 
 wrap_text <- function(txt,
                       width = convertWidth(unit(1,'npc'), 'inch', TRUE),

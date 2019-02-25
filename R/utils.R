@@ -11,17 +11,25 @@
 #' 
 #' @examples 
 #' 
-#' x <- structure(c(1,2,3), label = "Test")
+#' x <- with_label(c(1,2,3), label = "Test")
 #' label(x)
 #' 
 label <- function(x) {
   attr(x, "label")
 }
 
-#' Return an object with a particular label attribute
+#' Return an object with a label attribute
 #' 
+#' @param x an object
+#' @param label label attribute to to attached to  \code{x}
 #' 
 #' @export
+#' 
+#' @examples 
+#' 
+#' x <- with_label(c(1,2,3), label = "Test")
+#' label(x)
+#' 
 with_label <- function(x, label) {
   attr(x, "label") <- label
   x
@@ -180,7 +188,7 @@ var_labels_remove <- function(x) {
 #' @examples 
 #' \dontrun{
 #' # function is not exported
-#' `%needs%` <- teal.tern:::`%needs%`
+#' `%needs%` <- teal.modules.clinical:::`%needs%`
 #' 
 #' iris %needs% c("Sepal.Length", "Petal.Width")
 #' 
@@ -375,7 +383,7 @@ compound_table <- function(funs, ..., nrow_pad = 1) {
     
   })
   
-  do.call(stack_rtables, c(tbls, list(nrow_pad = nrow_pad)))
+  rbindl_rtables(tbls, gap = nrow_pad)
   
 }
 
@@ -510,37 +518,6 @@ reflow <- function(x,
 }
 
 
-#' stack a modified version of a data frame
-#'
-#' essenially rbind(X,modified(X)). this is useful for example when a total
-#' column is needed.
-#'
-#' @param X a data.frame
-#' @param ... key=value pairs, where the key refers to a variable in X and value
-#'   is the valueof the variable in modified(X)
-#'   
-#' @noRd
-#' 
-#' @examples 
-#' 
-#' duplicate_with_var(iris, Species = "Total")
-#' 
-duplicate_with_var <- function(X, ...) {
-  dots <- list(...)
-  nms <- names(dots)
-  if (length(nms) > 1 && (is.null(nms) || !all(nms %in% names(X))))
-    stop("not all names in ... are existent or in X")
-  X_copy <- X
-  vl <- var_labels(X)
-  for (var in nms) {
-    X_copy[[var]] <- dots[[var]]
-  }
-  Y <- rbind(X, X_copy)
-  var_labels(Y) <- vl
-  Y
-}
-
-
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -552,4 +529,97 @@ to_n <- function(x, n) {
     stop("dimension missmatch")
   }
 }
+
+
+#' Duplicate an object to create total group
+#'
+#' Used to duplicate data in order to create a total column in a table.
+#'
+#' @param x an object to dispatch on
+#' @param ... arguments passed on to methods
+#' 
+#' @noRd
+add_total <- function(x, ... ) {
+  UseMethod("add_total", x)
+}
+
+#' Duplicate vector 
+#' 
+#' @inheritParams add_total
+#' @param x a vector
+#' @param col_by a factor the same length as \code{x}
+#' @param total_level a label that is used as a new factor level in the duplicated \code{col_by}
+#' @param col_N a numeric vector with length equal to the number of levels of \code{col_by}.
+#' It is used to build the row in the table header with (N=xx).
+#' 
+#' @details 
+#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' \dontrun{
+#' # factor
+#' temp_f <- add_total(x=iris$Species, col_by = iris$Species, total_level = "All") 
+#' # numeric
+#' temp_n <- add_total(x=iris$Sepal.Length, col_by = iris$Species, total_level = "All") 
+#' }
+add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_by)) {
+  
+  is.atomic(x) || stop ("x is not atomic")
+  
+  !(total_level %in% levels(col_by)) || stop("total level exists in col_by")
+  length(x)==length(col_by) || stop("dimension missmatch x and col_by") 
+
+  col_N <- c(col_N, sum(col_N))
+  names(col_N)[length(col_N)] <- total_level
+  
+  cb_levels <- c(levels(col_by), total_level)
+  col_by <- factor(c(as.character(col_by), rep(total_level, length(x))), cb_levels)
+  
+  list(
+    x = rep(x, 2),
+    col_by = col_by,
+    col_N = col_N
+  )  
+}
+
+#' Duplicate data frame 
+#' 
+#' @inheritParams add_total.default
+#' @param x a data frame
+#' 
+#' @details 
+#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
+#' 
+#' @noRd
+#' 
+#' @examples 
+#' \dontrun{
+#' temp <- add_total(x=iris[, c("Sepal.Length", "Sepal.Width")], col_by = iris$Species, total_level = "All") 
+#' }
+add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(col_by) ) {
+  
+  vl <- var_labels(x)
+  y <- rbind(x, x)
+  var_labels(y) <- vl
+  
+  cb_levels <- c(levels(col_by), total_level)
+  col_by <- factor(c(as.character(col_by), rep(total_level, nrow(x))), cb_levels)
+  
+  col_N <- c(col_N, sum(col_N))
+  names(col_N)[length(col_N)] = total_level
+  
+  list(
+    x = y,
+    col_by = col_by, 
+    col_N = col_N
+  )
+}
+
+has_no_NA <- function(x) {
+  !any(is.na(x))
+}
+
+
 

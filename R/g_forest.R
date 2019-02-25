@@ -30,28 +30,29 @@
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{t_forest_tte}}, \code{\link{t_forest_rsp}}
+#' 
 #' @examples 
-#' 
 #' library(random.cdisc.data)
+#' library(dplyr)
 #' 
-#' ASL <- radam("ASL")
-#' ASL$RACE <- factor(sapply(as.character(ASL$RACE), function(x) {
-#'  if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
-#' }))
-#' ATE <- radam("ATE", ADSL = ASL)
+#' ADSL <- radsl(seed = 1)
+#' ADTTE <- radtte(ADSL, seed = 2)
 #' 
-#' ATE_f <- subset(ATE, PARAMCD == "OS") 
-#' 
-#' ANL <- merge(ASL, ATE_f)
+#' ADTTE_f <- ADTTE %>% 
+#'   filter(PARAMCD == "OS" & ARMCD %in% c("ARM B", "ARM A")) %>%
+#'   mutate(ARMCD = droplevels(ARMCD))
 #' 
 #' tbl <- t_forest_tte(
-#'   tte = ANL$AVAL,
-#'   is_event = ANL$CNSR == 0,
-#'   col_by = factor(ANL$ARM), 
-#'   group_data = as.data.frame(lapply(ANL[, c("SEX", "RACE")], as.factor))
+#'   tte = ADTTE_f$AVAL,
+#'   is_event = ADTTE_f$CNSR == 0,
+#'   col_by = ADTTE_f$ARMCD, 
+#'   group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
+#'   ties = "exact",
+#'   dense_header = TRUE
 #' )
 #' 
-#' ## note plot requires a certain width
+#' # note plot requires a certain width
 #' g_forest(
 #'   tbl = tbl,
 #'   col_x = 8,
@@ -65,16 +66,17 @@
 #' 
 #' # For response table
 #' 
-#' ASL <- radam("ASL")
-#' ARS <- radam("ARS", ADSL = ASL)
+#' ADSL <- radsl(seed = 1)
+#' ADRS <- radrs(ADSL, seed = 2)
 #' 
-#' ARS_f <- subset(ARS, PARAMCD == "OVRSPI")
-#' ANL <- merge(ASL, ARS_f)
+#' ADRS_f <- ADRS %>% 
+#'   filter(PARAMCD == "OVRINV" & ARMCD %in% c("ARM A","ARM B")) %>%
+#'   mutate(ARMCD = droplevels(ARMCD))
 #' 
 #' tbl <- t_forest_rsp(
-#'   rsp = ANL$AVALC %in% c("CR", "PR"),
-#'   col_by = ANL$ARM, 
-#'   group_data = ANL[, c("SEX", "RACE")]
+#'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#'   col_by = factor(ADRS_f$ARM), 
+#'   group_data = ADRS_f[, c("SEX", "RACE")]
 #' )
 #' 
 #' tbl
@@ -89,8 +91,6 @@
 #'   logx = TRUE,
 #'   x_at = c(.1, 1, 10)
 #' )
-#' 
-#' 
 #' 
 #' # Works with any rtable
 #' 
@@ -122,8 +122,6 @@
 #'   vline = 1,
 #'   forest_header = c("Hello", "World")
 #' )
-#' 
-#' 
 #' 
 g_forest <- function(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
                      xlim = NULL, logx = FALSE, x_at = NULL,
@@ -178,9 +176,7 @@ g_forest <- function(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
   invisible(grobForest)
 }
 
-
 #' forest plot grob
-#' 
 #' 
 #' @inheritParams g_forest
 #' @param tbl an \code{\link[rtables]{rtable}} object
@@ -188,10 +184,8 @@ g_forest <- function(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
 #' @param lower lower bound of ci
 #' @param upper upper bound of ci
 #'   
-#' 
 #' @details 
 #' The heights get automatically determined
-#' 
 #' 
 #' @noRd
 #' 
@@ -216,6 +210,7 @@ g_forest <- function(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
 #'   vp = plotViewport(margins = c(1, 1, 1, 1))
 #' )
 #' }
+#' 
 forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
                        xlim = NULL, logx = FALSE, x_at = NULL,
                        width_row.names = NULL,
@@ -223,7 +218,6 @@ forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
                        width_forest = unit(1, "null"), 
                        name=NULL, gp=NULL, vp=NULL) {
 
-  
   if (is.null(vline) && !is.null(forest_header)) stop("if vline is null then forest_header needs to be NULL")
   if (!is.null(forest_header) && length(forest_header) != 2) stop("length of forest_header needs to be 2")
   if (!is.null(vline) && length(vline) != 1) stop("length of vline needs to be 1")
@@ -234,7 +228,6 @@ forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
   if (length(upper) != nr) stop("dimension missmatch upper")
 
   if (is.null(xlim)) xlim <- extendrange(c(x, lower, upper))
-  
   
   if (logx) {
 
@@ -321,12 +314,10 @@ forestGrob <- function(tbl, x, lower, upper, vline, forest_header,
   g_forest
 }
 
-
 cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
   
   if (!is(row, "rrow")) stop("row needs to be of class rrow")
 
-  
   row_name <- attr(row, "row.name")
   
   g.rowname <- if (!is.null(row_name) && row_name != "") {
@@ -353,8 +344,6 @@ cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
   gl.cols <- if (!(length(row) > 0)) {
     list(NULL)
   } else {
-    
-    
     j <- 1 # column index of cell
     
     lapply(seq_along(row), function(k) {
@@ -379,7 +368,6 @@ cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
             vp = vpPath(paste0("cell-", row_index, "-", j))
           )
         } else {
-          
           vp_joined_cols <- viewport(layout.pos.row = row_index, layout.pos.col = seq(j + 1, j + cs)) # +1 because of rowname
           
           lab <- textGrob(
@@ -471,7 +459,6 @@ forest_dot_line <- function(x, lower, upper, row_index, xlim, datavp) {
   }
 }
 
-
 #' Create A viewport tree for the forest plot
 #' 
 #' @noRd
@@ -490,12 +477,12 @@ forest_dot_line <- function(x, lower, upper, row_index, xlim, datavp) {
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #' 
-#' 
 #' v <- tern:::forestViewport(tbl)
 #' 
 #' grid.newpage()
 #' showViewport(v)
 #' }
+#' 
 forestViewport <- function(tbl, width_row.names = NULL, width_columns = NULL, width_forest = unit(1, "null"),
                            gap_column = unit(1, "lines"), gap.header = unit(1, "lines")) {
   
@@ -504,14 +491,12 @@ forestViewport <- function(tbl, width_row.names = NULL, width_columns = NULL, wi
   if (!is.null(width_columns) && !is(width_columns, "unit")) stop("width_columns needs to be NULL or a unit object")
   if (!is(width_forest, "unit")) stop("width_forest needs to be a unit object")
   
-  
   nr <- nrow(tbl)
   nc <- ncol(tbl)
   
   tbl_header <- header(tbl)
   nr_h <- nrow(tbl_header)
 
-  
   # widths for row name, cols, forest
   
   if (is.null(width_row.names)) {
@@ -523,7 +508,6 @@ forestViewport <- function(tbl, width_row.names = NULL, width_columns = NULL, wi
     
     width_row.names <- stringWidth(longest_row_name)
   }
-  
   
   if (!is.null(width_columns)) {
     if (length(width_columns) == nc ) {
@@ -558,7 +542,6 @@ forestViewport <- function(tbl, width_row.names = NULL, width_columns = NULL, wi
     }))
   }
   
-
   widths <- unit.c(
     width_row.names + gap_column,
     width_columns + gap_column,

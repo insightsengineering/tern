@@ -13,6 +13,7 @@
 #' 
 #' @template author_waddella
 #' 
+#' @noRd 
 #' 
 #' @examples
 #' 
@@ -34,67 +35,8 @@
 #' tern:::recursive_stack_rtables(l_tbls)
 #' 
 recursive_stack_rtables <- function(x) {
-  
   tbls <- unlist_rtables(x)
-  
-  if (!all(vapply(tbls, is, logical(1), "rtable"))) stop("not all elements are rtables")
-  
-  do.call(fast_stack_rtables, tbls)
-  
-}
-
-
-#' Stack rtables with rbind and add empy rows between tables
-#' 
-#' @param ... rtbale objects
-#' @param nrow_pad number of empty rows between tables in \code{...}
-#' 
-#' @noRd
-#' 
-#' 
-stack_rtables <- function(..., nrow_pad = 1) {
-  
-  tbls <- Filter(Negate(is.null), list(...))
-  
-  if (length(tbls) > 0) {
-    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
-    
-    header <- attr(tbls[[1]], "header")
-    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
-    
-    Reduce(
-      function(x, y) rbind(x, tbl_with_empty_rows, y),
-      tbls
-    )
-    
-  } else {
-    list()
-  }
-}
-
-stack_rtables_l <- function(x) {
-  do.call(stack_rtables, x)
-}
-
-#' @export
-fast_stack_rtables <- function(..., nrow_pad = 1) {
-  
-  tbls <- Filter(Negate(is.null), list(...))
-  
-  if (length(tbls) > 0) {
-    if (!rtables:::are(tbls, "rtable")) stop("not all objects are of type rtable")
-    
-    header <- header(tbls[[1]])
-    tbl_with_empty_rows <- rtablel(header = header, replicate(nrow_pad, rrow()))
-    
-    Reduce(
-      function(x, y) rbind(x, tbl_with_empty_rows, y),
-      tbls
-    )
-    
-  } else {
-    list()
-  }
+  rbindl_rtables(tbls, gap = 1)
 }
 
 
@@ -106,6 +48,8 @@ fast_stack_rtables <- function(..., nrow_pad = 1) {
 #' @param x a nested list of with rtables as leaf object
 #' 
 #' @return a list of rtables
+#' 
+#' @noRd
 #' 
 #' @examples 
 #' 
@@ -177,37 +121,6 @@ row_names_as_col <- function(tbl, header_label) {
   cbind_rtables(tbl_rn, tbl)
 }
 
-#' @export
-unlist.rtable <- function(x, recursive = TRUE, use.names = TRUE) {
-  x
-}
-
-#' hack to faster bind multiple tables
-#' 
-#' @noRd
-#' 
-#' 
-#' @examples 
-#' 
-#' t1 <- rtabulate(iris$Sepal.Length, factor(iris$Species))
-#' t2 <- rtabulate(iris$Sepal.Width, factor(iris$Species))
-#' 
-#' tern:::fast_rbind(t1, t2)
-#' 
-fast_rbind <- function(...) {
-  dots <- Filter(Negate(is.null), list(...))
-  
-  if (!all(unlist(lapply(dots, is, "rtable")))) stop("not all elements are of type rtable")
-  
-  tbl <- unlist(dots, recursive = FALSE)
-  
-  attr(tbl, "header") <- header(dots[[1]])
-  attr(tbl, "nrow") <- length(tbl)
-  attr(tbl, "ncol") <- ncol(dots[[1]])
-  class(tbl) <- "rtable"
-  
-  tbl
-}
 
 #' insert rrows at a specific location
 #' 

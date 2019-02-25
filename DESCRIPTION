@@ -1,12 +1,13 @@
 Package: tern
-Title: Analysis Code
-Version: 0.5.0.3
+Title: Create Common TLGs used in Clinical Trials
+Version: 0.6.0
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
   person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
   person("Chendi", "Liao", email = "chendi.liao@roche.com", role = "aut"),
+  person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
   person("Edgar", "Manukyan", email = "edgar.manukyan@roche.com", role = "aut"),
   person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
   person("Carolyn", "Zhang", email = "carolyn.zhang@duke.ed", role = "aut"),
@@ -18,7 +19,7 @@ Depends:
   R (>= 3.3),
   survival,
   grid,
-  rtables (>= 0.1)
+  rtables (>= 0.1.1)
 Imports:
   methods,
   utils,
@@ -28,7 +29,7 @@ Imports:
   scales,
   gridExtra
 Suggests:
-  random.cdisc.data,
+  random.cdisc.data (>= 0.2.0),
   tibble,
   dplyr,
   testthat,
@@ -39,10 +40,10 @@ Suggests:
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
-URL: https://pages.github.roche.com/Rpackages/tern/, https://github.roche.com/Rpackages/tern/
-BugReports: https://github.roche.com/Rpackages/tern/issues
+URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/
+BugReports: https://github.roche.com/NEST/tern/issues
 Additional_repositories: 
   https://github.com/Roche/rtables,
-  https://github.roche.com/Rpackages/random.cdisc.data
+  https://github.roche.com/NEST/random.cdisc.data

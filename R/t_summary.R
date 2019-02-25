@@ -1,25 +1,28 @@
-
-
 #' Summarize an Object for Different Groups
-#' 
 #' 
 #' @inheritParams rtables::rtabulate.numeric
 #' @param x an object to dispatch on
+#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
 #' @param ... arguments passed on to methods
-#' 
-#' @details 
-#' Note that N refers to the number of observations and n refers to the numer of
-#' non-missing observations
 #' 
 #' @export
 #' 
-#' @examples 
-#' t_summary(iris[-5], iris$Species)
+#' @seealso \code{\link{t_summary.data.frame}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #' 
+#' @examples 
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
-#' with(iris, t_summary(Sepal.Length > mean(Sepal.Length), iris$Species))
-t_summary <- function(x, col_by, ...) {
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
+#' 
+#' t_summary(ADSL$AGE, ADSL$ARMCD)
+#' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
+#' with(ADSL, t_summary(AGE > 65, ARMCD))
+#' 
+t_summary <- function(x, col_by, col_N = table(col_by), ...) {
   UseMethod("t_summary", x)
 }
 
@@ -36,14 +39,16 @@ t_summary <- function(x, col_by, ...) {
 #' @template author_waddella
 #' 
 #' @examples 
-#' 
 #' t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
-t_summary.default <- function(x, col_by, ...) {
+#' 
+t_summary.default <- function(x, col_by, col_N = table(col_by), ...) {
   
-  rtable(
-    header = rtables:::rtabulate_header(col_by, length(x)),
+  tbl <- rtable(
+    header = levels(col_by),
     rrowl(paste("no t_summary method for class:", class(x)), lapply(levels(col_by), function(x)rcell("-")))
   )
+  header_add_N(tbl, col_N)
+  
 }
 
 #' Variables Summary Table
@@ -56,7 +61,8 @@ t_summary.default <- function(x, col_by, ...) {
 #'   be used for the row name.
 #' @param total if not \code{NULL} then it must be a string and an addition
 #'   column will be added with the overall summaries
-#'  
+#' @param ... arguments passed on to methods
+#'
 #' @details
 #' Every variable in \code{x} will be mapped to a summary table using
 #' \code{\link{t_summary}} and then be stacked.
@@ -64,141 +70,192 @@ t_summary.default <- function(x, col_by, ...) {
 #' @export
 #' 
 #' @template author_waddella
-#' @seealso \code{\link{t_summary}}, \code{\link{t_summary.factor}}, \code{\link{t_summary.numeric}}
 #' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #' 
 #' @examples 
+#' # with iris data
+#' t_summary(iris$Sepal.Length, iris$Species)
 #' 
 #' library(random.cdisc.data)
+#' library(dplyr)
+#' ADSL <- radsl(N = 100, seed = 1) 
 #' 
-#' ASL <- radam("ASL")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
 #' 
 #' # control the label
-#' ASL <- var_relabel(ASL, BAGE = "Baseline Age of patient")
+#' ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
 #' 
 #' # control categorical order
-#' ASL$SEX <- relevel(ASL$SEX, "M", "F")
+#' ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 #' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+#'          useNA = 'always')
+#'          
+#' ADSL$SEX[1:10] <- NA
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", 
+#'          useNA = 'ifany')
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+#'          denominator = "N", useNA = 'ifany')
+#'          
+#' ADSL_AGE65 <- ADSL %>% filter(AGE > 65)
+#' t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients", 
+#'          col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
 #' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-#'                       useNA = 'always')
-#' 
-#' ASL$SEX[1:10] <- NA
-#' 
-#' t_summary(ASL[, c("SEX", "BAGE")], col_by = ASL$ARM, total = "All Patients",
-#'                       useNA_factors = 'ifany')
-#' 
-#' # with iris data
-#' 
-#' t_summary(iris[, -5], col_by  = iris$Species)
-#' 
-#' t_summary(iris, col_by  = no_by("All Species"))
-#' 
-#' 
-#' x <- factor(c("A", NA, "B", "B", "A"))
-#' cb <- factor(c("I", "I", "I", "II", "II"))
-#' 
-#' t_summary(x, col_by = cb)
-#' 
-#' t_summary(data.frame(x), col_by = cb, useNA = "ifany")
-#' 
-t_summary.data.frame <- function(x, col_by, total = NULL, ...) {
+t_summary.data.frame <- function(x, col_by, col_N=table(col_by), total = NULL, ...) {
   
-  # If total column is requested stack the data and change col_by accordingly 
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
+  
+  # If total column is requested stack the data and change col_by and col_N accordingly 
   if (!is.null(total) && !is.no_by(col_by)) { ## add total column
-    
-    if (length(total) != 1) stop("total must be either NULL or a single string")
-    if (total %in% col_by) stop("total cannot be an level in col_by")
-    
-    x <- duplicate_with_var(x)
-    col_by <- factor(c(as.character(col_by), rep(total, length(col_by))), levels = c(levels(col_by), total))
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
   }
+
+   rtables_vars <- Map(function(var, varlabel) {
+     tbl <- t_summary(x=var, col_by=col_by, col_N = col_N, ...)
+     insert_rrow(indent_table(tbl, 1), rrow(varlabel))
+   }, x, var_labels(x, fill = TRUE))
   
-  rtables_vars <- Map(function(var, varlabel) {
-    tbl <- t_summary(x=var, col_by=col_by, ...) 
-    insert_rrow(indent_table(tbl, 1), rrow(varlabel))
-  }, x, var_labels(x, fill = TRUE))
-  
-  stack_rtables_l(rtables_vars)
+   rbindl_rtables(rtables_vars, gap = 1)
 }
-
-
-
 
 #' Summarize Numeric Variables
 #' 
-#' Tabulate the number on non-missing observations, mean, sd, median, and range
+#' Tabulate the number of non-missing observations, mean, sd, median, and range
 #' for different groups.
 #' 
 #' @inheritParams rtables::rtabulate.numeric
 #' @param x numeric variable
-#' 
+#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
+#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @template return_rtable
 #' 
 #' @export
 #' @template author_waddella
 #' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
 #' @examples 
-#' 
+#' # with iris data
 #' t_summary(iris$Sepal.Length, iris$Species)
 #' 
-t_summary.numeric <- function(x, col_by, ...) {
-  rbind(
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
+#' 
+#' t_summary(ADSL$AGE, ADSL$ARM)
+#' t_summary(ADSL$AGE, ADSL$ARM, total = "All")
+#' 
+#' ADSL$AGE[1:10] <- NA
+#' t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
+#' 
+t_summary.numeric <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
+  
+  if (!is.no_by(col_by)){
+    length(x)==length(col_by) || stop("dimension missmatch x and col_by")
+  }
+  
+    # If total column is requested stack the data and change by, col_by and col_N accordingly
+  if (!is.null(total) && !is.no_by(col_by)) { ## add total column
+    
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
+  }
+  
+  tbl <- rbind(
     rtabulate(x, col_by, count_n, row.name = "n"),
     rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
     rtabulate(x, col_by, median, row.name = "Median", format="xx.xx", na.rm = TRUE),
     rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE)
   )
+  
+  header_add_N(tbl, col_N)
 }
 
 #' Summarize Categorical Data
 #' 
-#' Tabulate the number on non-missing observations, number of per level and
-#' percentage
+#' Tabulate the number of non-missing observations, number of observations per level and
+#' percentage.
 #' 
 #' @inheritParams t_summary.default
-#' @param x numeric variable
-#' @param useNA choose whether missing data (NAs) should be displayed as a level
+#' @param x factor variable
+#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
+#' @param useNA choose whether missing data (NAs) should be displayed as a level.
 #' @param denominator either n or N for calculating the level associated
-#'   percentage.
-#' @param drop_levels boolean whether to drio zero count levels
+#'   percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
+#'   With option n, the number of non-missing records from \code{x} is used as the denominator. 
+#' @param drop_levels boolean whether to drop zero count levels
 #' 
 #' @template return_rtable
 #' 
 #' @export
 #' @template author_waddella
 #' 
-#' @examples 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.numeric}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
 #' 
+#' @examples 
+#' # with iris data
 #' t_summary(iris$Species, iris$Species)
 #' 
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
 #' 
-#' x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
-#' cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))
+#' t_summary(ADSL$SEX, ADSL$ARM, total = "All")
+#' t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 #' 
-#' t_summary(x, cb)
-#' 
-#' t_summary(x, cb, useNA = "always")
-#' 
-#' t_summary(x, cb, denominator = "N")
-#' 
-#' t_summary(x, cb, useNA = "always",  denominator = "N")
-#' 
-#' t_summary(x, cb, useNA = "always",  denominator = "n")
-#' 
-t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
+#' ADSL$SEX[1:10] <- NA
+#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
+#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
+#'  
+t_summary.factor <- function(x, col_by, col_N = table(col_by), total = NULL, useNA = c("no", "ifany", "always"),
                              denominator = c("n", "N"), drop_levels = FALSE, ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
   
   useNA <- match.arg(useNA)
   denominator <- match.arg(denominator)
   
   if (drop_levels) x <- droplevels(x)
   
-  d <- if (denominator == "n") {
-    function(x) sum(!is.na(x))
+  if (!is.no_by(col_by)){
+    length(x)==length(col_by) || stop("dimension missmatch x and col_by")
+  }
+  
+  # If total column is requested stack the data and change col_by and col_N accordingly
+  if (!is.null(total) && !is.no_by(col_by)) { ## add total column
+    
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
+    } 
+  
+  if (denominator == "n" && !is.no_by(col_by) ) {
+    denom <- table(col_by[!is.na(x)])
+  } else if (denominator == "n" && is.no_by(col_by) ){
+    denom <- table(rep(col_by,  sum(!is.na(x)) ))
   } else {
-    length
+    denom <- col_N
   }
   
   tbl <- rbind(
@@ -206,24 +263,30 @@ t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
     rtabulate(
       x = x,
       col_by = col_by,
-      FUN = function(x_cell, x_row, x_col) {
-        if (length(x_col) > 0) length(x_cell) * c(1, 1/d(x_col)) else rcell("-", format = "xx")
+      FUN = function(x_cell, denom) {
+        if (length(x_cell) > 0) length(x_cell) * c(1, 1/denom) else rcell("-", format = "xx")
       },
-      row_col_data_args = TRUE,
-      format = "xx (xx.xx%)"
+      format = "xx (xx.xx%)",
+      col_wise_args = list(denom = denom)
     )
   )
-  
-  if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
-    tbl <- insert_rrow(tbl, rrowl("<NA>", tapply(x, col_by, function(x)sum(is.na(x))), format = "xx"), nrow(tbl)+1)
-  } 
 
-  tbl
+  if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
+    if(is.no_by(col_by)){
+      NA_row <- sum(is.na(x))
+    } else {
+      NA_row <- tapply(x, col_by, function(x)sum(is.na(x)))
+    }
+    tbl <- insert_rrow(tbl, rrowl("<NA>", NA_row, format = "xx"), nrow(tbl)+1)
+  }
+  
+  header_add_N(tbl, col_N)
+
 }
 
 #' Summarize Character Data
 #' 
-#' Currently treated as for factors
+#' Currently treated as factors
 #' 
 #' @inheritParams t_summary.factor
 #' @param x a character vector
@@ -232,68 +295,106 @@ t_summary.factor <- function(x, col_by, useNA = c("no", "ifany", "always"),
 #' @template author_waddella
 #' 
 #' @export
-t_summary.character <- function(x, col_by, ...) {
-  t_summary(as.factor(x), col_by, ...)
+#' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary_by}}
+#'   
+
+t_summary.character <- function(x, col_by, col_N = table(col_by), total = NULL, ...) {
+  t_summary(as.factor(x), col_by, col_N, total, ...)
 }
 
 #' Summarize Date Data
 #' 
-#' Currently treated as for factors
+#' Tabulate the range of dates.
 #' 
-#' @inheritParams t_summary
+#' @inheritParams t_summary.default
 #' @param x a Date object
-#' @param ... arguments passed on to \code{\link{t_summary.factor}}
+#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' 
 #' @template author_waddella
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.numeric}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
+#'   
 #' @examples 
 #' (today <- Sys.Date())
 #' (tenweeks <- seq(today, length.out=10, by="1 week")) 
-#' t_summary(tenweeks, no_by("all"))
+#' t_summary(tenweeks, no_by("all"), length(tenweeks))
 #' 
 #' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
-t_summary.Date <- function(x, col_by, ...) {
-  rtables:::rtabulate_default(x, col_by, FUN = function(x) {
+#' 
+#' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
+#' 
+t_summary.Date <- function(x, col_by, col_N = table(col_by), total = NULL,  ...) {
+  
+  # check argument validity and consitency 
+  check_col_by(col_by, col_N, min_num_levels = 1)
+  
+  if ( length(x)==length(col_by)){
+    df <- data.frame(x = x, col_by = col_by, stringsAsFactors = FALSE)    
+  }
+  
+  # If total column is requested stack the data and change by, col_by and col_N accordingly
+  if (!is.null(total) && !is.no_by(col_by)) { ## add total column
+    
+    tmp <- add_total(x=x, col_by = col_by, total_level = total, col_N = col_N)
+    x <- tmp$x
+    col_by <- tmp$col_by
+    col_N <- tmp$col_N
+  }
+  
+  tbl <- rtables:::rtabulate_default(x, col_by, FUN = function(x) {
     paste(range(na.omit(x)), collapse = " to ")
   }, row.name = "range of dates", ...)
+  
+  header_add_N(tbl, col_N)
+  
 }
 
 #' Summarize Boolean Data
 #' 
+#' Boolean data will be converted to factor
 #' 
 #' @inheritParams t_summary.factor
-#' @param x a factor
+#' @param x a logical vector
 #' @param row.name.TRUE character string with row.name for TRUE summary
 #' @param row.name.FALSE character string with row.name for FALSE summary
 #' @param ... arguments passed on to \code{\link{t_summary.factor}}
-#' 
+#
 #' @template author_waddella
 #' 
 #' @export
 #' 
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'   
 #' @examples 
 #' t_summary(
-#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
+#'  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+#'  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
 #' )
 #' 
-#' t_summary(
-#'   x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
-#'   denominator = "N"
-#' )
+#' library(random.cdisc.data)
+#' ADSL <- radsl(N = 100, seed = 1) 
 #' 
-t_summary.logical <- function(x, col_by, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", denominator = c("n", "N"), ...) {
-
-  denominator <- match.arg(denominator)
+#' ADSL$AGE[1:10] <- NA
+#' 
+#' with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
+#' with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany", 
+#'                    row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
+#' 
+t_summary.logical <- function(x, col_by, col_N = table(col_by), total = NULL, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE", ...) {
   
-  rbind(
-    rtabulate(x, col_by, count_n, row.name = "n", format="xx"),
-    rtabulate(x, col_by = col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name =  row.name.TRUE, na.rm = denominator == "n"),
-    rtabulate(!x, col_by = col_by, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name = row.name.FALSE, na.rm = denominator == "n")
-  )
+  xf <- factor(x, levels=c(TRUE, FALSE), labels=c(row.name.TRUE, row.name.FALSE))
+  t_summary(xf, col_by, col_N, total, ...)
 }

@@ -4,7 +4,8 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, ...)
+\method{t_summary}{numeric}(x, col_by, col_N = table(col_by),
+  total = NULL, ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -13,19 +14,38 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+
 \item{...}{arguments passed to \code{FUN}}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-Tabulate the number on non-missing observations, mean, sd, median, and range
+Tabulate the number of non-missing observations, mean, sd, median, and range
 for different groups.
 }
 \examples{
-
+# with iris data
 t_summary(iris$Sepal.Length, iris$Species)
 
+library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
+
+t_summary(ADSL$AGE, ADSL$ARM)
+t_summary(ADSL$AGE, ADSL$ARM, total = "All")
+
+ADSL$AGE[1:10] <- NA
+t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
+
+}
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

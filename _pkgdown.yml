@@ -1,4 +1,4 @@
-url: https://pages.github.roche.com/Rpackages/tern
+url: https://pages.github.roche.com/NEST/tern
 
 template:
   params:
@@ -7,10 +7,10 @@ template:
 navbar:
   right:
     - icon: fa-github
-      href: https://github.roche.com/Rpackages/tern
+      href: https://github.roche.com/NEST/tern
 
 development:
-  mode: devel
+  mode: release
 
 reference:
   - title:
@@ -21,6 +21,7 @@ reference:
     contents:
       - t_summary
       - t_summary.data.frame
+      - t_summary_by
       - t_forest_rsp
       - t_forest_tte
       - t_rsp
@@ -33,6 +34,7 @@ reference:
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
     contents:
+      - t_summary.default
       - t_summary.numeric
       - t_summary.factor
       - t_summary.logical
@@ -43,6 +45,7 @@ reference:
       - t_max_grade_per_id
       - t_count_unique
       - t_events_summary
+      - tabulate_pairwise
   - title: Analysis Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
@@ -57,7 +60,6 @@ reference:
       - stack_grobs
       - arrange_grobs
       - draw_grob
-      - addTable
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
@@ -70,11 +72,6 @@ reference:
       - var_labels<-
       - var_relabel
       - var_labels_remove
-  - title: Deprecated functions
-    desc: these functions will be removed in future releases of tern
-    contents:
-      - t_summarize_variables
-      - t_summarize_by_visit
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:

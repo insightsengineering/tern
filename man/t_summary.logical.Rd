@@ -4,40 +4,51 @@
 \alias{t_summary.logical}
 \title{Summarize Boolean Data}
 \usage{
-\method{t_summary}{logical}(x, col_by, row.name.TRUE = "TRUE",
-  row.name.FALSE = "FALSE", denominator = c("n", "N"), ...)
+\method{t_summary}{logical}(x, col_by, col_N = table(col_by),
+  total = NULL, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE",
+  ...)
 }
 \arguments{
-\item{x}{a factor}
+\item{x}{a logical vector}
 
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+
 \item{row.name.TRUE}{character string with row.name for TRUE summary}
 
 \item{row.name.FALSE}{character string with row.name for FALSE summary}
 
-\item{denominator}{either n or N for calculating the level associated
-percentage.}
-
 \item{...}{arguments passed on to \code{\link{t_summary.factor}}}
 }
 \description{
-Summarize Boolean Data
+Boolean data will be converted to factor
 }
 \examples{
 t_summary(
-  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
+ x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+ col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
 )
 
-t_summary(
-  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
-  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)]),
-  denominator = "N"
-)
+library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
 
+ADSL$AGE[1:10] <- NA
+
+with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
+with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany", 
+                   row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
+
+}
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

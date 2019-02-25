@@ -202,6 +202,8 @@ test_that("adverse events by terms (term only)", {
                               total = "All Patients"
   )
   
+  # Viewer(tbl, tbl_stream)
+  
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
   
   expect_true(all(comp == "."), "t_events_per_term_id does not provide the same results as stream")

@@ -1,5 +1,13 @@
+# tern 0.6.0
 
-# tern 0.5.0.3
+* Removed functions `addTable`, `t_summarize_by_visit`, `t_summarize_variables`.
+* Added `t_summary_by` function.
+* Refactor of `g_km` function, renamed `kmGrob` into `kmCurveGrob`.
+* Refactor `t_events_*` family of functions.
+* Updated examples.
+
+
+# tern 0.5.0.3 
 
 ## New TLGs
 

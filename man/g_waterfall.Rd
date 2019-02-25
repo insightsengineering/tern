@@ -23,53 +23,50 @@ g_waterfall(height, id, col = NULL, xlab = NULL, ylab = NULL,
 \item{title}{A string to be displayed as plot title.}
 }
 \description{
-This basic waterfall plot visualizes a quatity \code{height} ordered by value with some
+This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
 markup
 }
 \examples{
-
-
 g_waterfall(height = c(3,5,-1), id = letters[1:3])
 
 g_waterfall(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"))
 
-
 library(random.cdisc.data)
 library(dplyr)
 
-ASL <- radam("ASL")
-ARS <- radam("ARS", ADSL = ASL)
-
-ARS_f <- subset(ARS, PARAMCD == "OVRINV")
-
-ASL_f <- ASL \%>\%
+ADSL <- radsl(seed = 1)
+ADSL_f <- ADSL \%>\%
   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
+  
+ADRS <- radrs(ADSL, seed = 2)
+ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") \%>\% 
+   mutate(pchg = rnorm(1200, 10, 50))
 
-apchg <- ARS_f \%>\%
-  mutate(pchg = rnorm(100, 10, 50))
-  # Merge pchange and besr response
-asld <- right_join(apchg, ASL_f \%>\% select(STUDYID, USUBJID, SEX, ARMCD))
-
-
-asld <- head(asld, 30)
-
-head(asld)
+ADRS_f <- head(ADRS_f, 30)
+ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID),]
+head(ADRS_f)
 
 g_waterfall(
-  height = asld$pchg,
-  id = asld$USUBJID,
-  col = asld$AVALC
+  height = ADRS_f$pchg,
+  id = ADRS_f$USUBJID,
+  col = ADRS_f$AVALC
 )
 
 g_waterfall(
-  height = asld$pchg,
-  id = paste("asdfdsfdsfsd",asld$USUBJID),
-  col = asld$SEX
+  height = ADRS_f$pchg,
+  id = ADRS_f$USUBJID,
+  col = ADRS_f$AVALC
 )
 
 g_waterfall(
-  height = asld$pchg,
-  id = paste("asdfdsfdsfsd",asld$USUBJID),
+  height = ADRS_f$pchg,
+  id = paste("asdfdsfdsfsd",ADRS_f$USUBJID),
+  col = ADRS_f$SEX
+)
+
+g_waterfall(
+  height = ADRS_f$pchg,
+  id = paste("asdfdsfdsfsd",ADRS_f$USUBJID),
   xlab = "ID",
   ylab = "Percentage Change",
   title = "Waterfall plot"

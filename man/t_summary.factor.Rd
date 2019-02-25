@@ -4,22 +4,28 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(x, col_by, useNA = c("no", "ifany", "always"),
+\method{t_summary}{factor}(x, col_by, col_N = table(col_by),
+  total = NULL, useNA = c("no", "ifany", "always"),
   denominator = c("n", "N"), drop_levels = FALSE, ...)
 }
 \arguments{
-\item{x}{numeric variable}
+\item{x}{factor variable}
 
 \item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{useNA}{choose whether missing data (NAs) should be displayed as a level}
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+
+\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+
+\item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
 \item{denominator}{either n or N for calculating the level associated
-percentage.}
+percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
+With option n, the number of non-missing records from \code{x} is used as the denominator.}
 
-\item{drop_levels}{boolean whether to drio zero count levels}
+\item{drop_levels}{boolean whether to drop zero count levels}
 
 \item{...}{not used arguments}
 }
@@ -27,27 +33,29 @@ percentage.}
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-Tabulate the number on non-missing observations, number of per level and
-percentage
+Tabulate the number of non-missing observations, number of observations per level and
+percentage.
 }
 \examples{
-
+# with iris data
 t_summary(iris$Species, iris$Species)
 
+library(random.cdisc.data)
+ADSL <- radsl(N = 100, seed = 1) 
 
-x <-  factor(c("a", "b", "a", "a",  NA,  NA,  NA, "b", "b"))
-cb <- factor(c("E", "E", "F", "F", "E", "E", "F", "F", "F"))
+t_summary(ADSL$SEX, ADSL$ARM, total = "All")
+t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 
-t_summary(x, cb)
-
-t_summary(x, cb, useNA = "always")
-
-t_summary(x, cb, denominator = "N")
-
-t_summary(x, cb, useNA = "always",  denominator = "N")
-
-t_summary(x, cb, useNA = "always",  denominator = "n")
-
+ADSL$SEX[1:10] <- NA
+t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
+t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
+ 
+}
+\seealso{
+\code{\link{t_summary}},
+  \code{\link{t_summary.data.frame}}, \code{\link{t_summary.numeric}},
+  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
