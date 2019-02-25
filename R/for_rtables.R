@@ -40,34 +40,6 @@ recursive_stack_rtables <- function(x) {
 }
 
 
-#' Stack rtables with rbind and add empy rows between tables
-#' 
-#' @param ... rtbale objects
-#' @param nrow_pad number of empty rows between tables in \code{...}
-#' 
-#' @noRd
-#' 
-#' 
-stack_rtables <- function(..., nrow_pad = 1) {
-  
-  warning("please use rbind.rtable")
-  rbind(..., gap = nrow_pad)
-  
-}
-
-stack_rtables_l <- function(x) {
-  warning("please use rbindl_rtables")
-  rbindl_rtables(x, gap = 1)
-}
-
-fast_stack_rtables <- function(..., nrow_pad = 1) {
-  
-  warning("please use rbind.rtable")
-  rbind(..., gap = nrow_pad)
-  
-}
-
-
 #' Unlist a Nested Lists with rtables as leafes
 #' 
 #' Often it is useful to flatten a nested lists with rtables as leafes to a list
@@ -149,27 +121,6 @@ row_names_as_col <- function(tbl, header_label) {
   cbind_rtables(tbl_rn, tbl)
 }
 
-
-unlist.rtable <- function(x, recursive = TRUE, use.names = TRUE) {
-  x
-}
-
-#' hack to faster bind multiple tables
-#' 
-#' @noRd
-#' 
-#' 
-#' @examples 
-#' 
-#' t1 <- rtabulate(iris$Sepal.Length, factor(iris$Species))
-#' t2 <- rtabulate(iris$Sepal.Width, factor(iris$Species))
-#' 
-#' tern:::fast_rbind(t1, t2)
-#' 
-fast_rbind <- function(...) {
-  warning("please use rbind.rtable")
-  rbind(...)
-}
 
 #' insert rrows at a specific location
 #' 
