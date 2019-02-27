@@ -24,14 +24,6 @@ The `tern` R package contains analysis functions to create tables, listings and 
 
 * However you can use `tern` for exploratory analysis and for quality control
 
-There are two versions of this web-manual:
-
-* development version: [https://pages.github.roche.com/NEST/tern/dev/](https://pages.github.roche.com/NEST/tern/dev/)
-
-
-* stable relase version: [https://pages.github.roche.com/NEST/tern/](https://pages.github.roche.com/NEST/tern/)
-
-
 
 # Installation 
 
@@ -40,38 +32,16 @@ There are two versions of this web-manual:
 ```{r eval=FALSE}
 devtools::install_github(
   repo = "NEST/random.cdisc.data",
-  ref = "master", 
+  ref = "v0.2.0", 
   host = "https://github.roche.com/api/v3",
   upgrade_dependencies = FALSE
 )
 
-devtools::install_github("Roche/rtables", ref = "master")
+devtools::install_github("Roche/rtables", ref = "v0.1.1")
 
 devtools::install_github(
   repo = "NEST/tern",
-  ref = "master", 
-  host = "https://github.roche.com/api/v3",
-  upgrade_dependencies = FALSE
-)
-```
-
-## Development Version
-
-To install the current development version of `tern` run:
-
-```{r eval=FALSE}
-devtools::install_github(
-  repo = "NEST/random.cdisc.data",
-  ref = "devel", 
-  host = "https://github.roche.com/api/v3",
-  upgrade_dependencies = FALSE
-)
-
-devtools::install_github("Roche/rtables", ref = "devel")
-
-devtools::install_github(
-  repo = "NEST/tern",
-  ref = "devel", 
+  ref = "v0.6.0", 
   host = "https://github.roche.com/api/v3",
   upgrade_dependencies = FALSE
 )
@@ -113,12 +83,6 @@ other than bug fixes or documentation examples (this includes argument changes)
       consider contributing to the
       [osprey](https://github.roche.com/Rpackages/osprey) R package.
 
-### Creating Pull Requests
-
-* Please make pull requests to the `master` branch (i.e. base is master)
-
-* We then make new tagged releases on the master branch once the `master` branch
-has been thoroughly tested
 
 
 # Presentations

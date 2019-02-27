@@ -383,7 +383,7 @@ compound_table <- function(funs, ..., nrow_pad = 1) {
     
   })
   
-  do.call(stack_rtables, c(tbls, list(nrow_pad = nrow_pad)))
+  rbindl_rtables(tbls, gap = nrow_pad)
   
 }
 

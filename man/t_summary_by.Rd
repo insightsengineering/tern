@@ -85,3 +85,6 @@ t_summary_by(
   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
   \code{\link{t_summary.character}}
 }
+\author{
+Jana Stoilova (stoilovs) \email{jana.stoilova@roche.com}
+}
