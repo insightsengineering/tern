@@ -14,6 +14,8 @@
 #' 
 #' @export
 #' 
+#' @template author_stoilovs
+#' 
 #' @seealso \code{\link{t_summary}}, \code{\link{t_summary.data.frame}},
 #'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
 #'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
