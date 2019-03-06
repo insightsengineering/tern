@@ -1,11 +1,10 @@
-
 context("test adverse events by terms (class and term)")
 
 library(dplyr)
 
 test_that("adverse events by terms (class and term)", {
-  
-  ANL <- read.table(header = TRUE, sep = ';', stringsAsFactors = FALSE, text = '
+
+  anl <- read.table(header = TRUE, sep = ';', stringsAsFactors = FALSE, text = '
                     "USUBJID";"ARM";"AEBODSYS";"AEDECOD"
                     "SHH4429G-S19914-16100";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
                     "SHH4429G-S19914-16100";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
@@ -106,8 +105,8 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
                     "SHH4429G-S19961-15655";"Placebo";"INFECTIONS AND INFESTATIONS";"UPPER RESPIRATORY TRACT INFECTION"'
   )
-  
-  ASL <- read.table(header = TRUE, sep = ';', stringsAsFactors = FALSE, text = '
+
+  asl <- read.table(header = TRUE, sep = ";", stringsAsFactors = FALSE, text = '
                     "USUBJID";"ARM"
                     "SHH4429G-S19914-16100";"Active"
                     "SHH4429G-S19914-16101";"Placebo"
@@ -170,51 +169,52 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active"
                     "SHH4429G-S19961-15655";"Placebo"'
   )
-  
+
+  # nolint start
   tbl_stream <- rtable(
     header = rheader(
-      rrowl("", c('Active', 'Placebo', 'All Patients')),
-      rrowl("", c('(N=32)', '(N=28)', '(N=60)'))
+      rrowl("", c("Active", "Placebo", "All Patients")),
+      rrowl("", c("(N=32)", "(N=28)", "(N=60)"))
     ),
-    rrow('- Any event -'),
-    rrow('Total number of patients with at least one adverse event', rcell(c(23, .719), 'xx (xx.x%)'), rcell(c(19, .679), 'xx (xx.x%)'), rcell(c(42, .700), 'xx (xx.x%)'), indent = 1),
-    rrow('Overall total number of events', rcell(c(58)), rcell(c(40)), rcell(c(98)), indent = 1),
+    rrow("- Any event -"),
+    rrow("Total number of patients with at least one adverse event", rcell(c(23, .719), "xx (xx.x%)"), rcell(c(19, .679), "xx (xx.x%)"), rcell(c(42, .700), "xx (xx.x%)"), indent = 1),
+    rrow("Overall total number of events", rcell(c(58)), rcell(c(40)), rcell(c(98)), indent = 1),
     rrow(),
-    rrow('GASTROINTESTINAL DISORDERS'),
-    rrow('Total number of patients with at least one adverse event', rcell(c(21, .656), 'xx (xx.x%)'), rcell(c(15, .536), 'xx (xx.x%)'), rcell(c(36, .600), 'xx (xx.x%)'), indent = 1),
-    rrow('Total number of events', rcell(c(56)), rcell(c(34)), rcell(c(90)), indent = 1),
-    rrow('VOMITING', rcell(c(17, .531), 'xx (xx.x%)'), rcell(c(8, .286), 'xx (xx.x%)'), rcell(c(25, .417), 'xx (xx.x%)'), indent = 1),
-    rrow('ABNOMINAL PAIN', rcell(c(6, .188), 'xx (xx.x%)'), rcell(c(5, .179), 'xx (xx.x%)'), rcell(c(11, .183), 'xx (xx.x%)'), indent = 1),
-    rrow('STOMATITIS', rcell(c(5, .156), 'xx (xx.x%)'), rcell(c(6, .214), 'xx (xx.x%)'), rcell(c(11, .183), 'xx (xx.x%)'), indent = 1),
+    rrow("GASTROINTESTINAL DISORDERS"),
+    rrow("Total number of patients with at least one adverse event", rcell(c(21, .656), "xx (xx.x%)"), rcell(c(15, .536), "xx (xx.x%)"), rcell(c(36, .600), "xx (xx.x%)"), indent = 1),
+    rrow("Total number of events", rcell(c(56)), rcell(c(34)), rcell(c(90)), indent = 1),
+    rrow("VOMITING", rcell(c(17, .531), "xx (xx.x%)"), rcell(c(8, .286), "xx (xx.x%)"), rcell(c(25, .417), "xx (xx.x%)"), indent = 1),
+    rrow("ABNOMINAL PAIN", rcell(c(6, .188), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"), indent = 1),
+    rrow("STOMATITIS", rcell(c(5, .156), "xx (xx.x%)"), rcell(c(6, .214), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"), indent = 1),
     rrow(),
-    rrow('INFECTIONS AND INFESTATIONS'),
-    rrow('Total number of patients with at least one adverse event', rcell(c(2, .063), 'xx (xx.x%)'), rcell(c(5, .179), 'xx (xx.x%)'), rcell(c(7, .117), 'xx (xx.x%)'), indent = 1),
-    rrow('Total number of events', rcell(c(2)), rcell(c(6)), rcell(c(8)), indent = 1),
-    rrow('UPPER RESPIRATORY TRACT INFECTION', rcell(c(1, .031), 'xx (xx.x%)'), rcell(c(5, .179), 'xx (xx.x%)'), rcell(c(6, .100), 'xx (xx.x%)'), indent = 1),
-    rrow('INFLUENZA', rcell(c(1, .031), 'xx (xx.x%)'), rcell(0), rcell(c(1, .017), 'xx (xx.x%)'), indent = 1)
-    
+    rrow("INFECTIONS AND INFESTATIONS"),
+    rrow("Total number of patients with at least one adverse event", rcell(c(2, .063), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(7, .117), "xx (xx.x%)"), indent = 1),
+    rrow("Total number of events", rcell(c(2)), rcell(c(6)), rcell(c(8)), indent = 1),
+    rrow("UPPER RESPIRATORY TRACT INFECTION", rcell(c(1, .031), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(6, .100), "xx (xx.x%)"), indent = 1),
+    rrow("INFLUENZA", rcell(c(1, .031), "xx (xx.x%)"), rcell(0), rcell(c(1, .017), "xx (xx.x%)"), indent = 1)
   )
-  
-  attr(attr(tbl_stream, "header")[[1]], "row.name") <- 'MedDRA System Organ Class'
-  attr(attr(tbl_stream, "header")[[2]], "row.name") <- 'MedDRA Preferred Term'
+  # nolint end
+
+  attr(attr(tbl_stream, "header")[[1]], "row.name") <- "MedDRA System Organ Class"
+  attr(attr(tbl_stream, "header")[[2]], "row.name") <- "MedDRA Preferred Term"
   attr(attr(tbl_stream, "header")[[2]], "indent") <- 1
-  
-  ANL$AEBODSYS[ANL$AEBODSYS == ""] <- NA
-  ANL$AEDECOD[ANL$AEDECOD == ""] <- NA
-  ANL <- ANL %>%
+
+  anl$AEBODSYS[anl$AEBODSYS == ""] <- NA
+  anl$AEDECOD[anl$AEDECOD == ""] <- NA
+  anl <- anl %>%
     var_relabel(
-      AEBODSYS = 'MedDRA System Organ Class',
-      AEDECOD = 'MedDRA Preferred Term')
-  
-  tbl <- t_events_per_term_id(terms = ANL[, c("AEBODSYS", "AEDECOD")],
-                              id = ANL$USUBJID,
-                              col_by = as.factor(ANL$ARM),
-                              col_N = table(ASL$ARM),
+      AEBODSYS = "MedDRA System Organ Class",
+      AEDECOD = "MedDRA Preferred Term")
+
+  tbl <- t_events_per_term_id(terms = anl[, c("AEBODSYS", "AEDECOD")],
+                              id = anl$USUBJID,
+                              col_by = as.factor(anl$ARM),
+                              col_n = table(asl$ARM),
                               total = "All Patients"
   )
-  
+
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-  
+
   expect_true(all(comp == "."), "t_events_per_term_id does not provide the same results as stream")
-  
+
 })

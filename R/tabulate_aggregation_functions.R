@@ -1,38 +1,40 @@
-
 # Collection of reusable function that can be reused in rtabulate
 
-positives_and_proportion <- function(x, na.rm = TRUE) {
-  if (!is.logical(x)) stop("x is required to be logical")
-  
-  
+positives_and_proportion <- function(x, na.rm = TRUE) { # nolint
+  if (!is.logical(x))
+    stop("x is required to be logical")
+
   n <- if (na.rm) sum(!is.na(x)) else length(x)
-  sum(x, na.rm=TRUE) * c(1, 1/n)
+  sum(x, na.rm = TRUE) * c(1, 1 / n)
 }
 
 
-count_n <- function(x, na.rm = TRUE) {
-  if (na.rm) sum(!is.na(x)) else length(x)
+count_n <- function(x, na.rm = TRUE) { # nolint
+  if (na.rm)
+    sum(!is.na(x))
+  else
+    length(x)
 }
 
-mean_sd <- function(x, na.rm = TRUE) {
+mean_sd <- function(x, na.rm = TRUE) { # nolint
   c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
 }
 
 #' get inter-quantile range
-#' 
+#'
 #' @noRd
-#' 
-#' @importFrom stats quantile sd median qnorm 
-#' 
-iqr_num <- function(x, na.rm = TRUE) {
+#'
+#' @importFrom stats quantile sd median qnorm
+#'
+iqr_num <- function(x, na.rm = TRUE) { # nolint
   quantile(x, probs = c(.25, .75), na.rm = TRUE)
 }
 
 
 # checks if there is any case and derives counts (percentage), otherwise 0
-count_perc_col_N <- function(x_cell, N_i) {
-  if (N_i > 0) {
-    length(x_cell$id) * c(1, 1 / N_i) # obtaining the total and getting percentage
+count_perc_col_n <- function(x_cell, n_i) {
+  if (n_i > 0) {
+    length(x_cell$id) * c(1, 1 / n_i) # obtaining the total and getting percentage
   } else {
     rcell(0, format = "xx")
   }
@@ -42,54 +44,89 @@ count_perc_col_N <- function(x_cell, N_i) {
 # Version with test for if-all-NA, then display empty cell
 
 positives_and_proportion2 <- function(x) {
-  if (!is.logical(x)) stop("x is required to be logical")
-  if (all(is.na(x))) rcell(" ", format="xx") else sum(x) * c(1, 1/length(x))
+  if (!is.logical(x))
+    stop("x is required to be logical")
+  if (all(is.na(x)))
+    rcell(" ", format = "xx")
+  else
+    sum(x) * c(1, 1 / length(x))
 }
 
 n_not_na2 <- function(x) {
-  if (all(is.na(x))) rcell(" ", format="xx") else sum(!is.na(x))
+  if (all(is.na(x)))
+    rcell(" ", format = "xx")
+  else
+    sum(!is.na(x))
 }
 
-mean_sd2 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell(" ", format="xx") else c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
+mean_sd2 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell(" ", format = "xx")
+  else
+    c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
 }
 
-median_t2 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell(" ", format="xx") else median(x, na.rm = TRUE)
+median_t2 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell(" ", format = "xx")
+  else
+    median(x, na.rm = TRUE)
 }
 
-range_t2 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell(" ", format="xx") else range(x, na.rm = TRUE)
+range_t2 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell(" ", format = "xx")
+  else
+    range(x, na.rm = TRUE)
 }
 
-iqr_num2 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell(" ", format="xx") else quantile(x, probs = c(.25, .75), na.rm = TRUE)
+iqr_num2 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell(" ", format = "xx")
+  else
+    quantile(x, probs = c(.25, .75), na.rm = TRUE)
 }
 
 
 # Version with test for if-all-NA, then display NE
 
 positives_and_proportion3 <- function(x) {
-  if (!is.logical(x)) stop("x is required to be logical")
-  if (all(is.na(x))) rcell("NE", format="xx") else sum(x) * c(1, 1/length(x))
+  if (!is.logical(x))
+    stop("x is required to be logical")
+  if (all(is.na(x)))
+    rcell("NE", format = "xx")
+  else
+    sum(x) * c(1, 1 / length(x))
 }
 
 n_not_na3 <- function(x) {
   sum(!is.na(x))
 }
 
-mean_sd3 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell("NE", format = function(x, output) paste0(x," (",x,")")) else c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
+mean_sd3 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell("NE", format = function(x, output) paste0(x, " (", x, ")"))
+  else
+    c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
 }
 
-median_t3 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell("NE", format="xx") else median(x, na.rm = TRUE)
+median_t3 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell("NE", format = "xx")
+  else
+    median(x, na.rm = TRUE)
 }
 
-range_t3 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell("NE", format = function(x, output) paste0(x," - ",x)) else range(x, na.rm = TRUE)
+range_t3 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell("NE", format = function(x, output) paste0(x, " - ", x))
+  else
+    range(x, na.rm = TRUE)
 }
 
-iqr_num3 <- function(x, na.rm = TRUE) {
-  if (all(is.na(x))) rcell("NE", format = function(x, output) paste0(x," - ",x)) else quantile(x, probs = c(.25, .75), na.rm = TRUE)
+iqr_num3 <- function(x, na.rm = TRUE) { # nolint
+  if (all(is.na(x)))
+    rcell("NE", format = function(x, output) paste0(x, " - ", x))
+  else
+    quantile(x, probs = c(.25, .75), na.rm = TRUE)
 }

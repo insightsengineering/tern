@@ -16,20 +16,21 @@ An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
 object for further annotation on top of Kaplan-Meier grob
 }
 \examples{
-
+\donttest{
 library(random.cdisc.data)
+
 ADSL <- radsl(seed = 1)
 ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
-   if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+  if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
 }))
 
 ADTTE <- radtte(ADSL, seed = 2)
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS") 
-                 
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
+
 fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
 tbl <- t_coxph(fit_coxph)
 tbl
-
+}
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

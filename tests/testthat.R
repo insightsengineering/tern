@@ -1,9 +1,5 @@
-
-
-
 if (requireNamespace("testthat", quietly = TRUE)) {
   library(tern)
   library(testthat)
-  test_check("tern")  
+  test_check("tern")
 }
-

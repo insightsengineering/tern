@@ -5,7 +5,7 @@
 \title{Response Table as used for Forest Plot}
 \usage{
 t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
-  na.omit.group = TRUE, dense_header = FALSE)
+  na_omit_group = TRUE, dense_header = FALSE)
 }
 \arguments{
 \item{rsp}{is a boolean vector. If \code{TRUE}, observation is a response,
@@ -19,7 +19,7 @@ first \code{level} indicates the reference group}
 \item{total}{character with the row name of the analysis run on all data. If
 \code{NULL} analysis is omitted.}
 
-\item{na.omit.group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
+\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
 
 \item{dense_header}{Display the table headers in mulitple rows. Default is \code{FALSE}.}
 }
@@ -64,7 +64,7 @@ the following 9 columns:
   effect lies in between. If the 95% confidence interval includes 1, then we
   say that the difference between two arms is not significant at a
   significance level of 0.05.}
-  
+
 }
 }
 \examples{
@@ -75,13 +75,13 @@ ADSL <- radsl(seed = 1)
 ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 
 ADRS <- radrs(ADSL, seed = 2)
-ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\% 
-  filter(ARM != 'C: Combination') \%>\%
+ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
+  dplyr::filter(ARM != 'C: Combination') \%>\%
   mutate(ARM = droplevels(ARM))
-  
+
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ADRS_f$ARM), 
+  col_by = factor(ADRS_f$ARM),
   group_data = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
 )
 
@@ -90,7 +90,6 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
-   
 }
 \seealso{
 \code{\link{t_rsp}}

@@ -4,20 +4,20 @@
 \alias{t_events_summary}
 \title{Summary table for events}
 \usage{
-t_events_summary(term, id, col_by, col_N,
+t_events_summary(term, id, col_by, col_n,
   total_events = "Total number of events",
   subjects_with_events = "Total number of patients with at least one adverse event")
 }
 \arguments{
 \item{term}{a character vector with optional label attribute}
 
-\item{id}{unique subject identifier. If a particular subject has no adverse 
-event then that information needs to be added to the \code{col_N} argument.}
+\item{id}{unique subject identifier. If a particular subject has no adverse
+event then that information needs to be added to the \code{col_n} argument.}
 
 \item{col_by}{group variable that will be used for a column header.
 \code{col_by} has to be a factor and can not be missing. See 'Examples'.}
 
-\item{col_N}{associated number of elements per level of \code{col_by}}
+\item{col_n}{associated number of elements per level of \code{col_by}}
 
 \item{total_events}{character string that will be used as a label in the row
 for the total event count. If this is \code{NULL} then this row will be
@@ -34,19 +34,18 @@ an rtable
 \code{t_events_summary} counts the number of unique elements per cell.
 }
 \examples{
-
 t_events_summary(
  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
  id = c(1, 4, 2, 3, 3),
  col_by = factor(c("A", "A", "B", "C", "C")),
- col_N = c(2, 4, 10)
+ col_n = c(2, 4, 10)
 )
 
 t_events_summary(
  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
  id = c(1, 4, 2, 3, 3),
  col_by = factor(c("A", "A", "B", "C", "C")),
- col_N = c(2, 4, 10),
+ col_n = c(2, 4, 10),
  total_events = NULL
 )
 
@@ -54,9 +53,8 @@ t_events_summary(
  term = NULL,
  id = c(1, 4, 2, 3, 3),
  col_by = factor(c("A", "A", "B", "C", "C")),
- col_N = c(2, 4, 10)
+ col_n = c(2, 4, 10)
 )
-
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},

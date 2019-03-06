@@ -2,7 +2,7 @@
 #'
 #' This function is useful to label grid grobs (also ggplot2, and lattice plots)
 #' with title, footnote, and page nuumbers.
-#' 
+#'
 #' @inheritParams grid::grob
 #' @param grob a grid grob object, optionally \code{NULL} if ongly a grob with
 #'   the decoration should be shown.
@@ -19,34 +19,35 @@
 #' @param outer_margins  unit object of length 4
 #' @param gp_titles a gpar object
 #' @param gp_footnotes a gpar object
-#' 
-#' @details 
+#'
+#' @details
 #' The titles and footnotes will be ragged, i.e. each title will be wrapped
 #' individually.
-#' 
+#'
 #' \if{html}{
 #' The layout can be illustrated as follows:
-#' 
+#'
 #' \figure{decorate_grob.png}{options: alt="decorate_grob layout"}
 #' }
-#' 
-#' @return a grid grob (gTree) 
+#'
+#' @return a grid grob (gTree)
+#'
+#' @import grid
 #'
 #' @export
-#' 
-#' @template author_waddella
-#' 
-#' @examples
 #'
+#' @template author_waddella
+#'
+#' @examples
 #' titles <- c(
 #'   "Edgar Anderson's Iris Data",
 #'   paste(
 #'     "This famous (Fisher's or Anderson's) iris data set gives the measurements",
-#'      "in centimeters of the variables sepal length and width and petal length",
-#'      "and width, respectively, for 50 flowers from each of 3 species of iris."
+#'     "in centimeters of the variables sepal length and width and petal length",
+#'     "and width, respectively, for 50 flowers from each of 3 species of iris."
 #'   )
-#'  )
-#'   
+#' )
+#'
 #' footnotes <- c(
 #'   "The species are Iris setosa, versicolor, and virginica.",
 #'   paste(
@@ -54,7 +55,7 @@
 #'   "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
 #'   )
 #' )
-#'   
+#'
 #'
 #' ## empty plot
 #' grid.newpage()
@@ -69,15 +70,15 @@
 #'
 #' # grid
 #' p <- gTree(
-#'    children = gList(
-#'      rectGrob(),
-#'      xaxisGrob(),
-#'      yaxisGrob(),
-#'      textGrob("Sepal.Length", y = unit(-4, "lines")),
-#'      textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
-#'      pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col=iris$Species), pch=16)
-#'    ),
-#'    vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
+#'   children = gList(
+#'     rectGrob(),
+#'     xaxisGrob(),
+#'     yaxisGrob(),
+#'     textGrob("Sepal.Length", y = unit(-4, "lines")),
+#'     textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
+#'     pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col=iris$Species), pch=16)
+#'   ),
+#'   vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
 #' )
 #' grid.newpage(); grid.draw(p)
 #'
@@ -92,7 +93,6 @@
 #' )
 #'
 #' ## with ggplot2
-#' library(ggplot2)
 #' p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 #' p_gg
 #' p <- ggplotGrob(p_gg)
@@ -126,7 +126,7 @@ decorate_grob <- function(grob,
                           width_titles = unit(1, "npc"),
                           width_footnotes = unit(1, "npc") - stringWidth(page),
                           border = TRUE,
-                          margins = unit(c(1,0,1,0), "lines"),
+                          margins = unit(c(1, 0, 1, 0), "lines"),
                           padding = unit(rep(1, 4), "lines"),
                           outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"),
                           gp_titles = gpar(),
@@ -134,17 +134,26 @@ decorate_grob <- function(grob,
                           name = NULL,
                           gp = gpar(),
                           vp = NULL) {
-  
-  st_titles <- splitTextGrob(titles, x = 0, y = 1, just = c("left", "top"), width = width_titles,
-                             vp = viewport(layout.pos.row = 1, layout.pos.col = 1),
-                             gp = gp_titles)
-  
-  
-  st_footnotes <- splitTextGrob(footnotes, x = 0, y = 1, just = c("left", "top"), width = width_footnotes,
-                                vp = viewport(layout.pos.row = 3, layout.pos.col = 1),
-                                gp = gp_footnotes)
-  
-  g <- gTree(
+
+  st_titles <- split_text_grob(
+    titles,
+    x = 0, y = 1,
+    just = c("left", "top"),
+    width = width_titles,
+    vp = viewport(layout.pos.row = 1, layout.pos.col = 1),
+    gp = gp_titles
+  )
+
+  st_footnotes <- split_text_grob(
+    footnotes,
+    x = 0, y = 1,
+    just = c("left", "top"),
+    width = width_footnotes,
+    vp = viewport(layout.pos.row = 3, layout.pos.col = 1),
+    gp = gp_footnotes
+  )
+
+  gTree(
     grob = grob,
     titles = titles,
     footnotes = footnotes,
@@ -157,7 +166,7 @@ decorate_grob <- function(grob,
     outer_margins = outer_margins,
     gp_titles = gp_titles,
     gp_footnotes = gp_footnotes,
-    
+
     children = gList(
       gTree(
         children = gList(
@@ -168,27 +177,35 @@ decorate_grob <- function(grob,
               gTree(
                 children = gList(
                   grob
-                ), 
+                ),
                 vp = plotViewport(margins = padding)
               )
             ),
             vp = vpStack(viewport(layout.pos.row = 2, layout.pos.col = 1), plotViewport(margins = margins))
           ),
           st_footnotes,
-          textGrob(page, x = 1, y = 0, just = c("right", "bottom"),
-                   vp = viewport(layout.pos.row = 3, layout.pos.col = 1),
-                   gp = gp_footnotes)
+          textGrob(
+            page,
+            x = 1, y = 0,
+            just = c("right", "bottom"),
+            vp = viewport(layout.pos.row = 3, layout.pos.col = 1),
+            gp = gp_footnotes
+          )
         ),
-        childrenvp = ,
+        childrenvp = NULL,
         name = "titles_grob_footnotes",
         vp = vpStack(
           plotViewport(margins = outer_margins),
-          viewport(layout = grid.layout(nrow = 3, ncol = 1,
-                                        heights = unit.c(
-                                          grobHeight(st_titles),
-                                          unit(1, "null"),
-                                          grobHeight(st_footnotes)
-                                        )))
+          viewport(
+            layout = grid.layout(
+              nrow = 3, ncol = 1,
+              heights = unit.c(
+                grobHeight(st_titles),
+                unit(1, "null"),
+                grobHeight(st_footnotes)
+              )
+            )
+          )
         )
       )
     ),
@@ -201,52 +218,55 @@ decorate_grob <- function(grob,
 
 
 #' @export
-validDetails.decoratedGrob <- function(x) {
-  
+validDetails.decoratedGrob <- function(x) { # nolint
+
   if (!is.grob(x$grob) && !is.null(x$grob))
     stop("grob argument is expected to be a grid grob object or NULL")
-  
-  if (!is.character(x$titles)) stop("argument titles is not of type character")
-  if (!is.character(x$footnotes)) stop("argument footnotes is not of type character")
-  if (!is.character(x$page) && length(x$page) == 1) stop("page is not a character of length 1")
-  
+
+  if (!is.character(x$titles))
+    stop("argument titles is not of type character")
+  if (!is.character(x$footnotes))
+    stop("argument footnotes is not of type character")
+  if (!is.character(x$page) && length(x$page) == 1)
+    stop("page is not a character of length 1")
+
   if (!is.unit(x$outer_margins) && length(x$outer_margins) != 4)
     stop("outer_margins needs to be a unit object of length 4 (bottom, left, top, right)")
   if (!is.unit(x$margins) && length(x$margins) != 4)
     stop("margins needs to be a unit object of length 4 (bottom, left, top, right)")
   if (!is.unit(x$padding) && length(x$padding) != 4)
     stop("padding needs to be a unit object of length 4 (bottom, left, top, right)")
-  
+
   x
 }
 
 
 #' @export
-widthDetails.decoratedGrob <- function(x) {
+widthDetails.decoratedGrob <- function(x) { # nolint
   unit(1, "null")
 }
 
 #' @export
-heightDetails.decoratedGrob <- function(x) {
+heightDetails.decoratedGrob <- function(x) { # nolint
   unit(1, "null")
 }
 
 
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
-splitString <- function(text, width) {
-  
+split_string <- function(text, width) {
+
   availwidth <- convertWidth(width, "in", valueOnly = TRUE)
   textwidth <- convertWidth(stringWidth(text), "in", valueOnly = TRUE)
   strings <- strsplit(text, " ")[[1]]
-  
+
   if (textwidth <= availwidth || length(strings) == 1) {
     text
   } else {
     gapwidth <- stringWidth(" ")
     newstring <- strings[1]
     linewidth <- stringWidth(newstring)
-    
+
     for (i in 2:length(strings)) {
       str_width <- stringWidth(strings[i])
       if (convertWidth(linewidth + gapwidth + str_width, "in", valueOnly = TRUE) < availwidth) {
@@ -260,24 +280,24 @@ splitString <- function(text, width) {
     }
     newstring
   }
-} 
+}
 
 #' Split Text According To Available Text Width
-#' 
+#'
 #' Dynamically wrap text
-#' 
+#'
 #' @inheritParams grid::grid.text
 #' @param text character string
 #' @param width a unit object specifying max width of text
 #' @param ... passed on to \code{\link{grob}}
-#' 
+#'
 #' @details
 #' This code is taken from R Graphics by Paul Murell, 2nd edition
-#' 
+#'
 #' @export
-#' 
-#' @examples 
-#' sg <- splitTextGrob(text = paste(
+#'
+#' @examples
+#' sg <- split_text_grob(text = paste(
 #'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
 #'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
 #'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
@@ -289,105 +309,121 @@ splitString <- function(text, width) {
 #'   "luctus massa id elementum. Praesent dictum, neque vitae vestibulum malesuada,",
 #'   "nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."
 #' ))
-#' 
+#'
 #' grobHeight(sg)
-#' 
+#'
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
 #' grid.draw(sg)
-#' 
+#'
 #' grid.rect(
 #'  height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 #' )
-#' 
-#' # stack splitTextGrob
+#'
+#' # stack split_text_grob
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.rect()
-#' grid.draw(splitTextGrob(
+#' grid.draw(split_text_grob(
 #'   c("Hello, this is a test", "and yet another test"),
 #'   just = c("left", "top"), x = 0, y = 1
 #' ))
-#' 
-#' 
-splitTextGrob <- function(text, x = unit(0.5, "npc"), y = unit(0.5, "npc"), width = unit(1, "npc"),
-                          just = "centre", hjust = NULL, vjust = NULL, 
-                          default.units = "npc", name = NULL, gp = gpar(), vp = NULL) {
+split_text_grob <- function(text,
+                            x = unit(0.5, "npc"),
+                            y = unit(0.5, "npc"),
+                            width = unit(1, "npc"),
+                            just = "centre",
+                            hjust = NULL,
+                            vjust = NULL,
+                            default.units = "npc", # nolint
+                            name = NULL,
+                            gp = gpar(),
+                            vp = NULL) {
 
-  if (!is.unit(x)) 
+  if (!is.unit(x))
     x <- unit(x, default.units)
-  if (!is.unit(y)) 
+  if (!is.unit(y))
     y <- unit(y, default.units)
-  
+
   if (!is.unit(width) || !(length(width) == 1))
     stop("width is supposed to be a unit object of length 1")
-  
+
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
-  if (!is(width, "unit.arithmetic") && attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts",
-                                 "dida", "cicero", "scaledpts")) {
-    attr(text, "fixed_text") <- paste(vapply(text, splitString, character(1), width = width), collapse = "\n")
+  if (!is(width, "unit.arithmetic") &&
+      attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts", "dida", "cicero", "scaledpts")) {
+    attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
   }
 
-  grob(text = text, x = x, y = y, width = width, just = just, hjust = hjust, 
-       vjust = vjust, rot = 0, check.overlap = FALSE, 
-       name = name, gp = gp, vp = vp, cl = "splitText")
+  grob(
+    text = text,
+    x = x, y = y,
+    width = width,
+    just = just,
+    hjust = hjust,
+    vjust = vjust,
+    rot = 0,
+    check.overlap = FALSE,
+    name = name,
+    gp = gp,
+    vp = vp,
+    cl = "splitText"
+  )
 }
 
 #' @export
-validDetails.splitText <- function(x) {
+validDetails.splitText <- function(x) { # nolint
   if (!is.character(x$text))
     stop("text is supposed to be of type character")
-  
+
   if (!is.unit(x$width) || !(length(x$width) == 1))
     stop("width is supposed to be a unit object of length 1")
-  
+
   x
 }
 
 #' @export
-heightDetails.splitText <- function(x) {
+heightDetails.splitText <- function(x) { # nolint
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
-    paste(vapply(x$text, splitString, character(1), width = x$width), collapse = "\n")
+    paste(vapply(x$text, split_string, character(1), width = x$width), collapse = "\n")
   }
   stringHeight(txt)
 }
 
 #' @export
-widthDetails.splitText <- function(x) {
+widthDetails.splitText <- function(x) { # nolint
   x$width
 }
 
 #' @export
-drawDetails.splitText <- function(x, recording) {
+drawDetails.splitText <- function(x, recording) { # nolint
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
-    paste(vapply(x$text, splitString, character(1), width = x$width), collapse = "\n")
+    paste(vapply(x$text, split_string, character(1), width = x$width), collapse = "\n")
   }
-  
+
   x$width <- NULL
   x$label <- txt
   x$text <- NULL
   class(x) <- c("text", class(x)[-1])
-  
+
   grid.draw(x)
 }
- 
+
 #' Automatically updates page number
 #'
 #' @param npages number of pages in total
 #' @param ... passed on to \code{\link{decorate_grob}}
 #'
-#'
 #' @return closure that increments the page number
-#' 
+#'
 #' @export
-#' 
+#'
 #' @template author_waddella
-#' 
+#'
 #' @examples
 #' pf <- decorate_grob_factory(
 #'   titles = "This is a test\nHello World",
@@ -398,15 +434,13 @@ drawDetails.splitText <- function(x, recording) {
 #' grid.newpage(); grid.draw(pf(NULL))
 #' grid.newpage(); grid.draw(pf(NULL))
 #' grid.newpage(); grid.draw(pf(NULL))
-#' \dontrun{
-#' grid.newpage(); grid.draw(pf(NULL))
-#' }
 decorate_grob_factory <- function(npages, ...) {
-  
+
   current_page <- 0
   function(grob) {
     current_page <<- current_page + 1
-    if (current_page > npages) stop(paste("current page is", current_page, "but max.", npages, "specified."))
+    if (current_page > npages)
+      stop(paste("current page is", current_page, "but max.", npages, "specified."))
     decorate_grob(grob = grob, page = paste("Page", current_page, "of", npages), ...)
   }
 }
@@ -415,17 +449,15 @@ decorate_grob_factory <- function(npages, ...) {
 #' Decorate all a set of grobs and add the page numbering
 #'
 #' this uses the decorate_grob_factory
-#' 
+#'
 #' @param grobs a list of grid grobs
 #' @param ... arguments passed on to \code{\link{decorate_grob}}
-#' 
-#' 
+#'
 #' @export
-#' 
+#'
 #' @template author_waddella
-#' 
+#'
 #' @examples
-#' library(ggplot2)
 #' g <- with(iris, {
 #'   list(
 #'     ggplotGrob(qplot(Sepal.Length, Sepal.Width, col=Species)),
@@ -445,4 +477,3 @@ decorate_grob_set <- function(grobs, ...) {
   lgf <- decorate_grob_factory(npages = n, ...)
   lapply(grobs, lgf)
 }
-

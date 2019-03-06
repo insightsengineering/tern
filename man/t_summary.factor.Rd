@@ -4,7 +4,7 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(x, col_by, col_N = table(col_by),
+\method{t_summary}{factor}(x, col_by, col_n = table(col_by),
   total = NULL, useNA = c("no", "ifany", "always"),
   denominator = c("n", "N"), drop_levels = FALSE, ...)
 }
@@ -15,14 +15,14 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_n}{The column total for each group that is displayed in the table header with (N=xx).}
 
 \item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
 \item{denominator}{either n or N for calculating the level associated
-percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
+percentage. With option N, the reference population from \code{col_n} is used as the denominator.
 With option n, the number of non-missing records from \code{x} is used as the denominator.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
@@ -41,7 +41,7 @@ percentage.
 t_summary(iris$Species, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- radsl(N = 100, seed = 1)
 
 t_summary(ADSL$SEX, ADSL$ARM, total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
@@ -49,7 +49,6 @@ t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 ADSL$SEX[1:10] <- NA
 t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
- 
 }
 \seealso{
 \code{\link{t_summary}},

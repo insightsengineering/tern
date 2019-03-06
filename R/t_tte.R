@@ -1,8 +1,8 @@
 #' Time to Event Table
-#' 
+#'
 #' The time to event table summarizes time to event data with different models
 #' as described in the details section.
-#' 
+#'
 #' @param formula a survival formula, the arm variable needs to be wrapped in
 #'   \code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
 #'   used for the stratified analysis. If there is not
@@ -17,8 +17,8 @@
 #'   analysis, if \code{NULL} this section of the table will be omitted
 #' @param time_unit a string with the unit of the \code{tte} argument
 #' @param ties passed forward to \code{\link[survival]{coxph}}
-#' 
-#' @details 
+#'
+#' @details
 #' The time to event section is derived from a kaplan meier estimator for the
 #' \code{formula} argument with the strata special dropped.
 #'
@@ -28,24 +28,25 @@
 #' and confidence interval.
 #'
 #' The time point analysis is based on the kaplan meier estimator.
-#' 
+#'
 #' @template return_rtable
-#' 
-#' @importFrom stats terms quantile pchisq qnorm pnorm 
+#'
+#' @importFrom stats terms quantile pchisq qnorm pnorm
 #' @export
-#' 
+#'
 #' @author Mark Rothe (rothem1)
 #' @template author_waddella
-#' 
+#'
 #' @seealso \code{\link{t_forest_tte}}
-#' 
-#' @examples 
+#'
+#' @examples
+#' \donttest{
 #' library(random.cdisc.data)
 #' ADSL <- radsl(seed = 1)
-#' 
+#'
 #' ADTTE <- radtte(ADSL, seed = 2)
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
-#'  
+#'
 #' tbl <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
 #'   data = ADTTE_f,
@@ -53,27 +54,26 @@
 #'   time_points = c(6, 2000),
 #'   time_unit = "month"
 #' )
-#' 
+#'
 #' tbl
-#' 
-#' \dontrun{
+#'
 #' Viewer(tbl)
 #' }
-#' 
 t_tte <- function(formula,
                   data,
                   event_descr,
                   time_points,
                   time_unit = "month",
                   ties = "exact") {
-  
+
   cl <- match.call()
-  
-  if (!is.data.frame(data)) stop("data needs to be a data.frame")
-  
+
+  if (!is.data.frame(data))
+    stop("data needs to be a data.frame")
+
   # extracted data
   tm <- t_tte_items(formula, cl, data, parent.frame())
-  
+
   tte <- tm$tte
   is_event <- as.logical(tm$event)
   arm <- tm$arm
@@ -82,36 +82,36 @@ t_tte <- function(formula,
   } else {
     eval(substitute(event_descr), data, parent.frame())
   }
-  
+
   # Argument Checking
   if (length(tte) != nrow(data)) {
     stop("some of the following variable contain missing values:\n   ",
          sub("^list", "", deparse(attr(terms(formula), "variables"))),
-         "\nmissing data in for the survival analysis is currently disabled")    
+         "\nmissing data in for the survival analysis is currently disabled")
   }
 
-  check_same_N(is_event = is_event, event_descr = event_descr, arm = arm)
-  col_N <- table(arm)
-  check_col_by(arm, col_N, 2)
+  check_same_n(is_event = is_event, event_descr = event_descr, arm = arm)
+  col_n <- table(arm)
+  check_col_by(arm, col_n, 2)
   if (!is.null(event_descr) && !is.factor(event_descr))
-    stop("event_descr is required to be a factor") 
+    stop("event_descr is required to be a factor")
   if (!is.null(time_points) && !is.numeric(time_points))
     stop("time_points is required to be numeric")
-  
+
   # Calculate elements of the table
 
   header <- rheader(rrowl("", levels(arm)))
 
   # Event Table
   # ###########
-  
+
   tbl_event <- rbind(
     rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients with event (%)"),
     if (!is.null(event_descr)) {
-      tbl_early_event <- rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event], 
+      tbl_early_event <- rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event],
                                    length, indent = 2)
-      
+
       header(tbl_early_event) <- header
       insert_rrow(tbl_early_event, rrow("Earliest Contributing Event", indent = 1))
     } else {
@@ -120,12 +120,12 @@ t_tte <- function(formula,
     rtabulate(!is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
               row.name = "Patients without event (%)")
   )
-  
+
   # Time to Event
   # #############
   f <- tm$formula_nostrata
   environment(f) <- environment()
-  
+
   surv_km_fit <- survfit(
     formula = f,
     data = data,
@@ -134,66 +134,66 @@ t_tte <- function(formula,
 
   srv_tbl <- summary(surv_km_fit)$table
   med <- as.list(srv_tbl[, "median"])
-  ci <- Map(function(x,y) c(x,y), srv_tbl[, "0.95LCL"], srv_tbl[, "0.95UCL"])
-  
+  ci <- Map(function(x, y) c(x, y), srv_tbl[, "0.95LCL"], srv_tbl[, "0.95UCL"])
+
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
-  qnt <- Map(function(x,y) c(x,y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
-  
+  qnt <- Map(function(x, y) c(x, y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
+
   rng_c <- lapply(split(data.frame(tte, is_event), arm), function(x) {
     range(x$tte[!x$is_event], na.rm = TRUE)
   })
   rng_e <- lapply(split(data.frame(tte, is_event), arm), function(x) {
     range(x$tte[x$is_event], na.rm = TRUE)
   })
-    
+
   tbl_tte <- rtable(
     header = header,
     rrow(paste0("Time to Event (", time_unit, "s)")),
     rrowl("Median", med, format = "xx.xx", indent = 1),
     rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
     rrowl("25% and 75%-ile", qnt, indent = 1, format = "xx.x, xx.x"),
-    rrowl("Range (censored)", rng_c, indent = 1, format = "xx.x to xx.x") ,
-    rrowl("Range (event)", rng_e, indent = 1, format = "xx.x to xx.x")  
+    rrowl("Range (censored)", rng_c, indent = 1, format = "xx.x to xx.x"),
+    rrowl("Range (event)", rng_e, indent = 1, format = "xx.x to xx.x")
   )
-  
+
   # Unstratified Analysis
   # #####################
-  
+
   # this function is reused for stratified analysis
   survival_anl <- function(formula, label) {
-    
+
     reference_level <- levels(arm)[1]
     comparison_levels <- levels(arm)[-1]
-    
+
     # create survival fit of comparison arm vs. reference arm
     values <- lapply(comparison_levels, function(lvl) {
-      
+
       df_i <- data[arm %in% c(reference_level, lvl), , drop = FALSE]
 
       varname <- attr(arm, "varname")
       df_i[[varname]] <- droplevels(df_i[[varname]])
-      
+
       environment(formula) <- environment()
-      
+
       ## for log-rank test: use coxph score for log-rank
       fit_survdiff <- survdiff(formula, data = df_i)
       fit_coxph <- tryCatch(
         coxph(formula, data = df_i, ties = ties), # weights are not supported if ties = 'exact'
         error = function(e) NULL
       )
-      
+
       list(
         pval = pchisq(fit_survdiff$chisq, length(fit_survdiff$n) - 1, lower.tail = FALSE),
         hr = if (is.null(fit_coxph)) NA else (summary(fit_coxph)$conf.int)[1, 1],
         hr_ci = if (is.null(fit_coxph)) c(NA, NA) else (summary(fit_coxph)$conf.int)[1, 3:4]
       )
     })
-    
+
     # first column is empty
-    pval <- start_with_NULL(lapply(values, `[[`, "pval"))
-    hr <- start_with_NULL(lapply(values, `[[`, "hr"))
-    hr_ci <- start_with_NULL(lapply(values, `[[`, "hr_ci"))
-    
+    pval <- start_with_null(lapply(values, `[[`, "pval"))
+    hr <- start_with_null(lapply(values, `[[`, "hr"))
+    hr_ci <- start_with_null(lapply(values, `[[`, "hr_ci"))
+
     rtable(
       header = header,
       rrow(label),
@@ -203,12 +203,12 @@ t_tte <- function(formula,
       rrowl("95% CI", hr_ci, indent = 2, format = "(xx.xxxx, xx.xxxx)")
     )
   }
-  
+
   tbl_unstratified <- survival_anl(
     formula = tm$formula_nostrata,
     label = "Unstratified Analysis"
   )
-  
+
   # Stratified Analysis
   # ###################
   tbl_stratified <- if (is.null(tm$formula_strata)) {
@@ -219,19 +219,19 @@ t_tte <- function(formula,
       label = "Stratified Analysis"
     )
   }
-  
+
   # Time Point Analysis
   # ###################
-  
+
   tbl_timepoints <- if (is.null(time_points)) {
     NULL
   } else {
-    
+
     tp <- try(summary(surv_km_fit, times = time_points), silent = TRUE)
-    
-    
+
+
     tp_rtables <- if (is(tp, "try-error")) {
-      
+
       list(
         rtable(
           header = header,
@@ -239,18 +239,17 @@ t_tte <- function(formula,
           rrow("-- no data", indent = 2)
         )
       )
-      
+
     } else {
-      
+
       df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "strata", "std.err")])
       s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
-      
-      ## dfi <- s_df_tp[[1]]; time_point = time_points[1]
+
       Map(function(dfi, time_point) {
-        
-        name <- paste(time_point, if(time_point == 1) time_unit else paste0(time_unit, "s"))
-        
-        
+
+        name <- paste(time_point, if (time_point == 1) time_unit else paste0(time_unit, "s"))
+
+
         if (nrow(dfi) <= 1) {
           rtable(
             header = header,
@@ -258,35 +257,36 @@ t_tte <- function(formula,
             rrow(if (nrow(dfi) == 0) "-- no data" else "-- not enough data", indent = 2)
           )
         } else {
-          
-          if (!all(dfi$time == time_point)) stop("time points do not match")
-          
+
+          if (!all(dfi$time == time_point))
+            stop("time points do not match")
+
           d <- dfi$surv[-1] - dfi$surv[1]
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
-          
+
           # z-test
-          l.ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
-          pval <- 2*(1 - pnorm(abs(d)/sd))
-          
+          l_ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
+          pval <- 2 * (1 - pnorm(abs(d) / sd))
+
           rtable(
             header = header,
             rrow(name, indent = 1),
             rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
             rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-            rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")]*100)), format = "(xx.xx, xx.xx)", indent = 3),
-            rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d*100)), format = "xx.xx", indent = 2),
-            rrowl("95% CI", c(list(NULL), lapply(l.ci, function(x) 100*x)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d * 100)), format = "xx.xx", indent = 2),
+            rrowl("95% CI", c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
             rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
           )
         }
-      }, s_df_tp, time_points)  
+      }, s_df_tp, time_points)
     }
 
     rbind(
-      rtable(header = header, rrow("Time Point Analysis")),    
-      rbindl_rtables(tp_rtables, gap = 1)      
+      rtable(header = header, rrow("Time Point Analysis")),
+      rbindl_rtables(tp_rtables, gap = 1)
     )
-    
+
   }
   ## Now Stack Tables together
   tbl <- rbind(
@@ -297,9 +297,8 @@ t_tte <- function(formula,
     tbl_timepoints,
     gap = 1
   )
-  
-  header_add_N(tbl, col_N)
-  
+
+  header_add_N(tbl, col_n)
 }
 
 t_tte_items <- function(formula, cl, data, env) {
@@ -322,17 +321,17 @@ t_tte_items <- function(formula, cl, data, env) {
     f <- formula
   }
   m <- match(c("formula", "data", "weights"), names(mf), 0L)
-  
+
   mf <- mf[c(1L, m)]
   mf[[1L]] <- quote(stats::model.frame)
   mf$na.action <- quote(stats::na.omit)
-  
+
   mf <- eval(mf, env)
   if (!inherits(mf[, irsp], "Surv"))
     stop("Response is not a 'Surv' object")
   if (attr(mf[, irsp], "type") != "right")
     stop("Response is not a right-censored 'Surv' object")
-  
+
   list(
     tte = mf[, irsp][, "time"],
     event = mf[, irsp][, "status"],

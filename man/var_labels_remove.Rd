@@ -17,5 +17,4 @@ Removing labels attributes from a variables in a data frame
 }
 \examples{
 x <- var_labels_remove(iris)
-
 }

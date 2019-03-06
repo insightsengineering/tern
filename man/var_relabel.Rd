@@ -21,5 +21,4 @@ Relabel a subset of the variables
 \examples{
 x <- var_relabel(iris, Sepal.Length = "Sepal Length of iris flower")
 var_labels(x)
-
 }

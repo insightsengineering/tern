@@ -4,7 +4,7 @@
 \alias{t_summary.Date}
 \title{Summarize Date Data}
 \usage{
-\method{t_summary}{Date}(x, col_by, col_N = table(col_by),
+\method{t_summary}{Date}(x, col_by, col_n = table(col_by),
   total = NULL, ...)
 }
 \arguments{
@@ -14,7 +14,7 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_n}{The column total for each group that is displayed in the table header with (N=xx).}
 
 \item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
@@ -24,14 +24,13 @@ into columns use the \code{\link{no_by}} function.}
 Tabulate the range of dates.
 }
 \examples{
-(today <- Sys.Date())
-(tenweeks <- seq(today, length.out=10, by="1 week")) 
+today <- Sys.Date()
+tenweeks <- seq(today, length.out=10, by="1 week")
 t_summary(tenweeks, no_by("all"), length(tenweeks))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
-
 }
 \seealso{
 \code{\link{t_summary}},

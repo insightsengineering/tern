@@ -47,12 +47,13 @@ and confidence interval.
 The time point analysis is based on the kaplan meier estimator.
 }
 \examples{
+\donttest{
 library(random.cdisc.data)
 ADSL <- radsl(seed = 1)
 
 ADTTE <- radtte(ADSL, seed = 2)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
- 
+
 tbl <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
   data = ADTTE_f,
@@ -63,10 +64,8 @@ tbl <- t_tte(
 
 tbl
 
-\dontrun{
 Viewer(tbl)
 }
-
 }
 \seealso{
 \code{\link{t_forest_tte}}

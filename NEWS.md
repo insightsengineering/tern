@@ -1,5 +1,30 @@
 # tern 0.6.0
 
+* Refactor of all functions to pass `test.nest` tests:
+    * changed `width_row.names` argument of `g_forest` function into `width_row_names`
+    * changed `censor.show` argument of `g_km` function into `censor_show`
+    * changed `col.legend.title` argument of `g_waterfall` function into `col_legend_title`
+    * changed `col_N` argument of `lt_events_per_term_grade_id_1` function into `col_n`
+    * changed `col_N` argument of `lt_events_per_term_grade_id_2` function into `col_n`
+    * changed `col_N` argument of `lt_events_per_term_id_2` function into `col_n`
+    * changed `col_N` argument of `t_count_unique` function into `col_n`
+    * changed `na.rm` argument of `t_count_unique` function into `na_rm`
+    * changed `row.name` argument of `t_count_unique` function into `row_name`
+    * changed `col_N` argument of `t_events_per_term_grade_id` function into `col_n`
+    * changed `col_N` argument of `t_events_per_term_id` function into `col_n`
+    * changed `col_N` argument of `t_events_summary` function into `col_n`
+    * changed `na.omit.group` argument of `t_forest_rsp` function into `na_omit_group`
+    * changed `na.omit.group` argument of `t_forest_tte` function into `na_omit_group`
+    * changed `col_N` argument of `t_max_grade_per_id` function into `col_n`
+    * changed `col_N` argument of `t_summary.character`, `t_summary.data.frame`, `t_summary.Date`, `t_summary.default`, `t_summary.factor`, `t_summary.logical`, `t_summary.numeric` and `t_summary` functions into `col_n`
+    * changed `row.name.TRUE` and `row.name.FALSE` arguments of `t_summary.logical` into `row_name_true` and `row_name_false` respectively
+    * rename `splotTextGrob` into `split_text_grob`
+    * fix examples
+    * refactor of internal functions code
+
+
+# tern 0.6.0
+
 * Removed functions `addTable`, `t_summarize_by_visit`, `t_summarize_variables`.
 * Added `t_summary_by` function.
 * Refactor of `g_km` function, renamed `kmGrob` into `kmCurveGrob`.

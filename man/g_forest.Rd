@@ -5,7 +5,7 @@
 \title{Create a Forest Plot based on a Table}
 \usage{
 g_forest(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
-  xlim = NULL, logx = FALSE, x_at = NULL, width_row.names = NULL,
+  xlim = NULL, logx = FALSE, x_at = NULL, width_row_names = NULL,
   width_columns = NULL, width_forest = unit(1, "null"), draw = TRUE,
   newpage = TRUE)
 }
@@ -30,7 +30,7 @@ right of \code{vline}, respectively. If \code{vline=NULL} then
 \item{x_at}{numeric vector with x tick locations, if \code{NULL} they get
 automatically chosen}
 
-\item{width_row.names}{\code{\link[grid]{unit}} object with width for row
+\item{width_row_names}{\code{\link[grid]{unit}} object with width for row
 names. If \code{NULL} the widths get automatically calculated.}
 
 \item{width_columns}{\code{\link[grid]{unit}} object with widths for the
@@ -54,14 +54,14 @@ library(dplyr)
 ADSL <- radsl(seed = 1)
 ADTTE <- radtte(ADSL, seed = 2)
 
-ADTTE_f <- ADTTE \%>\% 
-  filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
+ADTTE_f <- ADTTE \%>\%
+  dplyr::filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
 
 tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
-  col_by = ADTTE_f$ARMCD, 
+  col_by = ADTTE_f$ARMCD,
   group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
   ties = "exact",
   dense_header = TRUE
@@ -84,13 +84,13 @@ g_forest(
 ADSL <- radsl(seed = 1)
 ADRS <- radrs(ADSL, seed = 2)
 
-ADRS_f <- ADRS \%>\% 
-  filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
+ADRS_f <- ADRS \%>\%
+  dplyr::filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
 
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ADRS_f$ARM), 
+  col_by = factor(ADRS_f$ARM),
   group_data = ADRS_f[, c("SEX", "RACE")]
 )
 
@@ -137,7 +137,6 @@ g_forest(
   vline = 1,
   forest_header = c("Hello", "World")
 )
-
 }
 \seealso{
 \code{\link{t_forest_tte}}, \code{\link{t_forest_rsp}}

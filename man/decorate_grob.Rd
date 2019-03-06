@@ -67,16 +67,15 @@ The layout can be illustrated as follows:
 }
 }
 \examples{
-
 titles <- c(
   "Edgar Anderson's Iris Data",
   paste(
     "This famous (Fisher's or Anderson's) iris data set gives the measurements",
-     "in centimeters of the variables sepal length and width and petal length",
-     "and width, respectively, for 50 flowers from each of 3 species of iris."
+    "in centimeters of the variables sepal length and width and petal length",
+    "and width, respectively, for 50 flowers from each of 3 species of iris."
   )
- )
-  
+)
+
 footnotes <- c(
   "The species are Iris setosa, versicolor, and virginica.",
   paste(
@@ -84,7 +83,7 @@ footnotes <- c(
   "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
   )
 )
-  
+
 
 ## empty plot
 grid.newpage()
@@ -99,15 +98,15 @@ grid.draw(
 
 # grid
 p <- gTree(
-   children = gList(
-     rectGrob(),
-     xaxisGrob(),
-     yaxisGrob(),
-     textGrob("Sepal.Length", y = unit(-4, "lines")),
-     textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
-     pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col=iris$Species), pch=16)
-   ),
-   vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
+  children = gList(
+    rectGrob(),
+    xaxisGrob(),
+    yaxisGrob(),
+    textGrob("Sepal.Length", y = unit(-4, "lines")),
+    textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
+    pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col=iris$Species), pch=16)
+  ),
+  vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
 )
 grid.newpage(); grid.draw(p)
 
@@ -122,7 +121,6 @@ grid.draw(
 )
 
 ## with ggplot2
-library(ggplot2)
 p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 p_gg
 p <- ggplotGrob(p_gg)

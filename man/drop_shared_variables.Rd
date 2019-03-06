@@ -20,7 +20,5 @@ a data.frame
 Variables are considered shared if they have the same variable name
 }
 \examples{
-
 drop_shared_variables(iris, iris[, 1:3])
-
 }

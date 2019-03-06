@@ -4,7 +4,7 @@
 \alias{t_summary.default}
 \title{Return an rtable with a no Method Message}
 \usage{
-\method{t_summary}{default}(x, col_by, col_N = table(col_by), ...)
+\method{t_summary}{default}(x, col_by, col_n = table(col_by), ...)
 }
 \arguments{
 \item{x}{an object to dispatch on}
@@ -13,7 +13,7 @@
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_n}{The column total for each group that is displayed in the table header with (N=xx).}
 
 \item{...}{not used arguments}
 }
@@ -23,7 +23,6 @@ appropriate message is returned.
 }
 \examples{
 t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
-
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

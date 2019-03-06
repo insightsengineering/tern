@@ -25,6 +25,5 @@ This functions returns a named character vector with the variabel labels
 x <- iris
 var_labels(x)
 var_labels(x) <- paste("label for", names(iris))
-var_labels(x)    
-
+var_labels(x)
 }
