@@ -4,7 +4,7 @@
 \alias{t_max_grade_per_id}
 \title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
-t_max_grade_per_id(grade, id, col_by, col_n, grade_levels = NULL,
+t_max_grade_per_id(grade, id, col_by, col_N, grade_levels = NULL,
   any_grade = "-Any Grade-")
 }
 \arguments{
@@ -14,7 +14,7 @@ t_max_grade_per_id(grade, id, col_by, col_n, grade_levels = NULL,
 
 \item{col_by}{a factor with values used for column names}
 
-\item{col_n}{a vector with total n for each level of \code{col_by}}
+\item{col_N}{a vector with total n for each level of \code{col_by}}
 
 \item{grade_levels}{a numeric vector used for naming rows for each level of
 grade}
@@ -31,7 +31,7 @@ t_max_grade_per_id(
   grade =  c(1,2,3),
   id = c(1,1,1),
   col_by = factor(rep("A", 3)),
-  col_n = 3
+  col_N = 3
 )
 
 id <- c(1,1,2,2,3,3,3,4)
@@ -39,14 +39,14 @@ t_max_grade_per_id(
   grade =  c(1,2,3,2,1,1,2,3),
   id = id,
   col_by = factor(LETTERS[id]),
-  col_n = c(4,3,5,3)
+  col_N = c(4,3,5,3)
 )
 
 t_max_grade_per_id(
   grade =  c(1,2,3,2,1,1,2,3),
   id = id,
   col_by = factor(LETTERS[id]),
-  col_n = c(4,3,5,4)
+  col_N = c(4,3,5,4)
 )
 
 \dontrun{
@@ -55,7 +55,7 @@ t_max_grade_per_id(
   grade =  c(1,2,3),
   id = c(1,2,2),
   col_by = factor(LETTERS[1:3]),
-  col_n = c(15, 10, 12)
+  col_N = c(15, 10, 12)
 )
 }
 
@@ -65,7 +65,7 @@ t_max_grade_per_id(
   grade =  c(1,2,NA),
   id = c(1,2,3),
   col_by = factor(LETTERS[1:3]),
-  col_n = c(15, 10, 12)
+  col_N = c(15, 10, 12)
 )
 }
 }

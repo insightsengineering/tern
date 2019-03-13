@@ -51,7 +51,7 @@ test_that("t_summary_by categorical results are as expected", {
     x = asl$SEX,
     by = asl$COUNTRY,
     col_by = asl$ARMCD,
-    col_n = table(asl$ARMCD),
+    col_N = table(asl$ARMCD),
     total = "ALL"
   )
 
@@ -96,7 +96,7 @@ test_that("t_summary_by categorical results are as expected", {
     x = asl$AGE,
     by = asl$COUNTRY,
     col_by = asl$ARMCD,
-    col_n = table(asl$ARMCD),
+    col_N = table(asl$ARMCD),
     total = "ALL"
   )
 

@@ -219,23 +219,15 @@ decorate_grob <- function(grob,
 
 #' @export
 validDetails.decoratedGrob <- function(x) { # nolint
-
-  if (!is.grob(x$grob) && !is.null(x$grob))
-    stop("grob argument is expected to be a grid grob object or NULL")
-
-  if (!is.character(x$titles))
-    stop("argument titles is not of type character")
-  if (!is.character(x$footnotes))
-    stop("argument footnotes is not of type character")
-  if (!is.character(x$page) && length(x$page) == 1)
-    stop("page is not a character of length 1")
-
-  if (!is.unit(x$outer_margins) && length(x$outer_margins) != 4)
-    stop("outer_margins needs to be a unit object of length 4 (bottom, left, top, right)")
-  if (!is.unit(x$margins) && length(x$margins) != 4)
-    stop("margins needs to be a unit object of length 4 (bottom, left, top, right)")
-  if (!is.unit(x$padding) && length(x$padding) != 4)
-    stop("padding needs to be a unit object of length 4 (bottom, left, top, right)")
+  stopifnot(
+    is.grob(x$grob) || is.null(x$grob),
+    is.character(x$titles),
+    is.character(x$footnotes),
+    is.character(x$page) || length(x$page) != 1,
+    is.unit(x$outer_margins) || length(x$outer_margins) == 4,
+    is.unit(x$margins) || length(x$margins) == 4,
+    is.unit(x$padding) || length(x$padding) == 4
+  )
 
   x
 }
@@ -341,13 +333,14 @@ split_text_grob <- function(text,
                             gp = gpar(),
                             vp = NULL) {
 
-  if (!is.unit(x))
+  if (!is.unit(x)) {
     x <- unit(x, default.units)
-  if (!is.unit(y))
+  }
+  if (!is.unit(y)) {
     y <- unit(y, default.units)
+  }
 
-  if (!is.unit(width) || !(length(width) == 1))
-    stop("width is supposed to be a unit object of length 1")
+  stopifnot(is.unit(width) && length(width) == 1)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!is(width, "unit.arithmetic") &&
@@ -373,11 +366,10 @@ split_text_grob <- function(text,
 
 #' @export
 validDetails.splitText <- function(x) { # nolint
-  if (!is.character(x$text))
-    stop("text is supposed to be of type character")
-
-  if (!is.unit(x$width) || !(length(x$width) == 1))
-    stop("width is supposed to be a unit object of length 1")
+  stopifnot(
+    is.character(x$text),
+    is.unit(x$width) && length(x$width) == 1
+  )
 
   x
 }
@@ -439,8 +431,9 @@ decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {
     current_page <<- current_page + 1
-    if (current_page > npages)
+    if (current_page > npages) {
       stop(paste("current page is", current_page, "but max.", npages, "specified."))
+    }
     decorate_grob(grob = grob, page = paste("Page", current_page, "of", npages), ...)
   }
 }

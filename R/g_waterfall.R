@@ -71,15 +71,18 @@ g_waterfall <- function(height,
                         col_legend_title = NULL,
                         title = NULL) {
 
-  if (!is.null(col))
+  if (!is.null(col)) {
     check_same_n(height = height, id = id, col = col)
-  else
+  } else {
     check_same_n(height = height, id = id)
+  }
 
   xlabel <- deparse(substitute(id))
   ylabel <- deparse(substitute(height))
 
-  col_label <- if (!missing(col)) deparse(substitute(col))
+  col_label <- if (!missing(col)) {
+    deparse(substitute(col))
+  }
 
   xlab <- if (is.null(xlab)) xlabel else xlab
   ylab <- if (is.null(ylab)) ylabel else ylab
@@ -121,5 +124,4 @@ g_waterfall <- function(height,
   }
 
   p
-
 }

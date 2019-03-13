@@ -55,19 +55,22 @@ check_data_frame <- function(x, allow_missing = FALSE) {
   xname <- deparse(substitute(x))
 
   if (!is.null(x)) {
-    if (!is.data.frame(x))
+    if (!is.data.frame(x)) {
       stop(xname, " needs to be either NULL or a data.frame")
+    }
 
     if (!allow_missing) {
       is_missing <- vapply(x, function(var) {
-        if (is.numeric(var))
+        if (is.numeric(var)) {
           any(is.na(var))
-        else
+        } else {
           any(is.na(var)) || any(var == "")
+        }
       }, logical(1))
 
-      if (any(is_missing))
+      if (any(is_missing)) {
         stop(xname, " can not have any missing values (NA or '')")
+      }
     }
   }
 
@@ -75,59 +78,53 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 # if total is non-null then it can not be in the levels of col_by
-check_col_by <- function(col_by, col_n, min_num_levels = 2, total = NULL) {
-
-  if (!is(col_by, "no_by") && !is.factor(col_by))
-    stop("col_by needs to be a factor")
-
-  if (any(is.na(col_by)) || "" %in% levels(col_by))
-    stop("col_by can not have any missing data or have a level with an empty string")
-
-  if (length(col_n) != nlevels(col_by))
-    stop("col_n has not the same length as there are levels in col_by")
-
-  if (nlevels(col_by) < min_num_levels)
-    stop(paste("at least", min_num_levels, "expected in col_by but got", nlevels(col_by)))
-
-  if (!is.null(total) && total %in% levels(col_by))
-    stop("total level cannot exist as a level in col_by")
+check_col_by <- function(col_by,
+                         col_N, # nolint
+                         min_num_levels = 2,
+                         total = NULL) {
+  stopifnot(
+    is.no_by(col_by) || is.factor(col_by),
+    !any(is.na(col_by)) && !("" %in% levels(col_by)),
+    length(col_N) == nlevels(col_by),
+    nlevels(col_by) >= min_num_levels,
+    is.null(total) || !(total %in% levels(col_by))
+  )
 
   TRUE
 }
 
 
 check_is_event <- function(x) {
-
-  if (!is.logical(x))
-    stop("is_event needs to be of type logical")
-  if (any(is.na(x)))
-    stop("is_event can not have any missing data")
+  stopifnot(
+    is.logical(x),
+    !any(is.na(x))
+  )
 
   TRUE
 }
 
 
 check_is_factor <- function(x, allow_na = TRUE) {
+  stopifnot(is.factor(x))
 
-  if (!is.factor(x))
-    stop(deparse(substitute(x)), " needs to be a factor")
-
-  if (!allow_na)
-    if (any(is.na(x)))
+  if (!allow_na) {
+    if (any(is.na(x))) {
       stop(deparse(substitute(x)), " cannot have any missing data")
+    }
+  }
 
   TRUE
 }
 
 
 check_is_numeric <- function(x, allow_na = TRUE) {
+  stopifnot(is.numeric(x))
 
-  if (!is.numeric(x))
-    stop(deparse(substitute(x)), " needs to be numerical")
-
-  if (!allow_na)
-    if (any(is.na(x)))
+  if (!allow_na) {
+    if (any(is.na(x))) {
       stop(deparse(substitute(x)), " cannot have any missing data")
+    }
+  }
 
   TRUE
 }

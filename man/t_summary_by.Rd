@@ -4,7 +4,7 @@
 \alias{t_summary_by}
 \title{Summarize an Object for Different Groups with by Variable}
 \usage{
-t_summary_by(x, by, col_by, col_n, total = NULL, ...)
+t_summary_by(x, by, col_by, col_N, total = NULL, ...)
 }
 \arguments{
 \item{x}{vector}
@@ -13,7 +13,7 @@ t_summary_by(x, by, col_by, col_n, total = NULL, ...)
 
 \item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by} define the columns in the table.}
 
-\item{col_n}{a \code{table} object with the reference population used for the header of the table. See examples below.}
+\item{col_N}{a \code{table} object with the reference population used for the header of the table. See examples below.}
 
 \item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
@@ -36,7 +36,7 @@ t_summary_by(
  x = ADSL$SEX,
  by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD,
- col_n = table(ADSL$ARMCD),
+ col_N = table(ADSL$ARMCD),
  total = "All Patients",
  drop_levels = TRUE
 )
@@ -47,7 +47,7 @@ t_summary_by(
  x = ADSL$SEX,
  by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD,
- col_n = table(ADSL$ARMCD),
+ col_N = table(ADSL$ARMCD),
  total = "All Patients",
  drop_levels = TRUE,
  useNA = "ifany"
@@ -63,7 +63,7 @@ t_summary_by(
  x = ADQS_f$AVAL,
  by = ADQS_f$AVISIT,
  col_by = ADQS_f$ARMCD,
- col_n = table(ADSL$ARMCD),
+ col_N = table(ADSL$ARMCD),
  total = "All Patients"
 )
 
@@ -75,7 +75,7 @@ t_summary_by(
  x = ADQS_f$AVALCAT1,
  by = ADQS_f$AVISIT,
  col_by = ADQS_f$ARMCD,
- col_n = table(ADSL$ARMCD),
+ col_N = table(ADSL$ARMCD),
  total = "All Patients"
 )
 }

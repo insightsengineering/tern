@@ -4,7 +4,7 @@
 \alias{lt_events_per_term_grade_id_1}
 \title{List of Events Terms Tables By Highest Grade (One Level Term only)}
 \usage{
-lt_events_per_term_grade_id_1(term, id, grade, col_by, col_n,
+lt_events_per_term_grade_id_1(term, id, grade, col_by, col_N,
   total = "All Patients", grade_levels)
 }
 \arguments{
@@ -22,7 +22,7 @@ string used as a label in the column header for each grade.}
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
 
-\item{col_n}{numeric vector with information of the number of patients in the
+\item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
@@ -56,7 +56,7 @@ l_tbls <- tern:::lt_events_per_term_grade_id_1(
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )

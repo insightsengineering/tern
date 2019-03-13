@@ -4,7 +4,7 @@
 \alias{t_events_per_term_grade_id}
 \title{Events by Highest Grade Table}
 \usage{
-t_events_per_term_grade_id(terms, id, grade, col_by, col_n,
+t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels = 1:5)
 }
 \arguments{
@@ -24,7 +24,7 @@ string used as a label in the column header for each grade.}
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
 
-\item{col_n}{numeric vector with information of the number of patients in the
+\item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
@@ -48,7 +48,7 @@ to create Adverse Events by Highest NCI CTCAE grade table
 }
 \details{
 \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects
-in the column heading (i.e. "N=nnn"). \code{col_n} can be explicitly specified to
+in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset like
 subject level dataset. See the example.
 
@@ -81,7 +81,7 @@ t_events_per_term_grade_id(
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )
@@ -91,7 +91,7 @@ t_events_per_term_grade_id(
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   grade_levels = 1:5
 )

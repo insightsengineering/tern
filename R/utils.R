@@ -53,17 +53,21 @@ with_label <- function(x, label) {
 #' var_labels(x) <- paste("label for", names(iris))
 #' var_labels(x)
 var_labels <- function(x, fill = FALSE) {
-
-  if (!is(x, "data.frame")) stop("x must be a data.frame")
+  stopifnot(is.data.frame(x))
 
   y <- Map(function(var, name) {
     lbl <- attr(var, "label")
 
     if (is.null(lbl)) {
-      if (fill) name else NA_character_
+      if (fill) {
+        name
+      } else {
+        NA_character_
+      }
     } else {
-      if (!is.character(lbl) && !(length(lbl) == 1))
+      if (!is.character(lbl) && !(length(lbl) == 1)) {
         stop("label for variable ", name, "is not a character string")
+      }
       as.vector(lbl)
     }
 
@@ -71,7 +75,9 @@ var_labels <- function(x, fill = FALSE) {
 
   labels <- unlist(y, recursive = FALSE, use.names = TRUE)
 
-  if (!is.character(labels)) stop("label extraction failed")
+  if (!is.character(labels)) {
+    stop("label extraction failed")
+  }
 
   labels
 
@@ -100,12 +106,18 @@ var_labels <- function(x, fill = FALSE) {
 #' View(x) # in RStudio data viewer labels are displayed
 #' }
 `var_labels<-` <- function(x, value) {
-  if (!is(x, "data.frame")) stop("x must be a data.frame")
-  if (!is.character(value)) stop("values must be of type character")
-  if (ncol(x) != length(value)) stop("dimension missmatch")
+  stopifnot(
+    is.data.frame(x),
+    is.character(value),
+    ncol(x) == length(value)
+  )
 
   for (j in seq_along(x)) {
-    attr(x[[j]], "label") <- if (!is.na(value[j])) value[j] else NULL
+    attr(x[[j]], "label") <- if (!is.na(value[j])) {
+      value[j]
+    } else {
+      NULL
+    }
   }
 
   x
@@ -128,19 +140,19 @@ var_labels <- function(x, fill = FALSE) {
 #' x <- var_relabel(iris, Sepal.Length = "Sepal Length of iris flower")
 #' var_labels(x)
 var_relabel <- function(x, ...) {
-  if (!is(x, "data.frame"))
-    stop("x must be a data.frame")
+  stopifnot(is.data.frame(x))
 
   dots <- list(...)
   varnames <- names(dots)
-  if (is.null(varnames))
-    stop("missing variable declarations")
+  stopifnot(!is.null(varnames))
 
   map_varnames <- match(varnames, names(x))
-  if (any(is.na(map_varnames)))
+  if (any(is.na(map_varnames))) {
     stop("variables: ", paste(varnames[is.na(map_varnames)], collapse = ", "), " not found")
-  if (any(vapply(dots, Negate(is.character), logical(1))))
+  }
+  if (any(vapply(dots, Negate(is.character), logical(1)))) {
     stop("all variable labels must be of type character")
+  }
 
   for (i in seq_along(map_varnames)) {
     attr(x[[map_varnames[[i]]]], "label") <-  dots[[i]]
@@ -163,10 +175,12 @@ var_relabel <- function(x, ...) {
 #' @examples
 #' x <- var_labels_remove(iris)
 var_labels_remove <- function(x) {
-  if (!is(x, "data.frame"))
-    stop("x must be a data.frame")
-  for (i in 1:ncol(x))
+  stopifnot(is.data.frame(x))
+
+  for (i in 1:ncol(x)) {
     attr(x[[i]], "label") <- NULL
+  }
+
   x
 }
 
@@ -194,7 +208,6 @@ var_labels_remove <- function(x) {
 #' iris %needs% "ABC"
 #' }
 `%needs%` <- function(data, names) {
-
   i <- is.na(match(names, names(data)))
 
   if (any(i)) {
@@ -240,21 +253,14 @@ var_labels_remove <- function(x) {
 #' reorder_to_match_id(A, E)
 #' }
 reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
-
-  if (nrow(x) != nrow(ref))
-    stop("dimension missmatch")
-  if (!all(key %in% names(x)))
-    stop("x has not all keys")
-  if (!all(key %in% names(ref)))
-    stop("ref has not all keys")
-
-  if (any(is.na(x[key])))
-    stop("no missing values allows in x[,key]")
-  if (any(is.na(ref[key])))
-    stop("no missing values allows in ref[,key]")
-
-  if (any(duplicated(ref[, key])))
-    stop("key is not unique")
+  stopifnot(
+    nrow(x) == nrow(ref),
+    all(key %in% names(x)),
+    all(key %in% names(ref)),
+    !any(is.na(x[key])),
+    !any(is.na(ref[key])),
+    !any(duplicated(ref[, key]))
+  )
 
   x_ord <- do.call(order, x[key])
   ref_ord <- do.call(order, ref[key])
@@ -265,8 +271,9 @@ reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
     all(v1 == v2)
   }, out[key], ref[key]))
 
-  if (!all(is_same))
+  if (!all(is_same)) {
     stop("not same ids")
+  }
 
   out
 }
@@ -288,13 +295,10 @@ reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
 #'
 #' combine_levels(x, c('e', 'b'))
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
-
-  if (!is.factor(x))
-    stop("x is required to be a factor")
-
-  if (!all(levels %in% levels(x))) {
-    stop("not all levels are part of levels(x)")
-  }
+  stopifnot(
+    is.factor(x),
+    all(levels %in% levels(x))
+  )
 
   lvls <- levels(x)
 
@@ -326,7 +330,6 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' }
 add_labels <- function(df, labels) {
   for (name in names(df)) {
-
     lab <- labels[name]
     if (!is.na(lab[1]) && length(lab) == 1) {
       attr(df[[name]], "label") <- lab
@@ -369,7 +372,6 @@ start_with_null <- function(x) {
 #'   )
 #' }
 compound_table <- function(funs, ..., nrow_pad = 1) {
-
   dots <- list(...)
 
   tbls <- lapply(funs, function(fun) {
@@ -381,15 +383,15 @@ compound_table <- function(funs, ..., nrow_pad = 1) {
   })
 
   rbindl_rtables(tbls, gap = nrow_pad)
-
 }
 
 wrap_with <- function(x, left, right, as_list = TRUE) {
   lbls <- paste0(left, x, right)
-  if (as_list)
+  if (as_list) {
     as.list(lbls)
-  else
+  } else {
     lbls
+  }
 }
 
 #' check if all elements in x are factors
@@ -400,8 +402,7 @@ wrap_with <- function(x, left, right, as_list = TRUE) {
 #'
 #' @noRd
 all_as_factor <- function(x) {
-  if (!is(x, "data.frame"))
-    stop("x needs to be a data.frame")
+  stopifnot(is.data.frame(x))
 
   is_fct <- vapply(x, is.factor, logical(1))
 
@@ -428,31 +429,31 @@ all_as_factor <- function(x) {
 #' @examples
 #' drop_shared_variables(iris, iris[, 1:3])
 drop_shared_variables <- function(x, y, keep) {
+  stopifnot(
+    is.data.frame(x),
+    is.data.frame(y)
+  )
 
-  if (!is.data.frame(x))
-    stop("x must be a data.frame")
-  if (!is.data.frame(y))
-    stop("y must be a data.frame")
-
-  if (missing(keep))
+  if (missing(keep)) {
     keep <- character(0)
+  }
 
   df <- x[, !(names(x) %in% setdiff(names(y), keep)), drop = FALSE]
 
   for (a in c("md5sum", "source", "access_by", "accessed_on")) {
-     attr(df, a) <- attr(x, a)
+    attr(df, a) <- attr(x, a)
   }
 
   df
 }
 
 na_as_level <- function(x, na_level = "NA") {
-  if (!is.factor(x))
-    stop("x is required to be a factor")
+  stopifnot(is.factor(x))
 
   if (any(is.na(x))) {
-    if (na_level %in% levels(x))
+    if (na_level %in% levels(x)) {
       stop(na_level, " can not be a level of x")
+    }
     levels(x) <- c(levels(x), "NA")
     x[is.na(x)] <- "NA"
   }
@@ -460,7 +461,6 @@ na_as_level <- function(x, na_level = "NA") {
 }
 
 as.global <- function(...) {
-
   dots <- substitute(list(...))[-1]
   names <- sapply(dots, deparse)
 
@@ -471,7 +471,6 @@ as.global <- function(...) {
   Map(function(x, name) {
     ge[[name]] <- x
   }, args, names)
-
 }
 
 #' Helper functions to re-format and reflow long arm/grouping labels by inserting
@@ -499,8 +498,9 @@ reflow <- function(x,
   ctxt <- ""
   n <- 0
 
-  if (is.null(limit))
+  if (is.null(limit)) {
     limit <- max(unlist(lapply(xsplit, nchar)))
+  }
 
   for (i in xsplit) {
     if (nchar(i) > limit) {
@@ -522,14 +522,15 @@ reflow <- function(x,
 
 
 to_n <- function(x, n) {
-  if (is.null(x))
+  if (is.null(x)) {
     NULL
-  else if (length(x) == 1)
+  } else if (length(x) == 1) {
     rep(x, n)
-  else if (length(x) == n)
+  } else if (length(x) == n) {
     x
-  else
+  } else {
     stop("dimension missmatch")
+  }
 }
 
 
@@ -551,11 +552,11 @@ add_total <- function(x, ...) {
 #' @param x a vector
 #' @param col_by a factor the same length as \code{x}
 #' @param total_level a label that is used as a new factor level in the duplicated \code{col_by}
-#' @param col_n a numeric vector with length equal to the number of levels of \code{col_by}.
+#' @param col_N a numeric vector with length equal to the number of levels of \code{col_by}.
 #' It is used to build the row in the table header with (N=xx).
 #'
 #' @details
-#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_n}
+#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
 #'
 #' @noRd
 #'
@@ -564,18 +565,15 @@ add_total <- function(x, ...) {
 #' add_total(x=iris$Species, col_by = iris$Species, total_level = "All")
 #' # numeric
 #' add_total(x=iris$Sepal.Length, col_by = iris$Species, total_level = "All")
-add_total.default <- function(x, col_by, total_level = "All", col_n = table(col_by)) { # nolint
+add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_by)) { # nolint
+  stopifnot(
+    is.atomic(x),
+    !total_level %in% levels(col_by),
+    length(x) == length(col_by)
+  )
 
-  if (!is.atomic(x))
-    stop("x is not atomic")
-
-  if (total_level %in% levels(col_by))
-    stop("total level exists in col_by")
-  if (length(x) != length(col_by))
-    stop("dimension missmatch x and col_by")
-
-  col_n <- c(col_n, sum(col_n))
-  names(col_n)[length(col_n)] <- total_level
+  col_N <- c(col_N, sum(col_N)) # nolint
+  names(col_N)[length(col_N)] <- total_level
 
   cb_levels <- c(levels(col_by), total_level)
   col_by <- factor(c(as.character(col_by), rep(total_level, length(x))), cb_levels)
@@ -583,7 +581,7 @@ add_total.default <- function(x, col_by, total_level = "All", col_n = table(col_
   list(
     x = rep(x, 2),
     col_by = col_by,
-    col_n = col_n
+    col_N = col_N
   )
 }
 
@@ -593,13 +591,13 @@ add_total.default <- function(x, col_by, total_level = "All", col_n = table(col_
 #' @param x a data frame
 #'
 #' @details
-#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_n}
+#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
 #'
 #' @noRd
 #'
 #' @examples
 #' add_total(x=iris[, c("Sepal.Length", "Sepal.Width")], col_by = iris$Species, total_level = "All")
-add_total.data.frame <- function(x, col_by, total_level = "All", col_n = table(col_by)) { # nolint
+add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(col_by)) { # nolint
 
   vl <- var_labels(x)
   y <- rbind(x, x)
@@ -608,13 +606,13 @@ add_total.data.frame <- function(x, col_by, total_level = "All", col_n = table(c
   cb_levels <- c(levels(col_by), total_level)
   col_by <- factor(c(as.character(col_by), rep(total_level, nrow(x))), cb_levels)
 
-  col_n <- c(col_n, sum(col_n))
-  names(col_n)[length(col_n)] <- total_level
+  col_N <- c(col_N, sum(col_N)) # nolint
+  names(col_N)[length(col_N)] <- total_level
 
   list(
     x = y,
     col_by = col_by,
-    col_n = col_n
+    col_N = col_N
   )
 }
 

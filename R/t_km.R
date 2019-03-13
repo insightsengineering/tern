@@ -33,8 +33,7 @@
 #' tbl
 t_km <- function(fit_km) {
 
-  if (!is(fit_km, "survfit"))
-    stop("fit_km needs to be of class survfit")
+  stopifnot(is(fit_km, "survfit"))
 
   sumtable <- summary(fit_km)$table
 

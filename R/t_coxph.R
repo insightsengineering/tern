@@ -30,8 +30,7 @@
 #' tbl
 #' }
 t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model") {
-
-  if (!is(fit_coxph, "coxph")) stop("fit_coxph needs to be of class coxph")
+  stopifnot(is(fit_coxph, "coxph"))
 
   sfit <- summary(fit_coxph)
 

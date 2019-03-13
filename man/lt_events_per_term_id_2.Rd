@@ -4,7 +4,7 @@
 \alias{lt_events_per_term_id_2}
 \title{List of Events Terms Tables}
 \usage{
-lt_events_per_term_id_2(terms, id, col_by, col_n, total = "All Patients",
+lt_events_per_term_id_2(terms, id, col_by, col_N, total = "All Patients",
   event_type = "event")
 }
 \arguments{
@@ -20,7 +20,7 @@ length or number of rows of \code{terms}.}
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
 
-\item{col_n}{numeric vector with information of the number of patients in the
+\item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
@@ -54,7 +54,7 @@ l_tbls <- tern:::lt_events_per_term_id_2(
   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = "All Patients"
 )
 rbindl_rtables(l_tbls)
@@ -63,7 +63,7 @@ l_tbls <- tern:::lt_events_per_term_id_2(
   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = NULL
 )
 

@@ -4,7 +4,7 @@
 \alias{t_count_unique}
 \title{Count Unique Elements Per Cell}
 \usage{
-t_count_unique(x, col_by, col_n, na_rm = TRUE,
+t_count_unique(x, col_by, col_N, na_rm = TRUE,
   row_name = "number of unique elements", indent = 0)
 }
 \arguments{
@@ -13,7 +13,7 @@ t_count_unique(x, col_by, col_n, na_rm = TRUE,
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
 
-\item{col_n}{associated number of elements per level of \code{col_by}}
+\item{col_N}{associated number of elements per level of \code{col_by}}
 
 \item{na_rm}{a logical value indicating whether \code{NA} values should be
 removed from \code{x} pror to counting the unique elements per cell}
@@ -34,13 +34,13 @@ an rtable
 t_count_unique(
  x = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
  col_by = factor(c("A", "A", "B", "C", "C")),
- col_n = c(2, 4, 10)
+ col_N = c(2, 4, 10)
 )
 
 t_count_unique(
  x = c(1, 4, 2, 3, 3, NA),
  col_by = factor(c("A", "A", "B", "C", "C", "C")),
- col_n = c(2, 4, 10),
+ col_N = c(2, 4, 10),
  row_name = "Unique Records",
  indent = 1,
  na_rm = FALSE

@@ -10,7 +10,7 @@
 #' @param visit factor with visit names ordered by desired display order in the
 #'   stacked table.
 #' @param id unique subject identifier variable.
-#' @param col_n a \code{table} object with the reference population used for the header of the table.
+#' @param col_N a \code{table} object with the reference population used for the header of the table.
 #'
 #' @template param_col_by
 #'
@@ -51,10 +51,10 @@
 #' ADVS <- radvs(ADSL, seed = 2)
 #'
 #' t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
-#'   id = ADVS$USUBJID, col_n = table(ADSL$ARM))
+#'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
 #'
 #' t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
-#'   id = ADVS$USUBJID, col_n = table(ADSL$ARM))
+#'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
 #'
 #' # DO NOT THINK WE NEED THIS BLOCK AS LABELS ALREADY AVAILABLE
 #' # ADDED THIS NOTE GIVEN FINDING OF ATTRIBUTES BEING REMOVED
@@ -68,7 +68,7 @@
 #'   visit = ADVS$AVISIT,
 #'   col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID,
-#'   col_n = table(ADSL$ARM)
+#'   col_N = table(ADSL$ARM)
 #' )
 #'
 #' # EXAMPLE 2
@@ -84,7 +84,7 @@
 #'   visit = ADQS$AVISIT,
 #'   col_by = ADQS$ARM,
 #'   id = ADQS$USUBJID,
-#'   col_n = table(ADSL$ARM)
+#'   col_N = table(ADSL$ARM)
 #' )
 #'
 #' tbl
@@ -93,15 +93,20 @@
 #' Viewer(tbl)
 #' }
 #'
-t_summarize_by_visit <- function(data, visit, id, col_by, col_n) {
+t_summarize_by_visit <- function(data,
+                                 visit,
+                                 id,
+                                 col_by,
+                                 col_N) { # nolint
 
   # Check Arguments
   check_same_n(data = data, col_by = col_by, omit_null = TRUE)
-  if (!is.data.frame(data))
+  if (!is.data.frame(data)) {
     stop("data is expected to be a data frame")
+  }
 
   check_is_factor(visit, allow_na = FALSE)
-  check_col_by(col_by, col_n, 1)
+  check_col_by(col_by, col_N, 1)
 
   vapply(data, check_is_numeric, logical(1))
 
@@ -150,12 +155,12 @@ t_summarize_by_visit <- function(data, visit, id, col_by, col_n) {
   if (subcol_n == 1) {
     header(tbl) <- rheader(
       rrowl("", lapply(topcol_label, function(x) rcell(x, colspan = subcol_n))),
-      rrowl("", lapply(col_n, function(x) rcell(x, format = "(N=xx)", colspan = subcol_n)))
+      rrowl("", lapply(col_N, function(x) rcell(x, format = "(N=xx)", colspan = subcol_n)))
     )
   } else {
     header(tbl) <- rheader(
       rrowl("", lapply(topcol_label, function(x) rcell(x, colspan = subcol_n))),
-      rrowl("", lapply(col_n, function(x) rcell(x, format = "(N=xx)", colspan = subcol_n))),
+      rrowl("", lapply(col_N, function(x) rcell(x, format = "(N=xx)", colspan = subcol_n))),
       rrowl("", rep(subcol_label, topcol_n))
     )
   }

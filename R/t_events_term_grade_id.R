@@ -19,7 +19,7 @@
 #'
 #' @details
 #' \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects
-#' in the column heading (i.e. "N=nnn"). \code{col_n} can be explicitly specified to
+#' in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
 #' get N for percentage calculation from either events dataset or additional dataset like
 #' subject level dataset. See the example.
 #'
@@ -64,7 +64,7 @@
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -74,7 +74,7 @@
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -82,16 +82,16 @@ t_events_per_term_grade_id <- function(terms,
                                        id,
                                        grade,
                                        col_by,
-                                       col_n,
+                                       col_N, # nolint
                                        total = "All Patients",
                                        grade_levels = 1:5) {
+  stopifnot(!is.null(terms))
 
-  if (is.null(terms))
-    stop("terms can't be NULL")
-  if (is.atomic(terms))
+  if (is.atomic(terms)) {
     terms <- data.frame(term = terms, stringsAsFactors = FALSE)
-  else if (!is.data.frame(terms))
+  } else if (!is.data.frame(terms)) {
     stop("terms needs to be either a vector or a data.frame")
+  }
 
   irow <- ncol(terms)
   sort_index <-  if (is.null(total)) {
@@ -107,7 +107,7 @@ t_events_per_term_grade_id <- function(terms,
       id = id,
       grade = grade,
       col_by = col_by,
-      col_n = col_n,
+      col_N = col_N,
       total = total,
       grade_levels = grade_levels
     )
@@ -122,7 +122,7 @@ t_events_per_term_grade_id <- function(terms,
       id = id,
       grade = grade,
       col_by = col_by,
-      col_n = col_n,
+      col_N = col_N,
       total = total,
       grade_levels = grade_levels
     )
@@ -163,7 +163,7 @@ t_events_per_term_grade_id <- function(terms,
 #'   string used as a label in the column header for each grade.
 #' @param col_by group variable that will be used for a column header. \code{col_by}
 #'  has to be a factor and can not be missing. See 'Examples'.
-#' @param col_n numeric vector with information of the number of patients in the
+#' @param col_N numeric vector with information of the number of patients in the
 #'   levels of \code{col_by}. This is useful if there are patients that have no
 #'   adverse events can be accounted for with this argument.
 #' @param total character string that will be used as a label for a column with
@@ -203,7 +203,7 @@ t_events_per_term_grade_id <- function(terms,
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -213,31 +213,32 @@ lt_events_per_term_grade_id_2 <- function(terms,
                                           id,
                                           grade,
                                           col_by,
-                                          col_n,
+                                          col_N, # nolint
                                           total = "All Patients",
                                           grade_levels) {
 
   # check argument validity and consitency
-  check_col_by(col_by, col_n, min_num_levels = 1, total)
+  check_col_by(col_by, col_N, min_num_levels = 1, total)
 
-  if (any("- Overall -" %in% terms))
-    stop("'- Overall -' is not a valid term, t_ae_ctc reserves it for derivation")
-
-  if (any(terms == "", na.rm = TRUE))
-    stop("empty string is not a valid term, please use NA if data is missing")
-  if (!is.data.frame(terms) || ncol(terms) != 2)
-    stop("terms must be a dataframe with two columns")
+  stopifnot(
+    !any("- Overall -" %in% terms),
+    !any(terms == "", na.rm = TRUE),
+    is.data.frame(terms) && ncol(terms) == 2
+  )
 
   class_label <- label(terms[[1]])
   term_label <- label(terms[[2]])
   grade_label <- label(grade)
 
-  if (is.null(term_label))
+  if (is.null(term_label)) {
     class_label <- deparse(substitute(class))
-  if (is.null(term_label))
+  }
+  if (is.null(term_label)) {
     term_label <- deparse(substitute(term))
-  if (is.null(grade_label))
+  }
+  if (is.null(grade_label)) {
     grade_label <- deparse(substitute(grade))
+  }
 
   # data prep
   df <- data.frame(
@@ -249,13 +250,14 @@ lt_events_per_term_grade_id_2 <- function(terms,
     stringsAsFactors = FALSE
   )
 
-  if (any(is.na(df)))
+  if (any(is.na(df))) {
     stop("partial missing data in rows of [class, term, grade] is currently not supported")
+  }
 
   # adding All Patients
   if (!is.null(total)) {
-    .t <- add_total(x = df, col_by = col_by, total_level = total, col_n = col_n)
-    col_n <- .t$col_n
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N # nolint
     df <- data.frame(class = .t$x$class, term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by),
                      grade = .t$x$grade,
                      col_by = .t$col_by, stringsAsFactors = FALSE)
@@ -276,7 +278,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
 
   tbl_header <- rheader(
     rrowl(class_label, c(list(NULL), as.list(levels(df$col_by)))),
-    rrowl(term_label, c(list(rcell(grade_label, format = "xx")), as.list(col_n)), format = "(N=xx)", indent = 1)
+    rrowl(term_label, c(list(rcell(grade_label, format = "xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
   )
 
   # now create the tables
@@ -287,7 +289,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
         grade = df_term$grade,
         id = df_term$id,
         col_by = df_term$col_by,
-        col_n = col_n,
+        col_N = col_N,
         grade_levels = grade_levels,
         any_grade = "- Any Grade -"
       )
@@ -345,7 +347,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
@@ -355,25 +357,26 @@ lt_events_per_term_grade_id_1 <- function(term,
                                           id,
                                           grade,
                                           col_by,
-                                          col_n,
+                                          col_N, # nolint
                                           total = "All Patients",
                                           grade_levels) {
 
-  check_col_by(col_by, col_n, min_num_levels = 1, total)
+  check_col_by(col_by, col_N, min_num_levels = 1, total)
 
-  if (any("All Patients" %in% col_by))
-    stop("'All Patients' is not a valid col_by, t_ae_ctc derives All Patients column")
-
-  if (any(term == "", na.rm = TRUE))
-    stop("empty string is not a valid term, please use NA if data is missing")
+  stopifnot(
+    !any("All Patients" %in% col_by),
+    !any(term == "", na.rm = TRUE)
+  )
 
   term_label <- label(term)
   grade_label <- label(grade)
 
-  if (is.null(term_label))
+  if (is.null(term_label)) {
     term_label <- deparse(substitute(term))
-  if (is.null(grade_label))
+  }
+  if (is.null(grade_label)) {
     grade_label <- deparse(substitute(grade))
+  }
 
   df <- data.frame(
     term = term,
@@ -383,13 +386,14 @@ lt_events_per_term_grade_id_1 <- function(term,
     stringsAsFactors = FALSE
   )
 
-  if (any(is.na(df)))
+  if (any(is.na(df))) {
     stop("partial missing data in rows of [class, grade] is currently not supported")
+  }
 
 
   if (!is.null(total)) {
-    .t <- add_total(x = df, col_by = col_by, total_level = total, col_n = col_n)
-    col_n <- .t$col_n
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N # nolint
     df <- data.frame(term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by),
                      grade = .t$x$grade,
                      col_by = .t$col_by, stringsAsFactors = FALSE)
@@ -403,7 +407,7 @@ lt_events_per_term_grade_id_1 <- function(term,
 
   tbl_header <- rheader(
     rrowl("", c("", levels(df$col_by))),
-    rrowl(term_label, c(list(rcell(grade_label, format = NULL)), setNames(as.list(col_n), NULL)), format = "(N=xx)")
+    rrowl(term_label, c(list(rcell(grade_label, format = NULL)), setNames(as.list(col_N), NULL)), format = "(N=xx)")
   )
 
   Map(function(df_term, term_i) {
@@ -412,7 +416,7 @@ lt_events_per_term_grade_id_1 <- function(term,
       grade = df_term$grade,
       id = df_term$id,
       col_by = df_term$col_by,
-      col_n = col_n,
+      col_N = col_N,
       grade_levels = grade_levels,
       any_grade = "- Any Grade -"
     )
@@ -437,7 +441,7 @@ lt_events_per_term_grade_id_1 <- function(term,
 #' @param grade a numeric vector with grade values
 #' @param id a vector with id values
 #' @param col_by a factor with values used for column names
-#' @param col_n a vector with total n for each level of \code{col_by}
+#' @param col_N a vector with total n for each level of \code{col_by}
 #' @param grade_levels a numeric vector used for naming rows for each level of
 #'   grade
 #' @param any_grade add a row that counts any occurrence, it is named \code{-Any
@@ -459,7 +463,7 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   grade =  c(1,2,3),
 #'   id = c(1,1,1),
 #'   col_by = factor(rep("A", 3)),
-#'   col_n = 3
+#'   col_N = 3
 #' )
 #'
 #' id <- c(1,1,2,2,3,3,3,4)
@@ -467,14 +471,14 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   grade =  c(1,2,3,2,1,1,2,3),
 #'   id = id,
 #'   col_by = factor(LETTERS[id]),
-#'   col_n = c(4,3,5,3)
+#'   col_N = c(4,3,5,3)
 #' )
 #'
 #' t_max_grade_per_id(
 #'   grade =  c(1,2,3,2,1,1,2,3),
 #'   id = id,
 #'   col_by = factor(LETTERS[id]),
-#'   col_n = c(4,3,5,4)
+#'   col_N = c(4,3,5,4)
 #' )
 #'
 #' \dontrun{
@@ -483,7 +487,7 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   grade =  c(1,2,3),
 #'   id = c(1,2,2),
 #'   col_by = factor(LETTERS[1:3]),
-#'   col_n = c(15, 10, 12)
+#'   col_N = c(15, 10, 12)
 #' )
 #' }
 #'
@@ -493,32 +497,35 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   grade =  c(1,2,NA),
 #'   id = c(1,2,3),
 #'   col_by = factor(LETTERS[1:3]),
-#'   col_n = c(15, 10, 12)
+#'   col_N = c(15, 10, 12)
 #' )
 #' }
 t_max_grade_per_id <- function(grade,
                                id,
                                col_by,
-                               col_n,
+                               col_N, # nolint
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
 
-  check_col_by(col_by, col_n, 1)
+  check_col_by(col_by, col_N, 1)
   stopifnot(is.numeric(grade))
   stopifnot(has_no_na(id))
 
-  if (is.null(grade_levels))
+  if (is.null(grade_levels)) {
     grade_levels <- seq(1, max(grade, na.rm = TRUE))
+  }
 
-  if (length(setdiff(grade, grade_levels)) > 0)
+  if (length(setdiff(grade, grade_levels)) > 0) {
     stop("grades exist that are not in grade_levels")
+  }
 
   df <- data.frame(grade, id, col_by, stringsAsFactors = FALSE)
 
   df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
 
-  if (any(duplicated(df_max$id)))
+  if (any(duplicated(df_max$id))) {
     stop("every id can only have one col_by")
+  }
 
   df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
 
@@ -532,7 +539,7 @@ t_max_grade_per_id <- function(grade,
       col_by = df_no_na_id$col_by,
       FUN = count_perc_col_n,
       format = "xx (xx.x%)",
-      col_wise_args = list(n_i = col_n)
+      col_wise_args = list(n_i = col_N)
     )
   } else {
     NULL
@@ -545,11 +552,11 @@ t_max_grade_per_id <- function(grade,
     col_by  = df_max_no_na$col_by,
     FUN = count_perc_col_n,
     format = "xx (xx.x%)",
-    col_wise_args = list(n_i = col_n)
+    col_wise_args = list(n_i = col_N)
   )
 
   tbl <- rbind(tbl_any, tbl_x)
 
-  header_add_N(tbl, col_n)
+  header_add_N(tbl, col_N)
 
 }

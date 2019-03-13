@@ -198,7 +198,7 @@ test_that("adverse events by terms (term only)", {
   tbl <- t_events_per_term_id(terms = anl$AEDECOD,
                               id = anl$USUBJID,
                               col_by = as.factor(anl$ARM),
-                              col_n = table(asl$ARM),
+                              col_N = table(asl$ARM),
                               total = "All Patients"
   )
 

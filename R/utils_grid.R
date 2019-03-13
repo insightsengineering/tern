@@ -27,16 +27,29 @@
 #'
 #' showViewport()
 #' grid.ls(grobs = TRUE, viewports = TRUE)
-stack_grobs <- function(..., grobs = list(...), padding = unit(2, "line"), vp = NULL, gp = NULL, name = NULL) {
+stack_grobs <- function(...,
+                        grobs = list(...),
+                        padding = unit(2, "line"),
+                        vp = NULL,
+                        gp = NULL,
+                        name = NULL) {
+  stopifnot(all(vapply(grobs, is.grob, logical(1))))
 
-  if (!all(vapply(grobs, is, logical(1), "grob")))
-    stop("not all objects are of class grob")
-
-  if (length(grobs) == 1)
+  if (length(grobs) == 1) {
     return(grobs[[1]])
+  }
 
   n_layout <- 2 * length(grobs) - 1
-  hts <- lapply(seq(1, n_layout), function(i) if (i %% 2 != 0) unit(1, "null") else padding)
+  hts <- lapply(
+    seq(1, n_layout),
+    function(i) {
+      if (i %% 2 != 0) {
+        unit(1, "null")
+      } else {
+        padding
+      }
+    }
+  )
   hts <- do.call("unit.c", hts)
 
   main_vp <- viewport(
@@ -112,11 +125,11 @@ arrange_grobs <- function(...,
                           vp = NULL,
                           gp = NULL,
                           name = NULL) {
-  if (!all(vapply(grobs, is, logical(1), "grob")))
-    stop("not all objects are of class grob")
+  stopifnot(all(vapply(grobs, is.grob, logical(1))))
 
-  if (length(grobs) == 1)
+  if (length(grobs) == 1) {
     return(grobs[[1]])
+  }
 
   if (is.null(ncol) && is.null(nrow)) {
     ncol <- 1
@@ -127,18 +140,38 @@ arrange_grobs <- function(...,
     ncol <- ceiling(length(grobs) / nrow)
   }
 
-  if (ncol * nrow < length(grobs))
+  if (ncol * nrow < length(grobs)) {
     stop("specififed ncol and nrow are not enough for arranging the grobs ")
+  }
 
-  if (ncol == 1)
+  if (ncol == 1) {
     return(stack_grobs(grobs = grobs, padding = padding_ht, vp = vp, gp = gp, name = name))
+  }
 
   n_col <- 2 * ncol - 1
   n_row <- 2 * nrow - 1
-  hts <- lapply(seq(1, n_row), function(i) if (i %% 2 != 0) unit(1, "null") else padding_ht)
+  hts <- lapply(
+    seq(1, n_row),
+    function(i) {
+      if (i %% 2 != 0) {
+        unit(1, "null")
+      } else {
+        padding_ht
+      }
+    }
+  )
   hts <- do.call("unit.c", hts)
 
-  wts <- lapply(seq(1, n_col), function(i) if (i %% 2 != 0) unit(1, "null") else padding_wt)
+  wts <- lapply(
+    seq(1, n_col),
+    function(i) {
+      if (i %% 2 != 0) {
+        unit(1, "null")
+      } else {
+        padding_wt
+      }
+    }
+  )
   wts <- do.call("unit.c", wts)
 
   main_vp <- viewport(
@@ -193,13 +226,13 @@ arrange_grobs <- function(...,
 #'   draw_grob()
 #' showViewport()
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
-
-  if (newpage)
+  if (newpage) {
     grid.newpage()
-  if (!is.null(vp))
+  }
+  if (!is.null(vp)) {
     pushViewport(vp)
+  }
   grid.draw(grob)
-
 }
 
 
@@ -250,13 +283,12 @@ label_panel_grob <- function(label,
                              name = NULL,
                              gp = NULL,
                              vp = NULL) {
+  stopifnot(
+    is.factor(group),
+    length(label) == length(x),
+    length(label) == length(group)
+  )
 
-  if (!is.factor(group))
-    stop("group is required to be a factor")
-  if (length(label) != length(x))
-    stop("lengths of label and x are not equal")
-  if (length(label) != length(group))
-    stop("lengths of label and group are not equal")
   grp <- levels(group)
   col <- to_group_color(col, grp)
 

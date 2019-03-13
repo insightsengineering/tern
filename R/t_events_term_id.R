@@ -21,7 +21,7 @@
 #'
 #' @details
 #' \code{t_events_per_term_id} includes percentages based on the total number of subjects
-#' in the column heading (i.e. "N=nnn"). \code{col_n} can be explicitly specified to
+#' in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
 #' get N for percentage calculation from either events dataset or additional dataset such as
 #' subject level dataset. See the example.
 #'
@@ -58,7 +58,7 @@
 #'   terms = ADAE$AEDECOD,
 #'   id = ADAE$USUBJID,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = NULL,
 #'   event_type = "adverse event"
 #' )
@@ -67,7 +67,7 @@
 #'   terms = ADAE$AEDECOD,
 #'   id = ADAE$USUBJID,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   event_type = "adverse event"
 #' )
@@ -76,7 +76,7 @@
 #'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
 #'   id = ADAE$USUBJID,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients"
 #' )
 #'
@@ -89,20 +89,19 @@
 #'   terms = ADCM[, c("CMCLAS", "CMDECOD")],
 #'   id = ADCM$USUBJID,
 #'   col_by = ADCM$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   event_type = "treatment"
 #' )
 t_events_per_term_id <- function(terms,
                                  id,
                                  col_by,
-                                 col_n,
+                                 col_N, # nolint
                                  total = "All Patients",
                                  event_type = "event") {
+  stopifnot(!is.null(terms))
+  check_col_by(col_by, col_N, 1, total)
 
-  check_col_by(col_by, col_n, 1, total)
-  if (is.null(terms))
-    stop("terms can't be NULL")
   if (is.data.frame(terms) && ncol(terms) == 1) {
     terms <- terms[[1]]
   }
@@ -110,15 +109,19 @@ t_events_per_term_id <- function(terms,
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
 
-  order_indecies <- if (is.null(total)) c(0, 1) else c(nlevels(col_by) + 1, 1)
+  order_indecies <- if (is.null(total)) {
+    c(0, 1)
+  } else {
+    c(nlevels(col_by) + 1, 1)
+  }
 
   tbls <- if (is.atomic(terms)) {
 
     df <- data.frame(term = terms, id = id, col_by = col_by, stringsAsFactors = FALSE)
 
     if (!is.null(total)) {
-      .t <- add_total(x = df, col_by = col_by, total_level = total, col_n = col_n)
-      col_n <- .t$col_n
+      .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+      col_N <- .t$col_N # nolint
       df <- data.frame(
         term = .t$x$term,
         id = paste(.t$x$id, "-", .t$col_by),
@@ -131,7 +134,7 @@ t_events_per_term_id <- function(terms,
       term = df$term,
       id = df$id,
       col_by = df$col_by,
-      col_n = col_n,
+      col_N = col_N,
       total_events = total_events,
       subjects_with_events = subjects_with_events
     )
@@ -149,7 +152,7 @@ t_events_per_term_id <- function(terms,
       terms = terms,
       id = id,
       col_by = col_by,
-      col_n = col_n,
+      col_N = col_N,
       total = total,
       event_type = event_type
     )
@@ -180,7 +183,7 @@ t_events_per_term_id <- function(terms,
 #' @param x a vector
 #' @param col_by group variable that will be used for a column header. \code{col_by}
 #'  has to be a factor and can not be missing. See 'Examples'.
-#' @param col_n associated number of elements per level of \code{col_by}
+#' @param col_N associated number of elements per level of \code{col_by}
 #' @param na_rm a logical value indicating whether \code{NA} values should be
 #'   removed from \code{x} pror to counting the unique elements per cell
 #' @param row_name a string with the row name to disply in the summary table
@@ -204,38 +207,39 @@ t_events_per_term_id <- function(terms,
 #' t_count_unique(
 #'  x = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_n = c(2, 4, 10)
+#'  col_N = c(2, 4, 10)
 #' )
 #'
 #' t_count_unique(
 #'  x = c(1, 4, 2, 3, 3, NA),
 #'  col_by = factor(c("A", "A", "B", "C", "C", "C")),
-#'  col_n = c(2, 4, 10),
+#'  col_N = c(2, 4, 10),
 #'  row_name = "Unique Records",
 #'  indent = 1,
 #'  na_rm = FALSE
 #' )
 t_count_unique <- function(x,
                            col_by,
-                           col_n,
+                           col_N, # nolint
                            na_rm = TRUE,
                            row_name = "number of unique elements",
                            indent = 0) {
-
-  check_col_by(col_by, col_n, 1)
+  check_col_by(col_by, col_N, 1)
 
   counts <- vapply(split(x, col_by), function(xi) {
-    if (na_rm) xi <- na.omit(xi)
+    if (na_rm) {
+      xi <- na.omit(xi)
+    }
     length(unique(xi))
   }, numeric(1))
-  percentage <- counts / col_n
+  percentage <- counts / col_N
 
   tbl <-  rtable(
     rheader(rrowl("", levels(col_by))),
     rrowl(as.character(row_name), Map(c, counts, percentage), format = "xx.xx (xx.xx%)", indent = indent)
   )
 
-  header_add_N(tbl, col_n)
+  header_add_N(tbl, col_N)
 }
 
 #' Summary table for events
@@ -244,10 +248,10 @@ t_count_unique <- function(x,
 #'
 #' @param term a character vector with optional label attribute
 #' @param id unique subject identifier. If a particular subject has no adverse
-#'   event then that information needs to be added to the \code{col_n} argument.
+#'   event then that information needs to be added to the \code{col_N} argument.
 #' @param col_by group variable that will be used for a column header.
 #'   \code{col_by} has to be a factor and can not be missing. See 'Examples'.
-#' @param col_n associated number of elements per level of \code{col_by}
+#' @param col_N associated number of elements per level of \code{col_by}
 #' @param total_events character string that will be used as a label in the row
 #'   for the total event count. If this is \code{NULL} then this row will be
 #'   removed.
@@ -272,14 +276,14 @@ t_count_unique <- function(x,
 #'  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
 #'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_n = c(2, 4, 10)
+#'  col_N = c(2, 4, 10)
 #' )
 #'
 #' t_events_summary(
 #'  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
 #'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_n = c(2, 4, 10),
+#'  col_N = c(2, 4, 10),
 #'  total_events = NULL
 #' )
 #'
@@ -287,28 +291,32 @@ t_count_unique <- function(x,
 #'  term = NULL,
 #'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_n = c(2, 4, 10)
+#'  col_N = c(2, 4, 10)
 #' )
 t_events_summary <- function(term,
                              id,
                              col_by,
-                             col_n,
+                             col_N, # nolint
                              total_events = "Total number of events",
                              subjects_with_events = "Total number of patients with at least one adverse event") {
+  stopifnot(nlevels(col_by) == length(col_N))
 
-  if (nlevels(col_by) != length(col_n))
-    stop("dimension missmatch levels(col_by) and length of col_n")
-
-  df <- if (is.null(term))
+  df <- if (is.null(term)) {
     data.frame(id = id, col_by = col_by, stringsAsFactors = FALSE)
-  else
+  } else {
     data.frame(x = term, id = id, col_by = col_by, stringsAsFactors = FALSE)
+  }
 
-  if (any(is.na(df)))
+  if (any(is.na(df))) {
     stop("no NA allowed in x, id, and col_by")
+  }
 
-  term_label <- if (is.null(label(term)))
-    deparse(substitute(label)) else label(term)
+  term_label <- if (is.null(label(term))) {
+    deparse(substitute(label))
+  } else {
+    label(term)
+  }
+
   tbl_events <- if (!is.null(total_events)) {
     rtable(
       header = rheader(rrowl("", levels(col_by))),
@@ -322,7 +330,7 @@ t_events_summary <- function(term,
     t_count_unique(
       x = df$id,
       col_by = df$col_by,
-      col_n = col_n,
+      col_N = col_N,
       row_name = subjects_with_events,
       indent = 0
     )
@@ -335,7 +343,7 @@ t_events_summary <- function(term,
       t_count_unique(
         x = x$id,
         col_by = x$col_by,
-        col_n = col_n,
+        col_N = col_N,
         row_name = x$x[1],
         indent = 0
       )
@@ -372,7 +380,7 @@ t_events_summary <- function(term,
 #'   length or number of rows of \code{terms}.
 #' @param col_by group variable that will be used for a column header. \code{col_by}
 #'  has to be a factor and can not be missing. See 'Examples'.
-#' @param col_n numeric vector with information of the number of patients in the
+#' @param col_N numeric vector with information of the number of patients in the
 #'   levels of \code{col_by}. This is useful if there are patients that have no
 #'   adverse events can be accounted for with this argument.
 #' @param total character string that will be used as a label for a column with
@@ -408,7 +416,7 @@ t_events_summary <- function(term,
 #'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
 #'   id = ADAE$USUBJID,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = "All Patients"
 #' )
 #' rbindl_rtables(l_tbls)
@@ -417,7 +425,7 @@ t_events_summary <- function(term,
 #'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
 #'   id = ADAE$USUBJID,
 #'   col_by = ADAE$ARM,
-#'   col_n = table(ADSL$ARM),
+#'   col_N = table(ADSL$ARM),
 #'   total = NULL
 #' )
 #'
@@ -425,25 +433,23 @@ t_events_summary <- function(term,
 lt_events_per_term_id_2 <- function(terms,
                                     id,
                                     col_by,
-                                    col_n,
+                                    col_N, # nolint
                                     total = "All Patients",
                                     event_type = "event") {
-
-  # check argument validity and consitency
-  check_col_by(col_by, col_n, min_num_levels = 1, total)
-
-  if (any(terms == "", na.rm = TRUE))
-    stop("empty string is not a valid term, please use NA if data is missing")
-
-  if (!is.data.frame(terms) || ncol(terms) != 2)
-    stop("terms must be a dataframe with two columns")
+  check_col_by(col_by, col_N, min_num_levels = 1, total)
+  stopifnot(
+    !any(terms == "", na.rm = TRUE),
+    is.data.frame(terms) && ncol(terms) == 2
+  )
 
   class_label <- label(terms[[1]])
   term_label <- label(terms[[2]])
-  if (is.null(class_label))
+  if (is.null(class_label)) {
     class_label <- deparse(substitute(class))
-  if (is.null(term_label))
+  }
+  if (is.null(term_label)) {
     term_label <- deparse(substitute(term))
+  }
 
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
@@ -458,8 +464,8 @@ lt_events_per_term_id_2 <- function(terms,
   )
 
   if (!is.null(total)) {
-    .t <- add_total(x = df, col_by = col_by, total_level = total, col_n = col_n)
-    col_n <- .t$col_n
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N # nolint
     df <- data.frame(
       class = .t$x$class,
       term = .t$x$term,
@@ -469,8 +475,9 @@ lt_events_per_term_id_2 <- function(terms,
     )
   }
 
-  if (any(is.na(df)))
+  if (any(is.na(df))) {
     stop("partial missing data in rows of [class, term] is currently not supported")
+  }
 
 
   # class and term chunks
@@ -491,7 +498,7 @@ lt_events_per_term_id_2 <- function(terms,
       term = df_terms$term,
       id = df_terms$id,
       col_by = df_terms$col_by,
-      col_n = col_n,
+      col_N = col_N,
       total_events = total_events,
       subjects_with_events = subjects_with_events
     )
@@ -502,7 +509,7 @@ lt_events_per_term_id_2 <- function(terms,
     )
     header(tbl_i) <- rheader(
       header(tbl_i)[[1]],
-      rrowl(term_label, col_n, format = "(N=xx)", indent = 1)
+      rrowl(term_label, col_N, format = "(N=xx)", indent = 1)
     )
     tbl_i
 
@@ -540,10 +547,11 @@ nl_remove_n_first_rrows <- function(x, n = 1, lower_childindex_threshold = 0) {
     i <- 0
     lapply(xi, function(xii) {
       i <<- i + 1
-      if (i >= lower_childindex_threshold)
+      if (i >= lower_childindex_threshold) {
         xii[-seq(1, n, by = 1), ]
-      else
+      } else {
         xii
+      }
     })
   })
 }

@@ -57,7 +57,12 @@ t_helper_tabulate <- function(df_id, n, checkcol, term, remove_dupl, with_percen
 
 # checks if there is any case and derives counts, otherwise 0
 count_col_n <- function(x_cell, n) {
-  n_i <- if (nrow(x_cell) == 0) 0 else n[x_cell$col_by[1]]
+  n_i <- if (nrow(x_cell) == 0) {
+    0
+  } else {
+    n[x_cell$col_by[1]]
+  }
+
   if (n_i > 0) {
     length(x_cell$id) # obtaining the total
   } else {

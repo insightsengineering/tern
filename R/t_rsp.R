@@ -97,13 +97,13 @@ t_rsp <- function(rsp,
 
   check_same_n(rsp = rsp, col_by = col_by, partition_rsp_by = partition_rsp_by, strata_data = strata_data)
 
-  if (!is.logical(rsp))
-    stop("rsp is expected to be logical")
-  if (any(is.na(rsp)))
-    stop("rsp can not have any NAs")
+  stopifnot(
+    is.logical(rsp),
+    !any(is.na(rsp))
+  )
 
-  col_n <- table(col_by)
-  check_col_by(col_by, col_n, min_num_levels = 2)
+  col_N <- table(col_by) # nolint
+  check_col_by(col_by, col_N, min_num_levels = 2)
 
   if (!is.null(strata_data)) {
     check_data_frame(strata_data)
@@ -348,10 +348,11 @@ t_rsp <- function(rsp,
       rtable(
         header = header(tbl_response),
         rrowl(name, lapply(vals, `[[`, "n_p")),
-        if (name %in% c("Not Evaluable (NE)", "Missing or unevaluable", "Missing"))
+        if (name %in% c("Not Evaluable (NE)", "Missing or unevaluable", "Missing")) {
           rrow(NULL)
-        else
+        } else {
           rrowl("95% CI", lapply(vals, `[[`, "ci"), indent = 1)
+        }
       )
 
     }, values, values_label)
@@ -390,7 +391,7 @@ t_rsp <- function(rsp,
     gap = 1
   )
 
-  header_add_N(tbl, col_n)
+  header_add_N(tbl, col_N)
 
 }
 

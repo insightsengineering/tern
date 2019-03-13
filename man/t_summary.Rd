@@ -4,7 +4,7 @@
 \alias{t_summary}
 \title{Summarize an Object for Different Groups}
 \usage{
-t_summary(x, col_by, col_n = table(col_by), ...)
+t_summary(x, col_by, col_N = table(col_by), ...)
 }
 \arguments{
 \item{x}{an object to dispatch on}
@@ -13,7 +13,7 @@ t_summary(x, col_by, col_n = table(col_by), ...)
 which levels in \code{col_by} define a column. If data should not be split
 into columns use the \code{\link{no_by}} function.}
 
-\item{col_n}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
 
 \item{...}{arguments passed on to methods}
 }

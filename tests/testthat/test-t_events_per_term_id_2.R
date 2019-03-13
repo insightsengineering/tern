@@ -4,7 +4,7 @@ library(dplyr)
 
 test_that("adverse events by terms (class and term)", {
 
-  anl <- read.table(header = TRUE, sep = ';', stringsAsFactors = FALSE, text = '
+  anl <- read.table(header = TRUE, sep = ";", stringsAsFactors = FALSE, text = '
                     "USUBJID";"ARM";"AEBODSYS";"AEDECOD"
                     "SHH4429G-S19914-16100";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
                     "SHH4429G-S19914-16100";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
@@ -209,7 +209,7 @@ test_that("adverse events by terms (class and term)", {
   tbl <- t_events_per_term_id(terms = anl[, c("AEBODSYS", "AEDECOD")],
                               id = anl$USUBJID,
                               col_by = as.factor(anl$ARM),
-                              col_n = table(asl$ARM),
+                              col_N = table(asl$ARM),
                               total = "All Patients"
   )
 

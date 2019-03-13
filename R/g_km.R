@@ -165,8 +165,9 @@ g_km <- function(fit_km,
     cl = "kmGrob"
   )
   if (draw) {
-    if (newpage)
+    if (newpage) {
       grid.newpage()
+    }
     grid.draw(km_grob)
   }
 
@@ -229,16 +230,15 @@ km_curve_grob <- function(kmdata,
                           gp = NULL,
                           vp = NULL,
                           name = NULL) {
+  stopifnot(
+    missing(kmdata) || is(kmdata, "km_curve_data"),
+    missing(fit_km) || is(fit_km, "survfit"),
+    !missing(kmdata) || !missing(fit_km)
+  )
 
-  if (!missing(kmdata) && !is(kmdata, "km_curve_data"))
-    stop("kmdata is not a km_curve_data object")
-  if (!missing(fit_km) && !is(fit_km, "survfit"))
-    stop("fit_km needs to be of class survfit")
-  if (missing(kmdata) && missing(fit_km))
-    stop("kmdata and fit_km can not be both missing")
-
-  if (missing(kmdata))
+  if (missing(kmdata)) {
     kmdata <- km_curve_data(fit_km = fit_km, xticks = xticks)
+  }
 
   ngroup <- length(kmdata$group)
 
@@ -283,12 +283,19 @@ km_curve_grob <- function(kmdata,
     childrenvp = dataViewport(xData = kmdata$xpos, yData = c(0, 1), name = "curvePlot"),
     children = do.call(
       "gList",
-      c(list(xaxisGrob(
-        at = kmdata$xpos, vp = "curvePlot"),
-        yaxisGrob(vp = "curvePlot"),
-        rectGrob(vp =  "curvePlot")),
+      c(
+        list(
+          xaxisGrob(
+            at = kmdata$xpos,
+            vp = "curvePlot"
+          ),
+          yaxisGrob(vp = "curvePlot"),
+          rectGrob(vp =  "curvePlot")
+        ),
         lines,
-        if (censor_show) points)),
+        if (censor_show) points
+      )
+    ),
     cl = "km_curve_grob"
   )
 }
@@ -322,9 +329,7 @@ km_curve_grob <- function(kmdata,
 #'
 #' tern:::km_curve_data(fit_km, xticks = c(0.5, 0.8, 1.5))
 km_curve_data <- function(fit_km, xticks = NULL) {
-
-  if (!is(fit_km, "survfit"))
-    stop("fit_km needs to be of class survfit")
+  stopifnot(is(fit_km, "survfit"))
 
   # extract kmplot relevant data
   if (is.null(fit_km$strata)) {

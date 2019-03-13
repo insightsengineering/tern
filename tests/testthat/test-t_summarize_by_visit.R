@@ -53,7 +53,7 @@ test_that("summary by visit table", {
                               visit = df$Visit,
                               col_by = df$Type,
                               id = df$ID,
-                              col_n = table(pop$Type))
+                              col_N = table(pop$Type))
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 

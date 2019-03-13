@@ -4,7 +4,7 @@
 \alias{t_events_per_term_id}
 \title{Basic Events Table}
 \usage{
-t_events_per_term_id(terms, id, col_by, col_n, total = "All Patients",
+t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients",
   event_type = "event")
 }
 \arguments{
@@ -21,7 +21,7 @@ length or number of rows of \code{terms}.}
 \item{col_by}{group variable that will be used for a column header. \code{col_by}
 has to be a factor and can not be missing. See 'Examples'.}
 
-\item{col_n}{numeric vector with information of the number of patients in the
+\item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
@@ -49,7 +49,7 @@ or apply on Concomitatant Medication data to create Concomitant Treatment summar
 }
 \details{
 \code{t_events_per_term_id} includes percentages based on the total number of subjects
-in the column heading (i.e. "N=nnn"). \code{col_n} can be explicitly specified to
+in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset such as
 subject level dataset. See the example.
 
@@ -74,7 +74,7 @@ t_events_per_term_id(
   terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = NULL,
   event_type = "adverse event"
 )
@@ -83,7 +83,7 @@ t_events_per_term_id(
   terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   event_type = "adverse event"
 )
@@ -92,7 +92,7 @@ t_events_per_term_id(
   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = "All Patients"
 )
 
@@ -105,7 +105,7 @@ t_events_per_term_id(
   terms = ADCM[, c("CMCLAS", "CMDECOD")],
   id = ADCM$USUBJID,
   col_by = ADCM$ARM,
-  col_n = table(ADSL$ARM),
+  col_N = table(ADSL$ARM),
   total = "All Patients",
   event_type = "treatment"
 )

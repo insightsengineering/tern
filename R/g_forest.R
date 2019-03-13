@@ -137,32 +137,33 @@ g_forest <- function(tbl,
                      newpage = TRUE) {
 
 
-  if (!is(tbl, "rtable"))
-    stop("tbl needs to be of class rtable")
+  stopifnot(is(tbl, "rtable"))
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
 
-  if (!(col_x > 0 && col_x <= nc))
-    stop("i_col_est out of bounds")
-  if (!(col_ci > 0 && col_ci <= nc))
-    stop("i_col_ci out of bounds")
+  stopifnot(
+    col_x > 0 && col_x <= nc,
+    col_ci > 0 && col_ci <= nc
+  )
 
   x_e <- vapply(seq_len(nr), function(i) {
     xi <- as.vector(tbl[i, col_x])
 
-    if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi))
+    if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
       xi
-    else
+    } else {
       NA_real_
+    }
   }, numeric(1))
 
   x_ci <- lapply(seq_len(nr), function(i) {
     xi <- as.vector(tbl[i, col_ci])
 
     if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
-      if (length(xi) != 2)
+      if (length(xi) != 2) {
         stop("ci column needs two elements")
+      }
       xi
     } else {
       c(NA_real_, NA_real_)
@@ -189,8 +190,9 @@ g_forest <- function(tbl,
   )
 
   if (draw) {
-    if (newpage)
+    if (newpage) {
       grid.newpage()
+    }
     grid.draw(grob_forest)
   }
 
@@ -245,23 +247,22 @@ forest_grob <- function(tbl,
                         gp = NULL,
                         vp = NULL) {
 
-  if (is.null(vline) && !is.null(forest_header))
-    stop("if vline is null then forest_header needs to be NULL")
-  if (!is.null(forest_header) && length(forest_header) != 2)
-    stop("length of forest_header needs to be 2")
-  if (!is.null(vline) && length(vline) != 1)
-    stop("length of vline needs to be 1")
+  stopifnot(
+    !is.null(vline) || is.null(forest_header),
+    is.null(forest_header) || length(forest_header) == 2,
+    is.null(vline) || length(vline) == 1
+  )
 
   nr <- nrow(tbl)
-  if (length(x) != nr)
-    stop("dimension missmatch x")
-  if (length(lower) != nr)
-    stop("dimension missmatch lower")
-  if (length(upper) != nr)
-    stop("dimension missmatch upper")
+  stopifnot(
+    length(x) == nr,
+    length(lower) == nr,
+    length(upper) == nr
+  )
 
-  if (is.null(xlim))
+  if (is.null(xlim)) {
     xlim <- extendrange(c(x, lower, upper))
+  }
 
   if (logx) {
 
@@ -278,8 +279,9 @@ forest_grob <- function(tbl,
     lower <- log(lower)
     upper <- log(upper)
 
-    if (!is.null(vline))
+    if (!is.null(vline)) {
       vline <- log(vline)
+    }
 
   } else {
     x_labels <- TRUE
@@ -356,20 +358,20 @@ forest_grob <- function(tbl,
 }
 
 cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
-
-  if (!is(row, "rrow"))
-    stop("row needs to be of class rrow")
+  stopifnot(is(row, "rrow"))
 
   row_name <- attr(row, "row.name")
 
   g_rowname <- if (!is.null(row_name) && row_name != "") {
 
     indent <- attr(row, "indent")
-    if (is.null(indent))
+    if (is.null(indent)) {
       indent <- 0
+    }
 
-    if (indent > 0)
+    if (indent > 0) {
       row_name <- gsub("\n", paste0("\n", strrep(" ", 2 * (indent + 1) + 1)), row_name, fixed = TRUE)
+    }
 
     vp_name_rn <- paste0("rowname-", row_index)
     textGrob(
@@ -392,13 +394,15 @@ cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
 
       cell <- row[[k]]
       cs <- attr(cell, "colspan")
-      if (is.null(cs))
+      if (is.null(cs)) {
         cs <- 1
+      }
 
       cell_ascii <- format_rcell(cell, output = "ascii")
 
-      if (is.na(cell_ascii) || is.null(cell_ascii))
+      if (is.na(cell_ascii) || is.null(cell_ascii)) {
         cell_ascii <- "NA"
+      }
 
       cell_name <- paste0("g-cell-", row_index, "-", j)
 
@@ -532,14 +536,12 @@ forest_viewport <- function(tbl,
                             gap_column = unit(1, "lines"),
                             gap_header = unit(1, "lines")) {
 
-  if (!is(tbl, "rtable"))
-    stop("tbl needs to be an rtable object")
-  if (!is.null(width_row_names) && !is(width_row_names, "unit"))
-    stop("width_row_names needs to be NULL or a unit object")
-  if (!is.null(width_columns) && !is(width_columns, "unit"))
-    stop("width_columns needs to be NULL or a unit object")
-  if (!is(width_forest, "unit"))
-    stop("width_forest needs to be a unit object")
+  stopifnot(
+    is(tbl, "rtable"),
+    is.null(width_row_names) || is.unit(width_row_names),
+    is.null(width_columns) || is.unit(width_columns),
+    is.unit(width_forest)
+  )
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -560,10 +562,11 @@ forest_viewport <- function(tbl,
   }
 
   if (!is.null(width_columns)) {
-    if (length(width_columns) == 1)
+    if (length(width_columns) == 1) {
       width_columns <- unit.rep(width_columns, nc)
-    else if (length(width_columns) != nc)
+    } else if (length(width_columns) != nc) {
       stop("length of width_columns must be either 1 or the number of columns of tbl")
+    }
   } else {
     width_columns <- do.call(unit.c, lapply(seq_len(nc), function(j) {
 
@@ -576,12 +579,14 @@ forest_viewport <- function(tbl,
         # for now we avoide the multicolumn cell to get the column width
         cell <- tbl_header[i, j]
         cs <- attr(cell, "colspan")
-        if (is.null(cs))
+        if (is.null(cs)) {
           cs <- 1
-        if (cs == 1)
+        }
+        if (cs == 1) {
           stringWidth(format_rcell(cell, output = "ascii"))
-        else
+        } else {
           unit(1, "lines")
+        }
 
       }))
 
@@ -602,10 +607,11 @@ forest_viewport <- function(tbl,
         format_rcell(cell, output = "ascii")
       }))))
 
-      if (is.null(cell_text))
+      if (is.null(cell_text)) {
         1
-      else
+      } else {
         vapply(strsplit(cell_text, "\n"), length, numeric(1))
+      }
 
     }), max, numeric(1))
   }

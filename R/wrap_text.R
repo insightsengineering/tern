@@ -23,11 +23,13 @@ wrap_text <- function(txt,
                       gp = gpar(),
                       collapse = NULL) {
 
-  if (is(width, "unit"))
+  if (is.unit(width)) {
     width <- convertWidth(width, "inch", TRUE)
+  }
 
-  if (length(txt) == 0)
+  if (length(txt) == 0) {
     return(character(0))
+  }
 
   g_string_width <- function(label) {
     vapply(label,
@@ -69,9 +71,28 @@ wrap_text <- function(txt,
       str
     }
   }
-  strs_to_split <- unlist(Map(function(x) if (length(x) == 0) "" else x, strsplit(txt, "\n", fixed = TRUE)))
+  strs_to_split <- unlist(
+    Map(
+      function(x) {
+        if (length(x) == 0) {
+          ""
+        } else {
+          x
+        }
+      },
+      strsplit(txt, "\n", fixed = TRUE)
+    )
+  )
 
-  strings <- unlist(Map(function(str) splitstr(str), strs_to_split), use.names = FALSE)
+  strings <- unlist(
+    Map(
+      function(str) {
+        splitstr(str)
+      },
+      strs_to_split
+    ),
+    use.names = FALSE
+  )
 
   if (!is.null(collapse)) {
     paste(strings, collapse = collapse)

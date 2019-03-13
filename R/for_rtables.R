@@ -69,10 +69,11 @@ unlist_rtables <- function(x) {
 
   n <- 0
   incr_n_if_rtable <- function(x) {
-    if (is(x, "rtable"))
+    if (is(x, "rtable")) {
       n <<- n + 1
-    else
+    } else {
       lapply(x, incr_n_if_rtable)
+    }
   }
   incr_n_if_rtable(x)
 
@@ -88,8 +89,9 @@ unlist_rtables <- function(x) {
     }
   }
 
-  if (n > 0)
+  if (n > 0) {
     add_tbls(x)
+  }
 
   tbls
 
@@ -135,18 +137,16 @@ row_names_as_col <- function(tbl, header_label) {
 #'
 #' insert_rrow(tbl, rrow("Hello World"))
 insert_rrow <- function(tbl, rrow, at = 1) {
-
-  if (!is(tbl, "rtable"))
-    stop("tbl is expected to be an rtable")
-  if (!is(rrow, "rrow"))
-    stop("rrow is expected to be an rrow")
+  stopifnot(
+    is(tbl, "rtable"),
+    is(rrow, "rrow")
+  )
 
   nr <- nrow(tbl)
-  if (at <= 0 || at > nr + 1)
-    stop("at is not in [1, nrow(tbl)+1]")
-
-  if (length(rrow) != 0 && length(rrow) != ncol(tbl))
-    stop("rrow has wrong number of colums")
+  stopifnot(
+    at >= 1 && at <= nr + 1,
+    length(rrow) == 0 || length(rrow) == ncol(tbl)
+  )
 
   header <- header(tbl)
 
@@ -173,17 +173,15 @@ insert_rrow <- function(tbl, rrow, at = 1) {
 #'
 #' cbind_rtables(x, y)
 cbind_rtables <- function(x, y) {
-  if (!is(x, "rtable") || !is(y, "rtable"))
-    stop("x and y are not both rtables")
-
-  if (nrow(x) != nrow(y))
-    stop("number of rows missmatch")
+  stopifnot(
+    is(x, "rtable") && is(y, "rtable"),
+    nrow(x) == nrow(y)
+  )
 
   header_x <- header(x)
   header_y <- header(y)
 
-  if (nrow(header_x) != nrow(header_y))
-    stop("number of rows missmatch in header")
+  stopifnot(nrow(header_x) == nrow(header_y))
 
   header <- do.call(rheader, combine_rrows(header_x, header_y))
 

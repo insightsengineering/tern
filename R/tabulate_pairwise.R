@@ -25,15 +25,12 @@ tabulate_pairwise <- function(x,
                               row.name, # nolint
                               format = NULL,
                               indent = 0) {
-
-  if (!is.atomic(x) && !is.data.frame(x))
-    stop("currently x is required to be a vector or data.frame")
-  if (!is.factor(col_by))
-    stop("col_by is expected to be a factor")
-  if (length(levels(col_by)) < 2)
-    stop("col_by requires least two levels")
-  if (any(is.na(col_by)))
-    stop("currently no NAs allowed in col_by")
+  stopifnot(
+    is.atomic(x) || is.data.frame(x),
+    is.factor(col_by),
+    length(levels(col_by)) >= 2,
+    !any(is.na(col_by))
+  )
 
   ref_level <- levels(col_by)[1]
 

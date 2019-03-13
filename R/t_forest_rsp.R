@@ -82,13 +82,11 @@ t_forest_rsp <- function(rsp,
                          na_omit_group = TRUE,
                          dense_header = FALSE) {
 
-  if (!is.logical(rsp))
-    stop("rsp is required to be boolean")
+  stopifnot(is.logical(rsp))
   check_same_n(rsp = rsp, col_by = col_by, group_data = group_data)
 
   check_col_by(col_by, table(col_by), 2)
-  if (nlevels(col_by) != 2)
-    stop("col_by can only have two levels")
+  stopifnot(nlevels(col_by) == 2)
 
   if (!is.null(group_data)) {
     check_data_frame(group_data, allow_missing = TRUE)
@@ -166,8 +164,9 @@ t_forest_rsp <- function(rsp,
     # where each leaf is a data.frame with
     # the data to compute the survival analysis with
     data_tree <- lapply(group_data, function(var) {
-      if (!na_omit_group)
+      if (!na_omit_group) {
         var <- na_as_level(var)
+      }
       split(glm_data, var, drop = FALSE)
     })
 
@@ -217,10 +216,12 @@ glm_results <- function(data) {
   tbl_freq <- table(data$response, data$arm)
   resp_ref_event <- tbl_freq[rownames(tbl_freq) == "TRUE", colnames(tbl_freq) == levels(data$arm)[1]]
   resp_comp_event <- tbl_freq[rownames(tbl_freq) == "TRUE", colnames(tbl_freq) == levels(data$arm)[2]]
-  if (length(resp_ref_event) == 0)
+  if (length(resp_ref_event) == 0) {
     resp_ref_event <- 0
-  if (length(resp_comp_event) == 0)
+  }
+  if (length(resp_comp_event) == 0) {
     resp_comp_event <- 0
+  }
 
   # Logistic Model
   if (length(levels(factor(data$arm))) == 2) {
@@ -280,9 +281,16 @@ glm_results <- function(data) {
 }
 
 format_logistic <- function(x) {
-  format_or <- if (!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9) ">999.9" else "xx.xx"
-  format_ci <- if (!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9)
-    sprintf_format("(%.2f, >999.9)") else "(xx.xx, xx.xx)"
+  format_or <- if (!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9) {
+    ">999.9"
+  } else {
+    "xx.xx"
+  }
+  format_ci <- if (!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9) {
+    sprintf_format("(%.2f, >999.9)")
+  } else {
+    "(xx.xx, xx.xx)"
+  }
   list(
     rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
     rcell(x[["resp_ref_n"]], "xx"),

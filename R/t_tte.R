@@ -68,8 +68,7 @@ t_tte <- function(formula,
 
   cl <- match.call()
 
-  if (!is.data.frame(data))
-    stop("data needs to be a data.frame")
+  stopifnot(is.data.frame(data))
 
   # extracted data
   tm <- t_tte_items(formula, cl, data, parent.frame())
@@ -91,12 +90,14 @@ t_tte <- function(formula,
   }
 
   check_same_n(is_event = is_event, event_descr = event_descr, arm = arm)
-  col_n <- table(arm)
-  check_col_by(arm, col_n, 2)
-  if (!is.null(event_descr) && !is.factor(event_descr))
+  col_N <- table(arm) # nolint
+  check_col_by(arm, col_N, 2)
+  if (!is.null(event_descr) && !is.factor(event_descr)) {
     stop("event_descr is required to be a factor")
-  if (!is.null(time_points) && !is.numeric(time_points))
+  }
+  if (!is.null(time_points) && !is.numeric(time_points)) {
     stop("time_points is required to be numeric")
+  }
 
   # Calculate elements of the table
 
@@ -258,8 +259,9 @@ t_tte <- function(formula,
           )
         } else {
 
-          if (!all(dfi$time == time_point))
+          if (!all(dfi$time == time_point)) {
             stop("time points do not match")
+          }
 
           d <- dfi$surv[-1] - dfi$surv[1]
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
@@ -298,7 +300,7 @@ t_tte <- function(formula,
     gap = 1
   )
 
-  header_add_N(tbl, col_n)
+  header_add_N(tbl, col_N)
 }
 
 t_tte_items <- function(formula, cl, data, env) {
@@ -306,13 +308,18 @@ t_tte_items <- function(formula, cl, data, env) {
   mf <- cl
   mt <- terms(formula, specials = c("arm", "strata", "cluster", "tt"),
               data = data)
-  if (!all(all.vars(attr(mt, "variables")) %in% names(data)))
+  if (!all(all.vars(attr(mt, "variables")) %in% names(data))) {
     stop("All formula variables must appear in 'data'")
+  }
+
   irsp <- attr(mt, "response")
   istr <- attr(mt, "specials")$strata
   iarm <- attr(mt, "specials")$arm
-  if (is.null(irsp) | is.null(iarm))
+
+  if (is.null(irsp) | is.null(iarm)) {
     stop("formula must include a response and arm")
+  }
+
   if (is.null(istr)) {
     uf <- formula
     f <- NULL
@@ -320,6 +327,7 @@ t_tte_items <- function(formula, cl, data, env) {
     uf <- drop_special(mt, "strata")
     f <- formula
   }
+
   m <- match(c("formula", "data", "weights"), names(mf), 0L)
 
   mf <- mf[c(1L, m)]
@@ -327,10 +335,13 @@ t_tte_items <- function(formula, cl, data, env) {
   mf$na.action <- quote(stats::na.omit)
 
   mf <- eval(mf, env)
-  if (!inherits(mf[, irsp], "Surv"))
+
+  if (!inherits(mf[, irsp], "Surv")) {
     stop("Response is not a 'Surv' object")
-  if (attr(mf[, irsp], "type") != "right")
+  }
+  if (attr(mf[, irsp], "type") != "right") {
     stop("Response is not a right-censored 'Surv' object")
+  }
 
   list(
     tte = mf[, irsp][, "time"],

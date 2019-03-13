@@ -1,19 +1,24 @@
 # Collection of reusable function that can be reused in rtabulate
 
 positives_and_proportion <- function(x, na.rm = TRUE) { # nolint
-  if (!is.logical(x))
-    stop("x is required to be logical")
+  stopifnot(is.logical(x))
 
-  n <- if (na.rm) sum(!is.na(x)) else length(x)
+  n <- if (na.rm) {
+    sum(!is.na(x))
+  } else {
+    length(x)
+  }
+
   sum(x, na.rm = TRUE) * c(1, 1 / n)
 }
 
 
 count_n <- function(x, na.rm = TRUE) { # nolint
-  if (na.rm)
+  if (na.rm) {
     sum(!is.na(x))
-  else
+  } else {
     length(x)
+  }
 }
 
 mean_sd <- function(x, na.rm = TRUE) { # nolint
@@ -44,59 +49,66 @@ count_perc_col_n <- function(x_cell, n_i) {
 # Version with test for if-all-NA, then display empty cell
 
 positives_and_proportion2 <- function(x) {
-  if (!is.logical(x))
-    stop("x is required to be logical")
-  if (all(is.na(x)))
+  stopifnot(is.logical(x))
+
+  if (all(is.na(x))) {
     rcell(" ", format = "xx")
-  else
+  } else {
     sum(x) * c(1, 1 / length(x))
+  }
 }
 
 n_not_na2 <- function(x) {
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell(" ", format = "xx")
-  else
+  } else {
     sum(!is.na(x))
+  }
 }
 
 mean_sd2 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell(" ", format = "xx")
-  else
+  } else {
     c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
+  }
 }
 
 median_t2 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell(" ", format = "xx")
-  else
+  } else {
     median(x, na.rm = TRUE)
+  }
 }
 
 range_t2 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell(" ", format = "xx")
-  else
+  } else {
     range(x, na.rm = TRUE)
+  }
 }
 
 iqr_num2 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell(" ", format = "xx")
-  else
+  } else {
     quantile(x, probs = c(.25, .75), na.rm = TRUE)
+  }
 }
 
 
 # Version with test for if-all-NA, then display NE
 
 positives_and_proportion3 <- function(x) {
-  if (!is.logical(x))
-    stop("x is required to be logical")
-  if (all(is.na(x)))
+  stopifnot(is.logical(x))
+
+  if (all(is.na(x))) {
     rcell("NE", format = "xx")
-  else
+  } else {
     sum(x) * c(1, 1 / length(x))
+  }
 }
 
 n_not_na3 <- function(x) {
@@ -104,29 +116,33 @@ n_not_na3 <- function(x) {
 }
 
 mean_sd3 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell("NE", format = function(x, output) paste0(x, " (", x, ")"))
-  else
+  } else {
     c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
+  }
 }
 
 median_t3 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell("NE", format = "xx")
-  else
+  } else {
     median(x, na.rm = TRUE)
+  }
 }
 
 range_t3 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell("NE", format = function(x, output) paste0(x, " - ", x))
-  else
+  } else {
     range(x, na.rm = TRUE)
+  }
 }
 
 iqr_num3 <- function(x, na.rm = TRUE) { # nolint
-  if (all(is.na(x)))
+  if (all(is.na(x))) {
     rcell("NE", format = function(x, output) paste0(x, " - ", x))
-  else
+  } else {
     quantile(x, probs = c(.25, .75), na.rm = TRUE)
+  }
 }

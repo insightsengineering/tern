@@ -83,13 +83,15 @@ t_forest_tte <- function(tte,
                          na_omit_group = TRUE,
                          dense_header = FALSE) {
 
-  if (!is.null(strata_data))
+  if (!is.null(strata_data)) {
     stop("strata_data argument is currently not implemented")
+  }
 
   check_same_n(tte = tte, is_event = is_event, group_data = group_data)
   check_col_by(col_by, table(col_by), 2)
-  if (nlevels(col_by) != 2)
+  if (nlevels(col_by) != 2) {
     stop("col_by can only have two levels")
+  }
 
   if (!is.null(group_data)) {
     check_data_frame(group_data, allow_missing = TRUE)
@@ -166,8 +168,9 @@ t_forest_tte <- function(tte,
     # where each leaf is a data.frame with
     # the data to compute the survival analysis with
     data_tree <- lapply(group_data, function(var) {
-      if (!na_omit_group)
+      if (!na_omit_group) {
         var <- na_as_level(var)
+      }
       split(cox_data, var, drop = FALSE)
     })
 
@@ -272,10 +275,17 @@ survival_results <- function(data, ties) {
 }
 
 format_survival_analysis <- function(x) {
-  format_hr <- if (!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9) ">999.9" else  "xx.xx"
+  format_hr <- if (!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9) {
+    ">999.9"
+  } else {
+    "xx.xx"
+  }
 
-  format_ci <- if (!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9)
-    sprintf_format("(%.2f, >999.9)") else "(xx.xx, xx.xx)"
+  format_ci <- if (!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9) {
+    sprintf_format("(%.2f, >999.9)")
+  } else {
+    "(xx.xx, xx.xx)"
+  }
 
   list(
     rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
