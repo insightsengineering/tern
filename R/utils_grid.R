@@ -213,17 +213,17 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
 #' x <- rep(1:4, 2)
 #' group <- factor(rep(c("GROUP1", "GROUP_new"), each = 4))
 #' grid.newpage()
-#' grid.draw(labelPanelGrob(label, x, group))
+#' grid.draw(tern:::labelPanelGrob(label, x, group))
 #' grid.newpage()
 #' pushViewport(plotViewport())
-#' grid.draw(labelPanelGrob(label, x, group))
+#' grid.draw(tern:::labelPanelGrob(label, x, group))
 #' 
 #' label <- 1:18
 #' x <- c(rep(1:4, 2), rep(1:5, 2))
 #' group <- factor(c(rep(c("G1", "G2"), each = 4), rep(c("G3", "G4"), each = 5)))
 #' col <- c( "black", "blue", "red","green" )
 #' 
-#' g <- labelPanelGrob(label, x, group, col)
+#' g <- tern:::labelPanelGrob(label, x, group, col)
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.draw(g)
@@ -276,6 +276,6 @@ to_group_color <- function(col, grps) {
   } else {
     stop("dimension missmatch")
   }
-  names(col) <- grps
+  names(col) <- as.character(grps)
   col
 }
