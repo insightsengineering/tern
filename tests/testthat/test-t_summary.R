@@ -48,7 +48,8 @@ test_that("t_summary results are as expected", {
     rrow(""),
     rrow("AGE"),
     rrow("n", 9, 13, 8, 30, format = "xx", indent = 1),
-    rrow("Mean (SD)", c(39.78, 14.65), c(43.77, 13.55), c(42.62, 10.73), c(42.27, 12.88), format = "xx.xx (xx.xx)", indent = 1),
+    rrow("Mean (SD)",
+         c(39.78, 14.65), c(43.77, 13.55), c(42.62, 10.73), c(42.27, 12.88), format = "xx.xx (xx.xx)", indent = 1),
     rrow("Median", 38, 39, 43.5, 39, format = "xx.x", indent = 1),
     rrow("Min - Max", c(20, 62), c(20, 67), c(26, 55), c(20, 67), format = "xx.xx - xx.xx", indent = 1),
     rrow(""),
@@ -56,7 +57,9 @@ test_that("t_summary results are as expected", {
     rrow("n", 9, 13, 8, 30, format = "xx", indent = 1),
     rrow("F", c(6, 0.6667), c(6, 0.4615), c(3, 0.375), c(15, 0.5), format = "xx (xx.xx%)", indent = 1),
     rrow("M", c(3, 0.3333), c(6, 0.4615), c(5, 0.625), c(14, 0.4667), format = "xx (xx.xx%)", indent = 1),
-    rrow("U", rcell("-", format = "xx"), c(1, 0.0769), rcell("-", format = "xx"), c(1, 0.0333), format = "xx (xx.xx%)", indent = 1)
+    rrow("U",
+         rcell("-", format = "xx"), c(1, 0.0769), rcell("-", format = "xx"), c(1, 0.0333), format = "xx (xx.xx%)",
+         indent = 1)
   )
   # nolint end
 
