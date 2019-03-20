@@ -11,7 +11,7 @@ t_helper_tabulate <- function(df_id, n, checkcol, term, remove_dupl, with_percen
         na.omit(df_id),
         row_by_var = no_by(""),
         col_by_var = "col_by",
-        FUN = count_perc_col_n,
+        FUN = count_perc_col_N,
         n_i = n,
         format = "xx (xx.xx%)"
       )
@@ -20,7 +20,7 @@ t_helper_tabulate <- function(df_id, n, checkcol, term, remove_dupl, with_percen
         na.omit(df_id),
         row_by_var = no_by(""),
         col_by_var = "col_by",
-        FUN = count_col_n,
+        FUN = count_col_N,
         n_i = n,
         format = "xx"
       )
@@ -30,7 +30,7 @@ t_helper_tabulate <- function(df_id, n, checkcol, term, remove_dupl, with_percen
       na.omit(df_id),
       row_by_var = checkcol,
       col_by_var = "col_by",
-      FUN = count_perc_col_n,
+      FUN = count_perc_col_N,
       n_i = n,
       format = "xx (xx.xx%)"
     )
@@ -56,7 +56,7 @@ t_helper_tabulate <- function(df_id, n, checkcol, term, remove_dupl, with_percen
 }
 
 # checks if there is any case and derives counts, otherwise 0
-count_col_n <- function(x_cell, n) {
+count_col_N <- function(x_cell, n) { # nolint
   n_i <- if (nrow(x_cell) == 0) {
     0
   } else {

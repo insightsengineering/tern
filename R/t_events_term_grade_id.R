@@ -537,7 +537,7 @@ t_max_grade_per_id <- function(grade,
       x = df_no_na_id,
       row_by = no_by(any_grade),
       col_by = df_no_na_id$col_by,
-      FUN = count_perc_col_n,
+      FUN = count_perc_col_N,
       format = "xx (xx.x%)",
       col_wise_args = list(n_i = col_N)
     )
@@ -550,7 +550,7 @@ t_max_grade_per_id <- function(grade,
     x = df_max_no_na,
     row_by  = df_max_no_na$fct_grade,
     col_by  = df_max_no_na$col_by,
-    FUN = count_perc_col_n,
+    FUN = count_perc_col_N,
     format = "xx (xx.x%)",
     col_wise_args = list(n_i = col_N)
   )
