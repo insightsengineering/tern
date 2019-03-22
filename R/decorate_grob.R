@@ -1,10 +1,10 @@
 #' Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob
 #'
-#' This function is useful to label grid grobs (also ggplot2, and lattice plots)
-#' with title, footnote, and page nuumbers.
+#' This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
+#' with title, footnote, and page numbers.
 #'
 #' @inheritParams grid::grob
-#' @param grob a grid grob object, optionally \code{NULL} if ongly a grob with
+#' @param grob a grid grob object, optionally \code{NULL} if only a \code{grob} with
 #'   the decoration should be shown.
 #' @param titles vector of character strings. Vector elements are separated by a
 #'   newline and strings are wrapped according to the page with.
@@ -17,8 +17,8 @@
 #' @param margins unit object of length 4
 #' @param padding  unit object of length 4
 #' @param outer_margins  unit object of length 4
-#' @param gp_titles a gpar object
-#' @param gp_footnotes a gpar object
+#' @param gp_titles a \code{gpar} object
+#' @param gp_footnotes a \code{gpar} object
 #'
 #' @details
 #' The titles and footnotes will be ragged, i.e. each title will be wrapped
@@ -30,7 +30,7 @@
 #' \figure{decorate_grob.png}{options: alt="decorate_grob layout"}
 #' }
 #'
-#' @return a grid grob (gTree)
+#' @return a grid grob (\code{gTree})
 #'
 #' @import grid
 #'
@@ -92,7 +92,7 @@
 #'   )
 #' )
 #'
-#' ## with ggplot2
+#' ## with \code{ggplot2}
 #' p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 #' p_gg
 #' p <- ggplotGrob(p_gg)
@@ -106,7 +106,7 @@
 #'   )
 #' )
 #'
-#' ## with lattice
+#' ## with \code{lattice}
 #' library(lattice)
 #' xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
 #' p <- grid.grab()

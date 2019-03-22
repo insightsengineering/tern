@@ -35,7 +35,7 @@ the only columns of interest then total should be \code{NULL}}
 of \code{x:y}, default is \code{1:5}.}
 }
 \value{
-rtable
+\code{rtable}
 }
 \description{
 \code{lt_events_per_term_grade_id_2} returns a nested list of events tables by max

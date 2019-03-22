@@ -5,10 +5,10 @@
 #' concomitant medication, medical history, etc.
 #' Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data
 #' to create Adverse Events summary table
-#' (AET02, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
+#' (\code{AET02}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17} ),
-#' or apply on Concomitatant Medication data to create Concomitant Treatment summary table
-#' (CMT01, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
+#' or apply on Concomitant Medication data to create Concomitant Treatment summary table
+#' (\code{CMT01}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 #'
 #' @inheritParams lt_events_per_term_id_2
@@ -21,14 +21,14 @@
 #'
 #' @details
 #' \code{t_events_per_term_id} includes percentages based on the total number of subjects
-#' in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+#' in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly specified to
 #' get N for percentage calculation from either events dataset or additional dataset such as
 #' subject level dataset. See the example.
 #'
 #' Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term
 #' (if \code{terms} is two levels) are counted once when counting number of subjects.
 #'
-#' \code{t_events_per_term_id} doesn't deal with data with any non-complete records (has NA's),
+#' \code{t_events_per_term_id} doesn't deal with data with any non-complete records (has \code{NA}),
 #' e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_id}.
 #'
 #' \code{t_events_per_term_id} orders data by "All Patients" column from the most commonly
@@ -185,12 +185,12 @@ t_events_per_term_id <- function(terms,
 #'  has to be a factor and can not be missing. See 'Examples'.
 #' @param col_N associated number of elements per level of \code{col_by}
 #' @param na_rm a logical value indicating whether \code{NA} values should be
-#'   removed from \code{x} pror to counting the unique elements per cell
-#' @param row_name a string with the row name to disply in the summary table
+#'   removed from \code{x} prior to counting the unique elements per cell
+#' @param row_name a string with the row name to display in the summary table
 #'   that is returned. Default is "number of unique elements."
 #' @param indent non-negative integer where 0 means that the row should not be indented
 #'
-#' @return an rtable
+#' @return an \code{rtable}
 #'
 #' @export
 #'
@@ -259,7 +259,7 @@ t_count_unique <- function(x,
 #'   the row for the total number with at least one event. If this is
 #'   \code{NULL} then this row will be removed.
 #'
-#' @return an rtable
+#' @return an \code{rtable}
 #'
 #' @export
 #'

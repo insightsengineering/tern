@@ -10,7 +10,7 @@ g_waterfall(height, id, col = NULL, xlab = NULL, ylab = NULL,
 \arguments{
 \item{height}{numeric vector to be plotted as the waterfall bars}
 
-\item{id}{vector of IDs used as the x-axis label for the waterall bars}
+\item{id}{vector of IDs used as the x-axis label for the waterfall bars}
 
 \item{col}{vector of a categorical variable for bar coloring}
 

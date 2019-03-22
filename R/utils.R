@@ -35,7 +35,7 @@ with_label <- function(x, label) {
 #' Get Label Attributes of Variables in a \code{data.frame}
 #'
 #' Variable labels can be stored as a \code{label} attribute for each variable.
-#' This functions returns a named character vector with the variabel labels
+#' This functions returns a named character vector with the variable labels
 #' (empty sting if not specified)
 #'
 #' @param x a \code{data.frame} object
@@ -129,7 +129,7 @@ var_labels <- function(x, fill = FALSE) {
 #' Relabel a subset of the variables
 #'
 #' @inheritParams var_labels<-
-#' @param ... name-valeu pairs, where name corresponds to a variable name in
+#' @param ... name-value pairs, where name corresponds to a variable name in
 #'   \code{x} and the value to the new variable label
 #'
 #' @return a copy of \code{x} with changed labels according to \code{...}

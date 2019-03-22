@@ -2,7 +2,7 @@
 % Please edit documentation in R/formulas.R
 \name{arm}
 \alias{arm}
-\title{Indentity function to indicate specials in formulas}
+\title{Identity function to indicate specials in formulas}
 \usage{
 arm(x)
 }

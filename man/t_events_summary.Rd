@@ -28,7 +28,7 @@ the row for the total number with at least one event. If this is
 \code{NULL} then this row will be removed.}
 }
 \value{
-an rtable
+an \code{rtable}
 }
 \description{
 \code{t_events_summary} counts the number of unique elements per cell.

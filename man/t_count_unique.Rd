@@ -16,15 +16,15 @@ has to be a factor and can not be missing. See 'Examples'.}
 \item{col_N}{associated number of elements per level of \code{col_by}}
 
 \item{na_rm}{a logical value indicating whether \code{NA} values should be
-removed from \code{x} pror to counting the unique elements per cell}
+removed from \code{x} prior to counting the unique elements per cell}
 
-\item{row_name}{a string with the row name to disply in the summary table
+\item{row_name}{a string with the row name to display in the summary table
 that is returned. Default is "number of unique elements."}
 
 \item{indent}{non-negative integer where 0 means that the row should not be indented}
 }
 \value{
-an rtable
+an \code{rtable}
 }
 \description{
 \code{t_count_unique} counts the number of unique elements per cell.

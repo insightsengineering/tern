@@ -10,7 +10,7 @@
 #'
 #' @template author_waddella
 #'
-#' @return an rtable
+#' @return an \code{rtable}
 #'
 #' @examples
 #' tern:::tabulate_pairwise(

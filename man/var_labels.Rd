@@ -18,7 +18,7 @@ a named character vector with the variable labels, the names
 }
 \description{
 Variable labels can be stored as a \code{label} attribute for each variable.
-This functions returns a named character vector with the variabel labels
+This functions returns a named character vector with the variable labels
 (empty sting if not specified)
 }
 \examples{

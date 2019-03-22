@@ -5,8 +5,8 @@
 #' This function summarizes number of unique subjects by highest grade and events term(s).
 #' Events \code{terms} can be one level term or two level terms (one higher level and one lower level).
 #' An implementation example is to apply \code{t_events_per_term_grade_id} on Adverse Event Data
-#' to create Adverse Events by Highest NCI CTCAE grade table
-#' (AET04, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
+#' to create Adverse Events by Highest \code{NCI CTCAE} grade table
+#' (\code{AET04}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
 #'
 #' @inheritParams lt_events_per_term_grade_id_2
@@ -19,7 +19,7 @@
 #'
 #' @details
 #' \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects
-#' in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+#' in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly specified to
 #' get N for percentage calculation from either events dataset or additional dataset like
 #' subject level dataset. See the example.
 #'
@@ -27,7 +27,7 @@
 #' (if \code{terms} is two levels) are counted once using the
 #'  greatest intensity reported.
 #'
-#' \code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has NA's),
+#' \code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has \code{NA}),
 #' e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_grade_id}.
 #'
 #' \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
@@ -180,7 +180,7 @@ t_events_per_term_grade_id <- function(terms,
 #' \figure{lt_events_per_term_grade_id_2.png}{options: alt="lt_events_per_term_grade_id_2 layout"}
 #' }
 #'
-#' @return rtable
+#' @return \code{rtable}
 #'
 #' @template author_waddella
 #' @template author_zhanc107

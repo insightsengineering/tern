@@ -3,16 +3,16 @@
 #' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
 #' column with a single value and a column with 2 values
 #'
-#' @param tbl an rtable object
+#' @param tbl an \code{rtable} object
 #' @param col_x column index with estimator
 #' @param col_ci column index with confidence intervals
 #' @param vline x coordinate for vertical line, if \code{NULL} then the line is
 #'   omitted
-#' @param forest_header character vector of length 2, diplayed to the left and
+#' @param forest_header character vector of length 2, displayed to the left and
 #'   right of \code{vline}, respectively. If \code{vline=NULL} then
 #'   \code{forest_header} needs to be \code{NULL} too
 #' @param xlim x limits for x-scales
-#' @param logx boolean for showing x-values on logrithm scale
+#' @param logx boolean for showing x-values on logarithm scale
 #' @param x_at numeric vector with x tick locations, if \code{NULL} they get
 #'   automatically chosen
 #' @param width_row_names \code{\link[grid]{unit}} object with width for row
@@ -92,7 +92,7 @@
 #'   x_at = c(.1, 1, 10)
 #' )
 #'
-#' # Works with any rtable
+#' # Works with any \code{rtable}
 #'
 #' tbl <- rtable(
 #'   header = c("E", "CI"),

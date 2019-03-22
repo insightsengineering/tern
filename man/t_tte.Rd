@@ -36,7 +36,7 @@ The time to event table summarizes time to event data with different models
 as described in the details section.
 }
 \details{
-The time to event section is derived from a kaplan meier estimator for the
+The time to event section is derived from a Kaplan-Meier estimator for the
 \code{formula} argument with the strata special dropped.
 
 The stratified and unstratified analysis is evaluated pair-wise (reference to
@@ -44,7 +44,7 @@ comparison) and \code{\link[survival]{survdiff}} is used to get the p-value
 whereas \code{\link[survival]{coxph}} is used to calculate the hazard ratio
 and confidence interval.
 
-The time point analysis is based on the kaplan meier estimator.
+The time point analysis is based on the Kaplan-Meier estimator.
 }
 \examples{
 \donttest{

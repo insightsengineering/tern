@@ -13,7 +13,7 @@ decorate_grob(grob, titles, footnotes, page = "",
   vp = NULL)
 }
 \arguments{
-\item{grob}{a grid grob object, optionally \code{NULL} if ongly a grob with
+\item{grob}{a grid grob object, optionally \code{NULL} if only a \code{grob} with
 the decoration should be shown.}
 
 \item{titles}{vector of character strings. Vector elements are separated by a
@@ -36,9 +36,9 @@ not.}
 
 \item{outer_margins}{unit object of length 4}
 
-\item{gp_titles}{a gpar object}
+\item{gp_titles}{a \code{gpar} object}
 
-\item{gp_footnotes}{a gpar object}
+\item{gp_footnotes}{a \code{gpar} object}
 
 \item{name}{a character identifier for the grob.  Used to find the
     grob on the display list and/or as a child of another grob. }
@@ -50,11 +50,11 @@ not.}
 \item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
 }
 \value{
-a grid grob (gTree)
+a grid grob (\code{gTree})
 }
 \description{
-This function is useful to label grid grobs (also ggplot2, and lattice plots)
-with title, footnote, and page nuumbers.
+This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
+with title, footnote, and page numbers.
 }
 \details{
 The titles and footnotes will be ragged, i.e. each title will be wrapped
@@ -120,7 +120,7 @@ grid.draw(
   )
 )
 
-## with ggplot2
+## with \\code{ggplot2}
 p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 p_gg
 p <- ggplotGrob(p_gg)
@@ -134,7 +134,7 @@ grid.draw(
   )
 )
 
-## with lattice
+## with \\code{lattice}
 library(lattice)
 xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
 p <- grid.grab()

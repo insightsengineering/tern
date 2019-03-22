@@ -19,7 +19,7 @@
 #' @param ties passed forward to \code{\link[survival]{coxph}}
 #'
 #' @details
-#' The time to event section is derived from a kaplan meier estimator for the
+#' The time to event section is derived from a Kaplan-Meier estimator for the
 #' \code{formula} argument with the strata special dropped.
 #'
 #' The stratified and unstratified analysis is evaluated pair-wise (reference to
@@ -27,7 +27,7 @@
 #' whereas \code{\link[survival]{coxph}} is used to calculate the hazard ratio
 #' and confidence interval.
 #'
-#' The time point analysis is based on the kaplan meier estimator.
+#' The time point analysis is based on the Kaplan-Meier estimator.
 #'
 #' @template return_rtable
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_summary.R
 \name{t_summary.default}
 \alias{t_summary.default}
-\title{Return an rtable with a no Method Message}
+\title{Return an \code{rtable} with a no Method Message}
 \usage{
 \method{t_summary}{default}(x, col_by, col_N = table(col_by), ...)
 }
@@ -18,7 +18,7 @@ into columns use the \code{\link{no_by}} function.}
 \item{...}{not used arguments}
 }
 \description{
-If there is no explicit method for an object an rtable with one row with an
+If there is no explicit method for an object an \code{rtable} with one row with an
 appropriate message is returned.
 }
 \examples{

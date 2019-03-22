@@ -20,7 +20,7 @@
 #'   default to test for equality of proportions in response rate between
 #'   reference and comparison groups. If stratification factors are added,
 #'   Cochran-Mantel-Haensel test is performed instead. Statistics from the
-#'   stratificaiton-adjusted test will be reported for the p-value of test of
+#'   stratification-adjusted test will be reported for the p-value of test of
 #'   equal proportions, odds ratio and its corresponding 95\% confidence
 #'   interval.
 #'
@@ -28,7 +28,7 @@
 #'   inherits the factor level order of \code{partition_rsp_by}. Use
 #'   \code{\link[base]{factor}} and its \code{levels} argument to include or
 #'   exclude response categories and arrange display order. If response values
-#'   contains missing or "Not Evaluable (NE)", 95\% confidence interval will not
+#'   contains missing or "Non Evaluable (NE)", 95\% confidence interval will not
 #'   be calculated.
 #'
 #' @template return_rtable

@@ -33,7 +33,7 @@ drop_special <- function(terms, special) {
 }
 
 
-#' Indentity function to indicate specials in formulas
+#' Identity function to indicate specials in formulas
 #'
 #' We use \code{arm} to in tern formulas
 #'

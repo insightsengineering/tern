@@ -28,9 +28,9 @@ t_summary <- function(x,
   UseMethod("t_summary", x)
 }
 
-#' Return an rtable with a no Method Message
+#' Return an \code{rtable} with a no Method Message
 #'
-#' If there is no explicit method for an object an rtable with one row with an
+#' If there is no explicit method for an object an \code{rtable} with one row with an
 #' appropriate message is returned.
 #'
 #' @inheritParams t_summary
@@ -57,7 +57,7 @@ t_summary.default <- function(x, # nolint
 
 #' Variables Summary Table
 #'
-#' Similiar as the demographic table in STREAM
+#' Similar as the demographic table in STREAM
 #'
 #' @inheritParams t_summary.default
 #' @param x data frame with variables to be summarized as described in the

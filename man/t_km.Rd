@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_km.R
 \name{t_km}
 \alias{t_km}
-\title{Kaplan Meier Fit Summary Table}
+\title{Kaplan-Meier Fit Summary Table}
 \usage{
 t_km(fit_km)
 }

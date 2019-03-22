@@ -25,7 +25,7 @@ of a cell get pasted separated by a comma.}
 indented}
 }
 \value{
-an rtable
+an \code{rtable}
 }
 \description{
 Calculate statistics Pairwise with reference level

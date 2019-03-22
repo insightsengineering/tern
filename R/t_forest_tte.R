@@ -16,11 +16,11 @@
 #'   \code{NULL} analysis is omitted.
 #' @param time_unit The unit of median survival time. Default is \code{months}.
 #' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
-#' @param na_omit_group is boolean. Default is \code{TRUE}, do not display NA's as a category.
-#' @param dense_header Display the table headers in mulitple rows. Default is \code{FALSE}.
+#' @param na_omit_group is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.
+#' @param dense_header Display the table headers in multiple rows. Default is \code{FALSE}.
 #'
 #' @details
-#' Cox propotionl hazard model is used for hazard ratio calculation
+#' Cox proportional hazard model is used for hazard ratio calculation
 #'
 #' The returned table contains one row per analysis within a subgroup of data
 #' (indicated by the row name). The analysis is summarized with the following 9
@@ -33,7 +33,7 @@
 #'   \item{5-7}{same analysis as for reference arm now for comparison arm}
 #'   \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison group versus that in the reference group.
 #'    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio.
-#'   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when comparion arm is better. }
+#'   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when comparison arm is better. }
 #'   \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty
 #'   around the measure of effect (Hazard Ratio). Because only a small sample of the overall
 #'   population is included in the analysis, by having an upper and lower confidence limit

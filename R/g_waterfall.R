@@ -4,7 +4,7 @@
 #' markup
 #'
 #' @param height  numeric vector to be plotted as the waterfall bars
-#' @param id vector of IDs used as the x-axis label for the waterall bars
+#' @param id vector of IDs used as the x-axis label for the waterfall bars
 #' @param col vector of a categorical variable for bar coloring
 #' @param xlab x label. Default is \code{ID}.
 #' @param ylab y label. Default is \code{Value}.

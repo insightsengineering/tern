@@ -41,22 +41,22 @@ It creates basic summary of events and can be used for any events data like Adve
 concomitant medication, medical history, etc.
 Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data
 to create Adverse Events summary table
-(AET02, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
+(\code{AET02}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17} ),
-or apply on Concomitatant Medication data to create Concomitant Treatment summary table
-(CMT01, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
+or apply on Concomitant Medication data to create Concomitant Treatment summary table
+(\code{CMT01}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 }
 \details{
 \code{t_events_per_term_id} includes percentages based on the total number of subjects
-in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset such as
 subject level dataset. See the example.
 
 Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term
 (if \code{terms} is two levels) are counted once when counting number of subjects.
 
-\code{t_events_per_term_id} doesn't deal with data with any non-complete records (has NA's),
+\code{t_events_per_term_id} doesn't deal with data with any non-complete records (has \code{NA}),
 e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_id}.
 
 \code{t_events_per_term_id} orders data by "All Patients" column from the most commonly

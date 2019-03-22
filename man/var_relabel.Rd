@@ -9,7 +9,7 @@ var_relabel(x, ...)
 \arguments{
 \item{x}{a \code{data.frame} object}
 
-\item{...}{name-valeu pairs, where name corresponds to a variable name in
+\item{...}{name-value pairs, where name corresponds to a variable name in
 \code{x} and the value to the new variable label}
 }
 \value{

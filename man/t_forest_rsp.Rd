@@ -19,9 +19,9 @@ first \code{level} indicates the reference group}
 \item{total}{character with the row name of the analysis run on all data. If
 \code{NULL} analysis is omitted.}
 
-\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
+\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.}
 
-\item{dense_header}{Display the table headers in mulitple rows. Default is \code{FALSE}.}
+\item{dense_header}{Display the table headers in multiple rows. Default is \code{FALSE}.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object

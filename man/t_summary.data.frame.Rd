@@ -24,7 +24,7 @@ column will be added with the overall summaries}
 \item{...}{arguments passed on to methods}
 }
 \description{
-Similiar as the demographic table in STREAM
+Similar as the demographic table in STREAM
 }
 \details{
 Every variable in \code{x} will be mapped to a summary table using

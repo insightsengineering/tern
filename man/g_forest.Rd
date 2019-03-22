@@ -10,7 +10,7 @@ g_forest(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
   newpage = TRUE)
 }
 \arguments{
-\item{tbl}{an rtable object}
+\item{tbl}{an \code{rtable} object}
 
 \item{col_x}{column index with estimator}
 
@@ -19,13 +19,13 @@ g_forest(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
 \item{vline}{x coordinate for vertical line, if \code{NULL} then the line is
 omitted}
 
-\item{forest_header}{character vector of length 2, diplayed to the left and
+\item{forest_header}{character vector of length 2, displayed to the left and
 right of \code{vline}, respectively. If \code{vline=NULL} then
 \code{forest_header} needs to be \code{NULL} too}
 
 \item{xlim}{x limits for x-scales}
 
-\item{logx}{boolean for showing x-values on logrithm scale}
+\item{logx}{boolean for showing x-values on logarithm scale}
 
 \item{x_at}{numeric vector with x tick locations, if \code{NULL} they get
 automatically chosen}
@@ -107,7 +107,7 @@ g_forest(
   x_at = c(.1, 1, 10)
 )
 
-# Works with any rtable
+# Works with any \\code{rtable}
 
 tbl <- rtable(
   header = c("E", "CI"),
