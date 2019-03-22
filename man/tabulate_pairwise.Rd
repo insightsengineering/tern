@@ -25,20 +25,18 @@ of a cell get pasted separated by a comma.}
 indented}
 }
 \value{
-an rtable
+an \code{rtable}
 }
 \description{
 Calculate statistics Pairwise with reference level
 }
 \examples{
-\dontrun{
-tabulate_pairwise(
+tern:::tabulate_pairwise(
   x = iris$Sepal.Length,
   col_by = iris$Species,
   FUN = function(xi, col_by_i) diff(tapply(xi, col_by_i, mean)),
   row.name = "diff mean"
 )
-}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

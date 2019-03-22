@@ -24,15 +24,15 @@ has to be a factor and can not be missing. See 'Examples'.}
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
-\item{total}{character string that will be used as a label for a column with 
-pooled total population, default is "All Patients". If the levels of col_by are 
+\item{total}{character string that will be used as a label for a column with
+pooled total population, default is "All Patients". If the levels of col_by are
 the only columns of interest then total should be \code{NULL}}
 
 \item{event_type}{type of event that is summarized (e.g. adverse event,
 treatment). Default is "event".}
 }
 \description{
-\code{lt_events_per_term_grade_id_2} returns a nested list of events tables 
+\code{lt_events_per_term_grade_id_2} returns a nested list of events tables
 by unique id (\code{\link{t_count_unique}}).
 }
 \details{
@@ -44,7 +44,6 @@ The data is split and table functions are applied to leaf nodes as follows:
 }
 }
 \examples{
-
 library(dplyr)
 library(random.cdisc.data)
 
@@ -67,11 +66,11 @@ l_tbls <- tern:::lt_events_per_term_id_2(
   col_N = table(ADSL$ARM),
   total = NULL
 )
-rbindl_rtables(l_tbls)
 
+rbindl_rtables(l_tbls)
 }
 \seealso{
-\code{\link{t_events_per_term_id}}, \code{\link{t_count_unique}}, 
+\code{\link{t_events_per_term_id}}, \code{\link{t_count_unique}},
   \code{\link{t_events_summary}}, \code{\link{t_events_per_term_grade_id}}
 }
 \author{

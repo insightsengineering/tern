@@ -22,7 +22,7 @@ into columns use the \code{\link{no_by}} function.}
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
 \item{denominator}{either n or N for calculating the level associated
-percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
+percentage. With option N, the reference population from \code{col_N} is used as the denominator.
 With option n, the number of non-missing records from \code{x} is used as the denominator.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
@@ -41,7 +41,7 @@ percentage.
 t_summary(iris$Species, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- radsl(N = 100, seed = 1)
 
 t_summary(ADSL$SEX, ADSL$ARM, total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
@@ -49,7 +49,6 @@ t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 ADSL$SEX[1:10] <- NA
 t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
- 
 }
 \seealso{
 \code{\link{t_summary}},

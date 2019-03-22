@@ -1,6 +1,19 @@
 # tern 0.6.1
 
 * Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66
+* Refactor of all functions to pass `test.nest` tests:
+    * changed `width_row.names` argument of `g_forest` function into `width_row_names`
+    * changed `censor.show` argument of `g_km` function into `censor_show`
+    * changed `col.legend.title` argument of `g_waterfall` function into `col_legend_title`
+    * changed `na.rm` argument of `t_count_unique` function into `na_rm`
+    * changed `row.name` argument of `t_count_unique` function into `row_name`
+    * changed `na.omit.group` argument of `t_forest_rsp` function into `na_omit_group`
+    * changed `na.omit.group` argument of `t_forest_tte` function into `na_omit_group`
+    * changed `row.name.TRUE` and `row.name.FALSE` arguments of `t_summary.logical` into `row_name_true` and `row_name_false` respectively
+    * rename `splotTextGrob` into `split_text_grob`
+    * fix examples
+    * refactor of internal functions code
+
 
 # tern 0.6.0
 

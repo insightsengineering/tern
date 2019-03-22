@@ -3,7 +3,7 @@ url: https://pages.github.roche.com/NEST/tern
 template:
   params:
     bootswatch: cerulean
-    
+
 navbar:
   right:
     - icon: fa-github
@@ -56,7 +56,7 @@ reference:
       - decorate_grob
       - decorate_grob_factory
       - decorate_grob_set
-      - splitTextGrob
+      - split_text_grob
       - stack_grobs
       - arrange_grobs
       - draw_grob

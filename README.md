@@ -19,11 +19,7 @@ The `tern` R package contains analysis functions to create tables, listings and 
 
 -   However you can use `tern` for exploratory analysis and for quality control
 
-There are two versions of this web-manual:
-
--   development version: <https://pages.github.roche.com/NEST/tern/dev/>
-
--   stable relase version: <https://pages.github.roche.com/NEST/tern/>
+For the documentation please refer to the official [documentation webpage](https://pages.github.roche.com/NEST/docs/).
 
 Installation
 ============
@@ -78,18 +74,18 @@ Development
 Issues
 ------
 
-We hope that `tern` is useful for your everyday work. If you would like more TLGs or you need more configuration options for the existing functions then please fill out a [github issue](https://github.roche.com/NEST/tern/issues) with your request and the reason/context for your request.
+We hope that `tern` is useful for your everyday work. If you would like more TLGs or you need more configuration options for the existing functions then please fill out a [`github` issue](https://github.roche.com/NEST/tern/issues) with your request and the reason/context for your request.
 
 -   Please do not submit issues with ideas for useful features for current `tern` functions if you do not necessarily need them for your project. We are aware that many of `tern`'s functions would benefit from additional arguments in order to control the outputs in more detail. However, we would like to avoid argument explosion and one way to do that is to get more experience with `tern` *in the field* and then slowly grow the flexibility based on need.
 
--   Please do not paste outputs with sensitive information into the issues. If possible make a miniamal working example with `random.cdisc.data` data.
+-   Please do not paste outputs with sensitive information into the issues. If possible make a minimal working example with `random.cdisc.data` data.
 
 Collaboration
 -------------
 
 We would like `tern` to be a collaborative effort and your contributions are welcome! However please read the following points before you make any contributions:
 
--   talk to the repsective function authors before you start working on changes other than bug fixes or documentation examples (this includes argument changes)
+-   talk to the respective function authors before you start working on changes other than bug fixes or documentation examples (this includes argument changes)
 
     -   please have a look at the [R code](https://github.roche.com/NEST/tern/tree/master/R) of a couple of functions in `tern`. If you are new to `R` or do not want to spend the effort to create similarly general and robust functions then please consider contributing to the [osprey](https://github.roche.com/Rpackages/osprey) R package.
 

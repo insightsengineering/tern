@@ -19,13 +19,13 @@ Depends:
   R (>= 3.3),
   survival,
   grid,
-  rtables (>= 0.1.1)
+  rtables (>= 0.1.1),
+  ggplot2
 Imports:
   methods,
   utils,
   stats,
   grDevices,
-  ggplot2,
   scales,
   gridExtra
 Suggests:
@@ -33,6 +33,7 @@ Suggests:
   tibble,
   dplyr,
   testthat,
+  test.nest,
   knitr,
   rmarkdown,
   forcats,

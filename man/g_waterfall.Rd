@@ -5,12 +5,12 @@
 \title{Horizontal Waterfall Plot}
 \usage{
 g_waterfall(height, id, col = NULL, xlab = NULL, ylab = NULL,
-  col.legend.title = NULL, title = NULL)
+  col_legend_title = NULL, title = NULL)
 }
 \arguments{
 \item{height}{numeric vector to be plotted as the waterfall bars}
 
-\item{id}{vector of IDs used as the x-axis label for the waterall bars}
+\item{id}{vector of IDs used as the x-axis label for the waterfall bars}
 
 \item{col}{vector of a categorical variable for bar coloring}
 
@@ -18,7 +18,7 @@ g_waterfall(height, id, col = NULL, xlab = NULL, ylab = NULL,
 
 \item{ylab}{y label. Default is \code{Value}.}
 
-\item{col.legend.title}{A string to be displayed as legend title.}
+\item{col_legend_title}{A string to be displayed as legend title.}
 
 \item{title}{A string to be displayed as plot title.}
 }
@@ -37,10 +37,10 @@ library(dplyr)
 ADSL <- radsl(seed = 1)
 ADSL_f <- ADSL \%>\%
   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
-  
+
 ADRS <- radrs(ADSL, seed = 2)
-ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") \%>\% 
-   mutate(pchg = rnorm(1200, 10, 50))
+ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") \%>\%
+  mutate(pchg = rnorm(1200, 10, 50))
 
 ADRS_f <- head(ADRS_f, 30)
 ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID),]
@@ -71,7 +71,6 @@ g_waterfall(
   ylab = "Percentage Change",
   title = "Waterfall plot"
 )
-
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

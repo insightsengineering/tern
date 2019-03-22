@@ -24,12 +24,11 @@ Summarize an Object for Different Groups
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- radsl(N = 100, seed = 1)
 
 t_summary(ADSL$AGE, ADSL$ARMCD)
 t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
 with(ADSL, t_summary(AGE > 65, ARMCD))
-
 }
 \seealso{
 \code{\link{t_summary.data.frame}},

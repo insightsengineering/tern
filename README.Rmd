@@ -53,7 +53,7 @@ devtools::install_github(
 
 We hope that `tern` is useful for your everyday work. If you would like more
 TLGs or you need more configuration options for the existing functions then
-please fill out a [github issue](https://github.roche.com/NEST/tern/issues)
+please fill out a [`github` issue](https://github.roche.com/NEST/tern/issues)
 with your request and the reason/context for your request.
 
 * Please do not submit issues with ideas for useful features for current `tern`
@@ -64,7 +64,7 @@ explosion and one way to do that is to get more experience with `tern` *in the
 field* and then slowly grow the flexibility based on need.
 
 * Please do not paste outputs with sensitive information into the issues. If
-possible make a miniamal working example with `random.cdisc.data` data.
+possible make a minimal working example with `random.cdisc.data` data.
 
 
 ## Collaboration
@@ -73,7 +73,7 @@ We would like `tern` to be a collaborative effort and your contributions are
 welcome! However please read the following points before you make any
 contributions:
 
-* talk to the repsective function authors before you start working on changes
+* talk to the respective function authors before you start working on changes
 other than bug fixes or documentation examples (this includes argument changes)
  
       - please have a look at the [R

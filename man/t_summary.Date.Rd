@@ -24,14 +24,13 @@ into columns use the \code{\link{no_by}} function.}
 Tabulate the range of dates.
 }
 \examples{
-(today <- Sys.Date())
-(tenweeks <- seq(today, length.out=10, by="1 week")) 
+today <- Sys.Date()
+tenweeks <- seq(today, length.out=10, by="1 week")
 t_summary(tenweeks, no_by("all"), length(tenweeks))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
-
 }
 \seealso{
 \code{\link{t_summary}},

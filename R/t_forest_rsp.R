@@ -1,23 +1,23 @@
 #' Response Table as used for Forest Plot
-#' 
+#'
 #' The Response forest plot table summarizes response data by groups. The
 #' function returns sample sizes and responder counts and response rates for
 #' each analysis arm, as well as a odds ratio and the corresponding 95\%
 #' confidence interval from a univariate logistic model.
 #'
-#' @inheritParams t_forest_tte 
+#' @inheritParams t_forest_tte
 #' @param rsp is a boolean vector. If \code{TRUE}, observation is a response,
 #'   otherwise, \code{FALSE}.
-#'    
-#' @details 
+#'
+#' @details
 #' Logistic regression is used for odds ratio calculation.
 #'
 #' Each row in the returned table contains the analysis statistics for a
 #' subgroup of data (indicated by the row name). The summary table is consist of
 #' the following 9 columns:
-#' 
+#'
 #' \describe{
-#' 
+#'
 #'   \item{1}{\emph{Total n} the total number of subjects included in analysis
 #'   population}
 #'
@@ -41,216 +41,256 @@
 #'   effect lies in between. If the 95% confidence interval includes 1, then we
 #'   say that the difference between two arms is not significant at a
 #'   significance level of 0.05.}
-#'   
+#'
 #' }
-#' 
-#' @template return_rtable 
-#' 
+#'
+#' @template return_rtable
+#'
 #' @export
-#' 
+#'
 #' @template author_song24
-#' 
+#'
 #' @seealso \code{\link{t_rsp}}
-#'  
-#' @examples 
+#'
+#' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
-#' 
+#'
 #' ADSL <- radsl(seed = 1)
 #' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
-#' 
+#'
 #' ADRS <- radrs(ADSL, seed = 2)
-#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>% 
-#'   filter(ARM != 'C: Combination') %>%
+#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
+#'   dplyr::filter(ARM != 'C: Combination') %>%
 #'   mutate(ARM = droplevels(ARM))
-#'   
+#'
 #' tbl <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
-#'   col_by = factor(ADRS_f$ARM), 
+#'   col_by = factor(ADRS_f$ARM),
 #'   group_data = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
 #' )
-#' 
+#'
 #' tbl
-#' 
+#'
 #' \dontrun{
 #' Viewer(tbl)
 #' }
-#'    
-t_forest_rsp <- function(rsp, col_by, group_data = NULL,
-                         total = 'ALL', na.omit.group = TRUE,
+t_forest_rsp <- function(rsp,
+                         col_by,
+                         group_data = NULL,
+                         total = "ALL",
+                         na_omit_group = TRUE,
                          dense_header = FALSE) {
-  
-  if (!is.logical(rsp)) stop("rsp is required to be boolean")
-  check_same_N(rsp = rsp, col_by = col_by, group_data = group_data)
-  
+
+  stopifnot(is.logical(rsp))
+  check_same_n(rsp = rsp, col_by = col_by, group_data = group_data)
+
   check_col_by(col_by, table(col_by), 2)
-  if (nlevels(col_by) != 2) stop("col_by can only have two levels")
-  
+  stopifnot(nlevels(col_by) == 2)
+
   if (!is.null(group_data)) {
     check_data_frame(group_data, allow_missing = TRUE)
     group_data <- all_as_factor(group_data)
   }
-  
+
   table_header <- if (dense_header) {
     rheader(
-      rrow(row.name = "",
-           NULL,
-           rcell(levels(col_by)[1], colspan = 3),
-           rcell(levels(col_by)[2], colspan = 3),
-           NULL,
-           NULL
+      rrow(
+        row.name = "",
+        NULL,
+        rcell(levels(col_by)[1], colspan = 3),
+        rcell(levels(col_by)[2], colspan = 3),
+        NULL,
+        NULL
       ),
-      rrow(row.name = "Baseline",
-           "Total",
-           NULL, NULL, "Response",
-           NULL, NULL, "Response",
-           "Odds", NULL),
-      rrow(row.name = "Risk Factors",
-           "n",
-           "n", "Responders", "Rate",
-           "n", "Responders", "Rate",
-           "Ratio",
-           "95% CI"
+      rrow(
+        row.name = "Baseline",
+        "Total",
+        NULL, NULL, "Response",
+        NULL, NULL, "Response",
+        "Odds", NULL
+      ),
+      rrow(
+        row.name = "Risk Factors",
+        "n",
+        "n", "Responders", "Rate",
+        "n", "Responders", "Rate",
+        "Ratio",
+        "95% CI"
       )
-    )    
+    )
   } else {
     rheader(
-      rrow(row.name = "",
-           NULL,
-           rcell(levels(col_by)[1], colspan = 3),
-           rcell(levels(col_by)[2], colspan = 3),
-           NULL,
-           NULL
+      rrow(
+        row.name = "",
+        NULL,
+        rcell(levels(col_by)[1], colspan = 3),
+        rcell(levels(col_by)[2], colspan = 3),
+        NULL,
+        NULL
       ),
-      rrow(row.name = "Baseline Risk Factors",
-           "Total n",
-           "n", "Responders", "Response.Rate",
-           "n", "Responders", "Response.Rate",
-           "Odds Ratio",
-           "95% CI"
+      rrow(
+        row.name = "Baseline Risk Factors",
+        "Total n",
+        "n", "Responders", "Response.Rate",
+        "n", "Responders", "Response.Rate",
+        "Odds Ratio",
+        "95% CI"
       )
     )
   }
-  
+
   glm_data <- data.frame(response = rsp, arm = col_by)
-  
-  tbl_total <- if(is.null(total)) {
+
+  tbl_total <- if (is.null(total)) {
     NULL
   } else {
-    rtable(header = table_header, 
-           rrowl(row.name = total, 
-                 format_logistic(
-                   glm_results(glm_data)
-                 )
-           )) 
+    rtable(
+      header = table_header,
+      rrowl(
+        row.name = total,
+        format_logistic(
+          glm_results(glm_data)
+        )
+      )
+    )
   }
-  
+
   tbl_group_data <- if (is.null(group_data)) {
     NULL
   } else {
-    
+
     # split data into a tree for data
-    # where each leaf is a data.frame with 
+    # where each leaf is a data.frame with
     # the data to compute the survival analysis with
     data_tree <- lapply(group_data, function(var) {
-      if (!na.omit.group) var <- na_as_level(var)
+      if (!na_omit_group) {
+        var <- na_as_level(var)
+      }
       split(glm_data, var, drop = FALSE)
     })
-    
+
     names(data_tree) <- var_labels(group_data, fill = TRUE)
-    
+
     list_of_tables <- Map(function(dfs, varlabel) {
-      
+
       tbls_var <- Map(function(dfi, level) {
-        rtable(header = table_header,
-               rrowl(
-                 row.name = level,
-                 indent = 1,
-                 format_logistic(
-                   glm_results(dfi)
-                 )
-               )) 
+        rtable(
+          header = table_header,
+          rrowl(
+            row.name = level,
+            indent = 1,
+            format_logistic(
+              glm_results(dfi)
+            )
+          )
+        )
       }, dfs, names(dfs))
-      
+
       rbind(
         rtable(header = table_header, rrow(row.name = varlabel)),
         Reduce(rbind, tbls_var)
       )
     }, data_tree, names(data_tree))
-    
+
     rbindl_rtables(list_of_tables, gap = 1)
   }
-  
+
   rbind(
     tbl_total,
     tbl_group_data,
     gap = 1
   )
-}  
+}
 
 #' fit glm models for forest plot rsp
-#' 
+#'
 #' @noRd
-#' 
-#' @importFrom stats setNames glm binomial confint 
-#' 
-#' 
-glm_results <- function(data){
-  
+#'
+#' @importFrom stats setNames glm binomial confint
+glm_results <- function(data) {
+
   # Response Rate
   resp_n <- setNames(table(data$arm), c("resp_ref_n", "resp_comp_n"))
-  
-  tbl_freq <- table(data$response,data$arm)
-  resp_ref_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[1]]
-  resp_comp_event <- tbl_freq[rownames(tbl_freq)=="TRUE",colnames(tbl_freq)==levels(data$arm)[2]]
-  if (length(resp_ref_event)==0) resp_ref_event = 0
-  if (length(resp_comp_event)==0) resp_comp_event = 0
-  
+
+  tbl_freq <- table(data$response, data$arm)
+  resp_ref_event <- tbl_freq[rownames(tbl_freq) == "TRUE", colnames(tbl_freq) == levels(data$arm)[1]]
+  resp_comp_event <- tbl_freq[rownames(tbl_freq) == "TRUE", colnames(tbl_freq) == levels(data$arm)[2]]
+  if (length(resp_ref_event) == 0) {
+    resp_ref_event <- 0
+  }
+  if (length(resp_comp_event) == 0) {
+    resp_comp_event <- 0
+  }
+
   # Logistic Model
   if (length(levels(factor(data$arm))) == 2) {
     glm_fit <- try(
-      glm(response ~ arm, family=binomial(link='logit'), data = data)
+      glm(response ~ arm, family = binomial(link = "logit"), data = data)
     )
-    
+
     if (is(glm_fit, "try-error")) {
-      glm_or <- NA; glm_lcl <- NA; glm_ucl <- NA; glm_pval <- NA
+      glm_or <- NA
+      glm_lcl <- NA
+      glm_ucl <- NA
+      glm_pval <- NA
     } else {
-      glm_sum  <- summary(glm_fit)
-      #glm_or   <- ifelse(exp(glm_sum$coefficient[2,1]) > 999, ">999.99", exp(glm_sum$coefficient[2,1]))
-      glm_or   <- exp(glm_sum$coefficient[2,1])
-      
+      glm_sum <- summary(glm_fit)
+      glm_or <- exp(glm_sum$coefficients[2, 1])
+
       suppressWarnings(
         suppressMessages({
           glm_lcl  <- tryCatch(
-            exp(confint(glm_fit)[2,1]),
+            exp(confint(glm_fit)[2, 1]),
             error = function(e) NA
           )
-          
+
           glm_ucl  <- tryCatch(
-            exp(confint(glm_fit)[2,2]),
+            exp(confint(glm_fit)[2, 2]),
             error = function(e) NA
           )
         })
       )
-      
-      glm_pval <- glm_sum$coefficients[2,4]
+
+      glm_pval <- glm_sum$coefficients[2, 4]
     }
-    
-    resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2], 
-                             resp_ref_event, resp_comp_event, 
-                             glm_or, glm_lcl, glm_ucl, glm_pval)
+
+    resp_table <- data.frame(
+      resp_ref_n = resp_n[1],
+      resp_comp_n = resp_n[2],
+      resp_ref_event,
+      resp_comp_event,
+      glm_or,
+      glm_lcl,
+      glm_ucl,
+      glm_pval
+    )
   } else {
-    resp_table <- data.frame(resp_ref_n = resp_n[1], resp_comp_n = resp_n[2],  
-                             resp_ref_event, resp_comp_event, 
-                             glm_or = NA, glm_lcl = NA, glm_ucl = NA, glm_pval = NA)
+    resp_table <- data.frame(
+      resp_ref_n = resp_n[1],
+      resp_comp_n = resp_n[2],
+      resp_ref_event,
+      resp_comp_event,
+      glm_or = NA,
+      glm_lcl = NA,
+      glm_ucl = NA,
+      glm_pval = NA
+    )
   }
   resp_table
 }
 
 format_logistic <- function(x) {
-  format.or <- if(!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9) ">999.9" else "xx.xx"
-  format.ci <- if(!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9)
-    sprintf_format("(%.2f, >999.9)") else "(xx.xx, xx.xx)"
+  format_or <- if (!is.na(x[["glm_or"]]) & x[["glm_or"]] > 999.9) {
+    ">999.9"
+  } else {
+    "xx.xx"
+  }
+  format_ci <- if (!is.na(x[["glm_ucl"]]) & x[["glm_ucl"]] > 999.9) {
+    sprintf_format("(%.2f, >999.9)")
+  } else {
+    "(xx.xx, xx.xx)"
+  }
   list(
     rcell(x[["resp_comp_n"]] + x[["resp_ref_n"]], "xx"),
     rcell(x[["resp_ref_n"]], "xx"),
@@ -259,7 +299,7 @@ format_logistic <- function(x) {
     rcell(x[["resp_comp_n"]], "xx"),
     rcell(x[["resp_comp_event"]], "xx"),
     rcell(x[["resp_comp_event"]] / x[["resp_comp_n"]], "xx.xx"),
-    rcell(x[["glm_or"]], format = format.or),
-    rcell(c(x[['glm_lcl']], x[["glm_ucl"]]), format = format.ci)
+    rcell(x[["glm_or"]], format = format_or),
+    rcell(c(x[["glm_lcl"]], x[["glm_ucl"]]), format = format_ci)
   )
 }

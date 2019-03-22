@@ -5,7 +5,7 @@
 \title{Summarize Boolean Data}
 \usage{
 \method{t_summary}{logical}(x, col_by, col_N = table(col_by),
-  total = NULL, row.name.TRUE = "TRUE", row.name.FALSE = "FALSE",
+  total = NULL, row_name_true = "TRUE", row_name_false = "FALSE",
   ...)
 }
 \arguments{
@@ -19,9 +19,9 @@ into columns use the \code{\link{no_by}} function.}
 
 \item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
-\item{row.name.TRUE}{character string with row.name for TRUE summary}
+\item{row_name_true}{character string with row.name for TRUE summary}
 
-\item{row.name.FALSE}{character string with row.name for FALSE summary}
+\item{row_name_false}{character string with row.name for FALSE summary}
 
 \item{...}{arguments passed on to \code{\link{t_summary.factor}}}
 }
@@ -35,14 +35,13 @@ t_summary(
 )
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- radsl(N = 100, seed = 1)
 
 ADSL$AGE[1:10] <- NA
 
 with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
-with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany", 
-                   row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
-
+with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany",
+                     row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 }
 \seealso{
 \code{\link{t_summary}},

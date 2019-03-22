@@ -30,7 +30,7 @@ The individual tables are then stacked together.
 library(dplyr)
 library(random.cdisc.data)
 
-ADSL <- radsl(N = 30, seed = 1) 
+ADSL <- radsl(N = 30, seed = 1)
 
 t_summary_by(
  x = ADSL$SEX,
@@ -56,7 +56,8 @@ t_summary_by(
 ADSL <- ADSL \%>\% select(STUDYID, USUBJID, ARMCD)
 
 ADQS <- radqs(ADSL, seed = 2)
-ADQS_f <- ADQS \%>\% filter(PARAMCD=="BFIALL")
+ADQS_f <- ADQS \%>\%
+  dplyr::filter(PARAMCD=="BFIALL")
 
 t_summary_by(
  x = ADQS_f$AVAL,
@@ -66,9 +67,9 @@ t_summary_by(
  total = "All Patients"
 )
 
-ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"), 
+ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"),
   levels = c("Positive", "Negative"))
-ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )  
+ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )
 
 t_summary_by(
  x = ADQS_f$AVALCAT1,
@@ -77,7 +78,6 @@ t_summary_by(
  col_N = table(ADSL$ARMCD),
  total = "All Patients"
 )
-
 }
 \seealso{
 \code{\link{t_summary}}, \code{\link{t_summary.data.frame}},

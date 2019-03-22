@@ -32,14 +32,13 @@ for different groups.
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- radsl(N = 100, seed = 1)
 
 t_summary(ADSL$AGE, ADSL$ARM)
 t_summary(ADSL$AGE, ADSL$ARM, total = "All")
 
 ADSL$AGE[1:10] <- NA
 t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
-
 }
 \seealso{
 \code{\link{t_summary}},
