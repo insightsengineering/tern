@@ -6,3 +6,4 @@
 README.*
 man-roxygen/*
 TODO.md
+^\.drone\.yml$
