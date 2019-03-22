@@ -330,6 +330,6 @@ to_group_color <- function(col, grps) {
   } else {
     stop("dimension missmatch")
   }
-  names(col) <- grps
+  names(col) <- as.character(grps)
   col
 }

@@ -1,5 +1,6 @@
-# tern 0.6.0
+# tern 0.6.1
 
+* Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66
 * Refactor of all functions to pass `test.nest` tests:
     * changed `width_row.names` argument of `g_forest` function into `width_row_names`
     * changed `censor.show` argument of `g_km` function into `censor_show`

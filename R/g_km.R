@@ -118,7 +118,7 @@ g_km <- function(fit_km,
     vp = vpPath("mainPlot", "riskTable")
   )
 
-  col <- to_group_color(col, kmdata$group)
+  col <- to_group_color(col, names(kmdata$group))
   km_grob <- gTree(
     kmdata = kmdata,
     vp = vp,
@@ -244,9 +244,9 @@ km_curve_grob <- function(kmdata,
 
   lwd <- to_n(lwd, ngroup)
   lty <- to_n(lty, ngroup)
-
-  col <- to_group_color(col, kmdata$group)
-
+  
+  col <- to_group_color(col, names(kmdata$group))
+  
   lines <- Map(function(x, y, col_i, lty_i, lwd_i) {
     linesGrob(
       x = x,
