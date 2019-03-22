@@ -1,3 +1,7 @@
+# tern 0.6.1
+
+* Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66
+
 # tern 0.6.0
 
 * Removed functions `addTable`, `t_summarize_by_visit`, `t_summarize_variables`.

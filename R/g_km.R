@@ -96,7 +96,7 @@ g_km <- function(fit_km,  xticks = NULL, col = NA, lty = 1, lwd = 1,
   riskgrob <- labelPanelGrob(label = label, x = x, group = group, col = col,
                              vp = vpPath("mainPlot", "riskTable"))
   
-  col <- to_group_color(col, kmdata$group)
+  col <- to_group_color(col, names(kmdata$group))
   kmGrob <-   gTree( kmdata = kmdata, vp = vp, name = name, gp = gp,
                      childrenvp = childrenvp,
                      children = gList(
@@ -193,7 +193,7 @@ kmCurveGrob <- function(kmdata, fit_km,  xticks = NULL,
   lwd <- to_n(lwd, ngroup)
   lty <- to_n(lty, ngroup)
   
-  col <- to_group_color(col, kmdata$group)
+  col <- to_group_color(col, names(kmdata$group))
   
   lines <- Map(function(x, y, col_i, lty_i, lwd_i){
     linesGrob(x = x, y = y, default.units = "native", 
