@@ -1,9 +1,11 @@
+# The survival package is not strict because of this we need the
+# donttest.
 #' Proportional Hazards Regression Model Fit Summary Table
 #'
 #' An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
 #' object for further annotation on top of Kaplan-Meier grob
 #'
-#' @param fit_coxph a class \code{\link{coxph}} object.
+#' @param fit_coxph a class \code{\link{survival}{coxph}} object.
 #' @param info_coxph label information for Cox PH model.
 #'
 #' @import survival
@@ -14,7 +16,6 @@
 #' @template author_wangh107
 #'
 #' @examples
-#' \donttest{
 #' library(random.cdisc.data)
 #'
 #' ADSL <- radsl(seed = 1)
@@ -24,8 +25,9 @@
 #'
 #' ADTTE <- radtte(ADSL, seed = 2)
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
-#'
-#' fit_coxph <- coxph(Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
+#' \donttest{
+#' fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
+#
 #' tbl <- t_coxph(fit_coxph)
 #' tbl
 #' }
