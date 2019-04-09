@@ -141,7 +141,8 @@ t_summary.data.frame <- function(x, # nolint
 #' @inheritParams rtables::rtabulate.numeric
 #' @param x numeric variable
 #' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
-#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
+#' @param total character string that will be used as a label for a column with pooled total population.
+#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @template return_rtable
 #'
 #' @export
@@ -205,7 +206,8 @@ t_summary.numeric <- function(x, # nolint
 #'
 #' @inheritParams t_summary.default
 #' @param x factor variable
-#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
+#' @param total character string that will be used as a label for a column with pooled total population.
+#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @param useNA choose whether missing data (NAs) should be displayed as a level.
 #' @param denominator either n or N for calculating the level associated
 #'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
@@ -336,7 +338,8 @@ t_summary.character <- function(x, # nolint
 #'
 #' @inheritParams t_summary.default
 #' @param x a Date object
-#' @param total character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
+#' @param total character string that will be used as a label for a column with pooled total population.
+#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #'
 #' @template author_waddella
 #'

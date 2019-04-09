@@ -7,7 +7,7 @@
 t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model")
 }
 \arguments{
-\item{fit_coxph}{a class \code{\link{coxph}} object.}
+\item{fit_coxph}{a class \code{\link{survival}{coxph}} object.}
 
 \item{info_coxph}{label information for Cox PH model.}
 }
@@ -16,7 +16,6 @@ An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
 object for further annotation on top of Kaplan-Meier grob
 }
 \examples{
-\donttest{
 library(random.cdisc.data)
 
 ADSL <- radsl(seed = 1)
@@ -26,8 +25,9 @@ ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
 
 ADTTE <- radtte(ADSL, seed = 2)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
+\donttest{
+fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
 
-fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
 tbl <- t_coxph(fit_coxph)
 tbl
 }
