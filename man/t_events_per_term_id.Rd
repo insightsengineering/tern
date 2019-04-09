@@ -41,10 +41,14 @@ It creates basic summary of events and can be used for any events data like Adve
 concomitant medication, medical history, etc.
 Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data
 to create Adverse Events summary table
-(\code{AET02}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
+(\code{AET02},
+\href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{
+STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17} ),
 or apply on Concomitant Medication data to create Concomitant Treatment summary table
-(\code{CMT01}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
+(\code{CMT01},
+\href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{
+STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 }
 \details{
@@ -61,7 +65,8 @@ e.g. if any terms are missing. Impute missing values before using \code{t_events
 
 \code{t_events_per_term_id} orders data by "All Patients" column from the most commonly
  reported higher level term to the least frequent one. Within each group of higher level term,
- it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.
+ it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
+ alphabetical order.
 }
 \examples{
 library(dplyr)

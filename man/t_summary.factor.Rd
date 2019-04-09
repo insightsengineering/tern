@@ -17,7 +17,8 @@ into columns use the \code{\link{no_by}} function.}
 
 \item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
 
-\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{character string that will be used as a label for a column with pooled total population.
+If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 

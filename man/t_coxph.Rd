@@ -27,7 +27,7 @@ ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
 ADTTE <- radtte(ADSL, seed = 2)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 
-fit_coxph <- coxph(Surv(AVAL, 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
+fit_coxph <- coxph(Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RACE), data = ADTTE_f, ties = "exact")
 tbl <- t_coxph(fit_coxph)
 tbl
 }
