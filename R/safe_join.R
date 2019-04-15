@@ -1,19 +1,32 @@
 #' Safer join for tern
 #'
-#' @param x (\code{data.frame}) left hand side of the join data frame
-#' @param y (\code{data.frame}) right hand side of the join data frame
+#' This is a wrapper function around \code{dplyr::\link[dplyr]{join}}. It gives an error
+#' in case two \code{data.frames} cannot be joined due to wrong keys or dimension mismatches
+#' of equally named columns inside the \code{data.frames}. Additionally columns that are
+#' equal inside the \code{data.frames} do not get merged twice. The join is applied without
+#' duplicates.
 #'
-#' @param by (\code{character}) Key columns to use for joining
-#' @param method (\code{function}) \code{dplyr::join} function to join
+#' @param x (\code{data.frame} or \code{\link[dplyr]{tbl}}) left hand side of the join
+#' @param y (\code{data.frame} or \code{\link[dplyr]{tbl}}) right hand side of the join
+#'
+#' @param by (\code{character}) Key columns to use for joining. For a safe join these
+#'  are obligatory to guarantee the ability to merge the datasets.
+#' @param method (\code{function}) \code{dplyr::\link[dplyr]{join}} function to join
 #'   the two data sets.
 #'
 #' @param ... Additional parameters handed over to the function called in \code{method}
 #'
+#' @references \link[dplyr]{join}
 #'
 #' @importFrom dplyr select full_join
 #' @importFrom magrittr %<>%
 #' @export
-safe_join <- function(x, y, by, method = full_join, ...) {
+safe_join <- function(x, y, by = NULL, method = full_join, ...) {
+  stopifnot(is.function(method))
+  if (is.null(by)) {
+    stop("A safe_join cannot be executed without the 'by' input.")
+  }
+  stopifnot(is.character(by))
 
   check_intersect_cols_identical(x = x, y = y, exclude_columns = by, keys = by)
 
