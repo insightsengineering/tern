@@ -40,8 +40,10 @@ safe_join <- function(x, y, by = NULL, method = full_join, ...) {
 #' @importFrom dplyr arrange
 #' @importFrom rlang parse_expr
 check_intersect_cols_identical <- function(x, y, exclude_columns, keys) {
-  stopifnot(all(keys %in% names(x)))
-  stopifnot(all(keys %in% names(y)))
+  validate(
+      need(all(keys %in% names(x)), "One key variable is not selected anymore for merging."))
+  validate(
+      need(all(keys %in% names(y)), "One key variable is not selected anymore for merging."))
 
   # checks that intersecting columns are identical
   # for this, it first orders the columns by the rowid of the dataset y (therefore y needs a dataname)
