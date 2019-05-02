@@ -1,5 +1,5 @@
 
-# This file was automatically merged from several files at time Thu Mar 21 11:18:48 STD 2019
+# This file was automatically merged from several files at time Thu May  2 09:47:11 DST 2019
 
 # On Push to master: build R package, push R package doc to file server, deploy/release in Docker
 # for master: also push to R repo and create a github release (which automatically tags it)
@@ -16,14 +16,17 @@ trigger:
   event:
   - push
 
+image_pull_secrets:
+- .dockerconfigjson
+
 clone:
   disable: true
 
 volumes:
 # need to set repository as trusted in drone.io
-- name: dockersocket
+- name: sshkeys
   host:
-    path: /var/run/docker.sock
+    path: /home/ubuntu/sshkeys # this is wrt host drone is running on (because docker daemon is shared!!)
 
 steps:
 - name: Info about run
@@ -35,7 +38,6 @@ steps:
   image: alpine
   commands:
   - mkdir shared_vars # used to share variables between steps
-  - mkdir github_release_dir #contains all files to be released on github
   - mkdir docker_dir # for the docker files
 
 - name: clonerepo
@@ -47,7 +49,6 @@ steps:
   - git branch -a
   - git checkout "$DRONE_COMMIT_SHA"
   - git status
-  # we only check for PRs that .drone.yml has not changed
 
 - name: Directory contents
   image: alpine
@@ -57,87 +58,32 @@ steps:
 
 # build the R package and move tar.gz to the right directories, also write the docker image name to be read by successive steps
 - name: build the R package
-  image: docker.bioclinr.com:10021/automation/rstudio_automation:v1
+  image: docker.bioclinr.com:10021/nest/allprojects_${DRONE_BRANCH}:newest_version
   pull: always
-  environment:
-    R_REGISTRY_URL: "https://rran.bioclinr.com:10020/repository/NEST-R(-dev or not)/"
-    DOCKER_REGISTRY_URL: "docker.bioclinr.com:10021/" # with slash
   entrypoint:
-  - bash #to avoid starting RStudio
+  - bash
   commands:
   - |-
     R --vanilla <<- 'EOF'
+
     library(automation.utils)
 
-    rRegistryURL <- Sys.getenv("R_REGISTRY_URL")
-    branchName <- Sys.getenv("DRONE_BRANCH")
-    dockerRegistryURL <- Sys.getenv("DOCKER_REGISTRY_URL")
-
     pkg_dir <- "sourcecode"
-    targz_filename <- build_package(pkg_dir)
-
-    # copy into the Docker directory
-    file.copy(from=targz_filename, to="docker_dir")
-    file.copy(from=targz_filename, to="github_release_dir") # for the GitHub release
-
-    docker_image_name <- get_docker_image_name(pkg_dir, branch=branchName)
-    cat(docker_image_name, file="shared_vars/docker_image_name") # used by Docker to know how to tag image
-    cat(get_git_release_tag_name(pkg_dir), file="shared_vars/git_tag_name")
-    full_docker_img_name <- paste0(dockerRegistryURL, docker_image_name)
-    release_description <- paste0(get_release_description(), "\n\n", get_run_deploy_instructions(pkg_dir, full_docker_img_name, rRegistryURL))
-    cat(release_description, file="shared_vars/github_release_description.md")
-    EOF
-  - ls shared_vars github_release_dir
-  - cat shared_vars/docker_image_name
-
-- name: copy docker directory to dedicated directory
-  image: automation/rsync-client:v1
-  commands:
-  - rsync --archive --recursive --human-readable --progress sourcecode/build_docker_image/ docker_dir # sync docker dir because pkg dir is later committed again
-
-- name: build pkgdown documentation and push to github
-  image: docker.bioclinr.com:10021/automation/rstudio_automation:v1
-  pull: always
-  environment:
-    FILESERVER_GITHUB_TOKEN:
-      from_secret: githubFileserverToken
-    FILESERVER_GITHUB_USER: "mordigm"
-    FILESERVER_GIT_HTTPS_URL: "https://github.roche.com/NEST/docs.git"
-    FILESERVER_GIT_BRANCH: master
-  entrypoint:
-  - bash #to avoid starting RStudio
-  commands:
-  - |-
-    R --vanilla <<- 'EOF'
-    library(automation.utils)
-
-    fullRepoName <- Sys.getenv("DRONE_REPO")
-    branchName <- Sys.getenv("DRONE_BRANCH")
-    fileserverGithubUser <- Sys.getenv("FILESERVER_GITHUB_USER")
-    fileserverGithubToken <- Sys.getenv("FILESERVER_GITHUB_TOKEN")
-    fileserverGitHttpsURL <- Sys.getenv("FILESERVER_GIT_HTTPS_URL")
-    fileserverGitBranch <- Sys.getenv("FILESERVER_GIT_BRANCH")
-    organizationName <- Sys.getenv("DRONE_REPO_NAMESPACE")
-
-    pkg_dir <- "sourcecode"
-    build_pkgdown_website(pkg_dir, branch=branchName)
-
-    upload_type <- get_upload_type()
-    stopifnot(upload_type %in% c("release", "devel"))
-    doc_url <- push_R_package_doc_git(pkg_dir, upload_type, organizationName, fileserverGithubUser, fileserverGithubToken, fileserverGitHttpsURL, fileserverGitBranch)
-    print(glue_with_null("Uploaded documentation to '{doc_url}'"))
+    build_pkg(pkg_dir = pkg_dir)
 
     EOF
+  - ls shared_vars
+
 
 # push to the R repository before building docker image (because it loads what has been uploaded there)
 - name: push to rrepo
-  image: docker.bioclinr.com:10021/automation/rstudio_automation:v1
+  image: docker.bioclinr.com:10021/nest/allprojects_${DRONE_BRANCH}:newest_version
   pull: always
   entrypoint:
-  - bash #to avoid starting RStudio
+  - bash
   environment:
-    R_RELEASE_REGISTRY_URL: "https://rran.bioclinr.com:10020/repository/NEST-R/"
-    R_DEV_REGISTRY_URL: "https://rran.bioclinr.com:10020/repository/NEST-R-dev/"
+    R_RELEASE_REGISTRY_URL: "http://rran.bioclinr.com:8081/repository/NEST-R/"
+    R_DEV_REGISTRY_URL: "http://rran.bioclinr.com:8081/repository/NEST-R-dev/"
     R_REGISTRY_USER: NESTPushuser
     R_REGISTRY_PASSWORD:
       from_secret: NEXUS_REGISTRY_PASSWORD
@@ -146,100 +92,121 @@ steps:
     R --vanilla <<- 'EOF'
     library(automation.utils)
 
-    rReleaseRegistryURL <- Sys.getenv("R_RELEASE_REGISTRY_URL")
-    rDevRegistryURL <- Sys.getenv("R_DEV_REGISTRY_URL")
-    registryUser <- Sys.getenv("R_REGISTRY_USER")
-    registryPassword <- Sys.getenv("R_REGISTRY_PASSWORD")
-    branchName <- Sys.getenv("DRONE_BRANCH")
+    rReleaseRegistryURL <- utils.nest::sys_env_non_empty("R_RELEASE_REGISTRY_URL")
+    rDevRegistryURL <- utils.nest::sys_env_non_empty("R_DEV_REGISTRY_URL")
+    registryUser <- utils.nest::sys_env_non_empty("R_REGISTRY_USER")
+    registryPassword <- utils.nest::sys_env_non_empty("R_REGISTRY_PASSWORD")
+    branch_name <- utils.nest::sys_env_non_empty("DRONE_BRANCH")
 
     pkg_dir <- "sourcecode"
-    registry_url <- switch(branchName, master=rReleaseRegistryURL, devel=rDevRegistryURL, stop(glue_with_null("No registry for branch {branchName}")))
-    push_to_rregistry(registryUser, registryPassword, registry_url, pkg_dir, build=FALSE)
+    registry_url <- switch(
+      branch_name,
+      master = rReleaseRegistryURL,
+      devel = rDevRegistryURL,
+      stop(utils.nest::glue_with_null("No registry for branch {branch_name}"))
+    )
+    push_to_rregistry(registryUser, registryPassword, registry_url, pkg_dir, build = FALSE)
     EOF
 
-# build docker image and push it
-- name: docker build and push
-  image: docker:18.06-dind
-  entrypoint:
-    - bash
-  environment:
-    DOCKER_REGISTRY_URL: "docker.bioclinr.com:10021/" # unfortunately cannot put it as a build arg
-    DOCKER_USER: NESTPushuser
-    DOCKER_PASSWORD:
-      from_secret: NEXUS_REGISTRY_PASSWORD
-  volumes:
-  - name: dockersocket
-    path: /var/run/docker.sock
-  commands:
-  - |-
-    image_name="$DOCKER_REGISTRY_URL""$(cat shared_vars/docker_image_name)"
-    cd "docker_dir"
+- name: trigger docker build (does not wait)
+  image: plugins/downstream
+  settings:
+    server: http://${DRONE_SYSTEM_HOSTNAME}
+    token:
+      from_secret: DRONE_SERVER_TOKEN
+    fork: true # trigger new build number
+    repositories:
+    - NEST/docker_images
+    params:
+    - PARAM_UPSTREAM_INFO=${DRONE_REPO}_${DRONE_BUILD_NUMBER}
+    - PARAM_DOCKER_IMAGE_MODE=${DRONE_BRANCH}
+    wait: true
+    timeout: 10 #time to wait to start build if another build is running, otherwise fails
 
-    pwd
-    echo "Image name is $image_name"
-
-    # we added --no-cache option below
-    # function add_build_time() {
-    #   # This function can be used to modify a file trivially by adding the build time so that Docker will re-execute whatever is inside it
-    #   # Otherwise, if it uses a command like "install.packages" or "apt-get install", it would not fetch the newest source
-    #   filename="$1"
-    #   sed -i '/# Time of last Docker build: /d' "$filename"
-    #   echo "# Time of last Docker build: $(date)" >> "$filename"
-    # }
-    # add_build_time "setup_environment.R"
-
-    # login needed before everything else because docker might as well use it for building (when pulling the FROM image)
-    docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY_URL"
-    docker build --pull --no-cache -t "$image_name" .
-    docker push "$image_name"
-
-- name: publish github release (master only)
-  image: docker.bioclinr.com:10021/automation/go_github_release:v1
+- name: build pkgdown documentation and push to github
+  image: docker.bioclinr.com:10021/nest/allprojects_${DRONE_BRANCH}:newest_version
   pull: always
   environment:
+    FILESERVER_GITHUB_OWNER: "NEST" #todo: change
+    FILESERVER_GITHUB_REPO_NAME: "docs" #todo: change
+    FILESERVER_GITHUB_API_SERVER: "https://github.roche.com/api/v3"
+    FILESERVER_GITHUB_TOKEN:
+      from_secret: githubFileserverToken
+    FILESERVER_GIT_BRANCH: "master"
+
     GITHUB_REPO_TOKEN:
       from_secret: githubRepoToken
-    GITHUB_API: "https://github.roche.com/api/v3"
+    GITHUB_API_SERVER: "https://github.roche.com/api/v3"
+  volumes:
+  - name: sshkeys
+    path: /root/.ssh
   entrypoint:
-    - bash
+  - bash #to avoid starting RStudio
   commands:
   - |-
-    GIT_TAG_NAME="$(cat shared_vars/git_tag_name)"
-    REPO_NAME="${DRONE_REPO_NAME}"
-    ORGANIZATION_NAME="${DRONE_REPO_NAMESPACE}"
-    RELEASE_DESCR="$(cat shared_vars/github_release_description.md)"
-    PACKAGE_FILENAME=$(echo github_release_dir/*.tar.gz)
+    R --vanilla <<- 'EOF'
+    library(automation.utils)
 
-    echo $GIT_TAG_NAME $REPO_NAME $ORGANIZATION_NAME $RELEASE_DESCR $PACKAGE_FILENAME $GITHUB_API
+    full_repo_name <- utils.nest::sys_env_non_empty("DRONE_REPO")
+    branch_name <- utils.nest::sys_env_non_empty("DRONE_BRANCH")
 
-    # only if file exists
-    # debugging: github-release delete --user NEST --repo automation.utils
-    # may delete if it already exists
-    if [ -f "sourcecode/.CI-FORCE-RELEASE-VERSION" ]; then
-        echo "Releasing an already existing version, so first deleting previous release"
-        github-release delete \
-          --user "$ORGANIZATION_NAME" \
-          --repo "$REPO_NAME" \
-          --tag "$GIT_TAG_NAME"
-    fi
+    push_branch_name <- utils.nest::sys_env_non_empty("FILESERVER_GIT_BRANCH")
+    fileserver_repo_metadata <- github.tools::create_repo_metadata(
+      owner = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_OWNER"),
+      repo = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_REPO_NAME"),
+      github_api_server = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_API_SERVER"),
+      github_token = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_TOKEN"),
+      check_repo_exists = TRUE
+    )
 
-    github-release -v release \
-                --user "$ORGANIZATION_NAME" \
-                --repo "$REPO_NAME" \
-                --tag "$GIT_TAG_NAME" \
-                --name "Release for tag $GIT_TAG_NAME" \
-                --description "$RELEASE_DESCR"
+    pkg_dir <- "sourcecode"
+    build_pkgdown_website(pkg_dir, branch = branch_name)
 
-    github-release -v upload \
-                --user "$ORGANIZATION_NAME" \
-                --repo "$REPO_NAME" \
-                --tag "$GIT_TAG_NAME" \
-                --name "$PACKAGE_FILENAME" \
-                --file "$PACKAGE_FILENAME" \
-                --label "$PACKAGE_FILENAME"
-  when:
-    branch:
-    - master
+    upload_type <- drone_get_upload_type()
+    target_dir <- copy_rdoc_to_remote_git(
+      pkg_dir = pkg_dir,
+      full_repo_name = full_repo_name,
+      upload_type = upload_type,
+      repo_metadata = fileserver_repo_metadata,
+      branch = push_branch_name
+    )
+    doc_url <- get_ghpages_url(repo_metadata = fileserver_repo_metadata, subpath = target_dir)
+    print(utils.nest::glue_with_null("Uploaded documentation to '{doc_url}'"))
+
+    if (upload_type == "temp") {
+      repo_metadata <- github.tools::create_repo_metadata(
+        owner = utils.nest::sys_env_non_empty("DRONE_REPO_NAMESPACE"),
+        repo = utils.nest::sys_env_non_empty("DRONE_REPO_NAME"),
+        github_api_server = utils.nest::sys_env_non_empty("GITHUB_API_SERVER"),
+        github_token = utils.nest::sys_env_non_empty("GITHUB_REPO_TOKEN"),
+        check_repo_exists = TRUE
+      )
+      pr_id <- as.integer(utils.nest::sys_env_non_empty("DRONE_PULL_REQUEST"))
+      commit_sha <- utils.nest::sys_env_non_empty("DRONE_COMMIT_SHA")
+      update_pr_temp_doc_description(doc_url, pr_id, commit_sha, repo_metadata = repo_metadata)
+    }
+
+    EOF
+
+- name: check docker build succeeded
+  image: python:3
+  environment:
+    PLUGIN_UPSTREAM_INFO: "${DRONE_REPO}_${DRONE_BUILD_NUMBER}"
+    PLUGIN_DRONE_SERVER: "http://${DRONE_SYSTEM_HOSTNAME}"
+    PLUGIN_REPO_NAME: NEST/docker_images
+    PLUGIN_MAX_NB_TRIALS: -1
+    PLUGIN_TIMEOUT: 10
+  entrypoint:
+  - bash
+  commands:
+  - cd /tmp
+  - wget https://raw.github.roche.com/mordigm/automationTest/master/droneio/docker_containers/check_downstream/wait_for_downstream.py
+  - python wait_for_downstream.py
+  - rm wait_for_downstream.py
+# export PLUGIN_UPSTREAM_INFO=mordigm/nesttest-testRpkg2_103
+# export PLUGIN_DRONE_SERVER=http://ci2.bioclinr.com
+# wget https://raw.github.roche.com/mordigm/automationTest/master/droneio/docker_containers/wait_for_downstream/wait_for_downstream.py
+# python wait_for_downstream.py
 
 ---
 
@@ -259,26 +226,29 @@ trigger:
   event:
   - pull_request
 
+image_pull_secrets:
+- .dockerconfigjson
+
+clone:
+  disable: true
+
 volumes:
 # need to set repository as trusted in drone.io
 - name: sshkeys
   host:
     path: /home/ubuntu/sshkeys # this is wrt host drone is running on (because docker daemon is shared!!)
 
-clone:
-  disable: true
-
 steps:
-- name: Check branch condition (pre-release)
-  image: python:3
-  entrypoint:
-  - bash
-  commands:
-  - |
-    cat <<- EOF > test.py
-    if (('${DRONE_TARGET_BRANCH}' == 'master') and (not '${DRONE_SOURCE_BRANCH}'.startswith('pre-release'))): print("Only pre-release can merge into master"); quit(1)
-    EOF
-  - python test.py
+# - name: Check branch condition (pre-release)
+#   image: python:3
+#   entrypoint:
+#   - bash
+#   commands:
+#   - |
+#     cat <<- EOF > test.py
+#     if (('${DRONE_TARGET_BRANCH}' == 'master') and (not '${DRONE_SOURCE_BRANCH}'.startswith('pre-release'))): print("Only pre-release can merge into master"); quit(1)
+#     EOF
+#   - python test.py
 
 - name: Info about run
   image: alpine
@@ -300,11 +270,12 @@ steps:
   # see https://stackoverflow.com/questions/51342289/proper-way-to-programmatically-check-if-git-branches-can-be-merged
   - GIT_EDITOR=true git merge "$DRONE_COMMIT_SHA" #without origin, may give an error
   - git status
-  - '[ "$(git diff --name-only origin/"$DRONE_TARGET_BRANCH" -- .drone.yml)" == "" ] || exit 1' # fail if yaml is different from target branch
+  #todo: add again
+  #- '[ "$(git diff --name-only origin/"$DRONE_TARGET_BRANCH" -- .drone.yml)" == "" ] || exit 1' # fail if yaml is different from target branch
 
 
-- name: check version of code correct for deployment on master
-  image: docker.bioclinr.com:10021/automation/rstudio_automation:v1
+- name: check code
+  image: docker.bioclinr.com:10021/nest/allprojects_${DRONE_BRANCH}:newest_version
   pull: always
   environment:
     GITHUB_REPO_TOKEN:
@@ -317,45 +288,36 @@ steps:
     R --vanilla <<- 'EOF'
     library(automation.utils)
 
-    execute_pipeline_failiffalse(list(
-      "Check that version is correct for deploy"=function(stage_info, previous_return_value) version_correct_for_deploy("sourcecode", drone_get_repo_metadata(), verbose=TRUE),
-      "Check that changelog was updated"=function(stage_info, previous_return_value) changelog_updated("sourcecode")
-    ))
+    branch_name <- utils.nest::sys_env_non_empty("DRONE_BRANCH")
 
-    EOF
-  when:
-    branch:
-    - master
+    pkg_dir <- "sourcecode"
 
-- name: check code
-  image: docker.bioclinr.com:10021/automation/rstudio_automation:v1
-  pull: always
-  entrypoint:
-  - bash
-  commands:
-  - |-
-    R --vanilla <<- 'EOF'
-    library(automation.utils)
-
-    get_package_version("sourcecode")
-    execute_pipeline_failiffalse(list(
-      "Check the package"=function(stage_info, previous_return_value) check_pkg("sourcecode")$passed
-    ))
-
+    if (identical(branch_name, "master")) {
+      #todo: add again
+      # utils.nest::stop_if_not(list(version_correct_for_deploy(pkg_dir, drone_get_repo_metadata()), "The version is not correct for the deploy"))
+      # utils.nest::stop_if_not(list(changelog_updated(pkg_dir), "The changelog does not contain the version of the release."))
+    }
+    #todo: remove installed package of same name??
+    utils.nest::stop_if_not(list(utils.nest::check_pkg(pkg_dir)$passed, "The package does not pass the checks."))
     EOF
 
 - name: build pkgdown documentation and push to github
-  image: docker.bioclinr.com:10021/automation/rstudio_automation:v1
+  image: docker.bioclinr.com:10021/nest/allprojects_${DRONE_BRANCH}:newest_version
   pull: always
   environment:
+    FILESERVER_GITHUB_OWNER: "NEST" #todo: change
+    FILESERVER_GITHUB_REPO_NAME: "docs" #todo: change
+    FILESERVER_GITHUB_API_SERVER: "https://github.roche.com/api/v3"
     FILESERVER_GITHUB_TOKEN:
       from_secret: githubFileserverToken
-    FILESERVER_GITHUB_USER: "mordigm"
-    FILESERVER_GIT_HTTPS_URL: "https://github.roche.com/NEST/docs.git"
-    FILESERVER_GIT_BRANCH: master
+    FILESERVER_GIT_BRANCH: "master"
+
     GITHUB_REPO_TOKEN:
       from_secret: githubRepoToken
     GITHUB_API_SERVER: "https://github.roche.com/api/v3"
+  volumes:
+  - name: sshkeys
+    path: /root/.ssh
   entrypoint:
   - bash #to avoid starting RStudio
   commands:
@@ -363,24 +325,43 @@ steps:
     R --vanilla <<- 'EOF'
     library(automation.utils)
 
-    # we camelcase them because they are read from the environment
-    fullRepoName <- Sys.getenv("DRONE_REPO")
-    branchName <- Sys.getenv("DRONE_BRANCH")
-    fileserverGithubUser <- Sys.getenv("FILESERVER_GITHUB_USER")
-    fileserverGithubToken <- Sys.getenv("FILESERVER_GITHUB_TOKEN")
-    fileserverGitHttpsURL <- Sys.getenv("FILESERVER_GIT_HTTPS_URL")
-    fileserverGitBranch <- Sys.getenv("FILESERVER_GIT_BRANCH")
-    organizationName <- Sys.getenv("DRONE_REPO_NAMESPACE")
+    full_repo_name <- utils.nest::sys_env_non_empty("DRONE_REPO")
+    branch_name <- utils.nest::sys_env_non_empty("DRONE_BRANCH")
+
+    push_branch_name <- utils.nest::sys_env_non_empty("FILESERVER_GIT_BRANCH")
+    fileserver_repo_metadata <- github.tools::create_repo_metadata(
+      owner = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_OWNER"),
+      repo = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_REPO_NAME"),
+      github_api_server = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_API_SERVER"),
+      github_token = utils.nest::sys_env_non_empty("FILESERVER_GITHUB_TOKEN"),
+      check_repo_exists = TRUE
+    )
 
     pkg_dir <- "sourcecode"
-    build_pkgdown_website(pkg_dir, branch = branchName)
+    build_pkgdown_website(pkg_dir, branch = branch_name)
 
-    upload_type <- get_upload_type()
-    doc_url <- push_R_package_doc_git(pkg_dir, upload_type, organizationName, fileserverGithubUser, fileserverGithubToken, fileserverGitHttpsURL, fileserverGitBranch)
-    print(glue_with_null("Uploaded documentation to '{doc_url}'"))
+    upload_type <- drone_get_upload_type()
+    target_dir <- copy_rdoc_to_remote_git(
+      pkg_dir = pkg_dir,
+      full_repo_name = full_repo_name,
+      upload_type = upload_type,
+      repo_metadata = fileserver_repo_metadata,
+      branch = push_branch_name
+    )
+    doc_url <- get_ghpages_url(repo_metadata = fileserver_repo_metadata, subpath = target_dir)
+    print(utils.nest::glue_with_null("Uploaded documentation to '{doc_url}'"))
 
     if (upload_type == "temp") {
-      update_PR_temp_doc_description(doc_url, Sys.getenv("DRONE_PULL_REQUEST"), Sys.getenv("DRONE_COMMIT_SHA"), drone_get_repo_metadata())
+      repo_metadata <- github.tools::create_repo_metadata(
+        owner = utils.nest::sys_env_non_empty("DRONE_REPO_NAMESPACE"),
+        repo = utils.nest::sys_env_non_empty("DRONE_REPO_NAME"),
+        github_api_server = utils.nest::sys_env_non_empty("GITHUB_API_SERVER"),
+        github_token = utils.nest::sys_env_non_empty("GITHUB_REPO_TOKEN"),
+        check_repo_exists = TRUE
+      )
+      pr_id <- as.integer(utils.nest::sys_env_non_empty("DRONE_PULL_REQUEST"))
+      commit_sha <- utils.nest::sys_env_non_empty("DRONE_COMMIT_SHA")
+      update_pr_temp_doc_description(doc_url, pr_id, commit_sha, repo_metadata = repo_metadata)
     }
 
     EOF
@@ -405,6 +386,9 @@ trigger:
 clone:
   disable: true
 
+image_pull_secrets:
+- .dockerconfigjson
+
 steps:
 - name: Info about run
   image: alpine
@@ -424,7 +408,7 @@ steps:
   - '[ "$(git diff --name-only origin/master -- .drone.yml)" == "" ] || exit 1' # fail if yaml is different from master
 
 - name: extensive check of code
-  image: docker.bioclinr.com:10021/automation/rstudio_automation:v1
+  image: docker.bioclinr.com:10021/nest/allprojects:v1
   pull: always
   environment:
     EXTENSIVE_TESTING: true
@@ -437,9 +421,7 @@ steps:
     library(automation.utils)
 
     get_package_version("sourcecode")
-    execute_pipeline_failiffalse(list(
-      "Check the package"=function(stage_info, previous_return_value) check_pkg("sourcecode")$passed
-    ))
+    utils.nest::stop_if_not(list(check_pkg("sourcecode")$passed, "Check the package"))
 
     EOF
 
