@@ -93,7 +93,8 @@ Viewer(tbl2)
 # Example 3 - when all observations are non-responders
 ADRS <- data.frame(
 rsp = FALSE,
-arm = rep(c("A", "B"), each = 200)
+arm = rep(c("A", "B"), each = 200),
+stringsAsFactors = FALSE
 )
 
 t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
