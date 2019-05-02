@@ -1,3 +1,4 @@
+^\.CI-FORCE-RELEASE-VERSION$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
