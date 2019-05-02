@@ -17,9 +17,14 @@ annotation on top of Kaplan-Meier grob
 library(random.cdisc.data)
 
 ADSL <- radsl(seed = 1)
-ADSL$RACE <- factor(sapply(as.character(ADSL$RACE), function(x) {
-  if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
-}))
+ADSL$RACE <- factor(
+  vapply(as.character(ADSL$RACE),
+         function(x) {
+           if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
+         },
+         character(1)
+  )
+)
 
 ADTTE <- radtte(ADSL, seed = 2)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
