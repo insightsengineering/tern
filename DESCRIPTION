@@ -17,30 +17,30 @@ Authors@R: c(
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
 Depends:
   R (>= 3.3),
-  survival,
+  ggplot2,
   grid,
   rtables (>= 0.1.1),
-  ggplot2
+  survival
 Imports:
   dplyr,
   glue,
+  grDevices,
+  gridExtra,
   magrittr,
   methods,
-  utils,
   rlang,
-  stats,
-  grDevices,
   scales,
-  gridExtra
+  stats,
+  utils
 Suggests:
-  random.cdisc.data (>= 0.2.0),
-  tibble,
-  testthat,
-  test.nest,
-  knitr,
-  rmarkdown,
   forcats,
-  lattice
+  lattice,
+  knitr,
+  random.cdisc.data (>= 0.2.0),
+  rmarkdown,
+  test.nest,
+  testthat,
+  tibble
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
