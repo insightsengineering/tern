@@ -19,7 +19,8 @@
 #' @references \link[dplyr]{join}
 #'
 #' @importFrom dplyr select full_join
-#' @importFrom magrittr %<>%
+#' @importFrom magrittr %<>% %>%
+#' @importFrom glue glue
 #' @export
 safe_join <- function(x, y, by = NULL, method = full_join, ...) {
   stopifnot(is.function(method))
@@ -40,10 +41,12 @@ safe_join <- function(x, y, by = NULL, method = full_join, ...) {
 #' @importFrom dplyr arrange
 #' @importFrom rlang parse_expr
 check_intersect_cols_identical <- function(x, y, exclude_columns, keys) {
-  validate(
-      need(all(keys %in% names(x)), "One key variable is not selected anymore for merging."))
-  validate(
-      need(all(keys %in% names(y)), "One key variable is not selected anymore for merging."))
+  if (!all(keys %in% names(x))) {
+    stop("One key variable is not selected anymore for merging.")
+  }
+  if (!all(keys %in% names(y))) {
+    stop("One key variable is not selected anymore for merging.")
+  }
 
   # checks that intersecting columns are identical
   # for this, it first orders the columns by the rowid of the dataset y (therefore y needs a dataname)

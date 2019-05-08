@@ -22,8 +22,12 @@ Depends:
   rtables (>= 0.1.1),
   ggplot2
 Imports:
+  dplyr,
+  glue,
+  magrittr,
   methods,
   utils,
+  rlang,
   stats,
   grDevices,
   scales,
@@ -31,7 +35,6 @@ Imports:
 Suggests:
   random.cdisc.data (>= 0.2.0),
   tibble,
-  dplyr,
   testthat,
   test.nest,
   knitr,
@@ -45,6 +48,6 @@ RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/
 BugReports: https://github.roche.com/NEST/tern/issues
-Additional_repositories: 
+Additional_repositories:
   https://github.com/Roche/rtables,
   https://github.roche.com/NEST/random.cdisc.data
