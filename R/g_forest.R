@@ -36,7 +36,7 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- suppressWarnings(radsl(seed = 1))
 #' ADTTE <- radtte(ADSL, seed = 2)
 #'
 #' ADTTE_f <- ADTTE %>%
