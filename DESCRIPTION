@@ -20,7 +20,8 @@ Depends:
   ggplot2,
   grid,
   rtables (>= 0.1.1),
-  survival
+  survival,
+  utils.nest
 Imports:
   dplyr,
   glue,
