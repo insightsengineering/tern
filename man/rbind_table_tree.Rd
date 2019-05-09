@@ -9,7 +9,7 @@ rbind_table_tree(x, gap = 1)
 \arguments{
 \item{x}{a \code{\link{table_tree}} object}
 
-\item{gap}{argument passed to \code{\link[rtables]{rbind}}.}
+\item{gap}{argument passed to rtables.}
 }
 \description{
 \code{table_tree} obejcts can be named, when recursivly stacking it is sometimes desired to add these names as rrows

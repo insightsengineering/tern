@@ -5,10 +5,18 @@
 \title{Summarize a table_tree object}
 \usage{
 \method{summary}{table_tree}(object, name = "", indent = 0,
-  first = TRUE)
+  first = TRUE, ...)
 }
 \arguments{
 \item{object}{a \code{\link{table_tree}} object}
+
+\item{name}{list element name of table}
+
+\item{indent}{indentation of table}
+
+\item{first}{logical, whether the nested table should be indented}
+
+\item{...}{arguments which are not used}
 }
 \value{
 an \code{rtable} object with the columns \code{class} and \code{dimension}

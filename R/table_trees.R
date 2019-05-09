@@ -78,6 +78,10 @@ has_table_tree_structure <- function(x) {
 #' Summarize a table_tree object
 #'
 #' @param object a \code{\link{table_tree}} object
+#' @param name list element name of table
+#' @param first logical, whether the nested table should be indented
+#' @param indent indentation of table
+#' @param ... arguments which are not used
 #'
 #' @return an \code{rtable} object with the columns \code{class} and \code{dimension}
 #'
@@ -96,7 +100,7 @@ has_table_tree_structure <- function(x) {
 #' nl3 <- list(X = nl2, Y = nl2, Z = nl2)
 #' summary(table_tree(nl3))
 #'
-summary.table_tree <- function(object, name = "", indent = 0, first = TRUE) {
+summary.table_tree <- function(object, name = "", indent = 0, first = TRUE, ...) {
 
   default_header <- c("class", "dimension")
 
@@ -114,7 +118,7 @@ summary.table_tree <- function(object, name = "", indent = 0, first = TRUE) {
     )
     rbindl_rtables(tbls)
   } else {
-    stop(paste("class", class(x), "not valid"))
+    stop(paste("class", class(object), "not valid"))
   }
 
 }
@@ -128,7 +132,7 @@ summary.table_tree <- function(object, name = "", indent = 0, first = TRUE) {
 #'
 #'
 #' @param x a \code{\link{table_tree}} object
-#' @param gap argument passed to \code{\link[rtables]{rbind}}.
+#' @param gap argument passed to rtables.
 #'
 #' @export
 #'
@@ -207,7 +211,7 @@ default_childern_names <- function(x) {
 #' nl3 <- list(X = nl2, Y = nl2, Z = nl2)
 #' rapply_table_tree(table_tree(nl3), rename_rows)
 #'
-rapply_table_tree <- function(x, f, apply_to_NULL = FALSE, ...) {
+rapply_table_tree <- function(x, f, apply_to_NULL = FALSE, ...) { # nolint
   if (is(x, "rtable") || is.null(x)) {
     if (is.null(x) && !apply_to_NULL) NULL else f(x, ...)
   } else {
