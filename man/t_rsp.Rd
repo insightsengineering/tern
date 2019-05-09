@@ -4,7 +4,8 @@
 \alias{t_rsp}
 \title{Response Table}
 \usage{
-t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL)
+t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL,
+  table_tree = FALSE)
 }
 \arguments{
 \item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
@@ -20,6 +21,9 @@ additional statistics partitioned by each response categories. If
 \item{strata_data}{data for stratification factors (categorical variables).
 If \code{NULL}, no stratified analysis is performed. See details for
 further explanation.}
+
+\item{table_tree}{boolean, whether the comound table function should return a table_tree object or the elementary
+table should be stacked.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -92,12 +96,19 @@ Viewer(tbl2)
 
 # Example 3 - when all observations are non-responders
 ADRS <- data.frame(
-rsp = FALSE,
-arm = rep(c("A", "B"), each = 200),
-stringsAsFactors = FALSE
+  rsp = FALSE,
+  arm = rep(c("A", "B"), each = 200),
+  stringsAsFactors = FALSE
 )
 
 t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
+
+
+# table_tree
+tbls <- t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm), table_tree = TRUE)
+summary(tbls)
+rbindl_rtables(tbls, gap = 1)
+
 }
 \seealso{
 \code{\link{t_forest_rsp}}

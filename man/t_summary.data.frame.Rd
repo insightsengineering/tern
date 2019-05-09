@@ -5,7 +5,7 @@
 \title{Variables Summary Table}
 \usage{
 \method{t_summary}{data.frame}(x, col_by, col_N = table(col_by),
-  total = NULL, ...)
+  total = NULL, ..., table_tree = FALSE)
 }
 \arguments{
 \item{x}{data frame with variables to be summarized as described in the
@@ -22,6 +22,9 @@ into columns use the \code{\link{no_by}} function.}
 column will be added with the overall summaries}
 
 \item{...}{arguments passed on to methods}
+
+\item{table_tree}{boolean, whether the comound table function should return a table_tree object or the elementary
+table should be stacked.}
 }
 \description{
 Similar as the demographic table in STREAM
@@ -58,6 +61,12 @@ ADSL_AGE65 <- ADSL \%>\%
   dplyr::filter(AGE > 65)
 t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
           col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
+
+
+tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
+summary(tbls)
+rbind_table_tree(tbls)
+
 }
 \seealso{
 \code{\link{t_summary}},

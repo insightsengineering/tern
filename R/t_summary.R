@@ -66,6 +66,7 @@ t_summary.default <- function(x, # nolint
 #' @param total if not \code{NULL} then it must be a string and an addition
 #'   column will be added with the overall summaries
 #' @param ... arguments passed on to methods
+#' @template param_table_tree
 #'
 #' @details
 #' Every variable in \code{x} will be mapped to a summary table using
@@ -108,11 +109,18 @@ t_summary.default <- function(x, # nolint
 #'   dplyr::filter(AGE > 65)
 #' t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
 #'           col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
+#'
+#'
+#' tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
+#' summary(tbls)
+#' rbind_table_tree(tbls)
+#'
 t_summary.data.frame <- function(x, # nolint
                                  col_by,
                                  col_N = table(col_by), # nolint
                                  total = NULL,
-                                 ...) {
+                                 ...,
+                                 table_tree = FALSE) {
 
   # check argument validity and consitency
   check_col_by(col_by, col_N, min_num_levels = 1)
@@ -125,12 +133,14 @@ t_summary.data.frame <- function(x, # nolint
     col_N <- tmp$col_N # nolint
   }
 
-   rtables_vars <- Map(function(var, varlabel) {
-     tbl <- t_summary(x = var, col_by = col_by, col_N = col_N, ...)
-     insert_rrow(indent_table(tbl, 1), rrow(varlabel))
-   }, x, var_labels(x, fill = TRUE))
+  names(x) <- var_labels(x, fill = TRUE)
+  tbls <- lapply(x, t_summary, col_by = col_by, col_N = col_N, ...)
 
-   rbindl_rtables(rtables_vars, gap = 1)
+  if (table_tree) {
+    table_tree(tbls)
+  } else {
+    rbind_table_tree(tbls)
+  }
 }
 
 #' Summarize Numeric Variables
