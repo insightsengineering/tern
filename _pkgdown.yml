@@ -46,6 +46,13 @@ reference:
       - t_count_unique
       - t_events_summary
       - tabulate_pairwise
+  - title: Table Tree Functions
+    desc: Work with a list or nested list of rtables/NULL, i.e. the leafs are expected to be an rtable or NULL object
+    contents:
+      - table_tree
+      - summary.table_tree
+      - rbind_table_tree
+      - rapply_table_tree
   - title: Analysis Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
