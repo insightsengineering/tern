@@ -71,7 +71,7 @@ check_intersect_cols_identical <- function(x, y, exclude_columns, keys) {
         select(common_cols)
     ))) {
       stop(paste0(
-        "Datasets cannot be merged because the columns '", paste(common_cols, collapse=", ") , ",'
+        "Datasets cannot be merged because the columns '", paste(common_cols, collapse = ", "), ",'
         do not agree. This happens because the same dataset has been filtered twice with two different filters.
         Please ensure that the filter per dataset is identical."
       ))
