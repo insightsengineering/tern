@@ -39,7 +39,8 @@
 #'
 table_tree <- function(x) {
 
-  if (!has_table_tree_structure(x)) {
+  if (!(is(x, "rtable") || is.null(x) || is(x, "table_tree") && is.list(x) ||
+    identical(class(x), "list"))) {
     stop("object is not a nested list of rtables", call. = FALSE)
   }
 
@@ -61,17 +62,6 @@ table_tree <- function(x) {
 #' @export
 print.table_tree <- function(x, ...) {
   print(unclass(x), ...)
-}
-
-
-# used to check if we have a nested list of rtables
-has_table_tree_structure <- function(x) {
-  if (is(x, "table_tree")) {
-    x <- unclass(x)
-  }
-
-  is(x, "rtable") || is.null(x) ||
-    identical(class(x), "list") && all(vapply(x, has_table_tree_structure, logical(1)))
 }
 
 
