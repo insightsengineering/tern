@@ -5,7 +5,7 @@
 \title{Basic Events Table}
 \usage{
 t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients",
-  event_type = "event")
+  event_type = "event", table_tree = FALSE)
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information;
@@ -114,6 +114,33 @@ t_events_per_term_id(
   total = "All Patients",
   event_type = "treatment"
 )
+
+
+# Table Tree
+
+t_events_per_term_id(
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  table_tree = TRUE
+)
+
+
+tbls <- t_events_per_term_id(
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  table_tree = TRUE
+)
+summary(tbls)
+names(tbls)
+tbls[[1]]
+rbind_table_tree(tbls)
+
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_summary}},

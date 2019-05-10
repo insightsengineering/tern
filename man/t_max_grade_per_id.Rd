@@ -68,6 +68,7 @@ t_max_grade_per_id(
   col_N = c(15, 10, 12)
 )
 }
+
 }
 \seealso{
 \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},

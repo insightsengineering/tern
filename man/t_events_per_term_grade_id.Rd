@@ -5,7 +5,7 @@
 \title{Events by Highest Grade Table}
 \usage{
 t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
-  total = "All Patients", grade_levels = 1:5)
+  total = "All Patients", grade_levels = 1:5, table_tree = FALSE)
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information;
@@ -95,6 +95,36 @@ t_events_per_term_grade_id(
   total = "All Patients",
   grade_levels = 1:5
 )
+
+
+
+# Table Trees
+tbls <- t_events_per_term_grade_id(
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  grade_levels = 1:5,
+  table_tree = TRUE
+)
+summary(tbls)
+rbindl_rtables(tbls, gap = 1) # because term is already a rowname
+
+tbls <- t_events_per_term_grade_id(
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  grade_levels = 1:5,
+  table_tree = TRUE
+)
+summary(tbls)
+rbind_table_tree(lapply(tbls, rbindl_rtables, gap = 1))
+
 }
 \seealso{
 \code{\link{t_max_grade_per_id}}, \code{\link{lt_events_per_term_grade_id_1}},

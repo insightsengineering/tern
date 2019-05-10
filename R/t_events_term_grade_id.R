@@ -78,13 +78,44 @@
 #'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
+#'
+#'
+#'
+#' # Table Trees
+#' tbls <- t_events_per_term_grade_id(
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
+#'   grade_levels = 1:5,
+#'   table_tree = TRUE
+#' )
+#' summary(tbls)
+#' rbindl_rtables(tbls, gap = 1) # because term is already a rowname
+#'
+#' tbls <- t_events_per_term_grade_id(
+#'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
+#'   grade_levels = 1:5,
+#'   table_tree = TRUE
+#' )
+#' summary(tbls)
+#' rbind_table_tree(lapply(tbls, rbindl_rtables, gap = 1))
+#'
 t_events_per_term_grade_id <- function(terms,
                                        id,
                                        grade,
                                        col_by,
                                        col_N, # nolint
                                        total = "All Patients",
-                                       grade_levels = 1:5) {
+                                       grade_levels = 1:5,
+                                       table_tree = FALSE) {
   stopifnot(!is.null(terms))
 
   if (is.atomic(terms)) {
@@ -101,7 +132,7 @@ t_events_per_term_grade_id <- function(terms,
     c(irow, nlevels(col_by) + 2, 1)
   }
 
-  if (ncol(terms) == 1) {
+  tbls <- if (ncol(terms) == 1) {
     l_tbls <- lt_events_per_term_grade_id_1(
       term = terms[[1]],
       id = id,
@@ -113,7 +144,7 @@ t_events_per_term_grade_id <- function(terms,
     )
 
     order_tbls <- order_rtables(l_tbls, indices = sort_index, decreasing = TRUE)
-    recursive_stack_rtables(l_tbls[c(1, setdiff(order_tbls, 1))])
+    l_tbls[c(1, setdiff(order_tbls, 1))]
 
   } else if (ncol(terms) == 2) {
 
@@ -138,9 +169,20 @@ t_events_per_term_grade_id <- function(terms,
 
     l_tbls_sorted <- l_s_terms[c(1, setdiff(order_class, 1))]
 
-    recursive_stack_rtables(nl_remove_n_first_rrows(l_tbls_sorted, 1, 2))
+    l_tbls_sorted
   } else {
     stop("currently one or two terms are summported")
+  }
+
+
+  if (table_tree) {
+    table_tree(tbls)
+  } else {
+    if (ncol(terms) == 1) {
+      rbindl_rtables(tbls, gap = 1)
+    } else {
+      rbind_table_tree(lapply(tbls, rbindl_rtables,  gap = 1))
+    }
   }
 
 }
@@ -298,10 +340,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
       tbl <- row_names_as_col(tbl_raw)
       row.names(tbl)[1] <- term_name
 
-      rbind(
-        rtable(tbl_header, rrow(class_name)),
-        indent_table(tbl, 1)
-      )
+      tbl
 
     }, df_terms, names(df_terms))
   }, df_class_term, names(df_class_term))
@@ -500,6 +539,7 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'   col_N = c(15, 10, 12)
 #' )
 #' }
+#'
 t_max_grade_per_id <- function(grade,
                                id,
                                col_by,
