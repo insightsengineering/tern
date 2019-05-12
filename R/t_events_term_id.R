@@ -199,8 +199,8 @@ t_events_per_term_id <- function(terms,
 
     l_tbls_o <- lapply(l_tbls, function(tbl) {
       if (nrow(tbl) > 3) {
-        ord_rrows <- order_rrows(tbl[-c(1:3), ], indices = order_indecies, decreasing = TRUE)
-        tbl[c(1:3, ord_rrows + 3), ] # as label row exists
+        ord_rrows <- order_rrows(tbl[-c(1:2), ], indices = order_indecies, decreasing = TRUE)
+        tbl[c(1:2, ord_rrows + 2), ] # as label row exists
       } else {
         tbl
       }
