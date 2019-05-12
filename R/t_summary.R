@@ -1,8 +1,7 @@
 #' Summarize an Object for Different Groups
 #'
-#' @inheritParams rtables::rtabulate.numeric
+#' @inheritParams t_summary.data.frame
 #' @param x an object to dispatch on
-#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
 #' @param ... arguments passed on to methods
 #'
 #' @export
@@ -33,7 +32,7 @@ t_summary <- function(x,
 #' If there is no explicit method for an object an \code{rtable} with one row with an
 #' appropriate message is returned.
 #'
-#' @inheritParams t_summary
+#' @inheritParams t_summary.data.frame
 #' @param ... not used arguments
 #'
 #' @export
@@ -59,12 +58,10 @@ t_summary.default <- function(x, # nolint
 #'
 #' Similar as the demographic table in STREAM
 #'
-#' @inheritParams t_summary.default
+#' @inheritParams argument_convention
 #' @param x data frame with variables to be summarized as described in the
 #'   details section. If the variable has a \code{label} attribute then it will
 #'   be used for the row name.
-#' @param total if not \code{NULL} then it must be a string and an addition
-#'   column will be added with the overall summaries
 #' @param ... arguments passed on to methods
 #' @template param_table_tree
 #'
@@ -148,14 +145,13 @@ t_summary.data.frame <- function(x, # nolint
 #' Tabulate the number of non-missing observations, mean, sd, median, and range
 #' for different groups.
 #'
-#' @inheritParams rtables::rtabulate.numeric
+#' @inheritParams t_summary.data.frame
 #' @param x numeric variable
-#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
-#' @param total character string that will be used as a label for a column with pooled total population.
-#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
+#'
 #' @template return_rtable
 #'
 #' @export
+#'
 #' @template author_waddella
 #'
 #' @seealso \code{\link{t_summary}},
@@ -214,10 +210,8 @@ t_summary.numeric <- function(x, # nolint
 #' Tabulate the number of non-missing observations, number of observations per level and
 #' percentage.
 #'
-#' @inheritParams t_summary.default
+#' @inheritParams t_summary.data.frame
 #' @param x factor variable
-#' @param total character string that will be used as a label for a column with pooled total population.
-#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @param useNA choose whether missing data (NAs) should be displayed as a level.
 #' @param denominator either n or N for calculating the level associated
 #'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
@@ -322,7 +316,7 @@ t_summary.factor <- function(x, # nolint
 #'
 #' Currently treated as factors
 #'
-#' @inheritParams t_summary.factor
+#' @inheritParams t_summary.data.frame
 #' @param x a character vector
 #' @param ... arguments passed on to \code{\link{t_summary.factor}}
 #'
@@ -346,10 +340,8 @@ t_summary.character <- function(x, # nolint
 #'
 #' Tabulate the range of dates.
 #'
-#' @inheritParams t_summary.default
+#' @inheritParams t_summary.data.frame
 #' @param x a Date object
-#' @param total character string that will be used as a label for a column with pooled total population.
-#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #'
 #' @template author_waddella
 #'
@@ -397,7 +389,7 @@ t_summary.Date <- function(x, # nolint
 #'
 #' Boolean data will be converted to factor
 #'
-#' @inheritParams t_summary.factor
+#' @inheritParams t_summary.data.frame
 #' @param x a logical vector
 #' @param row_name_true character string with row.name for TRUE summary
 #' @param row_name_false character string with row.name for FALSE summary

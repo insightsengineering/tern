@@ -21,16 +21,15 @@ length or number of rows of \code{terms}.}
 \item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character
 string used as a label in the column header for each grade.}
 
-\item{col_by}{group variable that will be used for a column header. \code{col_by}
-has to be a factor and can not be missing. See 'Examples'.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
 \item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
-\item{total}{character string that will be used as a label for a column with
-pooled total population, default is "All Patients". If the levels of col_by are
-the only columns of interest then total should be \code{NULL}}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{grade_levels}{numeric, ordered values of possible of grades in a form
 of \code{x:y}, default is \code{1:5}.}

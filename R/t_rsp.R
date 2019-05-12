@@ -5,8 +5,8 @@
 #' categories, as well as conducts comparisons between groups' response rates
 #' and odds ratio.
 #'
+#' @inheritParams argument_convention
 #' @template param_rsp
-#' @template param_col_by
 #' @param partition_rsp_by factor with one or more response categories, generate
 #'   additional statistics partitioned by each response categories. If
 #'   \code{NULL}, tabulation by each response categories will not be performed.

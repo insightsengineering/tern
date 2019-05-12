@@ -12,7 +12,7 @@ t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL,
 otherwise}
 
 \item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group}
+first \code{level} indicates the reference group.}
 
 \item{partition_rsp_by}{factor with one or more response categories, generate
 additional statistics partitioned by each response categories. If

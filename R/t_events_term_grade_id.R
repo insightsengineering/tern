@@ -9,13 +9,23 @@
 #' (\code{AET04}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
 #'
-#' @inheritParams lt_events_per_term_grade_id_2
+#' @inheritParams argument_convention
 #' @param terms character or factor vector, or dataframe to represent events information;
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 #'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
 #'   column should be lower level term.
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term.
+#' @param id vector of subject identifier. Length of \code{id} must be the same as the
+#'   length or number of rows of \code{terms}.
+#' @param grade grade of adverse event as numeric. \code{var_relabel} is used as the character
+#'   string used as a label in the column header for each grade.
+#' @param col_N numeric vector with information of the number of patients in the
+#'   levels of \code{col_by}. This is useful if there are patients that have no
+#'   adverse events can be accounted for with this argument.
+#' @param grade_levels numeric, ordered values of possible of grades in a form
+#'   of \code{x:y}, default is \code{1:5}.
+#'
 #'
 #' @details
 #' \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects
@@ -194,25 +204,7 @@ t_events_per_term_grade_id <- function(terms,
 #' \code{lt_events_per_term_grade_id_2} returns a nested list of events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #'
-#' @param terms term information as character or factor dataframe, however factor
-#'   levels are not repeated by class, only terms with count > 1 are listed per
-#'   class. Currently \code{terms} can only be a dataframe with 2 columns.
-#'   \code{var_relabel} is used as the character string used as a label in the column header
-#'   for each term.
-#' @param id vector of subject identifier. Length of \code{id} must be the same as the
-#'   length or number of rows of \code{terms}.
-#' @param grade grade of adverse event as numeric. \code{var_relabel} is used as the character
-#'   string used as a label in the column header for each grade.
-#' @param col_by group variable that will be used for a column header. \code{col_by}
-#'  has to be a factor and can not be missing. See 'Examples'.
-#' @param col_N numeric vector with information of the number of patients in the
-#'   levels of \code{col_by}. This is useful if there are patients that have no
-#'   adverse events can be accounted for with this argument.
-#' @param total character string that will be used as a label for a column with
-#'  pooled total population, default is "All Patients". If the levels of col_by are
-#'  the only columns of interest then total should be \code{NULL}
-#' @param grade_levels numeric, ordered values of possible of grades in a form
-#'   of \code{x:y}, default is \code{1:5}.
+#' @inheritParams t_events_per_term_grade_id
 #'
 #' @details
 #' \if{html}{
@@ -333,8 +325,7 @@ lt_events_per_term_grade_id_2 <- function(terms,
 #' \code{lt_events_per_term_grade_id_1} returns a nested list of events tables by max
 #' grade (\code{\link{t_max_grade_per_id}}).
 #'
-#'
-#' @inheritParams lt_events_per_term_grade_id_2
+#' @inheritParams t_events_per_term_grade_id
 #' @param term term information as character or factor, however factor levels
 #'   are not repeated by class, only terms with count > 1 are listed per class.
 #'   \code{var_relabel} is used as the character string used as a label in the
@@ -458,10 +449,9 @@ lt_events_per_term_grade_id_1 <- function(term,
 #' \code{t_max_grade_per_id} is used for deriving adverse events tables, these are returned
 #' as nested lists.
 #'
+#' @inheritParams argument_convention
 #' @param grade a numeric vector with grade values
 #' @param id a vector with id values
-#' @param col_by a factor with values used for column names
-#' @param col_N a vector with total n for each level of \code{col_by}
 #' @param grade_levels a numeric vector used for naming rows for each level of
 #'   grade
 #' @param any_grade add a row that counts any occurrence, it is named \code{-Any

@@ -5,15 +5,9 @@
 #'arm, as well as a hazard ratio and the corresponding 95\% confidence interval
 #'from a Cox proportional hazard model.
 #'
-#' @param tte a vector of time to event data
-#' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
-#'   is censored
+#' @inheritParams argument_convention
 #' @param group_data data frame with one variable per grouping
 #' @param strata_data data frame with stratification variables
-#' @param col_by factor with reference and comparison group information, the
-#'   first \code{level} indicates the reference group
-#' @param total character with the row name of the analysis run on all data. If
-#'   \code{NULL} analysis is omitted.
 #' @param time_unit The unit of median survival time. Default is \code{months}.
 #' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
 #' @param na_omit_group is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.
