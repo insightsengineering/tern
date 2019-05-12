@@ -22,8 +22,6 @@
 #' @param tte vector with numeric time to event data, currently no \code{NA} allowed
 #' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 #'   is censored
-argument_convention <- function(col_by, col_N, total, table_tree, indent, na_rm, tte, is_event) {
+argument_convention <- function(col_by, col_N, total, table_tree, indent, na_rm, tte, is_event) { #nolintr
   NULL
 }
-
-
