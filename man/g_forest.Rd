@@ -62,7 +62,7 @@ tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
+  by = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
   ties = "exact",
   dense_header = TRUE
 )
@@ -91,7 +91,7 @@ ADRS_f <- ADRS \%>\%
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = factor(ADRS_f$ARM),
-  group_data = ADRS_f[, c("SEX", "RACE")]
+  by = ADRS_f[, c("SEX", "RACE")]
 )
 
 tbl

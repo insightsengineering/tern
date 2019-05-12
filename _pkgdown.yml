@@ -40,11 +40,13 @@ reference:
       - t_summary.logical
       - t_summary.character
       - t_summary.Date
-      - t_coxph
-      - t_km
       - t_max_grade_per_id
       - t_count_unique
       - t_events_summary
+      - t_el_forest_tte
+      - t_el_forest_rsp
+      - t_coxph
+      - t_km
       - tabulate_pairwise
   - title: Table Tree Functions
     desc: Work with a list or nested list of rtables/NULL, i.e. the leafs are expected to be an rtable or NULL object

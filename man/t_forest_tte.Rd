@@ -4,9 +4,9 @@
 \alias{t_forest_tte}
 \title{Time-to-event Table as used for Forest Plot}
 \usage{
-t_forest_tte(tte, is_event, col_by, group_data = NULL,
-  strata_data = NULL, total = "ALL", time_unit = "month",
-  ties = "exact", na_omit_group = TRUE, dense_header = FALSE)
+t_forest_tte(tte, is_event, col_by, by, total = "All",
+  strata_data = NULL, ties = "exact", time_unit = "month",
+  dense_header = FALSE, table_tree = FALSE)
 }
 \arguments{
 \item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
@@ -17,25 +17,25 @@ is censored}
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group.}
 
-\item{group_data}{data frame with one variable per grouping}
-
-\item{strata_data}{data frame with stratification variables}
+\item{by}{\code{list} or \code{data.frame} with one factor variable to calculate the \code{t_el_forest_tte}}
 
 \item{total}{character string that will be used as a label for a column with total population. If the levels of
 \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
-\item{time_unit}{The unit of median survival time. Default is \code{months}.}
+\item{strata_data}{currently not supported}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
 
-\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.}
+\item{time_unit}{The unit of median survival time. Default is \code{months}.}
 
-\item{dense_header}{Display the table headers in multiple rows. Default is \code{FALSE}.}
+\item{dense_header}{Display the table headers in multiple rows.}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
+\code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
 }
 \description{
-The time-to-event forest plot table summarizes time-to-event data by groups.
-The function returns event counts and median survival time for each analysis
-arm, as well as a hazard ratio and the corresponding 95\% confidence interval
+The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and
+median survival time for each analysis arm, as well as a hazard ratio and the corresponding 95\% confidence interval
 from a Cox proportional hazard model.
 }
 \details{
@@ -79,7 +79,7 @@ tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  by = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
   dense_header = TRUE
 )
@@ -89,6 +89,20 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
+
+# table tree
+tbls <- t_forest_tte(
+  tte = ADTTE_f$AVAL,
+  is_event = ADTTE_f$CNSR == 0,
+  col_by = ADTTE_f$ARMCD,
+  by = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  ties = "exact",
+  dense_header = TRUE,
+  table_tree = TRUE
+)
+summary(tbls)
+tbl <- rbind_table_tree(lapply(tbls, rbindl_rtables))
+
 }
 \seealso{
 \code{\link{t_tte}}

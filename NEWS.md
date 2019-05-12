@@ -1,3 +1,17 @@
+# tern 0.6.2
+
+* added `table_tree` data structure with accompanying functions `summary.table.tree`, `rbind_table_tree`, and `rapply_table_tree`. Table trees are lists or nested lists of elementary tables.
+* the following functions have now an argument `table_tree = FLASE` in order to return a `table_tree` data object if requested
+  - `t_summary.data.frame`
+  - `t_evenets_per_term_id`, `t_events_per_term_grade_id`
+  - `t_rsp`
+  - `t_forest_tte`
+* refactored `t_fores_tte`& `t_forst_rsp`
+  - renamed argument `group_data` to `by`.
+  - removed argument `na_omit_group`, user needs to this via `droplevels` preprocessing if desired
+
+
+
 # tern 0.6.1
 
 * Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66

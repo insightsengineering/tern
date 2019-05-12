@@ -99,7 +99,7 @@ summary.table_tree <- function(object, name = "", indent = 0, first = TRUE, ...)
   } else if (is.null(object)) {
     rtable(default_header, rrow(name, "NULL", 0, indent = indent))
   } else if (is.list(object)) {
-    object <- default_childern_names(object)
+    object <- ensure_children_named(object)
     tbls <- c(
       if (first) NULL else list(rtable(default_header, rrow(name, indent = indent))),
       Map(function(xi, namei) {
@@ -145,7 +145,7 @@ rbind_table_tree  <- function(x, gap = 1) {
     x
   } else {
 
-    x <- default_childern_names(x)
+    x <- ensure_children_named(x)
 
     tbls <- Filter(Negate(is.null), lapply(x, rbind_table_tree))
 
@@ -162,7 +162,8 @@ rbind_table_tree  <- function(x, gap = 1) {
 }
 
 
-default_childern_names <- function(x) {
+
+ensure_children_named <- function(x) {
   if (is.null(names(x))) {
     names(x) <- rep("<no-name>", length(x))
   }

@@ -209,13 +209,13 @@ wrap_with <- function(x, left, right, as_list = TRUE) {
 
 #' check if all elements in x are factors
 #'
-#' @param x data.frame
+#' @param x data.frame or a list
 #'
 #' @importFrom methods is
 #'
 #' @noRd
 all_as_factor <- function(x) {
-  stopifnot(is.data.frame(x))
+  stopifnot(is.list(x))
 
   is_fct <- vapply(x, is.factor, logical(1))
 
