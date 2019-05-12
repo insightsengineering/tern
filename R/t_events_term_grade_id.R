@@ -232,25 +232,6 @@ t_events_per_term_grade_id <- function(terms,
 #' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
 #'   \code{\link{lt_events_per_term_grade_id_1}}, \code{\link{t_events_per_term_id}}
 #'
-#' @examples
-#'
-#' library(dplyr)
-#' library(random.cdisc.data)
-#'
-#' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4, seed = 2)
-#'
-#' l_tbls <- tern:::lt_events_per_term_grade_id_2(
-#'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
-#'   id = ADAE$USUBJID,
-#'   grade = ADAE$AETOXGR,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
-#'   grade_levels = 1:5
-#' )
-#'
-#' tern:::recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
 lt_events_per_term_grade_id_2 <- function(terms,
                                           id,
                                           grade,
