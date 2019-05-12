@@ -30,6 +30,9 @@ adverse events can be accounted for with this argument.}
 
 \item{event_type}{type of event that is summarized (e.g. adverse event,
 treatment). Default is "event".}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
+\code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link{rtable}} object.

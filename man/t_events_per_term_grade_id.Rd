@@ -33,6 +33,9 @@ adverse events can be accounted for with this argument.}
 
 \item{grade_levels}{numeric, ordered values of possible of grades in a form
 of \code{x:y}, default is \code{1:5}.}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
+\code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link{rtable}} object.
