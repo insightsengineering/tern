@@ -15,13 +15,20 @@
 #' STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 #'
-#' @inheritParams lt_events_per_term_id_2
+#' @inheritParams argument_convention
 #' @param terms character or factor vector, or dataframe to represent events information;
 #'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 #'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
 #'   column should be lower level term.
 #'   \code{var_relabel} is used as the character string used as a label in the column header
 #'   for each term.
+#' @param id vector of subject identifier. Length of \code{id} must be the same as the
+#'   length or number of rows of \code{terms}.
+#' @param col_N numeric vector with information of the number of patients in the
+#'   levels of \code{col_by}. This is useful if there are patients that have no
+#'   adverse events can be accounted for with this argument.
+#' @param event_type type of event that is summarized (e.g. adverse event,
+#'   treatment). Default is "event".
 #'
 #' @details
 #' \code{t_events_per_term_id} includes percentages based on the total number of subjects
@@ -185,15 +192,10 @@ t_events_per_term_id <- function(terms,
 #'
 #' \code{t_count_unique} counts the number of unique elements per cell.
 #'
+#' @inheritParams argument_convention
 #' @param x a vector
-#' @param col_by group variable that will be used for a column header. \code{col_by}
-#'  has to be a factor and can not be missing. See 'Examples'.
-#' @param col_N associated number of elements per level of \code{col_by}
-#' @param na_rm a logical value indicating whether \code{NA} values should be
-#'   removed from \code{x} prior to counting the unique elements per cell
 #' @param row_name a string with the row name to display in the summary table
 #'   that is returned. Default is "number of unique elements."
-#' @param indent non-negative integer where 0 means that the row should not be indented
 #'
 #' @return an \code{rtable}
 #'
@@ -251,12 +253,10 @@ t_count_unique <- function(x,
 #'
 #' \code{t_events_summary} counts the number of unique elements per cell.
 #'
+#' @inheritParams argument_convention
 #' @param term a character vector with optional label attribute
 #' @param id unique subject identifier. If a particular subject has no adverse
 #'   event then that information needs to be added to the \code{col_N} argument.
-#' @param col_by group variable that will be used for a column header.
-#'   \code{col_by} has to be a factor and can not be missing. See 'Examples'.
-#' @param col_N associated number of elements per level of \code{col_by}
 #' @param total_events character string that will be used as a label in the row
 #'   for the total event count. If this is \code{NULL} then this row will be
 #'   removed.
@@ -375,24 +375,7 @@ t_events_summary <- function(term,
 #' \code{lt_events_per_term_grade_id_2} returns a nested list of events tables
 #' by unique id (\code{\link{t_count_unique}}).
 #'
-#'
-#' @param terms term information as character or factor dataframe, however factor
-#'   levels are not repeated by class, only terms with count > 1 are listed per
-#'   class. Currently \code{terms} can only be a dataframe with 2 columns.
-#'   \code{var_relabel} is used as the character string used as a label in the column header
-#'   for each term.
-#' @param id vector of subject identifier. Length of \code{id} must be the same as the
-#'   length or number of rows of \code{terms}.
-#' @param col_by group variable that will be used for a column header. \code{col_by}
-#'  has to be a factor and can not be missing. See 'Examples'.
-#' @param col_N numeric vector with information of the number of patients in the
-#'   levels of \code{col_by}. This is useful if there are patients that have no
-#'   adverse events can be accounted for with this argument.
-#' @param total character string that will be used as a label for a column with
-#'  pooled total population, default is "All Patients". If the levels of col_by are
-#'  the only columns of interest then total should be \code{NULL}
-#' @param event_type type of event that is summarized (e.g. adverse event,
-#'   treatment). Default is "event".
+#' @inheritParams t_events_per_term_id
 #'
 #' @details
 #' \if{html}{

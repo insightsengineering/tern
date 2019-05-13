@@ -12,12 +12,12 @@ t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
 otherwise, \code{FALSE}.}
 
 \item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group}
+first \code{level} indicates the reference group.}
 
 \item{group_data}{data frame with one variable per grouping}
 
-\item{total}{character with the row name of the analysis run on all data. If
-\code{NULL} analysis is omitted.}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.}
 

@@ -10,13 +10,13 @@ t_count_unique(x, col_by, col_N, na_rm = TRUE,
 \arguments{
 \item{x}{a vector}
 
-\item{col_by}{group variable that will be used for a column header. \code{col_by}
-has to be a factor and can not be missing. See 'Examples'.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{associated number of elements per level of \code{col_by}}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
 \item{na_rm}{a logical value indicating whether \code{NA} values should be
-removed from \code{x} prior to counting the unique elements per cell}
+removed from \code{x} prior to counting the unique elements per cell.}
 
 \item{row_name}{a string with the row name to display in the summary table
 that is returned. Default is "number of unique elements."}

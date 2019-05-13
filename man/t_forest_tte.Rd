@@ -9,20 +9,20 @@ t_forest_tte(tte, is_event, col_by, group_data = NULL,
   ties = "exact", na_omit_group = TRUE, dense_header = FALSE)
 }
 \arguments{
-\item{tte}{a vector of time to event data}
+\item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
 
 \item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
 
 \item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group}
+first \code{level} indicates the reference group.}
 
 \item{group_data}{data frame with one variable per grouping}
 
 \item{strata_data}{data frame with stratification variables}
 
-\item{total}{character with the row name of the analysis run on all data. If
-\code{NULL} analysis is omitted.}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{time_unit}{The unit of median survival time. Default is \code{months}.}
 
