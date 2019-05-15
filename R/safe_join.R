@@ -20,7 +20,6 @@
 #'
 #' @importFrom dplyr select full_join
 #' @importFrom magrittr %<>% %>%
-#' @importFrom glue glue
 #' @export
 safe_join <- function(x, y, by = NULL, method = full_join, ...) {
   stopifnot(is.function(method))
@@ -38,8 +37,8 @@ safe_join <- function(x, y, by = NULL, method = full_join, ...) {
   method(x, y, by = by, ...)
 }
 
-#' @importFrom dplyr arrange
-#' @importFrom rlang parse_expr
+#' @importFrom dplyr arrange select
+#' @importFrom magrittr %>%
 check_intersect_cols_identical <- function(x, y, exclude_columns, keys) {
   if (!all(keys %in% names(x))) {
     stop("One key variable is not selected anymore for merging.")
@@ -61,18 +60,18 @@ check_intersect_cols_identical <- function(x, y, exclude_columns, keys) {
 
   if (length(common_cols) > 0) {
 
-    y_row_id_col_name_expr <- parse_expr("rowid") # parse from string into an expression
+    rowid <- NULL # just for package check
 
     if (is.character(all.equal(
       x %>%
-        arrange(!!y_row_id_col_name_expr) %>%
+        arrange(rowid) %>%
         select(common_cols),
       y %>%
-        arrange(!!y_row_id_col_name_expr) %>%
+        arrange(rowid) %>%
         select(common_cols)
     ))) {
-      stop(glue(
-        "Datasets cannot be merged because the columns '{paste(common_cols, collapse=', ')}'
+      stop(paste0(
+        "Datasets cannot be merged because the columns '", paste(common_cols, collapse = ", "), ",'
         do not agree. This happens because the same dataset has been filtered twice with two different filters.
         Please ensure that the filter per dataset is identical."
       ))
