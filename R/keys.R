@@ -24,7 +24,6 @@ keys <- function(x) {
 #' @param value (\code{character}) with keys
 #'
 #' @export
-#' @import random.cdisc.data
 #' @examples
 #' library(random.cdisc.data)
 #' ASL <- radsl()
