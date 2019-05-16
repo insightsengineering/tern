@@ -12,7 +12,8 @@ t_summary(x, col_by, col_N = table(col_by), ...)
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{table(col_by)}.}
 
 \item{...}{arguments passed on to methods}
 }

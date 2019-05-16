@@ -13,7 +13,8 @@
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{table(col_by)}.}
 
 \item{total}{character string that will be used as a label for a column with total population. If the levels of
 \code{col_by} are the only columns of interest then total should be \code{NULL}.}

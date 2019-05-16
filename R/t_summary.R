@@ -105,7 +105,7 @@ t_summary.default <- function(x, # nolint
 #' ADSL_AGE65 <- ADSL %>%
 #'   dplyr::filter(AGE > 65)
 #' t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
-#'           col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
+#'           col_N = table(ADSL_AGE65$ARM), denominator = "N", drop_levels = TRUE)
 #'
 #'
 #' tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)

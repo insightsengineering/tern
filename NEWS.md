@@ -1,7 +1,7 @@
 # tern 0.6.2
 
 * added `table_tree` data structure with accompanying functions `summary.table.tree`, `rbind_table_tree`, and `rapply_table_tree`. Table trees are lists or nested lists of elementary tables.
-* the following functions have now an argument `table_tree = FLASE` in order to return a `table_tree` data object if requested
+* the following functions have now an argument `table_tree = FALSE` in order to return a `table_tree` data object if requested
   - `t_summary.data.frame`
   - `t_evenets_per_term_id`, `t_events_per_term_grade_id`
   - `t_rsp`

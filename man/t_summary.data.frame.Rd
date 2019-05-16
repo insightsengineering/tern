@@ -15,7 +15,8 @@ be used for the row name.}
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{table(col_by)}.}
 
 \item{total}{character string that will be used as a label for a column with total population. If the levels of
 \code{col_by} are the only columns of interest then total should be \code{NULL}.}
@@ -59,7 +60,7 @@ t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", de
 ADSL_AGE65 <- ADSL \%>\%
   dplyr::filter(AGE > 65)
 t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
-          col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
+          col_N = table(ADSL_AGE65$ARM), denominator = "N", drop_levels = TRUE)
 
 
 tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)

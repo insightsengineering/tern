@@ -13,7 +13,8 @@ t_count_unique(x, col_by, col_N, na_rm = TRUE,
 \item{col_by}{factor with reference and comparison group information, the
 first \code{level} indicates the reference group.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{table(col_by)}.}
 
 \item{na_rm}{a logical value indicating whether \code{NA} values should be
 removed from \code{x} prior to counting the unique elements per cell.}
