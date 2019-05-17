@@ -1,20 +1,77 @@
 #' Single element for disposition table
 #'
-#' @inheritParams rtables::rtabulate.numeric
+#' @inheritParams t_summary
 #' @param x a factor or logical vector.
 #' @param col_by The group variable to define columns.
 #' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
 #' @param row.name Only applicable when x is a logical vector. A string to label the row name. Default is "TRUE".
 #' @param indent An integer specifing the spaces before row.name.
-#' @param subset A logical vector with the same length as x that defines the subset
+#' @param subset A logical vector with the same length as x that defines the subset.
+#' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE.
 #' @param ... arguments passed on to methods
 #'
 #' @export
 #'
 #' @examples
 #'
+#' library(random.cdisc.data)
+#' library(dplyr)
+#' library(utils.nest)
+#'
+#' ADSL <- radsl(seed = 1)
+#'
+#' ADSL0 <- ADSL %>%
+#'  mutate(
+#'    COMPSTUD = sample(c('Y','N'),
+#'                      size=nrow(ADSL),
+#'                      replace = TRUE) %>% as.factor,
+#'    STUDONS = sample(c('Alive: On Treatment', 'Alive: In Follow-up', NA),
+#'                     size=nrow(ADSL),
+#'                     replace = TRUE) %>% as.factor,
+#'    STDDRS = sample(c('Death', 'Lost To Follow-Up',
+#'                      'Protocol Violation', 'Withdrawal By Subject',
+#'                      'Other'),
+#'                    size=nrow(ADSL),
+#'                    replace = TRUE) %>% as.factor,
+#'    GOTTRT = ifelse(!is.na(ACTARMCD), 'Y', 'N') %>% as.factor,
+#'    DISTRTFL = sample(c('Y','N'),
+#'                      size=nrow(ADSL),
+#'                      replace = TRUE) %>% as.factor,
+#'    TRTDRS = sample(c('ADVERSE EVENT', 'PROGRESSIVE DISEASE',
+#'                      'PHYSICIAN DECISION', 'LACK OF EFFICACY',
+#'                      'OTHER'),
+#'                    size=nrow(ADSL),
+#'                    replace = TRUE) %>% as.factor,
+#'    STUDONS = case_when(
+#'      COMPSTUD == 'N' ~ STUDONS
+#'    ),
+#'    STDDRS = case_when(
+#'      COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS
+#'    ),
+#'    DISSTDFL = case_when(
+#'      !is.na(STDDRS) ~ "Y"
+#'    ),
+#'    DISTRTFL = case_when(
+#'      GOTTRT == 'Y' ~ DISTRTFL
+#'    ),
+#'    TRTDRS = case_when(
+#'      DISTRTFL == 'Y' ~ TRTDRS
+#'    ),
+#'    DRSCAT = case_when(
+#'      TRTDRS %in% c('ADVERSE EVENT', 'PHYSICIAN DECISION') ~ "Safety",
+#'      !is.na(TRTDRS) ~ "Other"
+#'    )
+#'  ) %>% var_relabel(COMPSTUD = "Complete Study",
+#'                    STUDONS = "On-study Status",
+#'                    DISSTDFL = "Discontinued Study",
+#'                    STDDRS = "Reason for Study \r\nDiscontinuation",
+#'                    GOTTRT = "Received Treatment",
+#'                    DISTRTFL = "Discontinued Treatment",
+#'                    TRTDRS = "Reason for Treatment \r\nDiscontinuation"
+#'                    )
+#'
 #' library(purrr)
-#' dsp <- purrr::partial(t_dsp, col_by = ADSL0$ARM)
+#' dsp <- purrr::partial(t_dsp, col_by = ADSL0$ARM, denominator = "N", total = "All Patients")
 #'
 #' rbind(
 #'   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
@@ -31,8 +88,8 @@
 #' )
 #'
 
-t_dsp <- function(x = x, col_by, col_N = table(col_by), subset = NULL,
-                  indent = 0, row.name = NULL) {
+t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL,
+                  indent = 0, subset = NULL, show_n = FALSE, ... ) {
 
   stopifnot(is.factor(col_by), length(col_N) == nlevels(col_by))
   is.atomic(x) & (is.factor(x) | is.logical(x)) || stop("x is required to be atomic factor or logical vector")
@@ -47,7 +104,7 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), subset = NULL,
   x_anl <- x[subset]
   col_by <- col_by[subset]
 
-  if(is.factor(x) & !is.na(row.name)) {
+  if(is.factor(x) & !is.null(row.name)) {
     warning('x is factor and row.name will be ignored')
   }
   label <- if (is.null(row.name)) {
@@ -61,7 +118,7 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), subset = NULL,
       x = x_anl,
       col_by = col_by,
       col_N = col_N,
-      total = total
+      ...
     )
     row.names(tbl)[2] <- label
 
@@ -75,7 +132,7 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), subset = NULL,
       x = x_anl,
       col_by = col_by,
       col_N = col_N,
-      total = total
+      ...
     )
 
     if(!show_n){
