@@ -63,18 +63,14 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - safe_join
       - combine_levels
       - drop_shared_variables
       - reorder_to_match_id
-      - label
-      - with_label
-      - var_labels
-      - var_labels<-
-      - var_relabel
-      - var_labels_remove
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
+      - argument_convention
       - lt_events_per_term_id_2
       - lt_events_per_term_grade_id_1
       - lt_events_per_term_grade_id_2

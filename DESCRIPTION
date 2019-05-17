@@ -23,12 +23,10 @@ Depends:
   survival
 Imports:
   dplyr,
-  glue,
   grDevices,
   gridExtra,
   magrittr,
   methods,
-  rlang,
   scales,
   stats,
   utils

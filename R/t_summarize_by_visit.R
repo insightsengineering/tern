@@ -3,16 +3,13 @@
 #' This function summarizes test results or change from baseline statistics by
 #' visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01.
 #'
-#' @inheritParams rtables::rtabulate.numeric
+#' @inheritParams argument_convention
 #' @param data data frame with numerical variables to be summarized. If the
 #'   variable has a \code{label} attribute then it will be used as the
 #'   sub-header column name.
 #' @param visit factor with visit names ordered by desired display order in the
 #'   stacked table.
 #' @param id unique subject identifier variable.
-#' @param col_N a \code{table} object with the reference population used for the header of the table.
-#'
-#' @template param_col_by
 #'
 #' @template return_rtable
 #'

@@ -10,16 +10,15 @@
 \arguments{
 \item{x}{numeric variable}
 
-\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
-which levels in \code{col_by} define a column. If data should not be split
-into columns use the \code{\link{no_by}} function.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
-\item{total}{character string that will be used as a label for a column with pooled total population.
-If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
-\item{...}{arguments passed to \code{FUN}}
+\item{...}{arguments passed on to methods}
 }
 \value{
 an \code{\link[rtables]{rtable}} object

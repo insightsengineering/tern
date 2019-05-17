@@ -8,25 +8,25 @@ lt_events_per_term_id_2(terms, id, col_by, col_N, total = "All Patients",
   event_type = "event")
 }
 \arguments{
-\item{terms}{term information as character or factor dataframe, however factor
-levels are not repeated by class, only terms with count > 1 are listed per
-class. Currently \code{terms} can only be a dataframe with 2 columns.
+\item{terms}{character or factor vector, or dataframe to represent events information;
+Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
+For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
+column should be lower level term.
 \code{var_relabel} is used as the character string used as a label in the column header
 for each term.}
 
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the
 length or number of rows of \code{terms}.}
 
-\item{col_by}{group variable that will be used for a column header. \code{col_by}
-has to be a factor and can not be missing. See 'Examples'.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
 \item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
-\item{total}{character string that will be used as a label for a column with
-pooled total population, default is "All Patients". If the levels of col_by are
-the only columns of interest then total should be \code{NULL}}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{event_type}{type of event that is summarized (e.g. adverse event,
 treatment). Default is "event".}
