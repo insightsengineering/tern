@@ -69,6 +69,13 @@ e.g. if any terms are missing. Impute missing values before using \code{t_events
  reported higher level term to the least frequent one. Within each group of higher level term,
  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
  alphabetical order.
+
+\if{html}{
+
+The data is split and table functions are applied to leaf nodes as follows:
+
+\figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
+}
 }
 \examples{
 library(dplyr)

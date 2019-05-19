@@ -47,6 +47,14 @@
 #'  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
 #'  alphabetical order.
 #'
+#' \if{html}{
+#'
+#' The data is split and table functions are applied to leaf nodes as follows:
+#'
+#' \figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
+#' }
+#'
+#'
 #' @return an \code{\link{rtable}} object.
 #'
 #' @export
@@ -142,12 +150,34 @@ t_events_per_term_id <- function(terms,
   stopifnot(!is.null(terms))
   check_col_by(col_by, col_N, 1, total)
 
-  if (is.data.frame(terms) && ncol(terms) == 1) {
-    terms <- terms[[1]]
-  }
-
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
+
+  if (is.atomic(terms)) {
+    term <- terms
+    split_by <- NULL
+  } else {
+    nterms <- ncol(terms)
+    term <- terms[[nterms]]
+    split_by <- if (nterms == 1) {
+      NULL
+    } else {
+      terms[, -nterms]
+    }
+  }
+
+  df <- data.frame(term = term, id = id, col_by = col_by, stringsAsFactors = FALSE)
+
+  if (!is.null(total)) {
+    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+    col_N <- .t$col_N # nolint
+    df <- data.frame(
+      term = .t$x$term,
+      id = paste(.t$x$id, "-", .t$col_by),
+      col_by = .t$col_by,
+      stringsAsFactors = FALSE
+    )
+  }
 
   order_indecies <- if (is.null(total)) {
     c(0, 1)
@@ -155,23 +185,29 @@ t_events_per_term_id <- function(terms,
     c(nlevels(col_by) + 1, 1)
   }
 
-  tbls <- if (is.atomic(terms)) {
 
-    df <- data.frame(term = terms, id = id, col_by = col_by, stringsAsFactors = FALSE)
+  # create the data_tree
+  overall_label <- paste0("- Any ", event_type, " -")
 
-    if (!is.null(total)) {
-      .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
-      col_N <- .t$col_N # nolint
-      df <- data.frame(
-        term = .t$x$term,
-        id = paste(.t$x$id, "-", .t$col_by),
-        col_by = .t$col_by,
-        stringsAsFactors = FALSE
-      )
+  dft <- if (is.null(split_by)) {
+    list(df)
+  } else {
+    dfs <- rsplit(df, by = split_by)
+    data_tree_add_overall(dfs, label = overall_label, set_attr = TRUE)
+  }
+
+
+  tbls <- rapply_data_tree(dft, f = function(df) {
+    is_overall <- if_null_then(attr(df, "overall"), FALSE)
+
+    term <- if (is_overall) {
+      NULL
+    } else {
+      df$term
     }
 
     tbl <- t_events_summary(
-      term = df$term,
+      term = term,
       id = df$id,
       col_by = df$col_by,
       col_N = col_N,
@@ -186,33 +222,22 @@ t_events_per_term_id <- function(terms,
       tbl
     }
 
-  } else if (ncol(terms) == 2) {
+  })
 
-    l_tbls <- lt_events_per_term_id_2(
-      terms = terms,
-      id = id,
-      col_by = col_by,
-      col_N = col_N,
-      total = total,
-      event_type = event_type
-    )
 
-    l_tbls_o <- lapply(l_tbls, function(tbl) {
-      if (nrow(tbl) > 3) {
-        ord_rrows <- order_rrows(tbl[-c(1:2), ], indices = order_indecies, decreasing = TRUE)
-        tbl[c(1:2, ord_rrows + 2), ] # as label row exists
-      } else {
-        tbl
-      }
-    })
+  # l_tbls_o <- lapply(l_tbls, function(tbl) {
+  #   if (nrow(tbl) > 3) {
+  #     ord_rrows <- order_rrows(tbl[-c(1:2), ], indices = order_indecies, decreasing = TRUE)
+  #     tbl[c(1:2, ord_rrows + 2), ] # as label row exists
+  #   } else {
+  #     tbl
+  #   }
+  # })
+  #  sort_rtables(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
 
-    sort_rtables(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
-
-  } else {
-    stop("currently only one or two terms are supported")
-  }
-
-  if (table_tree) {
+  if (is.null(split_by)) {
+    tbls[[1]]
+  } else if (table_tree) {
     table_tree(tbls)
   } else {
     rbind_table_tree(tbls)

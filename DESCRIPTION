@@ -20,16 +20,13 @@ Depends:
   ggplot2,
   grid,
   rtables (>= 0.1.1),
-  survival,
-  utils.nest
+  survival
 Imports:
   dplyr,
-  glue,
   grDevices,
   gridExtra,
   magrittr,
   methods,
-  rlang,
   scales,
   stats,
   utils
