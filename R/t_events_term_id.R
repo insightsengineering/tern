@@ -215,14 +215,18 @@ t_events_per_term_id <- function(terms,
       subjects_with_events = subjects_with_events
     )
 
-    if (nrow(tbl) > 2) {
-      ord_rrows <- order_rrows(tbl[-c(1, 2), ], indices = order_indecies, decreasing = TRUE)
-      tbl[c(1, 2, ord_rrows + 2), ]
-    } else {
-      tbl
-    }
 
   })
+
+
+
+
+  # if (nrow(tbl) > 2) {
+  #   ord_rrows <- order_rrows(tbl[-c(1, 2), ], indices = order_indecies, decreasing = TRUE)
+  #   tbl[c(1, 2, ord_rrows + 2), ]
+  # } else {
+  #   tbl
+  # }
 
 
   # l_tbls_o <- lapply(l_tbls, function(tbl) {

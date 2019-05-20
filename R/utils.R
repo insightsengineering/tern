@@ -432,3 +432,12 @@ add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(c
 has_no_na <- function(x) {
   !any(is.na(x))
 }
+
+
+if_null_then <- function(x, y) {
+  if (is.null(x)) {
+    y
+  } else {
+    x
+  }
+}
