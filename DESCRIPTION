@@ -38,7 +38,8 @@ Suggests:
   rmarkdown,
   test.nest,
   testthat,
-  tibble
+  tibble,
+  purrr
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
