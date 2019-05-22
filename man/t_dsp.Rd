@@ -86,7 +86,7 @@ ADSL0 <- ADSL \%>\%
                    )
 
 library(purrr)
-dsp <- purrr::partial(t_dsp, col_by = ADSL0$ARM, denominator = "N", total = "All Patients")
+dsp <- partial(t_dsp, col_by = ADSL0$ARM, denominator = "N", total = "All Patients")
 
 rbind(
   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
