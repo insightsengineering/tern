@@ -71,7 +71,7 @@
 #'                    )
 #'
 #' library(purrr)
-#' dsp <- purrr::partial(t_dsp, col_by = ADSL0$ARM, denominator = "N", total = "All Patients")
+#' dsp <- partial(t_dsp, col_by = ADSL0$ARM, denominator = "N", total = "All Patients")
 #'
 #' rbind(
 #'   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
@@ -88,8 +88,8 @@
 #' )
 #'
 
-t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL,
-                  indent = 0, subset = NULL, show_n = FALSE, ... ) {
+t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL, # nolint
+                  indent = 0, subset = NULL, show_n = FALSE, ...) {     # nolint
 
   stopifnot(is.factor(col_by), length(col_N) == nlevels(col_by))
   is.atomic(x) & (is.factor(x) | is.logical(x)) || stop("x is required to be atomic factor or logical vector")
@@ -104,8 +104,8 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL,
   x_anl <- x[subset]
   col_by <- col_by[subset]
 
-  if(is.factor(x) & !is.null(row.name)) {
-    warning('x is factor and row.name will be ignored')
+  if (is.factor(x) & !is.null(row.name)) {
+    warning("x is factor and row.name will be ignored")
   }
   label <- if (is.null(row.name)) {
     "TRUE"
@@ -113,7 +113,7 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL,
     row.name
   }
 
-  if(is.logical(x)){
+  if (is.logical(x)) {
     tbl <- t_summary(
       x = x_anl,
       col_by = col_by,
@@ -126,7 +126,7 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL,
     tbl <- tbl[2, ]
 
 
-  }else if(is.factor(x)){
+  } else if (is.factor(x)) {
     x_anl <- droplevels(x_anl)
     tbl <- t_summary(
       x = x_anl,
@@ -135,7 +135,7 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL,
       ...
     )
 
-    if(!show_n){
+    if (!show_n){
       tbl <- tbl[-1, ]
     }
 
@@ -145,4 +145,3 @@ t_dsp <- function(x = x, col_by, col_N = table(col_by), row.name = NULL,
 
   tbl
 }
-
