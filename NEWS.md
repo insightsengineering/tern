@@ -1,5 +1,9 @@
 # tern 0.6.1
 
+* Added disposition elementary table `t_el_disposition`
+
+# tern 0.6.1
+
 * Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66
 * Refactor of all functions to pass `test.nest` tests:
     * changed `width_row.names` argument of `g_forest` function into `width_row_names`
