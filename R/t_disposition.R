@@ -12,6 +12,8 @@
 #' @param denominator either n or N for calculating the level associated
 #'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
 #'   With option n, the number of non-missing records from \code{x} is used as the denominator.
+#' @param total if not \code{NULL} then it must be a string and an addition
+#'   column will be added with the overall summaries
 #'
 #' @export
 #'
