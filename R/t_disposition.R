@@ -8,7 +8,10 @@
 #' @param indent An integer specifing the spaces before row.name.
 #' @param subset A logical vector with the same length as x that defines the subset.
 #' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE.
-#' @param ... arguments passed on to methods
+#' @param useNA choose whether missing data (NAs) should be displayed as a level. Note: NAs will never be counted in small "n"
+#' @param denominator either n or N for calculating the level associated
+#'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
+#'   With option n, the number of non-missing records from \code{x} is used as the denominator.
 #'
 #' @export
 #'
@@ -90,7 +93,7 @@ t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NU
                              indent = 0, subset = NULL, show_n = FALSE, ...) {      # nolint
 
   check_col_by(col_by, col_N)
-  if (!is.atomic(x) & (is.factor(x) | is.logical(x))) {
+  if (!(is.atomic(x) & (is.factor(x) | is.logical(x)))) {
     stop("x is required to be atomic factor or logical vector")
   }
 
