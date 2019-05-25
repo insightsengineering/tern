@@ -15,7 +15,8 @@ t_el_disposition(x = x, col_by, col_N = table(col_by),
 
 \item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
 
-\item{row.name}{Only applicable when x is a logical vector. A string to label the row name. Default is "TRUE".}
+\item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
+Default is "TRUE".}
 
 \item{indent}{An integer specifing the spaces before row.name.}
 
@@ -23,7 +24,8 @@ t_el_disposition(x = x, col_by, col_N = table(col_by),
 
 \item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE.}
 
-\item{useNA}{choose whether missing data (NAs) should be displayed as a level. Note: NAs will never be counted in small "n"}
+\item{useNA}{choose whether missing data (NAs) should be displayed as a level.
+Note: NAs will never be counted in small "n"}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
