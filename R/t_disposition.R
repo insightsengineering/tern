@@ -14,6 +14,7 @@
 #'   With option n, the number of non-missing records from \code{x} is used as the denominator.
 #' @param total if not \code{NULL} then it must be a string and an addition
 #'   column will be added with the overall summaries
+#' @param drop_levels boolean whether to drop zero count levels
 #'
 #' @export
 #'
@@ -75,7 +76,8 @@
 #'                    )
 #'
 #' library(purrr)
-#' dsp <- partial(t_el_disposition, col_by = ADSL0$ARM, denominator = "N", total = "All Patients")
+#' dsp <- partial(t_el_disposition, col_by = ADSL0$ARM, denominator = "N",
+#'  total = "All Patients")
 #'
 #' rbind(
 #'   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
@@ -92,7 +94,8 @@
 #' )
 #'
 t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NULL, # nolint
-                             indent = 0, subset = NULL, show_n = FALSE, ...) {      # nolint
+                             indent = 0, subset = NULL, show_n = FALSE,
+                             drop_levels = TRUE, ...) { # nolint
 
   check_col_by(col_by, col_N)
   if (!(is.atomic(x) & (is.factor(x) | is.logical(x)))) {
@@ -128,7 +131,10 @@ t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NU
     )[2, ]  # n row is not shown in disposition table
 
   } else if (is.factor(x)) {
-    x <- droplevels(x)
+    if (drop_levels) {
+      x <- droplevels(x)
+    }
+
     ttbl <- t_summary.factor(
       x = x,
       col_by = col_by,
