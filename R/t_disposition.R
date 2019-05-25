@@ -86,6 +86,8 @@
 #'   dsp(ADSL0$STUDONS == "Alive: In Follow-up", row.name = "Alive: In follow-up"),
 #'   dsp(ADSL0$DISSTDFL == "Y",  row.name = "Discontinued study"),
 #'   dsp(as.factor(ADSL0$STDDRS), indent = 1),
+#'   #t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM, denominator = "n",
+#'   #   total = "All Patients", indent = 1),
 #'   rrow(),
 #'   dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment"),
 #'   dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
