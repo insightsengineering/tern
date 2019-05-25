@@ -5,6 +5,7 @@ Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
+  person("Jennifer", "Li", email = "li.jing@gene.com", role = "aut"),
   person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
   person("Chendi", "Liao", email = "chendi.liao@roche.com", role = "aut"),
   person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
