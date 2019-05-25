@@ -1,4 +1,4 @@
-# tern 0.6.1
+# tern 0.6.2
 
 * Added disposition elementary table `t_el_disposition`
 
