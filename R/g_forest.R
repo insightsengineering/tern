@@ -66,8 +66,8 @@
 #'
 #' # For response table
 #'
-#' ADSL <- radsl(seed = 1)
-#' ADRS <- radrs(ADSL, seed = 2)
+#' ADSL <- cadsl
+#' ADRS <- cadrs
 #'
 #' ADRS_f <- ADRS %>%
 #'   dplyr::filter(PARAMCD == "OVRINV" & ARMCD %in% c("ARM A","ARM B")) %>%
