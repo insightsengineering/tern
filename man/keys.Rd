@@ -17,7 +17,7 @@ Get object keys
 }
 \examples{
 library(random.cdisc.data)
-ASL <- radsl()
+ASL <- cadsl
 
 keys(ASL) <- c("USUBJID", "STUDYID")
 keys(ASL)

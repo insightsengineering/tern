@@ -72,7 +72,7 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- cadsl
 #' ADQS <- radqs(ADSL, seed = 2) %>%
 #'   dplyr::filter(PARAMCD == "BFIALL")
 #'

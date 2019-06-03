@@ -49,9 +49,9 @@ The time point analysis is based on the Kaplan-Meier estimator.
 \examples{
 \donttest{
 library(random.cdisc.data)
-ADSL <- radsl(seed = 1)
+ADSL <- cadsl
 
-ADTTE <- radtte(ADSL, seed = 2)
+ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 
 tbl <- t_tte(

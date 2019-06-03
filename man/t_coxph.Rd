@@ -18,7 +18,7 @@ object for further annotation on top of Kaplan-Meier grob
 \examples{
 library(random.cdisc.data)
 
-ADSL <- radsl(seed = 1)
+ADSL <- cadsl
 ADSL$RACE <- factor(
   vapply(as.character(ADSL$RACE),
          function(x) {
@@ -28,7 +28,7 @@ ADSL$RACE <- factor(
   )
 )
 
-ADTTE <- radtte(ADSL, seed = 2)
+ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 \donttest{
 fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RACE),

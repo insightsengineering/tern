@@ -29,7 +29,7 @@
 #' library(dplyr)
 #' library(random.cdisc.data)
 #'
-#' ADSL <- radsl(N = 30, seed = 1)
+#' ADSL <- cadsl
 #'
 #' t_summary_by(
 #'  x = ADSL$SEX,
