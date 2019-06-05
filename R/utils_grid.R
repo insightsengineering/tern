@@ -305,7 +305,7 @@ label_panel_grob <- function(label,
       textGrob(
         label,
         x = unit(x, "native"),
-        y = unit(as.numeric(group) / (nlevels(group) + 1), "npc"),
+        y = unit((nlevels(group) - as.numeric(group) + 1) / (nlevels(group) + 1), "npc"),
         gp = gpar(col = col[group]),
         vp = "labelPlot"
       )
