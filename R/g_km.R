@@ -262,15 +262,19 @@ km_curve_grob <- function(kmdata,
     pch <- to_n(pch, ngroup)
     size <- list(to_n(size, ngroup))
     points <- Map(function(x, y, col_i, pch_i, size_i) {
-      pointsGrob(
-        x = x,
-        y = y,
-        pch = pch_i,
-        size = size_i,
-        default.units = "native",
-        gp = gpar(col = col_i),
-        vp =  "curvePlot"
-      )
+      if (length(x) == 0) {
+        nullGrob()
+      } else {
+        pointsGrob(
+          x = x,
+          y = y,
+          pch = pch_i,
+          size = size_i,
+          default.units = "native",
+          gp = gpar(col = col_i),
+          vp =  "curvePlot"
+        )
+      }
     }, kmdata$points_x, kmdata$points_y, col, pch, size)
 
   }
