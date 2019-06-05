@@ -6,7 +6,8 @@
 \usage{
 t_el_disposition(x = x, col_by, col_N = table(col_by),
   row.name = NULL, indent = 0, subset = NULL, show_n = FALSE,
-  useNA = FALSE, drop_levels = TRUE, ...)
+  useNA = FALSE, drop_levels = TRUE, total = NULL,
+  denominator = "N")
 }
 \arguments{
 \item{x}{a factor or logical vector.}
@@ -29,14 +30,12 @@ Note: NAs will never be counted in small "n"}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
-\item{...}{arguments passed on to methods}
+\item{total}{if not \code{NULL} then it must be a string and an addition
+column will be added with the overall summaries}
 
 \item{denominator}{either n or N for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator.
 With option n, the number of non-missing records from \code{x} is used as the denominator.}
-
-\item{total}{if not \code{NULL} then it must be a string and an addition
-column will be added with the overall summaries}
 }
 \description{
 Single element for disposition table
