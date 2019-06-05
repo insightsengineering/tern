@@ -134,7 +134,9 @@ t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NU
       col_by = col_by,
       col_N = col_N,
       row_name_true = label,
-      ...
+      useNA = useNA, drop_levels = drop_levels,
+      total = total, denominator = denominator
+
     )[2, ]  # n row is not shown in disposition table
 
   } else if (is.factor(x)) {
@@ -146,7 +148,8 @@ t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NU
       x = x,
       col_by = col_by,
       col_N = col_N,
-      ...
+      useNA = useNA, drop_levels = drop_levels,
+      total = total, denominator = denominator
     )
 
     if (!show_n) {
