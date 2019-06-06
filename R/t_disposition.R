@@ -101,7 +101,7 @@
 #'
 t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NULL, # nolint
                              indent = 0, subset = NULL, show_n = FALSE, # nolint
-                             useNA = FALSE, drop_levels = TRUE, total = NULL,
+                             useNA = "ifany", drop_levels = TRUE, total = NULL,
                              denominator = "N") {
 
   check_col_by(col_by, col_N)

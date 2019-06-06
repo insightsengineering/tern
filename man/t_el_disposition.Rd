@@ -6,7 +6,7 @@
 \usage{
 t_el_disposition(x = x, col_by, col_N = table(col_by),
   row.name = NULL, indent = 0, subset = NULL, show_n = FALSE,
-  useNA = FALSE, drop_levels = TRUE, total = NULL,
+  useNA = "ifany", drop_levels = TRUE, total = NULL,
   denominator = "N")
 }
 \arguments{
