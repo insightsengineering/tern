@@ -101,8 +101,8 @@
 #'
 t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NULL, # nolint
                              indent = 0, subset = NULL, show_n = FALSE, # nolint
-                             useNA = "ifany", drop_levels = TRUE, total = NULL,
-                             denominator = "N") {
+                             useNA = c("no", "ifany", "always"), drop_levels = TRUE,
+                             total = NULL, denominator = "N") { # nolint
 
   check_col_by(col_by, col_N)
   if (!(is.atomic(x) & (is.factor(x) | is.logical(x)))) {

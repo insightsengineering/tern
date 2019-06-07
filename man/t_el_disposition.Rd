@@ -6,8 +6,8 @@
 \usage{
 t_el_disposition(x = x, col_by, col_N = table(col_by),
   row.name = NULL, indent = 0, subset = NULL, show_n = FALSE,
-  useNA = "ifany", drop_levels = TRUE, total = NULL,
-  denominator = "N")
+  useNA = c("no", "ifany", "always"), drop_levels = TRUE,
+  total = NULL, denominator = "N")
 }
 \arguments{
 \item{x}{a factor or logical vector.}
