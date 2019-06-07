@@ -150,7 +150,7 @@ g_km <- function(fit_km,
       textGrob(
         levels(group),
         x = unit(-nlines_labels + 1, "lines"),
-        y = unit(1:nlevels(group) / (nlevels(group) + 1), "npc"),
+        y = unit(nlevels(group):1 / (nlevels(group) + 1), "npc"),
         just = "left",
         gp = gpar(col = col),
         vp = vpPath("mainPlot", "riskTable", "labelPlot")),
