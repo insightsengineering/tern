@@ -55,6 +55,11 @@ reference:
       - summary.table_tree
       - rbind_table_tree
       - rapply_table_tree
+  - title: Data Tree Functions
+    desc: similar to table trees but now with data.frame/NULL objects as leafs
+      - rsplit
+      - data_tree
+      - rapply_data.tree
   - title: Analysis Helper Functions
     desc: these functions are used by other functions to derive data
     contents:

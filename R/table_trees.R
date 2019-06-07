@@ -38,25 +38,30 @@
 #' }
 #'
 table_tree <- function(x) {
+   tree(x, "rtable", "table_tree")
+}
 
-  if (!(is(x, "rtable") || is.null(x) || is(x, "table_tree") && is.list(x) ||
-    identical(class(x), "list"))) {
-    stop("object is not a nested list of rtables", call. = FALSE)
+tree <- function(x, class_name, tree_name) {
+
+  if (!(is(x, class_name) || is.null(x) || is(x, tree_name) && is.list(x) ||
+        identical(class(x), "list"))) {
+    stop(paste0("object is not a nested list of ", class_name, "s"), call. = FALSE)
   }
 
   cl <- class(x)
   if (cl == "list") {
     structure(
-      lapply(x, table_tree),
-      class = "table_tree"
+      lapply(x, tree, class_name = class_name, tree_name = tree_name),
+      class = tree_name
     )
-  } else if (cl %in% c("table_tree", "rtable", "NULL")) {
+  } else if (cl %in% c(tree_name, class_name, "NULL")) {
     x
   } else {
-    stop("x is not a list, table_tree, rtable, or NULL")
+    stop(paste("x is not a list, ", tree_name, class_name, "or NULL"))
   }
 
 }
+
 
 
 #' @export
@@ -67,10 +72,7 @@ print.table_tree <- function(x, ...) {
 
 #' Summarize a table_tree object
 #'
-#' @param object a \code{\link{table_tree}} object
-#' @param name list element name of table
-#' @param first logical, whether the nested table should be indented
-#' @param indent indentation of table
+#' @inheritParams summary_tree
 #' @param ... arguments which are not used
 #'
 #' @return an \code{rtable} object with the columns \code{class} and \code{dimension}
@@ -91,11 +93,23 @@ print.table_tree <- function(x, ...) {
 #' summary(table_tree(nl3))
 #'
 summary.table_tree <- function(object, name = "", indent = 0, first = TRUE, ...) {
+  summary_tree(object, class_name = "rtable", name = name, indent = indent, first = first)
+}
+
+
+#' Summarize a table_tree object
+#'
+#' @param object a \code{\link{table_tree}} object
+#' @param name list element name of table
+#' @param first logical, whether the nested table should be indented
+#' @param indent indentation of table
+#'
+summary_tree <-  function(object, class_name, name = "", indent = 0, first = TRUE) {
 
   default_header <- c("class", "dimension")
 
-  if (is(object, "rtable")) {
-    rtable(default_header, rrow(name, "rtable", dim(object), indent = indent))
+  if (is(object, class_name)) {
+    rtable(default_header, rrow(name, class_name, paste(dim(object), collapse = " x "), indent = indent))
   } else if (is.null(object)) {
     rtable(default_header, rrow(name, "NULL", 0, indent = indent))
   } else if (is.list(object)) {
@@ -103,7 +117,7 @@ summary.table_tree <- function(object, name = "", indent = 0, first = TRUE, ...)
     tbls <- c(
       if (first) NULL else list(rtable(default_header, rrow(name, indent = indent))),
       Map(function(xi, namei) {
-        summary.table_tree(xi, name = namei, indent = indent + if (first) 0 else 1, first = FALSE)
+        summary_tree(xi, class_name = class_name, name = namei, indent = indent + if (first) 0 else 1, first = FALSE)
       }, object, names(object))
     )
     rbindl_rtables(tbls)
@@ -112,6 +126,8 @@ summary.table_tree <- function(object, name = "", indent = 0, first = TRUE, ...)
   }
 
 }
+
+
 
 
 
