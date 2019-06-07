@@ -88,7 +88,15 @@ data_tree_add_overall <- function(x, label = "- Overall -", set_attr = FALSE) {
   }
 }
 
+#' Recursive Apply A Function to leafs of a Data Tree
+#'
+#' The return value of \code{rapply_data_tree} has the same tree structure as the input \code{data_tree} object.
+#'
+#' @inheritParams rapply_table_tree
+#' @param x a list or nested list of \code{data.frame}, if \code{x} is a \code{data.frame}
+#'
 #' @export
+#'
 rapply_data_tree <- function(x, f, apply_to_NULL = FALSE, ...) { # nolint
     if (is(x, "data.frame") || is.null(x)) {
       if (is.null(x) && !apply_to_NULL) NULL else f(x, ...)

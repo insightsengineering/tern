@@ -20,7 +20,7 @@ remain \code{NULL} leafs.}
 \code{table_tree} object
 }
 \description{
-The return value of \code{rapply_table_tree} has the same tree structure as the input \code{data_tree} object.
+The return value of \code{rapply_table_tree} has the same tree structure as the input \code{table_tree} object.
 }
 \examples{
 

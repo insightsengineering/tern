@@ -172,7 +172,7 @@ ensure_children_named <- function(x) {
 
 #' Recursive Apply A Function to leafs of a Table Tree
 #'
-#' The return value of \code{rapply_table_tree} has the same tree structure as the input \code{data_tree} object.
+#' The return value of \code{rapply_table_tree} has the same tree structure as the input \code{table_tree} object.
 #'
 #' @inheritParams rbind_table_tree
 #' @param f a function to be applied to leafs
