@@ -25,13 +25,12 @@ Default is "TRUE".}
 
 \item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE.}
 
-\item{useNA}{choose whether missing data (NAs) should be displayed as a level.
-Note: NAs will never be counted in small "n"}
+\item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
-\item{total}{if not \code{NULL} then it must be a string and an addition
-column will be added with the overall summaries}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{denominator}{either n or N for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator.

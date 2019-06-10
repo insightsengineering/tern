@@ -1,6 +1,7 @@
 #' Single element for disposition table
 #'
 #' @inheritParams t_summary
+#' @inheritParams t_summary.factor
 #' @param x a factor or logical vector.
 #' @param col_by The group variable to define columns.
 #' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
@@ -9,14 +10,6 @@
 #' @param indent An integer specifing the spaces before row.name.
 #' @param subset A logical vector with the same length as x that defines the subset.
 #' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE.
-#' @param useNA choose whether missing data (NAs) should be displayed as a level.
-#'   Note: NAs will never be counted in small "n"
-#' @param denominator either n or N for calculating the level associated
-#'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-#'   With option n, the number of non-missing records from \code{x} is used as the denominator.
-#' @param total if not \code{NULL} then it must be a string and an addition
-#'   column will be added with the overall summaries
-#' @param drop_levels boolean whether to drop zero count levels
 #'
 #' @export
 #'
