@@ -2,9 +2,7 @@
 #'
 #' @inheritParams t_summary
 #' @inheritParams t_summary.factor
-#' @param x a factor or logical vector.
-#' @param col_by The group variable to define columns.
-#' @param col_N  The column total for each group that is displayed in the table header with (N=xx).
+#' @param x A factor or logical vector
 #' @param row.name Only applicable when x is a logical vector. A string to label the row name.
 #'   Default is "TRUE".
 #' @param indent An integer specifing the spaces before row.name.
@@ -92,12 +90,13 @@
 #'   dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT %in% "Other", indent = 2)
 #' )
 #'
+#'
 t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NULL, # nolint
                              indent = 0, subset = NULL, show_n = FALSE, # nolint
                              useNA = c("no", "ifany", "always"), drop_levels = TRUE, # nolint
                              total = NULL, denominator = "N") { # nolint
 
-  check_col_by(col_by, col_N)
+  check_col_by(col_by, col_N, min_num_levels = 1)
   if (!(is.atomic(x) & (is.factor(x) | is.logical(x)))) {
     stop("x is required to be atomic factor or logical vector")
   }

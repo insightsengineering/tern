@@ -10,11 +10,12 @@ t_el_disposition(x = x, col_by, col_N = table(col_by),
   total = NULL, denominator = "N")
 }
 \arguments{
-\item{x}{a factor or logical vector.}
+\item{x}{A factor or logical vector}
 
-\item{col_by}{The group variable to define columns.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
 \item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
 Default is "TRUE".}
@@ -117,5 +118,6 @@ rbind(
   dsp(ADSL0$DRSCAT == "Other", row.name = "Other", indent = 1),
   dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Other", indent = 2)
 )
+
 
 }
