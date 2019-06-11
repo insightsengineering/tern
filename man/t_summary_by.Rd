@@ -59,7 +59,7 @@ t_summary_by(
 
 ADSL <- ADSL \%>\% select(STUDYID, USUBJID, ARMCD)
 
-ADQS <- radqs(ADSL, seed = 2)
+ADQS <- cadqs
 ADQS_f <- ADQS \%>\%
   dplyr::filter(PARAMCD=="BFIALL")
 
