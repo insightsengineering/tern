@@ -36,8 +36,8 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- suppressWarnings(radsl(seed = 1))
-#' ADTTE <- radtte(ADSL, seed = 2)
+#' ADSL <- cadsl
+#' ADTTE <- cadtte
 #'
 #' ADTTE_f <- ADTTE %>%
 #'   dplyr::filter(PARAMCD == "OS" & ARMCD %in% c("ARM B", "ARM A")) %>%
@@ -66,8 +66,8 @@
 #'
 #' # For response table
 #'
-#' ADSL <- radsl(seed = 1)
-#' ADRS <- radrs(ADSL, seed = 2)
+#' ADSL <- cadsl
+#' ADRS <- cadrs
 #'
 #' ADRS_f <- ADRS %>%
 #'   dplyr::filter(PARAMCD == "OVRINV" & ARMCD %in% c("ARM A","ARM B")) %>%

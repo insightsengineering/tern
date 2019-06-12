@@ -35,7 +35,7 @@ t_summary(
 )
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1)
+ADSL <- cadsl
 
 ADSL$AGE[1:10] <- NA
 

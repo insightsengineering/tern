@@ -23,7 +23,7 @@ Summarize an Object for Different Groups
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1)
+ADSL <- cadsl
 
 t_summary(ADSL$AGE, ADSL$ARMCD)
 t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)

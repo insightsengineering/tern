@@ -16,7 +16,7 @@
 #' @examples
 #' library(random.cdisc.data)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- cadsl
 #' ADSL$RACE <- factor(
 #'   vapply(as.character(ADSL$RACE),
 #'          function(x) {
@@ -26,7 +26,7 @@
 #'   )
 #' )
 #'
-#' ADTTE <- radtte(ADSL, seed = 2)
+#' ADTTE <- cadtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'
 #' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")

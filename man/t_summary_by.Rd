@@ -34,7 +34,7 @@ The individual tables are then stacked together.
 library(dplyr)
 library(random.cdisc.data)
 
-ADSL <- radsl(N = 30, seed = 1)
+ADSL <- cadsl
 
 t_summary_by(
  x = ADSL$SEX,
@@ -59,7 +59,7 @@ t_summary_by(
 
 ADSL <- ADSL \%>\% select(STUDYID, USUBJID, ARMCD)
 
-ADQS <- radqs(ADSL, seed = 2)
+ADQS <- cadqs
 ADQS_f <- ADQS \%>\%
   dplyr::filter(PARAMCD=="BFIALL")
 

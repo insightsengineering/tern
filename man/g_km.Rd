@@ -50,10 +50,10 @@ Create a KM plot for any \code{\link[survival]{survfit}} object.
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl(seed = 1)
+ADSL <- cadsl
 levels(ADSL$RACE) <- strtrim(levels(ADSL$RACE), 10)
 
-ADTTE <- radtte(ADSL, seed = 2)
+ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 
 fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")

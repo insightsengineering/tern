@@ -35,7 +35,7 @@ t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
 library(dplyr)
-ADSL <- radsl(N = 100, seed = 1)
+ADSL <- cadsl
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
 
