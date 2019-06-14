@@ -20,7 +20,7 @@ first \code{level} indicates the reference group.}
 \item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
 Default is "TRUE".}
 
-\item{indent}{An integer specifing the spaces before row.name.}
+\item{indent}{non-negative integer where 0 means that the row should not be indented}
 
 \item{subset}{A logical vector with the same length as x that defines the subset.}
 

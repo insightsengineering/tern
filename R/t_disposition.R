@@ -1,11 +1,10 @@
 #' Single element for disposition table
 #'
-#' @inheritParams t_summary
+#' @inheritParams argument_convention
 #' @inheritParams t_summary.factor
 #' @param x A factor or logical vector
 #' @param row.name Only applicable when x is a logical vector. A string to label the row name.
 #'   Default is "TRUE".
-#' @param indent An integer specifing the spaces before row.name.
 #' @param subset A logical vector with the same length as x that defines the subset.
 #' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE.
 #'
