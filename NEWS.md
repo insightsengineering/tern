@@ -1,3 +1,9 @@
+# tern 0.6.2
+
+* use chached data from `random.cdisc.data` to speed up testing
+* added `t_summary.Date` method
+* added `save_join`
+
 # tern 0.6.1
 
 * Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66

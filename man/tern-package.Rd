@@ -18,10 +18,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Adrian Waddell \email{adrian.waddell@roche.com}
+\strong{Maintainer}: NEST \email{nestcicd@roche.com}
 
 Authors:
 \itemize{
+  \item Adrian Waddell \email{adrian.waddell@roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
   \item Yuyao Song \email{yuyao.song@roche.com}
   \item Chendi Liao \email{chendi.liao@roche.com}
@@ -36,6 +37,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Audrey Boruvka \email{audrey.boruvka@roche.com} [contributor]
+  \item Roche [copyright holder, funder]
 }
 
 }
