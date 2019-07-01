@@ -120,20 +120,19 @@ t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NU
   }
 
   tbl <- if (is.logical(x)) {
-    t_summary.logical(
+    ttbl <- t_summary.logical(
       x = x,
       col_by = col_by,
       col_N = col_N,
       row_name_true = label,
-      useNA = useNA, drop_levels = drop_levels,
+      useNA = useNA, drop_levels = FALSE, # do not drop level since logical will only have levels TRUE and FALSE
       total = total, denominator = denominator
 
     )[2, ]  # n row is not shown in disposition table
 
-  } else if (is.factor(x)) {
-    if (drop_levels) {
-      x <- droplevels(x)
-    }
+    indent(ttbl, indent)
+
+  } else if (is.factor(x) & length(x) > 0) {
 
     ttbl <- t_summary.factor(
       x = x,
@@ -144,12 +143,11 @@ t_el_disposition <- function(x = x, col_by, col_N = table(col_by), row.name = NU
     )
 
     if (!show_n) {
-      ttbl[-1, ]
-    } else {
-      ttbl
+      ttbl <- ttbl[-1, ]
     }
 
+    indent(ttbl, indent)
   }
 
-  indent(tbl, indent)
+
 }
