@@ -56,7 +56,7 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- cadsl
 #' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 #'
 #' ADRS <- radrs(ADSL, seed = 2)

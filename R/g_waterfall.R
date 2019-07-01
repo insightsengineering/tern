@@ -26,11 +26,11 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- cadsl
 #' ADSL_f <- ADSL %>%
 #'   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 #'
-#' ADRS <- radrs(ADSL, seed = 2)
+#' ADRS <- cadrs
 #' ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") %>%
 #'   mutate(pchg = rnorm(1200, 10, 50))
 #'

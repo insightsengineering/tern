@@ -48,7 +48,7 @@ reference:
       - t_el_disposition
       - tabulate_pairwise
   - title: Analysis Helper Functions
-    desc: these functions are used by other functions to derive data
+    desc: these functions are used by other functions to derive data.
     contents:
       - arm
   - title: Graphs Helper Functions

@@ -18,7 +18,6 @@
     * fix examples
     * refactor of internal functions code
 
-
 # tern 0.6.0
 
 * Removed functions `addTable`, `t_summarize_by_visit`, `t_summarize_variables`.
@@ -26,7 +25,6 @@
 * Refactor of `g_km` function, renamed `kmGrob` into `kmCurveGrob`.
 * Refactor `t_events_*` family of functions.
 * Updated examples.
-
 
 # tern 0.5.0.3 
 

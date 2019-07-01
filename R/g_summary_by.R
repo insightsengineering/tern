@@ -24,7 +24,6 @@
 #' @noRd
 #'
 #' @examples
-#' library(random.cdisc.data)
 #'
 #' ANL <- expand.grid(
 #'   VISIT = paste0("visit ", 1:10),

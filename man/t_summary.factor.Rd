@@ -41,7 +41,7 @@ percentage.
 t_summary(iris$Species, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1)
+ADSL <- cadsl
 
 t_summary(ADSL$SEX, ADSL$ARM, total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
