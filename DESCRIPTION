@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.6.1.1000
+Version: 0.6.1.1000 
 Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
@@ -15,7 +15,7 @@ Authors@R: c(
   person("Mark", "Rothe", role = "aut"),
   person("Xiao", "Mu Yo", role = "aut")
   )
-Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
+Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.3),
   ggplot2,
