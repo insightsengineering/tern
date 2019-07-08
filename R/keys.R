@@ -31,6 +31,13 @@ keys <- function(x) {
 #' keys(ASL) <- c("USUBJID", "STUDYID")
 #' keys(ASL)
 `keys<-` <- function(x, value) {
+  stopifnot("data.frame" %in% class(x),
+            all(value %in% names(x)))
+
+  if (any(duplicated(x[,value]))) {
+    stop("keys don't uniquely distinguish the rows,  i.e. some rows share the same keys")
+  }
+
   attr(x, "keys") <- value
   x
 }
