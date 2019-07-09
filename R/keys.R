@@ -31,7 +31,7 @@ keys <- function(x) {
 #' keys(ASL) <- c("USUBJID", "STUDYID")
 #' keys(ASL)
 `keys<-` <- function(x, value) {
-  stopifnot("data.frame" %in% class(x),
+  stopifnot(is.data.frame(x),
             all(value %in% names(x)))
 
   if (any(duplicated(x[,value]))) {
