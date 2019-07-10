@@ -45,6 +45,7 @@ reference:
       - t_max_grade_per_id
       - t_count_unique
       - t_events_summary
+      - t_el_disposition
       - tabulate_pairwise
   - title: Analysis Helper Functions
     desc: these functions are used by other functions to derive data.

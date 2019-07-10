@@ -1,3 +1,7 @@
+# tern 0.6.2
+
+* Added disposition elementary table `t_el_disposition`
+
 # tern 0.6.1
 
 * Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66
