@@ -32,6 +32,7 @@ keys <- function(x) {
 #' keys(ASL)
 `keys<-` <- function(x, value) {
   stopifnot(is.data.frame(x),
+            is.character(value),
             all(value %in% names(x)))
 
   if (any(duplicated(x[, value]))) {
