@@ -34,7 +34,7 @@ keys <- function(x) {
   stopifnot(is.data.frame(x),
             all(value %in% names(x)))
 
-  if (any(duplicated(x[,value]))) {
+  if (any(duplicated(x[, value]))) {
     stop("keys don't uniquely distinguish the rows,  i.e. some rows share the same keys")
   }
 
