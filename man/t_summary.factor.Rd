@@ -11,23 +11,23 @@
 \arguments{
 \item{x}{factor variable}
 
-\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
-which levels in \code{col_by} define a column. If data should not be split
-into columns use the \code{\link{no_by}} function.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
-\item{total}{character string that will be used as a label for a column with pooled total population. If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
 \item{denominator}{either n or N for calculating the level associated
-percentage. With option N, the reference population from \code{col_N} is used as the denominator. 
+percentage. With option N, the reference population from \code{col_N} is used as the denominator.
 With option n, the number of non-missing records from \code{x} is used as the denominator.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
-\item{...}{not used arguments}
+\item{...}{arguments passed on to methods}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -41,7 +41,7 @@ percentage.
 t_summary(iris$Species, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- cadsl
 
 t_summary(ADSL$SEX, ADSL$ARM, total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
@@ -49,7 +49,6 @@ t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 ADSL$SEX[1:10] <- NA
 t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
- 
 }
 \seealso{
 \code{\link{t_summary}},

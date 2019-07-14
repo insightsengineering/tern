@@ -12,9 +12,10 @@ t_max_grade_per_id(grade, id, col_by, col_N, grade_levels = NULL,
 
 \item{id}{a vector with id values}
 
-\item{col_by}{a factor with values used for column names}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{a vector with total n for each level of \code{col_by}}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
 \item{grade_levels}{a numeric vector used for naming rows for each level of
 grade}
@@ -60,7 +61,7 @@ t_max_grade_per_id(
 }
 
 \dontrun{
-# throws an error because grade NA is not in grade_levels 
+# throws an error because grade NA is not in grade_levels
 t_max_grade_per_id(
   grade =  c(1,2,NA),
   id = c(1,2,3),
@@ -68,7 +69,6 @@ t_max_grade_per_id(
   col_N = c(15, 10, 12)
 )
 }
-
 }
 \seealso{
 \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},

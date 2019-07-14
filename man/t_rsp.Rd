@@ -11,66 +11,68 @@ t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL)
 otherwise}
 
 \item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group}
+first \code{level} indicates the reference group.}
 
 \item{partition_rsp_by}{factor with one or more response categories, generate
-additional statistics partitioned by each response categories. If 
+additional statistics partitioned by each response categories. If
 \code{NULL}, tabulation by each response categories will not be performed.}
 
-\item{strata_data}{data for stratification factors (categorical variables). 
-If \code{NULL}, no stratified analysis is performed. See details for 
+\item{strata_data}{data for stratification factors (categorical variables).
+If \code{NULL}, no stratified analysis is performed. See details for
 further explanation.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
 }
 \description{
-The response table function summarizes response data by groups. The function 
-produces frequency counts and rates for responders and each response 
-categories, as well as conducts comparisons between groups' response rates 
+The response table function summarizes response data by groups. The function
+produces frequency counts and rates for responders and each response
+categories, as well as conducts comparisons between groups' response rates
 and odds ratio.
 }
 \details{
-For the test of difference in response rates, Wald confidence 
-  interval with and without continuity correction are both reported. If no 
-  stratification factors are specified, Chi-squared test is performed by 
-  default to test for equality of proportions in response rate between 
-  reference and comparison groups. If stratification factors are added, 
-  Cochran-Mantel-Haensel test is performed instead. Statistics from the 
-  stratificaiton-adjusted test will be reported for the p-value of test of 
-  equal proportions, odds ratio and its corresponding 95\% confidence 
+For the test of difference in response rates, Wald confidence
+  interval with and without continuity correction are both reported. If no
+  stratification factors are specified, Chi-squared test is performed by
+  default to test for equality of proportions in response rate between
+  reference and comparison groups. If stratification factors are added,
+  Cochran-Mantel-Haensel test is performed instead. Statistics from the
+  stratification-adjusted test will be reported for the p-value of test of
+  equal proportions, odds ratio and its corresponding 95\% confidence
   interval.
-  
-  The display order of response categories in partitioned statistics section 
-  inherits the factor level order of \code{partition_rsp_by}. Use 
-  \code{\link[base]{factor}} and its \code{levels} argument to include or 
-  exclude response categories and arrange display order. If response values 
-  contains missing or "Not Evaluable (NE)", 95\% confidence interval will not
+
+  The display order of response categories in partitioned statistics section
+  inherits the factor level order of \code{partition_rsp_by}. Use
+  \code{\link[base]{factor}} and its \code{levels} argument to include or
+  exclude response categories and arrange display order. If response values
+  contains missing or "Non Evaluable (NE)", 95\% confidence interval will not
   be calculated.
 }
 \examples{
 t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 1000, seed = 1)
+ADSL <- cadsl
 
-ADRS <- radrs(ADSL, seed = 2)
+ADRS <- cadrs
 ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI")
 
 # Example 1 - ARM B as reference
 #    "NON CR/PD" response category dropped from partition section since no observations
 #     model with no stratifiaction factors, Chi-square test is performed
 tbl <- t_rsp(
- rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
- col_by = relevel(factor(ADRS_f$ARMCD), "ARM B"),
- partition_rsp_by = droplevels(factor(
-   ADRS_f$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
- ))
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = relevel(factor(ADRS_f$ARMCD), "ARM B"),
+  partition_rsp_by = droplevels(factor(
+    ADRS_f$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE")
+  ))
 )
+
 tbl
+
 \dontrun{
 Viewer(tbl)
-} 
+}
 
 # Example 2 - ARM B as reference, ARM C displayed before ARM A
 #    "NON CR/PD" response category displayed in partition section, "NE" responses
@@ -81,20 +83,21 @@ tbl2 <- t_rsp(
  partition_rsp_by = factor(ADRS_f$AVALC, levels = c("CR", "PR", "SD", "NON CR/PD", "PD")),
  strata_data = ADRS_f[c("RACE")]
 )
+
 tbl2
+
 \dontrun{
 Viewer(tbl2)
-} 
+}
 
 # Example 3 - when all observations are non-responders
 ADRS <- data.frame(
 rsp = FALSE,
-arm = rep(c("A", "B"), each = 200)
+arm = rep(c("A", "B"), each = 200),
+stringsAsFactors = FALSE
 )
 
 t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
-
-
 }
 \seealso{
 \code{\link{t_forest_rsp}}

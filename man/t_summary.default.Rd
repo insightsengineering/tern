@@ -2,28 +2,28 @@
 % Please edit documentation in R/t_summary.R
 \name{t_summary.default}
 \alias{t_summary.default}
-\title{Return an rtable with a no Method Message}
+\title{Return an \code{rtable} with a no Method Message}
 \usage{
 \method{t_summary}{default}(x, col_by, col_N = table(col_by), ...)
 }
 \arguments{
-\item{x}{an object to dispatch on}
+\item{x}{data frame with variables to be summarized as described in the
+details section. If the variable has a \code{label} attribute then it will
+be used for the row name.}
 
-\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
-which levels in \code{col_by} define a column. If data should not be split
-into columns use the \code{\link{no_by}} function.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
 \item{...}{not used arguments}
 }
 \description{
-If there is no explicit method for an object an rtable with one row with an
+If there is no explicit method for an object an \code{rtable} with one row with an
 appropriate message is returned.
 }
 \examples{
 t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
-
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

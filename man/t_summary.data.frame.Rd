@@ -12,19 +12,18 @@
 details section. If the variable has a \code{label} attribute then it will
 be used for the row name.}
 
-\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
-which levels in \code{col_by} define a column. If data should not be split
-into columns use the \code{\link{no_by}} function.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
-\item{total}{if not \code{NULL} then it must be a string and an addition
-column will be added with the overall summaries}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{...}{arguments passed on to methods}
 }
 \description{
-Similiar as the demographic table in STREAM
+Similar as the demographic table in STREAM
 }
 \details{
 Every variable in \code{x} will be mapped to a summary table using
@@ -36,7 +35,7 @@ t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
 library(dplyr)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- cadsl
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
 
@@ -47,19 +46,17 @@ ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
 ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
-         useNA = 'always')
-         
-ADSL$SEX[1:10] <- NA
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", 
-         useNA = 'ifany')
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
-         denominator = "N", useNA = 'ifany')
-         
-ADSL_AGE65 <- ADSL \%>\% filter(AGE > 65)
-t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients", 
-         col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", useNA = 'always')
 
+ADSL$SEX[1:10] <- NA
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", useNA = 'ifany')
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", denominator = "N",
+          useNA = 'ifany')
+
+ADSL_AGE65 <- ADSL \%>\%
+  dplyr::filter(AGE > 65)
+t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
+          col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
 }
 \seealso{
 \code{\link{t_summary}},

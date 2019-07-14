@@ -6,40 +6,40 @@
 \usage{
 t_forest_tte(tte, is_event, col_by, group_data = NULL,
   strata_data = NULL, total = "ALL", time_unit = "month",
-  ties = "exact", na.omit.group = TRUE, dense_header = FALSE)
+  ties = "exact", na_omit_group = TRUE, dense_header = FALSE)
 }
 \arguments{
-\item{tte}{a vector of time to event data}
+\item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
 
 \item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
 
 \item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group}
+first \code{level} indicates the reference group.}
 
 \item{group_data}{data frame with one variable per grouping}
 
 \item{strata_data}{data frame with stratification variables}
 
-\item{total}{character with the row name of the analysis run on all data. If
-\code{NULL} analysis is omitted.}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{time_unit}{The unit of median survival time. Default is \code{months}.}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
 
-\item{na.omit.group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
+\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.}
 
-\item{dense_header}{Display the table headers in mulitple rows. Default is \code{FALSE}.}
+\item{dense_header}{Display the table headers in multiple rows. Default is \code{FALSE}.}
 }
 \description{
-The time-to-event forest plot table summarizes time-to-event data by groups. 
-The function returns event counts and median survival time for each analysis 
-arm, as well as a hazard ratio and the corresponding 95\% confidence interval 
+The time-to-event forest plot table summarizes time-to-event data by groups.
+The function returns event counts and median survival time for each analysis
+arm, as well as a hazard ratio and the corresponding 95\% confidence interval
 from a Cox proportional hazard model.
 }
 \details{
-Cox propotionl hazard model is used for hazard ratio calculation
+Cox proportional hazard model is used for hazard ratio calculation
 
 The returned table contains one row per analysis within a subgroup of data
 (indicated by the row name). The analysis is summarized with the following 9
@@ -47,16 +47,20 @@ columns:
 
 \describe{
   \item{1}{\emph{Total n} the total number of subjects included in analysis population}
-  \item{2-4}{Survival statistics for reference arm, \emph{n} and \emph{Events} are the total number of patients and the number of events in reference arm, respectively.
-  \code{Median (month)} is the survival time estimated by Kaplan-Meier method. Time unit can be modified per study needs.}
+  \item{2-4}{Survival statistics for reference arm, \emph{n} and \emph{Events} are the total number
+of patients and the number of events in reference arm, respectively.
+  \code{Median (month)} is the survival time estimated by Kaplan-Meier method. Time
+ unit can be modified per study needs.}
   \item{5-7}{same analysis as for reference arm now for comparison arm}
-  \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of the ratio of the hazard rate in the comparison group versus that in the reference group.
-   Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio. 
-  Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when comparion arm is better. }
-  \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty 
-  around the measure of effect (Hazard Ratio). Because only a small sample of the overall 
-  population is included in the analysis, by having an upper and lower confidence limit 
-  we can infer that the true treatment effect lies in between. If the 95% confidence interval 
+  \item{8}{\emph{Hazard Ratio} ranges from 0 to infinity. The hazard ratio is an estimate of
+ the ratio of the hazard rate in the comparison group versus that in the reference group.
+   Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio.
+  Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when
+  comparison arm is better. }
+  \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty
+  around the measure of effect (Hazard Ratio). Because only a small sample of the overall
+  population is included in the analysis, by having an upper and lower confidence limit
+  we can infer that the true treatment effect lies in between. If the 95% confidence interval
   includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
 }
 }
@@ -64,16 +68,17 @@ columns:
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl(seed = 1)
+ADSL <- cadsl
 
-ADTTE <- radtte(ADSL, seed = 2)
-ADTTE_f <- filter(ADTTE, PARAMCD == "OS", ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
-  mutate(ARMCD = droplevels(ARMCD))  
+ADTTE <- cadtte
+ADTTE_f <- ADTTE \%>\%
+  dplyr::filter(PARAMCD == "OS", ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
+  mutate(ARMCD = droplevels(ARMCD))
 
 tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
-  col_by = ADTTE_f$ARMCD, 
+  col_by = ADTTE_f$ARMCD,
   group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
   dense_header = TRUE
@@ -84,7 +89,6 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
-
 }
 \seealso{
 \code{\link{t_tte}}

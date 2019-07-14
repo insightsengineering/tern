@@ -11,13 +11,13 @@ t_events_summary(term, id, col_by, col_N,
 \arguments{
 \item{term}{a character vector with optional label attribute}
 
-\item{id}{unique subject identifier. If a particular subject has no adverse 
+\item{id}{unique subject identifier. If a particular subject has no adverse
 event then that information needs to be added to the \code{col_N} argument.}
 
-\item{col_by}{group variable that will be used for a column header.
-\code{col_by} has to be a factor and can not be missing. See 'Examples'.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{associated number of elements per level of \code{col_by}}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
 \item{total_events}{character string that will be used as a label in the row
 for the total event count. If this is \code{NULL} then this row will be
@@ -28,13 +28,12 @@ the row for the total number with at least one event. If this is
 \code{NULL} then this row will be removed.}
 }
 \value{
-an rtable
+an \code{rtable}
 }
 \description{
 \code{t_events_summary} counts the number of unique elements per cell.
 }
 \examples{
-
 t_events_summary(
  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
  id = c(1, 4, 2, 3, 3),
@@ -56,7 +55,6 @@ t_events_summary(
  col_by = factor(c("A", "A", "B", "C", "C")),
  col_N = c(2, 4, 10)
 )
-
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},

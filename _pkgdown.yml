@@ -3,7 +3,7 @@ url: https://pages.github.roche.com/NEST/tern
 template:
   params:
     bootswatch: cerulean
-    
+
 navbar:
   right:
     - icon: fa-github
@@ -47,7 +47,7 @@ reference:
       - t_events_summary
       - tabulate_pairwise
   - title: Analysis Helper Functions
-    desc: these functions are used by other functions to derive data
+    desc: these functions are used by other functions to derive data.
     contents:
       - arm
   - title: Graphs Helper Functions
@@ -56,25 +56,29 @@ reference:
       - decorate_grob
       - decorate_grob_factory
       - decorate_grob_set
-      - splitTextGrob
+      - split_text_grob
       - stack_grobs
       - arrange_grobs
       - draw_grob
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
-      - combine_levels
-      - drop_shared_variables
-      - reorder_to_match_id
       - label
       - with_label
       - var_labels
       - var_labels<-
       - var_relabel
       - var_labels_remove
+      - keys<-
+      - keys
+      - safe_join
+      - combine_levels
+      - drop_shared_variables
+      - reorder_to_match_id
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
+      - argument_convention
       - lt_events_per_term_id_2
       - lt_events_per_term_grade_id_1
       - lt_events_per_term_grade_id_2

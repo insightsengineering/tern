@@ -8,7 +8,7 @@ t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients",
   event_type = "event")
 }
 \arguments{
-\item{terms}{character or factor vector, or dataframe to represent events information; 
+\item{terms}{character or factor vector, or dataframe to represent events information;
 Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
 column should be lower level term.
@@ -18,16 +18,15 @@ for each term.}
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the
 length or number of rows of \code{terms}.}
 
-\item{col_by}{group variable that will be used for a column header. \code{col_by}
-has to be a factor and can not be missing. See 'Examples'.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
 \item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
-\item{total}{character string that will be used as a label for a column with 
-pooled total population, default is "All Patients". If the levels of col_by are 
-the only columns of interest then total should be \code{NULL}}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{event_type}{type of event that is summarized (e.g. adverse event,
 treatment). Default is "event".}
@@ -39,32 +38,36 @@ an \code{\link{rtable}} object.
 This function summarizes number of unique subjects with events and total number of events.
 It creates basic summary of events and can be used for any events data like Adverse Events,
 concomitant medication, medical history, etc.
-Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data 
-to create Adverse Events summary table 
-(AET02, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{STREAM2.x},
+Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data
+to create Adverse Events summary table
+(\code{AET02},
+\href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet02.html#example-report-outputs-aet02-aet02}{
+STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17} ),
-or apply on Concomitatant Medication data to create Concomitant Treatment summary table
-(CMT01, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{STREAM2.x},
+or apply on Concomitant Medication data to create Concomitant Treatment summary table
+(\code{CMT01},
+\href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{
+STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 }
 \details{
-\code{t_events_per_term_id} includes percentages based on the total number of subjects 
-in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+\code{t_events_per_term_id} includes percentages based on the total number of subjects
+in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset such as
-subject level dataset. See the example.  
+subject level dataset. See the example.
 
-Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term 
-(if \code{terms} is two levels) are counted once when counting number of subjects. 
+Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term
+(if \code{terms} is two levels) are counted once when counting number of subjects.
 
-\code{t_events_per_term_id} doesn't deal with data with any non-complete records (has NA's), 
+\code{t_events_per_term_id} doesn't deal with data with any non-complete records (has \code{NA}),
 e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_id}.
-     
+
 \code{t_events_per_term_id} orders data by "All Patients" column from the most commonly
- reported higher level term to the least frequent one. Within each group of higher level term, 
- it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.
+ reported higher level term to the least frequent one. Within each group of higher level term,
+ it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
+ alphabetical order.
 }
 \examples{
-
 library(dplyr)
 library(random.cdisc.data)
 
@@ -100,8 +103,8 @@ t_events_per_term_id(
 ADSL <- radsl(10, seed = 1)
 ADCM <- radcm(ADSL, 5, seed = 4)
 ADCM <- ADCM \%>\%
-       filter(ATIREL == "CONCOMITANT")
-       
+  dplyr::filter(ATIREL == "CONCOMITANT")
+
 t_events_per_term_id(
   terms = ADCM[, c("CMCLAS", "CMDECOD")],
   id = ADCM$USUBJID,
@@ -109,8 +112,7 @@ t_events_per_term_id(
   col_N = table(ADSL$ARM),
   total = "All Patients",
   event_type = "treatment"
-) 
-
+)
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_summary}},

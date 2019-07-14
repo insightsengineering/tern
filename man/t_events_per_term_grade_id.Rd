@@ -8,7 +8,7 @@ t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
   total = "All Patients", grade_levels = 1:5)
 }
 \arguments{
-\item{terms}{character or factor vector, or dataframe to represent events information; 
+\item{terms}{character or factor vector, or dataframe to represent events information;
 Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
 column should be lower level term.
@@ -18,19 +18,18 @@ for each term.}
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the
 length or number of rows of \code{terms}.}
 
-\item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character 
+\item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character
 string used as a label in the column header for each grade.}
 
-\item{col_by}{group variable that will be used for a column header. \code{col_by}
-has to be a factor and can not be missing. See 'Examples'.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
 \item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
-\item{total}{character string that will be used as a label for a column with 
-pooled total population, default is "All Patients". If the levels of col_by are 
-the only columns of interest then total should be \code{NULL}}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{grade_levels}{numeric, ordered values of possible of grades in a form
 of \code{x:y}, default is \code{1:5}.}
@@ -41,32 +40,32 @@ an \code{\link{rtable}} object.
 \description{
 This function summarizes number of unique subjects by highest grade and events term(s).
 Events \code{terms} can be one level term or two level terms (one higher level and one lower level).
-An implementation example is to apply \code{t_events_per_term_grade_id} on Adverse Event Data 
-to create Adverse Events by Highest NCI CTCAE grade table 
-(AET04, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
+An implementation example is to apply \code{t_events_per_term_grade_id} on Adverse Event Data
+to create Adverse Events by Highest \code{NCI CTCAE} grade table
+(\code{AET04}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
 }
 \details{
-\code{t_events_per_term_grade_id} includes percentages based on the total number of subjects 
-in the column heading (i.e. "N=nnn"). \code{col_N} can be explicitly specified to
+\code{t_events_per_term_grade_id} includes percentages based on the total number of subjects
+in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset like
-subject level dataset. See the example.  
+subject level dataset. See the example.
 
-Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term 
+Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term
 (if \code{terms} is two levels) are counted once using the
- greatest intensity reported. 
+ greatest intensity reported.
 
-\code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has NA's), 
+\code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has \code{NA}),
 e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_grade_id}.
-     
-\code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
- reported higher level term to the least frequent one. Within each group of higher level term, 
- it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.   
 
-\code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value 
-in case there was no events reported for particular \code{col_by} and/or 
+\code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
+ reported higher level term to the least frequent one. Within each group of higher level term,
+ it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.
+
+\code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value
+in case there was no events reported for particular \code{col_by} and/or
 \code{grade} category. Use \code{grade_levels} to modify the range of existing
-grades. If data does not have any records with \code{grade} 5 and the intent 
+grades. If data does not have any records with \code{grade} 5 and the intent
 is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 }
 \examples{
@@ -95,8 +94,6 @@ t_events_per_term_grade_id(
   total = "All Patients",
   grade_levels = 1:5
 )
-
-
 }
 \seealso{
 \code{\link{t_max_grade_per_id}}, \code{\link{lt_events_per_term_grade_id_1}},

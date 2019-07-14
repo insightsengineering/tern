@@ -1,8 +1,9 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.6.1
+Version: 0.6.2
 Authors@R: c(
-  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
+  person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
+  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
   person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
@@ -12,31 +13,34 @@ Authors@R: c(
   person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
   person("Carolyn", "Zhang", email = "carolyn.zhang@duke.ed", role = "aut"),
   person("Mark", "Rothe", role = "aut"),
-  person("Xiao", "Mu Yo", role = "aut")
+  person("Xiao", "Mu Yo", role = "aut"),
+  person("Roche", role = c("cph", "fnd"))
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
 Depends:
   R (>= 3.3),
-  survival,
-  grid,
-  rtables (>= 0.1.1)
-Imports:
-  methods,
-  utils,
-  stats,
-  grDevices,
   ggplot2,
-  scales,
-  gridExtra
-Suggests:
-  random.cdisc.data (>= 0.2.0),
-  tibble,
+  grid,
+  rtables (>= 0.1.2),
+  survival
+Imports:
   dplyr,
-  testthat,
-  knitr,
-  rmarkdown,
+  grDevices,
+  gridExtra,
+  magrittr,
+  methods,
+  scales,
+  stats,
+  utils
+Suggests:
   forcats,
-  lattice
+  lattice,
+  knitr,
+  random.cdisc.data (>= 0.2.1),
+  rmarkdown,
+  test.nest (>= 0.1),
+  testthat,
+  tibble
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -44,6 +48,6 @@ RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/
 BugReports: https://github.roche.com/NEST/tern/issues
-Additional_repositories: 
+Additional_repositories:
   https://github.com/Roche/rtables,
   https://github.roche.com/NEST/random.cdisc.data

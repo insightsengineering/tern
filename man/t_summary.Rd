@@ -9,11 +9,10 @@ t_summary(x, col_by, col_N = table(col_by), ...)
 \arguments{
 \item{x}{an object to dispatch on}
 
-\item{col_by}{a \code{\link{factor}} of length \code{nrow(x)} that defines
-which levels in \code{col_by} define a column. If data should not be split
-into columns use the \code{\link{no_by}} function.}
+\item{col_by}{factor with reference and comparison group information, the
+first \code{level} indicates the reference group.}
 
-\item{col_N}{The column total for each group that is displayed in the table header with (N=xx).}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
 
 \item{...}{arguments passed on to methods}
 }
@@ -24,12 +23,11 @@ Summarize an Object for Different Groups
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1) 
+ADSL <- cadsl
 
 t_summary(ADSL$AGE, ADSL$ARMCD)
 t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
 with(ADSL, t_summary(AGE > 65, ARMCD))
-
 }
 \seealso{
 \code{\link{t_summary.data.frame}},

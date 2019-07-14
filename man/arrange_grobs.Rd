@@ -31,6 +31,7 @@ arrange_grobs(..., grobs = list(...), ncol = NULL, nrow = NULL,
 Arrange grobs as a new grob with n*m (rows*cols) layout
 }
 \examples{
+library(grid)
 
 num <- lapply(1:9, textGrob)
 grid.newpage()
@@ -55,5 +56,4 @@ vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
 grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 
 showViewport()
-
 }

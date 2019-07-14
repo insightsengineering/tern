@@ -18,10 +18,9 @@ This function is useful to ensure that two datasets have the same subjects
 ordered in the same way
 }
 \examples{
-
 A <- data.frame(USUBJID=paste0("id-",1:10), STUDYID = "A", stringsAsFactors = FALSE)
 B <- data.frame(USUBJID=paste0("id-",10:1), STUDYID = "A", stringsAsFactors = FALSE)
- 
+
 reorder_to_match_id(A, B)
 
 \dontrun{
@@ -36,6 +35,4 @@ E <- B
 E$USUBJID[2] <- "id-10"
 reorder_to_match_id(A, E)
 }
-
-
 }

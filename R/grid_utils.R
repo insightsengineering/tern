@@ -1,5 +1,3 @@
-
-
 tern_grob <- function(x) {
   class(x) <- unique(c("ternGrob", class(x)))
   x

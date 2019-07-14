@@ -5,23 +5,23 @@
 \title{Response Table as used for Forest Plot}
 \usage{
 t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
-  na.omit.group = TRUE, dense_header = FALSE)
+  na_omit_group = TRUE, dense_header = FALSE)
 }
 \arguments{
 \item{rsp}{is a boolean vector. If \code{TRUE}, observation is a response,
 otherwise, \code{FALSE}.}
 
 \item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group}
+first \code{level} indicates the reference group.}
 
 \item{group_data}{data frame with one variable per grouping}
 
-\item{total}{character with the row name of the analysis run on all data. If
-\code{NULL} analysis is omitted.}
+\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
-\item{na.omit.group}{is boolean. Default is \code{TRUE}, do not display NA's as a category.}
+\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.}
 
-\item{dense_header}{Display the table headers in mulitple rows. Default is \code{FALSE}.}
+\item{dense_header}{Display the table headers in multiple rows. Default is \code{FALSE}.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -64,24 +64,24 @@ the following 9 columns:
   effect lies in between. If the 95% confidence interval includes 1, then we
   say that the difference between two arms is not significant at a
   significance level of 0.05.}
-  
+
 }
 }
 \examples{
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl(seed = 1)
+ADSL <- cadsl
 ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 
 ADRS <- radrs(ADSL, seed = 2)
-ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\% 
-  filter(ARM != 'C: Combination') \%>\%
+ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
+  dplyr::filter(ARM != 'C: Combination') \%>\%
   mutate(ARM = droplevels(ARM))
-  
+
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ADRS_f$ARM), 
+  col_by = factor(ADRS_f$ARM),
   group_data = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
 )
 
@@ -90,7 +90,6 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
-   
 }
 \seealso{
 \code{\link{t_rsp}}

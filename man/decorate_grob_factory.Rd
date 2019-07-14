@@ -27,9 +27,6 @@ pf <- decorate_grob_factory(
 grid.newpage(); grid.draw(pf(NULL))
 grid.newpage(); grid.draw(pf(NULL))
 grid.newpage(); grid.draw(pf(NULL))
-\dontrun{
-grid.newpage(); grid.draw(pf(NULL))
-}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
