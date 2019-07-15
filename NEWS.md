@@ -1,5 +1,7 @@
 # tern next release
 
+* Added disposition elementary table `t_el_disposition`
+* 
 # tern 0.6.2
 
 * use chached data from `random.cdisc.data` to speed up testing

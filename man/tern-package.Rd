@@ -24,6 +24,7 @@ Authors:
 \itemize{
   \item Adrian Waddell \email{adrian.waddell@roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
+  \item Jennifer Li \email{li.jing@gene.com}
   \item Yuyao Song \email{yuyao.song@roche.com}
   \item Chendi Liao \email{chendi.liao@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
