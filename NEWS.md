@@ -1,6 +1,12 @@
-# tern 0.6.2
+# tern next release
 
 * Added disposition elementary table `t_el_disposition`
+* 
+# tern 0.6.2
+
+* use chached data from `random.cdisc.data` to speed up testing
+* added `t_summary.Date` method
+* added `save_join`
 
 # tern 0.6.1
 

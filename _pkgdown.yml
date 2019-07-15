@@ -64,6 +64,14 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - label
+      - with_label
+      - var_labels
+      - var_labels<-
+      - var_relabel
+      - var_labels_remove
+      - keys<-
+      - keys
       - safe_join
       - combine_levels
       - drop_shared_variables

@@ -367,9 +367,10 @@ t_summary.Date <- function(x, # nolint
     col_N <- tmp$col_N # nolint
   }
 
-  tbl <- rtables:::rtabulate_default(x, col_by, FUN = function(x) {
-    paste(range(na.omit(x)), collapse = " to ")
-  }, row.name = "range of dates", ...)
+  df <- data.frame(date = x)
+  tbl <- rtabulate(df, row_by = no_by("range of dates"), col_by = col_by, FUN = function(x) {
+    paste(range(na.omit(x$date)), collapse = " to ")
+  }, ...)
 
   header_add_N(tbl, col_N)
 
