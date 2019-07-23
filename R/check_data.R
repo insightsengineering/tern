@@ -31,7 +31,7 @@ check_same_n <- function(..., omit_null = TRUE) {
 
   if (length(unique(n)) > 1) {
     sel <- which(n != n[1])
-    stop("dimension missmatch:", paste(names(n)[sel], collapse = ", "), " do not have N=", n[1])
+    stop("dimension mismatch:", paste(names(n)[sel], collapse = ", "), " do not have N=", n[1])
   }
 
   TRUE
@@ -78,7 +78,7 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 # if total is non-null then it can not be in the levels of col_by
-check_col_by <- function(col_by,
+check_col_by_old <- function(col_by,
                          col_N, # nolint
                          min_num_levels = 2,
                          total = NULL) {
@@ -91,6 +91,31 @@ check_col_by <- function(col_by,
   )
 
   TRUE
+}
+
+# checks col_by and col_N to be consistent
+# col_by must be a matrix of booleans
+# checks that there are no empty levels and at least a specified number of levels
+check_col_by <- function(x,
+                         col_by,
+                         col_N, # nolint
+                         min_num_levels = 2) {
+  stopifnot(is.data.frame(col_by))
+
+  if (is.data.frame(x)) {
+    stopifnot(nrow(col_by) == nrow(x))
+  } else {
+    stopifnot(nrow(col_by) == length(x))
+  }
+
+  stopifnot(
+    ncol(col_by) >= min_num_levels,
+    length(col_N) == ncol(col_by),
+    all(vapply(col_by, function(col) is.logical.vector(col), logical(1))),
+    !any(is.na(col_by)) && !("" %in% colnames(col_by))
+  )
+
+  invisible(NULL)
 }
 
 

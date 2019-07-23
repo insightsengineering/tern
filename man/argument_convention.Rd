@@ -8,13 +8,14 @@ argument_convention(col_by, col_N, total, table_tree, indent, na_rm, tte,
   is_event)
 }
 \arguments{
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{table(col_by)}.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\item{total}{(deprecated in favor of \code{col_by}) character string that will be used as a label for a column with total population. If the levels of
 \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a

@@ -4,18 +4,23 @@
 \alias{t_summary.default}
 \title{Return an \code{rtable} with a no Method Message}
 \usage{
-\method{t_summary}{default}(x, col_by, col_N = table(col_by), ...)
+\method{t_summary}{default}(x, col_by, col_N = table(col_by),
+  total = NULL, ...)
 }
 \arguments{
 \item{x}{data frame with variables to be summarized as described in the
 details section. If the variable has a \code{label} attribute then it will
 be used for the row name.}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{table(col_by)}.}
+
+\item{total}{(deprecated in favor of \code{col_by}) character string that will be used as a label for a column with total population. If the levels of
+\code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{...}{not used arguments}
 }
@@ -25,6 +30,7 @@ appropriate message is returned.
 }
 \examples{
 t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

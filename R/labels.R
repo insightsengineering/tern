@@ -55,23 +55,23 @@ with_label <- function(x, label) {
 var_labels <- function(x, fill = FALSE) {
   stopifnot(is.data.frame(x))
 
-  y <- Map(function(var, name) {
-    lbl <- attr(var, "label")
+  y <- Map(function(col, colname) {
+    label <- attr(col, "label")
 
-    if (is.null(lbl)) {
+    if (is.null(label)) {
       if (fill) {
         name
       } else {
         NA_character_
       }
     } else {
-      if (!is.character(lbl) && !(length(lbl) == 1)) {
-        stop("label for variable ", name, "is not a character string")
+      if (!is.character(label) && !(length(label) == 1)) {
+        stop("label for variable ", colname, "is not a character string")
       }
-      as.vector(lbl)
+      as.vector(label)
     }
 
-  }, x, names(x))
+  }, x, colnames(x))
 
   labels <- unlist(y, recursive = FALSE, use.names = TRUE)
 
@@ -87,7 +87,7 @@ var_labels <- function(x, fill = FALSE) {
 #' Set Label Attributes of All Variables in a \code{data.frame}
 #'
 #' Variable labels can be stored as a \code{label} attribute for each variable.
-#' This functions sets all non-missing variable labels in a \code{data.frame}
+#' This functions sets all non-missing (non-NA) variable labels in a \code{data.frame}
 #'
 #' @inheritParams var_labels
 #' @param value new variable labels, \code{NA} removes the variable label
@@ -112,6 +112,7 @@ var_labels <- function(x, fill = FALSE) {
     ncol(x) == length(value)
   )
 
+  # across columns of x
   for (j in seq_along(x)) {
     attr(x[[j]], "label") <- if (!is.na(value[j])) {
       value[j]
@@ -140,13 +141,14 @@ var_labels <- function(x, fill = FALSE) {
 #' x <- var_relabel(iris, Sepal.Length = "Sepal Length of iris flower")
 #' var_labels(x)
 var_relabel <- function(x, ...) {
+  # todo: make this function more readable / code easier
   stopifnot(is.data.frame(x))
 
   dots <- list(...)
   varnames <- names(dots)
   stopifnot(!is.null(varnames))
 
-  map_varnames <- match(varnames, names(x))
+  map_varnames <- match(varnames, colnames(x))
   if (any(is.na(map_varnames))) {
     stop("variables: ", paste(varnames[is.na(map_varnames)], collapse = ", "), " not found")
   }

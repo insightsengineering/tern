@@ -328,7 +328,7 @@ to_group_color <- function(col, grps) {
   } else if (length(col) == length(grps)) {
     col
   } else {
-    stop("dimension missmatch")
+    stop("dimension mismatch")
   }
   names(col) <- as.character(grps)
   col

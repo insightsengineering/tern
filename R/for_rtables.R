@@ -118,7 +118,7 @@ row_names_as_col <- function(tbl, header_label) {
   if (missing(header_label)) {
     header_label <- rep("", nr_h)
   } else if (length(header_label) != nr_h) {
-    stop("dimension missmatch")
+    stop("dimension mismatch")
   }
 
   h <- do.call(rheader, lapply(header_label, function(x) rrow("", x)))

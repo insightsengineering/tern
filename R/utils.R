@@ -342,7 +342,7 @@ to_n <- function(x, n) {
   } else if (length(x) == n) {
     x
   } else {
-    stop("dimension missmatch")
+    stop("dimension mismatch")
   }
 }
 

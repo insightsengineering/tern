@@ -21,7 +21,7 @@
 #' @exportClass node
 #' @name node-class
 #' @rdname node-class
-setClass("node", slots = c(name = "character", content = "ANY", children = "list"))
+setClass("node", slots = c(name = "ANY", content = "ANY", children = "list"))
 # only called when method new is called
 
 #' Children must not be null
@@ -31,7 +31,10 @@ setClass("node", slots = c(name = "character", content = "ANY", children = "list
 setValidity("node", function(object) {
   all(
     # if it has > 0 children, no child is null
+    is.character(object@name) ||
+      (is(object@name, "invisible_node_name") && is.character(unclass(object@name))),
     !any(vapply(object@children, is.null, logical(1))),
+    all(vapply(object@children, is, logical(1), "node")),
     # check all names are unique
     length(union(names(object@children), c())) == length(names(object@children)),
     # check names of children agree with list
@@ -69,6 +72,16 @@ node <- function(name, content, children) {
   #names(children) <- vapply(children, function(child) child@name, character(1))
   new("node", name = name, content = content, children = unname(children))
 }
+
+#todo: remove again
+# # get a new node with the specified fields updated
+# copy_node <- function(node, name = NULL, content = NULL, children = NULL) {
+#   node(
+#     name = `if`(is.null(name), node@name, name),
+#     content = `if`(is.null(content), node@content, content),
+#     children = `if`(is.null(children), node@children, children)
+#   )
+# }
 
 #' Create a summary of the object
 #'
@@ -130,6 +143,7 @@ setGeneric(
   function(x, f, ...) standardGeneric("rapply_tree"),
   signature = "x"
 )
+
 #' f is applied to the content of each node and a new node of class 'target_obj_class' is created
 #' with children applied recursively
 #' f takes as argument the content and the path to the node and ...
@@ -327,3 +341,49 @@ setMethod(`[[`, signature = c("node"), function(x, i, j, ..., return_content = T
   do.call(`[[`, args = c(list(x = children[[ indices[[1]] ]]), indices[-1], list(return_content = return_content)))
 })
 
+# node_name that will not be displayed, also true when converted to rtable
+invisible_node_name <- function(name) {
+  stopifnot(is.character(name))
+  structure(name, class = "invisible_node_name")
+}
+
+#' Converts the object to an rtable
+#'
+#' @param x object
+#'
+#' @export to_rtable
+setGeneric(
+  "to_rtable",
+  function(x, ...) standardGeneric("to_rtable"),
+  signature = "x"
+)
+
+#' Specific to nodes
+#'
+#' @param ... additional args needed for conversion
+#'
+#' @examples
+#' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
+#' n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
+#' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
+#' n2 <- node(name = "D", content = c(1:3), children = list(n11, n12, n13))
+#'
+#' to_rtable(n2) # not working because not a tree of rtables
+#'
+#' @export to_rtable
+#' @rdname to_rtable
+setMethod("to_rtable", signature = "node", definition = function(x, ...) {
+  gap <- 1
+
+  stopifnot(is.null(x@content) || is(x@content, "rtable"))
+
+  tbls <- c(list(x@content), lapply(x@children, to_rtable))
+  tbl <- rbindl_rtables(tbls, gap = gap)
+  if (is(x@name, "invisible_node_name")) {
+    insert_rrow(indent_table(tbl, 1), rrow(x@name))
+  }
+})
+
+setMethod("to_rtable", signature = "rtable", definition = function(x, ...) {
+  x
+})

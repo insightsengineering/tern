@@ -10,13 +10,14 @@
 \arguments{
 \item{x}{numeric variable}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{table(col_by)}.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
+\item{total}{(deprecated in favor of \code{col_by}) character string that will be used as a label for a column with total population. If the levels of
 \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{...}{arguments passed on to methods}
@@ -33,13 +34,16 @@ for different groups.
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
+library(rtables)
 ADSL <- radsl(N = 100, seed = 1)
 
 t_summary(ADSL$AGE, ADSL$ARM)
-t_summary(ADSL$AGE, ADSL$ARM, total = "All")
+t_summary(ADSL$AGE, col_by = add_total_by(factor_to_matrix_by(ADSL$ARM), label = "All"))
+t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
 
 ADSL$AGE[1:10] <- NA
 t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
+
 }
 \seealso{
 \code{\link{t_summary}},
