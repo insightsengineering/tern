@@ -22,7 +22,7 @@
 #' with(ADSL, t_summary(AGE > 65, ARMCD))
 t_summary <- function(x,
                       col_by,
-                      col_N = default_col_N(col_by), # nolint
+                      col_N = get_N(col_by), # nolint
                       ...) {
   UseMethod("t_summary", x)
 }
@@ -40,9 +40,9 @@ treat_total <- function(x, col_by, total) {
   }
 }
 
-default_col_N <- function(col_by) {
-  stopifnot(is.data.frame(col_by))
-  colSums(col_by)
+get_N <- function(col_by) {
+  stopifnot(is.factor(col_by) || is.data.frame(col_by))
+  colSums(col_by_to_matrix(col_by))
 }
 # total makes things quite a bit more complicated
 
@@ -66,7 +66,7 @@ default_col_N <- function(col_by) {
 #' @importFrom rtables col_by_to_matrix
 t_summary.default <- function(x, # nolint
                               col_by,
-                              col_N = default_col_N(col_by), # nolint
+                              col_N = get_N(col_by), # nolint
                               total = NULL,
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
@@ -115,7 +115,7 @@ t_summary.default <- function(x, # nolint
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' library(rtables)
-#' ADSL <- radsl(N = 100, seed = 1)
+#' ADSL <- cadsl # radsl(N = 100, seed = 1)
 #'
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by  = by_all("All"), col_N = nrow(ADSL))
 #'
@@ -146,8 +146,7 @@ t_summary.default <- function(x, # nolint
 #' @importFrom rtables col_by_to_matrix
 t_summary.data.frame <- function(x, # nolint
                                  col_by,
-                                 col_N = default_col_N(col_by), # nolint
-                                 total = NULL,
+                                 col_N = get_N(col_by), # nolint
                                  ...,
                                  table_tree = FALSE) {
   col_by <- col_by_to_matrix(col_by, x)
@@ -212,7 +211,7 @@ t_summary.data.frame <- function(x, # nolint
 #' @importFrom rtables col_by_to_matrix
 t_summary.numeric <- function(x, # nolint
                               col_by,
-                              col_N = default_col_N(col_by),
+                              col_N = get_N(col_by),
                               total = NULL,
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
@@ -269,7 +268,7 @@ t_summary.numeric <- function(x, # nolint
 #' t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
 t_summary.factor <- function(x, # nolint
                              col_by,
-                             col_N = default_col_N(col_by), # nolint
+                             col_N = get_N(col_by), # nolint
                              total = NULL,
                              useNA = c("no", "ifany", "always"), # nolint
                              denominator = c("n", "N"),
@@ -317,4 +316,73 @@ t_summary.factor <- function(x, # nolint
   }
 
   header_add_N(tbl, col_N)
+}
+
+#' Summarize Character Data
+#'
+#' Currently treated as factors
+#'
+#' @inheritParams t_summary.data.frame
+#' @param x a character vector
+#' @param ... arguments passed on to \code{\link{t_summary.factor}}
+#'
+#' @template author_waddella
+#'
+#' @export
+#'
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary_by}}
+t_summary.character <- function(x, # nolint
+                                col_by,
+                                col_N = table(col_by), # nolint
+                                total = NULL,
+                                ...) {
+  t_summary(as.factor(x), col_by, col_N, total, ...)
+}
+
+#' Summarize Boolean Data
+#'
+#' Boolean data will be converted to factor
+#'
+#' @inheritParams t_summary.data.frame
+#' @param x a logical vector
+#' @param row_name_true character string with row.name for TRUE summary
+#' @param row_name_false character string with row.name for FALSE summary
+#' @param ... arguments passed on to \code{\link{t_summary.factor}}
+#
+#' @template author_waddella
+#'
+#' @export
+#'
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'
+#' @examples
+#' t_summary(
+#'  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
+#'  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
+#' )
+#'
+#' library(random.cdisc.data)
+#' ADSL <- cadsl
+#'
+#' ADSL$AGE[1:10] <- NA
+#'
+#' with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
+#' with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany",
+#'                      row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
+t_summary.logical <- function(x, # nolint
+                              col_by,
+                              col_N = table(col_by), # nolint
+                              total = NULL,
+                              row_name_true = "TRUE",
+                              row_name_false = "FALSE",
+                              ...) {
+
+  xf <- factor(x, levels = c(TRUE, FALSE), labels = c(row_name_true, row_name_false))
+  t_summary(xf, col_by, col_N, total, ...)
 }

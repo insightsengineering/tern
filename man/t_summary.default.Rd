@@ -4,7 +4,7 @@
 \alias{t_summary.default}
 \title{Return an \code{rtable} with a no Method Message}
 \usage{
-\method{t_summary}{default}(x, col_by, col_N = table(col_by),
+\method{t_summary}{default}(x, col_by, col_N = default_col_N(col_by),
   total = NULL, ...)
 }
 \arguments{
@@ -23,6 +23,9 @@ and \code{add_total_by}.}
 \code{col_by} are the only columns of interest then total should be \code{NULL}.}
 
 \item{...}{not used arguments}
+}
+\value{
+rtable
 }
 \description{
 If there is no explicit method for an object an \code{rtable} with one row with an

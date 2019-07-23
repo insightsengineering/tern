@@ -4,7 +4,7 @@
 \alias{treat_total}
 \title{adds col_by to col_by if it is non-null}
 \usage{
-treat_total(col_by, total)
+treat_total(x, col_by, total)
 }
 \description{
 adds col_by to col_by if it is non-null

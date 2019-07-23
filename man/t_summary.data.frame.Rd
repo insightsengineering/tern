@@ -4,7 +4,7 @@
 \alias{t_summary.data.frame}
 \title{Variables Summary Table}
 \usage{
-\method{t_summary}{data.frame}(x, col_by, col_N = table(col_by),
+\method{t_summary}{data.frame}(x, col_by, col_N = default_col_N(col_by),
   total = NULL, ..., table_tree = FALSE)
 }
 \arguments{
@@ -31,6 +31,10 @@ table should be stacked.}
 Similar as the demographic table in STREAM
 }
 \details{
+You can use the label attribute of the columns in the data frame to modify the node value / displayed value,
+e.g. AGE -> "Baseline Age of patient"
+
+
 Every variable in \code{x} will be mapped to a summary table using
 \code{\link{t_summary}} and then be stacked.
 }
@@ -40,9 +44,10 @@ t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
 library(dplyr)
+library(rtables)
 ADSL <- radsl(N = 100, seed = 1)
 
-t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
+t_summary(ADSL[, c("SEX", "AGE")], col_by  = by_all("All"), col_N = nrow(ADSL))
 
 # control the label
 ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")

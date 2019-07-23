@@ -60,7 +60,7 @@ var_labels <- function(x, fill = FALSE) {
 
     if (is.null(label)) {
       if (fill) {
-        name
+        colname
       } else {
         NA_character_
       }

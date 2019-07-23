@@ -373,13 +373,20 @@ setGeneric(
 #' @export to_rtable
 #' @rdname to_rtable
 setMethod("to_rtable", signature = "node", definition = function(x, ...) {
-  gap <- 1
+  gap <- 1 # todo: as argument
 
   stopifnot(is.null(x@content) || is(x@content, "rtable"))
 
-  tbls <- c(list(x@content), lapply(x@children, to_rtable))
+  if (is.null(x@content)) {
+    tbls <- c()
+  } else {
+    tbls <- list(x@content)
+  }
+  tbls <- c(tbls, lapply(x@children, to_rtable))
   tbl <- rbindl_rtables(tbls, gap = gap)
   if (is(x@name, "invisible_node_name")) {
+    tbl
+  } else {
     insert_rrow(indent_table(tbl, 1), rrow(x@name))
   }
 })

@@ -4,7 +4,7 @@
 \alias{t_summary}
 \title{Summarize an Object for Different Groups}
 \usage{
-t_summary(x, col_by, col_N = table(col_by), ...)
+t_summary(x, col_by, col_N = default_col_N(col_by), ...)
 }
 \arguments{
 \item{x}{an object to dispatch on}
@@ -25,7 +25,7 @@ Summarize an Object for Different Groups
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
-ADSL <- radsl(N = 100, seed = 1)
+ADSL <- cadsl # radsl(N = 100, seed = 1)
 
 t_summary(ADSL$AGE, ADSL$ARMCD)
 t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)

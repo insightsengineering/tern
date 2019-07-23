@@ -4,7 +4,7 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, col_N = table(col_by),
+\method{t_summary}{numeric}(x, col_by, col_N = default_col_N(col_by),
   total = NULL, ...)
 }
 \arguments{
