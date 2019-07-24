@@ -1,16 +1,14 @@
+=======
+# tern next release
+
+* Added disposition elementary table `t_el_disposition`
+* Added `node` S4 class
+
 # tern 0.6.2
 
-* added `table_tree` data structure with accompanying functions `summary.table.tree`, `rbind_table_tree`, and `rapply_table_tree`. Table trees are lists or nested lists of elementary tables.
-* the following functions have now an argument `table_tree = FALSE` in order to return a `table_tree` data object if requested
-  - `t_summary.data.frame`
-  - `t_evenets_per_term_id`, `t_events_per_term_grade_id`
-  - `t_rsp`
-  - `t_forest_tte`
-* refactored `t_fores_tte`& `t_forst_rsp`
-  - renamed argument `group_data` to `by`.
-  - removed argument `na_omit_group`, user needs to this via `droplevels` preprocessing if desired
-
-
+* use chached data from `random.cdisc.data` to speed up testing
+* added `t_summary.Date` method
+* added `save_join`
 
 # tern 0.6.1
 
@@ -28,7 +26,6 @@
     * fix examples
     * refactor of internal functions code
 
-
 # tern 0.6.0
 
 * Removed functions `addTable`, `t_summarize_by_visit`, `t_summarize_variables`.
@@ -36,7 +33,6 @@
 * Refactor of `g_km` function, renamed `kmGrob` into `kmCurveGrob`.
 * Refactor `t_events_*` family of functions.
 * Updated examples.
-
 
 # tern 0.5.0.3 
 

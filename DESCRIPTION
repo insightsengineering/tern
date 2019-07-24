@@ -1,10 +1,12 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.6.1.1001
+Version: 0.6.2.9001
 Authors@R: c(
-  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = c("aut", "cre")),
+  person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
+  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
+  person("Jennifer", "Li", email = "li.jing@gene.com", role = "aut"),
   person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
   person("Chendi", "Liao", email = "chendi.liao@roche.com", role = "aut"),
   person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
@@ -12,14 +14,15 @@ Authors@R: c(
   person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
   person("Carolyn", "Zhang", email = "carolyn.zhang@duke.ed", role = "aut"),
   person("Mark", "Rothe", role = "aut"),
-  person("Xiao", "Mu Yo", role = "aut")
+  person("Xiao", "Mu Yo", role = "aut"),
+  person("Roche", role = c("cph", "fnd"))
   )
-Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
+Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.3),
   ggplot2,
   grid,
-  rtables (>= 0.1.1),
+  rtables (>= 0.1.2),
   survival
 Imports:
   dplyr,
@@ -34,11 +37,12 @@ Suggests:
   forcats,
   lattice,
   knitr,
-  random.cdisc.data (>= 0.2.0),
+  random.cdisc.data (>= 0.2.1),
   rmarkdown,
-  test.nest,
+  test.nest (>= 0.1),
   testthat,
-  tibble
+  tibble,
+  purrr
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true

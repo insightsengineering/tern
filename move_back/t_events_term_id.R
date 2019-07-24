@@ -47,14 +47,6 @@
 #'  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
 #'  alphabetical order.
 #'
-#' \if{html}{
-#'
-#' The data is split and table functions are applied to leaf nodes as follows:
-#'
-#' \figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
-#' }
-#'
-#'
 #' @return an \code{\link{rtable}} object.
 #'
 #' @export
@@ -113,71 +105,21 @@
 #'   total = "All Patients",
 #'   event_type = "treatment"
 #' )
-#'
-#'
-#' # Table Tree
-#'
-#' t_events_per_term_id(
-#'   terms = ADAE$AEDECOD,
-#'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
-#'   table_tree = TRUE
-#' )
-#'
-#'
-#' tbls <- t_events_per_term_id(
-#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
-#'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
-#'   table_tree = TRUE
-#' )
-#' summary(tbls)
-#' names(tbls)
-#' tbls[[1]]
-#' rbind_table_tree(tbls)
-#'
 t_events_per_term_id <- function(terms,
                                  id,
                                  col_by,
                                  col_N, # nolint
                                  total = "All Patients",
-                                 event_type = "event",
-                                 table_tree = FALSE) {
+                                 event_type = "event") {
   stopifnot(!is.null(terms))
   check_col_by(col_by, col_N, 1, total)
 
+  if (is.data.frame(terms) && ncol(terms) == 1) {
+    terms <- terms[[1]]
+  }
+
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
-
-  if (is.atomic(terms)) {
-    term <- terms
-    split_by <- NULL
-  } else {
-    nterms <- ncol(terms)
-    term <- terms[[nterms]]
-    split_by <- if (nterms == 1) {
-      NULL
-    } else {
-      terms[, -nterms]
-    }
-  }
-
-  df <- data.frame(term = term, id = id, col_by = col_by, stringsAsFactors = FALSE)
-
-  if (!is.null(total)) {
-    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
-    col_N <- .t$col_N # nolint
-    df <- data.frame(
-      term = .t$x$term,
-      id = paste(.t$x$id, "-", .t$col_by),
-      col_by = .t$col_by,
-      stringsAsFactors = FALSE
-    )
-  }
 
   order_indecies <- if (is.null(total)) {
     c(0, 1)
@@ -185,29 +127,23 @@ t_events_per_term_id <- function(terms,
     c(nlevels(col_by) + 1, 1)
   }
 
+  tbls <- if (is.atomic(terms)) {
 
-  # create the data_tree
-  overall_label <- paste0("- Any ", event_type, " -")
+    df <- data.frame(term = terms, id = id, col_by = col_by, stringsAsFactors = FALSE)
 
-  dft <- if (is.null(split_by)) {
-    list(df)
-  } else {
-    dfs <- rsplit(df, by = split_by)
-    data_tree_add_overall(dfs, label = overall_label, set_attr = TRUE)
-  }
-
-
-  tbls <- rapply_data_tree(dft, f = function(df) {
-    is_overall <- if_null_then(attr(df, "overall"), FALSE)
-
-    term <- if (is_overall) {
-      NULL
-    } else {
-      df$term
+    if (!is.null(total)) {
+      .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
+      col_N <- .t$col_N # nolint
+      df <- data.frame(
+        term = .t$x$term,
+        id = paste(.t$x$id, "-", .t$col_by),
+        col_by = .t$col_by,
+        stringsAsFactors = FALSE
+      )
     }
 
     tbl <- t_events_summary(
-      term = term,
+      term = df$term,
       id = df$id,
       col_by = df$col_by,
       col_N = col_N,
@@ -215,38 +151,40 @@ t_events_per_term_id <- function(terms,
       subjects_with_events = subjects_with_events
     )
 
+    if (nrow(tbl) > 2) {
+      ord_rrows <- order_rrows(tbl[-c(1, 2), ], indices = order_indecies, decreasing = TRUE)
+      tbl[c(1, 2, ord_rrows + 2), ]
+    } else {
+      tbl
+    }
 
-  })
+  } else if (ncol(terms) == 2) {
 
+    l_tbls <- lt_events_per_term_id_2(
+      terms = terms,
+      id = id,
+      col_by = col_by,
+      col_N = col_N,
+      total = total,
+      event_type = event_type
+    )
 
+    l_tbls_o <- lapply(l_tbls, function(tbl) {
+      if (nrow(tbl) > 3) {
+        ord_rrows <- order_rrows(tbl[-c(1:3), ], indices = order_indecies, decreasing = TRUE)
+        tbl[c(1:3, ord_rrows + 3), ] # as label row exists
+      } else {
+        tbl
+      }
+    })
 
+    sort_rtables(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
 
-  # if (nrow(tbl) > 2) {
-  #   ord_rrows <- order_rrows(tbl[-c(1, 2), ], indices = order_indecies, decreasing = TRUE)
-  #   tbl[c(1, 2, ord_rrows + 2), ]
-  # } else {
-  #   tbl
-  # }
-
-
-  # l_tbls_o <- lapply(l_tbls, function(tbl) {
-  #   if (nrow(tbl) > 3) {
-  #     ord_rrows <- order_rrows(tbl[-c(1:2), ], indices = order_indecies, decreasing = TRUE)
-  #     tbl[c(1:2, ord_rrows + 2), ] # as label row exists
-  #   } else {
-  #     tbl
-  #   }
-  # })
-  #  sort_rtables(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
-
-  if (is.null(split_by)) {
-    tbls[[1]]
-  } else if (table_tree) {
-    table_tree(tbls)
   } else {
-    rbind_table_tree(tbls)
+    stop("currently only one or two terms are supported")
   }
 
+  recursive_stack_rtables(tbls)
 }
 
 # Elementary Tables Used for AE tables ----
@@ -553,6 +491,10 @@ lt_events_per_term_id_2 <- function(terms,
       subjects_with_events = subjects_with_events
     )
 
+    tbl_i <- rbind(
+      rtable(header = tbl_header, rrow(class_i)),
+      indent_table(tbl_i, 1)
+    )
     header(tbl_i) <- rheader(
       header(tbl_i)[[1]],
       rrowl(term_label, col_N, format = "(N=xx)", indent = 1)
@@ -561,7 +503,43 @@ lt_events_per_term_id_2 <- function(terms,
 
   }, df_class, names(df_class))
 
-  row.names(tbls[[1]])[1:2] <- c(subjects_with_events, total_events)
+  row.names(tbls[[1]])[2:3] <- c(subjects_with_events, total_events)
 
   tbls
+}
+
+# Helper Functions Used to Convert the Nested Lists to Single AE tables ----
+
+#' Remove first n rows in a list of lists of rtables
+#'
+#' @noRd
+#'
+#' @examples
+#' tbl <- rbind(
+#'   rtabulate(iris$Sepal.Length, iris$Species, mean),
+#'   rtabulate(iris$Sepal.Length, iris$Species, sd)
+#' )
+#'
+#' l_tbls <- list(
+#'   list(
+#'     tbl, tbl, tbl
+#'   ),
+#'   list(
+#'     tbl, tbl
+#'   )
+#' )
+#'
+#' tern:::nl_remove_n_first_rrows(l_tbls, n = 1, 2)
+nl_remove_n_first_rrows <- function(x, n = 1, lower_childindex_threshold = 0) {
+  lapply(x, function(xi) {
+    i <- 0
+    lapply(xi, function(xii) {
+      i <<- i + 1
+      if (i >= lower_childindex_threshold) {
+        xii[-seq(1, n, by = 1), ]
+      } else {
+        xii
+      }
+    })
+  })
 }

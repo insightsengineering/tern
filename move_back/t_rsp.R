@@ -13,7 +13,6 @@
 #' @param strata_data data for stratification factors (categorical variables).
 #'   If \code{NULL}, no stratified analysis is performed. See details for
 #'   further explanation.
-#' @template param_table_tree
 #'
 #' @details For the test of difference in response rates, Wald confidence
 #'   interval with and without continuity correction are both reported. If no
@@ -46,9 +45,9 @@
 #' t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
 #'
 #' library(random.cdisc.data)
-#' ADSL <- radsl(N = 1000, seed = 1)
+#' ADSL <- cadsl
 #'
-#' ADRS <- radrs(ADSL, seed = 2)
+#' ADRS <- cadrs
 #' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI")
 #'
 #' # Example 1 - ARM B as reference
@@ -86,24 +85,16 @@
 #'
 #' # Example 3 - when all observations are non-responders
 #' ADRS <- data.frame(
-#'   rsp = FALSE,
-#'   arm = rep(c("A", "B"), each = 200),
-#'   stringsAsFactors = FALSE
+#' rsp = FALSE,
+#' arm = rep(c("A", "B"), each = 200),
+#' stringsAsFactors = FALSE
 #' )
 #'
 #' t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
-#'
-#'
-#' # table_tree
-#' tbls <- t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm), table_tree = TRUE)
-#' summary(tbls)
-#' rbindl_rtables(tbls, gap = 1)
-#'
 t_rsp <- function(rsp,
                   col_by,
                   partition_rsp_by = NULL,
-                  strata_data = NULL,
-                  table_tree = FALSE) {
+                  strata_data = NULL) {
 
   check_same_n(rsp = rsp, col_by = col_by, partition_rsp_by = partition_rsp_by, strata_data = strata_data)
 
@@ -391,22 +382,17 @@ t_rsp <- function(rsp,
   }
 
 
-  tbls <- list(
-    "Responders" = tbl_response,
-    "Clopper Pearson" = tbl_clopper_pearson,
-    "Difference Tests" = tbl_difference,
-    "Odds Ratio" = tbl_odds_ratio,
-    "Partition" = tbl_partition,
-    "Footer" = tbl_footer
+  tbl <- rbind(
+    tbl_response,
+    tbl_clopper_pearson,
+    tbl_difference,
+    tbl_odds_ratio,
+    tbl_partition,
+    tbl_footer,
+    gap = 1
   )
 
-
-  if (table_tree) {
-    table_tree(lapply(tbls, header_add_N, N = col_N))
-  } else {
-    tbl <- rbindl_rtables(tbls, gap = 1)
-    header_add_N(tbl, col_N)
-  }
+  header_add_N(tbl, col_N)
 
 }
 

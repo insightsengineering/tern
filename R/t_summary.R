@@ -15,7 +15,7 @@
 #' t_summary(iris$Sepal.Length, iris$Species)
 #'
 #' library(random.cdisc.data)
-#' ADSL <- cadsl # radsl(N = 100, seed = 1)
+#' ADSL <- cadsl
 #'
 #' t_summary(ADSL$AGE, ADSL$ARMCD)
 #' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
@@ -105,7 +105,7 @@ t_summary.default <- function(x, # nolint
 #' library(random.cdisc.data)
 #' library(dplyr)
 #' library(rtables)
-#' ADSL <- cadsl # radsl(N = 100, seed = 1)
+#' ADSL <- cadsl
 #'
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = by_all("All"), col_N = nrow(ADSL))
 #'
@@ -181,7 +181,7 @@ t_summary.data.frame <- function(x, # nolint
 #'
 #' library(random.cdisc.data)
 #' library(rtables)
-#' ADSL <- radsl(N = 100, seed = 1)
+#' ADSL <- cadsl
 #'
 #' t_summary(ADSL$AGE, ADSL$ARM)
 #' t_summary(ADSL$AGE, col_by = by_add_total(by_factor_to_matrix(ADSL$ARM), label = "All"))

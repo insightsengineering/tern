@@ -29,28 +29,15 @@
 #'
 #' @examples
 #' # EXAMPLE 1
-#' ANL <- expand.grid(
-#'   USUBJID = paste0("p-",1:100),
-#'   VISIT = paste0("visit ", 1:10),
-#'   ARM = c("ARM A", "ARM B")
-#' )
-#' ANL$AVAL <- rnorm(nrow(ANL))
-#' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
-#' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
-#' ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+#' library(random.cdisc.data)
 #'
-#' ANL$ARM <- factor(ANL$ARM)
-#' ANL$VISIT <- factor(ANL$VISIT)
+#' ADSL <- cadsl
+#' ADVS <- cadvs
 #'
-#' ASL <- unique(ANL[, c("USUBJID","ARM")])
-#'
-#' ADSL <- radsl(seed = 1)
-#' ADVS <- radvs(ADSL, seed = 2)
-#'
-#' t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
+#' tern:::t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
 #'
-#' t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
+#' tern:::t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
 #'
 #' # DO NOT THINK WE NEED THIS BLOCK AS LABELS ALREADY AVAILABLE
@@ -60,7 +47,7 @@
 #'  #                       CHG = "Change from\nBaseline",
 #'   #                      PCHG = "Percent Change\nfrom Baseline")
 #'
-#' t_summarize_by_visit(
+#' tern:::t_summarize_by_visit(
 #'   data = ADVS[c("AVAL", "CHG")],
 #'   visit = ADVS$AVISIT,
 #'   col_by = ADVS$ARM,
@@ -72,8 +59,8 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(seed = 1)
-#' ADQS <- radqs(ADSL, seed = 2) %>%
+#' ADSL <- cadsl
+#' ADQS <- cadqs %>%
 #'   dplyr::filter(PARAMCD == "BFIALL")
 #'
 #' tbl <- t_summarize_by_visit(
