@@ -64,6 +64,7 @@ setValidity("node", function(object) {
 #' n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n2 <- node(name = "D", content = c(1:3), children = list(n11, n12, n13))
+#' summary(n11)
 #' # incorrect example (children with same name):
 #' #node(name = "A", content = c(1:3), children = list("A"))
 #' @name node
@@ -83,24 +84,35 @@ node <- function(name, content, children) {
 #   )
 # }
 
-#' Create a summary of the object
+#' overwrite s3 method because s3 and s4 with same names cannot coexist
+#'
+#' @return
+#'
+#' @rdname summary
+#' @method summary node
+#' @S3method summary node
+summary.node <- function(x) {
+  basic_node_info(x)
+}
+
+#' Summarizes an object
 #'
 #' @param x node object
 #' @param ... other args
 #'
-#' @export summary
+#' @export basic_node_info
 setGeneric(
-  "summary",
-  function(x, ...) standardGeneric("summary"),
+  "basic_node_info",
+  function(x, ...) standardGeneric("basic_node_info"),
   signature = "x"
 )
 
-#' Creates a summary of a tree to first-depth.
-#' It displays the dimension and class of each entry in an rtable.
+#' Summarizes a tree of a tree using depth-first.
+#' It displays the dimension and class of each node in the tree recursively.
 #'
 #' @param index path to node (excluding node name itself)
 #'
-#' @rdname summary
+#' @rdname basic_node_info
 #'
 #' @examples
 #' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
@@ -112,7 +124,7 @@ setGeneric(
 #' summary(n11)
 #' summary(n2)
 #' @importFrom rtables rtable rcell rrow rbindl_rtables
-setMethod("summary", signature = "node", definition = function(x, index = numeric(0)) {
+setMethod("basic_node_info", signature = "node", definition = function(x, index = numeric(0)) {
   format_dim_fcn <- function(x, output) {
     paste(x, collapse = " x ")
   }
@@ -127,7 +139,7 @@ setMethod("summary", signature = "node", definition = function(x, index = numeri
       )
     )),
     Map(function(x, i) {
-      summary(x, index = c(index, i))
+      basic_node_info(x, index = c(index, i))
     }, x@children, seq_along(x@children))
   ))
 })

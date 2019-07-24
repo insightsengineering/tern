@@ -4,8 +4,7 @@
 \alias{t_summary.default}
 \title{Return an \code{rtable} with a no Method Message}
 \usage{
-\method{t_summary}{default}(x, col_by, col_N = default_col_N(col_by),
-  total = NULL, ...)
+\method{t_summary}{default}(x, col_by, col_N = get_N(col_by), ...)
 }
 \arguments{
 \item{x}{data frame with variables to be summarized as described in the
@@ -17,10 +16,7 @@ first \code{level} indicates the reference group. See the functions \code{factor
 and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{table(col_by)}.}
-
-\item{total}{(deprecated in favor of \code{col_by}) character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{...}{not used arguments}
 }

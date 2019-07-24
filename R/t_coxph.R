@@ -38,6 +38,8 @@
 #' tbl <- t_coxph(fit_coxph)
 #' tbl
 #' }
+#'
+#' #todoL why is there no space in the table by summary: e.g. "B: Placebo" -> "ARM B: Placebo"
 t_coxph <- function(fit_coxph, info_coxph = "Cox Porportional Hazard Model") {
   stopifnot(is(fit_coxph, "coxph"))
 

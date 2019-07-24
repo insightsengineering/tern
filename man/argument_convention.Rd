@@ -13,10 +13,7 @@ first \code{level} indicates the reference group. See the functions \code{factor
 and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{table(col_by)}.}
-
-\item{total}{(deprecated in favor of \code{col_by}) character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
 \code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}

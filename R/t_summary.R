@@ -146,6 +146,7 @@ t_summary.data.frame <- function(x, # nolint
 
   # each column of the data frame x is an element of the list
   # replicate col_by ncol times, rep does not work
+  colnames(x) <- var_labels(x, fill = TRUE)
   t_summary.list(
     x_list = x,
     col_by_list = lapply(seq_along(x), function(discard) col_by),
@@ -153,25 +154,6 @@ t_summary.data.frame <- function(x, # nolint
     ...,
     table_tree = table_tree
   )
-
-  # # one child per column of x
-  # children <- Map(function(col, node_name) {
-  #   node(
-  #     name = node_name,
-  #     content = t_summary(x = col, col_by = col_by, col_N = col_N, ...),
-  #     children = list()
-  #   )
-  # }, x, var_labels(x, fill = TRUE))
-  # res <- node(name = invisible_node_name("root"),
-  #      content = NULL,
-  #      children = children
-  # )
-  #
-  # if (table_tree) {
-  #   res
-  # } else {
-  #   to_rtable(res)
-  # }
 }
 
 #' Summarize Numeric Variables

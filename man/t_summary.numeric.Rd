@@ -4,8 +4,7 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, col_N = default_col_N(col_by),
-  total = NULL, ...)
+\method{t_summary}{numeric}(x, col_by, col_N = get_N(col_by), ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -15,10 +14,7 @@ first \code{level} indicates the reference group. See the functions \code{factor
 and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{table(col_by)}.}
-
-\item{total}{(deprecated in favor of \code{col_by}) character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{...}{arguments passed on to methods}
 }
@@ -38,11 +34,11 @@ library(rtables)
 ADSL <- radsl(N = 100, seed = 1)
 
 t_summary(ADSL$AGE, ADSL$ARM)
-t_summary(ADSL$AGE, col_by = add_total_by(factor_to_matrix_by(ADSL$ARM), label = "All"))
-t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
+t_summary(ADSL$AGE, col_by = by_add_total(by_factor_to_matrix(ADSL$ARM), label = "All"))
+t_summary(ADSL$AGE, col_by = ADSL$ARM \%>\% by_add_total("All"))
 
 ADSL$AGE[1:10] <- NA
-t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
+t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
 
 }
 \seealso{

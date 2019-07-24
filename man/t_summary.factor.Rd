@@ -4,9 +4,9 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(x, col_by, col_N = default_col_N(col_by),
-  total = NULL, useNA = c("no", "ifany", "always"),
-  denominator = c("n", "N"), drop_levels = FALSE, ...)
+\method{t_summary}{factor}(x, col_by, col_N = get_N(col_by),
+  useNA = c("no", "ifany", "always"), denominator = c("n", "N"),
+  drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{factor variable}
@@ -16,10 +16,7 @@ first \code{level} indicates the reference group. See the functions \code{factor
 and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{table(col_by)}.}
-
-\item{total}{(deprecated in favor of \code{col_by}) character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
@@ -45,12 +42,12 @@ t_summary(iris$Species, iris$Species)
 library(random.cdisc.data)
 ADSL <- cadsl
 
-t_summary(ADSL$SEX, ADSL$ARM, total = "All")
+t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"))
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 
 ADSL$SEX[1:10] <- NA
-t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
-t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
+t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"), denominator = "N", useNA = "ifany")
+t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"), denominator = "n", useNA = "no")
 }
 \seealso{
 \code{\link{t_summary}},

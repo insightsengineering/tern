@@ -4,7 +4,7 @@
 \alias{t_summary}
 \title{Summarize an Object for Different Groups}
 \usage{
-t_summary(x, col_by, col_N = default_col_N(col_by), ...)
+t_summary(x, col_by, col_N = get_N(col_by), ...)
 }
 \arguments{
 \item{x}{an object to dispatch on}
@@ -14,7 +14,7 @@ first \code{level} indicates the reference group. See the functions \code{factor
 and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{table(col_by)}.}
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{...}{arguments passed on to methods}
 }
