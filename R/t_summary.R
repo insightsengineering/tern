@@ -58,10 +58,10 @@ col_N_add_total <- function(col_N) {
 #' @importFrom rtables col_by_to_matrix
 t_summary.default <- function(x, # nolint
                               col_by,
-                              col_N = get_N(col_by), # nolint
+                              col_N = NULL, # nolint
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
-  force(col_N)
+  col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   tbl <- rtable(
@@ -136,12 +136,11 @@ t_summary.default <- function(x, # nolint
 #' @importFrom rtables col_by_to_matrix
 t_summary.data.frame <- function(x, # nolint
                                  col_by,
-                                 col_N = get_N(col_by), # nolint
+                                 col_N = NULL, # nolint
                                  ...,
                                  table_tree = FALSE) {
-  # todo: replace by t_summary.list, set var_labels(x, fill = TRUE)
   col_by <- col_by_to_matrix(col_by, x)
-  force(col_N)
+  col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   # each column of the data frame x is an element of the list
@@ -193,10 +192,10 @@ t_summary.data.frame <- function(x, # nolint
 #' @importFrom rtables col_by_to_matrix
 t_summary.numeric <- function(x, # nolint
                               col_by,
-                              col_N = get_N(col_by),
+                              col_N = NULL,
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
-  force(col_N)
+  col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   tbl <- rbind(
@@ -248,12 +247,12 @@ t_summary.numeric <- function(x, # nolint
 #' t_summary(ADSL$SEX, ADSL$ARM %>% by_add_total("All"), denominator = "n", useNA = "no")
 t_summary.factor <- function(x, # nolint
                              col_by,
-                             col_N = get_N(col_by), # nolint
+                             col_N = NULL,
                              useNA = c("no", "ifany", "always"), # nolint
                              denominator = c("n", "N"),
                              drop_levels = FALSE, ...) {
   col_by <- col_by_to_matrix(col_by, x)
-  force(col_N)
+  col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   useNA <- match.arg(useNA) # nolint
@@ -346,10 +345,10 @@ t_summary.character <- function(x, # nolint
 #' t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]) %>% by_add_total("All"))
 t_summary.Date <- function(x, # nolint
                            col_by,
-                           col_N = get_N(col_by), # nolint
+                           col_N = NULL, # nolint
                            ...) {
   col_by <- col_by_to_matrix(col_by, x)
-  force(col_N)
+  col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   df <- data.frame(date = x)

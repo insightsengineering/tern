@@ -100,7 +100,6 @@ t_summary.list <- function(x_list, # x_list
     col_N <- rowSums(data.frame(lapply(col_by_list, function(col_by) get_N(col_by))))
   }
   col_by_list <- lapply(col_by_list, function(col_by) col_by_to_matrix(col_by, x_list))
-  #force(col_N)
 
   # one child per column of x
   children <- Map(function(x, col_by, node_name) {
@@ -111,10 +110,7 @@ t_summary.list <- function(x_list, # x_list
       children = list()
     )
   }, x_list, col_by_list, names(x_list))
-  res <- node(name = invisible_node_name("root"),
-              content = NULL,
-              children = children
-  )
+  res <- invisible_node(children = children)
 
   if (table_tree) {
     res

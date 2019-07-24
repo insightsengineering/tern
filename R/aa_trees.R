@@ -21,7 +21,7 @@
 #' @exportClass node
 #' @name node-class
 #' @rdname node-class
-setClass("node", slots = c(name = "ANY", content = "ANY", children = "list"))
+setClass("node", slots = c(name = "ANY", content = "ANY", children = "list", format_data = "ANY"))
 # only called when method new is called
 
 #' Children must not be null
@@ -29,7 +29,14 @@ setClass("node", slots = c(name = "ANY", content = "ANY", children = "list"))
 #' @name node-validity
 #' @rdname node-class
 setValidity("node", function(object) {
+  format_data <- object@format_data
   all(
+    # todo: better checking of format_data
+    is.null(format_data) || (
+      (is.null(format_data[["gap_to_children"]]) || is.numeric.single(format_data[["gap_to_children"]])) &&
+        (is.null(format_data[["children_gap"]]) || is.numeric.single(format_data[["children_gap"]])) &&
+        (is.null(format_data[["children_indent"]]) || is.numeric.single(format_data[["children_indent"]]))
+    ),
     # if it has > 0 children, no child is null
     is.character(object@name) ||
       (is(object@name, "invisible_node_name") && is.character(unclass(object@name))),
@@ -54,6 +61,7 @@ setValidity("node", function(object) {
 #' @param name name of node
 #' @param content content of node
 #' @param children children of node
+#' @param children_indent format_data
 #'
 #' @return object of class node
 #'
@@ -69,9 +77,57 @@ setValidity("node", function(object) {
 #' #node(name = "A", content = c(1:3), children = list("A"))
 #' @name node
 #' @rdname node-class
-node <- function(name, content, children) {
+node <- function(name, content, children = list(), format_data = NULL) {
   #names(children) <- vapply(children, function(child) child@name, character(1))
-  new("node", name = name, content = content, children = unname(children))
+  new("node", name = name, content = content, children = unname(children), format_data = format_data)
+}
+
+#' Creates an invisible node with NULL content and invisible name
+#'
+#' @param children children of node
+#' @param name name of invisible node (invisible name in rtable prints)
+#' @param content content
+#' @param format_data format_data
+#'
+#' @return node
+#'
+#' @export
+#'
+#' @export
+#'
+#' @examples
+#' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
+#' n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
+#' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
+#' summary(invisible_node(list(n11, n12, n13)))
+invisible_node <- function(children, name = "root", content = NULL, format_data = NULL) {
+  stopifnot(is.character.single(name))
+  node(
+    name = invisible_node_name(name),
+    content = NULL,
+    children = children,
+    format_data = format_data
+  )
+}
+
+#' Create a node with only this object
+#'
+#' To add children, use the \code{\link{node}} function.
+#'
+#' @param x object to add as node
+#' @param node_name name of the node
+#'
+#' @return node
+#'
+#' @export
+#'
+#' @examples
+#' object_to_node(1:2)
+#' my_obj <- 1:2
+#' object_to_node(my_obj)
+#' object_to_node(my_obj, node_name = "hello")
+object_to_node <- function(x, node_name = invisible_node_name(deparse(substitute(x)))) {
+  node(name = node_name, content = x)
 }
 
 #todo: remove again
@@ -86,11 +142,9 @@ node <- function(name, content, children) {
 
 #' overwrite s3 method because s3 and s4 with same names cannot coexist
 #'
-#' @return
+#' @return a summary of the tree, see \code{\link{basic_node_info}}
 #'
-#' @rdname summary
-#' @method summary node
-#' @S3method summary node
+#' @export
 summary.node <- function(x) {
   basic_node_info(x)
 }
@@ -354,6 +408,8 @@ setMethod(`[[`, signature = c("node"), function(x, i, j, ..., return_content = T
 })
 
 # node_name that will not be displayed, also true when converted to rtable
+# The purpose of this is to still allow indexing in the rtable through the name index
+# todo: we can also add a label attribute to the format_data to tell how the node should be displayed
 invisible_node_name <- function(name) {
   stopifnot(is.character(name))
   structure(name, class = "invisible_node_name")
@@ -362,17 +418,16 @@ invisible_node_name <- function(name) {
 #' Converts the object to an rtable
 #'
 #' @param x object
+#' @param ... additional arguments to pass
 #'
 #' @export to_rtable
 setGeneric(
   "to_rtable",
-  function(x, ...) standardGeneric("to_rtable"),
+  function(x) standardGeneric("to_rtable"),
   signature = "x"
 )
 
 #' Specific to nodes
-#'
-#' @param ... additional args needed for conversion
 #'
 #' @examples
 #' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
@@ -380,30 +435,48 @@ setGeneric(
 #' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n2 <- node(name = "D", content = c(1:3), children = list(n11, n12, n13))
 #'
-#' to_rtable(n2) # not working because not a tree of rtables
+#' # to_rtable(n2) # not working because not a tree of rtables
 #'
 #' @export to_rtable
 #' @rdname to_rtable
-setMethod("to_rtable", signature = "node", definition = function(x, ...) {
-  gap <- 1 # todo: as argument
-
+#'
+#' @examples
+#' to_rtable(node(
+#'   invisible_node_name("received_treatment"),
+#'   content = t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
+#' ))
+setMethod("to_rtable", signature = "node", definition = function(x) {
   stopifnot(is.null(x@content) || is(x@content, "rtable"))
 
-  if (is.null(x@content)) {
-    tbls <- c()
+  if (length(x@children) > 0) {
+    tbl <- indent(
+      rbindl_rtables(lapply(x@children, to_rtable), gap = x@format_data[["children_gap"]] %||% 1),
+      x@format_data[["children_indent"]] %||% 0
+    )
   } else {
-    tbls <- list(x@content)
+    tbl <- NULL
   }
-  tbls <- c(tbls, lapply(x@children, to_rtable))
-  tbl <- rbindl_rtables(tbls, gap = gap)
+  if (!is.null(x@content)) {
+    tbl <- if (is.null(tbl)) {
+      x@content
+    } else {
+      rbindl_rtables(list(x@content, tbl), gap = x@format_data[["gap_to_children"]] %||% 1)
+    }
+  }
   if (is(x@name, "invisible_node_name")) {
     tbl
   } else {
+    # todo: tbl can be null, so ideally, indent_table should accept empty tables as well
     insert_rrow(indent_table(tbl, 1), rrow(x@name))
   }
 })
 
+# setMethod("to_rtable", signature = "ANY", definition = function(x) {
+#   stop(paste("Cannot convert object of class", class(x)))
+#   browser()
+# })
+
 # todo: rename to rbind
-setMethod("to_rtable", signature = "rtable", definition = function(x, ...) {
+setMethod("to_rtable", signature = "rtable", definition = function(x) {
   x
 })
