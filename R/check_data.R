@@ -93,6 +93,18 @@ check_col_by_old <- function(col_by,
   TRUE
 }
 
+# copied over from utils.nest which is not open-source
+# todo: move to utils.nest once request is implemented
+all_true <- function(lst, fcn) {
+  all(vapply(lst, fcn, TRUE))
+}
+is.logical.vector_modif <- function(x, min_size = 1) {
+  !is.null(x) &&
+    is.atomic(x) &&
+    length(x) >= min_size &&
+    all_true(x, utils.nest::is.logical.single)
+}
+
 # checks col_by and col_N to be consistent
 # col_by must be a matrix of booleans
 # checks that there are no empty levels and at least a specified number of levels
@@ -111,7 +123,7 @@ check_col_by <- function(x,
   stopifnot(
     ncol(col_by) >= min_num_levels,
     length(col_N) == ncol(col_by),
-    all(vapply(col_by, function(col) is.logical.vector(col), logical(1))),
+    all(vapply(col_by, function(col) is.logical.vector_modif(col, min_size = 0), logical(1))),
     !any(is.na(col_by)) && !("" %in% colnames(col_by))
   )
 

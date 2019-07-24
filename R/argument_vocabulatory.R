@@ -13,7 +13,7 @@
 #'   first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 #'   and \code{add_total_by}.
 #' @param col_N a vecor with the reference population per level of \code{col_by}. This often by default
-#'   \code{table(col_by)}.
+#'   \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 #' @param table_tree logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
 #'   \code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.
 #' @param indent non-negative integer where 0 means that the row should not be indented

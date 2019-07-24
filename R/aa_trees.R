@@ -391,6 +391,7 @@ setMethod("to_rtable", signature = "node", definition = function(x, ...) {
   }
 })
 
+# todo: rename to rbind
 setMethod("to_rtable", signature = "rtable", definition = function(x, ...) {
   x
 })

@@ -1,0 +1,124 @@
+#' Summarize an Object for Different Groups with by Variable
+#'
+#' @inheritParams t_summary
+#' @param x vector
+#' @param row_by  a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define
+#'  the summary sub-groups in the table.
+#' @param col_by a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
+#'  define the columns in the table.
+#' @param col_N a \code{table} object with the reference population used for the header of the table.
+#'  See examples below.
+#' @param total character string that will be used as a label for a column with pooled total population.
+#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
+#' @param ... arguments passed on to methods
+#'
+#' @details
+#' For every level of the variable \code{by} a summary table using \code{\link{t_summary}} will be created.
+#' The individual tables are then stacked together.
+#'
+#' @export
+#'
+#' @template author_stoilovs
+#'
+#' @seealso \code{\link{t_summary}}, \code{\link{t_summary.data.frame}},
+#'   \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+#'   \code{\link{t_summary.character}}
+#'
+#' @examples
+#' library(dplyr)
+#' library(random.cdisc.data)
+#'
+#' ADSL <- radsl(N = 30, seed = 1)
+#'
+#' t_summary_by(
+#'  x = ADSL$SEX,
+#'  row_by = ADSL$COUNTRY,
+#'  col_by = ADSL$ARMCD %>% by_add_total("All Patients"),
+#'  col_N = col_N_add_total(table(ADSL$ARMCD)),
+#'  drop_levels = TRUE
+#' )
+#'
+#' ADSL$SEX[1:5] <- NA
+#'
+#' t_summary_by(
+#'  x = ADSL$SEX,
+#'  row_by = ADSL$COUNTRY,
+#'  col_by = ADSL$ARMCD %>% by_add_total("All Patients"),
+#'  col_N = col_N_add_total(table(ADSL$ARMCD)),
+#'  drop_levels = TRUE,
+#'  useNA = "ifany"
+#' )
+#'
+#' ADSL <- ADSL %>% select(STUDYID, USUBJID, ARMCD)
+#'
+#' ADQS <- radqs(ADSL, seed = 2)
+#' ADQS_f <- ADQS %>%
+#'   dplyr::filter(PARAMCD=="BFIALL")
+#'
+#' t_summary_by(
+#'  x = ADQS_f$AVAL,
+#'  row_by = ADQS_f$AVISIT,
+#'  col_by = ADQS_f$ARMCD %>% by_add_total("All Patients"),
+#'  col_N = col_N_add_total(table(ADSL$ARMCD)),
+#' )
+#'
+#' ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"),
+#'   levels = c("Positive", "Negative"))
+#' ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )
+#'
+#' t_summary_by(
+#'  x = ADQS_f$AVALCAT1,
+#'  row_by = ADQS_f$AVISIT,
+#'  col_by = ADQS_f$ARMCD %>% by_add_total("All Patients"),
+#'  col_N = col_N_add_total(table(ADSL$ARMCD)),
+#' )
+t_summary_by <- function(x,
+                         row_by,
+                         col_by,
+                         col_N, # nolint
+                         ...,
+                         table_tree = FALSE) {
+  x <- data.frame(x) # treat data.frames and factors the same
+  col_by <- col_by_to_matrix(col_by, x)
+  row_by <- col_by_to_matrix(row_by, x)
+  t_summary.list(
+    x = lapply(row_by, function(rows) x[rows,]),
+    col_by = lapply(row_by, function(rows) col_by[rows,]),
+    col_N = col_N,
+    ...,
+    table_tree = table_tree
+  )
+}
+
+t_summary.list <- function(x_list, # x_list
+                           col_by_list,
+                           col_N = NULL, # nolint
+                           ...,
+                           table_tree = FALSE) {
+  if (is.null(col_N)) {
+    col_N <- rowSums(data.frame(lapply(col_by_list, function(col_by) get_N(col_by))))
+  }
+  col_by_list <- lapply(col_by_list, function(col_by) col_by_to_matrix(col_by, x_list))
+  #force(col_N)
+
+  # one child per column of x
+  children <- Map(function(x, col_by, node_name) {
+    check_col_by(x, col_by, col_N, min_num_levels = 1)
+    node(
+      name = node_name,
+      content = t_summary(x = x, col_by = col_by, col_N = col_N, ...),
+      children = list()
+    )
+  }, x_list, col_by_list, names(x_list))
+  res <- node(name = invisible_node_name("root"),
+              content = NULL,
+              children = children
+  )
+
+  if (table_tree) {
+    res
+  } else {
+    to_rtable(res)
+  }
+}

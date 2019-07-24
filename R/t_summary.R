@@ -27,22 +27,14 @@ t_summary <- function(x,
   UseMethod("t_summary", x)
 }
 
-# todo: to utils.R
-#' adds col_by to col_by if it is non-null
-#' @importFrom rtables by_add_total
-treat_total <- function(x, col_by, total) {
-  if (is.null(total)) {
-    col_by
-  } else {
-    stopifnot(is.character.single(total))
-    warning("total argument is deprecated")
-    by_add_total(col_by, label = total, n = length(x))
-  }
-}
-
 get_N <- function(col_by) {
   stopifnot(is.factor(col_by) || is.data.frame(col_by))
   colSums(col_by_to_matrix(col_by))
+}
+
+col_N_add_total <- function(col_N) {
+  #stopifnot(is.logical.vector(col_N))
+  c(col_N, sum(col_N))
 }
 # total makes things quite a bit more complicated
 
@@ -67,11 +59,9 @@ get_N <- function(col_by) {
 t_summary.default <- function(x, # nolint
                               col_by,
                               col_N = get_N(col_by), # nolint
-                              total = NULL,
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
-  col_by <- treat_total(x, col_by, total)
-  force(col_N) # only force col_N now
+  force(col_N)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   tbl <- rtable(
@@ -117,7 +107,7 @@ t_summary.default <- function(x, # nolint
 #' library(rtables)
 #' ADSL <- cadsl # radsl(N = 100, seed = 1)
 #'
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by  = by_all("All"), col_N = nrow(ADSL))
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = by_all("All"), col_N = nrow(ADSL))
 #'
 #' # control the label
 #' ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
@@ -125,23 +115,23 @@ t_summary.default <- function(x, # nolint
 #' # control categorical order
 #' ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 #'
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", useNA = 'always')
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"))
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"), useNA = 'always')
 #'
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", useNA = 'ifany')
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", denominator = "N",
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"), useNA = 'ifany')
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"), denominator = "N",
 #'           useNA = 'ifany')
 #'
 #' ADSL_AGE65 <- ADSL %>%
 #'   dplyr::filter(AGE > 65)
-#' t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
-#'           col_N = table(ADSL_AGE65$ARM), denominator = "N", drop_levels = TRUE)
+#' t_summary(ADSL_AGE65[, c("AGE", "SEX")], col_by = ADSL_AGE65$ARM %>% by_add_total("All Patients"),
+#'           col_N = col_N_add_total(table(ADSL$ARM)), denominator = "N", drop_levels = TRUE)
 #'
 #'
 #' tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
 #' summary(tbls)
-#' rbind_table_tree(tbls)
+#' to_rtable(tbls)
 #'
 #' @importFrom rtables col_by_to_matrix
 t_summary.data.frame <- function(x, # nolint
@@ -149,29 +139,39 @@ t_summary.data.frame <- function(x, # nolint
                                  col_N = get_N(col_by), # nolint
                                  ...,
                                  table_tree = FALSE) {
+  # todo: replace by t_summary.list, set var_labels(x, fill = TRUE)
   col_by <- col_by_to_matrix(col_by, x)
-  col_by <- treat_total(x, col_by, total)
-  force(col_N) # only force col_N now
+  force(col_N)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
-  # one child per column of x
-  children <- Map(function(col, node_name) {
-    node(
-      name = node_name,
-      content = t_summary(x = col, col_by = col_by, col_N = col_N, ...),
-      children = list()
-    )
-  }, x, var_labels(x, fill = TRUE))
-  res <- node(name = invisible_node_name("root"),
-       content = NULL,
-       children = children
+  # each column of the data frame x is an element of the list
+  # replicate col_by ncol times, rep does not work
+  t_summary.list(
+    x_list = x,
+    col_by_list = lapply(seq_along(x), function(discard) col_by),
+    col_N = col_N,
+    ...,
+    table_tree = table_tree
   )
 
-  if (table_tree) {
-    res
-  } else {
-    to_rtable(res)
-  }
+  # # one child per column of x
+  # children <- Map(function(col, node_name) {
+  #   node(
+  #     name = node_name,
+  #     content = t_summary(x = col, col_by = col_by, col_N = col_N, ...),
+  #     children = list()
+  #   )
+  # }, x, var_labels(x, fill = TRUE))
+  # res <- node(name = invisible_node_name("root"),
+  #      content = NULL,
+  #      children = children
+  # )
+  #
+  # if (table_tree) {
+  #   res
+  # } else {
+  #   to_rtable(res)
+  # }
 }
 
 #' Summarize Numeric Variables
@@ -202,21 +202,19 @@ t_summary.data.frame <- function(x, # nolint
 #' ADSL <- radsl(N = 100, seed = 1)
 #'
 #' t_summary(ADSL$AGE, ADSL$ARM)
-#' t_summary(ADSL$AGE, col_by = add_total_by(factor_to_matrix_by(ADSL$ARM), label = "All"))
-#' t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
+#' t_summary(ADSL$AGE, col_by = by_add_total(by_factor_to_matrix(ADSL$ARM), label = "All"))
+#' t_summary(ADSL$AGE, col_by = ADSL$ARM %>% by_add_total("All"))
 #'
 #' ADSL$AGE[1:10] <- NA
-#' t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
+#' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
 #'
 #' @importFrom rtables col_by_to_matrix
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = get_N(col_by),
-                              total = NULL,
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
-  col_by <- treat_total(x, col_by, total)
-  force(col_N) # only force col_N now
+  force(col_N)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   tbl <- rbind(
@@ -260,22 +258,20 @@ t_summary.numeric <- function(x, # nolint
 #' library(random.cdisc.data)
 #' ADSL <- cadsl
 #'
-#' t_summary(ADSL$SEX, ADSL$ARM, total = "All")
+#' t_summary(ADSL$SEX, ADSL$ARM %>% by_add_total("All"))
 #' t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 #'
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
-#' t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
+#' t_summary(ADSL$SEX, ADSL$ARM %>% by_add_total("All"), denominator = "N", useNA = "ifany")
+#' t_summary(ADSL$SEX, ADSL$ARM %>% by_add_total("All"), denominator = "n", useNA = "no")
 t_summary.factor <- function(x, # nolint
                              col_by,
                              col_N = get_N(col_by), # nolint
-                             total = NULL,
                              useNA = c("no", "ifany", "always"), # nolint
                              denominator = c("n", "N"),
                              drop_levels = FALSE, ...) {
   col_by <- col_by_to_matrix(col_by, x)
-  col_by <- treat_total(x, col_by, total)
-  force(col_N) # only force col_N now
+  force(col_N)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   useNA <- match.arg(useNA) # nolint
@@ -336,10 +332,51 @@ t_summary.factor <- function(x, # nolint
 #'   \code{\link{t_summary.numeric}}, \code{\link{t_summary_by}}
 t_summary.character <- function(x, # nolint
                                 col_by,
-                                col_N = table(col_by), # nolint
-                                total = NULL,
+                                col_N = get_N(col_by), # nolint
                                 ...) {
-  t_summary(as.factor(x), col_by, col_N, total, ...)
+  t_summary(as.factor(x), col_by = col_by, col_N = col_N, ...)
+}
+
+#' Summarize Date Data
+#'
+#' Tabulate the range of dates.
+#'
+#' @inheritParams t_summary.data.frame
+#' @param x a Date object
+#'
+#' @template author_waddella
+#'
+#' @export
+#'
+#' @seealso \code{\link{t_summary}},
+#'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
+#'   \code{\link{t_summary.logical}}, \code{\link{t_summary.numeric}},
+#'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+#'
+#'
+#' @examples
+#' today <- Sys.Date()
+#' tenweeks <- seq(today, length.out=10, by="1 week")
+#' t_summary(tenweeks, by_all("all"), length(tenweeks))
+#'
+#' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
+#'
+#' t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]) %>% by_add_total("All"))
+t_summary.Date <- function(x, # nolint
+                           col_by,
+                           col_N = get_N(col_by), # nolint
+                           ...) {
+  col_by <- col_by_to_matrix(col_by, x)
+  force(col_N)
+  check_col_by(x, col_by, col_N, min_num_levels = 1)
+
+  df <- data.frame(date = x)
+  tbl <- rtabulate(df, row_by = by_all("range of dates"), col_by = col_by, FUN = function(x) {
+    paste(range(na.omit(x)), collapse = " to ")
+  }, ...)
+
+  header_add_N(tbl, col_N)
+
 }
 
 #' Summarize Boolean Data
@@ -373,16 +410,15 @@ t_summary.character <- function(x, # nolint
 #' ADSL$AGE[1:10] <- NA
 #'
 #' with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
-#' with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany",
+#' with(ADSL, t_summary(AGE > 65, ARM %>% by_add_total("All"), denominator = "N", useNA = "ifany",
 #'                      row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 t_summary.logical <- function(x, # nolint
                               col_by,
-                              col_N = table(col_by), # nolint
-                              total = NULL,
+                              col_N = get_N(col_by), # nolint
                               row_name_true = "TRUE",
                               row_name_false = "FALSE",
                               ...) {
 
   xf <- factor(x, levels = c(TRUE, FALSE), labels = c(row_name_true, row_name_false))
-  t_summary(xf, col_by, col_N, total, ...)
+  t_summary(xf, col_by = col_by, col_N = col_N, ...)
 }
