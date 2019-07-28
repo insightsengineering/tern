@@ -81,19 +81,20 @@ t_summarize_by_visit <- function(data,
                                  visit,
                                  id,
                                  col_by,
-                                 col_N) { # nolint
-
-  # Check Arguments
+                                 col_N = NULL) { # nolint
+  stopifnot(is.data.frame(data))
+  stopifnot(is.factor(visit), !any(is.na(visit)))
   check_same_n(data = data, col_by = col_by, omit_null = TRUE)
-  if (!is.data.frame(data)) {
-    stop("data is expected to be a data frame")
-  }
+  #col_by <- col_by_to_matrix(col_by, visit)
+  col_N <- col_N %||% get_N(col_by)
+  #check_col_by(visit, col_by, col_N, min_num_levels = 1)
+  check_col_by_factor(visit, col_by, col_N, min_num_levels = 1)
 
-  check_is_factor(visit, allow_na = FALSE)
-  check_col_by(col_by, col_N, 1)
+  #todo: finish
 
-  vapply(data, check_is_numeric, logical(1))
+  lapply(data, check_is_numeric)
 
+  # todo: the code below should be done nicer to create the hierarchical header, i.e. hierarchical col_by (and header must be adapted to it)
   topcol_label <- levels(col_by)
   topcol_n <- length(topcol_label)
   subcol_name <- names(data)

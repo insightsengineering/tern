@@ -32,6 +32,7 @@ get_N <- function(col_by) {
   colSums(col_by_to_matrix(col_by))
 }
 
+# todo: maybe move into function as well
 col_N_add_total <- function(col_N) {
   #stopifnot(is.logical.vector(col_N))
   c(col_N, sum(col_N))

@@ -47,6 +47,14 @@
 #'  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
 #'  alphabetical order.
 #'
+#' \if{html}{
+#'
+#' The data is split and table functions are applied to leaf nodes as follows:
+#'
+#' \figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
+#' }
+#'
+#'
 #' @return an \code{\link{rtable}} object.
 #'
 #' @export
@@ -60,6 +68,20 @@
 #'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
+#' t_events_per_term_id(
+#'  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
+#'  col_by = factor(c("A", "A", "B", "C", "C")) %>% by_add_total("All Patients"),
+#'  col_N = col_N_add_total(c(2, 4, 10))
+#' )
+#'
+#' t_events_per_term_id(
+#'  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10)
+#' )
+#'
 #' library(dplyr)
 #' library(random.cdisc.data)
 #'
@@ -67,29 +89,26 @@
 #' ADAE <- radae(ADSL, 4, seed = 2)
 #'
 #' t_events_per_term_id(
-#'   terms = ADAE$AEDECOD,
+#'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
 #'   id = ADAE$USUBJID,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   total = NULL,
 #'   event_type = "adverse event"
 #' )
 #'
 #' t_events_per_term_id(
-#'   terms = ADAE$AEDECOD,
+#'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
 #'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
+#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
+#'   col_N = col_N_add_total(table(ADSL$ARM)),
 #'   event_type = "adverse event"
 #' )
 #'
 #' t_events_per_term_id(
-#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
 #'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients"
+#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
+#'   col_N = col_N_add_total(table(ADSL$ARM)),
 #' )
 #'
 #' ADSL <- radsl(10, seed = 1)
@@ -98,93 +117,100 @@
 #'   dplyr::filter(ATIREL == "CONCOMITANT")
 #'
 #' t_events_per_term_id(
-#'   terms = ADCM[, c("CMCLAS", "CMDECOD")],
+#'   terms = ADCM[, c("CMCLAS", "CMDECOD")] %>% map(as_factor_keep_attributes),
 #'   id = ADCM$USUBJID,
-#'   col_by = ADCM$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
+#'   col_by = ADCM$ARM %>% by_add_total("All Patients"),
+#'   col_N = col_N_add_total(table(ADSL$ARM)),
 #'   event_type = "treatment"
 #' )
+#'
+#'
+#' # Table Tree
+#'
+#' summary(t_events_per_term_id(
+#'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
+#'   id = ADAE$USUBJID,
+#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
+#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   table_tree = TRUE
+#' ))
+#'
+#' tbls <- t_events_per_term_id(
+#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
+#'   id = ADAE$USUBJID,
+#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
+#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   table_tree = TRUE
+#' )
+#' summary(tbls)
+#' tbls[[1]]
+#' rbind_table_tree(tbls)
 t_events_per_term_id <- function(terms,
                                  id,
                                  col_by,
-                                 col_N, # nolint
-                                 total = "All Patients",
-                                 event_type = "event") {
-  stopifnot(!is.null(terms))
-  check_col_by(col_by, col_N, 1, total)
-
-  if (is.data.frame(terms) && ncol(terms) == 1) {
-    terms <- terms[[1]]
+                                 col_N = NULL, # nolint
+                                 event_type = "event",
+                                 table_tree = FALSE) {
+  if (is.atomic(terms)) {
+    terms <- list(terms)
   }
+  stopifnot(is.list(terms))
+
+  terms_header <- vapply(terms, label, character(1))
+  #todo: assign them to header row
 
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
 
-  order_indecies <- if (is.null(total)) {
-    c(0, 1)
-  } else {
-    c(nlevels(col_by) + 1, 1)
-  }
+  tree <- rsplit_to_tree(
+    list(id = id, col_by = col_by),
+    terms,
+    drop_empty_levels = TRUE
+  )
+  tree@name <- paste0("- Any ", event_type, " -")
+  tree@format_data$children_indent <- 0
 
-  tbls <- if (is.atomic(terms)) {
-
-    df <- data.frame(term = terms, id = id, col_by = col_by, stringsAsFactors = FALSE)
-
-    if (!is.null(total)) {
-      .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
-      col_N <- .t$col_N # nolint
-      df <- data.frame(
-        term = .t$x$term,
-        id = paste(.t$x$id, "-", .t$col_by),
-        col_by = .t$col_by,
-        stringsAsFactors = FALSE
-      )
-    }
-
-    tbl <- t_events_summary(
-      term = df$term,
-      id = df$id,
-      col_by = df$col_by,
-      col_N = col_N,
-      total_events = total_events,
-      subjects_with_events = subjects_with_events
-    )
-
-    if (nrow(tbl) > 2) {
-      ord_rrows <- order_rrows(tbl[-c(1, 2), ], indices = order_indecies, decreasing = TRUE)
-      tbl[c(1, 2, ord_rrows + 2), ]
-    } else {
-      tbl
-    }
-
-  } else if (ncol(terms) == 2) {
-
-    l_tbls <- lt_events_per_term_id_2(
-      terms = terms,
-      id = id,
-      col_by = col_by,
-      col_N = col_N,
-      total = total,
-      event_type = event_type
-    )
-
-    l_tbls_o <- lapply(l_tbls, function(tbl) {
-      if (nrow(tbl) > 3) {
-        ord_rrows <- order_rrows(tbl[-c(1:3), ], indices = order_indecies, decreasing = TRUE)
-        tbl[c(1:3, ord_rrows + 3), ] # as label row exists
+  tree <- rapply_tree(
+    tree,
+    function(name, content, path) {
+      if (length(path) == length(terms) + 1) {
+        # don't show everything for leaves
+        # this is a hack as total_events row.name is name
+        list(name = invisible_node_name(name), content = t_el_events_per_term_id(
+          id = content$id,
+          col_by = content$col_by,
+          col_N = col_N,
+          total_events = NULL,
+          subjects_with_events = name
+        ))
       } else {
-        tbl
+        list(name = name, content = t_el_events_per_term_id(
+          id = content$id,
+          col_by = content$col_by,
+          col_N = col_N,
+          total_events = total_events,
+          subjects_with_events = subjects_with_events
+        ))
       }
-    })
+    }
+  )
 
-    sort_rtables(l_tbls_o, indices = c(2, order_indecies), decreasing = TRUE)
+  # update format_data to display last nodes with less spacing
+  tree <- full_apply_at_depth(
+    tree,
+    function(node) {
+      node@format_data <- list(children_gap = 0, gap_to_children = 0)
+      node
+    },
+    depth = length(terms) - 1
+  )
 
+  # todo: possibly sort with rsort_tree
+  if (table_tree) {
+    tree
   } else {
-    stop("currently only one or two terms are supported")
+    to_rtable(tree)
   }
-
-  recursive_stack_rtables(tbls)
 }
 
 # Elementary Tables Used for AE tables ----
@@ -222,18 +248,20 @@ t_events_per_term_id <- function(terms,
 #'  col_by = factor(c("A", "A", "B", "C", "C", "C")),
 #'  col_N = c(2, 4, 10),
 #'  row_name = "Unique Records",
-#'  indent = 1,
 #'  na_rm = FALSE
 #' )
 t_count_unique <- function(x,
                            col_by,
-                           col_N, # nolint
+                           col_N = NULL, # nolint
                            na_rm = TRUE,
-                           row_name = "number of unique elements",
-                           indent = 0) {
-  check_col_by(col_by, col_N, 1)
+                           row_name = "number of unique elements") {
+  stopifnot(is.atomic(x)) # todo: is this enough?
+  col_by <- col_by_to_matrix(col_by, x)
+  col_N <- col_N %||% get_N(col_by)
+  check_col_by(x, col_by, col_N, min_num_levels = 1)
 
-  counts <- vapply(split(x, col_by), function(xi) {
+  counts <- vapply(col_by, function(rows) {
+    xi <- x[rows]
     if (na_rm) {
       xi <- na.omit(xi)
     }
@@ -242,10 +270,9 @@ t_count_unique <- function(x,
   percentage <- counts / col_N
 
   tbl <-  rtable(
-    rheader(rrowl("", levels(col_by))),
-    rrowl(as.character(row_name), Map(c, counts, percentage), format = "xx.xx (xx.xx%)", indent = indent)
+    rheader(rrowl("", colnames(col_by))),
+    rrowl(as.character(row_name), Map(c, counts, percentage), format = "xx.xx (xx.xx%)")
   )
-
   header_add_N(tbl, col_N)
 }
 
@@ -277,96 +304,46 @@ t_count_unique <- function(x,
 #'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
-#' t_events_summary(
-#'  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
+#' t_el_events_per_term_id(
 #'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
 #'  col_N = c(2, 4, 10)
 #' )
-#'
-#' t_events_summary(
-#'  term = with_label(c("t1", "t1", "t2", "t2", "t2"), "Term"),
-#'  id = c(1, 4, 2, 3, 3),
-#'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_N = c(2, 4, 10),
-#'  total_events = NULL
-#' )
-#'
-#' t_events_summary(
-#'  term = NULL,
-#'  id = c(1, 4, 2, 3, 3),
-#'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_N = c(2, 4, 10)
-#' )
-t_events_summary <- function(term,
-                             id,
-                             col_by,
-                             col_N, # nolint
-                             total_events = "Total number of events",
-                             subjects_with_events = "Total number of patients with at least one adverse event") {
-  stopifnot(nlevels(col_by) == length(col_N))
+#' #todo: rename total_events -> total_events_label
+#' #todo: rename subjects_with_events -> subjects_with_events_label
+t_el_events_per_term_id <- function(id,
+                                    col_by,
+                                    col_N = NULL,
+                                    total_events = "Total number of events",
+                                    subjects_with_events = "Total number of patients with at least one adverse event") {
+  col_by <- col_by_to_matrix(col_by, x = id)
+  col_N <- col_N %||% get_N(col_by)
+  check_col_by(x = id, col_by, col_N, min_num_levels = 1)
 
-  df <- if (is.null(term)) {
-    data.frame(id = id, col_by = col_by, stringsAsFactors = FALSE)
+  # subjects with at least one adverse advent (AE): we use the id as some subjects can have more than one AE
+  tbl_at_least_one <- if (!is.null(subjects_with_events)) {
+    t_count_unique(
+      x = id,
+      col_by = col_by,
+      col_N = col_N,
+      row_name = subjects_with_events
+    )
   } else {
-    data.frame(x = term, id = id, col_by = col_by, stringsAsFactors = FALSE)
-  }
-
-  if (any(is.na(df))) {
-    stop("no NA allowed in x, id, and col_by")
-  }
-
-  term_label <- if (is.null(label(term))) {
-    deparse(substitute(label))
-  } else {
-    label(term)
+    NULL
   }
 
   tbl_events <- if (!is.null(total_events)) {
-    rtable(
-      header = rheader(rrowl("", levels(col_by))),
-      rrowl(total_events, table(df$col_by))
+    res <- rtable(
+      header = rheader(rrowl("", colnames(col_by))),
+      rrowl(total_events, get_N(col_by))
     )
+    header_add_N(res, col_N)
   } else {
-    NULL
+    empty_rtable()
   }
 
-  tbl_at_least_one <- if (!is.null(subjects_with_events)) {
-    t_count_unique(
-      x = df$id,
-      col_by = df$col_by,
-      col_N = col_N,
-      row_name = subjects_with_events,
-      indent = 0
-    )
-  } else {
-    NULL
-  }
-
-  tbls <- if (!is.null(df$x)) {
-    tmp_tbls <- lapply(split(df, df$x), function(x) {
-      t_count_unique(
-        x = x$id,
-        col_by = x$col_by,
-        col_N = col_N,
-        row_name = x$x[1],
-        indent = 0
-      )
-    })
-    rbindl_rtables(tmp_tbls)
-  } else {
-    NULL
-  }
-
-  tbl <-  rbind(tbl_at_least_one, tbl_events, tbls)
-
-  # add label
-  header(tbl) <- rheader(
-    header(tbl)[[1]],
-    rrowl(term_label, header(tbl)[[2]])
-  )
-
-  tbl
+  # if tbl_at_least_one is NULL, then incorrect rbind function is called, so we assign empty_rtable() above
+  rbind(tbl_at_least_one, tbl_events)
 }
 
 # Create Nested Lists of Tables that Compose Events tables ----
@@ -491,10 +468,6 @@ lt_events_per_term_id_2 <- function(terms,
       subjects_with_events = subjects_with_events
     )
 
-    tbl_i <- rbind(
-      rtable(header = tbl_header, rrow(class_i)),
-      indent_table(tbl_i, 1)
-    )
     header(tbl_i) <- rheader(
       header(tbl_i)[[1]],
       rrowl(term_label, col_N, format = "(N=xx)", indent = 1)
@@ -503,43 +476,50 @@ lt_events_per_term_id_2 <- function(terms,
 
   }, df_class, names(df_class))
 
-  row.names(tbls[[1]])[2:3] <- c(subjects_with_events, total_events)
+  row.names(tbls[[1]])[1:2] <- c(subjects_with_events, total_events)
 
   tbls
 }
 
-# Helper Functions Used to Convert the Nested Lists to Single AE tables ----
+#todo: put below into utils.R
 
-#' Remove first n rows in a list of lists of rtables
-#'
-#' @noRd
+#' split when lst is not a data.frame, but a list of objects
 #'
 #' @examples
-#' tbl <- rbind(
-#'   rtabulate(iris$Sepal.Length, iris$Species, mean),
-#'   rtabulate(iris$Sepal.Length, iris$Species, sd)
-#' )
-#'
-#' l_tbls <- list(
+#' split_subset(
 #'   list(
-#'     tbl, tbl, tbl
+#'     x1 = factor(c(1,2,3,4,5,6)),
+#'     x2 = data.frame(x = 7:12, y = 13:18)
 #'   ),
-#'   list(
-#'     tbl, tbl
-#'   )
+#'   factor(c("a", "a", "b", "b", "b", "b"))
 #' )
-#'
-#' tern:::nl_remove_n_first_rrows(l_tbls, n = 1, 2)
-nl_remove_n_first_rrows <- function(x, n = 1, lower_childindex_threshold = 0) {
-  lapply(x, function(xi) {
-    i <- 0
-    lapply(xi, function(xii) {
-      i <<- i + 1
-      if (i >= lower_childindex_threshold) {
-        xii[-seq(1, n, by = 1), ]
-      } else {
-        xii
-      }
-    })
+#' # todo: extend to non-disjoint col_by matrix
+split_subset <- function(lst, f) {
+  stopifnot(is.list(lst)) # also works for data.frames
+  stopifnot(is.factor(f))
+  stopifnot(all(vapply(lst, numberRows, numeric(1)) == length(f)))
+  res <- lapply(split(seq_along(f), f), function(rows) {
+    rows_logical <- rep(FALSE, length(f))
+    rows_logical[rows] <- TRUE
+    lapply(lst, function(elem) rowSubset(elem, rows_logical))
   })
+  names(res) <- levels(f)
+  res
+}
+
+# todo: move these functions elsewhere
+numberRows <- function(x) {
+  if (is.data.frame(x)) {
+    nrow(x)
+  } else {
+    length(x)
+  }
+}
+
+rowSubset <- function(x, rows) {
+  if (is.data.frame(x)) {
+    x[rows,]
+  } else {
+    x[rows]
+  }
 }

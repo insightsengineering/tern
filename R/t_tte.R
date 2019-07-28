@@ -17,6 +17,7 @@
 #'   analysis, if \code{NULL} this section of the table will be omitted
 #' @param time_unit a string with the unit of the \code{tte} argument
 #' @param ties passed forward to \code{\link[survival]{coxph}}
+#' @template param_table_tree
 #'
 #' @details
 #' The time to event section is derived from a Kaplan-Meier estimator for the
@@ -58,13 +59,26 @@
 #' tbl
 #'
 #' Viewer(tbl)
+#'
+#' # table_tree = TRUE
+#' tbl <- t_tte(
+#'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+#'   data = ADTTE_f,
+#'   event_descr = factor(EVNTDESC),
+#'   time_points = c(6, 2000),
+#'   time_unit = "month",
+#'   table_tree = TRUE
+#' )
+#' summary(tbl)
 #' }
 t_tte <- function(formula,
                   data,
                   event_descr,
                   time_points,
                   time_unit = "month",
-                  ties = "exact") {
+                  ties = "exact",
+                  table_tree = FALSE) {
+  #todo: add col_by argument here
 
   cl <- match.call()
 
@@ -91,7 +105,7 @@ t_tte <- function(formula,
 
   check_same_n(is_event = is_event, event_descr = event_descr, arm = arm)
   col_N <- table(arm) # nolint
-  check_col_by(arm, col_N, 2)
+  check_col_by_factor(tte, arm, col_N, 2)
   if (!is.null(event_descr) && !is.factor(event_descr)) {
     stop("event_descr is required to be a factor")
   }
@@ -106,20 +120,35 @@ t_tte <- function(formula,
   # Event Table
   # ###########
 
-  tbl_event <- rbind(
-    rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name = "Patients with event (%)"),
-    if (!is.null(event_descr)) {
-      tbl_early_event <- rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event],
-                                   length, indent = 2)
-
-      header(tbl_early_event) <- header
-      insert_rrow(tbl_early_event, rrow("Earliest Contributing Event", indent = 1))
-    } else {
-      NULL
-    },
-    rtabulate(!is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
-              row.name = "Patients without event (%)")
+  tbl_event <- node(
+    invisible_node_name("Patient events"),
+    content = NULL,
+    children = list(
+      node(
+        invisible_node_name("Patients with event"),
+        rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
+                  row.name = "Patients with event (%)"),
+        children = compact(list(
+          if (!is.null(event_descr)) {
+            tbl <- rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event], length)
+            header(tbl) <- header
+            node(
+              "Earliest Contributing Event",
+              tbl
+            )
+          } else {
+            NULL
+          }
+        )),
+        format_data = list(gap_to_children = 0, children_indent = 1)
+      ),
+      node(
+        invisible_node_name("Patients without events"),
+        rtabulate(!is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
+                  row.name = "Patients without event (%)")
+      )
+    ),
+    format_data = list(children_gap = 0)
   )
 
   # Time to Event
@@ -147,21 +176,23 @@ t_tte <- function(formula,
     range(x$tte[x$is_event], na.rm = TRUE)
   })
 
-  tbl_tte <- rtable(
-    header = header,
-    rrow(paste0("Time to Event (", time_unit, "s)")),
-    rrowl("Median", med, format = "xx.xx", indent = 1),
-    rrowl("95% CI", ci, indent = 2, format = "(xx.x, xx.x)"),
-    rrowl("25% and 75%-ile", qnt, indent = 1, format = "xx.x, xx.x"),
-    rrowl("Range (censored)", rng_c, indent = 1, format = "xx.x to xx.x"),
-    rrowl("Range (event)", rng_e, indent = 1, format = "xx.x to xx.x")
+  tbl_tte <- node(
+    paste0("Time to Event (", time_unit, "s)"),
+    rtable(
+      header = header,
+      rrowl("Median", med, format = "xx.xx"),
+      rrowl("95% CI", ci, indent = 1, format = "(xx.x, xx.x)"),
+      rrowl("25% and 75%-ile", qnt, format = "xx.x, xx.x"),
+      rrowl("Range (censored)", rng_c, format = "xx.x to xx.x"),
+      rrowl("Range (event)", rng_e, format = "xx.x to xx.x")
+    )
   )
 
   # Unstratified Analysis
   # #####################
 
   # this function is reused for stratified analysis
-  survival_anl <- function(formula, label) {
+  survival_anl <- function(node_name, formula) {
 
     reference_level <- levels(arm)[1]
     comparison_levels <- levels(arm)[-1]
@@ -195,19 +226,32 @@ t_tte <- function(formula,
     hr <- start_with_null(lapply(values, `[[`, "hr"))
     hr_ci <- start_with_null(lapply(values, `[[`, "hr_ci"))
 
-    rtable(
-      header = header,
-      rrow(label),
-      rrowl("p-value (log-rank)", pval, indent = 1, format = "xx.xxxx"),
-      rrow(),
-      rrowl("Hazard Ratio", hr, indent = 1, format = "xx.xxxx"),
-      rrowl("95% CI", hr_ci, indent = 2, format = "(xx.xxxx, xx.xxxx)")
+    node(
+      node_name,
+      content = NULL,
+      children = list(
+        node(
+          invisible_node_name("p-value"),
+          rtable(
+            header = header,
+            rrowl("p-value (log-rank)", pval, format = "xx.xxxx")
+          )
+        ),
+        node(
+          invisible_node_name("Hazard Ratio"),
+          rtable(
+            header = header,
+            rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
+            rrowl("95% CI", hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+          )
+        )
+      )
     )
   }
 
   tbl_unstratified <- survival_anl(
-    formula = tm$formula_nostrata,
-    label = "Unstratified Analysis"
+    "Unstratified Analysis",
+    formula = tm$formula_nostrata
   )
 
   # Stratified Analysis
@@ -216,8 +260,8 @@ t_tte <- function(formula,
     NULL
   } else {
     survival_anl(
-      formula = tm$formula_strata,
-      label = "Stratified Analysis"
+      "Stratified Analysis",
+      formula = tm$formula_strata
     )
   }
 
@@ -230,9 +274,8 @@ t_tte <- function(formula,
 
     tp <- try(summary(surv_km_fit, times = time_points), silent = TRUE)
 
-
     tp_rtables <- if (is(tp, "try-error")) {
-
+      stop("Not yet implemented")
       list(
         rtable(
           header = header,
@@ -247,14 +290,9 @@ t_tte <- function(formula,
       s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
 
       Map(function(dfi, time_point) {
-
-        name <- paste(time_point, if (time_point == 1) time_unit else paste0(time_unit, "s"))
-
-
-        if (nrow(dfi) <= 1) {
+        tbl <- if (nrow(dfi) <= 1) {
           rtable(
             header = header,
-            rrow(name, indent = 1),
             rrow(if (nrow(dfi) == 0) "-- no data" else "-- not enough data", indent = 2)
           )
         } else {
@@ -272,7 +310,6 @@ t_tte <- function(formula,
 
           rtable(
             header = header,
-            rrow(name, indent = 1),
             rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
             rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
             rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
@@ -281,26 +318,44 @@ t_tte <- function(formula,
             rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
           )
         }
+        node(
+          paste(time_point, if (time_point == 1) time_unit else paste0(time_unit, "s")),
+          tbl
+        )
       }, s_df_tp, time_points)
     }
 
-    rbind(
-      rtable(header = header, rrow("Time Point Analysis")),
-      rbindl_rtables(tp_rtables, gap = 1)
+    node(
+      "Time Point Analysis",
+      content = NULL,
+      children = tp_rtables
     )
-
   }
-  ## Now Stack Tables together
-  tbl <- rbind(
-    tbl_event,
-    tbl_tte,
-    tbl_unstratified,
-    tbl_stratified,
-    tbl_timepoints,
-    gap = 1
-  )
 
-  header_add_N(tbl, col_N)
+  ## Now Stack Tables together
+  tree <- invisible_node(
+    children = compact(c(
+      tbl_event,
+      tbl_tte,
+      tbl_unstratified,
+      tbl_stratified,
+      tbl_timepoints
+    ))
+  )
+  tree <- rapply_tree(tree, function(name, content, ...) {
+    if (is_non_empty_rtable(content)) {
+      header_add_N(content, col_N)
+      list(name = name, content = content)
+    } else {
+      list(name = name, content = content)
+    }
+  })
+
+  if (table_tree) {
+    tree
+  } else {
+    to_rtable(tree)
+  }
 }
 
 t_tte_items <- function(formula, cl, data, env) {

@@ -6,16 +6,14 @@
 \alias{to_rtable,node-method}
 \title{Converts the object to an rtable}
 \usage{
-to_rtable(x, ...)
+to_rtable(x)
 
-\S4method{to_rtable}{node}(x, indent = 0)
+\S4method{to_rtable}{node}(x)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{additional arguments to pass}
-
-\item{indent}{indent to print with}
 }
 \description{
 Converts the object to an rtable
@@ -28,6 +26,10 @@ n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list()
 n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 n2 <- node(name = "D", content = c(1:3), children = list(n11, n12, n13))
 
-to_rtable(n2) # not working because not a tree of rtables
+# to_rtable(n2) # not working because not a tree of rtables
 
+to_rtable(node(
+  invisible_node_name("received_treatment"),
+  content = t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
+))
 }

@@ -7,7 +7,7 @@
 \alias{node}
 \title{An S4 Class to represent nodes in a tree}
 \usage{
-node(name, content, children = list(), format_data = NULL)
+node(name, content, children = list(), format_data = list())
 }
 \arguments{
 \item{name}{name of node}

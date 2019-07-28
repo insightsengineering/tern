@@ -30,16 +30,21 @@ setClass("node", slots = c(name = "ANY", content = "ANY", children = "list", for
 #' @rdname node-class
 setValidity("node", function(object) {
   format_data <- object@format_data
-  all(
+  # returning FALSE also works, but error message is not informative
+  format_integer_or_null <- function(entry) {
+    is.null(format_data[[entry]]) || is.numeric.single(format_data[[entry]])
+  }
+  stopifnot(
     # todo: better checking of format_data
     is.null(format_data) || (
-      (is.null(format_data[["gap_to_children"]]) || is.numeric.single(format_data[["gap_to_children"]])) &&
-        (is.null(format_data[["children_gap"]]) || is.numeric.single(format_data[["children_gap"]])) &&
-        (is.null(format_data[["children_indent"]]) || is.numeric.single(format_data[["children_indent"]]))
+      format_integer_or_null("gap_to_children") &&
+        format_integer_or_null("children_gap") &&
+        format_integer_or_null("children_indent") &&
+        format_integer_or_null("content_indent")
     ),
     # if it has > 0 children, no child is null
-    is.character(object@name) ||
-      (is(object@name, "invisible_node_name") && is.character(unclass(object@name))),
+    is.character.single(object@name) ||
+      (is(object@name, "invisible_node_name") && is.character.single(unclass(object@name))),
     !any(vapply(object@children, is.null, logical(1))),
     all(vapply(object@children, is, logical(1), "node")),
     # check all names are unique
@@ -48,6 +53,14 @@ setValidity("node", function(object) {
     all(names(object@children) == vapply(object@children, function(child) child@name, character(1)))
   )
 })
+
+# todo: move to utils.R
+is.character.single <- function(x) {
+  !is.null(x) &&
+    is.character(x) &&
+    length(x) == 1 &&
+    !is.na(x)
+}
 
 #' Create an object of class node
 #'
@@ -77,7 +90,7 @@ setValidity("node", function(object) {
 #' #node(name = "A", content = c(1:3), children = list("A"))
 #' @name node
 #' @rdname node-class
-node <- function(name, content, children = list(), format_data = NULL) {
+node <- function(name, content, children = list(), format_data = list()) {
   #names(children) <- vapply(children, function(child) child@name, character(1))
   new("node", name = name, content = content, children = unname(children), format_data = format_data)
 }
@@ -201,7 +214,9 @@ setMethod("basic_node_info", signature = "node", definition = function(x, index 
 #' Applies the function f to each node in the tree x
 #'
 #' @param x tree object
-#' @param f function to apply to each node in the tree recursively, f(name, content, c(path, name))
+#' @param f function to apply to each node in the tree recursively,
+#'   f(name, content, path, ...) -> list(name = new_name, content = new_content)
+#'   path includes node itself
 #'
 #' @export rapply_tree
 setGeneric(
@@ -212,8 +227,6 @@ setGeneric(
 
 #' f is applied to the content of each node and a new node of class 'target_obj_class' is created
 #' with children applied recursively
-#' f takes as argument the content and the path to the node and ...
-#' todo: also pass object name to f??
 #' depth-first fashion
 #'
 #' @param target_obj_class target obj class of each node with arguments (name, content, children),
@@ -230,13 +243,14 @@ setGeneric(
 #' summary(n2)
 #' # change class of elements so we can see it in summary()
 #' summary(rapply_tree(n2, f = function(name, content, path, ...) {
-#'   if (is(content, "integer")) {
+#'   new_content <- if (is(content, "integer")) {
 #'     paste("integer", content, collapse = ":")
 #'   } else if (is(content, "matrix")) {
 #'     paste("matrix", content, collapse = ":")
 #'   } else {
 #'     "unknown"
 #'   }
+#'   list(name = name, content = new_content)
 #' }))
 #'
 #' @export rapply_tree
@@ -255,10 +269,12 @@ setMethod("rapply_tree", signature = "node", definition = function(x, f, target_
     target_obj_class <- function(...) new(class(x), ...)
   }
   new_path <- c(path, x@name)
+  new_node_value <- f(name = x@name, content = x@content, path = new_path, ...)
   target_obj_class(
-    name = x@name,
-    content = f(name = x@name, content = x@content, path = new_path, ...),
-    children = lapply(x@children, function(child) rapply_tree(child, f, target_obj_class, path = new_path, ...))
+    name = new_node_value$name,
+    content = new_node_value$content,
+    children = lapply(x@children, function(child) rapply_tree(child, f, target_obj_class, path = new_path, ...)),
+    format_data = x@format_data
   )
 })
 
@@ -288,7 +304,11 @@ get_indent_str <- function(indent) {
 #' @rdname displayable
 setMethod("displayable", signature = "ANY", definition = function(x, indent = 0) {
   #paste0(get_indent_str(indent), utils::capture.output(cat(x))[[1]], "...") # only print first line of cat output
-  paste0(get_indent_str(indent), "Default printout:", substr(toString(x), 1, 15), "...")
+  content <- toString(x)
+  if (length(content) > 18) {
+    content <- paste0(substr(toString(x), 1, 15), "...")
+  }
+  paste0(get_indent_str(indent), content)
 })
 
 setOldClass("rtable") # needed to overwrite S4 methods targetting it
@@ -335,7 +355,7 @@ setMethod("displayable", signature = "node", definition = function(x, indent = 0
   }
   # todo: handle when name is None
   paste(
-    paste0(get_indent_str(indent), x@name),
+    paste0(get_indent_str(indent), x@name, ":"),
     paste(lapply(c(list(x@content), x@children), displayable, indent = indent + 1), collapse = "\n"),
     sep = "\n"
   )
@@ -446,37 +466,243 @@ setGeneric(
 #'   content = t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
 #' ))
 setMethod("to_rtable", signature = "node", definition = function(x) {
-  stopifnot(is.null(x@content) || is(x@content, "rtable"))
-
-  if (length(x@children) > 0) {
-    tbl <- indent(
-      rbindl_rtables(lapply(x@children, to_rtable), gap = x@format_data[["children_gap"]] %||% 1),
-      x@format_data[["children_indent"]] %||% 0
-    )
+  stopifnot(is.null(x@content) || is_rtable(x@content))
+  if (is(x@name, "invisible_node_name")) {
+    default_children_indent <- 0
+    default_content_indent <- 0
   } else {
-    tbl <- NULL
+    default_children_indent <- 1
+    default_content_indent <- 1
   }
+  tbl <- indent(
+    rbindl_rtables(lapply(x@children, to_rtable), gap = x@format_data[["children_gap"]] %||% 1),
+    x@format_data[["children_indent"]] %||% default_children_indent
+  )
   if (!is.null(x@content)) {
-    tbl <- if (is.null(tbl)) {
-      x@content
-    } else {
-      rbindl_rtables(list(x@content, tbl), gap = x@format_data[["gap_to_children"]] %||% 1)
-    }
+    tbl <- rbind(
+      indent(x@content, x@format_data[["content_indent"]] %||% default_content_indent),
+      tbl,
+      gap = x@format_data[["gap_to_children"]] %||% 1
+    )
   }
   if (is(x@name, "invisible_node_name")) {
     tbl
   } else {
-    # todo: tbl can be null, so ideally, indent_table should accept empty tables as well
-    insert_rrow(indent_table(tbl, 1), rrow(x@name))
+    if (is_empty_rtable(tbl)) {
+      stop("Treat case to insert rrow into empty table")
+    } else {
+      insert_rrow(tbl, rrow(x@name))
+    }
   }
 })
 
+# todo: rename to rbind
+setMethod("to_rtable", signature = "rtable", definition = function(x) {
+  if (is_empty_rtable(x)) {
+    "Empty rtable"
+  } else {
+    x
+  }
+})
+
+#todo: remove
 # setMethod("to_rtable", signature = "ANY", definition = function(x) {
 #   stop(paste("Cannot convert object of class", class(x)))
 #   browser()
 # })
 
-# todo: rename to rbind
-setMethod("to_rtable", signature = "rtable", definition = function(x) {
-  x
-})
+
+#' Recursively construct a tree
+#'
+#' @param info_from_parent info passed on to this node from parent
+#' @param f function(info_from_parent, path) -> list(name, content, info_to_children_lst) that returns the name, the content and the info
+#'   to pass down to the children (the latter is a named list with one entry per child)
+#'   a child can get its name (as desired by the parent) by looking at path[[length(path)]]
+#' @param path to node (character string of node names leading to it)
+#'
+#' @export
+#'
+#' @examples
+#' i <- 0
+#' res <- recursive_construct_tree(
+#'   1:7,
+#'   function(info_from_parent, path) {
+#'     i <<- i + 1
+#'     list(
+#'       name = toString(i),
+#'       content = info_from_parent,
+#'       info_to_children_lst = if (length(info_from_parent) > 1) split(info_from_parent, seq_along(info_from_parent) %% 3) else NULL
+#'     )
+#'   },
+#'   path = "root"
+#' )
+#' cat(displayable(res))
+#'
+#' res <- recursive_construct_tree(
+#'   1:7,
+#'   function(info_from_parent, path) {
+#'     list(
+#'       name = path[[length(path)]],
+#'       content = info_from_parent,
+#'       info_to_children_lst = if (length(info_from_parent) > 1) split(info_from_parent, seq_along(info_from_parent) %% 3) else NULL
+#'     )
+#'   },
+#'   path = "root"
+#' )
+#' cat(displayable(res))
+recursive_construct_tree <- function(info_from_parent, f, path = "root") {
+  node_val <- f(info_from_parent = info_from_parent, path = path)
+  node(
+    name = node_val$name,
+    content = node_val$content,
+    # child_name is only suggested, but a different name can be returned
+    children = Map(
+      function(info_to_child, child_name) recursive_construct_tree(info_to_child, f = f, path = c(path, child_name)),
+      node_val$info_to_children_lst,
+      names(node_val$info_to_children_lst)
+    ),
+    format_data = node_val$format_data
+  )
+}
+
+#' Split list recursively according to by and return the associated tree
+#'
+#' @param lst list to split, \code{\link{split_subset}} will be applied to all list elements
+#' @param by list of columns, each of which is a factor to recursively split by
+#' @param drop_empty_levels whether to drop empty levels, this happens often when you have, e.g. two factors,
+#' one with levels (clA, clB), the other with levels (clA_1, clA_2, clB_1, clB_2) and only the combinations
+#' clA-clA_1, clA-clA_2, clB-clB_1, clB-clB_2 appear out of the eight combinations.
+#'
+#' @return node object
+#'
+#' @export
+#'
+#' @examples
+#' tree <- rsplit_to_tree(1:5, list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y"))))
+#' summary(tree)
+#' cat(displayable(tree))
+#'
+#' by_lst <- list(factor(c(rep("clA", 4), rep("clB", 4))), factor(c(rep(c("A1", "A2"), 2), rep(c("B1", "B2"), 2))))
+#' summary(rsplit_to_tree(1:8, by_lst))
+#' summary(rsplit_to_tree(1:8, by_lst, drop_empty_levels = FALSE))
+rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE) {
+  stopifnot(is.list(by_lst))
+  #todo: check class of by_lst, e.g. introduce class col_by
+  recursive_construct_tree(
+    list(content = lst, by_lst = by_lst),
+    function(info_from_parent, path) {
+      content <- info_from_parent$content
+      by_lst <- info_from_parent$by_lst
+      info_to_children_lst <- if (is.null(by_lst) || (length(by_lst) == 0)) {
+        NULL
+      } else {
+        split_by <- if (drop_empty_levels) {
+          by_drop_empty_cols(by_lst[[1]])
+        } else {
+          by_lst[[1]]
+        }
+        # named list
+        esplit(list(content = content, by_lst = by_lst[-1]), split_by)
+      }
+      list(
+        name = path[[length(path)]],
+        content = content,
+        info_to_children_lst = info_to_children_lst
+      )
+    }
+  )
+}
+
+#' It can also be used to remove children by not returning all indices
+#'
+#' @param node node to sort
+#' @param f function(node) that returns the ordered list of new childrens this node will have,
+#'   then recurses into the children
+#' @return node
+#'
+#' @export
+#'
+#' @examples
+#' tree <- node("1", 1, list(
+#' node("10", 10),
+#' node("7", 7),
+#' node("6", 6, list(
+#'   node("2", 2),
+#'   node("1", 1)
+#' ))
+#' ))
+#' cat(displayable(tree))
+#' sorted_tree <- rsort_tree(tree, function(node) order(vapply(node@children, function(child) child@content, numeric(1))))
+#' cat(displayable(sorted_tree))
+rsort_tree <- function(node, f) {
+  children_order <- f(node)
+  stopifnot(is.numeric(children_order))
+  node(
+    name = node@name,
+    content = node@content,
+    children = lapply(node@children[children_order], rsort_tree, f),
+    format_data = node@format_data
+  )
+}
+
+#todo: remove
+# x <- list(a = 1)
+# access_with_default(x, "a", default = 2)
+# access_with_default(x, "b", default = 2)
+# access_with_default <- function(lst, x, default = NULL) {
+#   if (x %in% names(lst)) {
+#     lst[[x]]
+#   } else {
+#     default
+#   }
+# }
+
+#' Applies f to node at given depth in depth-first order
+#'
+#' We prefix it full because you can modify the entire node, i.e. also the children and format_data
+#' full_apply_from_depth is also possible to be implemented.
+#'
+#' Note that we don't make an S4 method here for brevity.
+#'
+#' @param x node to apply to
+#' @param f function(node) -> node to apply to all nodes at given depth
+#' @param depth depth at which to apply function
+#'
+#' @return node
+#'
+#' @export
+#'
+#' @examples
+#' tree <- node("1", 1, list(
+#' node("10", 10),
+#' node("7", 7),
+#' node("6", 6, list(
+#'   node("2", 2),
+#'   node("1", 1)
+#' ))
+#' ))
+#' cat(displayable(tree))
+#' updated_tree <- full_apply_at_depth(
+#'   tree,
+#'   function(node) {
+#'     # Note: copy-on-write for node
+#'     node@content <- node@content + 100
+#'     node
+#'   },
+#'   depth = 2
+#' )
+#' cat(displayable(updated_tree))
+full_apply_at_depth <- function(x, f, depth = 0) {
+  stopifnot(is(x, "node"))
+  stopifnot(is.numeric(depth), depth >= 0)
+  if (depth == 0) {
+    f(x)
+  } else {
+    node(
+      name = x@name,
+      content = x@content,
+      children = lapply(x@children, full_apply_at_depth, f = f, depth = depth - 1),
+      format_data = x@format_data
+    )
+  }
+}

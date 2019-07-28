@@ -77,21 +77,6 @@ check_data_frame <- function(x, allow_missing = FALSE) {
   TRUE
 }
 
-# if total is non-null then it can not be in the levels of col_by
-check_col_by_old <- function(col_by,
-                         col_N, # nolint
-                         min_num_levels = 2,
-                         total = NULL) {
-  stopifnot(
-    is.no_by(col_by) || is.factor(col_by),
-    !any(is.na(col_by)) && !("" %in% levels(col_by)),
-    length(col_N) == nlevels(col_by),
-    nlevels(col_by) >= min_num_levels,
-    is.null(total) || !(total %in% levels(col_by))
-  )
-
-  TRUE
-}
 
 # copied over from utils.nest which is not open-source
 # todo: move to utils.nest once request is implemented
@@ -130,6 +115,24 @@ check_col_by <- function(x,
   invisible(NULL)
 }
 
+check_col_by_factor <- function(x,
+                                col_by,
+                                col_N, # nolint
+                                min_num_levels = 2) {
+  stopifnot(
+    is.factor(col_by),
+    !any(is.na(col_by)) && !("" %in% levels(col_by)),
+    length(col_N) == nlevels(col_by),
+    nlevels(col_by) >= min_num_levels
+  )
+  if (is.data.frame(x)) {
+    stopifnot(nrow(col_by) == nrow(x))
+  } else {
+    stopifnot(nrow(col_by) == length(x))
+  }
+
+  invisible(NULL)
+}
 
 check_is_event <- function(x) {
   stopifnot(
@@ -137,7 +140,7 @@ check_is_event <- function(x) {
     !any(is.na(x))
   )
 
-  TRUE
+  invisible(NULL)
 }
 
 
@@ -150,8 +153,10 @@ check_is_factor <- function(x, allow_na = TRUE) {
     }
   }
 
-  TRUE
+  invisible(NULL)
 }
+
+
 
 
 check_is_numeric <- function(x, allow_na = TRUE) {
@@ -163,5 +168,5 @@ check_is_numeric <- function(x, allow_na = TRUE) {
     }
   }
 
-  TRUE
+  invisible(NULL)
 }

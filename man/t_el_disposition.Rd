@@ -37,7 +37,6 @@ With option n, the number of non-missing records from \code{x} is used as the de
 Single element for disposition table
 }
 \examples{
-
 library(random.cdisc.data)
 library(dplyr)
 
@@ -45,58 +44,60 @@ ADSL <- radsl(cached = TRUE)
 
 ADSL0[, c("COMPSTUD", "STUDONS")]
 ADSL0 <- ADSL \%>\%
- mutate(
-   COMPSTUD = sample(c('Y','N'),
+  mutate(
+    COMPSTUD = sample(c('Y','N'),
+                      size=nrow(ADSL),
+                      replace = TRUE) \%>\% as.factor,
+    STUDONS = sample(c('Alive: On Treatment', 'Alive: In Follow-up', NA),
                      size=nrow(ADSL),
                      replace = TRUE) \%>\% as.factor,
-   STUDONS = sample(c('Alive: On Treatment', 'Alive: In Follow-up', NA),
+    STDDRS = sample(c('Death', 'Lost To Follow-Up',
+                      'Protocol Violation', 'Withdrawal By Subject',
+                      'Other'),
                     size=nrow(ADSL),
                     replace = TRUE) \%>\% as.factor,
-   STDDRS = sample(c('Death', 'Lost To Follow-Up',
-                     'Protocol Violation', 'Withdrawal By Subject',
-                     'Other'),
-                   size=nrow(ADSL),
-                   replace = TRUE) \%>\% as.factor,
-   GOTTRT = ifelse(!is.na(ACTARMCD), 'Y', 'N') \%>\% as.factor,
-   DISTRTFL = sample(c('Y','N'),
-                     size=nrow(ADSL),
-                     replace = TRUE) \%>\% as.factor,
-   TRTDRS = sample(c('ADVERSE EVENT', 'PROGRESSIVE DISEASE',
-                     'PHYSICIAN DECISION', 'LACK OF EFFICACY',
-                     'OTHER'),
-                   size=nrow(ADSL),
-                   replace = TRUE) \%>\% as.factor,
-   STUDONS = case_when(
-     COMPSTUD == 'N' ~ STUDONS
-   ),
-   STDDRS = case_when(
-     COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS
-   ),
-   DISSTDFL = case_when(
-     !is.na(STDDRS) ~ "Y"
-   ),
-   DISTRTFL = case_when(
-     GOTTRT == 'Y' ~ DISTRTFL
-   ),
-   TRTDRS = case_when(
-     DISTRTFL == 'Y' ~ TRTDRS
-   ),
-   DRSCAT = case_when(
-     TRTDRS \%in\% c('ADVERSE EVENT', 'PHYSICIAN DECISION') ~ "Safety",
-     !is.na(TRTDRS) ~ "Other"
-   )
- ) \%>\% var_relabel(COMPSTUD = "Complete Study",
-                   STUDONS = "On-study Status",
-                   DISSTDFL = "Discontinued Study",
-                   STDDRS = "Reason for Study \\r\\nDiscontinuation",
-                   GOTTRT = "Received Treatment",
-                   DISTRTFL = "Discontinued Treatment",
-                   TRTDRS = "Reason for Treatment \\r\\nDiscontinuation"
-                   )
+    GOTTRT = ifelse(!is.na(ACTARMCD), 'Y', 'N') \%>\% as.factor,
+    DISTRTFL = sample(c('Y','N'),
+                      size=nrow(ADSL),
+                      replace = TRUE) \%>\% as.factor,
+    TRTDRS = sample(c('ADVERSE EVENT', 'PROGRESSIVE DISEASE',
+                      'PHYSICIAN DECISION', 'LACK OF EFFICACY',
+                      'OTHER'),
+                    size=nrow(ADSL),
+                    replace = TRUE) \%>\% as.factor,
+    STUDONS = case_when(
+      COMPSTUD == 'N' ~ STUDONS
+    ),
+    STDDRS = case_when(
+      COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS
+    ),
+    DISSTDFL = case_when(
+      !is.na(STDDRS) ~ "Y"
+    ),
+    DISTRTFL = case_when(
+      GOTTRT == 'Y' ~ DISTRTFL
+    ),
+    TRTDRS = case_when(
+      DISTRTFL == 'Y' ~ TRTDRS
+    ),
+    DRSCAT = case_when(
+      TRTDRS \%in\% c('ADVERSE EVENT', 'PHYSICIAN DECISION') ~ "Safety",
+      !is.na(TRTDRS) ~ "Other"
+    )
+  ) \%>\% var_relabel(COMPSTUD = "Complete Study",
+                    STUDONS = "On-study Status",
+                    DISSTDFL = "Discontinued Study",
+                    STDDRS = "Reason for Study \\r\\nDiscontinuation",
+                    GOTTRT = "Received Treatment",
+                    DISTRTFL = "Discontinued Treatment",
+                    TRTDRS = "Reason for Treatment \\r\\nDiscontinuation"
+  )
 
 library(purrr)
-dsp <- partial(t_el_disposition, col_by = ADSL0$ARM \%>\% by_add_total("All Patients"), denominator = "N")
-
+t_el_disposition_indent <- function(..., indent = 0) indent(t_el_disposition(...), indent)
+dsp <- partial(t_el_disposition_indent, col_by = ADSL0$ARM \%>\% by_add_total("All Patients"), denominator = "N")
+# Only using rtables
+# old way of doing things with indent variable
 rbind(
   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
   dsp(ADSL0$STUDONS == "Alive: In Follow-up", row.name = "Alive: In follow-up"),
@@ -104,8 +105,7 @@ rbind(
   dsp(as.factor(ADSL0$STDDRS), indent = 1),
   rrow(),
   rrow("Show example of using n as denominator"),
-  t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM, denominator = "n",
-     total = "All Patients", indent = 1),
+  indent(t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM \%>\% by_add_total("All Patients"), denominator = "n"), 1),
   rrow(),
   dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment"),
   dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
@@ -115,5 +115,81 @@ rbind(
   dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Other", indent = 2)
 )
 
-# todo: remove subset
+# new way:
+treatment_section_rtable <- rbind(
+  dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment"),
+  dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
+  indent(
+    rbind(
+      dsp(ADSL0$DRSCAT == "Safety", row.name = "Safety"),
+      indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Safety"), 1),
+      dsp(ADSL0$DRSCAT == "Other", row.name = "Other"),
+      indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Other"), 1)
+    ),
+    1
+  )
+)
+treatment_section_rtable
+
+# easier to manipulate for their purposes by other users
+treatment_section_tree <- node(
+  invisible_node_name("treatment"),
+  content = NULL,
+  format_data = list(children_gap = 0),
+  children = list(
+    node(
+      invisible_node_name("received_treatment"),
+      content = dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment")
+    ),
+    node(
+      invisible_node_name("discontinuedtreatment"),
+      dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
+      format_data = list(gap_to_children = 0, children_gap = 0, children_indent = 1),
+      children = list(
+        node(
+          invisible_node_name("safety"),
+          rbind(
+            dsp(ADSL0$DRSCAT == "Safety", row.name = "Safety"),
+            indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Safety"), 1)
+          )
+        ),
+        node(
+          invisible_node_name("other"),
+          rbind(
+            dsp(ADSL0$DRSCAT == "Other", row.name = "Other"),
+            indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Other"), 1)
+          )
+        )
+      )
+    )
+  )
+)
+to_rtable(treatment_section_tree)
+
+to_rtable(invisible_node(
+  name = "t_el_disp",
+  children = list(
+    node(
+      name = invisible_node_name("Study status"),
+      content = rbind(
+        dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
+        dsp(ADSL0$STUDONS == "Alive: In Follow-up", row.name = "Alive: In follow-up")
+      ),
+      children = list(
+        node(
+          name = invisible_node_name("Reasons for study discontinuation (using capital N)"),
+          rbind(
+            dsp(ADSL0$DISSTDFL == "Y",  row.name = "Discontinued study"),
+            indent(dsp(as.factor(ADSL0$STDDRS)), 1)
+          )
+        ),
+        node(
+          name = "Reasons for study discontinuation (using small n)",
+          content = t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM \%>\% by_add_total("All Patients"), denominator = "n")
+        )
+      )
+    ),
+    treatment_section_tree
+  )
+))
 }

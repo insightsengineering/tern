@@ -79,12 +79,11 @@ t_summary_by <- function(x,
                          col_N, # nolint
                          ...,
                          table_tree = FALSE) {
-  x <- data.frame(x) # treat data.frames and factors the same
   col_by <- col_by_to_matrix(col_by, x)
   row_by <- col_by_to_matrix(row_by, x)
   t_summary.list(
-    x = lapply(row_by, function(rows) x[rows,]),
-    col_by = lapply(row_by, function(rows) col_by[rows,]),
+    x = lapply(row_by, function(rows) subset(x, rows)),
+    col_by = lapply(row_by, function(rows) subset(col_by, rows)),
     col_N = col_N,
     ...,
     table_tree = table_tree
@@ -110,11 +109,11 @@ t_summary.list <- function(x_list, # x_list
       children = list()
     )
   }, x_list, col_by_list, names(x_list))
-  res <- invisible_node(children = children)
+  tree <- invisible_node(children = children)
 
   if (table_tree) {
-    res
+    tree
   } else {
-    to_rtable(res)
+    to_rtable(tree)
   }
 }

@@ -1,6 +1,6 @@
 #' Drop a special from a formula
 #'
-#' For example get an unstratified version of a forumla
+#' For example get an unstratified version of a formula
 #'
 #' @param terms an object return by \code{\link[stats]{terms}}
 #' @param special a character string of the special

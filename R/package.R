@@ -3,4 +3,5 @@
 "_PACKAGE"
 
 #' @import utils.nest
+#' @importFrom rlang "%||%"
 NULL

@@ -137,7 +137,7 @@ g_forest <- function(tbl,
                      newpage = TRUE) {
 
 
-  stopifnot(is(tbl, "rtable"))
+  stopifnot(is(tbl, "rtable")) #todo: treat empty rtable
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -537,7 +537,7 @@ forest_viewport <- function(tbl,
                             gap_header = unit(1, "lines")) {
 
   stopifnot(
-    is(tbl, "rtable"),
+    is(tbl, "rtable"), #todo: treat empty rtable
     is.null(width_row_names) || is.unit(width_row_names),
     is.null(width_columns) || is.unit(width_columns),
     is.unit(width_forest)
