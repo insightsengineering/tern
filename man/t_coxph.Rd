@@ -38,7 +38,7 @@ tbl <- t_coxph(fit_coxph)
 tbl
 }
 
-#todoL why is there no space in the table by summary: e.g. "B: Placebo" -> "ARM B: Placebo"
+#todo: may add space in the table by summary: e.g. "B: Placebo" -> "ARM B: Placebo"
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

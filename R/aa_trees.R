@@ -1,10 +1,5 @@
-
-# Questions:
 # we don't name children with their content name because names may change and this would not get updated
-# setClassUnion is broken (mget error), so we will not use node or NULL, set children to NULL to handle empty node
-# todo: can we have several calls to setGeneric with different function signatures?
-
-
+# todo: yes, they get updated because the whole objects gets copied to a new node object for which we can again check validity
 
 #' An S4 Class to represent nodes in a tree
 #'
@@ -35,7 +30,6 @@ setValidity("node", function(object) {
     is.null(format_data[[entry]]) || is.numeric.single(format_data[[entry]])
   }
   stopifnot(
-    # todo: better checking of format_data
     is.null(format_data) || (
       format_integer_or_null("gap_to_children") &&
         format_integer_or_null("children_gap") &&
@@ -53,14 +47,6 @@ setValidity("node", function(object) {
     all(names(object@children) == vapply(object@children, function(child) child@name, character(1)))
   )
 })
-
-# todo: move to utils.R
-is.character.single <- function(x) {
-  !is.null(x) &&
-    is.character(x) &&
-    length(x) == 1 &&
-    !is.na(x)
-}
 
 #' Create an object of class node
 #'
@@ -142,16 +128,6 @@ invisible_node <- function(children, name = "root", content = NULL, format_data 
 object_to_node <- function(x, node_name = invisible_node_name(deparse(substitute(x)))) {
   node(name = node_name, content = x)
 }
-
-#todo: remove again
-# # get a new node with the specified fields updated
-# copy_node <- function(node, name = NULL, content = NULL, children = NULL) {
-#   node(
-#     name = `if`(is.null(name), node@name, name),
-#     content = `if`(is.null(content), node@content, content),
-#     children = `if`(is.null(children), node@children, children)
-#   )
-# }
 
 #' overwrite s3 method because s3 and s4 with same names cannot coexist
 #'
@@ -350,10 +326,10 @@ setMethod("displayable", signature = "rtable", definition = function(x, indent =
 #' n4 <- node(name = "D", content = c(1:3), children = list(n41, n42, n43))
 #' cat(displayable(n4))
 setMethod("displayable", signature = "node", definition = function(x, indent = 0) {
+  # todo: rename displayable to show
   if (is.null(x)) {
     return()
   }
-  # todo: handle when name is None
   paste(
     paste0(get_indent_str(indent), x@name, ":"),
     paste(lapply(c(list(x@content), x@children), displayable, indent = indent + 1), collapse = "\n"),
@@ -427,9 +403,22 @@ setMethod(`[[`, signature = c("node"), function(x, i, j, ..., return_content = T
   do.call(`[[`, args = c(list(x = children[[ indices[[1]] ]]), indices[-1], list(return_content = return_content)))
 })
 
-# node_name that will not be displayed, also true when converted to rtable
-# The purpose of this is to still allow indexing in the rtable through the name index
-# todo: we can also add a label attribute to the format_data to tell how the node should be displayed
+#' Create an invisible node
+#'
+#' Node can be accessed through this name, but name will not be displayed when converted with to_rtable.
+#' node_name that will not be displayed, also true when converted to rtable
+#' The purpose of this is to still allow indexing in the rtable through the name index
+#' todo: we can also add a label attribute to the format_data to tell how the node should be displayed
+#' e.g. node name to access it vs. displayed node name in to_rtable
+#'
+#' @param name name of invisible node
+#'
+#' @return node
+#'
+#' @export
+#'
+#' @examples
+#' invisible_node_name("root")
 invisible_node_name <- function(name) {
   stopifnot(is.character(name))
   structure(name, class = "invisible_node_name")
@@ -466,6 +455,9 @@ setGeneric(
 #'   content = t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
 #' ))
 setMethod("to_rtable", signature = "node", definition = function(x) {
+  #todo: instead of only indenting, put node name and children name into an rtable as well
+  # then extract labels from tree structure (add label to node format_data for instance) to construct header
+  # this will allow for thinbgs like "Dictionary-derived term"
   stopifnot(is.null(x@content) || is_rtable(x@content))
   if (is(x@name, "invisible_node_name")) {
     default_children_indent <- 0
@@ -496,7 +488,7 @@ setMethod("to_rtable", signature = "node", definition = function(x) {
   }
 })
 
-# todo: rename to rbind
+# todo: rename to rbind.node eventually
 setMethod("to_rtable", signature = "rtable", definition = function(x) {
   if (is_empty_rtable(x)) {
     "Empty rtable"
@@ -504,13 +496,6 @@ setMethod("to_rtable", signature = "rtable", definition = function(x) {
     x
   }
 })
-
-#todo: remove
-# setMethod("to_rtable", signature = "ANY", definition = function(x) {
-#   stop(paste("Cannot convert object of class", class(x)))
-#   browser()
-# })
-
 
 #' Recursively construct a tree
 #'
@@ -567,7 +552,7 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 
 #' Split list recursively according to by and return the associated tree
 #'
-#' @param lst list to split, \code{\link{split_subset}} will be applied to all list elements
+#' @param lst list to split, \code{\link{esplit}} will be applied to all list elements
 #' @param by list of columns, each of which is a factor to recursively split by
 #' @param drop_empty_levels whether to drop empty levels, this happens often when you have, e.g. two factors,
 #' one with levels (clA, clB), the other with levels (clA_1, clA_2, clB_1, clB_2) and only the combinations
@@ -644,18 +629,6 @@ rsort_tree <- function(node, f) {
     format_data = node@format_data
   )
 }
-
-#todo: remove
-# x <- list(a = 1)
-# access_with_default(x, "a", default = 2)
-# access_with_default(x, "b", default = 2)
-# access_with_default <- function(lst, x, default = NULL) {
-#   if (x %in% names(lst)) {
-#     lst[[x]]
-#   } else {
-#     default
-#   }
-# }
 
 #' Applies f to node at given depth in depth-first order
 #'

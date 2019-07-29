@@ -144,7 +144,7 @@
 #' )
 #' summary(tbls)
 #' tbls[[1]]
-#' rbind_table_tree(tbls)
+#' tbls[['cl A']]
 t_events_per_term_id <- function(terms,
                                  id,
                                  col_by,
@@ -156,8 +156,8 @@ t_events_per_term_id <- function(terms,
   }
   stopifnot(is.list(terms))
 
-  terms_header <- vapply(terms, label, character(1))
-  #todo: assign them to header row
+  #terms_header <- vapply(terms, label, character(1))
+  #todo: assign them to header row in tree
 
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
@@ -344,182 +344,4 @@ t_el_events_per_term_id <- function(id,
 
   # if tbl_at_least_one is NULL, then incorrect rbind function is called, so we assign empty_rtable() above
   rbind(tbl_at_least_one, tbl_events)
-}
-
-# Create Nested Lists of Tables that Compose Events tables ----
-#' List of Events Terms Tables
-#'
-#' \code{lt_events_per_term_grade_id_2} returns a nested list of events tables
-#' by unique id (\code{\link{t_count_unique}}).
-#'
-#' @inheritParams t_events_per_term_id
-#'
-#' @details
-#' \if{html}{
-#'
-#' The data is split and table functions are applied to leaf nodes as follows:
-#'
-#' \figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
-#' }
-#'
-#' @template author_waddella
-#' @template author_zhanc107
-#' @template author_wangh107
-#' @template author_qit3
-#'
-#' @seealso \code{\link{t_events_per_term_id}}, \code{\link{t_count_unique}},
-#'   \code{\link{t_events_summary}}, \code{\link{t_events_per_term_grade_id}}
-#'
-#' @examples
-#' library(dplyr)
-#' library(random.cdisc.data)
-#'
-#' ADSL <- radsl(10 , seed = 1)
-#' ADAE <- radae(ADSL, seed = 2)
-#'
-#' l_tbls <- tern:::lt_events_per_term_id_2(
-#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
-#'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients"
-#' )
-#' rbindl_rtables(l_tbls)
-#'
-#' l_tbls <- tern:::lt_events_per_term_id_2(
-#'   terms = ADAE[, c("AEBODSYS", "AEDECOD")],
-#'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = NULL
-#' )
-#'
-#' rbindl_rtables(l_tbls)
-lt_events_per_term_id_2 <- function(terms,
-                                    id,
-                                    col_by,
-                                    col_N, # nolint
-                                    total = "All Patients",
-                                    event_type = "event") {
-  check_col_by(col_by, col_N, min_num_levels = 1, total)
-  stopifnot(
-    !any(terms == "", na.rm = TRUE),
-    is.data.frame(terms) && ncol(terms) == 2
-  )
-
-  class_label <- label(terms[[1]])
-  term_label <- label(terms[[2]])
-  if (is.null(class_label)) {
-    class_label <- deparse(substitute(class))
-  }
-  if (is.null(term_label)) {
-    term_label <- deparse(substitute(term))
-  }
-
-  total_events <- paste0("Total number of ", event_type, "s")
-  subjects_with_events <- paste("Total number of patients with at least one", event_type)
-
-  # data prep
-  df <- data.frame(
-    class = terms[[1]],
-    term = terms[[2]],
-    id = id,
-    col_by = col_by,
-    stringsAsFactors = FALSE
-  )
-
-  if (!is.null(total)) {
-    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
-    col_N <- .t$col_N # nolint
-    df <- data.frame(
-      class = .t$x$class,
-      term = .t$x$term,
-      id = paste(.t$x$id, "-", .t$col_by),
-      col_by = .t$col_by,
-      stringsAsFactors = FALSE
-    )
-  }
-
-  if (any(is.na(df))) {
-    stop("partial missing data in rows of [class, term] is currently not supported")
-  }
-
-
-  # class and term chunks
-  top_label <- paste0("- Any ", event_type, " -")
-  df_class <- c(
-    setNames(list(df[, -2]), top_label),
-    split(df, df$class)
-  )
-
-  #  "Overall total number of events"
-  tbl_header <- rheader(
-    rrowl(class_label, levels(df$col_by))
-  )
-
-  tbls <- Map(function(df_terms, class_i) {
-
-    tbl_i <- t_events_summary(
-      term = df_terms$term,
-      id = df_terms$id,
-      col_by = df_terms$col_by,
-      col_N = col_N,
-      total_events = total_events,
-      subjects_with_events = subjects_with_events
-    )
-
-    header(tbl_i) <- rheader(
-      header(tbl_i)[[1]],
-      rrowl(term_label, col_N, format = "(N=xx)", indent = 1)
-    )
-    tbl_i
-
-  }, df_class, names(df_class))
-
-  row.names(tbls[[1]])[1:2] <- c(subjects_with_events, total_events)
-
-  tbls
-}
-
-#todo: put below into utils.R
-
-#' split when lst is not a data.frame, but a list of objects
-#'
-#' @examples
-#' split_subset(
-#'   list(
-#'     x1 = factor(c(1,2,3,4,5,6)),
-#'     x2 = data.frame(x = 7:12, y = 13:18)
-#'   ),
-#'   factor(c("a", "a", "b", "b", "b", "b"))
-#' )
-#' # todo: extend to non-disjoint col_by matrix
-split_subset <- function(lst, f) {
-  stopifnot(is.list(lst)) # also works for data.frames
-  stopifnot(is.factor(f))
-  stopifnot(all(vapply(lst, numberRows, numeric(1)) == length(f)))
-  res <- lapply(split(seq_along(f), f), function(rows) {
-    rows_logical <- rep(FALSE, length(f))
-    rows_logical[rows] <- TRUE
-    lapply(lst, function(elem) rowSubset(elem, rows_logical))
-  })
-  names(res) <- levels(f)
-  res
-}
-
-# todo: move these functions elsewhere
-numberRows <- function(x) {
-  if (is.data.frame(x)) {
-    nrow(x)
-  } else {
-    length(x)
-  }
-}
-
-rowSubset <- function(x, rows) {
-  if (is.data.frame(x)) {
-    x[rows,]
-  } else {
-    x[rows]
-  }
 }

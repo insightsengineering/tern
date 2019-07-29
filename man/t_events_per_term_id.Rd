@@ -5,7 +5,7 @@
 \title{Basic Events Table}
 \usage{
 t_events_per_term_id(terms, id, col_by, col_N = NULL,
-  event_type = "event", total = "All events", table_tree = FALSE)
+  event_type = "event", table_tree = FALSE)
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information;
@@ -76,6 +76,20 @@ The data is split and table functions are applied to leaf nodes as follows:
 }
 }
 \examples{
+t_events_per_term_id(
+ terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")) \%>\% by_add_total("All Patients"),
+ col_N = col_N_add_total(c(2, 4, 10))
+)
+
+t_events_per_term_id(
+ terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10)
+)
+
 library(dplyr)
 library(random.cdisc.data)
 
@@ -83,29 +97,26 @@ ADSL <- radsl(10, seed = 1)
 ADAE <- radae(ADSL, 4, seed = 2)
 
 t_events_per_term_id(
-  terms = ADAE$AEDECOD,
+  terms = as_factor_keep_attributes(ADAE$AEDECOD),
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  total = NULL,
   event_type = "adverse event"
 )
 
 t_events_per_term_id(
-  terms = ADAE$AEDECOD,
+  terms = as_factor_keep_attributes(ADAE$AEDECOD),
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM,
-  col_N = table(ADSL$ARM),
-  total = "All Patients",
+  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
+  col_N = col_N_add_total(table(ADSL$ARM)),
   event_type = "adverse event"
 )
 
 t_events_per_term_id(
-  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")] \%>\% map(as_factor_keep_attributes),
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM,
-  col_N = table(ADSL$ARM),
-  total = "All Patients"
+  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
+  col_N = col_N_add_total(table(ADSL$ARM)),
 )
 
 ADSL <- radsl(10, seed = 1)
@@ -114,40 +125,34 @@ ADCM <- ADCM \%>\%
   dplyr::filter(ATIREL == "CONCOMITANT")
 
 t_events_per_term_id(
-  terms = ADCM[, c("CMCLAS", "CMDECOD")],
+  terms = ADCM[, c("CMCLAS", "CMDECOD")] \%>\% map(as_factor_keep_attributes),
   id = ADCM$USUBJID,
-  col_by = ADCM$ARM,
-  col_N = table(ADSL$ARM),
-  total = "All Patients",
+  col_by = ADCM$ARM \%>\% by_add_total("All Patients"),
+  col_N = col_N_add_total(table(ADSL$ARM)),
   event_type = "treatment"
 )
 
 
 # Table Tree
 
-t_events_per_term_id(
-  terms = ADAE$AEDECOD,
+summary(t_events_per_term_id(
+  terms = as_factor_keep_attributes(ADAE$AEDECOD),
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM,
-  col_N = table(ADSL$ARM),
-  total = "All Patients",
+  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
+  col_N = col_N_add_total(table(ADSL$ARM)),
   table_tree = TRUE
-)
-
+))
 
 tbls <- t_events_per_term_id(
-  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")] \%>\% map(as_factor_keep_attributes),
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM,
-  col_N = table(ADSL$ARM),
-  total = "All Patients",
+  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
+  col_N = col_N_add_total(table(ADSL$ARM)),
   table_tree = TRUE
 )
 summary(tbls)
-names(tbls)
 tbls[[1]]
-rbind_table_tree(tbls)
-
+tbls[['cl A']]
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_summary}},

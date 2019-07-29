@@ -16,7 +16,6 @@
 #'
 #' ADSL <- radsl(cached = TRUE)
 #'
-#' ADSL0[, c("COMPSTUD", "STUDONS")]
 #' ADSL0 <- ADSL %>%
 #'   mutate(
 #'     COMPSTUD = sample(c('Y','N'),
@@ -204,7 +203,7 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
       denominator = denominator
     )[2, ]  # n row is not shown in disposition table
 
-  } else { #todo: taken out:  & length(x) > 0
+  } else { #todo: taken out, add again:  & length(x) > 0
     stopifnot(is.factor(x))
     if (!is.null(row.name)) {
       warning("x is factor and row.name will be ignored")

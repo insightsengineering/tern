@@ -4,10 +4,14 @@
 \alias{rsplit_to_tree}
 \title{Split list recursively according to by and return the associated tree}
 \usage{
-rsplit_to_tree(lst, by)
+rsplit_to_tree(lst, by_lst, drop_empty_levels = TRUE)
 }
 \arguments{
-\item{lst}{list to split, \code{\link{split_subset}} will be applied to all list elements}
+\item{lst}{list to split, \code{\link{esplit}} will be applied to all list elements}
+
+\item{drop_empty_levels}{whether to drop empty levels, this happens often when you have, e.g. two factors,
+one with levels (clA, clB), the other with levels (clA_1, clA_2, clB_1, clB_2) and only the combinations
+clA-clA_1, clA-clA_2, clB-clB_1, clB-clB_2 appear out of the eight combinations.}
 
 \item{by}{list of columns, each of which is a factor to recursively split by}
 }
@@ -21,4 +25,8 @@ Split list recursively according to by and return the associated tree
 tree <- rsplit_to_tree(1:5, list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y"))))
 summary(tree)
 cat(displayable(tree))
+
+by_lst <- list(factor(c(rep("clA", 4), rep("clB", 4))), factor(c(rep(c("A1", "A2"), 2), rep(c("B1", "B2"), 2))))
+summary(rsplit_to_tree(1:8, by_lst))
+summary(rsplit_to_tree(1:8, by_lst, drop_empty_levels = FALSE))
 }

@@ -14,7 +14,9 @@ rapply_tree(x, f, ...)
 \arguments{
 \item{x}{tree object}
 
-\item{f}{function to apply to each node in the tree recursively, f(name, content, c(path, name))}
+\item{f}{function to apply to each node in the tree recursively,
+f(name, content, path, ...) -> list(name = new_name, content = new_content)
+path includes node itself}
 
 \item{...}{additional args to pass to f}
 
@@ -28,8 +30,6 @@ Applies the function f to each node in the tree x
 
 f is applied to the content of each node and a new node of class 'target_obj_class' is created
 with children applied recursively
-f takes as argument the content and the path to the node and ...
-todo: also pass object name to f??
 depth-first fashion
 }
 \examples{
@@ -41,13 +41,14 @@ n2 <- node(name = "D", content = c(1:3), children = list(
 summary(n2)
 # change class of elements so we can see it in summary()
 summary(rapply_tree(n2, f = function(name, content, path, ...) {
-  if (is(content, "integer")) {
+  new_content <- if (is(content, "integer")) {
     paste("integer", content, collapse = ":")
   } else if (is(content, "matrix")) {
     paste("matrix", content, collapse = ":")
   } else {
     "unknown"
   }
+  list(name = name, content = new_content)
 }))
 
 }

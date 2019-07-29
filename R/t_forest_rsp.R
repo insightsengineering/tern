@@ -8,6 +8,7 @@
 #' @inheritParams argument_convention
 #' @inheritParams t_forest_tte
 #' @inheritParams t_el_forest_rsp
+#' @param total to add total
 #'
 #' @details
 #' Logistic regression is used for odds ratio calculation.
@@ -66,8 +67,8 @@
 #'
 #' tbl <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
-#'   col_by = ADRS_f$ARM,
-#'   by = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
+#'   col_by = as_factor_keep_attributes(ADRS_f$ARM),
+#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>% map(as_factor_keep_attributes)
 #' )
 #'
 #' tbl
@@ -81,47 +82,53 @@
 #' tbls <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = ADRS_f$ARM,
-#'   by = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")],
+#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>% map(as_factor_keep_attributes),
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
-#' rbind_table_tree(lapply(tbls, rbindl_rtables))
 t_forest_rsp <- function(rsp,
                          col_by,
-                         by = NULL,
+                         rows_by_lst = NULL,
                          total = "ALL",
                          dense_header = FALSE,
                          table_tree = FALSE) {
   stopifnot(is.logical(rsp))
+  #stopifnot(all(vapply(rows_by_lst, check_co, logical(1))))
+  do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), rows_by_lst))
 
-  by <- get_forest_by(by, length(rsp))
+  rows_by_lst <- c(
+    list(with_label(by_add_total(NULL, label = "-", n = length(rsp)), total)),
+    rows_by_lst %>% map(na_as_level)
+  )
+  # take label if it exists, otherwise rowname
+  names(rows_by_lst) <- Map(`%||%`, lapply(rows_by_lst, label), names(rows_by_lst)) # equivalent of var_labels(as.data.frame(by), fill = TRUE)
 
-  df <- data.frame(rsp = rsp, col_by = col_by)
+  df <- list(rsp = rsp, col_by = col_by)
 
-  dfs <- get_forest_data_tree(df, by, total)
+  dfs <- lapply(rows_by_lst, function(rows_by) esplit(df, rows_by))
 
   tbls <- lapply(dfs, function(x) {
-    Map(function(x_level, level_name) {
+    rbindl_rtables(Map(function(x_level, level_name) {
       t_el_forest_rsp(
         rsp = x_level$rsp,
         col_by = x_level$col_by,
         row_name = level_name,
         dense_header = dense_header
       )
-    }, x, names(x))
+    }, x, names(x)))
   })
-
+  tree <- invisible_node(Map(
+    function(node_name, tbl) node(name = node_name, content = tbl),
+    names(tbls),
+    tbls
+  ))
 
   if (table_tree) {
-    table_tree(tbls)
+    tree
   } else {
-    tbl <- rbind_table_tree(lapply(tbls, rbindl_rtables))
-    tbl <- tbl[-1, ] # remove total row
-    attr(tbl[[1]], "indent") <- 0
-    tbl
+    to_rtable(tree)
   }
 }
-
 
 #' Elementary Table for Forest Response Plot
 #'
@@ -144,6 +151,11 @@ t_forest_rsp <- function(rsp,
 #' )
 #'
 t_el_forest_rsp <- function(rsp, col_by, row_name = "", dense_header = FALSE) {
+
+  # todo: we can possibly use by_hierarchical here
+
+  # currently only works for factor
+  col_by <- col_by_to_factor(col_by)
 
   check_same_n(rsp = rsp, col_by = col_by)
   col_N <- table(col_by) #nolintr

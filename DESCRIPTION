@@ -53,3 +53,28 @@ BugReports: https://github.roche.com/NEST/tern/issues
 Additional_repositories:
   https://github.com/Roche/rtables,
   https://github.roche.com/NEST/random.cdisc.data
+Collate: 
+    'aa_trees.R'
+    'argument_vocabulatory.R'
+    'check_data.R'
+    'for_rtables.R'
+    'formulas.R'
+    'on_attach.R'
+    'package.R'
+    'split.R'
+    't_coxph.R'
+    't_disposition.R'
+    'utils.R'
+    't_events_term_grade_id.R'
+    't_events_term_id.R'
+    't_forest_rsp.R'
+    't_forest_tte.R'
+    't_km.R'
+    't_rsp.R'
+    't_summarize_by_visit.R'
+    't_summary.R'
+    't_summary_by.R'
+    't_tte.R'
+    'tabulate_aggregation_functions.R'
+    'tabulate_pairwise.R'
+    'wrap_text.R'

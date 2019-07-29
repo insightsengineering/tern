@@ -9,6 +9,10 @@ non_rsplit(x)
 \arguments{
 \item{x}{list to protect from splitting}
 }
+\value{
+object of class non_rsplit
+}
 \description{
+This is for the behavior of \code{\link{esplit.non_rsplit}}.
 See \code{\link{esplit.list}} for the alternative behavior.
 }

@@ -1,12 +1,7 @@
 # STREAM AE tables ----
 
-# todo: move to utils
-as_factor_keep_attributes <- function(x) {
-  stopifnot(is.atomic(x))
-  x_attrs <- attributes(x)
-  x_attrs <- x_attrs[names(x_attrs) != "class"]
-  do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
-}
+#' @include utils.R
+NULL
 
 #' Events by Highest Grade Table
 #'
@@ -75,6 +70,8 @@ as_factor_keep_attributes <- function(x) {
 #' library(random.cdisc.data)
 #' library(purrr)
 #'
+#' # todo: below fix all occurrences of as_factor_keep_attributes in ADAE to return a factor
+#'
 #' ADSL <- radsl(10, seed = 1)
 #' ADAE <- radae(ADSL, 4, seed = 2)
 #'
@@ -88,7 +85,7 @@ as_factor_keep_attributes <- function(x) {
 #' )
 #'
 #' t_events_per_term_grade_id(
-#'   terms = as_factor_keep_attributes(ADAE$AEDECOD), #todo: keep label or fix it right away in ADAE to be a factor
+#'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
@@ -97,7 +94,7 @@ as_factor_keep_attributes <- function(x) {
 #' )
 #'
 #' t_events_per_term_grade_id(
-#'   terms = ADAE %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes), #todo: fix in ADAE to be a factor
+#'   terms = ADAE %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
@@ -115,9 +112,6 @@ t_events_per_term_grade_id <- function(terms,
     terms <- list(terms)
   }
   stopifnot(is.list(terms))
-
-  terms_header <- vapply(terms, label, character(1))
-  #todo: assign them to header row
 
   tree <- rsplit_to_tree(
     list(grade = grade, id = id, col_by = col_by),
@@ -213,22 +207,22 @@ t_events_per_term_grade_id <- function(terms,
 #'
 #' \dontrun{
 #' # throws an error because each id can only have one col_by
-#' t_max_grade_per_id(
-#'   grade =  c(1,2,3),
-#'   id = c(1,2,2),
-#'   col_by = factor(LETTERS[1:3]),
-#'   col_N = c(15, 10, 12)
-#' )
+#' # t_max_grade_per_id(
+#'   #   grade =  c(1,2,3),
+#'   #   id = c(1,2,2),
+#'   #   col_by = factor(LETTERS[1:3]),
+#'   #   col_N = c(15, 10, 12)
+#'   # )
 #' }
 #'
 #' \dontrun{
 #' # throws an error because grade NA is not in grade_levels
-#' t_max_grade_per_id(
-#'   grade =  c(1,2,NA),
-#'   id = c(1,2,3),
-#'   col_by = factor(LETTERS[1:3]),
-#'   col_N = c(15, 10, 12)
-#' )
+#' # t_max_grade_per_id(
+#' #   grade =  c(1,2,NA),
+#' #   id = c(1,2,3),
+#' #   col_by = factor(LETTERS[1:3]),
+#' #   col_N = c(15, 10, 12)
+#' # )
 #' }
 t_max_grade_per_id <- function(grade,
                                id,
@@ -242,11 +236,6 @@ t_max_grade_per_id <- function(grade,
   col_N <- col_N %||% get_N(col_by)
   check_col_by(grade, col_by, col_N, min_num_levels = 1)
   check_id(id, col_by)
-
-  # # todo: replace by check that accounts for total column, at beginning of this function
-  # if (any(duplicated(df_max$id))) {
-  #   stop("every id can only have one col_by")
-  # }
 
   grade_levels <- grade_levels %||% seq(1, max(grade, na.rm = TRUE))
   if (length(setdiff(grade, grade_levels)) > 0) {
@@ -276,7 +265,7 @@ t_max_grade_per_id <- function(grade,
   # df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
 
   df_max$grade <- factor(df_max$grade, levels = grade_levels)
-  df_max_no_na <- na.omit(df_max) # todo: why not do before
+  df_max_no_na <- na.omit(df_max) # todo: why not do at the beginning
 
   tbl_any <- if (!is.null(any_grade)) {
     # TODO: Heng why do we allow this (na.omit)?
@@ -302,30 +291,27 @@ t_max_grade_per_id <- function(grade,
   )
 
   tbl <- rbind(tbl_any, tbl_x)
-  header_add_N(tbl, col_N)
-  # rownames_as_col(
-  #   header_add_N(tbl, col_N),
-  #   rownames_header = rheader(rrow(""), rrow(label(grade) %||% deparse(substitute(grade))))
-  # )
+  tbl <- header_add_N(tbl, col_N)
+  grade_label <- label(grade) %||% deparse(substitute(grade))
+  row_names_as_col(tbl, c("", grade_label))
 }
-
-# #todo: move to rtables
-# todo: unfortunately not working
-# rownames_as_col <- function(x, rownames_header) {
-#   # moves row.names to a separate column
-#   stopifnot(is(x, "rtable"))
-#   browser()
-#   cbind_rtables(rtablel(rownames_header, lapply(attr(x, "names"), function(x) rrowl(row.name = NULL, x))), x)
-# }
 
 #' checks that each patient appears in at most one col_by column (possibly
 #' several times as AVAL corresponds to several measures and there are >= 1 rows per patient)
+#'
+#' @param id patient id
+#' @param col_by columns indicating where patient is, (this function checks that the patient only
+#'   appears in one column, ignoring the "by_all" / total column)
 #' @examples
-#' check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
+#' library(random.cdisc.data)
+#' ADSL <- radsl(10, seed = 1)
+#' ADAE <- radae(ADSL, 4, seed = 2)
+#' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
+#'
 #' @importFrom dplyr group_by summarise_all select
 #' @importFrom magrittr %>%
 check_id <- function(id, col_by) {
-  col_by_old <- col_by
+  col_by_old <- col_by # for debugging
   col_by <- col_by_to_matrix(col_by)
   # remove total column if present
   col_by <- col_by[, !vapply(col_by, all, logical(1))]

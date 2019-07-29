@@ -27,18 +27,6 @@ t_summary <- function(x,
   UseMethod("t_summary", x)
 }
 
-get_N <- function(col_by) {
-  stopifnot(is.factor(col_by) || is.data.frame(col_by))
-  colSums(col_by_to_matrix(col_by))
-}
-
-# todo: maybe move into function as well
-col_N_add_total <- function(col_N) {
-  #stopifnot(is.logical.vector(col_N))
-  c(col_N, sum(col_N))
-}
-# total makes things quite a bit more complicated
-
 #' Return an \code{rtable} with a no Method Message
 #'
 #' If there is no explicit method for an object an \code{rtable} with one row with an
@@ -184,7 +172,7 @@ t_summary.data.frame <- function(x, # nolint
 #' ADSL <- cadsl
 #'
 #' t_summary(ADSL$AGE, ADSL$ARM)
-#' t_summary(ADSL$AGE, col_by = by_add_total(by_factor_to_matrix(ADSL$ARM), label = "All"))
+#' t_summary(ADSL$AGE, col_by = by_add_total(col_by_to_matrix(ADSL$ARM), label = "All"))
 #' t_summary(ADSL$AGE, col_by = ADSL$ARM %>% by_add_total("All"))
 #'
 #' ADSL$AGE[1:10] <- NA

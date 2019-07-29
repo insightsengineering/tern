@@ -42,7 +42,6 @@ library(dplyr)
 
 ADSL <- radsl(cached = TRUE)
 
-ADSL0[, c("COMPSTUD", "STUDONS")]
 ADSL0 <- ADSL \%>\%
   mutate(
     COMPSTUD = sample(c('Y','N'),

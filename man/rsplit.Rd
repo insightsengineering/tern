@@ -4,22 +4,23 @@
 \alias{rsplit}
 \title{Split recursively}
 \usage{
-rsplit(x, by)
+rsplit(x, by_lst)
 }
 \arguments{
 \item{x}{object to split}
 
-\item{by}{list of by objects to recursively split by}
+\item{by_lst}{list of by objects to recursively split by}
 }
 \value{
-nested list, first level corresponding to split by by[[1]], second to recursive split by by[[2]] etc.
+nested list, first level corresponding to split by by_lst[[1]], second to recursive split by by_lst[[2]] etc.
 }
 \description{
 This is an extension of \code{\link{esplit}} to the case when by is a list to split by recursively
 }
 \examples{
-rsplit(
-list(data.frame(x = 1:5, y = 6:10), data.frame(z1 = 11:15, z2 = 16:20)),
-list(by, by)
+by_lst <- list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y")))
+tern:::rsplit(
+  list(data.frame(x = 1:5, y = 6:10), data.frame(z1 = 11:15, z2 = 16:20)),
+  by_lst
 )
 }

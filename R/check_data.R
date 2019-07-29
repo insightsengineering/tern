@@ -78,7 +78,6 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 
-# copied over from utils.nest which is not open-source
 # todo: move to utils.nest once request is implemented
 all_true <- function(lst, fcn) {
   all(vapply(lst, fcn, TRUE))

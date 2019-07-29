@@ -7,10 +7,20 @@ several times as AVAL corresponds to several measures and there are >= 1 rows pe
 \usage{
 check_id(id, col_by)
 }
+\arguments{
+\item{id}{patient id}
+
+\item{col_by}{columns indicating where patient is, (this function checks that the patient only
+appears in one column, ignoring the "by_all" / total column)}
+}
 \description{
 checks that each patient appears in at most one col_by column (possibly
 several times as AVAL corresponds to several measures and there are >= 1 rows per patient)
 }
 \examples{
-check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
+library(random.cdisc.data)
+ADSL <- radsl(10, seed = 1)
+ADAE <- radae(ADSL, 4, seed = 2)
+tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
+
 }

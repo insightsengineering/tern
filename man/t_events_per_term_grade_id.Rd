@@ -74,11 +74,13 @@ library(dplyr)
 library(random.cdisc.data)
 library(purrr)
 
+# todo: below fix all occurrences of as_factor_keep_attributes in ADAE to return a factor
+
 ADSL <- radsl(10, seed = 1)
 ADAE <- radae(ADSL, 4, seed = 2)
 
 t_events_per_term_grade_id(
-  terms = as_factor_keep_label(ADAE$AEDECOD),
+  terms = as_factor_keep_attributes(ADAE$AEDECOD),
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
@@ -87,7 +89,7 @@ t_events_per_term_grade_id(
 )
 
 t_events_per_term_grade_id(
-  terms = as_factor_keep_label(ADAE$AEDECOD), #todo: keep label or fix it right away in ADAE to be a factor
+  terms = as_factor_keep_attributes(ADAE$AEDECOD),
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
@@ -96,7 +98,7 @@ t_events_per_term_grade_id(
 )
 
 t_events_per_term_grade_id(
-  terms = ADAE \%>\% select(AEBODSYS, AEDECOD) \%>\% map(as_factor_keep_label), #todo: fix in ADAE to be a factor
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD) \%>\% map(as_factor_keep_attributes),
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM \%>\% by_add_total("All Patients"),

@@ -31,7 +31,7 @@ an \code{rtable}
 Calculate statistics Pairwise with reference level
 }
 \examples{
-tabulate_pairwise(
+tern:::tabulate_pairwise(
   x = iris$Sepal.Length,
   col_by = iris$Species,
   FUN = function(xi, col_by_i) diff(tapply(xi, col_by_i, mean)),
