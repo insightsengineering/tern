@@ -30,9 +30,12 @@ Imports:
   gridExtra,
   magrittr,
   methods,
+  purrr,
+  rlang,
   scales,
   stats,
-  utils
+  utils,
+  utils.nest
 Suggests:
   forcats,
   lattice,
@@ -41,8 +44,7 @@ Suggests:
   rmarkdown,
   test.nest (>= 0.1),
   testthat,
-  tibble,
-  purrr
+  tibble
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -57,10 +59,17 @@ Collate:
     'aa_trees.R'
     'argument_vocabulatory.R'
     'check_data.R'
+    'decorate_grob.R'
     'for_rtables.R'
     'formulas.R'
+    'g_forest.R'
+    'g_km.R'
+    'g_summary_by.R'
+    'g_waterfall.R'
+    'keys.R'
     'on_attach.R'
     'package.R'
+    'safe_join.R'
     'split.R'
     't_coxph.R'
     't_disposition.R'
@@ -77,4 +86,6 @@ Collate:
     't_tte.R'
     'tabulate_aggregation_functions.R'
     'tabulate_pairwise.R'
+    'util_osprey.R'
+    'utils_grid.R'
     'wrap_text.R'

@@ -5,8 +5,10 @@
 #' @param x A factor or logical vector
 #' @param row.name Only applicable when x is a logical vector. A string to label the row name.
 #'   Default is "TRUE".
-#' @param subset A logical vector with the same length as x that defines the subset. Applies to \code{x} and \code{subset}.
-#' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE. Only when x is of type factor
+#' @param subset A logical vector with the same length as x that defines the subset.
+#'   Applies to \code{x} and \code{subset}.
+#' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE.
+#'   Only when x is of type factor
 #'
 #' @export
 #'
@@ -68,7 +70,11 @@
 #'
 #' library(purrr)
 #' t_el_disposition_indent <- function(..., indent = 0) indent(t_el_disposition(...), indent)
-#' dsp <- partial(t_el_disposition_indent, col_by = ADSL0$ARM %>% by_add_total("All Patients"), denominator = "N")
+#' dsp <- partial(
+#'   t_el_disposition_indent,
+#'   col_by = ADSL0$ARM %>% by_add_total("All Patients"),
+#'   denominator = "N"
+#' )
 #' # Only using rtables
 #' # old way of doing things with indent variable
 #' rbind(
@@ -78,7 +84,11 @@
 #'   dsp(as.factor(ADSL0$STDDRS), indent = 1),
 #'   rrow(),
 #'   rrow("Show example of using n as denominator"),
-#'   indent(t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM %>% by_add_total("All Patients"), denominator = "n"), 1),
+#'   indent(t_el_disposition(
+#'     as.factor(ADSL0$STDDRS),
+#'     col_by = ADSL0$ARM %>% by_add_total("All Patients"),
+#'     denominator = "n"
+#'   ), 1),
 #'   rrow(),
 #'   dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment"),
 #'   dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
@@ -158,7 +168,11 @@
 #'         ),
 #'         node(
 #'           name = "Reasons for study discontinuation (using small n)",
-#'           content = t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM %>% by_add_total("All Patients"), denominator = "n")
+#'           content = t_el_disposition(
+#'             as.factor(ADSL0$STDDRS),
+#'             col_by = ADSL0$ARM %>% by_add_total("All Patients"),
+#'             denominator = "n"
+#'           )
 #'         )
 #'       )
 #'     ),
@@ -187,7 +201,7 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
     length(subset) == length(x)
   )
   x <- x[subset]
-  col_by <- col_by[subset,]
+  col_by <- col_by[subset, ]
 
   if (is.logical(x)) {
     if (show_n) {
@@ -203,7 +217,8 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
       denominator = denominator
     )[2, ]  # n row is not shown in disposition table
 
-  } else { #todo: taken out, add again:  & length(x) > 0
+  } else {
+    #todo: taken out, add again:  & length(x) > 0
     stopifnot(is.factor(x))
     if (!is.null(row.name)) {
       warning("x is factor and row.name will be ignored")

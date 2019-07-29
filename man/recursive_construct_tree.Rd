@@ -24,10 +24,15 @@ res <- recursive_construct_tree(
   1:7,
   function(info_from_parent, path) {
     i <<- i + 1
+    info_to_children_lst <- if (length(info_from_parent) > 1) {
+      split(info_from_parent, seq_along(info_from_parent) \%\% 3)
+    } else {
+      NULL
+    }
     list(
       name = toString(i),
       content = info_from_parent,
-      info_to_children_lst = if (length(info_from_parent) > 1) split(info_from_parent, seq_along(info_from_parent) \%\% 3) else NULL
+      info_to_children_lst = info_to_children_lst
     )
   },
   path = "root"
@@ -37,10 +42,15 @@ cat(displayable(res))
 res <- recursive_construct_tree(
   1:7,
   function(info_from_parent, path) {
+    info_to_children_lst <- if (length(info_from_parent) > 1) {
+      split(info_from_parent, seq_along(info_from_parent) \%\% 3)
+    } else {
+      NULL
+    }
     list(
       name = path[[length(path)]],
       content = info_from_parent,
-      info_to_children_lst = if (length(info_from_parent) > 1) split(info_from_parent, seq_along(info_from_parent) \%\% 3) else NULL
+      info_to_children_lst = info_to_children_lst
     )
   },
   path = "root"

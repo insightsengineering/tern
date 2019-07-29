@@ -1,6 +1,7 @@
 context("test adverse events sorted by highest NCI CTCAE grade (term only)")
 
 library(dplyr)
+library(purrr)
 
 test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
 
@@ -191,12 +192,11 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
       AEDECOD = "MedDRA Preferred Term",
       AETOXGR = "NCI CTCAE Grade")
 
-  tbl <- t_events_per_term_grade_id(terms = anl$AEDECOD,
+  tbl <- t_events_per_term_grade_id(terms = as_factor_keep_attributes(anl$AEDECOD),
                                     id = anl$USUBJID,
                                     grade = anl$AETOXGR,
-                                    col_by = as.factor(anl$TRT02AN),
-                                    col_N = table(asl$TRT02AN),
-                                    total = "All Patients",
+                                    col_by = as.factor(anl$TRT02AN) %>% by_add_total("All Patients"),
+                                    col_N = col_N_add_total(table(asl$TRT02AN)),
                                     grade_levels = 1:5)
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)

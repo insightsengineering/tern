@@ -4,7 +4,7 @@
 \alias{esplit}
 \title{Split objects according to by object}
 \usage{
-esplit(x, by, ...)
+esplit(x, by)
 }
 \arguments{
 \item{x}{object to split}

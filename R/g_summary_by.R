@@ -1,4 +1,6 @@
-#' Chanage From Baseline Plot
+# todo: adapt all g_* functions to new col_by non-disjoint standard
+
+#' Change From Baseline Plot
 #'
 #' @param x x coordinates
 #' @param y y coordinates
@@ -72,7 +74,7 @@ g_summary_by <- function(x,
     n_visit = n_visit,
     omit_null = FALSE
   )
-  check_col_by(group, table(group), 1)
+  check_col_by_factor(x, group, table(group), 1)
   check_is_numeric(y)
   # allow y_lower y_upper n_visit y_refline y_range to be NULL?
   # x can be either factor or numeric?

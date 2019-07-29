@@ -30,7 +30,7 @@ adverse events can be accounted for with this argument.}
 treatment). Default is "event".}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
-\code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
+\code{node} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link{rtable}} object.
@@ -155,8 +155,8 @@ tbls[[1]]
 tbls[['cl A']]
 }
 \seealso{
-\code{\link{t_count_unique}}, \code{\link{t_events_summary}},
-  \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+\code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},
+  \code{\link{t_events_per_term_grade_id}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

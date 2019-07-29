@@ -62,8 +62,7 @@ NULL
 #' @template author_zhanc107
 #' @template author_wangh107
 #'
-#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{lt_events_per_term_grade_id_1}},
-#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_id}}
 #'
 #' @examples
 #' library(dplyr)
@@ -179,8 +178,7 @@ t_events_per_term_grade_id <- function(terms,
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
-#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{lt_events_per_term_grade_id_1}}
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
 #' t_max_grade_per_id(
@@ -246,12 +244,13 @@ t_max_grade_per_id <- function(grade,
 
   df_max <- do.call(rbind, unname(Map(
     function(rows, col_by_name) {
-      if (sum(rows) == 0) { # rows is logical
+      if (sum(rows) == 0) {
+        # rows is logical
         # aggregate does not work when rows is all FALSE
         data.frame(grade = 1, id = 1, col_by = 1)[c(), ] # get an empty data frame
       } else {
         data.frame(
-          aggregate(grade ~ id, FUN = max, drop = TRUE, data = df[rows,], na.rm = TRUE),
+          aggregate(grade ~ id, FUN = max, drop = TRUE, data = df[rows, ], na.rm = TRUE),
           col_by = col_by_name
         )
       }
@@ -261,8 +260,8 @@ t_max_grade_per_id <- function(grade,
   )))
   df_max$col_by <- factor(df_max$col_by, names(col_by))
   # when col_by is a factor and not a general matrix, the equivalent call is
-  # col_by <- col_by_to_factor(col_by)
-  # df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
+  # col_by <- col_by_to_factor(col_by) #nolintr
+  # df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE) #nolintr
 
   df_max$grade <- factor(df_max$grade, levels = grade_levels)
   df_max_no_na <- na.omit(df_max) # todo: why not do at the beginning
@@ -314,7 +313,7 @@ check_id <- function(id, col_by) {
   col_by_old <- col_by # for debugging
   col_by <- col_by_to_matrix(col_by)
   # remove total column if present
-  col_by <- col_by[, !vapply(col_by, all, logical(1))]
+  col_by <- col_by[, !vapply(col_by, all, logical(1)), drop = FALSE]
   if (ncol(col_by) == 0) {
     return(invisible(NULL))
   }

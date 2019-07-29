@@ -15,12 +15,15 @@ otherwise}
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
+\item{rows_by_lst}{\code{list} or \code{data.frame} with one factor variable to calculate
+the \code{t_el_forest_tte}}
+
 \item{total}{to add total}
 
 \item{dense_header}{Display the table headers in multiple rows.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
-\code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
+\item{table_tree}{boolean, whether the compound table function should return a table_tree object or the elementary
+table should be stacked.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -69,6 +72,7 @@ the following 9 columns:
 \examples{
 library(random.cdisc.data)
 library(dplyr)
+library(purrr)
 
 ADSL <- radsl(seed = 1)
 ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
@@ -81,7 +85,8 @@ ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = as_factor_keep_attributes(ADRS_f$ARM),
-  rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\% map(as_factor_keep_attributes)
+  rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
+    map(as_factor_keep_attributes)
 )
 
 tbl
@@ -95,10 +100,12 @@ Viewer(tbl)
 tbls <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = ADRS_f$ARM,
-  rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\% map(as_factor_keep_attributes),
+  rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
+    map(as_factor_keep_attributes),
   table_tree = TRUE
 )
 summary(tbls)
+
 }
 \seealso{
 \code{\link{t_rsp}}

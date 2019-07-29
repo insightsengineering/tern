@@ -105,17 +105,25 @@ t_summary.default <- function(x, # nolint
 #' ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 #'
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"))
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"), useNA = 'always')
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#'   useNA = 'always')
 #'
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"), useNA = 'ifany')
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"), denominator = "N",
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#'   useNA = 'ifany')
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#'   denominator = "N",
 #'           useNA = 'ifany')
 #'
 #' ADSL_AGE65 <- ADSL %>%
 #'   dplyr::filter(AGE > 65)
-#' t_summary(ADSL_AGE65[, c("AGE", "SEX")], col_by = ADSL_AGE65$ARM %>% by_add_total("All Patients"),
-#'           col_N = col_N_add_total(table(ADSL$ARM)), denominator = "N", drop_levels = TRUE)
+#' t_summary(
+#'   ADSL_AGE65[, c("AGE", "SEX")],
+#'   col_by = ADSL_AGE65$ARM %>% by_add_total("All Patients"),
+#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   denominator = "N",
+#'   drop_levels = TRUE
+#' )
 #'
 #'
 #' tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
@@ -274,6 +282,7 @@ t_summary.factor <- function(x, # nolint
     )
   )
 
+  #todo: do this right at the beginning and then apply rtabulate
   if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
     na_row <- lapply(col_by, function(rows) {
       sum(is.na(x[rows]))

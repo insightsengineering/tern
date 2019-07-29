@@ -26,14 +26,12 @@ removed.}
 \item{subjects_with_events}{character string that will be used as a label in
 the row for the total number with at least one event. If this is
 \code{NULL} then this row will be removed.}
-
-\item{term}{a character vector with optional label attribute}
 }
 \value{
 an \code{rtable}
 }
 \description{
-\code{t_events_summary} counts the number of unique elements per cell.
+\code{t_el_events_per_term_id} counts the number of unique elements per cell.
 }
 \examples{
 t_el_events_per_term_id(
@@ -46,7 +44,7 @@ t_el_events_per_term_id(
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},
-  \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+  \code{\link{t_events_per_term_grade_id}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

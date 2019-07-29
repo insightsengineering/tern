@@ -28,6 +28,9 @@ node("6", 6, list(
 ))
 ))
 cat(displayable(tree))
-sorted_tree <- rsort_tree(tree, function(node) order(vapply(node@children, function(child) child@content, numeric(1))))
+sorted_tree <- rsort_tree(
+  tree,
+  function(node) order(vapply(node@children, function(child) child@content, numeric(1)))
+)
 cat(displayable(sorted_tree))
 }

@@ -4,9 +4,11 @@
 \alias{esplit.non_rsplit}
 \title{Add this class to avoid recursion}
 \usage{
-\method{esplit}{non_rsplit}(lst, by)
+\method{esplit}{non_rsplit}(x, by)
 }
 \arguments{
+\item{x}{object to split}
+
 \item{by}{split by, either a factor or a col_by matrix}
 }
 \description{

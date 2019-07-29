@@ -4,9 +4,11 @@
 \alias{esplit.list}
 \title{Splits each list elements}
 \usage{
-\method{esplit}{list}(lst, by)
+\method{esplit}{list}(x, by)
 }
 \arguments{
+\item{x}{object to split}
+
 \item{by}{split by, either a factor or a col_by matrix}
 }
 \description{

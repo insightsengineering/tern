@@ -41,7 +41,7 @@ test_that("t_summary results are as expected", {
   asl$ARMCD <- factor(asl$ARMCD, levels = c("ARM A", "ARM B", "ARM C"))
   # nolint end
 
-  tbl_tern <- t_summary(asl[, c("AGE", "SEX")], asl$ARMCD, drop_levels = TRUE, total = "All")
+  tbl_tern <- t_summary(asl[, c("AGE", "SEX")], asl$ARMCD %>% by_add_total("All"), drop_levels = TRUE)
 
   # nolint start
   tbl_test <- rtable(

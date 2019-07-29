@@ -16,7 +16,9 @@ node(name, content, children = list(), format_data = list())
 
 \item{children}{children of node}
 
-\item{children_indent}{format_data}
+\item{format_data}{format data for conversion with \code{\link{to_rtable}},
+list(gap_to_children, children_gap, children_indent, content_indent),
+default values if not all given, see that function}
 }
 \value{
 object of class node
@@ -44,6 +46,8 @@ to be no longer in-sync. (or should accessor update child names??)
 \item{\code{content}}{of node (e.g. \code{data.frame} or \code{rtable} objects)}
 
 \item{\code{children}}{a list of \code{node} objects}
+
+\item{\code{format_data}}{formatting instructions for conversion with \code{\link{to_rtable}}}
 }}
 
 \examples{

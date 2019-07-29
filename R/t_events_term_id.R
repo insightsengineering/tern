@@ -64,8 +64,8 @@
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_count_unique}}, \code{\link{t_events_summary}},
-#'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+#' @seealso \code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},
+#'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
 #' t_events_per_term_id(
@@ -156,8 +156,8 @@ t_events_per_term_id <- function(terms,
   }
   stopifnot(is.list(terms))
 
-  #terms_header <- vapply(terms, label, character(1))
   #todo: assign them to header row in tree
+  #terms_header <- vapply(terms, label, character(1)) #nolintr
 
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
@@ -232,8 +232,8 @@ t_events_per_term_id <- function(terms,
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_events_per_term_id}}, \code{\link{t_events_summary}},
-#'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+#' @seealso \code{\link{t_events_per_term_id}}, \code{\link{t_el_events_per_term_id}},
+#'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
 #'
@@ -278,10 +278,9 @@ t_count_unique <- function(x,
 
 #' Summary table for events
 #'
-#' \code{t_events_summary} counts the number of unique elements per cell.
+#' \code{t_el_events_per_term_id} counts the number of unique elements per cell.
 #'
 #' @inheritParams argument_convention
-#' @param term a character vector with optional label attribute
 #' @param id unique subject identifier. If a particular subject has no adverse
 #'   event then that information needs to be added to the \code{col_N} argument.
 #' @param total_events character string that will be used as a label in the row
@@ -301,7 +300,7 @@ t_count_unique <- function(x,
 #' @template author_qit3
 #'
 #' @seealso \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},
-#'   \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+#'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
 #' t_el_events_per_term_id(

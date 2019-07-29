@@ -4,9 +4,11 @@
 \alias{esplit.data.frame}
 \title{Splits the data.frame by rows}
 \usage{
-\method{esplit}{data.frame}(df, by)
+\method{esplit}{data.frame}(x, by)
 }
 \arguments{
+\item{x}{object to split}
+
 \item{by}{split by, either a factor or a col_by matrix}
 }
 \description{

@@ -21,9 +21,11 @@ and \code{add_total_by}.}
 \item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
 Default is "TRUE".}
 
-\item{subset}{A logical vector with the same length as x that defines the subset. Applies to \code{x} and \code{subset}.}
+\item{subset}{A logical vector with the same length as x that defines the subset.
+Applies to \code{x} and \code{subset}.}
 
-\item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE. Only when x is of type factor}
+\item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE.
+Only when x is of type factor}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
@@ -94,7 +96,11 @@ ADSL0 <- ADSL \%>\%
 
 library(purrr)
 t_el_disposition_indent <- function(..., indent = 0) indent(t_el_disposition(...), indent)
-dsp <- partial(t_el_disposition_indent, col_by = ADSL0$ARM \%>\% by_add_total("All Patients"), denominator = "N")
+dsp <- partial(
+  t_el_disposition_indent,
+  col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+  denominator = "N"
+)
 # Only using rtables
 # old way of doing things with indent variable
 rbind(
@@ -104,7 +110,11 @@ rbind(
   dsp(as.factor(ADSL0$STDDRS), indent = 1),
   rrow(),
   rrow("Show example of using n as denominator"),
-  indent(t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM \%>\% by_add_total("All Patients"), denominator = "n"), 1),
+  indent(t_el_disposition(
+    as.factor(ADSL0$STDDRS),
+    col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+    denominator = "n"
+  ), 1),
   rrow(),
   dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment"),
   dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
@@ -184,7 +194,11 @@ to_rtable(invisible_node(
         ),
         node(
           name = "Reasons for study discontinuation (using small n)",
-          content = t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM \%>\% by_add_total("All Patients"), denominator = "n")
+          content = t_el_disposition(
+            as.factor(ADSL0$STDDRS),
+            col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+            denominator = "n"
+          )
         )
       )
     ),

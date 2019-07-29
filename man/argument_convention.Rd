@@ -4,7 +4,7 @@
 \alias{argument_convention}
 \title{Dummy Function that Documents all Standard Arguments}
 \usage{
-argument_convention(col_by, col_N, total, table_tree, indent, na_rm, tte,
+argument_convention(col_by, col_N, table_tree, indent, na_rm, tte,
   is_event)
 }
 \arguments{
@@ -16,7 +16,7 @@ and \code{add_total_by}.}
 \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
-\code{table_tree} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
+\code{node} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
 
 \item{indent}{non-negative integer where 0 means that the row should not be indented}
 

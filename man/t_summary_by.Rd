@@ -4,7 +4,7 @@
 \alias{t_summary_by}
 \title{Summarize an Object for Different Groups with by Variable}
 \usage{
-t_summary_by(x, row_by, col_by, col_N, ..., table_tree = FALSE)
+t_summary_by(x, row_by, col_by, col_N = NULL, ..., table_tree = FALSE)
 }
 \arguments{
 \item{x}{vector}
@@ -20,8 +20,8 @@ See examples below.}
 
 \item{...}{arguments passed on to methods}
 
-\item{total}{character string that will be used as a label for a column with pooled total population.
-If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{table_tree}{boolean, whether the compound table function should return a table_tree object or the elementary
+table should be stacked.}
 }
 \description{
 Summarize an Object for Different Groups with by Variable

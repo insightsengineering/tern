@@ -8,9 +8,8 @@
 #'  define the columns in the table.
 #' @param col_N a \code{table} object with the reference population used for the header of the table.
 #'  See examples below.
-#' @param total character string that will be used as a label for a column with pooled total population.
-#'  If the levels of \code{col_by} are the only columns of interest then total should be \code{NULL}.
 #' @param ... arguments passed on to methods
+#' @template param_table_tree
 #'
 #' @details
 #' For every level of the variable \code{by} a summary table using \code{\link{t_summary}} will be created.
@@ -76,14 +75,15 @@
 t_summary_by <- function(x,
                          row_by,
                          col_by,
-                         col_N, # nolint
+                         col_N = NULL, # nolint
                          ...,
                          table_tree = FALSE) {
   col_by <- col_by_to_matrix(col_by, x)
+  # can rely on col_N computed in t_summary.list because it has different col_by, but it sums it
   row_by <- col_by_to_matrix(row_by, x)
   t_summary.list(
-    x = lapply(row_by, function(rows) subset(x, rows)),
-    col_by = lapply(row_by, function(rows) subset(col_by, rows)),
+    x_list = lapply(row_by, function(rows) subset(x, rows)),
+    col_by_list = lapply(row_by, function(rows) subset(col_by, rows)),
     col_N = col_N,
     ...,
     table_tree = table_tree

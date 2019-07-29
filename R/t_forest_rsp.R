@@ -6,9 +6,11 @@
 #' confidence interval from a univariate logistic model.
 #'
 #' @inheritParams argument_convention
-#' @inheritParams t_forest_tte
+#' @param rows_by_lst \code{list} or \code{data.frame} with one factor variable to calculate
+#'   the \code{t_el_forest_tte}
 #' @inheritParams t_el_forest_rsp
 #' @param total to add total
+#' @template param_table_tree
 #'
 #' @details
 #' Logistic regression is used for odds ratio calculation.
@@ -56,6 +58,7 @@
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#' library(purrr)
 #'
 #' ADSL <- radsl(seed = 1)
 #' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
@@ -68,7 +71,8 @@
 #' tbl <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = as_factor_keep_attributes(ADRS_f$ARM),
-#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>% map(as_factor_keep_attributes)
+#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
+#'     map(as_factor_keep_attributes)
 #' )
 #'
 #' tbl
@@ -82,10 +86,13 @@
 #' tbls <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = ADRS_f$ARM,
-#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>% map(as_factor_keep_attributes),
+#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
+#'     map(as_factor_keep_attributes),
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
+#'
+#' @importFrom purrr map
 t_forest_rsp <- function(rsp,
                          col_by,
                          rows_by_lst = NULL,
@@ -93,7 +100,6 @@ t_forest_rsp <- function(rsp,
                          dense_header = FALSE,
                          table_tree = FALSE) {
   stopifnot(is.logical(rsp))
-  #stopifnot(all(vapply(rows_by_lst, check_co, logical(1))))
   do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), rows_by_lst))
 
   rows_by_lst <- c(
@@ -101,7 +107,8 @@ t_forest_rsp <- function(rsp,
     rows_by_lst %>% map(na_as_level)
   )
   # take label if it exists, otherwise rowname
-  names(rows_by_lst) <- Map(`%||%`, lapply(rows_by_lst, label), names(rows_by_lst)) # equivalent of var_labels(as.data.frame(by), fill = TRUE)
+  # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
+  names(rows_by_lst) <- Map(`%||%`, lapply(rows_by_lst, label), names(rows_by_lst))
 
   df <- list(rsp = rsp, col_by = col_by)
 

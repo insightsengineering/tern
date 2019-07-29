@@ -8,7 +8,7 @@
 #' @return list, one item for each cateogory in by
 #'
 #' @export
-esplit <- function (x, by, ...) {
+esplit <- function(x, by) {
   UseMethod("esplit", x)
 }
 
@@ -41,9 +41,9 @@ esplit.default <- function(x, by) {
 #' @examples
 #' by <- factor(c("M", "M", "F", "F", "F"))
 #' esplit(data.frame(x = 1:5, y = 6:10), by)
-esplit.data.frame <- function(df, by) {
+esplit.data.frame <- function(x, by) {
   by <- col_by_to_matrix(by)
-  lapply(by, function(rows) df[rows,])
+  lapply(by, function(rows) x[rows, ])
 }
 
 #' Splits each list elements
@@ -81,16 +81,16 @@ esplit.data.frame <- function(df, by) {
 #'   ),
 #'   factor(c("a", "a", "b", "b", "b", "b"))
 #' )
-esplit.list <- function(lst, by) {
+esplit.list <- function(x, by) {
   # splits each list item
   # applies recursively to each list element
   by <- col_by_to_matrix(by)
-  if (length(lst) == 0) {
+  if (length(x) == 0) {
     # must be careful because list can be empty and we always want to return ncol(by) elements
     lapply(by, function(discard) NULL) # use lapply to keep names
   } else {
     # apply by to each list item, then transpose list
-    purrr::transpose(lapply(lst, function(elem) esplit(elem, by)))
+    purrr::transpose(lapply(x, function(elem) esplit(elem, by)))
   }
 }
 
@@ -110,10 +110,10 @@ esplit.list <- function(lst, by) {
 #'   )),
 #'   by = factor(c("M", "F"))
 #' )
-esplit.non_rsplit <- function(lst, by) {
+esplit.non_rsplit <- function(x, by) {
   # same as default method
   by <- col_by_to_matrix(by)
-  lapply(by, function(rows) lst[rows])
+  lapply(by, function(rows) x[rows])
 }
 
 #' Split list in the classic way instead of applying split to each element

@@ -4,11 +4,14 @@
 \name{to_rtable}
 \alias{to_rtable}
 \alias{to_rtable,node-method}
+\alias{to_rtable,rtable-method}
 \title{Converts the object to an rtable}
 \usage{
 to_rtable(x)
 
 \S4method{to_rtable}{node}(x)
+
+\S4method{to_rtable}{rtable}(x)
 }
 \arguments{
 \item{x}{object}
@@ -16,9 +19,9 @@ to_rtable(x)
 \item{...}{additional arguments to pass}
 }
 \description{
-Converts the object to an rtable
+# todo: rename to rbind.node eventually
 
-Specific to nodes
+Trivial (identity)
 }
 \examples{
 n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())

@@ -218,11 +218,10 @@ test_that("adverse events by terms (class and term)", {
       AEBODSYS = "MedDRA System Organ Class",
       AEDECOD = "MedDRA Preferred Term")
 
-  tbl <- t_events_per_term_id(terms = anl[, c("AEBODSYS", "AEDECOD")],
+  tbl <- t_events_per_term_id(terms = anl[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
                               id = anl$USUBJID,
-                              col_by = as.factor(anl$ARM),
-                              col_N = table(asl$ARM),
-                              total = "All Patients"
+                              col_by = as.factor(anl$ARM) %>% by_add_total("All Patients"),
+                              col_N = col_N_add_total(table(asl$ARM))
   )
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)

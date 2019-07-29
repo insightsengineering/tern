@@ -35,6 +35,7 @@
   invisible(TRUE)
 }
 
+# nolintr start
 # #' Return Ordered Dataset so that a set of variables match exactly
 # #'
 # #' This function is useful to ensure that two datasets have the same subjects
@@ -89,7 +90,7 @@
 #
 #   out
 # }
-
+# nolintr end
 
 #' Combine factor Levels
 #'
@@ -259,6 +260,18 @@ drop_shared_variables <- function(x, y, keep) {
   df
 }
 
+#' Replace NA values by NA string level
+#'
+#' @param x factor, possibly with NAs
+#' @param na_level name of new level for NAs
+#'
+#' @return factor with additional NA level
+#'
+#' @export
+#'
+#' @examples
+#' na_as_level(factor(c(1, 1, 2)))
+#' na_as_level(factor(c(1, 1, NA)), "na")
 na_as_level <- function(x, na_level = "NA") {
   stopifnot(is.factor(x))
 
@@ -266,8 +279,8 @@ na_as_level <- function(x, na_level = "NA") {
     if (na_level %in% levels(x)) {
       stop(na_level, " can not be a level of x")
     }
-    levels(x) <- c(levels(x), "NA")
-    x[is.na(x)] <- "NA"
+    levels(x) <- c(levels(x), na_level)
+    x[is.na(x)] <- na_level
   }
   x
 }
@@ -509,7 +522,7 @@ numberRows <- function(x) {
 rowSubset <- function(x, rows) {
   # similar to subset function
   if (is.data.frame(x)) {
-    x[rows,]
+    x[rows, ]
   } else {
     x[rows]
   }

@@ -2,13 +2,18 @@
 % Please edit documentation in R/aa_trees.R
 \name{summary.node}
 \alias{summary.node}
-\title{overwrite s3 method because s3 and s4 with same names cannot coexist}
+\title{Overwrite s3 method because s3 and s4 with same names cannot coexist}
 \usage{
-\method{summary}{node}(x)
+\method{summary}{node}(object, ...)
+}
+\arguments{
+\item{object}{node object}
+
+\item{...}{ignored currently}
 }
 \value{
 a summary of the tree, see \code{\link{basic_node_info}}
 }
 \description{
-overwrite s3 method because s3 and s4 with same names cannot coexist
+Overwrite s3 method because s3 and s4 with same names cannot coexist
 }

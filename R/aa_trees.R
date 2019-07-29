@@ -1,5 +1,6 @@
 # we don't name children with their content name because names may change and this would not get updated
-# todo: yes, they get updated because the whole objects gets copied to a new node object for which we can again check validity
+# todo: yes, they get updated because the whole objects gets copied to a new node object for which we
+# can again check validity
 
 #' An S4 Class to represent nodes in a tree
 #'
@@ -12,6 +13,7 @@
 #' @slot name name of node
 #' @slot content of node (e.g. \code{data.frame} or \code{rtable} objects)
 #' @slot children a list of \code{node} objects
+#' @slot format_data formatting instructions for conversion with \code{\link{to_rtable}}
 #'
 #' @exportClass node
 #' @name node-class
@@ -60,7 +62,9 @@ setValidity("node", function(object) {
 #' @param name name of node
 #' @param content content of node
 #' @param children children of node
-#' @param children_indent format_data
+#' @param format_data format data for conversion with \code{\link{to_rtable}},
+#'   list(gap_to_children, children_gap, children_indent, content_indent),
+#'   default values if not all given, see that function
 #'
 #' @return object of class node
 #'
@@ -76,8 +80,12 @@ setValidity("node", function(object) {
 #' #node(name = "A", content = c(1:3), children = list("A"))
 #' @name node
 #' @rdname node-class
+#'
+#' @importFrom methods new
 node <- function(name, content, children = list(), format_data = list()) {
-  #names(children) <- vapply(children, function(child) child@name, character(1))
+  # keep names?, even if not agreeing with child names? or alternatively treat node@name as display name
+  # and list name as invisible name
+  # names(children) <- vapply(children, function(child) child@name, character(1)) #nolintr
   new("node", name = name, content = content, children = unname(children), format_data = format_data)
 }
 
@@ -129,13 +137,15 @@ object_to_node <- function(x, node_name = invisible_node_name(deparse(substitute
   node(name = node_name, content = x)
 }
 
-#' overwrite s3 method because s3 and s4 with same names cannot coexist
+#' Overwrite s3 method because s3 and s4 with same names cannot coexist
 #'
+#' @param object node object
+#' @param ... ignored currently
 #' @return a summary of the tree, see \code{\link{basic_node_info}}
 #'
 #' @export
-summary.node <- function(x) {
-  basic_node_info(x)
+summary.node <- function(object, ...) {
+  basic_node_info(object)
 }
 
 #' Summarizes an object
@@ -231,7 +241,11 @@ setGeneric(
 #'
 #' @export rapply_tree
 #' @rdname rapply_tree
-setMethod("rapply_tree", signature = "node", definition = function(x, f, target_obj_class = NULL, path = character(0), ...) {
+setMethod("rapply_tree", signature = "node", definition = function(x,
+                                                                   f,
+                                                                   target_obj_class = NULL,
+                                                                   path = character(0),
+                                                                   ...) {
   stopifnot(
     is.function(f),
     is.function(target_obj_class) || is.null(target_obj_class),
@@ -426,6 +440,7 @@ invisible_node_name <- function(name) {
 
 #' Converts the object to an rtable
 #'
+#' # todo: rename to rbind.node eventually
 #' @param x object
 #' @param ... additional arguments to pass
 #'
@@ -438,6 +453,9 @@ setGeneric(
 
 #' Specific to nodes
 #'
+#' @export to_rtable
+#' @rdname to_rtable
+#'
 #' @examples
 #' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
@@ -446,10 +464,6 @@ setGeneric(
 #'
 #' # to_rtable(n2) # not working because not a tree of rtables
 #'
-#' @export to_rtable
-#' @rdname to_rtable
-#'
-#' @examples
 #' to_rtable(node(
 #'   invisible_node_name("received_treatment"),
 #'   content = t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
@@ -488,7 +502,12 @@ setMethod("to_rtable", signature = "node", definition = function(x) {
   }
 })
 
-# todo: rename to rbind.node eventually
+#' Convert rtable to rtable
+#'
+#' Trivial (identity)
+#'
+#' @export to_rtable
+#' @rdname to_rtable
 setMethod("to_rtable", signature = "rtable", definition = function(x) {
   if (is_empty_rtable(x)) {
     "Empty rtable"
@@ -513,10 +532,15 @@ setMethod("to_rtable", signature = "rtable", definition = function(x) {
 #'   1:7,
 #'   function(info_from_parent, path) {
 #'     i <<- i + 1
+#'     info_to_children_lst <- if (length(info_from_parent) > 1) {
+#'       split(info_from_parent, seq_along(info_from_parent) %% 3)
+#'     } else {
+#'       NULL
+#'     }
 #'     list(
 #'       name = toString(i),
 #'       content = info_from_parent,
-#'       info_to_children_lst = if (length(info_from_parent) > 1) split(info_from_parent, seq_along(info_from_parent) %% 3) else NULL
+#'       info_to_children_lst = info_to_children_lst
 #'     )
 #'   },
 #'   path = "root"
@@ -526,10 +550,15 @@ setMethod("to_rtable", signature = "rtable", definition = function(x) {
 #' res <- recursive_construct_tree(
 #'   1:7,
 #'   function(info_from_parent, path) {
+#'     info_to_children_lst <- if (length(info_from_parent) > 1) {
+#'       split(info_from_parent, seq_along(info_from_parent) %% 3)
+#'     } else {
+#'       NULL
+#'     }
 #'     list(
 #'       name = path[[length(path)]],
 #'       content = info_from_parent,
-#'       info_to_children_lst = if (length(info_from_parent) > 1) split(info_from_parent, seq_along(info_from_parent) %% 3) else NULL
+#'       info_to_children_lst = info_to_children_lst
 #'     )
 #'   },
 #'   path = "root"
@@ -553,7 +582,7 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 #' Split list recursively according to by and return the associated tree
 #'
 #' @param lst list to split, \code{\link{esplit}} will be applied to all list elements
-#' @param by list of columns, each of which is a factor to recursively split by
+#' @param by_lst list of columns, each of which is a factor to recursively split by
 #' @param drop_empty_levels whether to drop empty levels, this happens often when you have, e.g. two factors,
 #' one with levels (clA, clB), the other with levels (clA_1, clA_2, clB_1, clB_2) and only the combinations
 #' clA-clA_1, clA-clA_2, clB-clB_1, clB-clB_2 appear out of the eight combinations.
@@ -563,11 +592,17 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 #' @export
 #'
 #' @examples
-#' tree <- rsplit_to_tree(1:5, list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y"))))
+#' tree <- rsplit_to_tree(
+#'   1:5,
+#'   list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y")))
+#' )
 #' summary(tree)
 #' cat(displayable(tree))
 #'
-#' by_lst <- list(factor(c(rep("clA", 4), rep("clB", 4))), factor(c(rep(c("A1", "A2"), 2), rep(c("B1", "B2"), 2))))
+#' by_lst <- list(
+#'   factor(c(rep("clA", 4), rep("clB", 4))),
+#'   factor(c(rep(c("A1", "A2"), 2), rep(c("B1", "B2"), 2)))
+#' )
 #' summary(rsplit_to_tree(1:8, by_lst))
 #' summary(rsplit_to_tree(1:8, by_lst, drop_empty_levels = FALSE))
 rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE) {
@@ -617,7 +652,10 @@ rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE) {
 #' ))
 #' ))
 #' cat(displayable(tree))
-#' sorted_tree <- rsort_tree(tree, function(node) order(vapply(node@children, function(child) child@content, numeric(1))))
+#' sorted_tree <- rsort_tree(
+#'   tree,
+#'   function(node) order(vapply(node@children, function(child) child@content, numeric(1)))
+#' )
 #' cat(displayable(sorted_tree))
 rsort_tree <- function(node, f) {
   children_order <- f(node)
