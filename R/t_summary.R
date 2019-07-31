@@ -344,7 +344,7 @@ t_summary.character <- function(x, # nolint
 #'
 #'
 #' @examples
-#' today <- Sys.Date()
+#' today <- as.Date("2000-01-01")
 #' tenweeks <- seq(today, length.out=10, by="1 week")
 #' t_summary(tenweeks, no_by("all"), length(tenweeks))
 #'
