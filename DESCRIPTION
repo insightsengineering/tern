@@ -35,9 +35,9 @@ Imports:
   scales,
   stats,
   utils,
-  utils.nest
+  utils.nest,
+  forcats
 Suggests:
-  forcats,
   lattice,
   knitr,
   random.cdisc.data (>= 0.2.1),
