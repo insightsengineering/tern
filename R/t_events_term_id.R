@@ -68,6 +68,10 @@
 #'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
+#'
+#' library(dplyr)
+#' library(purrr)
+#'
 #' t_events_per_term_id(
 #'  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
 #'  id = c(1, 4, 2, 3, 3),
@@ -82,7 +86,7 @@
 #'  col_N = c(2, 4, 10)
 #' )
 #'
-#' library(dplyr)
+#'
 #' library(random.cdisc.data)
 #'
 #' ADSL <- radsl(10, seed = 1)
