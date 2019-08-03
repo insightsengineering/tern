@@ -44,7 +44,6 @@ t_summary <- function(x,
 #' @examples
 #' t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
 #'
-#' @importFrom rtables col_by_to_matrix
 t_summary.default <- function(x, # nolint
                               col_by,
                               col_N = NULL, # nolint
@@ -88,6 +87,8 @@ t_summary.default <- function(x, # nolint
 #'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #'
 #' @examples
+#' library(dplyr)
+#'
 #' # with iris data
 #' t_summary(iris$Sepal.Length, iris$Species)
 #'
@@ -108,13 +109,6 @@ t_summary.default <- function(x, # nolint
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
 #'   useNA = 'always')
 #'
-#' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
-#'   useNA = 'ifany')
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
-#'   denominator = "N",
-#'           useNA = 'ifany')
-#'
 #' ADSL_AGE65 <- ADSL %>%
 #'   dplyr::filter(AGE > 65)
 #' t_summary(
@@ -126,16 +120,23 @@ t_summary.default <- function(x, # nolint
 #' )
 #'
 #'
+#' ADSL$SEX[1:10] <- NA
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#'   useNA = 'ifany')
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#'   denominator = "N", useNA = 'ifany')
+#'
 #' tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
 #' summary(tbls)
 #' to_rtable(tbls)
 #'
-#' @importFrom rtables col_by_to_matrix
+#'
 t_summary.data.frame <- function(x, # nolint
                                  col_by,
                                  col_N = NULL, # nolint
                                  ...,
                                  table_tree = FALSE) {
+
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -145,7 +146,7 @@ t_summary.data.frame <- function(x, # nolint
   colnames(x) <- var_labels(x, fill = TRUE)
   t_summary.list(
     x_list = x,
-    col_by_list = lapply(seq_along(x), function(discard) col_by),
+    col_by_list = replicate(length(x), col_by, simplify = FALSE),
     col_N = col_N,
     ...,
     table_tree = table_tree
@@ -163,6 +164,7 @@ t_summary.data.frame <- function(x, # nolint
 #' @template return_rtable
 #'
 #' @export
+#' @importFrom rtables col_by_to_matrix
 #'
 #' @template author_waddella
 #'
@@ -172,6 +174,8 @@ t_summary.data.frame <- function(x, # nolint
 #'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #'
 #' @examples
+#' library(dplyr)
+#'
 #' # with iris data
 #' t_summary(iris$Sepal.Length, iris$Species)
 #'
@@ -186,7 +190,6 @@ t_summary.data.frame <- function(x, # nolint
 #' ADSL$AGE[1:10] <- NA
 #' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
 #'
-#' @importFrom rtables col_by_to_matrix
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = NULL,
@@ -230,6 +233,8 @@ t_summary.numeric <- function(x, # nolint
 #'
 #'
 #' @examples
+#' library(dplyr)
+#'
 #' # with iris data
 #' t_summary(iris$Species, iris$Species)
 #'
@@ -245,9 +250,10 @@ t_summary.numeric <- function(x, # nolint
 t_summary.factor <- function(x, # nolint
                              col_by,
                              col_N = NULL,
-                             useNA = c("no", "ifany", "always"), # nolint
+                             useNA = c("ifany", "no", "always"), # nolint
                              denominator = c("n", "N"),
                              drop_levels = FALSE, ...) {
+
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -278,17 +284,10 @@ t_summary.factor <- function(x, # nolint
         }
       },
       format = "xx (xx.xx%)",
-      col_wise_args = list(denom = denom)
+      col_wise_args = list(denom = denom),
+      useNA = useNA
     )
   )
-
-  #todo: do this right at the beginning and then apply rtabulate
-  if (useNA == "always" || (useNA == "ifany" && any(is.na(x)))) {
-    na_row <- lapply(col_by, function(rows) {
-      sum(is.na(x[rows]))
-    })
-    tbl <- insert_rrow(tbl, rrowl("<NA>", na_row, format = "xx"), nrow(tbl) + 1)
-  }
 
   header_add_N(tbl, col_N)
 }
@@ -334,6 +333,8 @@ t_summary.character <- function(x, # nolint
 #'
 #'
 #' @examples
+#' library(dplyr)
+#'
 #' today <- Sys.Date()
 #' tenweeks <- seq(today, length.out=10, by="1 week")
 #' t_summary(tenweeks, by_all("all"), length(tenweeks))
@@ -378,6 +379,8 @@ t_summary.Date <- function(x, # nolint
 #'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #'
 #' @examples
+#' library(dplyr)
+#'
 #' t_summary(
 #'  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
 #'  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
