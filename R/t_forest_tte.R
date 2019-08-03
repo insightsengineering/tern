@@ -10,8 +10,8 @@ NULL
 #' from a Cox proportional hazard model.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams t_forest_rsp
 #' @inheritParams t_el_forest_tte
-#' @param by \code{list} or \code{data.frame} with one factor variable to calculate the \code{t_el_forest_tte}
 #' @param strata_data currently not supported
 #'
 #' @details
@@ -61,7 +61,7 @@ NULL
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = ADTTE_f$ARMCD,
-#'   by = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+#'   rows_by_lst = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
 #'   dense_header = TRUE
 #' )
@@ -77,62 +77,68 @@ NULL
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = ADTTE_f$ARMCD,
-#'   by = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+#'   rows_by_lst = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
 #'   dense_header = TRUE,
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
-#' tbl <- rbind_table_tree(lapply(tbls, rbindl_rtables))
+#' to_rtable(tbls)
 #'
 t_forest_tte <- function(tte,
                          is_event,
                          col_by,
-                         by,
+                         rows_by_lst = NULL,
+                         total = "ALL",
                          strata_data = NULL,
                          ties = "exact",
                          time_unit = "month",
                          dense_header = FALSE,
                          table_tree = FALSE) {
-  return("Not implemented")
-  # stopifnot(is.factor(col_by))
-  # if (!is.null(strata_data)) {
-  #   stop("strata_data argument is currently not implemented")
-  # }
-  # check_same_n(tte = tte, is_event = is_event)
-  #
-  # by <- get_forest_by(by, length(tte))
-  #
-  # df <- data.frame(tte = tte, is_event = is_event, col_by = col_by)
-  #
-  # dfs <- get_forest_data_tree(df, by, total)
-  #
-  # browser()
-  #
-  # tbls <- lapply(dfs, function(x) {
-  #   Map(function(x_level, level_name) {
-  #     t_el_forest_tte(
-  #       tte = x_level$tte,
-  #       is_event = x_level$is_event,
-  #       col_by = x_level$col_by,
-  #       ties = ties,
-  #       row_name = level_name,
-  #       dense_header = dense_header
-  #     )
-  #   }, x, names(x))
-  # })
-  #
-  # browser()
-  #
-  #
-  # if (table_tree) {
-  #   table_tree(tbls)
-  # } else {
-  #   tbl <- rbind_table_tree(lapply(tbls, rbindl_rtables))
-  #   tbl <- tbl[-1, ] # remove total row
-  #   attr(tbl[[1]], "indent") <- 0
-  #   tbl
-  # }
+
+  stopifnot(is.numeric(tte), is.logical(is_event))
+  if (!is.null(strata_data)) {
+    stop("strata_data argument is currently not implemented")
+  }
+
+  do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by), rows_by_lst))
+
+  rows_by_lst <- c(
+    list(with_label(by_add_total(NULL, label = "-", n = length(tte)), total)),
+    rows_by_lst %>% map(na_as_level)
+  )
+  # take label if it exists, otherwise rowname
+  # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
+  names(rows_by_lst) <- Map(`%||%`, lapply(rows_by_lst, label), names(rows_by_lst))
+
+  df <- list(tte = tte, is_event = is_event, col_by = col_by)
+
+  dfs <- lapply(rows_by_lst, function(rows_by) esplit(df, rows_by))
+
+
+  tbls <- lapply(dfs, function(x) {
+    rbindl_rtables(Map(function(x_level, level_name) {
+      t_el_forest_tte(
+        tte = x_level$tte,
+        is_event = x_level$is_event,
+        col_by = x_level$col_by,
+        ties = ties,
+        row_name = level_name,
+        dense_header = dense_header
+      )
+    }, x, names(x)))
+  })
+  tree <- invisible_node(Map(
+    function(node_name, tbl) node(name = node_name, content = tbl),
+    names(tbls),
+    tbls
+  ))
+
+  if (table_tree) {
+    tree
+  } else {
+    to_rtable(tree)
+  }
 
 }
 
