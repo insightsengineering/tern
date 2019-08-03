@@ -36,6 +36,8 @@ Every variable in \code{x} will be mapped to a summary table using
 \code{\link{t_summary}} and then be stacked.
 }
 \examples{
+library(dplyr)
+
 # with iris data
 t_summary(iris$Sepal.Length, iris$Species)
 
@@ -56,13 +58,6 @@ t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Pat
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
   useNA = 'always')
 
-ADSL$SEX[1:10] <- NA
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
-  useNA = 'ifany')
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
-  denominator = "N",
-          useNA = 'ifany')
-
 ADSL_AGE65 <- ADSL \%>\%
   dplyr::filter(AGE > 65)
 t_summary(
@@ -74,9 +69,16 @@ t_summary(
 )
 
 
+ADSL$SEX[1:10] <- NA
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
+  useNA = 'ifany')
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
+  denominator = "N", useNA = 'ifany')
+
 tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
 summary(tbls)
 to_rtable(tbls)
+
 
 }
 \seealso{

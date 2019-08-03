@@ -26,6 +26,8 @@ Tabulate the number of non-missing observations, mean, sd, median, and range
 for different groups.
 }
 \examples{
+library(dplyr)
+
 # with iris data
 t_summary(iris$Sepal.Length, iris$Species)
 

@@ -22,6 +22,8 @@ and \code{add_total_by}.}
 Tabulate the range of dates.
 }
 \examples{
+library(dplyr)
+
 today <- Sys.Date()
 tenweeks <- seq(today, length.out=10, by="1 week")
 t_summary(tenweeks, by_all("all"), length(tenweeks))

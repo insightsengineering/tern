@@ -76,6 +76,10 @@ The data is split and table functions are applied to leaf nodes as follows:
 }
 }
 \examples{
+
+library(dplyr)
+library(purrr)
+
 t_events_per_term_id(
  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
  id = c(1, 4, 2, 3, 3),
@@ -90,7 +94,7 @@ t_events_per_term_id(
  col_N = c(2, 4, 10)
 )
 
-library(dplyr)
+
 library(random.cdisc.data)
 
 ADSL <- radsl(10, seed = 1)

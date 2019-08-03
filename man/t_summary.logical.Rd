@@ -27,6 +27,8 @@ and \code{add_total_by}.}
 Boolean data will be converted to factor
 }
 \examples{
+library(dplyr)
+
 t_summary(
  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])

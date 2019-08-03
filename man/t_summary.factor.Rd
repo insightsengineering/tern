@@ -4,9 +4,8 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(x, col_by, col_N = NULL, useNA = c("no",
-  "ifany", "always"), denominator = c("n", "N"), drop_levels = FALSE,
-  ...)
+\method{t_summary}{factor}(x, col_by, col_N = NULL, useNA = c("ifany",
+  "no", "always"), denominator = c("n", "N"), drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{factor variable}
@@ -36,6 +35,8 @@ Tabulate the number of non-missing observations, number of observations per leve
 percentage.
 }
 \examples{
+library(dplyr)
+
 # with iris data
 t_summary(iris$Species, iris$Species)
 
