@@ -11,6 +11,7 @@
 #'   Only when x is of type factor
 #'
 #' @export
+#' @importFrom forcats fct_explicit_na
 #'
 #' @examples
 #' library(random.cdisc.data)
@@ -183,10 +184,14 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
                              subset = NULL, show_n = FALSE, # nolint
                              useNA = c("no", "ifany", "always"), drop_levels = NULL, # nolint
                              denominator = "N") { # nolint
+
+  useNA <- match.arg(useNA)
+
   # treat x and col_by
   if (!(is.atomic(x) & (is.factor(x) | is.logical(x)))) {
     stop("x is required to be atomic factor or logical vector")
   }
+
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -208,6 +213,7 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
       stop("n is never shown for logicals")
     }
     drop_levels <- drop_levels %||% FALSE
+
     t_summary.logical(
       x = x,
       col_by = col_by,
