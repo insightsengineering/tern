@@ -37,8 +37,9 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Audrey Boruvka \email{audrey.boruvka@roche.com} [contributor]
   \item Roche [copyright holder, funder]
+  \item Audrey Boruvka \email{audrey.boruvka@roche.com} [contributor]
+  \item Maximilian Mordig \email{maximilian.mordig@roche.com} [contributor]
 }
 
 }

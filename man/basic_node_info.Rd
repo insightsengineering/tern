@@ -32,4 +32,5 @@ n2 <- node(name = "D", content = c(1:3), children = list(
 ))
 summary(n11)
 summary(n2)
+
 }

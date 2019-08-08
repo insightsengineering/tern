@@ -4,7 +4,7 @@
 \alias{t_forest_tte}
 \title{Time-to-event Table as used for Forest Plot}
 \usage{
-t_forest_tte(tte, is_event, col_by, rows_by_lst = NULL, total = "ALL",
+t_forest_tte(tte, is_event, col_by, row_by_list = NULL, total = "ALL",
   strata_data = NULL, ties = "exact", time_unit = "month",
   dense_header = FALSE, table_tree = FALSE)
 }
@@ -18,7 +18,7 @@ is censored}
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
-\item{rows_by_lst}{\code{list} or \code{data.frame} with one factor variable to calculate
+\item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
 the \code{t_el_forest_tte}}
 
 \item{total}{to add total}
@@ -80,7 +80,7 @@ tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  rows_by_lst = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
   dense_header = TRUE
 )
@@ -96,7 +96,7 @@ tbls <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  rows_by_lst = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
   dense_header = TRUE,
   table_tree = TRUE

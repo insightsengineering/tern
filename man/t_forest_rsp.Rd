@@ -4,7 +4,7 @@
 \alias{t_forest_rsp}
 \title{Response Table as used for Forest Plot}
 \usage{
-t_forest_rsp(rsp, col_by, rows_by_lst = NULL, total = "ALL",
+t_forest_rsp(rsp, col_by, row_by_list = NULL, total = "ALL",
   dense_header = FALSE, table_tree = FALSE)
 }
 \arguments{
@@ -15,7 +15,7 @@ otherwise}
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
-\item{rows_by_lst}{\code{list} or \code{data.frame} with one factor variable to calculate
+\item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
 the \code{t_el_forest_tte}}
 
 \item{total}{to add total}
@@ -85,7 +85,7 @@ ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = as_factor_keep_attributes(ADRS_f$ARM),
-  rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
+  row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
     map(as_factor_keep_attributes)
 )
 
@@ -100,7 +100,7 @@ Viewer(tbl)
 tbls <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = ADRS_f$ARM,
-  rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
+  row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
     map(as_factor_keep_attributes),
   table_tree = TRUE
 )

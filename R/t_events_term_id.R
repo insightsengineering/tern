@@ -3,6 +3,21 @@
 #' This function summarizes number of unique subjects with events and total number of events.
 #' It creates basic summary of events and can be used for any events data like Adverse Events,
 #' concomitant medication, medical history, etc.
+#'
+#'
+#' @inheritParams argument_convention
+#' @param terms character or factor vector, or \code{data.frame} to represent events information; Currently \code{terms}
+#'   can only be a vector or dataframe with 1 or 2 columns. For \code{terms} with 2 columns, 1st column should represent
+#'   higher level term and 2nd column should be lower level term. \code{var_relabel} is used as the character string
+#'   used as a label in the column header for each term.
+#' @param id vector of subject identifier. Length of \code{id} must be the same as the length or number of rows of
+#'   \code{terms}.
+#' @param col_N numeric vector with information of the number of patients in the levels of \code{col_by}. This is useful
+#'   if there are patients that have no adverse events can be accounted for with this argument.
+#' @param event_type type of event that is summarized (e.g. adverse event, treatment). Default is "event".
+#'
+#'
+#' @details
 #' Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data
 #' to create Adverse Events summary table
 #' (\code{AET02},
@@ -15,22 +30,7 @@
 #' STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
 #'
-#' @inheritParams argument_convention
-#' @param terms character or factor vector, or dataframe to represent events information;
-#'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
-#'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
-#'   column should be lower level term.
-#'   \code{var_relabel} is used as the character string used as a label in the column header
-#'   for each term.
-#' @param id vector of subject identifier. Length of \code{id} must be the same as the
-#'   length or number of rows of \code{terms}.
-#' @param col_N numeric vector with information of the number of patients in the
-#'   levels of \code{col_by}. This is useful if there are patients that have no
-#'   adverse events can be accounted for with this argument.
-#' @param event_type type of event that is summarized (e.g. adverse event,
-#'   treatment). Default is "event".
 #'
-#' @details
 #' \code{t_events_per_term_id} includes percentages based on the total number of subjects
 #' in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly specified to
 #' get N for percentage calculation from either events dataset or additional dataset such as
@@ -57,6 +57,7 @@
 #'
 #' @return an \code{\link{rtable}} object.
 #'
+#' @importFrom methods slot
 #' @export
 #'
 #' @template author_waddella
@@ -115,8 +116,8 @@
 #'   col_N = col_N_add_total(table(ADSL$ARM)),
 #' )
 #'
-#' ADSL <- radsl(10, seed = 1)
-#' ADCM <- radcm(ADSL, 5, seed = 4)
+#' ADSL <- cadsl
+#' ADCM <- cadcm
 #' ADCM <- ADCM %>%
 #'   dplyr::filter(ATIREL == "CONCOMITANT")
 #'
@@ -139,6 +140,17 @@
 #'   table_tree = TRUE
 #' ))
 #'
+#'
+#' tbls <- t_events_per_term_id(
+#'  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
+#'  col_by = factor(c("A", "A", "B", "C", "C")) %>% by_add_total("All Patients"),
+#'  col_N = col_N_add_total(c(2, 4, 10)),
+#'  table_tree = TRUE
+#' )
+#' summary(tbls)
+#'
+#'
 #' tbls <- t_events_per_term_id(
 #'   terms = ADAE[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
 #'   id = ADAE$USUBJID,
@@ -155,6 +167,7 @@ t_events_per_term_id <- function(terms,
                                  col_N = NULL, # nolint
                                  event_type = "event",
                                  table_tree = FALSE) {
+
   if (is.atomic(terms)) {
     terms <- list(terms)
   }
@@ -166,16 +179,16 @@ t_events_per_term_id <- function(terms,
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
 
-  tree <- rsplit_to_tree(
+  tree_data <- rsplit_to_tree(
     list(id = id, col_by = col_by),
     terms,
     drop_empty_levels = TRUE
   )
-  tree@name <- paste0("- Any ", event_type, " -")
-  tree@format_data$children_indent <- 0
+  tree_data@name <- paste0("- Any ", event_type, " -")
+  tree_data@format_data$children_indent <- 0
 
   tree <- rapply_tree(
-    tree,
+    tree_data,
     function(name, content, path) {
       if (length(path) == length(terms) + 1) {
         # don't show everything for leaves
@@ -204,10 +217,19 @@ t_events_per_term_id <- function(terms,
     tree,
     function(node) {
       node@format_data <- list(children_gap = 0, gap_to_children = 0)
+      if (length(node@children) > 0) {
+        i <- order_rtables(lapply(node@children, slot, "content"), indices = c(1, 0, 1), decreasing = TRUE)
+        node@children <- node@children[i]
+      }
       node
     },
     depth = length(terms) - 1
   )
+
+  if (is.list(terms) && length(terms) == 1 || is.atomic(terms)) {
+    tree@format_data <- list(children_gap = 0, gap_to_children = 0)
+    tree@name <- invisible_node_name("All")
+  }
 
   # todo: possibly sort with rsort_tree
   if (table_tree) {
@@ -259,6 +281,7 @@ t_count_unique <- function(x,
                            col_N = NULL, # nolint
                            na_rm = TRUE,
                            row_name = "number of unique elements") {
+
   stopifnot(is.atomic(x)) # todo: is this enough?
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
@@ -319,6 +342,7 @@ t_el_events_per_term_id <- function(id,
                                     col_N = NULL,
                                     total_events = "Total number of events",
                                     subjects_with_events = "Total number of patients with at least one adverse event") {
+
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by)
   check_col_by(x = id, col_by, col_N, min_num_levels = 1)

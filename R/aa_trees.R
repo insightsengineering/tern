@@ -52,36 +52,43 @@ setValidity("node", function(object) {
 
 #' Create an object of class node
 #'
-#' A node is also known as a tree. This function makes sure that the children are properly named.
-#' They can then be properly accessed through node_children[['childName']]
+#' A node is also a tree. This function makes sure that the children are properly named.
+#' They can then be properly accessed through \code{node_children[['childName']]}.
 #' See the class node for more info about parameters.
 #'
 #' Note: changing the names of the children after calling this function will cause the children list names
 #' to be no longer in-sync. (or should accessor update child names??)
 #'
+#' @name node
+#' @rdname node-class
+#'
 #' @param name name of node
 #' @param content content of node
 #' @param children children of node
 #' @param format_data format data for conversion with \code{\link{to_rtable}},
-#'   list(gap_to_children, children_gap, children_indent, content_indent),
+#'   \code{list(gap_to_children, children_gap, children_indent, content_indent)},
 #'   default values if not all given, see that function
 #'
 #' @return object of class node
 #'
+#' @importFrom methods new
 #' @export
 #'
 #' @examples
+#'
 #' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n2 <- node(name = "D", content = c(1:3), children = list(n11, n12, n13))
-#' summary(n11)
-#' # incorrect example (children with same name):
-#' #node(name = "A", content = c(1:3), children = list("A"))
-#' @name node
-#' @rdname node-class
 #'
-#' @importFrom methods new
+#' summary(n11)
+#' summary(n2)
+#'
+#' \dontrun{
+#' # incorrect example (children with same name):
+#' node(name = "A", content = c(1:3), children = list("A"))
+#' }
+#'
 node <- function(name, content, children = list(), format_data = list()) {
   # keep names?, even if not agreeing with child names? or alternatively treat node@name as display name
   # and list name as invisible name
@@ -100,14 +107,13 @@ node <- function(name, content, children = list(), format_data = list()) {
 #'
 #' @export
 #'
-#' @export
 #'
 #' @examples
 #' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 #' summary(invisible_node(list(n11, n12, n13)))
-invisible_node <- function(children, name = "root", content = NULL, format_data = NULL) {
+invisible_node <- function(children, name = invisible_node_name("root"), content = NULL, format_data = NULL) {
   stopifnot(is.character.single(name))
   node(
     name = invisible_node_name(name),
@@ -167,6 +173,8 @@ setGeneric(
 #'
 #' @rdname basic_node_info
 #'
+#' @importFrom rtables rtable rcell rrow rbindl_rtables
+#'
 #' @examples
 #' n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n2 <- node(name = "D", content = c(1:3), children = list(
@@ -176,19 +184,22 @@ setGeneric(
 #' ))
 #' summary(n11)
 #' summary(n2)
-#' @importFrom rtables rtable rcell rrow rbindl_rtables
+#'
 setMethod("basic_node_info", signature = "node", definition = function(x, index = numeric(0)) {
   format_dim_fcn <- function(x, output) {
     paste(x, collapse = " x ")
   }
   rbindl_rtables(c(
     list(rtable(
-      header = c("index", "content", "dim"),
-      rrow(x@name,
-           index,
-           class(x@content),
-           rcell(dim(x@content), format = format_dim_fcn),
-           indent = length(index)
+      header = c("index", "content", "dim", "hide label", "format"),
+      rrow(
+        x@name,
+        index,
+        class(x@content),
+        rcell(dim(x@content), format = format_dim_fcn),
+        is(x@name, "invisible_node_name"),
+        x@format_data,
+        indent = length(index)
       )
     )),
     Map(function(x, i) {
@@ -716,4 +727,43 @@ full_apply_at_depth <- function(x, f, depth = 0) {
       format_data = x@format_data
     )
   }
+}
+
+
+
+#' Node Format Data
+#'
+#'
+#' @param gap_to_children row gap between content and children
+#' @param children_gap row gaps between children
+#' @param children_indent absolute indentation of children
+#' @param content_indent absolute indentation of
+#'
+#' @export
+#'
+#'
+#' @examples
+#' tbl <- function(x) {rtable(c("A", "B"), rrow("r1", "-", "-"))}
+#'
+#' to_rtable(node("AAA", tbl("r1")))
+#' to_rtable(node("AAA", tbl("r1"), children = list(
+#'    node("c1", tbl("r2")),
+#'    node("c1", tbl("r2")),
+#'    node("c1", tbl("r2"))
+#' )))
+#'
+#'
+#' to_rtable(node("AAA", tbl("r1"), children = list(
+#'    node("c1", tbl("r2")),
+#'    node("c1", tbl("r2")),
+#'    node("c1", tbl("r2"))
+#' ), format_data = node_format_data(children_indent = 0)))
+#'
+node_format_data <- function(gap_to_children = NULL, children_gap = NULL, children_indent = NULL,
+                             content_indent = NULL) {
+
+  Filter(Negate(is.null),
+         list(gap_to_children = gap_to_children, children_gap = children_gap,
+              children_indent = children_indent, content_indent = content_indent))
+
 }

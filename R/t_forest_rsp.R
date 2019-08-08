@@ -6,7 +6,7 @@
 #' confidence interval from a univariate logistic model.
 #'
 #' @inheritParams argument_convention
-#' @param rows_by_lst \code{list} or \code{data.frame} with one factor variable to calculate
+#' @param row_by_list \code{list} or \code{data.frame} with one factor variable to calculate
 #'   the \code{t_el_forest_tte}
 #' @inheritParams t_el_forest_rsp
 #' @param total to add total
@@ -71,7 +71,7 @@
 #' tbl <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = as_factor_keep_attributes(ADRS_f$ARM),
-#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
+#'   row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
 #'     map(as_factor_keep_attributes)
 #' )
 #'
@@ -86,7 +86,7 @@
 #' tbls <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = ADRS_f$ARM,
-#'   rows_by_lst = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
+#'   row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
 #'     map(as_factor_keep_attributes),
 #'   table_tree = TRUE
 #' )
@@ -95,24 +95,24 @@
 #' @importFrom purrr map
 t_forest_rsp <- function(rsp,
                          col_by,
-                         rows_by_lst = NULL,
+                         row_by_list = NULL,
                          total = "ALL",
                          dense_header = FALSE,
                          table_tree = FALSE) {
   stopifnot(is.logical(rsp))
-  do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), rows_by_lst))
+  do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), row_by_list))
 
-  rows_by_lst <- c(
+  row_by_list <- c(
     list(with_label(by_add_total(NULL, label = "-", n = length(rsp)), total)),
-    rows_by_lst %>% map(na_as_level)
+    row_by_list %>% map(na_as_level)
   )
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
-  names(rows_by_lst) <- Map(`%||%`, lapply(rows_by_lst, label), names(rows_by_lst))
+  names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
   df <- list(rsp = rsp, col_by = col_by)
 
-  dfs <- lapply(rows_by_lst, function(rows_by) esplit(df, rows_by))
+  dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
   tbls <- lapply(dfs, function(x) {
     rbindl_rtables(Map(function(x_level, level_name) {

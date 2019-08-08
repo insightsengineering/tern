@@ -61,7 +61,7 @@ NULL
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = ADTTE_f$ARMCD,
-#'   rows_by_lst = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+#'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
 #'   dense_header = TRUE
 #' )
@@ -77,7 +77,7 @@ NULL
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = ADTTE_f$ARMCD,
-#'   rows_by_lst = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+#'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
 #'   dense_header = TRUE,
 #'   table_tree = TRUE
@@ -88,7 +88,7 @@ NULL
 t_forest_tte <- function(tte,
                          is_event,
                          col_by,
-                         rows_by_lst = NULL,
+                         row_by_list = NULL,
                          total = "ALL",
                          strata_data = NULL,
                          ties = "exact",
@@ -101,19 +101,19 @@ t_forest_tte <- function(tte,
     stop("strata_data argument is currently not implemented")
   }
 
-  do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by), rows_by_lst))
+  do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by), row_by_list))
 
-  rows_by_lst <- c(
+  row_by_list <- c(
     list(with_label(by_add_total(NULL, label = "-", n = length(tte)), total)),
-    rows_by_lst %>% map(na_as_level)
+    row_by_list %>% map(na_as_level)
   )
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
-  names(rows_by_lst) <- Map(`%||%`, lapply(rows_by_lst, label), names(rows_by_lst))
+  names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
   df <- list(tte = tte, is_event = is_event, col_by = col_by)
 
-  dfs <- lapply(rows_by_lst, function(rows_by) esplit(df, rows_by))
+  dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
 
   tbls <- lapply(dfs, function(x) {

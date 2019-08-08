@@ -100,6 +100,18 @@ NULL
 #'   col_N = col_N_add_total(table(ADSL$ARM)),
 #'   grade_levels = 1:5
 #' )
+#'
+#'
+#' tbls <- t_events_per_term_grade_id(
+#'   terms = ADAE %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes),
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
+#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   grade_levels = 1:5,
+#'   table_tree = TRUE
+#' )
+#' summary(tbls)
 t_events_per_term_grade_id <- function(terms,
                                        id,
                                        grade,
@@ -128,7 +140,7 @@ t_events_per_term_grade_id <- function(terms,
         col_by = content$col_by,
         col_N = col_N,
         grade_levels = grade_levels,
-        any_grade = "-Any Grade-"
+        any_grade = "- Any Grade -"
       ))
     }
   )
@@ -147,6 +159,35 @@ t_events_per_term_grade_id <- function(terms,
       ))
     }
   )
+
+  tree <- full_apply_at_depth(
+    tree,
+    function(node) {
+      name <- node@name
+      node@name <- invisible_node_name(name)
+      row.names(node@content) <- c(name, row.names(node@content)[-1])
+      node
+    },
+    depth = length(terms)
+  )
+
+  tree <- full_apply_at_depth(
+    tree,
+    function(node) {
+      row.names(node@content) <- c("- Overall -", row.names(node@content)[-1])
+      node
+    },
+    depth = length(terms) - 1
+  )
+
+
+  if (length(terms) == 1) {
+    tree@name <- invisible_node_name(tree@name)
+    tree@format_data <- node_format_data(content_indent = 0)
+  } else {
+    row.names(tree@content) <- c("- Overall -", row.names(tree@content)[-1])
+  }
+
 
   if (table_tree) {
     tree
@@ -291,6 +332,7 @@ t_max_grade_per_id <- function(grade,
 
   tbl <- rbind(tbl_any, tbl_x)
   tbl <- header_add_N(tbl, col_N)
+
   grade_label <- label(grade) %||% deparse(substitute(grade))
   row_names_as_col(tbl, c("", grade_label))
 }

@@ -105,6 +105,18 @@ t_events_per_term_grade_id(
   col_N = col_N_add_total(table(ADSL$ARM)),
   grade_levels = 1:5
 )
+
+
+tbls <- t_events_per_term_grade_id(
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD) \%>\% map(as_factor_keep_attributes),
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
+  col_N = col_N_add_total(table(ADSL$ARM)),
+  grade_levels = 1:5,
+  table_tree = TRUE
+)
+summary(tbls)
 }
 \seealso{
 \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_id}}

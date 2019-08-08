@@ -17,7 +17,7 @@ node(name, content, children = list(), format_data = list())
 \item{children}{children of node}
 
 \item{format_data}{format data for conversion with \code{\link{to_rtable}},
-list(gap_to_children, children_gap, children_indent, content_indent),
+\code{list(gap_to_children, children_gap, children_indent, content_indent)},
 default values if not all given, see that function}
 }
 \value{
@@ -28,8 +28,8 @@ From Wikipedia: A tree data structure can be defined recursively as a collection
 where each node is a data structure consisting of a value, together with a list of references to nodes (the
 "children"), with the constraints that no reference is duplicated, and none points to the root.
 
-A node is also known as a tree. This function makes sure that the children are properly named.
-They can then be properly accessed through node_children[['childName']]
+A node is also a tree. This function makes sure that the children are properly named.
+They can then be properly accessed through \code{node_children[['childName']]}.
 See the class node for more info about parameters.
 }
 \details{
@@ -51,11 +51,18 @@ to be no longer in-sync. (or should accessor update child names??)
 }}
 
 \examples{
+
 n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())
 n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
 n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 n2 <- node(name = "D", content = c(1:3), children = list(n11, n12, n13))
+
 summary(n11)
+summary(n2)
+
+\dontrun{
 # incorrect example (children with same name):
-#node(name = "A", content = c(1:3), children = list("A"))
+node(name = "A", content = c(1:3), children = list("A"))
+}
+
 }
