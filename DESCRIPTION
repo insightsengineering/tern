@@ -5,8 +5,8 @@ Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
+  person("Maximilian", "Mordig", email = "maximilian.mordig@roche.com", role = "aut"),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
-  person("Maximilian", "Mordig", email = "maximilian.mordig@roche.com", role = "ctb"),
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
   person("Jennifer", "Li", email = "li.jing@gene.com", role = "aut"),
   person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
@@ -58,7 +58,7 @@ Additional_repositories:
   https://github.roche.com/NEST/random.cdisc.data
 Collate: 
     'aa_trees.R'
-    'argument_vocabulatory.R'
+    'argument_convention.R'
     'check_data.R'
     'decorate_grob.R'
     'for_rtables.R'
@@ -67,7 +67,6 @@ Collate:
     'g_km.R'
     'g_summary_by.R'
     'g_waterfall.R'
-    'keys.R'
     'on_attach.R'
     'package.R'
     'safe_join.R'

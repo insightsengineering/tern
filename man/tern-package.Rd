@@ -23,6 +23,7 @@ Useful links:
 Authors:
 \itemize{
   \item Adrian Waddell \email{adrian.waddell@roche.com}
+  \item Maximilian Mordig \email{maximilian.mordig@roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
   \item Jennifer Li \email{li.jing@gene.com}
   \item Yuyao Song \email{yuyao.song@roche.com}
@@ -39,7 +40,6 @@ Other contributors:
 \itemize{
   \item Roche [copyright holder, funder]
   \item Audrey Boruvka \email{audrey.boruvka@roche.com} [contributor]
-  \item Maximilian Mordig \email{maximilian.mordig@roche.com} [contributor]
 }
 
 }

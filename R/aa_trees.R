@@ -154,6 +154,8 @@ summary.node <- function(object, ...) {
   basic_node_info(object)
 }
 
+# basic_node_info ----
+
 #' Summarizes an object
 #'
 #' @param x node object
@@ -208,6 +210,8 @@ setMethod("basic_node_info", signature = "node", definition = function(x, index 
   ))
 })
 
+# rapply_tree ----
+
 #' Applies the function f to each node in the tree x
 #'
 #' @param x tree object
@@ -221,6 +225,9 @@ setGeneric(
   function(x, f, ...) standardGeneric("rapply_tree"),
   signature = "x"
 )
+
+
+# rapply_tree.node ----
 
 #' f is applied to the content of each node and a new node of class 'target_obj_class' is created
 #' with children applied recursively
@@ -278,6 +285,8 @@ setMethod("rapply_tree", signature = "node", definition = function(x,
     format_data = x@format_data
   )
 })
+
+# displayable ----
 
 #' Returns output to be displayed with cat()
 #'
@@ -361,6 +370,8 @@ setMethod("displayable", signature = "node", definition = function(x, indent = 0
     sep = "\n"
   )
 })
+
+# Accessor [[ ----
 
 # cannot overwrite `[[` with setGeneric because it dispatches internally
 #' Allows to access nodes recursively, each element in index can either be a number or the name of the node
@@ -448,6 +459,8 @@ invisible_node_name <- function(name) {
   stopifnot(is.character(name))
   structure(name, class = "invisible_node_name")
 }
+
+# to_rtable ----
 
 #' Converts the object to an rtable
 #'

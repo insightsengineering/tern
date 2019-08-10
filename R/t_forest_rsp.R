@@ -9,6 +9,7 @@
 #' @inheritParams t_el_forest_rsp
 #' @param row_by_list \code{list} or \code{data.frame} with one factor variable to calculate
 #'   the \code{t_el_forest_tte}
+#' @param total string of total row added. If \code{NULL} then no total row is added.
 #'
 #' @details
 #' Logistic regression is used for odds ratio calculation.
@@ -52,7 +53,7 @@
 #'
 #' @template author_song24
 #'
-#' @seealso \code{\link{t_rsp}}
+#' @seealso \code{\link{t_el_forest_rsp}}, \code{\link{t_rsp}}
 #'
 #' @examples
 #' library(random.cdisc.data)
@@ -98,7 +99,7 @@ t_forest_rsp <- function(rsp,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
-  stopifnot(is.logical(rsp))
+  stopifnot(is.logical(rsp), is.null(total) || is.character.single(total))
   do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), row_by_list))
 
   row_by_list <-  row_by_list %>% map(na_as_level)
@@ -111,7 +112,10 @@ t_forest_rsp <- function(rsp,
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
   data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0))
-  data_tree@children <- c(list(node("ALL", df)), data_tree@children)
+
+  if (!is.null(total)) {
+    data_tree@children <- c(list(node(total, df)), data_tree@children)
+  }
 
   tree <- rapply_tree(data_tree, function(name, content, path) {
     if (is.data.frame(content)) {
@@ -152,6 +156,8 @@ t_forest_rsp <- function(rsp,
 #'
 #' @importFrom stats binomial confint glm
 #' @export
+#'
+#' @seealso \code{\link{t_forest_rsp}}
 #'
 #' @examples
 #'

@@ -1,8 +1,35 @@
-=======
-# tern next release
 
-* Added disposition elementary table `t_el_disposition`
-* Added `node` S4 class
+# tern 0.6.2.9000
+
+* Added `node` S4 class to create trees:
+    - for all related tree functions see the reference under trees 
+
+* Removed functions:
+    - Moved all the label functions to `rtables`
+    - deleted `keys` and `keys<-` functions
+
+* New helper functions:
+    - exported `tabulate_pairwise`
+    - `get_N`, `col_N_add_total`, `check_id`
+    - `na_as_level`
+    - `as_factor_keep_attributes`
+
+* New TLGs:
+    - disposition elementary table `t_el_disposition`
+    - `t_el_forest_tte`, `t_el_forest_rsp`
+
+* Changed Arguments:
+    - all compound tables
+        - added `table_tree` argument which returns a `node` object
+    - `t_summary`, `t_summary_by`, `t_events_per_term_id`, `t_events_per_term_grade_id`
+        - removed `total`, use `by_add_total` instead
+    - `t_summary_by`
+        - renamed `by` to `row_by`
+    - `t_forest_rsp`, `t_forest_tte`
+        - changed functionality of `group_data` using `row_by_list`
+        - removed `na_omit_group`
+    - `t_count_unique`
+        - removed `indent` argument, use the `indent` funtion in `rtables` instead
 
 # tern 0.6.2
 

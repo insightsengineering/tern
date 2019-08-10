@@ -19,6 +19,9 @@ define the columns in the table.}
 \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{...}{arguments passed on to methods}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{
 Summarize an Object for Different Groups with by Variable

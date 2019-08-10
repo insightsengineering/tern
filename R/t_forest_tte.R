@@ -44,7 +44,7 @@ NULL
 #'
 #' @template author_song24
 #'
-#' @seealso \code{\link{t_tte}}
+#' @seealso \code{\link{t_el_forest_tte}}, \code{\link{t_tte}}
 #'
 #' @examples
 #' library(random.cdisc.data)
@@ -96,7 +96,7 @@ t_forest_tte <- function(tte,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
-  stopifnot(is.numeric(tte), is.logical(is_event))
+  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is.character.single(total))
   if (!is.null(strata_data)) {
     stop("strata_data argument is currently not implemented")
   }
@@ -114,8 +114,10 @@ t_forest_tte <- function(tte,
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
   data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0))
-  data_tree@children <- c(list(node("ALL", df)), data_tree@children)
 
+  if (!is.null(total)) {
+    data_tree@children <- c(list(node(total, df)), data_tree@children)
+  }
 
   tree <- rapply_tree(data_tree, function(name, content, path) {
     if (is.data.frame(content)) {
@@ -159,6 +161,8 @@ t_forest_tte <- function(tte,
 #' @return rtable with one row
 #'
 #' @export
+#'
+#' @seealso \code{\link{t_forest_tte}}
 #'
 #' @examples
 #'
@@ -336,41 +340,4 @@ t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
     )
   )
 
-}
-
-#todo: remove this function once simplified as in t_forest_rsp.R
-get_forest_by <- function(by, n) {
-  if (!is.null(by)) {
-    if (!is.list(by)) {
-      stop("by is required to be either a list or NULL")
-    }
-    if (any(vapply(by, length, numeric(1)) != n)) {
-      stop("elements in by do not length n")
-    }
-    by <- all_as_factor(by)
-    by <- lapply(by, na_as_level)
-    names(by) <- var_labels(as.data.frame(by), fill = TRUE)
-  }
-  by
-}
-
-#' Data Tree for Forest Plot
-#'
-#' @noRd
-#'
-#' @importFrom stats setNames
-get_forest_data_tree <- function(df, by, total) {
-  dfs <- if (!is.null(by)) {
-    lapply(by, function(by_i) {
-      split(df, by_i)
-    })
-  } else {
-    NULL
-  }
-
-  if (!is.null(total)) {
-    dfs <- c(list(total = setNames(list(df), total)), dfs)
-  }
-
-  dfs
 }

@@ -32,3 +32,6 @@ t_el_forest_rsp(
 )
 
 }
+\seealso{
+\code{\link{t_forest_rsp}}
+}

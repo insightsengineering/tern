@@ -44,7 +44,6 @@ reference:
       - t_km
       - t_max_grade_per_id
       - t_count_unique
-      - tabulate_pairwise
 
   - title: Graphs
     desc: Graphs
@@ -58,6 +57,7 @@ reference:
       - arm
       - get_N
       - col_N_add_total
+      - tabulate_pairwise
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
@@ -73,8 +73,6 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
-      - keys<-
-      - keys
       - safe_join
       - combine_levels
       - drop_shared_variables
@@ -83,8 +81,10 @@ reference:
       - check_id
 
   - title: Trees
-    desc: The functions are used to for computing compound tables. Note that we probablt will make table trees an
-          intrinsic part of rtables and hence those functions might be moved to another package in the future.
+    desc: The functions are used to for computing compound tables. These functions are under active development and may
+          change frequenly in upcoming releases.
+          Also note that we will probably make table trees an intrinsic part of `rtables` and hence those functions
+          might be moved to another package in the future.
     contents:
       - node-class
       - summary.node

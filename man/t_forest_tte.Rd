@@ -21,6 +21,8 @@ and \code{add_total_by}.}
 \item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
 the \code{t_el_forest_tte}}
 
+\item{total}{string of total row added. If \code{NULL} then no total row is added.}
+
 \item{strata_data}{currently not supported}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
@@ -104,7 +106,7 @@ to_rtable(tbls)
 
 }
 \seealso{
-\code{\link{t_tte}}
+\code{\link{t_el_forest_tte}}, \code{\link{t_tte}}
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

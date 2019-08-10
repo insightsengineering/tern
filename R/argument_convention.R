@@ -25,6 +25,6 @@
 #' @param rsp boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 #'   otherwise
 #'
-argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event) { #nolintr
+argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event, rsp) { #nolintr
   NULL
 }

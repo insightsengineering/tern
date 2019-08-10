@@ -1,5 +1,6 @@
 #' Summarize an Object for Different Groups with by Variable
 #'
+#' @inheritParams argument_convention
 #' @inheritParams t_summary
 #' @param x vector
 #' @param row_by a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define

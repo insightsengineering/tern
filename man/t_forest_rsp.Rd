@@ -18,6 +18,8 @@ and \code{add_total_by}.}
 \item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
 the \code{t_el_forest_tte}}
 
+\item{total}{string of total row added. If \code{NULL} then no total row is added.}
+
 \item{dense_header}{Display the table headers in multiple rows.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -106,7 +108,7 @@ summary(tbls)
 
 }
 \seealso{
-\code{\link{t_rsp}}
+\code{\link{t_el_forest_rsp}}, \code{\link{t_rsp}}
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}
