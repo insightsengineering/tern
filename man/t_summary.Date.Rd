@@ -22,6 +22,7 @@ and \code{add_total_by}.}
 Tabulate the range of dates.
 }
 \examples{
+today <- as.Date("2000-01-01")
 library(dplyr)
 
 today <- Sys.Date()

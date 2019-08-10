@@ -334,6 +334,7 @@ t_summary.character <- function(x, # nolint
 #'
 #'
 #' @examples
+#' today <- as.Date("2000-01-01")
 #' library(dplyr)
 #'
 #' today <- Sys.Date()

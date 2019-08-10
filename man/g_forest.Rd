@@ -52,7 +52,7 @@ library(random.cdisc.data)
 library(dplyr)
 
 ADSL <- radsl(cached = TRUE)
-ADTTE <- radtte(ADSL, chached = TRUE)
+ADTTE <- radtte(ADSL, cached = TRUE)
 
 ADTTE_f <- ADTTE \%>\%
   dplyr::filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
@@ -82,7 +82,7 @@ g_forest(
 # For response table
 
 ADSL <- radsl(cached = TRUE)
-ADRS <- cadrs(ADSL, cached = TRUE)
+ADRS <- radrs(ADSL, cached = TRUE)
 
 ADRS_f <- ADRS \%>\%
   dplyr::filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%

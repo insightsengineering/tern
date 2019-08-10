@@ -70,7 +70,7 @@
 #' # For response table
 #'
 #' ADSL <- radsl(cached = TRUE)
-#' ADRS <- cadrs(ADSL, cached = TRUE)
+#' ADRS <- radrs(ADSL, cached = TRUE)
 #'
 #' ADRS_f <- ADRS %>%
 #'   dplyr::filter(PARAMCD == "OVRINV" & ARMCD %in% c("ARM A","ARM B")) %>%
