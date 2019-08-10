@@ -103,36 +103,39 @@ t_forest_tte <- function(tte,
 
   do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by), row_by_list))
 
-  row_by_list <- c(
-    list(with_label(by_add_total(NULL, label = "-", n = length(tte)), total)),
-    row_by_list %>% map(na_as_level)
-  )
+  row_by_list <- row_by_list %>% map(na_as_level)
+
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
-  df <- list(tte = tte, is_event = is_event, col_by = col_by)
+  df <- data.frame(tte = tte, is_event = is_event, col_by = col_by)
 
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
+  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0))
+  data_tree@children <- c(list(node("ALL", df)), data_tree@children)
 
-  tbls <- lapply(dfs, function(x) {
-    rbindl_rtables(Map(function(x_level, level_name) {
-      t_el_forest_tte(
-        tte = x_level$tte,
-        is_event = x_level$is_event,
-        col_by = x_level$col_by,
-        ties = ties,
-        row_name = level_name,
-        dense_header = dense_header
+
+  tree <- rapply_tree(data_tree, function(name, content, path) {
+    if (is.data.frame(content)) {
+      list(
+        name = invisible_node_name(name),
+        content = t_el_forest_tte(
+          tte = content$tte,
+          is_event = content$is_event,
+          col_by = content$col_by,
+          ties = ties,
+          row_name = name,
+          dense_header = dense_header
+        )
       )
-    }, x, names(x)))
+    } else {
+      list(name = name, content = NULL)
+    }
   })
-  tree <- invisible_node(Map(
-    function(node_name, tbl) node(name = node_name, content = tbl),
-    names(tbls),
-    tbls
-  ))
+
+  tree@format_data <- node_format_data(children_gap = 1)
 
   if (table_tree) {
     tree

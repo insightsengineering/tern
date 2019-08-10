@@ -6,11 +6,9 @@
 #' confidence interval from a univariate logistic model.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams t_el_forest_rsp
 #' @param row_by_list \code{list} or \code{data.frame} with one factor variable to calculate
 #'   the \code{t_el_forest_tte}
-#' @inheritParams t_el_forest_rsp
-#' @param total to add total
-#' @template param_table_tree
 #'
 #' @details
 #' Logistic regression is used for odds ratio calculation.
@@ -49,6 +47,7 @@
 #'
 #' @template return_rtable
 #'
+#' @importFrom purrr map
 #' @export
 #'
 #' @template author_song24
@@ -92,43 +91,45 @@
 #' )
 #' summary(tbls)
 #'
-#' @importFrom purrr map
 t_forest_rsp <- function(rsp,
                          col_by,
                          row_by_list = NULL,
                          total = "ALL",
                          dense_header = FALSE,
                          table_tree = FALSE) {
+
   stopifnot(is.logical(rsp))
   do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), row_by_list))
 
-  row_by_list <- c(
-    list(with_label(by_add_total(NULL, label = "-", n = length(rsp)), total)),
-    row_by_list %>% map(na_as_level)
-  )
+  row_by_list <-  row_by_list %>% map(na_as_level)
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
-  df <- list(rsp = rsp, col_by = col_by)
+  df <- data.frame(rsp = rsp, col_by = col_by)
 
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
-  tbls <- lapply(dfs, function(x) {
-    rbindl_rtables(Map(function(x_level, level_name) {
-      t_el_forest_rsp(
-        rsp = x_level$rsp,
-        col_by = x_level$col_by,
-        row_name = level_name,
-        dense_header = dense_header
+  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0))
+  data_tree@children <- c(list(node("ALL", df)), data_tree@children)
+
+  tree <- rapply_tree(data_tree, function(name, content, path) {
+    if (is.data.frame(content)) {
+      list(
+        name = invisible_node_name(name),
+        content = t_el_forest_rsp(
+          rsp = content$rsp,
+          col_by = content$col_by,
+          row_name = name,
+          dense_header = dense_header
+        )
       )
-    }, x, names(x)))
+    } else {
+      list(name = name, content = NULL)
+    }
   })
-  tree <- invisible_node(Map(
-    function(node_name, tbl) node(name = node_name, content = tbl),
-    names(tbls),
-    tbls
-  ))
+
+  tree@format_data <- node_format_data(children_gap = 1)
 
   if (table_tree) {
     tree
@@ -136,6 +137,8 @@ t_forest_rsp <- function(rsp,
     to_rtable(tree)
   }
 }
+
+
 
 #' Elementary Table for Forest Response Plot
 #'
