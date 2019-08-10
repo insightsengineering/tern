@@ -767,3 +767,43 @@ node_format_data <- function(gap_to_children = NULL, children_gap = NULL, childr
               children_indent = children_indent, content_indent = content_indent))
 
 }
+
+#' Convert a named nested List to a tree
+#'
+#' @inheritParams node
+#' @param x nested list
+#'
+#' @export
+#'
+#' @examples
+#' lst <- list(
+#'   A = list(b = 1, c = iris),
+#'   B = list(e = 1:3, C = list(f = 5, g = 9, h = "a"))
+#' )
+#' n1 <- nested_list_to_tree(lst)
+#' summary(n1)
+#'
+#'
+nested_list_to_tree <- function(x, format_data = NULL) {
+
+  stopifnot(is.list(x), !is.null(names(x)))
+
+  lst_nodes <- Map(function(xi, namei) {
+    node_i <- if (identical(class(xi), "list")) {
+      if (all(vapply(xi, function(xii) identical(class(xii), "list"), logical(1)))) {
+        n <- nested_list_to_tree(xi, format_data = format_data)
+        n@name <- namei
+        n
+      } else {
+        node(namei, content = NULL, children = Map(function(xii, nameii) {
+          node(nameii, xii, format_data = format_data)
+        }, xi, names(xi)), format_data = format_data)
+      }
+    } else {
+      node(namei, content = xi, format_data = format_data)
+    }
+    node_i
+  }, x, names(x))
+
+  node(invisible_node_name("root"), content = NULL, children = lst_nodes, format_data = format_data)
+}
