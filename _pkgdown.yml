@@ -48,6 +48,7 @@ reference:
   - title: Graphs
     desc: Graphs
     contents:
+      - g_forest
       - g_km
       - g_waterfall
 
