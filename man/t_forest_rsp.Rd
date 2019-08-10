@@ -8,7 +8,7 @@ t_forest_rsp(rsp, col_by, row_by_list = NULL, total = "ALL",
   dense_header = FALSE, table_tree = FALSE)
 }
 \arguments{
-\item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
+\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 otherwise}
 
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the
@@ -18,12 +18,10 @@ and \code{add_total_by}.}
 \item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
 the \code{t_el_forest_tte}}
 
-\item{total}{to add total}
-
 \item{dense_header}{Display the table headers in multiple rows.}
 
-\item{table_tree}{boolean, whether the compound table function should return a table_tree object or the elementary
-table should be stacked.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object

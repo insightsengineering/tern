@@ -28,8 +28,8 @@ analysis, if \code{NULL} this section of the table will be omitted}
 
 \item{ties}{passed forward to \code{\link[survival]{coxph}}}
 
-\item{table_tree}{boolean, whether the compound table function should return a table_tree object or the elementary
-table should be stacked.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object

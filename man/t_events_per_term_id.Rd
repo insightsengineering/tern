@@ -25,8 +25,8 @@ if there are patients that have no adverse events can be accounted for with this
 
 \item{event_type}{type of event that is summarized (e.g. adverse event, treatment). Default is "event".}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
-\code{node} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link{rtable}} object.

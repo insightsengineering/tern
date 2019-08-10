@@ -21,8 +21,6 @@ and \code{add_total_by}.}
 \item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
 the \code{t_el_forest_tte}}
 
-\item{total}{to add total}
-
 \item{strata_data}{currently not supported}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
@@ -31,8 +29,8 @@ the \code{t_el_forest_tte}}
 
 \item{dense_header}{Display the table headers in multiple rows.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
-\code{node} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{
 The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and

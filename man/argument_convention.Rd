@@ -15,8 +15,8 @@ and \code{add_total_by}.}
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
-\code{node} gets returned with is either a list or a nested list of elementary \code{rtable} objects.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 
 \item{indent}{non-negative integer where 0 means that the row should not be indented}
 
@@ -27,6 +27,9 @@ removed from \code{x} prior to counting the unique elements per cell.}
 
 \item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
+
+\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
+otherwise}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern} that are used repeatedly to express an

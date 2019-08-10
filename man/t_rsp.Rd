@@ -8,7 +8,7 @@ t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL,
   table_tree = FALSE)
 }
 \arguments{
-\item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
+\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 otherwise}
 
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the
@@ -23,8 +23,8 @@ additional statistics partitioned by each response categories. If
 If \code{NULL}, no stratified analysis is performed. See details for
 further explanation.}
 
-\item{table_tree}{boolean, whether the compound table function should return a table_tree object or the elementary
-table should be stacked.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object

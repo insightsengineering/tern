@@ -21,8 +21,8 @@ and \code{add_total_by}.}
 
 \item{...}{arguments passed on to methods}
 
-\item{table_tree}{boolean, whether the compound table function should return a table_tree object or the elementary
-table should be stacked.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{
 Similar as the demographic table in STREAM
@@ -36,15 +36,14 @@ Every variable in \code{x} will be mapped to a summary table using
 \code{\link{t_summary}} and then be stacked.
 }
 \examples{
+library(random.cdisc.data)
 library(dplyr)
 
 # with iris data
 t_summary(iris$Sepal.Length, iris$Species)
 
-library(random.cdisc.data)
-library(dplyr)
-library(rtables)
-ADSL <- cadsl
+# with CDISC like data
+ADSL <- radsl(cached = TRUE)
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by = by_all("All"), col_N = nrow(ADSL))
 
@@ -58,6 +57,7 @@ t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Pat
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
   useNA = 'always')
 
+# use different col_by
 ADSL_AGE65 <- ADSL \%>\%
   dplyr::filter(AGE > 65)
 t_summary(
@@ -69,16 +69,18 @@ t_summary(
 )
 
 
+# With Missing Data
 ADSL$SEX[1:10] <- NA
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
   useNA = 'ifany')
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
   denominator = "N", useNA = 'ifany')
 
+
+# Table tree
 tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
 summary(tbls)
 to_rtable(tbls)
-
 
 }
 \seealso{

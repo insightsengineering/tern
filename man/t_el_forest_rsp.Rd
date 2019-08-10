@@ -7,7 +7,7 @@
 t_el_forest_rsp(rsp, col_by, row_name = "", dense_header = FALSE)
 }
 \arguments{
-\item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
+\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 otherwise}
 
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the

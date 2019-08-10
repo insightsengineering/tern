@@ -15,13 +15,10 @@ the summary sub-groups in the table.}
 \item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
 define the columns in the table.}
 
-\item{col_N}{a \code{table} object with the reference population used for the header of the table.
-See examples below.}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
 \item{...}{arguments passed on to methods}
-
-\item{table_tree}{boolean, whether the compound table function should return a table_tree object or the elementary
-table should be stacked.}
 }
 \description{
 Summarize an Object for Different Groups with by Variable
@@ -34,15 +31,15 @@ The individual tables are then stacked together.
 library(dplyr)
 library(random.cdisc.data)
 
-ADSL <- cadsl
+ADSL <- radsl(cached = TRUE)
 
 t_summary_by(
  x = ADSL$SEX,
  row_by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD \%>\% by_add_total("All Patients"),
- col_N = col_N_add_total(table(ADSL$ARMCD)),
  drop_levels = TRUE
 )
+
 
 ADSL$SEX[1:5] <- NA
 
@@ -50,14 +47,13 @@ t_summary_by(
  x = ADSL$SEX,
  row_by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD \%>\% by_add_total("All Patients"),
- col_N = col_N_add_total(table(ADSL$ARMCD)),
  drop_levels = TRUE,
  useNA = "ifany"
 )
 
 ADSL <- ADSL \%>\% select(STUDYID, USUBJID, ARMCD)
 
-ADQS <- cadqs
+ADQS <- radqs(cached = TRUE)
 ADQS_f <- ADQS \%>\%
   dplyr::filter(PARAMCD=="BFIALL")
 
@@ -78,6 +74,20 @@ t_summary_by(
  col_by = ADQS_f$ARMCD \%>\% by_add_total("All Patients"),
  col_N = col_N_add_total(table(ADSL$ARMCD)),
 )
+
+
+# Table Tree
+ADSL <- radsl(cached = TRUE)
+
+tbls <- t_summary_by(
+ x = ADSL$SEX,
+ row_by = ADSL$COUNTRY,
+ col_by = ADSL$ARMCD \%>\% by_add_total("All Patients"),
+ table_tree = TRUE
+)
+summary(tbls)
+to_rtable(tbls)
+
 }
 \seealso{
 \code{\link{t_summary}}, \code{\link{t_summary.data.frame}},
