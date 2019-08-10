@@ -6,14 +6,12 @@
 #' and odds ratio.
 #'
 #' @inheritParams argument_convention
-#' @template param_rsp
 #' @param partition_rsp_by factor with one or more response categories, generate
 #'   additional statistics partitioned by each response categories. If
 #'   \code{NULL}, tabulation by each response categories will not be performed.
 #' @param strata_data data for stratification factors (categorical variables).
 #'   If \code{NULL}, no stratified analysis is performed. See details for
 #'   further explanation.
-#' @template param_table_tree
 #'
 #' @details For the test of difference in response rates, Wald confidence
 #'   interval with and without continuity correction are both reported. If no

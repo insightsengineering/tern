@@ -14,14 +14,17 @@
 #'   and \code{add_total_by}.
 #' @param col_N a vecor with the reference population per level of \code{col_by}. This often by default
 #'   \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
-#' @param table_tree logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{FALSE} a
-#'   \code{node} gets returned with is either a list or a nested list of elementary \code{rtable} objects.
+#' @param table_tree logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+#'   \code{\link{node}} object gets returned with the elementary \code{rtable} objects.
 #' @param indent non-negative integer where 0 means that the row should not be indented
 #' @param na_rm a logical value indicating whether \code{NA} values should be
 #'   removed from \code{x} prior to counting the unique elements per cell.
 #' @param tte vector with numeric time to event data, currently no \code{NA} allowed
 #' @param is_event is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 #'   is censored
+#' @param rsp boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
+#'   otherwise
+#'
 argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event) { #nolintr
   NULL
 }

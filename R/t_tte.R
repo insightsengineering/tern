@@ -3,6 +3,7 @@
 #' The time to event table summarizes time to event data with different models
 #' as described in the details section.
 #'
+#' @inheritParams argument_convention
 #' @param formula a survival formula, the arm variable needs to be wrapped in
 #'   \code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
 #'   used for the stratified analysis. If there is not
@@ -17,7 +18,6 @@
 #'   analysis, if \code{NULL} this section of the table will be omitted
 #' @param time_unit a string with the unit of the \code{tte} argument
 #' @param ties passed forward to \code{\link[survival]{coxph}}
-#' @template param_table_tree
 #'
 #' @details
 #' The time to event section is derived from a Kaplan-Meier estimator for the

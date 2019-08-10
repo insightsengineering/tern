@@ -71,7 +71,6 @@ t_summary.default <- function(x, # nolint
 #'   details section. If the variable has a \code{label} attribute then it will
 #'   be used for the row name.
 #' @param ... arguments passed on to methods
-#' @template param_table_tree
 #'
 #' @details
 #' Every variable in \code{x} will be mapped to a summary table using
@@ -87,15 +86,14 @@ t_summary.default <- function(x, # nolint
 #'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #'
 #' @examples
+#' library(random.cdisc.data)
 #' library(dplyr)
 #'
 #' # with iris data
 #' t_summary(iris$Sepal.Length, iris$Species)
 #'
-#' library(random.cdisc.data)
-#' library(dplyr)
-#' library(rtables)
-#' ADSL <- cadsl
+#' # with CDISC like data
+#' ADSL <- radsl(cached = TRUE)
 #'
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = by_all("All"), col_N = nrow(ADSL))
 #'
@@ -109,6 +107,7 @@ t_summary.default <- function(x, # nolint
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
 #'   useNA = 'always')
 #'
+#' # use different col_by
 #' ADSL_AGE65 <- ADSL %>%
 #'   dplyr::filter(AGE > 65)
 #' t_summary(
@@ -120,16 +119,18 @@ t_summary.default <- function(x, # nolint
 #' )
 #'
 #'
+#' # With Missing Data
 #' ADSL$SEX[1:10] <- NA
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
 #'   useNA = 'ifany')
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
 #'   denominator = "N", useNA = 'ifany')
 #'
+#'
+#' # Table tree
 #' tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
 #' summary(tbls)
 #' to_rtable(tbls)
-#'
 #'
 t_summary.data.frame <- function(x, # nolint
                                  col_by,
