@@ -24,7 +24,9 @@
 #'   is censored
 #' @param rsp boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 #'   otherwise
+#' @param total string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+#'   \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.
 #'
-argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event, rsp) { #nolintr
+argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event, rsp, total) { #nolintr
   NULL
 }

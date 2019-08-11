@@ -21,7 +21,8 @@ and \code{add_total_by}.}
 \item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
 the \code{t_el_forest_tte}}
 
-\item{total}{string of total row added. If \code{NULL} then no total row is added.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{strata_data}{currently not supported}
 

@@ -5,7 +5,7 @@
 \title{Dummy Function that Documents all Standard Arguments}
 \usage{
 argument_convention(col_by, col_N, table_tree, indent, na_rm, tte,
-  is_event, rsp)
+  is_event, rsp, total)
 }
 \arguments{
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the
@@ -30,6 +30,9 @@ is censored}
 
 \item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 otherwise}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern} that are used repeatedly to express an

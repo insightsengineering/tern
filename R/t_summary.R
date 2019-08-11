@@ -15,14 +15,17 @@
 #' t_summary(iris$Sepal.Length, iris$Species)
 #'
 #' library(random.cdisc.data)
-#' ADSL <- cadsl
+#' ADSL <- radsl(cached = TRUE)
 #'
 #' t_summary(ADSL$AGE, ADSL$ARMCD)
 #' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
+#' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD, total = "All Patients")
+#'
 #' with(ADSL, t_summary(AGE > 65, ARMCD))
 t_summary <- function(x,
                       col_by,
                       col_N = get_N(col_by), # nolint
+                      total = NULL,
                       ...) {
   UseMethod("t_summary", x)
 }
@@ -47,9 +50,15 @@ t_summary <- function(x,
 t_summary.default <- function(x, # nolint
                               col_by,
                               col_N = NULL, # nolint
+                              total = NULL,
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   tbl <- rtable(
@@ -135,11 +144,17 @@ t_summary.default <- function(x, # nolint
 t_summary.data.frame <- function(x, # nolint
                                  col_by,
                                  col_N = NULL, # nolint
+                                 total = NULL,
                                  ...,
                                  table_tree = FALSE) {
 
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   # each column of the data frame x is an element of the list
@@ -149,6 +164,7 @@ t_summary.data.frame <- function(x, # nolint
     x_list = x,
     col_by_list = replicate(length(x), col_by, simplify = FALSE),
     col_N = col_N,
+    total = total,
     ...,
     table_tree = table_tree
   )
@@ -194,9 +210,15 @@ t_summary.data.frame <- function(x, # nolint
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = NULL,
+                              total = NULL,
                               ...) {
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   tbl <- rbind(
@@ -251,12 +273,18 @@ t_summary.numeric <- function(x, # nolint
 t_summary.factor <- function(x, # nolint
                              col_by,
                              col_N = NULL,
+                             total = NULL,
                              useNA = c("ifany", "no", "always"), # nolint
                              denominator = c("n", "N"),
                              drop_levels = FALSE, ...) {
 
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   useNA <- match.arg(useNA) # nolint
@@ -312,8 +340,9 @@ t_summary.factor <- function(x, # nolint
 t_summary.character <- function(x, # nolint
                                 col_by,
                                 col_N = get_N(col_by), # nolint
+                                total = NULL,
                                 ...) {
-  t_summary(as.factor(x), col_by = col_by, col_N = col_N, ...)
+  t_summary(as.factor(x), col_by = col_by, col_N = col_N, total = total, ...)
 }
 
 #' Summarize Date Data
@@ -347,9 +376,15 @@ t_summary.character <- function(x, # nolint
 t_summary.Date <- function(x, # nolint
                            col_by,
                            col_N = NULL, # nolint
+                           total = NULL,
                            ...) {
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   df <- data.frame(date = x)
@@ -399,10 +434,11 @@ t_summary.Date <- function(x, # nolint
 t_summary.logical <- function(x, # nolint
                               col_by,
                               col_N = get_N(col_by), # nolint
+                              total = NULL,
                               row_name_true = "TRUE",
                               row_name_false = "FALSE",
                               ...) {
 
   xf <- factor(x, levels = c(TRUE, FALSE), labels = c(row_name_true, row_name_false))
-  t_summary(xf, col_by = col_by, col_N = col_N, ...)
+  t_summary(xf, col_by = col_by, col_N = col_N, total = total, ...)
 }

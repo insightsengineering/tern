@@ -5,7 +5,8 @@
 \title{Summarize Boolean Data}
 \usage{
 \method{t_summary}{logical}(x, col_by, col_N = get_N(col_by),
-  row_name_true = "TRUE", row_name_false = "FALSE", ...)
+  total = NULL, row_name_true = "TRUE", row_name_false = "FALSE",
+  ...)
 }
 \arguments{
 \item{x}{a logical vector}
@@ -16,6 +17,9 @@ and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{row_name_true}{character string with row.name for TRUE summary}
 

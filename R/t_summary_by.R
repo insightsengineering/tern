@@ -87,15 +87,22 @@ t_summary_by <- function(x,
                          row_by,
                          col_by,
                          col_N = NULL, # nolint
+                         total = NULL,
                          ...,
                          table_tree = FALSE) {
   col_by <- col_by_to_matrix(col_by, x)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   # can rely on col_N computed in t_summary.list because it has different col_by, but it sums it
   row_by <- col_by_to_matrix(row_by, x)
   t_summary.list(
     x_list = lapply(row_by, function(rows) subset(x, rows)),
     col_by_list = lapply(row_by, function(rows) subset(col_by, rows)),
     col_N = col_N,
+    total = total,
     ...,
     table_tree = table_tree
   )
