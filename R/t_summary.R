@@ -104,6 +104,11 @@ t_summary.default <- function(x, # nolint
 #' # with CDISC like data
 #' ADSL <- radsl(cached = TRUE)
 #'
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"))
+#'
+#' # Special Variants
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = by_all("All"), col_N = nrow(ADSL))
 #'
 #' # control the label
@@ -117,14 +122,11 @@ t_summary.default <- function(x, # nolint
 #'   useNA = 'always')
 #'
 #' # use different col_by
-#' ADSL_AGE65 <- ADSL %>%
-#'   dplyr::filter(AGE > 65)
+#'
+#' ## Biomarker Evaluable Population
 #' t_summary(
-#'   ADSL_AGE65[, c("AGE", "SEX")],
-#'   col_by = ADSL_AGE65$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
-#'   denominator = "N",
-#'   drop_levels = TRUE
+#'     x = ADSL[, c("SEX", "AGE")],
+#'     col_by = ADSL$ARM %>% by_compare_subset(ADSL$BEP01FL == "Y", label_all = "ALL", label_subset = "BEP")
 #' )
 #'
 #'

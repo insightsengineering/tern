@@ -82,7 +82,7 @@ Collate:
     't_rsp.R'
     't_summarize_by_visit.R'
     't_summary.R'
-    't_summary_by.R'
+    't_summary_variants.R'
     't_tte.R'
     'tabulate_aggregation_functions.R'
     'tabulate_pairwise.R'

@@ -135,3 +135,29 @@ t_summary.list <- function(x_list, # x_list
     to_rtable(tree)
   }
 }
+
+
+
+#' Summarize the TRUE Counts
+#'
+#' Note that for this function the default \code{denominator = "N"} and not \code{n} as for the other \code{t_summary}
+#' functions.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams t_summary.factor
+#' @param row_name name of row
+#'
+#' @export
+#'
+#' @examples
+#'
+#' with(iris, t_summary_true(Sepal.Length > 5.5, col_by = Species, total = "All Flowers"))
+t_summary_true <- function(x, col_by, col_N = get_N(col_by), total = NULL, row_name = deparse(substitute(x)),
+                           denominator = c("N", "n")) {
+  denominator <- match.arg(denominator)
+
+  stopifnot(is.logical(x))
+
+  t_summary.logical(x, col_by, col_N, total, row_name_true = row_name, denominator = denominator)[2, ]
+
+}

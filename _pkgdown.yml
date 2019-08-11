@@ -39,6 +39,7 @@ reference:
       - t_summary.logical
       - t_summary.character
       - t_summary.Date
+      - t_summary_true
       - starts_with("t_el_")
       - t_coxph
       - t_km
