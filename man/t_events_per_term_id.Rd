@@ -4,7 +4,7 @@
 \alias{t_events_per_term_id}
 \title{Basic Events Table}
 \usage{
-t_events_per_term_id(terms, id, col_by, col_N = NULL,
+t_events_per_term_id(terms, id, col_by, col_N = NULL, total = NULL,
   event_type = "event", table_tree = FALSE)
 }
 \arguments{
@@ -22,6 +22,9 @@ and \code{add_total_by}.}
 
 \item{col_N}{numeric vector with information of the number of patients in the levels of \code{col_by}. This is useful
 if there are patients that have no adverse events can be accounted for with this argument.}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{event_type}{type of event that is summarized (e.g. adverse event, treatment). Default is "event".}
 
@@ -81,8 +84,9 @@ library(purrr)
 t_events_per_term_id(
  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
  id = c(1, 4, 2, 3, 3),
- col_by = factor(c("A", "A", "B", "C", "C")) \%>\% by_add_total("All Patients"),
- col_N = col_N_add_total(c(2, 4, 10))
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
 )
 
 t_events_per_term_id(
@@ -117,8 +121,9 @@ t_events_per_term_id(
 t_events_per_term_id(
   terms = ADAE[, c("AEBODSYS", "AEDECOD")] \%>\% map(as_factor_keep_attributes),
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
-  col_N = col_N_add_total(table(ADSL$ARM)),
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients"
 )
 
 ADSL <- cadsl
@@ -129,8 +134,9 @@ ADCM <- ADCM \%>\%
 t_events_per_term_id(
   terms = ADCM[, c("CMCLAS", "CMDECOD")] \%>\% map(as_factor_keep_attributes),
   id = ADCM$USUBJID,
-  col_by = ADCM$ARM \%>\% by_add_total("All Patients"),
-  col_N = col_N_add_total(table(ADSL$ARM)),
+  col_by = ADCM$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
   event_type = "treatment"
 )
 
@@ -140,8 +146,9 @@ t_events_per_term_id(
 summary(t_events_per_term_id(
   terms = as_factor_keep_attributes(ADAE$AEDECOD),
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
-  col_N = col_N_add_total(table(ADSL$ARM)),
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
   table_tree = TRUE
 ))
 
@@ -149,8 +156,8 @@ summary(t_events_per_term_id(
 tbls <- t_events_per_term_id(
  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
  id = c(1, 4, 2, 3, 3),
- col_by = factor(c("A", "A", "B", "C", "C")) \%>\% by_add_total("All Patients"),
- col_N = col_N_add_total(c(2, 4, 10)),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
  table_tree = TRUE
 )
 summary(tbls)
@@ -159,8 +166,9 @@ summary(tbls)
 tbls <- t_events_per_term_id(
   terms = ADAE[, c("AEBODSYS", "AEDECOD")] \%>\% map(as_factor_keep_attributes),
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
-  col_N = col_N_add_total(table(ADSL$ARM)),
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
   table_tree = TRUE
 )
 summary(tbls)

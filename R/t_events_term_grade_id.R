@@ -87,8 +87,9 @@ NULL
 #'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
-#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
 #'
@@ -96,8 +97,8 @@ NULL
 #'   terms = ADAE %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
-#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
 #'   grade_levels = 1:5
 #' )
 #'
@@ -106,8 +107,9 @@ NULL
 #'   terms = ADAE %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
-#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
 #'   grade_levels = 1:5,
 #'   table_tree = TRUE
 #' )
@@ -117,12 +119,19 @@ t_events_per_term_grade_id <- function(terms,
                                        grade,
                                        col_by,
                                        col_N = NULL, # nolint
+                                       total = NULL,
                                        grade_levels = 1:5,
                                        table_tree = FALSE) {
   if (is.atomic(terms)) {
     terms <- list(terms)
   }
   stopifnot(is.list(terms))
+
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
 
   tree <- rsplit_to_tree(
     list(grade = grade, id = id, col_by = col_by),
@@ -139,6 +148,7 @@ t_events_per_term_grade_id <- function(terms,
         id = content$id,
         col_by = content$col_by,
         col_N = col_N,
+        total = total,
         grade_levels = grade_levels,
         any_grade = "- Any Grade -"
       ))
@@ -267,12 +277,18 @@ t_max_grade_per_id <- function(grade,
                                id,
                                col_by,
                                col_N = NULL, # nolint
+                               total = NULL,
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
   stopifnot(is.numeric(grade))
   stopifnot(!any(is.na(id)))
   col_by <- col_by_to_matrix(col_by, grade)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(grade, col_by, col_N, min_num_levels = 1)
   check_id(id, col_by)
 

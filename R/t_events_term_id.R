@@ -76,8 +76,9 @@
 #' t_events_per_term_id(
 #'  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
 #'  id = c(1, 4, 2, 3, 3),
-#'  col_by = factor(c("A", "A", "B", "C", "C")) %>% by_add_total("All Patients"),
-#'  col_N = col_N_add_total(c(2, 4, 10))
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10),
+#'  total = "All Patients"
 #' )
 #'
 #' t_events_per_term_id(
@@ -112,8 +113,9 @@
 #' t_events_per_term_id(
 #'   terms = ADAE[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
 #'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients"
 #' )
 #'
 #' ADSL <- cadsl
@@ -124,8 +126,9 @@
 #' t_events_per_term_id(
 #'   terms = ADCM[, c("CMCLAS", "CMDECOD")] %>% map(as_factor_keep_attributes),
 #'   id = ADCM$USUBJID,
-#'   col_by = ADCM$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADCM$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
 #'   event_type = "treatment"
 #' )
 #'
@@ -135,8 +138,9 @@
 #' summary(t_events_per_term_id(
 #'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
 #'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
 #'   table_tree = TRUE
 #' ))
 #'
@@ -144,8 +148,8 @@
 #' tbls <- t_events_per_term_id(
 #'  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
 #'  id = c(1, 4, 2, 3, 3),
-#'  col_by = factor(c("A", "A", "B", "C", "C")) %>% by_add_total("All Patients"),
-#'  col_N = col_N_add_total(c(2, 4, 10)),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10),
 #'  table_tree = TRUE
 #' )
 #' summary(tbls)
@@ -154,8 +158,9 @@
 #' tbls <- t_events_per_term_id(
 #'   terms = ADAE[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
 #'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
@@ -165,6 +170,7 @@ t_events_per_term_id <- function(terms,
                                  id,
                                  col_by,
                                  col_N = NULL, # nolint
+                                 total = NULL,
                                  event_type = "event",
                                  table_tree = FALSE) {
 
@@ -172,6 +178,12 @@ t_events_per_term_id <- function(terms,
     terms <- list(terms)
   }
   stopifnot(is.list(terms))
+
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
 
   #todo: assign them to header row in tree
   #terms_header <- vapply(terms, label, character(1)) #nolintr
@@ -197,6 +209,7 @@ t_events_per_term_id <- function(terms,
           id = content$id,
           col_by = content$col_by,
           col_N = col_N,
+          total = total,
           total_events = NULL,
           subjects_with_events = name
         ))
@@ -205,6 +218,7 @@ t_events_per_term_id <- function(terms,
           id = content$id,
           col_by = content$col_by,
           col_N = col_N,
+          total = total,
           total_events = total_events,
           subjects_with_events = subjects_with_events
         ))
@@ -279,12 +293,18 @@ t_events_per_term_id <- function(terms,
 t_count_unique <- function(x,
                            col_by,
                            col_N = NULL, # nolint
+                           total = NULL,
                            na_rm = TRUE,
                            row_name = "number of unique elements") {
 
   stopifnot(is.atomic(x)) # todo: is this enough?
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   counts <- vapply(col_by, function(rows) {
@@ -340,11 +360,17 @@ t_count_unique <- function(x,
 t_el_events_per_term_id <- function(id,
                                     col_by,
                                     col_N = NULL,
+                                    total = NULL,
                                     total_events = "Total number of events",
                                     subjects_with_events = "Total number of patients with at least one adverse event") {
 
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x = id, col_by, col_N, min_num_levels = 1)
 
   # subjects with at least one adverse advent (AE): we use the id as some subjects can have more than one AE
@@ -353,6 +379,7 @@ t_el_events_per_term_id <- function(id,
       x = id,
       col_by = col_by,
       col_N = col_N,
+      total = total,
       row_name = subjects_with_events
     )
   } else {

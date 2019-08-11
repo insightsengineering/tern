@@ -4,7 +4,7 @@
 \alias{t_el_events_per_term_id}
 \title{Summary table for events}
 \usage{
-t_el_events_per_term_id(id, col_by, col_N = NULL,
+t_el_events_per_term_id(id, col_by, col_N = NULL, total = NULL,
   total_events = "Total number of events",
   subjects_with_events = "Total number of patients with at least one adverse event")
 }
@@ -18,6 +18,9 @@ and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{total_events}{character string that will be used as a label in the row
 for the total event count. If this is \code{NULL} then this row will be

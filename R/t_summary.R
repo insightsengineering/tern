@@ -126,7 +126,8 @@ t_summary.default <- function(x, # nolint
 #' ## Biomarker Evaluable Population
 #' t_summary(
 #'     x = ADSL[, c("SEX", "AGE")],
-#'     col_by = ADSL$ARM %>% by_compare_subset(ADSL$BEP01FL == "Y", label_all = "ALL", label_subset = "BEP")
+#'     col_by = ADSL$ARM %>% by_compare_subset(ADSL$BEP01FL == "Y",
+#'                                            label_all = "ALL", label_subset = "BEP")
 #' )
 #'
 #'

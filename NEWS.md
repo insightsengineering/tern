@@ -21,8 +21,6 @@
 * Changed Arguments:
     - all compound tables
         - added `table_tree` argument which returns a `node` object
-    - `t_summary`, `t_summary_by`, `t_events_per_term_id`, `t_events_per_term_grade_id`
-        - removed `total`, use `by_add_total` instead
     - `t_summary_by`
         - renamed `by` to `row_by`
     - `t_forest_rsp`, `t_forest_tte`
