@@ -4,7 +4,8 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, col_N = NULL, total = NULL, ...)
+\method{t_summary}{numeric}(x, col_by, col_N = NULL, total = NULL,
+  f_numeric = c("count_n", "mean_sd", "median", "range"), ...)
 }
 \arguments{
 \item{x}{numeric variable}
@@ -18,6 +19,9 @@ and \code{add_total_by}.}
 
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
+
+\item{f_numeric}{a combination of the analysis fuctions to be evaluated \code{"count_n", "mean_sd", "median",
+"q1_q3", "range"}}
 
 \item{...}{arguments passed on to methods}
 }
@@ -44,6 +48,8 @@ t_summary(ADSL$AGE, col_by = ADSL$ARM \%>\% by_add_total("All"))
 
 ADSL$AGE[1:10] <- NA
 t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
+
+
 
 }
 \seealso{

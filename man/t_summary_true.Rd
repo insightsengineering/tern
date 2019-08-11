@@ -5,7 +5,7 @@
 \title{Summarize the TRUE Counts}
 \usage{
 t_summary_true(x, col_by, col_N = get_N(col_by), total = NULL,
-  row_name = deparse(substitute(x)), denominator = c("N", "n"))
+  row_name = deparse(substitute(x)), denominator = c("N", "n", "omit"))
 }
 \arguments{
 \item{x}{factor variable}
@@ -22,9 +22,10 @@ and \code{add_total_by}.}
 
 \item{row_name}{name of row}
 
-\item{denominator}{either n or N for calculating the level associated
+\item{denominator}{either n, N or omit. n and N are for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-With option n, the number of non-missing records from \code{x} is used as the denominator.}
+With option n, the number of non-missing records from \code{x} is used as the denominator.
+If \code{omit} is chosen the percentage is omitted.}
 }
 \description{
 Note that for this function the default \code{denominator = "N"} and not \code{n} as for the other \code{t_summary}

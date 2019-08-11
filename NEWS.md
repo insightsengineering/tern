@@ -21,6 +21,10 @@
 * Changed Arguments:
     - all compound tables
         - added `table_tree` argument which returns a `node` object
+    - `t_summary.numeric`
+        - added `f_numeric` to choose which statistics should be calculted
+    - `t_summary.factor`
+        - `denominator` now also allows for `omit` if the percentages should be omitted.
     - `t_summary_by`
         - renamed `by` to `row_by`
     - `t_forest_rsp`, `t_forest_tte`

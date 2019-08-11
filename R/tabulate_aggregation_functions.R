@@ -25,6 +25,10 @@ mean_sd <- function(x, na.rm = TRUE) { # nolint
   c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
 }
 
+q1_q3 <- function(x, na.rm = TRUE) {
+  quantile(x, probs = c(0.25, 0.75), na.rm = na.rm)
+}
+
 #' get inter-quantile range
 #'
 #' @noRd

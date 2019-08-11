@@ -34,9 +34,10 @@ Only when x is of type factor}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
-\item{denominator}{either n or N for calculating the level associated
+\item{denominator}{either n, N or omit. n and N are for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-With option n, the number of non-missing records from \code{x} is used as the denominator.}
+With option n, the number of non-missing records from \code{x} is used as the denominator.
+If \code{omit} is chosen the percentage is omitted.}
 }
 \description{
 Single element for disposition table

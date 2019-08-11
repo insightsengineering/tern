@@ -180,6 +180,8 @@ t_summary.data.frame <- function(x, # nolint
 #'
 #' @inheritParams t_summary.data.frame
 #' @param x numeric variable
+#' @param f_numeric a combination of the analysis fuctions to be evaluated \code{"count_n", "mean_sd", "median",
+#'   "q1_q3", "range"}
 #'
 #' @template return_rtable
 #'
@@ -210,11 +212,20 @@ t_summary.data.frame <- function(x, # nolint
 #' ADSL$AGE[1:10] <- NA
 #' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
 #'
+#'
+#'
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = NULL,
                               total = NULL,
+                              f_numeric = c("count_n", "mean_sd", "median", "range"),
                               ...) {
+
+  stopifnot(
+    all(f_numeric %in% c("count_n", "mean_sd", "median", "q1_q3", "range")),
+    length(f_numeric) > 0
+  )
+
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
   if (!is.null(total)) {
@@ -224,11 +235,17 @@ t_summary.numeric <- function(x, # nolint
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
-  tbl <- rbind(
-    rtabulate(x, col_by, count_n, row.name = "n"),
-    rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
-    rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
-    rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE)
+
+  tbl <- rbindl_rtables(
+    lapply(f_numeric, function(f) switch(
+      f,
+      count_n = rtabulate(x, col_by, count_n, row.name = "n"),
+      mean_sd = rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
+      median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
+      q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE),
+      range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),
+      NULL
+    ))
   )
 
   header_add_N(tbl, col_N)
@@ -242,9 +259,10 @@ t_summary.numeric <- function(x, # nolint
 #' @inheritParams t_summary.data.frame
 #' @param x factor variable
 #' @param useNA choose whether missing data (NAs) should be displayed as a level.
-#' @param denominator either n or N for calculating the level associated
+#' @param denominator either n, N or omit. n and N are for calculating the level associated
 #'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
 #'   With option n, the number of non-missing records from \code{x} is used as the denominator.
+#'   If \code{omit} is chosen the percentage is omitted.
 #' @param drop_levels boolean whether to drop zero count levels
 #'
 #' @template return_rtable
@@ -278,7 +296,7 @@ t_summary.factor <- function(x, # nolint
                              col_N = NULL,
                              total = NULL,
                              useNA = c("ifany", "no", "always"), # nolint
-                             denominator = c("n", "N"),
+                             denominator = c("n", "N", "omit"),
                              drop_levels = FALSE, ...) {
 
   col_by <- col_by_to_matrix(col_by, x)
@@ -303,19 +321,22 @@ t_summary.factor <- function(x, # nolint
     denom <- col_N
   }
 
+  omit_perc <- denominator == "omit"
+
   tbl <- rbind(
     rtabulate(as.numeric(x), col_by, count_n, row.name = "n"),
     rtabulate(
       x = x,
       col_by = col_by,
       FUN = function(x_cell, denom) {
-        if (length(x_cell) > 0) {
-          length(x_cell) * c(1, 1 / denom)
+        if (omit_perc) {
+          rcell(length(x_cell), format = "xx")
+        } else if (length(x_cell) > 0) {
+          rcell(length(x_cell) * c(1, 1 / denom), format = "xx (xx.xx%)")
         } else {
           rcell("-", format = "xx")
         }
       },
-      format = "xx (xx.xx%)",
       col_wise_args = list(denom = denom),
       useNA = useNA
     )

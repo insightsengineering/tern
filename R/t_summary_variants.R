@@ -153,7 +153,7 @@ t_summary.list <- function(x_list, # x_list
 #'
 #' with(iris, t_summary_true(Sepal.Length > 5.5, col_by = Species, total = "All Flowers"))
 t_summary_true <- function(x, col_by, col_N = get_N(col_by), total = NULL, row_name = deparse(substitute(x)),
-                           denominator = c("N", "n")) {
+                           denominator = c("N", "n", "omit")) {
   denominator <- match.arg(denominator)
 
   stopifnot(is.logical(x))

@@ -5,8 +5,8 @@
 \title{Summarize Categorical Data}
 \usage{
 \method{t_summary}{factor}(x, col_by, col_N = NULL, total = NULL,
-  useNA = c("ifany", "no", "always"), denominator = c("n", "N"),
-  drop_levels = FALSE, ...)
+  useNA = c("ifany", "no", "always"), denominator = c("n", "N",
+  "omit"), drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{factor variable}
@@ -23,9 +23,10 @@ and \code{add_total_by}.}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
-\item{denominator}{either n or N for calculating the level associated
+\item{denominator}{either n, N or omit. n and N are for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-With option n, the number of non-missing records from \code{x} is used as the denominator.}
+With option n, the number of non-missing records from \code{x} is used as the denominator.
+If \code{omit} is chosen the percentage is omitted.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
