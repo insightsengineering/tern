@@ -180,7 +180,7 @@
 #'     treatment_section_tree
 #'   )
 #' ))
-t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nolint
+t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name = NULL, # nolint
                              subset = NULL, show_n = FALSE, # nolint
                              useNA = c("no", "ifany", "always"), drop_levels = NULL, # nolint
                              denominator = "N") { # nolint
@@ -194,6 +194,11 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
 
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
+  }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   # treat subset
@@ -218,6 +223,7 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
       x = x,
       col_by = col_by,
       col_N = col_N,
+      total = total,
       row_name_true = `if`(is.null(row.name), "TRUE", row.name),
       useNA = useNA, drop_levels = drop_levels, # do not drop level since logical will only have levels TRUE and FALSE
       denominator = denominator
@@ -234,6 +240,7 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, row.name = NULL, # nol
       x = x,
       col_by = col_by,
       col_N = col_N,
+      total = total,
       useNA = useNA, drop_levels = drop_levels,
       denominator = denominator
     )

@@ -4,9 +4,9 @@
 \alias{t_el_disposition}
 \title{Single element for disposition table}
 \usage{
-t_el_disposition(x = x, col_by, col_N = NULL, row.name = NULL,
-  subset = NULL, show_n = FALSE, useNA = c("no", "ifany", "always"),
-  drop_levels = NULL, denominator = "N")
+t_el_disposition(x = x, col_by, col_N = NULL, total = NULL,
+  row.name = NULL, subset = NULL, show_n = FALSE, useNA = c("no",
+  "ifany", "always"), drop_levels = NULL, denominator = "N")
 }
 \arguments{
 \item{x}{A factor or logical vector}
@@ -17,6 +17,9 @@ and \code{add_total_by}.}
 
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
 Default is "TRUE".}

@@ -75,7 +75,7 @@ NULL
 #' ADAE <- radae(ADSL, 4, seed = 2)
 #'
 #' t_events_per_term_grade_id(
-#'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
+#'   terms = ADAE$AEDECOD,
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
@@ -84,7 +84,7 @@ NULL
 #' )
 #'
 #' t_events_per_term_grade_id(
-#'   terms = as_factor_keep_attributes(ADAE$AEDECOD),
+#'   terms = ADAE$AEDECOD,
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
@@ -94,7 +94,7 @@ NULL
 #' )
 #'
 #' t_events_per_term_grade_id(
-#'   terms = ADAE %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes),
+#'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
@@ -104,7 +104,7 @@ NULL
 #'
 #'
 #' tbls <- t_events_per_term_grade_id(
-#'   terms = ADAE %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes),
+#'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
@@ -126,7 +126,10 @@ t_events_per_term_grade_id <- function(terms,
     terms <- list(terms)
   }
   stopifnot(is.list(terms))
+  terms <- lapply(terms, as_factor_keep_attributes)
 
+  col_by <- col_by_to_matrix(col_by, x = id)
+  col_N <- col_N %||% get_N(col_by)
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
     col_N <- col_N_add_total(col_N)

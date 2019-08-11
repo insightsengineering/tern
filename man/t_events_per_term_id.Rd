@@ -103,7 +103,7 @@ ADSL <- radsl(10, seed = 1)
 ADAE <- radae(ADSL, 4, seed = 2)
 
 t_events_per_term_id(
-  terms = as_factor_keep_attributes(ADAE$AEDECOD),
+  terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
@@ -111,7 +111,7 @@ t_events_per_term_id(
 )
 
 t_events_per_term_id(
-  terms = as_factor_keep_attributes(ADAE$AEDECOD),
+  terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
   col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
   col_N = col_N_add_total(table(ADSL$ARM)),
@@ -119,7 +119,7 @@ t_events_per_term_id(
 )
 
 t_events_per_term_id(
-  terms = ADAE[, c("AEBODSYS", "AEDECOD")] \%>\% map(as_factor_keep_attributes),
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
@@ -132,7 +132,7 @@ ADCM <- ADCM \%>\%
   dplyr::filter(ATIREL == "CONCOMITANT")
 
 t_events_per_term_id(
-  terms = ADCM[, c("CMCLAS", "CMDECOD")] \%>\% map(as_factor_keep_attributes),
+  terms = ADCM[, c("CMCLAS", "CMDECOD")],
   id = ADCM$USUBJID,
   col_by = ADCM$ARM,
   col_N = table(ADSL$ARM),
@@ -144,7 +144,7 @@ t_events_per_term_id(
 # Table Tree
 
 summary(t_events_per_term_id(
-  terms = as_factor_keep_attributes(ADAE$AEDECOD),
+  terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
@@ -164,7 +164,7 @@ summary(tbls)
 
 
 tbls <- t_events_per_term_id(
-  terms = ADAE[, c("AEBODSYS", "AEDECOD")] \%>\% map(as_factor_keep_attributes),
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),

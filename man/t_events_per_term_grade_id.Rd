@@ -83,7 +83,7 @@ ADSL <- radsl(10, seed = 1)
 ADAE <- radae(ADSL, 4, seed = 2)
 
 t_events_per_term_grade_id(
-  terms = as_factor_keep_attributes(ADAE$AEDECOD),
+  terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
@@ -92,7 +92,7 @@ t_events_per_term_grade_id(
 )
 
 t_events_per_term_grade_id(
-  terms = as_factor_keep_attributes(ADAE$AEDECOD),
+  terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
@@ -102,7 +102,7 @@ t_events_per_term_grade_id(
 )
 
 t_events_per_term_grade_id(
-  terms = ADAE \%>\% select(AEBODSYS, AEDECOD) \%>\% map(as_factor_keep_attributes),
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
@@ -112,7 +112,7 @@ t_events_per_term_grade_id(
 
 
 tbls <- t_events_per_term_grade_id(
-  terms = ADAE \%>\% select(AEBODSYS, AEDECOD) \%>\% map(as_factor_keep_attributes),
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
