@@ -4,9 +4,9 @@
 \alias{t_forest_tte}
 \title{Time-to-event Table as used for Forest Plot}
 \usage{
-t_forest_tte(tte, is_event, col_by, group_data = NULL,
-  strata_data = NULL, total = "ALL", time_unit = "month",
-  ties = "exact", na_omit_group = TRUE, dense_header = FALSE)
+t_forest_tte(tte, is_event, col_by, row_by_list = NULL, total = "ALL",
+  strata_data = NULL, ties = "exact", time_unit = "month",
+  dense_header = FALSE, table_tree = FALSE)
 }
 \arguments{
 \item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
@@ -14,28 +14,30 @@ t_forest_tte(tte, is_event, col_by, group_data = NULL,
 \item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{group_data}{data frame with one variable per grouping}
+\item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
+the \code{t_el_forest_tte}}
 
-\item{strata_data}{data frame with stratification variables}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
-
-\item{time_unit}{The unit of median survival time. Default is \code{months}.}
+\item{strata_data}{currently not supported}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
 
-\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.}
+\item{time_unit}{The unit of median survival time. Default is \code{months}.}
 
-\item{dense_header}{Display the table headers in multiple rows. Default is \code{FALSE}.}
+\item{dense_header}{Display the table headers in multiple rows.}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{
-The time-to-event forest plot table summarizes time-to-event data by groups.
-The function returns event counts and median survival time for each analysis
-arm, as well as a hazard ratio and the corresponding 95\% confidence interval
+The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and
+median survival time for each analysis arm, as well as a hazard ratio and the corresponding 95\% confidence interval
 from a Cox proportional hazard model.
 }
 \details{
@@ -68,9 +70,9 @@ of patients and the number of events in reference arm, respectively.
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- cadsl
+ADSL <- radsl(seed = 1)
 
-ADTTE <- cadtte
+ADTTE <- radtte(ADSL, seed = 2)
 ADTTE_f <- ADTTE \%>\%
   dplyr::filter(PARAMCD == "OS", ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
@@ -79,7 +81,7 @@ tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
   dense_header = TRUE
 )
@@ -89,9 +91,23 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
+
+# table tree
+tbls <- t_forest_tte(
+  tte = ADTTE_f$AVAL,
+  is_event = ADTTE_f$CNSR == 0,
+  col_by = ADTTE_f$ARMCD,
+  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  ties = "exact",
+  dense_header = TRUE,
+  table_tree = TRUE
+)
+summary(tbls)
+to_rtable(tbls)
+
 }
 \seealso{
-\code{\link{t_tte}}
+\code{\link{t_el_forest_tte}}, \code{\link{t_tte}}
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

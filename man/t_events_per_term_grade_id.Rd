@@ -4,8 +4,8 @@
 \alias{t_events_per_term_grade_id}
 \title{Events by Highest Grade Table}
 \usage{
-t_events_per_term_grade_id(terms, id, grade, col_by, col_N,
-  total = "All Patients", grade_levels = 1:5)
+t_events_per_term_grade_id(terms, id, grade, col_by, col_N = NULL,
+  total = NULL, grade_levels = 1:5, table_tree = FALSE)
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information;
@@ -21,18 +21,22 @@ length or number of rows of \code{terms}.}
 \item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character
 string used as a label in the column header for each grade.}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
 \item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{grade_levels}{numeric, ordered values of possible of grades in a form
 of \code{x:y}, default is \code{1:5}.}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link{rtable}} object.
@@ -71,9 +75,21 @@ is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 \examples{
 library(dplyr)
 library(random.cdisc.data)
+library(purrr)
+
+# todo: below fix all occurrences of as_factor_keep_attributes in ADAE to return a factor
 
 ADSL <- radsl(10, seed = 1)
 ADAE <- radae(ADSL, 4, seed = 2)
+
+t_events_per_term_grade_id(
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  grade_levels = 1:5
+)
 
 t_events_per_term_grade_id(
   terms = ADAE$AEDECOD,
@@ -91,13 +107,24 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  total = "All Patients",
   grade_levels = 1:5
 )
+
+
+tbls <- t_events_per_term_grade_id(
+  terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  grade_levels = 1:5,
+  table_tree = TRUE
+)
+summary(tbls)
 }
 \seealso{
-\code{\link{t_max_grade_per_id}}, \code{\link{lt_events_per_term_grade_id_1}},
-  \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}
+\code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_id}}
 }
 \author{
 Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}

@@ -4,26 +4,29 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(x, col_by, col_N = table(col_by),
-  total = NULL, useNA = c("no", "ifany", "always"),
-  denominator = c("n", "N"), drop_levels = FALSE, ...)
+\method{t_summary}{factor}(x, col_by, col_N = NULL, total = NULL,
+  useNA = c("ifany", "no", "always"), denominator = c("n", "N",
+  "omit"), drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{factor variable}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
-\item{denominator}{either n or N for calculating the level associated
+\item{denominator}{either n, N or omit. n and N are for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-With option n, the number of non-missing records from \code{x} is used as the denominator.}
+With option n, the number of non-missing records from \code{x} is used as the denominator.
+If \code{omit} is chosen the percentage is omitted.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
@@ -37,18 +40,20 @@ Tabulate the number of non-missing observations, number of observations per leve
 percentage.
 }
 \examples{
+library(dplyr)
+
 # with iris data
 t_summary(iris$Species, iris$Species)
 
 library(random.cdisc.data)
 ADSL <- cadsl
 
-t_summary(ADSL$SEX, ADSL$ARM, total = "All")
+t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"))
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 
 ADSL$SEX[1:10] <- NA
-t_summary(ADSL$SEX, ADSL$ARM, denominator = "N", useNA = "ifany", total = "All")
-t_summary(ADSL$SEX, ADSL$ARM, denominator = "n", useNA = "no", total = "All")
+t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"), denominator = "N", useNA = "ifany")
+t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"), denominator = "n", useNA = "no")
 }
 \seealso{
 \code{\link{t_summary}},

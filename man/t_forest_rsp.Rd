@@ -4,24 +4,26 @@
 \alias{t_forest_rsp}
 \title{Response Table as used for Forest Plot}
 \usage{
-t_forest_rsp(rsp, col_by, group_data = NULL, total = "ALL",
-  na_omit_group = TRUE, dense_header = FALSE)
+t_forest_rsp(rsp, col_by, row_by_list = NULL, total = "ALL",
+  dense_header = FALSE, table_tree = FALSE)
 }
 \arguments{
-\item{rsp}{is a boolean vector. If \code{TRUE}, observation is a response,
-otherwise, \code{FALSE}.}
+\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
+otherwise}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{group_data}{data frame with one variable per grouping}
+\item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
+the \code{t_el_forest_tte}}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of total row added. If \code{NULL} then no total row is added.}
 
-\item{na_omit_group}{is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.}
+\item{dense_header}{Display the table headers in multiple rows.}
 
-\item{dense_header}{Display the table headers in multiple rows. Default is \code{FALSE}.}
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -70,8 +72,9 @@ the following 9 columns:
 \examples{
 library(random.cdisc.data)
 library(dplyr)
+library(purrr)
 
-ADSL <- cadsl
+ADSL <- radsl(seed = 1)
 ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 
 ADRS <- radrs(ADSL, seed = 2)
@@ -81,8 +84,9 @@ ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
 
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ADRS_f$ARM),
-  group_data = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")]
+  col_by = as_factor_keep_attributes(ADRS_f$ARM),
+  row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
+    map(as_factor_keep_attributes)
 )
 
 tbl
@@ -90,9 +94,21 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
+
+
+# table tree
+tbls <- t_forest_rsp(
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = ADRS_f$ARM,
+  row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
+    map(as_factor_keep_attributes),
+  table_tree = TRUE
+)
+summary(tbls)
+
 }
 \seealso{
-\code{\link{t_rsp}}
+\code{\link{t_el_forest_rsp}}, \code{\link{t_rsp}}
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

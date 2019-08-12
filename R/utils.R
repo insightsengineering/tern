@@ -35,64 +35,64 @@
   invisible(TRUE)
 }
 
+# nolintr start
+# #' Return Ordered Dataset so that a set of variables match exactly
+# #'
+# #' This function is useful to ensure that two datasets have the same subjects
+# #' ordered in the same way
+# #'
+# #' @param x data set to reorder
+# #' @param ref reference data set
+# #' @param key variables that define a unique patient
+# #'
+# #' @export
+# #'
+# #' @examples
+# #' A <- data.frame(USUBJID=paste0("id-",1:10), STUDYID = "A", stringsAsFactors = FALSE)
+# #' B <- data.frame(USUBJID=paste0("id-",10:1), STUDYID = "A", stringsAsFactors = FALSE)
+# #'
+# #' reorder_to_match_id(A, B)
+# #'
+# #' \dontrun{
+# #' C <- data.frame(USUBJID=paste0("id-",1:9), STUDYID = "A")
+# #' reorder_to_match_id(A, C)
+# #'
+# #' D <- B
+# #' D$STUDYID[3] <- "B"
+# #' reorder_to_match_id(A, D)
+# #'
+# #' E <- B
+# #' E$USUBJID[2] <- "id-10"
+# #' reorder_to_match_id(A, E)
+# #' }
+# reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
+#   stopifnot(
+#     nrow(x) == nrow(ref),
+#     all(key %in% names(x)),
+#     all(key %in% names(ref)),
+#     !any(is.na(x[key])),
+#     !any(is.na(ref[key])),
+#     !any(duplicated(ref[, key]))
+#   )
+#
+#   x_ord <- do.call(order, x[key])
+#   ref_ord <- do.call(order, ref[key])
+#
+#   out <- x[x_ord[order(ref_ord)], ]
+#
+#   is_same <- unlist(Map(function(v1, v2) {
+#     all(v1 == v2)
+#   }, out[key], ref[key]))
+#
+#   if (!all(is_same)) {
+#     stop("not same ids")
+#   }
+#
+#   out
+# }
+# nolintr end
 
-#' Return Ordered Dataset so that a set of variables match exactly
-#'
-#' This function is useful to ensure that two datasets have the same subjects
-#' ordered in the same way
-#'
-#' @param x data set to reorder
-#' @param ref reference data set
-#' @param key variables that define a unique patient
-#'
-#' @export
-#'
-#' @examples
-#' A <- data.frame(USUBJID=paste0("id-",1:10), STUDYID = "A", stringsAsFactors = FALSE)
-#' B <- data.frame(USUBJID=paste0("id-",10:1), STUDYID = "A", stringsAsFactors = FALSE)
-#'
-#' reorder_to_match_id(A, B)
-#'
-#' \dontrun{
-#' C <- data.frame(USUBJID=paste0("id-",1:9), STUDYID = "A")
-#' reorder_to_match_id(A, C)
-#'
-#' D <- B
-#' D$STUDYID[3] <- "B"
-#' reorder_to_match_id(A, D)
-#'
-#' E <- B
-#' E$USUBJID[2] <- "id-10"
-#' reorder_to_match_id(A, E)
-#' }
-reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
-  stopifnot(
-    nrow(x) == nrow(ref),
-    all(key %in% names(x)),
-    all(key %in% names(ref)),
-    !any(is.na(x[key])),
-    !any(is.na(ref[key])),
-    !any(duplicated(ref[, key]))
-  )
-
-  x_ord <- do.call(order, x[key])
-  ref_ord <- do.call(order, ref[key])
-
-  out <- x[x_ord[order(ref_ord)], ]
-
-  is_same <- unlist(Map(function(v1, v2) {
-    all(v1 == v2)
-  }, out[key], ref[key]))
-
-  if (!all(is_same)) {
-    stop("not same ids")
-  }
-
-  out
-}
-
-
-#' Combine Factor Levels
+#' Combine factor Levels
 #'
 #' @param x factor
 #' @param levels level names to be combined
@@ -209,13 +209,13 @@ wrap_with <- function(x, left, right, as_list = TRUE) {
 
 #' check if all elements in x are factors
 #'
-#' @param x data.frame
+#' @param x data.frame or a list
 #'
 #' @importFrom methods is
 #'
 #' @noRd
 all_as_factor <- function(x) {
-  stopifnot(is.data.frame(x))
+  stopifnot(is.list(x))
 
   is_fct <- vapply(x, is.factor, logical(1))
 
@@ -260,6 +260,18 @@ drop_shared_variables <- function(x, y, keep) {
   df
 }
 
+#' Replace NA values by NA string level
+#'
+#' @param x factor, possibly with NAs
+#' @param na_level name of new level for NAs
+#'
+#' @return factor with additional NA level
+#'
+#' @export
+#'
+#' @examples
+#' na_as_level(factor(c(1, 1, 2)))
+#' na_as_level(factor(c(1, 1, NA)), "na")
 na_as_level <- function(x, na_level = "NA") {
   stopifnot(is.factor(x))
 
@@ -267,8 +279,8 @@ na_as_level <- function(x, na_level = "NA") {
     if (na_level %in% levels(x)) {
       stop(na_level, " can not be a level of x")
     }
-    levels(x) <- c(levels(x), "NA")
-    x[is.na(x)] <- "NA"
+    levels(x) <- c(levels(x), na_level)
+    x[is.na(x)] <- na_level
   }
   x
 }
@@ -342,10 +354,11 @@ to_n <- function(x, n) {
   } else if (length(x) == n) {
     x
   } else {
-    stop("dimension missmatch")
+    stop("dimension mismatch")
   }
 }
 
+#todo: remove add_total
 
 #' Duplicate an object to create total group
 #'
@@ -431,4 +444,86 @@ add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(c
 
 has_no_na <- function(x) {
   !any(is.na(x))
+}
+
+
+if_null_then <- function(x, y) {
+  # shortcut: x %||% y
+  if (is.null(x)) {
+    y
+  } else {
+    x
+  }
+}
+
+
+#' Get total count
+#'
+#' Normally, you don't need to use this function as it is the default
+#'
+#' @param col_by col_by (factor or matrix) to get counts from
+#'
+#' @return counts per factor level or column of col_by
+#'
+#' @export
+#'
+#' @examples
+#' get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE)))
+get_N <- function(col_by) {
+  stopifnot(is.factor(col_by) || is.data.frame(col_by))
+  colSums(col_by_to_matrix(col_by))
+}
+
+#' Add total to col_N
+#'
+#' It adds the sum of the vector as the last element.
+#'
+#' This is necessary when you manually specify col_N and col_by uses the total column (via by_add_total or similar)
+#'
+#' # todo: maybe put this into function as well like col_by_to_matrix
+#'
+#' @param col_N col_N count
+#'
+#' @return new count with total count appended to vector
+#'
+#' @export
+#'
+#' @examples
+#' col_N_add_total(get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE))))
+col_N_add_total <- function(col_N) {
+  c(col_N, sum(col_N))
+}
+
+#' Convert to factor and keep attributes
+#'
+#' @param x atomic
+#'
+#' @return factor with same attributes (except class) as x
+#'
+#' @export
+#'
+#' @examples
+#' as_factor_keep_attributes(with_label(c(1,1,2,3), "id"))
+as_factor_keep_attributes <- function(x) {
+  stopifnot(is.atomic(x))
+  x_attrs <- attributes(x)
+  x_attrs <- x_attrs[names(x_attrs) != "class"]
+  do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
+}
+
+# todo: move these functions elsewhere, closely related to esplit
+numberRows <- function(x) {
+  if (is.data.frame(x)) {
+    nrow(x)
+  } else {
+    length(x)
+  }
+}
+rowSubset <- function(x, rows) {
+  # similar to subset function
+  if (is.data.frame(x)) {
+    x[rows, ]
+  } else {
+    x[rows]
+  }
 }

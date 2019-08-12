@@ -4,19 +4,20 @@
 \alias{t_summary.Date}
 \title{Summarize Date Data}
 \usage{
-\method{t_summary}{Date}(x, col_by, col_N = table(col_by),
-  total = NULL, ...)
+\method{t_summary}{Date}(x, col_by, col_N = NULL, total = NULL, ...)
 }
 \arguments{
 \item{x}{a Date object}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{...}{arguments passed on to methods}
 }
@@ -25,12 +26,15 @@ Tabulate the range of dates.
 }
 \examples{
 today <- as.Date("2000-01-01")
+library(dplyr)
+
+today <- Sys.Date()
 tenweeks <- seq(today, length.out=10, by="1 week")
-t_summary(tenweeks, no_by("all"), length(tenweeks))
+t_summary(tenweeks, by_all("all"), length(tenweeks))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 
-t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
+t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]) \%>\% by_add_total("All"))
 }
 \seealso{
 \code{\link{t_summary}},

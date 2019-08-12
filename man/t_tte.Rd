@@ -5,7 +5,7 @@
 \title{Time to Event Table}
 \usage{
 t_tte(formula, data, event_descr, time_points, time_unit = "month",
-  ties = "exact")
+  ties = "exact", table_tree = FALSE)
 }
 \arguments{
 \item{formula}{a survival formula, the arm variable needs to be wrapped in
@@ -27,6 +27,9 @@ analysis, if \code{NULL} this section of the table will be omitted}
 \item{time_unit}{a string with the unit of the \code{tte} argument}
 
 \item{ties}{passed forward to \code{\link[survival]{coxph}}}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -65,6 +68,17 @@ tbl <- t_tte(
 tbl
 
 Viewer(tbl)
+
+# table_tree = TRUE
+tbl <- t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+  data = ADTTE_f,
+  event_descr = factor(EVNTDESC),
+  time_points = c(6, 2000),
+  time_unit = "month",
+  table_tree = TRUE
+)
+summary(tbl)
 }
 }
 \seealso{

@@ -1,5 +1,8 @@
 # STREAM AE tables ----
 
+#' @include utils.R
+NULL
+
 #' Events by Highest Grade Table
 #'
 #' This function summarizes number of unique subjects by highest grade and events term(s).
@@ -59,15 +62,26 @@
 #' @template author_zhanc107
 #' @template author_wangh107
 #'
-#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{lt_events_per_term_grade_id_1}},
-#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_id}}
 #'
 #' @examples
 #' library(dplyr)
 #' library(random.cdisc.data)
+#' library(purrr)
+#'
+#' # todo: below fix all occurrences of as_factor_keep_attributes in ADAE to return a factor
 #'
 #' ADSL <- radsl(10, seed = 1)
 #' ADAE <- radae(ADSL, 4, seed = 2)
+#'
+#' t_events_per_term_grade_id(
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   grade_levels = 1:5
+#' )
 #'
 #' t_events_per_term_grade_id(
 #'   terms = ADAE$AEDECOD,
@@ -85,341 +99,114 @@
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
 #'   grade_levels = 1:5
 #' )
-t_events_per_term_grade_id <- function(terms,
-                                       id,
-                                       grade,
-                                       col_by,
-                                       col_N, # nolint
-                                       total = "All Patients",
-                                       grade_levels = 1:5) {
-  stopifnot(!is.null(terms))
-
-  if (is.atomic(terms)) {
-    terms <- data.frame(term = terms, stringsAsFactors = FALSE)
-  } else if (!is.data.frame(terms)) {
-    stop("terms needs to be either a vector or a data.frame")
-  }
-
-  irow <- ncol(terms)
-  sort_index <-  if (is.null(total)) {
-    # because the first column is the grade level
-    function(tbli) sum(vapply(tbli[[irow]][2:ncol(tbli)], `[`, numeric(1), 1))
-  } else {
-    c(irow, nlevels(col_by) + 2, 1)
-  }
-
-  if (ncol(terms) == 1) {
-    l_tbls <- lt_events_per_term_grade_id_1(
-      term = terms[[1]],
-      id = id,
-      grade = grade,
-      col_by = col_by,
-      col_N = col_N,
-      total = total,
-      grade_levels = grade_levels
-    )
-
-    order_tbls <- order_rtables(l_tbls, indices = sort_index, decreasing = TRUE)
-    recursive_stack_rtables(l_tbls[c(1, setdiff(order_tbls, 1))])
-
-  } else if (ncol(terms) == 2) {
-
-    l_tbls <- lt_events_per_term_grade_id_2(
-      terms = terms,
-      id = id,
-      grade = grade,
-      col_by = col_by,
-      col_N = col_N,
-      total = total,
-      grade_levels = grade_levels
-    )
-    # l_tbls is of type list(all = list(tbl_overallm), cl_1 = list(tbl_overall, tbl_term_a, ...), ...)
-
-    # sort tables by term frequency
-    l_s_terms <- lapply(l_tbls, function(l_tbls_i) {
-      order_tbls_i <- order_rtables(l_tbls_i, indices = sort_index, decreasing = TRUE)
-      l_tbls_i[c(1, setdiff(order_tbls_i, 1))]
-    })
-
-    order_class <- order_rtables(lapply(l_s_terms, `[[`, 1), indices = sort_index, decreasing = TRUE)
-
-    l_tbls_sorted <- l_s_terms[c(1, setdiff(order_class, 1))]
-
-    recursive_stack_rtables(nl_remove_n_first_rrows(l_tbls_sorted, 1, 2))
-  } else {
-    stop("currently one or two terms are summported")
-  }
-
-}
-
-# Create Nested Lists of Tables that Compose Events tables ----
-
-#' List of Events Terms Tables by Highest Grade
 #'
-#' \code{lt_events_per_term_grade_id_2} returns a nested list of events tables by max
-#' grade (\code{\link{t_max_grade_per_id}}).
 #'
-#' @inheritParams t_events_per_term_grade_id
-#'
-#' @details
-#' \if{html}{
-#'
-#' The data is split and table functions are applied to leaf nodes as follows:
-#'
-#' \figure{lt_events_per_term_grade_id_2.png}{options: alt="lt_events_per_term_grade_id_2 layout"}
-#' }
-#'
-#' @return \code{rtable}
-#'
-#' @template author_waddella
-#' @template author_zhanc107
-#' @template author_wangh107
-#' @template author_qit3
-#'
-#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
-#'   \code{\link{lt_events_per_term_grade_id_1}}, \code{\link{t_events_per_term_id}}
-#'
-#' @examples
-#'
-#' library(dplyr)
-#' library(random.cdisc.data)
-#'
-#' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4, seed = 2)
-#'
-#' l_tbls <- tern:::lt_events_per_term_grade_id_2(
+#' tbls <- t_events_per_term_grade_id(
 #'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
-#'   grade_levels = 1:5
+#'   grade_levels = 1:5,
+#'   table_tree = TRUE
 #' )
-#'
-#' tern:::recursive_stack_rtables(tern:::nl_remove_n_first_rrows(l_tbls, 1,2))
-lt_events_per_term_grade_id_2 <- function(terms,
-                                          id,
-                                          grade,
-                                          col_by,
-                                          col_N, # nolint
-                                          total = "All Patients",
-                                          grade_levels) {
-
-  # check argument validity and consitency
-  check_col_by(col_by, col_N, min_num_levels = 1, total)
-
-  stopifnot(
-    !any("- Overall -" %in% terms),
-    !any(terms == "", na.rm = TRUE),
-    is.data.frame(terms) && ncol(terms) == 2
-  )
-
-  class_label <- label(terms[[1]])
-  term_label <- label(terms[[2]])
-  grade_label <- label(grade)
-
-  if (is.null(term_label)) {
-    class_label <- deparse(substitute(class))
+#' summary(tbls)
+t_events_per_term_grade_id <- function(terms,
+                                       id,
+                                       grade,
+                                       col_by,
+                                       col_N = NULL, # nolint
+                                       total = NULL,
+                                       grade_levels = 1:5,
+                                       table_tree = FALSE) {
+  if (is.atomic(terms)) {
+    terms <- list(terms)
   }
-  if (is.null(term_label)) {
-    term_label <- deparse(substitute(term))
-  }
-  if (is.null(grade_label)) {
-    grade_label <- deparse(substitute(grade))
-  }
+  stopifnot(is.list(terms))
+  terms <- lapply(terms, as_factor_keep_attributes)
 
-  # data prep
-  df <- data.frame(
-    class = terms[[1]],
-    term = terms[[2]],
-    id = id,
-    grade = grade,
-    col_by = col_by,
-    stringsAsFactors = FALSE
-  )
-
-  if (any(is.na(df))) {
-    stop("partial missing data in rows of [class, term, grade] is currently not supported")
-  }
-
-  # adding All Patients
+  col_by <- col_by_to_matrix(col_by, x = id)
+  col_N <- col_N %||% get_N(col_by)
   if (!is.null(total)) {
-    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
-    col_N <- .t$col_N # nolint
-    df <- data.frame(class = .t$x$class, term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by),
-                     grade = .t$x$grade,
-                     col_by = .t$col_by, stringsAsFactors = FALSE)
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
   }
 
-  # start tabulatings
-
-  # create nested list with data used for creating the sub tables
-  df_class_term <- c(
-    list("- Any adverse events -" = list("- Overall -" = df)),
-    lapply(split(df, df$class), function(x) {
-      c(
-        list("- Overall -" = x),
-        split(x, x$term)
-      )
-    })
+  tree <- rsplit_to_tree(
+    list(grade = grade, id = id, col_by = col_by),
+    terms
   )
+  tree@name <- "- Any adverse events -"
+  tree@format_data$children_indent <- 0
 
-  tbl_header <- rheader(
-    rrowl(class_label, c(list(NULL), as.list(levels(df$col_by)))),
-    rrowl(term_label, c(list(rcell(grade_label, format = "xx")), as.list(col_N)), format = "(N=xx)", indent = 1)
-  )
-
-  # now create the tables
-  Map(function(df_terms, class_name) {
-    Map(function(df_term, term_name) {
-
-      tbl_raw <- t_max_grade_per_id(
-        grade = df_term$grade,
-        id = df_term$id,
-        col_by = df_term$col_by,
+  tree <- rapply_tree(
+    tree,
+    function(name, content, path) {
+      list(name = name, content = t_max_grade_per_id(
+        grade = content$grade,
+        id = content$id,
+        col_by = content$col_by,
         col_N = col_N,
+        total = total,
         grade_levels = grade_levels,
         any_grade = "- Any Grade -"
-      )
-
-      # move rownames to column
-      tbl <- row_names_as_col(tbl_raw)
-      row.names(tbl)[1] <- term_name
-
-      rbind(
-        rtable(tbl_header, rrow(class_name)),
-        indent_table(tbl, 1)
-      )
-
-    }, df_terms, names(df_terms))
-  }, df_class_term, names(df_class_term))
-
-}
-
-#' List of Events Terms Tables By Highest Grade (One Level Term only)
-#'
-#' \code{lt_events_per_term_grade_id_1} returns a nested list of events tables by max
-#' grade (\code{\link{t_max_grade_per_id}}).
-#'
-#' @inheritParams t_events_per_term_grade_id
-#' @param term term information as character or factor, however factor levels
-#'   are not repeated by class, only terms with count > 1 are listed per class.
-#'   \code{var_relabel} is used as the character string used as a label in the
-#'   column header for each term.
-#'
-#' @details
-#' \if{html}{
-#'
-#' The data is split and table functions are applied to leaf nodes as follows:
-#'
-#' \figure{lt_events_per_term_grade_id_1.png}{options: alt="lt_events_per_term_grade_id_1 layout"}
-#' }
-#'
-#' @template author_waddella
-#' @template author_zhanc107
-#' @template author_wangh107
-#' @template author_qit3
-#'
-#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
-#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{t_events_per_term_id}}
-#'
-#' @examples
-#' library(random.cdisc.data)
-#'
-#' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4, seed = 2)
-#'
-#' l_tbls <- tern:::lt_events_per_term_grade_id_1(
-#'   term = ADAE$AEDECOD,
-#'   id = ADAE$USUBJID,
-#'   grade = ADAE$AETOXGR,
-#'   col_by = ADAE$ARM,
-#'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
-#'   grade_levels = 1:5
-#' )
-#'
-#' rbindl_rtables(l_tbls, gap = 1)
-lt_events_per_term_grade_id_1 <- function(term,
-                                          id,
-                                          grade,
-                                          col_by,
-                                          col_N, # nolint
-                                          total = "All Patients",
-                                          grade_levels) {
-
-  check_col_by(col_by, col_N, min_num_levels = 1, total)
-
-  stopifnot(
-    !any("All Patients" %in% col_by),
-    !any(term == "", na.rm = TRUE)
+      ))
+    }
   )
 
-  term_label <- label(term)
-  grade_label <- label(grade)
-
-  if (is.null(term_label)) {
-    term_label <- deparse(substitute(term))
-  }
-  if (is.null(grade_label)) {
-    grade_label <- deparse(substitute(grade))
-  }
-
-  df <- data.frame(
-    term = term,
-    id = id,
-    grade = grade,
-    col_by = col_by,
-    stringsAsFactors = FALSE
+  tree <- rsort_tree(
+    tree,
+    function(node) {
+      # we sort by the numberbecause the first column is the overall grade level
+      order(vapply(
+        node@children,
+        function(child) {
+          tbl <- child@content
+          -sum(vapply(tbl[[1]][2:ncol(tbl)], `[`, numeric(1), 1)) #- to reverse order
+        },
+        numeric(1)
+      ))
+    }
   )
 
-  if (any(is.na(df))) {
-    stop("partial missing data in rows of [class, grade] is currently not supported")
+  tree <- full_apply_at_depth(
+    tree,
+    function(node) {
+      name <- node@name
+      node@name <- invisible_node_name(name)
+      row.names(node@content) <- c(name, row.names(node@content)[-1])
+      node
+    },
+    depth = length(terms)
+  )
+
+  tree <- full_apply_at_depth(
+    tree,
+    function(node) {
+      row.names(node@content) <- c("- Overall -", row.names(node@content)[-1])
+      node
+    },
+    depth = length(terms) - 1
+  )
+
+
+  if (length(terms) == 1) {
+    tree@name <- invisible_node_name(tree@name)
+    tree@format_data <- node_format_data(content_indent = 0)
+  } else {
+    row.names(tree@content) <- c("- Overall -", row.names(tree@content)[-1])
   }
 
 
-  if (!is.null(total)) {
-    .t <- add_total(x = df, col_by = col_by, total_level = total, col_N = col_N)
-    col_N <- .t$col_N # nolint
-    df <- data.frame(term = .t$x$term, id = paste(.t$x$id, "-", .t$col_by),
-                     grade = .t$x$grade,
-                     col_by = .t$col_by, stringsAsFactors = FALSE)
+  if (table_tree) {
+    tree
+  } else {
+    to_rtable(tree)
   }
-
-  # start tabulating
-  df_terms <- c(
-    list("- Overall -" = df),
-    split(df, df$term)
-  )
-
-  tbl_header <- rheader(
-    rrowl("", c("", levels(df$col_by))),
-    rrowl(term_label, c(list(rcell(grade_label, format = NULL)), setNames(as.list(col_N), NULL)), format = "(N=xx)")
-  )
-
-  Map(function(df_term, term_i) {
-
-    tbl_raw <- t_max_grade_per_id(
-      grade = df_term$grade,
-      id = df_term$id,
-      col_by = df_term$col_by,
-      col_N = col_N,
-      grade_levels = grade_levels,
-      any_grade = "- Any Grade -"
-    )
-
-    tbl <- row_names_as_col(tbl_raw)
-    row.names(tbl)[1] <- term_i
-    header(tbl) <- tbl_header
-
-    tbl
-
-  }, df_terms, names(df_terms))
-
 }
 
 # Elementary Tables Used for AE tables ----
@@ -445,8 +232,7 @@ lt_events_per_term_grade_id_1 <- function(term,
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
-#'   \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{lt_events_per_term_grade_id_1}}
+#' @seealso \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
 #' t_max_grade_per_id(
@@ -473,60 +259,79 @@ lt_events_per_term_grade_id_1 <- function(term,
 #'
 #' \dontrun{
 #' # throws an error because each id can only have one col_by
-#' t_max_grade_per_id(
-#'   grade =  c(1,2,3),
-#'   id = c(1,2,2),
-#'   col_by = factor(LETTERS[1:3]),
-#'   col_N = c(15, 10, 12)
-#' )
+#' # t_max_grade_per_id(
+#'   #   grade =  c(1,2,3),
+#'   #   id = c(1,2,2),
+#'   #   col_by = factor(LETTERS[1:3]),
+#'   #   col_N = c(15, 10, 12)
+#'   # )
 #' }
 #'
 #' \dontrun{
 #' # throws an error because grade NA is not in grade_levels
-#' t_max_grade_per_id(
-#'   grade =  c(1,2,NA),
-#'   id = c(1,2,3),
-#'   col_by = factor(LETTERS[1:3]),
-#'   col_N = c(15, 10, 12)
-#' )
+#' # t_max_grade_per_id(
+#' #   grade =  c(1,2,NA),
+#' #   id = c(1,2,3),
+#' #   col_by = factor(LETTERS[1:3]),
+#' #   col_N = c(15, 10, 12)
+#' # )
 #' }
 t_max_grade_per_id <- function(grade,
                                id,
                                col_by,
-                               col_N, # nolint
+                               col_N = NULL, # nolint
+                               total = NULL,
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
-
-  check_col_by(col_by, col_N, 1)
   stopifnot(is.numeric(grade))
-  stopifnot(has_no_na(id))
-
-  if (is.null(grade_levels)) {
-    grade_levels <- seq(1, max(grade, na.rm = TRUE))
+  stopifnot(!any(is.na(id)))
+  col_by <- col_by_to_matrix(col_by, grade)
+  col_N <- col_N %||% get_N(col_by)
+  if (!is.null(total)) {
+    col_by <- by_add_total(col_by, label = total)
+    col_N <- col_N_add_total(col_N)
+    total <- NULL
   }
+  check_col_by(grade, col_by, col_N, min_num_levels = 1)
+  check_id(id, col_by)
 
+  grade_levels <- grade_levels %||% seq(1, max(grade, na.rm = TRUE))
   if (length(setdiff(grade, grade_levels)) > 0) {
     stop("grades exist that are not in grade_levels")
   }
 
-  df <- data.frame(grade, id, col_by, stringsAsFactors = FALSE)
+  df <- data.frame(grade, id, stringsAsFactors = FALSE)
 
-  df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE)
+  df_max <- do.call(rbind, unname(Map(
+    function(rows, col_by_name) {
+      if (sum(rows) == 0) {
+        # rows is logical
+        # aggregate does not work when rows is all FALSE
+        data.frame(grade = 1, id = 1, col_by = 1)[c(), ] # get an empty data frame
+      } else {
+        data.frame(
+          aggregate(grade ~ id, FUN = max, drop = TRUE, data = df[rows, ], na.rm = TRUE),
+          col_by = col_by_name
+        )
+      }
+    },
+    col_by,
+    names(col_by)
+  )))
+  df_max$col_by <- factor(df_max$col_by, names(col_by))
+  # when col_by is a factor and not a general matrix, the equivalent call is
+  # col_by <- col_by_to_factor(col_by) #nolintr
+  # df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE) #nolintr
 
-  if (any(duplicated(df_max$id))) {
-    stop("every id can only have one col_by")
-  }
-
-  df_max$fct_grade <- factor(df_max$grade, levels = grade_levels)
+  df_max$grade <- factor(df_max$grade, levels = grade_levels)
+  df_max_no_na <- na.omit(df_max) # todo: why not do at the beginning
 
   tbl_any <- if (!is.null(any_grade)) {
     # TODO: Heng why do we allow this (na.omit)?
-    df_no_na <- na.omit(df)
-    df_no_na_id <- df_no_na[!duplicated(df_no_na$id), ]
     rtabulate(
-      x = df_no_na_id,
-      row_by = no_by(any_grade),
-      col_by = df_no_na_id$col_by,
+      x = df_max_no_na,
+      row_by = by_all(any_grade),
+      col_by = as.factor(df_max_no_na$col_by),
       FUN = count_perc_col_N,
       format = "xx (xx.x%)",
       col_wise_args = list(n_i = col_N)
@@ -535,10 +340,9 @@ t_max_grade_per_id <- function(grade,
     NULL
   }
 
-  df_max_no_na <- na.omit(df_max)
   tbl_x <- rtabulate(
     x = df_max_no_na,
-    row_by  = df_max_no_na$fct_grade,
+    row_by  = df_max_no_na$grade,
     col_by  = df_max_no_na$col_by,
     FUN = count_perc_col_N,
     format = "xx (xx.x%)",
@@ -546,7 +350,42 @@ t_max_grade_per_id <- function(grade,
   )
 
   tbl <- rbind(tbl_any, tbl_x)
+  tbl <- header_add_N(tbl, col_N)
 
-  header_add_N(tbl, col_N)
+  grade_label <- label(grade) %||% deparse(substitute(grade))
+  row_names_as_col(tbl, c("", grade_label))
+}
 
+#' checks that each patient appears in at most one col_by column (possibly
+#' several times as AVAL corresponds to several measures and there are >= 1 rows per patient)
+#'
+#' @param id patient id
+#' @param col_by columns indicating where patient is, (this function checks that the patient only
+#'   appears in one column, ignoring the "by_all" / total column)
+#' @examples
+#' library(random.cdisc.data)
+#' ADSL <- radsl(10, seed = 1)
+#' ADAE <- radae(ADSL, 4, seed = 2)
+#' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
+#'
+#' @importFrom dplyr group_by summarise_all select
+#' @importFrom magrittr %>%
+check_id <- function(id, col_by) {
+  col_by_old <- col_by # for debugging
+  col_by <- col_by_to_matrix(col_by)
+  # remove total column if present
+  col_by <- col_by[, !vapply(col_by, all, logical(1)), drop = FALSE]
+  if (ncol(col_by) == 0) {
+    return(invisible(NULL))
+  }
+  # for each id, count number of appearances in each column of col_by, then check
+  # that each id appears in at most one column of col_by (possibly several times)
+  ids_in_at_most_one_col_by <- all(rowSums((
+    data.frame(id = id, col_by) %>% group_by(.data$id) %>% summarise_all(sum) %>% select(-id)
+  ) > 0) <= 1)
+  if (!ids_in_at_most_one_col_by) {
+    stop("Patient appears in multiple col_by columns/ARMs (excluding total column)")
+  }
+
+  invisible(NULL)
 }

@@ -4,103 +4,109 @@
 \alias{t_el_disposition}
 \title{Single element for disposition table}
 \usage{
-t_el_disposition(x = x, col_by, col_N = table(col_by),
-  row.name = NULL, indent = 0, subset = NULL, show_n = FALSE,
-  useNA = c("no", "ifany", "always"), drop_levels = TRUE,
-  total = NULL, denominator = "N")
+t_el_disposition(x = x, col_by, col_N = NULL, total = NULL,
+  row.name = NULL, subset = NULL, show_n = FALSE, useNA = c("no",
+  "ifany", "always"), drop_levels = NULL, denominator = "N")
 }
 \arguments{
 \item{x}{A factor or logical vector}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
 Default is "TRUE".}
 
-\item{indent}{non-negative integer where 0 means that the row should not be indented}
+\item{subset}{A logical vector with the same length as x that defines the subset.
+Applies to \code{x} and \code{subset}.}
 
-\item{subset}{A logical vector with the same length as x that defines the subset.}
-
-\item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE.}
+\item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE.
+Only when x is of type factor}
 
 \item{useNA}{choose whether missing data (NAs) should be displayed as a level.}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
-
-\item{denominator}{either n or N for calculating the level associated
+\item{denominator}{either n, N or omit. n and N are for calculating the level associated
 percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-With option n, the number of non-missing records from \code{x} is used as the denominator.}
+With option n, the number of non-missing records from \code{x} is used as the denominator.
+If \code{omit} is chosen the percentage is omitted.}
 }
 \description{
 Single element for disposition table
 }
 \examples{
-
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl(seed = 1)
+ADSL <- radsl(cached = TRUE)
 
 ADSL0 <- ADSL \%>\%
- mutate(
-   COMPSTUD = sample(c('Y','N'),
+  mutate(
+    COMPSTUD = sample(c('Y','N'),
+                      size=nrow(ADSL),
+                      replace = TRUE) \%>\% as.factor,
+    STUDONS = sample(c('Alive: On Treatment', 'Alive: In Follow-up', NA),
                      size=nrow(ADSL),
                      replace = TRUE) \%>\% as.factor,
-   STUDONS = sample(c('Alive: On Treatment', 'Alive: In Follow-up', NA),
+    STDDRS = sample(c('Death', 'Lost To Follow-Up',
+                      'Protocol Violation', 'Withdrawal By Subject',
+                      'Other'),
                     size=nrow(ADSL),
                     replace = TRUE) \%>\% as.factor,
-   STDDRS = sample(c('Death', 'Lost To Follow-Up',
-                     'Protocol Violation', 'Withdrawal By Subject',
-                     'Other'),
-                   size=nrow(ADSL),
-                   replace = TRUE) \%>\% as.factor,
-   GOTTRT = ifelse(!is.na(ACTARMCD), 'Y', 'N') \%>\% as.factor,
-   DISTRTFL = sample(c('Y','N'),
-                     size=nrow(ADSL),
-                     replace = TRUE) \%>\% as.factor,
-   TRTDRS = sample(c('ADVERSE EVENT', 'PROGRESSIVE DISEASE',
-                     'PHYSICIAN DECISION', 'LACK OF EFFICACY',
-                     'OTHER'),
-                   size=nrow(ADSL),
-                   replace = TRUE) \%>\% as.factor,
-   STUDONS = case_when(
-     COMPSTUD == 'N' ~ STUDONS
-   ),
-   STDDRS = case_when(
-     COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS
-   ),
-   DISSTDFL = case_when(
-     !is.na(STDDRS) ~ "Y"
-   ),
-   DISTRTFL = case_when(
-     GOTTRT == 'Y' ~ DISTRTFL
-   ),
-   TRTDRS = case_when(
-     DISTRTFL == 'Y' ~ TRTDRS
-   ),
-   DRSCAT = case_when(
-     TRTDRS \%in\% c('ADVERSE EVENT', 'PHYSICIAN DECISION') ~ "Safety",
-     !is.na(TRTDRS) ~ "Other"
-   )
- ) \%>\% var_relabel(COMPSTUD = "Complete Study",
-                   STUDONS = "On-study Status",
-                   DISSTDFL = "Discontinued Study",
-                   STDDRS = "Reason for Study \\r\\nDiscontinuation",
-                   GOTTRT = "Received Treatment",
-                   DISTRTFL = "Discontinued Treatment",
-                   TRTDRS = "Reason for Treatment \\r\\nDiscontinuation"
-                   )
+    GOTTRT = ifelse(!is.na(ACTARMCD), 'Y', 'N') \%>\% as.factor,
+    DISTRTFL = sample(c('Y','N'),
+                      size=nrow(ADSL),
+                      replace = TRUE) \%>\% as.factor,
+    TRTDRS = sample(c('ADVERSE EVENT', 'PROGRESSIVE DISEASE',
+                      'PHYSICIAN DECISION', 'LACK OF EFFICACY',
+                      'OTHER'),
+                    size=nrow(ADSL),
+                    replace = TRUE) \%>\% as.factor,
+    STUDONS = case_when(
+      COMPSTUD == 'N' ~ STUDONS
+    ),
+    STDDRS = case_when(
+      COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS
+    ),
+    DISSTDFL = case_when(
+      !is.na(STDDRS) ~ "Y"
+    ),
+    DISTRTFL = case_when(
+      GOTTRT == 'Y' ~ DISTRTFL
+    ),
+    TRTDRS = case_when(
+      DISTRTFL == 'Y' ~ TRTDRS
+    ),
+    DRSCAT = case_when(
+      TRTDRS \%in\% c('ADVERSE EVENT', 'PHYSICIAN DECISION') ~ "Safety",
+      !is.na(TRTDRS) ~ "Other"
+    )
+  ) \%>\% var_relabel(COMPSTUD = "Complete Study",
+                    STUDONS = "On-study Status",
+                    DISSTDFL = "Discontinued Study",
+                    STDDRS = "Reason for Study \\r\\nDiscontinuation",
+                    GOTTRT = "Received Treatment",
+                    DISTRTFL = "Discontinued Treatment",
+                    TRTDRS = "Reason for Treatment \\r\\nDiscontinuation"
+  )
 
 library(purrr)
-dsp <- partial(t_el_disposition, col_by = ADSL0$ARM, denominator = "N",
- total = "All Patients")
-
+t_el_disposition_indent <- function(..., indent = 0) indent(t_el_disposition(...), indent)
+dsp <- partial(
+  t_el_disposition_indent,
+  col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+  denominator = "N"
+)
+# Only using rtables
+# old way of doing things with indent variable
 rbind(
   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
   dsp(ADSL0$STUDONS == "Alive: In Follow-up", row.name = "Alive: In follow-up"),
@@ -108,8 +114,11 @@ rbind(
   dsp(as.factor(ADSL0$STDDRS), indent = 1),
   rrow(),
   rrow("Show example of using n as denominator"),
-  t_el_disposition(as.factor(ADSL0$STDDRS), col_by = ADSL0$ARM, denominator = "n",
-     total = "All Patients", indent = 1),
+  indent(t_el_disposition(
+    as.factor(ADSL0$STDDRS),
+    col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+    denominator = "n"
+  ), 1),
   rrow(),
   dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment"),
   dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
@@ -119,5 +128,85 @@ rbind(
   dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Other", indent = 2)
 )
 
+# new way:
+treatment_section_rtable <- rbind(
+  dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment"),
+  dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
+  indent(
+    rbind(
+      dsp(ADSL0$DRSCAT == "Safety", row.name = "Safety"),
+      indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Safety"), 1),
+      dsp(ADSL0$DRSCAT == "Other", row.name = "Other"),
+      indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Other"), 1)
+    ),
+    1
+  )
+)
+treatment_section_rtable
 
+# easier to manipulate for their purposes by other users
+treatment_section_tree <- node(
+  invisible_node_name("treatment"),
+  content = NULL,
+  format_data = list(children_gap = 0),
+  children = list(
+    node(
+      invisible_node_name("received_treatment"),
+      content = dsp(ADSL0$GOTTRT == "Y", row.name = "Received treatment")
+    ),
+    node(
+      invisible_node_name("discontinuedtreatment"),
+      dsp(ADSL0$DISTRTFL == "Y", row.name = "Discontinued treatment"),
+      format_data = list(gap_to_children = 0, children_gap = 0, children_indent = 1),
+      children = list(
+        node(
+          invisible_node_name("safety"),
+          rbind(
+            dsp(ADSL0$DRSCAT == "Safety", row.name = "Safety"),
+            indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Safety"), 1)
+          )
+        ),
+        node(
+          invisible_node_name("other"),
+          rbind(
+            dsp(ADSL0$DRSCAT == "Other", row.name = "Other"),
+            indent(dsp(ADSL0$TRTDRS, subset = ADSL0$DRSCAT \%in\% "Other"), 1)
+          )
+        )
+      )
+    )
+  )
+)
+to_rtable(treatment_section_tree)
+
+to_rtable(invisible_node(
+  name = "t_el_disp",
+  children = list(
+    node(
+      name = invisible_node_name("Study status"),
+      content = rbind(
+        dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
+        dsp(ADSL0$STUDONS == "Alive: In Follow-up", row.name = "Alive: In follow-up")
+      ),
+      children = list(
+        node(
+          name = invisible_node_name("Reasons for study discontinuation (using capital N)"),
+          rbind(
+            dsp(ADSL0$DISSTDFL == "Y",  row.name = "Discontinued study"),
+            indent(dsp(as.factor(ADSL0$STDDRS)), 1)
+          )
+        ),
+        node(
+          name = "Reasons for study discontinuation (using small n)",
+          content = t_el_disposition(
+            as.factor(ADSL0$STDDRS),
+            col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+            denominator = "n"
+          )
+        )
+      )
+    ),
+    treatment_section_tree
+  )
+))
 }

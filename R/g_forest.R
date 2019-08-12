@@ -1,3 +1,6 @@
+# todo: Not yet working because t_forest_tte.R not yet changed, uncomment once it is implemented
+
+# nolintr start
 #' Create a Forest Plot based on a Table
 #'
 #' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
@@ -36,8 +39,8 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- cadsl
-#' ADTTE <- cadtte
+#' ADSL <- radsl(cached = TRUE)
+#' ADTTE <- radtte(ADSL, cached = TRUE)
 #'
 #' ADTTE_f <- ADTTE %>%
 #'   dplyr::filter(PARAMCD == "OS" & ARMCD %in% c("ARM B", "ARM A")) %>%
@@ -47,7 +50,7 @@
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = ADTTE_f$ARMCD,
-#'   group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
+#'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
 #'   ties = "exact",
 #'   dense_header = TRUE
 #' )
@@ -66,8 +69,8 @@
 #'
 #' # For response table
 #'
-#' ADSL <- cadsl
-#' ADRS <- cadrs
+#' ADSL <- radsl(cached = TRUE)
+#' ADRS <- radrs(ADSL, cached = TRUE)
 #'
 #' ADRS_f <- ADRS %>%
 #'   dplyr::filter(PARAMCD == "OVRINV" & ARMCD %in% c("ARM A","ARM B")) %>%
@@ -76,7 +79,7 @@
 #' tbl <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = factor(ADRS_f$ARM),
-#'   group_data = ADRS_f[, c("SEX", "RACE")]
+#'   row_by_list = ADRS_f[, c("SEX", "RACE")]
 #' )
 #'
 #' tbl
@@ -92,7 +95,7 @@
 #'   x_at = c(.1, 1, 10)
 #' )
 #'
-#' # Works with any \code{rtable}
+#' # Works with any rtable
 #'
 #' tbl <- rtable(
 #'   header = c("E", "CI"),
@@ -137,7 +140,7 @@ g_forest <- function(tbl,
                      newpage = TRUE) {
 
 
-  stopifnot(is(tbl, "rtable"))
+  stopifnot(is(tbl, "rtable")) #todo: treat empty rtable
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -537,7 +540,7 @@ forest_viewport <- function(tbl,
                             gap_header = unit(1, "lines")) {
 
   stopifnot(
-    is(tbl, "rtable"),
+    is(tbl, "rtable"), #todo: treat empty rtable
     is.null(width_row_names) || is.unit(width_row_names),
     is.null(width_columns) || is.unit(width_columns),
     is.unit(width_forest)
@@ -631,8 +634,8 @@ forest_viewport <- function(tbl,
     parent = viewport(
       name = "vp_table_layout",
       layout = grid.layout(
-      nrow = 3, ncol = 1,
-      heights = unit.c(height_header, gap_column, height_body))
+        nrow = 3, ncol = 1,
+        heights = unit.c(height_header, gap_column, height_body))
     ),
     children = vpList(
       vp_forest_table_part(nr_h, nc_g, 1, 1, widths, height_header_rows, "vp_header"),
@@ -665,3 +668,4 @@ vp_forest_table_part <- function(nrow, ncol, l_row, l_col, widths, heights, name
 grid.forest <- function(...) { # nolint
   grid.draw(forest_grob(...))
 }
+# nolintr end

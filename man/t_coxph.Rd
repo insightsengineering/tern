@@ -37,6 +37,8 @@ fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RA
 tbl <- t_coxph(fit_coxph)
 tbl
 }
+
+#todo: may add space in the table by summary: e.g. "B: Placebo" -> "ARM B: Placebo"
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

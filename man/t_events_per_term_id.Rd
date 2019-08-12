@@ -4,32 +4,32 @@
 \alias{t_events_per_term_id}
 \title{Basic Events Table}
 \usage{
-t_events_per_term_id(terms, id, col_by, col_N, total = "All Patients",
-  event_type = "event")
+t_events_per_term_id(terms, id, col_by, col_N = NULL, total = NULL,
+  event_type = "event", table_tree = FALSE)
 }
 \arguments{
-\item{terms}{character or factor vector, or dataframe to represent events information;
-Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
-For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
-column should be lower level term.
-\code{var_relabel} is used as the character string used as a label in the column header
-for each term.}
+\item{terms}{character or factor vector, or \code{data.frame} to represent events information; Currently \code{terms}
+can only be a vector or dataframe with 1 or 2 columns. For \code{terms} with 2 columns, 1st column should represent
+higher level term and 2nd column should be lower level term. \code{var_relabel} is used as the character string
+used as a label in the column header for each term.}
 
-\item{id}{vector of subject identifier. Length of \code{id} must be the same as the
-length or number of rows of \code{terms}.}
+\item{id}{vector of subject identifier. Length of \code{id} must be the same as the length or number of rows of
+\code{terms}.}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{numeric vector with information of the number of patients in the
-levels of \code{col_by}. This is useful if there are patients that have no
-adverse events can be accounted for with this argument.}
+\item{col_N}{numeric vector with information of the number of patients in the levels of \code{col_by}. This is useful
+if there are patients that have no adverse events can be accounted for with this argument.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{event_type}{type of event that is summarized (e.g. adverse event,
-treatment). Default is "event".}
+\item{event_type}{type of event that is summarized (e.g. adverse event, treatment). Default is "event".}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link{rtable}} object.
@@ -38,6 +38,8 @@ an \code{\link{rtable}} object.
 This function summarizes number of unique subjects with events and total number of events.
 It creates basic summary of events and can be used for any events data like Adverse Events,
 concomitant medication, medical history, etc.
+}
+\details{
 Implementation examples are to apply \code{t_events_per_term_id} on Adverse Event data
 to create Adverse Events summary table
 (\code{AET02},
@@ -49,8 +51,8 @@ or apply on Concomitant Medication data to create Concomitant Treatment summary 
 \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_cmt01.html#example-report-outputs-cmt01-cmt01}{
 STREAM2.x},
 \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027342}{STREAM1.17}).
-}
-\details{
+
+
 \code{t_events_per_term_id} includes percentages based on the total number of subjects
 in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly specified to
 get N for percentage calculation from either events dataset or additional dataset such as
@@ -66,9 +68,35 @@ e.g. if any terms are missing. Impute missing values before using \code{t_events
  reported higher level term to the least frequent one. Within each group of higher level term,
  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
  alphabetical order.
+
+\if{html}{
+
+The data is split and table functions are applied to leaf nodes as follows:
+
+\figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
+}
 }
 \examples{
+
 library(dplyr)
+library(purrr)
+
+t_events_per_term_id(
+ terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
+)
+
+t_events_per_term_id(
+ terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10)
+)
+
+
 library(random.cdisc.data)
 
 ADSL <- radsl(10, seed = 1)
@@ -79,16 +107,14 @@ t_events_per_term_id(
   id = ADAE$USUBJID,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  total = NULL,
   event_type = "adverse event"
 )
 
 t_events_per_term_id(
   terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM,
-  col_N = table(ADSL$ARM),
-  total = "All Patients",
+  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
+  col_N = col_N_add_total(table(ADSL$ARM)),
   event_type = "adverse event"
 )
 
@@ -100,8 +126,8 @@ t_events_per_term_id(
   total = "All Patients"
 )
 
-ADSL <- radsl(10, seed = 1)
-ADCM <- radcm(ADSL, 5, seed = 4)
+ADSL <- cadsl
+ADCM <- cadcm
 ADCM <- ADCM \%>\%
   dplyr::filter(ATIREL == "CONCOMITANT")
 
@@ -113,10 +139,45 @@ t_events_per_term_id(
   total = "All Patients",
   event_type = "treatment"
 )
+
+
+# Table Tree
+
+summary(t_events_per_term_id(
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  table_tree = TRUE
+))
+
+
+tbls <- t_events_per_term_id(
+ terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ table_tree = TRUE
+)
+summary(tbls)
+
+
+tbls <- t_events_per_term_id(
+  terms = ADAE[, c("AEBODSYS", "AEDECOD")],
+  id = ADAE$USUBJID,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  table_tree = TRUE
+)
+summary(tbls)
+tbls[[1]]
+tbls[['cl A']]
 }
 \seealso{
-\code{\link{t_count_unique}}, \code{\link{t_events_summary}},
-  \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+\code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},
+  \code{\link{t_events_per_term_grade_id}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

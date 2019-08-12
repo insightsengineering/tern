@@ -4,19 +4,24 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, col_N = table(col_by),
-  total = NULL, ...)
+\method{t_summary}{numeric}(x, col_by, col_N = NULL, total = NULL,
+  f_numeric = c("count_n", "mean_sd", "median", "range"), ...)
 }
 \arguments{
 \item{x}{numeric variable}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
+
+\item{f_numeric}{a combination of the analysis fuctions to be evaluated \code{"count_n", "mean_sd", "median",
+"q1_q3", "range"}}
 
 \item{...}{arguments passed on to methods}
 }
@@ -28,17 +33,24 @@ Tabulate the number of non-missing observations, mean, sd, median, and range
 for different groups.
 }
 \examples{
+library(dplyr)
+
 # with iris data
 t_summary(iris$Sepal.Length, iris$Species)
 
 library(random.cdisc.data)
+library(rtables)
 ADSL <- cadsl
 
 t_summary(ADSL$AGE, ADSL$ARM)
-t_summary(ADSL$AGE, ADSL$ARM, total = "All")
+t_summary(ADSL$AGE, col_by = by_add_total(col_by_to_matrix(ADSL$ARM), label = "All"))
+t_summary(ADSL$AGE, col_by = ADSL$ARM \%>\% by_add_total("All"))
 
 ADSL$AGE[1:10] <- NA
-t_summary(ADSL$AGE, no_by("All"), col_N = nrow(ADSL) )
+t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
+
+
+
 }
 \seealso{
 \code{\link{t_summary}},

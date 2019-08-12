@@ -4,20 +4,22 @@
 \alias{t_summary.logical}
 \title{Summarize Boolean Data}
 \usage{
-\method{t_summary}{logical}(x, col_by, col_N = table(col_by),
+\method{t_summary}{logical}(x, col_by, col_N = get_N(col_by),
   total = NULL, row_name_true = "TRUE", row_name_false = "FALSE",
   ...)
 }
 \arguments{
 \item{x}{a logical vector}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{row_name_true}{character string with row.name for TRUE summary}
 
@@ -29,6 +31,8 @@ first \code{level} indicates the reference group.}
 Boolean data will be converted to factor
 }
 \examples{
+library(dplyr)
+
 t_summary(
  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
  col_by = factor(LETTERS[c(1,1,1,2,2,3,3,2)])
@@ -40,7 +44,7 @@ ADSL <- cadsl
 ADSL$AGE[1:10] <- NA
 
 with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
-with(ADSL, t_summary(AGE > 65, ARM, denominator = "N", total = "All", useNA = "ifany",
+with(ADSL, t_summary(AGE > 65, ARM \%>\% by_add_total("All"), denominator = "N", useNA = "ifany",
                      row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 }
 \seealso{

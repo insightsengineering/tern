@@ -31,7 +31,7 @@ check_same_n <- function(..., omit_null = TRUE) {
 
   if (length(unique(n)) > 1) {
     sel <- which(n != n[1])
-    stop("dimension missmatch:", paste(names(n)[sel], collapse = ", "), " do not have N=", n[1])
+    stop("dimension mismatch:", paste(names(n)[sel], collapse = ", "), " do not have N=", n[1])
   }
 
   TRUE
@@ -77,22 +77,61 @@ check_data_frame <- function(x, allow_missing = FALSE) {
   TRUE
 }
 
-# if total is non-null then it can not be in the levels of col_by
-check_col_by <- function(col_by,
-                         col_N, # nolint
-                         min_num_levels = 2,
-                         total = NULL) {
-  stopifnot(
-    is.no_by(col_by) || is.factor(col_by),
-    !any(is.na(col_by)) && !("" %in% levels(col_by)),
-    length(col_N) == nlevels(col_by),
-    nlevels(col_by) >= min_num_levels,
-    is.null(total) || !(total %in% levels(col_by))
-  )
 
-  TRUE
+# todo: move to utils.nest once request is implemented
+all_true <- function(lst, fcn) {
+  all(vapply(lst, fcn, TRUE))
+}
+is.logical.vector_modif <- function(x, min_size = 1) {
+  !is.null(x) &&
+    is.atomic(x) &&
+    length(x) >= min_size &&
+    all_true(x, utils.nest::is.logical.single)
 }
 
+# checks col_by and col_N to be consistent
+# col_by must be a matrix of booleans
+# checks that there are no empty levels and at least a specified number of levels
+check_col_by <- function(x,
+                         col_by,
+                         col_N, # nolint
+                         min_num_levels = 2) {
+  stopifnot(is.data.frame(col_by))
+
+  if (is.data.frame(x)) {
+    stopifnot(nrow(col_by) == nrow(x))
+  } else {
+    stopifnot(nrow(col_by) == length(x))
+  }
+
+  stopifnot(
+    ncol(col_by) >= min_num_levels,
+    length(col_N) == ncol(col_by),
+    all(vapply(col_by, function(col) is.logical.vector_modif(col, min_size = 0), logical(1))),
+    !any(is.na(col_by)) && !("" %in% colnames(col_by))
+  )
+
+  invisible(NULL)
+}
+
+check_col_by_factor <- function(x,
+                                col_by,
+                                col_N, # nolint
+                                min_num_levels = 2) {
+  stopifnot(
+    is.factor(col_by),
+    !any(is.na(col_by)) && !("" %in% levels(col_by)),
+    length(col_N) == nlevels(col_by),
+    nlevels(col_by) >= min_num_levels
+  )
+  if (is.data.frame(x)) {
+    stopifnot(nrow(col_by) == nrow(x))
+  } else {
+    stopifnot(nrow(col_by) == length(x))
+  }
+
+  invisible(NULL)
+}
 
 check_is_event <- function(x) {
   stopifnot(
@@ -100,7 +139,7 @@ check_is_event <- function(x) {
     !any(is.na(x))
   )
 
-  TRUE
+  invisible(NULL)
 }
 
 
@@ -113,8 +152,10 @@ check_is_factor <- function(x, allow_na = TRUE) {
     }
   }
 
-  TRUE
+  invisible(NULL)
 }
+
+
 
 
 check_is_numeric <- function(x, allow_na = TRUE) {
@@ -126,5 +167,5 @@ check_is_numeric <- function(x, allow_na = TRUE) {
     }
   }
 
-  TRUE
+  invisible(NULL)
 }

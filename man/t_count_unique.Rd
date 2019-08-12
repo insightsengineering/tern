@@ -4,24 +4,27 @@
 \alias{t_count_unique}
 \title{Count Unique Elements Per Cell}
 \usage{
-t_count_unique(x, col_by, col_N, na_rm = TRUE,
-  row_name = "number of unique elements", indent = 0)
+t_count_unique(x, col_by, col_N = NULL, total = NULL, na_rm = TRUE,
+  row_name = "number of unique elements")
 }
 \arguments{
 \item{x}{a vector}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{na_rm}{a logical value indicating whether \code{NA} values should be
 removed from \code{x} prior to counting the unique elements per cell.}
 
 \item{row_name}{a string with the row name to display in the summary table
 that is returned. Default is "number of unique elements."}
-
-\item{indent}{non-negative integer where 0 means that the row should not be indented}
 }
 \value{
 an \code{rtable}
@@ -42,13 +45,12 @@ t_count_unique(
  col_by = factor(c("A", "A", "B", "C", "C", "C")),
  col_N = c(2, 4, 10),
  row_name = "Unique Records",
- indent = 1,
  na_rm = FALSE
 )
 }
 \seealso{
-\code{\link{t_events_per_term_id}}, \code{\link{t_events_summary}},
-  \code{\link{lt_events_per_term_id_2}}, \code{\link{t_events_per_term_grade_id}}
+\code{\link{t_events_per_term_id}}, \code{\link{t_el_events_per_term_id}},
+  \code{\link{t_events_per_term_grade_id}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
