@@ -206,7 +206,8 @@ setMethod("basic_node_info", signature = "node", definition = function(x, index 
     )),
     Map(function(x, i) {
       basic_node_info(x, index = c(index, i))
-    }, x@children, seq_along(x@children))
+    },
+    x@children, seq_along(x@children))
   ))
 })
 

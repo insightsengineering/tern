@@ -69,10 +69,8 @@ NULL
 #' library(random.cdisc.data)
 #' library(purrr)
 #'
-#' # todo: below fix all occurrences of as_factor_keep_attributes in ADAE to return a factor
-#'
 #' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4, seed = 2)
+#' ADAE <- radae(ADSL, 4L, seed = 2)
 #'
 #' t_events_per_term_grade_id(
 #'   terms = ADAE$AEDECOD,
@@ -365,13 +363,12 @@ t_max_grade_per_id <- function(grade,
 #' @examples
 #' library(random.cdisc.data)
 #' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4, seed = 2)
+#' ADAE <- radae(ADSL, 4L, seed = 2)
 #' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
 #'
 #' @importFrom dplyr group_by summarise_all select
 #' @importFrom magrittr %>%
 check_id <- function(id, col_by) {
-  col_by_old <- col_by # for debugging
   col_by <- col_by_to_matrix(col_by)
   # remove total column if present
   col_by <- col_by[, !vapply(col_by, all, logical(1)), drop = FALSE]

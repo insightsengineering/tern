@@ -62,6 +62,7 @@
 #'
 #' ADSL <- radsl(seed = 1)
 #' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
+#' attr(ADSL$'FAKE Name > -1.3 Flag', "label") <- "dummy"
 #'
 #' ADRS <- radrs(ADSL, seed = 2)
 #' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%

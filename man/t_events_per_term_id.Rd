@@ -100,7 +100,7 @@ t_events_per_term_id(
 library(random.cdisc.data)
 
 ADSL <- radsl(10, seed = 1)
-ADAE <- radae(ADSL, 4, seed = 2)
+ADAE <- radae(ADSL, 4L, seed = 2)
 
 t_events_per_term_id(
   terms = ADAE$AEDECOD,

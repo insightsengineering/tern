@@ -20,7 +20,7 @@ several times as AVAL corresponds to several measures and there are >= 1 rows pe
 \examples{
 library(random.cdisc.data)
 ADSL <- radsl(10, seed = 1)
-ADAE <- radae(ADSL, 4, seed = 2)
+ADAE <- radae(ADSL, 4L, seed = 2)
 tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
 
 }

@@ -77,10 +77,8 @@ library(dplyr)
 library(random.cdisc.data)
 library(purrr)
 
-# todo: below fix all occurrences of as_factor_keep_attributes in ADAE to return a factor
-
 ADSL <- radsl(10, seed = 1)
-ADAE <- radae(ADSL, 4, seed = 2)
+ADAE <- radae(ADSL, 4L, seed = 2)
 
 t_events_per_term_grade_id(
   terms = ADAE$AEDECOD,

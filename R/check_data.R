@@ -25,7 +25,8 @@ check_same_n <- function(..., omit_null = TRUE) {
     } else {
       stop("data structure for ", name, "is currently not supported")
     }
-  }, dots, names(dots))
+  },
+  dots, names(dots))
 
   n <- na.omit(unlist(n_list))
 
@@ -60,13 +61,17 @@ check_data_frame <- function(x, allow_missing = FALSE) {
     }
 
     if (!allow_missing) {
-      is_missing <- vapply(x, function(var) {
-        if (is.numeric(var)) {
-          any(is.na(var))
-        } else {
-          any(is.na(var)) || any(var == "")
-        }
-      }, logical(1))
+      is_missing <- vapply(
+        x,
+        function(var) {
+          if (is.numeric(var)) {
+            any(is.na(var))
+          } else {
+            any(is.na(var)) || any(var == "")
+          }
+        },
+        logical(1)
+      )
 
       if (any(is_missing)) {
         stop(xname, " can not have any missing values (NA or '')")

@@ -4,12 +4,16 @@
 \alias{t_coxph}
 \title{Proportional Hazards Regression Model Fit Summary Table}
 \usage{
-t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model")
+t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model",
+  pval_method = "wald")
 }
 \arguments{
 \item{fit_coxph}{a class \code{\link{survival}{coxph}} object.}
 
 \item{info_coxph}{label information for Cox PH model.}
+
+\item{pval_method}{the method used to calculate the p-value,
+should be one of "wald", "logrank", "likelihood"}
 }
 \description{
 An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
@@ -37,8 +41,6 @@ fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RA
 tbl <- t_coxph(fit_coxph)
 tbl
 }
-
-#todo: may add space in the table by summary: e.g. "B: Placebo" -> "ARM B: Placebo"
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}
