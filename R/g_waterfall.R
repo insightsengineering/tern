@@ -32,7 +32,7 @@
 #'
 #' ADRS <- cadrs
 #' ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") %>%
-#'   mutate(pchg = rnorm(1200, 10, 50))
+#'   mutate(pchg = rnorm(n(), 10, 50))
 #'
 #' ADRS_f <- head(ADRS_f, 30)
 #' ADRS_f <- ADRS_f[!duplicated(ADRS_f$USUBJID),]
