@@ -4,7 +4,7 @@
 \alias{t_summary_true}
 \title{Summarize the TRUE Counts}
 \usage{
-t_summary_true(x, col_by, col_N = get_N(col_by), total = NULL,
+t_summary_true(x, col_by, col_N = NULL, total = NULL,
   row_name = deparse(substitute(x)), denominator = c("N", "n", "omit"))
 }
 \arguments{

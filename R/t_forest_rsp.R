@@ -93,6 +93,7 @@
 #' )
 #' summary(tbls)
 #'
+#' # todo: remove as_factor_keep_attributes above
 t_forest_rsp <- function(rsp,
                          col_by,
                          row_by_list = NULL,
@@ -100,7 +101,11 @@ t_forest_rsp <- function(rsp,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
-  stopifnot(is.logical(rsp), is.null(total) || is.character.single(total))
+  stopifnot(
+    is.logical(rsp),
+    is.null(total) || is.character.single(total),
+    is.list(row_by_list)
+  )
   do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), row_by_list))
 
   row_by_list <-  row_by_list %>% map(na_as_level)
@@ -108,18 +113,20 @@ t_forest_rsp <- function(rsp,
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
-  df <- data.frame(rsp = rsp, col_by = col_by)
+  # cannot be a data.frame as col_by may be a matrix
+  df <- list(rsp = rsp, col_by = col_by)
 
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
-  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0))
+  # nested structure, e.g. list dfs$SEX$M -> tree accessed like dfs[['SEX']][['M']]
+  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0), max_depth = 1)
 
   if (!is.null(total)) {
-    data_tree@children <- c(list(node(total, df)), data_tree@children)
+    data_tree@children <- c(list(node(name = total, content = df)), data_tree@children)
   }
 
-  tree <- rapply_tree(data_tree, function(name, content, path) {
-    if (is.data.frame(content)) {
+  tree <- rapply_tree(data_tree, function(name, content, ...) {
+    if (!is.null(content)) {
       list(
         name = invisible_node_name(name),
         content = t_el_forest_rsp(
@@ -130,6 +137,7 @@ t_forest_rsp <- function(rsp,
         )
       )
     } else {
+      # data_tree has empty nodes except for leaf nodes
       list(name = name, content = NULL)
     }
   })

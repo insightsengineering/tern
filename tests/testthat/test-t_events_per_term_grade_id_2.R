@@ -1,3 +1,5 @@
+# The difference to the file test-t_events_per_term_grade_id_1.R is that terms has two levels here
+
 context("test adverse events sorted by highest NCI CTCAE grade (class and term)")
 
 library(dplyr)
@@ -106,6 +108,7 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
                     "AB12345-275992-2520";"B";"3";"GASTROINTESTINAL DISORDERS";"ASCITES"
                     "AB12345-275992-2520";"B";"1";"SKIN AND SUBCUTANEOUS TISSUE DISORDERS";"DERMATITIS ACNEIFORM"'
   )
+  anl$TRT02AN <- factor(anl$TRT02AN, levels = c("A", "B"))
 
   asl <- unique(anl[, c("USUBJID", "TRT02AN")])
 
@@ -213,11 +216,13 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
       AEDECOD = "MedDRA Preferred Term",
       AETOXGR = "NCI CTCAE Grade")
 
-  tbl <- t_events_per_term_grade_id(terms = anl %>% select(AEBODSYS, AEDECOD) %>% map(as_factor_keep_attributes),
+  tbl <- t_events_per_term_grade_id(terms = anl %>%
+                                      select(AEBODSYS, AEDECOD),
                                     id = anl$USUBJID,
                                     grade = anl$AETOXGR,
-                                    col_by = as.factor(anl$TRT02AN) %>% by_add_total("All Patients"),
-                                    col_N = col_N_add_total(table(asl$TRT02AN)),
+                                    col_by = anl$TRT02AN,
+                                    total = "All Patients",
+                                    col_N = table(asl$TRT02AN),
                                     grade_levels = 1:5)
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)

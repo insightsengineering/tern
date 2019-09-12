@@ -55,10 +55,8 @@ test_that("summary by visit table", {
     ungroup()
 
   pop <- unique(df[, c("ID", "Type")])
-  # table(pop$Type)
 
-  library(tidyr)
-  ANL <- gather(df, param, val, conc, uptake)
+  ANL <- tidyr::gather(df, param, val, conc, uptake) #nolintr
 
   tbls <- t_summary_by(
     x = ANL$val,
@@ -67,8 +65,5 @@ test_that("summary by visit table", {
     table_tree = TRUE
   )
 
-  #comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
-
   expect_true(TRUE, "t_summary_by does not provide the same results as stream")
-
 })

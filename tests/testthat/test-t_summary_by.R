@@ -50,7 +50,8 @@ test_that("t_summary_by categorical results are as expected", {
   tbl_tern <- t_summary_by(
     x = asl$SEX,
     row_by = asl$COUNTRY,
-    col_by = asl$ARMCD %>% by_add_total("ALL")
+    col_by = asl$ARMCD,
+    total = "ALL"
   )
 
   # nolint start
@@ -93,7 +94,8 @@ test_that("t_summary_by categorical results are as expected", {
   tbl_tern <- t_summary_by(
     x = asl$AGE,
     row_by = asl$COUNTRY,
-    col_by = asl$ARMCD %>% by_add_total("ALL")
+    col_by = asl$ARMCD,
+    total = "ALL"
   )
 
   # nolint start

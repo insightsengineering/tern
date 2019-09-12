@@ -46,7 +46,7 @@
 #'     ),
 #'     STDDRS = case_when(
 #'       COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS
-#'     ),
+#'     ) %>% as.factor,
 #'     DISSTDFL = case_when(
 #'       !is.na(STDDRS) ~ "Y"
 #'     ),
@@ -73,7 +73,8 @@
 #' t_el_disposition_indent <- function(..., indent = 0) indent(t_el_disposition(...), indent)
 #' dsp <- partial(
 #'   t_el_disposition_indent,
-#'   col_by = ADSL0$ARM %>% by_add_total("All Patients"),
+#'   col_by = ADSL0$ARM,
+#'   total = "All Patients",
 #'   denominator = "N"
 #' )
 #' # Only using rtables
@@ -82,12 +83,13 @@
 #'   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
 #'   dsp(ADSL0$STUDONS == "Alive: In Follow-up", row.name = "Alive: In follow-up"),
 #'   dsp(ADSL0$DISSTDFL == "Y",  row.name = "Discontinued study"),
-#'   dsp(as.factor(ADSL0$STDDRS), indent = 1),
+#'   dsp(ADSL0$STDDRS, indent = 1),
 #'   rrow(),
 #'   rrow("Show example of using n as denominator"),
 #'   indent(t_el_disposition(
-#'     as.factor(ADSL0$STDDRS),
-#'     col_by = ADSL0$ARM %>% by_add_total("All Patients"),
+#'     ADSL0$STDDRS,
+#'     col_by = ADSL0$ARM,
+#'     total = "All Patients",
 #'     denominator = "n"
 #'   ), 1),
 #'   rrow(),
@@ -164,14 +166,15 @@
 #'           name = invisible_node_name("Reasons for study discontinuation (using capital N)"),
 #'           rbind(
 #'             dsp(ADSL0$DISSTDFL == "Y",  row.name = "Discontinued study"),
-#'             indent(dsp(as.factor(ADSL0$STDDRS)), 1)
+#'             indent(dsp(ADSL0$STDDRS), 1)
 #'           )
 #'         ),
 #'         node(
 #'           name = "Reasons for study discontinuation (using small n)",
 #'           content = t_el_disposition(
-#'             as.factor(ADSL0$STDDRS),
-#'             col_by = ADSL0$ARM %>% by_add_total("All Patients"),
+#'             ADSL0$STDDRS,
+#'             col_by = ADSL0$ARM,
+#'             total = "All Patients",
 #'             denominator = "n"
 #'           )
 #'         )
@@ -182,10 +185,11 @@
 #' ))
 t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name = NULL, # nolint
                              subset = NULL, show_n = FALSE, # nolint
-                             useNA = c("no", "ifany", "always"), drop_levels = NULL, # nolint
-                             denominator = "N") { # nolint
+                             useNA = c("no", "ifany", "always"), # nolintr
+                             drop_levels = NULL,
+                             denominator = "N") {
 
-  useNA <- match.arg(useNA)
+  useNA <- match.arg(useNA) #nolintr
 
   # treat x and col_by
   if (!(is.atomic(x) & (is.factor(x) | is.logical(x)))) {
@@ -193,10 +197,10 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name
   }
 
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -225,7 +229,8 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name
       col_N = col_N,
       total = total,
       row_name_true = `if`(is.null(row.name), "TRUE", row.name),
-      useNA = useNA, drop_levels = drop_levels, # do not drop level since logical will only have levels TRUE and FALSE
+      useNA = useNA,  #nolintr
+      drop_levels = drop_levels, # do not drop level since logical will only have levels TRUE and FALSE
       denominator = denominator
     )[2, ]  # n row is not shown in disposition table
 
@@ -241,7 +246,8 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name
       col_by = col_by,
       col_N = col_N,
       total = total,
-      useNA = useNA, drop_levels = drop_levels,
+      useNA = useNA, #nolintr
+      drop_levels = drop_levels,
       denominator = denominator
     )
 

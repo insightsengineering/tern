@@ -48,12 +48,12 @@ t_summary(iris$Species, iris$Species)
 library(random.cdisc.data)
 ADSL <- cadsl
 
-t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"))
+t_summary(ADSL$SEX, ADSL$ARM, total = "All")
 t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 
 ADSL$SEX[1:10] <- NA
-t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"), denominator = "N", useNA = "ifany")
-t_summary(ADSL$SEX, ADSL$ARM \%>\% by_add_total("All"), denominator = "n", useNA = "no")
+t_summary(ADSL$SEX, ADSL$ARM, total = "All", denominator = "N", useNA = "ifany")
+t_summary(ADSL$SEX, ADSL$ARM, total = "All", denominator = "n", useNA = "no")
 }
 \seealso{
 \code{\link{t_summary}},

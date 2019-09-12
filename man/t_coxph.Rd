@@ -35,7 +35,7 @@ ADSL$RACE <- factor(
 ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 \donttest{
-fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RACE),
+fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1 - CNSR) ~ ARM + strata(RACE),
   data = ADTTE_f, ties = "exact"
 )
 tbl <- t_coxph(fit_coxph)

@@ -42,14 +42,12 @@ Every variable in \code{x} will be mapped to a summary table using
 library(random.cdisc.data)
 library(dplyr)
 
-# with iris data
-t_summary(iris$Sepal.Length, iris$Species)
-
 # with CDISC like data
 ADSL <- radsl(cached = TRUE)
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+# or
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"))
 
 # Special Variants
@@ -61,8 +59,8 @@ ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
 # control categorical order
 ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"))
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
   useNA = 'always')
 
 # use different col_by
@@ -77,9 +75,9 @@ t_summary(
 
 # With Missing Data
 ADSL$SEX[1:10] <- NA
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
   useNA = 'ifany')
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"),
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
   denominator = "N", useNA = 'ifany')
 
 

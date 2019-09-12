@@ -34,7 +34,7 @@ t_summary(tenweeks, by_all("all"), length(tenweeks))
 
 t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 
-t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]) \%>\% by_add_total("All"))
+t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
 }
 \seealso{
 \code{\link{t_summary}},

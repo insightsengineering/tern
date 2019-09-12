@@ -17,7 +17,7 @@ node(name, content, children = list(), format_data = list())
 \item{children}{children of node}
 
 \item{format_data}{format data for conversion with \code{\link{to_rtable}},
-\code{list(gap_to_children, children_gap, children_indent, content_indent)},
+\code{list(gap_to_children, children_gap, children_indent, content_indent, left_header)},
 default values if not all given, see that function}
 }
 \value{
@@ -36,7 +36,10 @@ See the class node for more info about parameters.
 Use the function \code{\link{node}} to create objects of this class.
 
 Note: changing the names of the children after calling this function will cause the children list names
-to be no longer in-sync. (or should accessor update child names??)
+to be no longer in-sync because assignment via the \code{@} operator does not check whether the new object is valid,
+e.g. names of children nodes agree with names in children list.
+Ideally, we should define functions like setChildren and getChildren, but this seems to clutter the code.
+Temporarily, we always reassign children names when accessing via \code{`[[`}.
 }
 \section{Slots}{
 

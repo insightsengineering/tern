@@ -124,26 +124,29 @@ t_events_per_term_grade_id <- function(terms,
     terms <- list(terms)
   }
   stopifnot(is.list(terms))
-  terms <- lapply(terms, as_factor_keep_attributes)
+  stopifnot(is.null(total) || is.character.single(total))
 
   col_by <- col_by_to_matrix(col_by, x = id)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
 
-  tree <- rsplit_to_tree(
+  # First create a tree to distribute information splitting by terms, we will then use rapply_tree to operate based on
+  # this info.
+  terms <- lapply(terms, as_factor_keep_attributes) # removes class attributes
+  tree_data <- rsplit_to_tree(
     list(grade = grade, id = id, col_by = col_by),
-    terms
+    by_lst = terms
   )
-  tree@name <- "- Any adverse events -"
-  tree@format_data$children_indent <- 0
+  tree_data@name <- "- Any adverse events -"
+  tree_data@format_data$children_indent <- 0
 
   tree <- rapply_tree(
-    tree,
-    function(name, content, path) {
+    tree_data,
+    function(name, content, ...) {
       list(name = name, content = t_max_grade_per_id(
         grade = content$grade,
         id = content$id,
@@ -159,7 +162,7 @@ t_events_per_term_grade_id <- function(terms,
   tree <- rsort_tree(
     tree,
     function(node) {
-      # we sort by the numberbecause the first column is the overall grade level
+      # we sort by the number of events and ignore the first column because it is the overall grade level
       order(vapply(
         node@children,
         function(child) {
@@ -171,6 +174,7 @@ t_events_per_term_grade_id <- function(terms,
     }
   )
 
+  # make the leaf node names invisible and add this name as the first row.name of the leaf content
   tree <- full_apply_at_depth(
     tree,
     function(node) {
@@ -182,6 +186,8 @@ t_events_per_term_grade_id <- function(terms,
     depth = length(terms)
   )
 
+  #todo: this may require recursive application, not just at this depth
+  # Change first row.name to "Overall"
   tree <- full_apply_at_depth(
     tree,
     function(node) {
@@ -191,7 +197,7 @@ t_events_per_term_grade_id <- function(terms,
     depth = length(terms) - 1
   )
 
-
+  # change formatting when the terms is not recursive (list length >= 2)
   if (length(terms) == 1) {
     tree@name <- invisible_node_name(tree@name)
     tree@format_data <- node_format_data(content_indent = 0)
@@ -199,6 +205,7 @@ t_events_per_term_grade_id <- function(terms,
     row.names(tree@content) <- c("- Overall -", row.names(tree@content)[-1])
   }
 
+  #tree@format_data[["left_header"]] <- do.call(rheader, lapply(terms, label))
 
   if (table_tree) {
     tree
@@ -281,13 +288,14 @@ t_max_grade_per_id <- function(grade,
                                total = NULL,
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
+  stopifnot(is.null(total) || is.character.single(total))
   stopifnot(is.numeric(grade))
   stopifnot(!any(is.na(id)))
   col_by <- col_by_to_matrix(col_by, grade)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(grade, col_by, col_N, min_num_levels = 1)
@@ -314,9 +322,9 @@ t_max_grade_per_id <- function(grade,
       }
     },
     col_by,
-    names(col_by)
+    colnames(col_by)
   )))
-  df_max$col_by <- factor(df_max$col_by, names(col_by))
+  df_max$col_by <- factor(df_max$col_by, colnames(col_by))
   # when col_by is a factor and not a general matrix, the equivalent call is
   # col_by <- col_by_to_factor(col_by) #nolintr
   # df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE) #nolintr
@@ -378,7 +386,10 @@ check_id <- function(id, col_by) {
   # for each id, count number of appearances in each column of col_by, then check
   # that each id appears in at most one column of col_by (possibly several times)
   ids_in_at_most_one_col_by <- all(rowSums((
-    data.frame(id = id, col_by) %>% group_by(.data$id) %>% summarise_all(sum) %>% select(-id)
+    data.frame(id = id, col_by) %>%
+      group_by(.data$id) %>%
+      summarise_all(sum) %>%
+      select(-id)
   ) > 0) <= 1)
   if (!ids_in_at_most_one_col_by) {
     stop("Patient appears in multiple col_by columns/ARMs (excluding total column)")

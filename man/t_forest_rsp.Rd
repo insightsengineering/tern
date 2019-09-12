@@ -107,6 +107,7 @@ tbls <- t_forest_rsp(
 )
 summary(tbls)
 
+# todo: remove as_factor_keep_attributes above
 }
 \seealso{
 \code{\link{t_el_forest_rsp}}, \code{\link{t_rsp}}

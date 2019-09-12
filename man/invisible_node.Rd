@@ -4,8 +4,8 @@
 \alias{invisible_node}
 \title{Creates an invisible node with NULL content and invisible name}
 \usage{
-invisible_node(children, name = invisible_node_name("root"),
-  content = NULL, format_data = NULL)
+invisible_node(children, name = "root", content = NULL,
+  format_data = NULL)
 }
 \arguments{
 \item{children}{children of node}
@@ -20,7 +20,7 @@ invisible_node(children, name = invisible_node_name("root"),
 node
 }
 \description{
-Creates an invisible node with NULL content and invisible name
+The name of the created node is \code{invisible_node_name(name)}.
 }
 \examples{
 n11 <- node(name = "A", content = array(c(1:6), dim = c(2,3)), children = list())

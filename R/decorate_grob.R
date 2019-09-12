@@ -51,8 +51,8 @@
 #' footnotes <- c(
 #'   "The species are Iris setosa, versicolor, and virginica.",
 #'   paste(
-#'   "iris is a data frame with 150 cases (rows) and 5 variables (columns) named",
-#'   "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
+#'     "iris is a data frame with 150 cases (rows) and 5 variables (columns) named",
+#'     "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
 #'   )
 #' )
 #'
@@ -76,11 +76,12 @@
 #'     yaxisGrob(),
 #'     textGrob("Sepal.Length", y = unit(-4, "lines")),
 #'     textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
-#'     pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col=iris$Species), pch=16)
+#'     pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col = iris$Species), pch = 16)
 #'   ),
 #'   vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
 #' )
-#' grid.newpage(); grid.draw(p)
+#' grid.newpage()
+#' grid.draw(p)
 #'
 #' grid.newpage()
 #' grid.draw(
@@ -102,7 +103,7 @@
 #'     grob = p,
 #'     titles = titles,
 #'     footnotes = footnotes,
-#'     page =  "Page 6 of 129"
+#'     page = "Page 6 of 129"
 #'   )
 #' )
 #'
@@ -134,7 +135,6 @@ decorate_grob <- function(grob,
                           name = NULL,
                           gp = gpar(),
                           vp = NULL) {
-
   st_titles <- split_text_grob(
     titles,
     x = 0, y = 1,
@@ -247,7 +247,6 @@ heightDetails.decoratedGrob <- function(x) { # nolint
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
 split_string <- function(text, width) {
-
   availwidth <- convertWidth(width, "in", valueOnly = TRUE)
   textwidth <- convertWidth(stringWidth(text), "in", valueOnly = TRUE)
   strings <- strsplit(text, " ")[[1]]
@@ -310,7 +309,7 @@ split_string <- function(text, width) {
 #' grid.draw(sg)
 #'
 #' grid.rect(
-#'  height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
+#'   height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 #' )
 #'
 #' # stack split_text_grob
@@ -332,7 +331,6 @@ split_text_grob <- function(text,
                             name = NULL,
                             gp = gpar(),
                             vp = NULL) {
-
   if (!is.unit(x)) {
     x <- unit(x, default.units)
   }
@@ -344,7 +342,7 @@ split_text_grob <- function(text,
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!is(width, "unit.arithmetic") &&
-      attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts", "dida", "cicero", "scaledpts")) {
+    attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts", "dida", "cicero", "scaledpts")) {
     attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
   }
 
@@ -423,11 +421,10 @@ drawDetails.splitText <- function(x, recording) { # nolint
 #'   npages = 3
 #' )
 #'
-#' grid.newpage(); grid.draw(pf(NULL))
-#' grid.newpage(); grid.draw(pf(NULL))
-#' grid.newpage(); grid.draw(pf(NULL))
+#' draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
+#' draw_grob(pf(NULL))
 decorate_grob_factory <- function(npages, ...) {
-
   current_page <- 0
   function(grob) {
     current_page <<- current_page + 1
@@ -453,18 +450,18 @@ decorate_grob_factory <- function(npages, ...) {
 #' @examples
 #' g <- with(iris, {
 #'   list(
-#'     ggplotGrob(qplot(Sepal.Length, Sepal.Width, col=Species)),
-#'     ggplotGrob(qplot(Sepal.Length, Petal.Length, col=Species)),
-#'     ggplotGrob(qplot(Sepal.Length, Petal.Width, col=Species)),
-#'     ggplotGrob(qplot(Sepal.Width, Petal.Length, col=Species)),
-#'     ggplotGrob(qplot(Sepal.Width, Petal.Width, col=Species)),
-#'     ggplotGrob(qplot(Petal.Length, Petal.Width, col=Species))
+#'     ggplotGrob(qplot(Sepal.Length, Sepal.Width, col = Species)),
+#'     ggplotGrob(qplot(Sepal.Length, Petal.Length, col = Species)),
+#'     ggplotGrob(qplot(Sepal.Length, Petal.Width, col = Species)),
+#'     ggplotGrob(qplot(Sepal.Width, Petal.Length, col = Species)),
+#'     ggplotGrob(qplot(Sepal.Width, Petal.Width, col = Species)),
+#'     ggplotGrob(qplot(Petal.Length, Petal.Width, col = Species))
 #'   )
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
-#' grid.newpage(); grid.draw(lg[[1]])
-#' grid.newpage(); grid.draw(lg[[2]])
-#' grid.newpage(); grid.draw(lg[[6]])
+#' draw_grob(lg[[1]])
+#' draw_grob(lg[[2]])
+#' draw_grob(lg[[6]])
 decorate_grob_set <- function(grobs, ...) {
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)

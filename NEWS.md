@@ -13,6 +13,7 @@
     - `get_N`, `col_N_add_total`, `check_id`
     - `na_as_level`
     - `as_factor_keep_attributes`
+    - `r_by`
 
 * New TLGs:
     - disposition elementary table `t_el_disposition`

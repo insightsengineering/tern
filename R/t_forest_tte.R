@@ -113,13 +113,13 @@ t_forest_tte <- function(tte,
 
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
-  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0))
+  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0), max_depth = 2)
 
   if (!is.null(total)) {
     data_tree@children <- c(list(node(total, df)), data_tree@children)
   }
 
-  tree <- rapply_tree(data_tree, function(name, content, path) {
+  tree <- rapply_tree(data_tree, function(name, content, ...) {
     if (is.data.frame(content)) {
       list(
         name = invisible_node_name(name),
@@ -189,7 +189,7 @@ t_forest_tte <- function(tte,
 t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
                             time_unit = "month", row_name = "", dense_header = TRUE) {
 
-  #col_by <- col_by_to_factor(col_by)
+  #todo: adapt to matrix col_by
   stopifnot(is.factor(col_by))
   check_same_n(tte = tte, is_event = is_event, col_by = col_by)
 

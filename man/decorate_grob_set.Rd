@@ -17,18 +17,18 @@ this uses the decorate_grob_factory
 \examples{
 g <- with(iris, {
   list(
-    ggplotGrob(qplot(Sepal.Length, Sepal.Width, col=Species)),
-    ggplotGrob(qplot(Sepal.Length, Petal.Length, col=Species)),
-    ggplotGrob(qplot(Sepal.Length, Petal.Width, col=Species)),
-    ggplotGrob(qplot(Sepal.Width, Petal.Length, col=Species)),
-    ggplotGrob(qplot(Sepal.Width, Petal.Width, col=Species)),
-    ggplotGrob(qplot(Petal.Length, Petal.Width, col=Species))
+    ggplotGrob(qplot(Sepal.Length, Sepal.Width, col = Species)),
+    ggplotGrob(qplot(Sepal.Length, Petal.Length, col = Species)),
+    ggplotGrob(qplot(Sepal.Length, Petal.Width, col = Species)),
+    ggplotGrob(qplot(Sepal.Width, Petal.Length, col = Species)),
+    ggplotGrob(qplot(Sepal.Width, Petal.Width, col = Species)),
+    ggplotGrob(qplot(Petal.Length, Petal.Width, col = Species))
   )
 })
 lg <- decorate_grob_set(grobs = g, titles = "Hello\\nOne\\nTwo\\nThree", footnotes = "")
-grid.newpage(); grid.draw(lg[[1]])
-grid.newpage(); grid.draw(lg[[2]])
-grid.newpage(); grid.draw(lg[[6]])
+draw_grob(lg[[1]])
+draw_grob(lg[[2]])
+draw_grob(lg[[6]])
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

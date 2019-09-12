@@ -8,7 +8,6 @@
 #' @noRd
 #'
 check_same_n <- function(..., omit_null = TRUE) {
-
   dots <- list(...)
 
   n_list <- Map(function(x, name) {
@@ -52,7 +51,6 @@ check_same_n_l <- function(x) {
 #' @noRd
 #'
 check_data_frame <- function(x, allow_missing = FALSE) {
-
   xname <- deparse(substitute(x))
 
   if (!is.null(x)) {
@@ -102,6 +100,7 @@ check_col_by <- function(x,
                          col_N, # nolint
                          min_num_levels = 2) {
   stopifnot(is.data.frame(col_by))
+  stopifnot(is.numeric.vector(col_N))
 
   if (is.data.frame(x)) {
     stopifnot(nrow(col_by) == nrow(x))

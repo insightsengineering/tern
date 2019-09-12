@@ -75,7 +75,7 @@ ADSL0 <- ADSL \%>\%
     ),
     STDDRS = case_when(
       COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS
-    ),
+    ) \%>\% as.factor,
     DISSTDFL = case_when(
       !is.na(STDDRS) ~ "Y"
     ),
@@ -102,7 +102,8 @@ library(purrr)
 t_el_disposition_indent <- function(..., indent = 0) indent(t_el_disposition(...), indent)
 dsp <- partial(
   t_el_disposition_indent,
-  col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+  col_by = ADSL0$ARM,
+  total = "All Patients",
   denominator = "N"
 )
 # Only using rtables
@@ -111,12 +112,13 @@ rbind(
   dsp(ADSL0$COMPSTUD == "Y", row.name = "Completed study"),
   dsp(ADSL0$STUDONS == "Alive: In Follow-up", row.name = "Alive: In follow-up"),
   dsp(ADSL0$DISSTDFL == "Y",  row.name = "Discontinued study"),
-  dsp(as.factor(ADSL0$STDDRS), indent = 1),
+  dsp(ADSL0$STDDRS, indent = 1),
   rrow(),
   rrow("Show example of using n as denominator"),
   indent(t_el_disposition(
-    as.factor(ADSL0$STDDRS),
-    col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+    ADSL0$STDDRS,
+    col_by = ADSL0$ARM,
+    total = "All Patients",
     denominator = "n"
   ), 1),
   rrow(),
@@ -193,14 +195,15 @@ to_rtable(invisible_node(
           name = invisible_node_name("Reasons for study discontinuation (using capital N)"),
           rbind(
             dsp(ADSL0$DISSTDFL == "Y",  row.name = "Discontinued study"),
-            indent(dsp(as.factor(ADSL0$STDDRS)), 1)
+            indent(dsp(ADSL0$STDDRS), 1)
           )
         ),
         node(
           name = "Reasons for study discontinuation (using small n)",
           content = t_el_disposition(
-            as.factor(ADSL0$STDDRS),
-            col_by = ADSL0$ARM \%>\% by_add_total("All Patients"),
+            ADSL0$STDDRS,
+            col_by = ADSL0$ARM,
+            total = "All Patients",
             denominator = "n"
           )
         )

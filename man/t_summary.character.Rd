@@ -4,8 +4,8 @@
 \alias{t_summary.character}
 \title{Summarize Character Data}
 \usage{
-\method{t_summary}{character}(x, col_by, col_N = get_N(col_by),
-  total = NULL, ...)
+\method{t_summary}{character}(x, col_by, col_N = NULL, total = NULL,
+  ...)
 }
 \arguments{
 \item{x}{a character vector}

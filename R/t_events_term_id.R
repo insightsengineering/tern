@@ -105,8 +105,9 @@
 #' t_events_per_term_id(
 #'   terms = ADAE$AEDECOD,
 #'   id = ADAE$USUBJID,
-#'   col_by = ADAE$ARM %>% by_add_total("All Patients"),
-#'   col_N = col_N_add_total(table(ADSL$ARM)),
+#'   col_by = ADAE$ARM,
+#'   total = "All Patients",
+#'   col_N = table(ADSL$ARM),
 #'   event_type = "adverse event"
 #' )
 #'
@@ -179,12 +180,13 @@ t_events_per_term_id <- function(terms,
   }
   stopifnot(is.list(terms))
   terms <- lapply(terms, as_factor_keep_attributes)
+  stopifnot(is.null(total) || is.character.single(total))
 
   col_by <- col_by_to_matrix(col_by, x = id)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
 
@@ -194,9 +196,11 @@ t_events_per_term_id <- function(terms,
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
 
+  # First create a tree to distribute information splitting by terms, we will then use rappky_tree to operate based on
+  # this info.
   tree_data <- rsplit_to_tree(
     list(id = id, col_by = col_by),
-    terms,
+    by_lst = terms,
     drop_empty_levels = TRUE
   )
   tree_data@name <- paste0("- Any ", event_type, " -")
@@ -204,8 +208,8 @@ t_events_per_term_id <- function(terms,
 
   tree <- rapply_tree(
     tree_data,
-    function(name, content, path) {
-      if (length(path) == length(terms) + 1) {
+    function(name, content, path, is_leaf, ...) {
+      if (is_leaf) {
         # don't show everything for leaves
         # this is a hack as total_events row.name is name
         list(name = invisible_node_name(name), content = t_el_events_per_term_id(
@@ -235,15 +239,19 @@ t_events_per_term_id <- function(terms,
     function(node) {
       node@format_data <- list(children_gap = 0, gap_to_children = 0)
       if (length(node@children) > 0) {
-        i <- order_rtables(lapply(node@children, slot, "content"), indices = c(1, 0, 1), decreasing = TRUE)
-        node@children <- node@children[i]
+        ordered_indices <- order_rtables(
+          lapply(node@children, slot, "content"),
+          indices = c(1, 0, 1),
+          decreasing = TRUE
+        )
+        node@children <- node@children[ordered_indices]
       }
       node
     },
     depth = length(terms) - 1
   )
 
-  if (is.list(terms) && length(terms) == 1 || is.atomic(terms)) {
+  if (length(terms) == 1) {
     tree@format_data <- list(children_gap = 0, gap_to_children = 0)
     tree@name <- invisible_node_name("All")
   }
@@ -299,13 +307,13 @@ t_count_unique <- function(x,
                            total = NULL,
                            na_rm = TRUE,
                            row_name = "number of unique elements") {
-
+  stopifnot(is.null(total) || is.character.single(total))
   stopifnot(is.atomic(x)) # todo: is this enough?
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -362,16 +370,17 @@ t_count_unique <- function(x,
 #' #todo: rename subjects_with_events -> subjects_with_events_label
 t_el_events_per_term_id <- function(id,
                                     col_by,
-                                    col_N = NULL,
+                                    col_N = NULL, #nolintr
                                     total = NULL,
                                     total_events = "Total number of events",
                                     subjects_with_events = "Total number of patients with at least one adverse event") {
 
+  stopifnot(is.null(total) || is.character.single(total))
   col_by <- col_by_to_matrix(col_by, x = id)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x = id, col_by, col_N, min_num_levels = 1)

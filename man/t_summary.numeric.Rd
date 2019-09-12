@@ -43,11 +43,11 @@ library(rtables)
 ADSL <- cadsl
 
 t_summary(ADSL$AGE, ADSL$ARM)
-t_summary(ADSL$AGE, col_by = by_add_total(col_by_to_matrix(ADSL$ARM), label = "All"))
-t_summary(ADSL$AGE, col_by = ADSL$ARM \%>\% by_add_total("All"))
+t_summary(ADSL$AGE, col_by = col_by_to_matrix(ADSL$ARM), total = "All")
+t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
 
 ADSL$AGE[1:10] <- NA
-t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
+t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
 
 
 

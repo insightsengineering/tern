@@ -22,9 +22,38 @@
 #' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD, total = "All Patients")
 #'
 #' with(ADSL, t_summary(AGE > 65, ARMCD))
+#'
+#'
+#' # examples with hierarchical header
+#' library(dplyr)
+#' ADSL <- radsl(cached = TRUE)
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
+#' ADSL_f <- ADSL %>%
+#'   filter(SEX %in% c("M", "F")) %>% mutate(SEX = droplevels(SEX))
+#' t_summary(ADSL_f$SEX, col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
+#'
+#' t_summary(ADSL_f[, c("SEX", "AGE")], col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
+#'
+#' ADSL_f <- ADSL %>%
+#'   filter(SEX %in% c("M", "F"), RACE %in% c("ASIAN", "WHITE")) %>%
+#'   mutate(SEX = droplevels(SEX), RACE = droplevels(as.factor(RACE)))
+#' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$SEX, ADSL_f$RACE))
+#' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX))
+#'
+#' t_summary(
+#'   ADSL_f[, c("ITTFL", "BMRKR1", "BEP01FL")],
+#'   col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX)
+#' )
+#'
+#' # add total
+#' t_summary(
+#'   ADSL_f[, c("ITTFL", "BMRKR1", "BEP01FL")],
+#'   col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX),
+#'   total = "All"
+#' )
 t_summary <- function(x,
                       col_by,
-                      col_N = get_N(col_by), # nolint
+                      col_N = NULL, # nolint
                       total = NULL,
                       ...) {
   UseMethod("t_summary", x)
@@ -52,17 +81,18 @@ t_summary.default <- function(x, # nolint
                               col_N = NULL, # nolint
                               total = NULL,
                               ...) {
+  stopifnot(is.null(total) || is.character.single(total))
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
   tbl <- rtable(
-    header = colnames(col_by),
+    header = by_header(col_by),
     rrowl(paste("no t_summary method for class:", class(x)), lapply(colnames(col_by), function(x) rcell("-")))
   )
   header_add_N(tbl, col_N)
@@ -98,14 +128,12 @@ t_summary.default <- function(x, # nolint
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' # with iris data
-#' t_summary(iris$Sepal.Length, iris$Species)
-#'
 #' # with CDISC like data
 #' ADSL <- radsl(cached = TRUE)
 #'
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+#' # or
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"))
 #'
 #' # Special Variants
@@ -117,8 +145,8 @@ t_summary.default <- function(x, # nolint
 #' # control categorical order
 #' ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 #'
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"))
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
 #'   useNA = 'always')
 #'
 #' # use different col_by
@@ -133,9 +161,9 @@ t_summary.default <- function(x, # nolint
 #'
 #' # With Missing Data
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
 #'   useNA = 'ifany')
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"),
+#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
 #'   denominator = "N", useNA = 'ifany')
 #'
 #'
@@ -150,12 +178,12 @@ t_summary.data.frame <- function(x, # nolint
                                  total = NULL,
                                  ...,
                                  table_tree = FALSE) {
-
+  stopifnot(is.null(total) || is.character.single(total))
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -206,39 +234,39 @@ t_summary.data.frame <- function(x, # nolint
 #' ADSL <- cadsl
 #'
 #' t_summary(ADSL$AGE, ADSL$ARM)
-#' t_summary(ADSL$AGE, col_by = by_add_total(col_by_to_matrix(ADSL$ARM), label = "All"))
-#' t_summary(ADSL$AGE, col_by = ADSL$ARM %>% by_add_total("All"))
+#' t_summary(ADSL$AGE, col_by = col_by_to_matrix(ADSL$ARM), total = "All")
+#' t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
 #'
 #' ADSL$AGE[1:10] <- NA
-#' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL) )
+#' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
 #'
 #'
 #'
 t_summary.numeric <- function(x, # nolint
                               col_by,
-                              col_N = NULL,
+                              col_N = NULL, #nolintr
                               total = NULL,
                               f_numeric = c("count_n", "mean_sd", "median", "range"),
                               ...) {
-
   stopifnot(
+    is.null(total) || is.character.single(total),
     all(f_numeric %in% c("count_n", "mean_sd", "median", "q1_q3", "range")),
     length(f_numeric) > 0
   )
 
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
 
 
   tbl <- rbindl_rtables(
-    lapply(f_numeric, function(f) switch(
-      f,
+    lapply(f_numeric, function(f_name) switch(
+      f_name,
       count_n = rtabulate(x, col_by, count_n, row.name = "n"),
       mean_sd = rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
@@ -285,25 +313,25 @@ t_summary.numeric <- function(x, # nolint
 #' library(random.cdisc.data)
 #' ADSL <- cadsl
 #'
-#' t_summary(ADSL$SEX, ADSL$ARM %>% by_add_total("All"))
+#' t_summary(ADSL$SEX, ADSL$ARM, total = "All")
 #' t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
 #'
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL$SEX, ADSL$ARM %>% by_add_total("All"), denominator = "N", useNA = "ifany")
-#' t_summary(ADSL$SEX, ADSL$ARM %>% by_add_total("All"), denominator = "n", useNA = "no")
+#' t_summary(ADSL$SEX, ADSL$ARM, total = "All", denominator = "N", useNA = "ifany")
+#' t_summary(ADSL$SEX, ADSL$ARM, total = "All", denominator = "n", useNA = "no")
 t_summary.factor <- function(x, # nolint
                              col_by,
-                             col_N = NULL,
+                             col_N = NULL, #nolintr
                              total = NULL,
                              useNA = c("ifany", "no", "always"), # nolint
                              denominator = c("n", "N", "omit"),
                              drop_levels = FALSE, ...) {
-
+  stopifnot(is.null(total) || is.character.single(total))
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -363,7 +391,7 @@ t_summary.factor <- function(x, # nolint
 #'   \code{\link{t_summary.numeric}}, \code{\link{t_summary_by}}
 t_summary.character <- function(x, # nolint
                                 col_by,
-                                col_N = get_N(col_by), # nolint
+                                col_N = NULL, # nolint
                                 total = NULL,
                                 ...) {
   t_summary(as.factor(x), col_by = col_by, col_N = col_N, total = total, ...)
@@ -396,17 +424,18 @@ t_summary.character <- function(x, # nolint
 #'
 #' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
 #'
-#' t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]) %>% by_add_total("All"))
+#' t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
 t_summary.Date <- function(x, # nolint
                            col_by,
                            col_N = NULL, # nolint
                            total = NULL,
                            ...) {
+  stopifnot(is.null(total) || is.character.single(total))
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N)
+    col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
   check_col_by(x, col_by, col_N, min_num_levels = 1)
@@ -453,11 +482,11 @@ t_summary.Date <- function(x, # nolint
 #' ADSL$AGE[1:10] <- NA
 #'
 #' with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
-#' with(ADSL, t_summary(AGE > 65, ARM %>% by_add_total("All"), denominator = "N", useNA = "ifany",
+#' with(ADSL, t_summary(AGE > 65, ARM, total = "All", denominator = "N", useNA = "ifany",
 #'                      row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 t_summary.logical <- function(x, # nolint
                               col_by,
-                              col_N = get_N(col_by), # nolint
+                              col_N = NULL, # nolint
                               total = NULL,
                               row_name_true = "TRUE",
                               row_name_false = "FALSE",

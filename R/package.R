@@ -4,4 +4,5 @@
 
 #' @import utils.nest
 #' @importFrom rlang "%||%"
+#' @importFrom methods is
 NULL

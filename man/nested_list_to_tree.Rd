@@ -2,19 +2,23 @@
 % Please edit documentation in R/aa_trees.R
 \name{nested_list_to_tree}
 \alias{nested_list_to_tree}
-\title{Convert a named nested List to a tree}
+\title{Convert a named nested list to a tree}
 \usage{
-nested_list_to_tree(x, format_data = NULL)
+nested_list_to_tree(x, format_data = NULL,
+  max_depth = .Machine$integer.max)
 }
 \arguments{
 \item{x}{nested list}
 
 \item{format_data}{format data for conversion with \code{\link{to_rtable}},
-\code{list(gap_to_children, children_gap, children_indent, content_indent)},
+\code{list(gap_to_children, children_gap, children_indent, content_indent, left_header)},
 default values if not all given, see that function}
+
+\item{max_depth}{maximum depth until which to apply it recursively, depth 0 just creates a node with
+the list items as children nodes}
 }
 \description{
-Convert a named nested List to a tree
+Convert a named nested list to a tree
 }
 \examples{
 lst <- list(
@@ -23,6 +27,4 @@ lst <- list(
 )
 n1 <- nested_list_to_tree(lst)
 summary(n1)
-
-
 }

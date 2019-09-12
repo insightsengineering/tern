@@ -82,16 +82,18 @@ t_summarize_by_visit <- function(data,
                                  id,
                                  col_by,
                                  col_N = NULL) { # nolint
+  #todo: check this file
   stopifnot(is.data.frame(data))
   stopifnot(is.factor(visit), !any(is.na(visit)))
   check_same_n(data = data, col_by = col_by, omit_null = TRUE)
-  #col_by <- col_by_to_matrix(col_by, visit)
-  col_N <- col_N %||% get_N(col_by)
-  #check_col_by(visit, col_by, col_N, min_num_levels = 1)
+  #todo: col_by <- col_by_to_matrix(col_by, visit) #nolintr
+  col_N <- col_N %||% get_N(col_by) #nolintr
+  #check_col_by(visit, col_by, col_N, min_num_levels = 1) #nolintr
   check_col_by_factor(visit, col_by, col_N, min_num_levels = 1)
 
   # todo: finish
-  # the code below should be done nicer to create the hierarchical header, i.e. hierarchical col_by (and header must be adapted to it)
+  # the code below should be done nicer to create the hierarchical header,
+  # i.e. hierarchical col_by (and header must be adapted to it)
 
   lapply(data, check_is_numeric)
 

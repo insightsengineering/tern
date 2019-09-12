@@ -113,8 +113,9 @@ t_events_per_term_id(
 t_events_per_term_id(
   terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
-  col_by = ADAE$ARM \%>\% by_add_total("All Patients"),
-  col_N = col_N_add_total(table(ADSL$ARM)),
+  col_by = ADAE$ARM,
+  total = "All Patients",
+  col_N = table(ADSL$ARM),
   event_type = "adverse event"
 )
 

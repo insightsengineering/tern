@@ -28,7 +28,10 @@ define the columns in the table.}
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{
-Summarize an Object for Different Groups with by Variable
+This is a wrapper around the basic \code{t_summary} functions with the difference that it has a row_by
+argument. The row_by argument can either be a "by" object or it can be a "r_by" object in which case
+each list item is interpreted recursively as is typical for the \code{terms} item
+in \code{t_events_term_grade_id}.
 }
 \details{
 For every level of the variable \code{by} a summary table using \code{\link{t_summary}} will be created.
@@ -43,7 +46,8 @@ ADSL <- radsl(cached = TRUE)
 t_summary_by(
  x = ADSL$SEX,
  row_by = ADSL$COUNTRY,
- col_by = ADSL$ARMCD \%>\% by_add_total("All Patients"),
+ col_by = ADSL$ARMCD,
+ total = "All Patients",
  drop_levels = TRUE
 )
 
@@ -53,7 +57,8 @@ ADSL$SEX[1:5] <- NA
 t_summary_by(
  x = ADSL$SEX,
  row_by = ADSL$COUNTRY,
- col_by = ADSL$ARMCD \%>\% by_add_total("All Patients"),
+ col_by = ADSL$ARMCD,
+ total = "All Patients",
  drop_levels = TRUE,
  useNA = "ifany"
 )
@@ -67,8 +72,9 @@ ADQS_f <- ADQS \%>\%
 t_summary_by(
  x = ADQS_f$AVAL,
  row_by = ADQS_f$AVISIT,
- col_by = ADQS_f$ARMCD \%>\% by_add_total("All Patients"),
- col_N = col_N_add_total(table(ADSL$ARMCD)),
+ col_by = ADQS_f$ARMCD,
+ total = "All Patients",
+ col_N = table(ADSL$ARMCD),
 )
 
 ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"),
@@ -78,8 +84,21 @@ ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )
 t_summary_by(
  x = ADQS_f$AVALCAT1,
  row_by = ADQS_f$AVISIT,
- col_by = ADQS_f$ARMCD \%>\% by_add_total("All Patients"),
- col_N = col_N_add_total(table(ADSL$ARMCD)),
+ col_by = ADQS_f$ARMCD,
+ total = "All Patients",
+ col_N = table(ADSL$ARMCD),
+)
+
+ADSL <- radsl(cached = TRUE) #todo: replace by seed version
+ADLB <- radlb(cached = TRUE) #todo: replace by seed version
+
+# Recursive case
+t_summary_by(
+  x = ADLB$AVAL,
+  row_by = r_by(ADLB[, c("PARAM", "AVISIT")]),
+  col_by = ADLB$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients"
 )
 
 
@@ -89,12 +108,50 @@ ADSL <- radsl(cached = TRUE)
 tbls <- t_summary_by(
  x = ADSL$SEX,
  row_by = ADSL$COUNTRY,
- col_by = ADSL$ARMCD \%>\% by_add_total("All Patients"),
+ col_by = ADSL$ARMCD,
+ total = "All Patients",
  table_tree = TRUE
 )
 summary(tbls)
 to_rtable(tbls)
 
+# Other examples
+ADQS <- radqs(ADSL, seed = 2) \%>\%
+  mutate(PARAM = as.factor(PARAM)) \%>\%
+  var_relabel(
+    PARAM = "Questionnaire Parameter",
+    AVISIT = "Visit"
+  )
+
+# we suppress warnings because some are NaN (change CHG at screening visit)
+suppressWarnings(t_summary_by(
+  x = ADQS[,c("AVAL", "CHG")],
+  row_by = r_by(ADQS[, c("PARAM", "AVISIT")]),
+  col_by = ADQS$ARMCD,
+  col_N = table(ADSL$ARMCD),
+  total = "All Patients"
+))
+
+ADQS_f <- ADQS \%>\%
+  dplyr::filter(PARAMCD == "BFIALL") \%>\%
+  dplyr::mutate(
+    AVALCAT1 = factor(
+      ifelse(AVAL >= 50, "Positive", "Negative"),
+      levels = c("Positive", "Negative")
+    )
+  ) \%>\%
+  var_relabel(
+    AVALCAT1 = "Result",
+    AVISIT = "Visit"
+  )
+
+t_summary_by(
+  x = ADQS_f \%>\% select(c("AVALCAT1", "AVAL")),
+  row_by = ADQS_f$AVISIT,
+  col_by = ADQS_f$ARMCD,
+  col_N = table(ADSL$ARMCD),
+  total = "All Patients"
+)
 }
 \seealso{
 \code{\link{t_summary}}, \code{\link{t_summary.data.frame}},

@@ -75,7 +75,7 @@ grid.rect()
 grid.draw(sg)
 
 grid.rect(
- height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
+  height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
 )
 
 # stack split_text_grob

@@ -79,8 +79,8 @@ titles <- c(
 footnotes <- c(
   "The species are Iris setosa, versicolor, and virginica.",
   paste(
-  "iris is a data frame with 150 cases (rows) and 5 variables (columns) named",
-  "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
+    "iris is a data frame with 150 cases (rows) and 5 variables (columns) named",
+    "Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species."
   )
 )
 
@@ -104,11 +104,12 @@ p <- gTree(
     yaxisGrob(),
     textGrob("Sepal.Length", y = unit(-4, "lines")),
     textGrob("Petal.Length", x = unit(-3.5, "lines"), rot = 90),
-    pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col=iris$Species), pch=16)
+    pointsGrob(iris$Sepal.Length, iris$Petal.Length, gp = gpar(col = iris$Species), pch = 16)
   ),
   vp = vpStack(plotViewport(), dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
 )
-grid.newpage(); grid.draw(p)
+grid.newpage()
+grid.draw(p)
 
 grid.newpage()
 grid.draw(
@@ -130,7 +131,7 @@ grid.draw(
     grob = p,
     titles = titles,
     footnotes = footnotes,
-    page =  "Page 6 of 129"
+    page = "Page 6 of 129"
   )
 )
 

@@ -4,9 +4,8 @@
 \alias{t_summary.logical}
 \title{Summarize Boolean Data}
 \usage{
-\method{t_summary}{logical}(x, col_by, col_N = get_N(col_by),
-  total = NULL, row_name_true = "TRUE", row_name_false = "FALSE",
-  ...)
+\method{t_summary}{logical}(x, col_by, col_N = NULL, total = NULL,
+  row_name_true = "TRUE", row_name_false = "FALSE", ...)
 }
 \arguments{
 \item{x}{a logical vector}
@@ -44,7 +43,7 @@ ADSL <- cadsl
 ADSL$AGE[1:10] <- NA
 
 with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
-with(ADSL, t_summary(AGE > 65, ARM \%>\% by_add_total("All"), denominator = "N", useNA = "ifany",
+with(ADSL, t_summary(AGE > 65, ARM, total = "All", denominator = "N", useNA = "ifany",
                      row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
 }
 \seealso{

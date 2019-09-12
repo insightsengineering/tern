@@ -18,7 +18,12 @@
 #' @exportClass node
 #' @name node-class
 #' @rdname node-class
-setClass("node", slots = c(name = "ANY", content = "ANY", children = "list", format_data = "ANY"))
+setClass(
+  "node",
+  slots = c(name = "ANY", content = "ANY",
+            children = "list",
+            format_data = "ANY")
+)
 # only called when method new is called
 
 #' Children must not be null
@@ -36,7 +41,8 @@ setValidity("node", function(object) {
       format_integer_or_null("gap_to_children") &&
         format_integer_or_null("children_gap") &&
         format_integer_or_null("children_indent") &&
-        format_integer_or_null("content_indent")
+        format_integer_or_null("content_indent") &&
+        (is.null(format_data[["left_header"]]) || is(format_data[["left_header"]], "rheader"))
     ),
     # if it has > 0 children, no child is null
     is.character.single(object@name) ||
@@ -57,7 +63,10 @@ setValidity("node", function(object) {
 #' See the class node for more info about parameters.
 #'
 #' Note: changing the names of the children after calling this function will cause the children list names
-#' to be no longer in-sync. (or should accessor update child names??)
+#' to be no longer in-sync because assignment via the \code{@@} operator does not check whether the new object is valid,
+#' e.g. names of children nodes agree with names in children list.
+#' Ideally, we should define functions like setChildren and getChildren, but this seems to clutter the code.
+#' Temporarily, we always reassign children names when accessing via \code{`[[`}.
 #'
 #' @name node
 #' @rdname node-class
@@ -66,7 +75,7 @@ setValidity("node", function(object) {
 #' @param content content of node
 #' @param children children of node
 #' @param format_data format data for conversion with \code{\link{to_rtable}},
-#'   \code{list(gap_to_children, children_gap, children_indent, content_indent)},
+#'   \code{list(gap_to_children, children_gap, children_indent, content_indent, left_header)},
 #'   default values if not all given, see that function
 #'
 #' @return object of class node
@@ -93,10 +102,13 @@ node <- function(name, content, children = list(), format_data = list()) {
   # keep names?, even if not agreeing with child names? or alternatively treat node@name as display name
   # and list name as invisible name
   # names(children) <- vapply(children, function(child) child@name, character(1)) #nolintr
+  children <- children %||% list()
   new("node", name = name, content = content, children = unname(children), format_data = format_data)
 }
 
 #' Creates an invisible node with NULL content and invisible name
+#'
+#' The name of the created node is \code{invisible_node_name(name)}.
 #'
 #' @param children children of node
 #' @param name name of invisible node (invisible name in rtable prints)
@@ -113,7 +125,7 @@ node <- function(name, content, children = list(), format_data = list()) {
 #' n12 <- node(name = "B", content = array(c(1:6), dim = c(2,3)), children = list())
 #' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 #' summary(invisible_node(list(n11, n12, n13)))
-invisible_node <- function(children, name = invisible_node_name("root"), content = NULL, format_data = NULL) {
+invisible_node <- function(children, name = "root", content = NULL, format_data = NULL) {
   stopifnot(is.character.single(name))
   node(
     name = invisible_node_name(name),
@@ -200,7 +212,7 @@ setMethod("basic_node_info", signature = "node", definition = function(x, index 
         class(x@content),
         rcell(dim(x@content), format = format_dim_fcn),
         is(x@name, "invisible_node_name"),
-        x@format_data,
+        x@format_data, #to_string_with_names(x@format_data),
         indent = length(index)
       )
     )),
@@ -274,11 +286,11 @@ setMethod("rapply_tree", signature = "node", definition = function(x,
     return(NULL) # this is an empty child
   }
   if (is.null(target_obj_class)) {
-    #print(paste("Selecting class", class(x)))
     target_obj_class <- function(...) new(class(x), ...)
   }
   new_path <- c(path, x@name)
-  new_node_value <- f(name = x@name, content = x@content, path = new_path, ...)
+  new_node_value <- f(name = x@name, content = x@content, path = new_path,
+                      is_leaf = length(x@children) == 0, ...)
   target_obj_class(
     name = new_node_value$name,
     content = new_node_value$content,
@@ -314,7 +326,6 @@ get_indent_str <- function(indent) {
 #' @export displayable
 #' @rdname displayable
 setMethod("displayable", signature = "ANY", definition = function(x, indent = 0) {
-  #paste0(get_indent_str(indent), utils::capture.output(cat(x))[[1]], "...") # only print first line of cat output
   content <- toString(x)
   if (length(content) > 18) {
     content <- paste0(substr(toString(x), 1, 15), "...")
@@ -425,7 +436,6 @@ setMethod(`[[`, signature = c("node"), function(x, i, j, ..., return_content = T
   if (!missing(i)) {
     indices <- c(i, indices)
   }
-  #browser()
   if (length(indices) == 0) {
     return(if (return_content) {
       x@content
@@ -437,7 +447,7 @@ setMethod(`[[`, signature = c("node"), function(x, i, j, ..., return_content = T
   children <- x@children
   names(children) <- vapply(children, function(child) child@name, character(1))
   # simple form: children[[ indices[[1]] ]][[ indices[-1] ]]
-  do.call(`[[`, args = c(list(x = children[[ indices[[1]] ]]), indices[-1], list(return_content = return_content)))
+  do.call(`[[`, args = c(list(x = children[[indices[[1]]]]), indices[-1], list(return_content = return_content)))
 })
 
 #' Create an invisible node
@@ -497,7 +507,7 @@ setMethod("to_rtable", signature = "node", definition = function(x) {
   #todo: instead of only indenting, put node name and children name into an rtable as well
   # then extract labels from tree structure (add label to node format_data for instance) to construct header
   # this will allow for thinbgs like "Dictionary-derived term"
-  stopifnot(is.null(x@content) || is_rtable(x@content))
+  stopifnot(is.null(x@content) || is_rtable(x@content) || is(x@content, "node"))
   if (is(x@name, "invisible_node_name")) {
     default_children_indent <- 0
     default_content_indent <- 0
@@ -510,13 +520,19 @@ setMethod("to_rtable", signature = "node", definition = function(x) {
     x@format_data[["children_indent"]] %||% default_children_indent
   )
   if (!is.null(x@content)) {
+    # rtable or node
+    content <- if (is_rtable(x@content)) {
+      x@content
+    } else {
+      to_rtable(x@content)
+    }
     tbl <- rbind(
-      indent(x@content, x@format_data[["content_indent"]] %||% default_content_indent),
+      indent(content, x@format_data[["content_indent"]] %||% default_content_indent),
       tbl,
       gap = x@format_data[["gap_to_children"]] %||% 1
     )
   }
-  if (is(x@name, "invisible_node_name")) {
+  tbl <- if (is(x@name, "invisible_node_name")) {
     tbl
   } else {
     if (is_empty_rtable(tbl)) {
@@ -525,6 +541,20 @@ setMethod("to_rtable", signature = "node", definition = function(x) {
       insert_rrow(tbl, rrow(x@name))
     }
   }
+  #todo: add header to table
+  # if (!is.null(x@format_data[["left_header"]])) {
+  #   #header(tbl) <- combine_rheaders(x@format_data[["left_header"]], header(tbl))
+  #   stopifnot(length(x@format_data[["left_header"]]) <= nrow(header(tbl)))
+  #   browser()
+  #   row_names_as_col(
+  #     tbl,
+  #     c(
+  #       x@format_data[["left_header"]],
+  #       replicate(nrow(header(tbl)) - length(x@format_data[["left_header"]]), "")
+  #     )
+  #   ) #todo: rename left_header to row names header
+  # }
+  return(tbl)
 })
 
 #' Convert rtable to rtable
@@ -544,9 +574,10 @@ setMethod("to_rtable", signature = "rtable", definition = function(x) {
 #' Recursively construct a tree
 #'
 #' @param info_from_parent info passed on to this node from parent
-#' @param f function(info_from_parent, path) -> list(name, content, info_to_children_lst) that returns the name, the content and the info
-#'   to pass down to the children (the latter is a named list with one entry per child)
-#'   a child can get its name (as desired by the parent) by looking at path[[length(path)]]
+#' @param f function(info_from_parent, path) -> list(name, content, info_to_children_lst)
+#'   that returns the name, the content and the info to pass down to the children
+#'   (the latter is a named list with one entry per child)
+#'   a child can get its name (as desired by the parent) by looking at \code{path[[length(path)]]}
 #' @param path to node (character string of node names leading to it)
 #'
 #' @export
@@ -611,6 +642,7 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 #' @param drop_empty_levels whether to drop empty levels, this happens often when you have, e.g. two factors,
 #' one with levels (clA, clB), the other with levels (clA_1, clA_2, clB_1, clB_2) and only the combinations
 #' clA-clA_1, clA-clA_2, clB-clB_1, clB-clB_2 appear out of the eight combinations.
+#' @param non_leaves_null whether to assign NULL content to any non-leaves
 #'
 #' @return node object
 #'
@@ -619,7 +651,7 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 #' @examples
 #' tree <- rsplit_to_tree(
 #'   1:5,
-#'   list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y")))
+#'   by_lst = list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y")))
 #' )
 #' summary(tree)
 #' cat(displayable(tree))
@@ -630,8 +662,11 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 #' )
 #' summary(rsplit_to_tree(1:8, by_lst))
 #' summary(rsplit_to_tree(1:8, by_lst, drop_empty_levels = FALSE))
-rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE) {
-  stopifnot(is.list(by_lst))
+rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE, non_leaves_null = FALSE) {
+  stopifnot(
+    is.logical.single(drop_empty_levels),
+    is.logical.single(non_leaves_null)
+  )
   #todo: check class of by_lst, e.g. introduce class col_by
   recursive_construct_tree(
     list(content = lst, by_lst = by_lst),
@@ -648,6 +683,10 @@ rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE) {
         }
         # named list
         esplit(list(content = content, by_lst = by_lst[-1]), split_by)
+      }
+      if (non_leaves_null && (length(info_to_children_lst) != 0)) {
+        # has children, so we set content to NULL
+        content <- NULL
       }
       list(
         name = path[[length(path)]],
@@ -750,14 +789,17 @@ full_apply_at_depth <- function(x, f, depth = 0) {
 #'
 #' @param gap_to_children row gap between content and children
 #' @param children_gap row gaps between children
-#' @param children_indent absolute indentation of children
-#' @param content_indent absolute indentation of
+#' @param children_indent indentation of children wrt to node with respect to current indent level
+#' @param content_indent indentation of content of node with respect to current indent level
+#' @param left_header header to add to the left of the rtable, is not inherited
 #'
 #' @export
 #'
 #'
 #' @examples
-#' tbl <- function(x) {rtable(c("A", "B"), rrow("r1", "-", "-"))}
+#' tbl <- function(x) {
+#'   rtable(c("A", "B"), rrow(x, "-", "-"))
+#' }
 #'
 #' to_rtable(node("AAA", tbl("r1")))
 #' to_rtable(node("AAA", tbl("r1"), children = list(
@@ -774,18 +816,21 @@ full_apply_at_depth <- function(x, f, depth = 0) {
 #' ), format_data = node_format_data(children_indent = 0)))
 #'
 node_format_data <- function(gap_to_children = NULL, children_gap = NULL, children_indent = NULL,
-                             content_indent = NULL) {
+                             content_indent = NULL, left_header = NULL) {
 
   Filter(Negate(is.null),
          list(gap_to_children = gap_to_children, children_gap = children_gap,
-              children_indent = children_indent, content_indent = content_indent))
+              children_indent = children_indent, content_indent = content_indent,
+              left_header = left_header))
 
 }
 
-#' Convert a named nested List to a tree
+#' Convert a named nested list to a tree
 #'
 #' @inheritParams node
 #' @param x nested list
+#' @param max_depth maximum depth until which to apply it recursively, depth 0 just creates a node with
+#'   the list items as children nodes
 #'
 #' @export
 #'
@@ -796,9 +841,22 @@ node_format_data <- function(gap_to_children = NULL, children_gap = NULL, childr
 #' )
 #' n1 <- nested_list_to_tree(lst)
 #' summary(n1)
-#'
-#'
-nested_list_to_tree <- function(x, format_data = NULL) {
+nested_list_to_tree <- function(x, format_data = NULL, max_depth = .Machine$integer.max) {
+  stopifnot(is_fully_named_list(x))
+  children <- Map(function(xi, namei) {
+    if ((max_depth > 0) && identical(class(xi), "list")) {
+      # only do this for pure lists, don't do it for data.frames (it is not is(x, "list"))
+      n <- nested_list_to_tree(xi, format_data = format_data, max_depth = max_depth - 1)
+      n@name <- namei
+      n
+    } else {
+      node(namei, content = xi, children = NULL, format_data = format_data)
+    }
+  }, x, names(x))
+  node(invisible_node_name("root"), content = NULL, children = children, format_data = format_data)
+}
+#todo: remove below as it is not expanding when not all items are a list
+nested_list_to_tree_old <- function(x, format_data = NULL) {
 
   stopifnot(is.list(x), !is.null(names(x)))
 
@@ -821,3 +879,32 @@ nested_list_to_tree <- function(x, format_data = NULL) {
 
   node(invisible_node_name("root"), content = NULL, children = lst_nodes, format_data = format_data)
 }
+
+
+
+# utility functions for trees ----
+
+#' deprecated because it is a tree property and should not be added here
+#' #' Add header on left of each rtable in the tree
+#' #'
+#' #' It goes through the tree and adds the specified header to each rtable it finds,
+#' #' left to the current header.
+#' #' It is mostly used to add a header for the row names.
+#' #'
+#' #' @param tree tree to apply to
+#' #' @param left_header header to add to the left of each found rtable
+#' #'
+#' #' @return new tree
+#' #'
+#' add_header_on_left <- function(tree, left_header) {
+#'   rapply_tree(
+#'     tree,
+#'     function(name, content, ...) {
+#'       if (is_rtable(content)) {
+#'         browser()
+#'         header(content) <- combine_rheaders(left_header, header(content))
+#'       }
+#'       list(name = name, content = content)
+#'     }
+#'   )
+#' }
