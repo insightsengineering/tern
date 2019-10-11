@@ -35,64 +35,7 @@
   invisible(TRUE)
 }
 
-
-#' Return Ordered Dataset so that a set of variables match exactly
-#'
-#' This function is useful to ensure that two datasets have the same subjects
-#' ordered in the same way
-#'
-#' @param x data set to reorder
-#' @param ref reference data set
-#' @param key variables that define a unique patient
-#'
-#' @export
-#'
-#' @examples
-#' A <- data.frame(USUBJID=paste0("id-",1:10), STUDYID = "A", stringsAsFactors = FALSE)
-#' B <- data.frame(USUBJID=paste0("id-",10:1), STUDYID = "A", stringsAsFactors = FALSE)
-#'
-#' reorder_to_match_id(A, B)
-#'
-#' \dontrun{
-#' C <- data.frame(USUBJID=paste0("id-",1:9), STUDYID = "A")
-#' reorder_to_match_id(A, C)
-#'
-#' D <- B
-#' D$STUDYID[3] <- "B"
-#' reorder_to_match_id(A, D)
-#'
-#' E <- B
-#' E$USUBJID[2] <- "id-10"
-#' reorder_to_match_id(A, E)
-#' }
-reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
-  stopifnot(
-    nrow(x) == nrow(ref),
-    all(key %in% names(x)),
-    all(key %in% names(ref)),
-    !any(is.na(x[key])),
-    !any(is.na(ref[key])),
-    !any(duplicated(ref[, key]))
-  )
-
-  x_ord <- do.call(order, x[key])
-  ref_ord <- do.call(order, ref[key])
-
-  out <- x[x_ord[order(ref_ord)], ]
-
-  is_same <- unlist(Map(function(v1, v2) {
-    all(v1 == v2)
-  }, out[key], ref[key]))
-
-  if (!all(is_same)) {
-    stop("not same ids")
-  }
-
-  out
-}
-
-
-#' Combine Factor Levels
+#' Combine factor Levels
 #'
 #' @param x factor
 #' @param levels level names to be combined
@@ -104,9 +47,9 @@ reorder_to_match_id <- function(x, ref, key = c("USUBJID", "STUDYID")) {
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
-#' combine_levels(x, levels = c('a', 'b') )
+#' tern:::combine_levels(x, levels = c('a', 'b') )
 #'
-#' combine_levels(x, c('e', 'b'))
+#' tern:::combine_levels(x, c('e', 'b'))
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   stopifnot(
     is.factor(x),
@@ -136,7 +79,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #'
 #' labels <- setNames(c("a var", "b var"), c("a", "b"))
 #'
-#' X <- add_labels(df, labels)
+#' X <- tern:::add_labels(df, labels)
 #'
 #' \dontrun{
 #' View(X)
@@ -154,77 +97,6 @@ add_labels <- function(df, labels) {
 
 start_with_null <- function(x) {
   c(list(NULL), x)
-}
-
-
-#' Calculate and Stack Tables
-#'
-#'
-#' @param funs list of functions or vector with function names to create the
-#'   tables
-#' @param ... union of named arguments for all the functions defined in
-#'   \code{funs}
-#' @param nrow_pad number of empty rows between tables
-#'
-#' @noRd
-#'
-#' @author Adrian Waddell
-#'
-#' @examples
-#' t_tbl1 <- function(x, by, na.rm = TRUE) rtabulate(x, by, mean, format = "xx.xx")
-#' t_tbl2 <- function(x, by) rtabulate(x, by, sd, format = "xx.xx")
-#' t_tbl3 <- function(x, by) rtabulate(x, by, range, format = "xx.xx - xx.xx")
-#'
-#'
-#' t_tbl <- function(x, by, na.rm) {
-#'   compound_table(
-#'     funs = c("t_tbl1", "t_tbl2", "t_tbl3"),
-#'     x = iris$Sepal.Length,
-#'     by = iris$Species,
-#'     na.rm = FALSE
-#'   )
-#' }
-compound_table <- function(funs, ..., nrow_pad = 1) {
-  dots <- list(...)
-
-  tbls <- lapply(funs, function(fun) {
-
-    f <- match.fun(fun)
-
-    do.call(f, dots[names(dots) %in% names(formals(f))])
-
-  })
-
-  rbindl_rtables(tbls, gap = nrow_pad)
-}
-
-wrap_with <- function(x, left, right, as_list = TRUE) {
-  lbls <- paste0(left, x, right)
-  if (as_list) {
-    as.list(lbls)
-  } else {
-    lbls
-  }
-}
-
-#' check if all elements in x are factors
-#'
-#' @param x data.frame
-#'
-#' @importFrom methods is
-#'
-#' @noRd
-all_as_factor <- function(x) {
-  stopifnot(is.data.frame(x))
-
-  is_fct <- vapply(x, is.factor, logical(1))
-
-  if (!all(is_fct)) {
-    for (i in which(!is_fct)) {
-      x[[i]] <- structure(as.factor(x[[i]]), label = attr(x[[i]], "label"))
-    }
-  }
-  x
 }
 
 #' Remove Shared Variables
@@ -260,6 +132,18 @@ drop_shared_variables <- function(x, y, keep) {
   df
 }
 
+#' Replace NA values by NA string level
+#'
+#' @param x factor, possibly with NAs
+#' @param na_level name of new level for NAs
+#'
+#' @return factor with additional NA level
+#'
+#' @export
+#'
+#' @examples
+#' na_as_level(factor(c(1, 1, 2)))
+#' na_as_level(factor(c(1, 1, NA)), "na")
 na_as_level <- function(x, na_level = "NA") {
   stopifnot(is.factor(x))
 
@@ -267,72 +151,11 @@ na_as_level <- function(x, na_level = "NA") {
     if (na_level %in% levels(x)) {
       stop(na_level, " can not be a level of x")
     }
-    levels(x) <- c(levels(x), "NA")
-    x[is.na(x)] <- "NA"
+    levels(x) <- c(levels(x), na_level)
+    x[is.na(x)] <- na_level
   }
   x
 }
-
-as.global <- function(...) {
-  dots <- substitute(list(...))[-1]
-  names <- sapply(dots, deparse)
-
-  args <- list(...)
-
-  ge <- globalenv() # nolint
-
-  Map(function(x, name) {
-    ge[[name]] <- x
-  }, args, names)
-}
-
-#' Helper functions to re-format and reflow long arm/grouping labels by inserting
-#' line breaks
-#'
-#' @param x input single string
-#' @param delim delimiter, default is space
-#' @param limit number of characters allowed before inserting line break,
-#'   default is the maximum length of longest word
-#'
-#' @noRd
-#'
-#' @author Chendi Liao (liaoc10), \email{chendi.liao@roche.com}
-#'
-#' @examples
-#' x = "hellO-world abcerewerwere testing "
-#' reflow(x)
-#' reflow(x, delim = "-")
-#' reflow(x, limit= 9)
-reflow <- function(x,
-                   delim = " ",
-                   limit = NULL) {
-
-  xsplit <- unlist(strsplit(x, delim))
-  ctxt <- ""
-  n <- 0
-
-  if (is.null(limit)) {
-    limit <- max(unlist(lapply(xsplit, nchar)))
-  }
-
-  for (i in xsplit) {
-    if (nchar(i) > limit) {
-      ctxt <- ifelse(n, paste0(ctxt, "\n", i, "\n"), paste0(ctxt, i, "\n"))
-      n <- 0
-    } else if ((n + nchar(i)) > limit) {
-      ctxt <- paste0(ctxt, "\n", i)
-      n <- nchar(i)
-    } else {
-      ctxt <- ifelse(n, paste0(ctxt, delim, i), paste0(ctxt, i))
-      n <- n + nchar(i)
-    }
-  }
-
-  outtxt <- ifelse(substring(ctxt, nchar(ctxt)) == "\n", substr(ctxt, 1, nchar(ctxt) - 1), ctxt)
-
-  outtxt
-}
-
 
 to_n <- function(x, n) {
   if (is.null(x)) {
@@ -342,93 +165,132 @@ to_n <- function(x, n) {
   } else if (length(x) == n) {
     x
   } else {
-    stop("dimension missmatch")
+    stop("dimension mismatch")
   }
-}
-
-
-#' Duplicate an object to create total group
-#'
-#' Used to duplicate data in order to create a total column in a table.
-#'
-#' @param x an object to dispatch on
-#' @param ... arguments passed on to methods
-#'
-#' @noRd
-add_total <- function(x, ...) {
-  UseMethod("add_total", x)
-}
-
-#' Duplicate vector
-#'
-#' @inheritParams add_total
-#' @param x a vector
-#' @param col_by a factor the same length as \code{x}
-#' @param total_level a label that is used as a new factor level in the duplicated \code{col_by}
-#' @param col_N a numeric vector with length equal to the number of levels of \code{col_by}.
-#' It is used to build the row in the table header with (N=xx).
-#'
-#' @details
-#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
-#'
-#' @noRd
-#'
-#' @examples
-#' # factor
-#' add_total(x=iris$Species, col_by = iris$Species, total_level = "All")
-#' # numeric
-#' add_total(x=iris$Sepal.Length, col_by = iris$Species, total_level = "All")
-add_total.default <- function(x, col_by, total_level = "All", col_N = table(col_by)) { # nolint
-  stopifnot(
-    is.atomic(x),
-    !total_level %in% levels(col_by),
-    length(x) == length(col_by)
-  )
-
-  col_N <- c(col_N, sum(col_N)) # nolint
-  names(col_N)[length(col_N)] <- total_level
-
-  cb_levels <- c(levels(col_by), total_level)
-  col_by <- factor(c(as.character(col_by), rep(total_level, length(x))), cb_levels)
-
-  list(
-    x = rep(x, 2),
-    col_by = col_by,
-    col_N = col_N
-  )
-}
-
-#' Duplicate data frame
-#'
-#' @inheritParams add_total.default
-#' @param x a data frame
-#'
-#' @details
-#' Returns a list of duplicated \code{x}, \code{col_by} and \code{col_N}
-#'
-#' @noRd
-#'
-#' @examples
-#' add_total(x=iris[, c("Sepal.Length", "Sepal.Width")], col_by = iris$Species, total_level = "All")
-add_total.data.frame <- function(x, col_by, total_level = "All", col_N = table(col_by)) { # nolint
-
-  vl <- var_labels(x)
-  y <- rbind(x, x)
-  var_labels(y) <- vl
-
-  cb_levels <- c(levels(col_by), total_level)
-  col_by <- factor(c(as.character(col_by), rep(total_level, nrow(x))), cb_levels)
-
-  col_N <- c(col_N, sum(col_N)) # nolint
-  names(col_N)[length(col_N)] <- total_level
-
-  list(
-    x = y,
-    col_by = col_by,
-    col_N = col_N
-  )
 }
 
 has_no_na <- function(x) {
   !any(is.na(x))
+}
+
+#' Get total count
+#'
+#' Normally, you don't need to use this function as it is the default
+#'
+#' @param col_by col_by (factor or matrix) to get counts from
+#'
+#' @return counts per factor level or column of col_by
+#'
+#' @export
+#'
+#' @examples
+#' get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE)))
+get_N <- function(col_by) { #nolintr
+  stopifnot(is.factor(col_by) || is.data.frame(col_by))
+  colSums(col_by_to_matrix(col_by))
+}
+
+#' Add total to col_N
+#'
+#' It adds the sum of the vector as the last element.
+#'
+#' This is necessary when you manually specify col_N and col_by uses the total column (via by_add_total or similar)
+#'
+#' # todo: maybe put this into function as well like col_by_to_matrix
+#'
+#' @param col_N col_N count
+#'
+#' @return new count with total count appended to vector
+#'
+#' @export
+#'
+#' @examples
+#' col_N_add_total(get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE))))
+col_N_add_total <- function(col_N) { #nolintr
+  c(col_N, sum(col_N))
+}
+
+#' Convert to factor and keep attributes
+#'
+#' @param x atomic
+#'
+#' @return factor with same attributes (except class) as x
+#'
+#' @export
+#'
+#' @examples
+#' as_factor_keep_attributes(with_label(c(1,1,2,3), "id"))
+as_factor_keep_attributes <- function(x) {
+  stopifnot(is.atomic(x))
+  x_attrs <- attributes(x)
+  x_attrs <- x_attrs[names(x_attrs) != "class"]
+  do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
+}
+
+# todo: move these functions elsewhere, closely related to esplit
+number_rows <- function(x) {
+  if (is.data.frame(x)) {
+    nrow(x)
+  } else {
+    length(x)
+  }
+}
+row_subset <- function(x, rows) {
+  # similar to subset function, but the latter is only recommended for interactive use
+  if (is.data.frame(x)) {
+    x[rows, ]
+  } else {
+    x[rows]
+  }
+}
+
+#' Checks if the object is NULL or a fully named list
+#'
+#' @param x object to check
+#'
+#' @examples
+#' tern:::is_fully_named_list(list())
+#' tern:::is_fully_named_list(list(a = 1, 2))
+#' tern:::is_fully_named_list(list(1, 2))
+#' tern:::is_fully_named_list(list(a = 1, b = 2))
+is_fully_named_list <- function(x) {
+  is.list(x) &&
+    (
+      length(x) == 0 ||
+        (
+          !is.null(names(x)) &&
+            (length(x) == length(Filter(function(x) !identical(x, ""), names(x))))
+        )
+    )
+}
+
+#' string representation of the object's contents with names
+#'
+#' @param x object
+#'
+#' @return string of the form "key1: val1, keey2: val2, ..."
+#'
+#' @examples
+#' tern:::to_string_with_names(list(a = 1, 2))
+to_string_with_names <- function(x) {
+  # also works for more general
+  paste(names(x), x, sep = ":", collapse = ", ")
+}
+
+#' Kind of a complement to `%||%`
+#' Return y if x is not NULL, otherwise NULL (equal to x)
+#'
+#' @param x value checked for NULL
+#' @param y value to return if \code{x} is not NULL
+#'
+#' @return \code{NULL} if \code{x} is \code{NULL}, else \code{y}
+#' @examples
+#' tern:::if_not_null(NULL, 1)
+#' tern:::if_not_null(2, 1)
+if_not_null <- function(x, y) {
+  if (is.null(x)) {
+    NULL
+  } else {
+    y
+  }
 }

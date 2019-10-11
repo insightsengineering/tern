@@ -4,12 +4,16 @@
 \alias{t_coxph}
 \title{Proportional Hazards Regression Model Fit Summary Table}
 \usage{
-t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model")
+t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model",
+  pval_method = "wald")
 }
 \arguments{
 \item{fit_coxph}{a class \code{\link{survival}{coxph}} object.}
 
 \item{info_coxph}{label information for Cox PH model.}
+
+\item{pval_method}{the method used to calculate the p-value,
+should be one of "wald", "logrank", "likelihood"}
 }
 \description{
 An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
@@ -31,7 +35,7 @@ ADSL$RACE <- factor(
 ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 \donttest{
-fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1-CNSR) ~ ARM + strata(RACE),
+fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1 - CNSR) ~ ARM + strata(RACE),
   data = ADTTE_f, ties = "exact"
 )
 tbl <- t_coxph(fit_coxph)

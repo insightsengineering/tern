@@ -6,7 +6,6 @@
 #' and odds ratio.
 #'
 #' @inheritParams argument_convention
-#' @template param_rsp
 #' @param partition_rsp_by factor with one or more response categories, generate
 #'   additional statistics partitioned by each response categories. If
 #'   \code{NULL}, tabulation by each response categories will not be performed.
@@ -42,12 +41,13 @@
 #' @seealso \code{\link{t_forest_rsp}}
 #'
 #' @examples
+#' set.seed(1)
 #' t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
 #'
 #' library(random.cdisc.data)
-#' ADSL <- cadsl
+#' ADSL <- radsl(cached = TRUE)
 #'
-#' ADRS <- cadrs
+#' ADRS <- radrs(cached = TRUE)
 #' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI")
 #'
 #' # Example 1 - ARM B as reference
@@ -85,30 +85,36 @@
 #'
 #' # Example 3 - when all observations are non-responders
 #' ADRS <- data.frame(
-#' rsp = FALSE,
-#' arm = rep(c("A", "B"), each = 200),
-#' stringsAsFactors = FALSE
+#'   rsp = FALSE,
+#'   arm = rep(c("A", "B"), each = 200),
+#'   stringsAsFactors = FALSE
 #' )
 #'
 #' t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
+#'
+#'
+#' # table_tree
+#' tbls <- t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm), table_tree = TRUE)
+#' summary(tbls)
+#'
+#' @importFrom purrr compact
 t_rsp <- function(rsp,
                   col_by,
                   partition_rsp_by = NULL,
-                  strata_data = NULL) {
-
+                  strata_data = NULL,
+                  table_tree = FALSE) {
+  col_by <- col_by_to_factor(col_by)
+  stopifnot(is.factor(col_by))
+  col_N <- get_N(col_by) # nolint
+  check_col_by_factor(rsp, col_by, col_N, min_num_levels = 2)
   check_same_n(rsp = rsp, col_by = col_by, partition_rsp_by = partition_rsp_by, strata_data = strata_data)
-
+  if (!is.null(strata_data)) {
+    check_data_frame(strata_data)
+  }
   stopifnot(
     is.logical(rsp),
     !any(is.na(rsp))
   )
-
-  col_N <- table(col_by) # nolint
-  check_col_by(col_by, col_N, min_num_levels = 2)
-
-  if (!is.null(strata_data)) {
-    check_data_frame(strata_data)
-  }
 
   # Calculations for table in sections
   #####################################
@@ -137,13 +143,12 @@ t_rsp <- function(rsp,
     function(x) {
       binom.test(sum(x), length(x))$conf.int * 100
     },
-    format = "(xx.xx, xx.xx)",
+    format = "(xx.xx, xx.xx)", #todo: add percentage here
     row.name = "95% CI for Response Rates (Clopper-Pearson)"
   )
 
   # Difference in Response Rates section
   tbl_difference <- rbind(
-    # by is a factor with two levels: 1st ref arm, 2nd comp arm
     tabulate_pairwise(
       rsp,
       col_by,
@@ -155,79 +160,76 @@ t_rsp <- function(rsp,
     ),
 
     # wald test without continuity correction
-    tabulate_pairwise(
-      rsp,
-      col_by,
-      function(x, by) {
-        t.tbl <- table(by, x)
-        if (all(dim(t.tbl) == 2)) {
-          t_wc <- prop.test(t.tbl, correct = FALSE)
-          rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
-        } else {
-          rcell("-")
-        }
-      },
-      indent = 1,
-      row.name = "95% CI for difference (Wald without correction)"
-    ),
-
-    # wald test with  continuety correction
-    tabulate_pairwise(
-      rsp,
-      col_by,
-      function(x, by) {
-        t.tbl <- table(by, x)
-        if (all(dim(t.tbl) == 2)) {
-          t_wc <- prop.test(t.tbl, correct = TRUE)
-          rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
-        } else {
-          rcell("-")
-        }
-      },
-      indent = 1,
-      row.name = "95% CI for difference (Wald with continuity correction)"
-    ),
-
-    # p-value dependent on strata_data
-    if (is.null(strata_data)) {
+    indent(rbind(
       tabulate_pairwise(
         rsp,
         col_by,
         function(x, by) {
           t.tbl <- table(by, x)
           if (all(dim(t.tbl) == 2)) {
-            t_wc <- prop.test(table(by, x), correct = FALSE)
-            rcell(t_wc$p.value, format = "xx.xxxx")
+            t_wc <- prop.test(t.tbl, correct = FALSE)
+            rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
           } else {
             rcell("-")
           }
         },
-        indent = 1,
-        row.name = "p-value (Chi-squared)"
-      )
-    } else {
+        row.name = "95% CI for difference (Wald without correction)"
+      ),
+      # wald test with  continuety correction
       tabulate_pairwise(
         rsp,
         col_by,
         function(x, by) {
-          strat <- do.call(strata, strata_data)
-          if (any(tapply(rsp, strat, length) < 5)) {
-            rcell("<5 data points")
+          t.tbl <- table(by, x)
+          if (all(dim(t.tbl) == 2)) {
+            t_wc <- prop.test(t.tbl, correct = TRUE)
+            rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
           } else {
-            t.tbl <- table(col_by, rsp, strat)
-            if (all(dim(t.tbl)[1:2] == 2)) {
-              t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by), , ]
-              t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
-              rcell(t_m$p.value, format = "xx.xxxx")
+            rcell("-")
+          }
+        },
+        row.name = "95% CI for difference (Wald with continuity correction)"
+      ),
+
+      # p-value dependent on strata_data
+      if (is.null(strata_data)) {
+        tabulate_pairwise(
+          rsp,
+          col_by,
+          function(x, by) {
+            t.tbl <- table(by, x)
+            if (all(dim(t.tbl) == 2)) {
+              t_wc <- prop.test(table(by, x), correct = FALSE)
+              rcell(t_wc$p.value, format = "xx.xxxx")
             } else {
               rcell("-")
             }
-          }
-        },
-        indent = 1,
-        row.name = "p-value (Cochran-Mantel-Haenszel)*"
-      )
-    }
+          },
+          row.name = "p-value (Chi-squared)"
+        )
+      } else {
+        tabulate_pairwise(
+          rsp,
+          col_by,
+          function(x, by) {
+            strat <- do.call(strata, strata_data)
+            if (any(tapply(rsp, strat, length) < 5)) {
+              rcell("<5 data points")
+            } else {
+              t.tbl <- table(col_by, rsp, strat)
+              if (all(dim(t.tbl)[1:2] == 2)) {
+                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by), , ]
+                t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
+                rcell(t_m$p.value, format = "xx.xxxx")
+              } else {
+                rcell("-")
+              }
+            }
+          },
+          row.name = "p-value (Cochran-Mantel-Haenszel)*"
+        )
+      }
+    ), 1)
   )
 
   # Odds Ratio
@@ -304,30 +306,30 @@ t_rsp <- function(rsp,
     NULL
   } else {
     values <- lapply(split(col_by, partition_rsp_by, drop = FALSE),
-      function(x) {
+                     function(x) {
 
-        x <- factor(x, levels = levels(col_by))
-        x_x <- split(x, x, drop = FALSE)
+                       x <- factor(x, levels = levels(col_by))
+                       x_x <- split(x, x, drop = FALSE)
 
-        vals <- Map(function(y, arm) {
+                       vals <- Map(function(y, arm) {
 
-          n_arm <- sum(col_by == arm)
-          n_y <- length(y)
+                         n_arm <- sum(col_by == arm)
+                         n_y <- length(y)
 
-          if (is.na(n_arm) || n_arm == 0) {
-            list(n_p = rcell("-"), ci = rcell("-"))
-          } else if (n_y == 0) {
-            list(n_p = rcell(n_y, "xx.xx"),
-                 ci = rcell("-"))
-          } else {
-            list(
-              n_p = rcell(n_y * c(1, 1 / n_arm), "xx.xx (xx.xx%)"),
-              ci = rcell(binom.test(n_y, n_arm)$conf.int * 100, "(xx.xx, xx.xx)")
-            )
-          }
-        }, x_x, names(x_x))
+                         if (is.na(n_arm) || n_arm == 0) {
+                           list(n_p = rcell("-"), ci = rcell("-"))
+                         } else if (n_y == 0) {
+                           list(n_p = rcell(n_y, "xx.xx"),
+                                ci = rcell("-"))
+                         } else {
+                           list(
+                             n_p = rcell(n_y * c(1, 1 / n_arm), "xx.xx (xx.xx%)"),
+                             ci = rcell(binom.test(n_y, n_arm)$conf.int * 100, "(xx.xx, xx.xx)")
+                           )
+                         }
+                       }, x_x, names(x_x))
 
-      }
+                     }
     )
 
     # Display full labels for responses in controlled codelist
@@ -363,7 +365,7 @@ t_rsp <- function(rsp,
 
   #--- Footer section, if any for notes on stratification ---#
   tbl_footer <- if (is.null(strata_data)) {
-     NULL
+    NULL
   } else {
     n_strata <- length(strata_data)
     rtable(
@@ -381,19 +383,32 @@ t_rsp <- function(rsp,
     )
   }
 
-
-  tbl <- rbind(
-    tbl_response,
-    tbl_clopper_pearson,
-    tbl_difference,
-    tbl_odds_ratio,
-    tbl_partition,
-    tbl_footer,
-    gap = 1
+  node_if_non_null <- function(name, tbl) {
+    if (is.null(tbl)) {
+      NULL
+    } else {
+      # add header
+      header(tbl) <- rheader(rrowl("", levels(col_by)))
+      header_add_N(tbl, col_N)
+      node(name = invisible_node_name(name), content = tbl)
+    }
+  }
+  tree <- invisible_node(
+    children = compact(list(
+      node_if_non_null("Responders", tbl_response),
+      node_if_non_null("Clopper Pearson", tbl_clopper_pearson),
+      node_if_non_null("Difference Tests", tbl_difference),
+      node_if_non_null("Odds Ratio", tbl_odds_ratio),
+      node_if_non_null("Partition", tbl_partition),
+      node_if_non_null("Footer", tbl_footer)
+    ))
   )
 
-  header_add_N(tbl, col_N)
-
+  if (table_tree) {
+    tree
+  } else {
+    to_rtable(tree)
+  }
 }
 
 #' Function to calculate odds ratio and confidence interval
@@ -405,8 +420,8 @@ t_rsp <- function(rsp,
 #'
 #' @examples
 #' odds_ratio(table(mtcars$vs, mtcars$am))
-#' odds_ratio(matrix(c(12,6,7,7), nrow=2, byrow=T), conf_level = 0.90)
-odds_ratio <- function(x, conf_level=0.95) {
+#' odds_ratio(matrix(c(12,6,7,7), nrow = 2, byrow = TRUE), conf_level = 0.90)
+odds_ratio <- function(x, conf_level = 0.95) {
 
   theta <- x[1, 1] * x[2, 2] / (x[2, 1] * x[1, 2])
   # Asymptotic standard error

@@ -25,6 +25,10 @@ mean_sd <- function(x, na.rm = TRUE) { # nolint
   c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
 }
 
+q1_q3 <- function(x, na.rm = TRUE) { #nolintr
+  quantile(x, probs = c(0.25, 0.75), na.rm = na.rm)
+}
+
 #' get inter-quantile range
 #'
 #' @noRd
@@ -38,7 +42,7 @@ iqr_num <- function(x, na.rm = TRUE) { # nolint
 
 # checks if there is any case and derives counts (percentage), otherwise 0
 count_perc_col_N <- function(x_cell, n_i) { # nolint
-  if (n_i > 0) {
+  if (length(x_cell$id) > 0 && n_i > 0) {
     length(x_cell$id) * c(1, 1 / n_i) # obtaining the total and getting percentage
   } else {
     rcell(0, format = "xx")

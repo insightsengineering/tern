@@ -32,7 +32,7 @@ asl <- read.table(header = TRUE, sep = ";", stringsAsFactors = FALSE, text = '
                   "AB12345-XYZ2-id-28";"73";"M";"ARM C";"AFG"
                   "AB12345-XYZ2-id-29";"24";"F";"ARM B";"BES"
                   "AB12345-XYZ2-id-30";"46";"F";"ARM A";"SXM"'
-                  )
+)
 # nolint start
 asl$SEX <- factor(asl$SEX, levels = c("F", "M"))
 asl$ARMCD <- factor(asl$ARMCD, levels = c("ARM A", "ARM B", "ARM C"))
@@ -49,9 +49,8 @@ test_that("t_summary_by categorical results are as expected", {
 
   tbl_tern <- t_summary_by(
     x = asl$SEX,
-    by = asl$COUNTRY,
+    row_by = asl$COUNTRY,
     col_by = asl$ARMCD,
-    col_N = table(asl$ARMCD),
     total = "ALL"
   )
 
@@ -94,9 +93,8 @@ test_that("t_summary_by categorical results are as expected", {
 
   tbl_tern <- t_summary_by(
     x = asl$AGE,
-    by = asl$COUNTRY,
+    row_by = asl$COUNTRY,
     col_by = asl$ARMCD,
-    col_N = table(asl$ARMCD),
     total = "ALL"
   )
 

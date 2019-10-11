@@ -1,17 +1,18 @@
+#todo: add this again after replacing it with node object
+
+#' @include utils.R
+NULL
+
 #' Time-to-event Table as used for Forest Plot
 #'
-#'The time-to-event forest plot table summarizes time-to-event data by groups.
-#'The function returns event counts and median survival time for each analysis
-#'arm, as well as a hazard ratio and the corresponding 95\% confidence interval
-#'from a Cox proportional hazard model.
+#' The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and
+#' median survival time for each analysis arm, as well as a hazard ratio and the corresponding 95\% confidence interval
+#' from a Cox proportional hazard model.
 #'
 #' @inheritParams argument_convention
-#' @param group_data data frame with one variable per grouping
-#' @param strata_data data frame with stratification variables
-#' @param time_unit The unit of median survival time. Default is \code{months}.
-#' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
-#' @param na_omit_group is boolean. Default is \code{TRUE}, do not display \code{NA} as a category.
-#' @param dense_header Display the table headers in multiple rows. Default is \code{FALSE}.
+#' @inheritParams t_forest_rsp
+#' @inheritParams t_el_forest_tte
+#' @param strata_data currently not supported
 #'
 #' @details
 #' Cox proportional hazard model is used for hazard ratio calculation
@@ -43,15 +44,15 @@
 #'
 #' @template author_song24
 #'
-#' @seealso \code{\link{t_tte}}
+#' @seealso \code{\link{t_el_forest_tte}}, \code{\link{t_tte}}
 #'
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- cadsl
+#' ADSL <- radsl(seed = 1)
 #'
-#' ADTTE <- cadtte
+#' ADTTE <- radtte(ADSL, seed = 2)
 #' ADTTE_f <- ADTTE %>%
 #'   dplyr::filter(PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) %>%
 #'   mutate(ARMCD = droplevels(ARMCD))
@@ -60,7 +61,7 @@
 #'   tte = ADTTE_f$AVAL,
 #'   is_event = ADTTE_f$CNSR == 0,
 #'   col_by = ADTTE_f$ARMCD,
-#'   group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+#'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
 #'   dense_header = TRUE
 #' )
@@ -70,33 +71,211 @@
 #' \dontrun{
 #' Viewer(tbl)
 #' }
+#'
+#' # table tree
+#' tbls <- t_forest_tte(
+#'   tte = ADTTE_f$AVAL,
+#'   is_event = ADTTE_f$CNSR == 0,
+#'   col_by = ADTTE_f$ARMCD,
+#'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+#'   ties = "exact",
+#'   dense_header = TRUE,
+#'   table_tree = TRUE
+#' )
+#' summary(tbls)
+#' to_rtable(tbls)
+#'
 t_forest_tte <- function(tte,
                          is_event,
                          col_by,
-                         group_data = NULL,
-                         strata_data = NULL,
+                         row_by_list = NULL,
                          total = "ALL",
-                         time_unit = "month",
+                         strata_data = NULL,
                          ties = "exact",
-                         na_omit_group = TRUE,
-                         dense_header = FALSE) {
+                         time_unit = "month",
+                         dense_header = FALSE,
+                         table_tree = FALSE) {
 
+  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is.character.single(total))
   if (!is.null(strata_data)) {
     stop("strata_data argument is currently not implemented")
   }
 
-  check_same_n(tte = tte, is_event = is_event, group_data = group_data)
-  check_col_by(col_by, table(col_by), 2)
-  if (nlevels(col_by) != 2) {
-    stop("col_by can only have two levels")
+  do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by), row_by_list))
+
+  row_by_list <- row_by_list %>% map(na_as_level)
+
+  # take label if it exists, otherwise rowname
+  # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
+  names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
+
+  df <- data.frame(tte = tte, is_event = is_event, col_by = col_by)
+
+  dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
+
+  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0), max_depth = 2)
+
+  if (!is.null(total)) {
+    data_tree@children <- c(list(node(total, df)), data_tree@children)
   }
 
-  if (!is.null(group_data)) {
-    check_data_frame(group_data, allow_missing = TRUE)
-    group_data <- all_as_factor(group_data)
+  tree <- rapply_tree(data_tree, function(name, content, ...) {
+    if (is.data.frame(content)) {
+      list(
+        name = invisible_node_name(name),
+        content = t_el_forest_tte(
+          tte = content$tte,
+          is_event = content$is_event,
+          col_by = content$col_by,
+          ties = ties,
+          row_name = name,
+          dense_header = dense_header
+        )
+      )
+    } else {
+      list(name = name, content = NULL)
+    }
+  })
+
+  tree@format_data <- node_format_data(children_gap = 1)
+
+  if (table_tree) {
+    tree
+  } else {
+    to_rtable(tree)
   }
 
-  # Derive Output
+}
+
+
+#' Elementary Table for Forest Time to Event Plot
+#'
+#'
+#' @inheritParams survival::coxph
+#' @inheritParams argument_convention
+#' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
+#' @param time_unit The unit of median survival time. Default is \code{months}.
+#' @param row_name name of row
+#' @param dense_header Display the table headers in multiple rows.
+#'
+#' @return rtable with one row
+#'
+#' @export
+#'
+#' @seealso \code{\link{t_forest_tte}}
+#'
+#' @examples
+#'
+#' n <- 200
+#' tte <- rexp(n)
+#' set.seed(1)
+#' is_event <- sample(c(TRUE, FALSE), n, TRUE)
+#'
+#' t_el_forest_tte(
+#'   tte = tte, is_event = is_event,
+#'   col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
+#' )
+#'
+#' t_el_forest_tte(
+#'   tte = tte, is_event = is_event,
+#'   col_by = factor(rep("ARM A", n), levels = c("ARM A", "ARM B"))
+#' )
+#'
+#' t_el_forest_tte(
+#'   tte = tte, is_event = is_event,
+#'   col_by = factor(rep("ARM B", n), levels = c("ARM A", "ARM B"))
+#' )
+#'
+t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
+                            time_unit = "month", row_name = "", dense_header = TRUE) {
+
+  #todo: adapt to matrix col_by
+  stopifnot(is.factor(col_by))
+  check_same_n(tte = tte, is_event = is_event, col_by = col_by)
+
+  if (any(is.na(tte) | is.na(is_event))) {
+    stop("NAs in tte and is_event is not allowed")
+  }
+
+  if (!is.factor(col_by) && nlevels(col_by) != 2) {
+    stop("two levels required for col_by")
+  }
+
+  s_fit_km <- summary(survfit(Surv(tte, is_event) ~ col_by))$table
+
+  # Three scenarios:
+  # 1. two arms
+  # 2. ref arm has no records
+  # 3. comp arm has no records
+
+  col_N <- table(col_by) #nolintr
+
+  x <- if (all(col_N > 0)) {
+    s_fit_km <- as.data.frame(s_fit_km)
+    cox_sum  <- summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties))
+
+    list(
+      total_n = length(tte),
+      ref_n        = s_fit_km$records[1],
+      ref_events   = s_fit_km$events[1],
+      ref_median   = s_fit_km$median[1],
+      comp_n        = s_fit_km$records[2],
+      comp_events   = s_fit_km$events[2],
+      comp_median   = s_fit_km$median[2],
+      cox_hr   = cox_sum$conf.int[1],
+      cox_lcl  = cox_sum$conf.int[3],
+      cox_ucl  = cox_sum$conf.int[4]
+    )
+  } else if (col_N[1] > 0 && col_N[2] == 0) {
+    s_fit_km <- as.list(s_fit_km)
+    list(
+      total_n = length(tte),
+      ref_n        = s_fit_km$records,
+      ref_events   = s_fit_km$events,
+      ref_median   = s_fit_km$median,
+      comp_n        = 0,
+      comp_events   = 0,
+      comp_median   = NA,
+      cox_hr   = NA,
+      cox_lcl  = NA,
+      cox_ucl  = NA
+    )
+  } else if (col_N[1] == 0 && col_N[2] > 0) {
+    s_fit_km <- as.list(s_fit_km)
+    list(
+      total_n = length(tte),
+      comp_n        = s_fit_km$records,
+      comp_events   = s_fit_km$events,
+      comp_median   = s_fit_km$median,
+      ref_n        = 0,
+      ref_events   = 0,
+      ref_median   = NA,
+      cox_hr   = NA,
+      cox_lcl  = NA,
+      cox_ucl  = NA
+    )
+  } else {
+    stop("Invalid Arm Counts")
+  }
+
+  # format values
+
+  format_hr <- if (!is.na(x$cox_hr) & x$cox_hr > 999.9) {
+    ">999.9"
+  } else {
+    "xx.xx"
+  }
+
+  format_ci <- if (!is.na(x$cox_lcl) & x$cox_ucl > 999.9) {
+    sprintf_format("(%.2f, >999.9)")
+  } else {
+    "(xx.xx, xx.xx)"
+  }
+
+  if (x$total_n != x$ref_n + x$comp_n) {
+    stop("count inconsistency")
+  }
+
   table_header <- if (dense_header) {
     rheader(
       rrow(
@@ -131,7 +310,7 @@ t_forest_tte <- function(tte,
         NULL,
         rcell(levels(col_by)[1], colspan = 3),
         rcell(levels(col_by)[2], colspan = 3),
-         NULL,
+        NULL,
         NULL
       ),
       rrow(
@@ -145,156 +324,20 @@ t_forest_tte <- function(tte,
     )
   }
 
-  cox_data <- data.frame(time_to_event = tte, event = is_event, arm = col_by)
-
-  tbl_total <- if (is.null(total)) {
-    NULL
-  } else {
-    rtable(header = table_header, rrowl(row.name = total,
-                                        format_survival_analysis(
-                                          survival_results(cox_data, ties)
-                                        )
-    ))
-  }
-
-
-  tbl_group_data <- if (is.null(group_data)) {
-    NULL
-  } else {
-
-    # split data into a tree for data
-    # where each leaf is a data.frame with
-    # the data to compute the survival analysis with
-    data_tree <- lapply(group_data, function(var) {
-      if (!na_omit_group) {
-        var <- na_as_level(var)
-      }
-      split(cox_data, var, drop = FALSE)
-    })
-
-    names(data_tree) <- var_labels(group_data, fill = TRUE)
-
-    list_of_tables <- Map(function(dfs, varname) {
-      tbls_var <- Map(function(dfi, level) {
-        rtable(
-          header = table_header,
-          rrowl(
-            row.name = level,
-            indent = 1,
-            format_survival_analysis(
-              survival_results(dfi, ties)
-            )
-          )
-        )
-      }, dfs, names(dfs))
-      rbind(
-        rtable(header = table_header, rrow(row.name = varname)),
-        Reduce(rbind, tbls_var)
-      )
-    }, data_tree, names(data_tree))
-
-    rbindl_rtables(list_of_tables, gap = 1)
-  }
-
-  rbind(
-    tbl_total,
-    tbl_group_data,
-    gap = 1
-  )
-}
-
-survival_results <- function(data, ties) {
-
-  # KM Estimate
-  # Three scenarios:
-  # 1. two arms
-  # 2. ref arm has no records
-  # 3. comp arm has no records
-  arm_freq <- table(data$arm)
-  if (arm_freq[names(arm_freq) == levels(data$arm)[2]] == 0) {
-    km_sum <- as.data.frame(t(summary(survfit(Surv(time_to_event, event) ~ arm, data = data))$table))
-    km_ref_n <- as.numeric(km_sum[1])
-    km_comp_n <- 0
-    km_ref_event <- as.numeric(km_sum[4])
-    km_comp_event <- 0
-    km_ref_median <- as.numeric(km_sum[7])
-    km_comp_median <- NA
-  } else if (arm_freq[names(arm_freq) == levels(data$arm)[1]] == 0) {
-    km_sum <- as.data.frame(t(summary(survfit(Surv(time_to_event, event) ~ arm, data = data))$table))
-    km_ref_n <- 0
-    km_comp_n <- as.numeric(km_sum[1])
-    km_ref_event <- 0
-    km_comp_event <- as.numeric(km_sum[4])
-    km_ref_median <- NA
-    km_comp_median <- as.numeric(km_sum[7])
-  } else if (arm_freq[names(arm_freq) == levels(data$arm)[2]] * arm_freq[names(arm_freq) == levels(data$arm)[1]] > 0) {
-    km_sum <- summary(survfit(Surv(time_to_event, event) ~ arm, data = data))$table
-    km_ref_n <- km_sum[1, 1]
-    km_comp_n <- km_sum[2, 1]
-    km_ref_event <- km_sum[1, 4]
-    km_comp_event <- km_sum[2, 4]
-    km_ref_median <- km_sum[1, 7]
-    km_comp_median <- km_sum[2, 7]
-  } else {
-    stop("Invalid Arm Counts")
-  }
-
-  # Cox Model
-  # Three Scenarios:
-  # 1. both arms have events;
-  # 2. at least one of the two arms have no events
-  # 3. data has only one arm.
-  if (nrow(km_sum) == 2 & km_ref_event * km_comp_event > 0) {
-    cox_sum  <- suppressWarnings(summary(coxph(Surv(time_to_event, event) ~ arm, data = data, ties = ties)))
-    cox_hr   <- cox_sum$conf.int[1]
-    cox_lcl  <- cox_sum$conf.int[3]
-    cox_ucl  <- cox_sum$conf.int[4]
-    cox_pval <- cox_sum$conf.int[5]
-  } else {
-    cox_hr   <- NA
-    cox_lcl  <- NA
-    cox_ucl  <- NA
-    cox_pval <- NA
-  }
-
-  list(
-    total_n = nrow(data),
-    ref_n  = km_ref_n,
-    ref_events = km_ref_event,
-    ref_median = km_ref_median,
-    comp_n = km_comp_n,
-    comp_events = km_comp_event,
-    comp_median = km_comp_median,
-    cox_hr = cox_hr,
-    cox_lcl = cox_lcl,
-    cox_ucl = cox_ucl,
-    cox_pval = cox_pval
-  )
-}
-
-format_survival_analysis <- function(x) {
-  format_hr <- if (!is.na(x[["cox_hr"]]) & x[["cox_hr"]] > 999.9) {
-    ">999.9"
-  } else {
-    "xx.xx"
-  }
-
-  format_ci <- if (!is.na(x[["cox_ucl"]]) & x[["cox_ucl"]] > 999.9) {
-    sprintf_format("(%.2f, >999.9)")
-  } else {
-    "(xx.xx, xx.xx)"
-  }
-
-  list(
-    rcell(x[["ref_n"]] + x[["comp_n"]], "xx"),
-    rcell(x[["ref_n"]], "xx"),
-    rcell(x[["ref_events"]], "xx"),
-    rcell(x[["ref_median"]], "xx.xx"),
-    rcell(x[["comp_n"]], "xx"),
-    rcell(x[["comp_events"]], "xx"),
-    rcell(x[["comp_median"]], "xx.xx"),
-    rcell(x[["cox_hr"]], format_hr),
-    rcell(c(x[["cox_lcl"]], x[["cox_ucl"]]), format = format_ci)
+  rtable(
+    header = table_header,
+    rrow(
+      row_name,
+      rcell(x$total_n, "xx"),
+      rcell(x$ref_n, "xx"),
+      rcell(x$ref_events, "xx"),
+      rcell(x$ref_median, "xx.xx"),
+      rcell(x$comp_n, "xx"),
+      rcell(x$comp_events, "xx"),
+      rcell(x$comp_median, "xx.xx"),
+      rcell(x$cox_hr, format_hr),
+      rcell(c(x$cox_lcl, x$cox_ucl), format = format_ci)
+    )
   )
 
 }

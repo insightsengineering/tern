@@ -4,18 +4,23 @@
 \alias{t_max_grade_per_id}
 \title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
-t_max_grade_per_id(grade, id, col_by, col_N, grade_levels = NULL,
-  any_grade = "-Any Grade-")
+t_max_grade_per_id(grade, id, col_by, col_N = NULL, total = NULL,
+  grade_levels = NULL, any_grade = "-Any Grade-")
 }
 \arguments{
 \item{grade}{a numeric vector with grade values}
 
 \item{id}{a vector with id values}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{grade_levels}{a numeric vector used for naming rows for each level of
 grade}
@@ -29,7 +34,7 @@ as nested lists.
 }
 \examples{
 t_max_grade_per_id(
-  grade =  c(1,2,3),
+  grade = factor(c(1,2,3)),
   id = c(1,1,1),
   col_by = factor(rep("A", 3)),
   col_N = 3
@@ -37,14 +42,14 @@ t_max_grade_per_id(
 
 id <- c(1,1,2,2,3,3,3,4)
 t_max_grade_per_id(
-  grade =  c(1,2,3,2,1,1,2,3),
+  grade =  factor(c(1,2,3,2,1,1,2,3)),
   id = id,
   col_by = factor(LETTERS[id]),
   col_N = c(4,3,5,3)
 )
 
 t_max_grade_per_id(
-  grade =  c(1,2,3,2,1,1,2,3),
+  grade = factor(c(1,2,3,2,1,1,2,3)),
   id = id,
   col_by = factor(LETTERS[id]),
   col_N = c(4,3,5,4)
@@ -52,27 +57,26 @@ t_max_grade_per_id(
 
 \dontrun{
 # throws an error because each id can only have one col_by
-t_max_grade_per_id(
-  grade =  c(1,2,3),
-  id = c(1,2,2),
-  col_by = factor(LETTERS[1:3]),
-  col_N = c(15, 10, 12)
-)
+# t_max_grade_per_id(
+  #   grade = factor(c(1,2,3)),
+  #   id = c(1,2,2),
+  #   col_by = factor(LETTERS[1:3]),
+  #   col_N = c(15, 10, 12)
+  # )
 }
 
 \dontrun{
 # throws an error because grade NA is not in grade_levels
-t_max_grade_per_id(
-  grade =  c(1,2,NA),
-  id = c(1,2,3),
-  col_by = factor(LETTERS[1:3]),
-  col_N = c(15, 10, 12)
-)
+# t_max_grade_per_id(
+#   grade =  factor(c(1,2,NA)),
+#   id = c(1,2,3),
+#   col_by = factor(LETTERS[1:3]),
+#   col_N = c(15, 10, 12)
+# )
 }
 }
 \seealso{
-\code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}},
-  \code{\link{lt_events_per_term_grade_id_2}}, \code{\link{lt_events_per_term_grade_id_1}}
+\code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

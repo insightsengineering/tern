@@ -1,4 +1,4 @@
-
+ 
 -   [tern](#tern)
 -   [Installation](#installation)
     -   [Stable Version](#stable-version)
@@ -10,7 +10,8 @@
 -   [Presentations](#presentations)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-tern 
+
+tern
 ====
 
 The `tern` R package contains analysis functions to create tables, listings and graphs (TLGs) as used in clinical trials. We also provide [teal](https://github.roche.com/NEST/teal) modules for outputs in `tern` in the [teal.modules.clinical](https://github.roche.com/NEST/teal.modules.clinical) R package.

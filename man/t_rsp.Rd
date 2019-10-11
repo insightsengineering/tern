@@ -4,14 +4,16 @@
 \alias{t_rsp}
 \title{Response Table}
 \usage{
-t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL)
+t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL,
+  table_tree = FALSE)
 }
 \arguments{
-\item{rsp}{boolean, \code{TRUE} if subject is a responder \code{FALSE}
+\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 otherwise}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
 \item{partition_rsp_by}{factor with one or more response categories, generate
 additional statistics partitioned by each response categories. If
@@ -20,6 +22,9 @@ additional statistics partitioned by each response categories. If
 \item{strata_data}{data for stratification factors (categorical variables).
 If \code{NULL}, no stratified analysis is performed. See details for
 further explanation.}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -49,12 +54,13 @@ For the test of difference in response rates, Wald confidence
   be calculated.
 }
 \examples{
+set.seed(1)
 t_rsp(rsp = sample(c(TRUE, FALSE), 200, TRUE), col_by = factor(rep(c("A", "B"), each = 100)))
 
 library(random.cdisc.data)
-ADSL <- cadsl
+ADSL <- radsl(cached = TRUE)
 
-ADRS <- cadrs
+ADRS <- radrs(cached = TRUE)
 ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI")
 
 # Example 1 - ARM B as reference
@@ -92,12 +98,18 @@ Viewer(tbl2)
 
 # Example 3 - when all observations are non-responders
 ADRS <- data.frame(
-rsp = FALSE,
-arm = rep(c("A", "B"), each = 200),
-stringsAsFactors = FALSE
+  rsp = FALSE,
+  arm = rep(c("A", "B"), each = 200),
+  stringsAsFactors = FALSE
 )
 
 t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
+
+
+# table_tree
+tbls <- t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm), table_tree = TRUE)
+summary(tbls)
+
 }
 \seealso{
 \code{\link{t_forest_rsp}}

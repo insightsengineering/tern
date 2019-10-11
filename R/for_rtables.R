@@ -1,200 +1,106 @@
-# the functions in this document should eventually be moved to the rtables project
+# todo: move these functions
 
-
-#' Stack Tables Stored in a nested list of depth 2
-#'
-#' \code{recursive_stack_rtables} expects a list with lists of rtables to be stacked. Sometimes
-#' these tables have repeated information at the top and hence the first n rows
-#' can be optionally removed from the tables that are not first in the lists.
-#'
-#' @param x list with lists of rtables
-#'
-#' @return rtable
-#'
-#' @template author_waddella
-#'
-#' @noRd
-#'
-#' @examples
-#'
-#' l_tbls <- list(
-#'   list(
-#'     rtabulate(iris$Sepal.Length, iris$Species, mean),
-#'     rtabulate(iris$Sepal.Length, iris$Species, sd)
-#'   ),
-#'   list(
-#'     rtabulate(iris$Sepal.Width, iris$Species, mean),
-#'     rtabulate(iris$Sepal.Width, iris$Species, sd)
-#'   ),
-#'   list(
-#'     rtabulate(iris$Petal.Length, iris$Species, mean),
-#'     rtabulate(iris$Petal.Length, iris$Species, sd)
-#'   )
-#' )
-#'
-#' tern:::recursive_stack_rtables(l_tbls)
-#'
-recursive_stack_rtables <- function(x) {
-  tbls <- unlist_rtables(x)
-  rbindl_rtables(tbls, gap = 1)
-}
-
-
-#' Unlist a Nested Lists with rtables as leafes
-#'
-#' Often it is useful to flatten a nested lists with rtables as leafes to a list
-#' of rtables. The algorithm used is a depth first tree traversal.
-#'
-#' @param x a nested list of with rtables as leaf object
-#'
-#' @return a list of rtables
-#'
-#' @noRd
-#'
-#' @examples
-#'
-#' l_tbls <- list(
-#'   list(
-#'     rtabulate(iris$Sepal.Length, iris$Species, mean),
-#'     rtabulate(iris$Sepal.Length, iris$Species, sd)
-#'   ),
-#'   list(
-#'     rtabulate(iris$Sepal.Width, iris$Species, mean)
-#'   )
-#' )
-#'
-#' tern:::unlist_rtables(l_tbls)
-#'
-unlist_rtables <- function(x) {
-
-  n <- 0
-  incr_n_if_rtable <- function(x) {
-    if (is(x, "rtable")) {
-      n <<- n + 1
-    } else {
-      lapply(x, incr_n_if_rtable)
-    }
-  }
-  incr_n_if_rtable(x)
-
-  i <- 1
-  tbls <- vector(mode = "list", length = n)
-
-  add_tbls <- function(x) {
-    if (is(x, "rtable")) {
-      tbls[[i]] <<- x
-      i <<- i + 1
-    } else {
-      lapply(x, add_tbls)
-    }
-  }
-
-  if (n > 0) {
-    add_tbls(x)
-  }
-
-  tbls
-
-}
-
-indent_table <- function(x, n) {
-  for (i in 1:nrow(x)) {
-    attr(x[[i]], "indent") <- attr(x[[i]], "indent") + n
-  }
-  x
-}
-
+# todo: document this function
 shift_label_table <- function(tbl, term) {
   t_grade <- rtablel(rheader(rrow("", "."), rrow("", "Grade")), c(lapply(row.names(tbl), function(xi) rrow("", xi))))
   attr(t_grade[[1]], "row.name") <- term
   cbind_rtables(t_grade, tbl)
 }
 
-
+# adds row names as new column: this allows to add a header label to the rows
 row_names_as_col <- function(tbl, header_label) {
+  stopifnot(is.list(header_label) || is.character.vector(header_label))
 
-  nr_h <- nrow(header(tbl))
-
+  nrows_header <- nrow(header(tbl))
   if (missing(header_label)) {
-    header_label <- rep("", nr_h)
-  } else if (length(header_label) != nr_h) {
-    stop("dimension missmatch")
+    header_label <- rep("", nrows_header)
+  } else if (length(header_label) != nrows_header) {
+    stop("dimension mismatch")
   }
 
-  h <- do.call(rheader, lapply(header_label, function(x) rrow("", x)))
+  new_header <- do.call(rheader, lapply(header_label, function(x) {
+    if (is(x, "rrow")) {
+      stopifnot(ncol(x) == 1)
+      x
+    } else {
+      rrow("", x)
+    }
+  }))
 
-  tbl_rn <- rtablel(header = h, c(lapply(row.names(tbl), function(xi) rrow("", xi))))
+  tbl_rn <- rtablel(header = new_header, c(lapply(row.names(tbl), function(xi) rrow("", xi))))
   cbind_rtables(tbl_rn, tbl)
 }
 
-
-#' insert rrows at a specific location
+#' Combines two lists of rrows to a list of rrows
+#' Also keeps indent.
 #'
-#' @noRd
+#' todo: this should eventually replace rtables:::combine_rrows
 #'
-#' @examples
-#' tbl <- rtabulate(iris$Sepal.Length, iris$Species)
+#' @param x first list of rows, row.names are taken from this list
+#' @param y second list
 #'
-#' insert_rrow(tbl, rrow("Hello World"))
-insert_rrow <- function(tbl, rrow, at = 1) {
-  stopifnot(
-    is(tbl, "rtable"),
-    is(rrow, "rrow")
-  )
-
-  nr <- nrow(tbl)
-  stopifnot(
-    at >= 1 && at <= nr + 1,
-    length(rrow) == 0 || length(rrow) == ncol(tbl)
-  )
-
-  header <- header(tbl)
-
-  attributes(tbl) <- NULL
-  body <- if (at == 1) {
-    c(list(rrow), tbl)
-  } else if (at == (nr + 1)) {
-    c(tbl, list(rrow))
-  } else {
-    c(tbl[1:(at - 1)], rrow, tbl[(at + 1):nr])
-  }
-
-  rtablel(header, body)
-
-}
-
-#' cbind two rtables
-#' @noRd
+#' @return list of combined rows
 #'
-#' @examples
-#' x <- rtable(c("A", "B"), rrow("x row 1", 1,2), rrow("x row 2", 3, 4))
-#'
-#' y <- rtable("C", rrow("y row 1", 5), rrow("y row 2", 6))
-#'
-#' cbind_rtables(x, y)
-cbind_rtables <- function(x, y) {
-  stopifnot(
-    is(x, "rtable") && is(y, "rtable"),
-    nrow(x) == nrow(y)
-  )
-
-  header_x <- header(x)
-  header_y <- header(y)
-
-  stopifnot(nrow(header_x) == nrow(header_y))
-
-  header <- do.call(rheader, combine_rrows(header_x, header_y))
-
-  body <- combine_rrows(unclass(x), unclass(y))
-
-  rtablel(header, body)
-
-}
-
-combine_rrows <- function(x, y) {
-
+combine_rrows_with_indent <- function(x, y) {
+  #todo: check for empty rrows
   Map(function(xi, yi) {
-    rrowl(attr(xi, "row.name"), c(xi, yi))
+    #todo: optionally check row names are the same
+    rrowl(attr(xi, "row.name"), c(xi, yi), indent = attr(xi, "indent"))
   }, x, y)
+}
 
+
+# todo: add check !is_r_by to col_by_to_matrix
+
+#' Recursive by
+#'
+#' When a by of this type is encountered in tern functions, it recursively splits by it
+#' \code{is.list} still returns TRUE on the returned object.
+#' It is typically used to construct a nested tree from it.
+#'
+#' The r_by class is used to distinguish the simple_by (which can be a matrix
+#' which is a list as well, but in this case a non-recursive interpretation as in col_by)
+#' from the recursive
+#'
+#' @param x a list that specifies recursive split,
+#'   e.g. a list of col_bys (which can be matrices or factors)
+#'
+#' @export
+r_by <- function(x) {
+  stopifnot(is.list(x))
+  structure(x, class = "r_by")
+}
+
+#' Check whether is of class r_by
+#'
+#' @inheritParams r_by
+#' @return boolean whether it is an r_by object
+is_r_by <- function(x) {
+  is(x, "r_by")
+}
+
+#' Non-recursive by object
+#'
+#' This can be used both for row and column grouping.
+#'
+#' todo: adapt this in rtables/col_by.R to return this class
+#'
+#' Not called "by" because this function already exists in baseR
+#'
+#' @param x object to wrap it around
+simple_by <- function(x) {
+  stopifnot(is.data.frame(x) || is.factor(x) || is(x, "by_all"))
+  #todo: maybe have by_all inherit from "simple_by"
+  #structure(x, class = "simple_by")
+  # todo: need to adapt col_by_to_matrix first as it will not recognize this class, also change is_simple_by
+  x
+}
+
+#' Check whether is of class simple_by
+#'
+#' @inheritParams simple_by
+#' @return boolean whether it is an simple_by object
+is_simple_by <- function(x) {
+  #is(x, "simple_by")
+  TRUE
 }

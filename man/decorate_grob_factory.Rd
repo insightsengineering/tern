@@ -24,9 +24,9 @@ pf <- decorate_grob_factory(
   npages = 3
 )
 
-grid.newpage(); grid.draw(pf(NULL))
-grid.newpage(); grid.draw(pf(NULL))
-grid.newpage(); grid.draw(pf(NULL))
+draw_grob(pf(NULL))
+draw_grob(pf(NULL))
+draw_grob(pf(NULL))
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

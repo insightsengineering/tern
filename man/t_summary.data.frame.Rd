@@ -4,40 +4,54 @@
 \alias{t_summary.data.frame}
 \title{Variables Summary Table}
 \usage{
-\method{t_summary}{data.frame}(x, col_by, col_N = table(col_by),
-  total = NULL, ...)
+\method{t_summary}{data.frame}(x, col_by, col_N = NULL, total = NULL,
+  ..., table_tree = FALSE)
 }
 \arguments{
 \item{x}{data frame with variables to be summarized as described in the
 details section. If the variable has a \code{label} attribute then it will
 be used for the row name.}
 
-\item{col_by}{factor with reference and comparison group information, the
-first \code{level} indicates the reference group.}
+\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
+and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
-\item{total}{character string that will be used as a label for a column with total population. If the levels of
-\code{col_by} are the only columns of interest then total should be \code{NULL}.}
+\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{...}{arguments passed on to methods}
+
+\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{
 Similar as the demographic table in STREAM
 }
 \details{
+You can use the label attribute of the columns in the data frame to modify the node value / displayed value,
+e.g. AGE -> "Baseline Age of patient"
+
+
 Every variable in \code{x} will be mapped to a summary table using
 \code{\link{t_summary}} and then be stacked.
 }
 \examples{
-# with iris data
-t_summary(iris$Sepal.Length, iris$Species)
-
 library(random.cdisc.data)
 library(dplyr)
-ADSL <- cadsl
 
-t_summary(ADSL[, c("SEX", "AGE")], col_by  = no_by("All"), col_N = nrow(ADSL))
+# with CDISC like data
+ADSL <- radsl(cached = TRUE)
+
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+# or
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM \%>\% by_add_total("All Patients"))
+
+# Special Variants
+t_summary(ADSL[, c("SEX", "AGE")], col_by = by_all("All"), col_N = nrow(ADSL))
 
 # control the label
 ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
@@ -46,17 +60,32 @@ ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
 ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", useNA = 'always')
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+  useNA = 'always')
 
+# use different col_by
+
+## Biomarker Evaluable Population
+t_summary(
+    x = ADSL[, c("SEX", "AGE")],
+    col_by = ADSL$ARM \%>\% by_compare_subset(ADSL$BEP01FL == "Y",
+                                           label_all = "ALL", label_subset = "BEP")
+)
+
+
+# With Missing Data
 ADSL$SEX[1:10] <- NA
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", useNA = 'ifany')
-t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients", denominator = "N",
-          useNA = 'ifany')
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+  useNA = 'ifany')
+t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
+  denominator = "N", useNA = 'ifany')
 
-ADSL_AGE65 <- ADSL \%>\%
-  dplyr::filter(AGE > 65)
-t_summary(ADSL_AGE65[, c("AGE", "SEX")], ADSL_AGE65$ARM, total = "All Patients",
-          col_N = table(ADSL$ARM), denominator = "N", drop_levels = TRUE)
+
+# Table tree
+tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
+summary(tbls)
+to_rtable(tbls)
+
 }
 \seealso{
 \code{\link{t_summary}},

@@ -1,11 +1,15 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.6.2
+Date: 2019-10-11
+Version: 0.6.3
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
+  person("Roche", role = c("cph", "fnd")),
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
+  person("Maximilian", "Mordig", email = "maximilian.mordig@roche.com", role = "aut"),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
+  person("Jennifer", "Li", email = "li.jing@gene.com", role = "aut"),
   person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
   person("Chendi", "Liao", email = "chendi.liao@roche.com", role = "aut"),
   person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
@@ -13,15 +17,14 @@ Authors@R: c(
   person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
   person("Carolyn", "Zhang", email = "carolyn.zhang@duke.ed", role = "aut"),
   person("Mark", "Rothe", role = "aut"),
-  person("Xiao", "Mu Yo", role = "aut"),
-  person("Roche", role = c("cph", "fnd"))
+  person("Xiao", "Mu Yo", role = "aut")
   )
-Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
+Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.3),
   ggplot2,
   grid,
-  rtables (>= 0.1.2),
+  rtables (>= 0.1.3),
   survival
 Imports:
   dplyr,
@@ -29,16 +32,19 @@ Imports:
   gridExtra,
   magrittr,
   methods,
+  purrr,
+  rlang,
   scales,
   stats,
-  utils
+  utils,
+  utils.nest (>= 0.2.0),
+  forcats
 Suggests:
-  forcats,
   lattice,
   knitr,
-  random.cdisc.data (>= 0.2.1),
+  random.cdisc.data (>= 0.3.0),
   rmarkdown,
-  test.nest (>= 0.1),
+  test.nest (>= 0.2.0),
   testthat,
   tibble
 License: file LICENSE
@@ -51,3 +57,35 @@ BugReports: https://github.roche.com/NEST/tern/issues
 Additional_repositories:
   https://github.com/Roche/rtables,
   https://github.roche.com/NEST/random.cdisc.data
+Collate: 
+    'aa_trees.R'
+    'argument_convention.R'
+    'check_data.R'
+    'decorate_grob.R'
+    'for_rtables.R'
+    'formulas.R'
+    'g_forest.R'
+    'g_km.R'
+    'g_summary_by.R'
+    'g_waterfall.R'
+    'on_attach.R'
+    'package.R'
+    'safe_join.R'
+    'split.R'
+    't_coxph.R'
+    't_disposition.R'
+    'utils.R'
+    't_events_term_grade_id.R'
+    't_events_term_id.R'
+    't_forest_rsp.R'
+    't_forest_tte.R'
+    't_km.R'
+    't_rsp.R'
+    't_summarize_by_visit.R'
+    't_summary.R'
+    't_summary_variants.R'
+    't_tte.R'
+    'tabulate_aggregation_functions.R'
+    'tabulate_pairwise.R'
+    'utils_grid.R'
+    'wrap_text.R'

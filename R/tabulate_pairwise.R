@@ -7,13 +7,14 @@
 #'   and the second argument is a factor with two levels from col_by
 #'
 #' @importFrom stats relevel
+#' @export
 #'
 #' @template author_waddella
 #'
 #' @return an \code{rtable}
 #'
 #' @examples
-#' tern:::tabulate_pairwise(
+#' tabulate_pairwise(
 #'   x = iris$Sepal.Length,
 #'   col_by = iris$Species,
 #'   FUN = function(xi, col_by_i) diff(tapply(xi, col_by_i, mean)),

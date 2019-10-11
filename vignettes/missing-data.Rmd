@@ -1,7 +1,7 @@
 ---
 title: "Missing Data"
 author: "Adrian Waddell"
-date: "`r Sys.Date()`"
+date: "2019-07-31"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -35,7 +35,7 @@ t_summary(1:3, col_by = factor(c(NA, "a", "b")))
 You can use the `addNA` function to convert the NAs to a new level:
 
 ```{r}
-t_summary(1:3, col_by = addNA(factor(c(NA, "a", "b"))))
+t_summary(1:3, col_by = na_as_level(factor(c(NA, "a", "b"))))
 ```
 
 There are more ways to re-code `NAs` in factor variables as described in this
@@ -48,13 +48,15 @@ When summarizing factor variables the missing values do not get listed by
 default.
 
 ```{r}
-t_summary(x = factor(c(letters[1:5], NA)), col_by = factor(rep(c("I", "II"), 3)))
+#todo: fix NA in x: rtabulate.data.frame: row_by -> by_factor_to_matrix does not work well with NAs
+#t_summary(x = factor(c(letters[1:5], NA)), col_by = factor(rep(c("I", "II"), 3)))
 ```
 
 In order to display the missing values one can use the `useNA` argument similar
 as in `table` to convert missing values in factor variables to `"<NA>"`:
 
 ```{r}
-t_summary(x = factor(c(letters[1:5], NA)), col_by = factor(rep(c("I", "II"), 3)), useNA = "ifany")
+# todo: fix
+#t_summary(x = factor(c(letters[1:5], NA)), col_by = factor(rep(c("I", "II"), 3)), useNA = "ifany")
 ```
 

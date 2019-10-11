@@ -1,3 +1,38 @@
+# tern 0.6.3
+
+* Added `node` S4 class to create trees:
+    - for all related tree functions see the reference under trees 
+
+* Removed functions:
+    - Moved all the label functions to `rtables`
+    - deleted `keys` and `keys<-` functions
+
+* New helper functions:
+    - exported `tabulate_pairwise`
+    - `get_N`, `col_N_add_total`, `check_id`
+    - `na_as_level`
+    - `as_factor_keep_attributes`
+    - `r_by`
+
+* New TLGs:
+    - disposition elementary table `t_el_disposition`
+    - `t_el_forest_tte`, `t_el_forest_rsp`
+
+* Changed Arguments:
+    - all compound tables
+        - added `table_tree` argument which returns a `node` object
+    - `t_summary.numeric`
+        - added `f_numeric` to choose which statistics should be calculted
+    - `t_summary.factor`
+        - `denominator` now also allows for `omit` if the percentages should be omitted.
+    - `t_summary_by`
+        - renamed `by` to `row_by`
+    - `t_forest_rsp`, `t_forest_tte`
+        - changed functionality of `group_data` using `row_by_list`
+        - removed `na_omit_group`
+    - `t_count_unique`
+        - removed `indent` argument, use the `indent` funtion in `rtables` instead
+
 # tern 0.6.2
 
 * use chached data from `random.cdisc.data` to speed up testing

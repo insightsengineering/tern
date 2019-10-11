@@ -169,6 +169,7 @@ test_that("adverse events by terms (term only)", {
                     "SHH4429G-S19961-15654";"Active"
                     "SHH4429G-S19961-15655";"Placebo"'
   )
+  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo"))
 
   # nolint start
   tbl_stream <- rtable(
@@ -200,11 +201,11 @@ test_that("adverse events by terms (term only)", {
       AEBODSYS = "MedDRA System Organ Class",
       AEDECOD = "MedDRA Preferred Term")
 
-  tbl <- t_events_per_term_id(terms = anl$AEDECOD,
+  tbl <- t_events_per_term_id(terms = as_factor_keep_attributes(anl$AEDECOD),
                               id = anl$USUBJID,
-                              col_by = as.factor(anl$ARM),
-                              col_N = table(asl$ARM),
-                              total = "All Patients"
+                              col_by = anl$ARM,
+                              total = "All Patients",
+                              col_N = table(asl$ARM)
   )
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)

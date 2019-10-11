@@ -9,15 +9,14 @@ navbar:
     - icon: fa-github
       href: https://github.roche.com/NEST/tern
 
-development:
-  mode: release
-
 reference:
   - title:
     contents:
       - tern-package
+
   - title: Compound Tables
-    desc: These tables are often compound tables that are found in the GDSR templates.
+    desc: These tables are often compound tables that are found in the GDSR templates. Note that they all have the
+          `table_tree` argument to return the collection of elementary tables.
     contents:
       - t_summary
       - t_summary.data.frame
@@ -26,11 +25,8 @@ reference:
       - t_forest_tte
       - t_rsp
       - t_tte
-      - t_events_per_term_id
-      - t_events_per_term_grade_id
-  - title: Compound Graphs
-    contents:
-      - starts_with("g_")
+      - starts_with("t_events")
+
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
     contents:
@@ -40,16 +36,28 @@ reference:
       - t_summary.logical
       - t_summary.character
       - t_summary.Date
+      - t_summary_true
+      - starts_with("t_el_")
       - t_coxph
       - t_km
       - t_max_grade_per_id
       - t_count_unique
-      - t_events_summary
-      - tabulate_pairwise
+
+  - title: Graphs
+    desc: Graphs
+    contents:
+      - g_forest
+      - g_km
+      - g_waterfall
+
   - title: Analysis Helper Functions
-    desc: these functions are used by other functions to derive data.
+    desc: these functions are useful to help definining the analysis
     contents:
       - arm
+      - get_N
+      - col_N_add_total
+      - tabulate_pairwise
+
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
     contents:
@@ -60,25 +68,44 @@ reference:
       - stack_grobs
       - arrange_grobs
       - draw_grob
+
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
-      - label
-      - with_label
-      - var_labels
-      - var_labels<-
-      - var_relabel
-      - var_labels_remove
-      - keys<-
-      - keys
       - safe_join
       - combine_levels
       - drop_shared_variables
-      - reorder_to_match_id
+      - as_factor_keep_attributes
+      - na_as_level
+      - check_id
+
+  - title: Trees
+    desc: The functions are used to for computing compound tables. These functions are under active development and may
+          change frequenly in upcoming releases.
+          Also note that we will probably make table trees an intrinsic part of `rtables` and hence those functions
+          might be moved to another package in the future.
+    contents:
+      - node-class
+      - summary.node
+      - "[[,node-method"
+      - object_to_node
+      - nested_list_to_tree
+      - recursive_construct_tree
+      - rsplit
+      - non_rsplit
+      - rsplit_to_tree
+      - invisible_node
+      - invisible_node_name
+      - starts_with("esplit")
+      - basic_node_info
+      - displayable
+      - rapply_tree
+      - full_apply_at_depth
+      - rsort_tree
+      - node_format_data
+      - to_rtable
+
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
       - argument_convention
-      - lt_events_per_term_id_2
-      - lt_events_per_term_grade_id_1
-      - lt_events_per_term_grade_id_2

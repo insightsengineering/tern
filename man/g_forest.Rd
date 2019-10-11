@@ -51,8 +51,8 @@ column with a single value and a column with 2 values
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- cadsl
-ADTTE <- cadtte
+ADSL <- radsl(cached = TRUE)
+ADTTE <- radtte(ADSL, cached = TRUE)
 
 ADTTE_f <- ADTTE \%>\%
   dplyr::filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
@@ -62,7 +62,7 @@ tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  group_data = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
+  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
   ties = "exact",
   dense_header = TRUE
 )
@@ -81,8 +81,8 @@ g_forest(
 
 # For response table
 
-ADSL <- cadsl
-ADRS <- cadrs
+ADSL <- radsl(cached = TRUE)
+ADRS <- radrs(ADSL, cached = TRUE)
 
 ADRS_f <- ADRS \%>\%
   dplyr::filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
@@ -91,7 +91,7 @@ ADRS_f <- ADRS \%>\%
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = factor(ADRS_f$ARM),
-  group_data = ADRS_f[, c("SEX", "RACE")]
+  row_by_list = ADRS_f[, c("SEX", "RACE")]
 )
 
 tbl
@@ -107,7 +107,7 @@ g_forest(
   x_at = c(.1, 1, 10)
 )
 
-# Works with any \\code{rtable}
+# Works with any rtable
 
 tbl <- rtable(
   header = c("E", "CI"),

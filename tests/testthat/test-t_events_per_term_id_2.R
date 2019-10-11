@@ -105,6 +105,7 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
                     "SHH4429G-S19961-15655";"Placebo";"INFECTIONS AND INFESTATIONS";"UPPER RESPIRATORY TRACT INFECTION"'
   )
+  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo"))
 
   asl <- read.table(header = TRUE, sep = ";", stringsAsFactors = FALSE, text = '
                     "USUBJID";"ARM"
@@ -169,6 +170,7 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active"
                     "SHH4429G-S19961-15655";"Placebo"'
   )
+  asl$ARM <- factor(asl$ARM, levels = c("Active", "Placebo"))
 
   # nolint start
   tbl_stream <- rtable(
@@ -218,11 +220,11 @@ test_that("adverse events by terms (class and term)", {
       AEBODSYS = "MedDRA System Organ Class",
       AEDECOD = "MedDRA Preferred Term")
 
-  tbl <- t_events_per_term_id(terms = anl[, c("AEBODSYS", "AEDECOD")],
+  tbl <- t_events_per_term_id(terms = anl[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
                               id = anl$USUBJID,
-                              col_by = as.factor(anl$ARM),
-                              col_N = table(asl$ARM),
-                              total = "All Patients"
+                              col_by = anl$ARM,
+                              total = "All Patients",
+                              col_N = table(asl$ARM)
   )
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
