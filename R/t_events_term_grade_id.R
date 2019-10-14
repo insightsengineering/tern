@@ -241,7 +241,7 @@ t_events_per_term_grade_id <- function(terms,
 #'
 #' @examples
 #' t_max_grade_per_id(
-#'   grade =  c(1,2,3),
+#'   grade = factor(c(1,2,3)),
 #'   id = c(1,1,1),
 #'   col_by = factor(rep("A", 3)),
 #'   col_N = 3
@@ -249,14 +249,14 @@ t_events_per_term_grade_id <- function(terms,
 #'
 #' id <- c(1,1,2,2,3,3,3,4)
 #' t_max_grade_per_id(
-#'   grade =  c(1,2,3,2,1,1,2,3),
+#'   grade =  factor(c(1,2,3,2,1,1,2,3)),
 #'   id = id,
 #'   col_by = factor(LETTERS[id]),
 #'   col_N = c(4,3,5,3)
 #' )
 #'
 #' t_max_grade_per_id(
-#'   grade =  c(1,2,3,2,1,1,2,3),
+#'   grade = factor(c(1,2,3,2,1,1,2,3)),
 #'   id = id,
 #'   col_by = factor(LETTERS[id]),
 #'   col_N = c(4,3,5,4)
@@ -265,7 +265,7 @@ t_events_per_term_grade_id <- function(terms,
 #' \dontrun{
 #' # throws an error because each id can only have one col_by
 #' # t_max_grade_per_id(
-#'   #   grade =  c(1,2,3),
+#'   #   grade = factor(c(1,2,3)),
 #'   #   id = c(1,2,2),
 #'   #   col_by = factor(LETTERS[1:3]),
 #'   #   col_N = c(15, 10, 12)
@@ -275,7 +275,7 @@ t_events_per_term_grade_id <- function(terms,
 #' \dontrun{
 #' # throws an error because grade NA is not in grade_levels
 #' # t_max_grade_per_id(
-#' #   grade =  c(1,2,NA),
+#' #   grade =  factor(c(1,2,NA)),
 #' #   id = c(1,2,3),
 #' #   col_by = factor(LETTERS[1:3]),
 #' #   col_N = c(15, 10, 12)
@@ -288,8 +288,13 @@ t_max_grade_per_id <- function(grade,
                                total = NULL,
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
+  # must be done at beginning of function, otherwise senseless, todo: remove this
+  grade_label <- label(grade) %||% deparse(substitute(grade))
+
   stopifnot(is.null(total) || is.character.single(total))
-  stopifnot(is.numeric(grade))
+  stopifnot(is.factor(grade))
+  grade <- as.numeric(levels(grade))[grade] # convert factor to numeric because we compute maximum below
+  stopifnot(!any(is.na(grade)))
   stopifnot(!any(is.na(id)))
   col_by <- col_by_to_matrix(col_by, grade)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -358,7 +363,6 @@ t_max_grade_per_id <- function(grade,
   tbl <- rbind(tbl_any, tbl_x)
   tbl <- header_add_N(tbl, col_N)
 
-  grade_label <- label(grade) %||% deparse(substitute(grade))
   row_names_as_col(tbl, c("", grade_label))
 }
 

@@ -31,52 +31,6 @@ row_names_as_col <- function(tbl, header_label) {
   cbind_rtables(tbl_rn, tbl)
 }
 
-#todo: clean up rtables first
-#' remove_attributes <- function(x) {
-#'   attributes(x) <- NULL
-#'   x
-#' }
-#' #' Combine rheaders side-by-side into a new rheader
-#' #'
-#' #' @param header_x header1 (left)
-#' #' @param header_y header2 (right)
-#' #'
-#' #' @return new header
-#' #'
-#' #' @examples
-#' #' header_x <- rheader(
-#' #' rrow(NULL, "Visit", indent = 1)
-#' #' )
-#' #' header_y <- rheader(
-#' #'   rrow(NULL, "ARM A", "ARM B", "ARM C", "All Patients"),
-#' #'   rrowl(NULL, lapply(c(142, 133, 125, 400), function(nb) rcell(nb, format = "(N=xx)")))
-#' #' )
-#' #' header_x
-#' #' header_y
-#' #' combine_rheaders(header_x, header_y)
-#' combine_rheaders <- function(header_x, header_y) {
-#'   stopifnot(is(header_x, "rheader"), is(header_y, "rheader"))
-#'   if (nrow(header_x) < nrow(header_y)) {
-#'     header_x <- do.call(
-#'       rheader,
-#'       c(
-#'         remove_attributes(header_x),
-#'         replicate(nrow(header_y) - nrow(header_x), rrow(NULL, rep("-", ncol(header_x))), simplify = FALSE)
-#'       )
-#'     )
-#'   } else {
-#'     # x <-> y
-#'     header_y <- do.call(
-#'       rheader,
-#'       c(
-#'         remove_attributes(header_y),
-#'         replicate(nrow(header_x) - nrow(header_y), rrow(NULL, rep("-", ncol(header_y))), simplify = FALSE)
-#'       )
-#'     )
-#'   }
-#'   do.call(rheader, combine_rrows_with_indent(header_x, header_y))
-#' }
-
 #' Combines two lists of rrows to a list of rrows
 #' Also keeps indent.
 #'

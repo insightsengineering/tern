@@ -1,5 +1,4 @@
-
-# tern 0.6.2.9000
+# tern 0.6.3
 
 * Added `node` S4 class to create trees:
     - for all related tree functions see the reference under trees 

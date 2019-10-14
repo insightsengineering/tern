@@ -9,9 +9,6 @@ navbar:
     - icon: fa-github
       href: https://github.roche.com/NEST/tern
 
-development:
-  mode: devel
-
 reference:
   - title:
     contents:

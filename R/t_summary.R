@@ -325,7 +325,8 @@ t_summary.factor <- function(x, # nolint
                              total = NULL,
                              useNA = c("ifany", "no", "always"), # nolint
                              denominator = c("n", "N", "omit"),
-                             drop_levels = FALSE, ...) {
+                             drop_levels = FALSE,
+                             ...) {
   stopifnot(is.null(total) || is.character.single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr

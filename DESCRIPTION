@@ -1,6 +1,7 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Version: 0.6.2.9001
+Date: 2019-10-11
+Version: 0.6.3.9000
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
@@ -23,7 +24,7 @@ Depends:
   R (>= 3.3),
   ggplot2,
   grid,
-  rtables (>= 0.1.2),
+  rtables (>= 0.1.3),
   survival
 Imports:
   dplyr,
@@ -36,14 +37,14 @@ Imports:
   scales,
   stats,
   utils,
-  utils.nest,
+  utils.nest (>= 0.2.0),
   forcats
 Suggests:
   lattice,
   knitr,
-  random.cdisc.data (>= 0.2.1),
+  random.cdisc.data (>= 0.3.0),
   rmarkdown,
-  test.nest (>= 0.1),
+  test.nest (>= 0.2.0),
   testthat,
   tibble
 License: file LICENSE
