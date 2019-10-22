@@ -96,7 +96,7 @@ t_forest_tte <- function(tte,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
-  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is.character.single(total))
+  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is_character_single(total))
   if (!is.null(strata_data)) {
     stop("strata_data argument is currently not implemented")
   }

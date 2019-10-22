@@ -81,7 +81,7 @@ t_summary.default <- function(x, # nolint
                               col_N = NULL, # nolint
                               total = NULL,
                               ...) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -178,7 +178,7 @@ t_summary.data.frame <- function(x, # nolint
                                  total = NULL,
                                  ...,
                                  table_tree = FALSE) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -249,7 +249,7 @@ t_summary.numeric <- function(x, # nolint
                               f_numeric = c("count_n", "mean_sd", "median", "range"),
                               ...) {
   stopifnot(
-    is.null(total) || is.character.single(total),
+    is.null(total) || is_character_single(total),
     all(f_numeric %in% c("count_n", "mean_sd", "median", "q1_q3", "range")),
     length(f_numeric) > 0
   )
@@ -327,7 +327,7 @@ t_summary.factor <- function(x, # nolint
                              denominator = c("n", "N", "omit"),
                              drop_levels = FALSE,
                              ...) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -431,7 +431,7 @@ t_summary.Date <- function(x, # nolint
                            col_N = NULL, # nolint
                            total = NULL,
                            ...) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {

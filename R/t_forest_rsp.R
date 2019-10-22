@@ -103,7 +103,7 @@ t_forest_rsp <- function(rsp,
 
   stopifnot(
     is.logical(rsp),
-    is.null(total) || is.character.single(total),
+    is.null(total) || is_character_single(total),
     is.list(row_by_list)
   )
   do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), row_by_list))

@@ -34,7 +34,7 @@ setValidity("node", function(object) {
   format_data <- object@format_data
   # returning FALSE also works, but error message is not informative
   format_integer_or_null <- function(entry) {
-    is.null(format_data[[entry]]) || is.numeric.single(format_data[[entry]])
+    is.null(format_data[[entry]]) || is_numeric_single(format_data[[entry]])
   }
   stopifnot(
     is.null(format_data) || (
@@ -45,8 +45,8 @@ setValidity("node", function(object) {
         (is.null(format_data[["left_header"]]) || is(format_data[["left_header"]], "rheader"))
     ),
     # if it has > 0 children, no child is null
-    is.character.single(object@name) ||
-      (is(object@name, "invisible_node_name") && is.character.single(unclass(object@name))),
+    is_character_single(object@name) ||
+      (is(object@name, "invisible_node_name") && is_character_single(unclass(object@name))),
     !any(vapply(object@children, is.null, logical(1))),
     all(vapply(object@children, is, logical(1), "node")),
     # check all names are unique
@@ -126,7 +126,7 @@ node <- function(name, content, children = list(), format_data = list()) {
 #' n13 <- node(name = "C", content = array(c(1:6), dim = c(2,3)), children = list())
 #' summary(invisible_node(list(n11, n12, n13)))
 invisible_node <- function(children, name = "root", content = NULL, format_data = NULL) {
-  stopifnot(is.character.single(name))
+  stopifnot(is_character_single(name))
   node(
     name = invisible_node_name(name),
     content = NULL,
@@ -664,8 +664,8 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 #' summary(rsplit_to_tree(1:8, by_lst, drop_empty_levels = FALSE))
 rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE, non_leaves_null = FALSE) {
   stopifnot(
-    is.logical.single(drop_empty_levels),
-    is.logical.single(non_leaves_null)
+    is_logical_single(drop_empty_levels),
+    is_logical_single(non_leaves_null)
   )
   #todo: check class of by_lst, e.g. introduce class col_by
   recursive_construct_tree(

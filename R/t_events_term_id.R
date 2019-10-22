@@ -180,7 +180,7 @@ t_events_per_term_id <- function(terms,
   }
   stopifnot(is.list(terms))
   terms <- lapply(terms, as_factor_keep_attributes)
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
 
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -307,7 +307,7 @@ t_count_unique <- function(x,
                            total = NULL,
                            na_rm = TRUE,
                            row_name = "number of unique elements") {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   stopifnot(is.atomic(x)) # todo: is this enough?
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -375,7 +375,7 @@ t_el_events_per_term_id <- function(id,
                                     total_events = "Total number of events",
                                     subjects_with_events = "Total number of patients with at least one adverse event") {
 
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {

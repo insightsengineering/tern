@@ -9,7 +9,7 @@ shift_label_table <- function(tbl, term) {
 
 # adds row names as new column: this allows to add a header label to the rows
 row_names_as_col <- function(tbl, header_label) {
-  stopifnot(is.list(header_label) || is.character.vector(header_label))
+  stopifnot(is.list(header_label) || is_character_vector(header_label))
 
   nrows_header <- nrow(header(tbl))
   if (missing(header_label)) {

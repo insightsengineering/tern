@@ -124,7 +124,7 @@ t_events_per_term_grade_id <- function(terms,
     terms <- list(terms)
   }
   stopifnot(is.list(terms))
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
 
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -291,7 +291,7 @@ t_max_grade_per_id <- function(grade,
   # must be done at beginning of function, otherwise senseless, todo: remove this
   grade_label <- label(grade) %||% deparse(substitute(grade))
 
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   stopifnot(is.factor(grade))
   grade <- as.numeric(levels(grade))[grade] # convert factor to numeric because we compute maximum below
   stopifnot(!any(is.na(grade)))
