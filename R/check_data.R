@@ -81,10 +81,6 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 
-# todo: move to utils.nest once request is implemented
-all_true <- function(lst, fcn) {
-  all(vapply(lst, fcn, TRUE))
-}
 is_logical_vector_modif <- function(x, min_size = 1) {
   !is.null(x) &&
     is.atomic(x) &&

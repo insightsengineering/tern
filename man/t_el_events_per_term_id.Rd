@@ -42,8 +42,6 @@ t_el_events_per_term_id(
  col_by = factor(c("A", "A", "B", "C", "C")),
  col_N = c(2, 4, 10)
 )
-#todo: rename total_events -> total_events_label
-#todo: rename subjects_with_events -> subjects_with_events_label
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},

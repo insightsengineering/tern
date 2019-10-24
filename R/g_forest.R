@@ -1,5 +1,3 @@
-# todo: Not yet working because t_forest_tte.R not yet changed, uncomment once it is implemented
-
 # nolintr start
 #' Create a Forest Plot based on a Table
 #'
@@ -140,7 +138,7 @@ g_forest <- function(tbl,
                      newpage = TRUE) {
 
 
-  stopifnot(is(tbl, "rtable")) #todo: treat empty rtable
+  stopifnot(is(tbl, "rtable"))
 
   nr <- nrow(tbl)
   nc <- ncol(tbl)
@@ -540,7 +538,7 @@ forest_viewport <- function(tbl,
                             gap_header = unit(1, "lines")) {
 
   stopifnot(
-    is(tbl, "rtable"), #todo: treat empty rtable
+    is(tbl, "rtable"),
     is.null(width_row_names) || is.unit(width_row_names),
     is.null(width_columns) || is.unit(width_columns),
     is.unit(width_forest)

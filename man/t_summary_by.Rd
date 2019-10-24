@@ -89,8 +89,8 @@ t_summary_by(
  col_N = table(ADSL$ARMCD),
 )
 
-ADSL <- radsl(cached = TRUE) #todo: replace by seed version
-ADLB <- radlb(cached = TRUE) #todo: replace by seed version
+ADSL <- radsl(cached = TRUE)
+ADLB <- radlb(cached = TRUE)
 
 # Recursive case
 t_summary_by(

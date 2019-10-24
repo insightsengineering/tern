@@ -1,5 +1,3 @@
-#todo: maybe move these functions to rtables
-
 #' Split objects according to by object
 #'
 #' @param x object to split
@@ -131,7 +129,6 @@ non_rsplit <- function(x) {
   structure(x, class = "non_rsplit")
 }
 
-# todo: this function is not currently used
 #' Split recursively
 #'
 #' This is an extension of \code{\link{esplit}} to the case when by is a list to split by recursively

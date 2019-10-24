@@ -92,8 +92,6 @@
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
-#'
-#' # todo: remove as_factor_keep_attributes above
 t_forest_rsp <- function(rsp,
                          col_by,
                          row_by_list = NULL,
@@ -176,9 +174,6 @@ t_forest_rsp <- function(rsp,
 #' )
 #'
 t_el_forest_rsp <- function(rsp, col_by, row_name = "", dense_header = FALSE) {
-
-  # todo: we can possibly use by_hierarchical here
-
   # currently only works for factor
   col_by <- col_by_to_factor(col_by)
 

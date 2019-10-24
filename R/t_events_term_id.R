@@ -190,9 +190,6 @@ t_events_per_term_id <- function(terms,
     total <- NULL
   }
 
-  #todo: assign them to header row in tree
-  #terms_header <- vapply(terms, label, character(1)) #nolintr
-
   total_events <- paste0("Total number of ", event_type, "s")
   subjects_with_events <- paste("Total number of patients with at least one", event_type)
 
@@ -256,7 +253,6 @@ t_events_per_term_id <- function(terms,
     tree@name <- invisible_node_name("All")
   }
 
-  # todo: possibly sort with rsort_tree
   if (table_tree) {
     tree
   } else {
@@ -308,7 +304,7 @@ t_count_unique <- function(x,
                            na_rm = TRUE,
                            row_name = "number of unique elements") {
   stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(is.atomic(x)) # todo: is this enough?
+  stopifnot(is.atomic(x))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -366,8 +362,6 @@ t_count_unique <- function(x,
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
 #'  col_N = c(2, 4, 10)
 #' )
-#' #todo: rename total_events -> total_events_label
-#' #todo: rename subjects_with_events -> subjects_with_events_label
 t_el_events_per_term_id <- function(id,
                                     col_by,
                                     col_N = NULL, #nolintr

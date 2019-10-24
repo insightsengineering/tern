@@ -235,7 +235,6 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name
     )[2, ]  # n row is not shown in disposition table
 
   } else {
-    #todo: taken out, add again:  & length(x) > 0
     stopifnot(is.factor(x))
     if (!is.null(row.name)) {
       warning("x is factor and row.name will be ignored")

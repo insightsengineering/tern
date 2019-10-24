@@ -1,6 +1,3 @@
-# todo: move these functions
-
-# todo: document this function
 shift_label_table <- function(tbl, term) {
   t_grade <- rtablel(rheader(rrow("", "."), rrow("", "Grade")), c(lapply(row.names(tbl), function(xi) rrow("", xi))))
   attr(t_grade[[1]], "row.name") <- term
@@ -34,23 +31,16 @@ row_names_as_col <- function(tbl, header_label) {
 #' Combines two lists of rrows to a list of rrows
 #' Also keeps indent.
 #'
-#' todo: this should eventually replace rtables:::combine_rrows
-#'
 #' @param x first list of rows, row.names are taken from this list
 #' @param y second list
 #'
 #' @return list of combined rows
-#'
 combine_rrows_with_indent <- function(x, y) {
-  #todo: check for empty rrows
   Map(function(xi, yi) {
-    #todo: optionally check row names are the same
     rrowl(attr(xi, "row.name"), c(xi, yi), indent = attr(xi, "indent"))
   }, x, y)
 }
 
-
-# todo: add check !is_r_by to col_by_to_matrix
 
 #' Recursive by
 #'
@@ -83,16 +73,11 @@ is_r_by <- function(x) {
 #'
 #' This can be used both for row and column grouping.
 #'
-#' todo: adapt this in rtables/col_by.R to return this class
-#'
 #' Not called "by" because this function already exists in baseR
 #'
 #' @param x object to wrap it around
 simple_by <- function(x) {
   stopifnot(is.data.frame(x) || is.factor(x) || is(x, "by_all"))
-  #todo: maybe have by_all inherit from "simple_by"
-  #structure(x, class = "simple_by")
-  # todo: need to adapt col_by_to_matrix first as it will not recognize this class, also change is_simple_by
   x
 }
 

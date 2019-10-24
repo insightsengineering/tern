@@ -1,7 +1,3 @@
-# we don't name children with their content name because names may change and this would not get updated
-# todo: yes, they get updated because the whole objects gets copied to a new node object for which we
-# can again check validity
-
 #' An S4 Class to represent nodes in a tree
 #'
 #' From Wikipedia: A tree data structure can be defined recursively as a collection of nodes (starting at a root node),
@@ -372,7 +368,6 @@ setMethod("displayable", signature = "rtable", definition = function(x, indent =
 #' n4 <- node(name = "D", content = c(1:3), children = list(n41, n42, n43))
 #' cat(displayable(n4))
 setMethod("displayable", signature = "node", definition = function(x, indent = 0) {
-  # todo: rename displayable to show
   if (is.null(x)) {
     return()
   }
@@ -455,8 +450,6 @@ setMethod(`[[`, signature = c("node"), function(x, i, j, ..., return_content = T
 #' Node can be accessed through this name, but name will not be displayed when converted with to_rtable.
 #' node_name that will not be displayed, also true when converted to rtable
 #' The purpose of this is to still allow indexing in the rtable through the name index
-#' todo: we can also add a label attribute to the format_data to tell how the node should be displayed
-#' e.g. node name to access it vs. displayed node name in to_rtable
 #'
 #' @param name name of invisible node
 #'
@@ -475,7 +468,6 @@ invisible_node_name <- function(name) {
 
 #' Converts the object to an rtable
 #'
-#' # todo: rename to rbind.node eventually
 #' @param x object
 #' @param ... additional arguments to pass
 #'
@@ -504,9 +496,6 @@ setGeneric(
 #'   content = t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
 #' ))
 setMethod("to_rtable", signature = "node", definition = function(x) {
-  #todo: instead of only indenting, put node name and children name into an rtable as well
-  # then extract labels from tree structure (add label to node format_data for instance) to construct header
-  # this will allow for thinbgs like "Dictionary-derived term"
   stopifnot(is.null(x@content) || is_rtable(x@content) || is(x@content, "node"))
   if (is(x@name, "invisible_node_name")) {
     default_children_indent <- 0
@@ -541,19 +530,6 @@ setMethod("to_rtable", signature = "node", definition = function(x) {
       insert_rrow(tbl, rrow(x@name))
     }
   }
-  #todo: add header to table
-  # if (!is.null(x@format_data[["left_header"]])) {
-  #   #header(tbl) <- combine_rheaders(x@format_data[["left_header"]], header(tbl))
-  #   stopifnot(length(x@format_data[["left_header"]]) <= nrow(header(tbl)))
-  #   browser()
-  #   row_names_as_col(
-  #     tbl,
-  #     c(
-  #       x@format_data[["left_header"]],
-  #       replicate(nrow(header(tbl)) - length(x@format_data[["left_header"]]), "")
-  #     )
-  #   ) #todo: rename left_header to row names header
-  # }
   return(tbl)
 })
 
@@ -667,7 +643,6 @@ rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE, non_leaves_nul
     is_logical_single(drop_empty_levels),
     is_logical_single(non_leaves_null)
   )
-  #todo: check class of by_lst, e.g. introduce class col_by
   recursive_construct_tree(
     list(content = lst, by_lst = by_lst),
     function(info_from_parent, path) {
@@ -855,7 +830,6 @@ nested_list_to_tree <- function(x, format_data = NULL, max_depth = .Machine$inte
   }, x, names(x))
   node(invisible_node_name("root"), content = NULL, children = children, format_data = format_data)
 }
-#todo: remove below as it is not expanding when not all items are a list
 nested_list_to_tree_old <- function(x, format_data = NULL) {
 
   stopifnot(is.list(x), !is.null(names(x)))

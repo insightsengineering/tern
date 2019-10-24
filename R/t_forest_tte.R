@@ -1,5 +1,3 @@
-#todo: add this again after replacing it with node object
-
 #' @include utils.R
 NULL
 
@@ -189,7 +187,6 @@ t_forest_tte <- function(tte,
 t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
                             time_unit = "month", row_name = "", dense_header = TRUE) {
 
-  #todo: adapt to matrix col_by
   stopifnot(is.factor(col_by))
   check_same_n(tte = tte, is_event = is_event, col_by = col_by)
 

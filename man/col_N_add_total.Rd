@@ -17,8 +17,6 @@ It adds the sum of the vector as the last element.
 }
 \details{
 This is necessary when you manually specify col_N and col_by uses the total column (via by_add_total or similar)
-
-# todo: maybe put this into function as well like col_by_to_matrix
 }
 \examples{
 col_N_add_total(get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE))))

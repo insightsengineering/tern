@@ -78,7 +78,6 @@ t_tte <- function(formula,
                   time_unit = "month",
                   ties = "exact",
                   table_tree = FALSE) {
-  #todo: is it possible to add col_by argument here?
 
   cl <- match.call()
 

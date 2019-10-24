@@ -186,8 +186,6 @@ t_events_per_term_grade_id <- function(terms,
     depth = length(terms)
   )
 
-  #todo: this may require recursive application, not just at this depth
-  # Change first row.name to "Overall"
   tree <- full_apply_at_depth(
     tree,
     function(node) {
@@ -288,7 +286,6 @@ t_max_grade_per_id <- function(grade,
                                total = NULL,
                                grade_levels = NULL,
                                any_grade = "-Any Grade-") {
-  # must be done at beginning of function, otherwise senseless, todo: remove this
   grade_label <- label(grade) %||% deparse(substitute(grade))
 
   stopifnot(is.null(total) || is_character_single(total))
@@ -335,10 +332,9 @@ t_max_grade_per_id <- function(grade,
   # df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE) #nolintr
 
   df_max$grade <- factor(df_max$grade, levels = grade_levels)
-  df_max_no_na <- na.omit(df_max) # todo: why not do at the beginning
+  df_max_no_na <- na.omit(df_max)
 
   tbl_any <- if (!is.null(any_grade)) {
-    # TODO: Heng why do we allow this (na.omit)?
     rtabulate(
       x = df_max_no_na,
       row_by = by_all(any_grade),

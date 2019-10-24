@@ -48,7 +48,6 @@ When summarizing factor variables the missing values do not get listed by
 default.
 
 ```{r}
-#todo: fix NA in x: rtabulate.data.frame: row_by -> by_factor_to_matrix does not work well with NAs
 #t_summary(x = factor(c(letters[1:5], NA)), col_by = factor(rep(c("I", "II"), 3)))
 ```
 
@@ -56,7 +55,6 @@ In order to display the missing values one can use the `useNA` argument similar
 as in `table` to convert missing values in factor variables to `"<NA>"`:
 
 ```{r}
-# todo: fix
 #t_summary(x = factor(c(letters[1:5], NA)), col_by = factor(rep(c("I", "II"), 3)), useNA = "ifany")
 ```
 
