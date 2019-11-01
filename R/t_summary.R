@@ -363,7 +363,7 @@ t_summary.factor <- function(x, # nolint
         } else if (length(x_cell) > 0) {
           rcell(length(x_cell) * c(1, 1 / denom), format = "xx (xx.xx%)")
         } else {
-          rcell("-", format = "xx")
+          rcell(0, format = "xx")
         }
       },
       col_wise_args = list(denom = denom),

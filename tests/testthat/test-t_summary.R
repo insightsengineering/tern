@@ -62,7 +62,7 @@ test_that("t_summary results are as expected", {
     rrow("F", c(6, 0.6667), c(6, 0.4615), c(3, 0.375), c(15, 0.5), format = "xx (xx.xx%)", indent = 1),
     rrow("M", c(3, 0.3333), c(6, 0.4615), c(5, 0.625), c(14, 0.4667), format = "xx (xx.xx%)", indent = 1),
     rrow("U",
-         rcell("-", format = "xx"), c(1, 0.0769), rcell("-", format = "xx"), c(1, 0.0333), format = "xx (xx.xx%)",
+         rcell(0, format = "xx"), c(1, 0.0769), rcell(0, format = "xx"), c(1, 0.0333), format = "xx (xx.xx%)",
          indent = 1)
   )
   # nolint end
