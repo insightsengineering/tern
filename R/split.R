@@ -41,7 +41,7 @@ esplit.default <- function(x, by) { #nolintr
 #' esplit(data.frame(x = 1:5, y = 6:10), by)
 esplit.data.frame <- function(x, by) { #nolintr
   by <- col_by_to_matrix(by)
-  lapply(by, function(rows) x[rows, ])
+  lapply(by, function(rows) x[rows, , drop = FALSE])
 }
 
 #' Splits each list elements

@@ -59,9 +59,8 @@
 #' t_summary_by(
 #'  x = ADQS_f$AVAL,
 #'  row_by = ADQS_f$AVISIT,
-#'  col_by = ADQS_f$ARMCD,
-#'  total = "All Patients",
-#'  col_N = table(ADSL$ARMCD),
+#'  col_by = by_all("All"),
+#'  col_N = nrow(ADSL),
 #' )
 #'
 #' ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 50, "Positive", "Negative"),
