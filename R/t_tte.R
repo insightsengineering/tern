@@ -215,8 +215,8 @@ t_tte <- function(formula,
 
       list(
         pval = pchisq(fit_survdiff$chisq, length(fit_survdiff$n) - 1, lower.tail = FALSE),
-        hr = if (is.null(fit_coxph)) NA else (summary(fit_coxph)$conf.int)[1, 1],
-        hr_ci = if (is.null(fit_coxph)) c(NA, NA) else (summary(fit_coxph)$conf.int)[1, 3:4]
+        hr = if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))) NA else (summary(fit_coxph)$conf.int)[1, 1],
+        hr_ci = if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))) c(NA, NA) else (summary(fit_coxph)$conf.int)[1, 3:4]
       )
     })
 
