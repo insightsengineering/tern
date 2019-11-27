@@ -81,13 +81,6 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 
-is_logical_vector_modif <- function(x, min_size = 1) {
-  !is.null(x) &&
-    is.atomic(x) &&
-    length(x) >= min_size &&
-    all_true(x, utils.nest::is_logical_single)
-}
-
 # checks col_by and col_N to be consistent
 # col_by must be a matrix of booleans
 # checks that there are no empty levels and at least a specified number of levels
@@ -107,8 +100,8 @@ check_col_by <- function(x,
   stopifnot(
     ncol(col_by) >= min_num_levels,
     length(col_N) == ncol(col_by),
-    all(vapply(col_by, function(col) is_logical_vector_modif(col, min_size = 0), logical(1))),
-    !any(is.na(col_by)) && !("" %in% colnames(col_by))
+    all_true(col_by, is_logical_vector),
+    !anyNA(col_by) && !("" %in% colnames(col_by))
   )
 
   invisible(NULL)
