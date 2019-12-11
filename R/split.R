@@ -49,7 +49,7 @@ esplit.data.frame <- function(x, by) { #nolintr
 #' See \code{\link{esplit.non_rsplit}} for alternative behavior.
 #'
 #' @inheritParams esplit
-#'
+#' @importFrom purrr transpose
 #' @export
 #'
 #' @examples
