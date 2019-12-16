@@ -150,3 +150,76 @@ iqr_num3 <- function(x, na.rm = TRUE) { # nolint
     quantile(x, probs = c(.25, .75), na.rm = TRUE)
   }
 }
+
+
+#' ttest_two_arm Performs 2-arm t-test between comparison group against the reference group.
+#'
+#' @param x numeric vector
+#' @param col_by a factor with 2 or more levels. First level is taken as reference level
+#' @param conf.level an number indicating confidence level. Default is 0.95
+#'  Must be greater than 0 and less than 1.
+#' @param ... Other arguments from \code{\link{stats}{t.test}}
+#'
+#' @return list of
+#'   lcl, ucl, diff, se, tvalue, pvalue
+#'
+#' @importFrom stats t.test
+#'
+#' @export
+#'
+#' @examples
+#' ttest_two_arm(x = c(0,1,2,3,4,5,6,7,8,NA),
+#'               col_by = factor(c("A", "A", "A", "A", "A", "B", "B", "B", "B", "B")),
+#'               var.equal = TRUE)
+
+ttest_two_arm <- function(x, col_by, conf.level = 0.95, ...){
+
+  stopifnot(is.numeric(conf.level),
+            conf.level <= 1 && conf.level >= 0,
+            nlevels(col_by) == 2)
+
+  col_by <- relevel(col_by, ref = levels(col_by)[2])
+  fit <- t.test(x ~ col_by, conf.level = conf.level, ...)
+
+  result <- list(
+    ci = fit$conf.int,
+    diff = fit$estimate[[1]] - fit$estimate[[2]],
+    se = unname((fit$estimate[[1]] - fit$estimate[[2]])/fit$statistic),
+    tvalue = fit$statistic,
+    pvalue = fit$p.value
+  )
+
+  attr(result, "ref.level") <- levels(col_by)[2]
+  return(result)
+}
+
+#' ttest_ci_one_arm Confidence level for mean estimate (one-arm ttest)
+#'
+#' The calculation of confidence interval for an estimation of population mean
+#'  will use qt function with degree of freedom of n - 1
+#'
+#' @param x numeric vector
+#' @param conf.level confidence level. Must be greater than 0 and less than 1.
+#' @param ... Other arguments from \code{\link{stats}{t.test}}
+#'
+#' @return a vector of 2 numeric numbers representing the lower and upper bounds
+#'
+#' @export
+#'
+#' @examples
+#' ttest_ci_one_arm(c(1,2,3,4,5,6,7,8, NA), conf.level = 0.95, mu = 1, alternative = "less")
+#'
+ttest_ci_one_arm <- function(x, conf.level = 0.95, ...) {
+
+  stopifnot(is.numeric(conf.level),
+            conf.level <= 1 && conf.level >= 0)
+
+  result <- if (all(is.na(x))) {
+    rcell(" ", format="xx")
+  } else {
+    t.test(x, conf.level = conf.level, ...)$conf.int
+  }
+
+  attr(result, "conf.level") <- conf.level
+  return(result)
+}
