@@ -5,21 +5,20 @@
 \title{Events by Highest Grade Table}
 \usage{
 t_events_per_term_grade_id(terms, id, grade, col_by, col_N = NULL,
-  total = NULL, grade_levels = 1:5, table_tree = FALSE)
+  total = NULL, grade_levels = NULL, event_type = "event",
+  missing_term_action = "nocode", any_grade = "- Any Grade -",
+  table_tree = FALSE)
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information;
 Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
 For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
-column should be lower level term.
-\code{var_relabel} is used as the character string used as a label in the column header
-for each term.}
+column should be lower level term.}
 
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the
 length or number of rows of \code{terms}.}
 
-\item{grade}{grade of adverse event as numeric. \code{var_relabel} is used as the character
-string used as a label in the column header for each grade.}
+\item{grade}{grade of adverse event as numeric or factor.}
 
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
@@ -32,8 +31,19 @@ adverse events can be accounted for with this argument.}
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{grade_levels}{numeric, ordered values of possible of grades in a form
-of \code{x:y}, default is \code{1:5}.}
+\item{grade_levels}{an ordered character or factor vector used for naming rows for each
+level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
+level orders in \code{grade}}
+
+\item{event_type}{string to specify the type of event that is summarized, \code{event} by default.
+Only displayed when \code{terms} has 2 columns.}
+
+\item{missing_term_action}{Specify how the missing terms should be handled.
+Either "nocode" (by default) or "ignore". "nocode" means to code as
+"No Coding Available"; "ignore" means not to count the missing terms.}
+
+\item{any_grade}{string to specify the row name which counts any occurrence,
+it is named \code{-Any Grade-} by default}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
@@ -75,7 +85,6 @@ is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
 \examples{
 library(dplyr)
 library(random.cdisc.data)
-library(purrr)
 
 ADSL <- radsl(10, seed = 1)
 ADAE <- radae(ADSL, 4L, seed = 2)
@@ -89,6 +98,23 @@ t_events_per_term_grade_id(
   grade_levels = 1:5
 )
 
+ADAE$AEDECOD <- as.character(ADAE$AEDECOD)
+ADAE$AEBODSYS <- as.character(ADAE$AEBODSYS)
+ADAE$AEDECOD[c(1,5)] = ""
+ADAE$AEBODSYS[c(2,6)] = NA
+ADAE <- ADAE \%>\%
+  mutate(grade_category = case_when(
+    AETOXGR \%in\% c(1,2) ~ "Mild",
+    AETOXGR \%in\% c(3,4) ~ "Moderate",
+    AETOXGR \%in\% c(5) ~ "Severe") \%>\% as.factor) \%>\%
+  var_relabel(
+    AEBODSYS = "MedDRA System Organ Class",
+    AEDECOD = "MedDRA Preferred Term",
+    AETOXGR = "Analysis Toxicity Grade",
+    grade_category = "Insensity")
+
+levels(ADAE$grade_category) = c("Mild", "Moderate", "Severe")
+
 t_events_per_term_grade_id(
   terms = ADAE$AEDECOD,
   id = ADAE$USUBJID,
@@ -96,7 +122,7 @@ t_events_per_term_grade_id(
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
   total = "All Patients",
-  grade_levels = 1:5
+  grade_levels = 1:6
 )
 
 t_events_per_term_grade_id(
@@ -105,31 +131,25 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  grade_levels = 1:5
+  grade_levels = 1:5,
+  event_type = "adverse events",
+  missing_term_action = "ignore"
 )
-
 
 tbls <- t_events_per_term_grade_id(
   terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
   id = ADAE$USUBJID,
-  grade = ADAE$AETOXGR,
+  grade = ADAE$grade_category,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
   total = "All Patients",
-  grade_levels = 1:5,
+  event_type = "adverse events",
+  any_grade = "- Any Severity -",
   table_tree = TRUE
 )
 summary(tbls)
+to_rtable(tbls)
 }
 \seealso{
 \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_id}}
-}
-\author{
-Edgar Manukyan (manukyae) \email{edgar.manukyan@roche.com}
-
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
-
-Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
-
-Heng Wang (wangh107) \email{wang.heng@gene.com}
 }

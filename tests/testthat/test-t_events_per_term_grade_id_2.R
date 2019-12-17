@@ -214,8 +214,7 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
     var_relabel(
       AEBODSYS = "MedDRA System Organ Class",
       AEDECOD = "MedDRA Preferred Term",
-      AETOXGR = "NCI CTCAE Grade") %>%
-    mutate(AETOXGR = as.factor(AETOXGR))
+      AETOXGR = "NCI CTCAE Grade")
 
   tbl <- t_events_per_term_grade_id(terms = anl %>%
                                       select(AEBODSYS, AEDECOD),
@@ -224,7 +223,10 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
                                     col_by = anl$TRT02AN,
                                     total = "All Patients",
                                     col_N = table(asl$TRT02AN),
-                                    grade_levels = 1:5)
+                                    grade_levels = 1:5,
+                                    event_type = "adverse events",
+                                    missing_term_action = "ignore",
+                                    any_grade = "- Any Grade -")
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 
