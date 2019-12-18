@@ -6,7 +6,7 @@
 \usage{
 t_events_per_term_grade_id(terms, id, grade, col_by, col_N = NULL,
   total = NULL, grade_levels = NULL, event_type = "event",
-  missing_term_action = "nocode", any_grade = "- Any Grade -",
+  missing_term_action = "nocode", any_grade = "Any Grade",
   table_tree = FALSE)
 }
 \arguments{
@@ -43,7 +43,7 @@ Either "nocode" (by default) or "ignore". "nocode" means to code as
 "No Coding Available"; "ignore" means not to count the missing terms.}
 
 \item{any_grade}{string to specify the row name which counts any occurrence,
-it is named \code{-Any Grade-} by default}
+it is named \code{Any Grade} by default}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
@@ -69,8 +69,8 @@ Multiple events within a subject of the same term (if \code{terms} is one level)
 (if \code{terms} is two levels) are counted once using the
  greatest intensity reported.
 
-\code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has \code{NA}),
-e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_grade_id}.
+\code{t_events_per_term_grade_id} doesn't deal with data with missing grade. Impute or filter missing
+values before using \code{t_events_per_term_grade_id}.
 
 \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
  reported higher level term to the least frequent one. Within each group of higher level term,
@@ -78,9 +78,8 @@ e.g. if any terms are missing. Impute missing values before using \code{t_events
 
 \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value
 in case there was no events reported for particular \code{col_by} and/or
-\code{grade} category. Use \code{grade_levels} to modify the range of existing
-grades. If data does not have any records with \code{grade} 5 and the intent
-is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
+\code{grade} category. Use \code{grade_levels} to modify the range of desired
+grades.
 }
 \examples{
 library(dplyr)
@@ -144,7 +143,7 @@ tbls <- t_events_per_term_grade_id(
   col_N = table(ADSL$ARM),
   total = "All Patients",
   event_type = "adverse events",
-  any_grade = "- Any Severity -",
+  any_grade = "Any Severity",
   table_tree = TRUE
 )
 summary(tbls)

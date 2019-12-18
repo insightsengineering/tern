@@ -5,7 +5,7 @@
 \title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
 t_max_grade_per_id(grade, id, col_by, col_N = NULL, total = NULL,
-  grade_levels = NULL, any_grade = "-Any Grade-")
+  grade_levels = NULL, any_grade = "Any Grade")
 }
 \arguments{
 \item{grade}{a numeric or character vector with grade levels.}
@@ -26,8 +26,8 @@ and \code{add_total_by}.}
 level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
 level orders in \code{grade}}
 
-\item{any_grade}{add a row that counts any occurrence, it is named \code{-Any
-Grade-} by default}
+\item{any_grade}{add a row that counts any occurrence, it is named \code{Any
+Grade} by default}
 }
 \description{
 \code{t_max_grade_per_id} is used for deriving adverse events tables, these are returned
@@ -49,7 +49,7 @@ t_max_grade_per_id(
   col_by = factor(LETTERS[id]),
   grade_levels = factor(c("d","c","b","a"), levels = c("d","c","b","a")),
   col_N = c(4,3,5,3),
-  any_grade = "- Any Class -"
+  any_grade = "Any Class"
 )
 
 t_max_grade_per_id(

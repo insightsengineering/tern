@@ -226,7 +226,7 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
                                     grade_levels = 1:5,
                                     event_type = "adverse events",
                                     missing_term_action = "ignore",
-                                    any_grade = "- Any Grade -")
+                                    any_grade = "Any Grade")
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)
 

@@ -27,7 +27,7 @@ NULL
 #'   level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
 #'   level orders in \code{grade}
 #' @param any_grade string to specify the row name which counts any occurrence,
-#'   it is named \code{-Any Grade-} by default
+#'   it is named \code{Any Grade} by default
 #' @param event_type string to specify the type of event that is summarized, \code{event} by default.
 #'   Only displayed when \code{terms} has 2 columns.
 #' @param missing_term_action Specify how the missing terms should be handled.
@@ -44,8 +44,8 @@ NULL
 #' (if \code{terms} is two levels) are counted once using the
 #'  greatest intensity reported.
 #'
-#' \code{t_events_per_term_grade_id} doesn't deal with data with any non-complete records (has \code{NA}),
-#' e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_grade_id}.
+#' \code{t_events_per_term_grade_id} doesn't deal with data with missing grade. Impute or filter missing
+#' values before using \code{t_events_per_term_grade_id}.
 #'
 #' \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
 #'  reported higher level term to the least frequent one. Within each group of higher level term,
@@ -53,9 +53,8 @@ NULL
 #'
 #' \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value
 #' in case there was no events reported for particular \code{col_by} and/or
-#' \code{grade} category. Use \code{grade_levels} to modify the range of existing
-#' grades. If data does not have any records with \code{grade} 5 and the intent
-#' is to show only grades 1-4 rows then use \code{grade_levels = 1:4}.
+#' \code{grade} category. Use \code{grade_levels} to modify the range of desired
+#' grades.
 #'
 #' @return an \code{\link{rtable}} object.
 #'
@@ -125,7 +124,7 @@ NULL
 #'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
 #'   event_type = "adverse events",
-#'   any_grade = "- Any Severity -",
+#'   any_grade = "Any Severity",
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
@@ -139,17 +138,19 @@ t_events_per_term_grade_id <- function(terms,
                                        grade_levels = NULL,
                                        event_type = "event",
                                        missing_term_action = "nocode",
-                                       any_grade = "- Any Grade -",
+                                       any_grade = "Any Grade",
                                        table_tree = FALSE) {
   if (is.atomic(terms)) {
     terms <- list(terms)
   }
   stopifnot(is.list(terms))
   stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(!is.null(missing_term_action) & missing_term_action %in% c("nocode", "ignore"))
+  stopifnot(!is.null(missing_term_action) && missing_term_action %in% c("nocode", "ignore"))
 
   grade_label <- label(grade) %||% deparse(substitute(grade))
   col_by_label <- label(col_by) %||% deparse(substitute(col_by))
+
+  grade <- with_label(grade, label = grade_label)
 
   if(missing_term_action == "nocode") {
     terms <- lapply(terms, function(x) {
@@ -269,8 +270,8 @@ t_events_per_term_grade_id <- function(terms,
 #' @param grade_levels an ordered character or factor vector used for naming rows for each
 #'   level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
 #'   level orders in \code{grade}
-#' @param any_grade add a row that counts any occurrence, it is named \code{-Any
-#'   Grade-} by default
+#' @param any_grade add a row that counts any occurrence, it is named \code{Any
+#'   Grade} by default
 #'
 #' @importFrom stats aggregate
 #' @export
@@ -293,7 +294,7 @@ t_events_per_term_grade_id <- function(terms,
 #'   col_by = factor(LETTERS[id]),
 #'   grade_levels = factor(c("d","c","b","a"), levels = c("d","c","b","a")),
 #'   col_N = c(4,3,5,3),
-#'   any_grade = "- Any Class -"
+#'   any_grade = "Any Class"
 #' )
 #'
 #' t_max_grade_per_id(
@@ -328,7 +329,7 @@ t_max_grade_per_id <- function(grade,
                                col_N = NULL, # nolint
                                total = NULL,
                                grade_levels = NULL,
-                               any_grade = "-Any Grade-") {
+                               any_grade = "Any Grade") {
   grade_label <- label(grade) %||% deparse(substitute(grade))
 
   stopifnot(is.null(total) || is_character_single(total))
@@ -383,6 +384,7 @@ t_max_grade_per_id <- function(grade,
   df_max_no_na <- na.omit(df_max)
 
   tbl_any <- if (!is.null(any_grade)) {
+    any_grade <- paste0("- ", any_grade, " -")
     rtabulate(
       x = df_max_no_na,
       row_by = by_all(any_grade),
