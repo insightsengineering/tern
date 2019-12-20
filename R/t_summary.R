@@ -81,7 +81,7 @@ t_summary.default <- function(x, # nolint
                               col_N = NULL, # nolint
                               total = NULL,
                               ...) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -178,7 +178,7 @@ t_summary.data.frame <- function(x, # nolint
                                  total = NULL,
                                  ...,
                                  table_tree = FALSE) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -249,7 +249,7 @@ t_summary.numeric <- function(x, # nolint
                               f_numeric = c("count_n", "mean_sd", "median", "range"),
                               ...) {
   stopifnot(
-    is.null(total) || is.character.single(total),
+    is.null(total) || is_character_single(total),
     all(f_numeric %in% c("count_n", "mean_sd", "median", "q1_q3", "range")),
     length(f_numeric) > 0
   )
@@ -327,7 +327,7 @@ t_summary.factor <- function(x, # nolint
                              denominator = c("n", "N", "omit"),
                              drop_levels = FALSE,
                              ...) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -363,7 +363,7 @@ t_summary.factor <- function(x, # nolint
         } else if (length(x_cell) > 0) {
           rcell(length(x_cell) * c(1, 1 / denom), format = "xx (xx.xx%)")
         } else {
-          rcell("-", format = "xx")
+          rcell(0, format = "xx")
         }
       },
       col_wise_args = list(denom = denom),
@@ -431,7 +431,7 @@ t_summary.Date <- function(x, # nolint
                            col_N = NULL, # nolint
                            total = NULL,
                            ...) {
-  stopifnot(is.null(total) || is.character.single(total))
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -482,9 +482,9 @@ t_summary.Date <- function(x, # nolint
 #'
 #' ADSL$AGE[1:10] <- NA
 #'
-#' with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
-#' with(ADSL, t_summary(AGE > 65, ARM, total = "All", denominator = "N", useNA = "ifany",
-#'                      row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
+#' with(ADSL, t_summary(AGE > 50, ARM, useNA = "ifany"))
+#' with(ADSL, t_summary(AGE > 50, ARM, total = "All", denominator = "N", useNA = "ifany",
+#'                      row_name_true = "Baseline Age > 50", row_name_false = "Baseline Age <= 50"))
 t_summary.logical <- function(x, # nolint
                               col_by,
                               col_N = NULL, # nolint

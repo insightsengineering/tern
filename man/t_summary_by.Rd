@@ -51,7 +51,6 @@ t_summary_by(
  drop_levels = TRUE
 )
 
-
 ADSL$SEX[1:5] <- NA
 
 t_summary_by(
@@ -63,8 +62,6 @@ t_summary_by(
  useNA = "ifany"
 )
 
-ADSL <- ADSL \%>\% select(STUDYID, USUBJID, ARMCD)
-
 ADQS <- radqs(cached = TRUE)
 ADQS_f <- ADQS \%>\%
   dplyr::filter(PARAMCD=="BFIALL")
@@ -72,12 +69,11 @@ ADQS_f <- ADQS \%>\%
 t_summary_by(
  x = ADQS_f$AVAL,
  row_by = ADQS_f$AVISIT,
- col_by = ADQS_f$ARMCD,
- total = "All Patients",
- col_N = table(ADSL$ARMCD),
+ col_by = by_all("All"),
+ col_N = nrow(ADSL),
 )
 
-ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"),
+ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 50, "Positive", "Negative"),
   levels = c("Positive", "Negative"))
 ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )
 
@@ -89,8 +85,8 @@ t_summary_by(
  col_N = table(ADSL$ARMCD),
 )
 
-ADSL <- radsl(cached = TRUE) #todo: replace by seed version
-ADLB <- radlb(cached = TRUE) #todo: replace by seed version
+ADSL <- radsl(cached = TRUE)
+ADLB <- radlb(cached = TRUE)
 
 # Recursive case
 t_summary_by(

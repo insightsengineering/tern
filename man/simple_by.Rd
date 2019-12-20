@@ -13,7 +13,5 @@ simple_by(x)
 This can be used both for row and column grouping.
 }
 \details{
-todo: adapt this in rtables/col_by.R to return this class
-
 Not called "by" because this function already exists in baseR
 }

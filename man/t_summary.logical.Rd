@@ -42,9 +42,9 @@ ADSL <- cadsl
 
 ADSL$AGE[1:10] <- NA
 
-with(ADSL, t_summary(AGE > 65, ARM, useNA = "ifany"))
-with(ADSL, t_summary(AGE > 65, ARM, total = "All", denominator = "N", useNA = "ifany",
-                     row.name.TRUE = "Baseline Age > 65", row.name.FALSE = "Baseline Age <= 65"))
+with(ADSL, t_summary(AGE > 50, ARM, useNA = "ifany"))
+with(ADSL, t_summary(AGE > 50, ARM, total = "All", denominator = "N", useNA = "ifany",
+                     row_name_true = "Baseline Age > 50", row_name_false = "Baseline Age <= 50"))
 }
 \seealso{
 \code{\link{t_summary}},

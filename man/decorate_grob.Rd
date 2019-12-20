@@ -148,6 +148,19 @@ grid.draw(
     page = "Page 6 of 129"
   )
 )
+
+# no borders
+grid.newpage()
+grid.draw(
+  decorate_grob(
+    gridExtra::tableGrob(
+      head(mtcars)
+    ),
+    titles = "title",
+    footnotes = "footnote",
+    border = TRUE
+  )
+)
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

@@ -1,3 +1,9 @@
+# tern 0.6.4
+
+* Refactored after renaming functions in `utils.nest`
+* Added `event_type` argument to `t_events_per_term_grade_id`
+* Added one/two-arm t-test functions
+
 # tern 0.6.3
 
 * Added `node` S4 class to create trees:

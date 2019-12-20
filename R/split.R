@@ -1,5 +1,3 @@
-#todo: maybe move these functions to rtables
-
 #' Split objects according to by object
 #'
 #' @param x object to split
@@ -43,7 +41,7 @@ esplit.default <- function(x, by) { #nolintr
 #' esplit(data.frame(x = 1:5, y = 6:10), by)
 esplit.data.frame <- function(x, by) { #nolintr
   by <- col_by_to_matrix(by)
-  lapply(by, function(rows) x[rows, ])
+  lapply(by, function(rows) x[rows, , drop = FALSE])
 }
 
 #' Splits each list elements
@@ -51,7 +49,7 @@ esplit.data.frame <- function(x, by) { #nolintr
 #' See \code{\link{esplit.non_rsplit}} for alternative behavior.
 #'
 #' @inheritParams esplit
-#'
+#' @importFrom purrr transpose
 #' @export
 #'
 #' @examples
@@ -131,7 +129,6 @@ non_rsplit <- function(x) {
   structure(x, class = "non_rsplit")
 }
 
-# todo: this function is not currently used
 #' Split recursively
 #'
 #' This is an extension of \code{\link{esplit}} to the case when by is a list to split by recursively

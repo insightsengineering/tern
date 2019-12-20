@@ -19,8 +19,6 @@ to_rtable(x)
 \item{...}{additional arguments to pass}
 }
 \description{
-# todo: rename to rbind.node eventually
-
 Trivial (identity)
 }
 \examples{

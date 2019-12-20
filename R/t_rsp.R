@@ -143,7 +143,7 @@ t_rsp <- function(rsp,
     function(x) {
       binom.test(sum(x), length(x))$conf.int * 100
     },
-    format = "(xx.xx, xx.xx)", #todo: add percentage here
+    format = "(xx.xx, xx.xx)",
     row.name = "95% CI for Response Rates (Clopper-Pearson)"
   )
 

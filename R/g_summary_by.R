@@ -1,5 +1,3 @@
-# todo: adapt all g_* functions to new col_by non-disjoint standard
-
 #' Change From Baseline Plot
 #'
 #' @param x x coordinates

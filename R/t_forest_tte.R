@@ -1,5 +1,3 @@
-#todo: add this again after replacing it with node object
-
 #' @include utils.R
 NULL
 
@@ -96,7 +94,7 @@ t_forest_tte <- function(tte,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
-  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is.character.single(total))
+  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is_character_single(total))
   if (!is.null(strata_data)) {
     stop("strata_data argument is currently not implemented")
   }
@@ -189,7 +187,6 @@ t_forest_tte <- function(tte,
 t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
                             time_unit = "month", row_name = "", dense_header = TRUE) {
 
-  #todo: adapt to matrix col_by
   stopifnot(is.factor(col_by))
   check_same_n(tte = tte, is_event = is_event, col_by = col_by)
 

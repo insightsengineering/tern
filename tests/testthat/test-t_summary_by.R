@@ -60,22 +60,22 @@ test_that("t_summary_by categorical results are as expected", {
     rrow("AFG"),
     rrow("n", 3, 2, 5, 10, format = "xx", indent = 1),
     rrow("F", c(1, 0.3333), c(2, 1), c(3, 0.6), c(6, 0.6), format = "xx (xx.xx%)", indent = 1),
-    rrow("M", c(2, 0.6667), rcell("-", format = "xx"), c(2, 0.4), c(4, 0.4), format = "xx (xx.xx%)", indent = 1),
+    rrow("M", c(2, 0.6667), rcell(0, format = "xx"), c(2, 0.4), c(4, 0.4), format = "xx (xx.xx%)", indent = 1),
     rrow(""),
     rrow("BES"),
     rrow("n", 3, 3, 2, 8, format = "xx", indent = 1),
     rrow("F", c(2, 0.6667), c(3, 1), c(1, 0.5), c(6, 0.75), format = "xx (xx.xx%)", indent = 1),
-    rrow("M", c(1, 0.3333), rcell("-", format = "xx"), c(1, 0.5), c(2, 0.25), format = "xx (xx.xx%)", indent = 1),
+    rrow("M", c(1, 0.3333), rcell(0, format = "xx"), c(1, 0.5), c(2, 0.25), format = "xx (xx.xx%)", indent = 1),
     rrow(""),
     rrow("CUW"),
     rrow("n", 1, 3, 1, 5, format = "xx", indent = 1),
-    rrow("F", rcell("-", format = "xx"), c(3, 1), c(1, 1), c(4, 0.8), format = "xx (xx.xx%)", indent = 1),
-    rrow("M", c(1, 1), rcell("-", format = "xx"), rcell("-", format = "xx"), c(1, 0.2), format = "xx (xx.xx%)", indent = 1),
+    rrow("F", rcell(0, format = "xx"), c(3, 1), c(1, 1), c(4, 0.8), format = "xx (xx.xx%)", indent = 1),
+    rrow("M", c(1, 1), rcell(0, format = "xx"), rcell(0, format = "xx"), c(1, 0.2), format = "xx (xx.xx%)", indent = 1),
     rrow(""),
     rrow("SXM"),
     rrow("n", 2, 4, 1, 7, format = "xx", indent = 1),
     rrow("F", c(1, 0.5), c(1, 0.25), c(1, 1), c(3, 0.4286), format = "xx (xx.xx%)", indent = 1),
-    rrow("M", c(1, 0.5), c(3, 0.75), rcell("-", format = "xx"), c(4, 0.5714), format = "xx (xx.xx%)", indent = 1)
+    rrow("M", c(1, 0.5), c(3, 0.75), rcell(0, format = "xx"), c(4, 0.5714), format = "xx (xx.xx%)", indent = 1)
   )
   # nolint end
 
@@ -138,3 +138,4 @@ test_that("t_summary_by categorical results are as expected", {
   expect_true(all(comp == "."), "t_summary_by numerical does not provide the expected results")
 
 })
+

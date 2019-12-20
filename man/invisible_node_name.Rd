@@ -16,8 +16,6 @@ node
 Node can be accessed through this name, but name will not be displayed when converted with to_rtable.
 node_name that will not be displayed, also true when converted to rtable
 The purpose of this is to still allow indexing in the rtable through the name index
-todo: we can also add a label attribute to the format_data to tell how the node should be displayed
-e.g. node name to access it vs. displayed node name in to_rtable
 }
 \examples{
 invisible_node_name("root")

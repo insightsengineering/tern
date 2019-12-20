@@ -5,10 +5,10 @@
 \title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
 t_max_grade_per_id(grade, id, col_by, col_N = NULL, total = NULL,
-  grade_levels = NULL, any_grade = "-Any Grade-")
+  grade_levels = NULL, any_grade = "Any Grade")
 }
 \arguments{
-\item{grade}{a numeric vector with grade values}
+\item{grade}{a numeric or character vector with grade levels.}
 
 \item{id}{a vector with id values}
 
@@ -22,11 +22,12 @@ and \code{add_total_by}.}
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{grade_levels}{a numeric vector used for naming rows for each level of
-grade}
+\item{grade_levels}{an ordered character or factor vector used for naming rows for each
+level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
+level orders in \code{grade}}
 
-\item{any_grade}{add a row that counts any occurrence, it is named \code{-Any
-Grade-} by default}
+\item{any_grade}{add a row that counts any occurrence, it is named \code{Any
+Grade} by default}
 }
 \description{
 \code{t_max_grade_per_id} is used for deriving adverse events tables, these are returned
@@ -41,11 +42,14 @@ t_max_grade_per_id(
 )
 
 id <- c(1,1,2,2,3,3,3,4)
+grade <- factor(c("a","b","c","b","a","a","b","c"))
 t_max_grade_per_id(
-  grade =  factor(c(1,2,3,2,1,1,2,3)),
+  grade = grade,
   id = id,
   col_by = factor(LETTERS[id]),
-  col_N = c(4,3,5,3)
+  grade_levels = factor(c("d","c","b","a"), levels = c("d","c","b","a")),
+  col_N = c(4,3,5,3),
+  any_grade = "Any Class"
 )
 
 t_max_grade_per_id(
@@ -77,13 +81,4 @@ t_max_grade_per_id(
 }
 \seealso{
 \code{\link{t_max_grade_per_id}}, \code{\link{t_events_per_term_grade_id}}
-}
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
-
-Carolyn Zhang (zhanc107) \email{carolyn.zhang@duke.edu}
-
-Heng Wang (wangh107) \email{wang.heng@gene.com}
-
-Ting Qi (qit3) \email{qit3@gene.com}
 }

@@ -120,6 +120,19 @@
 #'     page = "Page 6 of 129"
 #'   )
 #' )
+#'
+#' # no borders
+#' grid.newpage()
+#' grid.draw(
+#'   decorate_grob(
+#'     gridExtra::tableGrob(
+#'       head(mtcars)
+#'     ),
+#'     titles = "title",
+#'     footnotes = "footnote",
+#'     border = TRUE
+#'   )
+#' )
 decorate_grob <- function(grob,
                           titles,
                           footnotes,
@@ -173,7 +186,7 @@ decorate_grob <- function(grob,
           st_titles,
           gTree(
             children = gList(
-              rectGrob(),
+              if (border) rectGrob(),
               gTree(
                 children = gList(
                   grob

@@ -196,8 +196,6 @@ get_N <- function(col_by) { #nolintr
 #'
 #' This is necessary when you manually specify col_N and col_by uses the total column (via by_add_total or similar)
 #'
-#' # todo: maybe put this into function as well like col_by_to_matrix
-#'
 #' @param col_N col_N count
 #'
 #' @return new count with total count appended to vector
@@ -227,7 +225,6 @@ as_factor_keep_attributes <- function(x) {
   do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
 }
 
-# todo: move these functions elsewhere, closely related to esplit
 number_rows <- function(x) {
   if (is.data.frame(x)) {
     nrow(x)

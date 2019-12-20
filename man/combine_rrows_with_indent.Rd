@@ -16,5 +16,6 @@ combine_rrows_with_indent(x, y)
 list of combined rows
 }
 \description{
-todo: this should eventually replace rtables:::combine_rrows
+Combines two lists of rrows to a list of rrows
+Also keeps indent.
 }

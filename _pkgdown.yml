@@ -43,6 +43,12 @@ reference:
       - t_max_grade_per_id
       - t_count_unique
 
+  - title: Analysis Functions
+    desc: These functions return statistical results from different models
+    contents:
+      - ttest_ci_one_arm
+      - ttest_two_arm
+
   - title: Graphs
     desc: Graphs
     contents:

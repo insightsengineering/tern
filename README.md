@@ -92,7 +92,7 @@ We would like `tern` to be a collaborative effort and your contributions are wel
 
 ### Creating Pull Requests
 
--   Please make pull requests to the `master` branch (i.e. base is master)
+-   Please make pull requests to the `master` branch (i.e. base is master) 
 
 -   We then make new tagged releases on the master branch once the `master` branch has been thoroughly tested
 

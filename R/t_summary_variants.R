@@ -41,7 +41,6 @@
 #'  drop_levels = TRUE
 #' )
 #'
-#'
 #' ADSL$SEX[1:5] <- NA
 #'
 #' t_summary_by(
@@ -53,8 +52,6 @@
 #'  useNA = "ifany"
 #' )
 #'
-#' ADSL <- ADSL %>% select(STUDYID, USUBJID, ARMCD)
-#'
 #' ADQS <- radqs(cached = TRUE)
 #' ADQS_f <- ADQS %>%
 #'   dplyr::filter(PARAMCD=="BFIALL")
@@ -62,12 +59,11 @@
 #' t_summary_by(
 #'  x = ADQS_f$AVAL,
 #'  row_by = ADQS_f$AVISIT,
-#'  col_by = ADQS_f$ARMCD,
-#'  total = "All Patients",
-#'  col_N = table(ADSL$ARMCD),
+#'  col_by = by_all("All"),
+#'  col_N = nrow(ADSL),
 #' )
 #'
-#' ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 0, "Positive", "Negative"),
+#' ADQS_f$AVALCAT1 <- factor(ifelse(ADQS_f$AVAL >= 50, "Positive", "Negative"),
 #'   levels = c("Positive", "Negative"))
 #' ADQS_f <- var_relabel(ADQS_f, AVALCAT1 = "Result" )
 #'
@@ -79,8 +75,8 @@
 #'  col_N = table(ADSL$ARMCD),
 #' )
 #'
-#' ADSL <- radsl(cached = TRUE) #todo: replace by seed version
-#' ADLB <- radlb(cached = TRUE) #todo: replace by seed version
+#' ADSL <- radsl(cached = TRUE)
+#' ADLB <- radlb(cached = TRUE)
 #'
 #' # Recursive case
 #' t_summary_by(
@@ -187,17 +183,10 @@ t_summary_by <- function(x,
         name = name,
         content = content
       )
-    }
+    },
+    ...
   )
   tree@name <- invisible_node_name(tree@name)
-
-  # todo: paste(deparse(substitute(row_by)) can be very long output and is confusing
-  # row_by is of class r_by
-  # row_by_lbl <- paste(lapply(row_by, label), collapse = "/") %||%
-  #   paste(deparse(substitute(row_by)), sep = "\n")
-  # x_lbl <- label(x) %||% paste(deparse(substitute(x)), sep = "\n") # secondary index
-  # rownames_header <- c(rrow(NULL, row_by_lbl), rrow(NULL, x_lbl, indent = 1))
-  # tree@format_data[["left_header"]] <- rownames_header
 
   if (table_tree) {
     tree
