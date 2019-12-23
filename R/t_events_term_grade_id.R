@@ -152,16 +152,19 @@ t_events_per_term_grade_id <- function(terms,
 
   grade <- with_label(grade, label = grade_label)
 
-  if(missing_term_action == "nocode") {
+  if (missing_term_action == "nocode") {
     terms <- lapply(terms, function(x) {
       x <- as.character(x)
       x[x %in% c("", " ", NA)] <- "No Coding Available"
       return(x)
     })
   } else if (missing_term_action == "ignore") {
-    missing_terms <- sapply(terms, function(x) {
-      x %in% c("", " ", NA)
-    }) %>% apply(., 1, any)
+    missing_terms <- apply(
+      sapply(terms, function(x) x %in% c("", " ", NA)),
+      1,
+      any
+    )
+
     terms <- lapply(terms, function(x) {
       x[!missing_terms]
     })
