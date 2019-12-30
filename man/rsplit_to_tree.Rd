@@ -4,8 +4,7 @@
 \alias{rsplit_to_tree}
 \title{Split list recursively according to by and return the associated tree}
 \usage{
-rsplit_to_tree(lst, by_lst, drop_empty_levels = TRUE,
-  non_leaves_null = FALSE)
+rsplit_to_tree(lst, by_lst, drop_empty_levels = TRUE, non_leaves_null = FALSE)
 }
 \arguments{
 \item{lst}{list to split, \code{\link{esplit}} will be applied to all list elements}

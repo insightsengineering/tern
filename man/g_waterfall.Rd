@@ -4,8 +4,15 @@
 \alias{g_waterfall}
 \title{Horizontal Waterfall Plot}
 \usage{
-g_waterfall(height, id, col = NULL, xlab = NULL, ylab = NULL,
-  col_legend_title = NULL, title = NULL)
+g_waterfall(
+  height,
+  id,
+  col = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  col_legend_title = NULL,
+  title = NULL
+)
 }
 \arguments{
 \item{height}{numeric vector to be plotted as the waterfall bars}

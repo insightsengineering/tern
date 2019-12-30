@@ -4,8 +4,14 @@
 \alias{t_count_unique}
 \title{Count Unique Elements Per Cell}
 \usage{
-t_count_unique(x, col_by, col_N = NULL, total = NULL, na_rm = TRUE,
-  row_name = "number of unique elements")
+t_count_unique(
+  x,
+  col_by,
+  col_N = NULL,
+  total = NULL,
+  na_rm = TRUE,
+  row_name = "number of unique elements"
+)
 }
 \arguments{
 \item{x}{a vector}

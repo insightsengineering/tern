@@ -4,11 +4,14 @@
 \alias{t_coxph}
 \title{Proportional Hazards Regression Model Fit Summary Table}
 \usage{
-t_coxph(fit_coxph, info_coxph = "Cox Porportional Hazard Model",
-  pval_method = "wald")
+t_coxph(
+  fit_coxph,
+  info_coxph = "Cox Porportional Hazard Model",
+  pval_method = "wald"
+)
 }
 \arguments{
-\item{fit_coxph}{a class \code{\link{survival}{coxph}} object.}
+\item{fit_coxph}{a class \code{\link[survival]{coxph}} object.}
 
 \item{info_coxph}{label information for Cox PH model.}
 

@@ -4,10 +4,19 @@
 \alias{t_events_per_term_grade_id}
 \title{Events by Highest Grade Table}
 \usage{
-t_events_per_term_grade_id(terms, id, grade, col_by, col_N = NULL,
-  total = NULL, grade_levels = NULL, event_type = "event",
-  missing_term_action = "nocode", any_grade = "Any Grade",
-  table_tree = FALSE)
+t_events_per_term_grade_id(
+  terms,
+  id,
+  grade,
+  col_by,
+  col_N = NULL,
+  total = NULL,
+  grade_levels = NULL,
+  event_type = "event",
+  missing_term_action = "nocode",
+  any_grade = "Any Grade",
+  table_tree = FALSE
+)
 }
 \arguments{
 \item{terms}{character or factor vector, or dataframe to represent events information;
