@@ -4,8 +4,15 @@
 \alias{t_tte}
 \title{Time to Event Table}
 \usage{
-t_tte(formula, data, event_descr, time_points, time_unit = "month",
-  ties = "exact", table_tree = FALSE)
+t_tte(
+  formula,
+  data,
+  event_descr,
+  time_points,
+  time_unit = "month",
+  ties = "exact",
+  table_tree = FALSE
+)
 }
 \arguments{
 \item{formula}{a survival formula, the arm variable needs to be wrapped in

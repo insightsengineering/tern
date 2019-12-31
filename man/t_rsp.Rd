@@ -4,8 +4,13 @@
 \alias{t_rsp}
 \title{Response Table}
 \usage{
-t_rsp(rsp, col_by, partition_rsp_by = NULL, strata_data = NULL,
-  table_tree = FALSE)
+t_rsp(
+  rsp,
+  col_by,
+  partition_rsp_by = NULL,
+  strata_data = NULL,
+  table_tree = FALSE
+)
 }
 \arguments{
 \item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}

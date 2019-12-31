@@ -4,8 +4,14 @@
 \alias{t_forest_rsp}
 \title{Response Table as used for Forest Plot}
 \usage{
-t_forest_rsp(rsp, col_by, row_by_list = NULL, total = "ALL",
-  dense_header = FALSE, table_tree = FALSE)
+t_forest_rsp(
+  rsp,
+  col_by,
+  row_by_list = NULL,
+  total = "ALL",
+  dense_header = FALSE,
+  table_tree = FALSE
+)
 }
 \arguments{
 \item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}

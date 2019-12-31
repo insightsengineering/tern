@@ -5,7 +5,7 @@
 #' An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
 #' object for further annotation on top of Kaplan-Meier grob
 #'
-#' @param fit_coxph a class \code{\link{survival}{coxph}} object.
+#' @param fit_coxph a class \code{\link[survival]{coxph}} object.
 #' @param info_coxph label information for Cox PH model.
 #' @param pval_method the method used to calculate the p-value,
 #' should be one of "wald", "logrank", "likelihood"
