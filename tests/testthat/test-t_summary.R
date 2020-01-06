@@ -76,4 +76,30 @@ test_that("t_summary results are as expected", {
 
   expect_true(all(comp == "."), "t_summary does not provide the expected results")
 
+  # Test SE calculation
+
+  asl <- data.frame(a = rep(c(1, 1.1, 1.2, 0.9, 0.8), 2),
+      b = rep(c(2, 2.5, 3, 1.4, 1), 2),
+      spec = c(rep("A", 5), rep("B", 5)))
+  tbl_tern <- t_summary(asl[, c("a", "b")], asl$spec, f_numeric = c("se", "mean_sd"))
+
+  # nolint start
+  tbl_test <- rtable(
+      rrow(""),
+      rrow("a"),
+      rrow("SE", 0.07, 0.07, format = "xx.xx", indent = 1),
+      rrow("Mean (SD)", c(1, 0.16), c(1, 0.16), format = "xx.xx (xx.xx)", indent = 1),
+      rrow(""),
+      rrow("b"),
+      rrow("SE", 0.36, 0.36, format = "xx.xx", indent = 1),
+      rrow("Mean (SD)", c(2, 0.81), c(2, 0.81), format = "xx.xx (xx.xx)", indent = 1)
+  )
+  # nolint end
+  header(tbl_test) <- rheader(
+     rrow("", "A", "B"),
+     rrow("", "(N=5)", "(N=5)")
+  )
+  comp <- compare_rtables(tbl_tern, tbl_test, comp.attr = FALSE)
+  expect_true(all(comp == "."), "t_summary does not provide the expected results")
+
 })

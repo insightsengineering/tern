@@ -209,7 +209,7 @@ t_summary.data.frame <- function(x, # nolint
 #' @inheritParams t_summary.data.frame
 #' @param x numeric variable
 #' @param f_numeric a combination of the analysis fuctions to be evaluated \code{"count_n", "mean_sd", "median",
-#'   "q1_q3", "range"}
+#'   "q1_q3", "range", "se"}
 #'
 #' @template return_rtable
 #'
@@ -250,7 +250,7 @@ t_summary.numeric <- function(x, # nolint
                               ...) {
   stopifnot(
     is.null(total) || is_character_single(total),
-    all(f_numeric %in% c("count_n", "mean_sd", "median", "q1_q3", "range")),
+    all(f_numeric %in% c("count_n", "mean_sd", "median", "se", "q1_q3", "range")),
     length(f_numeric) > 0
   )
 
@@ -269,6 +269,9 @@ t_summary.numeric <- function(x, # nolint
       f_name,
       count_n = rtabulate(x, col_by, count_n, row.name = "n"),
       mean_sd = rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
+      se = rtabulate(x, col_by, function(x, na.rm) {
+            sd(x)/sqrt(length(x))
+          }, row.name = "SE", format = "xx.xx", na.rm = TRUE),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
       q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE),
       range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),

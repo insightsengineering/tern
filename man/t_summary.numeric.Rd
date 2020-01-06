@@ -27,7 +27,7 @@ and \code{add_total_by}.}
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{f_numeric}{a combination of the analysis fuctions to be evaluated \code{"count_n", "mean_sd", "median",
-"q1_q3", "range"}}
+"q1_q3", "range", "se"}}
 
 \item{...}{arguments passed on to methods}
 }
