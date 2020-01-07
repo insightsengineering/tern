@@ -807,6 +807,8 @@ node_format_data <- function(gap_to_children = NULL, children_gap = NULL, childr
 #' @param max_depth maximum depth until which to apply it recursively, depth 0 just creates a node with
 #'   the list items as children nodes
 #'
+#' @importFrom utils.nest is_fully_named_list
+#'
 #' @export
 #'
 #' @examples

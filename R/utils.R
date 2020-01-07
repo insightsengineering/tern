@@ -232,6 +232,7 @@ number_rows <- function(x) {
     length(x)
   }
 }
+
 row_subset <- function(x, rows) {
   # similar to subset function, but the latter is only recommended for interactive use
   if (is.data.frame(x)) {
@@ -239,26 +240,6 @@ row_subset <- function(x, rows) {
   } else {
     x[rows]
   }
-}
-
-#' Checks if the object is NULL or a fully named list
-#'
-#' @param x object to check
-#'
-#' @examples
-#' tern:::is_fully_named_list(list())
-#' tern:::is_fully_named_list(list(a = 1, 2))
-#' tern:::is_fully_named_list(list(1, 2))
-#' tern:::is_fully_named_list(list(a = 1, b = 2))
-is_fully_named_list <- function(x) {
-  is.list(x) &&
-    (
-      length(x) == 0 ||
-        (
-          !is.null(names(x)) &&
-            (length(x) == length(Filter(function(x) !identical(x, ""), names(x))))
-        )
-    )
 }
 
 #' string representation of the object's contents with names
