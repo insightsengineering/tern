@@ -200,7 +200,7 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
                                     col_by = anl$TRT02AN,
                                     total = "All Patients",
                                     col_N = table(asl$TRT02AN),
-                                    grade_levels = 1:5,
+                                    grade_levels = as.factor(1:5),
                                     missing_term_action = "ignore",
                                     any_grade = "Any Grade")
 

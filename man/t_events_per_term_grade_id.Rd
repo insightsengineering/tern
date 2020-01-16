@@ -27,7 +27,10 @@ column should be lower level term.}
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the
 length or number of rows of \code{terms}.}
 
-\item{grade}{grade of adverse event as numeric or factor.}
+\item{grade}{grade of adverse event.
+For factors, it is assumed that intensity corresponds to the order of the factor levels.
+If that is not the case, see \code{grade_levels}.
+For character or numeric, \code{grade_levels} is required.}
 
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
@@ -40,9 +43,14 @@ adverse events can be accounted for with this argument.}
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{grade_levels}{an ordered character or factor vector used for naming rows for each
-level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
-level orders in \code{grade}}
+\item{grade_levels}{a factor. The values of the factor define the ordering of the rows
+in the resulting table. The levels of the factor define the severity of the grade.
+For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
+the most severe grade "c" at the top of the table, the least severe grade "a" at the bottom.
+If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
+If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
+the factor levels of \code{grade}.
+If \code{grade} is not a factor, \code{grade_levels} is required.}
 
 \item{event_type}{string to specify the type of event that is summarized, \code{event} by default.
 Only displayed when \code{terms} has 2 columns.}
@@ -103,7 +111,7 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  grade_levels = 1:5
+  grade_levels = as.factor(1:5)
 )
 
 ADAE$AEDECOD <- as.character(ADAE$AEDECOD)
@@ -130,7 +138,17 @@ t_events_per_term_grade_id(
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
   total = "All Patients",
-  grade_levels = 1:6
+  grade_levels = as.factor(1:5)
+)
+
+t_events_per_term_grade_id(
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$grade_category,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  grade_levels = unique(sort(ADAE$grade_category))
 )
 
 t_events_per_term_grade_id(
@@ -139,7 +157,7 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  grade_levels = 1:5,
+  grade_levels = as.factor(1:5),
   event_type = "adverse events",
   missing_term_action = "ignore"
 )

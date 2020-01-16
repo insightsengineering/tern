@@ -19,13 +19,21 @@ NULL
 #'   column should be lower level term.
 #' @param id vector of subject identifier. Length of \code{id} must be the same as the
 #'   length or number of rows of \code{terms}.
-#' @param grade grade of adverse event as numeric or factor.
+#' @param grade grade of adverse event.
+#'   For factors, it is assumed that intensity corresponds to the order of the factor levels.
+#'   If that is not the case, see \code{grade_levels}.
+#'   For character or numeric, \code{grade_levels} is required.
 #' @param col_N numeric vector with information of the number of patients in the
 #'   levels of \code{col_by}. This is useful if there are patients that have no
 #'   adverse events can be accounted for with this argument.
-#' @param grade_levels an ordered character or factor vector used for naming rows for each
-#'   level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
-#'   level orders in \code{grade}
+#' @param grade_levels a factor. The values of the factor define the ordering of the rows
+#'   in the resulting table. The levels of the factor define the severity of the grade.
+#'   For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
+#'   the most severe grade "c" at the top of the table, the least severe grade "a" at the bottom.
+#'   If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
+#'   If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
+#'   the factor levels of \code{grade}.
+#'   If \code{grade} is not a factor, \code{grade_levels} is required.
 #' @param any_grade string to specify the row name which counts any occurrence,
 #'   it is named \code{Any Grade} by default
 #' @param event_type string to specify the type of event that is summarized, \code{event} by default.
@@ -75,7 +83,7 @@ NULL
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   grade_levels = 1:5
+#'   grade_levels = as.factor(1:5)
 #' )
 #'
 #' ADAE$AEDECOD <- as.character(ADAE$AEDECOD)
@@ -102,7 +110,17 @@ NULL
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
-#'   grade_levels = 1:6
+#'   grade_levels = as.factor(1:5)
+#' )
+#'
+#' t_events_per_term_grade_id(
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$grade_category,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
+#'   grade_levels = unique(sort(ADAE$grade_category))
 #' )
 #'
 #' t_events_per_term_grade_id(
@@ -111,7 +129,7 @@ NULL
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   grade_levels = 1:5,
+#'   grade_levels = as.factor(1:5),
 #'   event_type = "adverse events",
 #'   missing_term_action = "ignore"
 #' )
@@ -146,6 +164,12 @@ t_events_per_term_grade_id <- function(terms,
   stopifnot(is.list(terms))
   stopifnot(is.null(total) || is_character_single(total))
   stopifnot(!is.null(missing_term_action) && missing_term_action %in% c("nocode", "ignore"))
+  stopifnot(is.factor(grade_levels) || is.null(grade_levels))
+  stopifnot(is.factor(grade_levels) || is.factor(grade))
+
+  if (is.factor(grade) && is.null(grade_levels)) {
+    grade_levels <- factor(levels(grade), levels = levels(grade))
+  }
 
   grade_label <- label(grade) %||% deparse(substitute(grade))
   col_by_label <- label(col_by) %||% deparse(substitute(col_by))
@@ -268,11 +292,19 @@ t_events_per_term_grade_id <- function(terms,
 #' as nested lists.
 #'
 #' @inheritParams argument_convention
-#' @param grade a numeric or character vector with grade levels.
+#' @param grade grade of adverse event.
+#'   For factors, it is assumed that intensity corresponds to the order of the factor levels.
+#'   If that is not the case, see \code{grade_levels}.
+#'   For character or numeric, \code{grade_levels} is required.
 #' @param id a vector with id values
-#' @param grade_levels an ordered character or factor vector used for naming rows for each
-#'   level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
-#'   level orders in \code{grade}
+#' @param grade_levels a factor. The values of the factor define the ordering of the rows
+#'   in the resulting table. The levels of the factor define the severity of the grade.
+#'   For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
+#'   the most severe grade "c" at the top of the table, the least severe grade "a" at the bottom.
+#'   If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
+#'   If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
+#'   the factor levels of \code{grade}.
+#'   If \code{grade} is not a factor, \code{grade_levels} is required.
 #' @param any_grade add a row that counts any occurrence, it is named \code{Any
 #'   Grade} by default
 #'
@@ -336,6 +368,8 @@ t_max_grade_per_id <- function(grade,
   grade_label <- label(grade) %||% deparse(substitute(grade))
 
   stopifnot(is.null(total) || is_character_single(total))
+  stopifnot(is.factor(grade_levels) || is.null(grade_levels))
+  stopifnot(is.factor(grade_levels) || is.factor(grade))
   stopifnot(!any(duplicated(grade_levels)))
   stopifnot(!any(is.na(grade)))
 
