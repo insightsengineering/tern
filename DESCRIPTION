@@ -38,7 +38,9 @@ Imports:
   stats,
   utils,
   utils.nest (>= 0.2.1),
-  forcats
+  forcats,
+  nlme,
+  emmeans
 Suggests:
   lattice,
   knitr,
@@ -81,6 +83,7 @@ Collate:
     't_forest_rsp.R'
     't_forest_tte.R'
     't_km.R'
+    't_mmrm.R'
     't_rsp.R'
     't_summarize_by_visit.R'
     't_summary.R'

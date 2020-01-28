@@ -26,6 +26,7 @@ reference:
       - t_rsp
       - t_tte
       - starts_with("t_events")
+      - t_mmrm
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
@@ -48,6 +49,7 @@ reference:
     contents:
       - ttest_ci_one_arm
       - ttest_two_arm
+      - a_mmrm
 
   - title: Graphs
     desc: Graphs
