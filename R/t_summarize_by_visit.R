@@ -25,7 +25,7 @@
 #'
 #' @importFrom utils stack
 #'
-#' @noRd
+#' @export
 #'
 #' @examples
 #' # EXAMPLE 1
@@ -34,20 +34,13 @@
 #' ADSL <- cadsl
 #' ADVS <- cadvs
 #'
-#' tern:::t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
+#' t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
 #'
-#' tern:::t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
+#' t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
 #'
-#' # DO NOT THINK WE NEED THIS BLOCK AS LABELS ALREADY AVAILABLE
-#' # ADDED THIS NOTE GIVEN FINDING OF ATTRIBUTES BEING REMOVED
-#' #Add label to variable instead showing variable name
-#' #ANL <- var_relabel(ANL, AVAL = "Value at\nVisit",
-#'  #                       CHG = "Change from\nBaseline",
-#'   #                      PCHG = "Percent Change\nfrom Baseline")
-#'
-#' tern:::t_summarize_by_visit(
+#' t_summarize_by_visit(
 #'   data = ADVS[c("AVAL", "CHG")],
 #'   visit = ADVS$AVISIT,
 #'   col_by = ADVS$ARM,

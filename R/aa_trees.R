@@ -639,9 +639,11 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 #' summary(rsplit_to_tree(1:8, by_lst))
 #' summary(rsplit_to_tree(1:8, by_lst, drop_empty_levels = FALSE))
 rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE, non_leaves_null = FALSE) {
+  by_lst <- nested_by(by_lst)
   stopifnot(
     is_logical_single(drop_empty_levels),
-    is_logical_single(non_leaves_null)
+    is_logical_single(non_leaves_null),
+    is_nested_by(by_lst)
   )
   recursive_construct_tree(
     list(content = lst, by_lst = by_lst),
@@ -832,55 +834,3 @@ nested_list_to_tree <- function(x, format_data = NULL, max_depth = .Machine$inte
   }, x, names(x))
   node(invisible_node_name("root"), content = NULL, children = children, format_data = format_data)
 }
-nested_list_to_tree_old <- function(x, format_data = NULL) {
-
-  stopifnot(is.list(x), !is.null(names(x)))
-
-  lst_nodes <- Map(function(xi, namei) {
-    node_i <- if (identical(class(xi), "list")) {
-      if (all(vapply(xi, function(xii) identical(class(xii), "list"), logical(1)))) {
-        n <- nested_list_to_tree(xi, format_data = format_data)
-        n@name <- namei
-        n
-      } else {
-        node(namei, content = NULL, children = Map(function(xii, nameii) {
-          node(nameii, xii, format_data = format_data)
-        }, xi, names(xi)), format_data = format_data)
-      }
-    } else {
-      node(namei, content = xi, format_data = format_data)
-    }
-    node_i
-  }, x, names(x))
-
-  node(invisible_node_name("root"), content = NULL, children = lst_nodes, format_data = format_data)
-}
-
-
-
-# utility functions for trees ----
-
-#' deprecated because it is a tree property and should not be added here
-#' #' Add header on left of each rtable in the tree
-#' #'
-#' #' It goes through the tree and adds the specified header to each rtable it finds,
-#' #' left to the current header.
-#' #' It is mostly used to add a header for the row names.
-#' #'
-#' #' @param tree tree to apply to
-#' #' @param left_header header to add to the left of each found rtable
-#' #'
-#' #' @return new tree
-#' #'
-#' add_header_on_left <- function(tree, left_header) {
-#'   rapply_tree(
-#'     tree,
-#'     function(name, content, ...) {
-#'       if (is_rtable(content)) {
-#'         browser()
-#'         header(content) <- combine_rheaders(left_header, header(content))
-#'       }
-#'       list(name = name, content = content)
-#'     }
-#'   )
-#' }

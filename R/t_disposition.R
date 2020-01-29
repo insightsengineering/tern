@@ -1,12 +1,14 @@
 #' Single element for disposition table
 #'
+#' Creates a disposition table
+#'
 #' @inheritParams argument_convention
 #' @inheritParams t_summary.factor
 #' @param x A factor or logical vector
 #' @param row.name Only applicable when x is a logical vector. A string to label the row name.
 #'   Default is "TRUE".
-#' @param subset A logical vector with the same length as x that defines the subset.
-#'   Applies to \code{x} and \code{subset}.
+#' @param subset A logical vector with the same length as x that defines the subset
+#'   to take from \code{x}. NAs are cast to false.
 #' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE.
 #'   Only when x is of type factor
 #'
@@ -183,19 +185,18 @@
 #'     treatment_section_tree
 #'   )
 #' ))
-t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name = NULL, # nolint
+t_el_disposition <- function(x, col_by, col_N = NULL, total = NULL, row.name = NULL, # nolint
                              subset = NULL, show_n = FALSE, # nolint
                              useNA = c("no", "ifany", "always"), # nolintr
                              drop_levels = NULL,
                              denominator = "N") {
+  # This function is a wrapper around t_summary
 
   useNA <- match.arg(useNA) #nolintr
-
   # treat x and col_by
-  if (!(is.atomic(x) & (is.factor(x) | is.logical(x)))) {
+  if (!(is.atomic(x) && (is.factor(x) || is.logical(x)))) { # is_logical_vector no longer working with NA
     stop("x is required to be atomic factor or logical vector")
   }
-
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -217,7 +218,7 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name
   x <- x[subset]
   col_by <- col_by[subset, ]
 
-  if (is.logical(x)) {
+  if (is.logical(x)) { # is_logical_vector no longer working with NAs
     if (show_n) {
       stop("n is never shown for logicals")
     }
@@ -228,12 +229,11 @@ t_el_disposition <- function(x = x, col_by, col_N = NULL, total = NULL, row.name
       col_by = col_by,
       col_N = col_N,
       total = total,
-      row_name_true = `if`(is.null(row.name), "TRUE", row.name),
+      row_name_true = if_null(row.name, "TRUE"),
       useNA = useNA,  #nolintr
-      drop_levels = drop_levels, # do not drop level since logical will only have levels TRUE and FALSE
+      drop_levels = drop_levels,
       denominator = denominator
     )[2, ]  # n row is not shown in disposition table
-
   } else {
     stopifnot(is.factor(x))
     if (!is.null(row.name)) {

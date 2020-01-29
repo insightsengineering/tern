@@ -130,7 +130,7 @@
 #'     ),
 #'     titles = "title",
 #'     footnotes = "footnote",
-#'     border = TRUE
+#'     border = FALSE
 #'   )
 #' )
 decorate_grob <- function(grob,

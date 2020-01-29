@@ -55,8 +55,6 @@ t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
 ADSL$AGE[1:10] <- NA
 t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
 
-
-
 }
 \seealso{
 \code{\link{t_summary}},

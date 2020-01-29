@@ -75,7 +75,6 @@ t_summary <- function(x,
 #'
 #' @examples
 #' t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
-#'
 t_summary.default <- function(x, # nolint
                               col_by,
                               col_N = NULL, # nolint
@@ -240,8 +239,6 @@ t_summary.data.frame <- function(x, # nolint
 #' ADSL$AGE[1:10] <- NA
 #' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
 #'
-#'
-#'
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = NULL, #nolintr
@@ -250,9 +247,18 @@ t_summary.numeric <- function(x, # nolint
                               ...) {
   stopifnot(
     is.null(total) || is_character_single(total),
-    all(f_numeric %in% c("count_n", "mean_sd", "median", "se", "q1_q3", "range")),
     length(f_numeric) > 0
   )
+
+
+  allowed_f_numeric <- c(
+    "count_n", "mean_sd", "median", "q1_q3", "range",
+    "n_not_na3", "mean_sd3", "median_t3", "iqr_num3", "range_t3", "se"
+  )
+
+  if (!all(f_numeric %in% allowed_f_numeric)) {
+    stop("f_numeric needs to be one of ", paste(allowed_f_numeric, collapse = ", "))
+  }
 
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -275,11 +281,27 @@ t_summary.numeric <- function(x, # nolint
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
       q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE),
       range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),
-      NULL
+
+      # for patient data
+      n_not_na3 = rtabulate(x, col_by, n_not_na3, row.name = "n"),
+      mean_sd3 = rtabulate(x, col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
+      median_t3 = rtabulate(x, col_by, median_t3, row.name = "Median", format = "xx.xx"),
+      iqr_num3 = rtabulate(x, col_by, iqr_num3, row.name = "IQR", format = "xx.xx - xx.xx"),
+      range_t3 = rtabulate(x, col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max"),
+
+      NULL # default, should never happen
     ))
   )
 
   header_add_N(tbl, col_N)
+}
+
+#' Get the names of functions to be used for t_summary.numeric to summarize patient
+#' data as for \code{\link{t_summarize_by_visit}}
+#'
+#' @export
+patient_numeric_fcns <- function() {
+  c("n_not_na3", "mean_sd3", "median_t3", "iqr_num3", "range_t3")
 }
 
 #' Summarize Categorical Data

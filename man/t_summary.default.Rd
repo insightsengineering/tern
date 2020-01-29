@@ -32,7 +32,6 @@ appropriate message is returned.
 }
 \examples{
 t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
-
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

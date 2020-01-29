@@ -168,7 +168,7 @@ grid.draw(
     ),
     titles = "title",
     footnotes = "footnote",
-    border = TRUE
+    border = FALSE
   )
 )
 }

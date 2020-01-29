@@ -1,9 +1,3 @@
-shift_label_table <- function(tbl, term) {
-  t_grade <- rtablel(rheader(rrow("", "."), rrow("", "Grade")), c(lapply(row.names(tbl), function(xi) rrow("", xi))))
-  attr(t_grade[[1]], "row.name") <- term
-  cbind_rtables(t_grade, tbl)
-}
-
 # adds row names as new column: this allows to add a header label to the rows
 row_names_as_col <- function(tbl, header_label) {
   stopifnot(is.list(header_label) || is_character_vector(header_label))
@@ -39,53 +33,4 @@ combine_rrows_with_indent <- function(x, y) {
   Map(function(xi, yi) {
     rrowl(attr(xi, "row.name"), c(xi, yi), indent = attr(xi, "indent"))
   }, x, y)
-}
-
-
-#' Recursive by
-#'
-#' When a by of this type is encountered in tern functions, it recursively splits by it
-#' \code{is.list} still returns TRUE on the returned object.
-#' It is typically used to construct a nested tree from it.
-#'
-#' The r_by class is used to distinguish the simple_by (which can be a matrix
-#' which is a list as well, but in this case a non-recursive interpretation as in col_by)
-#' from the recursive
-#'
-#' @param x a list that specifies recursive split,
-#'   e.g. a list of col_bys (which can be matrices or factors)
-#'
-#' @export
-r_by <- function(x) {
-  stopifnot(is.list(x))
-  structure(x, class = "r_by")
-}
-
-#' Check whether is of class r_by
-#'
-#' @inheritParams r_by
-#' @return boolean whether it is an r_by object
-is_r_by <- function(x) {
-  is(x, "r_by")
-}
-
-#' Non-recursive by object
-#'
-#' This can be used both for row and column grouping.
-#'
-#' Not called "by" because this function already exists in baseR
-#'
-#' @param x object to wrap it around
-simple_by <- function(x) {
-  stopifnot(is.data.frame(x) || is.factor(x) || is(x, "by_all"))
-  x
-}
-
-#' Check whether is of class simple_by
-#'
-#' @inheritParams simple_by
-#' @return boolean whether it is an simple_by object
-is_simple_by <- function(x) {
-  #is(x, "simple_by")
-  TRUE
 }

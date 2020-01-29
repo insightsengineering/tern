@@ -1,3 +1,60 @@
+#' Recursive by
+#'
+#' When a by of this type is encountered in tern functions, it recursively splits by it
+#' \code{is.list} still returns TRUE on the returned object.
+#' It is typically used to construct a nested tree from it.
+#'
+#' The nested_by class is used to distinguish the simple_by (which can be a matrix
+#' which is a list as well, but in this case a non-recursive interpretation as in col_by)
+#' from the recursive
+#'
+#' @param x a list that specifies recursive split,
+#'   e.g. a list of col_bys (which can be matrices or factors)
+#'
+#' @export
+nested_by <- function(x) {
+  stopifnot(is.list(x))
+  stopifnot(all(vapply(x, function(x) is.data.frame(x) || is.factor(x) || is(x, "by_all"), logical(1))))
+  structure(x, class = "nested_by")
+}
+
+#' @inherit nested_by
+#' @export
+r_by <- function(x) {
+  .Deprecated("nested_by") # function renamed
+  nested_by(x)
+}
+
+#' Check whether is of class nested_by
+#'
+#' @inheritParams nested_by
+#' @return boolean whether it is an nested_by object
+is_nested_by <- function(x) {
+  is(x, "nested_by")
+}
+
+#' Non-recursive by object
+#'
+#' This can be used both for row and column grouping.
+#'
+#' Not called "by" because this function already exists in base R
+#'
+#' @param x object to wrap it around
+simple_by <- function(x) {
+  stopifnot(is.data.frame(x) || is.factor(x) || is(x, "by_all"))
+  # structure(x, class = "simple_by")
+  x
+}
+
+#' Check whether is of class simple_by
+#'
+#' @inheritParams simple_by
+#' @return boolean whether it is an simple_by object
+is_simple_by <- function(x) {
+  is(x, "simple_by") ||
+    (is.data.frame(x) || is.factor(x) || is(x, "by_all"))
+}
+
 #' Split objects according to by object
 #'
 #' @param x object to split

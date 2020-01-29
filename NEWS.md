@@ -5,6 +5,8 @@
 * Refactored after renaming functions in `utils.nest`
 * Added `event_type` argument to `t_events_per_term_grade_id`
 * Added one/two-arm t-test functions
+* improvements in `t_summary_by`
+* internal code refactoring
 
 # tern 0.6.3
 

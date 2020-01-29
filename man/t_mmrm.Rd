@@ -65,8 +65,6 @@ Create rtable of MMRM test results
 }
 \examples{
 library(dplyr)
-library(nlme)
-library(emmeans)
 library(random.cdisc.data)
 
 ADSL <- radsl(cached = TRUE)

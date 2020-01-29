@@ -98,7 +98,7 @@ ADLB <- radlb(cached = TRUE)
 # Recursive case
 t_summary_by(
   x = ADLB$AVAL,
-  row_by = r_by(ADLB[, c("PARAM", "AVISIT")]),
+  row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
   col_by = ADLB$ARM,
   col_N = table(ADSL$ARM),
   total = "All Patients"
@@ -119,7 +119,7 @@ summary(tbls)
 to_rtable(tbls)
 
 # Other examples
-ADQS <- radqs(ADSL, seed = 2) \%>\%
+ADQS <- radqs(cached = TRUE) \%>\%
   mutate(PARAM = as.factor(PARAM)) \%>\%
   var_relabel(
     PARAM = "Questionnaire Parameter",
@@ -129,7 +129,7 @@ ADQS <- radqs(ADSL, seed = 2) \%>\%
 # we suppress warnings because some are NaN (change CHG at screening visit)
 suppressWarnings(t_summary_by(
   x = ADQS[,c("AVAL", "CHG")],
-  row_by = r_by(ADQS[, c("PARAM", "AVISIT")]),
+  row_by = nested_by(ADQS[, c("PARAM", "AVISIT")]),
   col_by = ADQS$ARMCD,
   col_N = table(ADSL$ARMCD),
   total = "All Patients"
@@ -154,6 +154,18 @@ t_summary_by(
   col_by = ADQS_f$ARMCD,
   col_N = table(ADSL$ARMCD),
   total = "All Patients"
+)
+
+# imitate behavior of t_summarize_by_visit by adding function compare_in_header
+ADSL <- cadsl
+ADVS <- cadvs
+
+t_summary_by(
+  x = compare_in_header(ADVS[c("AVAL", "CHG")]),
+  row_by = ADVS$AVISIT,
+  col_by = ADVS$ARM,
+  col_N = table(ADSL$ARM),
+  f_numeric = patient_numeric_fcns()
 )
 }
 \seealso{

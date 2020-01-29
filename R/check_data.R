@@ -81,9 +81,24 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 
-# checks col_by and col_N to be consistent
-# col_by must be a matrix of booleans
-# checks that there are no empty levels and at least a specified number of levels
+is_logical_vector_modif <- function(x, min_size = 1) {
+  !is.null(x) &&
+    is.atomic(x) &&
+    length(x) >= min_size &&
+    all_true(x, utils.nest::is_logical_single)
+}
+
+#' Checks that x, col_by and col_N are consistent in dimensions
+#'
+#' See \code{\link{t_summary}} variants for how to use it.
+#' Also checks that there are no empty levels and at least a specified number of levels.
+#' Raises an error on failure.
+#'
+#' @param x main object which will be queried for length (or rows in case of data.frame)
+#' @param col_by matrix of booleans that specifies how to group x (i.e. for each column,
+#'   takes all values of x for which the row is true)
+#' @param col_N vector that contains number of observations, it can be colSums(col_by)
+#' @param min_num_levels minimum number of columns of col_by
 check_col_by <- function(x,
                          col_by,
                          col_N, # nolint

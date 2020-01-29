@@ -5,7 +5,7 @@
 \title{Single element for disposition table}
 \usage{
 t_el_disposition(
-  x = x,
+  x,
   col_by,
   col_N = NULL,
   total = NULL,
@@ -33,8 +33,8 @@ and \code{add_total_by}.}
 \item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
 Default is "TRUE".}
 
-\item{subset}{A logical vector with the same length as x that defines the subset.
-Applies to \code{x} and \code{subset}.}
+\item{subset}{A logical vector with the same length as x that defines the subset
+to take from \code{x}. NAs are cast to false.}
 
 \item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE.
 Only when x is of type factor}
@@ -49,7 +49,7 @@ With option n, the number of non-missing records from \code{x} is used as the de
 If \code{omit} is chosen the percentage is omitted.}
 }
 \description{
-Single element for disposition table
+Creates a disposition table
 }
 \examples{
 library(random.cdisc.data)
