@@ -115,6 +115,23 @@ t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm))
 tbls <- t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm), table_tree = TRUE)
 summary(tbls)
 
+# Example 4 - Single Arm study
+t_rsp(
+   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+   col_by = factor(rep("Single ARM", nrow(ADRS_f))),
+   partition_rsp_by = droplevels(factor(
+     ADRS_f$AVALC, levels = c("CR", "PR", "MR", "SD", "PD")
+  ))
+)
+
+# Example 5 - Stratified
+
+t_rsp(
+rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+col_by = relevel(factor(ADRS_f$ARMCD), "ARM B"),
+strata_data = ADSL[,c("STRATA2", "STRATA1")]
+)
+
 }
 \seealso{
 \code{\link{t_forest_rsp}}

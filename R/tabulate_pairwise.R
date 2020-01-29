@@ -20,6 +20,20 @@
 #'   FUN = function(xi, col_by_i) diff(tapply(xi, col_by_i, mean)),
 #'   row.name = "diff mean"
 #' )
+#'
+#' tabulate_pairwise(
+#'    x = data.frame(
+#'         val = sample(c("X1", "X2"), 100, replace = TRUE),
+#'         strata = sample(c("A", "B"), 100, replace = TRUE)
+#'    ),
+#'   col_by = factor(sample(c("BY1", "BY2", "BY3"), 100, replace = TRUE)),
+#'   FUN = function(xi, col_by_i){
+#'             mhp <- mantelhaen.test(xi$val, col_by_i, xi$strata)
+#'             mhp$p.value
+#'             },
+#'   row.name = "MH pvalue: stratified"
+#' )
+#'
 tabulate_pairwise <- function(x,
                               col_by,
                               FUN, # nolint
@@ -42,8 +56,8 @@ tabulate_pairwise <- function(x,
     x_sel <- subset(x, sel)
     tmp_col_by_sel <- subset(col_by, sel)
     col_by_sel <- relevel(droplevels(tmp_col_by_sel), ref_level, comp_level)
-
     FUN(x_sel, col_by_sel)
+
   })
 
   header <- rheader(rrowl("", levels(col_by)))

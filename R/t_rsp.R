@@ -33,6 +33,7 @@
 #' @template return_rtable
 #'
 #' @importFrom stats binom.test prop.test mantelhaen.test
+#' @importFrom purrr compact
 #'
 #' @export
 #'
@@ -97,16 +98,33 @@
 #' tbls <- t_rsp(rsp = ADRS$rsp, col_by = factor(ADRS$arm), table_tree = TRUE)
 #' summary(tbls)
 #'
-#' @importFrom purrr compact
+#' # Example 4 - Single Arm study
+#' t_rsp(
+#'    rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#'    col_by = factor(rep("Single ARM", nrow(ADRS_f))),
+#'    partition_rsp_by = droplevels(factor(
+#'      ADRS_f$AVALC, levels = c("CR", "PR", "MR", "SD", "PD")
+#'   ))
+#' )
+#'
+#' # Example 5 - Stratified
+#'
+#' t_rsp(
+#' rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#' col_by = relevel(factor(ADRS_f$ARMCD), "ARM B"),
+#' strata_data = ADSL[,c("STRATA2", "STRATA1")]
+#' )
+#'
 t_rsp <- function(rsp,
                   col_by,
                   partition_rsp_by = NULL,
                   strata_data = NULL,
                   table_tree = FALSE) {
+
   col_by <- col_by_to_factor(col_by)
   stopifnot(is.factor(col_by))
   col_N <- get_N(col_by) # nolint
-  check_col_by_factor(rsp, col_by, col_N, min_num_levels = 2)
+  check_col_by_factor(rsp, col_by, col_N, min_num_levels = 1)
   check_same_n(rsp = rsp, col_by = col_by, partition_rsp_by = partition_rsp_by, strata_data = strata_data)
   if (!is.null(strata_data)) {
     check_data_frame(strata_data)
@@ -148,158 +166,179 @@ t_rsp <- function(rsp,
   )
 
   # Difference in Response Rates section
-  tbl_difference <- rbind(
-    tabulate_pairwise(
-      rsp,
-      col_by,
-      function(x, by) {
-        diff(tapply(x, by, mean)) * 100
-      },
-      format = "xx.xx",
-      row.name = "Difference in Response Rates (%)"
-    ),
 
-    # wald test without continuity correction
-    indent(rbind(
+  if (nlevels(col_by) == 1) {
+    tbl_difference <- NULL
+    tbl_odds_ratio <- NULL
+  } else {
+    tbl_difference <- rbind(
       tabulate_pairwise(
         rsp,
         col_by,
         function(x, by) {
-          t.tbl <- table(by, x)
-          if (all(dim(t.tbl) == 2)) {
-            t_wc <- prop.test(t.tbl, correct = FALSE)
-            rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
-          } else {
-            rcell("-")
-          }
+          diff(tapply(x, by, mean)) * 100
         },
-        row.name = "95% CI for difference (Wald without correction)"
-      ),
-      # wald test with  continuety correction
-      tabulate_pairwise(
-        rsp,
-        col_by,
-        function(x, by) {
-          t.tbl <- table(by, x)
-          if (all(dim(t.tbl) == 2)) {
-            t_wc <- prop.test(t.tbl, correct = TRUE)
-            rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
-          } else {
-            rcell("-")
-          }
-        },
-        row.name = "95% CI for difference (Wald with continuity correction)"
+        format = "xx.xx",
+        row.name = "Difference in Response Rates (%)"
       ),
 
-      # p-value dependent on strata_data
-      if (is.null(strata_data)) {
+      # wald test without continuity correction
+      indent(rbind(
         tabulate_pairwise(
           rsp,
           col_by,
           function(x, by) {
             t.tbl <- table(by, x)
             if (all(dim(t.tbl) == 2)) {
-              t_wc <- prop.test(table(by, x), correct = FALSE)
-              rcell(t_wc$p.value, format = "xx.xxxx")
+              t_wc <- prop.test(t.tbl, correct = FALSE)
+              rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
             } else {
               rcell("-")
             }
           },
-          row.name = "p-value (Chi-squared)"
-        )
-      } else {
+          row.name = "95% CI for difference (Wald without correction)"
+        ),
+        # wald test with  continuety correction
         tabulate_pairwise(
           rsp,
           col_by,
           function(x, by) {
-            strat <- do.call(strata, strata_data)
-            if (any(tapply(rsp, strat, length) < 5)) {
+            t.tbl <- table(by, x)
+            if (all(dim(t.tbl) == 2)) {
+              t_wc <- prop.test(t.tbl, correct = TRUE)
+              rcell(t_wc$conf.int * 100, format = "(xx.xx, xx.xx)")
+            } else {
+              rcell("-")
+            }
+          },
+          row.name = "95% CI for difference (Wald with continuity correction)"
+        ),
+
+        # p-value dependent on strata_data
+        if (is.null(strata_data)) {
+          tabulate_pairwise(
+            rsp,
+            col_by,
+            function(x, by) {
+              t.tbl <- table(by, x)
+              if (all(dim(t.tbl) == 2)) {
+                t_wc <- prop.test(table(by, x), correct = FALSE)
+                rcell(t_wc$p.value, format = "xx.xxxx")
+              } else {
+                rcell("-")
+              }
+            },
+            row.name = "p-value (Chi-squared)"
+          )
+        } else {
+          tabulate_pairwise(
+            data.frame(
+              rsp = rsp,
+              strata = do.call(strata, strata_data)
+            ),
+            col_by,
+            function(x, by) {
+              if (any(tapply(x$rsp, x$strata, length) < 5)) {
+                rcell("<5 data points")
+              } else {
+                t.tbl <- table(by, x$rsp, x$strata)
+                if (all(dim(t.tbl)[1:2] == 2)) {
+                  t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ]
+                  t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
+                  rcell(t_m$p.value, format = "xx.xxxx")
+                } else {
+                  rcell("-")
+                }
+              }
+            },
+            row.name = "p-value (Cochran-Mantel-Haenszel)*"
+          )
+        }
+      ), 1)
+    )
+
+
+    # Odds Ratio
+    tbl_odds_ratio <- rbind(
+      tabulate_pairwise(
+        if (is.null(strata_data)){
+          rsp
+        } else {
+          data.frame(
+            rsp = rsp,
+            strata = do.call(strata, strata_data)
+          )
+        },
+        col_by,
+        function(x, by) {
+          if (is.null(strata_data)) {
+            t.tbl <- table(by, x)
+            if (all(dim(t.tbl) == 2)) {
+              fit <- odds_ratio(t.tbl)
+              rcell(fit$estimator, "xx.xx")
+            } else {
+              rcell("-")
+            }
+          } else {
+            if (any(tapply(x$rsp, x$strata, length) < 5)) {
               rcell("<5 data points")
             } else {
-              t.tbl <- table(col_by, rsp, strat)
+              t.tbl <- table(by, x$rsp, x$strata)
               if (all(dim(t.tbl)[1:2] == 2)) {
-                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by), , ]
+                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ]
                 t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
-                rcell(t_m$p.value, format = "xx.xxxx")
+                rcell(t_m$estimate, format = "xx.xx")
               } else {
                 rcell("-")
               }
             }
-          },
-          row.name = "p-value (Cochran-Mantel-Haenszel)*"
-        )
-      }
-    ), 1)
-  )
-
-  # Odds Ratio
-  tbl_odds_ratio <- rbind(
-    tabulate_pairwise(
-      rsp,
-      col_by,
-      function(x, by) {
-        if (is.null(strata_data)) {
-          t.tbl <- table(by, x)
-          if (all(dim(t.tbl) == 2)) {
-            fit <- odds_ratio(t.tbl)
-            rcell(fit$estimator, "xx.xx")
-          } else {
-            rcell("-")
           }
-        } else {
-          strat <- do.call(strata, strata_data)
+        },
+        row.name = ifelse(is.null(strata_data), "Odds Ratio", "Odds Ratio*")
+      ),
 
-          if (any(tapply(rsp, strat, length) < 5)) {
-            rcell("<5 data points")
-          } else {
-            t.tbl <- table(col_by, rsp, strat)
-            if (all(dim(t.tbl)[1:2] == 2)) {
-              t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by), , ]
-              t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
-              rcell(t_m$estimate, format = "xx.xx")
+      tabulate_pairwise(
+        if (is.null(strata_data)){
+          rsp
+        } else {
+          data.frame(
+            rsp = rsp,
+            strata = do.call(strata, strata_data)
+          )
+        },
+        col_by,
+        function(x, by) {
+          if (is.null(strata_data)) {
+            t.tbl <- table(by, x)
+            if (all(dim(t.tbl) == 2)) {
+              fit <- odds_ratio(table(by, x))
+              rcell(fit$conf.int, "(xx.xx, xx.xx)")
             } else {
               rcell("-")
             }
-          }
-        }
-      },
-      row.name = ifelse(is.null(strata_data), "Odds Ratio", "Odds Ratio*")
-    ),
 
-    tabulate_pairwise(
-      rsp,
-      col_by,
-      function(x, by) {
-        if (is.null(strata_data)) {
-          t.tbl <- table(by, x)
-          if (all(dim(t.tbl) == 2)) {
-            fit <- odds_ratio(table(by, x))
-            rcell(fit$conf.int, "(xx.xx, xx.xx)")
           } else {
-            rcell("-")
-          }
-
-        } else {
-          strat <- do.call(strata, strata_data)
-
-          if (any(tapply(rsp, strat, length) < 5)) {
-            rcell("<5 data points")
-          } else {
-            t.tbl <- table(col_by, rsp, strat)
-            if (all(dim(t.tbl)[1:2] == 2)) {
-              t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$col_by), , ]
-              t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
-              rcell(t_m$conf.int, format = "(xx.xx, xx.xx)")
+            if (any(tapply(x$rsp, x$strata, length) < 5)) {
+              rcell("<5 data points")
             } else {
-              rcell("-")
+              t.tbl <- table(by, x$rsp, x$strata)
+              if (all(dim(t.tbl)[1:2] == 2)) {
+                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ]
+                t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
+                rcell(t_m$conf.int, format = "(xx.xx, xx.xx)")
+              } else {
+                rcell("-")
+              }
             }
           }
-        }
-      },
-      row.name = "95% CI",
-      indent = 1
+        },
+        row.name = "95% CI",
+        indent = 1
+      )
     )
-  )
+  }
+
+
 
   # Partition by response categories
   tbl_partition <- if (is.null(partition_rsp_by)) {

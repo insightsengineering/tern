@@ -1,5 +1,7 @@
 # tern 0.6.4.9000
 
+* Fix bug in `t_rsp` of not showing p-vlaue, odds ratio and CIs when `strata_data` is not `NULL`
+
 # tern 0.6.4
 
 * Refactored after renaming functions in `utils.nest`
