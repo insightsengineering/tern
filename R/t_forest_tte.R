@@ -101,7 +101,7 @@ t_forest_tte <- function(tte,
 
   do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by), row_by_list))
 
-  row_by_list <- row_by_list %>% map(na_as_level)
+  row_by_list <- row_by_list %>% map(explicit_na)
 
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames

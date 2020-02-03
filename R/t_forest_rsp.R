@@ -106,7 +106,7 @@ t_forest_rsp <- function(rsp,
   )
   do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), row_by_list))
 
-  row_by_list <-  row_by_list %>% map(na_as_level)
+  row_by_list <-  row_by_list %>% map(explicit_na)
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))

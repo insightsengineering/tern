@@ -132,31 +132,6 @@ drop_shared_variables <- function(x, y, keep) {
   df
 }
 
-#' Replace NA values by NA string level
-#'
-#' @param x factor, possibly with NAs
-#' @param na_level name of new level for NAs
-#'
-#' @return factor with additional NA level
-#'
-#' @export
-#'
-#' @examples
-#' na_as_level(factor(c(1, 1, 2)))
-#' na_as_level(factor(c(1, 1, NA)), "na")
-na_as_level <- function(x, na_level = "NA") {
-  stopifnot(is.factor(x))
-
-  if (any(is.na(x))) {
-    if (na_level %in% levels(x)) {
-      stop(na_level, " can not be a level of x")
-    }
-    levels(x) <- c(levels(x), na_level)
-    x[is.na(x)] <- na_level
-  }
-  x
-}
-
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -255,20 +230,6 @@ to_string_with_names <- function(x) {
   paste(names(x), x, sep = ":", collapse = ", ")
 }
 
-#' Kind of a complement to `%||%`
-#' Return y if x is not NULL, otherwise NULL (equal to x)
-#'
-#' @param x value checked for NULL
-#' @param y value to return if \code{x} is not NULL
-#'
-#' @return \code{NULL} if \code{x} is \code{NULL}, else \code{y}
-#' @examples
-#' tern:::if_not_null(NULL, 1)
-#' tern:::if_not_null(2, 1)
-if_not_null <- function(x, y) {
-  if (is.null(x)) {
-    NULL
-  } else {
-    y
-  }
-}
+
+
+

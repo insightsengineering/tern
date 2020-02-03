@@ -96,6 +96,34 @@ t_events_per_term_id(
  total = "All Patients"
 )
 
+\dontrun{
+# terms can't be empty strings or NA
+t_events_per_term_id(
+ terms = with_label(factor(c("", "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
+)
+
+t_events_per_term_id(
+ terms = with_label(factor(c(NA, "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
+)
+
+}
+
+t_events_per_term_id(
+ terms = explicit_na(sas_na(factor(c("", "", "t2", "t1", "t2")))),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
+)
+
 t_events_per_term_id(
  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
  id = c(1, 4, 2, 3, 3),
@@ -182,6 +210,8 @@ tbls <- t_events_per_term_id(
 summary(tbls)
 tbls[[1]]
 tbls[['cl A']]
+
+
 }
 \seealso{
 \code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},

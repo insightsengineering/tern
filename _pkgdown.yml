@@ -80,12 +80,18 @@ reference:
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - explicit_na
+      - sas_na
       - safe_join
       - combine_levels
       - drop_shared_variables
       - as_factor_keep_attributes
-      - na_as_level
       - check_id
+
+  - title: Deprecated Functions
+    desc: These functions will eventually be removed
+    contents:
+      - na_as_level
 
   - title: Trees
     desc: The functions are used to for computing compound tables. These functions are under active development and may
