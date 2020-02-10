@@ -38,6 +38,7 @@
 #'  row_by = ADSL$COUNTRY,
 #'  col_by = ADSL$ARMCD,
 #'  total = "All Patients",
+#'  denominator = "N",
 #'  drop_levels = TRUE
 #' )
 #'
@@ -48,6 +49,7 @@
 #'  row_by = ADSL$COUNTRY,
 #'  col_by = ADSL$ARMCD,
 #'  total = "All Patients",
+#'  denominator = "N",
 #'  drop_levels = TRUE,
 #'  useNA = "ifany"
 #' )
@@ -315,10 +317,9 @@ compare_in_header <- function(x) {
   # all columns must be of same type or else, t_summary row names will not agree
   # class[[1]] is used for S3 method dispatch
   # only numeric class type makes sense for now (different factors with different levels are difficult to compare)
-  stopifnot(all_equal(c(
-    vapply(x, function(xx) class(xx)[[1]], character(1)),
-    "numeric"
-  )))
+  stopifnot(all(
+    vapply(x, function(xx) class(xx)[[1]], character(1)) %in% c("integer", "numeric")
+  ))
   stopifnot(all_equal(vapply(x, nb_entries, numeric(1))))
   structure(x, compare_in_header = TRUE)
 }
@@ -384,7 +385,7 @@ nb_entries.data.frame <- function(x) {
 #' col_N <- res$col_N
 apply_compare_in_header <- function(x, col_by, col_N = NULL) {
   if (!"compare_in_header" %in% names(attributes(x))) {
-    return(list(x = x, col_by = col_by))
+    return(list(x = x, col_by = col_by, col_N = col_N))
   }
   attr(x, "compare_in_header") <- NULL
 

@@ -55,6 +55,7 @@ t_summary_by(
  row_by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD,
  total = "All Patients",
+ denominator = "N",
  drop_levels = TRUE
 )
 
@@ -65,6 +66,7 @@ t_summary_by(
  row_by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD,
  total = "All Patients",
+ denominator = "N",
  drop_levels = TRUE,
  useNA = "ifany"
 )
