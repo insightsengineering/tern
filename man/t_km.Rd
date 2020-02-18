@@ -4,10 +4,17 @@
 \alias{t_km}
 \title{Kaplan-Meier Fit Summary Table}
 \usage{
-t_km(fit_km)
+t_km(formula, data, conf.int = 0.95, ...)
 }
 \arguments{
-\item{fit_km}{a class \code{\link{survfit}} object.}
+\item{formula}{a survival \code{\link{Surv}} formula}
+
+\item{data}{a \code{data.frame} with all the variable that are used in
+\code{formula}}
+
+\item{conf.int}{level for computation of the confidence intervals.}
+
+\item{...}{additional parameters passed to \code{\link{survfit}}}
 }
 \description{
 An \code{\link[rtables]{rtable}} format of KM model data for further
@@ -29,12 +36,11 @@ ADSL$RACE <- factor(
 ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 
-fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
-tbl <- t_km(fit_km)
+formula <- Surv(AVAL, 1-CNSR) ~ ARM
+tbl <- t_km(formula, data = ADTTE_f, conf.type = "plain")
 tbl
 
-fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ADTTE_f, conf.type = "plain")
-tbl <- t_km(fit_km)
+tbl <- t_km(formula, data = ADTTE_f, conf.int = 0.8)
 tbl
 }
 \seealso{

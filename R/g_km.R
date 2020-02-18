@@ -16,8 +16,8 @@
 #' @param gp a abject of class \code{gpar}.
 #' @param vp a grid \code{viewport}.
 #' @param name A character value to uniquely identify the object.
-#' @param draw draw the plot on device.
-#' @param newpage open a new draw page.
+#' @param draw draw the plot on device, \code{TRUE} or \code{FALSE}.
+#' @param newpage open a new draw page, \code{TRUE} or \code{FALSE}.
 #'
 #' @template author_wangh107
 #'
@@ -35,14 +35,15 @@
 #' ADTTE <- cadtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
+#' formula <- Surv(AVAL, 1-CNSR) ~ ARM
+#' fit_km <- survfit(formula, data = ADTTE_f, conf.type = "plain")
 #'
 #' g_km(fit_km = fit_km)
 #' plot(fit_km)
 #'
 #' p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3), draw = FALSE)
 #'
-#' g_tkm <-  textGrob(label = toString(t_km(fit_km), gap = 1),
+#' g_tkm <-  textGrob(label = toString(t_km(formula, data = ADTTE_f), gap = 1),
 #'                    x = unit(1, "npc") - unit(2, "lines"),
 #'                    y = unit(1, "npc") - unit(2, "lines"),
 #'                    just = c("right", "top"),

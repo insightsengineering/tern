@@ -7,11 +7,13 @@
 t_tte(
   formula,
   data,
+  conf.int = 0.95,
   event_descr,
   time_points,
   time_unit = "month",
-  ties = "exact",
-  table_tree = FALSE
+  pval_method = "log-rank",
+  table_tree = FALSE,
+  ...
 )
 }
 \arguments{
@@ -24,6 +26,8 @@ is omitted.}
 \item{data}{a \code{data.frame} with all the variable that are used in
 \code{formula}}
 
+\item{conf.int}{level for computation of the confidence intervals. If set to {FALSE} no confidence intervals are printed}
+
 \item{event_descr}{a factor that partitions the the events into earliest
 contributing event. The variable name can be provided unquoted in which
 case it is looked up in \code{data} and then the calling environment.}
@@ -33,10 +37,13 @@ analysis, if \code{NULL} this section of the table will be omitted}
 
 \item{time_unit}{a string with the unit of the \code{tte} argument}
 
-\item{ties}{passed forward to \code{\link[survival]{coxph}}}
+\item{pval_method}{the method used to calculate the p-value,
+should be one of "wald", "log-rank", "likelihood", default is "log-rank".}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
+
+\item{...}{Other arguments will be passed to \code{\link[survival]{coxph}}}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -50,8 +57,7 @@ The time to event section is derived from a Kaplan-Meier estimator for the
 \code{formula} argument with the strata special dropped.
 
 The stratified and unstratified analysis is evaluated pair-wise (reference to
-comparison) and \code{\link[survival]{survdiff}} is used to get the p-value
-whereas \code{\link[survival]{coxph}} is used to calculate the hazard ratio
+comparison) and  \code{\link[survival]{coxph}} is used to get the p-value, calculate the hazard ratio
 and confidence interval.
 
 The time point analysis is based on the Kaplan-Meier estimator.
@@ -76,6 +82,19 @@ tbl
 
 Viewer(tbl)
 
+tbl2 <- t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+  data = ADTTE_f,
+  conf.int = 0.8,
+  event_descr = factor(EVNTDESC),
+  time_points = c(6, 2000),
+  time_unit = "month",
+  pval_method = "wald",
+  ties = "exact"
+)
+
+Viewer(tbl2)
+
 # table_tree = TRUE
 tbl <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
@@ -92,7 +111,5 @@ summary(tbl)
 \code{\link{t_forest_tte}}
 }
 \author{
-Mark Rothe (rothem1)
-
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

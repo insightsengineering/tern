@@ -4,28 +4,20 @@
 #' as described in the details section.
 #'
 #' @inheritParams argument_convention
-#' @param formula a survival formula, the arm variable needs to be wrapped in
-#'   \code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
-#'   used for the stratified analysis. If there is not
-#'   \code{\link[survival]{strata}} specification then the stratified analysis
-#'   is omitted.
-#' @param data a \code{data.frame} with all the variable that are used in
-#'   \code{formula}
+#' @inheritParams s_coxph
 #' @param event_descr a factor that partitions the the events into earliest
 #'   contributing event. The variable name can be provided unquoted in which
 #'   case it is looked up in \code{data} and then the calling environment.
 #' @param time_points numeric vector with times displayed in the time point
 #'   analysis, if \code{NULL} this section of the table will be omitted
 #' @param time_unit a string with the unit of the \code{tte} argument
-#' @param ties passed forward to \code{\link[survival]{coxph}}
 #'
 #' @details
 #' The time to event section is derived from a Kaplan-Meier estimator for the
 #' \code{formula} argument with the strata special dropped.
 #'
 #' The stratified and unstratified analysis is evaluated pair-wise (reference to
-#' comparison) and \code{\link[survival]{survdiff}} is used to get the p-value
-#' whereas \code{\link[survival]{coxph}} is used to calculate the hazard ratio
+#' comparison) and  \code{\link[survival]{coxph}} is used to get the p-value, calculate the hazard ratio
 #' and confidence interval.
 #'
 #' The time point analysis is based on the Kaplan-Meier estimator.
@@ -35,7 +27,6 @@
 #' @importFrom stats terms quantile pchisq qnorm pnorm
 #' @export
 #'
-#' @author Mark Rothe (rothem1)
 #' @template author_waddella
 #'
 #' @seealso \code{\link{t_forest_tte}}
@@ -60,6 +51,19 @@
 #'
 #' Viewer(tbl)
 #'
+#' tbl2 <- t_tte(
+#'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+#'   data = ADTTE_f,
+#'   conf.int = 0.8,
+#'   event_descr = factor(EVNTDESC),
+#'   time_points = c(6, 2000),
+#'   time_unit = "month",
+#'   pval_method = "wald",
+#'   ties = "exact"
+#' )
+#'
+#' Viewer(tbl2)
+#'
 #' # table_tree = TRUE
 #' tbl <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
@@ -73,11 +77,13 @@
 #' }
 t_tte <- function(formula,
                   data,
+                  conf.int = 0.95,
                   event_descr,
                   time_points,
                   time_unit = "month",
-                  ties = "exact",
-                  table_tree = FALSE) {
+                  pval_method = "log-rank",
+                  table_tree = FALSE,
+                  ...) {
 
   cl <- match.call()
 
@@ -158,12 +164,13 @@ t_tte <- function(formula,
   surv_km_fit <- survfit(
     formula = f,
     data = data,
-    conf.type = "plain"
+    conf.type = "plain",
+    conf.int = conf.int
   )
 
   srv_tbl <- summary(surv_km_fit)$table
   med <- as.list(srv_tbl[, "median"])
-  ci <- Map(function(x, y) c(x, y), srv_tbl[, "0.95LCL"], srv_tbl[, "0.95UCL"])
+  ci <- Map(function(x, y) c(x, y), srv_tbl[, paste0(conf.int,"LCL")], srv_tbl[, paste0(conf.int, "UCL")])
 
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
   qnt <- Map(function(x, y) c(x, y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
@@ -180,7 +187,7 @@ t_tte <- function(formula,
     rtable(
       header = header,
       rrowl("Median", med, format = "xx.xx"),
-      rrowl("95% CI", ci, indent = 1, format = "(xx.x, xx.x)"),
+      rrowl(paste0(conf.int*100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
       rrowl("25% and 75%-ile", qnt, format = "xx.x, xx.x"),
       rrowl("Range (censored)", rng_c, format = "xx.x to xx.x"),
       rrowl("Range (event)", rng_e, format = "xx.x to xx.x")
@@ -190,40 +197,16 @@ t_tte <- function(formula,
   # Unstratified Analysis
   # #####################
 
+  coxph_values <- s_coxph(formula, data, conf.int, pval_method, ...)
   # this function is reused for stratified analysis
-  survival_anl <- function(node_name, formula) {
+  pval_label <- paste0(toupper(substring(pval_method, 1, 1)), substring(pval_method, 2))
+  pval_label <- paste0("p-value (", pval_label, ")")
 
-    reference_level <- levels(arm)[1]
-    comparison_levels <- levels(arm)[-1]
-
-    # create survival fit of comparison arm vs. reference arm
-    values <- lapply(comparison_levels, function(lvl) {
-
-      df_i <- data[arm %in% c(reference_level, lvl), , drop = FALSE]
-
-      varname <- attr(arm, "varname")
-      df_i[[varname]] <- droplevels(df_i[[varname]])
-
-      environment(formula) <- environment()
-
-      ## for log-rank test: use coxph score for log-rank
-      fit_survdiff <- survdiff(formula, data = df_i)
-      fit_coxph <- tryCatch(
-        coxph(formula, data = df_i, ties = ties), # weights are not supported if ties = 'exact'
-        error = function(e) NULL
-      )
-
-      list(
-        pval = pchisq(fit_survdiff$chisq, length(fit_survdiff$n) - 1, lower.tail = FALSE),
-        hr = if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))) NA else (summary(fit_coxph)$conf.int)[1, 1],
-        hr_ci = if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))) c(NA, NA) else (summary(fit_coxph)$conf.int)[1, 3:4]
-      )
-    })
-
+  coxph_tbl <- function(node_name, coxph_df) {
     # first column is empty
-    pval <- start_with_null(lapply(values, `[[`, "pval"))
-    hr <- start_with_null(lapply(values, `[[`, "hr"))
-    hr_ci <- start_with_null(lapply(values, `[[`, "hr_ci"))
+    pval <- start_with_null(coxph_df$pvalue)
+    hr <- start_with_null(coxph_df$hr)
+    hr_ci <- start_with_null(coxph_df$hr_ci)
 
     node(
       node_name,
@@ -233,7 +216,7 @@ t_tte <- function(formula,
           invisible_node_name("p-value"),
           rtable(
             header = header,
-            rrowl("p-value (log-rank)", pval, format = "xx.xxxx")
+            rrowl(pval_label, pval, format = "xx.xxxx")
           )
         ),
         node(
@@ -241,16 +224,16 @@ t_tte <- function(formula,
           rtable(
             header = header,
             rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
-            rrowl("95% CI", hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+            rrowl(paste0(conf.int*100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
           )
         )
       )
     )
   }
 
-  tbl_unstratified <- survival_anl(
+  tbl_unstratified <- coxph_tbl(
     "Unstratified Analysis",
-    formula = tm$formula_nostrata
+    coxph_df = coxph_values$unstratified
   )
 
   # Stratified Analysis
@@ -258,9 +241,9 @@ t_tte <- function(formula,
   tbl_stratified <- if (is.null(tm$formula_strata)) {
     NULL
   } else {
-    survival_anl(
+    coxph_tbl(
       "Stratified Analysis",
-      formula = tm$formula_strata
+      coxph_df = coxph_values$stratified
     )
   }
 
@@ -304,16 +287,18 @@ t_tte <- function(formula,
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
 
           # z-test
-          l_ci <- Map(function(di, si) di + qnorm(c(0.025, 0.975)) * si, d, sd)
+          q1 <- conf.int - (1-conf.int)/2
+          q2 <- conf.int + (1-conf.int)/2
+          l_ci <- Map(function(di, si) di + qnorm(c(q1, q2)) * si, d, sd)
           pval <- 2 * (1 - pnorm(abs(d) / sd))
 
           rtable(
             header = header,
             rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
             rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-            rrowl("95% CI",  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(paste0(conf.int*100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
             rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d * 100)), format = "xx.xx", indent = 2),
-            rrowl("95% CI", c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(paste0(conf.int*100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
             rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
           )
         }
