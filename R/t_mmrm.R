@@ -25,18 +25,22 @@
 #' ADSL <- radsl(cached = TRUE)
 #' ADQS <- radqs(cached = TRUE)
 #' ADQS_f <- ADQS %>%
-#'   filter(PARAMCD=="FKSI-FWB" & ABLFL != "Y" & ABLFL2 != "Y") %>%
-#'   droplevels()
+#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
 #' t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM*AVISIT,
 #'        data = ADQS_f,
 #'        id_var = "USUBJID",
+#'        arm_var = "ARM",
+#'        visit_var = "AVISIT",
 #'        col_N = table(ADSL$ARM),
 #'        mode = "boot-satterthwaite",
 #'        conf.level = 0.95,
-#'        table_tree = FALSE,
 #'        weights_emmeans = "proportional",
-#'        corStruct = "corSymm"
+#'        corStruct = "corSymm",
+#'        table_tree = FALSE
 #' )
 #'
 t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
@@ -199,12 +203,13 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'
 #'
 #' @param formula a gls formula.
-#' @param data a \code{data.frame} with all the variable that are used in
-#'   \code{formula}. The arm column in data must be a factor.
+#' @param data a \code{data.frame} with all the variables specified in
+#'   \code{formula}. Records with missing values in any independent variables
+#'   will be excluded.
 #' @param id_var a character describing the variable name used as subject IDs,
 #'   "USUBJID" by default.
 #' @param arm_var a character describing the variable name for \code{\link{arm}},
-#'   "ARM" by default. This variable must be factor in data.
+#'   "ARM" by default. The arm variable must be factor in \code{data}
 #' @param visit_var a character describing the variable name for visit,
 #'   "AVISIT" by default. This variable must be factor in data.
 #' @param mode algorithm for degree of freedom: "auto", "df.error" or
@@ -229,8 +234,10 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #' ADSL <- radsl(cached = TRUE)
 #' ADQS <- radqs(cached = TRUE)
 #' ADQS_f <- ADQS %>%
-#'   filter(PARAMCD == "FKSI-FWB" & ABLFL != "Y" & ABLFL2 != "Y") %>%
-#'   droplevels()
+#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
 #' mmrm_results <- a_mmrm(
 #'   data = ADQS_f,
@@ -262,23 +269,34 @@ a_mmrm <- function(data,
 
   mode <- match.arg(mode)
 
+  # extract relevant information from formula
+  mt <- terms(formula, data = data)
+
+  vars <- all.vars(attr(mt, "variables"))
+  regressor_vars <- c(vars[-1L], id_var)
+
   stopifnot(
     is.data.frame(data),
-    id_var %in% names(data),
-    arm_var %in% names(data),
-    visit_var %in% names(data),
     is.null(corStruct) || corStruct %in% c(
       "corAR1", "corARMA", "corCAR1", "corCompSymm", "corExp", "corGaus",
       "corLin", "corRatio", "corSpher", "corSymm"
     )
   )
 
-  # extract relevant information from formula
-  mt <- terms(formula, data = data)
+  if(!id_var %in% names(data)) {
+    stop(paste("Subject ID variable", id_var, "does not exist in input data"))
+  }
 
-  vars <- all.vars(attr(mt, "variables")) # different than  all.vars(formula)?
+  if(!arm_var %in% regressor_vars) {
+    stop(paste("Arm variable", arm_var, "does not exist in formula"))
+  }
+
+  if(!visit_var %in% regressor_vars) {
+    stop(paste("Visit variable", visit_var, "does not exist in formula"))
+  }
+
   i_resp <- attr(mt,"response")
-  if ( i_resp == 0) {
+  if (i_resp == 0) {
     stop("need a response variable")
   }
 
@@ -290,10 +308,22 @@ a_mmrm <- function(data,
 
   environment(formula) <- new.env() # no scoping for formula elements needed
 
-  # names are strings and symbols can be substituted into bquote and used with !!
+  # SAS excludes records with any missing independent varibles. In gls, any such missing value will cause error.
+  if(!all(complete.cases(data[, regressor_vars]))) {
+    warning(
+      "Some records have missing independent variables, which will be excluded.",
+      head(data[!complete.cases(data[, regressor_vars]), c(id_var, vars)]),
+      call. = FALSE
+    )
+  }
+
+  data_complete <- data %>%
+    filter(complete.cases(data[, regressor_vars])) %>%
+    droplevels()
+
   arm_symbol <- sym(arm_var)
-  arm_values <- data[[arm_var]]
-  response_values <- data[[response_var]]
+  arm_values <- data_complete[[arm_var]]
+  response_values <- data_complete[[response_var]]
 
   stopifnot(nlevels(arm_values) >= 2)
   reference_level <- levels(arm_values)[1]
@@ -301,22 +331,23 @@ a_mmrm <- function(data,
   stopifnot(
     is.numeric(response_values),
     is.factor(arm_values),
-    is.factor(data[[visit_var]])
+    is.factor(data_complete[[visit_var]])
   )
 
-  # Modeling step in SAS assumes complete case; however estimation step considers all data
+  # Modeling step in SAS assumes non-missing response variable; however estimation step considers all data
   if (any(is.na(response_values))) {
     warning(
-      "Some records have a missing endpoint, which will be excluded from MMRM modeling.",
-      head(data[is.na(response_values), c(id_var, visit_var, response_var)]),
+      "Some records have a missing endpoint, which will be excluded from MMRM modeling, but included in estimation.",
+      head(data_complete[is.na(response_values), c(id_var, visit_var, response_var)]),
       call. = FALSE
     )
   }
 
   # remove all entries where response is NA, droplevels as well
-  data_cc <- data %>%
+  data_cc <- data_complete %>%
     filter(!is.na(!!sym(response_var))) %>%
     droplevels()
+
 
   # check all arms will still be present after NA filtering
   stopifnot(nlevels(arm_values) == nlevels(data_cc[[arm_var]]))
@@ -327,7 +358,6 @@ a_mmrm <- function(data,
   }
 
   cor_formula <- as.formula(paste("~", "as.numeric(", visit_var, ") | ", id_var))
-
   correlation <- if (is.null(corStruct)) {
     NULL
   } else {
@@ -350,7 +380,7 @@ a_mmrm <- function(data,
     fit_mmrm,
     mode = mode,
     specs = as.formula(paste("~ ", arm_var, "|", visit_var)),
-    data = data %>% select(-c(response_var)), # estimate on original data
+    data = data_complete %>% select(-c(response_var)), # estimate on original data
     weights = weights_emmeans
   )
 
@@ -363,11 +393,10 @@ a_mmrm <- function(data,
   estimate <- confint(emm, level = conf.level) %>%
     as.data.frame()
 
-  # add n information
-
-  data_n <- data %>%
+  data_n <- data_complete %>%
     group_by_at(.vars = c(visit_var, arm_var)) %>%
-    summarise(n = n())
+    summarise(n = n()) %>%
+    ungroup()
 
   estimate <- estimate %>%
     left_join(., data_n, by = c(visit_var, arm_var))
@@ -396,6 +425,8 @@ a_mmrm <- function(data,
     select(-contrast) %>%
     rename(!!arm_symbol := col_by) %>%
     left_join(., relative_reduc, by = c(visit_var, arm_var))
+
+  warning("MMRM methodology in R is different from SAS. Please use as exploratory purpose.")
 
   list(
     contrast = contrast,

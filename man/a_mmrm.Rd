@@ -17,8 +17,9 @@ a_mmrm(
 )
 }
 \arguments{
-\item{data}{a \code{data.frame} with all the variable that are used in
-\code{formula}. The arm column in data must be a factor.}
+\item{data}{a \code{data.frame} with all the variables specified in
+\code{formula}. Records with missing values in any independent variables
+will be excluded.}
 
 \item{formula}{a gls formula.}
 
@@ -26,7 +27,7 @@ a_mmrm(
 "USUBJID" by default.}
 
 \item{arm_var}{a character describing the variable name for \code{\link{arm}},
-"ARM" by default. This variable must be factor in data.}
+"ARM" by default. The arm variable must be factor in \code{data}}
 
 \item{visit_var}{a character describing the variable name for visit,
 "AVISIT" by default. This variable must be factor in data.}
@@ -54,8 +55,10 @@ library(dplyr)
 ADSL <- radsl(cached = TRUE)
 ADQS <- radqs(cached = TRUE)
 ADQS_f <- ADQS \%>\%
-  filter(PARAMCD == "FKSI-FWB" & ABLFL != "Y" & ABLFL2 != "Y") \%>\%
-  droplevels()
+  filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  droplevels() \%>\%
+  mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
+  mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
 mmrm_results <- a_mmrm(
   data = ADQS_f,
