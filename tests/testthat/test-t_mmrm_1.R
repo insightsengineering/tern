@@ -291,7 +291,7 @@ test_that("Summary of Mixed-effect Model Repeated Measures Analysis", {
   asl <- unique(anl[, c("USUBJID", "ARM")])
 
   tbl <- t_mmrm(
-    formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM*AVISIT,
+    formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM * AVISIT,
     data = anl,
     id_var = "USUBJID",
     col_N = table(asl$ARM),

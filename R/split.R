@@ -42,7 +42,6 @@ is_nested_by <- function(x) {
 #' @param x object to wrap it around
 simple_by <- function(x) {
   stopifnot(is.data.frame(x) || is.factor(x) || is(x, "by_all"))
-  # structure(x, class = "simple_by")
   x
 }
 

@@ -44,7 +44,7 @@ tabulate_pairwise(
         strata = sample(c("A", "B"), 100, replace = TRUE)
    ),
   col_by = factor(sample(c("BY1", "BY2", "BY3"), 100, replace = TRUE)),
-  FUN = function(xi, col_by_i){
+  FUN = function(xi, col_by_i) {
             mhp <- mantelhaen.test(xi$val, col_by_i, xi$strata)
             mhp$p.value
             },

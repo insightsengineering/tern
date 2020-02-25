@@ -77,7 +77,7 @@
 #' }
 t_tte <- function(formula,
                   data,
-                  conf.int = 0.95,
+                  conf.int = 0.95, # nolint
                   event_descr,
                   time_points,
                   time_unit = "month",
@@ -170,7 +170,7 @@ t_tte <- function(formula,
 
   srv_tbl <- summary(surv_km_fit)$table
   med <- as.list(srv_tbl[, "median"])
-  ci <- Map(function(x, y) c(x, y), srv_tbl[, paste0(conf.int,"LCL")], srv_tbl[, paste0(conf.int, "UCL")])
+  ci <- Map(function(x, y) c(x, y), srv_tbl[, paste0(conf.int, "LCL")], srv_tbl[, paste0(conf.int, "UCL")])
 
   srv_qt_tbl <- quantile(surv_km_fit)$quantile
   qnt <- Map(function(x, y) c(x, y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
@@ -187,7 +187,7 @@ t_tte <- function(formula,
     rtable(
       header = header,
       rrowl("Median", med, format = "xx.xx"),
-      rrowl(paste0(conf.int*100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
+      rrowl(paste0(conf.int * 100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
       rrowl("25% and 75%-ile", qnt, format = "xx.x, xx.x"),
       rrowl("Range (censored)", rng_c, format = "xx.x to xx.x"),
       rrowl("Range (event)", rng_e, format = "xx.x to xx.x")
@@ -224,7 +224,7 @@ t_tte <- function(formula,
           rtable(
             header = header,
             rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
-            rrowl(paste0(conf.int*100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+            rrowl(paste0(conf.int * 100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
           )
         )
       )
@@ -287,8 +287,8 @@ t_tte <- function(formula,
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
 
           # z-test
-          q1 <- conf.int - (1-conf.int)/2
-          q2 <- conf.int + (1-conf.int)/2
+          q1 <- conf.int - (1 - conf.int) / 2
+          q2 <- conf.int + (1 - conf.int) / 2
           l_ci <- Map(function(di, si) di + qnorm(c(q1, q2)) * si, d, sd)
           pval <- 2 * (1 - pnorm(abs(d) / sd))
 
@@ -296,9 +296,9 @@ t_tte <- function(formula,
             header = header,
             rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
             rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-            rrowl(paste0(conf.int*100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(paste0(conf.int * 100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
             rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d * 100)), format = "xx.xx", indent = 2),
-            rrowl(paste0(conf.int*100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(paste0(conf.int * 100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
             rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
           )
         }
@@ -371,7 +371,7 @@ t_tte_items <- function(formula, cl, data, env) {
 
   mf <- mf[c(1L, m)]
   mf[[1L]] <- quote(stats::model.frame)
-  mf$na.action <- quote(stats::na.omit)
+  mf$na.action <- quote(stats::na.omit) # nolint
 
   mf <- eval(mf, env)
 

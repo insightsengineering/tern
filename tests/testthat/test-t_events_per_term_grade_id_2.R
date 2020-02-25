@@ -108,7 +108,7 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
                     "AB12345-275992-2520";"B";"3";"GASTROINTESTINAL DISORDERS";"ASCITES"
                     "AB12345-275992-2520";"B";"1";"SKIN AND SUBCUTANEOUS TISSUE DISORDERS";"DERMATITIS ACNEIFORM"'
   )
-  anl$TRT02AN <- factor(anl$TRT02AN, levels = c("A", "B"))
+  anl$TRT02AN <- factor(anl$TRT02AN, levels = c("A", "B")) # nolint
 
   asl <- unique(anl[, c("USUBJID", "TRT02AN")])
 

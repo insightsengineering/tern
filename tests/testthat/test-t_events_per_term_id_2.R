@@ -105,7 +105,7 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
                     "SHH4429G-S19961-15655";"Placebo";"INFECTIONS AND INFESTATIONS";"UPPER RESPIRATORY TRACT INFECTION"'
   )
-  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo"))
+  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo")) # nolint
 
   asl <- read.table(header = TRUE, sep = ";", stringsAsFactors = FALSE, text = '
                     "USUBJID";"ARM"
@@ -170,7 +170,7 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active"
                     "SHH4429G-S19961-15655";"Placebo"'
   )
-  asl$ARM <- factor(asl$ARM, levels = c("Active", "Placebo"))
+  asl$ARM <- factor(asl$ARM, levels = c("Active", "Placebo")) # nolint
 
   # nolint start
   tbl_stream <- rtable(

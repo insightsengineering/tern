@@ -243,7 +243,7 @@ t_rsp <- function(rsp,
               } else {
                 t.tbl <- table(by, x$rsp, x$strata)
                 if (all(dim(t.tbl)[1:2] == 2)) {
-                  t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ]
+                  t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ] # nolint
                   t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
                   rcell(t_m$p.value, format = "xx.xxxx")
                 } else {
@@ -261,7 +261,7 @@ t_rsp <- function(rsp,
     # Odds Ratio
     tbl_odds_ratio <- rbind(
       tabulate_pairwise(
-        if (is.null(strata_data)){
+        if (is.null(strata_data)) {
           rsp
         } else {
           data.frame(
@@ -285,7 +285,7 @@ t_rsp <- function(rsp,
             } else {
               t.tbl <- table(by, x$rsp, x$strata)
               if (all(dim(t.tbl)[1:2] == 2)) {
-                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ]
+                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ] # nolint
                 t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
                 rcell(t_m$estimate, format = "xx.xx")
               } else {
@@ -298,7 +298,7 @@ t_rsp <- function(rsp,
       ),
 
       tabulate_pairwise(
-        if (is.null(strata_data)){
+        if (is.null(strata_data)) {
           rsp
         } else {
           data.frame(
@@ -323,7 +323,7 @@ t_rsp <- function(rsp,
             } else {
               t.tbl <- table(by, x$rsp, x$strata)
               if (all(dim(t.tbl)[1:2] == 2)) {
-                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ]
+                t.tbl.sub <- t.tbl[match(levels(by), dimnames(t.tbl)$by), , ] # nolint
                 t_m <- mantelhaen.test(t.tbl.sub, correct = FALSE)
                 rcell(t_m$conf.int, format = "(xx.xx, xx.xx)")
               } else {

@@ -29,13 +29,14 @@
 #' ADSL <- radsl(cached = TRUE)
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
 #' ADSL_f <- ADSL %>%
-#'   filter(SEX %in% c("M", "F")) %>% mutate(SEX = droplevels(SEX))
+#'   dplyr::filter(SEX %in% c("M", "F")) %>%
+#'   mutate(SEX = droplevels(SEX))
 #' t_summary(ADSL_f$SEX, col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 #'
 #' t_summary(ADSL_f[, c("SEX", "AGE")], col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 #'
 #' ADSL_f <- ADSL %>%
-#'   filter(SEX %in% c("M", "F"), RACE %in% c("ASIAN", "WHITE")) %>%
+#'   dplyr::filter(SEX %in% c("M", "F"), RACE %in% c("ASIAN", "WHITE")) %>%
 #'   mutate(SEX = droplevels(SEX), RACE = droplevels(as.factor(RACE)))
 #' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$SEX, ADSL_f$RACE))
 #' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX))
@@ -275,9 +276,9 @@ t_summary.numeric <- function(x, # nolint
       f_name,
       count_n = rtabulate(x, col_by, count_n, row.name = "n"),
       mean_sd = rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
-      se = rtabulate(x, col_by, function(x, na.rm) {
-            sd(x)/sqrt(length(x))
-          }, row.name = "SE", format = "xx.xx", na.rm = TRUE),
+      se = rtabulate(x, col_by, function(x, na_rm) {
+            sd(x) / sqrt(length(x))
+          }, row.name = "SE", format = "xx.xx", na_rm = TRUE),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
       q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE),
       range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),

@@ -60,7 +60,7 @@
 #' library(dplyr)
 #' library(purrr)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- radsl(cached = TRUE)
 #' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 #' attr(ADSL$'FAKE Name > -1.3 Flag', "label") <- "dummy"
 #'

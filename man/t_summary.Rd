@@ -42,13 +42,14 @@ library(dplyr)
 ADSL <- radsl(cached = TRUE)
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
 ADSL_f <- ADSL \%>\%
-  filter(SEX \%in\% c("M", "F")) \%>\% mutate(SEX = droplevels(SEX))
+  dplyr::filter(SEX \%in\% c("M", "F")) \%>\%
+  mutate(SEX = droplevels(SEX))
 t_summary(ADSL_f$SEX, col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 
 t_summary(ADSL_f[, c("SEX", "AGE")], col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 
 ADSL_f <- ADSL \%>\%
-  filter(SEX \%in\% c("M", "F"), RACE \%in\% c("ASIAN", "WHITE")) \%>\%
+  dplyr::filter(SEX \%in\% c("M", "F"), RACE \%in\% c("ASIAN", "WHITE")) \%>\%
   mutate(SEX = droplevels(SEX), RACE = droplevels(as.factor(RACE)))
 t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$SEX, ADSL_f$RACE))
 t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX))

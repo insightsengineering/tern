@@ -38,7 +38,10 @@
 #'
 #' tbl <- t_km(formula, data = ADTTE_f, conf.int = 0.8)
 #' tbl
-t_km <- function(formula, data, conf.int = 0.95, ...) {
+t_km <- function(formula,
+                 data,
+                 conf.int = 0.95,  # nolint
+                 ...) {
 
   fit_km <- survfit(formula, data, conf.int = conf.int, ...)
   sumtable <- summary(fit_km)$table
@@ -57,10 +60,10 @@ t_km <- function(formula, data, conf.int = 0.95, ...) {
     colnames(kminfo) <-  c("records", "median", "LCL", "UCL")
   }
 
-  skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
+  skminfo <- split(as.data.frame(kminfo), seq_len(nrow(kminfo)))
 
   rtablel(
-    header = c("N", "median", paste0(conf.int*100, "% CI for median")),
+    header = c("N", "median", paste0(conf.int * 100, "% CI for median")),
     lapply(skminfo, function(xi) {
       rrow(
         row.name = rownames(xi),
@@ -71,5 +74,3 @@ t_km <- function(formula, data, conf.int = 0.95, ...) {
     })
   )
 }
-
-

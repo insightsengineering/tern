@@ -31,13 +31,13 @@
 #' }
 t_coxph <- function(formula,
                     data,
-                    conf.int = 0.95,
+                    conf.int = 0.95, # nolint
                     pval_method = c("log-rank", "wald",  "likelihood"),
-                    ...){
+                    ...) {
 
   coxph_values <- s_coxph(formula, data, conf.int, pval_method, ...)
   arm_var <- coxph_values$arm_var
-  info <- if (!is.null(coxph_values$stratified)){
+  info <- if (!is.null(coxph_values$stratified)) {
     coxph_values$stratified
   } else {
     coxph_values$unstratified
@@ -47,7 +47,7 @@ t_coxph <- function(formula,
   pval_method_str <- paste0(toupper(substring(pval_method, 1, 1)), substring(pval_method, 2))
 
   rtablel(
-    header = c("HR", paste0(conf.int*100, "% CI of HR"), paste0(pval_method_str, " p-value")),
+    header = c("HR", paste0(conf.int * 100, "% CI of HR"), paste0(pval_method_str, " p-value")),
     lapply(sinfo, function(xi) {
       rrow(
         row.name = xi[, arm_var],
@@ -94,8 +94,8 @@ t_coxph <- function(formula,
 #'
 s_coxph <- function(formula,
                     data,
-                    conf.int = 0.95,
-                    pval_method = c("log-rank", "wald",  "likelihood"), ...){
+                    conf.int = 0.95, # nolint
+                    pval_method = c("log-rank", "wald",  "likelihood"), ...) {
   cl <- match.call()
   stopifnot(is.data.frame(data))
   # extracted data
@@ -107,7 +107,7 @@ s_coxph <- function(formula,
   reference_lvl <- levels(arm)[1]
   comparison_lvls <- levels(arm)[-1]
 
-  coxph_results <- lapply(comparison_lvls, function(lvl){
+  coxph_results <- lapply(comparison_lvls, function(lvl) {
     df_lvl <- data[arm %in% c(reference_lvl, lvl), , drop = FALSE]
     df_lvl[[varname]] <- droplevels(df_lvl[[varname]])
     unstratified <- coxph_extract(formula = form_unstr,
@@ -116,7 +116,7 @@ s_coxph <- function(formula,
                                   pval_method = pval_method,
                                   ...)
     unstratified[[varname]] <- lvl
-    if (is.null(form_str)){
+    if (is.null(form_str)) {
       stratified <- NULL
     } else {
       stratified <- coxph_extract(formula = form_str,
@@ -129,8 +129,8 @@ s_coxph <- function(formula,
     list(unstratified = unstratified, stratified = stratified)
   })
 
-  unstratified <- lapply(coxph_results, function(res) res[["unstratified"]]) %>% do.call("rbind", .)
-  stratified <- lapply(coxph_results, function(res) res[["stratified"]]) %>% do.call("rbind", .)
+  unstratified <- lapply(coxph_results, function(res) do.call("rbind", res[["unstratified"]]))
+  stratified <- lapply(coxph_results, function(res) do.call("rbind", res[["stratified"]]))
 
   list(unstratified = unstratified,
        stratified = stratified,
@@ -143,29 +143,29 @@ s_coxph <- function(formula,
 #' @noRd
 coxph_extract <- function(formula,
                           data,
-                          conf.int = 0.95,
-                          pval_method = c("log-rank", "wald",  "likelihood"), ...){
+                          conf.int = 0.95, # nolint
+                          pval_method = c("log-rank", "wald",  "likelihood"), ...) {
   pval_method <- match.arg(pval_method)
   fit_coxph <- tryCatch(
     coxph(formula, data = data, ...),
     error = function(e) NULL
   )
   msum <- summary(fit_coxph, conf.int)
-  pval <- if (pval_method == "wald"){
+  pval <- if (pval_method == "wald") {
     if (is.null(fit_coxph)) NA else msum$waldtest["pvalue"]
-  } else if (pval_method == "log-rank"){
+  } else if (pval_method == "log-rank") {
     # Score (logrank) test
     if (is.null(fit_coxph)) NA else msum$sctest["pvalue"]
-  } else if (pval_method == "likelihood"){
+  } else if (pval_method == "likelihood") {
     if (is.null(fit_coxph)) NA else msum$logtest["pvalue"]
   }
 
-  hr <- if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))){
+  hr <- if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))) {
     NA
   } else {
     msum$conf.int[1, 1]
   }
-  hr_ci <- if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))){
+  hr_ci <- if (is.null(fit_coxph) || all(is.na(fit_coxph$coefficients))) {
     c(NA, NA)
   } else {
     msum$conf.int[1, 3:4]

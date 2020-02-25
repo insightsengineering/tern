@@ -169,7 +169,7 @@ test_that("adverse events by terms (term only)", {
                     "SHH4429G-S19961-15654";"Active"
                     "SHH4429G-S19961-15655";"Placebo"'
   )
-  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo"))
+  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo")) # nolint
 
   # nolint start
   tbl_stream <- rtable(

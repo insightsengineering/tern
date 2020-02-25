@@ -71,7 +71,7 @@ NULL
 #' library(dplyr)
 #' library(random.cdisc.data)
 #'
-#' ADSL <- radsl(10, seed = 1)
+#' ADSL <- radsl(cached = TRUE)
 #' ADAE <- radae(ADSL, 4L, seed = 2)
 #'
 #' t_events_per_term_grade_id(
@@ -175,7 +175,6 @@ t_events_per_term_grade_id <- function(terms,
   }
 
   grade_label <- label(grade) %||% deparse(substitute(grade))
-  col_by_label <- label(col_by) %||% deparse(substitute(col_by))
 
   grade <- with_label(grade, label = grade_label)
 
@@ -255,8 +254,6 @@ t_events_per_term_grade_id <- function(terms,
   } else {
     row.names(tree@content) <- c("- Overall -", row.names(tree@content)[-1])
   }
-
-  #tree@format_data[["left_header"]] <- do.call(rheader, lapply(terms, label))
 
   if (table_tree) {
     tree
@@ -436,14 +433,15 @@ t_max_grade_per_id <- function(grade,
 #' @param id patient id
 #' @param col_by columns indicating where patient is, (this function checks that the patient only
 #'   appears in one column, ignoring the "by_all" / total column)
-#' @examples
-#' library(random.cdisc.data)
-#' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4L, seed = 2)
-#' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
 #'
 #' @importFrom dplyr group_by summarise_all select
 #' @importFrom magrittr %>%
+#'
+#' @examples
+#' library(random.cdisc.data)
+#' ADSL <- radsl(cached = TRUE)
+#' ADAE <- radae(ADSL, 4L, seed = 2)
+#' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
 check_id <- function(id, col_by) {
   col_by <- col_by_to_matrix(col_by)
   # remove total column if present

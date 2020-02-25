@@ -165,7 +165,7 @@ t_summary_by <- function(x,
   stopifnot(is.list(row_by))
 
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) # nolint
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
     col_N <- col_N_add_total(col_N) #nolintr
@@ -175,7 +175,7 @@ t_summary_by <- function(x,
   res <- apply_compare_in_header(x, col_by, col_N = col_N)
   x <- res$x
   col_by <- res$col_by
-  col_N <- res$col_N
+  col_N <- res$col_N # nolint
 
   tree_data <- rsplit_to_tree(
     list(x = x, col_by = col_by),
@@ -348,7 +348,7 @@ nb_entries.default <- function(x) {
 
 # need to export, bug otherwise
 #' @export
-nb_entries.data.frame <- function(x) {
+nb_entries.data.frame <- function(x) { # nolint
   nrow(x)
 }
 
@@ -383,7 +383,9 @@ nb_entries.data.frame <- function(x) {
 #' x <- res$x
 #' col_by <- res$col_by
 #' col_N <- res$col_N
-apply_compare_in_header <- function(x, col_by, col_N = NULL) {
+apply_compare_in_header <- function(x,
+                                    col_by,
+                                    col_N = NULL) { # nolint
   if (!"compare_in_header" %in% names(attributes(x))) {
     return(list(x = x, col_by = col_by, col_N = col_N))
   }

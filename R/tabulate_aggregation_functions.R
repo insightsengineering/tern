@@ -172,7 +172,10 @@ iqr_num3 <- function(x, na.rm = TRUE) { # nolint
 #'               col_by = factor(c("A", "A", "A", "A", "A", "B", "B", "B", "B", "B")),
 #'               var.equal = TRUE)
 
-ttest_two_arm <- function(x, col_by, conf.level = 0.95, ...){
+ttest_two_arm <- function(x,
+                          col_by,
+                          conf.level = 0.95, # nolint
+                          ...) {
 
   stopifnot(is.numeric(conf.level),
             conf.level <= 1 && conf.level >= 0,
@@ -184,7 +187,7 @@ ttest_two_arm <- function(x, col_by, conf.level = 0.95, ...){
   result <- list(
     ci = fit$conf.int,
     diff = fit$estimate[[1]] - fit$estimate[[2]],
-    se = unname((fit$estimate[[1]] - fit$estimate[[2]])/fit$statistic),
+    se = unname((fit$estimate[[1]] - fit$estimate[[2]]) / fit$statistic),
     tvalue = fit$statistic,
     pvalue = fit$p.value
   )
@@ -209,13 +212,15 @@ ttest_two_arm <- function(x, col_by, conf.level = 0.95, ...){
 #' @examples
 #' ttest_ci_one_arm(c(1,2,3,4,5,6,7,8, NA), conf.level = 0.95, mu = 1, alternative = "less")
 #'
-ttest_ci_one_arm <- function(x, conf.level = 0.95, ...) {
+ttest_ci_one_arm <- function(x,
+                             conf.level = 0.95, # nolint
+                             ...) {
 
   stopifnot(is.numeric(conf.level),
             conf.level <= 1 && conf.level >= 0)
 
   result <- if (all(is.na(x))) {
-    rcell(" ", format="xx")
+    rcell(" ", format = "xx")
   } else {
     t.test(x, conf.level = conf.level, ...)$conf.int
   }

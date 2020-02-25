@@ -48,9 +48,9 @@ NULL
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- radsl(cached = TRUE)
 #'
-#' ADTTE <- radtte(ADSL, seed = 2)
+#' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
 #'   dplyr::filter(PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) %>%
 #'   mutate(ARMCD = droplevels(ARMCD))

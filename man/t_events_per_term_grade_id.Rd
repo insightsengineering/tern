@@ -97,7 +97,7 @@ grades.
 library(dplyr)
 library(random.cdisc.data)
 
-ADSL <- radsl(10, seed = 1)
+ADSL <- radsl(cached = TRUE)
 ADAE <- radae(ADSL, 4L, seed = 2)
 
 t_events_per_term_grade_id(

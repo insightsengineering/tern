@@ -119,8 +119,8 @@
 #'
 #' library(random.cdisc.data)
 #'
-#' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4L, seed = 2)
+#' ADSL <- radsl(cached = TRUE)
+#' ADAE <- radae(cached = TRUE)
 #'
 #' t_events_per_term_id(
 #'   terms = ADAE$AEDECOD,
@@ -147,9 +147,8 @@
 #'   total = "All Patients"
 #' )
 #'
-#' ADSL <- cadsl
-#' ADCM <- cadcm
-#' ADCM <- ADCM %>%
+#' ADSL <- radsl(cached = TRUE)
+#' ADCM <- radcm(cached = TRUE) %>%
 #'   dplyr::filter(ATIREL == "CONCOMITANT")
 #'
 #' t_events_per_term_id(
@@ -446,7 +445,7 @@ argfix_events_terms <- function(terms) {
   na_terms <- vapply(terms, function(x) any(is.na(x)), logical(1))
 
   if (any(empty_terms))
-    stop('terms are not allowed to be a empty string or strings of spaces. You may use explicit_na(sas_na(x))', call. = FALSE)
+    stop("terms are not allowed to be a empty string or strings of spaces. You may use explicit_na(sas_na(x))", call. = FALSE)
 
   if (any(na_terms))
     stop("terms currently do not allow missing data, please use explicit_na(x)", call. = FALSE)

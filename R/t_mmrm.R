@@ -48,11 +48,11 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    id_var = "USUBJID",
                    arm_var = "ARM",
                    visit_var = "AVISIT",
-                   col_N = table(ADSL$ARM),
+                   col_N, # nolint
                    mode = c("df.error", "auto", "boot-satterthwaite"),
-                   conf.level = 0.95,
+                   conf.level = 0.95, # nolint
                    weights_emmeans = "proportional",
-                   corStruct = NULL,
+                   corStruct = NULL, # nolint
                    table_tree = TRUE) {
 
   mmrm_result <- a_mmrm(formula = formula,
@@ -87,7 +87,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
     }
   }
 
-  mmrm_node_list <- Map(function(df1_i, df2_i, visit){
+  mmrm_node_list <- Map(function(df1_i, df2_i, visit) {
 
     tbl <- rtable(
       header = tbl_head,
@@ -104,21 +104,21 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                          drop = FALSE),
                    function(vector_i) {
                      if (is.null(vector_i)) {
-                       NULL}
-                     else {
+                       NULL
+                     } else {
                        c(vector_i$`emmean`, vector_i$`SE`)
                      }
                    }),
             format = sprintf_format("%.3f (%.3f)")
       ),
-      rrowl(paste0(mmrm_result$`conf_level`*100, "% CI"),
+      rrowl(paste0(mmrm_result$`conf_level` * 100, "% CI"),
             lapply(split(df1_i,
                          factor(df1_i[[arm_var]], levels = arm_lvl),
                          drop = FALSE),
                    function(vector_i) {
                      if (is.null(vector_i)) {
-                       NULL}
-                     else {
+                       NULL
+                     } else {
                        c(vector_i$`lower.CL`, vector_i$`upper.CL`)
                      }
                    }),
@@ -138,7 +138,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    }),
             format = sprintf_format("%.3f (%.3f)")
       ),
-      rrowl(paste0(mmrm_result$`conf_level`*100, "% CI"),
+      rrowl(paste0(mmrm_result$`conf_level` * 100, "% CI"),
             lapply(split(df2_i,
                          factor(df2_i[[arm_var]], levels = arm_lvl),
                          drop = FALSE),
@@ -221,9 +221,12 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'
 #' @return a dataframe with MMRM results
 #'
+#' @importFrom dplyr filter group_by_at left_join mutate n summarise rename ungroup
 #' @importFrom nlme gls corSymm corAR1 corARMA corCAR1 corCompSymm
 #'  corExp corGaus corLin corRatio corSpher varIdent
 #' @importFrom emmeans emmeans contrast
+#' @importFrom stats complete.cases na.exclude
+#' @importFrom rlang :=
 #'
 #' @export
 #'
@@ -262,9 +265,9 @@ a_mmrm <- function(data,
                    arm_var = "ARM",
                    visit_var = "AVISIT",
                    mode = c("df.error", "auto", "boot-satterthwaite"),
-                   conf.level = 0.95,
+                   conf.level = 0.95, # nolint
                    weights_emmeans = "proportional",
-                   corStruct = NULL
+                   corStruct = NULL # nolint
 ) {
 
   mode <- match.arg(mode)
@@ -283,19 +286,19 @@ a_mmrm <- function(data,
     )
   )
 
-  if(!id_var %in% names(data)) {
+  if (!id_var %in% names(data)) {
     stop(paste("Subject ID variable", id_var, "does not exist in input data"))
   }
 
-  if(!arm_var %in% regressor_vars) {
+  if (!arm_var %in% regressor_vars) {
     stop(paste("Arm variable", arm_var, "does not exist in formula"))
   }
 
-  if(!visit_var %in% regressor_vars) {
+  if (!visit_var %in% regressor_vars) {
     stop(paste("Visit variable", visit_var, "does not exist in formula"))
   }
 
-  i_resp <- attr(mt,"response")
+  i_resp <- attr(mt, "response")
   if (i_resp == 0) {
     stop("need a response variable")
   }
@@ -309,7 +312,7 @@ a_mmrm <- function(data,
   environment(formula) <- new.env() # no scoping for formula elements needed
 
   # SAS excludes records with any missing independent varibles. In gls, any such missing value will cause error.
-  if(!all(complete.cases(data[, regressor_vars]))) {
+  if (!all(complete.cases(data[, regressor_vars]))) {
     warning(
       "Some records have missing independent variables, which will be excluded.",
       head(data[!complete.cases(data[, regressor_vars]), c(id_var, vars)]),
@@ -318,7 +321,7 @@ a_mmrm <- function(data,
   }
 
   data_complete <- data %>%
-    filter(complete.cases(data[, regressor_vars])) %>%
+    dplyr::filter(stats::complete.cases(data[, regressor_vars])) %>%
     droplevels()
 
   arm_symbol <- sym(arm_var)
@@ -345,7 +348,7 @@ a_mmrm <- function(data,
 
   # remove all entries where response is NA, droplevels as well
   data_cc <- data_complete %>%
-    filter(!is.na(!!sym(response_var))) %>%
+    dplyr::filter(!is.na(!!sym(response_var))) %>%
     droplevels()
 
 
@@ -370,7 +373,7 @@ a_mmrm <- function(data,
     weights = varIdent(form = as.formula(paste(" ~ 1 |", visit_var))),
     method = "REML",
     data = data_cc, # model fit on complete case
-    na.action = na.exclude
+    na.action = stats::na.exclude
   )
 
   # hacky for emmeans since emmeans evaluation and namespace is not good
@@ -394,37 +397,36 @@ a_mmrm <- function(data,
     as.data.frame()
 
   data_n <- data_complete %>%
-    group_by_at(.vars = c(visit_var, arm_var)) %>%
-    summarise(n = n()) %>%
-    ungroup()
+    dplyr::group_by_at(.vars = c(visit_var, arm_var)) %>%
+    dplyr::summarise(n = dplyr::n()) %>%
+    dplyr::ungroup()
 
   estimate <- estimate %>%
-    left_join(., data_n, by = c(visit_var, arm_var))
+    dplyr::left_join(data_n, by = c(visit_var, arm_var))
 
   # get emmean for reference group to join into full dataframe so that relative reduction in
   # emmean (mean of response variable) can be computed with respect to reference level (e.g. ARM A)
   means_at_ref <- estimate %>%
-    filter(!!arm_symbol == reference_level) %>%
-    select(c(visit_var, "emmean")) %>%
-    rename(ref = emmean)
+    dplyr::filter(!!arm_symbol == reference_level) %>%
+    dplyr::select(c(visit_var, "emmean")) %>%
+    dplyr::rename(ref = .data$emmean)
 
   relative_reduc <- estimate %>%
-    filter(!!arm_symbol != reference_level) %>%
-    left_join(means_at_ref, by = c(visit_var)) %>%
-    mutate(relative_reduc = (ref - emmean) / ref) %>%
-    select(c(visit_var, arm_var, "relative_reduc"))
+    dplyr::filter(!!arm_symbol != reference_level) %>%
+    dplyr::left_join(means_at_ref, by = c(visit_var)) %>%
+    dplyr::mutate(relative_reduc = (.data$ref - .data$emmean) / .data$ref) %>%
+    dplyr::select(c(visit_var, arm_var, "relative_reduc"))
 
   sum_fit_diff <- summary(contrast(emm, method = "trt.vs.ctrl"), level = conf.level, infer = c(TRUE, TRUE), adjust = "none")
 
   # get the comparison group name from "contrast" column, e.g. "ARMB - ARMA" returns "ARMB", i.e. remove " - ARMA"
   contrast <- sum_fit_diff %>%
-    mutate(
-      col_by = gsub(paste0("\\s-\\s", reference_level), "", contrast) %>%
-        factor(., levels = levels(data[[arm_var]]))
+    dplyr::mutate(
+      col_by = factor(gsub(paste0("\\s-\\s", reference_level), "", contrast), levels = levels(data[[arm_var]]))
     ) %>%
-    select(-contrast) %>%
-    rename(!!arm_symbol := col_by) %>%
-    left_join(., relative_reduc, by = c(visit_var, arm_var))
+    dplyr::select(-contrast) %>%
+    dplyr::rename(!!arm_symbol := .data$col_by) %>%
+    dplyr::left_join(relative_reduc, by = c(visit_var, arm_var))
 
   warning("MMRM methodology in R is different from SAS. Please use as exploratory purpose.")
 

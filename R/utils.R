@@ -229,7 +229,3 @@ to_string_with_names <- function(x) {
   # also works for more general
   paste(names(x), x, sep = ":", collapse = ", ")
 }
-
-
-
-

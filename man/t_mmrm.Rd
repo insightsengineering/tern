@@ -10,7 +10,7 @@ t_mmrm(
   id_var = "USUBJID",
   arm_var = "ARM",
   visit_var = "AVISIT",
-  col_N = table(ADSL$ARM),
+  col_N,
   mode = c("df.error", "auto", "boot-satterthwaite"),
   conf.level = 0.95,
   weights_emmeans = "proportional",

@@ -134,8 +134,8 @@ t_events_per_term_id(
 
 library(random.cdisc.data)
 
-ADSL <- radsl(10, seed = 1)
-ADAE <- radae(ADSL, 4L, seed = 2)
+ADSL <- radsl(cached = TRUE)
+ADAE <- radae(cached = TRUE)
 
 t_events_per_term_id(
   terms = ADAE$AEDECOD,
@@ -162,9 +162,8 @@ t_events_per_term_id(
   total = "All Patients"
 )
 
-ADSL <- cadsl
-ADCM <- cadcm
-ADCM <- ADCM \%>\%
+ADSL <- radsl(cached = TRUE)
+ADCM <- radcm(cached = TRUE) \%>\%
   dplyr::filter(ATIREL == "CONCOMITANT")
 
 t_events_per_term_id(

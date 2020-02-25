@@ -296,11 +296,11 @@ forest_grob <- function(tbl,
       gTree(
         children = do.call("gList", Map(function(row, i) {
           cell_in_rows(row, i, TRUE)
-        }, header(tbl), 1:nrow(header(tbl)), USE.NAMES = FALSE)),
+        }, header(tbl), seq_len(nrow(header(tbl))), USE.NAMES = FALSE)),
         vp = vpPath("vp_table_layout", "vp_header")
       ),
       gTree(
-        children = do.call("gList", Map(cell_in_rows, tbl, 1:nrow(tbl), USE.NAMES = FALSE)),
+        children = do.call("gList", Map(cell_in_rows, tbl, seq_len(nrow(tbl)), USE.NAMES = FALSE)),
         vp = vpPath("vp_table_layout", "vp_body")
       ),
       linesGrob(unit(c(0, 1), "npc"), y = unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
@@ -346,7 +346,7 @@ forest_grob <- function(tbl,
       gTree(
         children = do.call("gList", Map(function(xi, li, ui, row_index) {
           forest_dot_line(xi, li, ui, row_index, xlim, datavp = data_forest_vp)
-        }, x, lower, upper, 1:length(x), USE.NAMES = FALSE)),
+        }, x, lower, upper, seq_along(x), USE.NAMES = FALSE)),
         vp = vpPath("vp_table_layout", "vp_body")
       )
     ),

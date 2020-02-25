@@ -1,4 +1,4 @@
-.onAttach <- function(libname, pkgname) {
+.onAttach <- function(libname, pkgname) { # nolint
   return()
   packageStartupMessage(paste(
     "\nThis is a beta version for tern v0.6.1. Install the current stable tern v0.6.0 with:",

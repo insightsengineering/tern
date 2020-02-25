@@ -71,5 +71,3 @@ sas_na <- function(x, empty = TRUE, whitespaces = TRUE) {
   }
 
 }
-
-
