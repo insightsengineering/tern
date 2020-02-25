@@ -32,7 +32,6 @@
 #' @seealso \code{\link{t_forest_tte}}
 #'
 #' @examples
-#' \donttest{
 #' library(random.cdisc.data)
 #' ADSL <- cadsl
 #'
@@ -46,10 +45,7 @@
 #'   time_points = c(6, 2000),
 #'   time_unit = "month"
 #' )
-#'
 #' tbl
-#'
-#' Viewer(tbl)
 #'
 #' tbl2 <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
@@ -61,11 +57,10 @@
 #'   pval_method = "wald",
 #'   ties = "exact"
 #' )
-#'
-#' Viewer(tbl2)
+#' tbl2
 #'
 #' # table_tree = TRUE
-#' tbl <- t_tte(
+#' tbl3 <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
 #'   data = ADTTE_f,
 #'   event_descr = factor(EVNTDESC),
@@ -73,8 +68,7 @@
 #'   time_unit = "month",
 #'   table_tree = TRUE
 #' )
-#' summary(tbl)
-#' }
+#' summary(tbl3)
 t_tte <- function(formula,
                   data,
                   conf.int = 0.95, # nolint
@@ -204,9 +198,9 @@ t_tte <- function(formula,
 
   coxph_tbl <- function(node_name, coxph_df) {
     # first column is empty
-    pval <- start_with_null(coxph_df$pvalue)
-    hr <- start_with_null(coxph_df$hr)
-    hr_ci <- start_with_null(coxph_df$hr_ci)
+    pval <- start_with_null(lapply(coxph_df, function(x) x[, 1]$pvalue))
+    hr <- start_with_null(lapply(coxph_df, function(x) x[, 1]$hr))
+    hr_ci <- start_with_null(lapply(coxph_df, function(x) x[, 1]$hr_ci))
 
     node(
       node_name,
