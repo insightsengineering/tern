@@ -66,6 +66,7 @@ Collate:
     'check_data.R'
     'decorate_grob.R'
     'deprecated.R'
+    'df_explicit_na.R'
     'for_rtables.R'
     'formulas.R'
     'g_forest.R'
