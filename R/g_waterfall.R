@@ -114,7 +114,8 @@ g_waterfall <- function(height,
         legend.background = element_blank(),
         legend.title = element_text(face = "bold"),
         legend.box.background = element_rect(colour = "black")
-      )
+      ) +
+      scale_fill_manual(values = nest_color_palette(length(col)))
   }
 
   if (!is.null(title)) {

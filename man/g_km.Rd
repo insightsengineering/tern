@@ -88,7 +88,7 @@ p_t <- addGrob(p, gTree(children = gList(g_tkm), vp = vpPath("mainPlot", "kmCurv
 grid.newpage()
 grid.draw(p_t)
 
-g_km(fit_km, xlab = "Duration (Days)", col = "green")
+g_km(fit_km, xlab = "Duration (Days)")
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

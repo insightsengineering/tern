@@ -320,8 +320,7 @@ to_group_color <- function(col, grps) {
     stop("col and grps can not be NULL")
   } else if (length(col) == 1) {
     if (is.na(col)) {
-      col_pal <- scales::col_factor("Set1", domain = grps)
-      col <- col_pal(grps)
+      col <- setNames(nest_color_palette(length(grps)), names(grps))
     } else {
       col <- rep(col, length(grps))
     }

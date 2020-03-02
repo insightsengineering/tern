@@ -54,7 +54,7 @@
 #' grid.newpage()
 #' grid.draw(p_t)
 #'
-#' g_km(fit_km, xlab = "Duration (Days)", col = "green")
+#' g_km(fit_km, xlab = "Duration (Days)")
 g_km <- function(fit_km,
                  xticks = NULL,
                  col = NA,
