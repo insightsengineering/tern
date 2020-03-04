@@ -4,7 +4,13 @@
 \alias{t_el_forest_rsp}
 \title{Elementary Table for Forest Response Plot}
 \usage{
-t_el_forest_rsp(rsp, col_by, row_name = "", dense_header = FALSE)
+t_el_forest_rsp(
+  rsp,
+  col_by,
+  strata_data = NULL,
+  row_name = "",
+  dense_header = FALSE
+)
 }
 \arguments{
 \item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
@@ -13,6 +19,9 @@ otherwise}
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
+
+\item{strata_data}{data for stratification factors (categorical variables).
+If \code{NULL}, no stratified analysis is performed.}
 
 \item{row_name}{name of row}
 
@@ -25,11 +34,23 @@ rtable with one row
 Elementary Table for Forest Response Plot
 }
 \examples{
+rsp = sample(c(TRUE, FALSE), 200, TRUE)
+col_by = factor(sample(c("ARM A", "ARM B"), 200, TRUE), levels = c("ARM A", "ARM B"))
+strata_data <- data.frame(
+  STRATA1 = sample(c("STR1", "STR2"), 200, TRUE),
+  STRATA2 = sample(c("low", "medium", "high"), 200, TRUE)
+)
+t_el_forest_rsp(
+  rsp = rsp,
+  col_by = col_by
+)
 
 t_el_forest_rsp(
-  rsp = sample(c(TRUE, FALSE), 200, TRUE),
-  col_by = factor(sample(c("ARM A", "ARM B"), 200, TRUE), levels = c("ARM A", "ARM B"))
+  rsp = rsp,
+  col_by = col_by,
+  strata_data = strata_data
 )
+
 
 }
 \seealso{

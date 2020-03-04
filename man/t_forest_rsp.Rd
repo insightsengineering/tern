@@ -9,6 +9,7 @@ t_forest_rsp(
   col_by,
   row_by_list = NULL,
   total = "ALL",
+  strata_data = NULL,
   dense_header = FALSE,
   table_tree = FALSE
 )
@@ -25,6 +26,9 @@ and \code{add_total_by}.}
 the \code{t_el_forest_tte}}
 
 \item{total}{string of total row added. If \code{NULL} then no total row is added.}
+
+\item{strata_data}{data for stratification factors (categorical variables).
+If \code{NULL}, no stratified analysis is performed.}
 
 \item{dense_header}{Display the table headers in multiple rows.}
 
@@ -60,9 +64,11 @@ the following 9 columns:
   \item{5-7}{same statistics as for reference arm now for comparison arm}
 
   \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying
-  univariate logistic regression. Binary response status (responder or
-  non-responder) is the outcome and arm is the explanatory variable. Odds
-  ratio greater than 1 indicates better performance in comparison arm; odds
+  {\code{tern::odds_ratio}}. If stratification factors are added,
+  Cochran-Mantel-Haensel test is performed instead. Statistics from the
+  stratification-adjusted test will be reported for the p-value of test of
+  equal proportions, odds ratio and its corresponding 95\% confidence
+  interval. Odds ratio greater than 1 indicates better performance in comparison arm; odds
   ratio less than 1 indicates better performance in reference arm.}
 
   \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of
@@ -98,10 +104,22 @@ tbl <- t_forest_rsp(
 
 tbl
 
+
 \dontrun{
 Viewer(tbl)
 }
 
+tbl2 <- t_forest_rsp(
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = as_factor_keep_attributes(ADRS_f$ARM),
+  row_by_list = ADRS_f[, c("BMRKR2")] \%>\%
+    map(as_factor_keep_attributes),
+  strata_data = ADRS_f[ , "STRATA1"]
+)
+
+\dontrun{
+Viewer(tbl2)
+}
 
 # table tree
 tbls <- t_forest_rsp(

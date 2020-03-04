@@ -1,6 +1,8 @@
 # tern 0.6.4.9000
 
 * Fix bug in `t_rsp` of not showing p-vlaue, odds ratio and CIs when `strata_data` is not `NULL`
+* Add stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.
+* Addes `footnotes`, `footnotes<-` and `add_footnotes<-` functions to deal with footnotes
 
 # tern 0.6.4
 

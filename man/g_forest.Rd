@@ -102,12 +102,13 @@ ADRS_f <- ADRS \%>\%
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = factor(ADRS_f$ARM),
-  row_by_list = ADRS_f[, c("SEX", "RACE")]
+  row_by_list = ADRS_f[, c("SEX", "RACE", "STRATA2", "BMRKR2")],
+  strata_data = ADRS_f[ , c("STRATA1")]
 )
 
 tbl
 
-g_forest(
+p <- g_forest(
   tbl = tbl,
   col_x = 8,
   col_ci = 9,
@@ -115,8 +116,38 @@ g_forest(
   forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
-  x_at = c(.1, 1, 10)
+  x_at = c(.1, 1, 10),
+  draw = FALSE
 )
+p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+grid.newpage()
+grid.draw(p)
+
+
+tbl2 <- t_forest_rsp(
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = factor(ADRS_f$ARM),
+  row_by_list = ADRS_f[, c("BMRKR2")],
+  strata_data = ADRS_f[ , "STRATA1"]
+)
+
+tbl2
+
+# stratified analysis noted in footnote
+p <- g_forest(
+  tbl = tbl2,
+  col_x = 8,
+  col_ci = 9,
+  vline = 1,
+  forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
+  xlim = c(.1, 10),
+  logx = TRUE,
+  x_at = c(.1, 1, 10),
+  draw = FALSE
+)
+p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+grid.newpage()
+grid.draw(p)
 
 # Works with any rtable
 

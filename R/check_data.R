@@ -177,3 +177,20 @@ check_is_numeric <- function(x, allow_na = TRUE) {
 
   invisible(NULL)
 }
+
+
+check_strata <- function(strata_data){
+  if (!is.null(strata_data)){
+    stopifnot(is.data.frame(strata_data) ||
+                is_character_vector(strata_data) ||
+                is.factor(strata_data))
+    if (is.data.frame(strata_data)){
+      for (i in 1:dim(strata_data)[2]){
+        x <- strata_data[[i]]
+        if (!is_character_vector(x) && !is.factor(x)){
+          stop("all stratification factors must be character or factor vector")
+        }
+      }
+    }
+  }
+}

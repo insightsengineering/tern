@@ -8,6 +8,7 @@ t_el_forest_tte(
   tte,
   is_event,
   col_by,
+  strata_data = NULL,
   ties = "exact",
   time_unit = "month",
   row_name = "",
@@ -23,6 +24,9 @@ is censored}
 \item{col_by}{logical factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
+
+\item{strata_data}{data for stratification factors (categorical variables).
+If \code{NULL}, no stratified analysis is performed.}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
 
@@ -44,10 +48,20 @@ n <- 200
 tte <- rexp(n)
 set.seed(1)
 is_event <- sample(c(TRUE, FALSE), n, TRUE)
+strata_data <- data.frame(
+  STRATA1 = sample(c("STR1", "STR2"), n, TRUE),
+  STRATA2 = sample(c("low", "medium", "high"), n, TRUE)
+)
+col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
+t_el_forest_tte(
+  tte = tte, is_event = is_event,
+  col_by = col_by
+)
 
 t_el_forest_tte(
   tte = tte, is_event = is_event,
-  col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
+  col_by = col_by,
+  strata_data = strata_data
 )
 
 t_el_forest_tte(

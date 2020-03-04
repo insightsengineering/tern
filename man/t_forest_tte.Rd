@@ -33,7 +33,8 @@ the \code{t_el_forest_tte}}
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{strata_data}{currently not supported}
+\item{strata_data}{data for stratification factors (categorical variables).
+If \code{NULL}, no stratified analysis is performed.}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
 
@@ -95,7 +96,17 @@ tbl <- t_forest_tte(
   dense_header = TRUE
 )
 
-tbl
+tbl2 <- t_forest_tte(
+  tte = ADTTE_f$AVAL,
+  is_event = ADTTE_f$CNSR == 0,
+  col_by = ADTTE_f$ARMCD,
+  row_by_list = droplevels(ADTTE_f[,  "BMRKR2" ]),
+  strata_data = ADTTE_f[ , c("STRATA1", "STRATA2")],
+  ties = "exact",
+  dense_header = TRUE
+)
+
+tbl2
 
 \dontrun{
 Viewer(tbl)

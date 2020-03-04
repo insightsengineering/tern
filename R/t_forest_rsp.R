@@ -31,9 +31,11 @@
 #'   \item{5-7}{same statistics as for reference arm now for comparison arm}
 #'
 #'   \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying
-#'   univariate logistic regression. Binary response status (responder or
-#'   non-responder) is the outcome and arm is the explanatory variable. Odds
-#'   ratio greater than 1 indicates better performance in comparison arm; odds
+#'   {\code{tern::odds_ratio}}. If stratification factors are added,
+#'   Cochran-Mantel-Haensel test is performed instead. Statistics from the
+#'   stratification-adjusted test will be reported for the p-value of test of
+#'   equal proportions, odds ratio and its corresponding 95\% confidence
+#'   interval. Odds ratio greater than 1 indicates better performance in comparison arm; odds
 #'   ratio less than 1 indicates better performance in reference arm.}
 #'
 #'   \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of
@@ -78,10 +80,22 @@
 #'
 #' tbl
 #'
+#'
 #' \dontrun{
 #' Viewer(tbl)
 #' }
 #'
+#' tbl2 <- t_forest_rsp(
+#'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#'   col_by = as_factor_keep_attributes(ADRS_f$ARM),
+#'   row_by_list = ADRS_f[, c("BMRKR2")] %>%
+#'     map(as_factor_keep_attributes),
+#'   strata_data = ADRS_f[ , "STRATA1"]
+#' )
+#'
+#' \dontrun{
+#' Viewer(tbl2)
+#' }
 #'
 #' # table tree
 #' tbls <- t_forest_rsp(
@@ -96,6 +110,7 @@ t_forest_rsp <- function(rsp,
                          col_by,
                          row_by_list = NULL,
                          total = "ALL",
+                         strata_data = NULL,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
@@ -104,32 +119,38 @@ t_forest_rsp <- function(rsp,
     is.null(total) || is_character_single(total),
     is.list(row_by_list)
   )
-  do.call(check_same_n, c(list(rsp = rsp, col_by = col_by), row_by_list))
+
+  check_strata(strata_data)
+  do.call(check_same_n, c(list(rsp = rsp, col_by = col_by, strata_data = strata_data), row_by_list))
 
   row_by_list <-  row_by_list %>% map(explicit_na)
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
-  # cannot be a data.frame as col_by may be a matrix
-  df <- list(rsp = rsp, col_by = col_by)
+  df <- if (is.null(strata_data)){
+    data.frame(rsp = rsp, col_by = col_by)
+  } else {
+    data.frame(rsp = rsp, col_by = col_by, strata_data = strata_data)
+  }
 
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
   # nested structure, e.g. list dfs$SEX$M -> tree accessed like dfs[['SEX']][['M']]
-  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0), max_depth = 1)
+  data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0), max_depth = 2)
 
   if (!is.null(total)) {
     data_tree@children <- c(list(node(name = total, content = df)), data_tree@children)
   }
 
   tree <- rapply_tree(data_tree, function(name, content, ...) {
-    if (!is.null(content)) {
+    if (is.data.frame(content)) {
       list(
         name = invisible_node_name(name),
         content = t_el_forest_rsp(
           rsp = content$rsp,
           col_by = content$col_by,
+          strata_data = if (is.null(strata_data)) NULL else subset(content, select = -c(rsp, col_by)),
           row_name = name,
           dense_header = dense_header
         )
@@ -142,11 +163,29 @@ t_forest_rsp <- function(rsp,
 
   tree@format_data <- node_format_data(children_gap = 1)
 
+  model_type <- if (is.null(strata_data)){
+    "Unstratified Analysis"
+  } else {
+    n_strata <- length(strata_data)
+    paste(
+      "* Stratified by",
+      ifelse(
+        n_strata < 2,
+        names(strata_data),
+        paste(paste(names(strata_data)[-n_strata], collapse = ", "), "and", names(strata_data)[(n_strata)])
+      )
+    )
+  }
+
+
   if (table_tree) {
     tree
   } else {
-    to_rtable(tree)
+    rtbl <- to_rtable(tree)
+    footnotes(rtbl) <- model_type
+    rtbl
   }
+
 }
 
 
@@ -156,6 +195,8 @@ t_forest_rsp <- function(rsp,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_rsp
+#' @param strata_data data for stratification factors (categorical variables).
+#'   If \code{NULL}, no stratified analysis is performed.
 #' @param row_name name of row
 #' @param dense_header Display the table headers in multiple rows.
 #'
@@ -167,17 +208,33 @@ t_forest_rsp <- function(rsp,
 #' @seealso \code{\link{t_forest_rsp}}
 #'
 #' @examples
-#'
+#' rsp = sample(c(TRUE, FALSE), 200, TRUE)
+#' col_by = factor(sample(c("ARM A", "ARM B"), 200, TRUE), levels = c("ARM A", "ARM B"))
+#' strata_data <- data.frame(
+#'   STRATA1 = sample(c("STR1", "STR2"), 200, TRUE),
+#'   STRATA2 = sample(c("low", "medium", "high"), 200, TRUE)
+#' )
 #' t_el_forest_rsp(
-#'   rsp = sample(c(TRUE, FALSE), 200, TRUE),
-#'   col_by = factor(sample(c("ARM A", "ARM B"), 200, TRUE), levels = c("ARM A", "ARM B"))
+#'   rsp = rsp,
+#'   col_by = col_by
 #' )
 #'
-t_el_forest_rsp <- function(rsp, col_by, row_name = "", dense_header = FALSE) {
+#' t_el_forest_rsp(
+#'   rsp = rsp,
+#'   col_by = col_by,
+#'   strata_data = strata_data
+#' )
+#'
+#'
+t_el_forest_rsp <- function(rsp,
+                            col_by,
+                            strata_data = NULL,
+                            row_name = "",
+                            dense_header = FALSE) {
   # currently only works for factor
-  col_by <- col_by_to_factor(col_by)
+  stopifnot(is.factor(col_by))
 
-  check_same_n(rsp = rsp, col_by = col_by)
+  check_same_n(rsp = rsp, col_by = col_by, strata_data = strata_data)
   col_N <- table(col_by) #nolintr
   check_col_by_factor(rsp, col_by, col_N,  min_num_levels = 2)
   stopifnot(is.logical(rsp))
@@ -194,7 +251,7 @@ t_el_forest_rsp <- function(rsp, col_by, row_name = "", dense_header = FALSE) {
     ref_n = length(rsp_s[[1]]),
     ref_resp = sum(rsp_s[[1]]),
     comp_n = length(rsp_s[[2]]),
-    comp_resp = sum(rsp_s[[1]])
+    comp_resp = sum(rsp_s[[2]])
   )
   x_descr[["ref_resp_rate"]] <- if (x_descr$ref_n != 0) {
     x_descr$ref_resp / x_descr$ref_n
@@ -207,41 +264,44 @@ t_el_forest_rsp <- function(rsp, col_by, row_name = "", dense_header = FALSE) {
     NA
   }
 
-  glm_fit <- if (all(col_N > 0)) {
-    try(
-      glm(rsp ~ col_by, family = binomial(link = "logit"))
-    )
+  x_fit <- if (all(col_N > 0)) {
+      if (is.null(strata_data)){
+        or_tbl <- table(rsp, col_by)
+        if (all(dim(or_tbl) == 2)){
+          odds_ratio(or_tbl)
+        } else {
+          list(estimator = NA,
+               conf.int = c(NA, NA))
+        }
+
+      } else {
+        strat <- do.call(strata, strata_data)
+        or_tbl <- table(rsp, col_by, strat)
+        if (all(dim(or_tbl)[1:2] == 2) && all(apply(or_tbl, 3L, sum) >= 2)){
+             mantelhaen.test(or_tbl, correct = FALSE)
+        } else {
+          list(estimate = NA,
+               conf.int = c(NA, NA))
+        }
+
+      }
   } else {
     NULL
   }
 
 
-  x_logistic <- if (is.null(glm_fit) || is(glm_fit, "try-error")) {
+  x_or_ci <- if (is.null(x_fit)) {
     list(
-      glm_or = NA,
-      glm_lcl = NA,
-      glm_ucl = NA,
-      glm_pval = NA
+       oddr = NA,
+       lcl = NA,
+       ucl = NA
     )
   } else {
-    glm_sum <- summary(glm_fit)
-
-    suppressWarnings({
-      suppressMessages({
         list(
-          glm_or = exp(glm_sum$coefficients[2, 1]),
-          glm_lcl = tryCatch(
-            exp(confint(glm_fit)[2, 1]),
-            error = function(e) NA
-          ),
-          glm_ucl = tryCatch(
-            exp(confint(glm_fit)[2, 2]),
-            error = function(e) NA
-          ),
-          glm_pval = glm_sum$coefficients[2, 4]
+          oddr = if (is.null(strata_data)) x_fit$estimator else x_fit$estimate,
+          lcl = x_fit$conf.int[1],
+          ucl = x_fit$conf.int[2]
         )
-      })
-    })
   }
 
 
@@ -287,19 +347,19 @@ t_el_forest_rsp <- function(rsp, col_by, row_name = "", dense_header = FALSE) {
         "Total n",
         "n", "Responders", "Response.Rate",
         "n", "Responders", "Response.Rate",
-        "Odds Ratio",
+        if (is.null(strata_data)) "Odds Ratio" else "Odds Ratio*",
         "95% CI"
       )
     )
   }
 
 
-  format_or <- if (!is.na(x_logistic$glm_or) & x_logistic$glm_or > 999.9) {
+  format_or <- if (!is.na(x_or_ci$oddr) & x_or_ci$oddr > 999.9) {
     ">999.9"
   } else {
     "xx.xx"
   }
-  format_ci <- if (!is.na(x_logistic$glm_ucl) & x_logistic$glm_ucl > 999.9) {
+  format_ci <- if (!is.na(x_or_ci$ucl) & x_or_ci$ucl > 999.9) {
     sprintf_format("(%.2f, >999.9)")
   } else {
     "(xx.xx, xx.xx)"
@@ -316,8 +376,8 @@ t_el_forest_rsp <- function(rsp, col_by, row_name = "", dense_header = FALSE) {
       rcell(x_descr$comp_n, "xx"),
       rcell(x_descr$comp_resp, "xx"),
       rcell(x_descr$comp_resp_rate, "xx.xx"),
-      rcell(x_logistic$glm_or, format_or),
-      rcell(c(x_logistic$glm_lcl, x_logistic$glm_ucl), format_ci)
+      rcell(x_or_ci$oddr, format_or),
+      rcell(c(x_or_ci$lcl, x_or_ci$ucl), format_ci)
     )
   )
 }

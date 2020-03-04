@@ -77,12 +77,13 @@
 #' tbl <- t_forest_rsp(
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = factor(ADRS_f$ARM),
-#'   row_by_list = ADRS_f[, c("SEX", "RACE")]
+#'   row_by_list = ADRS_f[, c("SEX", "RACE", "STRATA2", "BMRKR2")],
+#'   strata_data = ADRS_f[ , c("STRATA1")]
 #' )
 #'
 #' tbl
 #'
-#' g_forest(
+#' p <- g_forest(
 #'   tbl = tbl,
 #'   col_x = 8,
 #'   col_ci = 9,
@@ -90,8 +91,38 @@
 #'   forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
 #'   xlim = c(.1, 10),
 #'   logx = TRUE,
-#'   x_at = c(.1, 1, 10)
+#'   x_at = c(.1, 1, 10),
+#'   draw = FALSE
 #' )
+#' p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+#' grid.newpage()
+#' grid.draw(p)
+#'
+#'
+#' tbl2 <- t_forest_rsp(
+#'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
+#'   col_by = factor(ADRS_f$ARM),
+#'   row_by_list = ADRS_f[, c("BMRKR2")],
+#'   strata_data = ADRS_f[ , "STRATA1"]
+#' )
+#'
+#' tbl2
+#'
+#' # stratified analysis noted in footnote
+#' p <- g_forest(
+#'   tbl = tbl2,
+#'   col_x = 8,
+#'   col_ci = 9,
+#'   vline = 1,
+#'   forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
+#'   xlim = c(.1, 10),
+#'   logx = TRUE,
+#'   x_at = c(.1, 1, 10),
+#'   draw = FALSE
+#' )
+#' p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+#' grid.newpage()
+#' grid.draw(p)
 #'
 #' # Works with any rtable
 #'
@@ -186,9 +217,15 @@ g_forest <- function(tbl,
     x_at,
     width_row_names,
     width_columns,
-    width_forest,
-    vp = plotViewport(margins = rep(1, 4))
+    width_forest
   )
+
+  fn <- footnotes(tbl)
+  if (!is.null(fn)){
+    footnotes(grob_forest) <- fn
+    warning('grob footnote is not added to plot;
+             suggest to use decorate_grob() to further decorate the grob')
+  }
 
   if (draw) {
     if (newpage) {
@@ -666,4 +703,50 @@ vp_forest_table_part <- function(nrow, ncol, l_row, l_col, widths, heights, name
 grid.forest <- function(...) { # nolint
   grid.draw(forest_grob(...))
 }
+
+
+#' Assign value to attribute footnote of object x
+#' @param x an object
+#' @param value character vector
+#' @export
+#' @examples
+#' x <- table(iris$Species)
+#' footnotes(x) <- "Species are equally distributed"
+#' attributes(x)
+
+`footnotes<-` <- function(x, value = NULL){
+  attr(x, "footnote") <- value
+  x
+}
+
+
+#' Retrieve value from attribute footnote of object x
+#' @param x an object
+#' @export
+#' @examples
+#' x <- table(iris$Species)
+#' footnotes(x) <- "Species are equally distributed"
+#' footnotes(x)
+#'
+footnotes <- function(x){
+  attr(x, "footnote")
+}
+
+#' Add more footnotes
+#' @param x an object
+#' @param value character vector
+#' @export
+#' @examples
+#' x <- table(iris$Species)
+#' footnotes(x) <- "Species are equally distributed"
+#' footnotes(x)
+#' add_footnotes(x) <- "Add more footnotes"
+#' footnotes(x)
+
+`add_footnotes<-` <- function(x, value){
+   footnotes(x) <- c(footnotes(x), value)
+   x
+}
 # nolintr end
+
+

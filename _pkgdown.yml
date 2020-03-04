@@ -65,6 +65,9 @@ reference:
       - get_N
       - col_N_add_total
       - tabulate_pairwise
+      - footnotes
+      - footnotes<-
+      - add_footnotes<-
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
