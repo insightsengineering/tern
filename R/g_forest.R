@@ -24,6 +24,10 @@
 #'   column. If \code{NULL} the widths get automatically calculated.
 #' @param draw boolean, should plot be drawn
 #' @param newpage boolean if \code{draw=TRUE} should plot be drawn on a new page
+#' @param col_symbol_size integer with column index from \code{tbl} containing data to be
+#' used to determine relative size for estimator plot symbol.
+#' Typically, symbol size is proportional to the sample size used to calculate the estimator.
+#' If \code{NULL}, the same symbol size is used for all subgroups.
 #'
 #' @template author_waddella
 #'
@@ -54,7 +58,7 @@
 #' )
 #'
 #' # note plot requires a certain width
-#' g_forest(
+#' p <- g_forest(
 #'   tbl = tbl,
 #'   col_x = 8,
 #'   col_ci = 9,
@@ -62,8 +66,13 @@
 #'   forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
 #'   xlim = c(.1, 10),
 #'   logx = TRUE,
-#'   x_at = c(.1, 1, 10)
+#'   x_at = c(.1, 1, 10),
+#'   col_symbol_size = NULL,
+#'   draw = FALSE
 #' )
+#' grid.newpage()
+#' grid.draw(p)
+#'
 #'
 #' # For response table
 #'
@@ -92,6 +101,7 @@
 #'   xlim = c(.1, 10),
 #'   logx = TRUE,
 #'   x_at = c(.1, 1, 10),
+#'   col_symbol_size = NULL,
 #'   draw = FALSE
 #' )
 #' p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
@@ -118,6 +128,7 @@
 #'   xlim = c(.1, 10),
 #'   logx = TRUE,
 #'   x_at = c(.1, 1, 10),
+#'   col_symbol_size = 1,
 #'   draw = FALSE
 #' )
 #' p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
@@ -127,15 +138,16 @@
 #' # Works with any rtable
 #'
 #' tbl <- rtable(
-#'   header = c("E", "CI"),
-#'   rrow("", 1, c(.8, 1.2)),
-#'   rrow("", 1.2, c(1.1, 1.4))
+#'   header = c("E", "CI", "N"),
+#'   rrow("", 1, c(.8, 1.2), 200),
+#'   rrow("", 1.2, c(1.1, 1.4), 50)
 #' )
 #'
 #' g_forest(
 #'   tbl = tbl,
 #'   col_x = 1,
-#'   col_ci = 2
+#'   col_ci = 2,
+#'   col_symbol_size = 3
 #' )
 #'
 #' tbl <- rtable(
@@ -165,6 +177,7 @@ g_forest <- function(tbl,
                      width_row_names = NULL,
                      width_columns = NULL,
                      width_forest = unit(1, "null"),
+                     col_symbol_size = NULL,
                      draw = TRUE,
                      newpage = TRUE) {
 
@@ -176,7 +189,8 @@ g_forest <- function(tbl,
 
   stopifnot(
     col_x > 0 && col_x <= nc,
-    col_ci > 0 && col_ci <= nc
+    col_ci > 0 && col_ci <= nc,
+    is.null(col_symbol_size) ||  col_symbol_size > 0 && col_symbol_size <= nc
   )
 
   x_e <- vapply(seq_len(nr), function(i) {
@@ -205,6 +219,28 @@ g_forest <- function(tbl,
   lower <- vapply(x_ci, `[`, numeric(1), 1)
   upper <- vapply(x_ci, `[`, numeric(1), 2)
 
+  if(!is.null(col_symbol_size)){
+    symbol_size <- vapply(seq_len(nr), function(i) {
+      xi <- as.vector(tbl[i, col_symbol_size])
+
+      if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
+        xi
+      } else {
+        NA_real_
+      }
+    }, numeric(1))
+
+    # scale symbol size
+    symbol_size <- sqrt(symbol_size)
+    max_size <- max(symbol_size, na.rm = TRUE)
+    # Biggest points have radius is 2 * (1/3.5) lines not to overlap
+    # see forest_dot_line
+    symbol_size <- 2 * symbol_size/max_size
+
+  } else {
+    symbol_size = NULL
+  }
+
   grob_forest <- forest_grob(
     tbl,
     x_e,
@@ -217,7 +253,9 @@ g_forest <- function(tbl,
     x_at,
     width_row_names,
     width_columns,
-    width_forest
+    width_forest,
+    symbol_size = symbol_size,
+    vp = plotViewport(margins = rep(1, 4))
   )
 
   fn <- footnotes(tbl)
@@ -244,6 +282,8 @@ g_forest <- function(tbl,
 #' @param x coordinate of point
 #' @param lower lower bound of ci
 #' @param upper upper bound of ci
+#' @param symbol_size vector with relative size for plot symbol.
+#' If \code{NULL}, the same symbol size is used.
 #'
 #' @details
 #' The heights get automatically determined
@@ -253,20 +293,23 @@ g_forest <- function(tbl,
 #' @examples
 #' tbl <- rtable(
 #'   header = rheader(
-#'    rrow("", "E", rcell("CI", colspan = 2)),
-#'    rrow("", "A", "B", "C")
+#'    rrow("", "E", rcell("CI", colspan = 2), "N"),
+#'    rrow("", "A", "B", "C", "D")
 #'   ),
-#'   rrow("row 1", 1, 0.8, 1.1),
-#'   rrow("row 2", 1.4, 0.8, 1.6),
-#'   rrow("row 3", 1.2, 0.8, 1.2)
+#'   rrow("row 1", 1, 0.8, 1.1, 16),
+#'   rrow("row 2", 1.4, 0.8, 1.6, 25),
+#'   rrow("row 3", 1.2, 0.8, 1.6, 36)
 #' )
 #'
-#' x <- c(.4, .9, 7)
-#' lower <- x - .2
-#' upper <- x + 2
+#' x <- c(1, 1.4, 1.2)
+#' lower <- c(0.8, 0.8, 0.8)
+#' upper <- c(1.1, 1.6, 1.6)
+#' # numeric vector with multiplication factor to scale each circle radius
+#' # default radius is 1/3.5 lines
+#' symbol_scale <- c(1, 1.25, 1.5)
 #'
 #' tern:::forest_grob(tbl, x, lower, upper, vline = 1, forest_header = c("A", "B"),
-#'   x_at = c(.1 , 1, 10), xlim = c(0.1, 10), logx = TRUE,
+#'   x_at = c(.1 , 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
 #'   vp = plotViewport(margins = c(1, 1, 1, 1))
 #' )
 forest_grob <- function(tbl,
@@ -281,6 +324,7 @@ forest_grob <- function(tbl,
                         width_row_names = NULL,
                         width_columns = NULL,
                         width_forest = unit(1, "null"),
+                        symbol_size = NULL,
                         name = NULL,
                         gp = NULL,
                         vp = NULL) {
@@ -295,8 +339,13 @@ forest_grob <- function(tbl,
   stopifnot(
     length(x) == nr,
     length(lower) == nr,
-    length(upper) == nr
+    length(upper) == nr,
+    is.null(symbol_size) || length(symbol_size) == nr
   )
+
+  if(is.null(symbol_size)){
+    symbol_size <- rep(1, nr)
+  }
 
   if (is.null(xlim)) {
     xlim <- extendrange(c(x, lower, upper))
@@ -381,9 +430,9 @@ forest_grob <- function(tbl,
         vp = vpPath("vp_table_layout", "vp_body")
       ),
       gTree(
-        children = do.call("gList", Map(function(xi, li, ui, row_index) {
-          forest_dot_line(xi, li, ui, row_index, xlim, datavp = data_forest_vp)
-        }, x, lower, upper, seq_along(x), USE.NAMES = FALSE)),
+        children = do.call("gList", Map(function(xi, li, ui, row_index, size_i) {
+          forest_dot_line(xi, li, ui, row_index, xlim, symbol_size = size_i, datavp = data_forest_vp)
+        }, x, lower, upper, seq_along(x), symbol_size, USE.NAMES = FALSE)),
         vp = vpPath("vp_table_layout", "vp_body")
       )
     ),
@@ -489,7 +538,7 @@ cell_in_rows <- function(row, row_index, underline_colspan = FALSE) {
   )
 }
 
-forest_dot_line <- function(x, lower, upper, row_index, xlim, datavp) {
+forest_dot_line <- function(x, lower, upper, row_index, xlim, symbol_size = 1, datavp) {
 
   ci <- c(lower, upper)
 
@@ -521,7 +570,8 @@ forest_dot_line <- function(x, lower, upper, row_index, xlim, datavp) {
     g_circle <- if (!is.na(x) && x >= xlim[1] && x <= xlim[2]) {
       circleGrob(
         x = unit(x, "native"),
-        y = y, r = unit(1 / 3.5, "lines"),
+        y = y,
+        r = unit(1 / 3.5 * symbol_size, "lines"),
         name = "point"
       )
     } else {

@@ -2,7 +2,7 @@
 #'
 #' The Response forest plot table summarizes response data by groups. The
 #' function returns sample sizes and responder counts and response rates for
-#' each analysis arm, as well as a odds ratio and the corresponding 95\%
+#' each analysis arm, as well as a odds ratio and the corresponding
 #' confidence interval from a univariate logistic model.
 #'
 #' @inheritParams argument_convention
@@ -38,13 +38,13 @@
 #'   interval. Odds ratio greater than 1 indicates better performance in comparison arm; odds
 #'   ratio less than 1 indicates better performance in reference arm.}
 #'
-#'   \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of
+#'   \item{9}{\emph{Confidence Interval} The confidence interval indicates the level of
 #'   uncertainty around the measure of effect (Odds Ratio). Because only a small
 #'   sample of the overall population is included in the analysis, by having an
 #'   upper and lower confidence limit we can infer that the true treatment
-#'   effect lies in between. If the 95% confidence interval includes 1, then we
-#'   say that the difference between two arms is not significant at a
-#'   significance level of 0.05.}
+#'   effect lies in between. By default, the 95% confidence interval is calculated.
+#'   If it includes 1, then we say that the difference between two arms is not
+#'   significant at a significance level of 0.05.}
 #'
 #' }
 #'
@@ -75,11 +75,11 @@
 #'   rsp = ADRS_f$AVALC %in% c("CR", "PR"),
 #'   col_by = as_factor_keep_attributes(ADRS_f$ARM),
 #'   row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
-#'     map(as_factor_keep_attributes)
+#'     map(as_factor_keep_attributes),
+#'   conf_int = 0.9
 #' )
 #'
 #' tbl
-#'
 #'
 #' \dontrun{
 #' Viewer(tbl)
@@ -111,13 +111,15 @@ t_forest_rsp <- function(rsp,
                          row_by_list = NULL,
                          total = "ALL",
                          strata_data = NULL,
+                         conf_int = 0.95,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
   stopifnot(
     is.logical(rsp),
     is.null(total) || is_character_single(total),
-    is.list(row_by_list)
+    is.list(row_by_list),
+    is_numeric_single(conf_int) && (0 < conf_int) && (conf_int < 1)
   )
 
   check_strata(strata_data)
@@ -152,6 +154,7 @@ t_forest_rsp <- function(rsp,
           col_by = content$col_by,
           strata_data = if (is.null(strata_data)) NULL else subset(content, select = -c(rsp, col_by)),
           row_name = name,
+          conf_int = conf_int,
           dense_header = dense_header
         )
       )
@@ -198,6 +201,7 @@ t_forest_rsp <- function(rsp,
 #' @param strata_data data for stratification factors (categorical variables).
 #'   If \code{NULL}, no stratified analysis is performed.
 #' @param row_name name of row
+#' @param conf_int confidence level of the interval
 #' @param dense_header Display the table headers in multiple rows.
 #'
 #' @return rtable with one row
@@ -225,10 +229,10 @@ t_forest_rsp <- function(rsp,
 #'   strata_data = strata_data
 #' )
 #'
-#'
 t_el_forest_rsp <- function(rsp,
                             col_by,
                             strata_data = NULL,
+                            conf_int = 0.95,
                             row_name = "",
                             dense_header = FALSE) {
   # currently only works for factor
@@ -237,12 +241,12 @@ t_el_forest_rsp <- function(rsp,
   check_same_n(rsp = rsp, col_by = col_by, strata_data = strata_data)
   col_N <- table(col_by) #nolintr
   check_col_by_factor(rsp, col_by, col_N,  min_num_levels = 2)
-  stopifnot(is.logical(rsp))
+  stopifnot(is.logical(rsp),
+      is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1 )
 
   if (nlevels(col_by) != 2) {
     stop("col_by number of levels is restricted to two")
   }
-
 
   rsp_s <- split(rsp, col_by)
 
@@ -268,7 +272,7 @@ t_el_forest_rsp <- function(rsp,
       if (is.null(strata_data)){
         or_tbl <- table(rsp, col_by)
         if (all(dim(or_tbl) == 2)){
-          odds_ratio(or_tbl)
+          odds_ratio(or_tbl, conf_level = conf_int)
         } else {
           list(estimator = NA,
                conf.int = c(NA, NA))
@@ -278,7 +282,7 @@ t_el_forest_rsp <- function(rsp,
         strat <- do.call(strata, strata_data)
         or_tbl <- table(rsp, col_by, strat)
         if (all(dim(or_tbl)[1:2] == 2) && all(apply(or_tbl, 3L, sum) >= 2)){
-             mantelhaen.test(or_tbl, correct = FALSE)
+             mantelhaen.test(or_tbl, correct = FALSE, conf.level = conf_int)
         } else {
           list(estimate = NA,
                conf.int = c(NA, NA))
@@ -328,8 +332,8 @@ t_el_forest_rsp <- function(rsp,
         "n",
         "n", "Responders", "Rate",
         "n", "Responders", "Rate",
-        "Ratio",
-        "95% CI"
+        if (is.null(strata_data)) "Ratio" else "Ratio*",
+        paste0((conf_int)*100, "% CI")
       )
     )
   } else {
@@ -348,7 +352,7 @@ t_el_forest_rsp <- function(rsp,
         "n", "Responders", "Response.Rate",
         "n", "Responders", "Response.Rate",
         if (is.null(strata_data)) "Odds Ratio" else "Odds Ratio*",
-        "95% CI"
+        paste0((conf_int)*100, "% CI")
       )
     )
   }

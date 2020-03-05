@@ -10,6 +10,7 @@ t_forest_rsp(
   row_by_list = NULL,
   total = "ALL",
   strata_data = NULL,
+  conf_int = 0.95,
   dense_header = FALSE,
   table_tree = FALSE
 )
@@ -30,6 +31,8 @@ the \code{t_el_forest_tte}}
 \item{strata_data}{data for stratification factors (categorical variables).
 If \code{NULL}, no stratified analysis is performed.}
 
+\item{conf_int}{confidence level of the interval}
+
 \item{dense_header}{Display the table headers in multiple rows.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -41,7 +44,7 @@ an \code{\link[rtables]{rtable}} object
 \description{
 The Response forest plot table summarizes response data by groups. The
 function returns sample sizes and responder counts and response rates for
-each analysis arm, as well as a odds ratio and the corresponding 95\%
+each analysis arm, as well as a odds ratio and the corresponding
 confidence interval from a univariate logistic model.
 }
 \details{
@@ -71,13 +74,13 @@ the following 9 columns:
   interval. Odds ratio greater than 1 indicates better performance in comparison arm; odds
   ratio less than 1 indicates better performance in reference arm.}
 
-  \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of
+  \item{9}{\emph{Confidence Interval} The confidence interval indicates the level of
   uncertainty around the measure of effect (Odds Ratio). Because only a small
   sample of the overall population is included in the analysis, by having an
   upper and lower confidence limit we can infer that the true treatment
-  effect lies in between. If the 95% confidence interval includes 1, then we
-  say that the difference between two arms is not significant at a
-  significance level of 0.05.}
+  effect lies in between. By default, the 95% confidence interval is calculated.
+  If it includes 1, then we say that the difference between two arms is not
+  significant at a significance level of 0.05.}
 
 }
 }

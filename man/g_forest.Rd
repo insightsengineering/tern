@@ -17,7 +17,8 @@ g_forest(
   width_columns = NULL,
   width_forest = unit(1, "null"),
   draw = TRUE,
-  newpage = TRUE
+  newpage = TRUE,
+  col_symbol_size = NULL
 )
 }
 \arguments{
@@ -53,6 +54,10 @@ column. If \code{NULL} the widths get automatically calculated.}
 \item{draw}{boolean, should plot be drawn}
 
 \item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
+
+\item{col_symbol_size}{column index containing data to be used to determine relative size for estimator plot symbol.
+Typically, symbol size is proportional to the sample size used to calculate the estimator.
+If \code{NULL}, the same symbol size is used for all subgroups.}
 }
 \description{
 Create a forest plot from any \code{\link[rtables]{rtable}} object that has a

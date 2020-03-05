@@ -8,6 +8,7 @@ t_el_forest_rsp(
   rsp,
   col_by,
   strata_data = NULL,
+  conf_int = 0.95,
   row_name = "",
   dense_header = FALSE
 )
@@ -22,6 +23,8 @@ and \code{add_total_by}.}
 
 \item{strata_data}{data for stratification factors (categorical variables).
 If \code{NULL}, no stratified analysis is performed.}
+
+\item{conf_int}{confidence level of the interval}
 
 \item{row_name}{name of row}
 
@@ -50,7 +53,6 @@ t_el_forest_rsp(
   col_by = col_by,
   strata_data = strata_data
 )
-
 
 }
 \seealso{
