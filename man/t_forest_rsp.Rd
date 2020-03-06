@@ -102,11 +102,11 @@ tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = as_factor_keep_attributes(ADRS_f$ARM),
   row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
-    map(as_factor_keep_attributes)
+    map(as_factor_keep_attributes),
+  conf_int = 0.9
 )
 
 tbl
-
 
 \dontrun{
 Viewer(tbl)

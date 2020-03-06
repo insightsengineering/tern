@@ -13,6 +13,7 @@ t_forest_tte(
   strata_data = NULL,
   ties = "exact",
   time_unit = "month",
+  conf_int = 0.95,
   dense_header = FALSE,
   table_tree = FALSE
 )
@@ -40,6 +41,8 @@ If \code{NULL}, no stratified analysis is performed.}
 
 \item{time_unit}{The unit of median survival time. Default is \code{months}.}
 
+\item{conf_int}{confidence level of the interval}
+
 \item{dense_header}{Display the table headers in multiple rows.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -47,7 +50,7 @@ If \code{NULL}, no stratified analysis is performed.}
 }
 \description{
 The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and
-median survival time for each analysis arm, as well as a hazard ratio and the corresponding 95\% confidence interval
+median survival time for each analysis arm, as well as a hazard ratio and the corresponding confidence interval
 from a Cox proportional hazard model.
 }
 \details{
@@ -69,11 +72,12 @@ of patients and the number of events in reference arm, respectively.
    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio.
   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when
   comparison arm is better. }
-  \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty
+  \item{9}{\emph{Wald CI} The confidence interval indicates the level of uncertainty
   around the measure of effect (Hazard Ratio). Because only a small sample of the overall
   population is included in the analysis, by having an upper and lower confidence limit
-  we can infer that the true treatment effect lies in between. If the 95% confidence interval
-  includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
+  we can infer that the true treatment effect lies in between. By default, the 95% confidence
+  interval is calculated. If it includes 1, then we say that the difference between two arms
+  is not significant at a significance level of 0.05.}
 }
 }
 \examples{
@@ -93,6 +97,7 @@ tbl <- t_forest_tte(
   col_by = ADTTE_f$ARMCD,
   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
+  conf_int = 0.9,
   dense_header = TRUE
 )
 

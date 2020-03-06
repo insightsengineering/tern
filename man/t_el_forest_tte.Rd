@@ -12,6 +12,7 @@ t_el_forest_tte(
   ties = "exact",
   time_unit = "month",
   row_name = "",
+  conf_int = 0.95,
   dense_header = TRUE
 )
 }
@@ -34,6 +35,8 @@ If \code{NULL}, no stratified analysis is performed.}
 
 \item{row_name}{name of row}
 
+\item{conf_int}{confidence level of the interval}
+
 \item{dense_header}{Display the table headers in multiple rows.}
 }
 \value{
@@ -55,7 +58,8 @@ strata_data <- data.frame(
 col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
 t_el_forest_tte(
   tte = tte, is_event = is_event,
-  col_by = col_by
+  col_by = col_by,
+  conf_int = 0.9
 )
 
 t_el_forest_tte(

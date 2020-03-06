@@ -16,9 +16,9 @@ g_forest(
   width_row_names = NULL,
   width_columns = NULL,
   width_forest = unit(1, "null"),
+  col_symbol_size = NULL,
   draw = TRUE,
-  newpage = TRUE,
-  col_symbol_size = NULL
+  newpage = TRUE
 )
 }
 \arguments{
@@ -51,13 +51,14 @@ table columns. If \code{NULL} the widths get automatically calculated.}
 \item{width_forest}{\code{\link[grid]{unit}} object with width for the forest
 column. If \code{NULL} the widths get automatically calculated.}
 
+\item{col_symbol_size}{integer with column index from \code{tbl} containing data to be
+used to determine relative size for estimator plot symbol.
+Typically, symbol size is proportional to the sample size used to calculate the estimator.
+If \code{NULL}, the same symbol size is used for all subgroups.}
+
 \item{draw}{boolean, should plot be drawn}
 
 \item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
-
-\item{col_symbol_size}{column index containing data to be used to determine relative size for estimator plot symbol.
-Typically, symbol size is proportional to the sample size used to calculate the estimator.
-If \code{NULL}, the same symbol size is used for all subgroups.}
 }
 \description{
 Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
@@ -84,7 +85,7 @@ tbl <- t_forest_tte(
 )
 
 # note plot requires a certain width
-g_forest(
+p <- g_forest(
   tbl = tbl,
   col_x = 8,
   col_ci = 9,
@@ -92,8 +93,13 @@ g_forest(
   forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
-  x_at = c(.1, 1, 10)
+  x_at = c(.1, 1, 10),
+  col_symbol_size = 1, #draw symbol proportional to column 1 values
+  draw = FALSE
 )
+grid.newpage()
+grid.draw(p)
+
 
 # For response table
 
@@ -122,6 +128,7 @@ p <- g_forest(
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
+  col_symbol_size = NULL,
   draw = FALSE
 )
 p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
@@ -148,6 +155,7 @@ p <- g_forest(
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
+  col_symbol_size = 1,
   draw = FALSE
 )
 p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
@@ -157,15 +165,16 @@ grid.draw(p)
 # Works with any rtable
 
 tbl <- rtable(
-  header = c("E", "CI"),
-  rrow("", 1, c(.8, 1.2)),
-  rrow("", 1.2, c(1.1, 1.4))
+  header = c("E", "CI", "N"),
+  rrow("", 1, c(.8, 1.2), 200),
+  rrow("", 1.2, c(1.1, 1.4), 50)
 )
 
 g_forest(
   tbl = tbl,
   col_x = 1,
-  col_ci = 2
+  col_ci = 2,
+  col_symbol_size = 3
 )
 
 tbl <- rtable(

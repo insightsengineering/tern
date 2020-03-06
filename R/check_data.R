@@ -180,17 +180,37 @@ check_is_numeric <- function(x, allow_na = TRUE) {
 
 
 check_strata <- function(strata_data){
+
   if (!is.null(strata_data)){
     stopifnot(is.data.frame(strata_data) ||
                 is_character_vector(strata_data) ||
                 is.factor(strata_data))
+
     if (is.data.frame(strata_data)){
-      for (i in 1:dim(strata_data)[2]){
-        x <- strata_data[[i]]
-        if (!is_character_vector(x) && !is.factor(x)){
-          stop("all stratification factors must be character or factor vector")
-        }
+
+      strata_type <- vapply(strata_data, FUN = function(x){
+        is_character_vector(x)||is.factor(x)
+      }, logical(1))
+
+      if(!all(strata_type)){
+        stop("all stratification factors must be character or factor vector")
       }
     }
+  }
+}
+
+check_strata_levels <- function(strata_data){
+
+  if( is_character_vector(strata_data) || is.factor(strata_data)){
+    strata_levels <- length(unique(strata_data)) > 1
+  }
+  else if (is.data.frame(strata_data)){
+    strata_levels <- vapply(strata_data, FUN = function(x){
+      length(unique(x)) > 1
+    }, logical(1))
+  }
+
+  if(!all(strata_levels)){
+    stop("Not all strata variables have more than 1 level.")
   }
 }

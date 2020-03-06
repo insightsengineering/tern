@@ -118,7 +118,7 @@ t_forest_rsp <- function(rsp,
   stopifnot(
     is.logical(rsp),
     is.null(total) || is_character_single(total),
-    is.list(row_by_list),
+    is.null(row_by_list) || is.list(row_by_list),
     is_numeric_single(conf_int) && (0 < conf_int) && (conf_int < 1)
   )
 
@@ -279,6 +279,7 @@ t_el_forest_rsp <- function(rsp,
         }
 
       } else {
+        check_strata_levels(strata_data)
         strat <- do.call(strata, strata_data)
         or_tbl <- table(rsp, col_by, strat)
         if (all(dim(or_tbl)[1:2] == 2) && all(apply(or_tbl, 3L, sum) >= 2)){

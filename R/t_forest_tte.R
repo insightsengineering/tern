@@ -4,7 +4,7 @@ NULL
 #' Time-to-event Table as used for Forest Plot
 #'
 #' The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and
-#' median survival time for each analysis arm, as well as a hazard ratio and the corresponding 95\% confidence interval
+#' median survival time for each analysis arm, as well as a hazard ratio and the corresponding confidence interval
 #' from a Cox proportional hazard model.
 #'
 #' @inheritParams argument_convention
@@ -30,11 +30,12 @@ NULL
 #'    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio.
 #'   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when
 #'   comparison arm is better. }
-#'   \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty
+#'   \item{9}{\emph{Wald CI} The confidence interval indicates the level of uncertainty
 #'   around the measure of effect (Hazard Ratio). Because only a small sample of the overall
 #'   population is included in the analysis, by having an upper and lower confidence limit
-#'   we can infer that the true treatment effect lies in between. If the 95% confidence interval
-#'   includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
+#'   we can infer that the true treatment effect lies in between. By default, the 95% confidence
+#'   interval is calculated. If it includes 1, then we say that the difference between two arms
+#'   is not significant at a significance level of 0.05.}
 #' }
 #'
 #' @export
@@ -60,6 +61,7 @@ NULL
 #'   col_by = ADTTE_f$ARMCD,
 #'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
+#'   conf_int = 0.9,
 #'   dense_header = TRUE
 #' )
 #'
@@ -100,10 +102,17 @@ t_forest_tte <- function(tte,
                          strata_data = NULL,
                          ties = "exact",
                          time_unit = "month",
+                         conf_int = 0.95,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
-  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is_character_single(total))
+  stopifnot(
+    is.numeric(tte),
+    is.logical(is_event),
+    is.null(total) || is_character_single(total),
+    is.null(row_by_list) || is.list(row_by_list),
+    is_numeric_single(conf_int) && (0 < conf_int) && (conf_int < 1)
+  )
   check_strata(strata_data)
 
   do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by,
@@ -140,6 +149,7 @@ t_forest_tte <- function(tte,
           strata_data = if (is.null(strata_data)) NULL else subset(content, select = -c(tte, is_event, col_by)),
           ties = ties,
           row_name = name,
+          conf_int = conf_int,
           dense_header = dense_header
         )
       )
@@ -184,6 +194,7 @@ t_forest_tte <- function(tte,
 #' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
 #' @param time_unit The unit of median survival time. Default is \code{months}.
 #' @param row_name name of row
+#' @param conf_int confidence level of the interval
 #' @param dense_header Display the table headers in multiple rows.
 #'
 #' @return rtable with one row
@@ -205,7 +216,8 @@ t_forest_tte <- function(tte,
 #' col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
 #' t_el_forest_tte(
 #'   tte = tte, is_event = is_event,
-#'   col_by = col_by
+#'   col_by = col_by,
+#'   conf_int = 0.9
 #' )
 #'
 #' t_el_forest_tte(
@@ -231,9 +243,13 @@ t_el_forest_tte <- function(tte,
                             ties = "exact",
                             time_unit = "month",
                             row_name = "",
+                            conf_int = 0.95,
                             dense_header = TRUE) {
 
-  stopifnot(is.factor(col_by))
+  stopifnot(
+    is.factor(col_by),
+    is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1
+  )
   check_same_n(tte = tte, is_event = is_event, col_by = col_by, strata_data = strata_data)
 
   if (any(is.na(tte) | is.na(is_event))) {
@@ -244,21 +260,33 @@ t_el_forest_tte <- function(tte,
     stop("two levels required for col_by")
   }
 
-  s_fit_km <- summary(survfit(Surv(tte, is_event) ~ col_by))$table
-
-  # Three scenarios:
+  # Four scenarios:
   # 1. two arms
   # 2. ref arm has no records
   # 3. comp arm has no records
+  # 4. both arms have no records
 
   col_N <- table(col_by) #nolintr
 
+  if(any(col_N) > 0 ){
+    s_fit_km <- summary(survfit(Surv(tte, is_event) ~ col_by))$table
+  }
+
   x <- if (all(col_N > 0)) {
     s_fit_km <- as.data.frame(s_fit_km)
-    cox_sum  <- if (is.null(strata_data)){
-      summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties))
+
+    cox_sum  <- if(any(is_event == TRUE) ){
+      if (is.null(strata_data)){
+        summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties), conf.int = conf_int)
+      } else {
+        summary(coxph(Surv(tte, is_event) ~ col_by + strata(strata_data), ties = ties),
+                conf.int = conf_int)
+      }
     } else {
-      summary(coxph(Surv(tte, is_event) ~ col_by + strata(strata_data), ties = ties))
+      # no events
+      list(
+        conf.int = c(NA, NA, NA, NA)
+      )
     }
 
     list(
@@ -302,7 +330,18 @@ t_el_forest_tte <- function(tte,
       cox_ucl  = NA
     )
   } else {
-    stop("Invalid Arm Counts")
+    list(
+      total_n = length(tte),
+      comp_n        = 0,
+      comp_events   = 0,
+      comp_median   = NA,
+      ref_n        = 0,
+      ref_events   = 0,
+      ref_median   = NA,
+      cox_hr   = NA,
+      cox_lcl  = NA,
+      cox_ucl  = NA
+    )
   }
 
   # format values
@@ -339,7 +378,7 @@ t_el_forest_tte <- function(tte,
         "n", "Events", "Median",
         "n", "Events", "Median",
         "Hazard",
-        "95%"
+        paste0((conf_int)*100, "%")
       ),
       rrow(
         row.name = "Factors",
@@ -366,7 +405,7 @@ t_el_forest_tte <- function(tte,
         "n", "Events", paste0("Median (", time_unit, ")"),
         "n", "Events", paste0("Median (", time_unit, ")"),
         if (is.null(strata_data)) "Hazard Ratio" else "Hazard Ratio*",
-        "95% Wald CI"
+        paste0((conf_int)*100, "% Wald CI")
       )
     )
   }

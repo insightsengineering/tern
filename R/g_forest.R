@@ -67,7 +67,7 @@
 #'   xlim = c(.1, 10),
 #'   logx = TRUE,
 #'   x_at = c(.1, 1, 10),
-#'   col_symbol_size = NULL,
+#'   col_symbol_size = 1, #draw symbol proportional to column 1 values
 #'   draw = FALSE
 #' )
 #' grid.newpage()
@@ -261,8 +261,7 @@ g_forest <- function(tbl,
   fn <- footnotes(tbl)
   if (!is.null(fn)){
     footnotes(grob_forest) <- fn
-    warning('grob footnote is not added to plot;
-             suggest to use decorate_grob() to further decorate the grob')
+    message('grob footnote is not added to plot; suggest to use decorate_grob() to further decorate the grob')
   }
 
   if (draw) {
