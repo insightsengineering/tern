@@ -11,13 +11,22 @@
 #' @param time_points numeric vector with times displayed in the time point
 #'   analysis, if \code{NULL} this section of the table will be omitted
 #' @param time_unit a string with the unit of the \code{tte} argument
+#' @param conf_int_survfit level for computation of the confidence intervals in
+#'  survival curve
+#' @param conf_int_ztest level for computation of the confidence intervals in landmark
+#'  analysis
+#' @param conf_int_coxph level for computation of the confidence intervals in \code{\link{s_coxph}}
+#' @param conf_type conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
+#' \code{"none"}, \code{"log"}, or \code{"log-log"}.
+#' @param probs numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}
+#' @param ... additional parameters passed to \code{\link{s_coxph}}
 #'
 #' @details
 #' The time to event section is derived from a Kaplan-Meier estimator for the
 #' \code{formula} argument with the strata special dropped.
 #'
 #' The stratified and unstratified analysis is evaluated pair-wise (reference to
-#' comparison) and  \code{\link[survival]{coxph}} is used to get the p-value, calculate the hazard ratio
+#' comparison) and \code{\link[survival]{coxph}} is used to get the p-value, calculate the hazard ratio
 #' and confidence interval.
 #'
 #' The time point analysis is based on the Kaplan-Meier estimator.
@@ -27,35 +36,36 @@
 #' @importFrom stats terms quantile pchisq qnorm pnorm
 #' @export
 #'
-#' @template author_waddella
-#'
-#' @seealso \code{\link{t_forest_tte}}
-#'
 #' @examples
 #' library(random.cdisc.data)
 #' ADSL <- cadsl
 #'
 #' ADTTE <- cadtte
-#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "EFS" & BMEASIFL == "Y")
 #'
 #' tbl <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
 #'   data = ADTTE_f,
 #'   event_descr = factor(EVNTDESC),
-#'   time_points = c(6, 2000),
-#'   time_unit = "month"
+#'   time_points = c(6, 12, 360),
+#'   time_unit = "month",
+#'   col_N = table(ADSL$ARM)
 #' )
 #' tbl
 #'
 #' tbl2 <- t_tte(
 #'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
 #'   data = ADTTE_f,
-#'   conf.int = 0.8,
 #'   event_descr = factor(EVNTDESC),
-#'   time_points = c(6, 2000),
+#'   time_points = c(6, 12, 24),
 #'   time_unit = "month",
+#'   conf_int_coxph = 0.8,
+#'   conf_int_survfit = 0.9,
+#'   probs = c(0.3, 0.7),
 #'   pval_method = "wald",
-#'   ties = "exact"
+#'   conf_type = "log-log",
+#'   ties = "exact",
+#'   col_N = table(ADSL$ARM)
 #' )
 #' tbl2
 #'
@@ -69,19 +79,36 @@
 #'   table_tree = TRUE
 #' )
 #' summary(tbl3)
+#'
+#' to_rtable(tbl3)
+#'
 t_tte <- function(formula,
                   data,
-                  conf.int = 0.95, # nolint
+                  conf_int_survfit = 0.95,
+                  conf_type = c("plain", "none", "log", "log-log"),
+                  conf_int_coxph = 0.95,
+                  conf_int_ztest = 0.95,
                   event_descr,
                   time_points,
                   time_unit = "month",
                   pval_method = "log-rank",
+                  probs = c(0.25, 0.75),
                   table_tree = FALSE,
+                  col_N = NULL,
                   ...) {
 
   cl <- match.call()
+  conf_type <- match.arg(conf_type)
 
-  stopifnot(is.data.frame(data))
+  stopifnot(is.data.frame(data),
+            length(probs) == 2
+  )
+
+  check_numeric_range(conf_int_survfit, 0, 1)
+  check_numeric_range(conf_int_coxph, 0, 1)
+  check_numeric_range(conf_int_ztest, 0, 1)
+  check_numeric_range(probs, 0, 1)
+
 
   # extracted data
   tm <- t_tte_items(formula, cl, data, parent.frame())
@@ -96,6 +123,7 @@ t_tte <- function(formula,
   }
 
   # Argument Checking
+
   if (length(tte) != nrow(data)) {
     stop("some of the following variable contain missing values:\n   ",
          sub("^list", "", deparse(attr(terms(formula), "variables"))),
@@ -103,7 +131,7 @@ t_tte <- function(formula,
   }
 
   check_same_n(is_event = is_event, event_descr = event_descr, arm = arm)
-  col_N <- table(arm) # nolint
+  col_N <- col_N %||% table(arm) #nolint
   check_col_by_factor(tte, arm, col_N, 2)
   if (!is.null(event_descr) && !is.factor(event_descr)) {
     stop("event_descr is required to be a factor")
@@ -158,16 +186,17 @@ t_tte <- function(formula,
   surv_km_fit <- survfit(
     formula = f,
     data = data,
-    conf.type = "plain",
-    conf.int = conf.int
+    conf.int = conf_int_survfit,
+    conf.type = conf_type
   )
 
   srv_tbl <- summary(surv_km_fit)$table
   med <- as.list(srv_tbl[, "median"])
-  ci <- Map(function(x, y) c(x, y), srv_tbl[, paste0(conf.int, "LCL")], srv_tbl[, paste0(conf.int, "UCL")])
+  ci <- Map(function(x, y) c(x, y), srv_tbl[, paste0(conf_int_survfit,"LCL")], srv_tbl[, paste0(conf_int_survfit, "UCL")])
 
-  srv_qt_tbl <- quantile(surv_km_fit)$quantile
-  qnt <- Map(function(x, y) c(x, y), srv_qt_tbl[, "25"], srv_qt_tbl[, "75"])
+  srv_qt_tbl <- quantile(surv_km_fit, probs = probs)$quantile
+
+  qnt <- Map(function(x, y) c(x, y), srv_qt_tbl[, 1], srv_qt_tbl[, 2])
 
   rng_c <- lapply(split(data.frame(tte, is_event), arm), function(x) {
     range(x$tte[!x$is_event], na.rm = TRUE)
@@ -181,8 +210,8 @@ t_tte <- function(formula,
     rtable(
       header = header,
       rrowl("Median", med, format = "xx.xx"),
-      rrowl(paste0(conf.int * 100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
-      rrowl("25% and 75%-ile", qnt, format = "xx.x, xx.x"),
+      rrowl(paste0(conf_int_survfit*100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
+      rrowl(paste0(probs[1]*100, "% and ", probs[2]*100, "%-ile"), qnt, format = "xx.x, xx.x"),
       rrowl("Range (censored)", rng_c, format = "xx.x to xx.x"),
       rrowl("Range (event)", rng_e, format = "xx.x to xx.x")
     )
@@ -191,7 +220,7 @@ t_tte <- function(formula,
   # Unstratified Analysis
   # #####################
 
-  coxph_values <- s_coxph(formula, data, conf.int, pval_method, ...)
+  coxph_values <- s_coxph(formula, data, conf.int = conf_int_coxph, pval_method, ...)
   # this function is reused for stratified analysis
   pval_label <- paste0(toupper(substring(pval_method, 1, 1)), substring(pval_method, 2))
   pval_label <- paste0("p-value (", pval_label, ")")
@@ -218,7 +247,7 @@ t_tte <- function(formula,
           rtable(
             header = header,
             rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
-            rrowl(paste0(conf.int * 100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+            rrowl(paste0(conf_int_coxph*100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
           )
         )
       )
@@ -281,8 +310,8 @@ t_tte <- function(formula,
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
 
           # z-test
-          q1 <- conf.int - (1 - conf.int) / 2
-          q2 <- conf.int + (1 - conf.int) / 2
+          q1 <- conf_int_ztest - (1 - conf_int_ztest)/2
+          q2 <- conf_int_ztest + (1 - conf_int_ztest)/2
           l_ci <- Map(function(di, si) di + qnorm(c(q1, q2)) * si, d, sd)
           pval <- 2 * (1 - pnorm(abs(d) / sd))
 
@@ -290,9 +319,9 @@ t_tte <- function(formula,
             header = header,
             rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
             rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-            rrowl(paste0(conf.int * 100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(paste0(conf_int_survfit*100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
             rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d * 100)), format = "xx.xx", indent = 2),
-            rrowl(paste0(conf.int * 100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(paste0(conf_int_ztest*100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
             rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
           )
         }
@@ -322,7 +351,7 @@ t_tte <- function(formula,
   )
   tree <- rapply_tree(tree, function(name, content, ...) {
     if (is_non_empty_rtable(content)) {
-      header_add_N(content, col_N)
+      content <- header_add_N(content, col_N)
       list(name = name, content = content)
     } else {
       list(name = name, content = content)

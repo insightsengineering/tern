@@ -7,12 +7,17 @@
 t_tte(
   formula,
   data,
-  conf.int = 0.95,
+  conf_int_survfit = 0.95,
+  conf_type = c("plain", "none", "log", "log-log"),
+  conf_int_coxph = 0.95,
+  conf_int_ztest = 0.95,
   event_descr,
   time_points,
   time_unit = "month",
   pval_method = "log-rank",
+  probs = c(0.25, 0.75),
   table_tree = FALSE,
+  col_N = NULL,
   ...
 )
 }
@@ -26,7 +31,16 @@ is omitted.}
 \item{data}{a \code{data.frame} with all the variable that are used in
 \code{formula}}
 
-\item{conf.int}{level for computation of the confidence intervals. If set to {FALSE} no confidence intervals are printed}
+\item{conf_int_survfit}{level for computation of the confidence intervals in
+survival curve}
+
+\item{conf_type}{conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
+\code{"none"}, \code{"log"}, or \code{"log-log"}.}
+
+\item{conf_int_coxph}{level for computation of the confidence intervals in \code{\link{s_coxph}}}
+
+\item{conf_int_ztest}{level for computation of the confidence intervals in landmark
+analysis}
 
 \item{event_descr}{a factor that partitions the the events into earliest
 contributing event. The variable name can be provided unquoted in which
@@ -40,10 +54,15 @@ analysis, if \code{NULL} this section of the table will be omitted}
 \item{pval_method}{the method used to calculate the p-value,
 should be one of "wald", "log-rank", "likelihood", default is "log-rank".}
 
+\item{probs}{numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}}
+
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 
-\item{...}{Other arguments will be passed to \code{\link[survival]{coxph}}}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
+\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+
+\item{...}{additional parameters passed to \code{\link{s_coxph}}}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -57,7 +76,7 @@ The time to event section is derived from a Kaplan-Meier estimator for the
 \code{formula} argument with the strata special dropped.
 
 The stratified and unstratified analysis is evaluated pair-wise (reference to
-comparison) and  \code{\link[survival]{coxph}} is used to get the p-value, calculate the hazard ratio
+comparison) and \code{\link[survival]{coxph}} is used to get the p-value, calculate the hazard ratio
 and confidence interval.
 
 The time point analysis is based on the Kaplan-Meier estimator.
@@ -67,26 +86,31 @@ library(random.cdisc.data)
 ADSL <- cadsl
 
 ADTTE <- cadtte
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
+ADTTE_f <- subset(ADTTE, PARAMCD == "EFS" & BMEASIFL == "Y")
 
 tbl <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
   data = ADTTE_f,
   event_descr = factor(EVNTDESC),
-  time_points = c(6, 2000),
-  time_unit = "month"
+  time_points = c(6, 12, 360),
+  time_unit = "month",
+  col_N = table(ADSL$ARM)
 )
 tbl
 
 tbl2 <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
   data = ADTTE_f,
-  conf.int = 0.8,
   event_descr = factor(EVNTDESC),
-  time_points = c(6, 2000),
+  time_points = c(6, 12, 24),
   time_unit = "month",
+  conf_int_coxph = 0.8,
+  conf_int_survfit = 0.9,
+  probs = c(0.3, 0.7),
   pval_method = "wald",
-  ties = "exact"
+  conf_type = "log-log",
+  ties = "exact",
+  col_N = table(ADSL$ARM)
 )
 tbl2
 
@@ -100,10 +124,7 @@ tbl3 <- t_tte(
   table_tree = TRUE
 )
 summary(tbl3)
-}
-\seealso{
-\code{\link{t_forest_tte}}
-}
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+
+to_rtable(tbl3)
+
 }

@@ -214,3 +214,26 @@ check_strata_levels <- function(strata_data){
     stop("Not all strata variables have more than 1 level.")
   }
 }
+
+
+#' check all numbers are in desired range
+#' @param x a numeric object
+#' @param min a numeric value specifying the lower boundary (exclusive), with default value \code{0}
+#' @param max a numeric value specifying the upper boundary (exclusive), with default value \code{1}
+#'
+#' conf.init <- 0.7
+#' tern:::check_numeric_range(conf.init)
+#'
+#' quantiles <- c(0, 1.2)
+#' tern:::check_numeric_range(quantiles)
+#'
+check_numeric_range <- function(x, min = 0, max = 1) {
+  stopifnot(is_numeric_single(min) && is_numeric_single(max),
+            is.numeric(x))
+
+  if(!all(x > min & x < max)) {
+    stop(paste0("there are numeric values outside the specified range (", min, ", ", max, ")"))
+  }
+
+  invisible(NULL)
+}
