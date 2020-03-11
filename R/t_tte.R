@@ -4,7 +4,7 @@
 #' as described in the details section.
 #'
 #' @inheritParams argument_convention
-#' @inheritParams s_coxph
+#' @inheritParams s_coxph_pairwise
 #' @param event_descr a factor that partitions the the events into earliest
 #'   contributing event. The variable name can be provided unquoted in which
 #'   case it is looked up in \code{data} and then the calling environment.
@@ -15,11 +15,11 @@
 #'  survival curve
 #' @param conf_int_ztest level for computation of the confidence intervals in landmark
 #'  analysis
-#' @param conf_int_coxph level for computation of the confidence intervals in \code{\link{s_coxph}}
+#' @param conf_int_coxph level for computation of the confidence intervals in \code{\link{s_coxph_pairwise}}
 #' @param conf_type conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
 #' \code{"none"}, \code{"log"}, or \code{"log-log"}.
 #' @param probs numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}
-#' @param ... additional parameters passed to \code{\link{s_coxph}}
+#' @param ... additional parameters passed to \code{\link{s_coxph_pairwise}}
 #'
 #' @details
 #' The time to event section is derived from a Kaplan-Meier estimator for the
@@ -44,7 +44,7 @@
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "EFS" & BMEASIFL == "Y")
 #'
 #' tbl <- t_tte(
-#'   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+#'   formula = Surv(AVAL, !CNSR) ~ arm(ARM),
 #'   data = ADTTE_f,
 #'   event_descr = factor(EVNTDESC),
 #'   time_points = c(6, 12, 360),
@@ -59,9 +59,6 @@
 #'   event_descr = factor(EVNTDESC),
 #'   time_points = c(6, 12, 24),
 #'   time_unit = "month",
-#'   conf_int_coxph = 0.8,
-#'   conf_int_survfit = 0.9,
-#'   probs = c(0.3, 0.7),
 #'   pval_method = "wald",
 #'   conf_type = "log-log",
 #'   ties = "exact",
@@ -217,58 +214,54 @@ t_tte <- function(formula,
     )
   )
 
-  # Unstratified Analysis
+  # Unstratified (and Stratified) Analysis
   # #####################
 
-  coxph_values <- s_coxph(formula, data, conf.int = conf_int_coxph, pval_method, ...)
+
+  coxph_values <- s_coxph_pairwise(formula, data, conf_int_coxph, pval_method, ...)
+
   # this function is reused for stratified analysis
-  pval_label <- paste0(toupper(substring(pval_method, 1, 1)), substring(pval_method, 2))
-  pval_label <- paste0("p-value (", pval_label, ")")
+  pval_label <- paste0("p-value (", capitalize(pval_method), ")")
 
-  coxph_tbl <- function(node_name, coxph_df) {
-    # first column is empty
-    pval <- start_with_null(lapply(coxph_df, function(x) x[, 1]$pvalue))
-    hr <- start_with_null(lapply(coxph_df, function(x) x[, 1]$hr))
-    hr_ci <- start_with_null(lapply(coxph_df, function(x) x[, 1]$hr_ci))
-
-    node(
-      node_name,
-      content = NULL,
-      children = list(
-        node(
-          invisible_node_name("p-value"),
-          rtable(
-            header = header,
-            rrowl(pval_label, pval, format = "xx.xxxx")
-          )
-        ),
-        node(
-          invisible_node_name("Hazard Ratio"),
-          rtable(
-            header = header,
-            rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
-            rrowl(paste0(conf_int_coxph*100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+  tbl_coxph <- lapply(c("unstratified", "stratified"), function(sel_strat){
+    if (is.null(tm$formula_strata) && sel_strat == "stratified"){
+      NULL
+    } else {
+      # first column is empty
+      pval <- start_with_null(
+        lapply(coxph_values[-1],function(x) x[[sel_strat]]$pvalue)
+      )
+      hr <- start_with_null(
+        lapply(coxph_values[-1], function(x) x[[sel_strat]]$hr)
+      )
+      hr_ci <- start_with_null(
+        lapply(coxph_values[-1],function(x) x[[sel_strat]]$hr_ci)
+      )
+      coxph_node <-  node(
+        paste0(capitalize(sel_strat), " Analysis"),
+        content = NULL,
+        children = list(
+          node(
+            invisible_node_name("p-value"),
+            rtable(
+              header = header,
+              rrowl(pval_label, pval, format = "xx.xxxx")
+            )
+          ),
+          node(
+            invisible_node_name("Hazard Ratio"),
+            rtable(
+              header = header,
+              rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
+              rrowl(paste0(conf_int_coxph*100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+            )
           )
         )
       )
-    )
-  }
+      coxph_node
+    }
+  })
 
-  tbl_unstratified <- coxph_tbl(
-    "Unstratified Analysis",
-    coxph_df = coxph_values$unstratified
-  )
-
-  # Stratified Analysis
-  # ###################
-  tbl_stratified <- if (is.null(tm$formula_strata)) {
-    NULL
-  } else {
-    coxph_tbl(
-      "Stratified Analysis",
-      coxph_df = coxph_values$stratified
-    )
-  }
 
   # Time Point Analysis
   # ###################
@@ -344,8 +337,8 @@ t_tte <- function(formula,
     children = compact(c(
       tbl_event,
       tbl_tte,
-      tbl_unstratified,
-      tbl_stratified,
+      tbl_coxph[[1]],
+      tbl_coxph[[2]],
       tbl_timepoints
     ))
   )

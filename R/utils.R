@@ -229,3 +229,18 @@ to_string_with_names <- function(x) {
   # also works for more general
   paste(names(x), x, sep = ":", collapse = ", ")
 }
+
+#' Capitalize First Letter
+#'
+#' @noRd
+#'
+#' @examples
+#'
+#' capitalize("hello world")
+#' tools::toTitleCase("hello world")
+#'
+capitalize <- function(x) {
+  stopifnot(is_character_single(x))
+
+  paste0(toupper(substring(x, 1, 1)), substring(x, 2))
+}

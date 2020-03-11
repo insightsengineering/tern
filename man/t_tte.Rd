@@ -22,14 +22,11 @@ t_tte(
 )
 }
 \arguments{
-\item{formula}{a survival formula, the arm variable needs to be wrapped in
-\code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
-used for the stratified analysis. If there is not
-\code{\link[survival]{strata}} specification then the stratified analysis
-is omitted.}
+\item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The
+\code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
+\code{\link[survival]{strata}} specification then the stratified analysis is omitted.}
 
-\item{data}{a \code{data.frame} with all the variable that are used in
-\code{formula}}
+\item{data}{a \code{data.frame} with all the variable that are used in \code{formula}}
 
 \item{conf_int_survfit}{level for computation of the confidence intervals in
 survival curve}
@@ -37,7 +34,7 @@ survival curve}
 \item{conf_type}{conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
 \code{"none"}, \code{"log"}, or \code{"log-log"}.}
 
-\item{conf_int_coxph}{level for computation of the confidence intervals in \code{\link{s_coxph}}}
+\item{conf_int_coxph}{level for computation of the confidence intervals in \code{\link{s_coxph_pairwise}}}
 
 \item{conf_int_ztest}{level for computation of the confidence intervals in landmark
 analysis}
@@ -51,8 +48,8 @@ analysis, if \code{NULL} this section of the table will be omitted}
 
 \item{time_unit}{a string with the unit of the \code{tte} argument}
 
-\item{pval_method}{the method used to calculate the p-value,
-should be one of "wald", "log-rank", "likelihood", default is "log-rank".}
+\item{pval_method}{the method used to calculate the p-value, should be one of "wald", "log-rank", "likelihood",
+default is "log-rank".}
 
 \item{probs}{numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}}
 
@@ -62,7 +59,7 @@ should be one of "wald", "log-rank", "likelihood", default is "log-rank".}
 \item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
 \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
 
-\item{...}{additional parameters passed to \code{\link{s_coxph}}}
+\item{...}{additional parameters passed to \code{\link{s_coxph_pairwise}}}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -89,7 +86,7 @@ ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "EFS" & BMEASIFL == "Y")
 
 tbl <- t_tte(
-  formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
   data = ADTTE_f,
   event_descr = factor(EVNTDESC),
   time_points = c(6, 12, 360),
@@ -104,9 +101,6 @@ tbl2 <- t_tte(
   event_descr = factor(EVNTDESC),
   time_points = c(6, 12, 24),
   time_unit = "month",
-  conf_int_coxph = 0.8,
-  conf_int_survfit = 0.9,
-  probs = c(0.3, 0.7),
   pval_method = "wald",
   conf_type = "log-log",
   ties = "exact",
