@@ -14,10 +14,7 @@ Authors@R: c(
   person("Chendi", "Liao", email = "chendi.liao@roche.com", role = "aut"),
   person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
   person("Edgar", "Manukyan", email = "edgar.manukyan@roche.com", role = "aut"),
-  person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
-  person("Carolyn", "Zhang", email = "carolyn.zhang@duke.ed", role = "aut"),
-  person("Mark", "Rothe", role = "aut"),
-  person("Xiao", "Mu Yo", role = "aut")
+  person("Ting", "Qi", email = "qit3@gene.com", role = "aut")
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
 Depends:
