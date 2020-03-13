@@ -259,38 +259,6 @@ t_summary.list <- function(x_list, #nolintr
   }
 }
 
-
-
-#' Summarize the TRUE Counts
-#'
-#' Note that for this function the default \code{denominator = "N"} and not \code{n} as for the other \code{t_summary}
-#' functions.
-#'
-#' @inheritParams argument_convention
-#' @inheritParams t_summary.factor
-#' @param row_name name of row
-#'
-#' @export
-#'
-#' @examples
-#'
-#' with(iris, t_summary_true(Sepal.Length > 5.5, col_by = Species, total = "All Flowers"))
-t_summary_true <- function(x,
-                           col_by,
-                           col_N = NULL, #nolintr
-                           total = NULL,
-                           row_name = deparse(substitute(x)),
-                           denominator = c("N", "n", "omit")) {
-  denominator <- match.arg(denominator)
-
-  stopifnot(is.logical(x))
-
-  t_summary.logical(x, col_by, col_N, total, row_name_true = row_name, denominator = denominator)[2, ]
-
-}
-
-
-
 #  Helper functions -----
 
 all_equal <- function(x) {

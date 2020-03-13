@@ -27,6 +27,8 @@ reference:
       - t_tte
       - starts_with("t_events")
       - t_mmrm
+      - t_count_true
+      - t_count_true.data.frame
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
@@ -37,12 +39,13 @@ reference:
       - t_summary.logical
       - t_summary.character
       - t_summary.Date
-      - t_summary_true
       - starts_with("t_el_")
       - t_coxph
       - t_km
       - t_max_grade_per_id
       - t_count_unique
+      - t_count_true.default
+      - t_count_true.logical
 
   - title: Analysis Functions
     desc: These functions return statistical results from different models

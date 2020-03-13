@@ -23,7 +23,7 @@ used as a label in the column header for each term.}
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the length or number of rows of
 \code{terms}.}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 

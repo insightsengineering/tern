@@ -17,12 +17,14 @@ argument_convention(
 )
 }
 \arguments{
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}

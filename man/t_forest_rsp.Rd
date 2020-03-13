@@ -19,7 +19,7 @@ t_forest_rsp(
 \item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 otherwise}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 

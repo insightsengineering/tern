@@ -34,8 +34,10 @@ will be excluded.}
 \item{visit_var}{a character describing the variable name for visit,
 "AVISIT" by default. This variable must be factor in data.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{mode}{algorithm for degree of freedom: "auto", "df.error" or
 "boot-satterthwaite".}

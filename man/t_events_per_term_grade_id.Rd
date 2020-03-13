@@ -31,7 +31,7 @@ For factors, it is assumed that intensity corresponds to the order of the factor
 If that is not the case, see \code{grade_levels}.
 For character or numeric, \code{grade_levels} is required.}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 

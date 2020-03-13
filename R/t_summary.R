@@ -23,7 +23,6 @@
 #'
 #' with(ADSL, t_summary(AGE > 65, ARMCD))
 #'
-#'
 #' # examples with hierarchical header
 #' library(dplyr)
 #' ADSL <- radsl(cached = TRUE)

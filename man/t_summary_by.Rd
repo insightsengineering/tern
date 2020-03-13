@@ -23,8 +23,10 @@ the summary sub-groups in the table.}
 \item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
 define the columns in the table.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}

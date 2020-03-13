@@ -9,11 +9,13 @@
 #' documentation of arguments that are commonly and consistently used in the framework. For the developer it adds a
 #' single reference point to import the roxygen argument description with \code{@inheritParams argument_convention}
 #'
-#' @param col_by logical factor or data.frame with reference and comparison group information, the
+#' @param col_by logical, factor or data.frame with reference and comparison group information, the
 #'   first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 #'   and \code{add_total_by}.
-#' @param col_N a vecor with the reference population per level of \code{col_by}. This often by default
-#'   \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+#' @param col_N a vecor with the reference population per level of \code{col_by}. This by default is often
+#'   set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+#'   The default may not appropriate and should be modified by the user when \code{col_by} contains
+#'   more than one record per subject.
 #' @param table_tree logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 #'   \code{\link{node}} object gets returned with the elementary \code{rtable} objects.
 #' @param indent non-negative integer where 0 means that the row should not be indented
