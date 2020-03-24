@@ -55,9 +55,6 @@ RoxygenNote: 7.0.2
 VignetteBuilder: knitr
 URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/
 BugReports: https://github.roche.com/NEST/tern/issues
-Additional_repositories:
-  https://github.com/Roche/rtables,
-  https://github.roche.com/NEST/random.cdisc.data
 Collate:
     'aa_trees.R'
     'argument_convention.R'
