@@ -1,4 +1,8 @@
 if (requireNamespace("testthat", quietly = TRUE)) {
+
   library(testthat)
-  test_check("tern")
+
+  test_results <- test_check("tern")
+  saveRDS(test_results, "unit_testing_results.rds")
+
 }
