@@ -213,7 +213,7 @@ tbls[['cl A']]
 
 }
 \seealso{
-\code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},
+\code{\link{t_el_count_unique}}, \code{\link{t_el_events_per_term_id}},
   \code{\link{t_events_per_term_grade_id}}
 }
 \author{

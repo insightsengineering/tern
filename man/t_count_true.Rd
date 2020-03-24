@@ -69,8 +69,12 @@ ANL <- ADAE \%>\%
     SER = "Serious",
     GRADE35 = "Grade 3-5"
   )
-t_count_true(ANL, col_by = ADAE$ARMCD, col_N = table(ADSL$ARMCD),
-  header_label = "Total number of adverse events which are:", denominator = "omit")
+tbl <- t_count_true(ANL, col_by = ADAE$ARMCD, col_N = table(ADSL$ARMCD),
+  denominator = "omit")
+tbl
+
+# Add descriptive row:
+insert_rrow(indent(tbl, 1), rrow("Total number of adverse events which are"))
 }
 \seealso{
 \code{\link{t_count_true.logical}},

@@ -1,4 +1,8 @@
-
+# March 2020
+t_summary_true <- function(x, col_by, col_N = NULL, total = NULL,
+                           row_name = deparse(substitute(x)),  denominator = c("N", "n", "omit")){
+  warning("t_summary_true is deprecated, use t_count_true instead")
+}
 
 
 # January 2019

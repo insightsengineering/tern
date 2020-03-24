@@ -65,7 +65,7 @@
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},
+#' @seealso \code{\link{t_el_count_unique}}, \code{\link{t_el_events_per_term_id}},
 #'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
@@ -285,75 +285,6 @@ t_events_per_term_id <- function(terms,
   }
 }
 
-# Elementary Tables Used for AE tables ----
-#' Count Unique Elements Per Cell
-#'
-#' \code{t_count_unique} counts the number of unique elements per cell.
-#'
-#' @inheritParams argument_convention
-#' @param x a vector
-#' @param row_name a string with the row name to display in the summary table
-#'   that is returned. Default is "number of unique elements."
-#'
-#' @return an \code{rtable}
-#'
-#' @export
-#'
-#' @template author_waddella
-#' @template author_zhanc107
-#' @template author_wangh107
-#' @template author_qit3
-#'
-#' @seealso \code{\link{t_events_per_term_id}}, \code{\link{t_el_events_per_term_id}},
-#'   \code{\link{t_events_per_term_grade_id}}
-#'
-#' @examples
-#'
-#' t_count_unique(
-#'  x = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
-#'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_N = c(2, 4, 10)
-#' )
-#'
-#' t_count_unique(
-#'  x = c(1, 4, 2, 3, 3, NA),
-#'  col_by = factor(c("A", "A", "B", "C", "C", "C")),
-#'  col_N = c(2, 4, 10),
-#'  row_name = "Unique Records",
-#'  na_rm = FALSE
-#' )
-t_count_unique <- function(x,
-                           col_by,
-                           col_N = NULL, # nolint
-                           total = NULL,
-                           na_rm = TRUE,
-                           row_name = "number of unique elements") {
-  stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(is.atomic(x))
-  col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by) #nolintr
-  if (!is.null(total)) {
-    col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N) #nolintr
-    total <- NULL
-  }
-  check_col_by(x, col_by, col_N, min_num_levels = 1)
-
-  counts <- vapply(col_by, function(rows) {
-    xi <- x[rows]
-    if (na_rm) {
-      xi <- na.omit(xi)
-    }
-    length(unique(xi))
-  }, numeric(1))
-  percentage <- counts / col_N
-
-  tbl <-  rtable(
-    rheader(rrowl("", colnames(col_by))),
-    rrowl(as.character(row_name), Map(c, counts, percentage), format = "xx.xx (xx.xx%)")
-  )
-  header_add_N(tbl, col_N)
-}
 
 #' Summary table for events
 #'
@@ -378,7 +309,7 @@ t_count_unique <- function(x,
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},
+#' @seealso \code{\link{t_el_count_unique}}, \code{\link{t_events_per_term_id}},
 #'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
@@ -394,6 +325,7 @@ t_el_events_per_term_id <- function(id,
                                     total_events = "Total number of events",
                                     subjects_with_events = "Total number of patients with at least one adverse event") {
 
+  stop_if_not(list(!any(is.na(id)), "id currently does not allow for missing data"))
   stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -406,11 +338,13 @@ t_el_events_per_term_id <- function(id,
 
   # subjects with at least one adverse advent (AE): we use the id as some subjects can have more than one AE
   tbl_at_least_one <- if (!is.null(subjects_with_events)) {
-    t_count_unique(
+    t_el_count_unique(
       x = id,
       col_by = col_by,
       col_N = col_N,
       total = total,
+      na_rm = TRUE,
+      denominator = "N",
       row_name = subjects_with_events
     )
   } else {
@@ -445,7 +379,7 @@ argfix_events_terms <- function(terms) {
   na_terms <- vapply(terms, function(x) any(is.na(x)), logical(1))
 
   if (any(empty_terms))
-    stop("terms are not allowed to be a empty string or strings of spaces. You may use explicit_na(sas_na(x))", call. = FALSE)
+    stop("terms are not allowed to be an empty string or strings of spaces. You may use explicit_na(sas_na(x))", call. = FALSE)
 
   if (any(na_terms))
     stop("terms currently do not allow missing data, please use explicit_na(x)", call. = FALSE)

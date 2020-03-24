@@ -43,8 +43,12 @@
 #'     SER = "Serious",
 #'     GRADE35 = "Grade 3-5"
 #'   )
-#' t_count_true(ANL, col_by = ADAE$ARMCD, col_N = table(ADSL$ARMCD),
-#'   header_label = "Total number of adverse events which are:", denominator = "omit")
+#' tbl <- t_count_true(ANL, col_by = ADAE$ARMCD, col_N = table(ADSL$ARMCD),
+#'   denominator = "omit")
+#' tbl
+#'
+#' # Add descriptive row:
+#' insert_rrow(indent(tbl, 1), rrow("Total number of adverse events which are"))
 t_count_true <- function(x,
                       col_by,
                       col_N = NULL, # nolint
@@ -134,13 +138,11 @@ t_count_true.logical <- function(x,
 #' @param col_by_list list of col_by, one for each item of \code{x_list}
 #' @param ... not used arguments
 #'
-#' @noRd
 t_count_true.list <- function(x_list, #nolintr
                            col_by_list,
                            col_N = NULL, # nolint
                            total = NULL,
                            denominator = c("N", "n", "omit"),
-                           header_label = NULL,
                            table_tree = FALSE,
                            ...) {
   stopifnot(
@@ -172,11 +174,7 @@ t_count_true.list <- function(x_list, #nolintr
     )
   }, x_list, col_by_list, names(x_list))
 
-  tree <- if(is.null(header_label)){
-    invisible_node(children = children, format_data = list(children_gap = 0))
-  } else {
-    node(name = header_label, content = NULL, children = children, format_data = list(children_gap = 0))
-  }
+  tree <- invisible_node(children = children, format_data = list(children_gap = 0))
 
   if (table_tree) {
     tree
@@ -196,8 +194,6 @@ t_count_true.list <- function(x_list, #nolintr
 #' @inheritParams argument_convention
 #' @param x data frame with only logical variables to be summarized.
 #' If a variable has a \code{label} attribute then it will be used for the row name.
-#' @param header_label string with label to be added as header row. If \code{NULL},
-#' no header row is included.
 #' @inheritParams t_count_true.data.frame
 #'
 #' @export
@@ -227,14 +223,12 @@ t_count_true.list <- function(x_list, #nolintr
 #'   )
 #'
 #' t_count_true(ANL, col_by = ADSL$ARM)
-#' t_count_true(ANL, col_by = ADSL$ARM, denominator = "omit",
-#'   header_label = "Total number of patients")
+#' t_count_true(ANL, col_by = ADSL$ARM, denominator = "omit")
 t_count_true.data.frame <- function(x,
                                    col_by,
                                    col_N = NULL, # nolint
                                    total = NULL,
                                    denominator = c("N", "n", "omit"),
-                                   header_label = NULL,
                                    table_tree = FALSE,
                                    ...) {
 
@@ -243,7 +237,6 @@ t_count_true.data.frame <- function(x,
   # NAs are accepted in X
   stopifnot(all(vapply(x, is.logical, FUN.VALUE = logical(1))))
   stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(is.null(header_label) || is_character_single(header_label))
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -262,7 +255,6 @@ t_count_true.data.frame <- function(x,
     col_N = col_N,
     total = total,
     denominator = denominator,
-    header_label = header_label,
     table_tree = table_tree
   )
 

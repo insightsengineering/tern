@@ -78,6 +78,7 @@ Collate:
     'safe_join.R'
     'split.R'
     't_count_true.R'
+    't_count_unique.R'
     't_coxph.R'
     't_disposition.R'
     'utils.R'

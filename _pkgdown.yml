@@ -29,6 +29,7 @@ reference:
       - t_mmrm
       - t_count_true
       - t_count_true.data.frame
+      - t_count_unique
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
@@ -129,3 +130,5 @@ reference:
     desc: the documentation for those unexported functions is useful for developers
     contents:
       - argument_convention
+      - t_summary.list
+      - t_count_true.list

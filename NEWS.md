@@ -8,6 +8,7 @@
 * Add argument `col_symbol_size` to `g_forest` to control the relative size of symbols used in the plot.
 * Added `s_coxph_pairwise` function to perform pairwise testing which is used by `t_tte` and `t_coxph`
 * Add methods for `t_count_true` replacing `t_summary_true`
+* Update `t_count_unique` to create analysis subsets, add `t_el_count_unique` for vectors
 
 # tern 0.6.4
 
