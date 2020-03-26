@@ -1,10 +1,10 @@
 # tern 0.6.4.9000
 
-* Added `conf.ini.coxph`, `conf.ini.survfit`, `conf.ini.ztest`, `conf.type`, `probs` arguments in `t_tte`
+* Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.
 * Fix bug in `t_rsp` of not showing p-vlaue, odds ratio and CIs when `strata_data` is not `NULL`
 * Add stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.
 * Addes `footnotes`, `footnotes<-` and `add_footnotes<-` functions to deal with footnotes
-* Add argument `conf_int` for confidence interval level to `t_el_forest_rps`, `t_forest_rsp`, `t_el_forest_tte``, `t_forest_tte`
+* Add argument `conf_int` for confidence interval level to `t_el_forest_rps`, `t_forest_rsp`, `t_el_forest_tte`, `t_forest_tte`
 * Add argument `col_symbol_size` to `g_forest` to control the relative size of symbols used in the plot.
 * Added `s_coxph_pairwise` function to perform pairwise testing which is used by `t_tte` and `t_coxph`
 * Add methods for `t_count_true` replacing `t_summary_true`

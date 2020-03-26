@@ -48,12 +48,13 @@ reference:
       - t_count_true.default
       - t_count_true.logical
 
-  - title: Analysis Functions
+  - title: Analysis and Summary Functions
     desc: These functions return statistical results from different models
     contents:
       - ttest_ci_one_arm
       - ttest_two_arm
       - a_mmrm
+      - s_coxph_pairwise
 
   - title: Graphs
     desc: Graphs
@@ -83,6 +84,7 @@ reference:
       - stack_grobs
       - arrange_grobs
       - draw_grob
+      - nest_color_palette
 
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
@@ -130,5 +132,20 @@ reference:
     desc: the documentation for those unexported functions is useful for developers
     contents:
       - argument_convention
+      - apply_compare_in_header
+      - check_col_by
+      - check_conf_level
+      - check_numeric_range
+      - combine_rrows_with_indent
+      - compare_in_header
+      - df_explicit_na
+      - is_nested_by
+      - is_simple_by
+      - nb_entries
+      - nested_by
+      - patient_numeric_fcns
+      - simple_by
+      - t_summary.list
+      - to_string_with_names
       - t_summary.list
       - t_count_true.list

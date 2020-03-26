@@ -7,18 +7,16 @@
 t_tte(
   formula,
   data,
-  conf_int_survfit = 0.95,
-  conf_type = c("plain", "none", "log", "log-log"),
-  conf_int_coxph = 0.95,
-  conf_int_ztest = 0.95,
-  event_descr,
-  time_points,
+  col_N,
+  event_descr = NULL,
+  time_points = NULL,
   time_unit = "month",
-  pval_method = "log-rank",
-  probs = c(0.25, 0.75),
-  table_tree = FALSE,
-  col_N = NULL,
-  ...
+  conf_level = 0.95,
+  conf_type_survfit = c("plain", "none", "log", "log-log"),
+  probs_survfit = c(0.25, 0.75),
+  pval_method_coxph = c("log-rank", "wald", "likelihood"),
+  ties_coxph = c("efron", "breslow", "exact"),
+  table_tree = FALSE
 )
 }
 \arguments{
@@ -28,16 +26,10 @@ t_tte(
 
 \item{data}{a \code{data.frame} with all the variable that are used in \code{formula}}
 
-\item{conf_int_survfit}{level for computation of the confidence intervals in
-survival curve}
-
-\item{conf_type}{conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
-\code{"none"}, \code{"log"}, or \code{"log-log"}.}
-
-\item{conf_int_coxph}{level for computation of the confidence intervals in \code{\link{s_coxph_pairwise}}}
-
-\item{conf_int_ztest}{level for computation of the confidence intervals in landmark
-analysis}
+\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{event_descr}{a factor that partitions the the events into earliest
 contributing event. The variable name can be provided unquoted in which
@@ -48,20 +40,20 @@ analysis, if \code{NULL} this section of the table will be omitted}
 
 \item{time_unit}{a string with the unit of the \code{tte} argument}
 
-\item{pval_method}{the method used to calculate the p-value, should be one of "wald", "log-rank", "likelihood",
-default is "log-rank".}
+\item{conf_level}{either a single number or a named vector of confidence levels where the names are \code{survfit},
+\code{coxph}, and \code{ztest}}
 
-\item{probs}{numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}}
+\item{conf_type_survfit}{conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
+\code{"none"}, \code{"log"}, or \code{"log-log"}.}
+
+\item{probs_survfit}{numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}}
+
+\item{pval_method_coxph}{passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}}
+
+\item{ties_coxph}{passed as argument \code{ties} to \code{\link{coxph}}}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
-
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
-set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
-The default may not appropriate and should be modified by the user when \code{col_by} contains
-more than one record per subject.}
-
-\item{...}{additional parameters passed to \code{\link{s_coxph_pairwise}}}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -82,39 +74,60 @@ The time point analysis is based on the Kaplan-Meier estimator.
 }
 \examples{
 library(random.cdisc.data)
-ADSL <- cadsl
+ADSL <- radsl(cached = TRUE)
 
-ADTTE <- cadtte
+ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- subset(ADTTE, PARAMCD == "EFS" & BMEASIFL == "Y")
 
-tbl <- t_tte(
+t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM),
   data = ADTTE_f,
-  event_descr = factor(EVNTDESC),
+  col_N = table(ADSL$ARM)
+)
+
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC)
+)
+
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
   time_points = c(6, 12, 360),
   time_unit = "month",
-  col_N = table(ADSL$ARM)
 )
-tbl
 
-tbl2 <- t_tte(
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
+  time_points = c(6, 12, 360),
+  conf_level = c(survfit = 0.91, coxph = 0.95, ztest = 0.99)
+)
+
+t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
   data = ADTTE_f,
-  event_descr = factor(EVNTDESC),
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
   time_points = c(6, 12, 24),
   time_unit = "month",
-  pval_method = "wald",
-  conf_type = "log-log",
-  ties = "exact",
-  col_N = table(ADSL$ARM)
+  pval_method_coxph = "wald",
+  conf_type_survfit = "log-log",
+  ties_coxph = "exact"
 )
-tbl2
 
 # table_tree = TRUE
 tbl3 <- t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
   data = ADTTE_f,
-  event_descr = factor(EVNTDESC),
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
   time_points = c(6, 2000),
   time_unit = "month",
   table_tree = TRUE

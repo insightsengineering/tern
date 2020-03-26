@@ -59,6 +59,7 @@ Collate:
     'aa_trees.R'
     'argument_convention.R'
     'check_data.R'
+    'conf_level.R'
     'decorate_grob.R'
     'deprecated.R'
     'df_explicit_na.R'
