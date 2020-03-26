@@ -73,7 +73,7 @@ ADAE <- radae(cached = TRUE)
 ANL <- ADAE \%>\%
  dplyr::transmute(
     SER = AESER == 'Y' ,
-    REL = AREL == 'Y',
+    REL = AEREL == 'Y',
     GR5 =  AETOXGR == '5'
   ) \%>\%
   var_relabel(

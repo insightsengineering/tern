@@ -84,6 +84,8 @@ t_coxph <- function(formula,
 #'
 #' @export
 #'
+#' @importFrom stats setNames
+#'
 #' @examples
 #' library(random.cdisc.data)
 #'

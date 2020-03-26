@@ -314,7 +314,7 @@ label_panel_grob <- function(label,
   )
 }
 
-
+#' @importFrom stats setNames
 to_group_color <- function(col, grps) {
   if (is.null(col) || is.null(grps)) {
     stop("col and grps can not be NULL")
