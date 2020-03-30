@@ -38,7 +38,8 @@ Imports:
   forcats,
   nlme,
   emmeans,
-  viridisLite
+  viridisLite,
+  car
 Suggests:
   lattice,
   knitr,
@@ -85,6 +86,7 @@ Collate:
     't_forest_rsp.R'
     't_forest_tte.R'
     't_km.R'
+    't_logistic.R'
     't_mmrm.R'
     't_rsp.R'
     't_summarize_by_visit.R'

@@ -1,5 +1,8 @@
 # tern 0.6.4.9000
 
+
+* Add new function `t_logistic` for multi-variable logistic regression table
+* Added `conf.ini.coxph`, `conf.ini.survfit`, `conf.ini.ztest`, `conf.type`, `probs` arguments in `t_tte`
 * Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.
 * Fix bug in `t_rsp` of not showing p-vlaue, odds ratio and CIs when `strata_data` is not `NULL`
 * Add stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.
