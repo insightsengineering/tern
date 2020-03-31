@@ -11,8 +11,18 @@ tabulate_pairwise(x, col_by, FUN, row.name, format = NULL, indent = 0)
 
 \item{col_by}{a factor first level is taken as reference level}
 
-\item{FUN}{a function with two arguments, first argument is the subset of x
-and the second argument is a factor with two levels from col_by}
+\item{FUN}{a function with two arguments, first argument is the subset of \code{x}
+and the second argument is a factor with two levels from \code{col_by}}
+
+\item{row.name}{string with row name}
+
+\item{format}{a valid format string or a format function for
+\code{\link[rtables]{rcell}}s. To get a list of all valid format strings use
+\code{\link[rtables]{list_rcell_format_labels}}. If format is \code{NULL} then the elements
+of a cell get pasted separated by a comma.}
+
+\item{indent}{non-negative integer where 0 means that the row should not be
+indented}
 }
 \value{
 an \code{rtable}

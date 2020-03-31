@@ -29,9 +29,8 @@ ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
   mutate(Response = case_when(AVALC \%in\% c("PR", "CR") ~ 1,
                               TRUE ~ 0))
 glm_model <- glm(
- formula = Response ~  ARM + AGE + SEX,
+ formula = Response ~ ARM + AGE + SEX,
  data = ADRS_f,
  family = "binomial")
 s_logistic_single(glm_model, conf_level = 0.90)
-
 }

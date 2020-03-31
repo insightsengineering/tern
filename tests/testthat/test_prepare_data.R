@@ -2,10 +2,10 @@ context("df_explicit_na")
 
 
 my_data <- data.frame(
-    x = c("A", "B", NA, "C"),
-    y = c("D", "E", "F", "E"),
-    z = c(1, 2, 3, 4),
-    stringsAsFactors = FALSE
+  x = c("A", "B", NA, "C"),
+  y = c("D", "E", "F", "E"),
+  z = c(1, 2, 3, 4),
+  stringsAsFactors = FALSE
 )
 
 test_that("Conversion to factor", {
@@ -58,9 +58,9 @@ test_that("Check Errors", {
 
 
 my_data <- data.frame(
-    x = c("A", "B", NA, "C"),
-    y = c("D", "E", "F", "E"),
-    z = c(1, 2, 3, 4)
+  x = c("A", "B", NA, "C"),
+  y = c("D", "E", "F", "E"),
+  z = c(1, 2, 3, 4)
 )
 
 test_that("Keep factors", {

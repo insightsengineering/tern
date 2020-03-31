@@ -12,7 +12,7 @@ esplit(x, by)
 \item{by}{split by, either a factor or a col_by matrix}
 }
 \value{
-list, one item for each cateogory in by
+list, one item for each category in by
 }
 \description{
 Split objects according to by object

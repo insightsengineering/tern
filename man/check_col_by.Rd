@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_data.R
 \name{check_col_by}
 \alias{check_col_by}
-\title{Checks that x, col_by and col_N are consistent in dimensions}
+\title{Checks that \code{x}, \code{col_by} and \code{col_N} are consistent in dimensions}
 \usage{
 check_col_by(x, col_by, col_N, min_num_levels = 2)
 }
@@ -12,9 +12,9 @@ check_col_by(x, col_by, col_N, min_num_levels = 2)
 \item{col_by}{matrix of booleans that specifies how to group x (i.e. for each column,
 takes all values of x for which the row is true)}
 
-\item{col_N}{vector that contains number of observations, it can be colSums(col_by)}
+\item{col_N}{vector that contains number of observations, it can be \code{colSums(col_by)}}
 
-\item{min_num_levels}{minimum number of columns of col_by}
+\item{min_num_levels}{minimum number of columns of \code{col_by}}
 }
 \description{
 See \code{\link{t_summary}} variants for how to use it.

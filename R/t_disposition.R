@@ -194,7 +194,8 @@ t_el_disposition <- function(x, col_by, col_N = NULL, total = NULL, row.name = N
 
   useNA <- match.arg(useNA) #nolintr
   # treat x and col_by
-  if (!(is.atomic(x) && (is.factor(x) || is.logical(x)))) { # is_logical_vector no longer working with NA
+  if (!(is.atomic(x) && (is.factor(x) || is.logical(x)))) {
+    # is_logical_vector no longer working with NA
     stop("x is required to be atomic factor or logical vector")
   }
   col_by <- col_by_to_matrix(col_by, x)
@@ -218,7 +219,8 @@ t_el_disposition <- function(x, col_by, col_N = NULL, total = NULL, row.name = N
   x <- x[subset]
   col_by <- col_by[subset, ]
 
-  if (is.logical(x)) { # is_logical_vector no longer working with NAs
+  if (is.logical(x)) {
+    # is_logical_vector no longer working with NAs
     if (show_n) {
       stop("n is never shown for logicals")
     }

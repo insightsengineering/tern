@@ -22,8 +22,8 @@ t_coxph(
 \item{conf.int}{level for computation of the confidence intervals. If set to {FALSE} no confidence intervals are
 printed}
 
-\item{pval_method}{the method used to calculate the p-value, should be one of "wald", "log-rank", "likelihood",
-default is "log-rank".}
+\item{pval_method}{the method used to calculate the p-value, should be one of \code{"wald"}, \code{"log-rank"},
+\code{"likelihood"}, default is \code{"log-rank"}.}
 
 \item{...}{Other arguments will be passed to \code{\link[survival]{coxph}}}
 }
@@ -49,8 +49,6 @@ tbl <- t_coxph(
   conf.int = 0.8, pval_method = "wald", ties = "exact"
 )
 tbl
-
-
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

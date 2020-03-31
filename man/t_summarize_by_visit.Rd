@@ -20,7 +20,7 @@ stacked table.}
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
@@ -30,7 +30,7 @@ an \code{\link[rtables]{rtable}} object
 }
 \description{
 This function summarizes test results or change from baseline statistics by
-visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01.
+visit. Corresponds to STREAM table templates \code{EGT01}, \code{VST01} and \code{LBT01}.
 }
 \details{
 Every variable in \code{data} will be mapped to a sub-column under
@@ -45,14 +45,24 @@ Every variable in \code{data} will be mapped to a sub-column under
 # EXAMPLE 1
 library(random.cdisc.data)
 
-ADSL <- cadsl
-ADVS <- cadvs
+ADSL <- radsl(cached = TRUE)
+ADVS <- radvs(cached = TRUE)
 
-t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
-  id = ADVS$USUBJID, col_N = table(ADSL$ARM))
+t_summarize_by_visit(
+  data = ADVS[c("AVAL")],
+  visit = ADVS$AVISIT,
+  col_by = ADVS$ARM,
+  id = ADVS$USUBJID,
+  col_N = table(ADSL$ARM)
+)
 
-t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
-  id = ADVS$USUBJID, col_N = table(ADSL$ARM))
+t_summarize_by_visit(
+  data = ADVS[c("PCHG")],
+  visit = ADVS$AVISIT,
+  col_by = ADVS$ARM,
+  id = ADVS$USUBJID,
+  col_N = table(ADSL$ARM)
+)
 
 t_summarize_by_visit(
   data = ADVS[c("AVAL", "CHG")],
@@ -83,7 +93,6 @@ tbl
 \dontrun{
 Viewer(tbl)
 }
-
 }
 \author{
 Chendi Liao (liaoc10) \email{chendi.liao@roche.com}

@@ -9,7 +9,7 @@ rsort_tree(node, f)
 \arguments{
 \item{node}{node to sort}
 
-\item{f}{function(node) that returns the ordered list of new childrens this node will have,
+\item{f}{function(node) that returns the ordered list of new children this node will have,
 then recurses into the children}
 }
 \value{

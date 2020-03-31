@@ -2,8 +2,8 @@
 % Please edit documentation in R/t_events_term_grade_id.R
 \name{check_id}
 \alias{check_id}
-\title{checks that each patient appears in at most one col_by column (possibly
-several times as AVAL corresponds to several measures and there are >= 1 rows per patient)}
+\title{checks that each patient appears in at most one \code{col_by} column (possibly
+several times as \code{AVAL} corresponds to several measures and there are >= 1 rows per patient)}
 \usage{
 check_id(id, col_by)
 }
@@ -14,8 +14,8 @@ check_id(id, col_by)
 appears in one column, ignoring the "by_all" / total column)}
 }
 \description{
-checks that each patient appears in at most one col_by column (possibly
-several times as AVAL corresponds to several measures and there are >= 1 rows per patient)
+checks that each patient appears in at most one \code{col_by} column (possibly
+several times as \code{AVAL} corresponds to several measures and there are >= 1 rows per patient)
 }
 \examples{
 library(random.cdisc.data)

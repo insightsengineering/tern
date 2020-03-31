@@ -40,7 +40,7 @@ If \code{NULL}, no stratified analysis is performed.}
 \item{dense_header}{Display the table headers in multiple rows.}
 }
 \value{
-rtable with one row
+\code{rtable} with one row
 }
 \description{
 Elementary Table for Forest Time to Event Plot
@@ -77,7 +77,6 @@ t_el_forest_tte(
   tte = tte, is_event = is_event,
   col_by = factor(rep("ARM B", n), levels = c("ARM A", "ARM B"))
 )
-
 }
 \seealso{
 \code{\link{t_forest_tte}}

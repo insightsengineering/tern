@@ -1,6 +1,10 @@
 # March 2020
-t_summary_true <- function(x, col_by, col_N = NULL, total = NULL,
-                           row_name = deparse(substitute(x)),  denominator = c("N", "n", "omit")){
+t_summary_true <- function(x,
+                           col_by,
+                           col_N = NULL, # nolint
+                           total = NULL,
+                           row_name = deparse(substitute(x)),
+                           denominator = c("N", "n", "omit")) {
   warning("t_summary_true is deprecated, use t_count_true instead")
 }
 
@@ -15,10 +19,9 @@ t_summary_true <- function(x, col_by, col_N = NULL, total = NULL,
 #' @return factor with additional NA level
 #'
 #' @export
-#'
 #' @examples
-#' na_as_level(factor(c(1, 1, 2)))
-#' na_as_level(factor(c(1, 1, NA)), "na")
+#' explicit_na(factor(c(1, 1, 2)))
+#' explicit_na(factor(c(1, 1, NA)), "na")
 na_as_level <- function(x, na_level = "NA") {
   warning("na_as_level deprecated use explicit_na instead")
 

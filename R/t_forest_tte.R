@@ -115,8 +115,15 @@ t_forest_tte <- function(tte,
   )
   check_strata(strata_data)
 
-  do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by,
-                               strata_data = strata_data), row_by_list))
+  do.call(
+    check_same_n,
+    c(list(
+      tte = tte,
+      is_event = is_event,
+      col_by = col_by,
+      strata_data = strata_data), row_by_list
+    )
+  )
 
   row_by_list <- row_by_list %>% map(explicit_na)
 
@@ -124,7 +131,7 @@ t_forest_tte <- function(tte,
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
-  df <- if (is.null(strata_data)){
+  df <- if (is.null(strata_data)) {
     data.frame(tte = tte, is_event = is_event, col_by = col_by)
   } else {
     data.frame(tte = tte, is_event = is_event, col_by = col_by, strata_data = strata_data)
@@ -159,7 +166,7 @@ t_forest_tte <- function(tte,
   })
 
   tree@format_data <- node_format_data(children_gap = 1)
-  model_type <- if (is.null(strata_data)){
+  model_type <- if (is.null(strata_data)) {
     "Unstratified Analysis"
   } else {
     n_strata <- length(strata_data)
@@ -197,7 +204,7 @@ t_forest_tte <- function(tte,
 #' @param conf_int confidence level of the interval
 #' @param dense_header Display the table headers in multiple rows.
 #'
-#' @return rtable with one row
+#' @return \code{rtable} with one row
 #'
 #' @export
 #'
@@ -235,7 +242,6 @@ t_forest_tte <- function(tte,
 #'   tte = tte, is_event = is_event,
 #'   col_by = factor(rep("ARM B", n), levels = c("ARM A", "ARM B"))
 #' )
-#'
 t_el_forest_tte <- function(tte,
                             is_event,
                             col_by,
@@ -245,7 +251,6 @@ t_el_forest_tte <- function(tte,
                             row_name = "",
                             conf_int = 0.95,
                             dense_header = TRUE) {
-
   stopifnot(
     is.factor(col_by),
     is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1
@@ -268,15 +273,15 @@ t_el_forest_tte <- function(tte,
 
   col_N <- table(col_by) #nolintr
 
-  if(any(col_N) > 0 ){
+  if (any(col_N) > 0) {
     s_fit_km <- summary(survfit(Surv(tte, is_event) ~ col_by))$table
   }
 
   x <- if (all(col_N > 0)) {
     s_fit_km <- as.data.frame(s_fit_km)
 
-    cox_sum  <- if(any(is_event == TRUE) ){
-      if (is.null(strata_data)){
+    cox_sum  <- if (any(is_event == TRUE)) {
+      if (is.null(strata_data)) {
         summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties), conf.int = conf_int)
       } else {
         summary(coxph(Surv(tte, is_event) ~ col_by + strata(strata_data), ties = ties),
@@ -378,7 +383,7 @@ t_el_forest_tte <- function(tte,
         "n", "Events", "Median",
         "n", "Events", "Median",
         "Hazard",
-        paste0((conf_int)*100, "%")
+        paste0((conf_int) * 100, "%")
       ),
       rrow(
         row.name = "Factors",
@@ -405,7 +410,7 @@ t_el_forest_tte <- function(tte,
         "n", "Events", paste0("Median (", time_unit, ")"),
         "n", "Events", paste0("Median (", time_unit, ")"),
         if (is.null(strata_data)) "Hazard Ratio" else "Hazard Ratio*",
-        paste0((conf_int)*100, "% Wald CI")
+        paste0((conf_int) * 100, "% Wald CI")
       )
     )
   }

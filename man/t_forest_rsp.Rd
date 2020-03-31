@@ -60,7 +60,7 @@ the following 9 columns:
   population}
 
   \item{3-4}{Summary of responders in reference arm, \emph{n} and
-  \emph{Responders} are the total number of patients and the number of
+  \emph{responders} are the total number of patients and the number of
   responders in reference arm, respectively. \code{Response.Rate} is the
   percentage of responders in reference arm.}
 

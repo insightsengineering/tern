@@ -47,16 +47,12 @@ t_km <- function(formula,
   sumtable <- summary(fit_km)$table
 
   if (is.null(dim(sumtable))) {
-    kminfo <- sumtable[c("records", "median",
-                         paste0(conf.int, "LCL"),
-                         paste0(conf.int, "UCL"))]
+    kminfo <- sumtable[c("records", "median", paste0(conf.int, "LCL"), paste0(conf.int, "UCL"))]
     names(kminfo) <- c("records", "median", "LCL", "UCL")
     kminfo <- data.frame(as.list(kminfo))
     rownames(kminfo) <- "All"
   } else {
-    kminfo <- sumtable[, c("records", "median",
-                            paste0(conf.int, "LCL"),
-                            paste0(conf.int, "UCL")), drop = FALSE]
+    kminfo <- sumtable[, c("records", "median", paste0(conf.int, "LCL"), paste0(conf.int, "UCL")), drop = FALSE]
     colnames(kminfo) <-  c("records", "median", "LCL", "UCL")
   }
 

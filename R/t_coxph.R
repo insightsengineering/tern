@@ -31,8 +31,6 @@
 #'   conf.int = 0.8, pval_method = "wald", ties = "exact"
 #' )
 #' tbl
-#'
-#'
 t_coxph <- function(formula,
                     data,
                     conf.int = 0.95, # nolint
@@ -50,8 +48,8 @@ t_coxph <- function(formula,
 
   tbl <- rtablel(
     header = c("HR", paste0(conf.int * 100, "% CI of HR"), paste0(pval_method_str, " p-value")),
-    lapply(coxph_values[-1], function(xi) { # don't want row for reference arm
-
+    lapply(coxph_values[-1], function(xi) {
+      # don't want row for reference arm
       vals <- xi[[sel]]
       rrow(
         row.name = xi$compare["comparison"],
@@ -67,7 +65,7 @@ t_coxph <- function(formula,
 }
 
 
-#' Run Pairwise (ARM) CoxPH model for unstratified and stratified analysis
+#' Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis
 #'
 #'
 #' @param formula a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The
@@ -76,8 +74,8 @@ t_coxph <- function(formula,
 #' @param data a \code{data.frame} with all the variable that are used in \code{formula}
 #' @param conf.int level for computation of the confidence intervals. If set to {FALSE} no confidence intervals are
 #'   printed
-#' @param pval_method the method used to calculate the p-value, should be one of "wald", "log-rank", "likelihood",
-#'   default is "log-rank".
+#' @param pval_method the method used to calculate the p-value, should be one of \code{"wald"}, \code{"log-rank"},
+#'   \code{"likelihood"}, default is \code{"log-rank"}.
 #' @param ... Other arguments will be passed to \code{\link[survival]{coxph}}
 #'
 #' @return a list of dataframes with unstratified and/or stratified analysis results
@@ -108,12 +106,11 @@ t_coxph <- function(formula,
 #' )
 #' cox_res2[[2]]$stratified
 #' cox_res2[[2]]$unstratified
-#'
 s_coxph_pairwise <- function(formula,
-                    data,
-                    conf.int = 0.95, # nolint
-                    pval_method = c("log-rank", "wald",  "likelihood"),
-                    ...) {
+                             data,
+                             conf.int = 0.95, # nolint
+                             pval_method = c("log-rank", "wald",  "likelihood"),
+                             ...) {
 
   # extracted data
   cl <- match.call()
@@ -140,9 +137,10 @@ s_coxph_pairwise <- function(formula,
 
 
     fit_unstratified <- coxph(formula = form_unstr, data = df_lvl, ...)
-    unstratified <- coxph_extract(fit_unstratified,
-                                  conf.int = conf.int,
-                                  pval_method = pval_method)
+    unstratified <- coxph_extract(
+      fit_unstratified,
+      conf.int = conf.int,
+      pval_method = pval_method)
 
     stratified <- if (is.null(form_str)) {
       NULL

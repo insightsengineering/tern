@@ -24,7 +24,7 @@
 #'   population}
 #'
 #'   \item{3-4}{Summary of responders in reference arm, \emph{n} and
-#'   \emph{Responders} are the total number of patients and the number of
+#'   \emph{responders} are the total number of patients and the number of
 #'   responders in reference arm, respectively. \code{Response.Rate} is the
 #'   percentage of responders in reference arm.}
 #'
@@ -130,7 +130,7 @@ t_forest_rsp <- function(rsp,
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
-  df <- if (is.null(strata_data)){
+  df <- if (is.null(strata_data)) {
     data.frame(rsp = rsp, col_by = col_by)
   } else {
     data.frame(rsp = rsp, col_by = col_by, strata_data = strata_data)
@@ -166,7 +166,7 @@ t_forest_rsp <- function(rsp,
 
   tree@format_data <- node_format_data(children_gap = 1)
 
-  model_type <- if (is.null(strata_data)){
+  model_type <- if (is.null(strata_data)) {
     "Unstratified Analysis"
   } else {
     n_strata <- length(strata_data)
@@ -204,9 +204,10 @@ t_forest_rsp <- function(rsp,
 #' @param conf_int confidence level of the interval
 #' @param dense_header Display the table headers in multiple rows.
 #'
-#' @return rtable with one row
+#' @return \code{rtable} with one row
 #'
 #' @importFrom stats binomial confint glm
+#'
 #' @export
 #'
 #' @seealso \code{\link{t_forest_rsp}}
@@ -228,7 +229,6 @@ t_forest_rsp <- function(rsp,
 #'   col_by = col_by,
 #'   strata_data = strata_data
 #' )
-#'
 t_el_forest_rsp <- function(rsp,
                             col_by,
                             strata_data = NULL,
@@ -241,8 +241,10 @@ t_el_forest_rsp <- function(rsp,
   check_same_n(rsp = rsp, col_by = col_by, strata_data = strata_data)
   col_N <- table(col_by) #nolintr
   check_col_by_factor(rsp, col_by, col_N,  min_num_levels = 2)
-  stopifnot(is.logical(rsp),
-      is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1 )
+  stopifnot(
+    is.logical(rsp),
+    is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1
+  )
 
   if (nlevels(col_by) != 2) {
     stop("col_by number of levels is restricted to two")
@@ -269,27 +271,27 @@ t_el_forest_rsp <- function(rsp,
   }
 
   x_fit <- if (all(col_N > 0)) {
-      if (is.null(strata_data)){
-        or_tbl <- table(rsp, col_by)
-        if (all(dim(or_tbl) == 2)){
-          odds_ratio(or_tbl, conf_level = conf_int)
-        } else {
-          list(estimator = NA,
-               conf.int = c(NA, NA))
-        }
-
+    if (is.null(strata_data)) {
+      or_tbl <- table(rsp, col_by)
+      if (all(dim(or_tbl) == 2)) {
+        odds_ratio(or_tbl, conf_level = conf_int)
       } else {
-        check_strata_levels(strata_data)
-        strat <- do.call(strata, strata_data)
-        or_tbl <- table(rsp, col_by, strat)
-        if (all(dim(or_tbl)[1:2] == 2) && all(apply(or_tbl, 3L, sum) >= 2)){
-             mantelhaen.test(or_tbl, correct = FALSE, conf.level = conf_int)
-        } else {
-          list(estimate = NA,
-               conf.int = c(NA, NA))
-        }
-
+        list(estimator = NA,
+             conf.int = c(NA, NA))
       }
+
+    } else {
+      check_strata_levels(strata_data)
+      strat <- do.call(strata, strata_data)
+      or_tbl <- table(rsp, col_by, strat)
+      if (all(dim(or_tbl)[1:2] == 2) && all(apply(or_tbl, 3L, sum) >= 2)) {
+        mantelhaen.test(or_tbl, correct = FALSE, conf.level = conf_int)
+      } else {
+        list(estimate = NA,
+             conf.int = c(NA, NA))
+      }
+
+    }
   } else {
     NULL
   }
@@ -297,16 +299,16 @@ t_el_forest_rsp <- function(rsp,
 
   x_or_ci <- if (is.null(x_fit)) {
     list(
-       oddr = NA,
-       lcl = NA,
-       ucl = NA
+      oddr = NA,
+      lcl = NA,
+      ucl = NA
     )
   } else {
-        list(
-          oddr = if (is.null(strata_data)) x_fit$estimator else x_fit$estimate,
-          lcl = x_fit$conf.int[1],
-          ucl = x_fit$conf.int[2]
-        )
+    list(
+      oddr = if (is.null(strata_data)) x_fit$estimator else x_fit$estimate,
+      lcl = x_fit$conf.int[1],
+      ucl = x_fit$conf.int[2]
+    )
   }
 
 
@@ -334,7 +336,7 @@ t_el_forest_rsp <- function(rsp,
         "n", "Responders", "Rate",
         "n", "Responders", "Rate",
         if (is.null(strata_data)) "Ratio" else "Ratio*",
-        paste0((conf_int)*100, "% CI")
+        paste0((conf_int) * 100, "% CI")
       )
     )
   } else {
@@ -353,7 +355,7 @@ t_el_forest_rsp <- function(rsp,
         "n", "Responders", "Response.Rate",
         "n", "Responders", "Response.Rate",
         if (is.null(strata_data)) "Odds Ratio" else "Odds Ratio*",
-        paste0((conf_int)*100, "% CI")
+        paste0((conf_int) * 100, "% CI")
       )
     )
   }

@@ -12,7 +12,7 @@ The model object can be all main effect model, and a model with one two-way inte
 
 \item{conf_level}{confidence level for Wald odds ratio confidence interval.}
 
-\item{increments}{a named list for specifyingnumeric values of continuous variables in {\code{glm_model}}
+\item{increments}{a named list for specifying numeric values of continuous variables in {\code{glm_model}}
 which interact with other variables. This is used to calculate the odds ratio when comparing
 the other interaction variable effect. For example, for a model with ARM and AGE interaction,
 {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
@@ -37,17 +37,17 @@ ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
   mutate(Response = case_when(AVALC \%in\% c("PR", "CR") ~ 1,
                               TRUE ~ 0))
 glm_model <- glm(
- formula = Response ~  ARM + AGE + SEX + ARM*SEX,
+ formula = Response ~ ARM + AGE + SEX + ARM*SEX,
  data = ADRS_f,
  family = "binomial")
 s_logistic_interaction(glm_model, conf_level = 0.90)
 glm_model2 <- glm(
- formula = Response ~  ARM + AGE + ARM*AGE,
+ formula = Response ~ ARM + AGE + ARM*AGE,
  data = ADRS_f,
  family = "binomial")
 s_logistic_interaction(glm_model2, conf_level = 0.90)
-glm_model3  <- glm(
- formula = Response ~  ARM + AGE + BMRKR1 + BMRKR1*AGE,
+glm_model3 <- glm(
+ formula = Response ~ ARM + AGE + BMRKR1 + BMRKR1*AGE,
  data = ADRS_f,
  family = "binomial")
 s_logistic_interaction(glm_model3 , conf_level = 0.90)

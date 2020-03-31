@@ -31,7 +31,7 @@ newline and strings are wrapped according to the page with.}
 
 \item{footnotes}{vector of character string. Same rules as for \code{titles}.}
 
-\item{page}{string with page numeration, if NULL then no page number is displayed.}
+\item{page}{string with page numeration, if \code{NULL} then no page number is displayed.}
 
 \item{width_titles}{unit object}
 

@@ -1,4 +1,3 @@
-# nolintr start
 #' Create a Forest Plot based on a Table
 #'
 #' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
@@ -10,7 +9,7 @@
 #' @param vline x coordinate for vertical line, if \code{NULL} then the line is
 #'   omitted
 #' @param forest_header character vector of length 2, displayed to the left and
-#'   right of \code{vline}, respectively. If \code{vline=NULL} then
+#'   right of \code{vline}, respectively. If \code{vline = NULL} then
 #'   \code{forest_header} needs to be \code{NULL} too
 #' @param xlim x limits for x-scales
 #' @param logx boolean for showing x-values on logarithm scale
@@ -104,7 +103,7 @@
 #'   col_symbol_size = NULL,
 #'   draw = FALSE
 #' )
-#' p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+#' p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
 #' grid.newpage()
 #' grid.draw(p)
 #'
@@ -131,7 +130,7 @@
 #'   col_symbol_size = 1,
 #'   draw = FALSE
 #' )
-#' p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+#' p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
 #' grid.newpage()
 #' grid.draw(p)
 #'
@@ -219,8 +218,8 @@ g_forest <- function(tbl,
   lower <- vapply(x_ci, `[`, numeric(1), 1)
   upper <- vapply(x_ci, `[`, numeric(1), 2)
 
-  if(!is.null(col_symbol_size)){
-    symbol_size <- vapply(seq_len(nr), function(i) {
+  symbol_size <- if (!is.null(col_symbol_size)) {
+    tmp_symbol_size <- vapply(seq_len(nr), function(i) {
       xi <- as.vector(tbl[i, col_symbol_size])
 
       if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
@@ -231,14 +230,14 @@ g_forest <- function(tbl,
     }, numeric(1))
 
     # scale symbol size
-    symbol_size <- sqrt(symbol_size)
-    max_size <- max(symbol_size, na.rm = TRUE)
+    tmp_symbol_size <- sqrt(tmp_symbol_size)
+    max_size <- max(tmp_symbol_size, na.rm = TRUE)
     # Biggest points have radius is 2 * (1/3.5) lines not to overlap
     # see forest_dot_line
-    symbol_size <- 2 * symbol_size/max_size
+    2 * tmp_symbol_size / max_size
 
   } else {
-    symbol_size = NULL
+    NULL
   }
 
   grob_forest <- forest_grob(
@@ -259,9 +258,9 @@ g_forest <- function(tbl,
   )
 
   fn <- footnotes(tbl)
-  if (!is.null(fn)){
+  if (!is.null(fn)) {
     footnotes(grob_forest) <- fn
-    message('grob footnote is not added to plot; suggest to use decorate_grob() to further decorate the grob')
+    message("grob footnote is not added to plot; suggest to use decorate_grob() to further decorate the grob")
   }
 
   if (draw) {
@@ -342,7 +341,7 @@ forest_grob <- function(tbl,
     is.null(symbol_size) || length(symbol_size) == nr
   )
 
-  if(is.null(symbol_size)){
+  if (is.null(symbol_size)) {
     symbol_size <- rep(1, nr)
   }
 
@@ -640,8 +639,7 @@ forest_viewport <- function(tbl,
 
   if (is.null(width_row_names)) {
 
-    all_row_names <- c(indented_row.names(tbl, 2),
-                       indented_row.names(tbl_header, 2))
+    all_row_names <- c(indented_row.names(tbl, 2), indented_row.names(tbl_header, 2))
 
     longest_row_name <- all_row_names[which.max(vapply(all_row_names, nchar, numeric(1)))]
 
@@ -732,8 +730,12 @@ forest_viewport <- function(tbl,
 
 vp_forest_table_part <- function(nrow, ncol, l_row, l_col, widths, heights, name) {
   vpTree(
-    viewport(name = name, layout.pos.row = l_row, layout.pos.col = l_col,
-             layout = grid.layout(nrow = nrow, ncol = ncol, widths = widths, heights = heights)),
+    viewport(
+      name = name,
+      layout.pos.row = l_row,
+      layout.pos.col = l_col,
+      layout = grid.layout(nrow = nrow, ncol = ncol, widths = widths, heights = heights)
+    ),
     children = vpList(
       do.call(vpList, lapply(seq_len(nrow), function(i) {
         viewport(layout.pos.row = i, layout.pos.col = 1, name = paste0("rowname-", i))
@@ -763,7 +765,7 @@ grid.forest <- function(...) { # nolint
 #' footnotes(x) <- "Species are equally distributed"
 #' attributes(x)
 
-`footnotes<-` <- function(x, value = NULL){
+`footnotes<-` <- function(x, value = NULL) { # nolint
   attr(x, "footnote") <- value
   x
 }
@@ -777,7 +779,7 @@ grid.forest <- function(...) { # nolint
 #' footnotes(x) <- "Species are equally distributed"
 #' footnotes(x)
 #'
-footnotes <- function(x){
+footnotes <- function(x) {
   attr(x, "footnote")
 }
 
@@ -792,10 +794,7 @@ footnotes <- function(x){
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
 
-`add_footnotes<-` <- function(x, value){
+`add_footnotes<-` <- function(x, value) { # nolint
    footnotes(x) <- c(footnotes(x), value)
    x
 }
-# nolintr end
-
-

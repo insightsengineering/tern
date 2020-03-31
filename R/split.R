@@ -5,11 +5,11 @@
 #' It is typically used to construct a nested tree from it.
 #'
 #' The nested_by class is used to distinguish the simple_by (which can be a matrix
-#' which is a list as well, but in this case a non-recursive interpretation as in col_by)
+#' which is a list as well, but in this case a non-recursive interpretation as in \code{col_by})
 #' from the recursive
 #'
 #' @param x a list that specifies recursive split,
-#'   e.g. a list of col_bys (which can be matrices or factors)
+#'   e.g. a list of \code{col_bys} (which can be matrices or factors)
 #'
 #' @export
 nested_by <- function(x) {
@@ -59,16 +59,16 @@ is_simple_by <- function(x) {
 #' @param x object to split
 #' @param by split by, either a factor or a col_by matrix
 #'
-#' @return list, one item for each cateogory in by
+#' @return list, one item for each category in by
 #'
 #' @export
 esplit <- function(x, by) {
   UseMethod("esplit", x)
 }
 
-#' Default method for atomics
+#' Default method for atomic
 #'
-#' Also includes NULL
+#' Also includes \code{NULL}
 #'
 #' @inheritParams esplit
 #'
@@ -177,7 +177,7 @@ esplit.non_rsplit <- function(x, by) { #nolintr
 #'
 #' @param x list to protect from splitting
 #'
-#' @return object of class non_rsplit
+#' @return object of class \code{non_rsplit}
 #'
 #' @export
 non_rsplit <- function(x) {
@@ -192,7 +192,8 @@ non_rsplit <- function(x) {
 #' @param x object to split
 #' @param by_lst list of by objects to recursively split by
 #'
-#' @return nested list, first level corresponding to split by by_lst[[1]], second to recursive split by by_lst[[2]] etc.
+#' @return nested list, first level corresponding to split by \code{by_lst[[1]]}, the second to recursive split by
+#' \code{by_lst[[2]]} etc.
 #'
 #' @examples
 #' by_lst <- list(factor(c("M", "M", "F", "F", "F")), factor(c("O", "Y", "Y", "Y", "Y")))

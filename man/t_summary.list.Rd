@@ -16,9 +16,9 @@
 \arguments{
 \item{x_list}{list of x}
 
-\item{col_by_list}{list of col_by, one for each item of \code{x_list}}
+\item{col_by_list}{list of \code{col_by}, one for each item of \code{x_list}}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
@@ -35,5 +35,5 @@ more than one record per subject.}
 You can use \code{...} to add arguments like \code{total}
 }
 \details{
-If col_N is NULL, it gets it by adding up the numbers from all items in the col_by_list
+If \code{col_N} is \code{NULL}, it gets it by adding up the numbers from all items in the \code{col_by_list}
 }

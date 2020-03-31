@@ -31,7 +31,7 @@ If \code{NULL}, no stratified analysis is performed.}
 \item{dense_header}{Display the table headers in multiple rows.}
 }
 \value{
-rtable with one row
+\code{rtable} with one row
 }
 \description{
 Elementary Table for Forest Response Plot
@@ -53,7 +53,6 @@ t_el_forest_rsp(
   col_by = col_by,
   strata_data = strata_data
 )
-
 }
 \seealso{
 \code{\link{t_forest_rsp}}

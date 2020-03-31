@@ -52,12 +52,12 @@
 #'   row_name = "Total number of patients with at least one AE")
 #'
 t_el_count_unique <- function(x,
-                           col_by,
-                           col_N = NULL, # nolint
-                           total = NULL,
-                           na_rm = TRUE,
-                           denominator = c("N", "omit"),
-                           row_name = "number of unique elements") {
+                              col_by,
+                              col_N = NULL, # nolint
+                              total = NULL,
+                              na_rm = TRUE,
+                              denominator = c("N", "omit"),
+                              row_name = "number of unique elements") {
   denominator <- match.arg(denominator)
 
   stopifnot(
@@ -85,16 +85,16 @@ t_el_count_unique <- function(x,
     length(unique(xi))
   }, numeric(1))
 
-  tbl_row <- if(omit_perc){
+  tbl_row <- if (omit_perc) {
     rrowl(as.character(row_name), counts, format = "xx")
   } else{
     rrowl(as.character(row_name), Map(function(ci, pi) {
-      res <- if (ci == 0){
+      res <- if (ci == 0) {
         rcell(ci, format = "xx")
       } else {
         rcell(c(ci, pi), format = "xx.xx (xx.xx%)")
       }
-    }, counts, counts/col_N))
+    }, counts, counts / col_N))
   }
 
   tbl <-  rtable(
@@ -172,7 +172,7 @@ t_count_unique <- function(x,
                            total = NULL,
                            na_rm = TRUE,
                            denominator = c("N", "omit"),
-                           table_tree = FALSE){
+                           table_tree = FALSE) {
 
   denominator <- match.arg(denominator)
 
@@ -200,12 +200,14 @@ t_count_unique <- function(x,
 
     node(
       name = invisible_node_name(node_name),
-      content = if(length(xi)==0 && nrow(cbi)==0) {
+      content = if (length(xi) == 0 && nrow(cbi) == 0) {
         header_add_N(
           rtable(
             header = rheader(rrowl("", colnames(cbi))),
             rrowl(node_name, get_N(cbi))
-          ), col_N )
+          ),
+          col_N
+        )
 
       } else {
 

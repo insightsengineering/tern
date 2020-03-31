@@ -1,6 +1,6 @@
 #' Substitute missing data with a string or factor level
 #'
-#' @param x factor or charactor vector
+#' @param x factor or character vector
 #' @param label character string that missing data should be replaced with
 #'
 #' @export

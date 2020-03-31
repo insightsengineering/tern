@@ -13,7 +13,7 @@ The model object can be all main effect model, and a model with one two-way inte
 \item{terms_label}{a named vector to control the displaying label of terms
 from {\code{glm_model}}. If it's {\code{NULL}}, then variable name will be displayed in table.}
 
-\item{increments}{a named list for specifyingnumeric values of continuous variables in {\code{glm_model}}
+\item{increments}{a named list for specifying numeric values of continuous variables in {\code{glm_model}}
 which interact with other variables. This is used to calculate the odds ratio when comparing
 the other interaction variable effect. For example, for a model with ARM and AGE interaction,
 {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
@@ -32,22 +32,21 @@ Report p-value for Wald chi-square test of the null hypothesis that covariate ha
 response in model containing all specified covariates.
 Allow option to include one two-way interaction and present similar output for
 each interaction degree of freedom.
-Note: For glm model, the variable names need to be standard dataframe column name without
+Note: For \code{glm} model, the variable names need to be standard dataframe column name without
 special characters. The big N is the total number of observations for complete cases.
 }
 \examples{
 library(random.cdisc.data)
 library(dplyr)
-library(purrr)
 
 ADSL <- radsl(cached = TRUE)
-ADSL <- ADSL \%>\% filter(SEX \%in\% c("F", "M"))
+ADSL <- ADSL \%>\% dplyr::filter(SEX \%in\% c("F", "M"))
 ADRS <- radrs(ADSL, seed = 2)
 ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
-  mutate(Response = case_when(AVALC \%in\% c("PR", "CR") ~ 1,
+  dplyr::mutate(Response = case_when(AVALC \%in\% c("PR", "CR") ~ 1,
                               TRUE ~ 0))
 glm_model <- glm(
- formula = Response ~  ARM + AGE + SEX,
+ formula = Response ~ ARM + AGE + SEX,
  data = ADRS_f,
  family = "binomial")
 tbl <- t_logistic(glm_model = glm_model)
@@ -55,8 +54,8 @@ tbl <- t_logistic(glm_model = glm_model)
 Viewer(tbl)
 }
 
-glm_model  <- glm(
- formula = Response ~  ARM + AGE + BMRKR2 + ARM*BMRKR2,
+glm_model <- glm(
+ formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
  data = ADRS_f,
  family = "binomial")
 tbl2 <- t_logistic(
@@ -71,7 +70,7 @@ Viewer(tbl2)
 }
 
 glm_model <- glm(
- formula = Response ~  ARM + AGE + BMRKR1 + ARM*BMRKR1,
+ formula = Response ~ ARM + AGE + BMRKR1 + ARM*BMRKR1,
  data = ADRS_f,
  family = "binomial")
 tbl3 <- t_logistic(
@@ -87,7 +86,7 @@ tbl3 <- t_logistic(
 Viewer(tbl3)
 }
 glm_model <- glm(
- formula = Response ~  ARM + AGE + BMRKR1 + AGE*BMRKR1,
+ formula = Response ~ ARM + AGE + BMRKR1 + AGE*BMRKR1,
  data = ADRS_f,
  family = "binomial")
 tbl4 <- t_logistic(
@@ -102,5 +101,4 @@ tbl4 <- t_logistic(
 \dontrun{
 Viewer(tbl4)
 }
-
 }

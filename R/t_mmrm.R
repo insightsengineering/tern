@@ -1,18 +1,18 @@
 #' Mix model with repeated measurements (MMRM) model
 #'
 #' The MMRM table function summarizes MMRM test results by visit and groups. The
-#' function produces adjusted lsmeans and standard error, as well as conducts
+#' function produces adjusted \code{lsmeans} and standard error, as well as conducts
 #' comparisons between groups' adjusted means, where the first level of the group
 #' is the reference level.
 #'
-#' @details \url{https://pages.github.roche.com/NEST/docs/bookdown/NEST/statistics_clinical_trials/master/mixed-effect-model-repeat-measurement.html}
+#' @details
 #'
-#' Create rtable of MMRM test results
+#' Create \code{rtable} of MMRM test results
 #'
 #' @inheritParams a_mmrm
 #' @inheritParams argument_convention
 #'
-#' @return rtable object or table tree, depending on the the `table_tree` argument
+#' @return \code{rtable} object or table tree, depending on the the `table_tree` argument
 #'
 #' @export
 #'
@@ -25,12 +25,12 @@
 #' ADSL <- radsl(cached = TRUE)
 #' ADQS <- radqs(cached = TRUE)
 #' ADQS_f <- ADQS %>%
-#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
-#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
-#' t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM*AVISIT,
+#' t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
 #'        data = ADQS_f,
 #'        id_var = "USUBJID",
 #'        arm_var = "ARM",
@@ -42,7 +42,6 @@
 #'        corStruct = "corSymm",
 #'        table_tree = FALSE
 #' )
-#'
 t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    data,
                    id_var = "USUBJID",
@@ -55,15 +54,17 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    corStruct = NULL, # nolint
                    table_tree = TRUE) {
 
-  mmrm_result <- a_mmrm(formula = formula,
-                        data = data,
-                        id_var = id_var,
-                        arm_var = arm_var,
-                        visit_var = visit_var,
-                        mode = mode,
-                        conf.level = conf.level,
-                        weights_emmeans = weights_emmeans,
-                        corStruct = corStruct)
+  mmrm_result <- a_mmrm(
+    formula = formula,
+    data = data,
+    id_var = id_var,
+    arm_var = arm_var,
+    visit_var = visit_var,
+    mode = mode,
+    conf.level = conf.level,
+    weights_emmeans = weights_emmeans,
+    corStruct = corStruct
+  )
 
   s_contrast_df <- split(
     mmrm_result$`contrast`,
@@ -91,88 +92,96 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 
     tbl <- rtable(
       header = tbl_head,
-      rrowl("n",
-            tapply(df1_i$`n`, factor(df1_i[[arm_var]], levels = arm_lvl),
-                   function(n_i) {
-                     c(n_i)
-                   }),
-            format = "xx"
+      rrowl(
+        "n",
+        tapply(
+          df1_i$`n`, factor(df1_i[[arm_var]], levels = arm_lvl),
+          function(n_i) {
+            c(n_i)
+          }
+        ),
+        format = "xx"
       ),
-      rrowl("Adjusted Mean (SE)",
-            lapply(split(df1_i,
-                         factor(df1_i[[arm_var]], levels = arm_lvl),
-                         drop = FALSE),
-                   function(vector_i) {
-                     if (is.null(vector_i)) {
-                       NULL
-                     } else {
-                       c(vector_i$`emmean`, vector_i$`SE`)
-                     }
-                   }),
-            format = sprintf_format("%.3f (%.3f)")
+      rrowl(
+        "Adjusted Mean (SE)",
+        lapply(
+          split(df1_i, factor(df1_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`emmean`, vector_i$`SE`)
+            }
+          }
+        ),
+        format = sprintf_format("%.3f (%.3f)")
       ),
-      rrowl(paste0(mmrm_result$`conf_level` * 100, "% CI"),
-            lapply(split(df1_i,
-                         factor(df1_i[[arm_var]], levels = arm_lvl),
-                         drop = FALSE),
-                   function(vector_i) {
-                     if (is.null(vector_i)) {
-                       NULL
-                     } else {
-                       c(vector_i$`lower.CL`, vector_i$`upper.CL`)
-                     }
-                   }),
-            format = "(xx.xxx, xx.xxx)"
-      ),
-      rrow(),
-      rrowl(paste0("Difference in Adjusted Means (SE) (vs. ", mmrm_result$`ref_level`, ")"),
-            lapply(split(df2_i,
-                         factor(df2_i[[arm_var]], levels = arm_lvl),
-                         drop = FALSE),
-                   function(vector_i) {
-                     if (is.null(vector_i)) {
-                       NULL
-                     } else {
-                       c(vector_i$`estimate`, vector_i$`SE`)
-                     }
-                   }),
-            format = sprintf_format("%.3f (%.3f)")
-      ),
-      rrowl(paste0(mmrm_result$`conf_level` * 100, "% CI"),
-            lapply(split(df2_i,
-                         factor(df2_i[[arm_var]], levels = arm_lvl),
-                         drop = FALSE),
-                   function(vector_i) {
-                     if (is.null(vector_i)) {
-                       NULL
-                     } else {
-                       c(vector_i$`lower.CL`, vector_i$`upper.CL`)
-                     }
-                   }),
-            format = "(xx.xxx, xx.xxx)"
-      ),
-      rrowl("Relative Reduction (%)",
-            lapply(split(df2_i, df2_i[[arm_var]], drop = FALSE),
-                   function(vector_i) {
-                     if (is.null(vector_i)) {
-                       NULL
-                     } else {
-                       c(vector_i$`relative_reduc`)
-                     }
-                   }),
-            format = "xx.x%"
+      rrowl(
+        paste0(mmrm_result$`conf_level` * 100, "% CI"),
+        lapply(
+          split(df1_i, factor(df1_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`lower.CL`, vector_i$`upper.CL`)
+            }
+          }),
+        format = "(xx.xxx, xx.xxx)"
       ),
       rrow(),
-      rrowl("p-value (MMRM)",
-            lapply(split(df2_i, df2_i[[arm_var]], drop = FALSE),
-                   function(vector_i) {
-                     if (is.null(vector_i)) {
-                       NULL
-                     } else {
-                       c(vector_i$`p.value`)
-                     }
-                   }),
-            format = format_pval
+      rrowl(
+        paste0("Difference in Adjusted Means (SE) (vs. ", mmrm_result$`ref_level`, ")"),
+        lapply(
+          split(df2_i, factor(df2_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`estimate`, vector_i$`SE`)
+            }
+          }),
+        format = sprintf_format("%.3f (%.3f)")
+      ),
+      rrowl(
+        paste0(mmrm_result$`conf_level` * 100, "% CI"),
+        lapply(
+          split(df2_i, factor(df2_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`lower.CL`, vector_i$`upper.CL`)
+            }
+          }),
+        format = "(xx.xxx, xx.xxx)"
+      ),
+      rrowl(
+        "Relative Reduction (%)",
+        lapply(
+          split(df2_i, df2_i[[arm_var]], drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`relative_reduc`)
+            }
+          }),
+        format = "xx.x%"
+      ),
+      rrow(),
+      rrowl(
+        "p-value (MMRM)",
+        lapply(
+          split(df2_i, df2_i[[arm_var]], drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`p.value`)
+            }
+          }),
+        format = format_pval
       )
     )
 
@@ -202,22 +211,22 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #' MMRM model, test, estimate
 #'
 #'
-#' @param formula a gls formula.
+#' @param formula a \code{gls} formula.
 #' @param data a \code{data.frame} with all the variables specified in
 #'   \code{formula}. Records with missing values in any independent variables
 #'   will be excluded.
 #' @param id_var a character describing the variable name used as subject IDs,
-#'   "USUBJID" by default.
+#'   \code{"USUBJID"} by default.
 #' @param arm_var a character describing the variable name for \code{\link{arm}},
-#'   "ARM" by default. The arm variable must be factor in \code{data}
+#'   \code{"ARM"} by default. The arm variable must be factor in \code{data}
 #' @param visit_var a character describing the variable name for visit,
-#'   "AVISIT" by default. This variable must be factor in data.
-#' @param mode algorithm for degree of freedom: "auto", "df.error" or
-#'   "boot-satterthwaite".
+#'   \code{"AVISIT"} by default. This variable must be factor in data.
+#' @param mode algorithm for degree of freedom: \code{auto}, \code{df.error} or
+#'   \code{boot-satterthwaite}.
 #' @param conf.level confidence level. Must be number greater than 0 and less
 #'   than 1.
-#' @param weights_emmeans argument from emmeans, "proportional" by default.
-#' @param corStruct \code{NULL} by default or a string with the name of \link[nlme]{corClasses}.
+#' @param weights_emmeans argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.
+#' @param corStruct \code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.
 #'
 #' @return a dataframe with MMRM results
 #'
@@ -244,7 +253,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'
 #' mmrm_results <- a_mmrm(
 #'   data = ADQS_f,
-#'   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM * AVISIT,
+#'   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,
 #'   id_var = "USUBJID",
 #'   arm_var = "ARM",
 #'   visit_var = "AVISIT",
@@ -258,7 +267,6 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'
 #' mmrm_results["contrast"]
 #' mmrm_results["estimate"]
-#'
 a_mmrm <- function(data,
                    formula = AVAL ~ ARM + AVISIT + ARM * VISIT,
                    id_var = "USUBJID",
@@ -417,7 +425,12 @@ a_mmrm <- function(data,
     dplyr::mutate(relative_reduc = (.data$ref - .data$emmean) / .data$ref) %>%
     dplyr::select(c(visit_var, arm_var, "relative_reduc"))
 
-  sum_fit_diff <- summary(contrast(emm, method = "trt.vs.ctrl"), level = conf.level, infer = c(TRUE, TRUE), adjust = "none")
+  sum_fit_diff <- summary(
+    contrast(emm, method = "trt.vs.ctrl"),
+    level = conf.level,
+    infer = c(TRUE, TRUE),
+    adjust = "none"
+  )
 
   # get the comparison group name from "contrast" column, e.g. "ARMB - ARMA" returns "ARMB", i.e. remove " - ARMA"
   contrast <- sum_fit_diff %>%
@@ -428,7 +441,7 @@ a_mmrm <- function(data,
     dplyr::rename(!!arm_symbol := .data$col_by) %>%
     dplyr::left_join(relative_reduc, by = c(visit_var, arm_var))
 
-  warning("MMRM methodology in R is different from SAS. Please use as exploratory purpose.")
+  message("MMRM methodology in R is different from SAS. Please use as exploratory purpose.")
 
   list(
     contrast = contrast,

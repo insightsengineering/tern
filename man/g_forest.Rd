@@ -32,7 +32,7 @@ g_forest(
 omitted}
 
 \item{forest_header}{character vector of length 2, displayed to the left and
-right of \code{vline}, respectively. If \code{vline=NULL} then
+right of \code{vline}, respectively. If \code{vline = NULL} then
 \code{forest_header} needs to be \code{NULL} too}
 
 \item{xlim}{x limits for x-scales}
@@ -131,7 +131,7 @@ p <- g_forest(
   col_symbol_size = NULL,
   draw = FALSE
 )
-p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
 grid.newpage()
 grid.draw(p)
 
@@ -158,7 +158,7 @@ p <- g_forest(
   col_symbol_size = 1,
   draw = FALSE
 )
-p <- decorate_grob(p, title =  "forest plot", footnotes = footnotes(p))
+p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
 grid.newpage()
 grid.draw(p)
 

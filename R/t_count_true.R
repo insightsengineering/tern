@@ -50,11 +50,11 @@
 #' # Add descriptive row:
 #' insert_rrow(indent(tbl, 1), rrow("Total number of adverse events which are"))
 t_count_true <- function(x,
-                      col_by,
-                      col_N = NULL, # nolint
-                      total = NULL,
-                      denominator = c("N", "n", "omit"),
-                      ...) {
+                         col_by,
+                         col_N = NULL, # nolint
+                         total = NULL,
+                         denominator = c("N", "n", "omit"),
+                         ...) {
   UseMethod("t_count_true", x)
 }
 
@@ -67,18 +67,18 @@ t_count_true <- function(x,
 #' @inheritParams t_count_true.logical
 #' @param ... not used arguments
 #'
-#' @return rtable
+#' @return \code{rtable}
 #'
 #' @export
 #'
 #' @examples
 #' t_count_true(1:5, factor(LETTERS[c(1,2,1,1,2)]))
 t_count_true.default <- function(x, # nolint
-                              col_by,
-                              col_N = NULL, # nolint
-                              total = NULL,
-                              denominator = c("N", "n", "omit"),
-                              ...) {
+                                 col_by,
+                                 col_N = NULL, # nolint
+                                 total = NULL,
+                                 denominator = c("N", "n", "omit"),
+                                 ...) {
 
   tbl <- t_summary.default(x = x, col_by = col_by, col_N = col_N, total = total)
   row.names(tbl) <- gsub("t_summary", "t_count_true", row.names(tbl))
@@ -114,12 +114,12 @@ t_count_true.default <- function(x, # nolint
 #' # show only counts without percent
 #' with(iris, t_count_true(Sepal.Length > 5.5, col_by = Species, denominator = "omit"))
 t_count_true.logical <- function(x,
-                           col_by,
-                           col_N = NULL, # nolint
-                           total = NULL,
-                           denominator = c("N", "n", "omit"),
-                           row_name = deparse(substitute(x)),
-                           ...) {
+                                 col_by,
+                                 col_N = NULL, # nolint
+                                 total = NULL,
+                                 denominator = c("N", "n", "omit"),
+                                 row_name = deparse(substitute(x)),
+                                 ...) {
 
   stopifnot(is_character_single(row_name))
   denominator <- match.arg(denominator)
@@ -131,20 +131,20 @@ t_count_true.logical <- function(x,
 #' Tabulate \code{TRUE} counts in a list
 #'
 #' Helper function for \code{t_count_true.data.frame},
-#' If col_N is NULL, it's derived by adding up the numbers from all items in the col_by_list
+#' If \code{col_N} is \code{NULL}, it's derived by adding up the numbers from all items in the \code{col_by_list}
 #'
 #' @inheritParams t_count_true.data.frame
 #' @param x_list list of x
-#' @param col_by_list list of col_by, one for each item of \code{x_list}
+#' @param col_by_list list of \code{col_by}, one for each item of \code{x_list}
 #' @param ... not used arguments
 #'
 t_count_true.list <- function(x_list, #nolintr
-                           col_by_list,
-                           col_N = NULL, # nolint
-                           total = NULL,
-                           denominator = c("N", "n", "omit"),
-                           table_tree = FALSE,
-                           ...) {
+                              col_by_list,
+                              col_N = NULL, # nolint
+                              total = NULL,
+                              denominator = c("N", "n", "omit"),
+                              table_tree = FALSE,
+                              ...) {
   stopifnot(
     is.list(x_list),
     is.list(col_by_list),
@@ -163,12 +163,13 @@ t_count_true.list <- function(x_list, #nolintr
     check_col_by(x, col_by, col_N, min_num_levels = 1)
     node(
       name = invisible_node_name(node_name),
-      content = t_count_true(x = x,
-                               col_by = col_by,
-                               col_N = col_N,
-                               total = NULL,
-                               row_name = node_name,
-                               denominator = denominator),
+      content = t_count_true(
+        x = x,
+        col_by = col_by,
+        col_N = col_N,
+        total = NULL,
+        row_name = node_name,
+        denominator = denominator),
       children = list(),
       format_data = list(content_indent = 0)
     )
@@ -224,13 +225,13 @@ t_count_true.list <- function(x_list, #nolintr
 #'
 #' t_count_true(ANL, col_by = ADSL$ARM)
 #' t_count_true(ANL, col_by = ADSL$ARM, denominator = "omit")
-t_count_true.data.frame <- function(x,
-                                   col_by,
-                                   col_N = NULL, # nolint
-                                   total = NULL,
-                                   denominator = c("N", "n", "omit"),
-                                   table_tree = FALSE,
-                                   ...) {
+t_count_true.data.frame <- function(x, # nolint
+                                    col_by,
+                                    col_N = NULL, # nolint
+                                    total = NULL,
+                                    denominator = c("N", "n", "omit"),
+                                    table_tree = FALSE,
+                                    ...) {
 
   denominator <- match.arg(denominator)
 

@@ -217,10 +217,10 @@ t_summary_by <- function(x,
 #'
 #' You can use \code{...} to add arguments like \code{total}
 #'
-#' If col_N is NULL, it gets it by adding up the numbers from all items in the col_by_list
+#' If \code{col_N} is \code{NULL}, it gets it by adding up the numbers from all items in the \code{col_by_list}
 #'
 #' @param x_list list of x
-#' @param col_by_list list of col_by, one for each item of \code{x_list}
+#' @param col_by_list list of \code{col_by}, one for each item of \code{x_list}
 #' @inheritParams t_summary.data.frame
 t_summary.list <- function(x_list, #nolintr
                            col_by_list,
@@ -320,13 +320,13 @@ nb_entries.data.frame <- function(x) { # nolint
   nrow(x)
 }
 
-#' Stacks x and col_by when \code{compare_in_header} attribute is present
+#' Stacks \code{x} and \code{col_by} when \code{compare_in_header} attribute is present
 #'
 #' Will create a hierarchical header for each column of x and the columns will be compared
 #'
 #' @param x data.frame with numeric columns that are stacked
 #' @param col_by col_by data.frame
-#' @param col_N numeric vector of length \code{ncol(col_by)} or NULL -> computed from col_by
+#' @param col_N numeric vector of length \code{ncol(col_by)} or \code{NULL} -> computed from \code{col_by}
 #'
 #' @return list(
 #'   x = stacked x,

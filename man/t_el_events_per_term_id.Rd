@@ -21,7 +21,7 @@ event then that information needs to be added to the \code{col_N} argument.}
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}

@@ -26,7 +26,7 @@ t_tte(
 
 \item{data}{a \code{data.frame} with all the variable that are used in \code{formula}}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
@@ -43,10 +43,10 @@ analysis, if \code{NULL} this section of the table will be omitted}
 \item{conf_level}{either a single number or a named vector of confidence levels where the names are \code{survfit},
 \code{coxph}, and \code{ztest}}
 
-\item{conf_type_survfit}{conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
+\item{conf_type_survfit}{\code{conf.type} in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
 \code{"none"}, \code{"log"}, or \code{"log-log"}.}
 
-\item{probs_survfit}{numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}}
+\item{probs_survfit}{numeric vector of length two to specify the quantiles in \code{\link[stats]{quantile}}}
 
 \item{pval_method_coxph}{passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}}
 
@@ -135,5 +135,4 @@ tbl3 <- t_tte(
 summary(tbl3)
 
 to_rtable(tbl3)
-
 }

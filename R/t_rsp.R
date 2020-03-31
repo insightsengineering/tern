@@ -372,19 +372,22 @@ t_rsp <- function(rsp,
     )
 
     # Display full labels for responses in controlled codelist
-    rsp_full_label <- c(CR          = "Complete Response (CR)",
-                        PR          = "Partial Response (PR)",
-                        SD          = "Stable Disease (SD)",
-                        `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
-                        PD          = "Progressive Disease (PD)",
-                        NE          = "Not Evaluable (NE)",
-                        Missing     = "Missing",
-                        `NE/Missing` = "Missing or unevaluable"
+    rsp_full_label <- c(
+      CR          = "Complete Response (CR)",
+      PR          = "Partial Response (PR)",
+      SD          = "Stable Disease (SD)",
+      `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
+      PD          = "Progressive Disease (PD)",
+      NE          = "Not Evaluable (NE)",
+      Missing     = "Missing",
+      `NE/Missing` = "Missing or unevaluable"
     )
 
-    values_label <- ifelse(names(values) %in% names(rsp_full_label),
-                           rsp_full_label[names(values)],
-                           names(values))
+    values_label <- ifelse(
+      names(values) %in% names(rsp_full_label),
+      rsp_full_label[names(values)],
+      names(values)
+    )
 
     tbls_part <- Map(function(vals, name) {
       rtable(

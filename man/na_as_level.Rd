@@ -18,6 +18,6 @@ factor with additional NA level
 Replace NA values by NA string level
 }
 \examples{
-na_as_level(factor(c(1, 1, 2)))
-na_as_level(factor(c(1, 1, NA)), "na")
+explicit_na(factor(c(1, 1, 2)))
+explicit_na(factor(c(1, 1, NA)), "na")
 }

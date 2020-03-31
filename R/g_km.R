@@ -376,9 +376,11 @@ km_curve_data <- function(fit_km, xticks = NULL) {
 
   ### interval in x-axis
   if (length(xticks) <= 1) {
-    xpos <- seq(0, floor(max(df$time)), by = ifelse(is.null(xticks),
-                                                    max(1, floor(max(df$time) / 10)),
-                                                    xticks))
+    xpos <- seq(
+      0,
+      floor(max(df$time)),
+      by = ifelse(is.null(xticks), max(1, floor(max(df$time) / 10)), xticks)
+    )
   } else {
     xpos <-  c(0, xticks)
   }
@@ -413,12 +415,16 @@ km_curve_data <- function(fit_km, xticks = NULL) {
     x[x$n.censor != 0, "surv"]
   })
 
-  structure(list(xpos = xpos,
-                 lines_x = lines_x,
-                 lines_y = lines_y,
-                 points_x = points_x,
-                 points_y = points_y,
-                 group = group,
-                 pt_risk = pt_risk),
-            class = "km_curve_data")
+  structure(
+    list(
+      xpos = xpos,
+      lines_x = lines_x,
+      lines_y = lines_y,
+      points_x = points_x,
+      points_y = points_y,
+      group = group,
+      pt_risk = pt_risk
+    ),
+    class = "km_curve_data"
+  )
 }

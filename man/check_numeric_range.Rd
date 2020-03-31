@@ -11,14 +11,18 @@ check_numeric_range(x, min = 0, max = 1)
 
 \item{min}{a numeric value specifying the lower boundary (exclusive), with default value \code{0}}
 
-\item{max}{a numeric value specifying the upper boundary (exclusive), with default value \code{1}
-
-conf.init <- 0.7
-tern:::check_numeric_range(conf.init)
-
-quantiles <- c(0, 1.2)
-tern:::check_numeric_range(quantiles)}
+\item{max}{a numeric value specifying the upper boundary (exclusive), with default value \code{1}}
 }
 \description{
 check all numbers are in desired range
+}
+\examples{
+conf.init <- 0.7
+tern:::check_numeric_range(conf.init)
+
+# below produces error
+quantiles <- c(0, 1.2)
+\donttest{
+tern:::check_numeric_range(quantiles)
+}
 }

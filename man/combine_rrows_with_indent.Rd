@@ -2,13 +2,13 @@
 % Please edit documentation in R/for_rtables.R
 \name{combine_rrows_with_indent}
 \alias{combine_rrows_with_indent}
-\title{Combines two lists of rrows to a list of rrows
+\title{Combines two lists of \code{rrow} to a list of \code{rrow}
 Also keeps indent.}
 \usage{
 combine_rrows_with_indent(x, y)
 }
 \arguments{
-\item{x}{first list of rows, row.names are taken from this list}
+\item{x}{first list of rows, \code{row.names} are taken from this list}
 
 \item{y}{second list}
 }
@@ -16,6 +16,6 @@ combine_rrows_with_indent(x, y)
 list of combined rows
 }
 \description{
-Combines two lists of rrows to a list of rrows
+Combines two lists of \code{rrow} to a list of \code{rrow}
 Also keeps indent.
 }

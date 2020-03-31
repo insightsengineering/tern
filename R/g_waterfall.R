@@ -99,8 +99,9 @@ g_waterfall <- function(height,
 
   p <- ggplot(plot_data_ord, aes(x = factor(id, levels = id), y = height)) +
     geom_col() +
-    geom_text(label = format(plot_data_ord$height, digits = 2),
-              vjust = ifelse(plot_data_ord$height >= 0, -0.5, 1.5)) +
+    geom_text(
+      label = format(plot_data_ord$height, digits = 2),
+      vjust = ifelse(plot_data_ord$height >= 0, -0.5, 1.5)) +
     xlab(xlab) +
     ylab(ylab) +
     theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = .5))

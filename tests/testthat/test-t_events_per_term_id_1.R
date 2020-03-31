@@ -173,21 +173,13 @@ test_that("adverse events by terms (term only)", {
 
   # nolint start
   tbl_stream <- rtable(
-    header = rheader(
-      rrowl("", c("Active", "Placebo", "All Patients")),
-      rrowl("", c("(N=32)", "(N=28)", "(N=60)"))
-    ),
-    rrow("Total number of patients with at least one adverse event",
-         rcell(c(23, .719), "xx (xx.x%)"), rcell(c(19, .679), "xx (xx.x%)"), rcell(c(42, .700), "xx (xx.x%)")),
+    header = rheader(rrowl("", c("Active", "Placebo", "All Patients")), rrowl("", c("(N=32)", "(N=28)", "(N=60)"))),
+    rrow("Total number of patients with at least one adverse event", rcell(c(23, .719), "xx (xx.x%)"), rcell(c(19, .679), "xx (xx.x%)"), rcell(c(42, .700), "xx (xx.x%)")),
     rrow("Overall total number of events", rcell(c(58)), rcell(c(40)), rcell(c(98))),
-    rrow("VOMITING",
-         rcell(c(17, .531), "xx (xx.x%)"), rcell(c(8, .286), "xx (xx.x%)"), rcell(c(25, .417), "xx (xx.x%)")),
-    rrow("ABNOMINAL PAIN",
-         rcell(c(6, .188), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)")),
-    rrow("STOMATITIS",
-         rcell(c(5, .156), "xx (xx.x%)"), rcell(c(6, .214), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)")),
-    rrow("UPPER RESPIRATORY TRACT INFECTION",
-         rcell(c(1, .031), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(6, .100), "xx (xx.x%)")),
+    rrow("VOMITING", rcell(c(17, .531), "xx (xx.x%)"), rcell(c(8, .286), "xx (xx.x%)"), rcell(c(25, .417), "xx (xx.x%)")),
+    rrow("ABNOMINAL PAIN", rcell(c(6, .188), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)")),
+    rrow("STOMATITIS", rcell(c(5, .156), "xx (xx.x%)"), rcell(c(6, .214), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)")),
+    rrow("UPPER RESPIRATORY TRACT INFECTION", rcell(c(1, .031), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(6, .100), "xx (xx.x%)")),
     rrow("INFLUENZA", rcell(c(1, .031), "xx (xx.x%)"), rcell(0), rcell(c(1, .017), "xx (xx.x%)"))
   )
   # nolint end
@@ -199,13 +191,15 @@ test_that("adverse events by terms (term only)", {
   anl <- anl %>%
     var_relabel(
       AEBODSYS = "MedDRA System Organ Class",
-      AEDECOD = "MedDRA Preferred Term")
+      AEDECOD = "MedDRA Preferred Term"
+    )
 
-  tbl <- t_events_per_term_id(terms = as_factor_keep_attributes(anl$AEDECOD),
-                              id = anl$USUBJID,
-                              col_by = anl$ARM,
-                              total = "All Patients",
-                              col_N = table(asl$ARM)
+  tbl <- t_events_per_term_id(
+    terms = as_factor_keep_attributes(anl$AEDECOD),
+    id = anl$USUBJID,
+    col_by = anl$ARM,
+    total = "All Patients",
+    col_N = table(asl$ARM)
   )
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)

@@ -378,11 +378,14 @@ argfix_events_terms <- function(terms) {
   empty_terms <- vapply(terms, function(x) any(x == "") || any(grepl("^\\s+$", x)), logical(1))
   na_terms <- vapply(terms, function(x) any(is.na(x)), logical(1))
 
-  if (any(empty_terms))
-    stop("terms are not allowed to be an empty string or strings of spaces. You may use explicit_na(sas_na(x))", call. = FALSE)
+  if (any(empty_terms)) {
+    stop("terms are not allowed to be an empty string or strings of spaces. You may use explicit_na(sas_na(x))",
+         call. = FALSE)
+  }
 
-  if (any(na_terms))
+  if (any(na_terms)) {
     stop("terms currently do not allow missing data, please use explicit_na(x)", call. = FALSE)
+  }
 
   terms
 }

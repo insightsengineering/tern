@@ -67,7 +67,7 @@ t_summary <- function(x,
 #' @inheritParams t_summary.data.frame
 #' @param ... not used arguments
 #'
-#' @return rtable
+#' @return \code{rtable}
 #'
 #' @export
 #'
@@ -202,12 +202,12 @@ t_summary.data.frame <- function(x, # nolint
 
 #' Summarize Numeric Variables
 #'
-#' Tabulate the number of non-missing observations, mean, sd, median, and range
+#' Tabulate the number of non-missing observations, mean, standard error, median, and range
 #' for different groups.
 #'
 #' @inheritParams t_summary.data.frame
 #' @param x numeric variable
-#' @param f_numeric a combination of the analysis fuctions to be evaluated \code{"count_n", "mean_sd", "median",
+#' @param f_numeric a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "median",
 #'   "q1_q3", "range", "se"}
 #'
 #' @template return_rtable
@@ -238,7 +238,6 @@ t_summary.data.frame <- function(x, # nolint
 #'
 #' ADSL$AGE[1:10] <- NA
 #' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
-#'
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = NULL, #nolintr
@@ -276,8 +275,8 @@ t_summary.numeric <- function(x, # nolint
       count_n = rtabulate(x, col_by, count_n, row.name = "n"),
       mean_sd = rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
       se = rtabulate(x, col_by, function(x, na_rm) {
-            sd(x) / sqrt(length(x))
-          }, row.name = "SE", format = "xx.xx", na_rm = TRUE),
+        sd(x) / sqrt(length(x))
+      }, row.name = "SE", format = "xx.xx", na_rm = TRUE),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
       q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE),
       range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),
@@ -312,10 +311,10 @@ patient_numeric_fcns <- function() {
 #' @inheritParams t_summary.data.frame
 #' @param x factor variable
 #' @param useNA choose whether missing data (NAs) should be displayed as a level.
-#' @param denominator either n, N or omit. n and N are for calculating the level associated
-#'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-#'   With option n, the number of non-missing records from \code{x} is used as the denominator.
-#'   If \code{omit} is chosen the percentage is omitted.
+#' @param denominator either \code{"n"}, \code{"N"} or \code{"omit"}. \code{"n"} and \code{"N"} are for calculating
+#'   the level associated percentage. With option \code{"N"}, the reference population from \code{col_N} is used as
+#'   the denominator. With option \code{"n"}, the number of non-missing records from \code{x} is used as
+#'   the denominator. If \code{"omit"} is chosen the percentage is omitted.
 #' @param drop_levels boolean whether to drop zero count levels
 #'
 #' @template return_rtable

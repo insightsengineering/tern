@@ -3,8 +3,8 @@
 #' @inheritParams rtables::rrow
 #' @param x a vector
 #' @param col_by a factor first level is taken as reference level
-#' @param FUN a function with two arguments, first argument is the subset of x
-#'   and the second argument is a factor with two levels from col_by
+#' @param FUN a function with two arguments, first argument is the subset of \code{x}
+#'   and the second argument is a factor with two levels from \code{col_by}
 #'
 #' @importFrom stats relevel
 #' @export

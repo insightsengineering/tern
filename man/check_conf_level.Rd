@@ -2,12 +2,12 @@
 % Please edit documentation in R/conf_level.R
 \name{check_conf_level}
 \alias{check_conf_level}
-\title{Check if Argument Descibes Confidence Levels for Different Confidence Intervals and Tests}
+\title{Check if Argument Describes Confidence Levels for Different Confidence Intervals and Tests}
 \usage{
 check_conf_level(conf_level, type = NULL)
 }
 \arguments{
-\item{conf_level}{a single value or a named vecotr with values between 0 and 1}
+\item{conf_level}{a single value or a named vector with values between 0 and 1}
 
 \item{type}{names expected in the returned values}
 }

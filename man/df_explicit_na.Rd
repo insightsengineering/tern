@@ -18,10 +18,10 @@ df_explicit_na(
 by this function}
 
 \item{char_as_factor}{(\code{logical}) Whether to make all \code{character} variables
-inside the \code{data.frame} that are not omit_columnsd \code{factor} variables.}
+inside the \code{data.frame} that are not \code{omit_columns} \code{factor} variables.}
 
 \item{na_level}{(\code{character}) that is used to replace all \code{NA} levels
-inside non-omit_columnsd columns}
+inside non - \code{omit_column} columns}
 }
 \value{
 The \code{data.frame} inserted with the desired changes made.

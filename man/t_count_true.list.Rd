@@ -17,9 +17,9 @@
 \arguments{
 \item{x_list}{list of x}
 
-\item{col_by_list}{list of col_by, one for each item of \code{x_list}}
+\item{col_by_list}{list of \code{col_by}, one for each item of \code{x_list}}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
@@ -27,10 +27,10 @@ more than one record per subject.}
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{denominator}{either n, N or omit. n and N are for calculating the level associated
-percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-With option n, the number of non-missing records from \code{x} is used as the denominator.
-If \code{omit} is chosen the percentage is omitted.}
+\item{denominator}{either \code{"n"}, \code{"N"} or \code{"omit"}. \code{"n"} and \code{"N"} are for calculating
+the level associated percentage. With option \code{"N"}, the reference population from \code{col_N} is used as
+the denominator. With option \code{"n"}, the number of non-missing records from \code{x} is used as
+the denominator. If \code{"omit"} is chosen the percentage is omitted.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
@@ -39,5 +39,5 @@ If \code{omit} is chosen the percentage is omitted.}
 }
 \description{
 Helper function for \code{t_count_true.data.frame},
-If col_N is NULL, it's derived by adding up the numbers from all items in the col_by_list
+If \code{col_N} is \code{NULL}, it's derived by adding up the numbers from all items in the \code{col_by_list}
 }

@@ -13,9 +13,9 @@
 #' @param time_unit a string with the unit of the \code{tte} argument
 #' @param conf_level either a single number or a named vector of confidence levels where the names are \code{survfit},
 #'   \code{coxph}, and \code{ztest}
-#' @param conf_type_survfit conf.type in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
+#' @param conf_type_survfit \code{conf.type} in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
 #' \code{"none"}, \code{"log"}, or \code{"log-log"}.
-#' @param probs_survfit numeric vector of length two to specify the qauntiles in \code{\link[stats]{quantile}}
+#' @param probs_survfit numeric vector of length two to specify the quantiles in \code{\link[stats]{quantile}}
 #' @param ties_coxph passed as argument \code{ties} to \code{\link{coxph}}
 #' @param pval_method_coxph passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}
 #'
@@ -97,10 +97,9 @@
 #' summary(tbl3)
 #'
 #' to_rtable(tbl3)
-#'
 t_tte <- function(formula,
                   data,
-                  col_N,
+                  col_N, # nolint
                   event_descr = NULL,
                   time_points = NULL,
                   time_unit = "month",
@@ -159,8 +158,13 @@ t_tte <- function(formula,
     children = list(
       node(
         invisible_node_name("Patients with event"),
-        rtabulate(is_event, arm, positives_and_proportion, format = "xx.xx (xx.xx%)",
-                  row.name = "Patients with event (%)"),
+        rtabulate(
+          is_event,
+          arm,
+          positives_and_proportion,
+          format = "xx.xx (xx.xx%)",
+          row.name = "Patients with event (%)"
+        ),
         children = compact(list(
           if (!is.null(event_descr)) {
             tbl <- rtabulate(droplevels(factor(event_descr)[is_event]), arm[is_event], length)
@@ -192,15 +196,17 @@ t_tte <- function(formula,
   surv_km_fit <- survfit(
     formula = f,
     data = data,
-    conf.int = conf_level['survfit'],
+    conf.int = conf_level["survfit"],
     conf.type = conf_type_survfit
   )
 
   srv_tbl <- summary(surv_km_fit)$table
   med <- as.list(srv_tbl[, "median"])
-  ci <- Map(function(x, y) c(x, y),
-            srv_tbl[, paste0(conf_level['survfit'], "LCL")],
-            srv_tbl[, paste0(conf_level['survfit'], "UCL")])
+  ci <- Map(
+    function(x, y) c(x, y),
+    srv_tbl[, paste0(conf_level["survfit"], "LCL")],
+    srv_tbl[, paste0(conf_level["survfit"], "UCL")]
+  )
 
   srv_qt_tbl <- quantile(surv_km_fit, probs = probs_survfit)$quantile
 
@@ -218,8 +224,8 @@ t_tte <- function(formula,
     rtable(
       header = header,
       rrowl("Median", med, format = "xx.xx"),
-      rrowl(paste0(conf_level['survfit']*100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
-      rrowl(paste0(probs_survfit[1]*100, "% and ", probs_survfit[2]*100, "%-ile"), qnt, format = "xx.x, xx.x"),
+      rrowl(paste0(conf_level["survfit"] * 100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
+      rrowl(paste0(probs_survfit[1] * 100, "% and ", probs_survfit[2] * 100, "%-ile"), qnt, format = "xx.x, xx.x"),
       rrowl("Range (censored)", rng_c, format = "xx.x to xx.x"),
       rrowl("Range (event)", rng_e, format = "xx.x to xx.x")
     )
@@ -229,24 +235,24 @@ t_tte <- function(formula,
   # #####################
 
 
-  coxph_values <- s_coxph_pairwise(formula, data, conf_level['coxph'], pval_method_coxph, ties = ties_coxph)
+  coxph_values <- s_coxph_pairwise(formula, data, conf_level["coxph"], pval_method_coxph, ties = ties_coxph)
 
   # this function is reused for stratified analysis
   pval_label <- paste0("p-value (", capitalize(pval_method_coxph), ")")
 
-  tbl_coxph <- lapply(c("unstratified", "stratified"), function(sel_strat){
-    if (is.null(tm$formula_strata) && sel_strat == "stratified"){
+  tbl_coxph <- lapply(c("unstratified", "stratified"), function(sel_strat) {
+    if (is.null(tm$formula_strata) && sel_strat == "stratified") {
       NULL
     } else {
       # first column is empty
       pval <- start_with_null(
-        lapply(coxph_values[-1],function(x) x[[sel_strat]]$pvalue)
+        lapply(coxph_values[-1], function(x) x[[sel_strat]]$pvalue)
       )
       hr <- start_with_null(
         lapply(coxph_values[-1], function(x) x[[sel_strat]]$hr)
       )
       hr_ci <- start_with_null(
-        lapply(coxph_values[-1],function(x) x[[sel_strat]]$hr_ci)
+        lapply(coxph_values[-1], function(x) x[[sel_strat]]$hr_ci)
       )
       coxph_node <-  node(
         paste0(capitalize(sel_strat), " Analysis"),
@@ -264,7 +270,7 @@ t_tte <- function(formula,
             rtable(
               header = header,
               rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
-              rrowl(paste0(conf_level['coxph']*100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+              rrowl(paste0(conf_level["coxph"] * 100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
             )
           )
         )
@@ -313,7 +319,7 @@ t_tte <- function(formula,
           # z-test
           d <- dfi$surv[-1] - dfi$surv[1]
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
-          qs <- qnorm(conf_level['ztest'] + c(1, -1) * (1 - conf_level['ztest'])/2)
+          qs <- qnorm(conf_level["ztest"] + c(1, -1) * (1 - conf_level["ztest"]) / 2)
           l_ci <- Map(function(di, si) di + qs * si, d, sd)
 
           pval <- 2 * (1 - pnorm(abs(d) / sd))
@@ -322,9 +328,15 @@ t_tte <- function(formula,
             header = header,
             rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
             rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-            rrowl(paste0(conf_level['survfit']*100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(
+              paste0(conf_level["survfit"] * 100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)),
+              format = "(xx.xx, xx.xx)", indent = 3
+            ),
             rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d * 100)), format = "xx.xx", indent = 2),
-            rrowl(paste0(conf_level['ztest']*100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)), format = "(xx.xx, xx.xx)", indent = 3),
+            rrowl(
+              paste0(conf_level["ztest"] * 100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)),
+              format = "(xx.xx, xx.xx)", indent = 3
+            ),
             rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
           )
         }
@@ -371,8 +383,7 @@ t_tte <- function(formula,
 t_tte_items <- function(formula, cl, data, env) {
   # extract information
   mf <- cl
-  mt <- terms(formula, specials = c("arm", "strata", "cluster", "tt"),
-              data = data)
+  mt <- terms(formula, specials = c("arm", "strata", "cluster", "tt"), data = data)
   if (!all(all.vars(attr(mt, "variables")) %in% names(data))) {
     stop("All formula variables must appear in 'data'")
   }

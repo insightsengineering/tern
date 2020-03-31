@@ -21,26 +21,26 @@ a_mmrm(
 \code{formula}. Records with missing values in any independent variables
 will be excluded.}
 
-\item{formula}{a gls formula.}
+\item{formula}{a \code{gls} formula.}
 
 \item{id_var}{a character describing the variable name used as subject IDs,
-"USUBJID" by default.}
+\code{"USUBJID"} by default.}
 
 \item{arm_var}{a character describing the variable name for \code{\link{arm}},
-"ARM" by default. The arm variable must be factor in \code{data}}
+\code{"ARM"} by default. The arm variable must be factor in \code{data}}
 
 \item{visit_var}{a character describing the variable name for visit,
-"AVISIT" by default. This variable must be factor in data.}
+\code{"AVISIT"} by default. This variable must be factor in data.}
 
-\item{mode}{algorithm for degree of freedom: "auto", "df.error" or
-"boot-satterthwaite".}
+\item{mode}{algorithm for degree of freedom: \code{auto}, \code{df.error} or
+\code{boot-satterthwaite}.}
 
 \item{conf.level}{confidence level. Must be number greater than 0 and less
 than 1.}
 
-\item{weights_emmeans}{argument from emmeans, "proportional" by default.}
+\item{weights_emmeans}{argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.}
 
-\item{corStruct}{\code{NULL} by default or a string with the name of \link[nlme]{corClasses}.}
+\item{corStruct}{\code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.}
 }
 \value{
 a dataframe with MMRM results
@@ -62,7 +62,7 @@ ADQS_f <- ADQS \%>\%
 
 mmrm_results <- a_mmrm(
   data = ADQS_f,
-  formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM * AVISIT,
+  formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,
   id_var = "USUBJID",
   arm_var = "ARM",
   visit_var = "AVISIT",
@@ -76,5 +76,4 @@ names(mmrm_results)
 
 mmrm_results["contrast"]
 mmrm_results["estimate"]
-
 }

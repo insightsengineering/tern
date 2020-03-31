@@ -8,7 +8,7 @@ nested_by(x)
 }
 \arguments{
 \item{x}{a list that specifies recursive split,
-e.g. a list of col_bys (which can be matrices or factors)}
+e.g. a list of \code{col_bys} (which can be matrices or factors)}
 }
 \description{
 When a by of this type is encountered in tern functions, it recursively splits by it
@@ -17,6 +17,6 @@ It is typically used to construct a nested tree from it.
 }
 \details{
 The nested_by class is used to distinguish the simple_by (which can be a matrix
-which is a list as well, but in this case a non-recursive interpretation as in col_by)
+which is a list as well, but in this case a non-recursive interpretation as in \code{col_by})
 from the recursive
 }

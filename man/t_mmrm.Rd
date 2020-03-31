@@ -19,52 +19,50 @@ t_mmrm(
 )
 }
 \arguments{
-\item{formula}{a gls formula.}
+\item{formula}{a \code{gls} formula.}
 
 \item{data}{a \code{data.frame} with all the variables specified in
 \code{formula}. Records with missing values in any independent variables
 will be excluded.}
 
 \item{id_var}{a character describing the variable name used as subject IDs,
-"USUBJID" by default.}
+\code{"USUBJID"} by default.}
 
 \item{arm_var}{a character describing the variable name for \code{\link{arm}},
-"ARM" by default. The arm variable must be factor in \code{data}}
+\code{"ARM"} by default. The arm variable must be factor in \code{data}}
 
 \item{visit_var}{a character describing the variable name for visit,
-"AVISIT" by default. This variable must be factor in data.}
+\code{"AVISIT"} by default. This variable must be factor in data.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{mode}{algorithm for degree of freedom: "auto", "df.error" or
-"boot-satterthwaite".}
+\item{mode}{algorithm for degree of freedom: \code{auto}, \code{df.error} or
+\code{boot-satterthwaite}.}
 
 \item{conf.level}{confidence level. Must be number greater than 0 and less
 than 1.}
 
-\item{weights_emmeans}{argument from emmeans, "proportional" by default.}
+\item{weights_emmeans}{argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.}
 
-\item{corStruct}{\code{NULL} by default or a string with the name of \link[nlme]{corClasses}.}
+\item{corStruct}{\code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
-rtable object or table tree, depending on the the `table_tree` argument
+\code{rtable} object or table tree, depending on the the `table_tree` argument
 }
 \description{
 The MMRM table function summarizes MMRM test results by visit and groups. The
-function produces adjusted lsmeans and standard error, as well as conducts
+function produces adjusted \code{lsmeans} and standard error, as well as conducts
 comparisons between groups' adjusted means, where the first level of the group
 is the reference level.
 }
 \details{
-\url{https://pages.github.roche.com/NEST/docs/bookdown/NEST/statistics_clinical_trials/master/mixed-effect-model-repeat-measurement.html}
-
-Create rtable of MMRM test results
+Create \code{rtable} of MMRM test results
 }
 \examples{
 library(dplyr)
@@ -73,12 +71,12 @@ library(random.cdisc.data)
 ADSL <- radsl(cached = TRUE)
 ADQS <- radqs(cached = TRUE)
 ADQS_f <- ADQS \%>\%
-  filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%
-  mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
-  mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
+  dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
+  dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
-t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM*AVISIT,
+t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
        data = ADQS_f,
        id_var = "USUBJID",
        arm_var = "ARM",
@@ -90,7 +88,6 @@ t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + BASE + ARM*AVISIT,
        corStruct = "corSymm",
        table_tree = FALSE
 )
-
 }
 \seealso{
 \code{\link{a_mmrm}}

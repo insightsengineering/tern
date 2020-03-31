@@ -12,9 +12,9 @@ nest_color_palette(n = 10, palette = "nest")
   a certain numerical limit per palette:
 
   \itemize{
-     \item{nest }{96}
-     \item{stream }{38}
-     \item{viridis }{49}
+     \item{\code{nest} }{96}
+     \item{\code{stream} }{38}
+     \item{\code{viridis} }{49}
   }}
 
 \item{palette}{(\code{character}) The name of a palette supported
@@ -24,8 +24,8 @@ nest_color_palette(n = 10, palette = "nest")
      \item{\code{nest} }{A color palette developed by the NEST team representing
       colors in the NEST logo.
     }
-    \item{stream }{A color palette proposed by the stream documentation of stream version \code{2_05}}
-       \item{viridis }{A color palette provided by the \code{viridis::plasma} function.}
+    \item{\code{stream} }{A color palette proposed by the stream documentation of stream version \code{2_05}}
+       \item{\code{viridis} }{A color palette provided by the \code{viridis::plasma} function.}
   }}
 }
 \description{

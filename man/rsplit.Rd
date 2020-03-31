@@ -12,7 +12,8 @@ rsplit(x, by_lst)
 \item{by_lst}{list of by objects to recursively split by}
 }
 \value{
-nested list, first level corresponding to split by by_lst[[1]], second to recursive split by by_lst[[2]] etc.
+nested list, first level corresponding to split by \code{by_lst[[1]]}, the second to recursive split by
+\code{by_lst[[2]]} etc.
 }
 \description{
 This is an extension of \code{\link{esplit}} to the case when by is a list to split by recursively

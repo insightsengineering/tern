@@ -23,7 +23,7 @@ the summary sub-groups in the table.}
 \item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
 define the columns in the table.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}

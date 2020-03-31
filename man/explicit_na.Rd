@@ -7,7 +7,7 @@
 explicit_na(x, label = "<Missing>")
 }
 \arguments{
-\item{x}{factor or charactor vector}
+\item{x}{factor or character vector}
 
 \item{label}{character string that missing data should be replaced with}
 }

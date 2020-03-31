@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_summary_variants.R
 \name{apply_compare_in_header}
 \alias{apply_compare_in_header}
-\title{Stacks x and col_by when \code{compare_in_header} attribute is present}
+\title{Stacks \code{x} and \code{col_by} when \code{compare_in_header} attribute is present}
 \usage{
 apply_compare_in_header(x, col_by, col_N = NULL)
 }
@@ -11,7 +11,7 @@ apply_compare_in_header(x, col_by, col_N = NULL)
 
 \item{col_by}{col_by data.frame}
 
-\item{col_N}{numeric vector of length \code{ncol(col_by)} or NULL -> computed from col_by}
+\item{col_N}{numeric vector of length \code{ncol(col_by)} or \code{NULL} -> computed from \code{col_by}}
 }
 \value{
 list(

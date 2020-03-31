@@ -1,9 +1,9 @@
 
-#' Check if Argument Descibes Confidence Levels for Different Confidence Intervals and Tests
+#' Check if Argument Describes Confidence Levels for Different Confidence Intervals and Tests
 #'
 #' Often a table contains multiple confidence intervals or p-values from tests.
 #'
-#' @param conf_level a single value or a named vecotr with values between 0 and 1
+#' @param conf_level a single value or a named vector with values between 0 and 1
 #' @param type names expected in the returned values
 #'
 #' @return a named vector with the confidence levels
@@ -29,7 +29,6 @@ check_conf_level <- function(conf_level, type = NULL) {
   )
 
   n_conf_level <- length(conf_level)
-  n_type <- length(type)
   if (is.null(type) && n_conf_level == 1) {
     conf_level
   } else if (is_character_vector(type) && n_conf_level == 1) {
@@ -45,4 +44,3 @@ check_conf_level <- function(conf_level, type = NULL) {
   }
 
 }
-

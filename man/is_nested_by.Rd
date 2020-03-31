@@ -8,7 +8,7 @@ is_nested_by(x)
 }
 \arguments{
 \item{x}{a list that specifies recursive split,
-e.g. a list of col_bys (which can be matrices or factors)}
+e.g. a list of \code{col_bys} (which can be matrices or factors)}
 }
 \value{
 boolean whether it is an nested_by object

@@ -22,10 +22,10 @@ row_names_as_col <- function(tbl, header_label) {
   cbind_rtables(tbl_rn, tbl)
 }
 
-#' Combines two lists of rrows to a list of rrows
+#' Combines two lists of \code{rrow} to a list of \code{rrow}
 #' Also keeps indent.
 #'
-#' @param x first list of rows, row.names are taken from this list
+#' @param x first list of rows, \code{row.names} are taken from this list
 #' @param y second list
 #'
 #' @return list of combined rows

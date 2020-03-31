@@ -427,8 +427,8 @@ t_max_grade_per_id <- function(grade,
   row_names_as_col(tbl, c("", grade_label))
 }
 
-#' checks that each patient appears in at most one col_by column (possibly
-#' several times as AVAL corresponds to several measures and there are >= 1 rows per patient)
+#' checks that each patient appears in at most one \code{col_by} column (possibly
+#' several times as \code{AVAL} corresponds to several measures and there are >= 1 rows per patient)
 #'
 #' @param id patient id
 #' @param col_by columns indicating where patient is, (this function checks that the patient only

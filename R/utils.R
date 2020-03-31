@@ -152,9 +152,9 @@ has_no_na <- function(x) {
 #'
 #' Normally, you don't need to use this function as it is the default
 #'
-#' @param col_by col_by (factor or matrix) to get counts from
+#' @param col_by (factor or matrix) to get counts from
 #'
-#' @return counts per factor level or column of col_by
+#' @return counts per factor level or column of \code{col_by}
 #'
 #' @export
 #'
@@ -165,13 +165,14 @@ get_N <- function(col_by) { #nolintr
   colSums(col_by_to_matrix(col_by))
 }
 
-#' Add total to col_N
+#' Add total to \code{col_N}
 #'
 #' It adds the sum of the vector as the last element.
 #'
-#' This is necessary when you manually specify col_N and col_by uses the total column (via by_add_total or similar)
+#' This is necessary when you manually specify \code{col_N} and \code{col_by} uses the total column
+#'   (via \code{by_add_total} or similar)
 #'
-#' @param col_N col_N count
+#' @param col_N count
 #'
 #' @return new count with total count appended to vector
 #'
@@ -221,7 +222,7 @@ row_subset <- function(x, rows) {
 #'
 #' @param x object
 #'
-#' @return string of the form "key1: val1, keey2: val2, ..."
+#' @return string of the form \code{"key1: val1, keey2: val2, ..."}
 #'
 #' @examples
 #' tern:::to_string_with_names(list(a = 1, 2))

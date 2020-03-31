@@ -7,7 +7,7 @@
 sas_na(x, empty = TRUE, whitespaces = TRUE)
 }
 \arguments{
-\item{x}{factor or charactor vector}
+\item{x}{factor or character vector}
 
 \item{empty}{boolean if true empty strings get replaced by \code{NA}}
 

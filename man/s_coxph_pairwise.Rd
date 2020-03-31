@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_coxph.R
 \name{s_coxph_pairwise}
 \alias{s_coxph_pairwise}
-\title{Run Pairwise (ARM) CoxPH model for unstratified and stratified analysis}
+\title{Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis}
 \usage{
 s_coxph_pairwise(
   formula,
@@ -22,8 +22,8 @@ s_coxph_pairwise(
 \item{conf.int}{level for computation of the confidence intervals. If set to {FALSE} no confidence intervals are
 printed}
 
-\item{pval_method}{the method used to calculate the p-value, should be one of "wald", "log-rank", "likelihood",
-default is "log-rank".}
+\item{pval_method}{the method used to calculate the p-value, should be one of \code{"wald"}, \code{"log-rank"},
+\code{"likelihood"}, default is \code{"log-rank"}.}
 
 \item{...}{Other arguments will be passed to \code{\link[survival]{coxph}}}
 }
@@ -31,7 +31,7 @@ default is "log-rank".}
 a list of dataframes with unstratified and/or stratified analysis results
 }
 \description{
-Run Pairwise (ARM) CoxPH model for unstratified and stratified analysis
+Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis
 }
 \examples{
 library(random.cdisc.data)
@@ -55,5 +55,4 @@ cox_res2 <- s_coxph_pairwise(
 )
 cox_res2[[2]]$stratified
 cox_res2[[2]]$unstratified
-
 }

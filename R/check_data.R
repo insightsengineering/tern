@@ -44,7 +44,7 @@ check_same_n_l <- function(x) {
 
 #' Check strata_data
 #'
-#' strata_data can be NULL or
+#' strata_data can be \code{NULL} or
 #'
 #' @param x data.frame with valid stratification data
 #'
@@ -88,7 +88,7 @@ is_logical_vector_modif <- function(x, min_size = 1) {
     all_true(x, utils.nest::is_logical_single)
 }
 
-#' Checks that x, col_by and col_N are consistent in dimensions
+#' Checks that \code{x}, \code{col_by} and \code{col_N} are consistent in dimensions
 #'
 #' See \code{\link{t_summary}} variants for how to use it.
 #' Also checks that there are no empty levels and at least a specified number of levels.
@@ -97,8 +97,8 @@ is_logical_vector_modif <- function(x, min_size = 1) {
 #' @param x main object which will be queried for length (or rows in case of data.frame)
 #' @param col_by matrix of booleans that specifies how to group x (i.e. for each column,
 #'   takes all values of x for which the row is true)
-#' @param col_N vector that contains number of observations, it can be colSums(col_by)
-#' @param min_num_levels minimum number of columns of col_by
+#' @param col_N vector that contains number of observations, it can be \code{colSums(col_by)}
+#' @param min_num_levels minimum number of columns of \code{col_by}
 check_col_by <- function(x,
                          col_by,
                          col_N, # nolint
@@ -179,38 +179,36 @@ check_is_numeric <- function(x, allow_na = TRUE) {
 }
 
 
-check_strata <- function(strata_data){
+check_strata <- function(strata_data) {
 
-  if (!is.null(strata_data)){
-    stopifnot(is.data.frame(strata_data) ||
-                is_character_vector(strata_data) ||
-                is.factor(strata_data))
+  if (!is.null(strata_data)) {
+    stopifnot(is.data.frame(strata_data) || is_character_vector(strata_data) || is.factor(strata_data))
 
-    if (is.data.frame(strata_data)){
+    if (is.data.frame(strata_data)) {
 
-      strata_type <- vapply(strata_data, FUN = function(x){
-        is_character_vector(x)||is.factor(x)
+      strata_type <- vapply(strata_data, FUN = function(x) {
+        is_character_vector(x) || is.factor(x)
       }, logical(1))
 
-      if(!all(strata_type)){
+      if (!all(strata_type)) {
         stop("all stratification factors must be character or factor vector")
       }
     }
   }
 }
 
-check_strata_levels <- function(strata_data){
+check_strata_levels <- function(strata_data) {
 
-  if( is_character_vector(strata_data) || is.factor(strata_data)){
+  if (is_character_vector(strata_data) || is.factor(strata_data)) {
     strata_levels <- length(unique(strata_data)) > 1
   }
-  else if (is.data.frame(strata_data)){
-    strata_levels <- vapply(strata_data, FUN = function(x){
+  else if (is.data.frame(strata_data)) {
+    strata_levels <- vapply(strata_data, FUN = function(x) {
       length(unique(x)) > 1
     }, logical(1))
   }
 
-  if(!all(strata_levels)){
+  if (!all(strata_levels)) {
     stop("Not all strata variables have more than 1 level.")
   }
 }
@@ -221,17 +219,22 @@ check_strata_levels <- function(strata_data){
 #' @param min a numeric value specifying the lower boundary (exclusive), with default value \code{0}
 #' @param max a numeric value specifying the upper boundary (exclusive), with default value \code{1}
 #'
+#' @examples
 #' conf.init <- 0.7
 #' tern:::check_numeric_range(conf.init)
 #'
+#' # below produces error
 #' quantiles <- c(0, 1.2)
+#' \donttest{
 #' tern:::check_numeric_range(quantiles)
-#'
+#' }
 check_numeric_range <- function(x, min = 0, max = 1) {
-  stopifnot(is_numeric_single(min) && is_numeric_single(max),
-            is.numeric(x))
+  stopifnot(
+    is_numeric_single(min) && is_numeric_single(max),
+    is.numeric(x)
+  )
 
-  if(!all(x > min & x < max)) {
+  if (!all(x > min & x < max)) {
     stop(paste0("there are numeric values outside the specified range (", min, ", ", max, ")"))
   }
 

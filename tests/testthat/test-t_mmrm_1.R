@@ -285,8 +285,10 @@ test_that("Summary of Mixed-effect Model Repeated Measures Analysis", {
   # nolint end
 
   anl <- anl %>%
-    mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
-           AVISIT = factor(AVISIT))
+    mutate(
+      ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
+      AVISIT = factor(AVISIT)
+    )
 
   asl <- unique(anl[, c("USUBJID", "ARM")])
 
