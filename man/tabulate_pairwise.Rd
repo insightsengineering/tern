@@ -11,8 +11,8 @@ tabulate_pairwise(x, col_by, FUN, row.name, format = NULL, indent = 0)
 
 \item{col_by}{a factor first level is taken as reference level}
 
-\item{FUN}{a function with two arguments, first argument is the subset of x
-and the second argument is a factor with two levels from col_by}
+\item{FUN}{a function with two arguments, first argument is the subset of \code{x}
+and the second argument is a factor with two levels from \code{col_by}}
 
 \item{row.name}{string with row name}
 
@@ -37,6 +37,20 @@ tabulate_pairwise(
   FUN = function(xi, col_by_i) diff(tapply(xi, col_by_i, mean)),
   row.name = "diff mean"
 )
+
+tabulate_pairwise(
+   x = data.frame(
+        val = sample(c("X1", "X2"), 100, replace = TRUE),
+        strata = sample(c("A", "B"), 100, replace = TRUE)
+   ),
+  col_by = factor(sample(c("BY1", "BY2", "BY3"), 100, replace = TRUE)),
+  FUN = function(xi, col_by_i) {
+            mhp <- mantelhaen.test(xi$val, col_by_i, xi$strata)
+            mhp$p.value
+            },
+  row.name = "MH pvalue: stratified"
+)
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

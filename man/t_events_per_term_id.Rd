@@ -23,7 +23,7 @@ used as a label in the column header for each term.}
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the length or number of rows of
 \code{terms}.}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
@@ -96,6 +96,34 @@ t_events_per_term_id(
  total = "All Patients"
 )
 
+\dontrun{
+# terms can't be empty strings or NA
+t_events_per_term_id(
+ terms = with_label(factor(c("", "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
+)
+
+t_events_per_term_id(
+ terms = with_label(factor(c(NA, "t1", "t2", "t2", "t2")), "Term"),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
+)
+
+}
+
+t_events_per_term_id(
+ terms = explicit_na(sas_na(factor(c("", "", "t2", "t1", "t2")))),
+ id = c(1, 4, 2, 3, 3),
+ col_by = factor(c("A", "A", "B", "C", "C")),
+ col_N = c(2, 4, 10),
+ total = "All Patients"
+)
+
 t_events_per_term_id(
  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
  id = c(1, 4, 2, 3, 3),
@@ -106,8 +134,8 @@ t_events_per_term_id(
 
 library(random.cdisc.data)
 
-ADSL <- radsl(10, seed = 1)
-ADAE <- radae(ADSL, 4L, seed = 2)
+ADSL <- radsl(cached = TRUE)
+ADAE <- radae(cached = TRUE)
 
 t_events_per_term_id(
   terms = ADAE$AEDECOD,
@@ -134,9 +162,8 @@ t_events_per_term_id(
   total = "All Patients"
 )
 
-ADSL <- cadsl
-ADCM <- cadcm
-ADCM <- ADCM \%>\%
+ADSL <- radsl(cached = TRUE)
+ADCM <- radcm(cached = TRUE) \%>\%
   dplyr::filter(ATIREL == "CONCOMITANT")
 
 t_events_per_term_id(
@@ -182,9 +209,11 @@ tbls <- t_events_per_term_id(
 summary(tbls)
 tbls[[1]]
 tbls[['cl A']]
+
+
 }
 \seealso{
-\code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},
+\code{\link{t_el_count_unique}}, \code{\link{t_el_events_per_term_id}},
   \code{\link{t_events_per_term_grade_id}}
 }
 \author{

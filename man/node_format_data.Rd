@@ -21,7 +21,7 @@ node_format_data(
 
 \item{content_indent}{indentation of content of node with respect to current indent level}
 
-\item{left_header}{header to add to the left of the rtable, is not inherited}
+\item{left_header}{header to add to the left of the \code{rtable}, is not inherited}
 }
 \description{
 Node Format Data
@@ -44,5 +44,4 @@ to_rtable(node("AAA", tbl("r1"), children = list(
    node("c1", tbl("r2")),
    node("c1", tbl("r2"))
 ), format_data = node_format_data(children_indent = 0)))
-
 }

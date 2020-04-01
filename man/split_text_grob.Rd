@@ -60,7 +60,7 @@ split_text_grob(
 Dynamically wrap text
 }
 \details{
-This code is taken from R Graphics by Paul Murell, 2nd edition
+This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 }
 \examples{
 sg <- split_text_grob(text = paste(

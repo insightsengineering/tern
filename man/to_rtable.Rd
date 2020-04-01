@@ -4,7 +4,7 @@
 \alias{to_rtable}
 \alias{to_rtable,node-method}
 \alias{to_rtable,rtable-method}
-\title{Converts the object to an rtable}
+\title{Converts the object to an \code{rtable}}
 \usage{
 to_rtable(x)
 

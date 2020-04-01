@@ -5,7 +5,7 @@
 \title{Single element for disposition table}
 \usage{
 t_el_disposition(
-  x = x,
+  x,
   col_by,
   col_N = NULL,
   total = NULL,
@@ -20,12 +20,14 @@ t_el_disposition(
 \arguments{
 \item{x}{A factor or logical vector}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
@@ -33,8 +35,8 @@ and \code{add_total_by}.}
 \item{row.name}{Only applicable when x is a logical vector. A string to label the row name.
 Default is "TRUE".}
 
-\item{subset}{A logical vector with the same length as x that defines the subset.
-Applies to \code{x} and \code{subset}.}
+\item{subset}{A logical vector with the same length as x that defines the subset
+to take from \code{x}. NAs are cast to false.}
 
 \item{show_n}{Logic value to determine whether the "n" row is displayed. Default is FALSE.
 Only when x is of type factor}
@@ -43,13 +45,13 @@ Only when x is of type factor}
 
 \item{drop_levels}{boolean whether to drop zero count levels}
 
-\item{denominator}{either n, N or omit. n and N are for calculating the level associated
-percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-With option n, the number of non-missing records from \code{x} is used as the denominator.
-If \code{omit} is chosen the percentage is omitted.}
+\item{denominator}{either \code{"n"}, \code{"N"} or \code{"omit"}. \code{"n"} and \code{"N"} are for calculating
+the level associated percentage. With option \code{"N"}, the reference population from \code{col_N} is used as
+the denominator. With option \code{"n"}, the number of non-missing records from \code{x} is used as
+the denominator. If \code{"omit"} is chosen the percentage is omitted.}
 }
 \description{
-Single element for disposition table
+Creates a disposition table
 }
 \examples{
 library(random.cdisc.data)

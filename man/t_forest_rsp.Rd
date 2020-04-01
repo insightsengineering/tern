@@ -9,6 +9,8 @@ t_forest_rsp(
   col_by,
   row_by_list = NULL,
   total = "ALL",
+  strata_data = NULL,
+  conf_int = 0.95,
   dense_header = FALSE,
   table_tree = FALSE
 )
@@ -17,7 +19,7 @@ t_forest_rsp(
 \item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
 otherwise}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
@@ -25,6 +27,11 @@ and \code{add_total_by}.}
 the \code{t_el_forest_tte}}
 
 \item{total}{string of total row added. If \code{NULL} then no total row is added.}
+
+\item{strata_data}{data for stratification factors (categorical variables).
+If \code{NULL}, no stratified analysis is performed.}
+
+\item{conf_int}{confidence level of the interval}
 
 \item{dense_header}{Display the table headers in multiple rows.}
 
@@ -37,7 +44,7 @@ an \code{\link[rtables]{rtable}} object
 \description{
 The Response forest plot table summarizes response data by groups. The
 function returns sample sizes and responder counts and response rates for
-each analysis arm, as well as a odds ratio and the corresponding 95\%
+each analysis arm, as well as a odds ratio and the corresponding
 confidence interval from a univariate logistic model.
 }
 \details{
@@ -53,25 +60,27 @@ the following 9 columns:
   population}
 
   \item{3-4}{Summary of responders in reference arm, \emph{n} and
-  \emph{Responders} are the total number of patients and the number of
+  \emph{responders} are the total number of patients and the number of
   responders in reference arm, respectively. \code{Response.Rate} is the
   percentage of responders in reference arm.}
 
   \item{5-7}{same statistics as for reference arm now for comparison arm}
 
   \item{8}{\emph{Odds Ratio} ranges from 0 to infinity, estimated by applying
-  univariate logistic regression. Binary response status (responder or
-  non-responder) is the outcome and arm is the explanatory variable. Odds
-  ratio greater than 1 indicates better performance in comparison arm; odds
+  {\code{tern::odds_ratio}}. If stratification factors are added,
+  Cochran-Mantel-Haensel test is performed instead. Statistics from the
+  stratification-adjusted test will be reported for the p-value of test of
+  equal proportions, odds ratio and its corresponding 95\% confidence
+  interval. Odds ratio greater than 1 indicates better performance in comparison arm; odds
   ratio less than 1 indicates better performance in reference arm.}
 
-  \item{9}{\emph{95 \% CI} The 95% confidence interval indicates the level of
+  \item{9}{\emph{Confidence Interval} The confidence interval indicates the level of
   uncertainty around the measure of effect (Odds Ratio). Because only a small
   sample of the overall population is included in the analysis, by having an
   upper and lower confidence limit we can infer that the true treatment
-  effect lies in between. If the 95% confidence interval includes 1, then we
-  say that the difference between two arms is not significant at a
-  significance level of 0.05.}
+  effect lies in between. By default, the 95% confidence interval is calculated.
+  If it includes 1, then we say that the difference between two arms is not
+  significant at a significance level of 0.05.}
 
 }
 }
@@ -80,7 +89,7 @@ library(random.cdisc.data)
 library(dplyr)
 library(purrr)
 
-ADSL <- radsl(seed = 1)
+ADSL <- radsl(cached = TRUE)
 ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
 attr(ADSL$'FAKE Name > -1.3 Flag', "label") <- "dummy"
 
@@ -93,7 +102,8 @@ tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = as_factor_keep_attributes(ADRS_f$ARM),
   row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
-    map(as_factor_keep_attributes)
+    map(as_factor_keep_attributes),
+  conf_int = 0.9
 )
 
 tbl
@@ -102,6 +112,17 @@ tbl
 Viewer(tbl)
 }
 
+tbl2 <- t_forest_rsp(
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = as_factor_keep_attributes(ADRS_f$ARM),
+  row_by_list = ADRS_f[, c("BMRKR2")] \%>\%
+    map(as_factor_keep_attributes),
+  strata_data = ADRS_f[ , "STRATA1"]
+)
+
+\dontrun{
+Viewer(tbl2)
+}
 
 # table tree
 tbls <- t_forest_rsp(

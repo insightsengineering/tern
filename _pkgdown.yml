@@ -26,6 +26,11 @@ reference:
       - t_rsp
       - t_tte
       - starts_with("t_events")
+      - t_mmrm
+      - t_count_true
+      - t_count_true.data.frame
+      - t_count_unique
+      - t_logistic
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
@@ -36,18 +41,21 @@ reference:
       - t_summary.logical
       - t_summary.character
       - t_summary.Date
-      - t_summary_true
       - starts_with("t_el_")
       - t_coxph
       - t_km
       - t_max_grade_per_id
       - t_count_unique
+      - t_count_true.default
+      - t_count_true.logical
 
-  - title: Analysis Functions
+  - title: Analysis and Summary Functions
     desc: These functions return statistical results from different models
     contents:
       - ttest_ci_one_arm
       - ttest_two_arm
+      - a_mmrm
+      - s_coxph_pairwise
 
   - title: Graphs
     desc: Graphs
@@ -63,6 +71,9 @@ reference:
       - get_N
       - col_N_add_total
       - tabulate_pairwise
+      - footnotes
+      - footnotes<-
+      - add_footnotes<-
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
@@ -74,16 +85,23 @@ reference:
       - stack_grobs
       - arrange_grobs
       - draw_grob
+      - nest_color_palette
 
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
+      - explicit_na
+      - sas_na
       - safe_join
       - combine_levels
       - drop_shared_variables
       - as_factor_keep_attributes
-      - na_as_level
       - check_id
+
+  - title: Deprecated Functions
+    desc: These functions will eventually be removed
+    contents:
+      - na_as_level
 
   - title: Trees
     desc: The functions are used to for computing compound tables. These functions are under active development and may
@@ -115,3 +133,20 @@ reference:
     desc: the documentation for those unexported functions is useful for developers
     contents:
       - argument_convention
+      - apply_compare_in_header
+      - check_col_by
+      - check_conf_level
+      - check_numeric_range
+      - combine_rrows_with_indent
+      - compare_in_header
+      - df_explicit_na
+      - is_nested_by
+      - is_simple_by
+      - nb_entries
+      - nested_by
+      - patient_numeric_fcns
+      - simple_by
+      - t_summary.list
+      - to_string_with_names
+      - t_summary.list
+      - t_count_true.list

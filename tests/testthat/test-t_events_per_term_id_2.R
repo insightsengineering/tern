@@ -105,7 +105,7 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active";"GASTROINTESTINAL DISORDERS";"VOMITING"
                     "SHH4429G-S19961-15655";"Placebo";"INFECTIONS AND INFESTATIONS";"UPPER RESPIRATORY TRACT INFECTION"'
   )
-  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo"))
+  anl$ARM <- factor(anl$ARM, levels = c("Active", "Placebo")) # nolint
 
   asl <- read.table(header = TRUE, sep = ";", stringsAsFactors = FALSE, text = '
                     "USUBJID";"ARM"
@@ -170,41 +170,26 @@ test_that("adverse events by terms (class and term)", {
                     "SHH4429G-S19961-15654";"Active"
                     "SHH4429G-S19961-15655";"Placebo"'
   )
-  asl$ARM <- factor(asl$ARM, levels = c("Active", "Placebo"))
+  asl$ARM <- factor(asl$ARM, levels = c("Active", "Placebo")) # nolint
 
   # nolint start
   tbl_stream <- rtable(
-    header = rheader(
-      rrowl("", c("Active", "Placebo", "All Patients")),
-      rrowl("", c("(N=32)", "(N=28)", "(N=60)"))
-    ),
+    header = rheader(rrowl("", c("Active", "Placebo", "All Patients")), rrowl("", c("(N=32)", "(N=28)", "(N=60)"))),
     rrow("- Any event -"),
-    rrow("Total number of patients with at least one adverse event",
-         rcell(c(23, .719), "xx (xx.x%)"), rcell(c(19, .679), "xx (xx.x%)"), rcell(c(42, .700), "xx (xx.x%)"),
-         indent = 1),
+    rrow("Total number of patients with at least one adverse event", rcell(c(23, .719), "xx (xx.x%)"), rcell(c(19, .679), "xx (xx.x%)"), rcell(c(42, .700), "xx (xx.x%)"), indent = 1),
     rrow("Overall total number of events", rcell(c(58)), rcell(c(40)), rcell(c(98)), indent = 1),
     rrow(),
     rrow("GASTROINTESTINAL DISORDERS"),
-    rrow("Total number of patients with at least one adverse event",
-         rcell(c(21, .656), "xx (xx.x%)"), rcell(c(15, .536), "xx (xx.x%)"), rcell(c(36, .600), "xx (xx.x%)"),
-         indent = 1),
+    rrow("Total number of patients with at least one adverse event", rcell(c(21, .656), "xx (xx.x%)"), rcell(c(15, .536), "xx (xx.x%)"), rcell(c(36, .600), "xx (xx.x%)"), indent = 1),
     rrow("Total number of events", rcell(c(56)), rcell(c(34)), rcell(c(90)), indent = 1),
-    rrow("VOMITING",
-         rcell(c(17, .531), "xx (xx.x%)"), rcell(c(8, .286), "xx (xx.x%)"), rcell(c(25, .417), "xx (xx.x%)"),
-         indent = 1),
-    rrow("ABNOMINAL PAIN",
-         rcell(c(6, .188), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"),
-         indent = 1),
-    rrow("STOMATITIS",
-         rcell(c(5, .156), "xx (xx.x%)"), rcell(c(6, .214), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"),
-         indent = 1),
+    rrow("VOMITING", rcell(c(17, .531), "xx (xx.x%)"), rcell(c(8, .286), "xx (xx.x%)"), rcell(c(25, .417), "xx (xx.x%)"), indent = 1),
+    rrow("ABNOMINAL PAIN", rcell(c(6, .188), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"), indent = 1),
+    rrow("STOMATITIS", rcell(c(5, .156), "xx (xx.x%)"), rcell(c(6, .214), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"), indent = 1),
     rrow(),
     rrow("INFECTIONS AND INFESTATIONS"),
-    rrow("Total number of patients with at least one adverse event",
-         rcell(c(2, .063), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(7, .117), "xx (xx.x%)"), indent = 1),
+    rrow("Total number of patients with at least one adverse event", rcell(c(2, .063), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(7, .117), "xx (xx.x%)"), indent = 1),
     rrow("Total number of events", rcell(c(2)), rcell(c(6)), rcell(c(8)), indent = 1),
-    rrow("UPPER RESPIRATORY TRACT INFECTION",
-         rcell(c(1, .031), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(6, .100), "xx (xx.x%)"), indent = 1),
+    rrow("UPPER RESPIRATORY TRACT INFECTION", rcell(c(1, .031), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(6, .100), "xx (xx.x%)"), indent = 1),
     rrow("INFLUENZA", rcell(c(1, .031), "xx (xx.x%)"), rcell(0), rcell(c(1, .017), "xx (xx.x%)"), indent = 1)
   )
   # nolint end
@@ -218,13 +203,15 @@ test_that("adverse events by terms (class and term)", {
   anl <- anl %>%
     var_relabel(
       AEBODSYS = "MedDRA System Organ Class",
-      AEDECOD = "MedDRA Preferred Term")
+      AEDECOD = "MedDRA Preferred Term"
+    )
 
-  tbl <- t_events_per_term_id(terms = anl[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
-                              id = anl$USUBJID,
-                              col_by = anl$ARM,
-                              total = "All Patients",
-                              col_N = table(asl$ARM)
+  tbl <- t_events_per_term_id(
+    terms = anl[, c("AEBODSYS", "AEDECOD")] %>% map(as_factor_keep_attributes),
+    id = anl$USUBJID,
+    col_by = anl$ARM,
+    total = "All Patients",
+    col_N = table(asl$ARM)
   )
 
   comp <- compare_rtables(tbl, tbl_stream, comp.attr = FALSE)

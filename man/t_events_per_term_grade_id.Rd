@@ -13,7 +13,6 @@ t_events_per_term_grade_id(
   total = NULL,
   grade_levels = NULL,
   event_type = "event",
-  missing_term_action = "nocode",
   any_grade = "Any Grade",
   table_tree = FALSE
 )
@@ -27,9 +26,12 @@ column should be lower level term.}
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the
 length or number of rows of \code{terms}.}
 
-\item{grade}{grade of adverse event as numeric or factor.}
+\item{grade}{grade of adverse event.
+For factors, it is assumed that intensity corresponds to the order of the factor levels.
+If that is not the case, see \code{grade_levels}.
+For character or numeric, \code{grade_levels} is required.}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
@@ -40,16 +42,17 @@ adverse events can be accounted for with this argument.}
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{grade_levels}{an ordered character or factor vector used for naming rows for each
-level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
-level orders in \code{grade}}
+\item{grade_levels}{a factor. The levels of the factor define the severity of the grade and
+the order of display.
+For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
+the most severe grade "c" at the bottom of the table, the least severe grade "a" at the top.
+If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
+If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
+the factor levels of \code{grade}.
+If \code{grade} is not a factor, \code{grade_levels} is required.}
 
 \item{event_type}{string to specify the type of event that is summarized, \code{event} by default.
 Only displayed when \code{terms} has 2 columns.}
-
-\item{missing_term_action}{Specify how the missing terms should be handled.
-Either "nocode" (by default) or "ignore". "nocode" means to code as
-"No Coding Available"; "ignore" means not to count the missing terms.}
 
 \item{any_grade}{string to specify the row name which counts any occurrence,
 it is named \code{Any Grade} by default}
@@ -79,7 +82,7 @@ Multiple events within a subject of the same term (if \code{terms} is one level)
  greatest intensity reported.
 
 \code{t_events_per_term_grade_id} doesn't deal with data with missing grade. Impute or filter missing
-values before using \code{t_events_per_term_grade_id}.
+values with \code{sas_na} and \code{explicit_na} before using \code{t_events_per_term_grade_id}.
 
 \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
  reported higher level term to the least frequent one. Within each group of higher level term,
@@ -94,7 +97,7 @@ grades.
 library(dplyr)
 library(random.cdisc.data)
 
-ADSL <- radsl(10, seed = 1)
+ADSL <- radsl(cached = TRUE)
 ADAE <- radae(ADSL, 4L, seed = 2)
 
 t_events_per_term_grade_id(
@@ -103,25 +106,33 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  grade_levels = 1:5
+  grade_levels = as.factor(1:5)
 )
 
+# Introducing imperfect data and demo how to preprocess
 ADAE$AEDECOD <- as.character(ADAE$AEDECOD)
 ADAE$AEBODSYS <- as.character(ADAE$AEBODSYS)
 ADAE$AEDECOD[c(1,5)] = ""
-ADAE$AEBODSYS[c(2,6)] = NA
+ADAE$AEBODSYS[c(2,6)] = " "
+
 ADAE <- ADAE \%>\%
-  mutate(grade_category = case_when(
-    AETOXGR \%in\% c(1,2) ~ "Mild",
-    AETOXGR \%in\% c(3,4) ~ "Moderate",
-    AETOXGR \%in\% c(5) ~ "Severe") \%>\% as.factor) \%>\%
+  mutate(
+   grade_category = case_when(
+     AETOXGR \%in\% c(1,2) ~ "Mild",
+     AETOXGR \%in\% c(3,4) ~ "Moderate",
+     AETOXGR \%in\% c(5) ~ "Severe"
+   ),
+   grade_category = factor(grade_category, levels=c("Mild", "Moderate", "Severe")),
+   # Preprocess imperfect data
+   AEDECOD = AEDECOD \%>\% sas_na \%>\% explicit_na(label = "Not Coded"),
+   AEBODSYS = AEBODSYS \%>\% sas_na \%>\% explicit_na(label = "Not Coded"),
+  ) \%>\%
   var_relabel(
     AEBODSYS = "MedDRA System Organ Class",
     AEDECOD = "MedDRA Preferred Term",
     AETOXGR = "Analysis Toxicity Grade",
     grade_category = "Insensity")
 
-levels(ADAE$grade_category) = c("Mild", "Moderate", "Severe")
 
 t_events_per_term_grade_id(
   terms = ADAE$AEDECOD,
@@ -130,7 +141,17 @@ t_events_per_term_grade_id(
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
   total = "All Patients",
-  grade_levels = 1:6
+  grade_levels = as.factor(1:5)
+)
+
+t_events_per_term_grade_id(
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$grade_category,
+  col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM),
+  total = "All Patients",
+  grade_levels = unique(sort(ADAE$grade_category))
 )
 
 t_events_per_term_grade_id(
@@ -139,9 +160,8 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  grade_levels = 1:5,
-  event_type = "adverse events",
-  missing_term_action = "ignore"
+  grade_levels = as.factor(1:5),
+  event_type = "adverse events"
 )
 
 tbls <- t_events_per_term_grade_id(
@@ -153,6 +173,7 @@ tbls <- t_events_per_term_grade_id(
   total = "All Patients",
   event_type = "adverse events",
   any_grade = "Any Severity",
+  grade_levels = factor(c("Severe", "Moderate", "Mild"), levels = c("Severe", "Moderate", "Mild")),
   table_tree = TRUE
 )
 summary(tbls)

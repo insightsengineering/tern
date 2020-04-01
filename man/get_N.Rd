@@ -7,10 +7,10 @@
 get_N(col_by)
 }
 \arguments{
-\item{col_by}{col_by (factor or matrix) to get counts from}
+\item{col_by}{(factor or matrix) to get counts from}
 }
 \value{
-counts per factor level or column of col_by
+counts per factor level or column of \code{col_by}
 }
 \description{
 Normally, you don't need to use this function as it is the default

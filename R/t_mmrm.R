@@ -1,0 +1,453 @@
+#' Mix model with repeated measurements (MMRM) model
+#'
+#' The MMRM table function summarizes MMRM test results by visit and groups. The
+#' function produces adjusted \code{lsmeans} and standard error, as well as conducts
+#' comparisons between groups' adjusted means, where the first level of the group
+#' is the reference level.
+#'
+#' @details
+#'
+#' Create \code{rtable} of MMRM test results
+#'
+#' @inheritParams a_mmrm
+#' @inheritParams argument_convention
+#'
+#' @return \code{rtable} object or table tree, depending on the the `table_tree` argument
+#'
+#' @export
+#'
+#' @seealso \code{\link{a_mmrm}}
+#'
+#' @examples
+#' library(dplyr)
+#' library(random.cdisc.data)
+#'
+#' ADSL <- radsl(cached = TRUE)
+#' ADQS <- radqs(cached = TRUE)
+#' ADQS_f <- ADQS %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'
+#' t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
+#'        data = ADQS_f,
+#'        id_var = "USUBJID",
+#'        arm_var = "ARM",
+#'        visit_var = "AVISIT",
+#'        col_N = table(ADSL$ARM),
+#'        mode = "boot-satterthwaite",
+#'        conf.level = 0.95,
+#'        weights_emmeans = "proportional",
+#'        corStruct = "corSymm",
+#'        table_tree = FALSE
+#' )
+t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
+                   data,
+                   id_var = "USUBJID",
+                   arm_var = "ARM",
+                   visit_var = "AVISIT",
+                   col_N, # nolint
+                   mode = c("df.error", "auto", "boot-satterthwaite"),
+                   conf.level = 0.95, # nolint
+                   weights_emmeans = "proportional",
+                   corStruct = NULL, # nolint
+                   table_tree = TRUE) {
+
+  mmrm_result <- a_mmrm(
+    formula = formula,
+    data = data,
+    id_var = id_var,
+    arm_var = arm_var,
+    visit_var = visit_var,
+    mode = mode,
+    conf.level = conf.level,
+    weights_emmeans = weights_emmeans,
+    corStruct = corStruct
+  )
+
+  s_contrast_df <- split(
+    mmrm_result$`contrast`,
+    mmrm_result$`contrast`[visit_var]
+  )
+
+  s_estimate_df <- split(
+    mmrm_result$`estimate`,
+    mmrm_result$`estimate`[visit_var]
+  )
+
+  arm_lvl <- levels(data[[arm_var]])
+
+  tbl_head <- rheader(rrowl("", arm_lvl))
+
+  format_pval <- function(x, output) {
+    if (x < 0.0001) {
+      "<.0001"
+    } else {
+      paste(round(x, 4))
+    }
+  }
+
+  mmrm_node_list <- Map(function(df1_i, df2_i, visit) {
+
+    tbl <- rtable(
+      header = tbl_head,
+      rrowl(
+        "n",
+        tapply(
+          df1_i$`n`, factor(df1_i[[arm_var]], levels = arm_lvl),
+          function(n_i) {
+            c(n_i)
+          }
+        ),
+        format = "xx"
+      ),
+      rrowl(
+        "Adjusted Mean (SE)",
+        lapply(
+          split(df1_i, factor(df1_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`emmean`, vector_i$`SE`)
+            }
+          }
+        ),
+        format = sprintf_format("%.3f (%.3f)")
+      ),
+      rrowl(
+        paste0(mmrm_result$`conf_level` * 100, "% CI"),
+        lapply(
+          split(df1_i, factor(df1_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`lower.CL`, vector_i$`upper.CL`)
+            }
+          }),
+        format = "(xx.xxx, xx.xxx)"
+      ),
+      rrow(),
+      rrowl(
+        paste0("Difference in Adjusted Means (SE) (vs. ", mmrm_result$`ref_level`, ")"),
+        lapply(
+          split(df2_i, factor(df2_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`estimate`, vector_i$`SE`)
+            }
+          }),
+        format = sprintf_format("%.3f (%.3f)")
+      ),
+      rrowl(
+        paste0(mmrm_result$`conf_level` * 100, "% CI"),
+        lapply(
+          split(df2_i, factor(df2_i[[arm_var]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`lower.CL`, vector_i$`upper.CL`)
+            }
+          }),
+        format = "(xx.xxx, xx.xxx)"
+      ),
+      rrowl(
+        "Relative Reduction (%)",
+        lapply(
+          split(df2_i, df2_i[[arm_var]], drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`relative_reduc`)
+            }
+          }),
+        format = "xx.x%"
+      ),
+      rrow(),
+      rrowl(
+        "p-value (MMRM)",
+        lapply(
+          split(df2_i, df2_i[[arm_var]], drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$`p.value`)
+            }
+          }),
+        format = format_pval
+      )
+    )
+
+    tbl <- header_add_N(tbl, col_N)
+
+    node(
+      name = visit,
+      content = tbl,
+      children = NULL
+    )
+
+  }, s_estimate_df, s_contrast_df, names(s_estimate_df))
+
+  tree <- invisible_node(
+    name = "root",
+    children = mmrm_node_list,
+    content = NULL
+  )
+
+  if (table_tree) {
+    tree
+  } else {
+    to_rtable(tree)
+  }
+}
+
+#' MMRM model, test, estimate
+#'
+#'
+#' @param formula a \code{gls} formula.
+#' @param data a \code{data.frame} with all the variables specified in
+#'   \code{formula}. Records with missing values in any independent variables
+#'   will be excluded.
+#' @param id_var a character describing the variable name used as subject IDs,
+#'   \code{"USUBJID"} by default.
+#' @param arm_var a character describing the variable name for \code{\link{arm}},
+#'   \code{"ARM"} by default. The arm variable must be factor in \code{data}
+#' @param visit_var a character describing the variable name for visit,
+#'   \code{"AVISIT"} by default. This variable must be factor in data.
+#' @param mode algorithm for degree of freedom: \code{auto}, \code{df.error} or
+#'   \code{boot-satterthwaite}.
+#' @param conf.level confidence level. Must be number greater than 0 and less
+#'   than 1.
+#' @param weights_emmeans argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.
+#' @param corStruct \code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.
+#'
+#' @return a dataframe with MMRM results
+#'
+#' @importFrom dplyr filter group_by_at left_join mutate n summarise rename ungroup
+#' @importFrom nlme gls corSymm corAR1 corARMA corCAR1 corCompSymm
+#'  corExp corGaus corLin corRatio corSpher varIdent
+#' @importFrom emmeans emmeans contrast
+#' @importFrom stats complete.cases na.exclude
+#' @importFrom rlang :=
+#'
+#' @export
+#'
+#' @examples
+#' library(random.cdisc.data)
+#' library(dplyr)
+#'
+#' ADSL <- radsl(cached = TRUE)
+#' ADQS <- radqs(cached = TRUE)
+#' ADQS_f <- ADQS %>%
+#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'
+#' mmrm_results <- a_mmrm(
+#'   data = ADQS_f,
+#'   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,
+#'   id_var = "USUBJID",
+#'   arm_var = "ARM",
+#'   visit_var = "AVISIT",
+#'   mode = "boot-satterthwaite",
+#'   conf.level = 0.95,
+#'   weights_emmeans = "proportional",
+#'   corStruct = "corSymm"
+#' )
+#'
+#' names(mmrm_results)
+#'
+#' mmrm_results["contrast"]
+#' mmrm_results["estimate"]
+a_mmrm <- function(data,
+                   formula = AVAL ~ ARM + AVISIT + ARM * VISIT,
+                   id_var = "USUBJID",
+                   arm_var = "ARM",
+                   visit_var = "AVISIT",
+                   mode = c("df.error", "auto", "boot-satterthwaite"),
+                   conf.level = 0.95, # nolint
+                   weights_emmeans = "proportional",
+                   corStruct = NULL # nolint
+) {
+
+  mode <- match.arg(mode)
+
+  # extract relevant information from formula
+  mt <- terms(formula, data = data)
+
+  vars <- all.vars(attr(mt, "variables"))
+  regressor_vars <- c(vars[-1L], id_var)
+
+  stopifnot(
+    is.data.frame(data),
+    is.null(corStruct) || corStruct %in% c(
+      "corAR1", "corARMA", "corCAR1", "corCompSymm", "corExp", "corGaus",
+      "corLin", "corRatio", "corSpher", "corSymm"
+    )
+  )
+
+  if (!id_var %in% names(data)) {
+    stop(paste("Subject ID variable", id_var, "does not exist in input data"))
+  }
+
+  if (!arm_var %in% regressor_vars) {
+    stop(paste("Arm variable", arm_var, "does not exist in formula"))
+  }
+
+  if (!visit_var %in% regressor_vars) {
+    stop(paste("Visit variable", visit_var, "does not exist in formula"))
+  }
+
+  i_resp <- attr(mt, "response")
+  if (i_resp == 0) {
+    stop("need a response variable")
+  }
+
+  response_var <- vars[i_resp]
+
+  if (!all(vars %in% names(data))) {
+    stop("All variables in the formula  must appear in 'data' (no scoping allowed)")
+  }
+
+  environment(formula) <- new.env() # no scoping for formula elements needed
+
+  # SAS excludes records with any missing independent varibles. In gls, any such missing value will cause error.
+  if (!all(complete.cases(data[, regressor_vars]))) {
+    warning(
+      "Some records have missing independent variables, which will be excluded.",
+      head(data[!complete.cases(data[, regressor_vars]), c(id_var, vars)]),
+      call. = FALSE
+    )
+  }
+
+  data_complete <- data %>%
+    dplyr::filter(stats::complete.cases(data[, regressor_vars])) %>%
+    droplevels()
+
+  arm_symbol <- sym(arm_var)
+  arm_values <- data_complete[[arm_var]]
+  response_values <- data_complete[[response_var]]
+
+  stopifnot(nlevels(arm_values) >= 2)
+  reference_level <- levels(arm_values)[1]
+
+  stopifnot(
+    is.numeric(response_values),
+    is.factor(arm_values),
+    is.factor(data_complete[[visit_var]])
+  )
+
+  # Modeling step in SAS assumes non-missing response variable; however estimation step considers all data
+  if (any(is.na(response_values))) {
+    warning(
+      "Some records have a missing endpoint, which will be excluded from MMRM modeling, but included in estimation.",
+      head(data_complete[is.na(response_values), c(id_var, visit_var, response_var)]),
+      call. = FALSE
+    )
+  }
+
+  # remove all entries where response is NA, droplevels as well
+  data_cc <- data_complete %>%
+    dplyr::filter(!is.na(!!sym(response_var))) %>%
+    droplevels()
+
+
+  # check all arms will still be present after NA filtering
+  stopifnot(nlevels(arm_values) == nlevels(data_cc[[arm_var]]))
+
+  # each arm should have at least have 5 records
+  if (!all(table(data_cc[[arm_var]]) > 5)) {
+    stop(paste("Each group / arm should have at least 5 records with non-missing", response_var))
+  }
+
+  cor_formula <- as.formula(paste("~", "as.numeric(", visit_var, ") | ", id_var))
+  correlation <- if (is.null(corStruct)) {
+    NULL
+  } else {
+    do.call(corStruct, list(form = cor_formula))
+  }
+
+  fit_mmrm <- gls(
+    model = formula,
+    correlation = correlation,
+    weights = varIdent(form = as.formula(paste(" ~ 1 |", visit_var))),
+    method = "REML",
+    data = data_cc, # model fit on complete case
+    na.action = stats::na.exclude
+  )
+
+  # hacky for emmeans since emmeans evaluation and namespace is not good
+  # https://github.com/rvlenth/emmeans/issues/13
+  fit_mmrm$call$model <- substitute(formula)
+  emm <- emmeans(
+    fit_mmrm,
+    mode = mode,
+    specs = as.formula(paste("~ ", arm_var, "|", visit_var)),
+    data = data_complete %>% select(-c(response_var)), # estimate on original data
+    weights = weights_emmeans
+  )
+
+  # Relative Reduction (in change from baseline) is calculated using model based
+  # LS means as 100*(LS mean change from baseline in Control Pooled group –
+  # LS mean change from baseline in Treatment Group)/LS mean change from
+  # baseline in Control Pooled group.
+
+  ### adjusted estimate for each arm
+  estimate <- confint(emm, level = conf.level) %>%
+    as.data.frame()
+
+  data_n <- data_complete %>%
+    dplyr::group_by_at(.vars = c(visit_var, arm_var)) %>%
+    dplyr::summarise(n = dplyr::n()) %>%
+    dplyr::ungroup()
+
+  estimate <- estimate %>%
+    dplyr::left_join(data_n, by = c(visit_var, arm_var))
+
+  # get emmean for reference group to join into full dataframe so that relative reduction in
+  # emmean (mean of response variable) can be computed with respect to reference level (e.g. ARM A)
+  means_at_ref <- estimate %>%
+    dplyr::filter(!!arm_symbol == reference_level) %>%
+    dplyr::select(c(visit_var, "emmean")) %>%
+    dplyr::rename(ref = .data$emmean)
+
+  relative_reduc <- estimate %>%
+    dplyr::filter(!!arm_symbol != reference_level) %>%
+    dplyr::left_join(means_at_ref, by = c(visit_var)) %>%
+    dplyr::mutate(relative_reduc = (.data$ref - .data$emmean) / .data$ref) %>%
+    dplyr::select(c(visit_var, arm_var, "relative_reduc"))
+
+  sum_fit_diff <- summary(
+    contrast(emm, method = "trt.vs.ctrl"),
+    level = conf.level,
+    infer = c(TRUE, TRUE),
+    adjust = "none"
+  )
+
+  # get the comparison group name from "contrast" column, e.g. "ARMB - ARMA" returns "ARMB", i.e. remove " - ARMA"
+  contrast <- sum_fit_diff %>%
+    dplyr::mutate(
+      col_by = factor(gsub(paste0("\\s-\\s", reference_level), "", contrast), levels = levels(data[[arm_var]]))
+    ) %>%
+    dplyr::select(-contrast) %>%
+    dplyr::rename(!!arm_symbol := .data$col_by) %>%
+    dplyr::left_join(relative_reduc, by = c(visit_var, arm_var))
+
+  message("MMRM methodology in R is different from SAS. Please use as exploratory purpose.")
+
+  list(
+    contrast = contrast,
+    estimate = estimate,
+    ref_level = reference_level,
+    conf_level = conf.level
+  )
+
+}

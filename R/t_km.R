@@ -3,8 +3,11 @@
 #' An \code{\link[rtables]{rtable}} format of KM model data for further
 #' annotation on top of Kaplan-Meier grob
 #'
-#' @param fit_km a class \code{\link{survfit}} object.
-#'
+#' @param formula a survival \code{\link{Surv}} formula
+#' @param data a \code{data.frame} with all the variable that are used in
+#'   \code{formula}
+#' @param conf.int level for computation of the confidence intervals.
+#' @param ... additional parameters passed to \code{\link{survfit}}
 #' @template author_wangh107
 #'
 #' @import rtables
@@ -29,33 +32,34 @@
 #' ADTTE <- cadtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = ADTTE_f, conf.type = "plain")
-#' tbl <- t_km(fit_km)
+#' formula <- Surv(AVAL, 1-CNSR) ~ ARM
+#' tbl <- t_km(formula, data = ADTTE_f, conf.type = "plain")
 #' tbl
 #'
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = ADTTE_f, conf.type = "plain")
-#' tbl <- t_km(fit_km)
+#' tbl <- t_km(formula, data = ADTTE_f, conf.int = 0.8)
 #' tbl
-t_km <- function(fit_km) {
+t_km <- function(formula,
+                 data,
+                 conf.int = 0.95,  # nolint
+                 ...) {
 
-  stopifnot(is(fit_km, "survfit"))
-
+  fit_km <- survfit(formula, data, conf.int = conf.int, ...)
   sumtable <- summary(fit_km)$table
 
   if (is.null(dim(sumtable))) {
-    kminfo <- sumtable[c("records", "median", "0.95LCL", "0.95UCL")]
+    kminfo <- sumtable[c("records", "median", paste0(conf.int, "LCL"), paste0(conf.int, "UCL"))]
     names(kminfo) <- c("records", "median", "LCL", "UCL")
     kminfo <- data.frame(as.list(kminfo))
     rownames(kminfo) <- "All"
   } else {
-    kminfo <- summary(fit_km)$table[, c("records", "median", "0.95LCL", "0.95UCL"), drop = FALSE]
+    kminfo <- sumtable[, c("records", "median", paste0(conf.int, "LCL"), paste0(conf.int, "UCL")), drop = FALSE]
     colnames(kminfo) <-  c("records", "median", "LCL", "UCL")
   }
 
-  skminfo <- split(as.data.frame(kminfo), 1:nrow(kminfo))
+  skminfo <- split(as.data.frame(kminfo), seq_len(nrow(kminfo)))
 
   rtablel(
-    header = c("N", "median", "95% CI for median"),
+    header = c("N", "median", paste0(conf.int * 100, "% CI for median")),
     lapply(skminfo, function(xi) {
       rrow(
         row.name = rownames(xi),

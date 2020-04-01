@@ -2,7 +2,7 @@
 % Please edit documentation in R/split.R
 \name{esplit.default}
 \alias{esplit.default}
-\title{Default method for atomics}
+\title{Default method for atomic}
 \usage{
 \method{esplit}{default}(x, by)
 }
@@ -12,7 +12,7 @@
 \item{by}{split by, either a factor or a col_by matrix}
 }
 \description{
-Also includes NULL
+Also includes \code{NULL}
 }
 \examples{
 by <- factor(c("M", "M", "F", "F", "F"))

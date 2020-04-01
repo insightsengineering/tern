@@ -10,7 +10,7 @@ to_string_with_names(x)
 \item{x}{object}
 }
 \value{
-string of the form "key1: val1, keey2: val2, ..."
+string of the form \code{"key1: val1, keey2: val2, ..."}
 }
 \description{
 string representation of the object's contents with names

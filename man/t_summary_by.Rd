@@ -23,8 +23,10 @@ the summary sub-groups in the table.}
 \item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
 define the columns in the table.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
@@ -55,6 +57,7 @@ t_summary_by(
  row_by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD,
  total = "All Patients",
+ denominator = "N",
  drop_levels = TRUE
 )
 
@@ -65,6 +68,7 @@ t_summary_by(
  row_by = ADSL$COUNTRY,
  col_by = ADSL$ARMCD,
  total = "All Patients",
+ denominator = "N",
  drop_levels = TRUE,
  useNA = "ifany"
 )
@@ -98,7 +102,7 @@ ADLB <- radlb(cached = TRUE)
 # Recursive case
 t_summary_by(
   x = ADLB$AVAL,
-  row_by = r_by(ADLB[, c("PARAM", "AVISIT")]),
+  row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
   col_by = ADLB$ARM,
   col_N = table(ADSL$ARM),
   total = "All Patients"
@@ -119,7 +123,7 @@ summary(tbls)
 to_rtable(tbls)
 
 # Other examples
-ADQS <- radqs(ADSL, seed = 2) \%>\%
+ADQS <- radqs(cached = TRUE) \%>\%
   mutate(PARAM = as.factor(PARAM)) \%>\%
   var_relabel(
     PARAM = "Questionnaire Parameter",
@@ -129,7 +133,7 @@ ADQS <- radqs(ADSL, seed = 2) \%>\%
 # we suppress warnings because some are NaN (change CHG at screening visit)
 suppressWarnings(t_summary_by(
   x = ADQS[,c("AVAL", "CHG")],
-  row_by = r_by(ADQS[, c("PARAM", "AVISIT")]),
+  row_by = nested_by(ADQS[, c("PARAM", "AVISIT")]),
   col_by = ADQS$ARMCD,
   col_N = table(ADSL$ARMCD),
   total = "All Patients"
@@ -154,6 +158,18 @@ t_summary_by(
   col_by = ADQS_f$ARMCD,
   col_N = table(ADSL$ARMCD),
   total = "All Patients"
+)
+
+# imitate behavior of t_summarize_by_visit by adding function compare_in_header
+ADSL <- cadsl
+ADVS <- cadvs
+
+t_summary_by(
+  x = compare_in_header(ADVS[c("AVAL", "CHG")]),
+  row_by = ADVS$AVISIT,
+  col_by = ADVS$ARM,
+  col_N = table(ADSL$ARM),
+  f_numeric = patient_numeric_fcns()
 )
 }
 \seealso{

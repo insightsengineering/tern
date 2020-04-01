@@ -13,6 +13,7 @@ t_forest_tte(
   strata_data = NULL,
   ties = "exact",
   time_unit = "month",
+  conf_int = 0.95,
   dense_header = FALSE,
   table_tree = FALSE
 )
@@ -23,7 +24,7 @@ t_forest_tte(
 \item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
@@ -33,11 +34,14 @@ the \code{t_el_forest_tte}}
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{strata_data}{currently not supported}
+\item{strata_data}{data for stratification factors (categorical variables).
+If \code{NULL}, no stratified analysis is performed.}
 
 \item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
 
 \item{time_unit}{The unit of median survival time. Default is \code{months}.}
+
+\item{conf_int}{confidence level of the interval}
 
 \item{dense_header}{Display the table headers in multiple rows.}
 
@@ -46,7 +50,7 @@ the \code{t_el_forest_tte}}
 }
 \description{
 The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and
-median survival time for each analysis arm, as well as a hazard ratio and the corresponding 95\% confidence interval
+median survival time for each analysis arm, as well as a hazard ratio and the corresponding confidence interval
 from a Cox proportional hazard model.
 }
 \details{
@@ -68,20 +72,21 @@ of patients and the number of events in reference arm, respectively.
    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio.
   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when
   comparison arm is better. }
-  \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty
+  \item{9}{\emph{Wald CI} The confidence interval indicates the level of uncertainty
   around the measure of effect (Hazard Ratio). Because only a small sample of the overall
   population is included in the analysis, by having an upper and lower confidence limit
-  we can infer that the true treatment effect lies in between. If the 95% confidence interval
-  includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
+  we can infer that the true treatment effect lies in between. By default, the 95% confidence
+  interval is calculated. If it includes 1, then we say that the difference between two arms
+  is not significant at a significance level of 0.05.}
 }
 }
 \examples{
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl(seed = 1)
+ADSL <- radsl(cached = TRUE)
 
-ADTTE <- radtte(ADSL, seed = 2)
+ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%
   dplyr::filter(PARAMCD == "OS", ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
@@ -92,10 +97,21 @@ tbl <- t_forest_tte(
   col_by = ADTTE_f$ARMCD,
   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
+  conf_int = 0.9,
   dense_header = TRUE
 )
 
-tbl
+tbl2 <- t_forest_tte(
+  tte = ADTTE_f$AVAL,
+  is_event = ADTTE_f$CNSR == 0,
+  col_by = ADTTE_f$ARMCD,
+  row_by_list = droplevels(ADTTE_f[,  "BMRKR2" ]),
+  strata_data = ADTTE_f[ , c("STRATA1", "STRATA2")],
+  ties = "exact",
+  dense_header = TRUE
+)
+
+tbl2
 
 \dontrun{
 Viewer(tbl)

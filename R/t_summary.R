@@ -23,19 +23,19 @@
 #'
 #' with(ADSL, t_summary(AGE > 65, ARMCD))
 #'
-#'
 #' # examples with hierarchical header
 #' library(dplyr)
 #' ADSL <- radsl(cached = TRUE)
 #' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
 #' ADSL_f <- ADSL %>%
-#'   filter(SEX %in% c("M", "F")) %>% mutate(SEX = droplevels(SEX))
+#'   dplyr::filter(SEX %in% c("M", "F")) %>%
+#'   mutate(SEX = droplevels(SEX))
 #' t_summary(ADSL_f$SEX, col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 #'
 #' t_summary(ADSL_f[, c("SEX", "AGE")], col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 #'
 #' ADSL_f <- ADSL %>%
-#'   filter(SEX %in% c("M", "F"), RACE %in% c("ASIAN", "WHITE")) %>%
+#'   dplyr::filter(SEX %in% c("M", "F"), RACE %in% c("ASIAN", "WHITE")) %>%
 #'   mutate(SEX = droplevels(SEX), RACE = droplevels(as.factor(RACE)))
 #' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$SEX, ADSL_f$RACE))
 #' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX))
@@ -67,7 +67,7 @@ t_summary <- function(x,
 #' @inheritParams t_summary.data.frame
 #' @param ... not used arguments
 #'
-#' @return rtable
+#' @return \code{rtable}
 #'
 #' @export
 #'
@@ -203,13 +203,13 @@ t_summary.data.frame <- function(x, # nolint
 
 #' Summarize Numeric Variables
 #'
-#' Tabulate the number of non-missing observations, mean, sd, median, and range
+#' Tabulate the number of non-missing observations, mean, standard error, median, and range
 #' for different groups.
 #'
 #' @inheritParams t_summary.data.frame
 #' @param x numeric variable
-#' @param f_numeric a combination of the analysis fuctions to be evaluated \code{"count_n", "mean_sd", "median",
-#'   "q1_q3", "range"}
+#' @param f_numeric a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "median",
+#'   "q1_q3", "range", "se"}
 #'
 #' @template return_rtable
 #'
@@ -239,9 +239,6 @@ t_summary.data.frame <- function(x, # nolint
 #'
 #' ADSL$AGE[1:10] <- NA
 #' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
-#'
-#'
-#'
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = NULL, #nolintr
@@ -250,9 +247,18 @@ t_summary.numeric <- function(x, # nolint
                               ...) {
   stopifnot(
     is.null(total) || is_character_single(total),
-    all(f_numeric %in% c("count_n", "mean_sd", "median", "q1_q3", "range")),
     length(f_numeric) > 0
   )
+
+
+  allowed_f_numeric <- c(
+    "count_n", "mean_sd", "median", "q1_q3", "range",
+    "n_not_na3", "mean_sd3", "median_t3", "iqr_num3", "range_t3", "se"
+  )
+
+  if (!all(f_numeric %in% allowed_f_numeric)) {
+    stop("f_numeric needs to be one of ", paste(allowed_f_numeric, collapse = ", "))
+  }
 
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -269,14 +275,33 @@ t_summary.numeric <- function(x, # nolint
       f_name,
       count_n = rtabulate(x, col_by, count_n, row.name = "n"),
       mean_sd = rtabulate(x, col_by, mean_sd, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
+      se = rtabulate(x, col_by, function(x, na_rm) {
+        sd(x) / sqrt(length(x))
+      }, row.name = "SE", format = "xx.xx", na_rm = TRUE),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
       q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE),
       range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),
-      NULL
+
+      # for patient data
+      n_not_na3 = rtabulate(x, col_by, n_not_na3, row.name = "n"),
+      mean_sd3 = rtabulate(x, col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
+      median_t3 = rtabulate(x, col_by, median_t3, row.name = "Median", format = "xx.xx"),
+      iqr_num3 = rtabulate(x, col_by, iqr_num3, row.name = "IQR", format = "xx.xx - xx.xx"),
+      range_t3 = rtabulate(x, col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max"),
+
+      NULL # default, should never happen
     ))
   )
 
   header_add_N(tbl, col_N)
+}
+
+#' Get the names of functions to be used for t_summary.numeric to summarize patient
+#' data as for \code{\link{t_summarize_by_visit}}
+#'
+#' @export
+patient_numeric_fcns <- function() {
+  c("n_not_na3", "mean_sd3", "median_t3", "iqr_num3", "range_t3")
 }
 
 #' Summarize Categorical Data
@@ -287,10 +312,10 @@ t_summary.numeric <- function(x, # nolint
 #' @inheritParams t_summary.data.frame
 #' @param x factor variable
 #' @param useNA choose whether missing data (NAs) should be displayed as a level.
-#' @param denominator either n, N or omit. n and N are for calculating the level associated
-#'   percentage. With option N, the reference population from \code{col_N} is used as the denominator.
-#'   With option n, the number of non-missing records from \code{x} is used as the denominator.
-#'   If \code{omit} is chosen the percentage is omitted.
+#' @param denominator either \code{"n"}, \code{"N"} or \code{"omit"}. \code{"n"} and \code{"N"} are for calculating
+#'   the level associated percentage. With option \code{"N"}, the reference population from \code{col_N} is used as
+#'   the denominator. With option \code{"n"}, the number of non-missing records from \code{x} is used as
+#'   the denominator. If \code{"omit"} is chosen the percentage is omitted.
 #' @param drop_levels boolean whether to drop zero count levels
 #'
 #' @template return_rtable

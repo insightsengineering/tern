@@ -65,7 +65,7 @@
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_count_unique}}, \code{\link{t_el_events_per_term_id}},
+#' @seealso \code{\link{t_el_count_unique}}, \code{\link{t_el_events_per_term_id}},
 #'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
@@ -75,6 +75,34 @@
 #'
 #' t_events_per_term_id(
 #'  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10),
+#'  total = "All Patients"
+#' )
+#'
+#' \dontrun{
+#' # terms can't be empty strings or NA
+#' t_events_per_term_id(
+#'  terms = with_label(factor(c("", "t1", "t2", "t2", "t2")), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10),
+#'  total = "All Patients"
+#' )
+#'
+#' t_events_per_term_id(
+#'  terms = with_label(factor(c(NA, "t1", "t2", "t2", "t2")), "Term"),
+#'  id = c(1, 4, 2, 3, 3),
+#'  col_by = factor(c("A", "A", "B", "C", "C")),
+#'  col_N = c(2, 4, 10),
+#'  total = "All Patients"
+#' )
+#'
+#' }
+#'
+#' t_events_per_term_id(
+#'  terms = explicit_na(sas_na(factor(c("", "", "t2", "t1", "t2")))),
 #'  id = c(1, 4, 2, 3, 3),
 #'  col_by = factor(c("A", "A", "B", "C", "C")),
 #'  col_N = c(2, 4, 10),
@@ -91,8 +119,8 @@
 #'
 #' library(random.cdisc.data)
 #'
-#' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4L, seed = 2)
+#' ADSL <- radsl(cached = TRUE)
+#' ADAE <- radae(cached = TRUE)
 #'
 #' t_events_per_term_id(
 #'   terms = ADAE$AEDECOD,
@@ -119,9 +147,8 @@
 #'   total = "All Patients"
 #' )
 #'
-#' ADSL <- cadsl
-#' ADCM <- cadcm
-#' ADCM <- ADCM %>%
+#' ADSL <- radsl(cached = TRUE)
+#' ADCM <- radcm(cached = TRUE) %>%
 #'   dplyr::filter(ATIREL == "CONCOMITANT")
 #'
 #' t_events_per_term_id(
@@ -167,6 +194,8 @@
 #' summary(tbls)
 #' tbls[[1]]
 #' tbls[['cl A']]
+#'
+#'
 t_events_per_term_id <- function(terms,
                                  id,
                                  col_by,
@@ -175,13 +204,9 @@ t_events_per_term_id <- function(terms,
                                  event_type = "event",
                                  table_tree = FALSE) {
 
-  if (is.atomic(terms)) {
-    terms <- list(terms)
-  }
-  stopifnot(is.list(terms))
-  terms <- lapply(terms, as_factor_keep_attributes)
-  stopifnot(is.null(total) || is_character_single(total))
+  terms <- argfix_events_terms(terms)
 
+  stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -260,75 +285,6 @@ t_events_per_term_id <- function(terms,
   }
 }
 
-# Elementary Tables Used for AE tables ----
-#' Count Unique Elements Per Cell
-#'
-#' \code{t_count_unique} counts the number of unique elements per cell.
-#'
-#' @inheritParams argument_convention
-#' @param x a vector
-#' @param row_name a string with the row name to display in the summary table
-#'   that is returned. Default is "number of unique elements."
-#'
-#' @return an \code{rtable}
-#'
-#' @export
-#'
-#' @template author_waddella
-#' @template author_zhanc107
-#' @template author_wangh107
-#' @template author_qit3
-#'
-#' @seealso \code{\link{t_events_per_term_id}}, \code{\link{t_el_events_per_term_id}},
-#'   \code{\link{t_events_per_term_grade_id}}
-#'
-#' @examples
-#'
-#' t_count_unique(
-#'  x = paste("id", c(1, 4, 2, 3, 3), sep = "-"),
-#'  col_by = factor(c("A", "A", "B", "C", "C")),
-#'  col_N = c(2, 4, 10)
-#' )
-#'
-#' t_count_unique(
-#'  x = c(1, 4, 2, 3, 3, NA),
-#'  col_by = factor(c("A", "A", "B", "C", "C", "C")),
-#'  col_N = c(2, 4, 10),
-#'  row_name = "Unique Records",
-#'  na_rm = FALSE
-#' )
-t_count_unique <- function(x,
-                           col_by,
-                           col_N = NULL, # nolint
-                           total = NULL,
-                           na_rm = TRUE,
-                           row_name = "number of unique elements") {
-  stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(is.atomic(x))
-  col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by) #nolintr
-  if (!is.null(total)) {
-    col_by <- by_add_total(col_by, label = total)
-    col_N <- col_N_add_total(col_N) #nolintr
-    total <- NULL
-  }
-  check_col_by(x, col_by, col_N, min_num_levels = 1)
-
-  counts <- vapply(col_by, function(rows) {
-    xi <- x[rows]
-    if (na_rm) {
-      xi <- na.omit(xi)
-    }
-    length(unique(xi))
-  }, numeric(1))
-  percentage <- counts / col_N
-
-  tbl <-  rtable(
-    rheader(rrowl("", colnames(col_by))),
-    rrowl(as.character(row_name), Map(c, counts, percentage), format = "xx.xx (xx.xx%)")
-  )
-  header_add_N(tbl, col_N)
-}
 
 #' Summary table for events
 #'
@@ -353,7 +309,7 @@ t_count_unique <- function(x,
 #' @template author_wangh107
 #' @template author_qit3
 #'
-#' @seealso \code{\link{t_count_unique}}, \code{\link{t_events_per_term_id}},
+#' @seealso \code{\link{t_el_count_unique}}, \code{\link{t_events_per_term_id}},
 #'   \code{\link{t_events_per_term_grade_id}}
 #'
 #' @examples
@@ -369,6 +325,7 @@ t_el_events_per_term_id <- function(id,
                                     total_events = "Total number of events",
                                     subjects_with_events = "Total number of patients with at least one adverse event") {
 
+  stop_if_not(list(!any(is.na(id)), "id currently does not allow for missing data"))
   stopifnot(is.null(total) || is_character_single(total))
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -381,11 +338,13 @@ t_el_events_per_term_id <- function(id,
 
   # subjects with at least one adverse advent (AE): we use the id as some subjects can have more than one AE
   tbl_at_least_one <- if (!is.null(subjects_with_events)) {
-    t_count_unique(
+    t_el_count_unique(
       x = id,
       col_by = col_by,
       col_N = col_N,
       total = total,
+      na_rm = TRUE,
+      denominator = "N",
       row_name = subjects_with_events
     )
   } else {
@@ -404,4 +363,29 @@ t_el_events_per_term_id <- function(id,
 
   # if tbl_at_least_one is NULL, then incorrect rbind function is called, so we assign empty_rtable() above
   rbind(tbl_at_least_one, tbl_events)
+}
+
+
+
+argfix_events_terms <- function(terms) {
+
+  if (is.atomic(terms)) {
+    terms <- list(terms)
+  }
+  stopifnot(is.list(terms))
+  terms <- lapply(terms, as_factor_keep_attributes)
+
+  empty_terms <- vapply(terms, function(x) any(x == "") || any(grepl("^\\s+$", x)), logical(1))
+  na_terms <- vapply(terms, function(x) any(is.na(x)), logical(1))
+
+  if (any(empty_terms)) {
+    stop("terms are not allowed to be an empty string or strings of spaces. You may use explicit_na(sas_na(x))",
+         call. = FALSE)
+  }
+
+  if (any(na_terms)) {
+    stop("terms currently do not allow missing data, please use explicit_na(x)", call. = FALSE)
+  }
+
+  terms
 }

@@ -12,7 +12,7 @@ basic_node_info(x, ...)
 \arguments{
 \item{x}{node object}
 
-\item{...}{other args}
+\item{...}{other arguments}
 
 \item{index}{path to node (excluding node name itself)}
 }

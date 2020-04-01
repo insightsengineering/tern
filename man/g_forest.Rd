@@ -16,6 +16,7 @@ g_forest(
   width_row_names = NULL,
   width_columns = NULL,
   width_forest = unit(1, "null"),
+  col_symbol_size = NULL,
   draw = TRUE,
   newpage = TRUE
 )
@@ -31,7 +32,7 @@ g_forest(
 omitted}
 
 \item{forest_header}{character vector of length 2, displayed to the left and
-right of \code{vline}, respectively. If \code{vline=NULL} then
+right of \code{vline}, respectively. If \code{vline = NULL} then
 \code{forest_header} needs to be \code{NULL} too}
 
 \item{xlim}{x limits for x-scales}
@@ -49,6 +50,11 @@ table columns. If \code{NULL} the widths get automatically calculated.}
 
 \item{width_forest}{\code{\link[grid]{unit}} object with width for the forest
 column. If \code{NULL} the widths get automatically calculated.}
+
+\item{col_symbol_size}{integer with column index from \code{tbl} containing data to be
+used to determine relative size for estimator plot symbol.
+Typically, symbol size is proportional to the sample size used to calculate the estimator.
+If \code{NULL}, the same symbol size is used for all subgroups.}
 
 \item{draw}{boolean, should plot be drawn}
 
@@ -79,7 +85,7 @@ tbl <- t_forest_tte(
 )
 
 # note plot requires a certain width
-g_forest(
+p <- g_forest(
   tbl = tbl,
   col_x = 8,
   col_ci = 9,
@@ -87,8 +93,13 @@ g_forest(
   forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
-  x_at = c(.1, 1, 10)
+  x_at = c(.1, 1, 10),
+  col_symbol_size = 1, #draw symbol proportional to column 1 values
+  draw = FALSE
 )
+grid.newpage()
+grid.draw(p)
+
 
 # For response table
 
@@ -102,12 +113,13 @@ ADRS_f <- ADRS \%>\%
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = factor(ADRS_f$ARM),
-  row_by_list = ADRS_f[, c("SEX", "RACE")]
+  row_by_list = ADRS_f[, c("SEX", "RACE", "STRATA2", "BMRKR2")],
+  strata_data = ADRS_f[ , c("STRATA1")]
 )
 
 tbl
 
-g_forest(
+p <- g_forest(
   tbl = tbl,
   col_x = 8,
   col_ci = 9,
@@ -115,21 +127,54 @@ g_forest(
   forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
-  x_at = c(.1, 1, 10)
+  x_at = c(.1, 1, 10),
+  col_symbol_size = NULL,
+  draw = FALSE
 )
+p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
+grid.newpage()
+grid.draw(p)
+
+
+tbl2 <- t_forest_rsp(
+  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
+  col_by = factor(ADRS_f$ARM),
+  row_by_list = ADRS_f[, c("BMRKR2")],
+  strata_data = ADRS_f[ , "STRATA1"]
+)
+
+tbl2
+
+# stratified analysis noted in footnote
+p <- g_forest(
+  tbl = tbl2,
+  col_x = 8,
+  col_ci = 9,
+  vline = 1,
+  forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
+  xlim = c(.1, 10),
+  logx = TRUE,
+  x_at = c(.1, 1, 10),
+  col_symbol_size = 1,
+  draw = FALSE
+)
+p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
+grid.newpage()
+grid.draw(p)
 
 # Works with any rtable
 
 tbl <- rtable(
-  header = c("E", "CI"),
-  rrow("", 1, c(.8, 1.2)),
-  rrow("", 1.2, c(1.1, 1.4))
+  header = c("E", "CI", "N"),
+  rrow("", 1, c(.8, 1.2), 200),
+  rrow("", 1.2, c(1.1, 1.4), 50)
 )
 
 g_forest(
   tbl = tbl,
   col_x = 1,
-  col_ci = 2
+  col_ci = 2,
+  col_symbol_size = 3
 )
 
 tbl <- rtable(

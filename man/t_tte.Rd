@@ -7,22 +7,29 @@
 t_tte(
   formula,
   data,
-  event_descr,
-  time_points,
+  col_N,
+  event_descr = NULL,
+  time_points = NULL,
   time_unit = "month",
-  ties = "exact",
+  conf_level = 0.95,
+  conf_type_survfit = c("plain", "none", "log", "log-log"),
+  probs_survfit = c(0.25, 0.75),
+  pval_method_coxph = c("log-rank", "wald", "likelihood"),
+  ties_coxph = c("efron", "breslow", "exact"),
   table_tree = FALSE
 )
 }
 \arguments{
-\item{formula}{a survival formula, the arm variable needs to be wrapped in
-\code{\link{arm}}. The \code{\link[survival]{strata}} special will only be
-used for the stratified analysis. If there is not
-\code{\link[survival]{strata}} specification then the stratified analysis
-is omitted.}
+\item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The
+\code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
+\code{\link[survival]{strata}} specification then the stratified analysis is omitted.}
 
-\item{data}{a \code{data.frame} with all the variable that are used in
-\code{formula}}
+\item{data}{a \code{data.frame} with all the variable that are used in \code{formula}}
+
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{event_descr}{a factor that partitions the the events into earliest
 contributing event. The variable name can be provided unquoted in which
@@ -33,7 +40,17 @@ analysis, if \code{NULL} this section of the table will be omitted}
 
 \item{time_unit}{a string with the unit of the \code{tte} argument}
 
-\item{ties}{passed forward to \code{\link[survival]{coxph}}}
+\item{conf_level}{either a single number or a named vector of confidence levels where the names are \code{survfit},
+\code{coxph}, and \code{ztest}}
+
+\item{conf_type_survfit}{\code{conf.type} in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
+\code{"none"}, \code{"log"}, or \code{"log-log"}.}
+
+\item{probs_survfit}{numeric vector of length two to specify the quantiles in \code{\link[stats]{quantile}}}
+
+\item{pval_method_coxph}{passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}}
+
+\item{ties_coxph}{passed as argument \code{ties} to \code{\link{coxph}}}
 
 \item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
@@ -50,49 +67,72 @@ The time to event section is derived from a Kaplan-Meier estimator for the
 \code{formula} argument with the strata special dropped.
 
 The stratified and unstratified analysis is evaluated pair-wise (reference to
-comparison) and \code{\link[survival]{survdiff}} is used to get the p-value
-whereas \code{\link[survival]{coxph}} is used to calculate the hazard ratio
+comparison) and \code{\link[survival]{coxph}} is used to get the p-value, calculate the hazard ratio
 and confidence interval.
 
 The time point analysis is based on the Kaplan-Meier estimator.
 }
 \examples{
-\donttest{
 library(random.cdisc.data)
-ADSL <- cadsl
+ADSL <- radsl(cached = TRUE)
 
-ADTTE <- cadtte
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
+ADTTE <- radtte(cached = TRUE)
+ADTTE_f <- subset(ADTTE, PARAMCD == "EFS" & BMEASIFL == "Y")
 
-tbl <- t_tte(
-  formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
   data = ADTTE_f,
-  event_descr = factor(EVNTDESC),
-  time_points = c(6, 2000),
-  time_unit = "month"
+  col_N = table(ADSL$ARM)
 )
 
-tbl
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC)
+)
 
-Viewer(tbl)
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
+  time_points = c(6, 12, 360),
+  time_unit = "month",
+)
 
-# table_tree = TRUE
-tbl <- t_tte(
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
+  time_points = c(6, 12, 360),
+  conf_level = c(survfit = 0.91, coxph = 0.95, ztest = 0.99)
+)
+
+t_tte(
   formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
   data = ADTTE_f,
-  event_descr = factor(EVNTDESC),
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
+  time_points = c(6, 12, 24),
+  time_unit = "month",
+  pval_method_coxph = "wald",
+  conf_type_survfit = "log-log",
+  ties_coxph = "exact"
+)
+
+# table_tree = TRUE
+tbl3 <- t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM) + strata(SEX),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
   time_points = c(6, 2000),
   time_unit = "month",
   table_tree = TRUE
 )
-summary(tbl)
-}
-}
-\seealso{
-\code{\link{t_forest_tte}}
-}
-\author{
-Mark Rothe (rothem1)
+summary(tbl3)
 
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+to_rtable(tbl3)
 }

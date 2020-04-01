@@ -12,10 +12,11 @@ rsplit_to_tree(lst, by_lst, drop_empty_levels = TRUE, non_leaves_null = FALSE)
 \item{by_lst}{list of columns, each of which is a factor to recursively split by}
 
 \item{drop_empty_levels}{whether to drop empty levels, this happens often when you have, e.g. two factors,
-one with levels (clA, clB), the other with levels (clA_1, clA_2, clB_1, clB_2) and only the combinations
-clA-clA_1, clA-clA_2, clB-clB_1, clB-clB_2 appear out of the eight combinations.}
+one with levels (\code{clA}, \code{clB}), the other with levels (\code{clA_1}, \code{clA_2}, \code{clB_1},
+\code{clB_2}) and only the combinations \code{clA-clA_1}, \code{clA-clA_2}, \code{clB-clB_1}, \code{clB-clB_2}
+appear out of the eight combinations.}
 
-\item{non_leaves_null}{whether to assign NULL content to any non-leaves}
+\item{non_leaves_null}{whether to assign \code{NULL} content to any non-leaves}
 }
 \value{
 node object

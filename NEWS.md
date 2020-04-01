@@ -1,8 +1,24 @@
+# tern 0.6.5
+
+* Add new function `t_logistic` for multi-variable logistic regression table
+* Added `conf.ini.coxph`, `conf.ini.survfit`, `conf.ini.ztest`, `conf.type`, `probs` arguments in `t_tte`
+* Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.
+* Fixed bug in `t_rsp` of not showing p-value, odds ratio and CIs when `strata_data` is not `NULL`
+* Added stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.
+* Added `footnotes`, `footnotes<-` and `add_footnotes<-` functions to deal with footnotes
+* Added argument `conf_int` for confidence interval level to `t_el_forest_rps`, `t_forest_rsp`, `t_el_forest_tte`, `t_forest_tte`
+* Added argument `col_symbol_size` to `g_forest` to control the relative size of symbols used in the plot.
+* Added `s_coxph_pairwise` function to perform pairwise testing which is used by `t_tte` and `t_coxph`
+* Added methods for `t_count_true` replacing `t_summary_true`
+* Updated `t_count_unique` to create analysis subsets, add `t_el_count_unique` for vectors
+
 # tern 0.6.4
 
 * Refactored after renaming functions in `utils.nest`
 * Added `event_type` argument to `t_events_per_term_grade_id`
 * Added one/two-arm t-test functions
+* improvements in `t_summary_by`
+* internal code refactoring
 
 # tern 0.6.3
 
@@ -28,7 +44,7 @@
     - all compound tables
         - added `table_tree` argument which returns a `node` object
     - `t_summary.numeric`
-        - added `f_numeric` to choose which statistics should be calculted
+        - added `f_numeric` to choose which statistics should be calculated
     - `t_summary.factor`
         - `denominator` now also allows for `omit` if the percentages should be omitted.
     - `t_summary_by`
@@ -37,11 +53,11 @@
         - changed functionality of `group_data` using `row_by_list`
         - removed `na_omit_group`
     - `t_count_unique`
-        - removed `indent` argument, use the `indent` funtion in `rtables` instead
+        - removed `indent` argument, use the `indent` function in `rtables` instead
 
 # tern 0.6.2
 
-* use chached data from `random.cdisc.data` to speed up testing
+* use cached data from `random.cdisc.data` to speed up testing
 * added `t_summary.Date` method
 * added `save_join`
 

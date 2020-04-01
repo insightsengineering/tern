@@ -9,12 +9,14 @@ t_summary(x, col_by, col_N = NULL, total = NULL, ...)
 \arguments{
 \item{x}{an object to dispatch on}
 
-\item{col_by}{logical factor or data.frame with reference and comparison group information, the
+\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
 and \code{add_total_by}.}
 
-\item{col_N}{a vecor with the reference population per level of \code{col_by}. This often by default
-\code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.}
+\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
 
 \item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
@@ -36,19 +38,19 @@ t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD, total = "All Patients")
 
 with(ADSL, t_summary(AGE > 65, ARMCD))
 
-
 # examples with hierarchical header
 library(dplyr)
 ADSL <- radsl(cached = TRUE)
 t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
 ADSL_f <- ADSL \%>\%
-  filter(SEX \%in\% c("M", "F")) \%>\% mutate(SEX = droplevels(SEX))
+  dplyr::filter(SEX \%in\% c("M", "F")) \%>\%
+  mutate(SEX = droplevels(SEX))
 t_summary(ADSL_f$SEX, col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 
 t_summary(ADSL_f[, c("SEX", "AGE")], col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
 
 ADSL_f <- ADSL \%>\%
-  filter(SEX \%in\% c("M", "F"), RACE \%in\% c("ASIAN", "WHITE")) \%>\%
+  dplyr::filter(SEX \%in\% c("M", "F"), RACE \%in\% c("ASIAN", "WHITE")) \%>\%
   mutate(SEX = droplevels(SEX), RACE = droplevels(as.factor(RACE)))
 t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$SEX, ADSL_f$RACE))
 t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX))

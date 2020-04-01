@@ -31,9 +31,6 @@ Authors:
   \item Jana Stoilova \email{jana.stoilova@roche.com}
   \item Edgar Manukyan \email{edgar.manukyan@roche.com}
   \item Ting Qi \email{qit3@gene.com}
-  \item Carolyn Zhang \email{carolyn.zhang@duke.ed}
-  \item Mark Rothe
-  \item Xiao Mu Yo
 }
 
 Other contributors:

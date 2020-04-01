@@ -13,9 +13,9 @@ invisible_node_name(name)
 node
 }
 \description{
-Node can be accessed through this name, but name will not be displayed when converted with to_rtable.
-node_name that will not be displayed, also true when converted to rtable
-The purpose of this is to still allow indexing in the rtable through the name index
+Node can be accessed through this name, but name will not be displayed when converted with \code{to_rtable}.
+node_name that will not be displayed, also true when converted to \code{rtable}
+The purpose of this is to still allow indexing in the \code{rtable} through the name index
 }
 \examples{
 invisible_node_name("root")

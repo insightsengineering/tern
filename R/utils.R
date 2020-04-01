@@ -132,31 +132,6 @@ drop_shared_variables <- function(x, y, keep) {
   df
 }
 
-#' Replace NA values by NA string level
-#'
-#' @param x factor, possibly with NAs
-#' @param na_level name of new level for NAs
-#'
-#' @return factor with additional NA level
-#'
-#' @export
-#'
-#' @examples
-#' na_as_level(factor(c(1, 1, 2)))
-#' na_as_level(factor(c(1, 1, NA)), "na")
-na_as_level <- function(x, na_level = "NA") {
-  stopifnot(is.factor(x))
-
-  if (any(is.na(x))) {
-    if (na_level %in% levels(x)) {
-      stop(na_level, " can not be a level of x")
-    }
-    levels(x) <- c(levels(x), na_level)
-    x[is.na(x)] <- na_level
-  }
-  x
-}
-
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -177,9 +152,9 @@ has_no_na <- function(x) {
 #'
 #' Normally, you don't need to use this function as it is the default
 #'
-#' @param col_by col_by (factor or matrix) to get counts from
+#' @param col_by (factor or matrix) to get counts from
 #'
-#' @return counts per factor level or column of col_by
+#' @return counts per factor level or column of \code{col_by}
 #'
 #' @export
 #'
@@ -190,13 +165,14 @@ get_N <- function(col_by) { #nolintr
   colSums(col_by_to_matrix(col_by))
 }
 
-#' Add total to col_N
+#' Add total to \code{col_N}
 #'
 #' It adds the sum of the vector as the last element.
 #'
-#' This is necessary when you manually specify col_N and col_by uses the total column (via by_add_total or similar)
+#' This is necessary when you manually specify \code{col_N} and \code{col_by} uses the total column
+#'   (via \code{by_add_total} or similar)
 #'
-#' @param col_N col_N count
+#' @param col_N count
 #'
 #' @return new count with total count appended to vector
 #'
@@ -232,6 +208,7 @@ number_rows <- function(x) {
     length(x)
   }
 }
+
 row_subset <- function(x, rows) {
   # similar to subset function, but the latter is only recommended for interactive use
   if (is.data.frame(x)) {
@@ -241,31 +218,11 @@ row_subset <- function(x, rows) {
   }
 }
 
-#' Checks if the object is NULL or a fully named list
-#'
-#' @param x object to check
-#'
-#' @examples
-#' tern:::is_fully_named_list(list())
-#' tern:::is_fully_named_list(list(a = 1, 2))
-#' tern:::is_fully_named_list(list(1, 2))
-#' tern:::is_fully_named_list(list(a = 1, b = 2))
-is_fully_named_list <- function(x) {
-  is.list(x) &&
-    (
-      length(x) == 0 ||
-        (
-          !is.null(names(x)) &&
-            (length(x) == length(Filter(function(x) !identical(x, ""), names(x))))
-        )
-    )
-}
-
 #' string representation of the object's contents with names
 #'
 #' @param x object
 #'
-#' @return string of the form "key1: val1, keey2: val2, ..."
+#' @return string of the form \code{"key1: val1, keey2: val2, ..."}
 #'
 #' @examples
 #' tern:::to_string_with_names(list(a = 1, 2))
@@ -274,20 +231,17 @@ to_string_with_names <- function(x) {
   paste(names(x), x, sep = ":", collapse = ", ")
 }
 
-#' Kind of a complement to `%||%`
-#' Return y if x is not NULL, otherwise NULL (equal to x)
+#' Capitalize First Letter
 #'
-#' @param x value checked for NULL
-#' @param y value to return if \code{x} is not NULL
+#' @noRd
 #'
-#' @return \code{NULL} if \code{x} is \code{NULL}, else \code{y}
 #' @examples
-#' tern:::if_not_null(NULL, 1)
-#' tern:::if_not_null(2, 1)
-if_not_null <- function(x, y) {
-  if (is.null(x)) {
-    NULL
-  } else {
-    y
-  }
+#'
+#' capitalize("hello world")
+#' tools::toTitleCase("hello world")
+#'
+capitalize <- function(x) {
+  stopifnot(is_character_single(x))
+
+  paste0(toupper(substring(x, 1, 1)), substring(x, 2))
 }

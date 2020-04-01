@@ -19,20 +19,25 @@ NULL
 #'   column should be lower level term.
 #' @param id vector of subject identifier. Length of \code{id} must be the same as the
 #'   length or number of rows of \code{terms}.
-#' @param grade grade of adverse event as numeric or factor.
+#' @param grade grade of adverse event.
+#'   For factors, it is assumed that intensity corresponds to the order of the factor levels.
+#'   If that is not the case, see \code{grade_levels}.
+#'   For character or numeric, \code{grade_levels} is required.
 #' @param col_N numeric vector with information of the number of patients in the
 #'   levels of \code{col_by}. This is useful if there are patients that have no
 #'   adverse events can be accounted for with this argument.
-#' @param grade_levels an ordered character or factor vector used for naming rows for each
-#'   level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
-#'   level orders in \code{grade}
+#' @param grade_levels a factor. The levels of the factor define the severity of the grade and
+#'   the order of display.
+#'   For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
+#'   the most severe grade "c" at the bottom of the table, the least severe grade "a" at the top.
+#'   If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
+#'   If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
+#'   the factor levels of \code{grade}.
+#'   If \code{grade} is not a factor, \code{grade_levels} is required.
 #' @param any_grade string to specify the row name which counts any occurrence,
 #'   it is named \code{Any Grade} by default
 #' @param event_type string to specify the type of event that is summarized, \code{event} by default.
 #'   Only displayed when \code{terms} has 2 columns.
-#' @param missing_term_action Specify how the missing terms should be handled.
-#'   Either "nocode" (by default) or "ignore". "nocode" means to code as
-#'   "No Coding Available"; "ignore" means not to count the missing terms.
 #'
 #' @details
 #' \code{t_events_per_term_grade_id} includes percentages based on the total number of subjects
@@ -45,7 +50,7 @@ NULL
 #'  greatest intensity reported.
 #'
 #' \code{t_events_per_term_grade_id} doesn't deal with data with missing grade. Impute or filter missing
-#' values before using \code{t_events_per_term_grade_id}.
+#' values with \code{sas_na} and \code{explicit_na} before using \code{t_events_per_term_grade_id}.
 #'
 #' \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
 #'  reported higher level term to the least frequent one. Within each group of higher level term,
@@ -66,7 +71,7 @@ NULL
 #' library(dplyr)
 #' library(random.cdisc.data)
 #'
-#' ADSL <- radsl(10, seed = 1)
+#' ADSL <- radsl(cached = TRUE)
 #' ADAE <- radae(ADSL, 4L, seed = 2)
 #'
 #' t_events_per_term_grade_id(
@@ -75,25 +80,33 @@ NULL
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   grade_levels = 1:5
+#'   grade_levels = as.factor(1:5)
 #' )
 #'
+#' # Introducing imperfect data and demo how to preprocess
 #' ADAE$AEDECOD <- as.character(ADAE$AEDECOD)
 #' ADAE$AEBODSYS <- as.character(ADAE$AEBODSYS)
 #' ADAE$AEDECOD[c(1,5)] = ""
-#' ADAE$AEBODSYS[c(2,6)] = NA
+#' ADAE$AEBODSYS[c(2,6)] = " "
+#'
 #' ADAE <- ADAE %>%
-#'   mutate(grade_category = case_when(
-#'     AETOXGR %in% c(1,2) ~ "Mild",
-#'     AETOXGR %in% c(3,4) ~ "Moderate",
-#'     AETOXGR %in% c(5) ~ "Severe") %>% as.factor) %>%
+#'   mutate(
+#'    grade_category = case_when(
+#'      AETOXGR %in% c(1,2) ~ "Mild",
+#'      AETOXGR %in% c(3,4) ~ "Moderate",
+#'      AETOXGR %in% c(5) ~ "Severe"
+#'    ),
+#'    grade_category = factor(grade_category, levels=c("Mild", "Moderate", "Severe")),
+#'    # Preprocess imperfect data
+#'    AEDECOD = AEDECOD %>% sas_na %>% explicit_na(label = "Not Coded"),
+#'    AEBODSYS = AEBODSYS %>% sas_na %>% explicit_na(label = "Not Coded"),
+#'   ) %>%
 #'   var_relabel(
 #'     AEBODSYS = "MedDRA System Organ Class",
 #'     AEDECOD = "MedDRA Preferred Term",
 #'     AETOXGR = "Analysis Toxicity Grade",
 #'     grade_category = "Insensity")
 #'
-#' levels(ADAE$grade_category) = c("Mild", "Moderate", "Severe")
 #'
 #' t_events_per_term_grade_id(
 #'   terms = ADAE$AEDECOD,
@@ -102,7 +115,17 @@ NULL
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
 #'   total = "All Patients",
-#'   grade_levels = 1:6
+#'   grade_levels = as.factor(1:5)
+#' )
+#'
+#' t_events_per_term_grade_id(
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$grade_category,
+#'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   total = "All Patients",
+#'   grade_levels = unique(sort(ADAE$grade_category))
 #' )
 #'
 #' t_events_per_term_grade_id(
@@ -111,9 +134,8 @@ NULL
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   grade_levels = 1:5,
-#'   event_type = "adverse events",
-#'   missing_term_action = "ignore"
+#'   grade_levels = as.factor(1:5),
+#'   event_type = "adverse events"
 #' )
 #'
 #' tbls <- t_events_per_term_grade_id(
@@ -125,6 +147,7 @@ NULL
 #'   total = "All Patients",
 #'   event_type = "adverse events",
 #'   any_grade = "Any Severity",
+#'   grade_levels = factor(c("Severe", "Moderate", "Mild"), levels = c("Severe", "Moderate", "Mild")),
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
@@ -137,41 +160,23 @@ t_events_per_term_grade_id <- function(terms,
                                        total = NULL,
                                        grade_levels = NULL,
                                        event_type = "event",
-                                       missing_term_action = "nocode",
                                        any_grade = "Any Grade",
                                        table_tree = FALSE) {
-  if (is.atomic(terms)) {
-    terms <- list(terms)
-  }
-  stopifnot(is.list(terms))
+
+
+  terms <- argfix_events_terms(terms)
+
   stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(!is.null(missing_term_action) && missing_term_action %in% c("nocode", "ignore"))
+  stopifnot(is.factor(grade_levels) || is.null(grade_levels))
+  stopifnot(is.factor(grade_levels) || is.factor(grade))
+
+  if (is.factor(grade) && is.null(grade_levels)) {
+    grade_levels <- factor(levels(grade), levels = levels(grade))
+  }
 
   grade_label <- label(grade) %||% deparse(substitute(grade))
-  col_by_label <- label(col_by) %||% deparse(substitute(col_by))
 
   grade <- with_label(grade, label = grade_label)
-
-  if (missing_term_action == "nocode") {
-    terms <- lapply(terms, function(x) {
-      x <- as.character(x)
-      x[x %in% c("", " ", NA)] <- "No Coding Available"
-      return(x)
-    })
-  } else if (missing_term_action == "ignore") {
-    missing_terms <- apply(
-      sapply(terms, function(x) x %in% c("", " ", NA)),
-      1,
-      any
-    )
-
-    terms <- lapply(terms, function(x) {
-      x[!missing_terms]
-    })
-    id <- id[!missing_terms]
-    grade <-  with_label(grade[!missing_terms], label = grade_label)
-    col_by <- with_label(col_by[!missing_terms], label = col_by_label)
-  }
 
   col_by <- col_by_to_matrix(col_by, x = id)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -184,7 +189,6 @@ t_events_per_term_grade_id <- function(terms,
   # First create a tree to distribute information splitting by terms, we will then use rapply_tree to operate based on
   # this info.
 
-  terms <- lapply(terms, as_factor_keep_attributes) # removes class attributes
   tree_data <- rsplit_to_tree(
     list(grade = grade, id = id, col_by = col_by),
     by_lst = terms
@@ -251,8 +255,6 @@ t_events_per_term_grade_id <- function(terms,
     row.names(tree@content) <- c("- Overall -", row.names(tree@content)[-1])
   }
 
-  #tree@format_data[["left_header"]] <- do.call(rheader, lapply(terms, label))
-
   if (table_tree) {
     tree
   } else {
@@ -268,11 +270,19 @@ t_events_per_term_grade_id <- function(terms,
 #' as nested lists.
 #'
 #' @inheritParams argument_convention
-#' @param grade a numeric or character vector with grade levels.
+#' @param grade grade of adverse event.
+#'   For factors, it is assumed that intensity corresponds to the order of the factor levels.
+#'   If that is not the case, see \code{grade_levels}.
+#'   For character or numeric, \code{grade_levels} is required.
 #' @param id a vector with id values
-#' @param grade_levels an ordered character or factor vector used for naming rows for each
-#'   level of grade. If \code{grade} is a factor, \code{grade_levels} will overwrite the
-#'   level orders in \code{grade}
+#' @param grade_levels a factor. The values of the factor define the ordering of the rows
+#'   in the resulting table. The levels of the factor define the severity of the grade.
+#'   For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
+#'   the most severe grade "c" at the top of the table, the least severe grade "a" at the bottom.
+#'   If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
+#'   If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
+#'   the factor levels of \code{grade}.
+#'   If \code{grade} is not a factor, \code{grade_levels} is required.
 #' @param any_grade add a row that counts any occurrence, it is named \code{Any
 #'   Grade} by default
 #'
@@ -336,6 +346,8 @@ t_max_grade_per_id <- function(grade,
   grade_label <- label(grade) %||% deparse(substitute(grade))
 
   stopifnot(is.null(total) || is_character_single(total))
+  stopifnot(is.factor(grade_levels) || is.null(grade_levels))
+  stopifnot(is.factor(grade_levels) || is.factor(grade))
   stopifnot(!any(duplicated(grade_levels)))
   stopifnot(!any(is.na(grade)))
 
@@ -415,20 +427,21 @@ t_max_grade_per_id <- function(grade,
   row_names_as_col(tbl, c("", grade_label))
 }
 
-#' checks that each patient appears in at most one col_by column (possibly
-#' several times as AVAL corresponds to several measures and there are >= 1 rows per patient)
+#' checks that each patient appears in at most one \code{col_by} column (possibly
+#' several times as \code{AVAL} corresponds to several measures and there are >= 1 rows per patient)
 #'
 #' @param id patient id
 #' @param col_by columns indicating where patient is, (this function checks that the patient only
 #'   appears in one column, ignoring the "by_all" / total column)
-#' @examples
-#' library(random.cdisc.data)
-#' ADSL <- radsl(10, seed = 1)
-#' ADAE <- radae(ADSL, 4L, seed = 2)
-#' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
 #'
 #' @importFrom dplyr group_by summarise_all select
 #' @importFrom magrittr %>%
+#'
+#' @examples
+#' library(random.cdisc.data)
+#' ADSL <- radsl(cached = TRUE)
+#' ADAE <- radae(ADSL, 4L, seed = 2)
+#' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
 check_id <- function(id, col_by) {
   col_by <- col_by_to_matrix(col_by)
   # remove total column if present

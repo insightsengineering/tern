@@ -1,7 +1,7 @@
 #' Summary Table by Visit
 #'
 #' This function summarizes test results or change from baseline statistics by
-#' visit. Corresponds to STREAM table templates EGT01, VST01 and LBT01.
+#' visit. Corresponds to STREAM table templates \code{EGT01}, \code{VST01} and \code{LBT01}.
 #'
 #' @inheritParams argument_convention
 #' @param data data frame with numerical variables to be summarized. If the
@@ -25,29 +25,32 @@
 #'
 #' @importFrom utils stack
 #'
-#' @noRd
+#' @export
 #'
 #' @examples
 #' # EXAMPLE 1
 #' library(random.cdisc.data)
 #'
-#' ADSL <- cadsl
-#' ADVS <- cadvs
+#' ADSL <- radsl(cached = TRUE)
+#' ADVS <- radvs(cached = TRUE)
 #'
-#' tern:::t_summarize_by_visit(data = ADVS[c("AVAL")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
-#'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
+#' t_summarize_by_visit(
+#'   data = ADVS[c("AVAL")],
+#'   visit = ADVS$AVISIT,
+#'   col_by = ADVS$ARM,
+#'   id = ADVS$USUBJID,
+#'   col_N = table(ADSL$ARM)
+#' )
 #'
-#' tern:::t_summarize_by_visit(data = ADVS[c("PCHG")], visit = ADVS$AVISIT, col_by = ADVS$ARM,
-#'   id = ADVS$USUBJID, col_N = table(ADSL$ARM))
+#' t_summarize_by_visit(
+#'   data = ADVS[c("PCHG")],
+#'   visit = ADVS$AVISIT,
+#'   col_by = ADVS$ARM,
+#'   id = ADVS$USUBJID,
+#'   col_N = table(ADSL$ARM)
+#' )
 #'
-#' # DO NOT THINK WE NEED THIS BLOCK AS LABELS ALREADY AVAILABLE
-#' # ADDED THIS NOTE GIVEN FINDING OF ATTRIBUTES BEING REMOVED
-#' #Add label to variable instead showing variable name
-#' #ANL <- var_relabel(ANL, AVAL = "Value at\nVisit",
-#'  #                       CHG = "Change from\nBaseline",
-#'   #                      PCHG = "Percent Change\nfrom Baseline")
-#'
-#' tern:::t_summarize_by_visit(
+#' t_summarize_by_visit(
 #'   data = ADVS[c("AVAL", "CHG")],
 #'   visit = ADVS$AVISIT,
 #'   col_by = ADVS$ARM,
@@ -76,7 +79,6 @@
 #' \dontrun{
 #' Viewer(tbl)
 #' }
-#'
 t_summarize_by_visit <- function(data,
                                  visit,
                                  id,
@@ -86,7 +88,6 @@ t_summarize_by_visit <- function(data,
   stopifnot(is.factor(visit), !any(is.na(visit)))
   check_same_n(data = data, col_by = col_by, omit_null = TRUE)
   col_N <- col_N %||% get_N(col_by) #nolintr
-  #check_col_by(visit, col_by, col_N, min_num_levels = 1) #nolintr
   check_col_by_factor(visit, col_by, col_N, min_num_levels = 1)
 
   lapply(data, check_is_numeric)
@@ -102,7 +103,7 @@ t_summarize_by_visit <- function(data,
 
   # creating new data input, stack the variables in long-format
   stack_data <- stack(data)
-  data <- stack_data$value
+  data <- stack_data$values
 
   # creating new visit input, stacked by as many times as number of variables specified in data
   visit <- rep(visit, subcol_n)

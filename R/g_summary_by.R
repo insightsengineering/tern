@@ -133,7 +133,9 @@ g_summary_by <- function(x,
   })
 
   # Plot the two grobs using grid.arrange
-  grid.newpage()
+  if (newpage) {
+    grid.newpage()
+  }
   do.call(grid.arrange, c(glist_aligned,
                           list(ncol = 1),
                           list(heights = c(8, length(unique(plotdat$group))))))

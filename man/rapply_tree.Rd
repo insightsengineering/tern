@@ -16,10 +16,10 @@ rapply_tree(x, f, ...)
 f(name, content, path, ...) -> list(name = new_name, content = new_content)
 path includes node itself}
 
-\item{...}{additional args to pass to f}
+\item{...}{additional arguments to pass to f}
 
 \item{target_obj_class}{target obj class of each node with arguments (name, content, children),
-same as original node if NULL}
+same as original node if \code{NULL}}
 
 \item{path}{path to node in tree}
 }

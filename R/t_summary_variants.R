@@ -38,6 +38,7 @@
 #'  row_by = ADSL$COUNTRY,
 #'  col_by = ADSL$ARMCD,
 #'  total = "All Patients",
+#'  denominator = "N",
 #'  drop_levels = TRUE
 #' )
 #'
@@ -48,6 +49,7 @@
 #'  row_by = ADSL$COUNTRY,
 #'  col_by = ADSL$ARMCD,
 #'  total = "All Patients",
+#'  denominator = "N",
 #'  drop_levels = TRUE,
 #'  useNA = "ifany"
 #' )
@@ -81,7 +83,7 @@
 #' # Recursive case
 #' t_summary_by(
 #'   x = ADLB$AVAL,
-#'   row_by = r_by(ADLB[, c("PARAM", "AVISIT")]),
+#'   row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
 #'   col_by = ADLB$ARM,
 #'   col_N = table(ADSL$ARM),
 #'   total = "All Patients"
@@ -102,7 +104,7 @@
 #' to_rtable(tbls)
 #'
 #' # Other examples
-#' ADQS <- radqs(ADSL, seed = 2) %>%
+#' ADQS <- radqs(cached = TRUE) %>%
 #'   mutate(PARAM = as.factor(PARAM)) %>%
 #'   var_relabel(
 #'     PARAM = "Questionnaire Parameter",
@@ -112,7 +114,7 @@
 #' # we suppress warnings because some are NaN (change CHG at screening visit)
 #' suppressWarnings(t_summary_by(
 #'   x = ADQS[,c("AVAL", "CHG")],
-#'   row_by = r_by(ADQS[, c("PARAM", "AVISIT")]),
+#'   row_by = nested_by(ADQS[, c("PARAM", "AVISIT")]),
 #'   col_by = ADQS$ARMCD,
 #'   col_N = table(ADSL$ARMCD),
 #'   total = "All Patients"
@@ -138,6 +140,18 @@
 #'   col_N = table(ADSL$ARMCD),
 #'   total = "All Patients"
 #' )
+#'
+#' # imitate behavior of t_summarize_by_visit by adding function compare_in_header
+#' ADSL <- cadsl
+#' ADVS <- cadvs
+#'
+#' t_summary_by(
+#'   x = compare_in_header(ADVS[c("AVAL", "CHG")]),
+#'   row_by = ADVS$AVISIT,
+#'   col_by = ADVS$ARM,
+#'   col_N = table(ADSL$ARM),
+#'   f_numeric = patient_numeric_fcns()
+#' )
 t_summary_by <- function(x,
                          row_by,
                          col_by,
@@ -145,18 +159,23 @@ t_summary_by <- function(x,
                          total = NULL,
                          ...,
                          table_tree = FALSE) {
-  if (is.atomic(row_by)) {
-    row_by <- list(simple_by(row_by))
+  if (!is_nested_by(row_by)) {
+    row_by <- nested_by(list(row_by))
   }
   stopifnot(is.list(row_by))
 
   col_by <- col_by_to_matrix(col_by, x)
-  col_N <- col_N %||% get_N(col_by)
+  col_N <- col_N %||% get_N(col_by) # nolint
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
     col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
+  # should only do this at the very end; this way, hierarchical column will also be added for total_N column
+  res <- apply_compare_in_header(x, col_by, col_N = col_N)
+  x <- res$x
+  col_by <- res$col_by
+  col_N <- res$col_N # nolint
 
   tree_data <- rsplit_to_tree(
     list(x = x, col_by = col_by),
@@ -165,7 +184,7 @@ t_summary_by <- function(x,
   )
   tree <- rapply_tree(
     tree_data,
-    function(name, content, path, is_leaf, ...) {
+    function(name, content, path, is_leaf) {
       # only compute for leaf nodes
       content <- if (is_leaf) {
         t_summary(
@@ -173,7 +192,7 @@ t_summary_by <- function(x,
           col_by = content$col_by,
           col_N = col_N,
           total = total,
-          ...,
+          ..., # outer ...
           table_tree = TRUE
         )
       } else {
@@ -183,8 +202,7 @@ t_summary_by <- function(x,
         name = name,
         content = content
       )
-    },
-    ...
+    }
   )
   tree@name <- invisible_node_name(tree@name)
 
@@ -199,10 +217,10 @@ t_summary_by <- function(x,
 #'
 #' You can use \code{...} to add arguments like \code{total}
 #'
-#' If col_N is NULL, it gets it by adding up the numbers from all items in the col_by_list
+#' If \code{col_N} is \code{NULL}, it gets it by adding up the numbers from all items in the \code{col_by_list}
 #'
 #' @param x_list list of x
-#' @param col_by_list list of col_by, one for each item of \code{x_list}
+#' @param col_by_list list of \code{col_by}, one for each item of \code{x_list}
 #' @inheritParams t_summary.data.frame
 t_summary.list <- function(x_list, #nolintr
                            col_by_list,
@@ -241,32 +259,128 @@ t_summary.list <- function(x_list, #nolintr
   }
 }
 
+#  Helper functions -----
 
+all_equal <- function(x) {
+  length(unique(x)) == 1
+}
 
-#' Summarize the TRUE Counts
+#' Compare the list items / data.frame columns in the header
 #'
-#' Note that for this function the default \code{denominator = "N"} and not \code{n} as for the other \code{t_summary}
-#' functions.
+#' Each list item will be a separate column in the header. The header will become hierarchical.
+#' A data.frame is a special case of a list, where each column is a list item. All specified columns are compared.
+#' All items must be of identical class
 #'
-#' @inheritParams argument_convention
-#' @inheritParams t_summary.factor
-#' @param row_name name of row
+#' @param x (\code{list}) list that contains items to compare in header
+#'
+#' @return object with attribute \code{compare_in_header}
+#' @export
+#'
+#' @examples
+#' compare_in_header(data.frame(`AVAL` = as.numeric(1:3),
+#'   `CHG` = as.numeric(4:6), `CHG2` = as.numeric(7:9)))
+compare_in_header <- function(x) {
+  # can be list or data.frame
+  stopifnot(is.list(x))
+  # all columns must be of same type or else, t_summary row names will not agree
+  # class[[1]] is used for S3 method dispatch
+  # only numeric class type makes sense for now (different factors with different levels are difficult to compare)
+  stopifnot(all(
+    vapply(x, function(xx) class(xx)[[1]], character(1)) %in% c("integer", "numeric")
+  ))
+  stopifnot(all_equal(vapply(x, nb_entries, numeric(1))))
+  structure(x, compare_in_header = TRUE)
+}
+
+#' Returns the number of entries in x
+#'
+#' For a data.frame, it is \code{nrow}. Defaults to \code{length}.
+#'
+#' @param x object
 #'
 #' @export
 #'
 #' @examples
+#' nb_entries(1:3)
+#' nb_entries(as.numeric(1:3))
+#' nb_entries(data.frame(x = 1:3, y = 4:6))
+nb_entries <- function(x) {
+  UseMethod("nb_entries", x)
+}
+
+# need to export, bug otherwise
+#' @export
+nb_entries.default <- function(x) {
+  length(x)
+}
+
+# need to export, bug otherwise
+#' @export
+nb_entries.data.frame <- function(x) { # nolint
+  nrow(x)
+}
+
+#' Stacks \code{x} and \code{col_by} when \code{compare_in_header} attribute is present
 #'
-#' with(iris, t_summary_true(Sepal.Length > 5.5, col_by = Species, total = "All Flowers"))
-t_summary_true <- function(x,
-                           col_by,
-                           col_N = NULL, #nolintr
-                           total = NULL,
-                           row_name = deparse(substitute(x)),
-                           denominator = c("N", "n", "omit")) {
-  denominator <- match.arg(denominator)
+#' Will create a hierarchical header for each column of x and the columns will be compared
+#'
+#' @param x data.frame with numeric columns that are stacked
+#' @param col_by col_by data.frame
+#' @param col_N numeric vector of length \code{ncol(col_by)} or \code{NULL} -> computed from \code{col_by}
+#'
+#' @return list(
+#'   x = stacked x,
+#'   col_by = hierarchical col_by with additional hierarchical level for each column of x,
+#'     TRUE at entries where corresponding column appears in x
+#' )
+#' @examples
+#' x <- compare_in_header(data.frame(`AVAL` = as.numeric(1:3),
+#'   `CHG` = as.numeric(4:6), `CHG2` = as.numeric(7:9)))
+#' col_by <- data.frame(`ARM A` = c(TRUE, TRUE, FALSE), `ARM B` = c(TRUE, FALSE, FALSE))
+#' res <- tern:::apply_compare_in_header(x, col_by)
+#' x <- res$x
+#' col_by <- res$col_by
+#' col_N <- res$col_N
+#' lapply(col_by, function(by) x[by])
+#'
+#' library(random.cdisc.data)
+#' ADVS <- cadvs
+#' x <- compare_in_header(ADVS[c("AVAL", "CHG")])
+#' col_by <- ADVS$ARM
+#' res <- tern:::apply_compare_in_header(x, col_by, col_N = NULL)
+#' x <- res$x
+#' col_by <- res$col_by
+#' col_N <- res$col_N
+apply_compare_in_header <- function(x,
+                                    col_by,
+                                    col_N = NULL) { # nolint
+  if (!"compare_in_header" %in% names(attributes(x))) {
+    return(list(x = x, col_by = col_by, col_N = col_N))
+  }
+  attr(x, "compare_in_header") <- NULL
 
-  stopifnot(is.logical(x))
+  # only can replicate these row-wise
+  stopifnot(is.data.frame(x))
+  col_by <- col_by_to_matrix(col_by, x)
+  col_N <- col_N %||% get_N(col_by) #nolintr
+  check_col_by(x, col_by, col_N, min_num_levels = 1)
 
-  t_summary.logical(x, col_by, col_N, total, row_name_true = row_name, denominator = denominator)[2, ]
+  # all columns of x will be stacked, therefore we use a hierarchical header
+  # to select only one of the columns in the stacked x
+  by_x_column <- data.frame(lapply(seq_along(x), function(idx) {
+    col_by <- rep(FALSE, nrow(x) * ncol(x))
+    col_by[(1 + (idx - 1) * nrow(x)):(idx * nrow(x))] <- TRUE
+    col_by
+  }))
+  # setting colnames instead of names -> whitespace won't be replaced by '.'
+  colnames(by_x_column) <- var_labels(x, fill = TRUE)
 
+  return(list(
+    x = unlist(c(x), use.names = FALSE), # stacking
+    col_by = by_hierarchical(
+      do.call(rbind, replicate(ncol(x), col_by, simplify = FALSE)), # stack col_bys
+      by_x_column
+    ),
+    col_N = rep(col_N, each = ncol(x))
+  ))
 }

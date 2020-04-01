@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulate_aggregation_functions.R
 \name{ttest_two_arm}
 \alias{ttest_two_arm}
-\title{ttest_two_arm Performs 2-arm t-test between comparison group against the reference group.}
+\title{Performs 2-arm t-test between comparison group against the reference group.}
 \usage{
 ttest_two_arm(x, col_by, conf.level = 0.95, ...)
 }
@@ -17,11 +17,10 @@ Must be greater than 0 and less than 1.}
 \item{...}{Other arguments from \code{\link{stats}{t.test}}}
 }
 \value{
-list of
-  lcl, ucl, diff, se, tvalue, pvalue
+list of \code{lcl}, \code{ucl}, \code{diff}, \code{se}, \code{tvalue}, \code{pvalue}
 }
 \description{
-ttest_two_arm Performs 2-arm t-test between comparison group against the reference group.
+Performs 2-arm t-test between comparison group against the reference group.
 }
 \examples{
 ttest_two_arm(x = c(0,1,2,3,4,5,6,7,8,NA),

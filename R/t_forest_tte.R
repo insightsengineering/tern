@@ -4,13 +4,12 @@ NULL
 #' Time-to-event Table as used for Forest Plot
 #'
 #' The time-to-event forest plot table summarizes time-to-event data by groups. The function returns event counts and
-#' median survival time for each analysis arm, as well as a hazard ratio and the corresponding 95\% confidence interval
+#' median survival time for each analysis arm, as well as a hazard ratio and the corresponding confidence interval
 #' from a Cox proportional hazard model.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_forest_rsp
 #' @inheritParams t_el_forest_tte
-#' @param strata_data currently not supported
 #'
 #' @details
 #' Cox proportional hazard model is used for hazard ratio calculation
@@ -31,11 +30,12 @@ NULL
 #'    Univariate Cox proportional hazard model is applied to obtain the estimated hazard ratio.
 #'   Hazard ratio > 1 implies better treatment effect in reference arm, and hazard ratio < 1 when
 #'   comparison arm is better. }
-#'   \item{9}{\emph{95\% Wald CI} The 95% confidence interval indicates the level of uncertainty
+#'   \item{9}{\emph{Wald CI} The confidence interval indicates the level of uncertainty
 #'   around the measure of effect (Hazard Ratio). Because only a small sample of the overall
 #'   population is included in the analysis, by having an upper and lower confidence limit
-#'   we can infer that the true treatment effect lies in between. If the 95% confidence interval
-#'   includes 1, then we say that the difference between two arms is not significant at a significance level of 0.05.}
+#'   we can infer that the true treatment effect lies in between. By default, the 95% confidence
+#'   interval is calculated. If it includes 1, then we say that the difference between two arms
+#'   is not significant at a significance level of 0.05.}
 #' }
 #'
 #' @export
@@ -48,9 +48,9 @@ NULL
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(seed = 1)
+#' ADSL <- radsl(cached = TRUE)
 #'
-#' ADTTE <- radtte(ADSL, seed = 2)
+#' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
 #'   dplyr::filter(PARAMCD == "OS", ARMCD %in% c("ARM B", "ARM A")) %>%
 #'   mutate(ARMCD = droplevels(ARMCD))
@@ -61,10 +61,21 @@ NULL
 #'   col_by = ADTTE_f$ARMCD,
 #'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
+#'   conf_int = 0.9,
 #'   dense_header = TRUE
 #' )
 #'
-#' tbl
+#' tbl2 <- t_forest_tte(
+#'   tte = ADTTE_f$AVAL,
+#'   is_event = ADTTE_f$CNSR == 0,
+#'   col_by = ADTTE_f$ARMCD,
+#'   row_by_list = droplevels(ADTTE_f[,  "BMRKR2" ]),
+#'   strata_data = ADTTE_f[ , c("STRATA1", "STRATA2")],
+#'   ties = "exact",
+#'   dense_header = TRUE
+#' )
+#'
+#' tbl2
 #'
 #' \dontrun{
 #' Viewer(tbl)
@@ -91,23 +102,40 @@ t_forest_tte <- function(tte,
                          strata_data = NULL,
                          ties = "exact",
                          time_unit = "month",
+                         conf_int = 0.95,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
-  stopifnot(is.numeric(tte), is.logical(is_event), is.null(total) || is_character_single(total))
-  if (!is.null(strata_data)) {
-    stop("strata_data argument is currently not implemented")
-  }
+  stopifnot(
+    is.numeric(tte),
+    is.logical(is_event),
+    is.null(total) || is_character_single(total),
+    is.null(row_by_list) || is.list(row_by_list),
+    is_numeric_single(conf_int) && (0 < conf_int) && (conf_int < 1)
+  )
+  check_strata(strata_data)
 
-  do.call(check_same_n, c(list(tte = tte, is_event = is_event, col_by = col_by), row_by_list))
+  do.call(
+    check_same_n,
+    c(list(
+      tte = tte,
+      is_event = is_event,
+      col_by = col_by,
+      strata_data = strata_data), row_by_list
+    )
+  )
 
-  row_by_list <- row_by_list %>% map(na_as_level)
+  row_by_list <- row_by_list %>% map(explicit_na)
 
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
 
-  df <- data.frame(tte = tte, is_event = is_event, col_by = col_by)
+  df <- if (is.null(strata_data)) {
+    data.frame(tte = tte, is_event = is_event, col_by = col_by)
+  } else {
+    data.frame(tte = tte, is_event = is_event, col_by = col_by, strata_data = strata_data)
+  }
 
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
@@ -125,8 +153,10 @@ t_forest_tte <- function(tte,
           tte = content$tte,
           is_event = content$is_event,
           col_by = content$col_by,
+          strata_data = if (is.null(strata_data)) NULL else subset(content, select = -c(tte, is_event, col_by)),
           ties = ties,
           row_name = name,
+          conf_int = conf_int,
           dense_header = dense_header
         )
       )
@@ -136,11 +166,26 @@ t_forest_tte <- function(tte,
   })
 
   tree@format_data <- node_format_data(children_gap = 1)
+  model_type <- if (is.null(strata_data)) {
+    "Unstratified Analysis"
+  } else {
+    n_strata <- length(strata_data)
+    paste(
+      "* Stratified by",
+      ifelse(
+        n_strata < 2,
+        names(strata_data),
+        paste(paste(names(strata_data)[-n_strata], collapse = ", "), "and", names(strata_data)[(n_strata)])
+      )
+    )
+  }
 
   if (table_tree) {
     tree
   } else {
-    to_rtable(tree)
+    rtbl <- to_rtable(tree)
+    footnotes(rtbl) <- model_type
+    rtbl
   }
 
 }
@@ -151,12 +196,15 @@ t_forest_tte <- function(tte,
 #'
 #' @inheritParams survival::coxph
 #' @inheritParams argument_convention
+#' @param strata_data data for stratification factors (categorical variables).
+#'   If \code{NULL}, no stratified analysis is performed.
 #' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
 #' @param time_unit The unit of median survival time. Default is \code{months}.
 #' @param row_name name of row
+#' @param conf_int confidence level of the interval
 #' @param dense_header Display the table headers in multiple rows.
 #'
-#' @return rtable with one row
+#' @return \code{rtable} with one row
 #'
 #' @export
 #'
@@ -168,10 +216,21 @@ t_forest_tte <- function(tte,
 #' tte <- rexp(n)
 #' set.seed(1)
 #' is_event <- sample(c(TRUE, FALSE), n, TRUE)
+#' strata_data <- data.frame(
+#'   STRATA1 = sample(c("STR1", "STR2"), n, TRUE),
+#'   STRATA2 = sample(c("low", "medium", "high"), n, TRUE)
+#' )
+#' col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
+#' t_el_forest_tte(
+#'   tte = tte, is_event = is_event,
+#'   col_by = col_by,
+#'   conf_int = 0.9
+#' )
 #'
 #' t_el_forest_tte(
 #'   tte = tte, is_event = is_event,
-#'   col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
+#'   col_by = col_by,
+#'   strata_data = strata_data
 #' )
 #'
 #' t_el_forest_tte(
@@ -183,12 +242,20 @@ t_forest_tte <- function(tte,
 #'   tte = tte, is_event = is_event,
 #'   col_by = factor(rep("ARM B", n), levels = c("ARM A", "ARM B"))
 #' )
-#'
-t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
-                            time_unit = "month", row_name = "", dense_header = TRUE) {
-
-  stopifnot(is.factor(col_by))
-  check_same_n(tte = tte, is_event = is_event, col_by = col_by)
+t_el_forest_tte <- function(tte,
+                            is_event,
+                            col_by,
+                            strata_data = NULL,
+                            ties = "exact",
+                            time_unit = "month",
+                            row_name = "",
+                            conf_int = 0.95,
+                            dense_header = TRUE) {
+  stopifnot(
+    is.factor(col_by),
+    is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1
+  )
+  check_same_n(tte = tte, is_event = is_event, col_by = col_by, strata_data = strata_data)
 
   if (any(is.na(tte) | is.na(is_event))) {
     stop("NAs in tte and is_event is not allowed")
@@ -198,18 +265,34 @@ t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
     stop("two levels required for col_by")
   }
 
-  s_fit_km <- summary(survfit(Surv(tte, is_event) ~ col_by))$table
-
-  # Three scenarios:
+  # Four scenarios:
   # 1. two arms
   # 2. ref arm has no records
   # 3. comp arm has no records
+  # 4. both arms have no records
 
   col_N <- table(col_by) #nolintr
 
+  if (any(col_N) > 0) {
+    s_fit_km <- summary(survfit(Surv(tte, is_event) ~ col_by))$table
+  }
+
   x <- if (all(col_N > 0)) {
     s_fit_km <- as.data.frame(s_fit_km)
-    cox_sum  <- summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties))
+
+    cox_sum  <- if (any(is_event == TRUE)) {
+      if (is.null(strata_data)) {
+        summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties), conf.int = conf_int)
+      } else {
+        summary(coxph(Surv(tte, is_event) ~ col_by + strata(strata_data), ties = ties),
+                conf.int = conf_int)
+      }
+    } else {
+      # no events
+      list(
+        conf.int = c(NA, NA, NA, NA)
+      )
+    }
 
     list(
       total_n = length(tte),
@@ -252,7 +335,18 @@ t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
       cox_ucl  = NA
     )
   } else {
-    stop("Invalid Arm Counts")
+    list(
+      total_n = length(tte),
+      comp_n        = 0,
+      comp_events   = 0,
+      comp_median   = NA,
+      ref_n        = 0,
+      ref_events   = 0,
+      ref_median   = NA,
+      cox_hr   = NA,
+      cox_lcl  = NA,
+      cox_ucl  = NA
+    )
   }
 
   # format values
@@ -289,14 +383,14 @@ t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
         "n", "Events", "Median",
         "n", "Events", "Median",
         "Hazard",
-        "95%"
+        paste0((conf_int) * 100, "%")
       ),
       rrow(
         row.name = "Factors",
         "n",
         NULL, NULL, paste0("(", time_unit, ")"),
         NULL, NULL, paste0("(", time_unit, ")"),
-        "Ratio",
+        if (is.null(strata_data)) "Ratio" else "Ratio*",
         "Wald CI"
       )
     )
@@ -315,8 +409,8 @@ t_el_forest_tte <- function(tte, is_event, col_by, ties = "exact",
         "Total n",
         "n", "Events", paste0("Median (", time_unit, ")"),
         "n", "Events", paste0("Median (", time_unit, ")"),
-        "Hazard Ratio",
-        "95% Wald CI"
+        if (is.null(strata_data)) "Hazard Ratio" else "Hazard Ratio*",
+        paste0((conf_int) * 100, "% Wald CI")
       )
     )
   }

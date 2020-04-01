@@ -5,45 +5,50 @@
 \title{Proportional Hazards Regression Model Fit Summary Table}
 \usage{
 t_coxph(
-  fit_coxph,
-  info_coxph = "Cox Porportional Hazard Model",
-  pval_method = "wald"
+  formula,
+  data,
+  conf.int = 0.95,
+  pval_method = c("log-rank", "wald", "likelihood"),
+  ...
 )
 }
 \arguments{
-\item{fit_coxph}{a class \code{\link[survival]{coxph}} object.}
+\item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The
+\code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
+\code{\link[survival]{strata}} specification then the stratified analysis is omitted.}
 
-\item{info_coxph}{label information for Cox PH model.}
+\item{data}{a \code{data.frame} with all the variable that are used in \code{formula}}
 
-\item{pval_method}{the method used to calculate the p-value,
-should be one of "wald", "logrank", "likelihood"}
+\item{conf.int}{level for computation of the confidence intervals. If set to {FALSE} no confidence intervals are
+printed}
+
+\item{pval_method}{the method used to calculate the p-value, should be one of \code{"wald"}, \code{"log-rank"},
+\code{"likelihood"}, default is \code{"log-rank"}.}
+
+\item{...}{Other arguments will be passed to \code{\link[survival]{coxph}}}
 }
 \description{
-An \code{\link[rtables]{rtable}} format of \code{\link[survival]{coxph}}
-object for further annotation on top of Kaplan-Meier grob
+An \code{\link[rtables]{rtable}} format of \code{\link[tern]{s_coxph_pairwise}}
+results for further annotation on top of Kaplan-Meier grob
 }
 \examples{
 library(random.cdisc.data)
-
 ADSL <- cadsl
-ADSL$RACE <- factor(
-  vapply(as.character(ADSL$RACE),
-         function(x) {
-           if (nchar(x)>9) paste0(substr(x, 1,9), "...") else x
-         },
-         character(1)
-  )
-)
-
 ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
-\donttest{
-fit_coxph <- coxph(formula = Surv(time = AVAL, time2 = 1 - CNSR) ~ ARM + strata(RACE),
-  data = ADTTE_f, ties = "exact"
+
+tbl <- t_coxph(
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARM) + strata(SEX),
+  data = ADTTE_f
 )
-tbl <- t_coxph(fit_coxph)
 tbl
-}
+
+tbl <- t_coxph(
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX),
+  data = ADTTE_f,
+  conf.int = 0.8, pval_method = "wald", ties = "exact"
+)
+tbl
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

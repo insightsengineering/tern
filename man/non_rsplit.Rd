@@ -10,7 +10,7 @@ non_rsplit(x)
 \item{x}{list to protect from splitting}
 }
 \value{
-object of class non_rsplit
+object of class \code{non_rsplit}
 }
 \description{
 This is for the behavior of \code{\link{esplit.non_rsplit}}.

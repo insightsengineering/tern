@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{col_N_add_total}
 \alias{col_N_add_total}
-\title{Add total to col_N}
+\title{Add total to \code{col_N}}
 \usage{
 col_N_add_total(col_N)
 }
 \arguments{
-\item{col_N}{col_N count}
+\item{col_N}{count}
 }
 \value{
 new count with total count appended to vector
@@ -16,7 +16,8 @@ new count with total count appended to vector
 It adds the sum of the vector as the last element.
 }
 \details{
-This is necessary when you manually specify col_N and col_by uses the total column (via by_add_total or similar)
+This is necessary when you manually specify \code{col_N} and \code{col_by} uses the total column
+  (via \code{by_add_total} or similar)
 }
 \examples{
 col_N_add_total(get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE))))

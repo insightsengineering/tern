@@ -38,7 +38,8 @@ Use the function \code{\link{node}} to create objects of this class.
 Note: changing the names of the children after calling this function will cause the children list names
 to be no longer in-sync because assignment via the \code{@} operator does not check whether the new object is valid,
 e.g. names of children nodes agree with names in children list.
-Ideally, we should define functions like setChildren and getChildren, but this seems to clutter the code.
+Ideally, we should define functions like \code{setChildren} and \code{getChildren}, but this seems to clutter the
+code.
 Temporarily, we always reassign children names when accessing via \code{`[[`}.
 }
 \section{Slots}{

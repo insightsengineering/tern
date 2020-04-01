@@ -23,7 +23,7 @@ displayable(x, ...)
 \item{indent}{indent with which to print object}
 }
 \description{
-For classes like integer, must use setOldClass("integer") so that S4 method dispatch works
+For classes like integer, must use \code{setOldClass("integer")} so that S4 method dispatch works
 and this function gets called.
 }
 \examples{
