@@ -46,7 +46,7 @@ Suggests:
   random.cdisc.data (>= 0.3.2),
   rmarkdown,
   test.nest (>= 0.2.2),
-  testthat,
+  testthat (>= 2.0),
   tibble,
   tidyr
 License: file LICENSE
