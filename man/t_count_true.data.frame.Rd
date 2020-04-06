@@ -4,15 +4,9 @@
 \alias{t_count_true.data.frame}
 \title{Tabulate \code{TRUE} counts in a data.frame}
 \usage{
-\method{t_count_true}{data.frame}(
-  x,
-  col_by,
-  col_N = NULL,
-  total = NULL,
-  denominator = c("N", "n", "omit"),
-  table_tree = FALSE,
-  ...
-)
+\method{t_count_true}{data.frame}(x, col_by, col_N = NULL,
+  total = NULL, denominator = c("N", "n", "omit"),
+  table_tree = FALSE, ...)
 }
 \arguments{
 \item{x}{data frame with only logical variables to be summarized.

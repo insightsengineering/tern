@@ -4,7 +4,8 @@
 \alias{t_logistic}
 \title{Multi-variable logistic regression table}
 \usage{
-t_logistic(glm_model, terms_label = NULL, increments = NULL, conf_level = 0.95)
+t_logistic(glm_model, terms_label = NULL, increments = NULL,
+  conf_level = 0.95)
 }
 \arguments{
 \item{glm_model}{a {\code{\link{glm}}} model object.

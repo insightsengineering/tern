@@ -4,15 +4,9 @@
 \alias{t_el_count_unique}
 \title{Count unique elements per cell in a vector}
 \usage{
-t_el_count_unique(
-  x,
-  col_by,
-  col_N = NULL,
-  total = NULL,
-  na_rm = TRUE,
-  denominator = c("N", "omit"),
-  row_name = "number of unique elements"
-)
+t_el_count_unique(x, col_by, col_N = NULL, total = NULL,
+  na_rm = TRUE, denominator = c("N", "omit"),
+  row_name = "number of unique elements")
 }
 \arguments{
 \item{x}{a vector}

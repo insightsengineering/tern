@@ -4,22 +4,10 @@
 \alias{g_forest}
 \title{Create a Forest Plot based on a Table}
 \usage{
-g_forest(
-  tbl,
-  col_x,
-  col_ci,
-  vline = NULL,
-  forest_header = NULL,
-  xlim = NULL,
-  logx = FALSE,
-  x_at = NULL,
-  width_row_names = NULL,
-  width_columns = NULL,
-  width_forest = unit(1, "null"),
-  col_symbol_size = NULL,
-  draw = TRUE,
-  newpage = TRUE
-)
+g_forest(tbl, col_x, col_ci, vline = NULL, forest_header = NULL,
+  xlim = NULL, logx = FALSE, x_at = NULL, width_row_names = NULL,
+  width_columns = NULL, width_forest = unit(1, "null"),
+  col_symbol_size = NULL, draw = TRUE, newpage = TRUE)
 }
 \arguments{
 \item{tbl}{an \code{rtable} object}
@@ -90,7 +78,7 @@ p <- g_forest(
   col_x = 8,
   col_ci = 9,
   vline = 1,
-  forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
+  forest_header = c("Treatement\\nBetter", "Comparison\\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
@@ -124,7 +112,7 @@ p <- g_forest(
   col_x = 8,
   col_ci = 9,
   vline = 1,
-  forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
+  forest_header = c("Comparison\\nBetter", "Treatement\\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
@@ -151,7 +139,7 @@ p <- g_forest(
   col_x = 8,
   col_ci = 9,
   vline = 1,
-  forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
+  forest_header = c("Comparison\\nBetter", "Treatement\\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),

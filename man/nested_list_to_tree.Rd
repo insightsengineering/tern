@@ -4,7 +4,8 @@
 \alias{nested_list_to_tree}
 \title{Convert a named nested list to a tree}
 \usage{
-nested_list_to_tree(x, format_data = NULL, max_depth = .Machine$integer.max)
+nested_list_to_tree(x, format_data = NULL,
+  max_depth = .Machine$integer.max)
 }
 \arguments{
 \item{x}{nested list}

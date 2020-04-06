@@ -25,7 +25,7 @@ g <- with(iris, {
     ggplotGrob(qplot(Petal.Length, Petal.Width, col = Species))
   )
 })
-lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
+lg <- decorate_grob_set(grobs = g, titles = "Hello\\nOne\\nTwo\\nThree", footnotes = "")
 draw_grob(lg[[1]])
 draw_grob(lg[[2]])
 draw_grob(lg[[6]])

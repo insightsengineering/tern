@@ -4,16 +4,8 @@
 \alias{t_count_unique}
 \title{Count unique elements per cell in a vector with subgroups}
 \usage{
-t_count_unique(
-  x,
-  col_by,
-  subgroups,
-  col_N = NULL,
-  total = NULL,
-  na_rm = TRUE,
-  denominator = c("N", "omit"),
-  table_tree = FALSE
-)
+t_count_unique(x, col_by, subgroups, col_N = NULL, total = NULL,
+  na_rm = TRUE, denominator = c("N", "omit"), table_tree = FALSE)
 }
 \arguments{
 \item{x}{a vector}

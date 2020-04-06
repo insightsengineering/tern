@@ -4,15 +4,8 @@
 \alias{t_max_grade_per_id}
 \title{Tabulate maximum grade per id by \code{col_by}}
 \usage{
-t_max_grade_per_id(
-  grade,
-  id,
-  col_by,
-  col_N = NULL,
-  total = NULL,
-  grade_levels = NULL,
-  any_grade = "Any Grade"
-)
+t_max_grade_per_id(grade, id, col_by, col_N = NULL, total = NULL,
+  grade_levels = NULL, any_grade = "Any Grade")
 }
 \arguments{
 \item{grade}{grade of adverse event.

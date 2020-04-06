@@ -19,7 +19,7 @@ Automatically updates page number
 }
 \examples{
 pf <- decorate_grob_factory(
-  titles = "This is a test\nHello World",
+  titles = "This is a test\\nHello World",
   footnotes = "Here belong the footnotess",
   npages = 3
 )

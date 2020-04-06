@@ -4,13 +4,8 @@
 \alias{node_format_data}
 \title{Node Format Data}
 \usage{
-node_format_data(
-  gap_to_children = NULL,
-  children_gap = NULL,
-  children_indent = NULL,
-  content_indent = NULL,
-  left_header = NULL
-)
+node_format_data(gap_to_children = NULL, children_gap = NULL,
+  children_indent = NULL, content_indent = NULL, left_header = NULL)
 }
 \arguments{
 \item{gap_to_children}{row gap between content and children}

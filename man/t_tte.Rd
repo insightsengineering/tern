@@ -4,20 +4,12 @@
 \alias{t_tte}
 \title{Time to Event Table}
 \usage{
-t_tte(
-  formula,
-  data,
-  col_N,
-  event_descr = NULL,
-  time_points = NULL,
-  time_unit = "month",
-  conf_level = 0.95,
+t_tte(formula, data, col_N, event_descr = NULL, time_points = NULL,
+  time_unit = "month", conf_level = 0.95,
   conf_type_survfit = c("plain", "none", "log", "log-log"),
-  probs_survfit = c(0.25, 0.75),
-  pval_method_coxph = c("log-rank", "wald", "likelihood"),
-  ties_coxph = c("efron", "breslow", "exact"),
-  table_tree = FALSE
-)
+  probs_survfit = c(0.25, 0.75), pval_method_coxph = c("log-rank",
+  "wald", "likelihood"), ties_coxph = c("efron", "breslow", "exact"),
+  table_tree = FALSE)
 }
 \arguments{
 \item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The

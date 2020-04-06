@@ -4,14 +4,8 @@
 \alias{t_el_forest_rsp}
 \title{Elementary Table for Forest Response Plot}
 \usage{
-t_el_forest_rsp(
-  rsp,
-  col_by,
-  strata_data = NULL,
-  conf_int = 0.95,
-  row_name = "",
-  dense_header = FALSE
-)
+t_el_forest_rsp(rsp, col_by, strata_data = NULL, conf_int = 0.95,
+  row_name = "", dense_header = FALSE)
 }
 \arguments{
 \item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}

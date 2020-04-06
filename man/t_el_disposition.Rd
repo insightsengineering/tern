@@ -4,18 +4,9 @@
 \alias{t_el_disposition}
 \title{Single element for disposition table}
 \usage{
-t_el_disposition(
-  x,
-  col_by,
-  col_N = NULL,
-  total = NULL,
-  row.name = NULL,
-  subset = NULL,
-  show_n = FALSE,
-  useNA = c("no", "ifany", "always"),
-  drop_levels = NULL,
-  denominator = "N"
-)
+t_el_disposition(x, col_by, col_N = NULL, total = NULL,
+  row.name = NULL, subset = NULL, show_n = FALSE, useNA = c("no",
+  "ifany", "always"), drop_levels = NULL, denominator = "N")
 }
 \arguments{
 \item{x}{A factor or logical vector}
@@ -103,10 +94,10 @@ ADSL0 <- ADSL \%>\%
   ) \%>\% var_relabel(COMPSTUD = "Complete Study",
                     STUDONS = "On-study Status",
                     DISSTDFL = "Discontinued Study",
-                    STDDRS = "Reason for Study \r\nDiscontinuation",
+                    STDDRS = "Reason for Study \\r\\nDiscontinuation",
                     GOTTRT = "Received Treatment",
                     DISTRTFL = "Discontinued Treatment",
-                    TRTDRS = "Reason for Treatment \r\nDiscontinuation"
+                    TRTDRS = "Reason for Treatment \\r\\nDiscontinuation"
   )
 
 library(purrr)

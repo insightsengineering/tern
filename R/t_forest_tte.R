@@ -282,6 +282,7 @@ t_el_forest_tte <- function(tte,
 
     cox_sum  <- if (any(is_event == TRUE)) {
       if (is.null(strata_data)) {
+        # use coxph.control argument to set iteration max to avoid warning if exceeded
         summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties), conf.int = conf_int)
       } else {
         summary(coxph(Surv(tte, is_event) ~ col_by + strata(strata_data), ties = ties),

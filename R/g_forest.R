@@ -396,6 +396,8 @@ forest_grob <- function(tbl,
           children = gList(
             gTree(
               children = gList(
+                # this may overflow, to fix, look here
+                # https://stackoverflow.com/questions/33623169/add-multi-line-footnote-to-tablegrob-while-using-gridextra-in-r #nolintr
                 textGrob(forest_header[1], x = unit(vline, "native") - unit(1, "lines"), just = c("right", "center")),
                 textGrob(forest_header[2], x = unit(vline, "native") + unit(1, "lines"), just = c("left", "center"))
               ),

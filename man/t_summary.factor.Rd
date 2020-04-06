@@ -4,16 +4,9 @@
 \alias{t_summary.factor}
 \title{Summarize Categorical Data}
 \usage{
-\method{t_summary}{factor}(
-  x,
-  col_by,
-  col_N = NULL,
-  total = NULL,
-  useNA = c("ifany", "no", "always"),
-  denominator = c("n", "N", "omit"),
-  drop_levels = FALSE,
-  ...
-)
+\method{t_summary}{factor}(x, col_by, col_N = NULL, total = NULL,
+  useNA = c("ifany", "no", "always"), denominator = c("n", "N",
+  "omit"), drop_levels = FALSE, ...)
 }
 \arguments{
 \item{x}{factor variable}

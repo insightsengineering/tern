@@ -4,14 +4,9 @@
 \alias{t_el_events_per_term_id}
 \title{Summary table for events}
 \usage{
-t_el_events_per_term_id(
-  id,
-  col_by,
-  col_N = NULL,
-  total = NULL,
+t_el_events_per_term_id(id, col_by, col_N = NULL, total = NULL,
   total_events = "Total number of events",
-  subjects_with_events = "Total number of patients with at least one adverse event"
-)
+  subjects_with_events = "Total number of patients with at least one adverse event")
 }
 \arguments{
 \item{id}{unique subject identifier. If a particular subject has no adverse

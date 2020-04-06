@@ -4,15 +4,9 @@
 \alias{t_count_true.list}
 \title{Tabulate \code{TRUE} counts in a list}
 \usage{
-\method{t_count_true}{list}(
-  x_list,
-  col_by_list,
-  col_N = NULL,
-  total = NULL,
-  denominator = c("N", "n", "omit"),
-  table_tree = FALSE,
-  ...
-)
+\method{t_count_true}{list}(x_list, col_by_list, col_N = NULL,
+  total = NULL, denominator = c("N", "n", "omit"),
+  table_tree = FALSE, ...)
 }
 \arguments{
 \item{x_list}{list of x}

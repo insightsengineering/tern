@@ -4,17 +4,11 @@
 \alias{a_mmrm}
 \title{MMRM model, test, estimate}
 \usage{
-a_mmrm(
-  data,
-  formula = AVAL ~ ARM + AVISIT + ARM * VISIT,
-  id_var = "USUBJID",
-  arm_var = "ARM",
-  visit_var = "AVISIT",
+a_mmrm(data, formula = AVAL ~ ARM + AVISIT + ARM * VISIT,
+  id_var = "USUBJID", arm_var = "ARM", visit_var = "AVISIT",
   mode = c("df.error", "auto", "boot-satterthwaite"),
-  conf.level = 0.95,
-  weights_emmeans = "proportional",
-  corStruct = NULL
-)
+  conf.level = 0.95, weights_emmeans = "proportional",
+  corStruct = NULL)
 }
 \arguments{
 \item{data}{a \code{data.frame} with all the variables specified in

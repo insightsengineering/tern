@@ -4,19 +4,11 @@
 \alias{t_mmrm}
 \title{Mix model with repeated measurements (MMRM) model}
 \usage{
-t_mmrm(
-  formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
-  data,
-  id_var = "USUBJID",
-  arm_var = "ARM",
-  visit_var = "AVISIT",
-  col_N,
+t_mmrm(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT, data,
+  id_var = "USUBJID", arm_var = "ARM", visit_var = "AVISIT", col_N,
   mode = c("df.error", "auto", "boot-satterthwaite"),
-  conf.level = 0.95,
-  weights_emmeans = "proportional",
-  corStruct = NULL,
-  table_tree = TRUE
-)
+  conf.level = 0.95, weights_emmeans = "proportional",
+  corStruct = NULL, table_tree = TRUE)
 }
 \arguments{
 \item{formula}{a \code{gls} formula.}

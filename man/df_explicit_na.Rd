@@ -4,12 +4,8 @@
 \alias{df_explicit_na}
 \title{Prepare data to be used in a teal app}
 \usage{
-df_explicit_na(
-  data,
-  omit_columns = NULL,
-  char_as_factor = TRUE,
-  na_level = "<Missing>"
-)
+df_explicit_na(data, omit_columns = NULL, char_as_factor = TRUE,
+  na_level = "<Missing>")
 }
 \arguments{
 \item{data}{(\code{data.frame}) Any \code{cdisc} data set}

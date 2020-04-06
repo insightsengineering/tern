@@ -4,14 +4,8 @@
 \alias{t_count_true.default}
 \title{Return an \code{rtable} with a no Method Message}
 \usage{
-\method{t_count_true}{default}(
-  x,
-  col_by,
-  col_N = NULL,
-  total = NULL,
-  denominator = c("N", "n", "omit"),
-  ...
-)
+\method{t_count_true}{default}(x, col_by, col_N = NULL, total = NULL,
+  denominator = c("N", "n", "omit"), ...)
 }
 \arguments{
 \item{x}{a logical vector}
