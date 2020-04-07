@@ -351,7 +351,7 @@ t_summary.factor <- function(x, # nolint
                              col_N = NULL, #nolintr
                              total = NULL,
                              useNA = c("ifany", "no", "always"), # nolint
-                             denominator = c("n", "N", "omit"),
+                             denominator = c("N", "n", "omit"),
                              drop_levels = FALSE,
                              ...) {
   stopifnot(is.null(total) || is_character_single(total))

@@ -51,7 +51,8 @@ test_that("t_summary_by categorical results are as expected", {
     x = asl$SEX,
     row_by = asl$COUNTRY,
     col_by = asl$ARMCD,
-    total = "ALL"
+    total = "ALL",
+    denominator = "n"
   )
 
   # nolint start
