@@ -1,5 +1,6 @@
 # tern 0.6.5
 
+* fix IQR bug: IQR as Q3 minus Q1
 * Add new function `t_logistic` for multi-variable logistic regression table
 * Added `conf.ini.coxph`, `conf.ini.survfit`, `conf.ini.ztest`, `conf.type`, `probs` arguments in `t_tte`
 * Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.

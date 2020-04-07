@@ -209,7 +209,9 @@ t_summary.data.frame <- function(x, # nolint
 #' @inheritParams t_summary.data.frame
 #' @param x numeric variable
 #' @param f_numeric a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "median",
-#'   "q1_q3", "range", "se"}
+#'   "q1_q3", "range", "se"}, as well as the functions which are wrapped by
+#'   \code{\link{patient_numeric_fcns}} (\code{f_numeric = patient_numeric_fcns()}) for summarizing
+#'   patient data as for \code{\link{t_summarize_by_visit}}
 #'
 #' @template return_rtable
 #'
@@ -286,7 +288,7 @@ t_summary.numeric <- function(x, # nolint
       n_not_na3 = rtabulate(x, col_by, n_not_na3, row.name = "n"),
       mean_sd3 = rtabulate(x, col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
       median_t3 = rtabulate(x, col_by, median_t3, row.name = "Median", format = "xx.xx"),
-      iqr_num3 = rtabulate(x, col_by, iqr_num3, row.name = "IQR", format = "xx.xx - xx.xx"),
+      iqr_num3 = rtabulate(x, col_by, iqr_num3, row.name = "IQR", format = "xx.xx"),
       range_t3 = rtabulate(x, col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max"),
 
       NULL # default, should never happen

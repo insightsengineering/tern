@@ -28,39 +28,45 @@
 #' @export
 #'
 #' @examples
-#' # EXAMPLE 1
-#' library(random.cdisc.data)
 #'
+#' library(random.cdisc.data)
+#' library(dplyr)
 #' ADSL <- radsl(cached = TRUE)
 #' ADVS <- radvs(cached = TRUE)
 #'
-#' t_summarize_by_visit(
+#' tbl1 <- t_summarize_by_visit(
 #'   data = ADVS[c("AVAL")],
 #'   visit = ADVS$AVISIT,
 #'   col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID,
 #'   col_N = table(ADSL$ARM)
 #' )
+#' \dontrun{
+#' Viewer(tbl1)
+#' }
 #'
-#' t_summarize_by_visit(
+#' tbl2 <- t_summarize_by_visit(
 #'   data = ADVS[c("PCHG")],
 #'   visit = ADVS$AVISIT,
 #'   col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID,
 #'   col_N = table(ADSL$ARM)
 #' )
+#' \dontrun{
+#' Viewer(tbl2)
+#' }
 #'
-#' t_summarize_by_visit(
+#' tbl3 <- t_summarize_by_visit(
 #'   data = ADVS[c("AVAL", "CHG")],
 #'   visit = ADVS$AVISIT,
 #'   col_by = ADVS$ARM,
 #'   id = ADVS$USUBJID,
 #'   col_N = table(ADSL$ARM)
 #' )
+#' \dontrun{
+#' Viewer(tbl3)
+#' }
 #'
-#' # EXAMPLE 2
-#' library(random.cdisc.data)
-#' library(dplyr)
 #'
 #' ADSL <- cadsl
 #' ADQS <- cadqs %>%
@@ -73,8 +79,6 @@
 #'   id = ADQS$USUBJID,
 #'   col_N = table(ADSL$ARM)
 #' )
-#'
-#' tbl
 #'
 #' \dontrun{
 #' Viewer(tbl)
@@ -125,7 +129,7 @@ t_summarize_by_visit <- function(data,
       rtabulate(dfi$data, dfi$col_by, n_not_na3, row.name = "n", indent = 1),
       rtabulate(dfi$data, dfi$col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)", indent = 1),
       rtabulate(dfi$data, dfi$col_by, median_t3, row.name = "Median", indent = 1, format = "xx.xx"),
-      rtabulate(dfi$data, dfi$col_by, iqr_num3, row.name = "IQR", indent = 1, format = "xx.xx - xx.xx"),
+      rtabulate(dfi$data, dfi$col_by, iqr_num3, row.name = "IQR", indent = 1, format = "xx.xx"),
       rtabulate(dfi$data, dfi$col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max", indent = 1)
     )
     insert_rrow(tbl_byv, rrow(visit_name))

@@ -36,7 +36,7 @@ q1_q3 <- function(x, na.rm = TRUE) { #nolintr
 #' @importFrom stats quantile sd median qnorm
 #'
 iqr_num <- function(x, na.rm = TRUE) { # nolint
-  quantile(x, probs = c(.25, .75), na.rm = TRUE)
+  quantile(x, probs = .75, na.rm = na.rm) - quantile(x, probs = .25, na.rm = na.rm)
 }
 
 
@@ -98,7 +98,7 @@ iqr_num2 <- function(x, na.rm = TRUE) { # nolint
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
-    quantile(x, probs = c(.25, .75), na.rm = TRUE)
+    quantile(x, probs = .75, na.rm = na.rm) - quantile(x, probs = .25, na.rm = na.rm)
   }
 }
 
@@ -145,9 +145,9 @@ range_t3 <- function(x, na.rm = TRUE) { # nolint
 
 iqr_num3 <- function(x, na.rm = TRUE) { # nolint
   if (all(is.na(x))) {
-    rcell("NE", format = function(x, output) paste0(x, " - ", x))
+    rcell("NE", format = function(x, output) paste0(x))
   } else {
-    quantile(x, probs = c(.25, .75), na.rm = TRUE)
+    quantile(x, probs = .75, na.rm = na.rm) - quantile(x, probs = .25, na.rm = na.rm)
   }
 }
 

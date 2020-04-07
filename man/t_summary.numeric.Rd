@@ -23,7 +23,9 @@ more than one record per subject.}
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{f_numeric}{a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "median",
-"q1_q3", "range", "se"}}
+"q1_q3", "range", "se"}, as well as the functions which are wrapped by
+\code{\link{patient_numeric_fcns}} (\code{f_numeric = patient_numeric_fcns()}) for summarizing
+patient data as for \code{\link{t_summarize_by_visit}}}
 
 \item{...}{arguments passed on to methods}
 }

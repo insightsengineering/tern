@@ -42,39 +42,45 @@ Every variable in \code{data} will be mapped to a sub-column under
   factor in \code{col_by}.
 }
 \examples{
-# EXAMPLE 1
-library(random.cdisc.data)
 
+library(random.cdisc.data)
+library(dplyr)
 ADSL <- radsl(cached = TRUE)
 ADVS <- radvs(cached = TRUE)
 
-t_summarize_by_visit(
+tbl1 <- t_summarize_by_visit(
   data = ADVS[c("AVAL")],
   visit = ADVS$AVISIT,
   col_by = ADVS$ARM,
   id = ADVS$USUBJID,
   col_N = table(ADSL$ARM)
 )
+\dontrun{
+Viewer(tbl1)
+}
 
-t_summarize_by_visit(
+tbl2 <- t_summarize_by_visit(
   data = ADVS[c("PCHG")],
   visit = ADVS$AVISIT,
   col_by = ADVS$ARM,
   id = ADVS$USUBJID,
   col_N = table(ADSL$ARM)
 )
+\dontrun{
+Viewer(tbl2)
+}
 
-t_summarize_by_visit(
+tbl3 <- t_summarize_by_visit(
   data = ADVS[c("AVAL", "CHG")],
   visit = ADVS$AVISIT,
   col_by = ADVS$ARM,
   id = ADVS$USUBJID,
   col_N = table(ADSL$ARM)
 )
+\dontrun{
+Viewer(tbl3)
+}
 
-# EXAMPLE 2
-library(random.cdisc.data)
-library(dplyr)
 
 ADSL <- cadsl
 ADQS <- cadqs \%>\%
@@ -87,8 +93,6 @@ tbl <- t_summarize_by_visit(
   id = ADQS$USUBJID,
   col_N = table(ADSL$ARM)
 )
-
-tbl
 
 \dontrun{
 Viewer(tbl)
