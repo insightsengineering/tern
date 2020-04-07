@@ -13,10 +13,10 @@ NULL
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
 #'
 #' @inheritParams argument_convention
-#' @param terms character or factor vector, or dataframe to represent events information;
-#'   Currently \code{terms} can only be a vector or dataframe with 1 or 2 columns.
-#'   For \code{terms} with 2 columns, 1st column should represent higher level term and 2nd
-#'   column should be lower level term.
+#' @param terms character or factor vector, or \code{data.frame} to represent events information.
+#'   Multi-level nesting is possible when \code{terms} is a \code{data.frame} and columns should
+#'   be ordered with the first column specifying the highest level term and the last column the
+#'   lowest level term.
 #' @param id vector of subject identifier. Length of \code{id} must be the same as the
 #'   length or number of rows of \code{terms}.
 #' @param grade grade of adverse event.
@@ -45,16 +45,16 @@ NULL
 #' get N for percentage calculation from either events dataset or additional dataset like
 #' subject level dataset. See the example.
 #'
-#' Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term
-#' (if \code{terms} is two levels) are counted once using the
-#'  greatest intensity reported.
+#' Multiple occurrences of the same event in an individual \code{id} are counted only once when counting
+#' number of subjects.
 #'
 #' \code{t_events_per_term_grade_id} doesn't deal with data with missing grade. Impute or filter missing
 #' values with \code{sas_na} and \code{explicit_na} before using \code{t_events_per_term_grade_id}.
 #'
-#' \code{t_events_per_term_grade_id} orders data by "All Patients" column from the most commonly
+#' \code{t_events_per_term_grade_id} orders data by overall frequency across all columns from the most commonly
 #'  reported higher level term to the least frequent one. Within each group of higher level term,
-#'  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in alphabetical order.
+#'  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
+#'  alphabetical order.
 #'
 #' \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value
 #' in case there was no events reported for particular \code{col_by} and/or

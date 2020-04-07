@@ -8,10 +8,9 @@ t_events_per_term_id(terms, id, col_by, col_N = NULL, total = NULL,
   event_type = "event", table_tree = FALSE)
 }
 \arguments{
-\item{terms}{character or factor vector, or \code{data.frame} to represent events information; Currently \code{terms}
-can only be a vector or dataframe with 1 or 2 columns. For \code{terms} with 2 columns, 1st column should represent
-higher level term and 2nd column should be lower level term. \code{var_relabel} is used as the character string
-used as a label in the column header for each term.}
+\item{terms}{character or factor vector, or \code{data.frame} to represent events information. Multi-level
+nesting is possible when \code{terms} is a \code{data.frame} and columns should be ordered with the first
+column specifying the highest level term and the last column the lowest level term.}
 
 \item{id}{vector of subject identifier. Length of \code{id} must be the same as the length or number of rows of
 \code{terms}.}
@@ -58,28 +57,20 @@ in the column heading (i.e. \code{"N=nnn"}). \code{col_N} can be explicitly spec
 get N for percentage calculation from either events dataset or additional dataset such as
 subject level dataset. See the example.
 
-Multiple events within a subject of the same term (if \code{terms} is one level) or lower level term
-(if \code{terms} is two levels) are counted once when counting number of subjects.
+Multiple occurrences of the same event in an individual \code{id} are counted only once when counting
+number of subjects.
 
 \code{t_events_per_term_id} doesn't deal with data with any non-complete records (has \code{NA}),
 e.g. if any terms are missing. Impute missing values before using \code{t_events_per_term_id}.
 
-\code{t_events_per_term_id} orders data by "All Patients" column from the most commonly
+\code{t_events_per_term_id} orders data by overall frequency across all columns from the most commonly
  reported higher level term to the least frequent one. Within each group of higher level term,
  it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
  alphabetical order.
-
-\if{html}{
-
-The data is split and table functions are applied to leaf nodes as follows:
-
-\figure{lt_events_per_term_id_2.png}{options: alt="lt_events_per_term_id_2 layout"}
-}
 }
 \examples{
 
 library(dplyr)
-library(purrr)
 
 t_events_per_term_id(
  terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
@@ -109,6 +100,7 @@ t_events_per_term_id(
 
 }
 
+# fill in "" with explicit NA
 t_events_per_term_id(
  terms = explicit_na(sas_na(factor(c("", "", "t2", "t1", "t2")))),
  id = c(1, 4, 2, 3, 3),
@@ -116,14 +108,6 @@ t_events_per_term_id(
  col_N = c(2, 4, 10),
  total = "All Patients"
 )
-
-t_events_per_term_id(
- terms = with_label(factor(c("t1", "t1", "t2", "t2", "t2")), "Term"),
- id = c(1, 4, 2, 3, 3),
- col_by = factor(c("A", "A", "B", "C", "C")),
- col_N = c(2, 4, 10)
-)
-
 
 library(random.cdisc.data)
 
@@ -201,7 +185,7 @@ tbls <- t_events_per_term_id(
 )
 summary(tbls)
 tbls[[1]]
-tbls[['cl A']]
+tbls[['cl A.1']]
 
 
 }

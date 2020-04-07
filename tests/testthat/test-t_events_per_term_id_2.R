@@ -175,22 +175,21 @@ test_that("adverse events by terms (class and term)", {
   # nolint start
   tbl_stream <- rtable(
     header = rheader(rrowl("", c("Active", "Placebo", "All Patients")), rrowl("", c("(N=32)", "(N=28)", "(N=60)"))),
-    rrow("- Any event -"),
-    rrow("Total number of patients with at least one adverse event", rcell(c(23, .719), "xx (xx.x%)"), rcell(c(19, .679), "xx (xx.x%)"), rcell(c(42, .700), "xx (xx.x%)"), indent = 1),
-    rrow("Overall total number of events", rcell(c(58)), rcell(c(40)), rcell(c(98)), indent = 1),
+    rrow("Total number of patients with at least one adverse event", rcell(c(23, .7188), "xx (xx.x%)"), rcell(c(19, .6786), "xx (xx.x%)"), rcell(c(42, .7000), "xx (xx.x%)")),
+    rrow("Overall total number of events", rcell(c(58)), rcell(c(40)), rcell(c(98))),
     rrow(),
     rrow("GASTROINTESTINAL DISORDERS"),
-    rrow("Total number of patients with at least one adverse event", rcell(c(21, .656), "xx (xx.x%)"), rcell(c(15, .536), "xx (xx.x%)"), rcell(c(36, .600), "xx (xx.x%)"), indent = 1),
+    rrow("Total number of patients with at least one adverse event", rcell(c(21, .6562), "xx (xx.x%)"), rcell(c(15, .5357), "xx (xx.x%)"), rcell(c(36, .6000), "xx (xx.x%)"), indent = 1),
     rrow("Total number of events", rcell(c(56)), rcell(c(34)), rcell(c(90)), indent = 1),
-    rrow("VOMITING", rcell(c(17, .531), "xx (xx.x%)"), rcell(c(8, .286), "xx (xx.x%)"), rcell(c(25, .417), "xx (xx.x%)"), indent = 1),
+    rrow("VOMITING", rcell(c(17, .5312), "xx (xx.x%)"), rcell(c(8, .2857), "xx (xx.x%)"), rcell(c(25, .4167), "xx (xx.x%)"), indent = 1),
     rrow("ABNOMINAL PAIN", rcell(c(6, .188), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"), indent = 1),
-    rrow("STOMATITIS", rcell(c(5, .156), "xx (xx.x%)"), rcell(c(6, .214), "xx (xx.x%)"), rcell(c(11, .183), "xx (xx.x%)"), indent = 1),
+    rrow("STOMATITIS", rcell(c(5, .1562), "xx (xx.x%)"), rcell(c(6, .2143), "xx (xx.x%)"), rcell(c(11, .1833), "xx (xx.x%)"), indent = 1),
     rrow(),
     rrow("INFECTIONS AND INFESTATIONS"),
-    rrow("Total number of patients with at least one adverse event", rcell(c(2, .063), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(7, .117), "xx (xx.x%)"), indent = 1),
+    rrow("Total number of patients with at least one adverse event", rcell(c(2, .0625), "xx (xx.x%)"), rcell(c(5, .1786), "xx (xx.x%)"), rcell(c(7, .1167), "xx (xx.x%)"), indent = 1),
     rrow("Total number of events", rcell(c(2)), rcell(c(6)), rcell(c(8)), indent = 1),
-    rrow("UPPER RESPIRATORY TRACT INFECTION", rcell(c(1, .031), "xx (xx.x%)"), rcell(c(5, .179), "xx (xx.x%)"), rcell(c(6, .100), "xx (xx.x%)"), indent = 1),
-    rrow("INFLUENZA", rcell(c(1, .031), "xx (xx.x%)"), rcell(0), rcell(c(1, .017), "xx (xx.x%)"), indent = 1)
+    rrow("UPPER RESPIRATORY TRACT INFECTION", rcell(c(1, .0312), "xx (xx.x%)"), rcell(c(5, .1786), "xx (xx.x%)"), rcell(c(6, .1000), "xx (xx.x%)"), indent = 1),
+    rrow("INFLUENZA", rcell(c(1, .0312), "xx (xx.x%)"), rcell(0), rcell(c(1, .0167), "xx (xx.x%)"), indent = 1)
   )
   # nolint end
 
