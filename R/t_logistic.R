@@ -24,7 +24,6 @@
 #' default AGE value is ceiling of median.
 #' @param conf_level confidence level for Wald odds ratio confidence interval.
 #' @importFrom car Anova
-#' @importFrom scales pvalue
 #' @export
 #' @examples
 #' library(random.cdisc.data)
@@ -448,42 +447,7 @@ s_logistic_interaction <- function(glm_model,
   )
 }
 
-#' Extract items from logistic regression coefficients for terms
-#' that are not invovled in interaction term and calculate odds ratios and CIs
-#' @noRd
-#' @examples
-#' \dontrun{
-#' library(random.cdisc.data)
-#' library(dplyr)
-#' library(purrr)
-#'
-#' ADSL <- radsl(cached = TRUE)
-#' ADSL <- ADSL %>% mutate(
-#'  SEX = as.character(SEX),
-#'  SEX = case_when(!SEX %in% c("F", "M") ~ "U",
-#'                TRUE ~ SEX))
-#' ADRS <- radrs(ADSL, seed = 2)
-#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
-#' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#'
-#' terms_name <- attr(terms(glm_model), "term.labels")
-#' # data used in model (complete cases)
-#' model_data <- glm_model$model
-#' model_coef <-  summary(glm_model)$coefficients
-#' terms_class <- attr(terms(glm_model),"dataClasses")[-1]
-#' terms_levels <- glm_model$xlevels
-#' extract_logistic_single(
-#'   terms_name =  terms_name,
-#'   terms_levels = terms_levels,
-#'   terms_class = terms_class,
-#'   model_coef = model_coef,
-#'   model_data = model_data)
-#' }
+
 extract_logistic_single <- function(terms_name,
                                     terms_levels,
                                     terms_class,
@@ -529,42 +493,7 @@ extract_logistic_single <- function(terms_name,
   terms_results
 }
 
-#' Extract items from logistic regression coefficients for terms
-#' that are invovled in interaction term and calculate odds ratios and CIs
-#' @noRd
-#' @examples
-#' \dontrun{
-#' library(random.cdisc.data)
-#' library(dplyr)
-#'
-#' ADSL <- radsl(cached = TRUE)
-#' ADSL <- ADSL %>% mutate(
-#'  SEX = as.character(SEX),
-#'  SEX = case_when(!SEX %in% c("F", "M") ~ "U",
-#'                TRUE ~ SEX))
-#' ADRS <- radrs(ADSL, seed = 2)
-#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
-#' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX + ARM*SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#'
-#' terms_name <- attr(terms(glm_model), "term.labels")
-#' # data used in model (complete cases)
-#' model_data <- glm_model$model
-#' model_coef <-  summary(glm_model)$coefficients
-#' terms_class <- attr(terms(glm_model),"dataClasses")[-1]
-#' terms_levels <- glm_model$xlevels
-#' vcov_coef <- vcov(glm_model)
-#' extract_logistic_interaction(
-#'   terms_interaction =  c("ARM", "AGE"),
-#'   terms_levels = terms_levels,
-#'   terms_class = terms_class,
-#'   model_coef = model_coef,
-#'   model_data = model_data)
-#' }
+
 extract_logistic_interaction <- function(terms_interaction,
                                          terms_class,
                                          terms_levels,
@@ -603,7 +532,6 @@ extract_logistic_interaction <- function(terms_interaction,
   results_interaction
 }
 
-#' @importFrom scales pvalue
 element_interaction <- function(info_xy,
                                 model_coef,
                                 vcov_coef,
@@ -822,8 +750,12 @@ table_formats <- function(dfi,
       "(xx.xx, xx.xx)"
     }
   }
-  format_pval <- function(pval, accuracy = 0.0001) {
-    pvalue(pval, accuracy = accuracy, prefix = c("<", "", ">"))
+  format_pval <- function(x, output) {
+    if (x < 0.0001) {
+      "<.0001"
+    } else {
+      paste(round(x, 4))
+    }
   }
 
   row_content <- switch(
@@ -834,14 +766,14 @@ table_formats <- function(dfi,
       rcell(dfi$se, format = "xx.xxx"),
       rcell(dfi$or, format = format_or(dfi$or)),
       rcell(c(dfi$lcl, dfi$ucl), format = format_ci(dfi$ucl)),
-      rcell(format_pval(dfi$`p-value`))
+      rcell(dfi$`p-value`, format = format_pval)
     ),
     main =  rrowl(
       row.name = row.name,
       c(
         list(rcell(dfi$df)),
         rep(list(NULL), 4),
-        list(rcell(format_pval(dfi$`p-value`)))
+        list(rcell(dfi$`p-value`, format = format_pval))
       )
     ),
     level =  rrow(
@@ -851,7 +783,7 @@ table_formats <- function(dfi,
       rcell(dfi$se, format = "xx.xxx"),
       NULL,
       NULL,
-      rcell(format_pval(dfi$`p-value`))
+      rcell(dfi$`p-value`, format = format_pval)
     ),
     or_ci = rrowl(
       row.name = row.name,

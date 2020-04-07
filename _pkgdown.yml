@@ -56,6 +56,8 @@ reference:
       - ttest_two_arm
       - a_mmrm
       - s_coxph_pairwise
+      - s_logistic_single
+      - s_logistic_interaction
 
   - title: Graphs
     desc: Graphs
