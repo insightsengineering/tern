@@ -30,6 +30,9 @@
 #'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
+#' \dontrun{
+#' # currently not executed because the algorithm to obtain the
+#' # Satterthwaite estimator does not always converge
 #' t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
 #'        data = ADQS_f,
 #'        id_var = "USUBJID",
@@ -42,6 +45,7 @@
 #'        corStruct = "corSymm",
 #'        table_tree = FALSE
 #' )
+#' }
 t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    data,
                    id_var = "USUBJID",
@@ -251,6 +255,9 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
+#' \dontrun{
+#' # currently not executed because the algorithm to obtain the
+#' # Satterthwaite estimator does not always converge
 #' mmrm_results <- a_mmrm(
 #'   data = ADQS_f,
 #'   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,
@@ -267,6 +274,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'
 #' mmrm_results["contrast"]
 #' mmrm_results["estimate"]
+#' }
 a_mmrm <- function(data,
                    formula = AVAL ~ ARM + AVISIT + ARM * VISIT,
                    id_var = "USUBJID",
