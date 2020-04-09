@@ -4,9 +4,15 @@
 \alias{t_count_true.logical}
 \title{Tabulate \code{TRUE} counts in a vector}
 \usage{
-\method{t_count_true}{logical}(x, col_by, col_N = NULL, total = NULL,
-  denominator = c("N", "n", "omit"), row_name = deparse(substitute(x)),
-  ...)
+\method{t_count_true}{logical}(
+  x,
+  col_by,
+  col_N = NULL,
+  total = NULL,
+  denominator = c("N", "n", "omit"),
+  row_name = deparse(substitute(x)),
+  ...
+)
 }
 \arguments{
 \item{x}{a logical vector}

@@ -4,8 +4,13 @@
 \alias{t_coxph}
 \title{Proportional Hazards Regression Model Fit Summary Table}
 \usage{
-t_coxph(formula, data, conf.int = 0.95, pval_method = c("log-rank",
-  "wald", "likelihood"), ...)
+t_coxph(
+  formula,
+  data,
+  conf.int = 0.95,
+  pval_method = c("log-rank", "wald", "likelihood"),
+  ...
+)
 }
 \arguments{
 \item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The

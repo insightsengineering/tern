@@ -4,8 +4,15 @@
 \alias{t_summary_by}
 \title{Summarize an Object for Different Groups with by Variable}
 \usage{
-t_summary_by(x, row_by, col_by, col_N = NULL, total = NULL, ...,
-  table_tree = FALSE)
+t_summary_by(
+  x,
+  row_by,
+  col_by,
+  col_N = NULL,
+  total = NULL,
+  ...,
+  table_tree = FALSE
+)
 }
 \arguments{
 \item{x}{vector}

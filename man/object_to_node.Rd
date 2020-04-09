@@ -4,8 +4,7 @@
 \alias{object_to_node}
 \title{Create a node with only this object}
 \usage{
-object_to_node(x,
-  node_name = invisible_node_name(deparse(substitute(x))))
+object_to_node(x, node_name = invisible_node_name(deparse(substitute(x))))
 }
 \arguments{
 \item{x}{object to add as node}

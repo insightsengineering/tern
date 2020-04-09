@@ -4,8 +4,14 @@
 \alias{t_summary.numeric}
 \title{Summarize Numeric Variables}
 \usage{
-\method{t_summary}{numeric}(x, col_by, col_N = NULL, total = NULL,
-  f_numeric = c("count_n", "mean_sd", "median", "range"), ...)
+\method{t_summary}{numeric}(
+  x,
+  col_by,
+  col_N = NULL,
+  total = NULL,
+  f_numeric = c("count_n", "mean_sd", "median", "range"),
+  ...
+)
 }
 \arguments{
 \item{x}{numeric variable}

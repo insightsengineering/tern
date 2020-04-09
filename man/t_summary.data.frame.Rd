@@ -4,8 +4,7 @@
 \alias{t_summary.data.frame}
 \title{Variables Summary Table}
 \usage{
-\method{t_summary}{data.frame}(x, col_by, col_N = NULL, total = NULL,
-  ..., table_tree = FALSE)
+\method{t_summary}{data.frame}(x, col_by, col_N = NULL, total = NULL, ..., table_tree = FALSE)
 }
 \arguments{
 \item{x}{data frame with variables to be summarized as described in the

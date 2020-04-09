@@ -4,8 +4,14 @@
 \alias{t_summary.list}
 \title{Helper function for t_summary_by}
 \usage{
-\method{t_summary}{list}(x_list, col_by_list, col_N = NULL,
-  total = NULL, ..., table_tree = FALSE)
+\method{t_summary}{list}(
+  x_list,
+  col_by_list,
+  col_N = NULL,
+  total = NULL,
+  ...,
+  table_tree = FALSE
+)
 }
 \arguments{
 \item{x_list}{list of x}

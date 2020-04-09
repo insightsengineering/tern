@@ -4,10 +4,19 @@
 \alias{split_text_grob}
 \title{Split Text According To Available Text Width}
 \usage{
-split_text_grob(text, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
-  width = unit(1, "npc"), just = "centre", hjust = NULL,
-  vjust = NULL, default.units = "npc", name = NULL, gp = gpar(),
-  vp = NULL)
+split_text_grob(
+  text,
+  x = unit(0.5, "npc"),
+  y = unit(0.5, "npc"),
+  width = unit(1, "npc"),
+  just = "centre",
+  hjust = NULL,
+  vjust = NULL,
+  default.units = "npc",
+  name = NULL,
+  gp = gpar(),
+  vp = NULL
+)
 }
 \arguments{
 \item{text}{character string}

@@ -4,8 +4,14 @@
 \alias{stack_grobs}
 \title{Stack multiple grobs}
 \usage{
-stack_grobs(..., grobs = list(...), padding = unit(2, "line"),
-  vp = NULL, gp = NULL, name = NULL)
+stack_grobs(
+  ...,
+  grobs = list(...),
+  padding = unit(2, "line"),
+  vp = NULL,
+  gp = NULL,
+  name = NULL
+)
 }
 \arguments{
 \item{...}{grobs.}

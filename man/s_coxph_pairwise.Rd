@@ -4,8 +4,13 @@
 \alias{s_coxph_pairwise}
 \title{Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis}
 \usage{
-s_coxph_pairwise(formula, data, conf.int = 0.95,
-  pval_method = c("log-rank", "wald", "likelihood"), ...)
+s_coxph_pairwise(
+  formula,
+  data,
+  conf.int = 0.95,
+  pval_method = c("log-rank", "wald", "likelihood"),
+  ...
+)
 }
 \arguments{
 \item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The

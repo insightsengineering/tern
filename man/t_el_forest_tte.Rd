@@ -4,9 +4,17 @@
 \alias{t_el_forest_tte}
 \title{Elementary Table for Forest Time to Event Plot}
 \usage{
-t_el_forest_tte(tte, is_event, col_by, strata_data = NULL,
-  ties = "exact", time_unit = "month", row_name = "",
-  conf_int = 0.95, dense_header = TRUE)
+t_el_forest_tte(
+  tte,
+  is_event,
+  col_by,
+  strata_data = NULL,
+  ties = "exact",
+  time_unit = "month",
+  row_name = "",
+  conf_int = 0.95,
+  dense_header = TRUE
+)
 }
 \arguments{
 \item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}

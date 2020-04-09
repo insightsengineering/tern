@@ -4,8 +4,15 @@
 \alias{t_events_per_term_id}
 \title{Basic Events Table}
 \usage{
-t_events_per_term_id(terms, id, col_by, col_N = NULL, total = NULL,
-  event_type = "event", table_tree = FALSE)
+t_events_per_term_id(
+  terms,
+  id,
+  col_by,
+  col_N = NULL,
+  total = NULL,
+  event_type = "event",
+  table_tree = FALSE
+)
 }
 \arguments{
 \item{terms}{character or factor vector, or \code{data.frame} to represent events information. Multi-level

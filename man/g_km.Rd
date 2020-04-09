@@ -4,11 +4,24 @@
 \alias{g_km}
 \title{Kaplan-Meier Plot}
 \usage{
-g_km(fit_km, xticks = NULL, col = NA, lty = 1, lwd = 1,
-  censor_show = TRUE, pch = 3, size = unit(0.5, "char"),
-  title = "Kaplan - Meier Plot", xlab = "Days",
-  ylab = "Survival Probability", draw = TRUE, newpage = TRUE,
-  gp = NULL, vp = NULL, name = NULL)
+g_km(
+  fit_km,
+  xticks = NULL,
+  col = NA,
+  lty = 1,
+  lwd = 1,
+  censor_show = TRUE,
+  pch = 3,
+  size = unit(0.5, "char"),
+  title = "Kaplan - Meier Plot",
+  xlab = "Days",
+  ylab = "Survival Probability",
+  draw = TRUE,
+  newpage = TRUE,
+  gp = NULL,
+  vp = NULL,
+  name = NULL
+)
 }
 \arguments{
 \item{fit_km}{a class \code{\link{survfit}} object.}

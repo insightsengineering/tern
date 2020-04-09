@@ -4,13 +4,23 @@
 \alias{decorate_grob}
 \title{Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob}
 \usage{
-decorate_grob(grob, titles, footnotes, page = "",
-  width_titles = unit(1, "npc"), width_footnotes = unit(1, "npc") -
-  stringWidth(page), border = TRUE, margins = unit(c(1, 0, 1, 0),
-  "lines"), padding = unit(rep(1, 4), "lines"),
-  outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"), gp_titles = gpar(),
-  gp_footnotes = gpar(fontsize = 8), name = NULL, gp = gpar(),
-  vp = NULL)
+decorate_grob(
+  grob,
+  titles,
+  footnotes,
+  page = "",
+  width_titles = unit(1, "npc"),
+  width_footnotes = unit(1, "npc") - stringWidth(page),
+  border = TRUE,
+  margins = unit(c(1, 0, 1, 0), "lines"),
+  padding = unit(rep(1, 4), "lines"),
+  outer_margins = unit(c(2, 1.5, 3, 1.5), "cm"),
+  gp_titles = gpar(),
+  gp_footnotes = gpar(fontsize = 8),
+  name = NULL,
+  gp = gpar(),
+  vp = NULL
+)
 }
 \arguments{
 \item{grob}{a grid grob object, optionally \code{NULL} if only a \code{grob} with
@@ -47,7 +57,7 @@ not.}
     from a call to the function \code{gpar}.  This is basically
     a list of graphical parameter settings.}
 
-\item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
+\item{vp}{a \code{\link[grid]{viewport}} object (or \code{NULL}).}
 }
 \value{
 a grid grob (\code{gTree})
@@ -121,7 +131,7 @@ grid.draw(
   )
 )
 
-## with \\code{ggplot2}
+## with \code{ggplot2}
 p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 p_gg
 p <- ggplotGrob(p_gg)
@@ -135,7 +145,7 @@ grid.draw(
   )
 )
 
-## with \\code{lattice}
+## with \code{lattice}
 library(lattice)
 xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
 p <- grid.grab()

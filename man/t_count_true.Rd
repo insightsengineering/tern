@@ -4,8 +4,14 @@
 \alias{t_count_true}
 \title{Tabulate \code{TRUE} counts}
 \usage{
-t_count_true(x, col_by, col_N = NULL, total = NULL,
-  denominator = c("N", "n", "omit"), ...)
+t_count_true(
+  x,
+  col_by,
+  col_N = NULL,
+  total = NULL,
+  denominator = c("N", "n", "omit"),
+  ...
+)
 }
 \arguments{
 \item{x}{an object to dispatch on}

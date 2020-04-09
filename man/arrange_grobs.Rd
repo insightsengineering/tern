@@ -4,9 +4,17 @@
 \alias{arrange_grobs}
 \title{Arrange multiple grobs}
 \usage{
-arrange_grobs(..., grobs = list(...), ncol = NULL, nrow = NULL,
-  padding_ht = unit(2, "line"), padding_wt = unit(2, "line"),
-  vp = NULL, gp = NULL, name = NULL)
+arrange_grobs(
+  ...,
+  grobs = list(...),
+  ncol = NULL,
+  nrow = NULL,
+  padding_ht = unit(2, "line"),
+  padding_wt = unit(2, "line"),
+  vp = NULL,
+  gp = NULL,
+  name = NULL
+)
 }
 \arguments{
 \item{...}{grobs.}

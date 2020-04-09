@@ -17,8 +17,8 @@ and the second argument is a factor with two levels from \code{col_by}}
 \item{row.name}{string with row name}
 
 \item{format}{a valid format string or a format function for
-\code{\link{rcell}}s. To get a list of all valid format strings use
-\code{\link{list_rcell_format_labels}}. If format is \code{NULL} then the elements
+\code{\link[rtables]{rcell}}s. To get a list of all valid format strings use
+\code{\link[rtables]{list_rcell_format_labels}}. If format is \code{NULL} then the elements
 of a cell get pasted separated by a comma.}
 
 \item{indent}{non-negative integer where 0 means that the row should not be
