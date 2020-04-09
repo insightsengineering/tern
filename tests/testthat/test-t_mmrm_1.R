@@ -298,7 +298,7 @@ test_that("Summary of Mixed-effect Model Repeated Measures Analysis", {
     id_var = "USUBJID",
     col_N = table(asl$ARM),
     mode = "df.error",
-    conf.level = 0.95,
+    conf_level = 0.95,
     table_tree = FALSE,
     weights_emmeans = "proportional",
     corStruct = "corSymm"
