@@ -3,6 +3,7 @@
 * Change default option for denominator to be `N` in `t_summary`
 * fix IQR bug: IQR as Q3 minus Q1
 * Add new function `t_logistic` for multi-variable logistic regression table
+* Add new function `df_explicit_na` to replace `NA` by explicit values
 * Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.
 * Fixed bug in `t_rsp` of not showing p-value, odds ratio and CIs when `strata_data` is not `NULL`
 * Added stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.

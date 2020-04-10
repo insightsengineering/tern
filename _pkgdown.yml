@@ -99,6 +99,7 @@ reference:
       - drop_shared_variables
       - as_factor_keep_attributes
       - check_id
+      - df_explicit_na
 
   - title: Deprecated Functions
     desc: These functions will eventually be removed
@@ -141,7 +142,6 @@ reference:
       - check_numeric_range
       - combine_rrows_with_indent
       - compare_in_header
-      - df_explicit_na
       - is_nested_by
       - is_simple_by
       - nb_entries
