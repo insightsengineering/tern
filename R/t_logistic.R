@@ -12,17 +12,20 @@
 #' Note: For \code{glm} model, the variable names need to be standard dataframe column name without
 #' special characters. The big N is the total number of observations for complete cases.
 #'
-#' @param glm_model a {\code{\link{glm}}} model object.
-#' The model object can be all main effect model, and a model with one two-way interaction.
-#' @param terms_label a named vector to control the displaying label of terms
-#' from {\code{glm_model}}. If it's {\code{NULL}}, then variable name will be displayed in table.
-#' @param increments a named list for specifying numeric values of continuous variables in {\code{glm_model}}
-#' which interact with other variables. This is used to calculate the odds ratio when comparing
-#' the other interaction variable effect. For example, for a model with ARM and AGE interaction,
-#' {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
-#' comparison ARM vs. reference ARM at AGE = 18 and AGE = 65. If {\code{increments = NULL}}, then
-#' default AGE value is ceiling of median.
-#' @param conf_level confidence level for Wald odds ratio confidence interval.
+#' @param glm_model ({\code{\link{glm}}} model object)\cr
+#'   The model object can be all main effect model, and a model with one two-way interaction.
+#' @param terms_label (\code{named character} vector)\cr
+#'   Controls the displaying label of terms
+#'   from {\code{glm_model}}. If it's {\code{NULL}}, then variable name will be displayed in table.
+#' @param increments (\code{named list})\cr
+#'   Used to specify numeric values of continuous variables in {\code{glm_model}}
+#'   which interact with other variables. This is used to calculate the odds ratio when comparing
+#'   the other interaction variable effect. For example, for a model with ARM and AGE interaction,
+#'   {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
+#'   comparison ARM vs. reference ARM at AGE = 18 and AGE = 65. If {\code{increments = NULL}}, then
+#'   default AGE value is ceiling of median.
+#' @param conf_level (\code{numeric} value)\cr
+#'   Confidence level for Wald odds ratio confidence interval.
 #' @importFrom car Anova
 #' @export
 #' @examples
@@ -33,64 +36,60 @@
 #' ADSL <- ADSL %>% dplyr::filter(SEX %in% c("F", "M"))
 #' ADRS <- radrs(ADSL, seed = 2)
 #' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
+#'   dplyr::mutate(Response = ifelse(AVALC %in% c("PR", "CR"), 1, 0))
+#'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + SEX,
+#'   data = ADRS_f,
+#'   family = "binomial"
+#' )
 #' tbl <- t_logistic(glm_model = glm_model)
-#' \dontrun{
-#' Viewer(tbl)
-#' }
+#'
+#' tbl # or Viewer(tbl) for a html view
 #'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
+#'   data = ADRS_f,
+#'   family = "binomial")
 #' tbl2 <- t_logistic(
-#'    glm_model = glm_model,
-#'    terms_label = c("ARM" = "Treatment",
-#'                    "AGE" = "Age at baseline",
-#'                    "BMRKR2" = "Biomarker",
-#'                    "ARM:BMRKR2" = "Interaction of Treatment * Biomarker")
+#'   glm_model = glm_model,
+#'   terms_label = c("ARM" = "Treatment",
+#'                   "AGE" = "Age at baseline",
+#'                   "BMRKR2" = "Biomarker",
+#'                   "ARM:BMRKR2" = "Interaction of Treatment * Biomarker")
 #' )
-#' \dontrun{
-#' Viewer(tbl2)
-#' }
+#'
+#' tbl
 #'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + BMRKR1 + ARM*BMRKR1,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + BMRKR1 + ARM*BMRKR1,
+#'   data = ADRS_f,
+#'   family = "binomial")
 #' tbl3 <- t_logistic(
-#'    glm_model = glm_model,
-#'    terms_label = c("ARM" = "Treatment Effect",
-#'                    "AGE" = "Age at baseline",
-#'                    "BMRKR1" = "Continuous Biomarker",
-#'                    "ARM:BMRKR1" = "Interaction of ARM* Biomarker"),
-#'    increments = list("BMRKR1" = c(5, 10)),
-#'    conf_level = 0.9
+#'   glm_model = glm_model,
+#'   terms_label = c("ARM" = "Treatment Effect",
+#'                   "AGE" = "Age at baseline",
+#'                   "BMRKR1" = "Continuous Biomarker",
+#'                   "ARM:BMRKR1" = "Interaction of ARM* Biomarker"),
+#'   increments = list("BMRKR1" = c(5, 10)),
+#'   conf_level = 0.9
 #' )
-#' \dontrun{
-#' Viewer(tbl3)
-#' }
+#' tbl
+#'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + BMRKR1 + AGE*BMRKR1,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + BMRKR1 + AGE*BMRKR1,
+#'   data = ADRS_f,
+#'   family = "binomial")
 #' tbl4 <- t_logistic(
-#'    glm_model = glm_model,
-#'    terms_label = c("ARM" = "Treatment Effect",
-#'                    "AGE" = "Age at baseline",
-#'                    "BMRKR1" = "Continuous Biomarker",
-#'                    "AGE:BMRKR1" = "Interaction of Age* Biomarker"),
-#'    increments = list("AGE" = c(20, 65), "BMRKR1" = c(5, 10)),
-#'    conf_level = 0.9
+#'   glm_model = glm_model,
+#'   terms_label = c("ARM" = "Treatment Effect",
+#'                   "AGE" = "Age at baseline",
+#'                   "BMRKR1" = "Continuous Biomarker",
+#'                   "AGE:BMRKR1" = "Interaction of Age* Biomarker"),
+#'   increments = list("AGE" = c(20, 65), "BMRKR1" = c(5, 10)),
+#'   conf_level = 0.9
 #' )
-#' \dontrun{
-#' Viewer(tbl4)
-#' }
+#' tbl
 t_logistic <- function(glm_model,
                        terms_label = NULL,
                        increments = NULL,
@@ -287,8 +286,10 @@ t_logistic <- function(glm_model,
 }
 
 #' Summary of logistic regression with no interaction term
-#' @param glm_model a {\code{\link{glm}}} model object with all main effect model.
-#' @param conf_level confidence level for Wald odds ratio confidence interval.
+#' @param glm_model ({\code{\link{glm}}} model object)\cr
+#'   with all main effect model.
+#' @param conf_level (\code{numeric} value)
+#'   confidence level for Wald's odds ratio confidence interval.
 #' @export
 #' @examples
 #' library(random.cdisc.data)

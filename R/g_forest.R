@@ -3,30 +3,38 @@
 #' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
 #' column with a single value and a column with 2 values
 #'
-#' @param tbl an \code{rtable} object
-#' @param col_x column index with estimator
-#' @param col_ci column index with confidence intervals
-#' @param vline x coordinate for vertical line, if \code{NULL} then the line is
+#' @param tbl (\code{rtable} object)
+#' @param col_x (\code{integer} value)\cr
+#'   column index with estimator
+#' @param col_ci (\code{integer} value)\cr
+#'   column index with confidence intervals
+#' @param vline (\code{numeric} value)\cr
+#'   x coordinate for vertical line, if \code{NULL} then the line is
 #'   omitted
-#' @param forest_header character vector of length 2, displayed to the left and
-#'   right of \code{vline}, respectively. If \code{vline = NULL} then
-#'   \code{forest_header} needs to be \code{NULL} too
-#' @param xlim x limits for x-scales
-#' @param logx boolean for showing x-values on logarithm scale
-#' @param x_at numeric vector with x tick locations, if \code{NULL} they get
-#'   automatically chosen
-#' @param width_row_names \code{\link[grid]{unit}} object with width for row
-#'   names. If \code{NULL} the widths get automatically calculated.
-#' @param width_columns \code{\link[grid]{unit}} object with widths for the
-#'   table columns. If \code{NULL} the widths get automatically calculated.
-#' @param width_forest \code{\link[grid]{unit}} object with width for the forest
-#'   column. If \code{NULL} the widths get automatically calculated.
-#' @param draw boolean, should plot be drawn
-#' @param newpage boolean if \code{draw=TRUE} should plot be drawn on a new page
-#' @param col_symbol_size integer with column index from \code{tbl} containing data to be
-#' used to determine relative size for estimator plot symbol.
-#' Typically, symbol size is proportional to the sample size used to calculate the estimator.
-#' If \code{NULL}, the same symbol size is used for all subgroups.
+#' @param forest_header (\code{character(2)})\cr
+#'   text displayed to the left and right of \code{vline}, respectively.
+#'   If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too
+#' @param xlim (\code{numeric(2)})\cr
+#'   x limits for x-scales
+#' @param logx (\code{logical} value)\cr
+#'   whether to show x-values on logarithm scale
+#' @param x_at (\code{numeric} vector)\cr
+#'   Contains x tick locations, if \code{NULL} they get automatically chosen
+#' @param width_row_names (\code{\link[grid]{unit}} object)\cr
+#'   Contains width for row names. If \code{NULL} the widths get automatically calculated.
+#' @param width_columns (\code{\link[grid]{unit}} object)\cr
+#'   Contains widths for the table columns. If \code{NULL} the widths get automatically calculated.
+#' @param width_forest (\code{\link[grid]{unit}} object)\cr
+#'   Contains width for the forest column. If \code{NULL} the widths get automatically calculated.
+#' @param draw (\code{logical} value)\cr
+#'   Whether plot should be drawn
+#' @param newpage (\code{logical} value)\cr
+#'  if \code{draw=TRUE} should plot be drawn on a new page
+#' @param col_symbol_size (\code{integer} value)\cr
+#'  Column index from \code{tbl} containing data to be used to determine relative
+#'  size for estimator plot symbol. Typically, symbol size is proportional to the
+#'  sample size used to calculate the estimator. If \code{NULL}, the same symbol
+#'  size is used for all subgroups.
 #'
 #' @template author_waddella
 #'

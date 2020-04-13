@@ -2,22 +2,38 @@
 #'
 #' Create a KM plot for any \code{\link[survival]{survfit}} object.
 #'
-#' @param fit_km a class \code{\link{survfit}} object.
-#' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
-#' @param col line color.
-#' @param lty line type.
-#' @param lwd line width.
-#' @param censor_show \code{TRUE/FALSE} to show censored.
-#' @param pch point type for censored.
-#' @param size size of censored point, a class of \code{unit}.
-#' @param title title for plot.
-#' @param xlab a string for label of x-axis
-#' @param ylab a string for label of y-axis.
-#' @param gp a abject of class \code{gpar}.
+#' @param fit_km (\code{\link{survfit}} object)
+#' @param xticks (\code{numeric} vector)\cr
+#'   break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param col (\code{character} vector)\cr
+#'   lines colors. Length of a vector should be equal to number of strata
+#'   from \code{\link{survfit}} object
+#' @param lty (\code{integer} vector)\cr
+#'   line type. Length of a vector should be equal to number of strata
+#'   from \code{\link{survfit}} object
+#' @param lwd (\code{numeric} vector)\cr
+#'   line width. Length of a vector should be equal to number of strata
+#'   from \code{\link{survfit}} object
+#' @param censor_show (\code{logical} value)\cr
+#'   Whether to show censored.
+#' @param pch (\code{numeric} vector)\cr
+#'   point type for censored.
+#' @param size  (\code{numeric} vector)\cr
+#'   size of censored point, a class of \code{unit}.
+#' @param title (\code{character} value)\cr
+#'   title for plot.
+#' @param xlab (\code{character} value)\cr
+#'   label of x-axis
+#' @param ylab (\code{character} value)\cr
+#'   label of y-axis.
+#' @param gp (abject of class \code{gpar}).
 #' @param vp a grid \code{viewport}.
-#' @param name A character value to uniquely identify the object.
-#' @param draw draw the plot on device, \code{TRUE} or \code{FALSE}.
-#' @param newpage open a new draw page, \code{TRUE} or \code{FALSE}.
+#' @param name  (\code{character} value)\cr
+#'   Used to uniquely identify the object.
+#' @param draw  (\code{logical} value)\cr
+#'   Whether to draw the plot on device.
+#' @param newpage  (\code{logical} value)\cr
+#'   Whether to open a new draw page.
 #'
 #' @template author_wangh107
 #'

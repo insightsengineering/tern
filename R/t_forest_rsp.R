@@ -7,9 +7,10 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_el_forest_rsp
-#' @param row_by_list \code{list} or \code{data.frame} with one factor variable to calculate
-#'   the \code{t_el_forest_tte}
-#' @param total string of total row added. If \code{NULL} then no total row is added.
+#' @param row_by_list (\code{list} or \code{data.frame})\cr
+#'   Contains one factor variable to calculate the \code{t_el_forest_tte}
+#' @param total (\code{character} value)\cr
+#'   Total row added. If \code{NULL} then no total row is added.
 #'
 #' @details
 #' Logistic regression is used for odds ratio calculation.
@@ -198,11 +199,12 @@ t_forest_rsp <- function(rsp,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_rsp
-#' @param strata_data data for stratification factors (categorical variables).
+#' @param strata_data (\code{character}, \code{factor} or \code{data.frame})\cr
+#'   Used for \code{\link[survival:strata]{stratification factors}}
 #'   If \code{NULL}, no stratified analysis is performed.
-#' @param row_name name of row
-#' @param conf_int confidence level of the interval
-#' @param dense_header Display the table headers in multiple rows.
+#' @param row_name (\code{character} value) name of row
+#' @param conf_int (\code{numeric} value) confidence level of the interval
+#' @param dense_header (\code{logical} value) Display the table headers in multiple rows.
 #'
 #' @return \code{rtable} with one row
 #'

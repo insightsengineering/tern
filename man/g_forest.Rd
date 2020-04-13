@@ -22,43 +22,51 @@ g_forest(
 )
 }
 \arguments{
-\item{tbl}{an \code{rtable} object}
+\item{tbl}{(\code{rtable} object)}
 
-\item{col_x}{column index with estimator}
+\item{col_x}{(\code{integer} value)\cr
+column index with estimator}
 
-\item{col_ci}{column index with confidence intervals}
+\item{col_ci}{(\code{integer} value)\cr
+column index with confidence intervals}
 
-\item{vline}{x coordinate for vertical line, if \code{NULL} then the line is
+\item{vline}{(\code{numeric} value)\cr
+x coordinate for vertical line, if \code{NULL} then the line is
 omitted}
 
-\item{forest_header}{character vector of length 2, displayed to the left and
-right of \code{vline}, respectively. If \code{vline = NULL} then
-\code{forest_header} needs to be \code{NULL} too}
+\item{forest_header}{(\code{character(2)})\cr
+text displayed to the left and right of \code{vline}, respectively.
+If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too}
 
-\item{xlim}{x limits for x-scales}
+\item{xlim}{(\code{numeric(2)})\cr
+x limits for x-scales}
 
-\item{logx}{boolean for showing x-values on logarithm scale}
+\item{logx}{(\code{logical} value)\cr
+whether to show x-values on logarithm scale}
 
-\item{x_at}{numeric vector with x tick locations, if \code{NULL} they get
-automatically chosen}
+\item{x_at}{(\code{numeric} vector)\cr
+Contains x tick locations, if \code{NULL} they get automatically chosen}
 
-\item{width_row_names}{\code{\link[grid]{unit}} object with width for row
-names. If \code{NULL} the widths get automatically calculated.}
+\item{width_row_names}{(\code{\link[grid]{unit}} object)\cr
+Contains width for row names. If \code{NULL} the widths get automatically calculated.}
 
-\item{width_columns}{\code{\link[grid]{unit}} object with widths for the
-table columns. If \code{NULL} the widths get automatically calculated.}
+\item{width_columns}{(\code{\link[grid]{unit}} object)\cr
+Contains widths for the table columns. If \code{NULL} the widths get automatically calculated.}
 
-\item{width_forest}{\code{\link[grid]{unit}} object with width for the forest
-column. If \code{NULL} the widths get automatically calculated.}
+\item{width_forest}{(\code{\link[grid]{unit}} object)\cr
+Contains width for the forest column. If \code{NULL} the widths get automatically calculated.}
 
-\item{col_symbol_size}{integer with column index from \code{tbl} containing data to be
-used to determine relative size for estimator plot symbol.
-Typically, symbol size is proportional to the sample size used to calculate the estimator.
-If \code{NULL}, the same symbol size is used for all subgroups.}
+\item{col_symbol_size}{(\code{integer} value)\cr
+Column index from \code{tbl} containing data to be used to determine relative
+size for estimator plot symbol. Typically, symbol size is proportional to the
+sample size used to calculate the estimator. If \code{NULL}, the same symbol
+size is used for all subgroups.}
 
-\item{draw}{boolean, should plot be drawn}
+\item{draw}{(\code{logical} value)\cr
+Whether plot should be drawn}
 
-\item{newpage}{boolean if \code{draw=TRUE} should plot be drawn on a new page}
+\item{newpage}{(\code{logical} value)\cr
+if \code{draw=TRUE} should plot be drawn on a new page}
 }
 \description{
 Create a forest plot from any \code{\link[rtables]{rtable}} object that has a

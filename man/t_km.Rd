@@ -7,14 +7,17 @@
 t_km(formula, data, conf.int = 0.95, ...)
 }
 \arguments{
-\item{formula}{a survival \code{\link{Surv}} formula}
+\item{formula}{(\code{formula})\cr
+Specifies \code{\link[survival:Surv]{survival model}}}
 
-\item{data}{a \code{data.frame} with all the variable that are used in
+\item{data}{(\code{data.frame})\cr with all the variable that are used in
 \code{formula}}
 
-\item{conf.int}{level for computation of the confidence intervals.}
+\item{conf.int}{(\code{numeric} value)\cr
+level for computation of the confidence intervals.}
 
-\item{...}{additional parameters passed to \code{\link{survfit}}}
+\item{...}{(optional)\cr
+additional parameters passed to \code{\link{survfit}}}
 }
 \description{
 An \code{\link[rtables]{rtable}} format of KM model data for further

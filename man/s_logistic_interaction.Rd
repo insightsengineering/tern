@@ -7,12 +7,14 @@
 s_logistic_interaction(glm_model, conf_level = 0.95, increments = NULL)
 }
 \arguments{
-\item{glm_model}{a {\code{\link{glm}}} model object.
+\item{glm_model}{({\code{\link{glm}}} model object)\cr
 The model object can be all main effect model, and a model with one two-way interaction.}
 
-\item{conf_level}{confidence level for Wald odds ratio confidence interval.}
+\item{conf_level}{(\code{numeric} value)\cr
+Confidence level for Wald odds ratio confidence interval.}
 
-\item{increments}{a named list for specifying numeric values of continuous variables in {\code{glm_model}}
+\item{increments}{(\code{named list})\cr
+Used to specify numeric values of continuous variables in {\code{glm_model}}
 which interact with other variables. This is used to calculate the odds ratio when comparing
 the other interaction variable effect. For example, for a model with ARM and AGE interaction,
 {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of

@@ -18,31 +18,38 @@ t_events_per_term_grade_id(
 )
 }
 \arguments{
-\item{terms}{character or factor vector, or \code{data.frame} to represent events information.
+\item{terms}{(\code{character} or \code{factor} vector, or \code{data.frame})\cr
+Represents events information.
 Multi-level nesting is possible when \code{terms} is a \code{data.frame} and columns should
 be ordered with the first column specifying the highest level term and the last column the
 lowest level term.}
 
-\item{id}{vector of subject identifier. Length of \code{id} must be the same as the
+\item{id}{(vector)\cr
+contains subject identifier. Length of \code{id} must be the same as the
 length or number of rows of \code{terms}.}
 
-\item{grade}{grade of adverse event.
+\item{grade}{(vector)\cr
+contains grade of adverse event.
 For factors, it is assumed that intensity corresponds to the order of the factor levels.
 If that is not the case, see \code{grade_levels}.
 For character or numeric, \code{grade_levels} is required.}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{col_N}{numeric vector with information of the number of patients in the
+\item{col_N}{(\code{numeric} vector)\cr
+Contains information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{grade_levels}{a factor. The levels of the factor define the severity of the grade and
+\item{grade_levels}{(\code{factor} vector)
+The levels of the factor define the severity of the grade and
 the order of display.
 For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
 the most severe grade "c" at the bottom of the table, the least severe grade "a" at the top.
@@ -51,13 +58,14 @@ If set to \code{NULL} (default), it is assumed that intensity corresponds to the
 the factor levels of \code{grade}.
 If \code{grade} is not a factor, \code{grade_levels} is required.}
 
-\item{event_type}{string to specify the type of event that is summarized, \code{event} by default.
+\item{event_type}{(\code{character} value) to specify the type of event that is summarized, \code{event} by default.
 Only displayed when \code{terms} has 2 columns.}
 
-\item{any_grade}{string to specify the row name which counts any occurrence,
+\item{any_grade}{(\code{character} value) to specify the row name which counts any occurrence,
 it is named \code{Any Grade} by default}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{

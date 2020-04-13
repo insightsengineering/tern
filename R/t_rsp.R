@@ -6,10 +6,12 @@
 #' and odds ratio.
 #'
 #' @inheritParams argument_convention
-#' @param partition_rsp_by factor with one or more response categories, generate
-#'   additional statistics partitioned by each response categories. If
-#'   \code{NULL}, tabulation by each response categories will not be performed.
-#' @param strata_data data for stratification factors (categorical variables).
+#' @param partition_rsp_by (\code{factor} vector)
+#'   Contains one or more response categories, generate additional statistics
+#'   partitioned by each response categories. If \code{NULL}, tabulation by each
+#'   response categories will not be performed.
+#' @param strata_data (\code{character}, \code{factor} or \code{data.frame})\cr
+#'   Used for \code{\link[survival:strata]{stratification factors}}
 #'   If \code{NULL}, no stratified analysis is performed. See details for
 #'   further explanation.
 #'

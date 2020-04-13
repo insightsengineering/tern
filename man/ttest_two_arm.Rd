@@ -7,14 +7,17 @@
 ttest_two_arm(x, col_by, conf.level = 0.95, ...)
 }
 \arguments{
-\item{x}{numeric vector}
+\item{x}{(\code{numeric} vector)}
 
-\item{col_by}{a factor with 2 or more levels. First level is taken as reference level}
+\item{col_by}{(\code{factor} vector)\cr
+Containing two or more levels. First level is taken as reference level}
 
-\item{conf.level}{an number indicating confidence level. Default is 0.95
+\item{conf.level}{(\code{numeric} value)\cr
+Number indicating confidence level. Default is 0.95
 Must be greater than 0 and less than 1.}
 
-\item{...}{Other arguments from \code{\link{stats}{t.test}}}
+\item{...}{(optional)\cr
+Other arguments from \code{\link{stats}{t.test}}}
 }
 \value{
 list of \code{lcl}, \code{ucl}, \code{diff}, \code{se}, \code{tvalue}, \code{pvalue}

@@ -15,19 +15,26 @@ g_waterfall(
 )
 }
 \arguments{
-\item{height}{numeric vector to be plotted as the waterfall bars}
+\item{height}{(\code{numeric} vector)\cr
+Contains values to be plotted as the waterfall bars}
 
-\item{id}{vector of IDs used as the x-axis label for the waterfall bars}
+\item{id}{(vector)\cr
+Contains of IDs used as the x-axis label for the waterfall bars}
 
-\item{col}{vector of a categorical variable for bar coloring}
+\item{col}{(vector)\cr
+Categorical variable for bar coloring}
 
-\item{xlab}{x label. Default is \code{ID}.}
+\item{xlab}{(\code{character} value)\cr
+x label. Default is \code{ID}.}
 
-\item{ylab}{y label. Default is \code{Value}.}
+\item{ylab}{(\code{character} value)\cr
+y label. Default is \code{Value}.}
 
-\item{col_legend_title}{A string to be displayed as legend title.}
+\item{col_legend_title}{(\code{character} value)\cr
+Text to be displayed as legend title.}
 
-\item{title}{A string to be displayed as plot title.}
+\item{title}{(\code{character} value)\cr
+Text to be displayed as plot title.}
 }
 \description{
 This basic waterfall plot visualizes a quantity \code{height} ordered by value with some

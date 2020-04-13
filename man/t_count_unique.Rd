@@ -18,31 +18,37 @@ t_count_unique(
 \arguments{
 \item{x}{a vector}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
 \item{subgroups}{A logical data.frame with rows matching the length of \code{x}. Each
 column represents a subset to be applied to \code{x} and \code{col_by} prior to
 tabulating the unique elements per cell. Label attributes are used for the row names
 if they exist. NAs are cast to \code{FALSE}.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{na_rm}{a logical value indicating whether \code{NA} values should be
+\item{na_rm}{(\code{logical} value)\cr
+Indicating whether \code{NA} values should be
 removed from \code{x} prior to counting the unique elements per cell.}
 
-\item{denominator}{either N or omit. With option N, the reference population
+\item{denominator}{(One of (\code{"N", "omit"}))\cr
+With option N, the reference population
 from \code{col_N} is used as the denominator. If \code{omit} is chosen,
 the percentage is omitted and only the counts are returned.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{

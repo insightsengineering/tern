@@ -16,20 +16,24 @@ t_count_true(
 \arguments{
 \item{x}{an object to dispatch on}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{denominator}{either \code{"n"}, \code{"N"} or \code{"omit"}. \code{"n"} and \code{"N"} are for calculating
-the level associated percentage. With option \code{"N"}, the reference population from \code{col_N} is used as
+\item{denominator}{(one of \code{("n", "N", "omit"})\cr
+Value set to \code{"n"} or \code{"N"} are for calculating the level associated percentage.
+With option \code{"N"}, the reference population from \code{col_N} is used as
 the denominator. With option \code{"n"}, the number of non-missing records from \code{x} is used as
 the denominator. If \code{"omit"} is chosen the percentage is omitted.}
 

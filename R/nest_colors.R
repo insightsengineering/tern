@@ -1,20 +1,21 @@
-#' NEST color palette
+#' Color palettes used in NEST
 #'
 #' A standardized color palette to be used for all plots within
 #' the NEST project.
 #'
-#' @param n (\code{numeric}) The number of colors to be returned from
+#' @param n (\code{numeric} value) \cr
+#'   The number of colors to be returned from
 #'   the color palettes. Please note the colors will be repeated after
 #'   a certain numerical limit per palette:
 #'
 #'   \itemize{
-#'      \item{\code{nest} }{96}
-#'      \item{\code{stream} }{38}
-#'      \item{\code{viridis} }{49}
+#'      \item{\code{nest} }{96 colors}
+#'      \item{\code{stream} }{38 colors}
+#'      \item{\code{viridis} }{49 colors}
 #'   }
 #'
-#' @param palette (\code{character}) The name of a palette supported
-#'   by this function
+#' @param palette (\code{character} value)\cr
+#'   The name of a palette supported by this function
 #'
 #'   \itemize{
 #'      \item{\code{nest} }{A color palette developed by the NEST team representing
@@ -29,7 +30,27 @@
 #' @importFrom scales col_bin
 #' @importFrom viridisLite plasma
 #' @importFrom utils.nest is_character_single is_numeric_single
-nest_color_palette <- function(n = 10, palette = "nest") {
+#'
+#'
+#' @examples
+#' library(grid)
+#' plot_pal <- function(x) {
+#'   grid.newpage()
+#'   pushViewport(plotViewport(rep(1, 4)))
+#'   pushViewport(viewport(layout = grid.layout(1, ncol = length(x))))
+#'   for(i in seq_along(x)) {
+#'     grid.rect(gp = gpar(fill = x[i], col = NA), vp = viewport(layout.pos.col=i, layout.pos.row=1))
+#'   }
+#' }
+#'
+#' plot_pal(color_palette(n = 10, palette = "nest"))
+#'
+#' plot_pal(color_palette(n = 10, palette = "stream"))
+#'
+#' plot_pal(color_palette(n = 10, palette = "viridis"))
+#'
+#'
+color_palette <- function(n = 10, palette = "nest") {
   stopifnot(is_character_single(palette))
   match.arg(palette, c("nest", "stream", "viridis"))
   stopifnot(is_numeric_single(n))

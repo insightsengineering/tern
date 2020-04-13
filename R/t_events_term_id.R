@@ -6,14 +6,18 @@
 #'
 #'
 #' @inheritParams argument_convention
-#' @param terms character or factor vector, or \code{data.frame} to represent events information. Multi-level
+#' @param terms (\code{character} or \code{factor} vector, or \code{data.frame})\cr
+#'   Represents events information. Multi-level
 #'   nesting is possible when \code{terms} is a \code{data.frame} and columns should be ordered with the first
 #'   column specifying the highest level term and the last column the lowest level term.
-#' @param id vector of subject identifier. Length of \code{id} must be the same as the length or number of rows of
+#' @param id (vector)\cr
+#'   contains subject identifier. Length of \code{id} must be the same as the length or number of rows of
 #'   \code{terms}.
-#' @param col_N numeric vector with information of the number of patients in the levels of \code{col_by}. This is useful
+#' @param col_N (\code{numeric} vector)\cr
+#'   Contains information of the number of patients in the levels of \code{col_by}. This is useful
 #'   if there are patients that have no adverse events can be accounted for with this argument.
-#' @param event_type type of event that is summarized (e.g. adverse event, treatment). Default is "event".
+#' @param event_type (\code{character} value)\cr
+#'   Specifies type of event that is summarized (e.g. adverse event, treatment). Default is \code{"event"}.
 #'
 #'
 #' @details
@@ -279,14 +283,15 @@ t_events_per_term_id <- function(terms,
 #' \code{t_el_events_per_term_id} counts the number of unique elements per cell.
 #'
 #' @inheritParams argument_convention
-#' @param id unique subject identifier. If a particular subject has no adverse
+#' @param id (vector)\cr
+#'   unique subject identifier. If a particular subject has no adverse
 #'   event then that information needs to be added to the \code{col_N} argument.
-#' @param total_events character string that will be used as a label in the row
-#'   for the total event count. If this is \code{NULL} then this row will be
-#'   removed.
-#' @param subjects_with_events character string that will be used as a label in
-#'   the row for the total number with at least one event. If this is
-#'   \code{NULL} then this row will be removed.
+#' @param total_events (\code{character} value)\cr
+#'   Used as a label in the row for the total event count.
+#'   If this is \code{NULL} then this row will be removed.
+#' @param subjects_with_events  (\code{character} value)\cr
+#'   Used as a label in the row for the total number with at least one event.
+#'   If this is \code{NULL} then this row will be removed.
 #'
 #' @return an \code{rtable}
 #'

@@ -7,23 +7,27 @@
 \method{t_summary}{default}(x, col_by, col_N = NULL, total = NULL, ...)
 }
 \arguments{
-\item{x}{data frame with variables to be summarized as described in the
-details section. If the variable has a \code{label} attribute then it will
-be used for the row name.}
+\item{x}{(\code{data.frame})\cr
+Contains variables to be summarized as described in the details section.
+If the variable has a \code{label} attribute then it will be used for the row name.}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{...}{not used arguments}
+\item{...}{(not used with this object)\cr
+not used arguments}
 }
 \value{
 \code{rtable}
@@ -33,7 +37,10 @@ If there is no explicit method for an object an \code{rtable} with one row with 
 appropriate message is returned.
 }
 \examples{
-t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
+t_summary(
+  x = structure(1:5, class = "aaa"),
+  col_by = factor(LETTERS[c(1,2,1,1,2)])
+)
 
 }
 \author{

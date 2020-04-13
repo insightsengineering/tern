@@ -48,6 +48,7 @@ reference:
       - t_count_unique
       - t_count_true.default
       - t_count_true.logical
+      - t_summarize_by_visit
 
   - title: Analysis and Summary Functions
     desc: These functions return statistical results from different models
@@ -105,6 +106,7 @@ reference:
     desc: These functions will eventually be removed
     contents:
       - na_as_level
+      - r_by
 
   - title: Trees
     desc: The functions are used to for computing compound tables. These functions are under active development and may

@@ -4,12 +4,15 @@
 #' visit. Corresponds to STREAM table templates \code{EGT01}, \code{VST01} and \code{LBT01}.
 #'
 #' @inheritParams argument_convention
-#' @param data data frame with numerical variables to be summarized. If the
+#' @param data (\code{data.frame})\cr
+#'   with numerical variables to be summarized. If the
 #'   variable has a \code{label} attribute then it will be used as the
 #'   sub-header column name.
-#' @param visit factor with visit names ordered by desired display order in the
+#' @param visit (\code{factor} vector)\cr
+#' with visit names ordered by desired display order in the
 #'   stacked table.
-#' @param id unique subject identifier variable.
+#' @param id (\code{vector})\cr
+#' unique subject identifier variable.
 #'
 #' @template return_rtable
 #'

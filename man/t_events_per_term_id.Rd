@@ -15,26 +15,33 @@ t_events_per_term_id(
 )
 }
 \arguments{
-\item{terms}{character or factor vector, or \code{data.frame} to represent events information. Multi-level
+\item{terms}{(\code{character} or \code{factor} vector, or \code{data.frame})\cr
+Represents events information. Multi-level
 nesting is possible when \code{terms} is a \code{data.frame} and columns should be ordered with the first
 column specifying the highest level term and the last column the lowest level term.}
 
-\item{id}{vector of subject identifier. Length of \code{id} must be the same as the length or number of rows of
+\item{id}{(vector)\cr
+contains subject identifier. Length of \code{id} must be the same as the length or number of rows of
 \code{terms}.}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{col_N}{numeric vector with information of the number of patients in the levels of \code{col_by}. This is useful
+\item{col_N}{(\code{numeric} vector)\cr
+Contains information of the number of patients in the levels of \code{col_by}. This is useful
 if there are patients that have no adverse events can be accounted for with this argument.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{event_type}{type of event that is summarized (e.g. adverse event, treatment). Default is "event".}
+\item{event_type}{(\code{character} value)\cr
+Specifies type of event that is summarized (e.g. adverse event, treatment). Default is \code{"event"}.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{

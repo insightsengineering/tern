@@ -3,11 +3,14 @@
 #' An \code{\link[rtables]{rtable}} format of KM model data for further
 #' annotation on top of Kaplan-Meier grob
 #'
-#' @param formula a survival \code{\link{Surv}} formula
-#' @param data a \code{data.frame} with all the variable that are used in
+#' @param formula (\code{formula})\cr
+#'   Specifies \code{\link[survival:Surv]{survival model}}
+#' @param data (\code{data.frame})\cr with all the variable that are used in
 #'   \code{formula}
-#' @param conf.int level for computation of the confidence intervals.
-#' @param ... additional parameters passed to \code{\link{survfit}}
+#' @param conf.int (\code{numeric} value)\cr
+#'   level for computation of the confidence intervals.
+#' @param ... (optional)\cr
+#'   additional parameters passed to \code{\link{survfit}}
 #' @template author_wangh107
 #'
 #' @import rtables

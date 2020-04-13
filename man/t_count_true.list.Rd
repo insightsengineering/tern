@@ -19,20 +19,24 @@
 
 \item{col_by_list}{list of \code{col_by}, one for each item of \code{x_list}}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{denominator}{either \code{"n"}, \code{"N"} or \code{"omit"}. \code{"n"} and \code{"N"} are for calculating
-the level associated percentage. With option \code{"N"}, the reference population from \code{col_N} is used as
+\item{denominator}{(one of \code{("n", "N", "omit"})\cr
+Value set to \code{"n"} or \code{"N"} are for calculating the level associated percentage.
+With option \code{"N"}, the reference population from \code{col_N} is used as
 the denominator. With option \code{"n"}, the number of non-missing records from \code{x} is used as
 the denominator. If \code{"omit"} is chosen the percentage is omitted.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 
 \item{...}{not used arguments}

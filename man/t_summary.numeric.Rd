@@ -14,18 +14,21 @@
 )
 }
 \arguments{
-\item{x}{numeric variable}
+\item{x}{(\code{numeric}) variable}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{f_numeric}{a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "median",
@@ -33,7 +36,8 @@ more than one record per subject.}
 \code{\link{patient_numeric_fcns}} (\code{f_numeric = patient_numeric_fcns()}) for summarizing
 patient data as for \code{\link{t_summarize_by_visit}}}
 
-\item{...}{arguments passed on to methods}
+\item{...}{(optional)\cr
+additional arguments passed on to methods}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -43,21 +47,32 @@ Tabulate the number of non-missing observations, mean, standard error, median, a
 for different groups.
 }
 \examples{
-library(dplyr)
-
 # with iris data
-t_summary(iris$Sepal.Length, iris$Species)
+t_summary(x = iris$Sepal.Length, col_by = iris$Species)
 
 library(random.cdisc.data)
-library(rtables)
 ADSL <- cadsl
 
-t_summary(ADSL$AGE, ADSL$ARM)
-t_summary(ADSL$AGE, col_by = col_by_to_matrix(ADSL$ARM), total = "All")
-t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
+t_summary(x = ADSL$AGE, col_by = ADSL$ARM)
+
+t_summary(
+  x = ADSL$AGE,
+  col_by = col_by_to_matrix(ADSL$ARM),
+  total = "All"
+)
+
+t_summary(
+  x = ADSL$AGE,
+  col_by = ADSL$ARM,
+  total = "All"
+)
 
 ADSL$AGE[1:10] <- NA
-t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
+t_summary(
+  x = ADSL$AGE,
+  col_by = by_all("All"),
+  col_N = nrow(ADSL)
+)
 }
 \seealso{
 \code{\link{t_summary}},

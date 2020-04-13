@@ -14,6 +14,7 @@
 * Added methods for `t_count_true` replacing `t_summary_true`
 * Updated `t_count_unique` to create analysis subsets, add `t_el_count_unique` for vectors
 * Fixed bug in `t_events_term_id` so that table sort order is by decreasing frequency instead of alphabetical.
+* Added function `color_palette` and a new nest color palette
 
 # tern 0.6.4
 

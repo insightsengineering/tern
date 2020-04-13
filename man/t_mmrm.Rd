@@ -34,7 +34,8 @@ will be excluded.}
 \item{visit_var}{a character describing the variable name for visit,
 \code{"AVISIT"} by default. This variable must be factor in data.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
@@ -49,7 +50,8 @@ than 1.}
 
 \item{corStruct}{\code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{

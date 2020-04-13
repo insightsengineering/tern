@@ -19,33 +19,39 @@ t_forest_tte(
 )
 }
 \arguments{
-\item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
+\item{tte}{(\code{numeric} vector)\cr
+Contains time to event data, currently no \code{NA} allowed}
 
-\item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
+\item{is_event}{(\code{logical} value)\cr
+\code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
-the \code{t_el_forest_tte}}
+\item{row_by_list}{(\code{list} or \code{data.frame})\cr
+Contains one factor variable to calculate the \code{t_el_forest_tte}}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{strata_data}{data for stratification factors (categorical variables).
+\item{strata_data}{(\code{character}, \code{factor} or \code{data.frame})\cr
+Used for \code{\link[survival:strata]{stratification factors}}
 If \code{NULL}, no stratified analysis is performed.}
 
-\item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
+\item{ties}{(\code{character} value) the method used for tie handling in \code{\link[survival]{coxph}}.}
 
-\item{time_unit}{The unit of median survival time. Default is \code{months}.}
+\item{time_unit}{(\code{character} value) The unit of median survival time. Default is \code{"months"}.}
 
-\item{conf_int}{confidence level of the interval}
+\item{conf_int}{(\code{numeric} value) confidence level of the interval}
 
-\item{dense_header}{Display the table headers in multiple rows.}
+\item{dense_header}{(\code{logical} value) Display the table headers in multiple rows.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{

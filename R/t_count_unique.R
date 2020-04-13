@@ -2,10 +2,12 @@
 #'
 #' @inheritParams argument_convention
 #' @param x a vector
-#' @param denominator either N or omit. With option N, the reference population
-#' from \code{col_N} is used as the denominator. If \code{omit} is chosen,
-#' the percentage is omitted and only the counts are returned.
-#' @param row_name a string with the row name to display in the summary table
+#' @param denominator (One of (\code{"N", "omit"}))\cr
+#'   With option N, the reference population
+#'   from \code{col_N} is used as the denominator. If \code{omit} is chosen,
+#'   the percentage is omitted and only the counts are returned.
+#' @param row_name (\code{character} value)\cr
+#'   Indicates the row name to display in the summary table
 #'   that is returned. Default is "number of unique elements."
 #'
 #' @return an \code{rtable}

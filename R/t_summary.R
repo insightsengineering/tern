@@ -1,8 +1,9 @@
 #' Summarize an Object for Different Groups
 #'
 #' @inheritParams t_summary.data.frame
-#' @param x an object to dispatch on
-#' @param ... arguments passed on to methods
+#' @param x an object to dispatch on, see \code{methods("t_summary")}
+#' @param ... (optional)\cr
+#'   additional arguments passed on to methods
 #'
 #' @export
 #'
@@ -15,39 +16,68 @@
 #' t_summary(iris$Sepal.Length, iris$Species)
 #'
 #' library(random.cdisc.data)
-#' ADSL <- radsl(cached = TRUE)
-#'
-#' t_summary(ADSL$AGE, ADSL$ARMCD)
-#' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD)
-#' t_summary(ADSL[, c("AGE", "SEX", "RACE")], ADSL$ARMCD, total = "All Patients")
-#'
-#' with(ADSL, t_summary(AGE > 65, ARMCD))
-#'
-#' # examples with hierarchical header
 #' library(dplyr)
 #' ADSL <- radsl(cached = TRUE)
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
+#'
+#' t_summary(x = ADSL$AGE, col_by = ADSL$ARMCD)
+#'
+#' t_summary(x = ADSL[, c("AGE", "SEX", "RACE")], col_by = ADSL$ARMCD)
+#'
+#' t_summary(
+#'   x = ADSL[, c("AGE", "SEX", "RACE")],
+#'   col_by = ADSL$ARMCD,
+#'   total = "All Patients"
+#' )
+#'
+#' with(
+#'   ADSL,
+#'   t_summary(AGE > 65, ARMCD)
+#' )
+#'
+#' # examples with hierarchical header
+#' ADSL <- radsl(cached = TRUE)
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM
+#' )
+#'
 #' ADSL_f <- ADSL %>%
 #'   dplyr::filter(SEX %in% c("M", "F")) %>%
 #'   mutate(SEX = droplevels(SEX))
-#' t_summary(ADSL_f$SEX, col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
+#' t_summary(
+#'   x = ADSL_f$SEX,
+#'   col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-")
+#' )
 #'
-#' t_summary(ADSL_f[, c("SEX", "AGE")], col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-"))
+#' t_summary(
+#'   x = ADSL_f[, c("SEX", "AGE")],
+#'   col_by = by_hierarchical(ADSL_f$ARM, ADSL_f$SEX, sep = "-")
+#' )
 #'
 #' ADSL_f <- ADSL %>%
 #'   dplyr::filter(SEX %in% c("M", "F"), RACE %in% c("ASIAN", "WHITE")) %>%
-#'   mutate(SEX = droplevels(SEX), RACE = droplevels(as.factor(RACE)))
-#' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$SEX, ADSL_f$RACE))
-#' t_summary(ADSL_f[, c("SEX", "RACE")], col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX))
+#'   mutate(
+#'     SEX = droplevels(SEX),
+#'     RACE = droplevels(as.factor(RACE))
+#'   )
+#' t_summary(
+#'   x = ADSL_f[, c("SEX", "RACE")],
+#'   col_by = by_hierarchical(ADSL_f$SEX, ADSL_f$RACE)
+#' )
 #'
 #' t_summary(
-#'   ADSL_f[, c("ITTFL", "BMRKR1", "BEP01FL")],
+#'   x = ADSL_f[, c("SEX", "RACE")],
+#'   col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX)
+#' )
+#'
+#' t_summary(
+#'   x = ADSL_f[, c("ITTFL", "BMRKR1", "BEP01FL")],
 #'   col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX)
 #' )
 #'
 #' # add total
 #' t_summary(
-#'   ADSL_f[, c("ITTFL", "BMRKR1", "BEP01FL")],
+#'   x = ADSL_f[, c("ITTFL", "BMRKR1", "BEP01FL")],
 #'   col_by = by_hierarchical(ADSL_f$RACE, ADSL_f$SEX),
 #'   total = "All"
 #' )
@@ -65,7 +95,8 @@ t_summary <- function(x,
 #' appropriate message is returned.
 #'
 #' @inheritParams t_summary.data.frame
-#' @param ... not used arguments
+#' @param ... (not used with this object)\cr
+#' not used arguments
 #'
 #' @return \code{rtable}
 #'
@@ -74,7 +105,10 @@ t_summary <- function(x,
 #' @template author_waddella
 #'
 #' @examples
-#' t_summary(structure(1:5, class = "aaa"), factor(LETTERS[c(1,2,1,1,2)]))
+#' t_summary(
+#'   x = structure(1:5, class = "aaa"),
+#'   col_by = factor(LETTERS[c(1,2,1,1,2)])
+#' )
 #'
 t_summary.default <- function(x, # nolint
                               col_by,
@@ -106,10 +140,11 @@ t_summary.default <- function(x, # nolint
 #' e.g. AGE -> "Baseline Age of patient"
 #'
 #' @inheritParams argument_convention
-#' @param x data frame with variables to be summarized as described in the
-#'   details section. If the variable has a \code{label} attribute then it will
-#'   be used for the row name.
-#' @param ... arguments passed on to methods
+#' @param x (\code{data.frame})\cr
+#'   Contains variables to be summarized as described in the details section.
+#'   If the variable has a \code{label} attribute then it will be used for the row name.
+#' @param ... (optional)\cr
+#'   additional arguments passed on to methods
 #'
 #' @details
 #' Every variable in \code{x} will be mapped to a summary table using
@@ -130,14 +165,29 @@ t_summary.default <- function(x, # nolint
 #'
 #' # with CDISC like data
 #' ADSL <- radsl(cached = TRUE)
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM
+#' )
 #'
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM)
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM,
+#'   total = "All Patients"
+#' )
+#'
 #' # or
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM %>% by_add_total("All Patients"))
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM %>% by_add_total("All Patients")
+#' )
 #'
 #' # Special Variants
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = by_all("All"), col_N = nrow(ADSL))
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = by_all("All"),
+#'   col_N = nrow(ADSL)
+#' )
 #'
 #' # control the label
 #' ADSL <- var_relabel(ADSL, AGE = "Baseline Age of patient")
@@ -145,30 +195,56 @@ t_summary.default <- function(x, # nolint
 #' # control categorical order
 #' ADSL$SEX <- relevel(ADSL$SEX, "M", "F")
 #'
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients")
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
-#'   useNA = 'always')
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM,
+#'   total = "All Patients"
+#' )
+#'
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM,
+#'   total = "All Patients",
+#'   useNA = "always"
+#' )
 #'
 #' # use different col_by
 #'
 #' ## Biomarker Evaluable Population
 #' t_summary(
-#'     x = ADSL[, c("SEX", "AGE")],
-#'     col_by = ADSL$ARM %>% by_compare_subset(ADSL$BEP01FL == "Y",
-#'                                            label_all = "ALL", label_subset = "BEP")
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM %>%
+#'     by_compare_subset(
+#'       ADSL$BEP01FL == "Y",
+#'       label_all = "ALL",
+#'       label_subset = "BEP"
+#'     )
 #' )
 #'
 #'
 #' # With Missing Data
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
-#'   useNA = 'ifany')
-#' t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, total = "All Patients",
-#'   denominator = "N", useNA = 'ifany')
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM,
+#'   total = "All Patients",
+#'   useNA = 'ifany'
+#' )
 #'
+#' t_summary(
+#'   x = ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM,
+#'   total = "All Patients",
+#'   denominator = "N",
+#'   useNA = "ifany"
+#' )
 #'
 #' # Table tree
-#' tbls <- t_summary(ADSL[, c("SEX", "AGE")], col_by = ADSL$ARM, table_tree = TRUE)
+#' tbls <- t_summary(
+#'   ADSL[, c("SEX", "AGE")],
+#'   col_by = ADSL$ARM,
+#'   table_tree = TRUE
+#' )
 #' summary(tbls)
 #' to_rtable(tbls)
 #'
@@ -207,7 +283,7 @@ t_summary.data.frame <- function(x, # nolint
 #' for different groups.
 #'
 #' @inheritParams t_summary.data.frame
-#' @param x numeric variable
+#' @param x (\code{numeric}) variable
 #' @param f_numeric a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "median",
 #'   "q1_q3", "range", "se"}, as well as the functions which are wrapped by
 #'   \code{\link{patient_numeric_fcns}} (\code{f_numeric = patient_numeric_fcns()}) for summarizing
@@ -226,21 +302,32 @@ t_summary.data.frame <- function(x, # nolint
 #'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # with iris data
-#' t_summary(iris$Sepal.Length, iris$Species)
+#' t_summary(x = iris$Sepal.Length, col_by = iris$Species)
 #'
 #' library(random.cdisc.data)
-#' library(rtables)
 #' ADSL <- cadsl
 #'
-#' t_summary(ADSL$AGE, ADSL$ARM)
-#' t_summary(ADSL$AGE, col_by = col_by_to_matrix(ADSL$ARM), total = "All")
-#' t_summary(ADSL$AGE, col_by = ADSL$ARM, total = "All")
+#' t_summary(x = ADSL$AGE, col_by = ADSL$ARM)
+#'
+#' t_summary(
+#'   x = ADSL$AGE,
+#'   col_by = col_by_to_matrix(ADSL$ARM),
+#'   total = "All"
+#' )
+#'
+#' t_summary(
+#'   x = ADSL$AGE,
+#'   col_by = ADSL$ARM,
+#'   total = "All"
+#' )
 #'
 #' ADSL$AGE[1:10] <- NA
-#' t_summary(ADSL$AGE, by_all("All"), col_N = nrow(ADSL))
+#' t_summary(
+#'   x = ADSL$AGE,
+#'   col_by = by_all("All"),
+#'   col_N = nrow(ADSL)
+#' )
 t_summary.numeric <- function(x, # nolint
                               col_by,
                               col_N = NULL, #nolintr
@@ -312,13 +399,16 @@ patient_numeric_fcns <- function() {
 #' percentage.
 #'
 #' @inheritParams t_summary.data.frame
-#' @param x factor variable
-#' @param useNA choose whether missing data (NAs) should be displayed as a level.
-#' @param denominator either \code{"n"}, \code{"N"} or \code{"omit"}. \code{"n"} and \code{"N"} are for calculating
-#'   the level associated percentage. With option \code{"N"}, the reference population from \code{col_N} is used as
+#' @param x (\code{factor}) variable
+#' @param useNA (\code{logical})\cr
+#'   choose whether missing data (NAs) should be displayed as a level.
+#' @param denominator (one of \code{("n", "N", "omit"})\cr
+#'   Value set to \code{"n"} or \code{"N"} are for calculating the level associated percentage.
+#'   With option \code{"N"}, the reference population from \code{col_N} is used as
 #'   the denominator. With option \code{"n"}, the number of non-missing records from \code{x} is used as
 #'   the denominator. If \code{"omit"} is chosen the percentage is omitted.
-#' @param drop_levels boolean whether to drop zero count levels
+#' @param drop_levels (\code{logical} value)\cr
+#'   Whether to drop zero count levels
 #'
 #' @template return_rtable
 #'
@@ -332,20 +422,40 @@ patient_numeric_fcns <- function() {
 #'
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # with iris data
 #' t_summary(iris$Species, iris$Species)
 #'
 #' library(random.cdisc.data)
 #' ADSL <- cadsl
 #'
-#' t_summary(ADSL$SEX, ADSL$ARM, total = "All")
-#' t_summary(ADSL$SEX, ADSL$ARM, useNA = "always")
+#' t_summary(
+#'   x = ADSL$SEX,
+#'   col_by = ADSL$ARM,
+#'   total = "All"
+#' )
+#'
+#' t_summary(
+#'   x = ADSL$SEX,
+#'   col_by = ADSL$ARM,
+#'   useNA = "always"
+#' )
 #'
 #' ADSL$SEX[1:10] <- NA
-#' t_summary(ADSL$SEX, ADSL$ARM, total = "All", denominator = "N", useNA = "ifany")
-#' t_summary(ADSL$SEX, ADSL$ARM, total = "All", denominator = "n", useNA = "no")
+#' t_summary(
+#'   x = ADSL$SEX,
+#'   col_by = ADSL$ARM,
+#'   total = "All",
+#'   denominator = "N",
+#'   useNA = "ifany"
+#'  )
+#'
+#' t_summary(
+#'   x = ADSL$SEX,
+#'   col_by = ADSL$ARM,
+#'   total = "All",
+#'   denominator = "n",
+#'   useNA = "no"
+#' )
 t_summary.factor <- function(x, # nolint
                              col_by,
                              col_N = NULL, #nolintr
@@ -406,8 +516,9 @@ t_summary.factor <- function(x, # nolint
 #' Currently treated as factors
 #'
 #' @inheritParams t_summary.data.frame
-#' @param x a character vector
-#' @param ... arguments passed on to \code{\link{t_summary.factor}}
+#' @param x (\code{character} vector)
+#' @param ... (optional)\cr
+#'  additional arguments passed on to \code{\link{t_summary.factor}}
 #'
 #' @template author_waddella
 #'
@@ -430,7 +541,7 @@ t_summary.character <- function(x, # nolint
 #' Tabulate the range of dates.
 #'
 #' @inheritParams t_summary.data.frame
-#' @param x a Date object
+#' @param x (\code{Date}) object
 #'
 #' @template author_waddella
 #'
@@ -443,16 +554,24 @@ t_summary.character <- function(x, # nolint
 #'
 #'
 #' @examples
-#' today <- as.Date("2000-01-01")
-#' library(dplyr)
-#'
 #' today <- Sys.Date()
 #' tenweeks <- seq(today, length.out=10, by="1 week")
-#' t_summary(tenweeks, by_all("all"), length(tenweeks))
+#' t_summary(
+#'   x = tenweeks,
+#'   col_by = by_all("all"),
+#'   col_N = length(tenweeks)
+#' )
 #'
-#' t_summary(tenweeks, factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]))
+#' t_summary(
+#'   x = tenweeks,
+#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)])
+#' )
 #'
-#' t_summary(tenweeks, col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]), total = "All")
+#' t_summary(
+#'   x = tenweeks,
+#'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]),
+#'   total = "All"
+#' )
 t_summary.Date <- function(x, # nolint
                            col_by,
                            col_N = NULL, # nolint
@@ -482,10 +601,13 @@ t_summary.Date <- function(x, # nolint
 #' Boolean data will be converted to factor
 #'
 #' @inheritParams t_summary.data.frame
-#' @param x a logical vector
-#' @param row_name_true character string with row.name for TRUE summary
-#' @param row_name_false character string with row.name for FALSE summary
-#' @param ... arguments passed on to \code{\link{t_summary.factor}}
+#' @param x (\code{logical} vector)
+#' @param row_name_true (\code{character} value)\cr
+#'   Contains row.name for TRUE summary
+#' @param row_name_false (\code{character} value)
+#'   Contains row.name for FALSE summary
+#' @param ... (optional)\cr
+#'   additional arguments passed on to \code{\link{t_summary.factor}}
 #
 #' @template author_waddella
 #'
@@ -497,7 +619,6 @@ t_summary.Date <- function(x, # nolint
 #'   \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 #'
 #' @examples
-#' library(dplyr)
 #'
 #' t_summary(
 #'  x = c(TRUE,FALSE,NA,TRUE,FALSE,FALSE,FALSE,TRUE),
@@ -509,9 +630,27 @@ t_summary.Date <- function(x, # nolint
 #'
 #' ADSL$AGE[1:10] <- NA
 #'
-#' with(ADSL, t_summary(AGE > 50, ARM, useNA = "ifany"))
-#' with(ADSL, t_summary(AGE > 50, ARM, total = "All", denominator = "N", useNA = "ifany",
-#'                      row_name_true = "Baseline Age > 50", row_name_false = "Baseline Age <= 50"))
+#' with(
+#'   ADSL,
+#'   t_summary(
+#'     AGE > 50,
+#'     ARM,
+#'     useNA = "ifany"
+#'   )
+#' )
+#'
+#' with(
+#'   ADSL,
+#'   t_summary(
+#'     AGE > 50,
+#'     ARM,
+#'     total = "All",
+#'     denominator = "N",
+#'     useNA = "ifany",
+#'     row_name_true = "Baseline Age > 50",
+#'     row_name_false = "Baseline Age <= 50"
+#'   )
+#' )
 t_summary.logical <- function(x, # nolint
                               col_by,
                               col_N = NULL, # nolint

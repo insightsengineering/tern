@@ -7,11 +7,13 @@
 ttest_ci_one_arm(x, conf.level = 0.95, ...)
 }
 \arguments{
-\item{x}{numeric vector}
+\item{x}{(\code{numeric} vector)}
 
-\item{conf.level}{confidence level. Must be greater than 0 and less than 1.}
+\item{conf.level}{(\code{numeric} value)
+Specifies confidence level. Must be greater than 0 and less than 1.}
 
-\item{...}{Other arguments from \code{\link{stats}{t.test}}}
+\item{...}{(optional)
+Other arguments from \code{\link{stats}{t.test}}}
 }
 \value{
 a vector of 2 numeric numbers representing the lower and upper bounds

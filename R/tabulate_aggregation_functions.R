@@ -154,11 +154,14 @@ iqr_num3 <- function(x, na.rm = TRUE) { # nolint
 
 #' Performs 2-arm t-test between comparison group against the reference group.
 #'
-#' @param x numeric vector
-#' @param col_by a factor with 2 or more levels. First level is taken as reference level
-#' @param conf.level an number indicating confidence level. Default is 0.95
-#'  Must be greater than 0 and less than 1.
-#' @param ... Other arguments from \code{\link{stats}{t.test}}
+#' @param x (\code{numeric} vector)
+#' @param col_by (\code{factor} vector)\cr
+#'   Containing two or more levels. First level is taken as reference level
+#' @param conf.level (\code{numeric} value)\cr
+#'   Number indicating confidence level. Default is 0.95
+#'   Must be greater than 0 and less than 1.
+#' @param ... (optional)\cr
+#'  Other arguments from \code{\link{stats}{t.test}}
 #'
 #' @return list of \code{lcl}, \code{ucl}, \code{diff}, \code{se}, \code{tvalue}, \code{pvalue}
 #'
@@ -201,9 +204,11 @@ ttest_two_arm <- function(x,
 #' The calculation of confidence interval for an estimation of population mean
 #'  will use \code{qt} function with degree of freedom of \code{n - 1}
 #'
-#' @param x numeric vector
-#' @param conf.level confidence level. Must be greater than 0 and less than 1.
-#' @param ... Other arguments from \code{\link{stats}{t.test}}
+#' @param x (\code{numeric} vector)
+#' @param conf.level (\code{numeric} value)
+#'   Specifies confidence level. Must be greater than 0 and less than 1.
+#' @param ... (optional)
+#'   Other arguments from \code{\link{stats}{t.test}}
 #'
 #' @return a vector of 2 numeric numbers representing the lower and upper bounds
 #'

@@ -13,20 +13,25 @@ NULL
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
 #'
 #' @inheritParams argument_convention
-#' @param terms character or factor vector, or \code{data.frame} to represent events information.
+#' @param terms (\code{character} or \code{factor} vector, or \code{data.frame})\cr
+#'   Represents events information.
 #'   Multi-level nesting is possible when \code{terms} is a \code{data.frame} and columns should
 #'   be ordered with the first column specifying the highest level term and the last column the
 #'   lowest level term.
-#' @param id vector of subject identifier. Length of \code{id} must be the same as the
+#' @param id (vector)\cr
+#'   contains subject identifier. Length of \code{id} must be the same as the
 #'   length or number of rows of \code{terms}.
-#' @param grade grade of adverse event.
+#' @param grade (vector)\cr
+#'   contains grade of adverse event.
 #'   For factors, it is assumed that intensity corresponds to the order of the factor levels.
 #'   If that is not the case, see \code{grade_levels}.
 #'   For character or numeric, \code{grade_levels} is required.
-#' @param col_N numeric vector with information of the number of patients in the
+#' @param col_N (\code{numeric} vector)\cr
+#'   Contains information of the number of patients in the
 #'   levels of \code{col_by}. This is useful if there are patients that have no
 #'   adverse events can be accounted for with this argument.
-#' @param grade_levels a factor. The levels of the factor define the severity of the grade and
+#' @param grade_levels (\code{factor} vector)
+#'   The levels of the factor define the severity of the grade and
 #'   the order of display.
 #'   For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
 #'   the most severe grade "c" at the bottom of the table, the least severe grade "a" at the top.
@@ -34,9 +39,9 @@ NULL
 #'   If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
 #'   the factor levels of \code{grade}.
 #'   If \code{grade} is not a factor, \code{grade_levels} is required.
-#' @param any_grade string to specify the row name which counts any occurrence,
+#' @param any_grade (\code{character} value) to specify the row name which counts any occurrence,
 #'   it is named \code{Any Grade} by default
-#' @param event_type string to specify the type of event that is summarized, \code{event} by default.
+#' @param event_type (\code{character} value) to specify the type of event that is summarized, \code{event} by default.
 #'   Only displayed when \code{terms} has 2 columns.
 #'
 #' @details
