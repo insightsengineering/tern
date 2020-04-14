@@ -137,6 +137,7 @@ t_forest_tte <- function(tte,
     data.frame(tte = tte, is_event = is_event, col_by = col_by, strata_data = strata_data)
   }
 
+  stop_if_not(list(all(sapply(row_by_list, is.factor)), "all elements in row_by_list must be factors"))
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
   data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0), max_depth = 2)

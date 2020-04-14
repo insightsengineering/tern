@@ -24,7 +24,7 @@ Contains reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions
 \code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{row_by_list}{(\code{list} or \code{data.frame})\cr
+\item{row_by_list}{(\code{list} or \code{data.frame}) of \code{factors}\cr
 Contains one factor variable to calculate the \code{t_el_forest_tte}}
 
 \item{total}{(\code{character} value)\cr
