@@ -88,7 +88,7 @@ reference:
       - stack_grobs
       - arrange_grobs
       - draw_grob
-      - nest_color_palette
+      - color_palette
 
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
