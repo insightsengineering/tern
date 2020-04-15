@@ -28,7 +28,11 @@
 #' @examples
 #' g_waterfall(height = c(3,5,-1), id = letters[1:3])
 #'
-#' g_waterfall(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"))
+#' g_waterfall(
+#'   height = c(3,5,-1),
+#'   id = letters[1:3],
+#'   col = letters[1:3]
+#' )
 #'
 #' library(random.cdisc.data)
 #' library(dplyr)
@@ -115,7 +119,7 @@ g_waterfall <- function(height,
 
   if (!is.null(col)) {
     p <- p +
-      aes(fill = col) +
+      aes(fill = plot_data_ord$col) +
       labs(fill = col_legend_title) +
       theme(
         legend.position = "bottom",
@@ -123,7 +127,7 @@ g_waterfall <- function(height,
         legend.title = element_text(face = "bold"),
         legend.box.background = element_rect(colour = "black")
       ) +
-      scale_fill_manual(values = col)
+      scale_fill_manual(values = color_palette())
   }
 
   if (!is.null(title)) {
