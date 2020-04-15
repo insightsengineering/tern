@@ -319,7 +319,7 @@ t_tte <- function(formula,
           # z-test
           d <- dfi$surv[-1] - dfi$surv[1]
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
-          qs <- qnorm(conf_level["ztest"] + c(1, -1) * (1 - conf_level["ztest"]) / 2)
+          qs <- c(-1, 1) * qnorm(1 - (1 - conf_level["ztest"]) / 2)
           l_ci <- Map(function(di, si) di + qs * si, d, sd)
 
           pval <- 2 * (1 - pnorm(abs(d) / sd))
