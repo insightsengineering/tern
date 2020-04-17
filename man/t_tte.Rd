@@ -20,39 +20,44 @@ t_tte(
 )
 }
 \arguments{
-\item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The
+\item{formula}{(\code{formula})\cr
+Specifies \code{\link[survival:Surv]{survival model}}.
+The arm variable needs to be wrapped in \code{\link{arm}}. The
 \code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
 \code{\link[survival]{strata}} specification then the stratified analysis is omitted.}
 
-\item{data}{a \code{data.frame} with all the variable that are used in \code{formula}}
+\item{data}{(\code{data.frame})\cr
+Contains all the variable that are used in \code{formula}}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{event_descr}{a factor that partitions the the events into earliest
-contributing event. The variable name can be provided unquoted in which
-case it is looked up in \code{data} and then the calling environment.}
+\item{event_descr}{(\code{factor} vector) that partitions the the events into earliest contributing event. The
+variable name can be provided unquoted in which case it is looked up in \code{data} and then the calling
+environment.}
 
-\item{time_points}{numeric vector with times displayed in the time point
-analysis, if \code{NULL} this section of the table will be omitted}
+\item{time_points}{(\code{numeric} vector) with times displayed in the time point analysis, if \code{NULL} this
+section of the table will be omitted}
 
-\item{time_unit}{a string with the unit of the \code{tte} argument}
+\item{time_unit}{(\code{character} value) with the unit of the \code{tte} argument}
 
-\item{conf_level}{either a single number or a named vector of confidence levels where the names are \code{survfit},
-\code{coxph}, and \code{ztest}}
+\item{conf_level}{(\code{numeric} value or named \code{numeric} vector) either a single number or a named vector of
+confidence levels where the names are \code{survfit}, \code{coxph}, and \code{ztest}}
 
-\item{conf_type_survfit}{\code{conf.type} in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
-\code{"none"}, \code{"log"}, or \code{"log-log"}.}
+\item{conf_type_survfit}{(one of \code{"plain"} (default), \code{"none"}, \code{"log"},  \code{"log-log"}). Used in
+\code{conf.type} in \code{\link[survival]{survfit}}}
 
-\item{probs_survfit}{numeric vector of length two to specify the quantiles in \code{\link[stats]{quantile}}}
+\item{probs_survfit}{(\code{numeric} vector of length two) to specify the quantiles in \code{\link[stats]{quantile}}}
 
 \item{pval_method_coxph}{passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}}
 
 \item{ties_coxph}{passed as argument \code{ties} to \code{\link{coxph}}}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{

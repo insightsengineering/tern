@@ -5,17 +5,17 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_coxph_pairwise
-#' @param event_descr a factor that partitions the the events into earliest
-#'   contributing event. The variable name can be provided unquoted in which
-#'   case it is looked up in \code{data} and then the calling environment.
-#' @param time_points numeric vector with times displayed in the time point
-#'   analysis, if \code{NULL} this section of the table will be omitted
-#' @param time_unit a string with the unit of the \code{tte} argument
-#' @param conf_level either a single number or a named vector of confidence levels where the names are \code{survfit},
-#'   \code{coxph}, and \code{ztest}
-#' @param conf_type_survfit \code{conf.type} in \code{\link[survival]{survfit}}. One of \code{"plain"} (the default),
-#' \code{"none"}, \code{"log"}, or \code{"log-log"}.
-#' @param probs_survfit numeric vector of length two to specify the quantiles in \code{\link[stats]{quantile}}
+#' @param event_descr (\code{factor} vector) that partitions the the events into earliest contributing event. The
+#'   variable name can be provided unquoted in which case it is looked up in \code{data} and then the calling
+#'   environment.
+#' @param time_points (\code{numeric} vector) with times displayed in the time point analysis, if \code{NULL} this
+#'   section of the table will be omitted
+#' @param time_unit (\code{character} value) with the unit of the \code{tte} argument
+#' @param conf_level (\code{numeric} value or named \code{numeric} vector) either a single number or a named vector of
+#'   confidence levels where the names are \code{survfit}, \code{coxph}, and \code{ztest}
+#' @param conf_type_survfit (one of \code{"plain"} (default), \code{"none"}, \code{"log"},  \code{"log-log"}). Used in
+#'   \code{conf.type} in \code{\link[survival]{survfit}}
+#' @param probs_survfit (\code{numeric} vector of length two) to specify the quantiles in \code{\link[stats]{quantile}}
 #' @param ties_coxph passed as argument \code{ties} to \code{\link{coxph}}
 #' @param pval_method_coxph passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}
 #'
@@ -319,7 +319,7 @@ t_tte <- function(formula,
           # z-test
           d <- dfi$surv[-1] - dfi$surv[1]
           sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
-          qs <- qnorm(conf_level["ztest"] + c(1, -1) * (1 - conf_level["ztest"]) / 2)
+          qs <- c(-1, 1) * qnorm(1 - (1 - conf_level["ztest"]) / 2)
           l_ci <- Map(function(di, si) di + qs * si, d, sd)
 
           pval <- 2 * (1 - pnorm(abs(d) / sd))

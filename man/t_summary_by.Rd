@@ -23,22 +23,25 @@ the summary sub-groups in the table.}
 \item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
 define the columns in the table.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
 
-\item{total}{string of column name of an added total column using \code{\link[rtables]{by_add_total}} to
+\item{total}{(\code{character} value)\cr
+Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{...}{arguments passed on to methods}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \description{
 This is a wrapper around the basic \code{t_summary} functions with the difference that it has a row_by
-argument. The row_by argument can either be a "by" object or it can be a "r_by" object in which case
+argument. The row_by argument can either be a "by" object or it can be a "nested_by" object in which case
 each list item is interpreted recursively as is typical for the \code{terms} item
 in \code{t_events_term_grade_id}.
 }

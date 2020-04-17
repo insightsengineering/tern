@@ -24,37 +24,53 @@ g_km(
 )
 }
 \arguments{
-\item{fit_km}{a class \code{\link{survfit}} object.}
+\item{fit_km}{(\code{\link{survfit}} object)}
 
-\item{xticks}{break interval of x-axis. It takes a numeric vector or \code{NULL}.}
+\item{xticks}{(\code{numeric} vector)\cr
+break interval of x-axis. It takes a numeric vector or \code{NULL}.}
 
-\item{col}{line color.}
+\item{col}{(\code{character} vector)\cr
+lines colors. Length of a vector should be equal to number of strata
+from \code{\link{survfit}} object}
 
-\item{lty}{line type.}
+\item{lty}{(\code{integer} vector)\cr
+line type. Length of a vector should be equal to number of strata
+from \code{\link{survfit}} object}
 
-\item{lwd}{line width.}
+\item{lwd}{(\code{numeric} vector)\cr
+line width. Length of a vector should be equal to number of strata
+from \code{\link{survfit}} object}
 
-\item{censor_show}{\code{TRUE/FALSE} to show censored.}
+\item{censor_show}{(\code{logical} value)\cr
+Whether to show censored.}
 
-\item{pch}{point type for censored.}
+\item{pch}{(\code{numeric} vector)\cr
+point type for censored.}
 
-\item{size}{size of censored point, a class of \code{unit}.}
+\item{size}{(\code{numeric} vector)\cr
+size of censored point, a class of \code{unit}.}
 
-\item{title}{title for plot.}
+\item{title}{(\code{character} value)\cr
+title for plot.}
 
-\item{xlab}{a string for label of x-axis}
+\item{xlab}{(\code{character} value)\cr
+label of x-axis}
 
-\item{ylab}{a string for label of y-axis.}
+\item{ylab}{(\code{character} value)\cr
+label of y-axis.}
 
-\item{draw}{draw the plot on device, \code{TRUE} or \code{FALSE}.}
+\item{draw}{(\code{logical} value)\cr
+Whether to draw the plot on device.}
 
-\item{newpage}{open a new draw page, \code{TRUE} or \code{FALSE}.}
+\item{newpage}{(\code{logical} value)\cr
+Whether to open a new draw page.}
 
-\item{gp}{a abject of class \code{gpar}.}
+\item{gp}{(abject of class \code{gpar}).}
 
 \item{vp}{a grid \code{viewport}.}
 
-\item{name}{A character value to uniquely identify the object.}
+\item{name}{(\code{character} value)\cr
+Used to uniquely identify the object.}
 }
 \description{
 Create a KM plot for any \code{\link[survival]{survfit}} object.

@@ -30,6 +30,9 @@
 #'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
+#' \dontrun{
+#' # currently not executed because the algorithm to obtain the
+#' # Satterthwaite estimator does not always converge
 #' t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
 #'        data = ADQS_f,
 #'        id_var = "USUBJID",
@@ -37,11 +40,12 @@
 #'        visit_var = "AVISIT",
 #'        col_N = table(ADSL$ARM),
 #'        mode = "boot-satterthwaite",
-#'        conf.level = 0.95,
+#'        conf_level = 0.95,
 #'        weights_emmeans = "proportional",
 #'        corStruct = "corSymm",
 #'        table_tree = FALSE
 #' )
+#' }
 t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    data,
                    id_var = "USUBJID",
@@ -49,7 +53,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    visit_var = "AVISIT",
                    col_N, # nolint
                    mode = c("df.error", "auto", "boot-satterthwaite"),
-                   conf.level = 0.95, # nolint
+                   conf_level = 0.95, # nolint
                    weights_emmeans = "proportional",
                    corStruct = NULL, # nolint
                    table_tree = TRUE) {
@@ -61,7 +65,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
     arm_var = arm_var,
     visit_var = visit_var,
     mode = mode,
-    conf.level = conf.level,
+    conf_level = conf_level,
     weights_emmeans = weights_emmeans,
     corStruct = corStruct
   )
@@ -223,7 +227,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'   \code{"AVISIT"} by default. This variable must be factor in data.
 #' @param mode algorithm for degree of freedom: \code{auto}, \code{df.error} or
 #'   \code{boot-satterthwaite}.
-#' @param conf.level confidence level. Must be number greater than 0 and less
+#' @param conf_level confidence level. Must be number greater than 0 and less
 #'   than 1.
 #' @param weights_emmeans argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.
 #' @param corStruct \code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.
@@ -251,6 +255,9 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
+#' \dontrun{
+#' # currently not executed because the algorithm to obtain the
+#' # Satterthwaite estimator does not always converge
 #' mmrm_results <- a_mmrm(
 #'   data = ADQS_f,
 #'   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,
@@ -258,7 +265,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'   arm_var = "ARM",
 #'   visit_var = "AVISIT",
 #'   mode = "boot-satterthwaite",
-#'   conf.level = 0.95,
+#'   conf_level = 0.95,
 #'   weights_emmeans = "proportional",
 #'   corStruct = "corSymm"
 #' )
@@ -267,13 +274,14 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'
 #' mmrm_results["contrast"]
 #' mmrm_results["estimate"]
+#' }
 a_mmrm <- function(data,
                    formula = AVAL ~ ARM + AVISIT + ARM * VISIT,
                    id_var = "USUBJID",
                    arm_var = "ARM",
                    visit_var = "AVISIT",
                    mode = c("df.error", "auto", "boot-satterthwaite"),
-                   conf.level = 0.95, # nolint
+                   conf_level = 0.95, # nolint
                    weights_emmeans = "proportional",
                    corStruct = NULL # nolint
 ) {
@@ -401,7 +409,7 @@ a_mmrm <- function(data,
   # baseline in Control Pooled group.
 
   ### adjusted estimate for each arm
-  estimate <- confint(emm, level = conf.level) %>%
+  estimate <- confint(emm, level = conf_level) %>%
     as.data.frame()
 
   data_n <- data_complete %>%
@@ -427,7 +435,7 @@ a_mmrm <- function(data,
 
   sum_fit_diff <- summary(
     contrast(emm, method = "trt.vs.ctrl"),
-    level = conf.level,
+    level = conf_level,
     infer = c(TRUE, TRUE),
     adjust = "none"
   )
@@ -447,7 +455,7 @@ a_mmrm <- function(data,
     contrast = contrast,
     estimate = estimate,
     ref_level = reference_level,
-    conf_level = conf.level
+    conf_level = conf_level
   )
 
 }

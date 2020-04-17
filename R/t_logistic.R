@@ -12,19 +12,21 @@
 #' Note: For \code{glm} model, the variable names need to be standard dataframe column name without
 #' special characters. The big N is the total number of observations for complete cases.
 #'
-#' @param glm_model a {\code{\link{glm}}} model object.
-#' The model object can be all main effect model, and a model with one two-way interaction.
-#' @param terms_label a named vector to control the displaying label of terms
-#' from {\code{glm_model}}. If it's {\code{NULL}}, then variable name will be displayed in table.
-#' @param increments a named list for specifying numeric values of continuous variables in {\code{glm_model}}
-#' which interact with other variables. This is used to calculate the odds ratio when comparing
-#' the other interaction variable effect. For example, for a model with ARM and AGE interaction,
-#' {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
-#' comparison ARM vs. reference ARM at AGE = 18 and AGE = 65. If {\code{increments = NULL}}, then
-#' default AGE value is ceiling of median.
-#' @param conf_level confidence level for Wald odds ratio confidence interval.
+#' @param glm_model ({\code{\link{glm}}} model object)\cr
+#'   The model object can be all main effect model, and a model with one two-way interaction.
+#' @param terms_label (\code{named character} vector)\cr
+#'   Controls the displaying label of terms
+#'   from {\code{glm_model}}. If it's {\code{NULL}}, then variable name will be displayed in table.
+#' @param increments (\code{named list})\cr
+#'   Used to specify numeric values of continuous variables in {\code{glm_model}}
+#'   which interact with other variables. This is used to calculate the odds ratio when comparing
+#'   the other interaction variable effect. For example, for a model with ARM and AGE interaction,
+#'   {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
+#'   comparison ARM vs. reference ARM at AGE = 18 and AGE = 65. If {\code{increments = NULL}}, then
+#'   default AGE value is ceiling of median.
+#' @param conf_level (\code{numeric} value)\cr
+#'   Confidence level for Wald odds ratio confidence interval.
 #' @importFrom car Anova
-#' @importFrom scales pvalue
 #' @export
 #' @examples
 #' library(random.cdisc.data)
@@ -34,64 +36,60 @@
 #' ADSL <- ADSL %>% dplyr::filter(SEX %in% c("F", "M"))
 #' ADRS <- radrs(ADSL, seed = 2)
 #' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
+#'   dplyr::mutate(Response = ifelse(AVALC %in% c("PR", "CR"), 1, 0))
+#'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + SEX,
+#'   data = ADRS_f,
+#'   family = "binomial"
+#' )
 #' tbl <- t_logistic(glm_model = glm_model)
-#' \dontrun{
-#' Viewer(tbl)
-#' }
+#'
+#' tbl # or Viewer(tbl) for a html view
 #'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
+#'   data = ADRS_f,
+#'   family = "binomial")
 #' tbl2 <- t_logistic(
-#'    glm_model = glm_model,
-#'    terms_label = c("ARM" = "Treatment",
-#'                    "AGE" = "Age at baseline",
-#'                    "BMRKR2" = "Biomarker",
-#'                    "ARM:BMRKR2" = "Interaction of Treatment * Biomarker")
+#'   glm_model = glm_model,
+#'   terms_label = c("ARM" = "Treatment",
+#'                   "AGE" = "Age at baseline",
+#'                   "BMRKR2" = "Biomarker",
+#'                   "ARM:BMRKR2" = "Interaction of Treatment * Biomarker")
 #' )
-#' \dontrun{
-#' Viewer(tbl2)
-#' }
+#'
+#' tbl
 #'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + BMRKR1 + ARM*BMRKR1,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + BMRKR1 + ARM*BMRKR1,
+#'   data = ADRS_f,
+#'   family = "binomial")
 #' tbl3 <- t_logistic(
-#'    glm_model = glm_model,
-#'    terms_label = c("ARM" = "Treatment Effect",
-#'                    "AGE" = "Age at baseline",
-#'                    "BMRKR1" = "Continuous Biomarker",
-#'                    "ARM:BMRKR1" = "Interaction of ARM* Biomarker"),
-#'    increments = list("BMRKR1" = c(5, 10)),
-#'    conf_level = 0.9
+#'   glm_model = glm_model,
+#'   terms_label = c("ARM" = "Treatment Effect",
+#'                   "AGE" = "Age at baseline",
+#'                   "BMRKR1" = "Continuous Biomarker",
+#'                   "ARM:BMRKR1" = "Interaction of ARM* Biomarker"),
+#'   increments = list("BMRKR1" = c(5, 10)),
+#'   conf_level = 0.9
 #' )
-#' \dontrun{
-#' Viewer(tbl3)
-#' }
+#' tbl
+#'
 #' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + BMRKR1 + AGE*BMRKR1,
-#'  data = ADRS_f,
-#'  family = "binomial")
+#'   formula = Response ~ ARM + AGE + BMRKR1 + AGE*BMRKR1,
+#'   data = ADRS_f,
+#'   family = "binomial")
 #' tbl4 <- t_logistic(
-#'    glm_model = glm_model,
-#'    terms_label = c("ARM" = "Treatment Effect",
-#'                    "AGE" = "Age at baseline",
-#'                    "BMRKR1" = "Continuous Biomarker",
-#'                    "AGE:BMRKR1" = "Interaction of Age* Biomarker"),
-#'    increments = list("AGE" = c(20, 65), "BMRKR1" = c(5, 10)),
-#'    conf_level = 0.9
+#'   glm_model = glm_model,
+#'   terms_label = c("ARM" = "Treatment Effect",
+#'                   "AGE" = "Age at baseline",
+#'                   "BMRKR1" = "Continuous Biomarker",
+#'                   "AGE:BMRKR1" = "Interaction of Age* Biomarker"),
+#'   increments = list("AGE" = c(20, 65), "BMRKR1" = c(5, 10)),
+#'   conf_level = 0.9
 #' )
-#' \dontrun{
-#' Viewer(tbl4)
-#' }
+#' tbl
 t_logistic <- function(glm_model,
                        terms_label = NULL,
                        increments = NULL,
@@ -139,7 +137,7 @@ t_logistic <- function(glm_model,
         } else {
           table_formats(s_term$main, header = header, row.name = main_rowname, row_format = "main")
         },
-        lapply(1:nrow(summary_term), function(i) {
+        indent(do.call("rbind", lapply(1:nrow(summary_term), function(i) {
           row_i <- summary_term[i, , drop = FALSE]
           row_nm <- rownames(row_i)
           table_formats(
@@ -148,9 +146,7 @@ t_logistic <- function(glm_model,
             row.name = paste0(row_nm, ", n = ", s_term$predictor$counts_by_level[row_nm]),
             row_format = "full"
           )
-        }) %>%
-          do.call("rbind", .) %>%
-          indent()
+        })))
       )
     } else {
       table_formats(s_term$summary, header = header, row.name = terms_label[term], row_format = "full")
@@ -160,7 +156,7 @@ t_logistic <- function(glm_model,
   if (all(terms_name %in% colnames(model_data))) {
     s_info <- s_logistic_single(glm_model = glm_model, conf_level = conf_level)
     table_term <- lapply(names(s_info$results), function(term) {
-        table_single(term = term,  s_info = s_info, terms_label = terms_label, header = table_header)
+      table_single(term = term,  s_info = s_info, terms_label = terms_label, header = table_header)
     })
   } else {
     s_info <- s_logistic_interaction(
@@ -205,7 +201,7 @@ t_logistic <- function(glm_model,
               row.name = terms_label[term],
               row_format = "main"
             ),
-            lapply(1:nrow(s_info$results[[term]]$summary), function(i) {
+            indent(do.call("rbind", lapply(1:nrow(s_info$results[[term]]$summary), function(i) {
               dfi <- s_info$results[[term]]$summary[i, , drop = FALSE]
               table_formats(
                 dfi = dfi,
@@ -213,10 +209,8 @@ t_logistic <- function(glm_model,
                 row.name = rownames(dfi),
                 row_format = "level"
               )
-            }) %>%
-              do.call("rbind",  .) %>%
-              indent()
-            )
+            })))
+          )
         }
 
       } else {
@@ -226,7 +220,7 @@ t_logistic <- function(glm_model,
           comp_level <- s_info$results[[term]]$predictor$term_comp_level
           counts <- s_info$results[[term]]$predictor$counts_by_level
           term_row_name <- paste0(terms_label[term], "(Reference = ", ref_level, ", n = ", counts[ref_level], ")")
-          table_by_level <- lapply(comp_level, function(lvl) {
+          table_by_level <- do.call("rbind", lapply(comp_level, function(lvl) {
             summary_comp <- s_info$results[[term]]$summary[[lvl]]
             summary_int <- summary_comp$summary_with_interaction
             rbind(
@@ -237,14 +231,11 @@ t_logistic <- function(glm_model,
                 row_format = "level"
               )),
               indent(rtable(header = table_header, rrowl(row.name = terms_label[interact_with])), by = 2),
-              lapply(names(summary_int), function(i) {
+              indent(do.call("rbind", lapply(names(summary_int), function(i) {
                 table_formats(dfi = summary_int[[i]], header = table_header, row.name = i, row_format = "or_ci")
-              }) %>%
-                do.call("rbind", .) %>%
-                indent(by = 3)
+              })), by = 3)
             )
-          }) %>%
-            do.call("rbind", .)
+          }))
           rbind(
             if (length(comp_level) == 1) {
               rrowl(row.name = term_row_name)
@@ -268,16 +259,14 @@ t_logistic <- function(glm_model,
               row_format = "level"
             ),
             indent(rtable(header = table_header, rrowl(row.name = terms_label[interact_with]))),
-            lapply(names(s_term$summary_with_interaction), function(i) {
+            indent(do.call("rbind", lapply(names(s_term$summary_with_interaction), function(i) {
               table_formats(
                 s_term$summary_with_interaction[[i]],
                 header  = table_header,
                 row.name = i,
                 row_format = "or_ci"
               )
-            }) %>%
-              do.call("rbind", .) %>%
-              indent(by = 2)
+            })), by = 2)
           )
         }
       }
@@ -286,20 +275,21 @@ t_logistic <- function(glm_model,
   rbind(
     rrowl(row.name = paste0("N = ", s_info$N)),
     rrow(),
-    lapply(1:length(table_term), function(i) {
+    do.call("rbind", lapply(1:length(table_term), function(i) {
       if (i == length(table_term)) {
         table_term[[i]]
       } else {
         rbind(table_term[[i]], rrow())
       }
-    }) %>%
-      do.call("rbind",  .)
+    }))
   )
 }
 
 #' Summary of logistic regression with no interaction term
-#' @param glm_model a {\code{\link{glm}}} model object with all main effect model.
-#' @param conf_level confidence level for Wald odds ratio confidence interval.
+#' @param glm_model ({\code{\link{glm}}} model object)\cr
+#'   with all main effect model.
+#' @param conf_level (\code{numeric} value)
+#'   confidence level for Wald's odds ratio confidence interval.
 #' @export
 #' @examples
 #' library(random.cdisc.data)
@@ -359,7 +349,11 @@ s_logistic_single <- function(glm_model,
 
 #' Summary of logistic regression with one two-way interaction term
 #' @inheritParams t_logistic
+#'
 #' @export
+#'
+#' @importFrom stats vcov
+#'
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
@@ -454,42 +448,7 @@ s_logistic_interaction <- function(glm_model,
   )
 }
 
-#' Extract items from logistic regression coefficients for terms
-#' that are not invovled in interaction term and calculate odds ratios and CIs
-#' @noRd
-#' @examples
-#' \dontrun{
-#' library(random.cdisc.data)
-#' library(dplyr)
-#' library(purrr)
-#'
-#' ADSL <- radsl(cached = TRUE)
-#' ADSL <- ADSL %>% mutate(
-#'  SEX = as.character(SEX),
-#'  SEX = case_when(!SEX %in% c("F", "M") ~ "U",
-#'                TRUE ~ SEX))
-#' ADRS <- radrs(ADSL, seed = 2)
-#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
-#' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#'
-#' terms_name <- attr(terms(glm_model), "term.labels")
-#' # data used in model (complete cases)
-#' model_data <- glm_model$model
-#' model_coef <-  summary(glm_model)$coefficients
-#' terms_class <- attr(terms(glm_model),"dataClasses")[-1]
-#' terms_levels <- glm_model$xlevels
-#' extract_logistic_single(
-#'   terms_name =  terms_name,
-#'   terms_levels = terms_levels,
-#'   terms_class = terms_class,
-#'   model_coef = model_coef,
-#'   model_data = model_data)
-#' }
+
 extract_logistic_single <- function(terms_name,
                                     terms_levels,
                                     terms_class,
@@ -515,10 +474,10 @@ extract_logistic_single <- function(terms_name,
     rowname_x_coef <- rownames(x_coef)
     x_coef <- x_coef %>%
       mutate(
-        or = exp(coef),
+        or = exp(.data$coef),
         df = 1,
-        lcl = exp(coef - qnorm((1 + conf_level) / 2) * se),
-        ucl = exp(coef + qnorm((1 + conf_level) / 2) * se)
+        lcl = exp(.data$coef - qnorm((1 + conf_level) / 2) * .data$se),
+        ucl = exp(.data$coef + qnorm((1 + conf_level) / 2) * .data$se)
       )
     rownames(x_coef) <- rowname_x_coef
     predictor <- list(
@@ -535,42 +494,7 @@ extract_logistic_single <- function(terms_name,
   terms_results
 }
 
-#' Extract items from logistic regression coefficients for terms
-#' that are invovled in interaction term and calculate odds ratios and CIs
-#' @noRd
-#' @examples
-#' \dontrun{
-#' library(random.cdisc.data)
-#' library(dplyr)
-#'
-#' ADSL <- radsl(cached = TRUE)
-#' ADSL <- ADSL %>% mutate(
-#'  SEX = as.character(SEX),
-#'  SEX = case_when(!SEX %in% c("F", "M") ~ "U",
-#'                TRUE ~ SEX))
-#' ADRS <- radrs(ADSL, seed = 2)
-#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
-#' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX + ARM*SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#'
-#' terms_name <- attr(terms(glm_model), "term.labels")
-#' # data used in model (complete cases)
-#' model_data <- glm_model$model
-#' model_coef <-  summary(glm_model)$coefficients
-#' terms_class <- attr(terms(glm_model),"dataClasses")[-1]
-#' terms_levels <- glm_model$xlevels
-#' vcov_coef <- vcov(glm_model)
-#' extract_logistic_interaction(
-#'   terms_interaction =  c("ARM", "AGE"),
-#'   terms_levels = terms_levels,
-#'   terms_class = terms_class,
-#'   model_coef = model_coef,
-#'   model_data = model_data)
-#' }
+
 extract_logistic_interaction <- function(terms_interaction,
                                          terms_class,
                                          terms_levels,
@@ -609,7 +533,6 @@ extract_logistic_interaction <- function(terms_interaction,
   results_interaction
 }
 
-#' @importFrom scales pvalue
 element_interaction <- function(info_xy,
                                 model_coef,
                                 vcov_coef,
@@ -675,7 +598,7 @@ element_interaction <- function(info_xy,
       int_ref_level <- info_xy[[interact_with]]$term_ref_level
       int_comp_level <- info_xy[[interact_with]]$term_comp_level
       summary_term <- sapply(term_comp_level, function(lvl) {
-        level_coef <- model_coef[paste0(term, lvl), extract_items, drop = FALSE] %>% as.data.frame()
+        level_coef <- as.data.frame(model_coef[paste0(term, lvl), extract_items, drop = FALSE])
         colnames(level_coef) <- c("coef", "se", "p-value")
         level_coef$df <- 1
         summary_with_interaction <- sapply(c(int_ref_level, int_comp_level), function(int_lvl) {
@@ -706,7 +629,7 @@ element_interaction <- function(info_xy,
 
     } else if (all(terms_type == "continuous")) {
       int_values <- info_xy[[interact_with]]$term_values
-      term_coef <- model_coef[term, extract_items, drop = FALSE] %>% as.data.frame()
+      term_coef <- as.data.frame(model_coef[term, extract_items, drop = FALSE])
       colnames(term_coef) <- c("coef", "se", "p-value")
       term_coef$df <- 1
       summary_with_interaction <- sapply(as.character(int_values), function(val) {
@@ -757,7 +680,7 @@ element_interaction <- function(info_xy,
           summary = summary_comp
         )
       } else {
-        term_coef <- model_coef[term, extract_items, drop = FALSE] %>% as.data.frame()
+        term_coef <- as.data.frame(model_coef[term, extract_items, drop = FALSE])
         colnames(term_coef) <- c("coef", "se", "p-value")
         term_coef$df <- 1
         summary_with_interaction <- sapply(c(cat_ref_level, cat_comp_level), function(cat_lvl) {
@@ -780,7 +703,7 @@ element_interaction <- function(info_xy,
 
   }, simplify = FALSE, USE.NAMES = TRUE)
 
-  results_interaction <- model_coef[int_lookup$INTERACTION, extract_items, drop = FALSE] %>% as.data.frame()
+  results_interaction <- as.data.frame(model_coef[int_lookup$INTERACTION, extract_items, drop = FALSE])
   colnames(results_interaction) <- c("coef", "se", "p-value")
   results_interaction$df <- 1
   if (all(terms_type == "categorical")) {
@@ -788,20 +711,17 @@ element_interaction <- function(info_xy,
       model_data[
         model_data[[names(info_xy)[1]]] == int_lookup[i, names(info_xy)[1]] &
           model_data[[names(info_xy[2])]] == int_lookup[i, names(info_xy)[2]], , drop = FALSE] %>%
-        nrow() %>%
-        paste0(" , n = ", .)
-
+        nrow()
     })
-    rownames(results_interaction) <- paste0(int_lookup[[1]], " * ", int_lookup[[2]], n)
+    rownames(results_interaction) <- paste0(int_lookup[[1]], " * ", int_lookup[[2]], " , n = ", n)
   } else if (all(terms_type == "continuous")) {
     rownames(results_interaction) <- paste0(int_lookup[[1]], " * ", int_lookup[[2]])
   } else {
     n <- sapply(1:nrow(int_lookup), function(i) {
       model_data[model_data[[cat]] == int_lookup[i, cat], , drop = FALSE] %>%
-        nrow() %>%
-        paste0(", n = ", .)
+        nrow()
     })
-    rownames(results_interaction) <- paste0(int_lookup[[cat]], n)
+    rownames(results_interaction) <- paste0(int_lookup[[cat]], ", n = ", n)
   }
 
   results_all <- c(
@@ -831,8 +751,12 @@ table_formats <- function(dfi,
       "(xx.xx, xx.xx)"
     }
   }
-  format_pval <- function(pval, accuracy = 0.0001) {
-    pvalue(pval, accuracy = accuracy, prefix = c("<", "", ">"))
+  format_pval <- function(x, output) {
+    if (x < 0.0001) {
+      "<.0001"
+    } else {
+      paste(round(x, 4))
+    }
   }
 
   row_content <- switch(
@@ -843,14 +767,14 @@ table_formats <- function(dfi,
       rcell(dfi$se, format = "xx.xxx"),
       rcell(dfi$or, format = format_or(dfi$or)),
       rcell(c(dfi$lcl, dfi$ucl), format = format_ci(dfi$ucl)),
-      rcell(format_pval(dfi$`p-value`))
+      rcell(dfi$`p-value`, format = format_pval)
     ),
     main =  rrowl(
       row.name = row.name,
       c(
         list(rcell(dfi$df)),
         rep(list(NULL), 4),
-        list(rcell(format_pval(dfi$`p-value`)))
+        list(rcell(dfi$`p-value`, format = format_pval))
       )
     ),
     level =  rrow(
@@ -860,7 +784,7 @@ table_formats <- function(dfi,
       rcell(dfi$se, format = "xx.xxx"),
       NULL,
       NULL,
-      rcell(format_pval(dfi$`p-value`))
+      rcell(dfi$`p-value`, format = format_pval)
     ),
     or_ci = rrowl(
       row.name = row.name,

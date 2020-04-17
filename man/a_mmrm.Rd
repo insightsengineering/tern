@@ -11,7 +11,7 @@ a_mmrm(
   arm_var = "ARM",
   visit_var = "AVISIT",
   mode = c("df.error", "auto", "boot-satterthwaite"),
-  conf.level = 0.95,
+  conf_level = 0.95,
   weights_emmeans = "proportional",
   corStruct = NULL
 )
@@ -35,7 +35,7 @@ will be excluded.}
 \item{mode}{algorithm for degree of freedom: \code{auto}, \code{df.error} or
 \code{boot-satterthwaite}.}
 
-\item{conf.level}{confidence level. Must be number greater than 0 and less
+\item{conf_level}{confidence level. Must be number greater than 0 and less
 than 1.}
 
 \item{weights_emmeans}{argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.}
@@ -60,6 +60,9 @@ ADQS_f <- ADQS \%>\%
   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
   mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
+\dontrun{
+# currently not executed because the algorithm to obtain the
+# Satterthwaite estimator does not always converge
 mmrm_results <- a_mmrm(
   data = ADQS_f,
   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,
@@ -67,7 +70,7 @@ mmrm_results <- a_mmrm(
   arm_var = "ARM",
   visit_var = "AVISIT",
   mode = "boot-satterthwaite",
-  conf.level = 0.95,
+  conf_level = 0.95,
   weights_emmeans = "proportional",
   corStruct = "corSymm"
 )
@@ -76,4 +79,5 @@ names(mmrm_results)
 
 mmrm_results["contrast"]
 mmrm_results["estimate"]
+}
 }

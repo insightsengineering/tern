@@ -13,19 +13,24 @@ t_coxph(
 )
 }
 \arguments{
-\item{formula}{a survival formula, the arm variable needs to be wrapped in \code{\link{arm}}. The
+\item{formula}{(\code{formula})\cr
+Specifies \code{\link[survival:Surv]{survival model}}.
+The arm variable needs to be wrapped in \code{\link{arm}}. The
 \code{\link[survival]{strata}} special will only be used for the stratified analysis. If there is not
 \code{\link[survival]{strata}} specification then the stratified analysis is omitted.}
 
-\item{data}{a \code{data.frame} with all the variable that are used in \code{formula}}
+\item{data}{(\code{data.frame})\cr
+Contains all the variable that are used in \code{formula}}
 
-\item{conf.int}{level for computation of the confidence intervals. If set to {FALSE} no confidence intervals are
-printed}
+\item{conf.int}{(\code{numeric} value)\cr
+level for computation of the confidence intervals.
+If set to \code{FALSE} no confidence intervals are printed}
 
-\item{pval_method}{the method used to calculate the p-value, should be one of \code{"wald"}, \code{"log-rank"},
-\code{"likelihood"}, default is \code{"log-rank"}.}
+\item{pval_method}{(one of (\code{"log-rank", "likelihood", "wald"}))\cr
+Specifies the method used to calculate the p-value. Default value is \code{"log-rank"}.}
 
-\item{...}{Other arguments will be passed to \code{\link[survival]{coxph}}}
+\item{...}{(optional)\cr
+Other arguments will be passed to \code{\link[survival]{coxph}}}
 }
 \description{
 An \code{\link[rtables]{rtable}} format of \code{\link[tern]{s_coxph_pairwise}}

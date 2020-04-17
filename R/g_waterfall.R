@@ -3,13 +3,20 @@
 #' This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
 #' markup
 #'
-#' @param height  numeric vector to be plotted as the waterfall bars
-#' @param id vector of IDs used as the x-axis label for the waterfall bars
-#' @param col vector of a categorical variable for bar coloring
-#' @param xlab x label. Default is \code{ID}.
-#' @param ylab y label. Default is \code{Value}.
-#' @param title A string to be displayed as plot title.
-#' @param col_legend_title A string to be displayed as legend title.
+#' @param height (\code{numeric} vector)\cr
+#'   Contains values to be plotted as the waterfall bars
+#' @param id (vector)\cr
+#'   Contains of IDs used as the x-axis label for the waterfall bars
+#' @param col (vector)\cr
+#'   Categorical variable for bar coloring
+#' @param xlab (\code{character} value)\cr
+#'   x label. Default is \code{ID}.
+#' @param ylab (\code{character} value)\cr
+#'   y label. Default is \code{Value}.
+#' @param title (\code{character} value)\cr
+#'   Text to be displayed as plot title.
+#' @param col_legend_title (\code{character} value)\cr
+#'   Text to be displayed as legend title.
 #'
 #' @template author_song24
 #'
@@ -21,7 +28,11 @@
 #' @examples
 #' g_waterfall(height = c(3,5,-1), id = letters[1:3])
 #'
-#' g_waterfall(height = c(3,5,-1), id = letters[1:3], col = c("red", "green", "red"))
+#' g_waterfall(
+#'   height = c(3,5,-1),
+#'   id = letters[1:3],
+#'   col = letters[1:3]
+#' )
 #'
 #' library(random.cdisc.data)
 #' library(dplyr)
@@ -108,7 +119,7 @@ g_waterfall <- function(height,
 
   if (!is.null(col)) {
     p <- p +
-      aes(fill = col) +
+      aes(fill = plot_data_ord$col) +
       labs(fill = col_legend_title) +
       theme(
         legend.position = "bottom",
@@ -116,7 +127,7 @@ g_waterfall <- function(height,
         legend.title = element_text(face = "bold"),
         legend.box.background = element_rect(colour = "black")
       ) +
-      scale_fill_manual(values = nest_color_palette(length(col)))
+      scale_fill_manual(values = color_palette())
   }
 
   if (!is.null(title)) {

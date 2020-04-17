@@ -13,22 +13,26 @@ t_rsp(
 )
 }
 \arguments{
-\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
-otherwise}
+\item{rsp}{(\code{logical} vector)\cr
+\code{TRUE} if subject is a responder \code{FALSE} otherwise}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{partition_rsp_by}{factor with one or more response categories, generate
-additional statistics partitioned by each response categories. If
-\code{NULL}, tabulation by each response categories will not be performed.}
+\item{partition_rsp_by}{(\code{factor} vector)
+Contains one or more response categories, generate additional statistics
+partitioned by each response categories. If \code{NULL}, tabulation by each
+response categories will not be performed.}
 
-\item{strata_data}{data for stratification factors (categorical variables).
+\item{strata_data}{(\code{character}, \code{factor} or \code{data.frame})\cr
+Used for \code{\link[survival:strata]{stratification factors}}
 If \code{NULL}, no stratified analysis is performed. See details for
 further explanation.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{

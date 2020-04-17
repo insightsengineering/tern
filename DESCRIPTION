@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Date: 2019-12-30
-Version: 0.6.4.9000
+Date: 2020-03-31
+Version: 0.6.5.9000
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
@@ -16,12 +16,12 @@ Authors@R: c(
   person("Edgar", "Manukyan", email = "edgar.manukyan@roche.com", role = "aut"),
   person("Ting", "Qi", email = "qit3@gene.com", role = "aut")
   )
-Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
+Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.3),
   ggplot2,
   grid,
-  rtables (>= 0.1.4),
+  rtables (>= 0.1.5),
   survival
 Imports:
   dplyr,
@@ -34,7 +34,7 @@ Imports:
   scales,
   stats,
   utils,
-  utils.nest (>= 0.2.1),
+  utils.nest (>= 0.2.2),
   forcats,
   nlme,
   emmeans,
@@ -43,10 +43,10 @@ Imports:
 Suggests:
   lattice,
   knitr,
-  random.cdisc.data (>= 0.3.1),
+  random.cdisc.data (>= 0.3.2),
   rmarkdown,
-  test.nest (>= 0.2.1),
-  testthat,
+  test.nest (>= 0.2.2),
+  testthat (>= 2.0),
   tibble,
   tidyr
 License: file LICENSE

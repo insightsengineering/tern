@@ -1,7 +1,7 @@
 #' Summarize an Object for Different Groups with by Variable
 #'
 #' This is a wrapper around the basic \code{t_summary} functions with the difference that it has a row_by
-#' argument. The row_by argument can either be a "by" object or it can be a "r_by" object in which case
+#' argument. The row_by argument can either be a "by" object or it can be a "nested_by" object in which case
 #' each list item is interpreted recursively as is typical for the \code{terms} item
 #' in \code{t_events_term_grade_id}.
 #'

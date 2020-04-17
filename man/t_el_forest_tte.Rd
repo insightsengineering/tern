@@ -17,27 +17,31 @@ t_el_forest_tte(
 )
 }
 \arguments{
-\item{tte}{vector with numeric time to event data, currently no \code{NA} allowed}
+\item{tte}{(\code{numeric} vector)\cr
+Contains time to event data, currently no \code{NA} allowed}
 
-\item{is_event}{is boolean, \code{TRUE} if event, \code{FALSE} if \code{tte}
+\item{is_event}{(\code{logical} value)\cr
+\code{TRUE} if event, \code{FALSE} if \code{tte}
 is censored}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{strata_data}{data for stratification factors (categorical variables).
-If \code{NULL}, no stratified analysis is performed.}
+\item{strata_data}{(\code{character}, \code{factor} or \code{data.frame})\cr
+Used for \code{\link[survival:strata]{stratification factors}}
+(categorical variables). If \code{NULL}, no stratified analysis is performed.}
 
-\item{ties}{the method used for tie handling in \code{\link[survival]{coxph}}.}
+\item{ties}{(\code{character} value) the method used for tie handling in \code{\link[survival]{coxph}}.}
 
-\item{time_unit}{The unit of median survival time. Default is \code{months}.}
+\item{time_unit}{(\code{character} value) The unit of median survival time. Default is \code{"months"}.}
 
-\item{row_name}{name of row}
+\item{row_name}{(\code{character} value) name of row}
 
-\item{conf_int}{confidence level of the interval}
+\item{conf_int}{(\code{numeri} value) confidence level of the interval}
 
-\item{dense_header}{Display the table headers in multiple rows.}
+\item{dense_header}{(\code{logical} value) Display the table headers in multiple rows.}
 }
 \value{
 \code{rtable} with one row
@@ -57,20 +61,24 @@ strata_data <- data.frame(
 )
 col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
 t_el_forest_tte(
-  tte = tte, is_event = is_event,
+  tte = tte,
+  is_event = is_event,
   col_by = col_by,
   conf_int = 0.9
 )
 
 t_el_forest_tte(
-  tte = tte, is_event = is_event,
+  tte = tte,
+  is_event = is_event,
   col_by = col_by,
   strata_data = strata_data
 )
 
 t_el_forest_tte(
-  tte = tte, is_event = is_event,
-  col_by = factor(rep("ARM A", n), levels = c("ARM A", "ARM B"))
+  tte = tte,
+  is_event = is_event,
+  col_by = factor(rep("ARM A", n),
+  levels = c("ARM A", "ARM B"))
 )
 
 t_el_forest_tte(

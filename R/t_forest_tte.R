@@ -137,6 +137,7 @@ t_forest_tte <- function(tte,
     data.frame(tte = tte, is_event = is_event, col_by = col_by, strata_data = strata_data)
   }
 
+  stop_if_not(list(all(sapply(row_by_list, is.factor)), "all elements in row_by_list must be factors"))
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
   data_tree <- nested_list_to_tree(dfs, format_data = node_format_data(children_gap =  0), max_depth = 2)
@@ -196,13 +197,14 @@ t_forest_tte <- function(tte,
 #'
 #' @inheritParams survival::coxph
 #' @inheritParams argument_convention
-#' @param strata_data data for stratification factors (categorical variables).
-#'   If \code{NULL}, no stratified analysis is performed.
-#' @param ties the method used for tie handling in \code{\link[survival]{coxph}}.
-#' @param time_unit The unit of median survival time. Default is \code{months}.
-#' @param row_name name of row
-#' @param conf_int confidence level of the interval
-#' @param dense_header Display the table headers in multiple rows.
+#' @param strata_data (\code{character}, \code{factor} or \code{data.frame})\cr
+#'   Used for \code{\link[survival:strata]{stratification factors}}
+#'   (categorical variables). If \code{NULL}, no stratified analysis is performed.
+#' @param ties (\code{character} value) the method used for tie handling in \code{\link[survival]{coxph}}.
+#' @param time_unit (\code{character} value) The unit of median survival time. Default is \code{"months"}.
+#' @param row_name (\code{character} value) name of row
+#' @param conf_int (\code{numeri} value) confidence level of the interval
+#' @param dense_header (\code{logical} value) Display the table headers in multiple rows.
 #'
 #' @return \code{rtable} with one row
 #'
@@ -222,20 +224,24 @@ t_forest_tte <- function(tte,
 #' )
 #' col_by = factor(sample(c("ARM A", "ARM B"), n, TRUE), levels = c("ARM A", "ARM B"))
 #' t_el_forest_tte(
-#'   tte = tte, is_event = is_event,
+#'   tte = tte,
+#'   is_event = is_event,
 #'   col_by = col_by,
 #'   conf_int = 0.9
 #' )
 #'
 #' t_el_forest_tte(
-#'   tte = tte, is_event = is_event,
+#'   tte = tte,
+#'   is_event = is_event,
 #'   col_by = col_by,
 #'   strata_data = strata_data
 #' )
 #'
 #' t_el_forest_tte(
-#'   tte = tte, is_event = is_event,
-#'   col_by = factor(rep("ARM A", n), levels = c("ARM A", "ARM B"))
+#'   tte = tte,
+#'   is_event = is_event,
+#'   col_by = factor(rep("ARM A", n),
+#'   levels = c("ARM A", "ARM B"))
 #' )
 #'
 #' t_el_forest_tte(
@@ -282,6 +288,7 @@ t_el_forest_tte <- function(tte,
 
     cox_sum  <- if (any(is_event == TRUE)) {
       if (is.null(strata_data)) {
+        # use coxph.control argument to set iteration max to avoid warning if exceeded
         summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties), conf.int = conf_int)
       } else {
         summary(coxph(Surv(tte, is_event) ~ col_by + strata(strata_data), ties = ties),

@@ -18,6 +18,8 @@
 #'                         type = c("survfit", "coxph", "ztest"))
 #'
 #' \dontrun{
+#' # will fail because mismatching size of both
+#' # arguments and neither has length 1
 #' tern:::check_conf_level(c(survfit = 0.95, ztest = 0.98),
 #'                         c("survfit", "coxph", "ztest"))
 #' }

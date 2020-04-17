@@ -16,26 +16,30 @@ t_forest_rsp(
 )
 }
 \arguments{
-\item{rsp}{boolean vector, \code{TRUE} if subject is a responder \code{FALSE}
-otherwise}
+\item{rsp}{(\code{logical} vector)\cr
+\code{TRUE} if subject is a responder \code{FALSE} otherwise}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{row_by_list}{\code{list} or \code{data.frame} with one factor variable to calculate
-the \code{t_el_forest_tte}}
+\item{row_by_list}{(\code{list} or \code{data.frame}) of \code{factors}\cr
+Contains one factor variable to calculate the \code{t_el_forest_tte}}
 
-\item{total}{string of total row added. If \code{NULL} then no total row is added.}
+\item{total}{(\code{character} value)\cr
+Total row added. If \code{NULL} then no total row is added.}
 
-\item{strata_data}{data for stratification factors (categorical variables).
+\item{strata_data}{(\code{character}, \code{factor} or \code{data.frame})\cr
+Used for \code{\link[survival:strata]{stratification factors}}
 If \code{NULL}, no stratified analysis is performed.}
 
-\item{conf_int}{confidence level of the interval}
+\item{conf_int}{(\code{numeric} value) confidence level of the interval}
 
-\item{dense_header}{Display the table headers in multiple rows.}
+\item{dense_header}{(\code{logical} value) Display the table headers in multiple rows.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{

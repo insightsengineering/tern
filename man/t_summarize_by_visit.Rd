@@ -7,20 +7,25 @@
 t_summarize_by_visit(data, visit, id, col_by, col_N = NULL)
 }
 \arguments{
-\item{data}{data frame with numerical variables to be summarized. If the
+\item{data}{(\code{data.frame})\cr
+with numerical variables to be summarized. If the
 variable has a \code{label} attribute then it will be used as the
 sub-header column name.}
 
-\item{visit}{factor with visit names ordered by desired display order in the
-stacked table.}
+\item{visit}{(\code{factor} vector)\cr
+with visit names ordered by desired display order in the
+  stacked table.}
 
-\item{id}{unique subject identifier variable.}
+\item{id}{(\code{vector})\cr
+unique subject identifier variable.}
 
-\item{col_by}{logical, factor or data.frame with reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions \code{factor_to_matrix_by}
-and \code{add_total_by}.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
@@ -42,39 +47,45 @@ Every variable in \code{data} will be mapped to a sub-column under
   factor in \code{col_by}.
 }
 \examples{
-# EXAMPLE 1
-library(random.cdisc.data)
 
+library(random.cdisc.data)
+library(dplyr)
 ADSL <- radsl(cached = TRUE)
 ADVS <- radvs(cached = TRUE)
 
-t_summarize_by_visit(
+tbl1 <- t_summarize_by_visit(
   data = ADVS[c("AVAL")],
   visit = ADVS$AVISIT,
   col_by = ADVS$ARM,
   id = ADVS$USUBJID,
   col_N = table(ADSL$ARM)
 )
+\dontrun{
+Viewer(tbl1)
+}
 
-t_summarize_by_visit(
+tbl2 <- t_summarize_by_visit(
   data = ADVS[c("PCHG")],
   visit = ADVS$AVISIT,
   col_by = ADVS$ARM,
   id = ADVS$USUBJID,
   col_N = table(ADSL$ARM)
 )
+\dontrun{
+Viewer(tbl2)
+}
 
-t_summarize_by_visit(
+tbl3 <- t_summarize_by_visit(
   data = ADVS[c("AVAL", "CHG")],
   visit = ADVS$AVISIT,
   col_by = ADVS$ARM,
   id = ADVS$USUBJID,
   col_N = table(ADSL$ARM)
 )
+\dontrun{
+Viewer(tbl3)
+}
 
-# EXAMPLE 2
-library(random.cdisc.data)
-library(dplyr)
 
 ADSL <- cadsl
 ADQS <- cadqs \%>\%
@@ -87,8 +98,6 @@ tbl <- t_summarize_by_visit(
   id = ADQS$USUBJID,
   col_N = table(ADSL$ARM)
 )
-
-tbl
 
 \dontrun{
 Viewer(tbl)

@@ -7,9 +7,10 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_el_forest_rsp
-#' @param row_by_list \code{list} or \code{data.frame} with one factor variable to calculate
-#'   the \code{t_el_forest_tte}
-#' @param total string of total row added. If \code{NULL} then no total row is added.
+#' @param row_by_list (\code{list} or \code{data.frame}) of \code{factors}\cr
+#'   Contains one factor variable to calculate the \code{t_el_forest_tte}
+#' @param total (\code{character} value)\cr
+#'   Total row added. If \code{NULL} then no total row is added.
 #'
 #' @details
 #' Logistic regression is used for odds ratio calculation.
@@ -125,7 +126,7 @@ t_forest_rsp <- function(rsp,
   check_strata(strata_data)
   do.call(check_same_n, c(list(rsp = rsp, col_by = col_by, strata_data = strata_data), row_by_list))
 
-  row_by_list <-  row_by_list %>% map(explicit_na)
+  row_by_list <- row_by_list %>% map(explicit_na)
   # take label if it exists, otherwise rowname
   # equivalent of var_labels(as.data.frame(by), fill = TRUE) for non data.frames
   names(row_by_list) <- Map(`%||%`, lapply(row_by_list, label), names(row_by_list))
@@ -136,6 +137,7 @@ t_forest_rsp <- function(rsp,
     data.frame(rsp = rsp, col_by = col_by, strata_data = strata_data)
   }
 
+  stop_if_not(list(all(sapply(row_by_list, is.factor)), "all elements in row_by_list must be factors"))
   dfs <- lapply(row_by_list, function(rows_by) esplit(df, rows_by))
 
   # nested structure, e.g. list dfs$SEX$M -> tree accessed like dfs[['SEX']][['M']]
@@ -198,11 +200,12 @@ t_forest_rsp <- function(rsp,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_rsp
-#' @param strata_data data for stratification factors (categorical variables).
+#' @param strata_data (\code{character}, \code{factor} or \code{data.frame})\cr
+#'   Used for \code{\link[survival:strata]{stratification factors}}
 #'   If \code{NULL}, no stratified analysis is performed.
-#' @param row_name name of row
-#' @param conf_int confidence level of the interval
-#' @param dense_header Display the table headers in multiple rows.
+#' @param row_name (\code{character} value) name of row
+#' @param conf_int (\code{numeric} value) confidence level of the interval
+#' @param dense_header (\code{logical} value) Display the table headers in multiple rows.
 #'
 #' @return \code{rtable} with one row
 #'

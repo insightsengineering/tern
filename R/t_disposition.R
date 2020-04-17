@@ -4,12 +4,14 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_summary.factor
-#' @param x A factor or logical vector
-#' @param row.name Only applicable when x is a logical vector. A string to label the row name.
-#'   Default is "TRUE".
-#' @param subset A logical vector with the same length as x that defines the subset
+#' @param x (\code{factor} or \code{logical} vector)
+#' @param row.name (\code{character} value)\cr
+#'   Only applicable when x is a logical vector. A string to label the row name. Default is "TRUE".
+#' @param subset (\code{logical} vector)\cr
+#'   Contains the same length as x that defines the subset
 #'   to take from \code{x}. NAs are cast to false.
-#' @param show_n Logic value to determine whether the "n" row is displayed. Default is FALSE.
+#' @param show_n (\code{logical} value)
+#'   Determines whether the \code{"n"} row is displayed. Default is \code{FALSE}.
 #'   Only when x is of type factor
 #'
 #' @export

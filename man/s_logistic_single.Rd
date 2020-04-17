@@ -7,9 +7,11 @@
 s_logistic_single(glm_model, conf_level = 0.95)
 }
 \arguments{
-\item{glm_model}{a {\code{\link{glm}}} model object with all main effect model.}
+\item{glm_model}{({\code{\link{glm}}} model object)\cr
+with all main effect model.}
 
-\item{conf_level}{confidence level for Wald odds ratio confidence interval.}
+\item{conf_level}{(\code{numeric} value)
+confidence level for Wald's odds ratio confidence interval.}
 }
 \description{
 Summary of logistic regression with no interaction term

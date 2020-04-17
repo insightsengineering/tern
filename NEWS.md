@@ -1,8 +1,11 @@
-# tern 0.6.4.9000
+# tern 0.6.5.9000
 
+# tern 0.6.5
 
+* Change default option for denominator to be `N` in `t_summary`
+* fix IQR bug: IQR as Q3 minus Q1
 * Add new function `t_logistic` for multi-variable logistic regression table
-* Added `conf.ini.coxph`, `conf.ini.survfit`, `conf.ini.ztest`, `conf.type`, `probs` arguments in `t_tte`
+* Add new function `df_explicit_na` to replace `NA` by explicit values
 * Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.
 * Fixed bug in `t_rsp` of not showing p-value, odds ratio and CIs when `strata_data` is not `NULL`
 * Added stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.
@@ -12,6 +15,8 @@
 * Added `s_coxph_pairwise` function to perform pairwise testing which is used by `t_tte` and `t_coxph`
 * Added methods for `t_count_true` replacing `t_summary_true`
 * Updated `t_count_unique` to create analysis subsets, add `t_el_count_unique` for vectors
+* Fixed bug in `t_events_term_id` so that table sort order is by decreasing frequency instead of alphabetical.
+* Added function `color_palette` and a new nest color palette
 
 # tern 0.6.4
 

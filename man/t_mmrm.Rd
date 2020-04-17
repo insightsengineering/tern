@@ -12,7 +12,7 @@ t_mmrm(
   visit_var = "AVISIT",
   col_N,
   mode = c("df.error", "auto", "boot-satterthwaite"),
-  conf.level = 0.95,
+  conf_level = 0.95,
   weights_emmeans = "proportional",
   corStruct = NULL,
   table_tree = TRUE
@@ -34,7 +34,8 @@ will be excluded.}
 \item{visit_var}{a character describing the variable name for visit,
 \code{"AVISIT"} by default. This variable must be factor in data.}
 
-\item{col_N}{a vector with the reference population per level of \code{col_by}. This by default is often
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
@@ -42,14 +43,15 @@ more than one record per subject.}
 \item{mode}{algorithm for degree of freedom: \code{auto}, \code{df.error} or
 \code{boot-satterthwaite}.}
 
-\item{conf.level}{confidence level. Must be number greater than 0 and less
+\item{conf_level}{confidence level. Must be number greater than 0 and less
 than 1.}
 
 \item{weights_emmeans}{argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.}
 
 \item{corStruct}{\code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.}
 
-\item{table_tree}{logical, if \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
+\item{table_tree}{(\code{logical} value)\cr
+If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
 }
 \value{
@@ -76,6 +78,9 @@ ADQS_f <- ADQS \%>\%
   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
   dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
+\dontrun{
+# currently not executed because the algorithm to obtain the
+# Satterthwaite estimator does not always converge
 t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
        data = ADQS_f,
        id_var = "USUBJID",
@@ -83,11 +88,12 @@ t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
        visit_var = "AVISIT",
        col_N = table(ADSL$ARM),
        mode = "boot-satterthwaite",
-       conf.level = 0.95,
+       conf_level = 0.95,
        weights_emmeans = "proportional",
        corStruct = "corSymm",
        table_tree = FALSE
 )
+}
 }
 \seealso{
 \code{\link{a_mmrm}}
