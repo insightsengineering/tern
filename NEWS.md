@@ -1,3 +1,7 @@
+# tern 0.6.6
+
+* Remove `test.nest` dependency
+
 # tern 0.6.5
 
 * Change default option for denominator to be `N` in `t_summary`

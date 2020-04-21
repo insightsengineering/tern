@@ -64,7 +64,7 @@
 #' library(purrr)
 #'
 #' ADSL <- radsl(cached = TRUE)
-#' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), 50)
+#' ADSL$'FAKE Name > -1.3 Flag' <- rep(c('Y', 'N'), length.out = nrow(ADSL))
 #' attr(ADSL$'FAKE Name > -1.3 Flag', "label") <- "dummy"
 #'
 #' ADRS <- radrs(ADSL, seed = 2)

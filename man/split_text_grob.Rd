@@ -53,8 +53,6 @@ split_text_grob(
     a list of graphical parameter settings.}
 
 \item{vp}{A Grid viewport object (or NULL).}
-
-\item{...}{passed on to \code{\link{grob}}}
 }
 \description{
 Dynamically wrap text

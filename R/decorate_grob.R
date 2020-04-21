@@ -293,7 +293,6 @@ split_string <- function(text, width) {
 #' @inheritParams grid::grid.text
 #' @param text character string
 #' @param width a unit object specifying max width of text
-#' @param ... passed on to \code{\link{grob}}
 #'
 #' @details
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
