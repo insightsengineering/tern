@@ -13,7 +13,8 @@ argument_convention(
   tte,
   is_event,
   rsp,
-  total
+  total,
+  prune_zero_rows
 )
 }
 \arguments{
@@ -52,6 +53,8 @@ is censored}
 \item{total}{(\code{character} value)\cr
 Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
+
+\item{prune_zero_rows}{\code{logical} whether to prune all zero rows}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern} that are used repeatedly to express an

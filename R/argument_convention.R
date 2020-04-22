@@ -10,6 +10,7 @@
 #' single reference point to import the \code{roxygen} argument description with
 #' \code{@inheritParams argument_convention}
 #'
+#' @md
 #' @param col_by (\code{logical}, \code{factor} or \code{data.frame})\cr
 #'   Contains reference and comparison group information, the
 #'   first \code{level} indicates the reference group. See the functions
@@ -37,7 +38,8 @@
 #' @param total (\code{character} value)\cr
 #'   Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 #'   \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.
+#' @param prune_zero_rows `logical` whether to prune all zero rows
 #'
-argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event, rsp, total) { # nolintr
+argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event, rsp, total, prune_zero_rows) { # nolintr
   NULL
 }

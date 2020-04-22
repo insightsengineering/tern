@@ -11,9 +11,9 @@ t_events_per_term_grade_id(
   col_by,
   col_N = NULL,
   total = NULL,
-  grade_levels = NULL,
   event_type = "event",
   any_grade = "Any Grade",
+  prune_zero_rows = TRUE,
   table_tree = FALSE
 )
 }
@@ -30,17 +30,19 @@ length or number of rows of \code{terms}.}
 
 \item{grade}{(vector)\cr
 contains grade of adverse event.
-For factors, it is assumed that intensity corresponds to the order of the factor levels.
-If that is not the case, see \code{grade_levels}.
-For character or numeric, \code{grade_levels} is required.}
+For factors, it is assumed that intensity corresponds to the order of
+the factor levels, from lowest to worst level.
+If that is not the case, you have to preprocess using \code{levels(grade) <- new_levels}
+beforehand.
+The resulting table is then  ordered in the same fashion. To instead display
+it in descending maximum grade order, you need to apply some postprocessing.}
 
 \item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
 Contains reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions
 \code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{col_N}{(\code{numeric} vector)\cr
-Contains information of the number of patients in the
+\item{col_N}{numeric vector with information of the number of patients in the
 levels of \code{col_by}. This is useful if there are patients that have no
 adverse events can be accounted for with this argument.}
 
@@ -48,21 +50,13 @@ adverse events can be accounted for with this argument.}
 Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{grade_levels}{(\code{factor} vector)
-The levels of the factor define the severity of the grade and
-the order of display.
-For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
-the most severe grade "c" at the bottom of the table, the least severe grade "a" at the top.
-If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
-If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
-the factor levels of \code{grade}.
-If \code{grade} is not a factor, \code{grade_levels} is required.}
-
 \item{event_type}{(\code{character} value) to specify the type of event that is summarized, \code{event} by default.
 Only displayed when \code{terms} has 2 columns.}
 
-\item{any_grade}{(\code{character} value) to specify the row name which counts any occurrence,
+\item{any_grade}{string to specify the row name which counts any occurrence,
 it is named \code{Any Grade} by default}
+
+\item{prune_zero_rows}{\code{logical} whether to prune all zero rows}
 
 \item{table_tree}{(\code{logical} value)\cr
 If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -92,14 +86,13 @@ number of subjects.
 values with \code{sas_na} and \code{explicit_na} before using \code{t_events_per_term_grade_id}.
 
 \code{t_events_per_term_grade_id} orders data by overall frequency across all columns from the most commonly
- reported higher level term to the least frequent one. Within each group of higher level term,
- it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
- alphabetical order.
+reported higher level term to the least frequent one. Within each group of higher level term,
+it sorts by decreasing frequency of lower level term. It brakes ties using \code{terms} names in
+alphabetical order.
 
 \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value
 in case there was no events reported for particular \code{col_by} and/or
-\code{grade} category. Use \code{grade_levels} to modify the range of desired
-grades.
+\code{grade} category.
 }
 \examples{
 library(dplyr)
@@ -113,8 +106,17 @@ t_events_per_term_grade_id(
   id = ADAE$USUBJID,
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
+  col_N = table(ADSL$ARM)
+)
+
+# don't prune zero rows
+t_events_per_term_grade_id(
+  terms = ADAE$AEDECOD,
+  id = ADAE$USUBJID,
+  grade = ADAE$AETOXGR,
+  col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  grade_levels = as.factor(1:5)
+  prune_zero_rows = FALSE
 )
 
 # Introducing imperfect data and demo how to preprocess
@@ -148,8 +150,7 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  total = "All Patients",
-  grade_levels = as.factor(1:5)
+  total = "All Patients"
 )
 
 t_events_per_term_grade_id(
@@ -158,8 +159,7 @@ t_events_per_term_grade_id(
   grade = ADAE$grade_category,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  total = "All Patients",
-  grade_levels = unique(sort(ADAE$grade_category))
+  total = "All Patients"
 )
 
 t_events_per_term_grade_id(
@@ -168,10 +168,10 @@ t_events_per_term_grade_id(
   grade = ADAE$AETOXGR,
   col_by = ADAE$ARM,
   col_N = table(ADSL$ARM),
-  grade_levels = as.factor(1:5),
   event_type = "adverse events"
 )
 
+levels(ADAE$grade_category) <- c("Severe", "Moderate", "Mild")
 tbls <- t_events_per_term_grade_id(
   terms = ADAE \%>\% select(AEBODSYS, AEDECOD),
   id = ADAE$USUBJID,
@@ -181,7 +181,6 @@ tbls <- t_events_per_term_grade_id(
   total = "All Patients",
   event_type = "adverse events",
   any_grade = "Any Severity",
-  grade_levels = factor(c("Severe", "Moderate", "Mild"), levels = c("Severe", "Moderate", "Mild")),
   table_tree = TRUE
 )
 summary(tbls)

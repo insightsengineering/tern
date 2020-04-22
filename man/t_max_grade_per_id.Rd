@@ -10,15 +10,13 @@ t_max_grade_per_id(
   col_by,
   col_N = NULL,
   total = NULL,
-  grade_levels = NULL,
-  any_grade = "Any Grade"
+  any_grade = "Any Grade",
+  prune_zero_rows = TRUE
 )
 }
 \arguments{
-\item{grade}{grade of adverse event.
-For factors, it is assumed that intensity corresponds to the order of the factor levels.
-If that is not the case, see \code{grade_levels}.
-For character or numeric, \code{grade_levels} is required.}
+\item{grade}{`factor` grade of adverse event.
+It is assumed that intensity corresponds to the order of the factor levels.}
 
 \item{id}{a vector with id values}
 
@@ -37,17 +35,10 @@ more than one record per subject.}
 Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
-\item{grade_levels}{a factor. The values of the factor define the ordering of the rows
-in the resulting table. The levels of the factor define the severity of the grade.
-For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
-the most severe grade "c" at the top of the table, the least severe grade "a" at the bottom.
-If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
-If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
-the factor levels of \code{grade}.
-If \code{grade} is not a factor, \code{grade_levels} is required.}
-
 \item{any_grade}{add a row that counts any occurrence, it is named \code{Any
 Grade} by default}
+
+\item{prune_zero_rows}{\code{logical} whether to prune all zero rows}
 }
 \description{
 \code{t_max_grade_per_id} is used for deriving adverse events tables, these are returned
@@ -55,45 +46,54 @@ as nested lists.
 }
 \examples{
 t_max_grade_per_id(
-  grade = factor(c(1,2,3)),
+  grade = factor(c(1, 2, 3)),
   id = c(1,1,1),
   col_by = factor(rep("A", 3)),
   col_N = 3
 )
 
+# don't prune zero rows
+t_max_grade_per_id(
+  grade = factor(c(1, 2, 3)),
+  id = c(1,1,1),
+  col_by = factor(rep("A", 3)),
+  col_N = 3,
+  prune_zero_rows = FALSE
+)
+
 id <- c(1,1,2,2,3,3,3,4)
-grade <- factor(c("a","b","c","b","a","a","b","c"))
+grade <- factor(c("a", "b", "c", "b", "a", "a", "b", "c"))
+levels(grade) <- c("d", "c", "b", "a")
 t_max_grade_per_id(
   grade = grade,
   id = id,
   col_by = factor(LETTERS[id]),
-  grade_levels = factor(c("d","c","b","a"), levels = c("d","c","b","a")),
-  col_N = c(4,3,5,3),
+  col_N = c(4, 3, 5, 3),
   any_grade = "Any Class"
 )
 
 t_max_grade_per_id(
-  grade = factor(c(1,2,3,2,1,1,2,3)),
+  grade = factor(c(1, 2, 3, 2, 1, 1, 2, 3)),
   id = id,
   col_by = factor(LETTERS[id]),
-  col_N = c(4,3,5,4)
+  col_N = c(4, 3, 5, 4)
 )
 
 \dontrun{
 # throws an error because each id can only have one col_by
 # t_max_grade_per_id(
-  #   grade = factor(c(1,2,3)),
-  #   id = c(1,2,2),
+  #   grade = factor(c(1, 2, 3)),
+  #   id = c(1, 2, 2),
   #   col_by = factor(LETTERS[1:3]),
   #   col_N = c(15, 10, 12)
   # )
 }
 
 \dontrun{
-# throws an error because grade NA is not in grade_levels
+# throws an error because grade should not be NA
 # t_max_grade_per_id(
-#   grade =  factor(c(1,2,NA)),
-#   id = c(1,2,3),
+#   grade =  factor(c(1, 2, NA)),
+#   id = c(1, 2, 3),
 #   col_by = factor(LETTERS[1:3]),
 #   col_N = c(15, 10, 12)
 # )
