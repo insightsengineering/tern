@@ -14,8 +14,6 @@ to_rtable(x)
 }
 \arguments{
 \item{x}{object}
-
-\item{...}{additional arguments to pass}
 }
 \description{
 Trivial (identity)

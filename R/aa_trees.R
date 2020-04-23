@@ -475,7 +475,6 @@ invisible_node_name <- function(name) {
 #' Converts the object to an \code{rtable}
 #'
 #' @param x object
-#' @param ... additional arguments to pass
 #'
 #' @export to_rtable
 setGeneric(

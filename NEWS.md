@@ -1,9 +1,13 @@
-# tern 0.6.5.9000
+# tern 0.6.6.9000
 * Removed `grade_levels` argument from `t_events_term_grade_id` functions. If a different ordering of the rows is needed,
   this must be done through postprocessing by reordering the leaves of the table tree. Eventually, a helper function
   will be provided.
 * Added `prune_zero_rows` argument to `t_events_per_term_grade_id` and `t_max_grade_per_id` to not show rows of all zeros
   as they can clutter the visualization in the Shiny app and make it slower.
+
+# tern 0.6.6
+
+* Remove `test.nest` dependency
 
 # tern 0.6.5
 
