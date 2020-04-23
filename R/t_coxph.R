@@ -28,26 +28,26 @@
 #' tbl <- t_coxph(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX),
 #'   data = ADTTE_f,
-#'   conf.int = 0.8, pval_method = "wald", ties = "exact"
+#'   conf_level = 0.8, pval_method = "wald", ties = "exact"
 #' )
 #' tbl
 t_coxph <- function(formula,
                     data,
-                    conf.int = 0.95, # nolint
+                    conf_level = 0.95, # nolint
                     pval_method = c("log-rank", "wald",  "likelihood"),
                     ...) {
 
   pval_method <- match.arg(pval_method)
 
   # this runs both stratified and unstratified if there is a strata special
-  coxph_values <- s_coxph_pairwise(formula, data, conf.int, pval_method, ...)
+  coxph_values <- s_coxph_pairwise(formula, data, conf_level, pval_method, ...)
 
   sel <- ifelse(has_special_strata(formula), "stratified", "unstratified")
   pval_method_str <- capitalize(pval_method)
 
 
   tbl <- rtablel(
-    header = c("HR", paste0(conf.int * 100, "% CI of HR"), paste0(pval_method_str, " p-value")),
+    header = c("HR", paste0(conf_level * 100, "% CI of HR"), paste0(pval_method_str, " p-value")),
     lapply(coxph_values[-1], function(xi) {
       # don't want row for reference arm
       vals <- xi[[sel]]
@@ -75,7 +75,7 @@ t_coxph <- function(formula,
 #'   \code{\link[survival]{strata}} specification then the stratified analysis is omitted.
 #' @param data (\code{data.frame})\cr
 #'   Contains all the variable that are used in \code{formula}
-#' @param conf.int (\code{numeric} value)\cr
+#' @param conf_level (\code{numeric} value)\cr
 #'   level for computation of the confidence intervals.
 #'   If set to \code{FALSE} no confidence intervals are printed
 #' @param pval_method (one of (\code{"log-rank", "likelihood", "wald"}))\cr
@@ -107,13 +107,13 @@ t_coxph <- function(formula,
 #' cox_res2 <- s_coxph_pairwise(
 #'   formula =  Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARM),
 #'   data = ADTTE_f,
-#'   conf.int = 0.8, pval_method = "likelihood",  ties = "breslow"
+#'   conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
 #' )
 #' cox_res2[[2]]$stratified
 #' cox_res2[[2]]$unstratified
 s_coxph_pairwise <- function(formula,
                              data,
-                             conf.int = 0.95, # nolint
+                             conf_level = 0.95, # nolint
                              pval_method = c("log-rank", "wald",  "likelihood"),
                              ...) {
 
@@ -144,7 +144,7 @@ s_coxph_pairwise <- function(formula,
     fit_unstratified <- coxph(formula = form_unstr, data = df_lvl, ...)
     unstratified <- coxph_extract(
       fit_unstratified,
-      conf.int = conf.int,
+      conf_level = conf_level,
       pval_method = pval_method)
 
     stratified <- if (is.null(form_str)) {
@@ -152,7 +152,7 @@ s_coxph_pairwise <- function(formula,
     } else {
       fit_stratified <- coxph(formula = form_str, data = df_lvl, ...)
       coxph_extract(fit_stratified,
-                    conf.int = conf.int,
+                    conf_level = conf_level,
                     pval_method = pval_method)
     }
 
@@ -160,7 +160,7 @@ s_coxph_pairwise <- function(formula,
       compare = c(reference = reference_lvl, comparison = lvl),
       unstratified = unstratified,
       stratified = stratified,
-      conf.int = conf.int,
+      conf_level = conf_level,
       pval_method = pval_method
     )
   })
@@ -190,13 +190,13 @@ s_coxph_pairwise <- function(formula,
 #'
 #' tern:::coxph_extract(fit)
 coxph_extract <- function(fit,
-                          conf.int = 0.95, # nolint
+                          conf_level = 0.95, # nolint
                           pval_method = c("log-rank", "wald",  "likelihood")) {
 
   stopifnot(is(fit, "coxph"))
   pval_method <- match.arg(pval_method)
 
-  msum <- summary(fit, conf.int = conf.int)
+  msum <- summary(fit, conf.int = conf_level)
 
   pval <- switch(pval_method,
     "wald" = msum$waldtest["pvalue"],
@@ -216,7 +216,7 @@ coxph_extract <- function(fit,
     pvalue = as.vector(pval),
     hr =  hr,
     hr_ci = hr_ci,
-    conf.int = conf.int,
+    conf_level = conf_level,
     pval_method = pval_method
   )
 

@@ -4,7 +4,7 @@
 \alias{ttest_two_arm}
 \title{Performs 2-arm t-test between comparison group against the reference group.}
 \usage{
-ttest_two_arm(x, col_by, conf.level = 0.95, ...)
+ttest_two_arm(x, col_by, conf_level = 0.95, ...)
 }
 \arguments{
 \item{x}{(\code{numeric} vector)}
@@ -12,7 +12,7 @@ ttest_two_arm(x, col_by, conf.level = 0.95, ...)
 \item{col_by}{(\code{factor} vector)\cr
 Containing two or more levels. First level is taken as reference level}
 
-\item{conf.level}{(\code{numeric} value)\cr
+\item{conf_level}{(\code{numeric} value)\cr
 Number indicating confidence level. Default is 0.95
 Must be greater than 0 and less than 1.}
 

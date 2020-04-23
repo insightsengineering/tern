@@ -157,7 +157,7 @@ iqr_num3 <- function(x, na.rm = TRUE) { # nolint
 #' @param x (\code{numeric} vector)
 #' @param col_by (\code{factor} vector)\cr
 #'   Containing two or more levels. First level is taken as reference level
-#' @param conf.level (\code{numeric} value)\cr
+#' @param conf_level (\code{numeric} value)\cr
 #'   Number indicating confidence level. Default is 0.95
 #'   Must be greater than 0 and less than 1.
 #' @param ... (optional)\cr
@@ -175,17 +175,17 @@ iqr_num3 <- function(x, na.rm = TRUE) { # nolint
 #'               var.equal = TRUE)
 ttest_two_arm <- function(x,
                           col_by,
-                          conf.level = 0.95, # nolint
+                          conf_level = 0.95, # nolint
                           ...) {
 
   stopifnot(
-    is.numeric(conf.level),
-    conf.level <= 1 && conf.level >= 0,
+    is.numeric(conf_level),
+    conf_level <= 1 && conf_level >= 0,
     nlevels(col_by) == 2
   )
 
   col_by <- relevel(col_by, ref = levels(col_by)[2])
-  fit <- t.test(x ~ col_by, conf.level = conf.level, ...)
+  fit <- t.test(x ~ col_by, conf.level = conf_level, ...)
 
   result <- list(
     ci = fit$conf.int,
@@ -194,6 +194,10 @@ ttest_two_arm <- function(x,
     tvalue = fit$statistic,
     pvalue = fit$p.value
   )
+
+  names(attributes(result$ci))[
+    which(names(attributes(result$ci)) == "conf.level")
+    ] <- "conf_level";
 
   attr(result, "ref.level") <- levels(col_by)[2]
   return(result)
@@ -205,7 +209,7 @@ ttest_two_arm <- function(x,
 #'  will use \code{qt} function with degree of freedom of \code{n - 1}
 #'
 #' @param x (\code{numeric} vector)
-#' @param conf.level (\code{numeric} value)
+#' @param conf_level (\code{numeric} value)
 #'   Specifies confidence level. Must be greater than 0 and less than 1.
 #' @param ... (optional)
 #'   Other arguments from \code{\link{stats}{t.test}}
@@ -215,19 +219,22 @@ ttest_two_arm <- function(x,
 #' @export
 #'
 #' @examples
-#' ttest_ci_one_arm(c(1,2,3,4,5,6,7,8, NA), conf.level = 0.95, mu = 1, alternative = "less")
+#' ttest_ci_one_arm(c(1,2,3,4,5,6,7,8, NA), conf_level = 0.95, mu = 1, alternative = "less")
 ttest_ci_one_arm <- function(x,
-                             conf.level = 0.95, # nolint
+                             conf_level = 0.95, # nolint
                              ...) {
 
-  stopifnot(is.numeric(conf.level), conf.level <= 1 && conf.level >= 0)
+  stopifnot(is.numeric(conf_level), conf_level <= 1 && conf_level >= 0)
 
   result <- if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
-    t.test(x, conf.level = conf.level, ...)$conf.int
+    t.test(x, conf.level = conf_level, ...)$conf.int
   }
 
-  attr(result, "conf.level") <- conf.level
+  names(attributes(result))[
+    which(names(attributes(result)) == "conf.level")
+    ] <- "conf_level";
+
   return(result)
 }

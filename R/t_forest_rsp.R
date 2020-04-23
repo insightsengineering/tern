@@ -77,7 +77,7 @@
 #'   col_by = as_factor_keep_attributes(ADRS_f$ARM),
 #'   row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] %>%
 #'     map(as_factor_keep_attributes),
-#'   conf_int = 0.9
+#'   conf_level = 0.9
 #' )
 #'
 #' tbl
@@ -112,7 +112,7 @@ t_forest_rsp <- function(rsp,
                          row_by_list = NULL,
                          total = "ALL",
                          strata_data = NULL,
-                         conf_int = 0.95,
+                         conf_level = 0.95,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
@@ -120,7 +120,7 @@ t_forest_rsp <- function(rsp,
     is.logical(rsp),
     is.null(total) || is_character_single(total),
     is.null(row_by_list) || is.list(row_by_list),
-    is_numeric_single(conf_int) && (0 < conf_int) && (conf_int < 1)
+    is_numeric_single(conf_level) && (0 < conf_level) && (conf_level < 1)
   )
 
   check_strata(strata_data)
@@ -156,7 +156,7 @@ t_forest_rsp <- function(rsp,
           col_by = content$col_by,
           strata_data = if (is.null(strata_data)) NULL else subset(content, select = -c(rsp, col_by)),
           row_name = name,
-          conf_int = conf_int,
+          conf_level = conf_level,
           dense_header = dense_header
         )
       )
@@ -204,7 +204,7 @@ t_forest_rsp <- function(rsp,
 #'   Used for \code{\link[survival:strata]{stratification factors}}
 #'   If \code{NULL}, no stratified analysis is performed.
 #' @param row_name (\code{character} value) name of row
-#' @param conf_int (\code{numeric} value) confidence level of the interval
+#' @param conf_level (\code{numeric} value) confidence level of the interval
 #' @param dense_header (\code{logical} value) Display the table headers in multiple rows.
 #'
 #' @return \code{rtable} with one row
@@ -235,7 +235,7 @@ t_forest_rsp <- function(rsp,
 t_el_forest_rsp <- function(rsp,
                             col_by,
                             strata_data = NULL,
-                            conf_int = 0.95,
+                            conf_level = 0.95,
                             row_name = "",
                             dense_header = FALSE) {
   # currently only works for factor
@@ -246,7 +246,7 @@ t_el_forest_rsp <- function(rsp,
   check_col_by_factor(rsp, col_by, col_N,  min_num_levels = 2)
   stopifnot(
     is.logical(rsp),
-    is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1
+    is_numeric_single(conf_level) && 0 < conf_level && conf_level < 1
   )
 
   if (nlevels(col_by) != 2) {
@@ -277,7 +277,7 @@ t_el_forest_rsp <- function(rsp,
     if (is.null(strata_data)) {
       or_tbl <- table(rsp, col_by)
       if (all(dim(or_tbl) == 2)) {
-        odds_ratio(or_tbl, conf_level = conf_int)
+        odds_ratio(or_tbl, conf_level = conf_level)
       } else {
         list(estimator = NA,
              conf.int = c(NA, NA))
@@ -288,7 +288,7 @@ t_el_forest_rsp <- function(rsp,
       strat <- do.call(strata, strata_data)
       or_tbl <- table(rsp, col_by, strat)
       if (all(dim(or_tbl)[1:2] == 2) && all(apply(or_tbl, 3L, sum) >= 2)) {
-        mantelhaen.test(or_tbl, correct = FALSE, conf.level = conf_int)
+        mantelhaen.test(or_tbl, correct = FALSE, conf.level = conf_level)
       } else {
         list(estimate = NA,
              conf.int = c(NA, NA))
@@ -339,7 +339,7 @@ t_el_forest_rsp <- function(rsp,
         "n", "Responders", "Rate",
         "n", "Responders", "Rate",
         if (is.null(strata_data)) "Ratio" else "Ratio*",
-        paste0((conf_int) * 100, "% CI")
+        paste0((conf_level) * 100, "% CI")
       )
     )
   } else {
@@ -358,7 +358,7 @@ t_el_forest_rsp <- function(rsp,
         "n", "Responders", "Response.Rate",
         "n", "Responders", "Response.Rate",
         if (is.null(strata_data)) "Odds Ratio" else "Odds Ratio*",
-        paste0((conf_int) * 100, "% CI")
+        paste0((conf_level) * 100, "% CI")
       )
     )
   }

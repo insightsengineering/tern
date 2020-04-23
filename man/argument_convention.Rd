@@ -14,6 +14,7 @@ argument_convention(
   is_event,
   rsp,
   total,
+  conf_level,
   prune_zero_rows
 )
 }
@@ -53,6 +54,8 @@ is censored}
 \item{total}{(\code{character} value)\cr
 Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
+
+\item{conf_level}{confidence level of the interval.}
 
 \item{prune_zero_rows}{\code{logical} whether to prune all zero rows}
 }

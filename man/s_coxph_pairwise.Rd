@@ -7,7 +7,7 @@
 s_coxph_pairwise(
   formula,
   data,
-  conf.int = 0.95,
+  conf_level = 0.95,
   pval_method = c("log-rank", "wald", "likelihood"),
   ...
 )
@@ -22,7 +22,7 @@ The arm variable needs to be wrapped in \code{\link{arm}}. The
 \item{data}{(\code{data.frame})\cr
 Contains all the variable that are used in \code{formula}}
 
-\item{conf.int}{(\code{numeric} value)\cr
+\item{conf_level}{(\code{numeric} value)\cr
 level for computation of the confidence intervals.
 If set to \code{FALSE} no confidence intervals are printed}
 
@@ -56,7 +56,7 @@ cox_res[[2]]$stratified
 cox_res2 <- s_coxph_pairwise(
   formula =  Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARM),
   data = ADTTE_f,
-  conf.int = 0.8, pval_method = "likelihood",  ties = "breslow"
+  conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
 )
 cox_res2[[2]]$stratified
 cox_res2[[2]]$unstratified

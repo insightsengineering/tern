@@ -12,7 +12,7 @@ t_el_forest_tte(
   ties = "exact",
   time_unit = "month",
   row_name = "",
-  conf_int = 0.95,
+  conf_level = 0.95,
   dense_header = TRUE
 )
 }
@@ -39,7 +39,7 @@ Used for \code{\link[survival:strata]{stratification factors}}
 
 \item{row_name}{(\code{character} value) name of row}
 
-\item{conf_int}{(\code{numeri} value) confidence level of the interval}
+\item{conf_level}{(\code{numeri} value) confidence level of the interval}
 
 \item{dense_header}{(\code{logical} value) Display the table headers in multiple rows.}
 }
@@ -64,7 +64,7 @@ t_el_forest_tte(
   tte = tte,
   is_event = is_event,
   col_by = col_by,
-  conf_int = 0.9
+  conf_level = 0.9
 )
 
 t_el_forest_tte(
