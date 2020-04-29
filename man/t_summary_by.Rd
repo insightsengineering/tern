@@ -164,8 +164,9 @@ t_summary_by(
 )
 
 # imitate behavior of t_summarize_by_visit by adding function compare_in_header
-ADSL <- cadsl
-ADVS <- cadvs
+ADSL <- radsl(cached = TRUE)
+ADVS <- radvs(cached = TRUE) \%>\%
+ dplyr::filter(PARAMCD=="DIABP")
 
 t_summary_by(
   x = compare_in_header(ADVS[c("AVAL", "CHG")]),

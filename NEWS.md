@@ -4,6 +4,7 @@
   will be provided.
 * Added `prune_zero_rows` argument to `t_events_per_term_grade_id` and `t_max_grade_per_id` to not show rows of all zeros
   as they can clutter the visualization in the Shiny app and make it slower.
+* Fixed position of (N=xx) in `t_summary_by` output when numeric columns are summarized in parallel with `compare_in_header` 
 
 # tern 0.6.6
 
