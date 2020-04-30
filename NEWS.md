@@ -1,4 +1,6 @@
-# tern 0.6.6.9000
+# tern 0.6.5.9000
+
+* Added new tern function `t_abnormality` and the elementary table function `t_el_abnormality`
 * Removed `grade_levels` argument from `t_events_term_grade_id` functions. If a different ordering of the rows is needed,
   this must be done through postprocessing by reordering the leaves of the table tree. Eventually, a helper function
   will be provided.

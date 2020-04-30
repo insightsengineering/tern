@@ -31,6 +31,7 @@ reference:
       - t_count_true.data.frame
       - t_count_unique
       - t_logistic
+      - t_abnormality
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.

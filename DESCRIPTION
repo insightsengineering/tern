@@ -75,6 +75,7 @@ Collate:
     'package.R'
     'safe_join.R'
     'split.R'
+    't_abnormality.R'
     't_count_true.R'
     't_count_unique.R'
     't_coxph.R'
