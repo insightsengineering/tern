@@ -19,6 +19,7 @@ cdisc
 CDISC
 CMD
 covr
+coxph
 dataname
 datanames
 Evaluable
@@ -66,6 +67,7 @@ testthat
 TLG
 TLGs
 tm
+t_coxph
 ui
 UI
 unstratified

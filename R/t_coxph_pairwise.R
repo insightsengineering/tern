@@ -1,10 +1,20 @@
-
-#' Proportional Hazards Regression Model Fit Summary Table
+#' Proportional Hazards Regression Model Fit Summary Table (pair-wise for multiple arms)
 #'
 #' An \code{\link[rtables]{rtable}} format of \code{\link[tern]{s_coxph_pairwise}}
-#' results for further annotation on top of Kaplan-Meier grob
+#' results for further annotation on top of Kaplan-Meier grob.
 #'
 #' @inheritParams s_coxph_pairwise
+#'
+#' @details
+#' The Cox PH model is evaluated pair-wise (reference to
+#' comparison) and \code{\link[survival]{coxph}} is used to get the p-value,
+#' calculate the hazard ratio and confidence interval.
+#' For example, given an ARM variable has reference group "ARM A" and
+#' two comparison groups "ARM B" and "ARM C",
+#' t_coxph_pairwise will conduct two Cox PH models for the specified \code{formula},
+#' one is for the subset data with only "ARM A" and "ARM B",
+#' the other is for the subset data with only "ARM A" and "ARM C".
+#'
 #'
 #' @import survival
 #' @import rtables
@@ -19,23 +29,23 @@
 #' ADTTE <- cadtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'
-#' tbl <- t_coxph(
+#' tbl <- t_coxph_pairwise(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARM) + strata(SEX),
 #'   data = ADTTE_f
 #' )
 #' tbl
 #'
-#' tbl <- t_coxph(
+#' tbl <- t_coxph_pairwise(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX),
 #'   data = ADTTE_f,
 #'   conf_level = 0.8, pval_method = "wald", ties = "exact"
 #' )
 #' tbl
-t_coxph <- function(formula,
-                    data,
-                    conf_level = 0.95, # nolint
-                    pval_method = c("log-rank", "wald",  "likelihood"),
-                    ...) {
+t_coxph_pairwise <- function(formula,
+                             data,
+                             conf_level = 0.95, # nolint
+                             pval_method = c("log-rank", "wald",  "likelihood"),
+                             ...) {
 
   pval_method <- match.arg(pval_method)
 

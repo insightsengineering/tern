@@ -78,7 +78,7 @@ Collate:
     't_abnormality.R'
     't_count_true.R'
     't_count_unique.R'
-    't_coxph.R'
+    't_coxph_pairwise.R'
     't_disposition.R'
     'utils.R'
     't_events_term_grade_id.R'
