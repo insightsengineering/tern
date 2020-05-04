@@ -79,7 +79,7 @@ test_that(
       baseline = sas_na(advs$BNRIND),
       id = advs$USUBJID,
       exclude_base_abn = FALSE,
-      row_by = advs[, c("PARAMCD"), drop = FALSE],
+      row_by = advs[, c("PARAMCD")],
       col_by = advs$ARM,
       col_N = c(10, 12, 17)
     )
@@ -143,7 +143,7 @@ test_that(
       baseline = sas_na(advs$BNRIND),
       id = advs$USUBJID,
       exclude_base_abn = TRUE,
-      row_by = advs[, c("PARAMCD"), drop = FALSE],
+      row_by = advs[, c("PARAMCD")],
       col_by = advs$ARM,
       col_N = c(10, 12, 17),
       total = "ALL"
