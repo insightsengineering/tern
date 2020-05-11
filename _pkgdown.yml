@@ -32,6 +32,7 @@ reference:
       - t_count_unique
       - t_logistic
       - t_abnormality
+      - t_events_patyear
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.

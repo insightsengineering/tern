@@ -28,7 +28,9 @@ test_strict(
     "t_tte.Rd",
     "tabulate_pairwise.Rd",
     "to_rtable.Rd",
-    "t_coxph_pairwise.Rd"
+    "t_coxph_pairwise.Rd",
+    "ci_patyear.Rd",
+    "t_events_patyear.Rd"
     # simpleWarning in model.matrix.default(Terms, mf, contrasts = contrast.arg): partial argument match of 'contrasts'
     # to 'contrasts.arg'
   )

@@ -80,6 +80,7 @@ Collate:
     't_count_unique.R'
     't_coxph_pairwise.R'
     't_disposition.R'
+    't_events_patyear.R'
     'utils.R'
     't_events_term_grade_id.R'
     't_events_term_id.R'
