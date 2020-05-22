@@ -33,6 +33,7 @@ reference:
       - t_logistic
       - t_abnormality
       - t_events_patyear
+      - t_binary_outcome
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
@@ -61,6 +62,10 @@ reference:
       - s_coxph_pairwise
       - s_logistic_single
       - s_logistic_interaction
+      - s_proportion
+      - s_proportion_diff
+      - s_adj_proportion_diff
+      - s_test_proportion_diff
 
   - title: Graphs
     desc: Graphs

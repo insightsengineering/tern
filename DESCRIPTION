@@ -58,6 +58,7 @@ BugReports: https://github.roche.com/NEST/tern/issues
 Collate:
     'aa_trees.R'
     'argument_convention.R'
+    'binary_endpoints.R'
     'check_data.R'
     'conf_level.R'
     'decorate_grob.R'

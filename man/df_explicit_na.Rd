@@ -37,16 +37,13 @@ be executed by setting the \code{char_as_factor} variable to \code{TRUE}.
 \examples{
 
 my_data <- data.frame(
-  x = c("A", "B", NA, "C"),
-  y = c("D", "E", "F", "E"),
+  v = c("A", NA, NA, NA),
+  w = c("A", "B", NA, "C"),
+  x = c("D", "E", "F", NA),
+  y = c("G", "H", "I", NA),
   z = c(1, 2, 3, 4)
 )
 
-df_explicit_na(my_data)
-
-library(random.cdisc.data)
-ADSL <- radsl(N = 100, na_percentage = 0.1)
-df_explicit_na(ADSL, omit_columns = c("USUBJID", "STUDYID"))
-
+df_explicit_na(my_data, omit_columns = c("x", "y"))
 
 }

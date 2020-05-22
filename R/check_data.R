@@ -197,6 +197,10 @@ check_strata <- function(strata_data) {
   }
 }
 
+#' Check input format for stratification variable(s)
+#' @param strata_data - data.frame or character vector or factor vector
+#' @importFrom utils.nest is_character_vector
+#' @noRd
 check_strata_levels <- function(strata_data) {
 
   if (is_character_vector(strata_data) || is.factor(strata_data)) {
@@ -213,12 +217,27 @@ check_strata_levels <- function(strata_data) {
   }
 }
 
+check_binary_endpoint_args <- function(rsp, col_by, strata_data){
+
+  check_col_by_factor(rsp, col_by, get_N(col_by), min_num_levels = 2)
+  check_same_n(rsp = rsp, col_by = col_by)
+  check_is_event(rsp)
+
+  if (!is.null(strata_data)) {
+    check_same_n(rsp = rsp, strata_data = strata_data)
+    check_data_frame(strata_data)
+    check_strata_levels(strata_data)
+  }
+
+}
+
 
 #' check all numbers are in desired range
 #' @param x a numeric object
 #' @param min a numeric value specifying the lower boundary (exclusive), with default value \code{0}
 #' @param max a numeric value specifying the upper boundary (exclusive), with default value \code{1}
 #'
+#' @importFrom utils.nest is_numeric_single
 #' @examples
 #' conf.init <- 0.7
 #' tern:::check_numeric_range(conf.init)
