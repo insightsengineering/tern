@@ -70,6 +70,7 @@
 #' Viewer(tbl)
 #' }
 #'
+#' \dontrun{
 #' # Example 2 - ARM B as reference, ARM C displayed before ARM A
 #' #    "NON CR/PD" response category displayed in partition section, "NE" responses
 #' #     are not displayed model with two stratifiaction factors, CMH test performed
@@ -81,6 +82,7 @@
 #' )
 #'
 #' tbl2
+#' }
 #'
 #' \dontrun{
 #' Viewer(tbl2)

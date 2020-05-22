@@ -1,5 +1,6 @@
 # tern 0.6.6.9000
 
+* Added new tern function `t_coxreg` as single interface for diverse cox regression types
 * Added new tern function `t_events_patyear` to create event table adjusted person-years
 * Added new tern function `t_abnormality` and the elementary table function `t_el_abnormality`
 * Removed `grade_levels` argument from `t_events_term_grade_id` functions. If a different ordering of the rows is needed,

@@ -102,7 +102,7 @@ t_abnormality(
   baseline = sas_na(ANL$BNRIND),
   id = ANL$USUBJID,
   exclude_base_abn = TRUE,
-  row_by = ANL[, c("PARAMCD")] \%>\% droplevels(),
+  row_by = nested_by(ANL[,c("PARAMCD")]),
   col_by = ANL$ARM,
   col_N = 6,
   total = NULL,
@@ -111,27 +111,27 @@ t_abnormality(
 
 # example 2
 ADSL <- radsl(cached = TRUE)
-ADLB <- radlb(cached = TRUE)
-ADLB_labels <- var_labels(ADLB)
-ADLB_base <- ADLB \%>\%
+ADLB0 <- radlb(cached = TRUE)
+ADLB_labels <- var_labels(ADLB0)
+ADLB_base <- ADLB0 \%>\%
  dplyr::filter(ABLFL == "Y") \%>\%
  dplyr::select(USUBJID, PARAM, ANRIND) \%>\%
  dplyr::rename(BNRIND = ANRIND)
 
-ADLB1 <- merge(ADLB, ADLB_base, by = c("USUBJID", "PARAM")) \%>\%
+ADLB <- merge(ADLB0, ADLB_base, by = c("USUBJID", "PARAM")) \%>\%
  dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y")
 
-ADLB1$ANRIND <- as.character(ADLB1$ANRIND)
-ADLB1$ANRIND[c(1,10,500)] <- " "
-ADLB1$ANRIND <- ADLB1$ANRIND \%>\% sas_na() \%>\% as.factor()
-var_labels(ADLB1) <- c(ADLB_labels, BNRIND = "Baseline Grade")
+ADLB$ANRIND <- as.character(ADLB$ANRIND)
+ADLB$ANRIND[c(1,10,500)] <- " "
+ADLB$ANRIND <- ADLB$ANRIND \%>\% sas_na() \%>\% as.factor()
+var_labels(ADLB) <- c(ADLB_labels, BNRIND = "Baseline Grade")
 
 tbl2 <- t_abnormality(
-  grade = ADLB1$ANRIND,
+  grade = ADLB$ANRIND,
   abnormal = c("LOW", "HIGH"),
-  baseline = ADLB1$BNRIND,
-  id = ADLB1$USUBJID,
-  row_by = ADLB1[, c("PARAM", "AVISIT")] \%>\% droplevels(),
+  baseline = ADLB$BNRIND,
+  id = ADLB$USUBJID,
+  row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
   col_by = by_all("All Patients"),
   col_N = nrow(ADSL),
   table_tree = FALSE
