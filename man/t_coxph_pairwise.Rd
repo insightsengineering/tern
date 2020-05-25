@@ -64,6 +64,14 @@ tbl <- t_coxph_pairwise(
   conf_level = 0.8, pval_method = "wald", ties = "exact"
 )
 tbl
+
+# If the event never happened in selection, a note is returned in the tabulation
+tbl <- t_coxph_pairwise(
+  formula = Surv(time = AVAL, event = CNSR - CNSR) ~ arm(ARMCD) + strata(SEX),
+  data = ADTTE_f,
+  conf_level = 0.8, pval_method = "wald", ties = "exact"
+)
+tbl
 }
 \author{
 Heng Wang (wangh107) \email{wang.heng@gene.com}

@@ -367,6 +367,14 @@ explicit_special <- function(formula_terms, special){
 #'   conf_level = 0.8, pval_method = "wald", ties = "exact"
 #' )
 #' tbl
+#'
+#' # If the event never happened in selection, a note is returned in the tabulation
+#' tbl <- t_coxph_pairwise(
+#'   formula = Surv(time = AVAL, event = CNSR - CNSR) ~ arm(ARMCD) + strata(SEX),
+#'   data = ADTTE_f,
+#'   conf_level = 0.8, pval_method = "wald", ties = "exact"
+#' )
+#' tbl
 t_coxph_pairwise <- function(formula,
                              data,
                              conf_level = 0.95, # nolint
@@ -374,17 +382,24 @@ t_coxph_pairwise <- function(formula,
                              ...) {
 
   pval_method <- match.arg(pval_method)
-
-  # this runs both stratified and unstratified if there is a strata special
-  coxph_values <- s_coxph_pairwise(formula, data, conf_level, pval_method, ...)
-
-  sel <- ifelse(has_special_strata(formula), "stratified", "unstratified")
   pval_method_str <- capitalize(pval_method)
 
+  header <- c("HR", paste0(conf_level * 100, "% CI of HR"), paste0(pval_method_str, " p-value"))
 
-  tbl <- rtablel(
-    header = c("HR", paste0(conf_level * 100, "% CI of HR"), paste0(pval_method_str, " p-value")),
-    lapply(coxph_values[-1], function(xi) {
+  nevents <- sum(with(data, eval(attr(terms(formula), "variables")[[2]])[, "status"]))
+
+  if (nevents == 0) {
+
+    rrows <- list(rrow("*NOTE: ", rcell("No estimates as the event was not observed in selection.", colspan = 3)))
+    footnote <- "nevent = 0"
+
+  } else {
+    # this runs both stratified and unstratified if there is a strata special
+    coxph_values <- s_coxph_pairwise(formula, data, conf_level, pval_method, ...)
+
+    sel <- ifelse(has_special_strata(formula), "stratified", "unstratified")
+
+    rrows <- lapply(coxph_values[-1], function(xi) {
       # don't want row for reference arm
       vals <- xi[[sel]]
       rrow(
@@ -394,9 +409,16 @@ t_coxph_pairwise <- function(formula,
         rcell(vals$pvalue, format = "xx.xxxx")
       )
     })
+
+    footnote <- paste0("pairwise comparison to \"", names(coxph_values)[1], "\"")
+  }
+
+  tbl <- rtablel(
+    header,
+    rrows
   )
 
-  attr(tbl, "footnotes") <- paste0("pairwise comparison to \"", names(coxph_values)[1], "\"")
+  attr(tbl, "footnotes") <- footnote
   tbl
 }
 
