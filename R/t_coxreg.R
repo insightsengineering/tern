@@ -12,15 +12,19 @@
 #'   a pairwise model or a range of candidate univariate models. See `details`.
 #' @param data (\code{data.frame})\cr
 #'   Contains all the variables that are used in \code{formula}
-#' @param ... (optional) other argument passed to cox regression:
-#' + `conf_level`   The level of confidence for the hazard ration interval estimations. Default is 0.95.
-#' + `pval_method`  The method used for estimation of p.values, should be one of `wald` (default) or
-#'   `likelihood`.
-#' + `ties` a character string specifying the method for tie handling, one of `exact` (default), `efron`, `breslow`.
-#' + `increments` If a quantitative variable is included, it is possible to provide the expected level
+#' @param simplify returns a `rtables` object instead of a list of `rtables object` when the variable
+#'   contained in `pairwise` has only two levels.
+#' @param conf_level confidence level of the interval.
+#' @param pval_method The method used for estimation of p.values, should be one of `wald` (default)
+#'    or `likelihood`. The `log-rank` can be accepted for models including
+#'    a single variable, specified through `pairwise()`.
+#' @param increments If a quantitative variable is included, it is possible to provide the expected level
 #'   of estimation for the interaction. If provided, it should then be list where
-#'   each item is vector giving expected levels and is named after the variable name as it appears
+#'   each item is a vector giving expected levels and is named after the variable name as it appears
 #'   in the formula.
+#' @param ... (optional) other arguments passed to cox regression:
+#' + `ties` a character string specifying the method for tie handling, one of `exact` (default), `efron`, `breslow`.
+#' + see  \code{\link[survival:coxph]{coxph()}} for possible options.
 #'
 #' @details
 #'   Possible model specifications:
@@ -33,7 +37,8 @@
 #'   each `Cov`. Replacing the symbol `+` by `*` will result in the additional estimation of the interaction
 #'   terms. This is similar to `COXT01` standards.
 #'   * `Surv(time, event) ~ Pred + Cov1 + ... ` estimate the simple effect of multiple Cox regression.
-#'   This provides the `COXT02` standard output.
+#'   This provides the `COXT02` standard output. Note that the variables in returned tabulation are matched
+#'   by position in `formula`.
 #'
 #'   Known limits:
 #'
@@ -46,6 +51,8 @@
 #'
 #' @return Depending on `formula`, returns an object of class `tbl` for every level of `pairwise()`
 #'   if included in `COXT01`, a single `tbl` otherwise.
+#'
+#' @export
 #'
 #' @seealso \code{\link{t_coxph_pairwise}},
 #'   \code{\link{t_cox_univariate}},
@@ -76,13 +83,13 @@
 #' )
 #'
 #' # For annotation on top of Kaplan-Meier grob.
-#' tern:::t_coxreg(
+#' t_coxreg(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD), data = ADTTE_f,
 #'   conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
 #' )
 #'
 #' ## COXT01 - Standard output, no interactions
-#' tern:::t_coxreg(
+#' t_coxreg(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + univariate(SEX, RACE, AGE),
 #'   data = ADTTE_f
 #' )
@@ -104,7 +111,7 @@
 #'
 #' ## COXT01 - options: control ties, set confidence interval level, choose a strata,
 #' ## modify pval_method
-#' tern:::t_coxreg(
+#' t_coxreg(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + strata(SEX) +
 #'     univariate(RACE, AGE),
 #'   data = ADTTE_f, conf_level = 0.80,
@@ -131,7 +138,7 @@
 #'
 #' \dontrun{
 #'   ## COXT01 - Addition of the interaction and increments to choose estimated levels
-#'   tern:::t_coxreg(
+#'   t_coxreg(
 #'     formula =  Surv(time = AVAL, event = 1 - CNSR) ~
 #'       pairwise(ARMCD) * univariate(RACE, SEX, AGE, X),
 #'     data = ADTTE_f, conf_level = 0.74, increments = list(X = c(-1, 0, 2))
@@ -146,7 +153,7 @@
 #'     filter(PARAMCD == "PFS" & ARMCD != "ARM C")
 #'   ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 #'   ADTTE$SEX <- droplevels(ADTTE$SEX)
-#'   tern:::t_coxreg(
+#'   t_coxreg(
 #'     formula = Surv(time = AVAL, event = 1 - CNSR) ~
 #'       pairwise(ARMCD) * univariate(SEX, BMRKR2, AGE),
 #'     data = ADTTE,
@@ -158,15 +165,21 @@
 #'   coef(m2)
 #'
 #'   # For COXT02
-#'   tern:::t_coxreg(
+#'   t_coxreg(
 #'     formula = Surv(time = AVAL, event = 1 - CNSR) ~ ARMCD + RACE * AGE, data = ADTTE_f,
 #'     conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
 #'   )
 #' }
 
-t_coxreg <- function(formula, data, ...) {
+t_coxreg <- function(formula, data,
+                     simplify = TRUE, conf_level = 0.95,
+                     pval_method = c("wald",  "likelihood", "log-rank"),
+                     increments = NULL, ...) {
 
   check_formula(formula)
+  pval_method <- match.arg(pval_method)
+
+  if (!is.logical(simplify)) stop("Simplify should be either TRUE or FALSE")
   tf        <- terms(formula, specials = c("strata", "pairwise", "univariate"))
   tf_factor <- attr(tf, "factors")
 
@@ -178,6 +191,11 @@ t_coxreg <- function(formula, data, ...) {
   pairwise <- explicit_special(formula_terms = tf, special = "pairwise")
   strat    <- explicit_special(formula_terms = tf, special = "strata")
   univ     <- explicit_special(formula_terms = tf, special = "univariate")
+
+  if (!is.null(pairwise)) {
+    n_lvl_pairwise <- nlevels(data[[pairwise$v]])
+    if (n_lvl_pairwise < 2) stop("The variable in `pairwise` needs at least two levels.")
+  }
 
   covariates <- rownames(tf_factor)[-c(1, unlist(attr(tf, "specials")))]
   if (length(covariates) == 0) covariates <- NULL
@@ -199,7 +217,10 @@ t_coxreg <- function(formula, data, ...) {
     )
 
     suppressWarnings({
-      y <- t_coxph_pairwise(formula = formula, data = data, ...)
+      y <- t_coxph_pairwise(
+        formula = formula, data = data, conf_level = conf_level,
+        pval_method = pval_method, ...
+      )
     })
     return(y)
   }
@@ -239,9 +260,17 @@ t_coxreg <- function(formula, data, ...) {
       X = data, FUN = function(x) {
         t_cox_univariate(
           formula = form_ref, data = x, covariates = covariates,
-          interactions = max(form_order) == 2, ...)
+          conf_level = conf_level, pval_method = pval_method,
+          interactions = max(form_order) == 2,
+          increments = increments,
+          ...
+        )
       }
     )
+
+    if (simplify & length(y) == 1) {
+      y <- y[[1]]
+    }
 
     return(y)
 
@@ -259,11 +288,17 @@ t_coxreg <- function(formula, data, ...) {
       stop("The second order interactions are not yet integrated in `t_coxreg`.
       Remove interaction terms or, if required by the study, refers to `survival::coxph()`.")
     }
-    y <- t_cox_multivariate(formula = formula, data = data, ...)
+    y <- t_cox_multivariate(
+      formula = formula, data = data, conf_level = conf_level,
+      pval_method = pval_method,
+      ...
+    )
 
     return(y)
 
   }
+
+  stop("The arguments don't match a standard use case. Please, refers to `?t_coxreg`.")
 
 }
 
@@ -1525,7 +1560,7 @@ t_cox_multivariate <- function(formula, data,
     conf_level = conf_level,
     pval_method = pval_method,
     ...
-    )
+  )
 
   mod <- y$mod
   msum <- y$msum
@@ -1619,15 +1654,21 @@ t_cox_multivariate <- function(formula, data,
     }
 
     tbl <- do.call(rbind, lapply(term_labs, make_a_cov_chunk))
+    footer <-   switch(
+      pval_method,
+      wald = "* Wald confidence interval/test",
+      likelihood = "* Wald confidence interval, likelihood ratio test"
+    )
+
     tbl <- rbind(
       tbl,
-      rrow("* Wald confidence interval/test")
+      rrow(footer)
     )
     return(tbl)
 
   } else {
     stop(
-    "The tabulation for Multivariate Cox Model including interaction term estimations is not
+      "The tabulation for Multivariate Cox Model including interaction term estimations is not
     available. Alternatively, the results of such analysis are summarised if using
     `s_cox_multivariate()` instead of `t_cox_multivariate()`"
     )

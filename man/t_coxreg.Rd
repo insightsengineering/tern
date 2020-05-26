@@ -4,7 +4,15 @@
 \alias{t_coxreg}
 \title{Cox regression for standard outputs}
 \usage{
-t_coxreg(formula, data, ...)
+t_coxreg(
+  formula,
+  data,
+  simplify = TRUE,
+  conf_level = 0.95,
+  pval_method = c("wald", "likelihood", "log-rank"),
+  increments = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{(\code{formula}) Specifies \code{\link[survival:Surv]{survival model}}.
@@ -18,16 +26,24 @@ a pairwise model or a range of candidate univariate models. See \code{details}.
 \item{data}{(\code{data.frame})\cr
 Contains all the variables that are used in \code{formula}}
 
-\item{...}{(optional) other argument passed to cox regression:
-\itemize{
-\item \code{conf_level}   The level of confidence for the hazard ration interval estimations. Default is 0.95.
-\item \code{pval_method}  The method used for estimation of p.values, should be one of \code{wald} (default) or
-\code{likelihood}.
-\item \code{ties} a character string specifying the method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.
-\item \code{increments} If a quantitative variable is included, it is possible to provide the expected level
+\item{simplify}{returns a \code{rtables} object instead of a list of \verb{rtables object} when the variable
+contained in \code{pairwise} has only two levels.}
+
+\item{conf_level}{confidence level of the interval.}
+
+\item{pval_method}{The method used for estimation of p.values, should be one of \code{wald} (default)
+or \code{likelihood}. The \code{log-rank} can be accepted for models including
+a single variable, specified through \code{pairwise()}.}
+
+\item{increments}{If a quantitative variable is included, it is possible to provide the expected level
 of estimation for the interaction. If provided, it should then be list where
-each item is vector giving expected levels and is named after the variable name as it appears
-in the formula.
+each item is a vector giving expected levels and is named after the variable name as it appears
+in the formula.}
+
+\item{...}{(optional) other arguments passed to cox regression:
+\itemize{
+\item \code{ties} a character string specifying the method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.
+\item see  \code{\link[survival:coxph]{coxph()}} for possible options.
 }}
 }
 \value{
@@ -51,7 +67,8 @@ separated by comas in special \code{univariate()} to test all bivariate combinat
 each \code{Cov}. Replacing the symbol \code{+} by \code{*} will result in the additional estimation of the interaction
 terms. This is similar to \code{COXT01} standards.
 \item \code{Surv(time, event) ~ Pred + Cov1 + ... } estimate the simple effect of multiple Cox regression.
-This provides the \code{COXT02} standard output.
+This provides the \code{COXT02} standard output. Note that the variables in returned tabulation are matched
+by position in \code{formula}.
 }
 
 Known limits:
@@ -87,13 +104,13 @@ ADTTE_f <- within( # nolint
 )
 
 # For annotation on top of Kaplan-Meier grob.
-tern:::t_coxreg(
+t_coxreg(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD), data = ADTTE_f,
   conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
 )
 
 ## COXT01 - Standard output, no interactions
-tern:::t_coxreg(
+t_coxreg(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + univariate(SEX, RACE, AGE),
   data = ADTTE_f
 )
@@ -115,7 +132,7 @@ tern:::t_coxreg(
 
 ## COXT01 - options: control ties, set confidence interval level, choose a strata,
 ## modify pval_method
-tern:::t_coxreg(
+t_coxreg(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + strata(SEX) +
     univariate(RACE, AGE),
   data = ADTTE_f, conf_level = 0.80,
@@ -142,7 +159,7 @@ tern:::t_coxreg(
 
 \dontrun{
   ## COXT01 - Addition of the interaction and increments to choose estimated levels
-  tern:::t_coxreg(
+  t_coxreg(
     formula =  Surv(time = AVAL, event = 1 - CNSR) ~
       pairwise(ARMCD) * univariate(RACE, SEX, AGE, X),
     data = ADTTE_f, conf_level = 0.74, increments = list(X = c(-1, 0, 2))
@@ -157,7 +174,7 @@ tern:::t_coxreg(
     filter(PARAMCD == "PFS" & ARMCD != "ARM C")
   ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
   ADTTE$SEX <- droplevels(ADTTE$SEX)
-  tern:::t_coxreg(
+  t_coxreg(
     formula = Surv(time = AVAL, event = 1 - CNSR) ~
       pairwise(ARMCD) * univariate(SEX, BMRKR2, AGE),
     data = ADTTE,
@@ -169,7 +186,7 @@ tern:::t_coxreg(
   coef(m2)
 
   # For COXT02
-  tern:::t_coxreg(
+  t_coxreg(
     formula = Surv(time = AVAL, event = 1 - CNSR) ~ ARMCD + RACE * AGE, data = ADTTE_f,
     conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
   )

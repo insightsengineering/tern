@@ -34,6 +34,9 @@ reference:
       - t_abnormality
       - t_events_patyear
       - t_binary_outcome
+      - t_coxreg
+      - t_cox_univariate
+      - t_cox_multivariate
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
@@ -60,6 +63,8 @@ reference:
       - ttest_two_arm
       - a_mmrm
       - s_coxph_pairwise
+      - s_cox_univariate
+      - s_cox_multivariate
       - s_logistic_single
       - s_logistic_interaction
       - s_proportion
