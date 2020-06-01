@@ -60,6 +60,6 @@ t_cox_multivariate(
 t_cox_multivariate(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2,
   data = ADTTE_f
-) # not quite there yet.
+)
 }
 }
