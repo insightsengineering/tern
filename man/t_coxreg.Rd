@@ -116,18 +116,18 @@ t_coxreg(
 )
 
 \dontrun{
-  # For comparison
-  mod10 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD), data = ADTTE_f)
-  mod11 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + SEX, data = ADTTE_f)
-  mod12 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + AGE, data = ADTTE_f)
-  mod13 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + RACE, data = ADTTE_f)
+# For comparison
+mod10 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD), data = ADTTE_f)
+mod11 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + SEX, data = ADTTE_f)
+mod12 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + AGE, data = ADTTE_f)
+mod13 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + RACE, data = ADTTE_f)
 
-  car::Anova(mod10,  test.statistic = "Wald", type = 'III')
-  car::Anova(mod11, test.statistic = "Wald", type = 'III')
-  car::Anova(mod12, test.statistic = "Wald", type = 'III')
-  car::Anova(mod13, test.statistic = "Wald", type = 'III')
+car::Anova(mod10,  test.statistic = "Wald", type = 'III')
+car::Anova(mod11, test.statistic = "Wald", type = 'III')
+car::Anova(mod12, test.statistic = "Wald", type = 'III')
+car::Anova(mod13, test.statistic = "Wald", type = 'III')
 
-  summary(mod13)$coefficients
+summary(mod13)$coefficients
 }
 
 ## COXT01 - options: control ties, set confidence interval level, choose a strata,
@@ -140,56 +140,56 @@ t_coxreg(
 )
 
 \dontrun{
-  # For comparison
-  mod20 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX), data = ADTTE_f)
-  mod21 <- coxph(
-    Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX) + AGE, data = ADTTE_f
-  )
-  mod22 <- coxph(
-    Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX) + RACE,
-    data = ADTTE_f
-  )
+# For comparison
+mod20 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX), data = ADTTE_f)
+mod21 <- coxph(
+  Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX) + AGE, data = ADTTE_f
+)
+mod22 <- coxph(
+  Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD) + strata(SEX) + RACE,
+  data = ADTTE_f
+)
 
-  car::Anova(mod20, test.statistic = "Wald", type = 'III')
-  car::Anova(mod21, test.statistic = "Wald", type = 'III')
-  car::Anova(mod22, test.statistic = "Wald", type = 'III')
+car::Anova(mod20, test.statistic = "Wald", type = 'III')
+car::Anova(mod21, test.statistic = "Wald", type = 'III')
+car::Anova(mod22, test.statistic = "Wald", type = 'III')
 
-  summary(mod22)$coefficients
+summary(mod22)$coefficients
 }
 
 \dontrun{
-  ## COXT01 - Addition of the interaction and increments to choose estimated levels
-  t_coxreg(
-    formula =  Surv(time = AVAL, event = 1 - CNSR) ~
-      pairwise(ARMCD) * univariate(RACE, SEX, AGE, X),
-    data = ADTTE_f, conf_level = 0.74, increments = list(X = c(-1, 0, 2))
-  )
+## COXT01 - Addition of the interaction and increments to choose estimated levels
+t_coxreg(
+  formula =  Surv(time = AVAL, event = 1 - CNSR) ~
+  pairwise(ARMCD) * univariate(RACE, SEX, AGE, X),
+  data = ADTTE_f, conf_level = 0.74, increments = list(X = c(-1, 0, 2))
+)
 
-  ## COXT01: Other example, other data
-  library(dplyr)
-  ADSL <- radsl(cached = TRUE)
-  ADSL <- ADSL \%>\% filter(SEX \%in\% c("F", "M"))
+## COXT01: Other example, other data
+library(dplyr)
+ADSL <- radsl(cached = TRUE)
+ADSL <- ADSL \%>\% filter(SEX \%in\% c("F", "M"))
 
-  ADTTE <- radtte(ADSL, seed = 2) \%>\%
-    filter(PARAMCD == "PFS" & ARMCD != "ARM C")
-  ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
-  ADTTE$SEX <- droplevels(ADTTE$SEX)
-  t_coxreg(
-    formula = Surv(time = AVAL, event = 1 - CNSR) ~
-      pairwise(ARMCD) * univariate(SEX, BMRKR2, AGE),
-    data = ADTTE,
-    increments = list(AGE = mean(ADTTE$AGE)),
-    conf_level = 0.975)
+ADTTE <- radtte(ADSL, seed = 2) \%>\%
+  filter(PARAMCD == "PFS" & ARMCD != "ARM C")
+ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
+ADTTE$SEX <- droplevels(ADTTE$SEX)
+t_coxreg(
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~
+  pairwise(ARMCD) * univariate(SEX, BMRKR2, AGE),
+  data = ADTTE,
+  increments = list(AGE = mean(ADTTE$AGE)),
+  conf_level = 0.975)
 
-  # check HRs
-  m2 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ ARMCD*BMRKR2, data = ADTTE)
-  coef(m2)
+# check HRs
+m2 <- coxph(Surv(time = AVAL, event = 1 - CNSR) ~ ARMCD*BMRKR2, data = ADTTE)
+coef(m2)
 
-  # For COXT02
-  t_coxreg(
-    formula = Surv(time = AVAL, event = 1 - CNSR) ~ ARMCD + RACE * AGE, data = ADTTE_f,
-    conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
-  )
+# For COXT02
+t_coxreg(
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ ARMCD + RACE * AGE, data = ADTTE_f,
+  conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
+)
 }
 }
 \seealso{
