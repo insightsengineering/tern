@@ -61,7 +61,7 @@ NULL
 #'   col_by = ADTTE_f$ARMCD,
 #'   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
 #'   ties = "exact",
-#'   conf_int = 0.9,
+#'   conf_level = 0.9,
 #'   dense_header = TRUE
 #' )
 #'
@@ -102,7 +102,7 @@ t_forest_tte <- function(tte,
                          strata_data = NULL,
                          ties = "exact",
                          time_unit = "month",
-                         conf_int = 0.95,
+                         conf_level = 0.95,
                          dense_header = FALSE,
                          table_tree = FALSE) {
 
@@ -111,7 +111,7 @@ t_forest_tte <- function(tte,
     is.logical(is_event),
     is.null(total) || is_character_single(total),
     is.null(row_by_list) || is.list(row_by_list),
-    is_numeric_single(conf_int) && (0 < conf_int) && (conf_int < 1)
+    is_numeric_single(conf_level) && (0 < conf_level) && (conf_level < 1)
   )
   check_strata(strata_data)
 
@@ -157,7 +157,7 @@ t_forest_tte <- function(tte,
           strata_data = if (is.null(strata_data)) NULL else subset(content, select = -c(tte, is_event, col_by)),
           ties = ties,
           row_name = name,
-          conf_int = conf_int,
+          conf_level = conf_level,
           dense_header = dense_header
         )
       )
@@ -203,7 +203,7 @@ t_forest_tte <- function(tte,
 #' @param ties (\code{character} value) the method used for tie handling in \code{\link[survival]{coxph}}.
 #' @param time_unit (\code{character} value) The unit of median survival time. Default is \code{"months"}.
 #' @param row_name (\code{character} value) name of row
-#' @param conf_int (\code{numeri} value) confidence level of the interval
+#' @param conf_level (\code{numeri} value) confidence level of the interval
 #' @param dense_header (\code{logical} value) Display the table headers in multiple rows.
 #'
 #' @return \code{rtable} with one row
@@ -227,7 +227,7 @@ t_forest_tte <- function(tte,
 #'   tte = tte,
 #'   is_event = is_event,
 #'   col_by = col_by,
-#'   conf_int = 0.9
+#'   conf_level = 0.9
 #' )
 #'
 #' t_el_forest_tte(
@@ -255,11 +255,11 @@ t_el_forest_tte <- function(tte,
                             ties = "exact",
                             time_unit = "month",
                             row_name = "",
-                            conf_int = 0.95,
+                            conf_level = 0.95,
                             dense_header = TRUE) {
   stopifnot(
     is.factor(col_by),
-    is_numeric_single(conf_int) && 0 < conf_int && conf_int < 1
+    is_numeric_single(conf_level) && 0 < conf_level && conf_level < 1
   )
   check_same_n(tte = tte, is_event = is_event, col_by = col_by, strata_data = strata_data)
 
@@ -289,10 +289,10 @@ t_el_forest_tte <- function(tte,
     cox_sum  <- if (any(is_event == TRUE)) {
       if (is.null(strata_data)) {
         # use coxph.control argument to set iteration max to avoid warning if exceeded
-        summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties), conf.int = conf_int)
+        summary(coxph(Surv(tte, is_event) ~ col_by, ties = ties), conf.int = conf_level)
       } else {
         summary(coxph(Surv(tte, is_event) ~ col_by + strata(strata_data), ties = ties),
-                conf.int = conf_int)
+                conf.int = conf_level)
       }
     } else {
       # no events
@@ -390,7 +390,7 @@ t_el_forest_tte <- function(tte,
         "n", "Events", "Median",
         "n", "Events", "Median",
         "Hazard",
-        paste0((conf_int) * 100, "%")
+        paste0((conf_level) * 100, "%")
       ),
       rrow(
         row.name = "Factors",
@@ -417,7 +417,7 @@ t_el_forest_tte <- function(tte,
         "n", "Events", paste0("Median (", time_unit, ")"),
         "n", "Events", paste0("Median (", time_unit, ")"),
         if (is.null(strata_data)) "Hazard Ratio" else "Hazard Ratio*",
-        paste0((conf_int) * 100, "% Wald CI")
+        paste0((conf_level) * 100, "% Wald CI")
       )
     )
   }

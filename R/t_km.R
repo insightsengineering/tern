@@ -7,7 +7,7 @@
 #'   Specifies \code{\link[survival:Surv]{survival model}}
 #' @param data (\code{data.frame})\cr with all the variable that are used in
 #'   \code{formula}
-#' @param conf.int (\code{numeric} value)\cr
+#' @param conf_level (\code{numeric} value)\cr
 #'   level for computation of the confidence intervals.
 #' @param ... (optional)\cr
 #'   additional parameters passed to \code{\link{survfit}}
@@ -39,30 +39,30 @@
 #' tbl <- t_km(formula, data = ADTTE_f, conf.type = "plain")
 #' tbl
 #'
-#' tbl <- t_km(formula, data = ADTTE_f, conf.int = 0.8)
+#' tbl <- t_km(formula, data = ADTTE_f, conf_level = 0.8)
 #' tbl
 t_km <- function(formula,
                  data,
-                 conf.int = 0.95,  # nolint
+                 conf_level = 0.95,  # nolint
                  ...) {
 
-  fit_km <- survfit(formula, data, conf.int = conf.int, ...)
+  fit_km <- survfit(formula, data, conf.int = conf_level, ...)
   sumtable <- summary(fit_km)$table
 
   if (is.null(dim(sumtable))) {
-    kminfo <- sumtable[c("records", "median", paste0(conf.int, "LCL"), paste0(conf.int, "UCL"))]
+    kminfo <- sumtable[c("records", "median", paste0(conf_level, "LCL"), paste0(conf_level, "UCL"))]
     names(kminfo) <- c("records", "median", "LCL", "UCL")
     kminfo <- data.frame(as.list(kminfo))
     rownames(kminfo) <- "All"
   } else {
-    kminfo <- sumtable[, c("records", "median", paste0(conf.int, "LCL"), paste0(conf.int, "UCL")), drop = FALSE]
+    kminfo <- sumtable[, c("records", "median", paste0(conf_level, "LCL"), paste0(conf_level, "UCL")), drop = FALSE]
     colnames(kminfo) <-  c("records", "median", "LCL", "UCL")
   }
 
   skminfo <- split(as.data.frame(kminfo), seq_len(nrow(kminfo)))
 
   rtablel(
-    header = c("N", "median", paste0(conf.int * 100, "% CI for median")),
+    header = c("N", "median", paste0(conf_level * 100, "% CI for median")),
     lapply(skminfo, function(xi) {
       rrow(
         row.name = rownames(xi),

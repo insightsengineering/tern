@@ -142,8 +142,9 @@
 #' )
 #'
 #' # imitate behavior of t_summarize_by_visit by adding function compare_in_header
-#' ADSL <- cadsl
-#' ADVS <- cadvs
+#' ADSL <- radsl(cached = TRUE)
+#' ADVS <- radvs(cached = TRUE) %>%
+#'  dplyr::filter(PARAMCD=="DIABP")
 #'
 #' t_summary_by(
 #'   x = compare_in_header(ADVS[c("AVAL", "CHG")]),
@@ -171,14 +172,12 @@ t_summary_by <- function(x,
     col_N <- col_N_add_total(col_N) #nolintr
     total <- NULL
   }
+
   # should only do this at the very end; this way, hierarchical column will also be added for total_N column
   res <- apply_compare_in_header(x, col_by, col_N = col_N)
-  x <- res$x
-  col_by <- res$col_by
-  col_N <- res$col_N # nolint
 
   tree_data <- rsplit_to_tree(
-    list(x = x, col_by = col_by),
+    list(x = res$x, col_by = res$col_by),
     by_lst = row_by,
     drop_empty_levels = TRUE
   )
@@ -187,14 +186,24 @@ t_summary_by <- function(x,
     function(name, content, path, is_leaf) {
       # only compute for leaf nodes
       content <- if (is_leaf) {
-        t_summary(
+        tbl <- t_summary(
           x = content$x,
           col_by = content$col_by,
-          col_N = col_N,
+          col_N = res$col_N,
           total = total,
           ..., # outer ...
-          table_tree = TRUE
+          table_tree = FALSE
         )
+
+        # post-processing to move (N=xx) row
+        if ("compare_in_header" %in% names(attributes(x)) && nrow(header(tbl)) == 3){
+
+          tbl <- move_header_N(tbl, col_N)
+
+        }
+
+      tbl
+
       } else {
         NULL
       }
@@ -383,4 +392,26 @@ apply_compare_in_header <- function(x,
     ),
     col_N = rep(col_N, each = ncol(x))
   ))
+}
+
+# return modified tbl with header N in second row
+# only applies to compare_in_header use-cases
+move_header_N <- function(tbl, col_N){ # nolint
+
+  l_colspan <- lapply(header(tbl)[[1]], function(cell){
+    attributes(cell)$colspan
+    })
+
+  l_rcell_n <- Map(function(x, cs){
+    rcell(x, colspan = cs, format = "(N=xx)")
+  }, col_N, l_colspan) # nolint
+
+  new_header <- rheader(
+    header(tbl)[[1]],
+    rrowl(NULL, l_rcell_n),
+    header(tbl)[[2]]
+  )
+
+  header(tbl) <- new_header
+  tbl
 }

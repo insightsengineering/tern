@@ -8,7 +8,7 @@ t_el_forest_rsp(
   rsp,
   col_by,
   strata_data = NULL,
-  conf_int = 0.95,
+  conf_level = 0.95,
   row_name = "",
   dense_header = FALSE
 )
@@ -26,7 +26,7 @@ first \code{level} indicates the reference group. See the functions
 Used for \code{\link[survival:strata]{stratification factors}}
 If \code{NULL}, no stratified analysis is performed.}
 
-\item{conf_int}{(\code{numeric} value) confidence level of the interval}
+\item{conf_level}{(\code{numeric} value) confidence level of the interval}
 
 \item{row_name}{(\code{character} value) name of row}
 

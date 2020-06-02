@@ -4,7 +4,7 @@
 \alias{t_km}
 \title{Kaplan-Meier Fit Summary Table}
 \usage{
-t_km(formula, data, conf.int = 0.95, ...)
+t_km(formula, data, conf_level = 0.95, ...)
 }
 \arguments{
 \item{formula}{(\code{formula})\cr
@@ -13,7 +13,7 @@ Specifies \code{\link[survival:Surv]{survival model}}}
 \item{data}{(\code{data.frame})\cr with all the variable that are used in
 \code{formula}}
 
-\item{conf.int}{(\code{numeric} value)\cr
+\item{conf_level}{(\code{numeric} value)\cr
 level for computation of the confidence intervals.}
 
 \item{...}{(optional)\cr
@@ -43,7 +43,7 @@ formula <- Surv(AVAL, 1-CNSR) ~ ARM
 tbl <- t_km(formula, data = ADTTE_f, conf.type = "plain")
 tbl
 
-tbl <- t_km(formula, data = ADTTE_f, conf.int = 0.8)
+tbl <- t_km(formula, data = ADTTE_f, conf_level = 0.8)
 tbl
 }
 \seealso{

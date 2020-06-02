@@ -12,6 +12,7 @@ NULL
 #' (\code{AET04}, \href{http://bioportal.roche.com/stream_doc/2_05/um/report_outputs_aet04.html}{STREAM2.x},
 #' \href{https://rochewiki.roche.com/confluence/pages/viewpage.action?pageId=294027501}{STREAM1.17}).
 #'
+#' @md
 #' @inheritParams argument_convention
 #' @param terms (\code{character} or \code{factor} vector, or \code{data.frame})\cr
 #'   Represents events information.
@@ -23,23 +24,16 @@ NULL
 #'   length or number of rows of \code{terms}.
 #' @param grade (vector)\cr
 #'   contains grade of adverse event.
-#'   For factors, it is assumed that intensity corresponds to the order of the factor levels.
-#'   If that is not the case, see \code{grade_levels}.
-#'   For character or numeric, \code{grade_levels} is required.
-#' @param col_N (\code{numeric} vector)\cr
-#'   Contains information of the number of patients in the
+#'   For factors, it is assumed that intensity corresponds to the order of
+#'   the factor levels, from lowest to worst level.
+#'   If that is not the case, you have to preprocess using `levels(grade) <- new_levels`
+#'   beforehand.
+#'   The resulting table is then  ordered in the same fashion. To instead display
+#'   it in descending maximum grade order, you need to apply some postprocessing.
+#' @param col_N numeric vector with information of the number of patients in the
 #'   levels of \code{col_by}. This is useful if there are patients that have no
 #'   adverse events can be accounted for with this argument.
-#' @param grade_levels (\code{factor} vector)
-#'   The levels of the factor define the severity of the grade and
-#'   the order of display.
-#'   For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
-#'   the most severe grade "c" at the bottom of the table, the least severe grade "a" at the top.
-#'   If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
-#'   If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
-#'   the factor levels of \code{grade}.
-#'   If \code{grade} is not a factor, \code{grade_levels} is required.
-#' @param any_grade (\code{character} value) to specify the row name which counts any occurrence,
+#' @param any_grade string to specify the row name which counts any occurrence,
 #'   it is named \code{Any Grade} by default
 #' @param event_type (\code{character} value) to specify the type of event that is summarized, \code{event} by default.
 #'   Only displayed when \code{terms} has 2 columns.
@@ -63,8 +57,7 @@ NULL
 #'
 #' \code{t_events_per_term_grade_id} fills in \code{col_by} and \code{grade} with \code{0} value
 #' in case there was no events reported for particular \code{col_by} and/or
-#' \code{grade} category. Use \code{grade_levels} to modify the range of desired
-#' grades.
+#' \code{grade} category.
 #'
 #' @return an \code{\link{rtable}} object.
 #'
@@ -84,8 +77,17 @@ NULL
 #'   id = ADAE$USUBJID,
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
+#'   col_N = table(ADSL$ARM)
+#' )
+#'
+#' # don't prune zero rows
+#' t_events_per_term_grade_id(
+#'   terms = ADAE$AEDECOD,
+#'   id = ADAE$USUBJID,
+#'   grade = ADAE$AETOXGR,
+#'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   grade_levels = as.factor(1:5)
+#'   prune_zero_rows = FALSE
 #' )
 #'
 #' # Introducing imperfect data and demo how to preprocess
@@ -119,8 +121,7 @@ NULL
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
-#'   grade_levels = as.factor(1:5)
+#'   total = "All Patients"
 #' )
 #'
 #' t_events_per_term_grade_id(
@@ -129,8 +130,7 @@ NULL
 #'   grade = ADAE$grade_category,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   total = "All Patients",
-#'   grade_levels = unique(sort(ADAE$grade_category))
+#'   total = "All Patients"
 #' )
 #'
 #' t_events_per_term_grade_id(
@@ -139,10 +139,10 @@ NULL
 #'   grade = ADAE$AETOXGR,
 #'   col_by = ADAE$ARM,
 #'   col_N = table(ADSL$ARM),
-#'   grade_levels = as.factor(1:5),
 #'   event_type = "adverse events"
 #' )
 #'
+#' levels(ADAE$grade_category) <- c("Severe", "Moderate", "Mild")
 #' tbls <- t_events_per_term_grade_id(
 #'   terms = ADAE %>% select(AEBODSYS, AEDECOD),
 #'   id = ADAE$USUBJID,
@@ -152,7 +152,6 @@ NULL
 #'   total = "All Patients",
 #'   event_type = "adverse events",
 #'   any_grade = "Any Severity",
-#'   grade_levels = factor(c("Severe", "Moderate", "Mild"), levels = c("Severe", "Moderate", "Mild")),
 #'   table_tree = TRUE
 #' )
 #' summary(tbls)
@@ -163,21 +162,16 @@ t_events_per_term_grade_id <- function(terms,
                                        col_by,
                                        col_N = NULL, # nolint
                                        total = NULL,
-                                       grade_levels = NULL,
                                        event_type = "event",
                                        any_grade = "Any Grade",
+                                       prune_zero_rows = TRUE,
                                        table_tree = FALSE) {
 
 
   terms <- argfix_events_terms(terms)
 
   stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(is.factor(grade_levels) || is.null(grade_levels))
-  stopifnot(is.factor(grade_levels) || is.factor(grade))
-
-  if (is.factor(grade) && is.null(grade_levels)) {
-    grade_levels <- factor(levels(grade), levels = levels(grade))
-  }
+  stopifnot(is_logical_single(prune_zero_rows))
 
   grade_label <- label(grade) %||% deparse(substitute(grade))
 
@@ -210,8 +204,8 @@ t_events_per_term_grade_id <- function(terms,
         col_by = content$col_by,
         col_N = col_N,
         total = total,
-        grade_levels = grade_levels,
-        any_grade = any_grade
+        any_grade = any_grade,
+        prune_zero_rows = prune_zero_rows
       ))
     }
   )
@@ -275,19 +269,9 @@ t_events_per_term_grade_id <- function(terms,
 #' as nested lists.
 #'
 #' @inheritParams argument_convention
-#' @param grade grade of adverse event.
-#'   For factors, it is assumed that intensity corresponds to the order of the factor levels.
-#'   If that is not the case, see \code{grade_levels}.
-#'   For character or numeric, \code{grade_levels} is required.
+#' @param grade `factor` grade of adverse event.
+#'   It is assumed that intensity corresponds to the order of the factor levels.
 #' @param id a vector with id values
-#' @param grade_levels a factor. The values of the factor define the ordering of the rows
-#'   in the resulting table. The levels of the factor define the severity of the grade.
-#'   For example, \code{factor(c("c", "b", "a"), levels = c("a", "b", "c"))} will display
-#'   the most severe grade "c" at the top of the table, the least severe grade "a" at the bottom.
-#'   If \code{grade} is a factor, \code{grade_levels} will overwrite the level orders in \code{grade}.
-#'   If set to \code{NULL} (default), it is assumed that intensity corresponds to the order of
-#'   the factor levels of \code{grade}.
-#'   If \code{grade} is not a factor, \code{grade_levels} is required.
 #' @param any_grade add a row that counts any occurrence, it is named \code{Any
 #'   Grade} by default
 #'
@@ -298,45 +282,54 @@ t_events_per_term_grade_id <- function(terms,
 #'
 #' @examples
 #' t_max_grade_per_id(
-#'   grade = factor(c(1,2,3)),
+#'   grade = factor(c(1, 2, 3)),
 #'   id = c(1,1,1),
 #'   col_by = factor(rep("A", 3)),
 #'   col_N = 3
 #' )
 #'
+#' # don't prune zero rows
+#' t_max_grade_per_id(
+#'   grade = factor(c(1, 2, 3)),
+#'   id = c(1,1,1),
+#'   col_by = factor(rep("A", 3)),
+#'   col_N = 3,
+#'   prune_zero_rows = FALSE
+#' )
+#'
 #' id <- c(1,1,2,2,3,3,3,4)
-#' grade <- factor(c("a","b","c","b","a","a","b","c"))
+#' grade <- factor(c("a", "b", "c", "b", "a", "a", "b", "c"))
+#' levels(grade) <- c("d", "c", "b", "a")
 #' t_max_grade_per_id(
 #'   grade = grade,
 #'   id = id,
 #'   col_by = factor(LETTERS[id]),
-#'   grade_levels = factor(c("d","c","b","a"), levels = c("d","c","b","a")),
-#'   col_N = c(4,3,5,3),
+#'   col_N = c(4, 3, 5, 3),
 #'   any_grade = "Any Class"
 #' )
 #'
 #' t_max_grade_per_id(
-#'   grade = factor(c(1,2,3,2,1,1,2,3)),
+#'   grade = factor(c(1, 2, 3, 2, 1, 1, 2, 3)),
 #'   id = id,
 #'   col_by = factor(LETTERS[id]),
-#'   col_N = c(4,3,5,4)
+#'   col_N = c(4, 3, 5, 4)
 #' )
 #'
 #' \dontrun{
 #' # throws an error because each id can only have one col_by
 #' # t_max_grade_per_id(
-#'   #   grade = factor(c(1,2,3)),
-#'   #   id = c(1,2,2),
+#'   #   grade = factor(c(1, 2, 3)),
+#'   #   id = c(1, 2, 2),
 #'   #   col_by = factor(LETTERS[1:3]),
 #'   #   col_N = c(15, 10, 12)
 #'   # )
 #' }
 #'
 #' \dontrun{
-#' # throws an error because grade NA is not in grade_levels
+#' # throws an error because grade should not be NA
 #' # t_max_grade_per_id(
-#' #   grade =  factor(c(1,2,NA)),
-#' #   id = c(1,2,3),
+#' #   grade =  factor(c(1, 2, NA)),
+#' #   id = c(1, 2, 3),
 #' #   col_by = factor(LETTERS[1:3]),
 #' #   col_N = c(15, 10, 12)
 #' # )
@@ -346,24 +339,16 @@ t_max_grade_per_id <- function(grade,
                                col_by,
                                col_N = NULL, # nolint
                                total = NULL,
-                               grade_levels = NULL,
-                               any_grade = "Any Grade") {
+                               any_grade = "Any Grade",
+                               prune_zero_rows = TRUE) {
   grade_label <- label(grade) %||% deparse(substitute(grade))
 
   stopifnot(is.null(total) || is_character_single(total))
-  stopifnot(is.factor(grade_levels) || is.null(grade_levels))
-  stopifnot(is.factor(grade_levels) || is.factor(grade))
-  stopifnot(!any(duplicated(grade_levels)))
+  stopifnot(is.factor(grade))
   stopifnot(!any(is.na(grade)))
+  stopifnot(is_logical_single(prune_zero_rows))
 
-  grade_levels <- grade_levels %||% levels(as.factor(grade))
-
-  if (length(setdiff(as.factor(grade), grade_levels)) > 0) {
-    stop(paste0("grades exist that are not in grade_levels: ", setdiff(as.factor(grade), grade_levels)))
-  }
-
-  grade <- factor(grade, levels = levels(as.factor(grade_levels)), ordered = TRUE)
-
+  grade <- factor(grade, levels = levels(grade), ordered = TRUE) # needed to take maximum
   stopifnot(!any(is.na(id)))
   col_by <- col_by_to_matrix(col_by, grade)
   col_N <- col_N %||% get_N(col_by) #nolintr
@@ -400,7 +385,7 @@ t_max_grade_per_id <- function(grade,
   # col_by <- col_by_to_factor(col_by) #nolintr
   # df_max <- aggregate(grade ~ id + col_by, FUN = max, drop = TRUE, data = df, na.rm = TRUE) #nolintr
 
-  df_max$grade <- factor(df_max$grade, levels = grade_levels)
+  df_max$grade <- factor(df_max$grade, levels = levels(grade))
   df_max_no_na <- na.omit(df_max)
 
   tbl_any <- if (!is.null(any_grade)) {
@@ -425,6 +410,21 @@ t_max_grade_per_id <- function(grade,
     format = "xx (xx.x%)",
     col_wise_args = list(n_i = col_N)
   )
+
+  if (prune_zero_rows) {
+    # remove attributes of rcell to get content
+    remove_attributes <- function(x) {
+      attributes(x) <- NULL
+      return(x)
+    }
+    # lapply on rtables loops over rows
+    # select rows which are not all equal to 0
+    tbl_x <- tbl_x[
+      vapply(tbl_x, function(row) {
+        any(vapply(lapply(row, remove_attributes), function(x) !identical(x, 0), logical(1)))
+      }, logical(1))
+      ]
+  }
 
   tbl <- rbind(tbl_any, tbl_x)
   tbl <- header_add_N(tbl, col_N)

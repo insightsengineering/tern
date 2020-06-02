@@ -1,3 +1,23 @@
+
+# tern 0.6.7
+
+* Add `stat_mean_ci` and `stat_median_ci` for error bars in `ggplot2`
+* Add new tern function `t_coxreg` as single interface for diverse cox regression types
+* Add compound table for binary endpoint: `t_binary_endpoint` and elementary functions: `t_el_proportion`,
+  `t_el_proportion_diff` and `t_el_test_proportion_diff`. The supporting summary functions added are: 
+  `s_proportion`, `s_adj_proportion_diff`, `s_proportion_diff` and `s_test_proportion_diff`.
+* Added new tern function `t_events_patyear` to create event table adjusted person-years
+* Added new tern function `t_abnormality` and the elementary table function `t_el_abnormality`
+* Removed `grade_levels` argument from `t_events_term_grade_id` functions. If a different ordering of the rows is needed,
+  this must be done through postprocessing by reordering the leaves of the table tree. Eventually, a helper function
+  will be provided.
+* Added `prune_zero_rows` argument to `t_events_per_term_grade_id` and `t_max_grade_per_id` to not show rows of all zeros
+  as they can clutter the visualization in the Shiny app and make it slower.
+* Fixed position of (N=xx) in `t_summary_by` output when numeric columns are summarized in parallel with `compare_in_header` 
+* rename t_coxph to t_coxph_pairwise to reflect the model process, add details in documentation.
+* Remove `test.nest` dependency
+
+
 # tern 0.6.6
 
 * Remove `test.nest` dependency

@@ -118,6 +118,7 @@ ADRS_f <- ADRS \%>\%
   dplyr::filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
 
+\dontrun{
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
   col_by = factor(ADRS_f$ARM),
@@ -169,6 +170,7 @@ p <- g_forest(
 p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
 grid.newpage()
 grid.draw(p)
+}
 
 # Works with any rtable
 

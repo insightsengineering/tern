@@ -4,12 +4,12 @@
 \alias{ttest_ci_one_arm}
 \title{Confidence level for mean estimate (one-arm t-test)}
 \usage{
-ttest_ci_one_arm(x, conf.level = 0.95, ...)
+ttest_ci_one_arm(x, conf_level = 0.95, ...)
 }
 \arguments{
 \item{x}{(\code{numeric} vector)}
 
-\item{conf.level}{(\code{numeric} value)
+\item{conf_level}{(\code{numeric} value)
 Specifies confidence level. Must be greater than 0 and less than 1.}
 
 \item{...}{(optional)
@@ -23,5 +23,5 @@ The calculation of confidence interval for an estimation of population mean
  will use \code{qt} function with degree of freedom of \code{n - 1}
 }
 \examples{
-ttest_ci_one_arm(c(1,2,3,4,5,6,7,8, NA), conf.level = 0.95, mu = 1, alternative = "less")
+ttest_ci_one_arm(c(1,2,3,4,5,6,7,8, NA), conf_level = 0.95, mu = 1, alternative = "less")
 }

@@ -13,7 +13,7 @@ t_forest_tte(
   strata_data = NULL,
   ties = "exact",
   time_unit = "month",
-  conf_int = 0.95,
+  conf_level = 0.95,
   dense_header = FALSE,
   table_tree = FALSE
 )
@@ -46,7 +46,7 @@ If \code{NULL}, no stratified analysis is performed.}
 
 \item{time_unit}{(\code{character} value) The unit of median survival time. Default is \code{"months"}.}
 
-\item{conf_int}{(\code{numeric} value) confidence level of the interval}
+\item{conf_level}{confidence level of the interval.}
 
 \item{dense_header}{(\code{logical} value) Display the table headers in multiple rows.}
 
@@ -103,7 +103,7 @@ tbl <- t_forest_tte(
   col_by = ADTTE_f$ARMCD,
   row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
   ties = "exact",
-  conf_int = 0.9,
+  conf_level = 0.9,
   dense_header = TRUE
 )
 

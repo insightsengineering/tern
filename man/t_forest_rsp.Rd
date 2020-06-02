@@ -10,7 +10,7 @@ t_forest_rsp(
   row_by_list = NULL,
   total = "ALL",
   strata_data = NULL,
-  conf_int = 0.95,
+  conf_level = 0.95,
   dense_header = FALSE,
   table_tree = FALSE
 )
@@ -34,7 +34,7 @@ Total row added. If \code{NULL} then no total row is added.}
 Used for \code{\link[survival:strata]{stratification factors}}
 If \code{NULL}, no stratified analysis is performed.}
 
-\item{conf_int}{(\code{numeric} value) confidence level of the interval}
+\item{conf_level}{confidence level of the interval.}
 
 \item{dense_header}{(\code{logical} value) Display the table headers in multiple rows.}
 
@@ -107,7 +107,7 @@ tbl <- t_forest_rsp(
   col_by = as_factor_keep_attributes(ADRS_f$ARM),
   row_by_list = ADRS_f[, c("SEX", "RACE", "FAKE Name > -1.3 Flag")] \%>\%
     map(as_factor_keep_attributes),
-  conf_int = 0.9
+  conf_level = 0.9
 )
 
 tbl

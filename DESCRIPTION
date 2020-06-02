@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
 Date: 2020-04-21
-Version: 0.6.6
+Version: 0.6.6.9000
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
@@ -51,13 +51,14 @@ Suggests:
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/
 BugReports: https://github.roche.com/NEST/tern/issues
 Collate:
     'aa_trees.R'
     'argument_convention.R'
+    'binary_endpoints.R'
     'check_data.R'
     'conf_level.R'
     'decorate_grob.R'
@@ -75,10 +76,12 @@ Collate:
     'package.R'
     'safe_join.R'
     'split.R'
+    't_abnormality.R'
     't_count_true.R'
     't_count_unique.R'
-    't_coxph.R'
+    't_coxreg.R'
     't_disposition.R'
+    't_events_patyear.R'
     'utils.R'
     't_events_term_grade_id.R'
     't_events_term_id.R'
