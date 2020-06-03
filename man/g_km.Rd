@@ -26,8 +26,8 @@ g_km(
 \arguments{
 \item{fit_km}{(\code{\link{survfit}} object)}
 
-\item{xticks}{(\code{numeric} vector)\cr
-break interval of x-axis. It takes a numeric vector or \code{NULL}.}
+\item{xticks}{numeric vector of xticks, single number with spacing
+between ticks or \code{NULL}.}
 
 \item{col}{(\code{character} vector)\cr
 lines colors. Length of a vector should be equal to number of strata

@@ -3,8 +3,9 @@
 #' Create a KM plot for any \code{\link[survival]{survfit}} object.
 #'
 #' @param fit_km (\code{\link{survfit}} object)
-#' @param xticks (\code{numeric} vector)\cr
-#'   break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param xticks
+#'   numeric vector of xticks, single number with spacing
+#'   between ticks or \code{NULL}.
 #' @param col (\code{character} vector)\cr
 #'   lines colors. Length of a vector should be equal to number of strata
 #'   from \code{\link{survfit}} object
@@ -51,7 +52,7 @@
 #' ADTTE <- cadtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 #'
-#' formula <- Surv(AVAL, 1-CNSR) ~ ARM
+#' formula <- Surv(AVAL, 1 - CNSR) ~ ARM
 #' fit_km <- survfit(formula, data = ADTTE_f, conf.type = "plain")
 #'
 #' g_km(fit_km = fit_km)
@@ -59,11 +60,13 @@
 #'
 #' p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3), draw = FALSE)
 #'
-#' g_tkm <-  textGrob(label = toString(t_km(formula, data = ADTTE_f), gap = 1),
-#'                    x = unit(1, "npc") - unit(2, "lines"),
-#'                    y = unit(1, "npc") - unit(2, "lines"),
-#'                    just = c("right", "top"),
-#'                    gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
+#' g_tkm <- textGrob(
+#'   label = toString(t_km(formula, data = ADTTE_f), gap = 1),
+#'   x = unit(1, "npc") - unit(2, "lines"),
+#'   y = unit(1, "npc") - unit(2, "lines"),
+#'   just = c("right", "top"),
+#'   gp = gpar(fontfamily = "mono", fontsize = 8, fontface = "bold")
+#' )
 #'
 #' p_t <- addGrob(p, gTree(children = gList(g_tkm), vp = vpPath("mainPlot", "kmCurve", "curvePlot")))
 #'
@@ -87,7 +90,6 @@ g_km <- function(fit_km,
                  gp = NULL,
                  vp = NULL,
                  name = NULL) {
-
   kmdata <- km_curve_data(fit_km = fit_km, xticks = xticks)
   ### margins
   tmp_labels <- names(kmdata$group)
@@ -170,7 +172,8 @@ g_km <- function(fit_km,
         y = unit(nlevels(group):1 / (nlevels(group) + 1), "npc"),
         just = "left",
         gp = gpar(col = col),
-        vp = vpPath("mainPlot", "riskTable", "labelPlot")),
+        vp = vpPath("mainPlot", "riskTable", "labelPlot")
+      ),
       textGrob(
         label = "Number of Patients at Risk",
         x = unit(0, "npc"),
@@ -199,7 +202,9 @@ g_km <- function(fit_km,
 #'
 #' @param kmdata a class \code{\link{km_curve_data}} object.
 #' @param fit_km a class \code{\link{survfit}} object.
-#' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param xticks
+#'   numeric vector of xticks, single number with spacing
+#'   between ticks or \code{NULL}.
 #' @param col line color.
 #' @param lty line type.
 #' @param lwd line width.
@@ -216,21 +221,23 @@ g_km <- function(fit_km,
 #' @noRd
 #'
 #' @examples
-#' OS <- data.frame(AVAL = abs(rnorm(200)),
-#'                  CNSR = sample(c(0, 1), 200, TRUE),
-#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
-#'                  SEX = sample(c("M","F"), 200, TRUE),
-#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'                  ECOG = sample(c(0, 1), 200, TRUE))
+#' OS <- data.frame(
+#'   AVAL = abs(rnorm(200)),
+#'   CNSR = sample(c(0, 1), 200, TRUE),
+#'   ARM = sample(LETTERS[1:3], 200, TRUE),
+#'   SEX = sample(c("M", "F"), 200, TRUE),
+#'   RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+#'   ECOG = sample(c(0, 1), 200, TRUE)
+#' )
 #'
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ 1, data = OS)
+#' fit_km <- survfit(Surv(AVAL, 1 - CNSR) ~ 1, data = OS)
 #' kmdata <- tern:::km_curve_data(fit_km, xticks = c(0.5, 1.0, 2.0))
 #' kmgrob <- tern:::km_curve_grob(kmdata, col = "blue")
 #' grid.newpage()
 #' pushViewport(plotViewport())
 #' grid.draw(kmgrob)
 #'
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' fit_km <- survfit(Surv(AVAL, 1 - CNSR) ~ ARM, data = OS, conf.type = "plain")
 #' kmgrob <- tern:::km_curve_grob(fit_km = fit_km, xticks = c(0.5, 0.8, 1.5))
 #' grid.newpage()
 #' pushViewport(plotViewport())
@@ -270,7 +277,7 @@ km_curve_grob <- function(kmdata,
       y = y,
       default.units = "native",
       gp = gpar(col = col_i, lwd = lwd_i, lty = lty_i),
-      vp =  "curvePlot"
+      vp = "curvePlot"
     )
   }, kmdata$lines_x, kmdata$lines_y, col, lty, lwd)
 
@@ -289,11 +296,10 @@ km_curve_grob <- function(kmdata,
           size = size_i,
           default.units = "native",
           gp = gpar(col = col_i),
-          vp =  "curvePlot"
+          vp = "curvePlot"
         )
       }
     }, kmdata$points_x, kmdata$points_y, col, pch, size)
-
   }
 
   gTree(
@@ -311,7 +317,7 @@ km_curve_grob <- function(kmdata,
             vp = "curvePlot"
           ),
           yaxisGrob(vp = "curvePlot"),
-          rectGrob(vp =  "curvePlot")
+          rectGrob(vp = "curvePlot")
         ),
         lines,
         if (censor_show) points
@@ -327,7 +333,9 @@ km_curve_grob <- function(kmdata,
 #' Return a list of data for primitive element of grid drawing
 #'
 #' @param fit_km a class \code{\link{survfit}} object.
-#' @param xticks break interval of x-axis. It takes a numeric vector or \code{NULL}.
+#' @param xticks
+#'   numeric vector of xticks, single number with spacing
+#'   between ticks or \code{NULL}.
 #'
 #' @importFrom scales col_factor
 #' @importFrom utils head tail
@@ -339,14 +347,16 @@ km_curve_grob <- function(kmdata,
 #'
 #' @examples
 #'
-#' OS <- data.frame(AVAL = abs(rnorm(200)),
-#'                  CNSR = sample(c(0, 1), 200, TRUE),
-#'                  ARM = sample(LETTERS[1:3], 200, TRUE),
-#'                  SEX = sample(c("M","F"), 200, TRUE),
-#'                  RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
-#'                  ECOG = sample(c(0, 1), 200, TRUE))
+#' OS <- data.frame(
+#'   AVAL = abs(rnorm(200)),
+#'   CNSR = sample(c(0, 1), 200, TRUE),
+#'   ARM = sample(LETTERS[1:3], 200, TRUE),
+#'   SEX = sample(c("M", "F"), 200, TRUE),
+#'   RACE = sample(c("AA", "BB", "CC"), 200, TRUE),
+#'   ECOG = sample(c(0, 1), 200, TRUE)
+#' )
 #'
-#' fit_km <- survfit(Surv(AVAL, 1-CNSR) ~ ARM, data = OS, conf.type = "plain")
+#' fit_km <- survfit(Surv(AVAL, 1 - CNSR) ~ ARM, data = OS, conf.type = "plain")
 #'
 #' tern:::km_curve_data(fit_km, xticks = c(0.5, 0.8, 1.5))
 km_curve_data <- function(fit_km, xticks = NULL) {
@@ -354,7 +364,6 @@ km_curve_data <- function(fit_km, xticks = NULL) {
 
   # extract kmplot relevant data
   if (is.null(fit_km$strata)) {
-
     df <- data.frame(
       time = fit_km$time,
       surv = fit_km$surv,
@@ -369,9 +378,7 @@ km_curve_data <- function(fit_km, xticks = NULL) {
 
     group <- "All"
     names(group) <- "All"
-
   } else {
-
     df <- data.frame(
       time = fit_km$time,
       surv = fit_km$surv,
@@ -390,15 +397,20 @@ km_curve_data <- function(fit_km, xticks = NULL) {
   # split by group
   df_s <- split(df, df$group)
 
-  ### interval in x-axis
-  if (length(xticks) <= 1) {
-    xpos <- seq(
-      0,
-      floor(max(df$time)),
-      by = ifelse(is.null(xticks), max(1, floor(max(df$time) / 10)), xticks)
-    )
+  ### interval on x-axis
+  if (is.null(xticks)) {
+    xticks <- max(1, ceiling(max(df$time) / 10))
+  }
+  xpos <- if (length(xticks) == 1) {
+    # xticks gives spacing between ticks
+    # range `[0, ceiling(maxtime)]`
+    is_integer <- function(x) x == round(x)
+    upper_range <- ceiling(max(df$time))
+    # add one extra tick if the upper range does not fall onto an xtick
+    seq(0, upper_range + xticks * !is_integer(upper_range / xticks), by = xticks)
   } else {
-    xpos <-  c(0, xticks)
+    # add zero if it does not exist, xticks can be unordered
+    unique(c(0, xticks))
   }
 
   pt_risk <- lapply(df_s, function(x) {
