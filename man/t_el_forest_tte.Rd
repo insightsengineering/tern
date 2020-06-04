@@ -35,7 +35,8 @@ Used for \code{\link[survival:strata]{stratification factors}}
 
 \item{ties}{(\code{character} value) the method used for tie handling in \code{\link[survival]{coxph}}.}
 
-\item{time_unit}{(\code{character} value) The unit of median survival time. Default is \code{"months"}.}
+\item{time_unit}{(\code{character} value) The unit of median survival time. Default is \code{"months"}.
+If \code{NULL} unit will be skipped.}
 
 \item{row_name}{(\code{character} value) name of row}
 

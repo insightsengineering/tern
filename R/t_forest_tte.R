@@ -38,6 +38,9 @@ NULL
 #'   is not significant at a significance level of 0.05.}
 #' }
 #'
+#' @importFrom purrr map
+#' @importFrom rlang "%||%"
+#'
 #' @export
 #'
 #' @template author_song24
@@ -158,7 +161,8 @@ t_forest_tte <- function(tte,
           ties = ties,
           row_name = name,
           conf_level = conf_level,
-          dense_header = dense_header
+          dense_header = dense_header,
+          time_unit = time_unit
         )
       )
     } else {
@@ -202,6 +206,7 @@ t_forest_tte <- function(tte,
 #'   (categorical variables). If \code{NULL}, no stratified analysis is performed.
 #' @param ties (\code{character} value) the method used for tie handling in \code{\link[survival]{coxph}}.
 #' @param time_unit (\code{character} value) The unit of median survival time. Default is \code{"months"}.
+#'   If \code{NULL} unit will be skipped.
 #' @param row_name (\code{character} value) name of row
 #' @param conf_level (\code{numeri} value) confidence level of the interval
 #' @param dense_header (\code{logical} value) Display the table headers in multiple rows.
@@ -374,6 +379,7 @@ t_el_forest_tte <- function(tte,
     stop("count inconsistency")
   }
 
+  time_unit <- ifelse(is.null(time_unit), "", paste0("(", time_unit, ")"))
   table_header <- if (dense_header) {
     rheader(
       rrow(
@@ -395,8 +401,8 @@ t_el_forest_tte <- function(tte,
       rrow(
         row.name = "Factors",
         "n",
-        NULL, NULL, paste0("(", time_unit, ")"),
-        NULL, NULL, paste0("(", time_unit, ")"),
+        NULL, NULL, time_unit,
+        NULL, NULL, time_unit,
         if (is.null(strata_data)) "Ratio" else "Ratio*",
         "Wald CI"
       )
@@ -414,8 +420,8 @@ t_el_forest_tte <- function(tte,
       rrow(
         row.name = "Baseline Risk Factors",
         "Total n",
-        "n", "Events", paste0("Median (", time_unit, ")"),
-        "n", "Events", paste0("Median (", time_unit, ")"),
+        "n", "Events", ifelse(time_unit == "", "Median", paste("Median", time_unit)),
+        "n", "Events", ifelse(time_unit == "", "Median", paste("Median", time_unit)),
         if (is.null(strata_data)) "Hazard Ratio" else "Hazard Ratio*",
         paste0((conf_level) * 100, "% Wald CI")
       )

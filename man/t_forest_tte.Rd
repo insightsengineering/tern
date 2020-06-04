@@ -44,7 +44,8 @@ If \code{NULL}, no stratified analysis is performed.}
 
 \item{ties}{(\code{character} value) the method used for tie handling in \code{\link[survival]{coxph}}.}
 
-\item{time_unit}{(\code{character} value) The unit of median survival time. Default is \code{"months"}.}
+\item{time_unit}{(\code{character} value) The unit of median survival time. Default is \code{"months"}.
+If \code{NULL} unit will be skipped.}
 
 \item{conf_level}{confidence level of the interval.}
 
