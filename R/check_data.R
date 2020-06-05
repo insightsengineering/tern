@@ -259,3 +259,33 @@ check_numeric_range <- function(x, min = 0, max = 1) {
 
   invisible(NULL)
 }
+
+#' Check all row_by variables of appropriate type (factor or data.frame of factors)
+#' NA values are not allowed.
+#' @param row_by a factor or data.frame of factors
+#' @param x a related analysis variable to be split by row_by
+#'
+#' @examples
+#' check_row_by(iris$Species, iris$Sepal.Length)
+#'
+#' @noRd
+check_row_by <- function(row_by, x) {
+
+  check_same_n(x = x, row_by = row_by)
+
+  if (is.atomic(row_by)) {
+
+    check_is_factor(row_by, allow_na = FALSE)
+
+  } else if (is.data.frame(row_by)) {
+
+    stopifnot(!anyNA(row_by))
+    rb <- vapply(row_by, is.factor, logical(1))
+
+    if (!all(rb)) {
+      stop("Not all row_by variables are factors.")
+    }
+  }
+
+  invisible(NULL)
+}

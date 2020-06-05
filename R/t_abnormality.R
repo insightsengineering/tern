@@ -52,7 +52,7 @@
 #'   baseline = sas_na(ANL$BNRIND),
 #'   id = ANL$USUBJID,
 #'   exclude_base_abn = TRUE,
-#'   row_by = nested_by(ANL[,c("PARAMCD")]),
+#'   row_by = ANL$PARAMCD,
 #'   col_by = ANL$ARM,
 #'   col_N = 6,
 #'   total = NULL,
@@ -81,7 +81,7 @@
 #'   abnormal = c("LOW", "HIGH"),
 #'   baseline = ADLB$BNRIND,
 #'   id = ADLB$USUBJID,
-#'   row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
+#'   row_by = ADLB[, c("PARAM", "AVISIT")],
 #'   col_by = by_all("All Patients"),
 #'   col_N = nrow(ADSL),
 #'   table_tree = FALSE
@@ -98,7 +98,7 @@ t_abnormality <- function(grade,
                           id,
                           exclude_base_abn = FALSE,
                           col_by,
-                          row_by = NULL,
+                          row_by,
                           col_N = NULL, #nolint
                           total = NULL,
                           table_tree = FALSE) {
@@ -106,7 +106,11 @@ t_abnormality <- function(grade,
   stopifnot(is.null(total) || is_character_single(total))
 
   if (!is_nested_by(row_by)) {
-    row_by <- nested_by(list(row_by))
+    check_row_by(row_by, grade)
+  }
+
+  if (!is.list(row_by)) {
+    row_by <- list(row_by)
   }
   stopifnot(is.list(row_by))
 

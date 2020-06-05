@@ -1,22 +1,21 @@
 #' Summarize an Object for Different Groups with by Variable
 #'
 #' This is a wrapper around the basic \code{t_summary} functions with the difference that it has a row_by
-#' argument. The row_by argument can either be a "by" object or it can be a "nested_by" object in which case
-#' each list item is interpreted recursively as is typical for the \code{terms} item
-#' in \code{t_events_term_grade_id}.
+#' argument.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_summary
-#' @param x vector
-#' @param row_by a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define
-#'  the summary sub-groups in the table.
-#' @param col_by a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
-#'  define the columns in the table.
+#' @param x vector or \code{data.frame}
+#' @param row_by (\code{factor} or \code{data.frame})\cr
+#'    Defines how data from \code{x} is split into sub-tables. Dimensions must match
+#'    dimensions of \code{x} and no missing values are allowed. Multi-level nesting is possible when
+#'    \code{row_by} is a \code{data.frame}. Columns should be ordered with the first column specifying
+#'    the first variable to split by and the last column the specifying the last variable to split by.
 #' @param ... arguments passed on to methods
 #'
 #' @details
-#' For every level of the variable \code{by} a summary table using \code{\link{t_summary}} will be created.
-#' The individual tables are then stacked together.
+#' For every unique combination of levels of \code{row_by} a summary table using
+#' \code{\link{t_summary}} will be created. The individual tables are then stacked together.
 #'
 #' @export
 #'
@@ -83,7 +82,7 @@
 #' # Recursive case
 #' t_summary_by(
 #'   x = ADLB$AVAL,
-#'   row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
+#'   row_by = ADLB[, c("PARAM", "AVISIT")],
 #'   col_by = ADLB$ARM,
 #'   col_N = table(ADSL$ARM),
 #'   total = "All Patients"
@@ -114,7 +113,7 @@
 #' # we suppress warnings because some are NaN (change CHG at screening visit)
 #' suppressWarnings(t_summary_by(
 #'   x = ADQS[,c("AVAL", "CHG")],
-#'   row_by = nested_by(ADQS[, c("PARAM", "AVISIT")]),
+#'   row_by = ADQS[, c("PARAM", "AVISIT")],
 #'   col_by = ADQS$ARMCD,
 #'   col_N = table(ADSL$ARMCD),
 #'   total = "All Patients"
@@ -160,13 +159,19 @@ t_summary_by <- function(x,
                          total = NULL,
                          ...,
                          table_tree = FALSE) {
+
   if (!is_nested_by(row_by)) {
-    row_by <- nested_by(list(row_by))
+    check_row_by(row_by, x)
+  }
+
+  if (!is.list(row_by)) {
+    row_by <- list(row_by)
   }
   stopifnot(is.list(row_by))
 
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) # nolint
+
   if (!is.null(total)) {
     col_by <- by_add_total(col_by, label = total)
     col_N <- col_N_add_total(col_N) #nolintr

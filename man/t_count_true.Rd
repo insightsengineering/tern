@@ -40,8 +40,7 @@ the denominator. If \code{"omit"} is chosen the percentage is omitted.}
 \item{...}{arguments passed on to methods}
 }
 \description{
-Note that for this function the default \code{denominator = "N"} and
-not \code{n} as for the other \code{t_summary} functions.
+Tabulate \code{TRUE} counts
 }
 \examples{
 

@@ -85,7 +85,7 @@ levels(ADSL$RACE) <- strtrim(levels(ADSL$RACE), 10)
 ADTTE <- cadtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS")
 
-formula <- Surv(AVAL, 1-CNSR) ~ ARM
+formula <- Surv(AVAL, 1 - CNSR) ~ ARM
 fit_km <- survfit(formula, data = ADTTE_f, conf.type = "plain")
 
 g_km(fit_km = fit_km)
@@ -93,11 +93,13 @@ plot(fit_km)
 
 p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3), draw = FALSE)
 
-g_tkm <-  textGrob(label = toString(t_km(formula, data = ADTTE_f), gap = 1),
-                   x = unit(1, "npc") - unit(2, "lines"),
-                   y = unit(1, "npc") - unit(2, "lines"),
-                   just = c("right", "top"),
-                   gp = gpar(fontfamily = 'mono', fontsize = 8, fontface = "bold"))
+g_tkm <- textGrob(
+  label = toString(t_km(formula, data = ADTTE_f), gap = 1),
+  x = unit(1, "npc") - unit(2, "lines"),
+  y = unit(1, "npc") - unit(2, "lines"),
+  just = c("right", "top"),
+  gp = gpar(fontfamily = "mono", fontsize = 8, fontface = "bold")
+)
 
 p_t <- addGrob(p, gTree(children = gList(g_tkm), vp = vpPath("mainPlot", "kmCurve", "curvePlot")))
 

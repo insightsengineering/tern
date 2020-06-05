@@ -46,8 +46,7 @@ If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 \item{...}{not used arguments}
 }
 \description{
-Note that for this function the default \code{denominator = "N"}
-and not \code{n} as for the other \code{t_summary} functions.
+Tabulate \code{TRUE} counts in a data.frame
 }
 \examples{
 library(random.cdisc.data)

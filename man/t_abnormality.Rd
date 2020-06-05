@@ -11,7 +11,7 @@ t_abnormality(
   id,
   exclude_base_abn = FALSE,
   col_by,
-  row_by = NULL,
+  row_by,
   col_N = NULL,
   total = NULL,
   table_tree = FALSE
@@ -37,8 +37,11 @@ Contains reference and comparison group information, the
 first \code{level} indicates the reference group. See the functions
 \code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
-\item{row_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define
-the summary sub-groups in the table.}
+\item{row_by}{(\code{factor} or \code{data.frame})\cr
+Defines how data from \code{x} is split into sub-tables. Dimensions must match
+dimensions of \code{x} and no missing values are allowed. Multi-level nesting is possible when
+\code{row_by} is a \code{data.frame}. Columns should be ordered with the first column specifying
+the first variable to split by and the last column the specifying the last variable to split by.}
 
 \item{col_N}{(\code{integer} vector)\cr
 Contains the reference population per level of \code{col_by}. This by default is often
@@ -102,7 +105,7 @@ t_abnormality(
   baseline = sas_na(ANL$BNRIND),
   id = ANL$USUBJID,
   exclude_base_abn = TRUE,
-  row_by = nested_by(ANL[,c("PARAMCD")]),
+  row_by = ANL$PARAMCD,
   col_by = ANL$ARM,
   col_N = 6,
   total = NULL,
@@ -131,7 +134,7 @@ tbl2 <- t_abnormality(
   abnormal = c("LOW", "HIGH"),
   baseline = ADLB$BNRIND,
   id = ADLB$USUBJID,
-  row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
+  row_by = ADLB[, c("PARAM", "AVISIT")],
   col_by = by_all("All Patients"),
   col_N = nrow(ADSL),
   table_tree = FALSE

@@ -1,6 +1,7 @@
 
 # tern 0.6.7
 
+* For functions with `row_by` argument, inputs no longer require use of `nested_by`.
 * Add `stat_mean_ci` and `stat_median_ci` for error bars in `ggplot2`
 * Add new tern function `t_coxreg` as single interface for diverse cox regression types
 * Add compound table for binary endpoint: `t_binary_endpoint` and elementary functions: `t_el_proportion`,

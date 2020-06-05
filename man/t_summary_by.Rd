@@ -15,13 +15,18 @@ t_summary_by(
 )
 }
 \arguments{
-\item{x}{vector}
+\item{x}{vector or \code{data.frame}}
 
-\item{row_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{by} define
-the summary sub-groups in the table.}
+\item{row_by}{(\code{factor} or \code{data.frame})\cr
+Defines how data from \code{x} is split into sub-tables. Dimensions must match
+dimensions of \code{x} and no missing values are allowed. Multi-level nesting is possible when
+\code{row_by} is a \code{data.frame}. Columns should be ordered with the first column specifying
+the first variable to split by and the last column the specifying the last variable to split by.}
 
-\item{col_by}{a \code{factor} of length \code{nrow(x)} with no missing values. The levels of \code{col_by}
-define the columns in the table.}
+\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
+Contains reference and comparison group information, the
+first \code{level} indicates the reference group. See the functions
+\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
 
 \item{col_N}{(\code{integer} vector)\cr
 Contains the reference population per level of \code{col_by}. This by default is often
@@ -41,13 +46,11 @@ If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
 }
 \description{
 This is a wrapper around the basic \code{t_summary} functions with the difference that it has a row_by
-argument. The row_by argument can either be a "by" object or it can be a "nested_by" object in which case
-each list item is interpreted recursively as is typical for the \code{terms} item
-in \code{t_events_term_grade_id}.
+argument.
 }
 \details{
-For every level of the variable \code{by} a summary table using \code{\link{t_summary}} will be created.
-The individual tables are then stacked together.
+For every unique combination of levels of \code{row_by} a summary table using
+\code{\link{t_summary}} will be created. The individual tables are then stacked together.
 }
 \examples{
 library(dplyr)
@@ -105,7 +108,7 @@ ADLB <- radlb(cached = TRUE)
 # Recursive case
 t_summary_by(
   x = ADLB$AVAL,
-  row_by = nested_by(ADLB[, c("PARAM", "AVISIT")]),
+  row_by = ADLB[, c("PARAM", "AVISIT")],
   col_by = ADLB$ARM,
   col_N = table(ADSL$ARM),
   total = "All Patients"
@@ -136,7 +139,7 @@ ADQS <- radqs(cached = TRUE) \%>\%
 # we suppress warnings because some are NaN (change CHG at screening visit)
 suppressWarnings(t_summary_by(
   x = ADQS[,c("AVAL", "CHG")],
-  row_by = nested_by(ADQS[, c("PARAM", "AVISIT")]),
+  row_by = ADQS[, c("PARAM", "AVISIT")],
   col_by = ADQS$ARMCD,
   col_N = table(ADSL$ARMCD),
   total = "All Patients"

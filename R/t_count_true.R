@@ -1,8 +1,5 @@
 #' Tabulate \code{TRUE} counts
 #'
-#' Note that for this function the default \code{denominator = "N"} and
-#' not \code{n} as for the other \code{t_summary} functions.
-#'
 #' @inheritParams t_count_true.logical
 #' @param x an object to dispatch on
 #' @param ... arguments passed on to methods
@@ -89,9 +86,7 @@ t_count_true.default <- function(x, # nolint
 #' Tabulate \code{TRUE} counts in a vector
 #'
 #' This function is a wrapper for \code{\link{t_summary.logical}} returning only
-#' the counts for \code{TRUE} records. Note that for this function the default
-#' \code{denominator = "N"} and not \code{n} as for the other \code{t_summary}
-#' functions.
+#' the counts for \code{TRUE} records.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams t_summary.factor
@@ -187,9 +182,6 @@ t_count_true.list <- function(x_list, #nolintr
 
 
 #' Tabulate \code{TRUE} counts in a data.frame
-#'
-#' Note that for this function the default \code{denominator = "N"}
-#' and not \code{n} as for the other \code{t_summary} functions.
 #'
 #' @inheritParams t_count_true.logical
 #' @inheritParams argument_convention

@@ -44,9 +44,7 @@ the denominator. If \code{"omit"} is chosen the percentage is omitted.}
 }
 \description{
 This function is a wrapper for \code{\link{t_summary.logical}} returning only
-the counts for \code{TRUE} records. Note that for this function the default
-\code{denominator = "N"} and not \code{n} as for the other \code{t_summary}
-functions.
+the counts for \code{TRUE} records.
 }
 \examples{
 with(iris, t_count_true(Sepal.Length > 5.5, col_by = Species, total = "All Flowers"))
