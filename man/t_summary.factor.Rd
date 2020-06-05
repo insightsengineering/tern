@@ -46,7 +46,11 @@ the denominator. If \code{"omit"} is chosen the percentage is omitted.}
 Whether to drop zero count levels}
 
 \item{...}{(optional)\cr
-additional arguments passed on to methods}
+additional arguments passed on to methods.
+\itemize{
+\item \code{q_type} an integer between 1 and 9 selecting one of the nine
+quantile algorithms as detailed in \code{\link[stats:quantile]{quantile(), type argument}}
+}}
 }
 \value{
 an \code{\link[rtables]{rtable}} object

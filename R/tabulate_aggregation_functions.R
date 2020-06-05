@@ -25,8 +25,8 @@ mean_sd <- function(x, na.rm = TRUE) { # nolint
   c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
 }
 
-q1_q3 <- function(x, na.rm = TRUE) { #nolintr
-  quantile(x, probs = c(0.25, 0.75), na.rm = na.rm)
+q1_q3 <- function(x, na.rm = TRUE, type = 7) { #nolintr
+  quantile(x, probs = c(0.25, 0.75), na.rm = na.rm, type = type)
 }
 
 #' get inter-quantile range
@@ -35,8 +35,8 @@ q1_q3 <- function(x, na.rm = TRUE) { #nolintr
 #'
 #' @importFrom stats quantile sd median qnorm
 #'
-iqr_num <- function(x, na.rm = TRUE) { # nolint
-  quantile(x, probs = .75, na.rm = na.rm) - quantile(x, probs = .25, na.rm = na.rm)
+iqr_num <- function(x, na.rm = TRUE, type = 7) { # nolint
+  diff(q1_q3(x, na.rm = na.rm, type = type))
 }
 
 
@@ -94,11 +94,11 @@ range_t2 <- function(x, na.rm = TRUE) { # nolint
   }
 }
 
-iqr_num2 <- function(x, na.rm = TRUE) { # nolint
+iqr_num2 <- function(x, na.rm = TRUE, type = 7) { # nolint
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
-    quantile(x, probs = .75, na.rm = na.rm) - quantile(x, probs = .25, na.rm = na.rm)
+    iqr_num(x, na.rm = na.rm, type = type)
   }
 }
 
@@ -143,11 +143,11 @@ range_t3 <- function(x, na.rm = TRUE) { # nolint
   }
 }
 
-iqr_num3 <- function(x, na.rm = TRUE) { # nolint
+iqr_num3 <- function(x, na.rm = TRUE, type = 7) { # nolint
   if (all(is.na(x))) {
     rcell("NE", format = function(x, output) paste0(x))
   } else {
-    quantile(x, probs = .75, na.rm = na.rm) - quantile(x, probs = .25, na.rm = na.rm)
+    iqr_num(x, na.rm = na.rm, type = type)
   }
 }
 

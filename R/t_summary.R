@@ -144,14 +144,16 @@ t_summary.default <- function(x, # nolint
 #'   Contains variables to be summarized as described in the details section.
 #'   If the variable has a \code{label} attribute then it will be used for the row name.
 #' @param ... (optional)\cr
-#'   additional arguments passed on to methods
+#'   additional arguments passed on to methods.
+#'   + \code{q_type} an integer between 1 and 9 selecting one of the nine
+#'   quantile algorithms as detailed in \code{\link[stats:quantile]{quantile(), type argument}}
 #'
 #' @details
 #' Every variable in \code{x} will be mapped to a summary table using
 #' \code{\link{t_summary}} and then be stacked.
 #'
 #' @export
-#'
+#' @md
 #' @template author_waddella
 #'
 #' @seealso \code{\link{t_summary}},
@@ -292,6 +294,7 @@ t_summary.data.frame <- function(x, # nolint
 #' @template return_rtable
 #'
 #' @export
+#'
 #' @importFrom rtables col_by_to_matrix
 #'
 #' @template author_waddella
@@ -349,6 +352,19 @@ t_summary.numeric <- function(x, # nolint
     stop("f_numeric needs to be one of ", paste(allowed_f_numeric, collapse = ", "))
   }
 
+  if (any(c("q1_q3", "iqr_num3") %in% f_numeric)) {
+    q_type <- 7
+    if ("q_type" %in% names(list(...))) {
+      q_type <- list(...)$q_type
+      if (!(q_type %in% 1:9)) {
+        message(
+          "`q_type` was provided but was not an integer between 1 and 9, see `?quantile`. Default was used instead: 7."
+          )
+        q_type <- 7
+      }
+    }
+  }
+
   col_by <- col_by_to_matrix(col_by, x)
   col_N <- col_N %||% get_N(col_by) #nolintr
   if (!is.null(total)) {
@@ -368,14 +384,14 @@ t_summary.numeric <- function(x, # nolint
         sd(x) / sqrt(length(x))
       }, row.name = "SE", format = "xx.xx", na_rm = TRUE),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
-      q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE),
+      q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE, type = q_type),
       range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),
 
       # for patient data
       n_not_na3 = rtabulate(x, col_by, n_not_na3, row.name = "n"),
       mean_sd3 = rtabulate(x, col_by, mean_sd3, format = "xx.xx (xx.xx)", row.name = "Mean (SD)"),
       median_t3 = rtabulate(x, col_by, median_t3, row.name = "Median", format = "xx.xx"),
-      iqr_num3 = rtabulate(x, col_by, iqr_num3, row.name = "IQR", format = "xx.xx"),
+      iqr_num3 = rtabulate(x, col_by, iqr_num3, row.name = "IQR", format = "xx.xx", type = q_type),
       range_t3 = rtabulate(x, col_by, range_t3, format = "xx.xx - xx.xx", row.name = "Min - Max"),
 
       NULL # default, should never happen

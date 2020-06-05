@@ -27,7 +27,11 @@ Denotes column name of an added total column using \code{\link[rtables]{by_add_t
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{...}{(optional)\cr
-additional arguments passed on to methods}
+additional arguments passed on to methods.
+\itemize{
+\item \code{q_type} an integer between 1 and 9 selecting one of the nine
+quantile algorithms as detailed in \code{\link[stats:quantile]{quantile(), type argument}}
+}}
 
 \item{table_tree}{(\code{logical} value)\cr
 If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -39,7 +43,6 @@ Similar as the demographic table in STREAM
 \details{
 You can use the label attribute of the columns in the data frame to modify the node value / displayed value,
 e.g. AGE -> "Baseline Age of patient"
-
 
 Every variable in \code{x} will be mapped to a summary table using
 \code{\link{t_summary}} and then be stacked.
@@ -136,9 +139,9 @@ to_rtable(tbls)
 }
 \seealso{
 \code{\link{t_summary}},
-  \code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
-  \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
-  \code{\link{t_summary.character}}, \code{\link{t_summary_by}}
+\code{\link{t_summary.numeric}}, \code{\link{t_summary.factor}},
+\code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
+\code{\link{t_summary.character}}, \code{\link{t_summary_by}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

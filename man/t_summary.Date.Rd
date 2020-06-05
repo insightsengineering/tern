@@ -25,7 +25,11 @@ Denotes column name of an added total column using \code{\link[rtables]{by_add_t
 \code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{...}{(optional)\cr
-additional arguments passed on to methods}
+additional arguments passed on to methods.
+\itemize{
+\item \code{q_type} an integer between 1 and 9 selecting one of the nine
+quantile algorithms as detailed in \code{\link[stats:quantile]{quantile(), type argument}}
+}}
 }
 \description{
 Tabulate the range of dates.
