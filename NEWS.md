@@ -13,7 +13,7 @@
 * Fixed position of (N=xx) in `t_summary_by` output when numeric columns are summarized in parallel with `compare_in_header`.
 * Rename t_coxph to t_coxph_pairwise to reflect the model process, add details in documentation.
 * Remove `test.nest` dependency.
-
+* Retain column labels when data is split into tree.
 
 # tern 0.6.6
 

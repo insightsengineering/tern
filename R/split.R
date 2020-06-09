@@ -96,8 +96,13 @@ esplit.default <- function(x, by) { #nolintr
 #' by <- factor(c("M", "M", "F", "F", "F"))
 #' esplit(data.frame(x = 1:5, y = 6:10), by)
 esplit.data.frame <- function(x, by) { #nolintr
+  labels <- var_labels(x)
   by <- col_by_to_matrix(by)
-  lapply(by, function(rows) x[rows, , drop = FALSE])
+  lapply(by, function(rows) {
+    x_sub <- x[rows, , drop = FALSE]
+    var_labels(x_sub) <- labels
+    x_sub
+  })
 }
 
 #' Splits each list elements
