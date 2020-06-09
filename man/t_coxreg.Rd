@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_coxreg.R
 \name{t_coxreg}
 \alias{t_coxreg}
-\title{Cox regression for standard outputs}
+\title{Cox proportional hazards regression for standard outputs}
 \usage{
 t_coxreg(
   formula,
@@ -15,7 +15,7 @@ t_coxreg(
 )
 }
 \arguments{
-\item{formula}{(\code{formula}) Specifies \code{\link[survival:Surv]{survival model}}.
+\item{formula}{A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}.
 \itemize{
 \item the left-hand side must include \code{Surv(time, event)} with time and event describing occurrence
 and censoring (see  \code{\link[survival:Surv]{Surv()}}).
@@ -23,27 +23,26 @@ and censoring (see  \code{\link[survival:Surv]{Surv()}}).
 a pairwise model or a range of candidate univariate models. See \code{details}.
 }}
 
-\item{data}{(\code{data.frame})\cr
-Contains all the variables that are used in \code{formula}}
+\item{data}{A \code{data.frame} which includes all the variables that are called in \code{formula}.}
 
-\item{simplify}{returns a \code{rtables} object instead of a list of \verb{rtables object} when the variable
-contained in \code{pairwise} has only two levels.}
+\item{simplify}{If \code{TRUE}, returns a \code{rtables} object instead of a list of \verb{rtables object} when the variable
+contained in \code{pairwise} has only two levels to compare.}
 
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{The confidence level of the interval.}
 
-\item{pval_method}{The method used for estimation of p.values, should be one of \code{wald} (default)
-or \code{likelihood}. The \code{log-rank} can be accepted for models including
+\item{pval_method}{The method used for the estimation of p.values, should be one of \code{wald} (default)
+or \code{likelihood}. The \code{log-rank} is accepted for models including
 a single variable, specified through \code{pairwise()}.}
 
 \item{increments}{If a quantitative variable is included, it is possible to provide the expected level
-of estimation for the interaction. If provided, it should then be list where
+of estimation for the interaction. If provided, it should be list where
 each item is a vector giving expected levels and is named after the variable name as it appears
-in the formula.}
+in the \code{formula}.}
 
-\item{...}{(optional) other arguments passed to cox regression:
+\item{...}{Optional other arguments passed to the Cox regression:
 \itemize{
 \item \code{ties} a character string specifying the method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.
-\item see  \code{\link[survival:coxph]{coxph()}} for possible options.
+\item see  \code{\link[survival:coxph]{coxph()}} for additional settings.
 }}
 }
 \value{
@@ -52,9 +51,9 @@ if included in \code{COXT01}, a single \code{tbl} otherwise.
 }
 \description{
 Cox models are the most commonly used methods to estimate the magnitude of the effect in survival analysis.
-It assumes proportional hazards; that is, it assumes that the ratio of the hazards of the two groups
-(e.g., two arms) is constant over time. This ratio is referred to as the "hazard ratio" and is one of the most
-commonly reported metrics to describe the effect size in survival analysis.
+It assumes proportional hazards: the ratio of the hazards of between groups (e.g., two arms) is constant over time.
+This ratio is referred to as the "hazard ratio" (HR) and is one of the most commonly reported metrics to describe
+the effect size in survival analysis.
 }
 \details{
 Possible model specifications:
@@ -66,7 +65,7 @@ treatment \code{Pred} independently, given in reference to the control treatment
 separated by comas in special \code{univariate()} to test all bivariate combinations of \code{Pred} with
 each \code{Cov}. Replacing the symbol \code{+} by \code{*} will result in the additional estimation of the interaction
 terms. This is similar to \code{COXT01} standards.
-\item \code{Surv(time, event) ~ Pred + Cov1 + ... } estimate the simple effect of multiple Cox regression.
+\item \code{Surv(time, event) ~ Pred + Cov1 + ... } estimates the simple effect of multiple Cox regression.
 This provides the \code{COXT02} standard output. Note that the variables in returned tabulation are matched
 by position in \code{formula}.
 }

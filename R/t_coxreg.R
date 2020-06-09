@@ -1,30 +1,29 @@
-#' Cox regression for standard outputs
+#' Cox proportional hazards regression for standard outputs
 #'
 #' Cox models are the most commonly used methods to estimate the magnitude of the effect in survival analysis.
-#' It assumes proportional hazards; that is, it assumes that the ratio of the hazards of the two groups
-#' (e.g., two arms) is constant over time. This ratio is referred to as the "hazard ratio" and is one of the most
-#' commonly reported metrics to describe the effect size in survival analysis.
+#' It assumes proportional hazards: the ratio of the hazards of between groups (e.g., two arms) is constant over time.
+#' This ratio is referred to as the "hazard ratio" (HR) and is one of the most commonly reported metrics to describe
+#' the effect size in survival analysis.
 #'
-#' @param formula (\code{formula}) Specifies \code{\link[survival:Surv]{survival model}}.
+#' @param formula A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}.
 #' + the left-hand side must include `Surv(time, event)` with time and event describing occurrence
 #'  and censoring (see  \code{\link[survival:Surv]{Surv()}}).
 #' + the right-hand side includes predictors and *specials* which can be used to specify
 #'   a pairwise model or a range of candidate univariate models. See `details`.
-#' @param data (\code{data.frame})\cr
-#'   Contains all the variables that are used in \code{formula}
-#' @param simplify returns a `rtables` object instead of a list of `rtables object` when the variable
-#'   contained in `pairwise` has only two levels.
-#' @param conf_level confidence level of the interval.
-#' @param pval_method The method used for estimation of p.values, should be one of `wald` (default)
-#'    or `likelihood`. The `log-rank` can be accepted for models including
+#' @param data A \code{data.frame} which includes all the variables that are called in \code{formula}.
+#' @param simplify If `TRUE`, returns a `rtables` object instead of a list of `rtables object` when the variable
+#'   contained in `pairwise` has only two levels to compare.
+#' @param conf_level The confidence level of the interval.
+#' @param pval_method The method used for the estimation of p.values, should be one of `wald` (default)
+#'    or `likelihood`. The `log-rank` is accepted for models including
 #'    a single variable, specified through `pairwise()`.
 #' @param increments If a quantitative variable is included, it is possible to provide the expected level
-#'   of estimation for the interaction. If provided, it should then be list where
+#'   of estimation for the interaction. If provided, it should be list where
 #'   each item is a vector giving expected levels and is named after the variable name as it appears
-#'   in the formula.
-#' @param ... (optional) other arguments passed to cox regression:
+#'   in the `formula`.
+#' @param ... Optional other arguments passed to the Cox regression:
 #' + `ties` a character string specifying the method for tie handling, one of `exact` (default), `efron`, `breslow`.
-#' + see  \code{\link[survival:coxph]{coxph()}} for possible options.
+#' + see  \code{\link[survival:coxph]{coxph()}} for additional settings.
 #'
 #' @details
 #'   Possible model specifications:
@@ -36,7 +35,7 @@
 #'   separated by comas in special `univariate()` to test all bivariate combinations of `Pred` with
 #'   each `Cov`. Replacing the symbol `+` by `*` will result in the additional estimation of the interaction
 #'   terms. This is similar to `COXT01` standards.
-#'   * `Surv(time, event) ~ Pred + Cov1 + ... ` estimate the simple effect of multiple Cox regression.
+#'   * `Surv(time, event) ~ Pred + Cov1 + ... ` estimates the simple effect of multiple Cox regression.
 #'   This provides the `COXT02` standard output. Note that the variables in returned tabulation are matched
 #'   by position in `formula`.
 #'
@@ -255,6 +254,7 @@ t_coxreg <- function(formula, data,
 
       }
     )
+
 
     y <- lapply(
       X = data, FUN = function(x) {
@@ -714,6 +714,18 @@ s_cox_univariate <- function(formula,
   ## Argument checks
   check_formula(formula)
   if (is.null(covariates)) stop("Check `covariates`, provide a list of candidate covariates.")
+
+  ## Character covariate are factors
+  lapply(
+    X   = covariates,
+    FUN = function(x) {
+      if (is.character(data[[rht(x)]]))
+        data[[rht(x)]] <<- as.factor(data[[rht(x)]])
+      invisible()
+    }
+  )
+
+
   check_covariate_formulas(covariates)
   check_numeric_range(conf_level, min = 0, max = 1)
   pval_method <- match.arg(pval_method)
@@ -763,6 +775,7 @@ s_cox_univariate <- function(formula,
     dimnames = list(NULL, c("coef", "se(coef)"))
   )
   rownames(coef$ref_mod) <- "ref_mod"
+
 
   if (interactions) {
 
@@ -1407,25 +1420,27 @@ make_a_cov_chunk <- function(item, y, header) {
 
 #' Multivariate Cox Model - summarized results
 #'
-#' Analysis based on multivariate Cox model is usually not performed for the `CSR` or regulatory documents and
-#' is for exploratory purposes only (e.g., for publication). In practice, the model usually includes only the main
-#' effects (without interaction terms). It produces the estimates for each of the covariates included in the model.
+#' Analyses based on multivariate Cox model are usually not performed for the Controlled Substance Reporting or
+#' regulatory documents but serve exploratory purposes only (e.g., for publication). In practice, the model usually
+#' includes only the main effects (without interaction terms). It produces the hazard ratio estimates for each of the
+#' covariates included in the model.
 #' The analysis follows the same principles (e.g., stratified vs. unstratified analysis and tie handling) as the
 #' usual Cox model analysis. Since there is usually no pre-specified hypothesis testing for such analysis,
-#' the p values need to be interpreted with caution. (**Statistical Analysis of Clinical Trials Data with R**,
+#' the p.values need to be interpreted with caution. (**Statistical Analysis of Clinical Trials Data with R**,
 #' `NEST's bookdown`)
 #'
-#' @param formula (\code{formula})\cr
-#'   Specifies \code{\link[survival:Surv]{survival model}} including covariate and interactions.
-#' @param data A \code{data.frame} which includes the variable in formula and covariate
+#' @param formula A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}
+#'     including covariates.
+#' @param data A \code{data.frame} which includes the variable in formula and covariates.
 #' @param conf_level The level of confidence for the hazard ration interval estimations. Default is 0.95.
 #' @param pval_method The method used for the estimation of p.values, should be one of \code{"wald"} (default) or
 #'   \code{"likelihood"}.
-#' @param ... (optional) parameters passed down to \code{\link[survival:coxph]{coxph()}}
+#' @param ... Optional parameters passed to \code{\link[survival:coxph]{coxph()}}
 #' + `ties` a character string specifying the method for tie handling, one of `exact` (default), `efron`, `breslow`.
 #'
 #' @details The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
-#' but is out of scope as defined by the `GDSR` (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
+#'     but is out of scope as defined by the  Global Data Standards Repository
+#'     (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
 #'
 #' @md
 #'
@@ -1454,10 +1469,20 @@ make_a_cov_chunk <- function(item, y, header) {
 s_cox_multivariate <- function(formula, data,
                                conf_level = 0.95,
                                pval_method = c("wald", "likelihood"),
-                               ...
-) {
+                               ...) {
 
+  tf         <- terms(formula, specials = c("strata"))
+  covariates <- rownames(attr(tf, "factors"))[-c(1, unlist(attr(tf, "specials")))]
+  lapply(
+    X   = covariates,
+    FUN = function(x) {
+      if (is.character(data[[x]]))
+        data[[x]] <<- as.factor(data[[x]])
+      invisible()
+    }
+  )
   pval_method <- match.arg(pval_method)
+
   # Results directly exported from environment(fit_n_aov) to environment(s_function_draft)
   y <- fit_n_aov(
     formula = formula,
@@ -1554,6 +1579,16 @@ t_cox_multivariate <- function(formula, data,
                                ...
 ) {
 
+  tf         <- terms(formula, specials = c("strata"))
+  covariates <- rownames(attr(tf, "factors"))[-c(1, unlist(attr(tf, "specials")))]
+  lapply(
+    X   = covariates,
+    FUN = function(x) {
+      if (is.character(data[[x]]))
+        data[[x]] <<- as.factor(data[[x]])
+      invisible()
+    }
+  )
   pval_method <- match.arg(pval_method)
 
   y <- s_cox_multivariate(
@@ -1563,9 +1598,9 @@ t_cox_multivariate <- function(formula, data,
     ...
   )
 
-  mod <- y$mod
+  mod  <- y$mod
   msum <- y$msum
-  aov <- y$aov
+  aov  <- y$aov
   coef_inter <- y$coef_inter
 
   all_term_labs <-  attr(mod$terms, "term.labels")
