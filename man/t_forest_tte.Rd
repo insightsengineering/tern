@@ -97,12 +97,13 @@ ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%
   dplyr::filter(PARAMCD == "OS", ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
+var_labels(ADTTE_f) <- var_labels(ADTTE)
 
 tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  row_by_list = ADTTE_f[, c("SEX", "RACE")],
   ties = "exact",
   conf_level = 0.9,
   dense_header = TRUE
@@ -112,7 +113,7 @@ tbl2 <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  row_by_list = droplevels(ADTTE_f[,  "BMRKR2" ]),
+  row_by_list = ADTTE_f[,  "BMRKR2" ],
   strata_data = ADTTE_f[ , c("STRATA1", "STRATA2")],
   ties = "exact",
   dense_header = TRUE
@@ -129,7 +130,7 @@ tbls <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]),
+  row_by_list = ADTTE_f[, c("SEX", "RACE")],
   ties = "exact",
   dense_header = TRUE,
   table_tree = TRUE

@@ -78,16 +78,16 @@ library(dplyr)
 
 ADSL <- radsl(cached = TRUE)
 ADTTE <- radtte(ADSL, cached = TRUE)
-
 ADTTE_f <- ADTTE \%>\%
   dplyr::filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
+var_labels(ADTTE_f) <- var_labels(ADTTE)
 
 tbl <- t_forest_tte(
   tte = ADTTE_f$AVAL,
   is_event = ADTTE_f$CNSR == 0,
   col_by = ADTTE_f$ARMCD,
-  row_by_list = droplevels(ADTTE_f[, c("SEX", "RACE")]), # note factors required
+  row_by_list = ADTTE_f[, c("SEX", "RACE")], # note factors required
   ties = "exact",
   dense_header = TRUE
 )
@@ -117,6 +117,7 @@ ADRS <- radrs(ADSL, cached = TRUE)
 ADRS_f <- ADRS \%>\%
   dplyr::filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
   mutate(ARMCD = droplevels(ARMCD))
+var_labels(ADRS_f) <- var_labels(ADRS)
 
 \dontrun{
 tbl <- t_forest_rsp(

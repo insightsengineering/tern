@@ -101,6 +101,7 @@ ADRS <- radrs(ADSL, seed = 2)
 ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
   dplyr::filter(ARM != 'C: Combination') \%>\%
   mutate(ARM = droplevels(ARM))
+var_labels(ADRS_f) <- var_labels(ADRS)
 
 tbl <- t_forest_rsp(
   rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
