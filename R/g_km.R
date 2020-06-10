@@ -91,6 +91,7 @@ g_km <- function(fit_km,
                  vp = NULL,
                  name = NULL) {
   kmdata <- km_curve_data(fit_km = fit_km, xticks = xticks)
+
   ### margins
   tmp_labels <- names(kmdata$group)
   tmp_label <- tmp_labels[which.max(nchar(tmp_labels))]
@@ -410,7 +411,8 @@ km_curve_data <- function(fit_km, xticks = NULL) {
     seq(0, upper_range + xticks * !is_integer(upper_range / xticks), by = xticks)
   } else {
     # add zero if it does not exist, xticks can be unordered
-    unique(c(0, xticks))
+    upper_range <- ceiling(max(df$time))
+    unique(c(0, xticks, upper_range))
   }
 
   pt_risk <- lapply(df_s, function(x) {
@@ -431,6 +433,7 @@ km_curve_data <- function(fit_km, xticks = NULL) {
   lines_x <- lapply(df_s, function(x) {
     c(0, rep(x$time, each = 2))
   })
+
   lines_y <- lapply(df_s, function(x) {
     c(rep(c(1, head(x$surv, -1)), each = 2), tail(x$surv, 1))
   })
