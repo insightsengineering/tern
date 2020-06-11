@@ -219,7 +219,6 @@ t_summary_by <- function(x,
     }
   )
   tree@name <- invisible_node_name(tree@name)
-
   if (table_tree) {
     tree
   } else {

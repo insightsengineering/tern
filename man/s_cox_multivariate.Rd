@@ -13,33 +13,35 @@ s_cox_multivariate(
 )
 }
 \arguments{
-\item{formula}{(\code{formula})\cr
-Specifies \code{\link[survival:Surv]{survival model}} including covariate and interactions.}
+\item{formula}{A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}
+including covariates.}
 
-\item{data}{A \code{data.frame} which includes the variable in formula and covariate}
+\item{data}{A \code{data.frame} which includes the variable in formula and covariates.}
 
 \item{conf_level}{The level of confidence for the hazard ration interval estimations. Default is 0.95.}
 
 \item{pval_method}{The method used for the estimation of p.values, should be one of \code{"wald"} (default) or
 \code{"likelihood"}.}
 
-\item{...}{(optional) parameters passed down to \code{\link[survival:coxph]{coxph()}}
+\item{...}{Optional parameters passed to \code{\link[survival:coxph]{coxph()}}
 \itemize{
 \item \code{ties} a character string specifying the method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.
 }}
 }
 \description{
-Analysis based on multivariate Cox model is usually not performed for the \code{CSR} or regulatory documents and
-is for exploratory purposes only (e.g., for publication). In practice, the model usually includes only the main
-effects (without interaction terms). It produces the estimates for each of the covariates included in the model.
+Analyses based on multivariate Cox model are usually not performed for the Controlled Substance Reporting or
+regulatory documents but serve exploratory purposes only (e.g., for publication). In practice, the model usually
+includes only the main effects (without interaction terms). It produces the hazard ratio estimates for each of the
+covariates included in the model.
 The analysis follows the same principles (e.g., stratified vs. unstratified analysis and tie handling) as the
 usual Cox model analysis. Since there is usually no pre-specified hypothesis testing for such analysis,
-the p values need to be interpreted with caution. (\strong{Statistical Analysis of Clinical Trials Data with R},
+the p.values need to be interpreted with caution. (\strong{Statistical Analysis of Clinical Trials Data with R},
 \verb{NEST's bookdown})
 }
 \details{
 The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
-but is out of scope as defined by the \code{GDSR} (\strong{\code{GDS_Standard_TLG_Specs_Tables_2.doc}}).
+but is out of scope as defined by the  Global Data Standards Repository
+(\strong{\code{GDS_Standard_TLG_Specs_Tables_2.doc}}).
 }
 \examples{
 library(tern)

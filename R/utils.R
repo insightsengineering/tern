@@ -358,3 +358,19 @@ strip_attr <- function(x, attr_names = NULL) {
 
     return(x)
 }
+
+#' Cut a character string at a certain width
+#' @noRd
+trunc_if_longer <- function(x, width = 40) {
+  stopifnot(is_character_single(x))
+
+  if (nchar(x) > width) {
+    warning(paste0("Label ", x, " is truncated to 40 characters"))
+    res <- paste0(substr(x, 1, width - 3), "...")
+  } else {
+    res <- x
+  }
+
+  res
+
+}

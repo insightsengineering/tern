@@ -7,7 +7,13 @@
 \alias{node}
 \title{An S4 Class to represent nodes in a tree}
 \usage{
-node(name, content, children = list(), format_data = list())
+node(
+  name,
+  content,
+  children = list(),
+  format_data = list(),
+  label = character(0)
+)
 }
 \arguments{
 \item{name}{name of node}
@@ -19,6 +25,8 @@ node(name, content, children = list(), format_data = list())
 \item{format_data}{format data for conversion with \code{\link{to_rtable}},
 \code{list(gap_to_children, children_gap, children_indent, content_indent, left_header)},
 default values if not all given, see that function}
+
+\item{label}{\code{character} A label for the name}
 }
 \value{
 object of class node
@@ -52,6 +60,8 @@ Temporarily, we always reassign children names when accessing via \code{`[[`}.
 \item{\code{children}}{a list of \code{node} objects}
 
 \item{\code{format_data}}{formatting instructions for conversion with \code{\link{to_rtable}}}
+
+\item{\code{label}}{\code{character} A label for the name}
 }}
 
 \examples{

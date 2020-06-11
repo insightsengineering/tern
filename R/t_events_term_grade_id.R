@@ -192,6 +192,7 @@ t_events_per_term_grade_id <- function(terms,
     list(grade = grade, id = id, col_by = col_by),
     by_lst = terms
   )
+
   tree_data@name <- paste0("- Any ", event_type, " -")
   tree_data@format_data$children_indent <- 0
 
@@ -253,7 +254,6 @@ t_events_per_term_grade_id <- function(terms,
   } else {
     row.names(tree@content) <- c("- Overall -", row.names(tree@content)[-1])
   }
-
   if (table_tree) {
     tree
   } else {

@@ -74,7 +74,8 @@
 #' ADLB$ANRIND <- as.character(ADLB$ANRIND)
 #' ADLB$ANRIND[c(1,10,500)] <- " "
 #' ADLB$ANRIND <- ADLB$ANRIND %>% sas_na() %>% as.factor()
-#' var_labels(ADLB) <- c(ADLB_labels, BNRIND = "Baseline Grade")
+#' var_labels(ADLB)[c(names(ADLB_labels), "BNRIND")] <-
+#'   c(ADLB_labels, BNRIND = "Baseline Grade")
 #'
 #' tbl2 <- t_abnormality(
 #'   grade = ADLB$ANRIND,
@@ -86,8 +87,6 @@
 #'   col_N = nrow(ADSL),
 #'   table_tree = FALSE
 #' )
-#'
-#' header_row.names(tbl2) <- c("", paste0(ADLB_labels["PARAM"], "/", ADLB_labels["AVISIT"]))
 #'
 #' Viewer(tbl2)
 #'

@@ -4,7 +4,13 @@
 \alias{invisible_node}
 \title{Creates an invisible node with \code{NULL} content and invisible name}
 \usage{
-invisible_node(children, name = "root", content = NULL, format_data = NULL)
+invisible_node(
+  children,
+  name = "root",
+  content = NULL,
+  format_data = NULL,
+  label = character(0)
+)
 }
 \arguments{
 \item{children}{children of node}
@@ -14,6 +20,8 @@ invisible_node(children, name = "root", content = NULL, format_data = NULL)
 \item{content}{content}
 
 \item{format_data}{format_data}
+
+\item{label}{(\code{character})}
 }
 \value{
 node

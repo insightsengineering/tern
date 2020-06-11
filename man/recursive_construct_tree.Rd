@@ -9,8 +9,8 @@ recursive_construct_tree(info_from_parent, f, path = "root")
 \arguments{
 \item{info_from_parent}{info passed on to this node from parent}
 
-\item{f}{\code{function(info_from_parent, path) -> list(name, content, info_to_children_lst)}
-that returns the name, the content and the info to pass down to the children
+\item{f}{\code{function(info_from_parent, path) -> list(name, content, info_to_children_lst, label)}
+that returns the name, label, the content and the info to pass down to the children
 (the latter is a named list with one entry per child)
 a child can get its name (as desired by the parent) by looking at \code{path[[length(path)]]}}
 

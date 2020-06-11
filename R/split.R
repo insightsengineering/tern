@@ -83,7 +83,11 @@ esplit <- function(x, by) {
 esplit.default <- function(x, by) { #nolintr
   stopifnot(is.atomic(x))
   by <- col_by_to_matrix(by)
-  lapply(by, function(rows) x[rows])
+  lapply(by, function(rows) {
+    split_row <- x[rows]
+    attr(split_row, "label") <- attr(x, "label")
+    split_row
+  })
 }
 
 #' Splits the data.frame by rows

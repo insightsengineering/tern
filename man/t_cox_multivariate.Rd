@@ -13,17 +13,17 @@ t_cox_multivariate(
 )
 }
 \arguments{
-\item{formula}{(\code{formula})\cr
-Specifies \code{\link[survival:Surv]{survival model}} including covariate and interactions.}
+\item{formula}{A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}
+including covariates.}
 
-\item{data}{A \code{data.frame} which includes the variable in formula and covariate}
+\item{data}{A \code{data.frame} which includes the variable in formula and covariates.}
 
 \item{conf_level}{The level of confidence for the hazard ration interval estimations. Default is 0.95.}
 
 \item{pval_method}{The method used for the estimation of p.values, should be one of \code{"wald"} (default) or
 \code{"likelihood"}.}
 
-\item{...}{(optional) parameters passed down to \code{\link[survival:coxph]{coxph()}}
+\item{...}{Optional parameters passed to \code{\link[survival:coxph]{coxph()}}
 \itemize{
 \item \code{ties} a character string specifying the method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.
 }}
