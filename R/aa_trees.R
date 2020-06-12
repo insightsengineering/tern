@@ -534,7 +534,9 @@ setMethod("to_rtable", signature = "node", definition = function(x) {
   }
   new_header_labels <- recursive_get_label(x)
   tbl <- if (is(x@name, "invisible_node_name")) {
-    header(tbl) <- get_indent_header(header(tbl),  new_header_labels[-length(new_header_labels)])
+    if (length(x@label) > 0) {
+      header(tbl) <- get_indent_header(header(tbl),  new_header_labels[-length(new_header_labels)])
+    }
     tbl
   } else {
     if (length(x@label) > 0) {
