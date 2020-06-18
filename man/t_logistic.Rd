@@ -4,18 +4,17 @@
 \alias{t_logistic}
 \title{Multi-variable logistic regression table}
 \usage{
-t_logistic(glm_model, terms_label = NULL, increments = NULL, conf_level = 0.95)
+t_logistic(formula, data, increments = NULL, conf_level = 0.95)
 }
 \arguments{
-\item{glm_model}{({\code{\link{glm}}} model object)\cr
-The model object can be all main effect model, and a model with one two-way interaction.}
+\item{formula}{a {\code{\link{glm}}} formula \cr
+The formula object can be all main effect model formula, and a formula with one two-way interaction.}
 
-\item{terms_label}{(\code{named character} vector)\cr
-Controls the displaying label of terms
-from {\code{glm_model}}. If it's {\code{NULL}}, then variable name will be displayed in table.}
+\item{data}{a \code{data.frame} with all the variables specified in
+\code{formula}.}
 
 \item{increments}{(\code{named list})\cr
-Used to specify numeric values of continuous variables in {\code{glm_model}}
+Used to specify numeric values of continuous variables in {\code{glm}} model {\code{formula}}
 which interact with other variables. This is used to calculate the odds ratio when comparing
 the other interaction variable effect. For example, for a model with ARM and AGE interaction,
 {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
@@ -35,7 +34,7 @@ Report p-value for Wald chi-square test of the null hypothesis that covariate ha
 response in model containing all specified covariates.
 Allow option to include one two-way interaction and present similar output for
 each interaction degree of freedom.
-Note: For \code{glm} model, the variable names need to be standard dataframe column name without
+Note: For \code{glm} formula, the variable names need to be standard dataframe column name without
 special characters. The big N is the total number of observations for complete cases.
 }
 \examples{
@@ -45,59 +44,38 @@ library(dplyr)
 ADSL <- radsl(cached = TRUE)
 ADSL <- ADSL \%>\% dplyr::filter(SEX \%in\% c("F", "M"))
 ADRS <- radrs(ADSL, seed = 2)
+
 ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") \%>\%
   dplyr::mutate(Response = ifelse(AVALC \%in\% c("PR", "CR"), 1, 0))
+var_labels(ADRS_f) <- c(var_labels(ADRS), "Response" = "Tumor Response")
 
-glm_model <- glm(
+tbl <- t_logistic(
   formula = Response ~ ARM + AGE + SEX,
-  data = ADRS_f,
-  family = "binomial"
-)
-tbl <- t_logistic(glm_model = glm_model)
+  data = ADRS_f )
 
 tbl # or Viewer(tbl) for a html view
 
-glm_model <- glm(
-  formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
-  data = ADRS_f,
-  family = "binomial")
 tbl2 <- t_logistic(
-  glm_model = glm_model,
-  terms_label = c("ARM" = "Treatment",
-                  "AGE" = "Age at baseline",
-                  "BMRKR2" = "Biomarker",
-                  "ARM:BMRKR2" = "Interaction of Treatment * Biomarker")
+  formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
+  data = ADRS_f
 )
 
-tbl
+tbl2
 
-glm_model <- glm(
+tbl3 <- t_logistic(
   formula = Response ~ ARM + AGE + BMRKR1 + ARM*BMRKR1,
   data = ADRS_f,
-  family = "binomial")
-tbl3 <- t_logistic(
-  glm_model = glm_model,
-  terms_label = c("ARM" = "Treatment Effect",
-                  "AGE" = "Age at baseline",
-                  "BMRKR1" = "Continuous Biomarker",
-                  "ARM:BMRKR1" = "Interaction of ARM* Biomarker"),
   increments = list("BMRKR1" = c(5, 10)),
   conf_level = 0.9
 )
-tbl
+tbl3
 
-glm_model <- glm(
+tbl4 <- t_logistic(
   formula = Response ~ ARM + AGE + BMRKR1 + AGE*BMRKR1,
   data = ADRS_f,
-  family = "binomial")
-tbl4 <- t_logistic(
-  glm_model = glm_model,
-  terms_label = c("ARM" = "Treatment Effect",
-                  "AGE" = "Age at baseline",
-                  "BMRKR1" = "Continuous Biomarker",
-                  "AGE:BMRKR1" = "Interaction of Age* Biomarker"),
   increments = list("AGE" = c(20, 65), "BMRKR1" = c(5, 10)),
   conf_level = 0.9
 )
-tbl
+tbl4
+
 }

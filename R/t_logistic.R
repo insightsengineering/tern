@@ -9,16 +9,15 @@
 #' response in model containing all specified covariates.
 #' Allow option to include one two-way interaction and present similar output for
 #' each interaction degree of freedom.
-#' Note: For \code{glm} model, the variable names need to be standard dataframe column name without
+#' Note: For \code{glm} formula, the variable names need to be standard dataframe column name without
 #' special characters. The big N is the total number of observations for complete cases.
 #'
-#' @param glm_model ({\code{\link{glm}}} model object)\cr
-#'   The model object can be all main effect model, and a model with one two-way interaction.
-#' @param terms_label (\code{named character} vector)\cr
-#'   Controls the displaying label of terms
-#'   from {\code{glm_model}}. If it's {\code{NULL}}, then variable name will be displayed in table.
+#' @param formula a {\code{\link{glm}}} formula \cr
+#'   The formula object can be all main effect model formula, and a formula with one two-way interaction.
+#' @param data a \code{data.frame} with all the variables specified in
+#'   \code{formula}.
 #' @param increments (\code{named list})\cr
-#'   Used to specify numeric values of continuous variables in {\code{glm_model}}
+#'   Used to specify numeric values of continuous variables in {\code{glm}} model {\code{formula}}
 #'   which interact with other variables. This is used to calculate the odds ratio when comparing
 #'   the other interaction variable effect. For example, for a model with ARM and AGE interaction,
 #'   {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
@@ -27,6 +26,7 @@
 #' @param conf_level (\code{numeric} value)\cr
 #'   Confidence level for Wald odds ratio confidence interval.
 #' @importFrom car Anova
+#' @importFrom rlang "%||%"
 #' @export
 #' @examples
 #' library(random.cdisc.data)
@@ -35,67 +35,52 @@
 #' ADSL <- radsl(cached = TRUE)
 #' ADSL <- ADSL %>% dplyr::filter(SEX %in% c("F", "M"))
 #' ADRS <- radrs(ADSL, seed = 2)
+#'
 #' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
 #'   dplyr::mutate(Response = ifelse(AVALC %in% c("PR", "CR"), 1, 0))
+#' var_labels(ADRS_f) <- c(var_labels(ADRS), "Response" = "Tumor Response")
 #'
-#' glm_model <- glm(
+#' tbl <- t_logistic(
 #'   formula = Response ~ ARM + AGE + SEX,
-#'   data = ADRS_f,
-#'   family = "binomial"
-#' )
-#' tbl <- t_logistic(glm_model = glm_model)
+#'   data = ADRS_f )
 #'
 #' tbl # or Viewer(tbl) for a html view
 #'
-#' glm_model <- glm(
-#'   formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
-#'   data = ADRS_f,
-#'   family = "binomial")
 #' tbl2 <- t_logistic(
-#'   glm_model = glm_model,
-#'   terms_label = c("ARM" = "Treatment",
-#'                   "AGE" = "Age at baseline",
-#'                   "BMRKR2" = "Biomarker",
-#'                   "ARM:BMRKR2" = "Interaction of Treatment * Biomarker")
+#'   formula = Response ~ ARM + AGE + BMRKR2 + ARM*BMRKR2,
+#'   data = ADRS_f
 #' )
 #'
-#' tbl
+#' tbl2
 #'
-#' glm_model <- glm(
+#' tbl3 <- t_logistic(
 #'   formula = Response ~ ARM + AGE + BMRKR1 + ARM*BMRKR1,
 #'   data = ADRS_f,
-#'   family = "binomial")
-#' tbl3 <- t_logistic(
-#'   glm_model = glm_model,
-#'   terms_label = c("ARM" = "Treatment Effect",
-#'                   "AGE" = "Age at baseline",
-#'                   "BMRKR1" = "Continuous Biomarker",
-#'                   "ARM:BMRKR1" = "Interaction of ARM* Biomarker"),
 #'   increments = list("BMRKR1" = c(5, 10)),
 #'   conf_level = 0.9
 #' )
-#' tbl
+#' tbl3
 #'
-#' glm_model <- glm(
+#' tbl4 <- t_logistic(
 #'   formula = Response ~ ARM + AGE + BMRKR1 + AGE*BMRKR1,
 #'   data = ADRS_f,
-#'   family = "binomial")
-#' tbl4 <- t_logistic(
-#'   glm_model = glm_model,
-#'   terms_label = c("ARM" = "Treatment Effect",
-#'                   "AGE" = "Age at baseline",
-#'                   "BMRKR1" = "Continuous Biomarker",
-#'                   "AGE:BMRKR1" = "Interaction of Age* Biomarker"),
 #'   increments = list("AGE" = c(20, 65), "BMRKR1" = c(5, 10)),
 #'   conf_level = 0.9
 #' )
-#' tbl
-t_logistic <- function(glm_model,
-                       terms_label = NULL,
+#' tbl4
+#'
+t_logistic <- function(formula,
+                       data,
                        increments = NULL,
                        conf_level = 0.95) {
-  stopifnot("glm" %in% class(glm_model))
-  stopifnot(glm_model$family$family == "binomial")
+  stopifnot(class(formula) == "formula")
+  stopifnot(is.data.frame(data))
+  glm_model <- glm(
+    formula = formula,
+    family = "binomial",
+    data = data
+    )
+
   terms_name <- attr(terms(glm_model), "term.labels")
   # complete case data used in model
   model_data <- glm_model$model
@@ -108,13 +93,17 @@ t_logistic <- function(glm_model,
     paste0("Wald \n ", conf_level * 100, "% CI"),
     "p-value"
   ))
-  if (!is.null(terms_label)) {
-    stopifnot(length(terms_label) == length(terms_name))
-    stopifnot(identical(names(terms_label), terms_name))
-  } else {
-    terms_label <- terms_name
-    names(terms_label) <- terms_name
-  }
+
+  terms_label <- Map(function(term) {
+    if (term %in% colnames(data)){
+      label(data[[term]]) %||% term
+    } else {
+      terms <- lapply(unlist(strsplit(term, ":")), function(i) {
+        label(data[[i]]) %||% i
+      })
+      paste0("Interaction of ", paste(terms, collapse = " * "))
+    }
+  }, terms_name)
 
   table_single <- function(term, s_info, terms_label, header) {
     s_term <- s_info$results[[term]]
@@ -124,7 +113,7 @@ t_logistic <- function(glm_model,
       ref <- s_term$predictor$term_ref_level
       comp <- s_term$predictor$term_comp_level
       main_rowname <- paste0(
-        terms_label[term],
+        terms_label[[term]],
         " (Reference = ",
         ref,
         ", n = ",
@@ -149,7 +138,7 @@ t_logistic <- function(glm_model,
         })))
       )
     } else {
-      table_formats(s_term$summary, header = header, row.name = terms_label[term], row_format = "full")
+      table_formats(s_term$summary, header = header, row.name = terms_label[[term]], row_format = "full")
     }
   }
 
@@ -198,7 +187,7 @@ t_logistic <- function(glm_model,
             table_formats(
               dfi = s_info$results[[term]]$main,
               header = table_header,
-              row.name = terms_label[term],
+              row.name = terms_label[[term]],
               row_format = "main"
             ),
             indent(do.call("rbind", lapply(1:nrow(s_info$results[[term]]$summary), function(i) {
@@ -219,7 +208,7 @@ t_logistic <- function(glm_model,
           ref_level <- s_info$results[[term]]$predictor$term_ref_level
           comp_level <- s_info$results[[term]]$predictor$term_comp_level
           counts <- s_info$results[[term]]$predictor$counts_by_level
-          term_row_name <- paste0(terms_label[term], "(Reference = ", ref_level, ", n = ", counts[ref_level], ")")
+          term_row_name <- paste0(terms_label[[term]], "(Reference = ", ref_level, ", n = ", counts[ref_level], ")")
           table_by_level <- do.call("rbind", lapply(comp_level, function(lvl) {
             summary_comp <- s_info$results[[term]]$summary[[lvl]]
             summary_int <- summary_comp$summary_with_interaction
@@ -230,7 +219,7 @@ t_logistic <- function(glm_model,
                 row.name = paste0(lvl, ", n = ", counts[lvl]),
                 row_format = "level"
               )),
-              indent(rtable(header = table_header, rrowl(row.name = terms_label[interact_with])), by = 2),
+              indent(rtable(header = table_header, rrowl(row.name = terms_label[[interact_with]])), by = 2),
               indent(do.call("rbind", lapply(names(summary_int), function(i) {
                 table_formats(dfi = summary_int[[i]], header = table_header, row.name = i, row_format = "or_ci")
               })), by = 3)
@@ -255,10 +244,10 @@ t_logistic <- function(glm_model,
             table_formats(
               s_term$summary_term,
               header = table_header,
-              row.name = terms_label[term],
+              row.name = terms_label[[term]],
               row_format = "level"
             ),
-            indent(rtable(header = table_header, rrowl(row.name = terms_label[interact_with]))),
+            indent(rtable(header = table_header, rrowl(row.name = terms_label[[interact_with]]))),
             indent(do.call("rbind", lapply(names(s_term$summary_with_interaction), function(i) {
               table_formats(
                 s_term$summary_with_interaction[[i]],
@@ -348,6 +337,8 @@ s_logistic_single <- function(glm_model,
 }
 
 #' Summary of logistic regression with one two-way interaction term
+#' @param glm_model ({\code{\link{glm}}} model object)\cr
+#'   The model object can be all main effect model, and a model with one two-way interaction.
 #' @inheritParams t_logistic
 #'
 #' @export
@@ -483,6 +474,7 @@ extract_logistic_single <- function(terms_name,
     predictor <- list(
       term_type = x_type,
       term_ref_level = if (x_type == "categorical") ref_level else NULL,
+      term_comp_level = if (x_type == "categorical") comp_level else NULL,
       counts_by_level = if (x_type == "categorical") count_by_lvl else NULL
     )
 

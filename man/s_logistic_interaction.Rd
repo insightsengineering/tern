@@ -14,7 +14,7 @@ The model object can be all main effect model, and a model with one two-way inte
 Confidence level for Wald odds ratio confidence interval.}
 
 \item{increments}{(\code{named list})\cr
-Used to specify numeric values of continuous variables in {\code{glm_model}}
+Used to specify numeric values of continuous variables in {\code{glm}} model {\code{formula}}
 which interact with other variables. This is used to calculate the odds ratio when comparing
 the other interaction variable effect. For example, for a model with ARM and AGE interaction,
 {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
