@@ -74,6 +74,7 @@ Collate:
     'nest_colors.R'
     'on_attach.R'
     'package.R'
+    's_ancova.R'
     'safe_join.R'
     'split.R'
     't_abnormality.R'
