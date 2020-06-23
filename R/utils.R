@@ -374,3 +374,175 @@ trunc_if_longer <- function(x, width = 40) {
   res
 
 }
+
+
+#' Replace format of `rtables` cells
+#'
+#' A Generic function to replace format of given `rtables` cells. This is
+#' convenient when, for instance, some data should rather be blanked during
+#' a post-processing step.
+#'
+#' @param x A `rtable`.
+#' @inheritParams rreplace_format.rrow
+#' @inheritParams rreplace_format.rtable
+#'
+#' @import rtables
+#'
+#' @export
+#' @md
+#' @examples
+#' library(random.cdisc.data)
+#' library(tern)
+#' library(dplyr)
+#'
+#' ADSL <- radsl(cached = TRUE)
+#' ADLB <- radlb(cached = TRUE)
+#' saved_labels <-  var_labels(ADLB)
+#'
+#' # For illustration purpose, the example focuses on "Alanine Aminotransferase
+#' # Measurement" starting from baseline, while excluding visit at week 1 for
+#' # subjects who were prescribed a placebo.
+#' ADLB <- subset(
+#'   ADLB,
+#'   PARAM == "Alanine Aminotransferase Measurement" &
+#'     !(ARM == "B: Placebo" & AVISIT == "WEEK 1 DAY 8") & AVISIT != "SCREENING"
+#' )
+#'
+#' # Preprocessing.
+#' ADLB_l <- split(
+#'   ADLB, f = ifelse(ADLB$AVISIT == "BASELINE", "Baseline", "Follow-up")
+#' )
+#' ADLB_l <- lapply(ADLB_l, `var_labels<-`, saved_labels)
+#' tbls1 <- lapply(X = ADLB_l, function(x) {
+#'
+#'   tbl <- t_summary_by(
+#'     x = compare_in_header(x[, c("AVAL", "CHG")]),
+#'     row_by = x$AVISIT,
+#'     col_by = x$ARM,
+#'     col_N = table(ADSL$ARM),
+#'     f_numeric = c("count_n", "mean_sd3", "median_t3", "range_t3")
+#'   )
+#'   return(tbl)
+#'
+#' })
+#'
+#' rreplace_format(tbls1$Baseline, col = 3)
+#' rreplace_format(tbls1$Baseline, row = 2, old = NULL, new = "xx%")
+
+rreplace_format <- function(x,
+                            row = NULL,
+                            col = NULL,
+                            old = FALSE,
+                            new = function(x, output) "") {
+  UseMethod("rreplace_format", x)
+}
+
+#' @export
+rreplace_format.default <- function(x,
+                                    row = NULL,
+                                    col = NULL,
+                                    old = FALSE,
+                                    new = function(x, output) "") {
+  stop("No default implementation for `rreplace_format.default`.")
+}
+
+
+#' Replace format of `rtables`
+#'
+#' @inheritParams rreplace_format
+#' @inheritParams rreplace_format.rrow
+#' @param row A vector of row indexes. Default `NULL` applies to all rows.
+#' @export
+rreplace_format.rtable <- function(x,
+                                   row = NULL,
+                                   col = NULL,
+                                   old = FALSE,
+                                   new = function(x, output) "") {
+
+  if (is.null(row)) row <- 1:nrow(x)
+  x[row] <- lapply(x[row], rreplace_format, col = col, old = old, new = new)
+  return(x)
+
+}
+
+#' Replace format of `rtable` row
+#'
+#' @inheritParams rreplace_format
+#' @inheritParams rreplace_format.rtable
+#' @param col A vector of columns indexes.
+#'   Default `NULL` applies to all columns.
+#' @param old A targeted `rtable` format to be replaced. Default `FALSE`,
+#'   indicates a replacement independent from current format, otherwise
+#'   all `rtables` compatible format are accepted.
+#' @param new The replacement format.
+#'
+#' @export
+rreplace_format.rrow <- function(x,
+                                 row = NULL,
+                                 col = NULL,
+                                 old = FALSE,
+                                 new = function(x, output) "") {
+
+  if (old != FALSE || is.null(old)) {
+    if (!rtables:::is_rcell_format(old, stop_otherwise = FALSE)) {
+      stop(
+        paste0(
+          "The `old` format should be a a valid format string or a format ",
+          "function for rcells. To get a list of all valid format strings, use ",
+          "`list_rcell_format_labels`"
+        )
+      )
+    }
+  }
+
+  if (!rtables:::is_rcell_format(new, stop_otherwise = FALSE)) {
+    stop(
+      paste0(
+        "The `new` format should be a a valid format string or a format ",
+        "function for rcells. To get a list of all valid format strings, use ",
+        "`list_rcell_format_labels`"
+      )
+    )
+  }
+
+  if (!(len_x <- length(x)) > 0)  return(x)
+  if (is.null(col)) col <- 1:len_x
+
+  lapply(
+    col, function(y) {
+
+      rcell_content <- x[[y]]
+
+      # Current cell format is observed only when `old` specified
+      # (note that NULL is a possible value of `old`).
+      if (is.null(old) || old != FALSE) {
+
+        rcell_format  <- rtables:::get_format(x[[y]])
+        attributes(rcell_content) <- NULL
+
+        # It is necessary to catch specifically when the current format is
+        # NULL and when demanded `old` is of format NULL.
+        if (is.null(rcell_format)) {
+
+          if (is.null(old))  x[[y]] <<- rcell(rcell_content, format = new)
+          if (!is.null(old)) x[[y]] <<- x[[y]]
+
+        } else if (!is.null(rcell_format)) {
+          if (is.null(old))  x[[y]]  <<- x[[y]]
+          if (!is.null(old) & rcell_format %in% old) {
+            x[[y]] <<- rcell(rcell_content, format = new)
+          }
+        }
+
+        # Finally, if no `old` reference is demanded then the format is
+        # directly modified.
+      } else if (!old) {
+        x[[y]] <<- rcell(rcell_content, format = new)
+      }
+
+      invisible()
+    }
+  )
+  return(x)
+
+}
