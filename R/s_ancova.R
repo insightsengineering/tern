@@ -53,3 +53,96 @@ s_ancova_items <- function(formula,
   )
   return(result)
 }
+
+#' Summary for analysis of covariance (ANCOVA).
+#'
+#' @param formula A \code{formula} corresponding to the investigated \code{\link[stats:lm]{linear model}}.
+#'   The left-hand side must include the dependent variable. The right-hand side must include the group variable
+#'   name wrapped in the special `arm()`.
+#' @param data A \code{data.frame} which includes all the variables that are called in \code{formula}.
+#' @param conf_level The confidence level of the resulting confidence intervals (default 0.95).
+#'
+#' @md
+#'
+#' @return Named list with analysis results as \code{summary_emm} objects, which are \code{data.frame} objects
+#'   with a special print method:
+#' \describe{
+#'   \item{sum_fit}{Summary of the estimated marginal means in the groups.}
+#'   \item{sum_contrasts}{Summary of the estimated contrasts of the marginal means. Here the first level of the arm
+#'     variable is taken as the reference or control group, and all other groups are compared with this control group.
+#'     Specifically, the differences of the marginal means are estimated.
+#'   }
+#' }
+#'
+#' @export
+#'
+#' @importFrom stats lm
+#' @importFrom emmeans emmeans contrast
+#'
+#' @examples
+#'
+#' # Estimate the adjusted means of sepal length in the different iris species,
+#' # adjusting for covariates:
+#' result <- s_ancova(
+#'   formula = Sepal.Length ~ arm(Species) + Sepal.Width + Petal.Length + Petal.Width,
+#'   data = iris
+#' )
+#' result
+#' # We can see that the adjusted mean sepal length in the "setosa" species is significantly
+#' # higher than in the "versicolor" and "virginica" species (p-values 0.003 in both differences).
+s_ancova <- function(formula,
+                     data,
+                     conf_level = 0.95) {
+  # Extract and check the ANCOVA variables.
+  ancova_items <- s_ancova_items(
+    formula = formula,
+    cl = match.call(),
+    data = data,
+    env = parent.frame()
+  )
+  y <- ancova_items$rsp
+  arm <- ancova_items$arm
+  stopifnot(
+    is.numeric(y),
+    !any(is.na(y)),
+    is.factor(arm),
+    !any(is.na(arm))
+  )
+  # Fit the linear model and derive estimated marginal means (EMM).
+  lm_fit <- stats::lm(
+    formula = formula,
+    data = data
+  )
+  emmeans_fit <- emmeans::emmeans(
+    lm_fit,
+    # We specify here the group variable over which EMM are desired.
+    specs = ancova_items$arm_name,
+    # We pass the data again so that the factor levels of the arm variable can be inferred.
+    data = data
+  )
+  sum_fit <- summary(
+    emmeans_fit,
+    level = conf_level
+  )
+  # Estimate the differences between the marginal means.
+  emmeans_contrasts <- emmeans::contrast(
+    emmeans_fit,
+    # Compare all arms versus the control arm.
+    method = "trt.vs.ctrl",
+    # Take the first level of the arm factor as the control arm.
+    ref = 1
+  )
+  sum_contrasts <- summary(
+    emmeans_contrasts,
+    # Derive confidence intervals, t-tests and p-values.
+    infer = TRUE,
+    # Don't adjust the p-values for multiplicity.
+    adjust = "none"
+  )
+
+  result <- list(
+    sum_fit = sum_fit,
+    sum_contrasts = sum_contrasts
+  )
+  return(result)
+}
