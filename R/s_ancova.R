@@ -15,6 +15,11 @@
 #'   \item{model_frame}{The \code{model.frame} object which was created internally.}
 #' }
 #'
+#' @note For missing values, this function inherits the behavior from \code{\link[stats]{model.frame}}:
+#'   Rows with missing values are by default removed. However, if the user sets the `na.action` attribute
+#'   of `data`, then this is respected. For example, if it is set to `na.fail`, then the `s_ancova_items`
+#'   call will fail.
+#'
 #' @importFrom stats terms model.frame
 #'
 #' @noRd
@@ -38,16 +43,24 @@ s_ancova_items <- function(formula,
     stop("Formula must include both response and arm.")
   }
 
+  # Evaluate the model frame call, and in this force "na.omit" action
+  # on missing values.
   args_position <- match(c("formula", "data"), names(cl), 0L)
   args_call <- cl[c(1L, args_position)]
   args_call[[1L]] <- quote(stats::model.frame)
   model_frame <- eval(args_call, env)
 
+  # Obtain names of response and arm variable, and adjust `model_frame` arm column name.
+  # This makes downstream use in `s_ancova` easier.
+  rsp_name <- all.vars(formula)[col_rsp]
+  arm_name <- all.vars(formula)[col_arm]
+  colnames(model_frame)[col_arm] <- arm_name
+
   result <- list(
     rsp = model_frame[, col_rsp],
-    rsp_name = all.vars(formula)[col_rsp],
+    rsp_name = rsp_name,
     arm = model_frame[, col_arm],
-    arm_name = all.vars(formula)[col_arm],
+    arm_name = arm_name,
     formula = formula,
     model_frame = model_frame
   )
@@ -102,21 +115,23 @@ s_ancova <- function(formula,
   )
   y <- ancova_items$rsp
   arm <- ancova_items$arm
+  arm_name <- ancova_items$arm_name
   stopifnot(
     is.numeric(y),
     !any(is.na(y)),
     is.factor(arm),
     !any(is.na(arm))
   )
+
   # Fit the linear model and derive estimated marginal means (EMM).
   lm_fit <- stats::lm(
-    formula = formula,
-    data = data
+    formula = ancova_items$formula,
+    data = ancova_items$model_frame
   )
   emmeans_fit <- emmeans::emmeans(
     lm_fit,
     # We specify here the group variable over which EMM are desired.
-    specs = ancova_items$arm_name,
+    specs = arm_name,
     # We pass the data again so that the factor levels of the arm variable can be inferred.
     data = data
   )
@@ -124,6 +139,14 @@ s_ancova <- function(formula,
     emmeans_fit,
     level = conf_level
   )
+
+  # Derive total and complete sample sizes for the groups and add to summary.
+  n_total <- table(data[[arm_name]])
+  n_complete <- table(arm)
+  sum_fit_group_rows <- as.character(sum_fit[[arm_name]])
+  sum_fit$n_total <- as.numeric(n_total[sum_fit_group_rows])
+  sum_fit$n_complete <- as.numeric(n_complete[sum_fit_group_rows])
+
   # Estimate the differences between the marginal means.
   emmeans_contrasts <- emmeans::contrast(
     emmeans_fit,
