@@ -484,7 +484,7 @@ rreplace_format.rrow <- function(x,
                                  new = function(x, output) "") {
 
   if (old != FALSE || is.null(old)) {
-    if (!rtables:::is_rcell_format(old, stop_otherwise = FALSE)) {
+    if (!rtables::is_rcell_format(old, stop_otherwise = FALSE)) {
       stop(
         paste0(
           "The `old` format should be a a valid format string or a format ",
@@ -495,7 +495,7 @@ rreplace_format.rrow <- function(x,
     }
   }
 
-  if (!rtables:::is_rcell_format(new, stop_otherwise = FALSE)) {
+  if (!rtables::is_rcell_format(new, stop_otherwise = FALSE)) {
     stop(
       paste0(
         "The `new` format should be a a valid format string or a format ",
@@ -517,7 +517,7 @@ rreplace_format.rrow <- function(x,
       # (note that NULL is a possible value of `old`).
       if (is.null(old) || old != FALSE) {
 
-        rcell_format  <- rtables:::get_format(x[[y]])
+        rcell_format  <- rtables::get_format(x[[y]])
         attributes(rcell_content) <- NULL
 
         # It is necessary to catch specifically when the current format is
