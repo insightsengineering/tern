@@ -417,9 +417,7 @@ t_summary.numeric <- function(x, # nolint
         row.name = paste0(round(conf_level * 100), "% CI"),
         format = "xx.xx - xx.xx",
         # Arguments for `ttest_ci_one_arm`:
-        conf_level = conf_level,
-        mu = 0,
-        alternative = "two.sided"
+        conf_level = conf_level
       ),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
       q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE, type = q_type),

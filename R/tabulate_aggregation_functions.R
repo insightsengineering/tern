@@ -203,38 +203,42 @@ ttest_two_arm <- function(x,
   return(result)
 }
 
-#' Confidence level for mean estimate (one-arm t-test)
+#' Confidence level for mean estimate (based on one-arm t-test statistic)
 #'
-#' The calculation of confidence interval for an estimation of population mean
-#'  will use \code{qt} function with degree of freedom of \code{n - 1}
+#' The calculation of a two-sided confidence interval for an estimation of population mean
+#' will use the \code{qt} function with \code{n - 1} degrees of freedom.
 #'
 #' @param x (\code{numeric} vector)
-#' @param conf_level (\code{numeric} value)
-#'   Specifies confidence level. Must be greater than 0 and less than 1.
-#' @param ... (optional)
-#'   Other arguments from \code{\link{stats}{t.test}}
+#' @inheritParams argument_convention
 #'
-#' @return a vector of 2 numeric numbers representing the lower and upper bounds
+#' @return a vector of 2 numeric numbers representing the lower and upper bounds.
+#'   Missing values are discarded before the CI calculation.
+#'   If not at least 2 `x` values are available, then an empty \code{rcell} object is returned.
 #'
+#' @importFrom stats var qt
 #' @export
 #'
 #' @examples
-#' ttest_ci_one_arm(c(1,2,3,4,5,6,7,8, NA), conf_level = 0.95, mu = 1, alternative = "less")
+#' ttest_ci_one_arm(c(1, 2, 3, 4, NA), conf_level = 0.95)
+#' ttest_ci_one_arm(as.numeric(c(NA, NA)))
 ttest_ci_one_arm <- function(x,
-                             conf_level = 0.95, # nolint
-                             ...) {
+                             conf_level = 0.95) {
+  stopifnot(is.numeric(x))
+  check_conf_level(conf_level)
+  x <- x[!is.na(x)]
 
-  stopifnot(is.numeric(conf_level), conf_level <= 1 && conf_level >= 0)
-
-  result <- if (all(is.na(x))) {
+  result <- if (length(x) < 2) {
     rcell(" ", format = "xx")
   } else {
-    t.test(x, conf.level = conf_level, ...)$conf.int
+    n <- length(x)
+    df <- n - 1
+    se <- sqrt(stats::var(x) / n)
+    alpha <- 1 - conf_level
+    t_quantile <- stats::qt(1 - alpha / 2, df)
+    ci <- mean(x) + c(-t_quantile, t_quantile) * se
+    ci
   }
 
-  names(attributes(result))[
-    which(names(attributes(result)) == "conf.level")
-    ] <- "conf_level";
-
+  attr(result, "conf_level") <- conf_level
   return(result)
 }
