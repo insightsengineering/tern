@@ -1,6 +1,8 @@
 # tern 0.6.7.9000
 
 * Add `rreplace_format` for tabulation post-processing.
+* Add new tern function `t_ancova` to create ANCOVA tables, as well as corresponding elementary table function 
+  `t_el_ancova` and summary function `s_ancova`.
 
 # tern 0.6.7
 

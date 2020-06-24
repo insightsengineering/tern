@@ -1,8 +1,8 @@
 library(dplyr)
 library(rtables)
 
-test_that("Elementary ANCOVA table works correctly", {
-  anl <- read.table(
+get_example_data <- function() {
+  read.table(
     header = TRUE,
     sep = ";",
     stringsAsFactors = FALSE,
@@ -48,9 +48,21 @@ test_that("Elementary ANCOVA table works correctly", {
       "AB12345-BRA-1-id-93";"A: Drug X";"A";"LOW";"WEEK 3 DAY 22";"71.71464916";"51.2307956"
       "AB12345-BRA-1-id-93";"A: Drug X";"A";"LOW";"WEEK 4 DAY 29";"71.71464916";"51.83555366"
       "AB12345-BRA-1-id-93";"A: Drug X";"A";"LOW";"WEEK 5 DAY 36";"71.71464916";"60.62970709"'
-  )
-  anl <- anl %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+  ) %>%
+    dplyr::mutate(
+      ARM = factor(
+        ARM,
+        levels = c("B: Placebo", "A: Drug X", "C: Combination")
+      ),
+      AVISIT = factor(
+        AVISIT,
+        levels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+      )
+    )
+}
+
+test_that("Elementary ANCOVA table works correctly", {
+  anl <- get_example_data() %>%
     dplyr::filter(AVISIT == "WEEK 1 DAY 8")
   result <- t_el_ancova(
     formula = AVAL ~ arm(ARM) + BASE + BMRKR2 + STRATA1,
@@ -69,4 +81,35 @@ test_that("Elementary ANCOVA table works correctly", {
   )
   comp <- compare_rtables(result, expected, comp.attr = FALSE)
   expect_true(all(comp == "."), "t_el_ancova does not produce same results any longer")
+})
+
+test_that("Compound ANCOVA table works correctly with a factor `row_by` variable", {
+  anl <- get_example_data() %>%
+    dplyr::filter(AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15"))
+  result <- t_ancova(
+    formula = AVAL ~ arm(ARM) + BASE + BMRKR2 + STRATA1,
+    data = anl,
+    row_by = anl$AVISIT
+  )
+  expected <- rtable(
+    header = rheader(
+      rrowl(NULL, "B: Placebo", "A: Drug X", "C: Combination"),
+      rrowl(NULL, "(N=2)", "(N=4)", "(N=2)")
+    ),
+    rrow("WEEK 1 DAY 8"),
+    rrow("n", 2, 4, 2, indent = 1),
+    rrow("Adjusted Mean", 59.19, 50.23, 43.09, indent = 1),
+    rrowl("Difference in Adjusted Means", list(NULL, -8.97, -16.1), format = "xx.xx", indent = 1),
+    rrowl("95% CI", list(NULL, c(-134.93, 117), c(-85.67, 53.46)), format = "xx.xx - xx.xx", indent = 2),
+    rrowl("p-value", list(NULL, 0.5320, 0.2086), format = "x.xxxx | (<0.0001)", indent = 2),
+    rrow(""),
+    rrow("WEEK 2 DAY 15"),
+    rrow("n", 2, 4, 2, indent = 1),
+    rrow("Adjusted Mean", 52.81, 49.32, 51.89, indent = 1),
+    rrowl("Difference in Adjusted Means", list(NULL, -3.5, -0.93), format = "xx.xx", indent = 1),
+    rrowl("95% CI", list(NULL, c(-289.11, 282.12), c(-158.66, 156.81)), format = "xx.xx - xx.xx", indent = 2),
+    rrowl("p-value", list(NULL, 0.9018, 0.9525), format = "x.xxxx | (<0.0001)", indent = 2)
+  )
+  comp <- compare_rtables(result, expected, comp.attr = FALSE)
+  expect_true(all(comp == "."), "t_ancova does not produce same results any longer")
 })
