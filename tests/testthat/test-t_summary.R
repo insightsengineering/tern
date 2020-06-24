@@ -56,15 +56,17 @@ test_that("t_summary results are as expected", {
     rrow(""),
     rrow("AGE"),
     rrow("n", 9, 13, 8, 30, format = "xx", indent = 1),
+    # Note: The following line somehow can't be broken into two lines because of test.nest::test_indent() complaints.
     rrow("Mean (SD)", c(39.78, 14.65), c(43.77, 13.55), c(42.62, 10.73), c(42.27, 12.88), format = "xx.xx (xx.xx)", indent = 1),
-    rrow("Median", 38, 39, 43.5, 39, format = "xx.x", indent = 1),
+    rrow("Median", 38, 39, 43.5, 39, format = "xx.xx", indent = 1),
     rrow("Min - Max", c(20, 62), c(20, 67), c(26, 55), c(20, 67), format = "xx.xx - xx.xx", indent = 1),
     rrow(""),
     rrow("SEX"),
     rrow("n", 9, 13, 8, 30, format = "xx", indent = 1),
     rrow("F", c(6, 0.6667), c(6, 0.4615), c(3, 0.375), c(15, 0.5), format = "xx (xx.xx%)", indent = 1),
     rrow("M", c(3, 0.3333), c(6, 0.4615), c(5, 0.625), c(14, 0.4667), format = "xx (xx.xx%)", indent = 1),
-    rrow("U", rcell(0, format = "xx"), c(1, 0.0769), rcell(0, format = "xx"), c(1, 0.0333), format = "xx (xx.xx%)", indent = 1)
+    rrow("U", rcell(0, format = "xx"), c(1, 0.0769), rcell(0, format = "xx"), c(1, 0.0333),
+         format = "xx (xx.xx%)", indent = 1)
   )
   # nolint end
 
@@ -77,14 +79,19 @@ test_that("t_summary results are as expected", {
 
   expect_true(all(comp == "."), "t_summary does not provide the expected results")
 
-  # Test SE calculation
+  # Test SE and CI calculation
 
   asl <- data.frame(
     a = rep(c(1, 1.1, 1.2, 0.9, 0.8), 2),
     b = rep(c(2, 2.5, 3, 1.4, 1), 2),
     spec = c(rep("A", 5), rep("B", 5))
   )
-  tbl_tern <- t_summary(asl[, c("a", "b")], asl$spec, f_numeric = c("se", "mean_sd"))
+  tbl_tern <- t_summary(
+    asl[, c("a", "b")],
+    asl$spec,
+    f_numeric = c("se", "mean_sd", "ci"),
+    conf_level = 0.8
+  )
 
   # nolint start
   tbl_test <- rtable(
@@ -92,10 +99,12 @@ test_that("t_summary results are as expected", {
     rrow("a"),
     rrow("SE", 0.07, 0.07, format = "xx.xx", indent = 1),
     rrow("Mean (SD)", c(1, 0.16), c(1, 0.16), format = "xx.xx (xx.xx)", indent = 1),
+    rrow("80% CI", c(0.89, 1.11), c(0.89, 1.11), format = "xx.xx - xx.xx", indent = 1),
     rrow(""),
     rrow("b"),
     rrow("SE", 0.36, 0.36, format = "xx.xx", indent = 1),
-    rrow("Mean (SD)", c(2, 0.81), c(2, 0.81), format = "xx.xx (xx.xx)", indent = 1)
+    rrow("Mean (SD)", c(2, 0.81), c(2, 0.81), format = "xx.xx (xx.xx)", indent = 1),
+    rrow("80% CI", c(1.43, 2.53), c(1.43, 2.53), format = "xx.xx - xx.xx", indent = 1)
   )
   # nolint end
 
@@ -105,5 +114,4 @@ test_that("t_summary results are as expected", {
   )
   comp <- compare_rtables(tbl_tern, tbl_test, comp.attr = FALSE)
   expect_true(all(comp == "."), "t_summary does not provide the expected results")
-
 })

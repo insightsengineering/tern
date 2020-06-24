@@ -147,6 +147,7 @@ t_summary.default <- function(x, # nolint
 #'   additional arguments passed on to methods.
 #'   + \code{q_type} an integer between 1 and 9 selecting one of the nine
 #'   quantile algorithms as detailed in \code{\link[stats:quantile]{quantile(), type argument}}
+#'   + \code{conf_level} the confidence level between 0 and 1 (default: 0.95)
 #'
 #' @details
 #' Every variable in \code{x} will be mapped to a summary table using
@@ -281,23 +282,25 @@ t_summary.data.frame <- function(x, # nolint
 
 #' Summarize Numeric Variables
 #'
-#' Tabulate the number of non-missing observations, mean, standard error, median, and range
+#' Tabulate the number of non-missing observations, mean, standard error, confidence interval, median, and range
 #' for different groups.
 #'
 #' @inheritParams t_summary.data.frame
 #' @param x (\code{numeric}) variable
-#' @param f_numeric a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "median",
-#'   "q1_q3", "range", "se"}, as well as the functions which are wrapped by
+#' @param f_numeric a combination of the analysis functions to be evaluated \code{"count_n", "mean_sd", "ci",
+#'  "median", "q1_q3", "range", "se"}, as well as the functions which are wrapped by
 #'   \code{\link{patient_numeric_fcns}} (\code{f_numeric = patient_numeric_fcns()}) for summarizing
 #'   patient data as for \code{\link{t_summarize_by_visit}}
 #'
 #' @template return_rtable
 #'
+#' @details The analysis function "ci" uses a two-sided confidence interval based on the t-test statistic, see
+#'   \code{\link{ttest_ci_one_arm}} for details. By default, the confidence level is 95%, and can be specified
+#'   with the optional `conf_level` parameter.
+#'
 #' @export
 #'
 #' @importFrom rtables col_by_to_matrix
-#'
-#' @template author_waddella
 #'
 #' @seealso \code{\link{t_summary}},
 #'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
@@ -312,6 +315,12 @@ t_summary.data.frame <- function(x, # nolint
 #' ADSL <- cadsl
 #'
 #' t_summary(x = ADSL$AGE, col_by = ADSL$ARM)
+#'
+#' t_summary(
+#'   x = ADSL$AGE,
+#'   col_by = ADSL$ARM,
+#'   f_numeric = c("count_n", "mean_sd", "se", "ci")
+#' )
 #'
 #' t_summary(
 #'   x = ADSL$AGE,
@@ -342,10 +351,9 @@ t_summary.numeric <- function(x, # nolint
     length(f_numeric) > 0
   )
 
-
   allowed_f_numeric <- c(
     "count_n", "mean_sd", "median", "q1_q3", "range",
-    "n_not_na3", "mean_sd3", "median_t3", "iqr_num3", "range_t3", "se"
+    "n_not_na3", "mean_sd3", "median_t3", "iqr_num3", "range_t3", "se", "ci"
   )
 
   if (!all(f_numeric %in% allowed_f_numeric)) {
@@ -362,6 +370,25 @@ t_summary.numeric <- function(x, # nolint
           )
         q_type <- 7
       }
+    }
+  }
+
+  if ("ci" %in% f_numeric) {
+    conf_level <- 0.95
+    if ("conf_level" %in% names(list(...))) {
+      spec_conf_level <- try(
+        check_conf_level(list(...)$conf_level),
+        silent = TRUE
+      )
+      conf_level <-
+        if (inherits(spec_conf_level, "try-error")) {
+          message(
+            "`conf_level` was provided but was not a proportion between 0 and 1. Default was used instead: 0.95."
+          )
+          0.95
+        } else {
+          spec_conf_level
+        }
     }
   }
 
@@ -383,6 +410,17 @@ t_summary.numeric <- function(x, # nolint
       se = rtabulate(x, col_by, function(x, na_rm) {
         sd(x) / sqrt(length(x))
       }, row.name = "SE", format = "xx.xx", na_rm = TRUE),
+      ci = rtabulate(
+        x,
+        col_by,
+        ttest_ci_one_arm,
+        row.name = paste0(round(conf_level * 100), "% CI"),
+        format = "xx.xx - xx.xx",
+        # Arguments for `ttest_ci_one_arm`:
+        conf_level = conf_level,
+        mu = 0,
+        alternative = "two.sided"
+      ),
       median = rtabulate(x, col_by, median, row.name = "Median", format = "xx.xx", na.rm = TRUE),
       q1_q3 = rtabulate(x, col_by, q1_q3, row.name = "Q1 - Q3", format = "xx.xx - xx.xx", na.rm = TRUE, type = q_type),
       range = rtabulate(x, col_by, range, format = "xx.xx - xx.xx", row.name = "Min - Max", na.rm = TRUE),

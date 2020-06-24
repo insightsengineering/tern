@@ -29,6 +29,7 @@ additional arguments passed on to methods.
 \itemize{
 \item \code{q_type} an integer between 1 and 9 selecting one of the nine
 quantile algorithms as detailed in \code{\link[stats:quantile]{quantile(), type argument}}
+\item \code{conf_level} the confidence level between 0 and 1 (default: 0.95)
 }}
 }
 \description{
