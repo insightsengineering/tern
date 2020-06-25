@@ -61,21 +61,12 @@
 #'
 #' # example 2
 #' ADSL <- radsl(cached = TRUE)
-#' ADLB0 <- radlb(cached = TRUE)
-#' ADLB_labels <- var_labels(ADLB0)
-#' ADLB_base <- ADLB0 %>%
-#'  dplyr::filter(ABLFL == "Y") %>%
-#'  dplyr::select(USUBJID, PARAM, ANRIND) %>%
-#'  dplyr::rename(BNRIND = ANRIND)
-#'
-#' ADLB <- merge(ADLB0, ADLB_base, by = c("USUBJID", "PARAM")) %>%
-#'  dplyr::filter(ABLFL != "Y" & ABLFL2 != "Y")
+#' ADLB <- radlb(cached = TRUE) %>%
+#'  dplyr::filter(ABLFL == "Y")
 #'
 #' ADLB$ANRIND <- as.character(ADLB$ANRIND)
 #' ADLB$ANRIND[c(1,10,500)] <- " "
 #' ADLB$ANRIND <- ADLB$ANRIND %>% sas_na() %>% as.factor()
-#' var_labels(ADLB)[c(names(ADLB_labels), "BNRIND")] <-
-#'   c(ADLB_labels, BNRIND = "Baseline Grade")
 #'
 #' tbl2 <- t_abnormality(
 #'   grade = ADLB$ANRIND,
