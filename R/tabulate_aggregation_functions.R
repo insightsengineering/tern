@@ -52,7 +52,7 @@ count_perc_col_N <- function(x_cell, n_i) { # nolint
 
 # Version with test for if-all-NA, then display empty cell
 
-positives_and_proportion2 <- function(x) {
+positives_and_proportion2 <- function(x) { # nousage # nolint
   stopifnot(is.logical(x))
 
   if (all(is.na(x))) {
@@ -62,7 +62,7 @@ positives_and_proportion2 <- function(x) {
   }
 }
 
-n_not_na2 <- function(x) {
+n_not_na2 <- function(x) { # nousage # nolint
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
@@ -70,7 +70,7 @@ n_not_na2 <- function(x) {
   }
 }
 
-mean_sd2 <- function(x, na.rm = TRUE) { # nolint
+mean_sd2 <- function(x, na.rm = TRUE) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
@@ -78,7 +78,7 @@ mean_sd2 <- function(x, na.rm = TRUE) { # nolint
   }
 }
 
-median_t2 <- function(x, na.rm = TRUE) { # nolint
+median_t2 <- function(x, na.rm = TRUE) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
@@ -86,7 +86,7 @@ median_t2 <- function(x, na.rm = TRUE) { # nolint
   }
 }
 
-range_t2 <- function(x, na.rm = TRUE) { # nolint
+range_t2 <- function(x, na.rm = TRUE) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
@@ -94,7 +94,7 @@ range_t2 <- function(x, na.rm = TRUE) { # nolint
   }
 }
 
-iqr_num2 <- function(x, na.rm = TRUE, type = 7) { # nolint
+iqr_num2 <- function(x, na.rm = TRUE, type = 7) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
   } else {
@@ -105,7 +105,7 @@ iqr_num2 <- function(x, na.rm = TRUE, type = 7) { # nolint
 
 # Version with test for if-all-NA, then display NE
 
-positives_and_proportion3 <- function(x) {
+positives_and_proportion3 <- function(x) { # nousage # nolint
   stopifnot(is.logical(x))
 
   if (all(is.na(x))) {

@@ -23,7 +23,7 @@
 #' @importFrom stats terms model.frame
 #'
 #' @noRd
-s_ancova_items <- function(formula,
+s_ancova_items <- function(formula, # nousage # nolint
                            cl,
                            data,
                            env) {

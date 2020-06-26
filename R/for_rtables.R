@@ -29,7 +29,7 @@ row_names_as_col <- function(tbl, header_label) {
 #' @param y second list
 #'
 #' @return list of combined rows
-combine_rrows_with_indent <- function(x, y) {
+combine_rrows_with_indent <- function(x, y) { # nousage # nolint
   Map(function(xi, yi) {
     rrowl(attr(xi, "row.name"), c(xi, yi), indent = attr(xi, "indent"))
   }, x, y)

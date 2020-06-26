@@ -1,5 +1,5 @@
 # March 2020
-t_summary_true <- function(x,
+t_summary_true <- function(x, # nousage # nolint
                            col_by,
                            col_N = NULL, # nolint
                            total = NULL,

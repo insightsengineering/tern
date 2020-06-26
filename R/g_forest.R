@@ -764,7 +764,7 @@ vp_forest_table_part <- function(nrow, ncol, l_row, l_col, widths, heights, name
   )
 }
 
-grid.forest <- function(...) { # nolint
+grid.forest <- function(...) { # nolint # nousage
   grid.draw(forest_grob(...))
 }
 

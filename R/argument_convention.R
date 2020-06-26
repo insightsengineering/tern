@@ -41,6 +41,5 @@
 #' @param conf_level confidence level of the interval.
 #' @param prune_zero_rows `logical` whether to prune all zero rows
 #'
-argument_convention <- function(col_by, col_N, table_tree, indent, na_rm, tte, is_event, rsp, total, conf_level, prune_zero_rows) { # nolintr
-  NULL
-}
+#' @name argument_convention
+NULL

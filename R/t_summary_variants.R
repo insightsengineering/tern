@@ -201,7 +201,7 @@ t_summary_by <- function(x,
         )
 
         # post-processing to move (N=xx) row
-        if ("compare_in_header" %in% names(attributes(x)) && nrow(header(tbl)) == 3){
+        if ("compare_in_header" %in% names(attributes(x)) && nrow(header(tbl)) == 3) {
 
           tbl <- move_header_N(tbl, col_N)
 
@@ -323,13 +323,13 @@ nb_entries <- function(x) {
 
 # need to export, bug otherwise
 #' @export
-nb_entries.default <- function(x) {
+nb_entries.default <- function(x) { # nousage # nolint
   length(x)
 }
 
 # need to export, bug otherwise
 #' @export
-nb_entries.data.frame <- function(x) { # nolint
+nb_entries.data.frame <- function(x) { # nolint # nousage
   nrow(x)
 }
 
@@ -402,11 +402,11 @@ apply_compare_in_header <- function(x,
 # only applies to compare_in_header use-cases
 move_header_N <- function(tbl, col_N){ # nolint
 
-  l_colspan <- lapply(header(tbl)[[1]], function(cell){
+  l_colspan <- lapply(header(tbl)[[1]], function(cell) {
     attributes(cell)$colspan
     })
 
-  l_rcell_n <- Map(function(x, cs){
+  l_rcell_n <- Map(function(x, cs) {
     rcell(x, colspan = cs, format = "(N=xx)")
   }, col_N, l_colspan) # nolint
 

@@ -40,7 +40,7 @@ is_nested_by <- function(x) {
 #' Not called "by" because this function already exists in base R
 #'
 #' @param x object to wrap it around
-simple_by <- function(x) {
+simple_by <- function(x) { # nousage # nolint
   stopifnot(is.data.frame(x) || is.factor(x) || is(x, "by_all"))
   x
 }
@@ -49,7 +49,7 @@ simple_by <- function(x) {
 #'
 #' @inheritParams simple_by
 #' @return boolean whether it is an simple_by object
-is_simple_by <- function(x) {
+is_simple_by <- function(x) { # nousage # nolint
   is(x, "simple_by") ||
     (is.data.frame(x) || is.factor(x) || is(x, "by_all"))
 }
@@ -80,7 +80,7 @@ esplit <- function(x, by) {
 #'
 #' by <- data.frame("Old" = c(TRUE, TRUE, FALSE), "Tall" = c(FALSE, TRUE, TRUE))
 #' esplit(1:3, by)
-esplit.default <- function(x, by) { #nolintr
+esplit.default <- function(x, by) { # nolint # nousage
   stopifnot(is.atomic(x))
   by <- col_by_to_matrix(by)
   lapply(by, function(rows) {
@@ -99,7 +99,7 @@ esplit.default <- function(x, by) { #nolintr
 #' @examples
 #' by <- factor(c("M", "M", "F", "F", "F"))
 #' esplit(data.frame(x = 1:5, y = 6:10), by)
-esplit.data.frame <- function(x, by) { #nolintr
+esplit.data.frame <- function(x, by) { # nolint # nousage
   labels <- var_labels(x)
   by <- col_by_to_matrix(by)
   lapply(by, function(rows) {
@@ -173,7 +173,7 @@ esplit.list <- function(x, by) { #nolintr
 #'   )),
 #'   by = factor(c("M", "F"))
 #' )
-esplit.non_rsplit <- function(x, by) { #nolintr
+esplit.non_rsplit <- function(x, by) { #nolint # nousage
   # same as default method
   by <- col_by_to_matrix(by)
   lapply(by, function(rows) x[rows])

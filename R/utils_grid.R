@@ -333,12 +333,12 @@ to_group_color <- function(col, grps) {
   col
 }
 
-tern_grob <- function(x) {
+tern_grob <- function(x) { # nousage # nolint
   class(x) <- unique(c("ternGrob", class(x)))
   x
 }
 
-print.ternGrob <- function(x, ...) {
+print.ternGrob <- function(x, ...) { # nousage # nolint
   grid.newpage()
   grid.draw(x)
 }

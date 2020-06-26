@@ -70,7 +70,7 @@ t_count_true <- function(x,
 #'
 #' @examples
 #' t_count_true(1:5, factor(LETTERS[c(1,2,1,1,2)]))
-t_count_true.default <- function(x, # nolint
+t_count_true.default <- function(x, # nolint # nousage
                                  col_by,
                                  col_N = NULL, # nolint
                                  total = NULL,
@@ -108,7 +108,7 @@ t_count_true.default <- function(x, # nolint
 #'
 #' # show only counts without percent
 #' with(iris, t_count_true(Sepal.Length > 5.5, col_by = Species, denominator = "omit"))
-t_count_true.logical <- function(x,
+t_count_true.logical <- function(x, # nousage # nolint
                                  col_by,
                                  col_N = NULL, # nolint
                                  total = NULL,
@@ -217,7 +217,7 @@ t_count_true.list <- function(x_list, #nolintr
 #'
 #' t_count_true(ANL, col_by = ADSL$ARM)
 #' t_count_true(ANL, col_by = ADSL$ARM, denominator = "omit")
-t_count_true.data.frame <- function(x, # nolint
+t_count_true.data.frame <- function(x, # nolint # nousage
                                     col_by,
                                     col_N = NULL, # nolint
                                     total = NULL,

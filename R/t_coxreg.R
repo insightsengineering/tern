@@ -343,7 +343,7 @@ univariate <- function(x) structure(x, varname = deparse(substitute(x)))
 
 
 
-explicit_special <- function(formula_terms, special){
+explicit_special <- function(formula_terms, special) {
 
   y <- attr(formula_terms, "specials")[[special]]
   if (!is.null(attr(formula_terms, "specials")[[special]])) {
@@ -1020,7 +1020,7 @@ estimate_coef <- function(variable, given,
   coef_hat <- t(design_mat) %*% betas
   dimnames(coef_hat)[2] <- "coef"
 
-  coef_se <- apply(design_mat, 2, function(x){
+  coef_se <- apply(design_mat, 2, function(x) {
     vcov_el <- as.logical(x)
     y <- vcov[vcov_el, vcov_el]
     y <- sum(y)
@@ -1031,7 +1031,7 @@ estimate_coef <- function(variable, given,
   q_norm  <- qnorm((1 + conf_level) / 2)
   y <- cbind(coef_hat, `se(coef)` = coef_se)
 
-  y <- apply(y, 1, function(x){
+  y <- apply(y, 1, function(x) {
 
     x["hr"]  <- exp(x["coef"])
     x["lcl"]  <- exp(x["coef"] - q_norm * x["se(coef)"])
@@ -1086,7 +1086,7 @@ fit_n_aov <- function(formula,
 
 
 # argument_checks
-check_formula <- function(formula){
+check_formula <- function(formula) {
 
   if (!(inherits(formula, "formula")))
     stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD)`.")
@@ -1510,7 +1510,7 @@ s_cox_multivariate <- function(formula, data,
     mcoef <- coef(mod)
     mvcov <- vcov(mod)
 
-    estimate_coef_local <- function(variable, given){
+    estimate_coef_local <- function(variable, given) {
       estimate_coef(
         variable, given, coef = mcoef, mmat = mmat, vcov = mvcov, conf_level = conf_level,
         lvl_var = levels(data[[variable]]), lvl_given = levels(data[[given]])
@@ -1518,7 +1518,7 @@ s_cox_multivariate <- function(formula, data,
     }
 
     coef_inter <- lapply(
-      for_inter, function(x){
+      for_inter, function(x) {
         y <- attr(mod$terms, "factor")[, x]
         y <- names(y[y > 0])
         Map(estimate_coef_local, variable = y, given = rev(y))
@@ -1621,7 +1621,7 @@ t_cox_multivariate <- function(formula, data,
     rrow("in the model",        "Treatment",  paste0(round(conf_level * 100, 0), "% CI*"), "p-value*")
   );
 
-  make_a_headline <- function(label, is_term_factor){
+  make_a_headline <- function(label, is_term_factor) {
 
     if (is_term_factor) {
       y <- paste0(label, " (Reference = ", levels(data[[label]])[1], ")")
@@ -1635,7 +1635,7 @@ t_cox_multivariate <- function(formula, data,
 
   get_ref_pval <- function(term_labs, aov = aov) aov[term_labs, ncol(aov)]
 
-  get_coefs <- function(term_labs, mod = mod, msum = msum){
+  get_coefs <- function(term_labs, mod = mod, msum = msum) {
 
     coef_rows <- mod$assign[[term_labs]]
     coefs <- matrix(
@@ -1647,7 +1647,7 @@ t_cox_multivariate <- function(formula, data,
 
   }
 
-  give_coef_names <- function(coefs, term_labs, is_term_factors){
+  give_coef_names <- function(coefs, term_labs, is_term_factors) {
 
     if (is_term_factors) rownames(coefs) <- levels(data[[term_labs]])[-1]
     else rownames(coefs) <- term_labs
@@ -1671,7 +1671,7 @@ t_cox_multivariate <- function(formula, data,
       )
     }
 
-    make_a_cov_chunk <- function(term_labs, pval){
+    make_a_cov_chunk <- function(term_labs, pval) {
 
       if (nrow(coefs[[term_labs]]) > 1) {
         effect_row <- rtable(
@@ -1684,7 +1684,7 @@ t_cox_multivariate <- function(formula, data,
         )
       }
 
-      if (is.numeric(data[[term_labs]])){
+      if (is.numeric(data[[term_labs]])) {
 
         row_content <- rtable(
           header = tbl_header,

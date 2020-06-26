@@ -44,7 +44,7 @@ test_that("`rreplace_format()` changed format of a given column.", {
 
         vapply(
           tbl_03[1:2],
-          FUN = function(x){
+          FUN = function(x) {
             attr(x[[1]], which = "format") %in% c(format_01, format_02)
           },
           FUN.VALUE = TRUE

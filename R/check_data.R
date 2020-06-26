@@ -37,7 +37,7 @@ check_same_n <- function(..., omit_null = TRUE) {
   TRUE
 }
 
-check_same_n_l <- function(x) {
+check_same_n_l <- function(x) { # nousage # nolint
   do.call(check_same_n, x)
 }
 
@@ -81,7 +81,7 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 
-is_logical_vector_modif <- function(x, min_size = 1) {
+is_logical_vector_modif <- function(x, min_size = 1) { # nousage # nolint
   !is.null(x) &&
     is.atomic(x) &&
     length(x) >= min_size &&
@@ -217,7 +217,7 @@ check_strata_levels <- function(strata_data) {
   }
 }
 
-check_binary_endpoint_args <- function(rsp, col_by, strata_data){
+check_binary_endpoint_args <- function(rsp, col_by, strata_data) {
 
   check_col_by_factor(rsp, col_by, get_N(col_by), min_num_levels = 2)
   check_same_n(rsp = rsp, col_by = col_by)

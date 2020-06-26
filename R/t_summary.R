@@ -251,7 +251,7 @@ t_summary.default <- function(x, # nolint
 #' summary(tbls)
 #' to_rtable(tbls)
 #'
-t_summary.data.frame <- function(x, # nolint
+t_summary.data.frame <- function(x, # nolint # nousage
                                  col_by,
                                  col_N = NULL, # nolint
                                  total = NULL,
@@ -340,9 +340,9 @@ t_summary.data.frame <- function(x, # nolint
 #'   col_by = by_all("All"),
 #'   col_N = nrow(ADSL)
 #' )
-t_summary.numeric <- function(x, # nolint
+t_summary.numeric <- function(x, # nolint # nousage
                               col_by,
-                              col_N = NULL, #nolintr
+                              col_N = NULL, # nolint
                               total = NULL,
                               f_numeric = c("count_n", "mean_sd", "median", "range"),
                               ...) {
@@ -580,7 +580,7 @@ t_summary.factor <- function(x, # nolint
 #'   \code{\link{t_summary.data.frame}}, \code{\link{t_summary.factor}},
 #'   \code{\link{t_summary.logical}}, \code{\link{t_summary.Date}},
 #'   \code{\link{t_summary.numeric}}, \code{\link{t_summary_by}}
-t_summary.character <- function(x, # nolint
+t_summary.character <- function(x, # nolint # nousage
                                 col_by,
                                 col_N = NULL, # nolint
                                 total = NULL,
@@ -624,7 +624,7 @@ t_summary.character <- function(x, # nolint
 #'   col_by = factor(LETTERS[c(1,1,1,2,2,3,3,3,4,4)]),
 #'   total = "All"
 #' )
-t_summary.Date <- function(x, # nolint
+t_summary.Date <- function(x, # nolint # nousage
                            col_by,
                            col_N = NULL, # nolint
                            total = NULL,

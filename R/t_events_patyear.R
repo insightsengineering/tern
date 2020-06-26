@@ -141,19 +141,19 @@ s_events_patyear <- function(events,
 
   conf_method <- match.arg(conf_method)
 
-  events_by_col <- lapply(col_by, function(rows){
+  events_by_col <- lapply(col_by, function(rows) {
     sum(events[rows])
   })
 
-  times_by_col <- lapply(col_by, function(rows){
+  times_by_col <- lapply(col_by, function(rows) {
     sum(time_in_years[rows])
   })
 
-  rate_by_col <-  Map(function(event, time){
+  rate_by_col <-  Map(function(event, time) {
     event / time * lambda
   }, events_by_col, times_by_col)
 
-  ci_by_col <- Map(function(event, time){
+  ci_by_col <- Map(function(event, time) {
     ci_patyear(
       event_number = event,
       person_year = time,
@@ -219,15 +219,15 @@ ci_patyear <- function(event_number,
   alpha <- 1 - conf_level
   q_norm <- qnorm(1 - alpha / 2)
   conf_method <- match.arg(conf_method)
-  if (conf_method == "normal"){
+  if (conf_method == "normal") {
     rate <- event_number / person_year
     ase <- sqrt(rate / person_year)
     lcl <- rate - q_norm * ase
     ucl <- rate + q_norm * ase
-  } else if (conf_method == "exact"){
+  } else if (conf_method == "exact") {
     lcl <- qchisq(p = (alpha) / 2, df = 2 * event_number) / (2 * person_year)
     ucl <- qchisq(p = 1 - (alpha) / 2, df = 2 * event_number + 2) / (2 * person_year)
-  } else if (conf_method == "byar"){
+  } else if (conf_method == "byar") {
     seg_1 <- event_number + 0.5
     seg_2 <- 1 - 1 / (9 * (event_number + 0.5))
     seg_3 <- q_norm * sqrt(1 / (event_number + 0.5)) / 3

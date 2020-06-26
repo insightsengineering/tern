@@ -46,7 +46,7 @@
 #'  xlab = "Visit", ylab = "Mean Result", nlab = "Number of subject at each visit",
 #'  title = "Plot of mean and IQR"
 #' )
-g_summary_by <- function(x,
+g_summary_by <- function(x, # nousage # nolint
                          y,
                          group,
                          y_lower,

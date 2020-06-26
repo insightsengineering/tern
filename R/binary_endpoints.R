@@ -134,7 +134,7 @@ s_proportion <- function(x, conf_level = 0.95,
 #'   stringsAsFactors = TRUE)
 #' s_adj_proportion_diff(rsp, trt, interaction(strata_data))
 #'
-s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95){
+s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95) {
 
   check_is_event(x)
   check_is_factor(grp, allow_na = FALSE)
@@ -148,7 +148,7 @@ s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95){
     list(length(levels(grp)) == 2, "grp must have 2 levels")
   )
 
-  if (any(tapply(x, strat, length) < 5)){
+  if (any(tapply(x, strat, length) < 5)) {
     warning("Less than 5 observations in some strata.")
   }
 
@@ -285,7 +285,7 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
   )
 
   # case when only responder / non-reponders
-  if (length(unique(x)) == 1){
+  if (length(unique(x)) == 1) {
     return(
       list(
         "diff" = 0,
@@ -295,19 +295,19 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
     )
   }
 
-  result <- if (diff_ci_method == "wald"){
+  result <- if (diff_ci_method == "wald") {
     list(
       "diff" = unname(diff(tapply(x, grp, mean))),
       "diff_ci" = prop.test(table(grp, x), correct = FALSE, conf.level = conf_level)$conf.int[1:2],
       "label_ci" =  paste0(conf_level * 100, "% CI for difference (Wald without correction)")
     )
-  } else if (diff_ci_method == "waldcc"){
+  } else if (diff_ci_method == "waldcc") {
     list(
       "diff" = unname(diff(tapply(x, grp, mean))),
       "diff_ci" = prop.test(table(grp, x), correct = TRUE, conf.level = conf_level)$conf.int[1:2],
       "label_ci" = paste0(conf_level * 100, "% CI for difference (Wald with correction)")
     )
-  } else if (diff_ci_method == "cmh"){
+  } else if (diff_ci_method == "cmh") {
 
     est <- s_adj_proportion_diff(x, grp, strat, conf_level = conf_level)
 
@@ -373,7 +373,7 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
 #'   test = "cmh"
 #' )
 #' }
-s_test_proportion_diff <- function(x, grp, strat = NULL, test = c("chisq", "cmh")){
+s_test_proportion_diff <- function(x, grp, strat = NULL, test = c("chisq", "cmh")) {
 
   check_is_event(x)
   check_is_factor(grp, allow_na = FALSE)
@@ -400,12 +400,12 @@ s_test_proportion_diff <- function(x, grp, strat = NULL, test = c("chisq", "cmh"
     table(grp, x, strat)
   }
 
-  result <- if (test == "chisq"){
+  result <- if (test == "chisq") {
     list(
       "p_value" = prop.test(t_tbl, correct = FALSE)$p.value,
       "test_name" = "Chi-squared Test"
     )
-  } else if (test == "cmh"){
+  } else if (test == "cmh") {
 
     if (any(tapply(x, strat, length) < 5)) {
       note <- "<5 data points in some strata. CMH test may be incorrect."
@@ -558,7 +558,7 @@ t_el_proportion <- function(rsp, col_by, conf_level = 0.95,
 #'   test = "chisq"
 #' )
 #'
-t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c("chisq", "cmh")){
+t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c("chisq", "cmh")) {
 
   col_by <- col_by_to_factor(col_by)
   col_by <- droplevels(col_by)
@@ -587,7 +587,7 @@ t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c(
     }
   }
 
-  if (all(rsp) || all(!rsp)){
+  if (all(rsp) || all(!rsp)) {
 
     # create empty table
     tbl_empty_header <- rheader(rrowl("", levels(col_by)))
@@ -1051,7 +1051,7 @@ t_binary_outcome <- function(rsp, col_by, strata_data = NULL, conf_level = 0.95,
       NULL
     }
 
-    tbl_s_test <- if ("diff_test" %in% names(strat_analysis)){
+    tbl_s_test <- if ("diff_test" %in% names(strat_analysis)) {
       t_el_test_proportion_diff(rsp, col_by, strata_data = strata_data,
                                 test = strat_analysis["diff_test"])[-1, ]
     } else {

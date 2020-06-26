@@ -20,7 +20,7 @@
 #' \dontrun{
 #' iris %needs% "ABC"
 #' }
-`%needs%` <- function(data, names) {
+`%needs%` <- function(data, names) { # nousage # nolint
   i <- is.na(match(names, names(data)))
 
   if (any(i)) {
@@ -84,7 +84,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' \dontrun{
 #' View(X)
 #' }
-add_labels <- function(df, labels) {
+add_labels <- function(df, labels) { # nousage # nolint
   for (name in names(df)) {
     lab <- labels[name]
     if (!is.na(lab[1]) && length(lab) == 1) {
@@ -144,7 +144,7 @@ to_n <- function(x, n) {
   }
 }
 
-has_no_na <- function(x) {
+has_no_na <- function(x) { # nousage # nolint
   !any(is.na(x))
 }
 
@@ -160,7 +160,7 @@ has_no_na <- function(x) {
 #'
 #' @examples
 #' get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE)))
-get_N <- function(col_by) { #nolintr
+get_N <- function(col_by) { # nolint
   stopifnot(is.factor(col_by) || is.data.frame(col_by))
   colSums(col_by_to_matrix(col_by))
 }
@@ -180,7 +180,7 @@ get_N <- function(col_by) { #nolintr
 #'
 #' @examples
 #' col_N_add_total(get_N(data.frame(A = c(TRUE, TRUE, FALSE), B = c(FALSE, FALSE, TRUE))))
-col_N_add_total <- function(col_N) { #nolintr
+col_N_add_total <- function(col_N) { # nolint
   c(col_N, sum(col_N))
 }
 
@@ -201,7 +201,7 @@ as_factor_keep_attributes <- function(x) {
   do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
 }
 
-number_rows <- function(x) {
+number_rows <- function(x) { # nousage # nolint
   if (is.data.frame(x)) {
     nrow(x)
   } else {
@@ -209,7 +209,7 @@ number_rows <- function(x) {
   }
 }
 
-row_subset <- function(x, rows) {
+row_subset <- function(x, rows) { # nousage # nolint
   # similar to subset function, but the latter is only recommended for interactive use
   if (is.data.frame(x)) {
     x[rows, ]
@@ -226,7 +226,7 @@ row_subset <- function(x, rows) {
 #'
 #' @examples
 #' tern:::to_string_with_names(list(a = 1, 2))
-to_string_with_names <- function(x) {
+to_string_with_names <- function(x) { # nousage # nolint
   # also works for more general
   paste(names(x), x, sep = ":", collapse = ", ")
 }
@@ -448,12 +448,13 @@ rreplace_format.default <- function(x,
 
 
 #' Replace format of `rtables`
+#' @rdname rreplace_format
 #'
 #' @inheritParams rreplace_format
 #' @inheritParams rreplace_format.rrow
 #' @param row A vector of row indexes. Default `NULL` applies to all rows.
 #' @export
-rreplace_format.rtable <- function(x,
+rreplace_format.rtable <- function(x, # nousage # nolint
                                    row = NULL,
                                    col = NULL,
                                    old = FALSE,
@@ -477,7 +478,7 @@ rreplace_format.rtable <- function(x,
 #' @param new The replacement format.
 #'
 #' @export
-rreplace_format.rrow <- function(x,
+rreplace_format.rrow <- function(x, # nousage # nolint
                                  row = NULL,
                                  col = NULL,
                                  old = FALSE,

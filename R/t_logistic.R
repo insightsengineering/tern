@@ -95,7 +95,7 @@ t_logistic <- function(formula,
   ))
 
   terms_label <- Map(function(term) {
-    if (term %in% colnames(data)){
+    if (term %in% colnames(data)) {
       label(data[[term]]) %||% term
     } else {
       terms <- lapply(unlist(strsplit(term, ":")), function(i) {
