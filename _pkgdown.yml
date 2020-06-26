@@ -37,6 +37,7 @@ reference:
       - t_coxreg
       - t_cox_univariate
       - t_cox_multivariate
+      - t_ancova
 
   - title: Elementary Tables
     desc: These are tables that are often used in compound tables or graphs.
@@ -55,6 +56,7 @@ reference:
       - t_count_true.default
       - t_count_true.logical
       - t_summarize_by_visit
+      - t_el_ancova
 
   - title: Analysis and Summary Functions
     desc: These functions return statistical results from different models
@@ -71,6 +73,8 @@ reference:
       - s_proportion_diff
       - s_adj_proportion_diff
       - s_test_proportion_diff
+      - s_ancova
+      - s_odds_ratio
 
   - title: Graphs
     desc: Graphs
@@ -168,3 +172,4 @@ reference:
       - to_string_with_names
       - t_summary.list
       - t_count_true.list
+      - s_ancova_items

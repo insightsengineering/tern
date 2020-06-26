@@ -758,8 +758,122 @@ t_el_proportion_diff <- function(rsp, col_by, strata_data = NULL, conf_level = 0
     tbl_prop_diff,
     tbl_prop_diff_ci
   )
+}
 
+#' Summary function for odds ratio estimation.
+#'
+#' @inheritParams argument_convention
+#' @param strat Optional factor with one level per stratum and same length as \code{rsp}. If `NULL`,
+#'   then the unstratified analysis is computed.
+#' @return A \code{data.frame} with columns:
+#' \describe{
+#'   \item{level}{The level of the `arm` variable which is compared with the reference level.}
+#'   \item{odds_ratio}{The odds ratio estimate.}
+#'   \item{ci_lower}{The lower bound of the confidence interval.}
+#'   \item{ci_upper}{The upper bound of the confidence interval.}
+#' }
+#' The attribute `conf_level` saves the used confidence level.
+#' Note that when `rsp` contains only responders or non-responders, then the result values will be `NA`,
+#' because no odds ratio estimation is possible.
+#'
+#' @details This function uses either logistic regression for unstratified analyses, or conditional logistic
+#'   regression for stratified analyses.
+#'   The Wald confidence interval with the specified confidence level is calculated. Note that
+#'   for stratified analyses, there is currently no implementation for conditional likelihood confidence intervals,
+#'   therefore we don't offer the option of a likelihood confidence interval.
+#'
+#' @importFrom stats coef glm as.formula confint confint.default
+#' @importFrom survival clogit
+#' @export
+#'
+#' @examples
+#' set.seed(1)
+#' rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+#' trt <- sample(c("Placebo", "Treatment", "Combination"), 100, TRUE)
+#' trt <- factor(trt, levels = c("Placebo", "Treatment", "Combination"))
+#' strata_data <- data.frame(
+#'   "f1" = sample(c("a", "b"), 100, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), 100, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' s_odds_ratio(rsp, trt)
+#' s_odds_ratio(rsp, trt, strat = interaction(strata_data))
+s_odds_ratio <- function(rsp,
+                         col_by,
+                         conf_level = 0.95,
+                         strat = NULL) {
+  # Check inputs.
+  check_is_event(rsp)
+  check_is_factor(col_by, allow_na = FALSE)
+  check_same_n(rsp = rsp, col_by = col_by)
+  check_conf_level(conf_level)
+  use_strata <- !is.null(strat)
+  if (use_strata) {
+    check_is_factor(strat, allow_na = FALSE)
+    check_strata_levels(strat)
+    check_same_n(rsp = rsp, strat = strat)
+  }
 
+  if (all(rsp) || all(!rsp)) {
+    result <- data.frame(
+      level = levels(col_by)[-1],
+      odds_ratio = NA,
+      ci_lower = NA,
+      ci_upper = NA,
+      row.names = NULL
+    )
+    attr(result, "conf_level") <- conf_level
+    return(result)
+  }
+
+  # Obtain odds ratio estimates with CIs for the non-reference
+  # levels of `col_by`.
+  raw_results <-
+    if (use_strata) {
+      formula <- stats::as.formula("rsp ~ col_by + strata(strat)")
+      data <- data.frame(
+        rsp = rsp,
+        col_by = col_by,
+        strat = strat
+      )
+      model_fit <- survival::clogit(
+        formula = formula,
+        data = data
+      )
+      list(
+        or = exp(stats::coef(model_fit)),
+        ci = exp(stats::confint(model_fit, level = conf_level))
+      )
+    } else {
+      formula <- as.formula("rsp ~ col_by")
+      data <- data.frame(
+        rsp = rsp,
+        col_by = col_by
+      )
+      model_fit <- stats::glm(
+        formula = formula,
+        data = data,
+        family = binomial(link = "logit")
+      )
+      # Note that here we need to discard the intercept.
+      list(
+        or = exp(stats::coef(model_fit)[-1]),
+        # We use `confint.default` to choose the Wald confidence interval.
+        ci = exp(stats::confint.default(model_fit, level = conf_level)[-1, , drop = FALSE])
+      )
+    }
+
+  # Combine into a data frame for return.
+  result <- data.frame(
+    level = levels(col_by)[-1],
+    odds_ratio = raw_results$or,
+    ci_lower = raw_results$ci[, 1],
+    ci_upper = raw_results$ci[, 2],
+    row.names = NULL
+  )
+  attr(result, "conf_level") <- conf_level
+  return(result)
 }
 
 #' Summary table for binary outcome

@@ -18,6 +18,7 @@ test_strict(
     "rapply_tree.Rd",
     "rsort_tree.Rd",
     "s_coxph_pairwise.Rd",
+    "s_odds_ratio.Rd",
     "sub-sub-node-method.Rd",
     "t_coxph.Rd",
     "t_el_disposition.Rd",
