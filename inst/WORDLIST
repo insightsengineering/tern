@@ -10,6 +10,7 @@ ADRS
 ADSL
 ADTTE
 ADVS
+Agresti
 analyse
 analysis
 ANCOVA
@@ -25,6 +26,7 @@ CMD
 cmh
 CMH
 conf
+Coull
 covr
 coxph
 dataname
@@ -41,6 +43,7 @@ Haenszel
 https
 inputId
 javascript
+Jeffreys
 Kaplan
 lexicographically
 liaoc

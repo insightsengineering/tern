@@ -3,7 +3,7 @@
 #' @inheritParams argument_convention
 #' @param x \code{logical} vector. \code{TRUE} represents a successful outcome.
 #' @param prop_ci_method one of (\code{"waldcc"}, \code{"wald"}, \code{"clopper-pearson"},
-#'   \code{"wilson"}).\cr
+#'   \code{"wilson"}, \code{agresti-coull} or \code{jeffreys}).\cr
 #'   Specifies the method used to construct the confidence interval for proportion
 #'   of successful outcomes.
 #'
@@ -17,6 +17,10 @@
 #'     as the 'exact' method.
 #'   * The \code{wilson} interval calls \code{\link[stats]{prop.test}} with option \code{correct=FALSE}.
 #'     Also referred to as Wilson score interval.
+#'   * The \code{agresti-coull} interval was created by Alan Agresti and Brent Coull and can be understood (for 95% CI)
+#'     as adding two successes and two failures to the data, and then using the Wald formula to construct a CI.
+#'   * The \code{jeffreys} interval is an equal-tailed interval based on the non-informative Jeffreys prior for a
+#'     binomial proportion.
 #'
 #' @md
 #'
@@ -29,10 +33,15 @@
 #'
 #' @export
 #'
+#' @note Note that the \code{prop} element of the analysis summary retains the maximum likelihood estimator, also
+#'   when the \code{agresti-coull} method is used, while e.g. other packages might return instead the modified
+#'   proportion estimator (obtained by adding artificial success and failures to the data). This behavior is consistent
+#'   with the software SAS.
+#'
 #' @seealso \code{\link{t_el_proportion}},
 #'   \code{\link{s_proportion_diff}}, \code{\link{s_test_proportion_diff}}
 #'
-#' @importFrom stats binom.test prop.test qnorm
+#' @importFrom stats binom.test prop.test qnorm qbeta
 #'
 #' @examples
 #' set.seed(1)
@@ -41,54 +50,91 @@
 #'
 #' s_proportion(rsp, conf_level = 0.9, prop_ci_method = "clopper-pearson")
 s_proportion <- function(x, conf_level = 0.95,
-                         prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson")) {
+                         prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
+                                            "jeffreys")) {
 
   check_is_event(x)
   prop_ci_method <- match.arg(prop_ci_method)
-  check_numeric_range(conf_level)
+  check_conf_level(conf_level)
 
-  result <- if (prop_ci_method == "clopper-pearson") {
+  # Common variables used below.
+  n <- length(x)
+  x_sum <- sum(x)
+  p_hat <- mean(x)
+  z <- qnorm((1 + conf_level) / 2)
+  label_ci_start <- paste0(conf_level * 100, "% CI for Response Rates")
+
+  results <- if (prop_ci_method == "clopper-pearson") {
     list(
-      "prop" = mean(x),
-      "prop_ci" = as.numeric(binom.test(sum(x), length(x), conf.level = conf_level)$conf.int),
-      "label_ci" =  paste0(conf_level * 100, "% CI for Response Rates (Clopper-Pearson)")
+      "prop_ci" = as.numeric(binom.test(x_sum, n, conf.level = conf_level)$conf.int),
+      "label_ci" =  paste(label_ci_start, "(Clopper-Pearson)")
     )
   } else if (prop_ci_method == "wilson") {
     list(
-      "prop" = mean(x),
-      "prop_ci" = as.numeric(prop.test(sum(x), length(x), correct = FALSE, conf.level = conf_level)$conf.int),
-      "label_ci" =  paste0(conf_level * 100, "% CI for Response Rates (Wilson)")
+      "prop_ci" = as.numeric(prop.test(x_sum, n, correct = FALSE, conf.level = conf_level)$conf.int),
+      "label_ci" =  paste(label_ci_start, "(Wilson)")
     )
   } else if (prop_ci_method %in% c("wald", "waldcc")) {
-
-    z <- qnorm((1 + conf_level) / 2)
-    n <- length(x)
-    p_hat <- mean(x)
     q_hat <- 1 - p_hat
-    correct <- if (prop_ci_method == "waldcc") {
-      1 / (2 * n)
-    } else {
+    correct <- ifelse(
+      prop_ci_method == "waldcc",
+      1 / (2 * n),
       0
-    }
+    )
     err <- z * sqrt(p_hat * q_hat) / sqrt(n) + correct
     l_ci <- max(0, p_hat - err)
     u_ci <- min(1, p_hat + err)
 
-    label_ci <- paste0(conf_level * 100, "% CI for Response Rates (Wald")
-
     list(
-      "prop" = p_hat,
       "prop_ci" = c(l_ci, u_ci),
       "label_ci" = ifelse(
         prop_ci_method == "wald",
-        paste0(label_ci, ", without correction)"),
-        paste0(label_ci, ", with correction)")
+        paste0(label_ci_start, "(Wald, without correction)"),
+        paste0(label_ci_start, "(Wald, with correction)")
       )
+    )
+  } else if (prop_ci_method == "agresti-coull") {
+    # Add here both z^2 / 2 successes and failures.
+    x_sum_tilde <- x_sum + z^2 / 2
+    n_tilde <- n + z^2
+    # Then proceed as with the Wald interval.
+    p_tilde <- x_sum_tilde / n_tilde
+    q_tilde <- 1 - p_tilde
+    err <- z * sqrt(p_tilde * q_tilde) / sqrt(n_tilde)
+    l_ci <- max(0, p_tilde - err)
+    u_ci <- min(1, p_tilde + err)
+    label_ci <- paste(label_ci_start, "(Agresti-Coull)")
+
+    list(
+      "prop_ci" = c(l_ci, u_ci),
+      "label_ci" = label_ci
+    )
+  } else if (prop_ci_method == "jeffreys") {
+    alpha <- 1 - conf_level
+    l_ci <- ifelse(
+      x_sum == 0,
+      0,
+      stats::qbeta(alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    )
+    u_ci <- ifelse(
+      x_sum == n,
+      1,
+      stats::qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    )
+    label_ci <- paste(label_ci_start, "(Jeffreys)")
+
+    list(
+      "prop_ci" = c(l_ci, u_ci),
+      "label_ci" = label_ci
     )
   }
 
-  result
-
+  # We always report the same estimate for the binomial proportion.
+  results <- c(
+    list("prop" = p_hat),
+    results
+  )
+  return(results)
 }
 
 #' Adjusted difference in proportions by CMH weights

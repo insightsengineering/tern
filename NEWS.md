@@ -4,6 +4,7 @@
 * Add new tern function `t_ancova` to create ANCOVA tables, as well as corresponding elementary table function 
   `t_el_ancova` and summary function `s_ancova`.
 * Add new tern function `s_odds_ratio` to estimate Odds Ratio of response between categories.
+* Additional CI methods (Agresti-Coull, Jeffreys) for `s_proportion`.
 
 # tern 0.6.7
 

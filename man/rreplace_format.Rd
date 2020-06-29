@@ -2,9 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{rreplace_format}
 \alias{rreplace_format}
+\alias{rreplace_format.rtable}
 \title{Replace format of \code{rtables} cells}
 \usage{
 rreplace_format(
+  x,
+  row = NULL,
+  col = NULL,
+  old = FALSE,
+  new = function(x, output) ""
+)
+
+\method{rreplace_format}{rtable}(
   x,
   row = NULL,
   col = NULL,

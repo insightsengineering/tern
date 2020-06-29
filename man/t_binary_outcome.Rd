@@ -30,7 +30,7 @@ analysis is performed.}
 \item{conf_level}{confidence level of the interval.}
 
 \item{prop_ci_method}{one of (\code{"waldcc"}, \code{"wald"}, \code{"clopper-pearson"},
-\code{"wilson"}).\cr
+\code{"wilson"}, \code{agresti-coull} or \code{jeffreys}).\cr
 Specifies the method used to construct the confidence interval for proportion
 of successful outcomes.}
 

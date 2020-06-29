@@ -7,7 +7,8 @@
 s_proportion(
   x,
   conf_level = 0.95,
-  prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson")
+  prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
+    "jeffreys")
 )
 }
 \arguments{
@@ -16,7 +17,7 @@ s_proportion(
 \item{conf_level}{confidence level of the interval.}
 
 \item{prop_ci_method}{one of (\code{"waldcc"}, \code{"wald"}, \code{"clopper-pearson"},
-\code{"wilson"}).\cr
+\code{"wilson"}, \code{agresti-coull} or \code{jeffreys}).\cr
 Specifies the method used to construct the confidence interval for proportion
 of successful outcomes.}
 }
@@ -42,7 +43,17 @@ correction \code{1/2n}.
 as the 'exact' method.
 \item The \code{wilson} interval calls \code{\link[stats]{prop.test}} with option \code{correct=FALSE}.
 Also referred to as Wilson score interval.
+\item The \code{agresti-coull} interval was created by Alan Agresti and Brent Coull and can be understood (for 95\% CI)
+as adding two successes and two failures to the data, and then using the Wald formula to construct a CI.
+\item The \code{jeffreys} interval is an equal-tailed interval based on the non-informative Jeffreys prior for a
+binomial proportion.
 }
+}
+\note{
+Note that the \code{prop} element of the analysis summary retains the maximum likelihood estimator, also
+when the \code{agresti-coull} method is used, while e.g. other packages might return instead the modified
+proportion estimator (obtained by adding artificial success and failures to the data). This behavior is consistent
+with the software SAS.
 }
 \examples{
 set.seed(1)

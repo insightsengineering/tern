@@ -23,7 +23,7 @@ first \code{level} indicates the reference group. See the functions
 \item{conf_level}{confidence level of the interval.}
 
 \item{prop_ci_method}{one of (\code{"waldcc"}, \code{"wald"}, \code{"clopper-pearson"},
-\code{"wilson"}).\cr
+\code{"wilson"}, \code{agresti-coull} or \code{jeffreys}).\cr
 Specifies the method used to construct the confidence interval for proportion
 of successful outcomes.}
 }
@@ -44,6 +44,10 @@ correction \code{1/2n}.
 as the 'exact' method.
 \item The \code{wilson} interval calls \code{\link[stats]{prop.test}} with option \code{correct=FALSE}.
 Also referred to as Wilson score interval.
+\item The \code{agresti-coull} interval was created by Alan Agresti and Brent Coull and can be understood (for 95\% CI)
+as adding two successes and two failures to the data, and then using the Wald formula to construct a CI.
+\item The \code{jeffreys} interval is an equal-tailed interval based on the non-informative Jeffreys prior for a
+binomial proportion.
 }
 }
 \examples{
