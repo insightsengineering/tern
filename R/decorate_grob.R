@@ -370,12 +370,12 @@ split_text_grob <- function(text,
     name = name,
     gp = gp,
     vp = vp,
-    cl = "splitText"
+    cl = "dynamicSplitText"
   )
 }
 
 #' @export
-validDetails.splitText <- function(x) { # nolint # nousage
+validDetails.dynamicSplitText <- function(x) { # nolint # nousage
   stopifnot(
     is.character(x$text),
     is.unit(x$width) && length(x$width) == 1
@@ -385,7 +385,7 @@ validDetails.splitText <- function(x) { # nolint # nousage
 }
 
 #' @export
-heightDetails.splitText <- function(x) { # nolint # nousage
+heightDetails.dynamicSplitText <- function(x) { # nolint # nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
@@ -395,12 +395,12 @@ heightDetails.splitText <- function(x) { # nolint # nousage
 }
 
 #' @export
-widthDetails.splitText <- function(x) { # nolint # nousage
+widthDetails.dynamicSplitText <- function(x) { # nolint # nousage
   x$width
 }
 
 #' @export
-drawDetails.splitText <- function(x, recording) { # nolint # nousage
+drawDetails.dynamicSplitText <- function(x, recording) { # nolint # nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {

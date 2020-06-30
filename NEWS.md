@@ -1,5 +1,6 @@
 # tern 0.6.7.9000
 
+* The class `splitText` is renamed to `dynamicSplitText` in order to resolve the name conflict with the package `ggpubr`.
 * Add `rreplace_format` for tabulation post-processing.
 * Add new tern function `t_ancova` to create ANCOVA tables, as well as corresponding elementary table function 
   `t_el_ancova` and summary function `s_ancova`.
