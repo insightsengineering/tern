@@ -12,10 +12,9 @@ t_tte(
   time_points = NULL,
   time_unit = "month",
   conf_level = 0.95,
-  conf_type_survfit = c("plain", "none", "log", "log-log"),
   probs_survfit = c(0.25, 0.75),
-  pval_method_coxph = c("log-rank", "wald", "likelihood"),
-  ties_coxph = c("efron", "breslow", "exact"),
+  conf_type_survfit = c("plain", "none", "log", "log-log"),
+  comparison = control_coxph(),
   table_tree = FALSE
 )
 }
@@ -45,16 +44,25 @@ section of the table will be omitted}
 \item{time_unit}{(\code{character} value) with the unit of the \code{tte} argument}
 
 \item{conf_level}{(\code{numeric} value or named \code{numeric} vector) either a single number or a named vector of
-confidence levels where the names are \code{survfit}, \code{coxph}, and \code{ztest}}
-
-\item{conf_type_survfit}{(one of \code{"plain"} (default), \code{"none"}, \code{"log"},  \code{"log-log"}). Used in
-\code{conf.type} in \code{\link[survival]{survfit}}}
+confidence levels where the names are \code{survfit} and \code{ztest}. If confidence level for comparison needs
+to be specified, please use \code{conf_level} for \code{comparison}.}
 
 \item{probs_survfit}{(\code{numeric} vector of length two) to specify the quantiles in \code{\link[stats]{quantile}}}
 
-\item{pval_method_coxph}{passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}}
+\item{conf_type_survfit}{(one of \code{"plain"} (default), \code{"none"}, \code{"log"}, \code{"log-log"}). Used in
+\code{conf.type} in \code{\link[survival]{survfit}}}
 
-\item{ties_coxph}{passed as argument \code{ties} to \code{\link{coxph}}}
+\item{comparison}{a (\code{list}) of parameters for comparison details, specified by using the helper function
+  \code{\link{control_coxph}}. If \code{NULL}, the comparison table section ("Unstratified Analysis" and
+"Stratified Analysis") will be excluded. Some possible parameter options are:
+\itemize{
+  \item{\code{pval_method}} The method to be passed as argument \code{pval_method} to function
+   \code{\link{s_coxph_pairwise}}. Default method is "log-rank", can also be set to "wald" or "likelihood".
+   \item{\code{ties}} The method to be passed as argument \code{ties} to \code{\link{coxph}}. Default is "efron",
+  can also be set to "breslow" or "exact".
+  \item{\code{conf_level}} (\code{numeric} value) passed as argument \code{conf_level} to function
+  \code{\link{s_coxph_pairwise}}.
+}}
 
 \item{table_tree}{(\code{logical} value)\cr
 If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -112,7 +120,7 @@ t_tte(
   col_N = table(ADSL$ARM),
   event_descr = factor(ADTTE_f$EVNTDESC),
   time_points = c(6, 12, 360),
-  conf_level = c(survfit = 0.91, coxph = 0.95, ztest = 0.99)
+  conf_level = c(survfit = 0.91, ztest = 0.99)
 )
 
 t_tte(
@@ -122,9 +130,19 @@ t_tte(
   event_descr = factor(ADTTE_f$EVNTDESC),
   time_points = c(6, 12, 24),
   time_unit = "month",
-  pval_method_coxph = "wald",
   conf_type_survfit = "log-log",
-  ties_coxph = "exact"
+  conf_level = 0.9,
+  comparison = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99)
+)
+
+# Set comparison to NULL to not display comparison
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  event_descr = factor(ADTTE_f$EVNTDESC),
+  time_points = c(6, 12),
+  comparison = NULL
 )
 
 # table_tree = TRUE
@@ -140,4 +158,22 @@ tbl3 <- t_tte(
 summary(tbl3)
 
 to_rtable(tbl3)
+
+# when there's single arm
+library(dplyr)
+library(random.cdisc.data)
+ADSL <- radsl(cached = TRUE) \%>\% filter(ARM == "C: Combination") \%>\% droplevels()
+ADTTE <- radtte(cached = TRUE)
+ADTTE_f <- ADTTE \%>\%
+  filter(PARAMCD == "EFS" & BMEASIFL == "Y" & ARM == "C: Combination") \%>\%
+  droplevels()
+
+t_tte(
+  formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+  data = ADTTE_f,
+  col_N = table(ADSL$ARM),
+  time_points = c(6, 12),
+  comparison = NULL
+)
+
 }

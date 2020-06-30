@@ -12,12 +12,22 @@
 #'   section of the table will be omitted
 #' @param time_unit (\code{character} value) with the unit of the \code{tte} argument
 #' @param conf_level (\code{numeric} value or named \code{numeric} vector) either a single number or a named vector of
-#'   confidence levels where the names are \code{survfit}, \code{coxph}, and \code{ztest}
-#' @param conf_type_survfit (one of \code{"plain"} (default), \code{"none"}, \code{"log"},  \code{"log-log"}). Used in
+#'   confidence levels where the names are \code{survfit} and \code{ztest}. If confidence level for comparison needs
+#'   to be specified, please use \code{conf_level} for \code{comparison}.
+#' @param conf_type_survfit (one of \code{"plain"} (default), \code{"none"}, \code{"log"}, \code{"log-log"}). Used in
 #'   \code{conf.type} in \code{\link[survival]{survfit}}
 #' @param probs_survfit (\code{numeric} vector of length two) to specify the quantiles in \code{\link[stats]{quantile}}
-#' @param ties_coxph passed as argument \code{ties} to \code{\link{coxph}}
-#' @param pval_method_coxph passed as argument \code{pval_method} to function \code{\link{s_coxph_pairwise}}
+#' @param comparison a (\code{list}) of parameters for comparison details, specified by using the helper function
+#'   \code{\link{control_coxph}}. If \code{NULL}, the comparison table section ("Unstratified Analysis" and
+#' "Stratified Analysis") will be excluded. Some possible parameter options are:
+#' \itemize{
+#'   \item{\code{pval_method}} The method to be passed as argument \code{pval_method} to function
+#'    \code{\link{s_coxph_pairwise}}. Default method is "log-rank", can also be set to "wald" or "likelihood".
+#'    \item{\code{ties}} The method to be passed as argument \code{ties} to \code{\link{coxph}}. Default is "efron",
+#'   can also be set to "breslow" or "exact".
+#'   \item{\code{conf_level}} (\code{numeric} value) passed as argument \code{conf_level} to function
+#'   \code{\link{s_coxph_pairwise}}.
+#' }
 #'
 #' @details
 #' The time to event section is derived from a Kaplan-Meier estimator for the
@@ -69,7 +79,7 @@
 #'   col_N = table(ADSL$ARM),
 #'   event_descr = factor(ADTTE_f$EVNTDESC),
 #'   time_points = c(6, 12, 360),
-#'   conf_level = c(survfit = 0.91, coxph = 0.95, ztest = 0.99)
+#'   conf_level = c(survfit = 0.91, ztest = 0.99)
 #' )
 #'
 #' t_tte(
@@ -79,9 +89,19 @@
 #'   event_descr = factor(ADTTE_f$EVNTDESC),
 #'   time_points = c(6, 12, 24),
 #'   time_unit = "month",
-#'   pval_method_coxph = "wald",
 #'   conf_type_survfit = "log-log",
-#'   ties_coxph = "exact"
+#'   conf_level = 0.9,
+#'   comparison = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99)
+#' )
+#'
+#' # Set comparison to NULL to not display comparison
+#' t_tte(
+#'   formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+#'   data = ADTTE_f,
+#'   col_N = table(ADSL$ARM),
+#'   event_descr = factor(ADTTE_f$EVNTDESC),
+#'   time_points = c(6, 12),
+#'   comparison = NULL
 #' )
 #'
 #' # table_tree = TRUE
@@ -97,6 +117,24 @@
 #' summary(tbl3)
 #'
 #' to_rtable(tbl3)
+#'
+#' # when there's single arm
+#' library(dplyr)
+#' library(random.cdisc.data)
+#' ADSL <- radsl(cached = TRUE) %>% filter(ARM == "C: Combination") %>% droplevels()
+#' ADTTE <- radtte(cached = TRUE)
+#' ADTTE_f <- ADTTE %>%
+#'   filter(PARAMCD == "EFS" & BMEASIFL == "Y" & ARM == "C: Combination") %>%
+#'   droplevels()
+#'
+#' t_tte(
+#'   formula = Surv(AVAL, !CNSR) ~ arm(ARM),
+#'   data = ADTTE_f,
+#'   col_N = table(ADSL$ARM),
+#'   time_points = c(6, 12),
+#'   comparison = NULL
+#' )
+#'
 t_tte <- function(formula,
                   data,
                   col_N, # nolint
@@ -104,21 +142,27 @@ t_tte <- function(formula,
                   time_points = NULL,
                   time_unit = "month",
                   conf_level = 0.95,
-                  conf_type_survfit = c("plain", "none", "log", "log-log"),
                   probs_survfit = c(0.25, 0.75),
-                  pval_method_coxph =  c("log-rank", "wald",  "likelihood"),
-                  ties_coxph = c("efron", "breslow", "exact"),
+                  conf_type_survfit = c("plain", "none", "log", "log-log"),
+                  comparison = control_coxph(),
                   table_tree = FALSE) {
 
   cl <- match.call()
 
   conf_type_survfit <- match.arg(conf_type_survfit)
-  pval_method_coxph <- match.arg(pval_method_coxph)
-  ties_coxph <- match.arg(ties_coxph)
-  stopifnot(is.data.frame(data), length(probs_survfit) == 2)
-  conf_level <- check_conf_level(conf_level, c("survfit", "coxph", "ztest"))
-  check_numeric_range(probs_survfit, 0, 1)
 
+  if (!is.null(comparison)) {
+    pval_method <- comparison$pval_method
+    ties <- comparison$ties
+  }
+
+  conf_level <- check_conf_level(conf_level, c("survfit", "ztest"))
+  if (!is_empty(comparison$conf_level)) {
+    conf_level["coxph"] <- comparison$conf_level
+  }
+
+  stopifnot(is.data.frame(data), length(probs_survfit) == 2)
+  check_numeric_range(probs_survfit, 0, 1)
 
   # extracted data
   tm <- t_tte_items(formula, cl, data, parent.frame())
@@ -137,13 +181,19 @@ t_tte <- function(formula,
 
   check_same_n(is_event = is_event, event_descr = event_descr, arm = arm)
   col_N <- col_N %||% table(arm) #nolint
-  check_col_by_factor(tte, arm, col_N, 2)
   if (!is.null(event_descr) && !is.factor(event_descr)) {
     stop("event_descr is required to be a factor")
   }
   if (!is.null(time_points) && !is.numeric(time_points)) {
     stop("time_points is required to be numeric")
   }
+  if (length(unique(arm)) == 1 && !is.null(comparison)) {
+    stop("there's only one arm, please set comparison to NULL")
+  }
+  if (any(grepl("strata", attr(terms(formula), "term.labels"))) && is.null(comparison)) {
+    stop("if a stratified analysis is needed, comparison cannot be NULL")
+  }
+
 
   # Calculate elements of the table
 
@@ -200,84 +250,116 @@ t_tte <- function(formula,
     conf.type = conf_type_survfit
   )
 
-  srv_tbl <- summary(surv_km_fit)$table
-  med <- as.list(srv_tbl[, "median"])
-  ci <- Map(
-    function(x, y) c(x, y),
-    srv_tbl[, paste0(conf_level["survfit"], "LCL")],
-    srv_tbl[, paste0(conf_level["survfit"], "UCL")]
-  )
-
-  srv_qt_tbl <- quantile(surv_km_fit, probs = probs_survfit)$quantile
-
-  qnt <- Map(function(x, y) c(x, y), srv_qt_tbl[, 1], srv_qt_tbl[, 2])
-
-  rng_c <- lapply(split(data.frame(tte, is_event), arm), function(x) {
-    range(x$tte[!x$is_event], na.rm = TRUE)
-  })
-  rng_e <- lapply(split(data.frame(tte, is_event), arm), function(x) {
-    range(x$tte[x$is_event], na.rm = TRUE)
-  })
-
-  tbl_tte <- node(
-    paste0("Time to Event (", time_unit, "s)"),
-    rtable(
-      header = header,
-      rrowl("Median", med, format = "xx.xx"),
-      rrowl(paste0(conf_level["survfit"] * 100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
-      rrowl(paste0(probs_survfit[1] * 100, "% and ", probs_survfit[2] * 100, "%-ile"), qnt, format = "xx.x, xx.x"),
-      rrowl("Range (censored)", rng_c, format = "xx.x to xx.x"),
-      rrowl("Range (event)", rng_e, format = "xx.x to xx.x")
+  if (length(unique(arm)) == 1) {
+    srv_tbl <- summary(surv_km_fit)$table
+    med <- srv_tbl[["median"]]
+    ci <- c(
+      srv_tbl[[paste0(conf_level["survfit"], "LCL")]],
+      srv_tbl[[paste0(conf_level["survfit"], "UCL")]]
     )
-  )
+
+    srv_qt_tbl <- quantile(surv_km_fit, probs = probs_survfit)$quantile
+
+    qnt <- c(srv_qt_tbl[[1]], srv_qt_tbl[[2]])
+
+    x <- data.frame(tte, is_event)
+    rng_c <- range(x$tte[!x$is_event], na.rm = TRUE)
+    rng_e <- range(x$tte[x$is_event], na.rm = TRUE)
+
+    tbl_tte <- node(
+      paste0("Time to Event (", time_unit, "s)"),
+      rtable(
+        header = header,
+        rrow("Median", med, format = "xx.xx"),
+        rrow(paste0(conf_level["survfit"] * 100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
+        rrow(paste0(probs_survfit[1] * 100, "% and ", probs_survfit[2] * 100, "%-ile"), qnt, format = "xx.x, xx.x"),
+        rrow("Range (censored)", rng_c, format = "xx.x to xx.x"),
+        rrow("Range (event)", rng_e, format = "xx.x to xx.x")
+      )
+    )
+  } else {
+    srv_tbl <- summary(surv_km_fit)$table
+    med <- as.list(srv_tbl[, "median"])
+    ci <- Map(
+      function(x, y) c(x, y),
+      srv_tbl[, paste0(conf_level["survfit"], "LCL")],
+      srv_tbl[, paste0(conf_level["survfit"], "UCL")]
+    )
+
+    srv_qt_tbl <- quantile(surv_km_fit, probs = probs_survfit)$quantile
+
+    qnt <- Map(function(x, y) c(x, y), srv_qt_tbl[, 1], srv_qt_tbl[, 2])
+
+    rng_c <- lapply(split(data.frame(tte, is_event), arm), function(x) {
+      range(x$tte[!x$is_event], na.rm = TRUE)
+    })
+    rng_e <- lapply(split(data.frame(tte, is_event), arm), function(x) {
+      range(x$tte[x$is_event], na.rm = TRUE)
+    })
+
+    tbl_tte <- node(
+      paste0("Time to Event (", time_unit, "s)"),
+      rtable(
+        header = header,
+        rrowl("Median", med, format = "xx.xx"),
+        rrowl(paste0(conf_level["survfit"] * 100, "% CI"), ci, indent = 1, format = "(xx.x, xx.x)"),
+        rrowl(paste0(probs_survfit[1] * 100, "% and ", probs_survfit[2] * 100, "%-ile"), qnt, format = "xx.x, xx.x"),
+        rrowl("Range (censored)", rng_c, format = "xx.x to xx.x"),
+        rrowl("Range (event)", rng_e, format = "xx.x to xx.x")
+      )
+    )
+  }
+
 
   # Unstratified (and Stratified) Analysis
   # #####################
+  if (length(unique(arm)) == 1 || is.null(comparison)) {
+    tbl_coxph <- NULL
+  } else {
+    coxph_values <- s_coxph_pairwise(formula, data, conf_level["coxph"], pval_method, ties = ties)
 
+    # this function is reused for stratified analysis
+    pval_label <- paste0("p-value (", capitalize(pval_method), ")")
 
-  coxph_values <- s_coxph_pairwise(formula, data, conf_level["coxph"], pval_method_coxph, ties = ties_coxph)
-
-  # this function is reused for stratified analysis
-  pval_label <- paste0("p-value (", capitalize(pval_method_coxph), ")")
-
-  tbl_coxph <- lapply(c("unstratified", "stratified"), function(sel_strat) {
-    if (is.null(tm$formula_strata) && sel_strat == "stratified") {
-      NULL
-    } else {
-      # first column is empty
-      pval <- start_with_null(
-        lapply(coxph_values[-1], function(x) x[[sel_strat]]$pvalue)
-      )
-      hr <- start_with_null(
-        lapply(coxph_values[-1], function(x) x[[sel_strat]]$hr)
-      )
-      hr_ci <- start_with_null(
-        lapply(coxph_values[-1], function(x) x[[sel_strat]]$hr_ci)
-      )
-      coxph_node <-  node(
-        paste0(capitalize(sel_strat), " Analysis"),
-        content = NULL,
-        children = list(
-          node(
-            invisible_node_name("p-value"),
-            rtable(
-              header = header,
-              rrowl(pval_label, pval, format = "xx.xxxx")
-            )
-          ),
-          node(
-            invisible_node_name("Hazard Ratio"),
-            rtable(
-              header = header,
-              rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
-              rrowl(paste0(conf_level["coxph"] * 100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+    tbl_coxph <- lapply(c("unstratified", "stratified"), function(sel_strat) {
+      if (is.null(tm$formula_strata) && sel_strat == "stratified") {
+        NULL
+      } else {
+        # first column is empty
+        pval <- start_with_null(
+          lapply(coxph_values[-1], function(x) x[[sel_strat]]$pvalue)
+        )
+        hr <- start_with_null(
+          lapply(coxph_values[-1], function(x) x[[sel_strat]]$hr)
+        )
+        hr_ci <- start_with_null(
+          lapply(coxph_values[-1], function(x) x[[sel_strat]]$hr_ci)
+        )
+        coxph_node <-  node(
+          paste0(capitalize(sel_strat), " Analysis"),
+          content = NULL,
+          children = list(
+            node(
+              invisible_node_name("p-value"),
+              rtable(
+                header = header,
+                rrowl(pval_label, pval, format = "xx.xxxx")
+              )
+            ),
+            node(
+              invisible_node_name("Hazard Ratio"),
+              rtable(
+                header = header,
+                rrowl("Hazard Ratio", hr, format = "xx.xxxx"),
+                rrowl(paste0(conf_level["coxph"] * 100, "% CI"), hr_ci, indent = 1, format = "(xx.xxxx, xx.xxxx)")
+              )
             )
           )
         )
-      )
-      coxph_node
-    }
-  })
+        coxph_node
+      }
+    })
+  }
 
 
   # Time Point Analysis
@@ -301,50 +383,85 @@ t_tte <- function(formula,
 
     } else {
 
-      df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "strata", "std.err")])
-      s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
+      if (length(unique(arm)) == 1) {
+        df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "std.err")])
+        s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
 
-      Map(function(dfi, time_point) {
-        tbl <- if (nrow(dfi) <= 1) {
-          rtable(
-            header = header,
-            rrow(if (nrow(dfi) == 0) "-- no data" else "-- not enough data", indent = 2)
-          )
-        } else {
+        Map(function(dfi, time_point) {
+          tbl <- if (nrow(dfi) == 0) {
+            rtable(
+              header = header,
+              rrow("-- no data", indent = 2)
+            )
+          } else {
 
-          if (!all(dfi$time == time_point)) {
-            stop("time points do not match")
+            if (!all(dfi$time == time_point)) {
+              stop("time points do not match")
+            }
+
+            rtable(
+              header = header,
+              rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
+              rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
+              rrowl(
+                paste0(conf_level["survfit"] * 100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)),
+                format = "(xx.xx, xx.xx)", indent = 3
+              )
+            )
           }
-
-          # z-test
-          d <- dfi$surv[-1] - dfi$surv[1]
-          sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
-          qs <- c(-1, 1) * qnorm(1 - (1 - conf_level["ztest"]) / 2)
-          l_ci <- Map(function(di, si) di + qs * si, d, sd)
-
-          pval <- 2 * (1 - pnorm(abs(d) / sd))
-
-          rtable(
-            header = header,
-            rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
-            rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
-            rrowl(
-              paste0(conf_level["survfit"] * 100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)),
-              format = "(xx.xx, xx.xx)", indent = 3
-            ),
-            rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d * 100)), format = "xx.xx", indent = 2),
-            rrowl(
-              paste0(conf_level["ztest"] * 100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)),
-              format = "(xx.xx, xx.xx)", indent = 3
-            ),
-            rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
+          node(
+            paste(time_point, if (time_point == 1) time_unit else paste0(time_unit, "s")),
+            tbl
           )
-        }
-        node(
-          paste(time_point, if (time_point == 1) time_unit else paste0(time_unit, "s")),
-          tbl
-        )
-      }, s_df_tp, time_points)
+        }, s_df_tp, time_points)
+
+      } else {
+        df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "strata", "std.err")])
+        s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
+
+        Map(function(dfi, time_point) {
+          tbl <- if (nrow(dfi) <= 1) {
+            rtable(
+              header = header,
+              rrow(if (nrow(dfi) == 0) "-- no data" else "-- not enough data", indent = 2)
+            )
+          } else {
+
+            if (!all(dfi$time == time_point)) {
+              stop("time points do not match")
+            }
+
+            # z-test
+            d <- dfi$surv[-1] - dfi$surv[1]
+            sd <- sqrt(dfi$std.err[-1]^2 + dfi$std.err[1]^2)
+            qs <- c(-1, 1) * qnorm(1 - (1 - conf_level["ztest"]) / 2)
+            l_ci <- Map(function(di, si) di + qs * si, d, sd)
+
+            pval <- 2 * (1 - pnorm(abs(d) / sd))
+
+            rtable(
+              header = header,
+              rrowl("Patients remaining at risk", dfi$n.risk, format = "xx", indent = 2),
+              rrowl("Event Free Rate (%)", dfi$surv, format = "xx.xx%", indent = 2),
+              rrowl(
+                paste0(conf_level["survfit"] * 100, "% CI"),  as.data.frame(t(dfi[c("lower", "upper")] * 100)),
+                format = "(xx.xx, xx.xx)", indent = 3
+              ),
+              rrowl("Difference in Event Free Rate", c(list(NULL), as.list(d * 100)), format = "xx.xx", indent = 2),
+              rrowl(
+                paste0(conf_level["ztest"] * 100, "% CI"), c(list(NULL), lapply(l_ci, function(x) 100 * x)),
+                format = "(xx.xx, xx.xx)", indent = 3
+              ),
+              rrowl("p-value (Z-test)", c(list(NULL), as.list(pval)), format = "xx.xxxx", indent = 2)
+            )
+          }
+          node(
+            paste(time_point, if (time_point == 1) time_unit else paste0(time_unit, "s")),
+            tbl
+          )
+        }, s_df_tp, time_points)
+      }
+
     }
 
     node(
@@ -428,4 +545,27 @@ t_tte_items <- function(formula, cl, data, env) {
     model_frame  = mf
   )
 
+}
+
+#' Control function for \code{CoxPH} model
+#' @param pval_method The method to be passed as argument \code{pval_method} to function
+#'   \code{\link{s_coxph_pairwise}}. Default method is "log-rank", can also be set to "wald" or "likelihood".
+#' @param ties The method to be passed as argument \code{ties} to \code{\link{coxph}}. Default is "efron",
+#'   can also be set to "breslow" or "exact".
+#' @param conf_level (\code{numeric} value) passed as argument \code{conf_level} to function
+#'   \code{\link{s_coxph_pairwise}}.
+#' @details
+#' This is an auxiliary function for controlling arguments for \code{CoxPH} model, typically used internally to specify
+#' details of \code{CoxPH} model for \code{\link{s_coxph_pairwise}}.
+#' @return a list of components named as the arguments
+#' @export
+control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
+                          ties = c("efron", "breslow", "exact"),
+                          conf_level = 0.95) {
+
+  pval_method <- match.arg(pval_method)
+  ties <- match.arg(ties)
+  check_conf_level(conf_level)
+
+  list(pval_method = pval_method, ties = ties, conf_level = conf_level)
 }
