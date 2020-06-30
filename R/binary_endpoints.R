@@ -819,14 +819,14 @@ t_el_proportion_diff <- function(rsp, col_by, strata_data = NULL, conf_level = 0
 #'   \item{ci_upper}{The upper bound of the confidence interval.}
 #' }
 #' The attribute `conf_level` saves the used confidence level.
-#' Note that when `rsp` contains only responders or non-responders, then the result values will be `NA`,
-#' because no odds ratio estimation is possible.
 #'
 #' @details This function uses either logistic regression for unstratified analyses, or conditional logistic
 #'   regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is calculated. Note that
 #'   for stratified analyses, there is currently no implementation for conditional likelihood confidence intervals,
 #'   therefore we don't offer the option of a likelihood confidence interval.
+#'   Note that when `rsp` contains only responders or non-responders, then the result values will be `NA`,
+#'   because no odds ratio estimation is possible.
 #'
 #' @importFrom stats coef glm as.formula confint confint.default
 #' @importFrom survival clogit
@@ -920,6 +920,88 @@ s_odds_ratio <- function(rsp,
   )
   attr(result, "conf_level") <- conf_level
   return(result)
+}
+
+#' Elementary summary table for odds ratio estimation.
+#'
+#' @inheritParams argument_convention
+#' @param strata_data (\code{data.frame}) Optional stratification factors. If \code{NULL}, the unstratified analysis
+#'   will be performed.
+#' @inherit s_odds_ratio details
+#' @template return_rtable
+#'
+#' @importFrom rtables rtabulate header_add_N rrowl
+#' @export
+#'
+#' @seealso \code{\link{s_odds_ratio}}, \code{\link{t_el_proportion}},
+#'   \code{\link{t_binary_outcome}}
+#'
+#' @examples
+#' library(random.cdisc.data)
+#' library(dplyr)
+#'
+#' ADRS <- radrs(cached = TRUE) %>%
+#'   dplyr::filter(PARAMCD == "BESRSPI")
+#'
+#' t_el_odds_ratio(
+#'   rsp = ADRS$AVALC == "CR",
+#'   col_by = ADRS$ARMCD,
+#'   conf_level = 0.9
+#' )
+#'
+#' t_el_odds_ratio(
+#'   rsp = ADRS$AVALC == "CR",
+#'   col_by = ADRS$ARMCD,
+#'   strata_data = ADRS[, c("STRATA1", "STRATA2")]
+#' )
+t_el_odds_ratio <- function(rsp,
+                            col_by,
+                            conf_level = 0.95,
+                            strata_data = NULL) {
+  col_by <- col_by_to_factor(col_by)
+  col_by <- droplevels(col_by)
+  check_binary_endpoint_args(rsp, col_by, strata_data)
+  strat <- if (!is.null(strata_data)) interaction(strata_data, drop = TRUE) else NULL
+
+  # Obtain Odds Ratio analysis results and combine in table.
+  results_or <- s_odds_ratio(
+    rsp = rsp,
+    col_by = col_by,
+    conf_level = conf_level,
+    strat = strat
+  )
+  results_or <- Map(
+    function(x, y, z) c(x, y, z),
+    results_or$odds_ratio,
+    results_or$ci_lower,
+    results_or$ci_upper
+  )
+  tbl_or <- rtables::rtable(
+    header = levels(col_by),
+    rtables::rrowl(
+      paste0("Odds Ratio", ifelse(is.null(strat), "", "*"), " (", conf_level * 100, "% CI)"),
+      c(list(NULL),
+        results_or),
+      format = "xx.xx (xx.xx - xx.xx)"
+    )
+  )
+
+  # Obtain table with number and % of responders.
+  tbl_rsp <- rtables::rtabulate(
+    rsp,
+    col_by = col_by,
+    positives_and_proportion,
+    format = "xx.xx (xx.xx%)",
+    row.name = "Responders"
+  )
+
+  # Combine in table, add Ns. (Footer is going to be handled by t_binary_outcome).
+  tbl <- rbind(
+    tbl_rsp,
+    tbl_or
+  )
+  tbl <- rtables::header_add_N(tbl, N = tabulate(col_by))
+  return(tbl)
 }
 
 #' Summary table for binary outcome

@@ -99,6 +99,108 @@ test_that("`s_odds_ratio` works also when there are only 2 `col_by` levels", {
   expect_equal(result, expected, tol = 0.001)
 })
 
+get_example_data <- function() {
+  read.table(
+    header = TRUE,
+    sep = ";",
+    stringsAsFactors = FALSE,
+    text = '
+    "USUBJID";"AGE";"RESPONSE";"ARMCD";"COUNTRY"
+    "AB12345-XYZ1-id-1";"33";"Y";"ARM C";"AFG"
+    "AB12345-XYZ2-id-2";"20";"Y";"ARM C";"BES"
+    "AB12345-XYZ1-id-3";"27";"Y";"ARM C";"AFG"
+    "AB12345-XYZ1-id-4";"64";"N";"ARM A";"CUW"
+    "AB12345-XYZ2-id-5";"43";"N";"ARM B";"SXM"
+    "AB12345-XYZ2-id-6";"28";"Y";"ARM B";"CUW"
+    "AB12345-XYZ1-id-7";"21";"Y";"ARM B";"BES"
+    "AB12345-XYZ1-id-8";"35";"Y";"ARM B";"BES"
+    "AB12345-XYZ2-id-9";"20";"Y";"ARM C";"CUW"
+    "AB12345-XYZ2-id-10";"30";"N";"ARM A";"BES"
+    "AB12345-XYZ2-id-11";"25";"N";"ARM A";"AFG"
+    "AB12345-XYZ2-id-12";"63";"N";"ARM B";"SXM"
+    "AB12345-XYZ2-id-13";"60";"Y";"ARM B";"CUW"
+    "AB12345-XYZ2-id-14";"38";"N";"ARM A";"AFG"
+    "AB12345-XYZ2-id-15";"20";"N";"ARM C";"AFG"
+    "AB12345-XYZ2-id-16";"58";"Y";"ARM B";"AFG"
+    "AB12345-XYZ1-id-17";"57";"Y";"ARM A";"AFG"
+    "AB12345-XYZ2-id-18";"54";"Y";"ARM A";"BES"
+    "AB12345-XYZ2-id-19";"54";"Y";"ARM B";"AFG"
+    "AB12345-XYZ1-id-20";"32";"Y";"ARM B";"SXM"
+    "AB12345-XYZ1-id-21";"54";"Y";"ARM B";"CUW"
+    "AB12345-XYZ1-id-22";"66";"Y";"ARM A";"BES"
+    "AB12345-XYZ1-id-23";"40";"Y";"ARM C";"SXM"
+    "AB12345-XYZ1-id-24";"20";"Y";"ARM C";"AFG"
+    "AB12345-XYZ1-id-25";"55";"N";"ARM C";"BES"
+    "AB12345-XYZ2-id-26";"55";"N";"ARM A";"SXM"
+    "AB12345-XYZ2-id-27";"33";"N";"ARM B";"SXM"
+    "AB12345-XYZ2-id-28";"73";"N";"ARM C";"AFG"
+    "AB12345-XYZ2-id-29";"24";"Y";"ARM B";"BES"
+    "AB12345-XYZ2-id-30";"46";"Y";"ARM A";"SXM"'
+  ) %>%
+#nolint start
+  dplyr::mutate(
+    ARMCD = factor(ARMCD),
+    RESPONSE = factor(RESPONSE),
+    COUNTRY = factor(COUNTRY)
+  )
+#nolint end
+}
+
+test_that("Elementary Odds Ratio table works correctly with stratification", {
+  anl <- get_example_data()
+  result <- t_el_odds_ratio(
+    rsp = anl$RESPONSE == "Y",
+    col_by = anl$ARMCD,
+    conf_level = 0.9,
+    strata_data = anl[, c("COUNTRY"), drop = FALSE]
+  )
+  expected <- rtable(
+    header = rheader(
+      rrowl(NULL, "ARM A", "ARM B", "ARM C"),
+      rrowl(NULL, "(N=9)", "(N=12)", "(N=9)")
+    ),
+    rrowl(
+      "Responders",
+      list(c(4, 0.444), c(9, 0.75), c(6, 0.667)),
+      format = "xx.xx (xx.xx%)"
+    ),
+    rrowl(
+      "Odds Ratio*",
+      list(NULL, c(3.858, 0.772, 19.284), c(2.266, 0.466, 11.021)),
+      format = "xx.xx (xx.xx - xx.xx)"
+    )
+  )
+  comp <- compare_rtables(result, expected, comp.attr = FALSE)
+  expect_true(all(comp == "."), "t_el_odds_ratio does not produce same results any longer")
+})
+
+test_that("Elementary Odds Ratio table works correctly without stratification", {
+  anl <- get_example_data()
+  result <- t_el_odds_ratio(
+    rsp = anl$RESPONSE == "Y",
+    col_by = anl$ARMCD,
+    conf_level = 0.99
+  )
+  expected <- rtable(
+    header = rheader(
+      rrowl(NULL, "ARM A", "ARM B", "ARM C"),
+      rrowl(NULL, "(N=9)", "(N=12)", "(N=9)")
+    ),
+    rrowl(
+      "Responders",
+      list(c(4, 0.444), c(9, 0.75), c(6, 0.667)),
+      format = "xx.xx (xx.xx%)"
+    ),
+    rrowl(
+      "Odds Ratio",
+      list(NULL, c(3.75, 0.328, 42.856), c(2.5, 0.203, 30.781)),
+      format = "xx.xx (xx.xx - xx.xx)"
+    )
+  )
+  comp <- compare_rtables(result, expected, comp.attr = FALSE)
+  expect_true(all(comp == "."), "t_el_odds_ratio does not produce the same results any longer")
+})
+
 test_that("`s_proportion` works with Agresti-Coull CI", {
   # "Mid" case.
   rsp1 <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)

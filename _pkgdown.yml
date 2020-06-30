@@ -57,6 +57,7 @@ reference:
       - t_count_true.logical
       - t_summarize_by_visit
       - t_el_ancova
+      - t_el_odds_ratio
 
   - title: Analysis and Summary Functions
     desc: These functions return statistical results from different models
