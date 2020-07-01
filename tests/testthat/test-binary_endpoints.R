@@ -260,3 +260,90 @@ test_that("`s_proportion` works with Jeffreys CI", {
   )
   expect_equal(result2, expected2, tol = 0.0001)
 })
+
+test_that("`s_test_proportion_diff` works with Fisher's Exact Test", {
+  # "Mid" case: 3/10 respond in group A, 4/8 respond in group B.
+  rsp1 <- c(
+    rep(c(TRUE, FALSE), c(3, 7)),
+    rep(c(TRUE, FALSE), c(4, 4))
+  )
+  trt1 <- factor(
+    rep(c("A", "B"), c(10, 8)),
+    levels = c("B", "A")
+  )
+  result1 <- s_test_proportion_diff(
+    x = rsp1,
+    grp = trt1,
+    test = "fisher"
+  )
+  expected1 <- list(
+    p_value = 0.6305,  # From SAS.
+    test_name = "Fisher's Exact Test"
+  )
+  expect_equal(result1, expected1, tol = 0.0001)
+
+  # Corner case: Same proportion of response in A and B.
+  rsp2 <- c(TRUE, FALSE, TRUE, FALSE)
+  trt2 <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+  result2 <- s_test_proportion_diff(
+    x = rsp2,
+    grp = trt2,
+    test = "fisher"
+  )
+  expected2 <- list(
+    p_value = 1,  # From SAS.
+    test_name = "Fisher's Exact Test"
+  )
+  expect_equal(result2, expected2, tol = 0.0001)
+})
+
+# Alternative implementation of the Schouten p-value, given a 2x2 contingency table.
+# Source:
+# https://www.phusewiki.org/wiki/index.php?title=Analysis_of_Response_(Proportions)
+schouten_pval <- function(t_tbl) {
+  r1 <- t_tbl[1, "TRUE"]
+  r2 <- t_tbl[2, "TRUE"]
+  n1 <- sum(t_tbl[1, ])
+  n2 <- sum(t_tbl[2, ])
+  test_num <- (n1 + n2 - 1) * (abs(r2 * (n1 - r1) - r1 * (n2 - r2)) - min(n1, n2) / 2)^2
+  test_denom <- n1 * n2 * (r1 + r2) * (n1 + n2 - r1 - r2)
+  test_stat <- test_num / test_denom
+  p_value <- pchisq(test_stat, df = 1, lower.tail = FALSE)
+  return(p_value)
+}
+
+test_that("`s_test_proportion_diff` works with Chi-Squared Test with Schouten Correction", {
+  # "Mid" case: 3/10 respond in group A, 4/8 respond in group B.
+  rsp1 <- c(
+    rep(c(TRUE, FALSE), c(3, 7)),
+    rep(c(TRUE, FALSE), c(4, 4))
+  )
+  trt1 <- factor(
+    rep(c("A", "B"), c(10, 8)),
+    levels = c("B", "A")
+  )
+  result1 <- s_test_proportion_diff(
+    x = rsp1,
+    grp = trt1,
+    test = "schouten"
+  )
+  expected1 <- list(
+    p_value = schouten_pval(table(trt1, rsp1)),
+    test_name = "Chi-squared Test with Schouten Correction"
+  )
+  expect_equal(result1, expected1, tol = 0.0001)
+
+  # Corner case: Same proportion of response in A and B.
+  rsp2 <- c(TRUE, FALSE, TRUE, FALSE)
+  trt2 <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+  result2 <- s_test_proportion_diff(
+    x = rsp2,
+    grp = trt2,
+    test = "schouten"
+  )
+  expected2 <- list(
+    p_value = schouten_pval(table(trt2, rsp2)),
+    test_name = "Chi-squared Test with Schouten Correction"
+  )
+  expect_equal(result2, expected2, tol = 0.0001)
+})

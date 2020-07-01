@@ -24,7 +24,7 @@ first \code{level} indicates the reference group. See the functions
 Used for stratification factors. If \code{NULL}, no stratified
 analysis is performed.}
 
-\item{test}{one of (\code{"chisq", "cmh"})\cr
+\item{test}{one of (\code{"chisq", "cmh", "fisher", "schouten"})\cr
 Specifies the test used to calculate the p-value.}
 }
 \value{
@@ -41,6 +41,8 @@ The following options are supported for testing difference of proportions:
   \item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
   \item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
   Internally calls \code{\link[stats]{mantelhaen.test}}.}
+  \item{Option \code{fisher} performs the Fisher's exact test.}
+  \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
 }
 }
 \examples{

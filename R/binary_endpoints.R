@@ -367,7 +367,6 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
   result
 }
 
-
 #' Test for difference between two proportions
 #'
 #' This function is a wrapper to extract the p-value from various tests for
@@ -377,7 +376,7 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
 #' @param grp a \code{factor} vector with 2 levels. Must be the same length as \code{x}.
 #' @param strat a \code{factor} vector with at least 2 levels identifying the strata. Only required if
 #' test is \code{"cmh"}.
-#' @param test one of (\code{"chisq", "cmh"})\cr
+#' @param test one of (\code{"chisq", "cmh", "fisher", "schouten"})\cr
 #'   Specifies the test used to calculate the p-value.
 #'
 #' @details
@@ -386,6 +385,8 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
 #'   \item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
 #'   \item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
 #'   Internally calls \code{\link[stats]{mantelhaen.test}}.}
+#'   \item{Option \code{fisher} performs the Fisher's exact test.}
+#'   \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
 #' }
 #'
 #' @return Named list with analysis summary.
@@ -396,7 +397,7 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
 #'
 #' @export
 #'
-#' @importFrom stats prop.test mantelhaen.test
+#' @importFrom stats prop.test mantelhaen.test fisher.test pchisq
 #' @importFrom utils.nest stop_if_not
 #'
 #' @seealso \code{\link{t_el_test_proportion_diff}}
@@ -419,7 +420,10 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
 #'   test = "cmh"
 #' )
 #' }
-s_test_proportion_diff <- function(x, grp, strat = NULL, test = c("chisq", "cmh")) {
+s_test_proportion_diff <- function(x,
+                                   grp,
+                                   strat = NULL,
+                                   test = c("chisq", "cmh", "fisher", "schouten")) {
 
   check_is_event(x)
   check_is_factor(grp, allow_na = FALSE)
@@ -430,9 +434,15 @@ s_test_proportion_diff <- function(x, grp, strat = NULL, test = c("chisq", "cmh"
     check_is_factor(strat, allow_na = FALSE)
     check_strata_levels(strat)
     check_same_n(x = x, strat = strat)
-    stop_if_not(list(test == "cmh", paste0(test, " test is not applicable when strata_data is not NULL.")))
+    stop_if_not(list(
+      test == "cmh",
+      paste(test, "test is not applicable when strata_data is not NULL.")
+    ))
   } else {
-    stop_if_not(list(test != "cmh", paste0(test, " test is not applicable when strat is NULL")))
+    stop_if_not(list(
+      test != "cmh",
+      paste(test, "test is not applicable when strat is NULL"))
+    )
   }
 
   stop_if_not(
@@ -446,27 +456,51 @@ s_test_proportion_diff <- function(x, grp, strat = NULL, test = c("chisq", "cmh"
     table(grp, x, strat)
   }
 
-  result <- if (test == "chisq") {
-    list(
-      "p_value" = prop.test(t_tbl, correct = FALSE)$p.value,
-      "test_name" = "Chi-squared Test"
-    )
-  } else if (test == "cmh") {
+  results <-
+    if (test == "chisq") {
+      list(
+        "p_value" = stats::prop.test(t_tbl, correct = FALSE)$p.value,
+        "test_name" = "Chi-squared Test"
+      )
+    } else if (test == "cmh") {
 
-    if (any(tapply(x, strat, length) < 5)) {
-      note <- "<5 data points in some strata. CMH test may be incorrect."
-      warning(note)
+      if (any(tapply(x, strat, length) < 5)) {
+        note <- "<5 data points in some strata. CMH test may be incorrect."
+        warning(note)
+      }
+
+      list(
+        "p_value" =  stats::mantelhaen.test(t_tbl, correct = FALSE)$p.value,
+        "test_name" = "Cochran-Mantel-Haenszel Test"
+      )
+    } else if (test == "fisher") {
+      list(
+        "p_value" = stats::fisher.test(t_tbl)$p.value,
+        "test_name" = "Fisher's Exact Test"
+      )
+    } else if (test == "schouten") {
+      # Source: STREAM v2
+      #nolint start
+      # https://github.roche.com/MDIS/stream2/blob/82c6c54ea6c61d11746af3b413ad6b1b213096cd/app/macro/str_tlg_method_resp.sas#L1623
+      #nolint end
+      count_1_1 <- t_tbl[1, "FALSE"]
+      count_1_2 <- t_tbl[1, "TRUE"]
+      count_2_1 <- t_tbl[2, "FALSE"]
+      count_2_2 <- t_tbl[2, "TRUE"]
+      t_schouten <- (count_1_1 + count_1_2 + count_2_1 + count_2_2 - 1) *
+        (abs(count_2_2 * count_1_1 - count_1_2 * count_2_1) -
+        0.5 * min(count_1_1 + count_1_2, count_2_1 + count_2_2))^2 /
+        ((count_1_1 + count_1_2) * (count_2_1 + count_2_2) *
+        (count_1_2 + count_2_2) * (count_1_1 + count_2_1))
+      p_value <- 1 - stats::pchisq(t_schouten, df = 1)
+      list(
+        "p_value" = p_value,
+        "test_name" = "Chi-squared Test with Schouten Correction"
+      )
     }
 
-    list(
-      "p_value" =  mantelhaen.test(t_tbl, correct = FALSE)$p.value,
-      "test_name" = "Cochran-Mantel-Haenszel Test"
-    )
-  }
-
-  result
+  return(results)
 }
-
 
 #' Table for proportion of successful outcomes
 #'

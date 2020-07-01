@@ -4,7 +4,12 @@
 \alias{s_test_proportion_diff}
 \title{Test for difference between two proportions}
 \usage{
-s_test_proportion_diff(x, grp, strat = NULL, test = c("chisq", "cmh"))
+s_test_proportion_diff(
+  x,
+  grp,
+  strat = NULL,
+  test = c("chisq", "cmh", "fisher", "schouten")
+)
 }
 \arguments{
 \item{x}{\code{logical} vector. \code{TRUE} represents a successful outcome.}
@@ -14,7 +19,7 @@ s_test_proportion_diff(x, grp, strat = NULL, test = c("chisq", "cmh"))
 \item{strat}{a \code{factor} vector with at least 2 levels identifying the strata. Only required if
 test is \code{"cmh"}.}
 
-\item{test}{one of (\code{"chisq", "cmh"})\cr
+\item{test}{one of (\code{"chisq", "cmh", "fisher", "schouten"})\cr
 Specifies the test used to calculate the p-value.}
 }
 \value{
@@ -34,6 +39,8 @@ The following options are supported for testing difference of proportions:
   \item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
   \item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
   Internally calls \code{\link[stats]{mantelhaen.test}}.}
+  \item{Option \code{fisher} performs the Fisher's exact test.}
+  \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
 }
 }
 \examples{
