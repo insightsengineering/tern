@@ -21,9 +21,39 @@ count_n <- function(x, na.rm = TRUE) { # nolint
   }
 }
 
-mean_sd <- function(x, na.rm = TRUE) { # nolint
-  c(mean(x, na.rm = na.rm), sd(x, na.rm = na.rm))
+
+mean_sd <- function(x,
+                    na.rm = TRUE,    # nolint
+                    na.strings = NA, # nolint
+                    rcell = FALSE) {
+
+  # Cell values
+  if (any(as.integer(x[!is.na(x)]))) {
+    x_bar <- mean(x, na.rm = na.rm)
+    x_sd  <- sd(x, na.rm = na.rm)
+  } else {
+    x_bar <- x_sd <- NA
+  }
+
+  # Cell format
+  format_fun <- function(x, output, na_str = na.strings) {
+    z <- paste0(
+      ifelse(is.na(x[1]), na_str, x[1]),
+      " (", ifelse(is.na(x[2]), na_str, x[2]), ")"
+    )
+    return(z)
+  }
+
+  # Return either a rcell or a vector
+  y <- if (rcell) {
+    rtables::rcell(c(x_bar, x_sd), format = format_fun)
+  } else {
+    c(x_bar, x_sd)
+  }
+
+  return(y)
 }
+
 
 q1_q3 <- function(x, na.rm = TRUE, type = 7) { #nolintr
   quantile(x, probs = c(0.25, 0.75), na.rm = na.rm, type = type)

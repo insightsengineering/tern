@@ -153,6 +153,7 @@ reference:
       - rsort_tree
       - node_format_data
       - to_rtable
+      - rreplace_format
 
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
