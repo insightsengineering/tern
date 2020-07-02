@@ -9,7 +9,7 @@ t_el_proportion_diff(
   col_by,
   strata_data = NULL,
   conf_level = 0.95,
-  diff_ci_method = c("wald", "waldcc", "cmh")
+  diff_ci_method = "wald"
 )
 }
 \arguments{

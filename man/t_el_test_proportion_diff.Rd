@@ -4,12 +4,7 @@
 \alias{t_el_test_proportion_diff}
 \title{Table for testing difference in proportions}
 \usage{
-t_el_test_proportion_diff(
-  rsp,
-  col_by,
-  strata_data = NULL,
-  test = c("chisq", "cmh")
-)
+t_el_test_proportion_diff(rsp, col_by, strata_data = NULL, test = "chisq")
 }
 \arguments{
 \item{rsp}{(\code{logical} vector)\cr
@@ -74,7 +69,7 @@ t_el_test_proportion_diff(
 
 }
 \seealso{
-\code{\link{s_test_proportion_diff}}
+\code{\link{s_test_proportion_diff}},
   \code{\link{t_el_proportion}}, \code{\link{t_el_proportion_diff}},
   \code{\link{t_binary_outcome}}
 }

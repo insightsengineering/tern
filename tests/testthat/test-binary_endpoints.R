@@ -165,7 +165,7 @@ test_that("Elementary Odds Ratio table works correctly with stratification", {
       format = "xx.xx (xx.xx%)"
     ),
     rrowl(
-      "Odds Ratio*",
+      "Odds Ratio",
       list(NULL, c(3.858, 0.772, 19.284), c(2.266, 0.466, 11.021)),
       format = "xx.xx (xx.xx - xx.xx)"
     )
@@ -346,7 +346,7 @@ test_that("`s_test_proportion_diff` works with Fisher's Exact Test", {
   )
   expected1 <- list(
     p_value = 0.6305,  # From SAS.
-    test_name = "Fisher's Exact Test"
+    test_name = "p-value (Fisher's Exact Test)"
   )
   expect_equal(result1, expected1, tol = 0.0001)
 
@@ -360,7 +360,7 @@ test_that("`s_test_proportion_diff` works with Fisher's Exact Test", {
   )
   expected2 <- list(
     p_value = 1,  # From SAS.
-    test_name = "Fisher's Exact Test"
+    test_name = "p-value (Fisher's Exact Test)"
   )
   expect_equal(result2, expected2, tol = 0.0001)
 })
@@ -397,7 +397,7 @@ test_that("`s_test_proportion_diff` works with Chi-Squared Test with Schouten Co
   )
   expected1 <- list(
     p_value = schouten_pval(table(trt1, rsp1)),
-    test_name = "Chi-squared Test with Schouten Correction"
+    test_name = "p-value (Chi-Squared Test with Schouten Correction)"
   )
   expect_equal(result1, expected1, tol = 0.0001)
 
@@ -411,7 +411,7 @@ test_that("`s_test_proportion_diff` works with Chi-Squared Test with Schouten Co
   )
   expected2 <- list(
     p_value = schouten_pval(table(trt2, rsp2)),
-    test_name = "Chi-squared Test with Schouten Correction"
+    test_name = "p-value (Chi-Squared Test with Schouten Correction)"
   )
   expect_equal(result2, expected2, tol = 0.0001)
 })

@@ -4,12 +4,7 @@
 \alias{t_el_proportion}
 \title{Table for proportion of successful outcomes}
 \usage{
-t_el_proportion(
-  rsp,
-  col_by,
-  conf_level = 0.95,
-  prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson")
-)
+t_el_proportion(rsp, col_by, conf_level = 0.95, prop_ci_method = "waldcc")
 }
 \arguments{
 \item{rsp}{(\code{logical} vector)\cr

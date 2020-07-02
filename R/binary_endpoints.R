@@ -1,3 +1,29 @@
+#' Describe the proportion summary
+#'
+#' This is an auxiliary function that describes the analysis in `s_proportion`.
+#'
+#' @inheritParams s_proportion
+#' @param long Whether a long or a short (default) description is required.
+#' @return String describing the analysis.
+d_proportion <- function(conf_level,
+                         prop_ci_method,
+                         long = FALSE) {
+  label <- paste0(conf_level * 100, "% CI")
+  if (long) label <- paste(label, "for Response Rates")
+  method_part <- switch(
+    prop_ci_method,
+    "clopper-pearson" = "Clopper-Pearson",
+    "waldcc" = "Wald, with correction",
+    "wald" = "Wald, without correction",
+    "wilson" = "Wilson",
+    "agresti-coull" = "Agresti-Coull",
+    "jeffreys" = "Jeffreys",
+    stop(paste(prop_ci_method, "does not have a description"))
+  )
+  label <- paste0(label, " (", method_part, ")")
+  return(label)
+}
+
 #' Summary for proportion of successful outcomes
 #'
 #' @inheritParams argument_convention
@@ -62,19 +88,18 @@ s_proportion <- function(x, conf_level = 0.95,
   x_sum <- sum(x)
   p_hat <- mean(x)
   z <- qnorm((1 + conf_level) / 2)
-  label_ci_start <- paste0(conf_level * 100, "% CI for Response Rates")
 
-  results <- if (prop_ci_method == "clopper-pearson") {
-    list(
-      "prop_ci" = as.numeric(binom.test(x_sum, n, conf.level = conf_level)$conf.int),
-      "label_ci" =  paste(label_ci_start, "(Clopper-Pearson)")
-    )
+  # Calculate CI.
+  prop_ci <- if (prop_ci_method == "clopper-pearson") {
+
+    as.numeric(binom.test(x_sum, n, conf.level = conf_level)$conf.int)
+
   } else if (prop_ci_method == "wilson") {
-    list(
-      "prop_ci" = as.numeric(prop.test(x_sum, n, correct = FALSE, conf.level = conf_level)$conf.int),
-      "label_ci" =  paste(label_ci_start, "(Wilson)")
-    )
+
+    as.numeric(prop.test(x_sum, n, correct = FALSE, conf.level = conf_level)$conf.int)
+
   } else if (prop_ci_method %in% c("wald", "waldcc")) {
+
     q_hat <- 1 - p_hat
     correct <- ifelse(
       prop_ci_method == "waldcc",
@@ -85,15 +110,10 @@ s_proportion <- function(x, conf_level = 0.95,
     l_ci <- max(0, p_hat - err)
     u_ci <- min(1, p_hat + err)
 
-    list(
-      "prop_ci" = c(l_ci, u_ci),
-      "label_ci" = ifelse(
-        prop_ci_method == "wald",
-        paste0(label_ci_start, "(Wald, without correction)"),
-        paste0(label_ci_start, "(Wald, with correction)")
-      )
-    )
+    c(l_ci, u_ci)
+
   } else if (prop_ci_method == "agresti-coull") {
+
     # Add here both z^2 / 2 successes and failures.
     x_sum_tilde <- x_sum + z^2 / 2
     n_tilde <- n + z^2
@@ -103,13 +123,11 @@ s_proportion <- function(x, conf_level = 0.95,
     err <- z * sqrt(p_tilde * q_tilde) / sqrt(n_tilde)
     l_ci <- max(0, p_tilde - err)
     u_ci <- min(1, p_tilde + err)
-    label_ci <- paste(label_ci_start, "(Agresti-Coull)")
 
-    list(
-      "prop_ci" = c(l_ci, u_ci),
-      "label_ci" = label_ci
-    )
+    c(l_ci, u_ci)
+
   } else if (prop_ci_method == "jeffreys") {
+
     alpha <- 1 - conf_level
     l_ci <- ifelse(
       x_sum == 0,
@@ -121,18 +139,18 @@ s_proportion <- function(x, conf_level = 0.95,
       1,
       stats::qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
     )
-    label_ci <- paste(label_ci_start, "(Jeffreys)")
 
-    list(
-      "prop_ci" = c(l_ci, u_ci),
-      "label_ci" = label_ci
-    )
+    c(l_ci, u_ci)
   }
 
-  # We always report the same estimate for the binomial proportion.
-  results <- c(
-    list("prop" = p_hat),
-    results
+  results <- list(
+    "prop" = p_hat,  # Note: We always return the same response proportion estimate.
+    "prop_ci" = prop_ci,
+    "label_ci" = d_proportion(
+      conf_level = conf_level,
+      prop_ci_method = prop_ci_method,
+      long = TRUE
+    )
   )
   return(results)
 }
@@ -247,6 +265,40 @@ s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95) {
   result
 }
 
+#' Describe the difference between two proportions summary
+#'
+#' This is an auxiliary function that describes the analysis in `s_proportion_diff`.
+#'
+#' @inheritParams s_proportion_diff
+#' @param long Whether a long or a short (default) description is required.
+#' @return String describing the analysis.
+d_proportion_diff <- function(conf_level,
+                              diff_ci_method,
+                              long = FALSE) {
+  label <- paste0(conf_level * 100, "% CI")
+  if (long) label <- paste(
+    label,
+    ifelse(
+      diff_ci_method == "cmh",
+      "for adjusted difference",
+      "for difference"
+    )
+  )
+
+  method_part <- switch(
+    diff_ci_method,
+    "cmh" = "CMH, without correction",
+    "waldcc" = "Wald, with correction",
+    "wald" = "Wald, without correction",
+    "anderson-hauck" = "Anderson-Hauck",
+    "ha" = "Anderson-Hauck",
+    "newcombe" = "Newcombe",
+    stop(paste(diff_ci_method, "does not have a description"))
+  )
+  label <- paste0(label, " (", method_part, ")")
+  return(label)
+}
+
 #' Summary of difference between two proportions
 #'
 #' This function is a wrapper to calculate the difference between
@@ -353,7 +405,6 @@ s_proportion_diff <- function(x,
   p_grp <- tapply(x, grp, mean)
   diff_p <- unname(diff(p_grp))
   n_grp <- tapply(x, grp, length)
-  label_ci_start <- paste0(conf_level * 100, "% CI for difference")
   z <- qnorm((1 + conf_level) / 2)
 
   results <- if (diff_ci_method == "wald") {
@@ -364,8 +415,7 @@ s_proportion_diff <- function(x,
     )$conf.int[1:2]
     list(
       "diff" = diff_p,
-      "diff_ci" = diff_ci,
-      "label_ci" =  paste(label_ci_start, "(Wald without correction)")
+      "diff_ci" = diff_ci
     )
   } else if (diff_ci_method == "waldcc") {
     diff_ci <- stats::prop.test(
@@ -375,8 +425,7 @@ s_proportion_diff <- function(x,
     )$conf.int[1:2]
     list(
       "diff" = diff_p,
-      "diff_ci" = diff_ci,
-      "label_ci" = paste(label_ci_start, "(Wald with correction)")
+      "diff_ci" = diff_ci
     )
   } else if (diff_ci_method == "cmh") {
     est <- s_adj_proportion_diff(
@@ -387,8 +436,7 @@ s_proportion_diff <- function(x,
     )
     list(
       "diff" = est$diff_est,
-      "diff_ci" = est$diff_ci,
-      "label_ci" = paste0(conf_level * 100, "% CI for adjusted difference (CMH, without correction)")
+      "diff_ci" = est$diff_ci
     )
   } else if (diff_ci_method %in% c("anderson-hauck", "ha")) {
     err <- 1 / (2 * min(n_grp)) + z * sqrt(sum(p_grp * (1 - p_grp) / (n_grp - 1)))
@@ -396,8 +444,7 @@ s_proportion_diff <- function(x,
     u_ci <- min(1, diff_p + err)
     list(
       "diff" = diff_p,
-      "diff_ci" = c(l_ci, u_ci),
-      "label_ci" =  paste(label_ci_start, "(Anderson-Hauck)")
+      "diff_ci" = c(l_ci, u_ci)
     )
   } else if (diff_ci_method == "newcombe") {
     # Source:
@@ -421,12 +468,35 @@ s_proportion_diff <- function(x,
     u_ci <- min(1, diff_p + sqrt((p_grp[1] - l1)^2 + (u2 - p_grp[2])^2))
     list(
       "diff" = diff_p,
-      "diff_ci" = c(l_ci, u_ci),
-      "label_ci" =  paste(label_ci_start, "(Newcombe)")
+      "diff_ci" = c(l_ci, u_ci)
     )
   }
+  results$label_ci <- d_proportion_diff(
+    conf_level = conf_level,
+    diff_ci_method = diff_ci_method,
+    long = TRUE
+  )
 
   return(results)
+}
+
+#' Describe the test between two proportions
+#'
+#' This is an auxiliary function that describes the analysis in `s_test_proportion_diff`.
+#'
+#' @inheritParams s_test_proportion_diff
+#' @return String describing the test from which the p-value is derived.
+d_test_proportion_diff <- function(test) {
+  test_part <- switch(
+    test,
+    "chisq" = "Chi-Squared Test",
+    "cmh" = "Cochran-Mantel-Haenszel Test",
+    "fisher" = "Fisher's Exact Test",
+    "schouten" = "Chi-Squared Test with Schouten Correction",
+    stop(paste(test, "does not have a description"))
+  )
+  label <- paste0("p-value (", test_part, ")")
+  return(label)
 }
 
 #' Test for difference between two proportions
@@ -518,12 +588,11 @@ s_test_proportion_diff <- function(x,
     table(grp, x, strat)
   }
 
-  results <-
+  pval <-
     if (test == "chisq") {
-      list(
-        "p_value" = stats::prop.test(t_tbl, correct = FALSE)$p.value,
-        "test_name" = "Chi-squared Test"
-      )
+
+      stats::prop.test(t_tbl, correct = FALSE)$p.value
+
     } else if (test == "cmh") {
 
       if (any(tapply(x, strat, length) < 5)) {
@@ -531,15 +600,12 @@ s_test_proportion_diff <- function(x,
         warning(note)
       }
 
-      list(
-        "p_value" =  stats::mantelhaen.test(t_tbl, correct = FALSE)$p.value,
-        "test_name" = "Cochran-Mantel-Haenszel Test"
-      )
+      stats::mantelhaen.test(t_tbl, correct = FALSE)$p.value
+
     } else if (test == "fisher") {
-      list(
-        "p_value" = stats::fisher.test(t_tbl)$p.value,
-        "test_name" = "Fisher's Exact Test"
-      )
+
+      stats::fisher.test(t_tbl)$p.value
+
     } else if (test == "schouten") {
       # Source: STREAM v2
       #nolint start
@@ -555,12 +621,13 @@ s_test_proportion_diff <- function(x,
         ((count_1_1 + count_1_2) * (count_2_1 + count_2_2) *
         (count_1_2 + count_2_2) * (count_1_1 + count_2_1))
       p_value <- 1 - stats::pchisq(t_schouten, df = 1)
-      list(
-        "p_value" = p_value,
-        "test_name" = "Chi-squared Test with Schouten Correction"
-      )
+      p_value
     }
 
+  results <- list(
+    "p_value" = pval,
+    "test_name" = d_test_proportion_diff(test)
+  )
   return(results)
 }
 
@@ -610,27 +677,25 @@ s_test_proportion_diff <- function(x,
 #'   ADRS$AVALC == "CR",
 #'   col_by = by_add_total(ADRS$ARMCD, "All")
 #' )
-
-t_el_proportion <- function(rsp, col_by, conf_level = 0.95,
-                            prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson")) {
+t_el_proportion <- function(rsp,
+                            col_by,
+                            conf_level = 0.95,
+                            prop_ci_method = "waldcc") {
 
   check_is_event(rsp)
   col_by <- col_by_to_matrix(col_by, rsp)
   col_by <- droplevels(col_by)
   check_same_n(rsp = rsp, col_by = col_by)
-
-  prop_ci_method <- match.arg(prop_ci_method)
-  prop_ci_method_label <- switch(
-    prop_ci_method,
-    "waldcc" = "% CI for Response Rates (Wald, with correction)",
-    "wald" = "% CI for Response Rates (Wald, without correction)",
-    "clopper-pearson" = "% CI for Response Rates (Clopper-Pearson)",
-    "wilson" = "% CI for Response Rates (Wilson)"
-  )
+  # Note: `conf_level` and `prop_ci_method` are checked downstream in `s_proportion`, so not again here.
 
   # Table of responders
   tbl_rates <- t_count_true(rsp, col_by, row_name = "Responders")
 
+  label_ci <- d_proportion(
+    conf_level = conf_level,
+    prop_ci_method = prop_ci_method,
+    long = TRUE
+  )
   tbl_rate_ci <- rtabulate(
     x = rsp,
     col_by = col_by,
@@ -638,7 +703,7 @@ t_el_proportion <- function(rsp, col_by, conf_level = 0.95,
       100 * s_proportion(x, conf_level = conf_level, prop_ci_method = prop_ci_method)$prop_ci
     },
     format = "(xx.xx, xx.xx)",
-    row.name = paste0(conf_level * 100, prop_ci_method_label)
+    row.name = label_ci
   )
 
   rbind(
@@ -647,7 +712,6 @@ t_el_proportion <- function(rsp, col_by, conf_level = 0.95,
   )
 
 }
-
 
 #' Table for testing difference in proportions
 #'
@@ -667,7 +731,7 @@ t_el_proportion <- function(rsp, col_by, conf_level = 0.95,
 #'
 #' @export
 #'
-#' @seealso \code{\link{s_test_proportion_diff}}
+#' @seealso \code{\link{s_test_proportion_diff}},
 #'   \code{\link{t_el_proportion}}, \code{\link{t_el_proportion_diff}},
 #'   \code{\link{t_binary_outcome}}
 #'
@@ -700,34 +764,18 @@ t_el_proportion <- function(rsp, col_by, conf_level = 0.95,
 #'   test = "chisq"
 #' )
 #'
-t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c("chisq", "cmh")) {
+t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = "chisq") {
 
   col_by <- col_by_to_factor(col_by)
   col_by <- droplevels(col_by)
   check_binary_endpoint_args(rsp, col_by, strata_data)
+  # Note: `test` is checked downstream in `s_test_proportion_diff`, so not again here.
 
-  test <- match.arg(test)
-  test_label <- switch(
-    test,
-    chisq = "p-value (Chi-squared Test)",
-    cmh = "p-value (CMH Test)"
-  )
+  # Obtain label (from arbitrary data).
+  test_label <- d_test_proportion_diff(test)
 
   # Table of responders
   tbl_rates <- t_count_true(rsp, col_by, row_name = "Responders")
-
-  # format for p-values
-  format_pval_na <- function(x, output) {
-    if (is.na(x)) {
-      "-"
-    } else {
-      if (x < 0.0001) {
-        "<.0001"
-      } else {
-        paste(round(x, 4))
-      }
-    }
-  }
 
   if (all(rsp) || all(!rsp)) {
 
@@ -736,7 +784,7 @@ t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c(
 
     tbl_empty <- rtable(
       header = tbl_empty_header,
-      rrowl(row.name = test_label, c(list(NULL), rep(NA, length(levels(col_by)[-1]))), format = format_pval_na)
+      rrowl(row.name = test_label, c(list(NULL), rep(NA, length(levels(col_by)[-1]))), format = "xx.xx")
     )
 
     return(rbind(tbl_rates, tbl_empty))
@@ -759,7 +807,7 @@ t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c(
         s_test_proportion_diff(x, by, strat = NULL, test = test)$p_value
       }
     },
-    format = format_pval_na,
+    format = "x.xxxx | (<0.0001)",
     row.name = ""
   )
 
@@ -771,7 +819,6 @@ t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c(
   )
 
 }
-
 
 #' Table for difference in proportions
 #'
@@ -825,20 +872,12 @@ t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = c(
 #'   diff_ci_method = "wald"
 #' )
 t_el_proportion_diff <- function(rsp, col_by, strata_data = NULL, conf_level = 0.95,
-                                 diff_ci_method = c("wald", "waldcc", "cmh")) {
+                                 diff_ci_method = "wald") {
 
   col_by <- col_by_to_factor(col_by)
   col_by <- droplevels(col_by)
   check_binary_endpoint_args(rsp, col_by, strata_data)
-
-  diff_ci_method <- match.arg(diff_ci_method)
-  method_label <- switch(
-    diff_ci_method,
-    wald = "CI (Wald without correction)",
-    waldcc = "CI (Wald with correction)",
-    cmh = "CI (CMH, without correction)"
-  )
-  method_label <- paste0(100 * conf_level, "% ", method_label)
+  # Note: `conf_level` and `diff_ci_method` are checked downstream in `s_proportion_diff`, so not again here.
 
   # Table of responders
   tbl_rates <- t_count_true(rsp, col_by, row_name = "Responders")
@@ -878,6 +917,12 @@ t_el_proportion_diff <- function(rsp, col_by, strata_data = NULL, conf_level = 0
     )
   )
 
+  label_ci <- d_proportion_diff(
+    conf_level = conf_level,
+    diff_ci_method = diff_ci_method,
+    long = FALSE
+  )
+
   tbl_prop_diff_ci <- tabulate_pairwise(
     rsp,
     col_by,
@@ -891,7 +936,7 @@ t_el_proportion_diff <- function(rsp, col_by, strata_data = NULL, conf_level = 0
       }
     },
     format = format_ci_na,
-    row.name = method_label,
+    row.name = label_ci,
     indent = 1
   )
 
@@ -1075,7 +1120,7 @@ t_el_odds_ratio <- function(rsp,
   tbl_or <- rtables::rtable(
     header = levels(col_by),
     rtables::rrowl(
-      paste0("Odds Ratio", ifelse(is.null(strat), "", "*"), " (", conf_level * 100, "% CI)"),
+      paste0("Odds Ratio (", conf_level * 100, "% CI)"),
       c(list(NULL),
         results_or),
       format = "xx.xx (xx.xx - xx.xx)"
@@ -1100,6 +1145,40 @@ t_el_odds_ratio <- function(rsp,
   return(tbl)
 }
 
+#' Control function for binary comparison analyses
+#'
+#' This is an auxiliary function for controlling the arguments for \code{\link{t_binary_outcome}} specifying
+#' how the response proportions should be compared between the arms.
+#'
+#' @param diff_ci The method used for the confidence interval for difference of
+#'   proportions (see \code{\link{s_proportion_diff}} for details). Default method is here "waldcc",
+#'   i.e. Wald with continuity correction. If \code{NULL}, then no confidence intervals will be calculated.
+#' @param diff_test Test for a difference between two proportions (see \code{\link{s_test_proportion_diff}}
+#'   for details). Default method is here "chisq", i.e. the Chi-Squared Test. If \code{NULL}, then no test
+#'   will be performed and no p-values reported.
+#' @param odds_ratio (\code{logical}) Whether the odds ratio estimates and confidence intervals should be
+#'   reported (default) or not.
+#' @return a list of components named as the arguments
+#'
+#' @export
+control_binary_comparison <- function(diff_ci = "waldcc",
+                                      diff_test = "chisq",
+                                      odds_ratio = TRUE) {
+
+  # Note: `diff_ci` and `diff_test` are checked downstream if they are strings (by the `s_*` functions.)
+  # To avoid duplicate checks, we don't check these details here.
+
+  if (!is.null(diff_ci)) {
+    stopifnot(is.character(diff_ci), identical(length(diff_ci), 1L))
+  }
+  if (!is.null(diff_test)) {
+    stopifnot(is.character(diff_test), identical(length(diff_test), 1L))
+  }
+  stopifnot(is.logical(odds_ratio), identical(length(odds_ratio), 1L))
+
+  list(diff_ci = diff_ci, diff_test = diff_test, odds_ratio = odds_ratio)
+}
+
 #' Summary table for binary outcome
 #'
 #' This is a convenience wrapper function for creating a summary of common analyses
@@ -1109,48 +1188,15 @@ t_el_odds_ratio <- function(rsp,
 #' @inheritParams argument_convention
 #' @inheritParams t_el_proportion
 #' @inheritParams t_el_proportion_diff
-#' @inheritParams t_el_test_proportion_diff
-#' @param unstrat_analysis named character vector specifying sections to include
-#' under the heading "Unstratified Analysis". If \code{NULL}, the table section is excluded.
-#' The named slot options are:
-#'   * \code{diff_ci_method} The method used for the confidence interval for difference of
-#' proportions. Default method is "waldcc", Wald with continuity correction.
-#'   * \code{diff_test} Test for a difference between two proportions. Default
-#'     method is "chisq", Chi-squared test.
-#' @param strat_analysis named character vector specifying sections to include
-#' under the heading "Stratified Analysis". Only applicable if stratification factors
-#' from \code{strata_data} are provided.
-#' The named slot options are:
-#'   * \code{diff_ci_method} The method used for the confidence interval for difference of
-#'     proportions. Default method is "waldcc", Wald with continuity correction.
-#'   * \code{diff_test} Test for a difference between two proportions. Default
-#'     method is "cmh", Cochran-Mantel-Haenszel test.
+#' @param unstrat_analysis list specified by calling \code{\link{control_binary_comparison}} for controlling the
+#'  "Unstratified Analysis" section. If \code{NULL}, this table section is excluded.
+#' @param strat_analysis list specified by calling \code{\link{control_binary_comparison}} for controlling the
+#'  "Stratified Analysis" section. Only applicable if stratification factors from \code{strata_data} are provided.
+#'  If \code{NULL}, this table section is excluded.
 #'
 #' @details
-#' Table sections are matched by name, so to remove a section specify a subset of the named slots
-#'   in \code{strat_analysis} or \code{strat_analysis}.
-#'
-#' The following options are supported for confidence interval for a proportion:
-#'   * The \code{wald} interval follows the usual textbook definition for a single proportion
-#'     confidence interval using the normal approximation.
-#'   * The \code{waldcc} interval is similar to \code{wald} and in addition uses the continuity
-#'     correction \code{1/2n}.
-#'   * The \code{clopper-pearson} interval calls \code{\link[stats]{binom.test}}. Also referred to
-#'     as the 'exact' method.
-#'   * The \code{wilson} interval calls \code{\link[stats]{prop.test}} with option \code{correct=FALSE}.
-#'     Also referred to as Wilson score interval.
-#'
-#' The following options are supported for difference of proportions confidence intervals:
-#'   * Option \code{"wald"} calls \code{\link[stats]{prop.test}} with \code{correct=FALSE}
-#'   * Option \code{"waldcc"} includes continuity correction for Wald interval and
-#'   calls \code{\link[stats]{prop.test}} with \code{correct=TRUE}
-#'   * Option \code{"cmh"} derives a CI for CMH-weighted difference of proportions and
-#'    calls \code{\link{s_adj_proportion_diff}}
-#'
-#' The following options are supported for testing difference of proportions:
-#'   * Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.
-#'   * Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
-#'   Internally calls \code{\link[stats]{mantelhaen.test}}.
+#' Table subsections are matched by name, so to remove a subsection set only the corresponding arguments of
+#' \code{unstrat_analysis} or \code{strat_analysis} to \code{NULL}.
 #'
 #' @md
 #'
@@ -1158,7 +1204,7 @@ t_el_odds_ratio <- function(rsp,
 #'
 #' @export
 #'
-#' @seealso \code{\link{t_el_proportion}},
+#' @seealso \code{\link{control_binary_comparison}}, \code{\link{t_el_proportion}},
 #'   \code{\link{t_el_proportion_diff}}, \code{\link{t_el_test_proportion_diff}}
 #'
 #' @examples
@@ -1167,32 +1213,32 @@ t_el_odds_ratio <- function(rsp,
 #' ADRS <- radrs(cached = TRUE) %>%
 #'   dplyr::filter(PARAMCD == "BESRSPI")
 #'
-#' # unstratified analysis only with default options for unstrat_analysis
+#' # Unstratified analysis only with default options for `unstrat_analysis`.
 #' t_binary_outcome(
 #'   ADRS$AVALC == "CR",
 #'   col_by = ADRS$ARMCD
 #' )
 #'
-#' # unstratified + stratified analysis with default options for
-#' # unstrat_analysis and strat_analysis
+#' # Unstratified + stratified analysis with default options for
+#' # `unstrat_analysis` and `strat_analysis`.
 #' t_binary_outcome(
 #'   ADRS$AVALC == "CR",
 #'   col_by = ADRS$ARMCD,
 #'   strata_data = ADRS[, c("STRATA1", "STRATA2")]
 #' )
 #'
-#' # stratified analysis only
-#' # Show difference with CMH weights and p-value from CMH test
+#' # Stratified analysis only, using CMH weights and corresponding test statistic.
+#' # Exclude Odds Ratio estimates.
 #' t_binary_outcome(
 #'   ADRS$AVALC == "CR",
 #'   col_by = ADRS$ARMCD,
 #'   strata_data = ADRS[, c("STRATA1", "STRATA2")],
 #'   unstrat_analysis = NULL,
-#'   strat_analysis = c("diff_ci_method" = "cmh", "diff_test" = "cmh")
+#'   strat_analysis = control_binary_comparison(diff_ci = "cmh", diff_test = "cmh", odds_ratio = FALSE)
 #'  )
 #'
-#' # exclude comparison between arms
-#' # specify CI method for proportions and change CI level
+#' # Exclude any comparisons between arms,
+#' # specify non-default CI method for proportions and CI level.
 #' t_binary_outcome(
 #'   ADRS$AVALC == "CR",
 #'   col_by = ADRS$ARMCD,
@@ -1200,46 +1246,77 @@ t_el_odds_ratio <- function(rsp,
 #'   unstrat_analysis = NULL,
 #'   conf_level = 0.90
 #'  )
+t_binary_outcome <- function(rsp,
+                             col_by,
+                             strata_data = NULL,
+                             conf_level = 0.95,
+                             prop_ci_method = "waldcc",
+                             unstrat_analysis = control_binary_comparison(),
+                             strat_analysis = control_binary_comparison(diff_test = "cmh")) {
 
-t_binary_outcome <- function(rsp, col_by, strata_data = NULL, conf_level = 0.95,
-                             prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson"),
-                             unstrat_analysis = c("diff_ci_method" = "waldcc", "diff_test" = "chisq"),
-                             strat_analysis = c("diff_ci_method" = "waldcc", "diff_test" = "cmh")
-) {
+  # Note: Argument checks are done inside each elementary function, so not checked here.
 
-  # NOTE: argument checks are done inside each elementary function, so not checked here
-
-  # Table of responders + optional CI
+  # Table of responders + optional CI.
   tbl_response <- if (!is.null(prop_ci_method)) {
     t_el_proportion(rsp, col_by, conf_level = conf_level, prop_ci_method = prop_ci_method)
   } else {
     t_count_true(rsp, col_by, row_name = "Responders")
   }
 
-  # Unstratified analysis table
+  # Unstratified analysis table.
   tbl_u <- if (!is.null(unstrat_analysis)) {
 
-    if (!all(names(unstrat_analysis) %in% c("diff_ci_method", "diff_test"))) {
-      stop("unstrat_analysis elements must be any from this list: diff_ci_method, diff_test")
-    }
+    # Differences of proportions estimates and CIs.
+    tbl_u_difference <- if (!is.null(unstrat_analysis$diff_ci)) {
 
-    tbl_u_difference <- if ("diff_ci_method" %in% names(unstrat_analysis)) {
-      t_el_proportion_diff(rsp, col_by, strata_data = NULL,
-                           conf_level = conf_level,
-                           diff_ci_method = unstrat_analysis["diff_ci_method"])[-1, ]
+      t_el_proportion_diff(
+        rsp = rsp,
+        col_by = col_by,
+        strata_data = NULL,
+        conf_level = conf_level,
+        diff_ci_method = unstrat_analysis$diff_ci
+      )[-1, ]  # Remove the "Responders" row.
+
     } else {
       NULL
     }
 
-    tbl_u_test <- if ("diff_test" %in% names(unstrat_analysis)) {
-      t_el_test_proportion_diff(rsp, col_by, strata_data = NULL,
-                                test = unstrat_analysis["diff_test"])[-1, ]
+    # Test for different proportions.
+    tbl_u_test <- if (!is.null(unstrat_analysis$diff_test)) {
+
+      t_el_test_proportion_diff(
+        rsp = rsp,
+        col_by = col_by,
+        strata_data = NULL,
+        test = unstrat_analysis$diff_test
+      )[-1, ]  # Remove the "Responders" row.
+
+    } else {
+      NULL
+    }
+
+    # Odds Ratio estimates and CIs.
+    tbl_u_odds_ratio <- if (unstrat_analysis$odds_ratio) {
+
+      t_el_odds_ratio(
+        rsp = rsp,
+        col_by = col_by,
+        conf_level = conf_level,
+        strata_data = NULL
+      )[-1, ]  # Remove the "Responders" row.
+
     } else {
       NULL
     }
 
     insert_rrow(
-      indent(rbind(tbl_u_difference, tbl_u_test), 1),
+      indent(
+        rbind(
+          tbl_u_difference,
+          tbl_u_test,
+          tbl_u_odds_ratio
+        ),
+      1),
       rrow("Unstratified Analysis")
     )
 
@@ -1249,35 +1326,58 @@ t_binary_outcome <- function(rsp, col_by, strata_data = NULL, conf_level = 0.95,
 
   tbl_footer <- NULL
 
-  # Stratified analysis table
+  # Stratified analysis table.
   tbl_s <- if (!is.null(strat_analysis) && !is.null(strata_data)) {
 
-    if (!all(names(strat_analysis) %in% c("diff_ci_method", "diff_test"))) {
-      stop("strat_analysis elements must be any from this list: diff_ci_method, diff_test")
-    }
+    # Differences of proportions estimates and CIs.
+    tbl_s_difference <- if (!is.null(strat_analysis$diff_ci)) {
 
-    tbl_s_difference <- if ("diff_ci_method" %in% names(strat_analysis)) {
-
-      # strata_data is set to null to fulfill GDSR RSPT01 template criteria:
-      # difference in response section (any of the unstratified options) may be repeated between
-      # stratified and unstratified analysis table sections
-      tmp_strata_data <- if (strat_analysis["diff_ci_method"] == "cmh") {
+      # If not Cox-Mantel Haenszel method is chosen, then `strata_data`` is set to `NULL`` to fulfill
+      # GDSR RSPT01 template criterion:
+      # The difference in proportions section (any of the unstratified options) may be repeated between
+      # stratified and unstratified analysis table sections.
+      tmp_strata_data <- if (strat_analysis$diff_ci == "cmh") {
         strata_data
       } else {
         NULL
       }
 
-      t_el_proportion_diff(rsp, col_by,
-                           strata_data = tmp_strata_data,
-                           conf_level = conf_level,
-                           diff_ci_method = strat_analysis["diff_ci_method"])[-1, ]
+      t_el_proportion_diff(
+        rsp = rsp,
+        col_by = col_by,
+        strata_data = tmp_strata_data,
+        conf_level = conf_level,
+        diff_ci_method = strat_analysis$diff_ci
+      )[-1, ]  # Remove the "Responders" row.
+
     } else {
       NULL
     }
 
-    tbl_s_test <- if ("diff_test" %in% names(strat_analysis)) {
-      t_el_test_proportion_diff(rsp, col_by, strata_data = strata_data,
-                                test = strat_analysis["diff_test"])[-1, ]
+    # Test for different proportions.
+    tbl_s_test <- if (!is.null(strat_analysis$diff_test)) {
+
+      t_el_test_proportion_diff(
+        rsp = rsp,
+        col_by = col_by,
+        strata_data = strata_data,
+        test = strat_analysis$diff_test
+      )[-1, ]  # Remove the "Responders" row.
+
+    } else {
+      NULL
+    }
+
+    # Odds Ratio estimates and CIs.
+    tbl_s_odds_ratio <- if (strat_analysis$odds_ratio) {
+
+      t_el_odds_ratio(
+        rsp = rsp,
+        col_by = col_by,
+        conf_level = conf_level,
+        strata_data = strata_data
+      )[-1, ]  # Remove the "Responders" row.
+
     } else {
       NULL
     }
@@ -1298,7 +1398,13 @@ t_binary_outcome <- function(rsp, col_by, strata_data = NULL, conf_level = 0.95,
     )
 
     insert_rrow(
-      indent(rbind(tbl_s_difference, tbl_s_test), 1),
+      indent(
+        rbind(
+          tbl_s_difference,
+          tbl_s_test,
+          tbl_s_odds_ratio),
+        1
+      ),
       rrow("Stratified Analysis*")
     )
 
@@ -1306,12 +1412,12 @@ t_binary_outcome <- function(rsp, col_by, strata_data = NULL, conf_level = 0.95,
     NULL
   }
 
-  rbind(
+  tbl <- rbind(
     tbl_response,
     tbl_u,
     tbl_s,
     tbl_footer,
     gap = 1
   )
-
+  return(tbl)
 }

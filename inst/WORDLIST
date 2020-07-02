@@ -17,6 +17,7 @@ ANCOVA
 anl
 BCE
 boruvkaa
+breslow
 Byar's
 cdisc
 CDISC
@@ -31,6 +32,7 @@ covr
 coxph
 dataname
 datanames
+efron
 Evaluable
 Fisher
 funder
@@ -92,12 +94,10 @@ UI
 unstratified
 USUBJID
 waddella
+wald
 waldcc
 wangh
 www
 xticks
 zhanc
 Zhang
-breslow
-efron
-wald

@@ -9,9 +9,9 @@ t_binary_outcome(
   col_by,
   strata_data = NULL,
   conf_level = 0.95,
-  prop_ci_method = c("waldcc", "wald", "clopper-pearson", "wilson"),
-  unstrat_analysis = c(diff_ci_method = "waldcc", diff_test = "chisq"),
-  strat_analysis = c(diff_ci_method = "waldcc", diff_test = "cmh")
+  prop_ci_method = "waldcc",
+  unstrat_analysis = control_binary_comparison(),
+  strat_analysis = control_binary_comparison(diff_test = "cmh")
 )
 }
 \arguments{
@@ -34,26 +34,12 @@ analysis is performed.}
 Specifies the method used to construct the confidence interval for proportion
 of successful outcomes.}
 
-\item{unstrat_analysis}{named character vector specifying sections to include
-under the heading "Unstratified Analysis". If \code{NULL}, the table section is excluded.
-The named slot options are:
-\itemize{
-\item \code{diff_ci_method} The method used for the confidence interval for difference of
-proportions. Default method is "waldcc", Wald with continuity correction.
-\item \code{diff_test} Test for a difference between two proportions. Default
-method is "chisq", Chi-squared test.
-}}
+\item{unstrat_analysis}{list specified by calling \code{\link{control_binary_comparison}} for controlling the
+"Unstratified Analysis" section. If \code{NULL}, this table section is excluded.}
 
-\item{strat_analysis}{named character vector specifying sections to include
-under the heading "Stratified Analysis". Only applicable if stratification factors
-from \code{strata_data} are provided.
-The named slot options are:
-\itemize{
-\item \code{diff_ci_method} The method used for the confidence interval for difference of
-proportions. Default method is "waldcc", Wald with continuity correction.
-\item \code{diff_test} Test for a difference between two proportions. Default
-method is "cmh", Cochran-Mantel-Haenszel test.
-}}
+\item{strat_analysis}{list specified by calling \code{\link{control_binary_comparison}} for controlling the
+"Stratified Analysis" section. Only applicable if stratification factors from \code{strata_data} are provided.
+If \code{NULL}, this table section is excluded.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -64,36 +50,8 @@ for binary outcome variables. Options include reporting unstratified
 analysis, stratified analysis or both.
 }
 \details{
-Table sections are matched by name, so to remove a section specify a subset of the named slots
-in \code{strat_analysis} or \code{strat_analysis}.
-
-The following options are supported for confidence interval for a proportion:
-\itemize{
-\item The \code{wald} interval follows the usual textbook definition for a single proportion
-confidence interval using the normal approximation.
-\item The \code{waldcc} interval is similar to \code{wald} and in addition uses the continuity
-correction \code{1/2n}.
-\item The \code{clopper-pearson} interval calls \code{\link[stats]{binom.test}}. Also referred to
-as the 'exact' method.
-\item The \code{wilson} interval calls \code{\link[stats]{prop.test}} with option \code{correct=FALSE}.
-Also referred to as Wilson score interval.
-}
-
-The following options are supported for difference of proportions confidence intervals:
-\itemize{
-\item Option \code{"wald"} calls \code{\link[stats]{prop.test}} with \code{correct=FALSE}
-\item Option \code{"waldcc"} includes continuity correction for Wald interval and
-calls \code{\link[stats]{prop.test}} with \code{correct=TRUE}
-\item Option \code{"cmh"} derives a CI for CMH-weighted difference of proportions and
-calls \code{\link{s_adj_proportion_diff}}
-}
-
-The following options are supported for testing difference of proportions:
-\itemize{
-\item Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.
-\item Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
-Internally calls \code{\link[stats]{mantelhaen.test}}.
-}
+Table subsections are matched by name, so to remove a subsection set only the corresponding arguments of
+\code{unstrat_analysis} or \code{strat_analysis} to \code{NULL}.
 }
 \examples{
 library(random.cdisc.data)
@@ -101,32 +59,32 @@ library(dplyr)
 ADRS <- radrs(cached = TRUE) \%>\%
   dplyr::filter(PARAMCD == "BESRSPI")
 
-# unstratified analysis only with default options for unstrat_analysis
+# Unstratified analysis only with default options for `unstrat_analysis`.
 t_binary_outcome(
   ADRS$AVALC == "CR",
   col_by = ADRS$ARMCD
 )
 
-# unstratified + stratified analysis with default options for
-# unstrat_analysis and strat_analysis
+# Unstratified + stratified analysis with default options for
+# `unstrat_analysis` and `strat_analysis`.
 t_binary_outcome(
   ADRS$AVALC == "CR",
   col_by = ADRS$ARMCD,
   strata_data = ADRS[, c("STRATA1", "STRATA2")]
 )
 
-# stratified analysis only
-# Show difference with CMH weights and p-value from CMH test
+# Stratified analysis only, using CMH weights and corresponding test statistic.
+# Exclude Odds Ratio estimates.
 t_binary_outcome(
   ADRS$AVALC == "CR",
   col_by = ADRS$ARMCD,
   strata_data = ADRS[, c("STRATA1", "STRATA2")],
   unstrat_analysis = NULL,
-  strat_analysis = c("diff_ci_method" = "cmh", "diff_test" = "cmh")
+  strat_analysis = control_binary_comparison(diff_ci = "cmh", diff_test = "cmh", odds_ratio = FALSE)
  )
 
-# exclude comparison between arms
-# specify CI method for proportions and change CI level
+# Exclude any comparisons between arms,
+# specify non-default CI method for proportions and CI level.
 t_binary_outcome(
   ADRS$AVALC == "CR",
   col_by = ADRS$ARMCD,
@@ -136,6 +94,6 @@ t_binary_outcome(
  )
 }
 \seealso{
-\code{\link{t_el_proportion}},
+\code{\link{control_binary_comparison}}, \code{\link{t_el_proportion}},
 \code{\link{t_el_proportion_diff}}, \code{\link{t_el_test_proportion_diff}}
 }

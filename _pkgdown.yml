@@ -95,6 +95,7 @@ reference:
       - footnotes<-
       - add_footnotes<-
       - control_coxph
+      - control_binary_comparison
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs

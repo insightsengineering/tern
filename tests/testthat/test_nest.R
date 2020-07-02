@@ -6,6 +6,7 @@ test_all(strict_args = list(exclude_from_man = c("decorate_grob.Rd", #partial ar
                                                  "s_coxph_pairwise.Rd",
                                                  "s_logistic_interaction.Rd",
                                                  "s_logistic_single.Rd",
+                                                 "t_binary_outcome.Rd",
                                                  "t_coxph_pairwise.Rd",
                                                  "t_el_disposition.Rd",
                                                  "t_el_forest_tte.Rd",
