@@ -27,7 +27,8 @@ analysis is performed.}
 
 \item{conf_level}{confidence level of the interval.}
 
-\item{diff_ci_method}{one of (\code{"wald"}, \code{"waldcc"}, \code{"cmh"})\cr
+\item{diff_ci_method}{one of (\code{"wald"}, \code{"waldcc"}, \code{"cmh"}, \code{"anderson-hauck"} or \code{"ha"},
+\code{"newcombe"})\cr
 Specifies the method used to construct the confidence interval for the difference
 in proportion of outcomes.}
 }
@@ -47,6 +48,9 @@ The following options are supported for difference of proportions confidence int
   calls \code{\link[stats]{prop.test}} with \code{correct=TRUE}}
   \item{Option \code{cmh} derives a CI for CMH-weighted difference of proportions and
    calls \code{\link{s_adj_proportion_diff}}.}
+  \item{Options \code{anderson-hauck} or \code{ha} derives the Anderson-Hauck confidence interval.}
+  \item{Option \code{newcombe} derives the Newcombe confidence interval, which is based on the Wilson score
+    confidence interval for a single binomial proportion.}
 }
 }
 \examples{

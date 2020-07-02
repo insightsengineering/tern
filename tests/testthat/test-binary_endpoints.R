@@ -261,6 +261,74 @@ test_that("`s_proportion` works with Jeffreys CI", {
   expect_equal(result2, expected2, tol = 0.0001)
 })
 
+test_that("`s_proportion_diff` works with Anderson-Hauck CI", {
+  # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
+  rsp1 <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
+  trt1 <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+  result1 <- s_proportion_diff(
+    x = rsp1,
+    grp = trt1,
+    conf_level = 0.9,
+    diff_ci_method = "anderson-hauck"
+  )
+  expected1 <- list(
+    diff = 0.25,
+    diff_ci = c(-0.9195, 1),  # From SAS.
+    label_ci = "90% CI for difference (Anderson-Hauck)"
+  )
+  expect_equal(result1, expected1, tol = 0.0001)
+
+  # Corner case: Same proportion of response in A and B.
+  rsp2 <- c(TRUE, FALSE, TRUE, FALSE)
+  trt2 <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+  result2 <- s_proportion_diff(
+    x = rsp2,
+    grp = trt2,
+    conf_level = 0.6,
+    diff_ci_method = "anderson-hauck"
+  )
+  expected2 <- list(
+    diff = 0,
+    diff_ci = c(-0.8451, 0.8451),  # From SAS.
+    label_ci = "60% CI for difference (Anderson-Hauck)"
+  )
+  expect_equal(result2, expected2, tol = 0.0001)
+})
+
+test_that("`s_proportion_diff` works with Newcombe CI", {
+  # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
+  rsp1 <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
+  trt1 <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+  result1 <- s_proportion_diff(
+    x = rsp1,
+    grp = trt1,
+    conf_level = 0.9,
+    diff_ci_method = "newcombe"
+  )
+  expected1 <- list(
+    diff = 0.25,
+    diff_ci = c(-0.2967, 0.6750),  # From SAS.
+    label_ci = "90% CI for difference (Newcombe)"
+  )
+  expect_equal(result1, expected1, tol = 0.0001)
+
+  # Corner case: Same proportion of response in A and B.
+  rsp2 <- c(TRUE, FALSE, TRUE, FALSE)
+  trt2 <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+  result2 <- s_proportion_diff(
+    x = rsp2,
+    grp = trt2,
+    conf_level = 0.6,
+    diff_ci_method = "newcombe"
+  )
+  expected2 <- list(
+    diff = 0,
+    diff_ci = c(-0.3616, 0.3616),  # From SAS.
+    label_ci = "60% CI for difference (Newcombe)"
+  )
+  expect_equal(result2, expected2, tol = 0.0001)
+})
+
 test_that("`s_test_proportion_diff` works with Fisher's Exact Test", {
   # "Mid" case: 3/10 respond in group A, 4/8 respond in group B.
   rsp1 <- c(

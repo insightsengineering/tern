@@ -8,6 +8,7 @@
 * Add new tern function `s_odds_ratio` to estimate Odds Ratio of response between categories, as well as the 
   corresponding elementary table function `t_el_odds_ratio`.
 * Additional CI methods (Agresti-Coull, Jeffreys) for `s_proportion`.
+* Added new CI methods `anderson-hauck` and `newcombe` to `s_proportion_diff`.
 * Additional p-value methods (Fisher's Exact, Chi-Squared Test with Schouten Correction) for `s_test_proportion_diff`.
 
 # tern 0.6.7

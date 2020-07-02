@@ -258,7 +258,8 @@ s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95) {
 #' @param grp a \code{factor} vector with 2 levels. Must be the same length as \code{x}.
 #' @param strat factor with one level per stratum and same length as \code{x}. Only required
 #'   for stratified analysis when method is "cmh".
-#' @param diff_ci_method one of (\code{"wald"}, \code{"waldcc"}, \code{"cmh"})\cr
+#' @param diff_ci_method one of (\code{"wald"}, \code{"waldcc"}, \code{"cmh"}, \code{"anderson-hauck"} or \code{"ha"},
+#'   \code{"newcombe"})\cr
 #'   Specifies the method used to construct the confidence interval for the difference
 #'   in proportion of outcomes.
 #'
@@ -270,6 +271,9 @@ s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95) {
 #'   calls \code{\link[stats]{prop.test}} with \code{correct=TRUE}}
 #'   \item{Option \code{cmh} derives a CI for CMH-weighted difference of proportions and
 #'    calls \code{\link{s_adj_proportion_diff}}.}
+#'   \item{Options \code{anderson-hauck} or \code{ha} derives the Anderson-Hauck confidence interval.}
+#'   \item{Option \code{newcombe} derives the Newcombe confidence interval, which is based on the Wilson score
+#'     confidence interval for a single binomial proportion.}
 #' }
 #'
 #' @return Named list with analysis summary.
@@ -304,12 +308,16 @@ s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95) {
 #'
 #' # case without responders
 #' s_proportion_diff(rep(FALSE, length(trt)), trt, diff_ci_method = "wald")
-s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
-                              diff_ci_method = c("wald", "waldcc", "cmh")) {
+s_proportion_diff <- function(x,
+                              grp,
+                              strat = NULL,
+                              conf_level = 0.95,
+                              diff_ci_method = c("wald", "waldcc", "cmh", "anderson-hauck", "ha", "newcombe")) {
 
   check_is_event(x)
   check_is_factor(grp, allow_na = FALSE)
   check_same_n(x = x, grp = grp)
+  check_conf_level(conf_level)
   diff_ci_method <- match.arg(diff_ci_method)
 
   if (!is.null(strat)) {
@@ -341,30 +349,84 @@ s_proportion_diff <- function(x, grp, strat = NULL, conf_level = 0.95,
     )
   }
 
-  result <- if (diff_ci_method == "wald") {
+  # Common variables used below.
+  p_grp <- tapply(x, grp, mean)
+  diff_p <- unname(diff(p_grp))
+  n_grp <- tapply(x, grp, length)
+  label_ci_start <- paste0(conf_level * 100, "% CI for difference")
+  z <- qnorm((1 + conf_level) / 2)
+
+  results <- if (diff_ci_method == "wald") {
+    diff_ci <- stats::prop.test(
+      table(grp, x),
+      correct = FALSE,
+      conf.level = conf_level
+    )$conf.int[1:2]
     list(
-      "diff" = unname(diff(tapply(x, grp, mean))),
-      "diff_ci" = prop.test(table(grp, x), correct = FALSE, conf.level = conf_level)$conf.int[1:2],
-      "label_ci" =  paste0(conf_level * 100, "% CI for difference (Wald without correction)")
+      "diff" = diff_p,
+      "diff_ci" = diff_ci,
+      "label_ci" =  paste(label_ci_start, "(Wald without correction)")
     )
   } else if (diff_ci_method == "waldcc") {
+    diff_ci <- stats::prop.test(
+      table(grp, x),
+      correct = TRUE,
+      conf.level = conf_level
+    )$conf.int[1:2]
     list(
-      "diff" = unname(diff(tapply(x, grp, mean))),
-      "diff_ci" = prop.test(table(grp, x), correct = TRUE, conf.level = conf_level)$conf.int[1:2],
-      "label_ci" = paste0(conf_level * 100, "% CI for difference (Wald with correction)")
+      "diff" = diff_p,
+      "diff_ci" = diff_ci,
+      "label_ci" = paste(label_ci_start, "(Wald with correction)")
     )
   } else if (diff_ci_method == "cmh") {
-
-    est <- s_adj_proportion_diff(x, grp, strat, conf_level = conf_level)
-
+    est <- s_adj_proportion_diff(
+      x = x,
+      grp = grp,
+      strat = strat,
+      conf_level = conf_level
+    )
     list(
       "diff" = est$diff_est,
       "diff_ci" = est$diff_ci,
       "label_ci" = paste0(conf_level * 100, "% CI for adjusted difference (CMH, without correction)")
     )
+  } else if (diff_ci_method %in% c("anderson-hauck", "ha")) {
+    err <- 1 / (2 * min(n_grp)) + z * sqrt(sum(p_grp * (1 - p_grp) / (n_grp - 1)))
+    l_ci <- max(-1, diff_p - err)
+    u_ci <- min(1, diff_p + err)
+    list(
+      "diff" = diff_p,
+      "diff_ci" = c(l_ci, u_ci),
+      "label_ci" =  paste(label_ci_start, "(Anderson-Hauck)")
+    )
+  } else if (diff_ci_method == "newcombe") {
+    # Source:
+    # https://www.lexjansen.com/wuss/2016/127_Final_Paper_PDF.pdf
+    x_grp <- split(x, f = grp)
+    ci_grp <- lapply(
+      x_grp,
+      FUN = function(x) {
+        s_proportion(
+          x = x,
+          conf_level = conf_level,
+          prop_ci_method = "wilson"
+        )$prop_ci
+      }
+    )
+    l1 <- ci_grp[[1]][1]
+    u1 <- ci_grp[[1]][2]
+    l2 <- ci_grp[[2]][1]
+    u2 <- ci_grp[[2]][2]
+    l_ci <- max(-1, diff_p - sqrt((u1 - p_grp[1])^2 + (p_grp[2] - l2)^2))
+    u_ci <- min(1, diff_p + sqrt((p_grp[1] - l1)^2 + (u2 - p_grp[2])^2))
+    list(
+      "diff" = diff_p,
+      "diff_ci" = c(l_ci, u_ci),
+      "label_ci" =  paste(label_ci_start, "(Newcombe)")
+    )
   }
 
-  result
+  return(results)
 }
 
 #' Test for difference between two proportions
