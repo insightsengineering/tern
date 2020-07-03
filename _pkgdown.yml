@@ -122,6 +122,7 @@ reference:
       - as_factor_keep_attributes
       - check_id
       - df_explicit_na
+      - get_onco_rsp_label
 
   - title: Deprecated Functions
     desc: These functions will eventually be removed

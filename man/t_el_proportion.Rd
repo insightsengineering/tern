@@ -78,7 +78,7 @@ t_el_proportion(
 )
 }
 \seealso{
-\code{\link{s_proportion}},
+\code{\link{s_proportion}}, \code{\link{t_el_multinomial_proportion}},
   \code{\link{t_el_proportion_diff}}, \code{\link{t_el_test_proportion_diff}},
   \code{\link{t_binary_outcome}}
 }

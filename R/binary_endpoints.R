@@ -642,7 +642,7 @@ s_test_proportion_diff <- function(x,
 #'
 #' @export
 #'
-#' @seealso \code{\link{s_proportion}},
+#' @seealso \code{\link{s_proportion}}, \code{\link{t_el_multinomial_proportion}},
 #'   \code{\link{t_el_proportion_diff}}, \code{\link{t_el_test_proportion_diff}},
 #'   \code{\link{t_binary_outcome}}
 #'
@@ -694,7 +694,7 @@ t_el_proportion <- function(rsp,
   label_ci <- d_proportion(
     conf_level = conf_level,
     prop_ci_method = prop_ci_method,
-    long = TRUE
+    long = FALSE
   )
   tbl_rate_ci <- rtabulate(
     x = rsp,
@@ -711,6 +711,88 @@ t_el_proportion <- function(rsp,
     tbl_rate_ci
   )
 
+}
+
+#' Table for proportion of outcomes per factor level
+#'
+#' @inheritParams argument_convention
+#' @inheritParams s_proportion
+#' @param rsp_multinomial (\code{factor} vector) The levels represent ordered response categories.
+#'   \code{NA} values or empty strings are not allowed.
+#' @param levels_without_ci (\code{character} vector) If any levels of \code{rsp_multinomial}
+#'  match, the corresponding rates are reported without a confidence interval.
+#'
+#' @return return_rtable
+#'
+#' @export
+#'
+#' @seealso \code{\link{s_proportion}}, \code{\link{t_el_proportion}},
+#'   \code{\link{t_binary_outcome}}
+#'
+#' @examples
+#' library(random.cdisc.data)
+#' library(dplyr)
+#'
+#' ADRS <- radrs(cached = TRUE) %>%
+#'   dplyr::filter(PARAMCD == "BESRSPI")
+#'
+#' t_el_multinomial_proportion(ADRS$AVALC, col_by = ADRS$ARMCD)
+#'
+#' t_el_multinomial_proportion(ADRS$AVALC, col_by = ADRS$ARMCD, levels_without_ci = "NE")
+#'
+#' # apply standard oncology labels, given factor input.
+#' m_rsp <- ADRS$AVALC
+#' levels(m_rsp) <- get_onco_rsp_label()[match(levels(m_rsp), names(get_onco_rsp_label()))]
+#' t_el_multinomial_proportion(m_rsp, col_by = ADRS$ARMCD, levels_without_ci = "Not Evaluable (NE)")
+#'
+#' t_el_multinomial_proportion(
+#'   ADRS$AVALC,
+#'   col_by = ADRS$ARMCD,
+#'   prop_ci_method = "wilson",
+#'   conf_level = 0.90
+#' )
+#'
+#' # single arm
+#' t_el_multinomial_proportion(
+#'   ADRS$AVALC,
+#'   col_by = by_all("All"),
+#'   prop_ci_method = "clopper-pearson"
+#' )
+#'
+#' # Add total
+#' t_el_multinomial_proportion(
+#'   ADRS$AVALC,
+#'   col_by = by_add_total(ADRS$ARMCD, "All")
+#' )
+
+t_el_multinomial_proportion <- function(rsp_multinomial, col_by, conf_level = 0.95,
+                                        prop_ci_method = "waldcc", levels_without_ci = NULL) {
+
+  check_is_factor(sas_na(rsp_multinomial, empty = TRUE, whitespaces = TRUE), allow_na = FALSE)
+  stopifnot(is.character(levels_without_ci) || is.null(levels_without_ci))
+
+  l_tbls <- lapply(levels(rsp_multinomial), function(level_i){
+
+    if (level_i %in% unique(levels_without_ci)) {
+
+      tbl_i <- t_count_true(rsp_multinomial == level_i, col_by, row_name = level_i)
+
+    } else {
+
+      tbl_i <- t_el_proportion(
+        rsp_multinomial == level_i,
+        col_by,
+        conf_level,
+        prop_ci_method
+      )
+      row.names(tbl_i)[1] <- level_i
+    }
+
+    tbl_i
+  })
+
+  tbl <- rbindl_rtables(l_tbls, gap = 1)
+  tbl
 }
 
 #' Table for testing difference in proportions
@@ -1193,10 +1275,20 @@ control_binary_comparison <- function(diff_ci = "waldcc",
 #' @param strat_analysis list specified by calling \code{\link{control_binary_comparison}} for controlling the
 #'  "Stratified Analysis" section. Only applicable if stratification factors from \code{strata_data} are provided.
 #'  If \code{NULL}, this table section is excluded.
+#' @param rsp_multinomial (\code{factor} vector) The levels represent ordered response categories.
+#'   \code{NA} values or empty strings are not allowed. If \code{NULL}, tabulation by each
+#'   response category will not be performed.
 #'
 #' @details
-#' Table subsections are matched by name, so to remove a subsection set only the corresponding arguments of
-#' \code{unstrat_analysis} or \code{strat_analysis} to \code{NULL}.
+#' Table subsections are matched by name, so to remove a subsection set any the corresponding arguments of
+#' \code{unstrat_analysis}, \code{strat_analysis} or \code{rsp_multinomial} to \code{NULL}.
+#'
+#' The display order of response categories in partitioned statistics section
+#' inherits the factor level order of \code{partition_analysis}. Use
+#' \code{\link[base]{factor}} and its \code{levels} argument to include or
+#' exclude response categories and arrange display order. If response values
+#' contain "NE", "Missing", "NE/Missing", "Not Evaluable (NE)" or "Missing or unevaluable",
+#' the confidence interval will not be calculated.
 #'
 #' @md
 #'
@@ -1205,7 +1297,8 @@ control_binary_comparison <- function(diff_ci = "waldcc",
 #' @export
 #'
 #' @seealso \code{\link{control_binary_comparison}}, \code{\link{t_el_proportion}},
-#'   \code{\link{t_el_proportion_diff}}, \code{\link{t_el_test_proportion_diff}}
+#'   \code{\link{t_el_proportion_diff}}, \code{\link{t_el_test_proportion_diff}},
+#'   \code{\link{t_el_multinomial_proportion}}
 #'
 #' @examples
 #' library(random.cdisc.data)
@@ -1238,13 +1331,20 @@ control_binary_comparison <- function(diff_ci = "waldcc",
 #'  )
 #'
 #' # Exclude any comparisons between arms,
-#' # specify non-default CI method for proportions and CI level.
+#' # specify non-default CI method for proportions and CI level,
+#' # and include individual response categories.
+#'
+#' # First recode multinomial response with standard labels.
+#' m_rsp <- ADRS$AVALC
+#' levels(m_rsp) <- get_onco_rsp_label()[match(levels(m_rsp), names(get_onco_rsp_label()))]
+#'
 #' t_binary_outcome(
-#'   ADRS$AVALC == "CR",
+#'   ADRS$AVALC %in% c("CR", "PR"),
 #'   col_by = ADRS$ARMCD,
 #'   prop_ci_method = "clopper-pearson",
 #'   unstrat_analysis = NULL,
-#'   conf_level = 0.90
+#'   conf_level = 0.90,
+#'   rsp_multinomial = m_rsp
 #'  )
 t_binary_outcome <- function(rsp,
                              col_by,
@@ -1252,9 +1352,14 @@ t_binary_outcome <- function(rsp,
                              conf_level = 0.95,
                              prop_ci_method = "waldcc",
                              unstrat_analysis = control_binary_comparison(),
-                             strat_analysis = control_binary_comparison(diff_test = "cmh")) {
+                             strat_analysis = control_binary_comparison(diff_test = "cmh"),
+                             rsp_multinomial = NULL) {
 
   # Note: Argument checks are done inside each elementary function, so not checked here.
+
+  if (is.null(rsp) & !is.null(rsp_multinomial)) {
+    stop("For only the multinomial response summary use t_el_multinomial_proportion.")
+  }
 
   # Table of responders + optional CI.
   tbl_response <- if (!is.null(prop_ci_method)) {
@@ -1412,12 +1517,61 @@ t_binary_outcome <- function(rsp,
     NULL
   }
 
+  tbl_multinomial <- if (!is.null(rsp_multinomial)) {
+
+    levels_without_ci <- c("NE", "Missing", "NE/Missing", "Not Evaluable (NE)", "Missing or unevaluable")
+
+    t_el_multinomial_proportion(
+      rsp_multinomial,
+      col_by,
+      conf_level = conf_level,
+      prop_ci_method = prop_ci_method,
+      levels_without_ci = levels_without_ci
+    )
+
+  } else {
+    NULL
+  }
+
   tbl <- rbind(
     tbl_response,
     tbl_u,
     tbl_s,
+    tbl_multinomial,
     tbl_footer,
     gap = 1
   )
   return(tbl)
+}
+
+
+#' Get label for standard oncology response categories
+#'
+#' This is a convenience function for labeling the partition section in `t_binary_outcome`.
+#'
+#' @return Named \code{character} vector.
+#'
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#' rsp <- c("CR", "NE", "PR")
+#' # Recode values with standard labels.
+#' rsp <- get_onco_rsp_label()[ match(rsp, names(get_onco_rsp_label()))  ]
+#' # Create factor.
+#' rsp <- factor(rsp, levels = get_onco_rsp_label())
+
+get_onco_rsp_label <- function() {
+
+  rsp_full_label <- c(
+    CR          = "Complete Response (CR)",
+    PR          = "Partial Response (PR)",
+    SD          = "Stable Disease (SD)",
+    `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
+    PD          = "Progressive Disease (PD)",
+    NE          = "Not Evaluable (NE)",
+    Missing     = "Missing",
+    `NE/Missing` = "Missing or unevaluable"
+  )
+  rsp_full_label
 }
