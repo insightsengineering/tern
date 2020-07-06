@@ -79,6 +79,7 @@ Collate:
     'split.R'
     't_abnormality.R'
     't_ancova.R'
+    't_contingency.R'
     't_count_true.R'
     't_count_unique.R'
     't_coxreg.R'

@@ -58,6 +58,7 @@ reference:
       - t_summarize_by_visit
       - t_el_ancova
       - t_el_odds_ratio
+      - t_contingency
 
   - title: Analysis and Summary Functions
     desc: These functions return statistical results from different models

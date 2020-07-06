@@ -1,5 +1,6 @@
 # tern 0.6.7.9000
 
+* Add new function `t_contingency` for contingency tables.
 * Improved `mean_sd`.
 * The class `splitText` is renamed to `dynamicSplitText` in order to resolve the name conflict with the package `ggpubr`.
 * Add `rreplace_format` for tabulation post-processing.
