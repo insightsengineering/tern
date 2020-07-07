@@ -80,7 +80,7 @@ esplit <- function(x, by) {
 #'
 #' by <- data.frame("Old" = c(TRUE, TRUE, FALSE), "Tall" = c(FALSE, TRUE, TRUE))
 #' esplit(1:3, by)
-esplit.default <- function(x, by) { # nolint # nousage
+esplit.default <- function(x, by) {
   stopifnot(is.atomic(x))
   by <- col_by_to_matrix(by)
   lapply(by, function(rows) {
@@ -99,7 +99,7 @@ esplit.default <- function(x, by) { # nolint # nousage
 #' @examples
 #' by <- factor(c("M", "M", "F", "F", "F"))
 #' esplit(data.frame(x = 1:5, y = 6:10), by)
-esplit.data.frame <- function(x, by) { # nolint # nousage
+esplit.data.frame <- function(x, by) { # nolint
   labels <- var_labels(x)
   by <- col_by_to_matrix(by)
   lapply(by, function(rows) {
@@ -144,7 +144,7 @@ esplit.data.frame <- function(x, by) { # nolint # nousage
 #'   ),
 #'   factor(c("a", "a", "b", "b", "b", "b"))
 #' )
-esplit.list <- function(x, by) { #nolintr
+esplit.list <- function(x, by) {
   # splits each list item
   # applies recursively to each list element
   by <- col_by_to_matrix(by)
@@ -173,7 +173,7 @@ esplit.list <- function(x, by) { #nolintr
 #'   )),
 #'   by = factor(c("M", "F"))
 #' )
-esplit.non_rsplit <- function(x, by) { #nolint # nousage
+esplit.non_rsplit <- function(x, by) { #nolint
   # same as default method
   by <- col_by_to_matrix(by)
   lapply(by, function(rows) x[rows])

@@ -164,7 +164,7 @@ object_to_node <- function(x, node_name = invisible_node_name(deparse(substitute
 #' @return a summary of the tree, see \code{\link{basic_node_info}}
 #'
 #' @export
-summary.node <- function(object, ...) { # nousage # nolint
+summary.node <- function(object, ...) {
   basic_node_info(object)
 }
 

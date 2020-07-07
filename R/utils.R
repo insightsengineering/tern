@@ -454,7 +454,7 @@ rreplace_format.default <- function(x,
 #' @inheritParams rreplace_format.rrow
 #' @param row A vector of row indexes. Default `NULL` applies to all rows.
 #' @export
-rreplace_format.rtable <- function(x, # nousage # nolint
+rreplace_format.rtable <- function(x,
                                    row = NULL,
                                    col = NULL,
                                    old = FALSE,
@@ -478,7 +478,7 @@ rreplace_format.rtable <- function(x, # nousage # nolint
 #' @param new The replacement format.
 #'
 #' @export
-rreplace_format.rrow <- function(x, # nousage # nolint
+rreplace_format.rrow <- function(x,
                                  row = NULL,
                                  col = NULL,
                                  old = FALSE,
