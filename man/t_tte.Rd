@@ -111,7 +111,7 @@ t_tte(
   col_N = table(ADSL$ARM),
   event_descr = factor(ADTTE_f$EVNTDESC),
   time_points = c(6, 12, 360),
-  time_unit = "month",
+  time_unit = "month"
 )
 
 t_tte(
@@ -161,7 +161,6 @@ to_rtable(tbl3)
 
 # when there's single arm
 library(dplyr)
-library(random.cdisc.data)
 ADSL <- radsl(cached = TRUE) \%>\% filter(ARM == "C: Combination") \%>\% droplevels()
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%

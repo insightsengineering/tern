@@ -70,7 +70,7 @@
 #'   col_N = table(ADSL$ARM),
 #'   event_descr = factor(ADTTE_f$EVNTDESC),
 #'   time_points = c(6, 12, 360),
-#'   time_unit = "month",
+#'   time_unit = "month"
 #' )
 #'
 #' t_tte(
@@ -120,7 +120,6 @@
 #'
 #' # when there's single arm
 #' library(dplyr)
-#' library(random.cdisc.data)
 #' ADSL <- radsl(cached = TRUE) %>% filter(ARM == "C: Combination") %>% droplevels()
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
@@ -383,15 +382,20 @@ t_tte <- function(formula,
 
     } else {
 
-      if (length(unique(arm)) == 1) {
+      if (length(unique(arm)) == 1 || is.null(comparison)) {
         df_tp <- as.data.frame(tp[c("time", "n.risk", "surv", "lower", "upper", "std.err")])
         s_df_tp <- split(df_tp, factor(df_tp$time, levels = time_points), drop = FALSE)
 
         Map(function(dfi, time_point) {
-          tbl <- if (nrow(dfi) == 0) {
+          tbl <- if (length(unique(arm)) == 1 && nrow(dfi) == 0) {
             rtable(
               header = header,
               rrow("-- no data", indent = 2)
+            )
+          } else if (length(unique(arm)) > 1 && nrow(dfi) <= 1) {
+            rtable(
+              header = header,
+              rrow(if (nrow(dfi) == 0) "-- no data" else "-- not enough data", indent = 2)
             )
           } else {
 
