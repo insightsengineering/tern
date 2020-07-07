@@ -1,5 +1,6 @@
 # tern 0.6.7.9000
 
+* New default p-value method in `s_test_proportion_diff`: Chi-Squared Test with Schouten Correction.
 * Add new function `t_contingency` for contingency tables.
 * Improved `mean_sd`.
 * The class `splitText` is renamed to `dynamicSplitText` in order to resolve the name conflict with the package `ggpubr`.

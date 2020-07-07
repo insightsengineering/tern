@@ -489,10 +489,10 @@ s_proportion_diff <- function(x,
 d_test_proportion_diff <- function(test) {
   test_part <- switch(
     test,
+    "schouten" = "Chi-Squared Test with Schouten Correction",
     "chisq" = "Chi-Squared Test",
     "cmh" = "Cochran-Mantel-Haenszel Test",
     "fisher" = "Fisher's Exact Test",
-    "schouten" = "Chi-Squared Test with Schouten Correction",
     stop(paste(test, "does not have a description"))
   )
   label <- paste0("p-value (", test_part, ")")
@@ -514,11 +514,11 @@ d_test_proportion_diff <- function(test) {
 #' @details
 #' The following options are supported for testing difference of proportions:
 #' \itemize{
+#'   \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
 #'   \item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
 #'   \item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
 #'   Internally calls \code{\link[stats]{mantelhaen.test}}.}
 #'   \item{Option \code{fisher} performs the Fisher's exact test.}
-#'   \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
 #' }
 #'
 #' @return Named list with analysis summary.
@@ -555,7 +555,7 @@ d_test_proportion_diff <- function(test) {
 s_test_proportion_diff <- function(x,
                                    grp,
                                    strat = NULL,
-                                   test = c("chisq", "cmh", "fisher", "schouten")) {
+                                   test = c("schouten", "chisq", "cmh", "fisher")) {
 
   check_is_event(x)
   check_is_factor(grp, allow_na = FALSE)
@@ -846,7 +846,7 @@ t_el_multinomial_proportion <- function(rsp_multinomial, col_by, conf_level = 0.
 #'   test = "chisq"
 #' )
 #'
-t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = "chisq") {
+t_el_test_proportion_diff <- function(rsp, col_by, strata_data = NULL, test = "schouten") {
 
   col_by <- col_by_to_factor(col_by)
   col_by <- droplevels(col_by)
@@ -1235,16 +1235,18 @@ t_el_odds_ratio <- function(rsp,
 #' @param diff_ci The method used for the confidence interval for difference of
 #'   proportions (see \code{\link{s_proportion_diff}} for details). Default method is here "waldcc",
 #'   i.e. Wald with continuity correction. If \code{NULL}, then no confidence intervals will be calculated.
-#' @param diff_test Test for a difference between two proportions (see \code{\link{s_test_proportion_diff}}
-#'   for details). Default method is here "chisq", i.e. the Chi-Squared Test. If \code{NULL}, then no test
-#'   will be performed and no p-values reported.
+#' @param diff_test Test for a difference between two proportions
+#'   (see \code{\link{s_test_proportion_diff}} for details). Default method is
+#'   here `schouten`, i.e. Chi-Squared Test with Schouten Correction.
+#'   If `NULL`, then no test will be performed and no p-values reported.
 #' @param odds_ratio (\code{logical}) Whether the odds ratio estimates and confidence intervals should be
 #'   reported (default) or not.
 #' @return a list of components named as the arguments
 #'
+#' @md
 #' @export
 control_binary_comparison <- function(diff_ci = "waldcc",
-                                      diff_test = "chisq",
+                                      diff_test = "schouten",
                                       odds_ratio = TRUE) {
 
   # Note: `diff_ci` and `diff_test` are checked downstream if they are strings (by the `s_*` functions.)

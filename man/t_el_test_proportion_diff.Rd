@@ -4,7 +4,7 @@
 \alias{t_el_test_proportion_diff}
 \title{Table for testing difference in proportions}
 \usage{
-t_el_test_proportion_diff(rsp, col_by, strata_data = NULL, test = "chisq")
+t_el_test_proportion_diff(rsp, col_by, strata_data = NULL, test = "schouten")
 }
 \arguments{
 \item{rsp}{(\code{logical} vector)\cr
@@ -33,11 +33,11 @@ the proportion of events in each of the remaining group levels in \code{col_by}.
 \details{
 The following options are supported for testing difference of proportions:
 \itemize{
+  \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
   \item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
   \item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
   Internally calls \code{\link[stats]{mantelhaen.test}}.}
   \item{Option \code{fisher} performs the Fisher's exact test.}
-  \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
 }
 }
 \examples{

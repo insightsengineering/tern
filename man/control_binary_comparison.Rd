@@ -6,7 +6,7 @@
 \usage{
 control_binary_comparison(
   diff_ci = "waldcc",
-  diff_test = "chisq",
+  diff_test = "schouten",
   odds_ratio = TRUE
 )
 }
@@ -15,9 +15,10 @@ control_binary_comparison(
 proportions (see \code{\link{s_proportion_diff}} for details). Default method is here "waldcc",
 i.e. Wald with continuity correction. If \code{NULL}, then no confidence intervals will be calculated.}
 
-\item{diff_test}{Test for a difference between two proportions (see \code{\link{s_test_proportion_diff}}
-for details). Default method is here "chisq", i.e. the Chi-Squared Test. If \code{NULL}, then no test
-will be performed and no p-values reported.}
+\item{diff_test}{Test for a difference between two proportions
+(see \code{\link{s_test_proportion_diff}} for details). Default method is
+here \code{schouten}, i.e. Chi-Squared Test with Schouten Correction.
+If \code{NULL}, then no test will be performed and no p-values reported.}
 
 \item{odds_ratio}{(\code{logical}) Whether the odds ratio estimates and confidence intervals should be
 reported (default) or not.}

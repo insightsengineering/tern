@@ -8,7 +8,7 @@ s_test_proportion_diff(
   x,
   grp,
   strat = NULL,
-  test = c("chisq", "cmh", "fisher", "schouten")
+  test = c("schouten", "chisq", "cmh", "fisher")
 )
 }
 \arguments{
@@ -36,11 +36,11 @@ difference of two proportions.
 \details{
 The following options are supported for testing difference of proportions:
 \itemize{
+  \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
   \item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
   \item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
   Internally calls \code{\link[stats]{mantelhaen.test}}.}
   \item{Option \code{fisher} performs the Fisher's exact test.}
-  \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
 }
 }
 \examples{
