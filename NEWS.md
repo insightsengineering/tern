@@ -1,8 +1,8 @@
 # tern 0.6.7.9000
 
+* Improved handling of missing data in aggregation functions: `a_mean_sd`, `a_median`,  `a_n_true_and_freq`, `a_count`, `a_q1q3`, `a_iqr`, `a_range`.
 * New default p-value method in `s_test_proportion_diff`: Chi-Squared Test with Schouten Correction.
 * Add new function `t_contingency` for contingency tables.
-* Improved `mean_sd`.
 * The class `splitText` is renamed to `dynamicSplitText` in order to resolve the name conflict with the package `ggpubr`.
 * Add `rreplace_format` for tabulation post-processing.
 * Add new tern function `t_ancova` to create ANCOVA tables, as well as corresponding elementary table function 

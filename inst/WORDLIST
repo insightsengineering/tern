@@ -65,6 +65,7 @@ postprocessing
 pre
 preprocess
 qit
+quartiles
 rcode
 recurse
 reproducibility

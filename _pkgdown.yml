@@ -124,6 +124,13 @@ reference:
       - check_id
       - df_explicit_na
       - get_onco_rsp_label
+      - a_mean_sd
+      - a_median
+      - a_n_true_and_freq
+      - a_count
+      - a_q1q3
+      - a_iqr
+      - a_range
 
   - title: Deprecated Functions
     desc: These functions will eventually be removed
