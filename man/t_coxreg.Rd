@@ -15,64 +15,73 @@ t_coxreg(
 )
 }
 \arguments{
-\item{formula}{A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}.
+\item{formula}{A \code{formula} corresponding to the
+\link[survival:Surv]{survival model}:
 \itemize{
-\item the left-hand side must include \code{Surv(time, event)} with time and event describing occurrence
-and censoring (see  \code{\link[survival:Surv]{Surv()}}).
-\item the right-hand side includes predictors and \emph{specials} which can be used to specify
-a pairwise model or a range of candidate univariate models. See \code{details}.
+\item the left-hand side must include \code{Surv(time, event)} with time and event
+describing occurrence and censoring (see \link[survival:Surv]{Surv()}).
+\item the right-hand side includes predictors and \emph{specials} which can be used
+to specify a pairwise model or a range of candidate univariate models.
+See \code{details}.
 }}
 
-\item{data}{A \code{data.frame} which includes all the variables that are called in \code{formula}.}
+\item{data}{A \code{data.frame} which includes all the variables that are called
+in \code{formula}.}
 
-\item{simplify}{If \code{TRUE}, returns a \code{rtables} object instead of a list of \verb{rtables object} when the variable
-contained in \code{pairwise} has only two levels to compare.}
+\item{simplify}{If \code{TRUE}, returns a \code{rtables} object instead of a list of
+\verb{rtables object} when the variable contained in \code{pairwise} has only two
+levels to compare.}
 
 \item{conf_level}{The confidence level of the interval.}
 
-\item{pval_method}{The method used for the estimation of p.values, should be one of \code{wald} (default)
-or \code{likelihood}. The \code{log-rank} is accepted for models including
-a single variable, specified through \code{pairwise()}.}
+\item{pval_method}{The method used for the estimation of p.values, should be
+one of \code{wald} (default) or \code{likelihood}. The \code{log-rank} is accepted for
+models including a single variable, specified through \code{\link[=pairwise]{pairwise()}}.}
 
-\item{increments}{If a quantitative variable is included, it is possible to provide the expected level
-of estimation for the interaction. If provided, it should be list where
-each item is a vector giving expected levels and is named after the variable name as it appears
-in the \code{formula}.}
+\item{increments}{If a quantitative variable is included, it is possible to
+provide the expected level of estimation for the interaction. If provided,
+it should be list where each item is a vector giving expected levels and is
+named after the variable name as it appears in the \code{formula}.}
 
 \item{...}{Optional other arguments passed to the Cox regression:
 \itemize{
-\item \code{ties} a character string specifying the method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.
-\item see  \code{\link[survival:coxph]{coxph()}} for additional settings.
+\item \code{ties} a character string specifying the method for tie handling, one of
+\code{exact} (default), \code{efron}, \code{breslow}.
+\item see \link[survival:coxph]{coxph()} for additional settings.
 }}
 }
 \value{
-Depending on \code{formula}, returns an object of class \code{tbl} for every level of \code{pairwise()}
-if included in \code{COXT01}, a single \code{tbl} otherwise.
+Depending on \code{formula}, returns an \code{rtable} object for every
+level of \code{\link[=pairwise]{pairwise()}} if included in \code{COXT01}; a single \code{rtable} otherwise.
 }
 \description{
-Cox models are the most commonly used methods to estimate the magnitude of the effect in survival analysis.
-It assumes proportional hazards: the ratio of the hazards of between groups (e.g., two arms) is constant over time.
-This ratio is referred to as the "hazard ratio" (HR) and is one of the most commonly reported metrics to describe
-the effect size in survival analysis.
+Cox models are the most commonly used methods to estimate the magnitude of
+the effect in survival analysis. It assumes proportional hazards: the ratio
+of the hazards of between groups (e.g., two arms) is constant over time.
+This ratio is referred to as the "hazard ratio" (HR) and is one of the
+most commonly reported metrics to describe the effect size in survival
+analysis.
 }
 \details{
 Possible model specifications:
 \itemize{
-\item \code{Surv(time, event) ~ pairwise(Pred)}, used to get hazard ratio of each tested level of
-treatment \code{Pred} independently, given in reference to the control treatment
-(see \link[tern:pairwise]{pairwise}).
-\item \code{Surv(time, event) ~ pairwise(Pred) + univariate(Cov1, Cov2, ...)}, add candidate covariates
-separated by comas in special \code{univariate()} to test all bivariate combinations of \code{Pred} with
-each \code{Cov}. Replacing the symbol \code{+} by \code{*} will result in the additional estimation of the interaction
-terms. This is similar to \code{COXT01} standards.
-\item \code{Surv(time, event) ~ Pred + Cov1 + ... } estimates the simple effect of multiple Cox regression.
-This provides the \code{COXT02} standard output. Note that the variables in returned tabulation are matched
-by position in \code{formula}.
+\item \code{Surv(time, event) ~ pairwise(Pred)}, used to get hazard ratio of each
+tested level of treatment \code{Pred} independently, given in reference to
+the control treatment (see \code{\link[=pairwise]{pairwise()}}).
+\item \code{Surv(time, event) ~ pairwise(Pred) + univariate(Cov1, Cov2, ...)}, add
+candidate covariates separated by comas in special \code{\link[=univariate]{univariate()}} to
+test all bivariate combinations of \code{Pred} with each \code{Cov}. Replacing the
+symbol \code{+} by \code{*} will result in the additional estimation of the
+interaction terms. This is similar to \code{COXT01} standards.
+\item \code{Surv(time, event) ~ Pred + Cov1 + ... } estimates the simple effect of
+multiple Cox regression. This provides the \code{COXT02} standard output.
+Note that the variables in returned tabulation are matched by position
+in \code{formula}.
 }
 
 Known limits:
 \itemize{
-\item the \emph{special} \code{univariate()} requires \code{pairwise()} being also specified.
+\item the \emph{special} \code{\link[=univariate]{univariate()}} requires \code{\link[=pairwise]{pairwise()}} being also specified.
 \item the interaction terms in multiple regression are not estimated.
 \item the third-order interactions are not estimated.
 }
@@ -84,7 +93,7 @@ For further information about the Cox Proportional Hazards Model, check
 library(tern)
 library(random.cdisc.data)
 ADTTE   <- radtte(cached = TRUE)
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS")   # _f: filtered
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- within( # nolint
   data = subset(
     ADTTE_f,
@@ -104,13 +113,15 @@ ADTTE_f <- within( # nolint
 
 # For annotation on top of Kaplan-Meier grob.
 t_coxreg(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD), data = ADTTE_f,
-  conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD),
+  data = ADTTE_f, conf_level = 0.8, pval_method = "likelihood",
+  ties = "breslow"
 )
 
 ## COXT01 - Standard output, no interactions
 t_coxreg(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + univariate(SEX, RACE, AGE),
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) +
+  univariate(SEX, RACE, AGE),
   data = ADTTE_f
 )
 
@@ -129,8 +140,8 @@ car::Anova(mod13, test.statistic = "Wald", type = 'III')
 summary(mod13)$coefficients
 }
 
-## COXT01 - options: control ties, set confidence interval level, choose a strata,
-## modify pval_method
+## COXT01 - options: control ties, set confidence interval level,
+##   choose a strata, modify pval_method
 t_coxreg(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + strata(SEX) +
     univariate(RACE, AGE),
@@ -193,7 +204,5 @@ t_coxreg(
 }
 }
 \seealso{
-\code{\link{t_coxph_pairwise}},
-\code{\link{t_cox_univariate}},
-\code{\link{t_cox_multivariate}}
+\code{\link[=t_coxph_pairwise]{t_coxph_pairwise()}}, \code{\link[=t_cox_univariate]{t_cox_univariate()}}, \code{\link[=t_cox_multivariate]{t_cox_multivariate()}}.
 }

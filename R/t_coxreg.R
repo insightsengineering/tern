@@ -1,61 +1,68 @@
 #' Cox proportional hazards regression for standard outputs
 #'
-#' Cox models are the most commonly used methods to estimate the magnitude of the effect in survival analysis.
-#' It assumes proportional hazards: the ratio of the hazards of between groups (e.g., two arms) is constant over time.
-#' This ratio is referred to as the "hazard ratio" (HR) and is one of the most commonly reported metrics to describe
-#' the effect size in survival analysis.
+#' Cox models are the most commonly used methods to estimate the magnitude of
+#' the effect in survival analysis. It assumes proportional hazards: the ratio
+#' of the hazards of between groups (e.g., two arms) is constant over time.
+#' This ratio is referred to as the "hazard ratio" (HR) and is one of the
+#' most commonly reported metrics to describe the effect size in survival
+#' analysis.
 #'
-#' @param formula A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}.
-#' + the left-hand side must include `Surv(time, event)` with time and event describing occurrence
-#'  and censoring (see  \code{\link[survival:Surv]{Surv()}}).
-#' + the right-hand side includes predictors and *specials* which can be used to specify
-#'   a pairwise model or a range of candidate univariate models. See `details`.
-#' @param data A \code{data.frame} which includes all the variables that are called in \code{formula}.
-#' @param simplify If `TRUE`, returns a `rtables` object instead of a list of `rtables object` when the variable
-#'   contained in `pairwise` has only two levels to compare.
+#' @param formula A `formula` corresponding to the
+#' [survival model][survival::Surv()]:
+#' + the left-hand side must include `Surv(time, event)` with time and event
+#'   describing occurrence and censoring (see [Surv()][survival::Surv()]).
+#' + the right-hand side includes predictors and *specials* which can be used
+#'   to specify a pairwise model or a range of candidate univariate models.
+#'   See `details`.
+#' @param data A `data.frame` which includes all the variables that are called
+#'   in `formula`.
+#' @param simplify If `TRUE`, returns a `rtables` object instead of a list of
+#'   `rtables object` when the variable contained in `pairwise` has only two
+#'   levels to compare.
 #' @param conf_level The confidence level of the interval.
-#' @param pval_method The method used for the estimation of p.values, should be one of `wald` (default)
-#'    or `likelihood`. The `log-rank` is accepted for models including
-#'    a single variable, specified through `pairwise()`.
-#' @param increments If a quantitative variable is included, it is possible to provide the expected level
-#'   of estimation for the interaction. If provided, it should be list where
-#'   each item is a vector giving expected levels and is named after the variable name as it appears
-#'   in the `formula`.
+#' @param pval_method The method used for the estimation of p.values, should be
+#'   one of `wald` (default) or `likelihood`. The `log-rank` is accepted for
+#'   models including a single variable, specified through [pairwise()].
+#' @param increments If a quantitative variable is included, it is possible to
+#'   provide the expected level of estimation for the interaction. If provided,
+#'   it should be list where each item is a vector giving expected levels and is
+#'   named after the variable name as it appears in the `formula`.
 #' @param ... Optional other arguments passed to the Cox regression:
-#' + `ties` a character string specifying the method for tie handling, one of `exact` (default), `efron`, `breslow`.
-#' + see  \code{\link[survival:coxph]{coxph()}} for additional settings.
+#' + `ties` a character string specifying the method for tie handling, one of
+#'   `exact` (default), `efron`, `breslow`.
+#' + see [coxph()][survival::coxph()] for additional settings.
 #'
 #' @details
 #'   Possible model specifications:
 #'
-#'   * `Surv(time, event) ~ pairwise(Pred)`, used to get hazard ratio of each tested level of
-#'   treatment `Pred` independently, given in reference to the control treatment
-#'   (see \link[tern:pairwise]{pairwise}).
-#'   * `Surv(time, event) ~ pairwise(Pred) + univariate(Cov1, Cov2, ...)`, add candidate covariates
-#'   separated by comas in special `univariate()` to test all bivariate combinations of `Pred` with
-#'   each `Cov`. Replacing the symbol `+` by `*` will result in the additional estimation of the interaction
-#'   terms. This is similar to `COXT01` standards.
-#'   * `Surv(time, event) ~ Pred + Cov1 + ... ` estimates the simple effect of multiple Cox regression.
-#'   This provides the `COXT02` standard output. Note that the variables in returned tabulation are matched
-#'   by position in `formula`.
+#'   * `Surv(time, event) ~ pairwise(Pred)`, used to get hazard ratio of each
+#'     tested level of treatment `Pred` independently, given in reference to
+#'     the control treatment (see [pairwise()]).
+#'   * `Surv(time, event) ~ pairwise(Pred) + univariate(Cov1, Cov2, ...)`, add
+#'     candidate covariates separated by comas in special [univariate()] to
+#'     test all bivariate combinations of `Pred` with each `Cov`. Replacing the
+#'     symbol `+` by `*` will result in the additional estimation of the
+#'     interaction terms. This is similar to `COXT01` standards.
+#'   * `Surv(time, event) ~ Pred + Cov1 + ... ` estimates the simple effect of
+#'     multiple Cox regression. This provides the `COXT02` standard output.
+#'     Note that the variables in returned tabulation are matched by position
+#'     in `formula`.
 #'
 #'   Known limits:
 #'
-#'   + the *special* `univariate()` requires `pairwise()` being also specified.
+#'   + the *special* [univariate()] requires [pairwise()] being also specified.
 #'   + the interaction terms in multiple regression are not estimated.
 #'   + the third-order interactions are not estimated.
 #'
 #'   For further information about the Cox Proportional Hazards Model, check
 #'   "Statistical Analysis of Clinical Trials Data with R", NEST team.
 #'
-#' @return Depending on `formula`, returns an object of class `tbl` for every level of `pairwise()`
-#'   if included in `COXT01`, a single `tbl` otherwise.
+#' @return Depending on `formula`, returns an `rtable` object for every
+#'   level of [pairwise()] if included in `COXT01`; a single `rtable` otherwise.
 #'
 #' @export
 #'
-#' @seealso \code{\link{t_coxph_pairwise}},
-#'   \code{\link{t_cox_univariate}},
-#'   \code{\link{t_cox_multivariate}}
+#' @seealso [t_coxph_pairwise()], [t_cox_univariate()], [t_cox_multivariate()].
 #'
 #' @md
 #'
@@ -63,7 +70,7 @@
 #' library(tern)
 #' library(random.cdisc.data)
 #' ADTTE   <- radtte(cached = TRUE)
-#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")   # _f: filtered
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 #' ADTTE_f <- within( # nolint
 #'   data = subset(
 #'     ADTTE_f,
@@ -83,13 +90,15 @@
 #'
 #' # For annotation on top of Kaplan-Meier grob.
 #' t_coxreg(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD), data = ADTTE_f,
-#'   conf_level = 0.8, pval_method = "likelihood",  ties = "breslow"
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD),
+#'   data = ADTTE_f, conf_level = 0.8, pval_method = "likelihood",
+#'   ties = "breslow"
 #' )
 #'
 #' ## COXT01 - Standard output, no interactions
 #' t_coxreg(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + univariate(SEX, RACE, AGE),
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) +
+#'   univariate(SEX, RACE, AGE),
 #'   data = ADTTE_f
 #' )
 #'
@@ -108,8 +117,8 @@
 #' summary(mod13)$coefficients
 #' }
 #'
-#' ## COXT01 - options: control ties, set confidence interval level, choose a strata,
-#' ## modify pval_method
+#' ## COXT01 - options: control ties, set confidence interval level,
+#' ##   choose a strata, modify pval_method
 #' t_coxreg(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ pairwise(ARMCD) + strata(SEX) +
 #'     univariate(RACE, AGE),
@@ -178,8 +187,9 @@ t_coxreg <- function(formula, data,
   check_formula(formula)
   pval_method <- match.arg(pval_method)
 
-  if (!is.logical(simplify)) stop("Simplify should be either TRUE or FALSE")
-  tf        <- terms(formula, specials = c("strata", "pairwise", "univariate"))
+  if (!is.logical(simplify)) stop("Simplify should be either TRUE or FALSE.")
+
+  tf <- terms(formula, specials = c("strata", "pairwise", "univariate"))
   tf_factor <- attr(tf, "factors")
 
   form_order <- colSums(tf_factor)
@@ -725,7 +735,6 @@ s_cox_univariate <- function(formula,
     }
   )
 
-
   check_covariate_formulas(covariates)
   check_numeric_range(conf_level, min = 0, max = 1)
   pval_method <- match.arg(pval_method)
@@ -913,7 +922,8 @@ s_cox_univariate <- function(formula,
     covariates = names(covariates),
     tstr = tstr,
     pval_method = pval_method,
-    treatment = setNames(arms, c("ref", "tested"))
+    treatment = setNames(arms, c("ref", "tested")),
+    method = fit$ref_mod$mod$method
   )
 
   return(y)
@@ -1055,8 +1065,78 @@ estimate_coef <- function(variable, given,
 }
 
 
+#' `tryCatch` around `car::Anova`
+#'
+#' Captures warnings when executing [car::Anova].
+#'
+#' @inheritParams car::Anova
+#'
+#' @importFrom car Anova
+#'
+#' @md
+#' @return A list with item `aov` for the result of the model and
+#'   `error_text` for the captured warnings.
+#'
+#' @examples
+#' # `car::Anova` on cox regression model including strata and expected
+#' # a likelihood ratio test triggers a warning as only Wald method is
+#' # accepted.
+#'
+#' \dontrun{
+#' library(survival)
+#' mod <- coxph(
+#'   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
+#'   data = ovarian
+#' )
+#'
+#' with_wald <- tern:::try_car_anova(mod = mod, test.statistic = "Wald")
+#' with_lr <- tern:::try_car_anova(mod = mod, test.statistic = "LR")
+#' }
+try_car_anova <- function(mod,
+                          test.statistic) { # nolint
 
-# Fit the cox regression model and compute anova ---
+  y <- tryCatch(
+    withCallingHandlers(
+      expr = {
+        warn_text <- c()
+        list(
+          aov = car::Anova(
+            mod,
+            test.statistic = test.statistic,
+            type = "III"
+          ),
+          warn_text = warn_text
+        )
+      },
+      warning = function(w) {
+        # If a warning is detected it is handled as "w".
+        warn_text <<- trimws(paste0("Warning in `try_car_anova`: ", w))
+
+        # A warning is sometimes expected, then, we want to restart
+        # the execution while ignoring the warning.
+        invokeRestart("muffleWarning")
+      }
+    ),
+    finally = {
+    }
+  )
+
+  return(y)
+}
+
+#' Fit the Cox regression model and Anova
+#'
+#' The functions allows to derive from the [survival::coxph()] results
+#' the effect p.values using [car::Anova()]. This last package introduces
+#' more flexibility to get the effect p.values.
+#'
+#' @inheritParams t_coxreg
+#' @noRd
+#' @md
+#' @importFrom survival coxph
+#'
+#' @return A list with items `mod` (results of [survival::coxph()]),
+#'   `msum` (result of `summary`) and `aov` (result of [car::Anova]).
 fit_n_aov <- function(formula,
                       data = data,
                       conf_level  = conf_level,
@@ -1068,18 +1148,23 @@ fit_n_aov <- function(formula,
 
   environment(formula) <- environment()
   suppressWarnings({
-    mod  <- coxph(formula, data = data, ...)
+    # We expect some warnings due to coxph which fails strict programming.
+    mod  <- survival::coxph(formula, data = data, ...)
     msum <- summary(mod, conf.int = conf_level)
-    suppressMessages({
-      aov  <- car::Anova(
-        mod,
-        test.statistic = switch(pval_method, "wald" = "Wald", "likelihood" = "LR"),
-        type = "III"
-      )
-    })
   })
 
+  aov <- try_car_anova(
+    mod,
+    test.statistic = switch(pval_method, "wald" = "Wald", "likelihood" = "LR")
+  )
+
+  warn_attr <- aov$warn_text
+  if (!is.null(aov$warn_text)) message(warn_attr)
+
+  aov <- aov$aov
   y <- list(mod = mod, msum = msum, aov = aov)
+  attr(y, "message") <- warn_attr
+
   return(y)
 
 }
@@ -1290,7 +1375,8 @@ t_cox_univariate <- function(formula,
     "Treatment ", y$treatment["tested"], " vs control (", y$treatment["ref"], ")"
   )
 
-  # Result output differs widely depending on the inclusion or not of the interaction term.
+  # The result output differs widely depending on the inclusion of the
+  # interaction term.
   if (!interactions) {
 
     my_header <- rheader(
@@ -1309,9 +1395,10 @@ t_cox_univariate <- function(formula,
       rrow("Covariate:"),
       indent(rtablel(header = NULL, lapply(y$covariates, make_a_rrow, x = y))),
       rrow(),
-      rrow("# Model including treatment and covariate"),
-      rrow("    without interaction"),
-      rrow(paste0("* ", y$pval_method, " confidence interval/test"))
+      rrow("# Model including treatment, "),
+      rrow("  covariate, no interaction."),
+      rrow(paste0("* ", capitalize(y$pval_method), " CI/test")),
+      rrow(paste("Ties:", capitalize(y$method)))
     )
 
   } else if (interactions) {
@@ -1346,10 +1433,11 @@ t_cox_univariate <- function(formula,
       rrow(),
       covar_rows,
       rrow(),
-      rrow("# Model including treatment and covariate"),
-      rrow("    and interaction"),
-      rrow(paste0("* ", y$pval_method, " confidence interval/test")),
-      rrow("** Likelihood-ratio test")
+      rrow("# Model including treatment,"),
+      rrow("  covariate, interaction"),
+      rrow(paste0("* ", capitalize(y$pval_method), " CI/test")),
+      rrow("** Likelihood-ratio test"),
+      rrow(paste("Ties:", capitalize(y$method)))
     )
 
   }
@@ -1616,27 +1704,33 @@ t_cox_multivariate <- function(formula, data,
   )
 
   tbl_header <- rheader(
-    rrow("Effect/ ",            "Hazard", "", ""),
-    rrow("Covariate included",  "Ratio for", "", ""),
-    rrow("in the model",        "Treatment",  paste0(round(conf_level * 100, 0), "% CI*"), "p-value*")
-  );
+    rrow("Effect/ ", " ", "", ""),
+    rrow("Covariate included", "Hazard", "", ""),
+    rrow(
+      "in the model", "Ratio",
+      paste0(round(conf_level * 100, 0), "% CI*"),
+      "p-value*"
+    )
+  )
 
   make_a_headline <- function(label, is_term_factor) {
-
-    if (is_term_factor) {
-      y <- paste0(label, " (Reference = ", levels(data[[label]])[1], ")")
+    y <- if (is_term_factor) {
+      paste0(label, " (Reference = ", levels(data[[label]])[1], ")")
     } else {
-      y <- label
+      label
     }
     return(y)
-
   }
-  headline <- Map(f = make_a_headline, label = term_labs, is_term_factor = is_term_factors)
+
+  headline <- Map(
+    f = make_a_headline,
+    label = term_labs,
+    is_term_factor = is_term_factors
+  )
 
   get_ref_pval <- function(term_labs, aov = aov) aov[term_labs, ncol(aov)]
 
   get_coefs <- function(term_labs, mod = mod, msum = msum) {
-
     coef_rows <- mod$assign[[term_labs]]
     coefs <- matrix(
       cbind(msum$coefficients, msum$conf.int)[coef_rows, c(2, 8, 9, 5)],
@@ -1644,20 +1738,22 @@ t_cox_multivariate <- function(formula, data,
       dimnames = list(NULL, c("hr", "lcl", "ucl", "pval"))
     )
     return(coefs)
-
   }
 
   give_coef_names <- function(coefs, term_labs, is_term_factors) {
-
     if (is_term_factors) rownames(coefs) <- levels(data[[term_labs]])[-1]
     else rownames(coefs) <- term_labs
     return(coefs)
-
   }
 
   pval_cov <- vapply(term_labs, get_ref_pval, aov = aov, FUN.VALUE = 0.001)
   coefs <- lapply(term_labs, get_coefs, mod = mod, msum)
-  coefs <- Map(f = give_coef_names, coefs = coefs, term_labs = term_labs, is_term_factors = is_term_factors)
+  coefs <- Map(
+    f = give_coef_names,
+    coefs = coefs,
+    term_labs = term_labs,
+    is_term_factors = is_term_factors
+  )
   names(coefs) <- term_labs
 
   if (is.null(coef_inter)) {
@@ -1676,7 +1772,10 @@ t_cox_multivariate <- function(formula, data,
       if (nrow(coefs[[term_labs]]) > 1) {
         effect_row <- rtable(
           header = tbl_header,
-          rrow(headline[term_labs], NULL, NULL, rcell(pval_cov[term_labs], format = "xx.xxxx"))
+          rrow(
+            headline[term_labs], NULL, NULL,
+            rcell(pval_cov[term_labs], format = "xx.xxxx")
+          )
         )
       } else {
         effect_row <- rtable(
@@ -1699,6 +1798,9 @@ t_cox_multivariate <- function(formula, data,
       } else {
 
         row_content <- split(coefs[[term_labs]], rownames(coefs[[term_labs]]))
+        if (length(row_content) == 1){
+          row_content[[1]][4] <- pval_cov[term_labs]
+        }
         row_content <- rtablel(
           header = tbl_header,
           Map(f = make_effect_row, row = row_content, name = names(row_content))
@@ -1715,13 +1817,14 @@ t_cox_multivariate <- function(formula, data,
     tbl <- do.call(rbind, lapply(term_labs, make_a_cov_chunk))
     footer <-   switch(
       pval_method,
-      wald = "* Wald confidence interval/test",
-      likelihood = "* Wald confidence interval, likelihood ratio test"
+      wald = "* Wald CI/test",
+      likelihood = "* Wald CI, likelihood ratio test"
     )
 
     tbl <- rbind(
       tbl,
-      rrow(footer)
+      rrow(footer),
+      rrow(paste("Ties:", capitalize(mod$method)))
     )
 
     if (!is.null(strat)) {

@@ -15,6 +15,7 @@ analyse
 analysis
 ANCOVA
 anl
+Anova
 BCE
 boruvkaa
 breslow
@@ -49,6 +50,7 @@ inputId
 javascript
 Jeffreys
 Kaplan
+Kenward
 lexicographically
 liaoc
 linters
@@ -75,6 +77,7 @@ roche
 Roche
 rsp
 rtable
+Satterthwaite
 Schouten
 SDTM
 shiny's
@@ -83,6 +86,7 @@ songy
 SREPs
 stoilovs
 STUDYID
+Surv
 swimlane
 t_coxph
 teal
