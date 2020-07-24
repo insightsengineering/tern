@@ -11,6 +11,7 @@ ADSL
 ADTTE
 ADVS
 Agresti
+abn
 analyse
 analysis
 ANCOVA
@@ -89,6 +90,8 @@ STUDYID
 Surv
 swimlane
 t_coxph
+t_abn_shift
+t_el_abn_shift
 teal
 testthat
 TLG
