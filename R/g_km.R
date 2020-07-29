@@ -423,7 +423,7 @@ km_curve_data <- function(fit_km, xticks = NULL) {
       } else if (xi > max(x$time)) {
         NA
       } else {
-        i <- tail(which(x$time <= xi), 1)
+        i <- tail(which(x$time < xi), 1)
         x$n.risk[i] - x$n.censor[i] - x$n.event[i]
       }
     }, numeric(1))
