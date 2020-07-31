@@ -37,9 +37,11 @@ Imports:
   utils.nest (>= 0.2.4),
   forcats,
   nlme,
-  emmeans,
+  emmeans (>= 1.4.8),
   viridisLite,
-  car
+  car,
+  lme4 (>= 1.1-23),
+  lmerTest (>= 3.1-2)
 Suggests:
   lattice,
   knitr,
@@ -75,6 +77,7 @@ Collate:
     'on_attach.R'
     'package.R'
     's_ancova.R'
+    's_mmrm.R'
     'safe_join.R'
     'split.R'
     't_abn_shift.R'

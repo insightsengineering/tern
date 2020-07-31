@@ -454,5 +454,4 @@ a_mmrm <- function(data,
     ref_level = reference_level,
     conf_level = conf_level
   )
-
 }

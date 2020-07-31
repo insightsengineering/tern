@@ -77,6 +77,7 @@ reference:
       - s_test_proportion_diff
       - s_ancova
       - s_odds_ratio
+      - s_mmrm
 
   - title: Graphs
     desc: Graphs
@@ -186,3 +187,7 @@ reference:
       - t_summary.list
       - t_count_true.list
       - s_ancova_items
+      - check_mmrm_vars
+      - build_mmrm_formula
+      - fit_lme4
+      - get_mmrm_lsmeans
