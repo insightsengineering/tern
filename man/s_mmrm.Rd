@@ -9,9 +9,9 @@ s_mmrm(
     "AVISIT"),
   data,
   conf_level = 0.95,
-  cor_struct = c("unstructured", "random-quadratic", "random-slope",
-    "compound-symmetry"),
-  weights_emmeans = "proportional"
+  cor_struct = "unstructured",
+  weights_emmeans = "proportional",
+  optimizer = "automatic"
 )
 }
 \arguments{
@@ -37,11 +37,16 @@ than 1. (Default: 0.95)}
 \code{"unstructured"}. See the details.}
 
 \item{weights_emmeans}{argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.}
+
+\item{optimizer}{a string specifying the optimization algorithm which should be used. By default, "automatic"
+will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
+is chosen and does not give a valid result, an error will occur.}
 }
 \value{
 A list with MMRM results:
 \describe{
-  \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data.}
+  \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
+    contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
   \item{lsmeans}{This is a list with data frames \code{estimate} and \code{contrast}.}
   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
   \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
@@ -52,16 +57,28 @@ Summary function for an MMRM analysis
 }
 \details{
 Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
-  match the results obtained in SAS (so far confirmed for unstructured covariance matrix).
+  match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
+
   For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
   in descending number of variance parameters:
   \describe{
   \item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
-     If there are \code{T} visits, then \code{T * (T-1) / 2} variance parameters are used.}
+     If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.}
   \item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
      6 variance parameters are used.}
   \item{random-slope}{Random slope for the random effects of the time variable. 3 variance parameters are used.}
   \item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
+  }
+
+  For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
+  \describe{
+  \item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
+  \item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
+  \item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
+  \item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
+  \item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
+  \item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
+  \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
   }
 }
 \examples{

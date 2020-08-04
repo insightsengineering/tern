@@ -4,12 +4,14 @@
 \alias{fit_lme4}
 \title{Helper function to fit the MMRM with lme4 and lmerTest}
 \usage{
-fit_lme4(formula, data)
+fit_lme4(formula, data, optimizer = "automatic")
 }
 \arguments{
 \item{formula}{the MMRM formula (it could also be another lme4 formula)}
 
 \item{data}{the data frame}
+
+\item{optimizer}{the optimizer to use}
 }
 \value{
 the \code{lmerModLmerTest} object

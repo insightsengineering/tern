@@ -189,5 +189,8 @@ reference:
       - s_ancova_items
       - check_mmrm_vars
       - build_mmrm_formula
+      - fit_lme4_single_optimizer
+      - summary_all_fits
+      - refit_lme4_all_optimizers
       - fit_lme4
       - get_mmrm_lsmeans

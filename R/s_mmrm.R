@@ -1,3 +1,4 @@
+# Functions for MMRM analysis.
 
 #' Helper function to check the MMRM variables
 #'
@@ -62,8 +63,17 @@ check_mmrm_vars <- function(vars,
 #' @param cor_struct correlation structure as per \code{\link{s_mmrm}}
 #'
 #' @return the complete MMRM formula to use with \code{lmer}
-build_mmrm_formula <- function(vars,
-                               cor_struct) {
+build_mmrm_formula <- function(
+  vars,
+  cor_struct = c(
+    "unstructured",
+    "random-quadratic",
+    "random-slope",
+    "compound-symmetry"
+  )
+) {
+  cor_struct <- match.arg(cor_struct)
+
   covariates_part <- paste(
     vars$covariates,
     collapse = " + "
@@ -107,55 +117,191 @@ build_mmrm_formula <- function(vars,
   return(full_formula)
 }
 
+#' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
+#'
+#' @param formula the lme4 formula
+#' @param data the data set
+#' @param optimizer the optimizer to use
+#'
+#' @return the fitted \code{lmerMerModTest} object, with additional attributes \code{messages} and \code{optimizer}.
+#'
+#' @note While we are not directly importing functions from \code{dfoptim} or \code{optimx} here, we rely on them
+#'   being available to \code{lme4} (which has these packages only in "Suggests"). Therefore we note the imports below.
+#'
+#' @importFrom lmerTest lmer
+#' @importFrom lme4 lmerControl
+#' @importFrom purrr quietly
+#' @importFrom dfoptim nmkb
+#' @importFrom optimx optimx
+fit_lme4_single_optimizer <- function(
+  formula,
+  data,
+  optimizer = c(
+    "automatic",
+    "nloptwrap_neldermead",
+    "nloptwrap_bobyqa",
+    "nlminbwrap",
+    "bobyqa",
+    "neldermead",
+    "nmkbw",
+    "optimx_lbfgsb"
+  )
+) {
+  optimizer <- match.arg(optimizer)
+
+  if (optimizer == "automatic") {
+    optimizer <- "nloptwrap_bobyqa"
+  }
+  control <- lme4::lmerControl(
+    # We need this to be able to fit unstructured covariance matrix models.
+    check.nobs.vs.nRE = "ignore",
+    optimizer = switch(
+      optimizer,
+      "nloptwrap_neldermead" = "nloptwrap",
+      "nloptwrap_bobyqa" = "nloptwrap",
+      "nlminbwrap" = "nlminbwrap",
+      "bobyqa" = "bobyqa",
+      "neldermead" = "Nelder_Mead",
+      "nmkbw" = "nmkbw",
+      "optimx_lbfgsb" = "optimx"
+    ),
+    optCtrl = switch(
+      optimizer,
+      "nloptwrap_neldermead" = list(algorithm = "NLOPT_LN_NELDERMEAD"),
+      "nloptwrap_bobyqa" = list(algorithm = "NLOPT_LN_BOBYQA"),
+      "optimx_lbfgsb" = list(method = "L-BFGS-B"),
+      list()
+    )
+  )
+  quiet_lmer <- purrr::quietly(lmerTest::lmer)
+  quiet_fit <- quiet_lmer(
+    formula = formula,
+    REML = TRUE,
+    data = data,
+    control = control
+  )
+  result <- structure(
+    quiet_fit$result,
+    messages = c(quiet_fit$warnings, quiet_fit$messages),
+    optimizer = optimizer
+  )
+  return(result)
+}
+
+#' Helper function to extract summaries from a list of lme4 fit objects.
+#'
+#' This is inspired by the internal unexported method \code{summary.allFit} from \code{lme4}.
+#'
+#' @param all_fits the list with fits from \code{\link{fit_lme4_single_optimizer}}.
+#'
+#' @return a list with elements \code{messages} (list of all messages), \code{fixef} (list of all fixed effects),
+#'   \code{llik} (vector of all log-likelihood values), \code{feval} (vector of number of function evaluations).
+#'
+#' @importFrom lme4 fixef
+#' @importFrom stats logLik
+summary_all_fits <- function(all_fits) {
+  messages <- lapply(all_fits, function(x) attr(x, "messages"))
+  fixef <- lapply(all_fits, lme4::fixef)
+  llik <- vapply(all_fits, stats::logLik, numeric(1))
+  feval <- vapply(all_fits, function(x) x@optinfo$feval, numeric(1))
+  res <- list(
+    messages = messages,
+    fixef = fixef,
+    llik = llik,
+    feval = feval
+  )
+  return(res)
+}
+
+#' Refit an lme4 model with all possible optimizers and return the best result.
+#'
+#' @param original_fit The original model fit coming from \code{\link{fit_lme4_single_optimizer}}.
+#'
+#' @return The "best" model fit, defined as a converging fit without any warnings or messages, leading
+#'   to the highest log-likelihood. If no optimizer succeeds, then an error is thrown.
+#'
+#' @importFrom lme4 allFit
+refit_lme4_all_optimizers <- function(original_fit) {
+  # Extract the components of the original fit.
+  formula <- formula(original_fit)
+  data <- original_fit@frame
+  optimizer <- attr(original_fit, "optimizer")
+
+  # Which optimizers we want to try here.
+  all_optimizers <- setdiff(
+    c(
+      "nloptwrap_neldermead",
+      "nloptwrap_bobyqa",
+      "nlminbwrap",
+      "bobyqa",
+      "neldermead",
+      "nmkbw",
+      "optimx_lbfgsb"
+    ),
+    optimizer
+  )
+
+  all_fits <- lapply(
+    all_optimizers,
+    function(opt) {
+      fit_lme4_single_optimizer(
+        formula = formula,
+        data = data,
+        optimizer = opt
+      )
+    }
+  )
+  names(all_fits) <- all_optimizers
+  all_fits_summary <- summary_all_fits(all_fits)
+
+  # Find the results that are ok:
+  is_ok <- sapply(all_fits_summary$messages, identical, y = character(0))
+  if (!any(is_ok)) {
+    stop("no optimizer led to a successful model fit")
+  }
+
+  # Return the best result in terms of log-likelihood.
+  log_liks <- all_fits_summary$llik
+  best_optimizer <- names(which.max(log_liks[is_ok]))
+  best_fit <- all_fits[[best_optimizer]]
+  return(best_fit)
+}
+
 #' Helper function to fit the MMRM with lme4 and lmerTest
 #'
 #' @param formula the MMRM formula (it could also be another lme4 formula)
 #' @param data the data frame
+#' @param optimizer the optimizer to use
 #'
 #' @return the \code{lmerModLmerTest} object
-#'
-#' @importFrom lmerTest lmer
-#' @importFrom lme4 lmerControl
-fit_lme4 <- function(formula,
-                     data) {
-  warning_message <- NULL
-  withCallingHandlers(
-    fit <- lmerTest::lmer(
-      formula = formula,
-      REML = TRUE,
-      data = data,
-      control = lme4::lmerControl(
-        optimizer = "nlminbwrap",
-        check.nobs.vs.nRE = "ignore"
-      )
-    ),
-    # If a warning occurs, save this outside and process below.
-    warning = function(w) {
-      warning_message <<- w
-      invokeRestart("muffleWarning")
-    }
+fit_lme4 <- function(
+  formula,
+  data,
+  optimizer = "automatic"
+) {
+  # First fit.
+  fit <- fit_lme4_single_optimizer(
+    formula = formula,
+    data = data,
+    optimizer = optimizer
   )
 
-  # Check that the model converged without warnings.
-  conv_info <- fit@optinfo$conv$lme4
-  has_some_conv_info <- length(conv_info) > 0 && !identical(conv_info$code, 0L)
-  has_warning <- !is.null(warning_message)
-
-  # If there was some problems, check additional gradient criterion.
-  if (has_warning || has_some_conv_info) {
-    hessian <- fit@optinfo$derivs$Hessian
-    gradient <- fit@optinfo$derivs$gradient
-    rel_grad <- solve(hessian, gradient)
-    if (max(abs(rel_grad)) > 1e-4) {
-      error_message <- paste(
-        c(warning_message, conv_info$messages),
-        collapse = "; "
-      )
-      stop(error_message)
-    }
+  # Check that the model converged without messages.
+  messages <- attr(fit, "messages")
+  if (identical(messages, character(0))) {
+    # If so, return this one.
+    return(fit)
+  } else if (optimizer != "automatic") {
+    # We fail if this optimizer was specified deliberately.
+    stop(paste0(
+      "Chosen optimizer '", optimizer, "' led to problems during model fit:\n",
+      paste(messages, collapse = "; "), "\n",
+      "Consider using the 'automatic' optimizer."
+    ))
+  } else {
+    # Refit with all possible optimizers and get the best one.
+    refit_lme4_all_optimizers(fit)
   }
-
-  return(fit)
 }
 
 #' Helper function to extract the LS means from an MMRM fit.
@@ -266,24 +412,39 @@ get_mmrm_lsmeans <- function(fit,
 #' @param cor_struct a string specifying the correlation structure, defaults to
 #'   \code{"unstructured"}. See the details.
 #' @param weights_emmeans argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.
+#' @param optimizer a string specifying the optimization algorithm which should be used. By default, "automatic"
+#'   will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
+#'   is chosen and does not give a valid result, an error will occur.
 #'
-#' @details
-#'   Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
-#'   match the results obtained in SAS (so far confirmed for unstructured covariance matrix).
+#' @details Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
+#'   match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
+#'
 #'   For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
 #'   in descending number of variance parameters:
 #'   \describe{
 #'   \item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
-#'      If there are \code{T} visits, then \code{T * (T-1) / 2} variance parameters are used.}
+#'      If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.}
 #'   \item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
 #'      6 variance parameters are used.}
 #'   \item{random-slope}{Random slope for the random effects of the time variable. 3 variance parameters are used.}
 #'   \item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
 #'   }
 #'
+#'   For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
+#'   \describe{
+#'   \item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
+#'   \item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
+#'   \item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
+#'   \item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
+#'   \item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
+#'   \item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
+#'   \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
+#'   }
+#'
 #' @return A list with MMRM results:
 #' \describe{
-#'   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data.}
+#'   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
+#'     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
 #'   \item{lsmeans}{This is a list with data frames \code{estimate} and \code{contrast}.}
 #'   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
 #'   \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
@@ -330,21 +491,19 @@ s_mmrm <- function(
   ),
   data,
   conf_level = 0.95,
-  cor_struct = c(
-    "unstructured",
-    "random-quadratic",
-    "random-slope",
-    "compound-symmetry"
-  ),
-  weights_emmeans = "proportional"
+  cor_struct = "unstructured",
+  weights_emmeans = "proportional",
+  optimizer = "automatic"
 ) {
-
   check_mmrm_vars(vars, data)
   check_conf_level(conf_level)
-  cor_struct <- match.arg(cor_struct)
 
   formula <- build_mmrm_formula(vars, cor_struct)
-  fit <- fit_lme4(formula, data)
+  fit <- fit_lme4(
+    formula = formula,
+    data = data,
+    optimizer = optimizer
+  )
   lsmeans <- get_mmrm_lsmeans(
     fit = fit,
     vars = vars,

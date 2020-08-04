@@ -124,6 +124,113 @@ test_that("build_mmrm_formula builds the correct formula", {
   expect_equal(result2, expected2)
 })
 
+test_that("fit_lme4_single_optimizer works as expected when there are no warnings or messages", {
+  # Default optimizer used.
+  result1 <- fit_lme4_single_optimizer(
+    formula = Reaction ~ Days + (Days | Subject),
+    data = lme4::sleepstudy
+  )
+  expect_s4_class(result1, "lmerModLmerTest")
+  expect_identical(attr(result1, "optimizer"), "nloptwrap_bobyqa")
+  expect_identical(attr(result1, "messages"), character(0))
+
+  # Non-default optimizer used.
+  result2 <- fit_lme4_single_optimizer(
+    formula = Reaction ~ Days + (Days | Subject),
+    data = lme4::sleepstudy,
+    optimizer = "nmkbw"
+  )
+  expect_s4_class(result2, "lmerModLmerTest")
+  expect_identical(attr(result2, "optimizer"), "nmkbw")
+  expect_identical(attr(result2, "messages"), character(0))
+
+  # Results should be equal (without attributes which capture optimizer details).
+  expect_equal(result1, result2, check.attributes = FALSE)
+})
+
+test_that("fit_lme4_single_optimizer correctly captures warnings and messages", {
+  data <- lme4::sleepstudy
+  data$days_copy <- data$Days
+
+  expect_silent(
+    result <- fit_lme4_single_optimizer(
+      formula = Reaction ~ Days + (Days + days_copy | Subject),
+      data = data
+    )
+  )
+  expect_s4_class(result, "lmerModLmerTest")
+  expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
+  expect_gt(length(attr(result, "messages")), 0)
+})
+
+test_that("fit_lme4_single_optimizer fails when there is an error", {
+  expect_error(
+    fit_lme4_single_optimizer(
+      formula = Reaction ~ Days + (Days | Subject),
+      data = does_not_exist
+    ),
+    "bad 'data'"
+  )
+})
+
+test_that("summary_all_fits works as expected", {
+  single_fit <- fit_lme4_single_optimizer(
+    formula = Reaction ~ Days + (Days | Subject),
+    data = lme4::sleepstudy
+  )
+  all_fits <- list(a = single_fit, b = single_fit, c = single_fit)
+  result <- summary_all_fits(all_fits)
+  expect_is(result, "list")
+  expect_named(result, c("messages", "fixef", "llik", "feval"))
+  lapply(
+    result,
+    expect_named,
+    expected = c("a", "b", "c")  # Note that is also implicitly tests the length of the result elements.
+  )
+})
+
+test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
+  original_fit <- fit_lme4_single_optimizer(
+    formula = Reaction ~ Days + (factor(Days) | Subject),
+    data = lme4::sleepstudy,
+    optimizer = "nloptwrap_bobyqa"
+  )
+  expect_gt(length(attr(original_fit, "messages")), 0)
+  expect_error(
+    refit_lme4_all_optimizers(original_fit),
+    "no optimizer led to a successful model fit"
+  )
+})
+
+test_that("refit_lme4_all_optimizers can find a working optimizer if there is one", {
+  data <- lme4::sleepstudy %>%
+    dplyr::mutate(
+      days_grouped = cut(
+        Days,
+        breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
+        include.lowest = TRUE
+      )
+    )
+  # This optimizer fails.
+  failed_fit <- fit_lme4_single_optimizer(
+    formula = Reaction ~ days_grouped + (days_grouped | Subject),
+    data = data,
+    optimizer = "nloptwrap_bobyqa"
+  )
+  expect_gt(length(attr(failed_fit, "messages")), 0)
+  # But this one works.
+  successful_fit <- fit_lme4_single_optimizer(
+    formula = Reaction ~ days_grouped + (days_grouped | Subject),
+    data = data,
+    optimizer = "nloptwrap_neldermead"
+  )
+  expect_length(attr(successful_fit, "messages"), 0L)
+  # So we expect that we can find the working one (or at least one working one).
+  final_fit <- refit_lme4_all_optimizers(failed_fit)
+  expect_length(attr(final_fit, "messages"), 0L)
+  expect_equal(successful_fit, final_fit, check.attributes = FALSE)
+})
+
 test_that("fit_lme4 works with healthy inputs", {
   result <- fit_lme4(
     formula = Reaction ~ Days + (Days | Subject),
@@ -132,7 +239,7 @@ test_that("fit_lme4 works with healthy inputs", {
   expect_s4_class(result, "lmerModLmerTest")
 })
 
-test_that("fit_lme4 fails when there are convergence issues", {
+test_that("fit_lme4 fails when there are convergence issues with all optimizers", {
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
 
@@ -141,8 +248,22 @@ test_that("fit_lme4 fails when there are convergence issues", {
       formula = Reaction ~ Days + (Days + days_copy | Subject),
       data = data
     ),
-    msg = "Model failed to converge",
+    msg = "no optimizer led to a successful model fit",
     fixed = TRUE
+  )
+})
+
+test_that("fit_lme4 fails when there are convergence issues with a specific optimizer", {
+  data <- lme4::sleepstudy
+  data$days_copy <- data$Days
+
+  expect_error(
+    fit_lme4(
+      formula = Reaction ~ Days + (Days + days_copy | Subject),
+      data = data,
+      optimizer = "bobyqa"
+    ),
+    msg = "Chosen optimizer 'bobyqa' led to problems during model fit"
   )
 })
 
@@ -159,7 +280,8 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   )
   fit <- fit_lme4(
     formula = AVAL ~ ARM * AVISIT + (0 + AVISIT | USUBJID),
-    data = data
+    data = data,
+    optimizer = "bobyqa"
   )
   expect_silent(result <- get_mmrm_lsmeans(
     fit = fit,
@@ -203,12 +325,18 @@ expect_equal_result_tables <- function(result,
   )
 }
 
-test_that("s_mmrm works with unstructured covariance matrix and produces same results as SAS", {
-
-  adsl <- radsl(cached = TRUE)
-  adqs <- radqs(cached = TRUE)
-  adqs_f <- adqs %>%
-    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+# Produces different version of a ADQS subset.
+get_adqs <- function(version = c("A", "B")) {
+  version <- match.arg(version)
+  adqs <- random.cdisc.data::radqs(cached = TRUE)
+  set.seed(123, kind = "Mersenne-Twister")  # Because of `sample` below.
+  adqs_f <- adqs %>% {
+    if (version == "A") {
+      dplyr::filter(., .data$PARAMCD == "FKSI-FWB" & !.data$AVISIT %in% c("BASELINE"))
+    } else {
+      dplyr::filter(., .data$PARAMCD == "FATIGI" & !.data$AVISIT %in% c("BASELINE", "SCREENING"))
+    }
+  } %>%
     droplevels() %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
     dplyr::mutate(
@@ -216,8 +344,34 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
         as.factor() %>%
         as.numeric() %>%
         as.factor()
-    )
+    ) %>% {
+      if (version == "B") {
+        dplyr::mutate(
+          .,
+          # Introduce extra missing response variable values.
+          AVAL = ifelse(
+            sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
+            NA,
+            AVAL
+          ),
+          # And also covariate values.
+          BMRKR1 = ifelse(
+            sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
+            NA,
+            BMRKR1
+          )
+        )
+      } else {
+        # No further changes in version A.
+        .
+      }
+    }
 
+  return(adqs_f)
+}
+
+test_that("s_mmrm works with unstructured covariance matrix and produces same results as SAS", {
+  adqs_f <- get_adqs(version = "A")
   mmrm_results <- s_mmrm(
     vars = list(
       response = "AVAL",
@@ -347,6 +501,289 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
     pval = c(
       0.5583, 0.663, 0.4572, 0.7339, 0.8901, 0.5605, 0.0487, 0.0712,
       0.3399, 0.3214, 0.3517, 0.8977
+    )
+  )
+  expect_equal_result_tables(
+    lsmeans_contrasts,
+    expected_lsmeans_contrasts,
+    pval_name = "p.value"
+  )
+})
+
+test_that("s_mmrm works also with missing data", {
+  adqs_f <- get_adqs(version = "B")
+  stopifnot(identical(
+    nrow(na.omit(adqs_f)),
+    469L
+  ))
+
+  mmrm_results <- s_mmrm(
+    vars = list(
+      response = "AVAL",
+      covariates = "BMRKR1",
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = adqs_f,
+    cor_struct = "unstructured",
+    weights_emmeans = "equal"
+  )
+
+  # Compare vs. SAS results calculated with the following statements:
+  #
+  # PROC MIXED DATA = ana.dat cl method=reml;
+  # CLASS USUBJID ARMCD(ref='ARM B') AVISIT(ref='WEEK 1 DAY 8');
+  # MODEL AVAL = BMRKR1 ARMCD AVISIT ARMCD*AVISIT / ddfm=satterthwaite solution chisq;
+  # REPEATED AVISIT / subject=USUBJID type=un r rcorr;
+  # LSMEANS AVISIT*ARMCD / pdiff=all cl alpha=0.05 slice=AVISIT;
+  # RUN;
+  #
+  # See https://github.roche.com/sabanesd/allinR/blob/master/mmrm/comparison/test_mmrm_2.R
+  # for reproducing the numbers below.
+
+  # REML criterion value.
+  expect_equal(
+    lme4::REMLcrit(mmrm_results$fit),
+    12003.9,
+    tol = 0.1
+  )
+
+  # Fixed effects estimates.
+  summary_table <- summary(mmrm_results$fit, ddf = "Satterthwaite")
+  fixed_effects <- as.data.frame(summary_table$coefficients[, c("Estimate", "df", "Pr(>|t|)")])
+
+  expected_fixed_effects <- data.frame(
+    Estimate = c(
+      54.3624, 0.07187, 0.8587, -0.2784, 3.6532, 8.619, 16.5113,
+      19.3103, 1.9357, 1.8384, -0.3365, 1.5316, -2.6048, -1.0245, -1.1721,
+      2.5177
+    ),
+    df = c(
+      411, 390, 311, 311, 365, 371, 366, 333, 363, 374, 358, 378,
+      357, 370, 333, 350
+    ),
+    "Pr(>|t|)" = c(
+      0, 0.299, 0.4337, 0.8064, 0.0016, 0, 0, 0, 0.2341, 0.263, 0.8465,
+      0.3978, 0.1459, 0.5731, 0.5639, 0.2378
+    ),
+    row.names = c(
+      "(Intercept)", "BMRKR1", "ARMCDARM A", "ARMCDARM C", "AVISITWEEK 2 DAY 15",
+      "AVISITWEEK 3 DAY 22", "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36",
+      "ARMCDARM A:AVISITWEEK 2 DAY 15", "ARMCDARM C:AVISITWEEK 2 DAY 15",
+      "ARMCDARM A:AVISITWEEK 3 DAY 22", "ARMCDARM C:AVISITWEEK 3 DAY 22",
+      "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
+      "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
+    ),
+    check.names = FALSE  # Necessary to get right p-value column name.
+  )
+
+  expect_equal_result_tables(
+    fixed_effects,
+    expected_fixed_effects
+  )
+
+  # Now compare LS means and their contrasts.
+  lsmeans_estimates <- mmrm_results$lsmeans$estimate[, c("ARMCD", "AVISIT", "emmean", "lower.CL", "upper.CL")]
+  expected_lsmeans_estimates <- data.frame(
+    ARMCD = factor(
+      c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
+      labels = c("ARM B", "ARM A", "ARM C"),
+    ),
+    AVISIT = factor(
+      c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L),
+      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
+    ),
+    emmean = c(
+      54.7786, 55.6373, 54.5002, 58.4318, 61.2261, 59.9917, 63.3977,
+      63.9199, 64.6508, 71.2899, 69.5438, 69.987, 74.089, 73.7756,
+      76.3282
+    ),
+    lower.CL = c(
+      53.2579, 54.11, 52.8644, 56.7255, 59.5276, 58.338, 61.5672,
+      62.2407, 62.7936, 69.3391, 67.6101, 68.0361, 71.6637, 71.4754,
+      73.7687
+    ),
+    upper.CL = c(
+      56.2994, 57.1647, 56.136, 60.1381, 62.9247, 61.6455, 65.2281,
+      65.599, 66.5081, 73.2408, 71.4775, 71.9378, 76.5142, 76.0758,
+      78.8876
+    )
+  )
+  expect_equal(
+    lsmeans_estimates,
+    expected_lsmeans_estimates,
+    tol = 0.00001
+  )
+
+  lsmeans_contrasts <-
+    mmrm_results$lsmeans$contrast[, c("ARMCD", "AVISIT", "estimate", "df", "lower.CL", "upper.CL", "p.value")]
+  expected_lsmeans_contrasts <- data.frame(
+    ARMCD = factor(
+      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+      labels = c("ARM A", "ARM C"),
+    ),
+    AVISIT = factor(
+      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L),
+      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+    ),
+    estimate = c(
+      0.8587, -0.2784, 2.7943, 1.5599, 0.5222, 1.2532, -1.7461, -1.303,
+      -0.3134, 2.2392
+    ),
+    df = c(311, 311, 327, 327, 330, 330, 327, 326, 319, 320),
+    lower.CL = c(
+      -1.2969, -2.5123, 0.3867, -0.8163, -1.9619, -1.3544, -4.4937,
+      -4.0616, -3.656, -1.2869
+    ),
+    upper.CL = c(
+      3.0143, 1.9554, 5.202, 3.9361, 3.0063, 3.8607, 1.0014, 1.4556,
+      3.0292, 5.7654
+    ),
+    pval = c(
+      0.4337, 0.8064, 0.0231, 0.1975, 0.6795, 0.3451, 0.2121, 0.3535,
+      0.8538, 0.2124
+    )
+  )
+  expect_equal_result_tables(
+    lsmeans_contrasts,
+    expected_lsmeans_contrasts,
+    pval_name = "p.value"
+  )
+})
+
+test_that("s_mmrm works with compound symmetry covariance structure", {
+  adqs_f <- get_adqs(version = "B")
+  stopifnot(identical(
+    nrow(na.omit(adqs_f)),
+    469L
+  ))
+
+  mmrm_results <- s_mmrm(
+    vars = list(
+      response = "AVAL",
+      covariates = "BMRKR1",
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = adqs_f,
+    cor_struct = "compound-symmetry",
+    weights_emmeans = "equal"
+  )
+
+  # Compare vs. SAS results calculated with the following statements:
+  #
+  # PROC MIXED DATA = ana.dat cl method=reml;
+  # CLASS USUBJID ARMCD(ref='ARM B') AVISIT(ref='WEEK 1 DAY 8');
+  # MODEL AVAL = BMRKR1 ARMCD AVISIT ARMCD*AVISIT / ddfm=satterthwaite solution chisq;
+  # REPEATED AVISIT / subject=USUBJID type=cs r rcorr;
+  # LSMEANS AVISIT*ARMCD / pdiff=all cl alpha=0.05 slice=AVISIT;
+  # RUN;
+  #
+  # See https://github.roche.com/sabanesd/allinR/blob/master/mmrm/comparison/test_mmrm_3.R
+  # for reproducing the numbers below.
+
+  # REML criterion value.
+  expect_equal(
+    lme4::REMLcrit(mmrm_results$fit),
+    12088.3,
+    tol = 0.1
+  )
+
+  # Fixed effects estimates.
+  summary_table <- summary(mmrm_results$fit, ddf = "Satterthwaite")
+  fixed_effects <- as.data.frame(summary_table$coefficients[, c("Estimate", "df", "Pr(>|t|)")])
+
+  expected_fixed_effects <- data.frame(
+    Estimate = c(
+      54.6769, 0.01057, 0.9314, -0.1213, 3.6915, 8.632, 16.4946,
+      19.3054, 1.837, 1.6848, -0.3634, 1.3077, -2.609, -1.1365, -1.1479,
+      2.331
+    ),
+    df = c(
+      1489, 394, 1610, 1610, 1351, 1352, 1355, 1341, 1348, 1363,
+      1333, 1362, 1341, 1360, 1340, 1369
+    ),
+    "Pr(>|t|)" = c(
+      0, 0.8855, 0.4943, 0.9316, 0.007, 0, 0, 0, 0.3418, 0.3889,
+      0.8486, 0.5103, 0.1746, 0.5622, 0.5478, 0.2432
+    ),
+    row.names = c(
+      "(Intercept)", "BMRKR1", "ARMCDARM A", "ARMCDARM C", "AVISITWEEK 2 DAY 15",
+      "AVISITWEEK 3 DAY 22", "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36",
+      "ARMCDARM A:AVISITWEEK 2 DAY 15", "ARMCDARM C:AVISITWEEK 2 DAY 15",
+      "ARMCDARM A:AVISITWEEK 3 DAY 22", "ARMCDARM C:AVISITWEEK 3 DAY 22",
+      "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
+      "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
+    ),
+    check.names = FALSE  # Necessary to get right p-value column name.
+  )
+
+  expect_equal_result_tables(
+    subset(fixed_effects),
+    subset(expected_fixed_effects)
+  )
+
+  # Now compare LS means and their contrasts.
+  lsmeans_estimates <- mmrm_results$lsmeans$estimate[, c("ARMCD", "AVISIT", "emmean", "lower.CL", "upper.CL")]
+  expected_lsmeans_estimates <- data.frame(
+    ARMCD = factor(
+      c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
+      labels = c("ARM B", "ARM A", "ARM C"),
+    ),
+    AVISIT = factor(
+      c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L),
+      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
+    ),
+    emmean = c(
+      54.7381, 55.6694, 54.6168, 58.4295, 61.1979, 59.9931, 63.3701,
+      63.938, 64.5566, 71.2327, 69.555, 69.9749, 74.0435, 73.827, 76.2532
+    ),
+    lower.CL = c(
+      52.8532, 53.776, 52.5886, 56.5186, 59.2956, 58.1415, 61.4409,
+      62.1698, 62.5992, 69.3389, 67.6778, 68.0813, 72.1323, 72.0149,
+      74.2355
+    ),
+    upper.CL = c(
+      56.623, 57.5629, 56.645, 60.3405, 63.1002, 61.8448, 65.2992,
+      65.7062, 66.5139, 73.1264, 71.4322, 71.8685, 75.9546, 75.639,
+      78.2709
+    )
+  )
+  expect_equal(
+    lsmeans_estimates,
+    expected_lsmeans_estimates,
+    tol = 0.00001
+  )
+
+  lsmeans_contrasts <-
+    mmrm_results$lsmeans$contrast[, c("ARMCD", "AVISIT", "estimate", "df", "lower.CL", "upper.CL", "p.value")]
+  expected_lsmeans_contrasts <- data.frame(
+    ARMCD = factor(
+      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+      labels = c("ARM A", "ARM C"),
+    ),
+    AVISIT = factor(
+      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L),
+      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+    ),
+    estimate = c(
+      0.9314, -0.1213, 2.7684, 1.5636, 0.5679, 1.1865, -1.6776, -1.2577,
+      -0.2165, 2.2097
+    ),
+    df = c(1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610),
+    lower.CL = c(
+      -1.7406, -2.8904, 0.07199, -1.0973, -2.0492, -1.5616, -4.345,
+      -3.9353, -2.8502, -0.5697
+    ),
+    upper.CL = c(
+      3.6033, 2.6479, 5.4647, 4.2245, 3.185, 3.9346, 0.9897, 1.4199,
+      2.4172, 4.9892
+    ),
+    pval = c(
+      0.4943, 0.9316, 0.0442, 0.2493, 0.6704, 0.3972, 0.2175, 0.357,
+      0.8719, 0.1191
     )
   )
   expect_equal_result_tables(

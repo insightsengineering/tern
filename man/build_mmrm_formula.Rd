@@ -4,7 +4,11 @@
 \alias{build_mmrm_formula}
 \title{Helper function to build the MMRM formula}
 \usage{
-build_mmrm_formula(vars, cor_struct)
+build_mmrm_formula(
+  vars,
+  cor_struct = c("unstructured", "random-quadratic", "random-slope",
+    "compound-symmetry")
+)
 }
 \arguments{
 \item{vars}{variable list as per \code{\link{s_mmrm}}}

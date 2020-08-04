@@ -18,6 +18,7 @@ ANCOVA
 anl
 Anova
 BCE
+BOBYQA
 boruvkaa
 breslow
 Byar's
@@ -61,9 +62,13 @@ lme4
 lmerTest
 MMRM
 nd
+Nelder
 NEST
 Newcombe
+nlminb
+NLopt
 npaszty
+optimizers
 PARAMCD
 pharmasug
 PharmaSUG
