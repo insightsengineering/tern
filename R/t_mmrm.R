@@ -1,3 +1,199 @@
+# Tabulation functions for MMRM models.
+
+#' Tabulate the LS means of an MMRM model.
+#'
+#' This function summarizes adjusted \code{lsmeans} and standard error, as well as conducts
+#' comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
+#' is the reference level.
+#'
+#' @param object the MMRM model result produced by \code{\link{s_mmrm}}.
+#' @inheritParams argument_convention
+#'
+#' @return \code{rtable} object or table tree, depending on the the `table_tree` argument
+#'
+#' @export
+#' @import rtables
+#'
+#' @seealso \code{\link{s_mmrm}}
+#'
+#' @examples
+#' library(dplyr)
+#' library(random.cdisc.data)
+#'
+#' adsl <- radsl(cached = TRUE)
+#' adqs <- radqs(cached = TRUE)
+#' adqs_f <- adqs %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'
+#' mmrm_results <- s_mmrm(
+#'   vars = list(
+#'     response = "AVAL",
+#'     covariates = c("STRATA1", "BMRKR2"),
+#'     id = "USUBJID",
+#'     arm = "ARM",
+#'     visit = "AVISIT"
+#'   ),
+#'   data = adqs_f,
+#'   cor_struct = "unstructured",
+#'   weights_emmeans = "proportional",
+#'   optimizer = "nloptwrap_neldermead"  # Only to speed up this example
+#' )
+#' t_mmrm_lsmeans(
+#'   mmrm_results,
+#'   col_N = table(adsl$ARM),
+#'   table_tree = FALSE
+#' )
+t_mmrm_lsmeans <- function(
+  object,
+  col_N, # nolint
+  table_tree = TRUE
+) {
+  stopifnot(is(object, "mmrm"))
+
+  contrast <- object$lsmeans$contrast
+  estimate <- object$lsmeans$estimate
+  vars <- object$vars
+  data <- object$fit@frame
+
+  # Ensure that the contrast data frame has all levels (including reference level).
+  contrast[[vars$arm]] <- factor(contrast[[vars$arm]], levels = levels(estimate[[vars$arm]]))
+
+  s_contrast_df <- split(
+    contrast,
+    contrast[vars$visit]
+  )
+
+  s_estimate_df <- split(
+    estimate,
+    estimate[vars$visit]
+  )
+
+  arm_lvl <- levels(data[[vars$arm]])
+
+  tbl_head <- rheader(rrowl("", arm_lvl))
+
+  mmrm_node_list <- Map(function(est_i, ctrs_i, visit) {
+
+    tbl <- rtable(
+      header = tbl_head,
+      rrowl(
+        "n",
+        tapply(
+          est_i$n, factor(est_i[[vars$arm]], levels = arm_lvl),
+          FUN = identity
+        ),
+        format = "xx"
+      ),
+      rrowl(
+        "Adjusted Mean (SE)",
+        lapply(
+          split(est_i, factor(est_i[[vars$arm]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$emmean, vector_i$SE)
+            }
+          }
+        ),
+        format = sprintf_format("%.3f (%.3f)")
+      ),
+      rrowl(
+        paste0(object$conf_level * 100, "% CI"),
+        lapply(
+          split(est_i, factor(est_i[[vars$arm]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$lower.CL, vector_i$upper.CL)
+            }
+          }),
+        format = "(xx.xxx, xx.xxx)"
+      ),
+      rrow(),
+      rrowl(
+        paste0("Difference in Adjusted Means (SE) (vs. ", object$ref_level, ")"),
+        lapply(
+          split(ctrs_i, factor(ctrs_i[[vars$arm]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$estimate, vector_i$SE)
+            }
+          }),
+        format = sprintf_format("%.3f (%.3f)")
+      ),
+      rrowl(
+        paste0(object$conf_level * 100, "% CI"),
+        lapply(
+          split(ctrs_i, factor(ctrs_i[[vars$arm]], levels = arm_lvl), drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$lower.CL, vector_i$upper.CL)
+            }
+          }),
+        format = "(xx.xxx, xx.xxx)"
+      ),
+      rrowl(
+        "Relative Reduction (%)",
+        lapply(
+          split(ctrs_i, ctrs_i[[vars$arm]], drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$relative_reduc)
+            }
+          }),
+        format = "xx.x%"
+      ),
+      rrow(),
+      rrowl(
+        "p-value (MMRM)",
+        lapply(
+          split(ctrs_i, ctrs_i[[vars$arm]], drop = FALSE),
+          function(vector_i) {
+            if (is.null(vector_i)) {
+              NULL
+            } else {
+              c(vector_i$p.value)
+            }
+          }),
+        format = "x.xxxx | (<0.0001)"
+      )
+    )
+
+    tbl <- header_add_N(tbl, col_N)
+
+    node(
+      name = visit,
+      content = tbl,
+      children = NULL
+    )
+
+  }, est_i = s_estimate_df, ctrs_i = s_contrast_df, visit = names(s_estimate_df))
+
+  tree <- invisible_node(
+    name = "root",
+    children = mmrm_node_list,
+    content = NULL
+  )
+
+  result <- if (table_tree) {
+    tree
+  } else {
+    to_rtable(tree)
+  }
+  return(result)
+}
+
 #' Mix model with repeated measurements (MMRM) model
 #'
 #' The MMRM table function summarizes MMRM test results by visit and groups. The

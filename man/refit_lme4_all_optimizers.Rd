@@ -11,7 +11,7 @@ refit_lme4_all_optimizers(original_fit)
 }
 \value{
 The "best" model fit, defined as a converging fit without any warnings or messages, leading
-  to the highest log-likelihood. If no optimizer succeeds to do so, then an error is thrown.
+  to the highest log-likelihood. If no optimizer succeeds, then an error is thrown.
 }
 \description{
 Refit an lme4 model with all possible optimizers and return the best result.

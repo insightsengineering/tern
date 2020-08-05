@@ -43,11 +43,12 @@ will (if necessary) try all possible optimization algorithms and choose the best
 is chosen and does not give a valid result, an error will occur.}
 }
 \value{
-A list with MMRM results:
+An \code{mmrm} object which is a list with MMRM results:
 \describe{
   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
   \item{lsmeans}{This is a list with data frames \code{estimate} and \code{contrast}.}
+  \item{vars}{The variable list.}
   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
   \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
 }

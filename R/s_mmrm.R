@@ -441,11 +441,12 @@ get_mmrm_lsmeans <- function(fit,
 #'   \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
 #'   }
 #'
-#' @return A list with MMRM results:
+#' @return An \code{mmrm} object which is a list with MMRM results:
 #' \describe{
 #'   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
 #'     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
 #'   \item{lsmeans}{This is a list with data frames \code{estimate} and \code{contrast}.}
+#'   \item{vars}{The variable list.}
 #'   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
 #'   \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
 #' }
@@ -514,8 +515,10 @@ s_mmrm <- function(
   results <- list(
     fit = fit,
     lsmeans = lsmeans,
+    vars = vars,
     ref_level = levels(data[[vars$arm]])[1],
     conf_level = conf_level
   )
+  class(results) <- "mmrm"
   return(results)
 }

@@ -27,6 +27,7 @@ reference:
       - t_tte
       - starts_with("t_events")
       - t_mmrm
+      - t_mmrm_lsmeans
       - t_count_true
       - t_count_true.data.frame
       - t_count_unique
