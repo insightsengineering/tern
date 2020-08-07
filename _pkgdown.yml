@@ -18,6 +18,7 @@ reference:
     desc: These tables are often compound tables that are found in the GDSR templates. Note that they all have the
           `table_tree` argument to return the collection of elementary tables.
     contents:
+      - test
       - t_summary
       - t_summary.data.frame
       - t_summary_by
