@@ -107,6 +107,5 @@ Collate:
     't_tte.R'
     'tabulate_aggregation_functions.R'
     'tabulate_pairwise.R'
-    'test.R'
     'utils_grid.R'
     'wrap_text.R'
