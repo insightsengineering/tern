@@ -47,6 +47,7 @@ Imports:
 Suggests:
   lattice,
   knitr,
+  Matrix,
   random.cdisc.data (>= 0.3.4),
   rmarkdown,
   testthat (>= 2.0),

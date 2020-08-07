@@ -50,7 +50,7 @@ mmrm_results <- s_mmrm(
   data = adqs_f,
   cor_struct = "unstructured",
   weights_emmeans = "proportional",
-  optimizer = "nloptwrap_neldermead"  # Only to speed up this example
+  optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 )
 t_mmrm_lsmeans(
   mmrm_results,

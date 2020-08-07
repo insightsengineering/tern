@@ -47,6 +47,7 @@ An \code{mmrm} object which is a list with MMRM results:
 \describe{
   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
+  \item{cov_estimate}{The matrix with the covariance matrix estimate.}
   \item{lsmeans}{This is a list with data frames \code{estimate} and \code{contrast}.}
   \item{vars}{The variable list.}
   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
@@ -64,10 +65,12 @@ Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because the
   in descending number of variance parameters:
   \describe{
   \item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
-     If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.}
+     If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
+     Note: the current actual implementation uses one more variance parameter, which does not have any
+     effect of the results. Therefore we report here the actually relevant number of parameters.}
   \item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
-     6 variance parameters are used.}
-  \item{random-slope}{Random slope for the random effects of the time variable. 3 variance parameters are used.}
+     7 variance parameters are used.}
+  \item{random-slope}{Random slope for the random effects of the time variable. 4 variance parameters are used.}
   \item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
   }
 
@@ -109,6 +112,7 @@ mmrm_results <- s_mmrm(
   ),
   data = adqs_f,
   cor_struct = "unstructured",
-  weights_emmeans = "equal"
+  weights_emmeans = "equal",
+  optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 )
 }

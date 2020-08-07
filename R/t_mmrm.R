@@ -39,7 +39,7 @@
 #'   data = adqs_f,
 #'   cor_struct = "unstructured",
 #'   weights_emmeans = "proportional",
-#'   optimizer = "nloptwrap_neldermead"  # Only to speed up this example
+#'   optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 #' )
 #' t_mmrm_lsmeans(
 #'   mmrm_results,
@@ -191,6 +191,70 @@ t_mmrm_lsmeans <- function(
   } else {
     to_rtable(tree)
   }
+  return(result)
+}
+
+#' Tabulate the covariance matrix estimate of an MMRM fit.
+#'
+#' @inheritParams t_mmrm_lsmeans
+#' @param format \code{rtables} format for the numbers (default is \code{"xx.xxxx"})
+#'
+#' @return \code{rtable} object with the covariance matrix
+#' @export
+#'
+#' @import rtables
+#'
+#' @examples
+#' library(dplyr)
+#' library(random.cdisc.data)
+#'
+#' adsl <- radsl(cached = TRUE)
+#' adqs <- radqs(cached = TRUE)
+#' adqs_f <- adqs %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'
+#' mmrm_results <- s_mmrm(
+#'   vars = list(
+#'     response = "AVAL",
+#'     covariates = c("STRATA1", "BMRKR2"),
+#'     id = "USUBJID",
+#'     arm = "ARM",
+#'     visit = "AVISIT"
+#'   ),
+#'   data = adqs_f,
+#'   cor_struct = "random-quadratic",
+#'   optimizer = "nloptwrap_bobyqa"
+#' )
+#' t_mmrm_cov(mmrm_results)
+t_mmrm_cov <- function(object, format = "xx.xxxx") {
+  stopifnot(is(object, "mmrm"))
+  cov_estimate <- object$cov_estimate
+
+  one_row <- function(row_i, row_name_i) {
+    do.call(
+      rrow,
+      c(
+        as.list(row_i),
+        row.name = row_name_i,
+        format = format
+      )
+    )
+  }
+
+  result <- do.call(
+    rtable,
+    c(
+      list(header = colnames(cov_estimate)),
+      Map(
+        one_row,
+        row_i = as.data.frame(t(cov_estimate)),
+        row_name_i = rownames(cov_estimate)
+      )
+    )
+  )
   return(result)
 }
 

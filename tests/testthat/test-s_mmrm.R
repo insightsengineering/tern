@@ -148,6 +148,119 @@ test_that("fit_lme4_single_optimizer works as expected when there are no warning
   expect_equal(result1, result2, check.attributes = FALSE)
 })
 
+# Helper function which is another implementation of the covariance matrix estimate from
+# https://stackoverflow.com/questions/45650548/get-residual-variance-covariance-matrix-in-lme4
+alternative_cov_estimate <- function(fit) {
+  # We want to keep the same variable names etc. as in the reference above, therefore no linting here.
+  #nolint start
+  var.d <- Matrix::crossprod(lme4::getME(fit, "Lambdat"))
+  Zt <- lme4::getME(fit, "Zt")
+  vr <- stats::sigma(fit)^2
+  var.b <- vr * (Matrix::t(Zt) %*% var.d %*% Zt)
+  sI <- vr * Matrix::Diagonal(nrow(fit@frame))
+  var.y <- var.b + sI
+  return(var.y)
+  #nolint end
+}
+
+test_that("get_lme4_cov_estimate works as expected with a random slope model", {
+  fit <- fit_lme4(
+    formula = Reaction ~ Days + (Days | Subject),
+    data = lme4::sleepstudy
+  )
+  result <- get_lme4_cov_estimate(fit)
+  expected <- as.matrix(alternative_cov_estimate(fit)[1:10, 1:10])  # We use first 10 obs.
+  expect_equal(result, expected, check.attributes = FALSE)
+  expect_identical(
+    attributes(result),
+    list(
+      dim = c(10L, 10L),
+      id = "308",
+      n_parameters = 4L
+    )
+  )
+})
+
+test_that("get_lme4_cov_estimate works with a random intercept model", {
+  fit <- fit_lme4(
+    formula = Reaction ~ Days + (1 | Subject),
+    data = lme4::sleepstudy
+  )
+  result <- get_lme4_cov_estimate(fit)
+})
+
+test_that("get_lme4_cov_estimate works as expected with unbalanced data and independent of sorting", {
+  # Obtain unbalanced data set.
+  set.seed(123, kind = "Mersenne-Twister")
+  data_unsorted <- lme4::sleepstudy %>%
+    dplyr::sample_frac(0.5)  # This randomly samples 50% of the rows of the data set.
+
+  # Fit with unsorted data.
+  fit_unsorted <- fit_lme4(
+    formula = Reaction ~ Days + (Days | Subject),
+    data = data_unsorted
+  )
+  result_unsorted <- get_lme4_cov_estimate(fit_unsorted)
+  expect_identical(
+    attributes(result_unsorted),
+    list(
+      dim = c(10L, 10L),
+      id = "372",
+      n_parameters = 4L
+    )
+  )
+
+  # Fit with sorted data.
+  data_sorted <- data_unsorted %>%
+    dplyr::arrange(Subject, Days)
+  fit_sorted <- fit_lme4(
+    formula = Reaction ~ Days + (Days | Subject),
+    data = data_sorted
+  )
+  result_sorted <- get_lme4_cov_estimate(fit_sorted)
+  expect_identical(
+    attributes(result_sorted),
+    list(
+      dim = c(10L, 10L),
+      id = "372",
+      n_parameters = 4L
+    )
+  )
+
+  # Check if the reordered result from unsorted fit equals the sorted fit result.
+  order_index <- data_unsorted %>%
+    dplyr::filter(Subject == "372") %>%
+    dplyr::pull(Days) %>%
+    order()
+  expect_equal(
+    result_unsorted[order_index, order_index],
+    result_sorted,
+    check.attributes = FALSE
+  )
+})
+
+test_that("get_lme4_cov_estimate works as expected with a random intercept model and unbalanced data", {
+  set.seed(123, kind = "Mersenne-Twister")
+  data <- lme4::sleepstudy %>%
+    dplyr::sample_frac(0.5)
+  fit <- fit_lme4(
+    formula = Reaction ~ Days + (1 | Subject),
+    data = data
+  )
+  result <- get_lme4_cov_estimate(fit)
+  id_indices <- which(data$Subject == "372")  # We get id 372 here.
+  expected <- as.matrix(alternative_cov_estimate(fit)[id_indices, id_indices])
+  expect_equal(result, expected, check.attributes = FALSE)
+  expect_identical(
+    attributes(result),
+    list(
+      dim = c(10L, 10L),
+      id = "372",
+      n_parameters = 2L
+    )
+  )
+})
+
 test_that("fit_lme4_single_optimizer correctly captures warnings and messages", {
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
@@ -382,7 +495,8 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
     ),
     data = adqs_f,
     cor_struct = "unstructured",
-    weights_emmeans = "equal"
+    weights_emmeans = "equal",
+    optimizer = "nloptwrap_neldermead"  # To speed up this test.
   )
 
   # Compare vs. SAS results calculated with the following statements:
@@ -508,6 +622,26 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
     expected_lsmeans_contrasts,
     pval_name = "p.value"
   )
+
+  # Covariance matrix estimate.
+  cov_estimate <- mmrm_results$cov_estimate
+  expected_cov_estimate <- matrix(
+    c(
+      72.7336, 2.1239, -0.9334, -0.8405, 1.0401, 6.0476,
+      2.1239, 63.3863, -0.6263, 2.7491, -1.5392, 0.3819, -0.9334, -0.6263,
+      78.3635, 1.532, -12.1098, -0.6274, -0.8405, 2.7491, 1.532, 101.23,
+      -5.975, 7.0188, 1.0401, -1.5392, -12.1098, -5.975, 132.2, -5.5353,
+      6.0476, 0.3819, -0.6274, 7.0188, -5.5353, 149.56
+    ),
+    nrow = 6L,
+    ncol = 6L
+  )
+  expect_equal(
+    cov_estimate,
+    expected_cov_estimate,
+    check.attributes = FALSE,
+    tol = 0.001
+  )
 })
 
 test_that("s_mmrm works also with missing data", {
@@ -527,7 +661,8 @@ test_that("s_mmrm works also with missing data", {
     ),
     data = adqs_f,
     cor_struct = "unstructured",
-    weights_emmeans = "equal"
+    weights_emmeans = "equal",
+    optimizer = "bobyqa"
   )
 
   # Compare vs. SAS results calculated with the following statements:
@@ -649,6 +784,25 @@ test_that("s_mmrm works also with missing data", {
     lsmeans_contrasts,
     expected_lsmeans_contrasts,
     pval_name = "p.value"
+  )
+
+  # Covariance matrix estimate.
+  cov_estimate <- mmrm_results$cov_estimate
+  expected_cov_estimate <- matrix(
+    c(
+      65.795, 2.0168, -7.5115, -1.5288, -1.0866, 2.0168,
+      80.6114, 1.3116, 6.8224, 4.6945, -7.5115, 1.3116, 91.1282, -2.9056,
+      -7.5785, -1.5288, 6.8224, -2.9056, 107.34, 9.3734, -1.0866, 4.6945,
+      -7.5785, 9.3734, 162.82
+    ),
+    nrow = 5L,
+    ncol = 5L
+  )
+  expect_equal(
+    cov_estimate,
+    expected_cov_estimate,
+    check.attributes = FALSE,
+    tol = 0.001
   )
 })
 
@@ -790,5 +944,24 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
     lsmeans_contrasts,
     expected_lsmeans_contrasts,
     pval_name = "p.value"
+  )
+
+  # Covariance matrix estimate.
+  cov_estimate <- mmrm_results$cov_estimate
+  expected_cov_estimate <- matrix(
+    c(
+      101.5635, 0.4235, 0.4235, 0.4235, 0.4235, 0.4235,
+      101.5635, 0.4235, 0.4235, 0.4235, 0.4235, 0.4235, 101.5635, 0.4235,
+      0.4235, 0.4235, 0.4235, 0.4235, 101.5635, 0.4235, 0.4235, 0.4235,
+      0.4235, 0.4235, 101.5635
+    ),
+    nrow = 5L,
+    ncol = 5L
+  )
+  expect_equal(
+    cov_estimate,
+    expected_cov_estimate,
+    check.attributes = FALSE,
+    tol = 0.001
   )
 })

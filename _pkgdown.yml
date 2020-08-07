@@ -28,6 +28,7 @@ reference:
       - starts_with("t_events")
       - t_mmrm
       - t_mmrm_lsmeans
+      - t_mmrm_cov
       - t_count_true
       - t_count_true.data.frame
       - t_count_unique
@@ -195,3 +196,4 @@ reference:
       - refit_lme4_all_optimizers
       - fit_lme4
       - get_mmrm_lsmeans
+      - get_lme4_cov_estimate

@@ -117,6 +117,64 @@ build_mmrm_formula <- function(
   return(full_formula)
 }
 
+#' Extract the covariance matrix estimate from a lme4 fit.
+#'
+#' @param fit the \code{merMod} object (e.g. coming from \code{\link{fit_lme4_single_optimizer}}).
+#'
+#' @return a matrix containing the covariance matrix estimate.
+#'   The following additional attributes are attached:
+#'   \describe{
+#'     \item{id}{which subject has been used (this is one subject with the maximum number of observations)}
+#'     \item{n_parameters}{number of covariance parameters that were used in the fit}
+#'   }
+#'
+#' @details This is adapted from \url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q1/000558.html}.
+#'   Note that the order of rows/columns in the returned matrix corresponds to the order of the
+#'   \code{id}'s observations in the original data set.
+#'
+#' @importFrom lme4 getME
+#' @importFrom stats sigma
+get_lme4_cov_estimate <- function(fit){
+  stopifnot(is(fit, "merMod"))
+  # A list of the grouping variables (factors) involved in the random effect terms.
+  grouping_factors <- lme4::getME(fit, "flist")
+  # We only have one here (id).
+  stopifnot(identical(length(grouping_factors), 1L))
+  id_var <- grouping_factors[[1L]]
+  # Obtain one id with the maximum number of time points.
+  id1 <- names(which.max(table(id_var)))
+  id1_indices <- which(id_var == id1)
+  # A is the scaled sparse model matrix (class "dgCMatrix") for the unit, orthogonal
+  # random effects, U, equal to getME(.,"Zt") %*% getME(.,"Lambdat").
+  # A = Z^T * Lambda^T, where
+  # Z = random-effects model matrix and
+  # Lambda = relative covariance factor Lambda of the random effects
+  # (note "relative", i.e. it does not include the sigma yet, therefore it is multiplied
+  # below in the last step)
+  a_mat <- as.matrix(lme4::getME(fit, "A"))
+  # Find out where in the row space id1 random effects are.
+  a_mat_id1_cols <- a_mat[, id1_indices]
+  row_indices_with_id1 <- which(apply(a_mat_id1_cols, 1L, function(x) any(x != 0)))
+  id1_row_indices <- seq(from = min(row_indices_with_id1), to = max(row_indices_with_id1))
+  # We can now extract the relevant submatrix of A.
+  a_mat_id1 <- a_mat[id1_row_indices, id1_indices, drop = FALSE]  # Make sure we don't get vector here.
+  # We account for the residual variance.
+  id1_dim <- length(id1_indices)
+  identity_id1 <- diag(1, id1_dim)
+  cov_estimate <- stats::sigma(fit)^2 * (crossprod(a_mat_id1) + identity_id1)
+  # Get the number of variance paramaters. Note: The sigma2 is not counted in "m",
+  # and for the unstructured case we have effectively one parameter too much.
+  # However, this does not have any effect on the covariance matrix estimate itself.
+  n_parameters <- as.integer(min(lme4::getME(fit, "m") + 1, id1_dim * (id1_dim + 1) / 2))
+  # Finally, we add the attributes.
+  result <- structure(
+    unname(cov_estimate),
+    id = id1,
+    n_parameters = n_parameters
+  )
+  return(result)
+}
+
 #' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
 #'
 #' @param formula the lme4 formula
@@ -423,10 +481,12 @@ get_mmrm_lsmeans <- function(fit,
 #'   in descending number of variance parameters:
 #'   \describe{
 #'   \item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
-#'      If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.}
+#'      If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
+#'      Note: the current actual implementation uses one more variance parameter, which does not have any
+#'      effect of the results. Therefore we report here the actually relevant number of parameters.}
 #'   \item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
-#'      6 variance parameters are used.}
-#'   \item{random-slope}{Random slope for the random effects of the time variable. 3 variance parameters are used.}
+#'      7 variance parameters are used.}
+#'   \item{random-slope}{Random slope for the random effects of the time variable. 4 variance parameters are used.}
 #'   \item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
 #'   }
 #'
@@ -445,6 +505,7 @@ get_mmrm_lsmeans <- function(fit,
 #' \describe{
 #'   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
 #'     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
+#'   \item{cov_estimate}{The matrix with the covariance matrix estimate.}
 #'   \item{lsmeans}{This is a list with data frames \code{estimate} and \code{contrast}.}
 #'   \item{vars}{The variable list.}
 #'   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
@@ -480,7 +541,8 @@ get_mmrm_lsmeans <- function(fit,
 #'   ),
 #'   data = adqs_f,
 #'   cor_struct = "unstructured",
-#'   weights_emmeans = "equal"
+#'   weights_emmeans = "equal",
+#'   optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 #' )
 s_mmrm <- function(
   vars = list(
@@ -511,9 +573,14 @@ s_mmrm <- function(
     conf_level = conf_level,
     weights = weights_emmeans
   )
+  cov_estimate <- get_lme4_cov_estimate(fit)
+  id_rows <- which(fit@frame[[vars$id]] == attr(cov_estimate, "id"))
+  visits <- fit@frame[[vars$visit]][id_rows]
+  rownames(cov_estimate) <- colnames(cov_estimate) <- as.character(visits)
 
   results <- list(
     fit = fit,
+    cov_estimate = cov_estimate,
     lsmeans = lsmeans,
     vars = vars,
     ref_level = levels(data[[vars$arm]])[1],

@@ -351,3 +351,41 @@ test_that("t_mmrm_lsmeans works correctly", {
     rcell(lsmeans_result, format = rtables::sprintf_format("%.3f (%.3f)"))
   )
 })
+
+test_that("t_mmrm_cov works correctly", {
+  anl <- get_anl() %>%
+    mutate(
+      ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
+      AVISIT = factor(AVISIT)
+    )
+  asl <- unique(anl[, c("USUBJID", "ARM")])
+
+  mmrm <- s_mmrm(
+    vars = list(
+      response = "AVAL",
+      visit = "AVISIT",
+      arm = "ARM",
+      covariates = c("BMRKR2"),
+      id = "USUBJID"
+    ),
+    data = anl,
+    cor_struct = "random-quadratic"
+  )
+  result <- t_mmrm_cov(mmrm, format = "xx.xx")
+
+  # Note: We don't check here the correctness of all resulting numbers as this is done when testing `s_mmrm`.
+  # We just do an automatic spot check.
+  result_subset <- result[5, ]
+  expect_identical(unname(row.names(result_subset)), "WEEK 5 DAY 36")
+  expect_identical(
+    names(result_subset),
+    c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+  )
+  cov_result <- mmrm$cov_estimate %>%
+    `[`("WEEK 5 DAY 36", "WEEK 2 DAY 15") %>%
+    as.numeric()
+  expect_equal(
+    result_subset[1, 2],
+    rcell(cov_result, format = "xx.xx")
+  )
+})
