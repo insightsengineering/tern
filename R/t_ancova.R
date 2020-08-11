@@ -5,6 +5,7 @@
 #' first level of the `arm()` factor variable on the right-hand side of the provided `formula`
 #' is taken as the reference group.
 #'
+#' @inheritParams argument_convention
 #' @inheritParams s_ancova
 #' @template return_rtable
 #'
@@ -18,14 +19,17 @@
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
+#' ADSL <- radsl(cached = TRUE)
 #' ADQS_filtered <- radqs(cached = TRUE) %>%
 #'   dplyr::filter(PARAMCD == "FKSI-FWB", AVISIT == "WEEK 1 DAY 8")
 #' t_el_ancova(
 #'   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
-#'   data = ADQS_filtered
+#'   data = ADQS_filtered,
+#'   col_N = table(ADSL$ARMCD)
 #' )
 t_el_ancova <- function(formula,
                         data,
+                        col_N, # nolint
                         conf_level = 0.95) {
 
   ancova_summaries <- s_ancova(
@@ -74,7 +78,7 @@ t_el_ancova <- function(formula,
     )
   )
 
-  result <- rtables::header_add_N(tbl, sum_fit$n_total)
+  result <- rtables::header_add_N(tbl, col_N)
   return(result)
 }
 
@@ -103,6 +107,7 @@ t_el_ancova <- function(formula,
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
+#' ADSL <- radsl(cached = TRUE)
 #' ADQS <- radqs(cached = TRUE) %>%
 #'   dplyr::filter(AVISIT == "WEEK 1 DAY 8")
 #'
@@ -111,7 +116,8 @@ t_el_ancova <- function(formula,
 #' t_ancova(
 #'   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
 #'   data = ADQS_week1day8,
-#'   row_by = ADQS_week1day8$PARAMCD
+#'   row_by = ADQS_week1day8$PARAMCD,
+#'   col_N = table(ADSL$ARMCD)
 #' )
 #'
 #' # Multiple visits (in this data set there is only one visit, though).
@@ -119,18 +125,21 @@ t_el_ancova <- function(formula,
 #' t_ancova(
 #'   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
 #'   data = ADQS_fksifwb,
-#'   row_by = ADQS_fksifwb$AVISIT
+#'   row_by = ADQS_fksifwb$AVISIT,
+#'   col_N = table(ADSL$ARMCD)
 #' )
 #'
 #' # Multiple timepoints and visits.
 #' t_ancova(
 #'   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
 #'   data = ADQS,
-#'   row_by = ADQS[, c("PARAMCD", "AVISIT")]
+#'   row_by = ADQS[, c("PARAMCD", "AVISIT")],
+#'   col_N = table(ADSL$ARMCD)
 #' )
 t_ancova <- function(formula,
                      data,
                      row_by,
+                     col_N, # nolint
                      conf_level = 0.95,
                      table_tree = FALSE) {
 
@@ -154,6 +163,7 @@ t_ancova <- function(formula,
           t_el_ancova(
             data = content,
             formula = formula,
+            col_N = col_N, # nolint
             conf_level = conf_level
           )
         } else {

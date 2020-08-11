@@ -4,7 +4,7 @@
 \alias{t_ancova}
 \title{Summary table for analysis of covariance (ANCOVA).}
 \usage{
-t_ancova(formula, data, row_by, conf_level = 0.95, table_tree = FALSE)
+t_ancova(formula, data, row_by, col_N, conf_level = 0.95, table_tree = FALSE)
 }
 \arguments{
 \item{formula}{A \code{formula} corresponding to the investigated \code{\link[stats:lm]{linear model}}.
@@ -19,7 +19,13 @@ dimensions of `data` and no missing values are allowed. Multi-level nesting is p
 `row_by` is a \code{data.frame}. Columns should be ordered with the first column specifying
 the first variable to split by and the last column specifying the last variable to split by.}
 
-\item{conf_level}{The confidence level of the resulting confidence intervals (default 0.95).}
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
+
+\item{conf_level}{confidence level of the interval.}
 
 \item{table_tree}{(\code{logical} value)\cr
 If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -39,6 +45,7 @@ variable.
 library(random.cdisc.data)
 library(dplyr)
 
+ADSL <- radsl(cached = TRUE)
 ADQS <- radqs(cached = TRUE) \%>\%
   dplyr::filter(AVISIT == "WEEK 1 DAY 8")
 
@@ -47,7 +54,8 @@ ADQS_week1day8 <- dplyr::filter(ADQS, AVISIT == "WEEK 1 DAY 8")
 t_ancova(
   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
   data = ADQS_week1day8,
-  row_by = ADQS_week1day8$PARAMCD
+  row_by = ADQS_week1day8$PARAMCD,
+  col_N = table(ADSL$ARMCD)
 )
 
 # Multiple visits (in this data set there is only one visit, though).
@@ -55,13 +63,15 @@ ADQS_fksifwb <- dplyr::filter(ADQS, PARAMCD == "FKSI-FWB")
 t_ancova(
   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
   data = ADQS_fksifwb,
-  row_by = ADQS_fksifwb$AVISIT
+  row_by = ADQS_fksifwb$AVISIT,
+  col_N = table(ADSL$ARMCD)
 )
 
 # Multiple timepoints and visits.
 t_ancova(
   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
   data = ADQS,
-  row_by = ADQS[, c("PARAMCD", "AVISIT")]
+  row_by = ADQS[, c("PARAMCD", "AVISIT")],
+  col_N = table(ADSL$ARMCD)
 )
 }

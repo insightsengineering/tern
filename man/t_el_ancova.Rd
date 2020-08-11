@@ -4,7 +4,7 @@
 \alias{t_el_ancova}
 \title{Elementary table for analysis of covariance (ANCOVA).}
 \usage{
-t_el_ancova(formula, data, conf_level = 0.95)
+t_el_ancova(formula, data, col_N, conf_level = 0.95)
 }
 \arguments{
 \item{formula}{A \code{formula} corresponding to the investigated \code{\link[stats:lm]{linear model}}.
@@ -13,7 +13,13 @@ name wrapped in the special \code{arm()}.}
 
 \item{data}{A \code{data.frame} which includes all the variables that are called in \code{formula}.}
 
-\item{conf_level}{The confidence level of the resulting confidence intervals (default 0.95).}
+\item{col_N}{(\code{integer} vector)\cr
+Contains the reference population per level of \code{col_by}. This by default is often
+set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
+The default may not appropriate and should be modified by the user when \code{col_by} contains
+more than one record per subject.}
+
+\item{conf_level}{confidence level of the interval.}
 }
 \value{
 an \code{\link[rtables]{rtable}} object
@@ -28,11 +34,13 @@ is taken as the reference group.
 library(random.cdisc.data)
 library(dplyr)
 
+ADSL <- radsl(cached = TRUE)
 ADQS_filtered <- radqs(cached = TRUE) \%>\%
   dplyr::filter(PARAMCD == "FKSI-FWB", AVISIT == "WEEK 1 DAY 8")
 t_el_ancova(
   formula = CHG ~ BASE + STRATA1 + arm(ARMCD),
-  data = ADQS_filtered
+  data = ADQS_filtered,
+  col_N = table(ADSL$ARMCD)
 )
 }
 \seealso{
