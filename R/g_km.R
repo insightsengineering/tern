@@ -19,8 +19,10 @@
 #'   Whether to show censored.
 #' @param pch (\code{numeric} vector)\cr
 #'   point type for censored.
-#' @param size  (\code{numeric} vector)\cr
+#' @param size (\code{numeric} vector)\cr
 #'   size of censored point, a class of \code{unit}.
+#' @param max_time (\code{numeric})\cr
+#'   maximum value of X axis range (\code{NULL} for default).
 #' @param title (\code{character} value)\cr
 #'   title for plot.
 #' @param xlab (\code{character} value)\cr
@@ -82,6 +84,7 @@ g_km <- function(fit_km,
                  censor_show = TRUE,
                  pch = 3,
                  size = unit(0.5, "char"),
+                 max_time = NULL,
                  title = "Kaplan - Meier Plot",
                  xlab = "Days",
                  ylab = "Survival Probability",
@@ -90,7 +93,7 @@ g_km <- function(fit_km,
                  gp = NULL,
                  vp = NULL,
                  name = NULL) {
-  kmdata <- km_curve_data(fit_km = fit_km, xticks = xticks)
+  kmdata <- km_curve_data(fit_km = fit_km, xticks = xticks, max_time = max_time)
 
   ### margins
   tmp_labels <- names(kmdata$group)
@@ -201,22 +204,9 @@ g_km <- function(fit_km,
 #'
 #' create a grid graphical object for basic KM plot from a \code{\link{survfit}} object.
 #'
+#' @inheritParams g_km
 #' @param kmdata a class \code{\link{km_curve_data}} object.
-#' @param fit_km a class \code{\link{survfit}} object.
-#' @param xticks
-#'   numeric vector of xticks, single number with spacing
-#'   between ticks or \code{NULL}.
-#' @param col line color.
-#' @param lty line type.
-#' @param lwd line width.
-#' @param censor_show \code{TRUE/FALSE} to show censored.
-#' @param pch point type for censored.
-#' @param size size of censored point, a class of \code{unit}.
-#' @param gp a abject of class \code{gpar}.
-#' @param vp a grid \code{viewport}.
-#' @param name A character value to uniquely identify the object.
 #'
-#' @importFrom scales col_factor
 #' @import grid
 #'
 #' @noRd
@@ -252,6 +242,7 @@ km_curve_grob <- function(kmdata,
                           censor_show = TRUE,
                           pch = 3,
                           size = unit(0.5, "char"),
+                          max_time = NULL,
                           gp = NULL,
                           vp = NULL,
                           name = NULL) {
@@ -262,7 +253,7 @@ km_curve_grob <- function(kmdata,
   )
 
   if (missing(kmdata)) {
-    kmdata <- km_curve_data(fit_km = fit_km, xticks = xticks)
+    kmdata <- km_curve_data(fit_km = fit_km, xticks = xticks, max_time = max_time)
   }
 
   ngroup <- length(kmdata$group)
@@ -333,12 +324,8 @@ km_curve_grob <- function(kmdata,
 #'
 #' Return a list of data for primitive element of grid drawing
 #'
-#' @param fit_km a class \code{\link{survfit}} object.
-#' @param xticks
-#'   numeric vector of xticks, single number with spacing
-#'   between ticks or \code{NULL}.
+#' @inheritParams g_km
 #'
-#' @importFrom scales col_factor
 #' @importFrom utils head tail
 #'
 #' @noRd
@@ -360,8 +347,9 @@ km_curve_grob <- function(kmdata,
 #' fit_km <- survfit(Surv(AVAL, 1 - CNSR) ~ ARM, data = OS, conf.type = "plain")
 #'
 #' tern:::km_curve_data(fit_km, xticks = c(0.5, 0.8, 1.5))
-km_curve_data <- function(fit_km, xticks = NULL) {
+km_curve_data <- function(fit_km, xticks = NULL, max_time = NULL) {
   stopifnot(is(fit_km, "survfit"))
+  stopifnot(is.null(max_time) || is_numeric_single(max_time))
 
   # extract kmplot relevant data
   if (is.null(fit_km$strata)) {
@@ -398,20 +386,19 @@ km_curve_data <- function(fit_km, xticks = NULL) {
   # split by group
   df_s <- split(df, df$group)
 
+  upper_range <- ceiling(max(max(df$time), max_time))
   ### interval on x-axis
   if (is.null(xticks)) {
-    xticks <- max(1, ceiling(max(df$time) / 10))
+    xticks <- max(1, upper_range / 10)
   }
   xpos <- if (length(xticks) == 1) {
     # xticks gives spacing between ticks
     # range `[0, ceiling(maxtime)]`
     is_integer <- function(x) x == round(x)
-    upper_range <- ceiling(max(df$time))
     # add one extra tick if the upper range does not fall onto an xtick
     seq(0, upper_range + xticks * !is_integer(upper_range / xticks), by = xticks)
   } else {
     # add zero if it does not exist, xticks can be unordered
-    upper_range <- ceiling(max(df$time))
     unique(c(0, xticks, upper_range))
   }
 

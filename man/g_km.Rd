@@ -13,6 +13,7 @@ g_km(
   censor_show = TRUE,
   pch = 3,
   size = unit(0.5, "char"),
+  max_time = NULL,
   title = "Kaplan - Meier Plot",
   xlab = "Days",
   ylab = "Survival Probability",
@@ -49,6 +50,9 @@ point type for censored.}
 
 \item{size}{(\code{numeric} vector)\cr
 size of censored point, a class of \code{unit}.}
+
+\item{max_time}{(\code{numeric})\cr
+maximum value of X axis range (\code{NULL} for default).}
 
 \item{title}{(\code{character} value)\cr
 title for plot.}
