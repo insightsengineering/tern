@@ -691,7 +691,7 @@ a_mmrm <- function(data,
     dplyr::select(c(visit_var, arm_var, "relative_reduc"))
 
   sum_fit_diff <- summary(
-    contrast(emm, method = "trt.vs.ctrl"),
+    contrast(emm, method = "trt.vs.ctrl", parens = NULL),
     level = conf_level,
     infer = c(TRUE, TRUE),
     adjust = "none"
