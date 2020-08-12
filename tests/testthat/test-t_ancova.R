@@ -64,9 +64,11 @@ get_example_data <- function() {
 test_that("Elementary ANCOVA table works correctly", {
   anl <- get_example_data() %>%
     dplyr::filter(AVISIT == "WEEK 1 DAY 8")
+
   result <- t_el_ancova(
     formula = AVAL ~ arm(ARM) + BASE + BMRKR2 + STRATA1,
-    data = anl
+    data = anl,
+    col_N = table(unique(anl[c("USUBJID", "ARM")])$ARM)
   )
   expected <- rtable(
     header = rheader(
@@ -89,7 +91,8 @@ test_that("Compound ANCOVA table works correctly with a factor `row_by` variable
   result <- t_ancova(
     formula = AVAL ~ arm(ARM) + BASE + BMRKR2 + STRATA1,
     data = anl,
-    row_by = anl$AVISIT
+    row_by = anl$AVISIT,
+    col_N = table(unique(anl[c("USUBJID", "ARM")])$ARM)
   )
   expected <- rtable(
     header = rheader(
