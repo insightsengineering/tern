@@ -5,26 +5,41 @@
 #' @param vars variable list as per \code{\link{s_mmrm}}
 #' @param data data frame that includes the variables
 #'
-#' @return nothing, this function will stop in case of problems, and pass when everything is ok.
+#' @return a corresponding list of variable labels.
+#'   For the covariates, the element \code{parts} contains a character vector with one element
+#'   per covariates part (i.e. occurring variable in the original covariates specification) is
+#'   included.
+#'   If a label is not found, the variable name is instead used.
 check_mmrm_vars <- function(vars,
                             data) {
   stopifnot(is.list(vars))
   stopifnot(is.data.frame(data))
+  labels <- list()
 
   # Check whether variables are specified and in data.
   is_specified <- function(var) {
     !is.null(vars[[var]])
   }
-  is_specified_and_in_data <- function(var){
+  is_specified_and_in_data <- function(var) {
     is_specified(var) && all(vars[[var]] %in% names(data))
   }
-  stopifnot(is_specified_and_in_data("response"))
-  stopifnot(is_specified_and_in_data("id"))
-  stopifnot(is_specified_and_in_data("arm"))
-  stopifnot(is_specified_and_in_data("visit"))
+  check_and_get_label <- function(var) {
+    stopifnot(is_specified_and_in_data(var))
+    res <- NULL
+    for (v in vars[[var]]) {
+      label <- attr(data[[v]], "label")
+      string <- ifelse(!is.null(label), label, v)
+      res <- c(res, setNames(string, v))
+    }
+    labels[[var]] <<- res  # Saves the result under the `var` element of `labels`.
+  }
+  check_and_get_label("response")
+  check_and_get_label("id")
+  check_and_get_label("arm")
+  check_and_get_label("visit")
   if (is_specified("covariates")) {
     vars$parts <- unique(unlist(strsplit(vars$covariates, split = "\\*|:")))
-    stopifnot(is_specified_and_in_data("parts"))
+    check_and_get_label("parts")
   }
 
   # Subset data to observations with complete regressors.
@@ -55,6 +70,8 @@ check_mmrm_vars <- function(vars,
   if (!all(table(data_complete[[vars$arm]]) > 5)) {
     stop(paste("Each group / arm should have at least 5 records with non-missing", vars$response))
   }
+
+  return(labels)
 }
 
 #' Helper function to build the MMRM formula
@@ -370,12 +387,13 @@ fit_lme4 <- function(
 #' @param weights string specifying the type of weights to be used for the LS means,
 #'   see \code{\link[emmeans]{emmeans}} for details.
 #'
-#' @return A list with the LS means `estimate` and `contrast` results between the treatment
+#' @return A list with the LS means `estimates` and `contrasts` results between the treatment
 #'   and control arm groups at the different visits.
 #'
 #' @importFrom emmeans emmeans contrast
 #' @importFrom dplyr filter group_by_at left_join mutate n summarise rename ungroup
 #' @importFrom rlang := !!
+#' @importFrom rtables var_labels
 get_mmrm_lsmeans <- function(fit,
                              vars,
                              conf_level,
@@ -395,30 +413,38 @@ get_mmrm_lsmeans <- function(fit,
   # baseline in Control Pooled group.
 
   # Adjusted estimate for each arm.
-  estimate <- confint(lsmeans, level = conf_level) %>%
-    as.data.frame()
+  estimates <- confint(lsmeans, level = conf_level) %>%
+    as.data.frame() %>%
+    dplyr::rename(
+      estimate = emmean,
+      se = SE,
+      lower_cl = lower.CL,
+      upper_cl = upper.CL
+    )
 
   data_n <- data_complete %>%
     dplyr::group_by_at(.vars = c(vars$visit, vars$arm)) %>%
     dplyr::summarise(n = dplyr::n()) %>%
     dplyr::ungroup()
 
-  estimate <- estimate %>%
-    dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
+  estimates <- suppressWarnings(  # We don't have labels in `estimates`, which triggers a warning.
+    estimates %>%
+      dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
+  )
 
   # Get LS means for reference group to join into full dataframe so that relative reduction in
   # LS mean (mean of response variable) can be computed with respect to reference level (e.g. ARM A).
   arm_levels <- levels(data_complete[[vars$arm]])
   reference_level <- arm_levels[1]
-  means_at_ref <- estimate %>%
+  means_at_ref <- estimates %>%
     dplyr::filter(!!as.symbol(vars$arm) == reference_level) %>%
-    dplyr::select(c(vars$visit, "emmean")) %>%
-    dplyr::rename(ref = .data$emmean)
+    dplyr::select(c(vars$visit, "estimate")) %>%
+    dplyr::rename(ref = .data$estimate)
 
-  relative_reduc <- estimate %>%
+  relative_reduc <- estimates %>%
     dplyr::filter(!!as.symbol(vars$arm) != reference_level) %>%
     dplyr::left_join(means_at_ref, by = c(vars$visit)) %>%
-    dplyr::mutate(relative_reduc = (.data$ref - .data$emmean) / .data$ref) %>%
+    dplyr::mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
     dplyr::select(c(vars$visit, vars$arm, "relative_reduc"))
 
   # Start with the differences between LS means.
@@ -431,7 +457,7 @@ get_mmrm_lsmeans <- function(fit,
 
   # Get the comparison group name from "contrast" column,
   # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
-  contrast <- sum_fit_diff %>%
+  contrasts <- sum_fit_diff %>%
     dplyr::mutate(
       col_by = factor(
         gsub(paste0("\\s-\\s", reference_level), "", contrast),
@@ -441,11 +467,18 @@ get_mmrm_lsmeans <- function(fit,
     dplyr::select(-contrast) %>%
     dplyr::rename(!!as.symbol(vars$arm) := .data$col_by) %>%
     dplyr::left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
-    dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level))
+    dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
+    dplyr::rename(
+      se = SE,
+      lower_cl = lower.CL,
+      upper_cl = upper.CL,
+      t_stat = t.ratio,
+      p_value = p.value
+    )
 
   results <- list(
-    estimate = estimate,
-    contrast = contrast
+    estimates = estimates,
+    contrasts = contrasts
   )
   return(results)
 }
@@ -506,8 +539,9 @@ get_mmrm_lsmeans <- function(fit,
 #'   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
 #'     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
 #'   \item{cov_estimate}{The matrix with the covariance matrix estimate.}
-#'   \item{lsmeans}{This is a list with data frames \code{estimate} and \code{contrast}.}
+#'   \item{lsmeans}{This is a list with data frames \code{estimates} and \code{contrasts}.}
 #'   \item{vars}{The variable list.}
+#'   \item{labels}{Corresponding list with variable labels extracted from \code{data}.}
 #'   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
 #'   \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
 #' }
@@ -530,6 +564,7 @@ get_mmrm_lsmeans <- function(fit,
 #'     as.numeric() %>%
 #'     as.factor()
 #'   )
+#' var_labels(adqs_f) <- var_labels(adqs)
 #'
 #' mmrm_results <- s_mmrm(
 #'   vars = list(
@@ -558,7 +593,7 @@ s_mmrm <- function(
   weights_emmeans = "proportional",
   optimizer = "automatic"
 ) {
-  check_mmrm_vars(vars, data)
+  labels <- check_mmrm_vars(vars, data)
   check_conf_level(conf_level)
 
   formula <- build_mmrm_formula(vars, cor_struct)
@@ -583,6 +618,7 @@ s_mmrm <- function(
     cov_estimate = cov_estimate,
     lsmeans = lsmeans,
     vars = vars,
+    labels = labels,
     ref_level = levels(data[[vars$arm]])[1],
     conf_level = conf_level
   )

@@ -53,22 +53,22 @@ t_mmrm_lsmeans <- function(
 ) {
   stopifnot(is(object, "mmrm"))
 
-  contrast <- object$lsmeans$contrast
-  estimate <- object$lsmeans$estimate
+  contrasts <- object$lsmeans$contrasts
+  estimates <- object$lsmeans$estimates
   vars <- object$vars
   data <- object$fit@frame
 
   # Ensure that the contrast data frame has all levels (including reference level).
-  contrast[[vars$arm]] <- factor(contrast[[vars$arm]], levels = levels(estimate[[vars$arm]]))
+  contrasts[[vars$arm]] <- factor(contrasts[[vars$arm]], levels = levels(estimates[[vars$arm]]))
 
-  s_contrast_df <- split(
-    contrast,
-    contrast[vars$visit]
+  s_contrasts_df <- split(
+    contrasts,
+    contrasts[vars$visit]
   )
 
-  s_estimate_df <- split(
-    estimate,
-    estimate[vars$visit]
+  s_estimates_df <- split(
+    estimates,
+    estimates[vars$visit]
   )
 
   arm_lvl <- levels(data[[vars$arm]])
@@ -95,7 +95,7 @@ t_mmrm_lsmeans <- function(
             if (is.null(vector_i)) {
               NULL
             } else {
-              c(vector_i$emmean, vector_i$SE)
+              c(vector_i$estimate, vector_i$se)
             }
           }
         ),
@@ -109,7 +109,7 @@ t_mmrm_lsmeans <- function(
             if (is.null(vector_i)) {
               NULL
             } else {
-              c(vector_i$lower.CL, vector_i$upper.CL)
+              c(vector_i$lower_cl, vector_i$upper_cl)
             }
           }),
         format = "(xx.xxx, xx.xxx)"
@@ -123,7 +123,7 @@ t_mmrm_lsmeans <- function(
             if (is.null(vector_i)) {
               NULL
             } else {
-              c(vector_i$estimate, vector_i$SE)
+              c(vector_i$estimate, vector_i$se)
             }
           }),
         format = sprintf_format("%.3f (%.3f)")
@@ -136,7 +136,7 @@ t_mmrm_lsmeans <- function(
             if (is.null(vector_i)) {
               NULL
             } else {
-              c(vector_i$lower.CL, vector_i$upper.CL)
+              c(vector_i$lower_cl, vector_i$upper_cl)
             }
           }),
         format = "(xx.xxx, xx.xxx)"
@@ -163,7 +163,7 @@ t_mmrm_lsmeans <- function(
             if (is.null(vector_i)) {
               NULL
             } else {
-              c(vector_i$p.value)
+              c(vector_i$p_value)
             }
           }),
         format = "x.xxxx | (<0.0001)"
@@ -178,7 +178,7 @@ t_mmrm_lsmeans <- function(
       children = NULL
     )
 
-  }, est_i = s_estimate_df, ctrs_i = s_contrast_df, visit = names(s_estimate_df))
+  }, est_i = s_estimates_df, ctrs_i = s_contrasts_df, visit = names(s_estimates_df))
 
   tree <- invisible_node(
     name = "root",

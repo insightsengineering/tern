@@ -87,6 +87,7 @@ reference:
       - g_forest
       - g_km
       - g_waterfall
+      - g_mmrm_lsmeans
 
   - title: Analysis Helper Functions
     desc: these functions are useful to help definining the analysis

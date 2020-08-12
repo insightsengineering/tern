@@ -3,7 +3,7 @@ context("test s_mmrm and associated helper functions")
 library(random.cdisc.data)
 library(dplyr)
 
-test_that("check_mmrm_vars passes with healthy inputs", {
+test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
   data <- radqs(cached = TRUE) %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
 
@@ -15,15 +15,32 @@ test_that("check_mmrm_vars passes with healthy inputs", {
     arm = "ARM",
     visit = "AVISIT"
   )
-  expect_silent(check_mmrm_vars(vars1, data))
+  expect_silent(result1 <- check_mmrm_vars(vars1, data))
+  expected1 <- list(
+    response = setNames("Analysis Value", "AVAL"),
+    id = setNames("Unique Subject Identifier", "USUBJID"),
+    arm = setNames("ARM", "ARM"),
+    visit = setNames("Analysis Visit", "AVISIT")
+  )
+  expect_identical(result1, expected1)
 
   # Additional covariates.
   vars2 <- vars1
   vars2$covariates <- c("STRATA1", "BMRKR2")
-  expect_silent(check_mmrm_vars(vars2, data))
+  expect_silent(result2 <- check_mmrm_vars(vars2, data))
+  expected2 <- c(
+    expected1,
+    list(
+      parts = setNames(
+        c("Stratification Factor 1", "Categorical Level Biomarker 2"),
+        c("STRATA1", "BMRKR2")
+      )
+    )
+  )
+  expect_identical(result2, expected2)
 })
 
-test_that("check_mmrm_vars passes with interaction terms in `covariates`", {
+test_that("check_mmrm_vars works with interaction terms in `covariates`", {
   data <- radqs(cached = TRUE) %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
 
@@ -34,7 +51,18 @@ test_that("check_mmrm_vars passes with interaction terms in `covariates`", {
     arm = "ARM",
     visit = "AVISIT"
   )
-  expect_silent(check_mmrm_vars(vars, data))
+  expect_silent(result <- check_mmrm_vars(vars, data))
+  expected <- list(
+    response = setNames("Analysis Value", "AVAL"),
+    id = setNames("Unique Subject Identifier", "USUBJID"),
+    arm = setNames("ARM", "ARM"),
+    visit = setNames("Analysis Visit", "AVISIT"),
+    parts = setNames(
+      c("ARM", "Continous Level Biomarker 1", "Stratification Factor 1"),
+      c("ARM", "BMRKR1", "STRATA1")
+    )
+  )
+  expect_identical(result, expected)
 })
 
 test_that("check_mmrm_vars works when there are missing values", {
@@ -63,7 +91,18 @@ test_that("check_mmrm_vars works when there are missing values", {
     arm = "ARM",
     visit = "AVISIT"
   )
-  expect_silent(check_mmrm_vars(vars, data))
+  expect_silent(result <- check_mmrm_vars(vars, data))
+  expected <- list(
+    response = setNames("AVAL", "AVAL"),
+    id = setNames("Unique Subject Identifier", "USUBJID"),
+    arm = setNames("ARM", "ARM"),
+    visit = setNames("Analysis Visit", "AVISIT"),
+    parts = setNames(
+      c("ARM", "BMRKR1", "Stratification Factor 1"),
+      c("ARM", "BMRKR1", "STRATA1")
+    )
+  )
+  expect_identical(result, expected)
 })
 
 test_that("check_mmrm_vars fails if a variable is missing", {
@@ -403,8 +442,8 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
     weights = "proportional"
   ))
   expect_is(result, "list")
-  expect_is(result$estimate, "data.frame")
-  expect_is(result$contrast, "data.frame")
+  expect_is(result$estimates, "data.frame")
+  expect_is(result$contrasts, "data.frame")
 })
 
 # Helper function to compare result and expected tables with proper handling of p-value column.
@@ -556,7 +595,7 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
   )
 
   # Now compare LS means and their contrasts.
-  lsmeans_estimates <- mmrm_results$lsmeans$estimate[, c("ARMCD", "AVISIT", "emmean", "lower.CL", "upper.CL")]
+  lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
       c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
@@ -566,17 +605,17 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
       c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L, 6L, 6L, 6L),
       labels = c("SCREENING", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
     ),
-    emmean = c(
+    estimate = c(
       45.1928, 44.5813, 44.7361, 54.3093, 55.0347, 53.9767, 59.9566,
       59.8068, 59.3232, 64.3685, 66.8024, 66.6031, 68.9239, 70.2673,
       70.3249, 74.3247, 75.7191, 74.5178
     ),
-    lower.CL = c(
+    lower_cl = c(
       43.7422, 43.1316, 43.2759, 52.9548, 53.6811, 52.6134, 58.451,
       58.302, 57.8076, 62.6578, 65.0925, 64.8808, 66.9695, 68.3136,
       68.3568, 72.2462, 73.6411, 72.4245
     ),
-    upper.CL = c(
+    upper_cl = c(
       46.6435, 46.0311, 46.1962, 55.6639, 56.3884, 55.3399, 61.4622,
       61.3116, 60.8388, 66.0791, 68.5123, 68.3254, 70.8782, 72.2211,
       72.2929, 76.4033, 77.797, 76.611
@@ -589,7 +628,7 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
   )
 
   lsmeans_contrasts <-
-    mmrm_results$lsmeans$contrast[, c("ARMCD", "AVISIT", "estimate", "df", "lower.CL", "upper.CL", "p.value")]
+    mmrm_results$lsmeans$contrasts[, c("ARMCD", "AVISIT", "estimate", "df", "lower_cl", "upper_cl", "p_value")]
   expected_lsmeans_contrasts <- data.frame(
     ARMCD = factor(
       c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
@@ -604,15 +643,15 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
       2.2346, 1.3435, 1.401, 1.3944, 0.193
     ),
     df = c(398, 398, 396, 396, 393, 393, 397, 396, 398, 398, 397, 397),
-    lower.CL = c(
+    lower_cl = c(
       -2.6636, -2.5161, -1.1909, -2.2556, -2.2797, -2.7707, 0.0142,
       -0.1938, -1.4209, -1.3734, -1.5456, -2.7576
     ),
-    upper.CL = c(
+    upper_cl = c(
       1.4407, 1.6026, 2.6417, 1.5902, 1.9801, 1.504, 4.8537, 4.663,
       4.1078, 4.1754, 4.3343, 3.1437
     ),
-    pval = c(
+    p_value = c(
       0.5583, 0.663, 0.4572, 0.7339, 0.8901, 0.5605, 0.0487, 0.0712,
       0.3399, 0.3214, 0.3517, 0.8977
     )
@@ -620,7 +659,7 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
   expect_equal_result_tables(
     lsmeans_contrasts,
     expected_lsmeans_contrasts,
-    pval_name = "p.value"
+    pval_name = "p_value"
   )
 
   # Covariance matrix estimate.
@@ -719,7 +758,7 @@ test_that("s_mmrm works also with missing data", {
   )
 
   # Now compare LS means and their contrasts.
-  lsmeans_estimates <- mmrm_results$lsmeans$estimate[, c("ARMCD", "AVISIT", "emmean", "lower.CL", "upper.CL")]
+  lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
       c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
@@ -729,17 +768,17 @@ test_that("s_mmrm works also with missing data", {
       c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L),
       labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
     ),
-    emmean = c(
+    estimate = c(
       54.7786, 55.6373, 54.5002, 58.4318, 61.2261, 59.9917, 63.3977,
       63.9199, 64.6508, 71.2899, 69.5438, 69.987, 74.089, 73.7756,
       76.3282
     ),
-    lower.CL = c(
+    lower_cl = c(
       53.2579, 54.11, 52.8644, 56.7255, 59.5276, 58.338, 61.5672,
       62.2407, 62.7936, 69.3391, 67.6101, 68.0361, 71.6637, 71.4754,
       73.7687
     ),
-    upper.CL = c(
+    upper_cl = c(
       56.2994, 57.1647, 56.136, 60.1381, 62.9247, 61.6455, 65.2281,
       65.599, 66.5081, 73.2408, 71.4775, 71.9378, 76.5142, 76.0758,
       78.8876
@@ -752,7 +791,7 @@ test_that("s_mmrm works also with missing data", {
   )
 
   lsmeans_contrasts <-
-    mmrm_results$lsmeans$contrast[, c("ARMCD", "AVISIT", "estimate", "df", "lower.CL", "upper.CL", "p.value")]
+    mmrm_results$lsmeans$contrasts[, c("ARMCD", "AVISIT", "estimate", "df", "lower_cl", "upper_cl", "p_value")]
   expected_lsmeans_contrasts <- data.frame(
     ARMCD = factor(
       c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
@@ -767,15 +806,15 @@ test_that("s_mmrm works also with missing data", {
       -0.3134, 2.2392
     ),
     df = c(311, 311, 327, 327, 330, 330, 327, 326, 319, 320),
-    lower.CL = c(
+    lower_cl = c(
       -1.2969, -2.5123, 0.3867, -0.8163, -1.9619, -1.3544, -4.4937,
       -4.0616, -3.656, -1.2869
     ),
-    upper.CL = c(
+    upper_cl = c(
       3.0143, 1.9554, 5.202, 3.9361, 3.0063, 3.8607, 1.0014, 1.4556,
       3.0292, 5.7654
     ),
-    pval = c(
+    p_value = c(
       0.4337, 0.8064, 0.0231, 0.1975, 0.6795, 0.3451, 0.2121, 0.3535,
       0.8538, 0.2124
     )
@@ -783,7 +822,7 @@ test_that("s_mmrm works also with missing data", {
   expect_equal_result_tables(
     lsmeans_contrasts,
     expected_lsmeans_contrasts,
-    pval_name = "p.value"
+    pval_name = "p_value"
   )
 
   # Covariance matrix estimate.
@@ -880,7 +919,7 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
   )
 
   # Now compare LS means and their contrasts.
-  lsmeans_estimates <- mmrm_results$lsmeans$estimate[, c("ARMCD", "AVISIT", "emmean", "lower.CL", "upper.CL")]
+  lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
       c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
@@ -890,16 +929,16 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
       c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L),
       labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
     ),
-    emmean = c(
+    estimate = c(
       54.7381, 55.6694, 54.6168, 58.4295, 61.1979, 59.9931, 63.3701,
       63.938, 64.5566, 71.2327, 69.555, 69.9749, 74.0435, 73.827, 76.2532
     ),
-    lower.CL = c(
+    lower_cl = c(
       52.8532, 53.776, 52.5886, 56.5186, 59.2956, 58.1415, 61.4409,
       62.1698, 62.5992, 69.3389, 67.6778, 68.0813, 72.1323, 72.0149,
       74.2355
     ),
-    upper.CL = c(
+    upper_cl = c(
       56.623, 57.5629, 56.645, 60.3405, 63.1002, 61.8448, 65.2992,
       65.7062, 66.5139, 73.1264, 71.4322, 71.8685, 75.9546, 75.639,
       78.2709
@@ -912,7 +951,7 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
   )
 
   lsmeans_contrasts <-
-    mmrm_results$lsmeans$contrast[, c("ARMCD", "AVISIT", "estimate", "df", "lower.CL", "upper.CL", "p.value")]
+    mmrm_results$lsmeans$contrasts[, c("ARMCD", "AVISIT", "estimate", "df", "lower_cl", "upper_cl", "p_value")]
   expected_lsmeans_contrasts <- data.frame(
     ARMCD = factor(
       c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
@@ -927,15 +966,15 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
       -0.2165, 2.2097
     ),
     df = c(1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610),
-    lower.CL = c(
+    lower_cl = c(
       -1.7406, -2.8904, 0.07199, -1.0973, -2.0492, -1.5616, -4.345,
       -3.9353, -2.8502, -0.5697
     ),
-    upper.CL = c(
+    upper_cl = c(
       3.6033, 2.6479, 5.4647, 4.2245, 3.185, 3.9346, 0.9897, 1.4199,
       2.4172, 4.9892
     ),
-    pval = c(
+    p_value = c(
       0.4943, 0.9316, 0.0442, 0.2493, 0.6704, 0.3972, 0.2175, 0.357,
       0.8719, 0.1191
     )
@@ -943,7 +982,7 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
   expect_equal_result_tables(
     lsmeans_contrasts,
     expected_lsmeans_contrasts,
-    pval_name = "p.value"
+    pval_name = "p_value"
   )
 
   # Covariance matrix estimate.

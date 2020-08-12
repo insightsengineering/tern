@@ -342,9 +342,9 @@ test_that("t_mmrm_lsmeans works correctly", {
   result_subset <- result[6, ]
   expect_identical(row.names(result_subset), "Difference in Adjusted Means (SE) (vs. B: Placebo)")
   expect_identical(names(result_subset), c("B: Placebo", "A: Drug X", "C: Combination"))
-  lsmeans_result <- mmrm$lsmeans$contrast %>%
+  lsmeans_result <- mmrm$lsmeans$contrasts %>%
     dplyr::filter(AVISIT == "WEEK 1 DAY 8", ARM == "A: Drug X") %>%
-    `[`(c("estimate", "SE")) %>%
+    `[`(c("estimate", "se")) %>%
     as.numeric()
   expect_equal(
     result_subset[1, 2],

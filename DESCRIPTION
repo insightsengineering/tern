@@ -73,6 +73,7 @@ Collate:
     'formulas.R'
     'g_forest.R'
     'g_km.R'
+    'g_mmrm.R'
     'g_summary_by.R'
     'g_waterfall.R'
     'missing_data.R'
