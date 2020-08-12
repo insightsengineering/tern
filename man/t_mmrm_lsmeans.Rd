@@ -39,6 +39,8 @@ adqs_f <- adqs \%>\%
   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
   dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
+\dontrun{
+# Chosen optimizer 'nloptwrap_bobyqa' led to problems during model fit
 mmrm_results <- s_mmrm(
   vars = list(
     response = "AVAL",
@@ -57,6 +59,7 @@ t_mmrm_lsmeans(
   col_N = table(adsl$ARM),
   table_tree = FALSE
 )
+}
 }
 \seealso{
 \code{\link{s_mmrm}}

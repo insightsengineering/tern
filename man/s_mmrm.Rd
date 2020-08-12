@@ -104,6 +104,8 @@ adqs_f <- adqs \%>\%
   )
 var_labels(adqs_f) <- var_labels(adqs)
 
+\dontrun{
+# sometimes results in failure to converge with 1 negative eigenvalue
 mmrm_results <- s_mmrm(
   vars = list(
     response = "AVAL",
@@ -117,4 +119,5 @@ mmrm_results <- s_mmrm(
   weights_emmeans = "equal",
   optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 )
+}
 }

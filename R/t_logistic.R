@@ -126,7 +126,7 @@ t_logistic <- function(formula,
         } else {
           table_formats(s_term$main, header = header, row.name = main_rowname, row_format = "main")
         },
-        indent(do.call("rbind", lapply(1:nrow(summary_term), function(i) {
+        indent(do.call("rbind", lapply(seq_len(nrow(summary_term)), function(i) {
           row_i <- summary_term[i, , drop = FALSE]
           row_nm <- rownames(row_i)
           table_formats(
@@ -190,7 +190,7 @@ t_logistic <- function(formula,
               row.name = terms_label[[term]],
               row_format = "main"
             ),
-            indent(do.call("rbind", lapply(1:nrow(s_info$results[[term]]$summary), function(i) {
+            indent(do.call("rbind", lapply(seq_len(nrow(s_info$results[[term]]$summary)), function(i) {
               dfi <- s_info$results[[term]]$summary[i, , drop = FALSE]
               table_formats(
                 dfi = dfi,
@@ -264,7 +264,7 @@ t_logistic <- function(formula,
   rbind(
     rrowl(row.name = paste0("N = ", s_info$N)),
     rrow(),
-    do.call("rbind", lapply(1:length(table_term), function(i) {
+    do.call("rbind", lapply(seq_len(length(table_term)), function(i) {
       if (i == length(table_term)) {
         table_term[[i]]
       } else {
@@ -699,7 +699,7 @@ element_interaction <- function(info_xy,
   colnames(results_interaction) <- c("coef", "se", "p-value")
   results_interaction$df <- 1
   if (all(terms_type == "categorical")) {
-    n <- sapply(1:nrow(int_lookup), function(i) {
+    n <- sapply(seq_len(nrow(int_lookup)), function(i) {
       model_data[
         model_data[[names(info_xy)[1]]] == int_lookup[i, names(info_xy)[1]] &
           model_data[[names(info_xy[2])]] == int_lookup[i, names(info_xy)[2]], , drop = FALSE] %>%
@@ -709,7 +709,7 @@ element_interaction <- function(info_xy,
   } else if (all(terms_type == "continuous")) {
     rownames(results_interaction) <- paste0(int_lookup[[1]], " * ", int_lookup[[2]])
   } else {
-    n <- sapply(1:nrow(int_lookup), function(i) {
+    n <- sapply(seq_len(nrow(int_lookup)), function(i) {
       model_data[model_data[[cat]] == int_lookup[i, cat], , drop = FALSE] %>%
         nrow()
     })

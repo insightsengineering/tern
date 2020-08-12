@@ -88,7 +88,7 @@ test_that("t_summary results are as expected", {
   )
   tbl_tern <- t_summary(
     asl[, c("a", "b")],
-    asl$spec,
+    factor(asl$spec),
     f_numeric = c("se", "mean_sd", "ci"),
     conf_level = 0.8
   )

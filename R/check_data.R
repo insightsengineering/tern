@@ -237,16 +237,17 @@ check_binary_endpoint_args <- function(rsp, col_by, strata_data) {
 #' @param min a numeric value specifying the lower boundary (exclusive), with default value \code{0}
 #' @param max a numeric value specifying the upper boundary (exclusive), with default value \code{1}
 #'
+#' @noRd
+#'
 #' @importFrom utils.nest is_numeric_single
+#'
 #' @examples
 #' conf.init <- 0.7
 #' tern:::check_numeric_range(conf.init)
 #'
 #' # below produces error
 #' quantiles <- c(0, 1.2)
-#' \donttest{
 #' tern:::check_numeric_range(quantiles)
-#' }
 check_numeric_range <- function(x, min = 0, max = 1) {
   stopifnot(
     is_numeric_single(min) && is_numeric_single(max),

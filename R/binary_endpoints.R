@@ -771,7 +771,7 @@ t_el_multinomial_proportion <- function(rsp_multinomial, col_by, conf_level = 0.
   check_is_factor(sas_na(rsp_multinomial, empty = TRUE, whitespaces = TRUE), allow_na = FALSE)
   stopifnot(is.character(levels_without_ci) || is.null(levels_without_ci))
 
-  l_tbls <- lapply(levels(rsp_multinomial), function(level_i){
+  l_tbls <- lapply(levels(rsp_multinomial), function(level_i) {
 
     if (level_i %in% unique(levels_without_ci)) {
 

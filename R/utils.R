@@ -460,7 +460,7 @@ rreplace_format.rtable <- function(x,
                                    old = FALSE,
                                    new = function(x, output) "") {
 
-  if (is.null(row)) row <- 1:nrow(x)
+  if (is.null(row)) row <- seq_len(nrow(x))
   x[row] <- lapply(x[row], rreplace_format, col = col, old = old, new = new)
   return(x)
 
@@ -478,7 +478,7 @@ rreplace_format.rtable <- function(x,
 #' @param new The replacement format.
 #'
 #' @export
-rreplace_format.rrow <- function(x,
+rreplace_format.rrow <- function(x, # nolint
                                  row = NULL,
                                  col = NULL,
                                  old = FALSE,

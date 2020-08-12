@@ -1798,7 +1798,7 @@ t_cox_multivariate <- function(formula, data,
       } else {
 
         row_content <- split(coefs[[term_labs]], rownames(coefs[[term_labs]]))
-        if (length(row_content) == 1){
+        if (length(row_content) == 1) {
           row_content[[1]][4] <- pval_cov[term_labs]
         }
         row_content <- rtablel(

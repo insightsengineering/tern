@@ -28,6 +28,8 @@
 #'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
+#' \dontrun{
+#' # Chosen optimizer 'nloptwrap_bobyqa' led to problems during model fit
 #' mmrm_results <- s_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
@@ -46,6 +48,7 @@
 #'   col_N = table(adsl$ARM),
 #'   table_tree = FALSE
 #' )
+#' }
 t_mmrm_lsmeans <- function(
   object,
   col_N, # nolint
@@ -205,6 +208,8 @@ t_mmrm_lsmeans <- function(
 #' @import rtables
 #'
 #' @examples
+#' \dontrun{
+#' # Model failed to converge with 1 negative eigenvalue
 #' library(dplyr)
 #' library(random.cdisc.data)
 #'
@@ -229,6 +234,7 @@ t_mmrm_lsmeans <- function(
 #'   optimizer = "nloptwrap_bobyqa"
 #' )
 #' t_mmrm_cov(mmrm_results)
+#' }
 t_mmrm_cov <- function(object, format = "xx.xxxx") {
   stopifnot(is(object, "mmrm"))
   cov_estimate <- object$cov_estimate

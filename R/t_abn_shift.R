@@ -279,14 +279,14 @@ t_el_abn_shift <- function(rri_ana,
              lapply(base_status, function(x) {
                cells <- lapply(sum_col, function(y) y[[x]])
                cell_2 <- lapply(cells, function(i) i[2])
-               if (any(cell_2 != 0)){
+               if (any(cell_2 != 0)) {
                  rrowl(x, cells, format = format_factor_perc)
                }
              }))
     )
     tbl <- header_add_N(tbl, col_N)
     tbl <- row_names_as_col(tbl, c("", "Baseline Status"))
-    if (dim(tbl)[1] > 0){
+    if (dim(tbl)[1] > 0) {
       row.names(tbl) <- c(abn, rep("", dim(tbl)[1] - 1))
       tbl
     } else {

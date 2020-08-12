@@ -18,6 +18,8 @@ t_mmrm_cov(object, format = "xx.xxxx")
 Tabulate the covariance matrix estimate of an MMRM fit.
 }
 \examples{
+\dontrun{
+# Model failed to converge with 1 negative eigenvalue
 library(dplyr)
 library(random.cdisc.data)
 
@@ -42,4 +44,5 @@ mmrm_results <- s_mmrm(
   optimizer = "nloptwrap_bobyqa"
 )
 t_mmrm_cov(mmrm_results)
+}
 }

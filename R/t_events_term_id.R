@@ -251,7 +251,7 @@ t_events_per_term_id <- function(terms,
         node@children,
         function(child) {
           tbl <- child@content
-          -sum(vapply(tbl[[1]][1:ncol(tbl)], `[`, numeric(1), 1)) #- to reverse order
+          -sum(vapply(tbl[[1]][seq_len(ncol(tbl))], `[`, numeric(1), 1)) #- to reverse order
         },
         numeric(1)
       ))

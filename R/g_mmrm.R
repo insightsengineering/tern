@@ -99,16 +99,16 @@ g_mmrm_lsmeans <-
 
   pd <- position_dodge2(width, preserve = "total", padding = .2)
   result <- ggplot(
-      plot_data,
-      aes_string(
-        x = v$visit,
-        y = "estimate",
-        colour = v$arm,
-        group = v$arm,
-        ymin = "lower_cl",
-        ymax = "upper_cl"
-      )
-    ) +
+    plot_data,
+    aes_string(
+      x = v$visit,
+      y = "estimate",
+      colour = v$arm,
+      group = v$arm,
+      ymin = "lower_cl",
+      ymax = "upper_cl"
+    )
+  ) +
     geom_errorbar(width = width, position = pd) +
     geom_point(position = pd) +
     expand_limits(x = 0) +

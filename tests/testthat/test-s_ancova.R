@@ -3,9 +3,8 @@ context("test s_ancova and associated helper functions")
 library(dplyr)
 
 test_that("s_ancova_items works with healthy inputs", {
-  testfun <- function(formula,
-                      data) {
-    s_ancova_items(
+  testfun <- function(formula, data) {
+    tern:::s_ancova_items(
       formula = formula,
       cl = match.call(),
       data = data,
@@ -30,9 +29,8 @@ test_that("s_ancova_items works with healthy inputs", {
 })
 
 test_that("s_ancova_items by default discards missing data, but respects `na.action` attribute of `data`", {
-  testfun <- function(formula,
-                      data) {
-    s_ancova_items(
+  testfun <- function(formula, data) {
+    tern:::s_ancova_items(
       formula = formula,
       cl = match.call(),
       data = data,
@@ -65,6 +63,17 @@ test_that("s_ancova_items by default discards missing data, but respects `na.act
   expect_error(testfun(formula, data), "missing values in object")
 })
 
+
+# package version dependent sometimes returns factor or character
+match_char_fct <- function(x) {
+  if (is.factor(x)) {
+    function(x) factor(x)
+  } else {
+    function(x) x
+  }
+}
+
+
 test_that("s_ancova works with healthy inputs", {
   formula <- y ~ x + arm(group)
   set.seed(123)
@@ -74,6 +83,9 @@ test_that("s_ancova works with healthy inputs", {
     group = factor(rep(1:2, 5))
   )
   result <- s_ancova(formula, data)
+
+  f_coerce <- match_char_fct(result$sum_contrasts$contrast)
+
   expected <- list(
     sum_fit = data.frame(
       group = factor(c(1, 2)),
@@ -86,7 +98,7 @@ test_that("s_ancova works with healthy inputs", {
       n_complete = c(5, 5)
     ),
     sum_contrasts = data.frame(
-      contrast = factor("2 - 1"),
+      contrast = f_coerce("2 - 1"),
       estimate = 0.09876,
       SE = 0.582,
       df = 7,
@@ -112,6 +124,8 @@ test_that("s_ancova works with missing values in `data`", {
   data$x[2] <- NA
   data$group[3] <- NA
   result <- s_ancova(formula, data)
+  f_coerce <- match_char_fct(result$sum_contrasts$contrast)
+
   expected <- list(
     sum_fit = data.frame(
       group = factor(c(1, 2)),
@@ -124,7 +138,7 @@ test_that("s_ancova works with missing values in `data`", {
       n_complete = c(3, 4)
     ),
     sum_contrasts = data.frame(
-      contrast = factor("2 - 1"),
+      contrast = f_coerce("2 - 1"),
       estimate = 0.3732,
       SE = 0.6606,
       df = 4,

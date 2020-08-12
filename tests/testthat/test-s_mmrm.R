@@ -496,7 +496,8 @@ get_adqs <- function(version = c("A", "B")) {
         as.factor() %>%
         as.numeric() %>%
         as.factor()
-    ) %>% {
+    ) %>%
+    { # nolint
       if (version == "B") {
         dplyr::mutate(
           .,

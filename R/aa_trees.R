@@ -619,7 +619,6 @@ get_indent_header <- function(old_header, header_labels) {
 #' Returns output to be displayed with cat()
 #'
 #' @param x object of type \link{node}
-#' @param ... other arguments
 #'
 #' @export recursive_get_label
 setGeneric(

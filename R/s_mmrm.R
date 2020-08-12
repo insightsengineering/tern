@@ -151,7 +151,7 @@ build_mmrm_formula <- function(
 #'
 #' @importFrom lme4 getME
 #' @importFrom stats sigma
-get_lme4_cov_estimate <- function(fit){
+get_lme4_cov_estimate <- function(fit) {
   stopifnot(is(fit, "merMod"))
   # A list of the grouping variables (factors) involved in the random effect terms.
   grouping_factors <- lme4::getME(fit, "flist")
@@ -394,6 +394,8 @@ fit_lme4 <- function(
 #' @importFrom dplyr filter group_by_at left_join mutate n summarise rename ungroup
 #' @importFrom rlang := !!
 #' @importFrom rtables var_labels
+#' @importFrom rlang .data
+#'
 get_mmrm_lsmeans <- function(fit,
                              vars,
                              conf_level,
@@ -416,10 +418,10 @@ get_mmrm_lsmeans <- function(fit,
   estimates <- confint(lsmeans, level = conf_level) %>%
     as.data.frame() %>%
     dplyr::rename(
-      estimate = emmean,
-      se = SE,
-      lower_cl = lower.CL,
-      upper_cl = upper.CL
+      estimate = .data$emmean,
+      se = .data$SE,
+      lower_cl = .data$lower.CL,
+      upper_cl = .data$upper.CL
     )
 
   data_n <- data_complete %>%
@@ -427,7 +429,8 @@ get_mmrm_lsmeans <- function(fit,
     dplyr::summarise(n = dplyr::n()) %>%
     dplyr::ungroup()
 
-  estimates <- suppressWarnings(  # We don't have labels in `estimates`, which triggers a warning.
+  estimates <- suppressWarnings(
+    # We don't have labels in `estimates`, which triggers a warning.
     estimates %>%
       dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
   )
@@ -469,11 +472,11 @@ get_mmrm_lsmeans <- function(fit,
     dplyr::left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
     dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
     dplyr::rename(
-      se = SE,
-      lower_cl = lower.CL,
-      upper_cl = upper.CL,
-      t_stat = t.ratio,
-      p_value = p.value
+      se = .data$SE,
+      lower_cl = .data$lower.CL,
+      upper_cl = .data$upper.CL,
+      t_stat = .data$t.ratio,
+      p_value = .data$p.value
     )
 
   results <- list(
@@ -566,6 +569,8 @@ get_mmrm_lsmeans <- function(fit,
 #'   )
 #' var_labels(adqs_f) <- var_labels(adqs)
 #'
+#' \dontrun{
+#' # sometimes results in failure to converge with 1 negative eigenvalue
 #' mmrm_results <- s_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
@@ -579,6 +584,7 @@ get_mmrm_lsmeans <- function(fit,
 #'   weights_emmeans = "equal",
 #'   optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 #' )
+#' }
 s_mmrm <- function(
   vars = list(
     response = "AVAL",

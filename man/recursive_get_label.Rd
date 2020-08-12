@@ -11,8 +11,6 @@ recursive_get_label(x)
 }
 \arguments{
 \item{x}{object of type \link{node}}
-
-\item{...}{other arguments}
 }
 \description{
 Returns output to be displayed with cat()
