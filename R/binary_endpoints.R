@@ -1416,16 +1416,20 @@ t_binary_outcome <- function(rsp,
       NULL
     }
 
-    insert_rrow(
-      indent(
-        rbind(
-          tbl_u_difference,
-          tbl_u_test,
-          tbl_u_odds_ratio
-        ),
-      1),
-      rrow("Unstratified Analysis")
-    )
+    if (any(!is.null(c(tbl_u_difference, tbl_u_test, tbl_u_odds_ratio)))) {
+      insert_rrow(
+        indent(
+          rbind(
+            tbl_u_difference,
+            tbl_u_test,
+            tbl_u_odds_ratio
+          ),
+          1),
+        rrow("Unstratified Analysis")
+      )
+    } else {
+      NULL
+    }
 
   } else {
     NULL
@@ -1490,30 +1494,35 @@ t_binary_outcome <- function(rsp,
     }
 
     n_strata <- length(strata_data)
-    tbl_footer <- rtable(
-      header = header(tbl_response),
-      rrow(
-        paste(
-          "* Model stratified by",
-          ifelse(
-            n_strata < 2,
-            names(strata_data),
-            paste(paste(names(strata_data)[-n_strata], collapse = ", "), "and", names(strata_data)[(n_strata)])
+
+    if (any(!is.null(c(tbl_s_difference, tbl_s_test, tbl_s_odds_ratio)))) {
+      tbl_footer <- rtable(
+        header = header(tbl_response),
+        rrow(
+          paste(
+            "* Model stratified by",
+            ifelse(
+              n_strata < 2,
+              names(strata_data),
+              paste(paste(names(strata_data)[-n_strata], collapse = ", "), "and", names(strata_data)[(n_strata)])
+            )
           )
         )
       )
-    )
 
-    insert_rrow(
-      indent(
-        rbind(
-          tbl_s_difference,
-          tbl_s_test,
-          tbl_s_odds_ratio),
-        1
-      ),
-      rrow("Stratified Analysis*")
-    )
+      insert_rrow(
+        indent(
+          rbind(
+            tbl_s_difference,
+            tbl_s_test,
+            tbl_s_odds_ratio),
+          1
+        ),
+        rrow("Stratified Analysis*")
+      )
+    } else {
+      NULL
+    }
 
   } else {
     NULL
