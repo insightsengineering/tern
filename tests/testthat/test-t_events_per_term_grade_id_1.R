@@ -184,7 +184,7 @@ test_that("adverse events sorted by highest NCI CTCAE grade (class and term)", {
   anl$AEBODSYS[anl$AEBODSYS == ""] <- NA
   anl$AEDECOD[anl$AEDECOD == ""] <- NA
   anl <- anl %>%
-    filter(!is.na(AETOXGR)) %>%
+    dplyr::filter(!is.na(AETOXGR)) %>%
     var_relabel(
       AEBODSYS = "MedDRA System Organ Class",
       AEDECOD = "MedDRA Preferred Term",

@@ -178,10 +178,10 @@ t_coxreg(
 ## COXT01: Other example, other data
 library(dplyr)
 ADSL <- radsl(cached = TRUE)
-ADSL <- ADSL \%>\% filter(SEX \%in\% c("F", "M"))
+ADSL <- ADSL \%>\% dplyr::filter(SEX \%in\% c("F", "M"))
 
 ADTTE <- radtte(ADSL, seed = 2) \%>\%
-    filter(PARAMCD == "PFS" & ARMCD != "ARM C")
+    dplyr::filter(PARAMCD == "PFS" & ARMCD != "ARM C")
 ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 ADTTE$SEX <- droplevels(ADTTE$SEX)
 t_coxreg(

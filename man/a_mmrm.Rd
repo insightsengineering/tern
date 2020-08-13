@@ -55,10 +55,10 @@ library(dplyr)
 ADSL <- radsl(cached = TRUE)
 ADQS <- radqs(cached = TRUE)
 ADQS_f <- ADQS \%>\%
-  filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%
-  mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
-  mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
+  dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
+  dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
 \dontrun{
 # currently not executed because the algorithm to obtain the

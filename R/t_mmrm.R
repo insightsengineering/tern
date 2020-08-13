@@ -264,6 +264,70 @@ t_mmrm_cov <- function(object, format = "xx.xxxx") {
   return(result)
 }
 
+#' Tabulate the diagnostic statistics of an MMRM fit.
+#'
+#' @inheritParams t_mmrm_lsmeans
+#' @param format \code{rtables} format for the numbers (default is \code{"xx.xxxx"})
+#'
+#' @return \code{rtable} object with the model fit diagnostics
+#' @export
+#'
+#' @import rtables
+#'
+#' @examples
+#' library(dplyr)
+#' library(random.cdisc.data)
+#'
+#' adsl <- radsl(cached = TRUE)
+#' adqs <- radqs(cached = TRUE)
+#' adqs_f <- adqs %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'
+#' mmrm_results <- s_mmrm(
+#'   vars = list(
+#'     response = "AVAL",
+#'     covariates = c("STRATA1", "BMRKR2"),
+#'     id = "USUBJID",
+#'     arm = "ARM",
+#'     visit = "AVISIT"
+#'   ),
+#'   data = adqs_f,
+#'   cor_struct = "random-quadratic",
+#'   optimizer = "nloptwrap_bobyqa"
+#' )
+#' t_mmrm_diagnostic(mmrm_results)
+t_mmrm_diagnostic <- function(object, format = "xx.xxxx") {
+  stopifnot(is(object, "mmrm"))
+  diagnostics <- object$diagnostics
+
+  one_row <- function(row_i, row_name_i) {
+    do.call(
+      rrow,
+      c(
+        list(row_i),
+        row.name = row_name_i,
+        format = format
+      )
+    )
+  }
+
+  result <- do.call(
+    rtable,
+    c(
+      list(header = c("Diagnostic statistic value")),
+      Map(
+        one_row,
+        row_i = diagnostics,
+        row_name_i = names(diagnostics)
+      )
+    )
+  )
+  return(result)
+}
+
 #' Mix model with repeated measurements (MMRM) model
 #'
 #' The MMRM table function summarizes MMRM test results by visit and groups. The
@@ -513,10 +577,10 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #' ADSL <- radsl(cached = TRUE)
 #' ADQS <- radqs(cached = TRUE)
 #' ADQS_f <- ADQS %>%
-#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
-#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
 #' \dontrun{
 #' # currently not executed because the algorithm to obtain the

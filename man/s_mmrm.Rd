@@ -48,6 +48,7 @@ An \code{mmrm} object which is a list with MMRM results:
   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
   \item{cov_estimate}{The matrix with the covariance matrix estimate.}
+  \item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
   \item{lsmeans}{This is a list with data frames \code{estimates} and \code{contrasts}.}
   \item{vars}{The variable list.}
   \item{labels}{Corresponding list with variable labels extracted from \code{data}.}

@@ -161,10 +161,10 @@ to_rtable(tbl3)
 
 # when there's single arm
 library(dplyr)
-ADSL <- radsl(cached = TRUE) \%>\% filter(ARM == "C: Combination") \%>\% droplevels()
+ADSL <- radsl(cached = TRUE) \%>\% dplyr::filter(ARM == "C: Combination") \%>\% droplevels()
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%
-  filter(PARAMCD == "EFS" & BMEASIFL == "Y" & ARM == "C: Combination") \%>\%
+  dplyr::filter(PARAMCD == "EFS" & BMEASIFL == "Y" & ARM == "C: Combination") \%>\%
   droplevels()
 
 t_tte(

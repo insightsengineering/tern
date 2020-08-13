@@ -192,6 +192,42 @@ get_lme4_cov_estimate <- function(fit) {
   return(result)
 }
 
+#' Compute the model diagnostic statistics for a linear mixed model fit
+#'
+#' @param fit object of class \code{lmerModLmerTest} fit with REML using \code{\link[lmerTest]{lmer}}
+#' @param cov_est the covariance estimate coming from \code{\link{get_lme4_cov_estimate}}
+#'
+#' @return a list with the REML criterion, the AIC, AICc and BIC.
+#'
+#' @details AICc is here defined as
+#' \deqn{-2 * loglik + 2 * df * (m / (m - df - 1))}
+#' where \code{loglik} is the restricted log likelihood value, \code{df} is the number of covariance parameters
+#' and \code{m} is the number of observations minus the number of fixed effects, or \code{df + 2} if it is smaller
+#' than that. The same \code{df} is used for AIC and BIC. Note that for BIC, the \code{n} used is the number of
+#' subjects (instead of the number of observations as in AIC and AICc). This matches the definitions in SAS.
+#'
+#' @importFrom lme4 isREML getME
+#' @importFrom stats logLik
+get_lme4_diagnostics <- function(fit,
+                                 cov_est = get_lme4_cov_estimate(fit)) {
+  stopifnot(is(fit, "lmerModLmerTest"))
+  stopifnot(lme4::isREML(fit))
+
+  n_obs <- lme4::getME(fit, "n")
+  df <- attr(cov_est, "n_parameters")
+  m <- max(df + 2, n_obs - lme4::getME(fit, "p"))
+  log_lik <- as.numeric(stats::logLik(fit))
+  n_subjects <- as.numeric(lme4::getME(fit, "l_i"))
+
+  result <- list(
+    "REML criterion" = -2 * log_lik,
+    AIC = -2 * log_lik + 2 * df,
+    AICc = -2 * log_lik + 2 * df * (m / (m - df - 1)),
+    BIC = -2 * log_lik + df * log(n_subjects)
+  )
+  return(result)
+}
+
 #' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
 #'
 #' @param formula the lme4 formula
@@ -542,6 +578,7 @@ get_mmrm_lsmeans <- function(fit,
 #'   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
 #'     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
 #'   \item{cov_estimate}{The matrix with the covariance matrix estimate.}
+#'   \item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
 #'   \item{lsmeans}{This is a list with data frames \code{estimates} and \code{contrasts}.}
 #'   \item{vars}{The variable list.}
 #'   \item{labels}{Corresponding list with variable labels extracted from \code{data}.}
@@ -603,25 +640,31 @@ s_mmrm <- function(
   check_conf_level(conf_level)
 
   formula <- build_mmrm_formula(vars, cor_struct)
+
   fit <- fit_lme4(
     formula = formula,
     data = data,
     optimizer = optimizer
   )
+
   lsmeans <- get_mmrm_lsmeans(
     fit = fit,
     vars = vars,
     conf_level = conf_level,
     weights = weights_emmeans
   )
+
   cov_estimate <- get_lme4_cov_estimate(fit)
   id_rows <- which(fit@frame[[vars$id]] == attr(cov_estimate, "id"))
   visits <- fit@frame[[vars$visit]][id_rows]
   rownames(cov_estimate) <- colnames(cov_estimate) <- as.character(visits)
 
+  diagnostics <- get_lme4_diagnostics(fit, cov_est = cov_estimate)
+
   results <- list(
     fit = fit,
     cov_estimate = cov_estimate,
+    diagnostics = diagnostics,
     lsmeans = lsmeans,
     vars = vars,
     labels = labels,

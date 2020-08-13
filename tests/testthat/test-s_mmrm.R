@@ -300,6 +300,23 @@ test_that("get_lme4_cov_estimate works as expected with a random intercept model
   )
 })
 
+test_that("get_lme4_diagnostics works as expected with a random slope model", {
+  fit <- fit_lme4(
+    formula = Reaction ~ Days + (Days | Subject),
+    data = lme4::sleepstudy
+  )
+  result <- get_lme4_diagnostics(fit)
+  # Expected value from SAS, see
+  # https://github.roche.com/sabanesd/allinR/blob/master/mmrm/comparison/test_mmrm_4.R
+  expected <- list(
+    "REML criterion" = 1743.6,
+    AIC = 1751.6,
+    AICc = 1751.9,
+    BIC = 1755.2
+  )
+  expect_equal(result, expected, tol = 0.0001)
+})
+
 test_that("fit_lme4_single_optimizer correctly captures warnings and messages", {
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
@@ -555,7 +572,7 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
   expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
     17672.9,
-    tol = 0.1
+    tol = 0.0001
   )
 
   # Fixed effects estimates.
@@ -682,6 +699,17 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
     check.attributes = FALSE,
     tol = 0.001
   )
+
+  # Diagnostics.
+  diagnostics <- mmrm_results$diagnostics
+  diagnostics_values <- unlist(diagnostics)
+  expected_diagnostics_values <- c(17672.9, 17714.9, 17715.3, 17798.7)
+  expect_equal(
+    diagnostics_values,
+    expected_diagnostics_values,
+    tol = 0.00001,
+    check.attributes = FALSE
+  )
 })
 
 test_that("s_mmrm works also with missing data", {
@@ -721,7 +749,7 @@ test_that("s_mmrm works also with missing data", {
   expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
     12003.9,
-    tol = 0.1
+    tol = 0.00001
   )
 
   # Fixed effects estimates.
@@ -844,6 +872,17 @@ test_that("s_mmrm works also with missing data", {
     check.attributes = FALSE,
     tol = 0.001
   )
+
+  # Diagnostics.
+  diagnostics <- mmrm_results$diagnostics
+  diagnostics_values <- unlist(diagnostics)
+  expected_diagnostics_values <- c(12003.9, 12033.9, 12034.2, 12093.8)
+  expect_equal(
+    diagnostics_values,
+    expected_diagnostics_values,
+    tol = 0.00001,
+    check.attributes = FALSE
+  )
 })
 
 test_that("s_mmrm works with compound symmetry covariance structure", {
@@ -882,7 +921,7 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
   expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
     12088.3,
-    tol = 0.1
+    tol = 0.0001
   )
 
   # Fixed effects estimates.
@@ -1003,5 +1042,16 @@ test_that("s_mmrm works with compound symmetry covariance structure", {
     expected_cov_estimate,
     check.attributes = FALSE,
     tol = 0.001
+  )
+
+  # Diagnostics.
+  diagnostics <- mmrm_results$diagnostics
+  diagnostics_values <- unlist(diagnostics)
+  expected_diagnostics_values <- c(12088.3, 12092.3, 12092.4, 12100.3)
+  expect_equal(
+    diagnostics_values,
+    expected_diagnostics_values,
+    tol = 0.00001,
+    check.attributes = FALSE
   )
 })

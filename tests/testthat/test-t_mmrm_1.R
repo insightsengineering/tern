@@ -389,3 +389,39 @@ test_that("t_mmrm_cov works correctly", {
     rcell(cov_result, format = "xx.xx")
   )
 })
+
+test_that("t_mmrm_diagnostic works correctly", {
+  anl <- get_anl() %>%
+    mutate(
+      ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
+      AVISIT = factor(AVISIT)
+    )
+  asl <- unique(anl[, c("USUBJID", "ARM")])
+
+  mmrm <- s_mmrm(
+    vars = list(
+      response = "AVAL",
+      visit = "AVISIT",
+      arm = "ARM",
+      covariates = c("BMRKR2"),
+      id = "USUBJID"
+    ),
+    data = anl,
+    cor_struct = "random-quadratic"
+  )
+  result <- t_mmrm_diagnostic(mmrm, format = "xx.xx")
+
+  # Note: We don't check here the correctness of all resulting numbers as this is done when testing `s_mmrm`.
+  # We just do an automatic spot check.
+  result_subset <- result[3, ]
+  expect_identical(unname(row.names(result_subset)), "AICc")
+  expect_identical(
+    names(result_subset),
+    "Diagnostic statistic value"
+  )
+  diagnostic_result <- mmrm$diagnostics$AICc
+  expect_equal(
+    result_subset[1, 1],
+    rcell(diagnostic_result, format = "xx.xx")
+  )
+})
