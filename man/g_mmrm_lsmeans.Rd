@@ -26,8 +26,7 @@ g_mmrm_lsmeans(
 
 \item{width}{width of the error bars.}
 
-\item{show_pval}{should the p-values for the differences of LS means vs. control be displayed (not default)? Note
-that this is an experimental feature and will be further improved.}
+\item{show_pval}{should the p-values for the differences of LS means vs. control be displayed (not default)?}
 }
 \value{
 a \code{ggplot2} plot
