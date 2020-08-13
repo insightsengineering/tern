@@ -425,3 +425,84 @@ test_that("t_mmrm_diagnostic works correctly", {
     rcell(diagnostic_result, format = "xx.xx")
   )
 })
+
+test_that("as.rtable.data.frame works correctly", {
+  set.seed(12, kind = "Mersenne-Twister")
+  x <- data.frame(
+    a = 1:10,
+    b = rnorm(10)
+  )
+  result <- as.rtable(x)
+  result_subset <- result[5, ]
+  expect_identical(unname(row.names(result_subset)), "5")
+  expect_identical(
+    names(result_subset),
+    c("a", "b")
+  )
+  expect_equal(
+    result_subset[1, 2],
+    rcell(-2, format = "xx.xx"),
+    tol = 1e-2
+  )
+})
+
+test_that("cbind.rtable works correctly", {
+  table1 <- as.rtable(data.frame(a = 5, b = 3))
+  table2 <- as.rtable(data.frame(c = 5, d = 9))
+  table3 <- as.rtable(data.frame(bla = 10))
+  result <- cbind(table1, table2, table3)
+  expect_identical(
+    names(result),
+    c("a", "b", "c", "d", "bla")
+  )
+  expect_identical(
+    table3[1, 1],
+    result[1, 5]
+  )
+})
+
+test_that("t_mmrm_fixed works correctly", {
+  anl <- get_anl() %>%
+    mutate(
+      ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
+      AVISIT = factor(AVISIT)
+    )
+  asl <- unique(anl[, c("USUBJID", "ARM")])
+
+  mmrm <- s_mmrm(
+    vars = list(
+      response = "AVAL",
+      visit = "AVISIT",
+      arm = "ARM",
+      covariates = c("BMRKR2"),
+      id = "USUBJID"
+    ),
+    data = anl,
+    cor_struct = "random-quadratic"
+  )
+  result <- t_mmrm_fixed(mmrm, format = "xx.xxxx")
+
+  # Note: We don't check here the correctness of all resulting numbers.
+  # We just do an automatic spot check.
+  result_subset <- result[5, ]
+  expect_identical(unname(row.names(result_subset)), "ARMC: Combination")
+  expect_identical(
+    names(result_subset),
+    c("Estimate", "Std. Error", "t value", "df", "Pr(>|t|)")
+  )
+  expect_equal(
+    result_subset[1, 1],
+    rcell(-3.3034, format = "xx.xxxx"),
+    tol = 1e-5
+  )
+  expect_equal(
+    result_subset[1, 4],
+    rcell(89, format = "xx."),
+    tol = 1e-2
+  )
+  expect_equal(
+    result_subset[1, 5],
+    rcell(0.3143, format = "x.xxxx | (<0.0001)"),
+    tol = 1e-4
+  )
+})

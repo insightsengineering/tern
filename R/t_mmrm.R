@@ -197,6 +197,57 @@ t_mmrm_lsmeans <- function(
   return(result)
 }
 
+#' Helper method to convert a \code{data.frame} into \code{rtable}.
+#'
+#' @param x the data frame
+#' @param format the format
+#' @return the \code{rtables} object
+#'
+#' @note This could eventually be moved to the \code{rtables} package. Currently we are not doing that
+#'   because of the upcoming major change of that package.
+#'
+#' @export
+as.rtable.data.frame <- function(x, format = "xx.xx") { # nousage # nolint 
+  do.call(
+    rtable,
+    c(
+      list(
+        header = names(x),
+        format = format
+      ),
+      Map(
+      function(row, row.name) {
+        do.call(rrow,
+                c(as.list(unname(row)),
+                  row.name = row.name))
+      },
+      row = as.data.frame(t(x)), row.name = rownames(x)
+      )
+    )
+  )
+}
+
+#' Helper function to \code{cbind} multiple \code{rtable} objects together.
+#'
+#' @param ... all \code{rtable} objects
+#'
+#' @return the resulting \code{rtable}
+#'
+#' @note This could eventually be moved to the \code{rtables} package. Currently we are not doing that
+#'   because of the upcoming major change of that package.
+#'
+#' @importFrom rtables cbind_rtables
+#' @export
+cbind.rtable <- function(...) { # nousage # nolint 
+  all_args <- list(...)
+  stopifnot(all(sapply(all_args, is, "rtable")))
+  current <- all_args[[1]]
+  while (length(all_args <- all_args[-1]) > 0) {
+    current <- rtables::cbind_rtables(current, all_args[[1]])
+  }
+  return(current)
+}
+
 #' Tabulate the covariance matrix estimate of an MMRM fit.
 #'
 #' @inheritParams t_mmrm_lsmeans
@@ -238,29 +289,56 @@ t_mmrm_lsmeans <- function(
 t_mmrm_cov <- function(object, format = "xx.xxxx") {
   stopifnot(is(object, "mmrm"))
   cov_estimate <- object$cov_estimate
+  result <- as.rtable(as.data.frame(cov_estimate), format = format)
+  return(result)
+}
 
-  one_row <- function(row_i, row_name_i) {
-    do.call(
-      rrow,
-      c(
-        as.list(row_i),
-        row.name = row_name_i,
-        format = format
-      )
-    )
-  }
-
-  result <- do.call(
-    rtable,
-    c(
-      list(header = colnames(cov_estimate)),
-      Map(
-        one_row,
-        row_i = as.data.frame(t(cov_estimate)),
-        row_name_i = rownames(cov_estimate)
-      )
-    )
-  )
+#' Tabulate the fixed effect estimates of an MMRM fit.
+#'
+#' @inheritParams t_mmrm_lsmeans
+#' @param format \code{rtables} format for the numbers other than degrees of freedom and p-values
+#'   (default is \code{"xx.xxxx"})
+#'
+#' @return \code{rtable} object with the fixed effect estimates, standard errors,
+#'   degrees of freedom, t-statistics, and p-values.
+#' @export
+#'
+#' @import rtables
+#'
+#' @examples
+#' library(dplyr)
+#' library(random.cdisc.data)
+#'
+#' adsl <- radsl(cached = TRUE)
+#' adqs <- radqs(cached = TRUE)
+#' adqs_f <- adqs %>%
+#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   droplevels() %>%
+#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'
+#' mmrm_results <- s_mmrm(
+#'   vars = list(
+#'     response = "AVAL",
+#'     covariates = c("STRATA1", "BMRKR2"),
+#'     id = "USUBJID",
+#'     arm = "ARM",
+#'     visit = "AVISIT"
+#'   ),
+#'   data = adqs_f,
+#'   cor_struct = "random-quadratic",
+#'   optimizer = "nloptwrap_bobyqa"
+#' )
+#' t_mmrm_fixed(mmrm_results)
+t_mmrm_fixed <- function(object, format = "xx.xxxx") {
+  stopifnot(is(object, "mmrm"))
+  fixed_table <- as.data.frame(coef(summary(object$fit)))
+  pvalue_column <- match("Pr(>|t|)", names(fixed_table))
+  df_column <- match("df", names(fixed_table))
+  pvalue_table <- as.rtable(fixed_table[, pvalue_column, drop = FALSE], format = "x.xxxx | (<0.0001)")
+  df_table <- as.rtable(fixed_table[, df_column, drop = FALSE], format = "xx.")  # xx. rounds to 0 digits.
+  remaining_table <- as.rtable(fixed_table[, - c(df_column, pvalue_column), drop = FALSE], format = format)
+  result <- cbind(remaining_table, df_table, pvalue_table)
   return(result)
 }
 
