@@ -103,7 +103,7 @@ g_mmrm_diagnostic <- function(
       ylab("Standardized residuals") +
       geom_abline(intercept = 0, slope = 1) +
       facet_grid(stats::as.formula(paste(". ~", vars$visit)))
-    if(!is.null(z_threshold)) {
+    if (!is.null(z_threshold)) {
       label_data <- plot_data
       label_data$label <- ifelse(
         abs(plot_data$y) > z_threshold,
