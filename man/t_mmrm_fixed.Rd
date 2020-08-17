@@ -10,7 +10,7 @@ t_mmrm_fixed(object, format = "xx.xxxx")
 \item{object}{the MMRM model result produced by \code{\link{s_mmrm}}.}
 
 \item{format}{\code{rtables} format for the numbers other than degrees of freedom and p-values
-(default is \code{"xx.xxxx"})}
+(default is \code{"xx.xxxx"}).}
 }
 \value{
 \code{rtable} object with the fixed effect estimates, standard errors,

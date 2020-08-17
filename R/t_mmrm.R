@@ -8,6 +8,9 @@
 #'
 #' @param object the MMRM model result produced by \code{\link{s_mmrm}}.
 #' @inheritParams argument_convention
+#' @param show_relative should the "reduction" (\code{control - treatment}, default) or the "increase"
+#'   (\code{treatment - control}) be shown for the relative change from baseline? It is also possible
+#'   to suppress this row in the table ("none").
 #'
 #' @return \code{rtable} object or table tree, depending on the the `table_tree` argument
 #'
@@ -46,15 +49,18 @@
 #' t_mmrm_lsmeans(
 #'   mmrm_results,
 #'   col_N = table(adsl$ARM),
+#'   show_relative = "increase",
 #'   table_tree = FALSE
 #' )
 #' }
 t_mmrm_lsmeans <- function(
   object,
   col_N, # nolint
+  show_relative = c("reduction", "increase", "none"),
   table_tree = TRUE
 ) {
   stopifnot(is(object, "mmrm"))
+  show_relative <- match.arg(show_relative)
 
   contrasts <- object$lsmeans$contrasts
   estimates <- object$lsmeans$estimates
@@ -80,8 +86,7 @@ t_mmrm_lsmeans <- function(
 
   mmrm_node_list <- Map(function(est_i, ctrs_i, visit) {
 
-    tbl <- rtable(
-      header = tbl_head,
+    top_part <- list(
       rrowl(
         "n",
         tapply(
@@ -143,21 +148,39 @@ t_mmrm_lsmeans <- function(
             }
           }),
         format = "(xx.xxx, xx.xxx)"
-      ),
-      rrowl(
-        "Relative Reduction (%)",
-        lapply(
-          split(ctrs_i, ctrs_i[[vars$arm]], drop = FALSE),
-          function(vector_i) {
-            if (is.null(vector_i)) {
-              NULL
-            } else {
-              c(vector_i$relative_reduc)
-            }
-          }),
-        format = "xx.x%"
-      ),
-      rrow(),
+      )
+    )
+
+    middle_part <- if (show_relative == "none") {
+      list(rrow())
+    } else {
+      list(
+        rrowl(
+          switch(
+            show_relative,
+            "reduction" = "Relative Reduction (%)",
+            "increase" = "Relative Increase (%)"
+          ),
+          lapply(
+            split(ctrs_i, ctrs_i[[vars$arm]], drop = FALSE),
+            function(vector_i) {
+              if (is.null(vector_i)) {
+                NULL
+              } else {
+                switch(
+                  show_relative,
+                  "reduction" = c(vector_i$relative_reduc),
+                  "increase" = - c(vector_i$relative_reduc)  # The negative of reduction is increase.
+                )
+              }
+            }),
+          format = "xx.x%"
+        ),
+        rrow()
+      )
+    }
+
+    bottom_part <- list(
       rrowl(
         "p-value (MMRM)",
         lapply(
@@ -172,7 +195,12 @@ t_mmrm_lsmeans <- function(
         format = "x.xxxx | (<0.0001)"
       )
     )
-
+    tbl <- rtablel(
+      header = tbl_head,
+      top_part,
+      middle_part,
+      bottom_part
+    )
     tbl <- header_add_N(tbl, col_N)
 
     node(
@@ -207,7 +235,7 @@ t_mmrm_lsmeans <- function(
 #'   because of the upcoming major change of that package.
 #'
 #' @export
-as.rtable.data.frame <- function(x, format = "xx.xx") { # nousage # nolint 
+as.rtable.data.frame <- function(x, format = "xx.xx") { # nousage # nolint
   do.call(
     rtable,
     c(
@@ -238,7 +266,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx") { # nousage # nolint
 #'
 #' @importFrom rtables cbind_rtables
 #' @export
-cbind.rtable <- function(...) { # nousage # nolint 
+cbind.rtable <- function(...) { # nousage # nolint
   all_args <- list(...)
   stopifnot(all(sapply(all_args, is, "rtable")))
   current <- all_args[[1]]
@@ -251,7 +279,7 @@ cbind.rtable <- function(...) { # nousage # nolint
 #' Tabulate the covariance matrix estimate of an MMRM fit.
 #'
 #' @inheritParams t_mmrm_lsmeans
-#' @param format \code{rtables} format for the numbers (default is \code{"xx.xxxx"})
+#' @param format \code{rtables} format for the numbers (default is \code{"xx.xxxx"}).
 #'
 #' @return \code{rtable} object with the covariance matrix
 #' @export
@@ -297,7 +325,7 @@ t_mmrm_cov <- function(object, format = "xx.xxxx") {
 #'
 #' @inheritParams t_mmrm_lsmeans
 #' @param format \code{rtables} format for the numbers other than degrees of freedom and p-values
-#'   (default is \code{"xx.xxxx"})
+#'   (default is \code{"xx.xxxx"}).
 #'
 #' @return \code{rtable} object with the fixed effect estimates, standard errors,
 #'   degrees of freedom, t-statistics, and p-values.
@@ -345,7 +373,7 @@ t_mmrm_fixed <- function(object, format = "xx.xxxx") {
 #' Tabulate the diagnostic statistics of an MMRM fit.
 #'
 #' @inheritParams t_mmrm_lsmeans
-#' @param format \code{rtables} format for the numbers (default is \code{"xx.xxxx"})
+#' @param format \code{rtables} format for the numbers (default is \code{"xx.xxxx"}).
 #'
 #' @return \code{rtable} object with the model fit diagnostics
 #' @export

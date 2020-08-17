@@ -9,7 +9,7 @@ t_mmrm_cov(object, format = "xx.xxxx")
 \arguments{
 \item{object}{the MMRM model result produced by \code{\link{s_mmrm}}.}
 
-\item{format}{\code{rtables} format for the numbers (default is \code{"xx.xxxx"})}
+\item{format}{\code{rtables} format for the numbers (default is \code{"xx.xxxx"}).}
 }
 \value{
 \code{rtable} object with the covariance matrix

@@ -4,7 +4,12 @@
 \alias{t_mmrm_lsmeans}
 \title{Tabulate the LS means of an MMRM model.}
 \usage{
-t_mmrm_lsmeans(object, col_N, table_tree = TRUE)
+t_mmrm_lsmeans(
+  object,
+  col_N,
+  show_relative = c("reduction", "increase", "none"),
+  table_tree = TRUE
+)
 }
 \arguments{
 \item{object}{the MMRM model result produced by \code{\link{s_mmrm}}.}
@@ -14,6 +19,10 @@ Contains the reference population per level of \code{col_by}. This by default is
 set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
 The default may not appropriate and should be modified by the user when \code{col_by} contains
 more than one record per subject.}
+
+\item{show_relative}{should the "reduction" (\code{control - treatment}, default) or the "increase"
+(\code{treatment - control}) be shown for the relative change from baseline? It is also possible
+to suppress this row in the table ("none").}
 
 \item{table_tree}{(\code{logical} value)\cr
 If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
@@ -57,6 +66,7 @@ mmrm_results <- s_mmrm(
 t_mmrm_lsmeans(
   mmrm_results,
   col_N = table(adsl$ARM),
+  show_relative = "increase",
   table_tree = FALSE
 )
 }

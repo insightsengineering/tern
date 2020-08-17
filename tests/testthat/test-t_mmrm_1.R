@@ -352,6 +352,61 @@ test_that("t_mmrm_lsmeans works correctly", {
   )
 })
 
+test_that("t_mmrm_lsmeans can change the display of the relative change from baseline correctly", {
+  anl <- get_anl() %>%
+    mutate(
+      ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
+      AVISIT = factor(AVISIT)
+    )
+  asl <- unique(anl[, c("USUBJID", "ARM")])
+
+  mmrm <- s_mmrm(
+    vars = list(
+      response = "AVAL",
+      visit = "AVISIT",
+      arm = "ARM",
+      covariates = c("STRATA1", "BMRKR2", "BASE"),
+      id = "USUBJID"
+    ),
+    data = anl,
+    conf_level = 0.95,
+    weights_emmeans = "proportional",
+    cor_struct = "random-quadratic"
+  )
+  # First with default, i.e. "reduction".
+  result_reduction <- t_mmrm_lsmeans(
+    mmrm,
+    col_N = table(asl$ARM),
+    show_relative = "reduction",
+    table_tree = FALSE
+  )
+  # Second with "increase".
+  result_increase <- t_mmrm_lsmeans(
+    mmrm,
+    col_N = table(asl$ARM),
+    show_relative = "increase",
+    table_tree = FALSE
+  )
+  # Third with no relative change displayed.
+  result_none <- t_mmrm_lsmeans(
+    mmrm,
+    col_N = table(asl$ARM),
+    show_relative = "none",
+    table_tree = FALSE
+  )
+
+  # Check that the relative change rows are the negative of each other and that row names are correct.
+  row_reduction <- result_reduction[8, ]
+  row_increase <- result_increase[8, ]
+  expect_identical(- row_reduction[1, 2], row_increase[1, 2])
+  expect_identical(- row_reduction[1, 3], row_increase[1, 3])
+  expect_identical(row.names(row_reduction), "Relative Reduction (%)")
+  expect_identical(row.names(row_increase), "Relative Increase (%)")
+
+  # Check that in the third table no relative change is displayed at all.
+  expect_false(any(grepl(pattern = "Relative", x = row.names(result_none))))
+})
+
 test_that("t_mmrm_cov works correctly", {
   anl <- get_anl() %>%
     mutate(
