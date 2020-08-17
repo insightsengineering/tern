@@ -197,8 +197,9 @@ t_forest_tte <- function(tte,
 }
 
 
-#' Elementary Table for Forest Time to Event Plot
+#' Elementary table
 #'
+#' Elementary Table for Forest Time to Event Plot
 #'
 #' @inheritParams survival::coxph
 #' @inheritParams argument_convention

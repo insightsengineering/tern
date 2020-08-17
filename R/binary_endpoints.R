@@ -24,6 +24,8 @@ d_proportion <- function(conf_level,
   return(label)
 }
 
+#' Outcomes summary
+#'
 #' Summary for proportion of successful outcomes
 #'
 #' @inheritParams argument_convention
@@ -155,6 +157,8 @@ s_proportion <- function(x, conf_level = 0.95,
   return(results)
 }
 
+#' Proportions: weights
+#'
 #' Adjusted difference in proportions by CMH weights
 #'
 #' This function calculates a weighted difference in proportions for binary outcomes data.
@@ -631,6 +635,8 @@ s_test_proportion_diff <- function(x,
   return(results)
 }
 
+#' Proportion: outcomes
+#'
 #' Table for proportion of successful outcomes
 #'
 #' @inheritParams argument_convention
@@ -713,6 +719,8 @@ t_el_proportion <- function(rsp,
 
 }
 
+#' Proportions: outcomes by level
+#'
 #' Table for proportion of outcomes per factor level
 #'
 #' @inheritParams argument_convention
@@ -1029,6 +1037,8 @@ t_el_proportion_diff <- function(rsp, col_by, strata_data = NULL, conf_level = 0
   )
 }
 
+#' OR: summary
+#'
 #' Summary function for odds ratio estimation.
 #'
 #' @inheritParams argument_convention
@@ -1145,6 +1155,8 @@ s_odds_ratio <- function(rsp,
   return(result)
 }
 
+#' OR: elementary summary table
+#'
 #' Elementary summary table for odds ratio estimation.
 #'
 #' @inheritParams argument_convention

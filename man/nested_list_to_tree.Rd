@@ -2,7 +2,7 @@
 % Please edit documentation in R/aa_trees.R
 \name{nested_list_to_tree}
 \alias{nested_list_to_tree}
-\title{Convert a named nested list to a tree}
+\title{Convert to tree}
 \usage{
 nested_list_to_tree(x, format_data = NULL, max_depth = .Machine$integer.max)
 }

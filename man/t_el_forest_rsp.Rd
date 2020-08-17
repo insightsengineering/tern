@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_forest_rsp.R
 \name{t_el_forest_rsp}
 \alias{t_el_forest_rsp}
-\title{Elementary Table for Forest Response Plot}
+\title{Elementary table}
 \usage{
 t_el_forest_rsp(
   rsp,

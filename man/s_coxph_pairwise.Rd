@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_coxreg.R
 \name{s_coxph_pairwise}
 \alias{s_coxph_pairwise}
-\title{Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis}
+\title{Pairwise model}
 \usage{
 s_coxph_pairwise(
   formula,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{rreplace_format.rrow}
 \alias{rreplace_format.rrow}
-\title{Replace format of `rtable` row}
+\title{Formats: rtable row}
 \usage{
 \method{rreplace_format}{rrow}(
   x,

@@ -55,6 +55,18 @@ Included:
 \item \code{a_iqr} interquartile range.
 \item \code{a_range} range.
 }
+
+Calculates median
+
+Calculates proportions
+
+Calculates counts
+
+Calculates First and Third quartiles
+
+Calculates Interquartile range
+
+Calculates Range
 }
 \details{
 These functions offer similar control over the management of missing values,

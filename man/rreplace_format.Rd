@@ -39,6 +39,8 @@ all `rtables` compatible format are accepted.}
 A Generic function to replace format of given \code{rtables} cells. This is
 convenient when, for instance, some data should rather be blanked during
 a post-processing step.
+
+Replace format of `rtables`
 }
 \examples{
 library(random.cdisc.data)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/aa_trees.R
 \name{node_format_data}
 \alias{node_format_data}
-\title{Node Format Data}
+\title{Format}
 \usage{
 node_format_data(
   gap_to_children = NULL,

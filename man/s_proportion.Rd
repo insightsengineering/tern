@@ -2,7 +2,7 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{s_proportion}
 \alias{s_proportion}
-\title{Summary for proportion of successful outcomes}
+\title{Outcomes summary}
 \usage{
 s_proportion(
   x,

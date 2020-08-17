@@ -2,7 +2,7 @@
 % Please edit documentation in R/aa_trees.R
 \name{get_indent_header}
 \alias{get_indent_header}
-\title{Derive a header with indented tree in top left corner}
+\title{Header: indented tree}
 \usage{
 get_indent_header(old_header, header_labels)
 }

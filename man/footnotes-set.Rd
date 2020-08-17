@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_forest.R
 \name{footnotes<-}
 \alias{footnotes<-}
-\title{Assign value to attribute footnote of object x}
+\title{Attribute}
 \usage{
 footnotes(x) <- value
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulate_aggregation_functions.R
 \name{ttest_two_arm}
 \alias{ttest_two_arm}
-\title{Performs 2-arm t-test between comparison group against the reference group.}
+\title{Function: t-test}
 \usage{
 ttest_two_arm(x, col_by, conf_level = 0.95, ...)
 }

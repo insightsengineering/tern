@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{get_lme4_cov_estimate}
 \alias{get_lme4_cov_estimate}
-\title{Extract the covariance matrix estimate from a lme4 fit.}
+\title{Covariance}
 \usage{
 get_lme4_cov_estimate(fit)
 }

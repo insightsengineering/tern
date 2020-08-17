@@ -1,3 +1,5 @@
+#' Summary
+#'
 #' Summarize an Object for Different Groups
 #'
 #' @inheritParams t_summary.data.frame
@@ -437,6 +439,8 @@ t_summary.numeric <- function(x,
   header_add_N(tbl, col_N)
 }
 
+#' Functions
+#'
 #' Get the names of functions to be used for t_summary.numeric to summarize patient
 #' data as for \code{\link{t_summarize_by_visit}}
 #'

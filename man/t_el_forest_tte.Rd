@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_forest_tte.R
 \name{t_el_forest_tte}
 \alias{t_el_forest_tte}
-\title{Elementary Table for Forest Time to Event Plot}
+\title{Elementary table}
 \usage{
 t_el_forest_tte(
   tte,

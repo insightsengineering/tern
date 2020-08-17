@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulate_aggregation_functions.R
 \name{ttest_ci_one_arm}
 \alias{ttest_ci_one_arm}
-\title{Confidence level for mean estimate (based on one-arm t-test statistic)}
+\title{Function: CI}
 \usage{
 ttest_ci_one_arm(x, conf_level = 0.95)
 }
@@ -17,6 +17,9 @@ a vector of 2 numeric numbers representing the lower and upper bounds.
   If not at least 2 `x` values are available, then an empty \code{rcell} object is returned.
 }
 \description{
+Confidence level for mean estimate (based on one-arm t-test statistic)
+}
+\details{
 The calculation of a two-sided confidence interval for an estimation of population mean
 will use the \code{qt} function with \code{n - 1} degrees of freedom.
 }

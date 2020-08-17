@@ -2,7 +2,7 @@
 % Please edit documentation in R/aa_trees.R
 \name{recursive_construct_tree}
 \alias{recursive_construct_tree}
-\title{Recursively construct a tree}
+\title{Tree construction}
 \usage{
 recursive_construct_tree(info_from_parent, f, path = "root")
 }

@@ -416,6 +416,8 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
   grid.draw(x)
 }
 
+#' Page number
+#'
 #' Automatically updates page number
 #'
 #' @param npages number of pages in total

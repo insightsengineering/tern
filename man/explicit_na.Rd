@@ -2,7 +2,7 @@
 % Please edit documentation in R/missing_data.R
 \name{explicit_na}
 \alias{explicit_na}
-\title{Substitute missing data with a string or factor level}
+\title{Missing data}
 \usage{
 explicit_na(x, label = "<Missing>")
 }

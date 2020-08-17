@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils_grid.R
 \name{draw_grob}
 \alias{draw_grob}
-\title{Draw grob
-Draw grob on device page}
+\title{Draw grob}
 \usage{
 draw_grob(grob, newpage = TRUE, vp = NULL)
 }
@@ -15,7 +14,6 @@ draw_grob(grob, newpage = TRUE, vp = NULL)
 \item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
 }
 \description{
-Draw grob
 Draw grob on device page
 }
 \examples{

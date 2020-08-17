@@ -11,6 +11,8 @@ t_summary_true <- function(x, # nousage # nolint
 
 # January 2019
 
+#' NA replace
+#'
 #' Replace NA values by NA string level
 #'
 #' @param x factor, possibly with NAs

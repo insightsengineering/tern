@@ -1,3 +1,5 @@
+#' Counts
+#'
 #' Tabulate \code{TRUE} counts
 #'
 #' @inheritParams t_count_true.logical
@@ -181,6 +183,8 @@ t_count_true.list <- function(x_list, #nolintr
 
 
 
+#' Counts
+#'
 #' Tabulate \code{TRUE} counts in a data.frame
 #'
 #' @inheritParams t_count_true.logical

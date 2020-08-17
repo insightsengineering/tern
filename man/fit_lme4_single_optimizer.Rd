@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{fit_lme4_single_optimizer}
 \alias{fit_lme4_single_optimizer}
-\title{Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.}
+\title{Fitting}
 \usage{
 fit_lme4_single_optimizer(
   formula,

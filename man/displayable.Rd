@@ -5,7 +5,7 @@
 \alias{displayable,ANY-method}
 \alias{displayable,rtable-method}
 \alias{displayable,node-method}
-\title{Returns output to be displayed with cat()}
+\title{Output: display}
 \usage{
 displayable(x, ...)
 
@@ -23,8 +23,14 @@ displayable(x, ...)
 \item{indent}{indent with which to print object}
 }
 \description{
+Returns output to be displayed with cat()
+
 For classes like integer, must use \code{setOldClass("integer")} so that S4 method dispatch works
 and this function gets called.
+
+Display an rtable with indent
+
+Display a node recursing into its children
 }
 \examples{
 library(rtables)

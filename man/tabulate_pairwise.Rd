@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulate_pairwise.R
 \name{tabulate_pairwise}
 \alias{tabulate_pairwise}
-\title{Calculate statistics Pairwise with reference level}
+\title{Statistics}
 \usage{
 tabulate_pairwise(x, col_by, FUN, row.name, format = NULL, indent = 0)
 }

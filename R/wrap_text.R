@@ -1,5 +1,6 @@
-#' return splitted text that fits onto page width
+#' Split string
 #'
+#' return splitted text that fits onto page width
 #'
 #' @param txt string (or vector of strins) to be split in multiple lines, not that
 #' \code{\\n} is also split into to lines

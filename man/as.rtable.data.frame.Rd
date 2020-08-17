@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{as.rtable.data.frame}
 \alias{as.rtable.data.frame}
-\title{Helper method to convert a \code{data.frame} into \code{rtable}.}
+\title{Helper}
 \usage{
 \method{as.rtable}{data.frame}(x, format = "xx.xx")
 }

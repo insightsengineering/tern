@@ -196,6 +196,8 @@ t_forest_rsp <- function(rsp,
 
 
 
+#' Elementary table
+#'
 #' Elementary Table for Forest Response Plot
 #'
 #'

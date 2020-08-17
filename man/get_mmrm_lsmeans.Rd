@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{get_mmrm_lsmeans}
 \alias{get_mmrm_lsmeans}
-\title{Helper function to extract the LS means from an MMRM fit.}
+\title{Extract LS means}
 \usage{
 get_mmrm_lsmeans(fit, vars, conf_level, weights)
 }

@@ -207,6 +207,7 @@ arrange_grobs <- function(...,
 
 
 #' Draw grob
+#'
 #' Draw grob on device page
 #'
 #' @param grob grid object
@@ -237,6 +238,7 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
 
 
 #' Label Panel Grob
+#'
 #' Create a panel style plotting of labels
 #'
 #' @param label a vector of plot contents.
@@ -314,6 +316,13 @@ label_panel_grob <- function(label,
   )
 }
 
+#' Colors
+#'
+#' Set colors
+#'
+#' @param col color
+#' @param grps group
+#'
 #' @importFrom stats setNames
 to_group_color <- function(col, grps) {
   if (is.null(col) || is.null(grps)) {

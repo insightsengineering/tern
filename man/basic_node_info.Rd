@@ -3,7 +3,7 @@
 \name{basic_node_info}
 \alias{basic_node_info}
 \alias{basic_node_info,node-method}
-\title{Summarizes an object}
+\title{Object summary}
 \usage{
 basic_node_info(x, ...)
 

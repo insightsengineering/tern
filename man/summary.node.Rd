@@ -2,7 +2,7 @@
 % Please edit documentation in R/aa_trees.R
 \name{summary.node}
 \alias{summary.node}
-\title{Overwrite s3 method because s3 and s4 with same names cannot coexist}
+\title{Method overwrite}
 \usage{
 \method{summary}{node}(object, ...)
 }

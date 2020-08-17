@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{t_mmrm_diagnostic}
 \alias{t_mmrm_diagnostic}
-\title{Tabulate the diagnostic statistics of an MMRM fit.}
+\title{Tabulation}
 \usage{
 t_mmrm_diagnostic(object, format = "xx.xxxx")
 }

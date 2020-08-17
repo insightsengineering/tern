@@ -2,7 +2,7 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{s_adj_proportion_diff}
 \alias{s_adj_proportion_diff}
-\title{Adjusted difference in proportions by CMH weights}
+\title{Proportions: weights}
 \usage{
 s_adj_proportion_diff(x, grp, strat, conf_level = 0.95)
 }
@@ -26,6 +26,9 @@ Named list with analysis summary:
 }
 }
 \description{
+Adjusted difference in proportions by CMH weights
+}
+\details{
 This function calculates a weighted difference in proportions for binary outcomes data.
 This is defined as the difference in response rates between the experimental treatment
 group and the control treatment group, adjusted for stratification factors by applying

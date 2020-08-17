@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{get_lme4_diagnostics}
 \alias{get_lme4_diagnostics}
-\title{Compute the model diagnostic statistics for a linear mixed model fit}
+\title{Linear mixed model}
 \usage{
 get_lme4_diagnostics(fit, cov_est = get_lme4_cov_estimate(fit))
 }

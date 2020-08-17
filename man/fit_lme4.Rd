@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{fit_lme4}
 \alias{fit_lme4}
-\title{Helper function to fit the MMRM with lme4 and lmerTest}
+\title{Fitting}
 \usage{
 fit_lme4(formula, data, optimizer = "automatic", n_cores = 1L)
 }

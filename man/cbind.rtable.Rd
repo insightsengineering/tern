@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{cbind.rtable}
 \alias{cbind.rtable}
-\title{Helper function to \code{cbind} multiple \code{rtable} objects together.}
+\title{Helper}
 \usage{
 \method{cbind}{rtable}(...)
 }

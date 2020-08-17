@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{check_mmrm_vars}
 \alias{check_mmrm_vars}
-\title{Helper function to check the MMRM variables}
+\title{MMRM}
 \usage{
 check_mmrm_vars(vars, data)
 }

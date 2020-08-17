@@ -92,7 +92,10 @@ a_mean_sd <- function(x,
 }
 
 
+#' Function: mean
+#'
 #' This function will have to be deprecated as replaced by `a_mean_sd`.
+#'
 #' @inherit a_mean_sd
 #' @noRd
 mean_sd <- function(x,
@@ -103,6 +106,10 @@ mean_sd <- function(x,
 }
 
 
+#' Function: median
+#'
+#' Calculates median
+#'
 #' @importFrom stats median
 #' @importFrom rtables rcell
 #' @export
@@ -142,6 +149,10 @@ a_median <- function(x,               # nousage # nolint
 }
 
 
+#' Function: proportions
+#'
+#' Calculates proportions
+#'
 #' @importFrom stats median
 #' @importFrom rtables rcell
 #' @export
@@ -207,6 +218,10 @@ a_n_true_and_freq <- function(x,
   return(y)
 }
 
+#' Function: counts
+#'
+#' Calculates counts
+#'
 #' @importFrom rtables rcell
 #' @export
 #' @md
@@ -263,7 +278,9 @@ count_n <- function(x, na.rm = TRUE) { # nolint
   }
 }
 
-#' First and Third quartiles
+#' Function: quartiles
+#'
+#' Calculates First and Third quartiles
 #'
 #' @param type An integer between 1 and 9 to select the quantile algorithm,
 #'  see [stats::quantile()].
@@ -325,7 +342,9 @@ a_q1q3 <- function(x,
 }
 
 
-#' Interquartile range
+#' Function: interquartiles
+#'
+#' Calculates Interquartile range
 #'
 #' @importFrom rtables rcell
 #' @export
@@ -362,7 +381,10 @@ a_iqr <- function(x,
   return(y)
 }
 
-#' Range
+#' Function: ranges
+#'
+#' Calculates Range
+#'
 #' @importFrom rtables rcell
 #' @export
 #' @md
@@ -406,7 +428,9 @@ q1_q3 <- function(x, na.rm = TRUE, type = 7) { #nolintr
   quantile(x, probs = c(0.25, 0.75), na.rm = na.rm, type = type)
 }
 
-#' get interquartile range
+#' Function: interquartiles
+#'
+#' Calculates interquartile range
 #'
 #' @noRd
 #'
@@ -541,6 +565,8 @@ iqr_num3 <- function(x, na.rm = TRUE, type = 7) { # nolint
 }
 
 
+#' Function: t-test
+#'
 #' Performs 2-arm t-test between comparison group against the reference group.
 #'
 #' @param x (\code{numeric} vector)
@@ -592,6 +618,8 @@ ttest_two_arm <- function(x,
   return(result)
 }
 
+#' Function: CI
+#'
 #' Confidence level for mean estimate (based on one-arm t-test statistic)
 #'
 #' The calculation of a two-sided confidence interval for an estimation of population mean

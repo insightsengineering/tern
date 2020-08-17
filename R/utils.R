@@ -35,6 +35,8 @@
   invisible(TRUE)
 }
 
+#' Factors
+#'
 #' Combine factor Levels
 #'
 #' @param x factor
@@ -66,6 +68,8 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 }
 
 
+#' Labels
+#'
 #' re-attach labels to variables
 #'
 #' @param df a data.frame
@@ -184,6 +188,8 @@ col_N_add_total <- function(col_N) { # nolint
   c(col_N, sum(col_N))
 }
 
+#' Factors
+#'
 #' Convert to factor and keep attributes
 #'
 #' @param x atomic
@@ -218,6 +224,8 @@ row_subset <- function(x, rows) { # nousage # nolint
   }
 }
 
+#' String
+#'
 #' string representation of the object's contents with names
 #'
 #' @param x object
@@ -231,6 +239,8 @@ to_string_with_names <- function(x) { # nousage # nolint
   paste(names(x), x, sep = ":", collapse = ", ")
 }
 
+#' Casing
+#'
 #' Capitalize First Letter
 #'
 #' @noRd
@@ -447,7 +457,10 @@ rreplace_format.default <- function(x,
 }
 
 
+#' Formats: rtables
+#'
 #' Replace format of `rtables`
+#'
 #' @rdname rreplace_format
 #'
 #' @inheritParams rreplace_format
@@ -466,6 +479,8 @@ rreplace_format.rtable <- function(x,
 
 }
 
+#' Formats: rtable row
+#'
 #' Replace format of `rtable` row
 #'
 #' @inheritParams rreplace_format

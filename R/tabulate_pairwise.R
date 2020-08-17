@@ -1,3 +1,5 @@
+#' Statistics
+#'
 #' Calculate statistics Pairwise with reference level
 #'
 #' @inheritParams rtables::rrow

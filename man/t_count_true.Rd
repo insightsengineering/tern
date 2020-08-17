@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_count_true.R
 \name{t_count_true}
 \alias{t_count_true}
-\title{Tabulate \code{TRUE} counts}
+\title{Counts}
 \usage{
 t_count_true(
   x,

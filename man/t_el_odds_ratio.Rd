@@ -2,7 +2,7 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{t_el_odds_ratio}
 \alias{t_el_odds_ratio}
-\title{Elementary summary table for odds ratio estimation.}
+\title{OR: elementary summary table}
 \usage{
 t_el_odds_ratio(rsp, col_by, conf_level = 0.95, strata_data = NULL)
 }

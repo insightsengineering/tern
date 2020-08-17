@@ -468,8 +468,9 @@ t_coxph_pairwise <- function(formula,
 }
 
 
-#' Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis
+#' Pairwise model
 #'
+#' Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis
 #'
 #' @param formula (\code{formula})\cr
 #'   Specifies \code{\link[survival:Surv]{survival model}}.
@@ -574,6 +575,8 @@ s_coxph_pairwise <- function(formula,
 }
 
 
+#' Extract
+#'
 #' Extract Info from coxph object
 #'
 #' @param fit an object of {\link{\code{coxph}}}
@@ -939,6 +942,8 @@ rht <- function(x) {
 }
 
 
+#' Hazard ratio
+#'
 #' Hazard ratio estimation in interactions
 #'
 #' @param variable,given Names of two variable in interaction. We seek the estimation of the levels of \code{variable}

@@ -4,7 +4,7 @@
 \alias{to_rtable}
 \alias{to_rtable,node-method}
 \alias{to_rtable,rtable-method}
-\title{Converts the object to an \code{rtable}}
+\title{Object: convert}
 \usage{
 to_rtable(x)
 
@@ -16,6 +16,10 @@ to_rtable(x)
 \item{x}{object}
 }
 \description{
+Converts the object to an \code{rtable}
+
+Specific to nodes
+
 Trivial (identity)
 }
 \examples{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_tte.R
 \name{control_coxph}
 \alias{control_coxph}
-\title{Control function for \code{CoxPH} model}
+\title{Control}
 \usage{
 control_coxph(
   pval_method = c("log-rank", "wald", "likelihood"),

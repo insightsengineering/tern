@@ -6,7 +6,7 @@
 \alias{tern-package}
 \title{TLG creation functions}
 \description{
-Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials.
+Functions to create TLG
 }
 \seealso{
 Useful links:

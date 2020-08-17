@@ -1,5 +1,7 @@
 #' Change From Baseline Plot
 #'
+#' Change from baseline
+#'
 #' @param x x coordinates
 #' @param y y coordinates
 #' @param group factor with group information

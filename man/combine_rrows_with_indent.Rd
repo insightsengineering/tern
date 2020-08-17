@@ -2,8 +2,7 @@
 % Please edit documentation in R/for_rtables.R
 \name{combine_rrows_with_indent}
 \alias{combine_rrows_with_indent}
-\title{Combines two lists of \code{rrow} to a list of \code{rrow}
-Also keeps indent.}
+\title{Combine lists}
 \usage{
 combine_rrows_with_indent(x, y)
 }

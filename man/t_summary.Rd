@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_summary.R
 \name{t_summary}
 \alias{t_summary}
-\title{Summarize an Object for Different Groups}
+\title{Summary}
 \usage{
 t_summary(x, col_by, col_N = NULL, total = NULL, ...)
 }

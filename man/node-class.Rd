@@ -36,6 +36,8 @@ From Wikipedia: A tree data structure can be defined recursively as a collection
 where each node is a data structure consisting of a value, together with a list of references to nodes (the
 "children"), with the constraints that no reference is duplicated, and none points to the root.
 
+Children must not be \code{NULL}
+
 A node is also a tree. This function makes sure that the children are properly named.
 They can then be properly accessed through \code{node_children[['childName']]}.
 See the class node for more info about parameters.

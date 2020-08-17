@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_count_true.R
 \name{t_count_true.data.frame}
 \alias{t_count_true.data.frame}
-\title{Tabulate \code{TRUE} counts in a data.frame}
+\title{Counts}
 \usage{
 \method{t_count_true}{data.frame}(
   x,

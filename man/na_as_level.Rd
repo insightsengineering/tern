@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecated.R
 \name{na_as_level}
 \alias{na_as_level}
-\title{Replace NA values by NA string level}
+\title{NA replace}
 \usage{
 na_as_level(x, na_level = "NA")
 }

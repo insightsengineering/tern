@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{s_mmrm}
 \alias{s_mmrm}
-\title{Summary function for an MMRM analysis}
+\title{Summary}
 \usage{
 s_mmrm(
   vars = list(response = "AVAL", covariates = c(), id = "USUBJID", arm = "ARM", visit =

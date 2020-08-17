@@ -2,7 +2,7 @@
 % Please edit documentation in R/split.R
 \name{esplit.list}
 \alias{esplit.list}
-\title{Splits each list elements}
+\title{Split list element}
 \usage{
 \method{esplit}{list}(x, by)
 }
@@ -12,6 +12,9 @@
 \item{by}{split by, either a factor or a col_by matrix}
 }
 \description{
+Splits each list elements
+}
+\details{
 See \code{\link{esplit.non_rsplit}} for alternative behavior.
 }
 \examples{

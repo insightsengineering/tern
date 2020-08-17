@@ -2,7 +2,7 @@
 % Please edit documentation in R/split.R
 \name{is_simple_by}
 \alias{is_simple_by}
-\title{Check whether is of class simple_by}
+\title{Class check}
 \usage{
 is_simple_by(x)
 }

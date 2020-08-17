@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{a_mmrm}
 \alias{a_mmrm}
-\title{MMRM model, test, estimate}
+\title{Model}
 \usage{
 a_mmrm(
   data,

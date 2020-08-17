@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{to_string_with_names}
 \alias{to_string_with_names}
-\title{string representation of the object's contents with names}
+\title{String}
 \usage{
 to_string_with_names(x)
 }

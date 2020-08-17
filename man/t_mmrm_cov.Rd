@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{t_mmrm_cov}
 \alias{t_mmrm_cov}
-\title{Tabulate the covariance matrix estimate of an MMRM fit.}
+\title{Tabulation}
 \usage{
 t_mmrm_cov(object, format = "xx.xxxx")
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{combine_levels}
 \alias{combine_levels}
-\title{Combine factor Levels}
+\title{Factors}
 \usage{
 combine_levels(x, levels, new_level = paste(levels, collapse = "/"))
 }

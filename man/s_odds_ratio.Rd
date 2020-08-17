@@ -2,7 +2,7 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{s_odds_ratio}
 \alias{s_odds_ratio}
-\title{Summary function for odds ratio estimation.}
+\title{OR: summary}
 \usage{
 s_odds_ratio(rsp, col_by, conf_level = 0.95, strat = NULL)
 }

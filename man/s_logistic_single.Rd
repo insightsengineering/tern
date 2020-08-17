@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_logistic.R
 \name{s_logistic_single}
 \alias{s_logistic_single}
-\title{Summary of logistic regression with no interaction term}
+\title{Summary}
 \usage{
 s_logistic_single(glm_model, conf_level = 0.95)
 }

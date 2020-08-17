@@ -45,6 +45,8 @@ simple_by <- function(x) { # nousage # nolint
   x
 }
 
+#' Class check
+#'
 #' Check whether is of class simple_by
 #'
 #' @inheritParams simple_by
@@ -54,6 +56,8 @@ is_simple_by <- function(x) { # nousage # nolint
     (is.data.frame(x) || is.factor(x) || is(x, "by_all"))
 }
 
+#' Split objects
+#'
 #' Split objects according to by object
 #'
 #' @param x object to split
@@ -90,6 +94,8 @@ esplit.default <- function(x, by) {
   })
 }
 
+#' Split data.frame
+#'
 #' Splits the data.frame by rows
 #'
 #' @inheritParams esplit
@@ -109,6 +115,8 @@ esplit.data.frame <- function(x, by) { # nolint
   })
 }
 
+#' Split list element
+#'
 #' Splits each list elements
 #'
 #' See \code{\link{esplit.non_rsplit}} for alternative behavior.
@@ -157,6 +165,8 @@ esplit.list <- function(x, by) {
   }
 }
 
+#' Class: recursion
+#'
 #' Add this class to avoid recursion
 #'
 #' @inheritParams esplit

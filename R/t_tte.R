@@ -551,7 +551,10 @@ t_tte_items <- function(formula, cl, data, env) {
 
 }
 
+#' Control
+#'
 #' Control function for \code{CoxPH} model
+#'
 #' @param pval_method The method to be passed as argument \code{pval_method} to function
 #'   \code{\link{s_coxph_pairwise}}. Default method is "log-rank", can also be set to "wald" or "likelihood".
 #' @param ties The method to be passed as argument \code{ties} to \code{\link{coxph}}. Default is "efron",

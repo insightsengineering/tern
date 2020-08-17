@@ -2,7 +2,7 @@
 % Please edit documentation in R/split.R
 \name{esplit}
 \alias{esplit}
-\title{Split objects according to by object}
+\title{Split objects}
 \usage{
 esplit(x, by)
 }

@@ -194,6 +194,8 @@ t_abnormality <- function(grade,
   }
 }
 
+#' Abnormality count
+#'
 #' Count abnormality numerator and denominator for each grade level
 #'
 #' @inheritParams argument_convention

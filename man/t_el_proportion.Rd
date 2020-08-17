@@ -2,7 +2,7 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{t_el_proportion}
 \alias{t_el_proportion}
-\title{Table for proportion of successful outcomes}
+\title{Proportion: outcomes}
 \usage{
 t_el_proportion(rsp, col_by, conf_level = 0.95, prop_ci_method = "waldcc")
 }

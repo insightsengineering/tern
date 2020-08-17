@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{refit_lme4_all_optimizers}
 \alias{refit_lme4_all_optimizers}
-\title{Refit an lme4 model with all possible optimizers and return the best result.}
+\title{Re-Fitting}
 \usage{
 refit_lme4_all_optimizers(original_fit, n_cores = 1L)
 }

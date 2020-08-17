@@ -3,7 +3,7 @@
 \name{rapply_tree}
 \alias{rapply_tree}
 \alias{rapply_tree,node-method}
-\title{Applies the function f to each node in the tree x}
+\title{Apply function: tree node}
 \usage{
 rapply_tree(x, f, ...)
 

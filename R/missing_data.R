@@ -1,3 +1,5 @@
+#' Missing data
+#'
 #' Substitute missing data with a string or factor level
 #'
 #' @param x factor or character vector

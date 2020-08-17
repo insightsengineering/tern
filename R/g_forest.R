@@ -284,6 +284,8 @@ g_forest <- function(tbl,
   invisible(grob_forest)
 }
 
+#' Grob
+#'
 #' forest plot grob
 #'
 #' @inheritParams g_forest
@@ -607,6 +609,8 @@ forest_dot_line <- function(x, lower, upper, row_index, xlim, symbol_size = 1, d
   }
 }
 
+#' Viewport
+#'
 #' Create A viewport tree for the forest plot
 #'
 #' @noRd
@@ -769,7 +773,10 @@ grid.forest <- function(...) { # nolint # nousage
 }
 
 
+#' Attribute
+#'
 #' Assign value to attribute footnote of object x
+#'
 #' @param x an object
 #' @param value character vector
 #' @export

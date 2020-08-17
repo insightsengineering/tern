@@ -23,6 +23,8 @@ setClass(
 )
 # only called when method new is called
 
+#' Children
+#'
 #' Children must not be \code{NULL}
 #'
 #' @name node-validity
@@ -157,6 +159,8 @@ object_to_node <- function(x, node_name = invisible_node_name(deparse(substitute
   node(name = node_name, content = x)
 }
 
+#' Method overwrite
+#'
 #' Overwrite s3 method because s3 and s4 with same names cannot coexist
 #'
 #' @param object node object
@@ -170,6 +174,8 @@ summary.node <- function(object, ...) {
 
 # basic_node_info ----
 
+#' Object summary
+#'
 #' Summarizes an object
 #'
 #' @param x node object
@@ -182,6 +188,8 @@ setGeneric(
   signature = "x"
 )
 
+#' Tree summary
+#'
 #' Summarizes a tree of a tree using depth-first.
 #' It displays the dimension and class of each node in the tree recursively.
 #'
@@ -227,6 +235,8 @@ setMethod("basic_node_info", signature = "node", definition = function(x, index 
 
 # rapply_tree ----
 
+#' Apply function: tree node
+#'
 #' Applies the function f to each node in the tree x
 #'
 #' @param x tree object
@@ -244,6 +254,8 @@ setGeneric(
 
 # rapply_tree.node ----
 
+#' Apply function: tree node content
+#'
 #' f is applied to the content of each node and a new node of class 'target_obj_class' is created
 #' with children applied recursively
 #' depth-first fashion
@@ -309,6 +321,8 @@ setMethod("rapply_tree", signature = "node", definition = function(x,
 
 # displayable ----
 
+#' Output: display
+#'
 #' Returns output to be displayed with cat()
 #'
 #' @param x  object to apply to
@@ -342,6 +356,8 @@ setMethod("displayable", signature = "ANY", definition = function(x, indent = 0)
 })
 
 setOldClass("rtable") # needed to overwrite S4 methods targetting it
+#' Output: indent
+#'
 #' Display an rtable with indent
 #'
 #' @export displayable
@@ -368,6 +384,8 @@ setMethod("displayable", signature = "rtable", definition = function(x, indent =
   paste0(get_indent_str(indent), capture.output(print(x)), collapse = "\n")
 })
 
+#' Output: children
+#'
 #' Display a node recursing into its children
 #'
 #' @export displayable
@@ -478,6 +496,8 @@ invisible_node_name <- function(name) {
 
 # to_rtable ----
 
+#' Object: convert
+#'
 #' Converts the object to an \code{rtable}
 #'
 #' @param x object
@@ -489,6 +509,8 @@ setGeneric(
   signature = "x"
 )
 
+#' Node specific
+#'
 #' Specific to nodes
 #'
 #' @export to_rtable
@@ -565,6 +587,8 @@ setMethod("to_rtable", signature = "rtable", definition = function(x) {
   }
 })
 
+#' Header: indented tree
+#'
 #' Derive a header with indented tree in top left corner
 #'
 #' @param header_labels (\link{node}) object's labels derived by \code{recursive_get_labels}
@@ -616,6 +640,8 @@ get_indent_header <- function(old_header, header_labels) {
 }
 # recursive_get_label ----
 
+#' Output: display
+#'
 #' Returns output to be displayed with cat()
 #'
 #' @param x object of type \link{node}
@@ -640,6 +666,8 @@ setMethod("recursive_get_label", signature = "node", definition = function(x) {
 })
 
 
+#' Tree construction
+#'
 #' Recursively construct a tree
 #'
 #' @param info_from_parent info passed on to this node from parent
@@ -707,6 +735,8 @@ recursive_construct_tree <- function(info_from_parent, f, path = "root") {
 }
 
 
+#' List split
+#'
 #' Split list recursively according to by and return the associated tree
 #'
 #' @param lst list to split, \code{\link{esplit}} will be applied to all list elements
@@ -808,6 +838,8 @@ rsplit_to_tree <- function(lst, by_lst, drop_empty_levels = TRUE, non_leaves_nul
   )
 }
 
+#' Return children
+#'
 #' It can also be used to remove children by not returning all indices
 #'
 #' @param node node to sort
@@ -897,8 +929,9 @@ full_apply_at_depth <- function(x, f, depth = 0) {
 
 
 
-#' Node Format Data
+#' Format
 #'
+#' Node Format Data
 #'
 #' @param gap_to_children row gap between content and children
 #' @param children_gap row gaps between children
@@ -937,6 +970,8 @@ node_format_data <- function(gap_to_children = NULL, children_gap = NULL, childr
 
 }
 
+#' Convert to tree
+#'
 #' Convert a named nested list to a tree
 #'
 #' @inheritParams node

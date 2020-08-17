@@ -2,7 +2,7 @@
 % Please edit documentation in R/split.R
 \name{esplit.non_rsplit}
 \alias{esplit.non_rsplit}
-\title{Add this class to avoid recursion}
+\title{Class: recursion}
 \usage{
 \method{esplit}{non_rsplit}(x, by)
 }

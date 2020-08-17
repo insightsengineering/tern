@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{as_factor_keep_attributes}
 \alias{as_factor_keep_attributes}
-\title{Convert to factor and keep attributes}
+\title{Factors}
 \usage{
 as_factor_keep_attributes(x)
 }

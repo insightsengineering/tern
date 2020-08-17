@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{t_mmrm_fixed}
 \alias{t_mmrm_fixed}
-\title{Tabulate the fixed effect estimates of an MMRM fit.}
+\title{Tabulation}
 \usage{
 t_mmrm_fixed(object, format = "xx.xxxx")
 }

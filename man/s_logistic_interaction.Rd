@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_logistic.R
 \name{s_logistic_interaction}
 \alias{s_logistic_interaction}
-\title{Summary of logistic regression with one two-way interaction term}
+\title{Summary}
 \usage{
 s_logistic_interaction(glm_model, conf_level = 0.95, increments = NULL)
 }

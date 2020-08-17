@@ -225,6 +225,8 @@ t_mmrm_lsmeans <- function(
   return(result)
 }
 
+#' Helper
+#'
 #' Helper method to convert a \code{data.frame} into \code{rtable}.
 #'
 #' @param x the data frame
@@ -255,6 +257,8 @@ as.rtable.data.frame <- function(x, format = "xx.xx") { # nousage # nolint
   )
 }
 
+#' Helper
+#'
 #' Helper function to \code{cbind} multiple \code{rtable} objects together.
 #'
 #' @param ... all \code{rtable} objects
@@ -276,6 +280,8 @@ cbind.rtable <- function(...) { # nousage # nolint
   return(current)
 }
 
+#' Tabulation
+#'
 #' Tabulate the covariance matrix estimate of an MMRM fit.
 #'
 #' @inheritParams t_mmrm_lsmeans
@@ -321,6 +327,8 @@ t_mmrm_cov <- function(object, format = "xx.xxxx") {
   return(result)
 }
 
+#' Tabulation
+#'
 #' Tabulate the fixed effect estimates of an MMRM fit.
 #'
 #' @inheritParams t_mmrm_lsmeans
@@ -370,6 +378,8 @@ t_mmrm_fixed <- function(object, format = "xx.xxxx") {
   return(result)
 }
 
+#' Tabulation
+#'
 #' Tabulate the diagnostic statistics of an MMRM fit.
 #'
 #' @inheritParams t_mmrm_lsmeans
@@ -645,8 +655,9 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
   }
 }
 
-#' MMRM model, test, estimate
+#' Model
 #'
+#' MMRM model, test, estimate
 #'
 #' @param formula a \code{gls} formula.
 #' @param data a \code{data.frame} with all the variables specified in

@@ -457,6 +457,8 @@ t_rsp <- function(rsp,
   }
 }
 
+#' OR and CI
+#'
 #' Function to calculate odds ratio and confidence interval
 #'
 #' @param x a matrix or table of 2-by-2 dimensions

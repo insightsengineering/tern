@@ -2,8 +2,7 @@
 % Please edit documentation in R/t_summary.R
 \name{patient_numeric_fcns}
 \alias{patient_numeric_fcns}
-\title{Get the names of functions to be used for t_summary.numeric to summarize patient
-data as for \code{\link{t_summarize_by_visit}}}
+\title{Functions}
 \usage{
 patient_numeric_fcns()
 }

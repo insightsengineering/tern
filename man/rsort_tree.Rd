@@ -2,7 +2,7 @@
 % Please edit documentation in R/aa_trees.R
 \name{rsort_tree}
 \alias{rsort_tree}
-\title{It can also be used to remove children by not returning all indices}
+\title{Return children}
 \usage{
 rsort_tree(node, f)
 }

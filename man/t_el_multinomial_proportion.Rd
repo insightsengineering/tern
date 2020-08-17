@@ -2,7 +2,7 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{t_el_multinomial_proportion}
 \alias{t_el_multinomial_proportion}
-\title{Table for proportion of outcomes per factor level}
+\title{Proportions: outcomes by level}
 \usage{
 t_el_multinomial_proportion(
   rsp_multinomial,

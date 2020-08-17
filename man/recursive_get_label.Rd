@@ -3,7 +3,7 @@
 \name{recursive_get_label}
 \alias{recursive_get_label}
 \alias{recursive_get_label,node-method}
-\title{Returns output to be displayed with cat()}
+\title{Output: display}
 \usage{
 recursive_get_label(x)
 
@@ -14,6 +14,4 @@ recursive_get_label(x)
 }
 \description{
 Returns output to be displayed with cat()
-
-Get the header for a nested node tree
 }

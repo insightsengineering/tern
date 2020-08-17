@@ -2,7 +2,7 @@
 % Please edit documentation in R/split.R
 \name{esplit.data.frame}
 \alias{esplit.data.frame}
-\title{Splits the data.frame by rows}
+\title{Split data.frame}
 \usage{
 \method{esplit}{data.frame}(x, by)
 }

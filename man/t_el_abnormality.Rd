@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_abnormality.R
 \name{t_el_abnormality}
 \alias{t_el_abnormality}
-\title{Count abnormality numerator and denominator for each grade level}
+\title{Abnormality count}
 \usage{
 t_el_abnormality(
   grade,

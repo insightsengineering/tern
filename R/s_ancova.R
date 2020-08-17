@@ -1,3 +1,5 @@
+#' ANCOVA
+#'
 #' Helper function to infer the ANCOVA model response and arm variables.
 #'
 #' @param formula The \code{formula} passed to `s_ancova`.

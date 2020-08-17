@@ -2,7 +2,7 @@
 % Please edit documentation in R/aa_trees.R
 \name{rsplit_to_tree}
 \alias{rsplit_to_tree}
-\title{Split list recursively according to by and return the associated tree}
+\title{List split}
 \usage{
 rsplit_to_tree(lst, by_lst, drop_empty_levels = TRUE, non_leaves_null = FALSE)
 }

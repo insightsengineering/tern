@@ -1,5 +1,7 @@
 #' TLG creation functions
 #'
+#' Functions to create TLG
+#'
 "_PACKAGE"
 
 #' @import utils.nest

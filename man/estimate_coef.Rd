@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_coxreg.R
 \name{estimate_coef}
 \alias{estimate_coef}
-\title{Hazard ratio estimation in interactions}
+\title{Hazard ratio}
 \usage{
 estimate_coef(
   variable,

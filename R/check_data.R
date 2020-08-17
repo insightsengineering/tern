@@ -1,3 +1,5 @@
+#' Element dimension
+#'
 #' check if elements ... have the same dimension
 #'
 #' @param ... data.frames or vectors
@@ -197,7 +199,10 @@ check_strata <- function(strata_data) {
   }
 }
 
-#' Check input format for stratification variable(s)
+#' Straticiation variables
+#'
+#'  Check input format for stratification variable(s)
+#'
 #' @param strata_data - data.frame or character vector or factor vector
 #' @importFrom utils.nest is_character_vector
 #' @noRd
@@ -232,7 +237,10 @@ check_binary_endpoint_args <- function(rsp, col_by, strata_data) {
 }
 
 
+#' Ranges:
+#'
 #' check all numbers are in desired range
+#'
 #' @param x a numeric object
 #' @param min a numeric value specifying the lower boundary (exclusive), with default value \code{0}
 #' @param max a numeric value specifying the upper boundary (exclusive), with default value \code{1}
@@ -261,8 +269,11 @@ check_numeric_range <- function(x, min = 0, max = 1) {
   invisible(NULL)
 }
 
+#' Variable type
+#'
 #' Check all row_by variables of appropriate type (factor or data.frame of factors)
 #' NA values are not allowed.
+#'
 #' @param row_by a factor or data.frame of factors
 #' @param x a related analysis variable to be split by row_by
 #'

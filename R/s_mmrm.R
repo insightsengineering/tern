@@ -1,5 +1,5 @@
-# Functions for MMRM analysis.
-
+#' MMRM
+#'
 #' Helper function to check the MMRM variables
 #'
 #' @param vars variable list as per \code{\link{s_mmrm}}
@@ -134,6 +134,8 @@ build_mmrm_formula <- function(
   return(full_formula)
 }
 
+#' Covariance
+#'
 #' Extract the covariance matrix estimate from a lme4 fit.
 #'
 #' @param fit the \code{merMod} object (e.g. coming from \code{\link{fit_lme4_single_optimizer}}).
@@ -192,6 +194,8 @@ get_lme4_cov_estimate <- function(fit) {
   return(result)
 }
 
+#' Linear mixed model
+#'
 #' Compute the model diagnostic statistics for a linear mixed model fit
 #'
 #' @param fit object of class \code{lmerModLmerTest} fit with REML using \code{\link[lmerTest]{lmer}}
@@ -228,6 +232,8 @@ get_lme4_diagnostics <- function(fit,
   return(result)
 }
 
+#' Fitting
+#'
 #' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
 #'
 #' @param formula the lme4 formula
@@ -324,6 +330,8 @@ summary_all_fits <- function(all_fits) {
   return(res)
 }
 
+#' Re-Fitting
+#'
 #' Refit an lme4 model with all possible optimizers and return the best result.
 #'
 #' @param original_fit The original model fit coming from \code{\link{fit_lme4_single_optimizer}}.
@@ -400,6 +408,8 @@ refit_lme4_all_optimizers <- function(original_fit,
   return(best_fit)
 }
 
+#' Fitting
+#'
 #' Helper function to fit the MMRM with lme4 and lmerTest
 #'
 #' @param formula the MMRM formula (it could also be another lme4 formula)
@@ -439,6 +449,8 @@ fit_lme4 <- function(
   }
 }
 
+#' Extract LS means
+#'
 #' Helper function to extract the LS means from an MMRM fit.
 #'
 #' @param fit result of \code{\link{fit_lme4}}
@@ -546,6 +558,8 @@ get_mmrm_lsmeans <- function(fit,
   return(results)
 }
 
+#' Summary
+#'
 #' Summary function for an MMRM analysis
 #'
 #' @param vars a \code{list} specifying the variables in the MMRM. The following elements need
