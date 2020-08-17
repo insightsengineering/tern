@@ -4,10 +4,13 @@
 \alias{refit_lme4_all_optimizers}
 \title{Refit an lme4 model with all possible optimizers and return the best result.}
 \usage{
-refit_lme4_all_optimizers(original_fit)
+refit_lme4_all_optimizers(original_fit, n_cores = 1L)
 }
 \arguments{
 \item{original_fit}{The original model fit coming from \code{\link{fit_lme4_single_optimizer}}.}
+
+\item{n_cores}{positive integer specifying the number of cores which could in principle be used for
+parallelizing the computations on Linux or Mac machines.}
 }
 \value{
 The "best" model fit, defined as a converging fit without any warnings or messages, leading
@@ -15,4 +18,9 @@ The "best" model fit, defined as a converging fit without any warnings or messag
 }
 \description{
 Refit an lme4 model with all possible optimizers and return the best result.
+}
+\note{
+Currently there are 7 optimizers in total. Since 1 optimizer is already used in the original fit,
+  only 6 additional optimizer runs need to be done. Thus the maximum number of parallel runs is 6.
+  For Windows, no parallelization is currently implemented.
 }

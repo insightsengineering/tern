@@ -400,6 +400,20 @@ test_that("refit_lme4_all_optimizers can find a working optimizer if there is on
   expect_equal(successful_fit, final_fit, check.attributes = FALSE)
 })
 
+test_that("refit_lme4_all_optimizers works with parallelization", {
+  original_fit <- fit_lme4_single_optimizer(
+    formula = Reaction ~ Days + (factor(Days) | Subject),
+    data = lme4::sleepstudy,
+    optimizer = "nloptwrap_bobyqa"
+  )
+  expect_gt(length(attr(original_fit, "messages")), 0)
+  # Note that here we get the wrong error message somehow in devtools::check.
+  # Therefore we don't compare the message text.
+  expect_error(
+    refit_lme4_all_optimizers(original_fit, n_cores = 4L)
+  )
+})
+
 test_that("fit_lme4 works with healthy inputs", {
   result <- fit_lme4(
     formula = Reaction ~ Days + (Days | Subject),
@@ -415,7 +429,8 @@ test_that("fit_lme4 fails when there are convergence issues with all optimizers"
   expect_error(
     fit_lme4(
       formula = Reaction ~ Days + (Days + days_copy | Subject),
-      data = data
+      data = data,
+      n_cores = 2L
     ),
     msg = "no optimizer led to a successful model fit",
     fixed = TRUE
@@ -461,6 +476,30 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   expect_is(result, "list")
   expect_is(result$estimates, "data.frame")
   expect_is(result$contrasts, "data.frame")
+})
+
+test_that("s_mmrm works with parallelization", {
+  dat <- lme4::sleepstudy %>%
+    dplyr::mutate(
+      group = factor(rep(c("A", "B"), length = nrow(lme4::sleepstudy))),
+      days_grouped = cut(
+        Days,
+        breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
+        include.lowest = TRUE
+      )
+    )
+  result <- s_mmrm(
+    vars = list(
+      response = "Reaction",
+      covariates = c(),
+      id = "Subject",
+      arm = "group",
+      visit = "days_grouped"
+    ),
+    data = dat,
+    cor_struct = "compound-symmetry",
+    parallel = TRUE
+  )
 })
 
 # Helper function to compare result and expected tables with proper handling of p-value column.

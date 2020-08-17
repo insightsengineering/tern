@@ -4,7 +4,7 @@
 \alias{fit_lme4}
 \title{Helper function to fit the MMRM with lme4 and lmerTest}
 \usage{
-fit_lme4(formula, data, optimizer = "automatic")
+fit_lme4(formula, data, optimizer = "automatic", n_cores = 1L)
 }
 \arguments{
 \item{formula}{the MMRM formula (it could also be another lme4 formula)}
@@ -12,6 +12,8 @@ fit_lme4(formula, data, optimizer = "automatic")
 \item{data}{the data frame}
 
 \item{optimizer}{the optimizer to use}
+
+\item{n_cores}{positive integer for number of cores to parallelize over the "automatic" optimizer search}
 }
 \value{
 the \code{lmerModLmerTest} object

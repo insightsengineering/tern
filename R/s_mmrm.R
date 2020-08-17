@@ -327,12 +327,23 @@ summary_all_fits <- function(all_fits) {
 #' Refit an lme4 model with all possible optimizers and return the best result.
 #'
 #' @param original_fit The original model fit coming from \code{\link{fit_lme4_single_optimizer}}.
+#' @param n_cores positive integer specifying the number of cores which could in principle be used for
+#'   parallelizing the computations on Linux or Mac machines.
 #'
 #' @return The "best" model fit, defined as a converging fit without any warnings or messages, leading
 #'   to the highest log-likelihood. If no optimizer succeeds, then an error is thrown.
 #'
+#' @note Currently there are 7 optimizers in total. Since 1 optimizer is already used in the original fit,
+#'   only 6 additional optimizer runs need to be done. Thus the maximum number of parallel runs is 6.
+#'   For Windows, no parallelization is currently implemented.
+#'
 #' @importFrom lme4 allFit
-refit_lme4_all_optimizers <- function(original_fit) {
+#' @importFrom parallel mclapply
+#' @importFrom purrr quietly
+refit_lme4_all_optimizers <- function(original_fit,
+                                      n_cores = 1L) {
+  stopifnot(is.integer(n_cores), n_cores > 0, identical(length(n_cores), 1L))
+
   # Extract the components of the original fit.
   formula <- formula(original_fit)
   data <- original_fit@frame
@@ -352,16 +363,27 @@ refit_lme4_all_optimizers <- function(original_fit) {
     optimizer
   )
 
-  all_fits <- lapply(
-    all_optimizers,
-    function(opt) {
+  n_cores_used <- ifelse(
+    .Platform$OS.type == "windows",
+    1L,
+    min(
+      length(all_optimizers),
+      n_cores
+    )
+  )
+  quiet_mclapply <- purrr::quietly(parallel::mclapply)
+  all_fits <- quiet_mclapply(
+    X = all_optimizers,
+    FUN = function(opt) {
       fit_lme4_single_optimizer(
         formula = formula,
         data = data,
         optimizer = opt
       )
-    }
-  )
+    },
+    mc.cores = n_cores_used,
+    mc.silent = TRUE
+  )$result
   names(all_fits) <- all_optimizers
   all_fits_summary <- summary_all_fits(all_fits)
 
@@ -383,12 +405,14 @@ refit_lme4_all_optimizers <- function(original_fit) {
 #' @param formula the MMRM formula (it could also be another lme4 formula)
 #' @param data the data frame
 #' @param optimizer the optimizer to use
+#' @param n_cores positive integer for number of cores to parallelize over the "automatic" optimizer search
 #'
 #' @return the \code{lmerModLmerTest} object
 fit_lme4 <- function(
   formula,
   data,
-  optimizer = "automatic"
+  optimizer = "automatic",
+  n_cores = 1L
 ) {
   # First fit.
   fit <- fit_lme4_single_optimizer(
@@ -411,7 +435,7 @@ fit_lme4 <- function(
     ))
   } else {
     # Refit with all possible optimizers and get the best one.
-    refit_lme4_all_optimizers(fit)
+    refit_lme4_all_optimizers(fit, n_cores = n_cores)
   }
 }
 
@@ -545,6 +569,8 @@ get_mmrm_lsmeans <- function(fit,
 #' @param optimizer a string specifying the optimization algorithm which should be used. By default, "automatic"
 #'   will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
 #'   is chosen and does not give a valid result, an error will occur.
+#' @param parallel flag that controls whether "automatic" optimizer search can use available free cores on the
+#'   machine (not default).
 #'
 #' @details Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
 #'   match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
@@ -587,6 +613,7 @@ get_mmrm_lsmeans <- function(fit,
 #' }
 #'
 #' @export
+#' @importFrom utils.nest get_free_cores
 #'
 #' @examples
 #' library(random.cdisc.data)
@@ -634,17 +661,20 @@ s_mmrm <- function(
   conf_level = 0.95,
   cor_struct = "unstructured",
   weights_emmeans = "proportional",
-  optimizer = "automatic"
+  optimizer = "automatic",
+  parallel = FALSE
 ) {
   labels <- check_mmrm_vars(vars, data)
   check_conf_level(conf_level)
+  stopifnot(is.logical(parallel), identical(length(parallel), 1L))
 
   formula <- build_mmrm_formula(vars, cor_struct)
 
   fit <- fit_lme4(
     formula = formula,
     data = data,
-    optimizer = optimizer
+    optimizer = optimizer,
+    n_cores = ifelse(parallel, utils.nest::get_free_cores(), 1L)
   )
 
   lsmeans <- get_mmrm_lsmeans(

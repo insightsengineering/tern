@@ -11,7 +11,8 @@ s_mmrm(
   conf_level = 0.95,
   cor_struct = "unstructured",
   weights_emmeans = "proportional",
-  optimizer = "automatic"
+  optimizer = "automatic",
+  parallel = FALSE
 )
 }
 \arguments{
@@ -41,6 +42,9 @@ than 1. (Default: 0.95)}
 \item{optimizer}{a string specifying the optimization algorithm which should be used. By default, "automatic"
 will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
 is chosen and does not give a valid result, an error will occur.}
+
+\item{parallel}{flag that controls whether "automatic" optimizer search can use available free cores on the
+machine (not default).}
 }
 \value{
 An \code{mmrm} object which is a list with MMRM results:
