@@ -398,7 +398,10 @@ refit_lme4_all_optimizers <- function(original_fit,
   # Find the results that are ok:
   is_ok <- sapply(all_fits_summary$messages, identical, y = character(0))
   if (!any(is_ok)) {
-    stop("no optimizer led to a successful model fit")
+    stop(
+      "No optimizer led to a successful model fit. ",
+      "Please try to use a different covariance structure or other covariates."
+    )
   }
 
   # Return the best result in terms of log-likelihood.

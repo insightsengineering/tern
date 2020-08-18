@@ -367,7 +367,7 @@ test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
   expect_gt(length(attr(original_fit, "messages")), 0)
   expect_error(
     refit_lme4_all_optimizers(original_fit),
-    "no optimizer led to a successful model fit"
+    "No optimizer led to a successful model fit"
   )
 })
 
@@ -432,8 +432,7 @@ test_that("fit_lme4 fails when there are convergence issues with all optimizers"
       data = data,
       n_cores = 2L
     ),
-    msg = "no optimizer led to a successful model fit",
-    fixed = TRUE
+    msg = "No optimizer led to a successful model fit"
   )
 })
 

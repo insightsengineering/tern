@@ -444,12 +444,16 @@ t_mmrm_diagnostic <- function(object, format = "xx.xxxx") {
   return(result)
 }
 
-#' Mix model with repeated measurements (MMRM) model
+#' (Deprecated) Mix model with repeated measurements (MMRM) model
 #'
 #' The MMRM table function summarizes MMRM test results by visit and groups. The
 #' function produces adjusted \code{lsmeans} and standard error, as well as conducts
 #' comparisons between groups' adjusted means, where the first level of the group
 #' is the reference level.
+#'
+#' @section Warning:
+#' This function has been deprecated. Please use \code{\link{s_mmrm}} together with
+#' \code{\link{t_mmrm_lsmeans}} instead.
 #'
 #' @details
 #'
@@ -475,7 +479,7 @@ t_mmrm_diagnostic <- function(object, format = "xx.xxxx") {
 #'   droplevels() %>%
 #'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
-#'
+#' \dontrun{
 #' t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
 #'        data = ADQS_f,
 #'        id_var = "USUBJID",
@@ -488,7 +492,7 @@ t_mmrm_diagnostic <- function(object, format = "xx.xxxx") {
 #'        corStruct = "corSymm",
 #'        table_tree = FALSE
 #' )
-
+#' }
 t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    data,
                    id_var = "USUBJID",
@@ -500,6 +504,14 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
                    weights_emmeans = "proportional",
                    corStruct = NULL, # nolint
                    table_tree = TRUE) {
+
+  .Deprecated(
+    new = "t_mmrm_lsmeans",
+    msg = paste(
+      "`t_mmrm` is deprecated and will eventually be removed.",
+      "Please use `s_mmrm` with `t_mmrm_lsmeans` instead."
+    )
+  )
 
   mmrm_result <- a_mmrm(
     formula = formula,
@@ -655,9 +667,7 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
   }
 }
 
-#' Model
-#'
-#' MMRM model, test, estimate
+#' (Deprecated) Fit the MMRM Model
 #'
 #' @param formula a \code{gls} formula.
 #' @param data a \code{data.frame} with all the variables specified in
@@ -677,6 +687,9 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #' @param corStruct \code{NULL} by default or a string with the name of \code{\link[nlme]{corClasses}}.
 #'
 #' @return a dataframe with MMRM results
+#'
+#' @section Warning:
+#' This function has been deprecated. Please use \code{\link{s_mmrm}} instead.
 #'
 #' @importFrom dplyr filter group_by_at left_join mutate n summarise rename ungroup
 #' @importFrom nlme gls corSymm corAR1 corARMA corCAR1 corCompSymm
@@ -700,8 +713,6 @@ t_mmrm <- function(formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
 #'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
 #' \dontrun{
-#' # currently not executed because the algorithm to obtain the
-#' # Satterthwaite estimator does not always converge
 #' mmrm_results <- a_mmrm(
 #'   data = ADQS_f,
 #'   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,
@@ -729,6 +740,14 @@ a_mmrm <- function(data,
                    weights_emmeans = "proportional",
                    corStruct = NULL # nolint
 ) {
+
+  .Deprecated(
+    new = "s_mmrm",
+    msg = paste(
+      "`a_mmrm` is deprecated and will eventually be removed.",
+      "Please use `s_mmrm` instead."
+    )
+  )
 
   mode <- match.arg(mode)
 

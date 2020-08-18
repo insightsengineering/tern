@@ -6,6 +6,11 @@
 \usage{
 to_group_color(col, grps)
 }
+\arguments{
+\item{col}{color}
+
+\item{grps}{group}
+}
 \description{
 Set colors
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{a_mmrm}
 \alias{a_mmrm}
-\title{Model}
+\title{(Deprecated) Fit the MMRM Model}
 \usage{
 a_mmrm(
   data,
@@ -46,8 +46,13 @@ than 1.}
 a dataframe with MMRM results
 }
 \description{
-MMRM model, test, estimate
+(Deprecated) Fit the MMRM Model
 }
+\section{Warning}{
+
+This function has been deprecated. Please use \code{\link{s_mmrm}} instead.
+}
+
 \examples{
 library(random.cdisc.data)
 library(dplyr)
@@ -61,8 +66,6 @@ ADQS_f <- ADQS \%>\%
   dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
 \dontrun{
-# currently not executed because the algorithm to obtain the
-# Satterthwaite estimator does not always converge
 mmrm_results <- a_mmrm(
   data = ADQS_f,
   formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM * AVISIT,

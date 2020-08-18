@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_mmrm.R
 \name{t_mmrm}
 \alias{t_mmrm}
-\title{Mix model with repeated measurements (MMRM) model}
+\title{(Deprecated) Mix model with repeated measurements (MMRM) model}
 \usage{
 t_mmrm(
   formula = AVAL ~ arm(ARM) + visit(AVISIT) + ARM * VISIT,
@@ -66,6 +66,12 @@ is the reference level.
 \details{
 Create \code{rtable} of MMRM test results
 }
+\section{Warning}{
+
+This function has been deprecated. Please use \code{\link{s_mmrm}} together with
+\code{\link{t_mmrm_lsmeans}} instead.
+}
+
 \examples{
 library(dplyr)
 library(random.cdisc.data)
@@ -77,7 +83,7 @@ ADQS_f <- ADQS \%>\%
   droplevels() \%>\%
   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
   dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
-
+\dontrun{
 t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
        data = ADQS_f,
        id_var = "USUBJID",
@@ -90,6 +96,7 @@ t_mmrm(formula = AVAL ~ ARM + AVISIT + STRATA1 + BMRKR2 + ARM*AVISIT,
        corStruct = "corSymm",
        table_tree = FALSE
 )
+}
 }
 \seealso{
 \code{\link{a_mmrm}}

@@ -15,7 +15,8 @@
 * The binary summary table function `t_binary_outcome` takes now lists (instead of character vectors) specified by the helper function `control_binary_comparison` as the arguments `strat_analysis` and `unstrat_analysis`. In addition, Odds Ratio estimates and CIs are now included by default and can be removed, similarly to the other subsections of the arm comparison analyses. Also added argument `rsp_multinomial`.
 * Add new table function `t_el_multinomial_proportion`. 
 * Add new table function `t_abn_shift`.
-* Add new MMRM analysis function `s_mmrm`, as well as corresponding table functions `t_mmrm_lsmeans`, `t_mmrm_cov`, `t_mmrm_diagnostic`, `t_mmrm_fixed`, and plot functions `g_mmrm_lsmeans`, `g_mmrm_diagnostic`.
+* Add new MMRM analysis function `s_mmrm`, as well as corresponding table functions `t_mmrm_lsmeans`, `t_mmrm_cov`, `t_mmrm_diagnostic`, `t_mmrm_fixed`, and plot functions `g_mmrm_lsmeans`, `g_mmrm_diagnostic`. The results of these match SAS results (up to numeric precision).
+* Deprecated old MMRM functions `a_mmrm` and `t_mmrm` (they give a deprecation warning but still work). These will be removed in the next release. The reason is that the results of these functions don't match SAS results.
 * Fix bug in `g_km` related to numbers in patients at risk table. Previously, numbers were incorrect for integer time-to-event variable inputs.
   
 # tern 0.6.7

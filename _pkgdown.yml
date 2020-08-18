@@ -26,11 +26,7 @@ reference:
       - t_rsp
       - t_tte
       - starts_with("t_events")
-      - t_mmrm
-      - t_mmrm_lsmeans
-      - t_mmrm_cov
-      - t_mmrm_fixed
-      - t_mmrm_diagnostic
+      - starts_with("t_mmrm")
       - t_count_true
       - t_count_true.data.frame
       - t_count_unique
@@ -69,7 +65,6 @@ reference:
     contents:
       - ttest_ci_one_arm
       - ttest_two_arm
-      - a_mmrm
       - s_coxph_pairwise
       - s_cox_univariate
       - s_cox_multivariate
@@ -89,8 +84,7 @@ reference:
       - g_forest
       - g_km
       - g_waterfall
-      - g_mmrm_diagnostic
-      - g_mmrm_lsmeans
+      - starts_with("g_mmrm")
 
   - title: Analysis Helper Functions
     desc: these functions are useful to help definining the analysis
@@ -144,6 +138,8 @@ reference:
     contents:
       - na_as_level
       - r_by
+      - a_mmrm
+      - t_mmrm
 
   - title: Trees
     desc: The functions are used to for computing compound tables. These functions are under active development and may
