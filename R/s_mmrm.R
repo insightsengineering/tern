@@ -527,7 +527,7 @@ get_mmrm_lsmeans <- function(fit,
 
   # Start with the differences between LS means.
   sum_fit_diff <- summary(
-    emmeans::contrast(lsmeans, method = "trt.vs.ctrl"),
+    emmeans::contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
     level = conf_level,
     infer = c(TRUE, TRUE),
     adjust = "none"

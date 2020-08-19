@@ -477,6 +477,49 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   expect_is(result$contrasts, "data.frame")
 })
 
+test_that("get_mmrm_lsmeans preserves combined arm levels.", {
+
+  data <- radqs(cached = TRUE) %>%
+    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+    droplevels() %>%
+    dplyr::mutate(
+      ARM = factor(
+        ARM,
+        levels = c("B: Placebo", "A: Drug X", "C: Combination")
+      )
+    )
+
+  data$ARM <- combine_levels( # nolint
+    data$ARM,
+    levels = c("A: Drug X", "C: Combination")
+  )
+
+  vars <- list(
+    response = "AVAL",
+    id = "USUBJID",
+    arm = "ARM",
+    visit = "AVISIT"
+  )
+
+  fit <- fit_lme4(
+    formula = AVAL ~ ARM * AVISIT + (0 + AVISIT | USUBJID),
+    data = data,
+    optimizer = "bobyqa"
+  )
+
+
+  result <- get_mmrm_lsmeans(
+    fit = fit,
+    vars = vars,
+    conf_level = 0.95,
+    weights = "proportional"
+  )
+
+  expect_identical(levels(data$ARM), levels(result$estimates$ARM))
+  expect_identical(levels(data$ARM)[-1], levels(result$contrasts$ARM))
+
+})
+
 test_that("s_mmrm works with parallelization", {
   dat <- lme4::sleepstudy %>%
     dplyr::mutate(
