@@ -629,6 +629,12 @@ get_mmrm_lsmeans <- function(fit,
 #'   \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
 #' }
 #'
+#' @note
+#' The ordering of the input data sets can lead to slightly different numerical results or
+#' different convergence behavior. This is a known observation with the used package
+#' \code{lme4}. However, once convergence is achieved, the results are reliable up to
+#' numerical precision.
+#'
 #' @export
 #' @importFrom utils.nest get_free_cores
 #'

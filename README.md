@@ -10,11 +10,9 @@ in the
 [teal.modules.clinical](https://github.roche.com/NEST/teal.modules.clinical)
 R package.
 
-  - Note that currently **tern may not be used for regulatory
-    submissions**
-
-  - However you can use `tern` for exploratory analysis and for quality
-    control
+  - Note that tern can be used to create output for regulatory submissions when used in the enableR system. 
+  
+  - Use of tern in other contexts/systems is for exploratory analysis, quality control, etc.
 
 # Installation
 

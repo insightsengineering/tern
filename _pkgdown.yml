@@ -49,7 +49,7 @@ reference:
       - t_summary.character
       - t_summary.Date
       - starts_with("t_el_")
-      - t_coxph
+      - t_coxph_pairwise
       - t_km
       - t_max_grade_per_id
       - t_count_unique

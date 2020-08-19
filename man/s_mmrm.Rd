@@ -91,6 +91,12 @@ Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because the
   \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
   }
 }
+\note{
+The ordering of the input data sets can lead to slightly different numerical results or
+different convergence behavior. This is a known observation with the used package
+\code{lme4}. However, once convergence is achieved, the results are reliable up to
+numerical precision.
+}
 \examples{
 library(random.cdisc.data)
 library(dplyr)
