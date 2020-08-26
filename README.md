@@ -16,7 +16,17 @@ R package.
 
 # Installation
 
-See the [agile-R website](https://go.roche.com/agile-R)
+Please refer to the quick start section in agile-R [here](https://pages.github.roche.com/NEST/docs/hugo/NEST/agile-R/master/quick_start/install-nest-environment/)
+
+The latest version of `tern` can be installed locally with:
+
+```
+devtools::install_github(
+  repo = "NEST/tern",
+  host = "https://github.roche.com/api/v3",
+  upgrade_dependencies = FALSE
+)
+```
 
 # Presentations
 
