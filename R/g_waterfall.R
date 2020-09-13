@@ -20,8 +20,7 @@
 #'
 #' @template author_song24
 #'
-#' @importFrom ggplot2 ggplot aes theme geom_col geom_text labs xlab ylab
-#'   element_text element_blank element_rect scale_fill_manual
+#' @import ggplot2
 #'
 #' @export
 #'

@@ -1,5 +1,7 @@
 # tern 0.6.8.9000
 
+This version of `tern` introduces a major refactor of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily easily build tables, see the examples.
+
 * issues with no news: 
 
 # tern 0.6.8

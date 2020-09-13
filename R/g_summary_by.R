@@ -75,6 +75,7 @@ g_summary_by <- function(x, # nousage # nolint
     omit_null = FALSE
   )
   check_col_by_factor(x, group, table(group), 1)
+
   check_is_numeric(y)
   # allow y_lower y_upper n_visit y_refline y_range to be NULL?
   # x can be either factor or numeric?

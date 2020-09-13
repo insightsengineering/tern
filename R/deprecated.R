@@ -1,6 +1,8 @@
 
 #' check is event
 #'
+#' @param x logical vector
+#'
 #' @importFrom lifecycle deprecate_warn
 check_is_event <- function(x) {
 
@@ -48,22 +50,7 @@ check_is_numeric <- function(x, allow_na = TRUE) {
 }
 
 
-check_binary_endpoint_args <- function(rsp, col_by, strata_data) {
 
-
-  deprecate_warn("0.6.8.9000", "tern::check_binary_endpoint_args")
-
-  check_col_by_factor(rsp, col_by, get_N(col_by), min_num_levels = 2)
-  check_same_n(rsp = rsp, col_by = col_by)
-  check_is_event(rsp)
-
-  if (!is.null(strata_data)) {
-    check_same_n(rsp = rsp, strata_data = strata_data)
-    check_data_frame(strata_data)
-    check_strata_levels(strata_data)
-  }
-
-}
 
 row_subset <- function(x, rows) { # nousage # nolint
 

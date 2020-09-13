@@ -47,6 +47,7 @@
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#' library(survival)
 #'
 #' ADSL <- cadsl
 #' levels(ADSL$RACE) <- strtrim(levels(ADSL$RACE), 10)

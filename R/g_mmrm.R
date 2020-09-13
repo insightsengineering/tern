@@ -124,6 +124,8 @@ g_mmrm_diagnostic <- function(
   return(result)
 }
 
+# @seealso \code{\link{t_mmrm_lsmeans}}
+
 #' Plot the LS means of an MMRM model.
 #'
 #' This function summarizes adjusted \code{lsmeans} and standard error, as well as conducts
@@ -145,7 +147,6 @@ g_mmrm_diagnostic <- function(
 #' @export
 #' @import ggplot2
 #'
-#' @seealso \code{\link{t_mmrm_lsmeans}}
 #'
 #' @examples
 #' library(dplyr)

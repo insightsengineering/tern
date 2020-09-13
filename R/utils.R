@@ -240,4 +240,22 @@ trunc_if_longer <- function(x, width = 40) {
 
 }
 
+check_col_by_factor <- function(x,
+                                col_by,
+                                col_N, # nolint
+                                min_num_levels = 2) {
+  stopifnot(
+    is.factor(col_by),
+    !any(is.na(col_by)) && !("" %in% levels(col_by)),
+    length(col_N) == nlevels(col_by),
+    nlevels(col_by) >= min_num_levels
+  )
+  if (is.data.frame(x)) {
+    stopifnot(nrow(col_by) == nrow(x))
+  } else {
+    stopifnot(nrow(col_by) == length(x))
+  }
+
+  invisible(NULL)
+}
 

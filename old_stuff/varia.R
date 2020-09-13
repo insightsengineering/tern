@@ -62,24 +62,6 @@ check_col_by <- function(x,
 
 
 
-check_col_by_factor <- function(x,
-                                col_by,
-                                col_N, # nolint
-                                min_num_levels = 2) {
-  stopifnot(
-    is.factor(col_by),
-    !any(is.na(col_by)) && !("" %in% levels(col_by)),
-    length(col_N) == nlevels(col_by),
-    nlevels(col_by) >= min_num_levels
-  )
-  if (is.data.frame(x)) {
-    stopifnot(nrow(col_by) == nrow(x))
-  } else {
-    stopifnot(nrow(col_by) == length(x))
-  }
-
-  invisible(NULL)
-}
 
 
 # March 2020
@@ -360,4 +342,22 @@ number_rows <- function(x) { # nousage # nolint
   } else {
     length(x)
   }
+}
+
+
+check_binary_endpoint_args <- function(rsp, col_by, strata_data) {
+
+
+  deprecate_warn("0.6.8.9000", "tern::check_binary_endpoint_args")
+
+  check_col_by_factor(rsp, col_by, get_N(col_by), min_num_levels = 2)
+  check_same_n(rsp = rsp, col_by = col_by)
+  check_is_event(rsp)
+
+  if (!is.null(strata_data)) {
+    check_same_n(rsp = rsp, strata_data = strata_data)
+    check_data_frame(strata_data)
+    check_strata_levels(strata_data)
+  }
+
 }

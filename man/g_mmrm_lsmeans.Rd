@@ -75,6 +75,3 @@ g_mmrm_lsmeans(
   width = 0.8
 )
 }
-\seealso{
-\code{\link{t_mmrm_lsmeans}}
-}

@@ -19,10 +19,9 @@ Authors@R: c(
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.3),
-  ggplot2,
-  grid,
   rtables (>= 0.1.7),
-  survival
+  grid,
+  ggplot2
 Imports:
   dplyr,
   grDevices,
@@ -40,13 +39,13 @@ Imports:
   forcats,
   nlme,
   emmeans (>= 1.4.8),
-  viridisLite,
-  car,
   lme4 (>= 1.1-23),
   lmerTest (>= 3.1-2),
   dfoptim,
-  optimx
+  optimx,
+  viridisLite
 Suggests:
+  survival,
   lattice,
   knitr,
   Matrix,

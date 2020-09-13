@@ -79,6 +79,9 @@ check_mmrm_vars <- function(vars,
 #' @param vars variable list as per \code{\link{s_mmrm}}
 #' @param cor_struct correlation structure as per \code{\link{s_mmrm}}
 #'
+#' @importFrom magrittr %>%
+#'
+#'
 #' @return the complete MMRM formula to use with \code{lmer}
 build_mmrm_formula <- function(
   vars,
@@ -470,6 +473,7 @@ fit_lme4 <- function(
 #' @importFrom rlang := !!
 #' @importFrom rtables var_labels
 #' @importFrom rlang .data
+#' @importFrom stats confint
 #'
 get_mmrm_lsmeans <- function(fit,
                              vars,

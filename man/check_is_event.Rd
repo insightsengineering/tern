@@ -6,6 +6,9 @@
 \usage{
 check_is_event(x)
 }
+\arguments{
+\item{x}{logical vector}
+}
 \description{
 check is event
 }

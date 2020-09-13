@@ -9,6 +9,7 @@
 #' @param n_lim The threshold number of non-missing \code{x} to estimate
 #'  the confidence interval for mean of \code{x}.
 #'
+#' @importFrom stats sd
 #' @export
 #'
 #' @examples
@@ -56,7 +57,7 @@ stat_mean_ci <- function(x,
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
-#' @importFrom  stats pbinom qbinom qt
+#' @importFrom  stats pbinom qbinom qt median
 #' @export
 #' @md
 #'
