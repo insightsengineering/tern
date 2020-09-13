@@ -5,6 +5,7 @@
 "_PACKAGE"
 
 #' @import utils.nest
+#' @import rtables
 #' @importFrom rlang "%||%"
 #' @importFrom methods is
 #' @importFrom utils globalVariables

@@ -81,12 +81,6 @@ check_data_frame <- function(x, allow_missing = FALSE) {
   TRUE
 }
 
-
-
-
-
-
-
 check_strata <- function(strata_data) {
 
   if (!is.null(strata_data)) {
@@ -128,8 +122,6 @@ check_strata_levels <- function(strata_data) {
   }
 }
 
-
-
 #' Ranges:
 #'
 #' check all numbers are in desired range
@@ -161,4 +153,3 @@ check_numeric_range <- function(x, min = 0, max = 1) {
 
   invisible(NULL)
 }
-

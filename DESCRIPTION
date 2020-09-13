@@ -21,11 +21,11 @@ Depends:
   R (>= 3.3),
   rtables (>= 0.1.7),
   grid,
-  ggplot2
+  ggplot2,
+  survival
 Imports:
   dplyr,
   grDevices,
-  lifecycle,
   assertthat,
   gridExtra,
   magrittr,
@@ -37,6 +37,7 @@ Imports:
   utils,
   utils.nest (>= 0.2.5),
   forcats,
+  car,
   nlme,
   emmeans (>= 1.4.8),
   lme4 (>= 1.1-23),
@@ -45,8 +46,8 @@ Imports:
   optimx,
   viridisLite
 Suggests:
-  survival,
   lattice,
+  test.nest,
   knitr,
   Matrix,
   random.cdisc.data (>= 0.3.5),

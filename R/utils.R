@@ -258,4 +258,3 @@ check_col_by_factor <- function(x,
 
   invisible(NULL)
 }
-

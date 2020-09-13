@@ -3,11 +3,7 @@
 #'
 #' @param x logical vector
 #'
-#' @importFrom lifecycle deprecate_warn
 check_is_event <- function(x) {
-
-  deprecate_warn("0.6.8.9000", "tern::check_is_event")
-
 
   stopifnot(
     is.logical(x),
@@ -19,8 +15,6 @@ check_is_event <- function(x) {
 
 
 check_is_factor <- function(x, allow_na = TRUE) {
-
-  deprecate_warn("0.6.8.9000", "tern::check_is_factor")
 
   stopifnot(is.factor(x))
 
@@ -35,8 +29,6 @@ check_is_factor <- function(x, allow_na = TRUE) {
 
 
 check_is_numeric <- function(x, allow_na = TRUE) {
-
-  deprecate_warn("0.6.8.9000", "tern::check_is_numeric")
 
   stopifnot(is.numeric(x))
 
@@ -54,9 +46,6 @@ check_is_numeric <- function(x, allow_na = TRUE) {
 
 row_subset <- function(x, rows) { # nousage # nolint
 
-  deprecate_warn("0.6.8.9000", "tern::row_subset")
-
-
   # similar to subset function, but the latter is only recommended for interactive use
   if (is.data.frame(x)) {
     x[rows, ]
@@ -64,5 +53,3 @@ row_subset <- function(x, rows) { # nousage # nolint
     x[rows]
   }
 }
-
-

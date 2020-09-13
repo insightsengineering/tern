@@ -11,6 +11,7 @@
 #' \code{@inheritParams argument_convention}
 #'
 #' @md
+#' @param col_by (\code{factor} value)\cr for defining column group
 #' @param na_rm (\code{logical} value)\cr
 #'   Indicating whether \code{NA} values should be
 #'   removed from \code{x} prior to counting the  'aa_trees.R' 'argument_convention.R' unique elements per cell.

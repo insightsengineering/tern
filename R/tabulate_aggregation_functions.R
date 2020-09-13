@@ -580,7 +580,7 @@ iqr_num3 <- function(x, na.rm = TRUE, type = 7) { # nolint
 #'
 #' @return list of \code{lcl}, \code{ucl}, \code{diff}, \code{se}, \code{tvalue}, \code{pvalue}
 #'
-#' @importFrom stats t.test
+#' @importFrom stats t.test relevel
 #'
 #' @export
 #'

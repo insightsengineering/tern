@@ -432,41 +432,4 @@ t_max_grade_per_id <- function(grade,
   row_names_as_col(tbl, c("", grade_label))
 }
 
-#' Checks
-#'
-#' checks that each patient appears in at most one \code{col_by} column (possibly
-#' several times as \code{AVAL} corresponds to several measures and there are >= 1 rows per patient)
-#'
-#' @param id patient id
-#' @param col_by columns indicating where patient is, (this function checks that the patient only
-#'   appears in one column, ignoring the "by_all" / total column)
-#'
-#' @importFrom dplyr group_by summarise_all select
-#' @importFrom magrittr %>%
-#'
-#' @examples
-#' library(random.cdisc.data)
-#' ADSL <- radsl(cached = TRUE)
-#' ADAE <- radae(ADSL, 4L, seed = 2)
-#' tern:::check_id(id = ADAE$USUBJID, col_by = ADAE$ARM)
-check_id <- function(id, col_by) {
-  col_by <- col_by_to_matrix(col_by)
-  # remove total column if present
-  col_by <- col_by[, !vapply(col_by, all, logical(1)), drop = FALSE]
-  if (ncol(col_by) == 0) {
-    return(invisible(NULL))
-  }
-  # for each id, count number of appearances in each column of col_by, then check
-  # that each id appears in at most one column of col_by (possibly several times)
-  ids_in_at_most_one_col_by <- all(rowSums((
-    data.frame(id = id, col_by) %>%
-      group_by(.data$id) %>%
-      summarise_all(sum) %>%
-      select(-id)
-  ) > 0) <= 1)
-  if (!ids_in_at_most_one_col_by) {
-    stop("Patient appears in multiple col_by columns/ARMs (excluding total column)")
-  }
 
-  invisible(NULL)
-}
