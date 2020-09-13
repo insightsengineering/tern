@@ -42,9 +42,11 @@
 #'
 #' @export
 #'
-#' @seealso \code{\link{t_forest_tte}}, \code{\link{t_forest_rsp}}
-#'
 #' @examples
+#'
+#' g_forest()
+#'
+#' \dontrun{
 #' library(random.cdisc.data)
 #' library(dplyr)
 #'
@@ -176,6 +178,7 @@
 #'   vline = 1,
 #'   forest_header = c("Hello", "World")
 #' )
+#' }
 g_forest <- function(tbl,
                      col_x,
                      col_ci,
@@ -192,87 +195,89 @@ g_forest <- function(tbl,
                      newpage = TRUE) {
 
 
-  stopifnot(is(tbl, "rtable"))
+#  stopifnot(is(tbl, "rtable"))
+#
+#  nr <- nrow(tbl)
+#  nc <- ncol(tbl)
+#
+#  stopifnot(
+#    col_x > 0 && col_x <= nc,
+#    col_ci > 0 && col_ci <= nc,
+#    is.null(col_symbol_size) ||  col_symbol_size > 0 && col_symbol_size <= nc
+#  )
+#
+#  x_e <- vapply(seq_len(nr), function(i) {
+#    xi <- as.vector(tbl[i, col_x])
+#
+#    if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
+#      xi
+#    } else {
+#      NA_real_
+#    }
+#  }, numeric(1))
+#
+#  x_ci <- lapply(seq_len(nr), function(i) {
+#    xi <- as.vector(tbl[i, col_ci])
+#
+#    if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
+#      if (length(xi) != 2) {
+#        stop("ci column needs two elements")
+#      }
+#      xi
+#    } else {
+#      c(NA_real_, NA_real_)
+#    }
+#  })
+#
+#  lower <- vapply(x_ci, `[`, numeric(1), 1)
+#  upper <- vapply(x_ci, `[`, numeric(1), 2)
+#
+#  symbol_size <- if (!is.null(col_symbol_size)) {
+#    tmp_symbol_size <- vapply(seq_len(nr), function(i) {
+#      xi <- as.vector(tbl[i, col_symbol_size])
+#
+#      if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
+#        xi
+#      } else {
+#        NA_real_
+#      }
+#    }, numeric(1))
+#
+#    # scale symbol size
+#    tmp_symbol_size <- sqrt(tmp_symbol_size)
+#    max_size <- max(tmp_symbol_size, na.rm = TRUE)
+#    # Biggest points have radius is 2 * (1/3.5) lines not to overlap
+#    # see forest_dot_line
+#    2 * tmp_symbol_size / max_size
+#
+#  } else {
+#    NULL
+#  }
+#
+#  grob_forest <- forest_grob(
+#    tbl,
+#    x_e,
+#    lower,
+#    upper,
+#    vline,
+#    forest_header,
+#    xlim,
+#    logx,
+#    x_at,
+#    width_row_names,
+#    width_columns,
+#    width_forest,
+#    symbol_size = symbol_size,
+#    vp = plotViewport(margins = rep(1, 4))
+#  )
+#
+#  fn <- footnotes(tbl)
+#  if (!is.null(fn)) {
+#    footnotes(grob_forest) <- fn
+#    message("grob footnote is not added to plot; suggest to use decorate_grob() to further decorate the grob")
+#  }
 
-  nr <- nrow(tbl)
-  nc <- ncol(tbl)
-
-  stopifnot(
-    col_x > 0 && col_x <= nc,
-    col_ci > 0 && col_ci <= nc,
-    is.null(col_symbol_size) ||  col_symbol_size > 0 && col_symbol_size <= nc
-  )
-
-  x_e <- vapply(seq_len(nr), function(i) {
-    xi <- as.vector(tbl[i, col_x])
-
-    if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
-      xi
-    } else {
-      NA_real_
-    }
-  }, numeric(1))
-
-  x_ci <- lapply(seq_len(nr), function(i) {
-    xi <- as.vector(tbl[i, col_ci])
-
-    if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
-      if (length(xi) != 2) {
-        stop("ci column needs two elements")
-      }
-      xi
-    } else {
-      c(NA_real_, NA_real_)
-    }
-  })
-
-  lower <- vapply(x_ci, `[`, numeric(1), 1)
-  upper <- vapply(x_ci, `[`, numeric(1), 2)
-
-  symbol_size <- if (!is.null(col_symbol_size)) {
-    tmp_symbol_size <- vapply(seq_len(nr), function(i) {
-      xi <- as.vector(tbl[i, col_symbol_size])
-
-      if (!is.null(xi) && !(length(xi) <= 0) && is.numeric(xi)) {
-        xi
-      } else {
-        NA_real_
-      }
-    }, numeric(1))
-
-    # scale symbol size
-    tmp_symbol_size <- sqrt(tmp_symbol_size)
-    max_size <- max(tmp_symbol_size, na.rm = TRUE)
-    # Biggest points have radius is 2 * (1/3.5) lines not to overlap
-    # see forest_dot_line
-    2 * tmp_symbol_size / max_size
-
-  } else {
-    NULL
-  }
-
-  grob_forest <- forest_grob(
-    tbl,
-    x_e,
-    lower,
-    upper,
-    vline,
-    forest_header,
-    xlim,
-    logx,
-    x_at,
-    width_row_names,
-    width_columns,
-    width_forest,
-    symbol_size = symbol_size,
-    vp = plotViewport(margins = rep(1, 4))
-  )
-
-  fn <- footnotes(tbl)
-  if (!is.null(fn)) {
-    footnotes(grob_forest) <- fn
-    message("grob footnote is not added to plot; suggest to use decorate_grob() to further decorate the grob")
-  }
+  grob_forest <- textGrob("g_forest needs to be refactored")
 
   if (draw) {
     if (newpage) {
@@ -773,48 +778,3 @@ grid.forest <- function(...) { # nolint # nousage
 }
 
 
-#' Attribute
-#'
-#' Assign value to attribute footnote of object x
-#'
-#' @param x an object
-#' @param value character vector
-#' @export
-#' @examples
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' attributes(x)
-
-`footnotes<-` <- function(x, value = NULL) { # nolint
-  attr(x, "footnote") <- value
-  x
-}
-
-
-#' Retrieve value from attribute footnote of object x
-#' @param x an object
-#' @export
-#' @examples
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' footnotes(x)
-#'
-footnotes <- function(x) {
-  attr(x, "footnote")
-}
-
-#' Add more footnotes
-#' @param x an object
-#' @param value character vector
-#' @export
-#' @examples
-#' x <- table(iris$Species)
-#' footnotes(x) <- "Species are equally distributed"
-#' footnotes(x)
-#' add_footnotes(x) <- "Add more footnotes"
-#' footnotes(x)
-
-`add_footnotes<-` <- function(x, value) { # nolint
-   footnotes(x) <- c(footnotes(x), value)
-   x
-}

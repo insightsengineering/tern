@@ -73,6 +73,10 @@ Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
 column with a single value and a column with 2 values
 }
 \examples{
+
+g_forest()
+
+\dontrun{
 library(random.cdisc.data)
 library(dplyr)
 
@@ -205,8 +209,6 @@ g_forest(
   forest_header = c("Hello", "World")
 )
 }
-\seealso{
-\code{\link{t_forest_tte}}, \code{\link{t_forest_rsp}}
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}

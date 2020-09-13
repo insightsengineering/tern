@@ -4,27 +4,9 @@
 \alias{argument_convention}
 \title{Dummy Function that Documents all Standard Arguments}
 \arguments{
-\item{col_by}{(\code{logical}, \code{factor} or \code{data.frame})\cr
-Contains reference and comparison group information, the
-first \code{level} indicates the reference group. See the functions
-\code{\link[rtables]{col_by_to_matrix}} and \code{\link[rtables]{by_add_total}}.}
-
-\item{col_N}{(\code{integer} vector)\cr
-Contains the reference population per level of \code{col_by}. This by default is often
-set to \code{get_N(col_by)}. Names of the list are ignored, they are added in the order they appear.
-The default may not appropriate and should be modified by the user when \code{col_by} contains
-more than one record per subject.}
-
-\item{table_tree}{(\code{logical} value)\cr
-If \code{FALSE} then a single \code{rtable} gets returned, if \code{TRUE} a
-\code{\link{node}} object gets returned with the elementary \code{rtable} objects.}
-
-\item{indent}{(non-negative \code{integer})\cr
-0 means that the row should not be indented}
-
 \item{na_rm}{(\code{logical} value)\cr
 Indicating whether \code{NA} values should be
-removed from \code{x} prior to counting the unique elements per cell.}
+removed from \code{x} prior to counting the  'aa_trees.R' 'argument_convention.R' unique elements per cell.}
 
 \item{tte}{(\code{numeric} vector)\cr
 Contains time to event data, currently no \code{NA} allowed}
@@ -35,10 +17,6 @@ is censored}
 
 \item{rsp}{(\code{logical} vector)\cr
 \code{TRUE} if subject is a responder \code{FALSE} otherwise}
-
-\item{total}{(\code{character} value)\cr
-Denotes column name of an added total column using \code{\link[rtables]{by_add_total}} to
-\code{col_by} and \code{\link{col_N_add_total}} to \code{col_N}. If \code{NULL} no total column is added.}
 
 \item{conf_level}{confidence level of the interval.}
 

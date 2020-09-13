@@ -1,4 +1,4 @@
-#' TLG creation functions
+#' tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.
 #'
 #' Functions to create TLG
 #'

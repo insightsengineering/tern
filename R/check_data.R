@@ -49,8 +49,7 @@ check_same_n_l <- function(x) { # nousage # nolint
 #' strata_data can be \code{NULL} or
 #'
 #' @param x data.frame with valid stratification data
-#'
-#' @noRd
+#' @param allow_missing boolean whether missing data is allowed in the variables
 #'
 check_data_frame <- function(x, allow_missing = FALSE) {
   xname <- deparse(substitute(x))
@@ -83,102 +82,9 @@ check_data_frame <- function(x, allow_missing = FALSE) {
 }
 
 
-is_logical_vector_modif <- function(x, min_size = 1) { # nousage # nolint
-  !is.null(x) &&
-    is.atomic(x) &&
-    length(x) >= min_size &&
-    all_true(x, utils.nest::is_logical_single)
-}
-
-#' Checks that \code{x}, \code{col_by} and \code{col_N} are consistent in dimensions
-#'
-#' See \code{\link{t_summary}} variants for how to use it.
-#' Also checks that there are no empty levels and at least a specified number of levels.
-#' Raises an error on failure.
-#'
-#' @param x main object which will be queried for length (or rows in case of data.frame)
-#' @param col_by matrix of booleans that specifies how to group x (i.e. for each column,
-#'   takes all values of x for which the row is true)
-#' @param col_N vector that contains number of observations, it can be \code{colSums(col_by)}
-#' @param min_num_levels minimum number of columns of \code{col_by}
-check_col_by <- function(x,
-                         col_by,
-                         col_N, # nolint
-                         min_num_levels = 2) {
-  stopifnot(is.data.frame(col_by))
-  stopifnot(is_numeric_vector(col_N))
-
-  if (is.data.frame(x)) {
-    stopifnot(nrow(col_by) == nrow(x))
-  } else {
-    stopifnot(nrow(col_by) == length(x))
-  }
-
-  stopifnot(
-    ncol(col_by) >= min_num_levels,
-    length(col_N) == ncol(col_by),
-    all_true(col_by, is_logical_vector),
-    !anyNA(col_by) && !("" %in% colnames(col_by))
-  )
-
-  invisible(NULL)
-}
-
-check_col_by_factor <- function(x,
-                                col_by,
-                                col_N, # nolint
-                                min_num_levels = 2) {
-  stopifnot(
-    is.factor(col_by),
-    !any(is.na(col_by)) && !("" %in% levels(col_by)),
-    length(col_N) == nlevels(col_by),
-    nlevels(col_by) >= min_num_levels
-  )
-  if (is.data.frame(x)) {
-    stopifnot(nrow(col_by) == nrow(x))
-  } else {
-    stopifnot(nrow(col_by) == length(x))
-  }
-
-  invisible(NULL)
-}
-
-check_is_event <- function(x) {
-  stopifnot(
-    is.logical(x),
-    !any(is.na(x))
-  )
-
-  invisible(NULL)
-}
-
-
-check_is_factor <- function(x, allow_na = TRUE) {
-  stopifnot(is.factor(x))
-
-  if (!allow_na) {
-    if (any(is.na(x))) {
-      stop(deparse(substitute(x)), " cannot have any missing data")
-    }
-  }
-
-  invisible(NULL)
-}
 
 
 
-
-check_is_numeric <- function(x, allow_na = TRUE) {
-  stopifnot(is.numeric(x))
-
-  if (!allow_na) {
-    if (any(is.na(x))) {
-      stop(deparse(substitute(x)), " cannot have any missing data")
-    }
-  }
-
-  invisible(NULL)
-}
 
 
 check_strata <- function(strata_data) {
@@ -222,19 +128,6 @@ check_strata_levels <- function(strata_data) {
   }
 }
 
-check_binary_endpoint_args <- function(rsp, col_by, strata_data) {
-
-  check_col_by_factor(rsp, col_by, get_N(col_by), min_num_levels = 2)
-  check_same_n(rsp = rsp, col_by = col_by)
-  check_is_event(rsp)
-
-  if (!is.null(strata_data)) {
-    check_same_n(rsp = rsp, strata_data = strata_data)
-    check_data_frame(strata_data)
-    check_strata_levels(strata_data)
-  }
-
-}
 
 
 #' Ranges:
@@ -269,35 +162,3 @@ check_numeric_range <- function(x, min = 0, max = 1) {
   invisible(NULL)
 }
 
-#' Variable type
-#'
-#' Check all row_by variables of appropriate type (factor or data.frame of factors)
-#' NA values are not allowed.
-#'
-#' @param row_by a factor or data.frame of factors
-#' @param x a related analysis variable to be split by row_by
-#'
-#' @examples
-#' check_row_by(iris$Species, iris$Sepal.Length)
-#'
-#' @noRd
-check_row_by <- function(row_by, x) {
-
-  check_same_n(x = x, row_by = row_by)
-
-  if (is.atomic(row_by)) {
-
-    check_is_factor(row_by, allow_na = FALSE)
-
-  } else if (is.data.frame(row_by)) {
-
-    stopifnot(!anyNA(row_by))
-    rb <- vapply(row_by, is.factor, logical(1))
-
-    if (!all(rb)) {
-      stop("Not all row_by variables are factors.")
-    }
-  }
-
-  invisible(NULL)
-}

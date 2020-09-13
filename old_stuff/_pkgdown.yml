@@ -14,6 +14,52 @@ reference:
     contents:
       - tern-package
 
+  - title: Compound Tables
+    desc: These tables are often compound tables that are found in the GDSR templates. Note that they all have the
+          `table_tree` argument to return the collection of elementary tables.
+    contents:
+      - t_summary
+      - t_summary.data.frame
+      - t_summary_by
+      - t_forest_rsp
+      - t_forest_tte
+      - t_rsp
+      - t_tte
+      - starts_with("t_events")
+      - starts_with("t_mmrm")
+      - t_count_true
+      - t_count_true.data.frame
+      - t_count_unique
+      - t_logistic
+      - t_abnormality
+      - t_events_patyear
+      - t_binary_outcome
+      - t_coxreg
+      - t_cox_univariate
+      - t_cox_multivariate
+      - t_ancova
+
+  - title: Elementary Tables
+    desc: These are tables that are often used in compound tables or graphs.
+    contents:
+      - t_summary.default
+      - t_summary.numeric
+      - t_summary.factor
+      - t_summary.logical
+      - t_summary.character
+      - t_summary.Date
+      - starts_with("t_el_")
+      - t_coxph_pairwise
+      - t_km
+      - t_max_grade_per_id
+      - t_count_unique
+      - t_count_true.default
+      - t_count_true.logical
+      - t_summarize_by_visit
+      - t_el_ancova
+      - t_el_odds_ratio
+      - t_contingency
+
   - title: Analysis and Summary Functions
     desc: These functions return statistical results from different models
     contents:
@@ -45,6 +91,8 @@ reference:
     contents:
       - arm
       - get_N
+      - col_N_add_total
+      - tabulate_pairwise
       - footnotes
       - footnotes<-
       - add_footnotes<-

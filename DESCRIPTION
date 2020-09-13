@@ -5,16 +5,16 @@ Version: 0.6.8.9000
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
-  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
-  person("Maximilian", "Mordig", email = "maximilian.mordig@roche.com", role = "aut"),
   person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
-  person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
-  person("Jennifer", "Li", email = "li.jing@gene.com", role = "aut"),
-  person("Yuyao", "Song", email = "yuyao.song@roche.com", role = "aut"),
-  person("Chendi", "Liao", email = "chendi.liao@roche.com", role = "aut"),
+  person("Saibah", "Chohan", email = "saibah.chohan@roche.com", role = "aut"),
+  person("Francois", "Collin", email = "francois.collin@contractors.roche.com", role = "aut"),
+  person("Nick", "Paszty", email = "paszty.nicholas@gene.com", role = "aut"),
+  person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
+  person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
   person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
-  person("Edgar", "Manukyan", email = "edgar.manukyan@roche.com", role = "aut"),
-  person("Ting", "Qi", email = "qit3@gene.com", role = "aut")
+  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
+  person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
+  person("Godwin", "Yung", email = "yungg@gene.com", role = "aut")
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
@@ -26,6 +26,8 @@ Depends:
 Imports:
   dplyr,
   grDevices,
+  lifecycle,
+  assertthat,
   gridExtra,
   magrittr,
   methods,
@@ -60,53 +62,3 @@ RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/
 BugReports: https://github.roche.com/NEST/tern/issues
-Collate:
-    'aa_trees.R'
-    'argument_convention.R'
-    'binary_endpoints.R'
-    'check_data.R'
-    'conf_level.R'
-    'decorate_grob.R'
-    'deprecated.R'
-    'df_explicit_na.R'
-    'for_rtables.R'
-    'formulas.R'
-    'g_forest.R'
-    'g_km.R'
-    'g_mmrm.R'
-    'g_summary_by.R'
-    'g_waterfall.R'
-    'missing_data.R'
-    'nest_colors.R'
-    'on_attach.R'
-    'package.R'
-    's_ancova.R'
-    's_mmrm.R'
-    'safe_join.R'
-    'split.R'
-    't_abn_shift.R'
-    't_abnormality.R'
-    't_ancova.R'
-    't_contingency.R'
-    't_count_true.R'
-    't_count_unique.R'
-    't_coxreg.R'
-    't_disposition.R'
-    't_events_patyear.R'
-    'utils.R'
-    't_events_term_grade_id.R'
-    't_events_term_id.R'
-    't_forest_rsp.R'
-    't_forest_tte.R'
-    't_km.R'
-    't_logistic.R'
-    't_mmrm.R'
-    't_rsp.R'
-    't_summarize_by_visit.R'
-    't_summary.R'
-    't_summary_variants.R'
-    't_tte.R'
-    'tabulate_aggregation_functions.R'
-    'tabulate_pairwise.R'
-    'utils_grid.R'
-    'wrap_text.R'

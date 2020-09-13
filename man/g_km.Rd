@@ -97,18 +97,19 @@ plot(fit_km)
 
 p <- g_km(fit_km = fit_km, col = c("black", "red", "blue"), lty = c(1, 2, 3), draw = FALSE)
 
-g_tkm <- textGrob(
-  label = toString(t_km(formula, data = ADTTE_f), gap = 1),
-  x = unit(1, "npc") - unit(2, "lines"),
-  y = unit(1, "npc") - unit(2, "lines"),
-  just = c("right", "top"),
-  gp = gpar(fontfamily = "mono", fontsize = 8, fontface = "bold")
-)
-
-p_t <- addGrob(p, gTree(children = gList(g_tkm), vp = vpPath("mainPlot", "kmCurve", "curvePlot")))
-
-grid.newpage()
-grid.draw(p_t)
+# Refactor
+# g_tkm <- textGrob(
+#   label = toString(t_km(formula, data = ADTTE_f), gap = 1),
+#   x = unit(1, "npc") - unit(2, "lines"),
+#   y = unit(1, "npc") - unit(2, "lines"),
+#   just = c("right", "top"),
+#   gp = gpar(fontfamily = "mono", fontsize = 8, fontface = "bold")
+# )
+#
+# p_t <- addGrob(p, gTree(children = gList(g_tkm), vp = vpPath("mainPlot", "kmCurve", "curvePlot")))
+#
+# grid.newpage()
+# grid.draw(p_t)
 
 g_km(fit_km, xlab = "Duration (Days)")
 }

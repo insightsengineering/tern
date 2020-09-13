@@ -4,7 +4,7 @@
 \name{tern-package}
 \alias{tern}
 \alias{tern-package}
-\title{TLG creation functions}
+\title{tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.}
 \description{
 Functions to create TLG
 }
@@ -22,15 +22,15 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Adrian Waddell \email{adrian.waddell@roche.com}
-  \item Maximilian Mordig \email{maximilian.mordig@roche.com}
-  \item Heng Wang \email{wang.heng@gene.com}
-  \item Jennifer Li \email{li.jing@gene.com}
-  \item Yuyao Song \email{yuyao.song@roche.com}
-  \item Chendi Liao \email{chendi.liao@roche.com}
-  \item Jana Stoilova \email{jana.stoilova@roche.com}
-  \item Edgar Manukyan \email{edgar.manukyan@roche.com}
+  \item Saibah Chohan \email{saibah.chohan@roche.com}
+  \item Francois Collin \email{francois.collin@contractors.roche.com}
+  \item Nick Paszty \email{paszty.nicholas@gene.com}
   \item Ting Qi \email{qit3@gene.com}
+  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+  \item Jana Stoilova \email{jana.stoilova@roche.com}
+  \item Adrian Waddell \email{adrian.waddell@roche.com}
+  \item Heng Wang \email{wang.heng@gene.com}
+  \item Godwin Yung \email{yungg@gene.com}
 }
 
 Other contributors:
