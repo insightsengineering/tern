@@ -29,6 +29,7 @@ reference:
           formatting themselves.
     contents:
       - s_dummy_sum
+      - s_summary
 
 
   - title: Analysis Functions

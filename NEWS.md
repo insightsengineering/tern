@@ -2,6 +2,8 @@
 
 This version of `tern` introduces a major refactor of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily easily build tables, see the examples.
 
+* Addition of the new S3 generic `s_summary` along with a method for `numeric`.
+
 * issues with no news: 
 
 # tern 0.6.8
