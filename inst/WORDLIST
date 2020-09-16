@@ -45,6 +45,7 @@ Evaluable
 Fisher
 funder
 Gabe
+GDSR
 Genetech
 ggplot
 github
@@ -58,6 +59,7 @@ javascript
 Jeffreys
 Kaplan
 Kenward
+LBT
 lexicographically
 liaoc
 linters
@@ -112,6 +114,8 @@ Surv
 swimlane
 t_abn_shift
 t_coxph
+t_el_abn_shift
+tabset
 teal
 t_el_abn_shift
 testthat
