@@ -4,17 +4,17 @@
 #'
 #' @name s_summary
 #' @param x a vector.
-#' @param ... arguments passed on methods.
-#' @export
-#' @md
-s_summary <- function(x, ...) UseMethod("s_summary", x)
-
-#' `s_summary` of numeric
-#'
 #' @param na.rm (`logical`)
 #'
 #' Indicating whether `NA` values should be
 #' stripped before the computation proceeds.
+#'
+#' @export
+#' @md
+s_summary <- function(x, na.rm = TRUE) # nolint
+  UseMethod("s_summary", x)
+
+#' `s_summary` of numeric
 #'
 #' @note
 #'

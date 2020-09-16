@@ -5,14 +5,12 @@
 \alias{s_summary.numeric}
 \title{S3 generic for \code{s_summary}}
 \usage{
-s_summary(x, ...)
+s_summary(x, na.rm = TRUE)
 
 \method{s_summary}{numeric}(x, na.rm = TRUE)
 }
 \arguments{
 \item{x}{a vector.}
-
-\item{...}{arguments passed on methods.}
 
 \item{na.rm}{(\code{logical})
 
