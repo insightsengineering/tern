@@ -4,6 +4,7 @@
 #'
 "_PACKAGE"
 
+#' @import assertthat
 #' @import utils.nest
 #' @import rtables
 #' @importFrom rlang "%||%"

@@ -24,9 +24,9 @@ Depends:
   ggplot2,
   survival
 Imports:
+  assertthat,
   dplyr,
   grDevices,
-  assertthat,
   gridExtra,
   magrittr,
   methods,

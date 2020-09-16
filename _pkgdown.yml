@@ -15,7 +15,7 @@ reference:
       - tern-package
       - argument_convention
 
-  - title: Contol Functions
+  - title: Control Functions
     desc: Control functions capture options in lists, and take care of defaults (and if it makes sense also checks).
           They avoid cluttering of function signatures with long lists of single arguments.
     contents:
@@ -29,7 +29,9 @@ reference:
           formatting themselves.
     contents:
       - s_dummy_sum
+      - s_count_abnormal
       - s_summary
+
 
 
   - title: Analysis Functions
@@ -37,9 +39,20 @@ reference:
           the table.
     contents:
        - dummy_sum
+       - analyze_abnormal
 
-  - title: Old Satatics Functions
-    desc: these functions might have to be refactored
+
+  - title: Analysis Helper Functions
+    desc: these functions are useful to help definining the analysis
+    contents:
+      - arm
+      - count_abnormal
+      - footnotes
+      - footnotes<-
+      - add_footnotes<-
+
+  - title: Old Statistics Functions
+    desc: these functions might have to be refactored or deprecated later
     contents:
       - ttest_ci_one_arm
       - ttest_two_arm
@@ -79,14 +92,18 @@ reference:
       - g_waterfall
       - starts_with("g_mmrm")
 
-  - title: Analysis Helper Functions
-    desc: these functions are useful to help definining the analysis
-    contents:
-      - arm
-      - footnotes
-      - footnotes<-
-      - add_footnotes<-
 
+  - title: rtables Helper Functions
+    desc: these functions help to work with the new rtables package and might be moved there later
+    contents:
+      - format_wrap_df
+      - format_wrap_x
+      - to_string_matrix
+
+  - title: rtables Formatting Functions
+    desc: these functions provide customized formatting rules to work with the rtables package
+    contents:
+      - format_fraction
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
@@ -113,6 +130,13 @@ reference:
       - df_explicit_na
       - get_onco_rsp_label
 
+  - title: Assertion Functions
+    desc: these functions supplement those in the assertthat package
+    contents:
+      - is_character_or_factor
+      - is_df_with_variables
+      - is_nonnegative_count
+      - is_variables
 
   - title: Deprecated Functions
     desc: These functions will eventually be removed
@@ -136,3 +160,7 @@ reference:
       - get_lme4_diagnostics
       - to_group_color
       - try_car_anova
+      - flatten_list
+      - list_length
+      - list_lengths_in_list
+      - labels_or_names

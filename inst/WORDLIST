@@ -1,4 +1,5 @@
-### Added from global WORDLIST
+aa
+abn
 abn
 ADAE
 ADAETTE
@@ -13,7 +14,6 @@ ADTTE
 ADVS
 Agresti
 AICc
-abn
 analyse
 analysis
 ANCOVA
@@ -22,6 +22,7 @@ Anova
 BCE
 BOBYQA
 boruvkaa
+Bove
 breslow
 Byar's
 cdisc
@@ -37,6 +38,8 @@ covr
 coxph
 dataname
 datanames
+denom
+df
 efron
 Evaluable
 Fisher
@@ -71,6 +74,7 @@ Newcombe
 nlminb
 NLopt
 npaszty
+num
 optimizers
 parallelization
 parallelize
@@ -93,9 +97,11 @@ roche
 Roche
 rsp
 rtable
+Sabanes
 Satterthwaite
 Schouten
 SDTM
+sfun
 shiny's
 shinyServer
 songy
@@ -106,8 +112,8 @@ Surv
 swimlane
 t_abn_shift
 t_coxph
-t_el_abn_shift
 teal
+t_el_abn_shift
 testthat
 TLG
 TLGs
@@ -123,9 +129,6 @@ waldcc
 wangh
 www
 xticks
+Yuyao
 zhanc
 Zhang
-Bove
-Sabanes
-Yuyao
-aa

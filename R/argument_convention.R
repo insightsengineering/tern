@@ -1,8 +1,7 @@
-#' Dummy Function that Documents all Standard Arguments
+#' Standard Arguments
 #'
 #' The documentation to this function lists all the arguments in \code{tern} that are used repeatedly to express an
-#' analysis
-#'
+#' analysis.
 #'
 #' @details
 #' Although this function just returns \code{NULL} it has two uses, for the \code{tern} users it provides a
@@ -24,6 +23,12 @@
 #'   \code{TRUE} if subject is a responder \code{FALSE} otherwise
 #' @param conf_level confidence level of the interval.
 #' @param prune_zero_rows `logical` whether to prune all zero rows
+#' @param lyt layout object pre-data used for tabulation
+#' @param df data frame containing analysis variables
+#' @param vars variable name(s) for the primary analysis variable(s)
+#' @param variables list of additional analysis variables
+#' @param .var single variable name that is passed by rtables when requested by statistics function
+#' @param ... additional arguments for the lower level functions
 #'
 #' @name argument_convention
 NULL
