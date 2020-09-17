@@ -41,10 +41,10 @@ Specifications:
 
 Plan:
 
-- [ ] low level summary function `s_summary`:
+- [x] low level summary function `s_summary`:
     + method for numerics.
     + test of `s_summary.numerics` as a statistical function.
-- [ ] high level function `sum_up`
+- [x] high level function `summarize_vars`
     + find an alternative name as already existing within `dplyr`.
     + depends on `format_wrap_x` in Daniel's branch.
     + test as an *analyzes* function
@@ -61,8 +61,10 @@ Dependencies:
 
 ```{r setup}
 library(rtables)
+library(tern)
 
 packageVersion("rtables")
+packageVersion("tern")
 # vignette("design_lbt02")
 ```
 
@@ -95,7 +97,7 @@ generally corresponding to `AVAL`) ordinarily described by:
 - `Median`;
 - `Min - Max`, the range of values from the minimum to the maximum.
 
-From the execution standpoint, a layout function `sum_up`
+From the execution standpoint, a layout function `summarize_vars`
 insure the analyzes. It is a wrapper for `rtables::analyze`, extra arguments
 (`extra_args`) are used:
 
@@ -113,306 +115,64 @@ For the higher level function, as of wrapper, I suggest not to be shy
 proposing specialized named functions, as soon as they rely on
 a common foundation.
 
-#### `s_summary`
+#### S3 generic/method `s_summary`
 
-##### As a S3 generic ...
-
-```{r}
-#' S3 generic for summary
-#' 
-#' @name s_summary
-#' @param x a vector.
-#' @param ... arguments passed on methods.
-#' @export
-s_summary <- function(x, ...) UseMethod("s_summary", x)
-```
-
-##### ... with method for numerics
-
-```{r}
-#' s_summary of numeric
-#'
-#' @param na.rm discard missing values.
-#' @method s_summary numeric
-#' @rdname s_summary
-#' @importFrom stats sd median
-s_summary.numeric <- function(
-  x,
-  na.rm = TRUE
-) {
-  
-  assertthat::is.number(x)
-  assertthat::is.flag(na.rm)
-  
-  x <- if(na.rm) x[!is.na(x)]
-  y <- list()
-  
-  y$n <- length(x)
-  
-  y <- within(
-    data = y,
-    {
-      mean_sd <- c(mean = mean(x), sd   = sd(x))
-      median <- median(x)
-      range <- if (n > 0) range(x) else rep(NA_integer_, 2)
-    }
-  )
-  
-  return(y)
-}
-```
-
-##### Tests
-
-```{r tests}
-testthat::test_that("s_summary returns expected results for numerics.", {
-  
-  testthat::expect_equivalent(
-    s_summary(as.numeric(c(NA_integer_))),
-    list(
-      n = 0, range = c(NA_integer_, NA_integer_),
-      median_sd = NA_integer_, mean = c(NaN, NA)
-    )
-  )
-  
-  testthat::expect_equivalent(
-    s_summary(as.numeric(c(NA_integer_, 1))),
-    list(n = 1, range = c(1, 1), median = 1, mean_sd = c(1, NA))
-  )
-  
-  testthat::expect_equivalent(
-    s_summary(as.numeric(c(NA_integer_, 1, 2))),
-    list(n = 2, range = c(1, 2), median = 1.5, mean_sd = c(1.5, 0.7071068)),
-    tolerance = .00001
-  )
-  
-  testthat::expect_equivalent(
-    s_summary(as.numeric(c(NA_integer_, 1), na.rm = FALSE)),
-    list(n = 1, range = c(1, 1), median = 1, mean_sd = c(1, NA))
-  )
-  
-})
-```
-
-#### `sum_up`
-
-Depends on `format_wrap_x`.
-
-```{r}
-#' sum_up Lab test visit
-#'
-#' @param ... passed to [rtables::analyze()].
-#' @export
-sum_up <- function(...) {
-  
-  analyze(
-    ...,
-    afun = format_wrap_x(
-      s_summary.numeric,
-      formats = c(
-        n = "xx", mean_sd = "xx.x (xx.x)",
-        median = "xx.x", range = "xx.x - xx.x"
-      ),
-      indent_mods = c(
-        n = 0, mean_sd = 0,
-        median = 0, range = 0
-      )
-    )
-  )
-  
-}
+```{r s_summary.R, engine='bash', comment=''}
+cat ../R/s_summary.R
 ```
 
 
-#### Depends on `format_wrap_x`
+#### `summarize_vars`
 
-```{r}
-#' format_wrap_x from Daniel
-#'
-#' This is similar as rtables::list_wrap_x.
-#' Note: this is just one prototype. Not final version of course yet!!!
-#'
-#' @export
-format_wrap_x <- function(s_function,
-                          indent_mods,
-                          formats) {
-  
-  function(x,
-           .stats, .indent_mods, .formats, .labels, # additional .labels now.
-           ...) {  # ... for all additional s_ arguments
-    vals <- as.list(s_function(x, ...)) # now this can also be a nested list.
-    
-    # overwrite defaults with user choices.
-    if (!missing(.formats)) {
-      formats[names(.formats)] <- .formats
-    }
-    if (!missing(.indent_mods)) {
-      indent_mods[names(.indent_mods)] <- .indent_mods
-    }
-    stats <- names(vals)
-    if (!missing(.stats)) {
-      stats <- .stats
-    }
-    
-    # subset values before formatting so we operate on top list level.
-    vals <- vals[stats]
-    
-    # replicate formats and indents to accommodate nested lists.
-    rep_index <- rep(names(vals), lengths_list(vals))
-    formats <- formats[rep_index]
-    indent_mods <- indent_mods[rep_index]
-    
-    # Flatten the list.
-    vals_flat <- flatten_list(vals)
-    
-    # Now we can construct labels.
-    labels <- labels_or_names(vals_flat)
-    if (!missing(.labels)) {
-      labels[names(.labels)] <- .labels
-    }
-    
-    # do the formatting.
-    vals_formatted <- mapply(
-      rcell,
-      x = vals_flat,
-      format = formats
-    )
-    
-    # indent the labels.
-    indented_labels <- mapply(  # allow indentation of labels
-      function(indent, label) {
-        indent_space <- paste(rep(" ", as.integer(indent)), collapse = "")
-        paste0(indent_space, label)
-      },
-      indent = indent_mods,
-      label = labels
-    )
-    rows <- rtables::in_rows(
-      .list = vals_formatted,
-      .labels = indented_labels
-    )
-    return(rows)
-  }
-}
-
-list_length <- function(x) {
-  if (!is.list(x)) {
-    return(1L)
-  } else {
-    return(length(x))
-  }
-}
-
-lengths_list <- function(x) {
-  sapply(x, list_length)
-}
-
-labels_or_names <- function(vals) {
-  labs <- sapply(vals, rtables::label)
-  nams <- names(vals)
-  is_null <- sapply(labs, is.null)
-  labs[is_null] <- nams[is_null]
-  return(labs)
-}
-
-
-flatten_list <- function(x) {
-  x_mod <- mapply(
-    function(x, n) {
-      if(is.list(x)) x else setNames(list(x), n)
-    },
-    x = x,
-    n = names(x),
-    SIMPLIFY = FALSE
-  )
-  do.call(c, c(x_mod, use.names = FALSE))
-}
-```
-
-
-
-#### Tests
-
-```{r test_sum_up}
-testthat::test_that("sum_up's conformity with former results.", {
-  
-  # Fabicated dataset.
-  set.seed(5)
-  dta_test <- data.frame(
-    USUBJID = rep(1:6, each = 3),
-    PARAMCD = rep("lab", 6*3),
-    AVISIT  = rep(paste0("V", 1:3), 6),
-    ARM     = rep(LETTERS[1:3], rep(6, 3)),
-    AVAL    = round(rnorm(3*6), 2)
-  )
-  l <- split_cols_by(lyt = NULL, var = "ARM")
-  l <- split_rows_by(lyt = l, var = "AVISIT")
-  l <- sum_up(lyt = l, vars = "AVAL")
-  results <- build_table(l, df = dta_test)
-  
-  # Test against expected original resuls.
-  testthat::expect_identical(
-    matrix_form(results)$strings,
-    structure(
-      c(
-        "", "V1", "n", "range", "median", "mean_sd", "V2", 
-        "n", "range", "median", "mean_sd", "V3", "n", "range", "median", 
-        "mean_sd", "A", "", "2", "-0.8 - 0.1", "-0.4", "-0.4 (0.6)", 
-        "", "2", "1.4 - 1.7", "1.5", "1.5 (0.2)", "", "2", "-1.3 - -0.6", 
-        "-0.9", "-0.9 (0.5)", "B", "", "2", "-0.5 - 0.1", "-0.2", "-0.2 (0.4)", 
-        "", "2", "-0.6 - 1.2", "0.3", "0.3 (1.3)", "", "2", "-0.8 - -0.3", 
-        "-0.5", "-0.5 (0.4)", "C", "", "2", "-1.1 - -0.1", "-0.6", "-0.6 (0.7)", 
-        "", "2", "-0.6 - -0.2", "-0.4", "-0.4 (0.3)", "", "2", "-2.2 - -1.1", 
-        "-1.6", "-1.6 (0.8)"
-      ),
-      .Dim = c(16L, 4L)
-    )
-  )
-})
+```{r summarize_vars.R, engine='bash', comment=''}
+cat ../R/summarize_vars.R
 ```
 
 ### Application {.tabset .tabset-pills}
 
-Applications will be used as a starting point to generate the
-`test-table_lbt02`.
+#### Fabricated data
 
-#### Default
-
-```{r application_01}
-l <- split_cols_by(lyt = NULL, "ARMCD")
-l <- split_rows_by(lyt = l, "AVISIT", split_fun = drop_split_levels)
-l <- sum_up(lyt = l, vars = "AVAL")
-
-build_table(
-  lyt = l,
-  df = subset(ex_adlb, AVISIT != "SCREENING" & PARAMCD == "ALT"),
-  col_counts = clcnt
-)  %>% as_html
-```
-
-
-#### Modified format
-
-```{r application_02}
-l <- split_cols_by(lyt = NULL, "ARMCD")
-l <- split_rows_by(lyt = l, "AVISIT", split_fun = drop_split_levels)
-l <- sum_up(
-  lyt = l, vars = "AVAL",
-  extra_args = list(
-    .stats = c("n", "mean_sd"),
-    .labels = c(n = "n (ind)"),
-    .formats = c(n = function(x, output) paste0(x, " ind."))
-  )
+```{r}
+# Fabricated dataset.
+dta_test <- data.frame(
+  USUBJID = rep(1:6, each = 3),
+  PARAMCD = rep("lab", 6*3),
+  AVISIT  = rep(paste0("V", 1:3), 6),
+  ARM     = rep(LETTERS[1:3], rep(6, 3)),
+  AVAL    = c(9:1, rep(NA, 9))
 )
 
-build_table(
-  lyt = l,
-  df = subset(ex_adlb, AVISIT != "SCREENING" & PARAMCD == "ALT"),
-  col_counts = clcnt
-) %>% as_html
+# Default output within a `rtables` pipeline.
+l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  split_rows_by(var = "AVISIT") %>%
+  summarize_vars(vars = "AVAL")
+
+build_table(l, df = dta_test)
+
+# Select and format statistics output.
+l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  split_rows_by(var = "AVISIT") %>%
+  summarize_vars(
+    vars = "AVAL",
+    .stats = c("n", "mean_sd"),
+    .formats = c("mean_sd" = "xx.x, xx.x"),
+    .labels = c(n = "n", mean_sd = "Mean (SD)")
+  )
+
+results <- build_table(l, df = dta_test)
+as_html(results)
+
+# Use arguments interpreted by `s_summary`.
+l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  split_rows_by(var = "AVISIT") %>%
+  summarize_vars(vars = "AVAL", na.rm = FALSE)
+
+results <- build_table(l, df = dta_test)
+as_html(results)
+
 ```
 
-
+#### `RCD` (TODO)
 
 References
 ==========

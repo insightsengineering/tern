@@ -22,13 +22,13 @@
 #' @param rsp (\code{logical} vector)\cr
 #'   \code{TRUE} if subject is a responder \code{FALSE} otherwise
 #' @param conf_level confidence level of the interval.
-#' @param prune_zero_rows `logical` whether to prune all zero rows
-#' @param lyt layout object pre-data used for tabulation
-#' @param df data frame containing analysis variables
-#' @param vars variable name(s) for the primary analysis variable(s)
-#' @param variables list of additional analysis variables
-#' @param .var single variable name that is passed by rtables when requested by statistics function
-#' @param ... additional arguments for the lower level functions
+#' @param prune_zero_rows `logical` whether to prune all zero rows.
+#' @param lyt layout object pre-data used for tabulation.
+#' @param df data frame containing analysis variables.
+#' @param vars variable name(s) for the primary analysis variable(s).
+#' @param variables list of additional analysis variables.
+#' @param .var single variable name that is passed by rtables when requested by statistics function.
+#' @param ... additional arguments for the lower level functions.
 #'
 #' @name argument_convention
 NULL

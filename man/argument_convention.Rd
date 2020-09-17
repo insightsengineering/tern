@@ -22,19 +22,19 @@ is censored}
 
 \item{conf_level}{confidence level of the interval.}
 
-\item{prune_zero_rows}{\code{logical} whether to prune all zero rows}
+\item{prune_zero_rows}{\code{logical} whether to prune all zero rows.}
 
-\item{lyt}{layout object pre-data used for tabulation}
+\item{lyt}{layout object pre-data used for tabulation.}
 
-\item{df}{data frame containing analysis variables}
+\item{df}{data frame containing analysis variables.}
 
-\item{vars}{variable name(s) for the primary analysis variable(s)}
+\item{vars}{variable name(s) for the primary analysis variable(s).}
 
-\item{variables}{list of additional analysis variables}
+\item{variables}{list of additional analysis variables.}
 
-\item{.var}{single variable name that is passed by rtables when requested by statistics function}
+\item{.var}{single variable name that is passed by rtables when requested by statistics function.}
 
-\item{...}{additional arguments for the lower level functions}
+\item{...}{additional arguments for the lower level functions.}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern} that are used repeatedly to express an

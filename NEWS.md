@@ -3,8 +3,7 @@
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
 
 * Counting patients with abnormal values post-baseline: `s_count_abnormal` and `analyze_abnormal`.
-
-* Addition of the new S3 generic `s_summary` along with a method for `numeric`.
+* Summarize variables: S3 generic `s_summary`, `s_summary.numeric` method, `summarize_vars`.
 
 * issues with no news: 
 

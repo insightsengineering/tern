@@ -20,21 +20,21 @@ s_count_abnormal(df, .var, abnormal, ...)
 analyze_abnormal(lyt, vars, ...)
 }
 \arguments{
-\item{df}{data frame containing analysis variables}
+\item{df}{data frame containing analysis variables.}
 
-\item{.var}{single variable name that is passed by rtables when requested by statistics function}
+\item{.var}{single variable name that is passed by rtables when requested by statistics function.}
 
 \item{abnormal}{string identifying the abnormal range level(s) in `vars`}
 
-\item{variables}{list of additional analysis variables}
+\item{variables}{list of additional analysis variables.}
 
 \item{baseline}{string identifying the baseline level(s) in `visit`}
 
-\item{...}{additional arguments for the lower level functions}
+\item{...}{additional arguments for the lower level functions.}
 
-\item{lyt}{layout object pre-data used for tabulation}
+\item{lyt}{layout object pre-data used for tabulation.}
 
-\item{vars}{variable name(s) for the primary analysis variable(s)}
+\item{vars}{variable name(s) for the primary analysis variable(s).}
 }
 \description{
 Primary analysis variable is the `range` factor, and additional analysis variables are

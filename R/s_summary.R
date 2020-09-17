@@ -1,28 +1,31 @@
+#' Summarize variables
+#'
+#' Produces an object description.
+#' @name summarize_variables
+#' @order 1
+NULL
+
+
 #' S3 generic for `s_summary`
 #'
-#' `s_summary` is a generic function to produce an object description.
-#'
-#' @name s_summary
 #' @param x a vector.
 #' @param na.rm (`logical`)
 #'
 #' Indicating whether `NA` values should be
 #' stripped before the computation proceeds.
 #'
+#' @describeIn summarize_variables `s_summary` is a generic function to produce
+#'   an object description.
+#'
 #' @export
 #' @md
+#' @order 2
 s_summary <- function(x, na.rm = TRUE) # nolint
   UseMethod("s_summary", x)
 
+
 #' `s_summary` of numeric
 #'
-#' @note
-#'
-#' * If `x` is an empty vector, `NA` is returned. This is the expected
-#'   feature so as to return `rcell` content in `rtables` when the
-#'   intersection of a column and a row delimits an empty data selection.
-#' * Also, when the `mean` function is applied to an empty vector, `NA` will
-#'   be returned instead of `NaN`, the latter being standard behavior in R.
 #'
 #' @return
 #'
@@ -34,16 +37,23 @@ s_summary <- function(x, na.rm = TRUE) # nolint
 #' - `range`: the [range()].
 #'
 #' @method s_summary numeric
-#' @rdname s_summary
+#' @describeIn summarize_variables Method for numeric class. Note that,
+#'   if `x` is an empty vector, `NA` is returned. This is the expected
+#'   feature so as to return `rcell` content in `rtables` when the
+#'   intersection of a column and a row delimits an empty data selection.
+#'   Also, when the `mean` function is applied to an empty vector, `NA` will
+#'   be returned instead of `NaN`, the latter being standard behavior in R.
+#' @order 3
+#'
 #' @md
 #'
 #' @importFrom stats sd median
 #' @import assertthat
+#' @import rtables
 #' @export
 #'
 #' @examples
 #' # `s_summary.numeric`
-#' # ===================
 #'
 #' ## Basic usage: empty numeric returns NA-filled items.
 #' s_summary(numeric())
@@ -65,7 +75,7 @@ s_summary <- function(x, na.rm = TRUE) # nolint
 #' )
 #'
 #' ## The summary obtained in with `rtables`:
-#' l <- split_cols_by(lyt = NULL, var = "Group") %>%
+#' split_cols_by(lyt = NULL, var = "Group") %>%
 #'   split_rows_by(var = "sub_group") %>%
 #'   analyze(vars = "x", afun = s_summary) %>%
 #'   build_table(df = dta_test)
@@ -83,13 +93,29 @@ s_summary.numeric <- function(x,
 
   y <- list()
 
-  y$n <- length(x)
-  y$mean_sd <- c(
-    mean = if (y$n > 0) mean(x) else NA_real_,
-    sd = sd(x)
+  y$n <- with_label(
+    x = length(x),
+    label = "n"
   )
-  y$median <- median(x)
-  y$range <- if (y$n > 0) range(x) else rep(NA_real_, 2)
 
-  return(y)
+  y$mean_sd <- with_label(
+    x = c(
+      mean = if (y$n > 0) mean(x) else NA_real_,
+      sd = stats::sd(x)
+    ),
+    label = "Mean (SD)"
+  )
+
+  y$median <- with_label(
+    x = stats::median(x),
+    label = "Median"
+  )
+
+  y$range <- with_label(
+    x = if (y$n > 0) range(x) else rep(NA_real_, 2),
+    label = "Min - Max"
+  )
+
+  y
+
 }
