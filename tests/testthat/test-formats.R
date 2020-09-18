@@ -1,5 +1,3 @@
-context("test functions in test-formats.R")
-
 test_that("format_fraction works with healthy inputs", {
   result <- format_fraction(c(num = 2L, denom = 3L))
   expected <- "2/3 (66.7%)"

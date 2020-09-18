@@ -1,7 +1,3 @@
-context("test functions in test-assertthat.R")
-
-# Class assertions.
-
 test_that("is_character_or_factor is TRUE with healthy input", {
   expect_true(is_character_or_factor(c("a", "b")))
   expect_true(is_character_or_factor(factor(c("a", "b"))))
@@ -12,8 +8,6 @@ test_that("is_character_or_factor is FALSE with wrong input", {
   expect_false(is_character_or_factor(c(5L, 3L)))
   expect_false(is_character_or_factor(NULL))
 })
-
-# Numeric assertions.
 
 test_that("is_nonnegative_count is TRUE with healthy input", {
   expect_true(is_nonnegative_count(5L))
@@ -27,8 +21,6 @@ test_that("is_nonnegative_count is FALSE with wrong input", {
   expect_false(is_nonnegative_count(NULL))
   expect_false(is_nonnegative_count(NA_integer_))
 })
-
-# Data frame assertions.
 
 test_that("is_variables is TRUE with healthy input", {
   expect_true(is_variables(list(a = "bla", b = "bli")))

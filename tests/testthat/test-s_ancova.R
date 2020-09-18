@@ -1,5 +1,3 @@
-context("test s_ancova and associated helper functions")
-
 library(dplyr)
 
 test_that("s_ancova_items works with healthy inputs", {

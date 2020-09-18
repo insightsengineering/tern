@@ -1,5 +1,3 @@
-context("test functions in abnormal.R")
-
 test_that("count_abnormal works with healthy input and default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 2)),

@@ -1,6 +1,3 @@
-context("df_explicit_na")
-
-
 my_data <- data.frame(
   x = c("A", "B", NA, "C"),
   y = c("D", "E", "F", "E"),

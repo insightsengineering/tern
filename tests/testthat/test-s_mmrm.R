@@ -1,5 +1,3 @@
-context("test s_mmrm and associated helper functions")
-
 library(random.cdisc.data)
 library(dplyr)
 

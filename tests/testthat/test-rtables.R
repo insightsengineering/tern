@@ -1,5 +1,3 @@
-context("test functions in rtables.R")
-
 test_that("to_string_matrix works correctly", {
   x <- basic_table() %>%
     analyze("AGE", mean, var_labels = "Age", format = "xx.xx") %>%
