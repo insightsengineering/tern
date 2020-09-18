@@ -4,7 +4,7 @@
 \alias{format_wrap}
 \alias{format_wrap_df}
 \alias{format_wrap_x}
-\title{Construct analysis functions with additional formatting arguments for use with \code{analyze}.}
+\title{Construct Formatted Analysis functions with additional formatting arguments for use with \code{analyze}.}
 \usage{
 format_wrap_df(sfun, indent_mods, formats)
 
@@ -32,6 +32,14 @@ original \code{sfun}. It has additional four formatting arguments:
 Note that \code{.indent_mods}, \code{.formats} and \code{.labels} don't need to contain an element for each
 statistic, as they have defaults initialized either from the arguments below (for indents and formats)
 or from the \code{sfun} results (for labels).
+}
+\details{
+For comparison functions it is common to return "empty" results for the
+comparison column. This can be specified by returning empty strings \code{""} in the
+corresponding statistics from the statistics function, along with the usual labels.
+The Formatted Analysis function which is returned from these wrapper constructors
+will then replace the old formats with the default format \code{"xx"} that works with these
+empty strings. The table cells will then stay empty.
 }
 \section{Functions}{
 \itemize{

@@ -90,6 +90,54 @@ test_that("labels_or_names works correctly", {
   )
 })
 
+test_that("identical_without_attr works correctly", {
+  x <- structure(
+    "bla",
+    a1 = "bli",
+    a2 = "foo"
+  )
+  y <- "bla"
+  expect_false(identical(x, y))
+  expect_true(identical_without_attr(x, y))
+
+  x <- "bla"
+  class(x) <- "foo"
+  y <- "bla"
+  expect_false(identical(x, y))
+  expect_false(isTRUE(all.equal(x, y, check.attributes = FALSE)))
+  expect_true(identical_without_attr(x, y))
+})
+
+test_that("identical_without_attr works only on top level for lists, not in elements", {
+  x <- list(
+    a = with_label(1, "one"),
+    b = with_label(2, "two")
+  )
+  y <- list(
+    a = with_label(1, "ONE"),
+    b = with_label(2, "TWO")
+  )
+  expect_false(identical(x, y))
+  expect_false(identical_without_attr(x, y))
+
+  x <- structure(
+    list(
+      a = 1,
+      b = 2
+    ),
+    foo = "bar"
+  )
+  y <- structure(
+    list(
+      a = 1,
+      b = 2
+    ),
+    zoo = "car"
+  )
+  expect_false(identical(x, y))
+  expect_true(identical_without_attr(x, y))
+})
+
 test_that("format_wrap_df works with healthy input", {
   sfun <- function(df) {
     assert_that(is.data.frame(df))
@@ -109,7 +157,6 @@ test_that("format_wrap_df works with healthy input", {
     )
   )
 
-  # Make sure the function signature is correct.
   expect_is(afun, "function")
   expect_identical(
     names(formals(afun)),
@@ -304,4 +351,89 @@ test_that("format_wrap_x correctly processes the required rtables arguments", {
     .labels = c(n = "n", mean = "  mean", median = " median", var = "var", N = "  N")
   )
   expect_identical(result, expected)
+})
+
+test_that("format_wrap_x produces empty cells and keeps labels when applied to empty string results", {
+  # sfun which returns empty string results when `in_ref` (toy example resembling comparison problems).
+  sfun <- function(x, in_ref = FALSE) {
+    list(
+      n = with_label(`if`(in_ref, "", length(x)), "Number of patients"),
+      mean = with_label(`if`(in_ref, "", mean(x)), "Mean"),
+      median = with_label(`if`(in_ref, "", median(x)), "Median")
+    )
+  }
+  indent_mods <- c(n = 0L, mean = 2L, median = 1L)
+  formats <- c(n = "xx.", mean = "xx.xx", median = "xx")
+
+  afun <- expect_silent(
+    format_wrap_x(
+      sfun,
+      indent_mods,
+      formats
+    )
+  )
+
+  # Make sure the function signature is correct.
+  expect_is(afun, "function")
+  expect_identical(
+    names(formals(afun)),
+    c("x", "...", ".stats", ".indent_mods", ".formats", ".labels")
+  )
+
+  # Make sure function works when not `in_ref`.
+  x <- c(1, 0, -1, 2, 5, 3, 2.5, 7.1)
+  result <- afun(x)
+  expected <- in_rows(
+    .list = list(
+      n = rcell(with_label(8L, "Number of patients"), "xx."),
+      mean = rcell(with_label(2.45, "Mean"), "xx.xx"),
+      median = rcell(with_label(2.25, "Median"), "xx")
+    ),
+    .labels = c(n = "Number of patients", mean = "  Mean", median = " Median")
+  )
+  expect_identical(result, expected)
+
+  # And now with `in_ref`. Here we expect empty strings with format "xx" and labels.
+  result <- afun(x, in_ref = TRUE)
+  expected <- in_rows(
+    .list = list(
+      n = rcell(with_label("", "Number of patients"), "xx"),
+      mean = rcell(with_label("", "Mean"), "xx"),
+      median = rcell(with_label("", "Median"), "xx")
+    ),
+    .labels = c(n = "Number of patients", mean = "  Mean", median = " Median")
+  )
+  expect_identical(result, expected)
+})
+
+test_that("format_wrap_df works with empty strings in end to end example", {
+  sfun <- function(df, .var, .ref_group, .in_ref_col) {
+    list(
+      range = with_label(
+        `if`(.in_ref_col, "", range(df[[.var]])),
+        "Label for Range"
+      ),
+      mean = with_label(
+        `if`(.in_ref_col, "", mean(df[[.var]])),
+        "Label for Mean"
+      )
+    )
+  }
+  afun <- format_wrap_df(
+    sfun,
+    formats = c(range = c("(xx.xx, xx.xx)"), mean = "xx.xx"),
+    indent_mods = c(range = 0L, mean = 2L)
+  )
+  result <- basic_table() %>%
+    split_cols_by("Species", ref_group = "setosa") %>%
+    analyze("Sepal.Length", afun = afun) %>%
+    build_table(iris)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "Label for Range", "  Label for Mean", "setosa",
+      "", "", "versicolor", "(4.9, 7)", "5.94", "virginica", "(4.9, 7.9)",
+      "6.59"),
+    .Dim = 3:4
+  )
+  expect_identical(result_matrix, expected_matrix)
 })

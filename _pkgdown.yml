@@ -165,3 +165,4 @@ reference:
       - list_length
       - list_lengths_in_list
       - labels_or_names
+      - identical_without_attr

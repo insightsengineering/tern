@@ -85,8 +85,31 @@ labels_or_names <- function(x) {
   return(result)
 }
 
+#' Compare two objects without considering attributes.
+#'
+#' Helper function used in format wrapper functions.
+#'
+#' @details This function only works on the top level of the objects,
+#'   i.e. if a list is compared with another list, then we still consider
+#'   attributes of the individual list elements when doing the comparison.
+#'
+#' @note Note that there is a difference of this function compared to the
+#'   behavior of [all.equal]. For example, the latter will not return `TRUE`
+#'   if `x` and `y` just differ in their class attribute, even when using it
+#'   with argument `check.attributes = FALSE`.
+#'
+#' @param x first object
+#' @param y second object
+#'
+#' @return A single logical value, `TRUE` or `FALSE`, never `NA` and never
+#'   anything other than a single value.
+identical_without_attr <- function(x, y) {
+  attributes(x) <- NULL
+  attributes(y) <- NULL
+  identical(x, y)
+}
 
-#' Construct analysis functions with additional formatting arguments for use with `analyze`.
+#' Construct Formatted Analysis functions with additional formatting arguments for use with `analyze`.
 #'
 #' The returned function has first argument `df` or `x` and uses any additional arguments for the
 #' original `sfun`. It has additional four formatting arguments:
@@ -105,6 +128,14 @@ labels_or_names <- function(x) {
 #' @param formats named vector with default formats
 #'
 #' @return the constructed analysis function
+#'
+#' @details For comparison functions it is common to return "empty" results for the
+#' comparison column. This can be specified by returning empty strings `""` in the
+#' corresponding statistics from the statistics function, along with the usual labels.
+#' The Formatted Analysis function which is returned from these wrapper constructors
+#' will then replace the old formats with the default format `"xx"` that works with these
+#' empty strings. The table cells will then stay empty.
+#'
 #' @name format_wrap
 NULL
 
@@ -195,6 +226,15 @@ format_wrap_df <- function(sfun,
     if (!missing(.labels)) {
       labels[names(.labels)] <- .labels
     }
+
+    # Handle the case of empty strings in general.
+    vals_is_empty_string <- vapply(
+      vals_flat,
+      FUN = identical_without_attr,
+      y = "",
+      FUN.VALUE = TRUE
+    )
+    formats[vals_is_empty_string] <- "xx"
 
     # Do the formatting.
     vals_formatted <- mapply(
@@ -311,6 +351,15 @@ format_wrap_x <- function(sfun,
     if (!missing(.labels)) {
       labels[names(.labels)] <- .labels
     }
+
+    # Handle the case of empty strings in general.
+    vals_is_empty_string <- vapply(
+      vals_flat,
+      FUN = identical_without_attr,
+      y = "",
+      FUN.VALUE = TRUE
+    )
+    formats[vals_is_empty_string] <- "xx"
 
     # Do the formatting.
     vals_formatted <- mapply(
