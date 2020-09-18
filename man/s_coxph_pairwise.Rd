@@ -40,6 +40,7 @@ Run Pairwise (ARM) \code{CoxPH} model for unstratified and stratified analysis
 }
 \examples{
 library(random.cdisc.data)
+library(survival)
 
 ADSL <- radsl(cached = TRUE)
 ADTTE <- radtte(cached = TRUE)

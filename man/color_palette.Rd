@@ -8,26 +8,26 @@ color_palette(n = 10, palette = "nest")
 }
 \arguments{
 \item{n}{(\code{numeric} value) \cr
-  The number of colors to be returned from
-  the color palettes. Please note the colors will be repeated after
-  a certain numerical limit per palette:
+The number of colors to be returned from
+the color palettes. Please note the colors will be repeated after
+a certain numerical limit per palette:
 
-  \itemize{
-     \item{\code{nest} }{96 colors}
-     \item{\code{stream} }{38 colors}
-     \item{\code{viridis} }{49 colors}
-  }}
+\itemize{
+\item{\code{nest} }{96 colors}
+\item{\code{stream} }{38 colors}
+\item{\code{viridis} }{49 colors}
+}}
 
 \item{palette}{(\code{character} value)\cr
-  The name of a palette supported by this function
+The name of a palette supported by this function
 
-  \itemize{
-     \item{\code{nest} }{A color palette developed by the NEST team representing
-      colors in the NEST logo.
-    }
-    \item{\code{stream} }{A color palette proposed by the stream documentation of stream version \code{2_05}}
-       \item{\code{viridis} }{A color palette provided by the \code{viridis::plasma} function.}
-  }}
+\itemize{
+\item{\code{nest} }{A color palette developed by the NEST team representing
+colors in the NEST logo.
+}
+\item{\code{stream} }{A color palette proposed by the stream documentation of stream version \code{2_05}}
+\item{\code{viridis} }{A color palette provided by the \code{viridis::plasma} function.}
+}}
 }
 \description{
 A standardized color palette to be used for all plots within

@@ -11,17 +11,17 @@ get_lme4_cov_estimate(fit)
 }
 \value{
 a matrix containing the covariance matrix estimate.
-  The following additional attributes are attached:
-  \describe{
-    \item{id}{which subject has been used (this is one subject with the maximum number of observations)}
-    \item{n_parameters}{number of covariance parameters that were used in the fit}
-  }
+The following additional attributes are attached:
+\describe{
+\item{id}{which subject has been used (this is one subject with the maximum number of observations)}
+\item{n_parameters}{number of covariance parameters that were used in the fit}
+}
 }
 \description{
 Extract the covariance matrix estimate from a lme4 fit.
 }
 \details{
 This is adapted from \url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q1/000558.html}.
-  Note that the order of rows/columns in the returned matrix corresponds to the order of the
-  \code{id}'s observations in the original data set.
+Note that the order of rows/columns in the returned matrix corresponds to the order of the
+\code{id}'s observations in the original data set.
 }

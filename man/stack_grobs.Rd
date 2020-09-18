@@ -30,6 +30,7 @@ stack_grobs(
 Stack grobs as a new grob with 1 column and multiple rows layout
 }
 \examples{
+library(grid)
 g1 <- circleGrob(gp = gpar(col = "blue"))
 g2 <- circleGrob(gp = gpar(col = "red"))
 g3 <- textGrob("TEST TEXT")

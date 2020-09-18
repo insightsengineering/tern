@@ -24,11 +24,11 @@ analyze_abnormal(lyt, vars, ...)
 
 \item{.var}{single variable name that is passed by rtables when requested by statistics function.}
 
-\item{abnormal}{string identifying the abnormal range level(s) in `vars`}
+\item{abnormal}{string identifying the abnormal range level(s) in \code{vars}}
 
 \item{variables}{list of additional analysis variables.}
 
-\item{baseline}{string identifying the baseline level(s) in `visit`}
+\item{baseline}{string identifying the baseline level(s) in \code{visit}}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -37,26 +37,26 @@ analyze_abnormal(lyt, vars, ...)
 \item{vars}{variable name(s) for the primary analysis variable(s).}
 }
 \description{
-Primary analysis variable is the `range` factor, and additional analysis variables are
-`id` (character or factor), `visit` (factor).
+Primary analysis variable is the \code{range} factor, and additional analysis variables are
+\code{id} (character or factor), \code{visit} (factor).
 We count patients in the numerator and denominator as follows:
 \describe{
-  \item{`num`}{the number of patients without this abnormality at baseline and at least one
-    post-baseline assessment.}
-  \item{`denom`}{the number of patients without this abnormality at baseline and with
-    this abnormality recorded while on treatment.}
+\item{\code{num}}{the number of patients without this abnormality at baseline and at least one
+post-baseline assessment.}
+\item{\code{denom}}{the number of patients without this abnormality at baseline and with
+this abnormality recorded while on treatment.}
 }
-Here the baseline visit is identified as the `visit` level(s) in `baseline`.
+Here the baseline visit is identified as the \code{visit} level(s) in \code{baseline}.
 Note that the denominators include patients that might have other abnormal levels
 at baseline, and patients with missing baseline.
 }
 \section{Functions}{
 \itemize{
-\item \code{count_abnormal}: Produce a vector with `num` and `denom` counts of patients for a single `abnormal`
+\item \code{count_abnormal}: Produce a vector with \code{num} and \code{denom} counts of patients for a single \code{abnormal}
 level.
 
 \item \code{s_count_abnormal}: Statistics function which counts patients with abnormal range values
-for multiple `abnormal` levels, and returns a list with one element each.
+for multiple \code{abnormal} levels, and returns a list with one element each.
 
 \item \code{analyze_abnormal}: Layout creating function which can be used for creating tables, which can take
 statistics function arguments and additional format arguments (see below).
@@ -66,10 +66,10 @@ statistics function arguments and additional format arguments (see below).
 
 These additional formatting arguments can be passed to the layout creating function:
 \describe{
-  \item{.stats}{(\code{character})\cr names of the statistics to use}
-  \item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-  \item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-  \item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
+\item{.stats}{(\code{character})\cr names of the statistics to use}
+\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
+\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
+\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
 }
 }
 

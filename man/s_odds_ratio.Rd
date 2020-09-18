@@ -14,30 +14,30 @@ s_odds_ratio(rsp, col_by, conf_level = 0.95, strat = NULL)
 
 \item{conf_level}{confidence level of the interval.}
 
-\item{strat}{Optional factor with one level per stratum and same length as \code{rsp}. If `NULL`,
+\item{strat}{Optional factor with one level per stratum and same length as \code{rsp}. If \code{NULL},
 then the unstratified analysis is computed.}
 }
 \value{
 A \code{data.frame} with columns:
 \describe{
-  \item{level}{The level of the `arm` variable which is compared with the reference level.}
-  \item{odds_ratio}{The odds ratio estimate.}
-  \item{ci_lower}{The lower bound of the confidence interval.}
-  \item{ci_upper}{The upper bound of the confidence interval.}
+\item{level}{The level of the \code{arm} variable which is compared with the reference level.}
+\item{odds_ratio}{The odds ratio estimate.}
+\item{ci_lower}{The lower bound of the confidence interval.}
+\item{ci_upper}{The upper bound of the confidence interval.}
 }
-The attribute `conf_level` saves the used confidence level.
+The attribute \code{conf_level} saves the used confidence level.
 }
 \description{
 Summary function for odds ratio estimation.
 }
 \details{
 This function uses either logistic regression for unstratified analyses, or conditional logistic
-  regression for stratified analyses.
-  The Wald confidence interval with the specified confidence level is calculated. Note that
-  for stratified analyses, there is currently no implementation for conditional likelihood confidence intervals,
-  therefore we don't offer the option of a likelihood confidence interval.
-  Note that when `rsp` contains only responders or non-responders, then the result values will be `NA`,
-  because no odds ratio estimation is possible.
+regression for stratified analyses.
+The Wald confidence interval with the specified confidence level is calculated. Note that
+for stratified analyses, there is currently no implementation for conditional likelihood confidence intervals,
+therefore we don't offer the option of a likelihood confidence interval.
+Note that when \code{rsp} contains only responders or non-responders, then the result values will be \code{NA},
+because no odds ratio estimation is possible.
 }
 \examples{
 set.seed(1)

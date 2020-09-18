@@ -7,12 +7,12 @@
 format_fraction(x, ...)
 }
 \arguments{
-\item{x}{a vector with integer elements `num` and `denom`}
+\item{x}{a vector with integer elements \code{num} and \code{denom}}
 
 \item{...}{required for rtables interface}
 }
 \value{
-a string in the format `num / denom (ratio %)`
+a string in the format \verb{num / denom (ratio \%)}
 }
 \description{
 Format a fraction together with ratio in percent.

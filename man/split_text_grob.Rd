@@ -74,6 +74,7 @@ sg <- split_text_grob(text = paste(
   "nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."
 ))
 
+library(grid)
 grobHeight(sg)
 
 grid.newpage()

@@ -33,10 +33,10 @@ given the levels of \code{given}}
 A list of matrix (one per level of variable) with rows corresponding to the combinations of
 \code{variable} and \code{given}, with columns:
 \describe{
-  \item{coef_hat}{Estimation of the coefficient}
-  \item{coef_se}{Standard error of the estimation.}
-  \item{hr}{Hazard ratio.}
-  \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
+\item{coef_hat}{Estimation of the coefficient}
+\item{coef_se}{Standard error of the estimation.}
+\item{hr}{Hazard ratio.}
+\item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
 }
 }
 \description{
@@ -44,17 +44,18 @@ Hazard ratio estimation in interactions
 }
 \details{
 Given the cox regression investigating the effect of Arm (A, B, C; reference A)
-  and Sex (F, M; reference Female). The model is abbreviated: y ~ Arm + Sex + Arm x Sex.
-  The cox regression estimates the coefficients along with a variance-covariance matrix for:
+and Sex (F, M; reference Female). The model is abbreviated: y ~ Arm + Sex + Arm x Sex.
+The cox regression estimates the coefficients along with a variance-covariance matrix for:
+\itemize{
+\item b1 (arm b), b2 (arm c),
+\item b3 (sex m),
+\item b4 (arm b: sex m), b5 (arm c: sex m)
+}
 
-  - b1 (arm b), b2 (arm c),
-  - b3 (sex m),
-  - b4 (arm b: sex m), b5 (arm c: sex m)
-
-  Given that I want an estimation of the Hazard Ratio for arm C/sex M, the estimation
-  will be given in reference to arm A/Sex M by exp(b2 + b3 + b5)/ exp(b3) = exp(b2 + b5),
-  therefore the interaction coefficient is given by b2 + b5 while the standard error is obtained
-  as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence level of 0.95.
+Given that I want an estimation of the Hazard Ratio for arm C/sex M, the estimation
+will be given in reference to arm A/Sex M by exp(b2 + b3 + b5)/ exp(b3) = exp(b2 + b5),
+therefore the interaction coefficient is given by b2 + b5 while the standard error is obtained
+as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence level of 0.95.
 }
 \examples{
 library(dplyr)

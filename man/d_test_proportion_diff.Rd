@@ -14,5 +14,5 @@ Specifies the test used to calculate the p-value.}
 String describing the test from which the p-value is derived.
 }
 \description{
-This is an auxiliary function that describes the analysis in `s_test_proportion_diff`.
+This is an auxiliary function that describes the analysis in \code{s_test_proportion_diff}.
 }

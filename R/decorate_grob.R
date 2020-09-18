@@ -39,6 +39,7 @@
 #' @template author_waddella
 #'
 #' @examples
+#'
 #' titles <- c(
 #'   "Edgar Anderson's Iris Data",
 #'   paste(
@@ -58,6 +59,7 @@
 #'
 #'
 #' ## empty plot
+#' library(grid)
 #' grid.newpage()
 #' grid.draw(
 #'   decorate_grob(
@@ -94,6 +96,7 @@
 #' )
 #'
 #' ## with \code{ggplot2}
+#' library(ggplot2)
 #' p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 #' p_gg
 #' p <- ggplotGrob(p_gg)
@@ -313,6 +316,7 @@ split_string <- function(text, width) {
 #'   "nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."
 #' ))
 #'
+#' library(grid)
 #' grobHeight(sg)
 #'
 #' grid.newpage()
@@ -436,6 +440,7 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #'   npages = 3
 #' )
 #'
+#' library(grid)
 #' draw_grob(pf(NULL))
 #' draw_grob(pf(NULL))
 #' draw_grob(pf(NULL))
@@ -463,6 +468,7 @@ decorate_grob_factory <- function(npages, ...) {
 #' @template author_waddella
 #'
 #' @examples
+#' library(ggplot2)
 #' g <- with(iris, {
 #'   list(
 #'     ggplotGrob(qplot(Sepal.Length, Sepal.Width, col = Species)),
@@ -474,6 +480,7 @@ decorate_grob_factory <- function(npages, ...) {
 #'   )
 #' })
 #' lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
+#' library(grid)
 #' draw_grob(lg[[1]])
 #' draw_grob(lg[[2]])
 #' draw_grob(lg[[6]])

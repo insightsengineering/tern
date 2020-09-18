@@ -7,6 +7,9 @@
 #' @import assertthat
 #' @import utils.nest
 #' @import rtables
+#' @import ggplot2
+#' @import survival
+#' @import grid
 #' @importFrom rlang "%||%"
 #' @importFrom methods is
 #' @importFrom utils globalVariables

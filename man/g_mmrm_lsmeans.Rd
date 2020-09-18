@@ -38,7 +38,7 @@ is the reference level.
 }
 \details{
 If variable labels are available in the original data set, then these are used. Otherwise
-  the variable names themselves are used for annotating the plot.
+the variable names themselves are used for annotating the plot.
 }
 \examples{
 library(dplyr)

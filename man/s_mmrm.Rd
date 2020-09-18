@@ -25,7 +25,7 @@ to be included as character vectors and match corresponding columns in \code{dat
 \item{arm}{the treatment group variable (factor)}
 \item{visit}{the visit variable (factor)}
 }
-Note that the main effects and interaction of `arm` and `visit` are by default included in the model.}
+Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
 
 \item{data}{a \code{data.frame} with all the variables specified in
 \code{vars}. Records with missing values in any independent variables
@@ -49,15 +49,15 @@ machine (not default).}
 \value{
 An \code{mmrm} object which is a list with MMRM results:
 \describe{
-  \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
-    contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
-  \item{cov_estimate}{The matrix with the covariance matrix estimate.}
-  \item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
-  \item{lsmeans}{This is a list with data frames \code{estimates} and \code{contrasts}.}
-  \item{vars}{The variable list.}
-  \item{labels}{Corresponding list with variable labels extracted from \code{data}.}
-  \item{ref_level}{The reference level for the arm variable, which is always the first level.}
-  \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
+\item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
+contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
+\item{cov_estimate}{The matrix with the covariance matrix estimate.}
+\item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
+\item{lsmeans}{This is a list with data frames \code{estimates} and \code{contrasts}.}
+\item{vars}{The variable list.}
+\item{labels}{Corresponding list with variable labels extracted from \code{data}.}
+\item{ref_level}{The reference level for the arm variable, which is always the first level.}
+\item{conf_level}{The confidence level which was used to construct the confidence intervals.}
 }
 }
 \description{
@@ -65,31 +65,31 @@ Summary function for an MMRM analysis
 }
 \details{
 Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
-  match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
+match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
 
-  For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
-  in descending number of variance parameters:
-  \describe{
-  \item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
-     If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
-     Note: the current actual implementation uses one more variance parameter, which does not have any
-     effect of the results. Therefore we report here the actually relevant number of parameters.}
-  \item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
-     7 variance parameters are used.}
-  \item{random-slope}{Random slope for the random effects of the time variable. 4 variance parameters are used.}
-  \item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
-  }
+For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
+in descending number of variance parameters:
+\describe{
+\item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
+If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
+Note: the current actual implementation uses one more variance parameter, which does not have any
+effect of the results. Therefore we report here the actually relevant number of parameters.}
+\item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
+7 variance parameters are used.}
+\item{random-slope}{Random slope for the random effects of the time variable. 4 variance parameters are used.}
+\item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
+}
 
-  For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
-  \describe{
-  \item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
-  \item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
-  \item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
-  \item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-  \item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
-  \item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
-  \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
-  }
+For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
+\describe{
+\item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
+\item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
+\item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
+\item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
+\item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
+\item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
+\item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
+}
 }
 \note{
 The ordering of the input data sets can lead to slightly different numerical results or

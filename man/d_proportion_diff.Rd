@@ -20,5 +20,5 @@ in proportion of outcomes.}
 String describing the analysis.
 }
 \description{
-This is an auxiliary function that describes the analysis in `s_proportion_diff`.
+This is an auxiliary function that describes the analysis in \code{s_proportion_diff}.
 }

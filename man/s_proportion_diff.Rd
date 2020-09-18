@@ -30,9 +30,9 @@ in proportion of outcomes.}
 \value{
 Named list with analysis summary.
 \describe{
-  \item{diff}{Difference in proportion of successful outcomes between groups.}
-  \item{diff_ci}{Confidence interval for \code{diff}.}
-  \item{label_ci}{Label for confidence interval in \code{diff_ci}.}
+\item{diff}{Difference in proportion of successful outcomes between groups.}
+\item{diff_ci}{Confidence interval for \code{diff}.}
+\item{label_ci}{Label for confidence interval in \code{diff_ci}.}
 }
 }
 \description{
@@ -43,14 +43,14 @@ used. In addition provides various options for types of confidence intervals.
 \details{
 The following options are supported for difference of proportions confidence intervals:
 \itemize{
-  \item{Option \code{wald} calls \code{\link[stats]{prop.test}} with \code{correct=FALSE}}
-  \item{Option \code{waldcc} includes continuity correction for Wald interval and
-  calls \code{\link[stats]{prop.test}} with \code{correct=TRUE}}
-  \item{Option \code{cmh} derives a CI for CMH-weighted difference of proportions and
-   calls \code{\link{s_adj_proportion_diff}}.}
-  \item{Options \code{anderson-hauck} or \code{ha} derives the Anderson-Hauck confidence interval.}
-  \item{Option \code{newcombe} derives the Newcombe confidence interval, which is based on the Wilson score
-    confidence interval for a single binomial proportion.}
+\item{Option \code{wald} calls \code{\link[stats]{prop.test}} with \code{correct=FALSE}}
+\item{Option \code{waldcc} includes continuity correction for Wald interval and
+calls \code{\link[stats]{prop.test}} with \code{correct=TRUE}}
+\item{Option \code{cmh} derives a CI for CMH-weighted difference of proportions and
+calls \code{\link{s_adj_proportion_diff}}.}
+\item{Options \code{anderson-hauck} or \code{ha} derives the Anderson-Hauck confidence interval.}
+\item{Option \code{newcombe} derives the Newcombe confidence interval, which is based on the Wilson score
+confidence interval for a single binomial proportion.}
 }
 }
 \examples{
@@ -72,5 +72,5 @@ s_proportion_diff(rep(FALSE, length(trt)), trt, diff_ci_method = "wald")
 }
 \seealso{
 \code{\link{s_adj_proportion_diff}}, \code{\link{s_proportion}},
-  \code{\link{s_test_proportion_diff}}
+\code{\link{s_test_proportion_diff}}
 }

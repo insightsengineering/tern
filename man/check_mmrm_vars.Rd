@@ -13,10 +13,10 @@ check_mmrm_vars(vars, data)
 }
 \value{
 a corresponding list of variable labels.
-  For the covariates, the element \code{parts} contains a character vector with one element
-  per covariates part (i.e. occurring variable in the original covariates specification) is
-  included.
-  If a label is not found, the variable name is instead used.
+For the covariates, the element \code{parts} contains a character vector with one element
+per covariates part (i.e. occurring variable in the original covariates specification) is
+included.
+If a label is not found, the variable name is instead used.
 }
 \description{
 Helper function to check the MMRM variables

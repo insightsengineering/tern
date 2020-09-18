@@ -4,7 +4,7 @@
 \alias{format_wrap}
 \alias{format_wrap_df}
 \alias{format_wrap_x}
-\title{Construct analysis functions with additional formatting arguments for use with `analyze`.}
+\title{Construct analysis functions with additional formatting arguments for use with \code{analyze}.}
 \usage{
 format_wrap_df(sfun, indent_mods, formats)
 
@@ -21,23 +21,23 @@ format_wrap_x(sfun, indent_mods, formats)
 the constructed analysis function
 }
 \description{
-The returned function has first argument `df` or `x` and uses any additional arguments for the
-original `sfun`. It has additional four formatting arguments:
+The returned function has first argument \code{df} or \code{x} and uses any additional arguments for the
+original \code{sfun}. It has additional four formatting arguments:
 \describe{
-  \item{.stats}{character vector to select statistics from the `sfun` result}
-  \item{.indent_mods}{named vector with custom (nonnegative) indent modifications}
-  \item{.formats}{named vector with custom formats}
-  \item{.labels}{named vector with custom labels}
+\item{.stats}{character vector to select statistics from the \code{sfun} result}
+\item{.indent_mods}{named vector with custom (nonnegative) indent modifications}
+\item{.formats}{named vector with custom formats}
+\item{.labels}{named vector with custom labels}
 }
-Note that `.indent_mods`, `.formats` and `.labels` don't need to contain an element for each
+Note that \code{.indent_mods}, \code{.formats} and \code{.labels} don't need to contain an element for each
 statistic, as they have defaults initialized either from the arguments below (for indents and formats)
-or from the `sfun` results (for labels).
+or from the \code{sfun} results (for labels).
 }
 \section{Functions}{
 \itemize{
-\item \code{format_wrap_df}: the wrapper for `sfun` having `df` as first argument.
+\item \code{format_wrap_df}: the wrapper for \code{sfun} having \code{df} as first argument.
 
-\item \code{format_wrap_x}: the wrapper for `sfun` having `x` as first argument.
+\item \code{format_wrap_x}: the wrapper for \code{sfun} having \code{x} as first argument.
 }}
 
 \examples{

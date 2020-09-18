@@ -185,9 +185,7 @@ s_proportion <- function(x, conf_level = 0.95,
 #' @seealso \code{\link{s_proportion_diff}}, \code{\link{s_test_proportion_diff}}
 #'
 #' @references
-#'   Kim Y, Won S. Adjusted proportion difference and confidence interval in stratified randomized trials.
-#'   [Internet]. PharmaSUG; 2013 [cited 14 May 2020]. (PharmaSUG 2013 Conference Proceedings). Report No.: SP04.
-#'   Available from: https://www.pharmasug.org/proceedings/2013/SP/PharmaSUG-2013-SP04.pdf
+#'   KimWon2013
 #'
 #' @examples
 #' set.seed(1)

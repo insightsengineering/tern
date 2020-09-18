@@ -15,11 +15,11 @@ g_mmrm_diagnostic(
 
 \item{type}{string specifying the type of diagnostic plot to be produced:
 \describe{
-  \item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
-    structure in the residuals that might be captured by adding additional covariates to the model.}
-  \item{q-q-residual}{A Q-Q plot for the residuals (i.e. sorted standardized residuals vs. normal quantiles),
-    grouped by visits. Observations with an absolute standardized residual above \code{z_threshold} will be
-    labeled.}
+\item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
+structure in the residuals that might be captured by adding additional covariates to the model.}
+\item{q-q-residual}{A Q-Q plot for the residuals (i.e. sorted standardized residuals vs. normal quantiles),
+grouped by visits. Observations with an absolute standardized residual above \code{z_threshold} will be
+labeled.}
 }}
 
 \item{z_threshold}{optional number indicating the normal quantile threshold for the Q-Q plot.}
@@ -32,9 +32,9 @@ This function produces diagnostic plots.
 }
 \details{
 Here we use marginal fitted values and residuals. That is, only the fixed effects are used
-  to estimate fitted values, and the difference of those fitted values vs. the observed data are
-  the residuals. This is in line with the MMRM philosophy where random effects are only used to
-  model the marginal residual distribution.
+to estimate fitted values, and the difference of those fitted values vs. the observed data are
+the residuals. This is in line with the MMRM philosophy where random effects are only used to
+model the marginal residual distribution.
 }
 \examples{
 library(dplyr)

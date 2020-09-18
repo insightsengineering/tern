@@ -20,5 +20,5 @@ of successful outcomes.}
 String describing the analysis.
 }
 \description{
-This is an auxiliary function that describes the analysis in `s_proportion`.
+This is an auxiliary function that describes the analysis in \code{s_proportion}.
 }

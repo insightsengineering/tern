@@ -11,7 +11,7 @@ summary_all_fits(all_fits)
 }
 \value{
 a list with elements \code{messages} (list of all messages), \code{fixef} (list of all fixed effects),
-  \code{llik} (vector of all log-likelihood values), \code{feval} (vector of number of function evaluations).
+\code{llik} (vector of all log-likelihood values), \code{feval} (vector of number of function evaluations).
 }
 \description{
 This is inspired by the internal unexported method \code{summary.allFit} from \code{lme4}.

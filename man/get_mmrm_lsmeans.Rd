@@ -17,8 +17,8 @@ get_mmrm_lsmeans(fit, vars, conf_level, weights)
 see \code{\link[emmeans]{emmeans}} for details.}
 }
 \value{
-A list with the LS means `estimates` and `contrasts` results between the treatment
-  and control arm groups at the different visits.
+A list with the LS means \code{estimates} and \code{contrasts} results between the treatment
+and control arm groups at the different visits.
 }
 \description{
 Helper function to extract the LS means from an MMRM fit.

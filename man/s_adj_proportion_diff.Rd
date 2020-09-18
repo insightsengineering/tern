@@ -18,11 +18,11 @@ s_adj_proportion_diff(x, grp, strat, conf_level = 0.95)
 \value{
 Named list with analysis summary:
 \describe{
-  \item{estimate}{CMH-weight adjusted proportion of successful outcomes in each group.}
-  \item{estimate_ci}{Confidence interval for adjusted proportions in \code{estimate}.}
-  \item{diff_est}{CMH-weight adjusted difference in proportion between groups.}
-  \item{diff_ci}{Confidence interval for adjusted difference in \code{diff_est}.}
-  \item{conf_level}{Confidence level used for \code{diff_ci} and \code{estimate_ci}.}
+\item{estimate}{CMH-weight adjusted proportion of successful outcomes in each group.}
+\item{estimate_ci}{Confidence interval for adjusted proportions in \code{estimate}.}
+\item{diff_est}{CMH-weight adjusted difference in proportion between groups.}
+\item{diff_ci}{Confidence interval for adjusted difference in \code{diff_est}.}
+\item{conf_level}{Confidence level used for \code{diff_ci} and \code{estimate_ci}.}
 }
 }
 \description{
@@ -48,9 +48,7 @@ s_adj_proportion_diff(rsp, trt, interaction(strata_data))
 
 }
 \references{
-Kim Y, Won S. Adjusted proportion difference and confidence interval in stratified randomized trials.
-  [Internet]. PharmaSUG; 2013 [cited 14 May 2020]. (PharmaSUG 2013 Conference Proceedings). Report No.: SP04.
-  Available from: https://www.pharmasug.org/proceedings/2013/SP/PharmaSUG-2013-SP04.pdf
+KimWon2013
 }
 \seealso{
 \code{\link{s_proportion_diff}}, \code{\link{s_test_proportion_diff}}

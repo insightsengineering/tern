@@ -24,6 +24,7 @@ pf <- decorate_grob_factory(
   npages = 3
 )
 
+library(grid)
 draw_grob(pf(NULL))
 draw_grob(pf(NULL))
 draw_grob(pf(NULL))

@@ -18,15 +18,14 @@ Authors@R: c(
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
-  R (>= 3.3),
-  rtables (>= 0.1.7),
-  grid,
-  ggplot2,
-  survival
+  R (>= 3.6),
+  rtables (>= 0.3.2)
 Imports:
   assertthat,
   dplyr,
   grDevices,
+  ggplot2,
+  grid,
   gridExtra,
   magrittr,
   methods,
@@ -34,6 +33,7 @@ Imports:
   rlang,
   scales,
   stats,
+  survival,
   utils,
   utils.nest (>= 0.2.5),
   forcats,
@@ -58,6 +58,7 @@ Suggests:
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/

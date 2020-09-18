@@ -77,6 +77,7 @@ The layout can be illustrated as follows:
 }
 }
 \examples{
+
 titles <- c(
   "Edgar Anderson's Iris Data",
   paste(
@@ -96,6 +97,7 @@ footnotes <- c(
 
 
 ## empty plot
+library(grid)
 grid.newpage()
 grid.draw(
   decorate_grob(
@@ -132,6 +134,7 @@ grid.draw(
 )
 
 ## with \code{ggplot2}
+library(ggplot2)
 p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 p_gg
 p <- ggplotGrob(p_gg)

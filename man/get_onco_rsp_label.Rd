@@ -10,7 +10,7 @@ get_onco_rsp_label()
 Named \code{character} vector.
 }
 \description{
-This is a convenience function for labeling the partition section in `t_binary_outcome`.
+This is a convenience function for labeling the partition section in \code{t_binary_outcome}.
 }
 \examples{
 library(dplyr)

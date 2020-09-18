@@ -12,6 +12,7 @@
 #' @export
 #'
 #' @examples
+#' library(grid)
 #' g1 <- circleGrob(gp = gpar(col = "blue"))
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
@@ -79,7 +80,7 @@ stack_grobs <- function(...,
 
 #' Arrange multiple grobs
 #'
-#' Arrange grobs as a new grob with n*m (rows*cols) layout
+#' Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout
 #'
 #' @inheritParams stack_grobs
 #' @param ncol number of columns in layout.
@@ -218,6 +219,7 @@ arrange_grobs <- function(...,
 #'
 #' @examples
 #' library(dplyr)
+#' library(grid)
 #' rect <- rectGrob(width = unit(0.5, "npc"), height = unit(0.5, "npc"))
 #' rect %>% draw_grob(vp = viewport(angle = 45))
 #'
@@ -251,6 +253,7 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
 #' @noRd
 #'
 #' @examples
+#' library(grid)
 #' label <- c("a", "b", "c", "d", "T", "R", "E", "G")
 #' x <- rep(1:4, 2)
 #' group <- factor(rep(c("GROUP1", "GROUP_new"), each = 4))

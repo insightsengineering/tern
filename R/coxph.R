@@ -160,6 +160,7 @@ explicit_special <- function(formula_terms, special) {
 #'
 #' @examples
 #' library(random.cdisc.data)
+#' library(survival)
 #'
 #' ADSL <- radsl(cached = TRUE)
 #' ADTTE <- radtte(cached = TRUE)

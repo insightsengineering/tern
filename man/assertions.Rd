@@ -6,7 +6,7 @@
 \alias{is_nonnegative_count}
 \alias{is_variables}
 \alias{is_df_with_variables}
-\title{Additional assertions that work with `assert_that`.}
+\title{Additional assertions that work with \code{assert_that}.}
 \usage{
 is_character_or_factor(x)
 
@@ -24,21 +24,21 @@ is_df_with_variables(df, variables)
 \item{variables}{supposed variables list to test}
 }
 \value{
-logical whether the assertion holds (TRUE or FALSE). When used inside `assert_that` produces
-  a meaningful error message.
+logical whether the assertion holds (TRUE or FALSE). When used inside \code{assert_that} produces
+a meaningful error message.
 }
 \description{
-Additional assertions that work with `assert_that`.
+Additional assertions that work with \code{assert_that}.
 }
 \section{Functions}{
 \itemize{
-\item \code{is_character_or_factor}: Check whether `x` is a character or factor vector.
+\item \code{is_character_or_factor}: Check whether \code{x} is a character or factor vector.
 
-\item \code{is_nonnegative_count}: Check whether `x` is a nonnegative count.
+\item \code{is_nonnegative_count}: Check whether \code{x} is a nonnegative count.
 
-\item \code{is_variables}: Check whether `x` is a valid list of variable names.
+\item \code{is_variables}: Check whether \code{x} is a valid list of variable names.
 
-\item \code{is_df_with_variables}: Check whether `df` is a data frame with the analysis `variables`.
+\item \code{is_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 }}
 
 \examples{

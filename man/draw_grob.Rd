@@ -18,6 +18,7 @@ Draw grob on device page
 }
 \examples{
 library(dplyr)
+library(grid)
 rect <- rectGrob(width = unit(0.5, "npc"), height = unit(0.5, "npc"))
 rect \%>\% draw_grob(vp = viewport(angle = 45))
 

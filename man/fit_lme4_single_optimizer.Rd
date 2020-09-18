@@ -26,5 +26,5 @@ Internal helper function to fit an lme4 model with a single optimizer, while cap
 }
 \note{
 While we are not directly importing functions from \code{dfoptim} or \code{optimx} here, we rely on them
-  being available to \code{lme4} (which has these packages only in "Suggests"). Therefore we note the imports below.
+being available to \code{lme4} (which has these packages only in "Suggests"). Therefore we note the imports below.
 }

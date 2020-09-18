@@ -25,8 +25,8 @@ Specifies the test used to calculate the p-value.}
 \value{
 Named list with analysis summary.
 \describe{
-  \item{p_value}{P-value for testing null hypothesis that proportions in two groups are the same.}
-  \item{test_name}{Label for test used to calculate \code{p_value}.}
+\item{p_value}{P-value for testing null hypothesis that proportions in two groups are the same.}
+\item{test_name}{Label for test used to calculate \code{p_value}.}
 }
 }
 \description{
@@ -36,11 +36,11 @@ difference of two proportions.
 \details{
 The following options are supported for testing difference of proportions:
 \itemize{
-  \item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
-  \item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
-  \item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
-  Internally calls \code{\link[stats]{mantelhaen.test}}.}
-  \item{Option \code{fisher} performs the Fisher's exact test.}
+\item{Option \code{schouten} performs the Chi-Squared test with Schouten correction.}
+\item{Option \code{chisq} performs Chi-Squared test. Internally calls \code{\link[stats]{prop.test}}.}
+\item{Option \code{cmh} performs stratified Cochran-Mantel-Haenszel test.
+Internally calls \code{\link[stats]{mantelhaen.test}}.}
+\item{Option \code{fisher} performs the Fisher's exact test.}
 }
 }
 \examples{

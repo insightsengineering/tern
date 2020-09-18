@@ -36,7 +36,7 @@ arrange_grobs(
 \item{name}{a character identifier for the grob.}
 }
 \description{
-Arrange grobs as a new grob with n*m (rows*cols) layout
+Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout
 }
 \examples{
 library(grid)
