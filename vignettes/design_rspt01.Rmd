@@ -1,0 +1,586 @@
+---
+title: "Design: Best overall response (RSPT01)"
+author: "Francois Collin"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: true
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{design_rspt01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: ../inst/ref/references.bib
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+
+Configuration
+=============
+
+```{r setup}
+library(rtables)
+library(tern)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+From old tern `get_onco_rsp_label()` becomes `label_onco_rsp()`.
+
+```{r label_onco_rsp}
+#' Label oncology responses
+#'
+#' This is a convenience function for standard labeling of oncological
+#' responses
+#'
+#' @return Named \code{character} vector.
+#'
+#' @export
+#'
+#' @examples
+#' rsp <- c("CR", "NE", "PR")
+#'
+#' # Recode values with standard labels.
+#' rsp <- label_onco_rsp()[ match(rsp, names(get_onco_rsp_label()))  ]
+#'
+#' rsp <- factor(rsp, levels = get_onco_rsp_label())
+
+get_onco_rsp_label <- function() {
+
+  rsp_full_label <- c(
+    CR          = "Complete Response (CR)",
+    PR          = "Partial Response (PR)",
+    SD          = "Stable Disease (SD)",
+    `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
+    PD          = "Progressive Disease (PD)",
+    NE          = "Not Evaluable (NE)",
+    Missing     = "Missing",
+    `NE/Missing` = "Missing or unevaluable"
+  )
+  rsp_full_label
+}
+```
+
+```{r data, results = "asis", eval = TRUE}
+library(dplyr)
+library(random.cdisc.data)
+ADSL <- radsl(cached = TRUE)
+ADRS <- radrs(cached = TRUE)
+
+# Select a response parameter endpoint.
+ADRS_f <- ADRS %>% filter(PARAMCD == "INVET")
+
+# Recode multinomial response with standard oncology labels.
+levels(ADRS_f$AVALC) <- get_onco_rsp_label()[
+  match(levels(ADRS_f$AVALC), names(get_onco_rsp_label()))
+  ]
+
+# Response variable.
+ADRS_f <- ADRS_f %>%
+  select(ARMCD, AVALC, SEX) %>%
+  mutate(
+    is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)")
+  )
+# Outlook.
+knitr::kable(head(ADRS_f))
+```
+
+
+
+Design Proposition
+==================
+
+The final functions should make this workable:
+
+```{r target, eval = FALSE}
+lyt <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = ref) %>%
+  add_colcounts %>%
+  estimate_proportion(
+    vars = "is_rsp",
+    conf_level = 0.9, prop_ci_method = "clopper-pearson"
+    ) %>%
+  estimate_proportion_diff(vars = "is_rsp", conf_level = 0.91) %>%
+  test_proportion_diff(vars = "is_rsp") %>%
+  estimate_odds_ratio(vars = "is_rsp") %>%
+  estimate_multinomial_response(var = "AVALC")
+
+as_html(build_table(lyt = lyt, df = ADRS_f))
+```
+
+
+Estimate proportion {.tabset}
+-------------------
+
+Based on the existing (minor refactoring):
+
+- topic name: `Responder proportions`
+- `estimate_proportion`, this layer function  needs:
+    + `s_proportion`, needs:
+        - `d_proportion` for row labeling.
+    + `format_wrap_x`
+
+
+### Functions {.tabset .tabset-pills}
+
+
+#### `estimate_proportion`
+
+```{r}
+estimate_proportion <- function(lyt,
+                                vars,
+                                ...) {
+  
+  analyze(
+    lyt,
+    vars,
+    afun = format_wrap_x(
+      s_proportion,
+      formats =  c(
+        n = "xx", prop = "xx.x%", n_prop = "xx (xx.xx%)",
+        prop_ci = "(xx.xx, xx.xx)"
+      ),
+      indent_mods =  c(n = 0L, prop = 0L, n_prop = 0L, prop_ci = 0L)
+    )
+    
+  )
+  
+}
+```
+
+#### `s_proportion`
+
+I would keep most of `s_proportion` as already defined in old tern
+(minor modification about the labeling).
+
+```{r}
+s_proportion <- function(x, conf_level = 0.95,
+                         prop_ci_method = c(
+                           "waldcc", "wald", "clopper-pearson",
+                           "wilson", "agresti-coull", "jeffreys"
+                         )
+) {
+
+  # check_is_event(x) # TODO - adapt after redesign
+  prop_ci_method <- match.arg(prop_ci_method)
+  ## check_conf_level(conf_level)  # TODO - adapt after redesign
+
+  # Common variables used below.
+  n <- length(x)
+  x_sum <- sum(x)
+  p_hat <- mean(x)
+  z <- qnorm((1 + conf_level) / 2)
+
+  # Calculate CI.
+  prop_ci <- if (prop_ci_method == "clopper-pearson") {
+
+    as.numeric(binom.test(x_sum, n, conf.level = conf_level)$conf.int)
+
+  } else if (prop_ci_method == "wilson") {
+
+    as.numeric(prop.test(x_sum, n, correct = FALSE, conf.level = conf_level)$conf.int)
+
+  } else if (prop_ci_method %in% c("wald", "waldcc")) {
+
+    q_hat <- 1 - p_hat
+    correct <- ifelse(
+      prop_ci_method == "waldcc",
+      1 / (2 * n),
+      0
+    )
+    err <- z * sqrt(p_hat * q_hat) / sqrt(n) + correct
+    l_ci <- max(0, p_hat - err)
+    u_ci <- min(1, p_hat + err)
+
+    c(l_ci, u_ci)
+
+  } else if (prop_ci_method == "agresti-coull") {
+
+    # Add here both z^2 / 2 successes and failures.
+    x_sum_tilde <- x_sum + z^2 / 2
+    n_tilde <- n + z^2
+    # Then proceed as with the Wald interval.
+    p_tilde <- x_sum_tilde / n_tilde
+    q_tilde <- 1 - p_tilde
+    err <- z * sqrt(p_tilde * q_tilde) / sqrt(n_tilde)
+    l_ci <- max(0, p_tilde - err)
+    u_ci <- min(1, p_tilde + err)
+
+    c(l_ci, u_ci)
+
+  } else if (prop_ci_method == "jeffreys") {
+
+    alpha <- 1 - conf_level
+    l_ci <- ifelse(
+      x_sum == 0,
+      0,
+      stats::qbeta(alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    )
+    u_ci <- ifelse(
+      x_sum == n,
+      1,
+      stats::qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    )
+
+    c(l_ci, u_ci)
+  }
+
+  attr(prop_ci, "label") <- d_proportion(
+    conf_level = conf_level,
+    prop_ci_method = prop_ci_method,
+    long = TRUE
+  )
+
+  results <- list(
+    "n" = x_sum,
+    "prop" = p_hat,  # Note: We always return the same response proportion estimate.
+    "n_prop" = c(x_sum, p_hat),
+    "prop_ci" = prop_ci
+  )
+
+}
+
+```
+
+#### `d_proportion`
+
+Helper function, kept as is from old tern.
+
+```{r d_proportion}
+d_proportion <- function(conf_level,
+                         prop_ci_method,
+                         long = FALSE) {
+  label <- paste0(conf_level * 100, "% CI")
+  if (long) label <- paste(label, "for Response Rates")
+  method_part <- switch(
+    prop_ci_method,
+    "clopper-pearson" = "Clopper-Pearson",
+    "waldcc" = "Wald, with correction",
+    "wald" = "Wald, without correction",
+    "wilson" = "Wilson",
+    "agresti-coull" = "Agresti-Coull",
+    "jeffreys" = "Jeffreys",
+    stop(paste(prop_ci_method, "does not have a description"))
+  )
+  label <- paste0(label, " (", method_part, ")")
+}
+```
+
+### Applications
+
+Applications will eventually used for tests and examples.
+
+#### `estimate_proportion`
+
+```{r estimate_proportion}
+dta_test <- data.frame(X = c(1, 0, 1, 0))
+l <- estimate_proportion(lyt = NULL, vars = "X")
+
+build_table(lyt = l, df = dta_test)
+```
+
+#### `s_proportion`
+
+```{r s_proportion}
+s_proportion(c(1, 0, 1, 0))
+```
+
+#### `afun` construction
+
+```{r afun_s_proportion}
+(
+  format_wrap_x(
+    s_proportion,
+    formats =  c(
+      n = "xx", prop = "xx.x%", n_prop = "xx (xx.xx%)",
+      prop_ci = "(xx.xx, xx.xx)"
+    ),
+    indent_mods =  c(n = 0L, prop = 0L, n_prop = 0L, prop_ci = 0L)
+  )
+)(c(1, 0, 1, 0))
+```
+
+
+Estimate proportion diff
+------------------------
+
+Based on the existing (minor refactoring):
+
+- topic name: `Responder proportion difference`
+- `estimate_proportion_diff`, this layer function  needs:
+    + `s_proportion_diff`, needs:
+        - `d_proportion_diff` for row labeling.
+    + `format_wrap_x_comp_ref`
+
+### Functions {.tabset}
+
+#### `prop_diff_*` {.tabset .tabset-pills}
+
+I broke down the former function `s_proportion_diff` into individualized
+proportion functions. Advantages:
+
+- smaller functions
+- reusable bits.
+- I will probably extend the approach to first `s_proportion`.
+
+##### `prop_diff_wald`
+
+```{r prop_diff_wald}
+prop_diff_wald <- function(rsp,
+                           grp,
+                           conf_level,
+                           correct) {
+
+  p_grp <- tapply(rsp, grp, mean)
+  list(
+    diff = unname(diff(p_grp)),
+    diff_ci = stats::prop.test(
+      table(grp, rsp),
+      correct = correct,
+      conf.level = conf_level
+    )$conf.int[1:2]
+  )
+
+}
+```
+
+##### `prop_diff_ha`
+
+```{r prop_diff_ha}
+prop_diff_ha <- function(rsp,
+                         grp,
+                         conf_level) {
+
+  n_grp <- tapply(rsp, grp, length)
+  p_grp <- tapply(rsp, grp, mean)
+  diff_p <- unname(diff(p_grp))
+  z <- stats::qnorm((1 + conf_level) / 2)
+
+  err <- 1 /
+    (2 * min(n_grp)) + z * sqrt(sum(p_grp * (1 - p_grp) / (n_grp - 1)))
+
+  l_ci <- max(-1, diff_p - err)
+  u_ci <- min(1, diff_p + err)
+
+  list(
+    "diff" = diff_p,
+    "diff_ci" = c(l_ci, u_ci)
+  )
+
+}
+```
+
+##### `prop_wilson`
+
+```{r prop_wilson}
+prop_wilson <- function(rsp,
+                        conf_level){
+
+  n <- length(rsp)
+  x_sum <- sum(rsp)
+
+  y <- prop.test(x_sum, n, correct = FALSE, conf.level = conf_level)$conf.int
+  y <- as.numeric(y)
+
+  y
+
+}
+```
+
+##### `prop_diff_nc`
+
+```{r prop_diff_nc}
+prop_diff_nc <- function(rsp,
+                         grp,
+                         conf_level) {
+
+  # Source:
+  # https://www.lexjansen.com/wuss/2016/127_Final_Paper_PDF.pdf
+
+  p_grp <- tapply(rsp, grp, mean)
+  diff_p <- unname(diff(p_grp))
+
+  x_grp <- split(rsp, f = grp)
+  ci_grp <- lapply(x_grp, FUN = prop_wilson, conf_level = conf_level)
+
+  l1 <- ci_grp[[1]][1]
+  u1 <- ci_grp[[1]][2]
+  l2 <- ci_grp[[2]][1]
+  u2 <- ci_grp[[2]][2]
+  l_ci <- max(-1, diff_p - sqrt((u1 - p_grp[1])^2 + (p_grp[2] - l2)^2))
+  u_ci <- min(1, diff_p + sqrt((p_grp[1] - l1)^2 + (u2 - p_grp[2])^2))
+  list(
+    "diff" = diff_p,
+    "diff_ci" = c(l_ci, u_ci)
+  )
+}
+```
+
+##### `prop_diff_cmh`
+
+```{r prop_diff_cmh}
+# prop_diff_cmh <- s_adj_proportion_diff
+prop_diff_cmh <- function(rsp, grp, strata, conf_level = 0.95) {
+
+  if (any(tapply(rsp, strata, length) < 5)) {
+    warning("Less than 5 observations in some strata.")
+  }
+
+  # first dimension: FALSE, TRUE
+  # 2nd dimension: CONTROL, TX
+  # 3rd dimension: levels of strat
+  t_tbl <- table(rsp, grp, strata)
+
+  n1 <- colSums(t_tbl[1:2, 1, ])
+  n2 <- colSums(t_tbl[1:2, 2, ])
+
+  p1 <- t_tbl[2, 1, ] / n1
+  p2 <- t_tbl[2, 2, ] / n2
+
+  # CMH weights
+  wt <- (n1 * n2 / (n1 + n2)) / sum(n1 * n2 / (n1 + n2))
+
+  est1 <- sum(wt * p1)
+  est2 <- sum(wt * p2)
+
+  estimate <- c(est1, est2)
+  names(estimate) <- levels(grp)
+
+  se1 <- sqrt(sum(wt^2 * p1 * (1 - p1) / n1))
+  se2 <- sqrt(sum(wt^2 * p2 * (1 - p2) / n2))
+
+  z <- qnorm((1 + conf_level) / 2)
+  err1 <- z * se1
+  err2 <- z * se2
+
+  ci1 <- c((est1 - err1), (est1 + err1))
+  ci2 <- c((est2 - err2), (est2 + err2))
+
+  estimate_ci <- list(ci1, ci2)
+  names(estimate_ci) <- levels(grp)
+
+  diff_est <- est2 - est1
+  se_diff <- sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt^2))
+
+  diff_ci <- c(diff_est - z * se_diff, diff_est + z * se_diff)
+
+  list(
+    prop = estimate,
+    prop_ci = estimate_ci,
+    diff = diff_est,
+    diff_ci = diff_ci
+  )
+
+}
+```
+
+#### `s_proportion_diff`
+
+```{r s_proportion_diff}
+s_proportion_diff <- function(df,
+                              .var,
+                              .ref_group,
+                              .in_ref_col,
+                              strata = NULL,
+                              conf_level = 0.95,
+                              diff_ci_method = c(
+                                "wald", "waldcc", "cmh",
+                                "anderson-hauck", "ha", "newcombe"
+                              )
+) {
+
+  cat("===> In sfun: Add the assertthat section.\n")
+  y <- list(diff = NULL, diff_ci = NULL)
+
+  if (.in_ref_col) return(y)
+
+  rsp <- c(df[[.var]], .ref_group[[.var]])
+  grp <- rep(c("Not-ref", "ref"), c(nrow(df), nrow(.ref_group)))
+
+  if (!is.null(strata))
+    strata <- c(interaction(df[[strata]]), interaction(.ref_group[[strata]]))
+
+  y <- switch(
+    diff_ci_method,
+    wald = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
+    waldcc = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
+    ha = prop_diff_ha(rsp, grp, conf_level),
+    `anderson-hauck` = prop_diff_ha(rsp, grp, conf_level),
+    newcombe = prop_diff_nc(rsp, grp, conf_level),
+    cmh = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
+  )
+
+  print(y)
+  y
+
+}
+```
+
+#### `estimate_proportion_diff`
+
+```{r estimate_proportion_diff}
+estimate_proportion_diff<- function(lyt,
+                                    vars,
+                                    ...) {
+
+  afun <- format_wrap_df(
+    sfun = s_proportion_diff,
+    formats =  c(diff = "xx.xx", diff_ci = "xx.xx - xx.xx"),
+    indent_mods = c(diff = 0L, diff_ci = 0L)
+  )
+
+  analyze(
+    lyt,
+    vars,
+    afun = afun,
+    extra_args = list(...)
+  )
+
+}
+```
+
+
+### Applications
+
+
+```{r estimate_proportion_diff_app}
+library(assertthat)
+ref <- levels(ADRS_f$ARMCD)[1]
+split_cols_by(lyt = NULL, var = "ARMCD", ref_group = ref) %>%
+  add_colcounts() %>%
+  estimate_proportion_diff(
+    vars = "is_rsp",
+    diff_ci_method = c(
+      "wald", "waldcc", "ha", "anderson-hauck", "newcombe", "cmh"
+      )[6],
+    strata = "SEX"
+  ) %>%
+  build_table(df = ADRS_f) %>%
+  as_html
+
+```
+
+Test proportion diff
+--------------------
+
+Estimate odds ratio
+-------------------
+
+Estimate multinomial response
+-----------------------------
+
+
+References
+==========
