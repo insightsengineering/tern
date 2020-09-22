@@ -1,6 +1,5 @@
 aa
 abn
-abn
 ADAE
 ADAETTE
 ADaM
@@ -27,6 +26,7 @@ breslow
 Byar's
 cdisc
 CDISC
+Chendi
 chisq
 ci
 CMD
@@ -41,6 +41,7 @@ datanames
 denom
 df
 efron
+enableR
 Evaluable
 Fisher
 funder
@@ -62,14 +63,17 @@ Kenward
 KimWon
 LBT
 lexicographically
+Liao
 liaoc
 linters
 lintr
 lme
 lme4
 lmerTest
+Manukyan
 mmrm
 MMRM
+Mordig
 nd
 Nelder
 NEST
@@ -119,7 +123,6 @@ t_coxph
 t_el_abn_shift
 tabset
 teal
-t_el_abn_shift
 testthat
 TLG
 TLGs
@@ -138,3 +141,4 @@ xticks
 Yuyao
 zhanc
 Zhang
+### Added from global WORDLIST

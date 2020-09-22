@@ -68,7 +68,8 @@ summarize_vars <- function(lyt,
   analyze(
     lyt, vars,
     afun = afun,
-    extra_args = list(...)
+    extra_args = list(...),
+    inclNAs = TRUE
   )
 
 }

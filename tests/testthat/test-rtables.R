@@ -172,8 +172,8 @@ test_that("format_wrap_df works with healthy input", {
   result <- afun(df)
   expected <- in_rows(
     .list = list(
-      nrows = rcell(4L, "xx."),
-      ncols = rcell(3L, "xx.xx")
+      nrows = CellValue(4L, "xx."),
+      ncols = CellValue(3L, "xx.xx")
     ),
     .labels = c(nrows = "nrows", ncols = "  ncols")
   )
@@ -189,7 +189,7 @@ test_that("format_wrap_df works with healthy input", {
   )
   expected <- in_rows(
     .list = list(
-      ncols = rcell(3L, "xx")
+      ncols = CellValue(3L, "xx")
     ),
     .labels = c(ncols = " number columns")
   )
@@ -233,10 +233,10 @@ test_that("format_wrap_df processes additional rtables arguments correctly", {
   result <- afun(df, .in_ref_col = FALSE, .N_col = 3)
   expected <- in_rows(
     .list = list(
-      nrows = rcell(4L, "xx."),
-      ncols = rcell(3L, "xx.xx"),
-      incol = rcell(FALSE, "xx"),
-      nincol = rcell(3, "xx")
+      nrows = CellValue(4L, "xx."),
+      ncols = CellValue(3L, "xx.xx"),
+      incol = CellValue(FALSE, "xx"),
+      nincol = CellValue(3, "xx")
     ),
     .labels = c(nrows = "nrows", ncols = "  ncols", incol = "incol", nincol = "nincol")
   )
@@ -274,9 +274,9 @@ test_that("format_wrap_x works with healthy input", {
   result <- afun(x)
   expected <- in_rows(
     .list = list(
-      n = rcell(8L, "xx."),
-      mean = rcell(2.45, "xx.xx"),
-      median = rcell(2.25, "xx")
+      n = CellValue(8L, "xx."),
+      mean = CellValue(2.45, "xx.xx"),
+      median = CellValue(2.25, "xx")
     ),
     .labels = c(n = "n", mean = "  mean", median = " median")
   )
@@ -292,8 +292,8 @@ test_that("format_wrap_x works with healthy input", {
   )
   expected <- in_rows(
     .list = list(
-      n = rcell(8L, "xx."),
-      median = rcell(2.25, "xx.xx")
+      n = CellValue(8L, "xx."),
+      median = CellValue(2.25, "xx.xx")
     ),
     .labels = c(n = "Number of numbers", median = "   median")
   )
@@ -342,11 +342,11 @@ test_that("format_wrap_x correctly processes the required rtables arguments", {
   result <- afun(x, .var = "bla", .N_total = 10)
   expected <- in_rows(
     .list = list(
-      n = rcell(8L, "xx."),
-      mean = rcell(2.45, "xx.xx"),
-      median = rcell(2.25, "xx"),
-      var = rcell("bla", "xx"),
-      N = rcell(10, "xx")
+      n = CellValue(8L, "xx."),
+      mean = CellValue(2.45, "xx.xx"),
+      median = CellValue(2.25, "xx"),
+      var = CellValue("bla", "xx"),
+      N = CellValue(10, "xx")
     ),
     .labels = c(n = "n", mean = "  mean", median = " median", var = "var", N = "  N")
   )
@@ -385,9 +385,9 @@ test_that("format_wrap_x produces empty cells and keeps labels when applied to e
   result <- afun(x)
   expected <- in_rows(
     .list = list(
-      n = rcell(with_label(8L, "Number of patients"), "xx."),
-      mean = rcell(with_label(2.45, "Mean"), "xx.xx"),
-      median = rcell(with_label(2.25, "Median"), "xx")
+      n = CellValue(with_label(8L, "Number of patients"), "xx."),
+      mean = CellValue(with_label(2.45, "Mean"), "xx.xx"),
+      median = CellValue(with_label(2.25, "Median"), "xx")
     ),
     .labels = c(n = "Number of patients", mean = "  Mean", median = " Median")
   )
@@ -397,9 +397,9 @@ test_that("format_wrap_x produces empty cells and keeps labels when applied to e
   result <- afun(x, in_ref = TRUE)
   expected <- in_rows(
     .list = list(
-      n = rcell(with_label("", "Number of patients"), "xx"),
-      mean = rcell(with_label("", "Mean"), "xx"),
-      median = rcell(with_label("", "Median"), "xx")
+      n = CellValue(with_label("", "Number of patients"), "xx"),
+      mean = CellValue(with_label("", "Mean"), "xx"),
+      median = CellValue(with_label("", "Median"), "xx")
     ),
     .labels = c(n = "Number of patients", mean = "  Mean", median = " Median")
   )

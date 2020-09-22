@@ -237,12 +237,12 @@ format_wrap_df <- function(sfun,
     formats[vals_is_empty_string] <- "xx"
 
     # Do the formatting.
-    vals_formatted <- mapply(
-      rcell,
-      x = vals_flat,
+    vals_formatted <- Map(
+      CellValue,
+      val = vals_flat,
       format = formats
     )
-    indented_labels <- mapply(
+    indented_labels <- Map(
       function(indent, label) {
         indent_space <- paste(rep(" ", as.integer(indent)), collapse = "")
         paste0(indent_space, label)
@@ -362,12 +362,12 @@ format_wrap_x <- function(sfun,
     formats[vals_is_empty_string] <- "xx"
 
     # Do the formatting.
-    vals_formatted <- mapply(
-      rcell,
-      x = vals_flat,
+    vals_formatted <- Map(
+      CellValue,
+      val = vals_flat,
       format = formats
     )
-    indented_labels <- mapply(
+    indented_labels <- Map(
       function(indent, label) {
         indent_space <- paste(rep(" ", as.integer(indent)), collapse = "")
         paste0(indent_space, label)
