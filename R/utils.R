@@ -119,28 +119,31 @@ has_no_na <- function(x) { # nousage # nolint
   !any(is.na(x))
 }
 
-#' Convert a Vector to a Factor
+#' Conversion of a Vector to a Factor
 #'
-#' Converts `x` to a factor and keeps its attributes.
+#' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
+#' can decide whether they prefer converting to factor manually (e.g. for full control of
+#' factor levels).
 #'
-#' @param x atomic
+#' @param x (`atomic`)\cr object to convert
 #'
-#' @return factor with same attributes (except class) as x
+#' @return The factor with same attributes (except class) as `x`.
 #'
 #' @export
 #'
 #' @examples
-#' as_factor_keep_attributes(with_label(c(1,1,2,3), "id"))
+#' as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
 #'
 as_factor_keep_attributes <- function(x) {
-  stopifnot(is.atomic(x))
-  x_attrs <- attributes(x)
-  x_attrs <- x_attrs[names(x_attrs) != "class"]
+  assert_that(is.atomic(x))
+  if (is.factor(x)) {
+    return(x)
+  }
+  x_name <- deparse(substitute(x))
+  x_class <- class(x)[1]
+  warning(paste("automatically converting", x_class, "variable", x_name, "to factor"))
   do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
 }
-
-
-
 
 #' Create String Representation
 #'

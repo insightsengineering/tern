@@ -2,20 +2,22 @@
 % Please edit documentation in R/utils.R
 \name{as_factor_keep_attributes}
 \alias{as_factor_keep_attributes}
-\title{Convert a Vector to a Factor}
+\title{Conversion of a Vector to a Factor}
 \usage{
 as_factor_keep_attributes(x)
 }
 \arguments{
-\item{x}{atomic}
+\item{x}{(\code{atomic})\cr object to convert}
 }
 \value{
-factor with same attributes (except class) as x
+The factor with same attributes (except class) as \code{x}.
 }
 \description{
-Converts \code{x} to a factor and keeps its attributes.
+Converts \code{x} to a factor and keeps its attributes. Warns appropriately such that the user
+can decide whether they prefer converting to factor manually (e.g. for full control of
+factor levels).
 }
 \examples{
-as_factor_keep_attributes(with_label(c(1,1,2,3), "id"))
+as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
 
 }
