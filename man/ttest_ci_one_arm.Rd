@@ -9,7 +9,7 @@ ttest_ci_one_arm(x, conf_level = 0.95)
 \arguments{
 \item{x}{(\code{numeric} vector)}
 
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
 a vector of 2 numeric numbers representing the lower and upper bounds.

@@ -5,7 +5,7 @@
 \alias{count_abnormal}
 \alias{s_count_abnormal}
 \alias{analyze_abnormal}
-\title{Count patients with abnormal range values.}
+\title{Patient Counts with Abnormal Range Values}
 \usage{
 count_abnormal(
   df,
@@ -20,31 +20,32 @@ s_count_abnormal(df, .var, abnormal, ...)
 analyze_abnormal(lyt, vars, ...)
 }
 \arguments{
-\item{df}{data frame containing analysis variables.}
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{single variable name that is passed by rtables when requested by statistics function.}
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
+a statistics function.}
 
 \item{abnormal}{string identifying the abnormal range level(s) in \code{vars}}
 
-\item{variables}{list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
 \item{baseline}{string identifying the baseline level(s) in \code{visit}}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{lyt}{layout object pre-data used for tabulation.}
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{vars}{variable name(s) for the primary analysis variable(s).}
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 }
 \description{
 Primary analysis variable is the \code{range} factor, and additional analysis variables are
 \code{id} (character or factor), \code{visit} (factor).
 We count patients in the numerator and denominator as follows:
 \describe{
-\item{\code{num}}{the number of patients without this abnormality at baseline and at least one
-post-baseline assessment.}
-\item{\code{denom}}{the number of patients without this abnormality at baseline and with
+\item{\code{num}}{the number of patients without this abnormality at baseline and with
 this abnormality recorded while on treatment.}
+\item{\code{denom}}{the number of patients without this abnormality at baseline and at least one
+post-baseline assessment.}
 }
 Here the baseline visit is identified as the \code{visit} level(s) in \code{baseline}.
 Note that the denominators include patients that might have other abnormal levels

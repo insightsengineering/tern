@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggplot2_helper.R
 \name{stat_mean_ci}
 \alias{stat_mean_ci}
-\title{Mean CI for ggplot2}
+\title{Mean CI for \code{ggplot2}}
 \usage{
 stat_mean_ci(x, conf_level = 0.95, na.rm = TRUE, n_lim = 2)
 }

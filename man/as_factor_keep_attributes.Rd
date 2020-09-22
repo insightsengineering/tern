@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{as_factor_keep_attributes}
 \alias{as_factor_keep_attributes}
-\title{Factors}
+\title{Convert a Vector to a Factor}
 \usage{
 as_factor_keep_attributes(x)
 }
@@ -13,8 +13,9 @@ as_factor_keep_attributes(x)
 factor with same attributes (except class) as x
 }
 \description{
-Convert to factor and keep attributes
+Converts \code{x} to a factor and keeps its attributes.
 }
 \examples{
 as_factor_keep_attributes(with_label(c(1,1,2,3), "id"))
+
 }

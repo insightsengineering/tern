@@ -70,7 +70,7 @@ if \code{draw=TRUE} should plot be drawn on a new page}
 }
 \description{
 Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
-column with a single value and a column with 2 values
+column with a single value and a column with 2 values.
 }
 \examples{
 

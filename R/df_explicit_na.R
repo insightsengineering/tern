@@ -1,4 +1,4 @@
-#' Prepare data to be used in a teal app
+#' Prepare Data to be Used in a Teal App
 #'
 #' teal does not take care of missing data provided by the app author. This is a helper
 #' function to encode \code{NA} values with a specific character char.

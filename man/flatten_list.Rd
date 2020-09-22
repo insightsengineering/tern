@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtables.R
 \name{flatten_list}
 \alias{flatten_list}
-\title{Flatten a list by one level.}
+\title{Flatten a List by One Level}
 \usage{
 flatten_list(x)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/df_explicit_na.R
 \name{df_explicit_na}
 \alias{df_explicit_na}
-\title{Prepare data to be used in a teal app}
+\title{Prepare Data to be Used in a Teal App}
 \usage{
 df_explicit_na(
   data,

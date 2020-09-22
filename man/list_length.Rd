@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtables.R
 \name{list_length}
 \alias{list_length}
-\title{Get the length of a list and return 1 for a vector}
+\title{List Length Definition}
 \usage{
 list_length(x)
 }

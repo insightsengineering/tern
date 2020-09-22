@@ -2,7 +2,7 @@
 % Please edit documentation in R/footnotes.R
 \name{add_footnotes<-}
 \alias{add_footnotes<-}
-\title{Add more footnotes}
+\title{Add Footnotes}
 \usage{
 add_footnotes(x) <- value
 }
@@ -12,7 +12,7 @@ add_footnotes(x) <- value
 \item{value}{character vector}
 }
 \description{
-Add more footnotes
+This adds more footnotes.
 }
 \examples{
 x <- table(iris$Species)
@@ -20,4 +20,5 @@ footnotes(x) <- "Species are equally distributed"
 footnotes(x)
 add_footnotes(x) <- "Add more footnotes"
 footnotes(x)
+
 }

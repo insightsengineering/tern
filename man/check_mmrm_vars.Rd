@@ -2,22 +2,34 @@
 % Please edit documentation in R/s_mmrm.R
 \name{check_mmrm_vars}
 \alias{check_mmrm_vars}
-\title{MMRM}
+\title{MMRM Variables Helper}
 \usage{
 check_mmrm_vars(vars, data)
 }
 \arguments{
-\item{vars}{variable list as per \code{\link{s_mmrm}}}
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+The following elements need to be included as character vectors and match corresponding columns
+in \code{data}:
+\describe{
+\item{response}{the response variable}
+\item{covariates}{the additional covariate terms (might also include interactions)}
+\item{id}{the subject ID variable}
+\item{arm}{the treatment group variable (factor)}
+\item{visit}{the visit variable (factor)}
+}
+Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
 
-\item{data}{data frame that includes the variables}
+\item{data}{a \code{data.frame} with all the variables specified in
+\code{vars}. Records with missing values in any independent variables
+will be excluded.}
 }
 \value{
-a corresponding list of variable labels.
-For the covariates, the element \code{parts} contains a character vector with one element
-per covariates part (i.e. occurring variable in the original covariates specification) is
-included.
-If a label is not found, the variable name is instead used.
+a corresponding list of variable labels. For the covariates, the
+element \code{parts} contains a character vector with one element per
+covariates part (i.e. occurring variable in the original covariates
+specification) is included. If a label is not found, the variable name is
+instead used.
 }
 \description{
-Helper function to check the MMRM variables
+Helper function to check the MMRM variables.
 }

@@ -1,7 +1,16 @@
-# Prototype functions to work with rtables.
-# Note: These are just prototypes. These are not final and will likely later be part of {rtables}.
+#' Prototype Functions to Work with `rtables`
+#'
+#' This summarizes the prototype functions that we currently use to work with
+#' rtables. Note: These are really just prototypes. These are not final and
+#' will likely later be part of rtables.
+#'
+#' @seealso [to_string_matrix()], [flatten_list()], [list_length()],
+#'   [list_lengths_in_list()], [labels_or_names()], [identical_without_attr()],
+#'   [format_wrap_df()], [format_wrap_x()]
+#' @name rtables_prototypes
+NULL
 
-#' Convert a table into a matrix of strings.
+#' Convert Table into Matrix of Strings
 #'
 #' Helper function to use mostly within tests.
 #'
@@ -14,7 +23,7 @@ to_string_matrix <- function(x) {
   matrix_form(x)$string
 }
 
-#' Flatten a list by one level.
+#' Flatten a List by One Level
 #'
 #' Internal function used by the automatically created formatting functions.
 #' Elements of the original input list which have been a list themselves are replaced
@@ -36,7 +45,7 @@ flatten_list <- function(x) {
   return(result)
 }
 
-#' Get the length of a list and return 1 for a vector
+#' List Length Definition
 #'
 #' Internal helper function to deal with possibly nested lists.
 #' We might call this result "list length" since only lists count here.
@@ -53,7 +62,7 @@ list_length <- function(x) {
   return(result)
 }
 
-#' Get the list lengths of all list elements.
+#' List Lengths for a List
 #'
 #' Internal helper function to deal with possibly nested lists.
 #'
@@ -66,7 +75,7 @@ list_lengths_in_list <- function(x) {
   vapply(x, list_length, 1L)
 }
 
-#' Get the labels or names if there are no labels from a list.
+#' Labels or Names of List Elements
 #'
 #' Internal helper function for working with nested statistic function results which typically
 #' don't have labels but names that we can use.
@@ -85,7 +94,7 @@ labels_or_names <- function(x) {
   return(result)
 }
 
-#' Compare two objects without considering attributes.
+#' Compare Without Considering Attributes
 #'
 #' Helper function used in format wrapper functions.
 #'
@@ -109,7 +118,7 @@ identical_without_attr <- function(x, y) {
   identical(x, y)
 }
 
-#' Construct Formatted Analysis functions with additional formatting arguments for use with `analyze`.
+#' Construct Formatted Analysis Functions
 #'
 #' The returned function has first argument `df` or `x` and uses any additional arguments for the
 #' original `sfun`. It has additional four formatting arguments:

@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtables.R
 \name{list_lengths_in_list}
 \alias{list_lengths_in_list}
-\title{Get the list lengths of all list elements.}
+\title{List Lengths for a List}
 \usage{
 list_lengths_in_list(x)
 }

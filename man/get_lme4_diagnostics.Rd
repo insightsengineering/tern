@@ -2,20 +2,20 @@
 % Please edit documentation in R/s_mmrm.R
 \name{get_lme4_diagnostics}
 \alias{get_lme4_diagnostics}
-\title{Linear mixed model}
+\title{Linear Mixed Model Diagnostics}
 \usage{
 get_lme4_diagnostics(fit, cov_est = get_lme4_cov_estimate(fit))
 }
 \arguments{
-\item{fit}{object of class \code{lmerModLmerTest} fit with REML using \code{\link[lmerTest]{lmer}}}
+\item{fit}{(\code{lmerModLmerTest})\cr object fit with REML using \code{\link[lmerTest:lmer]{lmerTest::lmer()}}.}
 
-\item{cov_est}{the covariance estimate coming from \code{\link{get_lme4_cov_estimate}}}
+\item{cov_est}{(\code{Matrix})\cr covariance estimate coming from \code{\link[=get_lme4_cov_estimate]{get_lme4_cov_estimate()}}.}
 }
 \value{
 a list with the REML criterion, the AIC, AICc and BIC.
 }
 \description{
-Compute the model diagnostic statistics for a linear mixed model fit
+Compute the model diagnostic statistics for a linear mixed model fit.
 }
 \details{
 AICc is here defined as

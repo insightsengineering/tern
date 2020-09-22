@@ -2,7 +2,7 @@
 % Please edit documentation in R/missing_data.R
 \name{sas_na}
 \alias{sas_na}
-\title{Convert empty strings and strings with only whitespaces to NA}
+\title{Convert Strings to \code{NA}}
 \usage{
 sas_na(x, empty = TRUE, whitespaces = TRUE)
 }

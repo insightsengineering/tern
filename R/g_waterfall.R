@@ -1,7 +1,7 @@
 #' Horizontal Waterfall Plot
 #'
 #' This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
-#' markup
+#' markup.
 #'
 #' @param height (\code{numeric} vector)\cr
 #'   Contains values to be plotted as the waterfall bars
@@ -73,6 +73,7 @@
 #'   ylab = "Percentage Change",
 #'   title = "Waterfall plot"
 #' )
+#'
 g_waterfall <- function(height,
                         id,
                         col = NULL,

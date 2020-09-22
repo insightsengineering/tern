@@ -1,6 +1,6 @@
-#' Split string
+#' Split String
 #'
-#' return splitted text that fits onto page width
+#' Return splitted text that fits onto page width.
 #'
 #' @param txt string (or vector of strins) to be split in multiple lines, not that
 #' \code{\\n} is also split into to lines
@@ -19,6 +19,7 @@
 #' text <- "This is a test with many words and more"
 #' teal.modules.clinical:::wrap_text(txt = text, width = unit(4, "cm"), collapse = "\n")
 #' teal.modules.clinical:::wrap_text(txt = text, width = unit(5, "cm"), collapse = "\n")
+#'
 wrap_text <- function(txt, # nousage # nolint
                       width = convertWidth(unit(1, "npc"), "inch", TRUE),
                       gp = gpar(),

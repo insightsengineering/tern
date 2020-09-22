@@ -2,7 +2,7 @@
 % Please edit documentation in R/conf_level.R
 \name{check_conf_level}
 \alias{check_conf_level}
-\title{Check if Argument Describes Confidence Levels for Different Confidence Intervals and Tests}
+\title{Check Confidence Levels for Different Confidence Intervals and Tests}
 \usage{
 check_conf_level(conf_level, type = NULL)
 }

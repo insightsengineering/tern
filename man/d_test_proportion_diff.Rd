@@ -2,7 +2,7 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{d_test_proportion_diff}
 \alias{d_test_proportion_diff}
-\title{Describe the test between two proportions}
+\title{Describe the Test Between Two Proportions}
 \usage{
 d_test_proportion_diff(test)
 }

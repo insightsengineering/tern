@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtables.R
 \name{to_string_matrix}
 \alias{to_string_matrix}
-\title{Convert a table into a matrix of strings.}
+\title{Convert Table into Matrix of Strings}
 \usage{
 to_string_matrix(x)
 }

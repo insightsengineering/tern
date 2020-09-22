@@ -1,7 +1,7 @@
 #' Create a Forest Plot based on a Table
 #'
 #' Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
-#' column with a single value and a column with 2 values
+#' column with a single value and a column with 2 values.
 #'
 #' @param tbl (\code{rtable} object)
 #' @param col_x (\code{integer} value)\cr

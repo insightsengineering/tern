@@ -1,4 +1,4 @@
-#' Describe the proportion summary
+#' Description of Proportion Summary
 #'
 #' This is an auxiliary function that describes the analysis in `s_proportion`.
 #'
@@ -265,7 +265,7 @@ s_adj_proportion_diff <- function(x, grp, strat, conf_level = 0.95) {
   result
 }
 
-#' Describe the difference between two proportions summary
+#' Description of Difference Between Two Proportions Summary
 #'
 #' This is an auxiliary function that describes the analysis in `s_proportion_diff`.
 #'
@@ -479,7 +479,7 @@ s_proportion_diff <- function(x,
   return(results)
 }
 
-#' Describe the test between two proportions
+#' Describe the Test Between Two Proportions
 #'
 #' This is an auxiliary function that describes the analysis in `s_test_proportion_diff`.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{fit_lme4_single_optimizer}
 \alias{fit_lme4_single_optimizer}
-\title{Fitting}
+\title{Fitting \code{lme4} Model}
 \usage{
 fit_lme4_single_optimizer(
   formula,
@@ -12,14 +12,18 @@ fit_lme4_single_optimizer(
 )
 }
 \arguments{
-\item{formula}{the lme4 formula}
+\item{formula}{(\code{formula})\cr the \code{lme4} formula.}
 
-\item{data}{the data set}
+\item{data}{a \code{data.frame} with all the variables specified in
+\code{vars}. Records with missing values in any independent variables
+will be excluded.}
 
-\item{optimizer}{the optimizer to use}
+\item{optimizer}{a string specifying the optimization algorithm which should be used. By default, "automatic"
+will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
+is chosen and does not give a valid result, an error will occur.}
 }
 \value{
-the fitted \code{lmerMerModTest} object, with additional attributes \code{messages} and \code{optimizer}.
+the fitted \code{\link[lmerTest:lmerModLmerTest-class]{lmerTest::lmerModLmerTest}} object, with additional attributes \code{messages} and \code{optimizer}.
 }
 \description{
 Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.

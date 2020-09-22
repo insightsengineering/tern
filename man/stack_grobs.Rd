@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_grid.R
 \name{stack_grobs}
 \alias{stack_grobs}
-\title{Stack multiple grobs}
+\title{Stack Multiple Grobs}
 \usage{
 stack_grobs(
   ...,
@@ -27,7 +27,7 @@ stack_grobs(
 \item{name}{a character identifier for the grob.}
 }
 \description{
-Stack grobs as a new grob with 1 column and multiple rows layout
+Stack grobs as a new grob with 1 column and multiple rows layout.
 }
 \examples{
 library(grid)
@@ -46,4 +46,5 @@ grid.draw(stack_grobs(g1, g2, g3, vp = vp1, name = "test"))
 
 showViewport()
 grid.ls(grobs = TRUE, viewports = TRUE)
+
 }

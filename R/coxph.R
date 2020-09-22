@@ -1,5 +1,6 @@
-
-#' Control function for \code{CoxPH} model
+#' Control Method Inputs for `CoxPH` Model
+#'
+#' This function captures all method inputs for a `CoxPH` model and checks them.
 #'
 #' @param pval_method The method to be passed as argument \code{pval_method} to function
 #'   \code{\link{s_coxph_pairwise}}. Default method is "log-rank", can also be set to "wald" or "likelihood".

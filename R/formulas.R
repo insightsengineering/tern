@@ -1,6 +1,6 @@
-#' Drop a special from a formula
+#' Drop Special from Formula
 #'
-#' For example get an unstratified version of a formula
+#' For example, this can be used to get an unstratified version of a formula.
 #'
 #' @param terms an object return by \code{\link[stats]{terms}}
 #' @param special a character string of the special
@@ -11,13 +11,12 @@
 #'
 #' @importFrom stats update.formula as.formula
 #'
-#' @author boruvkaa
-#'
 #' @examples
 #' formula <- X ~ Y + strata(B, C, D)
 #' trm <- terms(formula, specials = "strata")
 #'
 #' tern:::drop_special(trm, "strata")
+#'
 drop_special <- function(terms, special) {
   specials <- attr(terms, "specials")
   if (!is.null(specials[[special]])) {
@@ -39,15 +38,14 @@ has_special_arm <- function(formula) { # nousage # nolint
   !is.null(attr(terms(formula, specials = "arm"), "arm")$arm)
 }
 
-#' Identity function to indicate specials in formulas
+#' Indicate Arm Variable in Formula
 #'
-#' We use \code{arm} to in tern formulas
+#' We use `arm` to indicate the study arm variable in `tern` formulas.
 #'
 #' @param x arm information
 #'
 #' @export
 #'
-#' @author boruvkaa
 arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }

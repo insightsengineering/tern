@@ -1,6 +1,12 @@
-# Functions for MMRM plots.
+#' MMRM Plots
+#'
+#' This summarizes available plotting functions for MMRM.
+#'
+#' @seealso [g_mmrm_diagnostic], [g_mmrm_lsmeans]
+#' @name g_mmrm
+NULL
 
-#' Diagnostic plots for an MMRM model.
+#' Diagnostic Plots for MMRM
 #'
 #' This function produces diagnostic plots.
 #'
@@ -54,6 +60,7 @@
 #' )
 #' g_mmrm_diagnostic(mmrm_results)
 #' g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
+#'
 g_mmrm_diagnostic <- function(
   object,
   type = c("fit-residual", "q-q-residual"),
@@ -124,9 +131,7 @@ g_mmrm_diagnostic <- function(
   return(result)
 }
 
-# @seealso \code{\link{t_mmrm_lsmeans}}
-
-#' Plot the LS means of an MMRM model.
+#' Plot LS means for MMRM
 #'
 #' This function summarizes adjusted \code{lsmeans} and standard error, as well as conducts
 #' comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
@@ -146,7 +151,6 @@ g_mmrm_diagnostic <- function(
 #'
 #' @export
 #' @import ggplot2
-#'
 #'
 #' @examples
 #' library(dplyr)
@@ -182,6 +186,7 @@ g_mmrm_diagnostic <- function(
 #'   show_pval = TRUE,
 #'   width = 0.8
 #' )
+#'
 g_mmrm_lsmeans <-
   function(object,
            select = c("estimates", "contrasts"),

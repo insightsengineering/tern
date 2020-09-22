@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtables.R
 \name{identical_without_attr}
 \alias{identical_without_attr}
-\title{Compare two objects without considering attributes.}
+\title{Compare Without Considering Attributes}
 \usage{
 identical_without_attr(x, y)
 }

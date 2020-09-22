@@ -2,7 +2,7 @@
 % Please edit documentation in R/footnotes.R
 \name{footnotes}
 \alias{footnotes}
-\title{Retrieve value from attribute footnote of object x}
+\title{Retrieve Footnotes}
 \usage{
 footnotes(x)
 }
@@ -10,7 +10,7 @@ footnotes(x)
 \item{x}{an object}
 }
 \description{
-Retrieve value from attribute footnote of object x
+Retrieve value from attribute \code{footnote} of object \code{x}.
 }
 \examples{
 x <- table(iris$Species)

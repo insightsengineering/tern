@@ -1,15 +1,13 @@
-# Functions for analyzing frequencies of abnormal values.
-
-#' Count patients with abnormal range values.
+#' Patient Counts with Abnormal Range Values
 #'
 #' Primary analysis variable is the `range` factor, and additional analysis variables are
 #' `id` (character or factor), `visit` (factor).
 #' We count patients in the numerator and denominator as follows:
 #' \describe{
-#'   \item{`num`}{the number of patients without this abnormality at baseline and at least one
-#'     post-baseline assessment.}
-#'   \item{`denom`}{the number of patients without this abnormality at baseline and with
+#'   \item{`num`}{the number of patients without this abnormality at baseline and with
 #'     this abnormality recorded while on treatment.}
+#'   \item{`denom`}{the number of patients without this abnormality at baseline and at least one
+#'     post-baseline assessment.}
 #' }
 #' Here the baseline visit is identified as the `visit` level(s) in `baseline`.
 #' Note that the denominators include patients that might have other abnormal levels

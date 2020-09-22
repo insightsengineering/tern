@@ -2,14 +2,14 @@
 % Please edit documentation in R/s_mmrm.R
 \name{refit_lme4_all_optimizers}
 \alias{refit_lme4_all_optimizers}
-\title{Re-Fitting}
+\title{Re-Fitting \code{lme4} Model}
 \usage{
 refit_lme4_all_optimizers(original_fit, n_cores = 1L)
 }
 \arguments{
-\item{original_fit}{The original model fit coming from \code{\link{fit_lme4_single_optimizer}}.}
+\item{original_fit}{original model fit coming from \code{\link[=fit_lme4_single_optimizer]{fit_lme4_single_optimizer()}}.}
 
-\item{n_cores}{positive integer specifying the number of cores which could in principle be used for
+\item{n_cores}{(\code{count})\cr number of cores which could in principle be used for
 parallelizing the computations on Linux or Mac machines.}
 }
 \value{

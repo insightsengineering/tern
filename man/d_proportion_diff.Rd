@@ -2,12 +2,12 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{d_proportion_diff}
 \alias{d_proportion_diff}
-\title{Describe the difference between two proportions summary}
+\title{Description of Difference Between Two Proportions Summary}
 \usage{
 d_proportion_diff(conf_level, diff_ci_method, long = FALSE)
 }
 \arguments{
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{diff_ci_method}{one of (\code{"wald"}, \code{"waldcc"}, \code{"cmh"}, \code{"anderson-hauck"} or \code{"ha"},
 \code{"newcombe"})\cr

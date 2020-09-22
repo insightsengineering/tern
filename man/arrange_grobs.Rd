@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_grid.R
 \name{arrange_grobs}
 \alias{arrange_grobs}
-\title{Arrange multiple grobs}
+\title{Arrange Multiple Grobs}
 \usage{
 arrange_grobs(
   ...,
@@ -36,7 +36,7 @@ arrange_grobs(
 \item{name}{a character identifier for the grob.}
 }
 \description{
-Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout
+Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
 }
 \examples{
 library(grid)
@@ -64,4 +64,5 @@ vp1 <- viewport(layout.pos.row = 1, layout.pos.col = 2)
 grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 
 showViewport()
+
 }

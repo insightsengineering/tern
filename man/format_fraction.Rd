@@ -2,21 +2,27 @@
 % Please edit documentation in R/formats.R
 \name{format_fraction}
 \alias{format_fraction}
-\title{Format: fraction and percentage}
+\title{Formatting Fraction and Percentage}
 \usage{
 format_fraction(x, ...)
 }
 \arguments{
-\item{x}{a vector with integer elements \code{num} and \code{denom}}
+\item{x}{(\code{integer})\cr with elements \code{num} and \code{denom}.}
 
-\item{...}{required for rtables interface}
+\item{...}{required for rtables interface.}
 }
 \value{
 a string in the format \verb{num / denom (ratio \%)}
 }
 \description{
-Format a fraction together with ratio in percent.
+Formats a fraction together with ratio in percent.
 }
 \examples{
 format_fraction(x = c(num = 2L, denom = 3L))
+
 }
+\seealso{
+Other formatting functions: 
+\code{\link{formatting_functions}}
+}
+\concept{formatting functions}

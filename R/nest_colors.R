@@ -1,4 +1,4 @@
-#' Color palettes used in NEST
+#' Color Palettes Used in NEST
 #'
 #' A standardized color palette to be used for all plots within
 #' the NEST project.

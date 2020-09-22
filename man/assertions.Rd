@@ -6,7 +6,7 @@
 \alias{is_nonnegative_count}
 \alias{is_variables}
 \alias{is_df_with_variables}
-\title{Additional assertions that work with \code{assert_that}.}
+\title{Additional Assertions for \code{assert_that}}
 \usage{
 is_character_or_factor(x)
 
@@ -24,11 +24,11 @@ is_df_with_variables(df, variables)
 \item{variables}{supposed variables list to test}
 }
 \value{
-logical whether the assertion holds (TRUE or FALSE). When used inside \code{assert_that} produces
-a meaningful error message.
+\code{flag} whether the assertion holds (\code{TRUE} or \code{FALSE}). When used inside
+\code{\link[assertthat:assert_that]{assertthat::assert_that()}} produces a meaningful error message.
 }
 \description{
-Additional assertions that work with \code{assert_that}.
+We provide additional assertion functions which can be used together with \code{\link[assertthat:assert_that]{assertthat::assert_that()}}.
 }
 \section{Functions}{
 \itemize{

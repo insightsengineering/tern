@@ -2,7 +2,7 @@
 % Please edit documentation in R/formulas.R
 \name{arm}
 \alias{arm}
-\title{Identity function to indicate specials in formulas}
+\title{Indicate Arm Variable in Formula}
 \usage{
 arm(x)
 }
@@ -10,8 +10,5 @@ arm(x)
 \item{x}{arm information}
 }
 \description{
-We use \code{arm} to in tern formulas
-}
-\author{
-boruvkaa
+We use \code{arm} to indicate the study arm variable in \code{tern} formulas.
 }

@@ -1,6 +1,6 @@
-#' Element dimension
+#' Check Element Dimension
 #'
-#' check if elements ... have the same dimension
+#' Checks if the elements in `...` have the same dimension.
 #'
 #' @param ... data.frames or vectors
 #' @param omit.NULL are \code{NULL} elements in \code{...} to be omitted from the check?
@@ -44,13 +44,13 @@ check_same_n_l <- function(x) { # nousage # nolint
 }
 
 
-#' Check strata_data
+
+#' Checks a Data Frame
 #'
-#' strata_data can be \code{NULL} or
+#' @param x (`data frame`)\cr which should be checked
+#' @param allow_missing (`flag`)\cr whether missing data is allowed in the variables
 #'
-#' @param x data.frame with valid stratification data
-#' @param allow_missing boolean whether missing data is allowed in the variables
-#'
+#' @return `TRUE` or fails
 check_data_frame <- function(x, allow_missing = FALSE) {
   xname <- deparse(substitute(x))
 
@@ -81,6 +81,12 @@ check_data_frame <- function(x, allow_missing = FALSE) {
   TRUE
 }
 
+#' Check Stratification Data
+#'
+#' Checks whether `strata_data` is either `NULL` (i.e. not provided) or a valid stratification
+#' data input.
+#'
+#' @param strata_data data.frame with valid stratification data
 check_strata <- function(strata_data) {
 
   if (!is.null(strata_data)) {
@@ -99,12 +105,13 @@ check_strata <- function(strata_data) {
   }
 }
 
-#' Straticiation variables
+#' Check Stratification Levels
 #'
-#'  Check input format for stratification variable(s)
+#' Check input format for stratification variable(s).
 #'
 #' @param strata_data - data.frame or character vector or factor vector
 #' @importFrom utils.nest is_character_vector
+#'
 #' @noRd
 check_strata_levels <- function(strata_data) {
 
@@ -122,9 +129,9 @@ check_strata_levels <- function(strata_data) {
   }
 }
 
-#' Ranges:
+#' Checks Numeric Ranges
 #'
-#' check all numbers are in desired range
+#' Checks whether all numbers are in desired range.
 #'
 #' @param x a numeric object
 #' @param min a numeric value specifying the lower boundary (exclusive), with default value \code{0}

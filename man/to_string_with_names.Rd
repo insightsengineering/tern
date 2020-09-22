@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{to_string_with_names}
 \alias{to_string_with_names}
-\title{String}
+\title{Create String Representation}
 \usage{
 to_string_with_names(x)
 }
@@ -13,8 +13,9 @@ to_string_with_names(x)
 string of the form \code{"key1: val1, keey2: val2, ..."}
 }
 \description{
-string representation of the object's contents with names
+Create a string representation of the object's contents with names.
 }
 \examples{
 tern:::to_string_with_names(list(a = 1, 2))
+
 }

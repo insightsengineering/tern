@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggplot2_helper.R
 \name{stat_median_ci}
 \alias{stat_median_ci}
-\title{Median CI for ggplot2}
+\title{Median CI for \code{ggplot2}}
 \usage{
 stat_median_ci(x, conf_level = 0.95, na.rm = TRUE)
 }

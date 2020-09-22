@@ -4,7 +4,7 @@
 \alias{format_wrap}
 \alias{format_wrap_df}
 \alias{format_wrap_x}
-\title{Construct Formatted Analysis functions with additional formatting arguments for use with \code{analyze}.}
+\title{Construct Formatted Analysis Functions}
 \usage{
 format_wrap_df(sfun, indent_mods, formats)
 

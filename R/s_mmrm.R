@@ -1,15 +1,15 @@
-#' MMRM
+#' MMRM Variables Helper
 #'
-#' Helper function to check the MMRM variables
+#' Helper function to check the MMRM variables.
 #'
-#' @param vars variable list as per \code{\link{s_mmrm}}
-#' @param data data frame that includes the variables
+#' @inheritParams s_mmrm
 #'
-#' @return a corresponding list of variable labels.
-#'   For the covariates, the element \code{parts} contains a character vector with one element
-#'   per covariates part (i.e. occurring variable in the original covariates specification) is
-#'   included.
-#'   If a label is not found, the variable name is instead used.
+#' @return a corresponding list of variable labels. For the covariates, the
+#'   element `parts` contains a character vector with one element per
+#'   covariates part (i.e. occurring variable in the original covariates
+#'   specification) is included. If a label is not found, the variable name is
+#'   instead used.
+#'
 check_mmrm_vars <- function(vars,
                             data) {
   stopifnot(is.list(vars))
@@ -74,15 +74,16 @@ check_mmrm_vars <- function(vars,
   return(labels)
 }
 
-#' Helper function to build the MMRM formula
+#' Build MMRM Formula
 #'
-#' @param vars variable list as per \code{\link{s_mmrm}}
-#' @param cor_struct correlation structure as per \code{\link{s_mmrm}}
+#' Helper function to build the MMRM formula.
+#'
+#' @inheritParams s_mmrm
 #'
 #' @importFrom magrittr %>%
 #'
+#' @return the complete MMRM formula to use with [lme4::lmer()].
 #'
-#' @return the complete MMRM formula to use with \code{lmer}
 build_mmrm_formula <- function(
   vars,
   cor_struct = c(
@@ -137,11 +138,11 @@ build_mmrm_formula <- function(
   return(full_formula)
 }
 
-#' Covariance
+#' Covariance Matrix for MMRM
 #'
-#' Extract the covariance matrix estimate from a lme4 fit.
+#' Extract the covariance matrix estimate from a `lme4` fit.
 #'
-#' @param fit the \code{merMod} object (e.g. coming from \code{\link{fit_lme4_single_optimizer}}).
+#' @param fit (`merMod`)\cr object e.g. coming from [fit_lme4_single_optimizer()].
 #'
 #' @return a matrix containing the covariance matrix estimate.
 #'   The following additional attributes are attached:
@@ -152,10 +153,11 @@ build_mmrm_formula <- function(
 #'
 #' @details This is adapted from \url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q1/000558.html}.
 #'   Note that the order of rows/columns in the returned matrix corresponds to the order of the
-#'   \code{id}'s observations in the original data set.
+#'   `id`'s observations in the original data set.
 #'
 #' @importFrom lme4 getME
 #' @importFrom stats sigma
+#'
 get_lme4_cov_estimate <- function(fit) {
   stopifnot(is(fit, "merMod"))
   # A list of the grouping variables (factors) involved in the random effect terms.
@@ -197,12 +199,12 @@ get_lme4_cov_estimate <- function(fit) {
   return(result)
 }
 
-#' Linear mixed model
+#' Linear Mixed Model Diagnostics
 #'
-#' Compute the model diagnostic statistics for a linear mixed model fit
+#' Compute the model diagnostic statistics for a linear mixed model fit.
 #'
-#' @param fit object of class \code{lmerModLmerTest} fit with REML using \code{\link[lmerTest]{lmer}}
-#' @param cov_est the covariance estimate coming from \code{\link{get_lme4_cov_estimate}}
+#' @param fit (`lmerModLmerTest`)\cr object fit with REML using [lmerTest::lmer()].
+#' @param cov_est (`Matrix`)\cr covariance estimate coming from [get_lme4_cov_estimate()].
 #'
 #' @return a list with the REML criterion, the AIC, AICc and BIC.
 #'
@@ -215,6 +217,7 @@ get_lme4_cov_estimate <- function(fit) {
 #'
 #' @importFrom lme4 isREML getME
 #' @importFrom stats logLik
+#'
 get_lme4_diagnostics <- function(fit,
                                  cov_est = get_lme4_cov_estimate(fit)) {
   stopifnot(is(fit, "lmerModLmerTest"))
@@ -235,24 +238,24 @@ get_lme4_diagnostics <- function(fit,
   return(result)
 }
 
-#' Fitting
+#' Fitting `lme4` Model
 #'
 #' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
 #'
-#' @param formula the lme4 formula
-#' @param data the data set
-#' @param optimizer the optimizer to use
+#' @param formula (`formula`)\cr the `lme4` formula.
+#' @inheritParams s_mmrm
 #'
-#' @return the fitted \code{lmerMerModTest} object, with additional attributes \code{messages} and \code{optimizer}.
+#' @return the fitted [`lmerTest::lmerModLmerTest`] object, with additional attributes `messages` and `optimizer`.
 #'
-#' @note While we are not directly importing functions from \code{dfoptim} or \code{optimx} here, we rely on them
-#'   being available to \code{lme4} (which has these packages only in "Suggests"). Therefore we note the imports below.
+#' @note While we are not directly importing functions from `dfoptim` or `optimx` here, we rely on them
+#'   being available to `lme4` (which has these packages only in "Suggests"). Therefore we note the imports below.
 #'
 #' @importFrom lmerTest lmer
 #' @importFrom lme4 lmerControl
 #' @importFrom purrr quietly
 #' @importFrom dfoptim nmkb
 #' @importFrom optimx optimx
+#'
 fit_lme4_single_optimizer <- function(
   formula,
   data,
@@ -308,17 +311,19 @@ fit_lme4_single_optimizer <- function(
   return(result)
 }
 
+#' Summary of Multiple `lme4` Fits
+#'
 #' Helper function to extract summaries from a list of lme4 fit objects.
+#' This is inspired by the internal unexported method `summary.allFit` from `lme4`.
 #'
-#' This is inspired by the internal unexported method \code{summary.allFit} from \code{lme4}.
+#' @param all_fits (`list`)\cr fits from [fit_lme4_single_optimizer()].
 #'
-#' @param all_fits the list with fits from \code{\link{fit_lme4_single_optimizer}}.
-#'
-#' @return a list with elements \code{messages} (list of all messages), \code{fixef} (list of all fixed effects),
-#'   \code{llik} (vector of all log-likelihood values), \code{feval} (vector of number of function evaluations).
+#' @return A list with elements `messages` (list of all messages), `fixef` (list of all fixed effects),
+#'   `llik` (vector of all log-likelihood values), `feval` (vector of number of function evaluations).
 #'
 #' @importFrom lme4 fixef
 #' @importFrom stats logLik
+#'
 summary_all_fits <- function(all_fits) {
   messages <- lapply(all_fits, function(x) attr(x, "messages"))
   fixef <- lapply(all_fits, lme4::fixef)
@@ -333,12 +338,12 @@ summary_all_fits <- function(all_fits) {
   return(res)
 }
 
-#' Re-Fitting
+#' Re-Fitting `lme4` Model
 #'
 #' Refit an lme4 model with all possible optimizers and return the best result.
 #'
-#' @param original_fit The original model fit coming from \code{\link{fit_lme4_single_optimizer}}.
-#' @param n_cores positive integer specifying the number of cores which could in principle be used for
+#' @param original_fit original model fit coming from [fit_lme4_single_optimizer()].
+#' @param n_cores (`count`)\cr number of cores which could in principle be used for
 #'   parallelizing the computations on Linux or Mac machines.
 #'
 #' @return The "best" model fit, defined as a converging fit without any warnings or messages, leading
@@ -351,6 +356,7 @@ summary_all_fits <- function(all_fits) {
 #' @importFrom lme4 allFit
 #' @importFrom parallel mclapply
 #' @importFrom purrr quietly
+#'
 refit_lme4_all_optimizers <- function(original_fit,
                                       n_cores = 1L) {
   stopifnot(is.integer(n_cores), n_cores > 0, identical(length(n_cores), 1L))
@@ -414,16 +420,16 @@ refit_lme4_all_optimizers <- function(original_fit,
   return(best_fit)
 }
 
-#' Fitting
+#' Fitting `lme4` Model
 #'
-#' Helper function to fit the MMRM with lme4 and lmerTest
+#' Helper function to fit the MMRM with `lme4` and `lmerTest.`
 #'
-#' @param formula the MMRM formula (it could also be another lme4 formula)
-#' @param data the data frame
-#' @param optimizer the optimizer to use
-#' @param n_cores positive integer for number of cores to parallelize over the "automatic" optimizer search
+#' @param formula (`formula`)\cr the MMRM formula (it could also be another `lme4` formula).
+#' @inheritParams s_mmrm
+#' @param n_cores (`count`)\cr number of cores to parallelize over the "automatic" optimizer search.
 #'
-#' @return the \code{lmerModLmerTest} object
+#' @return the [`lmerTest::lmerModLmerTest`] object.
+#'
 fit_lme4 <- function(
   formula,
   data,
@@ -455,15 +461,14 @@ fit_lme4 <- function(
   }
 }
 
-#' Extract LS means
+#' Extract LS Means from MMRM
 #'
 #' Helper function to extract the LS means from an MMRM fit.
 #'
-#' @param fit result of \code{\link{fit_lme4}}
-#' @param vars variable list as per \code{\link{s_mmrm}} input
-#' @param conf_level confidence level
-#' @param weights string specifying the type of weights to be used for the LS means,
-#'   see \code{\link[emmeans]{emmeans}} for details.
+#' @param fit result of [fit_lme4()].
+#' @inheritParams s_mmrm
+#' @param weights (`string`)\cr type of weights to be used for the LS means,
+#'   see [emmeans::emmeans()] for details.
 #'
 #' @return A list with the LS means `estimates` and `contrasts` results between the treatment
 #'   and control arm groups at the different visits.
@@ -565,12 +570,14 @@ get_mmrm_lsmeans <- function(fit,
   return(results)
 }
 
-#' Summary
+#' MMRM Analysis
 #'
-#' Summary function for an MMRM analysis
+#' Does the MMRM analysis. Multiple other functions can be called on the result to produce
+#' tables and graphs.
 #'
-#' @param vars a \code{list} specifying the variables in the MMRM. The following elements need
-#'   to be included as character vectors and match corresponding columns in \code{data}:
+#' @param vars (named `list` of `string` or `character`)\cr specifying the variables in the MMRM.
+#'   The following elements need to be included as character vectors and match corresponding columns
+#'   in \code{data}:
 #'   \describe{
 #'   \item{response}{the response variable}
 #'   \item{covariates}{the additional covariate terms (might also include interactions)}
@@ -582,8 +589,7 @@ get_mmrm_lsmeans <- function(fit,
 #' @param data a \code{data.frame} with all the variables specified in
 #'   \code{vars}. Records with missing values in any independent variables
 #'   will be excluded.
-#' @param conf_level confidence level. Must be number greater than 0 and less
-#'   than 1. (Default: 0.95)
+#' @inheritParams argument_convention
 #' @param cor_struct a string specifying the correlation structure, defaults to
 #'   \code{"unstructured"}. See the details.
 #' @param weights_emmeans argument from \code{\link[emmeans]{emmeans}}, "proportional" by default.
@@ -676,6 +682,7 @@ get_mmrm_lsmeans <- function(fit,
 #'   optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 #' )
 #' }
+#'
 s_mmrm <- function(
   vars = list(
     response = "AVAL",

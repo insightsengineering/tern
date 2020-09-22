@@ -2,7 +2,7 @@
 % Please edit documentation in R/dummy.R
 \name{use_stuff}
 \alias{use_stuff}
-\title{Dummy function to use currently unused functions}
+\title{Dummy Function to use Currently Unused Functions}
 \usage{
 use_stuff(...)
 }
@@ -10,5 +10,6 @@ use_stuff(...)
 \item{...}{dummy arguments}
 }
 \description{
-to delete eventually. The function was introduced in the refactor.
+The function was introduced at the start of the rewriting of tern,
+and will be deleted before the first release.
 }

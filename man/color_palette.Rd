@@ -2,7 +2,7 @@
 % Please edit documentation in R/nest_colors.R
 \name{color_palette}
 \alias{color_palette}
-\title{Color palettes used in NEST}
+\title{Color Palettes Used in NEST}
 \usage{
 color_palette(n = 10, palette = "nest")
 }

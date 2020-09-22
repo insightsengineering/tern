@@ -1,4 +1,4 @@
-#' Mean CI for ggplot2
+#' Mean CI for `ggplot2`
 #'
 #' Convenient function for the addition of mean confidence intervals as
 #' error bars.
@@ -46,7 +46,7 @@ stat_mean_ci <- function(x,
 }
 
 
-#' Median CI for ggplot2
+#' Median CI for `ggplot2`
 #'
 #' Convenient function for the addition of the median confidence intervals as
 #' error bars.

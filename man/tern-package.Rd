@@ -4,9 +4,9 @@
 \name{tern-package}
 \alias{tern}
 \alias{tern-package}
-\title{tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.}
+\title{tern Package}
 \description{
-Functions to create TLG
+tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.
 }
 \seealso{
 Useful links:

@@ -4,45 +4,45 @@
 \alias{argument_convention}
 \title{Standard Arguments}
 \arguments{
-\item{col_by}{(\code{factor} value)\cr for defining column group}
+\item{col_by}{(\code{factor})\cr defining column groups.}
 
-\item{na_rm}{(\code{logical} value)\cr
-Indicating whether \code{NA} values should be
-removed from \code{x} prior to counting the  'aa_trees.R' 'argument_convention.R' unique elements per cell.}
+\item{na_rm}{(\code{flag})\cr (deprecated) whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{tte}{(\code{numeric} vector)\cr
-Contains time to event data, currently no \code{NA} allowed}
+\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{is_event}{(\code{logical} value)\cr
-\code{TRUE} if event, \code{FALSE} if \code{tte}
-is censored}
+\item{tte}{(\verb{\code{numeric}})\cr contains time-to-event duration values.}
 
-\item{rsp}{(\code{logical} vector)\cr
-\code{TRUE} if subject is a responder \code{FALSE} otherwise}
+\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{conf_level}{confidence level of the interval.}
+\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
-\item{prune_zero_rows}{\code{logical} whether to prune all zero rows.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{lyt}{layout object pre-data used for tabulation.}
+\item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
 
-\item{df}{data frame containing analysis variables.}
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{vars}{variable name(s) for the primary analysis variable(s).}
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{variables}{list of additional analysis variables.}
+\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.var}{single variable name that is passed by rtables when requested by statistics function.}
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
+a statistics function.}
 
 \item{...}{additional arguments for the lower level functions.}
 }
 \description{
-The documentation to this function lists all the arguments in \code{tern} that are used repeatedly to express an
-analysis.
+The documentation to this function lists all the arguments in \code{tern}
+that are used repeatedly to express an analysis.
 }
 \details{
-Although this function just returns \code{NULL} it has two uses, for the \code{tern} users it provides a
-documentation of arguments that are commonly and consistently used in the framework. For the developer it adds a
-single reference point to import the \code{roxygen} argument description with
-\code{@inheritParams argument_convention}
+Although this function just returns \code{NULL} it has two uses, for
+the \code{tern} users it provides a documentation of arguments that are
+commonly and consistently used in the framework. For the developer it adds a
+single reference point to import the \code{roxygen} argument description with:
+\verb{@inheritParams argument_convention}
 }

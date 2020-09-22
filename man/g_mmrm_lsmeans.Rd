@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_mmrm.R
 \name{g_mmrm_lsmeans}
 \alias{g_mmrm_lsmeans}
-\title{Plot the LS means of an MMRM model.}
+\title{Plot LS means for MMRM}
 \usage{
 g_mmrm_lsmeans(
   object,
@@ -74,4 +74,5 @@ g_mmrm_lsmeans(
   show_pval = TRUE,
   width = 0.8
 )
+
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistic_regression.R
 \name{s_logistic_interaction}
 \alias{s_logistic_interaction}
-\title{Summary of logistic regression with one two-way interaction term}
+\title{Logistic Regression with Two-Way Interaction}
 \usage{
 s_logistic_interaction(glm_model, conf_level = 0.95, increments = NULL)
 }
@@ -22,7 +22,7 @@ comparison ARM vs. reference ARM at AGE = 18 and AGE = 65. If {\code{increments 
 default AGE value is ceiling of median.}
 }
 \description{
-Summary of logistic regression with one two-way interaction term
+Summary of logistic regression with one two-way interaction term.
 }
 \examples{
 library(random.cdisc.data)

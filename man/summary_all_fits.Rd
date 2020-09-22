@@ -2,17 +2,18 @@
 % Please edit documentation in R/s_mmrm.R
 \name{summary_all_fits}
 \alias{summary_all_fits}
-\title{Helper function to extract summaries from a list of lme4 fit objects.}
+\title{Summary of Multiple \code{lme4} Fits}
 \usage{
 summary_all_fits(all_fits)
 }
 \arguments{
-\item{all_fits}{the list with fits from \code{\link{fit_lme4_single_optimizer}}.}
+\item{all_fits}{(\code{list})\cr fits from \code{\link[=fit_lme4_single_optimizer]{fit_lme4_single_optimizer()}}.}
 }
 \value{
-a list with elements \code{messages} (list of all messages), \code{fixef} (list of all fixed effects),
+A list with elements \code{messages} (list of all messages), \code{fixef} (list of all fixed effects),
 \code{llik} (vector of all log-likelihood values), \code{feval} (vector of number of function evaluations).
 }
 \description{
+Helper function to extract summaries from a list of lme4 fit objects.
 This is inspired by the internal unexported method \code{summary.allFit} from \code{lme4}.
 }

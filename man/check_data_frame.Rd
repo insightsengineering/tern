@@ -2,15 +2,18 @@
 % Please edit documentation in R/check_data.R
 \name{check_data_frame}
 \alias{check_data_frame}
-\title{Check strata_data}
+\title{Checks a Data Frame}
 \usage{
 check_data_frame(x, allow_missing = FALSE)
 }
 \arguments{
-\item{x}{data.frame with valid stratification data}
+\item{x}{(\verb{data frame})\cr which should be checked}
 
-\item{allow_missing}{boolean whether missing data is allowed in the variables}
+\item{allow_missing}{(\code{flag})\cr whether missing data is allowed in the variables}
+}
+\value{
+\code{TRUE} or fails
 }
 \description{
-strata_data can be \code{NULL} or
+Checks a Data Frame
 }

@@ -7,12 +7,11 @@
 s_odds_ratio(rsp, col_by, conf_level = 0.95, strat = NULL)
 }
 \arguments{
-\item{rsp}{(\code{logical} vector)\cr
-\code{TRUE} if subject is a responder \code{FALSE} otherwise}
+\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
-\item{col_by}{(\code{factor} value)\cr for defining column group}
+\item{col_by}{(\code{factor})\cr defining column groups.}
 
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{strat}{Optional factor with one level per stratum and same length as \code{rsp}. If \code{NULL},
 then the unstratified analysis is computed.}

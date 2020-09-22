@@ -2,7 +2,7 @@
 % Please edit documentation in R/decorate_grob.R
 \name{decorate_grob_factory}
 \alias{decorate_grob_factory}
-\title{Page number}
+\title{Update Page Number}
 \usage{
 decorate_grob_factory(npages, ...)
 }
@@ -15,7 +15,7 @@ decorate_grob_factory(npages, ...)
 closure that increments the page number
 }
 \description{
-Automatically updates page number
+Automatically updates page number.
 }
 \examples{
 pf <- decorate_grob_factory(

@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_ancova.R
 \name{s_ancova}
 \alias{s_ancova}
-\title{Summary for analysis of covariance (ANCOVA).}
+\title{Analysis of Covariance}
 \usage{
 s_ancova(formula, data, conf_level = 0.95)
 }

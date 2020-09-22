@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistic_regression.R
 \name{s_logistic_single}
 \alias{s_logistic_single}
-\title{Summary of logistic regression with no interaction term}
+\title{Logistic Regression without Interactions}
 \usage{
 s_logistic_single(glm_model, conf_level = 0.95)
 }
@@ -14,7 +14,7 @@ with all main effect model.}
 confidence level for Wald's odds ratio confidence interval.}
 }
 \description{
-Summary of logistic regression with no interaction term
+Summary of logistic regression with no interaction term.
 }
 \examples{
 library(random.cdisc.data)

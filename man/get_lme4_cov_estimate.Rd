@@ -2,12 +2,12 @@
 % Please edit documentation in R/s_mmrm.R
 \name{get_lme4_cov_estimate}
 \alias{get_lme4_cov_estimate}
-\title{Covariance}
+\title{Covariance Matrix for MMRM}
 \usage{
 get_lme4_cov_estimate(fit)
 }
 \arguments{
-\item{fit}{the \code{merMod} object (e.g. coming from \code{\link{fit_lme4_single_optimizer}}).}
+\item{fit}{(\code{merMod})\cr object e.g. coming from \code{\link[=fit_lme4_single_optimizer]{fit_lme4_single_optimizer()}}.}
 }
 \value{
 a matrix containing the covariance matrix estimate.
@@ -18,7 +18,7 @@ The following additional attributes are attached:
 }
 }
 \description{
-Extract the covariance matrix estimate from a lme4 fit.
+Extract the covariance matrix estimate from a \code{lme4} fit.
 }
 \details{
 This is adapted from \url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q1/000558.html}.

@@ -291,7 +291,7 @@ split_string <- function(text, width) {
 
 #' Split Text According To Available Text Width
 #'
-#' Dynamically wrap text
+#' Dynamically wrap text.
 #'
 #' @inheritParams grid::grid.text
 #' @param text character string
@@ -420,9 +420,9 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
   grid.draw(x)
 }
 
-#' Page number
+#' Update Page Number
 #'
-#' Automatically updates page number
+#' Automatically updates page number.
 #'
 #' @param npages number of pages in total
 #' @param ... passed on to \code{\link{decorate_grob}}
@@ -456,9 +456,9 @@ decorate_grob_factory <- function(npages, ...) {
 }
 
 
-#' Decorate all a set of grobs and add the page numbering
+#' Decorate Set of `grobs` and Add Page Numbering
 #'
-#' this uses the decorate_grob_factory
+#' Note that this uses the `decorate_grob_factory` function.
 #'
 #' @param grobs a list of grid grobs
 #' @param ... arguments passed on to \code{\link{decorate_grob}}

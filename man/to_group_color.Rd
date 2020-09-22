@@ -12,5 +12,5 @@ to_group_color(col, grps)
 \item{grps}{group}
 }
 \description{
-Set colors
+Set colors for groups.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{s_mmrm}
 \alias{s_mmrm}
-\title{Summary}
+\title{MMRM Analysis}
 \usage{
 s_mmrm(
   vars = list(response = "AVAL", covariates = c(), id = "USUBJID", arm = "ARM", visit =
@@ -16,8 +16,9 @@ s_mmrm(
 )
 }
 \arguments{
-\item{vars}{a \code{list} specifying the variables in the MMRM. The following elements need
-to be included as character vectors and match corresponding columns in \code{data}:
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+The following elements need to be included as character vectors and match corresponding columns
+in \code{data}:
 \describe{
 \item{response}{the response variable}
 \item{covariates}{the additional covariate terms (might also include interactions)}
@@ -31,8 +32,7 @@ Note that the main effects and interaction of \code{arm} and \code{visit} are by
 \code{vars}. Records with missing values in any independent variables
 will be excluded.}
 
-\item{conf_level}{confidence level. Must be number greater than 0 and less
-than 1. (Default: 0.95)}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{cor_struct}{a string specifying the correlation structure, defaults to
 \code{"unstructured"}. See the details.}
@@ -61,7 +61,8 @@ contains the finally used optimization algorithm, which can be useful for refitt
 }
 }
 \description{
-Summary function for an MMRM analysis
+Does the MMRM analysis. Multiple other functions can be called on the result to produce
+tables and graphs.
 }
 \details{
 Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
@@ -131,4 +132,5 @@ mmrm_results <- s_mmrm(
   optimizer = "nloptwrap_neldermead"  # Only to speed up this example.
 )
 }
+
 }

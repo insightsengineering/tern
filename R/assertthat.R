@@ -1,12 +1,12 @@
-# Additional assertions to work with `assert_that`.
-
-#' Additional assertions that work with `assert_that`.
+#' Additional Assertions for `assert_that`
+#'
+#' We provide additional assertion functions which can be used together with [assertthat::assert_that()].
 #'
 #' @param x object to test
 #' @param df supposed data frame to test
 #' @param variables supposed variables list to test
-#' @return logical whether the assertion holds (TRUE or FALSE). When used inside `assert_that` produces
-#'   a meaningful error message.
+#' @return `flag` whether the assertion holds (`TRUE` or `FALSE`). When used inside
+#'   [assertthat::assert_that()] produces a meaningful error message.
 #' @name assertions
 NULL
 

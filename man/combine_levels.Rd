@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{combine_levels}
 \alias{combine_levels}
-\title{Factors}
+\title{Combine Factor Levels}
 \usage{
 combine_levels(x, levels, new_level = paste(levels, collapse = "/"))
 }
@@ -17,11 +17,12 @@ combine_levels(x, levels, new_level = paste(levels, collapse = "/"))
 a factor
 }
 \description{
-Combine factor Levels
+Combine specified old factor Levels in a single new level.
 }
 \examples{
 x <- factor(letters[1:5], levels = letters[5:1])
 tern:::combine_levels(x, levels = c('a', 'b') )
 
 tern:::combine_levels(x, c('e', 'b'))
+
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_mmrm.R
 \name{g_mmrm_diagnostic}
 \alias{g_mmrm_diagnostic}
-\title{Diagnostic plots for an MMRM model.}
+\title{Diagnostic Plots for MMRM}
 \usage{
 g_mmrm_diagnostic(
   object,
@@ -62,6 +62,7 @@ mmrm_results <- s_mmrm(
 )
 g_mmrm_diagnostic(mmrm_results)
 g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
+
 }
 \seealso{
 \code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.

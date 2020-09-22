@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtables.R
 \name{labels_or_names}
 \alias{labels_or_names}
-\title{Get the labels or names if there are no labels from a list.}
+\title{Labels or Names of List Elements}
 \usage{
 labels_or_names(x)
 }

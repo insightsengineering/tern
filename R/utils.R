@@ -1,43 +1,6 @@
-#' Check if list or data.frame has elements/variables
+#' Combine Factor Levels
 #'
-#' Checks if list names exist and throws an error otherwise
-#'
-#' @param data a \code{data.frame} or named list
-#' @param names vector with names
-#'
-#' @return \code{TRUE} if all variables exist and an appropriate error if not.
-#'
-#' @author Adrian Waddell (waddella), \email{adrian.waddell@roche.com}
-#'
-#' @noRd
-#'
-#' @examples
-#' # function is not exported
-#' `%needs%` <- tern:::`%needs%`
-#'
-#' iris %needs% c("Sepal.Length", "Petal.Width")
-#'
-#' \dontrun{
-#' iris %needs% "ABC"
-#' }
-`%needs%` <- function(data, names) { # nousage # nolint
-  i <- is.na(match(names, names(data)))
-
-  if (any(i)) {
-    msg <- if (sum(i) == 1) {
-      paste("variable ", names[i], " does not exist")
-    } else {
-      paste("variables", paste(names[i], collapse = ", "), "do not exist")
-    }
-    stop(msg)
-  }
-
-  invisible(TRUE)
-}
-
-#' Factors
-#'
-#' Combine factor Levels
+#' Combine specified old factor Levels in a single new level.
 #'
 #' @param x factor
 #' @param levels level names to be combined
@@ -52,6 +15,7 @@
 #' tern:::combine_levels(x, levels = c('a', 'b') )
 #'
 #' tern:::combine_levels(x, c('e', 'b'))
+#'
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   stopifnot(
     is.factor(x),
@@ -68,9 +32,9 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 }
 
 
-#' Labels
+#' Add Labels for Data Frame Columns
 #'
-#' re-attach labels to variables
+#' Re-attach labels to variables in a data frame.
 #'
 #' @param df a data.frame
 #' @param labels a named vector with the labels. names are variable names
@@ -88,6 +52,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' \dontrun{
 #' View(X)
 #' }
+#'
 add_labels <- function(df, labels) { # nousage # nolint
   for (name in names(df)) {
     lab <- labels[name]
@@ -101,7 +66,7 @@ add_labels <- function(df, labels) { # nousage # nolint
 
 #' Remove Shared Variables
 #'
-#' Variables are considered shared if they have the same variable name
+#' Variables are considered shared if they have the same variable name.
 #'
 #' @param x a data.frame
 #' @param y a data.frame
@@ -113,6 +78,7 @@ add_labels <- function(df, labels) { # nousage # nolint
 #'
 #' @examples
 #' drop_shared_variables(iris, iris[, 1:3])
+#'
 drop_shared_variables <- function(x, y, keep) {
   stopifnot(
     is.data.frame(x),
@@ -137,8 +103,6 @@ start_with_null <- function(x) {
   c(list(NULL), x)
 }
 
-
-
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -155,11 +119,9 @@ has_no_na <- function(x) { # nousage # nolint
   !any(is.na(x))
 }
 
-
-
-#' Factors
+#' Convert a Vector to a Factor
 #'
-#' Convert to factor and keep attributes
+#' Converts `x` to a factor and keeps its attributes.
 #'
 #' @param x atomic
 #'
@@ -169,6 +131,7 @@ has_no_na <- function(x) { # nousage # nolint
 #'
 #' @examples
 #' as_factor_keep_attributes(with_label(c(1,1,2,3), "id"))
+#'
 as_factor_keep_attributes <- function(x) {
   stopifnot(is.atomic(x))
   x_attrs <- attributes(x)
@@ -179,9 +142,9 @@ as_factor_keep_attributes <- function(x) {
 
 
 
-#' String
+#' Create String Representation
 #'
-#' string representation of the object's contents with names
+#' Create a string representation of the object's contents with names.
 #'
 #' @param x object
 #'
@@ -189,14 +152,15 @@ as_factor_keep_attributes <- function(x) {
 #'
 #' @examples
 #' tern:::to_string_with_names(list(a = 1, 2))
+#'
 to_string_with_names <- function(x) { # nousage # nolint
   # also works for more general
   paste(names(x), x, sep = ":", collapse = ", ")
 }
 
-#' Casing
+#' Capitalize a String
 #'
-#' Capitalize First Letter
+#' Capitalize the first letters of the words in a single string.
 #'
 #' @noRd
 #'

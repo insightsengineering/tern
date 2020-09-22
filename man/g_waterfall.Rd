@@ -38,7 +38,7 @@ Text to be displayed as plot title.}
 }
 \description{
 This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
-markup
+markup.
 }
 \examples{
 g_waterfall(height = c(3,5,-1), id = letters[1:3])
@@ -89,6 +89,7 @@ g_waterfall(
   ylab = "Percentage Change",
   title = "Waterfall plot"
 )
+
 }
 \author{
 Yuyao Song (songy24) \email{yuyao.song@roche.com}

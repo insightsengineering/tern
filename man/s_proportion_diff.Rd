@@ -20,7 +20,7 @@ s_proportion_diff(
 \item{strat}{factor with one level per stratum and same length as \code{x}. Only required
 for stratified analysis when method is "cmh".}
 
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{diff_ci_method}{one of (\code{"wald"}, \code{"waldcc"}, \code{"cmh"}, \code{"anderson-hauck"} or \code{"ha"},
 \code{"newcombe"})\cr

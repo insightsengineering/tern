@@ -14,7 +14,7 @@ s_proportion(
 \arguments{
 \item{x}{\code{logical} vector. \code{TRUE} represents a successful outcome.}
 
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{prop_ci_method}{one of (\code{"waldcc"}, \code{"wald"}, \code{"clopper-pearson"},
 \code{"wilson"}, \code{agresti-coull} or \code{jeffreys}).\cr

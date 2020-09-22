@@ -115,17 +115,10 @@ For the higher level function, as of wrapper, I suggest not to be shy
 proposing specialized named functions, as soon as they rely on
 a common foundation.
 
-#### S3 generic/method `s_summary`
+#### S3 generic/method `s_summary` and `summarize_vars`
 
-```{r s_summary.R, engine='bash', comment=''}
-cat ../R/s_summary.R
-```
-
-
-#### `summarize_vars`
-
-```{r summarize_vars.R, engine='bash', comment=''}
-cat ../R/summarize_vars.R
+```{r summarize_variables.R, engine='bash', comment=''}
+cat ../R/summarize_variables.R
 ```
 
 ### Application {.tabset .tabset-pills}

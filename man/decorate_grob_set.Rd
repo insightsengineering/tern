@@ -2,7 +2,7 @@
 % Please edit documentation in R/decorate_grob.R
 \name{decorate_grob_set}
 \alias{decorate_grob_set}
-\title{Decorate all a set of grobs and add the page numbering}
+\title{Decorate Set of \code{grobs} and Add Page Numbering}
 \usage{
 decorate_grob_set(grobs, ...)
 }
@@ -12,7 +12,7 @@ decorate_grob_set(grobs, ...)
 \item{...}{arguments passed on to \code{\link{decorate_grob}}}
 }
 \description{
-this uses the decorate_grob_factory
+Note that this uses the \code{decorate_grob_factory} function.
 }
 \examples{
 library(ggplot2)

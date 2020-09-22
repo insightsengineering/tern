@@ -1,5 +1,6 @@
-
-#' Summary of logistic regression with no interaction term
+#' Logistic Regression without Interactions
+#'
+#' Summary of logistic regression with no interaction term.
 #'
 #' @param glm_model ({\code{\link{glm}}} model object)\cr
 #'   with all main effect model.
@@ -62,7 +63,9 @@ s_logistic_single <- function(glm_model,
   )
 }
 
-#' Summary of logistic regression with one two-way interaction term
+#' Logistic Regression with Two-Way Interaction
+#'
+#' Summary of logistic regression with one two-way interaction term.
 #'
 #' @param glm_model ({\code{\link{glm}}} model object)\cr
 #'   The model object can be all main effect model, and a model with one two-way interaction.

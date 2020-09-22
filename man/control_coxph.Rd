@@ -2,7 +2,7 @@
 % Please edit documentation in R/coxph.R
 \name{control_coxph}
 \alias{control_coxph}
-\title{Control function for \code{CoxPH} model}
+\title{Control Method Inputs for \code{CoxPH} Model}
 \usage{
 control_coxph(
   pval_method = c("log-rank", "wald", "likelihood"),
@@ -24,7 +24,7 @@ can also be set to "breslow" or "exact".}
 a list of components named as the arguments
 }
 \description{
-Control function for \code{CoxPH} model
+This function captures all method inputs for a \code{CoxPH} model and checks them.
 }
 \details{
 This is an auxiliary function for controlling arguments for \code{CoxPH} model, typically used internally to specify

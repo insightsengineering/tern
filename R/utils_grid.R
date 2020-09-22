@@ -1,6 +1,6 @@
-#' Stack multiple grobs
+#' Stack Multiple Grobs
 #'
-#' Stack grobs as a new grob with 1 column and multiple rows layout
+#' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
 #' @param ... grobs.
 #' @param grobs list of grobs.
@@ -28,6 +28,7 @@
 #'
 #' showViewport()
 #' grid.ls(grobs = TRUE, viewports = TRUE)
+#'
 stack_grobs <- function(...,
                         grobs = list(...),
                         padding = unit(2, "line"),
@@ -78,9 +79,9 @@ stack_grobs <- function(...,
 }
 
 
-#' Arrange multiple grobs
+#' Arrange Multiple Grobs
 #'
-#' Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout
+#' Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
 #'
 #' @inheritParams stack_grobs
 #' @param ncol number of columns in layout.
@@ -118,6 +119,7 @@ stack_grobs <- function(...,
 #' grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 #'
 #' showViewport()
+#'
 arrange_grobs <- function(...,
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
@@ -207,9 +209,9 @@ arrange_grobs <- function(...,
 }
 
 
-#' Draw grob
+#' Draw `grob`
 #'
-#' Draw grob on device page
+#' Draw grob on device page.
 #'
 #' @param grob grid object
 #' @param newpage draw on a new page
@@ -228,6 +230,7 @@ arrange_grobs <- function(...,
 #'   arrange_grobs(grobs = .) %>%
 #'   draw_grob()
 #' showViewport()
+#'
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid.newpage()
@@ -241,7 +244,7 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
 
 #' Label Panel Grob
 #'
-#' Create a panel style plotting of labels
+#' Create a panel style plotting of labels.
 #'
 #' @param label a vector of plot contents.
 #' @param x a vector of xticks for each label to be plotted.
@@ -281,6 +284,7 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
 #' grid.newpage()
 #' pushViewport(plotViewport(margins = c(5, 4, 4, 2)))
 #' grid.draw(g)
+#'
 label_panel_grob <- function(label,
                              x,
                              group,
@@ -321,7 +325,7 @@ label_panel_grob <- function(label,
 
 #' Colors
 #'
-#' Set colors
+#' Set colors for groups.
 #'
 #' @param col color
 #' @param grps group

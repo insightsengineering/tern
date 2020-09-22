@@ -1,6 +1,6 @@
-#' Missing data
+#' Missing Data
 #'
-#' Substitute missing data with a string or factor level
+#' Substitute missing data with a string or factor level.
 #'
 #' @param x factor or character vector
 #' @param label character string that missing data should be replaced with
@@ -31,7 +31,7 @@ explicit_na <- function(x, label = "<Missing>") {
 }
 
 
-#' Convert empty strings and strings with only whitespaces to NA
+#' Convert Strings to `NA`
 #'
 #' SAS imports missing data as empty strings or strings with whitespaces only. This helper function can be used to
 #' convert these values to \code{NA}s.

@@ -1,6 +1,6 @@
 #' Change From Baseline Plot
 #'
-#' Change from baseline
+#' Change from baseline is plotted.
 #'
 #' @param x x coordinates
 #' @param y y coordinates

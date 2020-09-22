@@ -13,7 +13,7 @@ s_adj_proportion_diff(x, grp, strat, conf_level = 0.95)
 
 \item{strat}{factor with one level per stratum and same length as \code{x}.}
 
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
 Named list with analysis summary:

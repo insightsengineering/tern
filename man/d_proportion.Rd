@@ -2,12 +2,12 @@
 % Please edit documentation in R/binary_endpoints.R
 \name{d_proportion}
 \alias{d_proportion}
-\title{Describe the proportion summary}
+\title{Description of Proportion Summary}
 \usage{
 d_proportion(conf_level, prop_ci_method, long = FALSE)
 }
 \arguments{
-\item{conf_level}{confidence level of the interval.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{prop_ci_method}{one of (\code{"waldcc"}, \code{"wald"}, \code{"clopper-pearson"},
 \code{"wilson"}, \code{agresti-coull} or \code{jeffreys}).\cr

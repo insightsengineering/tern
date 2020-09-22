@@ -1,4 +1,4 @@
-#' Check if Argument Describes Confidence Levels for Different Confidence Intervals and Tests
+#' Check Confidence Levels for Different Confidence Intervals and Tests
 #'
 #' Often a table contains multiple confidence intervals or p-values from tests.
 #'

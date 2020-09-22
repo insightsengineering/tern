@@ -1,6 +1,6 @@
-#' tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.
+#' tern Package
 #'
-#' Functions to create TLG
+#' tern is an analysis package to create tables, listings and graphs to analyze clinical trials data.
 #'
 "_PACKAGE"
 

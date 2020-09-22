@@ -1,4 +1,4 @@
-#' ANCOVA
+#' ANCOVA Model Helper
 #'
 #' Helper function to infer the ANCOVA model response and arm variables.
 #'
@@ -69,6 +69,8 @@ s_ancova_items <- function(formula, # nousage # nolint
   return(result)
 }
 
+#' Analysis of Covariance
+#'
 #' Summary for analysis of covariance (ANCOVA).
 #'
 #' @param formula A \code{formula} corresponding to the investigated \code{\link[stats:lm]{linear model}}.

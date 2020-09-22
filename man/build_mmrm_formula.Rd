@@ -2,7 +2,7 @@
 % Please edit documentation in R/s_mmrm.R
 \name{build_mmrm_formula}
 \alias{build_mmrm_formula}
-\title{Helper function to build the MMRM formula}
+\title{Build MMRM Formula}
 \usage{
 build_mmrm_formula(
   vars,
@@ -11,13 +11,24 @@ build_mmrm_formula(
 )
 }
 \arguments{
-\item{vars}{variable list as per \code{\link{s_mmrm}}}
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+The following elements need to be included as character vectors and match corresponding columns
+in \code{data}:
+\describe{
+\item{response}{the response variable}
+\item{covariates}{the additional covariate terms (might also include interactions)}
+\item{id}{the subject ID variable}
+\item{arm}{the treatment group variable (factor)}
+\item{visit}{the visit variable (factor)}
+}
+Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
 
-\item{cor_struct}{correlation structure as per \code{\link{s_mmrm}}}
+\item{cor_struct}{a string specifying the correlation structure, defaults to
+\code{"unstructured"}. See the details.}
 }
 \value{
-the complete MMRM formula to use with \code{lmer}
+the complete MMRM formula to use with \code{\link[lme4:lmer]{lme4::lmer()}}.
 }
 \description{
-Helper function to build the MMRM formula
+Helper function to build the MMRM formula.
 }
