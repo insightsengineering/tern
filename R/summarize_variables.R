@@ -16,7 +16,7 @@ NULL
 #' @md
 #' @order 2
 #'
-s_summary <- function(x, na.rm = TRUE) # nolint
+s_summary <- function(x, na.rm = TRUE, .N_row, .N_col, ...) # nolint
   UseMethod("s_summary", x)
 
 
@@ -74,7 +74,8 @@ s_summary <- function(x, na.rm = TRUE) # nolint
 #' lapply(X, function(x) s_summary(x$x))
 #'
 s_summary.numeric <- function(x,
-                              na.rm = TRUE # nolint
+                              na.rm = TRUE, # nolint
+                              ...
 ) {
   assert_that(
     is.numeric(x),
@@ -171,9 +172,19 @@ summarize_vars <- function(lyt,
 
   afun <- format_wrap_x(
     sfun = s_summary,
-    indent_mods = c(n = 0L, mean_sd = 0L, median = 0L, range = 0L),
+    indent_mods = c(
+      n = 0L,
+      mean_sd = 0L,
+      median = 0L,
+      range = 0L,
+      count_fraction = 0L
+    ),
     formats = c(
-      n = "xx", mean_sd = "xx.x (xx.x)", median = "xx.x", range = "xx.x - xx.x"
+      n = "xx",
+      mean_sd = "xx.x (xx.x)",
+      median = "xx.x",
+      range = "xx.x - xx.x",
+      count_fraction = "xx (xx.x%)"
     )
   )
 

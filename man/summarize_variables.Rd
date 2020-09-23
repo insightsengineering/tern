@@ -7,9 +7,9 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE)
+s_summary(x, na.rm = TRUE, .N_row, .N_col, ...)
 
-\method{s_summary}{numeric}(x, na.rm = TRUE)
+\method{s_summary}{numeric}(x, na.rm = TRUE, ...)
 
 summarize_vars(lyt, vars, ...)
 }
@@ -18,11 +18,16 @@ summarize_vars(lyt, vars, ...)
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
+\item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
+
+\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+
+\item{...}{arguments passed to \code{s_summary()}.}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{...}{arguments passed to \code{s_summary()}.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items:

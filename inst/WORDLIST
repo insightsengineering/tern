@@ -41,6 +41,7 @@ datanames
 denom
 df
 efron
+EGT
 enableR
 Evaluable
 Fisher
@@ -126,6 +127,7 @@ teal
 testthat
 TLG
 TLGs
+TLGC
 tm
 ui
 UI

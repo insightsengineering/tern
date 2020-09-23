@@ -1,0 +1,205 @@
+---
+title: "Design: ECG Qualitative Assessment Shift Table (EGT04)"
+author: "Daniel Sabanes Bove"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of EGT04}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+```{r data, results = "asis", eval = TRUE}
+
+library(random.cdisc.data)
+
+ADSL <- radsl(cached = TRUE)
+ADEG <- radeg(cached = TRUE)
+adeg_labels <- var_labels(ADEG)
+
+ADEG_f <- subset(
+  ADEG,
+  PARAMCD == "ECGINTP" & # Analysis in terms of "NORMAL"/"ABNORMAL" (AVALC)
+    SAFFL == "Y"       & # "Safety Population Flag"
+    ONTRTFL == 'Y'     & # "On Treatment Record Flag"
+    WORS02FL == 'Y'      # "Worst Post-Baseline Observation"
+)
+
+
+# Preprocessing
+
+# For the EGT04 template, data imputation shoud be avoided, and missing data
+# explicit and accounted for, so the contingency table sum adds up to the group N.
+# For illustration purpose, missing data are added to the example.
+ADEG_f$AVALC[sample(1:nrow(ADEG_f), size = 5)] <- "Missing" 
+ADEG_f$BASEC[sample(1:nrow(ADEG_f), size = 5)] <- "Missing" 
+ADEG_f$AVALC <- factor(
+  ADEG_f$AVALC, levels = c("NORMAL", "ABNORMAL", "Missing"),
+  labels = c("Normal", "Abnormal", "Missing")
+  )
+ADEG_f$BASEC <- factor(
+  ADEG_f$BASEC, levels = c("NORMAL", "ABNORMAL", "Missing"),
+  labels = c("Normal", "Abnormal", "Missing")
+  )
+
+var_labels(ADEG_f) <- adeg_labels
+```
+
+## Design Proposition
+
+The final functions should make this workable:
+
+```{r target, eval = FALSE}
+lyt <- basic_table() %>%
+  split_cols_by("AVALC") %>%
+  split_rows_by("ARM") %>%
+  add_rowcounts() %>%
+  summarize_vars("BASEC", by_row = TRUE)
+
+build_table(lyt = lyt, df = ADEG_f)
+```
+
+## Function `c_label_n` to use in `summarize_row_groups`
+
+This function just produces a label consisting of the label of the level that is being summarized followed by the `N` in parentheses. Important is here to not use `df` but `.N_row`, because the former
+is already split by columns and will refer to the first column only.
+
+```{r c_label_n}
+c_label_n <- function(df, labelstr, .N_row) {
+  CellValue(NULL, format = "xx", label = paste0(labelstr, " (N=", .N_row, ")"))
+}
+c_label_n(data.frame(a = c(1, 2)), "bla", .N_row = 4)
+```
+
+We can then add a speaking layout creating function, which is parallel to `add_colcounts()`:
+
+```{r summarize_row_counts}
+add_rowcounts <- function(lyt) {
+  summarize_row_groups(lyt, 
+                       cfun = c_label_n) 
+}
+```
+Let's try this out in a simple example.
+
+``` {r label example}
+basic_table() %>% 
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("RACE", split_fun = drop_split_levels) %>%
+  add_rowcounts() %>%
+  analyze("AGE", afun = list_wrap_x(summary) , format = "xx.xx") %>%
+  build_table(DM)
+```
+
+Ideas for later:
+
+- This should be added to `rtables` eventually.
+- Interestingly, it seems there was a function `summarize_row_groups_count` before in `rtables` already,
+  but it is no longer there. At least it is mentioned in likely outdated Developers vignette.
+
+## Function `s_summary.factor` 
+
+Note that we will have several applications of this method for the S3 generic `s_summary`.
+This is just one of them. We therefore will need to keep updating the method definition in `tern`
+as we add more TLGC entries. The tests will be critical to ensure that we keep existing TLGC entries
+working.
+
+Since here we need additional arguments, we will need to modify `s_summary` to forward additional
+arguments with an ellipsis to the methods. The argument `by_row` specifies whether percentages are
+normalized to columns (default) or rows (by setting `by_row = TRUE`).
+
+Further we need to add `.N_row` and `.N_col` to the signature of the generic `s_summary` such that
+the Analyze Function `summarize_vars` can really pass this down to our `s_summary.factor` method.
+
+We map our standard `na.rm` argument to the `useNA` argument of `table`.
+
+``` {r s_summary.factor}
+library(assertthat)
+
+s_summary.factor <- function(x, 
+                             na.rm = TRUE,
+                             by_row = FALSE,
+                             .N_row,
+                             .N_col) {
+  assert_that(
+    is.flag(na.rm),
+    is.flag(by_row)
+  )
+  use_na <- ifelse(na.rm, "no", "ifany")
+  counts <- as.list(table(x, useNA = use_na))
+  n <- ifelse(by_row, .N_row, .N_col)
+  counts_fractions <- lapply(
+    counts, 
+    function(x) c(x, x / n)
+  )
+  list(count_fraction = counts_fractions)
+}
+
+s_summary(factor(c("a", "b")), .N_row = 10, .N_col = 5)
+```
+
+Further, in order to increase usability, we can have a character summary method 
+that does a conversion to factor and then calls the factor method.
+
+``` {r s_summary.character}
+s_summary.character <- function(x, ...) {
+  x <- as_factor_keep_attributes(x)
+  UseMethod("s_summary", x)
+}
+
+s_summary(c("a", "b"), .N_row = 10, .N_col = 5)
+```
+
+Let's try this out in a simple example. We add the row and column counts so that we can check
+the fractions are correct.
+
+``` {r summary example}
+basic_table() %>% 
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("SEX", split_fun = drop_split_levels) %>%
+  add_rowcounts() %>%
+  summarize_vars("RACE") %>%
+  build_table(DM)
+
+basic_table() %>% 
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("SEX", split_fun = drop_split_levels) %>%
+  add_rowcounts() %>%
+  summarize_vars("RACE", by_row = TRUE) %>%
+  build_table(DM)
+```
+
+## Putting everything together
+
+Finally we can execute our preferred code.
+
+```{r target achieved}
+lyt <- basic_table() %>%
+  split_cols_by("AVALC") %>%
+  split_rows_by("ARM") %>%
+  add_rowcounts() %>%
+  summarize_vars("BASEC", by_row = TRUE)
+
+build_table(lyt = lyt, df = ADEG_f)
+```
