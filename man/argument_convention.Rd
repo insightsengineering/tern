@@ -28,6 +28,9 @@
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized (must
+be present as second argument in Content Row Functions).}
+
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by

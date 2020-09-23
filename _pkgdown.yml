@@ -35,8 +35,8 @@ reference:
 
 
 
-  - title: Analysis Functions
-    desc: Analysis functions are used in combination with the rtables layout functions, in the pipeline which creates
+  - title: Analyze Functions
+    desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
           the table.
     contents:
        - dummy_sum
@@ -105,6 +105,7 @@ reference:
       - format_wrap_df
       - format_wrap_x
       - to_string_matrix
+      - add_rowcounts
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
@@ -173,3 +174,4 @@ reference:
       - identical_without_attr
       - d_proportion_diff
       - check_diff_prop_ci
+      - c_label_n

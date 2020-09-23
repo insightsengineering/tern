@@ -437,3 +437,83 @@ test_that("format_wrap_df works with empty strings in end to end example", {
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("c_label_n works as expected", {
+  result <- c_label_n(data.frame(a = c(1, 2)), "female", .N_row = 4)
+  expected <- CellValue(val = NULL, label = "female (N=4)")
+  expect_identical(result, expected)
+})
+
+test_that("add_rowcounts works with one row split", {
+  result <- basic_table() %>%
+    split_rows_by("SEX", split_fun = drop_split_levels) %>%
+    add_rowcounts() %>%
+    build_table(DM)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "F (N=187)", "M (N=169)", "all obs", "", ""),
+    .Dim = 3:2
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("add_rowcounts works with multiple column and row splits", {
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_cols_by("STRATA1") %>%
+    split_rows_by("COUNTRY", split_fun = drop_split_levels) %>%
+    add_rowcounts() %>%
+    split_rows_by("SEX", split_fun = drop_split_levels) %>%
+    add_rowcounts() %>%
+    analyze("AGE", afun = mean, format = "xx.xx") %>%
+    build_table(DM)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "CHN (N=179)", "F (N=94)", "mean", "M (N=85)",
+      "mean", "USA (N=44)", "F (N=24)", "mean", "M (N=20)", "mean",
+      "BRA (N=29)", "F (N=15)", "mean", "M (N=14)", "mean", "PAK (N=28)",
+      "F (N=12)", "mean", "M (N=16)", "mean", "NGA (N=24)", "F (N=13)",
+      "mean", "M (N=11)", "mean", "RUS (N=20)", "F (N=10)", "mean",
+      "M (N=10)", "mean", "JPN (N=18)", "F (N=9)", "mean", "M (N=9)",
+      "mean", "GBR (N=7)", "F (N=6)", "mean", "M (N=1)", "mean", "CAN (N=7)",
+      "F (N=4)", "mean", "M (N=3)", "mean", "A: Drug X", "A", "", "",
+      "30.92", "", "36.29", "", "", "33", "", "35", "", "", "29", "",
+      "NaN", "", "", "NaN", "", "36.67", "", "", "26.5", "", "32",
+      "", "", "30", "", "27", "", "", "NaN", "", "33", "", "", "NaN",
+      "", "NaN", "", "", "32.5", "", "NaN", "A: Drug X", "B", "", "",
+      "36.91", "", "38", "", "", "43", "", "36.5", "", "", "28.75",
+      "", "31", "", "", "35", "", "37", "", "", "28.5", "", "37", "",
+      "", "36.5", "", "NaN", "", "", "35", "", "NaN", "", "", "32",
+      "", "NaN", "", "", "43", "", "NaN", "A: Drug X", "C", "", "",
+      "35.36", "", "39.46", "", "", "41.33", "", "35.5", "", "", "47",
+      "", "33", "", "", "NaN", "", "33", "", "", "24", "", "42.5",
+      "", "", "32.75", "", "39", "", "", "NaN", "", "26.5", "", "",
+      "NaN", "", "NaN", "", "", "NaN", "", "NaN", "B: Placebo", "A",
+      "", "", "34.33", "", "30", "", "", "27.5", "", "40", "", "",
+      "31", "", "32.33", "", "", "46", "", "28", "", "", "31", "",
+      "NaN", "", "", "NaN", "", "30", "", "", "NaN", "", "29.5", "",
+      "", "29", "", "NaN", "", "", "NaN", "", "NaN", "B: Placebo",
+      "B", "", "", "32.89", "", "32", "", "", "NaN", "", "34", "",
+      "", "30.5", "", "31.67", "", "", "29.67", "", "NaN", "", "",
+      "NaN", "", "21", "", "", "NaN", "", "36.5", "", "", "41.5", "",
+      "27.67", "", "", "NaN", "", "NaN", "", "", "30", "", "38", "B: Placebo",
+      "C", "", "", "39.75", "", "32.8", "", "", "32.25", "", "28",
+      "", "", "24", "", "35", "", "", "42", "", "32", "", "", "NaN",
+      "", "37", "", "", "40", "", "28", "", "", "35", "", "NaN", "",
+      "", "NaN", "", "NaN", "", "", "NaN", "", "NaN", "C: Combination",
+      "A", "", "", "35.33", "", "34.82", "", "", "34.2", "", "39.25",
+      "", "", "37", "", "NaN", "", "", "44", "", "41", "", "", "32",
+      "", "35", "", "", "NaN", "", "35.5", "", "", "43", "", "33",
+      "", "", "30", "", "NaN", "", "", "NaN", "", "29.5", "C: Combination",
+      "B", "", "", "33.4", "", "33", "", "", "37", "", "31", "", "",
+      "39", "", "48", "", "", "25.5", "", "38.5", "", "", "40", "",
+      "44", "", "", "36.5", "", "27", "", "", "40", "", "NaN", "",
+      "", "NaN", "", "30", "", "", "NaN", "", "NaN", "C: Combination",
+      "C", "", "", "34.75", "", "31.87", "", "", "36", "", "39.5",
+      "", "", "34", "", "31.67", "", "", "34", "", "36.33", "", "",
+      "30.5", "", "NaN", "", "", "NaN", "", "27", "", "", "32.5", "",
+      "NaN", "", "", "NaN", "", "NaN", "", "", "NaN", "", "NaN"),
+    .Dim = c(47L, 10L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})

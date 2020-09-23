@@ -22,6 +22,8 @@
 #' @param df (`data frame`)\cr data set containing all analysis variables.
 #' @param x (`numeric`)\cr vector of numbers we want to analyze.
 #' @param vars (`character`)\cr variable names for the primary analysis variable to be iterated over.
+#' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized (must
+#'   be present as second argument in Content Row Functions).
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables.
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested by
 #'   a statistics function.

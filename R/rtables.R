@@ -399,3 +399,52 @@ format_wrap_x <- function(sfun,
   formals(afun) <- new_formals
   return(afun)
 }
+
+#' Content Row Function to Add Row Total to Labels
+#'
+#' This takes the label of the latest row split level and adds the row total in parentheses.
+#'
+#' @inheritParams argument_convention
+#'
+#' @return `CellValue` that just has the right label.
+#'
+#' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
+#'   is already split by columns and will refer to the first column of the data only.
+#'
+c_label_n <- function(df,
+                      labelstr,
+                      .N_row  #nolint
+) {
+  label <- paste0(labelstr, " (N=", .N_row, ")")
+  CellValue(
+    val = NULL,
+    label = label
+  )
+}
+
+#' Layout Creating Function to Add Row Total Counts
+#'
+#' This works analogously to [rtables::add_colcounts()] but on the rows.
+#'
+#' @inheritParams argument_convention
+#'
+#' @return The modified layout where the latest row split labels now have the row-wise
+#'   total counts (i.e. without column based subsetting) attached in parentheses.
+#'
+#' @export
+#'
+#' @examples
+#' basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("RACE", split_fun = drop_split_levels) %>%
+#'   add_rowcounts() %>%
+#'   analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") %>%
+#'   build_table(DM)
+#'
+add_rowcounts <- function(lyt) {
+  summarize_row_groups(
+    lyt,
+    cfun = c_label_n
+  )
+}
