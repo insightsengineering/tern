@@ -25,6 +25,9 @@
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables.
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested by
 #'   a statistics function.
+#' @param .ref_group (`data frame` or `vector`)\cr the data corresponding to the reference group.
+#' @param .in_ref_col (`logical`)\cr
+#'   `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .N_row (`count`)\cr column-wise N (column count) for the full column that is passed by `rtables`.
 #' @param .N_col (`count`)\cr row-wise N (row group count) for the group of observations being analyzed
 #'   (i.e. with no column-based subsetting) that is passed by `rtables`.

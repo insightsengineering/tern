@@ -5,6 +5,7 @@
 #' @param x object to test
 #' @param df supposed data frame to test
 #' @param variables supposed variables list to test
+#' @param ... a collection of objects to test.
 #' @return `flag` whether the assertion holds (`TRUE` or `FALSE`). When used inside
 #'   [assertthat::assert_that()] produces a meaningful error message.
 #' @name assertions
@@ -74,4 +75,39 @@ on_failure(is_df_with_variables) <- function(call, env) {
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
   paste(deparse(call$df), "does not contain all variables among:", deparse(vars))
+}
+
+
+#' @describeIn assertions Check that objects provided are of same length.
+#' @export
+#' @examples
+#'
+#' #' # Check whether `x` is a valid list of variable names.
+#' a <- 1
+#' b <- NULL
+#' c <- c(1, "car")
+#' d <- 5
+#' is_equal_length(a, b, c, d)
+#'
+is_equal_length <- function(...) {
+  y <- mapply(FUN = length, x = list(...))
+  all(y == y[1])
+}
+
+on_failure(is_equal_length) <- function(call, env) {
+
+  y <- unlist(as.list(call)[-1])
+  y <- setNames(y, nm = y)
+  y <- mapply(
+    FUN = function(expr) eval(expr, envir = parent.frame(n = 2)),
+    expr = y
+  )
+  y <- mapply(length, x = y)
+
+  paste0(
+    deparse(call), " - Objects must have the same length.\n",
+    "However, variable `",
+    names(y[1]), "` is of length ", y[1], " unlike `",
+    paste(names(y[y != y[1]]), collapse = "`, `"), "`."
+  )
 }

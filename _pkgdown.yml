@@ -31,6 +31,7 @@ reference:
       - s_dummy_sum
       - s_count_abnormal
       - s_summary
+      - s_proportion_diff
 
 
 
@@ -41,6 +42,7 @@ reference:
        - dummy_sum
        - analyze_abnormal
        - summarize_vars
+       - estimate_proportion_diff
 
 
   - title: Analysis Helper Functions
@@ -51,6 +53,11 @@ reference:
       - footnotes
       - footnotes<-
       - add_footnotes<-
+      - prop_diff_cmh
+      - prop_diff_nc
+      - prop_diff_ha
+      - prop_diff_wald
+
 
   - title: Old Statistics Functions
     desc: these functions might have to be refactored or deprecated later
@@ -63,7 +70,6 @@ reference:
       - s_logistic_single
       - s_logistic_interaction
       - s_proportion
-      - s_proportion_diff
       - s_adj_proportion_diff
       - s_test_proportion_diff
       - s_ancova
@@ -77,7 +83,6 @@ reference:
       - a_iqr
       - a_range
       - d_proportion
-      - d_proportion_diff
       - d_test_proportion_diff
       - estimate_coef
       - pairwise
@@ -166,3 +171,5 @@ reference:
       - list_lengths_in_list
       - labels_or_names
       - identical_without_attr
+      - d_proportion_diff
+      - check_diff_prop_ci

@@ -6,6 +6,7 @@
 \alias{is_nonnegative_count}
 \alias{is_variables}
 \alias{is_df_with_variables}
+\alias{is_equal_length}
 \title{Additional Assertions for \code{assert_that}}
 \usage{
 is_character_or_factor(x)
@@ -15,6 +16,8 @@ is_nonnegative_count(x)
 is_variables(x)
 
 is_df_with_variables(df, variables)
+
+is_equal_length(...)
 }
 \arguments{
 \item{x}{object to test}
@@ -22,6 +25,8 @@ is_df_with_variables(df, variables)
 \item{df}{supposed data frame to test}
 
 \item{variables}{supposed variables list to test}
+
+\item{...}{a collection of objects to test.}
 }
 \value{
 \code{flag} whether the assertion holds (\code{TRUE} or \code{FALSE}). When used inside
@@ -39,6 +44,8 @@ We provide additional assertion functions which can be used together with \code{
 \item \code{is_variables}: Check whether \code{x} is a valid list of variable names.
 
 \item \code{is_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
+
+\item \code{is_equal_length}: Check that objects provided are of same length.
 }}
 
 \examples{
@@ -60,4 +67,12 @@ is_variables(list("bla"))
 
 # Check whether `df` contains the analysis `variables`.
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+
+#' # Check whether `x` is a valid list of variable names.
+a <- 1
+b <- NULL
+c <- c(1, "car")
+d <- 5
+is_equal_length(a, b, c, d)
+
 }

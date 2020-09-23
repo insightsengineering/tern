@@ -33,6 +33,11 @@
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
 a statistics function.}
 
+\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+
+\item{.in_ref_col}{(\code{logical})\cr
+\code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
