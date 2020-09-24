@@ -1,9 +1,9 @@
 # Format wrapper for `s_summary`.
 afun_s_summary <- format_wrap_x(
   sfun = s_summary,
-  indent_mods = c(n = 0L, mean_sd = 0L, median = 0L, range = 0L),
+  indent_mods = c(n = 0L, mean_sd = 0L, median = 0L, range = 0L, counts = 0L),
   formats = c(
-    n = "xx", mean_sd = "xx.x (xx.x)", median = "xx.x", range = "xx.x - xx.x"
+    n = "xx", mean_sd = "xx.x (xx.x)", median = "xx.x", range = "xx.x - xx.x", counts = "xx.x (xx.x)"
   )
 )
 
@@ -59,6 +59,74 @@ test_that("s_summary (+ afun wrapper) returns right results.", {
 
 })
 
+test_that("s_summary works with factors", {
+
+  x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown"))
+
+  result <- s_summary(x)
+  expected <- list(
+    n = with_label(9L, "n"),
+    count_fraction = list(
+      Female = c(2, 2 / 9),
+      Male = c(3, 3 / 9),
+      Unknown = c(4, 4 / 9)
+    )
+  )
+
+  expect_identical(result, expected)
+})
+
+test_that("s_summary works with factors with NA values and correctly removes them by default", {
+
+  x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", NA))
+
+  result <- s_summary(x)
+  expected <- list(
+    n = with_label(9L, "n"),
+    count_fraction = list(
+      Female = c(2, 2 / 9),
+      Male = c(3, 3 / 9),
+      Unknown = c(4, 4 / 9)
+    )
+  )
+
+  expect_identical(result, expected)
+})
+
+test_that("s_summary fails with factors that have no levels or have empty string levels", {
+
+  x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", ""))
+  expect_error(
+    s_summary(x),
+    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
+    fixed = TRUE
+  )
+
+  x <- factor()
+  expect_error(
+    s_summary(x),
+    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
+    fixed = TRUE
+  )
+})
+
+test_that("s_summary works with length 0 factors that have levels", {
+
+  x <- factor(levels = c("a", "b", "c"))
+
+  result <- s_summary(x)
+  expected <- list(
+    n = with_label(0L, "n"),
+    count_fraction = list(
+      a = c(0L, NA),
+      b = c(0L, NA),
+      c = c(0L, NA)
+    )
+  )
+
+  expect_identical(result, expected)
+})
+
 test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
 
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
@@ -95,5 +163,20 @@ test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE
   )
 
   expect_identical(to_string_matrix(result), expected)
+})
 
+test_that("`summarize_vars` works with healthy factor input", {
+
+  dta <- data.frame(foo = factor(c("a", "b", "a")))
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "foo") %>%
+    build_table(dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "n", "a", "b", "all obs", "3", "2 (66.7%)", "1 (33.3%)"),
+    .Dim = c(4L, 2L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
 })

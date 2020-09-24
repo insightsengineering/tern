@@ -4,12 +4,15 @@
 \alias{summarize_variables}
 \alias{s_summary}
 \alias{s_summary.numeric}
+\alias{s_summary.factor}
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
 s_summary(x, na.rm = TRUE, .N_row, .N_col, ...)
 
 \method{s_summary}{numeric}(x, na.rm = TRUE, ...)
+
+\method{s_summary}{factor}(x, na.rm = TRUE, ...)
 
 summarize_vars(lyt, vars, ...)
 }
@@ -37,6 +40,13 @@ If \code{x} is of class \code{numeric}, returns a list with named items:
 \item \code{median}: the \code{\link[=median]{median()}}.
 \item \code{range}: the \code{\link[=range]{range()}}.
 }
+
+If \code{x} is of class \code{factor}, returns a list with named items:
+\itemize{
+\item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
+\item \code{count_fraction}: a list with the number and proportion of cases for each level of the
+factor \code{x} relative to \code{n}, or \code{NA} if \code{n} is zero.
+}
 }
 \description{
 We use the new S3 generic function \link{s_summary} to implement summaries for different \code{x} objects.
@@ -53,6 +63,10 @@ feature so as to return \code{rcell} content in \code{rtables} when the
 intersection of a column and a row delimits an empty data selection.
 Also, when the \code{mean} function is applied to an empty vector, \code{NA} will
 be returned instead of \code{NaN}, the latter being standard behavior in R.
+
+\item \code{s_summary.factor}: Method for factor class. Note that,
+if \code{x} is an empty factor, then still a list is returned for \code{counts} with one element
+per factor level. If there are no levels in \code{x}, the function fails.
 
 \item \code{summarize_vars}: Analyze Function to add a descriptive analyze
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
@@ -103,6 +117,18 @@ split_cols_by(lyt = NULL, var = "Group") \%>\%
 ## By comparison with `lapply`:
 X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 lapply(X, function(x) s_summary(x$x))
+
+# `s_summary.factor`
+
+## Basic usage:
+s_summary(factor(c("a", "a", "b", "c", "a")))
+# Empty factor returns NA-filled items.
+s_summary(factor(levels = c("a", "b", "c")))
+
+## Management of NA values.
+x <- factor(c(NA, "Female"))
+s_summary(x, na.rm = TRUE)
+s_summary(x, na.rm = FALSE)
 
 
 # `summarize_vars()` in rtables pipelines

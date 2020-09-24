@@ -146,6 +146,7 @@ reference:
       - is_df_with_variables
       - is_nonnegative_count
       - is_variables
+      - is_valid_factor
 
   - title: Deprecated Functions
     desc: These functions will eventually be removed

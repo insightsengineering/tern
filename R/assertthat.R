@@ -9,6 +9,7 @@
 #' @return `flag` whether the assertion holds (`TRUE` or `FALSE`). When used inside
 #'   [assertthat::assert_that()] produces a meaningful error message.
 #' @name assertions
+#'
 NULL
 
 #' @describeIn assertions Check whether `x` is a character or factor vector.
@@ -110,4 +111,23 @@ on_failure(is_equal_length) <- function(call, env) {
     names(y[1]), "` is of length ", y[1], " unlike `",
     paste(names(y[y != y[1]]), collapse = "`, `"), "`."
   )
+}
+
+#' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
+#' @export
+#' @examples
+#'
+#' # Check whether `x` is a valid factor.
+#' is_valid_factor(-1)
+#' is_valid_factor(factor(c("a", "b")))
+#' is_valid_factor(factor(c("a", "")))
+#' is_valid_factor(factor())
+#'
+is_valid_factor <- function(x) {
+  is.factor(x) &&
+    length(levels(x)) > 0 &&
+    all(is.na(levels(x)) | levels(x) != "")
+}
+on_failure(is_valid_factor) <- function(call, env) {
+  paste0(deparse(call$x), " is not a valid factor, please check the factor levels (no empty strings allowed)")
 }

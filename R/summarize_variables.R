@@ -16,10 +16,10 @@ NULL
 #' @md
 #' @order 2
 #'
-s_summary <- function(x, na.rm = TRUE, .N_row, .N_col, ...) # nolint
-  UseMethod("s_summary", x)
-
-
+s_summary <- function(x, na.rm = TRUE, .N_row, .N_col, ...) { # nolint
+   assert_that(is.flag(na.rm))
+   UseMethod("s_summary", x)
+}
 #' @describeIn summarize_variables Method for numeric class. Note that,
 #'   if `x` is an empty vector, `NA` is returned. This is the expected
 #'   feature so as to return `rcell` content in `rtables` when the
@@ -37,8 +37,6 @@ s_summary <- function(x, na.rm = TRUE, .N_row, .N_col, ...) # nolint
 #' @md
 #'
 #' @importFrom stats sd median
-#' @import assertthat
-#' @import rtables
 #' @export
 #'
 #' @examples
@@ -77,23 +75,18 @@ s_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
                               ...
 ) {
-  assert_that(
-    is.numeric(x),
-    is.flag(na.rm)
-  )
+  assert_that(is.numeric(x))
 
-  x <- if (na.rm) x[!is.na(x)] else x
+  if (na.rm) x <- x[!is.na(x)]
 
   y <- list()
 
-  y$n <- with_label(
-    x = length(x),
-    label = "n"
-  )
+  dn <- length(x)
+  y$n <- with_label(dn, "n")
 
   y$mean_sd <- with_label(
     x = c(
-      mean = if (y$n > 0) mean(x) else NA_real_,
+      mean = if (dn > 0) mean(x) else NA_real_,
       sd = stats::sd(x)
     ),
     label = "Mean (SD)"
@@ -105,8 +98,58 @@ s_summary.numeric <- function(x,
   )
 
   y$range <- with_label(
-    x = if (y$n > 0) range(x) else rep(NA_real_, 2),
+    x = if (dn > 0) range(x) else rep(NA_real_, 2),
     label = "Min - Max"
+  )
+
+  y
+}
+
+#' @describeIn summarize_variables Method for factor class. Note that,
+#'   if `x` is an empty factor, then still a list is returned for `counts` with one element
+#'   per factor level. If there are no levels in `x`, the function fails.
+#' @return If `x` is of class `factor`, returns a list with named items:
+#' - `n`: the [length()] of `x`.
+#' - `count_fraction`: a list with the number and proportion of cases for each level of the
+#'    factor `x` relative to `n`, or `NA` if `n` is zero.
+#' @method s_summary factor
+#' @order 4
+#'
+#' @md
+#'
+#' @export
+#'
+#' @examples
+#' # `s_summary.factor`
+#'
+#' ## Basic usage:
+#' s_summary(factor(c("a", "a", "b", "c", "a")))
+#' # Empty factor returns NA-filled items.
+#' s_summary(factor(levels = c("a", "b", "c")))
+#'
+#' ## Management of NA values.
+#' x <- factor(c(NA, "Female"))
+#' s_summary(x, na.rm = TRUE)
+#' s_summary(x, na.rm = FALSE)
+#'
+s_summary.factor <- function(x,
+                             na.rm = TRUE, #nolint
+                             ...) {
+  assert_that(is_valid_factor(x))
+
+  if (na.rm) x <- x[!is.na(x)]
+
+  y <- list()
+
+  dn <- length(x)
+  y$n <- with_label(dn, "n")
+
+  counts <- as.list(table(x, useNA = "ifany"))
+  y$count_fraction <- lapply(
+    counts,
+    function(x) {
+      c(x, ifelse(dn > 0, x / dn, NA))
+    }
   )
 
   y
@@ -169,7 +212,6 @@ s_summary.numeric <- function(x,
 summarize_vars <- function(lyt,
                            vars,
                            ...) {
-
   afun <- format_wrap_x(
     sfun = s_summary,
     indent_mods = c(

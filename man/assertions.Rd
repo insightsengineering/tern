@@ -7,6 +7,7 @@
 \alias{is_variables}
 \alias{is_df_with_variables}
 \alias{is_equal_length}
+\alias{is_valid_factor}
 \title{Additional Assertions for \code{assert_that}}
 \usage{
 is_character_or_factor(x)
@@ -18,6 +19,8 @@ is_variables(x)
 is_df_with_variables(df, variables)
 
 is_equal_length(...)
+
+is_valid_factor(x)
 }
 \arguments{
 \item{x}{object to test}
@@ -46,6 +49,8 @@ We provide additional assertion functions which can be used together with \code{
 \item \code{is_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 
 \item \code{is_equal_length}: Check that objects provided are of same length.
+
+\item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
 }}
 
 \examples{
@@ -74,5 +79,12 @@ b <- NULL
 c <- c(1, "car")
 d <- 5
 is_equal_length(a, b, c, d)
+
+
+# Check whether `x` is a valid factor.
+is_valid_factor(-1)
+is_valid_factor(factor(c("a", "b")))
+is_valid_factor(factor(c("a", "")))
+is_valid_factor(factor())
 
 }

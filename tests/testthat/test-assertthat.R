@@ -54,3 +54,15 @@ test_that("is_df_with_variables fails or is FALSE with wrong input", {
     variables = list(aval = "b")
   ))
 })
+
+test_that("is_valid_factor is TRUE with healthy input", {
+  expect_true(is_valid_factor(factor(c("a", "b"))))
+  expect_true(is_valid_factor(factor(NA, exclude = factor())))
+})
+
+test_that("is_valid_factor is FALSE with wrong input", {
+  expect_false(is_valid_factor(c(5L, 3L)))
+  expect_false(is_valid_factor(NULL))
+  expect_false(is_valid_factor(factor(c("a", ""))))
+  expect_false(is_valid_factor(factor()))
+})
