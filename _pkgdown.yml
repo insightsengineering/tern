@@ -30,6 +30,7 @@ reference:
     contents:
       - s_dummy_sum
       - s_count_abnormal
+      - s_count_abnormal_by_baseline
       - s_summary
       - s_proportion_diff
 
@@ -50,6 +51,7 @@ reference:
     contents:
       - arm
       - count_abnormal
+      - count_abnormal_by_baseline
       - footnotes
       - footnotes<-
       - add_footnotes<-

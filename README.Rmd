@@ -28,7 +28,7 @@ The `tern` R package contains analysis functions to create tables, listings and 
 
 See the [agile-R website](https://go.roche.com/agile-R)
 
-# Acknowledgements
+# Acknowledgments
 
 There are a number of people who have previously been actively working on `tern` including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan.
 
