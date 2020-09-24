@@ -7,6 +7,7 @@
 \alias{is_variables}
 \alias{is_df_with_variables}
 \alias{is_equal_length}
+\alias{is_proportion}
 \alias{is_valid_factor}
 \title{Additional Assertions for \code{assert_that}}
 \usage{
@@ -19,6 +20,8 @@ is_variables(x)
 is_df_with_variables(df, variables)
 
 is_equal_length(...)
+
+is_proportion(x)
 
 is_valid_factor(x)
 }
@@ -50,6 +53,8 @@ We provide additional assertion functions which can be used together with \code{
 
 \item \code{is_equal_length}: Check that objects provided are of same length.
 
+\item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
+
 \item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
 }}
 
@@ -80,6 +85,10 @@ c <- c(1, "car")
 d <- 5
 is_equal_length(a, b, c, d)
 
+
+# Check whether `x` is between 0 and 1.
+is_proportion(x = 0.3)
+is_proportion(x = 1.3)
 
 # Check whether `x` is a valid factor.
 is_valid_factor(-1)

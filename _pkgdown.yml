@@ -55,6 +55,7 @@ reference:
       - footnotes
       - footnotes<-
       - add_footnotes<-
+      - or_glm
       - prop_diff_cmh
       - prop_diff_nc
       - prop_diff_ha
@@ -178,3 +179,4 @@ reference:
       - d_proportion_diff
       - check_diff_prop_ci
       - c_label_n
+
