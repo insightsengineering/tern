@@ -345,7 +345,6 @@ summary_all_fits <- function(all_fits) {
 #'   only 6 additional optimizer runs need to be done. Thus the maximum number of parallel runs is 6.
 #'   For Windows, no parallelization is currently implemented.
 #'
-#' @importFrom lme4 allFit
 #' @importFrom parallel mclapply
 #' @importFrom purrr quietly
 refit_lme4_all_optimizers <- function(original_fit,

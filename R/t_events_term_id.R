@@ -53,7 +53,6 @@
 #'
 #' @return an \code{\link{rtable}} object.
 #'
-#' @importFrom methods slot
 #' @export
 #'
 #' @template author_waddella

@@ -1,3 +1,6 @@
+# tern 0.6.8.9000
+* Removing not used imports.
+
 # tern 0.6.8
 
 * Improved handling of missing data in aggregation functions: `a_mean_sd`, `a_median`,  `a_n_true_and_freq`, `a_count`, `a_q1q3`, `a_iqr`, `a_range`.
