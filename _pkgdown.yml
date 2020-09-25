@@ -56,6 +56,8 @@ reference:
       - footnotes<-
       - add_footnotes<-
       - or_glm
+      - prop_chisq
+      - prop_cmh
       - prop_diff_cmh
       - prop_diff_nc
       - prop_diff_ha

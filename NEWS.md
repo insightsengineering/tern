@@ -5,6 +5,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Counting patients with abnormal values post-baseline: `s_count_abnormal` and `analyze_abnormal`.
 * Summarize variables: S3 generic `s_summary`, `s_summary.numeric` method, `summarize_vars`.
 * Estimate difference in terms of responder proportions: `estimate_proportion_diff`, `s_proportion_diff`.
+* Test the difference in responder proportions: `prop_chisq`, `prop_cmh`.
 * Estimate difference in terms of Odds Ratio: `or_glm`.
 
 * issues with no news: 
