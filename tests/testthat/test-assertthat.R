@@ -67,6 +67,15 @@ test_that("is_valid_factor is FALSE with wrong input", {
   expect_false(is_valid_factor(factor()))
 })
 
+test_that("is_equal_length is TRUE with same-length inputs", {
+  expect_true(is_equal_length(1, 5, "car", NA, list(a = list(5, 3))))
+})
+
+test_that("is_equal_length is FALSE with variable-length inputs", {
+  expect_false(is_equal_length(1, NULL))
+  expect_false(is_equal_length(1:10, LETTERS[1:3]))
+})
+
 test_that("is_proportion is TRUE with healthy input", {
   expect_true(is_proportion(0.99))
   expect_true(is_proportion(0.01))
