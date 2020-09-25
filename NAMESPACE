@@ -3,6 +3,7 @@
 S3method(drawDetails,dynamicSplitText)
 S3method(heightDetails,decoratedGrob)
 S3method(heightDetails,dynamicSplitText)
+S3method(s_summary,character)
 S3method(s_summary,factor)
 S3method(s_summary,numeric)
 S3method(validDetails,decoratedGrob)

@@ -83,21 +83,8 @@ build_table(lyt = lyt, df = ADEG_f)
 This function just produces a label consisting of the label of the level that is being summarized followed by the `N` in parentheses. Important is here to not use `df` but `.N_row`, because the former
 is already split by columns and will refer to the first column only.
 
-```{r c_label_n}
-c_label_n <- function(df, labelstr, .N_row) {
-  CellValue(NULL, format = "xx", label = paste0(labelstr, " (N=", .N_row, ")"))
-}
-c_label_n(data.frame(a = c(1, 2)), "bla", .N_row = 4)
-```
+We can then add a speaking layout creating function, which is parallel to `add_colcounts()`: `add_rowcounts`.
 
-We can then add a speaking layout creating function, which is parallel to `add_colcounts()`:
-
-```{r summarize_row_counts}
-add_rowcounts <- function(lyt) {
-  summarize_row_groups(lyt, 
-                       cfun = c_label_n) 
-}
-```
 Let's try this out in a simple example.
 
 ``` {r label example}
@@ -106,7 +93,7 @@ basic_table() %>%
   add_colcounts() %>%
   split_rows_by("RACE", split_fun = drop_split_levels) %>%
   add_rowcounts() %>%
-  analyze("AGE", afun = list_wrap_x(summary) , format = "xx.xx") %>%
+  analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") %>%
   build_table(DM)
 ```
 
@@ -124,50 +111,16 @@ as we add more TLGC entries. The tests will be critical to ensure that we keep e
 working.
 
 Since here we need additional arguments, we will need to modify `s_summary` to forward additional
-arguments with an ellipsis to the methods. The argument `by_row` specifies whether percentages are
-normalized to columns (default) or rows (by setting `by_row = TRUE`).
+arguments with an ellipsis to the methods. The argument `denom` specifies whether percentages are
+normalized to cells (default) columns (by using `N_col`) or rows (`N_row`).
 
 Further we need to add `.N_row` and `.N_col` to the signature of the generic `s_summary` such that
 the Analyze Function `summarize_vars` can really pass this down to our `s_summary.factor` method.
 
 We map our standard `na.rm` argument to the `useNA` argument of `table`.
 
-``` {r s_summary.factor}
-library(assertthat)
-
-s_summary.factor <- function(x, 
-                             na.rm = TRUE,
-                             by_row = FALSE,
-                             .N_row,
-                             .N_col) {
-  assert_that(
-    is.flag(na.rm),
-    is.flag(by_row)
-  )
-  use_na <- ifelse(na.rm, "no", "ifany")
-  counts <- as.list(table(x, useNA = use_na))
-  n <- ifelse(by_row, .N_row, .N_col)
-  counts_fractions <- lapply(
-    counts, 
-    function(x) c(x, x / n)
-  )
-  list(count_fraction = counts_fractions)
-}
-
-s_summary(factor(c("a", "b")), .N_row = 10, .N_col = 5)
-```
-
 Further, in order to increase usability, we can have a character summary method 
 that does a conversion to factor and then calls the factor method.
-
-``` {r s_summary.character}
-s_summary.character <- function(x, ...) {
-  x <- as_factor_keep_attributes(x)
-  UseMethod("s_summary", x)
-}
-
-s_summary(c("a", "b"), .N_row = 10, .N_col = 5)
-```
 
 Let's try this out in a simple example. We add the row and column counts so that we can check
 the fractions are correct.
@@ -186,7 +139,7 @@ basic_table() %>%
   add_colcounts() %>%
   split_rows_by("SEX", split_fun = drop_split_levels) %>%
   add_rowcounts() %>%
-  summarize_vars("RACE", by_row = TRUE) %>%
+  summarize_vars("RACE", denom = "N_row") %>%
   build_table(DM)
 ```
 
@@ -199,7 +152,7 @@ lyt <- basic_table() %>%
   split_cols_by("AVALC") %>%
   split_rows_by("ARM") %>%
   add_rowcounts() %>%
-  summarize_vars("BASEC", by_row = TRUE)
+  summarize_vars("BASEC", denom = "N_row")
 
 build_table(lyt = lyt, df = ADEG_f)
 ```

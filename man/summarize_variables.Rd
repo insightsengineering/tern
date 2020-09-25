@@ -6,20 +6,35 @@
 \alias{s_summary.numeric}
 \alias{s_summary.factor}
 \alias{summarize_vars}
+\alias{s_summary.character}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, .N_row, .N_col, ...)
+s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
 
 \method{s_summary}{numeric}(x, na.rm = TRUE, ...)
 
-\method{s_summary}{factor}(x, na.rm = TRUE, ...)
+\method{s_summary}{factor}(
+  x,
+  na.rm = TRUE,
+  denom = c("n", "N_row", "N_col"),
+  .N_row,
+  .N_col,
+  ...
+)
 
 summarize_vars(lyt, vars, ...)
+
+\method{s_summary}{character}(x, ...)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
+\item{denom}{(\code{string})\cr choice of denominator for factor proportions:\cr
+can be \code{n} (number of values in this row and column intersection), \code{N_row} (total
+number of values in this row across columns), or \code{N_col} (total number of values in
+this column across rows).}
 
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
@@ -41,11 +56,12 @@ If \code{x} is of class \code{numeric}, returns a list with named items:
 \item \code{range}: the \code{\link[=range]{range()}}.
 }
 
-If \code{x} is of class \code{factor}, returns a list with named items:
+If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with
+named items:
 \itemize{
 \item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
 \item \code{count_fraction}: a list with the number and proportion of cases for each level of the
-factor \code{x} relative to \code{n}, or \code{NA} if \code{n} is zero.
+factor \code{x} relative to the denominator, or \code{NA} if the denominator is zero.
 }
 }
 \description{
@@ -73,6 +89,9 @@ layer to \code{rtables} pipelines. The analysis is applied to a vector and
 return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
 \code{\link[=s_summary]{s_summary()}}, for instance \code{na.rm = FALSE} if missing data should be
 accounted for.
+
+\item \code{s_summary.character}: Method for character class. This makes an automatic
+conversion to factor (with a warning) and then forwards to the method for factors.
 }}
 
 \section{Formatting arguments}{
@@ -130,6 +149,11 @@ x <- factor(c(NA, "Female"))
 s_summary(x, na.rm = TRUE)
 s_summary(x, na.rm = FALSE)
 
+## Different denominators.
+x <- factor(c("a", "a", "b", "c", "a"))
+s_summary(x, denom = "N_row", .N_row = 10L)
+s_summary(x, denom = "N_col", .N_col = 20L)
+
 
 # `summarize_vars()` in rtables pipelines
 
@@ -169,5 +193,10 @@ l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
 
 results <- build_table(l, df = dta_test)
 Viewer(results)
+
+# `s_summary.character`
+
+## Basic usage:
+s_summary(c("a", "a", "b", "c", "a"))
 
 }

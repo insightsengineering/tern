@@ -13,10 +13,14 @@ NULL
 #'   an object description.
 #'
 #' @export
-#' @md
 #' @order 2
 #'
-s_summary <- function(x, na.rm = TRUE, .N_row, .N_col, ...) { # nolint
+s_summary <- function(x,
+                      na.rm = TRUE,  # nolint
+                      denom,
+                      .N_row,  # nolint
+                      .N_col,  # nolint
+                      ...) {
    assert_that(is.flag(na.rm))
    UseMethod("s_summary", x)
 }
@@ -33,8 +37,6 @@ s_summary <- function(x, na.rm = TRUE, .N_row, .N_col, ...) { # nolint
 #' - `range`: the [range()].
 #' @method s_summary numeric
 #' @order 3
-#'
-#' @md
 #'
 #' @importFrom stats sd median
 #' @export
@@ -73,8 +75,7 @@ s_summary <- function(x, na.rm = TRUE, .N_row, .N_col, ...) { # nolint
 #'
 s_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
-                              ...
-) {
+                              ...) {
   assert_that(is.numeric(x))
 
   if (na.rm) x <- x[!is.na(x)]
@@ -108,14 +109,17 @@ s_summary.numeric <- function(x,
 #' @describeIn summarize_variables Method for factor class. Note that,
 #'   if `x` is an empty factor, then still a list is returned for `counts` with one element
 #'   per factor level. If there are no levels in `x`, the function fails.
-#' @return If `x` is of class `factor`, returns a list with named items:
-#' - `n`: the [length()] of `x`.
-#' - `count_fraction`: a list with the number and proportion of cases for each level of the
-#'    factor `x` relative to `n`, or `NA` if `n` is zero.
+#' @param denom (`string`)\cr choice of denominator for factor proportions:\cr
+#'   can be `n` (number of values in this row and column intersection), `N_row` (total
+#'   number of values in this row across columns), or `N_col` (total number of values in
+#'   this column across rows).
+#' @return If `x` is of class `factor` or converted from `character`, returns a list with
+#'   named items:
+#'   - `n`: the [length()] of `x`.
+#'   - `count_fraction`: a list with the number and proportion of cases for each level of the
+#'      factor `x` relative to the denominator, or `NA` if the denominator is zero.
 #' @method s_summary factor
 #' @order 4
-#'
-#' @md
 #'
 #' @export
 #'
@@ -132,19 +136,33 @@ s_summary.numeric <- function(x,
 #' s_summary(x, na.rm = TRUE)
 #' s_summary(x, na.rm = FALSE)
 #'
+#' ## Different denominators.
+#' x <- factor(c("a", "a", "b", "c", "a"))
+#' s_summary(x, denom = "N_row", .N_row = 10L)
+#' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
 s_summary.factor <- function(x,
                              na.rm = TRUE, #nolint
+                             denom = c("n", "N_row", "N_col"),
+                             .N_row, #nolint
+                             .N_col, #nolint
                              ...) {
   assert_that(is_valid_factor(x))
+  denom <- match.arg(denom)
 
   if (na.rm) x <- x[!is.na(x)]
 
   y <- list()
 
-  dn <- length(x)
-  y$n <- with_label(dn, "n")
+  y$n <- with_label(length(x), "n")
 
   counts <- as.list(table(x, useNA = "ifany"))
+  dn <- switch(
+    denom,
+    n = length(x),
+    N_row = .N_row,
+    N_col = .N_col
+  )
   y$count_fraction <- lapply(
     counts,
     function(x) {
@@ -153,6 +171,24 @@ s_summary.factor <- function(x,
   )
 
   y
+}
+
+#' @describeIn summarize_variables Method for character class. This makes an automatic
+#'   conversion to factor (with a warning) and then forwards to the method for factors.
+#' @method s_summary character
+#' @order 5
+#'
+#' @export
+#'
+#' @examples
+#' # `s_summary.character`
+#'
+#' ## Basic usage:
+#' s_summary(c("a", "a", "b", "c", "a"))
+#'
+s_summary.character <- function(x, ...) {
+  y <- as_factor_keep_attributes(x)
+  s_summary(y, ...)
 }
 
 #' @describeIn summarize_variables Analyze Function to add a descriptive analyze
@@ -167,7 +203,6 @@ s_summary.factor <- function(x,
 #' @template formatting_arguments
 #'
 #' @export
-#' @md
 #' @examples
 #'
 #' # `summarize_vars()` in rtables pipelines
