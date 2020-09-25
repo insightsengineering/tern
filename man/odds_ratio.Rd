@@ -3,15 +3,28 @@
 \name{odds_ratio}
 \alias{odds_ratio}
 \alias{or_glm}
+\alias{s_odds_ratio}
 \title{Odds Ratio Estimation}
 \usage{
 or_glm(data, conf_level)
+
+s_odds_ratio(df, .var, .ref_group, .in_ref_col, conf_level = 0.95)
 }
 \arguments{
 \item{data}{(\verb{data frame})\cr
 expected with three variables \code{rsp}, \code{grp}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
+a statistics function.}
+
+\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+
+\item{.in_ref_col}{(\code{logical})\cr
+\code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \description{
 Compares bivariate responses between two groups in terms of odds ratios
@@ -31,6 +44,9 @@ possible.
 \section{Functions}{
 \itemize{
 \item \code{or_glm}: estimates the odds ratio based on \code{\link[stats:glm]{stats::glm()}}.
+
+\item \code{s_odds_ratio}: Statistics function which estimates the odds ratio
+between a treatment and a control.
 }}
 
 \section{Formatting arguments}{
@@ -46,11 +62,26 @@ These additional formatting arguments can be passed to the layout creating funct
 
 \examples{
 
+# Data
 data <- data.frame(
   rsp = as.logical(c(1, 1, 0, 1, 0, 0)),
   grp = letters[c(1, 1, 1, 2, 2, 2)]
 )
 
+# Odds ratio based on glm.
 or_glm(data, conf_level = 0.95)
+
+
+dta <- data.frame(
+  rsp = sample(c(TRUE, FALSE), 100, TRUE),
+  grp = factor(rep(c("A", "B"), each = 50))
+)
+
+s_odds_ratio(
+  df = subset(dta, grp == "A"),
+  .var = "rsp",
+  .ref_group = subset(dta, grp == "B"),
+  .in_ref_col = FALSE
+)
 
 }

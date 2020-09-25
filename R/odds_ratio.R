@@ -30,11 +30,13 @@ NULL
 #' @export
 #' @examples
 #'
+#' # Data
 #' data <- data.frame(
 #'   rsp = as.logical(c(1, 1, 0, 1, 0, 0)),
 #'   grp = letters[c(1, 1, 1, 2, 2, 2)]
 #' )
 #'
+#' # Odds ratio based on glm.
 #' or_glm(data, conf_level = 0.95)
 #'
 or_glm <- function(data, conf_level) {
@@ -63,4 +65,54 @@ or_glm <- function(data, conf_level) {
 
   list(or_ci = values)
 
+}
+
+
+#' @describeIn odds_ratio Statistics function which estimates the odds ratio
+#'   between a treatment and a control.
+#' @export
+#' @examples
+#'
+#' dta <- data.frame(
+#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
+#'   grp = factor(rep(c("A", "B"), each = 50))
+#' )
+#'
+#' s_odds_ratio(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE
+#' )
+#'
+s_odds_ratio <- function(df,
+                         .var,
+                         .ref_group,
+                         .in_ref_col,
+                         conf_level = 0.95) {
+  y <- list(or_ci = "")
+
+  if (!.in_ref_col) {
+    assert_that(
+      is_df_with_variables(df, list(rsp = .var)),
+      is_df_with_variables(.ref_group, list(rsp = .var)),
+      is_proportion(conf_level)
+    )
+
+    data <- data.frame(
+      rsp = c(.ref_group[[.var]], df[[.var]]),
+      grp = factor(
+        rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
+        levels = c("ref", "Not-ref")
+      )
+    )
+
+    y <- or_glm(data, conf_level = conf_level)
+  }
+
+  y$or_ci <- with_label(
+    x = y$or_ci,
+    label = paste0("Odds Ratio (", 100 * conf_level, "%CI)")
+  )
+  y
 }
