@@ -13,3 +13,13 @@ test_that("as_factor_keep_attributes does not modify a factor at all", {
   result <- expect_silent(as_factor_keep_attributes(foo))
   expect_identical(result, foo)
 })
+
+test_that("f_conf_level works for proportion", {
+  result <- f_conf_level(0.95)
+  expected <- "95% CI"
+  expect_identical(result, expected)
+})
+test_that("f_conf_level fails for non-proportion input", {
+  expect_error(f_conf_level(1.1))
+  expect_error(f_conf_level(-1))
+})

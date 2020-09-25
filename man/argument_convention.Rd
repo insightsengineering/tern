@@ -47,6 +47,12 @@ a statistics function.}
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{var_labels}{character for label.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{.stats}{statistics to select for the table.}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern}

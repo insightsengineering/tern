@@ -146,3 +146,18 @@ is_valid_factor <- function(x) {
 on_failure(is_valid_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a valid factor, please check the factor levels (no empty strings allowed)")
 }
+
+#' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
+#' @export
+#' @examples
+#'
+#' # Check whether `x` is between 0 and 1.
+#' is_proportion(x = 0.3)
+#' is_proportion(x = 1)
+is_proportion <- function(x) {
+    is.number(x) &&
+    x > 0 && x < 1
+}
+on_failure(is_proportion) <- function(call, env) {
+  paste(deparse(call$x), "is not a proportion: number between 0 and 1")
+}

@@ -66,3 +66,16 @@ test_that("is_valid_factor is FALSE with wrong input", {
   expect_false(is_valid_factor(factor(c("a", ""))))
   expect_false(is_valid_factor(factor()))
 })
+
+test_that("is_proportion is TRUE with healthy input", {
+  expect_true(is_proportion(0.99))
+  expect_true(is_proportion(0.01))
+})
+
+test_that("is_proportion is FALSE with wrong input", {
+  expect_false(is_proportion(0))
+  expect_false(is_proportion(1))
+  expect_false(is_proportion(-1.01))
+  expect_false(is_proportion("abc"))
+  expect_false(is_proportion(c(0.4, 0.3)))
+})

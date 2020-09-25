@@ -24,6 +24,8 @@ is_equal_length(...)
 is_proportion(x)
 
 is_valid_factor(x)
+
+is_proportion(x)
 }
 \arguments{
 \item{x}{object to test}
@@ -56,6 +58,8 @@ We provide additional assertion functions which can be used together with \code{
 \item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 
 \item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
+
+\item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 }}
 
 \examples{
@@ -96,4 +100,8 @@ is_valid_factor(factor(c("a", "b")))
 is_valid_factor(factor(c("a", "")))
 is_valid_factor(factor())
 
+
+# Check whether `x` is between 0 and 1.
+is_proportion(x = 0.3)
+is_proportion(x = 1)
 }

@@ -37,6 +37,7 @@ conf
 Coull
 covr
 coxph
+CoxPH
 dataname
 datanames
 denom
@@ -119,6 +120,7 @@ SREPs
 stoilovs
 STUDYID
 Surv
+surv
 swimlane
 t_abn_shift
 t_coxph
@@ -126,6 +128,7 @@ t_el_abn_shift
 tabset
 teal
 testthat
+timepoint
 TLG
 TLGC
 TLGs

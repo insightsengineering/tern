@@ -1,3 +1,16 @@
+#' Util function to create label for confidence interval
+#'
+#' @inheritParams argument_convention
+#' @return a `string`
+#' @examples
+#' tern:::f_conf_level(0.95)
+#' @noRd
+#'
+f_conf_level <- function(conf_level){
+  assert_that(is_proportion(conf_level))
+  paste0(conf_level * 100, "% CI")
+}
+
 #' Combine Factor Levels
 #'
 #' Combine specified old factor Levels in a single new level.
