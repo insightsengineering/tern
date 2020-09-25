@@ -35,7 +35,6 @@ reference:
       - s_proportion_diff
 
 
-
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
           the table.
@@ -58,6 +57,8 @@ reference:
       - or_glm
       - prop_chisq
       - prop_cmh
+      - prop_fisher
+      - prop_schouten
       - prop_diff_cmh
       - prop_diff_nc
       - prop_diff_ha

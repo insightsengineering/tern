@@ -3,17 +3,27 @@
 \name{prop_diff_test}
 \alias{prop_diff_test}
 \alias{prop_chisq}
+\alias{prop_schouten}
+\alias{prop_fisher}
 \alias{prop_cmh}
 \title{Difference Test for Two Proportions}
 \usage{
 prop_chisq(tbl)
 
-prop_cmh(tbl)
+prop_schouten(tbl)
+
+prop_fisher(tbl)
+
+prop_cmh(ary)
 }
 \arguments{
-\item{tbl}{(\code{array})\cr
+\item{tbl}{(\code{matrix})\cr
+with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in
+columns.}
+
+\item{ary}{(\code{array}, 3 dimensions)\cr
 with two groups in rows, the binary response (\code{TRUE}/\code{FALSE}) in
-columns, the strata in third dimension.}
+columns, the strata in the third dimension.}
 }
 \description{
 Various tests were implemented to test the difference between two
@@ -23,6 +33,12 @@ proportions.
 \itemize{
 \item \code{prop_chisq}: performs Chi-Squared test.
 Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
+
+\item \code{prop_schouten}: performs the Chi-Squared test with Schouten
+correction.
+
+\item \code{prop_fisher}: performs the Fisher's exact test.
+Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
 
 \item \code{prop_cmh}: performs stratified Cochran-Mantel-Haenszel test.
 Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
@@ -40,6 +56,10 @@ These additional formatting arguments can be passed to the layout creating funct
 }
 
 \examples{
+
+# Non-stratified proportion difference test
+
+## Data
 A <- 20
 B <- 20
 set.seed(1)
@@ -49,13 +69,28 @@ rsp <- c(
 )
 grp <- c(rep("A", A), rep("B", B))
 tbl <- table(grp, rsp)
+
+## Chi-Squared test
 prop_chisq(tbl)
 
 
+## Chi-Squared test + Schouten correction.
+prop_schouten(tbl)
+
+
+## Fisher's exact test
+prop_fisher(tbl)
+
+
+# Stratified proportion difference test
+
+## Data
 rsp <- sample(c(TRUE, FALSE), 100, TRUE)
 grp <- factor(rep(c("A", "B"), each = 50))
 strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 tbl <- table(grp, rsp, strata)
+
+## Cochran-Mantel-Haenszel test
 prop_cmh(tbl)
 
 }
