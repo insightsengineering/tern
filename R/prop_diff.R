@@ -4,7 +4,6 @@
 #' @param grp (`factor`)\cr
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
-#' @md
 #' @name prop_difference
 #'
 NULL
