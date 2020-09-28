@@ -438,6 +438,70 @@ test_that("format_wrap_df works with empty strings in end to end example", {
   expect_identical(result_matrix, expected_matrix)
 })
 
+test_that("format_wrap_df works with duplicate names in statistics function result list", {
+  sfun <- function(df) {
+    # Hardcode different results here for simplicity.
+    list(
+      a = with_label(5, "result 1"),
+      ci = with_label(c(0.111, 7.32598), "CI 1"),
+      a = with_label(10, "result 2"),
+      ci = with_label(c(5.235235, 12.23423), "CI 2")
+    )
+  }
+  afun <- format_wrap_df(
+    sfun,
+    formats = c(a = "xx.", ci = "(xx.x, xx.x)"),
+    indent_mods = c(a = 0L, ci = 2L)
+  )
+
+  result <- basic_table() %>%
+    analyze("Sepal.Length", afun = afun) %>%
+    build_table(iris)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "result 1", "  CI 1", "result 2", "  CI 2", "all obs",
+      "5", "(0.1, 7.3)", "10", "(5.2, 12.2)"),
+    .Dim = c(5L, 2L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+
+test_that("format_wrap_x works with duplicate names in statistics function result list", {
+  sfun <- function(x) {
+    # Hardcode different results here for simplicity.
+    list(
+      mean = with_label(mean(x), "mean"),
+      sd = with_label(sd(x), "sd"),
+      mean = with_label(mean(x, na.rm = TRUE), "mean without NAs"),
+      sd = with_label(sd(x, na.rm = TRUE), "sd without NAs")
+    )
+  }
+  afun <- format_wrap_x(
+    sfun,
+    formats = c(mean = "xx.x", sd = "xx.xxxx"),
+    indent_mods = c(mean = 0L, sd = 2L)
+  )
+
+  result <- basic_table() %>%
+    analyze(
+      "Sepal.Length",
+      afun = afun,
+      extra_args = list(
+        .formats = c(sd = "xx"),
+        .indent_mods = c(mean = 5L))
+      ) %>%
+    build_table(iris)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "     mean", "  sd", "     mean without NAs",
+      "  sd without NAs", "all obs", "5.8", "0.828066127977863", "5.8",
+      "0.828066127977863"),
+    .Dim = c(5L, 2L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
 test_that("c_label_n works as expected", {
   result <- c_label_n(data.frame(a = c(1, 2)), "female", .N_row = 4)
   expected <- CellValue(val = NULL, label = "female (N=4)")

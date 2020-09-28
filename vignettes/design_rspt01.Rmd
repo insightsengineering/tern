@@ -100,10 +100,43 @@ knitr::kable(head(ADRS_f))
 
 
 Execution
-========
+=========
+
+Estimate proportion {.tabset}
+-----------------------------
+
+### Application
+
+```{r estimate_proportion}
+dta_test <- data.frame(X = c(1, 0, 1, 0))
+l <- estimate_proportion(lyt = NULL, vars = "X")
+
+build_table(lyt = l, df = dta_test)
+```
+
+```{r s_proportion}
+s_proportion(c(1, 0, 1, 0))
+```
+
+### Functions
+
+- `prop_wilson()`
+- `prop_clopper_pearson()`
+- `prop_wald()`
+- `prop_agresti_coull()`
+- `prop_jeffreys()`
+- `s_proportion()`
+- `estimate_proportion()`
+- `d_proportion()`
+
+```{r estimate_proportion.R, engine='bash', comment=''}
+cat ../R/estimate_proportion.R
+```
+
 
 Estimate proportion differences {.tabset}
-------------------------
+-----------------------------------------
+
 
 ### Application
 
@@ -188,8 +221,105 @@ build_table(l, df = dta)
 
 ### Functions
 
+- `check_diff_prop_ci()`
+- `d_proportion_diff()`
+- `prop_diff_wald()`
+- `prop_diff_ha()`
+- `prop_diff_nc()`
+- `prop_diff_cmh()`
+- `s_proportion_diff()`
+- `estimate_proportion_diff()`
+
 ```{r prop_diff.R, engine='bash', comment=''}
 cat ../R/prop_diff.R
+```
+
+
+Test proportion difference {.tabset}
+------------------------------------
+
+### Application
+
+### Functions
+
+- `prop_chisq()`
+- `prop_cmh()`
+- `prop_schouten()`
+- `prop_fisher()`
+
+```{r test_proportion_diff.R, engine='bash', comment=''}
+cat ../R/test_proportion_diff.R
+```
+
+Estimate Odds Ratio {.tabset}
+-----------------------------
+
+### Application
+
+### Functions
+
+- `or_glm()`
+- `s_odds_ratio()`
+
+```{r odds_ratio.R, engine='bash', comment=''}
+cat ../R/odds_ratio.R
+```
+
+### Limits
+
+#### `or_clogit` - wrong implementation
+
+```{r}
+library(survival)
+#' OR with Strata by Conditional Likelihood
+#'
+#' The odds ratio is estimated by conditional likelihood using
+#' [survival::clogit()].
+#'
+#' @inheritParams argument_convention
+#' @param data (`data frame`)\cr
+#'   includes the three variables `rsp`, `grp` and `strata`.
+#' @importFrom survival strata clogit coxph
+or_clogit <- function(data, conf_level) {
+
+  # Deviation from convention: `survival::strata` must be simply `strata`.
+  formula <- stats::as.formula("rsp ~ grp + strata(strata)")
+  model_fit <- survival::clogit(formula = formula, data = data)
+
+  list(
+    or_ci = c(
+      exp(stats::coef(model_fit)),
+      exp(stats::confint(model_fit, level = conf_level))
+    )
+  )
+
+}
+```
+
+The `clogit`-based prototype is flawed as the OR estimates obtained for a
+model fitted on data subset is not equivalent to the estimates based on the
+complete dataset. This is typically the case of `rtables` workflow working
+by column (eventually in comparison to a reference):
+
+```{r}
+data <- data.frame(
+  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+  grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+  strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)]
+)
+
+data <- subset(data, grp %in% c("a", "b"))
+data$grp <- droplevels(data$grp)
+or_clogit(data, conf_level = 0.95)
+
+data <- data.frame(
+  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+  grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+  strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)]
+)
+
+data$grp <- droplevels(data$grp)
+or_clogit(data, conf_level = 0.95)
 ```
 
 
@@ -214,218 +344,12 @@ as_html(build_table(lyt = lyt, df = ADRS_f))
 ```
 
 
-Estimate proportion {.tabset}
--------------------
-
-Based on the existing (minor refactoring):
-
-- topic name: `Responder proportions`
-- `estimate_proportion`, this layer function  needs:
-    + `s_proportion`, needs:
-        - `d_proportion` for row labeling.
-    + `format_wrap_x`
-
-
-### Functions {.tabset .tabset-pills}
-
-
-#### `estimate_proportion`
-
-```{r}
-estimate_proportion <- function(lyt,
-                                vars,
-                                ...) {
-  
-  analyze(
-    lyt,
-    vars,
-    afun = format_wrap_x(
-      s_proportion,
-      formats =  c(
-        n = "xx", prop = "xx.x%", n_prop = "xx (xx.xx%)",
-        prop_ci = "(xx.xx, xx.xx)"
-      ),
-      indent_mods =  c(n = 0L, prop = 0L, n_prop = 0L, prop_ci = 0L)
-    )
-    
-  )
-  
-}
-```
-
-#### `s_proportion`
-
-I would keep most of `s_proportion` as already defined in old tern
-(minor modification about the labeling).
-
-```{r}
-s_proportion <- function(x, conf_level = 0.95,
-                         prop_ci_method = c(
-                           "waldcc", "wald", "clopper-pearson",
-                           "wilson", "agresti-coull", "jeffreys"
-                         )
-) {
-
-  # check_is_event(x) # TODO - adapt after redesign
-  prop_ci_method <- match.arg(prop_ci_method)
-  ## check_conf_level(conf_level)  # TODO - adapt after redesign
-
-  # Common variables used below.
-  n <- length(x)
-  x_sum <- sum(x)
-  p_hat <- mean(x)
-  z <- qnorm((1 + conf_level) / 2)
-
-  # Calculate CI.
-  prop_ci <- if (prop_ci_method == "clopper-pearson") {
-
-    as.numeric(binom.test(x_sum, n, conf.level = conf_level)$conf.int)
-
-  } else if (prop_ci_method == "wilson") {
-
-    as.numeric(prop.test(x_sum, n, correct = FALSE, conf.level = conf_level)$conf.int)
-
-  } else if (prop_ci_method %in% c("wald", "waldcc")) {
-
-    q_hat <- 1 - p_hat
-    correct <- ifelse(
-      prop_ci_method == "waldcc",
-      1 / (2 * n),
-      0
-    )
-    err <- z * sqrt(p_hat * q_hat) / sqrt(n) + correct
-    l_ci <- max(0, p_hat - err)
-    u_ci <- min(1, p_hat + err)
-
-    c(l_ci, u_ci)
-
-  } else if (prop_ci_method == "agresti-coull") {
-
-    # Add here both z^2 / 2 successes and failures.
-    x_sum_tilde <- x_sum + z^2 / 2
-    n_tilde <- n + z^2
-    # Then proceed as with the Wald interval.
-    p_tilde <- x_sum_tilde / n_tilde
-    q_tilde <- 1 - p_tilde
-    err <- z * sqrt(p_tilde * q_tilde) / sqrt(n_tilde)
-    l_ci <- max(0, p_tilde - err)
-    u_ci <- min(1, p_tilde + err)
-
-    c(l_ci, u_ci)
-
-  } else if (prop_ci_method == "jeffreys") {
-
-    alpha <- 1 - conf_level
-    l_ci <- ifelse(
-      x_sum == 0,
-      0,
-      stats::qbeta(alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
-    )
-    u_ci <- ifelse(
-      x_sum == n,
-      1,
-      stats::qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
-    )
-
-    c(l_ci, u_ci)
-  }
-
-  attr(prop_ci, "label") <- d_proportion(
-    conf_level = conf_level,
-    prop_ci_method = prop_ci_method,
-    long = TRUE
-  )
-
-  results <- list(
-    "n" = x_sum,
-    "prop" = p_hat,  # Note: We always return the same response proportion estimate.
-    "n_prop" = c(x_sum, p_hat),
-    "prop_ci" = prop_ci
-  )
-
-}
-
-```
-
-#### `d_proportion`
-
-Helper function, kept as is from old tern.
-
-```{r d_proportion}
-d_proportion <- function(conf_level,
-                         prop_ci_method,
-                         long = FALSE) {
-  label <- paste0(conf_level * 100, "% CI")
-  if (long) label <- paste(label, "for Response Rates")
-  method_part <- switch(
-    prop_ci_method,
-    "clopper-pearson" = "Clopper-Pearson",
-    "waldcc" = "Wald, with correction",
-    "wald" = "Wald, without correction",
-    "wilson" = "Wilson",
-    "agresti-coull" = "Agresti-Coull",
-    "jeffreys" = "Jeffreys",
-    stop(paste(prop_ci_method, "does not have a description"))
-  )
-  label <- paste0(label, " (", method_part, ")")
-}
-```
-
-### Applications
-
-Applications will eventually used for tests and examples.
-
-#### `estimate_proportion`
-
-```{r estimate_proportion}
-dta_test <- data.frame(X = c(1, 0, 1, 0))
-l <- estimate_proportion(lyt = NULL, vars = "X")
-
-build_table(lyt = l, df = dta_test)
-```
-
-#### `s_proportion`
-
-```{r s_proportion}
-s_proportion(c(1, 0, 1, 0))
-```
-
-#### `afun` construction
-
-```{r afun_s_proportion}
-(
-  format_wrap_x(
-    s_proportion,
-    formats =  c(
-      n = "xx", prop = "xx.x%", n_prop = "xx (xx.xx%)",
-      prop_ci = "(xx.xx, xx.xx)"
-    ),
-    indent_mods =  c(n = 0L, prop = 0L, n_prop = 0L, prop_ci = 0L)
-  )
-)(c(1, 0, 1, 0))
-```
-
 
 
 Test proportion diff
 --------------------
 
 ### Functions {.tabset}
-
-#### Topic intro
-
-```{r}
-#' Difference Test for Two Proportions
-#'
-#' Various tests were implemented to test the difference between two
-#' proportions.
-#'
-#' @template formatting_arguments
-#'
-#' @name prop_diff_test
-#'
-NULL
-```
 
 #### `d_test_proportion_diff`
 
@@ -449,132 +373,11 @@ d_test_proportion_diff <- function(method) {
     stop(paste(method, "does not have a description"))
   )
   paste0("p-value (", meth_part, ")")
-
 }
 ```
 
 
-#### `prop_*` {.tabset .tabset-pills}
-
-##### `prop_chisq`
-
-```{r}
-#' @describeIn prop_diff_test performs Chi-Squared test.
-#'   Internally calls [stats::prop.test()]
-#' @param tbl (`matrix`)\cr
-#'   with two groups in rows and the binary response (`TRUE`/`FALSE`) in
-#'   columns.
-#' @importFrom stats prop.test
-#' @export
-#' @examples
-#' A <- 20
-#' B <- 20
-#' set.seed(1)
-#' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = A, prob = c(3/4, 1/4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = A, prob = c(1/2, 1/2), replace = TRUE)
-#' )
-#' grp <- c(rep("A", A), rep("B", B))
-#' tbl <- table(grp, rsp)
-#' prop_chisq(tbl)
-#'
-prop_chisq <- function(tbl) stats::prop.test(tbl, correct = FALSE)$p.value
-```
-
-##### `prop_cmh`
-
-```{r}
-#' @describeIn prop_diff_test performs stratified Cochran-Mantel-Haenszel test.
-#'   Internally calls [stats::mantelhaen.test()].
-#' @param tbl (`array`)\cr
-#'   with two groups in rows, the binary response (`TRUE`/`FALSE`) in
-#'   columns, the strata in third dimension.
-#' @importFrom stats mantelhaen.test
-#' @export
-#' @examples
-#' rsp <- sample(c(TRUE, FALSE), 100, TRUE)
-#' grp <- factor(rep(c("A", "B"), each = 50))
-#' strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' tbl <- table(grp, rsp, strata)
-#' prop_cmh(tbl)
-#'
-prop_cmh <- function(tbl) {
-
-  if (any(apply(tbl, MARGIN = 3, sum) < 5))
-    warning("<5 data points in some strata. CMH test may be incorrect.")
-
-  stats::mantelhaen.test(tbl, correct = FALSE)$p.value
-
-}
-```
-
-##### `prop_fisher`
-
-```{r}
-#' @describeIn prop_diff_test performs the Fisher's exact test.
-#'   Internally calls [stats::fisher.test()]
-#' @inheritParams prop_chisq
-#' @importFrom stats fisher.test
-#' @export
-#' @examples
-#'
-#' A <- 20
-#' B <- 20
-#' set.seed(1)
-#' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = A, prob = c(3/4, 1/4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = A, prob = c(1/2, 1/2), replace = TRUE)
-#' )
-#' grp <- c(rep("A", A), rep("B", B))
-#' tbl <- table(grp, rsp)
-#' prop_fisher(tbl)
-#'
-prop_fisher <- function(tbl) stats::fisher.test(tbl)$p.value
-```
-
-##### `prop_schouten`
-
-```{r}
-#' @describeIn prop_diff_test performs the Chi-Squared test with Schouten
-#'   correction.
-#' @inheritParams prop_chisq
-#' @export
-#' @examples
-#'
-#' A <- 20
-#' B <- 20
-#' set.seed(1)
-#' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = A, prob = c(3/4, 1/4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = A, prob = c(1/2, 1/2), replace = TRUE)
-#' )
-#' grp <- c(rep("A", A), rep("B", B))
-#' tbl <- table(grp, rsp)
-#' prop_schouten(tbl)
-#'
-prop_schouten <- function(tbl) {
-
-  # Source: STREAM v2
-  #nolint start
-  # https://github.roche.com/MDIS/stream2/blob/82c6c54ea6c61d11746af3b413ad6b1b213096cd/app/macro/str_tlg_method_resp.sas#L1623
-  #nolint end
-  count_1_1 <- tbl[1, "FALSE"]
-  count_1_2 <- tbl[1, "TRUE"]
-  count_2_1 <- tbl[2, "FALSE"]
-  count_2_2 <- tbl[2, "TRUE"]
-
-  t_schouten <- (count_1_1 + count_1_2 + count_2_1 + count_2_2 - 1) *
-    (abs(count_2_2 * count_1_1 - count_1_2 * count_2_1) -
-       0.5 * min(count_1_1 + count_1_2, count_2_1 + count_2_2))^2 /
-    ((count_1_1 + count_1_2) * (count_2_1 + count_2_2) *
-       (count_1_2 + count_2_2) * (count_1_1 + count_2_1))
-
-  1 - stats::pchisq(t_schouten, df = 1)
-
-}
-```
-
-#### `s_test_proportion_diff` 
+#### `s_test_proportion_diff` [PR 658](https://github.roche.com/NEST/tern/pull/658/)
 
 ```{r}
 #' @describeIn prop_diff_test Statistics function which test the difference
@@ -583,7 +386,7 @@ prop_schouten <- function(tbl) {
 #' @inheritParams argument_convention
 #' @param .ref_group The data corresponding to the reference group.
 #' @param .in_ref_col Logical to specify result in reference column.
-#' @param method The method used for the confidence interval estimation.
+#' @param diff_ci_method The method used for the confidence interval estimation.
 #' @param method (`string`)\cr
 #'   one of (`chisq`, `cmh`, `fisher`, `schouten`; specifies the test used
 #'   to calculate the p-value.
@@ -656,7 +459,7 @@ s_test_proportion_diff <- function(df,
 
 ```
 
-#### `test_proportion_diff`
+#### `test_proportion_diff` [PR 658](https://github.roche.com/NEST/tern/pull/658/)
 
 ```{r test_proportion_diff}
 #' @describeIn prop_diff_test Layout creating function which can be used for
@@ -703,6 +506,7 @@ dta <- data.frame(
   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 )
 
+d_test_proportion_diff
 s_test_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
@@ -725,164 +529,13 @@ build_table(l, df = dta)
 ```
 
 
-Estimate odds ratio (OUT of REVIEW scope)
+Estimate odds ratio [PR 656](https://github.roche.com/NEST/tern/pull/656)
 -------------------
 
 ### Functions {.tabset}
 
-#### Topic intro
 
-```{r}
-#' OR: Comparison of Odds Ratio
-#'
-#' Compares bivariate responses between two groups in terms of odds ratios
-#' along with a confidence interval.
-#'
-#' @details This function uses either logistic regression for unstratified
-#'   analyses, or conditional logistic regression for stratified analyses.
-#'   The Wald confidence interval with the specified confidence level is
-#'   calculated. Note that, for stratified analyses, there is currently no
-#'   implementation for conditional likelihood confidence intervals,
-#'   therefore the likelihood confidence interval as an option is not yet
-#'   available. Besides, when `rsp` contains only responders or non-responders,
-#'   then the result values will be `NA`, because no odds ratio estimation is
-#'   possible.
-#'
-#' @template formatting_arguments
-#'
-#' @name odds_ratio
-#' @md
-#'
-NULL
-```
-
-#### `or_*` {.tabset .tabset-pills}
-
-##### `or_clogit` - wrong implementation
-
-```{r}
-library(survival)
-#' OR with Strata by Conditional Likelihood
-#'
-#' The odds ratio is estimated by conditional likelihood using
-#' [survival::clogit()].
-#'
-#' @inheritParams argument_convention
-#' @param data (`data frame`)\cr
-#'   includes the three variables `rsp`, `grp` and `strata`.
-#' @importFrom survival strata clogit coxph
-or_clogit <- function(data, conf_level) {
-
-  # Deviation from convention: `survival::strata` must be simply `strata`.
-  formula <- stats::as.formula("rsp ~ grp + strata(strata)")
-  model_fit <- survival::clogit(formula = formula, data = data)
-
-  list(
-    or_ci = c(
-      exp(stats::coef(model_fit)),
-      exp(stats::confint(model_fit, level = conf_level))
-    )
-  )
-
-}
-```
-
-The `clogit`-based prototype is flawed as the OR estimates obtained for a
-model fitted on data subset is not equivalent to the estimates based on the
-complete dataset. This is typically the case of `rtables` workflow working
-by column (eventually in comparison to a reference):
-
-```{r}
-data <- data.frame(
-  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-  grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
-  strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)]
-)
-
-data <- subset(data, grp %in% c("a", "b"))
-data$grp <- droplevels(data$grp)
-or_clogit(data, conf_level = 0.95)
-
-data <- data.frame(
-  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-  grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
-  strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)]
-)
-
-data$grp <- droplevels(data$grp)
-or_clogit(data, conf_level = 0.95)
-```
-
-
-##### `or_glm`
-
-```{r}
-or_glm
-```
-
-#### `s_odds_ratio`
-
-```{r}
-#' @describeIn odds_ratio Statistics function which estimates the odds ratio
-#'   between a treatment and a control.
-#' @export
-#' @examples
-#'
-#' dta <- data.frame(
-#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50)),
-#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' )
-#'
-#' s_odds_ratio(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   variables = list(strata = "strat")
-#' )
-#'
-s_odds_ratio <- function(df,
-                         .var,
-                         .ref_group,
-                         .in_ref_col,
-                         variables = list(strata = NULL),
-                         conf_level = 0.95) {
-
-  y <- list(or_ci = "")
-
-  if (!.in_ref_col) {
-
-    data <- data.frame(
-      rsp = c(.ref_group[[.var]], df[[.var]]),
-      grp = factor(
-        rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
-        levels = c("ref", "Not-ref")
-      )
-    )
-
-    if (!is.null(variables$strata)) {
-      strata <- variables$strata
-      data$strata <- c(
-        interaction(.ref_group[[strata]]), interaction(df[[strata]])
-      )
-    }
-
-    y <- if (is.null(data$strata))
-      or_glm(data, conf_level = conf_level)
-    else
-      or_clogit(data, conf_level = conf_level)
-
-  }
-
-  y$or_ci <- with_label(y$or_ci, "Odds Ratio (CI)")
-  y
-
-}
-
-```
-
-#### `estimation_odds_ratio`
+#### `estimation_odds_ratio` [PR 656](https://github.roche.com/NEST/tern/pull/656)
 
 ```{r}
 #' @describeIn abnormal Layout creating function which can be used for creating
@@ -945,16 +598,14 @@ s_odds_ratio(
   df = subset(dta, grp == "A"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),
-  .in_ref_col = FALSE,
-  variables = list(strata = "strat")
+  .in_ref_col = FALSE
 )
 ```
 
 ```{r}
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50)),
-  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  grp = factor(rep(c("A", "B"), each = 50))
 )
 
 l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
@@ -963,7 +614,7 @@ l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
 build_table(l, df = dta)
 
 l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-  estimation_odds_ratio(vars = "rsp", variables = list(strata = "strat"))
+  estimation_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
 
@@ -972,6 +623,234 @@ build_table(l, df = dta)
 
 Estimate multinomial response
 -----------------------------
+
+### Functions {.tabset}
+
+#### `d_onco_rsp_label`
+
+The function `d_onco_rsp_label()` is the renamed `get_onco_rsp_label()`:
+
+```{r d_onco_rsp_label}
+#' Standard oncology response
+#'
+#' Describe the oncology response.
+#'
+#' @return Named \code{character} vector.
+#'
+#' @export
+#'
+#' @examples
+#'
+#' rsp <- c("CR", "NE", "PR")
+#'
+#' # Recode values with standard labels.
+#' rsp <- d_onco_rsp_label()[match(rsp, names(get_onco_rsp_label()))]
+#'
+#' # Create factor.
+#' rsp <- factor(rsp, levels = get_onco_rsp_label())
+#'
+d_onco_rsp_label <- function() {
+
+  rsp_full_label <- c(
+    CR          = "Complete Response (CR)",
+    PR          = "Partial Response (PR)",
+    SD          = "Stable Disease (SD)",
+    `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
+    PD          = "Progressive Disease (PD)",
+    NE          = "Not Evaluable (NE)",
+    Missing     = "Missing",
+    `NE/Missing` = "Missing or unevaluable"
+  )
+  rsp_full_label
+}
+
+```
+
+#### `s_multinomial_response`
+
+#### `s_multinomial_response`
+
+```{r s_multinomial_response}
+library(assertthat)
+d_proportion <- tern:::d_proportion
+h_prop_ci <- function(rsp, n, x, n_total, method, conf_level, long = long) {
+  
+  z <- list()
+  z$n_prop <- with_label(x = c(n, n/n_total), label = as.character(unique(x)))
+  
+  prop_ci <- switch(
+    method,
+    "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
+    wilson = prop_wilson(rsp, conf_level),
+    wald = prop_wald(rsp, conf_level),
+    waldcc = prop_wald(rsp, conf_level, correct = TRUE),
+    "agresti-coull" = prop_agresti_coull(rsp, conf_level),
+    jeffreys = prop_jeffreys(rsp, conf_level)
+  )
+  
+  z$prop_ci <- with_label(
+    x = prop_ci,
+    label = d_proportion(conf_level, method, long = long)
+  )
+  
+  z
+  
+}
+#' @inheritParams argument_convention
+#' @inheritParams s_proportion estimate the proportion of outcomes per factor level.
+#'
+#' @describeIn multinomial_response statistics function estimating a
+#'   proportion per factor level along with its confidence interval for the level.
+#'
+#' @export
+#' @order 3
+#' @examples
+#'
+#' s_multinomial_response(c(0, 1, 0, 1), .N_col = 20)
+#'
+s_multinomial_response <- function(x,
+                                   conf_level = 0.95,
+                                   method = c(
+                                     "waldcc", "wald", "clopper-pearson",
+                                     "wilson", "agresti-coull", "jeffreys"
+                                   ),
+                                   long = FALSE) {
+  
+  method <- match.arg(method)
+  assert_that(
+    conf_level >= 0,
+    conf_level <= 1,
+    is.flag(long)
+  )
+  
+  n_total <- length(x)
+  x <- split(x, f = x)
+  n <- lapply(x, length)
+  rsp <- lapply(n, function(z) rep(c(TRUE, FALSE), c(z, n_total - z)))
+  
+  y <- mapply(
+    rsp = rsp, n = n, x = x, n_total = n_total, method = method,
+    conf_level = conf_level, long = long,
+    SIMPLIFY = FALSE, FUN = h_prop_ci
+  )
+  
+  tern:::flatten_list(y)
+  
+}
+```
+
+#### `estimate_multinomial_response`
+
+Problem:
+
+- Should we change the assertions behind `indent_mods` argument?
+    + If ` indent_mods = c(prop_ci = -1L)`, then
+    `Error: Elements 1 of sapply(indent_mods, is_nonnegative_count) are not true`.
+
+```{r}
+#' @inheritParams rtables::analyze
+#' @param ... other arguments are ultimately conveyed to [s_multinomial_response()].
+#' @export
+#' @describeIn multinomial_response used in a `rtables` pipeline.
+#' @order 4
+#' @template formatting_arguments
+#' @examples
+#' 
+#' dta_test <- data.frame(
+#'   USUBJID = paste0("S", 1:12),
+#'   ARM     = rep(LETTERS[1:3], each = 4),
+#'   AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
+#' )
+#' dta_test$AVALC <- as.factor(c(
+#'   "Complete Response (CR)", "Partial Response (PR)"
+#' )[dta_test$AVAL + 1])
+#'
+#' lyt <- split_cols_by(lyt = NULL, var = "ARM") %>%
+#'   estimate_multinomial_response(var = "AVALC")
+#'
+#' as_html(build_table(lyt = lyt, df = dta_test))
+#'
+estimate_multinomial_response <- function(lyt,
+                                          var,
+                                          vars = var,
+                                          ...) {
+
+  afun <- format_wrap_x(
+    sfun = s_multinomial_response,
+    formats =  c(n_prop = "xx (xx.xx%)", prop_ci = "(xx.xx, xx.xx)"),
+    indent_mods = c(n_prop = 0L, prop_ci = 0L)
+  )
+
+  analyze(
+    lyt,
+    vars,
+    afun = afun,
+    extra_args = list(...)
+  )
+
+}
+
+```
+
+### Application {.tabset .tabset-pills}
+
+```{r}
+library(dplyr)
+library(random.cdisc.data)
+ADSL <- radsl(cached = TRUE)
+ADRS <- radrs(cached = TRUE)
+
+# Select a response parameter endpoint.
+ADRS_f <- ADRS %>% filter(PARAMCD == "INVET")
+
+# Recode multinomial response with standard oncology labels.
+levels(ADRS_f$AVALC) <- d_onco_rsp_label()[
+  match(levels(ADRS_f$AVALC), names(d_onco_rsp_label()))
+  ]
+
+# Response variable.
+ADRS_f <- ADRS_f %>%
+  select(ARMCD, AVALC, SEX) %>%
+  mutate(is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)"))
+
+# Outlook.
+knitr::kable(head(ADRS_f))
+```
+
+```{r}
+x <- ADRS_f$AVALC[ADRS$ARMCD == "ARM A"]
+s_multinomial_response(x = x)
+```
+
+```{r}
+lyt <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  estimate_multinomial_response(var = "AVALC", .indent_mods = c(prop_ci = 2L))
+as_html(build_table(lyt = lyt, df = ADRS_f))
+```
+
+
+
+Combined layers
+---------------
+
+Problem:
+
+- `estimate_multinomial_response()` involves an `analyze` a row split.
+  Because it is not possible to add a new split after an analyze, and
+  because `estimate_multinomial_response()` is presented in RSPT01 after
+  proportion estimation, proportion difference test and other, we need to find 
+  a work around to make `estimate_multinomial_response()` compatible with the
+  other layout creating functions. Maybe `rbind()`?
+  
+```{r}
+lyt <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  estimate_proportion(vars = "is_rsp") %>%
+  estimate_proportion_diff(vars = "is_rsp") %>%
+  test_proportion_diff(vars = "is_rsp") %>%
+  estimate_multinomial_response(var = "AVALC")
+
+as_html(build_table(lyt = lyt, df = ADRS_f)) %>% Viewer
+```
 
 
 References

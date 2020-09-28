@@ -221,7 +221,9 @@ format_wrap_df <- function(sfun,
     }
 
     # Subset values before formatting so we operate on top list level.
-    vals <- vals[stats]
+    # Note that statistics could be duplicate in `vals` therefore the more careful
+    # subsetting here.
+    vals <- vals[which(names(vals) %in% stats)]
 
     # Replicate formats and indents to accommodate nested lists.
     rep_index <- rep(names(vals), list_lengths_in_list(vals))
@@ -346,7 +348,9 @@ format_wrap_x <- function(sfun,
     }
 
     # Subset values before formatting so we operate on top list level.
-    vals <- vals[stats]
+    # Note that statistics could be duplicate in `vals` therefore the more careful
+    # subsetting here.
+    vals <- vals[which(names(vals) %in% stats)]
 
     # Replicate formats and indents to accommodate nested lists.
     rep_index <- rep(names(vals), list_lengths_in_list(vals))
