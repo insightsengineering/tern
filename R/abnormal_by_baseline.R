@@ -100,12 +100,13 @@ count_abnormal_by_baseline <- function(df,
 }
 
 #' @describeIn abnormal_by_baseline Statistics function which counts patients with abnormal range values
-#'   by baseline status for multiple `abnormal` levels, and returns a list with one element each.
+#'   by baseline status for multiple `abnormal` levels, and returns a list with labeled entries.
 #' @export
 #' @examples
 #'
 #' # Use the statistics function to count patients for multiple abnormal levels.
 #' s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"))
+#'
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
@@ -113,6 +114,74 @@ s_count_abnormal_by_baseline <- function(df,
 ) {
 
   assert_that(!is.null(names(abnormal)))
+
   result <- lapply(abnormal, count_abnormal_by_baseline, df = df, .var = .var, ...)
-  list(fraction = result)
+
+  lbl_result <- Map(function(x, nm){
+
+    null_name <- paste0(toupper(substr(nm, 1, 1)), tolower(substring(nm, 2)))
+    not_abn_name <- paste("Not", tolower(nm), "baseline status")
+    abn_name <- paste(null_name, "baseline status")
+    total_name <- "Total"
+
+    list(
+      section_label = with_label("", null_name),
+      not_abnormal = with_label(x[["not_abnormal"]], not_abn_name),
+      abnormal = with_label(x[["abnormal"]], abn_name),
+      total = with_label(x[["total"]], total_name)
+    )
+
+  }, x = result, nm = names(result))
+
+  flatten_list(lbl_result)
+}
+
+#' @describeIn abnormal_by_baseline Layout creating function which can be used for creating tables, which can take
+#'   statistics function arguments and additional format arguments (see below).
+#' @export
+#' @examples
+#'
+#' # Layout creating function.
+#' basic_table() %>%
+#'   analyze_abnormal_by_baseline(vars = "ANRIND", abnormal = c(high = "HIGH")) %>%
+#'   build_table(df)
+#'
+#' # Passing of statistics function and formatting arguments.
+#' df2 <- data.frame(
+#'   ID = as.character(c(1, 2, 3, 4)),
+#'   RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+#'   BLRANGE = factor(c("LOW", "HIGH", "HIGH", "NORMAL"))
+#' )
+#'
+#' basic_table() %>%
+#'   analyze_abnormal_by_baseline(
+#'     vars = "RANGE",
+#'     abnormal = c(low = "LOW"),
+#'     variables = list(id = "ID", baseline = "BLRANGE"),
+#'     .formats = c(not_abnormal = "xx / xx", abnormal = "xx / xx", total = "xx / xx"),
+#'     .indent_mods = c(total = 2L)
+#'   ) %>%
+#'   build_table(df2)
+#'
+analyze_abnormal_by_baseline <- function(lyt,
+                                         vars,
+                                         ...) {
+  a_count_abnormal_by_baseline <- format_wrap_df(
+    s_count_abnormal_by_baseline,
+    indent_mods = c(section_label = 0L, not_abnormal = 1L, abnormal = 1L, total = 1L),
+    formats = c(
+      section_label = "xx",
+      not_abnormal = format_fraction,
+      abnormal = format_fraction,
+      total = format_fraction
+    )
+  )
+  analyze(
+    lyt,
+    vars,
+    afun = a_count_abnormal_by_baseline,
+    extra_args = c(
+      list(...)
+    )
+  )
 }

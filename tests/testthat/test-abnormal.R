@@ -113,7 +113,7 @@ test_that("analyze_abnormal works with default arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "low", "high", "all obs", "1/2 (50%)", "0/1 (0%)"
+      "", "low", "high", "all obs", "1/2 (50%)", "0/1"
     ),
     .Dim = 3:2
   )
@@ -163,7 +163,7 @@ test_that("analyze_abnormal works with more than one variable in `vars`", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "RANGE", "low", "high", "RANGE2", "low", "high",
-      "all obs", "", "1/2 (50%)", "0/1 (0%)", "", "0/1 (0%)", "2/2 (100%)"),
+      "all obs", "", "1/2 (50%)", "0/1", "", "0/1", "2/2 (100%)"),
     .Dim = c(7L, 2L)
   )
   expect_identical(result_matrix, expected_matrix)

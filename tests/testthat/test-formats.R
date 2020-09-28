@@ -4,6 +4,12 @@ test_that("format_fraction works with healthy inputs", {
   expect_identical(result, expected)
 })
 
+test_that("format_fraction works with 0 numerator input", {
+  result <- format_fraction(c(num = 0L, denom = 3L))
+  expected <- "0/3"
+  expect_identical(result, expected)
+})
+
 test_that("format_fraction fails with bad inputs", {
   x <- list(
     c(num = 2, denom = 3),

@@ -12,24 +12,38 @@ NULL
 #'
 #' @param x (`integer`)\cr with elements `num` and `denom`.
 #' @param ... required for rtables interface.
-#' @return a string in the format `num / denom (ratio %)`
+#' @return a string in the format `num / denom (ratio %)`. If `num` is 0 the format is `num / denom`.
 #'
 #' @family formatting functions
 #' @export
 #'
 #' @examples
 #' format_fraction(x = c(num = 2L, denom = 3L))
+#' format_fraction(x = c(num = 0L, denom = 3L))
 #'
 format_fraction <- function(x, ...) {
+
+  attr(x, "label") <- NULL
+
   assert_that(
     is.vector(x),
     is_nonnegative_count(x["num"]),
     is_nonnegative_count(x["denom"])
   )
-  result <- paste0(
-    x["num"], "/", x["denom"],
-    " (", round(x["num"] / x["denom"] * 100, 1), "%)"
-  )
+
+  result <- if (x["num"] == 0){
+
+    paste0(x["num"], "/", x["denom"])
+
+  } else {
+
+    paste0(
+      x["num"], "/", x["denom"],
+      " (", round(x["num"] / x["denom"] * 100, 1), "%)"
+    )
+
+  }
+
   return(result)
 }
 

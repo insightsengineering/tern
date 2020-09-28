@@ -4,6 +4,7 @@
 \alias{abnormal_by_baseline}
 \alias{count_abnormal_by_baseline}
 \alias{s_count_abnormal_by_baseline}
+\alias{analyze_abnormal_by_baseline}
 \title{Patient Counts with Abnormal Range Values by Baseline Status}
 \usage{
 count_abnormal_by_baseline(
@@ -14,6 +15,8 @@ count_abnormal_by_baseline(
 )
 
 s_count_abnormal_by_baseline(df, .var, abnormal, ...)
+
+analyze_abnormal_by_baseline(lyt, vars, ...)
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -26,6 +29,10 @@ a statistics function.}
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 }
 \description{
 Primary analysis variable \code{.var} indicates the abnormal range result (character or factor), and additional
@@ -60,7 +67,10 @@ Note that \code{df} should be filtered to include only post-baseline records.
 of patients.
 
 \item \code{s_count_abnormal_by_baseline}: Statistics function which counts patients with abnormal range values
-by baseline status for multiple \code{abnormal} levels, and returns a list with one element each.
+by baseline status for multiple \code{abnormal} levels, and returns a list with labeled entries.
+
+\item \code{analyze_abnormal_by_baseline}: Layout creating function which can be used for creating tables, which can take
+statistics function arguments and additional format arguments (see below).
 }}
 
 \section{Formatting arguments}{
@@ -87,4 +97,28 @@ count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
 
 # Use the statistics function to count patients for multiple abnormal levels.
 s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"))
+
+
+# Layout creating function.
+basic_table() \%>\%
+  analyze_abnormal_by_baseline(vars = "ANRIND", abnormal = c(high = "HIGH")) \%>\%
+  build_table(df)
+
+# Passing of statistics function and formatting arguments.
+df2 <- data.frame(
+  ID = as.character(c(1, 2, 3, 4)),
+  RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+  BLRANGE = factor(c("LOW", "HIGH", "HIGH", "NORMAL"))
+)
+
+basic_table() \%>\%
+  analyze_abnormal_by_baseline(
+    vars = "RANGE",
+    abnormal = c(low = "LOW"),
+    variables = list(id = "ID", baseline = "BLRANGE"),
+    .formats = c(not_abnormal = "xx / xx", abnormal = "xx / xx", total = "xx / xx"),
+    .indent_mods = c(total = 2L)
+  ) \%>\%
+  build_table(df2)
+
 }

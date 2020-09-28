@@ -12,13 +12,14 @@ format_fraction(x, ...)
 \item{...}{required for rtables interface.}
 }
 \value{
-a string in the format \verb{num / denom (ratio \%)}
+a string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0 the format is \code{num / denom}.
 }
 \description{
 Formats a fraction together with ratio in percent.
 }
 \examples{
 format_fraction(x = c(num = 2L, denom = 3L))
+format_fraction(x = c(num = 0L, denom = 3L))
 
 }
 \seealso{
