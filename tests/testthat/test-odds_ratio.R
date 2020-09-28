@@ -1,4 +1,3 @@
-
 test_that("or_glm estimates right OR and CI", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),

@@ -4,12 +4,12 @@
 \alias{d_proportion_diff}
 \title{Description of Method Used for Proportion Comparison}
 \usage{
-d_proportion_diff(conf_level, diff_ci_method, long = FALSE)
+d_proportion_diff(conf_level, method, long = FALSE)
 }
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{diff_ci_method}{(\code{string})\cr
+\item{method}{(\code{string})\cr
 the method used for the confidence interval estimation.}
 
 \item{long}{(\code{logical})\cr

@@ -171,7 +171,7 @@ s_proportion_diff(
   .ref_group = subset(dta, grp == "B"),
   .in_ref_col = FALSE,
   conf_level = 0.90,
-  diff_ci_method = "ha"
+  method = "ha"
 )
 
 
@@ -179,7 +179,7 @@ l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
   estimate_proportion_diff(
     vars = "rsp",
     conf_level = 0.90,
-    diff_ci_method = "ha"
+    method = "ha"
   )
 
 build_table(l, df = dta)
@@ -583,7 +583,7 @@ prop_schouten <- function(tbl) {
 #' @inheritParams argument_convention
 #' @param .ref_group The data corresponding to the reference group.
 #' @param .in_ref_col Logical to specify result in reference column.
-#' @param diff_ci_method The method used for the confidence interval estimation.
+#' @param method The method used for the confidence interval estimation.
 #' @param method (`string`)\cr
 #'   one of (`chisq`, `cmh`, `fisher`, `schouten`; specifies the test used
 #'   to calculate the p-value.

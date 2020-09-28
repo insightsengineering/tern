@@ -20,7 +20,6 @@ check_diff_prop_ci <- function(rsp,
                                strata = NULL,
                                conf_level,
                                correct = NULL) {
-
   assert_that(
     is.logical(rsp),
     !anyNA(c(rsp, grp)),
@@ -49,29 +48,28 @@ check_diff_prop_ci <- function(rsp,
 #' @return String describing the analysis.
 #'
 d_proportion_diff <- function(conf_level,
-                              diff_ci_method,
+                              method,
                               long = FALSE) {
   label <- paste0(conf_level * 100, "% CI")
   if (long) label <- paste(
     label,
     ifelse(
-      diff_ci_method == "cmh",
+      method == "cmh",
       "for adjusted difference",
       "for difference"
     )
   )
 
   method_part <- switch(
-    diff_ci_method,
+    method,
     "cmh" = "CMH, without correction",
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",
     "ha" = "Anderson-Hauck",
     "newcombe" = "Newcombe",
-    stop(paste(diff_ci_method, "does not have a description"))
+    stop(paste(method, "does not have a description"))
   )
   paste0(label, " (", method_part, ")")
-
 }
 
 
@@ -96,7 +94,6 @@ prop_diff_wald <- function(rsp,
                            grp,
                            conf_level,
                            correct) {
-
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, correct = correct
@@ -111,7 +108,6 @@ prop_diff_wald <- function(rsp,
       conf.level = conf_level
     )$conf.int[1:2]
   )
-
 }
 
 
@@ -133,7 +129,6 @@ prop_diff_wald <- function(rsp,
 prop_diff_ha <- function(rsp,
                          grp,
                          conf_level) {
-
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
@@ -149,7 +144,6 @@ prop_diff_ha <- function(rsp,
     "diff" = diff_p,
     "diff_ci" = c(l_ci, u_ci)
   )
-
 }
 
 
@@ -172,7 +166,6 @@ prop_diff_ha <- function(rsp,
 prop_diff_nc <- function(rsp,
                          grp,
                          conf_level) {
-
   grp <- as_factor_keep_attributes(grp)
   check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
 
@@ -192,7 +185,6 @@ prop_diff_nc <- function(rsp,
     "diff" = diff_p,
     "diff_ci" = c(l_ci, u_ci)
   )
-
 }
 
 
@@ -227,7 +219,6 @@ prop_diff_cmh <- function(rsp,
                           grp,
                           strata,
                           conf_level = 0.95) {
-
   grp <- as_factor_keep_attributes(grp)
   strata <- as_factor_keep_attributes(strata)
   check_diff_prop_ci(
@@ -275,7 +266,7 @@ prop_diff_cmh <- function(rsp,
 
 #' @describeIn prop_difference Statistics function estimating the difference
 #'   in terms of responder proportion.
-#' @param diff_ci_method (`string`)\cr
+#' @param method (`string`)\cr
 #'   the method used for the confidence interval estimation.
 #' @export
 #' @examples
@@ -294,7 +285,7 @@ prop_diff_cmh <- function(rsp,
 #'   .ref_group = subset(dta, grp == "B"),
 #'   .in_ref_col = FALSE,
 #'   conf_level = 0.90,
-#'   diff_ci_method = "ha"
+#'   method = "ha"
 #' )
 #'
 s_proportion_diff <- function(df,
@@ -303,13 +294,12 @@ s_proportion_diff <- function(df,
                               .in_ref_col,
                               variables = list(strata = NULL),
                               conf_level = 0.95,
-                              diff_ci_method = c(
+                              method = c(
                                 "wald", "waldcc", "cmh",
                                 "ha", "newcombe"
                               )
 ) {
-
-  diff_ci_method <- match.arg(diff_ci_method)
+  method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")
 
   if (!.in_ref_col) {
@@ -329,7 +319,7 @@ s_proportion_diff <- function(df,
     }
 
     y <- switch(
-      diff_ci_method,
+      method,
       wald = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
       waldcc = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
       ha = prop_diff_ha(rsp, grp, conf_level),
@@ -341,7 +331,7 @@ s_proportion_diff <- function(df,
 
   attr(y$diff, "label") <- "Difference in Response rate (%)"
   attr(y$diff_ci, "label") <- d_proportion_diff(
-    conf_level, diff_ci_method, long = FALSE
+    conf_level, method, long = FALSE
   )
 
   y
@@ -362,7 +352,7 @@ s_proportion_diff <- function(df,
 #'   estimate_proportion_diff(
 #'     vars = "rsp",
 #'     conf_level = 0.90,
-#'     diff_ci_method = "ha"
+#'     method = "ha"
 #'   )
 #'
 #' build_table(l, df = dta)
@@ -370,7 +360,6 @@ s_proportion_diff <- function(df,
 estimate_proportion_diff <- function(lyt,
                                      vars,
                                      ...) {
-
   afun <- format_wrap_df(
     sfun = s_proportion_diff,
     formats =  c(diff = "xx.xx", diff_ci = "xx.xx - xx.xx"),
@@ -383,5 +372,4 @@ estimate_proportion_diff <- function(lyt,
     afun = afun,
     extra_args = list(...)
   )
-
 }

@@ -6,6 +6,8 @@
 \alias{prop_schouten}
 \alias{prop_fisher}
 \alias{prop_cmh}
+\alias{s_test_proportion_diff}
+\alias{test_proportion_diff}
 \title{Difference Test for Two Proportions}
 \usage{
 prop_chisq(tbl)
@@ -15,6 +17,17 @@ prop_schouten(tbl)
 prop_fisher(tbl)
 
 prop_cmh(ary)
+
+s_test_proportion_diff(
+  df,
+  .var,
+  .ref_group,
+  .in_ref_col,
+  variables = list(strata = NULL),
+  method = c("chisq", "schouten", "fisher", "cmh")
+)
+
+test_proportion_diff(lyt, vars, ...)
 }
 \arguments{
 \item{tbl}{(\code{matrix})\cr
@@ -24,6 +37,33 @@ columns.}
 \item{ary}{(\code{array}, 3 dimensions)\cr
 with two groups in rows, the binary response (\code{TRUE}/\code{FALSE}) in
 columns, the strata in the third dimension.}
+
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
+a statistics function.}
+
+\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+
+\item{.in_ref_col}{(\code{logical})\cr
+\code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
+\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+
+\item{method}{(\code{string})\cr
+one of (\code{chisq}, \code{cmh}, \code{fisher}, \code{schouten}; specifies the test used
+to calculate the p-value.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
+}
+\value{
+Named \code{list} with a single item \code{pval} with an attribute \code{label}
+describing the method used. The p-value tests the null hypothesis that
+proportions in two groups are the same.
 }
 \description{
 Various tests were implemented to test the difference between two
@@ -42,6 +82,13 @@ Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
 
 \item \code{prop_cmh}: performs stratified Cochran-Mantel-Haenszel test.
 Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
+
+\item \code{s_test_proportion_diff}: Statistics function which test the difference
+between two proportions.
+
+\item \code{test_proportion_diff}: Layout creating function which can be used for
+creating tables, which can take statistics function arguments and
+additional format arguments.
 }}
 
 \section{Formatting arguments}{
@@ -92,5 +139,32 @@ tbl <- table(grp, rsp, strata)
 
 ## Cochran-Mantel-Haenszel test
 prop_cmh(tbl)
+
+
+# Statistics function
+dta <- data.frame(
+  rsp = sample(c(TRUE, FALSE), 100, TRUE),
+  grp = factor(rep(c("A", "B"), each = 50)),
+  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+)
+
+s_test_proportion_diff(
+  df = subset(dta, grp == "A"),
+  .var = "rsp",
+  .ref_group = subset(dta, grp == "B"),
+  .in_ref_col = FALSE,
+  variables = list(strata = "strat"),
+  method = "cmh"
+)
+
+
+# With rtables pipelines.
+l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") \%>\%
+  test_proportion_diff(
+    vars = "rsp",
+    method = "cmh", variables = list(strata = "strat")
+  )
+
+build_table(l, df = dta)
 
 }

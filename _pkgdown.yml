@@ -31,8 +31,6 @@ reference:
       - s_dummy_sum
       - s_count_abnormal
       - s_count_abnormal_by_baseline
-      - s_count_cumulative
-      - s_count_nonmissing
       - s_summary
       - s_proportion_diff
 
@@ -53,7 +51,6 @@ reference:
       - arm
       - count_abnormal
       - count_abnormal_by_baseline
-      - count_tail
       - footnotes
       - footnotes<-
       - add_footnotes<-
@@ -183,6 +180,6 @@ reference:
       - labels_or_names
       - identical_without_attr
       - d_proportion_diff
+      - d_test_proportion_diff
       - check_diff_prop_ci
       - c_label_n
-

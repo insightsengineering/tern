@@ -25,7 +25,7 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  diff_ci_method = c("wald", "waldcc", "cmh", "ha", "newcombe")
+  method = c("wald", "waldcc", "cmh", "ha", "newcombe")
 )
 
 estimate_proportion_diff(lyt, vars, ...)
@@ -57,7 +57,7 @@ a statistics function.}
 
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
-\item{diff_ci_method}{(\code{string})\cr
+\item{method}{(\code{string})\cr
 the method used for the confidence interval estimation.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -162,7 +162,7 @@ s_proportion_diff(
   .ref_group = subset(dta, grp == "B"),
   .in_ref_col = FALSE,
   conf_level = 0.90,
-  diff_ci_method = "ha"
+  method = "ha"
 )
 
 
@@ -170,7 +170,7 @@ l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") \%>\%
   estimate_proportion_diff(
     vars = "rsp",
     conf_level = 0.90,
-    diff_ci_method = "ha"
+    method = "ha"
   )
 
 build_table(l, df = dta)

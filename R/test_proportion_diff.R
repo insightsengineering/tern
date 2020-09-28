@@ -103,10 +103,14 @@ prop_schouten <- function(tbl) {
   count_2_2 <- tbl[2, "TRUE"]
 
   t_schouten <- (count_1_1 + count_1_2 + count_2_1 + count_2_2 - 1) *
-    (abs(count_2_2 * count_1_1 - count_1_2 * count_2_1) -
-       0.5 * min(count_1_1 + count_1_2, count_2_1 + count_2_2))^2 /
-    ((count_1_1 + count_1_2) * (count_2_1 + count_2_2) *
-       (count_1_2 + count_2_2) * (count_1_1 + count_2_1))
+    (
+      abs(count_2_2 * count_1_1 - count_1_2 * count_2_1) -
+        0.5 * min(count_1_1 + count_1_2, count_2_1 + count_2_2)
+    )^2 /
+    (
+      (count_1_1 + count_1_2) * (count_2_1 + count_2_2) *
+        (count_1_2 + count_2_2) * (count_1_1 + count_2_1)
+    )
 
   1 - stats::pchisq(t_schouten, df = 1)
 }
@@ -125,4 +129,144 @@ prop_schouten <- function(tbl) {
 prop_fisher <- function(tbl) {
   assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   stats::fisher.test(tbl)$p.value
+}
+
+
+#' @describeIn prop_diff_test Statistics function which test the difference
+#'  between two proportions.
+#'
+#' @inheritParams argument_convention
+#' @param method (`string`)\cr
+#'   one of (`chisq`, `cmh`, `fisher`, `schouten`; specifies the test used
+#'   to calculate the p-value.
+#'
+#' @return Named `list` with a single item `pval` with an attribute `label`
+#'   describing the method used. The p-value tests the null hypothesis that
+#'   proportions in two groups are the same.
+#' @export
+#' @order 4
+#' @examples
+#'
+#' # Statistics function
+#' dta <- data.frame(
+#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
+#'   grp = factor(rep(c("A", "B"), each = 50)),
+#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+#' )
+#'
+#' s_test_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   variables = list(strata = "strat"),
+#'   method = "cmh"
+#' )
+#'
+s_test_proportion_diff <- function(df,
+                                   .var,
+                                   .ref_group,
+                                   .in_ref_col,
+                                   variables = list(strata = NULL),
+                                   method = c("chisq", "schouten", "fisher", "cmh")) {
+
+  method <- match.arg(method)
+  y <- list(pval = "")
+
+  if (!.in_ref_col) {
+
+    assert_that(
+      is_df_with_variables(df, list(rsp = .var)),
+      is_df_with_variables(.ref_group, list(rsp = .var))
+    )
+
+    rsp <- c(.ref_group[[.var]], df[[.var]])
+    grp <- factor(
+      rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
+      levels = c("ref", "Not-ref")
+    )
+
+    if (!is.null(variables$strata) || method == "cmh") {
+      strata <- variables$strata
+      assert_that(
+        !is.null(strata),
+        is_df_with_variables(df, list(rsp = strata)),
+        is_df_with_variables(.ref_group, list(rsp = strata))
+      )
+      strata <- c(interaction(.ref_group[[strata]]), interaction(df[[strata]]))
+    }
+
+    tbl <- switch(
+      method,
+      cmh = table(grp, rsp, strata),
+      table(grp, rsp)
+    )
+
+    y$pval <- switch(
+      method,
+      chisq = prop_chisq(tbl),
+      cmh = prop_cmh(tbl),
+      fisher = prop_fisher(tbl),
+      schouten = prop_schouten(tbl)
+    )
+  }
+
+  y$pval <- with_label(y$pval, d_test_proportion_diff(method))
+  y
+}
+
+
+#' Description of the Difference Test Between Two Proportions
+#'
+#' This is an auxiliary function that describes the analysis in
+#' `s_test_proportion_diff`.
+#'
+#' @inheritParams s_test_proportion_diff
+#' @return `string` describing the test from which the p-value is derived.
+#'
+d_test_proportion_diff <- function(method) {
+  assert_that(is.string(method))
+  meth_part <- switch(
+    method,
+    "schouten" = "Chi-Squared Test with Schouten Correction",
+    "chisq" = "Chi-Squared Test",
+    "cmh" = "Cochran-Mantel-Haenszel Test",
+    "fisher" = "Fisher's Exact Test",
+    stop(paste(method, "does not have a description"))
+  )
+  paste0("p-value (", meth_part, ")")
+}
+
+
+#' @describeIn prop_diff_test Layout creating function which can be used for
+#'   creating tables, which can take statistics function arguments and
+#'   additional format arguments.
+#' @param ... other arguments are passed to [s_test_proportion_diff()].
+#' @export
+#' @examples
+#'
+#' # With rtables pipelines.
+#' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+#'   test_proportion_diff(
+#'     vars = "rsp",
+#'     method = "cmh", variables = list(strata = "strat")
+#'   )
+#'
+#' build_table(l, df = dta)
+#'
+test_proportion_diff <- function(lyt,
+                                 vars,
+                                 ...) {
+  afun <- format_wrap_df(
+    sfun = s_test_proportion_diff,
+    formats =  c(pval = "x.xxxx | (<0.0001)"),
+    indent_mods = c(pval = 0L)
+  )
+
+  analyze(
+    lyt,
+    vars,
+    afun = afun,
+    extra_args = list(...)
+  )
 }

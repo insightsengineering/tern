@@ -98,7 +98,7 @@ test_that("`estimate_proportion_diff` is compatible with `rtables`", {
     estimate_proportion_diff(
       vars = "rsp",
       conf_level = 0.90,
-      diff_ci_method = "ha"
+      method = "ha"
     )
 
   result <- build_table(l, df = dta)
