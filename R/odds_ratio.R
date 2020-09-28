@@ -61,7 +61,7 @@ or_glm <- function(data, conf_level) {
     stats::confint.default(model_fit, level = conf_level)[-1, , drop = FALSE]
   )
 
-  values <- stats::setNames(c(or, or_ci), c("or", "or_lcl", "or_ucl"))
+  values <- stats::setNames(c(or, or_ci), c("est", "lcl", "ucl"))
 
   list(or_ci = values)
 
@@ -112,7 +112,43 @@ s_odds_ratio <- function(df,
 
   y$or_ci <- with_label(
     x = y$or_ci,
-    label = paste0("Odds Ratio (", 100 * conf_level, "%CI)")
+    label = paste0("Odds Ratio (", 100 * conf_level, "% CI)")
   )
   y
+}
+
+
+#' @describeIn abnormal Layout creating function which can be used for creating
+#'   tables, which can take statistics function arguments and additional format
+#'   arguments (see below).
+#'
+#' @inheritParams rtables::analyze
+#' @param ... arguments passed to `s_odds_ratio()`.
+#' @export
+#' @examples
+#'
+#' dta <- data.frame(
+#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
+#'   grp = factor(rep(c("A", "B"), each = 50))
+#' )
+#'
+#' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+#'   estimation_odds_ratio(vars = "rsp")
+#'
+#' build_table(l, df = dta)
+#'
+estimation_odds_ratio <- function(lyt,
+                                  vars,
+                                  ...) {
+
+  afun <- format_wrap_df(
+    sfun = s_odds_ratio,
+    formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
+    indent_mods = c(or_ci = 0L)
+  )
+
+  analyze(
+    lyt, vars, afun = afun,
+    extra_args = list(...)
+  )
 }

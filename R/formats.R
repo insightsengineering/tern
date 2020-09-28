@@ -32,3 +32,51 @@ format_fraction <- function(x, ...) {
   )
   return(result)
 }
+
+
+#' Formatting: XX as Formatting Function
+#'
+#' Translate a string where x and dots are interpreted as number place
+#' holders, and others as formatting elements.
+#'
+#' @param str (`string`)\cr template.
+#'
+#' @export
+#' @return A `rtables` formatting function.
+#' @examples
+#' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
+#'
+#' z <- format_xx("xx (xx.x)")
+#' sapply(test, z)
+#'
+#' z <- format_xx("xx.x - xx.x")
+#' sapply(test, z)
+#'
+#' z <- format_xx("xx.x, incl. xx.x% NE")
+#' sapply(test, z)
+#'
+format_xx <- function(str) {
+
+  # Find position in the string.
+  positions <- gregexpr(pattern = "x+\\.x+|x+", text = str, perl = TRUE)
+  x_positions <- regmatches(x = str, m = positions)[[1]]
+
+  # Roundings depends on the number of x behind [.].
+  roundings <- lapply(
+    X = x_positions,
+    function(x) {
+      y <- strsplit(split = "\\.", x = x)[[1]]
+      rounding <- function(x)
+        round(x, digits = ifelse(length(y) > 1, nchar(y[2]), 0))
+      return(rounding)
+    }
+  )
+
+  rtable_format <- function(x, output) {
+    values <- Map(y = x, fun = roundings, function(y, fun) fun(y))
+    regmatches(x = str, m = positions)[[1]] <- values
+    return(str)
+  }
+
+  return(rtable_format)
+}
