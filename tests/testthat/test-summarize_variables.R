@@ -1,9 +1,9 @@
 # Format wrapper for `s_summary`.
 afun_s_summary <- format_wrap_x(
   sfun = s_summary,
-  indent_mods = c(n = 0L, mean_sd = 0L, median = 0L, range = 0L, counts = 0L),
+  indent_mods = c(n = 0L, mean_sd = 0L, median = 0L, range = 0L, count_fraction = 0L),
   formats = c(
-    n = "xx", mean_sd = "xx.x (xx.x)", median = "xx.x", range = "xx.x - xx.x", counts = "xx.x (xx.x)"
+    n = "xx", mean_sd = "xx.x (xx.x)", median = "xx.x", range = "xx.x - xx.x", count_fraction = "xx.x (xx.x)"
   )
 )
 

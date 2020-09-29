@@ -1,7 +1,8 @@
 #' Summarize Variables
 #'
-#' We use the new S3 generic function [s_summary] to implement summaries for different `x` objects.
-#' This is used as Statistics Function in combination with the new Analyze Function [summarize_vars].
+#' We use the new S3 generic function [s_summary()] to implement summaries for
+#' different `x` objects. This is used as Statistics Function in combination
+#' with the new Analyze Function [summarize_vars()].
 #'
 #' @name summarize_variables
 #' @order 1
@@ -24,6 +25,7 @@ s_summary <- function(x,
    assert_that(is.flag(na.rm))
    UseMethod("s_summary", x)
 }
+
 #' @describeIn summarize_variables Method for numeric class. Note that,
 #'   if `x` is an empty vector, `NA` is returned. This is the expected
 #'   feature so as to return `rcell` content in `rtables` when the
@@ -199,7 +201,7 @@ s_summary.character <- function(x, ...) {
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_summary()`.
 #'
-#' @order 4
+#' @order 6
 #' @template formatting_arguments
 #'
 #' @export
@@ -246,6 +248,8 @@ s_summary.character <- function(x, ...) {
 #'
 summarize_vars <- function(lyt,
                            vars,
+                           var_labels = vars,
+                           nested = TRUE,
                            ...) {
   afun <- format_wrap_x(
     sfun = s_summary,
@@ -266,8 +270,11 @@ summarize_vars <- function(lyt,
   )
 
   analyze(
-    lyt, vars,
+    lyt = lyt,
+    vars = vars,
+    var_labels = var_labels,
     afun = afun,
+    nested = nested,
     extra_args = list(...),
     inclNAs = TRUE
   )

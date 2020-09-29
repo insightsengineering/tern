@@ -5,8 +5,8 @@
 \alias{s_summary}
 \alias{s_summary.numeric}
 \alias{s_summary.factor}
-\alias{summarize_vars}
 \alias{s_summary.character}
+\alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
 s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
@@ -22,9 +22,9 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
   ...
 )
 
-summarize_vars(lyt, vars, ...)
-
 \method{s_summary}{character}(x, ...)
+
+summarize_vars(lyt, vars, var_labels = vars, nested = TRUE, ...)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -46,6 +46,10 @@ this column across rows).}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{character for label.}
+
+\item{nested}{boolean, Add this as a new top-level split  (defining a new subtable directly under root). Defaults to \code{FALSE}}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items:
@@ -65,8 +69,9 @@ factor \code{x} relative to the denominator, or \code{NA} if the denominator is 
 }
 }
 \description{
-We use the new S3 generic function \link{s_summary} to implement summaries for different \code{x} objects.
-This is used as Statistics Function in combination with the new Analyze Function \link{summarize_vars}.
+We use the new S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for
+different \code{x} objects. This is used as Statistics Function in combination
+with the new Analyze Function \code{\link[=summarize_vars]{summarize_vars()}}.
 }
 \section{Functions}{
 \itemize{
@@ -84,14 +89,14 @@ be returned instead of \code{NaN}, the latter being standard behavior in R.
 if \code{x} is an empty factor, then still a list is returned for \code{counts} with one element
 per factor level. If there are no levels in \code{x}, the function fails.
 
+\item \code{s_summary.character}: Method for character class. This makes an automatic
+conversion to factor (with a warning) and then forwards to the method for factors.
+
 \item \code{summarize_vars}: Analyze Function to add a descriptive analyze
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
 return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
 \code{\link[=s_summary]{s_summary()}}, for instance \code{na.rm = FALSE} if missing data should be
 accounted for.
-
-\item \code{s_summary.character}: Method for character class. This makes an automatic
-conversion to factor (with a warning) and then forwards to the method for factors.
 }}
 
 \section{Formatting arguments}{
@@ -154,6 +159,11 @@ x <- factor(c("a", "a", "b", "c", "a"))
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
+# `s_summary.character`
+
+## Basic usage:
+s_summary(c("a", "a", "b", "c", "a"))
+
 
 # `summarize_vars()` in rtables pipelines
 
@@ -193,10 +203,5 @@ l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
 
 results <- build_table(l, df = dta_test)
 Viewer(results)
-
-# `s_summary.character`
-
-## Basic usage:
-s_summary(c("a", "a", "b", "c", "a"))
 
 }
