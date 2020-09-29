@@ -31,6 +31,9 @@ reference:
       - s_dummy_sum
       - s_count_abnormal
       - s_count_abnormal_by_baseline
+      - s_count_cumulative
+      - s_count_nonmissing
+      - s_summary
       - s_multinomial_response
       - s_odds_ratio
       - s_proportion
@@ -53,6 +56,8 @@ reference:
        - estimate_odds_ratio
        - estimate_multinomial_response
        - test_proportion_diff
+       - count_cumulative
+       - count_missed_doses
 
 
   - title: Analysis Helper Functions
@@ -61,6 +66,7 @@ reference:
       - arm
       - count_abnormal
       - count_abnormal_by_baseline
+      - h_count_cumulative
       - footnotes
       - footnotes<-
       - add_footnotes<-

@@ -1,0 +1,303 @@
+# Tests all variants of EXT01
+
+library(random.cdisc.data)
+library(dplyr)
+
+test_that("EXT01 default variant with numeric parameters is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adex <- radex(cached = TRUE) %>%
+    filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
+    select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
+    mutate(
+      PARAMCD = as.character(PARAMCD),
+      AVALC = ""
+    ) %>%
+    droplevels()
+  # Add new param tdurd for treatment duration.
+  set.seed(99)
+  tdurd <- adsl %>%
+    select(STUDYID, USUBJID, ARM) %>%
+    mutate(
+      PARAMCD = "TDURD",
+      PARAM = "Treatment duration (days)",
+      AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
+      AVALC = case_when(
+        0 <= AVAL & AVAL <= 30 ~ "0 - 30",
+        31 <= AVAL & AVAL <= 60 ~ "31 - 60",
+        61 <= AVAL & AVAL <= 90 ~ "61 - 90",
+        TRUE ~ ">= 91"
+      )
+    )
+  tdurd <- adex %>%
+    filter(PARAMCD == "TNDOSE") %>%
+    select(STUDYID, USUBJID) %>%
+    left_join(tdurd, by = c("STUDYID", "USUBJID"))
+
+  # Add new param tndosmis for missed doses.
+  tndosmis <- adsl %>%
+    select(STUDYID, USUBJID, ARM) %>%
+    mutate(
+      PARAMCD = "TNDOSMIS",
+      PARAM = "Total number of missed doses during study",
+      AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),
+      AVALC = ""
+    )
+  tndosmis <- adex %>%
+    filter(PARAMCD == "TNDOSE") %>%
+    select(STUDYID, USUBJID) %>%
+    left_join(tndosmis, by = c("STUDYID", "USUBJID"))
+  adex <- rbind(adex, tdurd, tndosmis)
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    split_rows_by("PARAM", split_fun = drop_split_levels) %>%
+    summarize_vars(vars = "AVAL") %>%
+    build_table(adex, col_counts = table(adsl$ARM))
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Total dose administered", "n", "Mean (SD)", "Median", "Min - Max",
+      "Total number of doses administered", "n", "Mean (SD)", "Median", "Min - Max",
+      "Treatment duration (days)", "n", "Mean (SD)", "Median", "Min - Max",
+      "Total number of missed doses during study", "n", "Mean (SD)", "Median", "Min - Max",
+      "A: Drug X", "(N=134)", "", "75", "6675.2 (1110.9)", "6720", "4800 - 9360",
+      "", "75", "7 (0)", "7", "7 - 7", "", "75", "74.3 (41.6)", "77", "5 - 149",
+      "", "75", "10.5 (5.9)", "10", "0 - 20",
+      "B: Placebo", "(N=134)", "", "67", "6505.1 (1249.3)", "6480", "4080 - 9360",
+      "", "67", "7 (0)", "7", "7 - 7", "", "67", "79 (43.1)", "80", "2 - 150",
+      "", "67", "10 (6.1)", "11", "0 - 19",
+      "C: Combination", "(N=132)", "", "75", "6982.4 (1272.5)", "7200", "4320 - 9360",
+      "", "75", "7 (0)", "7", "7 - 7", "", "75", "74.2 (39.5)", "78", "1 - 147",
+      "", "75", "9.5 (5.5)", "9", "0 - 20"
+    ),
+    .Dim = c(22L, 4L),
+    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("EXT01 variant: with both numeric and categorical parameters", {
+  adsl <- radsl(cached = TRUE)
+  adex <- radex(cached = TRUE) %>%
+    filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
+    select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
+    mutate(
+      PARAMCD = as.character(PARAMCD),
+      AVALC = ""
+    ) %>%
+    droplevels()
+  # Add new param tdurd for treatment duration.
+  set.seed(99)
+  tdurd <- adsl %>%
+    select(STUDYID, USUBJID, ARM) %>%
+    mutate(
+      PARAMCD = "TDURD",
+      PARAM = "Treatment duration (days)",
+      AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
+      AVALC = case_when(
+        0 <= AVAL & AVAL <= 30 ~ "0 - 30",
+        31 <= AVAL & AVAL <= 60 ~ "31 - 60",
+        61 <= AVAL & AVAL <= 90 ~ "61 - 90",
+        TRUE ~ ">= 91"
+      )
+    )
+  tdurd <- adex %>%
+    filter(PARAMCD == "TNDOSE") %>%
+    select(STUDYID, USUBJID) %>%
+    left_join(tdurd, by = c("STUDYID", "USUBJID"))
+
+  # Add new param tndosmis for missed doses.
+  tndosmis <- adsl %>%
+    select(STUDYID, USUBJID, ARM) %>%
+    mutate(
+      PARAMCD = "TNDOSMIS",
+      PARAM = "Total number of missed doses during study",
+      AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),
+      AVALC = ""
+    )
+  tndosmis <- adex %>%
+    filter(PARAMCD == "TNDOSE") %>%
+    select(STUDYID, USUBJID) %>%
+    left_join(tndosmis, by = c("STUDYID", "USUBJID"))
+  adex <- rbind(adex, tdurd, tndosmis)
+
+  # need to transpose data to wide when both numeric and categorical parameters
+  # are to be summarized
+  adex_avalc_wide <- adex %>%
+    filter(PARAMCD == "TDURD") %>%
+    select(STUDYID, USUBJID, PARAMCD, AVALC) %>%
+    tidyr::pivot_wider(
+      id_cols = c(STUDYID, USUBJID),
+      names_from = PARAMCD,
+      values_from = AVALC
+    ) %>%
+    mutate(
+      TDURDC = factor(TDURD, levels = c("0 - 30", "31 - 60", "61 - 90", ">= 91"))
+    ) %>%
+    select(-TDURD)
+  anl <- adex %>%
+    select(STUDYID, USUBJID, ARM, PARAMCD, AVAL) %>%
+    tidyr::pivot_wider(
+      id_cols = c(STUDYID, USUBJID, ARM),
+      names_from = PARAMCD,
+      values_from = AVAL) %>%
+    left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
+    var_relabel(
+      TDOSE = "Total dose administered",
+      TNDOSE = "Total number of doses administered",
+      TDURD = "Treatment duration (days)",
+      TNDOSMIS = "Total number of missed doses during study",
+      TDURDC = "Treatment duration (days)"
+    )
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    summarize_vars(
+      vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
+      var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+    ) %>%
+    build_table(anl, col_counts = table(adsl$ARM))
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Treatment duration (days)", "n", "Mean (SD)", "Median", "Min - Max",
+      "Treatment duration (days)", "n", "0 - 30", "31 - 60", "61 - 90", ">= 91",
+      "Total dose administered", "n", "Mean (SD)", "Median", "Min - Max",
+      "Total number of doses administered", "n", "Mean (SD)", "Median", "Min - Max",
+      "A: Drug X", "(N=134)", "", "75", "74.3 (41.6)", "77", "5 - 149",
+      "", "75", "12 (16%)", "18 (24%)", "19 (25.3%)", "26 (34.7%)",
+      "", "75", "6675.2 (1110.9)", "6720", "4800 - 9360",
+      "", "75", "7 (0)", "7", "7 - 7",
+      "B: Placebo", "(N=134)", "", "67", "79 (43.1)", "80", "2 - 150",
+      "", "67", "12 (17.9%)", "12 (17.9%)", "15 (22.4%)", "28 (41.8%)",
+      "", "67", "6505.1 (1249.3)", "6480", "4080 - 9360",
+      "", "67", "7 (0)", "7", "7 - 7",
+      "C: Combination", "(N=132)", "", "75", "74.2 (39.5)", "78", "1 - 147",
+      "", "75", "15 (20%)", "14 (18.7%)", "18 (24%)", "28 (37.3%)",
+      "", "75", "6982.4 (1272.5)", "7200", "4320 - 9360",
+      "", "75", "7 (0)", "7", "7 - 7"
+    ),
+    .Dim = c(23L, 4L),
+    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("EXT01 variant: with user specified categories for missed doses", {
+  adsl <- radsl(cached = TRUE)
+  adex <- radex(cached = TRUE) %>%
+    filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
+    select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
+    mutate(
+      PARAMCD = as.character(PARAMCD),
+      AVALC = ""
+    ) %>%
+    droplevels()
+  # Add new param tdurd for treatment duration.
+  set.seed(99)
+  tdurd <- adsl %>%
+    select(STUDYID, USUBJID, ARM) %>%
+    mutate(
+      PARAMCD = "TDURD",
+      PARAM = "Treatment duration (days)",
+      AVAL = sample(1:150, size = nrow(adsl), replace = TRUE),
+      AVALC = case_when(
+        0 <= AVAL & AVAL <= 30 ~ "0 - 30",
+        31 <= AVAL & AVAL <= 60 ~ "31 - 60",
+        61 <= AVAL & AVAL <= 90 ~ "61 - 90",
+        TRUE ~ ">= 91"
+      )
+    )
+  tdurd <- adex %>%
+    filter(PARAMCD == "TNDOSE") %>%
+    select(STUDYID, USUBJID) %>%
+    left_join(tdurd, by = c("STUDYID", "USUBJID"))
+
+  # Add new param tndosmis for missed doses.
+  tndosmis <- adsl %>%
+    select(STUDYID, USUBJID, ARM) %>%
+    mutate(
+      PARAMCD = "TNDOSMIS",
+      PARAM = "Total number of missed doses during study",
+      AVAL = sample(0:20, size = nrow(adsl), replace = TRUE),
+      AVALC = ""
+    )
+  tndosmis <- adex %>%
+    filter(PARAMCD == "TNDOSE") %>%
+    select(STUDYID, USUBJID) %>%
+    left_join(tndosmis, by = c("STUDYID", "USUBJID"))
+  adex <- rbind(adex, tdurd, tndosmis)
+
+  # need to transpose data to wide when both numeric and categorical parameters
+  # are to be summarized
+  adex_avalc_wide <- adex %>%
+    filter(PARAMCD == "TDURD") %>%
+    select(STUDYID, USUBJID, PARAMCD, AVALC) %>%
+    tidyr::pivot_wider(
+      id_cols = c(STUDYID, USUBJID),
+      names_from = PARAMCD,
+      values_from = AVALC
+    ) %>%
+    mutate(
+      TDURDC = factor(TDURD, levels = c("0 - 30", "31 - 60", "61 - 90", ">= 91"))
+    ) %>%
+    select(-TDURD)
+  anl <- adex %>%
+    select(STUDYID, USUBJID, ARM, PARAMCD, AVAL) %>%
+    tidyr::pivot_wider(
+      id_cols = c(STUDYID, USUBJID, ARM),
+      names_from = PARAMCD,
+      values_from = AVAL) %>%
+    left_join(adex_avalc_wide, by = c("STUDYID", "USUBJID")) %>%
+    var_relabel(
+      TDOSE = "Total dose administered",
+      TNDOSE = "Total number of doses administered",
+      TDURD = "Treatment duration (days)",
+      TNDOSMIS = "Total number of missed doses during study",
+      TDURDC = "Treatment duration (days)"
+    )
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    summarize_vars(
+      vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
+      var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
+    ) %>%
+    count_missed_doses(var = "TNDOSMIS", thresholds = c(1, 5, 10, 15)) %>%
+    build_table(anl, col_counts = table(adsl$ARM))
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Treatment duration (days)", "n", "Mean (SD)", "Median", "Min - Max",
+      "Treatment duration (days)", "n", "0 - 30", "31 - 60", "61 - 90", ">= 91",
+      "Total dose administered", "n", "Mean (SD)", "Median", "Min - Max",
+      "Total number of doses administered", "n", "Mean (SD)", "Median", "Min - Max",
+      "Missed Doses", "n", "  At least 1 missed dose", "  At least 5 missed doses",
+      "  At least 10 missed doses", "  At least 15 missed doses",
+      "A: Drug X", "(N=134)", "", "75", "74.3 (41.6)", "77", "5 - 149",
+      "", "75", "12 (16%)", "18 (24%)", "19 (25.3%)", "26 (34.7%)",
+      "", "75", "6675.2 (1110.9)", "6720", "4800 - 9360",
+      "", "75", "7 (0)", "7", "7 - 7",
+      "", "75", "74 (55.22%)", "59 (44.03%)", "41 (30.6%)", "26 (19.4%)",
+      "B: Placebo", "(N=134)", "", "67", "79 (43.1)", "80", "2 - 150",
+      "", "67", "12 (17.9%)", "12 (17.9%)", "15 (22.4%)", "28 (41.8%)",
+      "", "67", "6505.1 (1249.3)", "6480", "4080 - 9360",
+      "", "67", "7 (0)", "7", "7 - 7",
+      "", "67", "63 (47.01%)", "49 (36.57%)", "38 (28.36%)", "21 (15.67%)",
+      "C: Combination", "(N=132)", "", "75", "74.2 (39.5)", "78", "1 - 147",
+      "", "75", "15 (20%)", "14 (18.7%)", "18 (24%)", "28 (37.3%)",
+      "", "75", "6982.4 (1272.5)", "7200", "4320 - 9360",
+      "", "75", "7 (0)", "7", "7 - 7",
+      "", "75", "73 (55.3%)", "59 (44.7%)", "37 (28.03%)", "16 (12.12%)"
+    ),
+    .Dim = c(29L, 4L),
+    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+  )
+  expect_identical(result_matrix, expected_matrix)
+})

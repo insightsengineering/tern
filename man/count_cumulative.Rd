@@ -5,6 +5,7 @@
 \alias{h_count_cumulative}
 \alias{s_count_cumulative}
 \alias{s_count_nonmissing}
+\alias{count_missed_doses}
 \title{Cumulative Counts with Thresholds}
 \usage{
 h_count_cumulative(
@@ -26,6 +27,10 @@ s_count_cumulative(
 )
 
 s_count_nonmissing(x)
+
+count_cumulative(lyt, vars, var_labels = vars, show_labels = "visible", ...)
+
+count_missed_doses(lyt, var, thresholds, ...)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -39,27 +44,37 @@ count, default is \code{TRUE}.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{.N_col}{(\code{count})\cr denominator for percentage calculation.}
+\item{.N_col}{(\code{count})\cr denominator for fraction calculation.}
 
 \item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{character for label.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{var}{(\code{string})\cr variable name for missed doses.}
 }
 \value{
-a named vector of 2:
+A named vector of 2:
 \itemize{
 \item \code{count}: the count of values less than, less or equal to, greater than, or
 greater or equal to a threshold of user specification.
-\item \code{percent}: the percentage of the count.
+\item \code{fraction}: the fraction of the count.
 }
 
-a named list:
+A named list:
 \itemize{
-\item \code{count_percent}: a list with each \code{thresholds} value as a component, each component
-contains a vector for the count and percentage.
+\item \code{count_fraction}: a list with each \code{thresholds} value as a component, each component
+contains a vector for the count and fraction.
 }
 
-a list with named item:
+A list with named item:
 \itemize{
 \item \code{n}: the count of non-missing values.
 }
@@ -70,13 +85,22 @@ greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_count_cumulative}: Helper function to calculate count and percentage of
+\item \code{h_count_cumulative}: Helper function to calculate count and fraction of
 \code{x} values in the lower or upper tail given a threshold.
 
 \item \code{s_count_cumulative}: Statistics function that produces a named lists given a
 (\code{numeric}) vector of thresholds.
 
 \item \code{s_count_nonmissing}: Statistics function to count non-missing values.
+
+\item \code{count_cumulative}: Layout creating function which can be be used for creating
+summary tables for cumulative counts of a variable. The ellipsis (\code{...}) conveys
+arguments to \code{s_count_cumulative()}, for instance \code{lower_tail = FALSE} if upper tail
+should be accounted for.
+
+\item \code{count_missed_doses}: Layout creating function which can be be used for creating
+summary tables for summarizing missed doses given user-specified \code{thresholds}. This is
+an additional layer on top of \code{count_cumulative} specifically for missed doses.
 }}
 
 \section{Formatting arguments}{
@@ -105,4 +129,33 @@ s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALS
 set.seed(1)
 x <- c(sample(1:10, 10), NA)
 s_count_nonmissing(x)
+
+library(random.cdisc.data)
+ADSL <- radsl(cached = TRUE)
+split_cols_by(lyt = NULL, "ARM") \%>\%
+  add_colcounts() \%>\%
+  count_cumulative(
+    vars = "AGE",
+    thresholds = c(40, 60)
+  ) \%>\%
+  build_table(ADSL)
+
+# data processing to get wide data
+library(dplyr)
+ADSL <- radsl(cached = TRUE)
+ADEX <- radex(cached = TRUE)
+ANL <- ADEX \%>\%
+  distinct(STUDYID, USUBJID, ARM) \%>\%
+  mutate(
+    PARAMCD = "TNDOSMIS",
+    PARAM = "Total number of missed doses during study",
+    AVAL = sample(0:20, size = nrow(ADSL), replace = TRUE),
+    AVALC = ""
+  )
+N_per_arm = table(ADSL$ARM)
+split_cols_by(lyt = NULL, "ARM") \%>\%
+  add_colcounts() \%>\%
+  count_missed_doses(var = "AVAL", thresholds = c(1, 5, 10, 15)) \%>\%
+  build_table(ANL, col_counts = N_per_arm)
+
 }
