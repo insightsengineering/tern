@@ -35,6 +35,7 @@ reference:
       - s_odds_ratio
       - s_proportion
       - s_proportion_diff
+      - s_change_from_baseline
       - s_summary
       - s_test_proportion_diff
 
@@ -45,6 +46,7 @@ reference:
     contents:
        - dummy_sum
        - analyze_abnormal
+       - summarize_change
        - summarize_vars
        - estimate_proportion
        - estimate_proportion_diff
