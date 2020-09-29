@@ -118,7 +118,9 @@ s_summary.numeric <- function(x,
 #' @return If `x` is of class `factor` or converted from `character`, returns a list with
 #'   named items:
 #'   - `n`: the [length()] of `x`.
-#'   - `count_fraction`: a list with the number and proportion of cases for each level of the
+#'   - `count`: a list with the number of cases for each level of the
+#'      factor `x`
+#'   - `count_fraction`: similar to `count` but also includes the proportion of cases for each level of the
 #'      factor `x` relative to the denominator, or `NA` if the denominator is zero.
 #' @method s_summary factor
 #' @order 4
@@ -158,7 +160,7 @@ s_summary.factor <- function(x,
 
   y$n <- with_label(length(x), "n")
 
-  counts <- as.list(table(x, useNA = "ifany"))
+  y$count <- as.list(table(x, useNA = "ifany"))
   dn <- switch(
     denom,
     n = length(x),
@@ -166,7 +168,7 @@ s_summary.factor <- function(x,
     N_col = .N_col
   )
   y$count_fraction <- lapply(
-    counts,
+    y$count,
     function(x) {
       c(x, ifelse(dn > 0, x / dn, NA))
     }
@@ -178,7 +180,7 @@ s_summary.factor <- function(x,
 #' @describeIn summarize_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #' @method s_summary character
-#' @order 5
+#' @order 4
 #'
 #' @export
 #'
@@ -191,6 +193,58 @@ s_summary.factor <- function(x,
 s_summary.character <- function(x, ...) {
   y <- as_factor_keep_attributes(x)
   s_summary(y, ...)
+}
+
+#' @describeIn summarize_variables Method for logical class.
+#' @param denom (`string`)\cr choice of denominator for proportion:\cr
+#'   can be `n` (number of values in this row and column intersection), `N_row` (total
+#'   number of values in this row across columns), or `N_col` (total number of values in
+#'   this column across rows).
+#' @return If `x` is of class `logical`, returns a list with named items:
+#'   - `n`: the [length()] of `x` (possibly after removing `NA`s).
+#'   - `count_fraction`: count and proportion of `TRUE` in `x` relative to the denominator,
+#'      or `NA` if the denominator is zero. Note that `NA`s in `x` are never counted or leading
+#'      to `NA` here.
+#' @method s_summary logical
+#' @order 5
+#'
+#' @export
+#'
+#' @examples
+#' # `s_summary.logical`
+#'
+#' ## Basic usage:
+#' s_summary(c(TRUE, FALSE, TRUE, TRUE))
+#'
+#' ## Management of NA values.
+#' x <- c(NA, TRUE, FALSE)
+#' s_summary(x, na.rm = TRUE)
+#' s_summary(x, na.rm = FALSE)
+#'
+#' ## Different denominators.
+#' x <- c(TRUE, FALSE, TRUE, TRUE)
+#' s_summary(x, denom = "N_row", .N_row = 10L)
+#' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
+s_summary.logical <- function(x,
+                              na.rm = TRUE, # nolint
+                              denom = c("n", "N_row", "N_col"),
+                              .N_row, # nolint
+                              .N_col, # nolint
+                              ...) {
+  denom <- match.arg(denom)
+  if (na.rm) x <- x[!is.na(x)]
+  y <- list()
+  y$n <- length(x)
+  count <- sum(x, na.rm = TRUE)
+  dn <- switch(
+    denom,
+    n = length(x),
+    N_row = .N_row,
+    N_col = .N_col
+  )
+  y$count_fraction <- c(count, ifelse(dn > 0, count / dn, NA))
+  y
 }
 
 #' @describeIn summarize_variables Analyze Function to add a descriptive analyze
@@ -250,6 +304,8 @@ summarize_vars <- function(lyt,
                            vars,
                            var_labels = vars,
                            nested = TRUE,
+                           show_labels = "default",
+                           .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                            ...) {
   afun <- format_wrap_x(
     sfun = s_summary,
@@ -258,6 +314,7 @@ summarize_vars <- function(lyt,
       mean_sd = 0L,
       median = 0L,
       range = 0L,
+      count = 0L,
       count_fraction = 0L
     ),
     formats = c(
@@ -265,6 +322,7 @@ summarize_vars <- function(lyt,
       mean_sd = "xx.x (xx.x)",
       median = "xx.x",
       range = "xx.x - xx.x",
+      count = "xx",
       count_fraction = "xx (xx.x%)"
     )
   )
@@ -275,8 +333,9 @@ summarize_vars <- function(lyt,
     var_labels = var_labels,
     afun = afun,
     nested = nested,
-    extra_args = list(...),
-    inclNAs = TRUE
+    extra_args = c(list(.stats = .stats), list(...)),
+    inclNAs = TRUE,
+    show_labels = show_labels
   )
 
 }

@@ -6,6 +6,7 @@
 \alias{s_summary.numeric}
 \alias{s_summary.factor}
 \alias{s_summary.character}
+\alias{s_summary.logical}
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
@@ -24,14 +25,31 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
 
 \method{s_summary}{character}(x, ...)
 
-summarize_vars(lyt, vars, var_labels = vars, nested = TRUE, ...)
+\method{s_summary}{logical}(
+  x,
+  na.rm = TRUE,
+  denom = c("n", "N_row", "N_col"),
+  .N_row,
+  .N_col,
+  ...
+)
+
+summarize_vars(
+  lyt,
+  vars,
+  var_labels = vars,
+  nested = TRUE,
+  show_labels = "default",
+  .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+  ...
+)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{denom}{(\code{string})\cr choice of denominator for factor proportions:\cr
+\item{denom}{(\code{string})\cr choice of denominator for proportion:\cr
 can be \code{n} (number of values in this row and column intersection), \code{N_row} (total
 number of values in this row across columns), or \code{N_col} (total number of values in
 this column across rows).}
@@ -50,6 +68,10 @@ this column across rows).}
 \item{var_labels}{character for label.}
 
 \item{nested}{boolean, Add this as a new top-level split  (defining a new subtable directly under root). Defaults to \code{FALSE}}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{.stats}{statistics to select for the table.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items:
@@ -64,8 +86,18 @@ If \code{x} is of class \code{factor} or converted from \code{character}, return
 named items:
 \itemize{
 \item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
-\item \code{count_fraction}: a list with the number and proportion of cases for each level of the
+\item \code{count}: a list with the number of cases for each level of the
+factor \code{x}
+\item \code{count_fraction}: similar to \code{count} but also includes the proportion of cases for each level of the
 factor \code{x} relative to the denominator, or \code{NA} if the denominator is zero.
+}
+
+If \code{x} is of class \code{logical}, returns a list with named items:
+\itemize{
+\item \code{n}: the \code{\link[=length]{length()}} of \code{x} (possibly after removing \code{NA}s).
+\item \code{count_fraction}: count and proportion of \code{TRUE} in \code{x} relative to the denominator,
+or \code{NA} if the denominator is zero. Note that \code{NA}s in \code{x} are never counted or leading
+to \code{NA} here.
 }
 }
 \description{
@@ -91,6 +123,8 @@ per factor level. If there are no levels in \code{x}, the function fails.
 
 \item \code{s_summary.character}: Method for character class. This makes an automatic
 conversion to factor (with a warning) and then forwards to the method for factors.
+
+\item \code{s_summary.logical}: Method for logical class.
 
 \item \code{summarize_vars}: Analyze Function to add a descriptive analyze
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
@@ -163,6 +197,21 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 
 ## Basic usage:
 s_summary(c("a", "a", "b", "c", "a"))
+
+# `s_summary.logical`
+
+## Basic usage:
+s_summary(c(TRUE, FALSE, TRUE, TRUE))
+
+## Management of NA values.
+x <- c(NA, TRUE, FALSE)
+s_summary(x, na.rm = TRUE)
+s_summary(x, na.rm = FALSE)
+
+## Different denominators.
+x <- c(TRUE, FALSE, TRUE, TRUE)
+s_summary(x, denom = "N_row", .N_row = 10L)
+s_summary(x, denom = "N_col", .N_col = 20L)
 
 
 # `summarize_vars()` in rtables pipelines

@@ -1,13 +1,4 @@
-# Format wrapper for `s_summary`.
-afun_s_summary <- format_wrap_x(
-  sfun = s_summary,
-  indent_mods = c(n = 0L, mean_sd = 0L, median = 0L, range = 0L, count_fraction = 0L),
-  formats = c(
-    n = "xx", mean_sd = "xx.x (xx.x)", median = "xx.x", range = "xx.x - xx.x", count_fraction = "xx.x (xx.x)"
-  )
-)
-
-test_that("s_summary (+ afun wrapper) return NA for x length 0L.", {
+test_that("s_summary return NA for x length 0L", {
 
   x <- numeric()
   expected <-  list(
@@ -16,19 +7,16 @@ test_that("s_summary (+ afun wrapper) return NA for x length 0L.", {
   )
 
   expect_equivalent(s_summary(x), expected)
-  expect_equivalent(afun_s_summary(x), lapply(expected, rcell))
-
 })
 
 
-test_that("s_summary (+ afun wrapper) handles NA.", {
+test_that("s_summary handles NA", {
 
   x <- c(NA_real_, 1)
 
   # With `na.rm = TRUE`.
   expected <- list(n = 1, mean_sd = c(1, NA), median = 1, range = c(1, 1))
   expect_equivalent(s_summary(x), expected)
-  expect_equivalent(afun_s_summary(x), lapply(expected, rcell))
 
   # With `na.rm = FALSE`.
   expected <- list(
@@ -36,15 +24,10 @@ test_that("s_summary (+ afun wrapper) handles NA.", {
     median = NA_real_, range = c(NA_real_, NA_real_)
   )
   expect_equivalent(s_summary(x, na.rm = FALSE), expected)
-  expect_equivalent(
-    afun_s_summary(x, na.rm = FALSE),
-    lapply(expected, rcell)
-  )
-
 })
 
 
-test_that("s_summary (+ afun wrapper) returns right results.", {
+test_that("s_summary returns right results", {
 
   x <- c(NA_real_, 1, 2)
   expected <- list(
@@ -52,11 +35,6 @@ test_that("s_summary (+ afun wrapper) returns right results.", {
   )
 
   expect_equivalent(s_summary(x), expected, tolerance = .00001)
-  expect_equivalent(
-    afun_s_summary(x), lapply(expected, rcell),
-    tolerance = .00001
-  )
-
 })
 
 test_that("s_summary works with factors", {
@@ -66,6 +44,11 @@ test_that("s_summary works with factors", {
   result <- s_summary(x)
   expected <- list(
     n = with_label(9L, "n"),
+    count = list(
+      Female = 2L,
+      Male = 3L,
+      Unknown = 4L
+    ),
     count_fraction = list(
       Female = c(2, 2 / 9),
       Male = c(3, 3 / 9),
@@ -83,6 +66,11 @@ test_that("s_summary works with factors with NA values and correctly removes the
   result <- s_summary(x)
   expected <- list(
     n = with_label(9L, "n"),
+    count = list(
+      Female = 2L,
+      Male = 3L,
+      Unknown = 4L
+    ),
     count_fraction = list(
       Female = c(2, 2 / 9),
       Male = c(3, 3 / 9),
@@ -117,6 +105,11 @@ test_that("s_summary works with length 0 factors that have levels", {
   result <- s_summary(x)
   expected <- list(
     n = with_label(0L, "n"),
+    count = list(
+      a = 0L,
+      b = 0L,
+      c = 0L
+    ),
     count_fraction = list(
       a = c(0L, NA),
       b = c(0L, NA),
@@ -134,6 +127,11 @@ test_that("s_summary works with factors and different denominator choices", {
   result <- s_summary(x, denom = "N_row", .N_row = 20)
   expected <- list(
     n = with_label(9L, "n"),
+    count = list(
+      Female = 2L,
+      Male = 3L,
+      Unknown = 4L
+    ),
     count_fraction = list(
       Female = c(2, 2 / 20),
       Male = c(3, 3 / 20),
@@ -145,6 +143,11 @@ test_that("s_summary works with factors and different denominator choices", {
   result <- s_summary(x, denom = "N_col", .N_col = 30)
   expected <- list(
     n = with_label(9L, "n"),
+    count = list(
+      Female = 2L,
+      Male = 3L,
+      Unknown = 4L
+    ),
     count_fraction = list(
       Female = c(2, 2 / 30),
       Male = c(3, 3 / 30),
@@ -160,6 +163,42 @@ test_that("s_summary works with characters by converting to character", {
 
   result <- expect_warning(s_summary(x, denom = "N_row", .N_row = 20))
   expected <- s_summary(factor(x), denom = "N_row", .N_row = 20)
+
+  expect_identical(result, expected)
+})
+
+test_that("s_summary works with logical vectors", {
+  x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE)
+
+  result <- s_summary(x)
+  expected <- list(
+    n = 6L,
+    count_fraction = c(4, 4 / 6)
+  )
+
+  expect_identical(result, expected)
+})
+
+test_that("s_summary works with logical vectors and by default removes NA", {
+  x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, NA, NA)
+
+  result <- s_summary(x)
+  expected <- list(
+    n = 6L,
+    count_fraction = c(4, 4 / 6)
+  )
+
+  expect_identical(result, expected)
+})
+
+test_that("s_summary works with logical vectors and by if requested does not remove NA from n", {
+  x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, NA, NA)
+
+  result <- s_summary(x, na.rm = FALSE)
+  expected <- list(
+    n = 8L,
+    count_fraction = c(4, 4 / 8)
+  )
 
   expect_identical(result, expected)
 })
@@ -281,4 +320,22 @@ test_that("`summarize_vars` works with character input and gives the same result
   expected <- build_table(l, dta_factor)
 
   expect_identical(result, expected)
+})
+
+test_that("`summarize_vars` works with logical input", {
+
+  dta <- data.frame(
+    boo = c(TRUE, FALSE, FALSE, TRUE, TRUE)
+  )
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "boo") %>%
+    build_table(dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "n", "count_fraction", "all obs", "5", "3 (60%)"),
+    .Dim = 3:2
+  )
+
+  expect_identical(result_matrix, expected_matrix)
 })
