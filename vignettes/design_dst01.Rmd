@@ -1,0 +1,261 @@
+---
+title: "Design: Patient Disposition Table (DST01)"
+author: "Daniel Sabanes Bove"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of DST01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+```{r data, results = "asis", eval = TRUE}
+
+# This specific ADSL is currently not part of RCD.
+set.seed(1, kind = "Mersenne-Twister")
+
+library(dplyr)
+library(random.cdisc.data)
+library(assertthat)
+
+#nolint start
+adsl0 <- ex_adsl %>%
+  mutate(
+    COMPSTUD = sample(c('Y','N'), size=nrow(ex_adsl), replace = TRUE) %>% as.factor,
+    STUDONS = sample(
+      c('Alive: On Treatment', 'Alive: In Follow-up', NA), 
+      size = nrow(ex_adsl), 
+      replace = TRUE) %>% as.factor,
+    STDDRS = sample(c('Death', 'Lost To Follow-Up',
+                      'Protocol Violation', 'Withdrawal By Subject',
+                      'Other'),
+                    size=nrow(ex_adsl),
+                    replace = TRUE) %>% as.factor,
+    GOTTRT = ifelse(!is.na(ACTARMCD), 'Y', 'N') %>% as.factor,
+    DISTRTFL = sample(c('Y','N'),
+                      size=nrow(ex_adsl),
+                      replace = TRUE) %>% as.factor,
+    TRTDRS = sample(c('ADVERSE EVENT', 'PROGRESSIVE DISEASE',
+                      'PHYSICIAN DECISION', 'LACK OF EFFICACY',
+                      'OTHER'),
+                    size=nrow(ex_adsl),
+                    replace = TRUE) %>% as.factor,
+    STUDONS = case_when(COMPSTUD == 'N' ~ STUDONS),
+    STDDRS = case_when(COMPSTUD == 'N' & is.na(STUDONS) ~ STDDRS),
+    DISSTDFL = case_when(!is.na(STDDRS) ~ "Y"),
+    DISTRTFL = case_when(GOTTRT == 'Y' ~ DISTRTFL),
+    TRTDRS = case_when(DISTRTFL == 'Y' ~ TRTDRS),
+    DRSCAT = case_when(
+      TRTDRS %in% c('ADVERSE EVENT', 'PHYSICIAN DECISION') ~ "Safety",
+      !is.na(TRTDRS) ~ "Other"
+    )
+  ) %>% var_relabel(COMPSTUD = "Complete Study",
+                    STUDONS = "On-study Status",
+                    DISSTDFL = "Discontinued Study",
+                    STDDRS = "Reason for Study \r\nDiscontinuation",
+                    GOTTRT = "Received Treatment",
+                    DISTRTFL = "Discontinued Treatment",
+                    TRTDRS = "Reason for Treatment \r\nDiscontinuation",
+                    DRSCAT = "Subcategory for Treatment Discontinuation"
+  )
+#nolint end
+adsl0
+```
+
+## Variant 1: Simple Patient Disposition Table
+
+### Objective
+
+We want something like this:
+
+````markdown
+                                 A: Drug X             B: Placebo          C: Combination         All Patients 
+                                  (N=134)               (N=134)               (N=132)               (N=400)    
+---------------------------------------------------------------------------------------------------------------
+Completed study                 64 (47.76%)           64 (47.76%)           69 (52.27%)           197 (49.25%) 
+Discontinued study              24 (17.91%)           14 (10.45%)           20 (15.15%)            58 (14.5%)  
+  Death                          4 (2.99%)             2 (1.49%)             5 (3.79%)             11 (2.75%)  
+  Lost To Follow-Up              4 (2.99%)             3 (2.24%)             1 (0.76%)               8 (2%)    
+  Other                          3 (2.24%)             4 (2.99%)             4 (3.03%)             11 (2.75%)  
+  Protocol Violation             6 (4.48%)             2 (1.49%)             6 (4.55%)             14 (3.5%)   
+  Withdrawal By Subject          7 (5.22%)             3 (2.24%)             4 (3.03%)             14 (3.5%)   
+````
+
+
+
+### Design Proposition
+
+The final functions should make this workable:
+
+```{r target, eval = FALSE}
+basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+  count_values("COMPSTUD", values = "Y", var_labels = "Completed Study") %>%
+  split_rows_by("DISSTDFL", split_fun = keep_split_levels("Y")) %>%
+  summarize_row_groups(label_fstr = "Discontinued Study") %>%
+  summarize_rows("STDDRS") %>%
+  build_table(ADSL0)
+```
+
+### Function `count_value` that counts occurrences of specific values in a variable
+
+The only additional Analyze Function we need here is `count_values` that counts occurrences of 
+specific values in a variable. It depends on a generic function `s_count_value` that works with
+different default `value`s. The other arguments are inherited from `s_summary.logical` which will 
+be used as the workhorse inside (which is in turn very similar to `s_summary.factor`, so we might be 
+able to create some helper function that serves both of these `s_summary` methods).
+
+```{r s_summary.logical}
+s_summary.logical <- function(x, na.rm = TRUE, label = "TRUE", .N_col, .N_row,  #nolint
+                              denom = c("n", "N_row", "N_col")) {
+  denom <- match.arg(denom)
+  if (na.rm) x <- x[!is.na(x)]
+  y <- list()
+  y$n <- with_label(length(x), "n")
+  count <- sum(x)
+  dn <- switch(
+    denom,
+    n = length(x),
+    N_row = .N_row,
+    N_col = .N_col
+  )
+  y$count_fraction <- with_label(c(count, ifelse(dn > 0, count / dn, NA)), label)
+  y
+}
+```
+
+```{r s_count_value}
+s_count_values <- function(x, values, label = paste(values), na.rm = TRUE, 
+                           .N_col, .N_row, denom = c("n", "N_row", "N_col")) {
+  UseMethod("s_count_values", x)
+}
+
+s_count_values.factor <- function(x, values = "Y", ...) { #nolint
+  assert_that(
+    is.character(values),
+    all(values %in% levels(x))
+  )
+  s_count_values(as.character(x), values = values, ...)
+}
+
+s_count_values.character <- function(x, values = "Y", na.rm = TRUE, ...) {
+  assert_that(
+    is.character(values)
+  )
+  if (na.rm) x <- x[!is.na(x)]
+  is_in_values <- x %in% values
+  assert_that(
+    noNA(is_in_values)
+  )
+  s_summary(is_in_values, ...)
+}
+
+s_count_values(factor(c("N", "Y", NA, "Y")))
+s_count_values(factor(c("N", "Y", NA, "Y")), na.rm = FALSE)
+```
+
+### Analyze Function
+
+```{r count_values}
+count_values <- function(lyt, vars, ..., .stats = "count_fraction") {
+  afun <- format_wrap_x(
+    s_count_values, 
+    indent_mods = c(count_fraction = 0L),
+    formats = c(count_fraction = "xx (xx.xx%)")
+  )
+  analyze(
+    lyt, 
+    vars,
+    afun = afun,
+    extra_args = c(.stats = .stats, list(...)),
+    show_labels = "hidden"
+  )  
+}
+```
+
+### Test 
+
+```{r simple variant test}
+basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+  count_values("COMPSTUD", values = "Y", label = "Completed Study") %>%
+  split_rows_by("DISSTDFL", split_fun = keep_split_levels("Y")) %>%
+  summarize_row_groups(label_fstr = "Discontinued Study") %>%
+  summarize_vars("STDDRS", .stats = "count_fraction") %>%
+  build_table(adsl0)
+```
+
+## Variant 2: With grouping of reasons
+
+We want this:
+
+```markdown
+                                A: Drug X             B: Placebo          C: Combination         All Patients 
+                                  (N=134)               (N=134)               (N=132)               (N=400)    
+---------------------------------------------------------------------------------------------------------------
+Received treatment               134 (100%)            134 (100%)            132 (100%)            400 (100%)  
+Discontinued treatment          71 (52.99%)           62 (46.27%)           75 (56.82%)            208 (52%)   
+  Safety                        27 (20.15%)           27 (20.15%)            26 (19.7%)             80 (20%)   
+    ADVERSE EVENT                12 (8.96%)           14 (10.45%)           15 (11.36%)           41 (10.25%)  
+    PHYSICIAN DECISION          15 (11.19%)            13 (9.7%)             11 (8.33%)            39 (9.75%)  
+  Other                         44 (32.84%)           35 (26.12%)           49 (37.12%)            128 (32%)   
+    LACK OF EFFICACY             13 (9.7%)            19 (14.18%)           21 (15.91%)           53 (13.25%)  
+    OTHER                       15 (11.19%)            10 (7.46%)            12 (9.09%)            37 (9.25%)  
+    PROGRESSIVE DISEASE         16 (11.94%)            6 (4.48%)            16 (12.12%)            38 (9.5%) 
+```
+
+Let's try:
+
+```{r subgrouping}
+basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+  count_values("GOTTRT", values = "Y", label = "Received treatment") %>%
+  split_rows_by("DISTRTFL", split_fun = keep_split_levels("Y")) %>%
+  summarize_row_groups(label_fstr = "Discontinued treatment") %>%
+  split_rows_by("DRSCAT", split_fun = reorder_split_levels(c("Safety", "Other"))) %>%
+  summarize_row_groups() %>%
+  summarize_vars("TRTDRS", .stats = "count_fraction") %>%
+  build_table(adsl0) %>%
+  prune_table()
+```
+
+## Variant 3: Adding other optional rows
+
+Of course we can also add more `count_values` rows on top. 
+
+Note: Unfortunately, this currently does not work. However I think it should be possible in the future
+to do this with rtables. Let's put this on backlog for now and revisit later.
+
+```{r optional rows}
+basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+  count_values("COMPSTUD", values = "Y", label = "Completed Study") %>%
+  count_values("STUDONS", values = "Alive: In Follow-up", label = "Alive: In Follow-up") %>%
+  split_rows_by("DISSTDFL", split_fun = keep_split_levels("Y"), nested = FALSE) %>%
+  summarize_row_groups(label_fstr = "Discontinued Study") %>%
+  summarize_vars("STDDRS", .stats = "count_fraction") %>%
+  build_table(adsl0)
+```

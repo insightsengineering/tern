@@ -14,9 +14,9 @@ NULL
 #' @export
 #'
 #' @examples
-#' mysum(1:10)
+#' h_dummy_sum(1:10)
 #'
-mysum <- function(x) {
+h_dummy_sum <- function(x) {
   sum(x, na.rm = TRUE)
 }
 
@@ -31,7 +31,7 @@ mysum <- function(x) {
 #'
 s_dummy_sum <- function(x, .var = "x") {
   list(
-    sum = with_label(mysum(x), paste("Sum of", .var))
+    sum = with_label(h_dummy_sum(x), paste("Sum of", .var))
   )
 }
 

@@ -54,6 +54,7 @@ reference:
       - footnotes
       - footnotes<-
       - add_footnotes<-
+      - h_dummy_sum
       - or_glm
       - prop_chisq
       - prop_cmh

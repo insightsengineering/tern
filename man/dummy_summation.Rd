@@ -2,12 +2,12 @@
 % Please edit documentation in R/doc_example.R
 \name{dummy_summation}
 \alias{dummy_summation}
-\alias{mysum}
+\alias{h_dummy_sum}
 \alias{s_dummy_sum}
 \alias{dummy_sum}
 \title{Documentation Example for Helper, Statistics and Analyze Functions}
 \usage{
-mysum(x)
+h_dummy_sum(x)
 
 s_dummy_sum(x, .var = "x")
 
@@ -35,7 +35,7 @@ together.
 }
 \section{Functions}{
 \itemize{
-\item \code{mysum}: Helper Function which does the actual summation.
+\item \code{h_dummy_sum}: Helper Function which does the actual summation.
 
 \item \code{s_dummy_sum}: Statistics Function which sums the numbers, after removing \code{NA} values.
 
@@ -56,7 +56,7 @@ These additional formatting arguments can be passed to the layout creating funct
 }
 
 \examples{
-mysum(1:10)
+h_dummy_sum(1:10)
 
 s_dummy_sum(c(1, 2))
 
