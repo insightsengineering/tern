@@ -3,10 +3,12 @@
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
 
 * Counting patients with abnormal values post-baseline: `s_count_abnormal` and `analyze_abnormal`.
-* Summarize variables: S3 generic `s_summary` (with numeric, factor, character and logical methods), `summarize_vars`.
+* Summarize variables: S3 generic `s_summary` (with numeric, factor and character methods), `summarize_vars`.
 * Estimate difference in terms of responder proportions: `estimate_proportion_diff`, `s_proportion_diff`.
-* Estimate difference in terms of Odds Ratio: `s_odds_ratio`, `or_glm`.
-* Test the difference in responder proportions: `s_test_proportion_diff`, `prop_chisq`, `prop_cmh`, `prop_fisher`, `prop_schouten`.
+* Estimate difference in terms of Odds Ratio: `estimate_odds_ratio`, `s_odds_ratio`, `or_glm`.
+* Test the difference in responder proportions: `test_proportion_diff`, `s_test_proportion_diff`, `prop_chisq`, `prop_cmh`, `prop_fisher`, `prop_schouten`.
+* Estimate the responder proportion regarding the level of a factor: `s_multinomial_response`, `estimate_multinomial_response`.
+
 
 * issues with no news: 
 

@@ -4,11 +4,14 @@
 \alias{odds_ratio}
 \alias{or_glm}
 \alias{s_odds_ratio}
+\alias{estimate_odds_ratio}
 \title{Odds Ratio Estimation}
 \usage{
 or_glm(data, conf_level)
 
 s_odds_ratio(df, .var, .ref_group, .in_ref_col, conf_level = 0.95)
+
+estimate_odds_ratio(lyt, vars, ...)
 }
 \arguments{
 \item{data}{(\verb{data frame})\cr
@@ -25,6 +28,12 @@ a statistics function.}
 
 \item{.in_ref_col}{(\code{logical})\cr
 \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{...}{arguments passed to \code{s_odds_ratio()}.}
 }
 \description{
 Compares bivariate responses between two groups in terms of odds ratios
@@ -47,6 +56,10 @@ possible.
 
 \item \code{s_odds_ratio}: Statistics function which estimates the odds ratio
 between a treatment and a control.
+
+\item \code{estimate_odds_ratio}: Layout creating function which can be used for creating
+tables, which can take statistics function arguments and additional format
+arguments (see below).
 }}
 
 \section{Formatting arguments}{
@@ -83,5 +96,16 @@ s_odds_ratio(
   .ref_group = subset(dta, grp == "B"),
   .in_ref_col = FALSE
 )
+
+
+dta <- data.frame(
+  rsp = sample(c(TRUE, FALSE), 100, TRUE),
+  grp = factor(rep(c("A", "B"), each = 50))
+)
+
+l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") \%>\%
+  estimate_odds_ratio(vars = "rsp")
+
+build_table(l, df = dta)
 
 }

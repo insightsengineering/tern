@@ -118,7 +118,7 @@ s_odds_ratio <- function(df,
 }
 
 
-#' @describeIn abnormal Layout creating function which can be used for creating
+#' @describeIn odds_ratio Layout creating function which can be used for creating
 #'   tables, which can take statistics function arguments and additional format
 #'   arguments (see below).
 #'
@@ -133,13 +133,13 @@ s_odds_ratio <- function(df,
 #' )
 #'
 #' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-#'   estimation_odds_ratio(vars = "rsp")
+#'   estimate_odds_ratio(vars = "rsp")
 #'
 #' build_table(l, df = dta)
 #'
-estimation_odds_ratio <- function(lyt,
-                                  vars,
-                                  ...) {
+estimate_odds_ratio <- function(lyt,
+                                vars,
+                                ...) {
 
   afun <- format_wrap_df(
     sfun = s_odds_ratio,

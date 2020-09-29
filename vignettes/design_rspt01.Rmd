@@ -38,67 +38,6 @@ packageVersion("tern")
 packageVersion("rtables")
 ```
 
-From old tern `get_onco_rsp_label()` becomes `label_onco_rsp()`.
-
-```{r label_onco_rsp}
-#' Label oncology responses
-#'
-#' This is a convenience function for standard labeling of oncological
-#' responses
-#'
-#' @return Named \code{character} vector.
-#'
-#' @export
-#'
-#' @examples
-#' rsp <- c("CR", "NE", "PR")
-#'
-#' # Recode values with standard labels.
-#' rsp <- label_onco_rsp()[ match(rsp, names(get_onco_rsp_label()))  ]
-#'
-#' rsp <- factor(rsp, levels = get_onco_rsp_label())
-
-get_onco_rsp_label <- function() {
-
-  rsp_full_label <- c(
-    CR          = "Complete Response (CR)",
-    PR          = "Partial Response (PR)",
-    SD          = "Stable Disease (SD)",
-    `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
-    PD          = "Progressive Disease (PD)",
-    NE          = "Not Evaluable (NE)",
-    Missing     = "Missing",
-    `NE/Missing` = "Missing or unevaluable"
-  )
-  rsp_full_label
-}
-```
-
-```{r data, results = "asis", eval = TRUE}
-library(dplyr)
-library(random.cdisc.data)
-ADSL <- radsl(cached = TRUE)
-ADRS <- radrs(cached = TRUE)
-
-# Select a response parameter endpoint.
-ADRS_f <- ADRS %>% filter(PARAMCD == "INVET")
-
-# Recode multinomial response with standard oncology labels.
-levels(ADRS_f$AVALC) <- get_onco_rsp_label()[
-  match(levels(ADRS_f$AVALC), names(get_onco_rsp_label()))
-  ]
-
-# Response variable.
-ADRS_f <- ADRS_f %>%
-  select(ARMCD, AVALC, SEX) %>%
-  mutate(
-    is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)")
-  )
-# Outlook.
-knitr::kable(head(ADRS_f))
-```
-
-
 Execution
 =========
 
@@ -136,7 +75,6 @@ cat ../R/estimate_proportion.R
 
 Estimate proportion differences {.tabset}
 -----------------------------------------
-
 
 ### Application
 
@@ -240,12 +178,41 @@ Test proportion difference {.tabset}
 
 ### Application
 
+```{r}
+dta <- data.frame(
+  rsp = sample(c(TRUE, FALSE), 100, TRUE),
+  grp = factor(rep(c("A", "B"), each = 50)),
+  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+)
+
+s_test_proportion_diff(
+  df = subset(dta, grp == "A"),
+  .var = "rsp",
+  .ref_group = subset(dta, grp == "B"),
+  .in_ref_col = FALSE,
+  variables = list(strata = "strat"),
+  method = "cmh"
+)
+
+l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  test_proportion_diff(
+    vars = "rsp",
+    method = "cmh", variables = list(strata = "strat")
+  )
+
+build_table(l, df = dta)
+
+```
+
 ### Functions
 
 - `prop_chisq()`
 - `prop_cmh()`
 - `prop_schouten()`
 - `prop_fisher()`
+- `s_test_proportion_diff()`
+- `d_test_proportion_diff()`
+- `test_proportion_diff()`
 
 ```{r test_proportion_diff.R, engine='bash', comment=''}
 cat ../R/test_proportion_diff.R
@@ -256,10 +223,23 @@ Estimate Odds Ratio {.tabset}
 
 ### Application
 
+```{r}
+dta <- data.frame(
+  rsp = sample(c(TRUE, FALSE), 100, TRUE),
+  grp = factor(rep(c("A", "B"), each = 50))
+)
+
+l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  estimate_odds_ratio(vars = "rsp")
+
+build_table(l, df = dta)
+```
+
 ### Functions
 
 - `or_glm()`
 - `s_odds_ratio()`
+- `estimate_odds_ratio()`
 
 ```{r odds_ratio.R, engine='bash', comment=''}
 cat ../R/odds_ratio.R
@@ -344,198 +324,13 @@ as_html(build_table(lyt = lyt, df = ADRS_f))
 ```
 
 
-
-
-Test proportion diff
---------------------
-
-### Functions {.tabset}
-
-#### `d_test_proportion_diff`
-
-Not exported.
-
-```{r}
-#' Description of the Test Between Two Proportions
-#'
-#' This is an auxiliary function that describes the analysis in
-#  `s_test_proportion_diff`.
-#'
-#' @inheritParams s_test_proportion_diff
-#' @return String describing the test from which the p-value is derived.
-d_test_proportion_diff <- function(method) {
-  meth_part <- switch(
-    method,
-    "schouten" = "Chi-Squared Test with Schouten Correction",
-    "chisq" = "Chi-Squared Test",
-    "cmh" = "Cochran-Mantel-Haenszel Test",
-    "fisher" = "Fisher's Exact Test",
-    stop(paste(method, "does not have a description"))
-  )
-  paste0("p-value (", meth_part, ")")
-}
-```
-
-
-#### `s_test_proportion_diff` [PR 658](https://github.roche.com/NEST/tern/pull/658/)
-
-```{r}
-#' @describeIn prop_diff_test Statistics function which test the difference
-#'  between two proportions.
-#'
-#' @inheritParams argument_convention
-#' @param .ref_group The data corresponding to the reference group.
-#' @param .in_ref_col Logical to specify result in reference column.
-#' @param diff_ci_method The method used for the confidence interval estimation.
-#' @param method (`string`)\cr
-#'   one of (`chisq`, `cmh`, `fisher`, `schouten`; specifies the test used
-#'   to calculate the p-value.
-#'
-#' @return Named `list` with a single item `pval` with an attribute `label`
-#'   describing the method used. The p-value tests the null hypothesis that
-#'   proportions in two groups are the same.
-#' @export
-#' @examples
-#'
-#' dta <- data.frame(
-#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50)),
-#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' )
-#'
-#' s_test_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   variables = list(strata = "strat"),
-#'   method = "cmh"
-#' )
-#'
-s_test_proportion_diff <- function(df,
-                                   .var,
-                                   .ref_group,
-                                   .in_ref_col,
-                                   variables = list(strata = NULL),
-                                   method = c(
-                                     "schouten", "chisq", "cmh", "fisher"
-                                     )
-                                   ) {
-
-  method <- match.arg(method)
-  y <- list(pval = "")
-
-  if (!.in_ref_col) {
-
-    rsp <- c(.ref_group[[.var]], df[[.var]])
-    grp <- factor(
-      rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
-      levels = c("ref", "Not-ref")
-    )
-
-    if (!is.null(variables$strata)) {
-      strata <- variables$strata
-      strata <- c(interaction(.ref_group[[strata]]), interaction(df[[strata]]))
-    }
-
-    tbl <- if(method == "cmh")
-      table(grp, rsp, strata)
-    else
-      table(grp, rsp)
-
-    y$pval <- switch(
-      method,
-      chisq = prop_chisq(tbl),
-      cmh = prop_cmh(tbl),
-      fisher = prop_fisher(tbl),
-      schouten = prop_schouten(tbl)
-    )
-
-  }
-
-  y$pval <- with_label(y$pval, d_test_proportion_diff(method))
-  y
-}
-
-```
-
-#### `test_proportion_diff` [PR 658](https://github.roche.com/NEST/tern/pull/658/)
-
-```{r test_proportion_diff}
-#' @describeIn prop_diff_test Layout creating function which can be used for
-#'   creating tables, which can take statistics function arguments and
-#'   additional format arguments.
-#' @export
-#' @examples
-#'
-#' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-#'   test_proportion_diff(
-#'     vars = "rsp",
-#'     method = "fisher"
-#'   )
-#'
-#' build_table(l, df = dta)
-#'
-test_proportion_diff <- function(lyt,
-                                 vars,
-                                 ...) {
-
-  afun <- format_wrap_df(
-    sfun = s_test_proportion_diff,
-    formats =  c(pval = "x.xxxx | (<0.0001)"),
-    indent_mods = c(pval = 0L)
-  )
-
-  analyze(
-    lyt,
-    vars,
-    afun = afun,
-    extra_args = list(...)
-  )
-
-}
-```
-
-
-### Applications
-
-```{r}
-dta <- data.frame(
-  rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50)),
-  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-)
-
-d_test_proportion_diff
-s_test_proportion_diff(
-  df = subset(dta, grp == "A"),
-  .var = "rsp",
-  .ref_group = subset(dta, grp == "B"),
-  .in_ref_col = FALSE,
-  variables = list(strata = "strat"),
-  method = "cmh"
-)
-
-```
-
-```{r}
-l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-  test_proportion_diff(
-    vars = "rsp",
-    method = "fisher"
-  )
-
-build_table(l, df = dta)
-```
-
-
 Estimate odds ratio [PR 656](https://github.roche.com/NEST/tern/pull/656)
 -------------------
 
 ### Functions {.tabset}
 
 
-#### `estimation_odds_ratio` [PR 656](https://github.roche.com/NEST/tern/pull/656)
+#### `estimate_odds_ratio` [PR 656](https://github.roche.com/NEST/tern/pull/656)
 
 ```{r}
 #' @describeIn abnormal Layout creating function which can be used for creating
@@ -551,16 +346,16 @@ Estimate odds ratio [PR 656](https://github.roche.com/NEST/tern/pull/656)
 #' )
 #'
 #' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-#'   estimation_odds_ratio(vars = "rsp")
+#'   estimate_odds_ratio(vars = "rsp")
 #'
 #' build_table(l, df = dta)
 #'
 #' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-#'   estimation_odds_ratio(vars = "rsp", variables = list(strata = "strat"))
+#'   estimate_odds_ratio(vars = "rsp", variables = list(strata = "strat"))
 #'
 #' build_table(l, df = dta)
 #'
-estimation_odds_ratio <- function(lyt,
+estimate_odds_ratio <- function(lyt,
                                   vars,
                                   ...) {
 
@@ -609,12 +404,12 @@ dta <- data.frame(
 )
 
 l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-  estimation_odds_ratio(vars = "rsp")
+  estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
 
 l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-  estimation_odds_ratio(vars = "rsp")
+  estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
 

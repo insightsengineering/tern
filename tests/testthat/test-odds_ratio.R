@@ -52,7 +52,7 @@ test_that("s_odds_ratio estimates right OR and CI", {
   )
 
   result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "a") %>%
-    estimation_odds_ratio(vars = "rsp") %>%
+    estimate_odds_ratio(vars = "rsp") %>%
     build_table(df = data)
 
   result_matrix <- to_string_matrix(result)

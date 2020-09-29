@@ -31,8 +31,12 @@ reference:
       - s_dummy_sum
       - s_count_abnormal
       - s_count_abnormal_by_baseline
-      - s_summary
+      - s_multinomial_response
+      - s_odds_ratio
+      - s_proportion
       - s_proportion_diff
+      - s_summary
+      - s_test_proportion_diff
 
 
   - title: Analyze Functions
@@ -42,7 +46,11 @@ reference:
        - dummy_sum
        - analyze_abnormal
        - summarize_vars
+       - estimate_proportion
        - estimate_proportion_diff
+       - estimate_odds_ratio
+       - estimate_multinomial_response
+       - test_proportion_diff
 
 
   - title: Analysis Helper Functions
@@ -76,11 +84,8 @@ reference:
       - s_cox_multivariate
       - s_logistic_single
       - s_logistic_interaction
-      - s_proportion
       - s_adj_proportion_diff
-      - s_test_proportion_diff
       - s_ancova
-      - s_odds_ratio
       - s_mmrm
       - a_mean_sd
       - a_median
@@ -182,5 +187,7 @@ reference:
       - identical_without_attr
       - d_proportion_diff
       - d_test_proportion_diff
+      - d_onco_rsp_label
+      - h_prop_ci
       - check_diff_prop_ci
       - c_label_n
