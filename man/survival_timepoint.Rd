@@ -56,9 +56,9 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr vector of labels.}
 
-\item{.stats}{statistics to select for the table.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -69,7 +69,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 
 \item{conf_level}{confidence level for difference of two risk rates}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 }
 \value{
 The statistics are:

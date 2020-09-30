@@ -41,7 +41,7 @@ a statistics function.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{other arguments are ultimately conveyed to \code{\link[=s_multinomial_response]{s_multinomial_response()}}.}
 }

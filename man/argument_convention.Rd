@@ -48,11 +48,17 @@ a statistics function.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr vector of labels.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{.stats}{statistics to select for the table.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern}

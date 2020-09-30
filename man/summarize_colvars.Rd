@@ -13,7 +13,7 @@ summarize_colvars(
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{.stats}{statistics to select for the table.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{...}{arguments passed to \code{s_summary()}.}
 }

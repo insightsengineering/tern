@@ -34,9 +34,12 @@
 #' @param .N_col (`count`)\cr row-wise N (row group count) for the group of observations being analyzed
 #'   (i.e. with no column-based subsetting) that is passed by `rtables`.
 #' @param ... additional arguments for the lower level functions.
-#' @param var_labels character for label.
-#' @param show_labels label visibility: one of "default", "visible" and "hidden".
-#' @param .stats statistics to select for the table.
+#' @param var_labels (`character`)\cr vector of labels.
+#' @param show_labels (`string`)\cr label visibility: one of "default", "visible" and "hidden".
+#' @param .stats (`character`)\cr statistics to select for the table.
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels.
+#' @param .formats (named `character` or `list`)\cr formats for the statistics.
+#' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #'
 #' @name argument_convention
 #'
