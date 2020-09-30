@@ -50,6 +50,7 @@ reference:
        - dummy_sum
        - analyze_abnormal
        - summarize_change
+       - summarize_colvars
        - summarize_vars
        - estimate_proportion
        - estimate_proportion_diff
