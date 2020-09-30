@@ -303,350 +303,125 @@ or_clogit(data, conf_level = 0.95)
 ```
 
 
-Design Proposition
-==================
-
-The final functions should make this workable:
-
-```{r target, eval = FALSE}
-lyt <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = ref) %>%
-  add_colcounts %>%
-  estimate_proportion(
-    vars = "is_rsp",
-    conf_level = 0.9, prop_ci_method = "clopper-pearson"
-    ) %>%
-  estimate_proportion_diff(vars = "is_rsp", conf_level = 0.91) %>%
-  test_proportion_diff(vars = "is_rsp") %>%
-  estimate_odds_ratio(vars = "is_rsp") %>%
-  estimate_multinomial_response(var = "AVALC")
-
-as_html(build_table(lyt = lyt, df = ADRS_f))
-```
-
-
-Estimate odds ratio [PR 656](https://github.roche.com/NEST/tern/pull/656)
--------------------
-
-### Functions {.tabset}
-
-
-#### `estimate_odds_ratio` [PR 656](https://github.roche.com/NEST/tern/pull/656)
-
-```{r}
-#' @describeIn abnormal Layout creating function which can be used for creating
-#'   tables, which can take statistics function arguments and additional format
-#'   arguments (see below).
-#' @export
-#' @examples
-#'
-#' dta <- data.frame(
-#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50)),
-#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' )
-#'
-#' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-#'   estimate_odds_ratio(vars = "rsp")
-#'
-#' build_table(l, df = dta)
-#'
-#' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-#'   estimate_odds_ratio(vars = "rsp", variables = list(strata = "strat"))
-#'
-#' build_table(l, df = dta)
-#'
-estimate_odds_ratio <- function(lyt,
-                                  vars,
-                                  ...) {
-
-  afun <- format_wrap_df(
-    sfun = s_odds_ratio,
-    formats =  c(or_ci = function(x, output) {
-      x <- round(x, 2)
-      paste0(x[1], " (", x[2], " - ", x[3], ")")
-    }
-    ),
-    indent_mods = c(or_ci = 0L)
-  )
-
-  analyze(
-    lyt,
-    vars,
-    afun = afun,
-    extra_args = list(...)
-  )
-
-}
-
-```
+Estimate multinomial response
+-----------------------------
 
 ### Application
 
 ```{r}
-dta <- data.frame(
-  rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50)),
-  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+dta_test <- data.frame(
+  USUBJID = paste0("S", 1:12),
+  ARM     = rep(LETTERS[1:3], each = 4),
+  AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
 )
+dta_test$AVALC <- as.factor(c(
+  "Complete Response (CR)", "Partial Response (PR)"
+)[dta_test$AVAL + 1])
 
-s_odds_ratio(
-  df = subset(dta, grp == "A"),
-  .var = "rsp",
-  .ref_group = subset(dta, grp == "B"),
-  .in_ref_col = FALSE
-)
-```
-
-```{r}
-dta <- data.frame(
-  rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50))
-)
-
-l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-  estimate_odds_ratio(vars = "rsp")
-
-build_table(l, df = dta)
-
-l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
-  estimate_odds_ratio(vars = "rsp")
-
-build_table(l, df = dta)
-
-```
-
-
-Estimate multinomial response
------------------------------
-
-### Functions {.tabset}
-
-#### `d_onco_rsp_label`
-
-The function `d_onco_rsp_label()` is the renamed `get_onco_rsp_label()`:
-
-```{r d_onco_rsp_label}
-#' Standard oncology response
-#'
-#' Describe the oncology response.
-#'
-#' @return Named \code{character} vector.
-#'
-#' @export
-#'
-#' @examples
-#'
-#' rsp <- c("CR", "NE", "PR")
-#'
-#' # Recode values with standard labels.
-#' rsp <- d_onco_rsp_label()[match(rsp, names(get_onco_rsp_label()))]
-#'
-#' # Create factor.
-#' rsp <- factor(rsp, levels = get_onco_rsp_label())
-#'
-d_onco_rsp_label <- function() {
-
-  rsp_full_label <- c(
-    CR          = "Complete Response (CR)",
-    PR          = "Partial Response (PR)",
-    SD          = "Stable Disease (SD)",
-    `NON CR/PD` = "Non-CR or Non-PD (NON CR/PD)",
-    PD          = "Progressive Disease (PD)",
-    NE          = "Not Evaluable (NE)",
-    Missing     = "Missing",
-    `NE/Missing` = "Missing or unevaluable"
-  )
-  rsp_full_label
-}
-
-```
-
-#### `s_multinomial_response`
-
-#### `s_multinomial_response`
-
-```{r s_multinomial_response}
-library(assertthat)
-d_proportion <- tern:::d_proportion
-h_prop_ci <- function(rsp, n, x, n_total, method, conf_level, long = long) {
-  
-  z <- list()
-  z$n_prop <- with_label(x = c(n, n/n_total), label = as.character(unique(x)))
-  
-  prop_ci <- switch(
-    method,
-    "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
-    wilson = prop_wilson(rsp, conf_level),
-    wald = prop_wald(rsp, conf_level),
-    waldcc = prop_wald(rsp, conf_level, correct = TRUE),
-    "agresti-coull" = prop_agresti_coull(rsp, conf_level),
-    jeffreys = prop_jeffreys(rsp, conf_level)
-  )
-  
-  z$prop_ci <- with_label(
-    x = prop_ci,
-    label = d_proportion(conf_level, method, long = long)
-  )
-  
-  z
-  
-}
-#' @inheritParams argument_convention
-#' @inheritParams s_proportion estimate the proportion of outcomes per factor level.
-#'
-#' @describeIn multinomial_response statistics function estimating a
-#'   proportion per factor level along with its confidence interval for the level.
-#'
-#' @export
-#' @order 3
-#' @examples
-#'
-#' s_multinomial_response(c(0, 1, 0, 1), .N_col = 20)
-#'
-s_multinomial_response <- function(x,
-                                   conf_level = 0.95,
-                                   method = c(
-                                     "waldcc", "wald", "clopper-pearson",
-                                     "wilson", "agresti-coull", "jeffreys"
-                                   ),
-                                   long = FALSE) {
-  
-  method <- match.arg(method)
-  assert_that(
-    conf_level >= 0,
-    conf_level <= 1,
-    is.flag(long)
-  )
-  
-  n_total <- length(x)
-  x <- split(x, f = x)
-  n <- lapply(x, length)
-  rsp <- lapply(n, function(z) rep(c(TRUE, FALSE), c(z, n_total - z)))
-  
-  y <- mapply(
-    rsp = rsp, n = n, x = x, n_total = n_total, method = method,
-    conf_level = conf_level, long = long,
-    SIMPLIFY = FALSE, FUN = h_prop_ci
-  )
-  
-  tern:::flatten_list(y)
-  
-}
-```
-
-#### `estimate_multinomial_response`
-
-Problem:
-
-- Should we change the assertions behind `indent_mods` argument?
-    + If ` indent_mods = c(prop_ci = -1L)`, then
-    `Error: Elements 1 of sapply(indent_mods, is_nonnegative_count) are not true`.
-
-```{r}
-#' @inheritParams rtables::analyze
-#' @param ... other arguments are ultimately conveyed to [s_multinomial_response()].
-#' @export
-#' @describeIn multinomial_response used in a `rtables` pipeline.
-#' @order 4
-#' @template formatting_arguments
-#' @examples
-#' 
-#' dta_test <- data.frame(
-#'   USUBJID = paste0("S", 1:12),
-#'   ARM     = rep(LETTERS[1:3], each = 4),
-#'   AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
-#' )
-#' dta_test$AVALC <- as.factor(c(
-#'   "Complete Response (CR)", "Partial Response (PR)"
-#' )[dta_test$AVAL + 1])
-#'
-#' lyt <- split_cols_by(lyt = NULL, var = "ARM") %>%
-#'   estimate_multinomial_response(var = "AVALC")
-#'
-#' as_html(build_table(lyt = lyt, df = dta_test))
-#'
-estimate_multinomial_response <- function(lyt,
-                                          var,
-                                          vars = var,
-                                          ...) {
-
-  afun <- format_wrap_x(
-    sfun = s_multinomial_response,
-    formats =  c(n_prop = "xx (xx.xx%)", prop_ci = "(xx.xx, xx.xx)"),
-    indent_mods = c(n_prop = 0L, prop_ci = 0L)
-  )
-
-  analyze(
-    lyt,
-    vars,
-    afun = afun,
-    extra_args = list(...)
-  )
-
-}
-
-```
-
-### Application {.tabset .tabset-pills}
-
-```{r}
-library(dplyr)
-library(random.cdisc.data)
-ADSL <- radsl(cached = TRUE)
-ADRS <- radrs(cached = TRUE)
-
-# Select a response parameter endpoint.
-ADRS_f <- ADRS %>% filter(PARAMCD == "INVET")
-
-# Recode multinomial response with standard oncology labels.
-levels(ADRS_f$AVALC) <- d_onco_rsp_label()[
-  match(levels(ADRS_f$AVALC), names(d_onco_rsp_label()))
-  ]
-
-# Response variable.
-ADRS_f <- ADRS_f %>%
-  select(ARMCD, AVALC, SEX) %>%
-  mutate(is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)"))
-
-# Outlook.
-knitr::kable(head(ADRS_f))
-```
-
-```{r}
-x <- ADRS_f$AVALC[ADRS$ARMCD == "ARM A"]
-s_multinomial_response(x = x)
-```
-
-```{r}
-lyt <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
-  estimate_multinomial_response(var = "AVALC", .indent_mods = c(prop_ci = 2L))
-as_html(build_table(lyt = lyt, df = ADRS_f))
-```
-
-
-
-Combined layers
----------------
-
-Problem:
-
-- `estimate_multinomial_response()` involves an `analyze` a row split.
-  Because it is not possible to add a new split after an analyze, and
-  because `estimate_multinomial_response()` is presented in RSPT01 after
-  proportion estimation, proportion difference test and other, we need to find 
-  a work around to make `estimate_multinomial_response()` compatible with the
-  other layout creating functions. Maybe `rbind()`?
-  
-```{r}
-lyt <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
-  estimate_proportion(vars = "is_rsp") %>%
-  estimate_proportion_diff(vars = "is_rsp") %>%
-  test_proportion_diff(vars = "is_rsp") %>%
+lyt <- split_cols_by(lyt = NULL, var = "ARM") %>%
   estimate_multinomial_response(var = "AVALC")
 
-as_html(build_table(lyt = lyt, df = ADRS_f)) %>% Viewer
+build_table(lyt = lyt, df = dta_test)
 ```
 
+### Functions
+
+- `d_onco_rsp_label()`
+- `h_prop_ci()`
+- `s_multinomial_response()`
+- `estimate_multinomial_response()`
+
+```{r estimate_multinomial_rsp.R, engine='bash', comment=''}
+cat ../R/estimate_multinomial_rsp.R
+```
+
+Stacked layers
+==============
+
+```{r}
+# Preparation of the test case.
+library(dplyr)
+library(random.cdisc.data)
+adsl <- radsl(cached = TRUE)
+adrs <- radrs(cached = TRUE)
+
+# Select a response parameter endpoint.
+adrs <- adrs %>% filter(PARAMCD == "INVET")
+
+# Recode multinomial response with standard oncology labels.
+levels(adrs$AVALC) <- d_onco_rsp_label(levels(adrs$AVALC))
+
+# Response variable.
+adrs <- adrs %>%
+  select(ARMCD, AVALC, SEX, STRATA1, STRATA2) %>%
+  mutate(
+    is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)")
+  )
+
+l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  add_colcounts() %>%
+  estimate_proportion(vars = "is_rsp") %>%
+  estimate_proportion_diff(
+    vars = "is_rsp", show_labels = "visible",
+    var_labels = "Unstratified Analysis"
+  ) %>%
+  test_proportion_diff(vars = "is_rsp", method = "schouten") %>%
+  estimate_odds_ratio(vars = "is_rsp") %>%
+  estimate_multinomial_response(var = "AVALC")
+
+build_table(l, adrs) %>% as_html
+```
+
+Design Propositions
+===================
+
+Refactor of `prop_schouten`
+---------------------------
+
+```{r}
+library(testthat)
+library(assertthat)
+## Data
+A <- 20
+B <- 20
+set.seed(1)
+rsp <- c(
+  sample(c(TRUE, FALSE), size = A, prob = c(3/4, 1/4), replace = TRUE),
+  sample(c(TRUE, FALSE), size = A, prob = c(1/2, 1/2), replace = TRUE)
+)
+grp <- c(rep("A", A), rep("B", B))
+tbl <- table(grp, rsp)
+
+prop_schouten <- function(tbl) {
+
+  assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+
+  # Source: STREAM v2
+  #nolint start
+  # https://onlinelibrary.wiley.com/doi/epdf/10.1002/bimj.4710220305
+  #nolint end
+  tbl <- tbl[, c("TRUE", "FALSE")]
+
+  n <- sum(tbl)
+
+  ad <- diag(tbl)
+  bc <- diag(apply(tbl,2,rev))
+  ac <- tbl[,1]
+  bd <- tbl[,2]
+
+  n1 <- sum(tbl[1,])
+  n2 <- sum(tbl[2,])
+
+  t_schouten <- (n - 1) *
+    (abs(prod(ad) - prod(bc)) - 0.5 * min(n1, n2))^2 /
+    (n1 * n2 * sum(ac) * sum(bd))
+
+  1 - stats::pchisq(t_schouten, df = 1)
+}
+
+## Chi-Squared test + Schouten correction.
+expect_equal(prop_schouten(tbl), 0.08434269, tolerance = 1e-6)
+```
 
 References
 ==========

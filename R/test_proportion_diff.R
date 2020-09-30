@@ -82,6 +82,8 @@ prop_cmh <- function(ary) {
 
 #' @describeIn prop_diff_test performs the Chi-Squared test with Schouten
 #'   correction.
+#' @references \insertRef{Schouten1980}{tern}
+#' @importFrom Rdpack reprompt
 #' @export
 #' @order 2
 #' @examples
@@ -256,17 +258,19 @@ d_test_proportion_diff <- function(method) {
 #'
 test_proportion_diff <- function(lyt,
                                  vars,
+                                 show_labels = "hidden",
                                  ...) {
   afun <- format_wrap_df(
     sfun = s_test_proportion_diff,
     formats =  c(pval = "x.xxxx | (<0.0001)"),
-    indent_mods = c(pval = 0L)
+    indent_mods = c(pval = 2L)
   )
 
   analyze(
     lyt,
     vars,
     afun = afun,
-    extra_args = list(...)
+    extra_args = list(...),
+    show_labels = show_labels
   )
 }

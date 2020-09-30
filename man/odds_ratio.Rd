@@ -11,7 +11,7 @@ or_glm(data, conf_level)
 
 s_odds_ratio(df, .var, .ref_group, .in_ref_col, conf_level = 0.95)
 
-estimate_odds_ratio(lyt, vars, ...)
+estimate_odds_ratio(lyt, vars, show_labels = "hidden", ...)
 }
 \arguments{
 \item{data}{(\verb{data frame})\cr
@@ -32,6 +32,8 @@ a statistics function.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{arguments passed to \code{s_odds_ratio()}.}
 }

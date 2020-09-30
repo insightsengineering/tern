@@ -139,16 +139,18 @@ s_odds_ratio <- function(df,
 #'
 estimate_odds_ratio <- function(lyt,
                                 vars,
+                                show_labels = "hidden",
                                 ...) {
 
   afun <- format_wrap_df(
     sfun = s_odds_ratio,
     formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
-    indent_mods = c(or_ci = 0L)
+    indent_mods = c(or_ci = 2L)
   )
 
   analyze(
     lyt, vars, afun = afun,
-    extra_args = list(...)
+    extra_args = list(...),
+    show_labels = show_labels
   )
 }

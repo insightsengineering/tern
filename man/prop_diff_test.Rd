@@ -27,7 +27,7 @@ s_test_proportion_diff(
   method = c("chisq", "schouten", "fisher", "cmh")
 )
 
-test_proportion_diff(lyt, vars, ...)
+test_proportion_diff(lyt, vars, show_labels = "hidden", ...)
 }
 \arguments{
 \item{tbl}{(\code{matrix})\cr
@@ -57,6 +57,8 @@ to calculate the p-value.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
 }
@@ -167,4 +169,7 @@ l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") \%>\%
 
 build_table(l, df = dta)
 
+}
+\references{
+\insertRef{Schouten1980}{tern}
 }

@@ -74,8 +74,8 @@ test_that("s_proportion returns right result", {
 
   result <- s_proportion(c(1, 0, 1, 0))
   expected <- list(
-    n_prop = c(4, .5),
-    prop_ci = c(0, 1)
+    n_prop = c(2, .5),
+    prop_ci = c(0, 100)
     )
   expect_equal(expected, result, tolerance = 1e-4, check.attributes = FALSE)
 
@@ -91,9 +91,9 @@ test_that("`s_proportion` works with Jeffreys CI", {
     method = "jeffreys"
   )
   expected <- list(# according to SAS.
-    n_prop = c(6, 4 / 6),
+    n_prop = c(4, 4 / 6),
     prop_ci = with_label(
-      c(0.3408, 0.8957),
+      c(34.0802, 89.5730),
       label = "90% CI for Response Rates (Jeffreys)"
     )
   )
@@ -109,7 +109,7 @@ test_that("`s_proportion` works with Jeffreys CI", {
   expected <- list(# according to SAS.
     n_prop = c(4, 1),
     prop_ci = with_label(
-      x = c(0.5552, 1),
+      x = c(55.5237, 100),
       label = "95% CI for Response Rates (Jeffreys)"
     )
   )
@@ -127,9 +127,9 @@ test_that("`s_proportion` works with Agresti-Coull CI", {
     method = "agresti-coull"
   )
   expected <- list(# according to SAS.
-    n_prop = c(6, 4 / 6),
+    n_prop = c(4, 4 / 6),
     prop_ci = with_label(
-      c(0.3436, 0.8862),
+      c(34.3585, 88.6154),
       label = "90% CI for Response Rates (Agresti-Coull)"
     )
   )
@@ -145,7 +145,7 @@ test_that("`s_proportion` works with Agresti-Coull CI", {
   expected <- list(# according to SAS.
     n_prop = c(4, 1),
     prop_ci = with_label(
-      x = c(0.4540, 1),
+      x = c(45.4050, 100),
       label = "95% CI for Response Rates (Agresti-Coull)"
     )
   )

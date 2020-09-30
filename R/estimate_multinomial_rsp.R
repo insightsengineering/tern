@@ -84,7 +84,7 @@ h_prop_ci <- function(rsp,
   )
 
   y$prop_ci <- with_label(
-    x = prop_ci,
+    x = 100 * prop_ci,
     label = d_proportion(conf_level, method, long = long)
   )
 
@@ -160,6 +160,7 @@ s_multinomial_response <- function(x,
 estimate_multinomial_response <- function(lyt,
                                           var,
                                           vars = var,
+                                          show_labels = "hidden",
                                           ...) {
   afun <- format_wrap_x(
     sfun = s_multinomial_response,
@@ -171,6 +172,7 @@ estimate_multinomial_response <- function(lyt,
     lyt,
     vars,
     afun = afun,
-    extra_args = list(...)
+    extra_args = list(...),
+    show_labels = show_labels
   )
 }

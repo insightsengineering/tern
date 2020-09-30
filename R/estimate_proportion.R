@@ -187,7 +187,7 @@ s_proportion <- function(x,
   )
 
   rsp <- x
-  n <- length(rsp)
+  n <- sum(rsp)
   p_hat <- mean(rsp)
 
   prop_ci <- switch(
@@ -203,7 +203,7 @@ s_proportion <- function(x,
   list(
     "n_prop"  = with_label(c(n, p_hat), "Responders"),
     "prop_ci" = with_label(
-      x = prop_ci, label = d_proportion(conf_level, method, long = long)
+      x = 100 * prop_ci, label = d_proportion(conf_level, method, long = long)
     )
   )
 }
@@ -228,22 +228,21 @@ s_proportion <- function(x,
 #'
 estimate_proportion <- function(lyt,
                                 vars,
+                                show_labels = "hidden",
                                 ...) {
 
   afun <- format_wrap_x(
     s_proportion,
-    formats =  c(
-      n = "xx", prop = "xx.x%", n_prop = "xx (xx.xx%)",
-      prop_ci = "(xx.xx, xx.xx)"
-    ),
-    indent_mods =  c(n = 0L, prop = 0L, n_prop = 0L, prop_ci = 0L)
+    formats =  c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)"),
+    indent_mods =  c(n_prop = 0L, prop_ci = 0L)
   )
 
   analyze(
     lyt,
     vars,
     afun = afun,
-    extra_args = list(...)
+    extra_args = list(...),
+    show_labels = show_labels
   )
 }
 

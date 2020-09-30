@@ -14,7 +14,13 @@ s_multinomial_response(
   long = FALSE
 )
 
-estimate_multinomial_response(lyt, var, vars = var, ...)
+estimate_multinomial_response(
+  lyt,
+  var,
+  vars = var,
+  show_labels = "hidden",
+  ...
+)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -34,6 +40,8 @@ successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, 
 a statistics function.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{other arguments are ultimately conveyed to \code{\link[=s_multinomial_response]{s_multinomial_response()}}.}
 }

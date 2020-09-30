@@ -29,7 +29,7 @@ s_proportion(
   long = FALSE
 )
 
-estimate_proportion(lyt, vars, ...)
+estimate_proportion(lyt, vars, show_labels = "hidden", ...)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
@@ -51,6 +51,8 @@ successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{other arguments are ultimately conveyed to \code{\link[=s_proportion]{s_proportion()}}.}
 }

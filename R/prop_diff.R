@@ -4,6 +4,8 @@
 #' @param grp (`factor`)\cr
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
+#'
+#' @template formatting_arguments
 #' @name prop_difference
 #'
 NULL
@@ -295,7 +297,7 @@ s_proportion_diff <- function(df,
                               variables = list(strata = NULL),
                               conf_level = 0.95,
                               method = c(
-                                "wald", "waldcc", "cmh",
+                                "waldcc", "wald", "cmh",
                                 "ha", "newcombe"
                               )
 ) {
@@ -326,6 +328,9 @@ s_proportion_diff <- function(df,
       newcombe = prop_diff_nc(rsp, grp, conf_level),
       cmh = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
     )
+
+    y$diff <- y$diff * 100
+    y$diff_ci <- y$diff_ci * 100
 
   }
 
@@ -359,17 +364,21 @@ s_proportion_diff <- function(df,
 #'
 estimate_proportion_diff <- function(lyt,
                                      vars,
+                                     var_labels = vars,
+                                     show_labels = "hidden",
                                      ...) {
   afun <- format_wrap_df(
     sfun = s_proportion_diff,
-    formats =  c(diff = "xx.xx", diff_ci = "xx.xx - xx.xx"),
-    indent_mods = c(diff = 0L, diff_ci = 0L)
+    formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+    indent_mods = c(diff = 0L, diff_ci = 2L)
   )
 
   analyze(
     lyt,
     vars,
     afun = afun,
-    extra_args = list(...)
+    var_labels = var_labels,
+    extra_args = list(...),
+    show_labels = show_labels
   )
 }

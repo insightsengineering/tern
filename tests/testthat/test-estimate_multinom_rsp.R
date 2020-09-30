@@ -28,7 +28,7 @@ test_that("h_prop_ci returns right result", {
   expected <- list(
     n_prop = structure(c(4, 1), label = "Responders"),
     prop_ci = structure(
-      c(0.875,  1), label = "95% CI for Response Rates (Wald, with correction)"
+      c(87.5,  100), label = "95% CI for Response Rates (Wald, with correction)"
     )
   )
 
@@ -40,9 +40,9 @@ test_that("s_multinomial_response returns right result", {
 
   expected <- list(
     n_prop = structure(c(0, 0), label = "Complete Response (CR)"),
-    prop_ci = structure(c(0, 0.125), label = "95% CI (Wald, with correction)"),
+    prop_ci = structure(c(0, 12.5), label = "95% CI (Wald, with correction)"),
     n_prop = structure(c(4, 1), label = "Partial Response (PR)"),
-    prop_ci = structure(c(0.875, 1), label = "95% CI (Wald, with correction)")
+    prop_ci = structure(c(87.5, 100), label = "95% CI (Wald, with correction)")
   )
 
   expect_identical(result, expected)
@@ -59,9 +59,9 @@ test_that("estimate_multinomial_response returns right result", {
     c(
       "", "Complete Response (CR)", "95% CI (Wald, with correction)",
       "Partial Response (PR)", "95% CI (Wald, with correction)", "A",
-      "0 (0%)", "(0, 0.12)", "4 (100%)", "(0.88, 1)", "B", "2 (50%)",
-      "(0, 1)", "2 (50%)", "(0, 1)", "C", "4 (100%)", "(0.88, 1)",
-      "0 (0%)", "(0, 0.12)"
+      "0 (0%)", "(0, 12.5)", "4 (100%)", "(87.5, 100)", "B", "2 (50%)",
+      "(0, 100)", "2 (50%)", "(0, 100)", "C", "4 (100%)", "(87.5, 100)",
+      "0 (0%)", "(0, 12.5)"
     ),
     .Dim = 5:4
   )

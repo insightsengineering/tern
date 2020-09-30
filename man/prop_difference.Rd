@@ -25,10 +25,16 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("wald", "waldcc", "cmh", "ha", "newcombe")
+  method = c("waldcc", "wald", "cmh", "ha", "newcombe")
 )
 
-estimate_proportion_diff(lyt, vars, ...)
+estimate_proportion_diff(
+  lyt,
+  vars,
+  var_labels = vars,
+  show_labels = "hidden",
+  ...
+)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
@@ -64,6 +70,10 @@ the method used for the confidence interval estimation.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{var_labels}{character for label.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
 \item{...}{arguments passed to \code{s_proportion_diff()}.}
 }
 \description{
@@ -96,6 +106,17 @@ estimations, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
 \code{s_proportion_diff()}, for instance \code{na.rm = FALSE} if missing data
 should be accounted for.
 }}
+
+\section{Formatting arguments}{
+
+These additional formatting arguments can be passed to the layout creating function:
+\describe{
+\item{.stats}{(\code{character})\cr names of the statistics to use}
+\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
+\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
+\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
+}
+}
 
 \examples{
 

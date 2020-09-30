@@ -104,8 +104,8 @@ test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   result <- build_table(l, df = dta)
   expected <- structure(
     c(
-      "", "Difference in Response rate (%)", "90% CI (Anderson-Hauck)",
-      "B", "", "", "A", "0.25", "-0.92 - 1"
+      "", "Difference in Response rate (%)", "  90% CI (Anderson-Hauck)",
+      "B", "", "", "A", "25", "(-92, 100)"
     ),
     .Dim = c(3L, 3L)
   )
