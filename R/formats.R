@@ -47,6 +47,40 @@ format_fraction <- function(x, ...) {
   return(result)
 }
 
+#' Formatting Count and Fraction
+#'
+#' Formats a count together with fraction with special consideration when count is `0`.
+#'
+#' @param x (`integer`)\cr vector of length 2, count and fraction.
+#' @param ... required for rtables interface.
+#' @importFrom rlang is_integerish
+#' @return a string in the format `count (fraction %)`. If `count` is 0 the format is `0`.
+#'
+#' @family formatting functions
+#' @export
+#'
+#' @examples
+#' format_count_fraction(x = c(2, 0.6667))
+#' format_count_fraction(x = c(0, 0))
+#'
+format_count_fraction <- function(x, ...) {
+
+  attr(x, "label") <- NULL
+
+  assert_that(
+    is.vector(x),
+    rlang::is_integerish(x[1]),
+    is_proportion(x[2], include_boundaries = TRUE)
+  )
+
+  result <- if (x[1] == 0){
+    "0"
+  } else {
+    paste0(x[1], " (", round(x[2] * 100, 1), "%)")
+  }
+
+  return(result)
+}
 
 #' Formatting: XX as Formatting Function
 #'

@@ -5,6 +5,7 @@
 #' @param x object to test
 #' @param df supposed data frame to test
 #' @param variables supposed variables list to test
+#' @param include_boundaries (`logical`)\cr whether to include boundaries in `is_proportion`
 #' @param ... a collection of objects to test.
 #' @return `flag` whether the assertion holds (`TRUE` or `FALSE`). When used inside
 #'   [assertthat::assert_that()] produces a meaningful error message.
@@ -120,9 +121,15 @@ on_failure(is_equal_length) <- function(call, env) {
 #' # Check whether `x` is between 0 and 1.
 #' is_proportion(x = 0.3)
 #' is_proportion(x = 1.3)
-is_proportion <- function(x) {
-  is_numeric_single(x) &&
-    x > 0 && x < 1
+#' is_proportion(x = 0, include_boundaries = TRUE)
+is_proportion <- function(x, include_boundaries = FALSE) {
+  if (include_boundaries) {
+    is_numeric_single(x) &&
+      x >= 0 && x <= 1
+  } else {
+    is_numeric_single(x) &&
+      x > 0 && x < 1
+  }
 }
 on_failure(is_proportion) <- function(call, env) {
   paste(deparse(call$x), "is not a proportion: number between 0 and 1")
@@ -145,19 +152,4 @@ is_valid_factor <- function(x) {
 }
 on_failure(is_valid_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a valid factor, please check the factor levels (no empty strings allowed)")
-}
-
-#' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
-#' @export
-#' @examples
-#'
-#' # Check whether `x` is between 0 and 1.
-#' is_proportion(x = 0.3)
-#' is_proportion(x = 1)
-is_proportion <- function(x) {
-    is.number(x) &&
-    x > 0 && x < 1
-}
-on_failure(is_proportion) <- function(call, env) {
-  paste(deparse(call$x), "is not a proportion: number between 0 and 1")
 }

@@ -118,7 +118,7 @@ test_that("count_cumulative works with default arguments", {
     c(
       "", "a", "  <= 3", "  <= 7",
       "A", "", "2 (40%)", "4 (80%)",
-      "B", "", "1 (16.67%)", "3 (50%)"
+      "B", "", "1 (16.7%)", "3 (50%)"
     ),
     .Dim = 4:3
   )
@@ -146,7 +146,7 @@ test_that("count_cumulative works with customized arguments", {
     c(
       "", "a", "  > 3", "  > 7",
       "A", "", "3 (60%)", "1 (20%)",
-      "B", "", "4 (66.67%)", "2 (33.33%)"
+      "B", "", "4 (66.7%)", "2 (33.3%)"
     ),
     .Dim = 4:3
   )
@@ -171,7 +171,7 @@ test_that("count_missed_doses works with default arguments", {
     c(
       "", "Missed Doses", "n", "  At least 3 missed doses", "  At least 7 missed doses",
       "A", "", "5", "3 (60%)", "2 (40%)",
-      "B", "", "5", "5 (83.33%)", "2 (33.33%)"
+      "B", "", "5", "5 (83.3%)", "2 (33.3%)"
     ),
     .Dim = c(5L, 3L)
   )

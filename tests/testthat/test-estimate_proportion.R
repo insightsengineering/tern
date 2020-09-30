@@ -76,7 +76,7 @@ test_that("s_proportion returns right result", {
   expected <- list(
     n_prop = c(2, .5),
     prop_ci = c(0, 100)
-    )
+  )
   expect_equal(expected, result, tolerance = 1e-4, check.attributes = FALSE)
 
 })

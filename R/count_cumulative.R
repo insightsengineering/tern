@@ -148,7 +148,7 @@ count_cumulative <- function(lyt,
   a_count_cumulative <- format_wrap_x(
     s_count_cumulative,
     indent_mods = c(count_fraction = 2L),
-    formats = c(count_fraction = "xx (xx.xx%)")
+    formats = c(count_fraction = format_count_fraction)
   )
   analyze(
     lyt,
