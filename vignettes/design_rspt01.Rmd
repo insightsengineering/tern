@@ -14,7 +14,7 @@ vignette: >
   %\VignetteIndexEntry{design_rspt01}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: ../inst/ref/references.bib
+bibliography: ../inst/REFERENCES.bib
 
 ---
 
@@ -375,7 +375,7 @@ build_table(l, adrs) %>% as_html
 Design Propositions
 ===================
 
-Refactor of `prop_schouten`
+Refactor of `prop_schouten` [@Schouten1980]
 ---------------------------
 
 ```{r}
