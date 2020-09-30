@@ -92,27 +92,22 @@ prop_cmh <- function(ary) {
 #' prop_schouten(tbl)
 #'
 prop_schouten <- function(tbl) {
-
   assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
 
-  # Source: STREAM v2
-  #nolint start
-  # https://github.roche.com/MDIS/stream2/blob/82c6c54ea6c61d11746af3b413ad6b1b213096cd/app/macro/str_tlg_method_resp.sas#L1623
-  #nolint end
-  count_1_1 <- tbl[1, "FALSE"]
-  count_1_2 <- tbl[1, "TRUE"]
-  count_2_1 <- tbl[2, "FALSE"]
-  count_2_2 <- tbl[2, "TRUE"]
+  tbl <- tbl[, c("TRUE", "FALSE")]
 
-  t_schouten <- (count_1_1 + count_1_2 + count_2_1 + count_2_2 - 1) *
-    (
-      abs(count_2_2 * count_1_1 - count_1_2 * count_2_1) -
-        0.5 * min(count_1_1 + count_1_2, count_2_1 + count_2_2)
-    )^2 /
-    (
-      (count_1_1 + count_1_2) * (count_2_1 + count_2_2) *
-        (count_1_2 + count_2_2) * (count_1_1 + count_2_1)
-    )
+  n <- sum(tbl)
+  n1 <- sum(tbl[1, ])
+  n2 <- sum(tbl[2, ])
+
+  ad <- diag(tbl)
+  bc <- diag(apply(tbl, 2, rev))
+  ac <- tbl[, 1]
+  bd <- tbl[, 2]
+
+  t_schouten <- (n - 1) *
+    (abs(prod(ad) - prod(bc)) - 0.5 * min(n1, n2))^2 /
+    (n1 * n2 * sum(ac) * sum(bd))
 
   1 - stats::pchisq(t_schouten, df = 1)
 }
