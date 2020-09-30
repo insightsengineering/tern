@@ -1,7 +1,7 @@
 
 test_that("prop_chisq returns right result", {
 
-  set.seed(1, kind = "Wichmann-Hill")
+  set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
     sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
     sample(c(TRUE, FALSE), size = 20, prob = c(1 / 2, 1 / 2), replace = TRUE)
@@ -10,28 +10,28 @@ test_that("prop_chisq returns right result", {
   tbl <- table(grp, rsp)
 
   result <- prop_chisq(tbl)
-  expected <- 0.0015
+  expected <- 0.0565
   expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 
 })
 
 test_that("prop_cmh returns right result", {
 
-  set.seed(1, kind = "Wichmann-Hill")
+  set.seed(1, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- factor(rep(c("A", "B"), each = 50))
   strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   tbl <- table(grp, rsp, strata)
 
   result <- prop_cmh(tbl)
-  expected <- 0.6613
+  expected <- 0.6477
   expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 
 })
 
 test_that("prop_fisher returns right result", {
 
-  set.seed(1, kind = "Wichmann-Hill")
+  set.seed(1, kind = "Mersenne-Twister")
   rsp <- c(
     sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
     sample(c(TRUE, FALSE), size = 20, prob = c(1 / 2, 1 / 2), replace = TRUE)
@@ -40,7 +40,7 @@ test_that("prop_fisher returns right result", {
   tbl <- table(grp, rsp)
 
   result <- prop_fisher(tbl)
-  expected <- 0.0036
+  expected <- 0.1110
   expect_equal(result, expected, tolerance = 1e-4, check.attributes = FALSE)
 
 })
@@ -85,7 +85,7 @@ test_that("prop_schouten returns right result", {
 
 test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
 
-  set.seed(194, kind = "Wichmann-Hill")
+  set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
     grp = factor(rep(c("A", "B"), each = 50)),
@@ -107,13 +107,13 @@ test_that("s_test_proportion_diff and d_test_proportion_diff return right result
 
   expected <- list(
     d = "p-value (Cochran-Mantel-Haenszel Test)",
-    s = list(pval = with_label(0.18876, result$d))
+    s = list(pval = with_label(0.6477, result$d))
   )
   expect_equal(result, expected, tolerance = 1e-4)
 })
 
 test_that("test_proportion_diff returns right result", {
-  set.seed(376, kind = "Wichmann-Hill")
+  set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
     grp = factor(rep(c("A", "B"), each = 50)),
@@ -130,7 +130,7 @@ test_that("test_proportion_diff returns right result", {
   expected_matrix <- structure(
     c(
       "", "  p-value (Cochran-Mantel-Haenszel Test)", "B",
-      "", "A", "0.3415"
+      "", "A", "0.6477"
     ), .Dim = 2:3
   )
   expect_identical(result_matrix, expected_matrix)
