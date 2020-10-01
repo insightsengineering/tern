@@ -22,11 +22,6 @@ This Analyze Function uses the new S3 generic function \code{\link[=s_summary]{s
 different variables that are arranged in columns.
 Additional standard formatting arguments are available.
 }
-\note{
-Currently a warning is thrown when building the table. This will be fixed in an upcoming
-new rtables version. Similarly, it is not yet possible to select statistics with \code{.stats}, which
-leads to an error.
-}
 \section{Formatting arguments}{
 
 These additional formatting arguments can be passed to the layout creating function:
@@ -50,35 +45,32 @@ dta_test <- data.frame(
 )
 
 ## Default output within a `rtables` pipeline.
-l <- basic_table() \%>\%
+basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("AVISIT") \%>\%
   split_cols_by_multivar(vars = c("AVAL", "CHG")) \%>\%
-  summarize_colvars()
-tab <- testthat::expect_warning(build_table(l, dta_test))
-tab
+  summarize_colvars() \%>\%
+  build_table(dta_test)
 
-## Selection of statistics does not work yet, but formats and labels do.
-l <- basic_table() \%>\%
+## Selection of statistics, formats and labels also work.
+basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("AVISIT") \%>\%
   split_cols_by_multivar(vars = c("AVAL", "CHG")) \%>\%
   summarize_colvars(
-    # .stats = c("n", "mean_sd")  # not possible yet
+    .stats = c("n", "mean_sd"),
     .formats = c("mean_sd" = "xx.x, xx.x"),
     .labels = c(n = "n", mean_sd = "Mean, SD")
-  )
-tab <- testthat::expect_warning(build_table(l, dta_test))
-tab
+  ) \%>\%
+  build_table(dta_test)
 
 ## Use arguments interpreted by `s_summary`.
-l <- basic_table() \%>\%
+basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("AVISIT") \%>\%
   split_cols_by_multivar(vars = c("AVAL", "CHG")) \%>\%
-  summarize_colvars(na.rm = FALSE)
-tab <- testthat::expect_warning(build_table(l, dta_test))
-tab
+  summarize_colvars(na.rm = FALSE) \%>\%
+  build_table(dta_test)
 
 }
 \seealso{

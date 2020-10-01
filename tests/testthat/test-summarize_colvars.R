@@ -39,7 +39,7 @@ test_that("summarize_colvars works as expected without column split and default 
   expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("summarize_colvars works as expected with column split but warns currently", {
+test_that("summarize_colvars works as expected with column split", {
   dta <- get_dta()
 
   l <- basic_table() %>%
@@ -48,7 +48,7 @@ test_that("summarize_colvars works as expected with column split but warns curre
     split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
     summarize_colvars()
 
-  result <- expect_warning(build_table(l, dta))
+  result <- build_table(l, dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "", "V1", "n", "Mean (SD)", "Median", "Min - Max",
@@ -62,6 +62,35 @@ test_that("summarize_colvars works as expected with column split but warns curre
       "1", "0 (NA)", "0", "0 - 0", "", "2", "-1 (0)", "-1", "-1 - -1",
       "", "1", "-2 (NA)", "-2", "-2 - -2"),
     .Dim = c(17L, 5L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+
+test_that("summarize_colvars works when selecting statistics and custom formatting", {
+  dta <- get_dta()
+
+  l <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("AVISIT") %>%
+    split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
+    summarize_colvars(
+      .stats = c("n", "mean_sd"),
+      .formats = c("mean_sd" = "xx.x, xx.x"),
+      .labels = c(n = "n", mean_sd = "Mean, SD"),
+      .indent_mods = c(n = 2L, mean_sd = 5L)
+    )
+
+  result <- build_table(l, dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "V1", "  n", "     Mean, SD", "V2", "  n",
+      "     Mean, SD", "V3", "  n", "     Mean, SD", "A", "AVAL", "",
+      "2", "6, 4.2", "", "1", "5, NA", "", "2", "4, 4.2", "A", "CHG",
+      "", "2", "0, 0", "", "1", "-1, NA", "", "2", "-2, 0", "B", "AVAL",
+      "", "1", "6, NA", "", "2", "5, 4.2", "", "1", "4, NA", "B", "CHG",
+      "", "1", "0, NA", "", "2", "-1, 0", "", "1", "-2, NA"),
+    .Dim = c(11L, 5L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

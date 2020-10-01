@@ -24,7 +24,7 @@ test_that("LBT01 default variant is produced correctly", {
     ) %>%
     summarize_colvars()
 
-  result <- expect_warning(build_table(l, adlb_f))
+  result <- build_table(l, adlb_f)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "", "BASELINE", "n", "Mean (SD)", "Median", "Min - Max",
