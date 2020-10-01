@@ -21,11 +21,9 @@ is_df_with_variables(df, variables)
 
 is_equal_length(...)
 
-is_proportion(x)
+is_proportion(x, include_boundaries = FALSE)
 
 is_valid_factor(x)
-
-is_proportion(x)
 }
 \arguments{
 \item{x}{object to test}
@@ -35,6 +33,8 @@ is_proportion(x)
 \item{variables}{supposed variables list to test}
 
 \item{...}{a collection of objects to test.}
+
+\item{include_boundaries}{(\code{logical})\cr whether to include boundaries in \code{is_proportion}}
 }
 \value{
 \code{flag} whether the assertion holds (\code{TRUE} or \code{FALSE}). When used inside
@@ -58,8 +58,6 @@ We provide additional assertion functions which can be used together with \code{
 \item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 
 \item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
-
-\item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 }}
 
 \examples{
@@ -93,6 +91,7 @@ is_equal_length(a, b, c, d)
 # Check whether `x` is between 0 and 1.
 is_proportion(x = 0.3)
 is_proportion(x = 1.3)
+is_proportion(x = 0, include_boundaries = TRUE)
 
 # Check whether `x` is a valid factor.
 is_valid_factor(-1)
@@ -100,8 +99,4 @@ is_valid_factor(factor(c("a", "b")))
 is_valid_factor(factor(c("a", "")))
 is_valid_factor(factor())
 
-
-# Check whether `x` is between 0 and 1.
-is_proportion(x = 0.3)
-is_proportion(x = 1)
 }

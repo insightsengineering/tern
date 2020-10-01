@@ -100,8 +100,6 @@ Discontinued study              24 (17.91%)           14 (10.45%)           20 (
   Withdrawal By Subject          7 (5.22%)             3 (2.24%)             4 (3.03%)             14 (3.5%)   
 ````
 
-
-
 ### Design Proposition
 
 The final functions should make this workable:
@@ -126,50 +124,11 @@ be used as the workhorse inside (which is in turn very similar to `s_summary.fac
 able to create some helper function that serves both of these `s_summary` methods).
 
 ```{r s_summary.logical}
-s_summary.logical <- function(x, na.rm = TRUE, label = "TRUE", .N_col, .N_row,  #nolint
-                              denom = c("n", "N_row", "N_col")) {
-  denom <- match.arg(denom)
-  if (na.rm) x <- x[!is.na(x)]
-  y <- list()
-  y$n <- with_label(length(x), "n")
-  count <- sum(x)
-  dn <- switch(
-    denom,
-    n = length(x),
-    N_row = .N_row,
-    N_col = .N_col
-  )
-  y$count_fraction <- with_label(c(count, ifelse(dn > 0, count / dn, NA)), label)
-  y
-}
+getS3method("s_summary", "logical")
 ```
 
 ```{r s_count_value}
-s_count_values <- function(x, values, label = paste(values), na.rm = TRUE, 
-                           .N_col, .N_row, denom = c("n", "N_row", "N_col")) {
-  UseMethod("s_count_values", x)
-}
-
-s_count_values.factor <- function(x, values = "Y", ...) { #nolint
-  assert_that(
-    is.character(values),
-    all(values %in% levels(x))
-  )
-  s_count_values(as.character(x), values = values, ...)
-}
-
-s_count_values.character <- function(x, values = "Y", na.rm = TRUE, ...) {
-  assert_that(
-    is.character(values)
-  )
-  if (na.rm) x <- x[!is.na(x)]
-  is_in_values <- x %in% values
-  assert_that(
-    noNA(is_in_values)
-  )
-  s_summary(is_in_values, ...)
-}
-
+s_count_values
 s_count_values(factor(c("N", "Y", NA, "Y")))
 s_count_values(factor(c("N", "Y", NA, "Y")), na.rm = FALSE)
 ```
@@ -177,20 +136,7 @@ s_count_values(factor(c("N", "Y", NA, "Y")), na.rm = FALSE)
 ### Analyze Function
 
 ```{r count_values}
-count_values <- function(lyt, vars, ..., .stats = "count_fraction") {
-  afun <- format_wrap_x(
-    s_count_values, 
-    indent_mods = c(count_fraction = 0L),
-    formats = c(count_fraction = "xx (xx.xx%)")
-  )
-  analyze(
-    lyt, 
-    vars,
-    afun = afun,
-    extra_args = c(.stats = .stats, list(...)),
-    show_labels = "hidden"
-  )  
-}
+count_values
 ```
 
 ### Test 
@@ -199,7 +145,7 @@ count_values <- function(lyt, vars, ..., .stats = "count_fraction") {
 basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
-  count_values("COMPSTUD", values = "Y", label = "Completed Study") %>%
+  count_values("COMPSTUD", values = "Y", .labels = c(count_fraction = "Completed Study")) %>%
   split_rows_by("DISSTDFL", split_fun = keep_split_levels("Y")) %>%
   summarize_row_groups(label_fstr = "Discontinued Study") %>%
   summarize_vars("STDDRS", .stats = "count_fraction") %>%
@@ -231,7 +177,7 @@ Let's try:
 basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
-  count_values("GOTTRT", values = "Y", label = "Received treatment") %>%
+  count_values("GOTTRT", values = "Y", .labels = c(count_fraction = "Received treatment")) %>%
   split_rows_by("DISTRTFL", split_fun = keep_split_levels("Y")) %>%
   summarize_row_groups(label_fstr = "Discontinued treatment") %>%
   split_rows_by("DRSCAT", split_fun = reorder_split_levels(c("Safety", "Other"))) %>%
@@ -245,15 +191,12 @@ basic_table() %>%
 
 Of course we can also add more `count_values` rows on top. 
 
-Note: Unfortunately, this currently does not work. However I think it should be possible in the future
-to do this with rtables. Let's put this on backlog for now and revisit later.
-
 ```{r optional rows}
 basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
-  count_values("COMPSTUD", values = "Y", label = "Completed Study") %>%
-  count_values("STUDONS", values = "Alive: In Follow-up", label = "Alive: In Follow-up") %>%
+  count_values("COMPSTUD", values = "Y", .labels = c(count_fraction = "Completed Study")) %>%
+  count_values("STUDONS", values = "Alive: In Follow-up", .labels = c(count_fraction = "Alive: In Follow-up")) %>%
   split_rows_by("DISSTDFL", split_fun = keep_split_levels("Y"), nested = FALSE) %>%
   summarize_row_groups(label_fstr = "Discontinued Study") %>%
   summarize_vars("STDDRS", .stats = "count_fraction") %>%

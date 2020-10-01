@@ -43,6 +43,8 @@ dataname
 datanames
 denom
 df
+DTH
+DTHT01
 efron
 EGT
 enableR
@@ -121,8 +123,8 @@ SREPs
 stoilovs
 STUDYID
 subtable
-Surv
 surv
+Surv
 swimlane
 t_abn_shift
 t_coxph

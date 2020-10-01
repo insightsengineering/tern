@@ -47,9 +47,9 @@ can also be set to "breslow" or "exact". see more in \code{\link[survival:coxph]
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr vector of labels.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 }

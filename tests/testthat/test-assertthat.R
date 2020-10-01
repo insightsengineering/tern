@@ -79,6 +79,8 @@ test_that("is_equal_length is FALSE with variable-length inputs", {
 test_that("is_proportion is TRUE with healthy input", {
   expect_true(is_proportion(0.99))
   expect_true(is_proportion(0.01))
+  expect_true(is_proportion(0, include_boundaries = TRUE))
+  expect_true(is_proportion(1, include_boundaries = TRUE))
 })
 
 test_that("is_proportion is FALSE with wrong input", {

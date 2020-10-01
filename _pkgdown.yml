@@ -50,6 +50,7 @@ reference:
        - dummy_sum
        - analyze_abnormal
        - summarize_change
+       - summarize_colvars
        - summarize_vars
        - estimate_proportion
        - estimate_proportion_diff
@@ -131,6 +132,7 @@ reference:
     desc: these functions provide customized formatting rules to work with the rtables package
     contents:
       - format_fraction
+      - format_count_fraction
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs

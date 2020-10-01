@@ -10,6 +10,18 @@ test_that("format_fraction works with 0 numerator input", {
   expect_identical(result, expected)
 })
 
+test_that("format_count_fraction works with healthy inputs", {
+  result <- format_count_fraction(c(2, 0.6667))
+  expected <- "2 (66.7%)"
+  expect_identical(result, expected)
+})
+
+test_that("format_count_fraction works with count of 0", {
+  result <- format_count_fraction(c(0, 0))
+  expected <- "0"
+  expect_identical(result, expected)
+})
+
 test_that("format_fraction fails with bad inputs", {
   x <- list(
     c(num = 2, denom = 3),

@@ -22,8 +22,8 @@ s_summary <- function(x,
                       .N_row,  # nolint
                       .N_col,  # nolint
                       ...) {
-   assert_that(is.flag(na.rm))
-   UseMethod("s_summary", x)
+  assert_that(is.flag(na.rm))
+  UseMethod("s_summary", x)
 }
 
 #' @describeIn summarize_variables Method for numeric class. Note that,
@@ -323,7 +323,7 @@ summarize_vars <- function(lyt,
       median = "xx.x",
       range = "xx.x - xx.x",
       count = "xx",
-      count_fraction = "xx (xx.x%)"
+      count_fraction = format_count_fraction
     )
   )
 
