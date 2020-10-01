@@ -16,8 +16,8 @@ dummy_sum(lyt, vars)
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
-a statistics function.}
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

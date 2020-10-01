@@ -4,53 +4,16 @@
 \alias{argument_convention}
 \title{Standard Arguments}
 \arguments{
-\item{col_by}{(\code{factor})\cr defining column groups.}
+\item{...}{additional arguments for the lower level functions.}
 
-\item{na_rm}{(\code{flag})\cr (deprecated) whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{tte}{(\verb{\code{numeric}})\cr contains time-to-event duration values.}
-
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
-
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
-
-\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized (must
-be present as second argument in Content Row Functions).}
-
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
-a statistics function.}
-
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
-
-\item{.in_ref_col}{(\code{logical})\cr
-\code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{...}{additional arguments for the lower level functions.}
+\item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
-\item{var_labels}{(\code{character})\cr vector of labels.}
-
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -59,6 +22,44 @@ a statistics function.}
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{col_by}{(\code{factor})\cr defining column groups.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{id}{(\code{string}) \cr subject variable.}
+
+\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions).}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
+\item{na_rm}{(\code{flag})\cr (deprecated) whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
+\item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
+
+\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{tte}{(\verb{\code{numeric}})\cr contains time-to-event duration values.}
+
+\item{var_labels}{character for label.}
+
+\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern}

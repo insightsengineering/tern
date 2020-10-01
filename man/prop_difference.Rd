@@ -53,13 +53,12 @@ with one level per stratum and same length as \code{rsp}.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
-a statistics function.}
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr
-\code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
@@ -70,9 +69,9 @@ the method used for the confidence interval estimation.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{(\code{character})\cr vector of labels.}
+\item{var_labels}{character for label.}
 
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{arguments passed to \code{s_proportion_diff()}.}
 }

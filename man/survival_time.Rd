@@ -19,8 +19,8 @@ surv_time(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
-a statistics function.}
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
@@ -37,7 +37,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{(\code{character})\cr vector of labels.}
+\item{var_labels}{character for label.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

@@ -38,8 +38,8 @@ surv_timepoint_diff(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
-a statistics function.}
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
@@ -56,7 +56,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{(\code{character})\cr vector of labels.}
+\item{var_labels}{character for label.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -64,12 +64,11 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 
 \item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr
-\code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{conf_level}{confidence level for difference of two risk rates}
 
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 }
 \value{
 The statistics are:

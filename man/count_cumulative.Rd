@@ -54,9 +54,9 @@ count, default is \code{TRUE}.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{(\code{character})\cr vector of labels.}
+\item{var_labels}{character for label.}
 
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{var}{(\code{string})\cr variable name for missed doses.}
 }

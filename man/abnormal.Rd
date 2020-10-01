@@ -22,8 +22,8 @@ analyze_abnormal(lyt, vars, ...)
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested by
-a statistics function.}
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{abnormal}{string identifying the abnormal range level(s) in \code{vars}}
 
