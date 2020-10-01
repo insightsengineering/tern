@@ -303,7 +303,7 @@ test_that("variant 2  is produced correctly", {
 
 
 # test for variant 3 
-```{r test for variant 3 of dth01}
+```{r test for variant 3 of dth01, eval = FALSE}
 test_that("variant 3 is produced correctly", {
   result <-  tbl3
   result_matrix <- to_string_matrix(result)
@@ -327,7 +327,7 @@ test_that("variant 3 is produced correctly", {
 
 
 # test for variant 4
-```{r test for variant 4 of dth01}
+```{r test for variant 4 of dth01, eval = FALSE}
 test_that("variant 4 is produced correctly", {
   result <-  tbl4
   result_matrix <- to_string_matrix(result)
