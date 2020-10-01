@@ -14,7 +14,6 @@ vignette: >
   %\VignetteIndexEntry{design_rspt01}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: ../inst/ref/references.bib
 
 ---
 
@@ -372,56 +371,6 @@ l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
 build_table(l, adrs) %>% as_html
 ```
 
-Design Propositions
-===================
-
-Refactor of `prop_schouten`
----------------------------
-
-```{r}
-library(testthat)
-library(assertthat)
-## Data
-A <- 20
-B <- 20
-set.seed(1)
-rsp <- c(
-  sample(c(TRUE, FALSE), size = A, prob = c(3/4, 1/4), replace = TRUE),
-  sample(c(TRUE, FALSE), size = A, prob = c(1/2, 1/2), replace = TRUE)
-)
-grp <- c(rep("A", A), rep("B", B))
-tbl <- table(grp, rsp)
-
-prop_schouten <- function(tbl) {
-
-  assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
-
-  # Source: STREAM v2
-  #nolint start
-  # https://onlinelibrary.wiley.com/doi/epdf/10.1002/bimj.4710220305
-  #nolint end
-  tbl <- tbl[, c("TRUE", "FALSE")]
-
-  n <- sum(tbl)
-
-  ad <- diag(tbl)
-  bc <- diag(apply(tbl,2,rev))
-  ac <- tbl[,1]
-  bd <- tbl[,2]
-
-  n1 <- sum(tbl[1,])
-  n2 <- sum(tbl[2,])
-
-  t_schouten <- (n - 1) *
-    (abs(prod(ad) - prod(bc)) - 0.5 * min(n1, n2))^2 /
-    (n1 * n2 * sum(ac) * sum(bd))
-
-  1 - stats::pchisq(t_schouten, df = 1)
-}
-
-## Chi-Squared test + Schouten correction.
-expect_equal(prop_schouten(tbl), 0.08434269, tolerance = 1e-6)
-```
 
 References
 ==========

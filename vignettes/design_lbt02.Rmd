@@ -14,7 +14,7 @@ vignette: >
   %\VignetteIndexEntry{design_lbt02}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: ../inst/ref/references.bib
+bibliography: ../inst/REFERENCES.bib
 
 ---
 
