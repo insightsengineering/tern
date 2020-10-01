@@ -1,3 +1,4 @@
+^vignettes/design_rspt01\.Rmd$
 ^\.CI-FORCE-RELEASE-VERSION$
 ^.*\.Rproj$
 ^\.Rproj\.user$
