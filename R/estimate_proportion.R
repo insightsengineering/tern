@@ -22,7 +22,7 @@ NULL
 #' )
 #' prop_wilson(rsp, conf_level = 0.9)
 #'
-prop_wilson <- function(rsp, conf_level){
+prop_wilson <- function(rsp, conf_level) {
 
   y <- stats::prop.test(
     sum(rsp),

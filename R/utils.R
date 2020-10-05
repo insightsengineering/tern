@@ -6,7 +6,7 @@
 #' tern:::f_conf_level(0.95)
 #' @noRd
 #'
-f_conf_level <- function(conf_level){
+f_conf_level <- function(conf_level) {
   assert_that(is_proportion(conf_level))
   paste0(conf_level * 100, "% CI")
 }

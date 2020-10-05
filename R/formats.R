@@ -31,7 +31,7 @@ format_fraction <- function(x, ...) {
     is_nonnegative_count(x["denom"])
   )
 
-  result <- if (x["num"] == 0){
+  result <- if (x["num"] == 0) {
 
     paste0(x["num"], "/", x["denom"])
 
@@ -73,7 +73,7 @@ format_count_fraction <- function(x, ...) {
     is_proportion(x[2], include_boundaries = TRUE)
   )
 
-  result <- if (x[1] == 0){
+  result <- if (x[1] == 0) {
     "0"
   } else {
     paste0(x[1], " (", round(x[2] * 100, 1), "%)")

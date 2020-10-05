@@ -21,8 +21,9 @@ test_that("EGT04 default variant is produced correctly", {
   # explicit and accounted for, so the contingency table sum adds up to the group N.
   # For illustration purpose, missing data are added to the example.
   set.seed(123, kind = "Mersenne-Twister")
-  adeg_f$AVALC[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
-  adeg_f$BASEC[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
+
+  adeg_f$AVALC[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
+  adeg_f$BASEC[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
 
   adeg_f$AVALC <- factor( #nolint
     adeg_f$AVALC, levels = c("NORMAL", "ABNORMAL", "Missing"),

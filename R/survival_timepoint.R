@@ -143,7 +143,7 @@ s_surv_timepoint_diff <- function(df,
   }
   data <- rbind(.ref_group, df)
   group <- factor(rep(c("ref", "x"), c(nrow(.ref_group), nrow(df))), levels = c("ref", "x"))
-  res_per_group <- lapply(split(data, group), function(x){
+  res_per_group <- lapply(split(data, group), function(x) {
     s_surv_timepoint(df = x, .var = .var, ...)
   })
 

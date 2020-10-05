@@ -124,7 +124,8 @@ test_that("test_proportion_diff returns right result", {
     test_proportion_diff(
       vars = "rsp",
       method = "cmh", variables = list(strata = "strat")
-    ) %>% build_table(df = dta)
+    ) %>%
+    build_table(df = dta)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

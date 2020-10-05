@@ -254,12 +254,13 @@ test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
       ) ~ "No Progression",
       TRUE ~ as.character(AVALC)
     )
-  ) %>% mutate(
-    AVALC_NEW = factor(
-      AVALC_NEW,
-      levels = c("No Progression", "Progressive Disease (PD)", "Not Evaluable (NE)")
+  ) %>%
+    mutate(
+      AVALC_NEW = factor(
+        AVALC_NEW,
+        levels = c("No Progression", "Progressive Disease (PD)", "Not Evaluable (NE)")
+      )
     )
-  )
 
   l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%

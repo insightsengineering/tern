@@ -117,7 +117,7 @@ s_count_abnormal_by_baseline <- function(df,
 
   result <- lapply(abnormal, count_abnormal_by_baseline, df = df, .var = .var, ...)
 
-  lbl_result <- Map(function(x, nm){
+  lbl_result <- Map(function(x, nm) {
 
     null_name <- paste0(toupper(substr(nm, 1, 1)), tolower(substring(nm, 2)))
     not_abn_name <- paste("Not", tolower(nm), "baseline status")

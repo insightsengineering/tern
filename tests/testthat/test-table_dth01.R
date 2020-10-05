@@ -4,10 +4,10 @@ library(random.cdisc.data)
 library(dplyr)
 
 ## Function to generate adsl
-gen_adsl <- function(){
+gen_adsl <- function() {
   adsl <- radsl(cached = TRUE)
   set.seed(36857, kind = "Mersenne-Twister")
-  # create DTHCAT
+
   adsl$DTHCAT <- NA   # nolint snake_case
   adsl$DTHCAT[!is.na(adsl$DTHDT)] <- sample(
     x = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER"),
@@ -15,8 +15,7 @@ gen_adsl <- function(){
     replace = TRUE, prob = c(.5, .3, .2)
   )
   adsl$DTHCAT <- factor(adsl$DTHCAT, level = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER"))  # nolint snake_case
-  #Create DTHCAUS with reasons for "Other" specified.
-  #Death flag variable (Y or N)
+
   adsl <- adsl %>% mutate(
     DTHCAUS = ifelse(!is.na(DTHCAT) & DTHCAT == "OTHER",
                      sample(
@@ -33,7 +32,8 @@ gen_adsl <- function(){
     DTHFL = ifelse(is.na(DTHDT), "N", "Y"))
 
   adsl$DTHCAUS <- as.factor(adsl$DTHCAUS) # nolint snake_case
-  # Create dummy variables LDDTHELD and LDDTHGR1 as in ADSL GDSR structure
+
+  # Create dummy variables LDDTHELD and LDDTHGR1 as in ADSL GDSR structure.
   adsl <- within(
     data = adsl,
     expr = {
@@ -57,10 +57,10 @@ gen_adsl <- function(){
   )
   # LDDTHGR1: Categorical variable with 2 levels: "<=30" and ">30"
   levels(adsl$LDDTHGR1) <- c("<=30", ">30")  # nolint snake_case
+
   adsl
 }
 
-## test for variant 1
 test_that("DTH01 variant 1  is produced correctly", {
   adsl <- gen_adsl()
   tbl1 <- basic_table() %>%
@@ -92,8 +92,7 @@ test_that("DTH01 variant 1  is produced correctly", {
   expect_identical(result, expected)
 })
 
-## test for variant 2
-test_that("DTH01 variant 2  is produced correctly", {
+test_that("DTH01 variant 2 is produced correctly", {
   adsl <- gen_adsl()
 
   part1 <- basic_table() %>%
@@ -104,7 +103,8 @@ test_that("DTH01 variant 2  is produced correctly", {
       values = "Y",
       .labels =  c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"))  %>%
-    summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death"))  %>% build_table(df = adsl)
+    summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
+    build_table(df = adsl)
 
   part2 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -115,7 +115,8 @@ test_that("DTH01 variant 2  is produced correctly", {
       nested = T,
       .stats = "count_fraction",
       .indent_mods = c("count_fraction" = 4L)) %>%
-    build_table(df = adsl) %>% prune_table()
+    build_table(df = adsl) %>%
+    prune_table()
   part3 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -173,14 +174,11 @@ test_that("DTH01 variant 2  is produced correctly", {
   expect_identical(result, expected)
 })
 
-
-#test for variant 3
-
 test_that("DTH01 variant 3 is produced correctly", {
   adsl <- gen_adsl()
-  # preprocessing steps
+
   l <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
-  #table
+
   part1 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -200,13 +198,13 @@ test_that("DTH01 variant 3 is produced correctly", {
       values = l[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L))  %>%
+      .indent_mods = c(count_fraction = 4L)) %>%
     count_values(
       "DTHCAUS",
       values = l[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L))  %>%
+      .indent_mods = c(count_fraction = 4L)) %>%
     build_table(adsl)
 
   col_info(part2) <- col_info(part1)
@@ -227,13 +225,11 @@ test_that("DTH01 variant 3 is produced correctly", {
         NULL, c("", "A: Drug X", "B: Placebo", "C: Combination", "All Patients"))
     )
   expect_identical(result, expected)
-
 })
 
-#test for variant 4
 test_that("DTH01 variant 4 is produced correctly", {
   adsl <- gen_adsl()
-  #preprocessing steps
+
   l <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
   adsl <- adsl %>%
     mutate(
@@ -242,7 +238,6 @@ test_that("DTH01 variant 4 is produced correctly", {
     )
   adsl$DTHCAUS_other <- as.factor(adsl$DTHCAUS_other)  # nolint snake_case
 
-  #table
   part1 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -250,9 +245,10 @@ test_that("DTH01 variant 4 is produced correctly", {
       "DTHFL",
       values = "Y",
       .labels =  c(count_fraction = "Total number of deaths"),
-      .formats = c(count_fraction = "xx (xx.x%)"))  %>%
+      .formats = c(count_fraction = "xx (xx.x%)")) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
     build_table(df = adsl)
+
   part2 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -262,14 +258,15 @@ test_that("DTH01 variant 4 is produced correctly", {
       values = l[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L))  %>%
+      .indent_mods = c(count_fraction = 4L)) %>%
     count_values(
       "DTHCAUS",
       values = l[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L))  %>%
+      .indent_mods = c(count_fraction = 4L)) %>%
     build_table(adsl)
+
   part3 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -280,6 +277,7 @@ test_that("DTH01 variant 4 is produced correctly", {
       .stats = "count_fraction",
       .indent_mods = c("count_fraction" = 6L)) %>%
     build_table(df = adsl)
+
   col_info(part2) <- col_info(part1)
   col_info(part3) <- col_info(part2)
   tbl4 <- rbind(part1, part2)
@@ -305,5 +303,4 @@ test_that("DTH01 variant 4 is produced correctly", {
     .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination", "All Patients"))
     )
   expect_identical(result, expected)
-
 })

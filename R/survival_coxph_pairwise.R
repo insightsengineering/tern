@@ -71,7 +71,7 @@ s_coxph_pairwise <- function(df,
     is_event = data[[is_event]],
     arm = group
   )
-  if (is.null(strat)){
+  if (is.null(strat)) {
     formula_cox <- survival::Surv(tte, is_event) ~ arm
   } else {
     formula_cox <- as.formula(
