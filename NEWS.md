@@ -1,4 +1,4 @@
-# tern 0.6.8.9000
+# tern 0.6.9
 * Removing not used imports.
 
 # tern 0.6.8
