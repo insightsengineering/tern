@@ -1,0 +1,251 @@
+---
+title: "Design: AE by Grade Table (AET04)"
+author: "Jana Stoilova"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of AET04}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(assertthat)
+library(dplyr)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+```{r data, results = "asis", eval = TRUE}
+
+library(random.cdisc.data)
+
+adsl <- radsl(cached = TRUE)
+adae <- radae(cached = TRUE)
+
+anl <- adae %>%
+  filter(AEDECOD %in% c("dcd A.1.1.1.1", "dcd A.1.1.1.2") | AEBODSYS == "cl B.1") %>%
+  droplevels()
+
+anl$AEDECOD2 <- as.character(anl$AEDECOD) #nolint
+anl$AEBODSYS2 <- as.character(anl$AEBODSYS) #nolint
+
+df <- data.frame(
+  USUBJID = as.character(c(1:5, 1)),
+  ATOXGR = factor(c(1, 2, 3, 1, 2, 3)),
+  AESEV = factor(c("MILD", "MODERATE", "SEVERE", "MILD", "MODERATE", "SEVERE")),
+  ARM = factor(c("A", "A", "A", "B", "B", "A")),
+  stringsAsFactors = FALSE
+)
+```
+
+## Design Summary
+
+- Tabulation layout now matches AET04 template.
+- Top summary row: using option #4 from Daniel. For reference, also considered other [ideas for top summary row label](#ideas-for-top-summary-row-label).
+- Still to do: apply the correct sort order. 
+
+## Statistics function
+```{r, s_fun}
+s_count_grade_per_id <- function(df,
+                                 .var,
+                                 .N_col, #nolint
+                                 any_grade_label = "- Any Grade -",
+                                 variables = list(id = "USUBJID")) {
+
+  assert_that(
+    noNA(df[, c(.var, variables$id)]),
+    is.factor(df[[.var]])
+  )
+
+  id <- df[[variables$id]] #nolint
+  grade <- df[[.var]]
+
+  grade <- factor(grade, levels = levels(grade), ordered = TRUE) # needed to take maximum
+  df_max <- aggregate(grade ~ id, FUN = max, drop = TRUE)
+
+  l_count <- c("any" = nrow(df_max),
+               as.list(table(df_max$grade))
+  )
+
+  labels <- c(any_grade_label,
+              names(l_count)[-1]
+  )
+
+  l_count_percent <- lapply(l_count, function(i, denom) c(i, i / denom), denom = .N_col)
+
+  result <- Map(with_label, l_count_percent, labels)
+
+  list(
+    count_percent = result
+  )
+
+}
+
+s_count_grade_per_id(df, .var = "ATOXGR", .N_col = 10)
+s_count_grade_per_id(df, .var = "AESEV", .N_col = 10, any_grade = "- Any Intensity -")
+
+```
+
+## Layout Function
+```{r lyt_fun}
+
+count_grade_per_id <- function(lyt, vars, ...) {
+
+  afun <- format_wrap_df(
+    s_count_grade_per_id,
+    indent_mods = c(count_percent = 0L),
+    formats = c(count_percent = "xx (xx.x%)")
+  )
+
+  analyze(
+    lyt = lyt,
+    vars = vars,
+    afun = afun,
+    extra_args = list(...)
+  )
+
+}
+
+basic_table() %>%
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  count_grade_per_id(vars = "ATOXGR") %>%
+  build_table(df, col_counts = table(df$ARM))
+```
+
+## Helper Functions
+Needed in order to insert an "Any AE" row. Will be added to `R/rtables.R`.
+```{r, helper}
+
+c_label <- function(dummy_label) {
+
+  function(df,
+           labelstr) {
+    CellValue(
+      val = NULL,
+      label = dummy_label,
+      format = "xx"
+    )
+  }
+}
+
+label_rows <- function(lyt, label) {
+
+  summarize_row_groups(
+    lyt,
+    cfun = c_label(label),
+    indent_mod = 0L
+  )
+}
+
+# Indentation is off here (F should be directly under ALL), likely rtables issue?
+basic_table() %>%
+  split_cols_by("ARM") %>%
+  label_rows("ALL") %>%
+  analyze("AGE", afun = mean, format = "xx.xx") %>%
+  split_rows_by("SEX") %>%
+  analyze("AGE", afun = mean, format = "xx.xx") %>%
+  build_table(DM)
+
+```
+
+## AET04 variants:
+```{r aet04_examples}
+big_n <- length(unique(anl$USUBJID))
+
+# split only by AEDECOD
+basic_table() %>%
+  split_cols_by("STUDYID") %>%
+  add_colcounts() %>%
+  split_rows_by("AEDECOD2", split_fun = add_overall_level("- Any adverse events -")) %>%
+  count_grade_per_id(vars = "AETOXGR") %>%
+  build_table(anl, col_counts = big_n)
+
+# split by AEBODSYS and AEDECOD - just missing the top summary across AEBODSYS
+basic_table() %>%
+  split_cols_by("STUDYID") %>%
+  add_colcounts() %>%
+  split_rows_by("AEBODSYS2")  %>%
+  split_rows_by("AEDECOD2", split_fun = add_overall_level("- Overall -"))  %>%
+    count_grade_per_id(vars = "AETOXGR") %>%
+  build_table(anl, col_counts = big_n)
+
+# add top row summary across AEBODSYS (option 4 below) with indent_mod set to -1
+basic_table() %>%
+  split_cols_by("STUDYID") %>%
+  add_colcounts() %>%
+  label_rows("-Any AE-") %>%
+    count_grade_per_id(vars = "AETOXGR") %>%
+  split_rows_by("AEBODSYS2", indent_mod = -1L)  %>%
+  split_rows_by("AEDECOD2", split_fun = add_overall_level("- Overall -"))  %>%
+    count_grade_per_id(vars = "AETOXGR") %>%
+  build_table(anl, col_counts = big_n)
+
+```
+
+## Ideas for top summary row label
+
+1. use `split_rows_by` with a new split function that will just insert a flexible label, this is sort of like an "identity" split
+
+```{r, eval = FALSE}
+basic_table() %>%
+  split_rows_by(var = NULL, identity_split(label = "-ANY AE-")) %>% #
+  count_grade_per_id(vars = "AETOXGR") %>%
+  build_table(anl)
+```
+
+2. split on `STUDYID` and relabel the split row
+
+3. Add a variable during pre-processing that has the appropriate label
+
+4. Use `summarize_row_groups` without any row splits (*This one is used.*)
+
+```{r}
+# Option 2: split on STUDYID and relabel
+basic_table() %>%
+  split_rows_by("STUDYID") %>%
+  summarize_row_groups(cfun = c_label("-ANY AE-")) %>% #custom c-fun that just inserts new label
+  count_grade_per_id(vars = "AETOXGR") %>%
+  build_table(anl)
+
+# Option 3: add new variable
+anl$TMP_ANY_AE <- "-Any AE-" #nolint
+
+basic_table() %>%
+  split_rows_by("TMP_ANY_AE") %>%
+  count_grade_per_id(vars = "AETOXGR") %>% #nolint
+  build_table(anl)
+
+# Option 4: no need for dummy split, now that `summarize_row_groups` works also
+# on start table without any row splits
+basic_table() %>%
+  split_cols_by("STUDYID") %>%
+  add_colcounts() %>%
+  # split_rows_by("STUDYID")  %>% #dummy split
+  summarize_row_groups(cfun = c_label("-Any AE-")) %>% #custom c-fun that just inserts new label for splits
+    count_grade_per_id(vars = "AETOXGR") %>%
+  split_rows_by("AEBODSYS2")  %>%
+  split_rows_by("AEDECOD2", split_fun = add_overall_level("- Overall -"))  %>%
+    count_grade_per_id(vars = "AETOXGR") %>%
+  build_table(anl, col_counts = big_n)
+```
+
+
+## Sorting
+
+TODO.
