@@ -1,0 +1,116 @@
+---
+title: "Vital Sign Results and Change from Baseline by Visit"
+author: "Saibah Chohan"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: true
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{design_vst01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: ../inst/REFERENCES.bib
+
+---
+Configuration
+=============
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+```{r setup}
+library(rtables)
+packageVersion("rtables")
+
+library(tern)
+library(random.cdisc.data)
+library(dplyr)
+```
+
+
+```{r data peprocessing}
+adsl <- radsl(cached = TRUE)
+advs <- radvs(cached = TRUE)
+advs_label <- var_labels(advs)
+
+advs <- advs %>%
+  filter(PARAMCD == "DIABP" & PARAM == "Diastolic Blood Pressure") %>%
+  mutate(PARAMCD = droplevels(PARAMCD), PARAM = droplevels(PARAM))
+
+advs_b <- advs %>% filter(ABLFL == "Y" | ABLFL2 == "Y") 
+N <- table(interaction(advs_b$ABLFL, advs_b$ARM))
+
+# post-baseline
+advs_pb <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y") 
+
+advs_pb_max <- advs_pb %>%
+  group_by(PARAM, USUBJID) %>%
+  arrange(desc(AVAL)) %>%
+  slice(1) %>% 
+  ungroup() %>%
+  mutate(AVISIT = "Post-Baseline Maximum")
+
+advs_pb_min <- advs_pb %>%
+  group_by(PARAM, USUBJID) %>%
+  arrange(AVAL) %>%
+  slice(1) %>% 
+  ungroup() %>%
+  mutate(AVISIT = "Post-Baseline Minimum")
+
+advs_pb_last <- advs_pb %>%
+  group_by(PARAM, USUBJID) %>%
+  arrange(desc(AVISITN)) %>%
+  slice(1) %>% 
+  ungroup() %>%
+  mutate(AVISIT = "Post-Baseline Last")
+
+advs_f <- rbind(
+  advs,
+  advs_pb_last,
+  advs_pb_min,
+  advs_pb_max)
+
+var_labels(advs_f) <- advs_label
+
+advs_f <- advs_f %>% mutate(AVISIT = droplevels(AVISIT))
+
+```
+
+### Functions 
+
+#### `summarize_colvars`
+
+```{r}
+library(tern)
+summarize_colvars
+
+```
+
+#### Default output
+
+```{r application_02}
+
+result <- basic_table() %>% 
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("AVISIT") %>% 
+  split_cols_by_multivar(
+    vars = c("AVAL", "CHG"),
+    varlabels = c("Value at Visit", "Change from Baseline")
+  ) %>% 
+  summarize_colvars(
+    .labels = c(range = "Min - Max")
+  ) %>% 
+  build_table(df = advs_f, col_counts = N)
+result
+```
