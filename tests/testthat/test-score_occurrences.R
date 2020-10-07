@@ -1,4 +1,5 @@
 test_that("score_occurrences functions as expected with valid input and default arguments", {
+  library(dplyr)
   set.seed(1)
   dfsl <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4, 5)),
@@ -58,8 +59,6 @@ test_that("score_occurrences functions as expected with valid input and default 
     c("AEPT1", "1 (33.3%)", "0 (0%)", "0 (0%)"),
     c("AEPT3", "0 (0%)", "0 (0%)", "1 (100%)")
   )
-  colnames(expected) <- c("", "A", "B", "C")
 
   expect_equal(result, expected)
-
 })

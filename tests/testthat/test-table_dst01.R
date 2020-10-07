@@ -89,11 +89,7 @@ test_that("DST01 default variant is produced correctly", {
       "8 (33.3%)", "5 (20.8%)", "4 (16.7%)", "3 (12.5%)", "All Patients",
       "(N=400)", "201 (50.25%)", "67 (16.8%)", "15 (22.4%)", "12 (17.9%)",
       "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"),
-    .Dim = c(9L, 5L),
-    .Dimnames = list(
-      NULL,
-      c("", "A: Drug X", "B: Placebo", "C: Combination", "All Patients")
-    )
+    .Dim = c(9L, 5L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -127,11 +123,7 @@ test_that("DST01 variant with grouping of reasons is produced correctly", {
       "All Patients", "(N=400)", "400 (100%)", "203 (50.7%)", "75 (18.8%)",
       "31 (41.3%)", "44 (58.7%)", "128 (32%)", "38 (29.7%)", "45 (35.2%)",
       "45 (35.2%)"),
-    .Dim = c(11L, 5L),
-    .Dimnames = list(
-      NULL,
-      c("", "A: Drug X", "B: Placebo", "C: Combination", "All Patients")
-    )
+    .Dim = c(11L, 5L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -162,11 +154,7 @@ test_that("DST01 variant with adding other optional rows is produced correctly",
       "5 (20.8%)", "4 (16.7%)", "3 (12.5%)", "All Patients", "(N=400)",
       "201 (50.25%)", "63 (47.73%)", "67 (16.8%)", "15 (22.4%)", "12 (17.9%)",
       "13 (19.4%)", "12 (17.9%)", "15 (22.4%)"),
-    .Dim = c(10L, 5L),
-    .Dimnames = list(
-      NULL,
-      c("", "A: Drug X", "B: Placebo", "C: Combination", "All Patients")
-    )
+    .Dim = c(10L, 5L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

@@ -36,8 +36,7 @@ test_that("LBT04 default variant is produced correctly", {
       "", "", "37/117 (31.6%)", "59/118 (50%)", "", "50/120 (41.7%)",
       "44/114 (38.6%)", "", "", "50/120 (41.7%)", "45/119 (37.8%)"
     ),
-    .Dim = c(13L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(13L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

@@ -39,8 +39,7 @@ test_that("LBT02 default variant is produced correctly", {
       "", "132", "48.9 (7.9)", "47.7", "30.4 - 67", "", "132", "49.6 (8)",
       "49.8", "25.5 - 68.6", "", "132", "50 (8.3)", "51", "24.8 - 65.6"
     ),
-    .Dim = c(32L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(32L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 

@@ -298,8 +298,7 @@ test_that("`summarize_vars` works with factors and different denominators", {
       "8 (4.3%)", "0", "0", "0", "0", "0",
       "", "68", "44 (26%)", "14 (8.3%)", "10 (5.9%)", "0", "0",
       "0", "0", "0"),
-    .Dim = c(22L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(22L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

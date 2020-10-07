@@ -55,7 +55,7 @@ test_that("RSPT01: 1. Best Overall Response", {
       "13 (9.85%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)",
       "5 (3.79%)", "(0.15, 7.42)"
     ),
-    .Dim = c(19L, 4L), .Dimnames = list(NULL, c("", "ARM A", "ARM B", "ARM C"))
+    .Dim = c(19L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -95,7 +95,7 @@ test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
       "(11.22, 25.14)", "13 (9.85%)", "(4.39, 15.31)", "33 (25%)",
       "(17.23, 32.77)", "5 (3.79%)", "(0.15, 7.42)"
     ),
-    .Dim = c(18L, 4L), .Dimnames = list(NULL, c("", "ARM A", "ARM B", "ARM C"))
+    .Dim = c(18L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -144,7 +144,7 @@ test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
       "(35.88, 50.71)", "24 (18.18%)", "(12.87, 24.61)", "13 (9.85%)",
       "(5.92, 15.2)", "33 (25%)", "(18.9, 31.97)", "5 (3.79%)"
     ),
-    .Dim = c(18L, 4L), .Dimnames = list(NULL, c("", "ARM A", "ARM B", "ARM C"))
+    .Dim = c(18L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -195,7 +195,7 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
       "24 (18.18%)", "(11.22, 25.14)", "13 (9.85%)", "(4.39, 15.31)",
       "33 (25%)", "(17.23, 32.77)", "5 (3.79%)", "(0.15, 7.42)"
     ),
-    .Dim = c(23L, 4L), .Dimnames = list(NULL, c("", "ARM A", "ARM B", "ARM C"))
+    .Dim = c(23L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -237,7 +237,7 @@ test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall
       "13 (9.85%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)",
       "5 (3.79%)", "(0.15, 7.42)"
     ),
-    .Dim = c(19L, 4L), .Dimnames = list(NULL, c("", "ARM A", "ARM B", "ARM C"))
+    .Dim = c(19L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -292,7 +292,7 @@ test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
       "94 (71.21%)", "(63.11, 79.31)", "33 (25%)", "(17.23, 32.77)",
       "5 (3.79%)", "(0.15, 7.42)"
     ),
-    .Dim = c(15L, 4L), .Dimnames = list(NULL, c("", "ARM A", "ARM B", "ARM C"))
+    .Dim = c(15L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

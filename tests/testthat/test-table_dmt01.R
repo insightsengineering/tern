@@ -102,8 +102,7 @@ test_that("DMT01 default and alternative variants are produced correctly", {
       "49.4 (8.1)", "49.2", "24.3 - 71.1", "", "400", "50 (8)", "50",
       "21.7 - 71.4"
     ),
-    .Dim = c(41L, 5L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination", "All Patients"))
+    .Dim = c(41L, 5L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -175,8 +174,7 @@ test_that("DMT01 default and alternative variants are produced correctly", {
       "34", "20 - 69", "", "400", "322 (80.5%)", "77 (19.2%)", "1 (0.2%)",
       "", "400", "231 (57.8%)", "169 (42.2%)"
     ),
-    .Dim = c(68L, 5L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination", "All Patients"))
+    .Dim = c(68L, 5L)
   )
 
   expect_identical(result_matrix, expected_matrix)

@@ -13,10 +13,9 @@ s_num_patients_content(df, labelstr = "", .N_col, .var)
 summarize_num_patients(
   lyt,
   var,
-  .stats = c("unique", "nonunique"),
-  .formats = c(unique = "xx (xx.x\%)", nonunique = "xx"),
-  .labels = c(unique = "Number of patients with at least one event", nonunique =
-    "Number of events")
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL
 )
 }
 \arguments{

@@ -63,6 +63,14 @@ s_num_patients_content <- function(df, labelstr="", .N_col, .var) { # nolint
 
 }
 
+c_num_patients <- make_afun(
+  s_num_patients_content,
+  .stats = c("unique", "nonunique"),
+  .formats = c(unique = "xx (xx.x%)", nonunique = "xx"),
+  .labels = c(unique = "Number of patients with at least one event",
+              nonunique = "Number of events")
+)
+
 #' @describeIn summarize_num_patients Layout creating function which adds content rows using the statistics
 #' function [s_num_patients_content()] and desired format.
 #'
@@ -72,13 +80,12 @@ s_num_patients_content <- function(df, labelstr="", .N_col, .var) { # nolint
 #'
 summarize_num_patients <- function(lyt,
                                    var,
-                                   .stats = c("unique", "nonunique"),
-                                   .formats = c(unique = "xx (xx.x%)", nonunique = "xx"),
-                                   .labels = c(unique = "Number of patients with at least one event",
-                                               nonunique = "Number of events")) {
+                                   .stats = NULL,
+                                   .formats = NULL,
+                                   .labels = NULL) {
 
-  c_num_patients <- make_afun(
-    s_num_patients_content,
+  cfun <- make_afun(
+    c_num_patients,
     .stats = .stats,
     .formats = .formats,
     .labels = .labels
@@ -87,7 +94,7 @@ summarize_num_patients <- function(lyt,
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = c_num_patients
+    cfun = cfun
   )
 
 }

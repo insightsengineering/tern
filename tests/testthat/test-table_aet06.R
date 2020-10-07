@@ -81,12 +81,7 @@ test_that("AET06 variant 1 is produced correctly", {
       "", "25 (40.3%)", "32", "25 (40.3%)", "", "39 (62.9%)", "62",
       "24 (38.7%)", "23 (37.1%)", "", "23 (37.1%)", "31", "23 (37.1%)"
     ),
-    .Dim = c(36L, 7L),
-    .Dimnames = list(
-      NULL,
-      c("", "F.A: Drug X", "M.A: Drug X", "F.B: Placebo",
-        "M.B: Placebo", "F.C: Combination", "M.C: Combination")
-      )
+    .Dim = c(36L, 7L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -205,12 +200,7 @@ test_that("AET06 variant 5 is produced correctly", {
       "", "23 (37.1%)", "30", "23 (37.1%)", "", "23 (37.1%)", "31",
       "", "23 (37.1%)", "31", "23 (37.1%)"
     ),
-    .Dim = c(63L, 7L),
-    .Dimnames = list(
-      NULL,
-      c("", "F.A: Drug X", "M.A: Drug X", "F.B: Placebo",
-        "M.B: Placebo", "F.C: Combination", "M.C: Combination")
-    )
+    .Dim = c(63L, 7L)
   )
 
   expect_identical(result_matrix, expected_matrix)

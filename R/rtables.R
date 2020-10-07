@@ -247,12 +247,6 @@ format_wrap_df <- function(sfun,
     )
     formats[vals_is_empty_string] <- "xx"
 
-    # Do the formatting.
-    vals_formatted <- Map(
-      CellValue,
-      val = vals_flat,
-      format = formats
-    )
     indented_labels <- Map(
       function(indent, label) {
         indent_space <- paste(rep(" ", as.integer(indent)), collapse = "")
@@ -262,10 +256,17 @@ format_wrap_df <- function(sfun,
       label = labels
     )
 
-    # Put formatted values in list with labels.
+    # Do the formatting.
+    vals_formatted <- Map(
+      CellValue,
+      val = vals_flat,
+      format = formats,
+      label = indented_labels
+    )
+
+    # Put formatted values in list.
     rows <- rtables::in_rows(
-      .list = vals_formatted,
-      .labels = indented_labels
+      .list = vals_formatted
     )
     return(rows)
   }
@@ -374,12 +375,6 @@ format_wrap_x <- function(sfun,
     )
     formats[vals_is_empty_string] <- "xx"
 
-    # Do the formatting.
-    vals_formatted <- Map(
-      CellValue,
-      val = vals_flat,
-      format = formats
-    )
     indented_labels <- Map(
       function(indent, label) {
         indent_space <- paste(rep(" ", as.integer(indent)), collapse = "")
@@ -389,10 +384,17 @@ format_wrap_x <- function(sfun,
       label = labels
     )
 
-    # Put formatted values in list with labels.
+    # Do the formatting.
+    vals_formatted <- Map(
+      CellValue,
+      val = vals_flat,
+      format = formats,
+      label = indented_labels
+    )
+
+    # Put formatted values in list.
     rows <- rtables::in_rows(
-      .list = vals_formatted,
-      .labels = indented_labels
+      .list = vals_formatted
     )
     return(rows)
   }

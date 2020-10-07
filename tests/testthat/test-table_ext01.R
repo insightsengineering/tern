@@ -72,8 +72,7 @@ test_that("EXT01 default variant with numeric parameters is produced correctly",
       "", "75", "7 (0)", "7", "7 - 7", "", "75", "74.2 (39.5)", "78", "1 - 147",
       "", "75", "9.5 (5.5)", "9", "0 - 20"
     ),
-    .Dim = c(22L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(22L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -181,8 +180,7 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
       "", "75", "6982.4 (1272.5)", "7200", "4320 - 9360",
       "", "75", "7 (0)", "7", "7 - 7"
     ),
-    .Dim = c(23L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(23L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -296,8 +294,7 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
       "", "75", "7 (0)", "7", "7 - 7",
       "", "75", "73 (55.3%)", "59 (44.7%)", "37 (28%)", "16 (12.1%)"
     ),
-    .Dim = c(29L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(29L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

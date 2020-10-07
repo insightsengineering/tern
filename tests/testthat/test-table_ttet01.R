@@ -101,8 +101,7 @@ test_that("TTET01 default variant is produced correctly", {
       "0.3422", "", "109", "88.89", "(83.4, 94.38)", "-0.14", "(-7.86, 7.57)",
       "0.9707"
     ),
-    .Dim = c(33L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(33L, 4L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -188,8 +187,7 @@ test_that("TTET01 variant: selecting sections to display", {
       "1.9 to 140.5", "2.7 to 326.1", "", "0.0918", "1.2955", "(0.958, 1.7519)",
       "", "120", "94.53", "(90.59, 98.47)", "", "109", "88.89", "(83.4, 94.38)"
     ),
-    .Dim = c(27L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(27L, 4L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -277,9 +275,7 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
       "1.2955", "(0.958, 1.7519)", "", "109", "88.89", "(83.29, 92.7)",
       "-0.14", "(-8.97, 8.68)", "0.9707"
     ),
-    .Dim = c(26L, 4L), .Dimnames = list(
-      NULL, c("", "A: Drug X", "B: Placebo", "C: Combination")
-    )
+    .Dim = c(26L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -372,8 +368,7 @@ test_that("TTET01 variant: with stratified analysis", {
       "", "109", "88.89", "(83.4, 94.38)", "-0.14", "(-7.86, 7.57)",
       "0.9707"
     ),
-    .Dim = c(30L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(30L, 4L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -460,8 +455,7 @@ test_that("TTET01 variant: modifying time point", {
       "1.2955", "(0.958, 1.7519)", "", "120", "94.53", "(90.59, 98.47)",
       "-2.39", "(-7.33, 2.54)", "0.3422"
     ),
-    .Dim = c(26L, 4L),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    .Dim = c(26L, 4L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -567,8 +561,7 @@ test_that("TTET01 variant: requesting more than one p-value", {
     .Dim = c(
       28L,
       4L
-    ),
-    .Dimnames = list(NULL, c("", "A: Drug X", "B: Placebo", "C: Combination"))
+    )
   )
   expect_identical(result_matrix, expected_matrix)
 })
