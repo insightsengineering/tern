@@ -1,0 +1,119 @@
+---
+title: "Design: CMT02_PT"
+author: "Nina Qi"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: true
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of CMT02_PT}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>",
+dev = "svg"
+)
+```
+
+Configuration
+=============
+
+Dependencies:
+
+```{r setup, message=FALSE}
+library(random.cdisc.data)
+library(rtables)
+library(dplyr)
+library(tern)
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+Data
+=============
+
+```{r data}
+adsl <- radsl(cached = TRUE)
+adcm <- radcm(cached = TRUE)
+
+# Update ADCM to follow structure with WHODrug treatment coding.
+adcm_path1 <- adcm %>%
+  mutate(
+    ATC1 = paste0("ATCCLAS1 ", substr(CMDECOD,  9, 9)),
+    ATC2 = paste0("ATCCLAS2 ", substr(CMDECOD,  9, 9)),
+    ATC3 = paste0("ATCCLAS3 ", substr(CMDECOD,  9, 9)),
+    ATC4 = paste0("ATCCLAS4 ", substr(CMDECOD,  9, 9))
+  )
+
+adcm_path2 <- adcm_path1 %>%
+  filter(CMDECOD %in% c("medname A_1/3", "medname B_2/4", "medname B_3/4", "medname C_1/2")) %>%
+  mutate(
+    ATC1 = paste(ATC1, "p2"),
+    ATC2 = paste(ATC2, "p2"),
+    ATC3 = paste(ATC3, "p2"),
+    ATC4 = paste(ATC4, "p2")
+  )
+
+adcm_path3 <- adcm_path2 %>%
+  filter(CMDECOD %in% c("medname B_2/4", "medname C_1/2")) %>%
+  mutate(
+    ATC1 = paste(ATC1, "p3"),
+    ATC2 = paste(ATC2, "p3"),
+    ATC3 = paste(ATC3, "p3"),
+    ATC4 = paste(ATC4, "p3")
+  )
+
+# Construct final VAD with multiple class paths per treatment.
+adcm <- rbind(
+  adcm_path1,
+  adcm_path2,
+  adcm_path3
+)
+ 
+# Process VAD based on keys and keep only one treatment path per CMDECOD.
+adcm <- adcm %>%
+  group_by(STUDYID, USUBJID, CMDECOD) %>%
+  slice(1) %>%
+  ungroup
+```
+
+Design
+=============
+
+## Functions {.tabset .tabset-pills}
+
+* Existing functions in `tern` are sufficient to get output numbers
+  + `summarize_num_patients`
+  + `count_occurrences`
+
+* Similar to `MHT01`, the pruning/sorting currently may depend on current ongoing pruning/sorting investigation
+
+* Also one note on the indentation, since `summarize_num_patients` (where `summarize_row_groups` is used) is called before `count_occurrences`, there are indentation of `2L` for `CMDECOD` summaries despite `.indent_mods` is set to `0L`.
+
+## Application on variant
+```{r}
+n_per_arm <- table(adsl$ARM)
+n_per_arm_tot <- c(n_per_arm, "All Patients" = dim(adsl)[1])
+
+lyt <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .labels = c("Total number of patients with at least one event", "Total number of events")
+  ) %>%
+  count_occurrences(var = "CMDECOD")
+
+build_table(lyt, adcm, col_counts = n_per_arm_tot) %>%
+    prune_table()
+```
