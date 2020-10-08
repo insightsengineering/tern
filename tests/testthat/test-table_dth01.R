@@ -6,7 +6,7 @@ library(dplyr)
 ## Function to generate adsl
 gen_adsl <- function() {
   adsl <- radsl(cached = TRUE)
-  set.seed(36857, kind = "Mersenne-Twister")
+  set.seed(12, kind = "Mersenne-Twister")
 
   adsl$DTHCAT <- NA   # nolint snake_case
   adsl$DTHCAT[!is.na(adsl$DTHDT)] <- sample(
@@ -61,7 +61,7 @@ gen_adsl <- function() {
   adsl
 }
 
-test_that("DTH01 variant 1  is produced correctly", {
+test_that("DTH01 variant 1 is produced correctly", {
   adsl <- gen_adsl()
   tbl1 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -79,12 +79,12 @@ test_that("DTH01 variant 1  is produced correctly", {
     c(
       "", "", "Total number of deaths", "Primary cause of death",
       "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "A: Drug X",
-      "(N=134)", "107 (79.9%)", "", "107", "49 (45.8%)", "31 (29%)",
-      "27 (25.2%)", "B: Placebo", "(N=134)", "112 (83.6%)", "", "112",
-      "50 (44.6%)", "44 (39.3%)", "18 (16.1%)", "C: Combination", "(N=132)",
-      "111 (84.1%)", "", "111", "53 (47.7%)", "37 (33.3%)", "21 (18.9%)",
-      "All Patients", "(N=400)", "330 (82.5%)", "", "330", "152 (46.1%)",
-      "112 (33.9%)", "66 (20%)"
+      "(N=134)", "107 (79.9%)", "", "107", "57 (53.3%)", "32 (29.9%)",
+      "18 (16.8%)", "B: Placebo", "(N=134)", "112 (83.6%)", "", "112",
+      "54 (48.2%)", "36 (32.1%)", "22 (19.6%)", "C: Combination", "(N=132)",
+      "111 (84.1%)", "", "111", "52 (46.8%)", "33 (29.7%)", "26 (23.4%)",
+      "All Patients", "(N=400)", "330 (82.5%)", "", "330", "163 (49.4%)",
+      "101 (30.6%)", "66 (20%)"
       ),
     .Dim = c(8L, 5L)
   )
@@ -149,25 +149,25 @@ test_that("DTH01 variant 2 is produced correctly", {
       ">30", "Primary cause by days from last study drug administration",
       "<=30", "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER",
       ">30", "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER",
-      "A: Drug X", "(N=134)", "107 (79.9%)", "", "107", "49 (45.8%)",
-      "31 (29%)", "27 (25.2%)", "12 (44.4%)", "4 (14.8%)", "4 (14.8%)",
-      "6 (22.2%)", "1 (3.7%)", "", "107", "62 (57.9%)", "45 (42.1%)",
-      "", "", "62", "26 (41.9%)", "18 (29%)", "18 (29%)", "", "45",
-      "23 (51.1%)", "13 (28.9%)", "9 (20%)", "B: Placebo", "(N=134)",
-      "112 (83.6%)", "", "112", "50 (44.6%)", "44 (39.3%)", "18 (16.1%)",
-      "5 (27.8%)", "6 (33.3%)", "0", "5 (27.8%)", "2 (11.1%)",
-      "", "112", "56 (50%)", "56 (50%)", "", "", "56", "26 (46.4%)",
-      "21 (37.5%)", "9 (16.1%)", "", "56", "24 (42.9%)", "23 (41.1%)",
-      "9 (16.1%)", "C: Combination", "(N=132)", "111 (84.1%)", "",
-      "111", "53 (47.7%)", "37 (33.3%)", "21 (18.9%)", "4 (19%)", "8 (38.1%)",
-      "2 (9.5%)", "3 (14.3%)", "4 (19%)", "", "111", "56 (50.5%)",
-      "55 (49.5%)", "", "", "56", "24 (42.9%)", "20 (35.7%)", "12 (21.4%)",
-      "", "55", "29 (52.7%)", "17 (30.9%)", "9 (16.4%)", "All Patients",
-      "(N=400)", "330 (82.5%)", "", "330", "152 (46.1%)", "112 (33.9%)",
-      "66 (20%)", "21 (31.8%)", "18 (27.3%)", "6 (9.1%)", "14 (21.2%)",
-      "7 (10.6%)", "", "330", "174 (52.7%)", "156 (47.3%)", "", "",
-      "174", "76 (43.7%)", "59 (33.9%)", "39 (22.4%)", "", "156", "76 (48.7%)",
-      "53 (34%)", "27 (17.3%)"),
+      "A: Drug X", "(N=134)", "107 (79.9%)", "", "107", "57 (53.3%)",
+      "32 (29.9%)", "18 (16.8%)", "10 (55.6%)", "4 (22.2%)", "1 (5.6%)",
+      "3 (16.7%)", "0", "", "107", "58 (54.2%)", "49 (45.8%)", "",
+      "", "58", "32 (55.2%)", "17 (29.3%)", "9 (15.5%)", "", "49",
+      "25 (51%)", "15 (30.6%)", "9 (18.4%)", "B: Placebo", "(N=134)",
+      "112 (83.6%)", "", "112", "54 (48.2%)", "36 (32.1%)", "22 (19.6%)",
+      "4 (18.2%)", "5 (22.7%)", "1 (4.5%)", "10 (45.5%)", "2 (9.1%)",
+      "", "112", "66 (58.9%)", "46 (41.1%)", "", "", "66", "32 (48.5%)",
+      "23 (34.8%)", "11 (16.7%)", "", "46", "22 (47.8%)", "13 (28.3%)",
+      "11 (23.9%)", "C: Combination", "(N=132)", "111 (84.1%)", "",
+      "111", "52 (46.8%)", "33 (29.7%)", "26 (23.4%)", "8 (30.8%)",
+      "5 (19.2%)", "2 (7.7%)", "5 (19.2%)", "6 (23.1%)", "", "111",
+      "55 (49.5%)", "56 (50.5%)", "", "", "55", "19 (34.5%)", "19 (34.5%)",
+      "17 (30.9%)", "", "56", "33 (58.9%)", "14 (25%)", "9 (16.1%)",
+      "All Patients", "(N=400)", "330 (82.5%)", "", "330", "163 (49.4%)",
+      "101 (30.6%)", "66 (20%)", "22 (33.3%)", "14 (21.2%)", "4 (6.1%)",
+      "18 (27.3%)", "8 (12.1%)", "", "330", "179 (54.2%)", "151 (45.8%)",
+      "", "", "179", "83 (46.4%)", "59 (33%)", "37 (20.7%)", "", "151",
+      "80 (53%)", "42 (27.8%)", "29 (19.2%)"),
     .Dim = c(28L, 5L)
   )
   expect_identical(result, expected)
@@ -176,7 +176,7 @@ test_that("DTH01 variant 2 is produced correctly", {
 test_that("DTH01 variant 3 is produced correctly", {
   adsl <- gen_adsl()
 
-  l <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
+  dthcaus_levels <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
 
   part1 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -194,13 +194,13 @@ test_that("DTH01 variant 3 is produced correctly", {
     split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
     count_values(
       "DTHCAUS",
-      values = l[4],
+      values = dthcaus_levels[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
       .indent_mods = c(count_fraction = 4L)) %>%
     count_values(
       "DTHCAUS",
-      values = l[-4],
+      values = dthcaus_levels[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
       .indent_mods = c(count_fraction = 4L)) %>%
@@ -214,22 +214,21 @@ test_that("DTH01 variant 3 is produced correctly", {
     c("", "", "Total number of deaths", "Primary cause of death",
       "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "    Post study reporting of deaths",
       "    All other causes", "A: Drug X", "(N=134)", "107 (79.9%)",
-      "", "107", "49 (45.8%)", "31 (29%)", "27 (25.2%)", "4 (14.8%)",
-      "23 (85.2%)", "B: Placebo", "(N=134)", "112 (83.6%)", "", "112",
-      "50 (44.6%)", "44 (39.3%)", "18 (16.1%)", "0 (0%)", "18 (100%)",
-      "C: Combination", "(N=132)", "111 (84.1%)", "", "111", "53 (47.7%)",
-      "37 (33.3%)", "21 (18.9%)", "2 (9.5%)", "19 (90.5%)", "All Patients",
-      "(N=400)", "330 (82.5%)", "", "330", "152 (46.1%)", "112 (33.9%)",
-      "66 (20%)", "6 (9.1%)", "60 (90.9%)"),
+      "", "107", "57 (53.3%)", "32 (29.9%)", "18 (16.8%)", "1 (5.6%)",
+      "17 (94.4%)", "B: Placebo", "(N=134)", "112 (83.6%)", "", "112",
+      "54 (48.2%)", "36 (32.1%)", "22 (19.6%)", "1 (4.5%)", "21 (95.5%)",
+      "C: Combination", "(N=132)", "111 (84.1%)", "", "111", "52 (46.8%)",
+      "33 (29.7%)", "26 (23.4%)", "2 (7.7%)", "24 (92.3%)", "All Patients",
+      "(N=400)", "330 (82.5%)", "", "330", "163 (49.4%)", "101 (30.6%)",
+      "66 (20%)", "4 (6.1%)", "62 (93.9%)"),
     .Dim = c(10L, 5L)
   )
-  # expect_identical(result, expected)
 })
 
 test_that("DTH01 variant 4 is produced correctly", {
   adsl <- gen_adsl()
 
-  l <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
+  dthcaus_levels <- levels(adsl[adsl$DTHCAT == "OTHER", ]$DTHCAUS)
   adsl <- adsl %>%
     mutate(
       DTHCAUS_other = ifelse(
@@ -254,13 +253,13 @@ test_that("DTH01 variant 4 is produced correctly", {
     split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
     count_values(
       "DTHCAUS",
-      values = l[4],
+      values = dthcaus_levels[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
       .indent_mods = c(count_fraction = 4L)) %>%
     count_values(
       "DTHCAUS",
-      values = l[-4],
+      values = dthcaus_levels[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
       .indent_mods = c(count_fraction = 4L)) %>%
@@ -288,17 +287,16 @@ test_that("DTH01 variant 4 is produced correctly", {
       "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "    Post study reporting of deaths",
       "    All other causes", "      LOST TO FOLLOW UP", "      MISSING",
       "      SUICIDE", "      UNKNOWN", "A: Drug X", "(N=134)", "107 (79.9%)",
-      "", "107", "49 (45.8%)", "31 (29%)", "27 (25.2%)", "4 (14.8%)",
-      "23 (85.2%)", "12 (52.2%)", "4 (17.4%)", "6 (26.1%)", "1 (4.3%)",
-      "B: Placebo", "(N=134)", "112 (83.6%)", "", "112", "50 (44.6%)",
-      "44 (39.3%)", "18 (16.1%)", "0 (0%)", "18 (100%)", "5 (27.8%)",
-      "6 (33.3%)", "5 (27.8%)", "2 (11.1%)", "C: Combination", "(N=132)",
-      "111 (84.1%)", "", "111", "53 (47.7%)", "37 (33.3%)", "21 (18.9%)",
-      "2 (9.5%)", "19 (90.5%)", "4 (21.1%)", "8 (42.1%)", "3 (15.8%)",
-      "4 (21.1%)", "All Patients", "(N=400)", "330 (82.5%)", "", "330",
-      "152 (46.1%)", "112 (33.9%)", "66 (20%)", "6 (9.1%)", "60 (90.9%)",
-      "21 (35%)", "18 (30%)", "14 (23.3%)", "7 (11.7%)"),
+      "", "107", "57 (53.3%)", "32 (29.9%)", "18 (16.8%)", "1 (5.6%)",
+      "17 (94.4%)", "10 (58.8%)", "4 (23.5%)", "3 (17.6%)", "0", "B: Placebo",
+      "(N=134)", "112 (83.6%)", "", "112", "54 (48.2%)", "36 (32.1%)",
+      "22 (19.6%)", "1 (4.5%)", "21 (95.5%)", "4 (19%)", "5 (23.8%)",
+      "10 (47.6%)", "2 (9.5%)", "C: Combination", "(N=132)", "111 (84.1%)",
+      "", "111", "52 (46.8%)", "33 (29.7%)", "26 (23.4%)", "2 (7.7%)",
+      "24 (92.3%)", "8 (33.3%)", "5 (20.8%)", "5 (20.8%)", "6 (25%)",
+      "All Patients", "(N=400)", "330 (82.5%)", "", "330", "163 (49.4%)",
+      "101 (30.6%)", "66 (20%)", "4 (6.1%)", "62 (93.9%)", "22 (35.5%)",
+      "14 (22.6%)", "18 (29%)", "8 (12.9%)"),
     .Dim = c(14L, 5L)
   )
-  # expect_identical(result, expected)
 })

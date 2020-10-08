@@ -23,6 +23,7 @@ Byar's
 CDISC
 CMD
 CMH
+CMT
 Chendi
 Clopper
 Coull
@@ -80,8 +81,6 @@ cdisc
 chisq
 ci
 cmh
-CMH
-CMT
 conf
 covr
 coxph
