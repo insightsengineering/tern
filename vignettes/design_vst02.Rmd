@@ -69,9 +69,9 @@ adsl <- radsl(cached = TRUE)
 advs <- radvs(cached = TRUE)
 advs_label <- var_labels(advs)
 
-# This table intends to only provide during treatment abnormalities. 
+# This table intends to only provide during treatment abnormalities.
 # Hence, we keep treatment abnormalities only and remove baseline/screening abnormalities.
-advs_f <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y") 
+advs_f <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y")
 
 n_col_counts <- table(adsl$ARM)
 n_col_counts <- c(n_col_counts, sum(n_col_counts))
@@ -91,10 +91,10 @@ analyze_abnormal
 #### Default output
 
 ```{r }
-result <- basic_table() %>% 
+result <- basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
-  split_rows_by("PARAM", split_label = c("Parameter / Abnormality Direction"), visible_label = TRUE ) %>%
+  split_rows_by("PARAM", split_label = c("Parameter / Abnormality Direction"), visible_label = TRUE) %>%
   analyze_abnormal(vars = "ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
   build_table(df = advs_f, col_counts = n_col_counts) %>% as_html()
 result
