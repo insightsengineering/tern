@@ -14,24 +14,40 @@ gen_adsl <- function() {
     size = sum(!is.na(adsl$DTHDT)),
     replace = TRUE, prob = c(.5, .3, .2)
   )
-  adsl$DTHCAT <- factor(adsl$DTHCAT, level = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER"))  # nolint snake_case
+  adsl$DTHCAT <- factor(  # nolint snake_case
+    adsl$DTHCAT,
+    levels = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER")
+  )
 
-  adsl <- adsl %>% mutate(
-    DTHCAUS = ifelse(!is.na(DTHCAT) & DTHCAT == "OTHER",
-                     sample(
-                       x = c(
-                         "Post-study reporting of death",
-                         "LOST TO FOLLOW UP",
-                         "MISSING",
-                         "SUICIDE",
-                         "UNKNOWN"),
-                       size = sum((!is.na(adsl$DTHCAT) & adsl$DTHCAT == "OTHER")),
-                       replace = TRUE, prob = c(.1, .3, .3, .2, .1)),
-                     as.character(DTHCAT)
-    ),
-    DTHFL = ifelse(is.na(DTHDT), "N", "Y"))
+  adsl <- adsl %>%
+    mutate(
+      DTHCAUS = ifelse(
+        !is.na(DTHCAT) & DTHCAT == "OTHER",
+        sample(
+          x = c(
+            "Post-study reporting of death",
+            "LOST TO FOLLOW UP",
+            "MISSING",
+            "SUICIDE",
+            "UNKNOWN"
+          ),
+          size = sum((!is.na(adsl$DTHCAT) & adsl$DTHCAT == "OTHER")),
+          replace = TRUE,
+          prob = c(.1, .3, .3, .2, .1)
+        ),
+        as.character(DTHCAT)
+      ),
+      DTHFL = ifelse(is.na(DTHDT), "N", "Y")
+    )
 
-  adsl$DTHCAUS <- as.factor(adsl$DTHCAUS) # nolint snake_case
+  adsl$DTHCAUS <- factor(  # nolint snake_case
+    adsl$DTHCAUS,
+    levels = c(
+      "ADVERSE EVENT", "LOST TO FOLLOW UP", "MISSING", "Post-study reporting of death",
+      "PROGRESSIVE DISEASE", "SUICIDE", "UNKNOWN"
+    )
+  )
+  adsl$DTHFL <- factor(adsl$DTHFL, levels = c("Y", "N"))  #nolint snake_case
 
   # Create dummy variables LDDTHELD and LDDTHGR1 as in ADSL GDSR structure.
   adsl <- within(
@@ -223,6 +239,7 @@ test_that("DTH01 variant 3 is produced correctly", {
       "66 (20%)", "4 (6.1%)", "62 (93.9%)"),
     .Dim = c(10L, 5L)
   )
+  expect_identical(result, expected)
 })
 
 test_that("DTH01 variant 4 is produced correctly", {
@@ -234,7 +251,10 @@ test_that("DTH01 variant 4 is produced correctly", {
       DTHCAUS_other = ifelse(
         DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death", as.character(DTHCAUS), NA)
     )
-  adsl$DTHCAUS_other <- as.factor(adsl$DTHCAUS_other)  # nolint snake_case
+  adsl$DTHCAUS_other <- factor(  # nolint snake_case
+    adsl$DTHCAUS_other,
+    levels = c("LOST TO FOLLOW UP", "MISSING", "SUICIDE", "UNKNOWN")
+  )
 
   part1 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -299,4 +319,5 @@ test_that("DTH01 variant 4 is produced correctly", {
       "14 (22.6%)", "18 (29%)", "8 (12.9%)"),
     .Dim = c(14L, 5L)
   )
+  expect_identical(result, expected)
 })
