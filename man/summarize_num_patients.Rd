@@ -19,7 +19,7 @@ summarize_num_patients(
 )
 }
 \arguments{
-\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+\item{x}{(\code{character} or \code{factor}) \cr vector of patient IDs.}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}

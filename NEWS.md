@@ -10,6 +10,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Estimate difference in terms of Odds Ratio: `estimate_odds_ratio`, `s_odds_ratio`, `or_glm`.
 * Test the difference in responder proportions: `test_proportion_diff`, `s_test_proportion_diff`, `prop_chisq`, `prop_cmh`, `prop_fisher`, `prop_schouten`.
 * Estimate the responder proportion regarding the level of a factor: `s_multinomial_response`, `estimate_multinomial_response`.
+* New method for calculating the confidence interval in `s_incidence_rate`: Normal approximation for log rate
 
 
 * issues with no news: 

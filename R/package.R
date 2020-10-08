@@ -13,6 +13,7 @@
 #' @importFrom rlang "%||%"
 #' @importFrom methods is
 #' @importFrom utils globalVariables
+#' @importFrom stats qchisq
 NULL
 
 # We need this to avoid R CMD check warning about the '.' in magrittr pipes.

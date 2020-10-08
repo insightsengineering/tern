@@ -3,9 +3,8 @@
 #' Count the number of unique and non-unique patients in a column (variable).
 #'
 #' @inheritParams argument_convention
-#'
+#' @param x (`character` or `factor`) \cr vector of patient IDs.
 #' @template formatting_arguments
-#'
 #' @name summarize_num_patients
 NULL
 
