@@ -1,0 +1,81 @@
+---
+title: "Design: ECG Quantitative Assessment Shift Table (EGT03)"
+author: "Maximo Carreras"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of EGT03}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+## Shift Table of ECG Interval Data - Baseline versus Minimum Post-Baseline
+
+```{r data, results = "asis", eval = TRUE}
+
+library(random.cdisc.data)
+
+adsl <- radsl(cached = TRUE)
+adeg <- radeg(cached = TRUE)
+adeg_labels <- var_labels(adeg)
+
+# Filtering
+# ---------
+adeg_f <- subset(
+  adeg,
+  PARAMCD == "HR"  & # Heart Rate
+    SAFFL == "Y"   & # "Safety Population Flag"
+    ONTRTFL == "Y" & # "On Treatment Record Flag"
+    AVISIT  == "POST-BASELINE MINIMUM" # "Analysis Visit"
+  )
+
+
+# Preprocessing
+
+# For the EGT03 template, data imputation shoud be avoided, and missing data
+# explicit and accounted for, so the contingency table sum adds up to the group N.
+# For illustration purpose, missing data are added to the example.
+adeg_f$BNRIND <- factor(
+  adeg_f$BNRIND, levels = c("NORMAL", "LOW", "HIGH", "Missing"),
+  labels = c("NORMAL", "LOW", "HIGH", "Missing")
+  )
+adeg_f$ANRIND <- factor(
+  adeg_f$BNRIND, levels = c("NORMAL", "LOW", "HIGH", "Missing"),
+  labels = c("NORMAL", "LOW", "HIGH", "Missing")
+  )
+adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 10)] <- "Missing" 
+adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 10)] <- "Missing" 
+
+
+var_labels(adeg_f) <- adeg_labels
+
+```
+
+```{r target1, eval = TRUE}
+lyt <- basic_table() %>%
+  split_cols_by("ANRIND") %>%
+  split_rows_by("ARM") %>%
+  add_rowcounts() %>%
+  summarize_vars("BNRIND", denom = "N_row")
+
+build_table(lyt = lyt, df = adeg_f)
+```
