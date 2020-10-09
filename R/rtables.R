@@ -188,7 +188,7 @@ format_wrap_df <- function(sfun,
   )
 
   # Find out which rtables arguments are requested by the statistics function.
-  rtables_arg_names <- c(".N_row", ".N_col", ".N_total", ".var", ".ref_group", ".ref_full", ".in_ref_col")
+  rtables_arg_names <- c(".N_row", ".N_col", ".N_total", ".var", ".df_row", ".ref_group", ".ref_full", ".in_ref_col")
   selected_arg_names <- intersect(
     names(formals(sfun)),
     rtables_arg_names
@@ -316,7 +316,7 @@ format_wrap_x <- function(sfun,
   )
 
   # Find out which rtables arguments are requested by the statistics function.
-  rtables_arg_names <- c(".N_row", ".N_col", ".N_total", ".var", ".ref_group", ".ref_full", ".in_ref_col")
+  rtables_arg_names <- c(".N_row", ".N_col", ".N_total", ".var", ".df_row", ".ref_group", ".ref_full", ".in_ref_col")
   selected_arg_names <- intersect(
     names(formals(sfun)),
     rtables_arg_names
