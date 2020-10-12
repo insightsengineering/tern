@@ -9,6 +9,10 @@ output:
     toc_depth: 2
     theme: journal
     highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of AET04}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
