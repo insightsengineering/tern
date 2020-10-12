@@ -45,6 +45,7 @@ Coull
 covr
 coxph
 CoxPH
+CTCAE
 dataname
 datanames
 denom
@@ -86,6 +87,7 @@ Manukyan
 mmrm
 MMRM
 Mordig
+NCI
 nd
 Nelder
 NEST
