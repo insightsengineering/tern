@@ -43,6 +43,7 @@ CMD
 cmh
 CMH
 CMT
+coercible
 conf
 Coull
 covr
@@ -94,6 +95,7 @@ NCI
 nd
 Nelder
 NEST
+NESTTeam
 Newcombe
 nlminb
 NLopt
