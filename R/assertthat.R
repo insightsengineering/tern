@@ -153,3 +153,52 @@ is_valid_factor <- function(x) {
 on_failure(is_valid_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a valid factor, please check the factor levels (no empty strings allowed)")
 }
+
+#' @describeIn assertions Check whether `x` is a valid character (has no NAs and no empty strings).
+#' @export
+#' @examples
+#'
+#' # Check whether `x` is a valid character vector
+#' is_valid_character(-1)
+#' is_valid_character(c("a", "b"))
+#' is_valid_character(c("a", ""))
+#' is_valid_character("")
+#'
+is_valid_character <- function(x) {
+  is.character(x) &&
+  all(x != "") &&
+  all(!(is.na(x)))
+}
+on_failure(is_valid_character) <- function(call, env) {
+  paste0(deparse(call$x), " is not a valid character vector, please check contents (no NAs or empty strings allowed)")
+}
+
+#' @describeIn assertions Check whether all elements of `x` are in a reference vector.
+#' @param ref (`vector`)\cr where matches from `x` are sought for `all_elements_in_ref`.
+#' @export
+#' @examples
+#'
+#' # Check whether all elements of `x` are in a reference vector.
+#' all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
+#' all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
+#' all_elements_in_ref(c(1:3), c(1:5))
+#'
+all_elements_in_ref <- function(x, ref){
+
+  assert_that(
+    is.vector(x),
+    is.vector(ref),
+    not_empty(x),
+    not_empty(ref)
+  )
+
+  all(x %in% ref)
+}
+on_failure(all_elements_in_ref) <- function(call, env) {
+
+  x <- eval(call$x, envir = env)
+  ref <- eval(call$ref, envir = env)
+  not_in_ref <- x[!(x %in% ref)]
+
+  paste0("Some elements ", deparse(not_in_ref), " are not in the reference.")
+}

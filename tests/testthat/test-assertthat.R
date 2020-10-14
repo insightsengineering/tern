@@ -67,6 +67,17 @@ test_that("is_valid_factor is FALSE with wrong input", {
   expect_false(is_valid_factor(factor()))
 })
 
+test_that("is_valid_character is TRUE with healthy input", {
+  expect_true(is_valid_character(c("a", "b")))
+})
+
+test_that("is_valid_character is FALSE with wrong input", {
+  expect_false(is_valid_character(c(1L, 2L)))
+  expect_false(is_valid_character(NULL))
+  expect_false(is_valid_character(c("a", NA)))
+  expect_false(is_valid_character(c("a", "")))
+})
+
 test_that("is_equal_length is TRUE with same-length inputs", {
   expect_true(is_equal_length(1, 5, "car", NA, list(a = list(5, 3))))
 })
@@ -89,4 +100,17 @@ test_that("is_proportion is FALSE with wrong input", {
   expect_false(is_proportion(-1.01))
   expect_false(is_proportion("abc"))
   expect_false(is_proportion(c(0.4, 0.3)))
+})
+
+test_that("all_elements_in_ref is TRUE with healthy input", {
+  expect_true(all_elements_in_ref(x = 1, ref = c(1:3)))
+  expect_true(all_elements_in_ref(x = c(1:2), ref = c(1:3)))
+  expect_true(all_elements_in_ref(x = "a", ref = c("a", "b", "c")))
+  expect_true(all_elements_in_ref(x = c("a", "c"), ref = c("a", "b", "c")))
+})
+
+test_that("all_elements_in_ref is FALSE with wrong input", {
+  expect_false(all_elements_in_ref(x = 4, ref = c(1:3)))
+  expect_false(all_elements_in_ref(x = "z", ref = c("a", "b", "c")))
+  expect_error(all_elements_in_ref(x = character(0), ref = c("a", "b", "c")))
 })

@@ -9,6 +9,8 @@
 \alias{is_equal_length}
 \alias{is_proportion}
 \alias{is_valid_factor}
+\alias{is_valid_character}
+\alias{all_elements_in_ref}
 \title{Additional Assertions for \code{assert_that}}
 \usage{
 is_character_or_factor(x)
@@ -24,6 +26,10 @@ is_equal_length(...)
 is_proportion(x, include_boundaries = FALSE)
 
 is_valid_factor(x)
+
+is_valid_character(x)
+
+all_elements_in_ref(x, ref)
 }
 \arguments{
 \item{x}{object to test}
@@ -35,6 +41,8 @@ is_valid_factor(x)
 \item{...}{a collection of objects to test.}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries in \code{is_proportion}}
+
+\item{ref}{(\code{vector})\cr where matches from \code{x} are sought for \code{all_elements_in_ref}.}
 }
 \value{
 \code{flag} whether the assertion holds (\code{TRUE} or \code{FALSE}). When used inside
@@ -58,6 +66,10 @@ We provide additional assertion functions which can be used together with \code{
 \item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 
 \item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
+
+\item \code{is_valid_character}: Check whether \code{x} is a valid character (has no NAs and no empty strings).
+
+\item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
 }}
 
 \examples{
@@ -98,5 +110,18 @@ is_valid_factor(-1)
 is_valid_factor(factor(c("a", "b")))
 is_valid_factor(factor(c("a", "")))
 is_valid_factor(factor())
+
+
+# Check whether `x` is a valid character vector
+is_valid_character(-1)
+is_valid_character(c("a", "b"))
+is_valid_character(c("a", ""))
+is_valid_character("")
+
+
+# Check whether all elements of `x` are in a reference vector.
+all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
+all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
+all_elements_in_ref(c(1:3), c(1:5))
 
 }
