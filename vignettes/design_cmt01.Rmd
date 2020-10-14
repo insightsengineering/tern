@@ -114,8 +114,34 @@ result <- basic_table() %>%
 ```
 
 
-## Variant 3: Remove "Total number of treatments" row within each class
-This is not possible at the moment. It will be possible in the future when the "summarize_row_groups" function takes extra arguments
+## Variant 3: Remove "Total number of treatments" row for each class
+
+Variant 3 is similar to variant 1 but removing the "Total number of treatments" row for each treatment class.
+
+```{r variant 3}
+result <- basic_table() %>%
+  split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = c("unique", "nonunique"),
+    .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
+  ) %>%
+  split_rows_by("CMCLAS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .labels = c("Total number of patients with at least one treatment (%)"),
+    .stats = "unique"
+  ) %>%
+  count_occurrences(var = "CMDECOD") %>%
+  build_table(adcm_c, col_counts = n_per_arm) %>%
+  prune_table() %>%
+  sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
+
+ result
+
+```
+
 
 
 ## Variant 4: Sort data by total column frequency from most to least frequently reported medication class

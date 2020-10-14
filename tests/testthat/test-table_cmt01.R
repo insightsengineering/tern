@@ -129,3 +129,65 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
 
   expect_identical(result_matrix, expected_matrix)
 })
+
+
+
+test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+
+  n_per_arm <- table(adsl$ARM)
+  n_per_arm <- c(n_per_arm, "All Patients" = sum(n_per_arm))
+
+  adcm <- radcm(cached = TRUE)
+  adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
+
+  result <- basic_table() %>%
+    split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+    add_colcounts() %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .labels = c(
+        unique = "Total number of patients with at least one treatment",
+        nonunique = "Total number of treatments"
+      )
+    ) %>%
+    split_rows_by("CMCLAS",
+      split_fun = drop_split_levels, child_labels = "visible",
+      nested = FALSE
+    ) %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .labels = c(unique = "Total number of patients with at least one treatment"),
+      .stats = "unique"
+    ) %>%
+    count_occurrences(var = "CMDECOD") %>%
+    build_table(adcm_c, col_counts = n_per_arm) %>%
+    prune_table() %>%
+    sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "Total number of patients with at least one treatment",
+      "Total number of treatments", "medcl A", "Total number of patients with at least one treatment",
+      "medname A_2/3", "medname A_3/3", "medcl B", "Total number of patients with at least one treatment",
+      "medname B_1/4", "medname B_4/4", "medcl C", "Total number of patients with at least one treatment",
+      "medname C_2/2", "medname C_1/2", "A: Drug X", "(N=134)", "117 (87.3%)",
+      "415", "", "75 (56%)", "53 (39.6%)", "45 (33.6%)", "", "83 (61.9%)",
+      "52 (38.8%)", "50 (37.3%)", "", "82 (61.2%)", "52 (38.8%)", "51 (38.1%)",
+      "B: Placebo", "(N=134)", "116 (86.6%)", "414", "", "79 (59%)",
+      "50 (37.3%)", "54 (40.3%)", "", "74 (55.2%)", "57 (42.5%)", "45 (33.6%)",
+      "", "84 (62.7%)", "58 (43.3%)", "50 (37.3%)", "C: Combination",
+      "(N=132)", "116 (87.9%)", "460", "", "81 (61.4%)", "56 (42.4%)",
+      "48 (36.4%)", "", "88 (66.7%)", "59 (44.7%)", "55 (41.7%)", "",
+      "89 (67.4%)", "60 (45.5%)", "56 (42.4%)", "All Patients", "(N=400)",
+      "349 (87.2%)", "1289", "", "235 (58.8%)", "159 (39.8%)", "147 (36.8%)",
+      "", "245 (61.3%)", "168 (42%)", "150 (37.5%)", "", "255 (63.7%)",
+      "170 (42.5%)", "157 (39.2%)"
+    ),
+    .Dim = c(16L, 5L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+})
