@@ -145,4 +145,29 @@ result <- basic_table() %>%
 
 
 ## Variant 4: Sort data by total column frequency from most to least frequently reported medication class
-Within a medication class, sort by decreasing total number of patients with the specific medication. This is currently not implemented. I did not find a way to use sort_at_path function here.
+Variant 4 is similar to variant 1 but sorting the data by total column frequency from most to least frequently reported medication class.  Within a medication class, sort by decreasing total number of patients with the specific medication.
+
+```{r variant 4}
+
+result <- basic_table() %>%
+  split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = c("unique", "nonunique"),
+    .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
+  ) %>%
+  split_rows_by("CMCLAS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
+  ) %>%
+  count_occurrences(var = "CMDECOD") %>%
+  build_table(adcm_c, col_counts = n_per_arm) %>%
+  prune_table() %>%
+  sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences, decreasing = TRUE) %>%
+  sort_at_path(path = c("CMCLAS"), scorefun = cont_n_onecol(4), decreasing = TRUE)
+
+result
+
+```
