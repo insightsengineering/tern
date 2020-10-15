@@ -4,6 +4,7 @@
 \alias{count_occurrences_by_grade}
 \alias{h_append_grade_groups}
 \alias{s_count_occurrences_by_grade}
+\alias{summarize_occurrences_by_grade}
 \title{Occurrence Counts by Grade}
 \usage{
 h_append_grade_groups(grade_groups, refs)
@@ -15,6 +16,24 @@ s_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list(),
   labelstr = ""
+)
+
+count_occurrences_by_grade(
+  lyt,
+  var,
+  .stats = NULL,
+  .formats = NULL,
+  .indent_mods = NULL,
+  ...
+)
+
+summarize_occurrences_by_grade(
+  lyt,
+  var,
+  .stats = NULL,
+  .formats = NULL,
+  .indent_mods = NULL,
+  ...
 )
 }
 \arguments{
@@ -35,6 +54,19 @@ by a statistics function.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
+\item{...}{additional arguments for the lower level functions.}
 }
 \description{
 Functions for analyzing frequencies and percentages of occurrences by grade for patients
@@ -49,6 +81,12 @@ insert grade groupings into list with individual grade frequencies.
 \item \code{s_count_occurrences_by_grade}: Statistics function which given occurrence data counts the
 number of patients by highest grade. Returns a list of counts and percentages with one element
 per grade level or grade level grouping.
+
+\item \code{count_occurrences_by_grade}: Layout creating function which can be used for creating tables,
+which can take statistics function arguments and additional format arguments (see below).
+
+\item \code{summarize_occurrences_by_grade}: Layout creating function which adds content rows using the
+statistics function and additional format arguments (see below).
 }}
 
 \section{Formatting arguments}{
@@ -73,9 +111,13 @@ h_append_grade_groups(
 
 
 df <- data.frame(
-  USUBJID = as.character(c(1:5, 1)),
-  ARM = factor(c("A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
-  AETOXGR = factor(c(1, 2, 3, 1, 2, 3), levels = c(1:5)),
+  USUBJID = as.character(c(1:6, 1)),
+  ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
+  AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
+  AESEV = factor(
+    x = c("MILD", "MODERATE", "SEVERE", "MILD",  "MILD", "MODERATE", "SEVERE"),
+    levels = c("MILD", "MODERATE", "SEVERE")
+  ),
   stringsAsFactors = FALSE
 )
 
@@ -84,5 +126,51 @@ s_count_occurrences_by_grade(df,
                     .var = "AETOXGR",
                     id = "USUBJID",
                     grade_groups = list("ANY" = levels(df$AETOXGR)))
+
+
+# Layout creating function with custom format.
+basic_table() \%>\%
+  split_cols_by("ARM") \%>\%
+  add_colcounts() \%>\%
+  count_occurrences_by_grade(
+    var = "AESEV",
+    .formats = c("count_percent" = "xx.xx (xx.xx\%)")
+  ) \%>\%
+  build_table(df, col_counts = c(3L, 3L))
+
+# Define additional grade groupings.
+gr_grp <-  list(
+  "-Any-" = c("1", "2", "3", "4", "5"),
+  "Grade 1-2" = c("1", "2"),
+  "Grade 3-5" = c("3", "4", "5")
+)
+
+basic_table() \%>\%
+  split_cols_by("ARM") \%>\%
+  add_colcounts() \%>\%
+  count_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) \%>\%
+  build_table(df, col_counts = c(3L, 3L))
+
+
+# Layout creating function with custom format.
+basic_table() \%>\%
+  add_colcounts() \%>\%
+  split_rows_by("ARM", child_labels = "visible", nested = TRUE) \%>\%
+  summarize_occurrences_by_grade(
+  var = "AESEV",
+  .formats = c("count_percent" = "xx.xx (xx.xx\%)")) \%>\%
+  build_table(df, col_counts = 10L)
+
+basic_table() \%>\%
+  add_colcounts() \%>\%
+  split_rows_by("ARM", child_labels = "visible", nested = TRUE) \%>\%
+  summarize_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) \%>\%
+  build_table(df, col_counts = 10L)
 
 }

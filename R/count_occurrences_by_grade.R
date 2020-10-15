@@ -61,9 +61,13 @@ h_append_grade_groups <- function(grade_groups, refs) {
 #' @examples
 #'
 #' df <- data.frame(
-#'   USUBJID = as.character(c(1:5, 1)),
-#'   ARM = factor(c("A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
-#'   AETOXGR = factor(c(1, 2, 3, 1, 2, 3), levels = c(1:5)),
+#'   USUBJID = as.character(c(1:6, 1)),
+#'   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
+#'   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
+#'   AESEV = factor(
+#'     x = c("MILD", "MODERATE", "SEVERE", "MILD",  "MILD", "MODERATE", "SEVERE"),
+#'     levels = c("MILD", "MODERATE", "SEVERE")
+#'   ),
 #'   stringsAsFactors = FALSE
 #' )
 #'
@@ -110,5 +114,138 @@ s_count_occurrences_by_grade <- function(df,
   list(
     count_percent = l_count_percent
   )
+
+}
+
+#' @describeIn count_occurrences_by_grade Layout creating function which can be used for creating tables,
+#'   which can take statistics function arguments and additional format arguments (see below).
+#' @export
+#' @examples
+#'
+#' # Layout creating function with custom format.
+#' basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   add_colcounts() %>%
+#'   count_occurrences_by_grade(
+#'     var = "AESEV",
+#'     .formats = c("count_percent" = "xx.xx (xx.xx%)")
+#'   ) %>%
+#'   build_table(df, col_counts = c(3L, 3L))
+#'
+#' # Define additional grade groupings.
+#' gr_grp <-  list(
+#'   "-Any-" = c("1", "2", "3", "4", "5"),
+#'   "Grade 1-2" = c("1", "2"),
+#'   "Grade 3-5" = c("3", "4", "5")
+#' )
+#'
+#' basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   add_colcounts() %>%
+#'   count_occurrences_by_grade(
+#'     var = "AETOXGR",
+#'     grade_groups = gr_grp
+#'   ) %>%
+#'   build_table(df, col_counts = c(3L, 3L))
+#'
+count_occurrences_by_grade <- function(
+  lyt,
+  var,
+  .stats = NULL,
+  .formats = NULL,
+  .indent_mods = NULL,
+  ...
+) {
+
+  afun <- make_afun(
+    s_count_occurrences_by_grade,
+    .stats = c("count_percent"),
+    .formats = c("count_percent" = "xx (xx.x%)"),
+    .indent_mods = c("count_percent" = 0L)
+  )
+
+  afun_customized <- make_afun(
+    afun,
+    .stats = .stats,
+    .formats = .formats,
+    .indent_mods = .indent_mods,
+    .ungroup_stats =
+      `if`(
+        is.null(.stats) || "count_percent" %in% .stats,
+        "count_percent",
+        NULL
+      ) # Note that we need to ungroup only here.
+    # Otherwise the user could no longer refer to `count_percent` statistic.
+  )
+
+  analyze(
+    lyt = lyt,
+    vars = var,
+    afun = afun_customized,
+    extra_args = list(...)
+  )
+
+}
+
+#' @describeIn count_occurrences_by_grade Layout creating function which adds content rows using the
+#'   statistics function and additional format arguments (see below).
+#' @export
+#' @examples
+#'
+#' # Layout creating function with custom format.
+#' basic_table() %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+#'   summarize_occurrences_by_grade(
+#'   var = "AESEV",
+#'   .formats = c("count_percent" = "xx.xx (xx.xx%)")) %>%
+#'   build_table(df, col_counts = 10L)
+#'
+#' basic_table() %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+#'   summarize_occurrences_by_grade(
+#'     var = "AETOXGR",
+#'     grade_groups = gr_grp
+#'   ) %>%
+#'   build_table(df, col_counts = 10L)
+#'
+summarize_occurrences_by_grade <- function(
+  lyt,
+  var,
+  .stats = NULL,
+  .formats = NULL,
+  .indent_mods = NULL,
+  ...
+) {
+
+  cfun <- make_afun(
+    s_count_occurrences_by_grade,
+    .stats = c("count_percent"),
+    .formats = c("count_percent" = "xx (xx.x%)"),
+    .indent_mods = c("count_percent" = 0L)
+  )
+
+  cfun_customized <- make_afun(
+    cfun,
+    .stats = .stats,
+    .formats = .formats,
+    .indent_mods = .indent_mods,
+    .ungroup_stats =
+      `if`(
+        is.null(.stats) || "count_percent" %in% .stats,
+        "count_percent",
+        NULL
+      ) # Note that we need to ungroup only here.
+    # Otherwise the user could no longer refer to `count_percent` statistic.
+  )
+
+  summarize_row_groups(
+    lyt = lyt,
+    var = var,
+    cfun = cfun_customized,
+    extra_args = list(...)
+  )
+
 
 }
