@@ -8,7 +8,9 @@ get_test_data_simple <- function() {
       c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
       levels = c("MILD", "MODERATE", "SEVERE")
     ),
-    ARM = factor(c("A", "A", "A", "B", "B", "B", "A")),
+    ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
+    ARM_EMPTY =  factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B", "D")),
+    BMRKR = factor(rep(c("HIGH", "LOW"), 4)[-1], levels = c("LOW", "HIGH")),
     stringsAsFactors = FALSE
   )
 
@@ -48,9 +50,26 @@ test_that("s_count_occurrences_by_grade works with valid input and default argum
     "3" = list(c(2L, 0.2)),
     "4" = list(c(0L, 0)),
     "5" = list(c(0, 0))
-
   ))
+
   expect_equal(result, expected)
+
+  # Test with empty input.
+  df_empty <- get_test_data_simple() %>%
+    dplyr::filter(ARM == "D")
+
+  result <- s_count_occurrences_by_grade(df = df_empty, .var = "AETOXGR", .N_col = 10)
+
+  expected <- list(count_percent = c(
+    "1" = list(c(0, 0)),
+    "2" = list(c(0, 0)),
+    "3" = list(c(0, 0)),
+    "4" = list(c(0, 0)),
+    "5" = list(c(0, 0))
+  ))
+
+  expect_equal(result, expected)
+
 })
 
 test_that("s_count_occurrences_by_grade works with valid input for grade grouping", {
@@ -77,6 +96,34 @@ test_that("s_count_occurrences_by_grade works with valid input for grade groupin
     "5" = list(c(0, 0))
   ))
   expect_equal(result, expected)
+
+  # Test with empyt input.
+  df_empty <- get_test_data_simple() %>%
+    dplyr::filter(ARM == "D")
+
+  result <- s_count_occurrences_by_grade(
+    df = df_empty,
+    .var = "AETOXGR",
+    .N_col = 10,
+    grade_groups = list(
+      "Any Grade" = as.character(1:5),
+      "Grade 1-2" = c("1", "2"),
+      "Grade 3-4" = c("3", "4")
+    )
+  )
+
+  expected <- list(count_percent = c(
+    "Any Grade" = list(c(0, 0)),
+    "Grade 1-2" = list(c(0, 0)),
+    "1" = list(c(0, 0)),
+    "2" = list(c(0, 0)),
+    "Grade 3-4" = list(c(0, 0)),
+    "3" = list(c(0, 0)),
+    "4" = list(c(0, 0)),
+    "5" = list(c(0, 0))
+  ))
+  expect_equal(result, expected)
+
 })
 
 test_that("s_count_occurrences_by_grade works with valid input for intensity and custom arguments", {
@@ -116,13 +163,33 @@ test_that("count_occurrences_by_grade works with default arguments for intensity
   expected_matrix <- structure(
     c(
       "", "", "MILD", "MODERATE", "SEVERE", "A", "(N=3)",
-      "0 (0%)", "1 (33.3%)", "2 (66.7%)", "B", "(N=3)", "2 (66.7%)",
-      "1 (33.3%)", "0 (0%)"
+      "0", "1 (33.3%)", "2 (66.7%)", "B", "(N=3)", "2 (66.7%)",
+      "1 (33.3%)", "0"
     ),
     .Dim = c(5L, 3L)
   )
 
   expect_identical(result_matrix, expected_matrix)
+
+  # Test with empty column.
+  df <- get_test_data_simple()
+
+  result <- basic_table() %>%
+    split_cols_by("ARM_EMPTY") %>%
+    add_colcounts() %>%
+    count_occurrences_by_grade(var = "AESEV") %>%
+    build_table(df, col_counts = c(3L, 3L, 1L))
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "MILD", "MODERATE", "SEVERE", "A", "(N=3)",
+      "0", "1 (33.3%)", "2 (66.7%)", "B", "(N=3)", "2 (66.7%)",
+      "1 (33.3%)", "0", "D", "(N=1)", "0", "0", "0"
+    ),
+  .Dim = 5:4
+ )
+
 })
 
 test_that("count_occurrences_by_grade works with custom arguments for grade", {
@@ -182,6 +249,32 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
     .Dim = c(10L, 2L)
   )
   expect_identical(result_matrix, expected_matrix)
+
+  # Test with empty input.
+  df <- get_test_data_simple()
+
+  result <- basic_table() %>%
+    split_cols_by("ARM_EMPTY") %>%
+    add_colcounts() %>%
+    split_rows_by("BMRKR", child_labels = "visible", nested = TRUE) %>%
+    summarize_occurrences_by_grade(
+      var = "AESEV",
+      .formats = c("count_percent" = "xx.xx (xx.xx%)")) %>%
+    build_table(df, col_counts = rep(10L, 3))
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "LOW", "MILD", "MODERATE", "SEVERE", "HIGH",
+      "MILD", "MODERATE", "SEVERE", "A", "(N=10)", "", "0", "0",
+      "2 (20%)", "", "0", "1 (10%)", "0", "B", "(N=10)",
+      "", "1 (10%)", "0", "0", "", "1 (10%)", "1 (10%)",
+      "0", "D", "(N=10)", "", "0", "0", "0", "",
+      "0", "0", "0"
+    ),
+    .Dim = c(10L, 4L)
+  )
+
 })
 
 test_that("summarize_occurrences_by_grade works with custom arguments for grade", {
@@ -210,9 +303,9 @@ test_that("summarize_occurrences_by_grade works with custom arguments for grade"
       "", "", "A", "-Any-", "Grade 1-2", "1", "2", "Grade 3-5",
       "3", "4", "5", "B", "-Any-", "Grade 1-2", "1", "2", "Grade 3-5",
       "3", "4", "5", "all obs", "(N=10)", "", "3 (30%)", "1 (10%)",
-      "0 (0%)", "1 (10%)", "2 (20%)", "2 (20%)", "0 (0%)", "0 (0%)",
-      "", "3 (30%)", "3 (30%)", "2 (20%)", "1 (10%)", "0 (0%)", "0 (0%)",
-      "0 (0%)", "0 (0%)"
+      "0", "1 (10%)", "2 (20%)", "2 (20%)", "0", "0",
+      "", "3 (30%)", "3 (30%)", "2 (20%)", "1 (10%)", "0", "0",
+      "0", "0"
     ),
     .Dim = c(20L, 2L)
   )

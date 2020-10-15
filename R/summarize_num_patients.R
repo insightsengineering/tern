@@ -65,7 +65,7 @@ s_num_patients_content <- function(df, labelstr="", .N_col, .var) { # nolint
 c_num_patients <- make_afun(
   s_num_patients_content,
   .stats = c("unique", "nonunique"),
-  .formats = c(unique = "xx (xx.x%)", nonunique = "xx"),
+  .formats = c(unique = format_count_fraction, nonunique = "xx"),
   .labels = c(unique = "Number of patients with at least one event",
               nonunique = "Number of events")
 )

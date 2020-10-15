@@ -86,24 +86,36 @@ s_count_occurrences_by_grade <- function(df,
 
   assert_that(
     is_df_with_variables(df, list(grade = .var, id = id)),
-    is_valid_factor(df[[.var]]),
-    is.count(.N_col),
-    noNA(df[[id]]),
-    is_valid_character(df[[id]]) || is_valid_factor(df[[id]])
+    is_valid_factor(df[[.var]])
   )
 
-  id <- df[[id]]
-  grade <- df[[.var]]
+  if (nrow(df) < 1) {
 
-  if (!is.ordered(grade)) {
+    grade_levels <- levels(df[[.var]])
+    l_count <- as.list(rep(0, length(grade_levels)))
+    names(l_count) <- grade_levels
 
-    grade_lbl <- label(grade)
-    grade <- with_label(factor(grade, levels = levels(grade), ordered = TRUE), grade_lbl)
+  } else {
 
+    assert_that(
+      is.count(.N_col),
+      noNA(df[[id]]),
+      is_valid_character(df[[id]]) || is_valid_factor(df[[id]])
+    )
+
+    id <- df[[id]]
+    grade <- df[[.var]]
+
+    if (!is.ordered(grade)) {
+
+      grade_lbl <- label(grade)
+      grade <- with_label(factor(grade, levels = levels(grade), ordered = TRUE), grade_lbl)
+
+    }
+
+    df_max <- aggregate(grade ~ id, FUN = max, drop = FALSE)
+    l_count <- as.list(table(df_max$grade))
   }
-
-  df_max <- aggregate(grade ~ id, FUN = max, drop = FALSE)
-  l_count <- as.list(table(df_max$grade))
 
   if (length(grade_groups) > 0) {
     l_count <- h_append_grade_groups(grade_groups, l_count)
@@ -160,7 +172,7 @@ count_occurrences_by_grade <- function(
   afun <- make_afun(
     s_count_occurrences_by_grade,
     .stats = c("count_percent"),
-    .formats = c("count_percent" = "xx (xx.x%)"),
+    .formats = c("count_percent" = format_count_fraction),
     .indent_mods = c("count_percent" = 0L)
   )
 
@@ -222,7 +234,7 @@ summarize_occurrences_by_grade <- function(
   cfun <- make_afun(
     s_count_occurrences_by_grade,
     .stats = c("count_percent"),
-    .formats = c("count_percent" = "xx (xx.x%)"),
+    .formats = c("count_percent" = format_count_fraction),
     .indent_mods = c("count_percent" = 0L)
   )
 
