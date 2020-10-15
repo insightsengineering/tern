@@ -1,0 +1,283 @@
+---
+title: "Design for special AE by grade PI table (AET04_PI)"
+author: "Daniel Sabanes Bove"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of AET04_PI}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(assertthat)
+library(dplyr)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+## Data for examples
+
+This is the same data that was used for `AET04`.
+
+```{r data, results = "asis", eval = TRUE}
+
+library(random.cdisc.data)
+
+adsl <- radsl(cached = TRUE)
+adae <- radae(cached = TRUE)
+
+adae$AEDECOD2 <- as.character(adae$AEDECOD) #nolint
+adae$AEBODSYS2 <- as.character(adae$AEBODSYS) #nolint
+
+anl <- adae %>%
+  filter(AEDECOD %in% c("dcd A.1.1.1.1", "dcd A.1.1.1.2") | AEBODSYS == "cl B.1")
+
+df <- data.frame(
+  USUBJID = as.character(c(1:5, 1)),
+  ATOXGR = factor(c(1, 2, 3, 1, 2, 3), levels = c(1:5)),
+  AESEV = factor(c("MILD", "MODERATE", "SEVERE", "MILD", "MODERATE", "SEVERE")),
+  ARM = factor(c("A", "A", "A", "B", "B", "A")),
+  stringsAsFactors = FALSE
+)
+
+big_n <- length(unique(anl$USUBJID))
+```
+
+## Objective
+
+We first tackle the first variant, "Adverse Events Reported in >= 10% of Patients by Highest NCI CTCAE Grade":
+
+````
+                                         ARM A                          ARM B            
+                                        (N=185)                        (N=180)           
+                             _____________________________  _____________________________
+                                                                                         
+  MedDRA System Organ Class  Any Grade  Grade 3-4  Grade 5  Any Grade  Grade 3-4  Grade 5
+    MedDRA Preferred Term       (%)        (%)       (%)       (%)        (%)       (%)  
+  _______________________________________________________________________________________
+                                                                                         
+  SKIN AND SUBCUTANEOUS TISSUE DISORDERS                                                     
+    ALOPECIA                    49          1         0        57          0         0   
+    RASH                        16         <1         0        12          0         0   
+    PRURITUS                    15          0         0         7          0         0   
+                                                                                         
+  GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS                                       
+    FATIGUE                     42          4         0        44          3         0   
+    PYREXIA                     12         <1         0        10         <1         0   
+    OEDEMA PERIPHERAL           12          0         0         8         <1         0   
+    ASTHENIA                    12          2         0        10          0         0   
+````
+
+This table is designed for the purpose of populating special tables for the US package insert (PI) for oncology drugs.The overall implementation is based on the `AET04` template.
+
+Details: (see GDSR)
+- Table entries represent percentages based on N in the column headings.
+- Multiple occurrences of the same AE in one individual are counted once at the highest grade for this patient.
+- Sorting: 
+  - Order the data by total column from the most commonly reported SOC to the least frequent one.  
+  - Within SOC, sort by decreasing frequency of PT.  
+  - Include the option to suppress SOC and sort by descending frequency of PT overall. (This is another variant.)
+- Pruning:
+  - Different combinations depending on the variant. 
+  - Rows with zero counts will be removed (default) unless overruled by the statistician.
+
+## Design Summary
+
+- Analysis: 
+  - We are going to use custom splits for the grades with `add_combo_levels` in combination with `summarize_vars`.
+  - We don't need to modify the `s_summary.factor` method to only give fractions as well as a statistic (based on `.N_col`),
+    since we can just take the fraction only when we do the formatting.
+  - That is also important so that we still have the counts in the table (although not displayed in formatting) as they are needed
+    for sorting and pruning.
+- Sorting:
+  - First challenge is that there is no "All Patients" column in the template, but that is ok as we can sum things across columns and obtain the total.
+  - Second challenge here is to sort by SOC first, but without showing SOC totals in the table. We could sum the "Any Grade" counts for each SOC to obtain the required count. That means we need to sum all the counts of the leaves there.
+  - Sorting the preferred terms by counts in the "Any Grade" columns is relatively simple.
+- Pruning: (can do during production)
+  - We can use the pruning family functions, potentially extended to account for the different analysis columns here.
+  
+## Content generation
+
+Let's first try to generate the content, which will then later be sorted and pruned.
+
+### Data preprocessing
+
+First we need to preprocess the data: For each patient and preferred term we need to find the highest grade.
+
+```{r}
+anl_max_grade <- anl %>%
+  # Note that here we need to include all variables we might need for table splits later below.
+  dplyr::group_by(ARM, USUBJID, AEBODSYS, AEDECOD) %>%
+  dplyr::summarize(
+    MAXAETOXGR = max(as.numeric(AETOXGR))
+  ) %>%
+  dplyr::ungroup() %>%
+  dplyr::mutate(
+    MAXAETOXGR = factor(MAXAETOXGR)
+  )
+```
+
+### Custom grade grouping
+
+See `?add_combo_levels` for the details. Basically we map combinations of levels of the `MAXAETOXGR` variable to new levels. We try to simplify here the interface by providing a wrapper, and staying close to `AET04` list specification.
+
+```{r}
+grade_groups <- list(
+  "Any Grade (%)" = c("1", "2", "3", "4", "5"),
+  "Grade 3-4 (%)" = c("3", "4"),
+  "Grade 5 (%)" = "5"
+)
+
+make_names <- function(nams) {
+  orig <- make.names(nams)
+  gsub(".", "", x = orig, fixed = TRUE)
+}
+
+groups_list_to_df <- function(groups_list) {
+  tibble::tibble(
+    valname = make_names(names(groups_list)),
+    label = names(groups_list),
+    levelcombo = unname(groups_list),
+    exargs = replicate(length(groups_list), list())
+  )
+}
+
+split_cols_by_groups <- function(lyt, var, groups) {
+  groups_df <- groups_list_to_df(groups)
+  split_cols_by(
+    lyt = lyt,
+    var = var, 
+    split_fun = add_combo_levels(groups_df, keep_levels = groups_df$valname)
+  )
+}
+```
+
+### Statistics and Formatting Functions
+
+```{r}
+# We need a special formatting here, since we only grab the second element (fraction) from the count + fraction vector.
+format_fraction_pi <- function(x, ...) {
+  ifelse(x[2] > 0.01, round(x[2] * 100), 
+         ifelse(x[2] == 0, "0", "<1"))
+}
+```
+
+### Table generation
+
+```{r}
+n_col <- rep(table(adsl$ARM), each = length(grade_groups))
+tab <- basic_table() %>%
+  split_cols_by("ARM") %>%
+  split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
+  split_rows_by("AEBODSYS") %>%
+  summarize_vars(
+    "AEDECOD", 
+    na.rm = TRUE, 
+    denom = "N_col", 
+    .stats = "count_fraction",
+    .formats = c(count_fraction = format_fraction_pi)
+  ) %>%
+  build_table(as.data.frame(anl_max_grade), col_counts = n_col)
+tab
+```
+
+Note that this can also made working with `AEDECOD2` in production when we make `s_summary.character` work with length 0 character vectors.
+
+## Sorting
+
+### Sorting the preferred terms within body system
+
+Since we only want to operate on the "Any Grade" columns here, we need to write a variant of `score_occurrences` that only takes those counts. Note that some of this will be simplified / merged with code from pruning helper functions during production.
+
+```{r}
+h_row_counts <- function(table_row, reg_exp_cols) {
+  col_indices <- grep(pattern = reg_exp_cols, x = names(table_row@leaf_value))
+  vals <- row_values(table_row)[col_indices]
+  vapply(vals, '[[', i=1, numeric(1))
+}
+
+score_occurrences_cols <- function(reg_exp_cols) {
+  assert_that(is.string(reg_exp_cols))
+  function(table_row) {
+    counts <- h_row_counts(table_row, reg_exp_cols)
+    sum(counts)
+  }
+}
+```
+
+Now we try to use that:
+
+```{r}
+scorefun <- score_occurrences_cols("Any Grade")
+# debug(scorefun)
+
+tab %>%
+  sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = scorefun, decreasing = TRUE) 
+```
+
+That seems to work.
+
+### Sorting the body systems
+
+We need a sorting function that sums all the counts from the "Any Grade" columns in this subtable.
+
+```{r}
+score_occurrences_subtable <- function(reg_exp_cols) {
+  score_table_row <- score_occurrences_cols(reg_exp_cols)
+  function(table_tree) {
+    table_rows <- collect_leaves(table_tree)
+    counts <- sapply(table_rows, score_table_row)
+    sum(counts)
+  }
+}
+```
+
+Let's try it out.
+
+```{r}
+scorefun <- score_occurrences_subtable("Any Grade")
+# debug(scorefun)
+
+tab %>%
+  sort_at_path(path = c("AEBODSYS"), scorefun = scorefun, decreasing = FALSE) 
+```
+
+That also seems to work.
+
+### All together
+
+Now we can put this together.
+
+```{r}
+tab %>%
+  sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences_cols("Any Grade"), decreasing = TRUE) %>%
+  sort_at_path(path = c("AEBODSYS"), scorefun = score_occurrences_subtable("Any Grade"), decreasing = TRUE) 
+```
+
+
+## Pruning
+
+We defer this to production time since then we will have the pruning functions family available.
+
