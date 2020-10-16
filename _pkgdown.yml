@@ -35,6 +35,7 @@ reference:
       - s_count_cumulative
       - s_count_nonmissing
       - s_count_occurrences
+      - s_count_patients_with_event
       - s_incidence_rate
       - s_multinomial_response
       - s_num_patients
@@ -54,6 +55,7 @@ reference:
        - count_cumulative
        - count_missed_doses
        - count_occurrences
+       - count_patients_with_event
        - dummy_sum
        - estimate_proportion
        - estimate_proportion_diff

@@ -173,7 +173,8 @@ test_that("s_summary works with logical vectors", {
   result <- s_summary(x)
   expected <- list(
     n = 6L,
-    count_fraction = c(4, 4 / 6)
+    count_fraction = c(4, 4 / 6),
+    count = 4L
   )
 
   expect_identical(result, expected)
@@ -185,7 +186,8 @@ test_that("s_summary works with logical vectors and by default removes NA", {
   result <- s_summary(x)
   expected <- list(
     n = 6L,
-    count_fraction = c(4, 4 / 6)
+    count_fraction = c(4, 4 / 6),
+    count = 4L
   )
 
   expect_identical(result, expected)
@@ -197,7 +199,8 @@ test_that("s_summary works with logical vectors and by if requested does not rem
   result <- s_summary(x, na.rm = FALSE)
   expected <- list(
     n = 8L,
-    count_fraction = c(4, 4 / 8)
+    count_fraction = c(4, 4 / 8),
+    count = 4L
   )
 
   expect_identical(result, expected)

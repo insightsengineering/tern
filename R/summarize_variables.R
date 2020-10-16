@@ -244,6 +244,7 @@ s_summary.logical <- function(x,
     N_col = .N_col
   )
   y$count_fraction <- c(count, ifelse(dn > 0, count / dn, NA))
+  y$count <- c(count)
   y
 }
 

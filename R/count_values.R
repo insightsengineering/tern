@@ -100,11 +100,12 @@ count_values <- function(lyt,
                          values,
                          ...,
                          .stats = "count_fraction",
-                         .labels = c(count_fraction = paste(values, collapse = ", "))) {
+                         .labels = c(count_fraction = paste(values, collapse = ", "))
+                         ) {
   afun <- format_wrap_x(
     s_count_values,
-    indent_mods = c(count_fraction = 0L),
-    formats = c(count_fraction = "xx (xx.xx%)")
+    indent_mods = c(count_fraction = 0L, count = 0L),
+    formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
   )
   analyze(
     lyt,
