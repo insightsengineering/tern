@@ -13,27 +13,32 @@ h_coxreg_univ_formulas(variables, interaction = FALSE)
 interaction between the studied treatment and candidate covariate.}
 }
 \value{
-It actually returns a vector of
-character strings, coercible into formulas with
-\code{\link[=as.formula]{as.formula()}}.
+It \code{character} vector coercible into formulas (e.g \code{\link[=as.formula]{as.formula()}}).
 }
 \description{
-Creates a list of formulas. It is used internally in \code{\link[=h_coxreg]{h_coxreg()}}
+Creates a list of formulas. It is used internally by \code{\link[=h_coxreg]{h_coxreg()}}
 for the comparison of univariate Cox regression models.
 }
 \examples{
 
+# `h_coxreg_univ_formulas`
+
+## Simple formulas.
 h_coxreg_univ_formulas(
   variables = list(
     time = "time", event = "status", arm = "armcd", covariates = c("X", "y")
   )
 )
+
+## Addition of an optional strata.
 h_coxreg_univ_formulas(
   variables = list(
     time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
     strata = "SITE"
   )
 )
+
+## Inclusion of the interaction term.
 h_coxreg_univ_formulas(
   variables = list(
     time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),

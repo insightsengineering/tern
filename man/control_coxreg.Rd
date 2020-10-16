@@ -25,7 +25,7 @@ Note: there is no equivalent of SAS \code{EXACT} method in R.}
 interaction between the studied treatment and candidate covariate.}
 }
 \value{
-A \code{list} of item corresponding to the provided arguments.
+A \code{list} of item corresponding to the arguments.
 }
 \description{
 Sets a list of parameters for Cox regression fit. Used internally,

@@ -20,9 +20,9 @@ reference:
           They avoid cluttering of function signatures with long lists of single arguments.
     contents:
       - control_coxph
+      - control_coxreg
       - control_binary_comparison
       - control_incidence_rate
-
 
   - title: Statistics Functions
     desc: Statistics functions should do the computation of the numbers that are tabulated later.
@@ -36,6 +36,7 @@ reference:
       - s_count_nonmissing
       - s_count_occurrences
       - s_count_patients_with_event
+      - s_coxreg
       - s_incidence_rate
       - s_multinomial_response
       - s_num_patients
@@ -46,7 +47,6 @@ reference:
       - s_summary
       - s_test_proportion_diff
 
-
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
           the table.
@@ -56,6 +56,7 @@ reference:
        - count_missed_doses
        - count_occurrences
        - count_patients_with_event
+       - fit_coxreg
        - dummy_sum
        - estimate_proportion
        - estimate_proportion_diff
@@ -79,6 +80,14 @@ reference:
       - footnotes<-
       - add_footnotes<-
       - h_count_cumulative
+      - h_coxreg
+      - h_coxreg_extract_interaction
+      - h_coxreg_inter_effect
+      - h_coxreg_inter_effect.factor
+      - h_coxreg_inter_effect.numeric
+      - h_coxreg_inter_estimations
+      - h_coxreg_univ_extract
+      - h_coxreg_univ_formulas
       - h_dummy_sum
       - h_incidence_rate
       - h_incidence_rate_byar

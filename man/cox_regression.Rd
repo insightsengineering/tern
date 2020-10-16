@@ -7,17 +7,21 @@
 \alias{fit_coxreg}
 \title{Cox Proportional Hazards Regression}
 \usage{
-h_coxreg(variables, data, control = control_coxreg())
+h_coxreg(variables, data, at = list(), control = control_coxreg())
 
 s_coxreg(df, .var)
 
-fit_coxreg(lyt, conf_level)
+fit_coxreg(lyt, conf_level, vars = c("n", "hr", "ci", "pval"))
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to fit the
 models.}
+
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
+\code{numeric}, use \code{at} to specify the value of the covariate at which the
+effect should be estimated.}
 
 \item{control}{(\code{list})\cr a list of parameters as returned by the
 helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
@@ -30,6 +34,12 @@ by a statistics function.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{vars}{(\code{character})\cr the name of statistics to be reported among
+\code{n} (number of observation), \code{hr} (Hazard Ratio),
+\code{ci} (confidence interval), \code{pval} (p.value of the treatment effect) and
+\code{pval_inter} (the p.value of the interaction effect between the treatment
+and the covariate).}
 }
 \description{
 Fits a Cox regression model and estimate hazard ratio to describe the effect
@@ -38,16 +48,16 @@ size in a survival analysis.
 \details{
 Cox models are the most commonly used methods to estimate the magnitude of
 the effect in survival analysis. It assumes proportional hazards: the ratio
-of the hazards of between groups (e.g., two arms) is constant over time.
+of the hazards between groups (e.g., two arms) is constant over time.
 This ratio is referred to as the "hazard ratio" (HR) and is one of the
 most commonly reported metrics to describe the effect size in survival
 analysis \insertCite{NESTTeam2020}{tern}.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg}: tabulates the result of a series of univariate Cox
+\item \code{h_coxreg}: tabulates the results of a series of univariate Cox
 regression models. \code{variables} corresponds to the names of variables found
-in \code{data} includes, passed as a named list and corresponding to
+in \code{data}, passed as a named list and corresponding to
 \code{time}, \code{event}, \code{arm}, \code{covariates} and \code{strata} terms.
 
 \item \code{s_coxreg}: transforms the tabulated results from \code{h_coxreg}
@@ -57,21 +67,17 @@ be used by the layout creating function.
 \item \code{fit_coxreg}: layout creating function.
 }}
 
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
+\note{
+The usual formatting arguments for the \emph{layout creating} function
+\code{fit_coxreg} are not yet accepted (\code{.stats}, \code{.indent_mod}, \code{.formats},
+\code{.labels}).
 }
-}
-
 \examples{
 
+# Testing dataset [survival::bladder].
+
+library(survival)
 set.seed(1, kind = "Mersenne-Twister")
-bladder <- survival::bladder
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],
   data.frame(
@@ -84,8 +90,52 @@ dta_bladder <- with(
     )
   )
 )
-attr(dta_bladder$covar1, "label") <- "A Covar"
+attr(dta_bladder$armcd, "label") <- "ARM"
+attr(dta_bladder$covar1, "label") <- "A Covariate Label"
 attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
+dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+
+plot(
+  survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
+  lty= 2:4, xlab="Months",
+  col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
+)
+
+
+# h_coxreg
+
+## Cox regression: arm + 1 covariate.
+h_coxreg(
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = "covar1"
+  ),
+  data = dta_bladder,
+  control = control_coxreg(conf_level = 0.91)
+)
+
+## Cox regression: arm + 1 covariate + interaction, 2 candidate covariates.
+h_coxreg(
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder,
+  control = control_coxreg(conf_level = 0.91, interaction = TRUE)
+)
+
+## Cox regression: arm + 1 covariate, stratified analysis.
+h_coxreg(
+  variables = list(
+    time = "time", event = "status", arm = "armcd", strata = "covar2",
+    covariates = c("covar1")
+  ),
+  data = dta_bladder,
+  control = control_coxreg(conf_level = 0.91)
+)
+
+
+# s_coxreg
 
 df <- h_coxreg(
   variables = list(
@@ -97,24 +147,18 @@ df <- h_coxreg(
 s_coxreg(df = df, .var = "hr")
 
 
-df <- h_coxreg(
-  variables = list(
-    time = "time", event = "status", arm = "armcd",
-    covariates = c("covar1", "covar2")
-  ),
-  data = dta_bladder
-)
-s_coxreg(df = df, .var = "hr")
-
+# fit_coxreg
 
 df <- h_coxreg(
   variables = list(
     time = "time", event = "status", arm = "armcd",
     covariates = c("covar1", "covar2")
   ),
-  data = dta_bladder
+  data = dta_bladder,
+  control = control_coxreg(interaction = FALSE)
 )
-result <- split_rows_by(lyt = NULL, "mod", child_labels = "visible") \%>\%
+result <- split_rows_by(lyt = NULL, "effect") \%>\%
+  split_rows_by("term", child_labels = "hidden") \%>\%
   fit_coxreg(conf_level = .95) \%>\%
   build_table(df = df)
 result

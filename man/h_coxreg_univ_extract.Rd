@@ -4,53 +4,34 @@
 \alias{h_coxreg_univ_extract}
 \title{Tabulation of Univariate Cox Regressions}
 \usage{
-h_coxreg_univ_extract(
-  mod,
-  var,
-  data,
-  effect = "armcd",
-  control = control_coxreg()
-)
+h_coxreg_univ_extract(effect, covar, mod, data, control = control_coxreg())
 }
 \arguments{
-\item{mod}{model}
-
-\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{data}{(\verb{data frame})\cr the dataset containing the variables to fit the
-models.}
-
 \item{effect}{(\code{string})\cr the treatment variable.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{covar}{(\code{string})\cr the name of the covariate in the model.}
+
+\item{mod}{(\code{coxph})\cr Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
+
+\item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
+
+\item{control}{(\code{list})\cr a list of controls as returned by
+\code{\link[=control_coxreg]{control_coxreg()}}.}
 }
 \description{
 Tabulate the result of a Cox regression model.
 }
 \examples{
 
-# Example, see `?survival::bladder`.
 library(survival)
-dta_test <- with(
-  data = bladder[bladder$enum < 5, ],
-  data.frame(
-    time = stop,
-    status = event,
-    armcd = as.factor(rx),
-    covar1 = as.factor(enum)
-  )
+dta_simple <-  data.frame(
+  time = c(5, 5, 10, 10, 5, 5, 10, 10),
+  status = c(0, 0, 1, 0, 0, 1, 1, 1),
+  armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B"))
 )
-mod <- coxph(Surv(time, status) ~ armcd + covar1, data = dta_test)
-h_coxreg_univ_extract(mod, var = "covar1", data = dta_test)
-
-# Example, see `?survival::aml`.
-plot(
-  survfit(Surv(time, status) ~ x, data = aml),
-  lty=2:3, xlab="Months"
+mod <- coxph(Surv(time, status) ~ armcd, data = dta_simple)
+result <- h_coxreg_univ_extract(
+  effect = "armcd", covar = "armcd", mod = mod, data = dta_simple
 )
-mod <- coxph(Surv(time, status) ~ x, data = aml)
-h_coxreg_univ_extract(mod, effect = "x", var = "x", data = aml)
 
 }
