@@ -139,12 +139,27 @@ reference:
       - format_wrap_x
       - to_string_matrix
       - add_rowcounts
+      - h_col_counts
+      - h_row_counts
+      - h_row_fractions
+      - has_tabletree_colnames
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
     contents:
       - format_fraction
       - format_count_fraction
+
+  - title: rtables Pruning Functions
+    desc: these functions and classes help with flexible pruning of tables
+    contents:
+      - keep_rows
+      - has_count_in_cols
+      - has_counts_difference
+      - has_fraction_in_cols
+      - has_fractions_difference
+      - new_combination_function
+      - CombinationFunction
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
@@ -179,6 +194,8 @@ reference:
       - is_nonnegative_count
       - is_variables
       - is_valid_factor
+      - is_proportion
+      - is_proportion_vector
 
   - title: Deprecated Functions
     desc: These functions will eventually be removed
@@ -213,3 +230,4 @@ reference:
       - h_prop_ci
       - check_diff_prop_ci
       - c_label_n
+

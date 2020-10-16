@@ -454,3 +454,18 @@ add_rowcounts <- function(lyt) {
     cfun = c_label_n
   )
 }
+
+#' Obtain Column Indices
+#'
+#' Helper function to extract column indices from a `VTableTree` for a given
+#' vector of column names.
+#'
+#' @param table_tree (`VTableTree`)\cr table to extract the indices from.
+#' @param col_names (`character`)\cr vector of column names.
+#'
+#' @return the vector of column indices.
+#'
+col_indices <- function(table_tree, col_names) {
+  assert_that(has_tabletree_colnames(table_tree, col_names))
+  match(col_names, names(table_tree))
+}

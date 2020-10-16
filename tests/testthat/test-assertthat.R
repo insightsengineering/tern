@@ -114,3 +114,18 @@ test_that("all_elements_in_ref is FALSE with wrong input", {
   expect_false(all_elements_in_ref(x = "z", ref = c("a", "b", "c")))
   expect_error(all_elements_in_ref(x = character(0), ref = c("a", "b", "c")))
 })
+
+test_that("is_proportion_vector works as expected", {
+  expect_true(is_proportion_vector(0.99))
+  expect_true(is_proportion_vector(c(0.01, 0.5)))
+  expect_false(is_proportion_vector(c(0, 2), include_boundaries = TRUE))
+  expect_false(is_proportion_vector(c(1, -1), include_boundaries = TRUE))
+})
+
+test_that("has_tabletree_colnames works correctly", {
+  tab <- basic_table() %>%
+    analyze("SEX") %>%
+    build_table(DM)
+  expect_true(has_tabletree_colnames(tab, "all obs"))
+  expect_false(has_tabletree_colnames(tab, c("all obs", "Arm A")))
+})

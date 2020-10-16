@@ -67,6 +67,10 @@ format_count_fraction <- function(x, ...) {
 
   attr(x, "label") <- NULL
 
+  if (any(is.na(x))) {
+    return("NA")
+  }
+
   assert_that(
     is.vector(x),
     rlang::is_integerish(x[1]),

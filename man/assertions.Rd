@@ -8,9 +8,11 @@
 \alias{is_df_with_variables}
 \alias{is_equal_length}
 \alias{is_proportion}
+\alias{is_proportion_vector}
 \alias{is_valid_factor}
 \alias{is_valid_character}
 \alias{all_elements_in_ref}
+\alias{has_tabletree_colnames}
 \title{Additional Assertions for \code{assert_that}}
 \usage{
 is_character_or_factor(x)
@@ -25,11 +27,15 @@ is_equal_length(...)
 
 is_proportion(x, include_boundaries = FALSE)
 
+is_proportion_vector(x, include_boundaries = FALSE)
+
 is_valid_factor(x)
 
 is_valid_character(x)
 
 all_elements_in_ref(x, ref)
+
+has_tabletree_colnames(x, col_names)
 }
 \arguments{
 \item{x}{object to test}
@@ -40,9 +46,11 @@ all_elements_in_ref(x, ref)
 
 \item{...}{a collection of objects to test.}
 
-\item{include_boundaries}{(\code{logical})\cr whether to include boundaries in \code{is_proportion}}
+\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing for proportions.}
 
 \item{ref}{(\code{vector})\cr where matches from \code{x} are sought for \code{all_elements_in_ref}.}
+
+\item{col_names}{(\code{character})\cr column names which should be present in the table.}
 }
 \value{
 \code{flag} whether the assertion holds (\code{TRUE} or \code{FALSE}). When used inside
@@ -65,11 +73,15 @@ We provide additional assertion functions which can be used together with \code{
 
 \item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 
+\item \code{is_proportion_vector}: Check whether \code{x} is a vector of proportions (numbers between 0 and 1).
+
 \item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
 
 \item \code{is_valid_character}: Check whether \code{x} is a valid character (has no NAs and no empty strings).
 
 \item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
+
+\item \code{has_tabletree_colnames}: Check whether rtables object \code{x} has the specified column names.
 }}
 
 \examples{
@@ -104,6 +116,13 @@ is_equal_length(a, b, c, d)
 is_proportion(x = 0.3)
 is_proportion(x = 1.3)
 is_proportion(x = 0, include_boundaries = TRUE)
+
+
+# Check whether `x` is a vector of numbers between 0 and 1.
+is_proportion_vector(c(0.3, 0.1))
+is_proportion_vector(c(1.3, 0.1))
+is_proportion_vector(0, include_boundaries = TRUE)
+
 
 # Check whether `x` is a valid factor.
 is_valid_factor(-1)

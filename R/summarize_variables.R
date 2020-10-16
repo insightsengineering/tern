@@ -170,7 +170,7 @@ s_summary.factor <- function(x,
   y$count_fraction <- lapply(
     y$count,
     function(x) {
-      c(x, ifelse(dn > 0, x / dn, NA))
+      c(x, ifelse(dn > 0, x / dn, 0))
     }
   )
 

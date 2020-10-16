@@ -111,9 +111,9 @@ test_that("s_summary works with length 0 factors that have levels", {
       c = 0L
     ),
     count_fraction = list(
-      a = c(0L, NA),
-      b = c(0L, NA),
-      c = c(0L, NA)
+      a = c(0L, 0),
+      b = c(0L, 0),
+      c = c(0L, 0)
     )
   )
 
@@ -301,6 +301,15 @@ test_that("`summarize_vars` works with factors and different denominators", {
     .Dim = c(22L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("summarize_vars works in demographic table example", {
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("RACE") %>%
+    summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+    build_table(DM)
+  expect_silent(to_string_matrix(result))
 })
 
 test_that("`summarize_vars` works with character input and gives the same result as with factor", {

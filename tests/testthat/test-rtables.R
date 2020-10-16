@@ -573,3 +573,12 @@ test_that("add_rowcounts works with multiple column and row splits", {
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("col_indices works as expected", {
+  tab <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    build_table(DM)
+  result <- col_indices(tab, c("B: Placebo", "C: Combination"))
+  expected <- c(2L, 3L)
+  expect_identical(result, expected)
+})
