@@ -11,6 +11,18 @@ f_conf_level <- function(conf_level) {
   paste0(conf_level * 100, "% CI")
 }
 
+#' Utility function to return a named list of covariate names.
+#'
+#' @param covariates (`character`)\cr a vector that can contain single variable names (such as
+#'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#' @return a named `list` of character vector.
+#'
+get_covariates <- function(covariates) {
+  assert_that(is.character(covariates))
+  cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))
+  setNames(as.list(cov_vars), cov_vars)
+}
+
 #' Combine Factor Levels
 #'
 #' Combine specified old factor Levels in a single new level.

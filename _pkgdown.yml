@@ -29,6 +29,7 @@ reference:
           In order to separate computation from formatting, they should not take care of `rcell` type
           formatting themselves.
     contents:
+      - s_ancova
       - s_dummy_sum
       - s_count_abnormal
       - s_count_abnormal_by_baseline
@@ -63,6 +64,7 @@ reference:
        - estimate_incidence_rate
        - estimate_multinomial_response
        - estimate_odds_ratio
+       - summarize_ancova
        - summarize_change
        - summarize_colvars
        - summarize_num_patients
@@ -79,6 +81,7 @@ reference:
       - footnotes
       - footnotes<-
       - add_footnotes<-
+      - h_ancova
       - h_count_cumulative
       - h_coxreg
       - h_coxreg_extract_interaction
@@ -244,4 +247,4 @@ reference:
       - h_prop_ci
       - check_diff_prop_ci
       - c_label_n
-
+      - get_covariates
