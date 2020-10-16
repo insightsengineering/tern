@@ -45,3 +45,22 @@ test_that("h_col_counts works as expected", {
   expected <- c("B: Placebo" = 106L, "C: Combination" = 129L)
   expect_identical(result, expected)
 })
+
+test_that("is_leaf_table works as expected", {
+  simple_tab <- basic_table() %>%
+    split_rows_by("RACE") %>%
+    summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+    build_table(DM)
+  expect_false(is_leaf_table(simple_tab))
+  sub_tab <- tree_children(simple_tab)[[1]]
+  expect_true(is_leaf_table(sub_tab))
+})
+
+test_that("h_content_first_row works as expected", {
+  simple_tab <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    summarize_row_groups() %>%
+    build_table(DM)
+  result <- h_content_first_row(simple_tab)
+  expect_is(result, "ContentRow")
+})

@@ -3,6 +3,7 @@
 \name{prune_occurrences}
 \alias{prune_occurrences}
 \alias{keep_rows}
+\alias{keep_content_rows}
 \alias{has_count_in_cols}
 \alias{has_fraction_in_cols}
 \alias{has_fractions_difference}
@@ -10,6 +11,8 @@
 \title{Occurrence Table Pruning}
 \usage{
 keep_rows(row_condition)
+
+keep_content_rows(content_row_condition)
 
 has_count_in_cols(above, col_names)
 
@@ -23,6 +26,9 @@ has_counts_difference(above, col_names)
 \item{row_condition}{(\code{CombinationFunction})\cr condition function which works on individual
 analysis rows and flags whether these should be kept in the pruned table.}
 
+\item{content_row_condition}{(\code{CombinationFunction})\cr condition function which works on individual
+first content rows of leaf tables and flags whether these leaf tables should be kept in the pruned table.}
+
 \item{above}{(\code{count} or \code{proportion})\cr threshold which should be met in order to
 keep the row.}
 
@@ -32,6 +38,9 @@ calculation.}
 \value{
 \code{\link[=keep_rows]{keep_rows()}} returns a pruning function that can be used with \code{\link[rtables:prune_table]{rtables::prune_table()}}
 on \verb{[rtables::TableTree()]} objects.
+
+\code{\link[=keep_content_rows]{keep_content_rows()}} also returns a pruning function, the difference is that it
+checks the condition on the first content row of leaf tables in the table.
 
 \code{\link[=has_count_in_cols]{has_count_in_cols()}} returns a condition function that sums the counts in the specified
 column.
@@ -58,6 +67,11 @@ a row condition function. This removes all analysis rows (\code{TableRow}) that 
 pruned, i.e., don't fulfill the row condition. It removes the sub tree if there are no
 children left.
 
+\item \code{keep_content_rows}: constructor for creating pruning functions based on
+a condition for the (first) content row in leaf tables. This removes all leaf tables where
+the first content row does not fulfill the condition. It does not check individual rows.
+It then proceeds recursively by removing the sub tree if there are no children left.
+
 \item \code{has_count_in_cols}: constructor for creating condition functions on total counts in
 the specified columns.
 
@@ -81,12 +95,17 @@ tab <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("RACE") \%>\%
   split_rows_by("STRATA1") \%>\%
+  summarize_row_groups() \%>\%
   summarize_vars("COUNTRY", .stats = "count_fraction") \%>\%
   build_table(DM)
 
 # `keep_rows`
 is_non_empty <- !CombinationFunction(all_zero_or_na)
 prune_table(tab, keep_rows(is_non_empty))
+
+# `keep_content_rows`
+more_than_twenty <- has_count_in_cols(above = 20L, col_names = names(tab))
+prune_table(tab, keep_content_rows(more_than_twenty))
 
 # `has_count_in_cols`
 more_than_one <- has_count_in_cols(above = 1L, col_names = names(tab))

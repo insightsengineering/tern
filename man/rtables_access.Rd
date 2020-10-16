@@ -5,6 +5,8 @@
 \alias{h_row_counts}
 \alias{h_row_fractions}
 \alias{h_col_counts}
+\alias{is_leaf_table}
+\alias{h_content_first_row}
 \title{rtables Access Helper Functions}
 \usage{
 h_row_counts(table_row, col_names)
@@ -12,6 +14,10 @@ h_row_counts(table_row, col_names)
 h_row_fractions(table_row, col_names)
 
 h_col_counts(table, col_names)
+
+is_leaf_table(table)
+
+h_content_first_row(table)
 }
 \arguments{
 \item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
@@ -33,8 +39,12 @@ in a \code{TableRow}.
 \item \code{h_row_fractions}: helper function to extract fractions from specified columns
 in a \code{TableRow}.
 
-\item \code{h_col_counts}: helper function to extract column counts from specified columns
+\item \code{h_col_counts}: Helper function to extract column counts from specified columns
 in a table.
+
+\item \code{is_leaf_table}: Helper function which says whether current table is a leaf in the tree.
+
+\item \code{h_content_first_row}: Helper function to get first row of content table of current table.
 }}
 
 \seealso{

@@ -145,6 +145,8 @@ reference:
       - h_row_counts
       - h_row_fractions
       - has_tabletree_colnames
+      - is_leaf_table
+      - h_content_first_row
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
@@ -156,6 +158,7 @@ reference:
     desc: these functions and classes help with flexible pruning of tables
     contents:
       - keep_rows
+      - keep_content_rows
       - has_count_in_cols
       - has_counts_difference
       - has_fraction_in_cols

@@ -15,6 +15,7 @@
 #'   split_cols_by("ARM") %>%
 #'   split_rows_by("RACE") %>%
 #'   split_rows_by("STRATA1") %>%
+#'   summarize_row_groups() %>%
 #'   summarize_vars("COUNTRY", .stats = "count_fraction") %>%
 #'   build_table(DM)
 #'
@@ -38,7 +39,36 @@ keep_rows <- function(row_condition) {
   assert_that(is.function(row_condition))
   function(table_tree) {
     if (is(table_tree, "TableRow")) {
-      return(! row_condition(table_tree))
+      return(!row_condition(table_tree))
+    }
+    children <- tree_children(table_tree)
+    identical(length(children), 0L)
+  }
+}
+
+#' @describeIn prune_occurrences constructor for creating pruning functions based on
+#'   a condition for the (first) content row in leaf tables. This removes all leaf tables where
+#'   the first content row does not fulfill the condition. It does not check individual rows.
+#'   It then proceeds recursively by removing the sub tree if there are no children left.
+#' @param content_row_condition (`CombinationFunction`)\cr condition function which works on individual
+#'   first content rows of leaf tables and flags whether these leaf tables should be kept in the pruned table.
+#' @return [keep_content_rows()] also returns a pruning function, the difference is that it
+#'   checks the condition on the first content row of leaf tables in the table.
+#' @export
+#' @examples
+#' # `keep_content_rows`
+#' more_than_twenty <- has_count_in_cols(above = 20L, col_names = names(tab))
+#' prune_table(tab, keep_content_rows(more_than_twenty))
+#'
+keep_content_rows <- function(content_row_condition) {
+  assert_that(is.function(content_row_condition))
+  function(table_tree) {
+    if (is_leaf_table(table_tree)) {
+      content_row <- h_content_first_row(table_tree)
+      return(!content_row_condition(content_row))
+    }
+    if (is(table_tree, "DataRow")) {
+      return(FALSE)
     }
     children <- tree_children(table_tree)
     identical(length(children), 0L)

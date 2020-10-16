@@ -36,7 +36,7 @@ h_row_fractions <- function(table_row, col_names) {
   fractions
 }
 
-#' @describeIn rtables_access helper function to extract column counts from specified columns
+#' @describeIn rtables_access Helper function to extract column counts from specified columns
 #'   in a table.
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
 #' @export
@@ -45,4 +45,21 @@ h_col_counts <- function(table, col_names) {
   col_indices <- col_indices(table, col_names)
   counts <- col_counts(table)[col_indices]
   setNames(counts, col_names)
+}
+
+#' @describeIn rtables_access Helper function which says whether current table is a leaf in the tree.
+#' @export
+#'
+is_leaf_table <- function(table) {
+  children <- tree_children(table)
+  child_classes <- unique(sapply(children, class))
+  identical(child_classes, "ElementaryTable")
+}
+
+#' @describeIn rtables_access Helper function to get first row of content table of current table.
+#' @export
+#'
+h_content_first_row <- function(table) {
+  ct <- content_table(table)
+  tree_children(ct)[[1]]
 }

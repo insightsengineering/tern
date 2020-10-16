@@ -3,6 +3,7 @@ get_table <- function() {
     split_cols_by("ARM") %>%
     split_rows_by("RACE") %>%
     split_rows_by("STRATA1") %>%
+    summarize_row_groups() %>%
     summarize_vars("COUNTRY", .stats = "count_fraction") %>%
     build_table(DM)
 }
@@ -37,6 +38,18 @@ test_that("keep_rows keeps everything if condition is always `TRUE`", {
   result <- prune_table(tab, pruning_fun)
   expected <- tab
   expect_identical(result, expected)
+})
+
+test_that("keep_content_rows works as expected", {
+  tab <- get_table()
+  more_than_twenty <- has_count_in_cols(above = 20L, col_names = names(tab))
+  result <- prune_table(tab, keep_content_rows(more_than_twenty))
+  result_leaves <- collect_leaves(result)
+  result_content_rows <- result_leaves[sapply(result_leaves, class) == "ContentRow"]
+  result_counts <- result_content_rows %>%
+    lapply(h_row_counts, col_names = names(tab)) %>%
+    sapply(sum)
+  expect_true(all(result_counts > 20))
 })
 
 test_that("has_count_in_cols result works in a special case identical to standard pruning", {
@@ -148,10 +161,11 @@ test_that("combination of pruning functions works", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "ASIAN", "A", "CHN", "C", "RUS", "WHITE", "B",
-      "CHN", "A: Drug X", "", "", "14 (51.9%)", "", "4 (14.3%)", "",
-      "", "4 (57.1%)", "B: Placebo", "", "", "9 (45%)", "", "2 (10.5%)",
-      "", "", "1 (20%)", "C: Combination", "", "", "12 (38.7%)", "",
-      "1 (3.2%)", "", "", "3 (75%)"),
+      "CHN", "A: Drug X", "", "27 (22.3%)", "14 (51.9%)", "28 (23.1%)",
+      "4 (14.3%)", "", "7 (5.8%)", "4 (57.1%)", "B: Placebo", "", "20 (18.9%)",
+      "9 (45%)", "19 (17.9%)", "2 (10.5%)", "", "5 (4.7%)", "1 (20%)",
+      "C: Combination", "", "31 (24%)", "12 (38.7%)", "31 (24%)", "1 (3.2%)",
+      "", "4 (3.1%)", "3 (75%)"),
     .Dim = c(9L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
