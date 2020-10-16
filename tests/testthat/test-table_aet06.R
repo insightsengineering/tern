@@ -17,6 +17,7 @@ test_that("AET06 variant 1 is produced correctly", {
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
@@ -24,6 +25,7 @@ test_that("AET06 variant 1 is produced correctly", {
     split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L)  %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
@@ -100,6 +102,7 @@ test_that("AET06 variant 5 is produced correctly", {
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
@@ -107,6 +110,7 @@ test_that("AET06 variant 5 is produced correctly", {
     split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L)  %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
@@ -114,6 +118,7 @@ test_that("AET06 variant 5 is produced correctly", {
     split_rows_by("AEHLT", child_labels = "visible", indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"

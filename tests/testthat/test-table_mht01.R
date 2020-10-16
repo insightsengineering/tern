@@ -17,11 +17,13 @@ test_that("MHT01 variant 1 is produced accurately", {
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
     split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
     count_occurrences(var = "MHDECOD")
@@ -73,11 +75,13 @@ test_that("MHT01 variant 2 is produced accurately", {
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
     split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
     count_occurrences(var = "MHDECOD")
@@ -169,9 +173,15 @@ test_that("MHT01 variant 5 is produced accurately", {
   lyt <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
-    summarize_num_patients("USUBJID", .labels = c(unique = "Total number of patients with at least one event")) %>%
+    summarize_num_patients(
+      "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(unique = "Total number of patients with at least one event")) %>%
     split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
-    summarize_num_patients("USUBJID", .labels = c(unique = "Total number of patients with at least one event")) %>%
+    summarize_num_patients(
+      "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(unique = "Total number of patients with at least one event")) %>%
     count_occurrences(var = "MHDECOD")
 
   result <- build_table(lyt, admh, col_counts = n_per_arm_tot) %>%

@@ -155,11 +155,11 @@ s_abnormal_by_worst_grade(
 )
 ```
 
-## Analyze function: `analyze_abnormal_by_worst_grade`
+## Analyze function: `abnormal_by_worst_grade`
 ```{r}
-analyze_abnormal_by_worst_grade <- function(lyt,
-                                            vars,
-                                            ...) {
+abnormal_by_worst_grade <- function(lyt,
+                                    vars,
+                                    ...) {
   a_abnormal_by_worst_grade <- format_wrap_df(
     s_abnormal_by_worst_grade, 
     indent_mods = c(section_label = 0L, count_fraction = 2L),
@@ -177,7 +177,7 @@ analyze_abnormal_by_worst_grade <- function(lyt,
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   split_rows_by("PARAMCD") %>%  
-  analyze_abnormal_by_worst_grade(
+  abnormal_by_worst_grade(
     vars = "ATOXGR",
     abnormal = c(Low = "low", High = "high"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL")) 
@@ -219,7 +219,7 @@ basic_table() %>%
   split_cols_by("ARMCD") %>%
   split_rows_by("PARAMCD") %>%
   count_unique_id(var = "ATOXGR", id = "USUBJID" ) %>%   
-  analyze_abnormal_by_worst_grade(
+  abnormal_by_worst_grade(
     vars = "ATOXGR",
     abnormal = c(Low = "low", High = "high"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL")) 

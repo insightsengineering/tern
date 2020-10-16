@@ -1,9 +1,10 @@
 test_that("s_num_patients works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, NA))
-  result <- s_num_patients(x = x, .N_col = 5)
+  result <- s_num_patients(x = x, labelstr = "", .N_col = 5)
   expected <- list(
     unique = c(3.0, 0.6),
-    nonunique = 4
+    nonunique = 4,
+    unique_count = with_label(3, " (n)")
   )
   expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -16,7 +17,8 @@ test_that("s_num_patients_content works as expected with healthy input", {
   result <- s_num_patients_content(df = df, .N_col = 5, .var = "USUBJID")
   expected <- list(
     unique = c(3.0, 0.6),
-    nonunique = 4
+    nonunique = 4,
+    unique_count = with_label(3, " (n)")
   )
   expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -36,11 +38,11 @@ test_that("summarize_num_patients works as expected with healthy input", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "", "Number of patients with at least one event", "Number of events",
-      "A", "(N=5)", "3 (60%)", "4",
-      "B", "(N=4)", "3 (75%)", "4"
+      "", "", "Number of patients with at least one event", "Number of events", " (n)",
+      "A", "(N=5)", "3 (60%)", "4", "3",
+      "B", "(N=4)", "3 (75%)", "4", "3"
     ),
-    .Dim = c(4L, 3L)
+    .Dim = c(5L, 3L)
   )
   expect_identical(result_matrix, expected_matrix)
 
@@ -71,6 +73,22 @@ test_that("summarize_num_patients works as expected with healthy input", {
       "", "", "Number of events",
       "A", "(N=5)", "4",
       "B", "(N=4)", "4"
+    ),
+    .Dim = c(3L, 3L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+
+  # Check with number of unique patients count only
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    summarize_num_patients("USUBJID", .stats = c("unique_count")) %>%
+    build_table(df, col_counts = c(5L, 4L))
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", " (n)",
+      "A", "(N=5)", "3",
+      "B", "(N=4)", "3"
     ),
     .Dim = c(3L, 3L)
   )

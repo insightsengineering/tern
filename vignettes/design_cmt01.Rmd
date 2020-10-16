@@ -72,6 +72,7 @@ result <- basic_table() %>%
   split_rows_by("CMCLAS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
   summarize_num_patients(
     var = "USUBJID",
+    .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
   count_occurrences(var = "CMDECOD") %>%
@@ -102,6 +103,7 @@ result <- basic_table() %>%
   split_rows_by("CMCLAS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
   summarize_num_patients(
     var = "USUBJID",
+    .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
   count_occurrences(var = "CMDECOD") %>%
@@ -160,6 +162,7 @@ result <- basic_table() %>%
   split_rows_by("CMCLAS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
   summarize_num_patients(
     var = "USUBJID",
+    .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
   count_occurrences(var = "CMDECOD") %>%

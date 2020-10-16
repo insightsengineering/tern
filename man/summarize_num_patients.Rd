@@ -6,31 +6,34 @@
 \alias{s_num_patients_content}
 \title{Number of patients}
 \usage{
-s_num_patients(x, .N_col)
+s_num_patients(x, labelstr, .N_col)
 
-s_num_patients_content(df, labelstr = "", .N_col, .var)
+s_num_patients_content(df, labelstr = "", .N_col, .var, required = NULL)
 
 summarize_num_patients(
   lyt,
   var,
   .stats = NULL,
   .formats = NULL,
-  .labels = NULL
+  .labels = NULL,
+  ...
 )
 }
 \arguments{
 \item{x}{(\code{character} or \code{factor}) \cr vector of patient IDs.}
+
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions).}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
-
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{required}{(\code{character} or \code{NULL}) optional name of a variable that is required to be non-missing.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -42,12 +45,15 @@ by a statistics function.}
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{...}{additional arguments for the lower level functions.}
 }
 \value{
 A list with:
 \itemize{
 \item \code{unique}: vector of count and percentage.
 \item \code{nonunique} : vector of count.
+\item \code{unique_count}: count.
 }
 }
 \description{
@@ -82,7 +88,7 @@ These additional formatting arguments can be passed to the layout creating funct
 
 \examples{
 # Use the statistics function to count number of unique and nonunique patients.
-s_num_patients(x = as.character(c(1, 2, 1, 4, NA)), .N_col = 5L)
+s_num_patients(x = as.character(c(1, 2, 1, 4, NA)), labelstr = "", .N_col = 5L)
 # Count number of unique and non-unique patients.
 df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),

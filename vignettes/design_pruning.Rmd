@@ -313,11 +313,13 @@ lyt <- basic_table() %>%
   add_colcounts() %>%
   summarize_num_patients(
     var = "USUBJID",
+    .stats = c("unique"),
     .labels = c(unique = "Total number of patients with at least one event")
   ) %>%
   split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
   summarize_num_patients(
     var = "USUBJID",
+    .stats = c("unique"),
     .labels = c(unique = "Total number of patients with at least one event")
   ) %>%
   count_occurrences("MHDECOD")

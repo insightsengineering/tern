@@ -15,24 +15,28 @@ NULL
 #' @return A list with:
 #'   - `unique`: vector of count and percentage.
 #'   - `nonunique` : vector of count.
+#'   - `unique_count`: count.
 #'
 #' @export
 #'
 #' @examples
 #' # Use the statistics function to count number of unique and nonunique patients.
-#' s_num_patients(x = as.character(c(1, 2, 1, 4, NA)), .N_col = 5L)
-s_num_patients <- function(x, .N_col) { # nolint
+#' s_num_patients(x = as.character(c(1, 2, 1, 4, NA)), labelstr = "", .N_col = 5L)
+s_num_patients <- function(x, labelstr, .N_col) { # nolint
 
   assert_that(
     is_character_or_factor(x),
+    is.string(labelstr),
     is.count(.N_col)
   )
 
   count1 <- sum(!is.na(unique(x)))
   count2 <- sum(!is.na(x))
-  list(unique = c(count1, count1 / .N_col),
-       nonunique = count2)
-
+  list(
+    unique = c(count1, count1 / .N_col),
+    nonunique = count2,
+    unique_count = with_label(count1, paste(labelstr, "(n)"))
+  )
 }
 
 #' @describeIn summarize_num_patients Counts the number of unique patients in a column
@@ -41,6 +45,7 @@ s_num_patients <- function(x, .N_col) { # nolint
 #' Function serves as a wrapper that carries over both expected arguments `df`
 #' and `labelstr` in `cfun` of [summarize_row_groups()].
 #'
+#' @param required (`character` or `NULL`) optional name of a variable that is required to be non-missing.
 #' @export
 #'
 #' @examples
@@ -50,22 +55,33 @@ s_num_patients <- function(x, .N_col) { # nolint
 #'   AGE = c(10, 15, 10, 17, 8)
 #' )
 #' s_num_patients_content(df, .N_col = 5, .var = "USUBJID")
-s_num_patients_content <- function(df, labelstr="", .N_col, .var) { # nolint
+s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NULL) { # nolint
 
   assert_that(
     is.data.frame(df),
-    is.string(.var)
+    is.string(.var),
+    is_df_with_variables(df, list(id = .var))
   )
+  if (!is.null(required)) {
+    assert_that(
+      is_df_with_variables(df, list(required = required)),
+      is.string(required)
+    )
+    df <- df[!is.na(df[[required]]), , drop = FALSE]
+  }
 
   x <- df[[.var]]
-  s_num_patients(x = x, .N_col = .N_col)
-
+  s_num_patients(
+    x = x,
+    labelstr = labelstr,
+    .N_col = .N_col
+  )
 }
 
 c_num_patients <- make_afun(
   s_num_patients_content,
-  .stats = c("unique", "nonunique"),
-  .formats = c(unique = format_count_fraction, nonunique = "xx"),
+  .stats = c("unique", "nonunique", "unique_count"),
+  .formats = c(unique = format_count_fraction, nonunique = "xx", unique_count = "xx"),
   .labels = c(unique = "Number of patients with at least one event",
               nonunique = "Number of events")
 )
@@ -81,7 +97,8 @@ summarize_num_patients <- function(lyt,
                                    var,
                                    .stats = NULL,
                                    .formats = NULL,
-                                   .labels = NULL) {
+                                   .labels = NULL,
+                                   ...) {
 
   cfun <- make_afun(
     c_num_patients,
@@ -93,7 +110,8 @@ summarize_num_patients <- function(lyt,
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = cfun
+    cfun = cfun,
+    extra_args = list(...)
   )
 
 }

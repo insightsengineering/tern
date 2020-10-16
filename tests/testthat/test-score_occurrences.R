@@ -20,6 +20,7 @@ test_that("score_occurrences functions as expected with valid input and default 
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one event",
         nonunique = "Total number of events"
@@ -27,6 +28,7 @@ test_that("score_occurrences functions as expected with valid input and default 
     split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE)  %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one event",
         nonunique = "Total number of events"

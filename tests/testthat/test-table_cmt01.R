@@ -19,6 +19,7 @@ test_that("CMT01 default variant (Concomitant medications) is produced correctly
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
         nonunique = "Total number of treatments"
@@ -30,6 +31,7 @@ test_that("CMT01 default variant (Concomitant medications) is produced correctly
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
         nonunique = "Total number of treatments"
@@ -86,6 +88,7 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
         nonunique = "Total number of treatments"
@@ -97,6 +100,7 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
     ) %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
         nonunique = "Total number of treatments"
@@ -147,6 +151,7 @@ test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one treatment",
         nonunique = "Total number of treatments"
@@ -213,6 +218,7 @@ test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
     split_rows_by("CMCLAS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
     ) %>%
     count_occurrences(var = "CMDECOD") %>%

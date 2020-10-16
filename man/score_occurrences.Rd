@@ -49,6 +49,7 @@ lyt <- basic_table() \%>\%
                          .labels = c("Total number of patients with at least one event")) \%>\%
   split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE)  \%>\%
   summarize_num_patients(var = "USUBJID",
+                         .stats = c("unique", "nonunique"),
                          .labels = c("Total number of patients with at least one event",
                                      "Total number of events")) \%>\%
  count_occurrences(vars="AEDECOD")

@@ -53,6 +53,7 @@ test_that("CMT02_PT default variant is produced correctly", {
     add_colcounts() %>%
     summarize_num_patients(
       var = "USUBJID",
+      .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
