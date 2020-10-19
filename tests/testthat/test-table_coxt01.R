@@ -63,12 +63,10 @@ test_that("2. Cox Regression (with Interaction Term)", {
     data = ADTTE_f,
     control = control_coxreg(interaction = TRUE)
   )
-  result <- expect_warning(
-    split_rows_by(lyt = NULL, "effect") %>%
-      split_rows_by("term", child_labels = "hidden") %>%
-      fit_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
-      build_table(df = df)
-  )
+  result <- split_rows_by(lyt = NULL, "effect") %>%
+    split_rows_by("term", child_labels = "hidden") %>%
+    fit_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
+    build_table(df = df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -99,12 +97,11 @@ test_that("3. Cox Regression (specifying covariates)", {
     control = control_coxreg(interaction = TRUE),
     at = list(AGE = c(30, 40, 50))
   )
-  result <- expect_warning(
-    split_rows_by(lyt = NULL, "effect") %>%
-      split_rows_by("term", child_labels = "hidden") %>%
-      fit_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
-      build_table(df = df)
-  )
+  result <- split_rows_by(lyt = NULL, "effect") %>%
+    split_rows_by("term", child_labels = "hidden") %>%
+    fit_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
+    build_table(df = df)
+
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -141,12 +138,11 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
     ),
     at = list(AGE = c(30, 40, 50))
   )
-  result <- expect_warning(
-    split_rows_by(lyt = NULL, "effect") %>%
-      split_rows_by("term", child_labels = "hidden") %>%
-      fit_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
-      build_table(df = df)
-  )
+  result <- split_rows_by(lyt = NULL, "effect") %>%
+    split_rows_by("term", child_labels = "hidden") %>%
+    fit_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
+    build_table(df = df)
+
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -164,4 +160,5 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
     ),
     .Dim = c(15L, 6L)
   )
+  expect_identical(result_matrix, expected_matrix)
 })
