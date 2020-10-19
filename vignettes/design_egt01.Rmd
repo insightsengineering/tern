@@ -1,0 +1,69 @@
+---
+title: "Design: ECG Results and Change from Baseline by Visit (EGT01)"
+author: "Maximo Carreras"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: true
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{design_egt01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: ../inst/REFERENCES.bib
+
+---
+
+# Setup
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+```{r setup}
+library(rtables)
+library(tern)
+packageVersion("rtables")
+library(random.cdisc.data)
+library(dplyr)
+```
+
+# Default variant
+Notes:
+
+- We cannot remove cell contents of the intersection of a "Baseline" visit and the "Change from Baseline" column. 
+- We cannot add the total number of patients for each treatment arm before splitting into "Analysis Value" and "Absolute Change from Baseline".
+- It would be nice to be able to split the column header "Absolute Change from Baseline" into two rows (as in the GDS TLG specs) to make the output less wide.
+
+
+```{r default variant}
+  adsl <- radsl(cached = TRUE)
+  adeg <- radeg(cached = TRUE)
+
+  adeg_f <- adeg %>%
+    dplyr::filter(
+      PARAM == "Heart Rate" &
+      AVISIT != "SCREENING"
+  )
+
+  l <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("AVISIT", split_fun = drop_split_levels) %>%
+    split_cols_by_multivar(
+      vars = c("AVAL", "CHG"),
+      varlabels = c("Analysis Value", "Absolute Change from Baseline")
+    ) %>%
+    summarize_colvars()
+
+  result <- build_table(l, adeg_f)
+  result
+```
+
