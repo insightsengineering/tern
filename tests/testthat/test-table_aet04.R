@@ -12,6 +12,55 @@ preproc_adae <- function(adae){
   anl
 }
 
+raw_table <- function(adae, n_per_arm) {
+
+  gr_grp <-  list(
+    "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
+    "Grade 1-2" = c("1", "2"),
+    "Grade 3-4" = c("3", "4")
+  )
+
+  lyt <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    summarize_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = gr_grp
+    ) %>%
+    split_rows_by("AEBODSYS", child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    summarize_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = gr_grp
+    ) %>%
+    split_rows_by("AEDECOD", child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = "unique",
+      .labels = "- Any Grade -"
+    ) %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = gr_grp[-1],
+      .indent_mods = -1L
+    )
+
+  result <- lyt %>%
+    build_table(adae, col_counts = n_per_arm) %>%
+    trim_rows() %>%
+    sort_at_path(
+      path = "AEBODSYS",
+      scorefun = cont_n_allcols,
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = cont_n_allcols,
+      decreasing = TRUE
+    )
+
+  result
+}
+
 # Simple wrapper to return subset ADAE to a threshold of xx%.
 get_adae_trimmed <- function(adsl, adae, cutoff_rate){
 
@@ -627,4 +676,162 @@ test_that("AET04 variant 6 is produced correctly", {
   .Dim = c(38L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
+})
+
+# No test done for variant 7, Adverse Events by Highest NCI CTCAE Grade
+# (with an Incidence Rate of at Least X Patients, totals unrestriced).
+# With this variant, the SOC level is not trimmed (even if there are no terms left).
+
+# NOTE: STREAM logic will only trim at term level
+test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
+
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE) %>%
+    preproc_adae()
+  n_per_arm <- table(adsl$ACTARM)
+
+  raw_result <- raw_table(adae, n_per_arm)
+
+  cutoff <- 57L
+  row_condition <- has_count_in_cols(above = cutoff, col_names = "A: Drug X") |
+    has_count_in_cols(above = cutoff, col_names = "B: Placebo") |
+    has_count_in_cols(above = cutoff, col_names = "C: Combination")
+
+  result <- prune_table(raw_result, keep_rows(row_condition))
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+    "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
+    "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
+    "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
+    "cl D.2", "- Any Grade -", "Grade 1-2", "1", "dcd D.2.1.5.3",
+    "- Any Grade -", "Grade 1-2", "1", "A: Drug X", "(N=134)", "122 (91%)",
+    "13 (9.7%)", "7 (5.2%)", "6 (4.5%)", "33 (24.6%)", "18 (13.4%)",
+    "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)", "78 (58.2%)", "30 (22.4%)",
+    "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)", "50 (37.3%)", "",
+    "47 (35.1%)", "47 (35.1%)", "47 (35.1%)", "", "47 (35.1%)", "47 (35.1%)",
+    "47 (35.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "19 (14.2%)",
+    "9 (6.7%)", "10 (7.5%)", "34 (25.4%)", "14 (10.4%)", "20 (14.9%)",
+    "70 (52.2%)", "", "75 (56%)", "75 (56%)", "27 (20.1%)", "48 (35.8%)",
+    "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)", "", "58 (43.3%)",
+    "58 (43.3%)", "58 (43.3%)", "", "58 (43.3%)", "58 (43.3%)", "58 (43.3%)",
+    "C: Combination", "(N=132)", "120 (90.9%)", "11 (8.3%)", "4 (3%)",
+    "7 (5.3%)", "34 (25.8%)", "16 (12.1%)", "18 (13.6%)", "75 (56.8%)",
+    "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)", "50 (37.9%)", "",
+    "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "", "57 (43.2%)", "57 (43.2%)",
+    "57 (43.2%)", "", "57 (43.2%)", "57 (43.2%)", "57 (43.2%)"
+  ),
+  .Dim = c(27L, 4L)
+ )
+ expect_identical(result_matrix, expected_matrix)
+})
+
+# NOTE: STREAM logic will only tream at term level
+test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
+
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE) %>%
+    preproc_adae()
+  n_per_arm <- table(adsl$ACTARM)
+
+  raw_result <- raw_table(adae, n_per_arm)
+
+  cutoff <- 0.1
+  row_condition <- has_fractions_difference(above = cutoff, col_names = names(raw_result))
+
+  result <- prune_table(raw_result, keep_rows(row_condition))
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+    "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
+    "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
+    "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
+    "cl C.2", "- Any Grade -", "Grade 1-2", "2", "dcd C.2.1.2.1",
+    "- Any Grade -", "Grade 1-2", "2", "A: Drug X", "(N=134)", "122 (91%)",
+    "13 (9.7%)", "7 (5.2%)", "6 (4.5%)", "33 (24.6%)", "18 (13.4%)",
+    "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)", "78 (58.2%)", "30 (22.4%)",
+    "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)", "50 (37.3%)", "",
+    "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "", "35 (26.1%)", "35 (26.1%)",
+    "35 (26.1%)", "B: Placebo", "(N=134)", "123 (91.8%)", "19 (14.2%)",
+    "9 (6.7%)", "10 (7.5%)", "34 (25.4%)", "14 (10.4%)", "20 (14.9%)",
+    "70 (52.2%)", "", "75 (56%)", "75 (56%)", "27 (20.1%)", "48 (35.8%)",
+    "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)", "", "48 (35.8%)",
+    "48 (35.8%)", "48 (35.8%)", "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)",
+    "C: Combination", "(N=132)", "120 (90.9%)", "11 (8.3%)", "4 (3%)",
+    "7 (5.3%)", "34 (25.8%)", "16 (12.1%)", "18 (13.6%)", "75 (56.8%)",
+    "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)", "50 (37.9%)", "",
+    "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "", "55 (41.7%)", "55 (41.7%)",
+    "55 (41.7%)", "", "55 (41.7%)", "55 (41.7%)", "55 (41.7%)"
+    ),
+  .Dim = c(27L, 4L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+})
+
+# No test done for variant 10, Adverse Events by Highest NCI CTCAE Grade
+# (with an Incidence Rate of at Least X%, SOCs below X% removed).
+# With this variant, SOC levels above the threshold are still in the table even if
+# there are no terms left.
+
+test_that(
+  "AET04 variant 11 is produced correctly
+  (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)", {
+
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE) %>%
+    preproc_adae()
+  n_per_arm <- table(adsl$ACTARM)
+
+  raw_result <- raw_table(adae, n_per_arm)
+
+  cutoff <- 0.4
+  row_condition <- has_fraction_in_cols(above = cutoff, col_names = "A: Drug X") |
+    has_fraction_in_cols(above = cutoff, col_names = "B: Placebo") |
+    has_fraction_in_cols(above = cutoff, col_names = "C: Combination")
+
+  result <- prune_table(raw_result, keep_rows(row_condition))
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+    "", "", "- Any Grade -", "Grade 1-2", "1", "2", "Grade 3-4",
+    "3", "4", "Grade 5", "cl A.1", "- Any Grade -", "Grade 1-2",
+    "1", "2", "dcd A.1.1.1.1", "- Any Grade -", "Grade 1-2", "1",
+    "cl B.2", "- Any Grade -", "Grade 1-2", "1", "Grade 3-4", "3",
+    "dcd B.2.2.3.1", "- Any Grade -", "Grade 1-2", "1", "cl D.2",
+    "- Any Grade -", "Grade 1-2", "1", "dcd D.2.1.5.3", "- Any Grade -",
+    "Grade 1-2", "1", "cl C.2", "- Any Grade -", "Grade 1-2", "2",
+    "dcd C.2.1.2.1", "- Any Grade -", "Grade 1-2", "2", "A: Drug X",
+    "(N=134)", "122 (91%)", "13 (9.7%)", "7 (5.2%)", "6 (4.5%)",
+    "33 (24.6%)", "18 (13.4%)", "15 (11.2%)", "76 (56.7%)", "", "78 (58.2%)",
+    "78 (58.2%)", "30 (22.4%)", "48 (35.8%)", "", "50 (37.3%)", "50 (37.3%)",
+    "50 (37.3%)", "", "79 (59%)", "30 (22.4%)", "30 (22.4%)", "49 (36.6%)",
+    "49 (36.6%)", "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)", "",
+    "47 (35.1%)", "47 (35.1%)", "47 (35.1%)", "", "47 (35.1%)", "47 (35.1%)",
+    "47 (35.1%)", "", "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "",
+    "35 (26.1%)", "35 (26.1%)", "35 (26.1%)", "B: Placebo", "(N=134)",
+    "123 (91.8%)", "19 (14.2%)", "9 (6.7%)", "10 (7.5%)", "34 (25.4%)",
+    "14 (10.4%)", "20 (14.9%)", "70 (52.2%)", "", "75 (56%)", "75 (56%)",
+    "27 (20.1%)", "48 (35.8%)", "", "45 (33.6%)", "45 (33.6%)", "45 (33.6%)",
+    "", "74 (55.2%)", "30 (22.4%)", "30 (22.4%)", "44 (32.8%)", "44 (32.8%)",
+    "", "54 (40.3%)", "54 (40.3%)", "54 (40.3%)", "", "58 (43.3%)",
+    "58 (43.3%)", "58 (43.3%)", "", "58 (43.3%)", "58 (43.3%)", "58 (43.3%)",
+    "", "48 (35.8%)", "48 (35.8%)", "48 (35.8%)", "", "48 (35.8%)",
+    "48 (35.8%)", "48 (35.8%)", "C: Combination", "(N=132)", "120 (90.9%)",
+    "11 (8.3%)", "4 (3%)", "7 (5.3%)", "34 (25.8%)", "16 (12.1%)",
+    "18 (13.6%)", "75 (56.8%)", "", "89 (67.4%)", "89 (67.4%)", "39 (29.5%)",
+    "50 (37.9%)", "", "63 (47.7%)", "63 (47.7%)", "63 (47.7%)", "",
+    "85 (64.4%)", "33 (25%)", "33 (25%)", "52 (39.4%)", "52 (39.4%)",
+    "", "51 (38.6%)", "51 (38.6%)", "51 (38.6%)", "", "57 (43.2%)",
+    "57 (43.2%)", "57 (43.2%)", "", "57 (43.2%)", "57 (43.2%)", "57 (43.2%)",
+    "", "55 (41.7%)", "55 (41.7%)", "55 (41.7%)", "", "55 (41.7%)",
+    "55 (41.7%)", "55 (41.7%)"),
+  .Dim = c(45L, 4L)
+ )
+ expect_identical(result_matrix, expected_matrix)
 })
