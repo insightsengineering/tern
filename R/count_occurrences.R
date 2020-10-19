@@ -90,7 +90,7 @@ count_occurrences <- function(lyt, vars, ...) {
   afun <- format_wrap_df(
     s_count_occurrences,
     indent_mods = c(count_percent = 0L),
-    formats = c(count_percent = "xx (xx.x%)")
+    formats = c(count_percent = format_count_fraction)
   )
 
   analyze(

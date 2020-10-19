@@ -57,9 +57,9 @@ test_that("score_occurrences functions as expected with valid input and default 
     c("AEBS2", "", "", ""),
     c("Total number of patients with at least one event", "2 (66.7%)", "1 (100%)", "1 (100%)"),
     c("Total number of events", "3", "2", "1"),
-    c("AEPT2", "2 (66.7%)", "1 (100%)", "0 (0%)"),
-    c("AEPT1", "1 (33.3%)", "0 (0%)", "0 (0%)"),
-    c("AEPT3", "0 (0%)", "0 (0%)", "1 (100%)")
+    c("AEPT2", "2 (66.7%)", "1 (100%)", "0"),
+    c("AEPT1", "1 (33.3%)", "0", "0"),
+    c("AEPT3", "0", "0", "1 (100%)")
   )
 
   expect_equal(result, expected)
