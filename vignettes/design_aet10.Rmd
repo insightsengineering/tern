@@ -1,0 +1,71 @@
+---
+title: "Design for Most Common (xx %) Adverse Events (AET10)"
+author: "Maximo Carreras"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of AET10}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+Configuration
+=============
+
+```{r setup}
+library(rtables)
+library(tern)
+library(assertthat)
+library(dplyr)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+Default variant
+=================
+The table includes AEs occurring with relative frequency of ≥40% in at least one of the treatment groups. Order the data by "All Patients" column frequency from most to least frequently reported AE. The "All Patients" column is included only to demonstrate that the table is correctly sorted.
+
+```{r dafault variant, eval = TRUE}
+
+library(random.cdisc.data)
+
+adsl <- radsl(cached = TRUE)
+n_per_arm <- table(adsl$ARM)
+n_per_arm <- c(n_per_arm, "All Patients" = sum(n_per_arm))
+
+adae <- radae(cached = TRUE)
+
+result1 <- basic_table() %>%
+  split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  # split_cols_by(var = "ARM") %>%
+  add_colcounts() %>%
+  count_occurrences(var = "AEDECOD") %>%
+  build_table(adae,col_count = n_per_arm)
+
+result2 <- prune_table(result1,
+    keep_rows(
+      has_fraction_in_cols(above = 0.40, col_names = names(result1)[1]) |
+      has_fraction_in_cols(above = 0.40, col_names = names(result1)[2]) |
+      has_fraction_in_cols(above = 0.40, col_names = names(result1)[3])
+    )
+  )
+
+result3 <- sort_at_path(result2, path = c("AEDECOD"), scorefun = score_occurrences)
+
+result3
+```
