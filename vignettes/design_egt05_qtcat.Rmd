@@ -1,0 +1,101 @@
+---
+title: "ECG Actual Values and Changes from Baseline by Visit (EGT05_QTCAT)"
+author: "Saibah Chohan"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+  toc: true
+  toc_float: true
+  toc_depth: 2
+  number_sections: true
+  theme: journal
+  highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{design_egt05_qtcat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: ../inst/REFERENCES.bib
+---
+
+Configuration
+=============
+  
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+```{r setup}
+library(rtables)
+packageVersion("rtables")
+
+library(tern)
+library(random.cdisc.data)
+library(dplyr)
+```
+
+
+```{r data peprocessing}
+adsl <- radsl(cached = TRUE)
+adeg <- radeg(cached = TRUE)
+adeg_labels <- var_labels(adeg)
+
+adeg_f <- adeg %>%
+  filter(PARAMCD == "QT" & # Filtering QT Duration
+           ANL01FL == "Y"  # "Analysis Flag 01 Baseline Post-Baseline"
+         ) %>%
+  # Categorize AVAL and CHG
+  mutate(
+    AVALCAT1 = case_when(
+      AVAL <= 450 ~ "<=450 msec",
+      AVAL <= 480 ~ ">450 to <=480 msec",
+      AVAL <= 500 ~ ">480 to <= 500 msec",
+      AVAL > 500 ~ ">500 msec"),
+    CHGCAT1 = case_when(
+      CHG <= 30 ~ "<=30 msec",
+      CHG <= 60 ~ ">30 to <=60 msec",
+      CHG > 60 ~ ">60 msec")
+    ) 
+
+adeg_f$AVALCAT1 <- factor(adeg_f$AVALCAT1, 
+                          levels = c(
+                            "<=450 msec", 
+                            ">450 to <=480 msec",
+                            ">480 to <= 500 msec",
+                            ">500 msec"))
+
+adeg_f$CHGCAT1 <- factor(adeg_f$CHGCAT1, 
+                          levels = c(
+                            "<=30 msec", 
+                            ">30 to <=60 msec", 
+                            ">60 msec"
+                            ))
+
+var_labels(adeg_f) <- c(adeg_labels, "AVALCAT1" = "Value at Visit", "CHGCAT1" = "Change from Baseline")
+```
+
+### Functions 
+
+#### `summarize_vars`
+
+```{r}
+library(tern)
+summarize_vars
+
+```
+
+#### Default output
+
+```{r}
+
+result <- basic_table() %>% 
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("AVISIT", split_label = "Visit", child_labels = "default", visible_label = TRUE) %>% 
+  summarize_vars(vars = c("AVALCAT1", "CHGCAT1"), var_labels = c("Value at Visit", "Change from Baseline")) %>% 
+  build_table(df = adeg_f, col_counts = table(adsl$ARM)) %>% prune_table()
+result
+```

@@ -130,6 +130,7 @@ postprocessing
 pre
 preprocess
 qit
+QTCAT
 quartiles
 rcode
 recurse
