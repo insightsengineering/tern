@@ -1,18 +1,15 @@
 #' Occurrence Table Sorting
 #'
-#' Functions to sort occurrence tables.
-#'
-#' @template formatting_arguments
+#' Functions to score occurrence table subtables and rows which can be used in the
+#' sorting of occurrence tables.
 #'
 #' @name score_occurrences
 #'
 NULL
 
-#' @describeIn score_occurrences Sorting function that works on occurrence data tabulated in rtables.
-#'
-#' @param rtable_object (`rtable`) \cr rtable object name.
-#'
-#' @returns A sorted rtable object.
+#' @describeIn score_occurrences Scoring function which sums the counts across all columns.
+#' @inheritParams rtables_access
+#' @return [score_occurrences()] returns the sum of counts across all columns of a table row.
 #'
 #' @export
 #'
@@ -37,18 +34,63 @@ NULL
 #'                          .stats = c("unique", "nonunique"),
 #'                          .labels = c("Total number of patients with at least one event",
 #'                                      "Total number of events")) %>%
-#'  count_occurrences(vars="AEDECOD")
+#'   count_occurrences(vars = "AEDECOD")
 #'
 #' rtable_object <- build_table(lyt, ADAE, col_counts = N_per_arm) %>%
-#'  prune_table()
+#'   prune_table()
 #'
 #' rtable_object_sorted <- rtable_object %>%
-#' sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+#'   sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 #'
 #' rtable_object_sorted
 #'
-score_occurrences <- function(rtable_object) {
-  vals <- row_values(rtable_object)
-  vals1 <- vapply(vals, '[[', i=1, numeric(1)) # nolint
-  sum(vals1)
+score_occurrences <- function(table_row) {
+  row_counts <- h_row_counts(table_row, col_indices = seq_len(ncol(table_row)))
+  sum(row_counts)
+}
+
+#' @describeIn score_occurrences Scoring functions can be produced by this constructor to only include
+#'   specific columns in the scoring.
+#' @inheritParams has_count_in_cols
+#' @return [score_occurrences_cols()] returns a function that sums counts across all specified columns
+#'   of a table row.
+#'
+#' @export
+#'
+#' @examples
+#' score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Placebo"))
+#' rtable_object_sorted <- rtable_object %>%
+#'   sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
+#'
+#' rtable_object_sorted
+#'
+score_occurrences_cols <- function(...) {
+  function(table_row) {
+    row_counts <- h_row_counts(table_row, ...)
+    sum(row_counts)
+  }
+}
+
+#' @describeIn score_occurrences Scoring functions produced by this constructor can be used on
+#'   subtables: They sum up all specified column counts in the subtable. This is useful when
+#'   there is no available content row summing up these counts.
+#' @return [score_occurrences_subtable()] returns a function that sums counts in each subtable
+#'   across all specified columns.
+#'
+#' @export
+#'
+#' @examples
+#' score_subtable_all <- score_occurrences_subtable(col_names = names(rtable_object))
+#' rtable_object_sorted <- rtable_object %>%
+#'   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
+#'
+#' rtable_object_sorted
+#'
+score_occurrences_subtable <- function(...) {
+  score_table_row <- score_occurrences_cols(...)
+  function(table_tree) {
+    table_rows <- collect_leaves(table_tree)
+    counts <- vapply(table_rows, score_table_row, numeric(1))
+    sum(counts)
+  }
 }

@@ -36,8 +36,7 @@ successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, 
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{var}{(\code{string})\cr single variable name.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 

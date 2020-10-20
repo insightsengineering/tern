@@ -167,6 +167,11 @@ test_that("s_summary works with characters by converting to character", {
   expect_identical(result, expected)
 })
 
+test_that("s_summary does not work for length 0 character vectors", {
+  x <- character()
+  expect_warning(expect_error(s_summary(x, denom = "n")))
+})
+
 test_that("s_summary works with logical vectors", {
   x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE)
 

@@ -284,7 +284,7 @@ h_coxreg_inter_effect <- function(x,
 #'   covariate
 #' @param at (`list`)\cr a list with items named after the covariate, every
 #'   item is a vector of levels at which the interaction should be estimated.
-#' @importFrom stats qnorm median
+#' @importFrom stats qnorm median terms
 #' @export
 h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
                                           effect,
@@ -297,7 +297,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
   betas <- coef(mod)
   term_indices <- grep(
     pattern = effect,
-    x = attr(terms(mod), "term.labels")
+    x = attr(stats::terms(mod), "term.labels")
   )
   assert_that(length(term_indices) == 2)
   betas <- betas[term_indices]
@@ -388,7 +388,7 @@ h_coxreg_extract_interaction <- function(effect,
                                          data,
                                          at,
                                          control) {
-  if (!any(attr(terms(mod), "order") == 2)) {
+  if (!any(attr(stats::terms(mod), "order") == 2)) {
     y <- h_coxreg_univ_extract(
       mod = mod, covar = covar, data = data, control = control, effect = effect
     )

@@ -159,12 +159,23 @@ reference:
       - has_tabletree_colnames
       - is_leaf_table
       - h_content_first_row
+      - groups_list_to_df
+      - split_cols_by_groups
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
     contents:
       - format_fraction
       - format_count_fraction
+      - format_fraction_threshold
+      - format_xx
+
+  - title: rtables Scoring Functions
+    desc: these functions can help with sorting of tables
+    contents:
+      - score_occurrences
+      - score_occurrences_cols
+      - score_occurrences_subtable
 
   - title: rtables Pruning Functions
     desc: these functions and classes help with flexible pruning of tables
@@ -172,8 +183,10 @@ reference:
       - keep_rows
       - keep_content_rows
       - has_count_in_cols
+      - has_count_in_any_col
       - has_counts_difference
       - has_fraction_in_cols
+      - has_fraction_in_any_col
       - has_fractions_difference
       - new_combination_function
       - CombinationFunction
@@ -247,4 +260,6 @@ reference:
       - h_prop_ci
       - check_diff_prop_ci
       - c_label_n
+      - make_names
+      - h_col_indices
       - get_covariates

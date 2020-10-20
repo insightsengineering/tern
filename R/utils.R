@@ -250,3 +250,15 @@ check_col_by_factor <- function(x,
 
   invisible(NULL)
 }
+
+#' Make Names Without Dots
+#'
+#' @param nams (`character`)\cr vector of original names.
+#'
+#' @return Character vector of proper names, which does not use dots in contrast to
+#'   [base::make.names()].
+#'
+make_names <- function(nams) {
+  orig <- make.names(nams)
+  gsub(".", "", x = orig, fixed = TRUE)
+}

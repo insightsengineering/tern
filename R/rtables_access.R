@@ -13,11 +13,15 @@ NULL
 #'   in a `TableRow`.
 #' @param table_row (`TableRow`)\cr an analysis row in a occurrence table.
 #' @param col_names (`character`)\cr the names of the columns to extract from.
+#' @param col_indices (`integer`)\cr the indices of the columns to extract from. If `col_names` are provided,
+#'   then these are inferred from the names of `table_row`. (Note that this currently only works well with a single
+#'   column split.)
 #' @export
 #' @importFrom rlang is_integerish
 #'
-h_row_counts <- function(table_row, col_names) {
-  col_indices <- col_indices(table_row, col_names)
+h_row_counts <- function(table_row,
+                         col_names = NULL,
+                         col_indices = h_col_indices(table_row, col_names)) {
   row_vals <- row_values(table_row)[col_indices]
   counts <- sapply(row_vals, "[", 1L)
   assert_that(rlang::is_integerish(counts))
@@ -28,8 +32,9 @@ h_row_counts <- function(table_row, col_names) {
 #'   in a `TableRow`.
 #' @export
 #'
-h_row_fractions <- function(table_row, col_names) {
-  col_indices <- col_indices(table_row, col_names)
+h_row_fractions <- function(table_row,
+                            col_names = NULL,
+                            col_indices = h_col_indices(table_row, col_names)) {
   row_vals <- row_values(table_row)[col_indices]
   fractions <- sapply(row_vals, "[", 2L)
   assert_that(is_proportion_vector(fractions, include_boundaries = TRUE))
@@ -41,8 +46,9 @@ h_row_fractions <- function(table_row, col_names) {
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
 #' @export
 #'
-h_col_counts <- function(table, col_names) {
-  col_indices <- col_indices(table, col_names)
+h_col_counts <- function(table,
+                         col_names = NULL,
+                         col_indices = h_col_indices(table, col_names)) {
   counts <- col_counts(table)[col_indices]
   setNames(counts, col_names)
 }

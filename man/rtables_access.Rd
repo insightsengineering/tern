@@ -9,11 +9,23 @@
 \alias{h_content_first_row}
 \title{rtables Access Helper Functions}
 \usage{
-h_row_counts(table_row, col_names)
+h_row_counts(
+  table_row,
+  col_names = NULL,
+  col_indices = h_col_indices(table_row, col_names)
+)
 
-h_row_fractions(table_row, col_names)
+h_row_fractions(
+  table_row,
+  col_names = NULL,
+  col_indices = h_col_indices(table_row, col_names)
+)
 
-h_col_counts(table, col_names)
+h_col_counts(
+  table,
+  col_names = NULL,
+  col_indices = h_col_indices(table, col_names)
+)
 
 is_leaf_table(table)
 
@@ -23,6 +35,10 @@ h_content_first_row(table)
 \item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
 
 \item{col_names}{(\code{character})\cr the names of the columns to extract from.}
+
+\item{col_indices}{(\code{integer})\cr the indices of the columns to extract from. If \code{col_names} are provided,
+then these are inferred from the names of \code{table_row}. (Note that this currently only works well with a single
+column split.)}
 
 \item{table}{(\code{VTableNodeInfo})\cr an occurrence table or row.}
 }

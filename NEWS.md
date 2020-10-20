@@ -13,6 +13,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * New method for calculating the confidence interval in `s_incidence_rate`: Normal approximation for log rate
 * Fit and tabulate the results of univariate Cox regressions: `fit_coxref`, `s_coxreg`, `h_coxreg`.
 * Pruning functions for occurrence tables (or tables with counts and fractions), see `?prune_occurrences`.
+* Scoring functions for occurrence tables, see `?score_occurrences`.
 
 
 * issues with no news: 

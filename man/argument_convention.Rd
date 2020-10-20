@@ -59,6 +59,8 @@ by a statistics function.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{var}{(\code{string})\cr single variable name.}
+
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 }
 \description{

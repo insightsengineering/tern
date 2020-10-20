@@ -9,6 +9,7 @@ This summarizes the additional Formatting Functions to work with rtables.
 \seealso{
 Other formatting functions: 
 \code{\link{format_count_fraction}()},
+\code{\link{format_fraction_threshold}()},
 \code{\link{format_fraction}()}
 }
 \concept{formatting functions}

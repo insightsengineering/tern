@@ -1,0 +1,468 @@
+library(random.cdisc.data)
+library(dplyr)
+
+preprocess_adae <- function(adae) {
+  adae %>%
+    dplyr::group_by(ACTARM, USUBJID, AEBODSYS, AEDECOD) %>%
+    dplyr::summarize(
+      MAXAETOXGR = max(as.numeric(AETOXGR))
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      MAXAETOXGR = factor(MAXAETOXGR),
+      AEDECOD = droplevels(AEDECOD)
+    )
+}
+
+full_table_aet04_pi <- function(adsl, adae_max) {
+  grade_groups <- list(
+    "Any Grade (%)" = c("1", "2", "3", "4", "5"),
+    "Grade 3-4 (%)" = c("3", "4"),
+    "Grade 5 (%)" = "5"
+  )
+
+  col_counts <- rep(table(adsl$ACTARM), each = length(grade_groups))
+  basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
+    split_rows_by("AEBODSYS") %>%
+    summarize_vars(
+      "AEDECOD",
+      na.rm = TRUE,
+      denom = "N_col",
+      .stats = "count_fraction",
+      .formats = c(count_fraction = format_fraction_threshold(0.01))
+    ) %>%
+    build_table(adae_max, col_counts = col_counts) %>%
+    trim_rows()
+}
+
+test_that("AET04_PI full table is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+  result <- full_table_aet04_pi(adsl, adae_max) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "dcd A.1.1.1.2",
+      "cl B.2", "dcd B.2.2.3.1", "dcd B.2.1.2.1", "cl D.1", "dcd D.1.1.1.1",
+      "dcd D.1.1.4.2", "cl D.2", "dcd D.2.1.5.3", "cl B.1", "dcd B.1.1.1.1",
+      "cl C.2", "dcd C.2.1.2.1", "cl C.1", "dcd C.1.1.1.3", "A: Drug X",
+      "Any Grade (%)", "(N=134)", "", "37", "36", "", "36", "37", "",
+      "37", "36", "", "35", "", "35", "", "26", "", "32", "A: Drug X",
+      "Grade 3-4 (%)", "(N=134)", "", "0", "0", "", "0", "37", "",
+      "0", "36", "", "0", "", "0", "", "0", "", "32", "A: Drug X",
+      "Grade 5 (%)", "(N=134)", "", "0", "0", "", "0", "0", "", "37",
+      "0", "", "0", "", "35", "", "0", "", "0", "B: Placebo", "Any Grade (%)",
+      "(N=134)", "", "34", "36", "", "40", "33", "", "31", "31", "",
+      "43", "", "37", "", "36", "", "34", "B: Placebo", "Grade 3-4 (%)",
+      "(N=134)", "", "0", "0", "", "0", "33", "", "0", "31", "", "0",
+      "", "0", "", "0", "", "34", "B: Placebo", "Grade 5 (%)", "(N=134)",
+      "", "0", "0", "", "0", "0", "", "31", "0", "", "0", "", "37",
+      "", "0", "", "0", "C: Combination", "Any Grade (%)", "(N=132)",
+      "", "48", "38", "", "39", "39", "", "39", "38", "", "43", "",
+      "33", "", "42", "", "33", "C: Combination", "Grade 3-4 (%)",
+      "(N=132)", "", "0", "0", "", "0", "39", "", "0", "38", "", "0",
+      "", "0", "", "0", "", "33", "C: Combination", "Grade 5 (%)",
+      "(N=132)", "", "0", "0", "", "0", "0", "", "39", "0", "", "0",
+      "", "33", "", "0", "", "0"),
+    .Dim = c(20L, 10L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 1 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+  full_table <- full_table_aet04_pi(adsl, adae_max)
+
+  at_least_10percent_any <- has_fraction_in_any_col(atleast = 0.1, col_indices = c(1, 4, 7))
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_10percent_any)) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "dcd A.1.1.1.2",
+      "cl B.2", "dcd B.2.2.3.1", "dcd B.2.1.2.1", "cl D.1", "dcd D.1.1.1.1",
+      "dcd D.1.1.4.2", "cl D.2", "dcd D.2.1.5.3", "cl B.1", "dcd B.1.1.1.1",
+      "cl C.2", "dcd C.2.1.2.1", "cl C.1", "dcd C.1.1.1.3", "A: Drug X",
+      "Any Grade (%)", "(N=134)", "", "37", "36", "", "36", "37", "",
+      "37", "36", "", "35", "", "35", "", "26", "", "32", "A: Drug X",
+      "Grade 3-4 (%)", "(N=134)", "", "0", "0", "", "0", "37", "",
+      "0", "36", "", "0", "", "0", "", "0", "", "32", "A: Drug X",
+      "Grade 5 (%)", "(N=134)", "", "0", "0", "", "0", "0", "", "37",
+      "0", "", "0", "", "35", "", "0", "", "0", "B: Placebo", "Any Grade (%)",
+      "(N=134)", "", "34", "36", "", "40", "33", "", "31", "31", "",
+      "43", "", "37", "", "36", "", "34", "B: Placebo", "Grade 3-4 (%)",
+      "(N=134)", "", "0", "0", "", "0", "33", "", "0", "31", "", "0",
+      "", "0", "", "0", "", "34", "B: Placebo", "Grade 5 (%)", "(N=134)",
+      "", "0", "0", "", "0", "0", "", "31", "0", "", "0", "", "37",
+      "", "0", "", "0", "C: Combination", "Any Grade (%)", "(N=132)",
+      "", "48", "38", "", "39", "39", "", "39", "38", "", "43", "",
+      "33", "", "42", "", "33", "C: Combination", "Grade 3-4 (%)",
+      "(N=132)", "", "0", "0", "", "0", "39", "", "0", "38", "", "0",
+      "", "0", "", "0", "", "33", "C: Combination", "Grade 5 (%)",
+      "(N=132)", "", "0", "0", "", "0", "0", "", "39", "0", "", "0",
+      "", "33", "", "0", "", "0"),
+    .Dim = c(20L, 10L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 2 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+  full_table <- full_table_aet04_pi(adsl, adae_max)
+
+  at_least_37percent_any_drugx <- has_fraction_in_cols(atleast = 0.37, col_indices = 1)
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_37percent_any_drugx)) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl A.1", "dcd A.1.1.1.1", "cl D.1",
+      "dcd D.1.1.1.1", "A: Drug X", "Any Grade (%)", "(N=134)", "",
+      "37", "", "37", "A: Drug X", "Grade 3-4 (%)", "(N=134)", "",
+      "0", "", "0", "A: Drug X", "Grade 5 (%)", "(N=134)", "", "0",
+      "", "37", "B: Placebo", "Any Grade (%)", "(N=134)", "", "34",
+      "", "31", "B: Placebo", "Grade 3-4 (%)", "(N=134)", "", "0",
+      "", "0", "B: Placebo", "Grade 5 (%)", "(N=134)", "", "0", "",
+      "31", "C: Combination", "Any Grade (%)", "(N=132)", "", "48",
+      "", "39", "C: Combination", "Grade 3-4 (%)", "(N=132)", "", "0",
+      "", "0", "C: Combination", "Grade 5 (%)", "(N=132)", "", "0",
+      "", "39"),
+    .Dim = c(7L, 10L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 3 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+  full_table <- full_table_aet04_pi(adsl, adae_max)
+
+  at_least_40percent_any <- has_fraction_in_any_col(atleast = 0.40, col_indices = c(1, 4, 7))
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_40percent_any)) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl D.2", "dcd D.2.1.5.3", "cl A.1",
+      "dcd A.1.1.1.1", "cl B.2", "dcd B.2.2.3.1", "cl C.2", "dcd C.2.1.2.1",
+      "A: Drug X", "Any Grade (%)", "(N=134)", "", "35", "", "37",
+      "", "36", "", "26", "A: Drug X", "Grade 3-4 (%)", "(N=134)",
+      "", "0", "", "0", "", "0", "", "0", "A: Drug X", "Grade 5 (%)",
+      "(N=134)", "", "0", "", "0", "", "0", "", "0", "B: Placebo",
+      "Any Grade (%)", "(N=134)", "", "43", "", "34", "", "40", "",
+      "36", "B: Placebo", "Grade 3-4 (%)", "(N=134)", "", "0", "",
+      "0", "", "0", "", "0", "B: Placebo", "Grade 5 (%)", "(N=134)",
+      "", "0", "", "0", "", "0", "", "0", "C: Combination", "Any Grade (%)",
+      "(N=132)", "", "43", "", "48", "", "39", "", "42", "C: Combination",
+      "Grade 3-4 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0",
+      "C: Combination", "Grade 5 (%)", "(N=132)", "", "0", "", "0",
+      "", "0", "", "0"),
+    .Dim = 11:10
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 4 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+  full_table <- full_table_aet04_pi(adsl, adae_max)
+
+  at_least_30percent_any <- has_fraction_in_any_col(atleast = 0.3, col_indices = c(1, 4, 7))
+  at_least_15percent_diff <- has_fractions_difference(atleast = 0.15, col_indices = c(1, 4, 7))
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_30percent_any & at_least_15percent_diff)) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl C.2", "dcd C.2.1.2.1", "A: Drug X",
+      "Any Grade (%)", "(N=134)", "", "26", "A: Drug X", "Grade 3-4 (%)",
+      "(N=134)", "", "0", "A: Drug X", "Grade 5 (%)", "(N=134)", "",
+      "0", "B: Placebo", "Any Grade (%)", "(N=134)", "", "36", "B: Placebo",
+      "Grade 3-4 (%)", "(N=134)", "", "0", "B: Placebo", "Grade 5 (%)",
+      "(N=134)", "", "0", "C: Combination", "Any Grade (%)", "(N=132)",
+      "", "42", "C: Combination", "Grade 3-4 (%)", "(N=132)", "", "0",
+      "C: Combination", "Grade 5 (%)", "(N=132)", "", "0"),
+    .Dim = c(5L, 10L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 5 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+  full_table <- full_table_aet04_pi(adsl, adae_max)
+
+  at_least_40percent_any <- has_fraction_in_any_col(atleast = 0.4, col_indices = c(1, 4, 7))
+  at_least_20percent_g5 <- has_fraction_in_any_col(atleast = 0.20, col_indices = c(3, 6, 9))
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_40percent_any | at_least_20percent_g5)) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl D.2", "dcd D.2.1.5.3", "cl A.1",
+      "dcd A.1.1.1.1", "cl B.2", "dcd B.2.2.3.1", "cl D.1", "dcd D.1.1.1.1",
+      "cl B.1", "dcd B.1.1.1.1", "cl C.2", "dcd C.2.1.2.1", "A: Drug X",
+      "Any Grade (%)", "(N=134)", "", "35", "", "37", "", "36", "",
+      "37", "", "35", "", "26", "A: Drug X", "Grade 3-4 (%)", "(N=134)",
+      "", "0", "", "0", "", "0", "", "0", "", "0", "", "0", "A: Drug X",
+      "Grade 5 (%)", "(N=134)", "", "0", "", "0", "", "0", "", "37",
+      "", "35", "", "0", "B: Placebo", "Any Grade (%)", "(N=134)",
+      "", "43", "", "34", "", "40", "", "31", "", "37", "", "36", "B: Placebo",
+      "Grade 3-4 (%)", "(N=134)", "", "0", "", "0", "", "0", "", "0",
+      "", "0", "", "0", "B: Placebo", "Grade 5 (%)", "(N=134)", "",
+      "0", "", "0", "", "0", "", "31", "", "37", "", "0", "C: Combination",
+      "Any Grade (%)", "(N=132)", "", "43", "", "48", "", "39", "",
+      "39", "", "33", "", "42", "C: Combination", "Grade 3-4 (%)",
+      "(N=132)", "", "0", "", "0", "", "0", "", "0", "", "0", "", "0",
+      "C: Combination", "Grade 5 (%)", "(N=132)", "", "0", "", "0",
+      "", "0", "", "39", "", "33", "", "0"),
+    .Dim = c(15L, 10L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 6 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+
+  grade_groups <- list(
+    "Any Grade (%)" = c("1", "2", "3", "4", "5"),
+    "Grade 1-2 (%)" = c("1", "2"),
+    "Grade 3-4 (%)" = c("3", "4"),
+    "Grade 5 (%)" = "5"
+  )
+
+  col_counts <- rep(table(adsl$ACTARM), each = length(grade_groups))
+  full_table <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
+    split_rows_by("AEBODSYS") %>%
+    summarize_vars(
+      "AEDECOD",
+      na.rm = TRUE,
+      denom = "N_col",
+      .stats = "count_fraction",
+      .formats = c(count_fraction = format_fraction_threshold(0.01))
+    ) %>%
+    build_table(adae_max, col_counts = col_counts)
+
+  at_least_40percent_any <- has_fraction_in_any_col(atleast = 0.4, col_indices = c(1, 5, 9))
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_40percent_any)) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 5, 9)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 5, 9)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl D.2", "dcd D.2.1.5.3", "cl A.1",
+      "dcd A.1.1.1.1", "cl B.2", "dcd B.2.2.3.1", "cl C.2", "dcd C.2.1.2.1",
+      "A: Drug X", "Any Grade (%)", "(N=134)", "", "35", "", "37",
+      "", "36", "", "26", "A: Drug X", "Grade 1-2 (%)", "(N=134)",
+      "", "35", "", "37", "", "36", "", "26", "A: Drug X", "Grade 3-4 (%)",
+      "(N=134)", "", "0", "", "0", "", "0", "", "0", "A: Drug X", "Grade 5 (%)",
+      "(N=134)", "", "0", "", "0", "", "0", "", "0", "B: Placebo",
+      "Any Grade (%)", "(N=134)", "", "43", "", "34", "", "40", "",
+      "36", "B: Placebo", "Grade 1-2 (%)", "(N=134)", "", "43", "",
+      "34", "", "40", "", "36", "B: Placebo", "Grade 3-4 (%)", "(N=134)",
+      "", "0", "", "0", "", "0", "", "0", "B: Placebo", "Grade 5 (%)",
+      "(N=134)", "", "0", "", "0", "", "0", "", "0", "C: Combination",
+      "Any Grade (%)", "(N=132)", "", "43", "", "48", "", "39", "",
+      "42", "C: Combination", "Grade 1-2 (%)", "(N=132)", "", "43",
+      "", "48", "", "39", "", "42", "C: Combination", "Grade 3-4 (%)",
+      "(N=132)", "", "0", "", "0", "", "0", "", "0", "C: Combination",
+      "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"),
+    .Dim = c(11L, 13L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 7 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+
+  grade_groups <- list(
+    "Any Grade (%)" = c("1", "2", "3", "4", "5"),
+    "Grade 3-4 (%)" = c("3", "4"),
+    "Grade 3-5 (%)" = c("3", "4", "5"),
+    "Grade 5 (%)" = "5"
+  )
+
+  col_counts <- rep(table(adsl$ACTARM), each = length(grade_groups))
+  full_table <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
+    split_rows_by("AEBODSYS") %>%
+    summarize_vars(
+      "AEDECOD",
+      na.rm = TRUE,
+      denom = "N_col",
+      .stats = "count_fraction",
+      .formats = c(count_fraction = format_fraction_threshold(0.01))
+    ) %>%
+    build_table(adae_max, col_counts = col_counts)
+
+  at_least_40percent_any <- has_fraction_in_any_col(atleast = 0.4, col_indices = c(1, 5, 9))
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_40percent_any)) %>%
+    sort_at_path(
+      path = c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 5, 9)),
+      decreasing = TRUE
+    ) %>%
+    sort_at_path(
+      path = c("AEBODSYS"),
+      scorefun = score_occurrences_subtable(col_indices = c(1, 5, 9)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "cl D.2", "dcd D.2.1.5.3", "cl A.1",
+      "dcd A.1.1.1.1", "cl B.2", "dcd B.2.2.3.1", "cl C.2", "dcd C.2.1.2.1",
+      "A: Drug X", "Any Grade (%)", "(N=134)", "", "35", "", "37",
+      "", "36", "", "26", "A: Drug X", "Grade 3-4 (%)", "(N=134)",
+      "", "0", "", "0", "", "0", "", "0", "A: Drug X", "Grade 3-5 (%)",
+      "(N=134)", "", "0", "", "0", "", "0", "", "0", "A: Drug X", "Grade 5 (%)",
+      "(N=134)", "", "0", "", "0", "", "0", "", "0", "B: Placebo",
+      "Any Grade (%)", "(N=134)", "", "43", "", "34", "", "40", "",
+      "36", "B: Placebo", "Grade 3-4 (%)", "(N=134)", "", "0", "",
+      "0", "", "0", "", "0", "B: Placebo", "Grade 3-5 (%)", "(N=134)",
+      "", "0", "", "0", "", "0", "", "0", "B: Placebo", "Grade 5 (%)",
+      "(N=134)", "", "0", "", "0", "", "0", "", "0", "C: Combination",
+      "Any Grade (%)", "(N=132)", "", "43", "", "48", "", "39", "",
+      "42", "C: Combination", "Grade 3-4 (%)", "(N=132)", "", "0",
+      "", "0", "", "0", "", "0", "C: Combination", "Grade 3-5 (%)",
+      "(N=132)", "", "0", "", "0", "", "0", "", "0", "C: Combination",
+      "Grade 5 (%)", "(N=132)", "", "0", "", "0", "", "0", "", "0"),
+    .Dim = c(11L, 13L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("AET04_PI variant 8 is produced correctly", {
+  adsl <- radsl(cached = TRUE)
+  adae_max <- radae(cached = TRUE) %>%
+    preprocess_adae()
+
+  grade_groups <- list(
+    "Any Grade (%)" = c("1", "2", "3", "4", "5"),
+    "Grade 3-4 (%)" = c("3", "4"),
+    "Grade 5 (%)" = "5"
+  )
+
+  col_counts <- rep(table(adsl$ACTARM), each = length(grade_groups))
+  full_table <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
+    summarize_vars(
+      "AEDECOD",
+      na.rm = TRUE,
+      denom = "N_col",
+      .stats = "count_fraction",
+      .formats = c(count_fraction = format_fraction_threshold(0.01))
+    ) %>%
+    build_table(adae_max, col_counts = col_counts)
+
+  at_least_20percent_any <- has_fraction_in_any_col(atleast = 0.2, col_indices = c(1, 4, 7))
+  result <- full_table %>%
+    prune_table(keep_rows(at_least_20percent_any)) %>%
+    sort_at_path(
+      path = c("AEDECOD"),
+      scorefun = score_occurrences_cols(col_indices = c(1, 4, 7)),
+      decreasing = TRUE
+    )
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "", "", "dcd D.2.1.5.3", "dcd A.1.1.1.1", "dcd B.2.2.3.1",
+      "dcd A.1.1.1.2", "dcd B.2.1.2.1", "dcd D.1.1.1.1", "dcd D.1.1.4.2",
+      "dcd B.1.1.1.1", "dcd C.2.1.2.1", "dcd C.1.1.1.3", "A: Drug X",
+      "Any Grade (%)", "(N=134)", "35", "37", "36", "36", "37", "37",
+      "36", "35", "26", "32", "A: Drug X", "Grade 3-4 (%)", "(N=134)",
+      "0", "0", "0", "0", "37", "0", "36", "0", "0", "32", "A: Drug X",
+      "Grade 5 (%)", "(N=134)", "0", "0", "0", "0", "0", "37", "0",
+      "35", "0", "0", "B: Placebo", "Any Grade (%)", "(N=134)", "43",
+      "34", "40", "36", "33", "31", "31", "37", "36", "34", "B: Placebo",
+      "Grade 3-4 (%)", "(N=134)", "0", "0", "0", "0", "33", "0", "31",
+      "0", "0", "34", "B: Placebo", "Grade 5 (%)", "(N=134)", "0",
+      "0", "0", "0", "0", "31", "0", "37", "0", "0", "C: Combination",
+      "Any Grade (%)", "(N=132)", "43", "48", "39", "38", "39", "39",
+      "38", "33", "42", "33", "C: Combination", "Grade 3-4 (%)", "(N=132)",
+      "0", "0", "0", "0", "39", "0", "38", "0", "0", "33", "C: Combination",
+      "Grade 5 (%)", "(N=132)", "0", "0", "0", "0", "0", "39", "0",
+      "33", "0", "0"),
+    .Dim = c(13L, 10L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})

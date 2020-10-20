@@ -5,7 +5,9 @@
 \alias{keep_rows}
 \alias{keep_content_rows}
 \alias{has_count_in_cols}
+\alias{has_count_in_any_col}
 \alias{has_fraction_in_cols}
+\alias{has_fraction_in_any_col}
 \alias{has_fractions_difference}
 \alias{has_counts_difference}
 \title{Occurrence Table Pruning}
@@ -14,13 +16,17 @@ keep_rows(row_condition)
 
 keep_content_rows(content_row_condition)
 
-has_count_in_cols(above, col_names)
+has_count_in_cols(atleast, ...)
 
-has_fraction_in_cols(above, col_names)
+has_count_in_any_col(atleast, ...)
 
-has_fractions_difference(above, col_names)
+has_fraction_in_cols(atleast, ...)
 
-has_counts_difference(above, col_names)
+has_fraction_in_any_col(atleast, ...)
+
+has_fractions_difference(atleast, ...)
+
+has_counts_difference(atleast, ...)
 }
 \arguments{
 \item{row_condition}{(\code{CombinationFunction})\cr condition function which works on individual
@@ -29,11 +35,12 @@ analysis rows and flags whether these should be kept in the pruned table.}
 \item{content_row_condition}{(\code{CombinationFunction})\cr condition function which works on individual
 first content rows of leaf tables and flags whether these leaf tables should be kept in the pruned table.}
 
-\item{above}{(\code{count} or \code{proportion})\cr threshold which should be met in order to
+\item{atleast}{(\code{count} or \code{proportion})\cr threshold which should be met in order to
 keep the row.}
 
-\item{col_names}{(\code{character})\cr names of the columns which should be used in the condition
-calculation.}
+\item{...}{arguments for row or column access, see \link{rtables_access}: either
+\code{col_names} (\code{character}) including the names of the columns which should be used,
+or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
 }
 \value{
 \code{\link[=keep_rows]{keep_rows()}} returns a pruning function that can be used with \code{\link[rtables:prune_table]{rtables::prune_table()}}
@@ -45,8 +52,14 @@ checks the condition on the first content row of leaf tables in the table.
 \code{\link[=has_count_in_cols]{has_count_in_cols()}} returns a condition function that sums the counts in the specified
 column.
 
+\code{\link[=has_count_in_any_col]{has_count_in_any_col()}} returns a condition function that compares the counts in the
+specified columns with the threshold.
+
 \code{\link[=has_fraction_in_cols]{has_fraction_in_cols()}} returns a condition function that sums the counts in the
 specified column, and computes the fraction by dividing by the total column counts.
+
+\code{\link[=has_fraction_in_cols]{has_fraction_in_cols()}} returns a condition function that looks at the fractions
+in the specified columns and checks whether any of them fulfill the threshold.
 
 \code{\link[=has_fractions_difference]{has_fractions_difference()}} returns a condition function that extracts the fractions of each
 specified column, and computes the difference of the minimum and maximum.
@@ -75,7 +88,13 @@ It then proceeds recursively by removing the sub tree if there are no children l
 \item \code{has_count_in_cols}: constructor for creating condition functions on total counts in
 the specified columns.
 
+\item \code{has_count_in_any_col}: constructor for creating condition functions on any of the counts in
+the specified columns satisfying a threshold.
+
 \item \code{has_fraction_in_cols}: constructor for creating condition functions on total fraction in
+the specified columns.
+
+\item \code{has_fraction_in_any_col}: constructor for creating condition functions on any fraction in
 the specified columns.
 
 \item \code{has_fractions_difference}: constructor for creating condition function that checks the difference
@@ -104,23 +123,31 @@ is_non_empty <- !CombinationFunction(all_zero_or_na)
 prune_table(tab, keep_rows(is_non_empty))
 
 # `keep_content_rows`
-more_than_twenty <- has_count_in_cols(above = 20L, col_names = names(tab))
+more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 prune_table(tab, keep_content_rows(more_than_twenty))
 
 # `has_count_in_cols`
-more_than_one <- has_count_in_cols(above = 1L, col_names = names(tab))
+more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one))
 
+# `has_count_in_any_col`
+any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
+prune_table(tab, keep_rows(any_more_than_one))
+
 # `has_fraction_in_cols`
-more_than_five_percent <- has_fraction_in_cols(above = 0.05, col_names = names(tab))
+more_than_five_percent <- has_fraction_in_cols(atleast = 0.05, col_names = names(tab))
+prune_table(tab, keep_rows(more_than_five_percent))
+
+# `has_fraction_in_any_col`
+any_atleast_five_percent <- has_fraction_in_any_col(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent))
 
 # `has_fractions_difference`
-more_than_five_percent_diff <- has_fractions_difference(above = 0.05, col_names = names(tab))
+more_than_five_percent_diff <- has_fractions_difference(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent_diff))
 
 # `has_counts_difference`
-more_than_one_diff <- has_counts_difference(above = 1L, col_names = names(tab))
+more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one_diff))
 
 }

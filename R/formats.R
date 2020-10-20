@@ -132,3 +132,41 @@ format_xx <- function(str) {
 
   return(rtable_format)
 }
+
+#' Formatting Fraction with Lower Threshold
+#'
+#' Formats a fraction when the second element of the input `x` is the fraction. It applies
+#' a lower threshold, below which it is just stated that the fraction is smaller than that.
+#'
+#' @param threshold (`proportion`)\cr lower threshold.
+#' @return An rtables Formatting Function that takes numeric input `x` where the second
+#'   element is the fraction that is formatted. If the fraction is above or equal to the threshold,
+#'   then it is displayed in percentage. If it is positive but below the threshold, it returns
+#'   "<1" e.g. if the threshold is `0.01`. If it is zero, then just "0" is returned.
+#'
+#' @family formatting functions
+#' @export
+#'
+#' @examples
+#' format_fun <- format_fraction_threshold(0.05)
+#' format_fun(x = c(20, 0.1))
+#' format_fun(x = c(2, 0.01))
+#' format_fun(x = c(0, 0))
+format_fraction_threshold <- function(threshold) {
+  assert_that(
+    is_proportion(threshold)
+  )
+  string_below_threshold <- paste0("<", round(threshold * 100))
+  function(x, ...) {
+    assert_that(is_proportion(x[2], include_boundaries = TRUE))
+    ifelse(
+      x[2] > 0.01,
+      round(x[2] * 100),
+      ifelse(
+        x[2] == 0,
+        "0",
+        string_below_threshold
+      )
+    )
+  }
+}

@@ -2,34 +2,47 @@
 % Please edit documentation in R/score_occurrences.R
 \name{score_occurrences}
 \alias{score_occurrences}
+\alias{score_occurrences_cols}
+\alias{score_occurrences_subtable}
 \title{Occurrence Table Sorting}
 \usage{
-score_occurrences(rtable_object)
+score_occurrences(table_row)
+
+score_occurrences_cols(...)
+
+score_occurrences_subtable(...)
 }
 \arguments{
-\item{rtable_object}{(\code{rtable}) \cr rtable object name.}
+\item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
+
+\item{...}{arguments for row or column access, see \link{rtables_access}: either
+\code{col_names} (\code{character}) including the names of the columns which should be used,
+or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
 }
 \value{
-A sorted rtable object.
+\code{\link[=score_occurrences]{score_occurrences()}} returns the sum of counts across all columns of a table row.
+
+\code{\link[=score_occurrences_cols]{score_occurrences_cols()}} returns a function that sums counts across all specified columns
+of a table row.
+
+\code{\link[=score_occurrences_subtable]{score_occurrences_subtable()}} returns a function that sums counts in each subtable
+across all specified columns.
 }
 \description{
-Functions to sort occurrence tables.
+Functions to score occurrence table subtables and rows which can be used in the
+sorting of occurrence tables.
 }
 \section{Functions}{
 \itemize{
-\item \code{score_occurrences}: Sorting function that works on occurrence data tabulated in rtables.
+\item \code{score_occurrences}: Scoring function which sums the counts across all columns.
+
+\item \code{score_occurrences_cols}: Scoring functions can be produced by this constructor to only include
+specific columns in the scoring.
+
+\item \code{score_occurrences_subtable}: Scoring functions produced by this constructor can be used on
+subtables: They sum up all specified column counts in the subtable. This is useful when
+there is no available content row summing up these counts.
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 
@@ -52,13 +65,25 @@ lyt <- basic_table() \%>\%
                          .stats = c("unique", "nonunique"),
                          .labels = c("Total number of patients with at least one event",
                                      "Total number of events")) \%>\%
- count_occurrences(vars="AEDECOD")
+  count_occurrences(vars = "AEDECOD")
 
 rtable_object <- build_table(lyt, ADAE, col_counts = N_per_arm) \%>\%
- prune_table()
+  prune_table()
 
 rtable_object_sorted <- rtable_object \%>\%
-sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+  sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
+
+rtable_object_sorted
+
+score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Placebo"))
+rtable_object_sorted <- rtable_object \%>\%
+  sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
+
+rtable_object_sorted
+
+score_subtable_all <- score_occurrences_subtable(col_names = names(rtable_object))
+rtable_object_sorted <- rtable_object \%>\%
+  sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 
 rtable_object_sorted
 

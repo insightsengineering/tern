@@ -23,9 +23,7 @@ test_that("AET10 default variant is produced correctly", {
   result2 <- prune_table(
     result1,
     keep_rows(
-      has_fraction_in_cols(above = 0.40, col_names = names(result1)[1]) |
-        has_fraction_in_cols(above = 0.40, col_names = names(result1)[2]) |
-        has_fraction_in_cols(above = 0.40, col_names = names(result1)[3])
+      has_fraction_in_any_col(atleast = 0.40, col_names = levels(adsl$ARM))
     )
   )
 

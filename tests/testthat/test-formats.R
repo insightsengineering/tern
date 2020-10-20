@@ -41,3 +41,11 @@ test_that("format_xx works with easy inputs", {
   expected <- c("2 (0.6)", "10 (785.6)")
   expect_identical(result, expected)
 })
+
+test_that("format_fraction_threshold works with easy inputs", {
+  test <- list(c(100, 0.1), c(10, 0.01), c(0, 0))
+  format_fun <- format_fraction_threshold(0.02)
+  result <- sapply(test, format_fun)
+  expected <- c("10", "<2", "0")
+  expect_identical(result, expected)
+})

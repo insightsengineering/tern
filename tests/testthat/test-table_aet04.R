@@ -692,10 +692,8 @@ test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at L
 
   raw_result <- raw_table(adae, n_per_arm)
 
-  cutoff <- 57L
-  row_condition <- has_count_in_cols(above = cutoff, col_names = "A: Drug X") |
-    has_count_in_cols(above = cutoff, col_names = "B: Placebo") |
-    has_count_in_cols(above = cutoff, col_names = "C: Combination")
+  cutoff <- 58L
+  row_condition <- has_count_in_any_col(atleast = cutoff, col_names = names(n_per_arm))
 
   result <- prune_table(raw_result, keep_rows(row_condition))
   result_matrix <- to_string_matrix(result)
@@ -738,7 +736,7 @@ test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence
   raw_result <- raw_table(adae, n_per_arm)
 
   cutoff <- 0.1
-  row_condition <- has_fractions_difference(above = cutoff, col_names = names(raw_result))
+  row_condition <- has_fractions_difference(atleast = cutoff, col_names = names(raw_result))
 
   result <- prune_table(raw_result, keep_rows(row_condition))
 
@@ -789,9 +787,7 @@ test_that(
   raw_result <- raw_table(adae, n_per_arm)
 
   cutoff <- 0.4
-  row_condition <- has_fraction_in_cols(above = cutoff, col_names = "A: Drug X") |
-    has_fraction_in_cols(above = cutoff, col_names = "B: Placebo") |
-    has_fraction_in_cols(above = cutoff, col_names = "C: Combination")
+  row_condition <- has_fraction_in_any_col(atleast = cutoff, col_names = names(n_per_arm))
 
   result <- prune_table(raw_result, keep_rows(row_condition))
 

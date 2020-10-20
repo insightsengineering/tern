@@ -57,7 +57,7 @@ keep_rows <- function(row_condition) {
 #' @export
 #' @examples
 #' # `keep_content_rows`
-#' more_than_twenty <- has_count_in_cols(above = 20L, col_names = names(tab))
+#' more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #'
 keep_content_rows <- function(content_row_condition) {
@@ -77,27 +77,49 @@ keep_content_rows <- function(content_row_condition) {
 
 #' @describeIn prune_occurrences constructor for creating condition functions on total counts in
 #'  the specified columns.
-#' @param above (`count` or `proportion`)\cr threshold which should be met in order to
+#' @param atleast (`count` or `proportion`)\cr threshold which should be met in order to
 #'   keep the row.
-#' @param col_names (`character`)\cr names of the columns which should be used in the condition
-#'   calculation.
+#' @param ... arguments for row or column access, see [rtables_access]: either
+#'   `col_names` (`character`) including the names of the columns which should be used,
+#'   or alternatively `col_indices` (`integer`) giving the indices directly instead.
 #' @return [has_count_in_cols()] returns a condition function that sums the counts in the specified
 #'   column.
 #' @export
 #' @examples
 #' # `has_count_in_cols`
-#' more_than_one <- has_count_in_cols(above = 1L, col_names = names(tab))
+#' more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one))
 #'
-has_count_in_cols <- function(above, col_names) {
+has_count_in_cols <- function(atleast, ...) {
   assert_that(
-    is_nonnegative_count(above),
-    is.character(col_names)
+    is.count(atleast)
   )
   CombinationFunction(function(table_row) {
-    row_counts <- h_row_counts(table_row, col_names)
+    row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
-    total_count > above
+    total_count >= atleast
+  })
+}
+
+#' @describeIn prune_occurrences constructor for creating condition functions on any of the counts in
+#'  the specified columns satisfying a threshold.
+#' @param atleast (`count` or `proportion`)\cr threshold which should be met in order to
+#'   keep the row.
+#' @return [has_count_in_any_col()] returns a condition function that compares the counts in the
+#'   specified columns with the threshold.
+#' @export
+#' @examples
+#' # `has_count_in_any_col`
+#' any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
+#' prune_table(tab, keep_rows(any_more_than_one))
+#'
+has_count_in_any_col <- function(atleast, ...) {
+  assert_that(
+    is.count(atleast)
+  )
+  CombinationFunction(function(table_row) {
+    row_counts <- h_row_counts(table_row, ...)
+    any(row_counts >= atleast)
   })
 }
 
@@ -108,21 +130,40 @@ has_count_in_cols <- function(above, col_names) {
 #' @export
 #' @examples
 #' # `has_fraction_in_cols`
-#' more_than_five_percent <- has_fraction_in_cols(above = 0.05, col_names = names(tab))
+#' more_than_five_percent <- has_fraction_in_cols(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent))
 #'
-has_fraction_in_cols <- function(above, col_names) {
+has_fraction_in_cols <- function(atleast, ...) {
   assert_that(
-    is_proportion(above, include_boundaries = TRUE),
-    is.character(col_names)
+    is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
-    row_counts <- h_row_counts(table_row, col_names)
+    row_counts <- h_row_counts(table_row, ...)
     total_count <- sum(row_counts)
-    col_counts <- h_col_counts(table_row, col_names)
+    col_counts <- h_col_counts(table_row, ...)
     total_n <- sum(col_counts)
     total_percent <- total_count / total_n
-    total_percent > above
+    total_percent >= atleast
+  })
+}
+
+#' @describeIn prune_occurrences constructor for creating condition functions on any fraction in
+#'  the specified columns.
+#' @return [has_fraction_in_cols()] returns a condition function that looks at the fractions
+#'  in the specified columns and checks whether any of them fulfill the threshold.
+#' @export
+#' @examples
+#' # `has_fraction_in_any_col`
+#' any_atleast_five_percent <- has_fraction_in_any_col(atleast = 0.05, col_names = names(tab))
+#' prune_table(tab, keep_rows(more_than_five_percent))
+#'
+has_fraction_in_any_col <- function(atleast, ...) {
+  assert_that(
+    is_proportion(atleast, include_boundaries = TRUE)
+  )
+  CombinationFunction(function(table_row) {
+    row_fractions <- h_row_fractions(table_row, ...)
+    any(row_fractions >= atleast)
   })
 }
 
@@ -133,19 +174,17 @@ has_fraction_in_cols <- function(above, col_names) {
 #' @export
 #' @examples
 #' # `has_fractions_difference`
-#' more_than_five_percent_diff <- has_fractions_difference(above = 0.05, col_names = names(tab))
+#' more_than_five_percent_diff <- has_fractions_difference(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent_diff))
 #'
-has_fractions_difference <- function(above, col_names) {
+has_fractions_difference <- function(atleast, ...) {
   assert_that(
-    is_proportion(above, include_boundaries = TRUE),
-    is.character(col_names),
-    length(col_names) > 1
+    is_proportion(atleast, include_boundaries = TRUE)
   )
   CombinationFunction(function(table_row) {
-    fractions <- h_row_fractions(table_row, col_names)
+    fractions <- h_row_fractions(table_row, ...)
     difference <- diff(range(fractions))
-    difference > above
+    difference >= atleast
   })
 }
 
@@ -156,18 +195,16 @@ has_fractions_difference <- function(above, col_names) {
 #' @export
 #' @examples
 #' # `has_counts_difference`
-#' more_than_one_diff <- has_counts_difference(above = 1L, col_names = names(tab))
+#' more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one_diff))
 #'
-has_counts_difference <- function(above, col_names) {
+has_counts_difference <- function(atleast, ...) {
   assert_that(
-    is_nonnegative_count(above),
-    is.character(col_names),
-    length(col_names) > 1
+    is.count(atleast)
   )
   CombinationFunction(function(table_row) {
-    counts <- h_row_counts(table_row, col_names)
+    counts <- h_row_counts(table_row, ...)
     difference <- diff(range(counts))
-    difference > above
+    difference >= atleast
   })
 }

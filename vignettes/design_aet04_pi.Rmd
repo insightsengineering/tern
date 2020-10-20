@@ -61,8 +61,6 @@ df <- data.frame(
   ARM = factor(c("A", "A", "A", "B", "B", "A")),
   stringsAsFactors = FALSE
 )
-
-big_n <- length(unique(anl$USUBJID))
 ```
 
 ## Objective
@@ -203,7 +201,9 @@ tab <- basic_table() %>%
 tab
 ```
 
-Note that this can also made working with `AEDECOD2` in production when we make `s_summary.character` work with length 0 character vectors.
+Note that we checked whether this can also be made working with `AEDECOD2`. However the problem is 
+when an empty cell is encountered in the table: Then  `s_summary.character` fails because it cannot
+work with length 0 character vectors. Therefore we stick to using factors here.
 
 ## Sorting
 

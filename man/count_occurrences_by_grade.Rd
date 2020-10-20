@@ -57,8 +57,7 @@ by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{var}{(\code{string})\cr single variable name.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

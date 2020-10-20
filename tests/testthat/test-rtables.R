@@ -574,11 +574,31 @@ test_that("add_rowcounts works with multiple column and row splits", {
   expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("col_indices works as expected", {
+test_that("h_col_indices works as expected", {
   tab <- basic_table() %>%
     split_cols_by("ARM") %>%
     build_table(DM)
-  result <- col_indices(tab, c("B: Placebo", "C: Combination"))
+  result <- h_col_indices(tab, c("B: Placebo", "C: Combination"))
   expected <- c(2L, 3L)
+  expect_identical(result, expected)
+})
+
+test_that("groups_list_to_df works as expected", {
+  grade_groups <- list(
+    "Any Grade (%)" = c("1", "2", "3", "4", "5"),
+    "Grade 3-4 (%)" = c("3", "4"),
+    "Grade 5 (%)" = "5"
+  )
+  result <- groups_list_to_df(grade_groups)
+  expected <- structure(
+    list(
+      valname = c("AnyGrade", "Grade34", "Grade5"),
+      label = c("Any Grade (%)", "Grade 3-4 (%)", "Grade 5 (%)"),
+      levelcombo = list(c("1", "2", "3", "4", "5"), c("3", "4"), "5"),
+      exargs = list(list(), list(), list())
+    ),
+    row.names = c(NA, -3L),
+    class = c("tbl_df", "tbl", "data.frame")
+  )
   expect_identical(result, expected)
 })
