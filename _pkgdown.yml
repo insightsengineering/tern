@@ -32,9 +32,11 @@ reference:
       - s_ancova
       - s_dummy_sum
       - s_count_abnormal
+      - s_count_abnormal_by_worst_grade
       - s_count_abnormal_by_baseline
       - s_count_cumulative
       - s_count_nonmissing
+      - s_count_missed_doses
       - s_count_occurrences
       - s_count_patients_with_event
       - s_coxreg
@@ -48,11 +50,25 @@ reference:
       - s_summary
       - s_test_proportion_diff
 
+  - title: Formatted Analysis functions
+    desc: These have the same arguments as the corresponding statistics functions, and can be further
+          customized by calling `rtables::make_afun()` on them. They are used as `afun` in
+          `rtables::analyze()`.
+    contents:
+       - a_count_abnormal
+       - a_count_abnormal_by_worst_grade
+       - a_count_abnormal_by_baseline
+       - a_count_cumulative
+       - a_count_missed_doses
+       - a_dummy_sum
+
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
           the table.
     contents:
-       - analyze_abnormal
+       - count_abnormal
+       - count_abnormal_by_worst_grade
+       - count_abnormal_by_baseline
        - count_cumulative
        - count_missed_doses
        - count_occurrences
@@ -76,8 +92,6 @@ reference:
     desc: these functions are useful to help definining the analysis
     contents:
       - arm
-      - count_abnormal
-      - count_abnormal_by_baseline
       - footnotes
       - footnotes<-
       - add_footnotes<-
@@ -263,3 +277,4 @@ reference:
       - make_names
       - h_col_indices
       - get_covariates
+      - d_count_missed_doses

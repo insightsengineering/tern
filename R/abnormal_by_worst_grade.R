@@ -19,8 +19,11 @@
 #'
 NULL
 
-#' @describeIn abnormal_by_worst_grade For a single `abnormal` level, produce a named list with
-#'    counts and percentages of patients with worst grade `1` to `5`, and `Any` non-zero grade.
+#' @describeIn abnormal_by_worst_grade Statistics function which counts patients with worst grade
+#'   for a single `abnormal` level, consisting of counts and percentages of patients with worst grade
+#'   `1` to `5`, and `Any` non-zero grade.
+#' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 5
+#'   and "Any" results.
 #'
 #' @export
 #'
@@ -36,23 +39,23 @@ NULL
 #'     WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
 #'   )
 #'
-#' h_abnormal_by_worst_grade(
+#' s_count_abnormal_by_worst_grade(
 #'   df = adlb_f %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
 #'   abnormal = "low",
 #'   variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")
 #' )
-#' h_abnormal_by_worst_grade(
+#' s_count_abnormal_by_worst_grade(
 #'   df = adlb_f %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
 #'   abnormal = "high",
 #'   variables = list(id = "USUBJID", worst_grade_flag = "WGRHIFL")
 #' )
 #'
-h_abnormal_by_worst_grade <- function(df,
-                                      .var = "ATOXGR",
-                                      abnormal = c("low", "high"),
-                                      variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")) {
+s_count_abnormal_by_worst_grade <- function(df, #nolint
+                                            .var = "ATOXGR",
+                                            abnormal = c("low", "high"),
+                                            variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")) {
   abnormal <- match.arg(abnormal)
   assertthat::assert_that(
     is.string(.var),
@@ -90,63 +93,26 @@ h_abnormal_by_worst_grade <- function(df,
   # Numerator for "Any" grade is number of patients with at least one high/low abnormality
   any_grade_num <- length(unique(anl_abn$id))
 
-  c(by_grade, list("Any" = c(any_grade_num, any_grade_num / n)))
+  list(count_fraction = c(by_grade, list("Any" = c(any_grade_num, any_grade_num / n))))
 }
 
-#' @describeIn abnormal_by_worst_grade Statistics function which counts patients with worst grade
-#'    for multiple `abnormal` levels, and returns a list with labeled entries.
+#' @describeIn abnormal_by_worst_grade Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @return [a_count_abnormal_by_worst_grade()] returns the corresponding list with formatted [rtables::CellValue()].
 #' @export
 #' @examples
-#'
-#' # Use the statistics function to count patients for multiple abnormal levels.
-#' s_abnormal_by_worst_grade(
+#' # Use the Formatted Analysis function for `analyze()`.
+#' a_count_abnormal_by_worst_grade(
 #'   df = adlb_f %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
 #'   .var = "ATOXGR",
-#'   abnormal = c(HIGH = "high"),
-#'   variables = list(id = "USUBJID", worst_grade_flag = c(HIGH = "WGRHIFL"))
+#'   abnormal = "high",
+#'   variables = list(id = "USUBJID", worst_grade_flag = "WGRHIFL")
 #' )
 #'
-#' s_abnormal_by_worst_grade(
-#'   df = adlb_f %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-#'   .var = "ATOXGR",
-#'   abnormal = c(Low = "low", High = "high"),
-#'   variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
-#' )
-#'
-s_abnormal_by_worst_grade <- function(df,
-                                      .var,
-                                      abnormal = c("Low" = "low", "High" = "high"),
-                                      variables = list(
-                                        id = "USUBJID",
-                                        worst_grade_flags = c("Low" = "WGRLOFL", "High" = "WGRHIFL")
-                                      )) {
-  assert_that(
-    !is.null(names(abnormal)),
-    !is.null(names(variables$worst_grade_flag)),
-    identical(names(abnormal), names(variables$worst_grade_flag))
-  )
-
-  result <- Map(function(abn, flag) {
-    h_abnormal_by_worst_grade(
-      df = df,
-      .var = .var,
-      abnormal = abn,
-      variables = list(
-        id = variables$id,
-        worst_grade_flag = flag
-      )
-    )
-  }, abnormal, variables$worst_grade_flag)
-
-  lbl_result <- Map(function(x, nm) {
-    list(
-      section_label = with_label("", nm),
-      count_fraction = x
-    )
-  }, x = result, nm = names(result))
-  flatten_list(lbl_result)
-}
-
+a_count_abnormal_by_worst_grade <- make_afun(  #nolint
+  s_count_abnormal_by_worst_grade,
+  .formats = c(count_fraction = format_count_fraction)
+)
 
 #' @describeIn abnormal_by_worst_grade Layout creating function which can be used for creating tables,
 #'    which can take statistics function arguments and additional format arguments (see below).
@@ -154,8 +120,8 @@ s_abnormal_by_worst_grade <- function(df,
 #' @examples
 #'
 #' basic_table() %>%
-#'   abnormal_by_worst_grade(
-#'     vars = "ATOXGR",
+#'   count_abnormal_by_worst_grade(
+#'     var = "ATOXGR",
 #'     abnormal = c(Low = "low", High = "high"),
 #'     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
 #'   ) %>%
@@ -164,25 +130,47 @@ s_abnormal_by_worst_grade <- function(df,
 #' basic_table() %>%
 #'   split_cols_by("ARMCD") %>%
 #'   split_rows_by("PARAMCD") %>%
-#'   abnormal_by_worst_grade(
-#'     vars = "ATOXGR",
+#'   count_abnormal_by_worst_grade(
+#'     var = "ATOXGR",
 #'     abnormal = c(Low = "low", High = "high"),
 #'     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
 #'   ) %>%
 #'   build_table(df = adlb_f)
 #'
-abnormal_by_worst_grade <- function(lyt,
-                                    vars,
-                                    ...) {
-  a_abnormal_by_worst_grade <- format_wrap_df(
-    s_abnormal_by_worst_grade,
-    indent_mods = c(section_label = 0L, count_fraction = 2L),
-    formats = c(section_label = "xx", count_fraction = format_count_fraction)
+count_abnormal_by_worst_grade <- function(lyt,
+                                          var,
+                                          abnormal,
+                                          variables,
+                                          ...,
+                                          .stats = NULL,
+                                          .formats = NULL,
+                                          .labels = NULL,
+                                          .indent_mods = NULL) {
+  assert_that(
+    is.string(var),
+    !is.null(names(abnormal)),
+    setequal(names(abnormal), names(variables$worst_grade_flag))
   )
-  analyze(
-    lyt,
-    vars,
-    afun = a_abnormal_by_worst_grade,
-    extra_args = list(...)
+  afun <- make_afun(
+    a_count_abnormal_by_worst_grade,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .ungroup_stats = "count_fraction"
   )
+  for (i in seq_along(abnormal)) {
+    abn <- abnormal[i]
+    varlist <- variables
+    varlist$worst_grade_flag <- varlist$worst_grade_flag[names(abn)]
+    lyt <- analyze(
+      lyt = lyt,
+      vars = var,
+      var_labels = names(abn),
+      afun = afun,
+      extra_args = c(list(abnormal = abn, variables = varlist), list(...)),
+      show_labels = "visible"
+    )
+  }
+  lyt
 }

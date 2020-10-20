@@ -2,7 +2,10 @@
 
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
 
-* Counting patients with abnormal values post-baseline: `s_count_abnormal` and `analyze_abnormal`.
+* Counting patients with abnormal values post-baseline: `s_count_abnormal` and `count_abnormal`.
+* Counting patients with graded abnormal values: `s_count_abnormal_by_worst_grade` and `count_abnormal_by_worst_grade`.
+* Counting patients with abnormal values by baseline status: `s_count_abnormal_by_baseline` and `count_abnormal_by_baseline`.
+* Counting patients with missed doses: `s_count_missed_doses` and `count_missed_doses`.
 * Summarize variables: S3 generic `s_summary` (with numeric, factor, character and logical methods), `summarize_vars`.
 * Summarize change from baseline: `s_change_from_baseline` and `summarize_change`.
 * Summarize variables in columns: `summarize_colvars` (which also works with `s_summary`).

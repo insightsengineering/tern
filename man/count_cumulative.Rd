@@ -4,8 +4,7 @@
 \alias{count_cumulative}
 \alias{h_count_cumulative}
 \alias{s_count_cumulative}
-\alias{s_count_nonmissing}
-\alias{count_missed_doses}
+\alias{a_count_cumulative}
 \title{Cumulative Counts with Thresholds}
 \usage{
 h_count_cumulative(
@@ -26,11 +25,26 @@ s_count_cumulative(
   ...
 )
 
-s_count_nonmissing(x)
+a_count_cumulative(
+  x,
+  thresholds,
+  lower_tail = TRUE,
+  include_eq = TRUE,
+  .N_col,
+  ...
+)
 
-count_cumulative(lyt, vars, var_labels = vars, show_labels = "visible", ...)
-
-count_missed_doses(lyt, var, thresholds, ...)
+count_cumulative(
+  lyt,
+  vars,
+  var_labels = vars,
+  show_labels = "visible",
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -58,7 +72,13 @@ count, default is \code{TRUE}.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{var}{(\code{string})\cr variable name for missed doses.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 A named vector of 2:
@@ -74,10 +94,7 @@ A named list:
 contains a vector for the count and fraction.
 }
 
-A list with named item:
-\itemize{
-\item \code{n}: the count of non-missing values.
-}
+\code{\link[=a_count_cumulative]{a_count_cumulative()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
 Summarize cumulative counts of a (\code{numeric}) vector that is less than, less or equal to,
@@ -91,28 +108,14 @@ greater than, or greater or equal to user-specific thresholds.
 \item \code{s_count_cumulative}: Statistics function that produces a named lists given a
 (\code{numeric}) vector of thresholds.
 
-\item \code{s_count_nonmissing}: Statistics function to count non-missing values.
+\item \code{a_count_cumulative}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 \item \code{count_cumulative}: Layout creating function which can be be used for creating
 summary tables for cumulative counts of a variable. The ellipsis (\code{...}) conveys
 arguments to \code{s_count_cumulative()}, for instance \code{lower_tail = FALSE} if upper tail
 should be accounted for.
-
-\item \code{count_missed_doses}: Layout creating function which can be be used for creating
-summary tables for summarizing missed doses given user-specified \code{thresholds}. This is
-an additional layer on top of \code{count_cumulative} specifically for missed doses.
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 set.seed(1)
@@ -126,9 +129,8 @@ h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
 s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 
-set.seed(1)
-x <- c(sample(1:10, 10), NA)
-s_count_nonmissing(x)
+# Use the Formatted Analysis function for `analyze()`.
+a_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 
 library(random.cdisc.data)
 ADSL <- radsl(cached = TRUE)
@@ -139,23 +141,5 @@ split_cols_by(lyt = NULL, "ARM") \%>\%
     thresholds = c(40, 60)
   ) \%>\%
   build_table(ADSL)
-
-# data processing to get wide data
-library(dplyr)
-ADSL <- radsl(cached = TRUE)
-ADEX <- radex(cached = TRUE)
-ANL <- ADEX \%>\%
-  distinct(STUDYID, USUBJID, ARM) \%>\%
-  mutate(
-    PARAMCD = "TNDOSMIS",
-    PARAM = "Total number of missed doses during study",
-    AVAL = sample(0:20, size = nrow(ADSL), replace = TRUE),
-    AVALC = ""
-  )
-N_per_arm = table(ADSL$ARM)
-split_cols_by(lyt = NULL, "ARM") \%>\%
-  add_colcounts() \%>\%
-  count_missed_doses(var = "AVAL", thresholds = c(1, 5, 10, 15)) \%>\%
-  build_table(ANL, col_counts = N_per_arm)
 
 }

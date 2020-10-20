@@ -45,110 +45,7 @@ df <- data.frame(
  USUBJID = as.character(c(1:6)),
  ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
  BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
- )
-```
-
-## Helper function
-
-- NEW 
-
-- Just a wrapper that adds labels
-
-```{r}
-d_count_abnormal_by_baseline <- function(counts, abnormal) {
-
-  null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
-  not_abn_name <- paste("Not", tolower(abnormal), "baseline status")
-  abn_name <- paste(null_name, "baseline status")
-  total_name <- "Total"
-
-  result <- list(
-    not_abnormal = with_label(counts[["not_abnormal"]], not_abn_name),
-    abnormal = with_label(counts[["abnormal"]], abn_name),
-    total = with_label(counts[["total"]], total_name)
-  )
-
-  result
-}
-```
-
-
-## Stats function
-
-Minor changes need to what is already on `devel`:
-
-- renaming to `s_count_abnormal_by_baseline`
-
-- add use of wrapper function `d_count_abnormal_by_baseline`
-
-```{r}
-s_count_abnormal_by_baseline2 <- function(df, .var, abnormal, variables = list(id = "USUBJID", baseline = "BNRIND")) {
-
-  counts <- count_abnormal_by_baseline(df, .var, abnormal, variables)
-
-  # Add labels.
-  result <- d_count_abnormal_by_baseline(counts, abnormal)
-
-  result
-}
-
-s_count_abnormal_by_baseline2(df, .var = "ANRIND", abnormal = "HIGH")
-
-```
-
-
-## Analyze function
-
-- NEW
-
-- Using `make_afun` as in Daniel's example.
-
-```{r}
-
-a_count_abnormal_by_baseline <- make_afun(
-  s_count_abnormal_by_baseline,
-  .formats = c(not_abnormal = format_fraction, abnormal = format_fraction, total = format_fraction),
-  .indent_mods = c(not_abnormal = 1L, abnormal = 1L, total = 1L)
 )
-
-analyze_abnormal_by_baseline2 <- function(
-  lyt,
-  vars,
-  abnormal,
-  ...,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-) {
-  afun <- make_afun(
-    a_count_abnormal_by_baseline,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
-  )
-
-  for (i in seq_along(abnormal)) {
-    abn <- abnormal[i]
-    lyt <- analyze(
-      lyt,
-      vars,
-      afun = afun,
-      extra_args = c(list(abnormal = abn), list(...)),
-      show_labels = "hidden"
-    )
-  }
-  lyt
-}
-
-basic_table() %>%
-  analyze_abnormal_by_baseline2(
-    vars = "ANRIND",
-    abnormal = c("Low" = "LOW", "High" = "HIGH")
-  ) %>%
-  build_table(df)
-
 ```
 
 ## Full LBT06 Example
@@ -168,8 +65,8 @@ basic_table() %>%
     add_colcounts() %>%
     split_rows_by("PARAM", split_fun = drop_split_levels) %>%
     split_rows_by("AVISIT", split_fun = drop_split_levels) %>%
-    analyze_abnormal_by_baseline2(
-      vars = "ANRIND",
+    count_abnormal_by_baseline(
+      "ANRIND",
       abnormal = c("Low" = "LOW", "High" = "HIGH")
     ) %>%
     build_table(adlb, col_counts = table(adsl$ARM))

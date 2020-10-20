@@ -37,7 +37,7 @@ by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var}{(\code{string})\cr single variable name.}
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

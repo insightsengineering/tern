@@ -3,8 +3,6 @@
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
 #'
-#' @template formatting_arguments
-#'
 #' @name count_cumulative
 #'
 NULL
@@ -110,18 +108,18 @@ s_count_cumulative <- function(x,
   list(count_fraction = count_fraction_list)
 }
 
-#' @describeIn count_cumulative Statistics function to count non-missing values.
-#' @return A list with named item:
-#'   - `n`: the count of non-missing values.
+#' @describeIn count_cumulative Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @return [a_count_cumulative()] returns the corresponding list with formatted [rtables::CellValue()].
 #' @export
 #' @examples
-#' set.seed(1)
-#' x <- c(sample(1:10, 10), NA)
-#' s_count_nonmissing(x)
+#' # Use the Formatted Analysis function for `analyze()`.
+#' a_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #'
-s_count_nonmissing <- function(x) {
-  list(n = with_label(sum(!is.na(x)), label = "n"))
-}
+a_count_cumulative <- make_afun(
+  s_count_cumulative,
+  .formats = c(count_fraction = format_count_fraction)
+)
 
 #' @describeIn count_cumulative Layout creating function which can be be used for creating
 #'   summary tables for cumulative counts of a variable. The ellipsis (`...`) conveys
@@ -144,77 +142,25 @@ count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,
                              show_labels = "visible",
-                             ...) {
-  a_count_cumulative <- format_wrap_x(
-    s_count_cumulative,
-    indent_mods = c(count_fraction = 2L),
-    formats = c(count_fraction = format_count_fraction)
+                             ...,
+                             .stats = NULL,
+                             .formats = NULL,
+                             .labels = NULL,
+                             .indent_mods = NULL) {
+  afun <- make_afun(
+    a_count_cumulative,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .ungroup_stats = "count_fraction"
   )
   analyze(
     lyt,
     vars,
-    afun = a_count_cumulative,
+    afun = afun,
     var_labels = var_labels,
     show_labels = show_labels,
     extra_args = list(...)
-  )
-}
-
-#' Description of Cumulative Count for Missed Doses
-#'
-#' This is a helper function that describes analysis in `count_missed_doses`
-#' @inheritParams s_count_cumulative
-#' @return A named `character` vector.
-#'
-d_count_missed_doses <- function(thresholds) {
-  labels <- paste0("At least ", thresholds, " missed dose", ifelse(thresholds > 1, "s", ""))
-  setNames(labels, thresholds)
-}
-
-#' @describeIn count_cumulative Layout creating function which can be be used for creating
-#'   summary tables for summarizing missed doses given user-specified `thresholds`. This is
-#'   an additional layer on top of `count_cumulative` specifically for missed doses.
-#' @inheritParams argument_convention
-#' @inheritParams s_count_cumulative
-#' @param var (`string`)\cr variable name for missed doses.
-#' @export
-#' @examples
-#' # data processing to get wide data
-#' library(dplyr)
-#' ADSL <- radsl(cached = TRUE)
-#' ADEX <- radex(cached = TRUE)
-#' ANL <- ADEX %>%
-#'   distinct(STUDYID, USUBJID, ARM) %>%
-#'   mutate(
-#'     PARAMCD = "TNDOSMIS",
-#'     PARAM = "Total number of missed doses during study",
-#'     AVAL = sample(0:20, size = nrow(ADSL), replace = TRUE),
-#'     AVALC = ""
-#'   )
-#' N_per_arm = table(ADSL$ARM)
-#' split_cols_by(lyt = NULL, "ARM") %>%
-#'   add_colcounts() %>%
-#'   count_missed_doses(var = "AVAL", thresholds = c(1, 5, 10, 15)) %>%
-#'   build_table(ANL, col_counts = N_per_arm)
-#'
-count_missed_doses <- function(lyt, var, thresholds, ...) {
-  assert_that(is.string(var))
-
-  lyt <- analyze(
-    lyt = lyt,
-    vars = var,
-    afun = s_count_nonmissing,
-    var_labels = "Missed Doses",
-    format = "xx"
-  )
-  count_cumulative(
-    lyt = lyt,
-    vars = var,
-    thresholds = thresholds,
-    lower_tail = FALSE,
-    include_eq = TRUE,
-    .labels = d_count_missed_doses(thresholds),
-    show_labels = "hidden",
-    ...
   )
 }

@@ -39,7 +39,7 @@
 #' @param var_labels character for label.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables.
 #' @param vars (`character`)\cr variable names for the primary analysis variable to be iterated over.
-#' @param var (`string`)\cr single variable name.
+#' @param var (`string`)\cr single variable name for the primary analysis variable.
 #' @param x (`numeric`)\cr vector of numbers we want to analyze.
 #'
 #' @name argument_convention

@@ -16,8 +16,8 @@ test_that("LBT04 default variant is produced correctly", {
     add_colcounts() %>%
     split_rows_by("LBCAT") %>%
     split_rows_by("PARAM", split_fun = drop_split_levels) %>%
-    analyze_abnormal(
-      vars = "ANRIND",
+    count_abnormal(
+      var = "ANRIND",
       abnormal = c(Low = "LOW", High = "HIGH")
     ) %>%
     build_table(adlb, col_counts = table(adsl$ARM))

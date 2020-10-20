@@ -4,14 +4,26 @@
 \alias{dummy_summation}
 \alias{h_dummy_sum}
 \alias{s_dummy_sum}
+\alias{a_dummy_sum}
 \alias{dummy_sum}
-\title{Documentation Example for Helper, Statistics and Analyze Functions}
+\title{Documentation Example for Helper, Statistics, Formatted Analysis and Analyze Functions}
 \usage{
 h_dummy_sum(x)
 
 s_dummy_sum(x, .var = "x")
 
-dummy_sum(lyt, vars)
+a_dummy_sum(x, .var = "x")
+
+dummy_sum(
+  lyt,
+  vars,
+  ...,
+  show_labels = "hidden",
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -22,6 +34,18 @@ by a statistics function.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 The statistics are:
@@ -30,8 +54,8 @@ The statistics are:
 }
 }
 \description{
-This illustrates the conventions on how to document helper, statistics and analyze functions
-together.
+This illustrates the conventions on how to document helper, statistics, formatted analysis
+and analyze functions together.
 }
 \section{Functions}{
 \itemize{
@@ -39,26 +63,20 @@ together.
 
 \item \code{s_dummy_sum}: Statistics Function which sums the numbers, after removing \code{NA} values.
 
+\item \code{a_dummy_sum}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{dummy_sum}: Analyze Function which adds the sum analysis to
 the input layout. Note that additional formatting arguments can be used
 here.
 }}
 
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
-
 \examples{
 h_dummy_sum(1:10)
 
 s_dummy_sum(c(1, 2))
+
+a_dummy_sum(c(1, 2))
 
 basic_table() \%>\%
   split_cols_by("Species") \%>\%

@@ -266,34 +266,35 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
       var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
-    count_missed_doses(var = "TNDOSMIS", thresholds = c(1, 5, 10, 15)) %>%
+    count_missed_doses(
+      "TNDOSMIS",
+      thresholds = c(1, 5, 10, 15),
+      var_labels = "Missed Doses"
+    ) %>%
     build_table(anl, col_counts = table(adsl$ARM))
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c(
-      "", "", "Treatment duration (days)", "n", "Mean (SD)", "Median", "Min - Max",
-      "Treatment duration (days)", "n", "0 - 30", "31 - 60", "61 - 90", ">= 91",
-      "Total dose administered", "n", "Mean (SD)", "Median", "Min - Max",
-      "Total number of doses administered", "n", "Mean (SD)", "Median", "Min - Max",
-      "Missed Doses", "n", "  At least 1 missed dose", "  At least 5 missed doses",
-      "  At least 10 missed doses", "  At least 15 missed doses",
-      "A: Drug X", "(N=134)", "", "75", "74.3 (41.6)", "77", "5 - 149",
-      "", "75", "12 (16%)", "18 (24%)", "19 (25.3%)", "26 (34.7%)",
-      "", "75", "6675.2 (1110.9)", "6720", "4800 - 9360",
-      "", "75", "7 (0)", "7", "7 - 7",
-      "", "75", "74 (55.2%)", "59 (44%)", "41 (30.6%)", "26 (19.4%)",
-      "B: Placebo", "(N=134)", "", "67", "79 (43.1)", "80", "2 - 150",
-      "", "67", "12 (17.9%)", "12 (17.9%)", "15 (22.4%)", "28 (41.8%)",
-      "", "67", "6505.1 (1249.3)", "6480", "4080 - 9360",
-      "", "67", "7 (0)", "7", "7 - 7",
-      "", "67", "63 (47%)", "49 (36.6%)", "38 (28.4%)", "21 (15.7%)",
-      "C: Combination", "(N=132)", "", "75", "74.2 (39.5)", "78", "1 - 147",
-      "", "75", "15 (20%)", "14 (18.7%)", "18 (24%)", "28 (37.3%)",
-      "", "75", "6982.4 (1272.5)", "7200", "4320 - 9360",
-      "", "75", "7 (0)", "7", "7 - 7",
-      "", "75", "73 (55.3%)", "59 (44.7%)", "37 (28%)", "16 (12.1%)"
-    ),
+    c("", "", "Treatment duration (days)", "n", "Mean (SD)",
+      "Median", "Min - Max", "Treatment duration (days)", "n", "0 - 30",
+      "31 - 60", "61 - 90", ">= 91", "Total dose administered", "n",
+      "Mean (SD)", "Median", "Min - Max", "Total number of doses administered",
+      "n", "Mean (SD)", "Median", "Min - Max", "Missed Doses", "n",
+      "At least 1 missed dose", "At least 5 missed doses", "At least 10 missed doses",
+      "At least 15 missed doses", "A: Drug X", "(N=134)", "", "75",
+      "74.3 (41.6)", "77", "5 - 149", "", "75", "12 (16%)", "18 (24%)",
+      "19 (25.3%)", "26 (34.7%)", "", "75", "6675.2 (1110.9)", "6720",
+      "4800 - 9360", "", "75", "7 (0)", "7", "7 - 7", "", "75", "74 (55.2%)",
+      "59 (44%)", "41 (30.6%)", "26 (19.4%)", "B: Placebo", "(N=134)",
+      "", "67", "79 (43.1)", "80", "2 - 150", "", "67", "12 (17.9%)",
+      "12 (17.9%)", "15 (22.4%)", "28 (41.8%)", "", "67", "6505.1 (1249.3)",
+      "6480", "4080 - 9360", "", "67", "7 (0)", "7", "7 - 7", "", "67",
+      "63 (47%)", "49 (36.6%)", "38 (28.4%)", "21 (15.7%)", "C: Combination",
+      "(N=132)", "", "75", "74.2 (39.5)", "78", "1 - 147", "", "75",
+      "15 (20%)", "14 (18.7%)", "18 (24%)", "28 (37.3%)", "", "75",
+      "6982.4 (1272.5)", "7200", "4320 - 9360", "", "75", "7 (0)",
+      "7", "7 - 7", "", "75", "73 (55.3%)", "59 (44.7%)", "37 (28%)",
+      "16 (12.1%)"),
     .Dim = c(29L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)

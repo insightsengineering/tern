@@ -81,25 +81,6 @@ test_that("s_count_cumulative works with customized arguments", {
   expect_equal(result, expected, tolerance = .00001)
 })
 
-test_that("s_count_nonmissing works with numeric input", {
-  set.seed(1)
-  x <- c(sample(1:10, 10), NA)
-
-  result <- s_count_nonmissing(x = x)
-  expected <- list(n = 10)
-  attr(expected$n, "label") <- "n"
-  expect_equal(result, expected, tolerance = .00001)
-})
-
-test_that("s_count_nonmissing also works with character input", {
-  x <- c("a", "b", NA, "c", "d")
-
-  result <- s_count_nonmissing(x = x)
-  expected <- list(n = 4)
-  attr(expected$n, "label") <- "n"
-  expect_equal(result, expected, tolerance = .00001)
-})
-
 test_that("count_cumulative works with default arguments", {
   set.seed(1)
   df <- data.frame(
@@ -116,7 +97,7 @@ test_that("count_cumulative works with default arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "a", "  <= 3", "  <= 7",
+      "", "a", "<= 3", "<= 7",
       "A", "", "2 (40%)", "4 (80%)",
       "B", "", "1 (16.7%)", "3 (50%)"
     ),
@@ -144,36 +125,11 @@ test_that("count_cumulative works with customized arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "a", "  > 3", "  > 7",
+      "", "a", "> 3", "> 7",
       "A", "", "3 (60%)", "1 (20%)",
       "B", "", "4 (66.7%)", "2 (33.3%)"
     ),
     .Dim = 4:3
-  )
-  expect_identical(result_matrix, expected_matrix)
-})
-
-test_that("count_missed_doses works with default arguments", {
-  set.seed(1)
-  df <- data.frame(
-    a = c(sample(1:10, 10), NA),
-    grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
-  )
-
-  result <- split_cols_by(lyt = NULL, "grp") %>%
-    count_missed_doses(
-      var = "a",
-      thresholds = c(3, 7)
-    ) %>%
-    build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Missed Doses", "n", "  At least 3 missed doses", "  At least 7 missed doses",
-      "A", "", "5", "3 (60%)", "2 (40%)",
-      "B", "", "5", "5 (83.3%)", "2 (33.3%)"
-    ),
-    .Dim = c(5L, 3L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

@@ -2,37 +2,65 @@
 % Please edit documentation in R/abnormal_by_baseline.R
 \name{abnormal_by_baseline}
 \alias{abnormal_by_baseline}
-\alias{count_abnormal_by_baseline}
+\alias{d_count_abnormal_by_baseline}
 \alias{s_count_abnormal_by_baseline}
-\alias{analyze_abnormal_by_baseline}
+\alias{a_count_abnormal_by_baseline}
+\alias{count_abnormal_by_baseline}
 \title{Patient Counts with Abnormal Range Values by Baseline Status}
 \usage{
-count_abnormal_by_baseline(
+d_count_abnormal_by_baseline(abnormal)
+
+s_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
 
-s_count_abnormal_by_baseline(df, .var, abnormal, ...)
+a_count_abnormal_by_baseline(
+  df,
+  .var,
+  abnormal,
+  variables = list(id = "USUBJID", baseline = "BNRIND")
+)
 
-analyze_abnormal_by_baseline(lyt, vars, ...)
+count_abnormal_by_baseline(
+  lyt,
+  var,
+  abnormal,
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
+\item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
+
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
-
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
-
-\item{...}{additional arguments for the lower level functions.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+}
+\value{
+\code{\link[=a_count_abnormal_by_baseline]{a_count_abnormal_by_baseline()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
 Primary analysis variable \code{.var} indicates the abnormal range result (character or factor), and additional
@@ -62,14 +90,16 @@ Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
-\item \code{count_abnormal_by_baseline}: For a single \code{abnormal} level, produce a named list with 3 slots:
-\code{not_abnormal}, \code{abnormal} and \code{total}. Each slot contains a vector with \code{num} and \code{denom} counts
-of patients.
+\item \code{d_count_abnormal_by_baseline}: Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
 
-\item \code{s_count_abnormal_by_baseline}: Statistics function which counts patients with abnormal range values
-by baseline status for multiple \code{abnormal} levels, and returns a list with labeled entries.
+\item \code{s_count_abnormal_by_baseline}: For a single \code{abnormal} level, produce a statistic \code{fraction} which is
+a named list with 3 elements: \code{not_abnormal}, \code{abnormal} and \code{total}.
+Each element contains a vector with \code{num} and \code{denom} counts of patients.
 
-\item \code{analyze_abnormal_by_baseline}: Layout creating function which can be used for creating tables, which can take
+\item \code{a_count_abnormal_by_baseline}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{count_abnormal_by_baseline}: Layout creating function which can be used for creating tables, which can take
 statistics function arguments and additional format arguments (see below).
 }}
 
@@ -85,6 +115,7 @@ These additional formatting arguments can be passed to the layout creating funct
 }
 
 \examples{
+d_count_abnormal_by_baseline("LOW")
 df <- data.frame(
  USUBJID = as.character(c(1:6)),
  ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
@@ -92,16 +123,15 @@ df <- data.frame(
  )
 
 # Just for one abnormal level.
-count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
+s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
 
-
-# Use the statistics function to count patients for multiple abnormal levels.
-s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"))
+# Use the Formatted Analysis function for `analyze()`.
+a_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "LOW")
 
 
 # Layout creating function.
 basic_table() \%>\%
-  analyze_abnormal_by_baseline(vars = "ANRIND", abnormal = c(high = "HIGH")) \%>\%
+  count_abnormal_by_baseline(var = "ANRIND", abnormal = c(High = "HIGH")) \%>\%
   build_table(df)
 
 # Passing of statistics function and formatting arguments.
@@ -112,12 +142,12 @@ df2 <- data.frame(
 )
 
 basic_table() \%>\%
-  analyze_abnormal_by_baseline(
-    vars = "RANGE",
-    abnormal = c(low = "LOW"),
+  count_abnormal_by_baseline(
+    var = "RANGE",
+    abnormal = c(Low = "LOW"),
     variables = list(id = "ID", baseline = "BLRANGE"),
-    .formats = c(not_abnormal = "xx / xx", abnormal = "xx / xx", total = "xx / xx"),
-    .indent_mods = c(total = 2L)
+    .formats = c(fraction = "xx / xx"),
+    .indent_mods = c(fraction = 2L)
   ) \%>\%
   build_table(df2)
 

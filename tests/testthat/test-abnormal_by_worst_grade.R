@@ -14,81 +14,46 @@ get_adlb <- function(){
   adlb_f
 }
 
-test_that("h_abnormal_by_worst_grade works as expected", {
+test_that("s_count_abnormal_by_worst_grade works as expected", {
   adlb <- get_adlb()
 
-  result <- h_abnormal_by_worst_grade(
+  result <- s_count_abnormal_by_worst_grade(
     df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
     .var = "ATOXGR",
     abnormal = "low",
     variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")
   )
-  expected <- list(
+  expected <- list(count_fraction = list(
     "1" = c(13.00000000, 0.09701493),
     "2" = c(21.0000000, 0.1567164),
     "3" = c(12.00000000, 0.08955224),
     "4" = c(6.00000000, 0.04477612),
     "5" = c(8.00000000, 0.05970149),
     "Any" = c(60.0000000, 0.4477612)
-  )
+  ))
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
-
-test_that("s_abnormal_by_worst_grade works as expected with single abnormality", {
+test_that("s_count_abnormal_by_worst_grade works as expected with single abnormality", {
   adlb <- get_adlb()
-  result <- s_abnormal_by_worst_grade(
+  result <- s_count_abnormal_by_worst_grade(
     df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
     .var = "ATOXGR",
     abnormal = c(High = "high"),
     variables = list(id = "USUBJID", worst_grade_flag = c(High = "WGRHIFL"))
   )
-  expected <- list(
-    section_label = with_label("", "High"),
-    count_fraction = list(
+  expected <- list(count_fraction = list(
       "1" = c(16.000000, 0.119403),
       "2" = c(12.00000000, 0.08955224),
       "3" = c(13.00000000, 0.09701493),
       "4" = c(14.0000000, 0.1044776),
       "5" = c(5.00000000, 0.03731343),
       "Any" = c(60.0000000, 0.4477612)
-    )
-  )
+    ))
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("s_abnormal_by_worst_grade works as expected with two abnormality directions", {
-  adlb <- get_adlb()
-  result <- s_abnormal_by_worst_grade(
-    df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-    .var = "ATOXGR",
-    abnormal = c(High = "high", Low = "low"),
-    variables = list(id = "USUBJID", worst_grade_flag = c(High = "WGRHIFL", Low = "WGRLOFL"))
-  )
-  expected <- list(
-    section_label = with_label("", "High"),
-    count_fraction = list(
-      "1" = c(16.000000, 0.119403),
-      "2" = c(12.00000000, 0.08955224),
-      "3" = c(13.00000000, 0.09701493),
-      "4" = c(14.0000000, 0.1044776),
-      "5" = c(5.00000000, 0.03731343),
-      "Any" = c(60.0000000, 0.4477612)
-    ),
-    section_label = with_label("", "Low"),
-    count_fraction = list(
-      "1" = c(13.00000000, 0.09701493),
-      "2" = c(21.0000000, 0.1567164),
-      "3" = c(12.00000000, 0.08955224),
-      "4" = c(6.00000000, 0.04477612),
-      "5" = c(8.00000000, 0.05970149),
-      "Any" = c(60.0000000, 0.4477612)
-    )
-  )
-  expect_equal(result, expected, tolerance = 0.000001)
-})
-
-test_that("abnormal_by_worst_grade works as expected", {
+test_that("count_abnormal_by_worst_grade works as expected", {
   adlb <- get_adlb()
   adlb_f <- adlb %>%
     dplyr::filter(PARAMCD == "IGA") %>%
@@ -96,8 +61,8 @@ test_that("abnormal_by_worst_grade works as expected", {
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     split_rows_by("PARAMCD") %>%
-    abnormal_by_worst_grade(
-      vars = "ATOXGR",
+    count_abnormal_by_worst_grade(
+      var = "ATOXGR",
       abnormal = c(Low = "low", High = "high"),
       variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
     ) %>%
@@ -105,8 +70,8 @@ test_that("abnormal_by_worst_grade works as expected", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "IGA", "Low", "  1", "  2", "  3", "  4", "  5", "  Any", "High", "  1",
-      "  2", "  3", "  4", "  5", "  Any",
+      "", "IGA", "Low", "1", "2", "3", "4", "5", "Any", "High", "1",
+      "2", "3", "4", "5", "Any",
       "ARM A", "", "", "14 (10.4%)", "14 (10.4%)", "10 (7.5%)", "7 (5.2%)", "9 (6.7%)", "54 (40.3%)", "", "24 (17.9%)",
       "11 (8.2%)", "13 (9.7%)", "3 (2.2%)", "11 (8.2%)", "62 (46.3%)",
       "ARM B", "", "", "21 (15.7%)", "15 (11.2%)", "10 (7.5%)", "6 (4.5%)", "13 (9.7%)", "65 (48.5%)", "", "9 (6.7%)",

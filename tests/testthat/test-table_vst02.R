@@ -1,9 +1,7 @@
 # Test the single variant for VST02
 
 library(random.cdisc.data)
-library(rtables)
 library(dplyr)
-
 
 test_that("VST02 default variant is produced correctly", {
   adsl <- radsl(cached = TRUE)
@@ -17,7 +15,7 @@ test_that("VST02 default variant is produced correctly", {
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     split_rows_by("PARAM", split_label = c("Parameter / Abnormality Direction"), visible_label = TRUE) %>%
-    analyze_abnormal(vars = "ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
+    count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
     build_table(df = advs_f, col_counts = n_col_counts)
 
   result_matrix <- to_string_matrix(result)

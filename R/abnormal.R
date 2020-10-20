@@ -14,16 +14,16 @@
 #' at baseline, and patients with missing baseline.
 #'
 #' @inheritParams argument_convention
-#' @param abnormal string identifying the abnormal range level(s) in `vars`
-#' @param baseline string identifying the baseline level(s) in `visit`
-#'
-#' @template formatting_arguments
+#' @param abnormal (named `string` or `character`)\cr identifying the abnormal range level(s) in `var`.
+#' @param baseline (`string`)\cr identifying the baseline level(s) in `visit`.
 #'
 #' @name abnormal
 NULL
 
-#' @describeIn abnormal Produce a vector with `num` and `denom` counts of patients for a single `abnormal`
-#'   level.
+#' @describeIn abnormal Statistics function which counts patients with abnormal range values
+#'   for a single `abnormal` level.
+#' @return [s_count_abnormal()] returns the statistic `fraction` which is a
+#'   vector with `num` and `denom` counts of patients.
 #' @export
 #' @examples
 #' df <- data.frame(
@@ -31,17 +31,19 @@ NULL
 #'   AVISIT = factor(c("BASELINE", "WEEK 1", "BASELINE", "WEEK 1")),
 #'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
 #' )
-#' # Just for one abnormal level.
-#' count_abnormal(df, .var = "ANRIND", abnormal = "HIGH")
-count_abnormal <- function(df,
-                           .var,
-                           abnormal,
-                           variables = list(id = "USUBJID", visit = "AVISIT"),
-                           baseline = "BASELINE"
+#' # For abnormal level "HIGH" we get the following counts.
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
+#'
+s_count_abnormal <- function(df,
+                             .var,
+                             abnormal,
+                             variables = list(id = "USUBJID", visit = "AVISIT"),
+                             baseline = "BASELINE"
 ) {
   assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
     is.string(abnormal),
+    !is.null(names(abnormal)),
     is_character_vector(baseline),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[variables$visit]]),
@@ -70,34 +72,31 @@ count_abnormal <- function(df,
   num <- length(subjects_num)
 
   result <- c(num = num, denom = denom)
-  return(result)
+  list(fraction = with_label(result, names(abnormal)))
 }
 
-#' @describeIn abnormal Statistics function which counts patients with abnormal range values
-#'   for multiple `abnormal` levels, and returns a list with one element each.
+#' @describeIn abnormal Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @return [a_count_abnormal()] returns the corresponding list with formatted [rtables::CellValue()].
 #' @export
 #' @examples
+#' # Use the Formatted Analysis function for `analyze()`.
+#' a_count_abnormal(df, .var = "ANRIND", abnormal = c(low = "LOW"))
 #'
-#' # Use the statistics function to count patients for multiple abnormal levels.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"))
-s_count_abnormal <- function(df,
-                             .var,
-                             abnormal,
-                             ...) {
-
-  assert_that(!is.null(names(abnormal)))
-  result <- lapply(abnormal, count_abnormal, df = df, .var = .var, ...)
-  list(fraction = result)
-}
+a_count_abnormal <- make_afun(
+  s_count_abnormal,
+  .formats = c(fraction = format_fraction)
+)
 
 #' @describeIn abnormal Layout creating function which can be used for creating tables, which can take
-#'   statistics function arguments and additional format arguments (see below).
+#'   statistics function arguments and additional format arguments (see below). Note that it only
+#'   works with a single variable but multiple abnormal levels.
+#' @return [count_abnormal()] can be used with multiple abnormal levels and modifies the layout.
 #' @export
 #' @examples
-#'
 #' # Layout creating function.
 #' basic_table() %>%
-#'   analyze_abnormal(vars = "ANRIND", abnormal = c(high = "HIGH")) %>%
+#'   count_abnormal(var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW")) %>%
 #'   build_table(df)
 #'
 #' # Passing of statistics function and formatting arguments.
@@ -107,29 +106,39 @@ s_count_abnormal <- function(df,
 #'   RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
 #' )
 #' basic_table() %>%
-#'   analyze_abnormal(
-#'     vars = "RANGE",
+#'   count_abnormal(
+#'     var = "RANGE",
 #'     abnormal = c(low = "LOW", high = "HIGH"),
 #'     variables = list(id = "ID", visit = "VISIT"),
-#'     baseline = "SCREENING",
-#'     .labels = c(low = "< LLN"),
-#'     .indent_mods = c(fraction = 1L)
+#'     baseline = "SCREENING"
 #'   ) %>%
 #'   build_table(df2)
-analyze_abnormal <- function(lyt,
-                             vars,
-                             ...) {
-  a_count_abnormal <- format_wrap_df(
-    s_count_abnormal,
-    indent_mods = c(fraction = 0L),
-    formats = c(fraction = format_fraction)
+#'
+count_abnormal <- function(lyt,
+                           var,
+                           abnormal,
+                           ...,
+                           .stats = NULL,
+                           .formats = NULL,
+                           .labels = NULL,
+                           .indent_mods = NULL) {
+  afun <- make_afun(
+    a_count_abnormal,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
-  analyze(
-    lyt,
-    vars,
-    afun = a_count_abnormal,
-    extra_args = c(
-      list(...)
+  assert_that(is.string(var))
+  for (i in seq_along(abnormal)) {
+    abn <- abnormal[i]
+    lyt <- analyze(
+      lyt = lyt,
+      vars = var,
+      afun = afun,
+      extra_args = c(list(abnormal = abn), list(...)),
+      show_labels = "hidden"
     )
-  )
+  }
+  lyt
 }

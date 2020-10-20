@@ -2,26 +2,36 @@
 % Please edit documentation in R/abnormal_by_worst_grade.R
 \name{abnormal_by_worst_grade}
 \alias{abnormal_by_worst_grade}
-\alias{h_abnormal_by_worst_grade}
-\alias{s_abnormal_by_worst_grade}
+\alias{s_count_abnormal_by_worst_grade}
+\alias{a_count_abnormal_by_worst_grade}
+\alias{count_abnormal_by_worst_grade}
 \title{Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality}
 \usage{
-h_abnormal_by_worst_grade(
+s_count_abnormal_by_worst_grade(
   df,
   .var = "ATOXGR",
   abnormal = c("low", "high"),
   variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")
 )
 
-s_abnormal_by_worst_grade(
+a_count_abnormal_by_worst_grade(
   df,
-  .var,
-  abnormal = c(Low = "low", High = "high"),
-  variables = list(id = "USUBJID", worst_grade_flags = c(Low = "WGRLOFL", High =
-    "WGRHIFL"))
+  .var = "ATOXGR",
+  abnormal = c("low", "high"),
+  variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")
 )
 
-abnormal_by_worst_grade(lyt, vars, ...)
+count_abnormal_by_worst_grade(
+  lyt,
+  var,
+  abnormal,
+  variables,
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -35,9 +45,23 @@ by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+\item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+}
+\value{
+\code{\link[=s_count_abnormal_by_worst_grade]{s_count_abnormal_by_worst_grade()}} the single statistic \code{count_fraction} with grade 1 to 5
+and "Any" results.
+
+\code{\link[=a_count_abnormal_by_worst_grade]{a_count_abnormal_by_worst_grade()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
 Primary analysis variable \code{.var} indicates the toxicity grade (numeric), and additional
@@ -55,13 +79,14 @@ Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_abnormal_by_worst_grade}: For a single \code{abnormal} level, produce a named list with
-counts and percentages of patients with worst grade \code{1} to \code{5}, and \code{Any} non-zero grade.
+\item \code{s_count_abnormal_by_worst_grade}: Statistics function which counts patients with worst grade
+for a single \code{abnormal} level, consisting of counts and percentages of patients with worst grade
+\code{1} to \code{5}, and \code{Any} non-zero grade.
 
-\item \code{s_abnormal_by_worst_grade}: Statistics function which counts patients with worst grade
-for multiple \code{abnormal} levels, and returns a list with labeled entries.
+\item \code{a_count_abnormal_by_worst_grade}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{abnormal_by_worst_grade}: Layout creating function which can be used for creating tables,
+\item \code{count_abnormal_by_worst_grade}: Layout creating function which can be used for creating tables,
 which can take statistics function arguments and additional format arguments (see below).
 }}
 
@@ -88,13 +113,21 @@ adlb_f <- adlb \%>\%
     WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
   )
 
-h_abnormal_by_worst_grade(
+s_count_abnormal_by_worst_grade(
   df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   abnormal = "low",
   variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")
 )
-h_abnormal_by_worst_grade(
+s_count_abnormal_by_worst_grade(
+  df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+  .var = "ATOXGR",
+  abnormal = "high",
+  variables = list(id = "USUBJID", worst_grade_flag = "WGRHIFL")
+)
+
+# Use the Formatted Analysis function for `analyze()`.
+a_count_abnormal_by_worst_grade(
   df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   abnormal = "high",
@@ -102,25 +135,9 @@ h_abnormal_by_worst_grade(
 )
 
 
-# Use the statistics function to count patients for multiple abnormal levels.
-s_abnormal_by_worst_grade(
-  df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-  .var = "ATOXGR",
-  abnormal = c(HIGH = "high"),
-  variables = list(id = "USUBJID", worst_grade_flag = c(HIGH = "WGRHIFL"))
-)
-
-s_abnormal_by_worst_grade(
-  df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-  .var = "ATOXGR",
-  abnormal = c(Low = "low", High = "high"),
-  variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
-)
-
-
 basic_table() \%>\%
-  abnormal_by_worst_grade(
-    vars = "ATOXGR",
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR",
     abnormal = c(Low = "low", High = "high"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) \%>\%
@@ -129,8 +146,8 @@ basic_table() \%>\%
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%
   split_rows_by("PARAMCD") \%>\%
-  abnormal_by_worst_grade(
-    vars = "ATOXGR",
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR",
     abnormal = c(Low = "low", High = "high"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) \%>\%
