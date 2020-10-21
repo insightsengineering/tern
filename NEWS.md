@@ -1,4 +1,4 @@
-# tern 0.6.8.9000
+# tern 0.6.9.9000
 
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
 
@@ -20,6 +20,9 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 
 
 * issues with no news: 
+
+# tern 0.6.9
+* Removing not used imports.
 
 # tern 0.6.8
 

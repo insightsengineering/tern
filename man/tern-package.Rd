@@ -11,7 +11,6 @@ tern is an analysis package to create tables, listings and graphs to analyze cli
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pages.github.roche.com/NEST/tern/}
   \item \url{https://github.roche.com/NEST/tern/}
   \item Report bugs at \url{https://github.roche.com/NEST/tern/issues}
 }

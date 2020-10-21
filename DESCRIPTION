@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Date: 2020-08-17
-Version: 0.6.8.9000
+Date: 2020-10-20
+Version: 0.6.9.9000
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
@@ -35,7 +35,7 @@ Imports:
     stats,
     survival,
     utils,
-    utils.nest (>= 0.2.5),
+    utils.nest (>= 0.2.6),
     forcats,
     car,
     nlme,
@@ -52,7 +52,7 @@ Suggests:
   test.nest,
   knitr,
   Matrix,
-  random.cdisc.data (>= 0.3.5),
+  random.cdisc.data (>= 0.3.6),
   rmarkdown,
   testthat (>= 2.0),
   tidyr
@@ -63,5 +63,5 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
-URL: https://pages.github.roche.com/NEST/tern/, https://github.roche.com/NEST/tern/
+URL: https://github.roche.com/NEST/tern/
 BugReports: https://github.roche.com/NEST/tern/issues
