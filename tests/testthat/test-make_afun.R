@@ -32,9 +32,10 @@ test_that("make_afun works with healthy input statistics function taking `df`", 
   result <- afun(df)
   expected <- in_rows(
     .list = list(
-      nrows = CellValue(4L, format = "xx.", label = "nrows", indent_mod = 0L),
-      ncols = CellValue(3L, format = "xx.xx", label = "ncols", indent_mod = 2L)
-    )
+      nrows = rcell(4L, format = "xx.", label = "nrows"),
+      ncols = rcell(3L, format = "xx.xx", label = "ncols")
+    ),
+    .indent_mods = c(0, 2)
   )
   expect_identical(result, expected)
 
@@ -49,8 +50,9 @@ test_that("make_afun works with healthy input statistics function taking `df`", 
   result <- afun2(df)
   expected <- in_rows(
     .list = list(
-      ncols = CellValue(3L, "xx", label = "number columns", indent_mod = 1L)
-    )
+      ncols = rcell(3L, "xx", label = "number columns")
+    ),
+    .indent_mods = 1
   )
   expect_identical(result, expected)
 })
@@ -92,11 +94,12 @@ test_that("make_afun processes additional rtables arguments correctly", {
   result <- afun(df, .in_ref_col = FALSE, .N_col = 3)
   expected <- in_rows(
     .list = list(
-      nrows = CellValue(4L, "xx.", label = "nrows", indent_mod = 0L),
-      ncols = CellValue(3L, "xx.xx", label = "ncols", indent_mod = 2L),
-      incol = CellValue(FALSE, "xx", label = "incol", indent_mod = 0L),
-      nincol = CellValue(3, "xx", label = "nincol", indent_mod = 0L)
-    )
+      nrows = rcell(4L, "xx.", label = "nrows"),
+      ncols = rcell(3L, "xx.xx", label = "ncols"),
+      incol = rcell(FALSE, "xx", label = "incol"),
+      nincol = rcell(3, "xx", label = "nincol")
+    ),
+    .indent_mods = c(0, 2, 0, 0)
   )
   expect_identical(result, expected)
 })
@@ -132,10 +135,11 @@ test_that("make_afun works with healthy input function taking `x`", {
   result <- afun(x)
   expected <- in_rows(
     .list = list(
-      n = CellValue(8L, "xx.", label = "n", indent_mod = 0L),
-      mean = CellValue(2.45, "xx.xx", label = "mean", indent_mod = 2L),
-      median = CellValue(2.25, "xx", label = "median", indent_mod = 1L)
-    )
+      n = rcell(8L, "xx.", label = "n"),
+      mean = rcell(2.45, "xx.xx", label = "mean"),
+      median = rcell(2.25, "xx", label = "median")
+    ),
+    .indent_mods = c(0, 2, 1)
   )
   expect_identical(result, expected)
 
@@ -150,9 +154,10 @@ test_that("make_afun works with healthy input function taking `x`", {
   result <- afun2(x)
   expected <- in_rows(
     .list = list(
-      n = CellValue(8L, "xx.", label = "Number of numbers", indent_mod = 0L),
-      median = CellValue(2.25, "xx.xx", label = "median", indent_mod = 3L)
-    )
+      n = rcell(8L, "xx.", label = "Number of numbers"),
+      median = rcell(2.25, "xx.xx", label = "median")
+    ),
+    .indent_mods = c(0, 3)
   )
   expect_identical(result, expected)
 })
@@ -189,10 +194,11 @@ test_that("make_afun produces empty cells and keeps labels when applied to empty
   result <- afun(x)
   expected <- in_rows(
     .list = list(
-      n = CellValue(with_label(8L, "Number of patients"), "xx.", label = "Number of patients", indent_mod = 0L),
-      mean = CellValue(with_label(2.45, "Mean"), "xx.xx", label = "Mean", indent_mod = 2L),
-      median = CellValue(with_label(2.25, "Median"), "xx", label = "Median", indent_mod = 1L)
-    )
+      n = rcell(with_label(8L, "Number of patients"), "xx.", label = "Number of patients"),
+      mean = rcell(with_label(2.45, "Mean"), "xx.xx", label = "Mean"),
+      median = rcell(with_label(2.25, "Median"), "xx", label = "Median")
+    ),
+    .indent_mods = c(0, 2, 1)
   )
   expect_identical(result, expected)
 
@@ -200,15 +206,15 @@ test_that("make_afun produces empty cells and keeps labels when applied to empty
   result <- afun(x, in_ref = TRUE)
   expected <- in_rows(
     .list = list(
-      n = CellValue(
+      n = rcell(
         with_label(character(), "Number of patients"),
         "xx.",
-        label = "Number of patients",
-        indent_mod = 0L
+        label = "Number of patients"
       ),
-      mean = CellValue(with_label(character(), "Mean"), "xx.xx", label = "Mean", indent_mod = 2L),
-      median = CellValue(with_label(character(), "Median"), "xx", label = "Median", indent_mod = 1L)
-    )
+      mean = rcell(with_label(character(), "Mean"), "xx.xx", label = "Mean"),
+      median = rcell(with_label(character(), "Median"), "xx", label = "Median")
+    ),
+    .indent_mods = c(0, 2, 1)
   )
   expect_identical(result, expected)
 
@@ -276,11 +282,14 @@ test_that("make_afun works with nested lists", {
     .ungroup_stats = "letters"
   )
   result <- a_grp(iris, 40)
-  expected <- list(
-    nrow_df = CellValue(150L, format = "xx.", label = "row count", indent_mod = 0L),
-    .N_col = CellValue(40, format = "xx.", label = "count in column", indent_mod = 0L),
-    a = CellValue(1, label = "a", indent_mod = 0L),
-    b = CellValue(3, label = "b", indent_mod = 0L)
+  expected <- in_rows(
+    .list = list(
+      nrow_df = rcell(150L, format = "xx.", label = "row count"),
+      .N_col = rcell(40, format = "xx.", label = "count in column"),
+      a = rcell(1, label = "a"),
+      b = rcell(3, label = "b")
+    ),
+    .indent_mods = c(0, 0, 0, 0)
   )
   expect_identical(result, expected)
 })
@@ -306,8 +315,11 @@ test_that("make_afun can subset on non-nested results when unnesting took place"
     .formats = c(nrow_df = "xx.xx")
   )
   result <- afun2(iris, 40)
-  expected <- list(
-    nrow_df = CellValue(150L, format = "xx.xx", label = "nrow_df", indent_mod = 0L)
+  expected <- in_rows(
+    .list = list(
+      nrow_df = rcell(150L, format = "xx.xx", label = "nrow_df")
+    ),
+    .indent_mods = 0
   )
   expect_identical(result, expected)
 })
