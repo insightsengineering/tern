@@ -1,0 +1,334 @@
+---
+title: "Design: COXT02"
+author: "Nina Qi"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: true
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of COXT02}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  
+---
+  
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>",
+dev = "svg"
+)
+```
+
+Summary
+=======
+
+Targets:
+
+- test candidate design as COXT02
+
+Plan:
+
+- [ ] separate elementary functions for multivariate cox regression
+- [ ] modified existing functions from `COXT01`
+
+
+Configuration
+=============
+
+Dependencies:
+
+```{r setup, message=FALSE}
+library(random.cdisc.data)
+library(rtables)
+library(dplyr)
+library(tern)
+library(survival)
+library(assertthat)
+library(utils.nest)
+
+packageVersion("tern")
+packageVersion("rtables")
+
+# bring internal tern functions to environment so the file could knit
+is_variables <- tern:::is_variables
+is_df_with_variables <- tern:::is_df_with_variables
+is_proportion <- tern:::is_proportion
+format_wrap_df <- tern:::format_wrap_df
+s_coxreg <- tern:::s_coxreg
+```
+
+Data
+=============
+
+```{r data}
+adtte   <- radtte(cached = TRUE)
+adtte_f <- subset(adtte, PARAMCD == "OS")   # _f: filtered
+adtte_f <- within( # nolint
+  data = subset(
+    adtte_f,
+    PARAMCD == "OS"
+    & SEX %in% c("F", "M")
+    & RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
+  ),
+  expr = { # nolint start
+    set.seed(1)
+    ARMCD <- relevel(ARMCD, "ARM B")
+    SEX <- droplevels(SEX)
+    RACE <- droplevels(RACE)
+    X <- rnorm(n = length(ARM))
+  }  # nolint end
+) %>%
+  mutate(event = 1 - CNSR)
+```
+
+Design
+=============
+
+## Functions {.tabset .tabset-pills}
+Some special considerations:
+
+* Only consider the first variant of `COXT02` of main effect as it is the only one in GDSR.
+
+* Try to leverage `COXT01` functions for main effect of `COXT02`, but did not really work as elementary functions are specific to univariate analyses. 
+  + `h_coxreg_univ_formulas` creates a list of formulas for the comparison of univariate Cox regression models
+  + `h_coxreg_univ_extract` is specific for one level of pairwise comparisons.
+  + Therefore might not be elegant to make functions more lengthy by adding if conditions. So the approach taken here will be to add  separate functions for multivariate cox regression, and modify overall `h_coxreg`, `s_coxreg` and `fit_coxreg` functions when needed.
+
+* For factor variables, the first level is taken as the reference level.
+
+### New helper functions
+```{r}
+#' h_coxreg_multivar_formulas(
+#'   variables = list(
+#'     time = "AVAL", event = "event", arm = "ARMCD", covariates = c("RACE", "AGE")
+#'   )
+#' )
+#'
+h_coxreg_multivar_formulas <- function(variables) {
+
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c("arm", "event", "time")])
+  )
+
+  covariates_part <- paste(variables$covariates, collapse = " + ")
+  paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm, " + ", covariates_part)
+}
+```
+
+### Modify currently control function from `COXT01`
+```{r}
+# add multivariate logical argument
+#' control_coxreg()
+#'
+control_coxreg <- function(pval_method = c("wald", "likelihood"),
+                           ties = c("exact", "efron", "breslow"),
+                           conf_level = 0.95,
+                           interaction = FALSE,
+                           multivar = FALSE) {
+  pval_method <- match.arg(pval_method)
+  ties <- match.arg(ties)
+  assert_that(
+    is_proportion(conf_level),
+    is.flag(interaction),
+    is.flag(multivar)
+  )
+  list(
+    pval_method = pval_method,
+    ties = ties,
+    conf_level = conf_level,
+    interaction = interaction,
+    multivar = multivar
+  )
+}
+```
+
+### New helper functions for multivariate cox regression summaries
+```{r}
+#' Function to custom tidy method for coxph.
+tidy.summary.coxph <- function(x, ...) {
+  pval <- x$coefficients
+  confint <- x$conf.int
+  levels <- rownames(pval)
+
+  pval <- dplyr::as_tibble(pval)
+  confint <- dplyr::as_tibble(confint)
+
+  ret <- cbind(pval[, grepl("Pr", names(pval))], confint)
+  ret$level <- levels
+  ret
+}
+
+#' mod <- coxph(Surv(AVAL, event) ~ ARMCD + RACE + AGE, data = adtte_f)
+#' result <- h_coxreg_multivar_extract(
+#'   var = "ARMCD", mod = mod, data = adtte_f
+#' )
+#' result
+#'
+h_coxreg_multivar_extract <- function(var,
+                                      mod,
+                                      data,
+                                      control = control_coxreg()) {
+
+  assert_that(
+    class(mod) == "coxph",
+    is.string(var),
+    is_df_with_variables(data, list(var = var))
+  )
+
+  test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
+  mod_aov <- car::Anova(
+    mod,
+    test.statistic = test_statistic,
+    type = "III"
+  )
+  msum <- summary(mod, conf.int = control$conf_level)
+
+  # Convert the model summaries to data.
+  sum_anova <- broom::tidy(mod_aov)
+  sum_cox <- broom::tidy(msum)
+
+  ret_anova <- sum_anova[sum_anova$term == var, c("term", "p.value")]
+  names(ret_anova)[2] <- "pval"
+  ret_cox <- sum_cox[grepl(var, sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
+  names(ret_cox)[1:4] <- c("pval", "hr", "lcl", "ucl")
+  ret_cox$term <- var
+
+  if (is.numeric(data[[var]])) {
+    ret <- merge(ret_anova, ret_cox)
+  } else {
+    ret_cox$level <- gsub(var, "", ret_cox$level)
+    ret <- bind_rows(ret_anova, ret_cox)
+  }
+
+  ret$term_label <- ifelse(
+    !is.numeric(data[[var]]) & is.na(ret$level),
+    paste0(var, " (reference = ", levels(data[[var]])[1], ")"),
+    ret$level
+  )
+
+  ret
+}
+
+#' ## Cox regression: multivariate cox regression
+#' df <- h_coxreg_multivar(
+#'   variables = list(
+#'     time = "AVAL", event = "event", arm = "ARMCD", covariates = c("RACE", "AGE")
+#'   ),
+#'   data = adtte_f,
+#'   control = control_coxreg(multivar = TRUE, conf_level = 0.91)
+#' )
+#' df
+#'
+h_coxreg_multivar <- function(variables,
+                              data,
+                              at = list(),
+                              control = control_coxreg()) {
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c("arm", "event", "time")]),
+    is_df_with_variables(data, as.list(unlist(variables)))
+  )
+  vars <- c(variables$arm, variables$covariates)
+  form <- h_coxreg_multivar_formulas(variables)
+  mod <- survival::coxph(formula = stats::as.formula(form), data = data)
+
+  result <- Map(
+    vars = vars,
+    f = function(vars) {
+      h_coxreg_multivar_extract(
+        mod = mod, control = control, var = vars,
+        data = data
+      )
+    }
+  )
+  result <- do.call(rbind, result)
+
+  empty_vector_if_na <- function(x) {
+    if (all(is.na(x))) {
+      numeric()
+    } else {
+      x
+    }
+  }
+  result$ci <- Map(lcl = result$lcl, ucl = result$ucl, f = function(lcl, ucl) c(lcl, ucl))
+  if (!control$multivar) {
+    result$n <- lapply(result$n, empty_vector_if_na)
+  }
+  result$ci <- lapply(result$ci, empty_vector_if_na)
+  result$hr <- lapply(result$hr, empty_vector_if_na)
+  result$pval <- lapply(result$pval, empty_vector_if_na)
+  attr(result, "conf_level") <- control$conf_level
+  result
+}
+
+```
+
+### Modify currently available function `h_coxreg` and `fit_coxreg` by adding conditions of multivariate
+```{r}
+
+# fit_coxreg
+fit_coxreg <- function(lyt,
+                       conf_level,
+                       multivar = FALSE,
+                       vars = c("n", "hr", "ci", "pval")) {
+  # will need to change to new make_afun
+  afun <- format_wrap_df(
+    sfun = s_coxreg,
+    formats = c(
+      n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)",
+      pval =  "xx.xxxx", pval_inter = "xx.xxxx"
+    ),
+    indent_mods = c(n = 0L, hr = 0L, ci = 0L, pval = 0L, pval_inter = 0L)
+  )
+
+  if (multivar) {
+    vars <- c("hr", "ci", "pval")
+    lyt <- split_cols_by_multivar(
+      lyt = lyt,
+      vars = vars,
+      varlabels = c(
+        hr = "HR",
+        ci = paste0(100 * conf_level, "% CI"),
+        pval = "pval"
+      )[vars]
+    )
+  } else {
+    lyt <- split_cols_by_multivar(
+      lyt = lyt,
+      vars = vars,
+      varlabels = c(
+        n = "n", hr = "HR",
+        ci = paste0(100 * conf_level, "% CI"),
+        pval = "pval",
+        pval_inter = "pval_inter"
+      )[vars]
+    )
+  }
+
+  analyze_colvars(lyt = lyt, afun = afun)
+}
+
+```
+## Application {.tabset .tabset-pills}
+
+### multivariate cox regression
+```{r}
+df <- h_coxreg_multivar(
+  variables = list(
+    time = "AVAL", event = "event", arm = "ARMCD", covariates = c("RACE", "AGE")
+  ),
+  data = adtte_f,
+  control = control_coxreg(multivar = TRUE)
+)
+result <- split_rows_by(lyt = NULL, "term", child_labels = "hidden") %>%
+  fit_coxreg(multivar = TRUE, conf_level = .95) %>%
+  build_table(df = df)
+result
+```
