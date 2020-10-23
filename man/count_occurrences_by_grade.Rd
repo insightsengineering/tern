@@ -4,6 +4,7 @@
 \alias{count_occurrences_by_grade}
 \alias{h_append_grade_groups}
 \alias{s_count_occurrences_by_grade}
+\alias{a_count_occurrences_by_grade}
 \alias{summarize_occurrences_by_grade}
 \title{Occurrence Counts by Grade}
 \usage{
@@ -18,22 +19,33 @@ s_count_occurrences_by_grade(
   labelstr = ""
 )
 
+a_count_occurrences_by_grade(
+  df,
+  .var,
+  .N_col,
+  id = "USUBJID",
+  grade_groups = list(),
+  labelstr = ""
+)
+
 count_occurrences_by_grade(
   lyt,
   var,
+  ...,
   .stats = NULL,
   .formats = NULL,
   .indent_mods = NULL,
-  ...
+  .labels = NULL
 )
 
 summarize_occurrences_by_grade(
   lyt,
   var,
+  ...,
   .stats = NULL,
   .formats = NULL,
   .indent_mods = NULL,
-  ...
+  .labels = NULL
 )
 }
 \arguments{
@@ -59,16 +71,18 @@ by a statistics function.}
 
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
+\item{...}{additional arguments for the lower level functions.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{...}{additional arguments for the lower level functions.}
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
 \description{
-Functions for analyzing frequencies and percentages of occurrences by grade for patients
+Functions for analyzing frequencies and fractions of occurrences by grade for patients
 with occurrence data. Multiple occurrences within one individual are counted once at the
 greatest intensity/highest grade level.
 }
@@ -78,8 +92,11 @@ greatest intensity/highest grade level.
 insert grade groupings into list with individual grade frequencies.
 
 \item \code{s_count_occurrences_by_grade}: Statistics function which given occurrence data counts the
-number of patients by highest grade. Returns a list of counts and percentages with one element
+number of patients by highest grade. Returns a list of counts and fractions with one element
 per grade level or grade level grouping.
+
+\item \code{a_count_occurrences_by_grade}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 \item \code{count_occurrences_by_grade}: Layout creating function which can be used for creating tables,
 which can take statistics function arguments and additional format arguments (see below).
@@ -120,11 +137,21 @@ df <- data.frame(
   stringsAsFactors = FALSE
 )
 
-s_count_occurrences_by_grade(df,
-                    .N_col = 10L, # nolint
-                    .var = "AETOXGR",
-                    id = "USUBJID",
-                    grade_groups = list("ANY" = levels(df$AETOXGR)))
+s_count_occurrences_by_grade(
+  df,
+  .N_col = 10L, # nolint
+  .var = "AETOXGR",
+  id = "USUBJID",
+  grade_groups = list("ANY" = levels(df$AETOXGR))
+)
+
+a_count_occurrences_by_grade(
+  df,
+  .N_col = 10L, # nolint
+  .var = "AETOXGR",
+  id = "USUBJID",
+  grade_groups = list("ANY" = levels(df$AETOXGR))
+)
 
 
 # Layout creating function with custom format.
@@ -133,12 +160,12 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_occurrences_by_grade(
     var = "AESEV",
-    .formats = c("count_percent" = "xx.xx (xx.xx\%)")
+    .formats = c("count_fraction" = "xx.xx (xx.xx\%)")
   ) \%>\%
   build_table(df, col_counts = c(3L, 3L))
 
 # Define additional grade groupings.
-gr_grp <-  list(
+grade_groups <-  list(
   "-Any-" = c("1", "2", "3", "4", "5"),
   "Grade 1-2" = c("1", "2"),
   "Grade 3-5" = c("3", "4", "5")
@@ -149,7 +176,7 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_occurrences_by_grade(
     var = "AETOXGR",
-    grade_groups = gr_grp
+    grade_groups = grade_groups
   ) \%>\%
   build_table(df, col_counts = c(3L, 3L))
 
@@ -160,7 +187,7 @@ basic_table() \%>\%
   split_rows_by("ARM", child_labels = "visible", nested = TRUE) \%>\%
   summarize_occurrences_by_grade(
   var = "AESEV",
-  .formats = c("count_percent" = "xx.xx (xx.xx\%)")) \%>\%
+  .formats = c("count_fraction" = "xx.xx (xx.xx\%)")) \%>\%
   build_table(df, col_counts = 10L)
 
 basic_table() \%>\%
@@ -168,7 +195,7 @@ basic_table() \%>\%
   split_rows_by("ARM", child_labels = "visible", nested = TRUE) \%>\%
   summarize_occurrences_by_grade(
     var = "AETOXGR",
-    grade_groups = gr_grp
+    grade_groups = grade_groups
   ) \%>\%
   build_table(df, col_counts = 10L)
 

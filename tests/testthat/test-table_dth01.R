@@ -201,7 +201,8 @@ test_that("DTH01 variant 3 is produced correctly", {
       "DTHFL",
       values = "Y",
       .labels =  c(count_fraction = "Total number of deaths"),
-      .formats = c(count_fraction = "xx (xx.x%)"))  %>%
+      .formats = c(count_fraction = "xx (xx.x%)")
+    )  %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
     build_table(df = adsl)
   part2 <- basic_table() %>%
@@ -213,13 +214,15 @@ test_that("DTH01 variant 3 is produced correctly", {
       values = dthcaus_levels[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L)) %>%
+      .indent_mods = c(count_fraction = 2L)
+    ) %>%
     count_values(
       "DTHCAUS",
       values = dthcaus_levels[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L)) %>%
+      .indent_mods = c(count_fraction = 2L)
+    ) %>%
     build_table(adsl)
 
   col_info(part2) <- col_info(part1)
@@ -228,8 +231,8 @@ test_that("DTH01 variant 3 is produced correctly", {
   result <- to_string_matrix(tbl3)
   expected <- structure(
     c("", "", "Total number of deaths", "Primary cause of death",
-      "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "    Post study reporting of deaths",
-      "    All other causes", "A: Drug X", "(N=134)", "107 (79.9%)",
+      "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "Post study reporting of deaths",
+      "All other causes", "A: Drug X", "(N=134)", "107 (79.9%)",
       "", "107", "57 (53.3%)", "32 (29.9%)", "18 (16.8%)", "1 (5.6%)",
       "17 (94.4%)", "B: Placebo", "(N=134)", "112 (83.6%)", "", "112",
       "54 (48.2%)", "36 (32.1%)", "22 (19.6%)", "1 (4.5%)", "21 (95.5%)",
@@ -263,7 +266,8 @@ test_that("DTH01 variant 4 is produced correctly", {
       "DTHFL",
       values = "Y",
       .labels =  c(count_fraction = "Total number of deaths"),
-      .formats = c(count_fraction = "xx (xx.x%)")) %>%
+      .formats = c(count_fraction = "xx (xx.x%)")
+    ) %>%
     summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
     build_table(df = adsl)
 
@@ -276,13 +280,15 @@ test_that("DTH01 variant 4 is produced correctly", {
       values = dthcaus_levels[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L)) %>%
+      .indent_mods = c(count_fraction = 2L)
+    ) %>%
     count_values(
       "DTHCAUS",
       values = dthcaus_levels[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 4L)) %>%
+      .indent_mods = c(count_fraction = 2L)
+    ) %>%
     build_table(adsl)
 
   part3 <- basic_table() %>%
@@ -293,7 +299,8 @@ test_that("DTH01 variant 4 is produced correctly", {
       "DTHCAUS_other",
       nested = TRUE,
       .stats = "count_fraction",
-      .indent_mods = c("count_fraction" = 6L)) %>%
+      .indent_mods = c("count_fraction" = 3L)
+    ) %>%
     build_table(df = adsl)
 
   col_info(part2) <- col_info(part1)
@@ -304,9 +311,9 @@ test_that("DTH01 variant 4 is produced correctly", {
   result <- to_string_matrix(tbl4)
   expected <- structure(
     c("", "", "Total number of deaths", "Primary cause of death",
-      "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "    Post study reporting of deaths",
-      "    All other causes", "      LOST TO FOLLOW UP", "      MISSING",
-      "      SUICIDE", "      UNKNOWN", "A: Drug X", "(N=134)", "107 (79.9%)",
+      "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "Post study reporting of deaths",
+      "All other causes", "   LOST TO FOLLOW UP", "   MISSING",
+      "   SUICIDE", "   UNKNOWN", "A: Drug X", "(N=134)", "107 (79.9%)",
       "", "107", "57 (53.3%)", "32 (29.9%)", "18 (16.8%)", "1 (5.6%)",
       "17 (94.4%)", "10 (58.8%)", "4 (23.5%)", "3 (17.6%)", "0", "B: Placebo",
       "(N=134)", "112 (83.6%)", "", "112", "54 (48.2%)", "36 (32.1%)",

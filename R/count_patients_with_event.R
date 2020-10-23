@@ -81,6 +81,25 @@ s_count_patients_with_event <- function(df,
   )
 }
 
+#' @describeIn count_patients_with_event Formatted Analysis function which can be further
+#'   customized by calling [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' # `a_count_patients_with_event()`
+#' a_count_patients_with_event(
+#'   adae,
+#'   .var = "SUBJID",
+#'   filters = c("TRTEMFL" = "Y"),
+#'   .N_col = 100,
+#'   .N_row = 100
+#' )
+#'
+a_count_patients_with_event <- make_afun(
+  s_count_patients_with_event,
+  .formats = c(count_fraction = "xx (xx.xx%)")
+)
+
 #' @describeIn count_patients_with_event Analyze Function which adds the count statistics
 #' to the input layout. Note that additional formatting arguments can be used here.
 #'
@@ -121,18 +140,24 @@ s_count_patients_with_event <- function(df,
 count_patients_with_event <- function(lyt,
                                       vars,
                                       ...,
-                                      .stats = "count_fraction") {
+                                      .stats = "count_fraction",
+                                      .formats = NULL,
+                                      .labels = NULL,
+                                      .indent_mods = NULL) {
 
-  afun <- format_wrap_df(
-    s_count_patients_with_event,
-    indent_mods = c(count_fraction = 0L),
-    formats = c(count_fraction = "xx (xx.xx%)")
+  afun <- make_afun(
+    a_count_patients_with_event,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
+
   analyze(
     lyt,
     vars,
     afun = afun,
-    extra_args = c(list(.stats = .stats), list(...)),
+    extra_args = list(...),
     show_labels = ifelse(length(vars) > 1, "visible", "hidden")
   )
 }

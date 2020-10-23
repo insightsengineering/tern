@@ -6,17 +6,14 @@ test_that("s_count_patients_with_event handles NA", {
     stringsAsFactors = FALSE
   )
 
-
   result <- s_count_patients_with_event(
     test_data,
     .var = "SUBJID",
-    filters = c("TRTEMFL" = "Y"))
+    filters = c("TRTEMFL" = "Y")
+  )
 
-
-  expected <- list(n = 2, count_faction = c(1.0, 0.5), count = 1)
-
-
-  expect_equivalent(result,  expected)
+  expected <- list(n = 2L, count_fraction = c(1.0, 0.5), count = 1L)
+  expect_identical(result, expected)
 })
 
 test_that("s_count_patients_with_event handles multiple columns", {
@@ -28,17 +25,15 @@ test_that("s_count_patients_with_event handles multiple columns", {
     stringsAsFactors = FALSE
   )
 
-
   result <- s_count_patients_with_event(
     test_data,
     .var = "SUBJID",
-    filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"))
+    filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
+  )
 
+  expected <- list(n = 3L, count_fraction = c(1.0, 0.3333333), count = 1L)
 
-  expected <- list(n = 3, count_fraction = c(1.0, 0.3333333), count = 1)
-
-
-  expect_equal(result,  expected, tolerance = 1e-4)
+  expect_equal(result, expected, tolerance = 1e-4)
 })
 
 test_that("count_patients_with_event works as expected", {
@@ -79,9 +74,7 @@ test_that("count_patients_with_event works as expected", {
     .Dim = c(4L, 3L)
   )
 
-
   expect_equal(result, expected, tolerance = 1e-4)
-
 })
 
 test_that("count_patients_with_event works as expected for different column count", {
@@ -100,7 +93,6 @@ test_that("count_patients_with_event works as expected for different column coun
     stringsAsFactors = FALSE
   )
 
-
   l <- split_cols_by(lyt = NULL, var = "ARM") %>%
     count_patients_with_event(
       vars = "SUBJID",
@@ -118,8 +110,6 @@ test_that("count_patients_with_event works as expected for different column coun
   result <- build_table(l, test_data, col_count = table(test_adsl_like$ARM))
 
   result <- to_string_matrix(result)
-
-
   expected <- structure(
     c("", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)",
@@ -127,7 +117,5 @@ test_that("count_patients_with_event works as expected for different column coun
     ),
     .Dim = c(4L, 3L)
   )
-
-
-  expect_equal(result, expected, tolerance = 1e-4)
+  expect_identical(result, expected)
 })

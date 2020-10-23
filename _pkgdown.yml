@@ -61,6 +61,10 @@ reference:
        - a_count_abnormal_by_baseline
        - a_count_cumulative
        - a_count_missed_doses
+       - a_count_occurrences
+       - a_count_occurrences_by_grade
+       - a_count_patients_with_event
+       - a_coxreg
        - a_dummy_sum
        - a_mmrm_lsmeans
 

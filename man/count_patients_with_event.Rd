@@ -3,6 +3,7 @@
 \name{count_patients_with_event}
 \alias{count_patients_with_event}
 \alias{s_count_patients_with_event}
+\alias{a_count_patients_with_event}
 \title{Count the Number of Patients with a Particular Event}
 \usage{
 s_count_patients_with_event(
@@ -14,7 +15,24 @@ s_count_patients_with_event(
   denom = c("n", "N_row", "N_col")
 )
 
-count_patients_with_event(lyt, vars, ..., .stats = "count_fraction")
+a_count_patients_with_event(
+  df,
+  .var,
+  filters,
+  .N_col,
+  .N_row,
+  denom = c("n", "N_row", "N_col")
+)
+
+count_patients_with_event(
+  lyt,
+  vars,
+  ...,
+  .stats = "count_fraction",
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -44,6 +62,12 @@ this column across rows).}
 \item{...}{additional arguments for the lower level functions.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 \code{\link[=s_count_patients_with_event]{s_count_patients_with_event()}} returns the count and fraction of patients with the
@@ -58,6 +82,9 @@ The primary analysis variable \code{.var} denotes the unique patient identifier.
 of unique identifiers with a particular type of event, e.g. the number and the fraction of patients who
 had treatment-emergent adverse events. Note that the user can define a new data column containing
 the event of interest.
+
+\item \code{a_count_patients_with_event}: Formatted Analysis function which can be further
+customized by calling \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 \item \code{count_patients_with_event}: Analyze Function which adds the count statistics
 to the input layout. Note that additional formatting arguments can be used here.
@@ -102,6 +129,15 @@ s_count_patients_with_event(
   denom = "N_col",
   .N_col = 456
 )
+# `a_count_patients_with_event()`
+a_count_patients_with_event(
+  adae,
+  .var = "SUBJID",
+  filters = c("TRTEMFL" = "Y"),
+  .N_col = 100,
+  .N_row = 100
+)
+
 
 # `count_patients_with_event()`
 

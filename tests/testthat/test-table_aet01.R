@@ -153,72 +153,72 @@ test_that("Test aet01", {
     aet01_count_patients_with_event(
       c("AESDTH" = "Y"),
       "AE with fatal outcome",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("AESER" = "Y"),
       "Serious AE",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("TREATWITHDRAWL" = "Y", "AESER" = "Y"),
       "Serious AE leading to withdrawal from treatment",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("TREATMOD" = "Y", "AESER" = "Y"),
       "Serious AE leading to dose modification/interruption",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("AEREL" = "Y", "AESER" = "Y"),
       "Related Serious AE",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("TREATWITHDRAWL" = "Y"),
       "AE leading to withdrawal from treatment",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("TREATMOD" = "Y"),
       "AE leading to dose modification/interruption",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("AEREL" = "Y"),
       "Related AE",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("TREATWITHDRAWL" = "Y", "AEREL" = "Y"),
       "Related AE leading to withdrawal from treatment",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("TREATMOD" = "Y", "AEREL" = "Y"),
       "Related AE leading to dose modification/interruption",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("GRADE3_5" = "Y"),
       "Grade 3-5 AE",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("SMQ01NAM" = "C.1.1.1.3/B.2.2.3.1 AESI"),
       "C.1.1.1.3/B.2.2.3.1 AESI (SMQ)  (broad)",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("SMQ02NAM" = "C.1.1.1.3/B.2.2.3.1 AESI"),
       "Y.9.9.9.9/Z.9.9.9.9 AESI (SMQ)  (narrow)",
-      2L
+      1L
     ) %>%
     aet01_count_patients_with_event(
       c("CQ01NAM" = "D.2.1.5.3/A.1.1.1.1 AESI"),
       "D.2.1.5.3/A.1.1.1.1 AESI",
-      2L
+      1L
     ) %>%
     count_patients_with_event(
       vars = "AETERM",
@@ -226,7 +226,7 @@ test_that("Test aet01", {
       denom = "N_col",
       .stats = "count",
       .labels = c(count = "Serious"),
-      .indent_mods = c(count = 2L),
+      .indent_mods = c(count = 1L),
       .formats = c(count = "xx")
     ) %>%
     count_patients_with_event(
@@ -235,7 +235,7 @@ test_that("Test aet01", {
       denom = "N_col",
       .stats = "count",
       .labels = c(count = "Related"),
-      .indent_mods = c(count = 2L),
+      .indent_mods = c(count = 1L),
       .formats = c(count = "xx")
     ) %>%
     count_values(
@@ -243,7 +243,7 @@ test_that("Test aet01", {
       values = "Y",
       .stats = "count",
       .labels = c(count = "Serious"),
-      .indent_mods = c(count = 2L)
+      .indent_mods = c(count = 1L)
     )
 
   result <- build_table(l, adae, col_count = table(adsl$ARM))
@@ -255,20 +255,18 @@ test_that("Test aet01", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c(
-      "", "", "Total number of patients with at least one adverse event",
+    c("", "", "Total number of patients with at least one adverse event",
       "Total AEs", "Total number deaths", "Total number of patients withdrawn from study due to an AE",
-      "Total number of patients with at least one", "  AE with fatal outcome",
-      "  Serious AE", "  Serious AE leading to withdrawal from treatment",
-      "  Serious AE leading to dose modification/interruption", "  Related Serious AE",
-      "  AE leading to withdrawal from treatment", "  AE leading to dose modification/interruption",
-      "  Related AE", "  Related AE leading to withdrawal from treatment",
-      "  Related AE leading to dose modification/interruption", "Medical concepts: patients with",
-      "  Grade 3-5 AE", "  C.1.1.1.3/B.2.2.3.1 AESI (SMQ)  (broad)",
-      "  Y.9.9.9.9/Z.9.9.9.9 AESI (SMQ)  (narrow)", "  D.2.1.5.3/A.1.1.1.1 AESI",
-      "Total number of unique preferred terms which are", "  Serious",
-      "  Related", "Total number of adverse events which are", "  Serious",
-      "A: Drug X", "(N=134)", "122 (91.04%)", "609", "107 (79.85%)",
+      "Total number of patients with at least one", "AE with fatal outcome",
+      "Serious AE", "Serious AE leading to withdrawal from treatment",
+      "Serious AE leading to dose modification/interruption", "Related Serious AE",
+      "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
+      "Related AE", "Related AE leading to withdrawal from treatment",
+      "Related AE leading to dose modification/interruption", "Medical concepts: patients with",
+      "Grade 3-5 AE", "C.1.1.1.3/B.2.2.3.1 AESI (SMQ)  (broad)", "Y.9.9.9.9/Z.9.9.9.9 AESI (SMQ)  (narrow)",
+      "D.2.1.5.3/A.1.1.1.1 AESI", "Total number of unique preferred terms which are",
+      "Serious", "Related", "Total number of adverse events which are",
+      "Serious", "A: Drug X", "(N=134)", "122 (91.04%)", "609", "107 (79.85%)",
       "6 (4.48%)", "", "6 (4.48%)", "104 (77.61%)", "6 (4.48%)", "43 (32.09%)",
       "76 (56.72%)", "25 (18.66%)", "79 (58.96%)", "105 (78.36%)",
       "14 (10.45%)", "56 (41.79%)", "", "109 (81.34%)", "72 (53.73%)",
@@ -285,6 +283,5 @@ test_that("Test aet01", {
     ),
     .Dim = c(27L, 4L)
   )
-
   expect_identical(result_matrix, expected_matrix)
 })

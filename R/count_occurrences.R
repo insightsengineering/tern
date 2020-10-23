@@ -1,6 +1,6 @@
 #' Occurrence Counts
 #'
-#' Functions for analyzing frequencies and percentages of occurrences for patients with occurrence
+#' Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 #' data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 #' counts. Multiple occurrences within patient at the lowest term level displayed in the table are
 #' counted only once.
@@ -17,25 +17,25 @@ NULL
 #' occurrence.
 #'
 #' @returns A list with:
-#'   - `count_percent`: list of counts and percentages with one element per occurrence.
+#'   - `count_fraction`: list of counts and fractions with one element per occurrence.
 #'
 #' @export
 #'
 #' @examples
-#'
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
 #'   MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
 #' )
 #'
-#' # Number of subjects in column being processed
 #' N_per_col <- 4
 #'
-#' # Count unique occurrences per subject
-#' s_count_occurrences (df,
-#'                     N_per_col,
-#'                     .var = "MHDECOD",
-#'                     id = "USUBJID")
+#' # Count unique occurrences per subject.
+#' s_count_occurrences(
+#'   df,
+#'   N_per_col,
+#'   .var = "MHDECOD",
+#'   id = "USUBJID"
+#' )
 #'
 s_count_occurrences <- function(df,
                                 .N_col, # nolint
@@ -54,10 +54,27 @@ s_count_occurrences <- function(df,
   occurrences_count <- table(occurrences, ids) > 0 # logical indicating whether a subject reported a term at least once
   sum_across_subjects <- as.list(apply(occurrences_count, 1, sum)) # sum across subjects
   list(
-    count_percent = lapply(sum_across_subjects, function(i, denom) c(i, i / denom), denom = .N_col)
+    count_fraction = lapply(sum_across_subjects, function(i, denom) c(i, i / denom), denom = .N_col)
   )
 
 }
+
+#' @describeIn count_occurrences Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_count_occurrences(
+#'   df,
+#'   N_per_col,
+#'   .var = "MHDECOD",
+#'   id = "USUBJID"
+#' )
+#'
+a_count_occurrences <- make_afun(
+  s_count_occurrences,
+  .formats = c(count_fraction = format_count_fraction)
+)
 
 #' @describeIn count_occurrences Analyze Function that counts occurrences as part of rtables layouts.
 #'
@@ -85,12 +102,20 @@ s_count_occurrences <- function(df,
 #'   build_table(df, col_counts = N_per_arm) %>%
 #'   prune_table()
 #'
-count_occurrences <- function(lyt, vars, ...) {
-
-  afun <- format_wrap_df(
-    s_count_occurrences,
-    indent_mods = c(count_percent = 0L),
-    formats = c(count_percent = format_count_fraction)
+count_occurrences <- function(lyt,
+                              vars,
+                              ...,
+                              .stats = NULL,
+                              .formats = NULL,
+                              .labels = NULL,
+                              .indent_mods = NULL) {
+  afun <- make_afun(
+    a_count_occurrences,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .ungroup_stats = "count_fraction"
   )
 
   analyze(
@@ -100,5 +125,4 @@ count_occurrences <- function(lyt, vars, ...) {
     show_labels = "hidden",
     extra_args = list(...)
   )
-
 }

@@ -6,6 +6,7 @@
 \alias{s_count_values.character}
 \alias{s_count_values.factor}
 \alias{count_values}
+\alias{a_count_values}
 \title{Counting Specific Values}
 \usage{
 s_count_values(
@@ -27,7 +28,18 @@ count_values(
   values,
   ...,
   .stats = "count_fraction",
-  .labels = c(count_fraction = paste(values, collapse = ", "))
+  .formats = NULL,
+  .labels = c(count_fraction = paste(values, collapse = ", ")),
+  .indent_mods = NULL
+)
+
+a_count_values(
+  x,
+  values,
+  na.rm = TRUE,
+  .N_col,
+  .N_row,
+  denom = c("n", "N_row", "N_col")
 )
 }
 \arguments{
@@ -55,7 +67,11 @@ this column across rows).}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 See \code{\link[=s_summary.logical]{s_summary.logical()}} for the returned statistics, as this is used inside.
@@ -76,6 +92,9 @@ and calling \code{s_count_values.character}.
 \item \code{count_values}: Analyze Function which adds the counting analysis to
 the input layout. Note that additional formatting arguments can be used
 here.
+
+\item \code{a_count_values}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 }}
 
 \note{
@@ -94,19 +113,19 @@ These additional formatting arguments can be passed to the layout creating funct
 }
 
 \examples{
-
 # `s_count_values.character`
 s_count_values(x = c("a", "b", "a"), values = "a")
 s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
 
-
 # `s_count_values.factor`
 s_count_values(x = factor(c("a", "b", "a")), values = "a")
-
 
 # `count_values`
 basic_table() \%>\%
   count_values("Species", values = "setosa") \%>\%
   build_table(iris)
+
+# `a_count_values`
+a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
 
 }

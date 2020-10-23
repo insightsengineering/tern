@@ -44,7 +44,7 @@ test_that("s_count_occurrences_by_grade works with valid input and default argum
   df <- get_test_data_simple()
   result <- s_count_occurrences_by_grade(df = df, .var = "AETOXGR", .N_col = 10)
 
-  expected <- list(count_percent = c(
+  expected <- list(count_fraction = c(
     "1" = list(c(2L, 0.2)),
     "2" = list(c(2L, 0.2)),
     "3" = list(c(2L, 0.2)),
@@ -60,7 +60,7 @@ test_that("s_count_occurrences_by_grade works with valid input and default argum
 
   result <- s_count_occurrences_by_grade(df = df_empty, .var = "AETOXGR", .N_col = 10)
 
-  expected <- list(count_percent = c(
+  expected <- list(count_fraction = c(
     "1" = list(c(0, 0)),
     "2" = list(c(0, 0)),
     "3" = list(c(0, 0)),
@@ -85,7 +85,7 @@ test_that("s_count_occurrences_by_grade works with valid input for grade groupin
     )
   )
 
-  expected <- list(count_percent = c(
+  expected <- list(count_fraction = c(
     "Any Grade" = list(c(6L, 0.6)),
     "Grade 1-2" = list(c(4L, 0.4)),
     "1" = list(c(2L, 0.2)),
@@ -112,7 +112,7 @@ test_that("s_count_occurrences_by_grade works with valid input for grade groupin
     )
   )
 
-  expected <- list(count_percent = c(
+  expected <- list(count_fraction = c(
     "Any Grade" = list(c(0, 0)),
     "Grade 1-2" = list(c(0, 0)),
     "1" = list(c(0, 0)),
@@ -139,7 +139,7 @@ test_that("s_count_occurrences_by_grade works with valid input for intensity and
     )
   )
 
-  expected <- list(count_percent = c(
+  expected <- list(count_fraction = c(
     "Any Intensity" = list(c(6L, 0.6)),
     "MILD" = list(c(2L, 0.2)),
     "MODERATE" = list(c(2L, 0.2)),
@@ -197,7 +197,7 @@ test_that("count_occurrences_by_grade works with custom arguments for grade", {
   df <- get_test_data_simple()
 
   # Define additional grade groupings
-  gr_grp <-  list(
+  grade_groups <-  list(
     "-Any-" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-5" = c("3", "4", "5")
@@ -208,7 +208,7 @@ test_that("count_occurrences_by_grade works with custom arguments for grade", {
     add_colcounts() %>%
     count_occurrences_by_grade(
       var = "AETOXGR",
-      grade_groups = gr_grp,
+      grade_groups = grade_groups,
       .formats = "xx.xx (xx.xx%)") %>%
     build_table(df, col_counts = c(3L, 3L))
 
@@ -236,7 +236,7 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
     split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
     summarize_occurrences_by_grade(
     var = "AESEV",
-    .formats = c("count_percent" = "xx.xx (xx.xx%)")) %>%
+    .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
     build_table(df, col_counts = 9L)
 
   result_matrix <- to_string_matrix(result)
@@ -259,7 +259,7 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
     split_rows_by("BMRKR", child_labels = "visible", nested = TRUE) %>%
     summarize_occurrences_by_grade(
       var = "AESEV",
-      .formats = c("count_percent" = "xx.xx (xx.xx%)")) %>%
+      .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
     build_table(df, col_counts = rep(10L, 3))
 
   result_matrix <- to_string_matrix(result)
@@ -282,7 +282,7 @@ test_that("summarize_occurrences_by_grade works with custom arguments for grade"
   df <- get_test_data_simple()
 
   # Define additional grade groupings
-  gr_grp <-  list(
+  grade_groups <-  list(
     "-Any-" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
     "Grade 3-5" = c("3", "4", "5")
@@ -293,7 +293,7 @@ test_that("summarize_occurrences_by_grade works with custom arguments for grade"
     split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
-      grade_groups = gr_grp
+      grade_groups = grade_groups
     ) %>%
     build_table(df, col_counts = 10L)
 

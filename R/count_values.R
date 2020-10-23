@@ -34,7 +34,6 @@ s_count_values <- function(x,
 #' @order 3
 #'
 #' @examples
-#'
 #' # `s_count_values.character`
 #' s_count_values(x = c("a", "b", "a"), values = "a")
 #' s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
@@ -63,7 +62,6 @@ s_count_values.character <- function(x,
 #' @order 4
 #'
 #' @examples
-#'
 #' # `s_count_values.factor`
 #' s_count_values(x = factor(c("a", "b", "a")), values = "a")
 #'
@@ -77,6 +75,19 @@ s_count_values.factor <- function(x,
   s_count_values(as.character(x), values = values, ...)
 }
 
+#' @describeIn count_values_funs Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' # `a_count_values`
+#' a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
+#'
+a_count_values <- make_afun(
+  s_count_values,
+  .formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
+)
+
 #' @describeIn count_values_funs Analyze Function which adds the counting analysis to
 #'   the input layout. Note that additional formatting arguments can be used
 #'   here.
@@ -89,7 +100,6 @@ s_count_values.factor <- function(x,
 #' @order 5
 #'
 #' @examples
-#'
 #' # `count_values`
 #' basic_table() %>%
 #'   count_values("Species", values = "setosa") %>%
@@ -100,25 +110,21 @@ count_values <- function(lyt,
                          values,
                          ...,
                          .stats = "count_fraction",
-                         .labels = c(count_fraction = paste(values, collapse = ", "))
-                         ) {
-  afun <- format_wrap_x(
-    s_count_values,
-    indent_mods = c(count_fraction = 0L, count = 0L),
-    formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
+                         .formats = NULL,
+                         .labels = c(count_fraction = paste(values, collapse = ", ")),
+                         .indent_mods = NULL) {
+  afun <- make_afun(
+    a_count_values,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
   analyze(
     lyt,
     vars,
     afun = afun,
-    extra_args = c(
-      list(
-        values = values,
-        .stats = .stats,
-        .labels = .labels
-      ),
-      list(...)
-    ),
+    extra_args = c(list(values = values), list(...)),
     show_labels = ifelse(length(vars) > 1, "visible", "hidden")
   )
 }

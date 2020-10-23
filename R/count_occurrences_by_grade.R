@@ -1,6 +1,6 @@
 #' Occurrence Counts by Grade
 #'
-#' Functions for analyzing frequencies and percentages of occurrences by grade for patients
+#' Functions for analyzing frequencies and fractions of occurrences by grade for patients
 #' with occurrence data. Multiple occurrences within one individual are counted once at the
 #' greatest intensity/highest grade level.
 #'
@@ -15,7 +15,6 @@ NULL
 
 #' @describeIn count_occurrences_by_grade  Helper function for [s_count_occurrences_by_grade()] to
 #'   insert grade groupings into list with individual grade frequencies.
-#'
 #' @export
 #' @examples
 #' h_append_grade_groups(
@@ -54,7 +53,7 @@ h_append_grade_groups <- function(grade_groups, refs) {
 }
 
 #' @describeIn count_occurrences_by_grade Statistics function which given occurrence data counts the
-#'  number of patients by highest grade. Returns a list of counts and percentages with one element
+#'  number of patients by highest grade. Returns a list of counts and fractions with one element
 #'  per grade level or grade level grouping.
 #' @importFrom stats aggregate
 #' @export
@@ -71,11 +70,13 @@ h_append_grade_groups <- function(grade_groups, refs) {
 #'   stringsAsFactors = FALSE
 #' )
 #'
-#' s_count_occurrences_by_grade(df,
-#'                     .N_col = 10L, # nolint
-#'                     .var = "AETOXGR",
-#'                     id = "USUBJID",
-#'                     grade_groups = list("ANY" = levels(df$AETOXGR)))
+#' s_count_occurrences_by_grade(
+#'   df,
+#'   .N_col = 10L, # nolint
+#'   .var = "AETOXGR",
+#'   id = "USUBJID",
+#'   grade_groups = list("ANY" = levels(df$AETOXGR))
+#' )
 #'
 s_count_occurrences_by_grade <- function(df,
                                          .var,
@@ -121,13 +122,32 @@ s_count_occurrences_by_grade <- function(df,
     l_count <- h_append_grade_groups(grade_groups, l_count)
   }
 
-  l_count_percent <- lapply(l_count, function(i, denom) c(i, i / denom), denom = .N_col)
+  l_count_fraction <- lapply(l_count, function(i, denom) c(i, i / denom), denom = .N_col)
 
   list(
-    count_percent = l_count_percent
+    count_fraction = l_count_fraction
   )
 
 }
+
+#' @describeIn count_occurrences_by_grade Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_count_occurrences_by_grade(
+#'   df,
+#'   .N_col = 10L, # nolint
+#'   .var = "AETOXGR",
+#'   id = "USUBJID",
+#'   grade_groups = list("ANY" = levels(df$AETOXGR))
+#' )
+#'
+a_count_occurrences_by_grade <- make_afun(
+  s_count_occurrences_by_grade,
+  .formats = c("count_fraction" = format_count_fraction)
+)
+
 
 #' @describeIn count_occurrences_by_grade Layout creating function which can be used for creating tables,
 #'   which can take statistics function arguments and additional format arguments (see below).
@@ -140,12 +160,12 @@ s_count_occurrences_by_grade <- function(df,
 #'   add_colcounts() %>%
 #'   count_occurrences_by_grade(
 #'     var = "AESEV",
-#'     .formats = c("count_percent" = "xx.xx (xx.xx%)")
+#'     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
 #'   ) %>%
 #'   build_table(df, col_counts = c(3L, 3L))
 #'
 #' # Define additional grade groupings.
-#' gr_grp <-  list(
+#' grade_groups <-  list(
 #'   "-Any-" = c("1", "2", "3", "4", "5"),
 #'   "Grade 1-2" = c("1", "2"),
 #'   "Grade 3-5" = c("3", "4", "5")
@@ -156,47 +176,37 @@ s_count_occurrences_by_grade <- function(df,
 #'   add_colcounts() %>%
 #'   count_occurrences_by_grade(
 #'     var = "AETOXGR",
-#'     grade_groups = gr_grp
+#'     grade_groups = grade_groups
 #'   ) %>%
 #'   build_table(df, col_counts = c(3L, 3L))
 #'
-count_occurrences_by_grade <- function(
-  lyt,
-  var,
-  .stats = NULL,
-  .formats = NULL,
-  .indent_mods = NULL,
-  ...
-) {
-
+count_occurrences_by_grade <- function(lyt,
+                                       var,
+                                       ...,
+                                       .stats = NULL,
+                                       .formats = NULL,
+                                       .indent_mods = NULL,
+                                       .labels = NULL) {
   afun <- make_afun(
-    s_count_occurrences_by_grade,
-    .stats = c("count_percent"),
-    .formats = c("count_percent" = format_count_fraction),
-    .indent_mods = c("count_percent" = 0L)
-  )
-
-  afun_customized <- make_afun(
-    afun,
+    a_count_occurrences_by_grade,
     .stats = .stats,
     .formats = .formats,
     .indent_mods = .indent_mods,
-    .ungroup_stats =
-      `if`(
-        is.null(.stats) || "count_percent" %in% .stats,
-        "count_percent",
-        NULL
-      ) # Note that we need to ungroup only here.
-    # Otherwise the user could no longer refer to `count_percent` statistic.
+    .ungroup_stats = "count_fraction"
+    #   `if`(
+    #     is.null(.stats) || "count_fraction" %in% .stats,
+    #     "count_fraction",
+    #     NULL
+    #   ) # Note that we need to ungroup only here.
+    # # Otherwise the user could no longer refer to `count_fraction` statistic.
   )
 
   analyze(
     lyt = lyt,
     vars = var,
-    afun = afun_customized,
+    afun = afun,
     extra_args = list(...)
   )
-
 }
 
 #' @describeIn count_occurrences_by_grade Layout creating function which adds content rows using the
@@ -210,7 +220,7 @@ count_occurrences_by_grade <- function(
 #'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
 #'   summarize_occurrences_by_grade(
 #'   var = "AESEV",
-#'   .formats = c("count_percent" = "xx.xx (xx.xx%)")) %>%
+#'   .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
 #'   build_table(df, col_counts = 10L)
 #'
 #' basic_table() %>%
@@ -218,46 +228,30 @@ count_occurrences_by_grade <- function(
 #'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
 #'   summarize_occurrences_by_grade(
 #'     var = "AETOXGR",
-#'     grade_groups = gr_grp
+#'     grade_groups = grade_groups
 #'   ) %>%
 #'   build_table(df, col_counts = 10L)
 #'
-summarize_occurrences_by_grade <- function(
-  lyt,
-  var,
-  .stats = NULL,
-  .formats = NULL,
-  .indent_mods = NULL,
-  ...
-) {
-
+summarize_occurrences_by_grade <- function(lyt,
+                                           var,
+                                           ...,
+                                           .stats = NULL,
+                                           .formats = NULL,
+                                           .indent_mods = NULL,
+                                           .labels = NULL) {
   cfun <- make_afun(
-    s_count_occurrences_by_grade,
-    .stats = c("count_percent"),
-    .formats = c("count_percent" = format_count_fraction),
-    .indent_mods = c("count_percent" = 0L)
-  )
-
-  cfun_customized <- make_afun(
-    cfun,
+    a_count_occurrences_by_grade,
     .stats = .stats,
     .formats = .formats,
+    .labels = .labels,
     .indent_mods = .indent_mods,
-    .ungroup_stats =
-      `if`(
-        is.null(.stats) || "count_percent" %in% .stats,
-        "count_percent",
-        NULL
-      ) # Note that we need to ungroup only here.
-    # Otherwise the user could no longer refer to `count_percent` statistic.
+    .ungroup_stats = "count_fraction"
   )
 
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = cfun_customized,
+    cfun = cfun,
     extra_args = list(...)
   )
-
-
 }

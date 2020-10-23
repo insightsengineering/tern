@@ -3,11 +3,22 @@
 \name{count_occurrences}
 \alias{count_occurrences}
 \alias{s_count_occurrences}
+\alias{a_count_occurrences}
 \title{Occurrence Counts}
 \usage{
 s_count_occurrences(df, .N_col, .var = "MHDECOD", id = "USUBJID")
 
-count_occurrences(lyt, vars, ...)
+a_count_occurrences(df, .N_col, .var = "MHDECOD", id = "USUBJID")
+
+count_occurrences(
+  lyt,
+  vars,
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -25,15 +36,23 @@ by a statistics function.}
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 A list with:
 \itemize{
-\item \code{count_percent}: list of counts and percentages with one element per occurrence.
+\item \code{count_fraction}: list of counts and fractions with one element per occurrence.
 }
 }
 \description{
-Functions for analyzing frequencies and percentages of occurrences for patients with occurrence
+Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 counts. Multiple occurrences within patient at the lowest term level displayed in the table are
 counted only once.
@@ -42,6 +61,9 @@ counted only once.
 \itemize{
 \item \code{s_count_occurrences}: Statistics function which counts number of patients that report an
 occurrence.
+
+\item \code{a_count_occurrences}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 \item \code{count_occurrences}: Analyze Function that counts occurrences as part of rtables layouts.
 }}
@@ -58,20 +80,27 @@ These additional formatting arguments can be passed to the layout creating funct
 }
 
 \examples{
-
 df <- data.frame(
   USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
   MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
 )
 
-# Number of subjects in column being processed
 N_per_col <- 4
 
-# Count unique occurrences per subject
-s_count_occurrences (df,
-                    N_per_col,
-                    .var = "MHDECOD",
-                    id = "USUBJID")
+# Count unique occurrences per subject.
+s_count_occurrences(
+  df,
+  N_per_col,
+  .var = "MHDECOD",
+  id = "USUBJID"
+)
+
+a_count_occurrences(
+  df,
+  N_per_col,
+  .var = "MHDECOD",
+  id = "USUBJID"
+)
 
 
 df <- data.frame(
