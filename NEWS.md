@@ -17,6 +17,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Fit and tabulate the results of univariate Cox regressions: `fit_coxref`, `s_coxreg`, `h_coxreg`.
 * Pruning functions for occurrence tables (or tables with counts and fractions), see `?prune_occurrences`.
 * Scoring functions for occurrence tables, see `?score_occurrences`.
+* MMRM are now with with `fit_mmrm` and tabulated with `as.rtable` and `summarize_lsmeans`, see `?tabulate_mmrm` for details.
 
 
 * issues with no news: 

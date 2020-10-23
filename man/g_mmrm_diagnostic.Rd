@@ -11,7 +11,7 @@ g_mmrm_diagnostic(
 )
 }
 \arguments{
-\item{object}{the MMRM model result produced by \code{\link{s_mmrm}}.}
+\item{object}{the MMRM model result produced by \code{\link{fit_mmrm}}.}
 
 \item{type}{string specifying the type of diagnostic plot to be produced:
 \describe{
@@ -48,7 +48,7 @@ adqs_f <- adqs \%>\%
   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
   dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
-mmrm_results <- s_mmrm(
+mmrm_results <- fit_mmrm(
   vars = list(
     response = "AVAL",
     covariates = c("STRATA1", "BMRKR2"),

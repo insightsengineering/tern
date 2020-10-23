@@ -518,7 +518,7 @@ test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 
 })
 
-test_that("s_mmrm works with parallelization", {
+test_that("fit_mmrm works with parallelization", {
   dat <- lme4::sleepstudy %>%
     dplyr::mutate(
       group = factor(rep(c("A", "B"), length = nrow(lme4::sleepstudy))),
@@ -528,7 +528,7 @@ test_that("s_mmrm works with parallelization", {
         include.lowest = TRUE
       )
     )
-  result <- s_mmrm(
+  result <- fit_mmrm(
     vars = list(
       response = "Reaction",
       covariates = c(),
@@ -619,9 +619,9 @@ get_adqs <- function(version = c("A", "B")) {
   return(adqs_f)
 }
 
-test_that("s_mmrm works with unstructured covariance matrix and produces same results as SAS", {
+test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
   adqs_f <- get_adqs(version = "A")
-  mmrm_results <- s_mmrm(
+  mmrm_results <- fit_mmrm(
     vars = list(
       response = "AVAL",
       covariates = c("STRATA1", "BMRKR2"),
@@ -791,14 +791,14 @@ test_that("s_mmrm works with unstructured covariance matrix and produces same re
   )
 })
 
-test_that("s_mmrm works also with missing data", {
+test_that("fit_mmrm works also with missing data", {
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
     nrow(na.omit(adqs_f)),
     469L
   ))
 
-  mmrm_results <- s_mmrm(
+  mmrm_results <- fit_mmrm(
     vars = list(
       response = "AVAL",
       covariates = "BMRKR1",
@@ -964,14 +964,14 @@ test_that("s_mmrm works also with missing data", {
   )
 })
 
-test_that("s_mmrm works with compound symmetry covariance structure", {
+test_that("fit_mmrm works with compound symmetry covariance structure", {
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
     nrow(na.omit(adqs_f)),
     469L
   ))
 
-  mmrm_results <- s_mmrm(
+  mmrm_results <- fit_mmrm(
     vars = list(
       response = "AVAL",
       covariates = "BMRKR1",

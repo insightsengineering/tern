@@ -602,3 +602,40 @@ test_that("groups_list_to_df works as expected", {
   )
   expect_identical(result, expected)
 })
+
+test_that("as.rtable.data.frame works correctly", {
+  x <- data.frame(
+    a = 1:10,
+    b = seq(from = 10000, to = 20000, length = 10) / 1000
+  )
+  rownames(x) <- LETTERS[1:10]
+  result <- as.rtable(x, format = "xx.x")
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+      "J", "a", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+      "b", "10", "11.1", "12.2", "13.3", "14.4", "15.6", "16.7", "17.8",
+      "18.9", "20"),
+    .Dim = c(11L, 3L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("as.rtable.data.frame fails when a column is not numeric", {
+  x <- data.frame(
+    a = 1:10,
+    b = LETTERS[1:10]
+  )
+  expect_error(as.rtable(x))
+})
+
+test_that("as.rtable.data.frame uses variable labels for column headers when they are available", {
+  x <- data.frame(
+    a = 1:10,
+    b = seq(from = 10000, to = 20000, length = 10) / 1000
+  )
+  var_labels(x) <- paste("label for", names(x))
+  rownames(x) <- LETTERS[1:10]
+  result <- as.rtable(x, format = "xx.x")
+  expect_identical(names(result), c("label for a", "label for b"))
+})

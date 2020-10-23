@@ -532,3 +532,51 @@ split_cols_by_groups <- function(lyt, var, groups_list, ...) {
     ...
   )
 }
+
+#' Convert to `rtable`
+#'
+#' This is a new generic function to convert objects to `rtable` tables.
+#'
+#' @param x the object which should be converted to an `rtable`.
+#' @param ... additional arguments for methods.
+#'
+#' @return The `rtable` object. Note that the concrete class will depend on the method
+#'   which is used.
+#' @export
+#'
+as.rtable <- function(x, ...) {  #nolint
+  UseMethod("as.rtable", x)
+}
+
+#' @describeIn as.rtable method for converting `data.frame` that contain numeric columns to `rtable`.
+#' @param format the format which should be used for the columns.
+#' @method as.rtable data.frame
+#' @export
+#' @examples
+#' x <- data.frame(
+#'   a = 1:10,
+#'   b = rnorm(10)
+#' )
+#' as.rtable(x)
+#'
+as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nousage # nolint
+  assert_that(all(sapply(x, is.numeric)), msg = "only works with numeric data frame columns")
+  do.call(
+    rtable,
+    c(
+      list(
+        header = labels_or_names(x),
+        format = format
+      ),
+      Map(
+        function(row, row_name) {
+          do.call(rrow,
+                  c(as.list(unname(row)),
+                    row.name = row_name))
+        },
+        row = as.data.frame(t(x)),
+        row_name = rownames(x)
+      )
+    )
+  )
+}

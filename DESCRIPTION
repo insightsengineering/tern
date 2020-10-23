@@ -46,7 +46,8 @@ Imports:
     optimx,
     viridisLite,
     Rdpack,
-    tibble
+    tibble,
+    broom
 Suggests:
   lattice,
   test.nest,

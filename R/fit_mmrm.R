@@ -2,7 +2,7 @@
 #'
 #' Helper function to check the MMRM variables.
 #'
-#' @inheritParams s_mmrm
+#' @inheritParams fit_mmrm
 #'
 #' @return a corresponding list of variable labels. For the covariates, the
 #'   element `parts` contains a character vector with one element per
@@ -78,7 +78,7 @@ check_mmrm_vars <- function(vars,
 #'
 #' Helper function to build the MMRM formula.
 #'
-#' @inheritParams s_mmrm
+#' @inheritParams fit_mmrm
 #'
 #' @importFrom magrittr %>%
 #'
@@ -243,7 +243,7 @@ get_lme4_diagnostics <- function(fit,
 #' Internal helper function to fit an lme4 model with a single optimizer, while capturing messages and warnings.
 #'
 #' @param formula (`formula`)\cr the `lme4` formula.
-#' @inheritParams s_mmrm
+#' @inheritParams fit_mmrm
 #'
 #' @return the fitted [`lmerTest::lmerModLmerTest`] object, with additional attributes `messages` and `optimizer`.
 #'
@@ -424,7 +424,7 @@ refit_lme4_all_optimizers <- function(original_fit,
 #' Helper function to fit the MMRM with `lme4` and `lmerTest.`
 #'
 #' @param formula (`formula`)\cr the MMRM formula (it could also be another `lme4` formula).
-#' @inheritParams s_mmrm
+#' @inheritParams fit_mmrm
 #' @param n_cores (`count`)\cr number of cores to parallelize over the "automatic" optimizer search.
 #'
 #' @return the [`lmerTest::lmerModLmerTest`] object.
@@ -465,7 +465,7 @@ fit_lme4 <- function(
 #' Helper function to extract the LS means from an MMRM fit.
 #'
 #' @param fit result of [fit_lme4()].
-#' @inheritParams s_mmrm
+#' @inheritParams fit_mmrm
 #' @param weights (`string`)\cr type of weights to be used for the LS means,
 #'   see [emmeans::emmeans()] for details.
 #'
@@ -667,7 +667,7 @@ get_mmrm_lsmeans <- function(fit,
 #'
 #' \dontrun{
 #' # sometimes results in failure to converge with 1 negative eigenvalue
-#' mmrm_results <- s_mmrm(
+#' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
 #'     covariates = c("STRATA1", "BMRKR2"),
@@ -682,7 +682,7 @@ get_mmrm_lsmeans <- function(fit,
 #' )
 #' }
 #'
-s_mmrm <- function(
+fit_mmrm <- function(
   vars = list(
     response = "AVAL",
     covariates = c(),

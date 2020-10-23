@@ -49,6 +49,7 @@ reference:
       - s_change_from_baseline
       - s_summary
       - s_test_proportion_diff
+      - s_mmrm_lsmeans
 
   - title: Formatted Analysis functions
     desc: These have the same arguments as the corresponding statistics functions, and can be further
@@ -61,6 +62,7 @@ reference:
        - a_count_cumulative
        - a_count_missed_doses
        - a_dummy_sum
+       - a_mmrm_lsmeans
 
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
@@ -83,6 +85,7 @@ reference:
        - summarize_ancova
        - summarize_change
        - summarize_colvars
+       - summarize_lsmeans
        - summarize_num_patients
        - summarize_vars
        - test_proportion_diff
@@ -120,7 +123,16 @@ reference:
       - prop_diff_nc
       - prop_diff_ha
       - prop_diff_wald
+      - h_mmrm_fixed
+      - h_mmrm_cov
+      - h_mmrm_diagnostic
 
+  - title: Model Specific Functions
+    desc: these functions help with fitting or extracting results from specific models
+    contents:
+      - fit_mmrm
+      - as.rtable.mmrm
+      - tidy.mmrm
 
   - title: Old Statistics Functions
     desc: these functions might have to be refactored or deprecated later
@@ -135,7 +147,6 @@ reference:
       - s_logistic_interaction
       - s_adj_proportion_diff
       - s_ancova
-      - s_mmrm
       - a_mean_sd
       - a_median
       - a_n_true_and_freq
@@ -175,6 +186,8 @@ reference:
       - h_content_first_row
       - groups_list_to_df
       - split_cols_by_groups
+      - as.rtable
+      - as.rtable.data.frame
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package

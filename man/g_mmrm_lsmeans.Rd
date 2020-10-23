@@ -16,7 +16,7 @@ g_mmrm_lsmeans(
 )
 }
 \arguments{
-\item{object}{the MMRM model result produced by \code{\link{s_mmrm}}.}
+\item{object}{the MMRM model result produced by \code{\link{fit_mmrm}}.}
 
 \item{select}{character vector to select one or both of "estimates" and "contrasts" plots.}
 
@@ -53,7 +53,7 @@ adqs_f <- adqs \%>\%
   dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 var_labels(adqs_f) <- var_labels(adqs)
 
-mmrm_results <- s_mmrm(
+mmrm_results <- fit_mmrm(
   vars = list(
     response = "AVAL",
     covariates = c("STRATA1", "BMRKR2"),

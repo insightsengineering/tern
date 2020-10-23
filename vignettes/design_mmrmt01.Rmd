@@ -40,7 +40,7 @@ packageVersion("rtables")
 
 ## Data for examples
 
-We just take the same as in the `s_mmrm` help page:
+We just take the same as in the `fit_mmrm` help page:
 
 ```{r}
 adsl <- radsl(cached = TRUE)
@@ -60,10 +60,10 @@ var_labels(adqs_f) <- var_labels(adqs)
 
 ## Model fitting
 
-The model fitting pretty much stays the same as before. We might just rename `s_mmrm` to `fit_mmrm` or similar to follow our new naming convention that we want "expressive verbs" for user facing functions.
+The model fitting pretty much stays the same as before. We have renamed `s_mmrm` to `fit_mmrm` to follow our new naming convention that we want "expressive verbs" for user facing functions.
 
 ```{r}
-mmrm_results <- s_mmrm(
+mmrm_results <- fit_mmrm(
   vars = list(
     response = "AVAL",
     covariates = c("STRATA1", "BMRKR2"),
@@ -113,7 +113,9 @@ x <- data.frame(
   a = 1:10,
   b = rnorm(10)
 )
-as.rtable(x)
+test <- as.rtable(x)
+test
+class(test)
 ```
 
 That seems to work, nice. Let's try the `cbind` (at least for simple elementary tables):
@@ -139,14 +141,7 @@ Also works, cool.
 
 ## Simple tables
 
-Let's start with the simple tables, that maybe don't need a lot of work in terms of tabulation if the manual tabulation framework still works ok. However, we might consider a more clever generic tabulation function together with a `type` argument to avoid the previous `t_mmrm_*` functions.
-
-```{r}
-make_table <- function(x, ...) {
-  UseMethod("make_table", x)
-}
-```
-Since `tabulate` and `table` are taken I just came up with this name. But if others have other ideas would be good since this one is not great :-)
+Let's start with the simple tables, that maybe don't need a lot of work in terms of tabulation if the manual tabulation framework still works ok. However, we might consider a more clever generic tabulation function together with a `type` argument to avoid the previous `t_mmrm_*` functions. We can just use again `as.rtable`.
 
 ### Fixed effects
 
@@ -169,14 +164,14 @@ t_mmrm_fixed(mmrm_results)
 Then we can link this (and then others below too) from our generic method:
 
 ```{r}
-make_table.mmrm <- function(x, type = "fixed") {
+as.rtable.mmrm <- function(x, type = "fixed") {
   type <- match.arg(type)
   if (type == "fixed") {
     t_mmrm_fixed(x)
   }
 }
 
-make_table(mmrm_results, type = "fixed")
+as.rtable(mmrm_results, type = "fixed")
 ```
 
 ## Covariance matrix
@@ -252,7 +247,7 @@ Then we have our Statistics function:
 s_mmrm_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "increase")) {
   show_relative <- match.arg(show_relative)
   if_not_ref <- function(x) `if`(.in_ref_col, character(), x)
-  stats <- list(
+  list(
     n = df$n,
     adj_mean_se = c(df$estimate_est, df$se_est),
     adj_mean_ci = with_label(c(df$lower_cl_est, df$upper_cl_est), tern:::f_conf_level(df$conf_level)),

@@ -10,7 +10,7 @@ NULL
 #'
 #' This function produces diagnostic plots.
 #'
-#' @param object the MMRM model result produced by \code{\link{s_mmrm}}.
+#' @param object the MMRM model result produced by \code{\link{fit_mmrm}}.
 #' @param type string specifying the type of diagnostic plot to be produced:
 #'   \describe{
 #'     \item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
@@ -46,7 +46,7 @@ NULL
 #'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
 #'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
-#' mmrm_results <- s_mmrm(
+#' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
 #'     covariates = c("STRATA1", "BMRKR2"),
@@ -137,7 +137,7 @@ g_mmrm_diagnostic <- function(
 #' comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
 #' is the reference level.
 #'
-#' @param object the MMRM model result produced by \code{\link{s_mmrm}}.
+#' @param object the MMRM model result produced by \code{\link{fit_mmrm}}.
 #' @param select character vector to select one or both of "estimates" and "contrasts" plots.
 #' @param titles character vector with elements \code{estimates} and \code{contrasts} containing the plot titles.
 #' @param ylab string with the y axis label.
@@ -165,7 +165,7 @@ g_mmrm_diagnostic <- function(
 #'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #' var_labels(adqs_f) <- var_labels(adqs)
 #'
-#' mmrm_results <- s_mmrm(
+#' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
 #'     covariates = c("STRATA1", "BMRKR2"),
