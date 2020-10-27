@@ -40,3 +40,17 @@ test_that("get_covariates fails for non-character input", {
   expect_error(get_covariates(c(1, 2)))
   expect_error(get_covariates(factor(c("a", "b", "b"))))
 })
+
+test_that("month2day works correctly", {
+  x <- c(13.25, 8.15, 1, 2.834)
+  result <- month2day(x)
+  expected <- c(403.296875, 248.065625, 30.4375, 86.259875)
+  expect_equal(result, expected)
+})
+
+test_that("day2month works correctly", {
+  x <- c(403, 248, 30, 86)
+  result <- day2month(x)
+  expected <- c(13.2402464065708, 8.14784394250513, 0.985626283367556, 2.82546201232033)
+  expect_equal(result, expected)
+})

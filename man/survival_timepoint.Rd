@@ -118,53 +118,52 @@ library(random.cdisc.data)
 library(dplyr)
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%
- dplyr::filter(PARAMCD == "OS") \%>\%
- dplyr::mutate(is_event = CNSR == 0)
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(
+    AVAL = day2month(AVAL),
+    is_event = CNSR == 0
+  )
 df <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM A")
 s_surv_timepoint(df, .var = "AVAL", is_event = "is_event")
 
-
 split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
- add_colcounts() \%>\%
- surv_timepoint(
-   vars = "AVAL",
-   var_labels = "7 Months",
-   is_event = "is_event",
-   control = control_surv_timepoint(time_point = 7)
- ) \%>\%
- build_table(df = ADTTE_f)
-
+  add_colcounts() \%>\%
+  surv_timepoint(
+    vars = "AVAL",
+    var_labels = "7 Months",
+    is_event = "is_event",
+    control = control_surv_timepoint(time_point = 7)
+  ) \%>\%
+  build_table(df = ADTTE_f)
 
 df_ref_group <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM B")
 s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 
+split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
+  add_colcounts() \%>\%
+  surv_timepoint_diff(
+    vars = "AVAL",
+    var_labels = "9 Months",
+    is_event = "is_event",
+    control = control_surv_timepoint(time_point = 9),
+    .indent_mods = c("rate_diff" = 0L, "rate_diff_ci" = 2L, "ztest_pval" = 2L)
+  ) \%>\%
+  build_table(df = ADTTE_f)
 
 split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
- add_colcounts() \%>\%
- surv_timepoint_diff(
-   vars = "AVAL",
-   var_labels = "9 Months",
-   is_event = "is_event",
-   control = control_surv_timepoint(time_point = 9),
-   .indent_mods = c("rate_diff" = 0L, "rate_diff_ci" = 2L, "ztest_pval" = 2L)
- ) \%>\%
- build_table(df = ADTTE_f)
-
-split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
- add_colcounts() \%>\%
- surv_timepoint(
-   vars = "AVAL",
-   var_labels = "7 Months",
-   is_event = "is_event",
-   control = control_surv_timepoint(time_point = 7)
- ) \%>\%
- surv_timepoint_diff(
-   vars = "AVAL",
-   show_label = "hidden",
-   is_event = "is_event",
-   control = control_surv_timepoint(time_point = 7)
- ) \%>\%
- build_table(df = ADTTE_f)
-
+  add_colcounts() \%>\%
+  surv_timepoint(
+    vars = "AVAL",
+    var_labels = "7 Months",
+    is_event = "is_event",
+    control = control_surv_timepoint(time_point = 7)
+  ) \%>\%
+  surv_timepoint_diff(
+    vars = "AVAL",
+    show_label = "hidden",
+    is_event = "is_event",
+    control = control_surv_timepoint(time_point = 7)
+  ) \%>\%
+  build_table(df = ADTTE_f)
 }

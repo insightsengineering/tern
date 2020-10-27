@@ -30,13 +30,11 @@ NULL
 #' library(dplyr)
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
-#'  dplyr::filter(PARAMCD == "OS") %>%
-#'  dplyr::mutate(is_event = CNSR == 0)
+#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   dplyr::mutate(is_event = CNSR == 0)
 #' df <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM A")
 #' df_ref_group <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM B")
-#' s_coxph_pairwise(df, df_ref_group,.in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-#'
-
+#' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 s_coxph_pairwise <- function(df,
                              .ref_group,
                              .in_ref_col,
@@ -85,7 +83,7 @@ s_coxph_pairwise <- function(df,
   }
   cox_fit <- survival::coxph(
     formula = formula_cox,
-    data =  df_cox,
+    data = df_cox,
     ties = ties
   )
   sum_cox <- summary(cox_fit, conf.int = conf_level)
@@ -109,25 +107,24 @@ s_coxph_pairwise <- function(df,
 #' @examples
 #'
 #' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
-#'  add_colcounts() %>%
-#'  coxph_pairwise(
+#'   add_colcounts() %>%
+#'   coxph_pairwise(
 #'     vars = "AVAL",
 #'     is_event = "is_event",
 #'     var_labels = "Unstratified Analysis"
-#'  ) %>%
-#'  build_table(df = ADTTE_f)
+#'   ) %>%
+#'   build_table(df = ADTTE_f)
 #'
 #' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
-#'  add_colcounts() %>%
-#'  coxph_pairwise(
+#'   add_colcounts() %>%
+#'   coxph_pairwise(
 #'     vars = "AVAL",
 #'     is_event = "is_event",
 #'     var_labels = "Stratified Analysis",
 #'     strat = "SEX",
 #'     control = control_coxph(pval_method = "wald")
-#'  ) %>%
-#'  build_table(df = ADTTE_f)
-#'
+#'   ) %>%
+#'   build_table(df = ADTTE_f)
 coxph_pairwise <- function(lyt,
                            vars,
                            var_labels = "CoxPH",

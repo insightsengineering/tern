@@ -40,7 +40,6 @@ univariate <- function(x) structure(x, varname = deparse(substitute(x)))
 
 
 explicit_special <- function(formula_terms, special) {
-
   y <- attr(formula_terms, "specials")[[special]]
   if (!is.null(attr(formula_terms, "specials")[[special]])) {
     y <- list()
@@ -107,8 +106,8 @@ explicit_special <- function(formula_terms, special) {
 #' @examples
 #' library(tern)
 #' library(random.cdisc.data)
-#' ADTTE   <- radtte(cached = TRUE)
-#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")   # _f: filtered
+#' ADTTE <- radtte(cached = TRUE)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 #' ADTTE_f <- within( # nolint
 #'   data = subset(
 #'     ADTTE_f,
@@ -124,19 +123,19 @@ explicit_special <- function(formula_terms, special) {
 #'     SEX <- droplevels(SEX)
 #'     RACE <- droplevels(RACE)
 #'     X <- rnorm(n = length(ARM))
-#'   }  # nolint end
+#'   } # nolint end
 #' )
 #'
 #' s_cox_univariate(
-#' formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
-#' data = ADTTE_f,
-#' covariates = list(~ SEX)
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+#'   data = ADTTE_f,
+#'   covariates = list(~SEX)
 #' )
 #' \dontrun{
 #' s_cox_univariate(
 #'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
 #'   data = ADTTE_f,
-#'   covariates = list("Race" = ~ RACE, ~ AGE, "a rand. quant var with increments" = ~ X),
+#'   covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
 #'   interactions = TRUE,
 #'   increments = list(X = c(-1, 1)),
 #'   conf_level = 0.95,
@@ -158,10 +157,11 @@ s_cox_univariate <- function(formula,
 
   ## Character covariate are factors
   lapply(
-    X   = covariates,
+    X = covariates,
     FUN = function(x) {
-      if (is.character(data[[rht(x)]]))
+      if (is.character(data[[rht(x)]])) {
         data[[rht(x)]] <<- as.factor(data[[rht(x)]])
+      }
       invisible()
     }
   )
@@ -174,7 +174,7 @@ s_cox_univariate <- function(formula,
   check_increments(increments, covariates)
 
   # Formula univariate survival model, terms (t) and term index (i) for conveniency
-  tf   <- terms(formula, specials = c("arm", "strata"))
+  tf <- terms(formula, specials = c("arm", "strata"))
   iarm <- attr(tf, "specials")$arm
   tarm <- rownames(attr(tf, "factors"))[iarm]
   istr <- attr(tf, "specials")$strata
@@ -208,7 +208,7 @@ s_cox_univariate <- function(formula,
   #        + the covariate is a numeric FALSE.          [^3]
   #    - interactions FALSE.                            [^4]
 
-  coef <- list();
+  coef <- list()
   coef$ref_mod <- matrix(
     fit$ref_mod$msum$coefficients[paste0(tarm, arms[-1]), c("coef", "se(coef)")],
     ncol = 2,
@@ -218,33 +218,30 @@ s_cox_univariate <- function(formula,
 
 
   if (interactions) {
-
-    is_covar_num <- lapply(covariates, function(x) is.numeric(data[[rht(x)]]));
+    is_covar_num <- lapply(covariates, function(x) is.numeric(data[[rht(x)]]))
     coef_cov <- Map(
       # work on model fits with interaction
       fit = fit[- (1:(length(covariates) + 1))], is_covar_num = is_covar_num, covariates = covariates,
       f = function(fit, is_covar_num, covariates) {
-
         if (is_covar_num & rht(covariates) %in% names(increments)) {
           # [^1]: If covar is a numeric and increments are specified,
           # SE and COEF must be estimated for every level
 
-          coef_narm   <- paste0(tarm, levels(with(data, eval(parse(text = tarm))))[2])
+          coef_narm <- paste0(tarm, levels(with(data, eval(parse(text = tarm))))[2])
           coef_ninter <- paste0(coef_narm, ":", rht(covariates))
 
-          betas     <- coef(fit$mod)[c(coef_narm, coef_ninter)]
+          betas <- coef(fit$mod)[c(coef_narm, coef_ninter)]
           var_betas <- diag(vcov(fit$mod))[c(coef_narm, coef_ninter)]
           cov_betas <- vcov(fit$mod)[coef_narm, coef_ninter]
 
-          xvals        <- increments[[rht(covariates)]]
+          xvals <- increments[[rht(covariates)]]
           names(xvals) <- xvals
 
           coef_hat <- betas[coef_narm] + xvals * betas[coef_ninter]
-          coef_se  <- sqrt(var_betas[coef_narm] + xvals^2 * var_betas[coef_ninter] + 2 * xvals * cov_betas)
+          coef_se <- sqrt(var_betas[coef_narm] + xvals^2 * var_betas[coef_ninter] + 2 * xvals * cov_betas)
           y <- cbind(coef_hat, coef_se)
-          colnames(y) <- c("coef", "se(coef)");
+          colnames(y) <- c("coef", "se(coef)")
           rownames(y) <- names(xvals)
-
         } else if (is_covar_num) {
           # [^2]: if the covariate is a numeric without specified increments
           y <- matrix(
@@ -261,28 +258,24 @@ s_cox_univariate <- function(formula,
             variable = tarm, given = rht(covariates),
             coef = coef(fit$mod), mmat = mmat, vcov = vcov(fit$mod),
             lvl_var = levels(data[[gsub(".*\\((.*)\\).*", "\\1", tarm)]]),
-            lvl_given =  levels(data[[rht(covariates)]]),
+            lvl_given = levels(data[[rht(covariates)]]),
             conf_level = 0.95
           )
           y <- y[[1]]
           rownames(y) <- levels(data[[rht(covariates)]])
-
         }
         return(y)
       }
     )
-
   } else if (!interactions) {
     # [^4]: no interactions
     coef_cov <- lapply(
       X = fit[-1], FUN = function(x) {
-
         coef <- matrix(
           x$msum$coefficients[paste0(tarm, arms[-1]), c("coef", "se(coef)")],
           ncol = 2,
           dimnames = list(NULL, c("coef", "se(coef)"))
         )
-
       }
     )
 
@@ -294,14 +287,13 @@ s_cox_univariate <- function(formula,
       x = coef_cov,
       names(covariates)
     )
-
   }
 
   coef <- c(coef, coef_cov)
 
   ## Select/extract results
   # Extract number of observations used for each covariate
-  n <- vapply(X = fit[1 : (1 + length(covariates))], FUN = function(x) x$msum$n, FUN.VALUE = 1)
+  n <- vapply(X = fit[1:(1 + length(covariates))], FUN = function(x) x$msum$n, FUN.VALUE = 1)
 
   # Hazard Ratio for treatment
   hr <- lapply(coef, function(x) exp(x[, "coef"]))
@@ -309,8 +301,8 @@ s_cox_univariate <- function(formula,
   # Confidence interval of Hazard ratio for treatment
   ci <- lapply(
     coef, function(x) {
-      q_norm  <- qnorm((1 + conf_level) / 2)
-      y  <- t(apply(x, 1, function(y) exp(y["coef"] + c(-1, +1) * q_norm * y["se(coef)"])))
+      q_norm <- qnorm((1 + conf_level) / 2)
+      y <- t(apply(x, 1, function(y) exp(y["coef"] + c(-1, +1) * q_norm * y["se(coef)"])))
       return(y)
     }
   )
@@ -325,21 +317,18 @@ s_cox_univariate <- function(formula,
     lapply(X = fit[-1], FUN = function(x) x$aov[tarm, "Pr(>Chisq)"])
   )
 
-  #Likelihood ratio test for the interaction
+  # Likelihood ratio test for the interaction
   if (interactions) {
-
     lrt <- Map(
       f = function(
-        without_interaction,
-        with_interaction
-      ) {
+                   without_interaction,
+                   with_interaction) {
         anova(without_interaction$mod, with_interaction$mod)[2, "P(>|Chi|)"]
       },
       without_interaction = fit[2:(length(covariates) + 1)],
-      with_interaction    = fit[- (1:(length(covariates) + 1))]
+      with_interaction = fit[- (1:(length(covariates) + 1))]
     )
     names(lrt) <- names(fit[- (1:(length(covariates) + 1))])
-
   } else if (!interactions) {
     lrt <- NULL
   }
@@ -349,7 +338,7 @@ s_cox_univariate <- function(formula,
     hr = hr,
     ci = ci,
     pval = pval,
-    lrt  = lrt,
+    lrt = lrt,
     covariates = names(covariates),
     tstr = tstr,
     pval_method = pval_method,
@@ -358,7 +347,6 @@ s_cox_univariate <- function(formula,
   )
 
   return(y)
-
 }
 
 
@@ -413,7 +401,7 @@ rht <- function(x) {
 #' ADSL <- radsl(cached = TRUE)
 #' ADSL <- ADSL %>% dplyr::filter(SEX %in% c("F", "M"))
 #' \dontrun{
-#' ADTTE <- radtte(ADSL, seed = 2) %>%  dplyr::filter(PARAMCD == "PFS")
+#' ADTTE <- radtte(ADSL, seed = 2) %>% dplyr::filter(PARAMCD == "PFS")
 #' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 #' ADTTE$SEX <- droplevels(ADTTE$SEX)
 #'
@@ -432,19 +420,17 @@ estimate_coef <- function(variable, given,
                           coef,
                           mmat,
                           vcov,
-                          conf_level = 0.95
-) {
-
+                          conf_level = 0.95) {
   var_lvl <- paste0(variable, lvl_var[-1]) # [-1]: reference level
-  giv_lvl <- paste0(given,    lvl_given)
+  giv_lvl <- paste0(given, lvl_given)
 
   design_mat <- expand.grid(variable = var_lvl, given = giv_lvl)
   design_mat <- design_mat[order(design_mat$variable, design_mat$given), ]
   design_mat <- within(
     data = design_mat,
     expr = {
-      inter     <- paste0(variable, ":", given)    # nolint
-      rev_inter <- paste0(given,    ":", variable) # nolint
+      inter <- paste0(variable, ":", given) # nolint
+      rev_inter <- paste0(given, ":", variable) # nolint
     }
   )
 
@@ -455,7 +441,8 @@ estimate_coef <- function(variable, given,
     X = design_mat, MARGIN = 1, FUN = function(x) {
       mmat[names(mmat) %in% x[-which(names(x) == "given")]] <- 1
       return(mmat)
-    })
+    }
+  )
   colnames(design_mat) <- interaction_names
 
   betas <- as.matrix(coef)
@@ -471,17 +458,15 @@ estimate_coef <- function(variable, given,
     return(y)
   })
 
-  q_norm  <- qnorm((1 + conf_level) / 2)
+  q_norm <- qnorm((1 + conf_level) / 2)
   y <- cbind(coef_hat, `se(coef)` = coef_se)
 
   y <- apply(y, 1, function(x) {
-
-    x["hr"]  <- exp(x["coef"])
-    x["lcl"]  <- exp(x["coef"] - q_norm * x["se(coef)"])
+    x["hr"] <- exp(x["coef"])
+    x["lcl"] <- exp(x["coef"] - q_norm * x["se(coef)"])
     x["ucl"] <- exp(x["coef"] + q_norm * x["se(coef)"])
 
     return(x)
-
   })
 
   y <- t(y)
@@ -494,7 +479,6 @@ estimate_coef <- function(variable, given,
     variable, " level ", lvl_var[1], "."
   )
   return(y)
-
 }
 
 
@@ -514,7 +498,6 @@ estimate_coef <- function(variable, given,
 #' # `car::Anova` on cox regression model including strata and expected
 #' # a likelihood ratio test triggers a warning as only Wald method is
 #' # accepted.
-#'
 #' \dontrun{
 #' library(survival)
 #' mod <- coxph(
@@ -572,17 +555,15 @@ try_car_anova <- function(mod,
 #'   `msum` (result of `summary`) and `aov` (result of [car::Anova]).
 fit_n_aov <- function(formula,
                       data = data,
-                      conf_level  = conf_level,
+                      conf_level = conf_level,
                       pval_method = c("wald", "likelihood"),
-                      ...
-) {
-
+                      ...) {
   pval_method <- match.arg(pval_method)
 
   environment(formula) <- environment()
   suppressWarnings({
     # We expect some warnings due to coxph which fails strict programming.
-    mod  <- survival::coxph(formula, data = data, ...)
+    mod <- survival::coxph(formula, data = data, ...)
     msum <- summary(mod, conf.int = conf_level)
   })
 
@@ -599,52 +580,50 @@ fit_n_aov <- function(formula,
   attr(y, "message") <- warn_attr
 
   return(y)
-
 }
 
 
 # argument_checks
 check_formula <- function(formula) {
-
-  if (!(inherits(formula, "formula")))
+  if (!(inherits(formula, "formula"))) {
     stop("Check `formula`. A formula should resemble `Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD)`.")
+  }
 
   invisible()
 }
 
 
 check_covariate_formulas <- function(covariates) {
-
-  if (!all(vapply(X = covariates, FUN = inherits, what = "formula", FUN.VALUE = TRUE)) | is.null(covariates))
+  if (!all(vapply(X = covariates, FUN = inherits, what = "formula", FUN.VALUE = TRUE)) | is.null(covariates)) {
     stop("Check `covariates`, it should be a list of right-hand-term formulas, e.g. list(Age = ~AGE).")
+  }
 
   invisible()
 }
 
 name_covariate_names <- function(covariates) {
-
   miss_names <- names(covariates) == ""
-  no_names   <- is.null(names(covariates))
-  if (any(miss_names))  names(covariates)[miss_names] <- vapply(covariates[miss_names], FUN = rht, FUN.VALUE = "name")
-  if (no_names)         names(covariates)             <- vapply(covariates,             FUN = rht, FUN.VALUE = "name")
+  no_names <- is.null(names(covariates))
+  if (any(miss_names)) names(covariates)[miss_names] <- vapply(covariates[miss_names], FUN = rht, FUN.VALUE = "name")
+  if (no_names) names(covariates) <- vapply(covariates, FUN = rht, FUN.VALUE = "name")
   return(covariates)
-
 }
 
 check_increments <- function(increments, covariates) {
-
   if (!is.null(increments)) {
     covariates <- vapply(covariates, FUN = rht, FUN.VALUE = "name")
     lapply(
       X = names(increments), FUN = function(x) {
-        if (!x %in% covariates)
+        if (!x %in% covariates) {
           warning(
-            paste("Check `increments`, the `increment` for ", x,
-                  "doesn't match any names in investigated covariate(s).")
+            paste(
+              "Check `increments`, the `increment` for ", x,
+              "doesn't match any names in investigated covariate(s)."
+            )
           )
+        }
       }
     )
-
   }
 
   invisible()
@@ -684,33 +663,33 @@ check_increments <- function(increments, covariates) {
 #' @examples
 #' library(tern)
 #' library(random.cdisc.data)
-#' ADTTE   <- radtte(cached = TRUE)
-#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS")   # _f: filtered
-#' ADTTE_f <- dplyr::filter (
+#' ADTTE <- radtte(cached = TRUE)
+#' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
+#' ADTTE_f <- dplyr::filter(
 #'   ADTTE_f,
 #'   PARAMCD == "OS"
 #'   & SEX %in% c("F", "M")
 #'   & RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
-#' );
-#' ADTTE_f$SEX  <- droplevels(ADTTE_f$SEX)
+#' )
+#' ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 #' ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
 #' \dontrun{
 #' s_cox_multivariate(
-#' formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
 #' )
 #' }
 s_cox_multivariate <- function(formula, data,
                                conf_level = 0.95,
                                pval_method = c("wald", "likelihood"),
                                ...) {
-
-  tf         <- terms(formula, specials = c("strata"))
+  tf <- terms(formula, specials = c("strata"))
   covariates <- rownames(attr(tf, "factors"))[-c(1, unlist(attr(tf, "specials")))]
   lapply(
-    X   = covariates,
+    X = covariates,
     FUN = function(x) {
-      if (is.character(data[[x]]))
+      if (is.character(data[[x]])) {
         data[[x]] <<- as.factor(data[[x]])
+      }
       invisible()
     }
   )
@@ -729,13 +708,12 @@ s_cox_multivariate <- function(formula, data,
   msum <- y$msum
   list2env(as.list(y), environment())
 
-  all_term_labs <-  attr(mod$terms, "term.labels")
+  all_term_labs <- attr(mod$terms, "term.labels")
   term_labs <- all_term_labs[which(attr(mod$terms, "order") == 1)]
   names(term_labs) <- term_labs
 
   coef_inter <- NULL
   if (any(attr(mod$terms, "order") > 1)) {
-
     for_inter <- all_term_labs[attr(mod$terms, "order") > 1]
     names(for_inter) <- for_inter
     mmat <- stats::model.matrix(mod)[1, ]
@@ -745,7 +723,8 @@ s_cox_multivariate <- function(formula, data,
 
     estimate_coef_local <- function(variable, given) {
       estimate_coef(
-        variable, given, coef = mcoef, mmat = mmat, vcov = mvcov, conf_level = conf_level,
+        variable, given,
+        coef = mcoef, mmat = mmat, vcov = mvcov, conf_level = conf_level,
         lvl_var = levels(data[[variable]]), lvl_given = levels(data[[given]])
       )
     }
@@ -757,9 +736,7 @@ s_cox_multivariate <- function(formula, data,
         Map(estimate_coef_local, variable = y, given = rev(y))
       }
     )
-
   }
 
   list(mod = mod, msum = msum, aov = aov, coef_inter = coef_inter)
-
 }

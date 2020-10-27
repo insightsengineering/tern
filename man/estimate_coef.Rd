@@ -64,7 +64,7 @@ library(random.cdisc.data)
 ADSL <- radsl(cached = TRUE)
 ADSL <- ADSL \%>\% dplyr::filter(SEX \%in\% c("F", "M"))
 \dontrun{
-ADTTE <- radtte(ADSL, seed = 2) \%>\%  dplyr::filter(PARAMCD == "PFS")
+ADTTE <- radtte(ADSL, seed = 2) \%>\% dplyr::filter(PARAMCD == "PFS")
 ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 ADTTE$SEX <- droplevels(ADTTE$SEX)
 

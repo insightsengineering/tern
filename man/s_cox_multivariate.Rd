@@ -46,19 +46,19 @@ but is out of scope as defined by the  Global Data Standards Repository
 \examples{
 library(tern)
 library(random.cdisc.data)
-ADTTE   <- radtte(cached = TRUE)
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS")   # _f: filtered
-ADTTE_f <- dplyr::filter (
+ADTTE <- radtte(cached = TRUE)
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
+ADTTE_f <- dplyr::filter(
   ADTTE_f,
   PARAMCD == "OS"
   & SEX \%in\% c("F", "M")
   & RACE \%in\% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
-);
-ADTTE_f$SEX  <- droplevels(ADTTE_f$SEX)
+)
+ADTTE_f$SEX <- droplevels(ADTTE_f$SEX)
 ADTTE_f$RACE <- droplevels(ADTTE_f$RACE)
 \dontrun{
 s_cox_multivariate(
-formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = ADTTE_f
 )
 }
 }

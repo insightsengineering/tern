@@ -68,8 +68,8 @@ interaction with a quantitative variable without (iii) or with a specified level
 \examples{
 library(tern)
 library(random.cdisc.data)
-ADTTE   <- radtte(cached = TRUE)
-ADTTE_f <- subset(ADTTE, PARAMCD == "OS")   # _f: filtered
+ADTTE <- radtte(cached = TRUE)
+ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- within( # nolint
   data = subset(
     ADTTE_f,
@@ -85,19 +85,19 @@ ADTTE_f <- within( # nolint
     SEX <- droplevels(SEX)
     RACE <- droplevels(RACE)
     X <- rnorm(n = length(ARM))
-  }  # nolint end
+  } # nolint end
 )
 
 s_cox_univariate(
-formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
-data = ADTTE_f,
-covariates = list(~ SEX)
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
+  data = ADTTE_f,
+  covariates = list(~SEX)
 )
 \dontrun{
 s_cox_univariate(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
   data = ADTTE_f,
-  covariates = list("Race" = ~ RACE, ~ AGE, "a rand. quant var with increments" = ~ X),
+  covariates = list("Race" = ~RACE, ~AGE, "a rand. quant var with increments" = ~X),
   interactions = TRUE,
   increments = list(X = c(-1, 1)),
   conf_level = 0.95,

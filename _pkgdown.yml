@@ -246,6 +246,8 @@ reference:
       - as_factor_keep_attributes
       - df_explicit_na
       - get_onco_rsp_label
+      - month2day
+      - day2month
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package

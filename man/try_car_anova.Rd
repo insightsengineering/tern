@@ -35,7 +35,6 @@ Captures warnings when executing \link[car:Anova]{car::Anova}.
 # `car::Anova` on cox regression model including strata and expected
 # a likelihood ratio test triggers a warning as only Wald method is
 # accepted.
-
 \dontrun{
 library(survival)
 mod <- coxph(

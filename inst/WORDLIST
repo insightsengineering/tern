@@ -29,12 +29,12 @@ CDISC
 CMD
 CMH
 CMT
+COXT
 CTCAE
 Chendi
 Clopper
 Coull
 CoxPH
-COXT
 DTH
 DTHT01
 EGT
@@ -64,6 +64,7 @@ Nelder
 Newcombe
 PARAMCD
 PharmaSUG
+QTCAT
 RSPT
 Roche
 SDTM
@@ -131,7 +132,6 @@ postprocessing
 pre
 preprocess
 qit
-QTCAT
 quartiles
 rcode
 recurse
@@ -168,3 +168,5 @@ wangh
 www
 xticks
 zhanc
+multisessions
+multithreaded

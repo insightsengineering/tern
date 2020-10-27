@@ -33,16 +33,17 @@ NULL
 #' library(dplyr)
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
-#'  dplyr::filter(PARAMCD == "OS") %>%
-#'  dplyr::mutate(is_event = CNSR == 0)
+#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   dplyr::mutate(
+#'     AVAL = day2month(AVAL),
+#'     is_event = CNSR == 0
+#'   )
 #' df <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM A")
-#' s_surv_time (df, .var = "AVAL", is_event = "is_event")
-#'
-
-s_surv_time  <- function(df,
-                         .var,
-                         is_event,
-                         control = control_surv_time()) {
+#' s_surv_time(df, .var = "AVAL", is_event = "is_event")
+s_surv_time <- function(df,
+                        .var,
+                        is_event,
+                        control = control_surv_time()) {
   assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
     is.string(.var),
@@ -82,22 +83,20 @@ s_surv_time  <- function(df,
 #' @examples
 #'
 #' split_cols_by(lyt = NULL, var = "ARMCD") %>%
-#'  add_colcounts() %>%
-#'  surv_time(
-#'      vars = "AVAL",
-#'      var_labels = "Survival Time (Months)",
-#'      is_event = "is_event",
-#'      control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
-#'  ) %>%
-#'  build_table(df = ADTTE_f)
-#'
-
+#'   add_colcounts() %>%
+#'   surv_time(
+#'     vars = "AVAL",
+#'     var_labels = "Survival Time (Months)",
+#'     is_event = "is_event",
+#'     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
+#'   ) %>%
+#'   build_table(df = ADTTE_f)
 surv_time <- function(lyt,
                       vars,
                       var_labels = "Time to Event",
                       .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
                       ...) {
-  a_surv_time  <- format_wrap_df(
+  a_surv_time <- format_wrap_df(
     s_surv_time,
     indent_mods = c(
       "median" = 0L,

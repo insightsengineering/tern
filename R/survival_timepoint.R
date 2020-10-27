@@ -30,11 +30,13 @@ NULL
 #' library(dplyr)
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
-#'  dplyr::filter(PARAMCD == "OS") %>%
-#'  dplyr::mutate(is_event = CNSR == 0)
+#'   dplyr::filter(PARAMCD == "OS") %>%
+#'   dplyr::mutate(
+#'     AVAL = day2month(AVAL),
+#'     is_event = CNSR == 0
+#'   )
 #' df <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM A")
 #' s_surv_timepoint(df, .var = "AVAL", is_event = "is_event")
-#'
 s_surv_timepoint <- function(df,
                              .var,
                              is_event,
@@ -81,21 +83,19 @@ s_surv_timepoint <- function(df,
 #' @examples
 #'
 #' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
-#'  add_colcounts() %>%
-#'  surv_timepoint(
-#'    vars = "AVAL",
-#'    var_labels = "7 Months",
-#'    is_event = "is_event",
-#'    control = control_surv_timepoint(time_point = 7)
-#'  ) %>%
-#'  build_table(df = ADTTE_f)
-#'
-
-surv_timepoint  <- function(lyt,
-                            vars,
-                            var_labels = "Months",
-                            .stats = c("pt_at_risk", "event_free_rate", "rate_ci"),
-                            ...) {
+#'   add_colcounts() %>%
+#'   surv_timepoint(
+#'     vars = "AVAL",
+#'     var_labels = "7 Months",
+#'     is_event = "is_event",
+#'     control = control_surv_timepoint(time_point = 7)
+#'   ) %>%
+#'   build_table(df = ADTTE_f)
+surv_timepoint <- function(lyt,
+                           vars,
+                           var_labels = "Months",
+                           .stats = c("pt_at_risk", "event_free_rate", "rate_ci"),
+                           ...) {
   a_surv_timepoint <- format_wrap_df(
     s_surv_timepoint,
     indent_mods = c("pt_at_risk" = 0L, "event_free_rate" = 0L, "rate_ci" = 2L),
@@ -124,8 +124,6 @@ surv_timepoint  <- function(lyt,
 #' df_ref_group <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM B")
 #' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 #' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-#'
-
 s_surv_timepoint_diff <- function(df,
                                   .var,
                                   .ref_group,
@@ -157,7 +155,7 @@ s_surv_timepoint_diff <- function(df,
   se_diff <- if (length(res_x$rate_se) == 0 || length(res_ref$rate_se) == 0) {
     NA
   } else {
-    sqrt(res_x$rate_se ^ 2 + res_ref$rate_se ^ 2)
+    sqrt(res_x$rate_se^2 + res_ref$rate_se^2)
   }
   qs <- c(-1, 1) * stats::qnorm(1 - (1 - conf_level) / 2)
   rate_diff_ci <- rate_diff + qs * se_diff
@@ -179,32 +177,31 @@ s_surv_timepoint_diff <- function(df,
 #' @examples
 #'
 #' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
-#'  add_colcounts() %>%
-#'  surv_timepoint_diff(
-#'    vars = "AVAL",
-#'    var_labels = "9 Months",
-#'    is_event = "is_event",
-#'    control = control_surv_timepoint(time_point = 9),
-#'    .indent_mods = c("rate_diff" = 0L, "rate_diff_ci" = 2L, "ztest_pval" = 2L)
-#'  ) %>%
-#'  build_table(df = ADTTE_f)
+#'   add_colcounts() %>%
+#'   surv_timepoint_diff(
+#'     vars = "AVAL",
+#'     var_labels = "9 Months",
+#'     is_event = "is_event",
+#'     control = control_surv_timepoint(time_point = 9),
+#'     .indent_mods = c("rate_diff" = 0L, "rate_diff_ci" = 2L, "ztest_pval" = 2L)
+#'   ) %>%
+#'   build_table(df = ADTTE_f)
 #'
 #' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
-#'  add_colcounts() %>%
-#'  surv_timepoint(
-#'    vars = "AVAL",
-#'    var_labels = "7 Months",
-#'    is_event = "is_event",
-#'    control = control_surv_timepoint(time_point = 7)
-#'  ) %>%
-#'  surv_timepoint_diff(
-#'    vars = "AVAL",
-#'    show_label = "hidden",
-#'    is_event = "is_event",
-#'    control = control_surv_timepoint(time_point = 7)
-#'  ) %>%
-#'  build_table(df = ADTTE_f)
-#'
+#'   add_colcounts() %>%
+#'   surv_timepoint(
+#'     vars = "AVAL",
+#'     var_labels = "7 Months",
+#'     is_event = "is_event",
+#'     control = control_surv_timepoint(time_point = 7)
+#'   ) %>%
+#'   surv_timepoint_diff(
+#'     vars = "AVAL",
+#'     show_label = "hidden",
+#'     is_event = "is_event",
+#'     control = control_surv_timepoint(time_point = 7)
+#'   ) %>%
+#'   build_table(df = ADTTE_f)
 surv_timepoint_diff <- function(lyt,
                                 vars,
                                 var_labels = "Time",

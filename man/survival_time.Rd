@@ -83,20 +83,21 @@ library(random.cdisc.data)
 library(dplyr)
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%
- dplyr::filter(PARAMCD == "OS") \%>\%
- dplyr::mutate(is_event = CNSR == 0)
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(
+    AVAL = day2month(AVAL),
+    is_event = CNSR == 0
+  )
 df <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM A")
-s_surv_time (df, .var = "AVAL", is_event = "is_event")
-
+s_surv_time(df, .var = "AVAL", is_event = "is_event")
 
 split_cols_by(lyt = NULL, var = "ARMCD") \%>\%
- add_colcounts() \%>\%
- surv_time(
-     vars = "AVAL",
-     var_labels = "Survival Time (Months)",
-     is_event = "is_event",
-     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
- ) \%>\%
- build_table(df = ADTTE_f)
-
+  add_colcounts() \%>\%
+  surv_time(
+    vars = "AVAL",
+    var_labels = "Survival Time (Months)",
+    is_event = "is_event",
+    control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
+  ) \%>\%
+  build_table(df = ADTTE_f)
 }

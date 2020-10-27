@@ -5,7 +5,10 @@ test_that("s_surv_timepoint works with default arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
 
   result <- s_surv_timepoint(
     adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
@@ -13,13 +16,12 @@ test_that("s_surv_timepoint works with default arguments", {
     is_event = "is_event"
   )
   expected <- list(
-    pt_at_risk = with_label(126, "Patients remaining at risk"),
-    event_free_rate = with_label(95.47124, "Event Free Rate (%)"),
-    rate_se = with_label(1.806604, "Standard Error of Event Free Rate"),
-    rate_ci = with_label(c(91.93036, 99.01212), "95% CI")
+    pt_at_risk = with_label(114, "Patients remaining at risk"),
+    event_free_rate = with_label(89.33188, "Event Free Rate (%)"),
+    rate_se = with_label(2.69695, "Standard Error of Event Free Rate"),
+    rate_ci = with_label(c(84.04595, 94.61780), "95% CI")
   )
   expect_equal(result, expected, tolerance = 0.0000001)
-
 })
 
 
@@ -27,7 +29,10 @@ test_that("s_surv_timepoint works with customized arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
 
   result <- s_surv_timepoint(
     adtte_f %>% dplyr::filter(ARMCD == "ARM C"),
@@ -38,20 +43,22 @@ test_that("s_surv_timepoint works with customized arguments", {
     )
   )
   expected <- list(
-    pt_at_risk = with_label(118, "Patients remaining at risk"),
-    event_free_rate = with_label(93.74203, "Event Free Rate (%)"),
-    rate_se = with_label(2.142505, "Standard Error of Event Free Rate"),
-    rate_ci = with_label(c(88.38261, 99.42644), "99% CI")
+    pt_at_risk = with_label(85, "Patients remaining at risk"),
+    event_free_rate = with_label(69.31139, "Event Free Rate (%)"),
+    rate_se = with_label(4.102859, "Standard Error of Event Free Rate"),
+    rate_ci = with_label(c(59.50938, 80.72791), "99% CI")
   )
   expect_equal(result, expected, tolerance = 0.0000001)
-
 })
 
 test_that("surv_timepoint works with default arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
 
   result <- split_cols_by(
     lyt = NULL,
@@ -67,13 +74,14 @@ test_that("surv_timepoint works with default arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "6 Months", "Patients remaining at risk", "Event Free Rate (%)", "  95% CI",
-      "ARM A", "", "124", "96.92", "(93.95, 99.89)",
-      "ARM B", "", "126", "95.47", "(91.93, 99.01)",
-      "ARM C", "", "120", "94.53", "(90.59, 98.47)"
+      "", "6 Months", "Patients remaining at risk", "Event Free Rate (%)",
+      "  95% CI", "ARM A", "", "107", "89.74", "(84.44, 95.03)", "ARM B",
+      "", "114", "89.33", "(84.05, 94.62)", "ARM C", "", "92", "75.02",
+      "(67.51, 82.53)"
     ),
     .Dim = 5:4
   )
+
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -81,7 +89,10 @@ test_that("surv_timepoint works with customized arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
 
   result <- split_cols_by(
     lyt = NULL,
@@ -98,13 +109,14 @@ test_that("surv_timepoint works with customized arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "8 Months", "Patients remaining at risk", "Event Free Rate (%)", "  90% CI",
-      "ARM A", "", "117", "92.23", "(87.27, 95.3)",
-      "ARM B", "", "121", "93.16", "(88.46, 95.99)",
-      "ARM C", "", "117", "93.74", "(89.08, 96.45)"
+      "", "8 Months", "Patients remaining at risk", "Event Free Rate (%)",
+      "  90% CI", "ARM A", "", "103", "88.87", "(83.25, 92.69)", "ARM B",
+      "", "107", "85.36", "(79.37, 89.73)", "ARM C", "", "79", "66.01",
+      "(58.55, 72.45)"
     ),
     .Dim = 5:4
   )
+
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -113,7 +125,11 @@ test_that("s_surv_timepoint_diff works with default arguments for comparison gro
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
+
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
@@ -125,9 +141,9 @@ test_that("s_surv_timepoint_diff works with default arguments for comparison gro
     is_event = "is_event"
   )
   expected <- list(
-    rate_diff = with_label(1.450188, "Difference in Event Free Rate"),
-    rate_diff_ci = with_label(c(-3.171972, 6.072348), "95% CI"),
-    ztest_pval = with_label(0.5385993, "p-value (Z-test)")
+    rate_diff = with_label(0.4049929, "Difference in Event Free Rate"),
+    rate_diff_ci = with_label(c(-7.077293, 7.887279), "95% CI"),
+    ztest_pval = with_label(0.9155135, "p-value (Z-test)")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -137,7 +153,12 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
+
+
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
@@ -151,9 +172,9 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
     conf_level = 0.9
   )
   expected <- list(
-    rate_diff = with_label(-0.9363941, "Difference in Event Free Rate"),
-    rate_diff_ci = with_label(c(-6.246414, 4.373626), "90% CI"),
-    ztest_pval = with_label(0.7717694, "p-value (Z-test)")
+    rate_diff = with_label(3.509382, "Difference in Event Free Rate"),
+    rate_diff_ci = with_label(c(-3.380986, 10.399750), "90% CI"),
+    ztest_pval = with_label(0.40217, "p-value (Z-test)")
   )
   expect_equal(result, expected, tolerance = 0.0000001)
 })
@@ -162,7 +183,10 @@ test_that("surv_timepoint_diff works with default arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
 
   result <- split_cols_by(
     lyt = NULL,
@@ -179,13 +203,14 @@ test_that("surv_timepoint_diff works with default arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "6 Months", "  Difference in Event Free Rate", "    95% CI", "    p-value (Z-test)",
-      "ARM A", "", "", "", "",
-      "ARM B", "", "2.51", "(-4.12, 9.15)", "0.4578",
-      "ARM C", "", "2.29", "(-4.43, 9.01)", "0.5038"
+      "", "6 Months", "  Difference in Event Free Rate",
+      "    95% CI", "    p-value (Z-test)", "ARM A", "", "", "", "",
+      "ARM B", "", "-2.64", "(-10.99, 5.71)", "0.5357", "ARM C", "",
+      "-22.83", "(-32.94, -12.72)", "<0.0001"
     ),
     .Dim = 5:4
   )
+
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -193,7 +218,10 @@ test_that("surv_timepoint_diff works with customized arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
 
   result <- split_cols_by(
     lyt = NULL,
@@ -211,12 +239,13 @@ test_that("surv_timepoint_diff works with customized arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "9 Months", "  Difference in Event Free Rate", "    99% CI", "    p-value (Z-test)",
-      "ARM A", "", "", "", "",
-      "ARM B", "", "2.51", "(-6.2, 11.23)", "0.4578",
-      "ARM C", "", "2.29", "(-6.54, 11.13)", "0.5038"
+      "", "9 Months", "  Difference in Event Free Rate",
+      "    99% CI", "    p-value (Z-test)", "ARM A", "", "", "", "",
+      "ARM B", "", "-2.64", "(-13.61, 8.33)", "0.5357", "ARM C", "",
+      "-22.83", "(-36.11, -9.54)", "<0.0001"
     ),
     .Dim = 5:4
   )
+
   expect_identical(result_matrix, expected_matrix)
 })

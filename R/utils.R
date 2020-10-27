@@ -262,3 +262,34 @@ make_names <- function(nams) {
   orig <- make.names(nams)
   gsub(".", "", x = orig, fixed = TRUE)
 }
+
+
+#' Conversion of Months to Days
+#'
+#' @param x (`numeric`)\cr time in months.
+#'
+#' @return A `numeric` vector with the time in days.
+#' @export
+#' @examples
+#' x <- c(13.25, 8.15, 1, 2.834)
+#' month2day(x)
+#'
+month2day <- function(x) {
+  assert_that(is_numeric_vector(x))
+  x * 30.4375
+}
+
+#' Conversion of Days to Months
+#'
+#' @param x (`numeric`)\cr time in days.
+#'
+#' @return A `numeric` vector with the time in months.
+#' @export
+#' @examples
+#' x <- c(403, 248, 30, 86)
+#' day2month(x)
+#'
+day2month <- function(x) {
+  assert_that(is_numeric_vector(x))
+  x / 30.4375
+}

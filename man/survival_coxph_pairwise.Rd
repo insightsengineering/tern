@@ -87,31 +87,29 @@ library(random.cdisc.data)
 library(dplyr)
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%
- dplyr::filter(PARAMCD == "OS") \%>\%
- dplyr::mutate(is_event = CNSR == 0)
+  dplyr::filter(PARAMCD == "OS") \%>\%
+  dplyr::mutate(is_event = CNSR == 0)
 df <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM A")
 df_ref_group <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM B")
-s_coxph_pairwise(df, df_ref_group,.in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-
+s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 
 split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
- add_colcounts() \%>\%
- coxph_pairwise(
+  add_colcounts() \%>\%
+  coxph_pairwise(
     vars = "AVAL",
     is_event = "is_event",
     var_labels = "Unstratified Analysis"
- ) \%>\%
- build_table(df = ADTTE_f)
+  ) \%>\%
+  build_table(df = ADTTE_f)
 
 split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
- add_colcounts() \%>\%
- coxph_pairwise(
+  add_colcounts() \%>\%
+  coxph_pairwise(
     vars = "AVAL",
     is_event = "is_event",
     var_labels = "Stratified Analysis",
     strat = "SEX",
     control = control_coxph(pval_method = "wald")
- ) \%>\%
- build_table(df = ADTTE_f)
-
+  ) \%>\%
+  build_table(df = ADTTE_f)
 }
