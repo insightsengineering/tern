@@ -17,6 +17,7 @@ NULL
 #' occurrence.
 #'
 #' @returns A list with:
+#'   - `count`: list of counts with one element per occurrence
 #'   - `count_fraction`: list of counts and fractions with one element per occurrence.
 #'
 #' @export
@@ -54,6 +55,7 @@ s_count_occurrences <- function(df,
   occurrences_count <- table(occurrences, ids) > 0 # logical indicating whether a subject reported a term at least once
   sum_across_subjects <- as.list(apply(occurrences_count, 1, sum)) # sum across subjects
   list(
+    count = sum_across_subjects,
     count_fraction = lapply(sum_across_subjects, function(i, denom) c(i, i / denom), denom = .N_col)
   )
 
@@ -73,7 +75,7 @@ s_count_occurrences <- function(df,
 #'
 a_count_occurrences <- make_afun(
   s_count_occurrences,
-  .formats = c(count_fraction = format_count_fraction)
+  .formats = c(count = "xx", count_fraction = format_count_fraction)
 )
 
 #' @describeIn count_occurrences Analyze Function that counts occurrences as part of rtables layouts.
@@ -95,7 +97,7 @@ a_count_occurrences <- make_afun(
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
-#'   count_occurrences(vars = "MHDECOD")
+#'   count_occurrences(vars = "MHDECOD", .stats = c("count"))
 #'
 #' # Apply table layout to data and produce rtable object
 #' lyt %>%
@@ -105,7 +107,7 @@ a_count_occurrences <- make_afun(
 count_occurrences <- function(lyt,
                               vars,
                               ...,
-                              .stats = NULL,
+                              .stats ="count_fraction",
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
@@ -115,7 +117,7 @@ count_occurrences <- function(lyt,
     .formats = .formats,
     .labels = .labels,
     .indent_mods = .indent_mods,
-    .ungroup_stats = "count_fraction"
+    .ungroup_stats = .stats
   )
 
   analyze(

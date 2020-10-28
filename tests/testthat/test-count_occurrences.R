@@ -6,11 +6,18 @@ test_that("s_count_occurrences functions as expected with valid input and defaul
 
   result <- s_count_occurrences(df = df, .N_col = 4)
 
-  expected <- list(count_fraction = c(
-    MH1 = list(c(3.00, 0.75)),
-    MH2 = list(c(1.00, 0.25)),
-    MH3 = list(c(1.00, 0.25))
-  ))
+ expected <- list(
+  count = list(
+    MH1 = 3L,
+    MH2 = 1L,
+    MH3 = 1L
+  ),
+  count_fraction = list(
+    MH1 = c(3L, 0.75),
+    MH2 = c(1L, 0.25),
+    MH3 = c(1L, 0.25)
+  )
+)
   expect_equal(result, expected)
 })
 

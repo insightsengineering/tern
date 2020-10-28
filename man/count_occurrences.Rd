@@ -14,7 +14,7 @@ count_occurrences(
   lyt,
   vars,
   ...,
-  .stats = NULL,
+  .stats = "count_fraction",
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -48,6 +48,7 @@ by a statistics function.}
 \value{
 A list with:
 \itemize{
+\item \code{count}: list of counts with one element per occurrence
 \item \code{count_fraction}: list of counts and fractions with one element per occurrence.
 }
 }
@@ -116,7 +117,7 @@ N_per_arm <- c(5L, 4L)
 lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
-  count_occurrences(vars = "MHDECOD")
+  count_occurrences(vars = "MHDECOD", .stats = c("count"))
 
 # Apply table layout to data and produce rtable object
 lyt \%>\%
