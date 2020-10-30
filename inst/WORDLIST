@@ -11,6 +11,7 @@ ADLB
 ADMH
 ADQS
 ADRS
+adrs
 ADSL
 ADTTE
 ADVS
@@ -26,8 +27,11 @@ ANCOVA
 anl
 Anova
 AOVT
+ARMCD
+AVALC
 AVISIT
 BCE
+BESRSPI
 BOBYQA
 boruvkaa
 Bove
@@ -56,6 +60,7 @@ datanames
 denom
 df
 DORT
+dplyr
 DTH
 DTHT01
 ECG
@@ -71,6 +76,7 @@ GDSR
 Genetech
 ggplot
 github
+glm
 gpar
 Haensel
 Haenszel
@@ -124,6 +130,7 @@ preprocess
 qit
 QTCAT
 quartiles
+radrs
 rcode
 recurse
 recursing

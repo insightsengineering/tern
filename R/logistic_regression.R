@@ -1,463 +1,371 @@
-#' Logistic Regression without Interactions
+#' Multi-variable logistic regression table
 #'
-#' Summary of logistic regression with no interaction term.
+#' Logistic regression for binary outcome with categorical/continuous covariates in model statement.
+#' For each covariate category (if categorical) or specified values (if continuous), present degrees of freedom,
+#' regression parameter estimate and standard error (SE) relative to reference group or category.
+#' Report odds ratios for each covariate category or specified values and corresponding Wald
+#' confidence intervals as default but allow user to specify other confidence levels.
+#' Report p-value for Wald chi-square test of the null hypothesis that covariate has no effect on
+#' response in model containing all specified covariates.
+#' Allow option to include one two-way interaction and present similar output for
+#' each interaction degree of freedom.
+#' Note: For \code{glm} formula, the variable names need to be standard dataframe column name without
+#' special characters. The big N is the total number of observations for complete cases.
 #'
-#' @param glm_model ({\code{\link{glm}}} model object)\cr
-#'   with all main effect model.
-#' @param conf_level (\code{numeric} value)
-#'   confidence level for Wald's odds ratio confidence interval.
+#' @md
+#' @inheritParams argument_convention
+#' @name logistic_regression
+#'
+NULL
+
+#' @describeIn logistic_regression Fit a logistic regression model.
+#' @param data (`data frame`)\cr the data frame on which the model was fit.
 #' @export
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
-#' library(purrr)
+#' adrs <- radrs(cached = TRUE)
+#' adrs_f <- adrs %>%
+#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
+#'   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#'   dplyr::mutate(
+#'     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+#'     RACE = factor(RACE),
+#'     SEX = factor(SEX)
+#'   )
+#' mod1 <- fit_logistic(
+#'   data = adrs_f,
+#'   variables = list(
+#'     response = "Response", arm = "ARMCD", covariates = c("AGE", "RACE")
+#'   )
+#' )
+#' mod2 <- fit_logistic(
+#'   data = adrs_f,
+#'   variables = list(
+#'     response = "Response", arm = "ARMCD",
+#'     covariates = c("AGE", "RACE"), interaction = "AGE"
+#'   )
+#' )
 #'
-#' ADSL <- radsl(cached = TRUE)
-#' ADSL <- ADSL %>% mutate(
-#'  SEX = as.character(SEX),
-#'  SEX = case_when(!SEX %in% c("F", "M") ~ "U",
-#'                TRUE ~ SEX))
-#' ADRS <- radrs(ADSL, seed = 2)
-#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
-#' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#' s_logistic_single(glm_model, conf_level = 0.90)
-s_logistic_single <- function(glm_model,
-                              conf_level = 0.95) {
-  stopifnot("glm" %in% class(glm_model))
-  stopifnot(glm_model$family$family == "binomial")
-  terms_name <- attr(terms(glm_model), "term.labels")
-
-  # data originally as input in glm_model
-  model_data <- glm_model$model
-  modsum <- summary(glm_model)
-  if (!all(terms_name %in% colnames(model_data))) {
-    stop("Terms not in data")
+fit_logistic <- function(data,
+                         variables = list(
+                           response = "Response",
+                           arm = "ARMCD",
+                           covariates = NULL,
+                           interaction = NULL
+                         )) {
+  response <- variables$response
+  arm <- variables$arm
+  covariates <- variables$covariates
+  interaction <- variables$interaction
+  assert_that(
+    is.list(variables),
+    all(names(variables) %in% c("response", "arm", "covariates", "interaction")),
+    is_df_with_variables(data, as.list(unlist(variables)))
+  )
+  forms <- paste0(response, " ~ ", arm)
+  if (!is.null(covariates)) {
+    forms <- paste0(forms, " + ", paste(covariates, collapse = " + "))
   }
-  terms_class <- attr(terms(glm_model), "dataClasses")[-1]
-  terms_levels <- glm_model$xlevels
-  model_coef <- modsum$coefficients
-  main_effect <- car::Anova(glm_model, type = 3, test.statistic = "Wald")
-  extract_single <- extract_logistic_single(
-    terms_name,
-    terms_levels,
-    terms_class,
-    model_coef,
-    model_data,
-    conf_level
-  )
-
-  terms_results <- sapply(names(extract_single), function(x) {
-    main <- main_effect[x, c("Df", "Pr(>Chisq)"), drop = FALSE]
-    colnames(main) <- c("df", "p-value")
-    c(list(main = main), extract_single[[x]])
-  }, simplify = FALSE, USE.NAMES = TRUE)
-
-  list(
-    N = nrow(model_data),
-    results = terms_results
-  )
+  if (is.null(interaction)) {
+    formula <- as.formula(forms)
+  } else {
+    assert_that(
+      is.string(interaction),
+      interaction %in% covariates
+    )
+    formula <- as.formula(paste0(forms, " + ", arm, ":", interaction))
+  }
+  glm(formula, family = "binomial", data = data)
 }
 
-#' Logistic Regression with Two-Way Interaction
+#' Tabulation of logistic regression
 #'
-#' Summary of logistic regression with one two-way interaction term.
-#'
-#' @param glm_model ({\code{\link{glm}}} model object)\cr
-#'   The model object can be all main effect model, and a model with one two-way interaction.
-#' @param increments (\code{named list})\cr
-#'   Used to specify numeric values of continuous variables in {\code{glm}} model {\code{formula}}
-#'   which interact with other variables. This is used to calculate the odds ratio when comparing
-#'   the other interaction variable effect. For example, for a model with ARM and AGE interaction,
-#'   {\code{increments = list(AGE = c(18, 65))}} will enable calculation of odds ratios of
-#'   comparison ARM vs. reference ARM at AGE = 18 and AGE = 65. If {\code{increments = NULL}}, then
-#'   default AGE value is ceiling of median.
-#' @param conf_level (\code{numeric} value)\cr
-#'   Confidence level for Wald odds ratio confidence interval.
-#'
+#' Tabulate the main effect results of a logistic regression model.
+#' @md
+#' @param x (`string`)\cr a variable in `fit_glm`.
+#' @param fit_glm logistic regression model fitted by [stats::glm()].
+#' @importFrom car Anova
 #' @export
-#'
-#' @importFrom stats vcov
 #'
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
-#' library(purrr)
+#' adrs <- radrs(cached = TRUE)
+#' adrs_f <- adrs %>%
+#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
+#'   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#'   dplyr::mutate(
+#'     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+#'     RACE = factor(RACE),
+#'     SEX = factor(SEX)
+#'   )
+#' fit_glm <- fit_logistic(
+#'   data = adrs_f,
+#'   variables = list(response = "Response", arm = "ARMCD", covariates = c("AGE", "RACE"))
+#' )
+#' glm_simple_term_extract("AGE", fit_glm)
+#' glm_simple_term_extract("ARMCD", fit_glm)
 #'
-#' ADSL <- radsl(cached = TRUE)
-#' ADSL <- ADSL %>% mutate(
-#'  SEX = as.character(SEX),
-#'  SEX = case_when(!SEX %in% c("F", "M") ~ "U",
-#'                TRUE ~ SEX))
-#' ADRS <- radrs(ADSL, seed = 2)
-#' ADRS_f <- subset(ADRS, PARAMCD == "BESRSPI") %>%
-#'   mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1,
-#'                               TRUE ~ 0))
-#' glm_model <- glm(
-#'  formula = Response ~ ARM + AGE + SEX + ARM*SEX,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#' s_logistic_interaction(glm_model, conf_level = 0.90)
-#' glm_model2 <- glm(
-#'  formula = Response ~ ARM + AGE + ARM*AGE,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#' s_logistic_interaction(glm_model2, conf_level = 0.90)
-#' glm_model3 <- glm(
-#'  formula = Response ~ ARM + AGE + BMRKR1 + BMRKR1*AGE,
-#'  data = ADRS_f,
-#'  family = "binomial")
-#' s_logistic_interaction(glm_model3 , conf_level = 0.90)
-s_logistic_interaction <- function(glm_model,
-                                   conf_level = 0.95,
-                                   increments = NULL) {
-  stopifnot("glm" %in% class(glm_model))
-  stopifnot(glm_model$family$family == "binomial")
-  terms_name <- attr(terms(glm_model), "term.labels")
-
-  # data used in model
-  model_data <- glm_model$model
-  terms_covariates <- terms_name[which(terms_name %in% colnames(model_data))]
-  terms_interaction <-  terms_name[which(!terms_name %in% colnames(model_data))]
-  if (length(terms_interaction) > 1) {
-    stop("Not support multiple interaction terms")
-  }
-  # Only allow one two-variable interaction term
-  # ":" must not be in variable name
-  terms_interaction <- unlist(strsplit(terms_interaction, ":"))
-  if (length(terms_interaction) != 2) {
-    stop("Only support two-variable interaction term")
-  }
-  stopifnot(all(terms_interaction %in% terms_covariates))
-  modsum <- summary(glm_model)
-  terms_class <- attr(terms(glm_model), "dataClasses")[-1]
-  terms_levels <- glm_model$xlevels
-  model_coef <- modsum$coefficients
-  terms_single <- terms_covariates[which(!terms_covariates %in% terms_interaction)]
-  main_effect <- car::Anova(glm_model, type = 3, test.statistic = "Wald")
-  # covariates only with main effect
-  extract_single <- if (length(terms_single) >= 1) {
-    extract_logistic_single(
-      terms_single,
-      terms_levels[terms_single],
-      terms_class[terms_single],
-      model_coef,
-      model_data,
-      conf_level
-    )
-  } else NULL
-
-  # covarates with interaction
-  vcov_coef <- vcov(glm_model)
-  extract_interacton <- extract_logistic_interaction(
-    terms_interaction,
-    terms_class[terms_interaction],
-    terms_levels[terms_interaction],
-    model_coef,
-    vcov_coef,
-    model_data,
-    increments = increments,
-    conf_level = conf_level
+glm_simple_term_extract <- function(x, fit_glm) {
+  assert_that(
+    "glm" %in% class(fit_glm),
+    is.string(x)
   )
-
-  extract_all <- c(extract_single, extract_interacton)
-  terms_results <- sapply(terms_name, function(x) {
-    main <- main_effect[x, c("Df", "Pr(>Chisq)"), drop = FALSE]
-    colnames(main) <- c("df", "p-value")
-    c(list(main = main),
-      extract_all[[x]])
-  }, simplify = FALSE, USE.NAMES = TRUE)
-  list(
-    N = nrow(model_data),
-    results = terms_results
-  )
-}
-
-
-extract_logistic_single <- function(terms_name,
-                                    terms_levels,
-                                    terms_class,
-                                    model_coef,
-                                    model_data,
-                                    conf_level = 0.95) {
-  extract_items <- c("Estimate", "Std. Error", "Pr(>|z|)")
-  terms_results <- sapply(terms_name, function(x) {
-    if (terms_class[[x]] %in% c("factor", "character")) {
-      ref_level <- terms_levels[[x]][1]
-      comp_level <- terms_levels[[x]][-1]
-      sel <- paste0(x, comp_level)
-      x_coef <- model_coef[sel, extract_items, drop = FALSE]
-      rownames(x_coef) <- terms_levels[[x]][-1]
-      count_by_lvl <- table(model_data[[x]])
-      x_type <- "categorical"
-    } else if (terms_class[[x]] == "numeric") {
-      x_coef <- model_coef[x, extract_items, drop = FALSE]
-      x_type <- "continuous"
-    }
-    x_coef <- as.data.frame(x_coef)
-    colnames(x_coef) <- c("coef",  "se", "p-value")
-    rowname_x_coef <- rownames(x_coef)
-    x_coef <- x_coef %>%
-      mutate(
-        or = exp(.data$coef),
-        df = 1,
-        lcl = exp(.data$coef - qnorm((1 + conf_level) / 2) * .data$se),
-        ucl = exp(.data$coef + qnorm((1 + conf_level) / 2) * .data$se)
-      )
-    rownames(x_coef) <- rowname_x_coef
-    predictor <- list(
-      term_type = x_type,
-      term_ref_level = if (x_type == "categorical") ref_level else NULL,
-      term_comp_level = if (x_type == "categorical") comp_level else NULL,
-      counts_by_level = if (x_type == "categorical") count_by_lvl else NULL
-    )
-
-    list(
-      predictor = predictor,
-      summary = x_coef
-    )
-  }, simplify = FALSE, USE.NAMES = TRUE)
-  terms_results
-}
-
-
-extract_logistic_interaction <- function(terms_interaction,
-                                         terms_class,
-                                         terms_levels,
-                                         model_coef,
-                                         vcov_coef,
-                                         model_data,
-                                         increments = NULL,
-                                         conf_level = 0.95) {
-  info_xy <- sapply(terms_interaction, function(term) {
-    term_class <- terms_class[[term]]
-    interact_with <- terms_interaction[which(terms_interaction != term)]
-    if (term_class %in% c("character", "factor")) {
-      lvls <- terms_levels[[term]]
-      term_ref_level <- lvls[1]
-      term_comp_level <- lvls[-1]
-      list(
-        interact_with = interact_with,
-        term_type = "categorical",
-        term_ref_level = term_ref_level,
-        term_comp_level = term_comp_level
-      )
-    } else if (term_class == "numeric") {
-      term_values <- if (!is.null(increments) & !is.null(increments[[term]])) {
-        increments[[term]]
-      } else {
-        ceiling(median(model_data[[term]]))
-      }
-      list(
-        interact_with = interact_with,
-        term_type = "continuous",
-        term_values = term_values
-      )
-    }
-  },  simplify = FALSE, USE.NAMES = TRUE)
-  results_interaction <- element_interaction(info_xy, model_coef, vcov_coef, model_data, conf_level)
-  results_interaction
-}
-
-element_interaction <- function(info_xy,
-                                model_coef,
-                                vcov_coef,
-                                model_data,
-                                conf_level = 0.95) {
-  terms_type <- sapply(info_xy, function(i) i$term_type)
-  extract_items <- c("Estimate", "Std. Error", "Pr(>|z|)")
-  if (all(terms_type == "categorical")) {
-    lvls1 <- info_xy[[1]]$term_comp_level
-    lvls2 <- info_xy[[2]]$term_comp_level
-    int_lookup <- data.frame(
-      rep(lvls1, length(lvls2)),
-      rep(lvls2, each = length(lvls1)),
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  xs_level <- fit_glm$xlevels
+  xs_coef <- summary(fit_glm)$coefficients
+  stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
+  # Make sure x is not interaction term
+  assert_that(x %in% names(xs_class))
+  x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
+  x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
+  colnames(x_stats) <- names(stats)
+  x_stats$estimate <- as.list(x_stats$estimate)
+  x_stats$std_error <- as.list(x_stats$std_error)
+  x_stats$pvalue <- as.list(x_stats$pvalue)
+  x_stats$df <- as.list(1)
+  x_stats$term <- if (xs_class[x] == "numeric") x else xs_level[[x]][-1]
+  if (xs_class[x] != "numeric") {
+    main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
+    x_main <- data.frame(
+      pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
+      term = paste(x, "Reference =", xs_level[[x]][1]),
+      df = main_effects[x, "Df", drop = TRUE],
       stringsAsFactors = FALSE
     )
-    int_lookup$INTERACTION <- paste( # nolint
-      paste0(names(info_xy)[1], int_lookup[[1]]),
-      paste0(names(info_xy)[2], int_lookup[[2]]),
-      sep = ":"
-    )
-  } else if (all(terms_type == "continuous")) {
-    int_lookup <- data.frame(
-      names(info_xy)[1], names(info_xy)[2], paste(names(info_xy), collapse = ":"),
+    x_main$pvalue <- as.list(x_main$pvalue)
+    x_main$df <- as.list(x_main$df)
+    x_main$estimate <- list(numeric(0))
+    x_main$std_error <- list(numeric(0))
+    if (length(xs_level[[x]][-1]) == 1) {
+      x_main$pvalue <- list(numeric(0))
+      x_main$df <- list(numeric(0))
+    }
+    x_stats <- rbind(x_main, x_stats)
+  }
+  x_stats$variable <- x
+  rownames(x_stats) <- NULL
+  x_stats[c("variable", "term", "estimate", "std_error", "df", "pvalue")]
+}
+
+#' Tabulation of logistic regression
+#'
+#' Tabulate the result of interaction from a logistic regression model.
+#' @md
+#' @param x (`string`)\cr a interaction in `fit_glm`.
+#' @param fit_glm logistic regression model fitted by [stats::glm()].
+#' @importFrom car Anova
+#' @export
+#'
+#' @examples
+#' library(random.cdisc.data)
+#' library(dplyr)
+#' adrs <- radrs(cached = TRUE)
+#' adrs_f <- adrs %>%
+#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
+#'   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#'   dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0))
+#' fit_glm <- fit_logistic(
+#'   data = adrs_f,
+#'   variables = list(
+#'     response = "Response", arm = "ARMCD",
+#'     covariates = c("AGE", "RACE"), interaction = "RACE"
+#'   )
+#' )
+#' glm_interaction_extract("ARMCD:RACE", fit_glm)
+#'
+glm_interaction_extract <- function(x, fit_glm) {
+  assert_that("glm" %in% class(fit_glm))
+  terms_name <- attr(terms(fit_glm), "term.labels")
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  assert_that(
+    is.string(x),
+    # Only deal with one interaction term
+    identical(x, terms_name[which(!terms_name %in% names(xs_class))])
+  )
+  vars <- unlist(strsplit(x, ":"))
+  # Only take two-way interaction
+  assert_that(
+    length(vars) == 2,
+    # Only consider simple case: first variable in interaction is arm, a categorical variable
+    xs_class[vars[1]] != "numeric"
+  )
+  xs_level <- fit_glm$xlevels
+  xs_coef <- summary(fit_glm)$coefficients
+  main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
+  stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
+  v1_comp <- xs_level[[vars[1]]][-1]
+  if (xs_class[vars[2]] == "numeric") {
+    x_stats <- as.data.frame(
+      xs_coef[paste0(vars[1], v1_comp, ":", vars[2]), stats, drop = FALSE],
       stringsAsFactors = FALSE
     )
-  } else {
-    cat <- names(info_xy)[which(terms_type == "categorical")]
-    con <- names(info_xy)[which(terms_type == "continuous")]
-    cat_ref_level <- info_xy[[cat]]$term_ref_level
-    cat_comp_level <- info_xy[[cat]]$term_comp_level
-    int_lookup <- data.frame(cat_comp_level, con, stringsAsFactors = FALSE)
-    int_lookup$INTERACTION <- if (which(names(info_xy) == cat) == 1) { # nolint
-      paste(paste0(cat, cat_comp_level), con, sep = ":")
-    } else {
-      paste(con, paste0(cat, cat_comp_level), sep = ":")
-    }
+    colnames(x_stats) <- names(stats)
+    x_stats$term <- v1_comp
+  } else if (xs_class[vars[2]] != "numeric") {
+    v2_comp <- xs_level[[vars[2]]][-1]
+    x_sel <- paste0(levels(interaction(paste0(vars[1], v1_comp), paste0(vars[2], v2_comp), sep = ":")))
+    x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
+    colnames(x_stats) <- names(stats)
+    x_stats$term <- paste0(levels(interaction(v1_comp, v2_comp, sep = " * ")))
   }
-  colnames(int_lookup) <- c(names(info_xy), "INTERACTION")
-  or_ci_df <- function(sel_beta_term, sel_beta_int = NULL, constant_int = 0) {
-    if (is.null(sel_beta_int)) {
-      or <- exp(model_coef[sel_beta_term, "Estimate"])
-      se_logor <- model_coef[sel_beta_term, "Std. Error"]
-    } else {
-      or <- exp(model_coef[sel_beta_term, "Estimate"] + constant_int * model_coef[sel_beta_int, "Estimate"])
-      se_beta_term <- model_coef[sel_beta_term, "Std. Error"]
-      se_beta_int <- model_coef[sel_beta_int, "Std. Error"]
-      cov_betas <- vcov_coef[sel_beta_term, sel_beta_int]
-      se_logor <- (se_beta_term^2 + constant_int^2 * se_beta_int^2 + 2 * constant_int * cov_betas) ^ (1 / 2)
-    }
-    data.frame(
-      or = or,
-      lcl = exp(log(or) - qnorm((1 + conf_level) / 2) * se_logor),
-      ucl = exp(log(or) + qnorm((1 + conf_level) / 2) * se_logor),
-      check.names = FALSE
-    )
-  }
-
-  results_by_term <- sapply(names(info_xy), function(term) {
-    interact_with <- info_xy[[term]]$interact_with
-    if (all(terms_type == "categorical")) {
-      counts_by_level <- table(model_data[[term]])
-      term_comp_level <- info_xy[[term]]$term_comp_level
-      int_ref_level <- info_xy[[interact_with]]$term_ref_level
-      int_comp_level <- info_xy[[interact_with]]$term_comp_level
-      summary_term <- sapply(term_comp_level, function(lvl) {
-        level_coef <- as.data.frame(model_coef[paste0(term, lvl), extract_items, drop = FALSE])
-        colnames(level_coef) <- c("coef", "se", "p-value")
-        level_coef$df <- 1
-        summary_with_interaction <- sapply(c(int_ref_level, int_comp_level), function(int_lvl) {
-          if (int_lvl == int_ref_level) {
-            sel_beta_int <- NULL
-            constant_int <- 0
-          } else {
-            sel_int <- int_lookup[[term]] == lvl & int_lookup[[interact_with]] == int_lvl
-            sel_beta_int <- int_lookup[sel_int, "INTERACTION"]
-            constant_int <- 1
-          }
-          or_ci_df(sel_beta_term = paste0(term, lvl), sel_beta_int, constant_int = constant_int)
-        }, simplify = FALSE, USE.NAMES = TRUE)
-        list(
-          summary_comp_level = level_coef,
-          summary_with_interaction = summary_with_interaction
-        )
-      }, simplify = FALSE, USE.NAMES = TRUE)
-      list(
-        predictor = list(
-          term_type = info_xy[[term]]$term_type,
-          interact_with = interact_with,
-          counts_by_level = counts_by_level,
-          term_ref_level = info_xy[[term]]$term_ref_level,
-          term_comp_level = term_comp_level),
-        summary = summary_term
-      )
-
-    } else if (all(terms_type == "continuous")) {
-      int_values <- info_xy[[interact_with]]$term_values
-      term_coef <- as.data.frame(model_coef[term, extract_items, drop = FALSE])
-      colnames(term_coef) <- c("coef", "se", "p-value")
-      term_coef$df <- 1
-      summary_with_interaction <- sapply(as.character(int_values), function(val) {
-        or_ci_df(
-          sel_beta_term = term,
-          sel_beta_int = int_lookup$INTERACTION,
-          constant_int = as.numeric(val)
-        )
-      }, simplify = FALSE, USE.NAMES = TRUE)
-
-      list(
-        predictor = list(
-          term_type = info_xy[[term]]$term_type,
-          interact_with = interact_with
-        ),
-        summary = list(
-          summary_term = term_coef,
-          summary_with_interaction = summary_with_interaction
-        )
-      )
-    } else {
-      if (term == cat) {
-        counts_by_level <- table(model_data[[term]])
-        int_values <- info_xy[[interact_with]]$term_values
-        summary_comp <- sapply(cat_comp_level, function(lvl) {
-          level_coef <- as.data.frame(model_coef[paste0(term, lvl), extract_items, drop = FALSE])
-          colnames(level_coef) <- c("coef", "se", "p-value")
-          level_coef$df <- 1
-          summary_with_interaction <- sapply(as.character(int_values), function(val) {
-            or_ci_df(
-              sel_beta_term = paste0(term, lvl),
-              sel_beta_int = int_lookup[int_lookup[[term]] == lvl, "INTERACTION"],
-              constant_int = as.numeric(val)
-            )
-          }, simplify = FALSE, USE.NAMES = TRUE)
-          list(
-            summary_comp_level = level_coef,
-            summary_with_interaction = summary_with_interaction
-          )
-        }, simplify = FALSE, USE.NAMES = TRUE)
-        list(
-          predictor = list(
-            term_type = "categorical",
-            interact_with = interact_with,
-            counts_by_level = counts_by_level,
-            term_ref_level = info_xy[[term]]$term_ref_level,
-            term_comp_level = cat_comp_level),
-          summary = summary_comp
-        )
-      } else {
-        term_coef <- as.data.frame(model_coef[term, extract_items, drop = FALSE])
-        colnames(term_coef) <- c("coef", "se", "p-value")
-        term_coef$df <- 1
-        summary_with_interaction <- sapply(c(cat_ref_level, cat_comp_level), function(cat_lvl) {
-          or_ci_df(
-            sel_beta_term = term,
-            sel_beta_int = if (cat_lvl == cat_ref_level) {
-              NULL
-            } else {
-              int_lookup[int_lookup[[cat]] == cat_lvl, "INTERACTION"]
-            },
-            constant_int = 1
-          )
-        }, simplify = FALSE, USE.NAMES = TRUE)
-        list(
-          predictor = list(term_type = info_xy[[term]]$term_type, interact_with = interact_with),
-          summary = list(summary_term = term_coef,  summary_with_interaction = summary_with_interaction)
-        )
-      }
-    }
-
-  }, simplify = FALSE, USE.NAMES = TRUE)
-
-  results_interaction <- as.data.frame(model_coef[int_lookup$INTERACTION, extract_items, drop = FALSE])
-  colnames(results_interaction) <- c("coef", "se", "p-value")
-  results_interaction$df <- 1
-  if (all(terms_type == "categorical")) {
-    n <- sapply(seq_len(nrow(int_lookup)), function(i) {
-      model_data[
-        model_data[[names(info_xy)[1]]] == int_lookup[i, names(info_xy)[1]] &
-          model_data[[names(info_xy[2])]] == int_lookup[i, names(info_xy)[2]], , drop = FALSE] %>%
-        nrow()
-    })
-    rownames(results_interaction) <- paste0(int_lookup[[1]], " * ", int_lookup[[2]], " , n = ", n)
-  } else if (all(terms_type == "continuous")) {
-    rownames(results_interaction) <- paste0(int_lookup[[1]], " * ", int_lookup[[2]])
-  } else {
-    n <- sapply(seq_len(nrow(int_lookup)), function(i) {
-      model_data[model_data[[cat]] == int_lookup[i, cat], , drop = FALSE] %>%
-        nrow()
-    })
-    rownames(results_interaction) <- paste0(int_lookup[[cat]], ", n = ", n)
-  }
-
-  results_all <- c(
-    results_by_term,
-    list(list(predictor = list(term_type = "interaction"), summary = results_interaction))
+  x_stats$df <- as.list(1)
+  x_stats$pvalue <- as.list(x_stats$pvalue)
+  x_main <- data.frame(
+    pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
+    term = paste(vars[1], vars[2], sep = " * "),
+    df = main_effects[x, "Df", drop = TRUE],
+    stringsAsFactors = FALSE
   )
-  names(results_all) <- c(names(results_by_term), paste(names(info_xy), collapse = ":"))
-  results_all
+  x_main$pvalue <- as.list(x_main$pvalue)
+  x_main$df <- as.list(x_main$df)
+  x_main$estimate <- list(numeric(0))
+  x_main$std_error <- list(numeric(0))
+
+  x_stats <- rbind(x_main, x_stats)
+  x_stats$variable <- x
+  rownames(x_stats) <- NULL
+  x_stats[c("variable", "term", "estimate", "std_error", "df", "pvalue")]
+}
+
+#' Helper of logistic regression
+#'
+#' Tabulate the results including odds ratios and confidence intervals of simple terms.
+#' @md
+#' @inheritParams argument_convention
+#' @inheritParams glm_simple_term_extract
+#' @param x (`string` or vector of `string`) \cr variable in `fit_glm`.
+#' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
+#' @export
+#' @examples
+#' library(random.cdisc.data)
+#' library(dplyr)
+#' adrs <- radrs(cached = TRUE)
+#' adrs_f <- adrs %>%
+#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
+#'   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#'   dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0))
+#' fit_glm <- fit_logistic(
+#'   data = adrs_f,
+#'   variables = list(
+#'     response = "Response", arm = "ARMCD",
+#'     covariates = c("AGE", "RACE"), interaction = "RACE"
+#'   )
+#' )
+#' h_logistic_simple_terms("AGE", fit_glm)
+#'
+h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
+  assert_that(
+    "glm" %in% class(fit_glm),
+    fit_glm$family$family == "binomial"
+  )
+  terms_name <- attr(terms(fit_glm), "term.labels")
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  interaction <- terms_name[which(!terms_name %in% names(xs_class))]
+  assert_that(all(x %in% terms_name))
+  if (length(interaction) != 0) {
+    # Make sure any item in x is not part of interaction term
+    assert_that(all(!x %in% unlist(strsplit(interaction, ":"))))
+  }
+  x_stats <- lapply(x, glm_simple_term_extract, fit_glm)
+  x_stats <- do.call(rbind, x_stats)
+  q_norm <- qnorm((1 + conf_level) / 2)
+  x_stats$odds_ratio <- lapply(x_stats$estimate, exp)
+  x_stats$lcl <- Map(function(or, se) exp(log(or) - q_norm * se), x_stats$odds_ratio, x_stats$std_error)
+  x_stats$ucl <- Map(function(or, se) exp(log(or) + q_norm * se), x_stats$odds_ratio, x_stats$std_error)
+  x_stats$ci <- Map(function(lcl, ucl) c(lcl, ucl), lcl = x_stats$lcl, ucl = x_stats$ucl)
+  x_stats
+}
+
+#' @describeIn logistic_regression Helper method (for [broom::tidy()]) to prepare a data frame from an
+#'   `glm` object with `binomial` family.
+#' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
+#' @method tidy glm
+#' @export
+#' @importFrom broom tidy
+#' @examples
+#' df <- broom::tidy(mod1, conf_level = 0.99)
+#'
+tidy.glm <- function(fit_glm, conf_level = 0.95) { #nolint
+  assert_that(
+    "glm" %in% class(fit_glm),
+    fit_glm$family$family == "binomial"
+  )
+  terms_name <- attr(terms(fit_glm), "term.labels")
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  interaction <- terms_name[which(!terms_name %in% names(xs_class))]
+  if (length(interaction) == 0) {
+    h_logistic_simple_terms(x = terms_name, fit_glm = fit_glm, conf_level = conf_level)
+  } else {
+    # To add the part for model with interaction
+  }
+}
+
+#' @describeIn logistic_regression transforms the tabulated results from `tidy`
+#'  into a list.
+#' @export
+#'
+#' @examples
+#' s_logistic(broom::tidy(mod1), .var = "ci")
+#'
+s_logistic <- function(df, .var) {
+  assert_that(
+    is_df_with_variables(df, list(variable = "variable", term = "term", var = .var)),
+    is_character_or_factor(df$term)
+  )
+  df$variable <- as.character(df$variable)
+  df$variable <- factor(df$variable, levels = unique(df$variable))
+  df$term <- as.character(df$term)
+  y <- split(df, f = factor(df$term, unique(df$term)), drop = FALSE)
+  y <- setNames(y, nm = rep(.var, length(y)))
+  if (nrow(df) == 0) {
+    setNames(list(character()), "estimate")
+  } else {
+    lapply(y, function(x) {
+      setNames(as.list(x[[.var]]), x$term)
+    })
+  }
+}
+
+#' @describeIn logistic_regression layout creating function.
+#' @param vars (`character`)\cr the name of statistics to be reported among
+#'  `df` (degrees of freedom), `estimate` (regression coefficient),
+#'  `std_error` (standard error of coefficient), `odds_ratio` (odds ratio) and
+#'  `ci` (confidence interval of odds ratio), `pvalue` (p.value of the effect).
+#' @export
+#'
+#' @examples
+#' result <- basic_table() %>%
+#'   split_rows_by("variable") %>%
+#'   split_rows_by("term", split_fun = drop_split_levels) %>%
+#'   summarize_logistic(conf_level = .99) %>%
+#'   build_table(df = df)
+#' result
+#'
+summarize_logistic <- function(lyt,
+                               conf_level,
+                               vars = c("df", "estimate",
+                                        "std_error", "odds_ratio",
+                                        "ci", "pvalue")) {
+  afun_list <- Map(
+    function(stat, format) {
+      make_afun(s_logistic, .stats = stat, .formats = format, .ungroup_stats = stat)
+    },
+    stat = c("df", "estimate", "std_error", "odds_ratio", "ci", "pvalue"),
+    format = c(
+      df = "xx", estimate = "xx.xxx", std_error = "xx.xxx",
+      odds_ratio = ">999.99", ci = "(xx.xx, xx.xx)", pvalue = "x.xxxx | (<0.0001)"
+    )
+  )
+  lyt <- split_cols_by_multivar(
+    lyt = lyt,
+    vars = vars,
+    varlabels = c(
+      df = "Degrees of Freedom", estimate = "Parameter Estimate",
+      std_error = "Standard Error", odds_ratio = "Odds Ratio",
+      ci = paste0("Wald ", 100 * conf_level, "% CI"), pvalue = "p-value"
+    )[vars]
+  )
+  analyze_colvars(lyt = lyt, afun = afun_list[vars])
 }
