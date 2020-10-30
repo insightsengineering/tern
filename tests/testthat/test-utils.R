@@ -54,3 +54,10 @@ test_that("day2month works correctly", {
   expected <- c(13.2402464065708, 8.14784394250513, 0.985626283367556, 2.82546201232033)
   expect_equal(result, expected)
 })
+
+test_that("empty_vector_if_na works correctly", {
+  x <- c(NA, NA, NA)
+  result <- empty_vector_if_na(x)
+  expected <- numeric()
+  expect_equal(result, expected)
+})

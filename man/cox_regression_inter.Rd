@@ -6,6 +6,7 @@
 \alias{h_coxreg_inter_effect.numeric}
 \alias{h_coxreg_inter_effect.factor}
 \alias{h_coxreg_extract_interaction}
+\alias{h_coxreg_inter_estimations}
 \title{Cox Regression Helper: Interactions}
 \usage{
 h_coxreg_inter_effect(x, effect, covar, mod, label, control, ...)
@@ -15,6 +16,15 @@ h_coxreg_inter_effect(x, effect, covar, mod, label, control, ...)
 \method{h_coxreg_inter_effect}{factor}(x, effect, covar, mod, label, control, data, ...)
 
 h_coxreg_extract_interaction(effect, covar, mod, data, at, control)
+
+h_coxreg_inter_estimations(
+  variable,
+  given,
+  lvl_var,
+  lvl_given,
+  mod,
+  conf_level = 0.95
+)
 }
 \arguments{
 \item{x}{(\code{numeric} or \code{factor})\cr the values of the effect to be tested.}
@@ -23,7 +33,7 @@ h_coxreg_extract_interaction(effect, covar, mod, data, at, control)
 
 \item{covar}{(\code{string})\cr the name of the covariate in the model.}
 
-\item{mod}{(\code{coxph})\cr the Cox regression model.}
+\item{mod}{(\code{coxph})\cr a fitted Cox regression model (see \code{\link[survival:coxph]{survival::coxph()}}).}
 
 \item{label}{(\code{string})\cr the label to be return as \code{term_label}
 (see \code{return}).}
@@ -37,23 +47,61 @@ h_coxreg_extract_interaction(effect, covar, mod, data, at, control)
 item is a vector of levels at which the interaction should be estimated.}
 
 \item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
+
+\item{variable, given}{(\code{string})\cr
+the name of variables in interaction. We seek the estimation of the levels
+of \code{variable} given the levels of \code{given}.}
+
+\item{lvl_var, lvl_given}{(\code{character})\cr
+corresponding levels has given by \code{\link[=levels]{levels()}}.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+}
+\value{
+A list of matrix (one per level of variable) with rows corresponding to the combinations of
+\code{variable} and \code{given}, with columns:
+\describe{
+\item{coef_hat}{Estimation of the coefficient}
+\item{coef_se}{Standard error of the estimation.}
+\item{hr}{Hazard ratio.}
+\item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
+}
 }
 \description{
 Test and estimate the effect of a treatment in interaction with a covariate.
 The effect is estimated as the HR of the tested treatment for a given level
 of the covariate, in comparison to the treatment control.
 }
+\details{
+Given the cox regression investigating the effect of Arm (A, B, C; reference A)
+and Sex (F, M; reference Female) and the model being abbreviated: y ~ Arm + Sex + Arm:Sex.
+The cox regression estimates the coefficients along with a variance-covariance matrix for:
+\itemize{
+\item b1 (arm b), b2 (arm c),
+\item b3 (sex m),
+\item b4 (arm b: sex m), b5 (arm c: sex m)
+}
+
+The estimation of the Hazard Ratio for arm C/sex M is given in reference
+to arm A/Sex M by exp(b2 + b3 + b5)/ exp(b3) = exp(b2 + b5).
+The interaction coefficient is deduced by b2 + b5 while the standard error
+is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
+}
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg_inter_effect.numeric}: estimate the interaction with a numerical
+\item \code{h_coxreg_inter_effect.numeric}: Estimate the interaction with a numerical
 covariate
 
-\item \code{h_coxreg_inter_effect.factor}: estimates the interaction with a factor
+\item \code{h_coxreg_inter_effect.factor}: Estimate the interaction with a factor
 covariate.
 
 \item \code{h_coxreg_extract_interaction}: a higher level function that returns
 the test of the interaction test and the estimated values. If
-no interaction, \code{\link[=h_coxreg_univ_extract]{h_coxreg_univ_extract()}} is applied.
+no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied.
+
+\item \code{h_coxreg_inter_estimations}: Hazard ratio
+
+Hazard ratio estimation in interactions
 }}
 
 \examples{
@@ -76,7 +124,7 @@ dta_bladder <- with(
 attr(dta_bladder$armcd, "label") <- "ARM"
 attr(dta_bladder$covar1, "label") <- "A Covariate Label"
 attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
-dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 plot(
   survfit(Surv(time, status) ~ armcd + covar1, data = dta_bladder),
@@ -90,5 +138,17 @@ h_coxreg_extract_interaction(
   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
   control = control_coxreg()
 )
+
+
+# Testing dataset [survival::bladder].
+
+mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
+result <- h_coxreg_inter_estimations(
+  variable = "armcd", given = "covar1",
+  lvl_var = levels(dta_bladder$armcd),
+  lvl_given = levels(dta_bladder$covar1),
+  mod = mod, conf_level = .95
+)
+result
 
 }

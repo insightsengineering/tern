@@ -33,8 +33,8 @@ get_bladder <- function() {
   dta_bladder
 }
 
-test_that("h_coxreg_univ_formulas creates formulas with covariate", {
-  result <- h_coxreg_univ_formulas(
+test_that("h_coxreg_univar_formulas creates formulas with covariate", {
+  result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y")
     )
@@ -45,11 +45,10 @@ test_that("h_coxreg_univ_formulas creates formulas with covariate", {
     y = "Surv( time , status ) ~  armcd + y "
   )
   expect_identical(result, expected)
-
 })
 
-test_that("h_coxreg_univ_formulas creates formulas with strata", {
-  result <- h_coxreg_univ_formulas(
+test_that("h_coxreg_univar_formulas creates formulas with strata", {
+  result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
       strata = "SITE"
@@ -63,8 +62,8 @@ test_that("h_coxreg_univ_formulas creates formulas with strata", {
   expect_identical(result, expected)
 })
 
-test_that("h_coxreg_univ_formulas creates formulas with interactions", {
-  result <- h_coxreg_univ_formulas(
+test_that("h_coxreg_univar_formulas creates formulas with interactions", {
+  result <- h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
       strata = "SITE"
@@ -79,6 +78,16 @@ test_that("h_coxreg_univ_formulas creates formulas with interactions", {
   expect_identical(result, expected)
 })
 
+test_that("h_coxreg_multivar_formula creates formula with covariate", {
+  result <- h_coxreg_multivar_formula(
+    variables = list(
+      time = "time", event = "status", arm = "armcd", covariates = c("covar1", "covar2")
+    )
+  )
+  expected <- "Surv(time, status) ~ armcd + covar1 + covar2"
+  expect_identical(result, expected)
+})
+
 test_that("control_coxreg returns a standard list of parameters", {
   result <- control_coxreg()
   expected <- list(
@@ -88,10 +97,58 @@ test_that("control_coxreg returns a standard list of parameters", {
   expect_identical(result, expected)
 })
 
-test_that("h_coxreg_univ_extract extracts coxph results", {
+test_that("fit_coxreg_univar returns model results as expected", {
+  data <- get_bladder()
+  control <- control_coxreg(conf_level = 0.91)
+  variables <- list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = "covar1"
+  )
+  forms <- h_coxreg_univar_formulas(
+    variables = variables,
+  )
+
+  result <- fit_coxreg_univar(
+    variables = variables,
+    data = data,
+    control = control
+  )
+
+  expected <- list(
+    mod = lapply(
+      forms, function(x) {
+        survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties)
+      }
+    ),
+    data = data,
+    control = control,
+    vars = variables,
+    at = list()
+  )
+  expect_equal(result$mod, expected$mod)
+})
+
+test_that("tidy.summary.coxph method tidies up the Cox regression model", {
+  dta_simple <- get_simple()
+  mod <- summary(survival::coxph(Surv(time, status) ~ armcd, data = dta_simple))
+  result <- broom::tidy(mod)
+  expected <- dplyr::tibble(
+    "Pr(>|z|)" = 0.2472383,
+    "exp(coef)" = 3.846606,
+    "exp(-coef)" = 0.2599694,
+    "lower .95" = 0.3926671,
+    "upper .95" = 37.68173,
+    "level" = "armcdB",
+    "n" = 8L
+  ) %>%
+    as.data.frame()
+  expect_equal(result, expected, tolerance = 1e-5)
+})
+
+test_that("h_coxreg_univar_extract extracts coxph results", {
   dta_simple <- get_simple()
   mod <- coxph(Surv(time, status) ~ armcd, data = dta_simple)
-  result <- h_coxreg_univ_extract(effect = "armcd", covar = "armcd", mod = mod, data = dta_simple)
+  result <- h_coxreg_univar_extract(effect = "armcd", covar = "armcd", mod = mod, data = dta_simple)
   expected <- data.frame(
     effect = "Treatment:",
     term = "armcd",
@@ -106,14 +163,15 @@ test_that("h_coxreg_univ_extract extracts coxph results", {
   expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("h_coxreg tabulates univariate Cox regression results", {
-  result <- h_coxreg(
+test_that("tidy.coxreg.univar method tidies up the univariate Cox regression model", {
+  univar_model <- fit_coxreg_univar(
     variables = list(
       time = "time", event = "status", arm = "armcd",
       covariates = c("covar1", "covar2")
     ),
     data = get_bladder()
   )
+  result <- broom::tidy(univar_model)
 
   expected <- structure(
     list(
@@ -138,53 +196,7 @@ test_that("h_coxreg tabulates univariate Cox regression results", {
   expect_equal(result, expected, tolerance = 1e-5)
 })
 
-test_that("s_coxreg converts tabulated results in a list", {
-  df <- h_coxreg(
-    variables = list(
-      time = "time", event = "status", arm = "armcd",
-      covariates = c("covar1", "covar2")
-    ),
-    data = get_bladder()
-  )
-  result <- s_coxreg(df = df, .var = "hr")
-  expected <- list(
-    hr = list(`2 vs control (1)` = 0.638642559520787),
-    hr = list(`A Covariate Label` = 0.607036963131032),
-    hr = list(`Sex (F/M)` = 0.62427)
-  )
-  expect_equal(result, expected, tolerance = 1e-4)
-})
-
-test_that("fit_coxreg adds the univariate Cox regression layer to rtables", {
-  conf_level <- 0.90
-  df <- h_coxreg(
-    variables = list(
-      time = "time", event = "status", arm = "armcd",
-      covariates = c("covar1", "covar2")
-    ),
-    data = get_bladder(),
-    control = control_coxreg(ties = "breslow", conf_level = conf_level)
-  )
-  result <- split_rows_by(lyt = NULL, "effect") %>%
-    split_rows_by("term", child_labels = "hidden") %>%
-    fit_coxreg(conf_level = conf_level) %>%
-    build_table(df = df)
-  result_matrix <- to_string_matrix(result)
-  dput(result_matrix)
-  expected_matrix <- structure(
-    c(
-      "", "Treatment:", "2 vs control (1)", "Covariate:", "A Covariate Label",
-      "Sex (F/M)", "n", "", "340", "", "340", "340", "HR", "", "0.64", "",
-      "0.61", "0.63", "90% CI", "", "(0.46, 0.89)", "", "(0.44, 0.85)",
-      "(0.45, 0.87)", "pval", "", "0.0253", "", "0.0136", "0.0191"
-    ),
-    .Dim = 6:5
-  )
-  expect_identical(result_matrix, expected_matrix)
-})
-
-
-test_that("h_coxreg_inter_effect works with factor as covariate", {
+test_that("h_coxreg_extract_interaction works with factor as covariate", {
   mod <- coxph(Surv(time, status) ~ armcd * covar1, data = get_bladder())
   expect_silent(
     h_coxreg_extract_interaction(
@@ -246,11 +258,10 @@ test_that("h_coxreg_inter_estimations' results identical to soon deprecated esti
   expect_identical(result, expected)
 })
 
-test_that("h_coxreg's result are identical to soon deprecated s_cox_univariate (no interaction)", {
-
+test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (no interaction)", {
   dta_bladder <- get_bladder()
 
-  result <- h_coxreg(
+  univar_model <- fit_coxreg_univar(
     variables = list(
       time = "time", event = "status", arm = "armcd",
       covariates = "covar1"
@@ -262,7 +273,9 @@ test_that("h_coxreg's result are identical to soon deprecated s_cox_univariate (
       conf_level = 0.95,
       interaction = FALSE
     )
-  )[c("n", "hr", "pval", "ci")]
+  )
+  df <- broom::tidy(univar_model)
+  result <- df[c("n", "hr", "pval", "ci")]
 
   expected <- with(
     data = s_cox_univariate(
@@ -284,7 +297,7 @@ test_that("h_coxreg's result are identical to soon deprecated s_cox_univariate (
   expect_equivalent(result, expected)
 })
 
-test_that("h_coxreg's result are identical to soon deprecated s_cox_univariate (with interaction)", {
+test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_univariate (with interaction)", {
 
   dta_bladder <- get_bladder()
   expected <- with(
@@ -315,21 +328,183 @@ test_that("h_coxreg's result are identical to soon deprecated s_cox_univariate (
 
   clear <- function(x) x[sapply(x, function(x) length(x) > 0)]
   result <- lapply(
-    X = h_coxreg(
-      variables = list(
-        time = "time", event = "status", arm = "armcd",
-        covariates = "covar1"
-      ),
-      data = dta_bladder,
-      control = control_coxreg(
-        pval_method = c("wald", "likelihood")[2],
-        ties = c("exact", "efron", "breslow")[2],
-        conf_level = 0.95,
-        interaction = TRUE
+    X = broom::tidy(
+      fit_coxreg_univar(
+        variables = list(
+          time = "time", event = "status", arm = "armcd",
+          covariates = "covar1"
+        ),
+        data = dta_bladder,
+        control = control_coxreg(
+          pval_method = c("wald", "likelihood")[2],
+          ties = c("exact", "efron", "breslow")[2],
+          conf_level = 0.95,
+          interaction = TRUE
+        )
       )
     )[c("n", "hr", "pval", "pval_inter", "ci")],
     clear
   )
 
   expect_equivalent(result, expected)
+})
+
+test_that("fit_coxreg_multivar returns model results as expected", {
+  data <- get_bladder()
+  control <- control_coxreg(conf_level = 0.91)
+  variables <- list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("covar1", "covar2")
+  )
+  form <- h_coxreg_multivar_formula(variables = variables)
+
+  result <- fit_coxreg_multivar(
+    variables = variables,
+    data = data,
+    control = control
+  )
+
+  expected <- list(
+    mod = survival::coxph(
+      formula = stats::as.formula(form),
+      data = data, ties = control$ties
+    ),
+    data = data,
+    control = control,
+    vars = variables
+  )
+  expect_equal(result$mod, expected$mod)
+})
+
+test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
+  library(survival)
+  set.seed(1, kind = "Mersenne-Twister")
+  dta_bladder <- get_bladder()
+
+  multivar_model <- fit_coxreg_multivar(
+    variables = list(
+      time = "time", event = "status", arm = "armcd",
+      covariates = c("covar1", "covar2")
+    ),
+    data = dta_bladder,
+    control = control_coxreg(ties = "efron")
+  )
+  result <- broom::tidy(multivar_model)
+  expected <- structure(
+    list(
+      term = c(
+        "armcd", "ARM", "covar1", "A Covariate Label", "A Covariate Label",
+        "A Covariate Label", "covar2", "Sex (F/M)"
+      ),
+      pval = list(
+        numeric(0), 0.01274101, 7.121178e-09, 0.001145167,
+        6.519833e-06, 3.296958e-08, numeric(0), 0.1979248
+      ),
+      term_label = c(
+        "ARM (reference = 1)", "2", "A Covariate Label (reference = 1)",
+        "2", "3", "4", "Sex (F/M) (reference = F)", "M"
+      ),
+      hr = list(
+        numeric(0), 0.6106495, numeric(0), 0.46139,
+        0.3111114, 0.1847729, numeric(0), 1.28109
+      ),
+      lcl = c(NA, 0.4142327, NA, 0.2894783, 0.1872782, 0.1015025, NA, 0.8786364),
+      ucl = c(NA, 0.9002013, NA, 0.7353945, 0.5168263, 0.3363563, NA, 1.8678847),
+      level = c(NA, "2", NA, "2", "3", "4", NA, "M"),
+      ci = list(
+        numeric(0), c(0.4142327, 0.9002013), numeric(0), c(0.2894783, 0.7353945),
+        c(0.1872782, 0.5168263), c(0.1015025, 0.3363563), numeric(0), c(0.8786364, 1.8678847)
+      )
+    ),
+    row.names = c(
+      "armcd.1", "armcd.2", "covar1.1", "covar1.2",
+      "covar1.3", "covar1.4", "covar2.1", "covar2.2"
+    ),
+    class = "data.frame",
+    conf_level = 0.95
+  )
+  attr(expected, "conf_level") <- 0.95
+  expect_equal(result, expected, tolerance = 1e-4)
+})
+
+test_that("s_coxreg converts tabulated results in a list", {
+  univar_model <- fit_coxreg_univar(
+    variables = list(
+      time = "time", event = "status", arm = "armcd",
+      covariates = c("covar1", "covar2")
+    ),
+    data = get_bladder()
+  )
+  df <- broom::tidy(univar_model)
+  result <- s_coxreg(df = df, .var = "hr")
+  expected <- list(
+    hr = list(`2 vs control (1)` = 0.638642559520787),
+    hr = list(`A Covariate Label` = 0.607036963131032),
+    hr = list(`Sex (F/M)` = 0.62427)
+  )
+  expect_equal(result, expected, tolerance = 1e-4)
+})
+
+test_that("summarize_coxreg adds the univariate Cox regression layer to rtables", {
+  conf_level <- 0.90
+  univar_model <- fit_coxreg_univar(
+    variables = list(
+      time = "time", event = "status", arm = "armcd",
+      covariates = c("covar1", "covar2")
+    ),
+    data = get_bladder(),
+    control = control_coxreg(ties = "breslow", conf_level = conf_level)
+  )
+  df <- broom::tidy(univar_model)
+  result <- basic_table() %>%
+    split_rows_by("effect") %>%
+    split_rows_by("term", child_labels = "hidden") %>%
+    summarize_coxreg(conf_level = conf_level) %>%
+    build_table(df = df)
+  result_matrix <- to_string_matrix(result)
+  dput(result_matrix)
+  expected_matrix <- structure(
+    c(
+      "", "Treatment:", "2 vs control (1)", "Covariate:", "A Covariate Label",
+      "Sex (F/M)", "n", "", "340", "", "340", "340", "Hazard Ratio", "", "0.64", "",
+      "0.61", "0.63", "90% CI", "", "(0.46, 0.89)", "", "(0.44, 0.85)",
+      "(0.45, 0.87)", "p-value", "", "0.0253", "", "0.0136", "0.0191"
+    ),
+    .Dim = 6:5
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
+  library(survival)
+  set.seed(1, kind = "Mersenne-Twister")
+  dta_bladder <- get_bladder()
+  conf_level <- 0.90
+
+  multivar_model <- fit_coxreg_multivar(
+    variables = list(
+      time = "time", event = "status", arm = "armcd",
+      covariates = c("covar1", "covar2")
+    ),
+    data = dta_bladder
+  )
+  df <- broom::tidy(multivar_model)
+  result <- basic_table() %>%
+    split_rows_by("term", child_labels = "hidden") %>%
+    summarize_coxreg(multivar = TRUE, conf_level = conf_level) %>%
+    build_table(df = df)
+  result_matrix <- to_string_matrix(result)
+  dput(result_matrix)
+  expected_matrix <- structure(
+    c(
+      "", "ARM (reference = 1)", "2", "A Covariate Label (reference = 1)",
+      "2", "3", "4", "Sex (F/M) (reference = F)", "M", "Hazard Ratio",
+      "", "0.61", "", "0.46", "0.31", "0.18", "", "1.29", "90% CI",
+      "", "(0.41, 0.9)", "", "(0.28, 0.73)", "(0.18, 0.51)", "(0.1, 0.33)",
+      "", "(0.88, 1.89)", "p-value", "", "0.0123", "<0.0001", "0.0011",
+      "<0.0001", "<0.0001", "", "0.1911"
+    ),
+    .Dim = c(9L, 4L)
+  )
+  expect_identical(result_matrix, expected_matrix)
 })

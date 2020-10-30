@@ -29,7 +29,7 @@ A \code{list} of item corresponding to the arguments.
 }
 \description{
 Sets a list of parameters for Cox regression fit. Used internally,
-see \code{\link[=h_coxreg]{h_coxreg()}}.
+see \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
 }
 \examples{
 

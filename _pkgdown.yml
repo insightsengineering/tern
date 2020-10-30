@@ -79,7 +79,6 @@ reference:
        - count_missed_doses
        - count_occurrences
        - count_patients_with_event
-       - fit_coxreg
        - dummy_sum
        - estimate_proportion
        - estimate_proportion_diff
@@ -92,6 +91,7 @@ reference:
        - summarize_lsmeans
        - summarize_num_patients
        - summarize_vars
+       - summarize_coxreg
        - test_proportion_diff
 
 
@@ -104,14 +104,15 @@ reference:
       - add_footnotes<-
       - h_ancova
       - h_count_cumulative
-      - h_coxreg
       - h_coxreg_extract_interaction
       - h_coxreg_inter_effect
       - h_coxreg_inter_effect.factor
       - h_coxreg_inter_effect.numeric
       - h_coxreg_inter_estimations
-      - h_coxreg_univ_extract
-      - h_coxreg_univ_formulas
+      - h_coxreg_univar_extract
+      - h_coxreg_multivar_extract
+      - h_coxreg_univar_formulas
+      - h_coxreg_multivar_formula
       - h_dummy_sum
       - h_incidence_rate
       - h_incidence_rate_byar
@@ -135,8 +136,13 @@ reference:
     desc: these functions help with fitting or extracting results from specific models
     contents:
       - fit_mmrm
+      - fit_coxreg_univar
+      - fit_coxreg_multivar
       - as.rtable.mmrm
       - tidy.mmrm
+      - tidy.summary.coxph
+      - tidy.coxreg.univar
+      - tidy.coxreg.multivar
 
   - title: Old Statistics Functions
     desc: these functions might have to be refactored or deprecated later

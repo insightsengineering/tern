@@ -293,3 +293,21 @@ day2month <- function(x) {
   assert_that(is_numeric_vector(x))
   x / 30.4375
 }
+
+#' Return an empty numeric if all elements are `NA`.
+#'
+#' @param x (`numeric`)\cr vector.
+#'
+#' @return An empty `numeric`.
+#' @export
+#' @examples
+#' x <- c(NA, NA, NA)
+#' empty_vector_if_na(x)
+#'
+empty_vector_if_na <- function(x) {
+  if (all(is.na(x))) {
+    numeric()
+  } else {
+    x
+  }
+}
