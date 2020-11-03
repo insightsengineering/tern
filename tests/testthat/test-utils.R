@@ -55,6 +55,20 @@ test_that("day2month works correctly", {
   expect_equal(result, expected)
 })
 
+test_that("combine_vectors works correctly", {
+  x <- c(1:3)
+  y <- c(4:6)
+  result <- combine_vectors(x, y)
+
+  expected <- list(
+    c(1, 4),
+    c(2, 5),
+    c(3, 6)
+  )
+
+  expect_equal(result, expected)
+})
+
 test_that("empty_vector_if_na works correctly", {
   x <- c(NA, NA, NA)
   result <- empty_vector_if_na(x)

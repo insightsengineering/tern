@@ -2,28 +2,21 @@
 % Please edit documentation in R/response_subgroups.R
 \name{response_subgroups}
 \alias{response_subgroups}
-\alias{h_proportion_df}
-\alias{h_proportion_subgroups_df}
-\alias{h_odds_ratio_df}
-\alias{h_odds_ratio_subgroups_df}
 \alias{extract_rsp_subgroups}
-\title{Helper Functions for Tabulating Binary Response by Subgroup}
+\alias{a_response_subgroups}
+\alias{tabulate_rsp_subgroups}
+\title{Tabulate Binary Response by Subgroup}
 \usage{
-h_proportion_df(rsp, arm)
-
-h_proportion_subgroups_df(variables, data)
-
-h_odds_ratio_df(rsp, arm, conf_level = 0.95, method = NULL)
-
-h_odds_ratio_subgroups_df(variables, data, conf_level = 0.95, method = NULL)
-
 extract_rsp_subgroups(variables, data, conf_level = 0.95, method = NULL)
+
+a_response_subgroups(
+  .formats = c(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or = ">999.99",
+    ci = "(xx.xx, xx.xx)", pval = "x.xxxx | (<0.0001)")
+)
+
+tabulate_rsp_subgroups(lyt, vars, conf_level = NULL, method = NULL)
 }
 \arguments{
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
-
-\item{arm}{(\code{factor})\cr the treatment group variable.}
-
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
@@ -34,34 +27,35 @@ extract_rsp_subgroups(variables, data, conf_level = 0.95, method = NULL)
 specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}
 so no test is performed.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr the name of statistics to be reported among
+\code{n} (total number of observations per group), \code{n_rsp} (number of responders per group),
+\code{prop} (proportion of responders), \code{n_tot} (total number of observations),
+\code{or} (odds ratio), \code{ci} (confidence interval of odds ratio) and \code{pvalue} (p value of the effect).}
 }
 \description{
-Helper functions that tabulate in a data frame statistics such as response rate
-and odds ratio for population subgroups.
+Tabulate statistics such as response rate and odds ratio for population subgroups.
 }
 \details{
-Main functionality is to prepare data for use in a layout creating function.
+These functions create a layout starting from a data frame which contains
+the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_proportion_df}: Helper to prepare a data frame of binary responses by arm.
-
-\item \code{h_proportion_subgroups_df}: Summarizes proportion of binary responses by arm and across subgroups
-in a data frame. \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and
-requires elements \code{rsp}, \code{arm} and \code{subgroups}.
-
-\item \code{h_odds_ratio_df}: Helper to prepare a data frame with estimates of
-the odds ratio between a treatment and a control arm.
-
-\item \code{h_odds_ratio_subgroups_df}: Summarizes estimates of the odds ratio between a treatment and a control
-arm across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
-\code{data}, passed as a named list and requires elements \code{rsp}, \code{arm} and \code{subgroups}.
-
-\item \code{extract_rsp_subgroups}: Tabulate response rates and odds ratios for
-population subgroups. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
+\item \code{extract_rsp_subgroups}: Prepares response rates and odds ratios for
+population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
 \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two data frames:
 \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
 named list and requires elements \code{rsp}, \code{arm} and \code{subgroups}.
+
+\item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=h_response_subgroups]{h_response_subgroups()}}.
+Returns is a list of Formatted Analysis functions with one element per statistic.
+
+\item \code{tabulate_rsp_subgroups}: layout creating function.
 }}
 
 \examples{
@@ -85,35 +79,23 @@ adrs <- adrs \%>\%
 var_labels(adrs) <- c(adrs_labels, "Response")
 
 
-h_proportion_df(
-  c(TRUE, FALSE, FALSE),
-  arm = factor(c("A", "A", "B"), levels = c("A", "B"))
-)
-
-
-h_proportion_subgroups_df(
+df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
   data = adrs
 )
+df
+
+a_response_subgroups(.formats = c("n" = "xx", "prop" = "xx.xx\%"))
 
 
-h_odds_ratio_df(
-  c(TRUE, FALSE, FALSE, TRUE),
-  arm = factor(c("A", "A", "B", "B"), levels = c("A", "B"))
-)
-# Include p-value.
-h_odds_ratio_df(adrs$rsp, adrs$ARM, method = "chisq")
+## Table of response rates by subgroup.
+basic_table() \%>\%
+  tabulate_rsp_subgroups(vars = c("n", "prop")) \%>\%
+  build_table(df$prop)
 
-
-h_odds_ratio_subgroups_df(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-  data = adrs
-)
-
-
-extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-  data = adrs
-)
+## Table of odds ratios by subgroup.
+basic_table() \%>\%
+  tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) \%>\%
+  build_table(df$or)
 
 }

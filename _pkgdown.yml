@@ -38,6 +38,7 @@ reference:
       - s_count_nonmissing
       - s_count_missed_doses
       - s_count_occurrences
+      - s_count_occurrences_by_grade
       - s_count_patients_with_event
       - s_coxreg
       - s_incidence_rate
@@ -67,6 +68,7 @@ reference:
        - a_coxreg
        - a_dummy_sum
        - a_mmrm_lsmeans
+       - a_response_subgroups
 
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
@@ -78,6 +80,7 @@ reference:
        - count_cumulative
        - count_missed_doses
        - count_occurrences
+       - count_occurrences_by_grade
        - count_patients_with_event
        - dummy_sum
        - estimate_proportion
@@ -89,9 +92,11 @@ reference:
        - summarize_change
        - summarize_colvars
        - summarize_lsmeans
-       - summarize_num_patients
+       - summarize_num_patient
+       - summarize_occurrences_by_grade
        - summarize_vars
        - summarize_coxreg
+       - tabulate_rsp_subgroups
        - test_proportion_diff
 
 
@@ -103,6 +108,7 @@ reference:
       - footnotes<-
       - add_footnotes<-
       - h_ancova
+      - h_append_grade_groups
       - h_count_cumulative
       - h_coxreg_extract_interaction
       - h_coxreg_inter_effect
@@ -119,6 +125,10 @@ reference:
       - h_incidence_rate_exact
       - h_incidence_rate_normal
       - h_incidence_rate_normal_log
+      - h_proportion_df
+      - h_proportion_subgroups_df
+      - h_odds_ratio_df
+      - h_odds_subgroups_df
       - or_glm
       - prop_chisq
       - prop_cmh
@@ -135,6 +145,7 @@ reference:
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
     contents:
+      - extract_rsp_subgroups
       - fit_mmrm
       - fit_coxreg_univar
       - fit_coxreg_multivar
@@ -258,6 +269,7 @@ reference:
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
     contents:
+      - all_elements_in_ref
       - is_character_or_factor
       - is_df_with_variables
       - is_nonnegative_count
@@ -303,3 +315,4 @@ reference:
       - h_col_indices
       - get_covariates
       - d_count_missed_doses
+      - d_rsp_subgroups_colvars

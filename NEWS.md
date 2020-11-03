@@ -18,6 +18,10 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Pruning functions for occurrence tables (or tables with counts and fractions), see `?prune_occurrences`.
 * Scoring functions for occurrence tables, see `?score_occurrences`.
 * MMRM are now with with `fit_mmrm` and tabulated with `as.rtable` and `summarize_lsmeans`, see `?tabulate_mmrm` for details.
+* Count the number of unique and non-unique patients with `summarize_num_patients`.
+* Count occurrences with `count_occurrences`.
+* Count occurrences by grade with `s_count_occurrences_by_grade`, `summarize_occurrences_by_grade` and `count_occurrences_by_grade`.
+* Tabulate the binary outcome response by subgroup with `extract_rsp_subgroups` and `tabulate_rsp_subgroups`.
 
 
 * issues with no news: 

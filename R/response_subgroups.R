@@ -12,7 +12,7 @@
 #'   specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
 #'   so no test is performed.
-#' @name response_subgroups
+#' @name h_response_subgroups
 #' @order 1
 #' @examples
 #'
@@ -36,8 +36,8 @@
 #'
 NULL
 
-#' @describeIn response_subgroups Helper to prepare a data frame of binary responses by arm.
-#' @inheritParams response_subgroups
+#' @describeIn h_response_subgroups Helper to prepare a data frame of binary responses by arm.
+#' @inheritParams h_response_subgroups
 #' @export
 #' @examples
 #'
@@ -73,7 +73,7 @@ h_proportion_df <- function(rsp, arm) {
   df
 }
 
-#' @describeIn response_subgroups Summarizes proportion of binary responses by arm and across subgroups
+#' @describeIn h_response_subgroups Summarizes proportion of binary responses by arm and across subgroups
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `rsp`, `arm` and `subgroups`.
 #' @export
@@ -115,7 +115,7 @@ h_proportion_subgroups_df <- function(variables, data) {
 
 }
 
-#' @describeIn response_subgroups Helper to prepare a data frame with estimates of
+#' @describeIn h_response_subgroups Helper to prepare a data frame with estimates of
 #'   the odds ratio between a treatment and a control arm.
 #' @inheritParams response_subgroups
 #' @export
@@ -180,7 +180,7 @@ h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
 
 }
 
-#' @describeIn response_subgroups Summarizes estimates of the odds ratio between a treatment and a control
+#' @describeIn h_response_subgroups Summarizes estimates of the odds ratio between a treatment and a control
 #'   arm across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `rsp`, `arm` and `subgroups`.
 #' @export
@@ -227,18 +227,56 @@ h_odds_ratio_subgroups_df <- function(variables, data, conf_level = 0.95, method
 
 }
 
-#' @describeIn response_subgroups Tabulate response rates and odds ratios for
-#'   population subgroups. Simple wrapper for [h_odds_ratio_subgroups_df()] and
+#' Tabulate Binary Response by Subgroup
+#'
+#' Tabulate statistics such as response rate and odds ratio for population subgroups.
+#'
+#' @details These functions create a layout starting from a data frame which contains
+#'   the required statistics. Tables typically used as part of forest plot.
+#'
+#' @inheritParams argument_convention
+#' @param data (`data frame`)\cr the dataset containing the variables to summarize.
+#' @param method (`string`)\cr
+#'   specifies the test used to calculate the p-value for the difference between
+#'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
+#'   so no test is performed.
+#' @name response_subgroups
+#' @order 1
+#' @examples
+#'
+#' # Testing dataset.
+#' library(random.cdisc.data)
+#' library(dplyr)
+#'
+#' adrs <- radrs(cached = TRUE)
+#' adrs_labels <- var_labels(adrs)
+#'
+#' adrs <- adrs %>%
+#'   filter(PARAMCD == "BESRSPI") %>%
+#'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
+#'   droplevels() %>%
+#'   mutate(
+#'     # Reorder levels of factor to make the placebo group the reference arm.
+#'     ARM = forcats::fct_relevel(ARM, "B: Placebo"),
+#'     rsp = AVALC == "CR"
+#'   )
+#' var_labels(adrs) <- c(adrs_labels, "Response")
+#'
+NULL
+
+#' @describeIn response_subgroups Prepares response rates and odds ratios for
+#'   population subgroups in data frames. Simple wrapper for [h_odds_ratio_subgroups_df()] and
 #'   [h_proportion_subgroups_df()]. Result is a list of two data frames:
 #'   `prop` and `or`. `variables` corresponds to the names of variables found in `data`, passed as a
 #'   named list and requires elements `rsp`, `arm` and `subgroups`.
 #' @export
 #' @examples
 #'
-#' extract_rsp_subgroups(
+#' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
 #'   data = adrs
 #' )
+#' df
 #'
 extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = NULL) {
 
@@ -246,4 +284,133 @@ extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = N
   df_or <- h_odds_ratio_subgroups_df(variables, data, conf_level = conf_level, method = method)
 
   list(prop = df_prop, or = df_or)
+}
+
+#' @describeIn response_subgroups Formatted Analysis function used to format the results of [h_response_subgroups()].
+#'   Returns is a list of Formatted Analysis functions with one element per statistic.
+#' @export
+#' @examples
+#' a_response_subgroups(.formats = c("n" = "xx", "prop" = "xx.xx%"))
+#'
+a_response_subgroups <- function(.formats = c(
+  n = "xx", n_rsp = "xx", prop = "xx.x%",
+  n_tot = "xx", or = ">999.99", ci = "(xx.xx, xx.xx)", pval = "x.xxxx | (<0.0001)")
+) {
+
+  assert_that(
+    is.character(.formats),
+    all_elements_in_ref(names(.formats), ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
+  )
+
+  afun_lst <- Map(function(stat, fmt){
+    if (stat == "ci") {
+      function(df, ...) {
+        in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
+      }
+    } else {
+      function(df, ...) {
+        in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
+      }
+    }
+  },
+  stat = names(.formats),
+  fmt = .formats
+  )
+
+  afun_lst
+}
+
+#' @describeIn response_subgroups layout creating function.
+#' @param vars (`character`)\cr the name of statistics to be reported among
+#'  `n` (total number of observations per group), `n_rsp` (number of responders per group),
+#'  `prop` (proportion of responders), `n_tot` (total number of observations),
+#'  `or` (odds ratio), `ci` (confidence interval of odds ratio) and `pvalue` (p value of the effect).
+#' @export
+#' @examples
+#'
+#' ## Table of response rates by subgroup.
+#' basic_table() %>%
+#'   tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
+#'   build_table(df$prop)
+#'
+#' ## Table of odds ratios by subgroup.
+#' basic_table() %>%
+#'   tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
+#'   build_table(df$or)
+#'
+tabulate_rsp_subgroups <- function(
+  lyt,
+  vars,
+  conf_level = NULL,
+  method = NULL) {
+
+  colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
+
+  afun_lst <- a_response_subgroups()
+
+  lyt <- split_cols_by(lyt = lyt, var = "arm")
+  lyt <- split_rows_by(lyt = lyt, var = "var_label")
+  lyt <- split_cols_by_multivar(
+    lyt = lyt,
+    vars = colvars$vars,
+    varlabels = colvars$labels
+  )
+  analyze_colvars(lyt = lyt, afun = afun_lst[vars])
+
+}
+
+#' Labels for Column Variables in Binary Response by Subgroup Table
+#'
+#' Internal function to check variables included in
+#' [tabulate_rsp_subgroups] and create column labels.
+#'
+#' @inheritParams tabulate_rsp_subgroups
+#' @return `list` of variables to tabulate and their labels.
+#'
+d_rsp_subgroups_colvars <- function(vars, conf_level = NULL, method = NULL) {
+
+  assert_that(
+    is.character(vars),
+    all_elements_in_ref(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
+  )
+
+  varlabels <- c(
+    n = "n",
+    n_rsp = "Responder n",
+    prop = "Response (%)",
+    n_tot = "Total n",
+    or = "Odds Ratio"
+  )
+  colvars <- vars
+
+  if ("ci" %in% colvars) {
+
+    assert_that(!is.null(conf_level))
+
+    varlabels <- c(
+      varlabels,
+      ci = paste0(100 * conf_level, "% CI")
+    )
+
+    # The `lcl`` variable is just a placeholder available in the analysis data,
+    # it is not acutally used in the tabulation.
+    # Variables used in the tabulation are lcl and ucl, see `a_response_subgroups` for details.
+    colvars[colvars == "ci"] <- "lcl"
+
+  }
+
+  if ("pval" %in% colvars) {
+
+    assert_that(!is.null(method))
+
+    varlabels <- c(
+      varlabels,
+      pval = d_test_proportion_diff(method)
+    )
+  }
+
+  list(
+    vars = colvars,
+    labels = varlabels[vars]
+  )
 }

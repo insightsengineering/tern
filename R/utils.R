@@ -311,3 +311,26 @@ empty_vector_if_na <- function(x) {
     x
   }
 }
+
+#' Combine Two Vectors Elementwise
+#'
+#' @param x (`vector`)\cr first vector to combine.
+#' @param y (`vector`)\cr second vector to combine.
+#'
+#' @return A `list` where each element combines corresponding elements of `x` and `y`.
+#' @export
+#' @examples
+#' combine_vectors(1:3, 4:6)
+#'
+combine_vectors <- function(x, y) {
+
+  assert_that(
+    is.vector(x),
+    is.vector(y),
+    is_equal_length(x, y)
+  )
+
+  result <- lapply(as.data.frame(rbind(x, y)), `c`)
+  names(result) <- NULL
+  result
+}

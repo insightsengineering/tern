@@ -202,3 +202,111 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
   expect_equal(result, expected, tol = 0.000001)
 
 })
+
+test_that("a_response_subgroups functions as expected with valid input", {
+
+  df <- data.frame(
+    prop = c(0.1234, 0.5678),
+    pval = c(0.00001, 0.983758),
+    subgroup = c("M", "F"),
+    stringsAsFactors = FALSE
+  )
+
+  afun <- a_response_subgroups(.formats = c(prop = "xx.xx", pval = "x.xxxx | (<0.0001)"))
+
+  result <- basic_table() %>%
+    split_cols_by_multivar(c("prop", "pval")) %>%
+    analyze_colvars(afun) %>%
+    build_table(df)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "M", "F", "prop", "0.12", "0.57", "pval", "<0.0001",
+      "0.9838"),
+    .Dim = c(3L, 3L)
+    )
+  expect_equal(result_matrix, expected_matrix)
+
+})
+
+test_that("tabulate_rsp_subgroups functions as expected with valid input", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs(n_records = 200)
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+    data = adrs,
+    method = "chisq",
+    conf_level = 0.95
+  )
+  df_prop <- df$prop
+  df_or <- df$or
+
+  # Response table.
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
+    build_table(df_prop)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "Sex", "F", "M", "Stratification Factor 2",
+      "S1", "S2", "B: Placebo", "n", "", "62", "38", "", "48", "52",
+      "B: Placebo", "Response (%)", "", "64.5%", "81.6%", "", "70.8%",
+      "71.2%", "A: Drug X", "n", "", "58", "42", "", "57", "43", "A: Drug X",
+      "Response (%)", "", "91.4%", "88.1%", "", "89.5%", "90.7%"),
+    .Dim = c(8L, 5L)
+  )
+  expect_equal(result_matrix, expected_matrix)
+
+  # Odds rato table with non-default inputs.
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci", "pval"), method = "chisq", conf_level = 0.95) %>%
+    build_table(df_or)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "Sex", "F", "M", "Stratification Factor 2",
+      "S1", "S2", " ", "Total n", "", "120", "80", "", "105", "95",
+      " ", "Odds Ratio", "", "5.83", "1.67", "", "3.5", "3.95", " ",
+      "95% CI", "", "(2.03, 16.73)", "(0.48, 5.79)", "", "(1.22, 10)",
+      "(1.2, 13.01)", " ", "p-value (Chi-Squared Test)", "", "0.0004",
+      "0.4150", "", "0.0154", "0.0178"),
+    .Dim = c(8L, 5L)
+    )
+  expect_equal(result_matrix, expected_matrix)
+
+})
+
+test_that("d_rsp_subgroups_colvars functions as expected with valid input", {
+
+  vars <- c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
+
+  result <- d_rsp_subgroups_colvars(
+    vars = vars,
+    conf_level = 0.9,
+    method = "chisq"
+  )
+
+  expected <- list(
+    vars = c("n", "n_rsp", "prop", "n_tot", "or", "lcl", "pval"),
+    labels = c(
+      n = "n",
+      n_rsp = "Responder n",
+      prop = "Response (%)",
+      n_tot = "Total n",
+      or = "Odds Ratio",
+      ci = "90% CI",
+      pval = "p-value (Chi-Squared Test)"
+    )
+  )
+
+  expect_equal(result, expected)
+
+})

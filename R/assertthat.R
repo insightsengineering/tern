@@ -216,7 +216,7 @@ on_failure(all_elements_in_ref) <- function(call, env) {
   ref <- eval(call$ref, envir = env)
   not_in_ref <- x[!(x %in% ref)]
 
-  paste0("Some elements ", deparse(not_in_ref), " are not in the reference.")
+  paste0("Some elements ", deparse(not_in_ref), " are not in the reference (", deparse(ref), ").")
 }
 
 #' @describeIn assertions Check whether rtables object `x` has the specified column names.
