@@ -28,7 +28,9 @@ on_failure(is_character_or_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a character or factor vector")
 }
 
+
 #' @describeIn assertions Check whether `x` is a nonnegative count.
+#' @importFrom rlang is_integerish
 #' @export
 #' @examples
 #'
@@ -36,11 +38,17 @@ on_failure(is_character_or_factor) <- function(call, env) {
 #' is_nonnegative_count(-1)
 #' is_nonnegative_count(0L)
 #' is_nonnegative_count(10L)
+#' is_nonnegative_count(0)
+#' is_nonnegative_count(10)
 is_nonnegative_count <- function(x) {
-  is_integer_single(x) && (x >= 0)
+  if (length(x) != 1)
+    return(FALSE)
+  if (!is_integerish(x, n = 1))
+    return(FALSE)
+  x >= 0 && !is.na(x)
 }
 on_failure(is_nonnegative_count) <- function(call, env) {
-  paste0(deparse(call$x), " is not a count (a single positive integer greater or equal to 0)")
+  paste0(deparse(call$x), " is not a non-negative count (a single integer greater than or equal to 0)")
 }
 
 #' @describeIn assertions Check whether `x` is a valid list of variable names.

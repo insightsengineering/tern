@@ -1,5 +1,5 @@
 test_that("format_fraction works with healthy inputs", {
-  result <- format_fraction(c(num = 2L, denom = 3L))
+  result <- format_fraction(c(num = 2, denom = 3))
   expected <- "2/3 (66.7%)"
   expect_identical(result, expected)
 })
@@ -24,7 +24,6 @@ test_that("format_count_fraction works with count of 0", {
 
 test_that("format_fraction fails with bad inputs", {
   x <- list(
-    c(num = 2, denom = 3),
     c(num = c(1L, 2L, 3L), denom = 5L),
     c(num = NA_integer_, denom = 2L)
   )

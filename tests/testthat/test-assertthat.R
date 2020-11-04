@@ -12,12 +12,13 @@ test_that("is_character_or_factor is FALSE with wrong input", {
 test_that("is_nonnegative_count is TRUE with healthy input", {
   expect_true(is_nonnegative_count(5L))
   expect_true(is_nonnegative_count(0L))
+  expect_true(is_nonnegative_count(5))
+  expect_true(is_nonnegative_count(0))
 })
 
 test_that("is_nonnegative_count is FALSE with wrong input", {
   expect_false(is_nonnegative_count(c(5L, 3L)))
   expect_false(is_nonnegative_count(- 5L))
-  expect_false(is_nonnegative_count(1))
   expect_false(is_nonnegative_count(NULL))
   expect_false(is_nonnegative_count(NA_integer_))
 })

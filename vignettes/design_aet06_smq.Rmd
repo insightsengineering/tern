@@ -1,0 +1,195 @@
+---
+title: "Design: AEs by Baseline Characteristics, by SMQ and Preferred Term Table (AET06_SMQ)"
+author: "Maximo Carreras"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of AET06_SMQ}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(dplyr)
+library(random.cdisc.data)
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+## Variant 1: Split columns by treatment arm and gender.
+
+```{r variant 1, eval = TRUE}
+
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE)
+  adsl_labels <- var_labels(adsl)
+  adae_labels <- var_labels(adae)
+
+  adae <- adae %>%
+    mutate(
+      SMQ1 = case_when(
+        AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
+        TRUE ~ NA_character_
+      ),
+      SMQ2 = case_when(
+        AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
+        TRUE ~ NA_character_
+      ),
+      SMQ3 = case_when(
+        AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
+        TRUE ~ NA_character_
+      )
+    )
+
+
+  adae_smq1 <- adae %>%
+    filter(!is.na(SMQ1)) %>%
+    rename(SMQ = SMQ1) %>%
+    select(-SMQ2, -SMQ3)
+
+  adae_smq2 <- adae %>%
+    filter(!is.na(SMQ2)) %>%
+    rename(SMQ = SMQ2) %>%
+    select(-SMQ1, -SMQ3)
+
+  adae_smq3 <- adae %>%
+    filter(!is.na(SMQ3)) %>%
+    rename(SMQ = SMQ3) %>%
+    select(-SMQ1, -SMQ2)
+
+  adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
+
+  var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries")
+
+  n_per_arm_sex <- table(interaction(adsl$SEX, adsl$ARM))
+
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_cols_by("SEX") %>%
+    add_colcounts() %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique"),
+      .labels = c(unique = "Total number of patients with at least one adverse event")
+    ) %>%
+    split_rows_by("SMQ", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(
+        unique = "Total number of patients with at least one adverse event",
+        nonunique = "Total number of events"
+      )
+    ) %>%
+    count_occurrences(vars = "AEDECOD")
+
+  result <- build_table(lyt, adae_f, col_counts = n_per_arm_sex) %>%
+    prune_table() %>%
+    sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
+
+result
+
+```
+
+## Variant 2: Split columns by treatment arm and age group. Note that some of the strata combining treatment arm and age group do not have any patients. Therefore, `NA` is displayed as the occurrences count.
+
+```{r variant 2, eval = TRUE}
+
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE)
+
+  adsl_labels <- var_labels(adsl)
+  adae_labels <- var_labels(adae)
+
+  adsl <- adsl %>%
+    mutate(
+      AGE65 = case_when(
+        AGE >= 65 ~ ">= 65",
+        TRUE ~ "< 65"
+      ),
+      AGE65 = factor(AGE65, levels = c(">= 65", "< 65"))
+    )
+
+  var_labels(adsl) <- c(adsl_labels, "AGE65" = "AGE65 GROUP")
+
+  adae <- adae %>%
+    mutate(
+      SMQ1 = case_when(
+        AEBODSYS %in% c("cl A.1", "cl B.1", "cl C.1", "cl D.1") ~ "SMQ 1 (broad)",
+        TRUE ~ NA_character_
+      ),
+      SMQ2 = case_when(
+        AEBODSYS %in% c("cl A.1", "cl D.1") ~ "SMQ 1 (narrow)",
+        TRUE ~ NA_character_
+      ),
+      SMQ3 = case_when(
+        AEDECOD %in% c("dcd B.2.1.2.1", "dcd A.1.1.1.2", "dcd C.2.1.2.1", "dcd B.2.2.3.1") ~ "AESI",
+        TRUE ~ NA_character_
+      ),
+      AGE65 = case_when(
+        AGE >= 65 ~ ">= 65",
+        TRUE ~ "< 65"
+      ),
+      AGE65 = factor(AGE65, levels = c(">= 65", "< 65"))
+    )
+
+  adae_smq1 <- adae %>%
+    filter(!is.na(SMQ1)) %>%
+    rename(SMQ = SMQ1) %>%
+    select(-SMQ2, -SMQ3)
+
+  adae_smq2 <- adae %>%
+    filter(!is.na(SMQ2)) %>%
+    rename(SMQ = SMQ2) %>%
+    select(-SMQ1, -SMQ3)
+
+  adae_smq3 <- adae %>%
+    filter(!is.na(SMQ3)) %>%
+    rename(SMQ = SMQ3) %>%
+    select(-SMQ1, -SMQ2)
+
+  adae_f <- rbind(adae_smq1, adae_smq2, adae_smq3)
+
+  var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries", "AGE65" = "AGE65 GROUP")
+
+  n_per_arm_age65 <- table(interaction(adsl$AGE65, adsl$ARM))
+
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_cols_by("AGE65") %>%
+    add_colcounts() %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique"),
+      .labels = c(unique = "Total number of patients with at least one adverse event")
+    ) %>%
+    split_rows_by("SMQ", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(
+        unique = "Total number of patients with at least one adverse event",
+        nonunique = "Total number of events"
+      )
+    ) %>%
+    count_occurrences(vars = "AEDECOD")
+
+  result <- build_table(lyt, adae_f, col_counts = n_per_arm_age65) %>%
+    prune_table() %>%
+    sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
+
+result
+
+```

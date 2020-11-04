@@ -28,7 +28,7 @@ NULL
 #'   MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
 #' )
 #'
-#' N_per_col <- 4
+#' N_per_col <- 4L
 #'
 #' # Count unique occurrences per subject.
 #' s_count_occurrences(
@@ -45,7 +45,7 @@ s_count_occurrences <- function(df,
 
   assert_that(
     is_df_with_variables(df, list(range = .var, id = id)),
-    is.count(.N_col),
+    is_nonnegative_count(.N_col),
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[id]])
   )

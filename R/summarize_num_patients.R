@@ -27,7 +27,7 @@ s_num_patients <- function(x, labelstr, .N_col) { # nolint
   assert_that(
     is_character_or_factor(x),
     is.string(labelstr),
-    is.count(.N_col)
+    is_nonnegative_count(.N_col)
   )
 
   count1 <- sum(!is.na(unique(x)))

@@ -95,6 +95,8 @@ is_character_or_factor(factor(c("a", "b")))
 is_nonnegative_count(-1)
 is_nonnegative_count(0L)
 is_nonnegative_count(10L)
+is_nonnegative_count(0)
+is_nonnegative_count(10)
 
 # Check whether `x` is a valid list of variable names.
 is_variables(list(val = "a"))

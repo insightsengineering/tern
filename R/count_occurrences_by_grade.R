@@ -99,7 +99,7 @@ s_count_occurrences_by_grade <- function(df,
   } else {
 
     assert_that(
-      is.count(.N_col),
+      is_nonnegative_count(.N_col),
       noNA(df[[id]]),
       is_valid_character(df[[id]]) || is_valid_factor(df[[id]])
     )

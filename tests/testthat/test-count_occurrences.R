@@ -4,7 +4,7 @@ test_that("s_count_occurrences functions as expected with valid input and defaul
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
   )
 
-  result <- s_count_occurrences(df = df, .N_col = 4)
+  result <- s_count_occurrences(df = df, .N_col = 4L)
 
  expected <- list(
   count = list(

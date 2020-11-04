@@ -86,7 +86,7 @@ df <- data.frame(
   MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
 )
 
-N_per_col <- 4
+N_per_col <- 4L
 
 # Count unique occurrences per subject.
 s_count_occurrences(

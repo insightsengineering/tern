@@ -132,7 +132,7 @@ test_that("s_count_occurrences_by_grade works with valid input for intensity and
   result <- s_count_occurrences_by_grade(
     df = df,
     .var = "AESEV",
-    .N_col = 10,
+    .N_col = 10L,
     id = "USUBJID2",
     grade_groups = list(
       "Any Intensity" = c("MILD", "MODERATE", "SEVERE")
