@@ -105,9 +105,9 @@ test_that("summarize_ancova works with healthy inputs", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Unadjusted comparison", "n", "Mean", "Difference in Means", "  95% CI", "  p-value",
+      "", "", "Unadjusted comparison", "n", "Mean", "Difference in Means", "95% CI", "p-value",
       "Adjusted comparison (covariates Petal.Length)", "n", "Adjusted Mean", "Difference in Adjusted Means",
-      "  95% CI", "  p-value",
+      "95% CI", "p-value",
       "setosa", "(N=50)", "", "50", "5.01", "", "", "", "", "50", "7.08", "", "", "",
       "versicolor", "(N=50)", "", "50", "5.94", "0.93", "0.73 - 1.13", "<0.0001",
       "", "50", "5.48", "-1.6", "-1.98 - -1.22", "<0.0001",

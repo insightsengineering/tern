@@ -13,8 +13,6 @@
 #'   then the result values will be `NA`, because no odds ratio estimation is
 #'   possible.
 #'
-#' @template formatting_arguments
-#'
 #' @name odds_ratio
 #' @md
 #'
@@ -117,12 +115,29 @@ s_odds_ratio <- function(df,
   y
 }
 
+#' @describeIn odds_ratio Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_odds_ratio(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE
+#' )
+#'
+a_odds_ratio <- make_afun(
+  s_odds_ratio,
+  .formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
+  .indent_mods = c(or_ci = 1L)
+)
 
 #' @describeIn odds_ratio Layout creating function which can be used for creating
 #'   tables, which can take statistics function arguments and additional format
 #'   arguments (see below).
 #'
-#' @inheritParams rtables::analyze
+#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_odds_ratio()`.
 #' @export
 #' @examples
@@ -139,17 +154,24 @@ s_odds_ratio <- function(df,
 #'
 estimate_odds_ratio <- function(lyt,
                                 vars,
+                                ...,
                                 show_labels = "hidden",
-                                ...) {
-
-  afun <- format_wrap_df(
-    sfun = s_odds_ratio,
-    formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
-    indent_mods = c(or_ci = 2L)
+                                .stats = NULL,
+                                .formats = NULL,
+                                .labels = NULL,
+                                .indent_mods = NULL) {
+  afun <- make_afun(
+    a_odds_ratio,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
 
   analyze(
-    lyt, vars, afun = afun,
+    lyt,
+    vars,
+    afun = afun,
     extra_args = list(...),
     show_labels = show_labels
   )

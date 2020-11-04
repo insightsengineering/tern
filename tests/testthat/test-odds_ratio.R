@@ -58,7 +58,7 @@ test_that("s_odds_ratio estimates right OR and CI", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "  Odds Ratio (95% CI)", "a", "", "b", "0.25 (0.01 - 7.45)",
+      "", "Odds Ratio (95% CI)", "a", "", "b", "0.25 (0.01 - 7.45)",
       "c", "0.5 (0.02 - 11.09)"
     ),
     .Dim = c(2L, 4L)

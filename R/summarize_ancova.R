@@ -3,8 +3,6 @@
 #' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
-#' @template formatting_arguments
-#'
 #' @name summarize_ancova
 #'
 NULL
@@ -135,9 +133,9 @@ s_ancova <- function(df,
     list(
       n = length(y[!is.na(y)]),
       lsmean = with_label(sum_fit_level$emmean, "Adjusted Mean"),
-      lsmean_diff = with_label("", "Difference in Adjusted Means"),
-      lsmean_diff_ci = with_label("", f_conf_level(conf_level)),
-      pval = with_label("", "p-value")
+      lsmean_diff = with_label(character(), "Difference in Adjusted Means"),
+      lsmean_diff_ci = with_label(character(), f_conf_level(conf_level)),
+      pval = with_label(character(), "p-value")
     )
   } else {
     # Estimate the differences between the marginal means.
@@ -170,6 +168,26 @@ s_ancova <- function(df,
     )
   }
 }
+
+#' @describeIn summarize_ancova Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+#'
+a_ancova <- make_afun(
+  s_ancova,
+  .indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 1L, "pval" = 1L),
+  .formats = c(
+    "n" = "xx",
+    "lsmean" = "xx.xx",
+    "lsmean_diff" = "xx.xx",
+    "lsmean_diff_ci" = "xx.xx - xx.xx",
+    "pval" = "x.xxxx | (<0.0001)"
+  ),
+  .null_ref_cells = FALSE
+)
 
 #' @describeIn summarize_ancova Layout creating function which can be be used for creating
 #'   summary tables for analysis of covariance (ANCOVA).
@@ -219,20 +237,25 @@ s_ancova <- function(df,
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,
+                             ...,
                              show_labels = "visible",
-                             ...) {
-  a_ancova <- format_wrap_df(
-    s_ancova,
-    indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 2L, "pval" = 2L),
-    formats = c("n" = "xx", "lsmean" = "xx.xx", "lsmean_diff" = "xx.xx", "lsmean_diff_ci" = "xx.xx - xx.xx",
-                "pval" = "x.xxxx | (<0.0001)")
+                             .stats = NULL,
+                             .formats = NULL,
+                             .labels = NULL,
+                             .indent_mods = NULL) {
+  afun <- make_afun(
+    a_ancova,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
   analyze(
     lyt,
     vars,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = a_ancova,
+    afun = afun,
     extra_args = list(...)
   )
 }

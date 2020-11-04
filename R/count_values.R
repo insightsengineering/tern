@@ -2,8 +2,6 @@
 #'
 #' We can count the occurrence of specific values in a variable of interest.
 #'
-#' @template formatting_arguments
-#'
 #' @name count_values_funs
 #' @order 1
 #'

@@ -12,9 +12,9 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Estimate difference in terms of responder proportions: `estimate_proportion_diff`, `s_proportion_diff`.
 * Estimate difference in terms of Odds Ratio: `estimate_odds_ratio`, `s_odds_ratio`, `or_glm`.
 * Test the difference in responder proportions: `test_proportion_diff`, `s_test_proportion_diff`, `prop_chisq`, `prop_cmh`, `prop_fisher`, `prop_schouten`.
-* Estimate the responder proportion regarding the level of a factor: `s_multinomial_response`, `estimate_multinomial_response`.
+* Estimate the responder proportion regarding the level of a factor: `estimate_multinomial_response`.
 * New method for calculating the confidence interval in `s_incidence_rate`: Normal approximation for log rate
-* Fit and tabulate the results of univariate Cox regressions: `fit_coxref`, `s_coxreg`, `h_coxreg`.
+* Fit and tabulate the results of Cox regressions: `fit_coxreg_univar`, `fit_coxreg_multivar`, `s_coxreg`, `summarize_coxreg`.
 * Pruning functions for occurrence tables (or tables with counts and fractions), see `?prune_occurrences`.
 * Scoring functions for occurrence tables, see `?score_occurrences`.
 * MMRM are now with with `fit_mmrm` and tabulated with `as.rtable` and `summarize_lsmeans`, see `?tabulate_mmrm` for details.

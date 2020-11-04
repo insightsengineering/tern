@@ -2,8 +2,6 @@
 #'
 #' Estimate the proportion of responders within a studied population.
 #'
-#' @template formatting_arguments
-#'
 #' @name estimate_proportions
 #' @order 1
 #'
@@ -208,13 +206,24 @@ s_proportion <- function(x,
   )
 }
 
+#' @describeIn estimate_proportions Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_proportion(c(1, 0, 1, 0))
+#'
+a_proportion <- make_afun(
+  s_proportion,
+  .formats = c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)")
+)
 
 #' @inheritParams rtables::analyze
 #' @param ... other arguments are ultimately conveyed to [s_proportion()].
 #' @export
 #' @describeIn estimate_proportions used in a `rtables` pipeline.
 #' @order 4
-#' @template formatting_arguments
+#'
 #' @examples
 #' dta_test <- data.frame(
 #'   USUBJID = paste0("S", 1:12),
@@ -228,15 +237,19 @@ s_proportion <- function(x,
 #'
 estimate_proportion <- function(lyt,
                                 vars,
+                                ...,
                                 show_labels = "hidden",
-                                ...) {
-
-  afun <- format_wrap_x(
-    s_proportion,
-    formats =  c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)"),
-    indent_mods =  c(n_prop = 0L, prop_ci = 0L)
+                                .stats = NULL,
+                                .formats = NULL,
+                                .labels = NULL,
+                                .indent_mods = NULL) {
+  afun <- make_afun(
+    a_proportion,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
-
   analyze(
     lyt,
     vars,

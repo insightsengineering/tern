@@ -9,6 +9,7 @@
 \alias{h_incidence_rate}
 \alias{s_incidence_rate}
 \alias{estimate_incidence_rate}
+\alias{a_incidence_rate}
 \title{Incidence rate}
 \usage{
 h_incidence_rate_normal(person_years, num_events, alpha = 0.05)
@@ -26,9 +27,15 @@ s_incidence_rate(df, .var, is_event, control = control_incidence_rate())
 estimate_incidence_rate(
   lyt,
   vars,
-  .stats = c("person_years", "num_events", "rate", "rate_ci"),
-  ...
+  ...,
+  show_labels = "hidden",
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
+
+a_incidence_rate(df, .var, is_event, control = control_incidence_rate())
 }
 \arguments{
 \item{person_years}{(\code{numeric}) \cr total person-years at risk.}
@@ -57,9 +64,17 @@ by a statistics function.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{...}{additional arguments for the lower level functions.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{...}{additional arguments for the lower level functions.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 The statistics are:
@@ -98,18 +113,10 @@ associated confidence interval.
 
 \item \code{estimate_incidence_rate}: layout creating function which adds analyze rows using the statistics
 function \code{s_incidence_rate} and desired format.
+
+\item \code{a_incidence_rate}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 h_incidence_rate_normal(200, 2)
@@ -157,5 +164,12 @@ basic_table() \%>\%
     control = control_incidence_rate(time_unit = 100)
   ) \%>\%
   build_table(df, col_counts = table(df$ARM))
+
+a_incidence_rate(
+  df,
+  .var = "AVAL",
+  is_event = "is_event",
+  control = control_incidence_rate(time_unit = 100)
+)
 
 }

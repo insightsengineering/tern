@@ -76,12 +76,18 @@ rtable_object_sorted <- rtable_object \%>\%
 rtable_object_sorted
 
 score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Placebo"))
+
+# Note that this here just sorts the AEDECOD inside the AEBODSYS. The AEBODSYS are not sorted.
+# That would require a second pass of `sort_at_path`.
 rtable_object_sorted <- rtable_object \%>\%
   sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
 
 rtable_object_sorted
 
 score_subtable_all <- score_occurrences_subtable(col_names = names(rtable_object))
+
+# Note that this code just sorts the AEBODSYS, not the AEDECOD within AEBODSYS. That
+# would require a second pass of `sort_at_path`.
 rtable_object_sorted <- rtable_object \%>\%
   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 

@@ -4,13 +4,26 @@
 \alias{summarize_ancova}
 \alias{h_ancova}
 \alias{s_ancova}
+\alias{a_ancova}
 \title{Summary for analysis of covariance (ANCOVA).}
 \usage{
 h_ancova(.var, .df_row, variables)
 
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col, conf_level)
 
-summarize_ancova(lyt, vars, var_labels, show_labels = "visible", ...)
+a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col, conf_level)
+
+summarize_ancova(
+  lyt,
+  vars,
+  var_labels,
+  ...,
+  show_labels = "visible",
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -43,9 +56,17 @@ reference group.
 
 \item{var_labels}{character for label.}
 
+\item{...}{additional arguments for the lower level functions.}
+
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{...}{additional arguments for the lower level functions.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 A named list of 5 statistics:
@@ -70,20 +91,12 @@ multiple timepoints within the same response variable \code{.var}.
 \item \code{s_ancova}: Statistics function that produces a named list of results
 of the investigated linear model.
 
+\item \code{a_ancova}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{summarize_ancova}: Layout creating function which can be be used for creating
 summary tables for analysis of covariance (ANCOVA).
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 h_ancova(
@@ -110,6 +123,8 @@ variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
 .ref_group <- adqs_single \%>\% dplyr::filter(ARMCD == "ARM A")
 conf_level <- 0.95
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
+
+a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 
 library(random.cdisc.data)
 library(dplyr)

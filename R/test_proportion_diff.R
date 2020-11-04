@@ -7,12 +7,10 @@
 #'   with two groups in rows and the binary response (`TRUE`/`FALSE`) in
 #'   columns.
 #'
-#' @template formatting_arguments
 #' @order 1
 #' @name prop_diff_test
 #'
 NULL
-
 
 #' @describeIn prop_diff_test performs Chi-Squared test.
 #'   Internally calls [stats::prop.test()].
@@ -234,11 +232,31 @@ d_test_proportion_diff <- function(method) {
   paste0("p-value (", meth_part, ")")
 }
 
+#' @describeIn prop_diff_test Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_test_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   variables = list(strata = "strat"),
+#'   method = "cmh"
+#' )
+#'
+a_test_proportion_diff <- make_afun(
+  s_test_proportion_diff,
+  .formats = c(pval = "x.xxxx | (<0.0001)"),
+  .indent_mods = c(pval = 1L)
+)
 
 #' @describeIn prop_diff_test Layout creating function which can be used for
 #'   creating tables, which can take statistics function arguments and
 #'   additional format arguments.
 #' @param ... other arguments are passed to [s_test_proportion_diff()].
+#' @inheritParams argument_convention
 #' @export
 #' @examples
 #'
@@ -253,14 +271,19 @@ d_test_proportion_diff <- function(method) {
 #'
 test_proportion_diff <- function(lyt,
                                  vars,
+                                 ...,
                                  show_labels = "hidden",
-                                 ...) {
-  afun <- format_wrap_df(
-    sfun = s_test_proportion_diff,
-    formats =  c(pval = "x.xxxx | (<0.0001)"),
-    indent_mods = c(pval = 2L)
+                                 .stats = NULL,
+                                 .formats = NULL,
+                                 .labels = NULL,
+                                 .indent_mods = NULL) {
+  afun <- make_afun(
+    a_test_proportion_diff,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
-
   analyze(
     lyt,
     vars,

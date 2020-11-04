@@ -279,7 +279,7 @@ fit_coxreg <- function(lyt,
                        multivar = FALSE,
                        vars = c("n", "hr", "ci", "pval")) {
   # will need to change to new make_afun
-  afun <- format_wrap_df(
+  afun <- tern:::format_wrap_df(
     sfun = s_coxreg,
     formats = c(
       n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)",

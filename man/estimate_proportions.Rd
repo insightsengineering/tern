@@ -9,6 +9,7 @@
 \alias{prop_jeffreys}
 \alias{s_proportion}
 \alias{estimate_proportion}
+\alias{a_proportion}
 \title{Estimation of Proportions}
 \usage{
 prop_wilson(rsp, conf_level)
@@ -29,7 +30,24 @@ s_proportion(
   long = FALSE
 )
 
-estimate_proportion(lyt, vars, show_labels = "hidden", ...)
+estimate_proportion(
+  lyt,
+  vars,
+  ...,
+  show_labels = "hidden",
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
+a_proportion(
+  x,
+  conf_level = 0.95,
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
+    "jeffreys"),
+  long = FALSE
+)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
@@ -52,9 +70,17 @@ successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, 
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{...}{other arguments are ultimately conveyed to \code{\link[=s_proportion]{s_proportion()}}.}
+
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{...}{other arguments are ultimately conveyed to \code{\link[=s_proportion]{s_proportion()}}.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \description{
 Estimate the proportion of responders within a studied population.
@@ -84,27 +110,10 @@ proportion.
 proportion along with its confidence interval.
 
 \item \code{estimate_proportion}: used in a \code{rtables} pipeline.
+
+\item \code{a_proportion}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 rsp <- c(
@@ -136,5 +145,7 @@ dta_test <- data.frame(
 split_cols_by(lyt = NULL, "ARM") \%>\%
   estimate_proportion(vars = "AVAL") \%>\%
   build_table(df = dta_test)
+
+a_proportion(c(1, 0, 1, 0))
 
 }

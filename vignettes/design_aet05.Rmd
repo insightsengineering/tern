@@ -161,7 +161,7 @@ adjusted_rate <- function(
   ...
 ) {
 
-  a_adjusted_rate <- format_wrap_df(
+  a_adjusted_rate <- tern:::format_wrap_df(
     s_adjusted_rate,
     indent_mods = c(
       "person_years" = 0L,

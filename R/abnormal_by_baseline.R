@@ -19,8 +19,6 @@
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
 #'
-#' @template formatting_arguments
-#'
 #' @name abnormal_by_baseline
 NULL
 
@@ -129,6 +127,7 @@ a_count_abnormal_by_baseline <- make_afun(
 
 #' @describeIn abnormal_by_baseline Layout creating function which can be used for creating tables, which can take
 #'   statistics function arguments and additional format arguments (see below).
+#' @inheritParams argument_convention
 #' @export
 #' @examples
 #'

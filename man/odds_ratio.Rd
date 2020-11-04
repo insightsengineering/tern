@@ -4,6 +4,7 @@
 \alias{odds_ratio}
 \alias{or_glm}
 \alias{s_odds_ratio}
+\alias{a_odds_ratio}
 \alias{estimate_odds_ratio}
 \title{Odds Ratio Estimation}
 \usage{
@@ -11,7 +12,18 @@ or_glm(data, conf_level)
 
 s_odds_ratio(df, .var, .ref_group, .in_ref_col, conf_level = 0.95)
 
-estimate_odds_ratio(lyt, vars, show_labels = "hidden", ...)
+a_odds_ratio(df, .var, .ref_group, .in_ref_col, conf_level = 0.95)
+
+estimate_odds_ratio(
+  lyt,
+  vars,
+  ...,
+  show_labels = "hidden",
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{data}{(\verb{data frame})\cr
@@ -32,9 +44,17 @@ by a statistics function.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{...}{arguments passed to \code{s_odds_ratio()}.}
+
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{...}{arguments passed to \code{s_odds_ratio()}.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \description{
 Compares bivariate responses between two groups in terms of odds ratios
@@ -58,21 +78,13 @@ possible.
 \item \code{s_odds_ratio}: Statistics function which estimates the odds ratio
 between a treatment and a control.
 
+\item \code{a_odds_ratio}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{estimate_odds_ratio}: Layout creating function which can be used for creating
 tables, which can take statistics function arguments and additional format
 arguments (see below).
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 
@@ -92,6 +104,13 @@ dta <- data.frame(
 )
 
 s_odds_ratio(
+  df = subset(dta, grp == "A"),
+  .var = "rsp",
+  .ref_group = subset(dta, grp == "B"),
+  .in_ref_col = FALSE
+)
+
+a_odds_ratio(
   df = subset(dta, grp == "A"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),

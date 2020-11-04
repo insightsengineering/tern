@@ -74,17 +74,6 @@ and \code{labelstr} in \code{cfun} of \code{\link[=summarize_row_groups]{summari
 function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and desired format.
 }}
 
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
-
 \examples{
 # Use the statistics function to count number of unique and nonunique patients.
 s_num_patients(x = as.character(c(1, 2, 1, 4, NA)), labelstr = "", .N_col = 5L)

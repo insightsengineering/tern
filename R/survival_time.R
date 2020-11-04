@@ -12,8 +12,6 @@
 #'    see more in [survival::survfit()]
 #' * `quantiles`: numeric vector of length two to specify the quantiles of survival time.
 #'
-#' @template formatting_arguments
-#'
 #' @name survival_time
 #'
 NULL
@@ -77,11 +75,38 @@ s_surv_time <- function(df,
   )
 }
 
+#' @describeIn survival_time Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_surv_time(df, .var = "AVAL", is_event = "is_event")
+#'
+a_surv_time <- make_afun(
+  s_surv_time,
+  .indent_mods = c(
+    "median" = 0L,
+    "median_ci" = 1L,
+    "quantiles" = 0L,
+    "range_censor" = 0L,
+    "range_event" = 0L,
+    "range" = 0L
+  ),
+  .formats = c(
+    "median" = "xx.xx",
+    "median_ci" = "(xx.x, xx.x)",
+    "quantiles" = "xx.x, xx.x",
+    "range_censor" = "xx.x to xx.x",
+    "range_event" = "xx.x to xx.x",
+    "range" = "xx.x to xx.x"
+  )
+)
+
 #' @describeIn survival_time Analyze Function which adds the survival times analysis
 #'   to the input layout. Note that additional formatting arguments can be used here.
+#' @inheritParams argument_convention
 #' @export
 #' @examples
-#'
 #' split_cols_by(lyt = NULL, var = "ARMCD") %>%
 #'   add_colcounts() %>%
 #'   surv_time(
@@ -91,36 +116,28 @@ s_surv_time <- function(df,
 #'     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
 #'   ) %>%
 #'   build_table(df = ADTTE_f)
+#'
 surv_time <- function(lyt,
                       vars,
+                      ...,
                       var_labels = "Time to Event",
                       .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
-                      ...) {
-  a_surv_time <- format_wrap_df(
-    s_surv_time,
-    indent_mods = c(
-      "median" = 0L,
-      "median_ci" = 2L,
-      "quantiles" = 0L,
-      "range_censor" = 0L,
-      "range_event" = 0L,
-      "range" = 0L
-    ),
-    formats = c(
-      "median" = "xx.xx",
-      "median_ci" = "(xx.x, xx.x)",
-      "quantiles" = "xx.x, xx.x",
-      "range_censor" = "xx.x to xx.x",
-      "range_event" = "xx.x to xx.x",
-      "range" = "xx.x to xx.x"
-    )
+                      .formats = NULL,
+                      .labels = NULL,
+                      .indent_mods = NULL) {
+  afun <- make_afun(
+    a_surv_time,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
   analyze(
     lyt,
     vars,
     var_labels = var_labels,
     show_labels = "visible",
-    afun = a_surv_time,
-    extra_args = c(list(.stats = .stats), list(...))
+    afun = afun,
+    extra_args = list(...)
   )
 }

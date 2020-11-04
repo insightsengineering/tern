@@ -54,7 +54,7 @@ test_that("TTET01 default variant is produced correctly", {
     ) %>%
     surv_timepoint_diff(
       vars = "AVAL",
-      show_label = "hidden",
+      show_labels = "hidden",
       is_event = "is_event",
       control = control_surv_timepoint(time_point = 6)
     ) %>%
@@ -66,7 +66,7 @@ test_that("TTET01 default variant is produced correctly", {
     ) %>%
     surv_timepoint_diff(
       vars = "AVAL",
-      show_label = "hidden",
+      show_labels = "hidden",
       is_event = "is_event",
       control = control_surv_timepoint(time_point = 12)
     )
@@ -79,13 +79,13 @@ test_that("TTET01 default variant is produced correctly", {
       "", "", "Patients with event (%)", "Adverse Event",
       "Death", "Disease Progression", "Last Date Known To Be Alive",
       "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "  95% CI", "25% and 75%-ile", "Range (censored)",
+      "Median", "95% CI", "25% and 75%-ile", "Range (censored)",
       "Range (event)", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "6 Months", "Patients remaining at risk",
-      "Event Free Rate (%)", "  95% CI", "  Difference in Event Free Rate",
-      "    95% CI", "    p-value (Z-test)", "12 Months", "Patients remaining at risk",
-      "Event Free Rate (%)", "  95% CI", "  Difference in Event Free Rate",
-      "    95% CI", "    p-value (Z-test)", "A: Drug X", "(N=134)",
+      "Hazard Ratio", "95% CI", "6 Months", "Patients remaining at risk",
+      "Event Free Rate (%)", "95% CI", "Difference in Event Free Rate",
+      "95% CI", "p-value (Z-test)", "12 Months", "Patients remaining at risk",
+      "Event Free Rate (%)", "95% CI", "Difference in Event Free Rate",
+      "95% CI", "p-value (Z-test)", "A: Drug X", "(N=134)",
       "81 (60.4%)", "12", "12", "23", "19", "15", "53 (39.6%)", "",
       "33.19", "(31.3, 41.9)", "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3",
       "", "", "", "", "", "107", "89.74", "(84.44, 95.03)", "", "",
@@ -172,11 +172,11 @@ test_that("TTET01 variant: selecting sections to display", {
       "", "", "Patients with event (%)", "Adverse Event",
       "Death", "Disease Progression", "Last Date Known To Be Alive",
       "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "  95% CI", "25% and 75%-ile", "Range (censored)",
+      "Median", "95% CI", "25% and 75%-ile", "Range (censored)",
       "Range (event)", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "6 Months", "Patients remaining at risk",
-      "Event Free Rate (%)", "  95% CI", "12 Months", "Patients remaining at risk",
-      "Event Free Rate (%)", "  95% CI", "A: Drug X", "(N=134)", "81 (60.4%)",
+      "Hazard Ratio", "95% CI", "6 Months", "Patients remaining at risk",
+      "Event Free Rate (%)", "95% CI", "12 Months", "Patients remaining at risk",
+      "Event Free Rate (%)", "95% CI", "A: Drug X", "(N=134)", "81 (60.4%)",
       "12", "12", "23", "19", "15", "53 (39.6%)", "", "33.19", "(31.3, 41.9)",
       "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3", "", "", "", "",
       "", "107", "89.74", "(84.44, 95.03)", "", "93", "81.84", "(74.94, 88.74)",
@@ -247,7 +247,7 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
     ) %>%
     surv_timepoint_diff(
       vars = "AVAL",
-      show_label = "hidden",
+      show_labels = "hidden",
       is_event = "is_event",
       control = control_surv_timepoint(time_point = 12),
       conf_level = 0.975
@@ -260,11 +260,11 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
       "", "", "Patients with event (%)", "Adverse Event",
       "Death", "Disease Progression", "Last Date Known To Be Alive",
       "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "  90% CI", "25% and 75%-ile", "Range (censored)",
+      "Median", "90% CI", "25% and 75%-ile", "Range (censored)",
       "Range (event)", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "12 Months", "Patients remaining at risk",
-      "Event Free Rate (%)", "  90% CI", "  Difference in Event Free Rate",
-      "    97.5% CI", "    p-value (Z-test)", "A: Drug X", "(N=134)",
+      "Hazard Ratio", "95% CI", "12 Months", "Patients remaining at risk",
+      "Event Free Rate (%)", "90% CI", "Difference in Event Free Rate",
+      "97.5% CI", "p-value (Z-test)", "A: Drug X", "(N=134)",
       "81 (60.4%)", "12", "12", "23", "19", "15", "53 (39.6%)", "",
       "33.19", "(31.3, 40.8)", "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3",
       "", "", "", "", "", "93", "81.84", "(75.19, 86.87)", "", "",
@@ -340,7 +340,7 @@ test_that("TTET01 variant: with stratified analysis", {
     ) %>%
     surv_timepoint_diff(
       vars = "AVAL",
-      show_label = "hidden",
+      show_labels = "hidden",
       is_event = "is_event",
       control = control_surv_timepoint(time_point = 12)
     )
@@ -352,12 +352,12 @@ test_that("TTET01 variant: with stratified analysis", {
       "", "", "Patients with event (%)", "Adverse Event",
       "Death", "Disease Progression", "Last Date Known To Be Alive",
       "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "  95% CI", "25% and 75%-ile", "Range (censored)",
+      "Median", "95% CI", "25% and 75%-ile", "Range (censored)",
       "Range (event)", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "Stratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "12 Months", "Patients remaining at risk",
-      "Event Free Rate (%)", "  95% CI", "  Difference in Event Free Rate",
-      "    95% CI", "    p-value (Z-test)", "A: Drug X", "(N=134)",
+      "Hazard Ratio", "95% CI", "Stratified Analysis", "p-value (log-rank)",
+      "Hazard Ratio", "95% CI", "12 Months", "Patients remaining at risk",
+      "Event Free Rate (%)", "95% CI", "Difference in Event Free Rate",
+      "95% CI", "p-value (Z-test)", "A: Drug X", "(N=134)",
       "81 (60.4%)", "12", "12", "23", "19", "15", "53 (39.6%)", "",
       "33.19", "(31.3, 41.9)", "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3",
       "", "", "", "", "", "", "", "", "", "93", "81.84", "(74.94, 88.74)",
@@ -430,7 +430,7 @@ test_that("TTET01 variant: modifying time point", {
     ) %>%
     surv_timepoint_diff(
       vars = "AVAL",
-      show_label = "hidden",
+      show_labels = "hidden",
       is_event = "is_event",
       control = control_surv_timepoint(time_point = 6)
     )
@@ -442,11 +442,11 @@ test_that("TTET01 variant: modifying time point", {
       "", "", "Patients with event (%)", "Adverse Event",
       "Death", "Disease Progression", "Last Date Known To Be Alive",
       "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "  95% CI", "25% and 75%-ile", "Range (censored)",
+      "Median", "95% CI", "25% and 75%-ile", "Range (censored)",
       "Range (event)", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "6 Months", "Patients remaining at risk",
-      "Event Free Rate (%)", "  95% CI", "  Difference in Event Free Rate",
-      "    95% CI", "    p-value (Z-test)", "A: Drug X", "(N=134)",
+      "Hazard Ratio", "95% CI", "6 Months", "Patients remaining at risk",
+      "Event Free Rate (%)", "95% CI", "Difference in Event Free Rate",
+      "95% CI", "p-value (Z-test)", "A: Drug X", "(N=134)",
       "81 (60.4%)", "12", "12", "23", "19", "15", "53 (39.6%)", "",
       "33.19", "(31.3, 41.9)", "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3",
       "", "", "", "", "", "107", "89.74", "(84.44, 95.03)", "", "",
@@ -513,7 +513,7 @@ test_that("TTET01 variant: requesting more than one p-value", {
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
-      show_label = "hidden",
+      show_labels = "hidden",
       control = control_coxph(pval_method = "wald"),
       .stats = "pvalue",
       .indent_mods = c(pvalue = 2L)
@@ -521,7 +521,7 @@ test_that("TTET01 variant: requesting more than one p-value", {
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
-      show_label = "hidden",
+      show_labels = "hidden",
       control = control_coxph(pval_method = "likelihood"),
       .indent_mods = c(pvalue = 2L, hr = 2L, hr_ci = 4L)
     ) %>%
@@ -533,7 +533,7 @@ test_that("TTET01 variant: requesting more than one p-value", {
     ) %>%
     surv_timepoint_diff(
       vars = "AVAL",
-      show_label = "hidden",
+      show_labels = "hidden",
       is_event = "is_event",
       control = control_surv_timepoint(time_point = 12)
     )
@@ -545,12 +545,12 @@ test_that("TTET01 variant: requesting more than one p-value", {
       "", "", "Patients with event (%)", "Adverse Event",
       "Death", "Disease Progression", "Last Date Known To Be Alive",
       "Last Tumor Assessment", "Patients without event (%)", "Time to Event (Months)",
-      "Median", "  95% CI", "25% and 75%-ile", "Range (censored)",
+      "Median", "95% CI", "25% and 75%-ile", "Range (censored)",
       "Range (event)", "Unstratified Analysis", "p-value (log-rank)",
-      "  p-value (wald)", "  p-value (likelihood)", "  Hazard Ratio",
-      "    95% CI", "12 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "  95% CI", "  Difference in Event Free Rate", "    95% CI",
-      "    p-value (Z-test)", "A: Drug X", "(N=134)", "81 (60.4%)",
+      "p-value (wald)", "p-value (likelihood)", "Hazard Ratio",
+      "95% CI", "12 Months", "Patients remaining at risk", "Event Free Rate (%)",
+      "95% CI", "Difference in Event Free Rate", "95% CI",
+      "p-value (Z-test)", "A: Drug X", "(N=134)", "81 (60.4%)",
       "12", "12", "23", "19", "15", "53 (39.6%)", "", "33.19", "(31.3, 41.9)",
       "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3", "", "", "", "",
       "", "", "", "93", "81.84", "(74.94, 88.74)", "", "", "", "B: Placebo",

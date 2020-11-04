@@ -658,7 +658,7 @@ check_increments <- function(increments, covariates) {
 #'
 #' @export
 #'
-#' @importFrom stats model.matrix coef
+#' @importFrom stats model.matrix coef vcov
 #'
 #' @examples
 #' library(tern)

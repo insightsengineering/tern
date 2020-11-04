@@ -5,7 +5,6 @@
 #'   vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
 #'
-#' @template formatting_arguments
 #' @name prop_difference
 #'
 NULL
@@ -342,6 +341,24 @@ s_proportion_diff <- function(df,
   y
 }
 
+#' @describeIn prop_difference Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#' @examples
+#' a_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   conf_level = 0.90,
+#'   method = "ha"
+#' )
+#'
+a_proportion_diff <- make_afun(
+  s_proportion_diff,
+  .formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+  .indent_mods = c(diff = 0L, diff_ci = 1L)
+)
 
 #' @describeIn prop_difference Adds a descriptive analyze layer to `rtables`
 #'   pipelines. The analysis is applied to a `dataframe` and return the
@@ -364,13 +381,19 @@ s_proportion_diff <- function(df,
 #'
 estimate_proportion_diff <- function(lyt,
                                      vars,
+                                     ...,
                                      var_labels = vars,
                                      show_labels = "hidden",
-                                     ...) {
-  afun <- format_wrap_df(
-    sfun = s_proportion_diff,
-    formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
-    indent_mods = c(diff = 0L, diff_ci = 2L)
+                                     .stats = NULL,
+                                     .formats = NULL,
+                                     .labels = NULL,
+                                     .indent_mods = NULL) {
+  afun <- make_afun(
+    a_proportion_diff,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
 
   analyze(

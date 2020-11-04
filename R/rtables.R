@@ -149,33 +149,8 @@ identical_without_attr <- function(x, y) {
 NULL
 
 #' @describeIn format_wrap the wrapper for `sfun` having `df` as first argument.
-#' @export
 #'
-#' @examples
-#' sfun <- function(df) {
-#'   list(
-#'     nrows = nrow(df),
-#'     ncols = length(df)
-#'   )
-#' }
-#' afun <- format_wrap_df(
-#'   sfun,
-#'   indent_mods = c(nrows = 0L, ncols = 2L),
-#'   formats = c(nrows = "xx.", ncols = "xx.xx")
-#' )
-#' df <- data.frame(
-#'   a = c(1, 2),
-#'   b = c(3, 4)
-#' )
-#' afun(df)
-#' afun(
-#'   df,
-#'   .indent_mods = c(nrows = 3L),
-#'   .stats = "nrows",
-#'   .formats = c(nrows = "xx.xx"),
-#'   .labels = c(nrows = "Number of rows")
-#' )
-format_wrap_df <- function(sfun,
+format_wrap_df <- function(sfun, #nousage #nolint
                            indent_mods,
                            formats) {
   assert_that(
@@ -279,30 +254,7 @@ format_wrap_df <- function(sfun,
 }
 
 #' @describeIn format_wrap the wrapper for `sfun` having `x` as first argument.
-#' @export
 #'
-#' @examples
-#' sfun <- function(x) {
-#'   list(
-#'     n = length(x),
-#'     mean = mean(x),
-#'     median = median(x)
-#'   )
-#' }
-#' afun <- format_wrap_x(
-#'   sfun,
-#'   indent_mods = c(n = 0L, mean = 2L, median = 1L),
-#'   formats = c(n = "xx.", mean = "xx.xx", median = "xx")
-#' )
-#' x <- c(1, 0, -1, 2, 5, 3, 2.5, 7.1)
-#' afun(x)
-#' afun(
-#'   x,
-#'   .indent_mods = c(median = 3L),
-#'   .stats = c("n", "median"),
-#'   .formats = c(median = "xx.xx"),
-#'   .labels = c(n = "Number of numbers")
-#' )
 format_wrap_x <- function(sfun,
                           indent_mods,
                           formats) {

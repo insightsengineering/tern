@@ -13,7 +13,6 @@
 #' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
 #'   can also be set to "breslow" or "exact". see more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
-#' @template formatting_arguments
 #'
 #' @name survival_coxph_pairwise
 #'
@@ -100,6 +99,19 @@ s_coxph_pairwise <- function(df,
   )
 }
 
+#' @describeIn survival_coxph_pairwise Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_dummy_sum(c(1, 2))
+#'
+a_coxph_pairwise <- make_afun(
+  s_coxph_pairwise,
+  .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L),
+  .formats = c(pvalue = "x.xxxx | (<0.0001)", hr = "xx.xxxx", hr_ci = "(xx.xxxx, xx.xxxx)")
+)
+
 
 #' @describeIn survival_coxph_pairwise Analyze Function which adds the pairwise coxph analysis
 #'   to the input layout. Note that additional formatting arguments can be used here.
@@ -127,20 +139,26 @@ s_coxph_pairwise <- function(df,
 #'   build_table(df = ADTTE_f)
 coxph_pairwise <- function(lyt,
                            vars,
+                           ...,
                            var_labels = "CoxPH",
                            show_labels = "visible",
-                           ...) {
-  a_coxph_pairwise <- format_wrap_df(
-    s_coxph_pairwise,
-    indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L),
-    formats = c(pvalue = "x.xxxx | (<0.0001)", hr = "xx.xxxx", hr_ci = "(xx.xxxx, xx.xxxx)")
+                           .stats = NULL,
+                           .formats = NULL,
+                           .labels = NULL,
+                           .indent_mods = NULL) {
+  afun <- make_afun(
+    a_coxph_pairwise,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
   analyze(
     lyt,
     vars,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = a_coxph_pairwise,
+    afun = afun,
     extra_args = list(...)
   )
 }

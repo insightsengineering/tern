@@ -2,47 +2,50 @@
 % Please edit documentation in R/estimate_multinomial_rsp.R
 \name{estimate_multinomial_rsp}
 \alias{estimate_multinomial_rsp}
-\alias{s_multinomial_response}
+\alias{s_length_proportion}
+\alias{a_length_proportion}
 \alias{estimate_multinomial_response}
 \title{Estimation of Proportions per Level of Factor}
 \usage{
-s_multinomial_response(
-  x,
-  conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "agresti-coull",
-    "jeffreys"),
-  long = FALSE
-)
+s_length_proportion(x, .N_col, ...)
+
+a_length_proportion(x, .N_col, ...)
 
 estimate_multinomial_response(
   lyt,
   var,
-  vars = var,
+  ...,
   show_labels = "hidden",
-  ...
+  .stats = "prop_ci",
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{method}{(\code{string}) \cr
-the method used to construct the confidence interval for proportion of
-successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
-\code{agresti-coull} or \code{jeffreys}.}
-
-\item{long}{(\code{flag})\cr a long description is required.}
+\item{...}{additional arguments for the lower level functions.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{...}{other arguments are ultimately conveyed to \code{\link[=s_multinomial_response]{s_multinomial_response()}}.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+}
+\value{
+See \code{\link[=s_proportion]{s_proportion()}} for statistics and additional possible arguments.
 }
 \description{
 Estimate the proportion along with confidence interval of a proportion
@@ -50,27 +53,22 @@ regarding the level of a factor.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_multinomial_response}: statistics function estimating a
-proportion per factor level along with its confidence interval for the level.
+\item \code{s_length_proportion}: Statistics function which takes the length of the input \code{x} and takes that
+as the number of successes, and the column number \code{.N_col} as the total number, and feeds that into
+\code{\link[=s_proportion]{s_proportion()}}.
 
-\item \code{estimate_multinomial_response}: used in a \code{rtables} pipeline.
+\item \code{a_length_proportion}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{estimate_multinomial_response}: Analyze Function which adds the multinomial proportion analysis to
+the input layout. Note that additional formatting arguments can be used
+here.
 }}
 
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
-
 \examples{
+s_length_proportion(rep("CR", 10), .N_col = 100)
 
-# Basic use of the statistics function
-s_multinomial_response(c(0, 1, 0, 1))
+a_length_proportion(rep("CR", 10), .N_col = 100)
 
 
 # Use of the layout creating function.

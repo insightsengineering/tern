@@ -127,7 +127,7 @@ test_that("coxph_pairwise works with default arguments and no stratification fac
   expected_matrix <- structure(
     c(
       "", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "ARM A", "", "", "", "", "ARM B",
+      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B",
       "", "0.2584", "1.1887", "(0.8805, 1.6048)", "ARM C", "", "<0.0001",
       "2.1107", "(1.5689, 2.8397)"
     ),
@@ -161,7 +161,7 @@ test_that("coxph_pairwise works with customized arguments and no stratification 
   expected_matrix <- structure(
     c(
       "", "Unstratified Analysis", "p-value (likelihood)",
-      "Hazard Ratio", " 99% CI", "ARM A", "", "", "", "", "ARM B",
+      "Hazard Ratio", "99% CI", "ARM A", "", "", "", "", "ARM B",
       "", "0.2585", "1.1887", "(0.8012, 1.7636)", "ARM C", "", "<0.0001",
       "2.1107", "(1.4293, 3.1171)"
     ),
@@ -195,7 +195,7 @@ test_that("coxph_pairwise works with default arguments and stratification factor
   expected_matrix <- structure(
     c(
       "", "Stratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", " 95% CI", "ARM A", "", "", "", "", "ARM B",
+      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B",
       "", "0.2789", "1.1825", "(0.8727, 1.6021)", "ARM C", "", "<0.0001",
       "2.0803", "(1.5453, 2.8004)"
     ),
@@ -230,7 +230,7 @@ test_that("coxph_pairwise works with customized arguments and stratification fac
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "Stratified Analysis", "Hazard Ratio", " 99% CI",
+      "", "Stratified Analysis", "Hazard Ratio", "99% CI",
       "ARM A", "", "", "", "ARM B", "", "1.251", "(0.825, 1.896)",
       "ARM C", "", "2.17", "(1.443, 3.262)"
     ),

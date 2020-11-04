@@ -160,7 +160,7 @@ s_abnormal_by_worst_grade(
 abnormal_by_worst_grade <- function(lyt,
                                     vars,
                                     ...) {
-  a_abnormal_by_worst_grade <- format_wrap_df(
+  a_abnormal_by_worst_grade <- tern:::format_wrap_df(
     s_abnormal_by_worst_grade, 
     indent_mods = c(section_label = 0L, count_fraction = 2L),
     formats = c(section_label = "xx", count_fraction = format_count_fraction)

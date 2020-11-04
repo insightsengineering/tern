@@ -1,0 +1,180 @@
+✓ |   8       | survival_coxph_pairwise [0.5 s]
+✓ |   4       | survival_time [0.2 s]
+✓ |   8       | survival_timepoint [0.4 s]
+✓ |   1       | table_aet01 [0.6 s]
+✓ |   1       | table_aet03 [1.2 s]
+✓ |   8       | table_aet04 [7.8 s]
+✓ |   9       | table_aet04_pi [3.1 s]
+✓ |   2       | table_aet05 [0.1 s]
+✓ |   2       | table_aet06 [5.8 s]
+✓ |   2       | table_aet07 [0.2 s]
+✓ |   1       | table_aet10
+x |   0 2     | table_aovt01 [1.1 s]
+─────────────────────────────────────────────────────────────────────────
+test-table_aovt01.R:48: failure: AOVT01 variant with single endpoint is produced correctly
+`result_matrix` not identical to `expected_matrix`.
+4/56 mismatches
+x[7]: "95% CI"
+y[7]: "  95% CI"
+
+x[8]: "p-value"
+y[8]: "  p-value"
+
+x[13]: "95% CI"
+y[13]: "  95% CI"
+
+x[14]: "p-value"
+y[14]: "  p-value"
+
+test-table_aovt01.R:92: failure: AOVT01 variant with multiple endpoints is produced correctly
+`result_matrix` not identical to `expected_matrix`.
+10/148 mismatches
+x[8]: "95% CI"
+y[8]: "  95% CI"
+
+x[9]: "p-value"
+y[9]: "  p-value"
+
+x[15]: "95% CI"
+y[15]: "  95% CI"
+
+x[16]: "p-value"
+y[16]: "  p-value"
+
+x[22]: "95% CI"
+y[22]: "  95% CI"
+─────────────────────────────────────────────────────────────────────────
+✓ |   4       | table_cmt01 [0.9 s]
+✓ |   1       | table_cmt02_pt [0.1 s]
+✓ |   4       | table_coxt01 [0.6 s]
+✓ |   2       | table_dmt01 [0.5 s]
+✓ |   3       | table_dst01 [0.4 s]
+✓ |   4       | table_dth01 [0.7 s]
+✓ |   1       | table_egt01 [0.4 s]
+✓ |   4       | table_egt03 [0.8 s]
+✓ |   1       | table_egt04 [0.2 s]
+✓ |   1       | table_egt05_qtcat [0.4 s]
+✓ |   4       | table_ent [7.3 s]
+✓ |   3       | table_ext01 [0.5 s]
+✓ |   1       | table_lbt01 [0.3 s]
+✓ |   1       | table_lbt02 [0.2 s]
+✓ |   1       | table_lbt03 [0.3 s]
+✓ |   1       | table_lbt04 [0.4 s]
+✓ |   1       | table_lbt06 [0.4 s]
+✓ |   1       | table_lbt07 [0.3 s]
+✓ |   4       | table_mht01 [1.1 s]
+✓ |   4       | table_mmrmt01 [0.7 s]
+x |   0 6     | table_rspt01 [1.3 s]
+─────────────────────────────────────────────────────────────────────────
+test-table_rspt01.R:60: failure: RSPT01: 1. Best Overall Response
+`result_matrix` not identical to `expected_matrix`.
+17/76 mismatches
+x[7]: "95% CI (Wald, with correction)"
+y[7]: "  95% CI (Wald, with correction)"
+
+x[8]: "p-value (Chi-Squared Test with Schouten Correction)"
+y[8]: "  p-value (Chi-Squared Test with Schouten Correction)"
+
+x[9]: "Odds Ratio (95% CI)"
+y[9]: "  Odds Ratio (95% CI)"
+
+x[29]: "60 (44.8%)"
+y[29]: "60 (44.78%)"
+
+x[31]: "40 (29.9%)"
+y[31]: "40 (29.85%)"
+
+test-table_rspt01.R:100: failure: RSPT01: 2. Best Overall Response (selecting sections to display)
+`result_matrix` not identical to `expected_matrix`.
+16/72 mismatches
+x[7]: "95% CI (Wald, with correction)"
+y[7]: "  95% CI (Wald, with correction)"
+
+x[8]: "p-value (Chi-Squared Test with Schouten Correction)"
+y[8]: "  p-value (Chi-Squared Test with Schouten Correction)"
+
+x[27]: "60 (44.8%)"
+y[27]: "60 (44.78%)"
+
+x[29]: "40 (29.9%)"
+y[29]: "40 (29.85%)"
+
+x[31]: "9 (6.7%)"
+y[31]: "9 (6.72%)"
+
+test-table_rspt01.R:149: failure: RSPT01: 3. Best Overall Response (modifying settings)
+`result_matrix` not identical to `expected_matrix`.
+17/72 mismatches
+x[7]: "90% CI (Anderson-Hauck)"
+y[7]: "  90% CI (Anderson-Hauck)"
+
+x[8]: "p-value (Fisher's Exact Test)"
+y[8]: "  p-value (Fisher's Exact Test)"
+
+x[9]: "Odds Ratio (90% CI)"
+y[9]: "  Odds Ratio (90% CI)"
+
+x[28]: "60 (44.8%)"
+y[28]: "60 (44.78%)"
+
+x[30]: "40 (29.9%)"
+y[30]: "40 (29.85%)"
+
+test-table_rspt01.R:200: failure: RSPT01: 4. Best Overall Response (with stratified analysis)
+`result_matrix` not identical to `expected_matrix`.
+19/92 mismatches
+x[7]: "95% CI (Wald, with correction)"
+y[7]: "  95% CI (Wald, with correction)"
+
+x[8]: "p-value (Chi-Squared Test with Schouten Correction)"
+y[8]: "  p-value (Chi-Squared Test with Schouten Correction)"
+
+x[9]: "Odds Ratio (95% CI)"
+y[9]: "  Odds Ratio (95% CI)"
+
+x[12]: "95% CI (Wald, with correction)"
+y[12]: "  95% CI (Wald, with correction)"
+
+x[13]: "p-value (Cochran-Mantel-Haenszel Test)"
+y[13]: "  p-value (Cochran-Mantel-Haenszel Test)"
+
+test-table_rspt01.R:242: failure: RSPT01: 5. Best Overall Response (modifying the definition of overall response)
+`result_matrix` not identical to `expected_matrix`.
+17/76 mismatches
+x[7]: "95% CI (Wald, with correction)"
+y[7]: "  95% CI (Wald, with correction)"
+
+x[8]: "p-value (Chi-Squared Test with Schouten Correction)"
+y[8]: "  p-value (Chi-Squared Test with Schouten Correction)"
+
+x[9]: "Odds Ratio (95% CI)"
+y[9]: "  Odds Ratio (95% CI)"
+
+x[29]: "60 (44.8%)"
+y[29]: "60 (44.78%)"
+
+x[31]: "40 (29.9%)"
+y[31]: "40 (29.85%)"
+
+test-table_rspt01.R:297: failure: RSPT01: 6. Best Overall Response (define new sections to display)
+`result_matrix` not identical to `expected_matrix`.
+10/60 mismatches
+x[7]: "95% CI (Wald, with correction)"
+y[7]: "  95% CI (Wald, with correction)"
+
+x[8]: "p-value (Chi-Squared Test with Schouten Correction)"
+y[8]: "  p-value (Chi-Squared Test with Schouten Correction)"
+
+x[9]: "Odds Ratio (95% CI)"
+y[9]: "  Odds Ratio (95% CI)"
+
+x[25]: "109 (81.3%)"
+y[25]: "109 (81.34%)"
+
+x[27]: "24 (17.9%)"
+y[27]: "24 (17.91%)"
+─────────────────────────────────────────────────────────────────────────
+
+══ Terminating early ════════════════════════════════════════════════════
+Too many failures
+Error while shutting down parallel: unable to terminate some child processes

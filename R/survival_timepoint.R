@@ -2,7 +2,6 @@
 #'
 #' Summarize patient's survival rate and difference of survival rates between groups at a time point.
 #'
-#' @md
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
 #' @param control a (`list`) of parameters for comparison details, specified by using \cr
@@ -11,8 +10,6 @@
 #' * `conf_type`: (`string`) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
 #'    see more in [survival::survfit()]
 #' * `time_point`: (`number`) \cr survival time point of interest.
-#'
-#' @template formatting_arguments
 #'
 #' @name survival_timepoint
 #'
@@ -37,6 +34,7 @@ NULL
 #'   )
 #' df <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM A")
 #' s_surv_timepoint(df, .var = "AVAL", is_event = "is_event")
+#'
 s_surv_timepoint <- function(df,
                              .var,
                              is_event,
@@ -77,11 +75,34 @@ s_surv_timepoint <- function(df,
   )
 }
 
+#' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_surv_timepoint(df, .var = "AVAL", is_event = "is_event")
+#'
+a_surv_timepoint <- make_afun(
+  s_surv_timepoint,
+  .indent_mods = c(
+    pt_at_risk = 0L,
+    event_free_rate = 0L,
+    rate_se = 1L,
+    rate_ci = 1L
+  ),
+  .formats = c(
+    pt_at_risk = "xx",
+    event_free_rate = "xx.xx",
+    rate_se = "xx.xx",
+    rate_ci = "(xx.xx, xx.xx)"
+  )
+)
+
 #' @describeIn survival_timepoint Analyze Function which adds the survival rate analysis to the input layout.
 #'   Note that additional formatting arguments can be used here.
+#' @inheritParams argument_convention
 #' @export
 #' @examples
-#'
 #' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%
 #'   surv_timepoint(
@@ -91,23 +112,29 @@ s_surv_timepoint <- function(df,
 #'     control = control_surv_timepoint(time_point = 7)
 #'   ) %>%
 #'   build_table(df = ADTTE_f)
+#'
 surv_timepoint <- function(lyt,
                            vars,
+                           ...,
                            var_labels = "Months",
                            .stats = c("pt_at_risk", "event_free_rate", "rate_ci"),
-                           ...) {
-  a_surv_timepoint <- format_wrap_df(
-    s_surv_timepoint,
-    indent_mods = c("pt_at_risk" = 0L, "event_free_rate" = 0L, "rate_ci" = 2L),
-    formats = c("pt_at_risk" = "xx", "event_free_rate" = "xx.xx", "rate_ci" = "(xx.xx, xx.xx)")
+                           .formats = NULL,
+                           .labels = NULL,
+                           .indent_mods = NULL) {
+  afun <- make_afun(
+    a_surv_timepoint,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
   analyze(
     lyt,
     vars,
     var_labels = var_labels,
     show_labels = "visible",
-    afun = a_surv_timepoint,
-    extra_args = c(list(.stats = .stats), list(...))
+    afun = afun,
+    extra_args = list(...)
   )
 }
 
@@ -120,10 +147,10 @@ surv_timepoint <- function(lyt,
 #' * `ztest_pval` : p-value to test the difference is 0.
 #' @export
 #' @examples
-#'
 #' df_ref_group <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM B")
 #' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
 #' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#'
 s_surv_timepoint_diff <- function(df,
                                   .var,
                                   .ref_group,
@@ -171,11 +198,31 @@ s_surv_timepoint_diff <- function(df,
   )
 }
 
+#' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_surv_timepoint_diff(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#'
+a_surv_timepoint_diff <- make_afun(
+  s_surv_timepoint_diff,
+  .indent_mods = c(
+    rate_diff = 1L,
+    rate_diff_ci = 2L,
+    ztest_pval = 2L
+  ),
+  .formats = c(
+    rate_diff = "xx.xx",
+    rate_diff_ci = "(xx.xx, xx.xx)",
+    ztest_pval = "x.xxxx | (<0.0001)"
+  )
+)
+
 #' @describeIn survival_timepoint Analyze Function which adds the difference between two survival rates analysis
 #'   to the input layout. Note that additional formatting arguments can be used here.
 #' @export
 #' @examples
-#'
 #' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%
 #'   surv_timepoint_diff(
@@ -197,27 +244,34 @@ s_surv_timepoint_diff <- function(df,
 #'   ) %>%
 #'   surv_timepoint_diff(
 #'     vars = "AVAL",
-#'     show_label = "hidden",
+#'     show_labels = "hidden",
 #'     is_event = "is_event",
 #'     control = control_surv_timepoint(time_point = 7)
 #'   ) %>%
 #'   build_table(df = ADTTE_f)
+#'
 surv_timepoint_diff <- function(lyt,
                                 vars,
+                                ...,
                                 var_labels = "Time",
                                 show_labels = "visible",
-                                ...) {
-  a_surv_timepoint_diff <- format_wrap_df(
-    s_surv_timepoint_diff,
-    indent_mods = c("rate_diff" = 2L, "rate_diff_ci" = 4L, "ztest_pval" = 4L),
-    formats = c("rate_diff" = "xx.xx", "rate_diff_ci" = "(xx.xx, xx.xx)", "ztest_pval" = "x.xxxx | (<0.0001)")
+                                .stats = NULL,
+                                .formats = NULL,
+                                .labels = NULL,
+                                .indent_mods = NULL) {
+  afun <- make_afun(
+    a_surv_timepoint_diff,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
   analyze(
     lyt,
     vars,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = a_surv_timepoint_diff,
+    afun = afun,
     extra_args = list(...)
   )
 }

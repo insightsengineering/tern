@@ -2,8 +2,6 @@
 #'
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
-#' @template formatting_arguments
-#'
 #' @name count_patients_with_event
 #'
 NULL

@@ -13,7 +13,7 @@
 #' @param person_years (`numeric`) \cr total person-years at risk.
 #' @param num_events (`numeric`) \cr total number of events observed.
 #' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
-#' @template formatting_arguments
+#'
 #' @name incidence_rate
 #' @order 1
 #'
@@ -243,15 +243,35 @@ s_incidence_rate <- function(df,
     num_events,
     control
   )
-
   list(
     person_years = with_label(person_years, "Total patient-years at risk"),
     num_events = with_label(num_events, "Number of adverse events observed"),
     rate = with_label(result$rate, paste("AE rate per", time_unit, "patient-years")),
     rate_ci = with_label(result$rate_ci, f_conf_level(conf_level))
   )
-
 }
+
+#' @describeIn incidence_rate Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_incidence_rate(
+#'   df,
+#'   .var = "AVAL",
+#'   is_event = "is_event",
+#'   control = control_incidence_rate(time_unit = 100)
+#' )
+#'
+a_incidence_rate <- make_afun(
+  s_incidence_rate,
+  .formats = c(
+    "person_years" = "xx.x",
+    "num_events" = "xx",
+    "rate" = "xx.xx",
+    "rate_ci" = "(xx.xx, xx.xx)"
+  )
+)
 
 #' @describeIn incidence_rate layout creating function which adds analyze rows using the statistics
 #' function `s_incidence_rate` and desired format.
@@ -270,31 +290,25 @@ s_incidence_rate <- function(df,
 #'
 estimate_incidence_rate <- function(lyt,
                                     vars,
-                                    .stats = c("person_years", "num_events", "rate", "rate_ci"),
-                                    ...) {
-
-  a_incidence_rate <- format_wrap_df(
-    s_incidence_rate,
-    indent_mods = c(
-      "person_years" = 0L,
-      "num_events" = 0L,
-      "rate" = 0L,
-      "rate_ci" = 0L
-    ),
-    formats = c(
-      "person_years" = "xx.x",
-      "num_events" = "xx",
-      "rate" = "xx.xx",
-      "rate_ci" = "(xx.xx, xx.xx)"
-    )
+                                    ...,
+                                    show_labels = "hidden",
+                                    .stats = NULL,
+                                    .formats = NULL,
+                                    .labels = NULL,
+                                    .indent_mods = NULL) {
+  afun <- make_afun(
+    a_incidence_rate,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
 
   analyze(
     lyt,
     vars,
-    show_labels = "hidden",
-    afun = a_incidence_rate,
-    extra_args = c(list(.stats = .stats), list(...))
+    show_labels = show_labels,
+    afun = afun,
+    extra_args = list(...)
   )
-
 }

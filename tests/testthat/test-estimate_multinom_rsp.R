@@ -9,46 +9,32 @@ test_that("d_onco_rsp_label provide right response labels", {
   expect_identical(result, expected)
 })
 
-# Preparation of a common test case for unit tests.
-dta_test <- data.frame(
-  USUBJID = paste0("S", 1:12),
-  ARM = rep(LETTERS[1:3], each = 4),
-  AVAL = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
-)
-
-dta_test$AVALC <- as.factor(c( # nolint
-  "Complete Response (CR)", "Partial Response (PR)"
-)[dta_test$AVAL + 1])
-
-test_that("h_prop_ci returns right result", {
-  result <- h_prop_ci(
-    rsp = as.logical(subset(dta_test, ARM == "A")$AVAL), conf_level = 0.95
-  )
-
-  expected <- list(
-    n_prop = structure(c(4, 1), label = "Responders"),
-    prop_ci = structure(
-      c(87.5,  100), label = "95% CI for Response Rates (Wald, with correction)"
-    )
-  )
-
+test_that("s_length_proportion works as expected with healthy input", {
+  x <- rep("A", 10)
+  n_col <- 20
+  result <- s_length_proportion(x = x, .N_col = n_col, method = "jeffreys", conf_level = 0.8)
+  expected <- s_proportion(x = rep(c(TRUE, FALSE), c(10, 10)), method = "jeffreys", conf_level = 0.8)
   expect_identical(result, expected)
 })
 
-test_that("s_multinomial_response returns right result", {
-  result <- s_multinomial_response(dta_test$AVALC[dta_test$ARM == "A"])
-
-  expected <- list(
-    n_prop = structure(c(0, 0), label = "Complete Response (CR)"),
-    prop_ci = structure(c(0, 12.5), label = "95% CI (Wald, with correction)"),
-    n_prop = structure(c(4, 1), label = "Partial Response (PR)"),
-    prop_ci = structure(c(87.5, 100), label = "95% CI (Wald, with correction)")
-  )
-
-  expect_identical(result, expected)
+test_that("s_length_proportion fails with bad input", {
+  expect_error(s_length_proportion(x = c(1, 1, 1), 10))
+  expect_error(s_length_proportion(x = c("A", "B"), 10))
+  expect_error(s_length_proportion(x = rep("A", 20), 10))
 })
 
 test_that("estimate_multinomial_response returns right result", {
+
+  # Preparation of a common test case for unit tests.
+  dta_test <- data.frame(
+    USUBJID = paste0("S", 1:12),
+    ARM = rep(LETTERS[1:3], each = 4),
+    AVAL = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
+  )
+
+  dta_test$AVALC <- as.factor(c( # nolint
+    "Complete Response (CR)", "Partial Response (PR)"
+  )[dta_test$AVAL + 1])
 
   lyt <- split_cols_by(lyt = NULL, var = "ARM") %>%
     estimate_multinomial_response(var = "AVALC")

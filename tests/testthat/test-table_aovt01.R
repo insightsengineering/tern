@@ -33,9 +33,9 @@ test_that("AOVT01 variant with single endpoint is produced correctly", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Unadjusted comparison", "n", "Mean", "Difference in Means", "  95% CI", "  p-value",
+      "", "", "Unadjusted comparison", "n", "Mean", "Difference in Means", "95% CI", "p-value",
       "Adjusted comparison (covariates BASE and STRATA1)", "n", "Adjusted Mean",
-      "Difference in Adjusted Means", "  95% CI", "  p-value",
+      "Difference in Adjusted Means", "95% CI", "p-value",
       "ARM A", "(N=134)", "", "68", "3.68", "", "", "", "", "68", "4.06", "", "", "",
       "ARM B",  "(N=134)", "", "73", "5.07", "1.38", "-2.76 - 5.53", "0.5113", "",
       "73", "3.57", "-0.49", "-3.28 - 2.29", "0.7277",
@@ -68,11 +68,11 @@ test_that("AOVT01 variant with multiple endpoints is produced correctly", {
   expected_matrix <- structure(
     c(
       "", "",  "BFIALL", "Adjusted mean",  "n", "Adjusted Mean",
-      "Difference in Adjusted Means", "  95% CI", "  p-value",
-      "FATIGI", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "  95% CI", "  p-value",
-      "FKSI-FWB", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "  95% CI", "  p-value",
-      "FKSI-TSE", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "  95% CI", "  p-value",
-      "FKSIALL", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "  95% CI", "  p-value",
+      "Difference in Adjusted Means", "95% CI", "p-value",
+      "FATIGI", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",
+      "FKSI-FWB", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",
+      "FKSI-TSE", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",
+      "FKSIALL", "Adjusted mean", "n", "Adjusted Mean", "Difference in Adjusted Means", "95% CI", "p-value",
       "ARM A", "(N=134)", "", "", "134", "4.47", "", "", "", "", "", "134", "5.42", "", "", "", "", "", "134", "4.29",
       "", "", "", "", "", "134", "4.7", "", "", "", "", "", "134", "5.03", "", "", "",
       "ARM B", "(N=134)", "", "", "134", "6.33", "1.85", "-0.14 - 3.85", "0.0679", "", "",

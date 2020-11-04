@@ -225,7 +225,7 @@ summarize_ancova <- function(lyt,
                              var_labels,
                              show_labels = "visible",
                              ...) {
-  a_ancova <- format_wrap_df(
+  a_ancova <- tern:::format_wrap_df(
     s_ancova,
     indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 2L, "pval" = 2L),
     formats = c("n" = "xx", "lsmean" = "xx.xx", "lsmean_diff" = "xx.xx", "lsmean_diff_ci" = "xx.xx - xx.xx",

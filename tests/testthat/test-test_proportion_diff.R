@@ -130,7 +130,7 @@ test_that("test_proportion_diff returns right result", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "  p-value (Cochran-Mantel-Haenszel Test)", "B",
+      "", "p-value (Cochran-Mantel-Haenszel Test)", "B",
       "", "A", "0.6477"
     ), .Dim = 2:3
   )

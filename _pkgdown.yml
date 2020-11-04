@@ -30,7 +30,7 @@ reference:
           formatting themselves.
     contents:
       - s_ancova
-      - s_dummy_sum
+      - s_change_from_baseline
       - s_count_abnormal
       - s_count_abnormal_by_worst_grade
       - s_count_abnormal_by_baseline
@@ -40,23 +40,33 @@ reference:
       - s_count_occurrences
       - s_count_occurrences_by_grade
       - s_count_patients_with_event
+      - s_count_values
+      - s_cox_univariate
+      - s_cox_multivariate
+      - s_coxph_pairwise
       - s_coxreg
+      - s_dummy_sum
       - s_incidence_rate
-      - s_multinomial_response
+      - s_length_proportion
+      - s_logistic
+      - s_mmrm_lsmeans
       - s_num_patients
+      - s_num_patients_content
       - s_odds_ratio
       - s_proportion
       - s_proportion_diff
-      - s_change_from_baseline
       - s_summary
+      - s_surv_time
+      - s_surv_timepoint
+      - s_surv_timepoint_diff
       - s_test_proportion_diff
-      - s_mmrm_lsmeans
 
   - title: Formatted Analysis functions
     desc: These have the same arguments as the corresponding statistics functions, and can be further
           customized by calling `rtables::make_afun()` on them. They are used as `afun` in
           `rtables::analyze()`.
     contents:
+       - a_ancova
        - a_count_abnormal
        - a_count_abnormal_by_worst_grade
        - a_count_abnormal_by_baseline
@@ -65,10 +75,19 @@ reference:
        - a_count_occurrences
        - a_count_occurrences_by_grade
        - a_count_patients_with_event
+       - a_coxph_pairwise
        - a_coxreg
        - a_dummy_sum
        - a_mmrm_lsmeans
        - a_response_subgroups
+       - a_odds_ratio
+       - a_proportion
+       - a_prop_diff
+       - a_summarize_change
+       - a_surv_time
+       - a_surv_timepoint
+       - a_surv_timepoint_diff
+       - a_test_proportion_diff
 
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
@@ -308,7 +327,6 @@ reference:
       - d_proportion_diff
       - d_test_proportion_diff
       - d_onco_rsp_label
-      - h_prop_ci
       - check_diff_prop_ci
       - c_label_n
       - make_names

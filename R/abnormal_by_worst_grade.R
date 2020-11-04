@@ -13,8 +13,6 @@
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr identifying the abnormality direction.
 #'
-#' @template formatting_arguments
-#'
 #' @name abnormal_by_worst_grade
 #'
 NULL

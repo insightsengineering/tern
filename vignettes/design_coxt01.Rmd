@@ -341,7 +341,7 @@ s_coxreg(df = subset(df, mod == "Covariate"), .var = "hr")
 #' @export
 #'
 fit_coxreg <- function(lyt, conf_level) {
-  afun <- format_wrap_df(
+  afun <- tern:::format_wrap_df(
     sfun = s_coxreg,
     formats = c(
       n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)", pval = "x.xxxx | (<0.0001)"

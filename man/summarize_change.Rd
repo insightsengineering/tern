@@ -3,11 +3,22 @@
 \name{summarize_change}
 \alias{summarize_change}
 \alias{s_change_from_baseline}
+\alias{a_change_from_baseline}
 \title{Summarize the Change from Baseline or Absolute Baseline Values}
 \usage{
 s_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 
-summarize_change(lyt, vars, ...)
+a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
+
+summarize_change(
+  lyt,
+  vars,
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -24,6 +35,14 @@ by a statistics function.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 See \code{\link[=s_summary.numeric]{s_summary.numeric()}} for the return values.
@@ -38,6 +57,9 @@ or the change from baseline values (post-baseline) are then summarized.
 \itemize{
 \item \code{s_change_from_baseline}: Statistics Function that summarizes baseline or post-baseline visits.
 
+\item \code{a_change_from_baseline}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{summarize_change}: Analyze Function for change from baseline analysis.
 To be used after a split on visits in the layout, such that each data
 subset only contains either baseline or post-baseline data. Allows additional
@@ -48,17 +70,6 @@ formatting options.
 The data in \code{df} must be either all be from baseline or post-baseline visits. Otherwise
 an error will be thrown.
 }
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
-
 \examples{
 df <- data.frame(
   chg = c(1, 2, 3),
@@ -66,6 +77,12 @@ df <- data.frame(
   val = c(4, 5, 6)
 )
 s_change_from_baseline(
+  df,
+  .var = "chg",
+  variables = list(value = "val", baseline_flag = "is_bl")
+)
+
+a_change_from_baseline(
   df,
   .var = "chg",
   variables = list(value = "val", baseline_flag = "is_bl")

@@ -7,6 +7,7 @@
 \alias{prop_fisher}
 \alias{prop_cmh}
 \alias{s_test_proportion_diff}
+\alias{a_test_proportion_diff}
 \alias{test_proportion_diff}
 \title{Difference Test for Two Proportions}
 \usage{
@@ -27,7 +28,25 @@ s_test_proportion_diff(
   method = c("chisq", "schouten", "fisher", "cmh")
 )
 
-test_proportion_diff(lyt, vars, show_labels = "hidden", ...)
+a_test_proportion_diff(
+  df,
+  .var,
+  .ref_group,
+  .in_ref_col,
+  variables = list(strata = NULL),
+  method = c("chisq", "schouten", "fisher", "cmh")
+)
+
+test_proportion_diff(
+  lyt,
+  vars,
+  ...,
+  show_labels = "hidden",
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{tbl}{(\code{matrix})\cr
@@ -57,9 +76,17 @@ to calculate the p-value.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
+
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 Named \code{list} with a single item \code{pval} with an attribute \code{label}
@@ -87,21 +114,13 @@ Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
 \item \code{s_test_proportion_diff}: Statistics function which test the difference
 between two proportions.
 
+\item \code{a_test_proportion_diff}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{test_proportion_diff}: Layout creating function which can be used for
 creating tables, which can take statistics function arguments and
 additional format arguments.
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 
@@ -150,6 +169,15 @@ dta <- data.frame(
 )
 
 s_test_proportion_diff(
+  df = subset(dta, grp == "A"),
+  .var = "rsp",
+  .ref_group = subset(dta, grp == "B"),
+  .in_ref_col = FALSE,
+  variables = list(strata = "strat"),
+  method = "cmh"
+)
+
+a_test_proportion_diff(
   df = subset(dta, grp == "A"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),

@@ -76,7 +76,7 @@ test_that("surv_time works with default arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "Survival Time (Months)", "Median", "  95% CI",
+      "", "Survival Time (Months)", "Median", "95% CI",
       "25% and 75%-ile", "Range (censored)", "Range (event)", "ARM A",
       "", "33.19", "(31.3, 41.9)", "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3",
       "ARM B", "", "26.73", "(20, 36.1)", "12.6, 48.5", "2.8 to 130.7",
@@ -113,7 +113,7 @@ test_that("surv_time works with customized arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "Survival Time (Months)", "Median", "  90% CI",
+      "", "Survival Time (Months)", "Median", "90% CI",
       "40% and 60%-ile", "Range (censored)", "Range (event)", "ARM A",
       "", "33.19", "(31.4, 41.9)", "27.9, 41.9", "0.2 to 109.1", "0.4 to 151.3",
       "ARM B", "", "26.73", "(22.2, 34.8)", "19.4, 37.3", "2.8 to 130.7",

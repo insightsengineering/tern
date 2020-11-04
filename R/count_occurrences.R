@@ -7,8 +7,6 @@
 #'
 #' @inheritParams argument_convention
 #'
-#' @template formatting_arguments
-#'
 #' @name count_occurrences
 #'
 NULL

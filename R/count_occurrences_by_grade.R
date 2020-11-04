@@ -8,7 +8,7 @@
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
 #'   and each entry represents a count.
-#' @template formatting_arguments
+#'
 #' @name count_occurrences_by_grade
 #'
 NULL

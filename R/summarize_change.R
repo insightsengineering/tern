@@ -53,13 +53,29 @@ s_change_from_baseline <- function(df,
   s_summary(combined, na.rm = na.rm, ...)
 }
 
+#' @describeIn summarize_change Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+#' @examples
+#' a_change_from_baseline(
+#'   df,
+#'   .var = "chg",
+#'   variables = list(value = "val", baseline_flag = "is_bl")
+#' )
+#'
+a_change_from_baseline <- make_afun(
+  s_change_from_baseline,
+  .formats = c(
+    n = "xx", mean_sd = "xx.xx (xx.xx)", median = "xx.xx", range = "xx.xx - xx.xx"
+  )
+)
+
 #' @describeIn summarize_change Analyze Function for change from baseline analysis.
 #'   To be used after a split on visits in the layout, such that each data
 #'   subset only contains either baseline or post-baseline data. Allows additional
 #'   formatting options.
 #' @inheritParams argument_convention
-#'
-#' @template formatting_arguments
 #'
 #' @export
 #' @examples
@@ -91,15 +107,19 @@ s_change_from_baseline <- function(df,
 #'
 summarize_change <- function(lyt,
                              vars,
-                             ...) {
-
-  afun <- format_wrap_df(
-    sfun = s_change_from_baseline,
-    indent_mods = c(n = 0L, mean_sd = 0L, median = 0L, range = 0L),
-    formats = c(
-      n = "xx", mean_sd = "xx.xx (xx.xx)", median = "xx.xx", range = "xx.xx - xx.xx"
-    )
+                             ...,
+                             .stats = NULL,
+                             .formats = NULL,
+                             .labels = NULL,
+                             .indent_mods = NULL) {
+  afun <- make_afun(
+    a_change_from_baseline,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
+
   analyze(
     lyt,
     vars,

@@ -3,6 +3,7 @@
 \name{survival_coxph_pairwise}
 \alias{survival_coxph_pairwise}
 \alias{s_coxph_pairwise}
+\alias{a_coxph_pairwise}
 \alias{coxph_pairwise}
 \title{Pairwise CoxPH model}
 \usage{
@@ -16,7 +17,27 @@ s_coxph_pairwise(
   control = control_coxph()
 )
 
-coxph_pairwise(lyt, vars, var_labels = "CoxPH", show_labels = "visible", ...)
+a_coxph_pairwise(
+  df,
+  .ref_group,
+  .in_ref_col,
+  .var,
+  is_event,
+  strat = NULL,
+  control = control_coxph()
+)
+
+coxph_pairwise(
+  lyt,
+  vars,
+  ...,
+  var_labels = "CoxPH",
+  show_labels = "visible",
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -46,11 +67,19 @@ can also be set to "breslow" or "exact". see more in \code{\link[survival:coxph]
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{...}{additional arguments for the lower level functions.}
+
 \item{var_labels}{character for label.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{...}{additional arguments for the lower level functions.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 The statistics are:
@@ -67,20 +96,12 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 \itemize{
 \item \code{s_coxph_pairwise}: Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
 
+\item \code{a_coxph_pairwise}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{coxph_pairwise}: Analyze Function which adds the pairwise coxph analysis
 to the input layout. Note that additional formatting arguments can be used here.
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 library(random.cdisc.data)
@@ -92,6 +113,8 @@ ADTTE_f <- ADTTE \%>\%
 df <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM A")
 df_ref_group <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM B")
 s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+a_dummy_sum(c(1, 2))
+
 
 split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
   add_colcounts() \%>\%

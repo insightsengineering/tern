@@ -3,17 +3,23 @@
 \name{survival_time}
 \alias{survival_time}
 \alias{s_surv_time}
+\alias{a_surv_time}
 \alias{surv_time}
 \title{Survival Time Analysis}
 \usage{
 s_surv_time(df, .var, is_event, control = control_surv_time())
 
+a_surv_time(df, .var, is_event, control = control_surv_time())
+
 surv_time(
   lyt,
   vars,
+  ...,
   var_labels = "Time to Event",
   .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
-  ...
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -37,11 +43,17 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{...}{additional arguments for the lower level functions.}
+
 \item{var_labels}{character for label.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{...}{additional arguments for the lower level functions.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 The statistics are:
@@ -63,20 +75,12 @@ survival time range of censored/event patients.
 \item \code{s_surv_time}: Statistics Function which analyzes survival times.
 \code{range_censor} and \code{range_event}.
 
+\item \code{a_surv_time}: Formatted Analysis function which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{surv_time}: Analyze Function which adds the survival times analysis
 to the input layout. Note that additional formatting arguments can be used here.
 }}
-
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
 
 \examples{
 library(random.cdisc.data)
@@ -90,6 +94,7 @@ ADTTE_f <- ADTTE \%>\%
   )
 df <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM A")
 s_surv_time(df, .var = "AVAL", is_event = "is_event")
+a_surv_time(df, .var = "AVAL", is_event = "is_event")
 
 split_cols_by(lyt = NULL, var = "ARMCD") \%>\%
   add_colcounts() \%>\%
@@ -100,4 +105,5 @@ split_cols_by(lyt = NULL, var = "ARMCD") \%>\%
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
   build_table(df = ADTTE_f)
+
 }

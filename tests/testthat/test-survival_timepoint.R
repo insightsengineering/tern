@@ -75,7 +75,7 @@ test_that("surv_timepoint works with default arguments", {
   expected_matrix <- structure(
     c(
       "", "6 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "  95% CI", "ARM A", "", "107", "89.74", "(84.44, 95.03)", "ARM B",
+      "95% CI", "ARM A", "", "107", "89.74", "(84.44, 95.03)", "ARM B",
       "", "114", "89.33", "(84.05, 94.62)", "ARM C", "", "92", "75.02",
       "(67.51, 82.53)"
     ),
@@ -110,7 +110,7 @@ test_that("surv_timepoint works with customized arguments", {
   expected_matrix <- structure(
     c(
       "", "8 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "  90% CI", "ARM A", "", "103", "88.87", "(83.25, 92.69)", "ARM B",
+      "90% CI", "ARM A", "", "103", "88.87", "(83.25, 92.69)", "ARM B",
       "", "107", "85.36", "(79.37, 89.73)", "ARM C", "", "79", "66.01",
       "(58.55, 72.45)"
     ),
@@ -203,8 +203,8 @@ test_that("surv_timepoint_diff works with default arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "6 Months", "  Difference in Event Free Rate",
-      "    95% CI", "    p-value (Z-test)", "ARM A", "", "", "", "",
+      "", "6 Months", "Difference in Event Free Rate",
+      "95% CI", "p-value (Z-test)", "ARM A", "", "", "", "",
       "ARM B", "", "-2.64", "(-10.99, 5.71)", "0.5357", "ARM C", "",
       "-22.83", "(-32.94, -12.72)", "<0.0001"
     ),
@@ -239,8 +239,8 @@ test_that("surv_timepoint_diff works with customized arguments", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "9 Months", "  Difference in Event Free Rate",
-      "    99% CI", "    p-value (Z-test)", "ARM A", "", "", "", "",
+      "", "9 Months", "Difference in Event Free Rate",
+      "99% CI", "p-value (Z-test)", "ARM A", "", "", "", "",
       "ARM B", "", "-2.64", "(-13.61, 8.33)", "0.5357", "ARM C", "",
       "-22.83", "(-36.11, -9.54)", "<0.0001"
     ),

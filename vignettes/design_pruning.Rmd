@@ -427,7 +427,7 @@ s_count_grade_per_id_content(df, .var = "ATOXGR", .N_col = 10)
 
 count_grade_per_id <- function(lyt, vars, ...) {
 
-  afun <- format_wrap_df(
+  afun <- tern:::format_wrap_df(
     s_count_grade_per_id,
     indent_mods = c(count_percent = 0L),
     formats = c(count_percent = "xx (xx.x%)")

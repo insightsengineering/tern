@@ -3,8 +3,6 @@
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
-#' @template formatting_arguments
-#' @order 1
 #' @name estimate_multinomial_rsp
 #'
 NULL
@@ -40,106 +38,51 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
 
 }
 
-
-#' Helper Function: Proportion Estimations
-#'
-#' Helps in estimating the proportion for a given vector of responses.
-#'
+#' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that
+#'   as the number of successes, and the column number `.N_col` as the total number, and feeds that into
+#'   [s_proportion()].
 #' @inheritParams argument_convention
-#' @inheritParams s_proportion
-#' @param denom (`number`)\cr denominator for the responder proportions.
-#' @param rsp_lab (`string`)\cr the label attribute for the responder proportion.
-#'
-h_prop_ci <- function(rsp,
-                      denom = length(rsp),
-                      method = c(
-                        "waldcc", "wald", "clopper-pearson",
-                        "wilson", "agresti-coull", "jeffreys"
-                      ),
-                      conf_level,
-                      long = TRUE,
-                      rsp_lab = "Responders") {
-
-  method <- match.arg(method)
-  assert_that(
-    is.logical(rsp),
-    is.number(denom),
-    is_proportion(conf_level),
-    is.flag(long),
-    is.string(rsp_lab)
-  )
-
-  y <- list()
-  n <- sum(rsp)
-  y$n_prop <- with_label(x = c(n, n / denom), label = rsp_lab)
-
-  prop_ci <- switch(
-    method,
-    "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
-    wilson = prop_wilson(rsp, conf_level),
-    wald = prop_wald(rsp, conf_level),
-    waldcc = prop_wald(rsp, conf_level, correct = TRUE),
-    "agresti-coull" = prop_agresti_coull(rsp, conf_level),
-    jeffreys = prop_jeffreys(rsp, conf_level)
-  )
-
-  y$prop_ci <- with_label(
-    x = 100 * prop_ci,
-    label = d_proportion(conf_level, method, long = long)
-  )
-
-  y
-}
-
-
-#' @inheritParams argument_convention
-#' @inheritParams s_proportion
-#'
-#' @describeIn estimate_multinomial_rsp statistics function estimating a
-#'   proportion per factor level along with its confidence interval for the level.
+#' @return See [s_proportion()] for statistics and additional possible arguments.
 #'
 #' @export
-#' @order 2
+#'
 #' @examples
+#' s_length_proportion(rep("CR", 10), .N_col = 100)
 #'
-#' # Basic use of the statistics function
-#' s_multinomial_response(c(0, 1, 0, 1))
-#'
-s_multinomial_response <- function(x,
-                                   conf_level = 0.95,
-                                   method = c(
-                                     "waldcc", "wald", "clopper-pearson",
-                                     "wilson", "agresti-coull", "jeffreys"
-                                   ),
-                                   long = FALSE) {
-
-  method <- match.arg(method)
-  assert_that(is.atomic(x))
-
-  denom <- length(x)
-  x <- split(x, f = x)
-  rsp_lab <- names(x)
-  n <- lapply(x, length)
-  rsp <- lapply(n, function(z) rep(c(TRUE, FALSE), c(z, denom - z)))
-
-  y <- Map(
-    rsp = rsp,
-    denom = denom,
-    method = method,
-    conf_level = conf_level,
-    long = long,
-    rsp_lab = rsp_lab,
-    f = h_prop_ci
+s_length_proportion <- function(x,
+                                .N_col, #nolint snake_case
+                                ...) {
+  assert_that(
+    is_character_or_factor(x),
+    length(unique(x)) <= 1L,
+    length(x) <= .N_col
   )
-
-  flatten_list(y)
+  n_true <- length(x)
+  n_false <- .N_col - n_true
+  x_logical <- rep(c(TRUE, FALSE), c(n_true, n_false))
+  s_proportion(x = x_logical, ...)
 }
 
-#' @inheritParams argument_convention
-#' @param ... other arguments are ultimately conveyed to [s_multinomial_response()].
+#' @describeIn estimate_multinomial_rsp Formatted Analysis function which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @export
-#' @describeIn estimate_multinomial_rsp used in a `rtables` pipeline.
-#' @order 3
+#'
+#' @examples
+#' a_length_proportion(rep("CR", 10), .N_col = 100)
+#'
+a_length_proportion <- make_afun(
+  s_length_proportion,
+  .formats = c(
+    n_prop = "xx (xx.x%)",
+    prop_ci = "(xx.xx, xx.xx)"
+  )
+)
+
+#' @describeIn estimate_multinomial_rsp Analyze Function which adds the multinomial proportion analysis to
+#'   the input layout. Note that additional formatting arguments can be used
+#'   here.
+#' @inheritParams argument_convention
+#' @export
 #' @examples
 #'
 #' # Use of the layout creating function.
@@ -159,20 +102,26 @@ s_multinomial_response <- function(x,
 #'
 estimate_multinomial_response <- function(lyt,
                                           var,
-                                          vars = var,
+                                          ...,
                                           show_labels = "hidden",
-                                          ...) {
-  afun <- format_wrap_x(
-    sfun = s_multinomial_response,
-    formats =  c(n_prop = "xx (xx.xx%)", prop_ci = "(xx.xx, xx.xx)"),
-    indent_mods = c(n_prop = 0L, prop_ci = 0L)
+                                          .stats = "prop_ci",
+                                          .formats = NULL,
+                                          .labels = NULL,
+                                          .indent_mods = NULL) {
+  afun <- make_afun(
+    a_length_proportion,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
-
+  lyt <- split_rows_by(lyt, var = var)
+  lyt <- summarize_row_groups(lyt)
   analyze(
     lyt,
-    vars,
+    vars = var,
     afun = afun,
-    extra_args = list(...),
-    show_labels = show_labels
+    show_labels = show_labels,
+    extra_args = list(...)
   )
 }
