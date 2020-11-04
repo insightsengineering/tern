@@ -74,13 +74,14 @@ test_that("h_proportion_subgroups_df functions as expected with valid input and 
   )
 
   expected <- data.frame(
-    arm = factor(rep(c("B: Placebo", "A: Drug X"), 4), levels = c("B: Placebo", "A: Drug X")),
-    n = c(3, 5, 4, 8, 2, 9, 5, 4),
-    n_rsp = c(1, 5, 3, 6, 2, 8, 2, 3),
-    prop = c(0.3333333, 1, 0.75, 0.75, 1, 0.8888889, 0.4, 0.75),
-    subgroup = c("F", "F", "M", "M", "S1", "S1", "S2", "S2"),
-    var = c(rep("SEX", 4), rep("STRATA2", 4)),
-    var_label = c(rep("Sex", 4), rep("Stratification Factor 2", 4)),
+    arm = factor(rep(c("B: Placebo", "A: Drug X"), 5), levels = c("B: Placebo", "A: Drug X")),
+    n = c(7, 13, 3, 5, 4, 8, 2, 9, 5, 4),
+    n_rsp = c(4, 11, 1, 5, 3, 6, 2, 8, 2, 3),
+    prop = c(0.5714286, 0.8461538, 0.3333333, 1, 0.75, 0.75, 1, 0.8888889, 0.4, 0.75),
+    subgroup = c("All Patients", "All Patients", "F", "F", "M", "M", "S1", "S1", "S2", "S2"),
+    var = c(rep("ALL", 2), rep("SEX", 4), rep("STRATA2", 4)),
+    var_label = c(rep("All Patients", 2), rep("Sex", 4), rep("Stratification Factor 2", 4)),
+    row_type = c(rep("content", 2), rep("analysis", 8)),
     stringsAsFactors = FALSE
   )
 
@@ -148,15 +149,16 @@ test_that("h_odds_ratio_subgroups_df functions as expected with valid input and 
   )
 
   expected <- data.frame(
-    arm = rep(" ", 4),
-    n_tot = c(56L, 44L, 48L, 52L),
-    or = c(4.363636, 1.235294, 2.083333, 3.043478),
-    lcl = c(0.8347243, 0.2204647, 0.4110081, 0.5663254),
-    ucl = c(22.811510, 6.921525, 10.560077, 16.355893),
+    arm = rep(" ", 5),
+    n_tot = c(100L, 56L, 44L, 48L, 52L),
+    or = c(2.538461, 4.363636, 1.235294, 2.083333, 3.043478),
+    lcl = c(0.8112651, 0.8347243, 0.2204647, 0.4110081, 0.5663254),
+    ucl = c(7.942886, 22.811510, 6.921525, 10.560077, 16.355893),
     conf_level = 0.95,
-    subgroup = c("F", "M", "S1", "S2"),
-    var = c("SEX", "SEX", "STRATA2", "STRATA2"),
-    var_label = rep(c("Sex", "Stratification Factor 2"), each = 2),
+    subgroup = c("All Patients", "F", "M", "S1", "S2"),
+    var = c("ALL", "SEX", "SEX", "STRATA2", "STRATA2"),
+    var_label = c("All Patients", rep(c("Sex", "Stratification Factor 2"), each = 2)),
+    row_type = c("content", rep("analysis", 4)),
     stringsAsFactors = FALSE
   )
 
@@ -176,25 +178,27 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
 
   expected <- list(
     prop = data.frame(
-      arm = factor(rep(c("B: Placebo", "A: Drug X"), 4), levels = c("B: Placebo", "A: Drug X")),
-      n = c(30, 26, 20, 24, 20, 28, 30, 22),
-      n_rsp = c(22, 24, 17, 21, 16, 25, 23, 20),
-      prop = c(0.7333333, 0.9230769, 0.85, 0.875, 0.8, 0.8928571, 0.7666667, 0.9090909),
-      subgroup = c("F", "F", "M", "M", "S1", "S1", "S2", "S2"),
-      var = c(rep("SEX", 4), rep("STRATA2", 4)),
-      var_label = c(rep("Sex", 4), rep("Stratification Factor 2", 4)),
+      arm = factor(rep(c("B: Placebo", "A: Drug X"), 5), levels = c("B: Placebo", "A: Drug X")),
+      n = c(50, 50, 30, 26, 20, 24, 20, 28, 30, 22),
+      n_rsp = c(39, 45, 22, 24, 17, 21, 16, 25, 23, 20),
+      prop = c(0.78, 0.9, 0.7333333, 0.9230769, 0.85, 0.875, 0.8, 0.8928571, 0.7666667, 0.9090909),
+      subgroup = c("All Patients", "All Patients", "F", "F", "M", "M", "S1", "S1", "S2", "S2"),
+      var = c(rep("ALL", 2), rep("SEX", 4), rep("STRATA2", 4)),
+      var_label = c(rep("All Patients", 2), rep("Sex", 4), rep("Stratification Factor 2", 4)),
+      row_type = c(rep("content", 2), rep("analysis", 8)),
       stringsAsFactors = FALSE
     ),
     or = data.frame(
-      arm = rep(" ", 4),
-      n_tot = c(56L, 44L, 48L, 52L),
-      or = c(4.363636, 1.235294, 2.083333, 3.043478),
-      lcl = c(0.8347243, 0.2204647, 0.4110081, 0.5663254),
-      ucl = c(22.811510, 6.921525, 10.560077, 16.355893),
+      arm = rep(" ", 5),
+      n_tot = c(100L, 56L, 44L, 48L, 52L),
+      or = c(2.538461, 4.363636, 1.235294, 2.083333, 3.043478),
+      lcl = c(0.8112651, 0.8347243, 0.2204647, 0.4110081, 0.5663254),
+      ucl = c(7.942886, 22.811510, 6.921525, 10.560077, 16.355893),
       conf_level = 0.95,
-      subgroup = c("F", "M", "S1", "S2"),
-      var = c("SEX", "SEX", "STRATA2", "STRATA2"),
-      var_label = rep(c("Sex", "Stratification Factor 2"), each = 2),
+      subgroup = c("All Patients", "F", "M", "S1", "S2"),
+      var = c("ALL", "SEX", "SEX", "STRATA2", "STRATA2"),
+      var_label = c("All Patients", rep(c("Sex", "Stratification Factor 2"), each = 2)),
+      row_type = c("content", rep("analysis", 4)),
       stringsAsFactors = FALSE
     )
   )
@@ -254,12 +258,13 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Sex", "F", "M", "Stratification Factor 2",
-      "S1", "S2", "B: Placebo", "n", "", "62", "38", "", "48", "52",
-      "B: Placebo", "Response (%)", "", "64.5%", "81.6%", "", "70.8%",
-      "71.2%", "A: Drug X", "n", "", "58", "42", "", "57", "43", "A: Drug X",
-      "Response (%)", "", "91.4%", "88.1%", "", "89.5%", "90.7%"),
-    .Dim = c(8L, 5L)
+      "", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
+      "S1", "S2", "B: Placebo", "n", "100", "", "62", "38", "", "48",
+      "52", "B: Placebo", "Response (%)", "71%", "", "64.5%", "81.6%",
+      "", "70.8%", "71.2%", "A: Drug X", "n", "100", "", "58", "42",
+      "", "57", "43", "A: Drug X", "Response (%)", "90%", "", "91.4%",
+      "88.1%", "", "89.5%", "90.7%"),
+    .Dim = c(9L, 5L)
   )
   expect_equal(result_matrix, expected_matrix)
 
@@ -272,14 +277,14 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input", {
 
   expected_matrix <- structure(
     c(
-      "", "", "Sex", "F", "M", "Stratification Factor 2",
-      "S1", "S2", " ", "Total n", "", "120", "80", "", "105", "95",
-      " ", "Odds Ratio", "", "5.83", "1.67", "", "3.5", "3.95", " ",
-      "95% CI", "", "(2.03, 16.73)", "(0.48, 5.79)", "", "(1.22, 10)",
-      "(1.2, 13.01)", " ", "p-value (Chi-Squared Test)", "", "0.0004",
-      "0.4150", "", "0.0154", "0.0178"),
-    .Dim = c(8L, 5L)
-    )
+      "", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
+      "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
+      "95", " ", "Odds Ratio", "3.68", "", "5.83", "1.67", "", "3.5",
+      "3.95", " ", "95% CI", "(1.68, 8.04)", "", "(2.03, 16.73)", "(0.48, 5.79)",
+      "", "(1.22, 10)", "(1.2, 13.01)", " ", "p-value (Chi-Squared Test)",
+      "0.0007", "", "0.0004", "0.4150", "", "0.0154", "0.0178"),
+    .Dim = c(9L, 5L)
+  )
   expect_equal(result_matrix, expected_matrix)
 
 })

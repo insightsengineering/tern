@@ -12,6 +12,7 @@
 #'   specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
 #'   so no test is performed.
+#' @param label_all (`string`)\cr label for the total population analysis.
 #' @name h_response_subgroups
 #' @order 1
 #' @examples
@@ -84,12 +85,13 @@ h_proportion_df <- function(rsp, arm) {
 #'   data = adrs
 #' )
 #'
-h_proportion_subgroups_df <- function(variables, data) {
+h_proportion_subgroups_df <- function(variables, data, label_all = "All Patients") {
 
   assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subgroups),
+    is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
     are_equal(nlevels(data[[variables$arm]]), 2)
@@ -97,6 +99,14 @@ h_proportion_subgroups_df <- function(variables, data) {
 
   subgroup_labels <- var_labels(data[, variables$subgroups], fill = TRUE)
 
+  # Add All Patients.
+  result_all <- h_proportion_df(data[[variables$rsp]], data[[variables$arm]])
+  result_all$subgroup <- label_all
+  result_all$var <- "ALL"
+  result_all$var_label <- label_all
+  result_all$row_type <- "content"
+
+  # Add Subgroups.
   l_subgroups <- lapply(variables$subgroups, function(grp_i){
 
     l_df <- lapply(split(data, data[[grp_i]]), function(x) {
@@ -107,11 +117,17 @@ h_proportion_subgroups_df <- function(variables, data) {
     df$subgroup <- rep(names(l_df), each = 2)
     df$var <- grp_i
     df$var_label <- subgroup_labels[grp_i]
+    df$row_type <- "analysis"
 
     df
   })
 
-  do.call(rbind, args = c(l_subgroups, make.row.names = FALSE))
+  result_subgroups <- do.call(rbind, args = c(l_subgroups, make.row.names = FALSE))
+
+  rbind(
+    result_all,
+    result_subgroups
+  )
 
 }
 
@@ -191,18 +207,31 @@ h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
 #'   data = adrs
 #' )
 #'
-h_odds_ratio_subgroups_df <- function(variables, data, conf_level = 0.95, method = NULL) {
+h_odds_ratio_subgroups_df <- function(variables, data, conf_level = 0.95, method = NULL, label_all = "All Patients") {
 
   assert_that(
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subgroups),
+    is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
     are_equal(nlevels(data[[variables$arm]]), 2)
   )
 
   subgroup_labels <- var_labels(data[, variables$subgroups], fill = TRUE)
+
+  # Add All Patients.
+  result_all <- h_odds_ratio_df(
+    rsp = data[[variables$rsp]],
+    arm = data[[variables$arm]],
+    conf_level = conf_level,
+    method = method
+  )
+  result_all$subgroup <- label_all
+  result_all$var <- "ALL"
+  result_all$var_label <- label_all
+  result_all$row_type <- "content"
 
   l_subgroups <- lapply(variables$subgroups, function(grp_i){
 
@@ -219,11 +248,17 @@ h_odds_ratio_subgroups_df <- function(variables, data, conf_level = 0.95, method
     df$subgroup <- names(l_df)
     df$var <- grp_i
     df$var_label <- subgroup_labels[grp_i]
+    df$row_type <- "analysis"
 
     df
   })
 
-  do.call(rbind, args = c(l_subgroups, make.row.names = FALSE))
+  result_subgroups <- do.call(rbind, args = c(l_subgroups, make.row.names = FALSE))
+
+  rbind(
+    result_all,
+    result_subgroups
+  )
 
 }
 
@@ -269,6 +304,7 @@ NULL
 #'   [h_proportion_subgroups_df()]. Result is a list of two data frames:
 #'   `prop` and `or`. `variables` corresponds to the names of variables found in `data`, passed as a
 #'   named list and requires elements `rsp`, `arm` and `subgroups`.
+#' @param label_all (`string`)\cr label for the total population analysis.
 #' @export
 #' @examples
 #'
@@ -278,10 +314,10 @@ NULL
 #' )
 #' df
 #'
-extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = NULL) {
+extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = NULL, label_all = "All Patients") {
 
-  df_prop <- h_proportion_subgroups_df(variables, data)
-  df_or <- h_odds_ratio_subgroups_df(variables, data, conf_level = conf_level, method = method)
+  df_prop <- h_proportion_subgroups_df(variables, data, label_all = label_all)
+  df_or <- h_odds_ratio_subgroups_df(variables, data, conf_level = conf_level, method = method, label_all = label_all)
 
   list(prop = df_prop, or = df_or)
 }
@@ -304,11 +340,11 @@ a_response_subgroups <- function(.formats = c(
 
   afun_lst <- Map(function(stat, fmt){
     if (stat == "ci") {
-      function(df, ...) {
+      function(df, labelstr = "", ...) {
         in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
       }
     } else {
-      function(df, ...) {
+      function(df, labelstr = "", ...) {
         in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
       }
     }
@@ -349,7 +385,21 @@ tabulate_rsp_subgroups <- function(
   afun_lst <- a_response_subgroups()
 
   lyt <- split_cols_by(lyt = lyt, var = "arm")
-  lyt <- split_rows_by(lyt = lyt, var = "var_label")
+  lyt <- split_rows_by(
+    lyt = lyt,
+    var = "row_type",
+    split_fun = keep_split_levels("content"),
+    nested = FALSE
+  )
+  lyt <- summarize_row_groups(lyt = lyt, var = "var_label", cfun = afun_lst[vars])
+  lyt <- split_rows_by(
+    lyt = lyt,
+    var = "row_type",
+    split_fun = keep_split_levels("analysis"),
+    nested = FALSE,
+    child_labels = "hidden"
+  )
+  lyt <- split_rows_by(lyt = lyt, var = "var_label", nested = TRUE)
   lyt <- split_cols_by_multivar(
     lyt = lyt,
     vars = colvars$vars,

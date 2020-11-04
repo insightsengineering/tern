@@ -7,7 +7,13 @@
 \alias{tabulate_rsp_subgroups}
 \title{Tabulate Binary Response by Subgroup}
 \usage{
-extract_rsp_subgroups(variables, data, conf_level = 0.95, method = NULL)
+extract_rsp_subgroups(
+  variables,
+  data,
+  conf_level = 0.95,
+  method = NULL,
+  label_all = "All Patients"
+)
 
 a_response_subgroups(
   .formats = c(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or = ">999.99",
@@ -27,6 +33,8 @@ tabulate_rsp_subgroups(lyt, vars, conf_level = NULL, method = NULL)
 specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}
 so no test is performed.}
+
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 

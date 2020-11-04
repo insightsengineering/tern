@@ -10,11 +10,17 @@
 \usage{
 h_proportion_df(rsp, arm)
 
-h_proportion_subgroups_df(variables, data)
+h_proportion_subgroups_df(variables, data, label_all = "All Patients")
 
 h_odds_ratio_df(rsp, arm, conf_level = 0.95, method = NULL)
 
-h_odds_ratio_subgroups_df(variables, data, conf_level = 0.95, method = NULL)
+h_odds_ratio_subgroups_df(
+  variables,
+  data,
+  conf_level = 0.95,
+  method = NULL,
+  label_all = "All Patients"
+)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
@@ -24,6 +30,8 @@ h_odds_ratio_subgroups_df(variables, data, conf_level = 0.95, method = NULL)
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
