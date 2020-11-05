@@ -48,27 +48,11 @@ test_that("TTET01 default variant is produced correctly", {
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "6 Months",
+      var_labels = "Months",
+      time_point = c(6, 12),
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 6)
-    ) %>%
-    surv_timepoint_diff(
-      vars = "AVAL",
-      show_labels = "hidden",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 6)
-    ) %>%
-    surv_timepoint(
-      vars = "AVAL",
-      var_labels = "12 Months",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
-    ) %>%
-    surv_timepoint_diff(
-      vars = "AVAL",
-      show_labels = "hidden",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
+      method = "both",
+      control = control_surv_timepoint()
     )
 
   result <- build_table(l, adtte_f)
@@ -154,15 +138,10 @@ test_that("TTET01 variant: selecting sections to display", {
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "6 Months",
+      var_labels = "Months",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 6)
-    ) %>%
-    surv_timepoint(
-      vars = "AVAL",
-      var_labels = "12 Months",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
+      method = "surv",
+      time_point = c(6, 12)
     )
   result <- build_table(l, adtte_f)
   result_matrix <- to_string_matrix(result)
@@ -241,15 +220,18 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "12 Months",
+      var_labels = "Months",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12, conf_level = 0.9, conf_type = "log-log")
+      time_point = 12,
+      control = control_surv_timepoint(conf_level = 0.9, conf_type = "log-log")
     ) %>%
-    surv_timepoint_diff(
+    surv_timepoint(
       vars = "AVAL",
       show_labels = "hidden",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12, conf_level = 0.975)
+      time_point = 12,
+      method = "surv_diff",
+      control = control_surv_timepoint(conf_level = 0.975)
     )
   result <- build_table(l, adtte_f)
   result_matrix <- to_string_matrix(result)
@@ -333,15 +315,10 @@ test_that("TTET01 variant: with stratified analysis", {
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "12 Months",
+      var_labels = "Months",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
-    ) %>%
-    surv_timepoint_diff(
-      vars = "AVAL",
-      show_labels = "hidden",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
+      method = "both",
+      time_point = 12
     )
   result <- build_table(l, adtte_f)
   result_matrix <- to_string_matrix(result)
@@ -423,15 +400,10 @@ test_that("TTET01 variant: modifying time point", {
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "6 Months",
+      var_labels = "Months",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 6)
-    ) %>%
-    surv_timepoint_diff(
-      vars = "AVAL",
-      show_labels = "hidden",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 6)
+      time_point = 6,
+      method = "both"
     )
   result <- build_table(l, adtte_f)
   result_matrix <- to_string_matrix(result)
@@ -526,15 +498,10 @@ test_that("TTET01 variant: requesting more than one p-value", {
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "12 Months",
+      var_labels = "Months",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
-    ) %>%
-    surv_timepoint_diff(
-      vars = "AVAL",
-      show_labels = "hidden",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
+      time_point = 12,
+      method = "both"
     )
   result <- build_table(l, adtte_f)
   result_matrix <- to_string_matrix(result)

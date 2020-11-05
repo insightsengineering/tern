@@ -56,17 +56,16 @@ control_surv_time <- function(conf_level = 0.95,
 #' @md
 #' @inheritParams argument_convention
 #' @inheritParams control_surv_time
-#' @param time_point (`number`) \cr survival time point of interest.
 #' @return A list of components with the same names as the arguments
 #' @export
 #'
 control_surv_timepoint <- function(conf_level = 0.95,
-                                   conf_type = c("plain", "none", "log", "log-log"),
-                                   time_point = 6) {
+                                   conf_type = c("plain", "none", "log", "log-log")
+) {
   conf_type <- match.arg(conf_type)
-  assert_that(
-    is_numeric_single(time_point),
-    is_proportion(conf_level)
+  assert_that(is_proportion(conf_level))
+  list(
+    conf_level = conf_level,
+    conf_type = conf_type
   )
-  list(conf_level = conf_level, conf_type = conf_type, time_point = time_point)
 }

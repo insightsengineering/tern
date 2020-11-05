@@ -36,12 +36,11 @@ test_that("control_surv_time fails wrong inputs", {
 
 test_that("control_surv_timepoint works with customized parameters", {
   result <- control_surv_timepoint(
-    conf_level = 0.8, conf_type = "log-log", time_point = 9
+    conf_level = 0.8, conf_type = "log-log"
   )
   expected <- list(
     conf_level = 0.8,
-    conf_type = "log-log",
-    time_point = 9
+    conf_type = "log-log"
   )
   expect_identical(result, expected)
 })

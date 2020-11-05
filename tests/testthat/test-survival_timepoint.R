@@ -13,6 +13,7 @@ test_that("s_surv_timepoint works with default arguments", {
   result <- s_surv_timepoint(
     adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
+    time_point = 6,
     is_event = "is_event"
   )
   expected <- list(
@@ -38,8 +39,9 @@ test_that("s_surv_timepoint works with customized arguments", {
     adtte_f %>% dplyr::filter(ARMCD == "ARM C"),
     .var = "AVAL",
     is_event = "is_event",
+    time_point = 7,
     control = control_surv_timepoint(
-      conf_level = 0.99, conf_type = "log", time_point = 7
+      conf_level = 0.99, conf_type = "log"
     )
   )
   expected <- list(
@@ -67,7 +69,8 @@ test_that("surv_timepoint works with default arguments", {
   ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "6 Months",
+      var_labels = "Months",
+      time_point = 6,
       is_event = "is_event"
     ) %>%
     build_table(df = adtte_f)
@@ -101,9 +104,10 @@ test_that("surv_timepoint works with customized arguments", {
   ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "8 Months",
+      var_labels = "Months",
+      time_point = 8,
       is_event = "is_event",
-      control = control_surv_timepoint(conf_level = 0.9, conf_type = "log-log", time_point = 8)
+      control = control_surv_timepoint(conf_level = 0.9, conf_type = "log-log")
     ) %>%
     build_table(df = adtte_f)
   result_matrix <- to_string_matrix(result)
@@ -139,6 +143,7 @@ test_that("s_surv_timepoint_diff works with default arguments for comparison gro
     .ref_group = df_ref,
     .in_ref_col = FALSE,
     is_event = "is_event",
+    time_point = 6,
     control = control_surv_timepoint()
   )
   expected <- list(
@@ -159,7 +164,6 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
       is_event = CNSR == 0
     )
 
-
   df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
   df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
 
@@ -168,8 +172,9 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
     .var = "AVAL",
     .ref_group = df_ref,
     .in_ref_col = FALSE,
+    time_point = 8,
     is_event = "is_event",
-    control = control_surv_timepoint(time_point = 8, conf_level = 0.9)
+    control = control_surv_timepoint(conf_level = 0.9)
   )
   expected <- list(
     rate_diff = with_label(3.509382, "Difference in Event Free Rate"),
@@ -179,7 +184,7 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
   expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-test_that("surv_timepoint_diff works with default arguments", {
+test_that("surv_timepoint for survival diff works with default arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -193,17 +198,18 @@ test_that("surv_timepoint_diff works with default arguments", {
     var = "ARMCD",
     ref_group = "ARM A"
   ) %>%
-    surv_timepoint_diff(
+    surv_timepoint(
       vars = "AVAL",
-      var_labels = "6 Months",
+      var_labels = "Months",
+      time_point = 9,
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 9)
+      method = "surv_diff"
     ) %>%
     build_table(df = adtte_f)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "6 Months", "Difference in Event Free Rate",
+      "", "9 Months", "Difference in Event Free Rate",
       "95% CI", "p-value (Z-test)", "ARM A", "", "", "", "",
       "ARM B", "", "-2.64", "(-10.99, 5.71)", "0.5357", "ARM C", "",
       "-22.83", "(-32.94, -12.72)", "<0.0001"
@@ -214,7 +220,7 @@ test_that("surv_timepoint_diff works with default arguments", {
   expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("surv_timepoint_diff works with customized arguments", {
+test_that("surv_timepoint for survival diff works with customized arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -228,11 +234,13 @@ test_that("surv_timepoint_diff works with customized arguments", {
     var = "ARMCD",
     ref_group = "ARM A"
   ) %>%
-    surv_timepoint_diff(
+    surv_timepoint(
       vars = "AVAL",
-      var_labels = "9 Months",
+      var_labels = "Months",
+      time_point = 9,
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 9, conf_level = 0.99)
+      method = "surv_diff",
+      control = control_surv_timepoint(conf_level = 0.99)
     ) %>%
     build_table(df = adtte_f)
   result_matrix <- to_string_matrix(result)

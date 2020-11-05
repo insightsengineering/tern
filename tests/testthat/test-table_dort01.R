@@ -51,15 +51,9 @@ test_that("DORT01 variant 1 is produced correctly", {
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "6 Months duration",
+      var_labels = "Months duration",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 6)
-    ) %>%
-    surv_timepoint(
-      vars = "AVAL",
-      var_labels = "12 Months duration",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12)
+      time_point = c(6, 12)
     ) %>%
     build_table(adtte_f)
 
@@ -217,15 +211,10 @@ test_that("DORT01 variant 3 is produced correctly", {
     ) %>%
     surv_timepoint(
       vars = "AVAL",
-      var_labels = "6 Months duration",
+      var_labels = "Months duration",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 6, conf_level = 0.90)
-    ) %>%
-    surv_timepoint(
-      vars = "AVAL",
-      var_labels = "12 Months duration",
-      is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12, conf_level = 0.90)
+      time_point = c(6, 12),
+      control = control_surv_timepoint(conf_level = 0.90)
     ) %>%
     build_table(adtte_f)
 

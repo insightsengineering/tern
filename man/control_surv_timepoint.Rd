@@ -6,8 +6,7 @@
 \usage{
 control_surv_timepoint(
   conf_level = 0.95,
-  conf_type = c("plain", "none", "log", "log-log"),
-  time_point = 6
+  conf_type = c("plain", "none", "log", "log-log")
 )
 }
 \arguments{
@@ -15,8 +14,6 @@ control_surv_timepoint(
 
 \item{conf_type}{(\code{string}) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
 see more in \code{\link[survival:survfit]{survival::survfit()}}}
-
-\item{time_point}{(\code{number}) \cr survival time point of interest.}
 }
 \value{
 A list of components with the same names as the arguments
