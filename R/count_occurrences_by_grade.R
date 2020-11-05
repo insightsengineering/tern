@@ -109,7 +109,7 @@ s_count_occurrences_by_grade <- function(df,
 
     if (!is.ordered(grade)) {
 
-      grade_lbl <- label(grade)
+      grade_lbl <- obj_label(grade)
       grade <- with_label(factor(grade, levels = levels(grade), ordered = TRUE), grade_lbl)
 
     }

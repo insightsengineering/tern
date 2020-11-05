@@ -189,7 +189,7 @@ h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
     )
 
     df$pval <- as.numeric(result_test$pval)
-    df$pval_label <- label(result_test$pval)
+    df$pval_label <- obj_label(result_test$pval)
   }
 
   df

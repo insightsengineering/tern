@@ -87,7 +87,7 @@ list_lengths_in_list <- function(x) {
 #' @importFrom rlang names2
 labels_or_names <- function(x) {
   assert_that(is.list(x))
-  labs <- sapply(x, label)
+  labs <- sapply(x, obj_label)
   nams <- rlang::names2(x)
   label_is_null <- sapply(labs, is.null)
   result <- unlist(ifelse(label_is_null, nams, labs))
