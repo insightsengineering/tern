@@ -140,7 +140,6 @@ surv_timepoint <- function(lyt,
 
 
 #' @describeIn survival_timepoint Statistics Function which analyzes difference between two survival rates.
-#' @param conf_level confidence level for difference of two risk rates
 #' @return The statistics are:
 #' * `rate_diff` : event free rate difference between two groups.
 #' * `rate_diff_ci` : confidence interval for the difference.
@@ -155,13 +154,14 @@ s_surv_timepoint_diff <- function(df,
                                   .var,
                                   .ref_group,
                                   .in_ref_col,
-                                  conf_level = 0.95,
+                                  control = control_surv_timepoint(),
                                   ...) {
+
   if (.in_ref_col) {
     return(
       list(
         rate_diff = with_label("", "Difference in Event Free Rate"),
-        rate_diff_ci = with_label("", f_conf_level(conf_level)),
+        rate_diff_ci = with_label("", f_conf_level(control$conf_level)),
         ztest_pval = with_label("", "p-value (Z-test)")
       )
     )
@@ -169,7 +169,7 @@ s_surv_timepoint_diff <- function(df,
   data <- rbind(.ref_group, df)
   group <- factor(rep(c("ref", "x"), c(nrow(.ref_group), nrow(df))), levels = c("ref", "x"))
   res_per_group <- lapply(split(data, group), function(x) {
-    s_surv_timepoint(df = x, .var = .var, ...)
+    s_surv_timepoint(df = x, .var = .var, control = control, ...)
   })
 
   res_x <- res_per_group[[2]]
@@ -184,7 +184,7 @@ s_surv_timepoint_diff <- function(df,
   } else {
     sqrt(res_x$rate_se^2 + res_ref$rate_se^2)
   }
-  qs <- c(-1, 1) * stats::qnorm(1 - (1 - conf_level) / 2)
+  qs <- c(-1, 1) * stats::qnorm(1 - (1 - control$conf_level) / 2)
   rate_diff_ci <- rate_diff + qs * se_diff
   ztest_pval <- if (is.na(rate_diff)) {
     NA
@@ -193,7 +193,7 @@ s_surv_timepoint_diff <- function(df,
   }
   list(
     rate_diff = with_label(rate_diff, "Difference in Event Free Rate"),
-    rate_diff_ci = with_label(rate_diff_ci, f_conf_level(conf_level)),
+    rate_diff_ci = with_label(rate_diff_ci, f_conf_level(control$conf_level)),
     ztest_pval = with_label(ztest_pval, "p-value (Z-test)")
   )
 }

@@ -138,7 +138,8 @@ test_that("s_surv_timepoint_diff works with default arguments for comparison gro
     .var = "AVAL",
     .ref_group = df_ref,
     .in_ref_col = FALSE,
-    is_event = "is_event"
+    is_event = "is_event",
+    control = control_surv_timepoint()
   )
   expected <- list(
     rate_diff = with_label(0.4049929, "Difference in Event Free Rate"),
@@ -168,8 +169,7 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
     .ref_group = df_ref,
     .in_ref_col = FALSE,
     is_event = "is_event",
-    control = control_surv_timepoint(time_point = 8),
-    conf_level = 0.9
+    control = control_surv_timepoint(time_point = 8, conf_level = 0.9)
   )
   expected <- list(
     rate_diff = with_label(3.509382, "Difference in Event Free Rate"),
@@ -232,8 +232,7 @@ test_that("surv_timepoint_diff works with customized arguments", {
       vars = "AVAL",
       var_labels = "9 Months",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 9),
-      conf_level = 0.99
+      control = control_surv_timepoint(time_point = 9, conf_level = 0.99)
     ) %>%
     build_table(df = adtte_f)
   result_matrix <- to_string_matrix(result)

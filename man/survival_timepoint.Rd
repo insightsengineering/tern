@@ -30,7 +30,7 @@ s_surv_timepoint_diff(
   .var,
   .ref_group,
   .in_ref_col,
-  conf_level = 0.95,
+  control = control_surv_timepoint(),
   ...
 )
 
@@ -39,7 +39,7 @@ a_surv_timepoint_diff(
   .var,
   .ref_group,
   .in_ref_col,
-  conf_level = 0.95,
+  control = control_surv_timepoint(),
   ...
 )
 
@@ -91,8 +91,6 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 \item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{conf_level}{confidence level for difference of two risk rates}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 }

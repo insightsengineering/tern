@@ -249,8 +249,7 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
       vars = "AVAL",
       show_labels = "hidden",
       is_event = "is_event",
-      control = control_surv_timepoint(time_point = 12),
-      conf_level = 0.975
+      control = control_surv_timepoint(time_point = 12, conf_level = 0.975)
     )
   result <- build_table(l, adtte_f)
   result_matrix <- to_string_matrix(result)
