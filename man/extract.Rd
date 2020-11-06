@@ -25,9 +25,3 @@ Differences to the standard [base::\code{[}()] function are:
 elements are returned. That is, \code{names} which don't appear in \code{x} are not returned as \code{NA}s.
 }
 }
-\examples{
-x <- c(a = 5, b = 3)
-extract(x, c("a", "c"))
-extract(NULL, "b")
-
-}

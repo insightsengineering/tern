@@ -349,12 +349,6 @@ combine_vectors <- function(x, y) {
 #'
 #' @return Either `NULL` or the extracted elements from `x`.
 #' @importFrom rlang is_named
-#' @export
-#'
-#' @examples
-#' x <- c(a = 5, b = 3)
-#' extract(x, c("a", "c"))
-#' extract(NULL, "b")
 #'
 extract <- function(x, names) {
   if (is.null(x)) {

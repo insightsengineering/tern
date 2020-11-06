@@ -287,7 +287,6 @@ reference:
       - get_onco_rsp_label
       - month2day
       - day2month
-      - extract
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
@@ -339,3 +338,4 @@ reference:
       - d_count_missed_doses
       - d_rsp_subgroups_colvars
       - afun_selected_stats
+      - extract
