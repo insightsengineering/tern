@@ -97,7 +97,7 @@ h_proportion_subgroups_df <- function(variables, data, label_all = "All Patients
     are_equal(nlevels(data[[variables$arm]]), 2)
   )
 
-  subgroup_labels <- var_labels(data[, variables$subgroups], fill = TRUE)
+  subgroup_labels <- var_labels(data[, variables$subgroups, drop = FALSE], fill = TRUE)
 
   # Add All Patients.
   result_all <- h_proportion_df(data[[variables$rsp]], data[[variables$arm]])
@@ -219,7 +219,7 @@ h_odds_ratio_subgroups_df <- function(variables, data, conf_level = 0.95, method
     are_equal(nlevels(data[[variables$arm]]), 2)
   )
 
-  subgroup_labels <- var_labels(data[, variables$subgroups], fill = TRUE)
+  subgroup_labels <- var_labels(data[, variables$subgroups, drop = FALSE], fill = TRUE)
 
   # Add All Patients.
   result_all <- h_odds_ratio_df(
@@ -326,15 +326,17 @@ extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = N
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
 #' @export
 #' @examples
-#' a_response_subgroups(.formats = c("n" = "xx", "prop" = "xx.xx%"))
+#' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
 #'
-a_response_subgroups <- function(.formats = c(
+a_response_subgroups <- function(.formats = list(
   n = "xx", n_rsp = "xx", prop = "xx.x%",
-  n_tot = "xx", or = ">999.99", ci = "(xx.xx, xx.xx)", pval = "x.xxxx | (<0.0001)")
+  n_tot = "xx", or = list(format_extreme_values(2L)),
+  ci = list(format_extreme_values_ci(2L)),
+  pval = "x.xxxx | (<0.0001)")
 ) {
 
   assert_that(
-    is.character(.formats),
+    is.list(.formats),
     all_elements_in_ref(names(.formats), ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
   )
 

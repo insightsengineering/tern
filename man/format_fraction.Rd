@@ -24,6 +24,7 @@ format_fraction(x = c(num = 0L, denom = 3L))
 }
 \seealso{
 Other formatting functions: 
+\code{\link{extreme_format}},
 \code{\link{format_count_fraction}()},
 \code{\link{format_fraction_threshold}()},
 \code{\link{formatting_functions}}

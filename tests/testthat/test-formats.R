@@ -48,3 +48,48 @@ test_that("format_fraction_threshold works with easy inputs", {
   expected <- c("10", "<2", "0")
   expect_identical(result, expected)
 })
+
+test_that("h_get_format_threshold works with easy inputs", {
+
+  # Test default.
+  result <- h_get_format_threshold()
+  expected <- list(
+    threshold = c(low = 0.01, high = 999.99),
+    format_string = c(low = "<0.01", high = ">999.99")
+  )
+  expect_identical(result, expected)
+
+  # Test non-default value.
+  result <- h_get_format_threshold(1L)
+  expected <- list(
+    threshold = c(low = 0.1, high = 999.9),
+    format_string = c(low = "<0.1", high = ">999.9")
+  )
+  expect_identical(result, expected)
+
+})
+
+test_that("h_format_threshold works with easy inputs", {
+
+  test <- c(0.782, 0.127, Inf, 0, 0.009)
+  result <- vapply(test, h_format_threshold, FUN.VALUE = character(1))
+  expected <- c("0.78", "0.13", ">999.99", "0.00", "<0.01")
+
+  expect_identical(result, expected)
+})
+
+test_that("format_extreme_values works with easy inputs", {
+  test <- c(0.127, Inf, 0, 0.009)
+  format_fun <- format_extreme_values(2L)
+  result <- sapply(test, format_fun)
+  expected <- c("0.13", ">999.99", "0.00", "<0.01")
+  expect_identical(result, expected)
+})
+
+test_that("format_extreme_values_ci works with easy inputs", {
+  test <- list(c(0.127, Inf), c(0, 0.009))
+  format_fun <- format_extreme_values_ci(2L)
+  result <- sapply(test, format_fun)
+  expected <- c("(0.13, >999.99)", "(0.00, <0.01)")
+  expect_identical(result, expected)
+})

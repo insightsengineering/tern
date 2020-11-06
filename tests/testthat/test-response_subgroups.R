@@ -216,7 +216,7 @@ test_that("a_response_subgroups functions as expected with valid input", {
     stringsAsFactors = FALSE
   )
 
-  afun <- a_response_subgroups(.formats = c(prop = "xx.xx", pval = "x.xxxx | (<0.0001)"))
+  afun <- a_response_subgroups(.formats = list(prop = "xx.xx", pval = "x.xxxx | (<0.0001)"))
 
   result <- basic_table() %>%
     split_cols_by_multivar(c("prop", "pval")) %>%
@@ -279,12 +279,56 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input", {
     c(
       "", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
-      "95", " ", "Odds Ratio", "3.68", "", "5.83", "1.67", "", "3.5",
+      "95", " ", "Odds Ratio", "3.68", "", "5.83", "1.67", "", "3.50",
       "3.95", " ", "95% CI", "(1.68, 8.04)", "", "(2.03, 16.73)", "(0.48, 5.79)",
-      "", "(1.22, 10)", "(1.2, 13.01)", " ", "p-value (Chi-Squared Test)",
+      "", "(1.22, 10.00)", "(1.20, 13.01)", " ", "p-value (Chi-Squared Test)",
       "0.0007", "", "0.0004", "0.4150", "", "0.0154", "0.0178"),
     .Dim = c(9L, 5L)
   )
+  expect_equal(result_matrix, expected_matrix)
+
+})
+
+test_that("tabulate_rsp_subgroups functions as expected with valid input extreme values in OR table", {
+
+  var1 <- data.frame(
+    rsp = c(rep(TRUE, 30), rep(FALSE, 20)),
+    arm = factor(c(rep("REF", 30), rep("COMP", 20)), levels = c("REF", "COMP")),
+    var1 = "subgroup1",
+    stringsAsFactors = FALSE
+  )
+
+  var2 <- data.frame(
+    rsp = c(rep(TRUE, 3), rep(FALSE, 7), rep(TRUE, 2), rep(FALSE, 0)),
+    arm = factor(c(rep("REF", 10), rep("COMP", 2)), levels = c("REF", "COMP")),
+    var1 = "subgroup2",
+    stringsAsFactors = FALSE
+  )
+
+  adrs <- rbind(var1, var2)
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "arm", subgroups = "var1"),
+    data = adrs,
+    conf_level = 0.95
+  )
+  df_or <- df$or
+
+  # Odds rato table with non-default inputs.
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
+    build_table(df_or)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "All Patients", "var1", "subgroup1", "subgroup2",
+      " ", "Total n", "62", "", "50", "12", " ", "Odds Ratio", "0.02",
+      "", "<0.01", ">999.99", " ", "95% CI", "(<0.01, 0.11)", "", "(0.00, >999.99)",
+      "(0.00, >999.99)"),
+    .Dim = c(6L, 4L)
+    )
   expect_equal(result_matrix, expected_matrix)
 
 })

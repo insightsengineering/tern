@@ -170,3 +170,114 @@ format_fraction_threshold <- function(threshold) {
     )
   }
 }
+
+
+#' Formatting Extreme Values
+#'
+#' Rtables Formatting Functions that handle extreme values.
+#'
+#' @details For each input, apply a format to the specified number of `digits`. If the value is
+#'    below a threshold, it returns "<0.01" e.g. if the number of `digits` is 2. If the value is
+#'    above a threshold, it returns ">999.99" e.g. if the number of `digits` is 2.
+#'    If it is zero, then returns "0.00".
+#' @param digits (`integer`)\cr number of decimal places to display.
+#' @family formatting functions
+#' @name extreme_format
+#' @order 1
+#'
+NULL
+
+#' @describeIn extreme_format Internal helper function to calculate the threshold and create formatted strings
+#'  used in Formatting Functions. Returns a list with elements `threshold` and `format_string`.
+#' @export
+#' @examples
+#'
+#' h_get_format_threshold(2L)
+h_get_format_threshold <- function(digits = 2L) {
+
+  assert_that(
+    is.integer(digits)
+  )
+
+  low_threshold <- 1 / (10 ^ digits)
+  high_threshold <- 1000 - (1 / (10 ^ digits))
+
+  string_below_threshold <- paste0("<", low_threshold)
+  string_above_threshold <- paste0(">", high_threshold)
+
+  list(
+    "threshold" = c(low = low_threshold, high = high_threshold),
+    "format_string" = c(low = string_below_threshold, high = string_above_threshold)
+  )
+}
+
+#' @describeIn extreme_format Internal helper function to apply a threshold format to a value.
+#'   Creates a formatted string to be used in Formatting Functions.
+#' @param x (`number`)\cr value to format.
+#' @export
+#' @examples
+#'
+#' h_format_threshold(0.001)
+#' h_format_threshold(1000)
+h_format_threshold <- function(x, digits = 2L) {
+
+  assert_that(
+    !is.na(x),
+    is.numeric(x),
+    x >= 0
+  )
+
+  l_fmt <- h_get_format_threshold(digits)
+
+  result <- if (x < l_fmt$threshold["low"] && 0 < x) {
+    l_fmt$format_string["low"]
+  } else if (x > l_fmt$threshold["high"]) {
+    l_fmt$format_string["high"]
+  } else {
+    sprintf(fmt = paste0("%.", digits, "f"), x)
+  }
+
+  unname(result)
+}
+
+#' @describeIn extreme_format Create Formatting Function for a single extreme value.
+#' @export
+#' @examples
+#'
+#' format_fun <- format_extreme_values(2L)
+#' format_fun(x = 0.127)
+#' format_fun(x = Inf)
+#' format_fun(x = 0)
+#' format_fun(x = 0.009)
+#'
+format_extreme_values <- function(digits = 2L) {
+
+  function(x, ...) {
+    assert_that(length(x) == 1)
+
+    h_format_threshold(x = x, digits = digits)
+
+  }
+}
+
+#' @describeIn extreme_format Create Formatting Function for extreme values part of a confidence interval. Values
+#'   are formatted as e.g. "(xx.xx, xx.xx)" if if the number of `digits` is 2.
+#' @export
+#' @examples
+#'
+#' format_fun <- format_extreme_values_ci(2L)
+#' format_fun(x = c(0.127, Inf))
+#' format_fun(x = c(0, 0.009))
+#'
+format_extreme_values_ci <- function(digits = 2L) {
+
+  function(x, ...) {
+    assert_that(length(x) == 2)
+
+    l_result <- h_format_threshold(x = x[1], digits = digits)
+    h_result <- h_format_threshold(x = x[2], digits = digits)
+
+    paste0("(", l_result, ", ", h_result, ")")
+
+  }
+}

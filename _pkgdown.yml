@@ -236,6 +236,8 @@ reference:
       - format_count_fraction
       - format_fraction_threshold
       - format_xx
+      - format_extreme_values
+      - format_extreme_values_ci
 
   - title: rtables Scoring Functions
     desc: these functions can help with sorting of tables

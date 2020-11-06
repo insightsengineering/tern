@@ -16,8 +16,9 @@ extract_rsp_subgroups(
 )
 
 a_response_subgroups(
-  .formats = c(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or = ">999.99",
-    ci = "(xx.xx, xx.xx)", pval = "x.xxxx | (<0.0001)")
+  .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
+    list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
+    "x.xxxx | (<0.0001)")
 )
 
 tabulate_rsp_subgroups(lyt, vars, conf_level = NULL, method = NULL)
@@ -93,7 +94,7 @@ df <- extract_rsp_subgroups(
 )
 df
 
-a_response_subgroups(.formats = c("n" = "xx", "prop" = "xx.xx\%"))
+a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
 
 
 ## Table of response rates by subgroup.
