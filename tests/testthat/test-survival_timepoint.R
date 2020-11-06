@@ -256,3 +256,27 @@ test_that("surv_timepoint for survival diff works with customized arguments", {
 
   expect_identical(result_matrix, expected_matrix)
 })
+
+
+test_that("surv_timepoint no warning when multipled layers generated", {
+  adtte <- radtte(cached = TRUE)
+  adtte_f <- adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
+  expect_silent(
+    basic_table() %>%
+      split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
+      add_colcounts() %>%
+      surv_timepoint(
+        vars = "AVAL",
+        var_labels = "Months",
+        is_event = "is_event",
+        time_point = 9,
+        method = "both"
+      ) %>%
+      build_table(df = adtte_f)
+  )
+})
