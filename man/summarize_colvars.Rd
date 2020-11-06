@@ -6,16 +6,25 @@
 \usage{
 summarize_colvars(
   lyt,
+  ...,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
-  ...
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{...}{arguments passed to \code{s_summary()}.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{...}{arguments passed to \code{s_summary()}.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \description{
 This Analyze Function uses the new S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize

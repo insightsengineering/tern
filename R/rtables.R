@@ -255,7 +255,7 @@ format_wrap_df <- function(sfun, #nousage #nolint
 
 #' @describeIn format_wrap the wrapper for `sfun` having `x` as first argument.
 #'
-format_wrap_x <- function(sfun,
+format_wrap_x <- function(sfun,  #nousage #nolint
                           indent_mods,
                           formats) {
   assert_that(
@@ -577,4 +577,26 @@ h_split_param <- function(param,
                           f) {
   y <- lapply(f, function(x) param[value %in% x])
   lapply(y, function(x) if (length(x) == 0) NULL else x)
+}
+
+#' Get Selected Statistics Names
+#'
+#' Helper function to be used for creating `afun`.
+#'
+#' @param .stats (`vector` or `NULL`)\cr input to the layout creating function. Note that `NULL` means
+#'   in this context that all default statistics should be used.
+#' @param all_stats (`character`)\cr all statistics which can be selected here potentially.
+#'
+#' @return Character vector with the selected statistics.
+#'
+afun_selected_stats <- function(.stats, all_stats) {
+  assert_that(
+    is.null(.stats) || is.character(.stats),
+    is.character(all_stats)
+  )
+  if (is.null(.stats)) {
+    all_stats
+  } else {
+    intersect(.stats, all_stats)
+  }
 }

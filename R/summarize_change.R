@@ -68,6 +68,11 @@ a_change_from_baseline <- make_afun(
   s_change_from_baseline,
   .formats = c(
     n = "xx", mean_sd = "xx.xx (xx.xx)", median = "xx.xx", range = "xx.xx - xx.xx"
+  ),
+  .labels = c(
+    mean_sd = "Mean (SD)",
+    median = "Median",
+    range = "Min - Max"
   )
 )
 

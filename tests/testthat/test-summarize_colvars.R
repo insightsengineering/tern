@@ -84,8 +84,8 @@ test_that("summarize_colvars works when selecting statistics and custom formatti
   result <- build_table(l, dta)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "V1", "  n", "     Mean, SD", "V2", "  n",
-      "     Mean, SD", "V3", "  n", "     Mean, SD", "A", "AVAL", "",
+    c("", "", "V1", "n", "Mean, SD", "V2", "n",
+      "Mean, SD", "V3", "n", "Mean, SD", "A", "AVAL", "",
       "2", "6, 4.2", "", "1", "5, NA", "", "2", "4, 4.2", "A", "CHG",
       "", "2", "0, 0", "", "1", "-1, NA", "", "2", "-2, 0", "B", "AVAL",
       "", "1", "6, NA", "", "2", "5, 4.2", "", "1", "4, NA", "B", "CHG",

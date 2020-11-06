@@ -159,9 +159,9 @@ test_that("DTH01 variant 2 is produced correctly", {
   result <- to_string_matrix(tbl2)
   expected <- structure(
     c("", "", "Total number of deaths", "Primary cause of death",
-      "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "    LOST TO FOLLOW UP",
-      "    MISSING", "    Post-study reporting of death", "    SUICIDE",
-      "    UNKNOWN", "Days from last drug administration", "n", "<=30",
+      "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "LOST TO FOLLOW UP",
+      "MISSING", "Post-study reporting of death", "SUICIDE",
+      "UNKNOWN", "Days from last drug administration", "n", "<=30",
       ">30", "Primary cause by days from last study drug administration",
       "<=30", "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER",
       ">30", "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER",
@@ -312,8 +312,8 @@ test_that("DTH01 variant 4 is produced correctly", {
   expected <- structure(
     c("", "", "Total number of deaths", "Primary cause of death",
       "n", "ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER", "Post study reporting of deaths",
-      "All other causes", "   LOST TO FOLLOW UP", "   MISSING",
-      "   SUICIDE", "   UNKNOWN", "A: Drug X", "(N=134)", "107 (79.9%)",
+      "All other causes", "LOST TO FOLLOW UP", "MISSING",
+      "SUICIDE", "UNKNOWN", "A: Drug X", "(N=134)", "107 (79.9%)",
       "", "107", "57 (53.3%)", "32 (29.9%)", "18 (16.8%)", "1 (5.6%)",
       "17 (94.4%)", "10 (58.8%)", "4 (23.5%)", "3 (17.6%)", "0", "B: Placebo",
       "(N=134)", "112 (83.6%)", "", "112", "54 (48.2%)", "36 (32.1%)",

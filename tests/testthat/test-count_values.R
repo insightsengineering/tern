@@ -5,8 +5,8 @@ test_that("s_count_values works for character input without NAs", {
   result <- s_count_values(x, values = "a")
   expected <- list(
     n = 3L,
-    count_fraction = c(2, 2 / 3),
-    count = 2L
+    count = 2L,
+    count_fraction = c(2, 2 / 3)
   )
   expect_identical(result, expected)
 
@@ -14,8 +14,8 @@ test_that("s_count_values works for character input without NAs", {
   result <- s_count_values(x, values = "c")
   expected <- list(
     n = 3L,
-    count_fraction = c(0, 0),
-    count = 0L
+    count = 0L,
+    count_fraction = c(0, 0)
   )
   expect_identical(result, expected)
 })
@@ -27,8 +27,8 @@ test_that("s_count_values works for character input with NAs", {
   result <- s_count_values(x, values = "a")
   expected <- list(
     n = 5L,
-    count_fraction = c(2, 2 / 5),
-    count = 2L
+    count = 2L,
+    count_fraction = c(2, 2 / 5)
   )
   expect_identical(result, expected)
 
@@ -36,8 +36,8 @@ test_that("s_count_values works for character input with NAs", {
   result <- s_count_values(x, values = c("bla", "c"), na.rm = FALSE)
   expected <- list(
     n = 6L,
-    count_fraction = c(1, 1 / 6),
-    count = 1L
+    count = 1L,
+    count_fraction = c(1, 1 / 6)
   )
   expect_identical(result, expected)
 })
@@ -48,8 +48,8 @@ test_that("s_count_values can pass options to s_summary's logical method", {
   result <- s_count_values(x, .N_row = 10, values = "a", denom = "N_row")
   expected <- list(
     n = 3L,
-    count_fraction = c(2, 2 / 10),
-    count = 2L
+    count = 2L,
+    count_fraction = c(2, 2 / 10)
   )
   expect_identical(result, expected)
 })

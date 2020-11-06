@@ -334,3 +334,40 @@ combine_vectors <- function(x, y) {
   names(result) <- NULL
   result
 }
+
+#' Extract Elements by Name
+#'
+#' This utility function extracts elements from a vector `x` by `names`.
+#' Differences to the standard [base::`[`()] function are:
+#'
+#' - If `x` is `NULL`, then still always `NULL` is returned (same as in base function).
+#' - If `x` is not `NULL`, then the intersection of its names is made with `names` and those
+#'   elements are returned. That is, `names` which don't appear in `x` are not returned as `NA`s.
+#'
+#' @param x (named `vector`)\cr where to extract named elements from.
+#' @param names (`character`)\cr vector of names to extract.
+#'
+#' @return Either `NULL` or the extracted elements from `x`.
+#' @importFrom rlang is_named
+#' @export
+#'
+#' @examples
+#' x <- c(a = 5, b = 3)
+#' extract(x, c("a", "c"))
+#' extract(NULL, "b")
+#'
+extract <- function(x, names) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  assert_that(
+    rlang::is_named(x),
+    is.character(names)
+  )
+  which_extract <- intersect(names(x), names)
+  if (length(which_extract) > 0) {
+    x[which_extract]
+  } else {
+    NULL
+  }
+}

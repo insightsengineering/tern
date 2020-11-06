@@ -43,7 +43,7 @@ test_that("s_summary works with factors", {
 
   result <- s_summary(x)
   expected <- list(
-    n = with_label(9L, "n"),
+    n = 9L,
     count = list(
       Female = 2L,
       Male = 3L,
@@ -65,7 +65,7 @@ test_that("s_summary works with factors with NA values and correctly removes the
 
   result <- s_summary(x)
   expected <- list(
-    n = with_label(9L, "n"),
+    n = 9L,
     count = list(
       Female = 2L,
       Male = 3L,
@@ -104,7 +104,7 @@ test_that("s_summary works with length 0 factors that have levels", {
 
   result <- s_summary(x)
   expected <- list(
-    n = with_label(0L, "n"),
+    n = 0L,
     count = list(
       a = 0L,
       b = 0L,
@@ -126,7 +126,7 @@ test_that("s_summary works with factors and different denominator choices", {
 
   result <- s_summary(x, denom = "N_row", .N_row = 20)
   expected <- list(
-    n = with_label(9L, "n"),
+    n = 9L,
     count = list(
       Female = 2L,
       Male = 3L,
@@ -142,7 +142,7 @@ test_that("s_summary works with factors and different denominator choices", {
 
   result <- s_summary(x, denom = "N_col", .N_col = 30)
   expected <- list(
-    n = with_label(9L, "n"),
+    n = 9L,
     count = list(
       Female = 2L,
       Male = 3L,
@@ -178,8 +178,8 @@ test_that("s_summary works with logical vectors", {
   result <- s_summary(x)
   expected <- list(
     n = 6L,
-    count_fraction = c(4, 4 / 6),
-    count = 4L
+    count = 4L,
+    count_fraction = c(4, 4 / 6)
   )
 
   expect_identical(result, expected)
@@ -191,8 +191,8 @@ test_that("s_summary works with logical vectors and by default removes NA", {
   result <- s_summary(x)
   expected <- list(
     n = 6L,
-    count_fraction = c(4, 4 / 6),
-    count = 4L
+    count = 4L,
+    count_fraction = c(4, 4 / 6)
   )
 
   expect_identical(result, expected)
@@ -204,11 +204,50 @@ test_that("s_summary works with logical vectors and by if requested does not rem
   result <- s_summary(x, na.rm = FALSE)
   expected <- list(
     n = 8L,
-    count_fraction = c(4, 4 / 8),
-    count = 4L
+    count = 4L,
+    count_fraction = c(4, 4 / 8)
   )
 
   expect_identical(result, expected)
+})
+
+test_that("create_afun_summary creates an `afun` that works", {
+  afun <- create_afun_summary(
+    .stats = c("n", "count_fraction", "median", "range"),
+    .formats = c(median = "xx."),
+    .labels = c(median = "My median"),
+    .indent_mods = c(median = 1L)
+  )
+  dta_test <- data.frame(
+    USUBJID = rep(1:6, each = 3),
+    PARAMCD = rep("lab", 6 * 3),
+    AVISIT  = rep(paste0("V", 1:3), 6),
+    ARM     = rep(LETTERS[1:3], rep(6, 3)),
+    AVAL    = c(9:1, rep(NA, 9))
+  )
+
+  l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    analyze(vars = c("AVAL", "ARM"), afun = afun)
+
+  result <- build_table(l, df = dta_test)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "V1", "AVAL", "n", "My median", "Min - Max",
+      "ARM", "n", "A", "B", "C", "V2", "AVAL", "n", "My median", "Min - Max",
+      "ARM", "n", "A", "B", "C", "V3", "AVAL", "n", "My median", "Min - Max",
+      "ARM", "n", "A", "B", "C", "A", "", "", "2", "8", "6 - 9", "",
+      "2", "2 (100%)", "0", "0", "", "", "2", "6", "5 - 8", "", "2",
+      "2 (100%)", "0", "0", "", "", "2", "6", "4 - 7", "", "2", "2 (100%)",
+      "0", "0", "B", "", "", "1", "3", "3 - 3", "", "2", "0", "2 (100%)",
+      "0", "", "", "1", "2", "2 - 2", "", "2", "0", "2 (100%)", "0",
+      "", "", "1", "1", "1 - 1", "", "2", "0", "2 (100%)", "0", "C",
+      "", "", "0", "NA", "NA - NA", "", "2", "0", "0", "2 (100%)",
+      "", "", "0", "NA", "NA - NA", "", "2", "0", "0", "2 (100%)",
+      "", "", "0", "NA", "NA - NA", "", "2", "0", "0", "2 (100%)"),
+    .Dim = c(31L, 4L)
+  )
+  expect_identical(result_matrix, expected_matrix)
 })
 
 test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
@@ -227,7 +266,6 @@ test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", 
   )
 
   expect_identical(to_string_matrix(result), expected)
-
 })
 
 

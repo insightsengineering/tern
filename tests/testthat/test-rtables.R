@@ -662,3 +662,15 @@ test_that("h_split_param divides param values", {
   )
   expect_identical(result, expected)
 })
+
+test_that("afun_selected_stats works for NULL input", {
+  result <- afun_selected_stats(NULL, "b")
+  expected <- "b"
+  expect_identical(result, expected)
+})
+
+test_that("afun_selected_stats works for character input", {
+  result <- afun_selected_stats(c("a", "c"), c("b", "c"))
+  expected <- "c"
+  expect_identical(result, expected)
+})

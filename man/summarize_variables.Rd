@@ -7,6 +7,12 @@
 \alias{s_summary.factor}
 \alias{s_summary.character}
 \alias{s_summary.logical}
+\alias{a_summary}
+\alias{a_summary.numeric}
+\alias{a_summary.factor}
+\alias{a_summary.character}
+\alias{a_summary.logical}
+\alias{create_afun_summary}
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
@@ -34,14 +40,43 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
   ...
 )
 
+a_summary(x, ..., .N_row, .N_col)
+
+\method{a_summary}{numeric}(x, na.rm = TRUE, ...)
+
+\method{a_summary}{factor}(
+  x,
+  na.rm = TRUE,
+  denom = c("n", "N_row", "N_col"),
+  .N_row,
+  .N_col,
+  ...
+)
+
+\method{a_summary}{character}(x, ...)
+
+\method{a_summary}{logical}(
+  x,
+  na.rm = TRUE,
+  denom = c("n", "N_row", "N_col"),
+  .N_row,
+  .N_col,
+  ...
+)
+
+create_afun_summary(.stats, .formats, .labels, .indent_mods)
+
 summarize_vars(
   lyt,
   vars,
   var_labels = vars,
   nested = TRUE,
+  ...,
   show_labels = "default",
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
-  ...
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -61,6 +96,14 @@ this column across rows).}
 
 \item{...}{arguments passed to \code{s_summary()}.}
 
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -70,8 +113,6 @@ this column across rows).}
 \item{nested}{boolean, Add this as a new top-level split  (defining a new subtable directly under root). Defaults to \code{FALSE}}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items:
@@ -95,6 +136,7 @@ factor \code{x} relative to the denominator, or \code{NA} if the denominator is 
 If \code{x} is of class \code{logical}, returns a list with named items:
 \itemize{
 \item \code{n}: the \code{\link[=length]{length()}} of \code{x} (possibly after removing \code{NA}s).
+\item \code{count}: count of \code{TRUE} in \code{x}.
 \item \code{count_fraction}: count and proportion of \code{TRUE} in \code{x} relative to the denominator,
 or \code{NA} if the denominator is zero. Note that \code{NA}s in \code{x} are never counted or leading
 to \code{NA} here.
@@ -126,6 +168,21 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{s_summary.logical}: Method for logical class.
 
+\item \code{a_summary}: S3 generic Formatted Analysis function to produce
+an object description. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{a_summary.numeric}: Formatted Analysis function method for \code{numeric}.
+
+\item \code{a_summary.factor}: Method for \code{factor}.
+
+\item \code{a_summary.character}: Formatted Analysis function method for \code{character}.
+
+\item \code{a_summary.logical}: Formatted Analysis function method for \code{logical}.
+
+\item \code{create_afun_summary}: Constructor function which creates a combined Formatted
+Analysis function for use in layout creating functions \code{\link[=summarize_vars]{summarize_vars()}} and
+\code{\link[=summarize_colvars]{summarize_colvars()}}.
+
 \item \code{summarize_vars}: Analyze Function to add a descriptive analyze
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
 return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
@@ -133,6 +190,14 @@ return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys argument
 accounted for.
 }}
 
+\note{
+Since \code{\link[=a_summary]{a_summary()}} is generic and we want customization of the formatting arguments
+via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
+corresponding customized methods. Then in order for the methods to be found,
+we need to wrap them in a combined \code{afun}. Since this is required by two layout creating
+functions (and possibly others in the future), we provide a constructor that does this:
+\code{\link[=create_afun_summary]{create_afun_summary()}}.
+}
 \section{Formatting arguments}{
 
 These additional formatting arguments can be passed to the layout creating function:
@@ -213,9 +278,26 @@ x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
+# `a_summary.numeric`
+a_summary(rnorm(10))
 
-# `summarize_vars()` in rtables pipelines
+# `a_summary.factor`
+a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 
+# `a_summary.character`
+a_summary(c("A", "B", "A", "C"))
+
+# `a_summary.logical`
+a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+
+# `create_afun_summary()` to create combined `afun`
+
+afun <- create_afun_summary(
+  .stats = NULL,
+  .formats = c(median = "xx."),
+  .labels = c(median = "My median"),
+  .indent_mods = c(median = 1L)
+)
 ## Fabricated dataset.
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
@@ -224,6 +306,15 @@ dta_test <- data.frame(
   ARM     = rep(LETTERS[1:3], rep(6, 3)),
   AVAL    = c(9:1, rep(NA, 9))
 )
+
+l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+  split_rows_by(var = "AVISIT") \%>\%
+  analyze(vars = "AVAL", afun = afun)
+
+build_table(l, df = dta_test)
+
+
+# `summarize_vars()` in rtables pipelines
 
 ## Default output within a `rtables` pipeline.
 l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%

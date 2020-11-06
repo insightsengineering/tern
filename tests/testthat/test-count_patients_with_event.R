@@ -12,7 +12,7 @@ test_that("s_count_patients_with_event handles NA", {
     filters = c("TRTEMFL" = "Y")
   )
 
-  expected <- list(n = 2L, count_fraction = c(1.0, 0.5), count = 1L)
+  expected <- list(n = 2L, count = 1L, count_fraction = c(1.0, 0.5))
   expect_identical(result, expected)
 })
 
@@ -31,7 +31,7 @@ test_that("s_count_patients_with_event handles multiple columns", {
     filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
   )
 
-  expected <- list(n = 3L, count_fraction = c(1.0, 0.3333333), count = 1L)
+  expected <- list(n = 3L, count = 1L, count_fraction = c(1.0, 0.3333333))
 
   expect_equal(result, expected, tolerance = 1e-4)
 })

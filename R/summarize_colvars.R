@@ -52,32 +52,17 @@
 #'   build_table(dta_test)
 #'
 summarize_colvars <- function(lyt,
+                              ...,
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
-                              ...) {
+                              .formats = NULL,
+                              .labels = NULL,
+                              .indent_mods = NULL) {
 
-  afun <- format_wrap_x(
-    s_summary,
-    indent_mods = c(
-      n = 0L,
-      mean_sd = 0L,
-      median = 0L,
-      range = 0L,
-      count = 0L,
-      count_fraction = 0L
-    ),
-    formats = c(
-      n = "xx",
-      mean_sd = "xx.x (xx.x)",
-      median = "xx.x",
-      range = "xx.x - xx.x",
-      count = "xx",
-      count_fraction = "xx (xx.x%)"
-    )
-  )
+  afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
 
   analyze_colvars(
     lyt,
     afun = afun,
-    extra_args = c(list(.stats = .stats), list(...))
+    extra_args = list(...)
   )
 }

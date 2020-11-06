@@ -75,3 +75,25 @@ test_that("empty_vector_if_na works correctly", {
   expected <- numeric()
   expect_equal(result, expected)
 })
+
+test_that("extract works for NULL input", {
+  expect_identical(extract(NULL, "bla"), NULL)
+})
+
+test_that("extract works for non-NULL input", {
+  result <- extract(
+    x = c(a = "xx", b = function(x) paste(x, "bla")),
+    c("b", "c")
+  )
+  expected <- c(b = function(x) paste(x, "bla"))
+  expect_identical(result, expected)
+})
+
+test_that("extract returns NULL when there is no overlap", {
+  result <- extract(
+    x = c(a = "xx", b = "xx.xx"),
+    c("d", "c")
+  )
+  expected <- NULL
+  expect_identical(result, expected)
+})

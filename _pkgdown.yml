@@ -88,6 +88,7 @@ reference:
        - a_surv_timepoint
        - a_surv_timepoint_diff
        - a_test_proportion_diff
+       - create_afun_summary
 
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
@@ -286,6 +287,7 @@ reference:
       - get_onco_rsp_label
       - month2day
       - day2month
+      - extract
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
@@ -336,3 +338,4 @@ reference:
       - get_covariates
       - d_count_missed_doses
       - d_rsp_subgroups_colvars
+      - afun_selected_stats
