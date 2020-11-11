@@ -27,7 +27,7 @@ h_odds_ratio_subgroups_df(
 
 \item{arm}{(\code{factor})\cr the treatment group variable.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
 

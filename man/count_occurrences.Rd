@@ -29,7 +29,7 @@ count_occurrences(
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{id}{(\code{string}) \cr subject variable.}
+\item{id}{(\code{string}) \cr subject variable name.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

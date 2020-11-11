@@ -75,7 +75,7 @@ by a statistics function.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{method}{(\code{string})\cr
 the method used for the confidence interval estimation.}

@@ -27,7 +27,7 @@ summarize_logistic(
 \arguments{
 \item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{fit_glm}{logistic regression model fitted by \code{\link[stats:glm]{stats::glm()}} with "binomial" family.}
 

@@ -25,7 +25,7 @@
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param df (`data frame`)\cr data set containing all analysis variables.
-#' @param id (`string`) \cr subject variable.
+#' @param id (`string`) \cr subject variable name.
 #' @param is_event (`logical`)\cr `TRUE` if event, `FALSE` if time to event is censored.
 #' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized
 #'   (must be present as second argument in Content Row Functions).
@@ -37,7 +37,7 @@
 #' @param show_labels label visibility: one of "default", "visible" and "hidden".
 #' @param tte (`\code{numeric}`)\cr contains time-to-event duration values.
 #' @param var_labels character for label.
-#' @param variables (named `list` of `strings`)\cr list of additional analysis variables.
+#' @param variables (named `list` of `string`)\cr list of additional analysis variables.
 #' @param vars (`character`)\cr variable names for the primary analysis variable to be iterated over.
 #' @param var (`string`)\cr single variable name for the primary analysis variable.
 #' @param x (`numeric`)\cr vector of numbers we want to analyze.

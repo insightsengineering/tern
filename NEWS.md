@@ -21,6 +21,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Count the number of unique and non-unique patients with `summarize_num_patients`.
 * Count occurrences with `count_occurrences`.
 * Count occurrences by grade with `s_count_occurrences_by_grade`, `summarize_occurrences_by_grade` and `count_occurrences_by_grade`.
+* Counting patients and events in columns with `summarize_patients_events_in_cols` and underlying `s_count_patients_and_multiple_events`.
 * Tabulate the binary outcome response by subgroup with `extract_rsp_subgroups` and `tabulate_rsp_subgroups`.
 
 

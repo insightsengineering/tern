@@ -24,7 +24,7 @@ a_response_subgroups(
 tabulate_rsp_subgroups(lyt, vars, conf_level = NULL, method = NULL)
 }
 \arguments{
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
 

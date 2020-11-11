@@ -41,7 +41,7 @@ by a statistics function.}
 
 \item{abnormal}{(\code{character})\cr identifying the abnormality direction.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

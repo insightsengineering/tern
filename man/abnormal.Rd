@@ -42,7 +42,7 @@ by a statistics function.}
 
 \item{abnormal}{(named \code{string} or \code{character})\cr identifying the abnormal range level(s) in \code{var}.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{baseline}{(\code{string})\cr identifying the baseline level(s) in \code{visit}.}
 

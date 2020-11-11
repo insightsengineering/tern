@@ -40,6 +40,7 @@ reference:
       - s_count_occurrences
       - s_count_occurrences_by_grade
       - s_count_patients_with_event
+      - s_count_patients_and_multiple_events
       - s_count_values
       - s_cox_univariate
       - s_cox_multivariate
@@ -114,6 +115,7 @@ reference:
        - summarize_lsmeans
        - summarize_num_patient
        - summarize_occurrences_by_grade
+       - summarize_patients_events_in_cols
        - summarize_vars
        - summarize_coxreg
        - tabulate_rsp_subgroups

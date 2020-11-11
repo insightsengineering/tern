@@ -32,7 +32,7 @@ by a statistics function.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{id}{(\code{string}) \cr subject variable.}
+\item{id}{(\code{string}) \cr subject variable name.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
@@ -55,7 +55,7 @@ by a statistics function.}
 
 \item{var_labels}{character for label.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
