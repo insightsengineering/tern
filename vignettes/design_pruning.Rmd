@@ -102,9 +102,10 @@ We can calculate some things from the `TableTree` object:
 - Index of the "All Levels" column (if there is one)
 
 ```{r}
-keep_occurrences <- function(keep_row_conditions) {
+keep_occurrences <- function(keep_row_conditions, all_name = "All Patients") {
   function(tt) {
-    all_levels_index <- grep("AllLevelsSentinel", names(tt))
+    browser()
+    all_levels_index <- grep(all_name, names(tt))
     if (is(tt, "TableRow")) 
       return(! keep_row_conditions(
         table_row = tt,
