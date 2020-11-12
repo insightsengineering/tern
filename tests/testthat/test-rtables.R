@@ -482,7 +482,7 @@ test_that("format_wrap_x works with duplicate names in statistics function resul
       extra_args = list(
         .formats = c(sd = "xx"),
         .indent_mods = c(mean = 5L))
-      ) %>%
+    ) %>%
     build_table(iris)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -673,4 +673,55 @@ test_that("afun_selected_stats works for character input", {
   result <- afun_selected_stats(c("a", "c"), c("b", "c"))
   expected <- "c"
   expect_identical(result, expected)
+})
+
+test_that("split_cols_by_groups manages combinations of columns", {
+  groups <- list(
+    "Arms A+B" = c("A: Drug X", "B: Placebo"),
+    "Arms A+C" = c("A: Drug X", "C: Combination")
+  )
+  result <- basic_table() %>%
+    split_cols_by_groups("ARM", groups) %>%
+    add_colcounts() %>%
+    analyze("AGE") %>%
+    build_table(DM)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Mean", "Arms A+B", "(N=227)", "34.03", "Arms A+C",
+      "(N=250)", "34.73"
+    ),
+    .Dim = c(3L, 3L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+
+test_that("split_cols_by_groups manages combinations of columns with reference", {
+  groups <- list(
+    "Arms A+B" = c("A: Drug X", "B: Placebo"),
+    "Arms A+C" = c("A: Drug X", "C: Combination")
+  )
+  result <- basic_table() %>%
+    split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
+    analyze(
+      "AGE",
+      afun = function(x, .ref_group, .in_ref_col){
+        if (.in_ref_col) {
+          in_rows("Diff. of Averages" = rcell(NULL))
+        } else {
+          in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
+        }
+      }
+    ) %>%
+    build_table(DM)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "Diff. of Averages", "Arms A+B", "", "Arms A+C",
+      "0.71"
+    ),
+    .Dim = 2:3
+  )
+  expect_identical(result_matrix, expected_matrix)
 })

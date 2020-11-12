@@ -4,7 +4,7 @@
 \alias{split_cols_by_groups}
 \title{Split Columns by Groups of Levels}
 \usage{
-split_cols_by_groups(lyt, var, groups_list, ...)
+split_cols_by_groups(lyt, var, groups_list, ref_group = NULL, ...)
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -13,6 +13,8 @@ split_cols_by_groups(lyt, var, groups_list, ...)
 
 \item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
+
+\item{ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{...}{additional arguments for \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}.}
 }
@@ -23,6 +25,7 @@ the modified layout.
 Split Columns by Groups of Levels
 }
 \examples{
+
 groups <- list(
   "Arms A+B" = c("A: Drug X", "B: Placebo"),
   "Arms A+C" = c("A: Drug X", "C: Combination")
@@ -31,6 +34,20 @@ basic_table() \%>\%
   split_cols_by_groups("ARM", groups) \%>\%
   add_colcounts() \%>\%
   analyze("AGE") \%>\%
+  build_table(DM)
+
+basic_table() \%>\%
+split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") \%>\%
+  analyze(
+    "AGE",
+    afun = function(x, .ref_group, .in_ref_col){
+      if (.in_ref_col) {
+        in_rows("Diff. of Averages" = rcell(NULL))
+      } else {
+        in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
+      }
+    }
+  ) \%>\%
   build_table(DM)
 
 }

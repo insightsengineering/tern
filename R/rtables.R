@@ -465,6 +465,7 @@ groups_list_to_df <- function(groups_list) {
 #' @export
 #'
 #' @examples
+#'
 #' groups <- list(
 #'   "Arms A+B" = c("A: Drug X", "B: Placebo"),
 #'   "Arms A+C" = c("A: Drug X", "C: Combination")
@@ -475,12 +476,34 @@ groups_list_to_df <- function(groups_list) {
 #'   analyze("AGE") %>%
 #'   build_table(DM)
 #'
-split_cols_by_groups <- function(lyt, var, groups_list, ...) {
+#' basic_table() %>%
+#' split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
+#'   analyze(
+#'     "AGE",
+#'     afun = function(x, .ref_group, .in_ref_col){
+#'       if (.in_ref_col) {
+#'         in_rows("Diff. of Averages" = rcell(NULL))
+#'       } else {
+#'         in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
+#'       }
+#'     }
+#'   ) %>%
+#'   build_table(DM)
+#'
+split_cols_by_groups <- function(lyt,
+                                 var,
+                                 groups_list,
+                                 ref_group = NULL,
+                                 ...) {
   groups_df <- groups_list_to_df(groups_list)
+  if (!is.null(ref_group)) {
+    ref_group <- groups_df$valname[groups_df$label == ref_group]
+  }
   split_cols_by(
     lyt = lyt,
     var = var,
     split_fun = add_combo_levels(groups_df, keep_levels = groups_df$valname),
+    ref_group = ref_group,
     ...
   )
 }
