@@ -4,6 +4,7 @@
 \alias{score_occurrences}
 \alias{score_occurrences_cols}
 \alias{score_occurrences_subtable}
+\alias{score_occurrences_cont_cols}
 \title{Occurrence Table Sorting}
 \usage{
 score_occurrences(table_row)
@@ -11,6 +12,8 @@ score_occurrences(table_row)
 score_occurrences_cols(...)
 
 score_occurrences_subtable(...)
+
+score_occurrences_cont_cols(...)
 }
 \arguments{
 \item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
@@ -42,6 +45,9 @@ specific columns in the scoring.
 \item \code{score_occurrences_subtable}: Scoring functions produced by this constructor can be used on
 subtables: They sum up all specified column counts in the subtable. This is useful when
 there is no available content row summing up these counts.
+
+\item \code{score_occurrences_cont_cols}: Produce score function for sorting table by summing the first content row in
+specified columns. Note that this is extending \code{\link[rtables:score_funs]{rtables::cont_n_onecol()}} and \code{\link[rtables:score_funs]{rtables::cont_n_allcols()}}.
 }}
 
 \examples{

@@ -248,6 +248,7 @@ reference:
       - score_occurrences
       - score_occurrences_cols
       - score_occurrences_subtable
+      - score_occurrences_cont_cols
 
   - title: rtables Pruning Functions
     desc: these functions and classes help with flexible pruning of tables

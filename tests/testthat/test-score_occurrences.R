@@ -10,7 +10,8 @@ get_df_ae <- function() {
   dfae <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4)),
     AEBODSYS = sample(c("AEBS1", "AEBS2"), 20, replace = TRUE),
-    AEDECOD = sample(c("AEPT1", "AEPT2", "AEPT3"), 20, replace = TRUE)
+    AEDECOD = sample(c("AEPT1", "AEPT2", "AEPT3"), 20, replace = TRUE),
+    AESUPSYS = sample(c("AESS1", "AESS2"), 20, replace = TRUE)
   )
   dfae <- dfae %>% arrange(USUBJID, AEBODSYS, AEDECOD) #nolint
   dfae <- left_join(dfae, dfsl, by = "USUBJID")
@@ -133,6 +134,37 @@ test_that("score_occurrences_subtable functions as expected", {
       "C", "(N=1)", "", "0", "0", "1 (100%)", "", "1 (100%)", "1 (100%)",
       "1 (100%)"),
     .Dim = c(10L, 4L)
+  )
+  expect_identical(result, expected)
+})
+
+test_that("score_occurrences_cont_cols functions as expected", {
+  set.seed(12)
+  dfae <- get_df_ae()
+  dfae <- dfae %>%
+    dplyr::mutate(USUBJID = factor(sample(1:10, size = nrow(dfae), replace = TRUE)))
+
+  full_table <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("AESUPSYS", child_labels = "visible") %>%
+    summarize_num_patients("USUBJID") %>%
+    build_table(df = dfae)
+
+  score_cont_cols <- score_occurrences_cont_cols(col_names = c("A", "B"))
+  expect_is(score_cont_cols, "function")
+
+  sorted_table <- full_table %>%
+    sort_at_path(path =  c("AESUPSYS"), scorefun = score_cont_cols, decreasing = TRUE)
+
+  result <- to_string_matrix(sorted_table)
+
+  expected <- structure(
+    c("", "AESS2", "Number of patients with at least one event",
+      "Number of events", "AESS2 (n)", "AESS1", "Number of patients with at least one event",
+      "Number of events", "AESS1 (n)", "A", "", "6 (60%)", "8", "6",
+      "", "2 (20%)", "2", "2", "B", "", "2 (40%)", "2", "2", "", "3 (60%)",
+      "3", "3", "C", "", "4 (80%)", "5", "4", "", "0", "0", "0"),
+    .Dim = c(9L, 4L)
   )
   expect_identical(result, expected)
 })

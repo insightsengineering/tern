@@ -100,3 +100,18 @@ score_occurrences_subtable <- function(...) {
     sum(counts)
   }
 }
+
+#' @describeIn score_occurrences Produce score function for sorting table by summing the first content row in
+#'   specified columns. Note that this is extending [rtables::cont_n_onecol()] and [rtables::cont_n_allcols()].
+#' @export
+#'
+score_occurrences_cont_cols <- function(...) {
+  score_table_row <- score_occurrences_cols(...)
+  function(table_tree) {
+    if (is(table_tree, "ContentRow")) {
+      return(NA)
+    }
+    content_row <- h_content_first_row(table_tree)
+    score_table_row(content_row)
+  }
+}

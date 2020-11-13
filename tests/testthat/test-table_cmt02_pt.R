@@ -57,23 +57,27 @@ test_that("CMT02_PT default variant is produced correctly", {
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
-    build_table(adcm, col_counts = n_per_arm_tot)
+    build_table(adcm, col_counts = n_per_arm_tot) %>%
+    sort_at_path(path =  c("CMDECOD"), scorefun = score_occurrences)
+
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "Total number of patients with at least one event", "Total number of events",
-      "medname A_1/3", "medname A_2/3", "medname A_3/3",
-      "medname B_1/4", "medname B_2/4", "medname B_3/4", "medname B_4/4",
-      "medname C_1/2", "medname C_2/2",
-      "A: Drug X", "(N=134)", "122 (91%)", "456", "54 (40.3%)", "53 (39.6%)", "45 (33.6%)",
-      "52 (38.8%)", "52 (38.8%)", "47 (35.1%)", "50 (37.3%)", "51 (38.1%)", "52 (38.8%)",
-      "B: Placebo", "(N=134)", "123 (91.8%)", "465", "49 (36.6%)", "50 (37.3%)", "54 (40.3%)",
-      "57 (42.5%)", "55 (41%)", "47 (35.1%)", "45 (33.6%)", "50 (37.3%)", "58 (43.3%)",
-      "C: Combination", "(N=132)", "120 (90.9%)", "511", "69 (52.3%)", "56 (42.4%)", "48 (36.4%)",
-      "59 (44.7%)", "56 (42.4%)", "52 (39.4%)", "55 (41.7%)", "56 (42.4%)", "60 (45.5%)",
-      "All Patients", "(N=400)", "365 (91.2%)", "1432", "172 (43%)", "159 (39.8%)", "147 (36.8%)",
-      "168 (42%)", "163 (40.8%)", "146 (36.5%)", "150 (37.5%)", "157 (39.2%)", "170 (42.5%)"
+      "", "", "Total number of patients with at least one event",
+      "Total number of events", "medname A_1/3", "medname C_2/2", "medname B_1/4",
+      "medname B_2/4", "medname A_2/3", "medname C_1/2", "medname B_4/4",
+      "medname A_3/3", "medname B_3/4", "A: Drug X", "(N=134)", "122 (91%)",
+      "456", "54 (40.3%)", "52 (38.8%)", "52 (38.8%)", "52 (38.8%)",
+      "53 (39.6%)", "51 (38.1%)", "50 (37.3%)", "45 (33.6%)", "47 (35.1%)",
+      "B: Placebo", "(N=134)", "123 (91.8%)", "465", "49 (36.6%)",
+      "58 (43.3%)", "57 (42.5%)", "55 (41%)", "50 (37.3%)", "50 (37.3%)",
+      "45 (33.6%)", "54 (40.3%)", "47 (35.1%)", "C: Combination", "(N=132)",
+      "120 (90.9%)", "511", "69 (52.3%)", "60 (45.5%)", "59 (44.7%)",
+      "56 (42.4%)", "56 (42.4%)", "56 (42.4%)", "55 (41.7%)", "48 (36.4%)",
+      "52 (39.4%)", "All Patients", "(N=400)", "365 (91.2%)", "1432",
+      "172 (43%)", "170 (42.5%)", "168 (42%)", "163 (40.8%)", "159 (39.8%)",
+      "157 (39.2%)", "150 (37.5%)", "147 (36.8%)", "146 (36.5%)"
     ),
     .Dim = c(13L, 5L)
   )
