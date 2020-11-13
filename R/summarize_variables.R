@@ -21,6 +21,7 @@ s_summary <- function(x,
                       denom,
                       .N_row,  # nolint
                       .N_col,  # nolint
+                      .var,
                       ...) {
   assert_that(is.flag(na.rm))
   UseMethod("s_summary", x)
@@ -166,6 +167,10 @@ s_summary.factor <- function(x,
 
 #' @describeIn summarize_variables Method for character class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#' @note Automatic conversion of character to factor does not guarantee that the table
+#'   can be generated correctly. In particular for sparse tables this very likely can fail.
+#'   It is therefore better to always preprocess the dataset such that factors are manually
+#'   created from character variables before passing the dataset to [rtables::build_table()].
 #' @method s_summary character
 #' @order 5
 #'
@@ -175,11 +180,24 @@ s_summary.factor <- function(x,
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
-#' s_summary(c("a", "a", "b", "c", "a"))
+#' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
 #'
-s_summary.character <- function(x, ...) {
-  y <- as_factor_keep_attributes(x)
-  s_summary(y, ...)
+s_summary.character <- function(x,
+                                na.rm = TRUE, #nolint
+                                denom = c("n", "N_row", "N_col"),
+                                .N_row, #nolint
+                                .N_col, #nolint
+                                .var,
+                                ...) {
+  y <- as_factor_keep_attributes(x, x_name = .var)
+  s_summary(
+    x = y,
+    na.rm = na.rm,
+    denom = denom,
+    .N_row = .N_row,
+    .N_col = .N_col,
+    ...
+  )
 }
 
 #' @describeIn summarize_variables Method for logical class.
@@ -245,7 +263,8 @@ s_summary.logical <- function(x,
 a_summary <- function(x,
                       ...,
                       .N_row,  # nolint
-                      .N_col) { # nolint
+                      .N_col,  # nolint
+                      .var) {
   UseMethod("a_summary", x)
 }
 
@@ -294,7 +313,7 @@ a_summary.factor <- make_afun(
 #' @order 10
 #' @examples
 #' # `a_summary.character`
-#' a_summary(c("A", "B", "A", "C"))
+#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
 #'
 a_summary.character <- make_afun(
   s_summary.character,
@@ -353,7 +372,8 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
   function(x,
            ...,
            .N_row,  # nolint
-           .N_col) {  # nolint
+           .N_col,  # nolint
+           .var) {
 
     afun <- function(x, ...) {
       UseMethod("afun", x)
@@ -400,7 +420,8 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
       x = x,
       ...,
       .N_row = .N_row,
-      .N_col = .N_col
+      .N_col = .N_col,
+      .var = .var
     )
   }
 }

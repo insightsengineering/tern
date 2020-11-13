@@ -4,10 +4,12 @@
 \alias{as_factor_keep_attributes}
 \title{Conversion of a Vector to a Factor}
 \usage{
-as_factor_keep_attributes(x)
+as_factor_keep_attributes(x, x_name = deparse(substitute(x)))
 }
 \arguments{
-\item{x}{(\code{atomic})\cr object to convert}
+\item{x}{(\code{atomic})\cr object to convert.}
+
+\item{x_name}{(\code{string})\cr name of \code{x}.}
 }
 \value{
 The factor with same attributes (except class) as \code{x}.

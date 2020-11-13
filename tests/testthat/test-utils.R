@@ -8,6 +8,14 @@ test_that("as_factor_keep_attributes works correctly for a character vector", {
   expect_identical(result, expected)
 })
 
+test_that("as_factor_keep_attributes shows correct name of vector in warning", {
+  foo <- with_label(c("a", "b"), "alphabet")
+  expect_warning(
+    as_factor_keep_attributes(foo, x_name = "FOO"),
+    "automatically converting character variable FOO to factor"
+  )
+})
+
 test_that("as_factor_keep_attributes does not modify a factor at all", {
   foo <- factor(c(1, 2))
   result <- expect_silent(as_factor_keep_attributes(foo))

@@ -161,7 +161,7 @@ test_that("s_summary works with characters by converting to character", {
 
   x <- c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown")
 
-  result <- expect_warning(s_summary(x, denom = "N_row", .N_row = 20))
+  result <- expect_warning(s_summary(x, denom = "N_row", .N_row = 20, .var = "SEX"))
   expected <- s_summary(factor(x), denom = "N_row", .N_row = 20)
 
   expect_identical(result, expected)
@@ -169,7 +169,7 @@ test_that("s_summary works with characters by converting to character", {
 
 test_that("s_summary does not work for length 0 character vectors", {
   x <- character()
-  expect_warning(expect_error(s_summary(x, denom = "n")))
+  expect_warning(expect_error(s_summary(x, denom = "n", .var = "foo")))
 })
 
 test_that("s_summary works with logical vectors", {
@@ -374,6 +374,25 @@ test_that("`summarize_vars` works with character input and gives the same result
   expected <- build_table(l, dta_factor)
 
   expect_identical(result, expected)
+})
+
+test_that("`summarize_vars` does not work with sparse character input due to missing statistics", {
+
+  dta <- data.frame(
+    foo = c("a", "b", "a"),
+    boo = c("e", "e", "f"),
+    stringsAsFactors = FALSE
+  )
+
+  l <- basic_table() %>%
+    split_cols_by("boo") %>%
+    summarize_vars(vars = "foo")
+  expect_error(build_table(l, dta))
+
+  # But when converting to factor, it works because we keep the levels information across columns.
+  dta_factor <- dta %>%
+    dplyr::mutate(foo = factor(foo))
+  expect_silent(build_table(l, dta_factor))
 })
 
 test_that("`summarize_vars` works with logical input", {

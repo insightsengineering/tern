@@ -150,7 +150,8 @@ has_no_na <- function(x) { # nousage # nolint
 #' can decide whether they prefer converting to factor manually (e.g. for full control of
 #' factor levels).
 #'
-#' @param x (`atomic`)\cr object to convert
+#' @param x (`atomic`)\cr object to convert.
+#' @param x_name (`string`)\cr name of `x`.
 #'
 #' @return The factor with same attributes (except class) as `x`.
 #'
@@ -159,14 +160,24 @@ has_no_na <- function(x) { # nousage # nolint
 #' @examples
 #' as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
 #'
-as_factor_keep_attributes <- function(x) {
-  assert_that(is.atomic(x))
+as_factor_keep_attributes <- function(x, x_name = deparse(substitute(x))) {
+  assert_that(
+    is.atomic(x),
+    is.string(x_name)
+  )
   if (is.factor(x)) {
     return(x)
   }
-  x_name <- deparse(substitute(x))
   x_class <- class(x)[1]
-  warning(paste("automatically converting", x_class, "variable", x_name, "to factor"))
+  warning(paste(
+    "automatically converting", x_class, "variable", x_name,
+    "to factor, better manually convert to factor to avoid failures"
+  ))
+  if (identical(length(x), 0L)) {
+    warning(paste(
+      x_name, "has length 0, this can lead to tabulation failures, better convert to factor"
+    ))
+  }
   do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
 }
 

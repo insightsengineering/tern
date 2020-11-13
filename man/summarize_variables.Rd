@@ -16,7 +16,7 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
+s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 
 \method{s_summary}{numeric}(x, na.rm = TRUE, ...)
 
@@ -29,7 +29,15 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
   ...
 )
 
-\method{s_summary}{character}(x, ...)
+\method{s_summary}{character}(
+  x,
+  na.rm = TRUE,
+  denom = c("n", "N_row", "N_col"),
+  .N_row,
+  .N_col,
+  .var,
+  ...
+)
 
 \method{s_summary}{logical}(
   x,
@@ -40,7 +48,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, ...)
   ...
 )
 
-a_summary(x, ..., .N_row, .N_col)
+a_summary(x, ..., .N_row, .N_col, .var)
 
 \method{a_summary}{numeric}(x, na.rm = TRUE, ...)
 
@@ -53,7 +61,15 @@ a_summary(x, ..., .N_row, .N_col)
   ...
 )
 
-\method{a_summary}{character}(x, ...)
+\method{a_summary}{character}(
+  x,
+  na.rm = TRUE,
+  denom = c("n", "N_row", "N_col"),
+  .N_row,
+  .N_col,
+  .var,
+  ...
+)
 
 \method{a_summary}{logical}(
   x,
@@ -93,6 +109,9 @@ this column across rows).}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{...}{arguments passed to \code{s_summary()}.}
 
@@ -191,6 +210,11 @@ accounted for.
 }}
 
 \note{
+Automatic conversion of character to factor does not guarantee that the table
+can be generated correctly. In particular for sparse tables this very likely can fail.
+It is therefore better to always preprocess the dataset such that factors are manually
+created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+
 Since \code{\link[=a_summary]{a_summary()}} is generic and we want customization of the formatting arguments
 via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
 corresponding customized methods. Then in order for the methods to be found,
@@ -261,7 +285,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 # `s_summary.character`
 
 ## Basic usage:
-s_summary(c("a", "a", "b", "c", "a"))
+s_summary(c("a", "a", "b", "c", "a"), .var = "x")
 
 # `s_summary.logical`
 
@@ -285,7 +309,7 @@ a_summary(rnorm(10))
 a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 
 # `a_summary.character`
-a_summary(c("A", "B", "A", "C"))
+a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
 
 # `a_summary.logical`
 a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
