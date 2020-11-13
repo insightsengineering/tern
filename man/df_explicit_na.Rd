@@ -2,7 +2,7 @@
 % Please edit documentation in R/df_explicit_na.R
 \name{df_explicit_na}
 \alias{df_explicit_na}
-\title{Prepare Data to be Used in a Teal App}
+\title{Encode Categorical Missing Values in a Data Frame}
 \usage{
 df_explicit_na(
   data,
@@ -12,38 +12,49 @@ df_explicit_na(
 )
 }
 \arguments{
-\item{data}{(\code{data.frame}) Any \code{cdisc} data set}
+\item{data}{(\verb{data frame})\cr data set.}
 
-\item{omit_columns}{(\code{character}) vector of columns that should not be touched
-by this function}
+\item{omit_columns}{(\code{character})\cr names of variables from \code{data} that should
+not be modified by this function.}
 
-\item{char_as_factor}{(\code{logical}) Whether to make all \code{character} variables
-inside the \code{data.frame} that are not \code{omit_columns} \code{factor} variables.}
+\item{char_as_factor}{(\code{flag})\cr whether to convert character variables
+in \code{data} to factors.}
 
-\item{na_level}{(\code{character}) that is used to replace all \code{NA} levels
-inside non - \code{omit_column} columns}
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty
+values inside non-\code{omit_columns} columns.}
 }
 \value{
-The \code{data.frame} inserted with the desired changes made.
+The data frame with the desired changes made.
 }
 \description{
-teal does not take care of missing data provided by the app author. This is a helper
-function to encode \code{NA} values with a specific character char.
+This is a helper function to encode missing entries across groups of categorical
+variables in a data frame.
 }
 \details{
-Additionally teal requires character variables to be converted to factors. This can
-be executed by setting the \code{char_as_factor} variable to \code{TRUE}.
+Missing entries are those with \code{NA} or empty strings and will
+be replaced with a specified value. If factor variables include missing
+values, the missing value will be inserted as the last level.
+Similarly, in case character variables should be converted to factors with
+\code{char_as_factor} option, the missing values will be set as the last level.
 }
 \examples{
 
 my_data <- data.frame(
-  v = c("A", NA, NA, NA),
+  v = factor(c("A", NA, NA, NA), levels = c("Z", "A")),
   w = c("A", "B", NA, "C"),
   x = c("D", "E", "F", NA),
-  y = c("G", "H", "I", NA),
-  z = c(1, 2, 3, 4)
+  y = c("G", "H", "I", ""),
+  z = c(1, 2, 3, 4),
+  stringsAsFactors = FALSE
 )
 
+# Encode missing values in all character or factor columns.
+df_explicit_na(my_data)
+
+# Encode missing values in a subset of columns.
 df_explicit_na(my_data, omit_columns = c("x", "y"))
 
+}
+\seealso{
+\code{\link[=sas_na]{sas_na()}} and \code{\link[=explicit_na]{explicit_na()}} for other missing data helper functions.
 }

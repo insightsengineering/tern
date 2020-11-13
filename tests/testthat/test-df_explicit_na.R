@@ -1,72 +1,172 @@
-my_data <- data.frame(
-  x = c("A", "B", NA, "C"),
-  y = c("D", "E", "F", "E"),
-  z = c(1, 2, 3, 4),
-  stringsAsFactors = FALSE
-)
+example_data <- function() {
 
-test_that("Conversion to factor", {
+  my_data <- data.frame(
+    v1 = factor(c("A", "B", "A", "B"), levels = c("B", "A")),
+    v2 = factor(c("A", "B", "A", NA), levels = c("B", "A")),
+    v3 = factor(c("A", "B", "A", ""), levels = c("", "B", "A")),
+    v4 = c("D", "E", "F", "E"),
+    v5 = c("A", "B", NA, "C"),
+    v6 = c("A", "B", "", "C"),
+    v7 = c(1, 2, 3, 4),
+    stringsAsFactors = FALSE
+  )
+  var_labels(my_data) <- paste0("Variable ", 1:7)
+  my_data
 
-  prepared_data <- expect_silent(df_explicit_na(my_data))
+}
 
-  expect_equal(levels(prepared_data$x), c("A", "B", "C", "<Missing>"))
+test_that("Default fill in of missing values and conversion to factor works as expected", {
 
-  expect_equal(class(prepared_data$x), "factor")
-  expect_equal(class(prepared_data$y), "factor")
-  expect_equal(class(prepared_data$z), "numeric")
+  my_data <- example_data()
+  result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = TRUE)
+
+  expected <- data.frame(
+    v1 = factor(
+      c("A", "B", "A", "B"),
+      levels = c("B", "A")
+    ),
+    v2 = factor(
+      c("A", "B", "A", "<Missing>"),
+      levels = c("B", "A", "<Missing>")
+    ),
+    v3 = factor(
+      c("A", "B", "A", "<Missing>"),
+      levels = c("B", "A", "<Missing>")
+    ),
+    v4 = factor(
+      c("D", "E", "F", "E"),
+      levels = c("D", "E", "F")
+    ),
+    v5 = factor(
+      c("A", "B", "<Missing>", "C"),
+      levels = c("A", "B", "C", "<Missing>")
+    ),
+    v6 = factor(
+      c("A", "B", "<Missing>", "C"),
+      levels = c("A", "B", "C", "<Missing>")
+    ),
+    v7 = c(1:4),
+    stringsAsFactors = FALSE
+  )
+  var_labels(expected) <- paste0("Variable ", 1:7)
+
+  expect_equal(result, expected)
 })
 
+test_that("Default settings work when input data does not have labels", {
 
-test_that("Only replace NA", {
+  my_data <- example_data() %>%
+    var_labels_remove()
 
-  prepared_data <- expect_silent(df_explicit_na(my_data, char_as_factor = FALSE))
+  result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = TRUE)
 
-  expect_equal(unique(prepared_data$x), c("A", "B", "<Missing>", "C"))
+  expected <- data.frame(
+    v1 = factor(
+      c("A", "B", "A", "B"),
+      levels = c("B", "A")
+    ),
+    v2 = factor(
+      c("A", "B", "A", "<Missing>"),
+      levels = c("B", "A", "<Missing>")
+    ),
+    v3 = factor(
+      c("A", "B", "A", "<Missing>"),
+      levels = c("B", "A", "<Missing>")
+    ),
+    v4 = factor(
+      c("D", "E", "F", "E"),
+      levels = c("D", "E", "F")
+    ),
+    v5 = factor(
+      c("A", "B", "<Missing>", "C"),
+      levels = c("A", "B", "C", "<Missing>")
+    ),
+    v6 = factor(
+      c("A", "B", "<Missing>", "C"),
+      levels = c("A", "B", "C", "<Missing>")
+    ),
+    v7 = c(1:4),
+    stringsAsFactors = FALSE
+  )
 
-  expect_equal(class(prepared_data$y), "character")
+  expect_equal(result, expected)
+})
 
-  my_data_fac <- my_data
-  my_data_fac[["x"]] <- as.factor(my_data$x)
+test_that("Only replace missing values without modifying character variables", {
 
-  prepared_data <- expect_silent(df_explicit_na(my_data_fac, char_as_factor = FALSE))
+  my_data <- example_data()
+  result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = FALSE)
 
-  expect_equal(levels(prepared_data$x), c("A", "B", "C", "<Missing>"))
+  expected <- data.frame(
+    v1 = factor(
+      c("A", "B", "A", "B"),
+      levels = c("B", "A")
+    ),
+    v2 = factor(
+      c("A", "B", "A", "<Missing>"),
+      levels = c("B", "A", "<Missing>")
+    ),
+    v3 = factor(
+      c("A", "B", "A", "<Missing>"),
+      levels = c("B", "A", "<Missing>")
+    ),
+    v4 = c("D", "E", "F", "E"),
+    v5 = c("A", "B", "<Missing>", "C"),
+    v6 = c("A", "B", "<Missing>", "C"),
+    v7 = c(1:4),
+    stringsAsFactors = FALSE
+  )
+  var_labels(expected) <- paste0("Variable ", 1:7)
+
+  expect_equal(result, expected)
 
 })
 
-test_that("Exclude", {
+test_that("Default conversion to factor works with some variables omitted", {
 
-  prepared_data <- expect_silent(df_explicit_na(my_data, omit_columns = "x"))
+  my_data <- example_data()
+  result <- df_explicit_na(data = my_data, omit_columns = c("v2", "v6"), char_as_factor = TRUE)
 
-  expect_equal(unique(prepared_data$x), c("A", "B", NA, "C"))
+  expected <- data.frame(
+    v1 = factor(
+      c("A", "B", "A", "B"),
+      levels = c("B", "A")
+    ),
+    v2 = factor(
+      c("A", "B", "A", NA),
+      levels = c("B", "A")
+    ),
+    v3 = factor(
+      c("A", "B", "A", "<Missing>"),
+      levels = c("B", "A", "<Missing>")
+    ),
+    v4 = factor(
+      c("D", "E", "F", "E"),
+      levels = c("D", "E", "F")
+    ),
+    v5 = factor(
+      c("A", "B", "<Missing>", "C"),
+      levels = c("A", "B", "C", "<Missing>")
+    ),
+    v6 = c("A", "B", "", "C"),
+    v7 = c(1:4),
+    stringsAsFactors = FALSE
+  )
+  var_labels(expected) <- paste0("Variable ", 1:7)
 
-  expect_equal(class(prepared_data$x), "character")
-  expect_equal(class(prepared_data$y), "factor")
+  expect_equal(result, expected)
+
 })
 
 test_that("Check Errors", {
+
+  my_data <- example_data()
+
   expect_error(df_explicit_na(my_data, na_level = NA), "na_level")
   expect_error(df_explicit_na(my_data, char_as_factor = "TRUE"), "logical")
   expect_error(df_explicit_na(my_data, omit_columns = 1), "character")
   expect_error(df_explicit_na(my_data, na_level = NULL), "character")
   expect_error(df_explicit_na(c("A")), "data.frame")
+  expect_error(df_explicit_na(my_data, omit_columns = names(my_data)), "character")
 
-})
-
-
-my_data <- data.frame(
-  x = c("A", "B", NA, "C"),
-  y = c("D", "E", "F", "E"),
-  z = c(1, 2, 3, 4)
-)
-
-test_that("Keep factors", {
-
-  prepared_data <- expect_silent(df_explicit_na(my_data))
-
-  expect_equal(levels(prepared_data$x), c("A", "B", "C", "<Missing>"))
-
-  expect_equal(class(prepared_data$x), "factor")
-  expect_equal(class(prepared_data$y), "factor")
-  expect_equal(class(prepared_data$z), "numeric")
 })

@@ -1,62 +1,92 @@
-#' Prepare Data to be Used in a Teal App
+#' Encode Categorical Missing Values in a Data Frame
 #'
-#' teal does not take care of missing data provided by the app author. This is a helper
-#' function to encode \code{NA} values with a specific character char.
+#' This is a helper function to encode missing entries across groups of categorical
+#'   variables in a data frame.
 #'
-#' Additionally teal requires character variables to be converted to factors. This can
-#' be executed by setting the \code{char_as_factor} variable to \code{TRUE}.
+#' @details Missing entries are those with `NA` or empty strings and will
+#'   be replaced with a specified value. If factor variables include missing
+#'   values, the missing value will be inserted as the last level.
+#'   Similarly, in case character variables should be converted to factors with
+#'   `char_as_factor` option, the missing values will be set as the last level.
 #'
-#' @param data (\code{data.frame}) Any \code{cdisc} data set
-#' @param omit_columns (\code{character}) vector of columns that should not be touched
-#'   by this function
-#' @param char_as_factor (\code{logical}) Whether to make all \code{character} variables
-#'   inside the \code{data.frame} that are not \code{omit_columns} \code{factor} variables.
-#' @param na_level (\code{character}) that is used to replace all \code{NA} levels
-#'   inside non - \code{omit_column} columns
+#' @param data (`data frame`)\cr data set.
+#' @param omit_columns (`character`)\cr names of variables from `data` that should
+#'   not be modified by this function.
+#' @param char_as_factor (`flag`)\cr whether to convert character variables
+#'   in `data` to factors.
+#' @param na_level (`string`)\cr used to replace all `NA` or empty
+#'   values inside non-`omit_columns` columns.
 #'
-#' @return The \code{data.frame} inserted with the desired changes made.
+#' @return The data frame with the desired changes made.
 #'
 #' @export
-#'
+#' @seealso [sas_na()] and [explicit_na()] for other missing data helper functions.
 #' @examples
 #'
 #' my_data <- data.frame(
-#'   v = c("A", NA, NA, NA),
+#'   v = factor(c("A", NA, NA, NA), levels = c("Z", "A")),
 #'   w = c("A", "B", NA, "C"),
 #'   x = c("D", "E", "F", NA),
-#'   y = c("G", "H", "I", NA),
-#'   z = c(1, 2, 3, 4)
+#'   y = c("G", "H", "I", ""),
+#'   z = c(1, 2, 3, 4),
+#'   stringsAsFactors = FALSE
 #' )
 #'
+#' # Encode missing values in all character or factor columns.
+#' df_explicit_na(my_data)
+#'
+#' # Encode missing values in a subset of columns.
 #' df_explicit_na(my_data, omit_columns = c("x", "y"))
 #'
 df_explicit_na <- function(data, omit_columns = NULL, char_as_factor = TRUE, na_level = "<Missing>") {
 
-  stopifnot(is.data.frame(data))
-  stopifnot(!any(duplicated(names(data))))
+  assert_that(
+    is.data.frame(data),
+    is.null(omit_columns) || is_character_vector(omit_columns),
+    is.flag(char_as_factor),
+    is.string(na_level)
+  )
 
-  stopifnot(is.null(omit_columns) || is_character_vector(omit_columns))
-  if (!is.null(omit_columns)) {
-    stopifnot(length(intersect(names(data), omit_columns)) == length(omit_columns))
+  target_vars <- if (is.null(omit_columns)) {
+    names(data)
+  } else {
+    setdiff(names(data), omit_columns) # May have duplicates.
   }
-  stopifnot(is_logical_single(char_as_factor))
-  stopifnot(is_character_single(na_level))
 
-  for (var in setdiff(names(data), omit_columns)) {
-    xi <- data[[var]]
+  assert_that(
+    is_character_vector(target_vars)
+  )
 
-    # Conver
+  l_target_vars <- split(target_vars, target_vars)
+
+  # Makes sure target_vars exist in data and names are not duplicated.
+  assert_that(
+    is_df_with_variables(data, l_target_vars)
+  )
+
+  for (x in target_vars) {
+
+    xi <- data[[x]]
+    xi_label <- obj_label(xi)
+
     if (is.factor(xi) || is.character(xi)) {
+
+      # Handle empty strings and NA values.
       xi <- explicit_na(sas_na(xi), label = na_level)
-    }
 
-    # convert characters to factors (argument)
-    if ((is.character(xi) || is.factor(xi)) && char_as_factor) {
-     # Make it a factor with NA as last value
-     xi <- factor(as.character(xi), levels = c(setdiff(unique(xi), na_level), na_level))
-    }
+      # Convert characters to factors, set na_level as the last value.
+      if (is.character(xi) && char_as_factor) {
+        levels_xi <- setdiff(sort(unique(xi)), na_level)
+        if (na_level %in% unique(xi)) {
+          levels_xi <- c(levels_xi, na_level)
+        }
 
-    data[, var] <- xi
+        xi <- factor(xi, levels = levels_xi)
+      }
+
+      data[, x] <- with_label(xi, label = xi_label)
+
+    }
 
   }
   return(data)

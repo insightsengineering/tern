@@ -32,6 +32,7 @@ test_that("is_variables is FALSE with wrong input", {
   expect_false(is_variables(list("bla", b = "bli")))
   expect_false(is_variables(list(a = 1, b = "bla")))
   expect_false(is_variables(c(a = "blo", b = "bla")))
+  expect_false(is_variables(c(a = 1, a = 2)))
 })
 
 test_that("is_df_with_variables is TRUE with healthy input", {
