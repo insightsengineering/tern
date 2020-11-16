@@ -583,25 +583,6 @@ test_that("h_col_indices works as expected", {
   expect_identical(result, expected)
 })
 
-test_that("groups_list_to_df works as expected", {
-  grade_groups <- list(
-    "Any Grade (%)" = c("1", "2", "3", "4", "5"),
-    "Grade 3-4 (%)" = c("3", "4"),
-    "Grade 5 (%)" = "5"
-  )
-  result <- groups_list_to_df(grade_groups)
-  expected <- structure(
-    list(
-      valname = c("AnyGrade", "Grade34", "Grade5"),
-      label = c("Any Grade (%)", "Grade 3-4 (%)", "Grade 5 (%)"),
-      levelcombo = list(c("1", "2", "3", "4", "5"), c("3", "4"), "5"),
-      exargs = list(list(), list(), list())
-    ),
-    row.names = c(NA, -3L),
-    class = c("tbl_df", "tbl", "data.frame")
-  )
-  expect_identical(result, expected)
-})
 
 test_that("as.rtable.data.frame works correctly", {
   x <- data.frame(
@@ -673,55 +654,4 @@ test_that("afun_selected_stats works for character input", {
   result <- afun_selected_stats(c("a", "c"), c("b", "c"))
   expected <- "c"
   expect_identical(result, expected)
-})
-
-test_that("split_cols_by_groups manages combinations of columns", {
-  groups <- list(
-    "Arms A+B" = c("A: Drug X", "B: Placebo"),
-    "Arms A+C" = c("A: Drug X", "C: Combination")
-  )
-  result <- basic_table() %>%
-    split_cols_by_groups("ARM", groups) %>%
-    add_colcounts() %>%
-    analyze("AGE") %>%
-    build_table(DM)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "", "Mean", "Arms A+B", "(N=227)", "34.03", "Arms A+C",
-      "(N=250)", "34.73"
-    ),
-    .Dim = c(3L, 3L)
-  )
-  expect_identical(result_matrix, expected_matrix)
-})
-
-
-test_that("split_cols_by_groups manages combinations of columns with reference", {
-  groups <- list(
-    "Arms A+B" = c("A: Drug X", "B: Placebo"),
-    "Arms A+C" = c("A: Drug X", "C: Combination")
-  )
-  result <- basic_table() %>%
-    split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
-    analyze(
-      "AGE",
-      afun = function(x, .ref_group, .in_ref_col){
-        if (.in_ref_col) {
-          in_rows("Diff. of Averages" = rcell(NULL))
-        } else {
-          in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
-        }
-      }
-    ) %>%
-    build_table(DM)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "Diff. of Averages", "Arms A+B", "", "Arms A+C",
-      "0.71"
-    ),
-    .Dim = 2:3
-  )
-  expect_identical(result_matrix, expected_matrix)
 })
