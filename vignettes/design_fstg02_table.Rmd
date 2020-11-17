@@ -1,0 +1,555 @@
+---
+title: "Design for Table in FSTG02 (Subgroup Analysis of Survival Duration)"
+author: "Jana Stoilova"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design for Table in FSTG02}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(assertthat)
+library(dplyr)
+library(forcats)
+library(utils.nest)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+## Data for examples
+
+```{r data}
+
+library(random.cdisc.data)
+adtte <- radtte(cached = TRUE)
+
+# Save variable labels before data processing steps.
+adtte_labels <- var_labels(adtte)
+
+adtte <- adtte %>%
+  filter(
+    PARAMCD == "OS",
+    ARMCD %in% c("ARM B", "ARM A"),
+    SEX %in% c("M", "F")
+  ) %>%
+  mutate(
+    # Reorder levels of ARMCD to display reference arm before treatment arm.
+    ARMCD = fct_relevel(droplevels(ARMCD), "Arm B"),
+    SEX = droplevels(SEX),
+    is_event = CNSR == 0
+  ) %>%
+  var_relabel(
+    ARMCD = adtte_labels["ARMCD"],
+    SEX = adtte_labels["SEX"],
+    is_event = "Event Flag"
+  )
+
+adtte %>%
+  select(USUBJID, ARMCD, AVAL, is_event, SEX, BMRKR2) %>%
+  glimpse()
+
+```
+
+## Objective
+
+
+                                                                                                   
+````
+                                        ARM A          ARM B                              
+                                       (N=187)        (N=182)                             
+                                    _____________  _____________                          
+                                                                                          
+                              Total        Median           Median  Hazard                   
+Baseline Risk Factors          n     n     (Days)     n     (Days)   Ratio    95% Wald CI     
+__________________________________________________________________________________________
+                                                                                           
+All Patients                  369   187    436.0    182    368.0      0.91  (0.58, 1.42)
+                                                                                        
+Sex                                                                                     
+  Male                        189   103    467.0    86    362.0       1.06  (0.54, 2.09)
+  Female                      180    84    360.0    96    368.0       0.77  (0.43, 1.40)
+                                                                                        
+Pooled Age Group 1                                                                      
+  <65                         267   131    388.0   136    368.0       0.92  (0.55, 1.56)
+  >=65                        102    56    642.0    46      NE        0.83  (0.33, 2.11)
+````
+
+
+Details: (see GDSR)
+
+## Design Summary
+
+- Follow design for `ONCT05`: helper function returns two summary datasets which need to be converted to rtables separately.
+- One summary dataset is used to create a summary table by arm.
+- The second summary dataset is used to create the table of total n, hazard ratio and ci. 
+- In a final step, the tables are combined using `cbind_rtable`.
+
+## Still to do
+- Adjust formatting for extreme values. Depends on rtables issue: https://github.com/Roche/rtables/issues/133
+- Add stratification variables.
+- Add time unit to header.
+
+## Helper functions to create tidy dataset(s) 
+
+- Reuse statistics functions from `TTET01` template: `s_surv_time` and `s_coxph_pairwise`.
+
+### Internal functions
+```{r, helpers_general}
+
+is_df_with_factors <- function(df, variables) {
+  assert_that(
+    is_df_with_variables(df, variables)
+  )
+  all(vapply(df[, unlist(variables)], is_valid_factor, logical(1)))
+}
+
+# Creata data splits by subgroup.
+h_split_by_subgroups <- function(data, subgroups) {
+
+  assert_that(
+    is_character_vector(subgroups),
+    is_df_with_factors(data, as.list(setNames(subgroups, subgroups)))
+  )
+
+  df_subgroups <- data[, subgroups, drop = FALSE]
+  subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
+
+  l_labels <- Map(function(grp_i, name_i) {
+
+    df_labels <- data.frame(
+      subgroup = levels(droplevels(grp_i)),
+      var = name_i,
+      var_label = unname(subgroup_labels[name_i]),
+      stringsAsFactors = FALSE #rationale: subgroups may not be unique.
+    )
+
+  }, df_subgroups, names(df_subgroups))
+
+  # Create a data.frame with one row per subgroup.
+  df_labels <- do.call(rbind, args = c(l_labels, make.row.names = FALSE))
+  rownames(df_labels) <- paste0(df_labels$var, ".", df_labels$subgroup)
+
+  # Create a list of data subsets.
+  lapply(split(df_labels, rownames(df_labels)), function(row_i) {
+
+    which_row <- data[[row_i$var]] == row_i$subgroup
+    df <- data[which_row, ]
+
+    list(
+      df = df,
+      df_labels = data.frame(row_i, row.names = NULL)
+    )
+  })
+
+}
+
+split_data <- h_split_by_subgroups(
+  data  = adtte %>% select(AVAL, is_event, SEX, BMRKR2),
+  subgroups = c("SEX", "BMRKR2")
+)
+str(split_data)
+
+```
+
+```{r, helpers_median}
+
+h_survtime_df <- function(tte, is_event, arm) {
+
+  assert_that(
+    is_numeric_vector(tte),
+    is_logical_vector(is_event),
+    is_valid_factor(arm),
+    is_equal_length(tte, is_event, arm)
+  )
+
+  df_tte <- data.frame(
+    tte = tte,
+    is_event = is_event,
+    stringsAsFactors = FALSE
+  )
+
+  lst_tte <- split(df_tte, arm)
+  lst_results <- Map(function(x, arm) {
+
+    s_surv <- s_surv_time(x, .var = "tte", is_event = "is_event")
+    data.frame(
+      arm = arm,
+      n = nrow(x),
+      median = unname(s_surv$median),
+      stringsAsFactors = FALSE
+    )
+
+  }, lst_tte, names(lst_tte))
+
+  df <- do.call(rbind, args = c(lst_results, make.row.names = FALSE))
+  df$arm <- factor(df$arm, levels = levels(arm))
+  df
+}
+
+h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients") {
+
+  assert_that(
+    is.character(variables$tte),
+    is.character(variables$is_event),
+    is.character(variables$arm),
+    is.character(variables$subgroups),
+    is_character_single(label_all),
+    is_df_with_variables(data, as.list(unlist(variables))),
+    is_valid_factor(data[[variables$arm]]),
+    are_equal(nlevels(data[[variables$arm]]), 2)
+  )
+
+  # Add All Patients.
+  result_all <- h_survtime_df(data[[variables$tte]], data[[variables$is_event]], data[[variables$arm]])
+  result_all$subgroup <- label_all
+  result_all$var <- "ALL"
+  result_all$var_label <- label_all
+  result_all$row_type <- "content"
+
+  # Add Subgroups.
+  l_data <- h_split_by_subgroups(data, variables$subgroups)
+  l_result <- lapply(l_data, function(grp) {
+    result <- h_survtime_df(grp$df[[variables$tte]], grp$df[[variables$is_event]], grp$df[[variables$arm]])
+    result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
+    cbind(result, result_labels)
+  })
+
+  result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
+  result_subgroups$row_type <- "analysis"
+
+  rbind(
+    result_all,
+    result_subgroups
+  )
+
+}
+
+# Extract median for one group.
+h_survtime_df(adtte$AVAL, adtte$is_event, adtte$ARMCD)
+
+# Extract median for multiple gropus.
+h_survtime_subgroups_df(
+  variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD", subgroups = c("SEX", "BMRKR2")),
+  data = adtte
+)
+
+```
+
+```{r, helpers_hr}
+h_coxph_df <- function(tte, is_event, arm, control = control_coxph()) {
+
+  assert_that(
+    is_numeric_vector(tte),
+    is_logical_vector(is_event),
+    is_valid_factor(arm),
+    are_equal(nlevels(arm), 2),
+    is_equal_length(tte, is_event, arm)
+  )
+
+  df_tte <- data.frame(
+    tte = tte,
+    is_event = is_event,
+    stringsAsFactors = FALSE
+  )
+
+  l_df <- split(df_tte, arm)
+
+  # Hazard ratio and CI.
+  result <- s_coxph_pairwise(
+    df = l_df[[2]],
+    .ref_group = l_df[[1]],
+    .in_ref_col = FALSE,
+    .var = "tte",
+    is_event = "is_event",
+    strat = NULL,
+    control = control
+  )
+
+  df <- data.frame(
+    # Dummy column needed downstream to create a nested header.
+    arm = " ",
+    n_tot = nrow(df_tte),
+    hr = unname(result$hr),
+    lcl = unname(result$hr_ci[1]),
+    ucl = unname(result$hr_ci[2]),
+    conf_level = control[["conf_level"]],
+    pval = as.numeric(result$pvalue),
+    pval_label = obj_label(result$pvalue),
+    stringsAsFactors = FALSE
+  )
+
+  df
+
+}
+
+h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), label_all = "All Patients") {
+
+  assert_that(
+    is.character(variables$tte),
+    is.character(variables$is_event),
+    is.character(variables$arm),
+    is.character(variables$subgroups),
+    is_character_single(label_all),
+    is_df_with_variables(data, as.list(unlist(variables))),
+    is_valid_factor(data[[variables$arm]]),
+    are_equal(nlevels(data[[variables$arm]]), 2)
+  )
+
+  # Add All Patients.
+  result_all <- h_coxph_df(
+    tte = data[[variables$tte]],
+    is_event = data[[variables$is_event]],
+    arm = data[[variables$arm]],
+    control = control
+  )
+  result_all$subgroup <- label_all
+  result_all$var <- "ALL"
+  result_all$var_label <- label_all
+  result_all$row_type <- "content"
+
+  # Add Subgroups.
+  l_data <- h_split_by_subgroups(data, variables$subgroups)
+  l_result <- lapply(l_data, function(grp) {
+
+    result <- h_coxph_df(
+      tte = grp$df[[variables$tte]],
+      is_event = grp$df[[variables$is_event]],
+      arm = grp$df[[variables$arm]]
+    )
+    result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
+    cbind(result, result_labels)
+  })
+
+  result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
+  result_subgroups$row_type <- "analysis"
+
+  rbind(
+    result_all,
+    result_subgroups
+  )
+
+}
+
+# Extract HR for one group.
+h_coxph_df(adtte$AVAL, adtte$is_event, adtte$ARMCD)
+
+# Extract HR for multiple gropus.
+h_coxph_subgroups_df(
+  variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD", subgroups = c("SEX", "BMRKR2")),
+  data = adtte
+)
+```
+
+### User-facing function to process data in one step
+```{r, helper_wrapper}
+
+extract_tte_subgroups <- function(variables, data, control = control_coxph(), label_all = "All Patients") {
+
+  df_survtime <- h_survtime_subgroups_df(variables, data, label_all = label_all)
+  df_hr <- h_coxph_subgroups_df(variables, data, control = control, label_all = label_all)
+
+  list(survtime = df_survtime, hr = df_hr)
+}
+
+df <- extract_tte_subgroups(
+  variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD", subgroups = c("SEX", "BMRKR2")),
+  data = adtte
+)
+df
+
+```
+
+
+## Formatting
+
+- Using custom Formatted Analysis function list.
+
+```{r, utils}
+
+a_tte_subgroups <- function(.formats = list(
+  n = "xx", median = "xx.x",
+  n_tot = "xx", hr = list(format_extreme_values(2L)),
+  ci = list(format_extreme_values_ci(2L)),
+  pval = "x.xxxx | (<0.0001)")
+) {
+
+  assert_that(
+    is.list(.formats),
+    all_elements_in_ref(names(.formats), ref = c("n", "median", "n_tot", "hr", "ci", "pval"))
+  )
+
+  afun_lst <- Map(function(stat, fmt){
+    if (stat == "ci") {
+      function(df, labelstr = "", ...) {
+        in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
+      }
+    } else {
+      function(df, labelstr = "", ...) {
+        in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
+      }
+    }
+  },
+  stat = names(.formats),
+  fmt = .formats
+  )
+
+  afun_lst
+}
+
+a_tte_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
+
+```
+
+## Description function for layout
+
+Used to create the table header.
+
+```{r, d_tbl_header}
+
+# Helper for table header.
+d_tte_subgroups_colvars <- function(vars, control = control_coxph()) {
+
+  assert_that(
+    is.character(vars),
+    all_elements_in_ref(vars, ref = c("n", "median", "n_tot", "hr", "ci", "pval"))
+  )
+
+  varlabels <- c(
+    n = "n",
+    median = "Median",
+    n_tot = "Total n",
+    hr = "Hazard Ratio",
+    ci = paste0(100 * control[["conf_level"]], "% Wald CI"),
+    pval = paste0("p-value (", control[["pval_method"]], ")")
+  )
+
+  colvars <- vars
+
+  # The `lcl`` variable is just a placeholder available in the analysis data,
+  # it is not acutally used in the tabulation.
+  # Variables used in the tabulation are lcl and ucl, see `a_tte_subgroups` for details.
+  colvars[colvars == "ci"] <- "lcl"
+
+  list(
+    vars = colvars,
+    labels = varlabels[vars]
+  )
+}
+d_tte_subgroups_colvars(vars = c("n_tot", "hr", "ci"))
+
+```
+
+## Layout function
+
+Just a small wrapper so users don't need to split summary data.
+
+```{r, lyt}
+tabulate_tte_subgroups <- function(
+  lyt,
+  vars,
+  control = control_coxph()) {
+
+  colvars <- d_tte_subgroups_colvars(vars, control = control)
+
+  afun_lst <- a_tte_subgroups()
+
+  lyt <- split_cols_by(lyt = lyt, var = "arm")
+  lyt <- split_rows_by(
+    lyt = lyt,
+    var = "row_type",
+    split_fun = keep_split_levels("content"),
+    nested = FALSE
+  )
+  lyt <- summarize_row_groups(lyt = lyt, var = "var_label", cfun = afun_lst[vars])
+  lyt <- split_rows_by(
+    lyt = lyt,
+    var = "row_type",
+    split_fun = keep_split_levels("analysis"),
+    nested = FALSE,
+    child_labels = "hidden"
+  )
+  lyt <- split_rows_by(lyt = lyt, var = "var_label", nested = TRUE)
+  lyt <- split_cols_by_multivar(
+    lyt = lyt,
+    vars = colvars$vars,
+    varlabels = colvars$labels
+  )
+  analyze_colvars(lyt = lyt, afun = afun_lst[vars])
+
+}
+```
+
+## Example
+```{r, lyt_example}
+
+df <- extract_tte_subgroups(
+  variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD", subgroups = c("SEX", "BMRKR2")),
+  data = adtte
+)
+
+tbl_survtime <- basic_table() %>%
+  tabulate_tte_subgroups(vars = c("n", "median")) %>%
+  build_table(df$survtime)
+
+## Table of odds ratios by subgroup.
+tbl_hr <- basic_table() %>%
+  tabulate_tte_subgroups(vars = c("n_tot", "hr", "ci")) %>%
+  build_table(df$hr)
+
+# Combine tables
+cbind_rtables(tbl_hr[, 1], tbl_survtime, tbl_hr[, 2:3])
+
+```
+
+## Work in progress 
+
+Example where median is NA.
+```{r, extereme_values}
+
+df_na <- data.frame(
+  aval = c(c(1:3), c(1:3)),
+  is_event = c(c(TRUE, FALSE, FALSE), rep(TRUE, 3)),
+  arm = factor(c(rep("A", 3), rep("B", 3))),
+  var1 = rep("X", 6)
+)
+
+df_na <- extract_tte_subgroups(
+  variables = list(tte = "aval", is_event = "is_event", arm = "arm", subgroups = c("var1")),
+  data = df_na
+)
+
+df_na$survtime
+
+```
+
+The following results in an error and I'm not sure why.
+
+```{r, extreme-value2, eval = FALSE}
+
+basic_table() %>%
+ tabulate_tte_subgroups(vars = c("n", "median")) %>%
+ build_table(df_na$survtime)
+```
