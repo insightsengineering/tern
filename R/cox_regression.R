@@ -478,7 +478,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
   } else {
     at[[covar]]
   }
-  effect_index <- !grepl(":", names(betas))
+  effect_index <- !grepl(covar, names(betas))
   coef_hat <- betas[effect_index] + xval * betas[!effect_index]
   coef_se <- sqrt(
     betas_var[effect_index] +

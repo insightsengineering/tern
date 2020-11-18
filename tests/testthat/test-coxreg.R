@@ -17,6 +17,7 @@ get_bladder <- function() {
     data.frame(
       time = stop,
       status = event,
+      arm = paste("ARM:", as.factor(rx)),
       armcd = as.factor(rx),
       covar1 = as.factor(enum),
       covar2 = factor(
@@ -507,4 +508,25 @@ test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtab
     .Dim = c(9L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
+})
+
+
+test_that("h_coxreg_inter_effect.numerics works with _:_ in effect levels", {
+  mod <- coxph(Surv(time, status) ~ armcd * AGE, data = get_bladder())
+  expected <- expect_silent(
+    h_coxreg_extract_interaction(
+      effect = "armcd", covar = "AGE", mod = mod, control = control_coxreg(),
+      at = list(), data = get_bladder()
+    )
+  )
+
+  mod <- coxph(Surv(time, status) ~ arm * AGE, data = get_bladder())
+  result <-  expect_silent(
+    h_coxreg_extract_interaction(
+      effect = "arm", covar = "AGE", mod = mod, control = control_coxreg(),
+      at = list(), data = get_bladder()
+    )
+  )
+  # The first column in the effect (arm/armcd) and expected to vary.
+  expect_equal(result[, -1], expected[, -1], check.attributes = FALSE)
 })
