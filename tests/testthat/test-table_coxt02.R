@@ -27,7 +27,7 @@ adtte_f <- within( # nolint
     AGE = "Age"
   )
 
-test_that("COXT02 default variant is produced correctly", {
+test_that("COXT02 default variant 1 is produced correctly", {
   multivar_model <- fit_coxreg_multivar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -51,6 +51,38 @@ test_that("COXT02 default variant is produced correctly", {
       "0.0002", "", "0.1605", "0.3103"
     ),
     .Dim = c(7L, 4L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("COXT02 variant 5 is produced correctly", {
+  multivar_model <- fit_coxreg_multivar(
+    variables = list(
+      time = "AVAL", event = "event", arm = "ARMCD",
+      covariates = c("SEX", "AGE"), strata = "RACE"
+    ),
+    control = control_coxreg(
+      conf_level = 0.9,
+      ties = "efron"
+    ),
+    data = adtte_f
+  )
+  df <- broom::tidy(multivar_model)
+  result <- basic_table() %>%
+    split_rows_by("term", child_labels = "hidden") %>%
+    summarize_coxreg(multivar = TRUE, conf_level = 0.9, vars = c("hr", "ci")) %>%
+    build_table(df)
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "ARMCD (reference = ARM B)", "ARM A", "ARM C",
+      "Sex (reference = F)", "M", "Age", "Hazard Ratio", "", "0.72",
+      "1.78", "", "0.82", "0.99", "90% CI", "", "(0.54, 0.95)", "(1.38, 2.28)",
+      "", "(0.67, 1.02)", "(0.98, 1)"
+    ),
+    .Dim = c(7L, 3L)
   )
 
   expect_identical(result_matrix, expected_matrix)

@@ -99,16 +99,21 @@ h_coxreg_univar_formulas <- function(variables,
     is_variables(variables[c("arm", "event", "time")]),
     is.flag(interaction)
   )
-  ref <- paste(
-    "Surv(", variables$time, ",", variables$event, ") ~ ", variables$arm
+  ref <- paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm,
+    ifelse(
+      !is.null(variables$strata),
+      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
+      ""
+    )
   )
-  covar <- paste(
-    ref,
-    ifelse(interaction, "*", "+"),
+  covar <- paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm,
+    ifelse(interaction, " * ", " + "),
     variables$covariates,
     ifelse(
       !is.null(variables$strata),
-      paste("+ strata(", variables$strata, ")"),
+      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
       ""
     )
   )
@@ -142,7 +147,15 @@ h_coxreg_multivar_formula <- function(variables) {
     is_variables(variables[c("arm", "event", "time")])
   )
   covariates_part <- paste(variables$covariates, collapse = " + ")
-  paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm, " + ", covariates_part)
+  paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ",
+    variables$arm, " + ", covariates_part,
+    ifelse(
+      !is.null(variables$strata),
+      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
+      ""
+    )
+  )
 }
 
 #' Controls for Cox regression
@@ -277,6 +290,7 @@ fit_coxreg_univar <- function(variables,
 #' @method tidy summary.coxph
 #' @export
 #' @examples
+#'
 #' library(survival)
 #' set.seed(1, kind = "Mersenne-Twister")
 #' dta_bladder <- with(
@@ -465,9 +479,10 @@ h_coxreg_inter_effect.numeric <- function(x, # nousage # nolint
                                           at,
                                           ...) {
   betas <- coef(mod)
+  attrs <- attr(stats::terms(mod), "term.labels")
   term_indices <- grep(
     pattern = effect,
-    x = attr(stats::terms(mod), "term.labels")
+    x = attrs[!grepl("strata\\(", attrs)]
   )
   assert_that(length(term_indices) == 2)
   betas <- betas[term_indices]
@@ -793,7 +808,8 @@ fit_coxreg_multivar <- function(variables,
   assert_that(
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")]),
-    is_df_with_variables(data, as.list(unlist(variables)))
+    is_df_with_variables(data, as.list(unlist(variables))),
+    isFALSE(control$interaction)
   )
 
   form <- h_coxreg_multivar_formula(variables)
@@ -1015,7 +1031,7 @@ summarize_coxreg <- function(lyt,
   )
 
   if (multivar) {
-    vars <- c("hr", "ci", "pval")
+    vars <- intersect(c("hr", "ci", "pval"), vars)
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = vars,

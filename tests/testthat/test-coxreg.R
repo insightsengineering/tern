@@ -28,7 +28,7 @@ get_bladder <- function() {
   attr(dta_bladder$armcd, "label") <- "ARM"
   attr(dta_bladder$covar1, "label") <- "A Covariate Label"
   attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
-  dta_bladder$AGE <- sample( # nolint
+  dta_bladder$age <- sample( # nolint
     20:60, size = nrow(dta_bladder), replace = TRUE
   )
   dta_bladder
@@ -41,9 +41,9 @@ test_that("h_coxreg_univar_formulas creates formulas with covariate", {
     )
   )
   expected <- c(
-    ref = "Surv( time , status ) ~  armcd",
-    X = "Surv( time , status ) ~  armcd + X ",
-    y = "Surv( time , status ) ~  armcd + y "
+    ref = "Surv(time, status) ~ armcd",
+    X = "Surv(time, status) ~ armcd + X",
+    y = "Surv(time, status) ~ armcd + y"
   )
   expect_identical(result, expected)
 })
@@ -56,9 +56,9 @@ test_that("h_coxreg_univar_formulas creates formulas with strata", {
     )
   )
   expected <- c(
-    ref = "Surv( time , status ) ~  armcd",
-    X = "Surv( time , status ) ~  armcd + X + strata( SITE )",
-    y = "Surv( time , status ) ~  armcd + y + strata( SITE )"
+    ref = "Surv(time, status) ~ armcd + strata(SITE)",
+    X = "Surv(time, status) ~ armcd + X + strata(SITE)",
+    y = "Surv(time, status) ~ armcd + y + strata(SITE)"
   )
   expect_identical(result, expected)
 })
@@ -72,10 +72,47 @@ test_that("h_coxreg_univar_formulas creates formulas with interactions", {
     interaction = TRUE
   )
   expected <- c(
-    ref = "Surv( time , status ) ~  armcd",
-    X = "Surv( time , status ) ~  armcd * X + strata( SITE )",
-    y = "Surv( time , status ) ~  armcd * y + strata( SITE )"
+    ref = "Surv(time, status) ~ armcd + strata(SITE)",
+    X = "Surv(time, status) ~ armcd * X + strata(SITE)",
+    y = "Surv(time, status) ~ armcd * y + strata(SITE)"
   )
+  expect_identical(result, expected)
+})
+
+test_that("h_coxreg_univar_formulas creates formulas with multiple strata", {
+  result <- h_coxreg_univar_formulas(
+    variables = list(
+      time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
+      strata = c("SITE", "COUNTRY")
+    )
+  )
+  expected <- c(
+    ref = "Surv(time, status) ~ armcd + strata(SITE, COUNTRY)",
+    X = "Surv(time, status) ~ armcd + X + strata(SITE, COUNTRY)",
+    y = "Surv(time, status) ~ armcd + y + strata(SITE, COUNTRY)"
+  )
+  expect_identical(result, expected)
+})
+
+test_that("h_coxreg_multivar_formula creates formulas with a strata", {
+  result <- h_coxreg_multivar_formula(
+    variables = list(
+      time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
+      strata = "SITE"
+    )
+  )
+  expected <- "Surv(time, status) ~ armcd + X + y + strata(SITE)"
+  expect_identical(result, expected)
+})
+
+test_that("h_coxreg_multivar_formula creates formulas with multiple strata", {
+  result <- h_coxreg_multivar_formula(
+    variables = list(
+      time = "time", event = "status", arm = "armcd", covariates = c("X", "y"),
+      strata = c("SITE", "COUNTRY")
+    )
+  )
+  expected <- "Surv(time, status) ~ armcd + X + y + strata(SITE, COUNTRY)"
   expect_identical(result, expected)
 })
 
@@ -197,6 +234,38 @@ test_that("tidy.coxreg.univar method tidies up the univariate Cox regression mod
   expect_equal(result, expected, tolerance = 1e-5)
 })
 
+test_that("tidy.coxreg.univar method works with only numeric covariates with strata", {
+  univar_model <- fit_coxreg_univar(
+    variables = list(
+      time = "time", event = "status", arm = "armcd",
+      covariates = "age", strata = c("covar1", "covar2")
+    ),
+    data = get_bladder()
+  )
+  result <- broom::tidy(univar_model)
+
+  expected <- structure(
+    list(
+      effect = c("Treatment:", "Covariate:"),
+      term = c("armcd", "age"),
+      term_label = c("2 vs control (1)", "age"),
+      level = c("2", "2"),
+      n = list(340L, 340L),
+      hr = list(0.6208343, 0.6076894),
+      lcl = c(0.4164994, 0.4072018),
+      ucl = c(0.9254162, 0.9068879),
+      pval = list(0.01925561, 0.01475084),
+      ci = list(c(0.4164994, 0.9254162),
+                c(0.4072018, 0.9068879)
+      )
+    ),
+    row.names = c("ref", "age"),
+    class = "data.frame",
+    conf_level = 0.95
+  )
+  expect_equal(result, expected, tolerance = 1e-5)
+})
+
 test_that("h_coxreg_extract_interaction works with factor as covariate", {
   mod <- coxph(Surv(time, status) ~ armcd * covar1, data = get_bladder())
   expect_silent(
@@ -215,18 +284,27 @@ test_that("h_coxreg_extract_interaction works with factor as covariate", {
 })
 
 test_that("h_coxreg_inter_effect works with numerics as covariate", {
-  mod <- coxph(Surv(time, status) ~ armcd * AGE, data = get_bladder())
+  mod1 <- coxph(Surv(time, status) ~ armcd * age, data = get_bladder())
   expect_silent(
     h_coxreg_extract_interaction(
-      effect = "armcd", covar = "AGE", mod = mod, control = control_coxreg(),
+      effect = "armcd", covar = "age", mod = mod1, control = control_coxreg(),
       at = list(), data = get_bladder()
     )
   )
   expect_silent(
     h_coxreg_inter_effect(
-      x = get_bladder()[["AGE"]],
-      effect = "armcd", covar = "AGE", mod = mod, control = control_coxreg(),
+      x = get_bladder()[["age"]],
+      effect = "armcd", covar = "age", mod = mod1, control = control_coxreg(),
       at = list(), data = get_bladder()
+    )
+  )
+
+  mod2 <- coxph(Surv(time, status) ~ armcd * age + strata(covar1), data = get_bladder())
+  expect_silent(
+    h_coxreg_inter_effect(
+      x = get_bladder()[["age"]],
+      effect = "armcd", covar = "age", mod = mod2, data = get_bladder(),
+      at = list(), control = control_coxreg()
     )
   )
 })

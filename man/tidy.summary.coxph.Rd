@@ -15,6 +15,7 @@
 Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{tibble} to extract model results.
 }
 \examples{
+
 library(survival)
 set.seed(1, kind = "Mersenne-Twister")
 dta_bladder <- with(

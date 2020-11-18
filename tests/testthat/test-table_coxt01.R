@@ -148,7 +148,7 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
   df <- tidy(mod4)
   result <- split_rows_by(lyt = NULL, "effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
-    summarize_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
+    summarize_coxreg(conf_level = conf_level, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
     build_table(df = df)
 
   result_matrix <- to_string_matrix(result)
@@ -159,7 +159,7 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
       "  WHITE", "Age", "  30", "  40", "  50", "n", "", "247", "",
       "247", "", "", "247", "", "", "", "247", "", "", "", "Hazard Ratio", "",
       "0.78", "", "", "0.63", "1.05", "", "0.96", "0.56", "0.64", "",
-      "0.59", "1.07", "1.95", "95% CI", "", "(0.6, 1.02)", "", "",
+      "0.59", "1.07", "1.95", "90% CI", "", "(0.6, 1.02)", "", "",
       "(0.42, 0.95)", "(0.63, 1.72)", "", "(0.63, 1.46)", "(0.3, 1.08)",
       "(0.31, 1.3)", "", "(0.43, 0.81)", "(0.76, 1.51)", "(1.01, 3.75)",
       "p-value", "", "0.1301", "", "0.0265", "", "", "0.8604", "", "",
