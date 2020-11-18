@@ -1,0 +1,756 @@
+---
+title: "Design: Kaplan-Meier Plot (`KMG01`)"
+author: "Francois Collin"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: true
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of KMG01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: ../inst/REFERENCES.bib
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+Introduction
+============
+
++ Existing TLG [entry](https://nest-docs.kubemea.science.roche.com/releases/2020_10_20/embedded/agile-R/tlg_catalog/graphs/kmg01/)
++ Existing
+[prototype](https://pages.github.roche.com/collinf1/RGraphics/RGraphics_grid/RGraphics_grid.html) 
+following
+[issue 499](https://github.roche.com/NEST/tern/issues/499).
+
+
+Specification: the function `g_km` is the current version of the API and the
+new prototype should accept compatible arguments.
+
+
+Method
+======
+
+The principle consists in using the acknowledge high level functions from
+`ggplot2` to render the Kaplan-Meier curve. Then, after decomposition of
+the graphics, the elements are arrange in a new layout with predefined positions
+for the `ggplot` elements (y or x axis, graphic and legends) and add annotation
+tables:
+
+- the survival median table overlay optionally on the top right corner above 
+the curve.
+- the patient at risk table with a constraint as the columns must be aligned
+to the curve y-axis.
+
+
+Result
+======
+
+
+ggplot2 decomposition {.tabset}
+---------------------
+
+`ggplot2` offers a comfortable interface to draw the the curve.
+
+The idea:
+
+1. the survival model is fitted and the data extracted: `h_data_plot`.
+2. the x ticks are estimated to be used in the graph and the patient-at-risk
+table.
+3. the graphics is obtained with `ggplot` ...
+4. ... and then decomposed into grobs, grobs being graphical objects.
+
+### `h_data_plot`
+
+```{r, h_data_plot}
+#' Helper function: tidy survival fit
+#'
+#' Convert the survival fit data into a dataframe designed for plotting.
+#'
+h_data_plot <- function(fit_km,
+                        xticks = NULL) {
+  y <- broom::tidy(fit_km)
+  y$censor <- ifelse(y$n.censor > 0, y$estimate, NA)
+  if (!is.null(xticks)) {
+    y <- subset(y, time <= max(xticks))
+  }
+  if (is.null(fit_km$strata)) {
+    y$strata <- "Data"
+  }
+  y
+}
+```
+
+```{r h_data_plot_example}
+library(random.cdisc.data)
+library(dplyr)
+library(survival)
+radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+  h_data_plot()
+```
+
+### `h_xticks`
+
+```{r h_xticks}
+#' Helper function: x tick positions
+#'
+#' Calculate the positions of ticks on the x-axis. However, if `xticks` already
+#' exists it is kept as is. It is based on the same function `ggplot2` relies on,
+#' and is required in the graphic and the patient-at-risk annotation table.
+#'
+h_xticks <- function(data, xticks = NULL) {
+  if (is.null(xticks)) {
+    labeling::extended(range(data$time)[1], range(data$time)[2], m = 5)
+  } else {
+    xticks
+  }
+}
+```
+
+```{r h_xticks_examples}
+library(random.cdisc.data)
+library(dplyr)
+library(survival)
+data <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+  h_data_plot()
+
+h_xticks(data)
+```
+
+
+### `h_ggkm`
+
+
+```{r, h_ggkm}
+#' Helper function: KM plot
+#'
+#' Draw the Kaplan-Meier plot using `ggplot2`.
+#'
+h_ggkm <- function(data,
+                   xticks = NULL,
+                   censor_show,
+                   xlab,
+                   ylab,
+                   title) {
+  gg <- {
+    ggplot2::ggplot(
+      data = data,
+      mapping = ggplot2::aes(
+        x = time,
+        y = estimate,
+        ymin = conf.low,
+        ymax = conf.high,
+        color = strata,
+        fill = strata
+      )
+    ) + ggplot2::geom_hline(
+      yintercept = 0
+    ) + ggplot2::geom_ribbon(
+      alpha = .3, lty = 0
+    ) + ggplot2::geom_step(
+    ) + ggplot2::coord_cartesian(
+      ylim = c(0, 1)
+    ) + ggplot2::labs(
+      x = xlab, y = ylab, title = title
+    )
+  }
+  if (censor_show) {
+    gg <- gg +
+      ggplot2::geom_point(
+        data = subset(data, !is.na(censor)),
+        ggplot2::aes(x = time, y = censor),
+        shape = "|"
+      )
+  }
+  if (!is.null(xticks)) {
+    gg <- gg + ggplot2::scale_x_continuous(breaks = xticks)
+  }
+  gg + ggplot2::theme_minimal(
+  ) + ggplot2::theme(
+    legend.position = "bottom",
+    legend.title = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_line(size = 2)
+  )
+}
+```
+
+
+```{r, h_ggkm_example}
+library(random.cdisc.data)
+library(dplyr)
+library(survival)
+fit_km <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+data_plot <- h_data_plot(fit_km = fit_km)
+xticks <- h_xticks(data = data_plot)
+gg <- h_ggkm(
+  data = data_plot,
+  censor_show = TRUE,
+  xticks = xticks, xlab = "Days", ylab = "Survival Probability",
+  title = "tt"
+)
+
+gg
+```
+
+
+
+### `h_decompose_gg`
+
+```{r, h_decompose_gg}
+#' `ggplot` Decomposition
+#'
+#' The elements composing the `ggplot` are extracted and organised in a
+#' list containing:
+#' the panel (`panel`),
+#' the y-axis and its label (`yaxis`, `ylab`),
+#' idem for the x-axis (`xaxis`, `xlab`),
+#' the legend (`guide`).
+#'
+
+h_decompose_gg <- function(gg) {
+  g_el <- ggplot2::ggplotGrob(gg)
+  y <- c(
+    panel = "panel", yaxis = "axis-l", xaxis = "axis-b",
+    xlab = "xlab-b", ylab = "ylab-l", guide = "guide"
+  )
+  lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
+}
+
+```
+
+```{r, h_decompose_gg_example}
+library(random.cdisc.data)
+library(dplyr)
+library(survival)
+library(grid)
+
+fit_km <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+data_plot <- h_data_plot(fit_km = fit_km)
+xticks <- h_xticks(data = data_plot)
+gg <- h_ggkm(
+  data = data_plot,
+  censor_show = TRUE,
+  xticks = xticks, xlab = "Days", ylab = "Survival Probability",
+  title = "tt"
+)
+
+g_el <- h_decompose_gg(gg)
+grid.newpage()
+grid.rect(gp = gpar(lty = 1, col = "red", fill = "gray85", lwd = 5))
+grid.draw(g_el$panel)
+
+grid.newpage()
+grid.rect(gp = gpar(lty = 1, col = "royalblue", fill = "gray85", lwd = 5))
+grid.draw(with(g_el, cbind(ylab, yaxis)))
+
+```
+
+Layout
+------
+
+With the data and after decomposition of the ggplot into elements, it is
+then possible to calculate the layout that will frame the final KM plot.
+
+### `h_km_layout`
+
+The layout corresponds to a grid of two columns and five rows of unequal
+dimensions.
+
+- The left column gets the annotation of the ggplot (y-axis) and the
+names of the strata for the patient at risk tabulation.
+The main constraint is about the width of the columns which must allow the
+writing of the strata name.
+- The right column receive the ggplot, the legend, the x-axis and the
+patient at risk table.
+
+Most of the dimension are fixed, only the curve is flexible and will accommodate
+with the remaining free space.
+
+```{r, h_km_layout}
+#' Helper: KM Layout
+#'
+#' Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
+#'
+h_km_layout <- function(data_plot, g_el) {
+  txtlines <- levels(as.factor(data_plot$strata))
+  nlines <- nlevels(as.factor(data_plot$strata))
+  col_annot_width <- max(
+    c(
+      as.numeric(grid::convertX(g_el$yaxis$width + g_el$ylab$width, "pt")),
+      as.numeric(
+        grid::convertX(
+          grid::stringWidth(txtlines) + grid::unit(7, "pt"), "pt"
+        )
+      )
+    )
+  )
+  grid::grid.layout(
+    nrow = 5, ncol = 2,
+    widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
+    heights = grid::unit(
+      c(
+        1,
+        grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
+        grid::convertX(g_el$guide$heights, "pt"),
+        nlines + 1,
+        grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
+      ),
+      c(
+        "null",
+        "pt",
+        "pt",
+        "lines",
+        "pt"
+      )
+    )
+  )
+}
+```
+
+```{r, h_km_layout_example}
+fit_km <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+data_plot <- h_data_plot(fit_km = fit_km)
+xticks <- h_xticks(data = data_plot)
+gg <- h_ggkm(
+  data = data_plot,
+  censor_show = TRUE,
+  xticks = xticks, xlab = "Days", ylab = "Survival Probability",
+  title = "tt"
+)
+g_el <- h_decompose_gg(gg)
+lyt <- h_km_layout(data_plot = data_plot, g_el = g_el)
+grid.show.layout(lyt)
+```
+
+
+Patient at risk
+---------------
+
+A difficulty is to plan the table which will be aligned below the KM curve.
+
+### `h_grob_tbl_at_risk`
+
+```{r, h_grob_tbl_at_risk}
+#' Helper: Patient-at-Risk Grobs
+#'
+#' Two grobs are obtained, one corresponding to row labelling and the
+#' second to the number of patient at risk
+#'
+h_grob_tbl_at_risk <- function(data_plot, annot_tbl) {
+  txtlines <- levels(as.factor(data_plot$strata))
+  nlines <- nlevels(as.factor(data_plot$strata))
+  vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
+  gb_table_left_annot <- grid::gList(
+    grid::rectGrob(
+      x = 0, y = grid::unit(c(1:nlines) - 1, "lines"),
+      gp = grid::gpar(fill = c("gray95", "gray90"), alpha = 1, col = "white"),
+      height = grid::unit(1, "lines"), just = "bottom", hjust = 0
+    ),
+    grid::textGrob(
+      label = unique(annot_tbl$strata),
+      x = .95,
+      y = grid::unit(unique(as.numeric(annot_tbl$strata)) - .5, "native"),
+      hjust = 1,
+      gp = grid::gpar(fontface = "italic", fontsize = 10)
+    )
+  )
+  gb_patient_at_risk <- grid::gList(
+    grid::rectGrob(
+      x = 0, y = grid::unit(c(1:nlines) - 1, "lines"),
+      gp = grid::gpar(fill = c("gray95", "gray90"), alpha = 1, col = "white"),
+      height = grid::unit(1, "lines"), just = "bottom", hjust = 0
+    ),
+    grid::textGrob(
+      label = annot_tbl$n.risk,
+      x = grid::unit(annot_tbl$time, "native"),
+      y = grid::unit(as.numeric(annot_tbl$strata) - .5, "line") # maybe native
+    )
+  )
+  list(
+    at_risk = grid::gList(
+      grid::gTree(
+        vp = vp_table,
+        children = grid::gList(
+          grid::gTree(
+            vp = grid::dataViewport(
+              xData = data_plot$time,
+              yscale = c(0, nlines + 1),
+              extension = c(0.05, 0)
+            ),
+            children = grid::gList(gb_patient_at_risk)
+          )
+        )
+      )
+    ),
+    label = grid::gList(
+      grid::gTree(
+        vp = grid::viewport(width = max(grid::stringWidth(txtlines))),
+        children = grid::gList(
+          grid::gTree(
+            vp = grid::dataViewport(
+              xscale = 0:1,
+              yscale = c(0, nlines + 1),
+              extension = c(0.0, 0)
+            ),
+            children = grid::gList(gb_table_left_annot)
+          )
+        )
+      )
+    )
+  )
+}
+```
+
+
+```{r, h_grob_tbl_at_risk_example}
+fit_km <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+
+data_plot <- h_data_plot(fit_km = fit_km)
+
+xticks <- h_xticks(data = data_plot)
+
+gg <- h_ggkm(
+  data = data_plot,
+  censor_show = TRUE,
+  xticks = xticks, xlab = "Days", ylab = "Survival Probability",
+  title = "tt"
+)
+
+# The annotation table reports the patient at risk for a given strata and
+# time (`xticks`).
+annot_tbl <- summary(fit_km, time = xticks)
+annot_tbl <- if (is.null(fit_km$strata)) {
+  with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "Data"))
+} else {
+  with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = strata))
+}
+
+# The annotation table is transformed into a grob.
+tbl <- h_grob_tbl_at_risk(data_plot = data_plot, annot_tbl = annot_tbl)
+
+# For the representation, the layout is estimated for which the decomposition
+# of the graphic element is necessary.
+g_el <- h_decompose_gg(gg)
+lyt <- h_km_layout(data_plot = data_plot, g_el = g_el)
+
+grid.newpage()
+pushViewport(viewport(layout = lyt, height = .95, width = .95))
+grid.rect(gp = gpar(lty = 1, col = "purple", fill = "gray85", lwd = 1))
+pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 2))
+grid.rect(gp = gpar(lty = 1, col = "orange", fill = "gray85", lwd = 1))
+grid.draw(tbl$at_risk)
+popViewport()
+pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 1))
+grid.rect(gp = gpar(lty = 1, col = "green3", fill = "gray85", lwd = 1))
+grid.draw(tbl$label)
+```
+
+## Median of Survival
+
+### `h_tbl_median_surv`
+
+```{r, h_tbl_median_surv}
+#' Helper Function: Survival Estimations
+#'
+#' Transform a survival fit to a table with groups in rows characterised
+#' by N, median and 95% confidence interval.
+#'
+h_tbl_median_surv <- function(fit) {
+  y <- if (is.null(fit$strata)) {
+    as.data.frame(t(summary(fit)$table), row.names = "Data")
+  } else {
+    as.data.frame(summary(fit)$table)
+  }
+  y$records <- round(y$records)
+  y$median <- signif(y$median, 4)
+  y$`CI` <- paste0( # nolint
+    "(", signif(y$`0.95LCL`, 4), ", ", signif(y$`0.95UCL`, 4), ")"
+  )
+
+  setNames(
+    y[c("records", "median", "CI")],
+    c("N", "Median", "95% CI")
+  )
+}
+
+```
+
+```{r, h_tbl_median_surv_example}
+library(random.cdisc.data)
+library(dplyr)
+
+adtte <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS")
+
+fit <- survival::survfit(
+  form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD,
+  data = adtte
+)
+h_tbl_median_surv(fit = fit)
+```
+
+### `h_grob_median_surv`
+
+```{r, h_grob_median_surv}
+#' Helper Function: Survival Estimation Grob
+#'
+#' The survival fit is transformed in a grob containing a table with groups in
+#' rows characterised by N, median and 95% confidence interval.
+#'
+h_grob_median_surv <- function(fit,
+                               ttheme = gridExtra::ttheme_default()) {
+  data <- h_tbl_median_surv(fit) # nolint
+  gt <- gridExtra::tableGrob(d = data, theme = ttheme)
+  vp <- grid::viewport(
+    x = grid::unit(1, "npc"),
+    y = grid::unit(1, "npc"),
+    height = sum(gt$heights),
+    width = sum(gt$widths),
+    just = c("right", "top")
+  )
+
+  grid::gList(
+    grid::gTree(
+      vp = vp,
+      children = grid::gList(gt)
+    )
+  )
+}
+
+```
+
+```{r, h_grob_median_surv_example}
+library(random.cdisc.data)
+library(dplyr)
+library(survival)
+
+grid.newpage()
+grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
+radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+  h_grob_median_surv %>%
+  grid.draw
+```
+
+
+## Y-Axis Annotation
+
+### `h_grob_y_annot`
+
+```{r, h_grob_y_annot}
+#' Helper: Grid Object with y-axis Annotation
+#'
+#' Build the y-axis annotation from a decomposed `ggplot`.
+#'
+h_grob_y_annot <- function(ylab, yaxis) {
+  grid::gList(
+    grid::gTree(
+      vp = grid::viewport(
+        width = grid::convertX(yaxis$width + ylab$width, "pt"),
+        x = grid::unit(1, "npc"),
+        just = "right"
+      ),
+      children = grid::gList(cbind(ylab, yaxis))
+    )
+  )
+}
+
+```
+
+
+```{r, h_grob_y_annot_example}
+library(random.cdisc.data)
+library(dplyr)
+
+fit_km <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+data_plot <- h_data_plot(fit_km = fit_km)
+xticks <- h_xticks(data = data_plot)
+gg <- h_ggkm(
+  data = data_plot,
+  censor_show = TRUE,
+  xticks = xticks, xlab = "Days", ylab = "Survival Probability",
+  title = "tt"
+)
+
+g_el <- h_decompose_gg(gg)
+
+grid.newpage()
+pvp <- plotViewport(margins = c(5, 4, 2, 20))
+pushViewport(pvp)
+grid.draw(h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis))
+grid.rect(gp = gpar(lty = 1, col = "gray35", fill = NA))
+```
+
+## Final Assembly
+
+### `g_km`
+
+```{r, g_km}
+g_km <- function(fit_km,
+                 xticks = NULL,
+                 # col = NA,
+                 # lty = 1,
+                 # lwd = 1,
+                 censor_show = TRUE,
+                 # pch = 3,
+                 # size = grid::unit(0.5, "char"),
+                 # max_time = NULL,
+                 xlab = "Days",
+                 ylab = "Survival Probability",
+                 title = "Kaplan-Meier Plot",
+                 draw = TRUE,
+                 newpage = TRUE
+                 # gp = NULL,
+                 # vp = NULL,
+                 # name = NULL,
+) {
+  data_plot <- h_data_plot(fit_km = fit_km, xticks = xticks) # nolint
+  xticks <- h_xticks(data = data_plot, xticks = xticks) # nolint
+  gg <- h_ggkm(
+    data = data_plot,
+    censor_show = censor_show,
+    xticks = xticks,
+    xlab = xlab,
+    ylab = ylab,
+    title = title
+  )
+  g_el <- h_decompose_gg(gg) # nolint
+  # This is the content of the table that will be below the graph.
+  annot_tbl <- summary(fit_km, time = xticks)
+  annot_tbl <- if (is.null(fit_km$strata)) {
+    data.frame(
+      n.risk = annot_tbl$n.risk,
+      time = annot_tbl$time,
+      strata = "Data"
+    )
+  } else {
+    data.frame(
+      n.risk = annot_tbl$n.risk,
+      time = annot_tbl$time,
+      strata = annot_tbl$strata
+    )
+  }
+
+  grobs_patient <- h_grob_tbl_at_risk(
+    data_plot = data_plot, annot_tbl = annot_tbl
+  )
+
+  lyt <- h_km_layout(data_plot = data_plot, g_el = g_el)
+
+  result <- grid::gTree(
+    vp = grid::viewport(layout = lyt, height = .95, width = .95),
+    children = grid::gList(
+
+      # The Kaplan - Meier curve (top-right corner).
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+        children = grid::gList(g_el$panel)
+      ),
+
+      # Survfit summary table (top-right corner).
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+        children = h_grob_median_surv(fit = fit_km)
+      ),
+
+      # Add the y-axis annotation (top-left corner).
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1),
+        children = h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis)
+      ),
+
+      # Add the x-axis annotation (second row below the Kaplan Meier Curve).
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 2),
+        children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
+      ),
+
+      # Add the legend.
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 3, layout.pos.col = 2),
+        children = grid::gList(g_el$guide)
+      ),
+
+      # Add the table with patient-at-risk numbers.
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 4, layout.pos.col = 2),
+        children = grobs_patient$at_risk
+      ),
+
+      # Add the table with patient-at-risk labels.
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 4, layout.pos.col = 1),
+        children = grobs_patient$label
+      ),
+
+      # Add the x-axis for the table.
+      grid::gTree(
+        vp = grid::viewport(layout.pos.row = 5, layout.pos.col = 2),
+        children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
+      )
+    )
+  )
+
+  if (newpage & draw)  grid::grid.newpage()
+  if (draw) grid::grid.draw(result)
+
+  return(
+    list(
+      lyt = lyt,
+      result = result
+    )
+  )
+}
+
+```
+
+### Examples {.tabset}
+
+#### Default
+
+```{r, g_km_example_1}
+fit_km <- radtte(cached = TRUE) %>%
+  filter(PARAMCD == "OS") %>%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+res <- g_km(fit_km = fit_km)
+```
+
+#### Layout
+
+```{r, g_km_example_2}
+grid.show.layout(res$lyt)
+```
+
+#### `xticks`
+
+```{r, g_km_example_3, fig.width = 8, fig.height = 9}
+res <- g_km(fit_km = fit_km, xticks = seq(0, 2000, 365))
+```
+
