@@ -754,3 +754,23 @@ grid.show.layout(res$lyt)
 res <- g_km(fit_km = fit_km, xticks = seq(0, 2000, 365))
 ```
 
+
+```{r}
+get_simple <- function(n = 200) {
+  set.seed(n, kind = "Mersenne-Twister")
+  data.frame(
+    time = sample(seq(0, 10, 2), size = 2 * n, replace = TRUE),
+    status = sample(x = c(0, 1), 2 * n, replace = TRUE),
+    armcd  = factor(
+      LETTERS[
+        rep(c(1, 2), each = n)
+        ], levels = c("A", "B")
+      )
+  )
+}
+
+fit_km <- survfit(Surv(time, status) ~ armcd, data = get_simple())
+res <- g_km(fit_km = fit_km, xticks =  seq(0, 10, 2))
+h_data_plot(fit_km)
+```
+
