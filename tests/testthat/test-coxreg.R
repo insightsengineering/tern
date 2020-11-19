@@ -541,7 +541,6 @@ test_that("summarize_coxreg adds the univariate Cox regression layer to rtables"
     summarize_coxreg(conf_level = conf_level) %>%
     build_table(df = df)
   result_matrix <- to_string_matrix(result)
-  dput(result_matrix)
   expected_matrix <- structure(
     c(
       "", "Treatment:", "2 vs control (1)", "Covariate:", "A Covariate Label",
@@ -573,7 +572,6 @@ test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtab
     summarize_coxreg(multivar = TRUE, conf_level = conf_level) %>%
     build_table(df = df)
   result_matrix <- to_string_matrix(result)
-  dput(result_matrix)
   expected_matrix <- structure(
     c(
       "", "ARM (reference = 1)", "2", "A Covariate Label (reference = 1)",
@@ -588,20 +586,19 @@ test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtab
   expect_identical(result_matrix, expected_matrix)
 })
 
-
 test_that("h_coxreg_inter_effect.numerics works with _:_ in effect levels", {
-  mod <- coxph(Surv(time, status) ~ armcd * AGE, data = get_bladder())
+  mod <- coxph(Surv(time, status) ~ armcd * age, data = get_bladder())
   expected <- expect_silent(
     h_coxreg_extract_interaction(
-      effect = "armcd", covar = "AGE", mod = mod, control = control_coxreg(),
+      effect = "armcd", covar = "age", mod = mod, control = control_coxreg(),
       at = list(), data = get_bladder()
     )
   )
 
-  mod <- coxph(Surv(time, status) ~ arm * AGE, data = get_bladder())
+  mod <- coxph(Surv(time, status) ~ arm * age, data = get_bladder())
   result <-  expect_silent(
     h_coxreg_extract_interaction(
-      effect = "arm", covar = "AGE", mod = mod, control = control_coxreg(),
+      effect = "arm", covar = "age", mod = mod, control = control_coxreg(),
       at = list(), data = get_bladder()
     )
   )
