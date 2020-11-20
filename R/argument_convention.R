@@ -35,7 +35,7 @@
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
 #' @param rsp (`logical`)\cr whether each subject is a responder or not.
 #' @param show_labels label visibility: one of "default", "visible" and "hidden".
-#' @param tte (`\code{numeric}`)\cr contains time-to-event duration values.
+#' @param tte (`numeric`)\cr contains time-to-event duration values.
 #' @param var_labels character for label.
 #' @param variables (named `list` of `string`)\cr list of additional analysis variables.
 #' @param vars (`character`)\cr variable names for the primary analysis variable to be iterated over.

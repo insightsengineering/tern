@@ -51,7 +51,7 @@ by a statistics function.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
-\item{tte}{(\verb{\code{numeric}})\cr contains time-to-event duration values.}
+\item{tte}{(\code{numeric})\cr contains time-to-event duration values.}
 
 \item{var_labels}{character for label.}
 

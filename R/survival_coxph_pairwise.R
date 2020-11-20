@@ -7,11 +7,11 @@
 #' @inheritParams s_surv_time
 #' @param strat (`character` or `NULL`) variable names indicating stratification factors.
 #' @param control (`list`) \cr parameters for comparison details, specified by using \cr
-#'    the helper function [control_coxph]. Some possible parameter options are: \cr
+#'    the helper function [control_coxph()]. Some possible parameter options are: \cr
 #' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
 #'   Default method is "log-rank", can also be set to "wald" or "likelihood".
 #' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
-#'   can also be set to "breslow" or "exact". see more in [survival::coxph()]
+#'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
 #'
 #' @name survival_coxph_pairwise

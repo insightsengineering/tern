@@ -6,6 +6,7 @@
 \alias{is_nonnegative_count}
 \alias{is_variables}
 \alias{is_df_with_variables}
+\alias{is_df_with_factors}
 \alias{is_equal_length}
 \alias{is_proportion}
 \alias{is_proportion_vector}
@@ -22,6 +23,8 @@ is_nonnegative_count(x)
 is_variables(x)
 
 is_df_with_variables(df, variables)
+
+is_df_with_factors(df, variables)
 
 is_equal_length(...)
 
@@ -69,6 +72,9 @@ We provide additional assertion functions which can be used together with \code{
 
 \item \code{is_df_with_variables}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 
+\item \code{is_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
+are all factors.
+
 \item \code{is_equal_length}: Check that objects provided are of same length.
 
 \item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
@@ -105,6 +111,13 @@ is_variables(list("bla"))
 
 # Check whether `df` contains the analysis `variables`.
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+
+# Check whether `df` contains all factor analysis `variables`.
+is_df_with_factors(
+  df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+  variables = list(val = "a")
+)
+
 
 #' # Check whether `x` is a valid list of variable names.
 a <- 1

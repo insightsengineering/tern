@@ -61,7 +61,7 @@ population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_rati
 \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
 named list and requires elements \code{rsp}, \code{arm} and \code{subgroups}.
 
-\item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=h_response_subgroups]{h_response_subgroups()}}.
+\item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
 
 \item \code{tabulate_rsp_subgroups}: layout creating function.

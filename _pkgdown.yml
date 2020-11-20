@@ -81,6 +81,7 @@ reference:
        - a_dummy_sum
        - a_mmrm_lsmeans
        - a_response_subgroups
+       - a_survival_subgroups
        - a_odds_ratio
        - a_proportion
        - a_prop_diff
@@ -119,6 +120,7 @@ reference:
        - summarize_vars
        - summarize_coxreg
        - tabulate_rsp_subgroups
+       - tabulate_survival_subgroups
        - test_proportion_diff
 
 
@@ -163,11 +165,17 @@ reference:
       - h_mmrm_fixed
       - h_mmrm_cov
       - h_mmrm_diagnostic
+      - h_survtime_df
+      - h_survtime_subgroups_df
+      - h_coxph_df
+      - h_coxph_subgroups_df
+      - h_split_by_subgroups
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
     contents:
       - extract_rsp_subgroups
+      - extract_survival_subgroups
       - fit_mmrm
       - fit_coxreg_univar
       - fit_coxreg_multivar
@@ -297,6 +305,7 @@ reference:
       - all_elements_in_ref
       - is_character_or_factor
       - is_df_with_variables
+      - is_df_with_factors
       - is_nonnegative_count
       - is_variables
       - is_valid_factor
@@ -340,5 +349,6 @@ reference:
       - get_covariates
       - d_count_missed_doses
       - d_rsp_subgroups_colvars
+      - d_survival_subgroups_colvars
       - afun_selected_stats
       - extract

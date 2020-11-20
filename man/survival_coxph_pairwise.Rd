@@ -54,12 +54,12 @@ by a statistics function.}
 \item{strat}{(\code{character} or \code{NULL}) variable names indicating stratification factors.}
 
 \item{control}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \link{control_coxph}. Some possible parameter options are: \cr
+the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
 \itemize{
 \item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
 Default method is "log-rank", can also be set to "wald" or "likelihood".
 \item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". see more in \code{\link[survival:coxph]{survival::coxph()}}
+can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
 }}
 

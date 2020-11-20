@@ -131,3 +131,17 @@ test_that("has_tabletree_colnames works correctly", {
   expect_true(has_tabletree_colnames(tab, "all obs"))
   expect_false(has_tabletree_colnames(tab, c("all obs", "Arm A")))
 })
+
+test_that("is_df_with_factors is TRUE with healthy input", {
+  expect_true(is_df_with_factors(
+    df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+    variables = list(val = "a")
+  ))
+})
+
+test_that("is_df_with_factors fails or is FALSE with wrong input", {
+  expect_false(is_df_with_factors(
+    df = data.frame(a = 1, b = 3),
+    variables = list(val = "a")
+  ))
+})

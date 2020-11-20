@@ -322,7 +322,7 @@ extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = N
   list(prop = df_prop, or = df_or)
 }
 
-#' @describeIn response_subgroups Formatted Analysis function used to format the results of [h_response_subgroups()].
+#' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
 #' @export
 #' @examples

@@ -87,6 +87,30 @@ on_failure(is_df_with_variables) <- function(call, env) {
   paste(deparse(call$df), "does not contain all variables among:", deparse(vars))
 }
 
+#' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
+#'   are all factors.
+#' @export
+#' @examples
+#'
+#' # Check whether `df` contains all factor analysis `variables`.
+#' is_df_with_factors(
+#'   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+#'   variables = list(val = "a")
+#' )
+#'
+is_df_with_factors <- function(df, variables) {
+  assert_that(
+    is_df_with_variables(df, variables)
+  )
+  all(vapply(df[, unlist(variables)], is_valid_factor, logical(1)))
+}
+
+on_failure(is_df_with_factors) <- function(call, env) {
+  var_df <- colnames(eval(call$df))
+  vars <- eval(call$variables, envir = env)
+  vars <- vars[! unlist(vars) %in% var_df]
+  paste(deparse(call$df), "does not contain only factor variables among:", deparse(vars))
+}
 
 #' @describeIn assertions Check that objects provided are of same length.
 #' @export
