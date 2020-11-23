@@ -2,4 +2,5 @@
 
 @Library('nestautomation') _
 
-rpackagePipeline()
+nestRPackagePipeline()
+
