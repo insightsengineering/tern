@@ -4,11 +4,11 @@
 #' `id` (character or factor), `visit` (factor).
 #' We count patients in the numerator and denominator as follows:
 #' \describe{
-#'   \item{`num`}{the number of patients without this abnormality at baseline and with
-#'     this abnormality recorded while on treatment.}
-#'   \item{`denom`}{the number of patients without this abnormality at baseline and at least one
-#'     post-baseline assessment.}
+#'   \item{`num`}{the number of patients with this abnormality recorded while on treatment.}
+#'   \item{`denom`}{the number of patients with at least one post-baseline assessment.}
 #' }
+#' Note that optionally patients with this abnormality at baseline are excluded from
+#' numerator and denominator.
 #' Here the baseline visit is identified as the `visit` level(s) in `baseline`.
 #' Note that the denominators include patients that might have other abnormal levels
 #' at baseline, and patients with missing baseline.
@@ -22,6 +22,8 @@ NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values
 #'   for a single `abnormal` level.
+#' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
+#'   from numerator and denominator.
 #' @return [s_count_abnormal()] returns the statistic `fraction` which is a
 #'   vector with `num` and `denom` counts of patients.
 #' @export
@@ -34,11 +36,15 @@ NULL
 #' # For abnormal level "HIGH" we get the following counts.
 #' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
 #'
+#' # Optionally exclude patients with abnormality at baseline.
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"), exclude_base_abn = TRUE)
+#'
 s_count_abnormal <- function(df,
                              .var,
                              abnormal,
                              variables = list(id = "USUBJID", visit = "AVISIT"),
-                             baseline = "BASELINE"
+                             baseline = "BASELINE",
+                             exclude_base_abn = FALSE
 ) {
   assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
@@ -49,7 +55,8 @@ s_count_abnormal <- function(df,
     is.factor(df[[variables$visit]]),
     is.factor(df[[.var]]),
     abnormal %in% levels(df[[.var]]),
-    all(baseline %in% levels(df[[variables$visit]]))
+    all(baseline %in% levels(df[[variables$visit]])),
+    is.flag(exclude_base_abn)
   )
 
   # Split up data frame in baseline and post-baseline visit rows.
@@ -58,9 +65,13 @@ s_count_abnormal <- function(df,
 
   # Patients in the denominator fulfill:
   # - have at least one post-baseline visit
-  # - their baseline must not be abnormal.
+  # - their baseline must not be abnormal if `exclude_base_abn`.
   subjects_post_any <- df_post_baseline[[variables$id]]
-  subjects_exclude <- df_baseline[df_baseline[[.var]] == abnormal, ][[variables$id]]
+  subjects_exclude <- if (exclude_base_abn) {
+    df_baseline[df_baseline[[.var]] == abnormal, ][[variables$id]]
+  } else {
+    c()
+  }
   subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
   denom <- length(subjects_denom)
 
@@ -118,6 +129,7 @@ count_abnormal <- function(lyt,
                            var,
                            abnormal,
                            ...,
+                           table_names = abnormal,
                            .stats = NULL,
                            .formats = NULL,
                            .labels = NULL,
@@ -129,7 +141,10 @@ count_abnormal <- function(lyt,
     .labels = .labels,
     .indent_mods = .indent_mods
   )
-  assert_that(is.string(var))
+  assert_that(
+    is.string(var),
+    is_equal_length(abnormal, table_names)
+  )
   for (i in seq_along(abnormal)) {
     abn <- abnormal[i]
     lyt <- analyze(
@@ -137,7 +152,8 @@ count_abnormal <- function(lyt,
       vars = var,
       afun = afun,
       extra_args = c(list(abnormal = abn), list(...)),
-      show_labels = "hidden"
+      show_labels = "hidden",
+      table_names = table_names[i]
     )
   }
   lyt

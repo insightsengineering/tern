@@ -5,9 +5,8 @@ library(dplyr)
 
 test_that("LBT04 default variant is produced correctly", {
   adsl <- radsl(cached = TRUE)
-  adlb <- radlb(cached = TRUE)
-
-  adlb <- adlb %>%
+  # Note: We exclude "SCREENING" visit here since otherwise it would be used as post-baseline below.
+  adlb <- radlb(cached = TRUE) %>%
     dplyr::filter(AVISIT != "SCREENING") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))
 
@@ -18,7 +17,8 @@ test_that("LBT04 default variant is produced correctly", {
     split_rows_by("PARAM", split_fun = drop_split_levels) %>%
     count_abnormal(
       var = "ANRIND",
-      abnormal = c(Low = "LOW", High = "HIGH")
+      abnormal = c(Low = "LOW", High = "HIGH"),
+      exclude_base_abn = TRUE
     ) %>%
     build_table(adlb, col_counts = table(adsl$ARM))
 

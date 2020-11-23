@@ -12,7 +12,8 @@ s_count_abnormal(
   .var,
   abnormal,
   variables = list(id = "USUBJID", visit = "AVISIT"),
-  baseline = "BASELINE"
+  baseline = "BASELINE",
+  exclude_base_abn = FALSE
 )
 
 a_count_abnormal(
@@ -20,7 +21,8 @@ a_count_abnormal(
   .var,
   abnormal,
   variables = list(id = "USUBJID", visit = "AVISIT"),
-  baseline = "BASELINE"
+  baseline = "BASELINE",
+  exclude_base_abn = FALSE
 )
 
 count_abnormal(
@@ -28,6 +30,7 @@ count_abnormal(
   var,
   abnormal,
   ...,
+  table_names = abnormal,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -46,11 +49,17 @@ by a statistics function.}
 
 \item{baseline}{(\code{string})\cr identifying the baseline level(s) in \code{visit}.}
 
+\item{exclude_base_abn}{(\code{flag})\cr whether to exclude subjects with baseline abnormality
+from numerator and denominator.}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -73,11 +82,11 @@ Primary analysis variable is the \code{range} factor, and additional analysis va
 \code{id} (character or factor), \code{visit} (factor).
 We count patients in the numerator and denominator as follows:
 \describe{
-\item{\code{num}}{the number of patients without this abnormality at baseline and with
-this abnormality recorded while on treatment.}
-\item{\code{denom}}{the number of patients without this abnormality at baseline and at least one
-post-baseline assessment.}
+\item{\code{num}}{the number of patients with this abnormality recorded while on treatment.}
+\item{\code{denom}}{the number of patients with at least one post-baseline assessment.}
 }
+Note that optionally patients with this abnormality at baseline are excluded from
+numerator and denominator.
 Here the baseline visit is identified as the \code{visit} level(s) in \code{baseline}.
 Note that the denominators include patients that might have other abnormal levels
 at baseline, and patients with missing baseline.
@@ -103,6 +112,9 @@ df <- data.frame(
 )
 # For abnormal level "HIGH" we get the following counts.
 s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
+
+# Optionally exclude patients with abnormality at baseline.
+s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"), exclude_base_abn = TRUE)
 
 # Use the Formatted Analysis function for `analyze()`.
 a_count_abnormal(df, .var = "ANRIND", abnormal = c(low = "LOW"))
