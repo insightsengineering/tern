@@ -5,6 +5,7 @@
 \alias{s_count_values}
 \alias{s_count_values.character}
 \alias{s_count_values.factor}
+\alias{s_count_values.logical}
 \alias{count_values}
 \alias{a_count_values}
 \title{Counting Specific Values}
@@ -21,6 +22,8 @@ s_count_values(
 \method{s_count_values}{character}(x, values = "Y", na.rm = TRUE, ...)
 
 \method{s_count_values}{factor}(x, values = "Y", ...)
+
+\method{s_count_values}{logical}(x, values = TRUE, ...)
 
 count_values(
   lyt,
@@ -89,6 +92,8 @@ We can count the occurrence of specific values in a variable of interest.
 included in the levels of \code{x} and fails otherwise. It then proceeds by converting to \code{character}
 and calling \code{s_count_values.character}.
 
+\item \code{s_count_values.logical}: method for \code{logical} vectors \code{x}.
+
 \item \code{count_values}: Analyze Function which adds the counting analysis to
 the input layout. Note that additional formatting arguments can be used
 here.
@@ -108,6 +113,10 @@ s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
 
 # `s_count_values.factor`
 s_count_values(x = factor(c("a", "b", "a")), values = "a")
+
+ # `s_count_values.logical`
+ s_count_values(x = c(TRUE, FALSE, TRUE))
+
 
 # `count_values`
 basic_table() \%>\%

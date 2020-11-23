@@ -101,3 +101,51 @@ test_that("count_values works as expected with multiple values and variables", {
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("s_count_values for logical vector", {
+  x <- c(TRUE, FALSE, TRUE)
+
+  # Value which is present in vector.
+  result <- s_count_values(x)
+  expected <- list(
+    n = 3L,
+    count = 2L,
+    count_fraction = c(2, 2 / 3)
+  )
+  expect_identical(result, expected)
+})
+
+test_that("s_count_values for logical vector with NA", {
+  x <- c(TRUE, FALSE, TRUE, NA)
+
+  # Value which is present in vector.
+  result <- s_count_values(x)
+  expected <- list(
+    n = 3L,
+    count = 2L,
+    count_fraction = c(2, 2 / 3)
+  )
+  expect_identical(result, expected)
+})
+
+
+
+test_that("count_values works as expected with multiple values and variables", {
+  df <- data.frame(
+    x = c(TRUE, FALSE, TRUE, FALSE),
+    y = c("b", "a", "a", "f"),
+    stringsAsFactors = FALSE
+  )
+  result <- basic_table() %>%
+    count_values(
+      "x",
+      values = TRUE
+    ) %>%
+    build_table(df)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "TRUE", "all obs", "2 (50%)"),
+    .Dim = c(2L, 2L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})

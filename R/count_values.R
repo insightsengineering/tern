@@ -73,6 +73,23 @@ s_count_values.factor <- function(x,
   s_count_values(as.character(x), values = values, ...)
 }
 
+#' @describeIn count_values_funs method for `logical` vectors `x`.
+#' @method s_count_values logical
+#'
+#' @export
+#' @order 5
+#'
+#' @examples
+#'  # `s_count_values.logical`
+#'  s_count_values(x = c(TRUE, FALSE, TRUE))
+#'
+#'
+s_count_values.logical <- function(x, values = TRUE, ...){
+  assert_that(is.logical(values))
+  s_count_values(as.character(x), values = as.character(values), ...)
+}
+
+
 #' @describeIn count_values_funs Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @export
@@ -95,7 +112,7 @@ a_count_values <- make_afun(
 #' are hidden.
 #'
 #' @export
-#' @order 5
+#' @order 6
 #'
 #' @examples
 #' # `count_values`
