@@ -30,6 +30,7 @@ count_values(
   vars,
   values,
   ...,
+  table_names = vars,
   .stats = "count_fraction",
   .formats = NULL,
   .labels = c(count_fraction = paste(values, collapse = ", ")),
@@ -67,6 +68,9 @@ this column across rows).}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

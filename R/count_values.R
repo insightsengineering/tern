@@ -124,6 +124,7 @@ count_values <- function(lyt,
                          vars,
                          values,
                          ...,
+                         table_names = vars,
                          .stats = "count_fraction",
                          .formats = NULL,
                          .labels = c(count_fraction = paste(values, collapse = ", ")),
@@ -140,6 +141,7 @@ count_values <- function(lyt,
     vars,
     afun = afun,
     extra_args = c(list(values = values), list(...)),
-    show_labels = ifelse(length(vars) > 1, "visible", "hidden")
+    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
+    table_names = table_names
   )
 }

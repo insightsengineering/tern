@@ -138,6 +138,7 @@ a_count_patients_with_event <- make_afun(
 count_patients_with_event <- function(lyt,
                                       vars,
                                       ...,
+                                      table_names = vars,
                                       .stats = "count_fraction",
                                       .formats = NULL,
                                       .labels = NULL,
@@ -156,6 +157,7 @@ count_patients_with_event <- function(lyt,
     vars,
     afun = afun,
     extra_args = list(...),
-    show_labels = ifelse(length(vars) > 1, "visible", "hidden")
+    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
+    table_names = table_names
   )
 }

@@ -35,6 +35,8 @@
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
 #' @param rsp (`logical`)\cr whether each subject is a responder or not.
 #' @param show_labels label visibility: one of "default", "visible" and "hidden".
+#' @param table_names (`character`)\cr this can be customized in case that the same `vars` are analyzed multiple times,
+#'   to avoid warnings from `rtables`.
 #' @param tte (`numeric`)\cr contains time-to-event duration values.
 #' @param var_labels character for label.
 #' @param variables (named `list` of `string`)\cr list of additional analysis variables.

@@ -28,6 +28,7 @@ count_patients_with_event(
   lyt,
   vars,
   ...,
+  table_names = vars,
   .stats = "count_fraction",
   .formats = NULL,
   .labels = NULL,
@@ -60,6 +61,9 @@ this column across rows).}
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
