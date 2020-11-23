@@ -37,6 +37,8 @@ NULL
 #'
 prop_chisq <- function(tbl) {
   assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  tbl <- tbl[, c("TRUE", "FALSE")]
+  if (any(colSums(tbl) == 0)) return(1)
   stats::prop.test(tbl, correct = FALSE)$p.value
 }
 
@@ -93,6 +95,7 @@ prop_schouten <- function(tbl) {
   assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
 
   tbl <- tbl[, c("TRUE", "FALSE")]
+  if (any(colSums(tbl) == 0)) return(1)
 
   n <- sum(tbl)
   n1 <- sum(tbl[1, ])
@@ -123,6 +126,7 @@ prop_schouten <- function(tbl) {
 #'
 prop_fisher <- function(tbl) {
   assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
+  tbl <- tbl[, c("TRUE", "FALSE")]
   stats::fisher.test(tbl)$p.value
 }
 
@@ -175,7 +179,10 @@ s_test_proportion_diff <- function(df,
       is_df_with_variables(.ref_group, list(rsp = .var))
     )
 
-    rsp <- c(.ref_group[[.var]], df[[.var]])
+    rsp <- factor(
+     c(.ref_group[[.var]], df[[.var]]),
+       levels = c("TRUE", "FALSE")
+    )
     grp <- factor(
       rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
       levels = c("ref", "Not-ref")

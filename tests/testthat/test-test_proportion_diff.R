@@ -136,3 +136,88 @@ test_that("test_proportion_diff returns right result", {
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("test_proportion_diff edge case: all responder by chisq", {
+  dta <- data.frame(
+    rsp = rep(TRUE, each = 100),
+    grp = factor(rep(c("A", "B"), each = 50))
+  )
+
+  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+    test_proportion_diff(
+      vars = "rsp",
+      method = c("chisq", "schouten", "fisher", "cmh")[1]
+    ) %>%
+    build_table(df = dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "p-value (Chi-Squared Test)", "B", "", "A", "1.0000"), .Dim = 2:3
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("test_proportion_diff edge case: all responder by schouten", {
+  dta <- data.frame(
+    rsp = rep(TRUE, each = 100),
+    grp = factor(rep(c("A", "B"), each = 50))
+  )
+
+  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+    test_proportion_diff(
+      vars = "rsp",
+      method = c("chisq", "schouten", "fisher", "cmh")[2]
+    ) %>%
+    build_table(df = dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "p-value (Chi-Squared Test with Schouten Correction)",
+      "B", "", "A", "1.0000"
+    ),
+    .Dim = 2:3
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("test_proportion_diff edge case: all responder by fisher", {
+  dta <- data.frame(
+    rsp = rep(TRUE, each = 100),
+    grp = factor(rep(c("A", "B"), each = 50))
+  )
+
+  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+    test_proportion_diff(
+      vars = "rsp",
+      method = c("chisq", "schouten", "fisher", "cmh")[3]
+    ) %>%
+    build_table(df = dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "p-value (Fisher's Exact Test)", "B", "", "A", "1.0000"), .Dim = 2:3
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("test_proportion_diff edge case: all responder by CMH", {
+  dta <- data.frame(
+    rsp = rep(TRUE, each = 100),
+    grp = factor(rep(c("A", "B"), each = 50)),
+    strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  )
+
+  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+    test_proportion_diff(
+      vars = "rsp",
+      method = c("chisq", "schouten", "fisher", "cmh")[4],
+      variables = list(strata = "strat")
+    ) %>%
+    build_table(df = dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "p-value (Cochran-Mantel-Haenszel Test)", "B", "", "A", "NA"),
+    .Dim = 2:3
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+
