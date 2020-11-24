@@ -173,15 +173,13 @@ s_test_proportion_diff <- function(df,
   y <- list(pval = "")
 
   if (!.in_ref_col) {
-
     assert_that(
       is_df_with_variables(df, list(rsp = .var)),
       is_df_with_variables(.ref_group, list(rsp = .var))
     )
-
     rsp <- factor(
-     c(.ref_group[[.var]], df[[.var]]),
-       levels = c("TRUE", "FALSE")
+      c(.ref_group[[.var]], df[[.var]]),
+      levels = c("TRUE", "FALSE")
     )
     grp <- factor(
       rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),

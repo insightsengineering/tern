@@ -1,4 +1,3 @@
-
 test_that("prop_chisq returns right result", {
 
   set.seed(1, kind = "Mersenne-Twister")
@@ -219,5 +218,3 @@ test_that("test_proportion_diff edge case: all responder by CMH", {
   )
   expect_identical(result_matrix, expected_matrix)
 })
-
-

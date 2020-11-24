@@ -57,7 +57,7 @@ test_that("2. Vital Sign Abnormalities (Among Subject Without Abnormality at Bas
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     split_rows_by("PARAM", split_label = c("Parameter / Abnormality Direction"), visible_label = TRUE) %>%
-    count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
+    count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%
     build_table(df = advs_f, col_counts = n_col_counts)
 
   result_matrix <- to_string_matrix(result)
