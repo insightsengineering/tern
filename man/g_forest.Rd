@@ -22,160 +22,118 @@ g_forest(
 )
 }
 \arguments{
-\item{tbl}{(\code{rtable} object)}
+\item{tbl}{(\code{rtable})}
 
-\item{col_x}{(\code{integer} value)\cr
-column index with estimator}
+\item{col_x}{(\code{integer})\cr column index with estimator.}
 
-\item{col_ci}{(\code{integer} value)\cr
-column index with confidence intervals}
+\item{col_ci}{(\code{integer})\cr column index with confidence intervals.}
 
-\item{vline}{(\code{numeric} value)\cr
-x coordinate for vertical line, if \code{NULL} then the line is
-omitted}
+\item{vline}{(\code{number})\cr
+x coordinate for vertical line, if \code{NULL} then the line is omitted.}
 
-\item{forest_header}{(\code{character(2)})\cr
+\item{forest_header}{(\code{character}, length 2)\cr
 text displayed to the left and right of \code{vline}, respectively.
-If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too}
+If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too.}
 
-\item{xlim}{(\code{numeric(2)})\cr
-x limits for x-scales}
+\item{xlim}{(\code{numeric})\cr limits for x axis.}
 
-\item{logx}{(\code{logical} value)\cr
-whether to show x-values on logarithm scale}
+\item{logx}{(\code{flag})\cr show the x-values on logarithm scale.}
 
-\item{x_at}{(\code{numeric} vector)\cr
-Contains x tick locations, if \code{NULL} they get automatically chosen}
+\item{x_at}{(\verb{numeric)\\cr x-tick locations, if }NULL` they get automatically chosen.}
 
-\item{width_row_names}{(\code{\link[grid]{unit}} object)\cr
-Contains width for row names. If \code{NULL} the widths get automatically calculated.}
+\item{width_row_names}{(\code{unit})\cr
+width for row names. If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{width_columns}{(\code{\link[grid]{unit}} object)\cr
-Contains widths for the table columns. If \code{NULL} the widths get automatically calculated.}
+\item{width_columns}{(\code{unit})\cr
+widths for the table columns. If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{width_forest}{(\code{\link[grid]{unit}} object)\cr
-Contains width for the forest column. If \code{NULL} the widths get automatically calculated.}
+\item{width_forest}{(\code{unit})\cr
+width for the forest column. If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{col_symbol_size}{(\code{integer} value)\cr
-Column index from \code{tbl} containing data to be used to determine relative
-size for estimator plot symbol. Typically, symbol size is proportional to the
+\item{col_symbol_size}{(\code{integer})\cr
+column index from \code{tbl} containing data to be used to determine relative
+size for estimator plot symbol. Typically, the symbol size is proportional to the
 sample size used to calculate the estimator. If \code{NULL}, the same symbol
 size is used for all subgroups.}
 
-\item{draw}{(\code{logical} value)\cr
-Whether plot should be drawn}
+\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
-\item{newpage}{(\code{logical} value)\cr
-if \code{draw=TRUE} should plot be drawn on a new page}
+\item{newpage}{(\code{flag})\cr
+if \code{draw = TRUE} should plot be drawn on a new page.}
 }
 \description{
-Create a forest plot from any \code{\link[rtables]{rtable}} object that has a
+Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a
 column with a single value and a column with 2 values.
 }
 \examples{
 
-g_forest()
-
-\dontrun{
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- radsl(cached = TRUE)
-ADTTE <- radtte(ADSL, cached = TRUE)
-ADTTE_f <- ADTTE \%>\%
-  dplyr::filter(PARAMCD == "OS" & ARMCD \%in\% c("ARM B", "ARM A")) \%>\%
-  mutate(ARMCD = droplevels(ARMCD))
-var_labels(ADTTE_f) <- var_labels(ADTTE)
+adrs <- radrs(cached = TRUE)
 
-tbl <- t_forest_tte(
-  tte = ADTTE_f$AVAL,
-  is_event = ADTTE_f$CNSR == 0,
-  col_by = ADTTE_f$ARMCD,
-  row_by_list = ADTTE_f[, c("SEX", "RACE")], # note factors required
-  ties = "exact",
-  dense_header = TRUE
+n_records <- 20
+adrs_labels <- var_labels(adrs)
+adrs <- adrs \%>\%
+  dplyr::filter(PARAMCD == "BESRSPI") \%>\%
+  dplyr::filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
+  dplyr::slice(seq_len(n_records)) \%>\%
+  droplevels() \%>\%
+  dplyr::mutate(
+    # Reorder levels of factor to make the placebo group the reference arm.
+    ARM = forcats::fct_relevel(ARM, "B: Placebo"),
+    rsp = AVALC == "CR"
+  )
+var_labels(adrs) <- c(adrs_labels, "Response")
+
+df <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+  data = adrs
 )
 
-# note plot requires a certain width
+# Response table.
+t1 <- basic_table() \%>\%
+  tabulate_rsp_subgroups(vars = c("n", "prop")) \%>\%
+  build_table(df$prop)
+
+# Odds rato table with non-default inputs.
+t2 <- basic_table() \%>\%
+  tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) \%>\%
+  build_table(df$or)
+t2
+
 p <- g_forest(
-  tbl = tbl,
-  col_x = 8,
-  col_ci = 9,
+  tbl = t2,
+  col_x = 2,
+  col_ci = 3,
   vline = 1,
   forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
-  col_symbol_size = 1, #draw symbol proportional to column 1 values
   draw = FALSE
 )
-grid.newpage()
-grid.draw(p)
 
+draw_grob(p)
 
-# For response table
-
-ADSL <- radsl(cached = TRUE)
-ADRS <- radrs(ADSL, cached = TRUE)
-
-ADRS_f <- ADRS \%>\%
-  dplyr::filter(PARAMCD == "OVRINV" & ARMCD \%in\% c("ARM A","ARM B")) \%>\%
-  mutate(ARMCD = droplevels(ARMCD))
-var_labels(ADRS_f) <- var_labels(ADRS)
-
-\dontrun{
-tbl <- t_forest_rsp(
-  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ADRS_f$ARM),
-  row_by_list = ADRS_f[, c("SEX", "RACE", "STRATA2", "BMRKR2")],
-  strata_data = ADRS_f[ , c("STRATA1")]
-)
-
+# full commonly used response table
+tbl <- cbind_rtables(t2[, 1], t1, t2[, -1])
 tbl
 
 p <- g_forest(
   tbl = tbl,
-  col_x = 8,
-  col_ci = 9,
+  col_x = 6,
+  col_ci = 7,
   vline = 1,
-  forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
+  forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
-  col_symbol_size = NULL,
   draw = FALSE
 )
-p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
-grid.newpage()
-grid.draw(p)
 
+draw_grob(p)
 
-tbl2 <- t_forest_rsp(
-  rsp = ADRS_f$AVALC \%in\% c("CR", "PR"),
-  col_by = factor(ADRS_f$ARM),
-  row_by_list = ADRS_f[, c("BMRKR2")],
-  strata_data = ADRS_f[ , "STRATA1"]
-)
-
-tbl2
-
-# stratified analysis noted in footnote
-p <- g_forest(
-  tbl = tbl2,
-  col_x = 8,
-  col_ci = 9,
-  vline = 1,
-  forest_header = c("Comparison\nBetter", "Treatement\nBetter"),
-  xlim = c(.1, 10),
-  logx = TRUE,
-  x_at = c(.1, 1, 10),
-  col_symbol_size = 1,
-  draw = FALSE
-)
-p <- decorate_grob(p, titles =  "forest plot", footnotes = footnotes(p))
-grid.newpage()
-grid.draw(p)
-}
 
 # Works with any rtable
 
@@ -208,7 +166,7 @@ g_forest(
   vline = 1,
   forest_header = c("Hello", "World")
 )
-}
+
 }
 \author{
 Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
