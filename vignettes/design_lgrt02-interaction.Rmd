@@ -1,0 +1,904 @@
+---
+title: "Multi-variable Logistic Regression with Interaction (LGRT02)"
+author: "Heng Wang, DSB"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Multi-variable Logistic Regression with Interaction (LGRT02)}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+```{r data, results = "asis", eval = TRUE}
+library(tern)
+library(random.cdisc.data)
+library(dplyr)
+library(rtables)
+library(assertthat)
+library(utils.nest)
+
+ADRS <- radrs(cached = TRUE) #nolint
+adrs_labels <- var_labels(ADRS) #nolint
+
+ADRS_f <- ADRS %>% #nolint
+  dplyr::filter(PARAMCD == "BESRSPI") %>%
+  dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+  dplyr::mutate(
+    Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+    RACE = factor(RACE),
+    SEX = factor(SEX)
+  )
+
+var_labels(ADRS_f) <- c(adrs_labels, "Response" = "Tumor Response")
+```
+
+Now let's have a look at the interaction table. Basically we need another hierarchy level here in the tidied dataset and the row splits, let's call it "reference" since we are referring to a level or value of the interaction term (either treatment arm or the covariate which is interacting with treatment arm). Then the content rows at the "term" level no longer display odds ratio and CI for that, since that is then shown at the "reference" level. 
+
+Plus we have at the bottom of the interaction table a section where the interaction terms themselves are tested. This is similar to the other "term" level summaries in this table in that no odds ratio or CI are displayed. The values there can be obtained from the usual `summary` of the `glm` fit, since they refer to single coefficient estimates only.
+
+Finally we still have covariates that are not interacting with treatment arm where the same tabular summary as without interactions at all in the model is shown.
+
+# Current baseline
+
+Let's see what we currently have in `tern` already.
+
+We can fit and extract the main and interaction term estimates:
+```{r}
+model_factor_glm <- fit_logistic(
+  data = ADRS_f,
+  variables = list(
+   response = "Response",
+   arm = "ARMCD",
+   covariates = c("AGE", "SEX"),
+   interaction = "SEX"
+  )
+)
+glm_simple_term_extract("ARMCD", model_factor_glm)
+glm_simple_term_extract("SEX", model_factor_glm)
+glm_interaction_extract("ARMCD:SEX", model_factor_glm)
+
+model_numeric_glm <- fit_logistic(
+  data = ADRS_f,
+  variables = list(
+   response = "Response",
+   arm = "ARMCD",
+   covariates = c("AGE", "SEX"),
+   interaction = "AGE"
+  )
+)
+glm_simple_term_extract("ARMCD", model_numeric_glm)
+glm_simple_term_extract("AGE", model_numeric_glm)
+glm_interaction_extract("ARMCD:AGE", model_numeric_glm)
+```
+
+That means we have all the numbers for the columns "Degrees of Freedom", "Parameter Estimate", "Standard Error", and "p-value". We are only missing the odds ratio estimates and corresponding CIs.
+
+# Odds ratio estimation
+
+The main challenge her is that we also need to account for the covariance between the coefficients. Therefore the calculations are not as simple as for the non-interaction case, and we therefore don't include them in the helper functions directly but factor them out in dedicated functions.
+
+## Calculating the estimates
+
+### Categorical covariate
+
+Let's start simple with a categorical covariate interacting with the treatment arm.
+
+```{r}
+h_get_interaction_vars <- function(fit_glm) {
+  assert_that("glm" %in% class(fit_glm))
+  terms_name <- attr(terms(fit_glm), "term.labels")
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  interaction_term <- terms_name[which(!terms_name %in% names(xs_class))]
+  strsplit(interaction_term, split = ":")[[1]]
+}
+
+h_interaction_coef_name <- function(
+  interaction_vars,
+  first_var_with_level,
+  second_var_with_level
+) {
+  first_name <- paste(first_var_with_level, collapse = "")
+  second_name <- paste(second_var_with_level, collapse = "")
+  if (first_var_with_level[1] == interaction_vars[1]) {
+    paste(first_name, second_name, sep = ":")
+  } else if (second_var_with_level[1] == interaction_vars[1]) {
+    paste(second_name, first_name, sep = ":")
+  } else {
+    stop("something is wrong")
+  }
+}
+
+h_odds_ratio_categorical_interaction <- function( #nolint
+  odds_ratio_var,  # name of the variable for which to calculate odds ratios
+  interaction_var,   # name of the interaction variable
+  fit_glm,
+  conf_level = 0.95) {
+  interaction_vars <- h_get_interaction_vars(fit_glm)
+  assert_that(
+    is.string(odds_ratio_var),
+    is.string(interaction_var),
+    all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
+    identical(length(interaction_vars), 2L)
+  )
+  xs_level <- fit_glm$xlevels
+  xs_coef <- coef(fit_glm)
+  xs_vcov <- vcov(fit_glm)
+  y <- list()
+  for (var_level in xs_level[[odds_ratio_var]][-1]) {
+    x <- list()
+    for (ref_level in xs_level[[interaction_var]]) {
+      coef_names <- paste0(odds_ratio_var, var_level)
+      if (ref_level != xs_level[[interaction_var]][1]) {
+        interaction_coef_name <- h_interaction_coef_name(
+          interaction_vars,
+          c(odds_ratio_var, var_level),
+          c(interaction_var, ref_level)
+        )
+        coef_names <- c(
+          coef_names,
+          interaction_coef_name
+        )
+      }
+      if (length(coef_names) > 1) {
+        ones <- t(c(1, 1))
+        est <- as.numeric(ones %*% xs_coef[coef_names])
+        se <- sqrt(as.numeric(ones %*% xs_vcov[coef_names, coef_names] %*% t(ones)))
+      } else {
+        est <- xs_coef[coef_names]
+        se <- sqrt(as.numeric(xs_vcov[coef_names, coef_names]))
+      }
+      or <- exp(est)
+      ci <- exp(est + c(-1, 1) * qnorm((1 + conf_level) / 2) * se)
+      x[[ref_level]] <- list(or = or, ci = ci)
+    }
+    y[[var_level]] <- x
+  }
+  y
+}
+```
+
+So for example:
+```{r}
+h_odds_ratio_categorical_interaction(odds_ratio_var = "ARMCD", interaction_var = "SEX", model_factor_glm)
+h_odds_ratio_categorical_interaction(odds_ratio_var = "SEX", interaction_var = "ARMCD", model_factor_glm)
+```
+
+### Continuous covariate
+
+Now we look at a continuous covariate. Here we need an additional argument to specify increments that is either `NULL` in which case we would just look at the median of the interaction variable. 
+
+```{r}
+h_odds_ratio_continuous_interaction <- function( #nolint
+  odds_ratio_var,  # name of the variable for which to calculate odds ratios
+  interaction_var,   # name of the interaction variable
+  fit_glm,
+  interaction_increments = NULL, # optional increments for interaction variable
+  conf_level = 0.95) {
+  interaction_vars <- h_get_interaction_vars(fit_glm)
+  assert_that(
+    is.string(odds_ratio_var),
+    is.string(interaction_var),
+    all(c(odds_ratio_var, interaction_var) %in% interaction_vars),
+    identical(length(interaction_vars), 2L),
+    is.null(interaction_increments) || is_numeric_vector(interaction_increments)
+  )
+  xs_level <- fit_glm$xlevels
+  xs_coef <- coef(fit_glm)
+  xs_vcov <- vcov(fit_glm)
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  model_data <- fit_glm$model
+  if (!is.null(interaction_increments)){
+    assert_that(
+      xs_class[interaction_var] == "numeric"
+    )
+  }
+  y <- list()
+  if (xs_class[interaction_var] == "numeric") {
+    if (is.null(interaction_increments)) {
+      interaction_increments <- ceiling(median(model_data[[interaction_var]]))
+    }
+
+    for (var_level in xs_level[[odds_ratio_var]][-1]) {
+      x <- list()
+      for (increment in interaction_increments) {
+        coef_names <- paste0(odds_ratio_var, var_level)
+        if (increment != 0) {
+          interaction_coef_name <- h_interaction_coef_name(
+            interaction_vars,
+            c(odds_ratio_var, var_level),
+            c(interaction_var, "")
+          )
+          coef_names <- c(
+            coef_names,
+            interaction_coef_name
+          )
+        }
+        if (length(coef_names) > 1) {
+          xvec <- t(c(1, increment))
+          est <- as.numeric(xvec %*% xs_coef[coef_names])
+          se <- sqrt(as.numeric(xvec %*% xs_vcov[coef_names, coef_names] %*% t(xvec)))
+        } else {
+          est <- xs_coef[coef_names]
+          se <- sqrt(as.numeric(xs_vcov[coef_names, coef_names]))
+        }
+        or <- exp(est)
+        ci <- exp(est + c(-1, 1) * qnorm((1 + conf_level) / 2) * se)
+        x[[as.character(increment)]] <- list(or = or, ci = ci)
+      }
+      y[[var_level]] <- x
+    }
+  } else {
+    assert_that(
+      xs_class[odds_ratio_var] == "numeric",
+      xs_class[interaction_var] == "factor"
+    )
+    for (var_level in xs_level[[interaction_var]]) {
+      coef_names <- odds_ratio_var
+      if (var_level != xs_level[[interaction_var]][1]) {
+        interaction_coef_name <- h_interaction_coef_name(
+          interaction_vars,
+          c(odds_ratio_var, ""),
+          c(interaction_var, var_level)
+        )
+        coef_names <- c(
+          coef_names,
+          interaction_coef_name
+        )
+      }
+      if (length(coef_names) > 1) {
+        xvec <- t(c(1, 1))
+        est <- as.numeric(xvec %*% xs_coef[coef_names])
+        se <- sqrt(as.numeric(xvec %*% xs_vcov[coef_names, coef_names] %*% t(xvec)))
+      } else {
+        est <- xs_coef[coef_names]
+        se <- sqrt(as.numeric(xs_vcov[coef_names, coef_names]))
+      }
+      or <- exp(est)
+      ci <- exp(est + c(-1, 1) * qnorm((1 + conf_level) / 2) * se)
+      y[[var_level]] <- list(or = or, ci = ci)
+    }
+  }
+  y
+}
+```
+
+Try it out:
+
+```{r}
+h_odds_ratio_continuous_interaction(odds_ratio_var = "ARMCD", interaction_var = "AGE",
+                                    interaction_increments = c(20, 30, 40), conf_level = 0.95,
+                                    fit_glm = model_numeric_glm)
+```
+
+
+### Wrapper that checks for class
+
+```{r}
+h_odds_ratio_interaction <- function(
+  odds_ratio_var,  # name of the variable for which to calculate odds ratios
+  interaction_var,   # name of the interaction variable
+  fit_glm,
+  conf_level = 0.95,
+  interaction_increments = NULL) {
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  ret <- if (any(xs_class[c(odds_ratio_var, interaction_var)] == "numeric")) {
+    h_odds_ratio_continuous_interaction(
+      odds_ratio_var, interaction_var, fit_glm,
+      conf_level = conf_level, interaction_increments = interaction_increments
+    )
+  } else if (all(xs_class[c(odds_ratio_var, interaction_var)] == "factor")) {
+    h_odds_ratio_categorical_interaction(odds_ratio_var, interaction_var, fit_glm, conf_level = conf_level)
+  } else {
+    stop("wrong interaction variable class")
+  }
+  return(ret)
+}
+```
+
+So for example:
+```{r}
+h_odds_ratio_interaction(odds_ratio_var = "ARMCD", interaction_var = "AGE", model_numeric_glm,
+                         interaction_increments = c(20, 30, 40))
+
+h_odds_ratio_interaction(odds_ratio_var = "AGE", interaction_var = "ARMCD", model_numeric_glm)
+```
+
+There is a lot of duplicate code in the above functions, which we can further refactor during production.
+
+# Tidying the estimates into data frame
+
+Now we need to tackle the formatting of the estimates in a logistic regression model with interaction terms into a data frame.
+
+## Baseline
+
+Currently we have only the simple terms version:
+
+```{r}
+glm_simple_term_extract("ARMCD", model_factor_glm)
+glm_interaction_extract("ARMCD:SEX", model_factor_glm)
+h_logistic_simple_terms("AGE", model_factor_glm)
+```
+
+We don't yet have something like the `h_logistic_simple_terms` which works on terms that are involved in interactions.
+As mentioned above, in our helper function here we will need to produce additional columns `interaction` and `reference` that mention the name and the reference value of the interaction variable.
+
+## simple term extract
+
+We also need to adapt `glm_simple_term_extract` to return the right columns `is_variable_summary` and `is_term_summary`.
+
+```{r}
+glm_simple_term_extract <- function(x, fit_glm) {
+  assert_that(
+    "glm" %in% class(fit_glm),
+    is.string(x)
+  )
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  xs_level <- fit_glm$xlevels
+  xs_coef <- summary(fit_glm)$coefficients
+  stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
+  # Make sure x is not interaction term
+  assert_that(x %in% names(xs_class))
+  x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
+  x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
+  colnames(x_stats) <- names(stats)
+  x_stats$estimate <- as.list(x_stats$estimate)
+  x_stats$std_error <- as.list(x_stats$std_error)
+  x_stats$pvalue <- as.list(x_stats$pvalue)
+  x_stats$df <- as.list(1)
+  if (xs_class[x] == "numeric") {
+    x_stats$term <- if (xs_class[x] == "numeric") x else xs_level[[x]][-1]
+    x_stats$is_variable_summary <- TRUE
+    x_stats$is_term_summary <- FALSE
+  } else {
+    x_stats$term <- xs_level[[x]][-1]
+    x_stats$is_variable_summary <- FALSE
+    x_stats$is_term_summary <- TRUE
+    main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
+    x_main <- data.frame(
+      pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
+      term = paste(x, "Reference =", xs_level[[x]][1]),
+      df = main_effects[x, "Df", drop = TRUE],
+      stringsAsFactors = FALSE
+    )
+    x_main$pvalue <- as.list(x_main$pvalue)
+    x_main$df <- as.list(x_main$df)
+    x_main$estimate <- list(numeric(0))
+    x_main$std_error <- list(numeric(0))
+    if (length(xs_level[[x]][-1]) == 1) {
+      x_main$pvalue <- list(numeric(0))
+      x_main$df <- list(numeric(0))
+    }
+    x_main$is_variable_summary <- TRUE
+    x_main$is_term_summary <- FALSE
+    x_stats <- rbind(x_main, x_stats)
+  }
+  x_stats$variable <- x
+  rownames(x_stats) <- NULL
+  x_stats[c(
+    "variable", 
+    "term",
+    "estimate",
+    "std_error",
+    "df",
+    "pvalue",
+    "is_variable_summary",
+    "is_term_summary"
+  )]
+}
+```
+
+Try it out:
+
+```{r}
+glm_simple_term_extract("SEX", model_numeric_glm)
+glm_simple_term_extract("AGE", model_factor_glm)
+```
+
+## interaction extract
+
+Similarly we also need to adapt the interaction extraction function to get the right flag columns in.
+
+```{r}
+glm_interaction_extract <- function(x, fit_glm) {
+  assert_that("glm" %in% class(fit_glm))
+  terms_name <- attr(terms(fit_glm), "term.labels")
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  assert_that(
+    is.string(x),
+    # Only deal with one interaction term
+    identical(x, terms_name[which(!terms_name %in% names(xs_class))])
+  )
+  vars <- unlist(strsplit(x, ":"))
+  # Only take two-way interaction
+  assert_that(
+    length(vars) == 2,
+    # Only consider simple case: first variable in interaction is arm, a categorical variable
+    xs_class[vars[1]] != "numeric"
+  )
+  xs_level <- fit_glm$xlevels
+  xs_coef <- summary(fit_glm)$coefficients
+  main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
+  stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
+  v1_comp <- xs_level[[vars[1]]][-1]
+  if (xs_class[vars[2]] == "numeric") {
+    x_stats <- as.data.frame(
+      xs_coef[paste0(vars[1], v1_comp, ":", vars[2]), stats, drop = FALSE],
+      stringsAsFactors = FALSE
+    )
+    colnames(x_stats) <- names(stats)
+    x_stats$term <- v1_comp
+  } else if (xs_class[vars[2]] != "numeric") {
+    v2_comp <- xs_level[[vars[2]]][-1]
+    x_sel <- paste0(levels(interaction(paste0(vars[1], v1_comp), paste0(vars[2], v2_comp), sep = ":")))
+    x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
+    colnames(x_stats) <- names(stats)
+    x_stats$term <- paste0(levels(interaction(v1_comp, v2_comp, sep = " * ")))
+  }
+  x_stats$df <- as.list(1)
+  x_stats$pvalue <- as.list(x_stats$pvalue)
+  x_stats$is_variable_summary <- FALSE
+  x_stats$is_term_summary <- TRUE
+  x_main <- data.frame(
+    pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
+    term = paste(vars[1], vars[2], sep = " * "),
+    df = main_effects[x, "Df", drop = TRUE],
+    stringsAsFactors = FALSE
+  )
+  x_main$pvalue <- as.list(x_main$pvalue)
+  x_main$df <- as.list(x_main$df)
+  x_main$estimate <- list(numeric(0))
+  x_main$std_error <- list(numeric(0))
+  x_main$is_variable_summary <- TRUE
+  x_main$is_term_summary <- FALSE
+
+  x_stats <- rbind(x_main, x_stats)
+  x_stats$variable <- x
+  rownames(x_stats) <- NULL
+  x_stats[c("variable", "term", "estimate", "std_error", "df", "pvalue", "is_variable_summary", "is_term_summary")]
+}
+```
+
+Try it out:
+
+```{r}
+glm_interaction_extract("ARMCD:SEX", model_factor_glm)
+glm_interaction_extract("ARMCD:AGE", model_numeric_glm)
+```
+
+## interaction term extract
+
+And finally we need something new as well.
+
+```{r}
+glm_inter_term_extract <- function(odds_ratio_var,
+                                   interaction_var,
+                                   fit_glm,
+                                   ...) {
+  # first we can get the main effects
+  main_stats <- glm_simple_term_extract(odds_ratio_var, fit_glm)
+  main_stats$interaction <- NA
+  main_stats$reference <- NA
+  main_stats$is_reference_summary <- FALSE
+  main_stats$odds_ratio <- NA
+  main_stats$lcl <- NA
+  main_stats$ucl <- NA
+  
+  # then we get the odds ratio estimates and put into df form
+  or_numbers <- h_odds_ratio_interaction(odds_ratio_var, interaction_var, fit_glm, ...)
+  is_num_or_var <- attr(fit_glm$terms, "dataClasses")[odds_ratio_var] == "numeric"
+  
+  # this if/else below can be simplified in production
+  if (is_num_or_var) {
+    # numeric OR variable
+    references <- names(or_numbers)
+    n_ref <- length(references)
+    
+    extract_from_list <- function(l, name, pos = 1) {
+      unname(unlist(
+        lapply(or_numbers, function(x) {
+          x[[name]][pos]
+        })
+      ))
+    }
+    or_stats <- data.frame(
+      variable = odds_ratio_var,
+      term = odds_ratio_var,
+      interaction = interaction_var,
+      reference = references,
+      estimate = NA,
+      std_error = NA,
+      odds_ratio = extract_from_list(or_numbers, "or"),
+      lcl = extract_from_list(or_numbers, "ci", pos = 1),
+      ucl = extract_from_list(or_numbers, "ci", pos = 2), 
+      df = NA,
+      pvalue = NA,
+      is_variable_summary = FALSE,
+      is_term_summary = FALSE,
+      is_reference_summary = TRUE
+    )
+  } else {
+    # categorical OR variable
+    references <- names(or_numbers[[1]])
+    n_ref <- length(references)
+    
+    extract_from_list <- function(l, name, pos = 1) {
+      unname(unlist(
+        lapply(or_numbers, function(x) {
+          lapply(x, function(y) y[[name]][pos])
+        })
+      ))
+    }
+    or_stats <- data.frame(
+      variable = odds_ratio_var,
+      term = rep(names(or_numbers), each = n_ref),
+      interaction = interaction_var,
+      reference = unlist(lapply(or_numbers, names)),
+      estimate = NA,
+      std_error = NA,
+      odds_ratio = extract_from_list(or_numbers, "or"),
+      lcl = extract_from_list(or_numbers, "ci", pos = 1),
+      ucl = extract_from_list(or_numbers, "ci", pos = 2), 
+      df = NA,
+      pvalue = NA,
+      is_variable_summary = FALSE,
+      is_term_summary = FALSE,
+      is_reference_summary = TRUE
+    )
+  }
+  
+  df <- rbind(
+    main_stats[, names(or_stats)],
+    or_stats
+  )
+  
+  df[order(-df$is_variable_summary, df$term, -df$is_term_summary, df$reference), ]
+}
+```
+
+Let's try it out:
+
+```{r}
+glm_inter_term_extract(odds_ratio_var = "ARMCD",
+                       interaction_var = "SEX",
+                       model_factor_glm,
+                       conf_level = 0.95)
+
+glm_inter_term_extract(odds_ratio_var = "ARMCD",
+                       interaction_var = "AGE",
+                       model_numeric_glm,
+                       conf_level = 0.95,
+                       interaction_increments = c(20, 30, 40))
+
+glm_inter_term_extract(odds_ratio_var = "AGE",
+                       interaction_var = "ARMCD",
+                       model_numeric_glm,
+                       conf_level = 0.95)
+# note: must not use interaction increments here, since that only works the other way around
+```
+
+
+## data frame production
+
+Since in our case we have the odds ratios already, we can directly write the analogue to `h_logistic_simple_terms`.
+
+```{r}
+h_logistic_inter_terms <- function(x, fit_glm, conf_level, 
+                                   interaction_increments = NULL) {
+  # find out the interaction variables and interaction term.
+  inter_vars <- h_get_interaction_vars(fit_glm)
+  assert_that(identical(length(inter_vars), 2L))
+  inter_term_index <- intersect(grep(inter_vars[1], x), grep(inter_vars[2], x))
+  inter_term <- x[inter_term_index]
+    
+  # first for the non-interaction vars we need the standard stuff.
+  normal_terms <- setdiff(x, union(inter_vars, inter_term))
+  
+  # do the normal stuff. -> we need to put this in helper function in production to not
+  # duplicate with `h_logistic_simple_terms`
+  x_stats <- lapply(normal_terms, glm_simple_term_extract, fit_glm)
+  x_stats <- do.call(rbind, x_stats)
+  q_norm <- qnorm((1 + conf_level) / 2)
+  x_stats$odds_ratio <- lapply(x_stats$estimate, exp)
+  x_stats$lcl <- Map(function(or, se) exp(log(or) - q_norm * se), x_stats$odds_ratio, x_stats$std_error)
+  x_stats$ucl <- Map(function(or, se) exp(log(or) + q_norm * se), x_stats$odds_ratio, x_stats$std_error)
+  normal_stats <- x_stats
+  normal_stats$interaction <- NA
+  normal_stats$reference <- NA
+  normal_stats$is_reference_summary <- FALSE
+  
+  # now the interaction term itself.
+  inter_term_stats <- glm_interaction_extract(inter_term, fit_glm)
+  inter_term_stats$odds_ratio <- NA
+  inter_term_stats$lcl <- NA
+  inter_term_stats$ucl <- NA
+  inter_term_stats$interaction <- NA
+  inter_term_stats$reference <- NA
+  inter_term_stats$is_reference_summary <- FALSE
+  
+  is_intervar1_numeric <- attr(fit_glm$terms, "dataClasses")[inter_vars[1]] == "numeric"
+  
+  # now proceed with the interaction stuff.
+  inter_stats_one <- glm_inter_term_extract(
+    inter_vars[1], 
+    inter_vars[2], 
+    fit_glm, 
+    conf_level = conf_level,
+    interaction_increments = `if`(is_intervar1_numeric, NULL, interaction_increments)
+  )
+  inter_stats_two <- glm_inter_term_extract(
+    inter_vars[2], 
+    inter_vars[1], 
+    fit_glm, 
+    conf_level = conf_level,
+    interaction_increments = `if`(is_intervar1_numeric, interaction_increments, NULL)
+  )
+  
+  # put everything together
+  col_names <- c(
+    "variable",
+    "term",
+    "interaction",
+    "reference",
+    "estimate", 
+    "std_error",
+    "df",
+    "pvalue",
+    "odds_ratio",
+    "lcl",
+    "ucl",
+    "is_variable_summary",
+    "is_term_summary",
+    "is_reference_summary"
+  )
+  df <- rbind(
+    normal_stats[, col_names],
+    inter_stats_one[, col_names],
+    inter_stats_two[, col_names],
+    inter_term_stats[, col_names]
+  )
+  df$ci <- combine_vectors(df$lcl, df$ucl)
+  df
+}
+```
+
+Let's try it out:
+
+```{r}
+# factor interaction
+h_logistic_inter_terms(
+  x = attr(terms(model_factor_glm), "term.labels"),
+  fit_glm = model_factor_glm,
+  conf_level = 0.95
+)
+
+# continuous interaction
+h_logistic_inter_terms(
+  x = attr(terms(model_numeric_glm), "term.labels"),
+  fit_glm = model_numeric_glm,
+  conf_level = 0.95,
+  interaction_increments = c(20, 30)
+)
+```
+
+
+## Tidy method
+
+We need to adapt `tidy.glm` to use the new helper function:
+
+```{r, tidy_glm}
+tidy.glm <- function(fit_glm, conf_level = 0.95, ...) { #nolint
+  assert_that(
+    "glm" %in% class(fit_glm),
+    fit_glm$family$family == "binomial"
+  )
+  terms_name <- attr(terms(fit_glm), "term.labels")
+  xs_class <- attr(fit_glm$terms, "dataClasses")
+  interaction <- terms_name[which(!terms_name %in% names(xs_class))]
+  if (length(interaction) == 0) {
+    h_logistic_simple_terms(x = terms_name, fit_glm = fit_glm, conf_level = conf_level)
+  } else {
+    h_logistic_inter_terms(x = terms_name, fit_glm = fit_glm, conf_level = conf_level, ...)
+  }
+}
+```
+
+Let's try it out:
+
+```{r try_tidy}
+df <- broom::tidy(model_factor_glm)
+df
+
+df_num <- broom::tidy(model_numeric_glm, interaction_increments = c(20, 30))
+df_num
+```
+
+
+# Tabulation
+
+## Stats function
+
+See below, we will just use content functions that format the right data frame entries.
+
+## Layout creating functions and table code
+
+In the end we should be able to run something like this:
+
+```{r, eval = FALSE}
+adrs <- get_adrs()
+mod1 <- fit_logistic(
+  adrs,
+  variables = list(
+    response = "Response", 
+    arm = "ARMCD", 
+    covariates = c("SEX", "RACE", "AGE"),
+    interaction = "SEX"
+  )
+)
+df <- broom::tidy(mod1)
+result <- basic_table() %>%
+  split_rows_by("variable") %>%
+  split_rows_by("term", split_fun = drop_split_levels) %>%
+  split_rows_by("interaction", split_fun = drop_split_levels) %>%
+  split_rows_by("reference", split_fun = drop_split_levels) %>%
+  summarize_logistic(conf_level = 0.95) %>%
+  build_table(df = df)
+```
+
+Alternatively we could try something like this, which seems more manageable as we can use the `summarize_rows_groups` for each split to display the information:
+
+```{r, eval = FALSE}
+result <- basic_table() %>%
+  logistic_cols(...) %>%
+  # this sets up the split_cols_by_multivar structure with all variables.
+  # note that we don't need flexibility here regarding which columns to have
+  split_rows_by("variable", labels_var = "variable_label") %>%
+  # since the labels are currently not yet as we need them with `n`, parentheses etc.
+  summarize_logistic_variable_test() %>%
+  # this would use `summarize_row_groups` internally. so the user can choose if they want this or not
+  split_rows_by("term", labels_var = "term_label", split_fun = drop_split_levels) %>%
+  summarize_logistic_term_estimates() %>%
+  # same like above
+  # then if there is interaction in the model/df can proceed with:
+  split_rows_by("interaction", labels_var = "interaction_label", split_fun = drop_split_levels) %>%
+  split_rows_by("reference", labels_var = "reference_label", split_fun = drop_split_levels) %>%
+  summarize_logistic_odds_ratios() %>%
+  build_table(df = df)
+```
+
+Let's try this quickly:
+
+Here we have a layout creating function that just sets up the multiple columns.
+Note that we need to supply the confidence level for the CI column here, which is not optimal but ok.
+
+```{r logistic_cols}
+logistic_cols <- function(lyt, conf_level = 0.95) {
+  vars <- c("df", "estimate", "std_error", "odds_ratio", "ci", "pvalue")
+  var_labels <- c(
+    df = "Degrees of Freedom", estimate = "Parameter Estimate",
+    std_error = "Standard Error", odds_ratio = "Odds Ratio",
+    ci = paste("Wald", tern:::f_conf_level(conf_level)), pvalue = "p-value"
+  )
+  split_cols_by_multivar(
+    lyt = lyt,
+    vars = vars,
+    varlabels = var_labels
+  )
+}
+```
+
+Now here we create 3 different layout functions which are only different in which flag column they use to identify the row they should use to summarize the split.
+
+```{r summarize_logistic_funs}
+# Helper function to give an empty cell in case only NA in this entry.
+# need the `unlist(x)` for the CI entries.
+zeroNA <- function(x) { #nolint
+  `if`(all(is.na(unlist(x))), character(), unlist(x))
+}
+
+# content function which just gives df$var at the row identified by
+# flag variable in the given format.
+ident_cfun <- function(var, flag, format = "xx") {
+  force(var)
+  force(format)
+  function(df, labelstr, .df_row) {
+    row_index <- which(.df_row[[flag]])
+    with_label(
+      rcell(zeroNA(df[[var]][row_index]), format = format),
+      labelstr
+    )
+  }
+}
+
+# constructor which produces layout creating function for given flag.
+create_summary_layout_fun <- function(flag) {
+  force(flag)
+  function(lyt) {
+    cfun_list <- list(
+      df = ident_cfun("df", flag, format = "xx."),
+      estimate = ident_cfun("estimate", flag, format = "xx.xx"),
+      std_error = ident_cfun("std_error", flag, format = "xx.xx"),
+      odds_ratio = ident_cfun("odds_ratio", flag, format = "xx.xx"),
+      ci = ident_cfun("ci", flag, format = "(xx.xx, xx.xx)"),
+      pvalue = ident_cfun("pvalue", flag, format = "x.xxxx | (<0.0001)")
+    )
+    summarize_row_groups(
+      lyt = lyt,
+      cfun = cfun_list
+    )
+  }
+}
+
+# since we have 3 hierarchy levels (variable, term, reference) we need 3 layout creating functions.
+summarize_logistic_variable_test <- create_summary_layout_fun("is_variable_summary") #nolint
+summarize_logistic_term_estimates <- create_summary_layout_fun("is_term_summary") #nolint
+summarize_logistic_odds_ratios <- create_summary_layout_fun("is_reference_summary") #nolint
+```
+
+This custom split function constructor combines `drop` and `remove` features. I will do a PR for rtables for this one since
+it uses internal rtables functions and could be generally useful.
+
+```{r splitfun}
+drop_and_remove_split_levels <- function(excl) {
+  force(excl)
+  function(df, spl, vals = NULL, labels = NULL, trim = FALSE) {
+    var <- rtables:::spl_payload(spl)
+    df2 <- df[!(df[[var]] %in% excl), ]
+    df2[[var]] <- factor(df2[[var]])
+    rtables:::.apply_split_inner(spl, df2, vals = vals, labels = labels,
+                                 trim = trim)
+  }
+}
+```
+
+So all together:
+
+```{r}
+df <- broom::tidy(model_factor_glm)
+
+result <- basic_table() %>%
+  logistic_cols() %>%
+  split_rows_by("variable", split_fun = drop_and_remove_split_levels("")) %>%
+  summarize_logistic_variable_test() %>%
+  split_rows_by("term", split_fun = drop_and_remove_split_levels("")) %>%
+  summarize_logistic_term_estimates() %>%
+  split_rows_by("interaction", split_fun = drop_and_remove_split_levels("")) %>%
+  split_rows_by("reference", split_fun = drop_and_remove_split_levels("")) %>%
+  summarize_logistic_odds_ratios() %>%
+  build_table(df)
+result
+```
+
+So the problem was that the summarize row groups function gets the whole `x` vector from the rows. But we just need the first one / unique one. We need other columns that flag which row is a variable / term / reference summary.
+
+This is what we want. We can further add label columns to the input data frame to polish the presentation.
+Now that we know which input data frame we need we can work towards that from the data side above.
+
+We could later wrap this and the other layout functions in another large one which handles all to shorten the default call for the user.
+
+Now for the numeric interaction:
+
+```{r}
+df_num <- broom::tidy(model_numeric_glm, interaction_increments = c(20, 30, 40))
+
+result_num <- basic_table() %>%
+  logistic_cols() %>%
+  split_rows_by("variable", split_fun = drop_and_remove_split_levels("")) %>%
+  summarize_logistic_variable_test() %>%
+  split_rows_by("term", split_fun = drop_and_remove_split_levels("")) %>%
+  summarize_logistic_term_estimates() %>%
+  split_rows_by("interaction", split_fun = drop_and_remove_split_levels("")) %>%
+  split_rows_by("reference", split_fun = drop_and_remove_split_levels("")) %>%
+  summarize_logistic_odds_ratios() %>%
+  build_table(df_num)
+result_num
+```

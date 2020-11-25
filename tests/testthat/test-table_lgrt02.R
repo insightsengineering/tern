@@ -1,4 +1,4 @@
-# Tests LGRT02.
+# Tests variants of LGRT02.
 
 library(random.cdisc.data)
 library(dplyr)
@@ -63,5 +63,3 @@ test_that("LGRT02 without interaction term is produced correctly", {
   )
   expect_identical(result_matrix, expected_matrix)
 })
-
-# To add variants for model with interaction term
