@@ -18,7 +18,7 @@ preprocess_adtte <- function(adtte) {
       is_event = CNSR == 0,
       # Convert time to MONTH
       AVAL = day2month(AVAL),
-      AVALU = "MONTHS"
+      AVALU = "Months"
     ) %>%
     var_relabel(
       ARM = adtte_labels["ARM"],
@@ -43,7 +43,7 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
 
   # Survival time table.
   lyt1 <- basic_table() %>%
-    tabulate_survival_subgroups(vars = c("n", "median"))
+    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = anl1$AVALU[1])
   t1 <- build_table(lyt1, df = df$survtime)
 
   # Hazard rato table.
@@ -62,9 +62,9 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
       "", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
       "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
       "", "95", "93", "80", "B: Placebo", "n", "134", "", "82", "52",
-      "", "45", "56", "33", "B: Placebo", "Median", "26.7", "", "22.2",
+      "", "45", "56", "33", "B: Placebo", "Median (Months)", "26.7", "", "22.2",
       "38.8", "", "26.9", "31.9", "15.7", "A: Drug X", "n", "134",
-      "", "79", "55", "", "50", "37", "47", "A: Drug X", "Median",
+      "", "79", "55", "", "50", "37", "47", "A: Drug X", "Median (Months)",
       "33.2", "", "32.4", "34.9", "", "31.7", "48.4", "31.4", " ",
       "Hazard Ratio", "0.84", "", "0.65", "1.23", "", "1.06", "0.61",
       "0.77", " ", "95% Wald CI", "(0.62, 1.14)", "", "(0.44, 0.97)",
@@ -84,7 +84,8 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
     xlim = c(.1, 10),
     logx = TRUE,
     x_at = c(.1, 1, 10),
-    col_symbol_size = 1
+    col_symbol_size = 1,
+    draw = FALSE
   )
 
 })
@@ -113,7 +114,7 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
 
   # Survival time table.
   lyt1 <- basic_table() %>%
-    tabulate_survival_subgroups(vars = c("n", "median"))
+    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = anl2$AVALU[1])
   t1 <- build_table(lyt1, df = df$survtime)
 
   # Hazard rato table.
@@ -132,9 +133,9 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
       "", "", "All Patients", "Sex", "M", "F", "Stratification Factor 1",
       "C", "B", "A", " ", "Total n", "268", "", "107", "161", "", "94",
       "92", "82", "Placebo", "n", "134", "", "52", "82", "", "45",
-      "45", "44", "Placebo", "Median", "26.7", "", "38.8", "22.2",
+      "45", "44", "Placebo", "Median (Months)", "26.7", "", "38.8", "22.2",
       "", "26.7", "32.4", "26.9", "Drug X", "n", "134", "", "55", "79",
-      "", "49", "47", "38", "Drug X", "Median", "33.2", "", "34.9",
+      "", "49", "47", "38", "Drug X", "Median (Months)", "33.2", "", "34.9",
       "32.4", "", "40.8", "31.7", "32.4", " ", "Hazard Ratio", "0.84",
       "", "1.23", "0.65", "", "0.77", "0.98", "0.76", " ", "95% Wald CI",
       "(0.62, 1.14)", "", "(0.76, 1.98)", "(0.44, 0.97)", "", "(0.45, 1.32)",
@@ -155,7 +156,8 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
     xlim = c(.1, 10),
     logx = TRUE,
     x_at = c(.1, 1, 10),
-    col_symbol_size = 1
+    col_symbol_size = 1,
+    draw = FALSE
   )
 
 })
@@ -202,7 +204,8 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
     xlim = c(.1, 10),
     logx = TRUE,
     x_at = c(.1, 1, 10),
-    col_symbol_size = 1
+    col_symbol_size = 1,
+    draw = FALSE
   )
 })
 
@@ -218,7 +221,7 @@ test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
 
   # Survival time table.
   lyt1 <- basic_table() %>%
-    tabulate_survival_subgroups(vars = c("n", "median"))
+    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = anl4$AVALU[1])
   t1 <- build_table(lyt1, df = df$survtime)
 
   # Hazard rato table.
@@ -237,9 +240,9 @@ test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
       "", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
       "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
       "", "95", "93", "80", "B: Placebo", "n", "134", "", "82", "52",
-      "", "45", "56", "33", "B: Placebo", "Median", "26.7", "", "22.2",
+      "", "45", "56", "33", "B: Placebo", "Median (Months)", "26.7", "", "22.2",
       "38.8", "", "26.9", "31.9", "15.7", "A: Drug X", "n", "134",
-      "", "79", "55", "", "50", "37", "47", "A: Drug X", "Median",
+      "", "79", "55", "", "50", "37", "47", "A: Drug X", "Median (Months)",
       "33.2", "", "32.4", "34.9", "", "31.7", "48.4", "31.4", " ",
       "Hazard Ratio", "0.84", "", "0.65", "1.23", "", "1.06", "0.61",
       "0.77", " ", "95% Wald CI", "(0.62, 1.14)", "", "(0.44, 0.97)",
@@ -259,7 +262,8 @@ test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
     xlim = c(.1, 10),
     logx = TRUE,
     x_at = c(.1, 1, 10),
-    col_symbol_size = NULL
+    col_symbol_size = NULL,
+    draw = FALSE
   )
 
 })

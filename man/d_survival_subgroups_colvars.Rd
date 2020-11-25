@@ -4,7 +4,7 @@
 \alias{d_survival_subgroups_colvars}
 \title{Labels for Column Variables in Survival Duration by Subgroup Table}
 \usage{
-d_survival_subgroups_colvars(vars, control = control_coxph())
+d_survival_subgroups_colvars(vars, control = control_coxph(), time_unit = NULL)
 }
 \arguments{
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
@@ -21,6 +21,9 @@ Default method is "log-rank", can also be set to "wald" or "likelihood".
 can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
 }}
+
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
+displaying unit.}
 }
 \value{
 \code{list} of variables to tabulate and their labels.

@@ -9,6 +9,8 @@
 #' @inheritParams survival_coxph_pairwise
 #' @param data (`data frame`)\cr the dataset containing the variables to summarize.
 #' @param label_all (`string`)\cr label for the total population analysis.
+#' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips
+#'   displaying unit.
 #' @name survival_duration_subgroups
 #' @order 1
 #' @examples
@@ -32,17 +34,19 @@
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
 #'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
 #'     SEX = droplevels(SEX),
+#'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
 #'   ) %>%
 #'   var_relabel(
 #'     ARM = adtte_labels["ARM"],
 #'     SEX = adtte_labels["SEX"],
+#'     AVALU = adtte_labels["AVALU"],
 #'     is_event = "Event Flag"
 #'   )
 #'
 NULL
 
-#' @describeIn survival_duration_subgroups Prepares estimates of median survival times and treatment hazard ratios for
+#' @describeIn survival_duration_subgroups prepares estimates of median survival times and treatment hazard ratios for
 #'   population subgroups in data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
 #'   Result is a list of two data frames: `survtime` and `hr`.
 #'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
@@ -114,7 +118,7 @@ a_survival_subgroups <- function(.formats = list(
 #'
 #' ## Table of survival times by subgroup.
 #' basic_table() %>%
-#'   tabulate_survival_subgroups(vars = c("n", "median")) %>%
+#'   tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte$AVALU[1]) %>%
 #'   build_table(df$survtime)
 #'
 #' ## Table of hazard ratios by subgroup.
@@ -122,12 +126,12 @@ a_survival_subgroups <- function(.formats = list(
 #'   tabulate_survival_subgroups(vars = c("n_tot", "hr", "ci")) %>%
 #'   build_table(df$hr)
 #'
-tabulate_survival_subgroups <- function(
-  lyt,
-  vars,
-  control = control_coxph()) {
+tabulate_survival_subgroups <- function(lyt,
+                                        vars,
+                                        control = control_coxph(),
+                                        time_unit = NULL) {
 
-  colvars <- d_survival_subgroups_colvars(vars, control = control)
+  colvars <- d_survival_subgroups_colvars(vars, control = control, time_unit = time_unit)
   afun_lst <- a_survival_subgroups()
 
   lyt <- split_cols_by(lyt = lyt, var = "arm")
@@ -151,7 +155,7 @@ tabulate_survival_subgroups <- function(
     vars = colvars$vars,
     varlabels = colvars$labels
   )
-  analyze_colvars(lyt = lyt, afun = afun_lst[vars])
+  analyze_colvars(lyt = lyt, afun = afun_lst[vars], inclNAs = TRUE)
 
 }
 
@@ -163,17 +167,24 @@ tabulate_survival_subgroups <- function(
 #' @inheritParams tabulate_survival_subgroups
 #' @return `list` of variables to tabulate and their labels.
 #'
-d_survival_subgroups_colvars <- function(vars, control = control_coxph()) {
+d_survival_subgroups_colvars <- function(vars, control = control_coxph(), time_unit = NULL) {
 
   assert_that(
     is.character(vars),
+    is.string(time_unit) || is.null(time_unit),
     all_elements_in_ref(vars, ref = c("n", "n_events", "median", "n_tot", "hr", "ci", "pval"))
   )
+
+  propcase_time_label <- if (!is.null(time_unit)) {
+     paste0("Median (", time_unit, ")")
+  } else {
+    "Median"
+  }
 
   varlabels <- c(
     n = "n",
     n_events = "Events",
-    median = "Median",
+    median = propcase_time_label,
     n_tot = "Total n",
     hr = "Hazard Ratio",
     ci = paste0(100 * control[["conf_level"]], "% Wald CI"),

@@ -42,7 +42,7 @@
 #'   )
 #'
 NULL
-#' @describeIn h_survival_duration_subgroups Helper to prepare a data frame of median survival times by arm.
+#' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
 #' @inheritParams h_survival_duration_subgroups
 #' @export
 #' @examples
@@ -93,9 +93,9 @@ h_survtime_df <- function(tte, is_event, arm) {
   df
 }
 
-#' @describeIn h_survival_duration_subgroups Summarizes median survival times by arm and across subgroups
+#' @describeIn h_survival_duration_subgroups summarizes median survival times by arm and across subgroups
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
-#'    requires elements `tte`, `is_event`, `arm` and `subgroups`.
+#'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`.
 #' @export
 #' @examples
 #'
@@ -116,7 +116,7 @@ h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients")
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
-    is.character(variables$subgroups),
+    is.character(variables$subgroups) || is.null(variables$subgroups),
     is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
@@ -131,24 +131,25 @@ h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients")
   result_all$row_type <- "content"
 
   # Add Subgroups.
-  l_data <- h_split_by_subgroups(data, variables$subgroups)
-  l_result <- lapply(l_data, function(grp) {
-    result <- h_survtime_df(grp$df[[variables$tte]], grp$df[[variables$is_event]], grp$df[[variables$arm]])
-    result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
-    cbind(result, result_labels)
-  })
-
-  result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
-  result_subgroups$row_type <- "analysis"
-
-  rbind(
-    result_all,
-    result_subgroups
-  )
-
+if (is.null(variables$subgroups)) {
+    result_all
+  } else {
+    l_data <- h_split_by_subgroups(data, variables$subgroups)
+    l_result <- lapply(l_data, function(grp) {
+      result <- h_survtime_df(grp$df[[variables$tte]], grp$df[[variables$is_event]], grp$df[[variables$arm]])
+      result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
+      cbind(result, result_labels)
+    })
+    result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
+    result_subgroups$row_type <- "analysis"
+    rbind(
+      result_all,
+      result_subgroups
+    )
+  }
 }
 
-#' @describeIn h_survival_duration_subgroups Helper to prepare a data frame with estimates of
+#' @describeIn h_survival_duration_subgroups helper to prepare a data frame with estimates of
 #'   treatment hazard ratio.
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
@@ -228,10 +229,10 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 
 }
 
-#' @describeIn h_survival_duration_subgroups Summarizes estimates of the treatment hazard ratio
+#' @describeIn h_survival_duration_subgroups summarizes estimates of the treatment hazard ratio
 #'   across subgroups in a data frame. `variables` corresponds to the names of variables found in
-#'   `data`, passed as a named list and requires elements `tte`, `is_event`, `arm`, `subgroups` and
-#'   optionally `strat`.
+#'   `data`, passed as a named list and requires elements `tte`, `is_event`, `arm` and
+#'   optionally `subgroups` and `strat`.
 #' @export
 #' @examples
 #'
@@ -264,7 +265,7 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
     is.character(variables$tte),
     is.character(variables$is_event),
     is.character(variables$arm),
-    is.character(variables$subgroups),
+    is.character(variables$subgroups) || is.null(variables$subgroups),
     is.character(variables$strat) || is.null(variables$strat),
     is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
@@ -286,29 +287,32 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
   result_all$row_type <- "content"
 
   # Add Subgroups.
-  l_data <- h_split_by_subgroups(data, variables$subgroups)
+  if (is.null(variables$subgroups)) {
+    result_all
+  } else {
+    l_data <- h_split_by_subgroups(data, variables$subgroups)
 
-  l_result <- lapply(l_data, function(grp) {
+    l_result <- lapply(l_data, function(grp) {
 
-    result <- h_coxph_df(
-      tte = grp$df[[variables$tte]],
-      is_event = grp$df[[variables$is_event]],
-      arm = grp$df[[variables$arm]],
-      strata_data = if (is.null(variables$strat)) NULL else grp$df[variables$strat],
-      control = control
+      result <- h_coxph_df(
+        tte = grp$df[[variables$tte]],
+        is_event = grp$df[[variables$is_event]],
+        arm = grp$df[[variables$arm]],
+        strata_data = if (is.null(variables$strat)) NULL else grp$df[variables$strat],
+        control = control
+      )
+      result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
+      cbind(result, result_labels)
+    })
+
+    result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
+    result_subgroups$row_type <- "analysis"
+
+    rbind(
+      result_all,
+      result_subgroups
     )
-    result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
-    cbind(result, result_labels)
-  })
-
-  result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
-  result_subgroups$row_type <- "analysis"
-
-  rbind(
-    result_all,
-    result_subgroups
-  )
-
+  }
 }
 
 #' Split Dataframe by Subgroups

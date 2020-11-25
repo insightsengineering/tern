@@ -20,7 +20,12 @@ a_survival_subgroups(
     "x.xxxx | (<0.0001)")
 )
 
-tabulate_survival_subgroups(lyt, vars, control = control_coxph())
+tabulate_survival_subgroups(
+  lyt,
+  vars,
+  control = control_coxph(),
+  time_unit = NULL
+)
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -47,6 +52,9 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 \code{n} (total number of observations per group), \code{n_events} (number of events per group),
 \code{median} (median survival time), \code{n_tot} (total number of observations),
 \code{hr} (hazard ratio), \code{ci} (confidence interval of hazard ratio) and \code{pvalue} (p value of the effect).}
+
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
+displaying unit.}
 }
 \description{
 Tabulate statistics such as median survival time and hazard ratio for population subgroups.
@@ -57,7 +65,7 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_survival_subgroups}: Prepares estimates of median survival times and treatment hazard ratios for
+\item \code{extract_survival_subgroups}: prepares estimates of median survival times and treatment hazard ratios for
 population subgroups in data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}.
 Result is a list of two data frames: \code{survtime} and \code{hr}.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
@@ -90,11 +98,13 @@ adtte <- adtte \%>\%
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
     SEX = droplevels(SEX),
+    AVALU = as.character(AVALU),
     is_event = CNSR == 0
   ) \%>\%
   var_relabel(
     ARM = adtte_labels["ARM"],
     SEX = adtte_labels["SEX"],
+    AVALU = adtte_labels["AVALU"],
     is_event = "Event Flag"
   )
 
@@ -114,7 +124,7 @@ a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 
 ## Table of survival times by subgroup.
 basic_table() \%>\%
-  tabulate_survival_subgroups(vars = c("n", "median")) \%>\%
+  tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte$AVALU[1]) \%>\%
   build_table(df$survtime)
 
 ## Table of hazard ratios by subgroup.

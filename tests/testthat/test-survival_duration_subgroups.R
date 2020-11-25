@@ -1,4 +1,5 @@
 library(random.cdisc.data)
+library(dplyr)
 
 preprocess_adtte <- function(adtte) {
 
@@ -15,11 +16,13 @@ preprocess_adtte <- function(adtte) {
       # Reorder levels of ARM to display reference arm before treatment arm.
       ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
       SEX = droplevels(SEX),
+      AVALU = as.character(AVALU),
       is_event = CNSR == 0
     ) %>%
     var_relabel(
       ARM = adtte_labels["ARM"],
       SEX = adtte_labels["SEX"],
+      AVALU = adtte_labels["AVALU"],
       is_event = "Event Flag"
     )
 
@@ -75,6 +78,49 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
 
 })
 
+test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte()
+
+  result <- extract_survival_subgroups(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
+    data = adtte
+  )
+
+  expected <- list(
+    survtime = data.frame(
+      arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
+      n = c(134, 134),
+      n_events = c(92, 81),
+      median = c(813.5769, 1010.2328),
+      subgroup = rep("All Patients", 2),
+      var = rep("ALL", 2),
+      var_label = rep("All Patients", 2),
+      row_type = rep("content", 2),
+      stringsAsFactors = FALSE
+    ),
+    hr = data.frame(
+      arm = " ",
+      n_tot = 268,
+      hr = 0.8412573,
+      lcl = 0.6231147,
+      ucl = 1.1357683,
+      conf_level = 0.95,
+      pval = 0.25844564,
+      pval_label = "p-value (log-rank)",
+      subgroup = "All Patients",
+      var = "ALL",
+      var_label = "All Patients",
+      row_type = "content",
+      stringsAsFactors = FALSE
+    )
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+
+})
+
 test_that("a_survival_subgroups functions as expected with valid input", {
 
   df <- data.frame(
@@ -117,7 +163,7 @@ test_that("tabulate_survival_subgroups functions as expected with valid input", 
 
   # Median survival time table.
   result <- basic_table() %>%
-    tabulate_survival_subgroups(vars = c("n", "median")) %>%
+    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte$AVALU[1]) %>%
     build_table(df_survtime)
 
   result_matrix <- to_string_matrix(result)
@@ -126,10 +172,10 @@ test_that("tabulate_survival_subgroups functions as expected with valid input", 
     c(
       "", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
       "LOW", "MEDIUM", "HIGH", "B: Placebo", "n", "134", "", "82",
-      "52", "", "45", "56", "33", "B: Placebo", "Median", "813.6",
+      "52", "", "45", "56", "33", "B: Placebo", "Median (DAYS)", "813.6",
       "", "676.1", "1180.4", "", "818.6", "971.3", "476.9", "A: Drug X",
       "n", "134", "", "79", "55", "", "50", "37", "47", "A: Drug X",
-      "Median", "1010.2", "", "987.2", "1062.6", "", "965.8", "1474.7",
+      "Median (DAYS)", "1010.2", "", "987.2", "1062.6", "", "965.8", "1474.7",
       "956"),
     .Dim = c(10L, 5L)
   )
@@ -160,13 +206,121 @@ test_that("tabulate_survival_subgroups functions as expected with valid input", 
 
 })
 
+test_that("tabulate_survival_subgroups functions as expected with NULL subgroups", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte()
+
+  df <- extract_survival_subgroups(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
+    data = adtte
+  )
+
+  df_survtime <- df$survtime
+  df_hr <- df$hr
+
+  # Median survival time table.
+  result <- basic_table() %>%
+    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte$AVALU[1]) %>%
+    build_table(df_survtime)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "All Patients", "B: Placebo", "n", "134",
+      "B: Placebo", "Median (DAYS)", "813.6", "A: Drug X", "n", "134",
+      "A: Drug X", "Median (DAYS)", "1010.2"),
+    .Dim = c(3L, 5L)
+  )
+  expect_equal(result_matrix, expected_matrix)
+
+  # Hazard rato table with non-default inputs.
+  result <- basic_table() %>%
+    tabulate_survival_subgroups(
+      vars = c("n_tot", "hr", "ci", "pval"),
+      control = control_coxph(conf_level = 0.9)
+    ) %>%
+    build_table(df_hr)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "All Patients", " ", "Total n", "268", " ",
+      "Hazard Ratio", "0.84", " ", "90% Wald CI", "(0.62, 1.14)", " ",
+      "p-value (log-rank)", "0.2584"),
+    .Dim = c(3L, 5L)
+    )
+  expect_equal(result_matrix, expected_matrix)
+
+})
+
+test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte() %>%
+    filter(COUNTRY %in% c("RUS", "GBR"))
+
+  df <- expect_warning(extract_survival_subgroups(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),
+    data = adtte
+  ))
+
+  df_survtime <- df$survtime
+  df_hr <- df$hr
+
+  # Median survival time table.
+  result <- basic_table() %>%
+    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte$AVALU[1]) %>%
+    build_table(df_survtime)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "All Patients", "Country", "RUS", "GBR",
+      "B: Placebo", "n", "11", "", "8", "3", "B: Placebo", "Median (DAYS)",
+      "533.3", "", "375.5", "NA", "A: Drug X", "n", "9", "", "5", "4",
+      "A: Drug X", "Median (DAYS)", "1541.3", "", "NA", "1541.3"
+      ),
+    .Dim = 6:5
+    )
+
+  expect_equal(result_matrix, expected_matrix)
+
+  # Hazard rato table with non-default inputs.
+  result <- basic_table() %>%
+    tabulate_survival_subgroups(
+      vars = c("n_tot", "hr", "ci", "pval"),
+      control = control_coxph(conf_level = 0.9)
+    ) %>%
+    build_table(df_hr)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "All Patients", "Country", "RUS", "GBR",
+      " ", "Total n", "20", "", "13", "7", " ", "Hazard Ratio", "0.13",
+      "", "0.14", "<0.01", " ", "90% Wald CI", "(0.02, 1.07)", "",
+      "(0.02, 1.20)", "(0.00, >999.99)", " ", "p-value (log-rank)",
+      "0.0257", "", "0.0387", "0.4142"
+      ),
+    .Dim = 6:5
+    )
+  expect_equal(result_matrix, expected_matrix)
+
+})
+
 test_that("d_survival_subgroups_colvars functions as expected with valid input", {
 
   vars <- c("n", "n_events", "median", "n_tot", "hr", "ci", "pval")
 
   result <- d_survival_subgroups_colvars(
     vars = vars,
-    control = control_coxph(conf_level = 0.9)
+    control = control_coxph(conf_level = 0.9),
+    time_unit = "Months"
   )
 
   expected <- list(
@@ -174,7 +328,7 @@ test_that("d_survival_subgroups_colvars functions as expected with valid input",
     labels = c(
       n = "n",
       n_events = "Events",
-      median = "Median",
+      median = "Median (Months)",
       n_tot = "Total n",
       hr = "Hazard Ratio",
       ci = "90% Wald CI",

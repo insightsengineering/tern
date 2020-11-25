@@ -106,28 +106,6 @@ test_that("h_survtime_df functions as expected when 0 records in one group", {
 
 })
 
-test_that("h_survtime_df functions as expected with valid input and default arguments", {
-
-  adtte <- radtte(cached = TRUE) %>%
-    preprocess_adtte()
-
-  result <- h_survtime_df(
-    tte = adtte$AVAL,
-    is_event = adtte$is_event,
-    arm = adtte$ARM
-  )
-
-  expected <- data.frame(
-    arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
-    n = c(134, 134),
-    n_events = c(92, 81),
-    median = c(813.5768, 1010.2328),
-    stringsAsFactors = FALSE
-  )
-
-  expect_equal(result, expected, tolerance = 0.000001)
-})
-
 test_that("h_survtime_df fails with wrong input", {
 
   expect_error(h_survtime_df(
@@ -224,6 +202,32 @@ test_that("h_survtime_subgroups_df functions as expected with valid input and de
     var = c(rep("ALL", 2), rep("SEX", 4), rep("BMRKR2", 6)),
     var_label = c(rep("All Patients", 2), rep("Sex", 4), rep("Categorical Level Biomarker 2", 6)),
     row_type = c(rep("content", 2), rep("analysis", 10)),
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+
+})
+
+test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte()
+
+  result <- h_survtime_subgroups_df(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
+    data = adtte
+  )
+
+  expected <- data.frame(
+    arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
+    n = c(134, 134),
+    n_events = c(92, 81),
+    median = c(813.5769, 1010.2328),
+    subgroup = c("All Patients", "All Patients"),
+    var = c(rep("ALL", 2)),
+    var_label = c(rep("All Patients", 2)),
+    row_type = c(rep("content", 2)),
     stringsAsFactors = FALSE
   )
 
@@ -351,7 +355,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
 
   expect_equal(result, expected, tol = 0.000001)
 
-  # Test edge case where HR I is (0, Inf)
+  # Test edge case where HR is (0, Inf)
   adtte <- radtte(cached = TRUE) %>%
     preprocess_adtte() %>%
     filter(COUNTRY %in% c("CAN", "GBR"))
@@ -410,3 +414,32 @@ test_that("h_coxph_subgroups_df functions as expected with with stratification f
   expect_equal(result, expected, tol = 0.000001)
 
 })
+
+test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte()
+
+  result <- h_coxph_subgroups_df(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
+    data = adtte
+  )
+
+  expected <- data.frame(
+    arm = " ",
+    n_tot = 268,
+    hr = 0.8412573,
+    lcl = 0.6231147,
+    ucl = 1.1357683,
+    conf_level = 0.95,
+    pval = 0.25844564,
+    pval_label = "p-value (log-rank)",
+    subgroup = "All Patients",
+    var = "ALL",
+    var_label = "All Patients",
+    row_type = "content",
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+  })
