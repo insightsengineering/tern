@@ -214,19 +214,6 @@ capitalize <- function(x) {
   paste0(toupper(substring(x, 1, 1)), substring(x, 2))
 }
 
-
-# From DescTools/versions/0.99.35/source, used in tern::stat_median_ci
-strip_attr <- function(x, attr_names = NULL) {
-
-  if (is.null(attr_names))
-    attributes(x) <- NULL
-  else
-    for (a in attr_names)
-      attr(x, which = a) <- NULL
-
-    return(x)
-}
-
 #' Cut a character string at a certain width
 #' @noRd
 trunc_if_longer <- function(x, width = 40) {

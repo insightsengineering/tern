@@ -7,11 +7,11 @@
 stat_median_ci(x, conf_level = 0.95, na.rm = TRUE)
 }
 \arguments{
-\item{x}{A vector of values.}
+\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{conf_level}{Level of confidence for the interval (aka 1 - alpha)}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{na.rm}{Remove the missing data.}
+\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 }
 \description{
 Convenient function for the addition of the median confidence intervals as

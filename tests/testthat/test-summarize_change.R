@@ -16,7 +16,9 @@ test_that("s_change_from_baseline handles empty data (complete missing for a vis
     n = 0L,
     mean_sd = c(mean = NA_real_, sd = NA_real_),
     median = NA_real_,
-    range = c(NA_real_, NA_real_)
+    range = c(NA_real_, NA_real_),
+    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
+    median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
   )
 
   expect_identical(result, expected)
@@ -40,10 +42,12 @@ test_that("s_change_from_baseline handles NA in baseline values", {
     n = 3L,
     mean_sd = c(mean = 3, sd = 3),
     median = 3,
-    range = c(0, 6)
+    range = c(0, 6),
+    mean_ci = with_label(c(-4.452413, 10.452413), "Mean 95% CI"),
+    median_ci =  with_label(c(-Inf, Inf), "Median 95% CI")
   )
 
-  expect_identical(result, expected)
+  expect_equal(result, expected, tol = 1e-6)
 })
 
 test_that("s_change_from_baseline handles baseline substitution", {
@@ -67,14 +71,18 @@ test_that("s_change_from_baseline handles baseline substitution", {
       n = 2L,
       mean_sd = c(mean = 1.5, sd = 0.7071068),
       median = 1.5,
-      range = c(1, 2)
+      range = c(1, 2),
+      mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
+      median_ci =  with_label(c(-Inf, Inf), "Median 95% CI")
     ),
     # Here we take the summary of the 2 baseline values.
     `TRUE` = list(
       n = 2L,
       mean_sd = c(mean = 2.5, sd = 2.12132),
       median = 2.5,
-      range = c(1, 4)
+      range = c(1, 4),
+      mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
+      median_ci =  with_label(c(-Inf, Inf), "Median 95% CI")
     )
   )
 

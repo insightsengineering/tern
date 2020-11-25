@@ -67,7 +67,12 @@ s_change_from_baseline <- function(df,
 a_change_from_baseline <- make_afun(
   s_change_from_baseline,
   .formats = c(
-    n = "xx", mean_sd = "xx.xx (xx.xx)", median = "xx.xx", range = "xx.xx - xx.xx"
+    n = "xx",
+    mean_sd = "xx.xx (xx.xx)",
+    median = "xx.xx",
+    range = "xx.xx - xx.xx",
+    mean_ci = "(xx.xx, xx.xx)",
+    median_ci = "(xx.xx, xx.xx)"
   ),
   .labels = c(
     mean_sd = "Mean (SD)",
@@ -113,7 +118,7 @@ a_change_from_baseline <- make_afun(
 summarize_change <- function(lyt,
                              vars,
                              ...,
-                             .stats = NULL,
+                             .stats = c("n", "mean_sd", "median", "range"),
                              .formats = NULL,
                              .labels = NULL,
                              .indent_mods = NULL) {

@@ -14,7 +14,7 @@ summarize_change(
   lyt,
   vars,
   ...,
-  .stats = NULL,
+  .stats = c("n", "mean_sd", "median", "range"),
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL

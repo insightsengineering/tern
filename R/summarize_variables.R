@@ -37,6 +37,8 @@ s_summary <- function(x,
 #' - `n`: the [length()] of `x`.
 #' - `mean_sd`: the [mean()] and [sd()].
 #' - `median`: the [median()].
+#' - `mean_ci`: the CI for the mean (from [stat_mean_ci()]).
+#' - `median_ci`: the CI for the median (from [stat_median_ci()]).
 #' - `range`: the [range()].
 #' @method s_summary numeric
 #' @order 3
@@ -78,6 +80,7 @@ s_summary <- function(x,
 #'
 s_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
+                              conf_level = 0.95,
                               ...) {
   assert_that(is.numeric(x))
 
@@ -93,6 +96,15 @@ s_summary.numeric <- function(x,
   )
   y$median <- stats::median(x)
   y$range <- if (dn > 0) range(x) else rep(NA_real_, 2)
+
+  mean_ci_df <- stat_mean_ci(x, conf_level = conf_level, na.rm = na.rm)
+  mean_ci <- unname(as.numeric(mean_ci_df[, c("ymin", "ymax")]))
+  y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(conf_level)))
+
+  median_ci_df <- stat_median_ci(x, conf_level = conf_level, na.rm = na.rm)
+  median_ci <- unname(as.numeric(median_ci_df[, c("ymin", "ymax")]))
+  y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(conf_level)))
+
   y
 }
 
@@ -281,7 +293,9 @@ a_summary.numeric <- make_afun(
     n = "xx.",
     mean_sd = "xx.x (xx.x)",
     median = "xx.x",
-    range = "xx.x - xx.x"
+    range = "xx.x - xx.x",
+    mean_ci = "(xx.xx, xx.xx)",
+    median_ci = "(xx.xx, xx.xx)"
   ),
   .labels = c(
     mean_sd = "Mean (SD)",
@@ -379,7 +393,10 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
       UseMethod("afun", x)
     }
 
-    numeric_stats <- afun_selected_stats(.stats, c("n", "mean_sd", "median", "range"))
+    numeric_stats <- afun_selected_stats(
+      .stats,
+      c("n", "mean_sd", "median", "range", "mean_ci", "median_ci")
+    )
     afun.numeric <- make_afun( #nolint
       a_summary.numeric,
       .stats = numeric_stats,

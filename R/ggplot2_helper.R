@@ -3,11 +3,9 @@
 #' Convenient function for the addition of mean confidence intervals as
 #' error bars.
 #'
-#' @param x A vector of values.
-#' @param conf_level Level of confidence for the interval (aka 1 - alpha)
-#' @param na.rm Remove the missing data.
-#' @param n_lim The threshold number of non-missing \code{x} to estimate
-#'  the confidence interval for mean of \code{x}.
+#' @inheritParams argument_convention
+#' @param n_lim (`number`)\cr threshold number of non-missing `x` to estimate
+#'     the confidence interval for mean.
 #'
 #' @importFrom stats sd
 #' @export
@@ -24,6 +22,7 @@
 #'   fun.data = function(x) stat_mean_ci(x, conf_level = 0.5),
 #'   geom = "errorbar", aes(group = 1, linetype = "mean")
 #' )
+#'
 stat_mean_ci <- function(x,
                          conf_level = 0.95,
                          na.rm = TRUE,  # nolint
@@ -31,18 +30,16 @@ stat_mean_ci <- function(x,
   if (na.rm) x <- na.omit(x)
   n <- length(x)
   mean <- mean(x)
-  hci  <- qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
 
-  lcl <-  mean - hci
-  ucl <-  mean + hci
-
-  y <- if (n <= n_lim) {
+  if (n <= n_lim) {
     data.frame(y = mean, ymin = NA, ymax = NA)
   } else {
+    hci  <- qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
+    lcl <-  mean - hci
+    ucl <-  mean + hci
     data.frame(y = mean, ymin = lcl, ymax = ucl)
   }
 
-  return(y)
 }
 
 
@@ -51,15 +48,12 @@ stat_mean_ci <- function(x,
 #' Convenient function for the addition of the median confidence intervals as
 #' error bars.
 #'
-#' @param x A vector of values.
-#' @param conf_level Level of confidence for the interval (aka 1 - alpha)
-#' @param na.rm Remove the missing data.
+#' @inheritParams argument_convention
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
 #' @importFrom  stats pbinom qbinom qt median
 #' @export
-#' @md
 #'
 #' @examples
 #' require(ggplot2)
@@ -68,6 +62,7 @@ stat_mean_ci <- function(x,
 #'   fun.data = stat_median_ci, geom = "errorbar",
 #'   aes(group = 1, linetype = "median")
 #' )
+
 stat_median_ci <- function(x,
                            conf_level = 0.95,
                            na.rm = TRUE) { # nolint
@@ -82,7 +77,7 @@ stat_median_ci <- function(x,
   attr(ci, "conf_level") <- 1 - 2 * pbinom(k - 1, size = n, prob = 0.5)
 
   # confints for small samples can be outside the observed range e.g. n < 6
-  if (identical(strip_attr(ci), NA_real_)) {
+  if (all(is.na(ci))) {
     ci <- c(-Inf, Inf)
     attr(ci, "conf_level") <- 1
   }
@@ -95,7 +90,5 @@ stat_median_ci <- function(x,
     ci <- c(median = med, ci)
   }
   names(ci) <- c("y", "ymin", "ymax")
-  ci <- as.data.frame(t(ci))
-
-  return(ci)
+  as.data.frame(t(ci))
 }

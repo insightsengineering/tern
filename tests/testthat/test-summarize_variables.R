@@ -1,40 +1,76 @@
 test_that("s_summary return NA for x length 0L", {
 
   x <- numeric()
-  expected <-  list(
-    n = 0, range = c(NA_real_, NA_real_),
-    median_sd = NA_real_, mean = c(NA_real_, NA_real_)
+
+  result <- s_summary(x)
+  expected <- list(
+    n = 0,
+    range = c(NA_real_, NA_real_),
+    median_sd = NA_real_,
+    mean = c(NA_real_, NA_real_),
+    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
+    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
   )
-
-  expect_equivalent(s_summary(x), expected)
+  expect_equivalent(result, expected)
 })
-
 
 test_that("s_summary handles NA", {
 
   x <- c(NA_real_, 1)
 
   # With `na.rm = TRUE`.
-  expected <- list(n = 1, mean_sd = c(1, NA), median = 1, range = c(1, 1))
-  expect_equivalent(s_summary(x), expected)
+  result <- s_summary(x)
+  expected <- list(
+    n = 1,
+    mean_sd = c(1, NA),
+    median = 1,
+    range = c(1, 1),
+    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
+    median = with_label(c(-Inf, Inf), "Median 95% CI")
+  )
+  expect_equivalent(result, expected)
 
   # With `na.rm = FALSE`.
+  result <- s_summary(x, na.rm = FALSE)
   expected <- list(
-    n = 2, mean_sd = c(NA_real_, NA_real_),
-    median = NA_real_, range = c(NA_real_, NA_real_)
+    n = 2,
+    mean_sd = c(NA_real_, NA_real_),
+    median = NA_real_,
+    range = c(NA_real_, NA_real_),
+    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
+    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
   )
-  expect_equivalent(s_summary(x, na.rm = FALSE), expected)
+  expect_equivalent(result, expected)
 })
 
-
-test_that("s_summary returns right results", {
+test_that("s_summary returns right results for n = 2", {
 
   x <- c(NA_real_, 1, 2)
+  result <- s_summary(x)
   expected <- list(
-    n = 2, mean_sd = c(1.5, 0.7071068), median = 1.5, range = c(1, 2)
+    n = 2,
+    mean_sd = c(1.5, 0.7071068),
+    median = 1.5,
+    range = c(1, 2),
+    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
+    median_ci = with_label(c(-Inf, Inf), "Median 95% CI")
   )
+  expect_equivalent(result, expected, tolerance = .00001)
+})
 
-  expect_equivalent(s_summary(x), expected, tolerance = .00001)
+test_that("s_summary returns right results for n = 8", {
+
+  x <- c(NA_real_, 1, 2, 5, 6, 7, 8, 9, 10)
+  result <- s_summary(x)
+  expected <- list(
+    n = 8,
+    mean_sd = c(6, 3.207135),
+    median = 6.5,
+    range = c(1, 10),
+    mean_ci = with_label(c(3.318768, 8.681232), "Mean 95% CI"),
+    median_ci = with_label(c(1, 10), "Median 95% CI")
+  )
+  expect_equivalent(result, expected, tolerance = .00001)
 })
 
 test_that("s_summary works with factors", {
@@ -213,7 +249,7 @@ test_that("s_summary works with logical vectors and by if requested does not rem
 
 test_that("create_afun_summary creates an `afun` that works", {
   afun <- create_afun_summary(
-    .stats = c("n", "count_fraction", "median", "range"),
+    .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
     .formats = c(median = "xx."),
     .labels = c(median = "My median"),
     .indent_mods = c(median = 1L)
@@ -234,18 +270,21 @@ test_that("create_afun_summary creates an `afun` that works", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "V1", "AVAL", "n", "My median", "Min - Max",
-      "ARM", "n", "A", "B", "C", "V2", "AVAL", "n", "My median", "Min - Max",
-      "ARM", "n", "A", "B", "C", "V3", "AVAL", "n", "My median", "Min - Max",
-      "ARM", "n", "A", "B", "C", "A", "", "", "2", "8", "6 - 9", "",
-      "2", "2 (100%)", "0", "0", "", "", "2", "6", "5 - 8", "", "2",
-      "2 (100%)", "0", "0", "", "", "2", "6", "4 - 7", "", "2", "2 (100%)",
-      "0", "0", "B", "", "", "1", "3", "3 - 3", "", "2", "0", "2 (100%)",
-      "0", "", "", "1", "2", "2 - 2", "", "2", "0", "2 (100%)", "0",
-      "", "", "1", "1", "1 - 1", "", "2", "0", "2 (100%)", "0", "C",
-      "", "", "0", "NA", "NA - NA", "", "2", "0", "0", "2 (100%)",
-      "", "", "0", "NA", "NA - NA", "", "2", "0", "0", "2 (100%)",
-      "", "", "0", "NA", "NA - NA", "", "2", "0", "0", "2 (100%)"),
-    .Dim = c(31L, 4L)
+      "Mean 95% CI", "ARM", "n", "A", "B", "C", "V2", "AVAL", "n",
+      "My median", "Min - Max", "Mean 95% CI", "ARM", "n", "A", "B",
+      "C", "V3", "AVAL", "n", "My median", "Min - Max", "Mean 95% CI",
+      "ARM", "n", "A", "B", "C", "A", "", "", "2", "8", "6 - 9", "(NA, NA)",
+      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "5 - 8", "(NA, NA)",
+      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "4 - 7", "(NA, NA)",
+      "", "2", "2 (100%)", "0", "0", "B", "", "", "1", "3", "3 - 3",
+      "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1", "2",
+      "2 - 2", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1",
+      "1", "1 - 1", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "C",
+      "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2", "0", "0",
+      "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)", "", "2",
+      "0", "0", "2 (100%)", "", "", "0", "NA", "NA - NA", "(NA, NA)",
+      "", "2", "0", "0", "2 (100%)"),
+    .Dim = c(34L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

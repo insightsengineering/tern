@@ -7,14 +7,14 @@
 stat_mean_ci(x, conf_level = 0.95, na.rm = TRUE, n_lim = 2)
 }
 \arguments{
-\item{x}{A vector of values.}
+\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{conf_level}{Level of confidence for the interval (aka 1 - alpha)}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{na.rm}{Remove the missing data.}
+\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{n_lim}{The threshold number of non-missing \code{x} to estimate
-the confidence interval for mean of \code{x}.}
+\item{n_lim}{(\code{number})\cr threshold number of non-missing \code{x} to estimate
+the confidence interval for mean.}
 }
 \description{
 Convenient function for the addition of mean confidence intervals as
@@ -32,4 +32,5 @@ d + stat_summary(
   fun.data = function(x) stat_mean_ci(x, conf_level = 0.5),
   geom = "errorbar", aes(group = 1, linetype = "mean")
 )
+
 }
