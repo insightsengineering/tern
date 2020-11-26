@@ -45,7 +45,7 @@ test_that("s_odds_ratio estimates right OR and CI", {
   expect_equal(result, expected, tolerance = 1e-4)
 })
 
-test_that("s_odds_ratio estimates right OR and CI", {
+test_that("estimate_odds_ratio estimates right OR and CI", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
     grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)]

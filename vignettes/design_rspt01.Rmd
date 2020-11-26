@@ -1,6 +1,6 @@
 ---
 title: "Design: Best overall response (RSPT01)"
-author: "Francois Collin"
+author: "Francois Collin, Daniel Sabanes Bove"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -25,9 +25,10 @@ knitr::opts_chunk$set(
 Configuration
 =============
 
-```{r setup, eval = FALSE}
+```{r setup, eval = TRUE}
 library(rtables)
 library(tern)
+library(assertthat)
 
 packageVersion("tern")
 packageVersion("rtables")
@@ -240,43 +241,65 @@ build_table(l, df = dta)
 cat ../R/odds_ratio.R
 ```
 
-### Limits
+### New Additions for Stratified Odds Ratio estimation
 
-#### `or_clogit` - wrong implementation
+- `or_clogit()`
+- modifications for Statistics and Layout creating functions
 
-```{r, eval = FALSE}
+#### `or_clogit`
+
+```{r or_clogit}
 library(survival)
+
 #' OR with Strata by Conditional Likelihood
 #'
 #' The odds ratio is estimated by conditional likelihood using
-#' [survival::clogit()].
+#' [survival::clogit()]. This is done for the whole data set including all groups, since 
+#' the results are not the same as when doing pairwise comparisons between the groups.
 #'
 #' @inheritParams argument_convention
 #' @param data (`data frame`)\cr
 #'   includes the three variables `rsp`, `grp` and `strata`.
 #' @importFrom survival strata clogit coxph
+#'
 or_clogit <- function(data, conf_level) {
 
+  assert_that(
+    is_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata")),
+    is.logical(data$rsp),
+    is_character_or_factor(data$grp),
+    is_character_or_factor(data$strata),
+    is_proportion(conf_level)
+  )
+  
+  data$grp <- as_factor_keep_attributes(data$grp)
+  data$strata <- as_factor_keep_attributes(data$strata)
+  
   # Deviation from convention: `survival::strata` must be simply `strata`.
   formula <- stats::as.formula("rsp ~ grp + strata(strata)")
   model_fit <- survival::clogit(formula = formula, data = data)
 
-  list(
-    or_ci = c(
-      exp(stats::coef(model_fit)),
-      exp(stats::confint(model_fit, level = conf_level))
+  # Create a list with one set of OR estimates and CI per coefficient, i.e.
+  # comparison of one group vs. the reference group.
+  coef_est <- stats::coef(model_fit)
+  ci_est <- stats::confint(model_fit, level = conf_level)
+  or_ci <- list()
+  for (coef_name in names(coef_est)) {
+    grp_name <- gsub("^grp", "", x = coef_name)
+    or_ci[[grp_name]] <- setNames(
+      object = exp(c(coef_est[coef_name], ci_est[coef_name, , drop = TRUE])),
+      nm = c("est", "lcl", "ucl")
     )
-  )
-
+  }
+  list(or_ci = or_ci)
 }
 ```
 
-The `clogit`-based prototype is flawed as the OR estimates obtained for a
+Note that OR estimates obtained for a
 model fitted on data subset is not equivalent to the estimates based on the
-complete dataset. This is typically the case of `rtables` workflow working
-by column (eventually in comparison to a reference):
+complete dataset:
 
-```{r, eval = FALSE}
+```{r show_diff_or_clogit}
 data <- data.frame(
   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
   grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
@@ -297,6 +320,137 @@ data$grp <- droplevels(data$grp)
 or_clogit(data, conf_level = 0.95)
 ```
 
+#### Modified `s_odds_ratio()`
+
+The statistics function needs to use the whole data set for fitting if a stratified analysis is chosen, and then
+select the result which is required for this column.
+
+Now we need a `variables` argument which the user can use to specify the stratification and the arm variable.
+Note that we need the arm variable since we need to know which to use as the `grp` input for the estimation. 
+This was not necessary with the pairwise comparison in `or_glm` since we could work with the subsets of the data frame, i.e. we implictly knew which group has which data already.
+
+```{r s_odds_ratio_strat}
+s_odds_ratio <- function(df,
+                         .var,
+                         .ref_group,
+                         .in_ref_col,
+                         .df_row,
+                         variables = list(arm = NULL, strata = NULL),
+                         conf_level = 0.95) {
+  y <- list(or_ci = "")
+
+  if (!.in_ref_col) {
+    assert_that(
+      is_df_with_variables(df, list(rsp = .var)),
+      is_df_with_variables(.ref_group, list(rsp = .var)),
+      is_proportion(conf_level)
+    )
+    
+    if (is.null(variables$strata)) {
+      data <- data.frame(
+        rsp = c(.ref_group[[.var]], df[[.var]]),
+        grp = factor(
+          rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
+          levels = c("ref", "Not-ref")
+        )
+      )
+      y <- or_glm(data, conf_level = conf_level)
+    } else {
+      assert_that(
+        is_df_with_variables(.df_row, c(list(rsp = .var), variables))
+      )
+      data <- data.frame(
+        rsp = .df_row[[.var]],
+        grp = .df_row[[variables$arm]],
+        strata = .df_row[[variables$strata]]
+      )
+      y_all <- or_clogit(data, conf_level = conf_level)
+      this_grp <- as.character(unique(df[[variables$arm]]))
+      assert_that(is.string(this_grp))
+      y$or_ci <- y_all$or_ci[[this_grp]]
+    }
+  }
+
+  y$or_ci <- with_label(
+    x = y$or_ci,
+    label = paste0("Odds Ratio (", 100 * conf_level, "% CI)")
+  )
+  y
+}
+```
+
+Let's try it out:
+
+```{r try_new_s_odds_ratio}
+data <- data.frame(
+  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+  grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+  strata = letters[c(1, 1, 2, 2, 1, 2, 1, 1, 2, 2)]
+)
+
+result <- s_odds_ratio(
+  df = subset(data, grp == "b"),
+  variables = list(arm = "grp", strata = "strata"),
+  .df_row = data,
+  .var = "rsp",
+  .ref_group = subset(data, grp == "a"),
+  .in_ref_col = FALSE
+)
+```
+So it looks like it is working.
+
+#### Test the layout creating function
+
+It seems like we don't need to modify `estimate_odds_ratio`. Let's try - we just need to copy the functions here so
+that we override the Formatted analysis function.
+
+```{r test_estimate_or_stratified}
+a_odds_ratio <- make_afun(
+  s_odds_ratio,
+  .formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
+  .indent_mods = c(or_ci = 1L)
+)
+
+estimate_odds_ratio <- function(lyt,
+                                vars,
+                                ...,
+                                show_labels = "hidden",
+                                .stats = NULL,
+                                .formats = NULL,
+                                .labels = NULL,
+                                .indent_mods = NULL) {
+  afun <- make_afun(
+    a_odds_ratio,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
+  )
+
+  analyze(
+    lyt,
+    vars,
+    afun = afun,
+    extra_args = list(...),
+    show_labels = show_labels
+  )
+}
+
+data <- data.frame(
+  rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+  grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+  strata = letters[c(1, 1, 2, 2, 1, 2, 1, 1, 2, 2)]
+)
+
+result <- basic_table() %>%
+  split_cols_by(var = "grp", ref_group = "a") %>%
+  estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata")) %>%
+  build_table(df = data)
+result
+
+```
+
+So this seems to work ok.
 
 Estimate multinomial response
 -----------------------------
