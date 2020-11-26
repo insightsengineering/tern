@@ -5,7 +5,9 @@
 \title{Kaplan-Meier Plot}
 \usage{
 g_km(
-  fit_km,
+  df,
+  variables = list(tte, is_event, arm, strat = NULL),
+  control_surv = control_surv_timepoint(),
   xticks = NULL,
   col = NULL,
   lty = NULL,
@@ -22,13 +24,33 @@ g_km(
   gp = NULL,
   vp = NULL,
   name = NULL,
+  font_size = 12,
   ggtheme = NULL,
   annot_at_risk = TRUE,
-  annot_surv_med = TRUE
+  annot_surv_med = TRUE,
+  annot_coxph = FALSE,
+  control_coxph_pw = control_coxph(),
+  position_coxph = c(0, 0)
 )
 }
 \arguments{
-\item{fit_km}{(\code{survfit})\cr see \code{\link[survival:survfit]{survival::survfit()}}.}
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{variables}{a (\code{list}) of for variable names. Details are: \cr
+\itemize{
+\item \code{tte}: variable indicating time-to-event duration values.
+\item \code{is_event}: event variable (\code{logical}) \cr \code{TRUE} if event, \code{FALSE} if time to event is censored.
+\item \code{arm}: the treatment group variable (`factor``)
+\item \code{strat} (\code{character} or \code{NULL}) variable names indicating stratification factors.
+}}
+
+\item{control_surv}{a (\code{list}) of parameters for comparison details, specified by using \cr
+the helper function \link{control_surv_timepoint}. Some possible parameter options are: \cr
+\itemize{
+\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
+\item \code{conf_type}: (\code{string}) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
+see more in \code{\link[survival:survfit]{survival::survfit()}}.
+}}
 
 \item{xticks}{(\code{numeric} or \code{number})\cr
 numeric vector of ticks or single number with spacing
@@ -83,6 +105,20 @@ Kaplan-Meier curve.}
 \item{annot_surv_med}{(\code{flag})\cr compute and add the annotation table
 on the top right corner of the Kaplan-Meier curve estimating the
 median survival time per group.}
+
+\item{annot_coxph}{(\code{flag})\cr add the annotation table from a \code{\link[survival:coxph]{survival::coxph()}} model.}
+
+\item{control_coxph_pw}{(\code{list}) \cr parameters for comparison details, specified by using \cr
+the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
+\itemize{
+\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
+Default method is "log-rank", can also be set to "wald" or "likelihood".
+\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
+can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
+\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
+}}
+
+\item{position_coxph}{\code{numeric} \cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
 }
 \description{
 From a survival model, a graphic is rendered along with tabulated annotation
@@ -95,18 +131,22 @@ library(random.cdisc.data)
 library(dplyr)
 library(survival)
 library(grid)
-
-fit_km <- radtte(cached = TRUE) \%>\%
+df <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
-  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-
+  mutate(is_event = CNSR == 0)
+variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 # 1. Example - basic option
 
-res <- g_km(fit_km = fit_km)
-res <- g_km(fit_km = fit_km, col = c("grey25", "grey50", "grey75"))
-res <- g_km(fit_km = fit_km, ggtheme = ggplot2::theme_minimal())
-res <- g_km(fit_km = fit_km, ggtheme = ggplot2::theme_minimal(), lty = 1:3)
-res <- g_km(fit_km = fit_km, max = 2000)
+res <- g_km(df = df, variables = variables)
+res <- g_km(
+  df = df,
+  variables = variables,
+  control_surv = control_surv_timepoint(conf_level = 0.9),
+  col = c("grey25", "grey50", "grey75")
+)
+res <- g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal())
+res <- g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal(), lty = 1:3)
+res <- g_km(df = df, variables = variables, max = 2000)
 
 # 2. Example - Arrange several KM curve on a single graph device
 
@@ -117,11 +157,11 @@ lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
   pushViewport()
 
 res <- g_km(
-  fit_km = fit_km, newpage = FALSE, annot_surv_med = FALSE,
+  df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
   vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
-  fit_km = fit_km, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
+  df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
   ggtheme = ggplot2::theme_dark(),
   vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
 )
@@ -133,15 +173,29 @@ lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
   pushViewport()
 
 res <- g_km(
-  fit_km = fit_km, newpage = FALSE,
+  df = df, variables = variables, newpage = FALSE,
   annot_surv_med = FALSE, annot_at_risk = FALSE,
   vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
-  fit_km = fit_km, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
+  df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
   annot_at_risk = TRUE,
   ggtheme = ggplot2::theme_dark(),
   vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
+)
+
+# Add annotation from a pairwise coxph analysis
+g_km(
+  df = df, variables = variables,
+  annot_coxph = TRUE
+)
+
+g_km(
+  df = df, variables = c(variables, list(strat = "SEX")),
+  font_size = 15,
+  annot_coxph = TRUE,
+  control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+  position_coxph = c(0.4, 0.5)
 )
 
 }

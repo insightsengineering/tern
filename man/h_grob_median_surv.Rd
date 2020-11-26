@@ -7,8 +7,6 @@
 h_grob_median_surv(fit_km, ttheme = gridExtra::ttheme_default())
 }
 \arguments{
-\item{fit_km}{(\code{survfit})\cr see \code{\link[survival:survfit]{survival::survfit()}}.}
-
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }
 \description{

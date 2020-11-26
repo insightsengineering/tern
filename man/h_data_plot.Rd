@@ -7,8 +7,6 @@
 h_data_plot(fit_km, xticks = NULL, max_time = NULL)
 }
 \arguments{
-\item{fit_km}{(\code{survfit})\cr see \code{\link[survival:survfit]{survival::survfit()}}.}
-
 \item{xticks}{(\code{numeric} or \code{number})\cr
 numeric vector of ticks or single number with spacing
 between ticks on the x axis.

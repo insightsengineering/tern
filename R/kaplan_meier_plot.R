@@ -1,7 +1,18 @@
 #' Kaplan-Meier Plot
 #'
+#'
+#' @param df (`data frame`)\cr data set containing all analysis variables.
+#' @param variables a (`list`) of for variable names. Details are: \cr
+#' * `tte`: variable indicating time-to-event duration values.
+#' * `is_event`: event variable (`logical`) \cr `TRUE` if event, `FALSE` if time to event is censored.
+#' * `arm`: the treatment group variable (`factor``)
+#' * `strat` (`character` or `NULL`) variable names indicating stratification factors.
+#' @param control_surv a (`list`) of parameters for comparison details, specified by using \cr
+#'    the helper function [control_surv_timepoint]. Some possible parameter options are: \cr
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
+#' * `conf_type`: (`string`) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
+#'    see more in [survival::survfit()].
 #' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
-#' @param fit_km (`survfit`)\cr see [survival::survfit()].
 #' @param xticks (`numeric` or `number`)\cr
 #'   numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis.
@@ -31,6 +42,15 @@
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table
 #'   on the top right corner of the Kaplan-Meier curve estimating the
 #'   median survival time per group.
+#' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
+#' @param control_coxph_pw (`list`) \cr parameters for comparison details, specified by using \cr
+#'    the helper function [control_coxph()]. Some possible parameter options are: \cr
+#' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
+#'   Default method is "log-rank", can also be set to "wald" or "likelihood".
+#' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
+#'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
+#' @param position_coxph `numeric` \cr x and y positions for plotting [survival::coxph()] model.
 #'
 #' @name kaplan_meier
 #'
@@ -51,18 +71,22 @@ NULL
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
-#'
-#' fit_km <- radtte(cached = TRUE) %>%
+#' df <- radtte(cached = TRUE) %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#'
+#'   mutate(is_event = CNSR == 0)
+#' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 #' # 1. Example - basic option
 #'
-#' res <- g_km(fit_km = fit_km)
-#' res <- g_km(fit_km = fit_km, col = c("grey25", "grey50", "grey75"))
-#' res <- g_km(fit_km = fit_km, ggtheme = ggplot2::theme_minimal())
-#' res <- g_km(fit_km = fit_km, ggtheme = ggplot2::theme_minimal(), lty = 1:3)
-#' res <- g_km(fit_km = fit_km, max = 2000)
+#' res <- g_km(df = df, variables = variables)
+#' res <- g_km(
+#'   df = df,
+#'   variables = variables,
+#'   control_surv = control_surv_timepoint(conf_level = 0.9),
+#'   col = c("grey25", "grey50", "grey75")
+#' )
+#' res <- g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal())
+#' res <- g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal(), lty = 1:3)
+#' res <- g_km(df = df, variables = variables, max = 2000)
 #'
 #' # 2. Example - Arrange several KM curve on a single graph device
 #'
@@ -73,11 +97,11 @@ NULL
 #'   pushViewport()
 #'
 #' res <- g_km(
-#'   fit_km = fit_km, newpage = FALSE, annot_surv_med = FALSE,
+#'   df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
 #'   vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
 #' )
 #' res <- g_km(
-#'   fit_km = fit_km, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
+#'   df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
 #'   ggtheme = ggplot2::theme_dark(),
 #'   vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
 #' )
@@ -89,18 +113,34 @@ NULL
 #'   pushViewport()
 #'
 #' res <- g_km(
-#'   fit_km = fit_km, newpage = FALSE,
+#'   df = df, variables = variables, newpage = FALSE,
 #'   annot_surv_med = FALSE, annot_at_risk = FALSE,
 #'   vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
 #' )
 #' res <- g_km(
-#'   fit_km = fit_km, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
+#'   df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
 #'   annot_at_risk = TRUE,
 #'   ggtheme = ggplot2::theme_dark(),
 #'   vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
 #' )
 #'
-g_km <- function(fit_km,
+#' # Add annotation from a pairwise coxph analysis
+#' g_km(
+#'   df = df, variables = variables,
+#'   annot_coxph = TRUE
+#' )
+#'
+#' g_km(
+#'   df = df, variables = c(variables, list(strat = "SEX")),
+#'   font_size = 15,
+#'   annot_coxph = TRUE,
+#'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+#'   position_coxph = c(0.4, 0.5)
+#' )
+#'
+g_km <- function(df,
+                 variables = list(tte, is_event, arm, strat = NULL),
+                 control_surv = control_surv_timepoint(),
                  xticks = NULL,
                  col = NULL,
                  lty = NULL,
@@ -117,11 +157,33 @@ g_km <- function(fit_km,
                  gp = NULL,
                  vp = NULL,
                  name = NULL,
-                 # New arguments:
+                 font_size = 12,
                  ggtheme = NULL,
                  annot_at_risk = TRUE,
-                 annot_surv_med = TRUE) {
-
+                 annot_surv_med = TRUE,
+                 annot_coxph = FALSE,
+                 control_coxph_pw = control_coxph(),
+                 position_coxph = c(0, 0)) {
+  assert_that(
+    is.list(variables),
+    all(c("tte", "arm", "is_event") %in% names(variables))
+  )
+  tte <- variables$tte
+  is_event <- variables$is_event
+  arm <- variables$arm
+  assert_that(
+    is_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm)),
+    is_numeric_vector(df[[tte]]),
+    is_valid_factor(df[[arm]]),
+    is_logical_vector(df[[is_event]])
+  )
+  formula <- as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", arm))
+  fit_km <- survival::survfit(
+    formula = formula,
+    data = df,
+    conf.int = control_surv$conf_level,
+    conf.type = control_surv$conf_type
+  )
   data_plot <- h_data_plot(
     fit_km = fit_km,
     xticks = xticks,
@@ -177,7 +239,30 @@ g_km <- function(fit_km,
         if (annot_surv_med) {
           grid::gTree(
             vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
-            children = h_grob_median_surv(fit_km = fit_km)
+            children = h_grob_median_surv(
+              fit_km = fit_km,
+              ttheme = gridExtra::ttheme_default(
+                base_size = font_size
+              )
+            )
+          )
+        },
+
+        if (annot_coxph) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+            children = h_grob_coxph(
+              df = df,
+              variables = variables,
+              control_coxph_pw = control_coxph_pw,
+              x = position_coxph[1],
+              y = position_coxph[2],
+              ttheme = gridExtra::ttheme_default(
+                base_size = font_size,
+                padding = unit(c(1, .5), "lines"),
+                core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
+              )
+            )
           )
         },
 
@@ -678,7 +763,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl) {
 #' Helper Function: Survival Estimations
 #'
 #' Transform a survival fit to a table with groups in rows characterized
-#' by N, median and 95% confidence interval.
+#' by N, median and confidence interval.
 #'
 #' @inheritParams kaplan_meier
 #' @examples
@@ -702,14 +787,15 @@ h_tbl_median_surv <- function(fit_km) {
   } else {
     as.data.frame(summary(fit_km)$table)
   }
+  conf.int <- summary(fit_km)$conf.int #nolint
   y$records <- round(y$records)
   y$median <- signif(y$median, 4)
   y$`CI` <- paste0( # nolint
-    "(", signif(y$`0.95LCL`, 4), ", ", signif(y$`0.95UCL`, 4), ")"
+    "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
   )
   setNames(
     y[c("records", "median", "CI")],
-    c("N", "Median", "95% CI")
+    c("N", "Median", f_conf_level(conf.int))
   )
 }
 
@@ -801,6 +887,113 @@ h_grob_y_annot <- function(ylab, yaxis) {
         just = "right"
       ),
       children = grid::gList(cbind(ylab, yaxis))
+    )
+  )
+}
+
+#' Helper Function: Pairwise CoxPH table
+#'
+#' Create an rtable of pairwise stratified or unstratified CoxPH analysis results.
+#'
+#' @inheritParams g_km
+#' @examples
+#' \dontrun{
+#' library(random.cdisc.data)
+#' library(dplyr)
+#'
+#' adtte <- radtte(cached = TRUE) %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
+#'
+#' tern:::h_tbl_coxph_pairwise(
+#'   df = adtte,
+#'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
+#'   control_coxph_pw = control_coxph(conf_level = 0.9))
+#' }
+#'
+h_tbl_coxph_pairwise <- function(df,
+                                 variables = list(tte, is_event, arm, strat = NULL),
+                                 control_coxph_pw = control_coxph()
+) {
+  arm <- variables$arm
+  assert_that(is_df_with_variables(df, list(arm = arm)))
+  df[[arm]] <- factor(df[[arm]])
+  ref_group <- levels(df[[arm]])[1]
+  comp_group <- levels(df[[arm]])[-1]
+  results <- Map(function(comp) {
+    res <- s_coxph_pairwise(
+      df = df[df[[arm]] == comp, , drop = FALSE],
+      .ref_group = df[df[[arm]] == ref_group, , drop = FALSE],
+      .in_ref_col = FALSE,
+      .var = variables$tte,
+      is_event = variables$is_event,
+      strat = variables$strat,
+      control = control_coxph_pw
+    )
+    res_df <- data.frame(
+      hr = format(round(res$hr, 4), nsmall = 4),
+      hr_ci = paste0( # nolint
+        "(", format(round(res$hr_ci[1], 4), nsmall = 4), ", ",
+        format(round(res$hr_ci[2], 4), nsmall = 4), ")"
+      ),
+      pvalue = if (res$pvalue < 0.0001) "<0.0001" else format(round(res$pvalue, 4), 4),
+      stringsAsFactors = FALSE
+    )
+    colnames(res_df) <- c("HR", vapply(res[c("hr_ci", "pvalue")], obj_label, FUN.VALUE = "character"))
+    row.names(res_df) <- comp
+    res_df
+  }, comp_group)
+  do.call(rbind, results)
+}
+#' Helper Function: CoxPH Grob
+#' Grob of rtable output from [h_tbl_coxph_pairwise]
+#'
+#' @inheritParams h_grob_median_surv
+#' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
+#' @param x a `numeric` value between 0 and 1 specifying x-location.
+#' @param y a `numeric` value between 0 and 1 specifying y-location.
+#'
+#' @examples
+#' \dontrun{
+#' library(random.cdisc.data)
+#' library(dplyr)
+#' library(survival)
+#' library(grid)
+#' grid.newpage()
+#' grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
+#' data <- radtte(cached = TRUE) %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
+#' tbl_grob <- tern:::h_grob_coxph(
+#'    df = data,
+#'    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARMCD"),
+#'    control_coxph_pw = control_coxph(conf_level = 0.9), x = 0.5, y = 0.5)
+#' grid.draw(tbl_grob)
+#' }
+#'
+h_grob_coxph <- function(...,
+                         x = 0,
+                         y = 0,
+                         ttheme = gridExtra::ttheme_default(
+                           base_size = 12,
+                           padding = unit(c(1, .5), "lines"),
+                           core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
+                         )
+) {
+  data <- h_tbl_coxph_pairwise(...) # nolint
+  gt <- gridExtra::tableGrob(d = data, theme = ttheme)
+  vp <- grid::viewport(
+    x = grid::unit(x, "npc") + grid::unit(1, "lines"),
+    y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
+    height =  sum(gt$heights),
+    width =  sum(gt$widths),
+    just = c("left", "bottom")
+  )
+
+  grid::gList(
+    grid::gTree(
+      vp = vp,
+      children = grid::gList(gt)
     )
   )
 }
