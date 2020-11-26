@@ -262,6 +262,13 @@ fit_coxreg_univar <- function(variables,
     is_df_with_variables(data, as.list(unlist(variables)))
   )
 
+  vars <- unlist(variables[c("arm", "covariates", "strata")], use.names = FALSE)
+  for (i in vars) {
+    if (is.factor(data[[i]])) {
+      attr(data[[i]], "levels") <- levels(droplevels(data[[i]]))
+    }
+  }
+
   forms <- h_coxreg_univar_formulas(variables, interaction = control$interaction)
   mod <- lapply(
     forms, function(x) {

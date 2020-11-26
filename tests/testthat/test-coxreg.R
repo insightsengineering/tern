@@ -135,6 +135,7 @@ test_that("control_coxreg returns a standard list of parameters", {
   expect_identical(result, expected)
 })
 
+# fit_coxreg_univar ----
 test_that("fit_coxreg_univar returns model results as expected", {
   data <- get_bladder()
   control <- control_coxreg(conf_level = 0.91)
@@ -165,6 +166,19 @@ test_that("fit_coxreg_univar returns model results as expected", {
   )
   expect_equal(result$mod, expected$mod)
 })
+
+test_that("fit_coxreg_univar runs with non-represented level of a factor", {
+  data <- get_bladder() %>%
+    filter(covar1 %in% 1:3)
+
+  variables <- list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = "covar1"
+  )
+
+  expect_silent(fit_coxreg_univar(variables = variables, data = data))
+})
+
 
 test_that("tidy.summary.coxph method tidies up the Cox regression model", {
   dta_simple <- get_simple()
