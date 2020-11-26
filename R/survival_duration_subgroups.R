@@ -24,7 +24,7 @@
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- var_labels(adtte)
 #'
-#' adtte <- adtte %>%
+#' adtte_f <- adtte %>%
 #'   filter(
 #'     PARAMCD == "OS",
 #'     ARM %in% c("B: Placebo", "A: Drug X"),
@@ -50,7 +50,7 @@ NULL
 #'   population subgroups in data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
 #'   Result is a list of two data frames: `survtime` and `hr`.
 #'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
-#'   `tte`, `is_event`, `arm`, `subgroups` and optionally `strat`.
+#'   `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`.
 #' @export
 #' @examples
 #'
@@ -60,7 +60,7 @@ NULL
 #'     is_event = "is_event",
 #'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
 #'   ),
-#'   data = adtte
+#'   data = adtte_f
 #' )
 #' df
 #'
@@ -118,7 +118,7 @@ a_survival_subgroups <- function(.formats = list(
 #'
 #' ## Table of survival times by subgroup.
 #' basic_table() %>%
-#'   tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte$AVALU[1]) %>%
+#'   tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte_f$AVALU[1]) %>%
 #'   build_table(df$survtime)
 #'
 #' ## Table of hazard ratios by subgroup.

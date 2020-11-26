@@ -23,7 +23,7 @@
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- var_labels(adtte)
 #'
-#' adtte <- adtte %>%
+#' adtte_f <- adtte %>%
 #'   filter(
 #'     PARAMCD == "OS",
 #'     ARM %in% c("B: Placebo", "A: Drug X"),
@@ -49,9 +49,9 @@ NULL
 #'
 #' # Extract median survival time for one group.
 #' h_survtime_df(
-#'   tte = adtte$AVAL,
-#'   is_event = adtte$is_event,
-#'   arm = adtte$ARM
+#'   tte = adtte_f$AVAL,
+#'   is_event = adtte_f$is_event,
+#'   arm = adtte_f$ARM
 #' )
 #'
 h_survtime_df <- function(tte, is_event, arm) {
@@ -107,7 +107,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'     arm = "ARM",
 #'     subgroups = c("SEX", "BMRKR2")
 #'   ),
-#'   data = adtte
+#'   data = adtte_f
 #' )
 #'
 h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients") {
@@ -157,10 +157,10 @@ if (is.null(variables$subgroups)) {
 #' @examples
 #'
 #' # Extract hazard ratio for one group.
-#' h_coxph_df(adtte$AVAL, adtte$is_event, adtte$ARM)
+#' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
 #'
 #' # Extract hazard ratio for one group with stratification factor.
-#' h_coxph_df(adtte$AVAL, adtte$is_event, adtte$ARM, strata_data = adtte$STRATA1)
+#' h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM, strata_data = adtte_f$STRATA1)
 #'
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
 
@@ -244,7 +244,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'     arm = "ARM",
 #'     subgroups = c("SEX", "BMRKR2")
 #'   ),
-#'   data = adtte
+#'   data = adtte_f
 #' )
 #'
 #' # Extract hazard ratio for multiple groups with stratification factors.
@@ -256,7 +256,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'     subgroups = c("SEX", "BMRKR2"),
 #'     strat = c("STRATA1", "STRATA2")
 #'    ),
-#'   data = adtte
+#'   data = adtte_f
 #' )
 #'
 h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), label_all = "All Patients") {

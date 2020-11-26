@@ -55,11 +55,11 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{extract_rsp_subgroups}: Prepares response rates and odds ratios for
+\item \code{extract_rsp_subgroups}: prepares response rates and odds ratios for
 population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
 \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two data frames:
 \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
-named list and requires elements \code{rsp}, \code{arm} and \code{subgroups}.
+named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}.
 
 \item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
@@ -76,7 +76,7 @@ library(dplyr)
 adrs <- radrs(cached = TRUE)
 adrs_labels <- var_labels(adrs)
 
-adrs <- adrs \%>\%
+adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
   droplevels() \%>\%
@@ -85,12 +85,12 @@ adrs <- adrs \%>\%
     ARM = forcats::fct_relevel(ARM, "B: Placebo"),
     rsp = AVALC == "CR"
   )
-var_labels(adrs) <- c(adrs_labels, "Response")
+var_labels(adrs_f) <- c(adrs_labels, "Response")
 
 
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-  data = adrs
+  data = adrs_f
 )
 df
 

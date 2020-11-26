@@ -69,7 +69,7 @@ the required statistics. Tables typically used as part of forest plot.
 population subgroups in data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}.
 Result is a list of two data frames: \code{survtime} and \code{hr}.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{arm}, \code{subgroups} and optionally \code{strat}.
+\code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}.
 
 \item \code{a_survival_subgroups}: Formatted Analysis function used to format the results of
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}. Returns is a list of Formatted Analysis functions with one element per statistic.
@@ -88,7 +88,7 @@ adtte <- radtte(cached = TRUE)
 # Save variable labels before data processing steps.
 adtte_labels <- var_labels(adtte)
 
-adtte <- adtte \%>\%
+adtte_f <- adtte \%>\%
   filter(
     PARAMCD == "OS",
     ARM \%in\% c("B: Placebo", "A: Drug X"),
@@ -115,7 +115,7 @@ df <- extract_survival_subgroups(
     is_event = "is_event",
     arm = "ARM", subgroups = c("SEX", "BMRKR2")
   ),
-  data = adtte
+  data = adtte_f
 )
 df
 
@@ -124,7 +124,7 @@ a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 
 ## Table of survival times by subgroup.
 basic_table() \%>\%
-  tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte$AVALU[1]) \%>\%
+  tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte_f$AVALU[1]) \%>\%
   build_table(df$survtime)
 
 ## Table of hazard ratios by subgroup.

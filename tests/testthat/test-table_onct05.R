@@ -30,14 +30,14 @@ test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced co
   )
 
   # Response table.
-  t1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-    build_table(df$prop)
+  lyt1 <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n", "prop"))
+  t1 <- build_table(lyt1, df = df$prop)
 
   # Odds rato table with non-default inputs.
-  t2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
-    build_table(df$or)
+  lyt2 <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95)
+  t2 <- build_table(lyt2, df = df$or)
 
   result <- cbind_rtables(t2[, 1], t1, t2[, -1])
 
@@ -80,14 +80,14 @@ test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly",
   )
 
   # Response table.
-  t1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-    build_table(df$prop)
+  lyt1 <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n", "prop"))
+  t1 <- build_table(lyt1, df = df$prop)
 
   # Odds ratio table with non-default inputs.
-  t2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
-    build_table(df$or)
+  lyt2 <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95)
+  t2 <- build_table(lyt2, df = df$or)
 
   result <- cbind_rtables(t2[, 1], t1, t2[, -1])
 
@@ -128,9 +128,9 @@ test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is 
     method = test_method
   )
 
-  result <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci", "pval"), conf_level = cl, method = test_method) %>%
-    build_table(df$or)
+  lyt <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci", "pval"), conf_level = cl, method = test_method)
+  result <- build_table(lyt, df = df$or)
 
   result_matrix <- to_string_matrix(result)
 
@@ -163,14 +163,14 @@ test_that("ONCT05 variant 4 (setting values indicating response) is produced cor
   )
 
   # Response table.
-  t1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-    build_table(df$prop)
+  lyt1 <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n", "prop"))
+  t1 <- build_table(lyt1, df$prop)
 
   # Odds rato table with non-default inputs.
-  t2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
-    build_table(df$or)
+  lyt2 <- basic_table() %>%
+    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95)
+  t2 <- build_table(lyt2, df$or)
 
   result <- cbind_rtables(t2[, 1], t1, t2[, -1])
 
