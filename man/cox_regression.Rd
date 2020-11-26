@@ -167,6 +167,8 @@ it rather prepares the data to be used by the layout creating function.
 The usual formatting arguments for the \emph{layout creating} function
 \code{summarize_coxreg} are not yet accepted (\code{.stats}, \code{.indent_mod}, \code{.formats},
 \code{.labels}).
+
+When using \code{fit_coxreg_univar} there should be two study arms.
 }
 \examples{
 

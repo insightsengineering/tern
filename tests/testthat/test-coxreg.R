@@ -179,6 +179,16 @@ test_that("fit_coxreg_univar runs with non-represented level of a factor", {
   expect_silent(fit_coxreg_univar(variables = variables, data = data))
 })
 
+test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
+  data <- get_bladder() %>%
+    filter(covar1 %in% 1:3)
+
+  variables <- list(
+    time = "time", event = "status", arm = "covar1", covariates = "covar2"
+  )
+
+  expect_error(fit_coxreg_univar(variables = variables, data = data))
+})
 
 test_that("tidy.summary.coxph method tidies up the Cox regression model", {
   dta_simple <- get_simple()

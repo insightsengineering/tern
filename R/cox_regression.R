@@ -214,6 +214,7 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'   - `control`: The original control input.
 #'   - `vars`: The variables used in the model.
 #'   - `at`: Value of the covariate at which the effect should be estimated.
+#' @note When using `fit_coxreg_univar` there should be two study arms.
 #' @importFrom survival coxph
 #' @importFrom stats as.formula
 #' @importFrom car Anova
@@ -260,6 +261,11 @@ fit_coxreg_univar <- function(variables,
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables)))
+  )
+
+  n_arms <- nlevels(data[[variables$arm]])
+  assert_that(
+    n_arms == 2
   )
 
   vars <- unlist(variables[c("arm", "covariates", "strata")], use.names = FALSE)
