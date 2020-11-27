@@ -22,6 +22,7 @@ s_summary <- function(x,
                       .N_row,  # nolint
                       .N_col,  # nolint
                       .var,
+                      conf_level,
                       ...) {
   assert_that(is.flag(na.rm))
   UseMethod("s_summary", x)

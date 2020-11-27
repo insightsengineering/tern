@@ -6,6 +6,8 @@
 \arguments{
 \item{...}{additional arguments for the lower level functions.}
 
+\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed

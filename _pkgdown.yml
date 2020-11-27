@@ -154,6 +154,7 @@ reference:
       - h_odds_ratio_df
       - h_odds_subgroups_df
       - or_glm
+      - or_clogit
       - prop_chisq
       - prop_cmh
       - prop_fisher

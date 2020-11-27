@@ -10,7 +10,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Summarize change from baseline: `s_change_from_baseline` and `summarize_change`.
 * Summarize variables in columns: `summarize_colvars` (which also works with `s_summary`).
 * Estimate difference in terms of responder proportions: `estimate_proportion_diff`, `s_proportion_diff`.
-* Estimate difference in terms of Odds Ratio: `estimate_odds_ratio`, `s_odds_ratio`, `or_glm`.
+* Estimate difference in terms of Odds Ratio: `estimate_odds_ratio`, `s_odds_ratio`, `or_glm`, `or_clogit`.
 * Test the difference in responder proportions: `test_proportion_diff`, `s_test_proportion_diff`, `prop_chisq`, `prop_cmh`, `prop_fisher`, `prop_schouten`.
 * Estimate the responder proportion regarding the level of a factor: `estimate_multinomial_response`.
 * New method for calculating the confidence interval in `s_incidence_rate`: Normal approximation for log rate

@@ -11,6 +11,7 @@
 #'
 #' @md
 #' @param ... additional arguments for the lower level functions.
+#' @param .df_row (`data frame`)\cr data frame across all of the columns for the given row split.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .N_col (`count`)\cr row-wise N (row group count) for the group of observations being analyzed
 #'   (i.e. with no column-based subsetting) that is passed by `rtables`.

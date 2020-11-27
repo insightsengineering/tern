@@ -16,7 +16,7 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
+s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level, ...)
 
 \method{s_summary}{numeric}(x, na.rm = TRUE, conf_level = 0.95, ...)
 
@@ -113,9 +113,9 @@ this column across rows).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{...}{arguments passed to \code{s_summary()}.}
-
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{...}{arguments passed to \code{s_summary()}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

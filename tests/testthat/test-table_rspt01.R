@@ -1,4 +1,3 @@
-
 # Preparation of the test case.
 library(dplyr)
 library(random.cdisc.data)
@@ -160,6 +159,7 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
       vars = "is_rsp", method = "cmh",
       variables = list(strata = "STRATA1")
     ) %>%
+    estimate_odds_ratio(vars = "is_rsp", variables = list(arm = "ARMCD", strata = "STRATA1")) %>%
     estimate_multinomial_response(var = "AVALC")
 
   result <- build_table(l, adrs)
@@ -169,24 +169,26 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
       "Unstratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
       "p-value (Chi-Squared Test with Schouten Correction)", "Odds Ratio (95% CI)",
       "Stratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
-      "p-value (Cochran-Mantel-Haenszel Test)", "Complete Response (CR)",
-      "95% CI (Wald, with correction)", "Partial Response (PR)", "95% CI (Wald, with correction)",
-      "Stable Disease (SD)", "95% CI (Wald, with correction)", "Progressive Disease (PD)",
-      "95% CI (Wald, with correction)", "Not Evaluable (NE)", "95% CI (Wald, with correction)",
-      "ARM A", "(N=134)", "100 (74.6%)", "(66.9, 82.4)", "", "", "",
-      "", "", "", "", "", "", "60 (44.8%)", "(35.98, 53.57)", "40 (29.9%)",
+      "p-value (Cochran-Mantel-Haenszel Test)", "Odds Ratio (95% CI)",
+      "Complete Response (CR)", "95% CI (Wald, with correction)", "Partial Response (PR)",
+      "95% CI (Wald, with correction)", "Stable Disease (SD)", "95% CI (Wald, with correction)",
+      "Progressive Disease (PD)", "95% CI (Wald, with correction)",
+      "Not Evaluable (NE)", "95% CI (Wald, with correction)", "ARM A",
+      "(N=134)", "100 (74.6%)", "(66.9, 82.4)", "", "", "", "", "",
+      "", "", "", "", "", "60 (44.8%)", "(35.98, 53.57)", "40 (29.9%)",
       "(21.73, 37.97)", "9 (6.7%)", "(2.11, 11.33)", "24 (17.9%)",
       "(11.05, 24.78)", "1 (0.7%)", "(0, 2.58)", "ARM B", "(N=134)",
       "84 (62.7%)", "(54.1, 71.2)", "", "-11.9", "(-23.7, -0.2)", "0.0416",
       "0.57 (0.34 - 0.96)", "", "-11.9", "(-23.7, -0.2)", "0.0366",
-      "47 (35.1%)", "(26.62, 43.53)", "37 (27.6%)", "(19.67, 35.55)",
-      "22 (16.4%)", "(9.77, 23.06)", "16 (11.9%)", "(6.08, 17.8)",
-      "12 (9%)", "(3.75, 14.16)", "ARM C", "(N=132)", "81 (61.4%)",
-      "(52.7, 70)", "", "-13.3", "(-25.1, -1.4)", "0.0245", "0.54 (0.32 - 0.91)",
-      "", "-13.3", "(-25.1, -1.4)", "0.0180", "57 (43.2%)", "(34.35, 52.01)",
-      "24 (18.2%)", "(11.22, 25.14)", "13 (9.8%)", "(4.39, 15.31)",
-      "33 (25%)", "(17.23, 32.77)", "5 (3.8%)", "(0.15, 7.42)"),
-    .Dim = c(23L, 4L)
+      "0.57 (0.34 - 0.96)", "47 (35.1%)", "(26.62, 43.53)", "37 (27.6%)",
+      "(19.67, 35.55)", "22 (16.4%)", "(9.77, 23.06)", "16 (11.9%)",
+      "(6.08, 17.8)", "12 (9%)", "(3.75, 14.16)", "ARM C", "(N=132)",
+      "81 (61.4%)", "(52.7, 70)", "", "-13.3", "(-25.1, -1.4)", "0.0245",
+      "0.54 (0.32 - 0.91)", "", "-13.3", "(-25.1, -1.4)", "0.0180",
+      "0.54 (0.32 - 0.9)", "57 (43.2%)", "(34.35, 52.01)", "24 (18.2%)",
+      "(11.22, 25.14)", "13 (9.8%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)",
+      "5 (3.8%)", "(0.15, 7.42)"),
+    .Dim = c(24L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

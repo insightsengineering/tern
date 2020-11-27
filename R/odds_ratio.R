@@ -3,6 +3,8 @@
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
+#' @param data (`data frame`)\cr
+#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is
@@ -18,20 +20,19 @@
 #'
 NULL
 
-
-#' @describeIn odds_ratio estimates the odds ratio based on [stats::glm()].
+#' @describeIn odds_ratio estimates the odds ratio based on [stats::glm()]. Note that there must be
+#'   exactly 2 groups in `data` as specified by the `grp` variable.
 #'
 #' @inheritParams argument_convention
-#' @param data (`data frame`)\cr
-#'   expected with three variables `rsp`, `grp`.
 #' @importFrom stats binomial as.formula glm coef confint setNames
 #' @export
 #' @examples
 #'
-#' # Data
+#' # Data with 2 groups.
 #' data <- data.frame(
-#'   rsp = as.logical(c(1, 1, 0, 1, 0, 0)),
-#'   grp = letters[c(1, 1, 1, 2, 2, 2)]
+#'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1)),
+#'   grp = letters[c(1, 1, 1, 2, 2, 2, 1, 2)],
+#'   strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)]
 #' )
 #'
 #' # Odds ratio based on glm.
@@ -47,6 +48,9 @@ or_glm <- function(data, conf_level) {
   )
 
   data$grp <- as_factor_keep_attributes(data$grp)
+  assert_that(
+    identical(nlevels(data$grp), 2L)
+  )
   formula <- stats::as.formula("rsp ~ grp")
   model_fit <- stats::glm(
     formula = formula, data = data,
@@ -62,31 +66,98 @@ or_glm <- function(data, conf_level) {
   values <- stats::setNames(c(or, or_ci), c("est", "lcl", "ucl"))
 
   list(or_ci = values)
-
 }
 
-
-#' @describeIn odds_ratio Statistics function which estimates the odds ratio
-#'   between a treatment and a control.
+#' @describeIn odds_ratio estimates the odds ratio based on [survival::clogit()]. This is done for
+#'   the whole data set including all groups, since the results are not the same as when doing
+#'   pairwise comparisons between the groups.
+#'
+#' @inheritParams argument_convention
+#' @importFrom survival strata clogit coxph
 #' @export
 #' @examples
 #'
-#' dta <- data.frame(
-#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50))
+#' # Data with 3 groups.
+#' data <- data.frame(
+#'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+#'   grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+#'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)]
 #' )
 #'
+#' # Odds ratio based on stratified estimation by conditional logistic regression.
+#' or_clogit(data, conf_level = 0.95)
+#'
+or_clogit <- function(data, conf_level) {
+
+  assert_that(
+    is_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata")),
+    is.logical(data$rsp),
+    is_character_or_factor(data$grp),
+    is_character_or_factor(data$strata),
+    is_proportion(conf_level)
+  )
+
+  data$grp <- as_factor_keep_attributes(data$grp)
+  data$strata <- as_factor_keep_attributes(data$strata)
+
+  # Deviation from convention: `survival::strata` must be simply `strata`.
+  formula <- stats::as.formula("rsp ~ grp + strata(strata)")
+  model_fit <- survival::clogit(formula = formula, data = data)
+
+  # Create a list with one set of OR estimates and CI per coefficient, i.e.
+  # comparison of one group vs. the reference group.
+  coef_est <- stats::coef(model_fit)
+  ci_est <- stats::confint(model_fit, level = conf_level)
+  or_ci <- list()
+  for (coef_name in names(coef_est)) {
+    grp_name <- gsub("^grp", "", x = coef_name)
+    or_ci[[grp_name]] <- setNames(
+      object = exp(c(coef_est[coef_name], ci_est[coef_name, , drop = TRUE])),
+      nm = c("est", "lcl", "ucl")
+    )
+  }
+  list(or_ci = or_ci)
+}
+
+#' @describeIn odds_ratio Statistics function which estimates the odds ratio
+#'   between a treatment and a control. Note that a `variables` list with `arm` and `strata` names
+#'   needs to be passed if a stratified analysis is required.
+#' @inheritParams argument_convention
+#' @export
+#' @examples
+#'
+#' set.seed(12)
+#' dta <- data.frame(
+#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
+#'   grp = factor(rep(c("A", "B"), each = 50), levels = c("B", "A")),
+#'   strata = factor(sample(c("C", "D"), 100, TRUE))
+#' )
+#'
+#' # Unstratified analysis.
 #' s_odds_ratio(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
 #'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE
+#'   .in_ref_col = FALSE,
+#'   .df_row = dta
+#' )
+#'
+#' # Stratified analysis.
+#' s_odds_ratio(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   .df_row = dta,
+#'   variables = list(arm = "grp", strata = "strata")
 #' )
 #'
 s_odds_ratio <- function(df,
                          .var,
                          .ref_group,
                          .in_ref_col,
+                         .df_row,
+                         variables = list(arm = NULL, strata = NULL),
                          conf_level = 0.95) {
   y <- list(or_ci = "")
 
@@ -97,15 +168,34 @@ s_odds_ratio <- function(df,
       is_proportion(conf_level)
     )
 
-    data <- data.frame(
-      rsp = c(.ref_group[[.var]], df[[.var]]),
-      grp = factor(
-        rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
-        levels = c("ref", "Not-ref")
+    if (is.null(variables$strata)) {
+      data <- data.frame(
+        rsp = c(.ref_group[[.var]], df[[.var]]),
+        grp = factor(
+          rep(c("ref", "Not-ref"), c(nrow(.ref_group), nrow(df))),
+          levels = c("ref", "Not-ref")
+        )
       )
-    )
-
-    y <- or_glm(data, conf_level = conf_level)
+      y <- or_glm(data, conf_level = conf_level)
+    } else {
+      assert_that(
+        is_df_with_variables(.df_row, c(list(rsp = .var), variables))
+      )
+      # The reference level in `grp` must be the same as in the rtables column split.
+      ref_grp <- as.character(unique(.ref_group[[variables$arm]]))
+      data <- data.frame(
+        rsp = .df_row[[.var]],
+        grp = relevel(factor(.df_row[[variables$arm]]), ref = ref_grp),
+        strata = .df_row[[variables$strata]]
+      )
+      y_all <- or_clogit(data, conf_level = conf_level)
+      this_grp <- as.character(unique(df[[variables$arm]]))
+      assert_that(
+        is.string(this_grp),
+        this_grp %in% names(y_all$or_ci)
+      )
+      y$or_ci <- y_all$or_ci[[this_grp]]
+    }
   }
 
   y$or_ci <- with_label(
@@ -124,7 +214,8 @@ s_odds_ratio <- function(df,
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
 #'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE
+#'   .in_ref_col = FALSE,
+#'   .df_row = dta
 #' )
 #'
 a_odds_ratio <- make_afun(
