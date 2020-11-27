@@ -22,6 +22,7 @@ NULL
 #'
 d_onco_rsp_label <- function(x) { # nousage # nolint
 
+  x <- as.character(x)
   desc <- c(
     CR          = "Complete Response (CR)",
     PR          = "Partial Response (PR)",

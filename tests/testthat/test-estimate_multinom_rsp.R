@@ -9,6 +9,17 @@ test_that("d_onco_rsp_label provide right response labels", {
   expect_identical(result, expected)
 })
 
+test_that("d_onco_rsp_label describe label with x being a factor", {
+  a <- factor(c("CR", "SD", "PR", "PD", "NE"))
+  result <- d_onco_rsp_label(a)
+  expected <- c(
+    CR = "Complete Response (CR)", SD = "Stable Disease (SD)",
+    PR = "Partial Response (PR)", PD = "Progressive Disease (PD)",
+    NE = "Not Evaluable (NE)"
+  )
+  expect_identical(result, expected)
+})
+
 test_that("s_length_proportion works as expected with healthy input", {
   x <- rep("A", 10)
   n_col <- 20
