@@ -104,6 +104,7 @@ reference:
        - count_occurrences
        - count_occurrences_by_grade
        - count_patients_with_event
+       - count_patients_with_flags
        - dummy_sum
        - estimate_proportion
        - estimate_proportion_diff
