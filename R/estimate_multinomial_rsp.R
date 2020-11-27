@@ -105,6 +105,7 @@ estimate_multinomial_response <- function(lyt,
                                           var,
                                           ...,
                                           show_labels = "hidden",
+                                          table_names = var,
                                           .stats = "prop_ci",
                                           .formats = NULL,
                                           .labels = NULL,
@@ -123,6 +124,7 @@ estimate_multinomial_response <- function(lyt,
     vars = var,
     afun = afun,
     show_labels = show_labels,
+    table_names = table_names,
     extra_args = list(...)
   )
 }

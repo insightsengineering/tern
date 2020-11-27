@@ -6,6 +6,9 @@
 \usage{
 h_tbl_median_surv(fit_km)
 }
+\arguments{
+\item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
+}
 \description{
 Transform a survival fit to a table with groups in rows characterized
 by N, median and confidence interval.

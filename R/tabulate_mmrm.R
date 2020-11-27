@@ -198,6 +198,7 @@ a_mmrm_lsmeans <- make_afun(
 #'
 summarize_lsmeans <- function(lyt,
                               ...,
+                              table_names = "lsmeans_summary",
                               .stats = NULL,
                               .formats = NULL,
                               .indent_mods = NULL,
@@ -213,6 +214,7 @@ summarize_lsmeans <- function(lyt,
     lyt = lyt,
     vars = "n",
     afun = afun,
+    table_names = table_names,
     extra_args = list(...)
   )
 }

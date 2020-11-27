@@ -2,11 +2,11 @@
 #'
 #'
 #' @param df (`data frame`)\cr data set containing all analysis variables.
-#' @param variables a (`list`) of for variable names. Details are: \cr
-#' * `tte`: variable indicating time-to-event duration values.
+#' @param variables (named `list`) of variable names. Details are: \cr
+#' * `tte`: variable indicating time-to-event duration values (`numeric`).
 #' * `is_event`: event variable (`logical`) \cr `TRUE` if event, `FALSE` if time to event is censored.
-#' * `arm`: the treatment group variable (`factor``)
-#' * `strat` (`character` or `NULL`) variable names indicating stratification factors.
+#' * `arm`: the treatment group variable (`factor`).
+#' * `strat`: (`character` or `NULL`) variable names indicating stratification factors.
 #' @param control_surv a (`list`) of parameters for comparison details, specified by using \cr
 #'    the helper function [control_surv_timepoint]. Some possible parameter options are: \cr
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
@@ -34,6 +34,7 @@
 #' @param size (`numeric`)\cr size of censored point, a class of `unit`.
 #' @param max_time (`numeric`)\cr maximum value of X axis range (`NULL` for
 #'    default)
+#' @param font_size (`number`) \cr font size to be used.
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to
 #'   control outlook of the Kaplan-Meier curve.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table
@@ -139,7 +140,7 @@ NULL
 #' )
 #'
 g_km <- function(df,
-                 variables = list(tte, is_event, arm, strat = NULL),
+                 variables,
                  control_surv = control_surv_timepoint(),
                  xticks = NULL,
                  col = NULL,
@@ -338,6 +339,7 @@ g_km <- function(df,
 #' within `g_km`.
 #'
 #' @inheritParams kaplan_meier
+#' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @examples vignette("Design of KMG01")
 #'
 #' \dontrun{
@@ -765,7 +767,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl) {
 #' Transform a survival fit to a table with groups in rows characterized
 #' by N, median and confidence interval.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams h_data_plot
 #' @examples
 #' \dontrun{
 #' library(random.cdisc.data)
@@ -807,6 +809,7 @@ h_tbl_median_surv <- function(fit_km) {
 #'
 #' @inheritParams kaplan_meier
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
+#' @inheritParams h_data_plot
 #'
 #' @examples
 #' \dontrun{
@@ -912,11 +915,11 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' }
 #'
 h_tbl_coxph_pairwise <- function(df,
-                                 variables = list(tte, is_event, arm, strat = NULL),
+                                 variables,
                                  control_coxph_pw = control_coxph()
 ) {
+  assert_that(is_df_with_variables(df, variables))
   arm <- variables$arm
-  assert_that(is_df_with_variables(df, list(arm = arm)))
   df[[arm]] <- factor(df[[arm]])
   ref_group <- levels(df[[arm]])[1]
   comp_group <- levels(df[[arm]])[-1]

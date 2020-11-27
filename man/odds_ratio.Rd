@@ -38,6 +38,7 @@ estimate_odds_ratio(
   vars,
   ...,
   show_labels = "hidden",
+  table_names = vars,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -70,6 +71,9 @@ by a statistics function.}
 \item{...}{arguments passed to \code{s_odds_ratio()}.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

@@ -239,6 +239,7 @@ estimate_proportion <- function(lyt,
                                 vars,
                                 ...,
                                 show_labels = "hidden",
+                                table_names = vars,
                                 .stats = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
@@ -255,7 +256,8 @@ estimate_proportion <- function(lyt,
     vars,
     afun = afun,
     extra_args = list(...),
-    show_labels = show_labels
+    show_labels = show_labels,
+    table_names = table_names
   )
 }
 

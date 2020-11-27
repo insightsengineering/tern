@@ -29,6 +29,7 @@ a_mmrm_lsmeans(df, .in_ref_col, show_relative = c("reduction", "increase"))
 summarize_lsmeans(
   lyt,
   ...,
+  table_names = "lsmeans_summary",
   .stats = NULL,
   .formats = NULL,
   .indent_mods = NULL,
@@ -52,6 +53,9 @@ summarize_lsmeans(
 (\code{treatment - control}) be shown for the relative change from baseline?}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

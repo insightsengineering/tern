@@ -55,12 +55,14 @@ test_that("count_patients_with_event works as expected", {
     count_patients_with_event(
       vars = "SUBJID",
       filters = c("TRTEMFL" = "Y"),
-      .labels = c(count_fraction = "Total number of patients with at least one adverse event")
+      .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
+      table_names = "total_pts_ae"
     ) %>%
     count_patients_with_event(
       vars = "SUBJID",
       filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
-      .labels = c(count_fraction = "Total number of patients with fatal AEs")
+      .labels = c(count_fraction = "Total number of patients with fatal AEs"),
+      table_names = "total_pts_fatal_ae"
     )
 
   result <- build_table(l, test_data, col_count = table(test_adsl_like$ARM))
@@ -102,13 +104,15 @@ test_that("count_patients_with_event works as expected for different column coun
       vars = "SUBJID",
       filters = c("TRTEMFL" = "Y"),
       .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
-      denom = "N_col"
+      denom = "N_col",
+      table_names = "total_pts_ae"
     ) %>%
     count_patients_with_event(
       vars = "SUBJID",
       filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
       .labels = c(count_fraction = "Total number of patients with fatal AEs"),
-      denom = "N_col"
+      denom = "N_col",
+      table_names = "total_pts_fatal_ae"
     )
 
   result <- build_table(lyt, df = test_data, col_counts = col_counts)

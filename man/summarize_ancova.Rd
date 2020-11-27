@@ -19,6 +19,7 @@ summarize_ancova(
   var_labels,
   ...,
   show_labels = "visible",
+  table_names = vars,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -59,6 +60,9 @@ reference group.
 \item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

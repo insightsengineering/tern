@@ -118,6 +118,7 @@ a_change_from_baseline <- make_afun(
 summarize_change <- function(lyt,
                              vars,
                              ...,
+                             table_names = vars,
                              .stats = c("n", "mean_sd", "median", "range"),
                              .formats = NULL,
                              .labels = NULL,
@@ -134,6 +135,7 @@ summarize_change <- function(lyt,
     lyt,
     vars,
     afun = afun,
-    extra_args = list(...)
+    extra_args = list(...),
+    table_names = table_names
   )
 }

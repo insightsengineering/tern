@@ -189,9 +189,11 @@ a_surv_timepoint_diff <- make_afun(
 
 #' @describeIn survival_timepoint Analyze Function which adds the survival rate analysis to the input layout.
 #'   Note that additional formatting arguments can be used here.
+#' @inheritParams argument_convention
 #' @param method (`string`)\cr either `surv` (survival estimations),
 #'   `surv_diff` (difference in survival with the control) or `both`.
-#' @inheritParams argument_convention
+#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the rtables to
+#'   avoid warnings from duplicate table names.
 #' @export
 #' @examples
 #'
@@ -237,6 +239,7 @@ a_surv_timepoint_diff <- make_afun(
 surv_timepoint <- function(lyt,
                            vars,
                            ...,
+                           table_names_suffix = "",
                            var_labels = "Time",
                            show_labels = "visible",
                            method = c("surv", "surv_diff", "both"),
@@ -249,6 +252,7 @@ surv_timepoint <- function(lyt,
                            .indent_mods = NULL) {
 
   method <- match.arg(method)
+  assert_that(is.string(table_names_suffix))
 
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
@@ -285,7 +289,7 @@ surv_timepoint <- function(lyt,
         lyt,
         vars,
         var_labels = paste(tpt, var_labels),
-        table_name = paste0("surv_", tpt),
+        table_names = paste0("surv_", tpt, table_names_suffix),
         show_labels = show_labels,
         afun = afun_surv,
         extra_args = list(
@@ -301,7 +305,7 @@ surv_timepoint <- function(lyt,
         lyt,
         vars,
         var_labels = paste(tpt, var_labels),
-        table_name = paste0("surv_diff_", tpt),
+        table_names = paste0("surv_diff_", tpt, table_names_suffix),
         show_labels = ifelse(method == "both", "hidden", show_labels),
         afun = afun_surv_diff,
         extra_args = list(

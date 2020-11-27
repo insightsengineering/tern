@@ -223,7 +223,7 @@ test_that("get_lme4_cov_estimate works with a random intercept model", {
     formula = Reaction ~ Days + (1 | Subject),
     data = lme4::sleepstudy
   )
-  result <- get_lme4_cov_estimate(fit)
+  expect_silent(result <- get_lme4_cov_estimate(fit))
 })
 
 test_that("get_lme4_cov_estimate works as expected with unbalanced data and independent of sorting", {
@@ -528,7 +528,7 @@ test_that("fit_mmrm works with parallelization", {
         include.lowest = TRUE
       )
     )
-  result <- fit_mmrm(
+  expect_silent(result <- fit_mmrm(
     vars = list(
       response = "Reaction",
       covariates = c(),
@@ -539,7 +539,7 @@ test_that("fit_mmrm works with parallelization", {
     data = dat,
     cor_struct = "compound-symmetry",
     parallel = TRUE
-  )
+  ))
 })
 
 # Helper function to compare result and expected tables with proper handling of p-value column.

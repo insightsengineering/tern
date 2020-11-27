@@ -14,19 +14,32 @@ levels(adrs$AVALC) <- d_onco_rsp_label(levels(adrs$AVALC))
 adrs <- adrs %>%
   dplyr::select(ARMCD, AVALC, SEX, STRATA1, STRATA2) %>%
   dplyr::mutate(
-    is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)")
+    is_rsp = AVALC %in% c("Complete Response (CR)", "Partial Response (PR)"),
+    STRATA1 = factor(STRATA1)
   )
 
 test_that("RSPT01: 1. Best Overall Response", {
   l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
-    estimate_proportion(vars = "is_rsp") %>%
-    estimate_proportion_diff(
-      vars = "is_rsp", show_labels = "visible",
-      var_labels = "Unstratified Analysis"
+    estimate_proportion(
+      vars = "is_rsp",
+      table_names = "prop_est"
     ) %>%
-    test_proportion_diff(vars = "is_rsp", method = "schouten") %>%
-    estimate_odds_ratio(vars = "is_rsp") %>%
+    estimate_proportion_diff(
+      vars = "is_rsp",
+      show_labels = "visible",
+      var_labels = "Unstratified Analysis",
+      table_names = "prop_diff"
+    ) %>%
+    test_proportion_diff(
+      vars = "is_rsp",
+      method = "schouten",
+      table_names = "test_diff"
+    ) %>%
+    estimate_odds_ratio(
+      vars = "is_rsp",
+      table_names = "est_or"
+    ) %>%
     estimate_multinomial_response(var = "AVALC")
 
   result <- build_table(l, adrs)
@@ -60,12 +73,21 @@ test_that("RSPT01: 1. Best Overall Response", {
 test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
   l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
-    estimate_proportion(vars = "is_rsp") %>%
-    estimate_proportion_diff(
-      vars = "is_rsp", show_labels = "visible",
-      var_labels = "Unstratified Analysis"
+    estimate_proportion(
+      vars = "is_rsp",
+      table_names = "prop_est"
     ) %>%
-    test_proportion_diff(vars = "is_rsp", method = "schouten") %>%
+    estimate_proportion_diff(
+      vars = "is_rsp",
+      show_labels = "visible",
+      var_labels = "Unstratified Analysis",
+      table_names = "prop_diff"
+    ) %>%
+    test_proportion_diff(
+      vars = "is_rsp",
+      method = "schouten",
+      table_names = "test_diff"
+    ) %>%
     estimate_multinomial_response(var = "AVALC")
 
   result <- build_table(l, adrs)
@@ -100,17 +122,33 @@ test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
   l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
     estimate_proportion(
-      vars = "is_rsp", method = method_prop, conf_level = conf_level
+      vars = "is_rsp",
+      method = method_prop,
+      conf_level = conf_level,
+      table_names = "prop_est"
     ) %>%
     estimate_proportion_diff(
-      vars = "is_rsp", show_labels = "visible",
+      vars = "is_rsp",
+      show_labels = "visible",
       var_labels = "Unstratified Analysis",
-      method = "ha", conf_level = conf_level
+      method = "ha",
+      conf_level = conf_level,
+      table_names = "prop_diff"
     ) %>%
-    test_proportion_diff(vars = "is_rsp", method = "fisher") %>%
-    estimate_odds_ratio(vars = "is_rsp", conf_level = conf_level) %>%
+    test_proportion_diff(
+      vars = "is_rsp",
+      method = "fisher",
+      table_names = "test_diff"
+    ) %>%
+    estimate_odds_ratio(
+      vars = "is_rsp",
+      conf_level = conf_level,
+      table_names = "est_or"
+    ) %>%
     estimate_multinomial_response(
-      var = "AVALC", method = method_prop, conf_level = conf_level
+      var = "AVALC",
+      method = method_prop,
+      conf_level = conf_level
     )
 
   result <- build_table(l, adrs)
@@ -142,24 +180,47 @@ test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
 })
 
 test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
-  l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
-    estimate_proportion(vars = "is_rsp") %>%
-    estimate_proportion_diff(
-      vars = "is_rsp", show_labels = "visible",
-      var_labels = "Unstratified Analysis"
+    estimate_proportion(
+      vars = "is_rsp",
+      table_names = "prop_est"
     ) %>%
-    test_proportion_diff(vars = "is_rsp", method = "schouten") %>%
-    estimate_odds_ratio(vars = "is_rsp") %>%
     estimate_proportion_diff(
-      vars = "is_rsp", show_labels = "visible",
-      var_labels = "Stratified Analysis"
+      vars = "is_rsp",
+      show_labels = "visible",
+      var_labels = "Unstratified Analysis",
+      table_names = "prop_diff"
     ) %>%
     test_proportion_diff(
-      vars = "is_rsp", method = "cmh",
-      variables = list(strata = "STRATA1")
+      vars = "is_rsp",
+      method = "schouten",
+      table_names = "test_diff"
     ) %>%
-    estimate_odds_ratio(vars = "is_rsp", variables = list(arm = "ARMCD", strata = "STRATA1")) %>%
+    estimate_odds_ratio(
+      vars = "is_rsp",
+      table_names = "est_or"
+    ) %>%
+    estimate_proportion_diff(
+      vars = "is_rsp",
+      show_labels = "visible",
+      variables = list(strata = "STRATA1"),
+      method = "cmh",
+      var_labels = "Stratified Analysis",
+      table_names = "prop_diff_strat"
+    ) %>%
+    test_proportion_diff(
+      vars = "is_rsp",
+      method = "cmh",
+      variables = list(strata = "STRATA1"),
+      table_names = "test_diff_strat"
+    ) %>%
+    estimate_odds_ratio(
+      vars = "is_rsp",
+      variables = list(arm = "ARMCD", strata = "STRATA1"),
+      table_names = "est_or_strat"
+    ) %>%
     estimate_multinomial_response(var = "AVALC")
 
   result <- build_table(l, adrs)
@@ -168,7 +229,7 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
     c("", "", "Responders", "95% CI (Wald, with correction)",
       "Unstratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
       "p-value (Chi-Squared Test with Schouten Correction)", "Odds Ratio (95% CI)",
-      "Stratified Analysis", "Difference in Response rate (%)", "95% CI (Wald, with correction)",
+      "Stratified Analysis", "Difference in Response rate (%)", "95% CI (CMH, without correction)",
       "p-value (Cochran-Mantel-Haenszel Test)", "Odds Ratio (95% CI)",
       "Complete Response (CR)", "95% CI (Wald, with correction)", "Partial Response (PR)",
       "95% CI (Wald, with correction)", "Stable Disease (SD)", "95% CI (Wald, with correction)",
@@ -179,15 +240,15 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
       "(21.73, 37.97)", "9 (6.7%)", "(2.11, 11.33)", "24 (17.9%)",
       "(11.05, 24.78)", "1 (0.7%)", "(0, 2.58)", "ARM B", "(N=134)",
       "84 (62.7%)", "(54.1, 71.2)", "", "-11.9", "(-23.7, -0.2)", "0.0416",
-      "0.57 (0.34 - 0.96)", "", "-11.9", "(-23.7, -0.2)", "0.0366",
-      "0.57 (0.34 - 0.96)", "47 (35.1%)", "(26.62, 43.53)", "37 (27.6%)",
-      "(19.67, 35.55)", "22 (16.4%)", "(9.77, 23.06)", "16 (11.9%)",
-      "(6.08, 17.8)", "12 (9%)", "(3.75, 14.16)", "ARM C", "(N=132)",
-      "81 (61.4%)", "(52.7, 70)", "", "-13.3", "(-25.1, -1.4)", "0.0245",
-      "0.54 (0.32 - 0.91)", "", "-13.3", "(-25.1, -1.4)", "0.0180",
-      "0.54 (0.32 - 0.9)", "57 (43.2%)", "(34.35, 52.01)", "24 (18.2%)",
-      "(11.22, 25.14)", "13 (9.8%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)",
-      "5 (3.8%)", "(0.15, 7.42)"),
+      "0.57 (0.34 - 0.96)", "", "-11.9", "(-22.7, -1)", "0.0366", "0.57 (0.34 - 0.96)",
+      "47 (35.1%)", "(26.62, 43.53)", "37 (27.6%)", "(19.67, 35.55)",
+      "22 (16.4%)", "(9.77, 23.06)", "16 (11.9%)", "(6.08, 17.8)",
+      "12 (9%)", "(3.75, 14.16)", "ARM C", "(N=132)", "81 (61.4%)",
+      "(52.7, 70)", "", "-13.3", "(-25.1, -1.4)", "0.0245", "0.54 (0.32 - 0.91)",
+      "", "-13.5", "(-24.5, -2.5)", "0.0180", "0.54 (0.32 - 0.9)",
+      "57 (43.2%)", "(34.35, 52.01)", "24 (18.2%)", "(11.22, 25.14)",
+      "13 (9.8%)", "(4.39, 15.31)", "33 (25%)", "(17.23, 32.77)", "5 (3.8%)",
+      "(0.15, 7.42)"),
     .Dim = c(24L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
@@ -196,13 +257,25 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
 test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall response)", {
   l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
-    estimate_proportion(vars = "is_rsp") %>%
-    estimate_proportion_diff(
-      vars = "is_rsp", show_labels = "visible",
-      var_labels = "Unstratified Analysis"
+    estimate_proportion(
+      vars = "is_rsp",
+      table_names = "prop_est"
     ) %>%
-    test_proportion_diff(vars = "is_rsp", method = "schouten") %>%
-    estimate_odds_ratio(vars = "is_rsp") %>%
+    estimate_proportion_diff(
+      vars = "is_rsp",
+      show_labels = "visible",
+      var_labels = "Unstratified Analysis",
+      table_names = "prop_diff"
+    ) %>%
+    test_proportion_diff(
+      vars = "is_rsp",
+      method = "schouten",
+      table_names = "test_diff"
+    ) %>%
+    estimate_odds_ratio(
+      vars = "is_rsp",
+      table_names = "est_or"
+    ) %>%
     estimate_multinomial_response(var = "AVALC")
 
   adrs$is_rsp <- adrs$AVALC == "Complete Response (CR)"
@@ -254,13 +327,25 @@ test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
 
   l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
-    estimate_proportion(vars = "is_rsp") %>%
-    estimate_proportion_diff(
-      vars = "is_rsp", show_labels = "visible",
-      var_labels = "Unstratified Analysis"
+    estimate_proportion(
+      vars = "is_rsp",
+      table_names = "prop_est"
     ) %>%
-    test_proportion_diff(vars = "is_rsp", method = "schouten") %>%
-    estimate_odds_ratio(vars = "is_rsp") %>%
+    estimate_proportion_diff(
+      vars = "is_rsp",
+      show_labels = "visible",
+      var_labels = "Unstratified Analysis",
+      table_names = "prop_diff"
+    ) %>%
+    test_proportion_diff(
+      vars = "is_rsp",
+      method = "schouten",
+      table_names = "test_diff"
+    ) %>%
+    estimate_odds_ratio(
+      vars = "is_rsp",
+      table_names = "est_or"
+    ) %>%
     estimate_multinomial_response(var = "AVALC_NEW")
 
   result <- build_table(l, adrs)

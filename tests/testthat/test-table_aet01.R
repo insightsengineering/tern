@@ -4,12 +4,14 @@
 
 # Shortcut function.
 aet01_count_patients_with_event <- function(lyt, filters, label, indentation = 0L) { #nolint
-  count_patients_with_event(lyt,
-                            vars = "SUBJID",
-                            filters = filters,
-                            denom = "N_col",
-                            .labels = c(count_fraction = label),
-                            .indent_mods = c(count_fraction = indentation)
+  count_patients_with_event(
+    lyt,
+    vars = "SUBJID",
+    filters = filters,
+    denom = "N_col",
+    .labels = c(count_fraction = label),
+    .indent_mods = c(count_fraction = indentation),
+    table_names = make_names(label)
   )
 }
 
@@ -140,7 +142,8 @@ test_that("Test aet01", {
       "STUDYID",
       values = "AB12345",
       .stats = "count",
-      .labels = c(count = "Total AEs")
+      .labels = c(count = "Total AEs"),
+      table_names = "total_aes"
     ) %>%
     aet01_count_patients_with_event(
       c("DTHFL" = "Y"),
@@ -227,7 +230,8 @@ test_that("Test aet01", {
       .stats = "count",
       .labels = c(count = "Serious"),
       .indent_mods = c(count = 1L),
-      .formats = c(count = "xx")
+      .formats = c(count = "xx"),
+      table_names = "serious_terms"
     ) %>%
     count_patients_with_event(
       vars = "AETERM",
@@ -236,14 +240,16 @@ test_that("Test aet01", {
       .stats = "count",
       .labels = c(count = "Related"),
       .indent_mods = c(count = 1L),
-      .formats = c(count = "xx")
+      .formats = c(count = "xx"),
+      table_names = "related_terms"
     ) %>%
     count_values(
       "AESER",
       values = "Y",
       .stats = "count",
       .labels = c(count = "Serious"),
-      .indent_mods = c(count = 1L)
+      .indent_mods = c(count = 1L),
+      table_names = "serious_ae"
     )
 
   result <- build_table(l, adae, col_count = table(adsl$ARM))

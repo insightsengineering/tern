@@ -38,13 +38,15 @@ test_that("TTET01 default variant is produced correctly", {
     surv_time(
       vars = "AVAL",
       var_labels = "Time to Event (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "time_to_event"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      control = control_coxph(pval_method = "log-rank")
+      control = control_coxph(pval_method = "log-rank"),
+      table_names = "coxph_unstratified"
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -128,13 +130,15 @@ test_that("TTET01 variant: selecting sections to display", {
     surv_time(
       vars = "AVAL",
       var_labels = "Time to Event (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "time_to_event"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      control = control_coxph(pval_method = "log-rank")
+      control = control_coxph(pval_method = "log-rank"),
+      table_names = "coxph_unstratified"
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -210,20 +214,23 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
       vars = "AVAL",
       var_labels = "Time to Event (Months)",
       is_event = "is_event",
-      control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
+      control = control_surv_time(conf_level = 0.9, conf_type = "log-log"),
+      table_names = "time_to_event"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      control = control_coxph(pval_method = "log-rank", conf_level = 0.95, ties = "efron")
+      control = control_coxph(pval_method = "log-rank", conf_level = 0.95, ties = "efron"),
+      table_names = "coxph_unstratified"
     ) %>%
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
       is_event = "is_event",
       time_point = 12,
-      control = control_surv_timepoint(conf_level = 0.9, conf_type = "log-log")
+      control = control_surv_timepoint(conf_level = 0.9, conf_type = "log-log"),
+      table_names_suffix = "_log_log"
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -231,7 +238,8 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
       is_event = "is_event",
       time_point = 12,
       method = "surv_diff",
-      control = control_surv_timepoint(conf_level = 0.975)
+      control = control_surv_timepoint(conf_level = 0.975),
+      table_names_suffix = "_975_pct"
     )
   result <- build_table(l, adtte_f)
   result_matrix <- to_string_matrix(result)
@@ -300,18 +308,21 @@ test_that("TTET01 variant: with stratified analysis", {
     surv_time(
       vars = "AVAL",
       var_labels = "Time to Event (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "time_to_event"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
-      var_labels = "Unstratified Analysis"
+      var_labels = "Unstratified Analysis",
+      table_names = "coxph_unstratified"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = "Stratified Analysis",
-      strat = "SEX"
+      strat = "SEX",
+      table_names = "coxph_stratified"
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -390,13 +401,15 @@ test_that("TTET01 variant: modifying time point", {
     surv_time(
       vars = "AVAL",
       var_labels = "Time to Event (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "time_to_event"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      control = control_coxph(pval_method = "log-rank")
+      control = control_coxph(pval_method = "log-rank"),
+      table_names = "coxph_unstratified"
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -472,14 +485,16 @@ test_that("TTET01 variant: requesting more than one p-value", {
     surv_time(
       vars = "AVAL",
       var_labels = "Time to Event (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "time_to_event"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
       control = control_coxph(pval_method = "log-rank"),
-      .stats = "pvalue"
+      .stats = "pvalue",
+      table_names = "coxph_unstratified"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
@@ -487,14 +502,16 @@ test_that("TTET01 variant: requesting more than one p-value", {
       show_labels = "hidden",
       control = control_coxph(pval_method = "wald"),
       .stats = "pvalue",
-      .indent_mods = c(pvalue = 2L)
+      .indent_mods = c(pvalue = 2L),
+      table_names = "coxph_wald_pvalue"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       show_labels = "hidden",
       control = control_coxph(pval_method = "likelihood"),
-      .indent_mods = c(pvalue = 2L, hr = 2L, hr_ci = 4L)
+      .indent_mods = c(pvalue = 2L, hr = 2L, hr_ci = 4L),
+      table_names = "coxph_likelihood_pvalue"
     ) %>%
     surv_timepoint(
       vars = "AVAL",

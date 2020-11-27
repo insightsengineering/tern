@@ -49,6 +49,7 @@ surv_timepoint(
   lyt,
   vars,
   ...,
+  table_names_suffix = "",
   var_labels = "Time",
   show_labels = "visible",
   method = c("surv", "surv_diff", "both"),
@@ -87,6 +88,9 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the rtables to
+avoid warnings from duplicate table names.}
 
 \item{var_labels}{character for label.}
 

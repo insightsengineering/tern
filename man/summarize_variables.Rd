@@ -18,7 +18,7 @@
 \usage{
 s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level, ...)
 
-\method{s_summary}{numeric}(x, na.rm = TRUE, conf_level = 0.95, ...)
+\method{s_summary}{numeric}(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level = 0.95, ...)
 
 \method{s_summary}{factor}(
   x,
@@ -50,7 +50,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level, ...)
 
 a_summary(x, ..., .N_row, .N_col, .var)
 
-\method{a_summary}{numeric}(x, na.rm = TRUE, conf_level = 0.95, ...)
+\method{a_summary}{numeric}(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level = 0.95, ...)
 
 \method{a_summary}{factor}(
   x,
@@ -89,6 +89,7 @@ summarize_vars(
   nested = TRUE,
   ...,
   show_labels = "default",
+  table_names = vars,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
   .formats = NULL,
   .labels = NULL,
@@ -134,6 +135,9 @@ by a statistics function.}
 \item{nested}{boolean, Add this as a new top-level split  (defining a new subtable directly under root). Defaults to \code{FALSE}}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 }
 \value{
 If \code{x} is of class \code{numeric}, returns a list with named items:
@@ -307,7 +311,7 @@ s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
 # `a_summary.numeric`
-a_summary(rnorm(10))
+a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 
 # `a_summary.factor`
 a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)

@@ -426,7 +426,7 @@ test_that("`summarize_vars` does not work with sparse character input due to mis
   l <- basic_table() %>%
     split_cols_by("boo") %>%
     summarize_vars(vars = "foo")
-  expect_error(build_table(l, dta))
+  expect_error(expect_warning(build_table(l, dta)))
 
   # But when converting to factor, it works because we keep the levels information across columns.
   dta_factor <- dta %>%

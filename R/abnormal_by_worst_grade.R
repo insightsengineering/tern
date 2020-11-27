@@ -140,6 +140,7 @@ count_abnormal_by_worst_grade <- function(lyt,
                                           abnormal,
                                           variables,
                                           ...,
+                                          table_names = abnormal,
                                           .stats = NULL,
                                           .formats = NULL,
                                           .labels = NULL,
@@ -147,7 +148,8 @@ count_abnormal_by_worst_grade <- function(lyt,
   assert_that(
     is.string(var),
     !is.null(names(abnormal)),
-    setequal(names(abnormal), names(variables$worst_grade_flag))
+    setequal(names(abnormal), names(variables$worst_grade_flag)),
+    is_equal_length(abnormal, table_names)
   )
   afun <- make_afun(
     a_count_abnormal_by_worst_grade,
@@ -165,6 +167,7 @@ count_abnormal_by_worst_grade <- function(lyt,
       lyt = lyt,
       vars = var,
       var_labels = names(abn),
+      table_names = table_names[i],
       afun = afun,
       extra_args = c(list(abnormal = abn, variables = varlist), list(...)),
       show_labels = "visible"

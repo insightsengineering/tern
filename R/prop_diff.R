@@ -316,7 +316,7 @@ s_proportion_diff <- function(df,
 
     if (!is.null(variables$strata)) {
       strata <- variables$strata
-      strata <- c(interaction(.ref_group[[strata]]), interaction(df[[strata]]))
+      strata <- factor(c(interaction(.ref_group[[strata]]), interaction(df[[strata]])))
     }
 
     y <- switch(
@@ -384,6 +384,7 @@ estimate_proportion_diff <- function(lyt,
                                      ...,
                                      var_labels = vars,
                                      show_labels = "hidden",
+                                     table_names = vars,
                                      .stats = NULL,
                                      .formats = NULL,
                                      .labels = NULL,
@@ -402,6 +403,7 @@ estimate_proportion_diff <- function(lyt,
     afun = afun,
     var_labels = var_labels,
     extra_args = list(...),
-    show_labels = show_labels
+    show_labels = show_labels,
+    table_names = table_names
   )
 }

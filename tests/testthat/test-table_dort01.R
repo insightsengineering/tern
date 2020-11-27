@@ -41,13 +41,15 @@ test_that("DORT01 variant 1 is produced correctly", {
     surv_time(
       vars = "AVAL",
       var_labels = "Duration of response (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "duration_response"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      control = control_coxph(pval_method = "log-rank")
+      control = control_coxph(pval_method = "log-rank"),
+      table_names = "coxph_unstratified"
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -127,13 +129,15 @@ test_that("DORT01 variant 2 is produced correctly", {
     surv_time(
       vars = "AVAL",
       var_labels = "Duration of response (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "duration_response"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      control = control_coxph(pval_method = "log-rank")
+      control = control_coxph(pval_method = "log-rank"),
+      table_names = "coxph_unstratified"
     ) %>%
     build_table(adtte_f)
 
@@ -201,13 +205,15 @@ test_that("DORT01 variant 3 is produced correctly", {
     surv_time(
       vars = "AVAL",
       var_labels = "Duration of response (Months)",
-      is_event = "is_event"
+      is_event = "is_event",
+      table_names = "duration_response"
     ) %>%
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      control = control_coxph(pval_method = "log-rank", conf_level = 0.90)
+      control = control_coxph(pval_method = "log-rank", conf_level = 0.90),
+      table_names = "coxph_unstratified"
     ) %>%
     surv_timepoint(
       vars = "AVAL",

@@ -32,6 +32,7 @@ count_occurrences_by_grade(
   lyt,
   var,
   ...,
+  table_names = var,
   .stats = NULL,
   .formats = NULL,
   .indent_mods = NULL,
@@ -72,6 +73,9 @@ by a statistics function.}
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

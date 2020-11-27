@@ -16,6 +16,7 @@ surv_time(
   vars,
   ...,
   var_labels = "Time to Event",
+  table_names = vars,
   .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
   .formats = NULL,
   .labels = NULL,
@@ -46,6 +47,9 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}
 \item{...}{additional arguments for the lower level functions.}
 
 \item{var_labels}{character for label.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

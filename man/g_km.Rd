@@ -6,7 +6,7 @@
 \usage{
 g_km(
   df,
-  variables = list(tte, is_event, arm, strat = NULL),
+  variables,
   control_surv = control_surv_timepoint(),
   xticks = NULL,
   col = NULL,
@@ -36,12 +36,12 @@ g_km(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{variables}{a (\code{list}) of for variable names. Details are: \cr
+\item{variables}{(named \code{list}) of variable names. Details are: \cr
 \itemize{
-\item \code{tte}: variable indicating time-to-event duration values.
+\item \code{tte}: variable indicating time-to-event duration values (\code{numeric}).
 \item \code{is_event}: event variable (\code{logical}) \cr \code{TRUE} if event, \code{FALSE} if time to event is censored.
-\item \code{arm}: the treatment group variable (`factor``)
-\item \code{strat} (\code{character} or \code{NULL}) variable names indicating stratification factors.
+\item \code{arm}: the treatment group variable (\code{factor}).
+\item \code{strat}: (\code{character} or \code{NULL}) variable names indicating stratification factors.
 }}
 
 \item{control_surv}{a (\code{list}) of parameters for comparison details, specified by using \cr
@@ -94,6 +94,8 @@ default)}
 
 \item{name}{a character identifier for the grob.  Used to find the
     grob on the display list and/or as a child of another grob. }
+
+\item{font_size}{(\code{number}) \cr font size to be used.}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
 control outlook of the Kaplan-Meier curve.}

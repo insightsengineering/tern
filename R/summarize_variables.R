@@ -81,6 +81,10 @@ s_summary <- function(x,
 #'
 s_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
+                              denom,
+                              .N_row, # nolint
+                              .N_col, #nolint
+                              .var,
                               conf_level = 0.95,
                               ...) {
   assert_that(is.numeric(x))
@@ -286,7 +290,7 @@ a_summary <- function(x,
 #' @order 8
 #' @examples
 #' # `a_summary.numeric`
-#' a_summary(rnorm(10))
+#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 #'
 a_summary.numeric <- make_afun(
   s_summary.numeric,
@@ -494,6 +498,7 @@ summarize_vars <- function(lyt,
                            nested = TRUE,
                            ...,
                            show_labels = "default",
+                           table_names = vars,
                            .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                            .formats = NULL,
                            .labels = NULL,
@@ -509,6 +514,7 @@ summarize_vars <- function(lyt,
     nested = nested,
     extra_args = list(...),
     inclNAs = TRUE,
-    show_labels = show_labels
+    show_labels = show_labels,
+    table_names = table_names
   )
 }

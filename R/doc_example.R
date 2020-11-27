@@ -69,6 +69,7 @@ dummy_sum <- function(lyt,
                       vars,
                       ...,
                       show_labels = "hidden",
+                      table_names = vars,
                       .stats = NULL,
                       .formats = NULL,
                       .labels = NULL,
@@ -85,6 +86,7 @@ dummy_sum <- function(lyt,
     vars,
     afun = afun,
     extra_args = list(...),
-    show_labels = show_labels
+    show_labels = show_labels,
+    table_names = table_names
   )
 }

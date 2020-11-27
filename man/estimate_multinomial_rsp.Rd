@@ -16,6 +16,7 @@ estimate_multinomial_response(
   var,
   ...,
   show_labels = "hidden",
+  table_names = var,
   .stats = "prop_ci",
   .formats = NULL,
   .labels = NULL,
@@ -35,6 +36,9 @@ estimate_multinomial_response(
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

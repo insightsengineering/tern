@@ -203,25 +203,35 @@ test_that("DTH01 variant 3 is produced correctly", {
       .labels =  c(count_fraction = "Total number of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)")
     )  %>%
-    summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
+    summarize_vars(
+      vars = c("DTHCAT"),
+      var_labels = c("Primary cause of death"),
+      table_names = "primary_cause"
+    ) %>%
     build_table(df = adsl)
   part2 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
-    split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
+    split_rows_by(
+      "DTHCAT",
+      split_fun = keep_split_levels("OTHER"),
+      child_labels = "hidden"
+    ) %>%
     count_values(
       "DTHCAUS",
       values = dthcaus_levels[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 2L)
+      .indent_mods = c(count_fraction = 2L),
+      table_names = "post_study_deaths"
     ) %>%
     count_values(
       "DTHCAUS",
       values = dthcaus_levels[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 2L)
+      .indent_mods = c(count_fraction = 2L),
+      table_nmaes = "all_other_cuases"
     ) %>%
     build_table(adsl)
 
@@ -280,14 +290,16 @@ test_that("DTH01 variant 4 is produced correctly", {
       values = dthcaus_levels[4],
       .labels = c(count_fraction = "Post study reporting of deaths"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 2L)
+      .indent_mods = c(count_fraction = 2L),
+      table_names = "post_study_deaths"
     ) %>%
     count_values(
       "DTHCAUS",
       values = dthcaus_levels[-4],
       .labels = c(count_fraction = "All other causes"),
       .formats = c(count_fraction = "xx (xx.x%)"),
-      .indent_mods = c(count_fraction = 2L)
+      .indent_mods = c(count_fraction = 2L),
+      table_names = "all_other_causes"
     ) %>%
     build_table(adsl)
 

@@ -183,6 +183,7 @@ a_count_occurrences_by_grade <- make_afun(
 count_occurrences_by_grade <- function(lyt,
                                        var,
                                        ...,
+                                       table_names = var,
                                        .stats = NULL,
                                        .formats = NULL,
                                        .indent_mods = NULL,
@@ -193,18 +194,13 @@ count_occurrences_by_grade <- function(lyt,
     .formats = .formats,
     .indent_mods = .indent_mods,
     .ungroup_stats = "count_fraction"
-    #   `if`(
-    #     is.null(.stats) || "count_fraction" %in% .stats,
-    #     "count_fraction",
-    #     NULL
-    #   ) # Note that we need to ungroup only here.
-    # # Otherwise the user could no longer refer to `count_fraction` statistic.
   )
 
   analyze(
     lyt = lyt,
     vars = var,
     afun = afun,
+    table_names = table_names,
     extra_args = list(...)
   )
 }

@@ -6,12 +6,12 @@
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{variables}{a (\code{list}) of for variable names. Details are: \cr
+\item{variables}{(named \code{list}) of variable names. Details are: \cr
 \itemize{
-\item \code{tte}: variable indicating time-to-event duration values.
+\item \code{tte}: variable indicating time-to-event duration values (\code{numeric}).
 \item \code{is_event}: event variable (\code{logical}) \cr \code{TRUE} if event, \code{FALSE} if time to event is censored.
-\item \code{arm}: the treatment group variable (`factor``)
-\item \code{strat} (\code{character} or \code{NULL}) variable names indicating stratification factors.
+\item \code{arm}: the treatment group variable (\code{factor}).
+\item \code{strat}: (\code{character} or \code{NULL}) variable names indicating stratification factors.
 }}
 
 \item{control_surv}{a (\code{list}) of parameters for comparison details, specified by using \cr
@@ -57,6 +57,8 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{max_time}{(\code{numeric})\cr maximum value of X axis range (\code{NULL} for
 default)}
+
+\item{font_size}{(\code{number}) \cr font size to be used.}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
 control outlook of the Kaplan-Meier curve.}

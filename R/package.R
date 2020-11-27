@@ -16,5 +16,14 @@
 #' @importFrom stats qchisq
 NULL
 
-# We need this to avoid R CMD check warning about the '.' in magrittr pipes.
-if (getRversion() >= "2.15.1") utils::globalVariables(c(".", "x"))
+# We need this to avoid R CMD check warning about missing global definitions.
+if (getRversion() >= "2.15.1") {
+  utils::globalVariables(c(
+    ".",
+    "x",
+    "control_coxph",
+    "control_incidence_rate",
+    "control_surv_time",
+    "control_surv_timepoint"
+  ))
+}

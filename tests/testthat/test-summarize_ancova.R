@@ -93,12 +93,14 @@ test_that("summarize_ancova works with healthy inputs", {
       vars = "Sepal.Length",
       variables = list(arm = "Species", covariates = NULL),
       conf_level = 0.95, var_labels = "Unadjusted comparison",
-      .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
+      .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means"),
+      table_names = "unadjusted"
     ) %>%
     summarize_ancova(
       vars = "Sepal.Length",
       variables = list(arm = "Species", covariates = "Petal.Length"),
-      conf_level = 0.95, var_labels = "Adjusted comparison (covariates Petal.Length)"
+      conf_level = 0.95, var_labels = "Adjusted comparison (covariates Petal.Length)",
+      table_names = "adjusted"
     ) %>%
     build_table(iris)
   result_matrix <- to_string_matrix(result)

@@ -157,13 +157,15 @@ count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,
                                        ...,
+                                       table_names = abnormal,
                                        .stats = NULL,
                                        .formats = NULL,
                                        .labels = NULL,
                                        .indent_mods = NULL) {
   assert_that(
     is.string(var),
-    !is.null(names(abnormal))
+    !is.null(names(abnormal)),
+    is_equal_length(abnormal, table_names)
   )
   afun <- make_afun(
     a_count_abnormal_by_baseline,
@@ -180,6 +182,7 @@ count_abnormal_by_baseline <- function(lyt,
       vars = var,
       var_labels = names(abn),
       afun = afun,
+      table_names = table_names[i],
       extra_args = c(list(abnormal = abn), list(...)),
       show_labels = "visible"
     )

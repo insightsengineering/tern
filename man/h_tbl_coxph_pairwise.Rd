@@ -4,21 +4,17 @@
 \alias{h_tbl_coxph_pairwise}
 \title{Helper Function: Pairwise CoxPH table}
 \usage{
-h_tbl_coxph_pairwise(
-  df,
-  variables = list(tte, is_event, arm, strat = NULL),
-  control_coxph_pw = control_coxph()
-)
+h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{variables}{a (\code{list}) of for variable names. Details are: \cr
+\item{variables}{(named \code{list}) of variable names. Details are: \cr
 \itemize{
-\item \code{tte}: variable indicating time-to-event duration values.
+\item \code{tte}: variable indicating time-to-event duration values (\code{numeric}).
 \item \code{is_event}: event variable (\code{logical}) \cr \code{TRUE} if event, \code{FALSE} if time to event is censored.
-\item \code{arm}: the treatment group variable (`factor``)
-\item \code{strat} (\code{character} or \code{NULL}) variable names indicating stratification factors.
+\item \code{arm}: the treatment group variable (\code{factor}).
+\item \code{strat}: (\code{character} or \code{NULL}) variable names indicating stratification factors.
 }}
 
 \item{control_coxph_pw}{(\code{list}) \cr parameters for comparison details, specified by using \cr

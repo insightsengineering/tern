@@ -33,6 +33,7 @@ coxph_pairwise(
   ...,
   var_labels = "CoxPH",
   show_labels = "visible",
+  table_names = vars,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -72,6 +73,9 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 \item{var_labels}{character for label.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

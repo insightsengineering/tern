@@ -21,12 +21,14 @@ test_that("AOVT01 variant with single endpoint is produced correctly", {
       vars = "CHG",
       variables = list(arm = "ARMCD", covariates = NULL),
       conf_level = 0.95, var_labels = "Unadjusted comparison",
-      .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
+      .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means"),
+      table_names = "unadjusted"
     ) %>%
     summarize_ancova(
       vars = "CHG",
       variables = list(arm = "ARMCD", covariates = c("BASE", "STRATA1")),
-      conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
+      conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)",
+      table_names = "adjusted"
     ) %>%
     build_table(adqs_single, col_counts = n_per_arm)
   result_matrix <- to_string_matrix(result)
