@@ -1,7 +1,5 @@
-# tern 0.6.9.9000
-
+# tern 0.6.10
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
-
 * Counting patients with abnormal values post-baseline: `s_count_abnormal` and `count_abnormal`.
 * Counting patients with graded abnormal values: `s_count_abnormal_by_worst_grade` and `count_abnormal_by_worst_grade`.
 * Counting patients with abnormal values by baseline status: `s_count_abnormal_by_baseline` and `count_abnormal_by_baseline`.
@@ -26,14 +24,10 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Tabulate the binary outcome response by subgroup with `extract_rsp_subgroups` and `tabulate_rsp_subgroups`.
 * Tabulate survival duration by subgroup with `extract_survival_subgroups` and `tabulate_survival_subgroups`.
 
-
-* issues with no news: 
-
 # tern 0.6.9
 * Removing not used imports.
 
 # tern 0.6.8
-
 * Improved handling of missing data in aggregation functions: `a_mean_sd`, `a_median`,  `a_n_true_and_freq`, `a_count`, `a_q1q3`, `a_iqr`, `a_range`.
 * New default p-value method in `s_test_proportion_diff`: Chi-Squared Test with Schouten Correction.
 * Add new function `t_contingency` for contingency tables.

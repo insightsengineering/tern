@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Date: 2020-10-20
-Version: 0.6.9.9000
+Date: 2020-12-15
+Version: 0.6.10
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
@@ -19,7 +19,7 @@ Authors@R: c(
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.6),
-  rtables (>= 0.3.2)
+  rtables (>= 0.3.3)
 Imports:
     assertthat,
     dplyr,
@@ -36,7 +36,7 @@ Imports:
     stats,
     survival,
     utils,
-    utils.nest (>= 0.2.6),
+    utils.nest (>= 0.2.7),
     forcats,
     car,
     nlme,
@@ -52,10 +52,10 @@ Imports:
     broom
 Suggests:
   lattice,
-  test.nest,
+  test.nest (>= 0.2.5),
   knitr,
   Matrix,
-  random.cdisc.data (>= 0.3.6),
+  random.cdisc.data (>= 0.3.7),
   rmarkdown,
   testthat (>= 2.0),
   tidyr
