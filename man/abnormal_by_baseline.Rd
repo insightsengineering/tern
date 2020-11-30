@@ -109,6 +109,7 @@ statistics function arguments and additional format arguments (see below).
 
 \examples{
 d_count_abnormal_by_baseline("LOW")
+
 df <- data.frame(
  USUBJID = as.character(c(1:6)),
  ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),

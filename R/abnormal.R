@@ -18,6 +18,8 @@
 #' @param baseline (`string`)\cr identifying the baseline level(s) in `visit`.
 #'
 #' @name abnormal
+#' @include formats.R
+#'
 NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values

@@ -20,12 +20,15 @@
 #' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
 #'
 #' @name abnormal_by_baseline
+#' @include formats.R
+#'
 NULL
 
 #' @describeIn abnormal_by_baseline Description Function that produces the labels for [s_count_abnormal_by_baseline()].
 #' @export
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
+#'
 d_count_abnormal_by_baseline <- function(abnormal) {
 
   null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
