@@ -162,7 +162,7 @@ test_that("count_patients_with_flags works as expected", {
     add_colcounts() %>%
     count_patients_with_flags(
       "SUBJID",
-      flag_variables = c("flag1", "flag2"),
+      flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
     )
 
   result <- build_table(lyt, df = test_data, col_counts = col_counts)
@@ -174,6 +174,62 @@ test_that("count_patients_with_flags works as expected", {
       "1 (16.67%)", "0 (0%)", "B", "(N=4)", "1 (25%)", "1 (25%)"
     ),
     .Dim = c(4L, 3L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("count_patients_with_flags works as expected when specifying table_names", {
+
+  test_data <- tibble(
+    USUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
+    SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
+    ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
+    TRTEMFL = c("Y", "", "", "NA", "", "", "Y", "", ""),
+    AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL")
+  )
+  test_data <- test_data %>%
+    mutate(
+      flag1 = TRTEMFL == "Y",
+      flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
+    ) %>%
+    var_relabel(
+      flag1 = "Total number of patients with at least one adverse event",
+      flag2 = "Total number of patients with fatal AEs"
+    )
+
+  test_adsl_like <- tibble(
+    USUBJID = as.character(1001:1010),
+    SUBJID = as.character(1001:1010),
+    ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
+    stringsAsFactors = FALSE
+  )
+  col_counts <- table(test_adsl_like$ARM)
+
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    count_patients_with_flags(
+      "SUBJID",
+      flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
+      table_names = paste0("SUBJID", c("flag1", "flag2"))
+    ) %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
+      table_names = paste0("USUBJID", c("flag1", "flag2"))
+    )
+
+  result <- build_table(lyt, df = test_data, col_counts = col_counts)
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Total number of patients with at least one adverse event",
+      "Total number of patients with fatal AEs", "Total number of patients with at least one adverse event",
+      "Total number of patients with fatal AEs", "A", "(N=6)", "1 (16.67%)",
+      "0 (0%)", "1 (16.67%)", "0 (0%)", "B", "(N=4)", "1 (25%)", "1 (25%)",
+      "1 (25%)", "1 (25%)"),
+    .Dim = c(6L, 3L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
