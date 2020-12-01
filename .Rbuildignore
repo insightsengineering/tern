@@ -10,5 +10,4 @@ man-roxygen/*
 TODO.md
 ^\.drone\.yml$
 ^Jenkinsfile$
-old_stuff/*
 .lintr
