@@ -9,15 +9,12 @@
 #' of the hazards between groups (e.g., two arms) is constant over time.
 #' This ratio is referred to as the "hazard ratio" (HR) and is one of the
 #' most commonly reported metrics to describe the effect size in survival
-#' analysis \insertCite{NESTTeam2020}{tern}.
+#' analysis (NEST Team, 2020).
 #'
 #' @note The usual formatting arguments for the _layout creating_ function
 #'  `summarize_coxreg` are not yet accepted (`.stats`, `.indent_mod`, `.formats`,
 #'  `.labels`).
 #' @inheritParams argument_convention
-#' @references
-#' + \insertAllCited{}
-#' + \insertRef{Hughes2020a}{tern}
 #'
 #' @name cox_regression
 #' @order 1

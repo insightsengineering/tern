@@ -81,9 +81,8 @@ prop_cmh <- function(ary) {
 
 
 #' @describeIn prop_diff_test performs the Chi-Squared test with Schouten
-#'   correction.
-#' @references \insertRef{Schouten1980}{tern}
-#' @importFrom Rdpack reprompt
+#'   correction ([Schouten 1980](
+#'   https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305)).
 #' @export
 #' @order 2
 #' @examples

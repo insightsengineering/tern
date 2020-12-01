@@ -107,7 +107,7 @@ proportions.
 Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
 \item \code{prop_schouten}: performs the Chi-Squared test with Schouten
-correction.
+correction (\href{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305}{Schouten 1980}).
 
 \item \code{prop_fisher}: performs the Fisher's exact test.
 Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
@@ -200,7 +200,4 @@ l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") \%>\%
 
 build_table(l, df = dta)
 
-}
-\references{
-\insertRef{Schouten1980}{tern}
 }

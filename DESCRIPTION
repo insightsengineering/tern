@@ -47,7 +47,6 @@ Imports:
     dfoptim,
     optimx,
     viridisLite,
-    Rdpack,
     tibble,
     broom
 Suggests:
@@ -59,7 +58,6 @@ Suggests:
   rmarkdown,
   testthat (>= 2.0),
   tidyr
-RdMacros: Rdpack
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
