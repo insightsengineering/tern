@@ -152,7 +152,7 @@ g_km <- function(df,
                  max_time = NULL,
                  xlab = "Days",
                  ylab = "Survival Probability",
-                 title = "Kaplan-Meier Plot",
+                 title = NULL,
                  draw = TRUE,
                  newpage = TRUE,
                  gp = NULL,
@@ -167,7 +167,8 @@ g_km <- function(df,
                  position_coxph = c(0, 0)) {
   assert_that(
     is.list(variables),
-    all(c("tte", "arm", "is_event") %in% names(variables))
+    all(c("tte", "arm", "is_event") %in% names(variables)),
+    is.string(title) || is.null(title)
   )
   tte <- variables$tte
   is_event <- variables$is_event
@@ -223,23 +224,30 @@ g_km <- function(df,
     }
 
     grobs_patient <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl)
-
-    lyt <- h_km_layout(data = data_plot, g_el = g_el)
-
+    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title) # nolint
+    ttl_row <- as.numeric(!is.null(title))
     km_grob <- grid::gTree(
       vp = grid::viewport(layout = lyt, height = .95, width = .95),
       children = grid::gList(
 
+        # Title.
+        if (!is.null(ttl_row)) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+            children =  grid::gList(grid::textGrob(label = title, x = unit(0, "npc"), hjust = 0))
+          )
+        },
+
         # The Kaplan - Meier curve (top-right corner).
         grid::gTree(
-          vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+          vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
           children = grid::gList(g_el$panel)
         ),
 
         # Survfit summary table (top-right corner).
         if (annot_surv_med) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
             children = h_grob_median_surv(
               fit_km = fit_km,
               ttheme = gridExtra::ttheme_default(
@@ -251,7 +259,7 @@ g_km <- function(df,
 
         if (annot_coxph) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
             children = h_grob_coxph(
               df = df,
               variables = variables,
@@ -269,37 +277,37 @@ g_km <- function(df,
 
         # Add the y-axis annotation (top-left corner).
         grid::gTree(
-          vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1),
+          vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 1),
           children = h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis)
         ),
 
         # Add the x-axis annotation (second row below the Kaplan Meier Curve).
         grid::gTree(
-          vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 2),
+          vp = grid::viewport(layout.pos.row = 2 + ttl_row, layout.pos.col = 2),
           children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
         ),
 
         # Add the legend.
         grid::gTree(
-          vp = grid::viewport(layout.pos.row = 3, layout.pos.col = 2),
+          vp = grid::viewport(layout.pos.row = 3 + ttl_row, layout.pos.col = 2),
           children = grid::gList(g_el$guide)
         ),
 
         # Add the table with patient-at-risk numbers.
         grid::gTree(
-          vp = grid::viewport(layout.pos.row = 4, layout.pos.col = 2),
+          vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
           children = grobs_patient$at_risk
         ),
 
         # Add the table with patient-at-risk labels.
         grid::gTree(
-          vp = grid::viewport(layout.pos.row = 4, layout.pos.col = 1),
+          vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
           children = grobs_patient$label
         ),
 
         # Add the x-axis for the table.
         grid::gTree(
-          vp = grid::viewport(layout.pos.row = 5, layout.pos.col = 2),
+          vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
           children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
         )
       )
@@ -508,11 +516,13 @@ h_ggkm <- function(data,
   if (!is.null(ggtheme)) {
     gg <- gg + ggtheme
   }
+
   gg + ggplot2::theme(
     legend.position = "bottom",
     legend.title = ggplot2::element_blank(),
     panel.grid.major.x = ggplot2::element_line(size = 2)
   )
+
 }
 
 
@@ -606,7 +616,7 @@ h_decompose_gg <- function(gg) {
 #' grid.show.layout(lyt)
 #' }
 #'
-h_km_layout <- function(data, g_el) {
+h_km_layout <- function(data, g_el, title) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -619,26 +629,52 @@ h_km_layout <- function(data, g_el) {
       )
     )
   )
-  grid::grid.layout(
-    nrow = 5, ncol = 2,
-    widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
-    heights = grid::unit(
-      c(
-        1,
-        grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-        grid::convertX(g_el$guide$heights, "pt"),
-        nlines + 1,
-        grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
-      ),
-      c(
-        "null",
-        "pt",
-        "pt",
-        "lines",
-        "pt"
+
+  if (is.null(title)) {
+    grid::grid.layout(
+      nrow = 5, ncol = 2,
+      widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
+      heights = grid::unit(
+        c(
+          1,
+          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
+          grid::convertX(g_el$guide$heights, "pt"),
+          nlines + 1,
+          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
+        ),
+        c(
+          "null",
+          "pt",
+          "pt",
+          "lines",
+          "pt"
+        )
       )
     )
-  )
+  } else {
+    grid::grid.layout(
+      nrow = 6, ncol = 2,
+      widths = grid::unit(c(col_annot_width, 1), c("pt", "null")),
+      heights = grid::unit(
+        c(
+          1,
+          1,
+          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
+          grid::convertX(g_el$guide$heights, "pt"),
+          nlines + 1,
+          grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
+        ),
+        c(
+          "lines",
+          "null",
+          "pt",
+          "pt",
+          "lines",
+          "pt"
+        )
+      )
+    )
+  }
 }
 
 #' Helper: Patient-at-Risk Grobs

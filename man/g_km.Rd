@@ -18,7 +18,7 @@ g_km(
   max_time = NULL,
   xlab = "Days",
   ylab = "Survival Probability",
-  title = "Kaplan-Meier Plot",
+  title = NULL,
   draw = TRUE,
   newpage = TRUE,
   gp = NULL,
