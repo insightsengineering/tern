@@ -256,6 +256,10 @@ check_col_by_factor <- function(x,
 #' @return Character vector of proper names, which does not use dots in contrast to
 #'   [base::make.names()].
 #'
+#' @export
+#' @examples
+#' make_names(c("foo Bar", "1 2 3 bla"))
+#'
 make_names <- function(nams) {
   orig <- make.names(nams)
   gsub(".", "", x = orig, fixed = TRUE)

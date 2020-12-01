@@ -241,6 +241,7 @@ reference:
       - split_cols_by_groups
       - as.rtable
       - as.rtable.data.frame
+      - make_names
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
@@ -346,7 +347,6 @@ reference:
       - d_onco_rsp_label
       - check_diff_prop_ci
       - c_label_n
-      - make_names
       - h_col_indices
       - get_covariates
       - d_count_missed_doses

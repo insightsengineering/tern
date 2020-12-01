@@ -16,3 +16,7 @@ Character vector of proper names, which does not use dots in contrast to
 \description{
 Make Names Without Dots
 }
+\examples{
+make_names(c("foo Bar", "1 2 3 bla"))
+
+}
