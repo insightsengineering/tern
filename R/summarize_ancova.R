@@ -121,11 +121,9 @@ s_ancova <- function(df,
 
   y <- df[[.var]]
   sum_level <- as.character(unique(df[[arm]]))
-  ref_level <- as.character(unique(.ref_group[[arm]]))
   # Ensure that there is only one element in sum_level.
   assertthat::assert_that(
-    is.scalar(sum_level),
-    is.scalar(ref_level)
+    is.scalar(sum_level)
   )
   sum_fit_level <- sum_fit[sum_fit[[arm]] == sum_level, ]
 
@@ -144,7 +142,7 @@ s_ancova <- function(df,
       # Compare all arms versus the control arm.
       method = "trt.vs.ctrl",
       # Take the first level of the arm factor as the control arm.
-      ref = ref_level
+      ref = 1
     )
     sum_contrasts <- summary(
       emmeans_contrasts,
