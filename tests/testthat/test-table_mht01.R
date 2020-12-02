@@ -7,10 +7,16 @@ library(tern)
 
 test_that("MHT01 variant 1 is produced accurately", {
 
-  adsl <- radsl(cached = TRUE)
-  n_per_arm <- table(adsl$ARM)
+  adsl_f <- radsl(cached = TRUE) %>%
+    filter(SAFFL == "Y")
+  col_counts <- table(adsl_f$ARM)
 
-  admh <- radmh(cached = TRUE)
+  admh_f <- radmh(cached = TRUE) %>%
+    filter(
+      SAFFL == "Y",
+      MHBODSYS != "",
+      MHDECOD != ""
+    )
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -20,15 +26,20 @@ test_that("MHT01 variant 1 is produced accurately", {
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
-    split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
+    split_rows_by(
+      var = "MHBODSYS",
+      split_fun = drop_split_levels,
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
-    count_occurrences(var = "MHDECOD")
+    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh, col_counts = n_per_arm) %>%
+  result <- build_table(lyt, admh_f, col_counts = col_counts) %>%
     prune_table()
   result_matrix <- to_string_matrix(result)
 
@@ -62,12 +73,18 @@ test_that("MHT01 variant 1 is produced accurately", {
 
 test_that("MHT01 variant 2 is produced accurately", {
 
-  adsl <- radsl(cached = TRUE)
-  n_per_arm <- table(adsl$ARM)
+  adsl_f <- radsl(cached = TRUE) %>%
+    filter(SAFFL == "Y")
+  col_counts <- table(adsl_f$ARM)
 
-  admh <- radmh(cached = TRUE)
+  admh_f <- radmh(cached = TRUE) %>%
+    filter(
+      SAFFL == "Y",
+      MHBODSYS != "",
+      MHDECOD != ""
+    )
 
-  admh_prior <- admh %>%
+  admh_f_prior <- admh_f %>%
     filter(ASTDY <= 0)
 
   lyt <- basic_table() %>%
@@ -78,15 +95,20 @@ test_that("MHT01 variant 2 is produced accurately", {
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
-    split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
+    split_rows_by(
+      var = "MHBODSYS",
+      split_fun = drop_split_levels,
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
-    count_occurrences(var = "MHDECOD")
+    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_prior, col_counts = n_per_arm) %>%
+  result <- build_table(lyt, admh_f_prior, col_counts = col_counts) %>%
     prune_table()
   result_matrix <- to_string_matrix(result)
 
@@ -109,10 +131,16 @@ test_that("MHT01 variant 2 is produced accurately", {
 
 test_that("MHT01 variant 3 is produced accurately", {
 
-  adsl <- radsl(cached = TRUE)
-  n_per_arm <- table(adsl$ARM)
+  adsl_f <- radsl(cached = TRUE) %>%
+    filter(SAFFL == "Y")
+  col_counts <- table(adsl_f$ARM)
 
-  admh <- radmh(cached = TRUE)
+  admh_f <- radmh(cached = TRUE) %>%
+    filter(
+      SAFFL == "Y",
+      MHBODSYS != "",
+      MHDECOD != ""
+    )
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -122,15 +150,20 @@ test_that("MHT01 variant 3 is produced accurately", {
       .stats = "unique",
       .labels = c(unique = "Total number of patients with at least one event")
     ) %>%
-    split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
+    split_rows_by(
+      var = "MHBODSYS",
+      split_fun = drop_split_levels,
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Total number of patients with at least one event")
     ) %>%
-    count_occurrences(var = "MHDECOD")
+    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh, col_counts = n_per_arm) %>%
+  result <- build_table(lyt, admh_f, col_counts = col_counts) %>%
     prune_table()
   result_matrix <- to_string_matrix(result)
 
@@ -164,27 +197,39 @@ test_that("MHT01 variant 3 is produced accurately", {
 
 test_that("MHT01 variant 5 is produced accurately", {
 
-  adsl <- radsl(cached = TRUE)
-  n_per_arm <- table(adsl$ARM)
-  n_per_arm_tot <- c(n_per_arm, "All Patients" = dim(adsl)[1])
+  adsl_f <- radsl(cached = TRUE) %>%
+    filter(SAFFL == "Y")
+  col_counts <- c(table(adsl_f$ARM), "All Patients" = dim(adsl_f)[1])
 
-  admh <- radmh(cached = TRUE)
+  admh_f <- radmh(cached = TRUE) %>%
+    filter(
+      SAFFL == "Y",
+      MHBODSYS != "",
+      MHDECOD != ""
+    )
 
   lyt <- basic_table() %>%
-    split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+    split_cols_by("ARM") %>%
+    add_overall_col("All Patients") %>%
     add_colcounts() %>%
     summarize_num_patients(
-      "USUBJID",
+      var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(unique = "Total number of patients with at least one event")) %>%
-    split_rows_by("MHBODSYS", split_fun = drop_split_levels, child_labels = "visible", nested = FALSE) %>%
+    split_rows_by(
+      var = "MHBODSYS",
+      split_fun = drop_split_levels,
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L
+    ) %>%
     summarize_num_patients(
-      "USUBJID",
+      var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(unique = "Total number of patients with at least one event")) %>%
-    count_occurrences(var = "MHDECOD")
+    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh, col_counts = n_per_arm_tot) %>%
+  result <- build_table(lyt, admh_f, col_counts = col_counts) %>%
     prune_table()
   result_matrix <- to_string_matrix(result)
 
