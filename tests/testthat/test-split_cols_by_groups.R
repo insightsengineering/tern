@@ -151,3 +151,37 @@ test_that("split_cols_by_groups equivalent to split_cols_by with ref_col but no 
 
   expect_identical(result, expected)
 })
+
+
+# combine_counts ----
+test_that("combine_counts combines character vectors", {
+  fct <- c("A", "A", "A", "B", "B", "C")
+  grp <- expect_warning(combine_groups(fct = fct))
+  result <- expect_warning(combine_counts(fct, grp))
+  expected <- c(A = 3, `B/C` = 3)
+  expect_identical(result, expected)
+})
+
+test_that("combine_counts combines factors", {
+  fct <- factor(c("A", "A", "A", "B", "B", "C"))
+  grp <- combine_groups(fct = fct)
+  result <- combine_counts(fct, grp)
+  expected <- c(A = 3, `B/C` = 3)
+  expect_identical(result, expected)
+})
+
+test_that("combine_counts combines factors", {
+  fct <- factor(c("A", "A", "A", "B", "B", "C"))
+  grp <- combine_groups(fct = fct, ref = c("A", "C"))
+  result <- combine_counts(fct, grp)
+  expected <- c(`A/C` = 4, B = 2)
+  expect_identical(result, expected)
+})
+
+test_that("combine_counts with groups_list NULL", {
+  fct <- factor(c("A", "A", "A", "B", "B", "C"))
+  grp <- combine_groups(fct = fct, ref = c("A", "C"))
+  result <- combine_counts(fct)
+  expected <- c(A = 3, B = 2, C = 1)
+  expect_identical(result, expected)
+})

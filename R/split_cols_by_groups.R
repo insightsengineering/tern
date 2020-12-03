@@ -219,3 +219,63 @@ split_cols_by_groups <- function(lyt,
     )
   }
 }
+
+#' Combine Counts
+#'
+#' Simplifies the estimation of column counts, especially when group combination
+#' is required.
+#'
+#' @seealso combine_groups
+#' @inheritParams combine_groups
+#' @inheritParams groups_list_to_df
+#'
+#' @export
+#'
+#' @examples
+#'
+#' library(rtables)
+#'
+#' ref <- c("A: Drug X", "B: Placebo")
+#' groups <- combine_groups(fct = DM$ARM, ref = ref)
+#' col_counts <- combine_counts(
+#'   fct = DM$ARM,
+#'   groups_list = groups
+#' )
+#'
+#' basic_table() %>%
+#'   split_cols_by_groups("ARM", groups) %>%
+#'   add_colcounts() %>%
+#'   summarize_vars("AGE") %>%
+#'   build_table(DM, col_counts = col_counts)
+#'
+#' ref <- "A: Drug X"
+#' groups <- combine_groups(fct = DM$ARM, ref = ref)
+#' col_counts <- combine_counts(
+#'   fct = DM$ARM,
+#'   groups_list = groups
+#' )
+#'
+#' basic_table() %>%
+#'   split_cols_by_groups("ARM", groups) %>%
+#'   add_colcounts() %>%
+#'   summarize_vars("AGE") %>%
+#'   build_table(DM, col_counts = col_counts)
+#'
+combine_counts <- function(fct, groups_list = NULL) {
+
+  assert_that(is_character_or_factor(fct))
+
+  fct <- as_factor_keep_attributes(fct)
+
+  if (is.null(groups_list)) {
+    y <- table(fct)
+    y <- setNames(as.numeric(y), nm = dimnames(y)[[1]])
+  } else {
+    y <- vapply(
+      X = groups_list,
+      FUN = function(x) sum(table(fct)[x]),
+      FUN.VALUE = 1
+    )
+  }
+  y
+}
