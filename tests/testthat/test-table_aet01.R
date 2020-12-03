@@ -1,142 +1,114 @@
-# Test the all variant for AET01 together, including:
-# 1) Total number of events satisfying certain criteria.
-# 2) Total number of patients with at least one event satisfying certain event criteria.
+library(random.cdisc.data)
+library(dplyr)
 
-# Shortcut function.
-aet01_count_patients_with_event <- function(lyt, filters, label, indentation = 0L) { #nolint
-  count_patients_with_event(
-    lyt,
-    vars = "SUBJID",
-    filters = filters,
-    denom = "N_col",
-    .labels = c(count_fraction = label),
-    .indent_mods = c(count_fraction = indentation),
-    table_names = make_names(label)
-  )
-}
+# Add some variables necessary for analysis that are missing from RCD.
+preproc_adsl <- function(adsl) {
 
-test_that("Test aet01", {
-  library(tern)
-  library(dplyr)
-  library(random.cdisc.data)
-  set.seed(99)
-  adsl <- radsl(cached = TRUE) %>%
-    mutate(
-      DCSREAS = as.character(DCSREAS)  # nolint
-    )
-  adae <- radae(cached = TRUE)
   adsl <- adsl %>%
     mutate(
-      DTHFL = case_when(  # nolint
+      DTHFL = case_when(
         !is.na(DTHDT) ~ "Y",
         TRUE ~ ""
-      ),
-      DCSREAS = case_when(  # nolint
-        is.na(DCSREAS) ~ "",
-        TRUE ~ DCSREAS
       )
     ) %>%
     var_relabel(
-      DTHFL = "Subject Death Flag",
-      DCSREAS = "Reason for Discontinuation from Study"
+      DTHFL = "Subject Death Flag"
     )
+  adsl
+}
 
-  # Create dummy AAG.
-  AAG <- tibble(  # nolint
-    NAMVAR = c(rep("SMQ01NAM", 2), rep("SMQ02NAM", 2), rep("CQ01NAM", 2)),
-    SRCVAR = rep("AEDECOD", 6),
-    GRPTYPE = c(rep("SMQ", 4), rep("CUSTOM", 2)),
-    CUSTYPE = c(rep("", 4), rep("AEGT", 2)),
-    SCOPE = c(rep("BROAD", 2), rep("NARROW", 2), rep("", 2)),
-    REFNAME = c(
-      rep("C.1.1.1.3/B.2.2.3.1 AESI", 2),
-      rep("Y.9.9.9.9/Z.9.9.9.9 AESI", 2),
-      rep("D.2.1.5.3/A.1.1.1.1 AESI", 2)
-    ), #nolint
-    REFTERM = c(
-      "dcd C.1.1.1.3", "dcd B.2.2.3.1", "dcd Y.9.9.9.9",
-      "dcd Z.9.9.9.9", "dcd D.2.1.5.3", "dcd A.1.1.1.1"
-      )
-    ) %>%
-    var_relabel(
-      NAMVAR = "Name of Grouping Flag Variable",
-      SRCVAR = "Variable on which Grouping is Based",
-      GRPTYPE = "Grouping Definition Type",
-      CUSTYPE = "Custom Definition Type",
-      SCOPE = "Scope of the query",
-      REFNAME = "Grouping Definition Name",
-      REFTERM = "Grouping Def. Clause Dictionary Term"
-    )
+preproc_adae <- function(adae, seed = 99) {
 
-  # Helper function to extract group label from AAG.
-  aegrp_label <- function(aegrp, varname){
+  set.seed(seed)
 
-    stopifnot(c("NAMVAR", "GRPTYPE", "SCOPE", "REFNAME") %in% names(aegrp))
-    stopifnot(varname %in% unique(aegrp[["NAMVAR"]]))
-
-    lbl_df <- aegrp[aegrp$NAMVAR == varname, c("GRPTYPE", "SCOPE", "REFNAME")][1, ]
-
-    lbl <- if (lbl_df$GRPTYPE == "SMQ") {
-      paste0(lbl_df$REFNAME, " (", lbl_df$GRPTYPE, ") ", " (", tolower(lbl_df$SCOPE), ")")
-    } else{
-      paste(lbl_df$REFNAME)
-    }
-
-    lbl
-  }
-
-  # Add additional variables to ADAE.
   adae <- adae %>%
-    mutate( # nolint
+    mutate(
+      AEDECOD = as.character(AEDECOD),
       AESDTH = sample(c("N", "Y"), size = nrow(adae), replace = TRUE, prob = c(0.99, 0.01)),
       AEACN = sample(
         c("DOSE NOT CHANGED", "DOSE INCREASED", "DRUG INTERRUPTED", "DRUG WITHDRAWN"),
         size = nrow(adae),
-        replace = TRUE,
-        prob = c(0.68, 0.02, 0.25, 0.05)
-      ),
-      SMQ01NAM = case_when(
-        AEDECOD %in% c("dcd C.1.1.1.3", "dcd B.2.2.3.1") ~ "C.1.1.1.3/B.2.2.3.1 AESI",
-        TRUE ~ ""
-      ),
-      SMQ02NAM = case_when(
-        AEDECOD %in% c("dcd Y.9.9.9.9", "dcd Z.9.9.9.9") ~ "Y.9.9.9.9/Z.9.9.9.9 AESI",
-        TRUE ~ ""
-      ),
-      CQ01NAM = case_when(
-        AEDECOD %in% c("dcd D.2.1.5.3", "dcd A.1.1.1.1") ~ "D.2.1.5.3/A.1.1.1.1 AESI",
-        TRUE ~ ""
+        replace = TRUE, prob = c(0.68, 0.02, 0.25, 0.05)
       )
     ) %>%
     var_relabel(
+      AEDECOD = "Dictionary-Derived Term",
       AESDTH = "Results in Death",
-      AEACN = "Action Taken with Study Treatment",
-      SMQ01NAM = "SMQ 01 Name",
-      SMQ02NAM = "SMQ 02 Name",
-      CQ01NAM = "Customized Query 01 Name"
+      AEACN = "Action Taken with Study Treatment"
     )
 
-  adae <- adae[, -which(colnames(adae) == "ARM")]
+  adae
+}
 
-  death <- data.frame(SUBJID = adsl$SUBJID, DTHFL = adsl$DTHFL, ARM = adsl$ARM, stringsAsFactors = FALSE)
+test_that("Safety Summary Variant 1 works as expected", {
 
-  adae <- full_join(adae, death, by = "SUBJID")
-  adae$AETERM <- as.character(adae$AETERM) # nolint
+  adsl <- radsl(cached = TRUE) %>%
+    preproc_adsl()
 
-  adae$TREATMOD <- NA # nolint
-  adae$TREATWITHDRAWL <- NA # nolint
-  adae$GRADE3_5 <- NA # nolint
+  adae <- radae(cached = TRUE) %>%
+    preproc_adae()
 
-  adae$TREATMOD[adae$AEACN %in% c("DOSE REDUCED", "DOSE INCREASED", "DRUG INTERRUPTED")] <- "Y"
-  adae$TREATWITHDRAWL[adae$AEACN %in% c("DRUG WITHDRAWN")] <- "Y"
-  adae$GRADE3_5[adae$AETOXGR %in% c("3", "4", "5")] <- "Y"
+  # Add flags (TRUE/FALSE) for select AEs of interest.
+  adae <- adae %>%
+    mutate(
+      FATAL = AESDTH == "Y",
+      SER = AESER == "Y",
+      SERWD = AESER == "Y" & AEACN == "DRUG WITHDRAWN",
+      SERDSM = AESER == "Y" & AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
+      RELSER = AESER == "Y" & AEREL == "Y",
+      WD = AEACN == "DRUG WITHDRAWN",
+      DSM = AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
+      REL = AEREL == "Y",
+      RELWD = AEREL == "Y" & AEACN == "DRUG WITHDRAWN",
+      RELDSM = AEREL == "Y" & AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
+      CTC35 = AETOXGR %in% c("3", "4", "5")
+    ) %>%
+    var_relabel(
+      FATAL = "AE with fatal outcome",
+      SER = "Serious AE",
+      SERWD = "Serious AE leading to withdrawal from treatment",
+      SERDSM = "Serious AE leading to dose modification/interruption",
+      RELSER = "Related Serious AE",
+      WD = "AE leading to withdrawal from treatment",
+      DSM = "AE leading to dose modification/interruption",
+      REL = "Related AE",
+      RELWD = "Related AE leading to withdrawal from treatment",
+      RELDSM = "Related AE leading to dose modification/interruption",
+      CTC35 = "Grade 3-5 AE"
+    )
 
+  aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
 
-  l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  col_counts <- table(adsl$ACTARM)
+
+  # Layout for variables from adsl dataset.
+  lyt_adsl <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
     add_colcounts() %>%
-    aet01_count_patients_with_event(
-      c("STUDYID" = "AB12345"),
-      "Total number of patients with at least one adverse event"
+    count_values(
+      "DTHFL",
+      values = "Y",
+      .labels = c(count_fraction = "Total number of deaths"),
+      denom = "N_col"
+    ) %>%
+    count_values(
+      "DCSREAS",
+      values = "ADVERSE EVENT",
+      .labels = c(count_fraction = "Total number of patients withdrawn from study due to an AE"),
+      denom = "N_col"
+    )
+
+  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+
+  # Layout for variables from adae dataset.
+  lyt_adae <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_patients_with_event(
+      vars = "STUDYID",
+      filters = c("STUDYID" = "AB12345"),
+      denom = "N_col",
+      .labels = c(count_fraction = "Total number of patients with at least one adverse event")
     ) %>%
     count_values(
       "STUDYID",
@@ -145,149 +117,460 @@ test_that("Test aet01", {
       .labels = c(count = "Total AEs"),
       table_names = "total_aes"
     ) %>%
-    aet01_count_patients_with_event(
-      c("DTHFL" = "Y"),
-      "Total number deaths"
-    ) %>%
-    aet01_count_patients_with_event(
-      c("DCSREAS" = "ADVERSE EVENT"),
-      "Total number of patients withdrawn from study due to an AE"
-    ) %>%
-    aet01_count_patients_with_event(
-      c("AESDTH" = "Y"),
-      "AE with fatal outcome",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("AESER" = "Y"),
-      "Serious AE",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("TREATWITHDRAWL" = "Y", "AESER" = "Y"),
-      "Serious AE leading to withdrawal from treatment",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("TREATMOD" = "Y", "AESER" = "Y"),
-      "Serious AE leading to dose modification/interruption",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("AEREL" = "Y", "AESER" = "Y"),
-      "Related Serious AE",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("TREATWITHDRAWL" = "Y"),
-      "AE leading to withdrawal from treatment",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("TREATMOD" = "Y"),
-      "AE leading to dose modification/interruption",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("AEREL" = "Y"),
-      "Related AE",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("TREATWITHDRAWL" = "Y", "AEREL" = "Y"),
-      "Related AE leading to withdrawal from treatment",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("TREATMOD" = "Y", "AEREL" = "Y"),
-      "Related AE leading to dose modification/interruption",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("GRADE3_5" = "Y"),
-      "Grade 3-5 AE",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("SMQ01NAM" = "C.1.1.1.3/B.2.2.3.1 AESI"),
-      "C.1.1.1.3/B.2.2.3.1 AESI (SMQ)  (broad)",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("SMQ02NAM" = "C.1.1.1.3/B.2.2.3.1 AESI"),
-      "Y.9.9.9.9/Z.9.9.9.9 AESI (SMQ)  (narrow)",
-      1L
-    ) %>%
-    aet01_count_patients_with_event(
-      c("CQ01NAM" = "D.2.1.5.3/A.1.1.1.1 AESI"),
-      "D.2.1.5.3/A.1.1.1.1 AESI",
-      1L
-    ) %>%
-    count_patients_with_event(
-      vars = "AETERM",
-      filters = c("AESER" = "Y"),
-      denom = "N_col",
-      .stats = "count",
-      .labels = c(count = "Serious"),
-      .indent_mods = c(count = 1L),
-      .formats = c(count = "xx"),
-      table_names = "serious_terms"
-    ) %>%
-    count_patients_with_event(
-      vars = "AETERM",
-      filters = c("AEREL" = "Y"),
-      denom = "N_col",
-      .stats = "count",
-      .labels = c(count = "Related"),
-      .indent_mods = c(count = 1L),
-      .formats = c(count = "xx"),
-      table_names = "related_terms"
-    ) %>%
-    count_values(
-      "AESER",
-      values = "Y",
-      .stats = "count",
-      .labels = c(count = "Serious"),
-      .indent_mods = c(count = 1L),
-      table_names = "serious_ae"
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = var_labels(adae[, aesi_vars]),
+      .indent_mods = 1L
     )
 
-  result <- build_table(l, adae, col_count = table(adsl$ARM))
-  result <- insert_rrow(result, rrow("Total number of patients with at least one", "", "", ""), at = 5)
-  result <- insert_rrow(result, rrow("Medical concepts: patients with", "", "", ""), at = 16)
-  result <- insert_rrow(result, rrow("Total number of unique preferred terms which are", "", "", ""), at = 21)
-  result <- insert_rrow(result, rrow("Total number of adverse events which are", "", "", ""), at = 24)
+  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
+
+  # Combine tables.
+  col_info(result_adsl) <- col_info(result_adae)
+  result <- rbind(
+    result_adae[1:2, ],
+    result_adsl,
+    result_adae[3:nrow(result_adae), ]
+  )
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "Total number of patients with at least one adverse event",
-      "Total AEs", "Total number deaths", "Total number of patients withdrawn from study due to an AE",
+    c(
+      "", "", "Total number of patients with at least one adverse event",
+      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
       "Total number of patients with at least one", "AE with fatal outcome",
       "Serious AE", "Serious AE leading to withdrawal from treatment",
       "Serious AE leading to dose modification/interruption", "Related Serious AE",
       "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
       "Related AE", "Related AE leading to withdrawal from treatment",
-      "Related AE leading to dose modification/interruption", "Medical concepts: patients with",
-      "Grade 3-5 AE", "C.1.1.1.3/B.2.2.3.1 AESI (SMQ)  (broad)", "Y.9.9.9.9/Z.9.9.9.9 AESI (SMQ)  (narrow)",
-      "D.2.1.5.3/A.1.1.1.1 AESI", "Total number of unique preferred terms which are",
-      "Serious", "Related", "Total number of adverse events which are",
-      "Serious", "A: Drug X", "(N=134)", "122 (91.04%)", "609", "107 (79.85%)",
-      "6 (4.48%)", "", "6 (4.48%)", "104 (77.61%)", "6 (4.48%)", "43 (32.09%)",
+      "Related AE leading to dose modification/interruption", "Grade 3-5 AE",
+      "A: Drug X", "(N=134)", "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)",
+      "", "6 (4.48%)", "104 (77.61%)", "6 (4.48%)", "43 (32.09%)",
       "76 (56.72%)", "25 (18.66%)", "79 (58.96%)", "105 (78.36%)",
-      "14 (10.45%)", "56 (41.79%)", "", "109 (81.34%)", "72 (53.73%)",
-      "0 (0%)", "74 (55.22%)", "", "4", "5", "", "249", "B: Placebo",
-      "(N=134)", "123 (91.79%)", "622", "112 (83.58%)", "5 (3.73%)",
-      "", "9 (6.72%)", "101 (75.37%)", "16 (11.94%)", "48 (35.82%)",
-      "70 (52.24%)", "31 (23.13%)", "89 (66.42%)", "108 (80.6%)", "14 (10.45%)",
-      "56 (41.79%)", "", "104 (77.61%)", "79 (58.96%)", "0 (0%)", "80 (59.7%)",
-      "", "4", "5", "", "255", "C: Combination", "(N=132)", "120 (90.91%)",
-      "703", "111 (84.09%)", "6 (4.55%)", "", "6 (4.55%)", "99 (75%)",
-      "11 (8.33%)", "52 (39.39%)", "75 (56.82%)", "31 (23.48%)", "90 (68.18%)",
-      "109 (82.58%)", "15 (11.36%)", "60 (45.45%)", "", "109 (82.58%)",
-      "75 (56.82%)", "0 (0%)", "87 (65.91%)", "", "4", "5", "", "282"
-    ),
-    .Dim = c(27L, 4L)
+      "14 (10.45%)", "56 (41.79%)", "109 (81.34%)", "B: Placebo", "(N=134)",
+      "1 (0.75%)", "622", "112 (83.58%)", "6 (4.48%)", "", "9 (6.72%)",
+      "101 (75.37%)", "16 (11.94%)", "48 (35.82%)", "70 (52.24%)",
+      "31 (23.13%)", "89 (66.42%)", "108 (80.6%)", "14 (10.45%)", "56 (41.79%)",
+      "104 (77.61%)", "C: Combination", "(N=132)", "1 (0.76%)", "703",
+      "111 (84.09%)", "7 (5.3%)", "", "6 (4.55%)", "99 (75%)", "11 (8.33%)",
+      "52 (39.39%)", "75 (56.82%)", "31 (23.48%)", "90 (68.18%)", "109 (82.58%)",
+      "15 (11.36%)", "60 (45.45%)", "109 (82.58%)"
+      ),
+    .Dim = c(18L, 4L)
   )
+
   expect_identical(result_matrix, expected_matrix)
+
+})
+
+test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
+
+  adsl <- radsl(cached = TRUE) %>%
+    preproc_adsl()
+
+  adae <- radae(cached = TRUE) %>%
+    preproc_adae()
+
+  # Add flags (TRUE/FALSE) for select AEs of interest.
+  adae <- adae %>%
+    mutate(
+      FATAL = AESDTH == "Y",
+      SER = AESER == "Y",
+      SERWD = AESER == "Y" & AEACN == "DRUG WITHDRAWN",
+      SERDSM = AESER == "Y" & AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
+      RELSER = AESER == "Y" & AEREL == "Y",
+      WD = AEACN == "DRUG WITHDRAWN",
+      DSM = AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
+      REL = AEREL == "Y",
+      RELWD = AEREL == "Y" & AEACN == "DRUG WITHDRAWN",
+      RELDSM = AEREL == "Y" & AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
+      CTC35 = AETOXGR %in% c("3", "4", "5")
+    ) %>%
+    var_relabel(
+      FATAL = "AE with fatal outcome",
+      SER = "Serious AE",
+      SERWD = "Serious AE leading to withdrawal from treatment",
+      SERDSM = "Serious AE leading to dose modification/interruption",
+      RELSER = "Related Serious AE",
+      WD = "AE leading to withdrawal from treatment",
+      DSM = "AE leading to dose modification/interruption",
+      REL = "Related AE",
+      RELWD = "Related AE leading to withdrawal from treatment",
+      RELDSM = "Related AE leading to dose modification/interruption",
+      CTC35 = "Grade 3-5 AE"
+    )
+
+  # Add flags (TRUE/FALSE) for select AE basket variables.
+  adae <- adae %>%
+    mutate(
+      SMQ01 = SMQ01NAM != "",
+      SMQ02 = SMQ02NAM != "",
+      CQ01 = CQ01NAM != ""
+    ) %>%
+    var_relabel(
+      SMQ01 =  aesi_label(adae$SMQ01NAM, adae$SMQ01SC),
+      SMQ02 =  aesi_label(adae$SMQ02NAM, adae$SMQ02SC),
+      CQ01 =  aesi_label(adae$CQ01NAM)
+    )
+
+  aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
+  basket_vars <- c("SMQ01", "SMQ02", "CQ01")
+
+  col_counts <- table(adsl$ACTARM)
+
+  # Layout for variables from adsl dataset.
+  lyt_adsl <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_values(
+      "DTHFL",
+      values = "Y",
+      .labels = c(count_fraction = "Total number of deaths"),
+      denom = "N_col"
+    ) %>%
+    count_values(
+      "DCSREAS",
+      values = "ADVERSE EVENT",
+      .labels = c(count_fraction = "Total number of patients withdrawn from study due to an AE"),
+      denom = "N_col"
+    )
+
+  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+
+  # Layout for variables from adae dataset.
+  lyt_adae <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_patients_with_event(
+      vars = "STUDYID",
+      filters = c("STUDYID" = "AB12345"),
+      denom = "N_col",
+      .labels = c(count_fraction = "Total number of patients with at least one adverse event")
+    ) %>%
+    count_values(
+      "STUDYID",
+      values = "AB12345",
+      .stats = "count",
+      .labels = c(count = "Total AEs"),
+      denom = "N_col",
+      table_names = "total_aes"
+    ) %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = var_labels(adae[, aesi_vars]),
+      .indent_mods = 1L
+    ) %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = var_labels(adae[, basket_vars]),
+      .indent_mods = 1L
+    )
+
+  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 15)
+
+  # Combine tables.
+  col_info(result_adsl) <- col_info(result_adae)
+  result <- rbind(
+    result_adae[1:2, ],
+    result_adsl,
+    result_adae[3:nrow(result_adae), ]
+  )
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "Total number of patients with at least one adverse event",
+      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
+      "Total number of patients with at least one", "AE with fatal outcome",
+      "Serious AE", "Serious AE leading to withdrawal from treatment",
+      "Serious AE leading to dose modification/interruption", "Related Serious AE",
+      "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
+      "Related AE", "Related AE leading to withdrawal from treatment",
+      "Related AE leading to dose modification/interruption", "Grade 3-5 AE",
+      "Total number of patients with at least one", "C.1.1.1.3/B.2.2.3.1 AESI (BROAD)",
+      "SMQ 02 Reference Name", "D.2.1.5.3/A.1.1.1.1 AESI", "A: Drug X",
+      "(N=134)", "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)", "",
+      "6 (4.48%)", "104 (77.61%)", "6 (4.48%)", "43 (32.09%)", "76 (56.72%)",
+      "25 (18.66%)", "79 (58.96%)", "105 (78.36%)", "14 (10.45%)",
+      "56 (41.79%)", "109 (81.34%)", "", "72 (53.73%)", "0 (0%)", "74 (55.22%)",
+      "B: Placebo", "(N=134)", "1 (0.75%)", "622", "112 (83.58%)",
+      "6 (4.48%)", "", "9 (6.72%)", "101 (75.37%)", "16 (11.94%)",
+      "48 (35.82%)", "70 (52.24%)", "31 (23.13%)", "89 (66.42%)", "108 (80.6%)",
+      "14 (10.45%)", "56 (41.79%)", "104 (77.61%)", "", "79 (58.96%)",
+      "0 (0%)", "80 (59.7%)", "C: Combination", "(N=132)", "1 (0.76%)",
+      "703", "111 (84.09%)", "7 (5.3%)", "", "6 (4.55%)", "99 (75%)",
+      "11 (8.33%)", "52 (39.39%)", "75 (56.82%)", "31 (23.48%)", "90 (68.18%)",
+      "109 (82.58%)", "15 (11.36%)", "60 (45.45%)", "109 (82.58%)",
+      "", "75 (56.82%)", "0 (0%)", "87 (65.91%)"
+    ),
+  .Dim = c(22L, 4L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+
+})
+
+test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
+
+  adsl <- radsl(cached = TRUE) %>%
+    preproc_adsl()
+
+  adae <- radae(cached = TRUE) %>%
+    preproc_adae()
+
+  # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
+  adae <- adae %>%
+    mutate(
+      FATAL = AESDTH == "Y",
+      SER = AESER == "Y",
+      WD = AEACN == "DRUG WITHDRAWN",
+      REL = AEREL == "Y",
+      CTC35 = AETOXGR %in% c("3", "4", "5"),
+      CTC45 = AETOXGR %in% c("4", "5")
+    ) %>%
+    var_relabel(
+      FATAL = "AE with fatal outcome",
+      SER = "Serious AE",
+      WD = "AE leading to withdrawal from treatment",
+      REL = "Related AE",
+      CTC35 = "Grade 3-5 AE",
+      CTC45 = "Grade 4/5 AE"
+    )
+
+  aesi_vars <- c("FATAL", "SER", "WD", "REL", "CTC35", "CTC45")
+
+  col_counts <- table(adsl$ACTARM)
+
+  # Layout for variables from adsl dataset.
+  lyt_adsl <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_values(
+      "DTHFL",
+      values = "Y",
+      .labels = c(count_fraction = "Total number of deaths"),
+      denom = "N_col"
+    ) %>%
+    count_values(
+      "DCSREAS",
+      values = "ADVERSE EVENT",
+      .labels = c(count_fraction = "Total number of patients withdrawn from study due to an AE"),
+      denom = "N_col",
+      table_names = "tbl_dscsreas_ae"
+    ) %>%
+    count_values(
+      "DCSREAS",
+      values = "WITHDRAWAL BY SUBJECT",
+      .labels = c(count_fraction = "Total number of patients withdrawn informed consent"),
+      denom = "N_col",
+      table_names = "tbl_dscsreas_wd"
+    )
+  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+
+  # Layout for variables from adae dataset.
+  lyt_adae <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_patients_with_event(
+      vars = "STUDYID",
+      filters = c("STUDYID" = "AB12345"),
+      denom = "N_col",
+      .labels = c(count_fraction = "Total number of patients with at least one adverse event")
+    ) %>%
+    count_values(
+      "STUDYID",
+      values = "AB12345",
+      .stats = "count",
+      .labels = c(count = "Total AEs"),
+      denom = "N_col",
+      table_names = "total_aes"
+    ) %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = var_labels(adae[, aesi_vars]),
+      .indent_mods = 1L
+    )
+
+  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
+
+  # Combine tables.
+  col_info(result_adsl) <- col_info(result_adae)
+  result <- rbind(
+    result_adae[1:2, ],
+    result_adsl,
+    result_adae[3:nrow(result_adae), ]
+  )
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "Total number of patients with at least one adverse event",
+      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
+      "Total number of patients withdrawn informed consent", "Total number of patients with at least one",
+      "AE with fatal outcome", "Serious AE", "AE leading to withdrawal from treatment",
+      "Related AE", "Grade 3-5 AE", "Grade 4/5 AE", "A: Drug X", "(N=134)",
+      "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)", "4 (2.99%)",
+      "", "6 (4.48%)", "104 (77.61%)", "25 (18.66%)", "105 (78.36%)",
+      "109 (81.34%)", "91 (67.91%)", "B: Placebo", "(N=134)", "1 (0.75%)",
+      "622", "112 (83.58%)", "6 (4.48%)", "8 (5.97%)", "", "9 (6.72%)",
+      "101 (75.37%)", "31 (23.13%)", "108 (80.6%)", "104 (77.61%)",
+      "90 (67.16%)", "C: Combination", "(N=132)", "1 (0.76%)", "703",
+      "111 (84.09%)", "7 (5.3%)", "10 (7.58%)", "", "6 (4.55%)", "99 (75%)",
+      "31 (23.48%)", "109 (82.58%)", "109 (82.58%)", "93 (70.45%)"
+    ),
+    .Dim = c(14L, 4L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+
+})
+
+test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
+
+  adsl <- radsl(cached = TRUE) %>%
+    preproc_adsl()
+
+  adae <- radae(cached = TRUE) %>%
+    preproc_adae() %>%
+    mutate(
+      USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@") # Create unique ID per AE in dataset.
+    )
+
+  # Add flags (TRUE/FALSE) for select AEs of interest.
+  adae <- adae %>%
+    mutate(
+      FATAL = AESDTH == "Y",
+      SER = AESER == "Y",
+      WD = AEACN == "DRUG WITHDRAWN",
+      DSM = AEACN %in% c("DRUG INTERRUPTED", "DOSE INCREASED", "DOSE REDUCED"),
+      REL = AEREL == "Y",
+      CTC35 = AETOXGR %in% c("3", "4", "5"),
+      CTC45 = AETOXGR %in% c("4", "5")
+    ) %>%
+    var_relabel(
+      FATAL = "AE with fatal outcome",
+      SER = "Serious AE",
+      WD = "AE leading to withdrawal from treatment",
+      DSM = "AE leading to dose modification/interruption",
+      REL = "Related AE",
+      CTC35 = "Grade 3-5 AE",
+      CTC45 = "Grade 4/5"
+    )
+
+  count_subj_vars <- c("FATAL", "SER", "WD", "DSM", "REL", "CTC35")
+  count_term_vars <- c("SER", "DSM", "REL", "CTC35", "CTC45")
+  count_ae_vars <- c("SER", "DSM", "REL", "CTC35", "CTC45")
+
+  col_counts <- table(adsl$ACTARM)
+
+  # Layout for variables from adsl dataset.
+  lyt_adsl <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_values(
+      "DTHFL",
+      values = "Y",
+      .labels = c(count_fraction = "Total number of deaths"),
+      denom = "N_col"
+    ) %>%
+    count_values(
+      "DCSREAS",
+      values = "ADVERSE EVENT",
+      .labels = c(count_fraction = "Total number of patients withdrawn from study due to an AE"),
+      denom = "N_col"
+    )
+
+  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+
+  # Layout for variables from adae dataset.
+  lyt_adae <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_patients_with_event(
+      vars = "STUDYID",
+      filters = c("STUDYID" = "AB12345"),
+      denom = "N_col",
+      .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
+      table_names = "total_subj"
+    ) %>%
+    count_values(
+      "STUDYID",
+      values = "AB12345",
+      .stats = "count",
+      .labels = c(count = "Total AEs"),
+      denom = "N_col",
+      table_names = "total_aes"
+    ) %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = var_labels(adae[, count_subj_vars]),
+      .indent_mods = 1L
+    ) %>%
+    count_patients_with_flags(
+      "AEDECOD",
+      flag_variables = var_labels(adae[, count_term_vars]),
+      .stats = "count",
+      .formats = c(count = "xx"),
+      .indent_mods = 1L,
+      table_names = paste0("table_term_", count_term_vars)
+    ) %>%
+    count_patients_with_flags(
+      "USUBJID_AESEQ",
+      flag_variables = var_labels(adae[, count_ae_vars]),
+      .stats = "count",
+      .formats = c(count = "xx"),
+      .indent_mods = 1L,
+      table_names = paste0("table_ae_", count_ae_vars)
+    )
+
+  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of unique preferred terms which are", ""), at = 10)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of adverse events which are", ""), at = 16)
+
+  # Combine tables.
+  col_info(result_adsl) <- col_info(result_adae)
+  result <- rbind(
+    result_adae[1:2, ],
+    result_adsl,
+    result_adae[3:nrow(result_adae), ]
+  )
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "", "", "Total number of patients with at least one adverse event",
+      "Total AEs", "Total number of deaths", "Total number of patients withdrawn from study due to an AE",
+      "Total number of patients with at least one", "AE with fatal outcome",
+      "Serious AE", "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
+      "Related AE", "Grade 3-5 AE", "Total number of unique preferred terms which are",
+      "Serious AE", "AE leading to dose modification/interruption",
+      "Related AE", "Grade 3-5 AE", "Grade 4/5", "Total number of adverse events which are",
+      "Serious AE", "AE leading to dose modification/interruption",
+      "Related AE", "Grade 3-5 AE", "Grade 4/5", "A: Drug X", "(N=134)",
+      "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)", "", "6 (4.48%)",
+      "104 (77.61%)", "25 (18.66%)", "79 (58.96%)", "105 (78.36%)",
+      "109 (81.34%)", "", "4", "10", "5", "5", "3", "", "249", "150",
+      "282", "303", "172", "B: Placebo", "(N=134)", "1 (0.75%)", "622",
+      "112 (83.58%)", "6 (4.48%)", "", "9 (6.72%)", "101 (75.37%)",
+      "31 (23.13%)", "89 (66.42%)", "108 (80.6%)", "104 (77.61%)",
+      "", "4", "10", "5", "5", "3", "", "255", "167", "299", "291",
+      "174", "C: Combination", "(N=132)", "1 (0.76%)", "703", "111 (84.09%)",
+      "7 (5.3%)", "", "6 (4.55%)", "99 (75%)", "31 (23.48%)", "90 (68.18%)",
+      "109 (82.58%)", "109 (82.58%)", "", "4", "10", "5", "5", "3",
+      "", "282", "187", "336", "327", "197"
+    ),
+    .Dim = c(25L, 4L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+
 })

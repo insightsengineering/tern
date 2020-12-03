@@ -303,6 +303,7 @@ reference:
       - get_onco_rsp_label
       - month2day
       - day2month
+      - aesi_label
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package

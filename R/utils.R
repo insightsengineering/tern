@@ -367,3 +367,51 @@ extract <- function(x, names) {
     NULL
   }
 }
+
+#' Labels for Adverse Event Baskets
+#'
+#' @param x (`character`)\cr with standardized MedDRA query name (e.g. SMQzzNAM) or customized query
+#'   name (e.g. CQzzNAM).
+#' @param y (`character`)\cr with scope of query (e.g. SMQzzSC).
+#'
+#' @return A `string` with the standard label for the AE basket.
+#' @export
+#'
+#' @examples
+#' library(random.cdisc.data)
+#' adae <- radae(cached = TRUE)
+#'
+#' # Standardized query label includes scope.
+#' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
+#'
+#' # Customized query label.
+#' aesi_label(adae$CQ01NAM)
+#'
+aesi_label <- function(aesi, scope = NULL) {
+
+  assert_that(
+    is.character(aesi),
+    is.character(scope) || is.null(scope)
+  )
+
+  aesi_label <- obj_label(aesi)
+  aesi <- sas_na(aesi)
+  aesi <- unique(aesi)[!is.na(unique(aesi))]
+
+  lbl <- if (length(aesi) == 1 & !is.null(scope)) {
+
+    scope <- sas_na(scope)
+    scope <- unique(scope)[!is.na(unique(scope))]
+    assert_that(
+      is.string(scope)
+    )
+    paste0(aesi, " (", scope, ")")
+
+  } else if (length(aesi) == 1 & is.null(scope)) {
+    aesi
+  } else {
+    aesi_label
+  }
+
+  lbl
+}

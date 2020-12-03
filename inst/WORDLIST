@@ -53,6 +53,7 @@ covr
 coxph
 CoxPH
 COXT
+CQzzNAM
 CTCAE
 dataname
 datanames
@@ -100,6 +101,7 @@ lme
 lme4
 lmerTest
 Manukyan
+MedDRA
 mmrm
 MMRM
 mockup
@@ -150,6 +152,8 @@ sfun
 shiny's
 shinyServer
 SMQ
+SMQzzNAM
+SMQzzSC
 songy
 SREPs
 stoilovs
