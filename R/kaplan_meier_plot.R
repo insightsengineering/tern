@@ -63,6 +63,8 @@ NULL
 #' including the number of patient at risk at given time and the median survival
 #' per group.
 #'
+#' @return a `grob` of class `gTree`.
+#'
 #' @inheritParams grid::gTree
 #' @inheritParams kaplan_meier
 #' @export
@@ -327,18 +329,12 @@ g_km <- function(df,
       name = name,
       children = grid::gList(ggplot2::ggplotGrob(gg))
     )
-    lyt <- NULL
   }
 
   if (newpage & draw) grid::grid.newpage()
   if (draw) grid::grid.draw(result)
 
-  return(
-    list(
-      lyt = lyt,
-      result = result
-    )
-  )
+  result
 }
 
 #' Helper function: tidy survival fit

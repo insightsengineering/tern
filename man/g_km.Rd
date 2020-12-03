@@ -122,6 +122,9 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 
 \item{position_coxph}{\code{numeric} \cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
 }
+\value{
+a \code{grob} of class \code{gTree}.
+}
 \description{
 From a survival model, a graphic is rendered along with tabulated annotation
 including the number of patient at risk at given time and the median survival
