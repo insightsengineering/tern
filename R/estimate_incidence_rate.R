@@ -9,7 +9,9 @@
 #' * `conf_level`: (`proportion`) \cr confidence level for the estimated incidence rate.
 #' * `conf_type`: (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
 #'   for confidence interval type.
-#' * `time_unit`: (`numeric`) \cr unit time in person-years.
+#' * `time_unit_input`: (`string`) \cr `day`, `month`, or `year` (default)
+#'   indicating time unit for data input.
+#' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
 #' @param person_years (`numeric`) \cr total person-years at risk.
 #' @param num_events (`numeric`) \cr total number of events observed.
 #' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
@@ -25,28 +27,33 @@ NULL
 #' internally to specify details in [s_incidence_rate()].
 #'
 #' @inheritParams argument_convention
-#' @param time_unit (`numeric`) \cr unit time in person-years.
+#' @param time_unit_input (`string`) \cr `day`, `month`, or `year` (default)
+#'   indicating time unit for data input.
+#' @param time_unit_output (`numeric`) \cr time unit for desired output (in person-years).
 #' @param conf_type (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
 #'   for confidence interval type.
 #' @return A list of components with the same name as the arguments.
 #' @export
 #' @examples
-#' control_incidence_rate(0.9, "exact", 100)
+#' control_incidence_rate(0.9, "exact", "month", 100)
 #'
 control_incidence_rate <- function(conf_level = 0.95,
                                    conf_type = c("normal", "normal_log", "exact", "byar"),
-                                   time_unit = 1) {
+                                   time_unit_input = c("year", "day", "month"),
+                                   time_unit_output = 1) {
 
   conf_type <- match.arg(conf_type)
+  time_unit_input <- match.arg(time_unit_input)
   assert_that(
     is_proportion(conf_level),
-    is.number(time_unit)
+    is.number(time_unit_output)
   )
 
   list(
     conf_level = conf_level,
     conf_type = conf_type,
-    time_unit = time_unit
+    time_unit_input = time_unit_input,
+    time_unit_output = time_unit_output
   )
 
 }
@@ -171,7 +178,7 @@ h_incidence_rate_byar <- function(person_years,
 #'   control_incidence_rate(
 #'     conf_level = 0.9,
 #'     conf_type = "normal_log",
-#'     time_unit = 100)
+#'     time_unit_output = 100)
 #' )
 #'
 h_incidence_rate <- function(person_years,
@@ -187,10 +194,10 @@ h_incidence_rate <- function(person_years,
     byar = h_incidence_rate_byar(person_years, num_events, alpha)
   )
 
-  time_unit <- control$time_unit
+  time_unit_output <- control$time_unit_output
   list(
-    rate = est$rate * time_unit,
-    rate_ci = est$rate_ci * time_unit
+    rate = est$rate * time_unit_output,
+    rate_ci = est$rate_ci * time_unit_output
   )
 
 }
@@ -219,7 +226,10 @@ h_incidence_rate <- function(person_years,
 #'   df,
 #'   .var = "AVAL",
 #'   is_event = "is_event",
-#'   control = control_incidence_rate(time_unit = 100)
+#'   control = control_incidence_rate(
+#'     time_unit_input = "month",
+#'     time_unit_output = 100
+#'   )
 #' )
 #'
 s_incidence_rate <- function(df,
@@ -234,10 +244,16 @@ s_incidence_rate <- function(df,
     is_logical_vector(df[[is_event]])
   )
 
-  time_unit <- control$time_unit
+  time_unit_input <- control$time_unit_input
+  time_unit_output <- control$time_unit_output
   conf_level <- control$conf_level
-  person_years <- sum(df[[.var]], na.rm = TRUE)
+  person_years <- sum(df[[.var]], na.rm = TRUE) * (
+    1 * (time_unit_input == "year") +
+      1 / 12 * (time_unit_input == "month") +
+      1 / 365.24 * (time_unit_input == "day")
+  )
   num_events <- sum(df[[is_event]], na.rm = TRUE)
+
   result <- h_incidence_rate(
     person_years,
     num_events,
@@ -246,7 +262,7 @@ s_incidence_rate <- function(df,
   list(
     person_years = with_label(person_years, "Total patient-years at risk"),
     num_events = with_label(num_events, "Number of adverse events observed"),
-    rate = with_label(result$rate, paste("AE rate per", time_unit, "patient-years")),
+    rate = with_label(result$rate, paste("AE rate per", time_unit_output, "patient-years")),
     rate_ci = with_label(result$rate_ci, f_conf_level(conf_level))
   )
 }
@@ -260,7 +276,7 @@ s_incidence_rate <- function(df,
 #'   df,
 #'   .var = "AVAL",
 #'   is_event = "is_event",
-#'   control = control_incidence_rate(time_unit = 100)
+#'   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
 #' )
 #'
 a_incidence_rate <- make_afun(
@@ -284,7 +300,10 @@ a_incidence_rate <- make_afun(
 #'   estimate_incidence_rate(
 #'     vars = "AVAL",
 #'     is_event = "is_event",
-#'     control = control_incidence_rate(time_unit = 100)
+#'     control = control_incidence_rate(
+#'       time_unit_input = "month",
+#'       time_unit_output = 100
+#'     )
 #'   ) %>%
 #'   build_table(df, col_counts = table(df$ARM))
 #'

@@ -51,7 +51,9 @@ the helper function \code{\link[=control_incidence_rate]{control_incidence_rate(
 \item \code{conf_level}: (\code{proportion}) \cr confidence level for the estimated incidence rate.
 \item \code{conf_type}: (\code{string}) \cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.
-\item \code{time_unit}: (\code{numeric}) \cr unit time in person-years.
+\item \code{time_unit_input}: (\code{string}) \cr \code{day}, \code{month}, or \code{year} (default)
+indicating time unit for data input.
+\item \code{time_unit_output}: (\code{numeric}) \cr time unit for desired output (in person-years).
 }}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
@@ -139,7 +141,7 @@ h_incidence_rate(
   control_incidence_rate(
     conf_level = 0.9,
     conf_type = "normal_log",
-    time_unit = 100)
+    time_unit_output = 100)
 )
 
 
@@ -156,7 +158,10 @@ s_incidence_rate(
   df,
   .var = "AVAL",
   is_event = "is_event",
-  control = control_incidence_rate(time_unit = 100)
+  control = control_incidence_rate(
+    time_unit_input = "month",
+    time_unit_output = 100
+  )
 )
 
 basic_table() \%>\%
@@ -165,7 +170,10 @@ basic_table() \%>\%
   estimate_incidence_rate(
     vars = "AVAL",
     is_event = "is_event",
-    control = control_incidence_rate(time_unit = 100)
+    control = control_incidence_rate(
+      time_unit_input = "month",
+      time_unit_output = 100
+    )
   ) \%>\%
   build_table(df, col_counts = table(df$ARM))
 
@@ -173,7 +181,7 @@ a_incidence_rate(
   df,
   .var = "AVAL",
   is_event = "is_event",
-  control = control_incidence_rate(time_unit = 100)
+  control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
 )
 
 }

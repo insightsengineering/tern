@@ -15,7 +15,7 @@ test_that("AET05 variant 1 is produced correctly", {
     estimate_incidence_rate(
       vars = "AVAL",
       is_event = "is_event",
-      control = control_incidence_rate(time_unit = 100)
+      control = control_incidence_rate(time_unit_output = 100)
     ) %>%
     build_table(anl, col_counts = table(adsl$ARM))
   result_matrix <- to_string_matrix(result)
@@ -43,7 +43,7 @@ test_that("AET05 variant 2 is produced correctly", {
     estimate_incidence_rate(
       vars = "AVAL",
       is_event = "is_event",
-      control = control_incidence_rate(conf_type = "exact", time_unit = 100)
+      control = control_incidence_rate(conf_type = "exact", time_unit_output = 100)
     ) %>%
     build_table(anl, col_counts = table(adsl$ARM))
   result_matrix <- to_string_matrix(result)

@@ -7,7 +7,8 @@
 control_incidence_rate(
   conf_level = 0.95,
   conf_type = c("normal", "normal_log", "exact", "byar"),
-  time_unit = 1
+  time_unit_input = c("year", "day", "month"),
+  time_unit_output = 1
 )
 }
 \arguments{
@@ -16,7 +17,10 @@ control_incidence_rate(
 \item{conf_type}{(\code{string}) \cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.}
 
-\item{time_unit}{(\code{numeric}) \cr unit time in person-years.}
+\item{time_unit_input}{(\code{string}) \cr \code{day}, \code{month}, or \code{year} (default)
+indicating time unit for data input.}
+
+\item{time_unit_output}{(\code{numeric}) \cr time unit for desired output (in person-years).}
 }
 \value{
 A list of components with the same name as the arguments.
@@ -26,6 +30,6 @@ This is an auxiliary function for controlling arguments for the incidence rate, 
 internally to specify details in \code{\link[=s_incidence_rate]{s_incidence_rate()}}.
 }
 \examples{
-control_incidence_rate(0.9, "exact", 100)
+control_incidence_rate(0.9, "exact", "month", 100)
 
 }

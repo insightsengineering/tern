@@ -1,11 +1,15 @@
 test_that("control_incidence_rate works with customized parameters", {
   result <- control_incidence_rate(
-    conf_level = 0.9, conf_type = "exact", time_unit = 100
+    conf_level = 0.9,
+    conf_type = "exact",
+    time_unit_input = "month",
+    time_unit_output = 100
   )
   expected <- list(
     conf_level = 0.9,
     conf_type = "exact",
-    time_unit = 100
+    time_unit_input = "month",
+    time_unit_output = 100
   )
   expect_identical(result, expected)
 })
@@ -13,7 +17,8 @@ test_that("control_incidence_rate works with customized parameters", {
 test_that("control_incidence_rate fails with wrong input", {
   expect_error(control_incidence_rate(conf_level = 1.1))
   expect_error(control_incidence_rate(conf_type = "wald"))
-  expect_error(control_incidence_rate(time_unit = "one"))
+  expect_error(control_incidence_rate(time_unit_input = "decade"))
+  expect_error(control_incidence_rate(time_unit_output = "one"))
 })
 
 test_that("h_incidence_rate_normal works as expected with healthy input", {
@@ -56,7 +61,7 @@ test_that("h_incidence_rate works as expected with healthy input", {
   result <- h_incidence_rate(
     200,
     2,
-    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit = 100))
+    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit_output = 100))
   expected <- list(
     rate = 1,
     rate_ci = c(0.3125199, 3.1997963)
@@ -79,15 +84,16 @@ test_that("s_incidence_rate works as expected with healthy input", {
     control = control_incidence_rate(
       conf_level = 0.9,
       conf_type = "normal_log",
-      time_unit = 100
+      time_unit_input = "month",
+      time_unit_output = 100
     )
   )
 
   expected <- list(
-    person_years = with_label(108.7, "Total patient-years at risk"),
+    person_years = with_label(9.058333, "Total patient-years at risk"),
     num_events = with_label(4, "Number of adverse events observed"),
-    rate = with_label(3.679853, "AE rate per 100 patient-years"),
-    rate_ci = with_label(c(1.616795, 8.375406), "90% CI")
+    rate = with_label(44.15823, "AE rate per 100 patient-years"),
+    rate_ci = with_label(c(19.40154, 100.50487), "90% CI")
   )
 
   expect_equal(result, expected, tolerance = 1e-4, check.attributes = TRUE)
@@ -110,7 +116,8 @@ test_that("estimate_incidence_rate works as expected with healthy input", {
       control = control_incidence_rate(
         conf_level = 0.9,
         conf_type = "normal_log",
-        time_unit = 100
+        time_unit_input = "month",
+        time_unit_output = 100
       )
     ) %>%
     build_table(df, col_counts = table(df$ARM))
@@ -118,9 +125,9 @@ test_that("estimate_incidence_rate works as expected with healthy input", {
 
   expected_matrix <- structure(
     c("", "", "Total patient-years at risk", "Number of adverse events observed",
-      "AE rate per 100 patient-years", "90% CI", "A", "(N=3)", "45.8",
-      "1", "2.18", "(0.42, 11.31)", "B", "(N=3)", "62.9", "3", "4.77",
-      "(1.85, 12.33)"),
+      "AE rate per 100 patient-years", "90% CI", "A", "(N=3)", "3.8",
+      "1", "26.2", "(5.06, 135.73)", "B", "(N=3)", "5.2", "3", "57.23",
+      "(22.14, 147.94)"),
     .Dim = c(6L, 3L)
   )
 
