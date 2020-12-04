@@ -260,6 +260,12 @@ fit_coxreg_univar <- function(variables,
     is_df_with_variables(data, as.list(unlist(variables)))
   )
 
+  if (!is.null(variables$strata)) {
+    assert_that(
+      control$pval_method != "likelihood"
+    )
+  }
+
   n_arms <- nlevels(data[[variables$arm]])
   assert_that(
     n_arms == 2
@@ -821,6 +827,12 @@ fit_coxreg_multivar <- function(variables,
     is_df_with_variables(data, as.list(unlist(variables))),
     isFALSE(control$interaction)
   )
+
+  if (!is.null(variables$strata)) {
+    assert_that(
+      control$pval_method != "likelihood"
+    )
+  }
 
   form <- h_coxreg_multivar_formula(variables)
   mod <- survival::coxph(

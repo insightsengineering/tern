@@ -190,6 +190,20 @@ test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
   expect_error(fit_coxreg_univar(variables = variables, data = data))
 })
 
+test_that("fit_coxreg_univar is stopped when likelihood method is used together with strata", {
+  data <- get_bladder()
+
+  variables <- list(
+    time = "time", event = "status", arm = "armcd", covariates = "age", strata = "covar1"
+  )
+
+  expect_error(
+    fit_coxreg_univar(
+      variables = variables, data = data, control = control_coxreg(pval_method = "likelihood")
+    )
+  )
+})
+
 test_that("tidy.summary.coxph method tidies up the Cox regression model", {
   dta_simple <- get_simple()
   mod <- summary(survival::coxph(Surv(time, status) ~ armcd, data = dta_simple))
@@ -477,6 +491,20 @@ test_that("fit_coxreg_multivar returns model results as expected", {
     vars = variables
   )
   expect_equal(result$mod, expected$mod)
+})
+
+test_that("fit_coxreg_multivar is stopped when likelihood method is used together with strata", {
+  data <- get_bladder()
+
+  variables <- list(
+    time = "time", event = "status", arm = "armcd", covariates = "age", strata = "covar1"
+  )
+
+  expect_error(
+    fit_coxreg_multivar(
+      variables = variables, data = data, control = control_coxreg(pval_method = "likelihood")
+    )
+  )
 })
 
 test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
