@@ -119,7 +119,7 @@ combine_groups <- function(fct,
 #'   add_colcounts() %>%
 #'   analyze(
 #'     "AGE",
-#'     afun = function(x, .ref_group, .in_ref_col){
+#'     afun = function(x, .ref_group, .in_ref_col) {
 #'       if (.in_ref_col) {
 #'         in_rows("Diff Mean" = rcell(NULL))
 #'       } else {
@@ -149,7 +149,7 @@ combine_groups <- function(fct,
 #'   split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
 #'   analyze(
 #'     "AGE",
-#'     afun = function(x, .ref_group, .in_ref_col){
+#'     afun = function(x, .ref_group, .in_ref_col) {
 #'       if (.in_ref_col) {
 #'         in_rows("Diff. of Averages" = rcell(NULL))
 #'       } else {
@@ -182,7 +182,7 @@ combine_groups <- function(fct,
 #'   add_colcounts() %>%
 #'   analyze(
 #'     "AGE",
-#'     afun = function(x, .ref_group, .in_ref_col){
+#'     afun = function(x, .ref_group, .in_ref_col) {
 #'       if (.in_ref_col) {
 #'         in_rows("Diff Mean" = rcell(NULL))
 #'       } else {

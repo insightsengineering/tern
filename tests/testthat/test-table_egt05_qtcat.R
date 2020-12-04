@@ -5,8 +5,8 @@ library(rtables)
 library(dplyr)
 
 
-get_adeg <- function(){
-  adeg <- radeg(cached = TRUE)
+get_adeg <- function() {
+  adeg <- radeg(cached = TRUE) # nolintr
   adeg_labels <- var_labels(adeg)
 
   adeg_f <- adeg %>%

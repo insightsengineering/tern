@@ -93,7 +93,7 @@ test_that("split_cols_by_groups manages combinations of columns with reference",
     split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
     analyze(
       "AGE",
-      afun = function(x, .ref_group, .in_ref_col){
+      afun = function(x, .ref_group, .in_ref_col) {
         if (.in_ref_col) {
           in_rows("Diff. of Averages" = rcell(NULL))
         } else {
@@ -130,7 +130,7 @@ test_that("split_cols_by_groups equivalent to split_cols_by when no groups", {
 })
 
 test_that("split_cols_by_groups equivalent to split_cols_by with ref_col but no groups", {
-  afun <- function(x, .ref_group, .in_ref_col){
+  afun <- function(x, .ref_group, .in_ref_col) {
     if (.in_ref_col) {
       in_rows("Diff. of Averages" = rcell(NULL))
     } else {

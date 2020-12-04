@@ -1,6 +1,6 @@
 library(random.cdisc.data)
 
-preproc_adae <- function(adae){
+preproc_adae <- function(adae) {
 
   anl <- adae %>%
     dplyr::mutate(
@@ -62,7 +62,7 @@ raw_table <- function(adae, n_per_arm) {
 }
 
 # Simple wrapper to return subset ADAE to a threshold of xx%.
-get_adae_trimmed <- function(adsl, adae, cutoff_rate){
+get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 
   n_per_arm <- adsl %>%
     dplyr::count(ACTARM)

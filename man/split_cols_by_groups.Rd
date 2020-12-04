@@ -47,7 +47,7 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   analyze(
     "AGE",
-    afun = function(x, .ref_group, .in_ref_col){
+    afun = function(x, .ref_group, .in_ref_col) {
       if (.in_ref_col) {
         in_rows("Diff Mean" = rcell(NULL))
       } else {
@@ -77,7 +77,7 @@ basic_table() \%>\%
   split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") \%>\%
   analyze(
     "AGE",
-    afun = function(x, .ref_group, .in_ref_col){
+    afun = function(x, .ref_group, .in_ref_col) {
       if (.in_ref_col) {
         in_rows("Diff. of Averages" = rcell(NULL))
       } else {
@@ -110,7 +110,7 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   analyze(
     "AGE",
-    afun = function(x, .ref_group, .in_ref_col){
+    afun = function(x, .ref_group, .in_ref_col) {
       if (.in_ref_col) {
         in_rows("Diff Mean" = rcell(NULL))
       } else {

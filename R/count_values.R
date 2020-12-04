@@ -84,7 +84,7 @@ s_count_values.factor <- function(x,
 #'  s_count_values(x = c(TRUE, FALSE, TRUE))
 #'
 #'
-s_count_values.logical <- function(x, values = TRUE, ...){
+s_count_values.logical <- function(x, values = TRUE, ...) {
   assert_that(is.logical(values))
   s_count_values(as.character(x), values = as.character(values), ...)
 }

@@ -231,7 +231,7 @@ on_failure(is_valid_character) <- function(call, env) {
 #' all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
 #' all_elements_in_ref(c(1:3), c(1:5))
 #'
-all_elements_in_ref <- function(x, ref){
+all_elements_in_ref <- function(x, ref) {
 
   assert_that(
     is.vector(x),

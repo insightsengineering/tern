@@ -5,7 +5,7 @@ library(dplyr)
 
 ## Function to generate adsl
 gen_adsl <- function() {
-  adsl <- radsl(cached = TRUE)
+  adsl <- radsl(cached = TRUE) # nolintr
   set.seed(12, kind = "Mersenne-Twister")
 
   adsl$DTHCAT <- NA   # nolint snake_case

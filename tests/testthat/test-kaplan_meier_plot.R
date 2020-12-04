@@ -3,7 +3,7 @@ library(dplyr)
 library(survival)
 
 get_test_data <- function() {
-  dta <- radtte(cached = TRUE)
+  dta <- radtte(cached = TRUE) # nolintr
   dta <- dta[dta$PARAMCD == "OS", ]
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 }

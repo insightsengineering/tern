@@ -7,7 +7,7 @@ library(random.cdisc.data)
 
 stack_adae_by_smq <- function(adae, smq) {
 
-  l_df <- lapply(smq, function(ae_grp){
+  l_df <- lapply(smq, function(ae_grp) {
 
     keep <- !(is.na(adae[[ae_grp]]))
     df <- adae[keep, ]

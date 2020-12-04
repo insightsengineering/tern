@@ -76,10 +76,10 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   # Denominator is number of patients with at least one valid measurement during treatment
   n <- length(unique(anl$id))
   # Numerator is number of patients with worst high grade (grade 1 to 5) or low grade (grade -1 to -5)
-  if (abnormal == "low"){
+  if (abnormal == "low") {
     anl_abn <- anl[anl$flag & anl$grade < 0, , drop = FALSE]
     grades <- setNames(- (1:5), as.character(1:5))
-  } else if (abnormal == "high"){
+  } else if (abnormal == "high") {
     anl_abn <- anl[anl$flag & anl$grade > 0, , drop = FALSE]
     grades <- setNames(1:5, as.character(1:5))
   }

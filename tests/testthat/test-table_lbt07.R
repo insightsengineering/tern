@@ -12,7 +12,9 @@ test_that("LBT07 is produced correctly", {
       WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
       WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
     ) %>%
-    dplyr::filter(PARAMCD %in% c("ALT", "CRP")) %>% droplevels()
+    dplyr::filter(PARAMCD %in% c("ALT", "CRP")) %>%
+    droplevels()
+
   l <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     split_rows_by("PARAMCD") %>%

@@ -38,8 +38,8 @@ test_that("EGT03 variant 1 is produced correctly", {
     labels = c("LOW", "NORMAL", "HIGH", "Missing")
   )
 
-  adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
-  adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
+  adeg_f$BNRIND[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
+  adeg_f$ANRIND[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
 
 
   var_labels(adeg_f) <- adeg_labels
@@ -106,7 +106,7 @@ test_that("EGT03 variant 2 is produced correctly", {
     labels = c("LOW", "NORMAL", "HIGH", "Missing")
   )
 
-  adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
+  adeg_f$BNRIND[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
 
   var_labels(adeg_f) <- adeg_labels
 
@@ -170,7 +170,7 @@ test_that("EGT03 variant 3 is produced correctly", {
     labels = c("LOW", "NORMAL", "HIGH", "Missing")
   )
 
-  adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
+  adeg_f$ANRIND[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
 
   var_labels(adeg_f) <- adeg_labels
 
@@ -238,8 +238,8 @@ test_that("EGT03 variant 4 is produced correctly", {
     labels = c("LOW", "NORMAL", "HIGH", "Missing")
   )
 
-  adeg_f$BNRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
-  adeg_f$ANRIND[sample(1:nrow(adeg_f), size = 5)] <- "Missing"
+  adeg_f$BNRIND[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
+  adeg_f$ANRIND[sample(seq_len(nrow(adeg_f)), size = 5)] <- "Missing"
 
 
   var_labels(adeg_f) <- adeg_labels

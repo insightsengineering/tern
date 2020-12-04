@@ -436,7 +436,7 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
       y$ci <- do.call(
         c, list(
           list(c(y$ci[[1]])),
-          split(y$ci[[2]], f = 1:nrow(y$ci[[2]]))
+          split(y$ci[[2]], f = seq_len(nrow(y$ci[[2]])))
         )
       )
       lapply(y, unname)

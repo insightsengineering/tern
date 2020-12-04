@@ -2,10 +2,10 @@ library(random.cdisc.data)
 library(rtables)
 library(dplyr)
 
-get_adrs <- function(){
-  adsl <- radsl(cached = TRUE)
+get_adrs <- function() {
+  adsl <- radsl(cached = TRUE) # nolintr
   adsl <- adsl %>% dplyr::filter(SEX %in% c("F", "M")) #nolint
-  adrs <- radrs(adsl, seed = 2)
+  adrs <- radrs(adsl, seed = 2) # nolintr
   adrs_f <- adrs %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",

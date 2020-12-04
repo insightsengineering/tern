@@ -4,8 +4,8 @@ library(random.cdisc.data)
 library(rtables)
 library(dplyr)
 
-gen_advs <- function(){
-  advs <- radvs(cached = TRUE)
+gen_advs <- function() {
+  advs <- radvs(cached = TRUE) # nolintr
   advs_label <- var_labels(advs)
 
   advs <- advs %>%

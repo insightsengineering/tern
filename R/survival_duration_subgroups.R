@@ -90,7 +90,7 @@ a_survival_subgroups <- function(.formats = list(
     all_elements_in_ref(names(.formats), ref = c("n", "n_events", "median", "n_tot", "hr", "ci", "pval"))
   )
 
-  afun_lst <- Map(function(stat, fmt){
+  afun_lst <- Map(function(stat, fmt) {
     if (stat == "ci") {
       function(df, labelstr = "", ...) {
         in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)

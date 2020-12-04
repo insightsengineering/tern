@@ -1,8 +1,8 @@
 library(random.cdisc.data)
 library(dplyr)
 
-get_adsl <- function(){
-  adsl <- radsl(cached = TRUE)
+get_adsl <- function() {
+  adsl <- radsl(cached = TRUE) # nolintr
   set.seed(1)
   #nolint start
   adsl_f <- adsl %>%
@@ -43,7 +43,7 @@ get_adsl <- function(){
 
 }
 
-get_adae_trimmed <- function(adsl, adae, cutoff_rate){
+get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 
   n_per_arm <- adsl %>%
     dplyr::count(ARM)
