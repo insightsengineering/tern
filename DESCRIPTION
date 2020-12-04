@@ -40,7 +40,6 @@ Imports:
     utils.nest (>= 0.2.7),
     forcats,
     car,
-    nlme,
     emmeans (>= 1.4.5),
     labeling,
     lme4 (>= 1.1-21),
