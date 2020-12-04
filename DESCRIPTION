@@ -19,7 +19,8 @@ Authors@R: c(
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.6),
-  rtables (>= 0.3.3)
+  rtables (>= 0.3.3),
+  optimx
 Imports:
     assertthat,
     dplyr,
@@ -40,12 +41,11 @@ Imports:
     forcats,
     car,
     nlme,
-    emmeans (>= 1.4.8),
+    emmeans (>= 1.4.5),
     labeling,
-    lme4 (>= 1.1-23),
-    lmerTest (>= 3.1-2),
+    lme4 (>= 1.1-21),
+    lmerTest (>= 3.1-1),
     dfoptim,
-    optimx,
     viridisLite,
     tibble,
     broom
