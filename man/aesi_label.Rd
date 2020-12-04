@@ -7,10 +7,10 @@
 aesi_label(aesi, scope = NULL)
 }
 \arguments{
-\item{x}{(\code{character})\cr with standardized MedDRA query name (e.g. SMQzzNAM) or customized query
+\item{aesi}{(\code{character})\cr with standardized MedDRA query name (e.g. SMQzzNAM) or customized query
 name (e.g. CQzzNAM).}
 
-\item{y}{(\code{character})\cr with scope of query (e.g. SMQzzSC).}
+\item{scope}{(\code{character})\cr with scope of query (e.g. SMQzzSC).}
 }
 \value{
 A \code{string} with the standard label for the AE basket.

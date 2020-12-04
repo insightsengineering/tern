@@ -59,7 +59,7 @@ the required statistics. Tables typically used as part of forest plot.
 population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
 \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two data frames:
 \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
-named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}.
+named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}.
 
 \item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
@@ -88,11 +88,19 @@ adrs_f <- adrs \%>\%
 var_labels(adrs_f) <- c(adrs_labels, "Response")
 
 
+# Unstratified analysis.
 df <- extract_rsp_subgroups(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
   data = adrs_f
 )
 df
+
+# Stratified analysis.
+df_strat <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
+  data = adrs_f
+)
+df_strat
 
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
 

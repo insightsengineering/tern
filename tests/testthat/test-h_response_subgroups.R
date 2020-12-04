@@ -165,6 +165,35 @@ test_that("h_odds_ratio_df functions as expected with valid input and non-defaul
 
 })
 
+test_that("h_odds_ratio_df functions as expected with strata", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs(n_records = 100)
+
+  result <- h_odds_ratio_df(
+    rsp = adrs$rsp,
+    arm = adrs$ARM,
+    strata_data = adrs[, c("STRATA1", "STRATA2")],
+    method = "cmh",
+    conf_level = 0.9
+  )
+
+  expected <- data.frame(
+    arm = " ",
+    n_tot = 100L,
+    or = 2.30758672923386,
+    lcl = 0.871548407676952,
+    ucl = 6.10976563783706,
+    conf_level = 0.9,
+    pval = 0.150916197874731,
+    pval_label = "p-value (Cochran-Mantel-Haenszel Test)",
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+
+})
+
 test_that("h_odds_ratio_subgroups_df functions as expected with valid input and default arguments", {
 
   adrs <- radrs(cached = TRUE) %>%
@@ -193,7 +222,7 @@ test_that("h_odds_ratio_subgroups_df functions as expected with valid input and 
 
 })
 
-test_that("h_odds_ratio_subgroups_df functions as expected  when subgroups is NULL.", {
+test_that("h_odds_ratio_subgroups_df functions as expected when subgroups is NULL.", {
 
   adrs <- radrs(cached = TRUE) %>%
     preprocess_adrs(n_records = 100)
@@ -214,6 +243,42 @@ test_that("h_odds_ratio_subgroups_df functions as expected  when subgroups is NU
     var = "ALL",
     var_label = "All Patients",
     row_type = "content",
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+
+})
+
+test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs(n_records = 100)
+
+  result <- h_odds_ratio_subgroups_df(
+    variables = list(
+      rsp = "rsp",
+      arm = "ARM",
+      subgroups = c("SEX", "STRATA2"),
+      strat = "STRATA1"
+    ),
+    data = adrs,
+    method = "cmh"
+  )
+
+  expected <- data.frame(
+    arm = c(" ", " ", " ", " ", " "),
+    n_tot = c(100L, 56L, 44L, 48L, 52L),
+    or = c(2.44435836096141, 3.93615491524354, 1.33764497396648, 1.76534154255098, 2.96199676942766),
+    lcl = c(0.786672949464047, 0.771183247516691, 0.238778312539021, 0.330424835389017, 0.557995974203059),
+    ucl = c(7.59513569250423, 20.0903164931116, 7.49353681811187, 9.43158754452345, 15.7230970611038),
+    conf_level = c(0.95, 0.95, 0.95, 0.95, 0.95),
+    pval = c(0.11439763791237, 0.0817702804665442, 0.740127116433065, 0.503305076219993, 0.187331184135787),
+    pval_label = "p-value (Cochran-Mantel-Haenszel Test)",
+    subgroup = c("All Patients", "F", "M", "S1", "S2"),
+    var = c("ALL", "SEX", "SEX", "STRATA2", "STRATA2"),
+    var_label = c("All Patients", "Sex", "Sex", "Stratification Factor 2", "Stratification Factor 2"),
+    row_type = c("content", "analysis", "analysis", "analysis", "analysis"),
     stringsAsFactors = FALSE
   )
 

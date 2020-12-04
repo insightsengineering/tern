@@ -464,7 +464,7 @@ test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
   expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("AET04 variant 4 is produced correctly (with an Incidence Rate of at Least xx%, totals restricted)", {
+test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1&2, grades 3&4&5)", {
 
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%
@@ -589,7 +589,7 @@ test_that("AET04 variant 4 is produced correctly (with an Incidence Rate of at L
 # No test done for variant 5 (Using Worst Grade Flags from ADAE) since it's similar to
 # variant 1 (just pre-processing the data).
 
-test_that("AET04 variant 6 is produced correctly", {
+test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at Least 5%, totals restricted)", {
 
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%

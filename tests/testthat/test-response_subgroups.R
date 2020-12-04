@@ -100,6 +100,52 @@ test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
 
 })
 
+test_that("extract_rsp_subgroups functions as expected with strata", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs(n_records = 100)
+
+  result <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2"), strat = c("STRATA1")),
+    data = adrs,
+    conf_level = 0.9,
+    method = "cmh",
+    label_all = "ALL"
+  )
+
+  expected <- list(
+    prop = data.frame(
+      arm = factor(rep(c("B: Placebo", "A: Drug X"), 5), levels = c("B: Placebo", "A: Drug X")),
+      n = c(50, 50, 30, 26, 20, 24, 20, 28, 30, 22),
+      n_rsp = c(39, 45, 22, 24, 17, 21, 16, 25, 23, 20),
+      prop = c(0.78, 0.9, 0.7333333, 0.9230769, 0.85, 0.875, 0.8, 0.8928571, 0.7666667, 0.9090909),
+      subgroup = c("ALL", "ALL", "F", "F", "M", "M", "S1", "S1", "S2", "S2"),
+      var = c(rep("ALL", 2), rep("SEX", 4), rep("STRATA2", 4)),
+      var_label = c(rep("ALL", 2), rep("Sex", 4), rep("Stratification Factor 2", 4)),
+      row_type = c(rep("content", 2), rep("analysis", 8)),
+      stringsAsFactors = FALSE
+    ),
+    or = data.frame(
+      arm = rep(" ", 5),
+      n_tot = c(100L, 56L, 44L, 48L, 52L),
+      or = c(2.44435836096141, 3.93615491524354, 1.33764497396648, 1.76534154255098, 2.96199676942766),
+      lcl = c(0.943961742331993, 1.00223952484456, 0.314998956584877, 0.432590127386342, 0.729767321547954),
+      ucl = c(6.32958681359417, 15.458695384418, 5.68031747081565, 7.20411901373099, 12.022222156358),
+      conf_level = c(0.9, 0.9, 0.9, 0.9, 0.9),
+      pval = c(0.11439763791237, 0.0817702804665442, 0.740127116433065, 0.503305076219993, 0.187331184135787),
+      pval_label = "p-value (Cochran-Mantel-Haenszel Test)",
+      subgroup = c("ALL", "F", "M", "S1", "S2"),
+      var = c("ALL", "SEX", "SEX", "STRATA2", "STRATA2"),
+      var_label = c("ALL", rep(c("Sex", "Stratification Factor 2"), each = 2)),
+      row_type = c("content", rep("analysis", 4)),
+      stringsAsFactors = FALSE
+    )
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+
+})
+
 test_that("a_response_subgroups functions as expected with valid input", {
 
   df <- data.frame(

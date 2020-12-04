@@ -129,17 +129,29 @@ h_proportion_subgroups_df <- function(variables, data, label_all = "All Patients
 #' @describeIn h_response_subgroups helper to prepare a data frame with estimates of
 #'   the odds ratio between a treatment and a control arm.
 #' @inheritParams response_subgroups
+#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
+#'   required if stratified analysis is performed.
 #' @export
 #' @examples
 #'
+#' # Unstratatified analysis.
 #' h_odds_ratio_df(
 #'   c(TRUE, FALSE, FALSE, TRUE),
 #'   arm = factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 #' )
+#'
 #' # Include p-value.
 #' h_odds_ratio_df(adrs_f$rsp, adrs_f$ARM, method = "chisq")
 #'
-h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
+#' # Stratatified analysis.
+#' h_odds_ratio_df(
+#'   rsp = adrs_f$rsp,
+#'   arm = adrs_f$ARM,
+#'   strata_data = adrs_f[, c("STRATA1", "STRATA2")],
+#'   method = "cmh"
+#' )
+#'
+h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
 
   assert_that(
     is_valid_factor(arm),
@@ -147,7 +159,25 @@ h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
     are_equal(nlevels(arm), 2)
   )
 
-  df_rsp <- data.frame(rsp = rsp)
+  df_rsp <- data.frame(
+    rsp = rsp,
+    arm = arm
+  )
+
+  if (!is.null(strata_data)) {
+
+    strata_var <- interaction(strata_data, drop = TRUE)
+    strata_name <- "strata"
+
+    assert_that(
+      is_valid_factor(strata_var),
+      are_equal(length(strata_var), nrow(df_rsp))
+    )
+
+    df_rsp[[strata_name]] <- strata_var
+  } else {
+    strata_name <- NULL
+  }
 
   l_df <- split(df_rsp, arm)
 
@@ -157,6 +187,8 @@ h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
     .var = "rsp",
     .ref_group = l_df[[1]],
     .in_ref_col = FALSE,
+    .df_row = df_rsp,
+    variables = list(arm = "arm", strata = strata_name),
     conf_level = conf_level
   )
 
@@ -179,7 +211,7 @@ h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
       .var = "rsp",
       .ref_group = l_df[[1]],
       .in_ref_col = FALSE,
-      variables = list(strata = NULL),
+      variables = list(strata = strata_name),
       method = method
     )
 
@@ -193,12 +225,25 @@ h_odds_ratio_df <- function(rsp, arm, conf_level = 0.95, method = NULL) {
 
 #' @describeIn h_response_subgroups summarizes estimates of the odds ratio between a treatment and a control
 #'   arm across subgroups in a data frame. `variables` corresponds to the names of variables found in
-#'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`.
+#'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`
+#'   and `strat`.
 #' @export
 #' @examples
 #'
+#' # Unstratified analysis.
 #' h_odds_ratio_subgroups_df(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+#'   data = adrs_f
+#' )
+#'
+#' # Stratified analysis.
+#' h_odds_ratio_subgroups_df(
+#'   variables = list(
+#'     rsp = "rsp",
+#'     arm = "ARM",
+#'     subgroups = c("SEX", "BMRKR2"),
+#'     strat = c("STRATA1", "STRATA2")
+#'    ),
 #'   data = adrs_f
 #' )
 #'
@@ -212,16 +257,24 @@ h_odds_ratio_subgroups_df <- function(variables,
     is.character(variables$rsp),
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
+    is.character(variables$strat) || is.null(variables$strat),
     is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
     is_valid_factor(data[[variables$arm]]),
     are_equal(nlevels(data[[variables$arm]]), 2)
   )
 
+  strata_data <- if (is.null(variables$strat)) {
+    NULL
+  } else {
+    data[, variables$strat, drop = FALSE]
+  }
+
   # Add All Patients.
   result_all <- h_odds_ratio_df(
     rsp = data[[variables$rsp]],
     arm = data[[variables$arm]],
+    strata_data = strata_data,
     conf_level = conf_level,
     method = method
   )
@@ -238,9 +291,16 @@ h_odds_ratio_subgroups_df <- function(variables,
 
     l_result <- lapply(l_data, function(grp) {
 
+      grp_strata_data <- if (is.null(variables$strat)) {
+        NULL
+      } else {
+        grp$df[, variables$strat, drop = FALSE]
+      }
+
       result <- h_odds_ratio_df(
         rsp = grp$df[[variables$rsp]],
         arm = grp$df[[variables$arm]],
+        strata_data = grp_strata_data,
         conf_level = conf_level,
         method = method
       )

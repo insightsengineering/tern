@@ -12,7 +12,7 @@ h_proportion_df(rsp, arm)
 
 h_proportion_subgroups_df(variables, data, label_all = "All Patients")
 
-h_odds_ratio_df(rsp, arm, conf_level = 0.95, method = NULL)
+h_odds_ratio_df(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL)
 
 h_odds_ratio_subgroups_df(
   variables,
@@ -32,6 +32,9 @@ h_odds_ratio_subgroups_df(
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
+
+\item{strata_data}{(\code{factor}, \code{data.frame} or \code{NULL})\cr
+required if stratified analysis is performed.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
@@ -60,7 +63,8 @@ the odds ratio between a treatment and a control arm.
 
 \item \code{h_odds_ratio_subgroups_df}: summarizes estimates of the odds ratio between a treatment and a control
 arm across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
-\code{data}, passed as a named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}.
+\code{data}, passed as a named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}
+and \code{strat}.
 }}
 
 \examples{
@@ -96,16 +100,38 @@ h_proportion_subgroups_df(
 )
 
 
+# Unstratatified analysis.
 h_odds_ratio_df(
   c(TRUE, FALSE, FALSE, TRUE),
   arm = factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 )
+
 # Include p-value.
 h_odds_ratio_df(adrs_f$rsp, adrs_f$ARM, method = "chisq")
 
+# Stratatified analysis.
+h_odds_ratio_df(
+  rsp = adrs_f$rsp,
+  arm = adrs_f$ARM,
+  strata_data = adrs_f[, c("STRATA1", "STRATA2")],
+  method = "cmh"
+)
 
+
+# Unstratified analysis.
 h_odds_ratio_subgroups_df(
   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+  data = adrs_f
+)
+
+# Stratified analysis.
+h_odds_ratio_subgroups_df(
+  variables = list(
+    rsp = "rsp",
+    arm = "ARM",
+    subgroups = c("SEX", "BMRKR2"),
+    strat = c("STRATA1", "STRATA2")
+   ),
   data = adrs_f
 )
 
