@@ -1,6 +1,3 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # tern
 
 The `tern` R package contains analysis functions to create tables,
@@ -32,3 +29,7 @@ devtools::install_github(
 
   - [Stats Software Initiative - R Series.
     June 18, 2018](https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing)
+
+# Acknowledgments
+
+There are a number of people who have previously been actively working on `tern` including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao Yu Mo.
