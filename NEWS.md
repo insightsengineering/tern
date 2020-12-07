@@ -1,4 +1,4 @@
-# tern 0.6.10
+# tern 0.7.0
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
 * Counting patients with abnormal values post-baseline: `s_count_abnormal` and `count_abnormal`.
 * Counting patients with graded abnormal values: `s_count_abnormal_by_worst_grade` and `count_abnormal_by_worst_grade`.
@@ -33,10 +33,8 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Add new function `t_contingency` for contingency tables.
 * The class `splitText` is renamed to `dynamicSplitText` in order to resolve the name conflict with the package `ggpubr`.
 * Add `rreplace_format` for tabulation post-processing.
-* Add new tern function `t_ancova` to create ANCOVA tables, as well as corresponding elementary table function 
-  `t_el_ancova` and summary function `s_ancova`.
-* Add new tern function `s_odds_ratio` to estimate Odds Ratio of response between categories, as well as the 
-  corresponding elementary table function `t_el_odds_ratio`.
+* Add new tern function `t_ancova` to create ANCOVA tables, as well as corresponding elementary table function `t_el_ancova` and summary function `s_ancova`.
+* Add new tern function `s_odds_ratio` to estimate Odds Ratio of response between categories, as well as the corresponding elementary table function `t_el_odds_ratio`.
 * Additional CI methods (Agresti-Coull, Jeffreys) for `s_proportion`.
 * Added new CI methods `anderson-hauck` and `newcombe` to `s_proportion_diff`.
 * Additional p-value methods (Fisher's Exact, Chi-Squared Test with Schouten Correction) for `s_test_proportion_diff`.
@@ -52,8 +50,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * For functions with `row_by` argument, inputs no longer require use of `nested_by`.
 * Add `stat_mean_ci` and `stat_median_ci` for error bars in `ggplot2`.
 * Add new tern function `t_coxreg` as single interface for diverse cox regression types.
-* Add compound table for binary endpoint: `t_binary_endpoint` and elementary functions: `t_el_proportion`, `t_el_proportion_diff` and `t_el_test_proportion_diff`. The supporting summary functions added are: 
-  `s_proportion`, `s_adj_proportion_diff`, `s_proportion_diff` and `s_test_proportion_diff`.
+* Add compound table for binary endpoint: `t_binary_endpoint` and elementary functions: `t_el_proportion`, `t_el_proportion_diff` and `t_el_test_proportion_diff`. The supporting summary functions added are: `s_proportion`, `s_adj_proportion_diff`, `s_proportion_diff` and `s_test_proportion_diff`.
 * Added new tern function `t_events_patyear` to create event table adjusted person-years.
 * Added new tern function `t_abnormality` and the elementary table function `t_el_abnormality`.
 * Removed `grade_levels` argument from `t_events_term_grade_id` functions. If a different ordering of the rows is needed, this must be done through postprocessing by reordering the leaves of the table tree. Eventually, a helper function will be provided.
@@ -162,12 +159,9 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 
 #### New TLGs
 
-* `t_summary` and methods for `data.frame`, `numeric`, `logical`, `character`,
-`factor`, and `Date` objects.
-* `t_events_per_term_id`, `t_events_per_term_grade_id`: Adverse Events &
-Concomitant Treatment Tables.
-* `t_max_grade_per_id`, `t_count_unique`, `t_events_summary` elementary tables
-used for the Adverse Events & Concomitant Treatment Tables.
+* `t_summary` and methods for `data.frame`, `numeric`, `logical`, `character`, `factor`, and `Date` objects.
+* `t_events_per_term_id`, `t_events_per_term_grade_id`: Adverse Events & Concomitant Treatment Tables.
+* `t_max_grade_per_id`, `t_count_unique`, `t_events_summary` elementary tables used for the Adverse Events & Concomitant Treatment Tables.
 * `g_waterfall`: Horizontal Waterfall Plot.
 
 #### New Helper Functions
@@ -177,13 +171,10 @@ used for the Adverse Events & Concomitant Treatment Tables.
 
 #### TLG changes
 
-* `t_tte` now shows two rows with ranges for event and censored times,
-respectively.
+* `t_tte` now shows two rows with ranges for event and censored times, respectively.
 * `g_km` works with one arm `survfit` objects.
-* In forest plot functions, added formatting to display extreme values to
-">999.9".
-* `t_summarise_variables` uses now `n` instead of `N` as a denominator for
-calculating percentages for factors by default.
+* In forest plot functions, added formatting to display extreme values to ">999.9".
+* `t_summarise_variables` uses now `n` instead of `N` as a denominator for calculating percentages for factors by default.
 * `t_rsp` now works when all response values are `TRUE` or `FALSE`.
 
 #### Deprecated Functions
