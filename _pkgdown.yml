@@ -262,6 +262,7 @@ reference:
       - make_names
       - unlist_and_blank_na
       - cfun_by_flag
+      - append_varlabel
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package

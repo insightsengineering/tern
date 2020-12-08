@@ -688,3 +688,45 @@ test_that("afun_selected_stats works for character input", {
   expected <- "c"
   expect_identical(result, expected)
 })
+
+test_that("append_varlabels works as expected", {
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    split_rows_by("SEX") %>%
+    append_varlabels(DM, "SEX") %>%
+    analyze("AGE", afun = mean) %>%
+    append_varlabels(DM, "AGE", indent = TRUE)
+  result <- build_table(lyt, DM)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("SEX", "  Age", "F", "mean", "M", "mean", "U", "mean",
+      "UNDIFFERENTIATED", "mean", "A: Drug X", "(N=121)", "", "33.7142857142857",
+      "", "36.5490196078431", "", "NA", "", "NA", "B: Placebo", "(N=106)",
+      "", "33.8392857142857", "", "32.1", "", "NA", "", "NA", "C: Combination",
+      "(N=129)", "", "34.8852459016393", "", "34.2794117647059", "",
+      "NA", "", "NA"),
+    .Dim = c(10L, 4L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("append_varlabels correctly concatenates multiple variable labels", {
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("SEX") %>%
+    analyze("AGE", afun = mean) %>%
+    append_varlabels(DM, c("SEX", "AGE"))
+  result <- build_table(lyt, DM)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("SEX / Age", "F", "mean", "M", "mean", "U", "mean",
+      "UNDIFFERENTIATED", "mean", "A: Drug X", "", "33.7142857142857",
+      "", "36.5490196078431", "", "NA", "", "NA", "B: Placebo", "",
+      "33.8392857142857", "", "32.1", "", "NA", "", "NA", "C: Combination",
+      "", "34.8852459016393", "", "34.2794117647059", "", "NA", "",
+      "NA"),
+    .Dim = c(9L, 4L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})

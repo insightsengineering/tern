@@ -586,3 +586,55 @@ afun_selected_stats <- function(.stats, all_stats) {
     intersect(.stats, all_stats)
   }
 }
+
+
+#' Add Variable Labels to Top Left Corner in Table
+#'
+#' Helper layout creating function to just append the variable labels of a given variables vector
+#' from a given dataset in the top left corner. If a variable label is not found then the
+#' variable name itself is used instead. Multiple variable labels are concatenated with slashes.
+#'
+#' @note This is not an optimal implementation of course, since we are using here the data set
+#'   itself during the layout creation. When we have a more mature rtables implementation then
+#'   this will also be improved or not necessary anymore.
+#'
+#' @inheritParams argument_convention
+#' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
+#' @param indent (`flag`)\cr should this be indented by 2 blanks (1 level in rtables)?
+#'
+#' @return The modified layout.
+#' @export
+#'
+#' @examples
+#' lyt <- basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("SEX") %>%
+#'   append_varlabels(DM, "SEX") %>%
+#'   analyze("AGE", afun = mean) %>%
+#'   append_varlabels(DM, "AGE", indent = TRUE)
+#' build_table(lyt, DM)
+#'
+#' lyt <- basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   split_rows_by("SEX") %>%
+#'   analyze("AGE", afun = mean) %>%
+#'   append_varlabels(DM, c("SEX", "AGE"))
+#' build_table(lyt, DM)
+#'
+append_varlabels <- function(lyt, df, vars, indent = FALSE) {
+  assert_that(
+    is.data.frame(df),
+    is.character(vars),
+    is.flag(indent)
+  )
+  lab <- var_labels(df[vars], fill = TRUE)
+  lab <- paste(lab, collapse = " / ")
+  if (indent) {
+    lab <- paste0(
+      ifelse(indent, "  ", ""),
+      lab
+    )
+  }
+  append_topleft(lyt, lab)
+}
