@@ -23,7 +23,6 @@ Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
 }
 \examples{
-vignette("Design of KMG01")
 
 \dontrun{
 library(random.cdisc.data)

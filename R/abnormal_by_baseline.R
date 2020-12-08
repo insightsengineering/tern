@@ -120,8 +120,10 @@ s_count_abnormal_by_baseline <- function(df,
 #' @return [a_count_abnormal_by_baseline()] returns the corresponding list with formatted [rtables::CellValue()].
 #' @export
 #' @examples
-#' # Use the Formatted Analysis function for `analyze()`.
-#' a_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "LOW")
+#' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
+#' # so that the rtables formatting function `format_fraction()` can be applied correctly.
+#' afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
+#' afun(df, .var = "ANRIND", abnormal = "LOW")
 #'
 a_count_abnormal_by_baseline <- make_afun(
   s_count_abnormal_by_baseline,

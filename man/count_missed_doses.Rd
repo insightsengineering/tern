@@ -93,7 +93,10 @@ s_count_nonmissing(x)
 
 s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 
-a_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
+#  We need to ungroup `count_fraction` first so that the rtables formatting
+# function `format_count_fraction()` can be applied correctly.
+afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
+afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 
 library(dplyr)
 library(random.cdisc.data)

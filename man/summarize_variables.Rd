@@ -314,13 +314,27 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 
 # `a_summary.factor`
-a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+# We need to ungroup `count` and `count_fraction` first so that the rtables formatting
+# functions can be applied correctly.
+afun <- make_afun(
+  getS3method("a_summary", "factor"),
+  .ungroup_stats = c("count", "count_fraction")
+)
+afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 
 # `a_summary.character`
-a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
+afun <- make_afun(
+  getS3method("a_summary", "character"),
+  .ungroup_stats = c("count", "count_fraction")
+)
+afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
 
 # `a_summary.logical`
-a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+afun <- make_afun(
+  getS3method("a_summary", "logical"),
+  .ungroup_stats = c("count", "count_fraction")
+)
+afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 
 # `create_afun_summary()` to create combined `afun`
 

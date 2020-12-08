@@ -113,8 +113,10 @@ s_count_cumulative <- function(x,
 #' @return [a_count_cumulative()] returns the corresponding list with formatted [rtables::CellValue()].
 #' @export
 #' @examples
-#' # Use the Formatted Analysis function for `analyze()`.
-#' a_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
+#' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
+#' # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
+#' afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
+#' afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 #'
 a_count_cumulative <- make_afun(
   s_count_cumulative,

@@ -89,7 +89,10 @@ s_count_occurrences(
   id = "USUBJID"
 )
 
-a_count_occurrences(
+#  We need to ungroup `count_fraction` first so that the rtables formatting
+# function `format_count_fraction()` can be applied correctly.
+afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction"))
+afun(
   df,
   N_per_col,
   .var = "MHDECOD",

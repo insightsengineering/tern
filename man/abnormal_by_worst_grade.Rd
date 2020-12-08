@@ -119,8 +119,10 @@ s_count_abnormal_by_worst_grade(
   variables = list(id = "USUBJID", worst_grade_flag = "WGRHIFL")
 )
 
-# Use the Formatted Analysis function for `analyze()`.
-a_count_abnormal_by_worst_grade(
+# Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
+# so that the rtables formatting function `format_count_fraction()` can be applied correctly.
+afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
+afun(
   df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   abnormal = "high",

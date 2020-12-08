@@ -344,7 +344,7 @@ g_km <- function(df,
 #'
 #' @inheritParams kaplan_meier
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @examples vignette("Design of KMG01")
+#' @examples
 #'
 #' \dontrun{
 #' library(random.cdisc.data)
