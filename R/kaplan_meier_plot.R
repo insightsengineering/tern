@@ -950,7 +950,7 @@ h_tbl_coxph_pairwise <- function(df,
                                  variables,
                                  control_coxph_pw = control_coxph()
 ) {
-  assert_that(is_df_with_variables(df, variables))
+  assert_that(is_df_with_variables(df, as.list(unlist(variables))))
   arm <- variables$arm
   df[[arm]] <- factor(df[[arm]])
   ref_group <- levels(df[[arm]])[1]
