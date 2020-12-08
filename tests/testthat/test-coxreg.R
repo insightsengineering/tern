@@ -657,3 +657,13 @@ test_that("h_coxreg_inter_effect.numerics works with _:_ in effect levels", {
   # The first column in the effect (arm/armcd) and expected to vary.
   expect_equal(result[, -1], expected[, -1], check.attributes = FALSE)
 })
+
+test_that("muffled_car_anova muffles notes about dropped strata term", {
+  bladder1 <- bladder[bladder$enum < 5, ]
+  mod <- coxph(
+    Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
+    bladder1
+  )
+  expect_message(car::Anova(mod, test.statistic = "Wald"))
+  expect_silent(muffled_car_anova(mod, test_statistic = "Wald"))
+})

@@ -387,11 +387,8 @@ h_coxreg_univar_extract <- function(effect,
     class(mod) == "coxph"
   )
   test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
-  mod_aov <- car::Anova(
-    mod,
-    test.statistic = test_statistic,
-    type = "III"
-  )
+
+  mod_aov <- muffled_car_anova(mod, test_statistic)
   msum <- summary(mod, conf.int = control$conf_level)
   sum_cox <- broom::tidy(msum)
 
@@ -600,7 +597,7 @@ h_coxreg_extract_interaction <- function(effect,
     test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
 
     # Test the main treatment effect.
-    mod_aov <- car::Anova(mod, test.statistic = test_statistic, type = "III")
+    mod_aov <- muffled_car_anova(mod, test_statistic)
     sum_anova <- broom::tidy(mod_aov)
     pval <- sum_anova[sum_anova$term == effect, ][["p.value"]]
 
@@ -875,11 +872,8 @@ h_coxreg_multivar_extract <- function(var,
                                       control = control_coxreg()) {
 
   test_statistic <- c(wald = "Wald", likelihood = "LR")[control$pval_method]
-  mod_aov <- car::Anova(
-    mod,
-    test.statistic = test_statistic,
-    type = "III"
-  )
+  mod_aov <- muffled_car_anova(mod, test_statistic)
+
   msum <- summary(mod, conf.int = control$conf_level)
   sum_anova <- broom::tidy(mod_aov)
   sum_cox <- broom::tidy(msum)
@@ -1077,4 +1071,28 @@ summarize_coxreg <- function(lyt,
   }
 
   analyze_colvars(lyt = lyt, afun = afun_list[vars])
+}
+
+#' Muffled `car::Anova`
+#'
+#' Applied on survival models, [car::Anova()] signal that the `strata` terms is dropped from the model formula when
+#' present, this function deliberately muffles this message.
+#'
+#' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
+#' @param test_statistic (`string`)\cr the method used for estimation of p.values;
+#'   `wald` (default) or `likelihood`.
+#'
+muffled_car_anova <- function(mod, test_statistic) {
+  tryCatch(
+    withCallingHandlers(
+      expr = {
+        car::Anova(
+          mod,
+          test.statistic = test_statistic,
+          type = "III"
+        )
+      },
+      message = function(m) invokeRestart("muffleMessage")
+    )
+  )
 }
