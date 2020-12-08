@@ -1,9 +1,19 @@
+library(dplyr)
+
 test_that("s_count_abnormal works with healthy input and default arguments", {
+
+  abn_levels <- c("LOW", "NORMAL", "HIGH")
+
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 2)),
-    AVISIT = factor(c("BASELINE", "WEEK 1", "BASELINE", "WEEK 1")),
-    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"), levels = abn_levels),
+    BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH"), levels = abn_levels),
+    ONTRTFL = c("", "Y", "", "Y"),
     stringsAsFactors = FALSE
+  )
+
+  df <- df %>% filter(
+    ONTRTFL == "Y"
   )
 
   # Check with LOW abnormality.
@@ -38,11 +48,18 @@ test_that("s_count_abnormal works with healthy input and default arguments", {
 })
 
 test_that("s_count_abnormal works when excluding patients with abnormality at baseline", {
+  abn_levels <- c("LOW", "NORMAL", "HIGH")
+
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 2, 3, 3)),
-    AVISIT = factor(c("BASELINE", "WEEK 1", "BASELINE", "WEEK 1", "BASELINE", "WEEK 1")),
-    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH", "LOW", "HIGH")),
+    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH", "LOW", "HIGH"), levels = abn_levels),
+    BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH", "LOW", "LOW")),
+    ONTRTFL = c("", "Y", "", "Y", "", "Y"),
     stringsAsFactors = FALSE
+  )
+
+  df <- df %>% filter(
+    ONTRTFL == "Y"
   )
 
   # Check with LOW abnormality.
@@ -79,13 +96,20 @@ test_that("s_count_abnormal works when excluding patients with abnormality at ba
 })
 
 test_that("s_count_abnormal also works with tibble and custom arguments", {
+
+  abn_levels <- c("LOW", "NORMAL", "HIGH")
+
   df <- dplyr::as_tibble(
     data.frame(
       myid = as.character(c(1, 1, 1, 2, 2, 2)),
-      myvisit = factor(c("SCREENING", "BASELINE", "WEEK 1", "SCREENING", "BASELINE", "WEEK 1")),
-      myrange = factor(c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", "HIGH")),
+      myrange = factor(c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", "HIGH"), levels = abn_levels),
+      myblrange = factor(c("LOW", "LOW", "LOW", "HIGH", "HIGH", "HIGH"), levels = abn_levels),
+      mytrtfl = c("", "", "Y", "", "", "Y"),
       stringsAsFactors = FALSE
     )
+  )
+  df <- df %>% filter(
+    mytrtfl == "Y"
   )
 
   # Check with LOW abnormality.
@@ -93,8 +117,7 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
     df = df,
     .var = "myrange",
     abnormal = c(low = "LOW"),
-    variables = list(id = "myid", visit = "myvisit"),
-    baseline = c("SCREENING", "BASELINE"),
+    variables = list(id = "myid", baseline = "myblrange"),
     exclude_base_abn = TRUE
   )
   expected <- list(fraction = with_label(
@@ -111,8 +134,7 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
     df = df,
     .var = "myrange",
     abnormal = c(high = "HIGH"),
-    variables = list(id = "myid", visit = "myvisit"),
-    baseline = c("SCREENING", "BASELINE"),
+    variables = list(id = "myid", baseline = "myblrange"),
     exclude_base_abn = TRUE
   )
   expected <- list(fraction = with_label(
@@ -126,11 +148,21 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
 })
 
 test_that("count_abnormal works with default arguments", {
+
+  abn_levels <- c("LOW", "NORMAL", "HIGH")
+
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 2)),
-    AVISIT = factor(c("BASELINE", "WEEK 1", "BASELINE", "WEEK 1")),
-    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
+    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"), levels = abn_levels),
+    BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH"), levels = abn_levels),
+    ONTRTFL = c("", "Y", "", "Y")
   )
+
+  df <- df %>%
+    filter(
+      ONTRTFL == "Y"
+    )
+
   result <- basic_table() %>%
     count_abnormal(var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"), exclude_base_abn = TRUE) %>%
     build_table(df)
@@ -145,17 +177,27 @@ test_that("count_abnormal works with default arguments", {
 })
 
 test_that("count_abnormal works with custom arguments", {
+
+  abn_levels <- c("LOW", "NORMAL", "HIGH")
+
   df2 <- data.frame(
     ID = as.character(c(1, 1, 2, 2)),
-    VISIT = factor(c("SCREENING", "WEEK 1", "SCREENING", "WEEK 1")),
-    RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
+    RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH"), levels = abn_levels),
+    BL_RANGE = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH"), levels = abn_levels),
+    ONTRTFL = c("", "Y", "", "Y"),
+    stringsAsFactors = FALSE
   )
+
+  df2 <- df2 %>%
+    filter(
+      ONTRTFL == "Y"
+    )
+
   result <- basic_table() %>%
     count_abnormal(
       var = "RANGE",
       abnormal = c("< LLN" = "LOW", "> ULN" = "HIGH"),
-      variables = list(id = "ID", visit = "VISIT"),
-      baseline = "SCREENING",
+      variables = list(id = "ID", baseline = "BL_RANGE"),
       .indent_mods = c(fraction = 1L),
       .formats = c(fraction = "xx / xx"),
       exclude_base_abn = TRUE,
@@ -166,6 +208,39 @@ test_that("count_abnormal works with custom arguments", {
   expected_matrix <- structure(
     c("", "< LLN", "> ULN", "all obs", "1 / 2", "0 / 1"),
     .Dim = 3:2
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("count_abnormal works with default arguments and visit", {
+
+  abn_levels <- c("LOW", "NORMAL", "HIGH")
+  visit_levels <- c("BASELINE", "WEEK 1", "WEEK 2")
+
+  df <- data.frame(
+    USUBJID = as.character(c(1, 1, 1, 2, 2, 2)),
+    AVISIT = factor(rep(c("BASELINE", "WEEK 1", "WEEK 2"), 2), levels = visit_levels),
+    ANRIND = factor(c("NORMAL", "LOW", "LOW", "HIGH", "HIGH", "NORMAL"), levels = abn_levels),
+    BNRIND = factor(c("NORMAL", "NORMAL", "NORMAL", "HIGH", "HIGH", "HIGH"), levels = abn_levels),
+    ONTRTFL = c("", "Y", "Y", "", "Y", "Y")
+  )
+
+  df <- df %>%
+    filter(
+      ONTRTFL == "Y"
+    )
+
+  result <- basic_table() %>%
+    split_rows_by("AVISIT", split_fun = drop_split_levels) %>%
+    count_abnormal(var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH")) %>%
+    build_table(df)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "WEEK 1", "low", "high", "WEEK 2", "low", "high",
+      "all obs", "", "1/2 (50%)", "1/2 (50%)", "", "1/2 (50%)", "0/2"
+      ),
+    .Dim = c(7L, 2L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

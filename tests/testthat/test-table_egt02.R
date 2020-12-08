@@ -6,9 +6,11 @@ library(dplyr)
 test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
 
   adsl <- radsl(cached = TRUE)
-  # Note: We exclude "SCREENING" visit here since otherwise it would be used as post-baseline below.
+  # Note: We exclude "SCREENING" and "BASELINE" visits here
+  # so to keep only post-baseline for analysis.
   adeg <- radeg(cached = TRUE) %>%
     dplyr::filter(AVISIT != "SCREENING") %>%
+    dplyr::filter(AVISIT != "BASELINE") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))
 
   n_col_counts <- table(adsl$ARM)
@@ -51,6 +53,7 @@ test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
   adsl <- radsl(cached = TRUE)
   adeg <- radeg(cached = TRUE) %>%
     dplyr::filter(AVISIT != "SCREENING") %>%
+    dplyr::filter(AVISIT != "BASELINE") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))
 
   n_col_counts <- table(adsl$ARM)

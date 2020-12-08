@@ -7,6 +7,7 @@ test_that("1. Vital Sign Abnormalities (Regardless of Abnormality at Baseline, V
   adsl <- radsl(cached = TRUE)
   advs <- radvs(cached = TRUE)
 
+  # Note: We keep only post-baseline for analysis.
   advs_f <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y")
   n_col_counts <- table(adsl$ARM)
   n_col_counts <- c(n_col_counts, sum(n_col_counts))
@@ -49,7 +50,8 @@ test_that("2. Vital Sign Abnormalities (Among Subject Without Abnormality at Bas
   adsl <- radsl(cached = TRUE)
   advs <- radvs(cached = TRUE)
 
-  advs_f <- advs %>% filter(AVISITN >= 0)
+  # Note: We keep only post-baseline for analysis.
+  advs_f <- advs %>% filter(AVISITN > 0)
   n_col_counts <- table(adsl$ARM)
   n_col_counts <- c(n_col_counts, sum(n_col_counts))
 
@@ -61,7 +63,6 @@ test_that("2. Vital Sign Abnormalities (Among Subject Without Abnormality at Bas
     build_table(df = advs_f, col_counts = n_col_counts)
 
   result_matrix <- to_string_matrix(result)
-  dput(result_matrix)
 
   expected_matrix <- structure(
     c(

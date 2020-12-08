@@ -11,8 +11,7 @@ s_count_abnormal(
   df,
   .var,
   abnormal,
-  variables = list(id = "USUBJID", visit = "AVISIT"),
-  baseline = "BASELINE",
+  variables = list(id = "USUBJID", baseline = "BNRIND"),
   exclude_base_abn = FALSE
 )
 
@@ -20,8 +19,7 @@ a_count_abnormal(
   df,
   .var,
   abnormal,
-  variables = list(id = "USUBJID", visit = "AVISIT"),
-  baseline = "BASELINE",
+  variables = list(id = "USUBJID", baseline = "BNRIND"),
   exclude_base_abn = FALSE
 )
 
@@ -46,8 +44,6 @@ by a statistics function.}
 \item{abnormal}{(named \code{string} or \code{character})\cr identifying the abnormal range level(s) in \code{var}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{baseline}{(\code{string})\cr identifying the baseline level(s) in \code{visit}.}
 
 \item{exclude_base_abn}{(\code{flag})\cr whether to exclude subjects with baseline abnormality
 from numerator and denominator.}
@@ -78,18 +74,20 @@ vector with \code{num} and \code{denom} counts of patients.
 \code{\link[=count_abnormal]{count_abnormal()}} can be used with multiple abnormal levels and modifies the layout.
 }
 \description{
-Primary analysis variable is the \code{range} factor, and additional analysis variables are
-\code{id} (character or factor), \code{visit} (factor).
-We count patients in the numerator and denominator as follows:
+Primary analysis variable \code{.var} indicates the abnormal range result (character or factor)
+and additional analysis variables are \code{id} (character or factor) and \code{baseline} (character or factor).
+For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
+numerator and denominator as follows:
 \describe{
 \item{\code{num}}{the number of patients with this abnormality recorded while on treatment.}
 \item{\code{denom}}{the number of patients with at least one post-baseline assessment.}
 }
-Note that optionally patients with this abnormality at baseline are excluded from
-numerator and denominator.
-Here the baseline visit is identified as the \code{visit} level(s) in \code{baseline}.
-Note that the denominators include patients that might have other abnormal levels
-at baseline, and patients with missing baseline.
+Note, the denominator includes patients that might have other abnormal levels at baseline,
+and patients with missing baseline. Note, optionally patients with this abnormality at
+baseline can be excluded from numerator and denominator.
+}
+\details{
+Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
@@ -105,11 +103,19 @@ works with a single variable but multiple abnormal levels.
 }}
 
 \examples{
+library(dplyr)
 df <- data.frame(
   USUBJID = as.character(c(1, 1, 2, 2)),
-  AVISIT = factor(c("BASELINE", "WEEK 1", "BASELINE", "WEEK 1")),
-  ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
+  ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+  BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
+  ONTRTFL = c("", "Y", "", "Y"),
+  stringsAsFactors = FALSE
 )
+
+# Select only post-baseline records.
+df <- df \%>\%
+  filter(ONTRTFL == "Y")
+
 # For abnormal level "HIGH" we get the following counts.
 s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
 
@@ -127,15 +133,21 @@ basic_table() \%>\%
 # Passing of statistics function and formatting arguments.
 df2 <- data.frame(
   ID = as.character(c(1, 1, 2, 2)),
-  VISIT = factor(c("SCREENING", "WEEK 1", "SCREENING", "WEEK 1")),
-  RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
+  RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+  BL_RANGE = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
+  ONTRTFL = c("", "Y", "", "Y"),
+  stringsAsFactors = FALSE
 )
+
+# Select only post-baseline records.
+df2 <- df2 \%>\%
+  filter(ONTRTFL == "Y")
+
 basic_table() \%>\%
   count_abnormal(
     var = "RANGE",
     abnormal = c(low = "LOW", high = "HIGH"),
-    variables = list(id = "ID", visit = "VISIT"),
-    baseline = "SCREENING"
+    variables = list(id = "ID", baseline = "BL_RANGE")
   ) \%>\%
   build_table(df2)
 

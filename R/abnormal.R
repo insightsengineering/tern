@@ -1,21 +1,21 @@
 #' Patient Counts with Abnormal Range Values
 #'
-#' Primary analysis variable is the `range` factor, and additional analysis variables are
-#' `id` (character or factor), `visit` (factor).
-#' We count patients in the numerator and denominator as follows:
+#' Primary analysis variable `.var` indicates the abnormal range result (character or factor)
+#' and additional analysis variables are `id` (character or factor) and `baseline` (character or factor).
+#' For each direction specified in `abnormal` (e.g. high or low) count patients in the
+#' numerator and denominator as follows:
 #' \describe{
 #'   \item{`num`}{the number of patients with this abnormality recorded while on treatment.}
 #'   \item{`denom`}{the number of patients with at least one post-baseline assessment.}
 #' }
-#' Note that optionally patients with this abnormality at baseline are excluded from
-#' numerator and denominator.
-#' Here the baseline visit is identified as the `visit` level(s) in `baseline`.
-#' Note that the denominators include patients that might have other abnormal levels
-#' at baseline, and patients with missing baseline.
+#' Note, the denominator includes patients that might have other abnormal levels at baseline,
+#' and patients with missing baseline. Note, optionally patients with this abnormality at
+#' baseline can be excluded from numerator and denominator.
+#'
+#' @details Note that `df` should be filtered to include only post-baseline records.
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (named `string` or `character`)\cr identifying the abnormal range level(s) in `var`.
-#' @param baseline (`string`)\cr identifying the baseline level(s) in `visit`.
 #'
 #' @name abnormal
 #' @include formats.R
@@ -30,11 +30,19 @@ NULL
 #'   vector with `num` and `denom` counts of patients.
 #' @export
 #' @examples
+#' library(dplyr)
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1, 1, 2, 2)),
-#'   AVISIT = factor(c("BASELINE", "WEEK 1", "BASELINE", "WEEK 1")),
-#'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
+#'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+#'   BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
+#'   ONTRTFL = c("", "Y", "", "Y"),
+#'   stringsAsFactors = FALSE
 #' )
+#'
+#' # Select only post-baseline records.
+#' df <- df %>%
+#'   filter(ONTRTFL == "Y")
+#'
 #' # For abnormal level "HIGH" we get the following counts.
 #' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
 #'
@@ -44,33 +52,26 @@ NULL
 s_count_abnormal <- function(df,
                              .var,
                              abnormal,
-                             variables = list(id = "USUBJID", visit = "AVISIT"),
-                             baseline = "BASELINE",
+                             variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
   assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
     is.string(abnormal),
     !is.null(names(abnormal)),
-    is_character_vector(baseline),
+    is_character_or_factor(df[[variables$baseline]]),
     is_character_or_factor(df[[variables$id]]),
-    is.factor(df[[variables$visit]]),
     is.factor(df[[.var]]),
     abnormal %in% levels(df[[.var]]),
-    all(baseline %in% levels(df[[variables$visit]])),
     is.flag(exclude_base_abn)
   )
-
-  # Split up data frame in baseline and post-baseline visit rows.
-  df_baseline <- df[df[[variables$visit]] %in% baseline, ]
-  df_post_baseline <- df[!(df[[variables$visit]] %in% baseline), ]
 
   # Patients in the denominator fulfill:
   # - have at least one post-baseline visit
   # - their baseline must not be abnormal if `exclude_base_abn`.
-  subjects_post_any <- df_post_baseline[[variables$id]]
+  subjects_post_any <- df[[variables$id]]
   subjects_exclude <- if (exclude_base_abn) {
-    df_baseline[df_baseline[[.var]] == abnormal, ][[variables$id]]
+    df[df[[variables$baseline]] == abnormal, ][[variables$id]]
   } else {
     c()
   }
@@ -80,7 +81,7 @@ s_count_abnormal <- function(df,
   # Patients in the numerator fulfill:
   # - have at least one post-baseline visit with the required abnormality level
   # - are part of the denominator patients.
-  subjects_post_abnormal <- df_post_baseline[df_post_baseline[[.var]] == abnormal, ][[variables$id]]
+  subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
   subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
   num <- length(subjects_num)
 
@@ -115,15 +116,21 @@ a_count_abnormal <- make_afun(
 #' # Passing of statistics function and formatting arguments.
 #' df2 <- data.frame(
 #'   ID = as.character(c(1, 1, 2, 2)),
-#'   VISIT = factor(c("SCREENING", "WEEK 1", "SCREENING", "WEEK 1")),
-#'   RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH"))
+#'   RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+#'   BL_RANGE = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
+#'   ONTRTFL = c("", "Y", "", "Y"),
+#'   stringsAsFactors = FALSE
 #' )
+#'
+#' # Select only post-baseline records.
+#' df2 <- df2 %>%
+#'   filter(ONTRTFL == "Y")
+#'
 #' basic_table() %>%
 #'   count_abnormal(
 #'     var = "RANGE",
 #'     abnormal = c(low = "LOW", high = "HIGH"),
-#'     variables = list(id = "ID", visit = "VISIT"),
-#'     baseline = "SCREENING"
+#'     variables = list(id = "ID", baseline = "BL_RANGE")
 #'   ) %>%
 #'   build_table(df2)
 #'
@@ -136,6 +143,7 @@ count_abnormal <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
+
   afun <- make_afun(
     a_count_abnormal,
     .stats = .stats,
@@ -147,6 +155,7 @@ count_abnormal <- function(lyt,
     is.string(var),
     is_equal_length(abnormal, table_names)
   )
+
   for (i in seq_along(abnormal)) {
     abn <- abnormal[i]
     lyt <- analyze(
