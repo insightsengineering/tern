@@ -5,7 +5,7 @@ preprocess_adtte <- function(adtte) {
   # Save variable labels before data processing steps.
   adtte_labels <- var_labels(adtte)
 
-  adtte <- adtte %>%
+  adtte_mod <- adtte %>%
     dplyr::filter(
       PARAMCD == "OS",
       ARM %in% c("B: Placebo", "A: Drug X"),
@@ -16,14 +16,9 @@ preprocess_adtte <- function(adtte) {
       ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
       SEX = droplevels(SEX),
       is_event = CNSR == 0
-    ) %>%
-    var_relabel(
-      ARM = adtte_labels["ARM"],
-      SEX = adtte_labels["SEX"],
-      is_event = "Event Flag"
     )
 
-  adtte
+  reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
 test_that("h_survtime_df functions as expected with valid input and default arguments", {
@@ -358,7 +353,8 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   # Test edge case where HR is (0, Inf)
   adtte <- radtte(cached = TRUE) %>%
     preprocess_adtte() %>%
-    filter(COUNTRY %in% c("CAN", "GBR"))
+    filter(COUNTRY %in% c("CAN", "GBR")) %>%
+    reapply_varlabels(var_labels(radtte(cached = TRUE)))
 
   result <- expect_warning(h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),
@@ -442,4 +438,4 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
   )
 
   expect_equal(result, expected, tol = 0.000001)
-  })
+})

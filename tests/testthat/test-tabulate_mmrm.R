@@ -236,6 +236,11 @@ get_mmrm <- function() {
 }
 
 test_that("h_mmrm_fixed works as expected", {
+
+  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
+    skip("tests dont run with older version of lme4")
+  }
+
   mmrm <- get_mmrm()
   result <- h_mmrm_fixed(mmrm, format = "xx.xxxx")
   result2 <- as.rtable(mmrm, type = "fixed", format = "xx.xxxx")
@@ -268,6 +273,13 @@ test_that("h_mmrm_fixed works as expected", {
 })
 
 test_that("h_mmrm_cov works as expected", {
+
+  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
+    skip("tests dont run with older version of lme4")
+  }
+
+  skip_if_too_deep(2)
+
   mmrm <- get_mmrm()
   result <- h_mmrm_cov(mmrm, format = "xx.xxxx")
   result2 <- as.rtable(mmrm, type = "cov", format = "xx.xxxx")
@@ -287,6 +299,9 @@ test_that("h_mmrm_cov works as expected", {
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
+
+  skip_if_too_deep(2)
+
   mmrm <- get_mmrm()
   result <- h_mmrm_diagnostic(mmrm, format = "xx.x")
   result2 <- as.rtable(mmrm, type = "diagnostic", format = "xx.x")
@@ -301,6 +316,9 @@ test_that("h_mmrm_diagnostic works as expected", {
 })
 
 test_that("tidy.mmrm works as expected", {
+
+  skip_if_too_deep(2)
+
   mmrm <- get_mmrm()
   result <- broom::tidy(mmrm)
   result_one_row <- result[8, ]
@@ -324,7 +342,7 @@ test_that("tidy.mmrm works as expected", {
     conf_level = 0.95
   )
   expect_is(result_one_row, "tbl_df")
-  expect_equal(as.data.frame(result_one_row), as.data.frame(expected_one_row))
+  expect_equal(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
 })
 
 test_that("s_mmrm_lsmeans works as expected when not in reference column", {
@@ -340,10 +358,13 @@ test_that("s_mmrm_lsmeans works as expected when not in reference column", {
     change = with_label(-0.0233534667084426, label = "Relative Reduction (%)"),
     p_value = 0.698170225099465
   )
-  expect_equal(result, expected)
+  expect_equal(result, expected, tolerance = 0.001)
 })
 
 test_that("s_mmrm_lsmeans works as expected when in reference column", {
+
+  skip_if_too_deep(2)
+
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[2, ], TRUE)
@@ -356,10 +377,17 @@ test_that("s_mmrm_lsmeans works as expected when in reference column", {
     change = with_label(character(0), label = "Relative Reduction (%)"),
     p_value = character(0)
   )
-  expect_equal(result, expected)
+  expect_equal(result, expected, tolerance = 0.001)
 })
 
 test_that("summarize_lsmeans works as expected", {
+
+  skip_if_too_deep(2)
+
+  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
+    skip("tests dont run with older version of lme4")
+  }
+
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- basic_table() %>%

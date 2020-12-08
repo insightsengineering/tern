@@ -5,7 +5,7 @@ preprocess_adtte <- function(adtte) {
   # Save variable labels before data processing steps.
   adtte_labels <- var_labels(adtte)
 
-  adtte <- adtte %>%
+  adtte_mod <- adtte %>%
     dplyr::filter(
       PARAMCD == "OS",
       ARM %in% c("B: Placebo", "A: Drug X"),
@@ -19,16 +19,10 @@ preprocess_adtte <- function(adtte) {
       # Convert time to MONTH
       AVAL = day2month(AVAL),
       AVALU = "Months"
-    ) %>%
-    var_relabel(
-      ARM = adtte_labels["ARM"],
-      SEX = adtte_labels["SEX"],
-      is_event = "Event Flag",
-      AVAL = adtte_labels["AVAL"],
-      AVALU = adtte_labels["AVALU"]
     )
 
-  adtte
+  reapply_varlabels(adtte_mod, adtte_labels, AVAL = adtte_labels["AVAL"])
+
 }
 
 test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {

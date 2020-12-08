@@ -6,7 +6,7 @@ preprocess_adtte <- function(adtte) {
   # Save variable labels before data processing steps.
   adtte_labels <- var_labels(adtte)
 
-  adtte <- adtte %>%
+  adtte_mod <- adtte %>%
     dplyr::filter(
       PARAMCD == "OS",
       ARM %in% c("B: Placebo", "A: Drug X"),
@@ -18,15 +18,9 @@ preprocess_adtte <- function(adtte) {
       SEX = droplevels(SEX),
       AVALU = as.character(AVALU),
       is_event = CNSR == 0
-    ) %>%
-    var_relabel(
-      ARM = adtte_labels["ARM"],
-      SEX = adtte_labels["SEX"],
-      AVALU = adtte_labels["AVALU"],
-      is_event = "Event Flag"
     )
 
-  adtte
+  reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
 test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
@@ -260,7 +254,8 @@ test_that("tabulate_survival_subgroups functions as expected with extreme values
 
   adtte <- radtte(cached = TRUE) %>%
     preprocess_adtte() %>%
-    filter(COUNTRY %in% c("RUS", "GBR"))
+    filter(COUNTRY %in% c("RUS", "GBR")) %>%
+    reapply_varlabels(var_labels(radtte(cached = TRUE)))
 
   df <- expect_warning(extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),

@@ -4,13 +4,14 @@ library(dplyr)
 
 adsl_cached <- radsl(cached = TRUE) %>% dplyr::filter(SEX %in% c("F", "M"))
 adrs_cached <- radrs(adsl_cached, seed = 2)
-get_adrs <- function(){
+get_adrs <- function() {
   adrs_cached %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",
       RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
     ) %>%
-    dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0))
+    dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
+    reapply_varlabels(var_labels(adrs_cached))
 }
 
 test_that("fit_logistic works with default paramters", {
@@ -329,7 +330,7 @@ test_that("h_glm_simple_term_extract works for factor and numeric variables", {
   expected2$std_error <- list(0.0370085242079029)
   expected2$df <- list(1)
   expected2$pvalue <- list(0.6764584)
-  expect_equal(result2, expected2[, names(result2)], tolerance = 0.000001)
+  expect_equal(result2, expected2[, names(result2)], tolerance = 0.00001)
 })
 
 test_that("h_glm_interaction_extract works for categorical interaction", {
@@ -405,6 +406,9 @@ test_that("h_glm_interaction_extract works for continuous interaction", {
 })
 
 test_that("h_logistic_simple_terms works", {
+
+  skip_if_too_deep(2)
+
   adrs <- get_adrs()
   mod1 <- fit_logistic(
     adrs,
@@ -672,6 +676,9 @@ test_that("h_logistic_inter_terms works as expected", {
 })
 
 test_that("tidy.glm works as expected for simple case", {
+
+  skip_if_too_deep(2)
+
   adrs <- get_adrs()
   mod1 <- fit_logistic(
     adrs,

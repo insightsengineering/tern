@@ -222,7 +222,7 @@ h_or_cont_interaction <- function(odds_ratio_var,
   xs_vcov <- vcov(fit_glm)
   xs_class <- attr(fit_glm$terms, "dataClasses")
   model_data <- fit_glm$model
-  if (!is.null(at)){
+  if (!is.null(at)) {
     assert_that(
       xs_class[interaction_var] == "numeric"
     )

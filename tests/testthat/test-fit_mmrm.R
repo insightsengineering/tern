@@ -356,7 +356,12 @@ test_that("summary_all_fits works as expected", {
   )
 })
 
+
+
 test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
+
+  skip_if_too_deep(2)
+
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),
     data = lme4::sleepstudy,
@@ -398,7 +403,11 @@ test_that("refit_lme4_all_optimizers can find a working optimizer if there is on
   expect_equal(successful_fit, final_fit, check.attributes = FALSE)
 })
 
+
 test_that("refit_lme4_all_optimizers works with parallelization", {
+
+  skip_if_too_deep(2)
+
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),
     data = lme4::sleepstudy,
@@ -421,6 +430,9 @@ test_that("fit_lme4 works with healthy inputs", {
 })
 
 test_that("fit_lme4 fails when there are convergence issues with all optimizers", {
+
+  skip_if_too_deep(2)
+
   data <- lme4::sleepstudy
   data$days_copy <- data$Days
 
@@ -449,6 +461,9 @@ test_that("fit_lme4 fails when there are convergence issues with a specific opti
 })
 
 test_that("get_mmrm_lsmeans can calculate the LS mean results", {
+
+  skip_if_too_deep(2)
+
   data <- radqs(cached = TRUE) %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
     droplevels() %>%
@@ -476,6 +491,8 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 })
 
 test_that("get_mmrm_lsmeans preserves combined arm levels.", {
+
+  skip_if_too_deep(2)
 
   data <- radqs(cached = TRUE) %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
@@ -518,7 +535,11 @@ test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 
 })
 
+
 test_that("fit_mmrm works with parallelization", {
+
+  skip_if_too_deep(2)
+
   dat <- lme4::sleepstudy %>%
     dplyr::mutate(
       group = factor(rep(c("A", "B"), length = nrow(lme4::sleepstudy))),
@@ -620,7 +641,15 @@ get_adqs <- function(version = c("A", "B")) {
 }
 
 test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
+
+  skip_if_too_deep(2)
+
+  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
+    skip("tests dont run with older version of lme4")
+  }
+
   adqs_f <- get_adqs(version = "A")
+
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "AVAL",
@@ -792,6 +821,9 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
 })
 
 test_that("fit_mmrm works also with missing data", {
+
+  skip_if_too_deep(2)
+
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
     nrow(na.omit(adqs_f)),
