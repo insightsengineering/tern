@@ -12,6 +12,39 @@ test_that("to_string_matrix works correctly", {
   expect_identical(result, expected)
 })
 
+test_that("unlist_and_blank_na works as expected if not all missing", {
+  x <- list(1, 3, 5, NA)
+  result <- unlist_and_blank_na(x)
+  expected <- c(1, 3, 5, NA)
+  expect_identical(result, expected)
+})
+
+test_that("unlist_and_blank_na works as expected if all missing", {
+  x <- c(NA, NA)
+  result <- unlist_and_blank_na(x)
+  expected <- character()
+  expect_identical(result, expected)
+})
+
+test_that("cfun_by_flag works as expected", {
+  result_fun <- cfun_by_flag(analysis_var = "aval", flag_var = "is_result", format = "xx.xxxx")
+  expect_is(result_fun, "function")
+  df <- data.frame(
+    aval = c(1, 2, 3, 4, 5),
+    arm = c("a", "a", "b", "b", "b"),
+    is_result = c(TRUE, FALSE, FALSE, FALSE, FALSE)
+  )
+  result <- result_fun(df = df, labelstr = "bla")
+  expected <- CellValue(
+    1,
+    format = "xx.xxxx",
+    colspan = 1L,
+    indent_mod = 0L,
+    label = "bla"
+  )
+  expect_identical(result, expected)
+})
+
 test_that("flatten_list does not change input if there is just one list level", {
   x <- list(
     list(a = c(1, 2)),

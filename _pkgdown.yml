@@ -49,7 +49,6 @@ reference:
       - s_dummy_sum
       - s_incidence_rate
       - s_length_proportion
-      - s_logistic
       - s_mmrm_lsmeans
       - s_num_patients
       - s_num_patients_content
@@ -115,6 +114,7 @@ reference:
        - summarize_change
        - summarize_colvars
        - summarize_lsmeans
+       - summarize_logistic
        - summarize_num_patient
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
@@ -172,6 +172,18 @@ reference:
       - h_coxph_df
       - h_coxph_subgroups_df
       - h_split_by_subgroups
+      - h_get_interaction_vars
+      - h_interaction_coef_name
+      - h_or_cat_interaction
+      - h_or_cont_interaction
+      - h_or_interaction
+      - h_glm_simple_term_extract
+      - h_glm_interaction_extract
+      - h_glm_iter_term_extract
+      - h_logistic_simple_terms
+      - h_logistic_inter_terms
+      - h_simple_term_labels
+      - h_interaction_term_labels
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
@@ -181,11 +193,15 @@ reference:
       - fit_mmrm
       - fit_coxreg_univar
       - fit_coxreg_multivar
+      - fit_logistic
       - as.rtable.mmrm
       - tidy.mmrm
       - tidy.summary.coxph
       - tidy.coxreg.univar
       - tidy.coxreg.multivar
+      - tidy.glm
+      - logistic_regression_cols
+      - logistic_summary_by_flag
 
   - title: Old Statistics Functions
     desc: these functions might have to be refactored or deprecated later
@@ -244,6 +260,8 @@ reference:
       - as.rtable
       - as.rtable.data.frame
       - make_names
+      - unlist_and_blank_na
+      - cfun_by_flag
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package

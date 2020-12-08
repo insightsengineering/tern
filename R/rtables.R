@@ -23,6 +23,54 @@ to_string_matrix <- function(x) {
   matrix_form(x)$string
 }
 
+#' Blank for Missing Input
+#'
+#' Helper function to use in tabulating model results.
+#'
+#' @param x (`vector`)\cr input for a cell.
+#'
+#' @return Either empty character vector if all entries in `x` are missing (`NA`), or otherwise
+#'   the unlisted version of `x`
+#'
+unlist_and_blank_na <- function(x) {
+  unl <- unlist(x)
+  if (all(is.na(unl))) {
+    character()
+  } else {
+    unl
+  }
+}
+
+#' Constructor for Content Functions given Data Frame with Flag Input
+#'
+#' This can be useful for tabulating model results.
+#'
+#' @param analysis_var (`string`)\cr variable name for the column containing values to be
+#'   returned by the content function.
+#' @param flag_var (`string`)\cr variable name for the logical column identifying which
+#'   row should be returned.
+#' @param format (`string`)\cr rtables format to use.
+#'
+#' @return Content function which just gives `df$analysis_var` at the row identified by
+#'   `.df_row$flag` in the given format.
+#'
+cfun_by_flag <- function(analysis_var,
+                         flag_var,
+                         format = "xx") {
+  assert_that(
+    is.string(analysis_var),
+    is.string(flag_var)
+  )
+  function(df, labelstr) {
+    row_index <- which(df[[flag_var]])
+    x <- unlist_and_blank_na(df[[analysis_var]][row_index])
+    with_label(
+      rcell(x, format = format),
+      labelstr
+    )
+  }
+}
+
 #' Flatten a List by One Level
 #'
 #' Internal function used by the automatically created formatting functions.
