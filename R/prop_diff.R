@@ -316,7 +316,13 @@ s_proportion_diff <- function(df,
 
     if (!is.null(variables$strata)) {
       strata <- variables$strata
-      strata <- factor(c(interaction(.ref_group[[strata]]), interaction(df[[strata]])))
+      strata_vars <- setNames(as.list(strata), strata)
+      assert_that(
+        !is.null(strata),
+        is_df_with_variables(df, strata_vars),
+        is_df_with_variables(.ref_group, strata_vars)
+      )
+      strata <- factor(c(interaction(.ref_group[strata]), interaction(df[strata])))
     }
 
     y <- switch(

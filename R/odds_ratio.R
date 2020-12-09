@@ -186,7 +186,7 @@ s_odds_ratio <- function(df,
       data <- data.frame(
         rsp = .df_row[[.var]],
         grp = relevel(factor(.df_row[[variables$arm]]), ref = ref_grp),
-        strata = .df_row[[variables$strata]]
+        strata = interaction(.df_row[variables$strata])
       )
       y_all <- or_clogit(data, conf_level = conf_level)
       this_grp <- as.character(unique(df[[variables$arm]]))

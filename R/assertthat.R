@@ -57,11 +57,12 @@ on_failure(is_nonnegative_count) <- function(call, env) {
 #'
 #' # Check whether `x` is a valid list of variable names.
 #' is_variables(list(val = "a"))
+#' is_variables(list(val = c("a", "b")))
 #' is_variables(list(1, 2))
 #' is_variables(list("bla"))
 is_variables <- function(x) {
   utils.nest::is_fully_named_list(x) &&
-    all(vapply(x, is.string, TRUE))
+    all(vapply(x, is_character_vector, TRUE))
 }
 on_failure(is_variables) <- function(call, env) {
   paste0(deparse(call$x), " is not a list of variable names")
@@ -73,12 +74,13 @@ on_failure(is_variables) <- function(call, env) {
 #'
 #' # Check whether `df` contains the analysis `variables`.
 #' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+#' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 is_df_with_variables <- function(df, variables) {
   assert_that(
     is.data.frame(df),
     is_variables(variables)
   )
-  all(variables %in% names(df))
+  all(unlist(variables) %in% names(df))
 }
 on_failure(is_df_with_variables) <- function(call, env) {
   var_df <- colnames(eval(call$df))

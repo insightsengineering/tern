@@ -187,12 +187,13 @@ s_test_proportion_diff <- function(df,
 
     if (!is.null(variables$strata) || method == "cmh") {
       strata <- variables$strata
+      strata_vars <- setNames(as.list(strata), strata)
       assert_that(
         !is.null(strata),
-        is_df_with_variables(df, list(rsp = strata)),
-        is_df_with_variables(.ref_group, list(rsp = strata))
+        is_df_with_variables(df, strata_vars),
+        is_df_with_variables(.ref_group, strata_vars)
       )
-      strata <- c(interaction(.ref_group[[strata]]), interaction(df[[strata]]))
+      strata <- c(interaction(.ref_group[strata]), interaction(df[strata]))
     }
 
     tbl <- switch(

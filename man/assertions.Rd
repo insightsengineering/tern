@@ -106,11 +106,13 @@ is_nonnegative_count(10)
 
 # Check whether `x` is a valid list of variable names.
 is_variables(list(val = "a"))
+is_variables(list(val = c("a", "b")))
 is_variables(list(1, 2))
 is_variables(list("bla"))
 
 # Check whether `df` contains the analysis `variables`.
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
+is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 
 # Check whether `df` contains all factor analysis `variables`.
 is_df_with_factors(

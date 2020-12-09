@@ -26,6 +26,7 @@ test_that("is_nonnegative_count is FALSE with wrong input", {
 test_that("is_variables is TRUE with healthy input", {
   expect_true(is_variables(list(a = "bla", b = "bli")))
   expect_true(is_variables(list(a = "123")))
+  expect_true(is_variables(list(a = c("bla", "bli"))))
 })
 
 test_that("is_variables is FALSE with wrong input", {
@@ -39,6 +40,10 @@ test_that("is_df_with_variables is TRUE with healthy input", {
   expect_true(is_df_with_variables(
     df = data.frame(a = 5, b = 3),
     variables = list(val = "a")
+  ))
+  expect_true(is_df_with_variables(
+    df = data.frame(a = 5, b = 3),
+    variables = list(val = c("a", "b"))
   ))
 })
 
