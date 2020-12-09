@@ -99,8 +99,12 @@ a_length_proportion <- make_afun(
 #' lyt <- split_cols_by(lyt = NULL, var = "ARM") %>%
 #'   estimate_multinomial_response(var = "AVALC")
 #'
-#' as_html(build_table(lyt = lyt, df = dta_test)) %>% Viewer
+#' html <- as_html(build_table(lyt = lyt, df = dta_test))
+#' html
 #'
+#' \dontrun{
+#' Viewer(html)
+#' }
 estimate_multinomial_response <- function(lyt,
                                           var,
                                           ...,

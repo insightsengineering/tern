@@ -116,6 +116,9 @@ results <- basic_table() \%>\%
   split_rows_by("AVISIT") \%>\%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) \%>\%
   build_table(dta_test)
+
+\dontrun{
 Viewer(results)
+}
 
 }

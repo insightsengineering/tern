@@ -388,6 +388,9 @@ l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
   summarize_vars(vars = "AVAL", na.rm = FALSE)
 
 results <- build_table(l, df = dta_test)
+
+\dontrun{
 Viewer(results)
+}
 
 }

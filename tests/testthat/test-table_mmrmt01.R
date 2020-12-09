@@ -16,21 +16,32 @@ adqs_f <- adqs %>%
   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #nolint end
 
-mmrm_results <- fit_mmrm(
-  vars = list(
-    response = "AVAL",
-    covariates = c("STRATA1", "BMRKR2"),
-    id = "USUBJID",
-    arm = "ARM",
-    visit = "AVISIT"
-  ),
-  data = adqs_f,
-  cor_struct = "unstructured",
-  weights_emmeans = "proportional",
-  optimizer = "nloptwrap_neldermead"
-)
+too_old_lme4 <- compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0
+
+
+mmrm_results <- if (too_old_lme4) {
+  NULL
+} else {
+  fit_mmrm(
+    vars = list(
+      response = "AVAL",
+      covariates = c("STRATA1", "BMRKR2"),
+      id = "USUBJID",
+      arm = "ARM",
+      visit = "AVISIT"
+    ),
+    data = adqs_f,
+    cor_struct = "unstructured",
+    weights_emmeans = "proportional",
+    optimizer = "nloptwrap_neldermead"
+  )
+}
+
 
 test_that("LS means table is produced correctly", {
+
+  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+
   df <- tidy(mmrm_results)
   result <- basic_table() %>%
     split_cols_by("ARM", ref_group = mmrm_results$ref_level) %>%
@@ -84,6 +95,9 @@ test_that("LS means table is produced correctly", {
 })
 
 test_that("Fixed effects table is produced correctly", {
+
+  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+
   result <- as.rtable(mmrm_results, type = "fixed")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -119,6 +133,9 @@ test_that("Fixed effects table is produced correctly", {
 })
 
 test_that("Covariance matrix table is produced correctly", {
+
+  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+
   result <- as.rtable(mmrm_results, type = "cov")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -138,6 +155,9 @@ test_that("Covariance matrix table is produced correctly", {
 })
 
 test_that("Model diagnostics table is produced correctly", {
+
+  skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
+
   result <- as.rtable(mmrm_results, type = "diagnostic")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

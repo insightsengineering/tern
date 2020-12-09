@@ -504,7 +504,10 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   summarize_vars(vars = "AVAL", na.rm = FALSE)
 #'
 #' results <- build_table(l, df = dta_test)
+#'
+#' \dontrun{
 #' Viewer(results)
+#' }
 #'
 summarize_vars <- function(lyt,
                            vars,
