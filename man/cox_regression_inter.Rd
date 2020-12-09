@@ -99,9 +99,7 @@ covariate.
 the test of the interaction test and the estimated values. If
 no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied.
 
-\item \code{h_coxreg_inter_estimations}: Hazard ratio
-
-Hazard ratio estimation in interactions
+\item \code{h_coxreg_inter_estimations}: hazard ratio estimation in interactions.
 }}
 
 \examples{

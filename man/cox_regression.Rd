@@ -89,11 +89,12 @@ candidate covariate. Default is \code{FALSE} for univariate Cox regression.}
 and the covariate).}
 }
 \value{
-It \code{character} vector coercible into formulas (e.g \code{\link[=as.formula]{as.formula()}}).
+The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[=as.formula]{as.formula()}}).
 
-A \code{string} coercible into formulas (e.g \code{\link[=as.formula]{as.formula()}}).
+The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible into formulas (e.g \code{\link[=as.formula]{as.formula()}}).
 
-A \code{coxreg.univar} class object which is a named list with 5 elements:
+The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
+with 5 elements:
 \itemize{
 \item \code{mod}: Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.
 \item \code{data}: The original data frame input.
@@ -102,7 +103,8 @@ A \code{coxreg.univar} class object which is a named list with 5 elements:
 \item \code{at}: Value of the covariate at which the effect should be estimated.
 }
 
-A \code{coxreg.multivar} class object which is a named list with 4 elements:
+The function \code{fit_coxreg_multivar} returns a \code{coxreg.multivar} class object which is a named list
+with 4 elements:
 \itemize{
 \item \code{mod}: Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.
 \item \code{data}: The original data frame input.

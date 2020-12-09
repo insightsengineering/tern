@@ -94,6 +94,16 @@ test_that("h_coxreg_univar_formulas creates formulas with multiple strata", {
   expect_identical(result, expected)
 })
 
+# h_coxreg_multivar_formula ----
+
+test_that("h_coxreg_multivar_formula creates formula without covariate", {
+  result <- h_coxreg_multivar_formula(
+    variables = list(arm = "ARMCD", event = "EVNT", time = "TIME", covariates = character())
+  )
+  expected <- "Surv(TIME, EVNT) ~ ARMCD"
+  expect_identical(result, expected)
+})
+
 test_that("h_coxreg_multivar_formula creates formulas with a strata", {
   result <- h_coxreg_multivar_formula(
     variables = list(

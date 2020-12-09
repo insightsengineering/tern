@@ -57,7 +57,8 @@ NULL
 #' @inheritParams argument_convention
 #' @inheritParams control_coxreg
 #'
-#' @return It `character` vector coercible into formulas (e.g [as.formula()]).
+#' @return
+#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible into formulas (e.g [as.formula()]).
 #'
 #' @importFrom stats setNames
 #' @export
@@ -125,7 +126,8 @@ h_coxreg_univar_formulas <- function(variables,
 #'
 #' @inheritParams argument_convention
 #'
-#' @return A `string` coercible into formulas (e.g [as.formula()]).
+#' @return
+#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible into formulas (e.g [as.formula()]).
 #'
 #' @export
 #' @examples
@@ -143,16 +145,15 @@ h_coxreg_multivar_formula <- function(variables) {
     is.character(variables$covariates),
     is_variables(variables[c("arm", "event", "time")])
   )
-  covariates_part <- paste(variables$covariates, collapse = " + ")
-  paste0(
-    "Surv(", variables$time, ", ", variables$event, ") ~ ",
-    variables$arm, " + ", covariates_part,
-    ifelse(
-      !is.null(variables$strata),
-      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
-      ""
-    )
-  )
+
+  y <- paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm)
+  if (length(variables$covariates) > 0) {
+    y <- paste(y, paste(variables$covariates, collapse = " + "), sep = " + ")
+  }
+  if (!is.null(variables$strata)) {
+    y <- paste0(y, " + strata(", paste0(variables$strata, collapse = ", "), ")")
+  }
+  y
 }
 
 #' Controls for Cox regression
@@ -205,7 +206,8 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'  effect should be estimated.
 #' @param control (`list`)\cr a list of parameters as returned by the
 #'   helper function [control_coxreg()].
-#' @return A `coxreg.univar` class object which is a named list with 5 elements:
+#' @return The function `fit_coxreg_univar` returns a `coxreg.univar` class object which is a named list
+#' with 5 elements:
 #'   - `mod`: Cox regression model fitted by [survival::coxph()].
 #'   - `data`: The original data frame input.
 #'   - `control`: The original control input.
@@ -622,9 +624,7 @@ h_coxreg_extract_interaction <- function(effect,
   }
 }
 
-#' @describeIn cox_regression_inter Hazard ratio
-#'
-#' Hazard ratio estimation in interactions
+#' @describeIn cox_regression_inter hazard ratio estimation in interactions.
 #'
 #' @param variable,given (`string`)\cr
 #'   the name of variables in interaction. We seek the estimation of the levels
@@ -792,7 +792,8 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
 
 #' @describeIn cox_regression Fit a multi-variable Cox regression model.
 #' @inheritParams fit_coxreg_univar
-#' @return A `coxreg.multivar` class object which is a named list with 4 elements:
+#' @return The function `fit_coxreg_multivar` returns a `coxreg.multivar` class object which is a named list
+#'   with 4 elements:
 #'   - `mod`: Cox regression model fitted by [survival::coxph()].
 #'   - `data`: The original data frame input.
 #'   - `control`: The original control input.
