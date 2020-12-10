@@ -20,7 +20,8 @@ s_odds_ratio(
   .in_ref_col,
   .df_row,
   variables = list(arm = NULL, strata = NULL),
-  conf_level = 0.95
+  conf_level = 0.95,
+  groups_list = NULL
 )
 
 a_odds_ratio(
@@ -30,7 +31,8 @@ a_odds_ratio(
   .in_ref_col,
   .df_row,
   variables = list(arm = NULL, strata = NULL),
-  conf_level = 0.95
+  conf_level = 0.95,
+  groups_list = NULL
 )
 
 estimate_odds_ratio(
@@ -63,6 +65,9 @@ by a statistics function.}
 \item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

@@ -122,6 +122,7 @@ or_clogit <- function(data, conf_level) {
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
 #'   between a treatment and a control. Note that a `variables` list with `arm` and `strata` names
 #'   needs to be passed if a stratified analysis is required.
+#' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
 #' @export
 #' @examples
@@ -158,10 +159,12 @@ s_odds_ratio <- function(df,
                          .in_ref_col,
                          .df_row,
                          variables = list(arm = NULL, strata = NULL),
-                         conf_level = 0.95) {
+                         conf_level = 0.95,
+                         groups_list = NULL) {
   y <- list(or_ci = "")
 
   if (!.in_ref_col) {
+
     assert_that(
       is_df_with_variables(df, list(rsp = .var)),
       is_df_with_variables(.ref_group, list(rsp = .var)),
@@ -178,23 +181,51 @@ s_odds_ratio <- function(df,
       )
       y <- or_glm(data, conf_level = conf_level)
     } else {
+
       assert_that(
         is_df_with_variables(.df_row, c(list(rsp = .var), variables))
       )
+
+      # The group variable prepared for clogit must be synchronised with combination groups definition.
+      if (is.null(groups_list)) {
+        ref_grp <- as.character(unique(.ref_group[[variables$arm]]))
+        trt_grp <- as.character(unique(df[[variables$arm]]))
+        grp <- relevel(factor(.df_row[[variables$arm]]), ref = ref_grp)
+      } else {
+        # If more than one level in reference col.
+        reference <- as.character(unique(.ref_group[[variables$arm]]))
+        grp_ref_flag <- vapply(
+          X = groups_list,
+          FUN.VALUE = TRUE,
+          FUN = function(x) all(reference %in% x)
+        )
+        ref_grp <- names(groups_list)[grp_ref_flag]
+
+        # If more than one level in treatment col.
+        treatment <- as.character(unique(df[[variables$arm]]))
+        grp_trt_flag <- vapply(
+          X = groups_list,
+          FUN.VALUE = TRUE,
+          FUN = function(x) all(treatment %in% x)
+        )
+        trt_grp <- names(groups_list)[grp_trt_flag]
+
+        grp <- combine_levels(.df_row[[variables$arm]], levels = reference, new_level = ref_grp)
+        grp <- combine_levels(grp, levels = treatment, new_level = trt_grp)
+      }
+
       # The reference level in `grp` must be the same as in the rtables column split.
-      ref_grp <- as.character(unique(.ref_group[[variables$arm]]))
       data <- data.frame(
         rsp = .df_row[[.var]],
-        grp = relevel(factor(.df_row[[variables$arm]]), ref = ref_grp),
+        grp = grp,
         strata = interaction(.df_row[variables$strata])
       )
       y_all <- or_clogit(data, conf_level = conf_level)
-      this_grp <- as.character(unique(df[[variables$arm]]))
       assert_that(
-        is.string(this_grp),
-        this_grp %in% names(y_all$or_ci)
+        is.string(trt_grp),
+        trt_grp %in% names(y_all$or_ci)
       )
-      y$or_ci <- y_all$or_ci[[this_grp]]
+      y$or_ci <- y_all$or_ci[[trt_grp]]
     }
   }
 

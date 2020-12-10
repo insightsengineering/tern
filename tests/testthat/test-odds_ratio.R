@@ -131,3 +131,37 @@ test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)",
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+
+test_that("estimate_odds_ratio works with strata and combined groups", {
+  set.seed(1, kind = "Mersenne-Twister")
+  anl <- data.frame(
+    rsp = sample(x = c(TRUE, FALSE), size = 100, replace = TRUE),
+    ARM = factor(
+      sample(x =  c("C: Combination", "A: Drug X", "B: Placebo"), size = 100, replace = TRUE),
+      levels = c("C: Combination", "A: Drug X", "B: Placebo")
+    ),
+    SEX = factor(sample(x = c("D", "E"), size = 100, replace = TRUE))
+  )
+  groups <- combine_groups(fct = anl[["ARM"]])
+  lyt <- basic_table() %>%
+    split_cols_by_groups(
+      var = "ARM",
+      groups_list = groups,
+      ref_group = names(groups)[1]
+    ) %>%
+    estimate_odds_ratio(
+      vars = "rsp",
+      variables = list(arm = "ARM", strata = "SEX"),
+      conf_level = 0.95,
+      table_names = "s_est_or",
+      groups_list = groups
+    )
+
+  result <- build_table(lyt = lyt, df = anl)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "Odds Ratio (95% CI)", "C: Combination", "", "A: Drug X/B: Placebo", "1.24 (0.54 - 2.89)"), .Dim = 2:3
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
