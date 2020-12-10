@@ -54,7 +54,7 @@ Suggests:
   knitr,
   Matrix,
   random.cdisc.data (>= 0.3.7),
-  test.nest (>= 0.2.5),
+  test.nest (>= 0.2.6),
   rmarkdown,
   tidyr
 License: file LICENSE
