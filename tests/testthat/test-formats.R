@@ -71,25 +71,25 @@ test_that("h_get_format_threshold works with easy inputs", {
 
 test_that("h_format_threshold works with easy inputs", {
 
-  test <- c(0.782, 0.127, Inf, 0, 0.009)
-  result <- vapply(test, h_format_threshold, FUN.VALUE = character(1))
-  expected <- c("0.78", "0.13", ">999.99", "0.00", "<0.01")
+  test <- c(0.782, 0.127, Inf, 0, 0.009, NA)
+  result <- sapply(test, h_format_threshold)
+  expected <- c("0.78", "0.13", ">999.99", "0.00", "<0.01", NA)
 
   expect_identical(result, expected)
 })
 
 test_that("format_extreme_values works with easy inputs", {
-  test <- c(0.127, Inf, 0, 0.009)
+  test <- c(0.127, Inf, 0, 0.009, NA)
   format_fun <- format_extreme_values(2L)
   result <- sapply(test, format_fun)
-  expected <- c("0.13", ">999.99", "0.00", "<0.01")
+  expected <- c("0.13", ">999.99", "0.00", "<0.01", NA)
   expect_identical(result, expected)
 })
 
 test_that("format_extreme_values_ci works with easy inputs", {
-  test <- list(c(0.127, Inf), c(0, 0.009))
+  test <- list(c(0.127, Inf), c(0, 0.009), c(NA, NA))
   format_fun <- format_extreme_values_ci(2L)
   result <- sapply(test, format_fun)
-  expected <- c("(0.13, >999.99)", "(0.00, <0.01)")
+  expected <- c("(0.13, >999.99)", "(0.00, <0.01)", "(NA, NA)")
   expect_identical(result, expected)
 })

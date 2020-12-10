@@ -102,55 +102,136 @@ a_response_subgroups <- function(.formats = list(
   afun_lst
 }
 
-#' @describeIn response_subgroups layout creating function.
+#' @describeIn response_subgroups table creating function.
+#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
+#'   created using [extract_rsp_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
 #'  `n` (total number of observations per group), `n_rsp` (number of responders per group),
 #'  `prop` (proportion of responders), `n_tot` (total number of observations),
-#'  `or` (odds ratio), `ci` (confidence interval of odds ratio) and `pvalue` (p value of the effect).
+#'  `or` (odds ratio), `ci` (confidence interval of odds ratio) and `pval` (p value of the effect).
+#'  Note, the statistics `n_tot`, `or` and `ci` are required.
 #' @export
 #' @examples
 #'
-#' ## Table of response rates by subgroup.
+#' ## Table with default columns.
 #' basic_table() %>%
-#'   tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-#'   build_table(df$prop)
+#'   tabulate_rsp_subgroups(df)
 #'
-#' ## Table of odds ratios by subgroup.
+#' ## Table with selected columns.
 #' basic_table() %>%
-#'   tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
-#'   build_table(df$or)
+#'   tabulate_rsp_subgroups(
+#'     df = df,
+#'     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
+#'   )
 #'
 tabulate_rsp_subgroups <- function(lyt,
-                                   vars,
-                                   conf_level = NULL,
-                                   method = NULL) {
+                                   df,
+                                   vars = c("n_tot", "n", "prop", "or", "ci")) {
 
-  colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
+  conf_level <- df$or$conf_level[1]
+  method <- if ("pval_label" %in% names(df$or)) {
+    df$or$pval_label[1]
+  } else {
+    NULL
+  }
 
   afun_lst <- a_response_subgroups()
+  colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
 
-  lyt <- split_cols_by(lyt = lyt, var = "arm")
-  lyt <- split_rows_by(
-    lyt = lyt,
+  colvars_prop <- list(
+    vars = colvars$vars[names(colvars$labels) %in% c("n", "prop", "n_rsp")],
+    labels = colvars$labels[names(colvars$labels) %in% c("n", "prop", "n_rsp")]
+  )
+  colvars_or <- list(
+    vars = colvars$vars[names(colvars$labels) %in% c("n_tot", "or", "ci", "pval")],
+    labels = colvars$labels[names(colvars$labels) %in% c("n_tot", "or", "ci", "pval")]
+  )
+
+  # Columns from table_prop are optional.
+  if (length(colvars_prop$vars) > 0) {
+
+    lyt_prop <- split_cols_by(lyt = lyt, var = "arm")
+    lyt_prop <- split_rows_by(
+      lyt = lyt_prop,
+      var = "row_type",
+      split_fun = keep_split_levels("content"),
+      nested = FALSE
+    )
+    lyt_prop <- summarize_row_groups(lyt = lyt_prop, var = "var_label", cfun = afun_lst[names(colvars_prop$labels)])
+    lyt_prop <- split_cols_by_multivar(
+      lyt = lyt_prop,
+      vars = colvars_prop$vars,
+      varlabels = colvars_prop$labels
+    ) %>%
+      append_topleft("Baseline Risk Factors")
+
+    if ("analysis" %in% df$prop$row_type) {
+
+      lyt_prop <- split_rows_by(
+        lyt = lyt_prop,
+        var = "row_type",
+        split_fun = keep_split_levels("analysis"),
+        nested = FALSE,
+        child_labels = "hidden"
+      )
+      lyt_prop <- split_rows_by(lyt = lyt_prop, var = "var_label", nested = TRUE)
+      lyt_prop <- analyze_colvars(
+        lyt = lyt_prop,
+        afun = afun_lst[names(colvars_prop$labels)],
+        inclNAs = TRUE
+      )
+    }
+
+    table_prop <- build_table(lyt_prop, df = df$prop)
+
+  } else {
+    table_prop <- NULL
+  }
+
+  # Columns "n_tot", "or", "ci" in table_or are required.
+  lyt_or <- split_cols_by(lyt = lyt, var = "arm")
+  lyt_or <- split_rows_by(
+    lyt = lyt_or,
     var = "row_type",
     split_fun = keep_split_levels("content"),
     nested = FALSE
   )
-  lyt <- summarize_row_groups(lyt = lyt, var = "var_label", cfun = afun_lst[vars])
-  lyt <- split_rows_by(
-    lyt = lyt,
-    var = "row_type",
-    split_fun = keep_split_levels("analysis"),
-    nested = FALSE,
-    child_labels = "hidden"
+  lyt_or <- split_cols_by_multivar(
+    lyt = lyt_or,
+    vars = colvars_or$vars,
+    varlabels = colvars_or$labels
   )
-  lyt <- split_rows_by(lyt = lyt, var = "var_label", nested = TRUE)
-  lyt <- split_cols_by_multivar(
-    lyt = lyt,
-    vars = colvars$vars,
-    varlabels = colvars$labels
+  lyt_or <- summarize_row_groups(
+    lyt = lyt_or,
+    var = "var_label",
+    cfun = afun_lst[names(colvars_or$labels)]
   )
-  analyze_colvars(lyt = lyt, afun = afun_lst[vars])
+
+  if ("analysis" %in% df$or$row_type) {
+    lyt_or <- split_rows_by(
+      lyt = lyt_or,
+      var = "row_type",
+      split_fun = keep_split_levels("analysis"),
+      nested = FALSE,
+      child_labels = "hidden"
+    )
+    lyt_or <- split_rows_by(lyt = lyt_or, var = "var_label", nested = TRUE)
+    lyt_or <- analyze_colvars(
+      lyt = lyt_or,
+      afun = afun_lst[names(colvars_or$labels)],
+      inclNAs = TRUE
+    )
+  }
+  table_or <- build_table(lyt_or, df = df$or)
+
+  if (is.null(table_prop)) {
+    result <- table_or
+  } else {
+    n_tot_id <- match("n_tot", colvars_or$vars)
+    result <- cbind_rtables(table_or[, n_tot_id], table_prop, table_or[, -n_tot_id])
+  }
+
+  result
 
 }
 
@@ -166,12 +247,13 @@ d_rsp_subgroups_colvars <- function(vars, conf_level = NULL, method = NULL) {
 
   assert_that(
     is.character(vars),
+    all_elements_in_ref(c("n_tot", "or", "ci"), vars),
     all_elements_in_ref(vars, ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
   )
 
   varlabels <- c(
     n = "n",
-    n_rsp = "Responder n",
+    n_rsp = "Responders",
     prop = "Response (%)",
     n_tot = "Total n",
     or = "Odds Ratio"
@@ -195,12 +277,9 @@ d_rsp_subgroups_colvars <- function(vars, conf_level = NULL, method = NULL) {
   }
 
   if ("pval" %in% colvars) {
-
-    assert_that(!is.null(method))
-
     varlabels <- c(
       varlabels,
-      pval = d_test_proportion_diff(method)
+      pval = method
     )
   }
 

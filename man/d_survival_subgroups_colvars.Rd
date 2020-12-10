@@ -4,23 +4,18 @@
 \alias{d_survival_subgroups_colvars}
 \title{Labels for Column Variables in Survival Duration by Subgroup Table}
 \usage{
-d_survival_subgroups_colvars(vars, control = control_coxph(), time_unit = NULL)
+d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 }
 \arguments{
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
 \code{n} (total number of observations per group), \code{n_events} (number of events per group),
 \code{median} (median survival time), \code{n_tot} (total number of observations),
-\code{hr} (hazard ratio), \code{ci} (confidence interval of hazard ratio) and \code{pvalue} (p value of the effect).}
+\code{hr} (hazard ratio), \code{ci} (confidence interval of hazard ratio) and \code{pval} (p value of the effect).
+Note, the statistics \code{n_tot}, \code{hr} and \code{ci} are required.}
 
-\item{control}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
-\itemize{
-\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank", can also be set to "wald" or "likelihood".
-\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
-}}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{method}{p-value method for testing hazard ratio = 1.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}

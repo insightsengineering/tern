@@ -71,17 +71,21 @@ h_survtime_df <- function(tte, is_event, arm) {
 
   lst_tte <- split(df_tte, arm)
   lst_results <- Map(function(x, arm) {
-    median_est <- if (nrow(x) > 0) {
+
+    if (nrow(x) > 0) {
+
       s_surv <- s_surv_time(x, .var = "tte", is_event = "is_event")
-      unname(as.numeric(s_surv$median))
+      median_est <- unname(as.numeric(s_surv$median))
+      n_events <- sum(x$is_event)
     } else {
-      NA
+      median_est <- NA
+      n_events <- NA
     }
 
     data.frame(
       arm = arm,
       n = nrow(x),
-      n_events = sum(x$is_event),
+      n_events = n_events,
       median = median_est,
       stringsAsFactors = FALSE
     )
@@ -194,36 +198,46 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 
   l_df <- split(df_tte, arm)
 
-  stop_if_not(
-    list(
-      all(vapply(l_df, nrow, numeric(1)) >= 1),
-      "Not enough records to estimate hazard ratio in subgroup."
+  if (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) > 0) {
+
+    # Hazard ratio and CI.
+    result <- s_coxph_pairwise(
+      df = l_df[[2]],
+      .ref_group = l_df[[1]],
+      .in_ref_col = FALSE,
+      .var = "tte",
+      is_event = "is_event",
+      strat = strata_vars,
+      control = control
     )
-  )
 
-  # Hazard ratio and CI.
-  result <- s_coxph_pairwise(
-    df = l_df[[2]],
-    .ref_group = l_df[[1]],
-    .in_ref_col = FALSE,
-    .var = "tte",
-    is_event = "is_event",
-    strat = strata_vars,
-    control = control
-  )
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = nrow(df_tte),
+      hr = unname(as.numeric(result$hr)),
+      lcl = unname(result$hr_ci[1]),
+      ucl = unname(result$hr_ci[2]),
+      conf_level = control[["conf_level"]],
+      pval = as.numeric(result$pvalue),
+      pval_label = obj_label(result$pvalue),
+      stringsAsFactors = FALSE
+    )
+  } else {
 
-  df <- data.frame(
-    # Dummy column needed downstream to create a nested header.
-    arm = " ",
-    n_tot = nrow(df_tte),
-    hr = unname(as.numeric(result$hr)),
-    lcl = unname(result$hr_ci[1]),
-    ucl = unname(result$hr_ci[2]),
-    conf_level = control[["conf_level"]],
-    pval = as.numeric(result$pvalue),
-    pval_label = obj_label(result$pvalue),
-    stringsAsFactors = FALSE
-  )
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = nrow(df_tte),
+      hr = NA,
+      lcl = NA,
+      ucl = NA,
+      conf_level = control[["conf_level"]],
+      pval = NA,
+      pval_label = NA,
+      stringsAsFactors = FALSE
+    )
+  }
 
   df
 

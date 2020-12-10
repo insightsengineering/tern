@@ -35,25 +35,18 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
     data = anl1
   )
 
-  # Survival time table.
-  lyt1 <- basic_table() %>%
-    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = anl1$AVALU[1])
-  t1 <- build_table(lyt1, df = df$survtime)
-
-  # Hazard rato table.
-  lyt2 <- basic_table() %>%
+  result <- basic_table() %>%
     tabulate_survival_subgroups(
-      vars = c("n_tot", "hr", "ci")
+      df = df,
+      vars = c("n_tot", "n", "median", "hr", "ci"),
+      time_unit = anl1$AVALU[1]
     )
-  t2 <- build_table(lyt2, df = df$hr)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
       "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
       "", "95", "93", "80", "B: Placebo", "n", "134", "", "82", "52",
       "", "45", "56", "33", "B: Placebo", "Median (Months)", "26.7", "", "22.2",
@@ -106,25 +99,17 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
     data = anl2
   )
 
-  # Survival time table.
-  lyt1 <- basic_table() %>%
-    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = anl2$AVALU[1])
-  t1 <- build_table(lyt1, df = df$survtime)
-
-  # Hazard rato table.
-  lyt2 <- basic_table() %>%
+  result <- basic_table() %>%
     tabulate_survival_subgroups(
-      vars = c("n_tot", "hr", "ci")
+      df = df,
+      vars = c("n_tot", "n", "median", "hr", "ci"),
+      time_unit = anl2$AVALU[1]
     )
-  t2 <- build_table(lyt2, df = df$hr)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
-
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "M", "F", "Stratification Factor 1",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "M", "F", "Stratification Factor 1",
       "C", "B", "A", " ", "Total n", "268", "", "107", "161", "", "94",
       "92", "82", "Placebo", "n", "134", "", "52", "82", "", "45",
       "45", "44", "Placebo", "Median (Months)", "26.7", "", "38.8", "22.2",
@@ -167,12 +152,11 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
     data = anl3
   )
 
-  lyt <- basic_table() %>%
+  result <- basic_table() %>%
     tabulate_survival_subgroups(
-      vars = c("n_tot", "hr", "ci"),
-      control = control_coxph(conf_level = 0.9)
+      df = df,
+      vars = c("n_tot", "hr", "ci")
     )
-  result <- build_table(lyt, df = df$hr)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -213,25 +197,18 @@ test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
     data = anl4
   )
 
-  # Survival time table.
-  lyt1 <- basic_table() %>%
-    tabulate_survival_subgroups(vars = c("n", "median"), time_unit = anl4$AVALU[1])
-  t1 <- build_table(lyt1, df = df$survtime)
-
-  # Hazard rato table.
-  lyt2 <- basic_table() %>%
+  result <- basic_table() %>%
     tabulate_survival_subgroups(
-      vars = c("n_tot", "hr", "ci")
+      df = df,
+      vars = c("n_tot", "n", "median", "hr", "ci"),
+      time_unit = anl4$AVALU[1]
     )
-  t2 <- build_table(lyt2, df = df$hr)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
       "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
       "", "95", "93", "80", "B: Placebo", "n", "134", "", "82", "52",
       "", "45", "56", "33", "B: Placebo", "Median (Months)", "26.7", "", "22.2",

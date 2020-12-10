@@ -61,34 +61,9 @@
 #'   data = adrs
 #' )
 #'
-#' # Response table.
-#' t1 <- basic_table() %>%
-#'   tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-#'   build_table(df$prop)
-#'
-#' # Odds rato table with non-default inputs.
-#' t2 <- basic_table() %>%
-#'   tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
-#'   build_table(df$or)
-#' t2
-#'
-#' p <- g_forest(
-#'   tbl = t2,
-#'   col_x = 2,
-#'   col_ci = 3,
-#'   vline = 1,
-#'   forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
-#'   xlim = c(.1, 10),
-#'   logx = TRUE,
-#'   x_at = c(.1, 1, 10),
-#'   draw = FALSE
-#' )
-#'
-#' draw_grob(p)
-#'
-#' # full commonly used response table
-#' tbl <- cbind_rtables(t2[, 1], t1, t2[, -1])
-#' tbl
+#' # Full commonly used response table.
+#' tbl <- basic_table() %>%
+#'   tabulate_rsp_subgroups(df)
 #'
 #' p <- g_forest(
 #'   tbl = tbl,
@@ -104,6 +79,24 @@
 #'
 #' draw_grob(p)
 #'
+#' # Odds rato only table.
+#' tbl_or <- basic_table() %>%
+#'   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
+#' tbl_or
+#'
+#' p <- g_forest(
+#'   tbl = tbl_or,
+#'   col_x = 2,
+#'   col_ci = 3,
+#'   vline = 1,
+#'   forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
+#'   xlim = c(.1, 10),
+#'   logx = TRUE,
+#'   x_at = c(.1, 1, 10),
+#'   draw = FALSE
+#' )
+#'
+#' draw_grob(p)
 #'
 #' # Works with any rtable
 #'

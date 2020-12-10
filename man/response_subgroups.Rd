@@ -21,7 +21,7 @@ a_response_subgroups(
     "x.xxxx | (<0.0001)")
 )
 
-tabulate_rsp_subgroups(lyt, vars, conf_level = NULL, method = NULL)
+tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -41,10 +41,14 @@ so no test is performed.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
+created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
+
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
 \code{n} (total number of observations per group), \code{n_rsp} (number of responders per group),
 \code{prop} (proportion of responders), \code{n_tot} (total number of observations),
-\code{or} (odds ratio), \code{ci} (confidence interval of odds ratio) and \code{pvalue} (p value of the effect).}
+\code{or} (odds ratio), \code{ci} (confidence interval of odds ratio) and \code{pval} (p value of the effect).
+Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
 \description{
 Tabulate statistics such as response rate and odds ratio for population subgroups.
@@ -64,7 +68,7 @@ named list and requires elements \code{rsp}, \code{arm} and optionally \code{sub
 \item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
 
-\item \code{tabulate_rsp_subgroups}: layout creating function.
+\item \code{tabulate_rsp_subgroups}: table creating function.
 }}
 
 \examples{
@@ -105,14 +109,15 @@ df_strat
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
 
 
-## Table of response rates by subgroup.
+## Table with default columns.
 basic_table() \%>\%
-  tabulate_rsp_subgroups(vars = c("n", "prop")) \%>\%
-  build_table(df$prop)
+  tabulate_rsp_subgroups(df)
 
-## Table of odds ratios by subgroup.
+## Table with selected columns.
 basic_table() \%>\%
-  tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) \%>\%
-  build_table(df$or)
+  tabulate_rsp_subgroups(
+    df = df,
+    vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
+  )
 
 }

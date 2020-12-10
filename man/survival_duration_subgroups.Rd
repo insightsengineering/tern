@@ -22,8 +22,8 @@ a_survival_subgroups(
 
 tabulate_survival_subgroups(
   lyt,
-  vars,
-  control = control_coxph(),
+  df,
+  vars = c("n_tot", "n", "median", "hr", "ci"),
   time_unit = NULL
 )
 }
@@ -48,10 +48,14 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
+created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
+
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
 \code{n} (total number of observations per group), \code{n_events} (number of events per group),
 \code{median} (median survival time), \code{n_tot} (total number of observations),
-\code{hr} (hazard ratio), \code{ci} (confidence interval of hazard ratio) and \code{pvalue} (p value of the effect).}
+\code{hr} (hazard ratio), \code{ci} (confidence interval of hazard ratio) and \code{pval} (p value of the effect).
+Note, the statistics \code{n_tot}, \code{hr} and \code{ci} are required.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}
@@ -74,7 +78,7 @@ Result is a list of two data frames: \code{survtime} and \code{hr}.
 \item \code{a_survival_subgroups}: Formatted Analysis function used to format the results of
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}. Returns is a list of Formatted Analysis functions with one element per statistic.
 
-\item \code{tabulate_survival_subgroups}: layout creating function.
+\item \code{tabulate_survival_subgroups}: table creating function.
 }}
 
 \examples{
@@ -122,14 +126,16 @@ df
 a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 
 
-## Table of survival times by subgroup.
+## Table with default columns.
 basic_table() \%>\%
-  tabulate_survival_subgroups(vars = c("n", "median"), time_unit = adtte_f$AVALU[1]) \%>\%
-  build_table(df$survtime)
+  tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 
-## Table of hazard ratios by subgroup.
+## Table with a full set of columns.
 basic_table() \%>\%
-  tabulate_survival_subgroups(vars = c("n_tot", "hr", "ci")) \%>\%
-  build_table(df$hr)
+  tabulate_survival_subgroups(
+    df = df,
+    vars = c("n_tot", "n", "n_events", "median", "hr", "ci", "pval"),
+    time_unit = adtte_f$AVALU[1]
+  )
 
 }

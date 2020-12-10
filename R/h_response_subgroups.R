@@ -58,14 +58,24 @@ h_proportion_df <- function(rsp, arm) {
   lst_rsp <- split(rsp, arm)
   lst_results <- Map(function(x, arm) {
 
-    s_prop <- s_proportion(x)
-    data.frame(
-      arm = arm,
-      n = length(x),
-      n_rsp = unname(s_prop$n_prop[1]),
-      prop = unname(s_prop$n_prop[2]),
-      stringsAsFactors = FALSE
-    )
+    if (length(x) > 0) {
+      s_prop <- s_proportion(x)
+      data.frame(
+        arm = arm,
+        n = length(x),
+        n_rsp = unname(s_prop$n_prop[1]),
+        prop = unname(s_prop$n_prop[2]),
+        stringsAsFactors = FALSE
+      )
+    } else {
+      data.frame(
+        arm = arm,
+        n = length(x),
+        n_rsp = NA,
+        prop = NA,
+        stringsAsFactors = FALSE
+      )
+    }
 
   }, lst_rsp, names(lst_rsp))
 
@@ -181,42 +191,63 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 
   l_df <- split(df_rsp, arm)
 
-  # Odds ratio and CI.
-  result_odds_ratio <- s_odds_ratio(
-    df = l_df[[2]],
-    .var = "rsp",
-    .ref_group = l_df[[1]],
-    .in_ref_col = FALSE,
-    .df_row = df_rsp,
-    variables = list(arm = "arm", strata = strata_name),
-    conf_level = conf_level
-  )
+  if (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) > 0) {
 
-  df <- data.frame(
-    # Dummy column needed downstream to create a nested header.
-    arm = " ",
-    n_tot = nrow(df_rsp),
-    or = unname(result_odds_ratio$or_ci["est"]),
-    lcl = unname(result_odds_ratio$or_ci["lcl"]),
-    ucl = unname(result_odds_ratio$or_ci["ucl"]),
-    conf_level = conf_level,
-    stringsAsFactors = FALSE
-  )
-
-  if (!is.null(method)) {
-
-    # Test for difference.
-    result_test <- s_test_proportion_diff(
+    # Odds ratio and CI.
+    result_odds_ratio <- s_odds_ratio(
       df = l_df[[2]],
       .var = "rsp",
       .ref_group = l_df[[1]],
       .in_ref_col = FALSE,
-      variables = list(strata = strata_name),
-      method = method
+      .df_row = df_rsp,
+      variables = list(arm = "arm", strata = strata_name),
+      conf_level = conf_level
     )
 
-    df$pval <- as.numeric(result_test$pval)
-    df$pval_label <- obj_label(result_test$pval)
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = nrow(df_rsp),
+      or = unname(result_odds_ratio$or_ci["est"]),
+      lcl = unname(result_odds_ratio$or_ci["lcl"]),
+      ucl = unname(result_odds_ratio$or_ci["ucl"]),
+      conf_level = conf_level,
+      stringsAsFactors = FALSE
+    )
+
+    if (!is.null(method)) {
+
+      # Test for difference.
+      result_test <- s_test_proportion_diff(
+        df = l_df[[2]],
+        .var = "rsp",
+        .ref_group = l_df[[1]],
+        .in_ref_col = FALSE,
+        variables = list(strata = strata_name),
+        method = method
+      )
+
+      df$pval <- as.numeric(result_test$pval)
+      df$pval_label <- obj_label(result_test$pval)
+    }
+
+  } else {
+
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = nrow(df_rsp),
+      or = NA,
+      lcl = NA,
+      ucl = NA,
+      conf_level = conf_level,
+      stringsAsFactors = FALSE
+    )
+    if (!is.null(method)) {
+      df$pval <- NA
+      df$pval_label <- NA
+    }
+
   }
 
   df

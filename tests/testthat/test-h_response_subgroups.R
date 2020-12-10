@@ -64,6 +64,24 @@ test_that("h_proportion_df fails with wrong input", {
 
 })
 
+test_that("h_proportion_df functions when 0 obs in one arm", {
+
+  rsp <- c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE)
+  arm <- factor(rep("A", 6), levels = c("B", "A"))
+
+  result <- h_proportion_df(rsp = rsp, arm = arm)
+
+  expected <- data.frame(
+    arm = factor(c("B", "A"), levels = c("B", "A")),
+    n = c(0, 6),
+    n_rsp = c(NA, 2),
+    prop = c(NA, 0.333333333333333),
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected)
+})
+
 test_that("h_proportion_subgroups_df functions as expected with valid input and default arguments", {
 
   adrs <- radrs(cached = TRUE) %>%
@@ -187,6 +205,33 @@ test_that("h_odds_ratio_df functions as expected with strata", {
     conf_level = 0.9,
     pval = 0.150916197874731,
     pval_label = "p-value (Cochran-Mantel-Haenszel Test)",
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+
+})
+
+test_that("h_odds_ratio_df functions when 0 obs in one arm", {
+
+  rsp <- c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE)
+  arm <- factor(rep("A", 6), levels = c("B", "A"))
+
+  result <- h_odds_ratio_df(
+    c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE),
+    arm = factor(rep("A", 6), levels = c("B", "A")),
+    method = "chisq"
+  )
+
+  expected <- data.frame(
+    arm = " ",
+    n_tot = 6,
+    or = NA,
+    lcl = NA,
+    ucl = NA,
+    conf_level = 0.95,
+    pval = NA,
+    pval_label = NA,
     stringsAsFactors = FALSE
   )
 

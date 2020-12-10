@@ -10,7 +10,8 @@ d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
 \code{n} (total number of observations per group), \code{n_rsp} (number of responders per group),
 \code{prop} (proportion of responders), \code{n_tot} (total number of observations),
-\code{or} (odds ratio), \code{ci} (confidence interval of odds ratio) and \code{pvalue} (p value of the effect).}
+\code{or} (odds ratio), \code{ci} (confidence interval of odds ratio) and \code{pval} (p value of the effect).
+Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 

@@ -182,26 +182,21 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input", {
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
     data = adrs,
-    method = "chisq",
-    conf_level = 0.95
+    conf_level = 0.95,
+    method = "chisq"
   )
-  df_prop <- df$prop
-  df_or <- df$or
 
-  t1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-    build_table(df_prop)
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n", "prop", "n_tot", "or", "ci", "pval")
+    )
 
-  t2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci", "pval"), method = "chisq", conf_level = 0.95) %>%
-    build_table(df_or)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
       "95", "B: Placebo", "n", "100", "", "62", "38", "", "48", "52",
       "B: Placebo", "Response (%)", "71%", "", "64.5%", "81.6%", "",
@@ -242,23 +237,14 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input extreme
     data = adrs,
     conf_level = 0.95
   )
-  df_prop <- df$prop
-  df_or <- df$or
 
-  t1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-    build_table(df_prop)
-
-  t2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95) %>%
-    build_table(df_or)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(df)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "var1", "subgroup1", "subgroup2",
+      "Baseline Risk Factors", "", "All Patients", "var1", "subgroup1", "subgroup2",
       " ", "Total n", "62", "", "50", "12", "REF", "n", "40", "", "30",
       "10", "REF", "Response (%)", "82.5%", "", "100%", "30%", "COMP",
       "n", "22", "", "20", "2", "COMP", "Response (%)", "9.1%", "",
@@ -282,42 +268,65 @@ test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
     method = "chisq",
     conf_level = 0.95
   )
-  df_prop <- df$prop
-  df_or <- df$or
 
-  # Response table.
   result <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop")) %>%
-    build_table(df_prop)
-
-  result_matrix <- to_string_matrix(result)
-
-  expected_matrix <- structure(
-    c(
-      "", "", "All Patients", "B: Placebo", "n", "100",
-      "B: Placebo", "Response (%)", "71%", "A: Drug X", "n", "100",
-      "A: Drug X", "Response (%)", "90%"
-      ),
-    .Dim = c(3L, 5L)
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n_tot", "n", "prop", "or", "ci", "pval")
     )
 
-  expect_equal(result_matrix, expected_matrix)
+  result_matrix <- to_string_matrix(result)
 
-  # # Odds rato table with non-default inputs.
+  expected_matrix <- structure(
+    c(
+      "Baseline Risk Factors", "", "All Patients", " ", "Total n", "200", "B: Placebo",
+      "n", "100", "B: Placebo", "Response (%)", "71%", "A: Drug X",
+      "n", "100", "A: Drug X", "Response (%)", "90%", " ", "Odds Ratio",
+      "3.68", " ", "95% CI", "(1.68, 8.04)", " ", "p-value (Chi-Squared Test)",
+      "0.0007"
+    ),
+    .Dim = c(3L, 9L)
+  )
+  expect_equal(result_matrix, expected_matrix)
+})
+
+test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs(n_records = 200)
+
+  df <- expect_warning(extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = "RACE"),
+    data = adrs,
+    method = "chisq",
+    conf_level = 0.95
+  ))
+
   result <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci", "pval"), method = "chisq", conf_level = 0.95) %>%
-    build_table(df_or)
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n_tot", "n", "prop", "or", "ci", "pval")
+    )
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "B: Placebo", "n", "100",
-      "B: Placebo", "Response (%)", "71%", "A: Drug X", "n", "100",
-      "A: Drug X", "Response (%)", "90%"
-      ),
-    .Dim = c(3L, 5L)
+      "Baseline Risk Factors", "", "All Patients", "Race", "ASIAN", "BLACK OR AFRICAN AMERICAN",
+      "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
+      " ", "Total n", "200", "", "106", "49", "34", "10", "1", "B: Placebo",
+      "n", "100", "", "50", "23", "19", "7", "1", "B: Placebo", "Response (%)",
+      "71%", "", "66%", "65.2%", "78.9%", "100%", "100%", "A: Drug X",
+      "n", "100", "", "56", "26", "15", "3", "0", "A: Drug X", "Response (%)",
+      "90%", "", "87.5%", "92.3%", "100%", "66.7%", "NA%", " ", "Odds Ratio",
+      "3.68", "", "3.61", "6.40", ">999.99", "<0.01", "NA", " ", "95% CI",
+      "(1.68, 8.04)", "", "(1.35, 9.65)", "(1.19, 34.29)", "(0.00, >999.99)",
+      "(0.00, >999.99)", "(NA, NA)", " ", "p-value (Chi-Squared Test)",
+      "0.0007", "", "0.0083", "0.0189", "0.0585", "0.1074", "NA"
+    ),
+    .Dim = c(9L, 9L)
   )
+  expect_equal(result_matrix, expected_matrix)
 })
 
 test_that("d_rsp_subgroups_colvars functions as expected with valid input", {
@@ -327,14 +336,14 @@ test_that("d_rsp_subgroups_colvars functions as expected with valid input", {
   result <- d_rsp_subgroups_colvars(
     vars = vars,
     conf_level = 0.9,
-    method = "chisq"
+    method = "p-value (Chi-Squared Test)"
   )
 
   expected <- list(
     vars = c("n", "n_rsp", "prop", "n_tot", "or", "lcl", "pval"),
     labels = c(
       n = "n",
-      n_rsp = "Responder n",
+      n_rsp = "Responders",
       prop = "Response (%)",
       n_tot = "Total n",
       or = "Odds Ratio",

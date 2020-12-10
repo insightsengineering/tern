@@ -92,7 +92,7 @@ test_that("h_survtime_df functions as expected when 0 records in one group", {
   expected <- data.frame(
     arm = factor(c("A", "B"), levels = c("A", "B")),
     n = c(0, 6),
-    n_events = c(0, 4),
+    n_events = c(NA, 4),
     median = c(NA, 5),
     stringsAsFactors = FALSE
   )
@@ -312,13 +312,31 @@ test_that("h_coxph_df functions as expected with multiple stratification factors
   expect_equal(result, expected, tol = 0.000001)
 })
 
-test_that("h_coxph_df fails with wrong input", {
+test_that("h_coxph_df functions as expected when 0 records in one group", {
 
-  expect_error(h_coxph_df(
-    tte = 1,
-    is_event = TRUE,
-    arm = factor("A", levels = c("B", "A"))
-  ))
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte() %>%
+    filter(ARM == "A: Drug X")
+
+  result <- h_coxph_df(
+    tte = adtte$AVAL,
+    is_event = adtte$is_event,
+    arm = adtte$ARM
+  )
+
+  expected <- data.frame(
+    arm = " ",
+    n_tot = 134,
+    hr = NA,
+    lcl = NA,
+    ucl = NA,
+    conf_level = 0.95,
+    pval = NA,
+    pval_label = NA,
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
 
 })
 

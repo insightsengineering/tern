@@ -221,8 +221,11 @@ h_get_format_threshold <- function(digits = 2L) {
 #' h_format_threshold(1000)
 h_format_threshold <- function(x, digits = 2L) {
 
+  if (is.na(x)) {
+    return(x)
+  }
+
   assert_that(
-    !is.na(x),
     is.numeric(x),
     x >= 0
   )

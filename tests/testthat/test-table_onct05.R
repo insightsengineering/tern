@@ -29,23 +29,14 @@ test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced co
     data = adrs
   )
 
-  # Response table.
-  lyt1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop"))
-  t1 <- build_table(lyt1, df = df$prop)
-
-  # Odds rato table with non-default inputs.
-  lyt2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95)
-  t2 <- build_table(lyt2, df = df$or)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(df)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
       "95", "B: Placebo", "n", "100", "", "62", "38", "", "48", "52",
       "B: Placebo", "Response (%)", "71%", "", "64.5%", "81.6%", "",
@@ -79,23 +70,14 @@ test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly",
     data = adrs
   )
 
-  # Response table.
-  lyt1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop"))
-  t1 <- build_table(lyt1, df = df$prop)
-
-  # Odds ratio table with non-default inputs.
-  lyt2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95)
-  t2 <- build_table(lyt2, df = df$or)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(df)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "M", "F", "Stratification Factor 1",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "M", "F", "Stratification Factor 1",
       "C", "B", "A", " ", "Total n", "200", "", "80", "120", "", "72",
       "71", "57", "B: Placebo", "n", "100", "", "38", "62", "", "36",
       "35", "29", "B: Placebo", "Response (%)", "71%", "", "81.6%",
@@ -118,19 +100,15 @@ test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is 
   adrs <- radrs(cached = TRUE) %>%
     preprocess_adrs(n_records = 200)
 
-  cl <- 0.9
-  test_method <- "chisq"
-
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
     data = adrs,
-    conf_level = cl,
-    method = test_method
+    conf_level = 0.9,
+    method = "chisq"
   )
 
-  lyt <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci", "pval"), conf_level = cl, method = test_method)
-  result <- build_table(lyt, df = df$or)
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci", "pval"))
 
   result_matrix <- to_string_matrix(result)
 
@@ -163,22 +141,14 @@ test_that("ONCT05 variant 4 (setting values indicating response) is produced cor
   )
 
   # Response table.
-  lyt1 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n", "prop"))
-  t1 <- build_table(lyt1, df$prop)
-
-  # Odds rato table with non-default inputs.
-  lyt2 <- basic_table() %>%
-    tabulate_rsp_subgroups(vars = c("n_tot", "or", "ci"), conf_level = 0.95)
-  t2 <- build_table(lyt2, df$or)
-
-  result <- cbind_rtables(t2[, 1], t1, t2[, -1])
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(df)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
       "95", "B: Placebo", "n", "100", "", "62", "38", "", "48", "52",
       "B: Placebo", "Response (%)", "95%", "", "96.8%", "92.1%", "",
