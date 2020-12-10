@@ -735,13 +735,37 @@ test_that("tidy.glm works as expected for interaction case", {
     )
   )
   result <- broom::tidy(mod1, conf_level = 0.99)
+  result <- result[, c("variable", "term", "interaction", "reference", "estimate", "std_error")]
+  row.names(result) <- seq(dim(result)[1])
   expect_is(result, "data.frame")
-  expect_equivalent(
-    result$odds_ratio,
-    list(numeric(0), 0.260697047918053, NA_real_, NA_real_, 0.237501595925629,
-         NA_real_, 20471466.6182566, NA_real_, 0.952865197244208,
-         1.01066782739912, 1.00356140795794, NA, NA, NA)
+  expected <- data.frame(
+    variable = factor(
+      c(rep("SEX", 2), rep("ARMCD", 5), rep("AGE", 4), rep("ARMCD:AGE", 3)),
+      levels = c("SEX", "ARMCD", "AGE", "ARMCD:AGE")
+    ),
+    term = factor(
+      c("F", "M", "ARM A", "ARM B", "ARM B", "ARM C", "ARM C",
+        rep("AGE", 4), "ARM A", "ARM B", "ARM C"),
+      levels = c("F", "M", "ARM A", "ARM B", "ARM C", "AGE")
+    ),
+    interaction = factor(
+      c(rep("", 4), "AGE", "", "AGE", "", rep("ARMCD", 3), rep("", 3)),
+      levels = c("", "AGE", "ARMCD")
+    ),
+    reference = factor(
+      c(rep("", 4), "34", "", "34", "", "ARM A", "ARM B", "ARM C", rep("", 3)),
+      levels = c("", "34", "ARM A", "ARM B", "ARM C")
+    )
   )
+  expected$estimate <- list(
+    numeric(0), -1.344396, numeric(0), -3.439949, NA, 15.07209, NA, -0.04828184,
+    NA, NA, NA, numeric(0), 0.05889316, 0.05183692
+  )
+  expected$std_error <- list(
+    numeric(0), 0.6334459, numeric(0), 3.496053, NA, 7084.929, NA, 0.08522134,
+    NA, NA, NA, numeric(0), 0.09426531, 194.9034
+  )
+  expect_equal(result, expected, tolerance = 0.000001)
 })
 
 test_that("logistic_regression_cols works as expected", {

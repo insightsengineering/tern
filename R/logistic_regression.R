@@ -759,11 +759,16 @@ h_logistic_inter_terms <- function(x,
     "is_reference_summary"
   )
   df <- rbind(
-    normal_stats[, col_names],
     inter_stats_one[, col_names],
     inter_stats_two[, col_names],
     inter_term_stats[, col_names]
   )
+  if (length(normal_terms) > 0) {
+    df <- rbind(
+      normal_stats[, col_names],
+      df
+    )
+  }
   df$ci <- combine_vectors(df$lcl, df$ucl)
   df
 }
