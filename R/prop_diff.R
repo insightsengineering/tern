@@ -101,13 +101,19 @@ prop_diff_wald <- function(rsp,
   )
 
   p_grp <- tapply(rsp, grp, mean)
-  list(
-    diff = unname(diff(p_grp)),
-    diff_ci = stats::prop.test(
+  diff_ci <- if (all(rsp == rsp[1])) {
+    c(NA, NA)
+  } else {
+    stats::prop.test(
       table(grp, rsp),
       correct = correct,
       conf.level = conf_level
     )$conf.int[1:2]
+  }
+
+  list(
+    diff = unname(diff(p_grp)),
+    diff_ci = diff_ci
   )
 }
 
