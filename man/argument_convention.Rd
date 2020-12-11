@@ -34,6 +34,9 @@ by a statistics function.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
+\item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
+Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
+
 \item{id}{(\code{string}) \cr subject variable name.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}

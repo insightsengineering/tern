@@ -39,7 +39,6 @@ test_that("CMT01 default variant (Concomitant medications) is produced correctly
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
     build_table(adcm_c, col_counts = n_per_arm) %>%
-    prune_table() %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -108,7 +107,6 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
     build_table(adcm_p, col_counts = n_per_arm) %>%
-    prune_table() %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -168,7 +166,6 @@ test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
     build_table(adcm_c, col_counts = n_per_arm) %>%
-    prune_table() %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -223,7 +220,6 @@ test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
     build_table(adcm_c, col_counts = n_per_arm) %>%
-    prune_table() %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences, decreasing = TRUE) %>%
     sort_at_path(path = c("CMCLAS"), scorefun = cont_n_onecol(4), decreasing = TRUE)
 

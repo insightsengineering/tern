@@ -26,6 +26,8 @@
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param df (`data frame`)\cr data set containing all analysis variables.
+#' @param drop (`flag`)\cr should non appearing occurrence levels be dropped from the resulting table.
+#'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
 #' @param id (`string`) \cr subject variable name.
 #' @param is_event (`logical`)\cr `TRUE` if event, `FALSE` if time to event is censored.
 #' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized

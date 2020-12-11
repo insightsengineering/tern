@@ -4,7 +4,6 @@ library(dplyr)
 library(tern)
 library(random.cdisc.data)
 
-
 stack_adae_by_smq <- function(adae, smq) {
 
   l_df <- lapply(smq, function(ae_grp) {
@@ -54,7 +53,13 @@ test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correc
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Overall total number of events related to study drug"
       )) %>%
-    split_rows_by("SMQ", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "SMQ",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -65,7 +70,6 @@ test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correc
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, adae_r, col_count = c(table(adsl$ARM))) %>%
-    prune_table() %>%
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -156,7 +160,13 @@ test_that("AET09 variant 2 (AEs related to study srug by SMQ <with customized qu
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Overall total number of events related to study drug"
       )) %>%
-    split_rows_by("SMQ", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "SMQ",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -167,7 +177,6 @@ test_that("AET09 variant 2 (AEs related to study srug by SMQ <with customized qu
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, adae_r, col_count = c(table(adsl$ARM))) %>%
-    prune_table() %>%
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 

@@ -3,7 +3,9 @@
 #' Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 #' data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 #' counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-#' counted only once.
+#' counted only once. Note that by default occurrences which don't appear in a given row split
+#' are dropped from the table and the occurrences in the table are sorted alphabetically per row split.
+#' Use `drop = FALSE` if you would like to show all occurrences.
 #'
 #' @inheritParams argument_convention
 #'
@@ -32,31 +34,45 @@ NULL
 #' s_count_occurrences(
 #'   df,
 #'   N_per_col,
+#'   .df_row = df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
 #' )
 #'
 s_count_occurrences <- function(df,
                                 .N_col, # nolint
+                                .df_row,
+                                drop = TRUE,
                                 .var = "MHDECOD",
                                 id = "USUBJID") {
 
   assert_that(
     is_df_with_variables(df, list(range = .var, id = id)),
     is_nonnegative_count(.N_col),
+    is.flag(drop),
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[id]])
   )
 
-  occurrences <- df[[.var]] # vector of all occurrences
-  ids <- df[[id]] # vector of all subjids
-  occurrences_count <- table(occurrences, ids) > 0 # logical indicating whether a subject reported a term at least once
-  sum_across_subjects <- as.list(apply(occurrences_count, 1, sum)) # sum across subjects
+  occurrences <- if (drop) {
+    # Note that we don't try to preserve original level order here since a) that would required
+    # more time to look up in large original levels and b) that would fail for character input variable.
+    occurrence_levels <- sort(unique(.df_row[[.var]]))
+    factor(df[[.var]], levels = occurrence_levels)
+  } else {
+    df[[.var]]
+  }
+  ids <- factor(df[[id]])
+  has_occurrence_per_id <- table(occurrences, ids) > 0
+  n_ids_per_occurrence <- as.list(rowSums(has_occurrence_per_id))
   list(
-    count = sum_across_subjects,
-    count_fraction = lapply(sum_across_subjects, function(i, denom) c(i, i / denom), denom = .N_col)
+    count = n_ids_per_occurrence,
+    count_fraction = lapply(
+      n_ids_per_occurrence,
+      function(i, denom) c(i, i / denom),
+      denom = .N_col
+    )
   )
-
 }
 
 #' @describeIn count_occurrences Formatted Analysis function which can be further customized by calling
@@ -70,6 +86,7 @@ s_count_occurrences <- function(df,
 #' afun(
 #'   df,
 #'   N_per_col,
+#'   .df_row = df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
 #' )

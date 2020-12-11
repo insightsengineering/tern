@@ -39,8 +39,7 @@ test_that("MHT01 variant 1 is produced accurately", {
     ) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f, col_counts = col_counts) %>%
-    prune_table()
+  result <- build_table(lyt, admh_f, col_counts = col_counts)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(c(
@@ -108,8 +107,7 @@ test_that("MHT01 variant 2 is produced accurately", {
     ) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f_prior, col_counts = col_counts) %>%
-    prune_table()
+  result <- build_table(lyt, admh_f_prior, col_counts = col_counts)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(c(
@@ -163,8 +161,7 @@ test_that("MHT01 variant 3 is produced accurately", {
     ) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f, col_counts = col_counts) %>%
-    prune_table()
+  result <- build_table(lyt, admh_f, col_counts = col_counts)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
@@ -229,8 +226,7 @@ test_that("MHT01 variant 5 is produced accurately", {
       .labels = c(unique = "Total number of patients with at least one event")) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f, col_counts = col_counts) %>%
-    prune_table()
+  result <- build_table(lyt, admh_f, col_counts = col_counts)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(

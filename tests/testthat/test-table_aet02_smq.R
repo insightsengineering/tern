@@ -2,7 +2,6 @@
 
 library(random.cdisc.data)
 
-
 stack_adae_by_smq <- function(adae, smq) {
 
   l_df <- lapply(smq, function(ae_grp) {
@@ -18,7 +17,6 @@ stack_adae_by_smq <- function(adae, smq) {
 
 test_that("AET02SMQ variant 1 is produced correctly", {
 
-
   adae <- radae(cached = TRUE)
   adsl <- radsl(cached = TRUE)
 
@@ -33,7 +31,13 @@ test_that("AET02SMQ variant 1 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event"
       )) %>%
-    split_rows_by("AE_GRP", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AE_GRP",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -43,13 +47,11 @@ test_that("AET02SMQ variant 1 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM))) %>%
-    prune_table()
-
+  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM)))
 
   result <- result %>%
     sort_at_path(path = c("AE_GRP"), scorefun = cont_n_allcols) %>%
-    sort_at_path(path =  c("AE_GRP", "*", "AEDECOD"), scorefun = score_occurrences)
+    sort_at_path(path = c("AE_GRP", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
 
@@ -78,7 +80,6 @@ test_that("AET02SMQ variant 1 is produced correctly", {
 
 test_that("AET02SMQ variant 2 is produced correctly", {
 
-
   adae <- radae(cached = TRUE)
   adsl <- radsl(cached = TRUE)
 
@@ -93,7 +94,13 @@ test_that("AET02SMQ variant 2 is produced correctly", {
       .labels = c(
         unique = "Total number of patients with at least one adverse event"
       )) %>%
-    split_rows_by("AE_GRP", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AE_GRP",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -103,9 +110,7 @@ test_that("AET02SMQ variant 2 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM))) %>%
-    prune_table()
-
+  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM)))
 
   result <- result %>%
     sort_at_path(path = c("AE_GRP"), scorefun = cont_n_allcols) %>%

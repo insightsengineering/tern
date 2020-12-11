@@ -22,7 +22,12 @@ test_that("AET06 variant 1 is produced correctly", {
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
       )) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L)  %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -31,8 +36,7 @@ test_that("AET06 variant 1 is produced correctly", {
         nonunique = "Total number of events"
       )) %>%
     count_occurrences(vars = "AEDECOD")
-  result <- build_table(lyt, adae, col_counts = n_per_arm_sex) %>%
-    prune_table()
+  result <- build_table(lyt, adae, col_counts = n_per_arm_sex)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
@@ -115,7 +119,12 @@ test_that("AET06 variant 5 is produced correctly", {
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
       )) %>%
-    split_rows_by("AEHLT", child_labels = "visible", indent_mod = -1L) %>%
+    split_rows_by(
+      "AEHLT",
+      child_labels = "visible",
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -124,8 +133,7 @@ test_that("AET06 variant 5 is produced correctly", {
         nonunique = "Total number of events"
       )) %>%
     count_occurrences("AEDECOD")
-  result <- build_table(lyt, adae, col_counts = n_per_arm_sex) %>%
-    prune_table()
+  result <- build_table(lyt, adae, col_counts = n_per_arm_sex)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(

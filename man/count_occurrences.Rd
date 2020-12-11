@@ -6,9 +6,23 @@
 \alias{a_count_occurrences}
 \title{Occurrence Counts}
 \usage{
-s_count_occurrences(df, .N_col, .var = "MHDECOD", id = "USUBJID")
+s_count_occurrences(
+  df,
+  .N_col,
+  .df_row,
+  drop = TRUE,
+  .var = "MHDECOD",
+  id = "USUBJID"
+)
 
-a_count_occurrences(df, .N_col, .var = "MHDECOD", id = "USUBJID")
+a_count_occurrences(
+  df,
+  .N_col,
+  .df_row,
+  drop = TRUE,
+  .var = "MHDECOD",
+  id = "USUBJID"
+)
 
 count_occurrences(
   lyt,
@@ -26,6 +40,11 @@ count_occurrences(
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+
+\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+
+\item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
+Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -60,7 +79,9 @@ A list with:
 Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-counted only once.
+counted only once. Note that by default occurrences which don't appear in a given row split
+are dropped from the table and the occurrences in the table are sorted alphabetically per row split.
+Use \code{drop = FALSE} if you would like to show all occurrences.
 }
 \section{Functions}{
 \itemize{
@@ -85,6 +106,7 @@ N_per_col <- 4L
 s_count_occurrences(
   df,
   N_per_col,
+  .df_row = df,
   .var = "MHDECOD",
   id = "USUBJID"
 )
@@ -95,6 +117,7 @@ afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fracti
 afun(
   df,
   N_per_col,
+  .df_row = df,
   .var = "MHDECOD",
   id = "USUBJID"
 )

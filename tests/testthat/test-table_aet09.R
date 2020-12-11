@@ -16,9 +16,12 @@ test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Overall total number of events related to study drug"
       )) %>%
-
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
-
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -28,8 +31,7 @@ test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae_r, col_count = c(table(adsl$ARM), sum(table(adsl$ARM)))) %>%
-    prune_table()
+  result <- build_table(lyt, adae_r, col_count = c(table(adsl$ARM), sum(table(adsl$ARM))))
 
   result <- result %>%
     prune_table() %>%
@@ -175,7 +177,6 @@ test_that("AET09 variant 2 is produced correctly, AE related to study drug (incl
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -183,8 +184,12 @@ test_that("AET09 variant 2 is produced correctly, AE related to study drug (incl
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Overall total number of events related to study drug"
       )) %>%
-
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE)  %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    )  %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -192,8 +197,13 @@ test_that("AET09 variant 2 is produced correctly, AE related to study drug (incl
         unique = "Total number of patients with at least one adverse event related to study drug",
         nonunique = "Total number of events related to study drug"
       )) %>%
-    split_rows_by("AEHLT", child_labels = "visible", nested = TRUE, indent_mod = -1L)  %>%
-
+    split_rows_by(
+      "AEHLT",
+      child_labels = "visible",
+      nested = TRUE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    )  %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -377,5 +387,4 @@ test_that("AET09 variant 2 is produced correctly, AE related to study drug (incl
     .Dim = c(39L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
-
 })

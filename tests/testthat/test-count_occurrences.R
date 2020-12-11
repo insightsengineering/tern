@@ -4,31 +4,55 @@ test_that("s_count_occurrences functions as expected with valid input and defaul
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
   )
 
-  result <- s_count_occurrences(df = df, .N_col = 4L)
+  result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
 
- expected <- list(
-  count = list(
-    MH1 = 3L,
-    MH2 = 1L,
-    MH3 = 1L
-  ),
-  count_fraction = list(
-    MH1 = c(3L, 0.75),
-    MH2 = c(1L, 0.25),
-    MH3 = c(1L, 0.25)
+  expected <- list(
+    count = list(
+      MH1 = 3L,
+      MH2 = 1L,
+      MH3 = 1L
+    ),
+    count_fraction = list(
+      MH1 = c(3L, 0.75),
+      MH2 = c(1L, 0.25),
+      MH3 = c(1L, 0.25)
+    )
   )
-)
   expect_equal(result, expected)
+})
+
+test_that("s_count_occurrences drops non appearing levels by default", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
+    MHDECOD = factor(
+      c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3"),
+      levels = c("MH1", "MH2", "MH3", "MHX")
+    )
+  )
+  result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
+  expect_false("MHX" %in% c(names(result$count), names(result$count_fraction)))
+})
+
+test_that("s_count_occurrences keeps non appearing levels if requested", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
+    MHDECOD = factor(
+      c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3"),
+      levels = c("MH1", "MH2", "MH3", "MHX")
+    )
+  )
+  result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df, drop = FALSE)
+  expect_true("MHX" %in% names(result$count))
+  expect_true("MHX" %in% names(result$count_fraction))
 })
 
 test_that("count_occurrences functions as expected with valid input and default arguments", {
   df <- data.frame(
-    USUBJID = as.character(c(
-      1, 1, 2, 4, 4, 4,
-      6, 6, 6, 7, 7, 8)),
-    MHDECOD = c(
-      "MH1", "MH2", "MH1", "MH1", "MH1", "MH3",
-      "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"),
+    USUBJID = as.character(c(1, 1, 2, 4, 4, 4, 6, 6, 6, 7, 7, 8)),
+    MHDECOD = factor(
+      c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3", "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"),
+      levels = c("MH1", "MH2", "MH3", "MH4", "MHX")
+    ),
     ARM = rep(c("A", "B"), each = 6)
   )
 
@@ -38,8 +62,8 @@ test_that("count_occurrences functions as expected with valid input and default 
     count_occurrences(vars = "MHDECOD")
 
   result <- rtable_object <- lyt %>%
-    build_table(df, col_counts = c(5L, 4L)) %>%
-    prune_table()
+    build_table(df, col_counts = c(5L, 4L))
+
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(

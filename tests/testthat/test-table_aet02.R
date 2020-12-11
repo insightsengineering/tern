@@ -18,9 +18,13 @@ test_that("AET02 variant 1 is produced correctly", {
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
       )) %>%
-
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
-
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -30,14 +34,11 @@ test_that("AET02 variant 1 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM), sum(table(adsl$ARM)))) %>%
-    prune_table()
+  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM), sum(table(adsl$ARM))))
 
   result <- result %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
-
 
   result_matrix <- to_string_matrix(result)
 
@@ -157,7 +158,6 @@ test_that("AET02 variant 2 is produced correctly", {
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE)
 
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -169,18 +169,20 @@ test_that("AET02 variant 2 is produced correctly", {
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
       )) %>%
-
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
-
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique"),
       .labels = c(
         unique = "Total number of patients with at least one adverse event"
       )) %>%
-
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L) %>%
-
     count_values(
       "STUDYID",
       values = "AB12345",
@@ -189,15 +191,11 @@ test_that("AET02 variant 2 is produced correctly", {
       .indent_mods = c(count = -1L)
     )
 
-
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM), sum(table(adsl$ARM)))) %>%
-    prune_table()
+  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM), sum(table(adsl$ARM))))
 
   result <- result %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences) %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_onecol(4))
-
 
   result_matrix <- to_string_matrix(result)
 
@@ -391,7 +389,6 @@ test_that("AET02 variant 3 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -399,8 +396,12 @@ test_that("AET02 variant 3 is produced correctly", {
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
       )) %>%
-
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -408,8 +409,13 @@ test_that("AET02 variant 3 is produced correctly", {
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Total number of events"
       )) %>%
-    split_rows_by("AEHLT", child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
-
+    split_rows_by(
+      "AEHLT",
+      child_labels = "visible",
+      nested = TRUE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -419,16 +425,12 @@ test_that("AET02 variant 3 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
-
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table()
+  result <- build_table(lyt, adae, col_count = table(adsl$ARM))
 
   result <- result %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences)
-
-
 
   result_matrix <- to_string_matrix(result)
 
@@ -751,7 +753,6 @@ test_that("AET02 variant 5 is produced correctly", {
   adae <- radae(cached = TRUE)
   adae_5 <- adae %>% dplyr::filter(ARM != "C: Combination")
 
-
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
@@ -762,9 +763,12 @@ test_that("AET02 variant 5 is produced correctly", {
         unique = "Total number of patients with at least one adverse event",
         nonunique = "Overall total number of events"
       )) %>%
-
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
-
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -774,8 +778,7 @@ test_that("AET02 variant 5 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
-  result <- build_table(lyt, adae_5, col_count = table(adsl$ARM)) %>%
-    prune_table()
+  result <- build_table(lyt, adae_5, col_count = table(adsl$ARM))
 
   result <- result %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
@@ -937,7 +940,12 @@ test_that("AET02 variant 6 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -946,7 +954,6 @@ test_that("AET02 variant 6 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -984,13 +991,25 @@ test_that("AET02 variant 7 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = TRUE, indent_mod = -2L) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = TRUE,
+      indent_mod = -2L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
       .labels = "Total number of patients with at least one adverse event"
     ) %>%
-    split_rows_by("AEHLT", child_labels = "visible", nested = TRUE, indent_mod = 1L) %>%
+    split_rows_by(
+      "AEHLT",
+      child_labels = "visible",
+      nested = TRUE,
+      indent_mod = 1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -999,7 +1018,6 @@ test_that("AET02 variant 7 is produced correctly", {
     count_occurrences(vars = "AEDECOD")
 
   result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table() %>%
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols, decreasing = TRUE) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols, decreasing = TRUE) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences, decreasing = TRUE)
@@ -1042,7 +1060,12 @@ test_that("AET02 variant 8 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -1051,7 +1074,6 @@ test_that("AET02 variant 8 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1089,7 +1111,12 @@ test_that("AET02 variant 9 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -1098,7 +1125,6 @@ test_that("AET02 variant 9 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1138,7 +1164,12 @@ test_that("AET02 variant 10 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -1147,7 +1178,6 @@ test_that("AET02 variant 10 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1189,7 +1219,12 @@ test_that("AET02 variant 11 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -1198,7 +1233,6 @@ test_that("AET02 variant 11 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1232,7 +1266,12 @@ test_that("AET02 variant 12 is produced correctly", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS",
+      child_labels = "visible",
+      nested = FALSE,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -1241,7 +1280,6 @@ test_that("AET02 variant 12 is produced correctly", {
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
   result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
-    prune_table() %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 

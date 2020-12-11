@@ -47,7 +47,6 @@ test_that("AET07 variant 1 is produced correctly", {
     )
 
   result <- build_table(lyt, adae, col_counts = n_per_arm) %>%
-    prune_table() %>%
     sort_at_path(
       path = "SOC_PT",
       scorefun = score_occurrences,

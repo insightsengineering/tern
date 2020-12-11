@@ -1,7 +1,6 @@
 # Test variants for AET05.
 
 library(random.cdisc.data)
-library(magrittr)
 library(dplyr)
 
 test_that("AET05 variant 1 is produced correctly", {

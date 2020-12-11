@@ -1,7 +1,7 @@
 # Test variants for AET06_SMQ.
 
 library(random.cdisc.data)
-library(magrittr)
+library(dplyr)
 
 test_that("AET06_SMQ variant 1 is produced correctly", {
   adsl <- radsl(cached = TRUE)
@@ -56,7 +56,13 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
       .stats = c("unique"),
       .labels = c(unique = "Total number of patients with at least one adverse event")
     ) %>%
-    split_rows_by("SMQ", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "SMQ",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -68,7 +74,6 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
     count_occurrences(vars = "AEDECOD")
 
   result <- build_table(lyt, adae_f, col_counts = n_per_arm_sex) %>%
-    prune_table() %>%
     sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -118,8 +123,6 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
 
   expect_identical(result_matrix, expected_matrix)
 })
-
-
 
 test_that("AET06_SMQ variant 2 is produced correctly", {
   adsl <- radsl(cached = TRUE)
@@ -190,7 +193,13 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
       .stats = c("unique"),
       .labels = c(unique = "Total number of patients with at least one adverse event")
     ) %>%
-    split_rows_by("SMQ", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "SMQ",
+      child_labels = "visible",
+      nested = FALSE,
+      indent_mod = -1L,
+      split_fun = drop_split_levels
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
@@ -202,7 +211,6 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
     count_occurrences(vars = "AEDECOD")
 
   result <- build_table(lyt, adae_f, col_counts = n_per_arm_age65) %>%
-    prune_table() %>%
     sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
