@@ -18,6 +18,8 @@
 #' # Testing dataset.
 #' library(random.cdisc.data)
 #' library(dplyr)
+#' library(forcats)
+#' library(rtables)
 #'
 #' adrs <- radrs(cached = TRUE)
 #' adrs_labels <- var_labels(adrs)
@@ -28,7 +30,7 @@
 #'   droplevels() %>%
 #'   mutate(
 #'     # Reorder levels of factor to make the placebo group the reference arm.
-#'     ARM = forcats::fct_relevel(ARM, "B: Placebo"),
+#'     ARM = fct_relevel(ARM, "B: Placebo"),
 #'     rsp = AVALC == "CR"
 #'   )
 #' var_labels(adrs_f) <- c(adrs_labels, "Response")
@@ -68,6 +70,7 @@ extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = N
 
 #' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
 #'   Returns is a list of Formatted Analysis functions with one element per statistic.
+#' @importFrom rtables in_rows
 #' @export
 #' @examples
 #' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))

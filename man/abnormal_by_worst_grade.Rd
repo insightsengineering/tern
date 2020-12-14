@@ -97,23 +97,24 @@ which can take statistics function arguments and additional format arguments (se
 \examples{
 library(random.cdisc.data)
 library(dplyr)
+
 adlb <- radlb(cached = TRUE)
 adlb_f <- adlb \%>\%
-  dplyr::filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
-  dplyr::mutate(
+  filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
+  mutate(
     ATOXGR = as.numeric(as.character(ATOXGR)),
     WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
     WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
   )
 
 s_count_abnormal_by_worst_grade(
-  df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+  df = adlb_f \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   abnormal = "low",
   variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")
 )
 s_count_abnormal_by_worst_grade(
-  df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+  df = adlb_f \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   abnormal = "high",
   variables = list(id = "USUBJID", worst_grade_flag = "WGRHIFL")
@@ -123,7 +124,7 @@ s_count_abnormal_by_worst_grade(
 # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 afun(
-  df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+  df = adlb_f \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
   .var = "ATOXGR",
   abnormal = "high",
   variables = list(id = "USUBJID", worst_grade_flag = "WGRHIFL")
@@ -136,7 +137,7 @@ basic_table() \%>\%
     abnormal = c(Low = "low", High = "high"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) \%>\%
-  build_table(df = adlb_f \%>\% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"))
+  build_table(df = adlb_f \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"))
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%

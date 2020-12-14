@@ -31,6 +31,7 @@ NULL
 #' @export
 #' @examples
 #' library(dplyr)
+#'
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1, 1, 2, 2)),
 #'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),

@@ -18,7 +18,12 @@ NULL
 #'   reference group.
 #'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#'
+#' @importFrom emmeans emmeans
+#' @importFrom stats as.formula lm
+#'
 #' @export
+#'
 #' @examples
 #' h_ancova(
 #'   .var = "Sepal.Length",
@@ -30,7 +35,7 @@ h_ancova <- function(.var,
                      .df_row,
                      variables) {
 
-  assertthat::assert_that(
+  assert_that(
     is.string(.var),
     is.list(variables),
     all(names(variables) %in% c("arm", "covariates")),
@@ -42,7 +47,7 @@ h_ancova <- function(.var,
   if (!is.null(covariates)) {
     # Get all covariate variable names in the model.
     var_list <- get_covariates(covariates)
-    assertthat::assert_that(
+    assert_that(
       is_df_with_variables(.df_row, var_list)
     )
   }
@@ -54,7 +59,7 @@ h_ancova <- function(.var,
     formula <- as.formula(paste0(.var, " ~ ", arm))
   }
 
-  lm_fit <- stats::lm(
+  lm_fit <- lm(
     formula = formula,
     data = .df_row
   )
@@ -81,10 +86,14 @@ h_ancova <- function(.var,
 #'   - `lsmean_diff_ci`: confidence level for difference in estimated marginal means in
 #'   comparison to the reference group.
 #'   - `pval`: p-value (not adjusted for multiple comparisons).
+#'
+#' @importFrom emmeans contrast
 #' @export
+#'
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#'
 #' adsl <- radsl(cached = TRUE)
 #' adqs <- radqs(cached = TRUE)
 #' adqs_single <- adqs %>%
@@ -94,12 +103,15 @@ h_ancova <- function(.var,
 #'   ) %>%
 #'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
 #'
-#' df <- adqs_single %>% dplyr::filter(ARMCD == "ARM B")
+#' df <- adqs_single %>%
+#'   filter(ARMCD == "ARM B")
 #' .var <- "CHG"
 #' .df_row <- adqs_single
 #' variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
-#' .ref_group <- adqs_single %>% dplyr::filter(ARMCD == "ARM A")
+#' .ref_group <- adqs_single %>%
+#'   filter(ARMCD == "ARM A")
 #' conf_level <- 0.95
+#'
 #' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 #'
 s_ancova <- function(df,
@@ -122,7 +134,7 @@ s_ancova <- function(df,
   y <- df[[.var]]
   sum_level <- as.character(unique(df[[arm]]))
   # Ensure that there is only one element in sum_level.
-  assertthat::assert_that(
+  assert_that(
     is.scalar(sum_level)
   )
   sum_fit_level <- sum_fit[sum_fit[[arm]] == sum_level, ]
@@ -137,7 +149,7 @@ s_ancova <- function(df,
     )
   } else {
     # Estimate the differences between the marginal means.
-    emmeans_contrasts <- emmeans::contrast(
+    emmeans_contrasts <- contrast(
       emmeans_fit,
       # Compare all arms versus the control arm.
       method = "trt.vs.ctrl",
@@ -194,6 +206,7 @@ a_ancova <- make_afun(
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#'
 #' adsl <- radsl(cached = TRUE)
 #' adqs <- radqs(cached = TRUE)
 #'
@@ -203,7 +216,8 @@ a_ancova <- make_afun(
 #'     PARAMCD == "FKSI-FWB"  # single end point
 #'   ) %>%
 #'   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
-#' adqs_multi <- filter(adqs, AVISIT == "WEEK 1 DAY 8")
+#' adqs_multi <- adqs %>%
+#'   filter(AVISIT == "WEEK 1 DAY 8")
 #' n_per_arm <- table(adsl$ARM)
 #'
 #' basic_table() %>%

@@ -9,7 +9,7 @@
 #'
 #' @return e vector with the new strings
 #'
-#' @importFrom grid convertWidth gpar grobWidth textGrob
+#' @importFrom grid convertWidth gpar grobWidth textGrob unit
 #'
 #' @noRd
 #'

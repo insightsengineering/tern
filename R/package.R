@@ -5,18 +5,19 @@
 "_PACKAGE"
 
 #' @import assertthat
-#' @import utils.nest
 #' @import rtables
-#' @import ggplot2
-#' @import survival
-#' @import grid
-#' @importFrom rlang "%||%"
+#' @import utils.nest
+#' @importFrom magrittr %>%
 #' @importFrom methods is
-#' @importFrom utils globalVariables
-#' @importFrom stats qchisq
+# Packages that are not imported and also not prefixed
+# ggplot2
+# grid
+# survival
+# stats
 NULL
 
 # We need this to avoid R CMD check warning about missing global definitions.
+#' @importFrom utils globalVariables
 if (getRversion() >= "2.15.1") {
   utils::globalVariables(c(
     ".",

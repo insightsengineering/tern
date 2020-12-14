@@ -44,6 +44,7 @@ h_row_fractions <- function(table_row,
 #' @describeIn rtables_access Helper function to extract column counts from specified columns
 #'   in a table.
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
+#' @importFrom stats setNames
 #' @export
 #'
 h_col_counts <- function(table,

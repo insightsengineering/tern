@@ -76,6 +76,8 @@ optionally \code{subgroups} and \code{strat}.
 # Testing dataset.
 library(random.cdisc.data)
 library(dplyr)
+library(forcats)
+library(rtables)
 
 adtte <- radtte(cached = TRUE)
 
@@ -90,7 +92,7 @@ adtte_f <- adtte \%>\%
   ) \%>\%
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
-    ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
+    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
     SEX = droplevels(SEX),
     is_event = CNSR == 0
   ) \%>\%

@@ -9,10 +9,12 @@
 #' @param name a character identifier for the grob.
 #' @param gp A \code{\link{gpar}} object.
 #'
+#' @importFrom grid gList gTree grid.layout unit unit.c viewport
 #' @export
 #'
 #' @examples
 #' library(grid)
+#'
 #' g1 <- circleGrob(gp = gpar(col = "blue"))
 #' g2 <- circleGrob(gp = gpar(col = "red"))
 #' g3 <- textGrob("TEST TEXT")
@@ -52,7 +54,7 @@ stack_grobs <- function(...,
       }
     }
   )
-  hts <- do.call("unit.c", hts)
+  hts <- do.call(unit.c, hts)
 
   main_vp <- viewport(
     layout = grid.layout(nrow = n_layout, ncol = 1, heights = hts)
@@ -65,8 +67,8 @@ stack_grobs <- function(...,
     )
   }, grobs, seq_along(grobs) * 2 - 1)
 
-  grobs_mainvp <-   gTree(
-    children = do.call("gList", nested_grobs),
+  grobs_mainvp <- gTree(
+    children = do.call(gList, nested_grobs),
     vp = main_vp
   )
 
@@ -163,7 +165,7 @@ arrange_grobs <- function(...,
       }
     }
   )
-  hts <- do.call("unit.c", hts)
+  hts <- do.call(unit.c, hts)
 
   wts <- lapply(
     seq(1, n_col),
@@ -175,7 +177,7 @@ arrange_grobs <- function(...,
       }
     }
   )
-  wts <- do.call("unit.c", wts)
+  wts <- do.call(unit.c, wts)
 
   main_vp <- viewport(
     layout = grid.layout(nrow = n_row, ncol = n_col, widths = wts, heights = hts)
@@ -195,8 +197,8 @@ arrange_grobs <- function(...,
       }
     }
   }
-  grobs_mainvp <-   gTree(
-    children = do.call("gList", nested_grobs),
+  grobs_mainvp <- gTree(
+    children = do.call(gList, nested_grobs),
     vp = main_vp
   )
 
@@ -217,11 +219,13 @@ arrange_grobs <- function(...,
 #' @param newpage draw on a new page
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #'
+#' @importFrom grid grid.draw grid.newpage pushViewport
 #' @export
 #'
 #' @examples
 #' library(dplyr)
 #' library(grid)
+#'
 #' rect <- rectGrob(width = unit(0.5, "npc"), height = unit(0.5, "npc"))
 #' rect %>% draw_grob(vp = viewport(angle = 45))
 #'
@@ -247,6 +251,7 @@ tern_grob <- function(x) { # nousage # nolint
   x
 }
 
+#' @importFrom grid grid.draw grid.newpage
 print.ternGrob <- function(x, ...) { # nousage # nolint
   grid.newpage()
   grid.draw(x)

@@ -5,6 +5,8 @@
 #' @param x factor or character vector
 #' @param label character string that missing data should be replaced with
 #'
+#' @importFrom forcats fct_explicit_na
+#'
 #' @export
 #'
 #' @examples

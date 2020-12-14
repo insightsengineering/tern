@@ -39,19 +39,21 @@
 #'
 #' library(random.cdisc.data)
 #' library(dplyr)
+#' library(forcats)
+#' library(rtables)
 #'
 #' adrs <- radrs(cached = TRUE)
 #'
 #' n_records <- 20
 #' adrs_labels <- var_labels(adrs)
 #' adrs <- adrs %>%
-#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
-#'   dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-#'   dplyr::slice(seq_len(n_records)) %>%
+#'   filter(PARAMCD == "BESRSPI") %>%
+#'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
+#'   slice(seq_len(n_records)) %>%
 #'   droplevels() %>%
-#'   dplyr::mutate(
+#'   mutate(
 #'     # Reorder levels of factor to make the placebo group the reference arm.
-#'     ARM = forcats::fct_relevel(ARM, "B: Placebo"),
+#'     ARM = fct_relevel(ARM, "B: Placebo"),
 #'     rsp = AVALC == "CR"
 #'   )
 #' var_labels(adrs) <- c(adrs_labels, "Response")
@@ -249,7 +251,11 @@ g_forest <- function(tbl,
 #' The heights get automatically determined.
 #'
 #' @noRd
+#'
 #' @importFrom grDevices extendrange
+#' @importFrom grid dataViewport gList gTree gpar rectGrob
+#' @importFrom stats na.omit
+#'
 #' @examples
 #' tbl <- rtable(
 #'   header = rheader(
@@ -336,7 +342,7 @@ forest_grob <- function(tbl,
   data_forest_vp <- dataViewport(xlim, c(0, 1))
 
   # Get table content as matrix form.
-  mf <- rtables::matrix_form(tbl)
+  mf <- matrix_form(tbl)
 
   # Use rtables indent_string eventually.
   mf$strings[, 1] <- paste0(
@@ -379,11 +385,11 @@ forest_grob <- function(tbl,
     name = name,
     children = gList(
       gTree(
-        children = do.call("gList", lapply(args_header, do.call, what = cell_in_rows)),
+        children = do.call(gList, lapply(args_header, do.call, what = cell_in_rows)),
         vp = vpPath("vp_table_layout", "vp_header")
       ),
       gTree(
-        children = do.call("gList", lapply(args_body, do.call, what  = cell_in_rows)),
+        children = do.call(gList, lapply(args_body, do.call, what = cell_in_rows)),
         vp = vpPath("vp_table_layout", "vp_body")
       ),
       linesGrob(unit(c(0, 1), "npc"), y = unit(c(.5, .5), "npc"), vp = vpPath("vp_table_layout", "vp_spacer")),
@@ -397,8 +403,16 @@ forest_grob <- function(tbl,
               children = gList(
                 # this may overflow, to fix, look here
                 # https://stackoverflow.com/questions/33623169/add-multi-line-footnote-to-tablegrob-while-using-gridextra-in-r #nolintr
-                textGrob(forest_header[1], x = unit(vline, "native") - unit(1, "lines"), just = c("right", "center")),
-                textGrob(forest_header[2], x = unit(vline, "native") + unit(1, "lines"), just = c("left", "center"))
+                textGrob(
+                  forest_header[1],
+                  x = unit(vline, "native") - unit(1, "lines"),
+                  just = c("right", "center")
+                ),
+                textGrob(
+                  forest_header[2],
+                  x = unit(vline, "native") + unit(1, "lines"),
+                  just = c("left", "center")
+                )
               ),
               vp = vpStack(viewport(layout.pos.col = ncol(tbl) + 2), data_forest_vp)
             )
@@ -461,6 +475,7 @@ forest_grob <- function(tbl,
 }
 
 
+#' @importFrom grid gList gTree textGrob unit unit.c
 cell_in_rows <- function(row_name,
                          cells,
                          cell_spans,
@@ -555,6 +570,7 @@ cell_in_rows <- function(row_name,
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #' @noRd
 #'
+#' @importFrom grid gList gTree unit
 forest_dot_line <- function(x,
                             lower,
                             upper,
@@ -626,7 +642,8 @@ forest_dot_line <- function(x,
 #'
 #' @noRd
 #'
-#' @importFrom grDevices extendrange
+#' @importFrom grid grid.layout stringWidth unit unit.c
+#' @importFrom rtables matrix_form
 #'
 #' @examples
 #' library(grid)
@@ -661,7 +678,7 @@ forest_viewport <- function(tbl,
     is.unit(width_forest)
   )
 
-  if (is.null(mat_form)) mat_form <- rtables::matrix_form(tbl)
+  if (is.null(mat_form)) mat_form <- matrix_form(tbl)
 
   mat_form$strings[!mat_form$display] <- ""
 
@@ -729,6 +746,8 @@ forest_viewport <- function(tbl,
 #'
 #' @noRd
 #'
+#' @importFrom grid grid.layout viewport vpList vpTree
+#'
 vp_forest_table_part <- function(nrow,
                                  ncol,
                                  l_row,
@@ -781,6 +800,8 @@ vp_forest_table_part <- function(nrow,
 #' Renders the forest grob.
 #'
 #' @noRd
+#'
+#' @importFrom grid grid.draw
 #'
 grid.forest <- function(...) {# nousage # nolint
   grid.draw(forest_grob(...)) # nolint

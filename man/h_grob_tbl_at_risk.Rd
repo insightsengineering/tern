@@ -20,6 +20,11 @@ the second to the number of patient at risk.
 \examples{
 
 \dontrun{
+library(random.cdisc.data)
+library(dplyr)
+library(survival)
+library(grid)
+
 fit_km <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)

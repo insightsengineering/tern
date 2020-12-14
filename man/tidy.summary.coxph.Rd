@@ -17,7 +17,10 @@ Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{ti
 \examples{
 
 library(survival)
+library(broom)
+
 set.seed(1, kind = "Mersenne-Twister")
+
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],
   data.frame(
@@ -36,7 +39,7 @@ attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
 dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 
 formula <- "Surv(time, status) ~ armcd + covar1"
-msum <- summary(survival::coxph(stats::as.formula(formula), data = dta_bladder))
-broom::tidy(msum)
+msum <- summary(coxph(as.formula(formula), data = dta_bladder))
+tidy(msum)
 
 }

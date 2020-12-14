@@ -81,6 +81,7 @@ d_proportion_diff <- function(conf_level,
 #'
 #' @param correct `logical`\cr
 #'   include the continuity correction.
+#' @importFrom stats prop.test
 #' @export
 #' @examples
 #'
@@ -119,6 +120,7 @@ prop_diff_wald <- function(rsp,
 
 
 #' @describeIn prop_difference Anderson-Hauck confidence interval.
+#' @importFrom stats qnorm
 #' @export
 #' @examples
 #' # Anderson-Hauck confidence interval
@@ -142,7 +144,7 @@ prop_diff_ha <- function(rsp,
   n_grp <- tapply(rsp, grp, length)
   p_grp <- tapply(rsp, grp, mean)
   diff_p <- unname(diff(p_grp))
-  z <- stats::qnorm((1 + conf_level) / 2)
+  z <- qnorm((1 + conf_level) / 2)
   err <- 1 /
     (2 * min(n_grp)) + z * sqrt(sum(p_grp * (1 - p_grp) / (n_grp - 1)))
   l_ci <- max(-1, diff_p - err)
@@ -203,6 +205,7 @@ prop_diff_nc <- function(rsp,
 #'
 #' @param strata (`factor`)\cr
 #'   with one level per stratum and same length as `rsp`.
+#' @importFrom stats qnorm
 #' @export
 #' @examples
 #'
@@ -275,6 +278,7 @@ prop_diff_cmh <- function(rsp,
 #'   in terms of responder proportion.
 #' @param method (`string`)\cr
 #'   the method used for the confidence interval estimation.
+#' @importFrom stats setNames
 #' @export
 #' @examples
 #'

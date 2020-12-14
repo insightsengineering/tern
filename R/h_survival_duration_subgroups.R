@@ -17,6 +17,8 @@
 #' # Testing dataset.
 #' library(random.cdisc.data)
 #' library(dplyr)
+#' library(forcats)
+#' library(rtables)
 #'
 #' adtte <- radtte(cached = TRUE)
 #'
@@ -31,7 +33,7 @@
 #'   ) %>%
 #'   mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
+#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
 #'     SEX = droplevels(SEX),
 #'     is_event = CNSR == 0
 #'   ) %>%
@@ -157,6 +159,7 @@ if (is.null(variables$subgroups)) {
 #'   treatment hazard ratio.
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
 #'   required if stratified analysis is performed.
+#' @importFrom stats setNames
 #' @export
 #' @examples
 #'
@@ -340,9 +343,15 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
 #'   Unused levels not present in `data` are dropped.
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
+#'
+#' @importFrom rtables var_labels var_labels<-
+#' @importFrom stats setNames
+#'
 #' @export
 #'
 #' @examples
+#' library(rtables)
+#'
 #' df <- data.frame(
 #'   x = c(1:5),
 #'   y = factor(c("A","B", "A", "B", "A"), levels = c("A", "B", "C")),

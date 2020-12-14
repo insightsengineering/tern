@@ -21,12 +21,13 @@ NULL
 #' @examples
 #' library(dplyr)
 #' library(lme4)
-#' dat <- lme4::sleepstudy %>%
-#'   dplyr::mutate(
-#'     group = factor(rep(c("A", "B"), length = nrow(lme4::sleepstudy))),
+#'
+#' dat <- sleepstudy %>%
+#'   mutate(
+#'     group = factor(rep(c("A", "B"), length = nrow(sleepstudy))),
 #'     days_grouped = cut(
 #'       Days,
-#'       breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
+#'       breaks = quantile(Days, probs = seq(0, 1, length = 5)),
 #'       include.lowest = TRUE
 #'     )
 #'   )
@@ -58,6 +59,7 @@ as.rtable.mmrm <- function(x,  #nolint
 
 #' @describeIn tabulate_mmrm Helper function to produce fixed effects table.
 #' @param format (`string`)\cr format for the numbers in the table.
+#' @importFrom stats coef
 #' @export
 #'
 h_mmrm_fixed <- function(x, format = "xx.xxxx") {
@@ -104,7 +106,8 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 #' @importFrom broom tidy
 #' @importFrom tibble as_tibble
 #' @examples
-#' df <- broom::tidy(result)
+#' library(broom)
+#' df <- tidy(result)
 #'
 tidy.mmrm <- function(x) {  #nolint
   contrasts <- x$lsmeans$contrasts
@@ -192,7 +195,7 @@ a_mmrm_lsmeans <- make_afun(
 #'   split_rows_by("days_grouped") %>%
 #'   summarize_lsmeans(show_relative = "increase") %>%
 #'   build_table(
-#'     df = broom::tidy(result),
+#'     df = tidy(result),
 #'     col_counts = n_cols
 #'   )
 #'

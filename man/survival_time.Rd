@@ -89,14 +89,15 @@ to the input layout. Note that additional formatting arguments can be used here.
 \examples{
 library(random.cdisc.data)
 library(dplyr)
+
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- ADTTE \%>\%
-  dplyr::filter(PARAMCD == "OS") \%>\%
-  dplyr::mutate(
+  filter(PARAMCD == "OS") \%>\%
+  mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- ADTTE_f \%>\% dplyr::filter(ARMCD == "ARM A")
+df <- ADTTE_f \%>\% filter(ARMCD == "ARM A")
 s_surv_time(df, .var = "AVAL", is_event = "is_event")
 a_surv_time(df, .var = "AVAL", is_event = "is_event")
 

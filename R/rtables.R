@@ -54,6 +54,8 @@ unlist_and_blank_na <- function(x) {
 #' @return Content function which just gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
 #'
+#' @importFrom rtables rcell with_label
+#'
 cfun_by_flag <- function(analysis_var,
                          flag_var,
                          format = "xx") {
@@ -80,6 +82,8 @@ cfun_by_flag <- function(analysis_var,
 #' @param x possibly nested list
 #'
 #' @return list with one list level flattened out
+#'
+#' @importFrom stats setNames
 flatten_list <- function(x) {
   assert_that(is.list(x))
   x_mod <- Map(
@@ -198,6 +202,7 @@ NULL
 
 #' @describeIn format_wrap the wrapper for `sfun` having `df` as first argument.
 #'
+#' @importFrom rtables in_rows
 format_wrap_df <- function(sfun, #nousage #nolint
                            indent_mods,
                            formats) {
@@ -288,7 +293,7 @@ format_wrap_df <- function(sfun, #nousage #nolint
     )
 
     # Put formatted values in list.
-    rows <- rtables::in_rows(
+    rows <- in_rows(
       .list = vals_formatted
     )
     return(rows)
@@ -303,6 +308,7 @@ format_wrap_df <- function(sfun, #nousage #nolint
 
 #' @describeIn format_wrap the wrapper for `sfun` having `x` as first argument.
 #'
+#' @importFrom rtables in_rows
 format_wrap_x <- function(sfun,  #nousage #nolint
                           indent_mods,
                           formats) {
@@ -393,7 +399,7 @@ format_wrap_x <- function(sfun,  #nousage #nolint
     )
 
     # Put formatted values in list.
-    rows <- rtables::in_rows(
+    rows <- in_rows(
       .list = vals_formatted
     )
     return(rows)
@@ -603,6 +609,9 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' @param indent (`flag`)\cr should this be indented by 2 blanks (1 level in rtables)?
 #'
 #' @return The modified layout.
+#'
+#' @importFrom rtables var_labels
+#'
 #' @export
 #'
 #' @examples

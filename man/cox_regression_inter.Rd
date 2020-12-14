@@ -139,6 +139,7 @@ h_coxreg_extract_interaction(
 
 
 # Testing dataset [survival::bladder].
+library(survival)
 
 mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 result <- h_coxreg_inter_estimations(

@@ -146,13 +146,14 @@ h_incidence_rate(
 
 
 library(dplyr)
+
 df <- data.frame(
   USUBJID = as.character(seq(6)),
   CNSR = c(0, 1, 1, 0, 0, 0),
   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
   ARM = factor(c("A", "A", "A", "B", "B", "B"))
 ) \%>\%
-  dplyr::mutate(is_event = CNSR == 0)
+  mutate(is_event = CNSR == 0)
 
 s_incidence_rate(
   df,

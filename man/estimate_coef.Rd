@@ -60,15 +60,21 @@ as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence leve
 \examples{
 library(dplyr)
 library(random.cdisc.data)
+library(survival)
 
 ADSL <- radsl(cached = TRUE)
-ADSL <- ADSL \%>\% dplyr::filter(SEX \%in\% c("F", "M"))
+ADSL <- ADSL \%>\%
+  filter(SEX \%in\% c("F", "M"))
 \dontrun{
-ADTTE <- radtte(ADSL, seed = 2) \%>\% dplyr::filter(PARAMCD == "PFS")
+ADTTE <- radtte(ADSL, seed = 2) \%>\%
+  filter(PARAMCD == "PFS")
 ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 ADTTE$SEX <- droplevels(ADTTE$SEX)
 
-mod <- coxph(formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2, data = ADTTE)
+mod <- coxph(
+  formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
+  data = ADTTE
+)
 
 mmat <- model.matrix(mod)[1, ]
 mmat[!mmat == 0] <- 0

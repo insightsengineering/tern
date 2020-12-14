@@ -18,7 +18,12 @@ NULL
 
 #' @describeIn survival_time Statistics Function which analyzes survival times.
 #'  `range_censor` and `range_event`.
+#'
+#' @importFrom stats as.formula
+#' @importFrom survival Surv survfit
+#'
 #' @export
+#'
 #' @return The statistics are:
 #' * `median` : median survival time.
 #' * `median_ci` : confidence interval for median time.
@@ -29,14 +34,15 @@ NULL
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#'
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
-#'   dplyr::mutate(
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(
 #'     AVAL = day2month(AVAL),
 #'     is_event = CNSR == 0
 #'   )
-#' df <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM A")
+#' df <- ADTTE_f %>% filter(ARMCD == "ARM A")
 #' s_surv_time(df, .var = "AVAL", is_event = "is_event")
 s_surv_time <- function(df,
                         .var,
@@ -53,15 +59,15 @@ s_surv_time <- function(df,
   conf_level <- control$conf_level
   quantiles <- control$quantiles
 
-  formula <- as.formula(paste0("survival::Surv(", .var, ", ", is_event, ") ~ 1"))
-  srv_fit <- survival::survfit(
+  formula <- as.formula(paste0("Surv(", .var, ", ", is_event, ") ~ 1"))
+  srv_fit <- survfit(
     formula = formula,
     data = df,
     conf.int = conf_level,
     conf.type = conf_type
   )
   srv_tab <- summary(srv_fit)$table
-  srv_qt_tab <- stats::quantile(srv_fit, probs = quantiles)$quantile
+  srv_qt_tab <- quantile(srv_fit, probs = quantiles)$quantile
   range_censor <- range(df[[.var]][!df[[is_event]]], na.rm = TRUE)
   range_event <- range(df[[.var]][df[[is_event]]], na.rm = TRUE)
   range <- range(df[[.var]], na.rm = TRUE)

@@ -18,6 +18,8 @@
 #' # Testing dataset.
 #' library(random.cdisc.data)
 #' library(dplyr)
+#' library(forcats)
+#' library(rtables)
 #'
 #' adtte <- radtte(cached = TRUE)
 #'
@@ -32,7 +34,7 @@
 #'   ) %>%
 #'   mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
+#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
 #'     SEX = droplevels(SEX),
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
@@ -74,6 +76,7 @@ extract_survival_subgroups <- function(variables, data, control = control_coxph(
 
 #' @describeIn survival_duration_subgroups Formatted Analysis function used to format the results of
 #'   [extract_survival_subgroups()]. Returns is a list of Formatted Analysis functions with one element per statistic.
+#' @importFrom rtables in_rows
 #' @export
 #' @examples
 #' a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))

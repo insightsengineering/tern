@@ -101,9 +101,9 @@ s_summary.numeric <- function(x,
   y$n <- dn
   y$mean_sd <- c(
     mean = if (dn > 0) mean(x) else NA_real_,
-    sd = stats::sd(x)
+    sd = sd(x)
   )
-  y$median <- stats::median(x)
+  y$median <- median(x)
   y$range <- if (dn > 0) range(x) else rep(NA_real_, 2)
 
   mean_ci_df <- stat_mean_ci(x, conf_level = conf_level, na.rm = na.rm)

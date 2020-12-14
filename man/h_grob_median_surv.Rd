@@ -4,7 +4,7 @@
 \alias{h_grob_median_surv}
 \title{Helper Function: Survival Estimation Grob}
 \usage{
-h_grob_median_surv(fit_km, ttheme = gridExtra::ttheme_default())
+h_grob_median_surv(fit_km, ttheme = ttheme_default())
 }
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
@@ -20,6 +20,7 @@ rows characterized by N, median and 95\% confidence interval.
 library(random.cdisc.data)
 library(dplyr)
 library(survival)
+library(grid)
 
 grid.newpage()
 grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
@@ -27,7 +28,7 @@ radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_grob_median_surv \%>\%
-  grid.draw
+  grid.draw()
 }
 
 }

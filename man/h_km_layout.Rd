@@ -31,8 +31,12 @@ patient at risk table.
 }
 \examples{
 \dontrun{
+library(random.cdisc.data)
+library(dplyr)
+library(survival)
+
 fit_km <- radtte(cached = TRUE) \%>\%
-filter(PARAMCD == "OS") \%>\%
+  filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)

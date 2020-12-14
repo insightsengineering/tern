@@ -45,6 +45,8 @@ groups_list_to_df <- function(groups_list) {
 #' @return a `list` with first item `ref` (reference) and second item `trt`
 #'   (treatment).
 #'
+#' @importFrom stats setNames
+#'
 #' @export
 #' @examples
 #'
@@ -102,6 +104,7 @@ combine_groups <- function(fct,
 #' @export
 #'
 #' @examples
+#' library(rtables)
 #'
 #' # 1 - Basic use
 #'
@@ -228,6 +231,8 @@ split_cols_by_groups <- function(lyt,
 #' @seealso combine_groups
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
+#'
+#' @importFrom stats setNames
 #'
 #' @export
 #'

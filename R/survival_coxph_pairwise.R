@@ -19,20 +19,30 @@
 NULL
 
 #' @describeIn survival_coxph_pairwise Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
+#'
+#' @importFrom stats as.formula
+#' @importFrom survival Surv
+#'
 #' @export
+#'
 #' @return The statistics are:
 #' * `pvalue` : p-value to test HR = 1.
 #' * `hr` : hazard ratio.
 #' * `hr_ci` : confidence interval for hazard ratio.
+#'
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#'
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- ADTTE %>%
-#'   dplyr::filter(PARAMCD == "OS") %>%
-#'   dplyr::mutate(is_event = CNSR == 0)
-#' df <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM A")
-#' df_ref_group <- ADTTE_f %>% dplyr::filter(ARMCD == "ARM B")
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
+#' df <- ADTTE_f %>%
+#'   filter(ARMCD == "ARM A")
+#' df_ref_group <- ADTTE_f %>%
+#'   filter(ARMCD == "ARM B")
+#'
 #' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 s_coxph_pairwise <- function(df,
                              .ref_group,
@@ -69,18 +79,18 @@ s_coxph_pairwise <- function(df,
     arm = group
   )
   if (is.null(strat)) {
-    formula_cox <- survival::Surv(tte, is_event) ~ arm
+    formula_cox <- Surv(tte, is_event) ~ arm
   } else {
     formula_cox <- as.formula(
       paste0(
-        "survival::Surv(tte, is_event) ~ arm + strata(",
+        "Surv(tte, is_event) ~ arm + strata(",
         paste(strat, collapse = ","),
         ")"
       )
     )
     df_cox <- cbind(df_cox, data[strat])
   }
-  cox_fit <- survival::coxph(
+  cox_fit <- coxph(
     formula = formula_cox,
     data = df_cox,
     ties = ties

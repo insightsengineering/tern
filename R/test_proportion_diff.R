@@ -39,7 +39,7 @@ prop_chisq <- function(tbl) {
   assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
   if (any(colSums(tbl) == 0)) return(1)
-  stats::prop.test(tbl, correct = FALSE)$p.value
+  prop.test(tbl, correct = FALSE)$p.value
 }
 
 
@@ -76,13 +76,14 @@ prop_cmh <- function(ary) {
     warning("<5 data points in some strata. CMH test may be incorrect.")
   }
 
-  stats::mantelhaen.test(ary, correct = FALSE)$p.value
+  mantelhaen.test(ary, correct = FALSE)$p.value
 }
 
 
 #' @describeIn prop_diff_test performs the Chi-Squared test with Schouten
 #'   correction ([Schouten 1980](
 #'   https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305)).
+#' @importFrom stats pchisq
 #' @export
 #' @order 2
 #' @examples
@@ -109,7 +110,7 @@ prop_schouten <- function(tbl) {
     (abs(prod(ad) - prod(bc)) - 0.5 * min(n1, n2))^2 /
     (n1 * n2 * sum(ac) * sum(bd))
 
-  1 - stats::pchisq(t_schouten, df = 1)
+  1 - pchisq(t_schouten, df = 1)
 }
 
 
@@ -126,7 +127,7 @@ prop_schouten <- function(tbl) {
 prop_fisher <- function(tbl) {
   assert_that(ncol(tbl) == 2, nrow(tbl) == 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
-  stats::fisher.test(tbl)$p.value
+  fisher.test(tbl)$p.value
 }
 
 
@@ -141,6 +142,8 @@ prop_fisher <- function(tbl) {
 #' @return Named `list` with a single item `pval` with an attribute `label`
 #'   describing the method used. The p-value tests the null hypothesis that
 #'   proportions in two groups are the same.
+#'
+#' @importFrom stats setNames
 #' @export
 #' @order 4
 #' @examples

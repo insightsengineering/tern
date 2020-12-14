@@ -7,7 +7,7 @@
 #' @param n_lim (`number`)\cr threshold number of non-missing `x` to estimate
 #'     the confidence interval for mean.
 #'
-#' @importFrom stats sd
+#' @importFrom stats na.omit qt sd
 #' @export
 #'
 #' @examples
@@ -34,7 +34,7 @@ stat_mean_ci <- function(x,
   if (n <= n_lim) {
     data.frame(y = mean, ymin = NA, ymax = NA)
   } else {
-    hci  <- qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
+    hci <- qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
     lcl <-  mean - hci
     ucl <-  mean + hci
     data.frame(y = mean, ymin = lcl, ymax = ucl)
@@ -52,7 +52,7 @@ stat_mean_ci <- function(x,
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
-#' @importFrom  stats pbinom qbinom qt median
+#' @importFrom stats median na.omit pbinom qbinom qt
 #' @export
 #'
 #' @examples
@@ -62,7 +62,6 @@ stat_mean_ci <- function(x,
 #'   fun.data = stat_median_ci, geom = "errorbar",
 #'   aes(group = 1, linetype = "median")
 #' )
-
 stat_median_ci <- function(x,
                            conf_level = 0.95,
                            na.rm = TRUE) { # nolint

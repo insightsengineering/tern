@@ -61,6 +61,7 @@ control_incidence_rate <- function(conf_level = 0.95,
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the
 #'   incidence rate. Unit is one person-year.
+#' @importFrom stats qnorm
 #' @export
 #' @order 2
 #' @examples
@@ -87,6 +88,7 @@ h_incidence_rate_normal <- function(person_years,
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the
 #'   logarithm of the incidence rate. Unit is one person-year.
+#' @importFrom stats qnorm
 #' @export
 #' @order 2
 #' @examples
@@ -114,6 +116,7 @@ h_incidence_rate_normal_log <- function(person_years,
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated exact confidence interval. Unit is one person-year.
+#' @importFrom stats qchisq
 #' @export
 #' @order 2
 #' @examples
@@ -139,6 +142,7 @@ h_incidence_rate_exact <- function(person_years,
 
 #' @describeIn incidence_rate helper function to estimate the incidence rate and
 #'   associated Byar's confidence interval. Unit is one person-year.
+#' @importFrom stats qnorm
 #' @export
 #' @order 2
 #' @examples
@@ -214,13 +218,14 @@ h_incidence_rate <- function(person_years,
 #' @examples
 #'
 #' library(dplyr)
+#'
 #' df <- data.frame(
 #'   USUBJID = as.character(seq(6)),
 #'   CNSR = c(0, 1, 1, 0, 0, 0),
 #'   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
 #'   ARM = factor(c("A", "A", "A", "B", "B", "B"))
 #' ) %>%
-#'   dplyr::mutate(is_event = CNSR == 0)
+#'   mutate(is_event = CNSR == 0)
 #'
 #' s_incidence_rate(
 #'   df,

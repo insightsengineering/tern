@@ -98,12 +98,13 @@ data frame.
 \examples{
 library(dplyr)
 library(lme4)
-dat <- lme4::sleepstudy \%>\%
-  dplyr::mutate(
-    group = factor(rep(c("A", "B"), length = nrow(lme4::sleepstudy))),
+
+dat <- sleepstudy \%>\%
+  mutate(
+    group = factor(rep(c("A", "B"), length = nrow(sleepstudy))),
     days_grouped = cut(
       Days,
-      breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
+      breaks = quantile(Days, probs = seq(0, 1, length = 5)),
       include.lowest = TRUE
     )
   )
@@ -121,7 +122,8 @@ result <- fit_mmrm(
 )
 as.rtable(result, type = "cov", format = "xx.x")
 
-df <- broom::tidy(result)
+library(broom)
+df <- tidy(result)
 
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
 
@@ -135,7 +137,7 @@ basic_table() \%>\%
   split_rows_by("days_grouped") \%>\%
   summarize_lsmeans(show_relative = "increase") \%>\%
   build_table(
-    df = broom::tidy(result),
+    df = tidy(result),
     col_counts = n_cols
   )
 

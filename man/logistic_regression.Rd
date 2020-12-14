@@ -221,11 +221,12 @@ with the treatment arm is included in the model.
 \examples{
 library(random.cdisc.data)
 library(dplyr)
+
 adrs <- radrs(cached = TRUE)
 adrs_f <- adrs \%>\%
-  dplyr::filter(PARAMCD == "BESRSPI") \%>\%
-  dplyr::filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%
-  dplyr::mutate(
+  filter(PARAMCD == "BESRSPI") \%>\%
+  filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%
+  mutate(
     Response = case_when(AVALC \%in\% c("PR", "CR") ~ 1, TRUE ~ 0),
     RACE = factor(RACE),
     SEX = factor(SEX)
@@ -260,8 +261,9 @@ h_logistic_simple_terms("AGE", mod1)
 
 h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
 
-df <- broom::tidy(mod1, conf_level = 0.99)
-df2 <- broom::tidy(mod2, conf_level = 0.99)
+library(broom)
+df <- tidy(mod1, conf_level = 0.99)
+df2 <- tidy(mod2, conf_level = 0.99)
 
 result1 <- basic_table() \%>\%
   summarize_logistic(conf_level = 0.95) \%>\%

@@ -134,8 +134,10 @@ per group.
 
 library(random.cdisc.data)
 library(dplyr)
+library(ggplot2)
 library(survival)
 library(grid)
+
 df <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
@@ -149,44 +151,44 @@ res <- g_km(
   control_surv = control_surv_timepoint(conf_level = 0.9),
   col = c("grey25", "grey50", "grey75")
 )
-res <- g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal())
-res <- g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal(), lty = 1:3)
+res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
+res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
 res <- g_km(df = df, variables = variables, max = 2000)
 
 # 2. Example - Arrange several KM curve on a single graph device
 
 # 2.1 Use case: A general graph on the top, a zoom on the bottom.
-grid::grid.newpage()
+grid.newpage()
 lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
-  grid::viewport(layout = .) \%>\%
+  viewport(layout = .) \%>\%
   pushViewport()
 
 res <- g_km(
   df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
-  vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
+  vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
   df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
-  ggtheme = ggplot2::theme_dark(),
-  vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
+  ggtheme = theme_dark(),
+  vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
 )
 
 # 2.1 Use case: No annotations on top, annotated graph on bottom
-grid::grid.newpage()
+grid.newpage()
 lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
-  grid::viewport(layout = .) \%>\%
+  viewport(layout = .) \%>\%
   pushViewport()
 
 res <- g_km(
   df = df, variables = variables, newpage = FALSE,
   annot_surv_med = FALSE, annot_at_risk = FALSE,
-  vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1)
+  vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
   df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
   annot_at_risk = TRUE,
-  ggtheme = ggplot2::theme_dark(),
-  vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1)
+  ggtheme = theme_dark(),
+  vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
 )
 
 # Add annotation from a pairwise coxph analysis

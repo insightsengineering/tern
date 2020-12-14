@@ -20,6 +20,8 @@ Build the y-axis annotation from a decomposed \code{ggplot}.
 \dontrun{
 library(random.cdisc.data)
 library(dplyr)
+library(survival)
+library(grid)
 
 fit_km <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%

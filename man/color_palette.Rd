@@ -35,6 +35,7 @@ the NEST project.
 }
 \examples{
 library(grid)
+
 plot_pal <- function(x) {
   grid.newpage()
   pushViewport(plotViewport(rep(1, 4)))
@@ -49,6 +50,5 @@ plot_pal(color_palette(n = 10, palette = "nest"))
 plot_pal(color_palette(n = 10, palette = "stream"))
 
 plot_pal(color_palette(n = 10, palette = "viridis"))
-
 
 }

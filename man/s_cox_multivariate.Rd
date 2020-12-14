@@ -44,11 +44,12 @@ but is out of scope as defined by the  Global Data Standards Repository
 (\strong{\code{GDS_Standard_TLG_Specs_Tables_2.doc}}).
 }
 \examples{
-library(tern)
 library(random.cdisc.data)
+library(dplyr)
+
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
-ADTTE_f <- dplyr::filter(
+ADTTE_f <- filter(
   ADTTE_f,
   PARAMCD == "OS"
   & SEX \%in\% c("F", "M")

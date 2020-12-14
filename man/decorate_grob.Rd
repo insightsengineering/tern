@@ -98,6 +98,7 @@ footnotes <- c(
 
 ## empty plot
 library(grid)
+
 grid.newpage()
 grid.draw(
   decorate_grob(
@@ -135,6 +136,7 @@ grid.draw(
 
 ## with \code{ggplot2}
 library(ggplot2)
+
 p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 p_gg
 p <- ggplotGrob(p_gg)
@@ -150,6 +152,7 @@ grid.draw(
 
 ## with \code{lattice}
 library(lattice)
+
 xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
 p <- grid.grab()
 grid.newpage()
@@ -163,10 +166,11 @@ grid.draw(
 )
 
 # no borders
+library(gridExtra)
 grid.newpage()
 grid.draw(
   decorate_grob(
-    gridExtra::tableGrob(
+    tableGrob(
       head(mtcars)
     ),
     titles = "title",

@@ -52,12 +52,13 @@ g_waterfall(
 library(random.cdisc.data)
 library(dplyr)
 
-ADSL <- cadsl
+ADSL <- radsl(cached = TRUE)
 ADSL_f <- ADSL \%>\%
   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 
-ADRS <- cadrs
-ADRS_f <- subset(ADRS, PARAMCD == "OVRINV") \%>\%
+ADRS <- radrs(cached = TRUE)
+ADRS_f <- ADRS \%>\%
+  filter(PARAMCD == "OVRINV") \%>\%
   mutate(pchg = rnorm(n(), 10, 50))
 
 ADRS_f <- head(ADRS_f, 30)

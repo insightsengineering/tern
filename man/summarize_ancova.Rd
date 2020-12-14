@@ -111,6 +111,7 @@ h_ancova(
 
 library(random.cdisc.data)
 library(dplyr)
+
 adsl <- radsl(cached = TRUE)
 adqs <- radqs(cached = TRUE)
 adqs_single <- adqs \%>\%
@@ -120,18 +121,22 @@ adqs_single <- adqs \%>\%
   ) \%>\%
   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
 
-df <- adqs_single \%>\% dplyr::filter(ARMCD == "ARM B")
+df <- adqs_single \%>\%
+  filter(ARMCD == "ARM B")
 .var <- "CHG"
 .df_row <- adqs_single
 variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
-.ref_group <- adqs_single \%>\% dplyr::filter(ARMCD == "ARM A")
+.ref_group <- adqs_single \%>\%
+  filter(ARMCD == "ARM A")
 conf_level <- 0.95
+
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 
 a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 
 library(random.cdisc.data)
 library(dplyr)
+
 adsl <- radsl(cached = TRUE)
 adqs <- radqs(cached = TRUE)
 
@@ -141,7 +146,8 @@ adqs_single <- adqs \%>\%
     PARAMCD == "FKSI-FWB"  # single end point
   ) \%>\%
   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
-adqs_multi <- filter(adqs, AVISIT == "WEEK 1 DAY 8")
+adqs_multi <- adqs \%>\%
+  filter(AVISIT == "WEEK 1 DAY 8")
 n_per_arm <- table(adsl$ARM)
 
 basic_table() \%>\%

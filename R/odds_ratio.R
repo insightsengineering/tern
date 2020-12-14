@@ -24,7 +24,7 @@ NULL
 #'   exactly 2 groups in `data` as specified by the `grp` variable.
 #'
 #' @inheritParams argument_convention
-#' @importFrom stats binomial as.formula glm coef confint setNames
+#' @importFrom stats as.formula binomial coef confint confint.default glm setNames
 #' @export
 #' @examples
 #'
@@ -51,19 +51,19 @@ or_glm <- function(data, conf_level) {
   assert_that(
     identical(nlevels(data$grp), 2L)
   )
-  formula <- stats::as.formula("rsp ~ grp")
-  model_fit <- stats::glm(
+  formula <- as.formula("rsp ~ grp")
+  model_fit <- glm(
     formula = formula, data = data,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
   # Note that here we need to discard the intercept.
-  or <- exp(stats::coef(model_fit)[-1])
+  or <- exp(coef(model_fit)[-1])
   or_ci <- exp(
-    stats::confint.default(model_fit, level = conf_level)[-1, , drop = FALSE]
+    confint.default(model_fit, level = conf_level)[-1, , drop = FALSE]
   )
 
-  values <- stats::setNames(c(or, or_ci), c("est", "lcl", "ucl"))
+  values <- setNames(c(or, or_ci), c("est", "lcl", "ucl"))
 
   list(or_ci = values)
 }
@@ -73,6 +73,7 @@ or_glm <- function(data, conf_level) {
 #'   pairwise comparisons between the groups.
 #'
 #' @inheritParams argument_convention
+#' @importFrom stats setNames
 #' @importFrom survival strata clogit coxph
 #' @export
 #' @examples
@@ -101,13 +102,13 @@ or_clogit <- function(data, conf_level) {
   data$strata <- as_factor_keep_attributes(data$strata)
 
   # Deviation from convention: `survival::strata` must be simply `strata`.
-  formula <- stats::as.formula("rsp ~ grp + strata(strata)")
-  model_fit <- survival::clogit(formula = formula, data = data)
+  formula <- as.formula("rsp ~ grp + strata(strata)")
+  model_fit <- clogit(formula = formula, data = data)
 
   # Create a list with one set of OR estimates and CI per coefficient, i.e.
   # comparison of one group vs. the reference group.
-  coef_est <- stats::coef(model_fit)
-  ci_est <- stats::confint(model_fit, level = conf_level)
+  coef_est <- coef(model_fit)
+  ci_est <- confint(model_fit, level = conf_level)
   or_ci <- list()
   for (coef_name in names(coef_est)) {
     grp_name <- gsub("^grp", "", x = coef_name)
@@ -124,6 +125,7 @@ or_clogit <- function(data, conf_level) {
 #'   needs to be passed if a stratified analysis is required.
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
+#' @importFrom stats relevel
 #' @export
 #' @examples
 #'

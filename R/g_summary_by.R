@@ -19,6 +19,7 @@
 #' @param newpage boolean should plot be drawn on newpage
 #'
 #' @import ggplot2
+#' @importFrom grid grid.newpage unit.pmax
 #' @importFrom gridExtra grid.arrange
 #'
 #' @template author_liaoc10
@@ -128,7 +129,7 @@ g_summary_by <- function(x, # nousage # nolint
     text = element_text(size = fontsize))
 
   # wrap plot and table into grobs, and align left margins
-  glist <- lapply(list(plot = p, text = t1), ggplotGrob)
+  glist <- lapply(list(plot = p, text = t1), ggplot2::ggplotGrob)
   leftmar <- do.call(unit.pmax, lapply(glist, "[[", "widths"))
   glist_aligned <- lapply(glist, function(x) {
     x$widths <- leftmar
@@ -139,8 +140,13 @@ g_summary_by <- function(x, # nousage # nolint
   if (newpage) {
     grid.newpage()
   }
-  do.call(grid.arrange, c(glist_aligned,
-                          list(ncol = 1),
-                          list(heights = c(8, length(unique(plotdat$group))))))
+  do.call(
+    gridExtra::grid.arrange,
+    c(
+      glist_aligned,
+      list(ncol = 1),
+      list(heights = c(8, length(unique(plotdat$group))))
+    )
+  )
 
 }

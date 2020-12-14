@@ -43,7 +43,7 @@ on_failure(is_character_or_factor) <- function(call, env) {
 is_nonnegative_count <- function(x) {
   if (length(x) != 1)
     return(FALSE)
-  if (!is_integerish(x, n = 1))
+  if (!rlang::is_integerish(x, n = 1))
     return(FALSE)
   x >= 0 && !is.na(x)
 }
@@ -61,7 +61,7 @@ on_failure(is_nonnegative_count) <- function(call, env) {
 #' is_variables(list(1, 2))
 #' is_variables(list("bla"))
 is_variables <- function(x) {
-  utils.nest::is_fully_named_list(x) &&
+  is_fully_named_list(x) &&
     all(vapply(x, is_character_vector, TRUE))
 }
 on_failure(is_variables) <- function(call, env) {
@@ -130,6 +130,7 @@ is_equal_length <- function(...) {
   all(y == y[1])
 }
 
+#' @importFrom stats setNames
 on_failure(is_equal_length) <- function(call, env) {
 
   y <- unlist(as.list(call)[-1])

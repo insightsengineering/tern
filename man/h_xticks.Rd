@@ -26,6 +26,7 @@ and is required in the graphic and the patient-at-risk annotation table.
 library(random.cdisc.data)
 library(dplyr)
 library(survival)
+
 data <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%

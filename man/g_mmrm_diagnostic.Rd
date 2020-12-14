@@ -43,10 +43,10 @@ library(random.cdisc.data)
 adsl <- radsl(cached = TRUE)
 adqs <- radqs(cached = TRUE)
 adqs_f <- adqs \%>\%
-  dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%
-  dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
-  dplyr::mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
+  mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
+  mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
 
 mmrm_results <- fit_mmrm(
   vars = list(

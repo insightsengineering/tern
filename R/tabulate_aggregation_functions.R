@@ -83,7 +83,7 @@ a_mean_sd <- function(x,
   # Cell format.
   # Return either a rcell or a vector.
   y <- if (rcell) {
-    rtables::rcell(c(x_bar, x_sd), format = format_fun)
+    rcell(c(x_bar, x_sd), format = format_fun)
   } else {
     c(x_bar, x_sd)
   }
@@ -127,7 +127,7 @@ a_median <- function(x,               # nousage # nolint
 
   # Cell value.
   if (any(as.integer(x[!is.na(x)]))) {
-    x_med <- stats::median(x, na.rm = na.rm)
+    x_med <- median(x, na.rm = na.rm)
   } else {
     x_med <- x_med <- NA
   }
@@ -140,7 +140,7 @@ a_median <- function(x,               # nousage # nolint
 
   # Return either a rcell or a vector.
   y <- if (rcell) {
-    rtables::rcell(x_med, format = format_fun)
+    rcell(x_med, format = format_fun)
   } else {
     x_med
   }
@@ -153,7 +153,6 @@ a_median <- function(x,               # nousage # nolint
 #'
 #' Calculates proportions
 #'
-#' @importFrom stats median
 #' @importFrom rtables rcell
 #' @export
 #' @md
@@ -213,7 +212,7 @@ a_n_true_and_freq <- function(x,
   }
 
   # Return either a formatted rcell or a vector.
-  if (rcell) y <- rtables::rcell(y, format = format_fun)
+  if (rcell) y <- rcell(y, format = format_fun)
 
   return(y)
 }
@@ -250,7 +249,7 @@ a_count <- function(x,
   }
 
   # Return either a rcell or a vector.
-  if (rcell) y <- rtables::rcell(y, format = format_fun)
+  if (rcell) y <- rcell(y, format = format_fun)
 
   return(y)
 }
@@ -316,7 +315,7 @@ a_q1q3 <- function(x,
   } else if (any(is.na(x)) & !na.rm) {
     y <- c(NA, NA)
   } else {
-    y <- stats::quantile(
+    y <- quantile(
       x, probs = c(0.25, 0.75),
       na.rm = na.rm,
       type = type,
@@ -335,7 +334,7 @@ a_q1q3 <- function(x,
   }
 
   # Return either a rcell or a vector.
-  if (rcell) y <- rtables::rcell(y, format = format_fun)
+  if (rcell) y <- rcell(y, format = format_fun)
 
   return(y)
 
@@ -376,7 +375,7 @@ a_iqr <- function(x,
   }
 
   # Return either a rcell or a vector.
-  if (rcell) y <- rtables::rcell(y, format = format_fun)
+  if (rcell) y <- rcell(y, format = format_fun)
 
   return(y)
 }
@@ -418,12 +417,13 @@ a_range <- function(x,
   }
 
   # Return either a rcell or a vector.
-  if (rcell) y <- rtables::rcell(y, format = format_fun)
+  if (rcell) y <- rcell(y, format = format_fun)
 
   return(y)
 }
 
 # Deprecated, use `a_q1q3` instead.
+#' @importFrom stats quantile
 q1_q3 <- function(x, na.rm = TRUE, type = 7) { #nolintr
   quantile(x, probs = c(0.25, 0.75), na.rm = na.rm, type = type)
 }
@@ -434,14 +434,13 @@ q1_q3 <- function(x, na.rm = TRUE, type = 7) { #nolintr
 #'
 #' @noRd
 #'
-#' @importFrom stats quantile sd median qnorm
-#'
 iqr_num <- function(x, na.rm = TRUE, type = 7) { # nolint
   diff(q1_q3(x, na.rm = na.rm, type = type))
 }
 
 
 # checks if there is any case and derives counts (percentage), otherwise 0
+#' @importFrom rtables rcell
 count_perc_col_N <- function(x_cell, n_i) { # nolint
   if (length(x_cell$id) > 0 && n_i > 0) {
     length(x_cell$id) * c(1, 1 / n_i) # obtaining the total and getting percentage
@@ -454,6 +453,7 @@ count_perc_col_N <- function(x_cell, n_i) { # nolint
 # Version with test for if-all-NA, then display empty cell
 
 # Deprecated, use `a_n_true_and_freq` instead.
+#' @importFrom rtables rcell
 positives_and_proportion2 <- function(x) { # nousage # nolint
   stopifnot(is.logical(x))
 
@@ -465,6 +465,7 @@ positives_and_proportion2 <- function(x) { # nousage # nolint
 }
 
 # Deprecated, use `a_count` instead.
+#' @importFrom rtables rcell
 n_not_na2 <- function(x) { # nousage # nolint
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
@@ -474,6 +475,8 @@ n_not_na2 <- function(x) { # nousage # nolint
 }
 
 # Deprecated, use `mean_sd` instead.
+#' @importFrom rtables rcell
+#' @importFrom stats sd
 mean_sd2 <- function(x, na.rm = TRUE) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
@@ -483,6 +486,8 @@ mean_sd2 <- function(x, na.rm = TRUE) { # nolint # nousage
 }
 
 # Deprecated, use `a_median` instead.
+#' @importFrom rtables rcell
+#' @importFrom stats median
 median_t2 <- function(x, na.rm = TRUE) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
@@ -492,6 +497,7 @@ median_t2 <- function(x, na.rm = TRUE) { # nolint # nousage
 }
 
 # Deprecated, use `a_range` instead.
+#' @importFrom rtables rcell
 range_t2 <- function(x, na.rm = TRUE) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
@@ -501,6 +507,7 @@ range_t2 <- function(x, na.rm = TRUE) { # nolint # nousage
 }
 
 # Deprecated, use `a_iqr` instead.
+#' @importFrom rtables rcell
 iqr_num2 <- function(x, na.rm = TRUE, type = 7) { # nolint # nousage
   if (all(is.na(x))) {
     rcell(" ", format = "xx")
@@ -513,6 +520,7 @@ iqr_num2 <- function(x, na.rm = TRUE, type = 7) { # nolint # nousage
 # Version with test for if-all-NA, then display NE
 
 # Deprecated, use `a_n_true_and_freq` instead.
+#' @importFrom rtables rcell
 positives_and_proportion3 <- function(x) { # nousage # nolint
   stopifnot(is.logical(x))
 
@@ -529,6 +537,8 @@ n_not_na3 <- function(x) {
 }
 
 # Deprecated, use `mean_sd` instead.
+#' @importFrom rtables rcell
+#' @importFrom stats sd
 mean_sd3 <- function(x, na.rm = TRUE) { # nolint
   if (all(is.na(x))) {
     rcell("NE", format = function(x, output) paste0(x, " (", x, ")"))
@@ -538,6 +548,8 @@ mean_sd3 <- function(x, na.rm = TRUE) { # nolint
 }
 
 # Deprecated, use `a_median` instead.
+#' @importFrom rtables rcell
+#' @importFrom stats median
 median_t3 <- function(x, na.rm = TRUE) { # nolint
   if (all(is.na(x))) {
     rcell("NE", format = "xx")
@@ -547,6 +559,7 @@ median_t3 <- function(x, na.rm = TRUE) { # nolint
 }
 
 # Deprecated, use `a_range` instead.
+#' @importFrom rtables rcell
 range_t3 <- function(x, na.rm = TRUE) { # nolint
   if (all(is.na(x))) {
     rcell("NE", format = function(x, output) paste0(x, " - ", x))
@@ -556,6 +569,7 @@ range_t3 <- function(x, na.rm = TRUE) { # nolint
 }
 
 # Deprecated, use `a_iqr` instead.
+#' @importFrom rtables rcell
 iqr_num3 <- function(x, na.rm = TRUE, type = 7) { # nolint
   if (all(is.na(x))) {
     rcell("NE", format = function(x, output) paste0(x))
@@ -649,9 +663,9 @@ ttest_ci_one_arm <- function(x,
   } else {
     n <- length(x)
     df <- n - 1
-    se <- sqrt(stats::var(x) / n)
+    se <- sqrt(var(x) / n)
     alpha <- 1 - conf_level
-    t_quantile <- stats::qt(1 - alpha / 2, df)
+    t_quantile <- qt(1 - alpha / 2, df)
     ci <- mean(x) + c(-t_quantile, t_quantile) * se
     ci
   }

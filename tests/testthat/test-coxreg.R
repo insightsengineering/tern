@@ -166,7 +166,7 @@ test_that("fit_coxreg_univar returns model results as expected", {
   expected <- list(
     mod = lapply(
       forms, function(x) {
-        survival::coxph(formula = stats::as.formula(x), data = data, ties = control$ties)
+        coxph(formula = as.formula(x), data = data, ties = control$ties)
       }
     ),
     data = data,
@@ -492,8 +492,8 @@ test_that("fit_coxreg_multivar returns model results as expected", {
   )
 
   expected <- list(
-    mod = survival::coxph(
-      formula = stats::as.formula(form),
+    mod = coxph(
+      formula = as.formula(form),
       data = data, ties = control$ties
     ),
     data = data,

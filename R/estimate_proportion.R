@@ -22,7 +22,7 @@ NULL
 #'
 prop_wilson <- function(rsp, conf_level) {
 
-  y <- stats::prop.test(
+  y <- prop.test(
     sum(rsp),
     length(rsp),
     correct = FALSE,
@@ -46,7 +46,7 @@ prop_wilson <- function(rsp, conf_level) {
 prop_clopper_pearson <- function(rsp,
                                  conf_level) {
 
-  y <- stats::binom.test(
+  y <- binom.test(
     x = sum(rsp),
     n = length(rsp),
     conf.level = conf_level
@@ -71,7 +71,7 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 
   n <- length(rsp)
   p_hat <- mean(rsp)
-  z <- stats::qnorm((1 + conf_level) / 2)
+  z <- qnorm((1 + conf_level) / 2)
   q_hat <- 1 - p_hat
   correct <- if (correct) 1 / (2 * n) else 0
 
@@ -99,7 +99,7 @@ prop_agresti_coull <- function(rsp, conf_level) {
 
   n <- length(rsp)
   x_sum <- sum(rsp)
-  z <- stats::qnorm((1 + conf_level) / 2)
+  z <- qnorm((1 + conf_level) / 2)
 
   # Add here both z^2 / 2 successes and failures.
   x_sum_tilde <- x_sum + z^2 / 2
@@ -137,13 +137,13 @@ prop_jeffreys <- function(rsp,
   l_ci <- ifelse(
     x_sum == 0,
     0,
-    stats::qbeta(alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    qbeta(alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
   )
 
   u_ci <- ifelse(
     x_sum == n,
     1,
-    stats::qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
+    qbeta(1 - alpha / 2, x_sum + 0.5, n - x_sum + 0.5)
   )
 
   c(l_ci, u_ci)

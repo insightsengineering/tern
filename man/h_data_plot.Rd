@@ -28,6 +28,7 @@ within \code{g_km}.
 library(random.cdisc.data)
 library(dplyr)
 library(survival)
+
 radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%

@@ -41,10 +41,10 @@ NULL
 #' adsl <- radsl(cached = TRUE)
 #' adqs <- radqs(cached = TRUE)
 #' adqs_f <- adqs %>%
-#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
-#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #'
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
@@ -73,7 +73,7 @@ g_mmrm_diagnostic <- function(
   model <- object$fit
   vars <- object$vars
   amended_data <- object$fit@frame
-  amended_data$.fitted <- stats::predict(
+  amended_data$.fitted <- predict(
     model,
     re.form = NA  # Don't include random effects. We want marginal fitted values.
   )
@@ -82,7 +82,7 @@ g_mmrm_diagnostic <- function(
   result <- if (type == "fit-residual") {
     ggplot(amended_data, aes_string(x = ".fitted", y = ".resid")) +
       geom_point(colour = "blue", alpha = 0.3) +
-      facet_grid(stats::as.formula(paste(". ~", vars$visit)), scales = "free_x") +
+      facet_grid(as.formula(paste(". ~", vars$visit)), scales = "free_x") +
       geom_hline(yintercept = 0) +
       geom_smooth(method = "loess", color = "red") +
       xlab("Fitted values") +
@@ -97,7 +97,7 @@ g_mmrm_diagnostic <- function(
     plot_data <- split(amended_data, amended_data[[vars$visit]]) %>%
       lapply(function(data) {
         res <- data.frame(
-          x = stats::qnorm(stats::ppoints(data$.scaled_resid)),
+          x = qnorm(ppoints(data$.scaled_resid)),
           y = sort(data$.scaled_resid)
         )
         res[[vars$visit]] <- data[[vars$visit]]  # Note that these are all the same.
@@ -109,7 +109,7 @@ g_mmrm_diagnostic <- function(
       xlab("Standard normal quantiles") +
       ylab("Standardized residuals") +
       geom_abline(intercept = 0, slope = 1) +
-      facet_grid(stats::as.formula(paste(". ~", vars$visit)))
+      facet_grid(as.formula(paste(". ~", vars$visit)))
     if (!is.null(z_threshold)) {
       label_data <- plot_data
       label_data$label <- ifelse(
@@ -155,14 +155,15 @@ g_mmrm_diagnostic <- function(
 #' @examples
 #' library(dplyr)
 #' library(random.cdisc.data)
+#' library(rtables)
 #'
 #' adsl <- radsl(cached = TRUE)
 #' adqs <- radqs(cached = TRUE)
 #' adqs_f <- adqs %>%
-#'   dplyr::filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   filter(PARAMCD=="FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
-#'   dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-#'   dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
+#'   mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
+#'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #' var_labels(adqs_f) <- var_labels(adqs)
 #'
 #' mmrm_results <- fit_mmrm(

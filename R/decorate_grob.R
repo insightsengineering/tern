@@ -60,6 +60,7 @@
 #'
 #' ## empty plot
 #' library(grid)
+#'
 #' grid.newpage()
 #' grid.draw(
 #'   decorate_grob(
@@ -97,6 +98,7 @@
 #'
 #' ## with \code{ggplot2}
 #' library(ggplot2)
+#'
 #' p_gg <- with(iris, qplot(Sepal.Length, Petal.Length, col = Species))
 #' p_gg
 #' p <- ggplotGrob(p_gg)
@@ -112,6 +114,7 @@
 #'
 #' ## with \code{lattice}
 #' library(lattice)
+#'
 #' xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
 #' p <- grid.grab()
 #' grid.newpage()
@@ -125,10 +128,11 @@
 #' )
 #'
 #' # no borders
+#' library(gridExtra)
 #' grid.newpage()
 #' grid.draw(
 #'   decorate_grob(
-#'     gridExtra::tableGrob(
+#'     tableGrob(
 #'       head(mtcars)
 #'     ),
 #'     titles = "title",
@@ -249,11 +253,13 @@ validDetails.decoratedGrob <- function(x) { # nolint
 }
 
 
+#' @importFrom grid unit
 #' @export
 widthDetails.decoratedGrob <- function(x) { # nolint
   unit(1, "null")
 }
 
+#' @importFrom grid unit
 #' @export
 heightDetails.decoratedGrob <- function(x) { # nolint
   unit(1, "null")
@@ -262,6 +268,7 @@ heightDetails.decoratedGrob <- function(x) { # nolint
 
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
+#' @importFrom grid convertWidth stringWidth
 split_string <- function(text, width) {
   availwidth <- convertWidth(width, "in", valueOnly = TRUE)
   textwidth <- convertWidth(stringWidth(text), "in", valueOnly = TRUE)
@@ -300,6 +307,7 @@ split_string <- function(text, width) {
 #' @details
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 #'
+#' @importFrom grid gpar unit
 #' @export
 #'
 #' @examples
@@ -405,6 +413,7 @@ widthDetails.dynamicSplitText <- function(x) { # nolint
 }
 
 #' @export
+#' @importFrom grid grid.draw
 drawDetails.dynamicSplitText <- function(x, recording) { # nolint
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")

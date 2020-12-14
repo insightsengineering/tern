@@ -36,15 +36,19 @@ NULL
 #' @param response_definition (`string`)\cr the definition of what an event is in terms of `response`.
 #'   This will be used when fitting the logistic regression model on the left hand side of the formula.
 #'
+#' @importFrom stats as.formula glm
+#'
 #' @export
+#'
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#'
 #' adrs <- radrs(cached = TRUE)
 #' adrs_f <- adrs %>%
-#'   dplyr::filter(PARAMCD == "BESRSPI") %>%
-#'   dplyr::filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
-#'   dplyr::mutate(
+#'   filter(PARAMCD == "BESRSPI") %>%
+#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#'   mutate(
 #'     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
 #'     RACE = factor(RACE),
 #'     SEX = factor(SEX)
@@ -102,11 +106,13 @@ fit_logistic <- function(data,
     )
     formula <- as.formula(paste0(forms, " + ", variables$arm, ":", variables$interaction))
   }
-  do.call("glm", list(formula = formula, family = "binomial", data = as.name("data")))
+  do.call(glm, list(formula = formula, family = "binomial", data = as.name("data")))
 }
 
 #' @describeIn logistic_regression Helper function to extract interaction variable names from a fitted
 #'   model assuming only one interaction term.
+#'
+#' @importFrom stats terms
 #'
 h_get_interaction_vars <- function(fit_glm) {
   assert_that("glm" %in% class(fit_glm))
@@ -148,6 +154,8 @@ h_interaction_coef_name <- function(interaction_vars,
 #'   for the case when both the odds ratio and the interaction variable are categorical.
 #' @param odds_ratio_var (`string`)\cr the odds ratio variable.
 #' @param interaction_var (`string`)\cr the interaction variable.
+#'
+#' @importFrom stats coef vcov
 #'
 h_or_cat_interaction <- function(odds_ratio_var,
                                  interaction_var,
@@ -203,6 +211,8 @@ h_or_cat_interaction <- function(odds_ratio_var,
 #' @note We don't provide a function for the case when both variables are continuous because
 #'   this does not arise in this table, as the treatment arm variable will always be involved
 #'   and categorical.
+#'
+#' @importFrom stats coef median qnorm vcov
 #'
 h_or_cont_interaction <- function(odds_ratio_var,
                                   interaction_var,
@@ -376,8 +386,12 @@ h_interaction_term_labels <- function(terms1,
 
 #' @describeIn logistic_regression Helper function to tabulate the main effect
 #'   results of a logistic regression model.
+#'
 #' @importFrom car Anova
+#' @importFrom rtables var_labels
+#'
 #' @export
+#'
 #' @examples
 #' h_glm_simple_term_extract("AGE", mod1)
 #' h_glm_simple_term_extract("ARMCD", mod1)
@@ -563,6 +577,7 @@ h_glm_interaction_extract <- function(x, fit_glm) {
 #'   results of a logistic regression model. This basically is a wrapper for
 #'   [h_or_interaction()] and [h_glm_simple_term_extract()] which puts the results
 #'   in the right data frame format.
+#' @importFrom rtables var_labels
 #' @export
 #' @examples
 #' h_glm_inter_term_extract("AGE", "ARMCD", mod2)
@@ -657,6 +672,7 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of simple terms.
+#' @importFrom stats qnorm
 #' @export
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
@@ -686,6 +702,7 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
 
 #' @describeIn logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of interaction terms.
+#' @importFrom stats qnorm
 #' @export
 #' @examples
 #' h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
@@ -779,9 +796,11 @@ h_logistic_inter_terms <- function(x,
 #' @method tidy glm
 #' @export
 #' @importFrom broom tidy
+#' @importFrom stats terms
 #' @examples
-#' df <- broom::tidy(mod1, conf_level = 0.99)
-#' df2 <- broom::tidy(mod2, conf_level = 0.99)
+#' library(broom)
+#' df <- tidy(mod1, conf_level = 0.99)
+#' df2 <- tidy(mod2, conf_level = 0.99)
 #'
 tidy.glm <- function(fit_glm, #nolint
                      conf_level = 0.95,

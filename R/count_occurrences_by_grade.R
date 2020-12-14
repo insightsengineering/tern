@@ -42,7 +42,7 @@ h_append_grade_groups <- function(grade_groups, refs) {
   for (i in seq_along(grade_groups)) {
 
     l_count_select <- result[grade_groups[[i]]]
-    frq <- do.call("sum", l_count_select)
+    frq <- do.call(sum, l_count_select)
     index <- min(vapply(names(l_count_select), grep, x = names(result), numeric(1)))
 
     result <- append(result, frq, after = index - 1)

@@ -101,14 +101,15 @@ numerical precision.
 \examples{
 library(random.cdisc.data)
 library(dplyr)
+library(rtables)
 
 adsl <- radsl(cached = TRUE)
 adqs <- radqs(cached = TRUE)
 adqs_f <- adqs \%>\%
-  dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
+  filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%
-  dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) \%>\%
-  dplyr::mutate(
+  mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) \%>\%
+  mutate(
     AVISITN = rank(AVISITN) \%>\%
     as.factor() \%>\%
     as.numeric() \%>\%

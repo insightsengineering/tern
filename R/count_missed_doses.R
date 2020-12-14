@@ -77,6 +77,7 @@ a_count_missed_doses <- make_afun(
 #' @examples
 #' library(dplyr)
 #' library(random.cdisc.data)
+#'
 #' adsl <- radsl(cached = TRUE)
 #' adex <- radex(cached = TRUE)
 #' anl <- adex %>%

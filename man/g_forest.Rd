@@ -69,19 +69,21 @@ column with a single value and a column with 2 values.
 
 library(random.cdisc.data)
 library(dplyr)
+library(forcats)
+library(rtables)
 
 adrs <- radrs(cached = TRUE)
 
 n_records <- 20
 adrs_labels <- var_labels(adrs)
 adrs <- adrs \%>\%
-  dplyr::filter(PARAMCD == "BESRSPI") \%>\%
-  dplyr::filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
-  dplyr::slice(seq_len(n_records)) \%>\%
+  filter(PARAMCD == "BESRSPI") \%>\%
+  filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
+  slice(seq_len(n_records)) \%>\%
   droplevels() \%>\%
-  dplyr::mutate(
+  mutate(
     # Reorder levels of factor to make the placebo group the reference arm.
-    ARM = forcats::fct_relevel(ARM, "B: Placebo"),
+    ARM = fct_relevel(ARM, "B: Placebo"),
     rsp = AVALC == "CR"
   )
 var_labels(adrs) <- c(adrs_labels, "Response")

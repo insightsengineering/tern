@@ -17,12 +17,13 @@ by N, median and confidence interval.
 \dontrun{
 library(random.cdisc.data)
 library(dplyr)
+library(survival)
 
 adtte <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS")
 
-fit <- survival::survfit(
-  form = survival::Surv(AVAL, 1 - CNSR) ~ ARMCD,
+fit <- survfit(
+  form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte
 )
 h_tbl_median_surv(fit_km = fit)

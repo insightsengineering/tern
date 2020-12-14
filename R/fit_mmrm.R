@@ -10,6 +10,8 @@
 #'   specification) is included. If a label is not found, the variable name is
 #'   instead used.
 #'
+#' @importFrom dplyr filter
+#' @importFrom stats complete.cases setNames
 check_mmrm_vars <- function(vars,
                             data) {
   stopifnot(is.list(vars))
@@ -45,7 +47,7 @@ check_mmrm_vars <- function(vars,
   # Subset data to observations with complete regressors.
   regressor_vars <- c(vars$arm, vars$visit, vars$parts)
   data_complete_regressors <- data %>%
-    dplyr::filter(stats::complete.cases(data[, regressor_vars])) %>%
+    dplyr::filter(complete.cases(data[, regressor_vars])) %>%
     droplevels()
 
   # Check variable values in this complete data set.
@@ -80,7 +82,7 @@ check_mmrm_vars <- function(vars,
 #'
 #' @inheritParams fit_mmrm
 #'
-#' @importFrom magrittr %>%
+#' @importFrom stats as.formula
 #'
 #' @return the complete MMRM formula to use with [lme4::lmer()].
 #'
@@ -185,7 +187,7 @@ get_lme4_cov_estimate <- function(fit) {
   # We account for the residual variance.
   id1_dim <- length(id1_indices)
   identity_id1 <- diag(1, id1_dim)
-  cov_estimate <- stats::sigma(fit)^2 * (crossprod(a_mat_id1) + identity_id1)
+  cov_estimate <- sigma(fit)^2 * (crossprod(a_mat_id1) + identity_id1)
   # Get the number of variance paramaters. Note: The sigma2 is not counted in "m",
   # and for the unstructured case we have effectively one parameter too much.
   # However, this does not have any effect on the covariance matrix estimate itself.
@@ -226,7 +228,7 @@ get_lme4_diagnostics <- function(fit,
   n_obs <- lme4::getME(fit, "n")
   df <- attr(cov_est, "n_parameters")
   m <- max(df + 2, n_obs - lme4::getME(fit, "p"))
-  log_lik <- as.numeric(stats::logLik(fit))
+  log_lik <- as.numeric(logLik(fit))
   n_subjects <- as.numeric(lme4::getME(fit, "l_i"))
 
   result <- list(
@@ -296,7 +298,7 @@ fit_lme4_single_optimizer <- function(
       list()
     )
   )
-  quiet_lmer <- purrr::quietly(lmerTest::lmer)
+  quiet_lmer <- purrr::quietly(lmer)
   quiet_fit <- quiet_lmer(
     formula = formula,
     REML = TRUE,
@@ -327,7 +329,7 @@ fit_lme4_single_optimizer <- function(
 summary_all_fits <- function(all_fits) {
   messages <- lapply(all_fits, function(x) attr(x, "messages"))
   fixef <- lapply(all_fits, lme4::fixef)
-  llik <- vapply(all_fits, stats::logLik, numeric(1))
+  llik <- vapply(all_fits, logLik, numeric(1))
   feval <- vapply(all_fits, function(x) x@optinfo$feval, numeric(1))
   res <- list(
     messages = messages,
@@ -473,11 +475,10 @@ fit_lme4 <- function(
 #'   and control arm groups at the different visits.
 #'
 #' @importFrom emmeans emmeans contrast
-#' @importFrom dplyr filter group_by_at left_join mutate n summarise rename ungroup
+#' @importFrom dplyr filter group_by_at left_join mutate n select summarise rename ungroup
 #' @importFrom rlang := !!
-#' @importFrom rtables var_labels
 #' @importFrom rlang .data
-#' @importFrom stats confint
+#' @importFrom stats as.formula confint
 #'
 get_mmrm_lsmeans <- function(fit,
                              vars,
@@ -650,14 +651,15 @@ get_mmrm_lsmeans <- function(fit,
 #' @examples
 #' library(random.cdisc.data)
 #' library(dplyr)
+#' library(rtables)
 #'
 #' adsl <- radsl(cached = TRUE)
 #' adqs <- radqs(cached = TRUE)
 #' adqs_f <- adqs %>%
-#'   dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+#'   filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%
-#'   dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
-#'   dplyr::mutate(
+#'   mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
+#'   mutate(
 #'     AVISITN = rank(AVISITN) %>%
 #'     as.factor() %>%
 #'     as.numeric() %>%
@@ -707,7 +709,7 @@ fit_mmrm <- function(
     formula = formula,
     data = data,
     optimizer = optimizer,
-    n_cores = ifelse(parallel, utils.nest::get_free_cores(), 1L)
+    n_cores = ifelse(parallel, get_free_cores(), 1L)
   )
 
   lsmeans <- get_mmrm_lsmeans(

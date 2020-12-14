@@ -76,6 +76,8 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 # Testing dataset.
 library(random.cdisc.data)
 library(dplyr)
+library(forcats)
+library(rtables)
 
 adrs <- radrs(cached = TRUE)
 adrs_labels <- var_labels(adrs)
@@ -86,7 +88,7 @@ adrs_f <- adrs \%>\%
   droplevels() \%>\%
   mutate(
     # Reorder levels of factor to make the placebo group the reference arm.
-    ARM = forcats::fct_relevel(ARM, "B: Placebo"),
+    ARM = fct_relevel(ARM, "B: Placebo"),
     rsp = AVALC == "CR"
   )
 var_labels(adrs_f) <- c(adrs_labels, "Response")

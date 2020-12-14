@@ -95,8 +95,7 @@ explicit_special <- function(formula_terms, special) {
 #'   \item{tstr}{the strata term if included in the model.}
 #' }
 #'
-#' @importFrom car Anova
-#' @importFrom stats anova update model.matrix
+#' @importFrom stats anova coef median model.matrix qnorm setNames terms update vcov
 #' @import survival
 #'
 #' @export
@@ -104,8 +103,9 @@ explicit_special <- function(formula_terms, special) {
 #' @md
 #'
 #' @examples
-#' library(tern)
 #' library(random.cdisc.data)
+#' library(survival)
+#'
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 #' ADTTE_f <- within( # nolint
@@ -252,7 +252,7 @@ s_cox_univariate <- function(formula,
         } else {
           # [^3]: If not a numeric: build contrasts
 
-          mmat <- stats::model.matrix(fit$mod)[1, ]
+          mmat <- model.matrix(fit$mod)[1, ]
           mmat[!mmat == 0] <- 0
           y <- estimate_coef(
             variable = tarm, given = rht(covariates),
@@ -392,20 +392,28 @@ rht <- function(x) {
 #'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
 #' }
 #'
+#' @importFrom stats qnorm
+#'
 #' @export
 #'
 #' @examples
 #' library(dplyr)
 #' library(random.cdisc.data)
+#' library(survival)
 #'
 #' ADSL <- radsl(cached = TRUE)
-#' ADSL <- ADSL %>% dplyr::filter(SEX %in% c("F", "M"))
+#' ADSL <- ADSL %>%
+#'   filter(SEX %in% c("F", "M"))
 #' \dontrun{
-#' ADTTE <- radtte(ADSL, seed = 2) %>% dplyr::filter(PARAMCD == "PFS")
+#' ADTTE <- radtte(ADSL, seed = 2) %>%
+#'   filter(PARAMCD == "PFS")
 #' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 #' ADTTE$SEX <- droplevels(ADTTE$SEX)
 #'
-#' mod <- coxph(formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2, data = ADTTE)
+#' mod <- coxph(
+#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (SEX + ARMCD)^2,
+#'   data = ADTTE
+#' )
 #'
 #' mmat <- model.matrix(mod)[1, ]
 #' mmat[!mmat == 0] <- 0
@@ -563,7 +571,7 @@ fit_n_aov <- function(formula,
   environment(formula) <- environment()
   suppressWarnings({
     # We expect some warnings due to coxph which fails strict programming.
-    mod <- survival::coxph(formula, data = data, ...)
+    mod <- coxph(formula, data = data, ...)
     msum <- summary(mod, conf.int = conf_level)
   })
 
@@ -658,14 +666,15 @@ check_increments <- function(increments, covariates) {
 #'
 #' @export
 #'
-#' @importFrom stats model.matrix coef vcov
+#' @importFrom stats model.matrix coef terms vcov
 #'
 #' @examples
-#' library(tern)
 #' library(random.cdisc.data)
+#' library(dplyr)
+#'
 #' ADTTE <- radtte(cached = TRUE)
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
-#' ADTTE_f <- dplyr::filter(
+#' ADTTE_f <- filter(
 #'   ADTTE_f,
 #'   PARAMCD == "OS"
 #'   & SEX %in% c("F", "M")
@@ -716,7 +725,7 @@ s_cox_multivariate <- function(formula, data,
   if (any(attr(mod$terms, "order") > 1)) {
     for_inter <- all_term_labs[attr(mod$terms, "order") > 1]
     names(for_inter) <- for_inter
-    mmat <- stats::model.matrix(mod)[1, ]
+    mmat <- model.matrix(mod)[1, ]
     mmat[!mmat == 0] <- 0
     mcoef <- coef(mod)
     mvcov <- vcov(mod)

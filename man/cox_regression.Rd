@@ -270,8 +270,8 @@ mod3 <- fit_coxreg_univar(
   control = control_coxreg(conf_level = 0.91)
 )
 
-
 library(survival)
+
 dta_simple <-  data.frame(
   time = c(5, 5, 10, 10, 5, 5, 10, 10),
   status = c(0, 0, 1, 0, 0, 1, 1, 1),
@@ -285,8 +285,9 @@ result <- h_coxreg_univar_extract(
 )
 result
 
-broom::tidy(mod1)
-broom::tidy(mod2)
+library(broom)
+tidy(mod1)
+tidy(mod2)
 
 
 # fit_coxreg_multivar
@@ -306,8 +307,8 @@ result <- h_coxreg_multivar_extract(
 )
 result
 
-
-broom::tidy(multivar_model)
+library(broom)
+tidy(multivar_model)
 
 
 # s_coxreg
@@ -319,7 +320,7 @@ univar_model <- fit_coxreg_univar(
   ),
   data = dta_bladder
 )
-df1 <- broom::tidy(univar_model)
+df1 <- tidy(univar_model)
 s_coxreg(df = df1, .var = "hr")
 
 multivar_model <- fit_coxreg_multivar(
@@ -329,7 +330,7 @@ multivar_model <- fit_coxreg_multivar(
   ),
   data = dta_bladder
 )
-df2 <- broom::tidy(multivar_model)
+df2 <- tidy(multivar_model)
 s_coxreg(df = df2, .var = "hr")
 
 

@@ -100,6 +100,7 @@ afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 
 library(dplyr)
 library(random.cdisc.data)
+
 adsl <- radsl(cached = TRUE)
 adex <- radex(cached = TRUE)
 anl <- adex \%>\%

@@ -66,8 +66,9 @@ are therefore discriminated: no interaction with the covariate (i), interaction 
 interaction with a quantitative variable without (iii) or with a specified level (iv) for the estimation.
 }
 \examples{
-library(tern)
 library(random.cdisc.data)
+library(survival)
+
 ADTTE <- radtte(cached = TRUE)
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- within( # nolint

@@ -17,6 +17,8 @@ f_conf_level <- function(conf_level) {
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #' @return a named `list` of character vector.
 #'
+#' @importFrom stats setNames
+#'
 get_covariates <- function(covariates) {
   assert_that(is.character(covariates))
   cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))

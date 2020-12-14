@@ -61,6 +61,7 @@ Draw the Kaplan-Meier plot using \code{ggplot2}.
 library(random.cdisc.data)
 library(dplyr)
 library(survival)
+
 fit_km <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)

@@ -29,11 +29,11 @@
 #'
 #' @importFrom scales col_bin
 #' @importFrom viridisLite plasma
-#' @importFrom utils.nest is_character_single is_numeric_single
 #'
 #'
 #' @examples
 #' library(grid)
+#'
 #' plot_pal <- function(x) {
 #'   grid.newpage()
 #'   pushViewport(plotViewport(rep(1, 4)))
@@ -48,7 +48,6 @@
 #' plot_pal(color_palette(n = 10, palette = "stream"))
 #'
 #' plot_pal(color_palette(n = 10, palette = "viridis"))
-#'
 #'
 color_palette <- function(n = 10, palette = "nest") {
   stopifnot(is_character_single(palette))
