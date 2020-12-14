@@ -35,6 +35,7 @@ get_adeg <- function() {
 
   var_labels(adeg_f) <- c(adeg_labels, "AVALCAT1" = "Value at Visit", "CHGCAT1" = "Change from Baseline")
 
+  adeg_f <- df_explicit_na(adeg_f)
   adeg_f
 }
 

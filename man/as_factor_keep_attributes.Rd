@@ -4,7 +4,11 @@
 \alias{as_factor_keep_attributes}
 \title{Conversion of a Vector to a Factor}
 \usage{
-as_factor_keep_attributes(x, x_name = deparse(substitute(x)))
+as_factor_keep_attributes(
+  x,
+  x_name = deparse(substitute(x)),
+  na_level = "<Missing>"
+)
 }
 \arguments{
 \item{x}{(\code{atomic})\cr object to convert.}
@@ -21,5 +25,6 @@ factor levels).
 }
 \examples{
 as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
+as_factor_keep_attributes(c("a", "b", ""), "id")
 
 }

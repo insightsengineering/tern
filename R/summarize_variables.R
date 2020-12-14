@@ -21,10 +21,13 @@ s_summary <- function(x,
                       denom,
                       .N_row,  # nolint
                       .N_col,  # nolint
+                      na_level,
                       .var,
                       conf_level,
                       ...) {
-  assert_that(is.flag(na.rm))
+  assert_that(
+    is.flag(na.rm)
+  )
   UseMethod("s_summary", x)
 }
 
@@ -84,6 +87,7 @@ s_summary.numeric <- function(x,
                               denom,
                               .N_row, # nolint
                               .N_col, #nolint
+                              na_level,
                               .var,
                               conf_level = 0.95,
                               ...) {
@@ -115,7 +119,9 @@ s_summary.numeric <- function(x,
 
 #' @describeIn summarize_variables Method for factor class. Note that,
 #'   if `x` is an empty factor, then still a list is returned for `counts` with one element
-#'   per factor level. If there are no levels in `x`, the function fails.
+#'   per factor level. If there are no levels in `x`, the function fails. If `x` contains `NA`,
+#'   it is expected that `NA` have been conveyed to `na_level` appropriately beforehand with
+#'   [df_explicit_na()] or [explicit_na()].
 #' @param denom (`string`)\cr choice of denominator for factor proportions:\cr
 #'   can be `n` (number of values in this row and column intersection), `N_row` (total
 #'   number of values in this row across columns), or `N_col` (total number of values in
@@ -142,6 +148,7 @@ s_summary.numeric <- function(x,
 #'
 #' ## Management of NA values.
 #' x <- factor(c(NA, "Female"))
+#' x <- explicit_na(x)
 #' s_summary(x, na.rm = TRUE)
 #' s_summary(x, na.rm = FALSE)
 #'
@@ -155,11 +162,15 @@ s_summary.factor <- function(x,
                              denom = c("n", "N_row", "N_col"),
                              .N_row, #nolint
                              .N_col, #nolint
+                             na_level = "<Missing>",
                              ...) {
-  assert_that(is_valid_factor(x))
+  assert_that(
+    is_valid_factor(x),
+    is_factor_no_na(x)
+  )
   denom <- match.arg(denom)
 
-  if (na.rm) x <- x[!is.na(x)]
+  if (na.rm) x <- factor(x[x != na_level], levels = setdiff(levels(x), na_level))
 
   y <- list()
 
@@ -198,18 +209,21 @@ s_summary.factor <- function(x,
 #'
 #' ## Basic usage:
 #' s_summary(c("a", "a", "b", "c", "a"), .var = "x")
+#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
 #'
 s_summary.character <- function(x,
                                 na.rm = TRUE, #nolint
                                 denom = c("n", "N_row", "N_col"),
                                 .N_row, #nolint
                                 .N_col, #nolint
+                                na_level = "<Missing>",
                                 .var,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var)
+  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level)
   s_summary(
     x = y,
     na.rm = na.rm,
+    na_level = na_level,
     denom = denom,
     .N_row = .N_row,
     .N_col = .N_col,
@@ -466,7 +480,9 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   layer to `rtables` pipelines. The analysis is applied to a vector and
 #'   return the summary, in `rcells`. The ellipsis (`...`) conveys arguments to
 #'   [s_summary()], for instance `na.rm = FALSE` if missing data should be
-#'   accounted for.
+#'   accounted for. When factor variables contains `NA`, it is expected that `NA`
+#'   have been conveyed to `na_level` appropriately beforehand with
+#'   [df_explicit_na()].
 #' @inheritParams rtables::analyze
 #' @param ... arguments passed to `s_summary()`.
 #'
@@ -504,6 +520,15 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   summarize_vars(vars = "AVAL", na.rm = FALSE)
 #'
 #' results <- build_table(l, df = dta_test)
+#'
+#' ## Handle `NA` levels first when summarizing factors.
+#' dta_test$AVISIT <- NA
+#' dta_test <- df_explicit_na(dta_test)
+#' l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+#'   summarize_vars(vars = "AVISIT", na.rm = FALSE)
+#'
+#' results <- build_table(l, df = dta_test)
+
 #'
 #' \dontrun{
 #' Viewer(results)

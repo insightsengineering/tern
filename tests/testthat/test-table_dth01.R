@@ -74,6 +74,7 @@ gen_adsl <- function() {
   # LDDTHGR1: Categorical variable with 2 levels: "<=30" and ">30"
   levels(adsl$LDDTHGR1) <- c("<=30", ">30")  # nolint snake_case
 
+  adsl <- df_explicit_na(adsl, omit_columns = setdiff(names(adsl), c("DTHCAT", "LDDTHGR1")))
   adsl
 }
 
@@ -145,6 +146,7 @@ test_that("DTH01 variant 2 is produced correctly", {
     add_colcounts() %>%
     split_rows_by(
       "LDDTHGR1",
+      split_fun = remove_split_levels("<Missing>"),
       split_label = "Primary cause by days from last study drug administration",
       visible_label = TRUE) %>%
     summarize_vars("DTHCAT") %>%
@@ -268,6 +270,7 @@ test_that("DTH01 variant 4 is produced correctly", {
     adsl$DTHCAUS_other,
     levels = c("LOST TO FOLLOW UP", "MISSING", "SUICIDE", "UNKNOWN")
   )
+  adsl$DTHCAUS_other <- explicit_na(adsl$DTHCAUS_other) # nolint snake_case
 
   part1 <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%

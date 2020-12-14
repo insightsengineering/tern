@@ -39,8 +39,8 @@ get_adsl <- function() {
   adsl_f$ETHNIC <- factor(adsl_f$ETHNIC, levels = c("Ethnicity 1", "Ethnicity 2", "Unknown"))
   adsl_f$DTHFL <- factor(adsl_f$DTHFL, levels = c("Y", "N"))
   #nolint end
+  adsl_f <- df_explicit_na(adsl_f)
   adsl_f
-
 }
 
 get_adae_trimmed <- function(adsl, adae, cutoff_rate) {

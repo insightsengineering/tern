@@ -35,6 +35,7 @@
 #' @param lyt (`layout`)\cr input layout where analyses will be added to.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_rm (`flag`)\cr (deprecated) whether `NA` values should be removed from `x` prior to analysis.
+#' @param na_level (`string`)\cr used to replace all `NA` or empty values in factors.
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
 #' @param rsp (`logical`)\cr whether each subject is a responder or not.
 #' @param show_labels label visibility: one of "default", "visible" and "hidden".

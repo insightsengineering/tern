@@ -95,9 +95,38 @@ test_that("s_summary works with factors", {
   expect_identical(result, expected)
 })
 
-test_that("s_summary works with factors with NA values and correctly removes them by default", {
+test_that("s_summary fails with factors that have no levels or have empty string levels", {
+
+  x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", ""))
+  expect_error(
+    s_summary(x),
+    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
+    fixed = TRUE
+  )
+
+  x <- factor()
+  expect_error(
+    s_summary(x),
+    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
+    fixed = TRUE
+  )
+})
+
+test_that("s_summary fails when factors have NA levels", {
+
+  x <- factor(c("Female", "Male", "Female", "Male", "Unknown", "Unknown", NA))
+  expect_error(
+    s_summary(x, na.rm = FALSE),
+    "NA in x has not been conveyed to na_level, please use explicit factor levels.",
+    fixed = TRUE
+  )
+
+})
+
+test_that("s_summary works with factors with NA values handled and correctly removes them by default", {
 
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", NA))
+  x <- explicit_na(x)
 
   result <- s_summary(x)
   expected <- list(
@@ -115,23 +144,6 @@ test_that("s_summary works with factors with NA values and correctly removes the
   )
 
   expect_identical(result, expected)
-})
-
-test_that("s_summary fails with factors that have no levels or have empty string levels", {
-
-  x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", ""))
-  expect_error(
-    s_summary(x),
-    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
-    fixed = TRUE
-  )
-
-  x <- factor()
-  expect_error(
-    s_summary(x),
-    "x is not a valid factor, please check the factor levels (no empty strings allowed)",
-    fixed = TRUE
-  )
 })
 
 test_that("s_summary works with length 0 factors that have levels", {
@@ -199,6 +211,30 @@ test_that("s_summary works with characters by converting to character", {
 
   result <- expect_warning(s_summary(x, denom = "N_row", .N_row = 20, .var = "SEX"))
   expected <- s_summary(factor(x), denom = "N_row", .N_row = 20)
+
+  expect_identical(result, expected)
+})
+
+test_that("s_summary works with characters by converting to character and handling empty strings", {
+
+  x <- c("Female", "Male", "Female", "Male", "Male", "", "Unknown", "Unknown", "Unknown", "Unknown")
+
+  result <- expect_warning(s_summary(x, .var = "foo", na.rm = FALSE, denom = "N_row", .N_row = 10))
+  expected <- list(
+    n = 10L,
+    count = list(
+      Female = 2L,
+      Male = 3L,
+      Unknown = 4L,
+      "<Missing>" = 1L
+    ),
+    count_fraction = list(
+      Female = c(2, 2 / 10),
+      Male = c(3, 3 / 10),
+      Unknown = c(4, 4 / 10),
+      "<Missing>" = c(1, 1 / 10)
+    )
+  )
 
   expect_identical(result, expected)
 })
@@ -337,6 +373,23 @@ test_that("`summarize_vars` works with healthy factor input", {
   expected_matrix <- structure(
     c("", "n", "a", "b", "all obs", "3", "2 (66.7%)", "1 (33.3%)"),
     .Dim = c(4L, 2L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("`summarize_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
+
+  dta <- data.frame(foo = factor(c("a", NA, "b", "a", NA)))
+  dta <- df_explicit_na(dta)
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    build_table(dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "n", "a", "b", "<Missing>", "all obs", "5", "2 (40%)", "1 (20%)", "2 (40%)"),
+    .Dim = c(5L, 2L)
   )
 
   expect_identical(result_matrix, expected_matrix)

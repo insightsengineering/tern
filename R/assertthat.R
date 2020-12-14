@@ -204,6 +204,21 @@ on_failure(is_valid_factor) <- function(call, env) {
   paste0(deparse(call$x), " is not a valid factor, please check the factor levels (no empty strings allowed)")
 }
 
+#' @describeIn assertions Check whether `NA` has been handled when `x` is a factor.
+#' @export
+#' @examples
+#'
+#' # Check whether `NA` has been handled when `x` is a factor.
+#' is_factor_no_na(factor(c("a", NA)))
+#' is_factor_no_na(factor(c("a", "<Missing>")))
+#'
+is_factor_no_na <- function(x) {
+  is_valid_factor(x) & !any(is.na(x))
+}
+on_failure(is_factor_no_na) <- function(call, env) {
+  paste0("NA in ", deparse(call$x), " has not been conveyed to na_level, please use explicit factor levels.")
+}
+
 #' @describeIn assertions Check whether `x` is a valid character (has no NAs and no empty strings).
 #' @export
 #' @examples

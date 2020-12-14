@@ -16,9 +16,29 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level, ...)
+s_summary(
+  x,
+  na.rm = TRUE,
+  denom,
+  .N_row,
+  .N_col,
+  na_level,
+  .var,
+  conf_level,
+  ...
+)
 
-\method{s_summary}{numeric}(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level = 0.95, ...)
+\method{s_summary}{numeric}(
+  x,
+  na.rm = TRUE,
+  denom,
+  .N_row,
+  .N_col,
+  na_level,
+  .var,
+  conf_level = 0.95,
+  ...
+)
 
 \method{s_summary}{factor}(
   x,
@@ -26,6 +46,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level, ...)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
+  na_level = "<Missing>",
   ...
 )
 
@@ -35,6 +56,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level, ...)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
+  na_level = "<Missing>",
   .var,
   ...
 )
@@ -50,7 +72,17 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level, ...)
 
 a_summary(x, ..., .N_row, .N_col, .var)
 
-\method{a_summary}{numeric}(x, na.rm = TRUE, denom, .N_row, .N_col, .var, conf_level = 0.95, ...)
+\method{a_summary}{numeric}(
+  x,
+  na.rm = TRUE,
+  denom,
+  .N_row,
+  .N_col,
+  na_level,
+  .var,
+  conf_level = 0.95,
+  ...
+)
 
 \method{a_summary}{factor}(
   x,
@@ -58,6 +90,7 @@ a_summary(x, ..., .N_row, .N_col, .var)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
+  na_level = "<Missing>",
   ...
 )
 
@@ -67,6 +100,7 @@ a_summary(x, ..., .N_row, .N_col, .var)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
+  na_level = "<Missing>",
   .var,
   ...
 )
@@ -110,6 +144,8 @@ this column across rows).}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -188,7 +224,9 @@ be returned instead of \code{NaN}, the latter being standard behavior in R.
 
 \item \code{s_summary.factor}: Method for factor class. Note that,
 if \code{x} is an empty factor, then still a list is returned for \code{counts} with one element
-per factor level. If there are no levels in \code{x}, the function fails.
+per factor level. If there are no levels in \code{x}, the function fails. If \code{x} contains \code{NA},
+it is expected that \code{NA} have been conveyed to \code{na_level} appropriately beforehand with
+\code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
 
 \item \code{s_summary.character}: Method for character class. This makes an automatic
 conversion to factor (with a warning) and then forwards to the method for factors.
@@ -214,7 +252,9 @@ Analysis function for use in layout creating functions \code{\link[=summarize_va
 layer to \code{rtables} pipelines. The analysis is applied to a vector and
 return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
 \code{\link[=s_summary]{s_summary()}}, for instance \code{na.rm = FALSE} if missing data should be
-accounted for.
+accounted for. When factor variables contains \code{NA}, it is expected that \code{NA}
+have been conveyed to \code{na_level} appropriately beforehand with
+\code{\link[=df_explicit_na]{df_explicit_na()}}.
 }}
 
 \note{
@@ -282,6 +322,7 @@ s_summary(factor(levels = c("a", "b", "c")))
 
 ## Management of NA values.
 x <- factor(c(NA, "Female"))
+x <- explicit_na(x)
 s_summary(x, na.rm = TRUE)
 s_summary(x, na.rm = FALSE)
 
@@ -294,6 +335,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 
 ## Basic usage:
 s_summary(c("a", "a", "b", "c", "a"), .var = "x")
+s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE)
 
 # `s_summary.logical`
 
@@ -386,6 +428,14 @@ as_html(results)
 l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   summarize_vars(vars = "AVAL", na.rm = FALSE)
+
+results <- build_table(l, df = dta_test)
+
+## Handle `NA` levels first when summarizing factors.
+dta_test$AVISIT <- NA
+dta_test <- df_explicit_na(dta_test)
+l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+  summarize_vars(vars = "AVISIT", na.rm = FALSE)
 
 results <- build_table(l, df = dta_test)
 

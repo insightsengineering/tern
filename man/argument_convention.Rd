@@ -50,6 +50,8 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 
 \item{na_rm}{(\code{flag})\cr (deprecated) whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
+
 \item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
 
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}

@@ -159,8 +159,9 @@ has_no_na <- function(x) { # nousage # nolint
 #'
 #' @examples
 #' as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
+#' as_factor_keep_attributes(c("a", "b", ""), "id")
 #'
-as_factor_keep_attributes <- function(x, x_name = deparse(substitute(x))) {
+as_factor_keep_attributes <- function(x, x_name = deparse(substitute(x)), na_level = "<Missing>") {
   assert_that(
     is.atomic(x),
     is.string(x_name)
@@ -178,7 +179,18 @@ as_factor_keep_attributes <- function(x, x_name = deparse(substitute(x))) {
       x_name, "has length 0, this can lead to tabulation failures, better convert to factor"
     ))
   }
-  do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
+  if (is.character(x)) {
+    x_no_na <- explicit_na(sas_na(x), label = na_level)
+    if (any(na_level %in% x_no_na)) {
+      do.call(structure, c(
+        list(.Data = forcats::fct_relevel(x_no_na, na_level, after = Inf)), attributes(x)
+      ))
+    } else {
+      do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
+    }
+  } else {
+    do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
+  }
 }
 
 #' Create String Representation

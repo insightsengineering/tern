@@ -5,7 +5,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Counting patients with abnormal values by baseline status: `s_count_abnormal_by_baseline` and `count_abnormal_by_baseline`.
 * Counting patients with missed doses: `s_count_missed_doses` and `count_missed_doses`.
 * Counting patients with event flags: `s_count_patients_with_event`, `count_patients_with_event` and `count_patients_with_flags`.
-* Summarize variables: S3 generic `s_summary` (with numeric, factor, character and logical methods), `summarize_vars`.
+* Summarize variables: S3 generic `s_summary` (with numeric, factor, character and logical methods), `summarize_vars`. `summarize_vars` expects `NA` to be conveyed to `na_level` appropriately before use.
 * Summarize change from baseline: `s_change_from_baseline` and `summarize_change`.
 * Summarize variables in columns: `summarize_colvars` (which also works with `s_summary`).
 * Estimate difference in terms of responder proportions: `estimate_proportion_diff`, `s_proportion_diff`.

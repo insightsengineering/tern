@@ -8,6 +8,16 @@ test_that("as_factor_keep_attributes works correctly for a character vector", {
   expect_identical(result, expected)
 })
 
+test_that("as_factor_keep_attributes converts empty strings for a character vector", {
+  foo <- with_label(c("a", "", "b"), "alphabet")
+  result <- expect_warning(
+    as_factor_keep_attributes(foo, na_level = "missing"),
+    "automatically converting character variable foo to factor"
+  )
+  expected <- with_label(factor(c("a", "missing", "b"), levels = c("a", "b", "missing")), "alphabet")
+  expect_identical(result, expected)
+})
+
 test_that("as_factor_keep_attributes shows correct name of vector in warning", {
   foo <- with_label(c("a", "b"), "alphabet")
   expect_warning(

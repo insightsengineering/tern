@@ -11,6 +11,7 @@
 \alias{is_proportion}
 \alias{is_proportion_vector}
 \alias{is_valid_factor}
+\alias{is_factor_no_na}
 \alias{is_valid_character}
 \alias{all_elements_in_ref}
 \alias{has_tabletree_colnames}
@@ -33,6 +34,8 @@ is_proportion(x, include_boundaries = FALSE)
 is_proportion_vector(x, include_boundaries = FALSE)
 
 is_valid_factor(x)
+
+is_factor_no_na(x)
 
 is_valid_character(x)
 
@@ -82,6 +85,8 @@ are all factors.
 \item \code{is_proportion_vector}: Check whether \code{x} is a vector of proportions (numbers between 0 and 1).
 
 \item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
+
+\item \code{is_factor_no_na}: Check whether \code{NA} has been handled when \code{x} is a factor.
 
 \item \code{is_valid_character}: Check whether \code{x} is a valid character (has no NAs and no empty strings).
 
@@ -146,6 +151,11 @@ is_valid_factor(-1)
 is_valid_factor(factor(c("a", "b")))
 is_valid_factor(factor(c("a", "")))
 is_valid_factor(factor())
+
+
+# Check whether `NA` has been handled when `x` is a factor.
+is_factor_no_na(factor(c("a", NA)))
+is_factor_no_na(factor(c("a", "<Missing>")))
 
 
 # Check whether `x` is a valid character vector
