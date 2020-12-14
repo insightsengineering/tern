@@ -233,3 +233,22 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("s_count_patients_with_event works with factor filters", {
+  test_data <- data.frame(
+    SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
+    AEOUT = c(
+      "RECOVERING/RESOLVING", "RECOVERED/RESOLVED", "RECOVERING/RESOLVING",
+      "NOT RECOVERED/NOT RESOLVED", "RECOVERED/RESOLVED WITH SEQUELAE", "UNKNOWN",
+      "FATAL", "RECOVERED/RESOLVED WITH SEQUELAE", "FATAL"
+    ),
+    stringsAsFactors = TRUE
+  )
+  result <- s_count_patients_with_event(
+    test_data,
+    .var = "SUBJID",
+    filters = c("AEOUT" = "FATAL")
+  )
+  expected <- list(n = 3, count = 1, count_fraction = c(1.0000000, 0.3333333))
+  expect_equal(result, expected, tolerance = 1e-7)
+})

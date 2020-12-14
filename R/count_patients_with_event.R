@@ -67,7 +67,7 @@ s_count_patients_with_event <- function(df,
     filter_values
   )
   position_satisfy_filters <- Reduce(intersect, temp)
-  id_satisfy_filters <- unique(df[position_satisfy_filters, ][[.var]])
+  id_satisfy_filters <- as.character(unique(df[position_satisfy_filters, ][[.var]]))
   result <- s_count_values(
     as.character(unique(df[[.var]])),
     id_satisfy_filters,
