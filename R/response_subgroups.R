@@ -162,8 +162,7 @@ tabulate_rsp_subgroups <- function(lyt,
       lyt = lyt_prop,
       vars = colvars_prop$vars,
       varlabels = colvars_prop$labels
-    ) %>%
-      append_topleft("Baseline Risk Factors")
+    )
 
     if ("analysis" %in% df$prop$row_type) {
 
@@ -205,7 +204,8 @@ tabulate_rsp_subgroups <- function(lyt,
     lyt = lyt_or,
     var = "var_label",
     cfun = afun_lst[names(colvars_or$labels)]
-  )
+  ) %>%
+    append_topleft("Baseline Risk Factors")
 
   if ("analysis" %in% df$or$row_type) {
     lyt_or <- split_rows_by(

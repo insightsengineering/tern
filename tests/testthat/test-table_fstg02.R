@@ -161,7 +161,7 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
       "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
       "", "95", "93", "80", " ", "Hazard Ratio", "0.84", "", "0.65",
       "1.23", "", "1.06", "0.61", "0.77", " ", "90% Wald CI", "(0.65, 1.08)",

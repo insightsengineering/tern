@@ -114,7 +114,7 @@ test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is 
 
   expected_matrix <- structure(
     c(
-      "", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
+      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Stratification Factor 2",
       "S1", "S2", " ", "Total n", "200", "", "120", "80", "", "105",
       "95", " ", "Odds Ratio", "3.68", "", "5.83", "1.67", "", "3.50",
       "3.95", " ", "90% CI", "(1.91, 7.09)", "", "(2.41, 14.12)", "(0.59, 4.74)",

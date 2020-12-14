@@ -175,8 +175,7 @@ tabulate_survival_subgroups <- function(lyt,
       lyt = lyt_survtime,
       vars = colvars_survtime$vars,
       varlabels = colvars_survtime$labels
-    ) %>%
-      append_topleft("Baseline Risk Factors")
+    )
 
     if ("analysis" %in% df$survtime$row_type) {
       lyt_survtime <- split_rows_by(
@@ -217,7 +216,9 @@ tabulate_survival_subgroups <- function(lyt,
     lyt = lyt_hr,
     vars = colvars_hr$vars,
     varlabels = colvars_hr$labels
-  )
+  ) %>%
+    append_topleft("Baseline Risk Factors")
+
   if ("analysis" %in% df$survtime$row_type) {
     lyt_hr <- split_rows_by(
       lyt = lyt_hr,
