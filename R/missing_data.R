@@ -23,7 +23,7 @@ explicit_na <- function(x, label = "<Missing>") {
   stopifnot(is_character_single(label))
 
   if (is.factor(x)) {
-    forcats::fct_explicit_na(x, label)
+    fct_explicit_na(x, label)
   } else if (is.character(x)) {
     x[is.na(x)] <- label
     x

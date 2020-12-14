@@ -14,9 +14,13 @@ as_factor_keep_attributes(
 \item{x}{(\code{atomic})\cr object to convert.}
 
 \item{x_name}{(\code{string})\cr name of \code{x}.}
+
+\item{na_level}{(\code{string})\cr the explicit missing level which should be used when
+converting a character vector.}
 }
 \value{
-The factor with same attributes (except class) as \code{x}.
+The factor with same attributes (except class) as \code{x}. Does not do any modifications
+if \code{x} is already a factor.
 }
 \description{
 Converts \code{x} to a factor and keeps its attributes. Warns appropriately such that the user

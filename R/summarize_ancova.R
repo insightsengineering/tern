@@ -63,7 +63,7 @@ h_ancova <- function(.var,
     formula = formula,
     data = .df_row
   )
-  emmeans_fit <- emmeans::emmeans(
+  emmeans_fit <- emmeans(
     lm_fit,
     # Specify here the group variable over which EMM are desired.
     specs = arm,

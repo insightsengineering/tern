@@ -73,7 +73,7 @@ format_count_fraction <- function(x, ...) {
 
   assert_that(
     is.vector(x),
-    rlang::is_integerish(x[1]),
+    is_integerish(x[1]),
     is_proportion(x[2], include_boundaries = TRUE)
   )
 

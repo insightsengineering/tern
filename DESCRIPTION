@@ -14,7 +14,9 @@ Authors@R: c(
   person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
-  person("Godwin", "Yung", email = "yungg@gene.com", role = "aut")
+  person("Godwin", "Yung", email = "yungg@gene.com", role = "aut"),
+  person("Carreras", "Maximo", email = "maximo.carreras@roche.com", role = "aut"),
+  person("Zhao", "Rui", email = "zhaor8@gene.com", role = "aut")
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
@@ -72,9 +74,7 @@ Collate:
     'abnormal_by_worst_grade.R'
     'argument_convention.R'
     'assertthat.R'
-    'check_data.R'
     'combination_function.R'
-    'conf_level.R'
     'control_survival.R'
     'count_cumulative.R'
     'count_missed_doses.R'
@@ -86,16 +86,12 @@ Collate:
     'cox_regression.R'
     'coxph.R'
     'decorate_grob.R'
-    'deprecated.R'
     'df_explicit_na.R'
-    'doc_example.R'
-    'dummy.R'
     'estimate_incidence_rate.R'
     'estimate_multinomial_rsp.R'
     'estimate_proportion.R'
     'fit_mmrm.R'
     'footnotes.R'
-    'formulas.R'
     'g_forest.R'
     'g_mmrm.R'
     'g_summary_by.R'
@@ -125,7 +121,6 @@ Collate:
     'survival_duration_subgroups.R'
     'survival_time.R'
     'survival_timepoint.R'
-    'tabulate_aggregation_functions.R'
     'tabulate_mmrm.R'
     'test_proportion_diff.R'
     'testthat_skip.R'

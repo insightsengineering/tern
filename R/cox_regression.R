@@ -399,7 +399,7 @@ h_coxreg_univar_extract <- function(effect,
 
   mod_aov <- muffled_car_anova(mod, test_statistic)
   msum <- summary(mod, conf.int = control$conf_level)
-  sum_cox <- broom::tidy(msum)
+  sum_cox <- tidy(msum)
 
   # Combine results together.
   effect_aov <- mod_aov[effect, , drop = TRUE]
@@ -606,7 +606,7 @@ h_coxreg_extract_interaction <- function(effect,
 
     # Test the main treatment effect.
     mod_aov <- muffled_car_anova(mod, test_statistic)
-    sum_anova <- broom::tidy(mod_aov)
+    sum_anova <- tidy(mod_aov)
     pval <- sum_anova[sum_anova$term == effect, ][["p.value"]]
 
     # Test the interaction effect.
@@ -884,8 +884,8 @@ h_coxreg_multivar_extract <- function(var,
   mod_aov <- muffled_car_anova(mod, test_statistic)
 
   msum <- summary(mod, conf.int = control$conf_level)
-  sum_anova <- broom::tidy(mod_aov)
-  sum_cox <- broom::tidy(msum)
+  sum_anova <- tidy(mod_aov)
+  sum_cox <- tidy(msum)
 
   ret_anova <- sum_anova[sum_anova$term == var, c("term", "p.value")]
   names(ret_anova)[2] <- "pval"
@@ -902,12 +902,12 @@ h_coxreg_multivar_extract <- function(var,
     ret_anova$term_label <- paste0(varlab, " (reference = ", levels(data[[var]])[1], ")")
     ret_cox$level <- gsub(var, "", ret_cox$level)
     ret_cox$term_label <- ret_cox$level
-    ret <- dplyr::bind_rows(ret_anova, ret_cox)
+    ret <- bind_rows(ret_anova, ret_cox)
   } else {
     ret_anova$term_label <- paste0(varlab, " (reference = ", levels(data[[var]])[1], ")")
     ret_cox$level <- gsub(var, "", ret_cox$level)
     ret_cox$term_label <- ret_cox$level
-    ret <- dplyr::bind_rows(ret_anova, ret_cox)
+    ret <- bind_rows(ret_anova, ret_cox)
   }
 
   as.data.frame(ret)
@@ -1095,7 +1095,7 @@ muffled_car_anova <- function(mod, test_statistic) {
   tryCatch(
     withCallingHandlers(
       expr = {
-        car::Anova(
+        Anova(
           mod,
           test.statistic = test_statistic,
           type = "III"

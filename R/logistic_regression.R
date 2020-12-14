@@ -416,7 +416,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
   x_stats$df <- as.list(1)
   if (xs_class[x] == "numeric") {
     x_stats$term <- x
-    x_stats$term_label <- var_labels(fit_glm$data[x])
+    x_stats$term_label <- var_labels(fit_glm$data[x], fill = TRUE)
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
   } else {
@@ -425,7 +425,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats$term_label <- h_simple_term_labels(x_stats$term, x_numbers)
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
-    main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
+    main_effects <- Anova(fit_glm, type = 3, test.statistic = "Wald")
     x_main <- data.frame(
       pvalue = main_effects[x, "Pr(>Chisq)", drop = TRUE],
       term = xs_level[[x]][1],
@@ -446,7 +446,7 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats <- rbind(x_main, x_stats)
   }
   x_stats$variable <- x
-  x_stats$variable_label <- var_labels(fit_glm$data[x])
+  x_stats$variable_label <- var_labels(fit_glm$data[x], fill = TRUE)
   x_stats$interaction <- ""
   x_stats$interaction_label <- ""
   x_stats$reference <- ""
@@ -491,7 +491,7 @@ h_glm_interaction_extract <- function(x, fit_glm) {
   )
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
-  main_effects <- car::Anova(fit_glm, type = 3, test.statistic = "Wald")
+  main_effects <- Anova(fit_glm, type = 3, test.statistic = "Wald")
   stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
   v1_comp <- xs_level[[vars[1]]][-1]
   if (xs_class[vars[2]] == "numeric") {
@@ -546,9 +546,9 @@ h_glm_interaction_extract <- function(x, fit_glm) {
   x_stats$variable <- x
   x_stats$variable_label <- paste(
     "Interaction of",
-    var_labels(fit_glm$data[vars[1]]),
+    var_labels(fit_glm$data[vars[1]], fill = TRUE),
     "*",
-    var_labels(fit_glm$data[vars[2]])
+    var_labels(fit_glm$data[vars[2]], fill = TRUE)
   )
   x_stats$interaction <- ""
   x_stats$interaction_label <- ""
@@ -611,11 +611,11 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
     }
     or_stats <- data.frame(
       variable = odds_ratio_var,
-      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var])),
+      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       term = odds_ratio_var,
-      term_label = unname(var_labels(fit_glm$data[odds_ratio_var])),
+      term_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       interaction = interaction_var,
-      interaction_label = unname(var_labels(fit_glm$data[interaction_var])),
+      interaction_label = unname(var_labels(fit_glm$data[interaction_var], fill = TRUE)),
       reference = references,
       reference_label = references,
       estimate = NA,
@@ -643,11 +643,11 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
     }
     or_stats <- data.frame(
       variable = odds_ratio_var,
-      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var])),
+      variable_label = unname(var_labels(fit_glm$data[odds_ratio_var], fill = TRUE)),
       term = rep(names(or_numbers), each = n_ref),
       term_label = h_simple_term_labels(rep(names(or_numbers), each = n_ref), table(fit_glm$data[[odds_ratio_var]])),
       interaction = interaction_var,
-      interaction_label = unname(var_labels(fit_glm$data[interaction_var])),
+      interaction_label = unname(var_labels(fit_glm$data[interaction_var], fill = TRUE)),
       reference = unlist(lapply(or_numbers, names)),
       reference_label = unlist(lapply(or_numbers, names)),
       estimate = NA,
@@ -802,7 +802,7 @@ h_logistic_inter_terms <- function(x,
 #' df <- tidy(mod1, conf_level = 0.99)
 #' df2 <- tidy(mod2, conf_level = 0.99)
 #'
-tidy.glm <- function(fit_glm, #nolint
+tidy.glm <- function(fit_glm, #nolint #nousage
                      conf_level = 0.95,
                      at = NULL) {
   assert_that(

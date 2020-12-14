@@ -1,4 +1,3 @@
-
 # nolint start
 testing_depth <- function() { # nolintr # nousage
 

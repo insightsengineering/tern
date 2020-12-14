@@ -30,6 +30,8 @@ Authors:
   \item Adrian Waddell \email{adrian.waddell@roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
   \item Godwin Yung \email{yungg@gene.com}
+  \item Carreras Maximo \email{maximo.carreras@roche.com}
+  \item Zhao Rui \email{zhaor8@gene.com}
 }
 
 Other contributors:

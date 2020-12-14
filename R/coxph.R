@@ -1,4 +1,3 @@
-
 #' Pairwise formula special term
 #'
 #' The special term `pairwise` indicate that the model should be fitted individually for
@@ -14,8 +13,9 @@
 #' @export
 #'
 #' @md
-pairwise <- function(x) structure(x, varname = deparse(substitute(x)))
-
+pairwise <- function(x) {
+  structure(x, varname = deparse(substitute(x)))
+}
 
 #' Univariate formula special term
 #'
@@ -35,26 +35,9 @@ pairwise <- function(x) structure(x, varname = deparse(substitute(x)))
 #' @export
 #'
 #' @md
-univariate <- function(x) structure(x, varname = deparse(substitute(x)))
-
-
-
-explicit_special <- function(formula_terms, special) {
-  y <- attr(formula_terms, "specials")[[special]]
-  if (!is.null(attr(formula_terms, "specials")[[special]])) {
-    y <- list()
-    # i, index; t, term; v, variable
-    y$i <- attr(formula_terms, "specials")[[special]]
-    y$t <- rownames(attr(formula_terms, "factors"))[y$i]
-    y$v <- gsub(".*\\((.*)\\).*", "\\1", y$t)
-  } else {
-    y <- NULL
-  }
-  return(y)
+univariate <- function(x) {
+  structure(x, varname = deparse(substitute(x)))
 }
-
-
-
 
 #' Cox regression including a single covariate - summarized results
 #'
@@ -167,7 +150,7 @@ s_cox_univariate <- function(formula,
   )
 
   check_covariate_formulas(covariates)
-  check_numeric_range(conf_level, min = 0, max = 1)
+  assert_that(is_proportion(conf_level, include_boundaries = TRUE))
   pval_method <- match.arg(pval_method)
 
   covariates <- name_covariate_names(covariates)
@@ -524,7 +507,7 @@ try_car_anova <- function(mod,
       expr = {
         warn_text <- c()
         list(
-          aov = car::Anova(
+          aov = Anova(
             mod,
             test.statistic = test.statistic,
             type = "III"

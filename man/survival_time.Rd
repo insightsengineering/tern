@@ -99,6 +99,7 @@ ADTTE_f <- ADTTE \%>\%
   )
 df <- ADTTE_f \%>\% filter(ARMCD == "ARM A")
 s_surv_time(df, .var = "AVAL", is_event = "is_event")
+
 a_surv_time(df, .var = "AVAL", is_event = "is_event")
 
 split_cols_by(lyt = NULL, var = "ARMCD") \%>\%

@@ -81,7 +81,8 @@ data. Primary analysis variables are the dictionary terms. All occurrences are c
 counts. Multiple occurrences within patient at the lowest term level displayed in the table are
 counted only once. Note that by default occurrences which don't appear in a given row split
 are dropped from the table and the occurrences in the table are sorted alphabetically per row split.
-Use \code{drop = FALSE} if you would like to show all occurrences.
+Therefore the corresponding layout needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by}
+calls. Use \code{drop = FALSE} if you would like to show all occurrences.
 }
 \section{Functions}{
 \itemize{

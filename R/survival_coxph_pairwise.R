@@ -44,6 +44,7 @@ NULL
 #'   filter(ARMCD == "ARM B")
 #'
 #' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
+#'
 s_coxph_pairwise <- function(df,
                              .ref_group,
                              .in_ref_col,
@@ -114,7 +115,7 @@ s_coxph_pairwise <- function(df,
 #' @export
 #'
 #' @examples
-#' a_dummy_sum(c(1, 2))
+#' a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 #'
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,

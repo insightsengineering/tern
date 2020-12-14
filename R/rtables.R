@@ -1,15 +1,3 @@
-#' Prototype Functions to Work with `rtables`
-#'
-#' This summarizes the prototype functions that we currently use to work with
-#' rtables. Note: These are really just prototypes. These are not final and
-#' will likely later be part of rtables.
-#'
-#' @seealso [to_string_matrix()], [flatten_list()], [list_length()],
-#'   [list_lengths_in_list()], [labels_or_names()], [identical_without_attr()],
-#'   [format_wrap_df()], [format_wrap_x()]
-#' @name rtables_prototypes
-NULL
-
 #' Convert Table into Matrix of Strings
 #'
 #' Helper function to use mostly within tests.
@@ -19,6 +7,7 @@ NULL
 #' @return matrix of strings
 #'
 #' @export
+#'
 to_string_matrix <- function(x) {
   matrix_form(x)$string
 }
@@ -71,345 +60,6 @@ cfun_by_flag <- function(analysis_var,
       labelstr
     )
   }
-}
-
-#' Flatten a List by One Level
-#'
-#' Internal function used by the automatically created formatting functions.
-#' Elements of the original input list which have been a list themselves are replaced
-#' by the corresponding elements of the lower level list.
-#'
-#' @param x possibly nested list
-#'
-#' @return list with one list level flattened out
-#'
-#' @importFrom stats setNames
-flatten_list <- function(x) {
-  assert_that(is.list(x))
-  x_mod <- Map(
-    function(x, n) {
-      if (is.list(x)) x else setNames(list(x), n)
-    },
-    x = x,
-    n = names(x)
-  )
-  result <- do.call(c, c(x_mod, use.names = FALSE))
-  return(result)
-}
-
-#' List Length Definition
-#'
-#' Internal helper function to deal with possibly nested lists.
-#' We might call this result "list length" since only lists count here.
-#'
-#' @param x list or vector
-#'
-#' @return the length of the list, or 1 in case of a vector
-list_length <- function(x) {
-  result <- if (!is.list(x)) {
-    1L
-  } else {
-    length(x)
-  }
-  return(result)
-}
-
-#' List Lengths for a List
-#'
-#' Internal helper function to deal with possibly nested lists.
-#'
-#' @param x a list
-#'
-#' @return the list lengths of all elements
-#' @seealso \code{\link{list_length}}
-list_lengths_in_list <- function(x) {
-  assert_that(is.list(x))
-  vapply(x, list_length, 1L)
-}
-
-#' Labels or Names of List Elements
-#'
-#' Internal helper function for working with nested statistic function results which typically
-#' don't have labels but names that we can use.
-#'
-#' @param x a list
-#'
-#' @return a character vector with the labels or names for the list elements
-#'
-#' @importFrom rlang names2
-labels_or_names <- function(x) {
-  assert_that(is.list(x))
-  labs <- sapply(x, obj_label)
-  nams <- rlang::names2(x)
-  label_is_null <- sapply(labs, is.null)
-  result <- unlist(ifelse(label_is_null, nams, labs))
-  return(result)
-}
-
-#' Compare Without Considering Attributes
-#'
-#' Helper function used in format wrapper functions.
-#'
-#' @details This function only works on the top level of the objects,
-#'   i.e. if a list is compared with another list, then we still consider
-#'   attributes of the individual list elements when doing the comparison.
-#'
-#' @note Note that there is a difference of this function compared to the
-#'   behavior of [all.equal]. For example, the latter will not return `TRUE`
-#'   if `x` and `y` just differ in their class attribute, even when using it
-#'   with argument `check.attributes = FALSE`.
-#'
-#' @param x first object
-#' @param y second object
-#'
-#' @return A single logical value, `TRUE` or `FALSE`, never `NA` and never
-#'   anything other than a single value.
-identical_without_attr <- function(x, y) {
-  attributes(x) <- NULL
-  attributes(y) <- NULL
-  identical(x, y)
-}
-
-#' Construct Formatted Analysis Functions
-#'
-#' The returned function has first argument `df` or `x` and uses any additional arguments for the
-#' original `sfun`. It has additional four formatting arguments:
-#' \describe{
-#'   \item{.stats}{character vector to select statistics from the `sfun` result}
-#'   \item{.indent_mods}{named vector with custom (nonnegative) indent modifications}
-#'   \item{.formats}{named vector with custom formats}
-#'   \item{.labels}{named vector with custom labels}
-#' }
-#' Note that `.indent_mods`, `.formats` and `.labels` don't need to contain an element for each
-#' statistic, as they have defaults initialized either from the arguments below (for indents and formats)
-#' or from the `sfun` results (for labels).
-#'
-#' @param sfun the original statistics function returning a named list of results
-#' @param indent_mods named vector with default (nonnegative) indent modifications
-#' @param formats named vector with default formats
-#'
-#' @return the constructed analysis function
-#'
-#' @details For comparison functions it is common to return "empty" results for the
-#' comparison column. This can be specified by returning empty strings `""` in the
-#' corresponding statistics from the statistics function, along with the usual labels.
-#' The Formatted Analysis function which is returned from these wrapper constructors
-#' will then replace the old formats with the default format `"xx"` that works with these
-#' empty strings. The table cells will then stay empty.
-#'
-#' @name format_wrap
-NULL
-
-#' @describeIn format_wrap the wrapper for `sfun` having `df` as first argument.
-#'
-#' @importFrom rtables in_rows
-format_wrap_df <- function(sfun, #nousage #nolint
-                           indent_mods,
-                           formats) {
-  assert_that(
-    is.function(sfun),
-    identical(names(formals(sfun)[1]), "df"),
-    all(sapply(indent_mods, is_nonnegative_count)),
-    all(sapply(formats, is_rcell_format)),
-    !is.null(names(indent_mods)),
-    identical(names(indent_mods), names(formats))
-  )
-
-  # Find out which rtables arguments are requested by the statistics function.
-  rtables_arg_names <- c(".N_row", ".N_col", ".N_total", ".var", ".df_row", ".ref_group", ".ref_full", ".in_ref_col")
-  selected_arg_names <- intersect(
-    names(formals(sfun)),
-    rtables_arg_names
-  )
-
-  afun <- function(df,
-                   ...,
-                   .stats, .indent_mods, .formats, .labels) {
-
-    # Call statistics function with arguments df, ..., and requested rtables arguments.
-    # (Note that these will be available in this function signature, see below.)
-    rtables_args <- mget(selected_arg_names)
-    all_args <- c(
-      list(df = df),
-      list(...),
-      rtables_args
-    )
-    vals <- as.list(do.call(sfun, all_args))
-
-    # Overwrite defaults with user choices.
-    if (!missing(.formats)) {
-      formats[names(.formats)] <- .formats
-    }
-    if (!missing(.indent_mods)) {
-      indent_mods[names(.indent_mods)] <- .indent_mods
-    }
-    stats <- names(vals)
-    if (!missing(.stats)) {
-      stats <- .stats
-    }
-
-    # Subset values before formatting so we operate on top list level.
-    # Note that statistics could be duplicate in `vals` therefore the more careful
-    # subsetting here.
-    vals <- vals[which(names(vals) %in% stats)]
-
-    # Replicate formats and indents to accommodate nested lists.
-    rep_index <- rep(names(vals), list_lengths_in_list(vals))
-    formats <- formats[rep_index]
-    indent_mods <- indent_mods[rep_index]
-
-    vals_flat <- flatten_list(vals)
-
-    # Now we can construct labels.
-    labels <- labels_or_names(vals_flat)
-    if (!missing(.labels)) {
-      labels[names(.labels)] <- .labels
-    }
-
-    # Handle the case of empty strings in general.
-    vals_is_empty_string <- vapply(
-      vals_flat,
-      FUN = identical_without_attr,
-      y = "",
-      FUN.VALUE = TRUE
-    )
-    formats[vals_is_empty_string] <- "xx"
-
-    indented_labels <- Map(
-      function(indent, label) {
-        indent_space <- paste(rep(" ", as.integer(indent)), collapse = "")
-        paste0(indent_space, label)
-      },
-      indent = indent_mods,
-      label = labels
-    )
-
-    # Do the formatting.
-    vals_formatted <- Map(
-      CellValue,
-      val = vals_flat,
-      format = formats,
-      label = indented_labels
-    )
-
-    # Put formatted values in list.
-    rows <- in_rows(
-      .list = vals_formatted
-    )
-    return(rows)
-  }
-
-  # Finally add the requested rtables arguments to the formals of afun.
-  add_formals <- as.pairlist(sapply(selected_arg_names, function(x) substitute()))
-  new_formals <- c(formals(afun), add_formals)
-  formals(afun) <- new_formals
-  return(afun)
-}
-
-#' @describeIn format_wrap the wrapper for `sfun` having `x` as first argument.
-#'
-#' @importFrom rtables in_rows
-format_wrap_x <- function(sfun,  #nousage #nolint
-                          indent_mods,
-                          formats) {
-  assert_that(
-    is.function(sfun),
-    identical(names(formals(sfun)[1]), "x"),
-    all(sapply(indent_mods, is_nonnegative_count)),
-    all(sapply(formats, is_rcell_format)),
-    !is.null(names(indent_mods)),
-    identical(names(indent_mods), names(formats))
-  )
-
-  # Find out which rtables arguments are requested by the statistics function.
-  rtables_arg_names <- c(".N_row", ".N_col", ".N_total", ".var", ".df_row", ".ref_group", ".ref_full", ".in_ref_col")
-  selected_arg_names <- intersect(
-    names(formals(sfun)),
-    rtables_arg_names
-  )
-
-  afun <- function(x,
-                   ...,
-                   .stats, .indent_mods, .formats, .labels) {
-
-    # Call statistics function with arguments x, ..., and requested rtables arguments.
-    # (Note that these will be available in this function signature, see below.)
-    rtables_args <- mget(selected_arg_names)
-    all_args <- c(
-      list(x = x),
-      list(...),
-      rtables_args
-    )
-    vals <- as.list(do.call(sfun, all_args))
-
-    # Overwrite defaults with user choices.
-    if (!missing(.formats)) {
-      formats[names(.formats)] <- .formats
-    }
-    if (!missing(.indent_mods)) {
-      indent_mods[names(.indent_mods)] <- .indent_mods
-    }
-    stats <- names(vals)
-    if (!missing(.stats)) {
-      stats <- .stats
-    }
-
-    # Subset values before formatting so we operate on top list level.
-    # Note that statistics could be duplicate in `vals` therefore the more careful
-    # subsetting here.
-    vals <- vals[which(names(vals) %in% stats)]
-
-    # Replicate formats and indents to accommodate nested lists.
-    rep_index <- rep(names(vals), list_lengths_in_list(vals))
-    formats <- formats[rep_index]
-    indent_mods <- indent_mods[rep_index]
-
-    vals_flat <- flatten_list(vals)
-
-    # Now we can construct labels.
-    labels <- labels_or_names(vals_flat)  # default labels are extracted from flattened result list.
-    if (!missing(.labels)) {
-      labels[names(.labels)] <- .labels
-    }
-
-    # Handle the case of empty strings in general.
-    vals_is_empty_string <- vapply(
-      vals_flat,
-      FUN = identical_without_attr,
-      y = "",
-      FUN.VALUE = TRUE
-    )
-    formats[vals_is_empty_string] <- "xx"
-
-    indented_labels <- Map(
-      function(indent, label) {
-        indent_space <- paste(rep(" ", as.integer(indent)), collapse = "")
-        paste0(indent_space, label)
-      },
-      indent = indent_mods,
-      label = labels
-    )
-
-    # Do the formatting.
-    vals_formatted <- Map(
-      CellValue,
-      val = vals_flat,
-      format = formats,
-      label = indented_labels
-    )
-
-    # Put formatted values in list.
-    rows <- in_rows(
-      .list = vals_formatted
-    )
-    return(rows)
-  }
-
-  # Finally add the requested rtables arguments to the formals of afun.
-  add_formals <- as.pairlist(sapply(selected_arg_names, function(x) substitute()))
-  new_formals <- c(formals(afun), add_formals)
-  formals(afun) <- new_formals
-  return(afun)
 }
 
 #' Content Row Function to Add Row Total to Labels
@@ -476,6 +126,24 @@ h_col_indices <- function(table_tree, col_names) {
   match(col_names, names(table_tree))
 }
 
+#' Labels or Names of List Elements
+#'
+#' Internal helper function for working with nested statistic function results which typically
+#' don't have labels but names that we can use.
+#'
+#' @param x a list
+#'
+#' @return a character vector with the labels or names for the list elements
+#'
+#' @importFrom rlang names2
+labels_or_names <- function(x) {
+  assert_that(is.list(x))
+  labs <- sapply(x, obj_label)
+  nams <- rlang::names2(x)
+  label_is_null <- sapply(labs, is.null)
+  result <- unlist(ifelse(label_is_null, nams, labs))
+  return(result)
+}
 
 #' Convert to `rtable`
 #'

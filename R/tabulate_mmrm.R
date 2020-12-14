@@ -109,7 +109,7 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 #' library(broom)
 #' df <- tidy(result)
 #'
-tidy.mmrm <- function(x) {  #nolint
+tidy.mmrm <- function(x) {  #nolint #nousage
   contrasts <- x$lsmeans$contrasts
   estimates <- x$lsmeans$estimates
   vars <- x$vars
@@ -122,7 +122,7 @@ tidy.mmrm <- function(x) {  #nolint
     all = TRUE
   )
   df$conf_level <- x$conf_level
-  tibble::as_tibble(df)
+  as_tibble(df)
 }
 
 #' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied LS means

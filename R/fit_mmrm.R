@@ -62,7 +62,7 @@ check_mmrm_vars <- function(vars,
 
   # Remove all entries where response is NA, droplevels as well.
   data_complete <- data_complete_regressors %>%
-    dplyr::filter(!is.na(data_complete_regressors[, vars$response])) %>%
+    filter(!is.na(data_complete_regressors[, vars$response])) %>%
     droplevels()
 
   # Check all arms will still be present after NA filtering.
@@ -163,7 +163,7 @@ build_mmrm_formula <- function(
 get_lme4_cov_estimate <- function(fit) {
   stopifnot(is(fit, "merMod"))
   # A list of the grouping variables (factors) involved in the random effect terms.
-  grouping_factors <- lme4::getME(fit, "flist")
+  grouping_factors <- getME(fit, "flist")
   # We only have one here (id).
   stopifnot(identical(length(grouping_factors), 1L))
   id_var <- grouping_factors[[1L]]
@@ -177,7 +177,7 @@ get_lme4_cov_estimate <- function(fit) {
   # Lambda = relative covariance factor Lambda of the random effects
   # (note "relative", i.e. it does not include the sigma yet, therefore it is multiplied
   # below in the last step)
-  a_mat <- as.matrix(lme4::getME(fit, "A"))
+  a_mat <- as.matrix(getME(fit, "A"))
   # Find out where in the row space id1 random effects are.
   a_mat_id1_cols <- a_mat[, id1_indices]
   row_indices_with_id1 <- which(apply(a_mat_id1_cols, 1L, function(x) any(x != 0)))
@@ -191,7 +191,7 @@ get_lme4_cov_estimate <- function(fit) {
   # Get the number of variance paramaters. Note: The sigma2 is not counted in "m",
   # and for the unstructured case we have effectively one parameter too much.
   # However, this does not have any effect on the covariance matrix estimate itself.
-  n_parameters <- as.integer(min(lme4::getME(fit, "m") + 1, id1_dim * (id1_dim + 1) / 2))
+  n_parameters <- as.integer(min(getME(fit, "m") + 1, id1_dim * (id1_dim + 1) / 2))
   # Finally, we add the attributes.
   result <- structure(
     unname(cov_estimate),
@@ -223,9 +223,9 @@ get_lme4_cov_estimate <- function(fit) {
 get_lme4_diagnostics <- function(fit,
                                  cov_est = get_lme4_cov_estimate(fit)) {
   stopifnot(is(fit, "lmerModLmerTest"))
-  stopifnot(lme4::isREML(fit))
+  stopifnot(isREML(fit))
 
-  n_obs <- lme4::getME(fit, "n")
+  n_obs <- getME(fit, "n")
   df <- attr(cov_est, "n_parameters")
   m <- max(df + 2, n_obs - lme4::getME(fit, "p"))
   log_lik <- as.numeric(logLik(fit))
@@ -277,7 +277,7 @@ fit_lme4_single_optimizer <- function(
   if (optimizer == "automatic") {
     optimizer <- "nloptwrap_bobyqa"
   }
-  control <- lme4::lmerControl(
+  control <- lmerControl(
     # We need this to be able to fit unstructured covariance matrix models.
     check.nobs.vs.nRE = "ignore",
     optimizer = switch(
@@ -389,7 +389,7 @@ refit_lme4_all_optimizers <- function(original_fit,
       n_cores
     )
   )
-  quiet_mclapply <- purrr::quietly(parallel::mclapply)
+  quiet_mclapply <- quietly(mclapply)
   all_fits <- quiet_mclapply(
     X = all_optimizers,
     FUN = function(opt) {
@@ -485,7 +485,7 @@ get_mmrm_lsmeans <- function(fit,
                              conf_level,
                              weights) {
   data_complete <- fit@frame
-  lsmeans <- emmeans::emmeans(
+  lsmeans <- emmeans(
     fit,
     mode = "satterthwaite",
     specs = as.formula(paste("~ ", vars$arm, "|", vars$visit)),
@@ -501,7 +501,7 @@ get_mmrm_lsmeans <- function(fit,
   # Adjusted estimate for each arm.
   estimates <- confint(lsmeans, level = conf_level) %>%
     as.data.frame() %>%
-    dplyr::rename(
+    rename(
       estimate = .data$emmean,
       se = .data$SE,
       lower_cl = .data$lower.CL,
@@ -509,14 +509,14 @@ get_mmrm_lsmeans <- function(fit,
     )
 
   data_n <- data_complete %>%
-    dplyr::group_by_at(.vars = c(vars$visit, vars$arm)) %>%
-    dplyr::summarise(n = dplyr::n()) %>%
-    dplyr::ungroup()
+    group_by_at(.vars = c(vars$visit, vars$arm)) %>%
+    summarise(n = n()) %>%
+    ungroup()
 
   estimates <- suppressWarnings(
     # We don't have labels in `estimates`, which triggers a warning.
     estimates %>%
-      dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
+      left_join(data_n, by = c(vars$visit, vars$arm))
   )
 
   # Get LS means for reference group to join into full dataframe so that relative reduction in
@@ -524,19 +524,19 @@ get_mmrm_lsmeans <- function(fit,
   arm_levels <- levels(data_complete[[vars$arm]])
   reference_level <- arm_levels[1]
   means_at_ref <- estimates %>%
-    dplyr::filter(!!as.symbol(vars$arm) == reference_level) %>%
-    dplyr::select(c(vars$visit, "estimate")) %>%
-    dplyr::rename(ref = .data$estimate)
+    filter(!!as.symbol(vars$arm) == reference_level) %>%
+    select(c(vars$visit, "estimate")) %>%
+    rename(ref = .data$estimate)
 
   relative_reduc <- estimates %>%
-    dplyr::filter(!!as.symbol(vars$arm) != reference_level) %>%
-    dplyr::left_join(means_at_ref, by = c(vars$visit)) %>%
-    dplyr::mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
-    dplyr::select(c(vars$visit, vars$arm, "relative_reduc"))
+    filter(!!as.symbol(vars$arm) != reference_level) %>%
+    left_join(means_at_ref, by = c(vars$visit)) %>%
+    mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
+    select(c(vars$visit, vars$arm, "relative_reduc"))
 
   # Start with the differences between LS means.
   sum_fit_diff <- summary(
-    emmeans::contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
+    contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
     level = conf_level,
     infer = c(TRUE, TRUE),
     adjust = "none"
@@ -545,17 +545,17 @@ get_mmrm_lsmeans <- function(fit,
   # Get the comparison group name from "contrast" column,
   # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
   contrasts <- sum_fit_diff %>%
-    dplyr::mutate(
+    mutate(
       col_by = factor(
         gsub(paste0("\\s-\\s", reference_level), "", contrast),
         levels = arm_levels
       )
     ) %>%
-    dplyr::select(-contrast) %>%
-    dplyr::rename(!!as.symbol(vars$arm) := .data$col_by) %>%
-    dplyr::left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
-    dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
-    dplyr::rename(
+    select(-contrast) %>%
+    rename(!!as.symbol(vars$arm) := .data$col_by) %>%
+    left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
+    mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
+    rename(
       se = .data$SE,
       lower_cl = .data$lower.CL,
       upper_cl = .data$upper.CL,
@@ -700,9 +700,10 @@ fit_mmrm <- function(
   parallel = FALSE
 ) {
   labels <- check_mmrm_vars(vars, data)
-  check_conf_level(conf_level)
-  stopifnot(is.logical(parallel), identical(length(parallel), 1L))
-
+  assert_that(
+    is_proportion(conf_level),
+    is.flag(parallel)
+  )
   formula <- build_mmrm_formula(vars, cor_struct)
 
   fit <- fit_lme4(

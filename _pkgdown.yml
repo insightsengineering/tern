@@ -46,7 +46,6 @@ reference:
       - s_cox_multivariate
       - s_coxph_pairwise
       - s_coxreg
-      - s_dummy_sum
       - s_incidence_rate
       - s_length_proportion
       - s_mmrm_lsmeans
@@ -77,7 +76,6 @@ reference:
        - a_count_patients_with_event
        - a_coxph_pairwise
        - a_coxreg
-       - a_dummy_sum
        - a_mmrm_lsmeans
        - a_response_subgroups
        - a_survival_subgroups
@@ -104,7 +102,6 @@ reference:
        - count_occurrences_by_grade
        - count_patients_with_event
        - count_patients_with_flags
-       - dummy_sum
        - estimate_proportion
        - estimate_proportion_diff
        - estimate_incidence_rate
@@ -144,7 +141,6 @@ reference:
       - h_coxreg_multivar_extract
       - h_coxreg_univar_formulas
       - h_coxreg_multivar_formula
-      - h_dummy_sum
       - h_incidence_rate
       - h_incidence_rate_byar
       - h_incidence_rate_exact
@@ -216,13 +212,6 @@ reference:
       - s_logistic_interaction
       - s_adj_proportion_diff
       - s_ancova
-      - a_mean_sd
-      - a_median
-      - a_n_true_and_freq
-      - a_count
-      - a_q1q3
-      - a_iqr
-      - a_range
       - d_proportion
       - d_test_proportion_diff
       - estimate_coef
@@ -243,8 +232,6 @@ reference:
   - title: rtables Helper Functions
     desc: these functions help to work with the new rtables package and might be moved there later
     contents:
-      - format_wrap_df
-      - format_wrap_x
       - to_string_matrix
       - add_rowcounts
       - h_col_counts
@@ -262,7 +249,7 @@ reference:
       - make_names
       - unlist_and_blank_na
       - cfun_by_flag
-      - append_varlabel
+      - append_varlabels
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
@@ -338,17 +325,9 @@ reference:
       - is_proportion
       - is_proportion_vector
 
-  - title: Deprecated Functions
-    desc: These functions will eventually be removed
-    contents:
-      - check_is_event
-
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
-      - check_data_frame
-      - check_conf_level
-      - to_string_with_names
       - check_mmrm_vars
       - build_mmrm_formula
       - fit_lme4_single_optimizer
@@ -360,11 +339,6 @@ reference:
       - get_lme4_diagnostics
       - to_group_color
       - try_car_anova
-      - flatten_list
-      - list_length
-      - list_lengths_in_list
-      - labels_or_names
-      - identical_without_attr
       - d_proportion_diff
       - d_test_proportion_diff
       - d_onco_rsp_label
@@ -377,3 +351,4 @@ reference:
       - d_survival_subgroups_colvars
       - afun_selected_stats
       - extract
+      - labels_or_names

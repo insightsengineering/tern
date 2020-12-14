@@ -1,28 +1,27 @@
 # tern 0.7.0
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
-* Counting patients with abnormal values post-baseline: `s_count_abnormal` and `count_abnormal`.
-* Counting patients with graded abnormal values: `s_count_abnormal_by_worst_grade` and `count_abnormal_by_worst_grade`.
-* Counting patients with abnormal values by baseline status: `s_count_abnormal_by_baseline` and `count_abnormal_by_baseline`.
-* Counting patients with missed doses: `s_count_missed_doses` and `count_missed_doses`.
-* Counting patients with event flags: `s_count_patients_with_event`, `count_patients_with_event` and `count_patients_with_flags`.
-* Summarize variables: S3 generic `s_summary` (with numeric, factor, character and logical methods), `summarize_vars`. `summarize_vars` expects `NA` to be conveyed to `na_level` appropriately before use.
-* Summarize change from baseline: `s_change_from_baseline` and `summarize_change`.
-* Summarize variables in columns: `summarize_colvars` (which also works with `s_summary`).
-* Estimate difference in terms of responder proportions: `estimate_proportion_diff`, `s_proportion_diff`.
-* Estimate difference in terms of Odds Ratio: `estimate_odds_ratio`, `s_odds_ratio`, `or_glm`, `or_clogit`.
-* Test the difference in responder proportions: `test_proportion_diff`, `s_test_proportion_diff`, `prop_chisq`, `prop_cmh`, `prop_fisher`, `prop_schouten`.
-* Estimate the responder proportion regarding the level of a factor: `estimate_multinomial_response`.
-* New method for calculating the confidence interval in `s_incidence_rate`: Normal approximation for log rate
-* Fit and tabulate the results of Cox regressions: `fit_coxreg_univar`, `fit_coxreg_multivar`, `s_coxreg`, `summarize_coxreg`.
-* Pruning functions for occurrence tables (or tables with counts and fractions), see `?prune_occurrences`.
-* Scoring functions for occurrence tables, see `?score_occurrences`.
-* MMRM are now with with `fit_mmrm` and tabulated with `as.rtable` and `summarize_lsmeans`, see `?tabulate_mmrm` for details.
-* Count the number of unique and non-unique patients with `summarize_num_patients`.
-* Count occurrences with `count_occurrences`.
-* Count occurrences by grade with `s_count_occurrences_by_grade`, `summarize_occurrences_by_grade` and `count_occurrences_by_grade`.
-* Counting patients and events in columns with `summarize_patients_events_in_cols` and underlying `s_count_patients_and_multiple_events`.
-* Tabulate the binary outcome response by subgroup with `extract_rsp_subgroups` and `tabulate_rsp_subgroups`.
-* Tabulate survival duration by subgroup with `extract_survival_subgroups` and `tabulate_survival_subgroups`.
+* Counting patients with abnormal values post-baseline with `count_abnormal`.
+* Counting patients with graded abnormal values with `count_abnormal_by_worst_grade`.
+* Counting patients with abnormal values by baseline status with `count_abnormal_by_baseline`.
+* Counting patients with missed doses with `s_count_missed_doses` and `count_missed_doses`.
+* Counting patients with event flags with `count_patients_with_event` and `count_patients_with_flags`.
+* Summarizing variables with `summarize_vars` (supports numeric, factor, character and logical variables). Note that factors need to have `NA`s converted to `na_level` before use.
+* Summarizing change from baseline with `summarize_change`.
+* Summarizing variables in columns with `summarize_colvars`.
+* Estimating difference in terms of responder proportions with `estimate_proportion_diff`.
+* Estimating difference in terms of Odds Ratio with `estimate_odds_ratio`.
+* Testing the difference in responder proportions with `test_proportion_diff`.
+* Estimating the responder proportion regarding the level of a factor with `estimate_multinomial_response`.
+* Fitting and tabulating the results of Cox regressions with `fit_coxreg_univar`, `fit_coxreg_multivar` and `summarize_coxreg`, respectively.
+* Pruning occurrence tables (or tables with counts and fractions) with flexible rules, see `?prune_occurrences` for details.
+* Sorting occurrence tables using different options, see `?score_occurrences` for details.
+* Fitting and tabulating MMRMs with `fit_mmrm` and `as.rtable` and `summarize_lsmeans`, see `?tabulate_mmrm` for details.
+* Counting the number of unique and non-unique patients with `summarize_num_patients`.
+* Counting occurrences with `count_occurrences`.
+* Counting occurrences by grade with `summarize_occurrences_by_grade` and `count_occurrences_by_grade`.
+* Counting patients and events in columns with `summarize_patients_events_in_cols`.
+* Tabulating the binary outcome response by subgroup with `extract_rsp_subgroups` and `tabulate_rsp_subgroups`.
+* Tabulating the survival duration by subgroup with `extract_survival_subgroups` and `tabulate_survival_subgroups`.
 
 # tern 0.6.9
 * Removing not used imports.

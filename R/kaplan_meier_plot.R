@@ -371,7 +371,7 @@ g_km <- function(df,
 h_data_plot <- function(fit_km,
                         xticks = NULL,
                         max_time = NULL) {
-  y <- broom::tidy(fit_km)
+  y <- tidy(fit_km)
   y$censor <- ifelse(y$n.censor > 0, y$estimate, NA)
   if (!is.null(xticks)) {
     y <- y[y$time <= max(xticks), ]
@@ -414,7 +414,7 @@ h_data_plot <- function(fit_km,
 #'
 h_xticks <- function(data, xticks = NULL) {
   if (is.null(xticks)) {
-    labeling::extended(range(data$time)[1], range(data$time)[2], m = 5)
+    extended(range(data$time)[1], range(data$time)[2], m = 5)
   } else if (is.number(xticks)) {
     seq(0, max(data$time), xticks)
   } else if (is.numeric(xticks)) {
@@ -583,7 +583,7 @@ h_ggkm <- function(data,
 #' }
 #'
 h_decompose_gg <- function(gg) {
-  g_el <- ggplot2::ggplotGrob(gg)
+  g_el <- ggplotGrob(gg)
   y <- c(
     panel = "panel",
     yaxis = "axis-l",
@@ -592,7 +592,7 @@ h_decompose_gg <- function(gg) {
     ylab = "ylab-l",
     guide = "guide"
   )
-  lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
+  lapply(X = y, function(x) gtable_filter(g_el, x))
 }
 
 

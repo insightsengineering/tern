@@ -317,7 +317,7 @@ forest_grob <- function(tbl,
   }
 
   if (is.null(xlim)) {
-    xlim <- grDevices::extendrange(c(x, lower, upper))
+    xlim <- extendrange(c(x, lower, upper))
   }
 
   if (logx) {

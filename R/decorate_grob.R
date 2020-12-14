@@ -238,7 +238,7 @@ decorate_grob <- function(grob,
 
 
 #' @export
-validDetails.decoratedGrob <- function(x) { # nolint
+validDetails.decoratedGrob <- function(x) { #nolint #nousage
   stopifnot(
     is.grob(x$grob) || is.null(x$grob),
     is.character(x$titles),
@@ -255,13 +255,13 @@ validDetails.decoratedGrob <- function(x) { # nolint
 
 #' @importFrom grid unit
 #' @export
-widthDetails.decoratedGrob <- function(x) { # nolint
+widthDetails.decoratedGrob <- function(x) { #nolint #nousage
   unit(1, "null")
 }
 
 #' @importFrom grid unit
 #' @export
-heightDetails.decoratedGrob <- function(x) { # nolint
+heightDetails.decoratedGrob <- function(x) { #nolint #nousage
   unit(1, "null")
 }
 
@@ -388,7 +388,7 @@ split_text_grob <- function(text,
 }
 
 #' @export
-validDetails.dynamicSplitText <- function(x) { # nolint
+validDetails.dynamicSplitText <- function(x) { #nolint #nousage
   stopifnot(
     is.character(x$text),
     is.unit(x$width) && length(x$width) == 1
@@ -398,7 +398,7 @@ validDetails.dynamicSplitText <- function(x) { # nolint
 }
 
 #' @export
-heightDetails.dynamicSplitText <- function(x) { # nolint
+heightDetails.dynamicSplitText <- function(x) { #nolint #nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
@@ -408,13 +408,13 @@ heightDetails.dynamicSplitText <- function(x) { # nolint
 }
 
 #' @export
-widthDetails.dynamicSplitText <- function(x) { # nolint
+widthDetails.dynamicSplitText <- function(x) { #nolint #nousage
   x$width
 }
 
 #' @export
 #' @importFrom grid grid.draw
-drawDetails.dynamicSplitText <- function(x, recording) { # nolint
+drawDetails.dynamicSplitText <- function(x, recording) { #nolint #nousage
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {

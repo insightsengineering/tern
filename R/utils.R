@@ -59,77 +59,16 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 }
 
 
-#' Add Labels for Data Frame Columns
+#' Replicate Entries of a Vector if Required
 #'
-#' Re-attach labels to variables in a data frame.
+#' Note that this will fail if `x` is not having length `n` or being a scalar.
 #'
-#' @param df a data.frame
-#' @param labels a named vector with the labels. names are variable names
+#' @inheritParams argument_convention
+#' @param n (`count`)\cr how many entries we need.
 #'
-#' @noRd
+#' @return Just input `x` if it has the required length already or is `NULL`,
+#'   otherwise if it is scalar the replicated version of it with `n` entries.
 #'
-#' @examples
-#'
-#' df <- data.frame(c = c(1, 2), b = c("a", "b"), a = c(3,4))
-#'
-#' labels <- setNames(c("a var", "b var"), c("a", "b"))
-#'
-#' X <- tern:::add_labels(df, labels)
-#'
-#' \dontrun{
-#' View(X)
-#' }
-#'
-add_labels <- function(df, labels) { # nousage # nolint
-  for (name in names(df)) {
-    lab <- labels[name]
-    if (!is.na(lab[1]) && length(lab) == 1) {
-      attr(df[[name]], "label") <- lab
-    }
-  }
-  df
-}
-
-
-#' Remove Shared Variables
-#'
-#' Variables are considered shared if they have the same variable name.
-#'
-#' @param x a data.frame
-#' @param y a data.frame
-#' @param keep optional, a vector with variable names that should not be removed
-#'
-#' @return a data.frame
-#'
-#' @export
-#'
-#' @examples
-#' drop_shared_variables(iris, iris[, 1:3])
-#'
-drop_shared_variables <- function(x, y, keep) {
-  stopifnot(
-    is.data.frame(x),
-    is.data.frame(y)
-  )
-
-  if (missing(keep)) {
-    keep <- character(0)
-  }
-
-  df <- x[, !(names(x) %in% setdiff(names(y), keep)), drop = FALSE]
-
-  for (a in c("md5sum", "source", "access_by", "accessed_on")) {
-    attr(df, a) <- attr(x, a)
-  }
-
-  df
-}
-
-
-start_with_null <- function(x) {
-  c(list(NULL), x)
-}
-
 to_n <- function(x, n) {
   if (is.null(x)) {
     NULL
@@ -142,10 +81,6 @@ to_n <- function(x, n) {
   }
 }
 
-has_no_na <- function(x) { # nousage # nolint
-  !any(is.na(x))
-}
-
 #' Conversion of a Vector to a Factor
 #'
 #' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
@@ -154,8 +89,11 @@ has_no_na <- function(x) { # nousage # nolint
 #'
 #' @param x (`atomic`)\cr object to convert.
 #' @param x_name (`string`)\cr name of `x`.
+#' @param na_level (`string`)\cr the explicit missing level which should be used when
+#'   converting a character vector.
 #'
-#' @return The factor with same attributes (except class) as `x`.
+#' @return The factor with same attributes (except class) as `x`. Does not do any modifications
+#'   if `x` is already a factor.
 #'
 #' @export
 #'
@@ -163,10 +101,13 @@ has_no_na <- function(x) { # nousage # nolint
 #' as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
 #' as_factor_keep_attributes(c("a", "b", ""), "id")
 #'
-as_factor_keep_attributes <- function(x, x_name = deparse(substitute(x)), na_level = "<Missing>") {
+as_factor_keep_attributes <- function(x,
+                                      x_name = deparse(substitute(x)),
+                                      na_level = "<Missing>") {
   assert_that(
     is.atomic(x),
-    is.string(x_name)
+    is.string(x_name),
+    is.string(na_level)
   )
   if (is.factor(x)) {
     return(x)
@@ -184,9 +125,13 @@ as_factor_keep_attributes <- function(x, x_name = deparse(substitute(x)), na_lev
   if (is.character(x)) {
     x_no_na <- explicit_na(sas_na(x), label = na_level)
     if (any(na_level %in% x_no_na)) {
-      do.call(structure, c(
-        list(.Data = forcats::fct_relevel(x_no_na, na_level, after = Inf)), attributes(x)
-      ))
+      do.call(
+        structure,
+        c(
+          list(.Data = forcats::fct_relevel(x_no_na, na_level, after = Inf)),
+          attributes(x)
+        )
+      )
     } else {
       do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
     }
@@ -195,55 +140,15 @@ as_factor_keep_attributes <- function(x, x_name = deparse(substitute(x)), na_lev
   }
 }
 
-#' Create String Representation
+#' Check an Arm Variable
 #'
-#' Create a string representation of the object's contents with names.
+#' @inheritParams argument_convention
+#' @param x (`data.frame` or `vector`)\cr input data.
+#' @param col_N (`numeric`)\cr explicit column counts.
+#' @param min_num_levels (`count`)\cr minimum number of levels that `col_by` needs to have.
 #'
-#' @param x object
+#' @return Nothing, just passes without error if everything is ok.
 #'
-#' @return string of the form \code{"key1: val1, keey2: val2, ..."}
-#'
-#' @examples
-#' tern:::to_string_with_names(list(a = 1, 2))
-#'
-to_string_with_names <- function(x) { # nousage # nolint
-  # also works for more general
-  paste(names(x), x, sep = ":", collapse = ", ")
-}
-
-#' Capitalize a String
-#'
-#' Capitalize the first letters of the words in a single string.
-#'
-#' @noRd
-#'
-#' @examples
-#'
-#' capitalize("hello world")
-#' tools::toTitleCase("hello world")
-#'
-capitalize <- function(x) {
-  stopifnot(is_character_single(x))
-
-  paste0(toupper(substring(x, 1, 1)), substring(x, 2))
-}
-
-#' Cut a character string at a certain width
-#' @noRd
-trunc_if_longer <- function(x, width = 40) {
-  stopifnot(is_character_single(x))
-
-  if (nchar(x) > width) {
-    warning(paste0("Label ", x, " is truncated to 40 characters"))
-    res <- paste0(substr(x, 1, width - 3), "...")
-  } else {
-    res <- x
-  }
-
-  res
-
-}
-
 check_col_by_factor <- function(x,
                                 col_by,
                                 col_N, # nolint
@@ -263,6 +168,45 @@ check_col_by_factor <- function(x,
   invisible(NULL)
 }
 
+#' Check Element Dimension
+#'
+#' Checks if the elements in `...` have the same dimension.
+#'
+#' @param ... data.frames or vectors
+#' @param omit_null are \code{NULL} elements in \code{...} to be omitted from the check?
+#'
+#' @importFrom stats na.omit
+#'
+check_same_n <- function(..., omit_null = TRUE) {
+  dots <- list(...)
+
+  n_list <- Map(function(x, name) {
+    if (is.null(x)) {
+      if (omit_null) {
+        NA_integer_
+      } else {
+        stop("arg", name, "is not supposed to be NULL")
+      }
+    } else if (is.data.frame(x)) {
+      nrow(x)
+    } else if (is.atomic(x)) {
+      length(x)
+    } else {
+      stop("data structure for ", name, "is currently not supported")
+    }
+  },
+  dots, names(dots))
+
+  n <- na.omit(unlist(n_list))
+
+  if (length(unique(n)) > 1) {
+    sel <- which(n != n[1])
+    stop("dimension mismatch:", paste(names(n)[sel], collapse = ", "), " do not have N=", n[1])
+  }
+
+  TRUE
+}
+
 #' Make Names Without Dots
 #'
 #' @param nams (`character`)\cr vector of original names.
@@ -278,7 +222,6 @@ make_names <- function(nams) {
   orig <- make.names(nams)
   gsub(".", "", x = orig, fixed = TRUE)
 }
-
 
 #' Conversion of Months to Days
 #'
@@ -371,7 +314,7 @@ extract <- function(x, names) {
     return(NULL)
   }
   assert_that(
-    rlang::is_named(x),
+    is_named(x),
     is.character(names)
   )
   which_extract <- intersect(names(x), names)
@@ -428,4 +371,16 @@ aesi_label <- function(aesi, scope = NULL) {
   }
 
   lbl
+}
+
+#' Indicate Arm Variable in Formula
+#'
+#' We use `arm` to indicate the study arm variable in `tern` formulas.
+#'
+#' @param x arm information
+#'
+#' @export
+#'
+arm <- function(x) {
+  structure(x, varname = deparse(substitute(x)))
 }

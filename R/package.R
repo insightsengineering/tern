@@ -19,7 +19,7 @@ NULL
 # We need this to avoid R CMD check warning about missing global definitions.
 #' @importFrom utils globalVariables
 if (getRversion() >= "2.15.1") {
-  utils::globalVariables(c(
+  globalVariables(c(
     ".",
     "x",
     "control_coxph",

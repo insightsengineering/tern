@@ -19,7 +19,7 @@ NULL
 #' @describeIn survival_time Statistics Function which analyzes survival times.
 #'  `range_censor` and `range_event`.
 #'
-#' @importFrom stats as.formula
+#' @importFrom stats as.formula quantile
 #' @importFrom survival Surv survfit
 #'
 #' @export
@@ -44,6 +44,7 @@ NULL
 #'   )
 #' df <- ADTTE_f %>% filter(ARMCD == "ARM A")
 #' s_surv_time(df, .var = "AVAL", is_event = "is_event")
+#'
 s_surv_time <- function(df,
                         .var,
                         is_event,

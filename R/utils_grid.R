@@ -245,7 +245,6 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   grid.draw(grob)
 }
 
-
 tern_grob <- function(x) { # nousage # nolint
   class(x) <- unique(c("ternGrob", class(x)))
   x

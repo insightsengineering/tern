@@ -46,6 +46,23 @@ test_that("s_count_occurrences keeps non appearing levels if requested", {
   expect_true("MHX" %in% names(result$count_fraction))
 })
 
+test_that("s_count_occurrences fails when it receives empty .df_row and drop = TRUE", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
+    MHDECOD = factor(
+      c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3"),
+      levels = c("MH1", "MH2", "MH3", "MHX")
+    )
+  )
+  df_sub <- df[df$USUBJID == "5", ]
+  expect_error(s_count_occurrences(
+    df = df_sub,
+    .N_col = 4L,
+    .df_row = df_sub,
+    drop = TRUE
+  ))
+})
+
 test_that("count_occurrences functions as expected with valid input and default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4, 6, 6, 6, 7, 7, 8)),

@@ -75,6 +75,7 @@ on_failure(is_variables) <- function(call, env) {
 #' # Check whether `df` contains the analysis `variables`.
 #' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
 #' is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
+#'
 is_df_with_variables <- function(df, variables) {
   assert_that(
     is.data.frame(df),

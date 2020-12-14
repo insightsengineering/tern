@@ -121,7 +121,8 @@ df_ref_group <- ADTTE_f \%>\%
   filter(ARMCD == "ARM B")
 
 s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-a_dummy_sum(c(1, 2))
+
+a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 
 
 split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%

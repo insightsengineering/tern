@@ -119,6 +119,7 @@ is_variables(list("bla"))
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = "a"))
 is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a", "b")))
 
+
 # Check whether `df` contains all factor analysis `variables`.
 is_df_with_factors(
   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),

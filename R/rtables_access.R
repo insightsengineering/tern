@@ -24,7 +24,7 @@ h_row_counts <- function(table_row,
                          col_indices = h_col_indices(table_row, col_names)) {
   row_vals <- row_values(table_row)[col_indices]
   counts <- sapply(row_vals, "[", 1L)
-  assert_that(rlang::is_integerish(counts))
+  assert_that(is_integerish(counts))
   counts
 }
 

@@ -23,7 +23,7 @@ groups_list_to_df <- function(groups_list) {
     is_fully_named_list(groups_list),
     all(sapply(groups_list, is.character))
   )
-  tibble::tibble(
+  tibble(
     valname = make_names(names(groups_list)),
     label = names(groups_list),
     levelcombo = unname(groups_list),
