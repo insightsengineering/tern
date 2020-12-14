@@ -1,7 +1,8 @@
 test_that("or_glm estimates right OR and CI", {
   data <- data.frame(
     rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
-    grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)]
+    grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
+    stringsAsFactors = TRUE
   )
 
   data_ab <- subset(data, grp %in% c("a", "b"))

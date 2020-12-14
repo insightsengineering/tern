@@ -4,7 +4,8 @@ get_df_ae <- function() {
   set.seed(1)
   dfsl <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4, 5)),
-    ARM = sample(c("A", "B", "C"), 5, replace = TRUE)
+    ARM = sample(c("A", "B", "C"), 5, replace = TRUE),
+    stringsAsFactors = TRUE
   )
 
   dfae <- data.frame(

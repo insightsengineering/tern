@@ -295,7 +295,8 @@ test_that("create_afun_summary creates an `afun` that works", {
     PARAMCD = rep("lab", 6 * 3),
     AVISIT  = rep(paste0("V", 1:3), 6),
     ARM     = rep(LETTERS[1:3], rep(6, 3)),
-    AVAL    = c(9:1, rep(NA, 9))
+    AVAL    = c(9:1, rep(NA, 9)),
+    stringsAsFactors = TRUE
   )
 
   l <- split_cols_by(lyt = NULL, var = "ARM") %>%
