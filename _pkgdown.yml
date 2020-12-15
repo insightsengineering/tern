@@ -10,10 +10,12 @@ navbar:
       href: https://github.roche.com/NEST/tern
 
 reference:
-  - title:
+  - title: Overview Pages
     contents:
       - tern-package
       - argument_convention
+      - formatting_functions
+      - kaplan_meier
 
   - title: Control Functions
     desc: Control functions capture options in lists, and take care of defaults (and if it makes sense also checks).
@@ -21,8 +23,9 @@ reference:
     contents:
       - control_coxph
       - control_coxreg
-      - control_binary_comparison
       - control_incidence_rate
+      - control_surv_time
+      - control_surv_timepoint
 
   - title: Statistics Functions
     desc: Statistics functions should do the computation of the numbers that are tabulated later.
@@ -75,14 +78,11 @@ reference:
        - a_count_occurrences_by_grade
        - a_count_patients_with_event
        - a_coxph_pairwise
-       - a_coxreg
        - a_mmrm_lsmeans
        - a_response_subgroups
        - a_survival_subgroups
        - a_odds_ratio
        - a_proportion
-       - a_prop_diff
-       - a_summarize_change
        - a_surv_time
        - a_surv_timepoint
        - a_surv_timepoint_diff
@@ -112,7 +112,7 @@ reference:
        - summarize_colvars
        - summarize_lsmeans
        - summarize_logistic
-       - summarize_num_patient
+       - summarize_num_patients
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
        - summarize_vars
@@ -149,7 +149,7 @@ reference:
       - h_proportion_df
       - h_proportion_subgroups_df
       - h_odds_ratio_df
-      - h_odds_subgroups_df
+      - h_odds_ratio_subgroups_df
       - or_glm
       - or_clogit
       - prop_chisq
@@ -175,7 +175,7 @@ reference:
       - h_or_interaction
       - h_glm_simple_term_extract
       - h_glm_interaction_extract
-      - h_glm_iter_term_extract
+      - h_glm_inter_term_extract
       - h_logistic_simple_terms
       - h_logistic_inter_terms
       - h_simple_term_labels
@@ -184,6 +184,9 @@ reference:
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
     contents:
+      - estimate_coef
+      - pairwise
+      - univariate
       - extract_rsp_subgroups
       - extract_survival_subgroups
       - fit_mmrm
@@ -199,27 +202,6 @@ reference:
       - logistic_regression_cols
       - logistic_summary_by_flag
 
-  - title: Old Statistics Functions
-    desc: these functions might have to be refactored or deprecated later
-    contents:
-      - ttest_ci_one_arm
-      - ttest_two_arm
-      - s_coxph_pairwise
-      - s_cox_univariate
-      - s_cox_multivariate
-      - s_events_patyear
-      - s_logistic_single
-      - s_logistic_interaction
-      - s_adj_proportion_diff
-      - s_ancova
-      - d_proportion
-      - d_test_proportion_diff
-      - estimate_coef
-      - pairwise
-      - univariate
-
-
-
   - title: Graphs
     desc: Graphs
     contents:
@@ -227,7 +209,6 @@ reference:
       - g_km
       - g_waterfall
       - starts_with("g_mmrm")
-
 
   - title: rtables Helper Functions
     desc: these functions help to work with the new rtables package and might be moved there later
@@ -280,7 +261,6 @@ reference:
       - has_fraction_in_cols
       - has_fraction_in_any_col
       - has_fractions_difference
-      - new_combination_function
       - CombinationFunction
 
   - title: Graphs Helper Functions
@@ -303,13 +283,14 @@ reference:
       - explicit_na
       - sas_na
       - combine_levels
-      - drop_shared_variables
       - as_factor_keep_attributes
       - df_explicit_na
-      - get_onco_rsp_label
       - month2day
       - day2month
       - aesi_label
+      - combine_vectors
+      - empty_vector_if_na
+      - to_n
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
@@ -328,6 +309,8 @@ reference:
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
+      - check_col_by_factor
+      - check_same_n
       - check_mmrm_vars
       - build_mmrm_formula
       - fit_lme4_single_optimizer
@@ -337,8 +320,9 @@ reference:
       - get_mmrm_lsmeans
       - get_lme4_cov_estimate
       - get_lme4_diagnostics
-      - to_group_color
       - try_car_anova
+      - d_count_cumulative
+      - d_proportion
       - d_proportion_diff
       - d_test_proportion_diff
       - d_onco_rsp_label
@@ -352,3 +336,16 @@ reference:
       - afun_selected_stats
       - extract
       - labels_or_names
+      - muffled_car_anova
+      - h_data_plot
+      - h_decompose_gg
+      - h_ggkm
+      - h_grob_coxph
+      - h_grob_median_surv
+      - h_grob_tbl_at_risk
+      - h_grob_y_annot
+      - h_km_layout
+      - h_split_param
+      - h_tbl_coxph_pairwise
+      - h_tbl_median_surv
+      - h_xticks

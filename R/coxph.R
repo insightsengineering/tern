@@ -341,9 +341,10 @@ rht <- function(x) {
 }
 
 
-#' Hazard ratio
+#' Hazard Ratio Estimation in Interactions
 #'
-#' Hazard ratio estimation in interactions
+#' This function estimates the hazard ratios between arms when an interaction variable is given with
+#' specific values.
 #'
 #' @param variable,given Names of two variable in interaction. We seek the estimation of the levels of \code{variable}
 #'   given the levels of \code{given}
@@ -406,6 +407,7 @@ rht <- function(x) {
 #'   coef = coef(mod), mmat = mmat, vcov = vcov(mod), data = ADTTE, conf_level = .95
 #' )
 #' }
+#'
 estimate_coef <- function(variable, given,
                           lvl_var, lvl_given,
                           coef,

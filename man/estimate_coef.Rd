@@ -2,7 +2,7 @@
 % Please edit documentation in R/coxph.R
 \name{estimate_coef}
 \alias{estimate_coef}
-\title{Hazard ratio}
+\title{Hazard Ratio Estimation in Interactions}
 \usage{
 estimate_coef(
   variable,
@@ -40,7 +40,8 @@ A list of matrix (one per level of variable) with rows corresponding to the comb
 }
 }
 \description{
-Hazard ratio estimation in interactions
+This function estimates the hazard ratios between arms when an interaction variable is given with
+specific values.
 }
 \details{
 Given the cox regression investigating the effect of Arm (A, B, C; reference A)
@@ -84,4 +85,5 @@ estimate_coef(
   coef = coef(mod), mmat = mmat, vcov = vcov(mod), data = ADTTE, conf_level = .95
 )
 }
+
 }
