@@ -777,7 +777,8 @@ vp_forest_table_part <- function(nrow,
           expand.grid(seq_len(nrow), seq_len(ncol - 2)),
           1,
           function(x) {
-            i <- x[1]; j <- x[2]
+            i <- x[1]
+            j <- x[2]
             viewport(layout.pos.row = i, layout.pos.col = j + 1, name = paste0("cell-", i, "-", j))
           }
         )

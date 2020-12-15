@@ -128,7 +128,7 @@ test_that("DTH01 variant 2 is produced correctly", {
     split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
     summarize_vars(
       "DTHCAUS",
-      nested = T,
+      nested = TRUE,
       .stats = "count_fraction",
       .indent_mods = c("count_fraction" = 4L)) %>%
     build_table(df = adsl) %>%
