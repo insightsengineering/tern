@@ -310,7 +310,7 @@ a_incidence_rate <- make_afun(
 #'       time_unit_output = 100
 #'     )
 #'   ) %>%
-#'   build_table(df, col_counts = table(df$ARM))
+#'   build_table(df)
 #'
 estimate_incidence_rate <- function(lyt,
                                     vars,

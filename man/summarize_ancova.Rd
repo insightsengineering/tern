@@ -148,7 +148,6 @@ adqs_single <- adqs \%>\%
   mutate(CHG = ifelse(BMEASIFL == "Y", CHG, NA))  # only analyze evaluable population
 adqs_multi <- adqs \%>\%
   filter(AVISIT == "WEEK 1 DAY 8")
-n_per_arm <- table(adsl$ARM)
 
 basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
@@ -164,7 +163,7 @@ basic_table() \%>\%
     variables = list(arm = "ARMCD", covariates = c("BASE", "STRATA1")),
     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
   ) \%>\%
-  build_table(adqs_single, col_counts = n_per_arm)
+  build_table(adqs_single, alt_counts_df = adsl)
 
 basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
@@ -174,6 +173,6 @@ basic_table() \%>\%
     variables = list(arm = "ARMCD", covariates = c("BASE", "STRATA1")),
     conf_level = 0.95, var_labels = "Adjusted mean"
   ) \%>\%
-  build_table(adqs_multi, col_counts = n_per_arm)
+  build_table(adqs_multi, alt_counts_df = adsl)
 
 }

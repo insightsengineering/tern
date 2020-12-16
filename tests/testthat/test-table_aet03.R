@@ -38,7 +38,7 @@ test_that("AET03 variant 1 is produced correctly", {
     count_occurrences_by_grade(var = "ASEV", .indent_mods = -1L)
 
   result <- lyt %>%
-    build_table(adae, col_counts = n_per_arm) %>%
+    build_table(adae, alt_counts_df = adsl) %>%
     trim_rows() %>%
     sort_at_path(
       path = "AEBODSYS",

@@ -9,7 +9,6 @@ test_that("AET06 variant 1 is produced correctly", {
 
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE)
-  n_per_arm_sex <- table(interaction(adsl$SEX, adsl$ARM))
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -36,7 +35,7 @@ test_that("AET06 variant 1 is produced correctly", {
         nonunique = "Total number of events"
       )) %>%
     count_occurrences(vars = "AEDECOD")
-  result <- build_table(lyt, adae, col_counts = n_per_arm_sex)
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
@@ -98,7 +97,6 @@ test_that("AET06 variant 5 is produced correctly", {
 
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE)
-  n_per_arm_sex <- table(interaction(adsl$SEX, adsl$ARM))
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -133,7 +131,7 @@ test_that("AET06 variant 5 is produced correctly", {
         nonunique = "Total number of events"
       )) %>%
     count_occurrences("AEDECOD")
-  result <- build_table(lyt, adae, col_counts = n_per_arm_sex)
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(

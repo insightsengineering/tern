@@ -13,9 +13,6 @@ test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
     dplyr::filter(AVISIT != "BASELINE") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))
 
-  n_col_counts <- table(adsl$ARM)
-  n_col_counts <- c(n_col_counts, Total = sum(n_col_counts))
-
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_overall_col("All Patients") %>%
@@ -27,7 +24,7 @@ test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
       visible_label = TRUE
     ) %>%
     count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = FALSE) %>%
-    build_table(df = adeg, col_counts = n_col_counts)
+    build_table(df = adeg, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
 
@@ -56,9 +53,6 @@ test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
     dplyr::filter(AVISIT != "BASELINE") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))
 
-  n_col_counts <- table(adsl$ARM)
-  n_col_counts <- c(n_col_counts, Total = sum(n_col_counts))
-
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -70,7 +64,7 @@ test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
       split_fun = keep_split_levels(c("Heart Rate", "QT Duration", "RR Duration"))
     ) %>%
     count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%
-    build_table(df = adeg, col_counts = n_col_counts)
+    build_table(df = adeg, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
 

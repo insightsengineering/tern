@@ -28,11 +28,6 @@ test_that("AET07 variant 1 is produced correctly", {
   adae <- radae(cached = TRUE) %>%
     preprocess_adae()
 
-  # Not all arms have events so need to subset adsl counts.
-  n_per_arm <- count(adsl, ACTARM) %>%
-    filter(ACTARM %in% unique(adae$ACTARM)) %>%
-    pull(n)
-
   lyt <- basic_table() %>%
     split_cols_by("ACTARM", split_fun = drop_split_levels) %>%
     add_colcounts() %>%
@@ -46,7 +41,7 @@ test_that("AET07 variant 1 is produced correctly", {
       .indent_mods = -1L
     )
 
-  result <- build_table(lyt, adae, col_counts = n_per_arm) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(
       path = "SOC_PT",
       scorefun = score_occurrences,
@@ -75,8 +70,6 @@ test_that("AET07 variant 2 is produced correctly", {
   adae <- radae(cached = TRUE) %>%
     preprocess_adae()
 
-  n_per_arm <- table(adsl$ACTARM)
-
   lyt <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
@@ -90,7 +83,7 @@ test_that("AET07 variant 2 is produced correctly", {
       .indent_mods = -1L
     )
 
-  result <- build_table(lyt, adae, col_counts = n_per_arm) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     prune_table() %>%
     sort_at_path(
       path = "SOC_PT",

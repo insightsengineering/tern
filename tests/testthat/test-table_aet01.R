@@ -79,8 +79,6 @@ test_that("Safety Summary Variant 1 works as expected", {
 
   aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
 
-  col_counts <- table(adsl$ACTARM)
-
   # Layout for variables from adsl dataset.
   lyt_adsl <- basic_table() %>%
     split_cols_by("ACTARM") %>%
@@ -98,7 +96,7 @@ test_that("Safety Summary Variant 1 works as expected", {
       denom = "N_col"
     )
 
-  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+  result_adsl <- build_table(lyt_adsl, df = adsl)
 
   # Layout for variables from adae dataset.
   lyt_adae <- basic_table() %>%
@@ -123,7 +121,7 @@ test_that("Safety Summary Variant 1 works as expected", {
       .indent_mods = 1L
     )
 
-  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
   result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
 
   # Combine tables.
@@ -218,8 +216,6 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
   aesi_vars <- c("FATAL", "SER", "SERWD", "SERDSM", "RELSER", "WD", "DSM", "REL", "RELWD", "RELDSM", "CTC35")
   basket_vars <- c("SMQ01", "SMQ02", "CQ01")
 
-  col_counts <- table(adsl$ACTARM)
-
   # Layout for variables from adsl dataset.
   lyt_adsl <- basic_table() %>%
     split_cols_by("ACTARM") %>%
@@ -237,7 +233,7 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
       denom = "N_col"
     )
 
-  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+  result_adsl <- build_table(lyt_adsl, df = adsl)
 
   # Layout for variables from adae dataset.
   lyt_adae <- basic_table() %>%
@@ -268,7 +264,7 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
       .indent_mods = 1L
     )
 
-  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
   result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
   result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 15)
 
@@ -344,8 +340,6 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
 
   aesi_vars <- c("FATAL", "SER", "WD", "REL", "CTC35", "CTC45")
 
-  col_counts <- table(adsl$ACTARM)
-
   # Layout for variables from adsl dataset.
   lyt_adsl <- basic_table() %>%
     split_cols_by("ACTARM") %>%
@@ -370,7 +364,7 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
       denom = "N_col",
       table_names = "tbl_dscsreas_wd"
     )
-  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+  result_adsl <- build_table(lyt_adsl, df = adsl)
 
   # Layout for variables from adae dataset.
   lyt_adae <- basic_table() %>%
@@ -396,7 +390,7 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
       .indent_mods = 1L
     )
 
-  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
   result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
 
   # Combine tables.
@@ -468,8 +462,6 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
   count_term_vars <- c("SER", "DSM", "REL", "CTC35", "CTC45")
   count_ae_vars <- c("SER", "DSM", "REL", "CTC35", "CTC45")
 
-  col_counts <- table(adsl$ACTARM)
-
   # Layout for variables from adsl dataset.
   lyt_adsl <- basic_table() %>%
     split_cols_by("ACTARM") %>%
@@ -487,7 +479,7 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
       denom = "N_col"
     )
 
-  result_adsl <- build_table(lyt_adsl, df = adsl, col_counts = col_counts)
+  result_adsl <- build_table(lyt_adsl, df = adsl)
 
   # Layout for variables from adae dataset.
   lyt_adae <- basic_table() %>%
@@ -530,7 +522,7 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
       table_names = paste0("table_ae_", count_ae_vars)
     )
 
-  result_adae <- build_table(lyt_adae, df = adae, col_counts = col_counts)
+  result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
   result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
   result_adae <- insert_rrow(result_adae, rrow("Total number of unique preferred terms which are", ""), at = 10)
   result_adae <- insert_rrow(result_adae, rrow("Total number of adverse events which are", ""), at = 16)

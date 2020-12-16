@@ -18,7 +18,7 @@ get_df_ae <- function() {
   dfae <- left_join(dfae, dfsl, by = "USUBJID")
   structure(
     dfae,
-    n_per_arm = table(dfsl$ARM)
+    dfsl = dfsl
   )
 }
 
@@ -45,8 +45,7 @@ get_full_table <- function() {
     count_occurrences(vars = "AEDECOD")
 
   dfae <- get_df_ae()  #nolint
-
-  build_table(lyt, dfae, col_counts = attr(dfae, "n_per_arm")) %>%
+  build_table(lyt, dfae, alt_counts_df = attr(dfae, "dfsl")) %>%
     prune_table()
 }
 
@@ -116,7 +115,7 @@ test_that("score_occurrences_subtable functions as expected", {
     add_colcounts() %>%
     split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE)  %>%
     count_occurrences(vars = "AEDECOD") %>%
-    build_table(dfae, col_counts = attr(dfae, "n_per_arm")) %>%
+    build_table(dfae, alt_counts_df = attr(dfae, "dfsl")) %>%
     prune_table()
 
   score_subtable_all <- score_occurrences_subtable(col_names = names(full_table))

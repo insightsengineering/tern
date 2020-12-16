@@ -44,10 +44,6 @@ test_that("CMT02_PT default variant is produced correctly", {
     slice(1) %>%
     ungroup()
 
-  # Get big N for table outputs.
-  n_per_arm <- table(adsl$ARM)
-  n_per_arm_tot <- c(n_per_arm, "All Patients" = sum(n_per_arm))
-
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
@@ -57,7 +53,7 @@ test_that("CMT02_PT default variant is produced correctly", {
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
-    build_table(adcm, col_counts = n_per_arm_tot) %>%
+    build_table(adcm, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)

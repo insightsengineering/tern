@@ -200,8 +200,6 @@ test_that("Enrollment by Country Table is produced correctly", {
 test_that("Death table is produced correctly", {
   adsl <- get_adsl()
   adae <- radae(cached = TRUE)
-  n_per_arm <- table(adsl$ARM)
-  n_col_counts <- c(n_per_arm, sum(table(adsl$ARM)))
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -211,7 +209,7 @@ test_that("Death table is produced correctly", {
       filters = c("AESDTH" = "Y"),
       .labels = c(count_fraction = "Total Number of Deaths"),
       .formats = c(count_fraction = "xx (xx.xx%)")) %>%
-    build_table(adae, col_counts = n_col_counts)
+    build_table(adae, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -270,7 +268,6 @@ test_that("Table of Non-Serious Adverse Events is produced correctly", {
   adae_nonser <- adae %>% filter(AESER != "Y", SAFFL == "Y")
   adae_trim <- get_adae_trimmed(adsl, adae_nonser, cutoff_rate = 0.05)
 
-  col_counts <- rep(table(adsl$ARM), each = 2L)
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -282,7 +279,7 @@ test_that("Table of Non-Serious Adverse Events is produced correctly", {
     summarize_patients_events_in_cols(
       col_split = FALSE
     ) %>%
-    build_table(adae_trim, col_counts = col_counts)
+    build_table(adae_trim, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

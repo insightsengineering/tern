@@ -9,7 +9,6 @@ test_that("MHT01 variant 1 is produced accurately", {
 
   adsl_f <- radsl(cached = TRUE) %>%
     filter(SAFFL == "Y")
-  col_counts <- table(adsl_f$ARM)
 
   admh_f <- radmh(cached = TRUE) %>%
     filter(
@@ -39,7 +38,7 @@ test_that("MHT01 variant 1 is produced accurately", {
     ) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f, col_counts = col_counts)
+  result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(c(
@@ -74,7 +73,6 @@ test_that("MHT01 variant 2 is produced accurately", {
 
   adsl_f <- radsl(cached = TRUE) %>%
     filter(SAFFL == "Y")
-  col_counts <- table(adsl_f$ARM)
 
   admh_f <- radmh(cached = TRUE) %>%
     filter(
@@ -107,7 +105,7 @@ test_that("MHT01 variant 2 is produced accurately", {
     ) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f_prior, col_counts = col_counts)
+  result <- build_table(lyt, admh_f_prior, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(c(
@@ -131,7 +129,6 @@ test_that("MHT01 variant 3 is produced accurately", {
 
   adsl_f <- radsl(cached = TRUE) %>%
     filter(SAFFL == "Y")
-  col_counts <- table(adsl_f$ARM)
 
   admh_f <- radmh(cached = TRUE) %>%
     filter(
@@ -161,7 +158,7 @@ test_that("MHT01 variant 3 is produced accurately", {
     ) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f, col_counts = col_counts)
+  result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
@@ -196,7 +193,6 @@ test_that("MHT01 variant 5 is produced accurately", {
 
   adsl_f <- radsl(cached = TRUE) %>%
     filter(SAFFL == "Y")
-  col_counts <- c(table(adsl_f$ARM), "All Patients" = dim(adsl_f)[1])
 
   admh_f <- radmh(cached = TRUE) %>%
     filter(
@@ -226,7 +222,7 @@ test_that("MHT01 variant 5 is produced accurately", {
       .labels = c(unique = "Total number of patients with at least one event")) %>%
     count_occurrences(var = "MHDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, admh_f, col_counts = col_counts)
+  result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(

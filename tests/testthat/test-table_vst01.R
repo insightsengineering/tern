@@ -51,7 +51,7 @@ gen_advs <- function() {
 test_that("VST01 default variant is produced correctly", {
   advs <- gen_advs()
   advs_baseline <- advs %>% filter(ABLFL == "Y")   #nolint
-  n_col_counts <- rep(table(advs_baseline$ARM), each = 2)
+  df_adsl <- unique(advs[c("USUBJID", "ARM")])
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -61,7 +61,7 @@ test_that("VST01 default variant is produced correctly", {
       vars = c("AVAL", "CHG"),
       varlabels = c("Value at Visit", "Change from Baseline")) %>%
     summarize_colvars(.labels = c(range = "Min - Max")) %>%
-    build_table(df = advs, col_counts = n_col_counts)
+    build_table(df = advs, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

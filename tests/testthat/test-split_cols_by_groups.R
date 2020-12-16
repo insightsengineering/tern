@@ -152,6 +152,39 @@ test_that("split_cols_by_groups equivalent to split_cols_by with ref_col but no 
   expect_identical(result, expected)
 })
 
+test_that("split_cols_by_groups manages combinations of columns with reference and alt_counts_df", {
+  groups <- list(
+    "Arms A+B" = c("A: Drug X", "B: Placebo"),
+    "Arms A+C" = c("A: Drug X", "C: Combination")
+  )
+
+  DM_ANL <- DM[1:100, ] #nolint
+
+  result <- basic_table() %>%
+    split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
+    add_colcounts() %>%
+    analyze(
+      "AGE",
+      afun = function(x, .ref_group, .in_ref_col) {
+        if (.in_ref_col) {
+          in_rows("Diff. of Averages" = rcell(NULL))
+        } else {
+          in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
+        }
+      }
+    ) %>%
+    build_table(DM_ANL, alt_counts_df = DM)
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "Diff. of Averages", "Arms A+B", "(N=227)",
+      "", "Arms A+C", "(N=250)", "-0.75"
+      ),
+    .Dim = c(3L, 3L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
 
 # combine_counts ----
 test_that("combine_counts combines character vectors", {

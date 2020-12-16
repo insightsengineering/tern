@@ -176,7 +176,7 @@ basic_table() \%>\%
       time_unit_output = 100
     )
   ) \%>\%
-  build_table(df, col_counts = table(df$ARM))
+  build_table(df)
 
 a_incidence_rate(
   df,

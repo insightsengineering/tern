@@ -16,7 +16,7 @@ test_that("AET05 variant 1 is produced correctly", {
       is_event = "is_event",
       control = control_incidence_rate(time_unit_output = 100)
     ) %>%
-    build_table(anl, col_counts = table(adsl$ARM))
+    build_table(anl, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
@@ -44,7 +44,7 @@ test_that("AET05 variant 2 is produced correctly", {
       is_event = "is_event",
       control = control_incidence_rate(conf_type = "exact", time_unit_output = 100)
     ) %>%
-    build_table(anl, col_counts = table(adsl$ARM))
+    build_table(anl, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(

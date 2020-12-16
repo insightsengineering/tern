@@ -69,7 +69,7 @@ test_that("AET09 variant 1 (AEs related to study drug by SMQ) is produced correc
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae_r, col_count = c(table(adsl$ARM))) %>%
+  result <- build_table(lyt, adae_r, alt_counts_df = adsl) %>%
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -176,7 +176,7 @@ test_that("AET09 variant 2 (AEs related to study srug by SMQ <with customized qu
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae_r, col_count = c(table(adsl$ARM))) %>%
+  result <- build_table(lyt, adae_r, alt_counts_df = adsl) %>%
     sort_at_path(path = c("SMQ"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 

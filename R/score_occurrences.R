@@ -18,25 +18,27 @@ NULL
 #' library(assertthat)
 #' library(random.cdisc.data)
 #' library(rtables)
-#' ADSL <- radsl(cached = TRUE)
-#' ADAE <- radae(cached = TRUE)
-#'
-#' N_per_arm <- table(ADSL$ARM)
+#' adsl <- radsl(cached = TRUE)
+#' adae <- radae(cached = TRUE)
 #'
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
-#'   summarize_num_patients(var = "USUBJID",
-#'                          .stats = c("unique"),
-#'                          .labels = c("Total number of patients with at least one event")) %>%
+#'   summarize_num_patients(
+#'     var = "USUBJID",
+#'     .stats = c("unique"),
+#'     .labels = c("Total number of patients with at least one event")
+#'   ) %>%
 #'   split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE)  %>%
-#'   summarize_num_patients(var = "USUBJID",
-#'                          .stats = c("unique", "nonunique"),
-#'                          .labels = c("Total number of patients with at least one event",
-#'                                      "Total number of events")) %>%
+#'   summarize_num_patients(
+#'     var = "USUBJID",
+#'     .stats = c("unique", "nonunique"),
+#'     .labels = c("Total number of patients with at least one event",
+#'                 "Total number of events")
+#'   ) %>%
 #'   count_occurrences(vars = "AEDECOD")
 #'
-#' rtable_object <- build_table(lyt, ADAE, col_counts = N_per_arm) %>%
+#' rtable_object <- build_table(lyt, adae, alt_counts_df = adsl) %>%
 #'   prune_table()
 #'
 #' rtable_object_sorted <- rtable_object %>%

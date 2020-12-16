@@ -23,7 +23,7 @@ test_that("h_append_grade_groups works with valid input", {
       "Any Grade" = as.character(1:5),
       "Grade 1-2" = c("1", "2"),
       "Grade 3-4" = c("3", "4")
-      ),
+    ),
     list("1" = 10L, "2" = 7L, "3" = 2L, "4" = 2L, "5" = 0L)
   )
 
@@ -152,12 +152,13 @@ test_that("s_count_occurrences_by_grade works with valid input for intensity and
 test_that("count_occurrences_by_grade works with default arguments for intensity", {
 
   df <- get_test_data_simple()
+  df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     count_occurrences_by_grade(var = "AESEV") %>%
-    build_table(df, col_counts = c(3L, 3L))
+    build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -172,13 +173,11 @@ test_that("count_occurrences_by_grade works with default arguments for intensity
   expect_identical(result_matrix, expected_matrix)
 
   # Test with empty column.
-  df <- get_test_data_simple()
-
   result <- basic_table() %>%
     split_cols_by("ARM_EMPTY") %>%
     add_colcounts() %>%
     count_occurrences_by_grade(var = "AESEV") %>%
-    build_table(df, col_counts = c(3L, 3L, 1L))
+    build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -187,14 +186,15 @@ test_that("count_occurrences_by_grade works with default arguments for intensity
       "0", "1 (33.3%)", "2 (66.7%)", "B", "(N=3)", "2 (66.7%)",
       "1 (33.3%)", "0", "D", "(N=1)", "0", "0", "0"
     ),
-  .Dim = 5:4
- )
+    .Dim = 5:4
+  )
 
 })
 
 test_that("count_occurrences_by_grade works with custom arguments for grade", {
 
   df <- get_test_data_simple()
+  df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
   # Define additional grade groupings
   grade_groups <-  list(
@@ -210,7 +210,7 @@ test_that("count_occurrences_by_grade works with custom arguments for grade", {
       var = "AETOXGR",
       grade_groups = grade_groups,
       .formats = "xx.xx (xx.xx%)") %>%
-    build_table(df, col_counts = c(3L, 3L))
+    build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -221,7 +221,7 @@ test_that("count_occurrences_by_grade works with custom arguments for grade", {
       "B", "(N=3)", "3 (100%)", "3 (100%)", "2 (66.67%)", "1 (33.33%)",
       "0 (0%)", "0 (0%)", "0 (0%)", "0 (0%)"
     ),
-  .Dim = c(10L, 3L)
+    .Dim = c(10L, 3L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -230,14 +230,18 @@ test_that("count_occurrences_by_grade works with custom arguments for grade", {
 test_that("summarize_occurrences_by_grade works with default arguments for intensity", {
 
   df <- get_test_data_simple()
+  df_adsl <- data.frame(
+    USUBJID = 1:9,
+    ARM = rep(c("A", "B"), c(4, 5))
+  )
 
   result <- basic_table() %>%
     add_colcounts() %>%
     split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
     summarize_occurrences_by_grade(
-    var = "AESEV",
-    .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
-    build_table(df, col_counts = 9L)
+      var = "AESEV",
+      .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
+    build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -252,6 +256,10 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
 
   # Test with empty input.
   df <- get_test_data_simple()
+  df_adsl <- data.frame(
+    USUBJID = 1:20,
+    ARM_EMPTY = rep(c("A", "B"), each = 10)
+  )
 
   result <- basic_table() %>%
     split_cols_by("ARM_EMPTY") %>%
@@ -260,7 +268,7 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
     summarize_occurrences_by_grade(
       var = "AESEV",
       .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
-    build_table(df, col_counts = rep(10L, 3))
+    build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -280,6 +288,10 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
 test_that("summarize_occurrences_by_grade works with custom arguments for grade", {
 
   df <- get_test_data_simple()
+  df_adsl <- data.frame(
+    USUBJID = 1:10,
+    ARM_EMPTY = rep(c("A", "B"), each = 5)
+  )
 
   # Define additional grade groupings
   grade_groups <-  list(
@@ -295,7 +307,7 @@ test_that("summarize_occurrences_by_grade works with custom arguments for grade"
       var = "AETOXGR",
       grade_groups = grade_groups
     ) %>%
-    build_table(df, col_counts = 10L)
+    build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

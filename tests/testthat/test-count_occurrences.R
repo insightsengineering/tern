@@ -72,6 +72,10 @@ test_that("count_occurrences functions as expected with valid input and default 
     ),
     ARM = rep(c("A", "B"), each = 6)
   )
+  df_adsl <- data.frame(
+    USUBJID = 1:9,
+    ARM = rep(c("A", "B"), c(5, 4))
+  )
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -79,7 +83,7 @@ test_that("count_occurrences functions as expected with valid input and default 
     count_occurrences(vars = "MHDECOD")
 
   result <- rtable_object <- lyt %>%
-    build_table(df, col_counts = c(5L, 4L))
+    build_table(df, alt_counts_df = df_adsl)
 
   result_matrix <- to_string_matrix(result)
 

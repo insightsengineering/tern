@@ -4,7 +4,6 @@ library(random.cdisc.data)
 library(rtables)
 library(dplyr)
 
-
 get_adeg <- function() {
   adeg <- radeg(cached = TRUE) # nolintr
   adeg_labels <- var_labels(adeg)
@@ -50,7 +49,7 @@ test_that("EGT05_QTCAT default variant is produced correctly", {
     summarize_vars(
       vars = c("AVALCAT1", "CHGCAT1"),
       var_labels = c("Value at Visit", "Change from Baseline")) %>%
-    build_table(df = adeg, col_counts = table(adsl$ARM)) %>%
+    build_table(df = adeg, alt_counts_df = adsl) %>%
     prune_table()
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

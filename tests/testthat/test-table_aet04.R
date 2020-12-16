@@ -12,7 +12,7 @@ preproc_adae <- function(adae) {
   anl
 }
 
-raw_table <- function(adae, n_per_arm) {
+raw_table <- function(adae, adsl) {
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
@@ -44,8 +44,8 @@ raw_table <- function(adae, n_per_arm) {
       .indent_mods = -1L
     )
 
-  result <- lyt %>%
-    build_table(adae, col_counts = n_per_arm) %>%
+  lyt %>%
+    build_table(adae, alt_counts_df = adsl) %>%
     trim_rows() %>%
     sort_at_path(
       path = "AEBODSYS",
@@ -57,8 +57,6 @@ raw_table <- function(adae, n_per_arm) {
       scorefun = cont_n_allcols,
       decreasing = TRUE
     )
-
-  result
 }
 
 # Simple wrapper to return subset ADAE to a threshold of xx%.
@@ -100,7 +98,6 @@ test_that("AET04 variant 1 is produced correctly", {
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%
     preproc_adae()
-  n_per_arm <- table(adsl$ACTARM)
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
@@ -133,7 +130,7 @@ test_that("AET04 variant 1 is produced correctly", {
     )
 
   result <- lyt %>%
-    build_table(adae, col_counts = n_per_arm) %>%
+    build_table(adae, alt_counts_df = adsl) %>%
     trim_rows() %>%
     sort_at_path(
       path = "AEBODSYS",
@@ -219,8 +216,6 @@ test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)",
     preproc_adae() %>%
     dplyr::filter(ACTARM == "A: Drug X")
 
-  n_per_arm <- table(adsl$ACTARM)
-
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
     "Grade 1-2" = c("1", "2"),
@@ -252,7 +247,7 @@ test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)",
     )
 
   result <- lyt %>%
-    build_table(adae, col_counts = n_per_arm) %>%
+    build_table(adae, alt_counts_df = adsl) %>%
     trim_rows() %>%
     sort_at_path(
       path = "AEBODSYS",
@@ -322,7 +317,6 @@ test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%
     preproc_adae()
-  n_per_arm <- table(adsl$ACTARM)
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
@@ -355,7 +349,7 @@ test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
     )
 
   result <- lyt %>%
-    build_table(adae, col_counts = n_per_arm) %>%
+    build_table(adae, alt_counts_df = adsl) %>%
     sort_at_path(
       path = "AEBODSYS",
       scorefun = cont_n_allcols,
@@ -472,7 +466,6 @@ test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1
     dplyr::mutate(
       AETOXGR = forcats::fct_recode(AETOXGR, "5" = "Grade 5")
     )
-  n_per_arm <- table(adsl$ACTARM)
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
@@ -505,7 +498,7 @@ test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1
     )
 
   result <- lyt %>%
-    build_table(adae, col_counts = n_per_arm) %>%
+    build_table(adae, alt_counts_df = adsl) %>%
     trim_rows() %>%
     sort_at_path(
       path = "AEBODSYS",
@@ -595,7 +588,6 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
   adae <- radae(cached = TRUE) %>%
     preproc_adae()
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4)
-  n_per_arm <- table(adsl$ACTARM)
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
@@ -628,7 +620,7 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
     )
 
   result <- lyt %>%
-    build_table(adae, col_counts = n_per_arm) %>%
+    build_table(adae, alt_counts_df = adsl) %>%
     trim_rows() %>%
     sort_at_path(
       path = "AEBODSYS",
@@ -688,12 +680,11 @@ test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at L
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%
     preproc_adae()
-  n_per_arm <- table(adsl$ACTARM)
 
-  raw_result <- raw_table(adae, n_per_arm)
+  raw_result <- raw_table(adae, adsl)
 
   cutoff <- 58L
-  row_condition <- has_count_in_any_col(atleast = cutoff, col_names = names(n_per_arm))
+  row_condition <- has_count_in_any_col(atleast = cutoff, col_names = levels(adsl$ACTARM))
 
   result <- prune_table(raw_result, keep_rows(row_condition))
   result_matrix <- to_string_matrix(result)
@@ -731,9 +722,8 @@ test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%
     preproc_adae()
-  n_per_arm <- table(adsl$ACTARM)
 
-  raw_result <- raw_table(adae, n_per_arm)
+  raw_result <- raw_table(adae, adsl)
 
   cutoff <- 0.1
   row_condition <- has_fractions_difference(atleast = cutoff, col_names = names(raw_result))
@@ -782,12 +772,11 @@ test_that(
   adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%
     preproc_adae()
-  n_per_arm <- table(adsl$ACTARM)
 
-  raw_result <- raw_table(adae, n_per_arm)
+  raw_result <- raw_table(adae, adsl)
 
   cutoff <- 0.4
-  row_condition <- has_fraction_in_any_col(atleast = cutoff, col_names = names(n_per_arm))
+  row_condition <- has_fraction_in_any_col(atleast = cutoff, col_names = levels(adsl$ACTARM))
 
   result <- prune_table(raw_result, keep_rows(row_condition))
 

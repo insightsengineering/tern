@@ -20,7 +20,7 @@ test_that("LBT04 default variant is produced correctly", {
       abnormal = c(Low = "LOW", High = "HIGH"),
       exclude_base_abn = TRUE
     ) %>%
-    build_table(adlb, col_counts = table(adsl$ARM))
+    build_table(adlb, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

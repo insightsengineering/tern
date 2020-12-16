@@ -9,15 +9,13 @@ test_that("1. Vital Sign Abnormalities (Regardless of Abnormality at Baseline, V
 
   # Note: We keep only post-baseline for analysis.
   advs_f <- advs %>% filter(ABLFL != "Y" & ABLFL2 != "Y")
-  n_col_counts <- table(adsl$ARM)
-  n_col_counts <- c(n_col_counts, sum(n_col_counts))
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     split_rows_by("PARAM", split_label = c("Parameter / Abnormality Direction"), visible_label = TRUE) %>%
     count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
-    build_table(df = advs_f, col_counts = n_col_counts)
+    build_table(df = advs_f, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(c(
@@ -52,15 +50,13 @@ test_that("2. Vital Sign Abnormalities (Among Subject Without Abnormality at Bas
 
   # Note: We keep only post-baseline for analysis.
   advs_f <- advs %>% filter(AVISITN > 0)
-  n_col_counts <- table(adsl$ARM)
-  n_col_counts <- c(n_col_counts, sum(n_col_counts))
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
     split_rows_by("PARAM", split_label = c("Parameter / Abnormality Direction"), visible_label = TRUE) %>%
     count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%
-    build_table(df = advs_f, col_counts = n_col_counts)
+    build_table(df = advs_f, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
 

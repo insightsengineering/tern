@@ -33,8 +33,9 @@ test_that("summarize_num_patients works as expected with healthy input", {
   # Check with both output
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
+    add_colcounts() %>%
     summarize_num_patients("USUBJID") %>%
-    build_table(df, col_counts = c(5L, 4L))
+    build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -49,8 +50,9 @@ test_that("summarize_num_patients works as expected with healthy input", {
   # Check with number of unique patients only
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
+    add_colcounts() %>%
     summarize_num_patients("USUBJID", .stats = c("unique")) %>%
-    build_table(df, col_counts = c(5L, 4L))
+    build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -65,8 +67,9 @@ test_that("summarize_num_patients works as expected with healthy input", {
   # Check with number of non-unique patients only
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
+    add_colcounts() %>%
     summarize_num_patients("USUBJID", .stats = c("nonunique")) %>%
-    build_table(df, col_counts = c(5L, 4L))
+    build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -81,8 +84,9 @@ test_that("summarize_num_patients works as expected with healthy input", {
   # Check with number of unique patients count only
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
+    add_colcounts() %>%
     summarize_num_patients("USUBJID", .stats = c("unique_count")) %>%
-    build_table(df, col_counts = c(5L, 4L))
+    build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(

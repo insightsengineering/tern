@@ -48,7 +48,7 @@ test_that("LS means table is produced correctly", {
     add_colcounts() %>%
     split_rows_by("AVISIT") %>%
     summarize_lsmeans(show_relative = "increase") %>%
-    build_table(df, col_counts = table(adsl$ARM))
+    build_table(df, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "", "SCREENING", "n", "Adjusted Mean (SE)", "95% CI",

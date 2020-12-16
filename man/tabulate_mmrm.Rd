@@ -127,10 +127,10 @@ df <- tidy(result)
 
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
 
-n_cols <- dat \%>\%
-  group_by(group) \%>\%
-  summarize(n = n_distinct(Subject)) \%>\%
-  pull(n)
+
+dat_adsl <- dat \%>\%
+  select(Subject, group) \%>\%
+  unique
 basic_table() \%>\%
   split_cols_by("group", ref_group = result$ref_level) \%>\%
   add_colcounts() \%>\%
@@ -138,7 +138,7 @@ basic_table() \%>\%
   summarize_lsmeans(show_relative = "increase") \%>\%
   build_table(
     df = tidy(result),
-    col_counts = n_cols
+    alt_counts_df = dat_adsl
   )
 
 }

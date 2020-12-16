@@ -45,8 +45,6 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
 
   var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries")
 
-  n_per_arm_sex <- table(interaction(adsl$SEX, adsl$ARM))
-
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_cols_by("SEX") %>%
@@ -73,7 +71,7 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD")
 
-  result <- build_table(lyt, adae_f, col_counts = n_per_arm_sex) %>%
+  result <- build_table(lyt, adae_f, alt_counts_df = adsl) %>%
     sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -182,8 +180,6 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
 
   var_labels(adae_f) <- c(adae_labels, "SMQ" = "Standardised MedDRA Queries", "AGE65" = "AGE65 GROUP")
 
-  n_per_arm_age65 <- table(interaction(adsl$AGE65, adsl$ARM))
-
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_cols_by("AGE65") %>%
@@ -210,7 +206,7 @@ test_that("AET06_SMQ variant 2 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD")
 
-  result <- build_table(lyt, adae_f, col_counts = n_per_arm_age65) %>%
+  result <- build_table(lyt, adae_f, alt_counts_df = adsl) %>%
     sort_at_path(path = c("SMQ", "*", "AEDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)

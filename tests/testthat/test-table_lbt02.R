@@ -15,7 +15,7 @@ test_that("LBT02 default variant is produced correctly", {
     add_colcounts() %>%
     summarize_vars(vars = "AVAL")
 
-  result <- build_table(l, df = adlb, col_counts = table(adsl$ARM))
+  result <- build_table(l, df = adlb, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(

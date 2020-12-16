@@ -34,7 +34,7 @@ test_that("AET02 variant 1 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM), sum(table(adsl$ARM))))
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_onecol(4)) %>%
@@ -191,7 +191,7 @@ test_that("AET02 variant 2 is produced correctly", {
       .indent_mods = c(count = -1L)
     )
 
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM), sum(table(adsl$ARM))))
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences) %>%
@@ -425,7 +425,7 @@ test_that("AET02 variant 3 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM))
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
@@ -706,7 +706,7 @@ test_that("AET02 variant 4 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM))
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
     sort_at_path(path =  c("AEDECOD"), scorefun = score_occurrences)
@@ -778,7 +778,7 @@ test_that("AET02 variant 5 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
-  result <- build_table(lyt, adae_5, col_count = table(adsl$ARM))
+  result <- build_table(lyt, adae_5, alt_counts_df = adsl)
 
   result <- result %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
@@ -953,7 +953,7 @@ test_that("AET02 variant 6 is produced correctly", {
       ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1017,7 +1017,7 @@ test_that("AET02 variant 7 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD")
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(path = c("AEBODSYS"), scorefun = cont_n_allcols, decreasing = TRUE) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT"), scorefun = cont_n_allcols, decreasing = TRUE) %>%
     sort_at_path(path = c("AEBODSYS", "*", "AEHLT", "*", "AEDECOD"), scorefun = score_occurrences, decreasing = TRUE)
@@ -1073,7 +1073,7 @@ test_that("AET02 variant 8 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1124,7 +1124,7 @@ test_that("AET02 variant 9 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1177,7 +1177,7 @@ test_that("AET02 variant 10 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1232,7 +1232,7 @@ test_that("AET02 variant 11 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
@@ -1279,7 +1279,7 @@ test_that("AET02 variant 12 is produced correctly", {
     ) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = 1L))
 
-  result <- build_table(lyt, adae, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("AEBODSYS"), scorefun = cont_n_allcols) %>%
     sort_at_path(path =  c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 

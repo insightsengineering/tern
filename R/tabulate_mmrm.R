@@ -185,10 +185,10 @@ a_mmrm_lsmeans <- make_afun(
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#' n_cols <- dat %>%
-#'   group_by(group) %>%
-#'   summarize(n = n_distinct(Subject)) %>%
-#'   pull(n)
+#'
+#' dat_adsl <- dat %>%
+#'   select(Subject, group) %>%
+#'   unique
 #' basic_table() %>%
 #'   split_cols_by("group", ref_group = result$ref_level) %>%
 #'   add_colcounts() %>%
@@ -196,7 +196,7 @@ a_mmrm_lsmeans <- make_afun(
 #'   summarize_lsmeans(show_relative = "increase") %>%
 #'   build_table(
 #'     df = tidy(result),
-#'     col_counts = n_cols
+#'     alt_counts_df = dat_adsl
 #'   )
 #'
 summarize_lsmeans <- function(lyt,

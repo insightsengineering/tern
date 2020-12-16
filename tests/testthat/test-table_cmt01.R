@@ -8,9 +8,6 @@ library(rtables)
 test_that("CMT01 default variant (Concomitant medications) is produced correctly", {
   adsl <- radsl(cached = TRUE)
 
-  n_per_arm <- table(adsl$ARM)
-  n_per_arm <- c(n_per_arm, "All Patients" = sum(n_per_arm))
-
   adcm <- radcm(cached = TRUE)
   adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
 
@@ -38,7 +35,7 @@ test_that("CMT01 default variant (Concomitant medications) is produced correctly
       )
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
-    build_table(adcm_c, col_counts = n_per_arm) %>%
+    build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -76,9 +73,6 @@ test_that("CMT01 default variant (Concomitant medications) is produced correctly
 test_that("CMT01 variant 1 (prior medications) is produced correctly", {
   adsl <- radsl(cached = TRUE)
 
-  n_per_arm <- table(adsl$ARM)
-  n_per_arm <- c(n_per_arm, "All Patients" = sum(n_per_arm))
-
   adcm <- radcm(cached = TRUE)
   adcm_p <- adcm %>% filter(ATIREL == "PRIOR")
 
@@ -106,7 +100,7 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
       )
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
-    build_table(adcm_p, col_counts = n_per_arm) %>%
+    build_table(adcm_p, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -138,9 +132,6 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
 test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
   adsl <- radsl(cached = TRUE)
 
-  n_per_arm <- table(adsl$ARM)
-  n_per_arm <- c(n_per_arm, "All Patients" = sum(n_per_arm))
-
   adcm <- radcm(cached = TRUE)
   adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
 
@@ -165,7 +156,7 @@ test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
       .stats = "unique"
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
-    build_table(adcm_c, col_counts = n_per_arm) %>%
+    build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
   result_matrix <- to_string_matrix(result)
@@ -198,9 +189,6 @@ test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
 test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
   adsl <- radsl(cached = TRUE)
 
-  n_per_arm <- table(adsl$ARM)
-  n_per_arm <- c(n_per_arm, "All Patients" = sum(n_per_arm))
-
   adcm <- radcm(cached = TRUE)
   adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
 
@@ -219,7 +207,7 @@ test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
       .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
     ) %>%
     count_occurrences(var = "CMDECOD") %>%
-    build_table(adcm_c, col_counts = n_per_arm) %>%
+    build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences, decreasing = TRUE) %>%
     sort_at_path(path = c("CMCLAS"), scorefun = cont_n_onecol(4), decreasing = TRUE)
 

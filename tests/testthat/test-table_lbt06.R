@@ -21,7 +21,7 @@ test_that("LBT06 default variant is produced correctly", {
       "ANRIND",
       abnormal = c(Low = "LOW", High = "HIGH")
     ) %>%
-    build_table(adlb, col_counts = table(adsl$ARM))
+    build_table(adlb, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

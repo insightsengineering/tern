@@ -119,6 +119,7 @@ h_append_grade_groups(
  )
 
 
+library(dplyr)
 df <- data.frame(
   USUBJID = as.character(c(1:6, 1)),
   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
@@ -129,6 +130,9 @@ df <- data.frame(
   ),
   stringsAsFactors = FALSE
 )
+df_adsl <- df \%>\%
+  select(USUBJID, ARM) \%>\%
+  unique
 
 s_count_occurrences_by_grade(
   df,
@@ -158,7 +162,7 @@ basic_table() \%>\%
     var = "AESEV",
     .formats = c("count_fraction" = "xx.xx (xx.xx\%)")
   ) \%>\%
-  build_table(df, col_counts = c(3L, 3L))
+  build_table(df, alt_counts_df = df_adsl)
 
 # Define additional grade groupings.
 grade_groups <-  list(
@@ -174,7 +178,7 @@ basic_table() \%>\%
     var = "AETOXGR",
     grade_groups = grade_groups
   ) \%>\%
-  build_table(df, col_counts = c(3L, 3L))
+  build_table(df, alt_counts_df = df_adsl)
 
 
 # Layout creating function with custom format.
@@ -184,7 +188,7 @@ basic_table() \%>\%
   summarize_occurrences_by_grade(
   var = "AESEV",
   .formats = c("count_fraction" = "xx.xx (xx.xx\%)")) \%>\%
-  build_table(df, col_counts = 10L)
+  build_table(df, alt_counts_df = df_adsl)
 
 basic_table() \%>\%
   add_colcounts() \%>\%
@@ -193,6 +197,6 @@ basic_table() \%>\%
     var = "AETOXGR",
     grade_groups = grade_groups
   ) \%>\%
-  build_table(df, col_counts = 10L)
+  build_table(df, alt_counts_df = df_adsl)
 
 }

@@ -107,6 +107,7 @@ test_that("estimate_incidence_rate works as expected with healthy input", {
     ARM = factor(c("A", "A", "A", "B", "B", "B"))
   ) %>%
     mutate(is_event = CNSR == 0)
+
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -120,9 +121,9 @@ test_that("estimate_incidence_rate works as expected with healthy input", {
         time_unit_output = 100
       )
     ) %>%
-    build_table(df, col_counts = table(df$ARM))
-  result_matrix <- to_string_matrix(result)
+    build_table(df)
 
+  result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "90% CI", "A", "(N=3)", "3.8",

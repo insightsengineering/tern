@@ -124,6 +124,7 @@ afun(
 )
 
 
+library(dplyr)
 df <- data.frame(
   USUBJID = as.character(c(1, 1, 2, 4, 4, 4,
                            6, 6, 6, 7, 7, 8)),
@@ -131,7 +132,9 @@ df <- data.frame(
               "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"),
   ARM = rep(c("A", "B"), each=6)
 )
-N_per_arm <- c(5L, 4L)
+df_adsl <- df \%>\%
+  select(USUBJID, ARM) \%>\%
+  unique
 
 # Create table layout
 lyt <- basic_table() \%>\%
@@ -141,7 +144,7 @@ lyt <- basic_table() \%>\%
 
 # Apply table layout to data and produce rtable object
 lyt \%>\%
-  build_table(df, col_counts = N_per_arm) \%>\%
+  build_table(df, alt_counts_df = df_adsl) \%>\%
   prune_table()
 
 }

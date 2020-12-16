@@ -53,7 +53,7 @@ test_that("EXT01 default variant with numeric parameters is produced correctly",
     add_colcounts() %>%
     split_rows_by("PARAM", split_fun = drop_split_levels) %>%
     summarize_vars(vars = "AVAL") %>%
-    build_table(adex, col_counts = table(adsl$ARM))
+    build_table(adex, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -158,7 +158,7 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
       vars = c("TDURD", "TDURDC", "TDOSE", "TNDOSE"),
       var_labels = rtables::var_labels(anl)[c("TDURD", "TDURDC", "TDOSE", "TNDOSE")]
     ) %>%
-    build_table(anl, col_counts = table(adsl$ARM))
+    build_table(anl, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -271,7 +271,7 @@ test_that("EXT01 variant: with user specified categories for missed doses", {
       thresholds = c(1, 5, 10, 15),
       var_labels = "Missed Doses"
     ) %>%
-    build_table(anl, col_counts = table(adsl$ARM))
+    build_table(anl, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

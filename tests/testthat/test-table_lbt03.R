@@ -16,6 +16,7 @@ test_that("LBT03 default variant is produced correctly", {
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
+    add_colcounts() %>%
     split_rows_by("AVISIT") %>%
     summarize_change(
       "CHG",
@@ -24,7 +25,7 @@ test_that("LBT03 default variant is produced correctly", {
     ) %>%
     build_table(
       df = adlb_f,
-      col_counts = table(adsl$ARM)
+      alt_counts_df = adsl
     )
 
   result_matrix <- to_string_matrix(result)

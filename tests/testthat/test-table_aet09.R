@@ -31,7 +31,7 @@ test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae_r, col_count = c(table(adsl$ARM), sum(table(adsl$ARM))))
+  result <- build_table(lyt, adae_r, alt_counts_df = adsl)
 
   result <- result %>%
     prune_table() %>%
@@ -214,7 +214,7 @@ test_that("AET09 variant 2 is produced correctly, AE related to study drug (incl
     count_occurrences(vars = "AEDECOD", .indent_mods = c(count_fraction = -1L))
 
 
-  result <- build_table(lyt, adae_r, col_count = table(adsl$ARM)) %>%
+  result <- build_table(lyt, adae_r, alt_counts_df = adsl) %>%
     prune_table()
 
   result <- result %>%

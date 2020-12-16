@@ -136,7 +136,7 @@ a_count_patients_with_event <- make_afun(
 #'     .indent_mods = c(count_fraction = 2L),
 #'     table_names = "tbl_rel_fatal"
 #'   )
-#' build_table(lyt, adae, col_counts = table(adsl$ARM))
+#' build_table(lyt, adae, alt_counts_df = adsl)
 #'
 count_patients_with_event <- function(lyt,
                                       vars,
@@ -202,7 +202,7 @@ count_patients_with_event <- function(lyt,
 #'     "SUBJID",
 #'     flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
 #'   )
-#'  build_table(lyt2, adae, col_counts = table(adsl$ARM))
+#'  build_table(lyt2, adae, alt_counts_df = adsl)
 #'
 count_patients_with_flags <- function(lyt,
                                       var,

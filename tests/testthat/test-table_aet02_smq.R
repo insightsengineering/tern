@@ -47,7 +47,7 @@ test_that("AET02SMQ variant 1 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM)))
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
     sort_at_path(path = c("AE_GRP"), scorefun = cont_n_allcols) %>%
@@ -110,7 +110,7 @@ test_that("AET02SMQ variant 2 is produced correctly", {
       )) %>%
     count_occurrences(vars = "AEDECOD", .indent_mods = -1L)
 
-  result <- build_table(lyt, adae, col_count = c(table(adsl$ARM)))
+  result <- build_table(lyt, adae, alt_counts_df = adsl)
 
   result <- result %>%
     sort_at_path(path = c("AE_GRP"), scorefun = cont_n_allcols) %>%

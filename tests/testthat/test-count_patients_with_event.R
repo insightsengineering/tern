@@ -50,8 +50,9 @@ test_that("count_patients_with_event works as expected", {
 
   test_adsl_like <- test_data[!duplicated(test_data["SUBJID"]), ]
 
-
-  l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
+    add_colcounts() %>%
     count_patients_with_event(
       vars = "SUBJID",
       filters = c("TRTEMFL" = "Y"),
@@ -65,10 +66,9 @@ test_that("count_patients_with_event works as expected", {
       table_names = "total_pts_fatal_ae"
     )
 
-  result <- build_table(l, test_data, col_count = table(test_adsl_like$ARM))
+  result <- build_table(l, test_data, alt_counts_df = test_adsl_like)
 
   result <- to_string_matrix(result)
-
 
   expected <- structure(
     c("", "", "Total number of patients with at least one adverse event",
@@ -96,10 +96,10 @@ test_that("count_patients_with_event works as expected for different column coun
     ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
     stringsAsFactors = FALSE
   )
-  col_counts <- table(test_adsl_like$ARM)
 
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
+    add_colcounts() %>%
     count_patients_with_event(
       vars = "SUBJID",
       filters = c("TRTEMFL" = "Y"),
@@ -115,7 +115,7 @@ test_that("count_patients_with_event works as expected for different column coun
       table_names = "total_pts_fatal_ae"
     )
 
-  result <- build_table(lyt, df = test_data, col_counts = col_counts)
+  result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
 
   result <- to_string_matrix(result)
   expected <- structure(
@@ -155,7 +155,6 @@ test_that("count_patients_with_flags works as expected", {
     ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
     stringsAsFactors = FALSE
   )
-  col_counts <- table(test_adsl_like$ARM)
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -165,7 +164,7 @@ test_that("count_patients_with_flags works as expected", {
       flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
     )
 
-  result <- build_table(lyt, df = test_data, col_counts = col_counts)
+  result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -203,7 +202,6 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
     ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
     stringsAsFactors = FALSE
   )
-  col_counts <- table(test_adsl_like$ARM)
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -219,7 +217,7 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
       table_names = paste0("USUBJID", c("flag1", "flag2"))
     )
 
-  result <- build_table(lyt, df = test_data, col_counts = col_counts)
+  result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

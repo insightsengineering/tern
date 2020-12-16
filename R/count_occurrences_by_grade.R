@@ -59,6 +59,7 @@ h_append_grade_groups <- function(grade_groups, refs) {
 #' @export
 #' @examples
 #'
+#' library(dplyr)
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1:6, 1)),
 #'   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
@@ -69,6 +70,9 @@ h_append_grade_groups <- function(grade_groups, refs) {
 #'   ),
 #'   stringsAsFactors = FALSE
 #' )
+#' df_adsl <- df %>%
+#'   select(USUBJID, ARM) %>%
+#'   unique
 #'
 #' s_count_occurrences_by_grade(
 #'   df,
@@ -165,7 +169,7 @@ a_count_occurrences_by_grade <- make_afun(
 #'     var = "AESEV",
 #'     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
 #'   ) %>%
-#'   build_table(df, col_counts = c(3L, 3L))
+#'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' # Define additional grade groupings.
 #' grade_groups <-  list(
@@ -181,7 +185,7 @@ a_count_occurrences_by_grade <- make_afun(
 #'     var = "AETOXGR",
 #'     grade_groups = grade_groups
 #'   ) %>%
-#'   build_table(df, col_counts = c(3L, 3L))
+#'   build_table(df, alt_counts_df = df_adsl)
 #'
 count_occurrences_by_grade <- function(lyt,
                                        var,
@@ -220,7 +224,7 @@ count_occurrences_by_grade <- function(lyt,
 #'   summarize_occurrences_by_grade(
 #'   var = "AESEV",
 #'   .formats = c("count_fraction" = "xx.xx (xx.xx%)")) %>%
-#'   build_table(df, col_counts = 10L)
+#'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' basic_table() %>%
 #'   add_colcounts() %>%
@@ -229,7 +233,7 @@ count_occurrences_by_grade <- function(lyt,
 #'     var = "AETOXGR",
 #'     grade_groups = grade_groups
 #'   ) %>%
-#'   build_table(df, col_counts = 10L)
+#'   build_table(df, alt_counts_df = df_adsl)
 #'
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
