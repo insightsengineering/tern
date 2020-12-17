@@ -1,3 +1,7 @@
+# tern 0.7.0.9000
+
+* Issues with no news: 
+
 # tern 0.7.0
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
 * Counting patients with abnormal values post-baseline with `count_abnormal`.
