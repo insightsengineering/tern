@@ -7,7 +7,7 @@ design/*
 ^\.github$
 README.*
 man-roxygen/*
-TODO.md
+TODO\.md
 ^\.drone\.yml$
 ^Jenkinsfile$
-.lintr
+^\.lintr$
