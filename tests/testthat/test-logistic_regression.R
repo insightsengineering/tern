@@ -3,7 +3,8 @@ library(rtables)
 library(dplyr)
 
 adsl_cached <- radsl(cached = TRUE) %>% dplyr::filter(SEX %in% c("F", "M"))
-adrs_cached <- radrs(adsl_cached, seed = 2)
+adrs_cached <- radrs(cached = TRUE) %>% dplyr::filter(SEX %in% c("F", "M"))
+
 get_adrs <- function() {
   adrs_cached %>%
     dplyr::filter(
@@ -125,8 +126,8 @@ test_that("h_or_cat_interaction works as expected", {
   expect_equivalent(
     result_armcd[["ARM B"]][["ASIAN"]],
     list(
-      or = 0.16232,
-      ci = c(0.01849, 1.42441)
+      or = 0.1503174,
+      ci = c(0.01669928, 1.35307118)
     ),
     tol = 1e-4
   )
@@ -160,8 +161,8 @@ test_that("h_or_cont_interaction works as expected with median increment", {
   expect_equivalent(
     result_armcd[["ARM B"]][["34"]],
     list(
-      or = 0.24866,
-      ci = c(0.06114, 1.01139)
+      or = 9.284028e-05,
+      ci = c(1.483171e-10, 5.811413e+01)
     ),
     tol = 1e-4
   )
@@ -175,8 +176,8 @@ test_that("h_or_cont_interaction works as expected with median increment", {
   expect_equivalent(
     result_age[["ARM B"]],
     list(
-      or = 0.99796,
-      ci = c(0.91931, 1.08333)
+      or = 1.028141,
+      ci = c(0.9286094, 1.1383411)
     ),
     tol = 1e-4
   )
@@ -306,9 +307,9 @@ test_that("h_glm_simple_term_extract works for factor and numeric variables", {
     stringsAsFactors = FALSE
   )
   expected1$df <- list(2, 1, 1)
-  expected1$pvalue <- list(0.7633307, 0.6097390, 0.7207622)
-  expected1$estimate <- list(numeric(0), -0.33522939569033, 0.296292628380204)
-  expected1$std_error <- list(numeric(0), 0.65673817912887, 0.828929059143728)
+  expected1$pvalue <- list(0.636928085707871, 0.349760676147602, 0.729420300119224)
+  expected1$estimate <- list(numeric(0), 1.02678193759971, 0.294048000380143)
+  expected1$std_error <- list(numeric(0), 1.09809954779278, 0.850103355568239)
 
   expect_equal(result1, expected1[, names(result1)], tolerance = 0.000001)
 
@@ -326,10 +327,10 @@ test_that("h_glm_simple_term_extract works for factor and numeric variables", {
     is_term_summary = TRUE,
     stringsAsFactors = FALSE
   )
-  expected2$estimate <- list(-0.0154436872166314)
-  expected2$std_error <- list(0.0370085242079029)
+  expected2$estimate <- list(0.0674615539231469)
+  expected2$std_error <- list(0.0534337742090727)
   expected2$df <- list(1)
-  expected2$pvalue <- list(0.6764584)
+  expected2$pvalue <- list(0.206759410411742)
   expect_equal(result2, expected2[, names(result2)], tolerance = 0.00001)
 })
 
@@ -363,10 +364,10 @@ test_that("h_glm_interaction_extract works for categorical interaction", {
     is_term_summary = c(FALSE, TRUE, TRUE, TRUE, TRUE),
     stringsAsFactors = FALSE
   )
-  expected$estimate <- list(numeric(0), 1.722828, 1.469858, -16.3095, -16.49343)
-  expected$std_error <- list(numeric(0), 1.513541, 3755.583, 3409.299, 5556.542)
+  expected$estimate <- list(numeric(0), -15.40581, -16.09859, -15.27831, -33.46005)
+  expected$std_error <- list(numeric(0), 3162.069, 4876.011, 3369.775, 3944.697)
   expected$df <- list(4, 1, 1, 1, 1)
-  expected$pvalue <- list(0.8621049, 0.2550051, 0.9996877, 0.9961831, 0.9976317)
+  expected$pvalue <- list(1, 0.9961127, 0.9973657, 0.9963825, 0.9932322)
   expect_equal(result, expected[, names(result)], tolerance = 0.000001)
 })
 
@@ -392,10 +393,10 @@ test_that("h_glm_interaction_extract works for continuous interaction", {
       interaction_label = rep("", 3),
       reference = rep("", 3),
       reference_label = rep("", 3),
-      estimate = list(numeric(0), 0.0765168047633205, 0.0806134116654586),
-      std_error = list(numeric(0), 0.100660238964565, 202.171397083027),
+      estimate = list(numeric(0), -0.868231277534066, -0.617569013085646),
+      std_error = list(numeric(0), 0.629837882151419, 0.67144179738645),
       df = list(2, 1, 1),
-      pvalue = list(0.749077041429099, 0.447165378840067, 0.999681853141517),
+      pvalue = list(0.230620398951395, 0.168049086898722, 0.357695305920641),
       is_variable_summary = c(TRUE, FALSE, FALSE),
       is_term_summary = c(FALSE, TRUE, TRUE)
     ),
@@ -431,14 +432,17 @@ test_that("h_logistic_simple_terms works", {
     is_term_summary = c(TRUE, FALSE, TRUE),
     stringsAsFactors = FALSE
   )
-  expected1$estimate <- list(-0.001764094, numeric(0), -1.34854854729683)
-  expected1$std_error <- list(0.03810346, numeric(0), 0.632485325778419)
+  expected1$estimate <- list(0.0661119158842212, numeric(0), -0.325646036403045)
+  expected1$std_error <- list(0.0541759122402904, numeric(0), 0.705657114685314)
   expected1$df <- list(1, numeric(0), 1)
-  expected1$pvalue <- list(0.9630732, numeric(0), 0.0329951722214885)
-  expected1$odds_ratio <- list(0.9982375, numeric(0), 0.2596168)
-  expected1$lcl <- list(0.9264034, numeric(0), 0.07515542)
-  expected1$ucl <- list(1.075642, numeric(0), 0.89682)
-  expected1$ci <- list(c(0.9264034, 1.0756416), numeric(0), c(0.07515542, 0.89682002))
+  expected1$pvalue <- list(0.222343824158412, numeric(0), 0.644454886077627)
+  expected1$odds_ratio <- list(1.0683462753937, numeric(0), 0.722060725415064)
+  expected1$lcl <- list(0.960721301481885, numeric(0), 0.181099519627827)
+  expected1$ucl <- list(1.18802795606496, numeric(0), 2.87892365622165)
+  expected1$ci <- list(
+    c(0.960721301481885, 1.18802795606496), numeric(0),
+    c(0.181099519627827, 2.87892365622165)
+  )
   expect_equal(result1, expected1[, names(result1)], tolerance = 0.000001)
 
   result2 <- h_logistic_simple_terms("SEX", mod1, conf_level = 0.99)
@@ -455,14 +459,14 @@ test_that("h_logistic_simple_terms works", {
     is_term_summary = c(FALSE, TRUE),
     stringsAsFactors = FALSE
   )
-  expected2$estimate <- list(numeric(0), -1.34854854729683)
-  expected2$std_error <- list(numeric(0), 0.632485325778419)
+  expected2$estimate <- list(numeric(0), -0.325646036403045)
+  expected2$std_error <- list(numeric(0), 0.705657114685314)
   expected2$df <- list(numeric(0), 1)
-  expected2$pvalue <- list(numeric(0), 0.0329951722214885)
-  expected2$odds_ratio <- list(numeric(0), 0.259616808827808)
-  expected2$lcl <- list(numeric(0),  0.0509086319427838)
-  expected2$ucl <- list(numeric(0), 1.32395793903255)
-  expected2$ci <- list(numeric(0), c(0.0509086319427838, 1.32395793903255))
+  expected2$pvalue <- list(numeric(0), 0.644454886077627)
+  expected2$odds_ratio <- list(numeric(0), 0.722060725415064)
+  expected2$lcl <- list(numeric(0), 0.117267420069842)
+  expected2$ucl <- list(numeric(0), 4.44600632363543)
+  expected2$ci <- list(numeric(0), c(0.117267420069842, 4.44600632363543))
   expect_equal(result2, expected2[, names(result2)], tolerance = 0.000001)
 })
 
@@ -513,22 +517,21 @@ test_that("h_glm_inter_term_extract works as expected with categorical interacti
       ),
       estimate = list(
         numeric(0),
-        -1.81816206889842,
+        -1.89500640455506,
         NA,
         NA,
         NA,
-        16.4311487182376,
+        16.104321554579,
         NA,
-        NA,
-        NA
+        NA, NA
       ),
       std_error = list(
         numeric(0),
-        1.10814323422898,
+        1.1211345604689,
         NA,
         NA,
         NA,
-        2072.90323550604,
+        2050.67134278974,
         NA,
         NA,
         NA
@@ -536,20 +539,20 @@ test_that("h_glm_inter_term_extract works as expected with categorical interacti
       odds_ratio = c(
         NA,
         NA,
-        0.162323816929255,
-        0.909069078703235,
-        1.34046224750204e-08,
+        0.150317372327429,
+        3.06445027971716e-08,
+        3.48115457572539e-08,
         NA,
-        13675941.0360017,
-        59471465.9937293,
-        0.939619768714003
+        9863203.3243185,
+        1.00574842606045,
+        2.90070240841069e-08
       ),
       lcl = c(
-        NA, NA, 0.0184981805996508, 0.119168317385949,
+        NA, NA, 0.0166992784864452, 0,
         0, NA, 0, 0, 0
       ),
       ucl = c(
-        NA, NA, 1.42441151985399, 6.93478441235242,
+        NA, NA, 1.35307117859994, Inf,
         Inf, NA, Inf, Inf, Inf
       ),
       df = list(
@@ -557,12 +560,12 @@ test_that("h_glm_inter_term_extract works as expected with categorical interacti
         NA, NA
       ),
       pvalue = list(
-        0.260270851480672,
-        0.100853808130027,
+        0.239662687330642,
+        0.0909786500513382,
         NA,
         NA,
         NA,
-        0.993675526012668,
+        0.993734121510509,
         NA,
         NA,
         NA
@@ -710,16 +713,35 @@ test_that("tidy.glm works as expected for simple case", {
     is_term_summary = c(FALSE, TRUE, TRUE, TRUE, FALSE, TRUE),
     stringsAsFactors = FALSE
   )
-  expected$estimate <- list(numeric(0), -1.344506, 16.91221, -0.0001172816, numeric(0), -1.352468)
-  expected$std_error <- list(numeric(0), 0.680919, 1539.07, 0.03697361, numeric(0), 0.6311038)
+  expected$estimate <- list(
+    numeric(0), -2.13997014929601, -0.0581408215972514, 0.0686993293696756,
+    numeric(0), -0.342159921912373
+  )
+  expected$std_error <- list(
+    numeric(0), 1.08023696449696, 1.42359779774611, 0.0533593646062628,
+    numeric(0), 0.698571835198751
+  )
   expected$df <- list(2, 1, 1, 1, numeric(0), 1)
-  expected$pvalue <- list(0.1423476, 0.0483197, 0.9912325, 0.9974691, numeric(0), 0.03211152)
-  expected$odds_ratio <- list(numeric(0), 0.2606685, 22124846, 0.9998827, numeric(0), 0.2586013)
-  expected$lcl <- list(numeric(0), 0.04511967, 0, 0.9090502, numeric(0), 0.05089026)
-  expected$ucl <- list(numeric(0), 1.505952, Inf, 1.099791, numeric(0), 1.314095)
+  expected$pvalue <- list(
+    0.0346348266698999, 0.0475891223245196, 0.967422841532196,
+    0.197925635097254, numeric(0), 0.624276001036544
+  )
+  expected$odds_ratio <- list(
+    numeric(0), 0.117658355154091, 0.943517070500145, 1.07111410817357,
+    numeric(0), 0.710234613548929
+  )
+  expected$lcl <- list(
+    numeric(0), 0.00728107926391354, 0.0241110329256203, 0.933564442101182,
+    numeric(0), 0.117471241840093
+  )
+  expected$ucl <- list(
+    numeric(0), 1.9012962276317, 36.9218716208225, 1.22893008879628,
+    numeric(0), 4.29409954625027
+  )
   expected$ci <- list(
-    numeric(0), c(0.04511967, 1.50595200), c(0, Inf),
-    c(0.9090502, 1.0997913), numeric(0), c(0.05089026, 1.31409454)
+    numeric(0), c(0.00728107926391354, 1.9012962276317),
+    c(0.0241110329256203, 36.9218716208225), c(0.933564442101182, 1.22893008879628),
+    numeric(0), c(0.117471241840093, 4.29409954625027)
   )
   expect_equal(result, expected[, names(result)], tolerance = 0.000001)
 })
@@ -758,12 +780,14 @@ test_that("tidy.glm works as expected for interaction case", {
     )
   )
   expected$estimate <- list(
-    numeric(0), -1.344396, numeric(0), -3.439949, NA, 15.07209, NA, -0.04828184,
-    NA, NA, NA, numeric(0), 0.05889316, 0.05183692
+    numeric(0), -0.379654068603096, numeric(0), 19.6400646633339,
+    NA, 15.4488986205526, NA, 0.86399679862127, NA, NA, NA, numeric(0),
+    -0.836486811025185, -0.628305227524577
   )
   expected$std_error <- list(
-    numeric(0), 0.6334459, numeric(0), 3.496053, NA, 7084.929, NA, 0.08522134,
-    NA, NA, NA, numeric(0), 0.09426531, 194.9034
+    numeric(0), 0.711864825000689, numeric(0), 13.6647262772159,
+    NA, 14.7450624370364, NA, 0.578765963526213, NA, NA, NA,
+    numeric(0), 0.580672630722349, 0.615655368309798
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -826,17 +850,17 @@ test_that("summarize_logistic works as expected for interaction model with conti
       "Reference ARM A, n = 126", "ARM B, n = 121", "ARM C, n = 126",
       "Degrees of Freedom", "", "", "1", "2", "", "1", "", "", "1",
       "", "", "", "1", "", "", "", "", "2", "", "1", "1", "Parameter Estimate",
-      "", "", "-1.344", "", "", "-3.44", "", "", "15.072", "", "",
-      "", "-0.048", "", "", "", "", "", "", "0.059", "0.052", "Standard Error",
-      "", "", "0.633", "", "", "3.496", "", "", "7084.929", "", "",
-      "", "0.085", "", "", "", "", "", "", "0.094", "194.903", "Odds Ratio",
-      "", "", "0.26", "", "", "", "", "0.24", "", "", ">999.99", "",
-      "", "", "0.95", "1.01", "1", "", "", "", "", "Wald 99% CI", "",
-      "", "(0.05, 1.33)", "", "", "", "", "(0.04, 1.50)", "", "", "(0.00, >999.99)",
-      "", "", "", "(0.77, 1.19)", "(0.91, 1.13)", "(<0.01, >999.99)",
-      "", "", "", "", "p-value", "", "", "0.0338", "0.6163", "", "0.3251",
-      "", "", "0.9983", "", "", "", "0.5710", "", "", "", "", "0.8227",
-      "", "0.5321", "0.9998"),
+      "", "", "-0.38", "", "", "19.64", "", "", "15.449", "", "", "",
+      "0.864", "", "", "", "", "", "", "-0.836", "-0.628", "Standard Error",
+      "", "", "0.712", "", "", "13.665", "", "", "14.745", "", "",
+      "", "0.579", "", "", "", "", "", "", "0.581", "0.616", "Odds Ratio",
+      "", "", "0.68", "", "", "", "", "0", "", "", "0", "", "", "",
+      "2.37", "1.03", "1.27", "", "", "", "", "Wald 99% CI", "", "",
+      "(0.11, 4.28)", "", "", "", "", "(<0.01, >999.99)", "", "", "(<0.01, >999.99)",
+      "", "", "", "(0.53, 10.54)", "(0.90, 1.18)", "(0.74, 2.18)",
+      "", "", "", "", "p-value", "", "", "0.5938", "0.2910", "", "0.1506",
+      "", "", "0.2948", "", "", "", "0.1355", "", "", "", "", "0.2297",
+      "", "0.1497", "0.3075"),
     .Dim = c(22L, 7L)
   )
   expect_identical(result_matrix, expected_matrix)
@@ -865,18 +889,18 @@ test_that("summarize_logistic works as expected for interaction model with categ
       "Reference ARM A or F, n = 266", "ARM B * M, n = 47", "ARM C * M, n = 60",
       "Degrees of Freedom", "", "1", "2", "", "1", "", "", "", "1",
       "", "", "", "", "", "1", "", "", "", "", "2", "", "1", "1", "Parameter Estimate",
-      "", "0", "", "", "-0.028", "", "", "", "16.954", "", "", "",
-      "", "", "0.28", "", "", "", "", "", "", "-2.28", "-0.28", "Standard Error",
-      "", "0.037", "", "", "1.016", "", "", "", "2182.457", "", "",
-      "", "", "", "1.243", "", "", "", "", "", "", "1.483", "3162.68",
-      "Odds Ratio", "", "1", "", "", "", "", "0.97", "0.1", "", "",
-      ">999.99", ">999.99", "", "", "", "", "1.32", "0.14", "1", "",
-      "", "", "", "Wald 99% CI", "", "(0.91, 1.10)", "", "", "", "",
-      "(0.07, 13.30)", "(<0.01, 1.63)", "", "", "(0.00, >999.99)",
-      "(0.00, >999.99)", "", "", "", "", "(0.05, 32.48)", "(0.02, 1.13)",
-      "(0.00, >999.99)", "", "", "", "", "p-value", "", "0.9922", "0.9996",
-      "", "0.9780", "", "", "", "0.9938", "", "", "", "", "", "0.8218",
-      "", "", "", "", "0.3065", "", "0.1241", "0.9999"),
+      "", "0.067", "", "", "-1.549", "", "", "", "16.089", "", "",
+      "", "", "", "16.075", "", "", "", "", "", "", "-16.41", "-32.572",
+      "Standard Error", "", "0.053", "", "", "1.134", "", "", "", "2155.353",
+      "", "", "", "", "", "2477.888", "", "", "", "", "", "", "2477.888",
+      "3284.125", "Odds Ratio", "", "1.07", "", "", "", "", "0.21",
+      "0", "", "", ">999.99", "0", "", "", "", "", ">999.99", "0.72",
+      "0", "", "", "", "", "Wald 99% CI", "", "(0.93, 1.23)", "", "",
+      "", "", "(0.01, 3.94)", "(0.00, >999.99)", "", "", "(0.00, >999.99)",
+      "(0.00, >999.99)", "", "", "", "", "(0.00, >999.99)", "(0.09, 5.59)",
+      "(0.00, >999.99)", "", "", "", "", "p-value", "", "0.2109", "0.3932",
+      "", "0.1719", "", "", "", "0.9940", "", "", "", "", "", "0.9948",
+      "", "", "", "", "0.9999", "", "0.9947", "0.9921"),
     .Dim = c(24L, 7L)
   )
   expect_identical(result_matrix, expected_matrix)
@@ -896,12 +920,12 @@ test_that("summarize_logistic works as expected for simple model without interac
   expected_matrix <- structure(
     c("", "Planned Arm Code", "Reference ARM A, n = 126",
       "ARM B, n = 121", "ARM C, n = 126", "Age", "Age", "Degrees of Freedom",
-      "2", "", "1", "1", "", "1", "Parameter Estimate", "", "", "-1.276",
-      "16.883", "", "-0.016", "Standard Error", "", "", "0.676", "1577.857",
-      "", "0.036", "Odds Ratio", "", "", "0.28", ">999.99", "", "0.98",
-      "Wald 99% CI", "", "", "(0.05, 1.59)", "(0.00, >999.99)", "",
-      "(0.90, 1.08)", "p-value", "0.1681", "", "0.0590", "0.9915",
-      "", "0.6602"),
+      "2", "", "1", "1", "", "1", "Parameter Estimate", "", "", "-2.133",
+      "-0.093", "", "0.066", "Standard Error", "", "", "1.08", "1.422",
+      "", "0.053", "Odds Ratio", "", "", "0.12", "0.91", "", "1.07",
+      "Wald 99% CI", "", "", "(<0.01, 1.91)", "(0.02, 35.52)", "",
+      "(0.93, 1.23)", "p-value", "0.0367", "", "0.0483", "0.9481",
+      "", "0.2185"),
     .Dim = c(7L, 7L)
   )
   expect_identical(result_matrix, expected_matrix)
