@@ -207,6 +207,8 @@ g_km <- function(df,
   gg <- h_ggkm(
     data = data_plot,
     censor_show = censor_show,
+    pch = pch,
+    size = size,
     xticks = xticks,
     xlab = xlab,
     ylab = ylab,
