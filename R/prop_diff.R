@@ -248,6 +248,12 @@ prop_diff_cmh <- function(rsp,
   p2 <- t_tbl[2, 2, ] / n2
   # CMH weights
   wt <- (n1 * n2 / (n1 + n2)) / sum(n1 * n2 / (n1 + n2))
+  use_stratum <- wt > 0
+  wt <- wt[use_stratum]
+  p1 <- p1[use_stratum]
+  p2 <- p2[use_stratum]
+  n1 <- n1[use_stratum]
+  n2 <- n2[use_stratum]
   est1 <- sum(wt * p1)
   est2 <- sum(wt * p2)
   estimate <- c(est1, est2)

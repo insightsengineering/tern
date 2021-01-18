@@ -1,6 +1,7 @@
 # tern 0.7.0.9000
 
 * Fixed bug in `g_km` related to the arguments `pch` and `size`. Previously, these arguments were not passed on to helper function `h_ggkm` and so were effectively being ignored.
+* Fixed bug in `prop_diff_cmh` that led to `NaN` weighted proportion difference estimates and missing confidence intervals. Previously, when for at least one stratum no patients from one treatment arm were included, then the estimation did not lead to numeric results.
 
 # tern 0.7.0
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.

@@ -85,6 +85,40 @@ test_that("`prop_diff_cmh` (proportion difference by CMH)", {
 
 })
 
+test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
+
+  set.seed(2)
+  rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+  grp <- sample(c("Placebo", "Treatment"), 100, TRUE)
+  grp <- factor(grp, levels = c("Placebo", "Treatment"))
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 100, TRUE),
+    "f2" = sample(c("x", "y", "z"), 100, TRUE),
+    stringsAsFactors = TRUE)
+
+  # Deliberately remove all `Treatment` patients from one stratum.
+  grp[strata_data$f1 == "a" & strata_data$f2 == "x"] <- "Placebo"
+
+  result <- expect_silent(prop_diff_cmh(
+    rsp = rsp, grp = grp, strata = interaction(strata_data),
+    conf_level = 0.90
+  ))
+
+  expect_false(is.na(result$diff))
+  expect_false(any(is.na(result$diff_ci)))
+
+  expected <- list(
+    prop = c(Placebo = 0.569842, Treatment = 0.398075),
+    prop_ci = list(
+      Placebo = c(0.4637119, 0.6759721),
+      Treatment = c(0.2836122, 0.5125378)
+    ),
+    diff = -0.171767,
+    diff_ci = c(-0.32786094, -0.01567301)
+  )
+  expect_equal(result, expected, tol = 0.000001)
+})
+
 
 test_that("`estimate_proportion_diff` is compatible with `rtables`", {
 
