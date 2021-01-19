@@ -12,17 +12,23 @@
 \alias{a_incidence_rate}
 \title{Incidence rate}
 \usage{
-h_incidence_rate_normal(person_years, num_events, alpha = 0.05)
+h_incidence_rate_normal(person_years, n_events, alpha = 0.05)
 
-h_incidence_rate_normal_log(person_years, num_events, alpha = 0.05)
+h_incidence_rate_normal_log(person_years, n_events, alpha = 0.05)
 
-h_incidence_rate_exact(person_years, num_events, alpha = 0.05)
+h_incidence_rate_exact(person_years, n_events, alpha = 0.05)
 
-h_incidence_rate_byar(person_years, num_events, alpha = 0.05)
+h_incidence_rate_byar(person_years, n_events, alpha = 0.05)
 
-h_incidence_rate(person_years, num_events, control = control_incidence_rate())
+h_incidence_rate(person_years, n_events, control = control_incidence_rate())
 
-s_incidence_rate(df, .var, is_event, control = control_incidence_rate())
+s_incidence_rate(
+  df,
+  .var,
+  n_events,
+  is_event,
+  control = control_incidence_rate()
+)
 
 estimate_incidence_rate(
   lyt,
@@ -36,12 +42,18 @@ estimate_incidence_rate(
   .indent_mods = NULL
 )
 
-a_incidence_rate(df, .var, is_event, control = control_incidence_rate())
+a_incidence_rate(
+  df,
+  .var,
+  n_events,
+  is_event,
+  control = control_incidence_rate()
+)
 }
 \arguments{
 \item{person_years}{(\code{numeric}) \cr total person-years at risk.}
 
-\item{num_events}{(\code{numeric}) \cr total number of events observed.}
+\item{n_events}{(\code{integer}) \cr number of events observed.}
 
 \item{alpha}{(\code{numeric}) \cr two-sided alpha-level for confidence interval.}
 
@@ -86,7 +98,7 @@ to avoid warnings from \code{rtables}.}
 The statistics are:
 \itemize{
 \item \code{person_years}: total person-years at risk
-\item \code{num_events}: total number of events observed
+\item \code{n_events}: total number of events observed
 \item \code{rate}: estimated incidence rate
 \item \code{rate_ci}: confidence interval for the incidence rate
 }
@@ -153,12 +165,13 @@ df <- data.frame(
   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
   ARM = factor(c("A", "A", "A", "B", "B", "B"))
 ) \%>\%
-  mutate(is_event = CNSR == 0)
+  mutate(is_event = CNSR == 0) \%>\%
+  mutate(n_events = as.integer(is_event))
 
 s_incidence_rate(
   df,
   .var = "AVAL",
-  is_event = "is_event",
+  n_events = "n_events",
   control = control_incidence_rate(
     time_unit_input = "month",
     time_unit_output = 100
@@ -170,7 +183,7 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   estimate_incidence_rate(
     vars = "AVAL",
-    is_event = "is_event",
+    n_events = "n_events",
     control = control_incidence_rate(
       time_unit_input = "month",
       time_unit_output = 100
@@ -181,7 +194,7 @@ basic_table() \%>\%
 a_incidence_rate(
   df,
   .var = "AVAL",
-  is_event = "is_event",
+  n_events = "n_events",
   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
 )
 

@@ -7,13 +7,14 @@ test_that("AET05 variant 1 is produced correctly", {
   adsl <- radsl(cached = TRUE)
   anl <- radaette(cached = TRUE) %>%
     dplyr::filter(PARAM == "Time to first occurrence of any adverse event") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(is_event = CNSR == 0) %>%
+    dplyr::mutate(n_events = as.integer(is_event))
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     estimate_incidence_rate(
       vars = "AVAL",
-      is_event = "is_event",
+      n_events = "n_events",
       control = control_incidence_rate(time_unit_output = 100)
     ) %>%
     build_table(anl, alt_counts_df = adsl)
@@ -35,13 +36,14 @@ test_that("AET05 variant 2 is produced correctly", {
   adsl <- radsl(cached = TRUE)
   anl <- radaette(cached = TRUE) %>%
     dplyr::filter(PARAM == "Time to first occurrence of any adverse event") %>%
-    dplyr::mutate(is_event = CNSR == 0)
+    dplyr::mutate(is_event = CNSR == 0) %>%
+    dplyr::mutate(n_events = as.integer(is_event))
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     estimate_incidence_rate(
       vars = "AVAL",
-      is_event = "is_event",
+      n_events = "n_events",
       control = control_incidence_rate(conf_type = "exact", time_unit_output = 100)
     ) %>%
     build_table(anl, alt_counts_df = adsl)

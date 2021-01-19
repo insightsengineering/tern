@@ -76,11 +76,12 @@ test_that("s_incidence_rate works as expected with healthy input", {
     AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
     ARM = factor(c("A", "A", "A", "B", "B", "B"))
   ) %>%
-    mutate(is_event = CNSR == 0)
+    mutate(is_event = CNSR == 0) %>%
+    mutate(n_events = as.integer(is_event))
   result <- s_incidence_rate(
     df,
     .var = "AVAL",
-    is_event = "is_event",
+    n_events = "n_events",
     control = control_incidence_rate(
       conf_level = 0.9,
       conf_type = "normal_log",
@@ -91,7 +92,7 @@ test_that("s_incidence_rate works as expected with healthy input", {
 
   expected <- list(
     person_years = with_label(9.058333, "Total patient-years at risk"),
-    num_events = with_label(4, "Number of adverse events observed"),
+    n_events = with_label(4, "Number of adverse events observed"),
     rate = with_label(44.15823, "AE rate per 100 patient-years"),
     rate_ci = with_label(c(19.40154, 100.50487), "90% CI")
   )
@@ -106,14 +107,15 @@ test_that("estimate_incidence_rate works as expected with healthy input", {
     AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
     ARM = factor(c("A", "A", "A", "B", "B", "B"))
   ) %>%
-    mutate(is_event = CNSR == 0)
+    mutate(is_event = CNSR == 0) %>%
+    mutate(n_events = as.integer(is_event))
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     estimate_incidence_rate(
       vars = "AVAL",
-      is_event = "is_event",
+      n_events = "n_events",
       control = control_incidence_rate(
         conf_level = 0.9,
         conf_type = "normal_log",

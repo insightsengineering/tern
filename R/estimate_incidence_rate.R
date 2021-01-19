@@ -13,8 +13,8 @@
 #'   indicating time unit for data input.
 #' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
 #' @param person_years (`numeric`) \cr total person-years at risk.
-#' @param num_events (`numeric`) \cr total number of events observed.
 #' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
+#' @param n_events (`integer`) \cr number of events observed.
 #'
 #' @name incidence_rate
 #' @order 1
@@ -68,16 +68,16 @@ control_incidence_rate <- function(conf_level = 0.95,
 #' h_incidence_rate_normal(200, 2)
 #'
 h_incidence_rate_normal <- function(person_years,
-                                    num_events,
+                                    n_events,
                                     alpha = 0.05) {
 
   assert_that(
     is.number(person_years),
-    is.number(num_events),
+    is.number(n_events),
     is_proportion(alpha)
   )
 
-  est <- num_events / person_years
+  est <- n_events / person_years
   se <- sqrt(est / person_years)
   ci <- est + c(-1, 1) * qnorm(1 - alpha / 2) * se
 
@@ -95,16 +95,16 @@ h_incidence_rate_normal <- function(person_years,
 #' h_incidence_rate_normal_log(200, 2)
 #'
 h_incidence_rate_normal_log <- function(person_years,
-                                        num_events,
+                                        n_events,
                                         alpha = 0.05) {
 
   assert_that(
     is.number(person_years),
-    is.number(num_events),
+    is.number(n_events),
     is_proportion(alpha)
   )
 
-  rate_est <- num_events / person_years
+  rate_est <- n_events / person_years
   rate_se <- sqrt(rate_est / person_years)
   lrate_est <- log(rate_est)
   lrate_se <- rate_se / rate_est
@@ -123,18 +123,18 @@ h_incidence_rate_normal_log <- function(person_years,
 #' h_incidence_rate_exact(200, 2)
 #'
 h_incidence_rate_exact <- function(person_years,
-                                   num_events,
+                                   n_events,
                                    alpha = 0.05) {
 
   assert_that(
     is.number(person_years),
-    is.number(num_events),
+    is.number(n_events),
     is_proportion(alpha)
   )
 
-  est <- num_events / person_years
-  lcl <- qchisq(p = (alpha) / 2, df = 2 * num_events) / (2 * person_years)
-  ucl <- qchisq(p = 1 - (alpha) / 2, df = 2 * num_events + 2) / (2 * person_years)
+  est <- n_events / person_years
+  lcl <- qchisq(p = (alpha) / 2, df = 2 * n_events) / (2 * person_years)
+  ucl <- qchisq(p = 1 - (alpha) / 2, df = 2 * n_events + 2) / (2 * person_years)
 
   list(rate = est, rate_ci = c(lcl, ucl))
 
@@ -149,19 +149,19 @@ h_incidence_rate_exact <- function(person_years,
 #' h_incidence_rate_byar(200, 2)
 #'
 h_incidence_rate_byar <- function(person_years,
-                                  num_events,
+                                  n_events,
                                   alpha = 0.05) {
 
   assert_that(
     is.number(person_years),
-    is.number(num_events),
+    is.number(n_events),
     is_proportion(alpha)
   )
 
-  est <- num_events / person_years
-  seg_1 <- num_events + 0.5
-  seg_2 <- 1 - 1 / (9 * (num_events + 0.5))
-  seg_3 <- qnorm(1 - alpha / 2) * sqrt(1 / (num_events + 0.5)) / 3
+  est <- n_events / person_years
+  seg_1 <- n_events + 0.5
+  seg_2 <- 1 - 1 / (9 * (n_events + 0.5))
+  seg_3 <- qnorm(1 - alpha / 2) * sqrt(1 / (n_events + 0.5)) / 3
   lcl <- seg_1 * ((seg_2 - seg_3)^3) / person_years
   ucl <- seg_1 * ((seg_2 + seg_3)^3) / person_years
 
@@ -186,16 +186,16 @@ h_incidence_rate_byar <- function(person_years,
 #' )
 #'
 h_incidence_rate <- function(person_years,
-                             num_events,
+                             n_events,
                              control = control_incidence_rate()) {
 
   alpha <- 1 - control$conf_level
   est <- switch(
     control$conf_type,
-    normal = h_incidence_rate_normal(person_years, num_events, alpha),
-    normal_log = h_incidence_rate_normal_log(person_years, num_events, alpha),
-    exact = h_incidence_rate_exact(person_years, num_events, alpha),
-    byar = h_incidence_rate_byar(person_years, num_events, alpha)
+    normal = h_incidence_rate_normal(person_years, n_events, alpha),
+    normal_log = h_incidence_rate_normal_log(person_years, n_events, alpha),
+    exact = h_incidence_rate_exact(person_years, n_events, alpha),
+    byar = h_incidence_rate_byar(person_years, n_events, alpha)
   )
 
   time_unit_output <- control$time_unit_output
@@ -210,7 +210,7 @@ h_incidence_rate <- function(person_years,
 #'   associated confidence interval.
 #' @return The statistics are:
 #'   * `person_years`: total person-years at risk
-#'   * `num_events`: total number of events observed
+#'   * `n_events`: total number of events observed
 #'   * `rate`: estimated incidence rate
 #'   * `rate_ci`: confidence interval for the incidence rate
 #' @export
@@ -225,12 +225,13 @@ h_incidence_rate <- function(person_years,
 #'   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
 #'   ARM = factor(c("A", "A", "A", "B", "B", "B"))
 #' ) %>%
-#'   mutate(is_event = CNSR == 0)
+#'   mutate(is_event = CNSR == 0) %>%
+#'   mutate(n_events = as.integer(is_event))
 #'
 #' s_incidence_rate(
 #'   df,
 #'   .var = "AVAL",
-#'   is_event = "is_event",
+#'   n_events = "n_events",
 #'   control = control_incidence_rate(
 #'     time_unit_input = "month",
 #'     time_unit_output = 100
@@ -239,15 +240,18 @@ h_incidence_rate <- function(person_years,
 #'
 s_incidence_rate <- function(df,
                              .var,
+                             n_events,
                              is_event,
                              control = control_incidence_rate()) {
 
   assert_that(
-    is_df_with_variables(df, list(tte = .var, is_event = is_event)),
+    is_df_with_variables(df, list(tte = .var, n_events = n_events)),
     is.string(.var),
     is_numeric_vector(df[[.var]]),
-    is_logical_vector(df[[is_event]])
+    is_integer_vector(df[[n_events]])
   )
+
+  if (!missing(is_event)) warning("argument is_event will be deprecated. Please use n_events.")
 
   time_unit_input <- control$time_unit_input
   time_unit_output <- control$time_unit_output
@@ -257,16 +261,16 @@ s_incidence_rate <- function(df,
       1 / 12 * (time_unit_input == "month") +
       1 / 365.24 * (time_unit_input == "day")
   )
-  num_events <- sum(df[[is_event]], na.rm = TRUE)
+  n_events <- sum(df[[n_events]], na.rm = TRUE)
 
   result <- h_incidence_rate(
     person_years,
-    num_events,
+    n_events,
     control
   )
   list(
     person_years = with_label(person_years, "Total patient-years at risk"),
-    num_events = with_label(num_events, "Number of adverse events observed"),
+    n_events = with_label(n_events, "Number of adverse events observed"),
     rate = with_label(result$rate, paste("AE rate per", time_unit_output, "patient-years")),
     rate_ci = with_label(result$rate_ci, f_conf_level(conf_level))
   )
@@ -280,7 +284,7 @@ s_incidence_rate <- function(df,
 #' a_incidence_rate(
 #'   df,
 #'   .var = "AVAL",
-#'   is_event = "is_event",
+#'   n_events = "n_events",
 #'   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
 #' )
 #'
@@ -288,7 +292,7 @@ a_incidence_rate <- make_afun(
   s_incidence_rate,
   .formats = c(
     "person_years" = "xx.x",
-    "num_events" = "xx",
+    "n_events" = "xx",
     "rate" = "xx.xx",
     "rate_ci" = "(xx.xx, xx.xx)"
   )
@@ -304,7 +308,7 @@ a_incidence_rate <- make_afun(
 #'   add_colcounts() %>%
 #'   estimate_incidence_rate(
 #'     vars = "AVAL",
-#'     is_event = "is_event",
+#'     n_events = "n_events",
 #'     control = control_incidence_rate(
 #'       time_unit_input = "month",
 #'       time_unit_output = 100
