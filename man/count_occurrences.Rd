@@ -8,6 +8,7 @@
 \usage{
 s_count_occurrences(
   df,
+  denom = c("N_col", "n"),
   .N_col,
   .df_row,
   drop = TRUE,
@@ -17,6 +18,7 @@ s_count_occurrences(
 
 a_count_occurrences(
   df,
+  denom = c("N_col", "n"),
   .N_col,
   .df_row,
   drop = TRUE,
@@ -37,6 +39,10 @@ count_occurrences(
 }
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{denom}{(\code{string})\cr choice of denominator for patient proportions:\cr
+can be \code{N_col} (total number of patients in this column across rows) or
+\code{n} (number of patients with any occurrences).}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
@@ -106,7 +112,7 @@ N_per_col <- 4L
 # Count unique occurrences per subject.
 s_count_occurrences(
   df,
-  N_per_col,
+  .N_col = N_per_col,
   .df_row = df,
   .var = "MHDECOD",
   id = "USUBJID"
@@ -117,7 +123,7 @@ s_count_occurrences(
 afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction"))
 afun(
   df,
-  N_per_col,
+  .N_col = N_per_col,
   .df_row = df,
   .var = "MHDECOD",
   id = "USUBJID"

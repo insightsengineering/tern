@@ -16,6 +16,9 @@ NULL
 
 #' @describeIn count_occurrences Statistics function which counts number of patients that report an
 #' occurrence.
+#' @param denom (`string`)\cr choice of denominator for patient proportions:\cr
+#'   can be `N_col` (total number of patients in this column across rows) or
+#'   `n` (number of patients with any occurrences).
 #'
 #' @returns A list with:
 #'   - `count`: list of counts with one element per occurrence
@@ -34,13 +37,14 @@ NULL
 #' # Count unique occurrences per subject.
 #' s_count_occurrences(
 #'   df,
-#'   N_per_col,
+#'   .N_col = N_per_col,
 #'   .df_row = df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
 #' )
 #'
 s_count_occurrences <- function(df,
+                                denom = c("N_col", "n"),
                                 .N_col, # nolint
                                 .df_row,
                                 drop = TRUE,
@@ -54,6 +58,7 @@ s_count_occurrences <- function(df,
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[id]])
   )
+  denom <- match.arg(denom)
 
   occurrences <- if (drop) {
     # Note that we don't try to preserve original level order here since a) that would required
@@ -71,6 +76,11 @@ s_count_occurrences <- function(df,
     df[[.var]]
   }
   ids <- factor(df[[id]])
+  dn <- switch(
+    denom,
+    n = nlevels(ids),
+    N_col = .N_col
+  )
   has_occurrence_per_id <- table(occurrences, ids) > 0
   n_ids_per_occurrence <- as.list(rowSums(has_occurrence_per_id))
   list(
@@ -78,7 +88,7 @@ s_count_occurrences <- function(df,
     count_fraction = lapply(
       n_ids_per_occurrence,
       function(i, denom) c(i, i / denom),
-      denom = .N_col
+      denom = dn
     )
   )
 }
@@ -93,7 +103,7 @@ s_count_occurrences <- function(df,
 #' afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction"))
 #' afun(
 #'   df,
-#'   N_per_col,
+#'   .N_col = N_per_col,
 #'   .df_row = df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"

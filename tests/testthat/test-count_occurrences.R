@@ -63,6 +63,29 @@ test_that("s_count_occurrences fails when it receives empty .df_row and drop = T
   ))
 })
 
+test_that("s_count_occurrences functions as expected when requesting different denominator", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
+    MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
+  )
+
+  result <- s_count_occurrences(df = df, denom = "n", .N_col = 4L, .df_row = df)
+
+  expected <- list(
+    count = list(
+      MH1 = 3L,
+      MH2 = 1L,
+      MH3 = 1L
+    ),
+    count_fraction = list(
+      MH1 = c(3L, 1),
+      MH2 = c(1L, 1 / 3),
+      MH3 = c(1L, 1 / 3)
+    )
+  )
+  expect_equal(result, expected)
+})
+
 test_that("count_occurrences functions as expected with valid input and default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4, 6, 6, 6, 7, 7, 8)),
