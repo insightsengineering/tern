@@ -28,6 +28,28 @@ test_that("prop_cmh returns right result", {
 
 })
 
+test_that("prop_cmh also works when there are strata with just one observation", {
+  tbl <- structure(
+    c(20L, 17L, 7L, 10L, 0L, 0L, 2L, 3L, 21L, 14L, 3L,
+      0L, 0L, 0L, 1L, 0L, 21L, 18L, 3L, 4L, 79L, 16L, 30L, 9L, 1L,
+      0L, 13L, 4L),
+    .Dim = c(2L, 2L, 7L),
+    .Dimnames = list(
+      grp = c("Placebo", "Treatment"),
+      x = c("no", "yes"),
+      strat = c("A", "B", "C", "D", "E", "F", "G")
+    ),
+    class = "table"
+  )
+
+  result <- expect_warning(
+    prop_cmh(tbl),
+    "<5 data points in some strata. CMH test may be incorrect."
+  )
+  expected <- 0.3326
+  expect_equal(result, expected, tol = 1e-4)
+})
+
 test_that("prop_fisher returns right result", {
 
   set.seed(1, kind = "Mersenne-Twister")

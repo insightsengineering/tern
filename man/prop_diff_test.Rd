@@ -113,7 +113,8 @@ correction (\href{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.471022030
 Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
 
 \item \code{prop_cmh}: performs stratified Cochran-Mantel-Haenszel test.
-Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
+Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations
+are automatically discarded.
 
 \item \code{s_test_proportion_diff}: Statistics function which test the difference
 between two proportions.

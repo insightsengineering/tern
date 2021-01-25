@@ -42,9 +42,9 @@ prop_chisq <- function(tbl) {
   prop.test(tbl, correct = FALSE)$p.value
 }
 
-
 #' @describeIn prop_diff_test performs stratified Cochran-Mantel-Haenszel test.
-#'   Internally calls [stats::mantelhaen.test()].
+#'   Internally calls [stats::mantelhaen.test()]. Note that strata with less than two observations
+#'   are automatically discarded.
 #' @param ary (`array`, 3 dimensions)\cr
 #'   with two groups in rows, the binary response (`TRUE`/`FALSE`) in
 #'   columns, the strata in the third dimension.
@@ -72,8 +72,10 @@ prop_cmh <- function(ary) {
     length(dim(ary)) == 3
   )
 
-  if (any(apply(ary, MARGIN = 3, sum) < 5)) {
+  strata_sizes <- apply(ary, MARGIN = 3, sum)
+  if (any(strata_sizes < 5)) {
     warning("<5 data points in some strata. CMH test may be incorrect.")
+    ary <- ary[, , strata_sizes > 1]
   }
 
   mantelhaen.test(ary, correct = FALSE)$p.value
