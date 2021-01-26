@@ -247,8 +247,8 @@ s_incidence_rate <- function(df,
   assert_that(
     is_df_with_variables(df, list(tte = .var, n_events = n_events)),
     is.string(.var),
-    is_numeric_vector(df[[.var]]),
-    is_integer_vector(df[[n_events]])
+    is_numeric_vector(df[[.var]], min_length = 0),
+    is_integer_vector(df[[n_events]], min_length = 0)
   )
 
   if (!missing(is_event)) warning("argument is_event will be deprecated. Please use n_events.")
