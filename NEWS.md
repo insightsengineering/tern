@@ -5,6 +5,7 @@
 * Fixed bug in `prop_cmh` which previously gave an error in case of at least one stratum containing less than two observations.
 * New argument `n_events` added to `estimate_incidence_rate`.
 * New argument `denom` added to `count_occurrences`.
+* New argument `yval` added to `g_km`.
 
 # tern 0.7.0
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.

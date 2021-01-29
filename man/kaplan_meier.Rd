@@ -24,11 +24,14 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}.
 
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{xticks}{(\code{numeric} or \code{number})\cr
+\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr
 numeric vector of ticks or single number with spacing
 between ticks on the x axis.
-If \code{NULL}, \code{\link[labeling:extended]{labeling::extended()}} is used to determine
+If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 an optimal tick position on the x axis.}
+
+\item{yval}{(\code{string})\cr value of y-axis. Should be either
+\code{Survival} (default) or \code{Failure} probability.}
 
 \item{censor_show}{(\code{flag})\cr whether to show censored.}
 

@@ -9,10 +9,10 @@ h_data_plot(fit_km, xticks = NULL, max_time = NULL)
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{xticks}{(\code{numeric} or \code{number})\cr
+\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr
 numeric vector of ticks or single number with spacing
 between ticks on the x axis.
-If \code{NULL}, \code{\link[labeling:extended]{labeling::extended()}} is used to determine
+If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 an optimal tick position on the x axis.}
 
 \item{max_time}{(\code{numeric})\cr maximum value of X axis range (\code{NULL} for

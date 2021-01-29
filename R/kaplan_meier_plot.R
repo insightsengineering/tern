@@ -13,11 +13,13 @@
 #' * `conf_type`: (`string`) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
 #'    see more in [survival::survfit()].
 #' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
-#' @param xticks (`numeric` or `number`)\cr
+#' @param xticks (`numeric`, `number`, or `NULL`)\cr
 #'   numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis.
-#'   If `NULL`, [labeling::extended()] is used to determine
+#'   If `NULL` (default), [labeling::extended()] is used to determine
 #'   an optimal tick position on the x axis.
+#' @param yval (`string`)\cr value of y-axis. Should be either
+#'   `Survival` (default) or `Failure` probability.
 #' @param censor_show (`flag`)\cr whether to show censored.
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
@@ -91,6 +93,7 @@ NULL
 #' # 1. Example - basic option
 #'
 #' res <- g_km(df = df, variables = variables)
+#' res <- g_km(df = df, variables = variables, yval = "Failure")
 #' res <- g_km(
 #'   df = df,
 #'   variables = variables,
@@ -154,7 +157,6 @@ NULL
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
-                 xticks = NULL,
                  col = NULL,
                  lty = NULL,
                  lwd = .5,
@@ -162,8 +164,10 @@ g_km <- function(df,
                  pch = "|",
                  size = 3,
                  max_time = NULL,
+                 xticks = NULL,
                  xlab = "Days",
-                 ylab = "Survival Probability",
+                 yval = c("Survival", "Failure"),
+                 ylab = paste(yval, "Probability"),
                  title = NULL,
                  draw = TRUE,
                  newpage = TRUE,
@@ -191,6 +195,7 @@ g_km <- function(df,
     is_valid_factor(df[[arm]]),
     is_logical_vector(df[[is_event]])
   )
+  yval <- match.arg(yval)
   formula <- as.formula(paste0("Surv(", tte, ", ", is_event, ") ~ ", arm))
   fit_km <- survfit(
     formula = formula,
@@ -211,6 +216,7 @@ g_km <- function(df,
     size = size,
     xticks = xticks,
     xlab = xlab,
+    yval = yval,
     ylab = ylab,
     title = title,
     lwd = lwd,
@@ -454,6 +460,7 @@ h_xticks <- function(data, xticks = NULL) {
 #'   censor_show = TRUE,
 #'   xticks = xticks,
 #'   xlab = "Days",
+#'   yval = "Survival",
 #'   ylab = "Survival Probability",
 #'   title = "Survival"
 #' )
@@ -463,6 +470,7 @@ h_xticks <- function(data, xticks = NULL) {
 #'
 h_ggkm <- function(data,
                    xticks = NULL,
+                   yval,
                    censor_show,
                    xlab,
                    ylab,
@@ -477,6 +485,13 @@ h_ggkm <- function(data,
   assert_that(
     (is.null(lty) || is.number(lty) || is.numeric(lty))
   )
+
+  # change estimates of survival to estimates of failure (1 - survival)
+  if (yval == "Failure") {
+    data$estimate <- 1 - data$estimate
+    data[c("conf.high", "conf.low")] <- list(1 - data$conf.low, 1 - data$conf.high)
+    data$censor <- 1 - data$censor
+  }
 
   gg <- {
     ggplot(

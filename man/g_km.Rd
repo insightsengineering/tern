@@ -8,7 +8,6 @@ g_km(
   df,
   variables,
   control_surv = control_surv_timepoint(),
-  xticks = NULL,
   col = NULL,
   lty = NULL,
   lwd = 0.5,
@@ -16,8 +15,10 @@ g_km(
   pch = "|",
   size = 3,
   max_time = NULL,
+  xticks = NULL,
   xlab = "Days",
-  ylab = "Survival Probability",
+  yval = c("Survival", "Failure"),
+  ylab = paste(yval, "Probability"),
   title = NULL,
   draw = TRUE,
   newpage = TRUE,
@@ -52,12 +53,6 @@ the helper function \link{control_surv_timepoint}. Some possible parameter optio
 see more in \code{\link[survival:survfit]{survival::survfit()}}.
 }}
 
-\item{xticks}{(\code{numeric} or \code{number})\cr
-numeric vector of ticks or single number with spacing
-between ticks on the x axis.
-If \code{NULL}, \code{\link[labeling:extended]{labeling::extended()}} is used to determine
-an optimal tick position on the x axis.}
-
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
@@ -76,7 +71,16 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 \item{max_time}{(\code{numeric})\cr maximum value of X axis range (\code{NULL} for
 default)}
 
+\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr
+numeric vector of ticks or single number with spacing
+between ticks on the x axis.
+If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
+an optimal tick position on the x axis.}
+
 \item{xlab}{(\code{string})\cr label of x-axis.}
+
+\item{yval}{(\code{string})\cr value of y-axis. Should be either
+\code{Survival} (default) or \code{Failure} probability.}
 
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
@@ -145,6 +149,7 @@ variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 # 1. Example - basic option
 
 res <- g_km(df = df, variables = variables)
+res <- g_km(df = df, variables = variables, yval = "Failure")
 res <- g_km(
   df = df,
   variables = variables,
