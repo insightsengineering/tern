@@ -99,6 +99,7 @@ Collate:
     'ggplot2_helper.R'
     'h_response_subgroups.R'
     'h_survival_duration_subgroups.R'
+    'individual_patient_plot.R'
     'kaplan_meier_plot.R'
     'logistic_regression.R'
     'missing_data.R'
