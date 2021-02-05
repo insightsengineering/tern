@@ -51,12 +51,14 @@ h_set_nest_theme <- function(font_size) {
 #' @inheritParams argument_convention
 #' @export
 #' @examples
+#'
 #' library(random.cdisc.data)
 #' library(dplyr)
-#' adsl <- radsl(N = 6)
-#' adlb <- radlb(adsl) %>%
-#'   filter(PARAMCD == "ALT",
-#'          AVISIT != "SCREENING")
+#'
+#' # Select a small sample of data to plot.
+#' adlb <- radlb(cached = TRUE) %>%
+#'   filter(PARAMCD == "ALT", AVISIT != "SCREENING") %>%
+#'   slice(1:36)
 #'
 #' p <- h_g_ipp(df = adlb,
 #'              xvar = "AVISIT",
@@ -150,7 +152,7 @@ h_g_ipp <- function(df,
 #' @export
 #' @examples
 #'
-#' p <- g_ipp(df = adlb,
+#' plot_list <- g_ipp(df = adlb,
 #'            xvar = "AVISIT",
 #'            yvar = "AVAL",
 #'            xlab = "Visit" ,
@@ -159,7 +161,7 @@ h_g_ipp <- function(df,
 #'            add_baseline_hline = TRUE,
 #'            plotting_choices = "split_by_max_obs",
 #'            max_obs_per_plot = 5)
-#' p
+#' plot_list
 #'
 g_ipp <- function(df,
                   xvar,
@@ -197,6 +199,9 @@ g_ipp <- function(df,
       yvar_baseline = yvar_baseline,
       ggtheme = ggtheme
     )
+
+    return(p)
+
   } else if (plotting_choices == "split_by_max_obs") {
     id_vec <- unique(df[[id_var]])
     id_list <- split(
@@ -229,7 +234,7 @@ g_ipp <- function(df,
 
       plot_list[[i]] <- plots
     }
-    p <- ggpubr::ggarrange(plotlist = plot_list, nrow = 1, ncol = 1)
+    return(plot_list)
   } else {
     ind_df <- split(df, df[[id_var]])
     plot_list <- lapply(
@@ -249,8 +254,7 @@ g_ipp <- function(df,
           ggtheme = ggtheme
         )
       })
-    p <- ggpubr::ggarrange(plotlist = plot_list, nrow = 1, ncol = 1)
-  }
 
-  p
+    return(plot_list)
+  }
 }

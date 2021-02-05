@@ -93,12 +93,14 @@ values over time.
 }}
 
 \examples{
+
 library(random.cdisc.data)
 library(dplyr)
-adsl <- radsl(N = 6)
-adlb <- radlb(adsl) \%>\%
-  filter(PARAMCD == "ALT",
-         AVISIT != "SCREENING")
+
+# Select a small sample of data to plot.
+adlb <- radlb(cached = TRUE) \%>\%
+  filter(PARAMCD == "ALT", AVISIT != "SCREENING") \%>\%
+  slice(1:36)
 
 p <- h_g_ipp(df = adlb,
              xvar = "AVISIT",
@@ -110,7 +112,7 @@ p <- h_g_ipp(df = adlb,
 p
 
 
-p <- g_ipp(df = adlb,
+plot_list <- g_ipp(df = adlb,
            xvar = "AVISIT",
            yvar = "AVAL",
            xlab = "Visit" ,
@@ -119,6 +121,6 @@ p <- g_ipp(df = adlb,
            add_baseline_hline = TRUE,
            plotting_choices = "split_by_max_obs",
            max_obs_per_plot = 5)
-p
+plot_list
 
 }

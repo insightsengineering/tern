@@ -6,6 +6,7 @@
 * New argument `n_events` added to `estimate_incidence_rate`.
 * New argument `denom` added to `count_occurrences`.
 * New argument `yval` added to `g_km`.
+* Add new individual patient plot function `g_ipp` along with helpers `h_g_ipp` and `h_set_nest_theme`.
 
 # tern 0.7.0
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.
