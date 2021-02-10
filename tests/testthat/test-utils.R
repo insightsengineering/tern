@@ -149,3 +149,35 @@ test_that("aesi_label works as expected when input includes multiple values", {
   expect_identical(result, expected)
 
 })
+
+test_that("get_smooths dimensions without grouping", {
+  air_smooths <- get_smooths(df = airquality, x = "Solar.R", y = "Ozone")
+
+  expect_identical(nrow(air_smooths), sum(complete.cases(airquality[, c("Solar.R", "Ozone")])))
+  expect_identical(ncol(air_smooths), 4L)
+})
+
+test_that("get_smooths dimensions with grouping", {
+  mt_smooths <- get_smooths(mtcars, "wt", "mpg", c("am"))
+
+  expect_identical(nrow(mt_smooths), sum(complete.cases(mtcars[, c("wt", "mpg", "am")])))
+  expect_identical(ncol(mt_smooths), 5L)
+})
+
+test_that("get_smooths proper splits across groups", {
+  air_smooths2 <- get_smooths(df = airquality, x = "Solar.R", y = "Ozone", groups = "Month")
+  air_full <- airquality[complete.cases(airquality[, c("Solar.R", "Ozone", "Month")]), ]
+
+  expect_identical(
+    unlist(by(air_full, air_full$Month, function(d) range(d$`Solar.R`, na.rm = TRUE))),
+    unlist(by(air_smooths2, air_smooths2$Month, function(d) range(d$`x`)))
+  )
+})
+
+test_that("get_smooths relative intervals level", {
+  air_smooths3a <- get_smooths(df = airquality, x = "Solar.R", y = "Ozone", groups = "Month", level = 0.95)
+  air_smooths3b <- get_smooths(df = airquality, x = "Solar.R", y = "Ozone", groups = "Month", level = 0.8)
+
+  expect_true(all(air_smooths3b$ylow >= air_smooths3a$ylow))
+  expect_true(all(air_smooths3b$yhigh <= air_smooths3a$yhigh))
+})

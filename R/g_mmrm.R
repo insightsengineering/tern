@@ -79,12 +79,31 @@ g_mmrm_diagnostic <- function(
   )
   amended_data$.resid <- amended_data[[vars$response]] - amended_data$.fitted
 
+  amended_data_smooth <- get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
+
   result <- if (type == "fit-residual") {
     ggplot(amended_data, aes_string(x = ".fitted", y = ".resid")) +
       geom_point(colour = "blue", alpha = 0.3) +
       facet_grid(as.formula(paste(". ~", vars$visit)), scales = "free_x") +
       geom_hline(yintercept = 0) +
-      geom_smooth(method = "loess", color = "red") +
+      geom_line(
+        data = amended_data_smooth,
+        aes_string(x = "x", y = "y", group = vars$visit),
+        color = "red",
+        size = 1.4
+      ) +
+      geom_ribbon(
+        data = amended_data_smooth,
+        aes_string(
+          x = "x",
+          y = NULL,
+          ymin = "ylow",
+          ymax = "yhigh",
+          group = vars$visit
+        ),
+        alpha = 0.4,
+        color = "light grey"
+      ) +
       xlab("Fitted values") +
       ylab("Residuals")
   } else if (type == "q-q-residual") {

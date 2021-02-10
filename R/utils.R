@@ -384,3 +384,63 @@ aesi_label <- function(aesi, scope = NULL) {
 arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
+
+#' Smooth Function with Optional Grouping
+#'
+#' This produces \code{loess} smoothed estimates of `y` with Student confidence intervals.
+#'
+#' @param df (`data.frame`)\cr.
+#' @param x (`character`)\cr value with x column name.
+#' @param y (`character`)\cr value with y column name.
+#' @param groups (`character`)\cr vector with optional grouping variables names.
+#' @param level (`numeric`) level of confidence interval to use (0.95 by default).
+#' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, `yhigh` and
+#' optional `groups` variables formatted to factor type.
+#'
+get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
+  assert_that(is.data.frame(df))
+  df_cols <- colnames(df)
+  assert_that(is.string(x) && (x %in% df_cols) && is.numeric(df[[x]]))
+  assert_that(is.string(y) && (y %in% df_cols) && is.numeric(df[[y]]))
+  assert_that(is.null(groups) || (is.character(groups) && all(groups %in% df_cols)))
+
+  smooths <- function(x, y) {
+    predict(stats::loess(y ~ x), se = TRUE)
+  }
+
+  if (!is.null(groups)) {
+    cc <- complete.cases(df[c(x, y, groups)])
+    df_c <- df[cc, c(x, y, groups)]
+    df_c_ordered <- df_c[order(df_c[groups]), ]
+    df_c_g <- data.frame(Map(as.factor, df_c_ordered[groups]))
+
+    df_smooth_raw <-
+      by(df_c_ordered, df_c_g, function(d) {
+        plx <- smooths(d[[x]], d[[y]])
+        data.frame(
+          x = d[[x]],
+          y = plx$fit,
+          ylow = plx$fit - qt(level, plx$df) * plx$se,
+          yhigh = plx$fit + qt(level, plx$df) * plx$se
+        )
+      })
+
+    df_smooth <- do.call(rbind, df_smooth_raw)
+    df_smooth[groups] <- df_c_g
+
+    df_smooth
+  } else {
+    cc <- complete.cases(df[c(x, y)])
+    df_c <- df[cc, ]
+    plx <- smooths(df_c[[x]], df_c[[y]])
+
+    df_smooth <- data.frame(
+      x = df_c[[x]],
+      y = plx$fit,
+      ylow = plx$fit - qt(level, plx$df) * plx$se,
+      yhigh = plx$fit + qt(level, plx$df) * plx$se
+    )
+
+    df_smooth
+  }
+}
