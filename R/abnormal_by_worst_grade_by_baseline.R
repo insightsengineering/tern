@@ -123,7 +123,10 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, adlb, worst_flag = c("WGRHI
   adlb_out$BTOXGR <- as.factor(adlb_out$BTOXGR) #nolint
 
   adlb_out <- df_explicit_na(adlb_out)
-  adlb_out[c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR")]
+  adlb_out <- adlb_out[c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR")]
+
+  var_labels(adlb_out) <- var_labels(adlb[c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR")])
+  adlb_out
 }
 
 #' @describeIn abnormal_by_worst_grade_by_baseline Helper function to group patients
