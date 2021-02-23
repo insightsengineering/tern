@@ -6,9 +6,16 @@
 \alias{s_num_patients_content}
 \title{Number of patients}
 \usage{
-s_num_patients(x, labelstr, .N_col)
+s_num_patients(x, labelstr, .N_col, count_by = NULL)
 
-s_num_patients_content(df, labelstr = "", .N_col, .var, required = NULL)
+s_num_patients_content(
+  df,
+  labelstr = "",
+  .N_col,
+  .var,
+  required = NULL,
+  count_by = NULL
+)
 
 summarize_num_patients(
   lyt,
@@ -27,6 +34,9 @@ summarize_num_patients(
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+
+\item{count_by}{(\code{character} or \code{factor}) \cr optional vector to be combined with \code{x} when counting
+\code{nonunqiue} records.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
@@ -76,12 +86,24 @@ function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and des
 
 \examples{
 # Use the statistics function to count number of unique and nonunique patients.
-s_num_patients(x = as.character(c(1, 2, 1, 4, NA)), labelstr = "", .N_col = 5L)
+s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)), labelstr = "", .N_col = 6L)
+s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)),
+               labelstr = "",
+               .N_col = 6L,
+               count_by = as.character(c(1, 1, 2, 1, 1, 1))
+               )
 # Count number of unique and non-unique patients.
 df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),
-  AGE = c(10, 15, 10, 17, 8)
+  EVENT = as.character(c(10, 15, 10, 17, 8))
 )
 s_num_patients_content(df, .N_col = 5, .var = "USUBJID")
+
+df_by_event <- data.frame(
+  USUBJID = as.character(c(1, 2, 1, 4, NA)),
+  EVENT = as.character(c(10, 15, 10, 17, 8))
+)
+s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
+s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 
 }

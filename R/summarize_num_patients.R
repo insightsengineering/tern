@@ -4,6 +4,8 @@
 #'
 #' @inheritParams argument_convention
 #' @param x (`character` or `factor`) \cr vector of patient IDs.
+#' @param count_by (`character` or `factor`) \cr optional vector to be combined with `x` when counting
+#' `nonunqiue` records.
 #'
 #' @name summarize_num_patients
 NULL
@@ -17,12 +19,18 @@ NULL
 #'   - `nonunique` : vector of count.
 #'   - `unique_count`: count.
 #'
+#'
 #' @export
 #'
 #' @examples
 #' # Use the statistics function to count number of unique and nonunique patients.
-#' s_num_patients(x = as.character(c(1, 2, 1, 4, NA)), labelstr = "", .N_col = 5L)
-s_num_patients <- function(x, labelstr, .N_col) { # nolint
+#' s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)), labelstr = "", .N_col = 6L)
+#' s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)),
+#'                labelstr = "",
+#'                .N_col = 6L,
+#'                count_by = as.character(c(1, 1, 2, 1, 1, 1))
+#'                )
+s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
 
   assert_that(
     is_character_or_factor(x),
@@ -32,11 +40,22 @@ s_num_patients <- function(x, labelstr, .N_col) { # nolint
 
   count1 <- sum(!is.na(unique(x)))
   count2 <- sum(!is.na(x))
-  list(
+
+  if (!is.null(count_by)){
+    assert_that(
+      is_character_or_factor(count_by),
+      is_equal_length(count_by, x)
+    )
+    count2 <- sum(!is.na(unique(interaction(x, count_by))))
+  }
+
+  out <- list(
     unique = c(count1, count1 / .N_col),
     nonunique = count2,
     unique_count = with_label(count1, paste(labelstr, "(n)"))
   )
+
+  out
 }
 
 #' @describeIn summarize_num_patients Counts the number of unique patients in a column
@@ -52,16 +71,28 @@ s_num_patients <- function(x, labelstr, .N_col) { # nolint
 #' # Count number of unique and non-unique patients.
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1, 2, 1, 4, NA)),
-#'   AGE = c(10, 15, 10, 17, 8)
+#'   EVENT = as.character(c(10, 15, 10, 17, 8))
 #' )
 #' s_num_patients_content(df, .N_col = 5, .var = "USUBJID")
-s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NULL) { # nolint
+#'
+#' df_by_event <- data.frame(
+#'   USUBJID = as.character(c(1, 2, 1, 4, NA)),
+#'   EVENT = as.character(c(10, 15, 10, 17, 8))
+#' )
+#' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
+#' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
+s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NULL, count_by = NULL) { # nolint
 
   assert_that(
     is.data.frame(df),
     is.string(.var),
-    is_df_with_variables(df, list(id = .var))
+    ifelse(
+      is.null(count_by),
+      is_df_with_variables(df, list(id = .var)),
+      is_df_with_variables(df, list(id = .var, count_by = count_by))
+    )
   )
+
   if (!is.null(required)) {
     assert_that(
       is_df_with_variables(df, list(required = required)),
@@ -71,10 +102,13 @@ s_num_patients_content <- function(df, labelstr="", .N_col, .var, required = NUL
   }
 
   x <- df[[.var]]
+  y <- switch(as.numeric(!is.null(count_by)) + 1, NULL, df[[count_by]])
+
   s_num_patients(
     x = x,
     labelstr = labelstr,
-    .N_col = .N_col
+    .N_col = .N_col,
+    count_by = y
   )
 }
 
