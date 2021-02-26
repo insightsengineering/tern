@@ -205,10 +205,9 @@ g_km <- function(df,
   )
   data_plot <- h_data_plot(
     fit_km = fit_km,
-    xticks = xticks,
     max_time = max_time
   )
-  xticks <- h_xticks(data = data_plot, xticks = xticks)
+  xticks <- h_xticks(data = data_plot, xticks = xticks, max_time = max_time)
   gg <- h_ggkm(
     data = data_plot,
     censor_show = censor_show,
@@ -377,13 +376,9 @@ g_km <- function(df,
 #' }
 #'
 h_data_plot <- function(fit_km,
-                        xticks = NULL,
                         max_time = NULL) {
   y <- tidy(fit_km)
   y$censor <- ifelse(y$n.censor > 0, y$estimate, NA)
-  if (!is.null(xticks)) {
-    y <- y[y$time <= max(xticks), ]
-  }
   if (!is.null(max_time)) {
     y <- y[y$time <= max(max_time), ]
   }
@@ -417,10 +412,10 @@ h_data_plot <- function(fit_km,
 #'
 #' h_xticks(data)
 #' h_xticks(data, xticks = seq(0, 3000, 500))
-#' h_xticks(data, xticks = 500)
+#'
 #' }
 #'
-h_xticks <- function(data, xticks = NULL) {
+h_xticks <- function(data, xticks = NULL, max_time = NULL) {
   if (is.null(xticks)) {
     extended(range(data$time)[1], range(data$time)[2], m = 5)
   } else if (is.number(xticks)) {
@@ -539,7 +534,7 @@ h_ggkm <- function(data,
       )
   }
   if (!is.null(xticks)) {
-    gg <- gg + scale_x_continuous(breaks = xticks)
+      gg <- gg + scale_x_continuous(breaks = xticks)
   }
 
   if (!is.null(ggtheme)) {
@@ -648,10 +643,10 @@ h_decompose_gg <- function(gg) {
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "tt"
+#'   title = "tt", yval = "Survival"
 #' )
 #' g_el <- h_decompose_gg(gg)
-#' lyt <- h_km_layout(data = data_plot, g_el = g_el)
+#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #' grid.show.layout(lyt)
 #' }
 #'
@@ -748,7 +743,7 @@ h_km_layout <- function(data, g_el, title) {
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-#'   title = "tt"
+#'   title = "tt", yval = "Survival"
 #' )
 #'
 #' # The annotation table reports the patient at risk for a given strata and
@@ -766,7 +761,7 @@ h_km_layout <- function(data, g_el, title) {
 #' # For the representation, the layout is estimated for which the decomposition
 #' # of the graphic element is necessary.
 #' g_el <- h_decompose_gg(gg)
-#' lyt <- h_km_layout(data = data_plot, g_el = g_el)
+#' lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
 #'
 #' grid.newpage()
 #' pushViewport(viewport(layout = lyt, height = .95, width = .95))

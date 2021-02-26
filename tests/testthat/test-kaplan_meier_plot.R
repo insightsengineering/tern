@@ -30,7 +30,6 @@ test_that("h_xticks works with xticks numeric", {
   expect_identical(result, expected)
 })
 
-
 # h_tbl_median_surv ----
 test_that("h_tbl_median_surv estimates median survival time with CI", {
   result <- h_tbl_median_surv(fit_km = get_test_data())

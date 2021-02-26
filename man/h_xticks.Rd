@@ -4,7 +4,7 @@
 \alias{h_xticks}
 \title{Helper function: x tick positions}
 \usage{
-h_xticks(data, xticks = NULL)
+h_xticks(data, xticks = NULL, max_time = NULL)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
@@ -14,6 +14,9 @@ numeric vector of ticks or single number with spacing
 between ticks on the x axis.
 If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 an optimal tick position on the x axis.}
+
+\item{max_time}{(\code{numeric})\cr maximum value of X axis range (\code{NULL} for
+default)}
 }
 \description{
 Calculate the positions of ticks on the x-axis. However, if \code{xticks} already
@@ -34,7 +37,7 @@ data <- radtte(cached = TRUE) \%>\%
 
 h_xticks(data)
 h_xticks(data, xticks = seq(0, 3000, 500))
-h_xticks(data, xticks = 500)
+
 }
 
 }

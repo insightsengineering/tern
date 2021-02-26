@@ -44,10 +44,10 @@ gg <- h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
-  title = "tt"
+  title = "tt", yval = "Survival"
 )
 g_el <- h_decompose_gg(gg)
-lyt <- h_km_layout(data = data_plot, g_el = g_el)
+lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t")
 grid.show.layout(lyt)
 }
 
