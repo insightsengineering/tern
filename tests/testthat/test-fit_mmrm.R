@@ -827,7 +827,7 @@ test_that("fit_mmrm works also with missing data", {
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
     nrow(na.omit(adqs_f)),
-    469L
+    265L
   ))
 
   mmrm_results <- fit_mmrm(
@@ -1000,7 +1000,7 @@ test_that("fit_mmrm works with compound symmetry covariance structure", {
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
     nrow(na.omit(adqs_f)),
-    469L
+    265L
   ))
 
   mmrm_results <- fit_mmrm(

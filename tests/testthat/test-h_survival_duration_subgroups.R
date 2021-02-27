@@ -35,8 +35,8 @@ test_that("h_survtime_df functions as expected with valid input and default argu
   expected <- data.frame(
     arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
     n = c(134, 134),
-    n_events = c(92, 81),
-    median = c(813.5768, 1010.2328),
+    n_events = c(87, 79),
+    median = c(837.42801327648, 1260.49053370248),
     stringsAsFactors = FALSE
   )
 
@@ -188,10 +188,11 @@ test_that("h_survtime_subgroups_df functions as expected with valid input and de
   expected <- data.frame(
     arm = factor(rep(c("B: Placebo", "A: Drug X"), 6), levels = c("B: Placebo", "A: Drug X")),
     n = c(134, 134, 82, 79, 52, 55, 45, 50, 56, 37, 33, 47),
-    n_events = c(92, 81, 59, 44, 33, 37, 28, 34, 37, 19, 27, 28),
+    n_events = c(87L, 79L, 50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L),
     median = c(
-      813.5769, 1010.2328, 676.0553, 987.2498, 1180.4056, 1062.6402,
-      818.6373, 965.8316, 971.3165, 1474.6575, 476.9332, 956.0405
+      837.42801327648, 1260.49053370248, 850.920785514258, 1274.80474338372,
+      527.665885794264, 849.297617184933, 751.431436610118, 1160.64578110184,
+      722.792588842567, 1269.40388857211, 848.239273340441, 1070.80218764022
     ),
     subgroup = c("All Patients", "All Patients", "F", "F", "M", "M", "LOW", "LOW", "MEDIUM", "MEDIUM", "HIGH", "HIGH"),
     var = c(rep("ALL", 2), rep("SEX", 4), rep("BMRKR2", 6)),
@@ -217,8 +218,8 @@ test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.
   expected <- data.frame(
     arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
     n = c(134, 134),
-    n_events = c(92, 81),
-    median = c(813.5769, 1010.2328),
+    n_events = c(87, 79),
+    median = c(837.42801327648, 1260.49053370248),
     subgroup = c("All Patients", "All Patients"),
     var = c(rep("ALL", 2)),
     var_label = c(rep("All Patients", 2)),
@@ -244,11 +245,11 @@ test_that("h_coxph_df functions as expected with valid input and default argumen
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
-    hr = 0.8412573,
-    lcl = 0.6231147,
-    ucl = 1.135768,
+    hr = 0.71736505115489,
+    lcl = 0.527523110746632,
+    ucl = 0.975526201857014,
     conf_level = 0.95,
-    pval = 0.2584456,
+    pval = 0.0334029294775113,
     pval_label = "p-value (log-rank)",
     stringsAsFactors = FALSE
   )
@@ -273,11 +274,11 @@ test_that("h_coxph_df functions as expected with one stratification factor", {
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
-    hr =  0.8419229,
-    lcl = 0.6223851,
-    ucl = 1.1389,
+    hr =  0.7343822,
+    lcl = 0.5376802,
+    ucl = 1.003045,
     conf_level = 0.95,
-    pval = 0.2637548,
+    pval = 0.05142933,
     pval_label = "p-value (log-rank)",
     stringsAsFactors = FALSE
   )
@@ -300,11 +301,11 @@ test_that("h_coxph_df functions as expected with multiple stratification factors
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
-    hr = 0.7979136,
-    lcl = 0.5840112,
-    ucl = 1.090161,
+    hr = 0.7412854,
+    lcl = 0.5390265,
+    ucl = 1.019438,
     conf_level = 0.95,
-    pval = 0.1554903,
+    pval = 0.06468801,
     pval_label = "p-value (log-rank)",
     stringsAsFactors = FALSE
   )
@@ -353,11 +354,20 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   expected <- data.frame(
     arm = rep(" ", 6),
     n_tot = c(268, 161, 107, 95, 93, 80),
-    hr = c(0.8412573, 0.6531635, 1.2312049, 1.0592234, 0.6068906, 0.7683790),
-    lcl = c(0.6231147, 0.4390645, 0.7644891, 0.6383431, 0.3432599, 0.4489251),
-    ucl = c(1.1357683, 0.9716624, 1.9828478, 1.7576037, 1.0729952, 1.3151552),
+    hr = c(
+      0.71736505115489, 0.697969331159471, 0.783616674201674, 0.705072968604656, 0.572806884078014, 0.976900177598777
+    ),
+    lcl = c(
+      0.527523110746632, 0.464781196048063, 0.487344418692843, 0.424365474268753, 0.324419621563317, 0.555200234313668
+    ),
+    ucl = c(
+      0.975526201857014, 1.04815167089682, 1.26000230747263, 1.17146167914251, 1.01136831633695, 1.71890049393127
+    ),
     conf_level = 0.95,
-    pval = c(0.25844564, 0.03429498, 0.39147827, 0.82376106, 0.08300454, 0.33527427),
+    pval = c(
+      0.0334029294775113, 0.0814817359933963, 0.313183467032326, 0.17526198076925,
+      0.0517494169527888, 0.935389266684535
+    ),
     pval_label = rep("p-value (log-rank)", 6),
     subgroup = c("All Patients", "F", "M", "LOW", "MEDIUM", "HIGH"),
     var = c("ALL", "SEX", "SEX", "BMRKR2", "BMRKR2", "BMRKR2"),
@@ -382,11 +392,11 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   expected <- data.frame(
     arm = rep(" ", 3),
     n_tot = c(12, 7, 5),
-    hr = c(7.327311e-01, 8.756061e-10, 1.405150),
-    lcl = c(0.116615850209759, 0, 0.124664516285412),
-    ucl = c(4.603962, Inf, 15.838070),
+    hr = c(1.2230641194542, 0.679005471337507, 1142066054.5383),
+    lcl = c(0.270922018090357, 0.112310823072285, 0),
+    ucl = c(5.52146278416316, 4.10511131068404, Inf),
     conf_level = 0.95,
-    pval = c(0.7392974, 0.4142162, 0.7821768),
+    pval = c(0.793122593044781, 0.671398806014098, 0.414216178242525),
     pval_label = rep("p-value (log-rank)", 3),
     subgroup = c("All Patients", "GBR", "CAN"),
     var = c("ALL", "COUNTRY", "COUNTRY"),
@@ -412,11 +422,11 @@ test_that("h_coxph_subgroups_df functions as expected with with stratification f
   expected <- data.frame(
     arm = rep(" ", 3),
     n_tot = c(268, 161, 107),
-    hr = c(0.8419229, 0.6768647, 1.2255609),
-    lcl = c(0.6223851, 0.4507315, 0.7538494),
-    ucl = c(1.138900, 1.016449, 1.992440),
+    hr = c(0.734382192317288, 0.759888515051216, 0.72253798908495),
+    lcl = c(0.537680185840195, 0.501798302845741, 0.428328174772149),
+    ucl = c(1.00304459527366, 1.15072241582342, 1.21883447417073),
     conf_level = 0.95,
-    pval = c(0.26375482, 0.05843529, 0.41126770),
+    pval = c(0.0514293311402528, 0.193419942197434, 0.22139944778939),
     pval_label = rep("p-value (log-rank)", 3),
     subgroup = c("All Patients", "F", "M"),
     var = c("ALL", "SEX", "SEX"),
@@ -442,11 +452,11 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
-    hr = 0.8412573,
-    lcl = 0.6231147,
-    ucl = 1.1357683,
+    hr = 0.71736505115489,
+    lcl = 0.5275231,
+    ucl = 0.9755262,
     conf_level = 0.95,
-    pval = 0.25844564,
+    pval = 0.03340293,
     pval_label = "p-value (log-rank)",
     subgroup = "All Patients",
     var = "ALL",

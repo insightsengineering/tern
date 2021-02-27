@@ -17,10 +17,10 @@ test_that("s_surv_timepoint works with default arguments", {
     is_event = "is_event"
   )
   expected <- list(
-    pt_at_risk = with_label(114, "Patients remaining at risk"),
-    event_free_rate = with_label(89.33188, "Event Free Rate (%)"),
-    rate_se = with_label(2.69695, "Standard Error of Event Free Rate"),
-    rate_ci = with_label(c(84.04595, 94.61780), "95% CI")
+    pt_at_risk = with_label(112, label = "Patients remaining at risk"),
+    event_free_rate = with_label(89.1626763122249, label = "Event Free Rate (%)"),
+    rate_se = with_label(2.73767719947927, label = "Standard Error of Event Free Rate"),
+    rate_ci = with_label(c(83.7969275999491, 94.5284250245007), label = "95% CI")
   )
   expect_equal(result, expected, tolerance = 0.0000001)
 })
@@ -45,10 +45,10 @@ test_that("s_surv_timepoint works with customized arguments", {
     )
   )
   expected <- list(
-    pt_at_risk = with_label(85, "Patients remaining at risk"),
-    event_free_rate = with_label(69.31139, "Event Free Rate (%)"),
-    rate_se = with_label(4.102859, "Standard Error of Event Free Rate"),
-    rate_ci = with_label(c(59.50938, 80.72791), "99% CI")
+    pt_at_risk = with_label(83, label = "Patients remaining at risk"),
+    event_free_rate = with_label(66.9772864371622, label = "Event Free Rate (%)"),
+    rate_se = with_label(4.17892667633869, label = "Standard Error of Event Free Rate"),
+    rate_ci = with_label(c(57.0335300760197, 78.6547298143104), label = "99% CI")
   )
   expect_equal(result, expected, tolerance = 0.0000001)
 })
@@ -78,13 +78,12 @@ test_that("surv_timepoint works with default arguments", {
   expected_matrix <- structure(
     c(
       "", "6 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "95% CI", "ARM A", "", "107", "89.74", "(84.44, 95.03)", "ARM B",
-      "", "114", "89.33", "(84.05, 94.62)", "ARM C", "", "92", "75.02",
-      "(67.51, 82.53)"
+      "95% CI", "ARM A", "", "106", "83.83", "(77.49, 90.17)", "ARM B",
+      "", "112", "89.16", "(83.8, 94.53)", "ARM C", "", "92", "73.4",
+      "(65.72, 81.07)"
     ),
     .Dim = 5:4
   )
-
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -114,13 +113,12 @@ test_that("surv_timepoint works with customized arguments", {
   expected_matrix <- structure(
     c(
       "", "8 Months", "Patients remaining at risk", "Event Free Rate (%)",
-      "90% CI", "ARM A", "", "103", "88.87", "(83.25, 92.69)", "ARM B",
-      "", "107", "85.36", "(79.37, 89.73)", "ARM C", "", "79", "66.01",
-      "(58.55, 72.45)"
+      "90% CI", "ARM A", "", "98", "81.36", "(74.9, 86.3)", "ARM B",
+      "", "100", "81.92", "(75.47, 86.82)", "ARM C", "", "77", "62.92",
+      "(55.4, 69.53)"
     ),
     .Dim = 5:4
   )
-
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -147,9 +145,9 @@ test_that("s_surv_timepoint_diff works with default arguments for comparison gro
     control = control_surv_timepoint()
   )
   expected <- list(
-    rate_diff = with_label(0.4049929, "Difference in Event Free Rate"),
-    rate_diff_ci = with_label(c(-7.077293, 7.887279), "95% CI"),
-    ztest_pval = with_label(0.9155135, "p-value (Z-test)")
+    rate_diff = with_label(-5.33344544636732, label = "Difference in Event Free Rate"),
+    rate_diff_ci = with_label(c(-13.6362446145953, 2.96935372186064), label = "95% CI"),
+    ztest_pval = with_label(0.208024379170235, label = "p-value (Z-test)")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -177,9 +175,9 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
     control = control_surv_timepoint(conf_level = 0.9)
   )
   expected <- list(
-    rate_diff = with_label(3.509382, "Difference in Event Free Rate"),
-    rate_diff_ci = with_label(c(-3.380986, 10.399750), "90% CI"),
-    ztest_pval = with_label(0.40217, "p-value (Z-test)")
+    rate_diff = with_label(-0.562624959121464, label = "Difference in Event Free Rate"),
+    rate_diff_ci = with_label(c(-8.53787765104722, 7.41262773280429), label = "90% CI"),
+    ztest_pval = with_label(0.907622094366106, label = "p-value (Z-test)")
   )
   expect_equal(result, expected, tolerance = 0.0000001)
 })
@@ -210,9 +208,9 @@ test_that("surv_timepoint for survival diff works with default arguments", {
   expected_matrix <- structure(
     c(
       "", "9 Months", "Difference in Event Free Rate",
-      "95% CI", "p-value (Z-test)", "ARM A", "", "", "", "",
-      "ARM B", "", "-2.64", "(-10.99, 5.71)", "0.5357", "ARM C", "",
-      "-22.83", "(-32.94, -12.72)", "<0.0001"
+      "95% CI", "p-value (Z-test)", "ARM A", "", "", "", "", "ARM B",
+      "", "-4.34", "(-14.48, 5.79)", "0.4012", "ARM C", "", "-20.05",
+      "(-31.02, -9.09)", "0.0003"
     ),
     .Dim = 5:4
   )
@@ -247,9 +245,9 @@ test_that("surv_timepoint for survival diff works with customized arguments", {
   expected_matrix <- structure(
     c(
       "", "9 Months", "Difference in Event Free Rate",
-      "99% CI", "p-value (Z-test)", "ARM A", "", "", "", "",
-      "ARM B", "", "-2.64", "(-13.61, 8.33)", "0.5357", "ARM C", "",
-      "-22.83", "(-36.11, -9.54)", "<0.0001"
+      "99% CI", "p-value (Z-test)", "ARM A", "", "", "", "", "ARM B",
+      "", "-4.34", "(-17.66, 8.98)", "0.4012", "ARM C", "", "-20.05",
+      "(-34.46, -5.65)", "0.0003"
     ),
     .Dim = 5:4
   )

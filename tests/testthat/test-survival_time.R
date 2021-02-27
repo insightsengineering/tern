@@ -16,12 +16,12 @@ test_that("s_surv_time works with default arguments", {
     is_event = "is_event"
   )
   expected <- list(
-    median = with_label(26.72943, "Median"),
-    median_ci = with_label(c(20.00754, 36.14036), "95% CI"),
-    quantiles = with_label(c(12.55214, 48.49524), "25% and 75%-ile"),
-    range_censor = with_label(c(2.813063, 130.655977), "Range (censored)"),
-    range_event = with_label(c(0.3034908, 155.8429981), "Range (event)"),
-    range = with_label(c(0.3034908, 155.8429981), "Range")
+    median = with_label(27.5130353437858, label = "Median"),
+    median_ci = with_label(c(17.336045529175, 30.2169178803838), label = "95% CI"),
+    quantiles = with_label(c(9.49817068050519, 54.8903290286298), label = "25% and 75%-ile"),
+    range_censor = with_label(c(0.864396308007549, 91.0033832489784), label = "Range (censored)"),
+    range_event = with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
+    range = with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -44,12 +44,12 @@ test_that("s_surv_time works with customized arguments", {
     )
   )
   expected <- list(
-    median = with_label(26.72943, "Median"),
-    median_ci = with_label(c(17.33605, 38.75602), "99% CI"),
-    quantiles = with_label(c(11.14121, 53.29873), "20% and 80%-ile"),
-    range_censor = with_label(c(2.813063, 130.655977), "Range (censored)"),
-    range_event = with_label(c(0.3034908, 155.8429981), "Range (event)"),
-    range = with_label(c(0.3034908, 155.8429981), "Range")
+    median = with_label(27.5130353437858, label = "Median"),
+    median_ci = with_label(c(15.7210381999671, 35.7398274871358), label = "99% CI"),
+    quantiles = with_label(c(8.49943279711687, 61.6015017964328), label = "20% and 80%-ile"),
+    range_censor = with_label(c(0.864396308007549, 91.0033832489784), label = "Range (censored)"),
+    range_event = with_label(c(0.0104370446088212, 122.357382022329), label = "Range (event)"),
+    range = with_label(c(0.0104370446088212, 122.357382022329), label = "Range")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -78,10 +78,10 @@ test_that("surv_time works with default arguments", {
     c(
       "", "Survival Time (Months)", "Median", "95% CI",
       "25% and 75%-ile", "Range (censored)", "Range (event)", "ARM A",
-      "", "33.19", "(31.3, 41.9)", "14.7, 57.8", "0.2 to 109.1", "0.4 to 151.3",
-      "ARM B", "", "26.73", "(20, 36.1)", "12.6, 48.5", "2.8 to 130.7",
-      "0.3 to 155.8", "ARM C", "", "14.82", "(10.9, 22.6)", "6, 33.3",
-      "1.1 to 81.9", "0.2 to 72"
+      "", "41.41", "(27.7, 54.7)", "15.4, 75.2", "0.4 to 154.7", "0.3 to 116.4",
+      "ARM B", "", "27.51", "(17.3, 30.2)", "9.5, 54.9", "0.9 to 91",
+      "0 to 122.4", "ARM C", "", "11.08", "(9.6, 15.9)", "5.3, 25.2",
+      "0.3 to 49.4", "0.1 to 101.6"
     ),
     .Dim = c(7L, 4L)
   )
@@ -115,10 +115,10 @@ test_that("surv_time works with customized arguments", {
     c(
       "", "Survival Time (Months)", "Median", "90% CI",
       "40% and 60%-ile", "Range (censored)", "Range (event)", "ARM A",
-      "", "33.19", "(31.4, 41.9)", "27.9, 41.9", "0.2 to 109.1", "0.4 to 151.3",
-      "ARM B", "", "26.73", "(22.2, 34.8)", "19.4, 37.3", "2.8 to 130.7",
-      "0.3 to 155.8", "ARM C", "", "14.82", "(11.6, 22.5)", "10.3, 23",
-      "1.1 to 81.9", "0.2 to 72"
+      "", "41.41", "(32.4, 54.1)", "27.7, 54.7", "0.4 to 154.7", "0.3 to 116.4",
+      "ARM B", "", "27.51", "(20, 30.2)", "16.3, 32.4", "0.9 to 91",
+      "0 to 122.4", "ARM C", "", "11.08", "(9.7, 15.6)", "9.2, 15.9",
+      "0.3 to 49.4", "0.1 to 101.6"
     ),
     .Dim = c(7L, 4L)
   )

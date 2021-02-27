@@ -19,9 +19,9 @@ test_that("s_coxph_pairwise works with default arguments and no stratification f
   )
 
   expected <- list(
-    pvalue = with_label(0.2584456, "p-value (log-rank)"),
-    hr = with_label(0.8412573, "Hazard Ratio"),
-    hr_ci = with_label(c(0.6231147, 1.1357683), "95% CI")
+    pvalue = with_label(0.03340293, "p-value (log-rank)"),
+    hr = with_label(0.7173651, "Hazard Ratio"),
+    hr_ci = with_label(c(0.5275231, 0.9755262), "95% CI")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -45,9 +45,9 @@ test_that("s_coxph_pairwise works with customized arguments and no stratificatio
   )
 
   expected <- list(
-    pvalue = with_label(0.2590296, "p-value (wald)"),
-    hr = with_label(0.8412573, "Hazard Ratio"),
-    hr_ci = with_label(c(0.6539229, 1.0822589), "90% CI")
+    pvalue = with_label(0.03417907, "p-value (wald)"),
+    hr = with_label(0.7173651, "Hazard Ratio"),
+    hr_ci = with_label(c(0.5542485, 0.9284871), "90% CI")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -70,9 +70,9 @@ test_that("s_coxph_pairwise works with default arguments and stratification fact
   )
 
   expected <- list(
-    pvalue = with_label(0.1649184, "p-value (log-rank)"),
-    hr = with_label(0.7995183, "Hazard Ratio"),
-    hr_ci = with_label(c(0.5826759, 1.0970585), "95% CI")
+    pvalue = with_label(0.03398278, "p-value (log-rank)"),
+    hr = with_label(0.7057806, "Hazard Ratio"),
+    hr_ci = with_label(c(0.5106793, 0.9754189), "95% CI")
   )
   expect_equal(result, expected, tolerance = 0.00001)
 })
@@ -96,9 +96,9 @@ test_that("s_coxph_pairwise works with customized arguments and stratification f
   )
 
   expected <- list(
-    pvalue = with_label(0.1657147, "p-value (wald)"),
-    hr = with_label(0.7995183, "Hazard Ratio"),
-    hr_ci = with_label(c(0.6130806, 1.0426518), "90% CI")
+    pvalue = with_label(0.03479608, "p-value (wald)"),
+    hr = with_label(0.7057806, "Hazard Ratio"),
+    hr_ci = with_label(c(0.5379481, 0.9259745), "90% CI")
   )
   expect_equal(result, expected, tolerance = 0.00001)
 })
@@ -127,13 +127,12 @@ test_that("coxph_pairwise works with default arguments and no stratification fac
   expected_matrix <- structure(
     c(
       "", "Unstratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B",
-      "", "0.2584", "1.1887", "(0.8805, 1.6048)", "ARM C", "", "<0.0001",
-      "2.1107", "(1.5689, 2.8397)"
+      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
+      "0.0334", "1.394", "(1.0251, 1.8957)", "ARM C", "", "<0.0001",
+      "2.7532", "(2.0478, 3.7017)"
     ),
     .Dim = 5:4
   )
-
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -161,13 +160,12 @@ test_that("coxph_pairwise works with customized arguments and no stratification 
   expected_matrix <- structure(
     c(
       "", "Unstratified Analysis", "p-value (likelihood)",
-      "Hazard Ratio", "99% CI", "ARM A", "", "", "", "", "ARM B",
-      "", "0.2585", "1.1887", "(0.8012, 1.7636)", "ARM C", "", "<0.0001",
-      "2.1107", "(1.4293, 3.1171)"
+      "Hazard Ratio", "99% CI", "ARM A", "", "", "", "", "ARM B", "",
+      "0.0341", "1.394", "(0.9307, 2.0879)", "ARM C", "", "<0.0001",
+      "2.7532", "(1.8659, 4.0625)"
     ),
     .Dim = 5:4
   )
-
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -195,9 +193,9 @@ test_that("coxph_pairwise works with default arguments and stratification factor
   expected_matrix <- structure(
     c(
       "", "Stratified Analysis", "p-value (log-rank)",
-      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B",
-      "", "0.2789", "1.1825", "(0.8727, 1.6021)", "ARM C", "", "<0.0001",
-      "2.0803", "(1.5453, 2.8004)"
+      "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
+      "0.0478", "1.3644", "(1.0018, 1.8582)", "ARM C", "", "<0.0001",
+      "2.7277", "(2.0171, 3.6886)"
     ),
     .Dim = 5:4
   )
@@ -231,8 +229,8 @@ test_that("coxph_pairwise works with customized arguments and stratification fac
   expected_matrix <- structure(
     c(
       "", "Stratified Analysis", "Hazard Ratio", "99% CI",
-      "ARM A", "", "", "", "ARM B", "", "1.251", "(0.825, 1.896)",
-      "ARM C", "", "2.17", "(1.443, 3.262)"
+      "ARM A", "", "", "", "ARM B", "", "1.417", "(0.926, 2.168)",
+      "ARM C", "", "2.775", "(1.827, 4.216)"
     ),
     .Dim = c(4L, 4L)
   )

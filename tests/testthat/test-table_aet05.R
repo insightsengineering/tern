@@ -21,11 +21,13 @@ test_that("AET05 variant 1 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "Total patient-years at risk", "Number of adverse events observed",
+    c(
+      "", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "95% CI", "A: Drug X", "(N=134)",
-      "25.8", "80", "309.57", "(241.74, 377.41)", "B: Placebo", "(N=134)",
-      "36.4", "106", "291.47", "(235.98, 346.96)", "C: Combination",
-      "(N=132)", "21.9", "81", "369.16", "(288.77, 449.55)"),
+      "93.1", "88", "94.57", "(74.81, 114.32)", "B: Placebo", "(N=134)",
+      "65.8", "109", "165.72", "(134.61, 196.83)", "C: Combination",
+      "(N=132)", "105.6", "76", "72", "(55.81, 88.18)"
+    ),
     .Dim = c(6L, 4L)
   )
 
@@ -50,13 +52,14 @@ test_that("AET05 variant 2 is produced correctly", {
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "", "Total patient-years at risk", "Number of adverse events observed",
+    c(
+      "", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "95% CI", "A: Drug X", "(N=134)",
-      "25.8", "80", "309.57", "(245.47, 385.29)", "B: Placebo", "(N=134)",
-      "36.4", "106", "291.47", "(238.63, 352.52)", "C: Combination",
-      "(N=132)", "21.9", "81", "369.16", "(293.17, 458.83)"),
+      "93.1", "88", "94.57", "(75.84, 116.51)", "B: Placebo", "(N=134)",
+      "65.8", "109", "165.72", "(136.07, 199.9)", "C: Combination",
+      "(N=132)", "105.6", "76", "72", "(56.72, 90.11)"
+    ),
     .Dim = c(6L, 4L)
   )
-
   expect_identical(result_matrix, expected_matrix)
 })

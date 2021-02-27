@@ -23,21 +23,18 @@ get_adsl <- function() {
       ETHNIC = sample(
         c("Ethnicity 1", "Ethnicity 2", "Unknown"),
         nrow(.),
-        replace = TRUE),
-      DTHFL = ifelse(is.na(DTHDT), "N", "Y")
+        replace = TRUE)
     ) %>%
     var_relabel(
       STSTFL = "Start Study",
       COMPSTUD = "Study Completion Flag",
       DISCSTUD = "Study Discontinuation Flag",
       AGEGRP = "Age Group",
-      ETHNIC = "Ethnicity",
-      DTHFL = "Subject death flag"
+      ETHNIC = "Ethnicity"
     )
 
   adsl_f$AGEGRP <- factor(adsl_f$AGEGRP, levels = c("< 65 yrs", ">= 65 yrs"))
   adsl_f$ETHNIC <- factor(adsl_f$ETHNIC, levels = c("Ethnicity 1", "Ethnicity 2", "Unknown"))
-  adsl_f$DTHFL <- factor(adsl_f$DTHFL, levels = c("Y", "N"))
   #nolint end
   adsl_f <- df_explicit_na(adsl_f)
   adsl_f
@@ -108,21 +105,24 @@ test_that("Patient Disposition table is produced correctly", {
     build_table(adsl)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
-    c("", "", "Started Study", "Completed Study", "Discontinued Study",
-      "ADVERSE EVENT", "LACK OF EFFICACY", "PHYSICIAN DECISION",
+    c(
+      "", "", "Started Study", "Completed Study", "Discontinued Study",
+      "ADVERSE EVENT", "DEATH", "LACK OF EFFICACY", "PHYSICIAN DECISION",
       "PROTOCOL VIOLATION", "WITHDRAWAL BY PARENT/GUARDIAN", "WITHDRAWAL BY SUBJECT",
       "A: Drug X", "(N=134)", "134 (100%)", "69 (51.49%)", "38 (28.36%)",
-      "6 (4.48%)", "11 (8.21%)", "3 (2.24%)", "6 (4.48%)", "8 (5.97%)",
-      "4 (2.99%)", "B: Placebo", "(N=134)", "134 (100%)", "69 (51.49%)",
-      "43 (32.09%)", "6 (4.48%)", "10 (7.46%)", "8 (5.97%)", "9 (6.72%)",
-      "2 (1.49%)", "8 (5.97%)", "C: Combination", "(N=132)", "132 (100%)",
-      "72 (54.55%)", "39 (29.55%)", "7 (5.3%)", "6 (4.55%)", "6 (4.55%)",
-      "6 (4.55%)", "4 (3.03%)", "10 (7.58%)", "All Patients", "(N=400)",
-      "400 (100%)", "210 (52.5%)", "120 (30%)", "19 (4.75%)", "27 (6.75%)",
-      "17 (4.25%)", "21 (5.25%)", "14 (3.5%)", "22 (5.5%)"),
-    .Dim = c(11L, 5L)
-    )
-    expect_identical(result_matrix, expected_matrix)
+      "6 (4.48%)", "22 (16.42%)", "2 (1.49%)", "0 (0%)", "4 (2.99%)",
+      "2 (1.49%)", "2 (1.49%)", "B: Placebo", "(N=134)", "134 (100%)",
+      "69 (51.49%)", "43 (32.09%)", "1 (0.75%)", "26 (19.4%)", "1 (0.75%)",
+      "1 (0.75%)", "7 (5.22%)", "5 (3.73%)", "2 (1.49%)", "C: Combination",
+      "(N=132)", "132 (100%)", "72 (54.55%)", "39 (29.55%)", "2 (1.52%)",
+      "19 (14.39%)", "2 (1.52%)", "7 (5.3%)", "6 (4.55%)", "3 (2.27%)",
+      "0 (0%)", "All Patients", "(N=400)", "400 (100%)", "210 (52.5%)",
+      "120 (30%)", "9 (2.25%)", "67 (16.75%)", "5 (1.25%)", "8 (2%)",
+      "17 (4.25%)", "10 (2.5%)", "4 (1%)"
+    ),
+    .Dim = c(12L, 5L)
+  )
+  expect_identical(result_matrix, expected_matrix)
 })
 
 test_that("Demographic table is produced correctly", {

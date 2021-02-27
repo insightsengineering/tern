@@ -37,10 +37,11 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
     survtime = data.frame(
       arm = factor(rep(c("B: Placebo", "A: Drug X"), 6), levels = c("B: Placebo", "A: Drug X")),
       n = c(134, 134, 82, 79, 52, 55, 45, 50, 56, 37, 33, 47),
-      n_events = c(92, 81, 59, 44, 33, 37, 28, 34, 37, 19, 27, 28),
+      n_events = c(87L, 79L, 50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L),
       median = c(
-        813.5769, 1010.2328, 676.0553, 987.2498, 1180.4056, 1062.6402,
-        818.6373, 965.8316, 971.3165, 1474.6575, 476.9332, 956.0405
+        837.42801327648, 1260.49053370248, 850.920785514258, 1274.80474338372,
+        527.665885794264, 849.297617184933, 751.431436610118, 1160.64578110184,
+        722.792588842567, 1269.40388857211, 848.239273340441, 1070.80218764022
       ),
       subgroup = c(
         "All Patients", "All Patients", "F", "F", "M", "M",
@@ -54,11 +55,23 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
     hr = data.frame(
       arm = rep(" ", 6),
       n_tot = c(268, 161, 107, 95, 93, 80),
-      hr = c(0.8412573, 0.6531635, 1.2312049, 1.0592234, 0.6068906, 0.7683790),
-      lcl = c(0.6231147, 0.4390645, 0.7644891, 0.6383431, 0.3432599, 0.4489251),
-      ucl = c(1.1357683, 0.9716624, 1.9828478, 1.7576037, 1.0729952, 1.3151552),
+      hr = c(
+        0.71736505115489, 0.697969331159471, 0.783616674201674, 0.705072968604656,
+        0.572806884078014, 0.976900177598777
+      ),
+      lcl = c(
+        0.527523110746632, 0.464781196048063, 0.487344418692843, 0.424365474268753,
+        0.324419621563317, 0.555200234313668
+      ),
+      ucl = c(
+        0.975526201857014, 1.04815167089682, 1.26000230747263, 1.17146167914251,
+        1.01136831633695, 1.71890049393127
+      ),
       conf_level = 0.95,
-      pval = c(0.25844564, 0.03429498, 0.39147827, 0.82376106, 0.08300454, 0.33527427),
+      pval = c(
+        0.0334029294775113, 0.0814817359933963, 0.313183467032326,
+        0.17526198076925, 0.0517494169527888, 0.935389266684535
+      ),
       pval_label = rep("p-value (log-rank)", 6),
       subgroup = c("All Patients", "F", "M", "LOW", "MEDIUM", "HIGH"),
       var = c("ALL", "SEX", "SEX", "BMRKR2", "BMRKR2", "BMRKR2"),
@@ -86,8 +99,8 @@ test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
     survtime = data.frame(
       arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
       n = c(134, 134),
-      n_events = c(92, 81),
-      median = c(813.5769, 1010.2328),
+      n_events = c(87L, 79L),
+      median = c(837.42801327648, 1260.49053370248),
       subgroup = rep("All Patients", 2),
       var = rep("ALL", 2),
       var_label = rep("All Patients", 2),
@@ -97,11 +110,11 @@ test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
     hr = data.frame(
       arm = " ",
       n_tot = 268,
-      hr = 0.8412573,
-      lcl = 0.6231147,
-      ucl = 1.1357683,
+      hr = 0.71736505115489,
+      lcl = 0.527523110746632,
+      ucl = 0.975526201857014,
       conf_level = 0.95,
-      pval = 0.25844564,
+      pval = 0.0334029294775113,
       pval_label = "p-value (log-rank)",
       subgroup = "All Patients",
       var = "ALL",
@@ -159,17 +172,17 @@ test_that("tabulate_survival_subgroups functions as expected with valid input", 
 
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
-      "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
-      "", "95", "93", "80", "B: Placebo", "n", "134", "", "82", "52",
-      "", "45", "56", "33", "B: Placebo", "Median (DAYS)", "813.6",
-      "", "676.1", "1180.4", "", "818.6", "971.3", "476.9", "A: Drug X",
-      "n", "134", "", "79", "55", "", "50", "37", "47", "A: Drug X",
-      "Median (DAYS)", "1010.2", "", "987.2", "1062.6", "", "965.8",
-      "1474.7", "956", " ", "Hazard Ratio", "0.84", "", "0.65", "1.23",
-      "", "1.06", "0.61", "0.77", " ", "95% Wald CI", "(0.62, 1.14)",
-      "", "(0.44, 0.97)", "(0.76, 1.98)", "", "(0.64, 1.76)", "(0.34, 1.07)",
-      "(0.45, 1.32)"
+      "Baseline Risk Factors", "", "All Patients", "Sex",
+      "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM", "HIGH",
+      " ", "Total n", "268", "", "161", "107", "", "95", "93", "80",
+      "B: Placebo", "n", "134", "", "82", "52", "", "45", "56", "33",
+      "B: Placebo", "Median (DAYS)", "837.4", "", "850.9", "527.7",
+      "", "751.4", "722.8", "848.2", "A: Drug X", "n", "134", "", "79",
+      "55", "", "50", "37", "47", "A: Drug X", "Median (DAYS)", "1260.5",
+      "", "1274.8", "849.3", "", "1160.6", "1269.4", "1070.8", " ",
+      "Hazard Ratio", "0.72", "", "0.70", "0.78", "", "0.71", "0.57",
+      "0.98", " ", "95% Wald CI", "(0.53, 0.98)", "", "(0.46, 1.05)",
+      "(0.49, 1.26)", "", "(0.42, 1.17)", "(0.32, 1.01)", "(0.56, 1.72)"
     ),
     .Dim = c(10L, 8L)
   )
@@ -194,12 +207,12 @@ test_that("tabulate_survival_subgroups functions as expected with NULL subgroups
 
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", " ", "Total n", "268", "B: Placebo",
-      "n", "134", "B: Placebo", "Median (DAYS)", "813.6", "A: Drug X",
-      "n", "134", "A: Drug X", "Median (DAYS)", "1010.2", " ", "Hazard Ratio",
-      "0.84", " ", "95% Wald CI", "(0.62, 1.14)"
+      "Baseline Risk Factors", "", "All Patients", " ",
+      "Total n", "268", "B: Placebo", "n", "134", "B: Placebo", "Median (DAYS)",
+      "837.4", "A: Drug X", "n", "134", "A: Drug X", "Median (DAYS)",
+      "1260.5", " ", "Hazard Ratio", "0.72", " ", "95% Wald CI", "(0.53, 0.98)"
     ),
-  .Dim = c(3L, 8L)
+    .Dim = c(3L, 8L)
   )
 
   expect_equal(result_matrix, expected_matrix)
@@ -209,11 +222,11 @@ test_that("tabulate_survival_subgroups functions as expected with extreme values
 
   adtte <- radtte(cached = TRUE) %>%
     preprocess_adtte() %>%
-    filter(COUNTRY %in% c("RUS", "GBR")) %>%
+    slice(1:30) %>%
     reapply_varlabels(var_labels(radtte(cached = TRUE)))
 
   df <- expect_warning(extract_survival_subgroups(
-    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "REGION1"),
     data = adtte
   ))
 
@@ -224,15 +237,16 @@ test_that("tabulate_survival_subgroups functions as expected with extreme values
 
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", "Country", "RUS", "GBR",
-      " ", "Total n", "20", "", "13", "7", "B: Placebo", "n", "11",
-      "", "8", "3", "B: Placebo", "Median (DAYS)", "533.3", "", "375.5",
-      "NA", "A: Drug X", "n", "9", "", "5", "4", "A: Drug X", "Median (DAYS)",
-      "1541.3", "", "NA", "1541.3", " ", "Hazard Ratio", "0.13", "",
-      "0.14", "<0.01", " ", "95% Wald CI", "(0.02, 1.07)", "", "(0.02, 1.20)",
-      "(0.00, >999.99)"
+      "Baseline Risk Factors", "", "All Patients", "Geographic Region 1",
+      "Asia", "North America", "South America", " ", "Total n", "30",
+      "", "5", "5", "20", "B: Placebo", "n", "11", "", "2", "2", "7",
+      "B: Placebo", "Median (DAYS)", "742.2", "", "176.4", "NA", "837.4",
+      "A: Drug X", "n", "19", "", "3", "3", "13", "A: Drug X", "Median (DAYS)",
+      "985.4", "", "985.4", "242.7", "1759.9", " ", "Hazard Ratio",
+      "0.92", "", "<0.01", ">999.99", "1.10", " ", "95% Wald CI", "(0.31, 2.76)",
+      "", "(0.00, >999.99)", "(0.00, >999.99)", "(0.27, 4.43)"
     ),
-    .Dim = c(6L, 8L)
+    .Dim = 7:8
   )
 
   expect_equal(result_matrix, expected_matrix)
@@ -260,21 +274,22 @@ test_that("tabulate_survival_subgroups functions as expected when one arm has 0 
 
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", "Race", "ASIAN", "BLACK OR AFRICAN AMERICAN",
-      "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE", "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
-      " ", "Total n", "268", "", "135", "59", "53", "19", "1", "1",
-      "B: Placebo", "n", "134", "", "67", "28", "26", "11", "1", "1",
-      "B: Placebo", "Events", "92", "", "45", "21", "16", "8", "1",
-      "1", "B: Placebo", "Median (DAYS)", "813.6", "", "931.7", "676.1",
-      "906.4", "1236.5", "4743.5", "280.3", "A: Drug X", "n", "134",
-      "", "68", "31", "27", "8", "0", "0", "A: Drug X", "Events", "81",
-      "", "45", "17", "14", "5", "NA", "NA", "A: Drug X", "Median (DAYS)",
-      "1010.2", "", "987.2", "1274.8", "1062.6", "965.8", "NA", "NA",
-      " ", "Hazard Ratio", "0.84", "", "0.96", "0.54", "0.56", "1.59",
-      "NA", "NA", " ", "95% Wald CI", "(0.62, 1.14)", "", "(0.63, 1.45)",
-      "(0.28, 1.05)", "(0.26, 1.19)", "(0.48, 5.31)", "(NA, NA)", "(NA, NA)",
-      " ", "p-value (log-rank)", "0.2584", "", "0.8299", "0.0675",
-      "0.1263", "0.4488", "NA", "NA"
+      "Baseline Risk Factors", "", "All Patients", "Race",
+      "ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE",
+      "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER", " ",
+      "Total n", "268", "", "135", "59", "53", "19", "1", "1", "B: Placebo",
+      "n", "134", "", "67", "28", "26", "11", "1", "1", "B: Placebo",
+      "Events", "87", "", "40", "20", "19", "6", "1", "1", "B: Placebo",
+      "Median (DAYS)", "837.4", "", "906", "751.4", "841.2", "741.9",
+      "33.6", "153.5", "A: Drug X", "n", "134", "", "68", "31", "27",
+      "8", "0", "0", "A: Drug X", "Events", "79", "", "42", "15", "16",
+      "6", "NA", "NA", "A: Drug X", "Median (DAYS)", "1260.5", "",
+      "1274.8", "1327.8", "774.7", "849.3", "NA", "NA", " ", "Hazard Ratio",
+      "0.72", "", "0.75", "0.63", "0.69", "1.01", "NA", "NA", " ",
+      "95% Wald CI", "(0.53, 0.98)", "", "(0.48, 1.17)", "(0.32, 1.25)",
+      "(0.35, 1.35)", "(0.28, 3.61)", "(NA, NA)", "(NA, NA)", " ",
+      "p-value (log-rank)", "0.0334", "", "0.2012", "0.1832", "0.2745",
+      "0.9839", "NA", "NA"
     ),
     .Dim = 10:11
   )

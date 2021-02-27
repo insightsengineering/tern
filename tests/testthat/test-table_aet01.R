@@ -1,52 +1,10 @@
 library(random.cdisc.data)
 library(dplyr)
 
-# Add some variables necessary for analysis that are missing from RCD.
-preproc_adsl <- function(adsl) {
-
-  adsl <- adsl %>%
-    mutate(
-      DTHFL = case_when(
-        !is.na(DTHDT) ~ "Y",
-        TRUE ~ ""
-      )
-    ) %>%
-    var_relabel(
-      DTHFL = "Subject Death Flag"
-    )
-  adsl
-}
-
-preproc_adae <- function(adae, seed = 99) {
-
-  set.seed(seed)
-
-  adae <- adae %>%
-    mutate(
-      AEDECOD = as.character(AEDECOD),
-      AESDTH = sample(c("N", "Y"), size = nrow(adae), replace = TRUE, prob = c(0.99, 0.01)),
-      AEACN = sample(
-        c("DOSE NOT CHANGED", "DOSE INCREASED", "DRUG INTERRUPTED", "DRUG WITHDRAWN"),
-        size = nrow(adae),
-        replace = TRUE, prob = c(0.68, 0.02, 0.25, 0.05)
-      )
-    ) %>%
-    var_relabel(
-      AEDECOD = "Dictionary-Derived Term",
-      AESDTH = "Results in Death",
-      AEACN = "Action Taken with Study Treatment"
-    )
-
-  adae
-}
-
 test_that("Safety Summary Variant 1 works as expected", {
 
-  adsl <- radsl(cached = TRUE) %>%
-    preproc_adsl()
-
-  adae <- radae(cached = TRUE) %>%
-    preproc_adae()
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE)
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -103,7 +61,7 @@ test_that("Safety Summary Variant 1 works as expected", {
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
     count_patients_with_event(
-      vars = "STUDYID",
+      vars = "USUBJID",
       filters = c("STUDYID" = "AB12345"),
       denom = "N_col",
       .labels = c(count_fraction = "Total number of patients with at least one adverse event")
@@ -144,18 +102,18 @@ test_that("Safety Summary Variant 1 works as expected", {
       "AE leading to withdrawal from treatment", "AE leading to dose modification/interruption",
       "Related AE", "Related AE leading to withdrawal from treatment",
       "Related AE leading to dose modification/interruption", "Grade 3-5 AE",
-      "A: Drug X", "(N=134)", "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)",
-      "", "6 (4.48%)", "104 (77.61%)", "6 (4.48%)", "43 (32.09%)",
-      "76 (56.72%)", "25 (18.66%)", "79 (58.96%)", "105 (78.36%)",
-      "14 (10.45%)", "56 (41.79%)", "109 (81.34%)", "B: Placebo", "(N=134)",
-      "1 (0.75%)", "622", "112 (83.58%)", "6 (4.48%)", "", "9 (6.72%)",
-      "101 (75.37%)", "16 (11.94%)", "48 (35.82%)", "70 (52.24%)",
-      "31 (23.13%)", "89 (66.42%)", "108 (80.6%)", "14 (10.45%)", "56 (41.79%)",
-      "104 (77.61%)", "C: Combination", "(N=132)", "1 (0.76%)", "703",
-      "111 (84.09%)", "7 (5.3%)", "", "6 (4.55%)", "99 (75%)", "11 (8.33%)",
-      "52 (39.39%)", "75 (56.82%)", "31 (23.48%)", "90 (68.18%)", "109 (82.58%)",
-      "15 (11.36%)", "60 (45.45%)", "109 (82.58%)"
-      ),
+      "A: Drug X", "(N=134)", "122 (91.04%)", "609", "22 (16.42%)",
+      "6 (4.48%)", "", "76 (56.72%)", "104 (77.61%)", "8 (5.97%)",
+      "36 (26.87%)", "76 (56.72%)", "23 (17.16%)", "72 (53.73%)", "105 (78.36%)",
+      "6 (4.48%)", "31 (23.13%)", "109 (81.34%)", "B: Placebo", "(N=134)",
+      "123 (91.79%)", "622", "26 (19.4%)", "1 (0.75%)", "", "70 (52.24%)",
+      "101 (75.37%)", "8 (5.97%)", "31 (23.13%)", "70 (52.24%)", "24 (17.91%)",
+      "65 (48.51%)", "108 (80.6%)", "9 (6.72%)", "31 (23.13%)", "104 (77.61%)",
+      "C: Combination", "(N=132)", "120 (90.91%)", "703", "19 (14.39%)",
+      "2 (1.52%)", "", "75 (56.82%)", "99 (75%)", "7 (5.3%)", "26 (19.7%)",
+      "75 (56.82%)", "27 (20.45%)", "76 (57.58%)", "109 (82.58%)",
+      "13 (9.85%)", "32 (24.24%)", "109 (82.58%)"
+    ),
     .Dim = c(18L, 4L)
   )
 
@@ -165,11 +123,8 @@ test_that("Safety Summary Variant 1 works as expected", {
 
 test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
 
-  adsl <- radsl(cached = TRUE) %>%
-    preproc_adsl()
-
-  adae <- radae(cached = TRUE) %>%
-    preproc_adae()
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE)
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -240,7 +195,7 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
     count_patients_with_event(
-      vars = "STUDYID",
+      vars = "USUBJID",
       filters = c("STUDYID" = "AB12345"),
       denom = "N_col",
       .labels = c(count_fraction = "Total number of patients with at least one adverse event")
@@ -290,21 +245,21 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
       "Related AE leading to dose modification/interruption", "Grade 3-5 AE",
       "Total number of patients with at least one", "C.1.1.1.3/B.2.2.3.1 AESI (BROAD)",
       "SMQ 02 Reference Name", "D.2.1.5.3/A.1.1.1.1 AESI", "A: Drug X",
-      "(N=134)", "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)", "",
-      "6 (4.48%)", "104 (77.61%)", "6 (4.48%)", "43 (32.09%)", "76 (56.72%)",
-      "25 (18.66%)", "79 (58.96%)", "105 (78.36%)", "14 (10.45%)",
-      "56 (41.79%)", "109 (81.34%)", "", "72 (53.73%)", "0 (0%)", "74 (55.22%)",
-      "B: Placebo", "(N=134)", "1 (0.75%)", "622", "112 (83.58%)",
-      "6 (4.48%)", "", "9 (6.72%)", "101 (75.37%)", "16 (11.94%)",
-      "48 (35.82%)", "70 (52.24%)", "31 (23.13%)", "89 (66.42%)", "108 (80.6%)",
-      "14 (10.45%)", "56 (41.79%)", "104 (77.61%)", "", "79 (58.96%)",
-      "0 (0%)", "80 (59.7%)", "C: Combination", "(N=132)", "1 (0.76%)",
-      "703", "111 (84.09%)", "7 (5.3%)", "", "6 (4.55%)", "99 (75%)",
-      "11 (8.33%)", "52 (39.39%)", "75 (56.82%)", "31 (23.48%)", "90 (68.18%)",
-      "109 (82.58%)", "15 (11.36%)", "60 (45.45%)", "109 (82.58%)",
+      "(N=134)", "122 (91.04%)", "609", "22 (16.42%)", "6 (4.48%)",
+      "", "76 (56.72%)", "104 (77.61%)", "8 (5.97%)", "36 (26.87%)",
+      "76 (56.72%)", "23 (17.16%)", "72 (53.73%)", "105 (78.36%)",
+      "6 (4.48%)", "31 (23.13%)", "109 (81.34%)", "", "72 (53.73%)",
+      "0 (0%)", "74 (55.22%)", "B: Placebo", "(N=134)", "123 (91.79%)",
+      "622", "26 (19.4%)", "1 (0.75%)", "", "70 (52.24%)", "101 (75.37%)",
+      "8 (5.97%)", "31 (23.13%)", "70 (52.24%)", "24 (17.91%)", "65 (48.51%)",
+      "108 (80.6%)", "9 (6.72%)", "31 (23.13%)", "104 (77.61%)", "",
+      "79 (58.96%)", "0 (0%)", "80 (59.7%)", "C: Combination", "(N=132)",
+      "120 (90.91%)", "703", "19 (14.39%)", "2 (1.52%)", "", "75 (56.82%)",
+      "99 (75%)", "7 (5.3%)", "26 (19.7%)", "75 (56.82%)", "27 (20.45%)",
+      "76 (57.58%)", "109 (82.58%)", "13 (9.85%)", "32 (24.24%)", "109 (82.58%)",
       "", "75 (56.82%)", "0 (0%)", "87 (65.91%)"
     ),
-  .Dim = c(22L, 4L)
+    .Dim = c(22L, 4L)
   )
 
   expect_identical(result_matrix, expected_matrix)
@@ -313,11 +268,8 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
 
 test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
 
-  adsl <- radsl(cached = TRUE) %>%
-    preproc_adsl()
-
-  adae <- radae(cached = TRUE) %>%
-    preproc_adae()
+  adsl <- radsl(cached = TRUE)
+  adae <- radae(cached = TRUE)
 
   # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
   adae <- adae %>%
@@ -371,7 +323,7 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
     count_patients_with_event(
-      vars = "STUDYID",
+      vars = "USUBJID",
       filters = c("STUDYID" = "AB12345"),
       denom = "N_col",
       .labels = c(count_fraction = "Total number of patients with at least one adverse event")
@@ -410,29 +362,25 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
       "Total number of patients withdrawn informed consent", "Total number of patients with at least one",
       "AE with fatal outcome", "Serious AE", "AE leading to withdrawal from treatment",
       "Related AE", "Grade 3-5 AE", "Grade 4/5 AE", "A: Drug X", "(N=134)",
-      "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)", "4 (2.99%)",
-      "", "6 (4.48%)", "104 (77.61%)", "25 (18.66%)", "105 (78.36%)",
-      "109 (81.34%)", "91 (67.91%)", "B: Placebo", "(N=134)", "1 (0.75%)",
-      "622", "112 (83.58%)", "6 (4.48%)", "8 (5.97%)", "", "9 (6.72%)",
-      "101 (75.37%)", "31 (23.13%)", "108 (80.6%)", "104 (77.61%)",
-      "90 (67.16%)", "C: Combination", "(N=132)", "1 (0.76%)", "703",
-      "111 (84.09%)", "7 (5.3%)", "10 (7.58%)", "", "6 (4.55%)", "99 (75%)",
-      "31 (23.48%)", "109 (82.58%)", "109 (82.58%)", "93 (70.45%)"
+      "122 (91.04%)", "609", "22 (16.42%)", "6 (4.48%)", "2 (1.49%)",
+      "", "76 (56.72%)", "104 (77.61%)", "23 (17.16%)", "105 (78.36%)",
+      "109 (81.34%)", "91 (67.91%)", "B: Placebo", "(N=134)", "123 (91.79%)",
+      "622", "26 (19.4%)", "1 (0.75%)", "2 (1.49%)", "", "70 (52.24%)",
+      "101 (75.37%)", "24 (17.91%)", "108 (80.6%)", "104 (77.61%)",
+      "90 (67.16%)", "C: Combination", "(N=132)", "120 (90.91%)", "703",
+      "19 (14.39%)", "2 (1.52%)", "0 (0%)", "", "75 (56.82%)", "99 (75%)",
+      "27 (20.45%)", "109 (82.58%)", "109 (82.58%)", "93 (70.45%)"
     ),
     .Dim = c(14L, 4L)
   )
-
   expect_identical(result_matrix, expected_matrix)
 
 })
 
 test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
 
-  adsl <- radsl(cached = TRUE) %>%
-    preproc_adsl()
-
+  adsl <- radsl(cached = TRUE)
   adae <- radae(cached = TRUE) %>%
-    preproc_adae() %>%
     mutate(
       USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@") # Create unique ID per AE in dataset.
     )
@@ -486,7 +434,7 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
     split_cols_by("ACTARM") %>%
     add_colcounts() %>%
     count_patients_with_event(
-      vars = "STUDYID",
+      vars = "USUBJID",
       filters = c("STUDYID" = "AB12345"),
       denom = "N_col",
       .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
@@ -548,17 +496,17 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
       "Related AE", "Grade 3-5 AE", "Grade 4/5", "Total number of adverse events which are",
       "Serious AE", "AE leading to dose modification/interruption",
       "Related AE", "Grade 3-5 AE", "Grade 4/5", "A: Drug X", "(N=134)",
-      "1 (0.75%)", "609", "107 (79.85%)", "6 (4.48%)", "", "6 (4.48%)",
-      "104 (77.61%)", "25 (18.66%)", "79 (58.96%)", "105 (78.36%)",
-      "109 (81.34%)", "", "4", "10", "5", "5", "3", "", "249", "150",
-      "282", "303", "172", "B: Placebo", "(N=134)", "1 (0.75%)", "622",
-      "112 (83.58%)", "6 (4.48%)", "", "9 (6.72%)", "101 (75.37%)",
-      "31 (23.13%)", "89 (66.42%)", "108 (80.6%)", "104 (77.61%)",
-      "", "4", "10", "5", "5", "3", "", "255", "167", "299", "291",
-      "174", "C: Combination", "(N=132)", "1 (0.76%)", "703", "111 (84.09%)",
-      "7 (5.3%)", "", "6 (4.55%)", "99 (75%)", "31 (23.48%)", "90 (68.18%)",
-      "109 (82.58%)", "109 (82.58%)", "", "4", "10", "5", "5", "3",
-      "", "282", "187", "336", "327", "197"
+      "122 (91.04%)", "609", "22 (16.42%)", "6 (4.48%)", "", "76 (56.72%)",
+      "104 (77.61%)", "23 (17.16%)", "72 (53.73%)", "105 (78.36%)",
+      "109 (81.34%)", "", "4", "8", "5", "5", "3", "", "249", "109",
+      "282", "303", "172", "B: Placebo", "(N=134)", "123 (91.79%)",
+      "622", "26 (19.4%)", "1 (0.75%)", "", "70 (52.24%)", "101 (75.37%)",
+      "24 (17.91%)", "65 (48.51%)", "108 (80.6%)", "104 (77.61%)",
+      "", "4", "8", "5", "5", "3", "", "255", "100", "299", "291",
+      "174", "C: Combination", "(N=132)", "120 (90.91%)", "703", "19 (14.39%)",
+      "2 (1.52%)", "", "75 (56.82%)", "99 (75%)", "27 (20.45%)", "76 (57.58%)",
+      "109 (82.58%)", "109 (82.58%)", "", "4", "8", "5", "5", "3",
+      "", "282", "138", "336", "327", "197"
     ),
     .Dim = c(25L, 4L)
   )

@@ -46,17 +46,18 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
 
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
-      "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
-      "", "95", "93", "80", "B: Placebo", "n", "134", "", "82", "52",
-      "", "45", "56", "33", "B: Placebo", "Median (Months)", "26.7", "", "22.2",
-      "38.8", "", "26.9", "31.9", "15.7", "A: Drug X", "n", "134",
-      "", "79", "55", "", "50", "37", "47", "A: Drug X", "Median (Months)",
-      "33.2", "", "32.4", "34.9", "", "31.7", "48.4", "31.4", " ",
-      "Hazard Ratio", "0.84", "", "0.65", "1.23", "", "1.06", "0.61",
-      "0.77", " ", "95% Wald CI", "(0.62, 1.14)", "", "(0.44, 0.97)",
-      "(0.76, 1.98)", "", "(0.64, 1.76)", "(0.34, 1.07)", "(0.45, 1.32)"
-      ),
+      "Baseline Risk Factors", "", "All Patients", "Sex",
+      "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM", "HIGH",
+      " ", "Total n", "268", "", "161", "107", "", "95", "93", "80",
+      "B: Placebo", "n", "134", "", "82", "52", "", "45", "56", "33",
+      "B: Placebo", "Median (Months)", "27.5", "", "28", "17.3", "",
+      "24.7", "23.7", "27.9", "A: Drug X", "n", "134", "", "79", "55",
+      "", "50", "37", "47", "A: Drug X", "Median (Months)", "41.4",
+      "", "41.9", "27.9", "", "38.1", "41.7", "35.2", " ", "Hazard Ratio",
+      "0.72", "", "0.70", "0.78", "", "0.71", "0.57", "0.98", " ",
+      "95% Wald CI", "(0.53, 0.98)", "", "(0.46, 1.05)", "(0.49, 1.26)",
+      "", "(0.42, 1.17)", "(0.32, 1.01)", "(0.56, 1.72)"
+    ),
     .Dim = c(10L, 8L)
   )
   expect_equal(result_matrix, expected_matrix)
@@ -109,16 +110,17 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
 
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", "Sex", "M", "F", "Stratification Factor 1",
-      "C", "B", "A", " ", "Total n", "268", "", "107", "161", "", "94",
-      "92", "82", "Placebo", "n", "134", "", "52", "82", "", "45",
-      "45", "44", "Placebo", "Median (Months)", "26.7", "", "38.8", "22.2",
-      "", "26.7", "32.4", "26.9", "Drug X", "n", "134", "", "55", "79",
-      "", "49", "47", "38", "Drug X", "Median (Months)", "33.2", "", "34.9",
-      "32.4", "", "40.8", "31.7", "32.4", " ", "Hazard Ratio", "0.84",
-      "", "1.23", "0.65", "", "0.77", "0.98", "0.76", " ", "95% Wald CI",
-      "(0.62, 1.14)", "", "(0.76, 1.98)", "(0.44, 0.97)", "", "(0.45, 1.32)",
-      "(0.60, 1.59)", "(0.44, 1.32)"),
+      "Baseline Risk Factors", "", "All Patients", "Sex",
+      "M", "F", "Stratification Factor 1", "C", "B", "A", " ", "Total n",
+      "268", "", "107", "161", "", "94", "92", "82", "Placebo", "n",
+      "134", "", "52", "82", "", "45", "45", "44", "Placebo", "Median (Months)",
+      "27.5", "", "17.3", "28", "", "16.3", "27.9", "35.7", "Drug X",
+      "n", "134", "", "55", "79", "", "49", "47", "38", "Drug X", "Median (Months)",
+      "41.4", "", "27.9", "41.9", "", "54.7", "32.4", "35.2", " ",
+      "Hazard Ratio", "0.72", "", "0.78", "0.70", "", "0.53", "0.87",
+      "0.86", " ", "95% Wald CI", "(0.53, 0.98)", "", "(0.49, 1.26)",
+      "(0.46, 1.05)", "", "(0.31, 0.90)", "(0.53, 1.45)", "(0.48, 1.53)"
+    ),
     .Dim = c(10L, 8L)
   )
 
@@ -161,14 +163,15 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
-      "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
-      "", "95", "93", "80", " ", "Hazard Ratio", "0.84", "", "0.65",
-      "1.23", "", "1.06", "0.61", "0.77", " ", "90% Wald CI", "(0.65, 1.08)",
-      "", "(0.47, 0.91)", "(0.83, 1.84)", "", "(0.69, 1.62)", "(0.38, 0.98)",
-      "(0.49, 1.21)"),
+      "Baseline Risk Factors", "", "All Patients", "Sex",
+      "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM", "HIGH",
+      " ", "Total n", "268", "", "161", "107", "", "95", "93", "80",
+      " ", "Hazard Ratio", "0.72", "", "0.70", "0.78", "", "0.71",
+      "0.57", "0.98", " ", "90% Wald CI", "(0.55, 0.93)", "", "(0.50, 0.98)",
+      "(0.53, 1.17)", "", "(0.46, 1.08)", "(0.36, 0.92)", "(0.61, 1.57)"
+    ),
     .Dim = c(10L, 4L)
-    )
+  )
 
   expect_equal(result_matrix, expected_matrix)
 
@@ -208,17 +211,17 @@ test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
 
   expected_matrix <- structure(
     c(
-      "Baseline Risk Factors", "", "All Patients", "Sex", "F", "M", "Categorical Level Biomarker 2",
-      "LOW", "MEDIUM", "HIGH", " ", "Total n", "268", "", "161", "107",
-      "", "95", "93", "80", "B: Placebo", "n", "134", "", "82", "52",
-      "", "45", "56", "33", "B: Placebo", "Median (Months)", "26.7", "", "22.2",
-      "38.8", "", "26.9", "31.9", "15.7", "A: Drug X", "n", "134",
-      "", "79", "55", "", "50", "37", "47", "A: Drug X", "Median (Months)",
-      "33.2", "", "32.4", "34.9", "", "31.7", "48.4", "31.4", " ",
-      "Hazard Ratio", "0.84", "", "0.65", "1.23", "", "1.06", "0.61",
-      "0.77", " ", "95% Wald CI", "(0.62, 1.14)", "", "(0.44, 0.97)",
-      "(0.76, 1.98)", "", "(0.64, 1.76)", "(0.34, 1.07)", "(0.45, 1.32)"
-    ),
+      "Baseline Risk Factors", "", "All Patients", "Sex",
+      "F", "M", "Categorical Level Biomarker 2", "LOW", "MEDIUM", "HIGH",
+      " ", "Total n", "268", "", "161", "107", "", "95", "93", "80",
+      "B: Placebo", "n", "134", "", "82", "52", "", "45", "56", "33",
+      "B: Placebo", "Median (Months)", "27.5", "", "28", "17.3", "",
+      "24.7", "23.7", "27.9", "A: Drug X", "n", "134", "", "79", "55",
+      "", "50", "37", "47", "A: Drug X", "Median (Months)", "41.4",
+      "", "41.9", "27.9", "", "38.1", "41.7", "35.2", " ", "Hazard Ratio",
+      "0.72", "", "0.70", "0.78", "", "0.71", "0.57", "0.98", " ",
+      "95% Wald CI", "(0.53, 0.98)", "", "(0.46, 1.05)", "(0.49, 1.26)",
+      "", "(0.42, 1.17)", "(0.32, 1.01)", "(0.56, 1.72)"),
     .Dim = c(10L, 8L)
   )
   expect_equal(result_matrix, expected_matrix)

@@ -19,7 +19,7 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients wit
       c("WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22", "<Missing>", "<Missing>", "<Missing>"),
       rep(c("ALT", "CRP", "IGA"), 2L),
       c("2", "0", "0", "<Missing>", "<Missing>", "<Missing>"),
-      c("0", "0", "4", "<Missing>", "<Missing>", "<Missing>")
+      c("0", "0", "3", "<Missing>", "<Missing>", "<Missing>")
     ),
     .Dim = c(6L, 6L)
   )
@@ -46,7 +46,7 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients mis
       c("WEEK 5 DAY 36", "WEEK 1 DAY 8", "WEEK 4 DAY 29", "WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22"),
       rep(c("ALT", "CRP", "IGA"), 2),
       c("0", "0", "0", "2", "0", "0"),
-      c("<Missing>", "<Missing>", "<Missing>", "0", "0", "4")
+      c("<Missing>", "<Missing>", "<Missing>", "0", "0", "3")
     ),
     .Dim = c(6L, 6L)
   )
@@ -73,7 +73,7 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients mis
       c("WEEK 5 DAY 36", "WEEK 1 DAY 8", "WEEK 4 DAY 29", "WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22"),
       rep(c("ALT", "CRP", "IGA"), 2L),
       c("<Missing>", "<Missing>", "<Missing>", "2", "0", "0"),
-      c("0", "2", "0", "0", "0", "4")
+      c("0", "2", "0", "0", "0", "3")
     ),
     .Dim = c(6L, 6L)
   )
@@ -100,7 +100,7 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing for patients wit
       c("WEEK 3 DAY 22", "WEEK 5 DAY 36", "WEEK 3 DAY 22", "<Missing>", "<Missing>", "<Missing>"),
       rep(c("ALT", "CRP", "IGA"), 2L),
       c("2", "0", "0", "<Missing>", "<Missing>", "<Missing>"),
-      c("0", "0", "4", "<Missing>", "<Missing>", "<Missing>")
+      c("0", "0", "3", "<Missing>", "<Missing>", "<Missing>")
     ),
     .Dim = c(6L, 6L)
   )
@@ -131,16 +131,17 @@ test_that("h_group_counter check ", {
   )
 
   expected <- list(
-    count = list("Total" = 400),
+    count = list(Total = 400L),
     count_fraction = list(
       "Missing" = c(0, 0),
-      "Not High" = c(239.0000,   0.5975),
-      "1" = c(38.000,  0.095),
-      "2" = c(38.000,  0.095),
-      "3" = c(30.000,  0.075),
-      "4" = c(37.000,  0.0925)
+      "Not High" = c(239, 0.5975),
+      "1" = c(41, 0.1025),
+      "2" = c(44, 0.11),
+      "3" = c(42, 0.105),
+      "4" = c(34, 0.085)
+      )
     )
-  )
+
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
@@ -170,16 +171,16 @@ test_that("s_count_abnormal_by_worst_grade_by_baseline High works as expected", 
   )
 
   expected <- list(
-    count = list("Total" = 11L),
+    count = list("Total" = 15L),
     count_fraction = list(
-      "Missing" = c(0L, 0L),
-      "Not High" = c(8L,   8L / 11L),
-      "1" = c(0L,  0L),
-      "2" = c(2L,  2L / 11L),
-      "3" = c(0L,  0L),
-      "4" = c(1L,  1L / 11L)
+      "Missing" = c(0, 0),
+      "Not High" = c(12, 0.8),
+      "1" = c(0, 0),
+      "2" = c(2, 0.133333333333333),
+      "3" = c(0, 0),
+      "4" = c(1, 0.0666666666666667)
+      )
     )
-  )
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
@@ -208,16 +209,16 @@ test_that("s_count_abnormal_by_worst_grade_by_baseline Low works as expected", {
   )
 
   expected <- list(
-    count = list("Total" = 7L),
+    count = list(Total = 7L),
     count_fraction = list(
-      "Missing" = c(0L, 0L),
-      "Not Low" = c(6L,   6L / 7L),
-      "1" = c(0L,  0L),
-      "2" = c(0L,  0L),
-      "3" = c(1L,  1L / 7L),
-      "4" = c(0L,  0L)
-    )
-  )
+      "Missing" = c(0, 0),
+      "Not Low" = c(5, 0.714285714285714),
+      "1" = c(0, 0),
+      "2" = c(1, 0.142857142857143),
+      "3" = c(1, 0.142857142857143),
+      "4" = c(0, 0)
+  ))
+
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
@@ -257,17 +258,19 @@ test_that("count_abnormal_by_worst_grade_by_baseline works as expected", {
 
   expected_matrix <- structure(
     c(
-      "",     "",       "ALT", "Not Low", "Total",     "Not Low",   "1",         "2",        "3",         "4",
-      "Missing", "1",  "Total",   "Not Low",  "1",        "2",        "3",        "4",        "Missing",
-      "ARM A", "(N=134)", "",   "",       "122", "73 (59.8%)", "13 (10.7%)", "8 (6.6%)", "13 (10.7%)", "11 (9%)",
-      "0",      "",   "3", "0",        "1 (33.3%)", "0",        "0",        "2 (66.7%)", "0",
-      "ARM B", "(N=134)", "",   "",       "119", "75 (63%)",  "11 (9.2%)", "10 (8.4%)", "13 (10.9%)", "6 (5%)",
-      "0",      "",   "6", "2 (33.3%)", "2 (33.3%)", "1 (16.7%)", "1 (16.7%)", "0",        "0",
-      "ARM C", "(N=132)", "",   "",       "115", "79 (68.7%)", "9 (7.8%)",  "7 (6.1%)", "9 (7.8%)",  "7 (6.1%)",
-      "0",      "",   "6", "4 (66.7%)", "0",        "0",        "0",        "2 (33.3%)", "0"
-    ),
+      "", "", "ALT", "Not Low", "Total", "Not Low", "1",
+      "2", "3", "4", "Missing", "1", "Total", "Not Low", "1", "2",
+      "3", "4", "Missing", "ARM A", "(N=134)", "", "", "124", "74 (59.7%)",
+      "13 (10.5%)", "13 (10.5%)", "17 (13.7%)", "7 (5.6%)", "0", "",
+      "3", "0", "1 (33.3%)", "0", "2 (66.7%)", "0", "0", "ARM B", "(N=134)",
+      "", "", "122", "76 (62.3%)", "12 (9.8%)", "16 (13.1%)", "11 (9%)",
+      "7 (5.7%)", "0", "", "6", "2 (33.3%)", "2 (33.3%)", "1 (16.7%)",
+      "1 (16.7%)", "0", "0", "ARM C", "(N=132)", "", "", "117", "80 (68.4%)",
+      "9 (7.7%)", "11 (9.4%)", "9 (7.7%)", "8 (6.8%)", "0", "", "7",
+      "5 (71.4%)", "0", "0", "0", "2 (28.6%)", "0"),
     .Dim = c(19L, 4L)
   )
+
   expect_identical(result_matrix, expected_matrix)
 })
 
@@ -323,23 +326,41 @@ test_that("h_adsl_adlb_merge_using_worst_flag generates missing and by visit lab
   result_matrix <- matrix(c(as.matrix(result)), 30L, 6L)
 
   expected_matrix <- structure(
-    c(rep(c("AB12345-CHN-3-id-128", "AB12345-CHN-15-id-262"), each = 15L),
-      rep(c("ARM A", "ARM C"), each = 15L),
-      c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
-        "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
-        "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
-        "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
-        "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
-        "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
-      c(rep(c("ALT", "CRP", "IGA"), each = 5), rep(c("ALT", "CRP", "IGA"), each = 5)),
-      c(
-        c("-2", "-3", "2", "0", "-4", "-1", "0", "0", "0", "0", "0", "0", "0", "0", "0"),
-        rep("<Missing>", 15L)
-        ),
-      c(
-        c("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "4", "4", "4", "4", "4"),
-        rep("<Missing>", 15L)
-      )
+    c(
+      "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128",
+      "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128",
+      "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128",
+      "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128",
+      "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128", "AB12345-CHN-3-id-128",
+      "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262",
+      "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262",
+      "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262",
+      "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262",
+      "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262", "AB12345-CHN-15-id-262",
+      "ARM A", "ARM A", "ARM A", "ARM A", "ARM A", "ARM A", "ARM A",
+      "ARM A", "ARM A", "ARM A", "ARM A", "ARM A", "ARM A", "ARM A",
+      "ARM A", "ARM C", "ARM C", "ARM C", "ARM C", "ARM C", "ARM C",
+      "ARM C", "ARM C", "ARM C", "ARM C", "ARM C", "ARM C", "ARM C",
+      "ARM C", "ARM C", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22",
+      "WEEK 4 DAY 29", "WEEK 5 DAY 36", "WEEK 1 DAY 8", "WEEK 2 DAY 15",
+      "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36", "WEEK 1 DAY 8",
+      "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
+      "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29",
+      "WEEK 5 DAY 36", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22",
+      "WEEK 4 DAY 29", "WEEK 5 DAY 36", "WEEK 1 DAY 8", "WEEK 2 DAY 15",
+      "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36", "ALT", "ALT",
+      "ALT", "ALT", "ALT", "CRP", "CRP", "CRP", "CRP", "CRP", "IGA",
+      "IGA", "IGA", "IGA", "IGA", "ALT", "ALT", "ALT", "ALT", "ALT",
+      "CRP", "CRP", "CRP", "CRP", "CRP", "IGA", "IGA", "IGA", "IGA",
+      "IGA", "-2", "-3", "2", "0", "-3", "-1", "0", "0", "0", "0",
+      "0", "0", "0", "0", "0", "<Missing>", "<Missing>", "<Missing>",
+      "<Missing>", "<Missing>", "<Missing>", "<Missing>", "<Missing>",
+      "<Missing>", "<Missing>", "<Missing>", "<Missing>", "<Missing>",
+      "<Missing>", "<Missing>", "0", "0", "0", "0", "0", "0", "0",
+      "0", "0", "0", "3", "3", "3", "3", "3", "<Missing>", "<Missing>",
+      "<Missing>", "<Missing>", "<Missing>", "<Missing>", "<Missing>",
+      "<Missing>", "<Missing>", "<Missing>", "<Missing>", "<Missing>",
+      "<Missing>", "<Missing>", "<Missing>"
     ),
     .Dim = c(30L, 6L)
   )

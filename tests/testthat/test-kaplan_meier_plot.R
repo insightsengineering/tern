@@ -36,8 +36,8 @@ test_that("h_tbl_median_surv estimates median survival time with CI", {
   expected <- structure(
     list(
       N = c(134, 134, 132),
-      Median = c(1010, 813.6, 451),
-      `95% CI` = c("(951.2, 1401)", "(638.3, 1136)", "(339.2, 701.1)")
+      Median = c(1260, 837.4, 337.2),
+      `95% CI` = c("(849.3, 1723)", "(527.7, 985.6)", "(293.7, 484.4)")
     ),
     row.names = c("ARMCD=ARM A", "ARMCD=ARM B", "ARMCD=ARM C"),
     class = "data.frame"
@@ -57,9 +57,9 @@ test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   )
   expected1 <- structure(
     list(
-      HR = c("1.1887", "2.1107"),
-      `95% CI` = c("(0.8805, 1.6048)", "(1.5689, 2.8397)"),
-      `p-value (log-rank)` = c("0.2584", "<0.0001")
+      HR = c("1.3940", "2.7532"),
+      `95% CI` = c("(1.0251, 1.8957)", "(2.0478, 3.7017)"),
+      `p-value (log-rank)` = c("0.0334", "<0.0001")
     ),
     row.names = c("ARM B", "ARM C"),
     class = "data.frame"
@@ -73,9 +73,9 @@ test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   )
   expected2 <- structure(
     list(
-      HR = c("1.1825", "2.0803"),
-      `99% CI` = c("(0.7933, 1.7626)", "(1.4075, 3.0745)"),
-      `p-value (wald)` = c("0.2795", "<0.0001")
+      HR = c("1.3644", "2.7277"),
+      `99% CI` = c("(0.9091, 2.0476)", "(1.8346, 4.0555)"),
+      `p-value (wald)` = c("0.0487", "<0.0001")
     ),
     row.names = c("ARM B", "ARM C"),
     class = "data.frame"
