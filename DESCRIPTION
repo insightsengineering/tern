@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
-Date: 2020-12-15
-Version: 0.7.0.9000
+Date: 2021-03-17
+Version: 0.7.1
 Authors@R: c(
   person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
   person("Roche", role = c("cph", "fnd")),
@@ -39,7 +39,7 @@ Imports:
   stats,
   survival,
   utils,
-  utils.nest (>= 0.2.7),
+  utils.nest (>= 0.2.8),
   forcats,
   car,
   emmeans (>= 1.4.5),
@@ -55,8 +55,8 @@ Suggests:
   lattice,
   knitr,
   Matrix,
-  random.cdisc.data (>= 0.3.7),
-  test.nest (>= 0.2.6),
+  random.cdisc.data (>= 0.3.8),
+  test.nest (>= 0.2.7),
   rmarkdown,
   tidyr
 License: file LICENSE
