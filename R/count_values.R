@@ -66,11 +66,7 @@ s_count_values.character <- function(x,
 s_count_values.factor <- function(x,
                                   values = "Y",
                                   ...) {
-  assert_that(
-    is.character(values),
-    all(values %in% levels(x))
-  )
-  s_count_values(as.character(x), values = values, ...)
+  s_count_values(as.character(x), values = as.character(values), ...)
 }
 
 #' @describeIn count_values_funs method for `logical` vectors `x`.

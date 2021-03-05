@@ -62,11 +62,12 @@ test_that("s_count_values for factor gives same result as for character", {
   expect_identical(result, expected)
 })
 
-test_that("s_count_values for factor fails if not all values are levels of the factor", {
+test_that("s_count_values for factor gives the same result as for character for values not in factor level", {
   x <- c("a", "b", "a")
 
-  expect_error(s_count_values(factor(x), values = "x"))
-  expect_error(s_count_values(factor(x), values = c("a", "x")))
+  result <- s_count_values(factor(x), values = "x")
+  expected <- s_count_values(x, values = "x")
+  expect_identical(result, expected)
 })
 
 test_that("count_values works as expected with a single value", {
