@@ -12,6 +12,7 @@ h_ggkm(
   xlab,
   ylab,
   title,
+  max_time = NULL,
   lwd = 1,
   lty = NULL,
   pch = "|",
@@ -39,6 +40,10 @@ an optimal tick position on the x axis.}
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
+
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
+Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
+default)}
 
 \item{lwd}{(\code{numeric})\cr line width. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}

@@ -58,7 +58,8 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{size}{(\code{numeric})\cr size of censored point, a class of \code{unit}.}
 
-\item{max_time}{(\code{numeric})\cr maximum value of X axis range (\code{NULL} for
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
+Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
 default)}
 
 \item{font_size}{(\code{number}) \cr font size to be used.}

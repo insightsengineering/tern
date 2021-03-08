@@ -4,7 +4,7 @@
 \alias{h_grob_tbl_at_risk}
 \title{Helper: Patient-at-Risk Grobs}
 \usage{
-h_grob_tbl_at_risk(data, annot_tbl)
+h_grob_tbl_at_risk(data, annot_tbl, xlim)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
@@ -12,6 +12,9 @@ h_grob_tbl_at_risk(data, annot_tbl)
 \item{annot_tbl}{(\code{data.frame})\cr annotation as prepared
 by \code{\link[survival:summary.survfit]{survival::summary.survfit()}} which includes the number of
 patients at risk at given time points.}
+
+\item{xlim}{(\code{numeric})\cr the maximum value on the x-axis (used to
+ensure the at risk table aligns with the KM graph).}
 }
 \description{
 Two Graphical Objects are obtained, one corresponding to row labeling and
@@ -50,7 +53,7 @@ annot_tbl <- if (is.null(fit_km$strata)) {
 }
 
 # The annotation table is transformed into a grob.
-tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl)
+tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
 
 # For the representation, the layout is estimated for which the decomposition
 # of the graphic element is necessary.

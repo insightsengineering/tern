@@ -9,7 +9,8 @@ h_data_plot(fit_km, max_time = NULL)
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{max_time}{(\code{numeric})\cr maximum value of X axis range (\code{NULL} for
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
+Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
 default)}
 }
 \description{

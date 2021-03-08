@@ -1,5 +1,6 @@
 # tern 0.7.1
 * Fixed bug in `g_km` related to the arguments `pch` and `size`. Previously, these arguments were not passed on to helper function `h_ggkm` and so were effectively being ignored.
+* Updated xticks and max_time arguments in `g_km` for greater functionality. max_time added as an argument in `h_xticks` to allow this. 
 * Fixed bug in `prop_diff_cmh` that led to `NaN` weighted proportion difference estimates and missing confidence intervals. Previously, when for at least one stratum no patients from one treatment arm were included, then the estimation did not lead to numeric results.
 * Fixed bug in `prop_cmh` which previously gave an error in case of at least one stratum containing less than two observations.
 * New argument `n_events` added to `estimate_incidence_rate`.

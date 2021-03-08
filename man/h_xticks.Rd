@@ -15,7 +15,8 @@ between ticks on the x axis.
 If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 an optimal tick position on the x axis.}
 
-\item{max_time}{(\code{numeric})\cr maximum value of X axis range (\code{NULL} for
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
+Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
 default)}
 }
 \description{
@@ -37,7 +38,10 @@ data <- radtte(cached = TRUE) \%>\%
 
 h_xticks(data)
 h_xticks(data, xticks = seq(0, 3000, 500))
-
+h_xticks(data, xticks = 500)
+h_xticks(data, xticks = 500, max_time = 6000)
+h_xticks(data, xticks = c(0, 500), max_time = 300)
+h_xticks(data, xticks = 500, max_time = 300)
 }
 
 }

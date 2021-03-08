@@ -34,7 +34,8 @@
 #'   to number of strata from [survival::survfit()].
 #' @param pch (`numeric`)\cr point type for censored.
 #' @param size (`numeric`)\cr size of censored point, a class of `unit`.
-#' @param max_time (`numeric`)\cr maximum value of X axis range (`NULL` for
+#' @param max_time (`numeric`)\cr maximum value to show on X axis.
+#' Only data values less than or up to to this threshold value will be plotted.(`NULL` for
 #'    default)
 #' @param font_size (`number`) \cr font size to be used.
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to
@@ -207,6 +208,7 @@ g_km <- function(df,
     fit_km = fit_km,
     max_time = max_time
   )
+
   xticks <- h_xticks(data = data_plot, xticks = xticks, max_time = max_time)
   gg <- h_ggkm(
     data = data_plot,
@@ -218,6 +220,7 @@ g_km <- function(df,
     yval = yval,
     ylab = ylab,
     title = title,
+    max_time = max_time,
     lwd = lwd,
     lty = lty,
     col = col,
@@ -242,7 +245,11 @@ g_km <- function(df,
       )
     }
 
-    grobs_patient <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl)
+    grobs_patient <- h_grob_tbl_at_risk(
+      data = data_plot,
+      annot_tbl = annot_tbl,
+      xlim = max(max_time, data_plot$time, xticks)
+    )
     lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title) # nolint
     ttl_row <- as.numeric(!is.null(title))
     km_grob <- gTree(
@@ -412,14 +419,25 @@ h_data_plot <- function(fit_km,
 #'
 #' h_xticks(data)
 #' h_xticks(data, xticks = seq(0, 3000, 500))
-#'
+#' h_xticks(data, xticks = 500)
+#' h_xticks(data, xticks = 500, max_time = 6000)
+#' h_xticks(data, xticks = c(0, 500), max_time = 300)
+#' h_xticks(data, xticks = 500, max_time = 300)
 #' }
 #'
 h_xticks <- function(data, xticks = NULL, max_time = NULL) {
   if (is.null(xticks)) {
-    extended(range(data$time)[1], range(data$time)[2], m = 5)
+    if (is.null(max_time)) {
+      extended(range(data$time)[1], range(data$time)[2], m = 5)
+    } else {
+      extended(range(data$time)[1], max(range(data$time)[2], max_time), m = 5)
+    }
   } else if (is.number(xticks)) {
-    seq(0, max(data$time), xticks)
+    if (is.null(max_time)) {
+      seq(0, max(data$time), xticks)
+    } else {
+      seq(0, max(data$time, max_time), xticks)
+    }
   } else if (is.numeric(xticks)) {
     xticks
   } else {
@@ -470,6 +488,7 @@ h_ggkm <- function(data,
                    xlab,
                    ylab,
                    title,
+                   max_time = NULL,
                    lwd = 1,
                    lty = NULL,
                    pch = "|",
@@ -533,9 +552,22 @@ h_ggkm <- function(data,
         shape = pch, size = size
       )
   }
-  if (!is.null(xticks)) {
-      gg <- gg + scale_x_continuous(breaks = xticks)
+
+
+  if (!is.null(max_time) && !is.null(xticks)) {
+   gg <- gg + scale_x_continuous(breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))))
   }
+  else if (!is.null(xticks)) {
+    if (max(data$time) <= max(xticks)) {
+      gg <- gg + scale_x_continuous(breaks = xticks, limits = c(min(0, min(xticks)), max(xticks)))
+    } else {
+      gg <- gg + scale_x_continuous(breaks = xticks)
+    }
+  }
+  else if (!is.null(max_time)) {
+    gg <- gg + scale_x_continuous(limits = c(0, max_time))
+  }
+
 
   if (!is.null(ggtheme)) {
     gg <- gg + ggtheme
@@ -720,6 +752,8 @@ h_km_layout <- function(data, g_el, title) {
 #' @param annot_tbl (`data.frame`)\cr annotation as prepared
 #'   by [survival::summary.survfit()] which includes the number of
 #'   patients at risk at given time points.
+#' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
+#'   ensure the at risk table aligns with the KM graph).
 #'
 #' @importFrom grid dataViewport gList gpar gTree plotViewport rectGrob stringWidth textGrob unit viewport
 #'
@@ -756,7 +790,7 @@ h_km_layout <- function(data, g_el, title) {
 #' }
 #'
 #' # The annotation table is transformed into a grob.
-#' tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl)
+#' tbl <- h_grob_tbl_at_risk(data = data_plot, annot_tbl = annot_tbl, xlim = max(xticks))
 #'
 #' # For the representation, the layout is estimated for which the decomposition
 #' # of the graphic element is necessary.
@@ -775,7 +809,7 @@ h_km_layout <- function(data, g_el, title) {
 #' grid.draw(tbl$label)
 #' }
 #'
-h_grob_tbl_at_risk <- function(data, annot_tbl) {
+h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   vp_table <- plotViewport(margins = unit(c(0, 0, 0, 0), "lines"))
@@ -805,6 +839,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl) {
       y = unit(as.numeric(annot_tbl$strata) - .5, "line") # maybe native
     )
   )
+
   list(
     at_risk = gList(
       gTree(
@@ -812,7 +847,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl) {
         children = gList(
           gTree(
             vp = dataViewport(
-              xData = data$time,
+              xscale = c(0, xlim) + c(-0.05, 0.05) * xlim,
               yscale = c(0, nlines + 1),
               extension = c(0.05, 0)
             ),
