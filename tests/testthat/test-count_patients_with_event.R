@@ -73,7 +73,7 @@ test_that("count_patients_with_event works as expected", {
   expected <- structure(
     c("", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=2)",
-      "1 (50%)", "0 (0%)", "B", "(N=1)", "1 (100%)", "1 (100%)"
+      "1 (50%)", "0", "B", "(N=1)", "1 (100%)", "1 (100%)"
     ),
     .Dim = c(4L, 3L)
   )
@@ -121,7 +121,7 @@ test_that("count_patients_with_event works as expected for different column coun
   expected <- structure(
     c("", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)",
-      "1 (16.67%)", "0 (0%)", "B", "(N=4)", "1 (25%)", "1 (25%)"
+      "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)"
     ),
     .Dim = c(4L, 3L)
   )
@@ -170,7 +170,7 @@ test_that("count_patients_with_flags works as expected", {
   expected_matrix <- structure(
     c("", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "A", "(N=6)",
-      "1 (16.67%)", "0 (0%)", "B", "(N=4)", "1 (25%)", "1 (25%)"
+      "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)"
     ),
     .Dim = c(4L, 3L)
   )
@@ -224,8 +224,8 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
     c(
       "", "", "Total number of patients with at least one adverse event",
       "Total number of patients with fatal AEs", "Total number of patients with at least one adverse event",
-      "Total number of patients with fatal AEs", "A", "(N=6)", "1 (16.67%)",
-      "0 (0%)", "1 (16.67%)", "0 (0%)", "B", "(N=4)", "1 (25%)", "1 (25%)",
+      "Total number of patients with fatal AEs", "A", "(N=6)", "1 (16.7%)",
+      "0", "1 (16.7%)", "0", "B", "(N=4)", "1 (25%)", "1 (25%)",
       "1 (25%)", "1 (25%)"),
     .Dim = c(6L, 3L)
   )

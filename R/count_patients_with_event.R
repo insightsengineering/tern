@@ -75,7 +75,6 @@ s_count_patients_with_event <- function(df,
     .N_col = .N_col,
     .N_row = .N_row
   )
-
   result
 }
 
@@ -95,7 +94,7 @@ s_count_patients_with_event <- function(df,
 #'
 a_count_patients_with_event <- make_afun(
   s_count_patients_with_event,
-  .formats = c(count_fraction = "xx (xx.xx%)")
+  .formats = c(count_fraction = format_count_fraction)
 )
 
 #' @describeIn count_patients_with_event Analyze Function which adds the count statistics
@@ -209,8 +208,8 @@ count_patients_with_flags <- function(lyt,
                                       flag_variables,
                                       table_names = flag_variables,
                                       .stats = "count_fraction",
-                                      .formats = c(count_fraction = "xx (xx.xx%)"),
-                                      .indent_mods = 0) {
+                                      .formats = NULL,
+                                      .indent_mods = NULL) {
 
   assert_that(
     length(flag_variables) == length(table_names)

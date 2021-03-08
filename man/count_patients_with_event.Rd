@@ -42,8 +42,8 @@ count_patients_with_flags(
   flag_variables,
   table_names = flag_variables,
   .stats = "count_fraction",
-  .formats = c(count_fraction = "xx (xx.xx\%)"),
-  .indent_mods = 0
+  .formats = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
