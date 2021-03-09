@@ -8,6 +8,7 @@
 * New argument `yval` added to `g_km`.
 * Add new individual patient plot function `g_ipp` along with helpers `h_g_ipp` and `h_set_nest_theme`.
 * Fixed bug in `count_patients_with_events`, now zero counts without percentage are shown.
+* Fixed bug in `get_mmrm_lsmeans` which previously did not allow MMRM analysis of more than 3000 observations.
 
 # tern 0.7.0
 This version of `tern` introduces a major rewriting of `tern` due to the change to layout based tabulation in `rtables`. `tern` now does not build tables directly anymore, instead it provides analysis functions to easily build tables, see the examples.

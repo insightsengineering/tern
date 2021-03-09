@@ -490,7 +490,9 @@ get_mmrm_lsmeans <- function(fit,
     mode = "satterthwaite",
     specs = as.formula(paste("~ ", vars$arm, "|", vars$visit)),
     weights = weights,
-    data = data_complete
+    data = data_complete,
+    # The below option is needed to enable analysis of more than 3000 observations.
+    lmerTest.limit = nrow(data_complete)
   )
 
   # Relative Reduction (in change from baseline) is calculated using model based
