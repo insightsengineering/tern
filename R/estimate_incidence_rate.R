@@ -244,14 +244,29 @@ s_incidence_rate <- function(df,
                              is_event,
                              control = control_incidence_rate()) {
 
-  assert_that(
-    is_df_with_variables(df, list(tte = .var, n_events = n_events)),
-    is.string(.var),
-    is_numeric_vector(df[[.var]], min_length = 0),
-    is_integer_vector(df[[n_events]], min_length = 0)
-  )
+  if (!missing(is_event)) {
 
-  if (!missing(is_event)) warning("argument is_event will be deprecated. Please use n_events.")
+    warning("argument is_event will be deprecated. Please use n_events.")
+
+    if (missing(n_events)) {
+      assert_that(
+        is_df_with_variables(df, list(tte = .var, is_event = is_event)),
+        is.string(.var),
+        is_numeric_vector(df[[.var]], min_length = 0),
+        is_logical_vector(df[[is_event]], min_length = 0)
+      )
+
+      n_events <- is_event
+    }
+
+  } else {
+    assert_that(
+      is_df_with_variables(df, list(tte = .var, n_events = n_events)),
+      is.string(.var),
+      is_numeric_vector(df[[.var]], min_length = 0),
+      is_integer_vector(df[[n_events]], min_length = 0)
+    )
+  }
 
   time_unit_input <- control$time_unit_input
   time_unit_output <- control$time_unit_output
