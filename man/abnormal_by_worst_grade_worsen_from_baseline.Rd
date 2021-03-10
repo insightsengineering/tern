@@ -102,7 +102,7 @@ selected. For a lab that is needed for both low and high directions, the worst
 low records are selected for the low direction, and the worst high record are selected
 for the high direction.
 
-\code{\link[=h_adlb_worsen]{h_adlb_worsen()}} returns the counts and fraction of patients
+\code{\link[=h_group_counter]{h_group_counter()}} returns the counts and fraction of patients
 whose worst post-baseline lab grades are worse than their baseline grades, for
 post-baseline worst grades "1", "2", "3", "4" and "Any".
 
