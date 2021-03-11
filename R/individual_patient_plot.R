@@ -114,7 +114,11 @@ h_g_ipp <- function(df,
     ggtheme
 
   if (add_baseline_hline) {
-    baseline_df <- df[df[[yvar]] == df[[yvar_baseline]], ]
+
+
+    baseline_df <- df[!is.na(df[yvar_baseline]), ]
+    baseline_df <- baseline_df[!duplicated(baseline_df[id_var]), ]
+
     p <- p +
       geom_hline(
         data = baseline_df,
