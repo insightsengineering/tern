@@ -62,7 +62,7 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal_by_worst_grade]{s_count_abnormal_by_worst_grade()}} the single statistic \code{count_fraction} with grade 1 to 5
+\code{\link[=s_count_abnormal_by_worst_grade]{s_count_abnormal_by_worst_grade()}} the single statistic \code{count_fraction} with grade 1 to 4
 and "Any" results.
 
 \code{\link[=a_count_abnormal_by_worst_grade]{a_count_abnormal_by_worst_grade()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
@@ -74,7 +74,7 @@ direction specified in \code{abnormal} (e.g. high or low) we condition on the wo
 patients in the denominator as number of patients with at least one valid measurement during treatment,
 and patients in the numerator as follows:
 \itemize{
-\item \code{1} to \code{5}: Numerator is number of patients with worst grades 1-5 respectively;
+\item \code{1} to \code{4}: Numerator is number of patients with worst grades 1-4 respectively;
 \item \code{Any}: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 }
 }
@@ -85,7 +85,7 @@ Note that \code{df} should be filtered to include only post-baseline records.
 \itemize{
 \item \code{s_count_abnormal_by_worst_grade}: Statistics function which counts patients with worst grade
 for a single \code{abnormal} level, consisting of counts and percentages of patients with worst grade
-\code{1} to \code{5}, and \code{Any} non-zero grade.
+\code{1} to \code{4}, and \code{Any} non-zero grade.
 
 \item \code{a_count_abnormal_by_worst_grade}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.

@@ -5,7 +5,7 @@
 #'   direction specified in `abnormal` (e.g. high or low) we condition on the worst grade flag and count
 #'   patients in the denominator as number of patients with at least one valid measurement during treatment,
 #'   and patients in the numerator as follows:
-#' * `1` to `5`: Numerator is number of patients with worst grades 1-5 respectively;
+#' * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
 #' * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 #'
 #' @details Note that `df` should be filtered to include only post-baseline records.
@@ -19,8 +19,8 @@ NULL
 
 #' @describeIn abnormal_by_worst_grade Statistics function which counts patients with worst grade
 #'   for a single `abnormal` level, consisting of counts and percentages of patients with worst grade
-#'   `1` to `5`, and `Any` non-zero grade.
-#' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 5
+#'   `1` to `4`, and `Any` non-zero grade.
+#' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 4
 #'   and "Any" results.
 #'
 #' @importFrom stats setNames
@@ -78,13 +78,13 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   )
   # Denominator is number of patients with at least one valid measurement during treatment
   n <- length(unique(anl$id))
-  # Numerator is number of patients with worst high grade (grade 1 to 5) or low grade (grade -1 to -5)
+  # Numerator is number of patients with worst high grade (grade 1 to 4) or low grade (grade -1 to -4)
   if (abnormal == "low") {
     anl_abn <- anl[anl$flag & anl$grade < 0, , drop = FALSE]
-    grades <- setNames(- (1:5), as.character(1:5))
+    grades <- setNames(- (1:4), as.character(1:4))
   } else if (abnormal == "high") {
     anl_abn <- anl[anl$flag & anl$grade > 0, , drop = FALSE]
-    grades <- setNames(1:5, as.character(1:5))
+    grades <- setNames(1:4, as.character(1:4))
   }
 
   by_grade <- lapply(grades, function(i) {
