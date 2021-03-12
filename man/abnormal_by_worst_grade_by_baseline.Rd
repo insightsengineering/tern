@@ -23,7 +23,7 @@ s_count_abnormal_by_worst_grade_by_baseline(
   .var = "ATOXGR",
   grouping_list = list(Missing = "<Missing>", `Not High` = c(0, -1, -2, -3, -4), `1` =
     1, `2` = 2, `3` = 3, `4` = 4),
-  variables = list(id = "USUBJID", baseline_var = "BTOXGR", baseline_grade = "Missing")
+  variables = list(id = "USUBJID", by_var = "BTOXGR", by_grade = "Missing")
 )
 
 a_count_abnormal_by_worst_grade_by_baseline(
@@ -31,14 +31,14 @@ a_count_abnormal_by_worst_grade_by_baseline(
   .var = "ATOXGR",
   grouping_list = list(Missing = "<Missing>", `Not High` = c(0, -1, -2, -3, -4), `1` =
     1, `2` = 2, `3` = 3, `4` = 4),
-  variables = list(id = "USUBJID", baseline_var = "BTOXGR", baseline_grade = "Missing")
+  variables = list(id = "USUBJID", by_var = "BTOXGR", by_grade = "Missing")
 )
 
 count_abnormal_by_worst_grade_by_baseline(
   lyt,
   var,
   grouping_list,
-  variables = list(id = "USUBJID", baseline_var = "BTOXGR", baseline_grade_list = NULL),
+  variables = list(id = "USUBJID", by_var = "BTOXGR", by_grade_list = NULL),
   ...,
   table_names = NULL,
   .stats = NULL,
@@ -66,21 +66,20 @@ If worst grade per patient per visit is specified for \code{worst_flag}, then
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{grouping_list}{(named \code{list}) defining how NCI-CTCAE grades should be grouped.}
+\item{grouping_list}{(named \code{list}) defining how inner NCI-CTCAE grades should be grouped.}
 
 \item{variables}{(named \code{list} of \code{string}) list of additional analysis variables including:
 \itemize{
 \item \code{id} (\code{string}): \cr subject variable name
-\item \code{baseline_var} (\code{string}): \cr name of the data column containing baseline toxicity variable
-\item \code{baseline_grade} (\code{character}): \cr baseline toxicity group of interest for
-\code{\link[=s_count_abnormal_by_worst_grade_by_baseline]{s_count_abnormal_by_worst_grade_by_baseline()}}. \code{baseline_grade} must be identical to the name
+\item \code{by_var} (\code{string}): \cr name of the data column containing the outer level toxicity variable within which toxicity
+variable \code{.var} is counted. Inputs for \code{by_var} and \code{.var} can be switched, e.g. \code{.var = ATOXGR} and
+\code{by_var = BTOXGR}, this generates post-baseline grade by baseline grade table, or \code{.var = BTOXGR} and
+\code{by_var = ATOXGR}, this generates baseline grade by post-baseline grade table.
+\item \code{by_grade} (\code{character}): \cr outer level toxicity group of interest for
+\code{\link[=s_count_abnormal_by_worst_grade_by_baseline]{s_count_abnormal_by_worst_grade_by_baseline()}}. \code{by_grade} must be identical to the name
 of an element in the \code{grouping_list}
-\item \code{baseline_grade_list} (\code{list} of \code{string}): \cr indicating all baseline group of interest for
-\code{\link[=count_abnormal_by_worst_grade_by_baseline]{count_abnormal_by_worst_grade_by_baseline()}}. If \code{baseline_grade_list} is not specified, then
-all groups in \code{grouping_list} will be used as baseline groups, in the order specified in
-\code{grouping_list}. All elements of \code{baseline_grade_list} must be in the set of names of elements in
-\code{grouping_list}.
-or \code{NULL}.
+\item \code{by_grade_list} (\code{list}): \cr indicating all outer groups of interest for
+\code{\link[=count_abnormal_by_worst_grade_by_baseline]{count_abnormal_by_worst_grade_by_baseline()}}. If \verb{by_grade_list`` is not specified, then all groups in }grouping_list\verb{will be used.}by_grade_list\verb{follows the same format as}grouping_list`.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -109,7 +108,8 @@ group identified in the \code{grouping_list} in a named list, with names from \c
 
 \code{\link[=s_count_abnormal_by_worst_grade_by_baseline]{s_count_abnormal_by_worst_grade_by_baseline()}} returns the total patient count, and the
 counts and fraction of patients' worst post-baseline NCI-CTCAE grades in each of the groups
-in \code{group_listing}, for a particular baseline NCI-CTCAE grade group, \code{baseline_grade}.
+in \code{group_listing}, for a particular baseline NCI-CTCAE grade group, \code{by_grade}. Elements of
+\code{by_grade_list} must be in the set of names of elements in \code{grouping_list}, or
 
 \code{\link[=a_count_abnormal_by_worst_grade]{a_count_abnormal_by_worst_grade()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
@@ -156,9 +156,10 @@ following situations:
 then the counts and fractions are produced according to \code{grouping_list}, along with total number
 of patients.
 
-\item \code{s_count_abnormal_by_worst_grade_by_baseline}: Statistics function which calculates the total,
-and counts and fraction of patients' worst post-baseline NCI-CTCAE grades in each of the groups
-in \code{group_listing}, for a particular baseline NCI-CTCAE grade group, \code{baseline_grade}.
+\item \code{s_count_abnormal_by_worst_grade_by_baseline}: Statistics function, for each NCI-CTCAE grade
+group specified in \code{by_grade}, this function calculates the total, counts and fraction of
+patients' worst NCI-CTCAE grades in \code{.var} falling into each of the groups
+in \code{group_listing}.
 
 \item \code{a_count_abnormal_by_worst_grade_by_baseline}: Formatted Analysis function which can be further customized by
 calling \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -215,8 +216,8 @@ s_count_abnormal_by_worst_grade_by_baseline(
     ),
   variables = list(
     id = "USUBJID",
-    baseline_var = "BTOXGR",
-    baseline_grade = "Not Low"
+    by_var = "BTOXGR",
+    by_grade = "Not Low"
   )
 )
 
@@ -234,8 +235,8 @@ grouping_list = list(
    "4" = 4
    ),
 variables = list(id = "USUBJID",
-                 baseline_var = "BTOXGR",
-                 baseline_grade = "4" )
+                 by_var = "BTOXGR",
+                 by_grade = "4" )
 )
 
 
@@ -255,7 +256,7 @@ basic_table() \%>\%
       ),
     variables = list(
       id = "USUBJID",
-      baseline_var = "BTOXGR"
+      by_var = "BTOXGR"
       )
     ) \%>\%
   build_table(df = adlb_out, alt_counts_df = adsl)

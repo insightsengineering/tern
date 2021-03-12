@@ -133,7 +133,7 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, adlb, worst_flag = c("WGRHI
 #' (identified using `id`) according to post-baseline toxicity in `.var`,
 #' then the counts and fractions are produced according to `grouping_list`, along with total number
 #' of patients.
-#' @param grouping_list (named `list`) defining how NCI-CTCAE grades should be grouped.
+#' @param grouping_list (named `list`) defining how inner NCI-CTCAE grades should be grouped.
 #' @return [h_group_counter()] returns the total number of patients, and counts and fractions for each
 #' group identified in the `grouping_list` in a named list, with names from `grouping_list`.
 #'
@@ -180,26 +180,28 @@ h_group_counter <- function(df, id, .var, grouping_list){
   list(count = list("Total" = n), count_fraction = by_grade)
 }
 
-#' @describeIn abnormal_by_worst_grade_by_baseline Statistics function which calculates the total,
-#' and counts and fraction of patients' worst post-baseline NCI-CTCAE grades in each of the groups
-#' in `group_listing`, for a particular baseline NCI-CTCAE grade group, `baseline_grade`.
+#' @describeIn abnormal_by_worst_grade_by_baseline Statistics function, for each NCI-CTCAE grade
+#' group specified in `by_grade`, this function calculates the total, counts and fraction of
+#' patients' worst NCI-CTCAE grades in `.var` falling into each of the groups
+#' in `group_listing`.
 #'
 #' @param variables (named `list` of `string`) list of additional analysis variables including:
 #' * `id` (`string`): \cr subject variable name
-#' * `baseline_var` (`string`): \cr name of the data column containing baseline toxicity variable
-#' * `baseline_grade` (`character`): \cr baseline toxicity group of interest for
-#' [s_count_abnormal_by_worst_grade_by_baseline()]. `baseline_grade` must be identical to the name
+#' * `by_var` (`string`): \cr name of the data column containing the outer level toxicity variable within which toxicity
+#' variable `.var` is counted. Inputs for `by_var` and `.var` can be switched, e.g. `.var = ATOXGR` and
+#' `by_var = BTOXGR`, this generates post-baseline grade by baseline grade table, or `.var = BTOXGR` and
+#' `by_var = ATOXGR`, this generates baseline grade by post-baseline grade table.
+#' * `by_grade` (`character`): \cr outer level toxicity group of interest for
+#' [s_count_abnormal_by_worst_grade_by_baseline()]. `by_grade` must be identical to the name
 #' of an element in the `grouping_list`
-#' * `baseline_grade_list` (`list` of `string`): \cr indicating all baseline group of interest for
-#' [count_abnormal_by_worst_grade_by_baseline()]. If `baseline_grade_list` is not specified, then
-#' all groups in `grouping_list` will be used as baseline groups, in the order specified in
-#' `grouping_list`. All elements of `baseline_grade_list` must be in the set of names of elements in
-#' `grouping_list`.
-#'  or `NULL`.
+#' * `by_grade_list` (`list`): \cr indicating all outer groups of interest for
+#' [count_abnormal_by_worst_grade_by_baseline()]. If `by_grade_list`` is not specified,
+#' then all groups in `grouping_list` will be used. `by_grade_list` follows the same format as `grouping_list`.
 #'
 #' @return [s_count_abnormal_by_worst_grade_by_baseline()] returns the total patient count, and the
 #' counts and fraction of patients' worst post-baseline NCI-CTCAE grades in each of the groups
-#' in `group_listing`, for a particular baseline NCI-CTCAE grade group, `baseline_grade`.
+#' in `group_listing`, for a particular baseline NCI-CTCAE grade group, `by_grade`. Elements of
+#' `by_grade_list` must be in the set of names of elements in `grouping_list`, or
 #'
 #'
 #' @importFrom stats setNames
@@ -222,8 +224,8 @@ h_group_counter <- function(df, id, .var, grouping_list){
 #'     ),
 #'   variables = list(
 #'     id = "USUBJID",
-#'     baseline_var = "BTOXGR",
-#'     baseline_grade = "Not Low"
+#'     by_var = "BTOXGR",
+#'     by_grade = "Not Low"
 #'   )
 #' )
 #'
@@ -239,23 +241,24 @@ s_count_abnormal_by_worst_grade_by_baseline <- function(df, #nolint
                                                           ),
                                                         variables = list(
                                                           id = "USUBJID",
-                                                          baseline_var = "BTOXGR",
-                                                          baseline_grade = "Missing"
+                                                          by_var = "BTOXGR",
+                                                          by_grade = "Missing"
                                                           )
                                                         ) {
   assert_that(
     is.string(.var),
-    is_variables(variables),
-    setequal(names(variables), c("id", "baseline_var", "baseline_grade")),
-    variables$baseline_grade %in% names(grouping_list),
+    is_variables(variables[1:2]),
+    setequal(names(variables), c("id", "by_var", "by_grade")),
+    #variables$by_grade %in% names(grouping_list),
     is_df_with_variables(df, c(aval = .var, variables[1:2]))
   )
 
-  baseline <- as.character(unlist(grouping_list[which(names(grouping_list) %in% variables$baseline_grade)]))
+
+  baseline <- unlist(variables$by_grade, use.names = FALSE)
 
   anl <- data.frame(
     df[[variables$id]],
-    baseline = df[[variables$baseline_var]],
+    baseline = df[[variables$by_var]],
     df[[.var]],
     stringsAsFactors = FALSE
     )
@@ -286,8 +289,8 @@ s_count_abnormal_by_worst_grade_by_baseline <- function(df, #nolint
 #'    "4" = 4
 #'    ),
 #' variables = list(id = "USUBJID",
-#'                  baseline_var = "BTOXGR",
-#'                  baseline_grade = "4" )
+#'                  by_var = "BTOXGR",
+#'                  by_grade = "4" )
 #' )
 #'
 a_count_abnormal_by_worst_grade_by_baseline <- make_afun(  #nolint
@@ -316,7 +319,7 @@ a_count_abnormal_by_worst_grade_by_baseline <- make_afun(  #nolint
 #'       ),
 #'     variables = list(
 #'       id = "USUBJID",
-#'       baseline_var = "BTOXGR"
+#'       by_var = "BTOXGR"
 #'       )
 #'     ) %>%
 #'   build_table(df = adlb_out, alt_counts_df = adsl)
@@ -326,8 +329,8 @@ count_abnormal_by_worst_grade_by_baseline <- function(lyt, #nolint
                                                       grouping_list,
                                                       variables = list(
                                                         id = "USUBJID",
-                                                        baseline_var = "BTOXGR",
-                                                        baseline_grade_list = NULL
+                                                        by_var = "BTOXGR",
+                                                        by_grade_list = NULL
                                                         ),
                                                       ...,
                                                       table_names = NULL,
@@ -337,8 +340,7 @@ count_abnormal_by_worst_grade_by_baseline <- function(lyt, #nolint
                                                       .indent_mods = NULL) {
   assert_that(
     is.string(var),
-    setequal(names(variables)[1:2], c("id", "baseline_var")),
-    all(variables$baseline_grade_list %in% names(grouping_list))
+    setequal(names(variables)[1:2], c("id", "by_var"))
   )
 
   afun <- make_afun(
@@ -350,19 +352,19 @@ count_abnormal_by_worst_grade_by_baseline <- function(lyt, #nolint
     .ungroup_stats = c("count", "count_fraction")
   )
 
-  baseline_grade_list <- if_null(variables$baseline_grade_list, names(grouping_list))
+  by_grade_list <- if_null(variables$by_grade_list, grouping_list)
 
-  for (i in baseline_grade_list){
+  for (i in seq(by_grade_list)){
     varlist <- list(
       id = variables$id,
-      baseline_var = variables$baseline_var,
-      baseline_grade = i
+      by_var = variables$by_var,
+      by_grade = by_grade_list[i]
     )
     lyt <- analyze(
       lyt = lyt,
       vars = var,
-      var_labels = varlist$baseline_grade,
-      table_names = varlist$baseline_grade,
+      var_labels = names(varlist$by_grade),
+      table_names = names(varlist$by_grade),
       afun = afun,
       extra_args = c(list(grouping_list = grouping_list, variables = varlist), list(...)),
       show_labels = "visible"

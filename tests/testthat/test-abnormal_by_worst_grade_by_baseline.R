@@ -165,8 +165,8 @@ test_that("s_count_abnormal_by_worst_grade_by_baseline High works as expected", 
     ),
     variables = list(
       id = "USUBJID",
-      baseline_var = "BTOXGR",
-      baseline_grade = "1"
+      by_var = "BTOXGR",
+      by_grade = "1"
     )
   )
 
@@ -203,8 +203,8 @@ test_that("s_count_abnormal_by_worst_grade_by_baseline Low works as expected", {
     ),
     variables = list(
       id = "USUBJID",
-      baseline_var = "BTOXGR",
-      baseline_grade = "2"
+      by_var = "BTOXGR",
+      by_grade = "-2"
     )
   )
 
@@ -248,8 +248,8 @@ test_that("count_abnormal_by_worst_grade_by_baseline works as expected", {
       ),
       variables = list(
         id = "USUBJID",
-        baseline_var = "BTOXGR",
-        baseline_grade_list = list("Not Low", "1")
+        by_var = "BTOXGR",
+        by_grade_list = list("Not Low" = c(0L, 1L, 2L, 3L, 4L), "1" = -1)
       )
     ) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -296,8 +296,8 @@ test_that("count_abnormal_by_worst_grade_by_baseline sum check", {
       ),
       variables = list(
         id = "USUBJID",
-        baseline_var = "BTOXGR",
-        baseline_grade_list = list("Not Low")
+        by_var = "BTOXGR",
+        by_grade_list = list("Not Low" = c(-1L, -2L, -3L, -4L, -5L, 5L, 0L, 1L, 2L, 3L, 4L))
       )
     ) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)

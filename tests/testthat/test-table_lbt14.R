@@ -31,7 +31,7 @@ test_that("LBT14 variant 1: HIGH works as expected", {
       ),
       variables = list(
         id = "USUBJID",
-        baseline_var = "BTOXGR"
+        by_var = "BTOXGR"
       )
     ) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -95,7 +95,7 @@ test_that("LBT14 variant 2: LOW works as expected", {
       ),
       variables = list(
         id = "USUBJID",
-        baseline_var = "BTOXGR"
+        by_var = "BTOXGR"
       )
     ) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -159,8 +159,14 @@ test_that("LBT14 variant 3: LOW without baseline missing works as expected", {
       ),
       variables = list(
         id = "USUBJID",
-        baseline_var = "BTOXGR",
-        baseline_grade_list = list("Not Low", "1", "2", "3", "4")
+        by_var = "BTOXGR",
+        by_grade_list = list(
+          "Not Low" = c(0, 1, 2, 3, 4),
+          "1" = -1,
+          "2" = -2,
+          "3" = -3,
+          "4" = -4
+        )
       )
     ) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -222,7 +228,7 @@ test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-basel
       ),
       variables = list(
         id = "USUBJID",
-        baseline_var = "BTOXGR"
+        by_var = "BTOXGR"
       )
     ) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
@@ -288,7 +294,7 @@ test_that("LBT14 variant 4: LOW and force 1 missing both baseline and post-basel
       ),
       variables = list(
         id = "USUBJID",
-        baseline_var = "BTOXGR"
+        by_var = "BTOXGR"
       )
     ) %>%
     build_table(df = adlb_out, alt_counts_df = adsl)
