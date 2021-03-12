@@ -66,7 +66,7 @@ s_surv_timepoint <- function(df,
     conf.int = conf_level,
     conf.type = conf_type
   )
-  s_srv_fit <- summary(srv_fit, times = time_point)
+  s_srv_fit <- summary(srv_fit, times = time_point, extend = TRUE)
   df_srv_fit <- as.data.frame(s_srv_fit[c("time", "n.risk", "surv", "lower", "upper", "std.err")])
   if (dim(df_srv_fit)[1] == 0) {
     pt_at_risk <- event_free_rate <- rate_se <- NA

@@ -96,7 +96,7 @@ s_coxph_pairwise <- function(df,
     data = df_cox,
     ties = ties
   )
-  sum_cox <- summary(cox_fit, conf.int = conf_level)
+  sum_cox <- summary(cox_fit, conf.int = conf_level, extend = TRUE)
   pval <- switch(
     pval_method,
     "wald" = sum_cox$waldtest["pvalue"],

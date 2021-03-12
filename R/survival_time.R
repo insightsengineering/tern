@@ -67,7 +67,7 @@ s_surv_time <- function(df,
     conf.int = conf_level,
     conf.type = conf_type
   )
-  srv_tab <- summary(srv_fit)$table
+  srv_tab <- summary(srv_fit, extend = TRUE)$table
   srv_qt_tab <- quantile(srv_fit, probs = quantiles)$quantile
   range_censor <- range(df[[.var]][!df[[is_event]]], na.rm = TRUE)
   range_event <- range(df[[.var]][df[[is_event]]], na.rm = TRUE)

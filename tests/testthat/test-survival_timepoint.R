@@ -25,7 +25,6 @@ test_that("s_surv_timepoint works with default arguments", {
   expect_equal(result, expected, tolerance = 0.0000001)
 })
 
-
 test_that("s_surv_timepoint works with customized arguments", {
   adtte <- radtte(cached = TRUE)
   adtte_f <- adtte %>%
@@ -51,6 +50,33 @@ test_that("s_surv_timepoint works with customized arguments", {
     rate_ci = with_label(c(57.0335300760197, 78.6547298143104), label = "99% CI")
   )
   expect_equal(result, expected, tolerance = 0.0000001)
+})
+
+test_that("s_surv_timepoint also works when there are 0 patients at risk", {
+  adtte <- radtte(cached = TRUE)
+  adtte_f <- adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    ) %>%
+    # Only take patients from Arm A who have less than 6 months time point,
+    # such that no patients are at risk anymore beyond 6 months.
+    dplyr::filter(ARMCD == "ARM A", AVAL <= 6)
+
+  result <- expect_silent(s_surv_timepoint(
+    adtte_f,
+    .var = "AVAL",
+    time_point = 6,
+    is_event = "is_event"
+  ))
+  expected <- list(
+    pt_at_risk = with_label(0, "Patients remaining at risk"),
+    event_free_rate = with_label(0, "Event Free Rate (%)"),
+    rate_se = with_label(NaN, "Standard Error of Event Free Rate"),
+    rate_ci = with_label(c(NaN, NaN), "95% CI")
+  )
+  expect_identical(result, expected)
 })
 
 test_that("surv_timepoint works with default arguments", {
