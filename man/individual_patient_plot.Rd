@@ -99,7 +99,7 @@ library(dplyr)
 
 # Select a small sample of data to plot.
 adlb <- radlb(cached = TRUE) \%>\%
-  filter(PARAMCD == "ALT", AVISIT != "SCREENING") \%>\%
+  filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
   slice(1:36)
 
 p <- h_g_ipp(df = adlb,

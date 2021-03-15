@@ -57,7 +57,7 @@ h_set_nest_theme <- function(font_size) {
 #'
 #' # Select a small sample of data to plot.
 #' adlb <- radlb(cached = TRUE) %>%
-#'   filter(PARAMCD == "ALT", AVISIT != "SCREENING") %>%
+#'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
 #'   slice(1:36)
 #'
 #' p <- h_g_ipp(df = adlb,
@@ -115,9 +115,8 @@ h_g_ipp <- function(df,
 
   if (add_baseline_hline) {
 
-
-    baseline_df <- df[!is.na(df[yvar_baseline]), ]
-    baseline_df <- baseline_df[!duplicated(baseline_df[id_var]), ]
+    baseline_df <- df[, c(id_var, yvar_baseline)]
+    baseline_df <- unique(baseline_df)
 
     p <- p +
       geom_hline(
@@ -125,18 +124,18 @@ h_g_ipp <- function(df,
         mapping = aes_string(
           yintercept = yvar_baseline,
           colour = id_var
-          ),
+        ),
         linetype = "dotdash",
         size = 0.4
-      ) +
+      )  +
       geom_text(
         data = baseline_df,
         mapping = aes_string(
+          x = 1,
           y = yvar_baseline,
           label = id_var,
           colour = id_var
-          ),
-        nudge_x = 0,
+        ),
         nudge_y = 1,
         vjust = "right",
         size = 2
