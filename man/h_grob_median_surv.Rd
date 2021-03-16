@@ -4,10 +4,14 @@
 \alias{h_grob_median_surv}
 \title{Helper Function: Survival Estimation Grob}
 \usage{
-h_grob_median_surv(fit_km, ttheme = ttheme_default())
+h_grob_median_surv(fit_km, x = 0.9, y = 0.9, ttheme = ttheme_default())
 }
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
+
+\item{x}{a \code{numeric} value between 0 and 1 specifying x-location.}
+
+\item{y}{a \code{numeric} value between 0 and 1 specifying y-location.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }

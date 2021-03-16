@@ -44,8 +44,7 @@
 #'   reporting the number of patient at risk matching the main grid of the
 #'   Kaplan-Meier curve.
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table
-#'   on the top right corner of the Kaplan-Meier curve estimating the
-#'   median survival time per group.
+#'   on the Kaplan-Meier curve estimating the median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
 #' @param control_coxph_pw (`list`) \cr parameters for comparison details, specified by using \cr
 #'    the helper function [control_coxph()]. Some possible parameter options are: \cr
@@ -55,6 +54,8 @@
 #'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
 #' @param position_coxph `numeric` \cr x and y positions for plotting [survival::coxph()] model.
+#' @param position_surv_med `numeric` \cr x and y positions for plotting annotation table
+#'    estimating median survival time per group
 #'
 #' @name kaplan_meier
 #'
@@ -155,6 +156,14 @@ NULL
 #'   position_coxph = c(0.4, 0.5)
 #' )
 #'
+#' # Change position of the treatment group annotation table.
+#' g_km(
+#'   df = df, variables = c(variables, list(strat = "SEX")),
+#'   font_size = 15,
+#'   annot_coxph = TRUE,
+#'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+#'   position_surv_med = c(1, 0.7)
+#' )
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
@@ -181,7 +190,8 @@ g_km <- function(df,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
                  control_coxph_pw = control_coxph(),
-                 position_coxph = c(0, 0)) {
+                 position_coxph = c(0, 0),
+                 position_surv_med = c(0.9, 0.9)) {
   assert_that(
     is.list(variables),
     all(c("tte", "arm", "is_event") %in% names(variables)),
@@ -276,6 +286,8 @@ g_km <- function(df,
             vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
             children = h_grob_median_surv(
               fit_km = fit_km,
+              x = position_surv_med[1],
+              y = position_surv_med[2],
               ttheme = ttheme_default(
                 base_size = font_size
               )
@@ -923,6 +935,8 @@ h_tbl_median_surv <- function(fit_km) {
 #'
 #' @inheritParams kaplan_meier
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
+#' @param x a `numeric` value between 0 and 1 specifying x-location.
+#' @param y a `numeric` value between 0 and 1 specifying y-location.
 #' @inheritParams h_data_plot
 #'
 #' @importFrom grid gList gTree unit viewport
@@ -945,12 +959,14 @@ h_tbl_median_surv <- function(fit_km) {
 #' }
 #'
 h_grob_median_surv <- function(fit_km,
+                               x = 0.9,
+                               y = 0.9,
                                ttheme = ttheme_default()) {
   data <- h_tbl_median_surv(fit_km) # nolint
   gt <- gridExtra::tableGrob(d = data, theme = ttheme)
   vp <- viewport(
-    x = unit(1, "npc"),
-    y = unit(1, "npc"),
+    x = unit(x, "npc") + unit(1, "lines"),
+    y = unit(y, "npc") + unit(1.5, "lines"),
     height = sum(gt$heights),
     width = sum(gt$widths),
     just = c("right", "top")

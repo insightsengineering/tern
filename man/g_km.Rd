@@ -31,7 +31,8 @@ g_km(
   annot_surv_med = TRUE,
   annot_coxph = FALSE,
   control_coxph_pw = control_coxph(),
-  position_coxph = c(0, 0)
+  position_coxph = c(0, 0),
+  position_surv_med = c(0.9, 0.9)
 )
 }
 \arguments{
@@ -110,8 +111,7 @@ reporting the number of patient at risk matching the main grid of the
 Kaplan-Meier curve.}
 
 \item{annot_surv_med}{(\code{flag})\cr compute and add the annotation table
-on the top right corner of the Kaplan-Meier curve estimating the
-median survival time per group.}
+on the Kaplan-Meier curve estimating the median survival time per group.}
 
 \item{annot_coxph}{(\code{flag})\cr add the annotation table from a \code{\link[survival:coxph]{survival::coxph()}} model.}
 
@@ -126,6 +126,9 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 }}
 
 \item{position_coxph}{\code{numeric} \cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
+
+\item{position_surv_med}{\code{numeric} \cr x and y positions for plotting annotation table
+estimating median survival time per group}
 }
 \value{
 a \code{grob} of class \code{gTree}.
@@ -211,4 +214,12 @@ g_km(
   position_coxph = c(0.4, 0.5)
 )
 
+# Change position of the treatment group annotation table.
+g_km(
+  df = df, variables = c(variables, list(strat = "SEX")),
+  font_size = 15,
+  annot_coxph = TRUE,
+  control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+  position_surv_med = c(1, 0.7)
+)
 }

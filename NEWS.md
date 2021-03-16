@@ -1,4 +1,5 @@
 # tern 0.7.1
+* New argument `position_surv_med` added to `g_km` to move position of the annotation table with median survival times.  
 * Fixed bug in `g_km` related to the arguments `pch` and `size`. Previously, these arguments were not passed on to helper function `h_ggkm` and so were effectively being ignored.
 * Updated xticks and max_time arguments in `g_km` for greater functionality. max_time added as an argument in `h_xticks` to allow this. 
 * Fixed bug in `prop_diff_cmh` that led to `NaN` weighted proportion difference estimates and missing confidence intervals. Previously, when for at least one stratum no patients from one treatment arm were included, then the estimation did not lead to numeric results.
