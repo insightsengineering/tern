@@ -4,7 +4,7 @@
 \alias{stat_mean_ci}
 \title{Mean CI for \code{ggplot2}}
 \usage{
-stat_mean_ci(x, conf_level = 0.95, na.rm = TRUE, n_lim = 2)
+stat_mean_ci(x, conf_level = 0.95, na.rm = TRUE, n_min = 2)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -13,7 +13,7 @@ stat_mean_ci(x, conf_level = 0.95, na.rm = TRUE, n_lim = 2)
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{n_lim}{(\code{number})\cr threshold number of non-missing \code{x} to estimate
+\item{n_min}{(\code{number})\cr a minimum number of non-missing \code{x} to estimate
 the confidence interval for mean.}
 }
 \description{

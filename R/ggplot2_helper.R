@@ -4,7 +4,7 @@
 #' error bars.
 #'
 #' @inheritParams argument_convention
-#' @param n_lim (`number`)\cr threshold number of non-missing `x` to estimate
+#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
 #'     the confidence interval for mean.
 #'
 #' @importFrom stats na.omit qt sd
@@ -26,18 +26,19 @@
 stat_mean_ci <- function(x,
                          conf_level = 0.95,
                          na.rm = TRUE,  # nolint
-                         n_lim = 2) {
-  if (na.rm) x <- na.omit(x)
-  n <- length(x)
-  mean <- mean(x)
+                         n_min = 2) {
 
-  if (n <= n_lim) {
-    data.frame(y = mean, ymin = NA, ymax = NA)
+  if (na.rm)
+    x <- na.omit(x)
+  n <- length(x)
+  m <- mean(x)
+
+  # is.na(m) instead of any(is.na(x)) is used below, as these are equivalent here
+  if (n < n_min || is.na(m)) {
+    data.frame(y = m, ymin = NA_real_, ymax = NA_real_)
   } else {
     hci <- qt((1 + conf_level) / 2, df = n - 1) * sd(x) / sqrt(n)
-    lcl <-  mean - hci
-    ucl <-  mean + hci
-    data.frame(y = mean, ymin = lcl, ymax = ucl)
+    data.frame(y = m, ymin = m - hci, ymax = m + hci)
   }
 
 }
@@ -66,28 +67,24 @@ stat_median_ci <- function(x,
                            conf_level = 0.95,
                            na.rm = TRUE) { # nolint
 
-  if (na.rm) x <- na.omit(x)
+  if (na.rm)
+    x <- na.omit(x)
   n <- length(x)
+  med <- median(x)
 
-  k <- qbinom(
-    p = (1 - conf_level) / 2, size = n, prob = 0.5, lower.tail = TRUE
-  )
-  ci <- sort(x)[c(k, n - k + 1)]
-  attr(ci, "conf_level") <- 1 - 2 * pbinom(k - 1, size = n, prob = 0.5)
+  k <- qbinom(p = (1 - conf_level) / 2, size = n, prob = 0.5, lower.tail = TRUE)
 
-  # confints for small samples can be outside the observed range e.g. n < 6
-  if (all(is.na(ci))) {
-    ci <- c(-Inf, Inf)
-    attr(ci, "conf_level") <- 1
-  }
-
-  med <- median(x, na.rm = na.rm)
-  # do not report a CI if the median is not defined.
-  if (is.na(med)) {
-    ci <- rep(NA, 3)
+  # k == 0 - for small samples (e.g. n <= 5) ci can be outside the observed range
+  # is.na(med) instead of any(is.na(x)) is used below, as these are equivalent here
+  if (k == 0 || is.na(med)) {
+    ci <- data.frame(y = med, ymin = NA_real_, ymax = NA_real_)
+    attr(ci, "conf_level") <- NA_real_
   } else {
-    ci <- c(median = med, ci)
+    x_sort <- sort(x)
+    ci <- data.frame(y = med, ymin = x_sort[k], ymax = x_sort[n - k + 1])
+    attr(ci, "conf_level") <- 1 - 2 * pbinom(k - 1, size = n, prob = 0.5)
   }
-  names(ci) <- c("y", "ymin", "ymax")
-  as.data.frame(t(ci))
+
+  ci
+
 }

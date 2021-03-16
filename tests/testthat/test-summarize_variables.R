@@ -26,7 +26,7 @@ test_that("s_summary handles NA", {
     median = 1,
     range = c(1, 1),
     mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median = with_label(c(-Inf, Inf), "Median 95% CI")
+    median = with_label(c(NA_real_, NA_real_), "Median 95% CI")
   )
   expect_equivalent(result, expected)
 
@@ -52,8 +52,8 @@ test_that("s_summary returns right results for n = 2", {
     mean_sd = c(1.5, 0.7071068),
     median = 1.5,
     range = c(1, 2),
-    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median_ci = with_label(c(-Inf, Inf), "Median 95% CI")
+    mean_ci = with_label(c(-4.853102, 7.853102), "Mean 95% CI"),
+    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
   )
   expect_equivalent(result, expected, tolerance = .00001)
 })
@@ -310,9 +310,9 @@ test_that("create_afun_summary creates an `afun` that works", {
       "Mean 95% CI", "ARM", "n", "A", "B", "C", "V2", "AVAL", "n",
       "My median", "Min - Max", "Mean 95% CI", "ARM", "n", "A", "B",
       "C", "V3", "AVAL", "n", "My median", "Min - Max", "Mean 95% CI",
-      "ARM", "n", "A", "B", "C", "A", "", "", "2", "8", "6 - 9", "(NA, NA)",
-      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "5 - 8", "(NA, NA)",
-      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "4 - 7", "(NA, NA)",
+      "ARM", "n", "A", "B", "C", "A", "", "", "2", "8", "6 - 9", "(-11.56, 26.56)",
+      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "5 - 8", "(-12.56, 25.56)",
+      "", "2", "2 (100%)", "0", "0", "", "", "2", "6", "4 - 7", "(-13.56, 24.56)",
       "", "2", "2 (100%)", "0", "0", "B", "", "", "1", "3", "3 - 3",
       "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1", "2",
       "2 - 2", "(NA, NA)", "", "2", "0", "2 (100%)", "0", "", "", "1",
