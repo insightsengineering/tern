@@ -6,7 +6,7 @@
 * Fixed bug in `prop_cmh` which previously gave an error in case of at least one stratum containing less than two observations.
 * New argument `n_events` added to `estimate_incidence_rate`.
 * New argument `denom` added to `count_occurrences`.
-* New argument `yval` added to `g_km`.
+* New arguments `yval` and `ci_ribbon` added to `g_km`.
 * Add new individual patient plot function `g_ipp` along with helpers `h_g_ipp` and `h_set_nest_theme`.
 * Fixed bug in `count_patients_with_events`, now zero counts without percentage are shown.
 * Fixed bug in `get_mmrm_lsmeans` which previously did not allow MMRM analysis of more than 3000 observations.

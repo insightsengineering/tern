@@ -8,8 +8,8 @@
 #' @param control a (`list`) of parameters for comparison details, specified by using \cr
 #'    the helper function [control_surv_time]. Some possible parameter options are: \cr
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival time.
-#' * `conf_type`: (`string`) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()]
+#' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+#'    see more in [survival::survfit()]. Note option, "none" is not supported.
 #' * `quantiles`: numeric vector of length two to specify the quantiles of survival time.
 #'
 #' @name survival_time

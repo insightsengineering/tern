@@ -18,6 +18,7 @@ h_ggkm(
   pch = "|",
   size = 3,
   col = NULL,
+  ci_ribbon = FALSE,
   ggtheme = NULL
 )
 }
@@ -58,6 +59,8 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
+\item{ci_ribbon}{(\code{flag})\cr draw the confidence interval around the Kaplan-Meier curve.}
+
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
 control outlook of the Kaplan-Meier curve.}
 }
@@ -74,9 +77,9 @@ library(survival)
 fit_km <- radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-data_plot <- h_data_plot(fit_km = fit_km)
-xticks <- h_xticks(data = data_plot)
-gg <- h_ggkm(
+data_plot <- tern:::h_data_plot(fit_km = fit_km)
+xticks <- tern:::h_xticks(data = data_plot)
+gg <- tern:::h_ggkm(
   data = data_plot,
   censor_show = TRUE,
   xticks = xticks,

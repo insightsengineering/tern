@@ -18,8 +18,8 @@
 the helper function \link{control_surv_timepoint}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}.
+\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
 }}
 
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
@@ -63,6 +63,8 @@ Only data values less than or up to to this threshold value will be plotted.(\co
 default)}
 
 \item{font_size}{(\code{number}) \cr font size to be used.}
+
+\item{ci_ribbon}{(\code{flag})\cr draw the confidence interval around the Kaplan-Meier curve.}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
 control outlook of the Kaplan-Meier curve.}

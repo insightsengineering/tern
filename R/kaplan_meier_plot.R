@@ -10,8 +10,8 @@
 #' @param control_surv a (`list`) of parameters for comparison details, specified by using \cr
 #'    the helper function [control_surv_timepoint]. Some possible parameter options are: \cr
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
-#' * `conf_type`: (`string`) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()].
+#' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+#'    see more in [survival::survfit()]. Note that the option "none" is no longer supported.
 #' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
 #' @param xticks (`numeric`, `number`, or `NULL`)\cr
 #'   numeric vector of ticks or single number with spacing
@@ -38,6 +38,7 @@
 #' Only data values less than or up to to this threshold value will be plotted.(`NULL` for
 #'    default)
 #' @param font_size (`number`) \cr font size to be used.
+#' @param ci_ribbon (`flag`)\cr draw the confidence interval around the Kaplan-Meier curve.
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to
 #'   control outlook of the Kaplan-Meier curve.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table
@@ -185,6 +186,7 @@ g_km <- function(df,
                  vp = NULL,
                  name = NULL,
                  font_size = 12,
+                 ci_ribbon = FALSE,
                  ggtheme = NULL,
                  annot_at_risk = TRUE,
                  annot_surv_med = TRUE,
@@ -234,7 +236,8 @@ g_km <- function(df,
     lwd = lwd,
     lty = lty,
     col = col,
-    ggtheme = ggtheme
+    ggtheme = ggtheme,
+    ci_ribbon = ci_ribbon
   )
 
   if (annot_at_risk) {
@@ -478,9 +481,9 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' fit_km <- radtte(cached = TRUE) %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-#' data_plot <- h_data_plot(fit_km = fit_km)
-#' xticks <- h_xticks(data = data_plot)
-#' gg <- h_ggkm(
+#' data_plot <- tern:::h_data_plot(fit_km = fit_km)
+#' xticks <- tern:::h_xticks(data = data_plot)
+#' gg <- tern:::h_ggkm(
 #'   data = data_plot,
 #'   censor_show = TRUE,
 #'   xticks = xticks,
@@ -506,6 +509,7 @@ h_ggkm <- function(data,
                    pch = "|",
                    size = 3,
                    col = NULL,
+                   ci_ribbon = FALSE,
                    ggtheme = NULL) {
 
   assert_that(
@@ -531,8 +535,11 @@ h_ggkm <- function(data,
         fill = "strata"
       )
     ) +
-      geom_hline(yintercept = 0) +
-      geom_ribbon(alpha = .3, lty = 0)
+      geom_hline(yintercept = 0)
+  }
+
+  if (ci_ribbon) {
+    gg <- gg + geom_ribbon(alpha = .3, lty = 0)
   }
 
   gg <- if (is.null(lty)) {

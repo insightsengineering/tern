@@ -74,8 +74,8 @@ by a statistics function.}
 the helper function \link{control_surv_timepoint}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}
+\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
 \item \code{time_point}: (\code{number}) \cr survival time point of interest.
 }}
 

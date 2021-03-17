@@ -26,6 +26,7 @@ g_km(
   vp = NULL,
   name = NULL,
   font_size = 12,
+  ci_ribbon = FALSE,
   ggtheme = NULL,
   annot_at_risk = TRUE,
   annot_surv_med = TRUE,
@@ -50,8 +51,8 @@ g_km(
 the helper function \link{control_surv_timepoint}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}.
+\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
 }}
 
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
@@ -102,6 +103,8 @@ an optimal tick position on the x axis.}
     grob on the display list and/or as a child of another grob. }
 
 \item{font_size}{(\code{number}) \cr font size to be used.}
+
+\item{ci_ribbon}{(\code{flag})\cr draw the confidence interval around the Kaplan-Meier curve.}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
 control outlook of the Kaplan-Meier curve.}

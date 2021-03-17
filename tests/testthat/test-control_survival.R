@@ -31,6 +31,7 @@ test_that("control_surv_time works with customized parameters", {
 test_that("control_surv_time fails wrong inputs", {
   expect_error(control_surv_time(conf_level = 1.1))
   expect_error(control_surv_time(quantiles = 0.8))
+  expect_error(control_surv_time(conf_type = "none"))
 })
 
 
@@ -48,4 +49,5 @@ test_that("control_surv_timepoint works with customized parameters", {
 test_that("control_surv_timepoint fails wrong inputs", {
   expect_error(control_surv_timepoint(conf_level = 1.5))
   expect_error(control_surv_timepoint(time_point = c(4, 6)))
+  expect_error(control_surv_timepoint(conf_type = "none"))
 })

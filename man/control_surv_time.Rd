@@ -6,15 +6,15 @@
 \usage{
 control_surv_time(
   conf_level = 0.95,
-  conf_type = c("plain", "none", "log", "log-log"),
+  conf_type = c("plain", "log", "log-log"),
   quantiles = c(0.25, 0.75)
 )
 }
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{conf_type}{(\code{string}) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}}
+\item{conf_type}{(\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.}
 
 \item{quantiles}{(\code{numeric}) \cr of length two to specify the quantiles of survival time.}
 }

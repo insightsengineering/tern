@@ -35,8 +35,8 @@ by a statistics function.}
 the helper function \link{control_surv_time}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival time.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "none", "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}
+\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option, "none" is not supported.
 \item \code{quantiles}: numeric vector of length two to specify the quantiles of survival time.
 }}
 
