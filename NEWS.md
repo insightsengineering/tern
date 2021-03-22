@@ -1,3 +1,6 @@
+# tern 0.7.1.9000
+Issues with no news:
+
 # tern 0.7.1
 * New argument `position_surv_med` added to `g_km` to move position of the annotation table with median survival times.  
 * Fixed bug in `g_km` related to the arguments `pch` and `size`. Previously, these arguments were not passed on to helper function `h_ggkm` and so were effectively being ignored.
