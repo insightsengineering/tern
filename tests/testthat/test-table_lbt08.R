@@ -10,7 +10,8 @@ adlb <- adlb %>% mutate(
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
   )
-) %>% filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+) %>%
+filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 test_that("LBT08 produce correctly", {
   df <- h_adlb_worsen(

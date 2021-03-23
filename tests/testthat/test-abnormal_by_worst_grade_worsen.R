@@ -10,7 +10,8 @@ adlb <- adlb %>% mutate(
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
   )
-) %>% filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+) %>%
+filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 test_that("h_adlb_worsen stacks data correctly (simple case)", {
   set.seed(42)
@@ -120,7 +121,7 @@ test_that("h_group_counter counts data (low) correctly", {
     .var = "ATOXGR",
     baseline_var = "BTOXGR",
     direction_var = "GRADDR"
-    )
+  )
 
   expected <- list(
     fraction = list(
@@ -319,7 +320,8 @@ test_that("h_adlb_worsen all high", {
       PARAMCD == "CRP" ~ "H",
       PARAMCD == "IGA" ~ "H"
     )
-  ) %>% filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  ) %>%
+  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,
@@ -348,7 +350,8 @@ test_that("h_adlb_worsen all low", {
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "L"
     )
-  ) %>% filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  ) %>%
+  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
     adlb,

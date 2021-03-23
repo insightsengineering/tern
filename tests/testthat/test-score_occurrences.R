@@ -9,7 +9,7 @@ get_df_ae <- function() {
   )
 
   dfae <- data.frame(
-    USUBJID = as.character(c(1, 2, 3, 4)),
+    USUBJID = factor(as.character(c(1, 2, 3, 4)), levels = as.character(c(1, 2, 3, 4, 5))),
     AEBODSYS = sample(c("AEBS1", "AEBS2"), 20, replace = TRUE),
     AEDECOD = sample(c("AEPT1", "AEPT2", "AEPT3"), 20, replace = TRUE),
     AESUPSYS = sample(c("AESS1", "AESS2"), 20, replace = TRUE)

@@ -41,7 +41,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
   count1 <- sum(!is.na(unique(x)))
   count2 <- sum(!is.na(x))
 
-  if (!is.null(count_by)){
+  if (!is.null(count_by)) {
     assert_that(
       is_character_or_factor(count_by),
       is_equal_length(count_by, x)
