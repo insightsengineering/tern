@@ -82,7 +82,7 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, adlb, worst_flag = c("WGRHI
     select("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR") %>%
     filter(!.data[["AVISIT"]] %in% c("SCREENING", "BASELINE"))
 
-  if (by_visit){
+  if (by_visit) {
     adsl_lb <- expand.grid(
       USUBJID = unique(adsl$USUBJID),
       AVISIT = unique(adlb_f$AVISIT),
@@ -156,7 +156,7 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, adlb, worst_flag = c("WGRHI
 #'     )
 #'   )
 #'
-h_group_counter <- function(df, id, .var, grouping_list){
+h_group_counter <- function(df, id, .var, grouping_list) {
 
   assert_that(
     is.string(id),
@@ -172,7 +172,7 @@ h_group_counter <- function(df, id, .var, grouping_list){
       c(num, num / n)
     })
   }else{
-    by_grade <- lapply(grouping_list, function(i){
+    by_grade <- lapply(grouping_list, function(i) {
       c(0, 0)
       })
   }
@@ -354,7 +354,7 @@ count_abnormal_by_worst_grade_by_baseline <- function(lyt, #nolint
 
   by_grade_list <- if_null(variables$by_grade_list, grouping_list)
 
-  for (i in seq(by_grade_list)){
+  for (i in seq(by_grade_list)) {
     varlist <- list(
       id = variables$id,
       by_var = variables$by_var,

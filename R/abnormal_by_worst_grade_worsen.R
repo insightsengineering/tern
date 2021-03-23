@@ -62,26 +62,26 @@ h_adlb_worsen <- function(
   worst_flag_low = NULL,
   worst_flag_high = NULL,
   direction_var
-){
+) {
   assert_that(
     is.string(direction_var),
     is_df_with_variables(adlb, list("Col" = direction_var)),
     all(unique(adlb[[direction_var]]) %in% c("B", "L", "H"))
   )
 
-  if (any(unique(adlb[[direction_var]]) == "H")){
+  if (any(unique(adlb[[direction_var]]) == "H")) {
     assert_that(
       is_df_with_variables(adlb, list("High" = names(worst_flag_high)))
       )
   }
 
-  if (any(unique(adlb[[direction_var]]) == "L")){
+  if (any(unique(adlb[[direction_var]]) == "L")) {
     assert_that(
       is_df_with_variables(adlb, list("Low" = names(worst_flag_low)))
       )
   }
 
-  if (any(unique(adlb[[direction_var]]) == "B")){
+  if (any(unique(adlb[[direction_var]]) == "B")) {
     assert_that(
       is_df_with_variables(
         adlb,
@@ -117,7 +117,7 @@ h_adlb_worsen <- function(
   adlb_f_b_l <- adlb_f_b
 
   #extract data with worst lab
-  if (!is.null(worst_flag_high) && !is.null(worst_flag_low)){
+  if (!is.null(worst_flag_high) && !is.null(worst_flag_low)) {
 
     #change H to High, L to Low
     adlb_f_h[[direction_var]] <- rep("High", nrow(adlb_f_h))
@@ -133,7 +133,7 @@ h_adlb_worsen <- function(
     adlb_out_b_l <- adlb_f_b_l[which(adlb_f_b_l[[names(worst_flag_low)]] == worst_flag_low), ]
 
     out <- rbind(adlb_out_h, adlb_out_b_h, adlb_out_l, adlb_out_b_l)
-  } else if (!is.null(worst_flag_high)){
+  } else if (!is.null(worst_flag_high)) {
 
     adlb_f_h[[direction_var]] <- rep("High", nrow(adlb_f_h))
     adlb_f_b_h[[direction_var]] <- rep("High", nrow(adlb_f_b_h))
@@ -142,7 +142,7 @@ h_adlb_worsen <- function(
     adlb_out_b_h <- adlb_f_b_h[which(adlb_f_b_h[[names(worst_flag_high)]] == worst_flag_high), ]
 
     out <- rbind(adlb_out_h, adlb_out_b_h)
-  } else if (!is.null(worst_flag_low)){
+  } else if (!is.null(worst_flag_low)) {
 
     adlb_f_l[[direction_var]] <- rep("Low", nrow(adlb_f_l))
     adlb_f_b_l[[direction_var]] <- rep("Low", nrow(adlb_f_b_l))
@@ -179,7 +179,7 @@ h_adlb_worsen <- function(
 #'                  direction_var = "GRADDR"
 #'                  )
 #'
-h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
+h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 
   assert_that(
     is.string(id),
@@ -196,10 +196,10 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
   #obtain directionality
   direction <- unique(df[[direction_var]])
 
-  if (direction == "Low"){
+  if (direction == "Low") {
     grade <- -1:-4
     worst_grade <- -4
-  } else if (direction == "High"){
+  } else if (direction == "High") {
     grade <- 1:4
     worst_grade <- 4
   }
@@ -216,12 +216,12 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
       c(num = num, denom = denom)
     })
   }else{
-    by_grade <- lapply(1, function(i){
+    by_grade <- lapply(1, function(i) {
       c(num = 0, denom = 0)
     })
   }
 
-  names(by_grade) <- as.character(1: length(by_grade))
+  names(by_grade) <- as.character(seq_along(by_grade))
 
   #baseline grade less 4 or missing
   df_temp <- df[!df[[baseline_var]] %in% worst_grade, ]
@@ -234,7 +234,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
   df_temp_nm <- df_temp[which(df_temp[[baseline_var]] != "<Missing>" & df_temp[[.var]] %in% grade), ]
 
   #condition 2: if post-baseline values are present then post-baseline values must be worse than baseline
-  if (direction == "Low"){
+  if (direction == "Low") {
     con2 <- which(as.numeric(as.character(df_temp_nm[[.var]])) < as.numeric(as.character(df_temp_nm[[baseline_var]])))
   } else {
     con2 <- which(as.numeric(as.character(df_temp_nm[[.var]])) > as.numeric(as.character(df_temp_nm[[baseline_var]])))

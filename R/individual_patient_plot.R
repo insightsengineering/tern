@@ -218,7 +218,7 @@ g_ipp <- function(df,
     df_list <- list()
     plot_list <- list()
 
-    for (i in 1:length(id_list)) {
+    for (i in seq_along(id_list)) {
       df_list[[i]] <-  df[df[[id_var]] %in% id_list[[i]], ]
 
       plots <- h_g_ipp(
