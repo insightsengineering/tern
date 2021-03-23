@@ -193,7 +193,7 @@ a_ancova <- make_afun(
     "n" = "xx",
     "lsmean" = "xx.xx",
     "lsmean_diff" = "xx.xx",
-    "lsmean_diff_ci" = "xx.xx - xx.xx",
+    "lsmean_diff_ci" = "(xx.xx, xx.xx)",
     "pval" = "x.xxxx | (<0.0001)"
   ),
   .null_ref_cells = FALSE
@@ -262,6 +262,7 @@ summarize_ancova <- function(lyt,
     .labels = .labels,
     .indent_mods = .indent_mods
   )
+
   analyze(
     lyt,
     vars,
