@@ -1,5 +1,5 @@
 # tern 0.7.2.9000
-Issues with no news:
+* Added new layout function `compare_vars` which compares variables of different types between columns and produces a p-value for the comparison to the reference column. It is built on top of the `summarize_vars` functionality.
 
 # tern 0.7.2
 * Fixed internal test errors regarding column labels.

@@ -444,3 +444,43 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
     df_smooth
   }
 }
+
+#' Number of Available (Non-Missing Entries) in a Vector
+#'
+#' Small utility function for better readability.
+#'
+#' @param x (`vector`)\cr where to count the non-missing values.
+#'
+#' @return Number of non-missing values.
+#' @export
+#'
+#' @examples
+#' n_available(c(1, NA, 2))
+#'
+n_available <- function(x) {
+  sum(!is.na(x))
+}
+
+#' Discard Certain Levels from a Factor
+#'
+#' This discards the observations as well as the levels specified from a factor.
+#'
+#' @param x (`factor`)\cr the original factor.
+#' @param discard (`character`)\cr which levels to discard.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' fct_discard(factor("a", "b", "c"), "c")
+#'
+fct_discard <- function(x, discard) {
+  assert_that(
+    is.factor(x),
+    is.character(discard),
+    noNA(discard)
+  )
+  new_obs <- x[x != discard]
+  new_levels <- setdiff(levels(x), discard)
+  factor(new_obs, levels = new_levels)
+}

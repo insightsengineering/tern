@@ -373,8 +373,7 @@ afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10)
 
 # `a_summary.logical`
 afun <- make_afun(
-  getS3method("a_summary", "logical"),
-  .ungroup_stats = c("count", "count_fraction")
+  getS3method("a_summary", "logical")
 )
 afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 

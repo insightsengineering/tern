@@ -181,3 +181,17 @@ test_that("get_smooths relative intervals level", {
   expect_true(all(air_smooths3b$ylow >= air_smooths3a$ylow))
   expect_true(all(air_smooths3b$yhigh <= air_smooths3a$yhigh))
 })
+
+test_that("n_available works as expected", {
+  x <- c(1, 2, 3, NA)
+  result <- n_available(x)
+  expected <- 3L
+  expect_identical(result, expected)
+})
+
+test_that("fct_discard works as expected", {
+  x <- factor(c("a", "b", "c"))
+  result <- fct_discard(x, "b")
+  expected <- factor(c("a", "c"))
+  expect_identical(result, expected)
+})

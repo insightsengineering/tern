@@ -34,6 +34,7 @@ reference:
     contents:
       - s_ancova
       - s_change_from_baseline
+      - s_compare
       - s_count_abnormal
       - s_count_abnormal_by_worst_grade
       - s_count_abnormal_by_baseline
@@ -87,12 +88,14 @@ reference:
        - a_surv_timepoint
        - a_surv_timepoint_diff
        - a_test_proportion_diff
+       - create_afun_compare
        - create_afun_summary
 
   - title: Analyze Functions
     desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
           the table.
     contents:
+       - compare_vars
        - count_abnormal
        - count_abnormal_by_worst_grade
        - count_abnormal_by_baseline
@@ -294,6 +297,8 @@ reference:
       - combine_vectors
       - empty_vector_if_na
       - to_n
+      - fct_discard
+      - n_available
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package

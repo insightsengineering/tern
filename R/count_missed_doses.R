@@ -16,7 +16,7 @@ NULL
 #' s_count_nonmissing(x)
 #'
 s_count_nonmissing <- function(x) {
-  list(n = sum(!is.na(x)))
+  list(n = n_available(x))
 }
 
 #' @describeIn count_missed_doses Description function that calculates labels for  [s_count_missed_doses()].

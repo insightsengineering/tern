@@ -38,15 +38,15 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL){ # nolint
     is_nonnegative_count(.N_col)
   )
 
-  count1 <- sum(!is.na(unique(x)))
-  count2 <- sum(!is.na(x))
+  count1 <- n_available(unique(x))
+  count2 <- n_available(x)
 
   if (!is.null(count_by)) {
     assert_that(
       is_character_or_factor(count_by),
       is_equal_length(count_by, x)
     )
-    count2 <- sum(!is.na(unique(interaction(x, count_by))))
+    count2 <- n_available(unique(interaction(x, count_by)))
   }
 
   out <- list(

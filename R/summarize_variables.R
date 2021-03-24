@@ -170,7 +170,7 @@ s_summary.factor <- function(x,
   )
   denom <- match.arg(denom)
 
-  if (na.rm) x <- factor(x[x != na_level], levels = setdiff(levels(x), na_level))
+  if (na.rm) x <- fct_discard(x, na_level)
 
   y <- list()
 
@@ -299,6 +299,21 @@ a_summary <- function(x,
   UseMethod("a_summary", x)
 }
 
+.a_summary_numeric_formats <- c(
+  n = "xx.",
+  mean_sd = "xx.x (xx.x)",
+  median = "xx.x",
+  range = "xx.x - xx.x",
+  mean_ci = "(xx.xx, xx.xx)",
+  median_ci = "(xx.xx, xx.xx)"
+)
+
+.a_summary_numeric_labels <- c(
+  mean_sd = "Mean (SD)",
+  median = "Median",
+  range = "Min - Max"
+)
+
 #' @describeIn summarize_variables Formatted Analysis function method for `numeric`.
 #' @export
 #' @order 8
@@ -308,22 +323,11 @@ a_summary <- function(x,
 #'
 a_summary.numeric <- make_afun(
   s_summary.numeric,
-  .formats = c(
-    n = "xx.",
-    mean_sd = "xx.x (xx.x)",
-    median = "xx.x",
-    range = "xx.x - xx.x",
-    mean_ci = "(xx.xx, xx.xx)",
-    median_ci = "(xx.xx, xx.xx)"
-  ),
-  .labels = c(
-    mean_sd = "Mean (SD)",
-    median = "Median",
-    range = "Min - Max"
-  )
+  .formats = .a_summary_numeric_formats,
+  .labels = .a_summary_numeric_labels
 )
 
-a_summary_counts_formats <- c(
+.a_summary_counts_formats <- c(
   n = "xx.",
   count = "xx.",
   count_fraction = format_count_fraction
@@ -344,7 +348,7 @@ a_summary_counts_formats <- c(
 #'
 a_summary.factor <- make_afun(
   s_summary.factor,
-  .formats = a_summary_counts_formats
+  .formats = .a_summary_counts_formats
 )
 
 #' @describeIn summarize_variables Formatted Analysis function method for `character`.
@@ -360,7 +364,7 @@ a_summary.factor <- make_afun(
 #'
 a_summary.character <- make_afun(
   s_summary.character,
-  .formats = a_summary_counts_formats
+  .formats = .a_summary_counts_formats
 )
 
 #' @describeIn summarize_variables Formatted Analysis function method for `logical`.
@@ -369,14 +373,13 @@ a_summary.character <- make_afun(
 #' @examples
 #' # `a_summary.logical`
 #' afun <- make_afun(
-#'   getS3method("a_summary", "logical"),
-#'   .ungroup_stats = c("count", "count_fraction")
+#'   getS3method("a_summary", "logical")
 #' )
 #' afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 #'
 a_summary.logical <- make_afun(
   s_summary.logical,
-  .formats = a_summary_counts_formats
+  .formats = .a_summary_counts_formats
 )
 
 #' @describeIn summarize_variables Constructor function which creates a combined Formatted
@@ -428,7 +431,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 
     numeric_stats <- afun_selected_stats(
       .stats,
-      c("n", "mean_sd", "median", "range", "mean_ci", "median_ci")
+      all_stats = names(.a_summary_numeric_formats)
     )
     afun.numeric <- make_afun( #nolint
       a_summary.numeric,
