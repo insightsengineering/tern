@@ -4,10 +4,13 @@
 \alias{h_tbl_median_surv}
 \title{Helper Function: Survival Estimations}
 \usage{
-h_tbl_median_surv(fit_km)
+h_tbl_median_surv(fit_km, armval = "All")
 }
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
+
+\item{armval}{(\code{string}) \cr used as strata name when treatment arm
+variable only has one level. Default is "All".}
 }
 \description{
 Transform a survival fit to a table with groups in rows characterized

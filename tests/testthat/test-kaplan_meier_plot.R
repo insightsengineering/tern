@@ -61,7 +61,7 @@ test_that("h_tbl_median_surv estimates median survival time with CI", {
       Median = c(1260, 837.4, 337.2),
       `95% CI` = c("(849.3, 1723)", "(527.7, 985.6)", "(293.7, 484.4)")
     ),
-    row.names = c("ARMCD=ARM A", "ARMCD=ARM B", "ARMCD=ARM C"),
+    row.names = c("ARM A", "ARM B", "ARM C"),
     class = "data.frame"
   )
   expect_identical(result, expected)

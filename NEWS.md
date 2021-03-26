@@ -1,5 +1,7 @@
 # tern 0.7.2.9000
 * Added new layout function `compare_vars` which compares variables of different types between columns and produces a p-value for the comparison to the reference column. It is built on top of the `summarize_vars` functionality.
+* Updated `g_km`, `h_tbl_median_surv` and `h_grob_median_surv` to remove arm variable name from arm labels in plot legend and annotation tables.
+* Added a new argument `armval` to `h_tbl_median_surv` and `h_grob_median_surv` to allow use of arm value as strata name in `g_km` when treatment arm variable only has one level.
 
 # tern 0.7.2
 * Fixed internal test errors regarding column labels.

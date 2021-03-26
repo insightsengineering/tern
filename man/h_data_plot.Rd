@@ -4,10 +4,13 @@
 \alias{h_data_plot}
 \title{Helper function: tidy survival fit}
 \usage{
-h_data_plot(fit_km, max_time = NULL)
+h_data_plot(fit_km, armval = "All", max_time = NULL)
 }
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
+
+\item{armval}{(\code{string}) \cr used as strata name when treatment arm
+variable only has one level. Default is "All".}
 
 \item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
 Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
@@ -24,10 +27,17 @@ library(random.cdisc.data)
 library(dplyr)
 library(survival)
 
+# Test with multiple arms
 radtte(cached = TRUE) \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   tern:::h_data_plot()
+
+# Test with single arm
+radtte(cached = TRUE) \%>\%
+  filter(PARAMCD == "OS", ARMCD == "ARM B") \%>\%
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
+  tern:::h_data_plot(armval = "ARM B")
 }
 
 }

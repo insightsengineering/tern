@@ -32,6 +32,7 @@ data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
 gg <- h_ggkm(
   data = data_plot,
+  yval = "Survival",
   censor_show = TRUE,
   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
   title = "tt"

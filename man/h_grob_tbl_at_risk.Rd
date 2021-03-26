@@ -46,10 +46,16 @@ gg <- h_ggkm(
 # The annotation table reports the patient at risk for a given strata and
 # time (`xticks`).
 annot_tbl <- summary(fit_km, time = xticks)
-annot_tbl <- if (is.null(fit_km$strata)) {
-  with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "Data"))
+if (is.null(fit_km$strata)) {
+  annot_tbl <- with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "All"))
 } else {
-  with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = strata))
+  strata_lst <- strsplit(levels(annot_tbl$strata), "=")
+  levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+  annot_tbl <- data.frame(
+    n.risk = annot_tbl$n.risk,
+    time = annot_tbl$time,
+    strata = annot_tbl$strata
+    )
 }
 
 # The annotation table is transformed into a grob.

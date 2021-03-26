@@ -208,6 +208,10 @@ g_km <- function(df,
     is_valid_factor(df[[arm]]),
     is_logical_vector(df[[is_event]])
   )
+  armval <- as.character(unique(df[[arm]]))
+  if (length(armval) > 1) {
+    armval <- NULL
+  }
   yval <- match.arg(yval)
   formula <- as.formula(paste0("Surv(", tte, ", ", is_event, ") ~ ", arm))
   fit_km <- survfit(
@@ -218,6 +222,7 @@ g_km <- function(df,
   )
   data_plot <- h_data_plot(
     fit_km = fit_km,
+    armval = armval,
     max_time = max_time
   )
 
@@ -248,9 +253,11 @@ g_km <- function(df,
       data.frame(
         n.risk = annot_tbl$n.risk,
         time = annot_tbl$time,
-        strata = "Data"
+        strata = armval
       )
     } else {
+      strata_lst <- strsplit(levels(annot_tbl$strata), "=")
+      levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
       data.frame(
         n.risk = annot_tbl$n.risk,
         time = annot_tbl$time,
@@ -289,6 +296,7 @@ g_km <- function(df,
             vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
             children = h_grob_median_surv(
               fit_km = fit_km,
+              armval = armval,
               x = position_surv_med[1],
               y = position_surv_med[2],
               ttheme = ttheme_default(
@@ -383,6 +391,8 @@ g_km <- function(df,
 #'
 #' @inheritParams kaplan_meier
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
+#' @param armval (`string`) \cr used as strata name when treatment arm
+#' variable only has one level. Default is "All".
 #' @importFrom broom tidy
 #' @examples
 #'
@@ -391,21 +401,32 @@ g_km <- function(df,
 #' library(dplyr)
 #' library(survival)
 #'
+#' # Test with multiple arms
 #' radtte(cached = TRUE) %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   tern:::h_data_plot()
+#'
+#' # Test with single arm
+#' radtte(cached = TRUE) %>%
+#'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
+#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+#'   tern:::h_data_plot(armval = "ARM B")
 #' }
 #'
 h_data_plot <- function(fit_km,
+                        armval = "All",
                         max_time = NULL) {
   y <- tidy(fit_km)
+  if (!is.null(fit_km$strata)) {
+    strata_lst <- strsplit(y$strata, "=")
+    y$strata <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+  } else {
+    y$strata <- armval
+  }
   y$censor <- ifelse(y$n.censor > 0, y$estimate, NA)
   if (!is.null(max_time)) {
     y <- y[y$time <= max(max_time), ]
-  }
-  if (is.null(fit_km$strata)) {
-    y$strata <- "Data"
   }
   y
 }
@@ -630,6 +651,7 @@ h_ggkm <- function(data,
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
 #'   data = data_plot,
+#'   yval = "Survival",
 #'   censor_show = TRUE,
 #'   xticks = xticks, xlab = "Days", ylab = "Survival Probability",
 #'   title = "tt"
@@ -802,10 +824,16 @@ h_km_layout <- function(data, g_el, title) {
 #' # The annotation table reports the patient at risk for a given strata and
 #' # time (`xticks`).
 #' annot_tbl <- summary(fit_km, time = xticks)
-#' annot_tbl <- if (is.null(fit_km$strata)) {
-#'   with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "Data"))
+#' if (is.null(fit_km$strata)) {
+#'   annot_tbl <- with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "All"))
 #' } else {
-#'   with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = strata))
+#'   strata_lst <- strsplit(levels(annot_tbl$strata), "=")
+#'   levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+#'   annot_tbl <- data.frame(
+#'     n.risk = annot_tbl$n.risk,
+#'     time = annot_tbl$time,
+#'     strata = annot_tbl$strata
+#'     )
 #' }
 #'
 #' # The annotation table is transformed into a grob.
@@ -831,6 +859,7 @@ h_km_layout <- function(data, g_el, title) {
 h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
+  y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- plotViewport(margins = unit(c(0, 0, 0, 0), "lines"))
   gb_table_left_annot <- gList(
     rectGrob(
@@ -841,7 +870,10 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     textGrob(
       label = unique(annot_tbl$strata),
       x = .95,
-      y = unit(unique(as.numeric(annot_tbl$strata)) - .5, "native"),
+      y = unit(
+        (max(unique(y_str_unit)) - unique(y_str_unit)) + .5,
+        "native"
+      ),
       hjust = 1,
       gp = gpar(fontface = "italic", fontsize = 10)
     )
@@ -855,7 +887,10 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     textGrob(
       label = annot_tbl$n.risk,
       x = unit(annot_tbl$time, "native"),
-      y = unit(as.numeric(annot_tbl$strata) - .5, "line") # maybe native
+      y = unit(
+        (max(y_str_unit) - y_str_unit) + .5
+        , "line"
+      ) # maybe native
     )
   )
 
@@ -916,11 +951,14 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' h_tbl_median_surv(fit_km = fit)
 #' }
 #'
-h_tbl_median_surv <- function(fit_km) {
+h_tbl_median_surv <- function(fit_km, armval = "All") {
   y <- if (is.null(fit_km$strata)) {
-    as.data.frame(t(summary(fit_km)$table), row.names = "Data")
+    as.data.frame(t(summary(fit_km)$table), row.names = armval)
   } else {
-    as.data.frame(summary(fit_km)$table)
+    tbl <- summary(fit_km)$table
+    rownames_lst <- strsplit(rownames(tbl), "=")
+    rownames(tbl) <- matrix(unlist(rownames_lst), ncol = 2, byrow = TRUE)[, 2]
+    as.data.frame(tbl)
   }
   conf.int <- summary(fit_km)$conf.int #nolint
   y$records <- round(y$records)
@@ -966,10 +1004,11 @@ h_tbl_median_surv <- function(fit_km) {
 #' }
 #'
 h_grob_median_surv <- function(fit_km,
+                               armval = "All",
                                x = 0.9,
                                y = 0.9,
                                ttheme = ttheme_default()) {
-  data <- h_tbl_median_surv(fit_km) # nolint
+  data <- h_tbl_median_surv(fit_km, armval = armval) # nolint
   gt <- gridExtra::tableGrob(d = data, theme = ttheme)
   vp <- viewport(
     x = unit(x, "npc") + unit(1, "lines"),
