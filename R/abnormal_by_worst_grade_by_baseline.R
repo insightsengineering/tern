@@ -22,8 +22,10 @@
 #' right of `=` sign is NCI-CTCAE grade(s) to be included in that group, i.e., `"NAME" = c(1, 2, 3, 4)`. \cr
 #'
 #' User may define custom functions for extracting the worst lab grades. At the minimum, the output `df`
-#' should contain `USUBJID`, `ARMCD`, `PARAMCD`, `ATOXGR`, and `BTOXGR`. One worst lab grade per patient
-#' per lab is expected for each of `ATOXGR` and `BTOXGR`.
+#' should contain relevant subject-level variables derived from ADSL (e.g. `USUBJID`, `ACTARM`) and analysis variables
+#' sourced from ADLB:`PARAM` or `PARAMCD`, `ATOXGR` and `BTOXGR`.
+#' One worst lab grade per patient per lab is expected for each of `ATOXGR` and `BTOXGR` unless summarizing the worst
+#' grade by visit in which case a visit variable such as `AVISIT` would be necessary.
 #'
 #' @inheritParams argument_convention
 #'
@@ -44,8 +46,12 @@ NULL
 #' @param by_visit (`logical`) defaults to `FALSE` to generate worst grade per patient.
 #' If worst grade per patient per visit is specified for `worst_flag`, then
 #' `by_visit` should be `TRUE` to generate worst grade patient per visit.
+#' @param no_fillin_visits (named `character`)
+#' Visits that are not considered for post-baseline worst toxicity grade. Defaults to `c("SCREENING", "BASELINE")`.
 #' @return [h_adsl_adlb_merge_using_worst_flag()] returns a `df`
-#' containing `USUBJID`, `ARMCD`, `AVISIT`, `PARAMCD`, `ATOXGR`, and `BTOXGR`
+#' containing variables shared between `adlb` and `adsl` along with variables relevant for analysis:
+#' `PARAM`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.  Optionally `AVISIT`, `AVISITN` are included when `by_visit = TRUE` and
+#' `no_fillin_visits = c("SCREENING", "BASELINE")`.
 #'
 #' @export
 #'
@@ -62,11 +68,14 @@ NULL
 #' adlb_out_by_visit <- h_adsl_adlb_merge_using_worst_flag(
 #'   adsl,
 #'   adlb,
-#'   worst_flag = c("WGRLOFL" = "Y"),
+#'   worst_flag = c("WGRLOVFL" = "Y"),
 #'   by_visit = TRUE
 #'   )
 #'
-h_adsl_adlb_merge_using_worst_flag <- function(adsl, adlb, worst_flag = c("WGRHIFL" = "Y"), by_visit = FALSE){ #nolint
+
+h_adsl_adlb_merge_using_worst_flag <- function( #nolint
+  adsl, adlb, worst_flag = c("WGRHIFL" = "Y"), by_visit = FALSE, no_fillin_visits = c("SCREENING", "BASELINE")
+){
   col_names <- names(worst_flag)
   filter_values <- worst_flag
 
@@ -78,44 +87,73 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, adlb, worst_flag = c("WGRHI
 
   position_satisfy_filters <- Reduce(intersect, temp)
 
+  adsl_adlb_common_columns <- intersect(colnames(adsl), colnames(adlb))
+  columns_from_adlb <- c("USUBJID", setdiff(colnames(adlb), adsl_adlb_common_columns))
+
   adlb_f <- adlb[position_satisfy_filters, ] %>%
-    select("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR") %>%
-    filter(!.data[["AVISIT"]] %in% c("SCREENING", "BASELINE"))
+    filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
+    select(columns_from_adlb)
+
+  avisits_grid <- adlb %>%
+    filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
+    pull(AVISIT) %>%
+    unique()
 
   if (by_visit) {
     adsl_lb <- expand.grid(
       USUBJID = unique(adsl$USUBJID),
-      AVISIT = unique(adlb_f$AVISIT),
+      AVISIT = avisits_grid,
       PARAMCD = unique(adlb$PARAMCD)
       )
 
+    adsl_lb <- adsl_lb %>%
+      left_join(unique(adlb[c("AVISIT", "AVISITN")]), by = "AVISIT") %>%
+      left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
+
     adsl_lb <- adsl %>%
-      select("USUBJID", "ARMCD") %>%
+      select(adsl_adlb_common_columns) %>%
       merge(adsl_lb, by = "USUBJID")
+
+    by_variables_from_adlb <- c("USUBJID", "AVISIT", "AVISITN", "PARAMCD", "PARAM")
 
     adlb_out <- merge(
       adlb_f,
       adsl_lb,
-      by = c("USUBJID", "ARMCD", "AVISIT", "PARAMCD"),
+      by = by_variables_from_adlb,
       all = TRUE,
       sort = FALSE
       )
+
+    adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),
+                         var_labels(adlb[columns_from_adlb[! columns_from_adlb %in% by_variables_from_adlb]]),
+                         var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
+                         )
+
     }else{
     adsl_lb <- expand.grid(
       USUBJID = unique(adsl$USUBJID),
       PARAMCD = unique(adlb$PARAMCD)
       )
 
+    adsl_lb <- adsl_lb %>% left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
+
     adsl_lb <- adsl %>%
-      select("USUBJID", "ARMCD") %>%
+      select(adsl_adlb_common_columns) %>%
       merge(adsl_lb, by = "USUBJID")
+
+    by_variables_from_adlb <- c("USUBJID", "PARAMCD", "PARAM")
 
     adlb_out <- merge(
       adlb_f,
       adsl_lb,
-      by = c("USUBJID", "ARMCD", "PARAMCD"),
+      by = by_variables_from_adlb,
       all = TRUE,
       sort = FALSE
+    )
+
+    adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),
+                         var_labels(adlb[columns_from_adlb[! columns_from_adlb %in% by_variables_from_adlb]]),
+                         var_labels(adsl[adsl_adlb_common_columns[adsl_adlb_common_columns != "USUBJID"]])
     )
   }
 
@@ -123,9 +161,8 @@ h_adsl_adlb_merge_using_worst_flag <- function(adsl, adlb, worst_flag = c("WGRHI
   adlb_out$BTOXGR <- as.factor(adlb_out$BTOXGR) #nolint
 
   adlb_out <- df_explicit_na(adlb_out)
-  adlb_out <- adlb_out[c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR")]
+  var_labels(adlb_out) <- adlb_var_labels
 
-  var_labels(adlb_out) <- var_labels(adlb[c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR")])
   adlb_out
 }
 

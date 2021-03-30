@@ -13,7 +13,8 @@ h_adsl_adlb_merge_using_worst_flag(
   adsl,
   adlb,
   worst_flag = c(WGRHIFL = "Y"),
-  by_visit = FALSE
+  by_visit = FALSE,
+  no_fillin_visits = c("SCREENING", "BASELINE")
 )
 
 h_group_counter(df, id, .var, grouping_list)
@@ -59,6 +60,9 @@ Worst post-baseline lab flag variable}
 If worst grade per patient per visit is specified for \code{worst_flag}, then
 \code{by_visit} should be \code{TRUE} to generate worst grade patient per visit.}
 
+\item{no_fillin_visits}{(named \code{character})
+Visits that are not considered for post-baseline worst toxicity grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
+
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{id}{(\code{string}) \cr subject variable name.}
@@ -101,7 +105,9 @@ to avoid warnings from \code{rtables}.}
 }
 \value{
 \code{\link[=h_adsl_adlb_merge_using_worst_flag]{h_adsl_adlb_merge_using_worst_flag()}} returns a \code{df}
-containing \code{USUBJID}, \code{ARMCD}, \code{AVISIT}, \code{PARAMCD}, \code{ATOXGR}, and \code{BTOXGR}
+containing variables shared between \code{adlb} and \code{adsl} along with variables relevant for analysis:
+\code{PARAM}, \code{PARAMCD}, \code{ATOXGR}, and \code{BTOXGR}.  Optionally \code{AVISIT}, \code{AVISITN} are included when \code{by_visit = TRUE} and
+\code{no_fillin_visits = c("SCREENING", "BASELINE")}.
 
 \code{\link[=h_group_counter]{h_group_counter()}} returns the total number of patients, and counts and fractions for each
 group identified in the \code{grouping_list} in a named list, with names from \code{grouping_list}.
@@ -137,8 +143,10 @@ be specified using a \code{=} sign; on the left of the \code{=} sign is the name
 right of \code{=} sign is NCI-CTCAE grade(s) to be included in that group, i.e., \code{"NAME" = c(1, 2, 3, 4)}. \cr
 
 User may define custom functions for extracting the worst lab grades. At the minimum, the output \code{df}
-should contain \code{USUBJID}, \code{ARMCD}, \code{PARAMCD}, \code{ATOXGR}, and \code{BTOXGR}. One worst lab grade per patient
-per lab is expected for each of \code{ATOXGR} and \code{BTOXGR}.
+should contain relevant subject-level variables derived from ADSL (e.g. \code{USUBJID}, \code{ACTARM}) and analysis variables
+sourced from ADLB:\code{PARAM} or \code{PARAMCD}, \code{ATOXGR} and \code{BTOXGR}.
+One worst lab grade per patient per lab is expected for each of \code{ATOXGR} and \code{BTOXGR} unless summarizing the worst
+grade by visit in which case a visit variable such as \code{AVISIT} would be necessary.
 }
 \section{Functions}{
 \itemize{
@@ -181,7 +189,7 @@ adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl, adlb, worst_flag = c("WGRHI
 adlb_out_by_visit <- h_adsl_adlb_merge_using_worst_flag(
   adsl,
   adlb,
-  worst_flag = c("WGRLOFL" = "Y"),
+  worst_flag = c("WGRLOVFL" = "Y"),
   by_visit = TRUE
   )
 
