@@ -889,7 +889,11 @@ h_coxreg_multivar_extract <- function(var,
 
   ret_anova <- sum_anova[sum_anova$term == var, c("term", "p.value")]
   names(ret_anova)[2] <- "pval"
-  ret_cox <- sum_cox[grepl(var, sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
+  if (is.factor(data[[var]])) {
+    ret_cox <- sum_cox[startsWith(prefix = var, x = sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
+    } else {
+    ret_cox <- sum_cox[(var == sum_cox$level), !(names(sum_cox) %in% "exp(-coef)")]
+  }
   names(ret_cox)[1:4] <- c("pval", "hr", "lcl", "ucl")
   varlab <- unname(labels_or_names(data[var]))
   ret_cox$term <- varlab

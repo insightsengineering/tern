@@ -4,7 +4,12 @@ get_simple <- function() {
   data.frame(
     time = c(5, 5, 10, 10, 5, 5, 10, 10),
     status = c(0, 0, 1, 0, 0, 1, 1, 1),
-    armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B"))
+    armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
+    age = c(15, 68, 65, 17, 12, 33, 45, 20),
+    stage = factor(
+      c("1", "2", "1", "1", "1", "2", "1", "2"),
+      levels = c("1", "2")
+    )
   )
 }
 
@@ -95,6 +100,52 @@ test_that("h_coxreg_univar_formulas creates formulas with multiple strata", {
 })
 
 # h_coxreg_multivar_formula ----
+
+test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate names overlap", {
+  library(survival)
+  set.seed(1, kind = "Mersenne-Twister")
+  dta_simple <- get_simple()
+  mod <- coxph(Surv(time, status) ~ age + stage, data = dta_simple)
+  result <- h_coxreg_multivar_extract(var = "age", mod = mod, data = dta_simple)
+  expected <- structure(
+    list(
+      pval = 0.261168055675453,
+      hr = 1.02693066913884,
+      lcl = 0.980414799123199,
+      ucl = 1.07565348887132,
+      level = "age",
+      n = 8L,
+      term = "age",
+      term_label = "age"
+    ),
+    row.names = 1L,
+    class = "data.frame"
+  )
+  expect_equal(result, expected, tolerance = 0.2)
+})
+
+test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate is a factor", {
+  library(survival)
+  set.seed(1, kind = "Mersenne-Twister")
+  dta_simple <- get_simple()
+  mod <- coxph(Surv(time, status) ~ age + stage, data = dta_simple)
+  result <- h_coxreg_multivar_extract(var = "stage", mod = mod, data = dta_simple)
+  expected <- structure(
+    list(
+      term = c("stage", "stage"),
+      pval = c(NA, 0.194768110455291),
+      term_label = c("stage (reference = 1)", "2"),
+      hr = c(NA, 4.98956427177951),
+      lcl = c(NA, 0.439400256215144),
+      ucl = c(NA, 56.6584822609408),
+      level = c(NA, "2"),
+      n = c(NA, 8L)
+      ),
+    row.names = c(NA, -2L),
+    class = "data.frame"
+    )
+  expect_equal(result, expected, tolerance = 0.2)
+})
 
 test_that("h_coxreg_multivar_formula creates formula without covariate", {
   result <- h_coxreg_multivar_formula(
