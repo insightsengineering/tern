@@ -1,0 +1,81 @@
+---
+title: "New Tern Function: Liver Laboratory Tests - Patients with Elevated Post-Baseline AST or ALT Levels (LBT09)"
+author: "Maximo Carreras"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of LBT08}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+```{r data, eval = TRUE}
+library(dplyr)
+library(tern)
+
+# At the terminal, run:
+# scp carrerm1@bee.roche.com:/opt/bee/analyses/stream2/master/2.10/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adhy.sas7bdat .
+
+adhy <- haven::read_sas(data_file = "../adhy.sas7bdat")
+                  
+# select only 4 parameters just to keep example simple:
+anl <- adhy %>% 
+  filter(PARAMCD %in% c("BLAL", "BLAS", "BGAL", "BGAS")) %>%
+  filter(ARM %in% c("ARM B", "ARM A"))
+
+# convert character to factors for tabulation
+anl <- df_explicit_na(anl)
+
+anl_cnt <- anl %>% filter(PARAMCD %in% c("BLAL"))
+
+anl <- anl %>%
+  mutate(
+    PARAM2 = factor(
+      ifelse(
+        grepl("TBILI <= 2 times ULN", PARAM),
+        "Total Bilirubin <= 2xULN",
+        ifelse(
+          grepl("TBILI > 2 times ULN", PARAM),
+          "Total Bilirubin > 2xULN",
+          NA
+        )
+      )
+    )
+    ,
+    AVALC2 = factor(
+      ifelse(
+        grepl("ALT value category", PARAM),
+        paste0("ALT ", AVALC),
+        ifelse(
+          grepl("AST value category", PARAM),
+          paste0("AST ", AVALC),
+          NA
+        )
+      ),
+      ordered = TRUE,
+      levels = c("ALT >3-5ULN", "ALT >5-10ULN", "ALT >10-20ULN", "ALT >20ULN", "AST >3-5ULN", "AST >5-10ULN",  "AST >10-20ULN", "AST >20ULN")
+    )
+  )
+
+split_fun <- drop_split_levels
+
+lyt <- basic_table() %>% 
+  split_cols_by(var = "ARM") %>%
+  split_cols_by(var = "AVISIT") %>%
+  split_rows_by("PARAM2", split_fun = split_fun) %>%
+  count_occurrences(vars = "AVALC2", .stats = c("count_fraction"), drop = FALSE)
+
+result <- build_table(lyt = lyt, df = anl, alt_counts_df = anl_cnt)
+
+result
+
+```
