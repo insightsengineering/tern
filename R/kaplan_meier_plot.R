@@ -419,8 +419,13 @@ h_data_plot <- function(fit_km,
                         max_time = NULL) {
   y <- tidy(fit_km)
   if (!is.null(fit_km$strata)) {
-    strata_lst <- strsplit(y$strata, "=")
-    y$strata <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+    fit_km_var_level <- strsplit(names(fit_km$strata), "=")
+    strata_levels <- vapply(fit_km_var_level, FUN = "[", FUN.VALUE = "a", i = 2)
+    strata_var_level <- strsplit(y$strata, "=")
+    y$strata <- factor(
+      vapply(strata_var_level, FUN = "[", FUN.VALUE = "a", i = 2),
+      levels = strata_levels
+    )
   } else {
     y$strata <- armval
   }

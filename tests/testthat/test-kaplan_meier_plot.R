@@ -8,6 +8,29 @@ get_test_data <- function() {
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 }
 
+# h_data_plot ----
+test_that("h_data_plot works as expected", {
+  data <- get_test_data()
+  result <- h_data_plot(data)
+  expect_is(result, "tbl_df")
+  expect_identical(
+    names(result),
+    c("time", "n.risk", "n.event", "n.censor", "estimate", "std.error",
+      "conf.high", "conf.low", "strata", "censor")
+  )
+})
+
+test_that("h_data_plot respects the ordering of the arm variable factor levels", {
+  data <- radtte(cached = TRUE) %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
+    survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+  result <- h_data_plot(data)
+  expect_is(result, "tbl_df")
+  expect_is(result$strata, "factor")
+  expect_identical(levels(result$strata), c("ARM B", "ARM C", "ARM A"))
+})
+
 # h_xticks ----
 test_that("h_xticks works with default settings", {
   result <- h_data_plot(get_test_data()) %>%

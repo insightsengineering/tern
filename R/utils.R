@@ -468,7 +468,7 @@ n_available <- function(x) {
 #' @param x (`factor`)\cr the original factor.
 #' @param discard (`character`)\cr which levels to discard.
 #'
-#' @return
+#' @return The modified factor with observations as well as levels from `discard` dropped.
 #' @export
 #'
 #' @examples

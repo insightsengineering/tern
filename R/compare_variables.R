@@ -78,6 +78,8 @@ s_compare.numeric <- function(x,
 #'   Therefore a row-based proportion would not make sense. Also proportion based on `N_col` would
 #'   be difficult since for the chi-squared test statistic we use the counts. Therefore
 #'   missing values should be accounted for explicitly as factor levels.
+#' @param denom (`string`)\cr choice of denominator for factor proportions,
+#'   can only be `n` (number of values in this row and column intersection).
 #' @return If `x` is of class `factor` or converted from `character`, returns a list with
 #'   named items:
 #'   - all items from [s_summary.factor()].
@@ -362,8 +364,7 @@ a_compare.logical <- make_afun(
 )
 
 #' @describeIn compare_variables Constructor function which creates a combined Formatted
-#'   Analysis function for use in layout creating functions [compare_vars()] and
-#'   [compare_colvars()].
+#'   Analysis function for use in layout creating functions [compare_vars()].
 #' @note Since [a_compare()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
 #'   corresponding customized methods. Then in order for the methods to be found,

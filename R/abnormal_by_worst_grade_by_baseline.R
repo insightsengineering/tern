@@ -54,10 +54,10 @@ NULL
 #' `no_fillin_visits = c("SCREENING", "BASELINE")`.
 #'
 #' @export
+#' @importFrom dplyr select filter pull left_join
 #'
 #' @examples
 #' library(random.cdisc.data)
-#' library(dplyr)
 #' adlb <- radlb(cached = TRUE)
 #' adsl <- radsl(cached = TRUE)
 #'
@@ -70,11 +70,14 @@ NULL
 #'   adlb,
 #'   worst_flag = c("WGRLOVFL" = "Y"),
 #'   by_visit = TRUE
-#'   )
+#' )
 #'
-
 h_adsl_adlb_merge_using_worst_flag <- function( #nolint
-  adsl, adlb, worst_flag = c("WGRHIFL" = "Y"), by_visit = FALSE, no_fillin_visits = c("SCREENING", "BASELINE")
+  adsl,
+  adlb,
+  worst_flag = c("WGRHIFL" = "Y"),
+  by_visit = FALSE,
+  no_fillin_visits = c("SCREENING", "BASELINE")
 ){
   col_names <- names(worst_flag)
   filter_values <- worst_flag
@@ -96,7 +99,7 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
 
   avisits_grid <- adlb %>%
     filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
-    pull(AVISIT) %>%
+    pull(.data[["AVISIT"]]) %>%
     unique()
 
   if (by_visit) {
@@ -104,7 +107,7 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       USUBJID = unique(adsl$USUBJID),
       AVISIT = avisits_grid,
       PARAMCD = unique(adlb$PARAMCD)
-      )
+    )
 
     adsl_lb <- adsl_lb %>%
       left_join(unique(adlb[c("AVISIT", "AVISITN")]), by = "AVISIT") %>%
@@ -246,7 +249,7 @@ h_group_counter <- function(df, id, .var, grouping_list) {
 #' @export
 #'
 #' @examples
-#'
+#' library(dplyr)
 #' # Count worst post-baseline lab for patients who were `Not Low` at baseline.
 #' s_count_abnormal_by_worst_grade_by_baseline(
 #'   df = adlb_out %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),

@@ -12,7 +12,7 @@ fct_discard(x, discard)
 \item{discard}{(\code{character})\cr which levels to discard.}
 }
 \value{
-
+The modified factor with observations as well as levels from \code{discard} dropped.
 }
 \description{
 This discards the observations as well as the levels specified from a factor.

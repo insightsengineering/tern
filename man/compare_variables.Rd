@@ -100,6 +100,9 @@ compare_vars(
 
 \item{...}{arguments passed to \code{s_compare()}.}
 
+\item{denom}{(\code{string})\cr choice of denominator for factor proportions,
+can only be \code{n} (number of values in this row and column intersection).}
+
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
@@ -188,8 +191,7 @@ of p-values. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::
 \item \code{a_compare.logical}: Formatted Analysis function method for \code{logical}.
 
 \item \code{create_afun_compare}: Constructor function which creates a combined Formatted
-Analysis function for use in layout creating functions \code{\link[=compare_vars]{compare_vars()}} and
-\code{\link[=compare_colvars]{compare_colvars()}}.
+Analysis function for use in layout creating functions \code{\link[=compare_vars]{compare_vars()}}.
 
 \item \code{compare_vars}: Analyze Function to add a comparison of variables to
 \code{rtables} pipelines. The column split needs to have the reference group defined

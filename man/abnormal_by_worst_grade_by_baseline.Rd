@@ -178,7 +178,6 @@ which can take statistics function arguments and additional format arguments (se
 
 \examples{
 library(random.cdisc.data)
-library(dplyr)
 adlb <- radlb(cached = TRUE)
 adsl <- radsl(cached = TRUE)
 
@@ -191,7 +190,7 @@ adlb_out_by_visit <- h_adsl_adlb_merge_using_worst_flag(
   adlb,
   worst_flag = c("WGRLOVFL" = "Y"),
   by_visit = TRUE
-  )
+)
 
 
 # `h_group_counter`
@@ -209,7 +208,7 @@ h_group_counter(
     )
   )
 
-
+library(dplyr)
 # Count worst post-baseline lab for patients who were `Not Low` at baseline.
 s_count_abnormal_by_worst_grade_by_baseline(
   df = adlb_out \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
