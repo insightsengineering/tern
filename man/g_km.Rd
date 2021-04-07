@@ -12,8 +12,8 @@ g_km(
   lty = NULL,
   lwd = 0.5,
   censor_show = TRUE,
-  pch = "|",
-  size = 3,
+  pch = 3,
+  size = 2,
   max_time = NULL,
   xticks = NULL,
   xlab = "Days",
@@ -66,7 +66,7 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{censor_show}{(\code{flag})\cr whether to show censored.}
 
-\item{pch}{(\code{numeric})\cr point type for censored.}
+\item{pch}{(\code{numeric}, \code{string})\cr value or character of points symbol to indicate censored cases.}
 
 \item{size}{(\code{numeric})\cr size of censored point, a class of \code{unit}.}
 

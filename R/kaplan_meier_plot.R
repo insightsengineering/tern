@@ -32,7 +32,7 @@
 #'   to number of strata from [survival::survfit()].
 #' @param lwd (`numeric`)\cr line width. Length of a vector should be equal
 #'   to number of strata from [survival::survfit()].
-#' @param pch (`numeric`)\cr point type for censored.
+#' @param pch (`numeric`, `string`)\cr value or character of points symbol to indicate censored cases.
 #' @param size (`numeric`)\cr size of censored point, a class of `unit`.
 #' @param max_time (`numeric`)\cr maximum value to show on X axis.
 #' Only data values less than or up to to this threshold value will be plotted.(`NULL` for
@@ -172,8 +172,8 @@ g_km <- function(df,
                  lty = NULL,
                  lwd = .5,
                  censor_show = TRUE,
-                 pch = "|",
-                 size = 3,
+                 pch = 3,
+                 size = 2,
                  max_time = NULL,
                  xticks = NULL,
                  xlab = "Days",
@@ -532,8 +532,8 @@ h_ggkm <- function(data,
                    max_time = NULL,
                    lwd = 1,
                    lty = NULL,
-                   pch = "|",
-                   size = 3,
+                   pch = 3,
+                   size = 2,
                    col = NULL,
                    ci_ribbon = FALSE,
                    ggtheme = NULL) {
@@ -590,17 +590,30 @@ h_ggkm <- function(data,
       scale_fill_manual(values = col)
   }
   if (censor_show) {
-    gg <- gg +
-      geom_point(
-        data = data[!is.na(data$censor), ],
-        aes_string(x = "time", y = "censor"),
-        shape = pch, size = size
+    dt <- data[data$n.censor != 0, ]
+    dt$censor_lbl <- factor("Censored")
+
+    gg <- gg + geom_point(
+      data = dt,
+      aes_string(
+        x = "time",
+        y = "censor",
+        shape = "censor_lbl"
+      ),
+      size = size,
+      show.legend = TRUE,
+      inherit.aes = TRUE
+    ) +
+      scale_shape_manual(name = NULL, values = pch) +
+      guides(
+        shape = guide_legend(override.aes = list(linetype = NA)),
+        fill = guide_legend(override.aes = list(shape = NA))
       )
   }
 
 
   if (!is.null(max_time) && !is.null(xticks)) {
-   gg <- gg + scale_x_continuous(breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))))
+    gg <- gg + scale_x_continuous(breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))))
   }
   else if (!is.null(xticks)) {
     if (max(data$time) <= max(xticks)) {
