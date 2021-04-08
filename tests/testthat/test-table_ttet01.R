@@ -15,7 +15,8 @@ test_that("TTET01 default variant is produced correctly", {
         case_when(
           is_event == TRUE ~ "Patients with event (%)",
           is_event == FALSE ~ "Patients without event (%)"
-        )
+        ),
+        levels = c("Patients with event (%)", "Patients without event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )
@@ -105,7 +106,8 @@ test_that("TTET01 variant: selecting sections to display", {
         case_when(
           is_event == TRUE ~ "Patients with event (%)",
           is_event == FALSE ~ "Patients without event (%)"
-        )
+        ),
+        levels = c("Patients with event (%)", "Patients without event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )
@@ -189,7 +191,8 @@ test_that("TTET01 variant: modifying analysis details like conftype, ties, alpha
         case_when(
           is_event == TRUE ~ "Patients with event (%)",
           is_event == FALSE ~ "Patients without event (%)"
-        )
+        ),
+        levels = c("Patients with event (%)", "Patients without event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )
@@ -283,7 +286,8 @@ test_that("TTET01 variant: with stratified analysis", {
         case_when(
           is_event == TRUE ~ "Patients with event (%)",
           is_event == FALSE ~ "Patients without event (%)"
-        )
+        ),
+        levels = c("Patients with event (%)", "Patients without event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )
@@ -374,7 +378,8 @@ test_that("TTET01 variant: modifying time point", {
         case_when(
           is_event == TRUE ~ "Patients with event (%)",
           is_event == FALSE ~ "Patients without event (%)"
-        )
+        ),
+        levels = c("Patients with event (%)", "Patients without event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )
@@ -458,7 +463,8 @@ test_that("TTET01 variant: requesting more than one p-value", {
         case_when(
           is_event == TRUE ~ "Patients with event (%)",
           is_event == FALSE ~ "Patients without event (%)"
-        )
+        ),
+        levels = c("Patients with event (%)", "Patients without event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )

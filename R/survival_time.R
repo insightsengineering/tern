@@ -69,9 +69,9 @@ s_surv_time <- function(df,
   )
   srv_tab <- summary(srv_fit, extend = TRUE)$table
   srv_qt_tab <- quantile(srv_fit, probs = quantiles)$quantile
-  range_censor <- range(df[[.var]][!df[[is_event]]], na.rm = TRUE)
-  range_event <- range(df[[.var]][df[[is_event]]], na.rm = TRUE)
-  range <- range(df[[.var]], na.rm = TRUE)
+  range_censor <- range_noinf(df[[.var]][!df[[is_event]]], na.rm = TRUE)
+  range_event <- range_noinf(df[[.var]][df[[is_event]]], na.rm = TRUE)
+  range <- range_noinf(df[[.var]], na.rm = TRUE)
   list(
     median = with_label(unname(srv_tab["median"]), "Median"),
     median_ci = with_label(unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))]), f_conf_level(conf_level)),

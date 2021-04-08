@@ -1,4 +1,7 @@
 # tern 0.7.2.9000
+* Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
+* Created `range_noinf` utils function. This is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.
+* Updated the pre-processing code in the files `test-table_ttet01.R` and `test-table_dort01.R` to make sure the analysis variable `EVNT1` has both levels of the factor defined.
 * Added new layout function `compare_vars` which compares variables of different types between columns and produces a p-value for the comparison to the reference column. It is built on top of the `summarize_vars` functionality.
 * Updated `g_km` to show legend for symbol used to mark censored cases on the KM plot.
 * Updated `g_km`, `h_tbl_median_surv` and `h_grob_median_surv` to remove arm variable name from arm labels in plot legend and annotation tables.

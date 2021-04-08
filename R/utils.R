@@ -1,3 +1,46 @@
+#' Re-implemented \code{\link[base]{range.default}} default S3 method for numerical objects only.
+#' It returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
+#' without any warnings.
+#'
+#' @param x numeric S3 class, a sequence of numbers for which the range is computed.
+#' @inheritParams base::range.default
+#'
+#' @return 2-elements vector of class numeric.
+#'
+#' @export
+#'
+#' @examples
+#' range_noinf(1:5)
+#' range_noinf(c(1:5, NA, NA), na.rm = TRUE)
+#' range_noinf(numeric(), na.rm = TRUE)
+#' range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
+#' range_noinf(Inf)
+#' range_noinf(Inf, na.rm = TRUE, finite = TRUE)
+#' range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
+#' range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
+#'
+range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
+
+  assert_that(is.numeric(x), msg = "Argument x in range_noinf function must be of class numeric.")
+
+  if (finite) {
+    x <- x[is.finite(x)] # removes NAs too
+  } else if (na.rm) {
+    x <- x[!is.na(x)]
+  }
+
+  if (length(x) == 0) {
+    rval <- c(NA, NA)
+    mode(rval) <- typeof(x)
+  }
+  else {
+    rval <- c(min(x, na.rm = FALSE), max(x, na.rm = FALSE))
+  }
+
+  return(rval)
+
+}
+
 #' Util function to create label for confidence interval
 #'
 #' @inheritParams argument_convention

@@ -183,7 +183,7 @@ If \code{x} is of class \code{numeric}, returns a list with named items:
 \item \code{median}: the \code{\link[=median]{median()}}.
 \item \code{mean_ci}: the CI for the mean (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
 \item \code{median_ci}: the CI for the median (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
-\item \code{range}: the \code{\link[=range]{range()}}.
+\item \code{range}: the \code{\link[=range_noinf]{range_noinf()}}.
 }
 
 If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with

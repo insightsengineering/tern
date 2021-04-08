@@ -44,6 +44,7 @@ DTH
 DTHT01
 ECG
 EGT
+EVNT
 Evaluable
 FSTG
 Fisher
@@ -104,6 +105,7 @@ Zhang
 aa
 abn
 adcm
+adsl
 analyse
 analysis
 anl
@@ -121,6 +123,7 @@ dataname
 datanames
 denom
 df
+dort
 dplyr
 efron
 enableR
@@ -183,6 +186,7 @@ teal
 testthat
 timepoint
 tm
+ttet
 ui
 unevaluable
 unstratified
@@ -193,4 +197,3 @@ wangh
 www
 xticks
 zhanc
-adsl

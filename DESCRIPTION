@@ -16,7 +16,8 @@ Authors@R: c(
   person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
   person("Godwin", "Yung", email = "yungg@gene.com", role = "aut"),
   person("Carreras", "Maximo", email = "maximo.carreras@roche.com", role = "aut"),
-  person("Zhao", "Rui", email = "zhaor8@gene.com", role = "aut")
+  person("Zhao", "Rui", email = "zhaor8@gene.com", role = "aut"),
+  person("Wojciech", "Wojciak", email = "wojciech.wojciak@contractors.roche.com", role = "aut")
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:

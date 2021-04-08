@@ -43,7 +43,7 @@ s_summary <- function(x,
 #' - `median`: the [median()].
 #' - `mean_ci`: the CI for the mean (from [stat_mean_ci()]).
 #' - `median_ci`: the CI for the median (from [stat_median_ci()]).
-#' - `range`: the [range()].
+#' - `range`: the [range_noinf()].
 #' @method s_summary numeric
 #' @order 3
 #'
@@ -104,7 +104,7 @@ s_summary.numeric <- function(x,
     sd = sd(x)
   )
   y$median <- median(x)
-  y$range <- if (dn > 0) range(x) else rep(NA_real_, 2)
+  y$range <- range_noinf(x)
 
   mean_ci_df <- stat_mean_ci(x, conf_level = conf_level, na.rm = na.rm)
   mean_ci <- unname(as.numeric(mean_ci_df[, c("ymin", "ymax")]))

@@ -258,10 +258,10 @@ test_that("tabulate_survival_subgroups functions as expected when one arm has 0 
   adtte <- radtte(cached = TRUE) %>%
     preprocess_adtte()
 
-  df <- expect_warning(extract_survival_subgroups(
+  df <- extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "RACE"),
     data = adtte
-  ))
+  )
 
   result <- basic_table() %>%
     tabulate_survival_subgroups(

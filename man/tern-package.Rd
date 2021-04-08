@@ -32,6 +32,7 @@ Authors:
   \item Godwin Yung \email{yungg@gene.com}
   \item Carreras Maximo \email{maximo.carreras@roche.com}
   \item Zhao Rui \email{zhaor8@gene.com}
+  \item Wojciech Wojciak \email{wojciech.wojciak@contractors.roche.com}
 }
 
 Other contributors:

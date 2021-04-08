@@ -55,11 +55,11 @@ test_that("h_survtime_df functions as expected when median is NA", {
     arm = factor(c("A", "A", "A", "B", "B", "B"), levels = c("A", "B"))
   )
 
-  result <- expect_warning(h_survtime_df(
+  result <- h_survtime_df(
     tte = df_na$tte,
     is_event = df_na$is_event,
     arm = df_na$arm
-  ))
+  )
 
   expected <- data.frame(
     arm = factor(c("A", "B"), levels = c("A", "B")),
@@ -68,6 +68,8 @@ test_that("h_survtime_df functions as expected when median is NA", {
     median = c(NA, 2),
     stringsAsFactors = FALSE
   )
+
+  expect_equal(result, expected)
 
 })
 

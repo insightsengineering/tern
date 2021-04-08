@@ -195,3 +195,559 @@ test_that("fct_discard works as expected", {
   expected <- factor(c("a", "c"))
   expect_identical(result, expected)
 })
+
+##################
+## range_noinf
+##################
+
+# INTEGER no zero-len data, no NAs, no Inf
+
+test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] and with all default options", {
+
+  x <- 5:1
+
+  result <- range_noinf(x)
+  expected <- c(1L, 5L)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = FALSE (d)]", {
+
+  x <- 5:1
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(1L, 5L)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- 5:1
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(1L, 5L)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- 5:1
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(1L, 5L)
+
+  expect_identical(result, expected)
+
+})
+
+# INTEGER no zero-len data, with NAs, no Inf
+
+test_that("range_noinf for INT [no zero-len data, with NAs, no Inf] and with default options", {
+
+  x <- c(NA, 5:1, NA)
+
+  result <- range_noinf(x)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- c(NA, 5:1, NA)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(1L, 5L)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- c(NA, 5:1, NA)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(1L, 5L)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- c(NA, 5:1, NA)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(1L, 5L)
+
+  expect_identical(result, expected)
+
+})
+
+# INTEGER  with zero-len data, no NAs, no Inf
+
+test_that("range_noinf for INT [with zero-len data, no NAs, no Inf] and with all default options", {
+
+  x <- vector(mode = "integer", length = 0)
+
+  result <- range_noinf(x)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- vector(mode = "integer", length = 0)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- vector(mode = "integer", length = 0)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- vector(mode = "integer", length = 0)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+# INTEGER with zero-len data, with NAs, no Inf
+
+test_that("range_noinf for INT [with zero-len data, with NAs, no Inf] and with default options", {
+
+  x <- rep(NA_integer_, 4)
+
+  result <- range_noinf(x)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- rep(NA_integer_, 4)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- rep(NA_integer_, 4)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for INT [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- rep(NA_integer_, 4)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(NA_integer_, NA_integer_)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE no zero-len data, no NAs, no Inf
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] and with all default options", {
+
+  x <- c(3.5, 1.5, 2.5)
+
+  result <- range_noinf(x)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- c(3.5, 1.5, 2.5)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- c(3.5, 1.5, 2.5)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- c(3.5, 1.5, 2.5)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE no zero-len data, no NAs, with Inf
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, with Inf] and with all default options", {
+
+  x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
+
+  result <- range_noinf(x)
+  expected <- c(-Inf, Inf)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(-Inf, Inf)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- c(Inf, 3.5, 1.5, -Inf, 2.5)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE no zero-len data, with NAs, no Inf
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, no Inf] and with default options", {
+
+  x <- c(NA, 3.5, 1.5, 2.5, NA)
+
+  result <- range_noinf(x)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- c(NA, 3.5, 1.5, 2.5, NA)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- c(NA, 3.5, 1.5, 2.5, NA)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- c(NA, 3.5, 1.5, 2.5, NA)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE  no zero-len data, with NAs, with Inf
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, with Inf] and with default options", {
+
+  x <- c(NA, 3.5, Inf, 1.5, -Inf, 2.5, NA)
+
+  result <- range_noinf(x)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- c(NA, 3.5, Inf, 1.5, -Inf, 2.5, NA)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(-Inf, Inf)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- c(NA, 3.5, Inf, 1.5, -Inf, 2.5, NA)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [no zero-len data, with NAs, with Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- c(NA, 3.5, Inf, 1.5, -Inf, 2.5, NA)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(1.5, 3.5)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE with zero-len data, no NAs, no Inf
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] and with all default options", {
+
+  x <- vector(mode = "double", length = 0)
+
+  result <- range_noinf(x)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- vector(mode = "double", length = 0)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- vector(mode = "double", length = 0)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- vector(mode = "double", length = 0)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE with zero-len data, no NAs, with Inf
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] and with all default options", {
+
+  x <- c(Inf, -Inf, Inf, -Inf)
+
+  result <- range_noinf(x)
+  expected <- c(-Inf, Inf)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- c(Inf, -Inf, Inf, -Inf)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(-Inf, Inf)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- c(Inf, -Inf, Inf, -Inf)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, no NAs, with Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- c(Inf, -Inf, Inf, -Inf)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE with zero-len data, with NAs, no Inf
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] and with default options", {
+
+  x <- rep(NA_real_, 4)
+
+  result <- range_noinf(x)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- rep(NA_real_, 4)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- rep(NA_real_, 4)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, no Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- rep(NA_real_, 4)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+# DOUBLE with zero-len data, with NAs, with Inf
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, with Inf] and with default options", {
+
+  x <- c(NA, Inf, -Inf, NA)
+
+  result <- range_noinf(x)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, with Inf] with [na.rm = TRUE, finite = FALSE (def)]", {
+
+  x <- c(NA, Inf, -Inf, NA)
+
+  result <- range_noinf(x, na.rm = TRUE)
+  expected <- c(-Inf, Inf)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, with Inf] with [na.rm = FALSE (def), finite = TRUE]", {
+
+  x <- c(NA, Inf, -Inf, NA)
+
+  result <- range_noinf(x, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})
+
+test_that("range_noinf for DOUBLE [with zero-len data, with NAs, with Inf] with [na.rm = TRUE, finite = TRUE]", {
+
+  x <- c(NA, Inf, -Inf, NA)
+
+  result <- range_noinf(x, na.rm = TRUE, finite = TRUE)
+  expected <- c(NA_real_, NA_real_)
+
+  expect_identical(result, expected)
+
+})

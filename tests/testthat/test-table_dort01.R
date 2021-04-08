@@ -17,7 +17,8 @@ test_that("DORT01 variant 1 is produced correctly", {
         case_when(
           is_event == TRUE ~ "Responders with subsequent event (%)",
           is_event == FALSE ~ "Responders without subsequent event (%)"
-        )
+        ),
+        levels = c("Responders with subsequent event (%)", "Responders without subsequent event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )
@@ -105,7 +106,8 @@ test_that("DORT01 variant 2 is produced correctly", {
         case_when(
           is_event == TRUE ~ "Responders with subsequent event (%)",
           is_event == FALSE ~ "Responders without subsequent event (%)"
-        )
+        ),
+        levels = c("Responders with subsequent event (%)", "Responders without subsequent event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )
@@ -181,7 +183,8 @@ test_that("DORT01 variant 3 is produced correctly", {
         case_when(
           is_event == TRUE ~ "Responders with subsequent event (%)",
           is_event == FALSE ~ "Responders without subsequent event (%)"
-        )
+        ),
+        levels = c("Responders with subsequent event (%)", "Responders without subsequent event (%)")
       ),
       EVNTDESC = factor(EVNTDESC)
     )

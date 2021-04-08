@@ -299,6 +299,7 @@ reference:
       - to_n
       - fct_discard
       - n_available
+      - range_noinf
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
