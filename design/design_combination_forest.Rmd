@@ -1,0 +1,326 @@
+---
+title: "Allow grouping of factor levels in forest plot functions"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data
+
+```{r}
+library(tern)
+library(ggplot2.utils)
+library(dplyr)
+adtte <- ex_adtte %>% 
+  filter(
+    PARAMCD == "OS"
+    ) %>%
+  mutate(
+    AVAL = day2month(AVAL),
+    AVALU = "Months",
+    is_event = CNSR == 0, 
+    ARM_BIN = forcats::fct_collapse(
+      ARM,
+      CTRL = c("B: Placebo"),
+      TRT = c("A: Drug X", "C: Combination")
+      ),
+    ARM_BIN = droplevels(forcats::fct_relevel(ARM_BIN, "CTRL"))
+  ) %>% 
+  var_relabel(BEP01FL = "BEP",
+              BMRKR2 = "Biomarker (Categorical)")
+```
+
+## Idea
+
+The idea is that we can do something like this.
+
+First we can define the `groups_list` that specifies the new group levels via the names and the levels that belong to it in the character vectors that are elements of the list, in the same format as `split_cols_by_groups()` expects e.g.
+
+```{r, groupsdef}
+bmrkr2_groups <- list(
+  "low" = "LOW",
+  "low/medium" = c("LOW", "MEDIUM"),
+  "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+)
+```
+
+Then we can pass this to `extract_survival_subgroups()` via a new argument `groups_lists` (using plural here because there could be multiple lists passed for each of the `subgroups` variables):
+
+```{r, eval = FALSE}
+tbl <- extract_survival_subgroups(
+  variables = list(
+    ...,
+    subgroups = c("BEP01FL", "BMRKR2")
+    ),
+  groups_lists = list(BMRKR2 = bmrkr2_groups),
+  ...
+)
+```
+
+By default `groups_lists` would be `NULL`, meaning to just use factor levels for the groups.
+
+The resulting list would then have in each of the `survtime` and `hr` data frames in the `subgroup` variable the corresponding labels (low, low/medium, low/medium/high) instead of the original levels (LOW, MEDIUM, HIGH), otherwise the result format would stay the same. So downstream usage via `tabulate_survival_subgroups()` etc would not be affected.
+
+Note that the same needs to be done for `extract_rsp_subgroups()` and associated helper functions.
+
+## Implementation
+
+The current structure is as follows:
+- `extract_survival_subgroups` just calls `h_survtime_subgroups_df` and `h_coxph_subgroups_df`
+- `h_survtime_subgroups_df` uses `h_split_by_subgroups` to split the data into subgroups
+- `h_split_by_subgroups` is the main function that we need to modify to get the cumulative splitting behavior / assign different labels to the cumulative groups
+- `h_coxph_subgroups_df` also uses `h_split_by_subgroups` so it would then apply the same there
+
+### `extract_survival_subgroups()`
+
+We can just pass `groups_lists` from top level to helper functions.
+
+```{r, toplevel}
+extract_survival_subgroups <- function(variables, 
+                                        data, 
+                                        groups_lists = NULL,
+                                        control = control_coxph(), 
+                                        label_all = "All Patients") {
+
+  df_survtime <- h_survtime_subgroups_df(
+    variables, 
+    data, 
+    groups_lists = groups_lists,
+    label_all = label_all
+  )
+  df_hr <- h_coxph_subgroups_df(
+    variables, 
+    data, 
+    groups_lists = groups_lists, 
+    control = control, 
+    label_all = label_all
+  )
+
+  list(survtime = df_survtime, hr = df_hr)
+}
+```
+
+### `h_survtime_subgroups_df()`
+
+Also here we just pass on.
+
+```{r, helper1}
+h_survtime_subgroups_df <- function(variables, 
+                                    data, 
+                                    groups_lists = NULL,
+                                    label_all = "All Patients") {
+
+  assert_that(
+    is.character(variables$tte),
+    is.character(variables$is_event),
+    is.character(variables$arm),
+    is.character(variables$subgroups) || is.null(variables$subgroups),
+    is_character_single(label_all),
+    is_df_with_variables(data, as.list(unlist(variables))),
+    is_valid_factor(data[[variables$arm]]),
+    are_equal(nlevels(data[[variables$arm]]), 2)
+  )
+
+  # Add All Patients.
+  result_all <- h_survtime_df(data[[variables$tte]], data[[variables$is_event]], data[[variables$arm]])
+  result_all$subgroup <- label_all
+  result_all$var <- "ALL"
+  result_all$var_label <- label_all
+  result_all$row_type <- "content"
+
+  # Add Subgroups.
+if (is.null(variables$subgroups)) {
+    result_all
+  } else {
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
+    l_result <- lapply(l_data, function(grp) {
+      result <- h_survtime_df(
+        grp$df[[variables$tte]], 
+        grp$df[[variables$is_event]], 
+        grp$df[[variables$arm]]
+      )
+      result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
+      cbind(result, result_labels)
+    })
+    result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
+    result_subgroups$row_type <- "analysis"
+    rbind(
+      result_all,
+      result_subgroups
+    )
+  }
+}
+```
+
+### `h_coxph_subgroups_df()`
+
+Same here
+
+```{r, helper2}
+h_coxph_subgroups_df <- function(variables, 
+                                 data, 
+                                 groups_lists = NULL,
+                                 control = control_coxph(), 
+                                 label_all = "All Patients") {
+
+  assert_that(
+    is.character(variables$tte),
+    is.character(variables$is_event),
+    is.character(variables$arm),
+    is.character(variables$subgroups) || is.null(variables$subgroups),
+    is.character(variables$strat) || is.null(variables$strat),
+    is_character_single(label_all),
+    is_df_with_variables(data, as.list(unlist(variables))),
+    is_valid_factor(data[[variables$arm]]),
+    are_equal(nlevels(data[[variables$arm]]), 2)
+  )
+
+  # Add All Patients.
+  result_all <- h_coxph_df(
+    tte = data[[variables$tte]],
+    is_event = data[[variables$is_event]],
+    arm = data[[variables$arm]],
+    strata_data = if (is.null(variables$strat)) NULL else data[variables$strat],
+    control = control
+  )
+  result_all$subgroup <- label_all
+  result_all$var <- "ALL"
+  result_all$var_label <- label_all
+  result_all$row_type <- "content"
+
+  # Add Subgroups.
+  if (is.null(variables$subgroups)) {
+    result_all
+  } else {
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
+
+    l_result <- lapply(l_data, function(grp) {
+
+      result <- h_coxph_df(
+        tte = grp$df[[variables$tte]],
+        is_event = grp$df[[variables$is_event]],
+        arm = grp$df[[variables$arm]],
+        strata_data = if (is.null(variables$strat)) NULL else grp$df[variables$strat],
+        control = control
+      )
+      result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
+      cbind(result, result_labels)
+    })
+
+    result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
+    result_subgroups$row_type <- "analysis"
+
+    rbind(
+      result_all,
+      result_subgroups
+    )
+  }
+}
+```
+
+### `h_split_by_subgroups()`
+
+Here the actual work happens.
+
+```{r, splitfun}
+h_split_by_subgroups <- function(data, 
+                                 subgroups, 
+                                 groups_lists) {
+
+  assert_that(
+    is_character_vector(subgroups),
+    is_df_with_factors(data, as.list(setNames(subgroups, subgroups))),
+    is.null(groups_lists) || 
+      (is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups))
+  )
+
+  data_labels <- unname(var_labels(data))
+  df_subgroups <- data[, subgroups, drop = FALSE]
+  subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
+
+  l_labels <- Map(function(grp_i, name_i) {
+    grp_levels <- if (name_i %in% names(groups_lists)) {
+      names(groups_lists[[name_i]])
+    } else {
+      levels(droplevels(grp_i))
+    }
+    df_labels <- data.frame(
+      subgroup = grp_levels,
+      var = name_i,
+      var_label = unname(subgroup_labels[name_i]),
+      stringsAsFactors = FALSE # Rationale is that subgroups may not be unique.
+    )
+
+  }, df_subgroups, names(df_subgroups))
+
+  # Create a dataframe with one row per subgroup.
+  df_labels <- do.call(rbind, args = c(l_labels, make.row.names = FALSE))
+  row_label <- paste0(df_labels$var, ".", df_labels$subgroup)
+  row_split_var <- factor(row_label, levels = row_label)
+
+  # Create a list of data subsets.
+  lapply(split(df_labels, row_split_var), function(row_i) {
+    which_row <- if (row_i$var %in% names(groups_lists)) {
+      data[[row_i$var]] %in% groups_lists[[row_i$var]][[row_i$subgroup]] 
+    } else {
+      data[[row_i$var]] == row_i$subgroup
+    }
+    df <- data[which_row, ]
+    rownames(df) <- NULL
+    var_labels(df) <- data_labels
+
+    list(
+      df = df,
+      df_labels = data.frame(row_i, row.names = NULL)
+    )
+  })
+
+}
+```
+
+
+## Try it out
+
+```{r, tryout}
+tbl <- extract_survival_subgroups(
+   variables = list(
+    tte = "AVAL", 
+    is_event = "is_event", 
+    arm = "ARM_BIN", 
+    subgroups = c("BEP01FL", "BMRKR2")
+    ),
+  label_all = "ITT",
+  data = adtte,
+  groups_lists = list(BMRKR2 = bmrkr2_groups)
+)
+tbl
+```
+
+So this works as expected. Downstream check:
+
+```{r, downstream}
+result <- basic_table() %>% 
+  tabulate_survival_subgroups(
+    df = tbl,
+    vars = c("n_tot", "n", "n_events", "median", "hr", "ci"),
+    time_unit = adtte$AVALU[1]
+  )
+g_forest(
+  tbl = result,
+  col_x = 8,
+  col_ci = 9,
+  forest_header = c(paste0(levels(adtte$ARM_BIN)[2:1], rep("\nBetter", 2))),
+  vline = 1,
+  xlim = c(0.1, 10),
+  logx = TRUE,
+  x_at = c(0.1, 1, 10),
+  col_symbol_size = 1,
+  draw = TRUE
+)
+```
+
+So downstream also works.
