@@ -192,7 +192,7 @@ g_km <- function(df,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
                  control_coxph_pw = control_coxph(),
-                 position_coxph = c(0, 0),
+                 position_coxph = c(0, 0.05),
                  position_surv_med = c(0.9, 0.9)) {
   assert_that(
     is.list(variables),
