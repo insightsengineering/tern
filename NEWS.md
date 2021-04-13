@@ -1,6 +1,8 @@
 * Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
 
 # tern 0.7.2.9000
+* Updated default position of hazard ratio table in `g_km` to stay
+on the left bottom corner but above x-axis for greater legibility.
 * Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
 * Created `range_noinf` utils function. This is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.
 * Updated the pre-processing code in the files `test-table_ttet01.R` and `test-table_dort01.R` to make sure the analysis variable `EVNT1` has both levels of the factor defined.
