@@ -4,6 +4,7 @@ test_that("s_count_occurrences functions as expected with valid input and defaul
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
   )
 
+
   result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
 
   expected <- list(
@@ -16,7 +17,13 @@ test_that("s_count_occurrences functions as expected with valid input and defaul
       MH1 = c(3L, 0.75),
       MH2 = c(1L, 0.25),
       MH3 = c(1L, 0.25)
+    ),
+    fraction = list(
+      MH1 = c("num" = 3L, "denom" = 4L),
+      MH2 = c("num" = 1L, "denom" = 4L),
+      MH3 = c("num" = 1L, "denom" = 4L)
     )
+
   )
   expect_equal(result, expected)
 })
@@ -27,10 +34,10 @@ test_that("s_count_occurrences drops non appearing levels by default", {
     MHDECOD = factor(
       c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3"),
       levels = c("MH1", "MH2", "MH3", "MHX")
-    )
+     )
   )
   result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
-  expect_false("MHX" %in% c(names(result$count), names(result$count_fraction)))
+  expect_false("MHX" %in% c(names(result$count), names(result$count_fraction), names(result$fraction)))
 })
 
 test_that("s_count_occurrences keeps non appearing levels if requested", {
@@ -44,6 +51,7 @@ test_that("s_count_occurrences keeps non appearing levels if requested", {
   result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df, drop = FALSE)
   expect_true("MHX" %in% names(result$count))
   expect_true("MHX" %in% names(result$count_fraction))
+  expect_true("MHX" %in% names(result$fraction))
 })
 
 test_that("s_count_occurrences fails when it receives empty .df_row and drop = TRUE", {
@@ -81,6 +89,11 @@ test_that("s_count_occurrences functions as expected when requesting different d
       MH1 = c(3L, 1),
       MH2 = c(1L, 1 / 3),
       MH3 = c(1L, 1 / 3)
+    ),
+    fraction = list(
+      MH1 = c("num" = 3L, "denom" = 3),
+      MH2 = c("num" = 1L, "denom" = 3),
+      MH3 = c("num" = 1L, "denom" = 3)
     )
   )
   expect_equal(result, expected)

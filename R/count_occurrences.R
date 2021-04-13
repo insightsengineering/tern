@@ -20,9 +20,11 @@ NULL
 #'   can be `N_col` (total number of patients in this column across rows) or
 #'   `n` (number of patients with any occurrences).
 #'
+#'
 #' @returns A list with:
 #'   - `count`: list of counts with one element per occurrence
 #'   - `count_fraction`: list of counts and fractions with one element per occurrence.
+#'   - `fraction`: list of numerators and denominators with one element per occurrence.
 #'
 #' @export
 #'
@@ -89,6 +91,11 @@ s_count_occurrences <- function(df,
       n_ids_per_occurrence,
       function(i, denom) c(i, i / denom),
       denom = dn
+    ),
+    fraction = lapply(
+      n_ids_per_occurrence,
+      function(i, denom) c("num" = i, "denom" = denom),
+      denom = dn
     )
   )
 }
@@ -100,7 +107,7 @@ s_count_occurrences <- function(df,
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the rtables formatting
 #' # function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction"))
+#' afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
 #' afun(
 #'   df,
 #'   .N_col = N_per_col,
@@ -111,8 +118,8 @@ s_count_occurrences <- function(df,
 #'
 a_count_occurrences <- make_afun(
   s_count_occurrences,
-  .formats = c(count = "xx", count_fraction = format_count_fraction)
-)
+  .formats = c(count = "xx", count_fraction = format_count_fraction, fraction = format_fraction)
+  )
 
 #' @describeIn count_occurrences Analyze Function that counts occurrences as part of rtables layouts.
 #'
@@ -136,7 +143,7 @@ a_count_occurrences <- make_afun(
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
-#'   count_occurrences(vars = "MHDECOD", .stats = c("count"))
+#'   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 #'
 #' # Apply table layout to data and produce rtable object
 #' lyt %>%
@@ -147,7 +154,7 @@ count_occurrences <- function(lyt,
                               vars,
                               ...,
                               table_names = vars,
-                              .stats ="count_fraction",
+                              .stats = "count_fraction",
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {

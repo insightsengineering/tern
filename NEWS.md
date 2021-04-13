@@ -1,3 +1,5 @@
+* Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
+
 # tern 0.7.2.9000
 * Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
 * Created `range_noinf` utils function. This is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.

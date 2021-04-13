@@ -79,6 +79,7 @@ A list with:
 \itemize{
 \item \code{count}: list of counts with one element per occurrence
 \item \code{count_fraction}: list of counts and fractions with one element per occurrence.
+\item \code{fraction}: list of numerators and denominators with one element per occurrence.
 }
 }
 \description{
@@ -120,7 +121,7 @@ s_count_occurrences(
 
 #  We need to ungroup `count_fraction` first so that the rtables formatting
 # function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction"))
+afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
 afun(
   df,
   .N_col = N_per_col,
@@ -146,7 +147,7 @@ df_adsl <- df \%>\%
 lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
-  count_occurrences(vars = "MHDECOD", .stats = c("count"))
+  count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 
 # Apply table layout to data and produce rtable object
 lyt \%>\%
