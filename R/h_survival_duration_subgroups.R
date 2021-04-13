@@ -7,9 +7,8 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
+#' @inheritParams survival_duration_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
-#' @param data (`data frame`)\cr the dataset containing the variables to summarize.
-#' @param label_all (`string`)\cr label for the total population analysis.
 #' @name h_survival_duration_subgroups
 #' @order 1
 #' @examples
@@ -44,6 +43,7 @@
 #'   )
 #'
 NULL
+
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
 #' @inheritParams h_survival_duration_subgroups
 #' @export
@@ -101,7 +101,8 @@ h_survtime_df <- function(tte, is_event, arm) {
 
 #' @describeIn h_survival_duration_subgroups summarizes median survival times by arm and across subgroups
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
-#'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`.
+#'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
+#'    groupings for `subgroups` variables.
 #' @export
 #' @examples
 #'
@@ -116,7 +117,28 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'   data = adtte_f
 #' )
 #'
-h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients") {
+#' # Define groupings for BMRKR2 levels.
+#' h_survtime_subgroups_df(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     arm = "ARM",
+#'     subgroups = c("SEX", "BMRKR2")
+#'   ),
+#'   data = adtte_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+#'
+h_survtime_subgroups_df <- function(variables,
+                                    data,
+                                    groups_lists = list(),
+                                    label_all = "All Patients") {
 
   assert_that(
     is.character(variables$tte),
@@ -140,7 +162,7 @@ h_survtime_subgroups_df <- function(variables, data, label_all = "All Patients")
 if (is.null(variables$subgroups)) {
     result_all
   } else {
-    l_data <- h_split_by_subgroups(data, variables$subgroups)
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
     l_result <- lapply(l_data, function(grp) {
       result <- h_survtime_df(grp$df[[variables$tte]], grp$df[[variables$is_event]], grp$df[[variables$arm]])
       result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
@@ -249,7 +271,8 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #' @describeIn h_survival_duration_subgroups summarizes estimates of the treatment hazard ratio
 #'   across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `tte`, `is_event`, `arm` and
-#'   optionally `subgroups` and `strat`.
+#'   optionally `subgroups` and `strat`. `groups_lists` optionally specifies
+#'   groupings for `subgroups` variables.
 #' @export
 #' @examples
 #'
@@ -264,6 +287,24 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   data = adtte_f
 #' )
 #'
+#' # Define groupings of BMRKR2 levels.
+#' h_coxph_subgroups_df(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     arm = "ARM",
+#'     subgroups = c("SEX", "BMRKR2")
+#'   ),
+#'   data = adtte_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+#'
 #' # Extract hazard ratio for multiple groups with stratification factors.
 #' h_coxph_subgroups_df(
 #'   variables = list(
@@ -276,7 +317,11 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   data = adtte_f
 #' )
 #'
-h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), label_all = "All Patients") {
+h_coxph_subgroups_df <- function(variables,
+                                 data,
+                                 groups_lists = list(),
+                                 control = control_coxph(),
+                                 label_all = "All Patients") {
 
   assert_that(
     is.character(variables$tte),
@@ -307,7 +352,7 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
   if (is.null(variables$subgroups)) {
     result_all
   } else {
-    l_data <- h_split_by_subgroups(data, variables$subgroups)
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
 
@@ -338,14 +383,17 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
 #'
 #' @details Main functionality is to prepare data for use in forest plot layouts.
 #'
+#' @inheritParams survival_duration_subgroups
 #' @param data (`data frame`)\cr dataset to split.
 #' @param subgroups (`character`)\cr names of factor variables from `data` used to create subsets.
-#'   Unused levels not present in `data` are dropped.
+#'   Unused levels not present in `data` are dropped. Note that the order in this vector
+#'   determines the order in the downstream table.
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
 #'
 #' @importFrom rtables var_labels var_labels<-
 #' @importFrom stats setNames
+#' @importFrom utils.nest is_fully_named_list
 #'
 #' @export
 #'
@@ -360,14 +408,26 @@ h_coxph_subgroups_df <- function(variables, data, control = control_coxph(), lab
 #' var_labels(df) <- paste("label for", names(df))
 #'
 #' h_split_by_subgroups(
-#'   data  = df,
+#'   data = df,
 #'   subgroups = c("y", "z")
 #' )
-h_split_by_subgroups <- function(data, subgroups) {
+#'
+#' h_split_by_subgroups(
+#'   data = df,
+#'   subgroups = c("y", "z"),
+#'   groups_lists = list(
+#'     y = list("AB" = c("A", "B"), "C" = "C")
+#'   )
+#' )
+#'
+h_split_by_subgroups <- function(data,
+                                 subgroups,
+                                 groups_lists = list()) {
 
   assert_that(
     is_character_vector(subgroups),
-    is_df_with_factors(data, as.list(setNames(subgroups, subgroups)))
+    is_df_with_factors(data, as.list(setNames(subgroups, subgroups))),
+    is_fully_named_list(groups_lists) && all(names(groups_lists) %in% subgroups)
   )
 
   data_labels <- unname(var_labels(data))
@@ -375,14 +435,21 @@ h_split_by_subgroups <- function(data, subgroups) {
   subgroup_labels <- var_labels(df_subgroups, fill = TRUE)
 
   l_labels <- Map(function(grp_i, name_i) {
-
+    existing_levels <- levels(droplevels(grp_i))
+    grp_levels <- if (name_i %in% names(groups_lists)) {
+      # For this variable groupings are defined. We check which groups are contained in the data.
+      group_list_i <- groups_lists[[name_i]]
+      group_has_levels <- vapply(group_list_i, function(lvls) any(lvls %in% existing_levels), TRUE)
+      names(which(group_has_levels))
+    } else {
+      existing_levels
+    }
     df_labels <- data.frame(
-      subgroup = levels(droplevels(grp_i)),
+      subgroup = grp_levels,
       var = name_i,
       var_label = unname(subgroup_labels[name_i]),
       stringsAsFactors = FALSE # Rationale is that subgroups may not be unique.
     )
-
   }, df_subgroups, names(df_subgroups))
 
   # Create a dataframe with one row per subgroup.
@@ -393,7 +460,11 @@ h_split_by_subgroups <- function(data, subgroups) {
   # Create a list of data subsets.
   lapply(split(df_labels, row_split_var), function(row_i) {
 
-    which_row <- data[[row_i$var]] == row_i$subgroup
+    which_row <- if (row_i$var %in% names(groups_lists)) {
+      data[[row_i$var]] %in% groups_lists[[row_i$var]][[row_i$subgroup]]
+    } else {
+      data[[row_i$var]] == row_i$subgroup
+    }
     df <- data[which_row, ]
     rownames(df) <- NULL
     var_labels(df) <- data_labels

@@ -8,9 +8,13 @@ d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 }
 \arguments{
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group), \code{n_events} (number of events per group),
-\code{median} (median survival time), \code{n_tot} (total number of observations),
-\code{hr} (hazard ratio), \code{ci} (confidence interval of hazard ratio) and \code{pval} (p value of the effect).
+\code{n} (total number of observations per group),
+\code{n_events} (number of events per group),
+\code{median} (median survival time),
+\code{n_tot} (total number of observations),
+\code{hr} (hazard ratio),
+\code{ci} (confidence interval of hazard ratio) and
+\code{pval} (p value of the effect).
 Note, the statistics \code{n_tot}, \code{hr} and \code{ci} are required.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}

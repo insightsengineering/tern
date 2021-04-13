@@ -177,6 +177,38 @@ test_that("h_split_by_subgroups functions as expected with valid input and defau
 
 })
 
+test_that("h_split_by_subgroups works as expected with groups_lists", {
+
+  lvls_y <- c("B", "A", "C")
+
+  df_test <- data.frame(
+    x = c(1:2),
+    y = factor(c("A", "B"), levels = lvls_y),
+    z = factor(c("D", "D"), levels = "D")
+  )
+  var_labels(df_test) <- paste("label for", names(df_test))
+
+  result <- h_split_by_subgroups(
+    data  = df_test,
+    subgroups = c("y", "z"),
+    groups_lists = list(
+      y = list("AB" = c("A", "B"), "E" = "C")
+    )
+  )
+  expect_named(result, c("y.AB", "z.D"))
+
+  df_yab <- data.frame(
+    x = as.integer(c(1, 2)),
+    y = factor(c("A", "B"), levels = lvls_y),
+    z = factor("D", levels = "D")
+  )
+  var_labels(df_yab) <- c("label for x", "label for y", "label for z")
+  expect_identical(
+    result$y.AB$df,
+    df_yab
+  )
+})
+
 test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
 
   adtte <- radtte(cached = TRUE) %>%
@@ -231,6 +263,29 @@ test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.
 
   expect_equal(result, expected, tol = 0.000001)
 
+})
+
+test_that("h_survtime_subgroups_df works as expected with groups_lists", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte()
+
+  result <- h_survtime_subgroups_df(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+    data = adtte,
+    groups_lists = list(
+      BMRKR2 = list(
+        "low" = "LOW",
+        "low/medium" = c("LOW", "MEDIUM"),
+        "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+      )
+    )
+  )
+
+  expect_setequal(
+    result[result$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
 })
 
 test_that("h_coxph_df functions as expected with valid input and default arguments", {
@@ -468,4 +523,27 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
   )
 
   expect_equal(result, expected, tol = 0.000001)
+})
+
+test_that("h_coxph_subgroups_df works as expected with groups_lists", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte()
+
+  result <- h_coxph_subgroups_df(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+    data = adtte,
+    groups_lists = list(
+      BMRKR2 = list(
+        "low" = "LOW",
+        "low/medium" = c("LOW", "MEDIUM"),
+        "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+      )
+    )
+  )
+
+  expect_setequal(
+    result[result$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
 })

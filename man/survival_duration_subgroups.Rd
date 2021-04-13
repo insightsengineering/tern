@@ -10,6 +10,7 @@
 extract_survival_subgroups(
   variables,
   data,
+  groups_lists = list(),
   control = control_coxph(),
   label_all = "All Patients"
 )
@@ -32,6 +33,10 @@ tabulate_survival_subgroups(
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
 
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
+
 \item{control}{(\code{list}) \cr parameters for comparison details, specified by using \cr
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
 \itemize{
@@ -52,9 +57,13 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
 
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group), \code{n_events} (number of events per group),
-\code{median} (median survival time), \code{n_tot} (total number of observations),
-\code{hr} (hazard ratio), \code{ci} (confidence interval of hazard ratio) and \code{pval} (p value of the effect).
+\code{n} (total number of observations per group),
+\code{n_events} (number of events per group),
+\code{median} (median survival time),
+\code{n_tot} (total number of observations),
+\code{hr} (hazard ratio),
+\code{ci} (confidence interval of hazard ratio) and
+\code{pval} (p value of the effect).
 Note, the statistics \code{n_tot}, \code{hr} and \code{ci} are required.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
@@ -73,7 +82,8 @@ the required statistics. Tables typically used as part of forest plot.
 population subgroups in data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}.
 Result is a list of two data frames: \code{survtime} and \code{hr}.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}.
+\code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
+groupings for \code{subgroups} variables.
 
 \item \code{a_survival_subgroups}: Formatted Analysis function used to format the results of
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}. Returns is a list of Formatted Analysis functions with one element per statistic.
@@ -124,6 +134,23 @@ df <- extract_survival_subgroups(
   data = adtte_f
 )
 df
+
+df_grouped <- extract_survival_subgroups(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM", subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adtte_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
 
 a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 

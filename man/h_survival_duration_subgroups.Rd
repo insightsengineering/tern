@@ -10,13 +10,19 @@
 \usage{
 h_survtime_df(tte, is_event, arm)
 
-h_survtime_subgroups_df(variables, data, label_all = "All Patients")
+h_survtime_subgroups_df(
+  variables,
+  data,
+  groups_lists = list(),
+  label_all = "All Patients"
+)
 
 h_coxph_df(tte, is_event, arm, strata_data = NULL, control = control_coxph())
 
 h_coxph_subgroups_df(
   variables,
   data,
+  groups_lists = list(),
   control = control_coxph(),
   label_all = "All Patients"
 )
@@ -31,6 +37,10 @@ h_coxph_subgroups_df(
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
@@ -60,7 +70,8 @@ Main functionality is to prepare data for use in a layout creating function.
 
 \item \code{h_survtime_subgroups_df}: summarizes median survival times by arm and across subgroups
 in a data frame. \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and
-requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups}.
+requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups}. \code{groups_lists} optionally specifies
+groupings for \code{subgroups} variables.
 
 \item \code{h_coxph_df}: helper to prepare a data frame with estimates of
 treatment hazard ratio.
@@ -68,7 +79,8 @@ treatment hazard ratio.
 \item \code{h_coxph_subgroups_df}: summarizes estimates of the treatment hazard ratio
 across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{tte}, \code{is_event}, \code{arm} and
-optionally \code{subgroups} and \code{strat}.
+optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
+groupings for \code{subgroups} variables.
 }}
 
 \examples{
@@ -122,6 +134,24 @@ h_survtime_subgroups_df(
   data = adtte_f
 )
 
+# Define groupings for BMRKR2 levels.
+h_survtime_subgroups_df(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM",
+    subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adtte_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+
 
 # Extract hazard ratio for one group.
 h_coxph_df(adtte_f$AVAL, adtte_f$is_event, adtte_f$ARM)
@@ -139,6 +169,24 @@ h_coxph_subgroups_df(
     subgroups = c("SEX", "BMRKR2")
   ),
   data = adtte_f
+)
+
+# Define groupings of BMRKR2 levels.
+h_coxph_subgroups_df(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM",
+    subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adtte_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
 )
 
 # Extract hazard ratio for multiple groups with stratification factors.

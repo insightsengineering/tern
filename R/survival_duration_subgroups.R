@@ -8,6 +8,9 @@
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
 #' @param data (`data frame`)\cr the dataset containing the variables to summarize.
+#' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
+#'   list, which specifies the new group levels via the names and the
+#'   levels that belong to it in the character vectors that are elements of the list.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips
 #'   displaying unit.
@@ -52,7 +55,8 @@ NULL
 #'   population subgroups in data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
 #'   Result is a list of two data frames: `survtime` and `hr`.
 #'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
-#'   `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`.
+#'   `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`. `groups_lists` optionally specifies
+#'   groupings for `subgroups` variables.
 #' @export
 #' @examples
 #'
@@ -66,10 +70,42 @@ NULL
 #' )
 #' df
 #'
-extract_survival_subgroups <- function(variables, data, control = control_coxph(), label_all = "All Patients") {
+#' df_grouped <- extract_survival_subgroups(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
+#'   ),
+#'   data = adtte_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+#' df_grouped
+#'
+extract_survival_subgroups <- function(variables,
+                                       data,
+                                       groups_lists = list(),
+                                       control = control_coxph(),
+                                       label_all = "All Patients") {
 
-  df_survtime <- h_survtime_subgroups_df(variables, data, label_all = label_all)
-  df_hr <- h_coxph_subgroups_df(variables, data, control = control, label_all = label_all)
+  df_survtime <- h_survtime_subgroups_df(
+    variables,
+    data,
+    groups_lists = groups_lists,
+    label_all = label_all
+  )
+  df_hr <- h_coxph_subgroups_df(
+    variables,
+    data,
+    groups_lists = groups_lists,
+    control = control,
+    label_all = label_all
+  )
 
   list(survtime = df_survtime, hr = df_hr)
 }
@@ -82,25 +118,39 @@ extract_survival_subgroups <- function(variables, data, control = control_coxph(
 #' a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 #'
 a_survival_subgroups <- function(.formats = list(
-  n = "xx", n_events = "xx", median = "xx.x",
-  n_tot = "xx", hr = list(format_extreme_values(2L)),
+  n = "xx",
+  n_events = "xx",
+  median = "xx.x",
+  n_tot = "xx",
+  hr = list(format_extreme_values(2L)),
   ci = list(format_extreme_values_ci(2L)),
   pval = "x.xxxx | (<0.0001)")
 ) {
 
   assert_that(
     is.list(.formats),
-    all_elements_in_ref(names(.formats), ref = c("n", "n_events", "median", "n_tot", "hr", "ci", "pval"))
+    all_elements_in_ref(
+      names(.formats),
+      ref = c("n", "n_events", "median", "n_tot", "hr", "ci", "pval")
+    )
   )
 
   afun_lst <- Map(function(stat, fmt) {
     if (stat == "ci") {
       function(df, labelstr = "", ...) {
-        in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
+        in_rows(
+          .list = combine_vectors(df$lcl, df$ucl),
+          .labels = as.character(df$subgroup),
+          .formats = fmt
+        )
       }
     } else {
       function(df, labelstr = "", ...) {
-        in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
+        in_rows(
+          .list = as.list(df[[stat]]),
+          .labels = as.character(df$subgroup),
+          .formats = fmt
+        )
       }
     }
   },
@@ -115,9 +165,13 @@ a_survival_subgroups <- function(.formats = list(
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n` (total number of observations per group), `n_events` (number of events per group),
-#'  `median` (median survival time), `n_tot` (total number of observations),
-#'  `hr` (hazard ratio), `ci` (confidence interval of hazard ratio) and `pval` (p value of the effect).
+#'  `n` (total number of observations per group),
+#'  `n_events` (number of events per group),
+#'  `median` (median survival time),
+#'  `n_tot` (total number of observations),
+#'  `hr` (hazard ratio),
+#'  `ci` (confidence interval of hazard ratio) and
+#'  `pval` (p value of the effect).
 #'  Note, the statistics `n_tot`, `hr` and `ci` are required.
 #' @export
 #' @examples
@@ -260,7 +314,10 @@ tabulate_survival_subgroups <- function(lyt,
 #' @param method p-value method for testing hazard ratio = 1.
 #' @return `list` of variables to tabulate and their labels.
 #'
-d_survival_subgroups_colvars <- function(vars, conf_level, method, time_unit = NULL) {
+d_survival_subgroups_colvars <- function(vars,
+                                         conf_level,
+                                         method,
+                                         time_unit = NULL) {
 
   assert_that(
     is.character(vars),

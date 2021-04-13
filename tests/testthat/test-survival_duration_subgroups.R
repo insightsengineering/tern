@@ -23,7 +23,7 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
-test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
+test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {
 
   adtte <- radtte(cached = TRUE) %>%
     preprocess_adtte()
@@ -85,7 +85,37 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
 
 })
 
-test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
+test_that("extract_survival_subgroups works as expected with groups_lists", {
+
+  adtte <- radtte(cached = TRUE) %>%
+    preprocess_adtte()
+
+  result <- extract_survival_subgroups(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+    data = adtte,
+    groups_lists = list(
+      BMRKR2 = list(
+        "low" = "LOW",
+        "low/medium" = c("LOW", "MEDIUM"),
+        "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+      )
+    )
+  )
+
+  survtime <- result$survtime
+  expect_setequal(
+    survtime[survtime$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
+
+  hr <- result$hr
+  expect_setequal(
+    hr[hr$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
+})
+
+test_that("extract_survival_subgroups functions as expected with NULL subgroups", {
 
   adtte <- radtte(cached = TRUE) %>%
     preprocess_adtte()
