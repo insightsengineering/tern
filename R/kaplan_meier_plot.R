@@ -381,7 +381,7 @@ g_km <- function(df,
   if (newpage & draw) grid.newpage()
   if (draw) grid.draw(result)
 
-  result
+  invisible(result)
 }
 
 #' Helper function: tidy survival fit
