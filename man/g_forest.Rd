@@ -9,7 +9,7 @@ g_forest(
   col_x,
   col_ci,
   vline = NULL,
-  forest_header = NULL,
+  forest_header = h_default_forest_header(tbl),
   xlim = NULL,
   logx = FALSE,
   x_at = NULL,
@@ -33,7 +33,9 @@ x coordinate for vertical line, if \code{NULL} then the line is omitted.}
 
 \item{forest_header}{(\code{character}, length 2)\cr
 text displayed to the left and right of \code{vline}, respectively.
-If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too.}
+If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too.
+Has a reasonable default text parsed from the \code{tbl} arguments when this is the usual
+full table returned by \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}} and \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}.}
 
 \item{xlim}{(\code{numeric})\cr limits for x axis.}
 
@@ -102,7 +104,6 @@ p <- g_forest(
   col_x = 6,
   col_ci = 7,
   vline = 1,
-  forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
@@ -111,7 +112,7 @@ p <- g_forest(
 
 draw_grob(p)
 
-# Odds rato only table.
+# Odds ratio only table.
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 tbl_or
@@ -121,7 +122,7 @@ p <- g_forest(
   col_x = 2,
   col_ci = 3,
   vline = 1,
-  forest_header = c("Treatement\nBetter", "Comparison\nBetter"),
+  forest_header = c("Treatment\nBetter", "Comparison\nBetter"),
   xlim = c(.1, 10),
   logx = TRUE,
   x_at = c(.1, 1, 10),
@@ -162,7 +163,4 @@ g_forest(
   forest_header = c("Hello", "World")
 )
 
-}
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

@@ -106,6 +106,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.
 * Fixed bug in `t_rsp` of not showing p-value, odds ratio and CIs when `strata_data` is not `NULL`.
 * Added stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.
+* Added helper function `h_default_forest_header` which gives a reasonable default for `forest_header` argument of `g_forest` if full tables are used, such that the user does not need to do this manually.
 * Added `footnotes`, `footnotes<-` and `add_footnotes<-` functions to deal with footnotes.
 * Added argument `conf_int` for confidence interval level to `t_el_forest_rps`, `t_forest_rsp`, `t_el_forest_tte`, `t_forest_tte`.
 * Added argument `col_symbol_size` to `g_forest` to control the relative size of symbols used in the plot.
