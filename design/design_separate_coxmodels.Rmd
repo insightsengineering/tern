@@ -1,0 +1,532 @@
+---
+title: "Allow easy Cox model fitting per covariate / without arm variable"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data
+
+```{r}
+library(survival)
+set.seed(1, kind = "Mersenne-Twister")
+dta_bladder <- with(
+  data = bladder[bladder$enum < 5, ],
+  data.frame(
+    time = stop,
+    status = event,
+    armcd = as.factor(rx),
+    covar1 = as.factor(enum),
+    covar2 = factor(
+      sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")
+    )
+  )
+)
+attr(dta_bladder$armcd, "label") <- "ARM"
+attr(dta_bladder$covar1, "label") <- "A Covariate Label"
+attr(dta_bladder$covar2, "label") <- "Sex (F/M)"
+dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
+```
+
+## Starting point
+
+Currently we can do the following with `fit_coxreg_univar()`:
+
+```{r}
+## Cox regression: arm + 1 covariate, 2 candidate covariates.
+mod2 <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+
+## see which models have been fitted:
+formula(mod2$mod$ref)
+formula(mod2$mod$covar1)
+formula(mod2$mod$covar2)
+```
+
+So the treatment arm is always included and then we add one of the covariate options.
+
+## Tabulation
+
+Univariate:
+
+```{r}
+univar_model <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status", arm = "armcd",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+df1 <- tidy(univar_model)
+s_coxreg(df = df1, .var = "hr")
+result_univar <- basic_table() %>%
+  split_rows_by("effect") %>%
+  split_rows_by("term", child_labels = "hidden") %>%
+  summarize_coxreg(conf_level = 0.95) %>%
+  build_table(df1)
+result_univar
+```
+
+So here we actually tabulate the hazard ratio estimates for the treatment arm, not for the covariates.
+
+Multivariate:
+
+```{r}
+multivar_model <- fit_coxreg_multivar(
+  variables = list(
+    time = "time", event = "status", arm = "covar1",
+    covariates = c("covar2")
+  ),
+  data = dta_bladder
+)
+df2 <- tidy(multivar_model)
+result_multivar <- basic_table() %>%
+  split_rows_by("term", child_labels = "hidden") %>%
+  summarize_coxreg(multivar = TRUE, conf_level = .95) %>%
+  build_table(df2)
+result_multivar
+```
+
+So here we actually tabulate the individual hazard ratio estimates of the covariates and the arm variable. We can put one covariate as arm variable.
+
+## Motivation
+
+When analyzing the data in an exploratory way, we also need to be able to:
+1. Run separate univariate models and tabulate the covariates results.
+1. For convenience, it would be nice if we can also explicitly work without an arm variable in the multivariate case, so don't necessarily require arm variable. It works as shown above also as is but is not very nice to read/specify.
+
+## Ideas for separate univariate models
+
+### Set `arm` variable to `NA` in `fit_coxreg_univar()`
+
+From a specification perspective it could make sense to be able to set the `arm` variable name to `NA` (missing). Then it is clear that we don't want arm. Then also we need to tabulate the covariate results instead of the arm results.
+However, the assertions at the start of the function become problematic, and we would need if/else conditions throughout the function.
+
+```{r, arm_na_univar}
+fit_coxreg_univar <- function(variables,
+                              data,
+                              at = list(),
+                              control = control_coxreg()) {
+  # take out arm here?
+  if (is.na(variables$arm)) {
+    variables <- variables[names(variables) != "arm"]
+  }
+  assert_that(
+    is.character(variables$covariates),
+    # but then here we would still want to check arm...
+    is_variables(variables[c("event", "time")]),
+    is_df_with_variables(data, as.list(unlist(variables)))
+  )
+
+  #...
+}
+```
+
+So I discard this option.
+
+### Make new function `fit_coxreg_biomarker()`
+
+We can make a new function say `fit_coxreg_biomarker()` which is similar to `fit_coxreg_univar()` but does not need arm.
+We also don't allow interactions here.
+
+```{r, fit_coxreg_biomarker}
+fit_coxreg_biomarker <- function(variables,
+                                 data,
+                                 at = list(),
+                                 control = control_coxreg()) {
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c("event", "time")]),
+    is_df_with_variables(data, as.list(unlist(variables))),
+    isFALSE(control$interaction)
+  )
+
+  if (!is.null(variables$strata)) {
+    assert_that(
+      control$pval_method != "likelihood"
+    )
+  }
+
+  vars <- unlist(variables[c("covariates", "strata")], use.names = FALSE)
+  for (i in vars) {
+    if (is.factor(data[[i]])) {
+      attr(data[[i]], "levels") <- levels(droplevels(data[[i]]))
+    }
+  }
+
+  forms <- h_coxreg_biomarker_formulas(variables)
+  mod <- lapply(
+    forms, function(x) {
+      coxph(formula = as.formula(x), data = data, ties = control$ties)
+    }
+  )
+
+  structure(
+    list(
+      mod = mod,
+      data = data,
+      control = control,
+      vars = variables,
+      at = at
+    ),
+    class = "coxreg.biomarker"
+  )
+}
+```
+
+Then we also need a biomarker version of the helper function that builds the formulas.
+We don't have `interaction` argument here.
+
+```{r, formulas}
+h_coxreg_biomarker_formulas <- function(variables) {
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c("event", "time")])
+  )
+  covar <- paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ",
+    variables$covariates,
+    ifelse(
+      !is.null(variables$strata),
+      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
+      ""
+    )
+  )
+  setNames(covar, variables$covariates)
+}
+```
+
+And then of course we also need the tidy method. We can reuse the `h_coxreg_multivar_extract()` helper function here. This makes sense because we want to tabulate results for covariates which are often factors, and thus need for consistency the same layout as the multivariate Cox model tabulation.
+
+```{r, tidymethod}
+tidy.coxreg.biomarker <- function(x, # nousage # nolint
+                                  ...) {
+  assert_that(
+    class(x) == "coxreg.biomarker"
+  )
+
+  mod <- x$mod
+  vars <- x$vars$covariates
+
+  result <- Map(
+    mod = mod, vars = vars,
+    f = function(mod, vars) {
+      h_coxreg_multivar_extract(
+        var = vars,
+        data = x$data,
+        mod = mod,
+        control = x$control
+      )
+    }
+  )
+  result <- do.call(rbind, result)
+
+  result$ci <- Map(lcl = result$lcl, ucl = result$ucl, f = function(lcl, ucl) c(lcl, ucl))
+  result$n <- lapply(result$n, empty_vector_if_na)
+  result$ci <- lapply(result$ci, empty_vector_if_na)
+  result$hr <- lapply(result$hr, empty_vector_if_na)
+  result$pval <- lapply(result$pval, empty_vector_if_na)
+  if (x$control$interaction) {
+    result$pval_inter <- lapply(result$pval_inter, empty_vector_if_na)
+  }
+  attr(result, "conf_level") <- x$control$conf_level
+  result
+}
+```
+
+Let's try it out. Note that also here we reuse the `multivar` option of `summarize_coxreg()` to suppress the `n` statistic which is constant here across all rows.
+
+```{r, tryout}
+biomarker_model <- fit_coxreg_biomarker(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+df <- tidy(biomarker_model)
+s_coxreg(df = df, .var = "hr")
+result <- basic_table() %>%
+  split_rows_by("term", child_labels = "hidden") %>%
+  summarize_coxreg(multivar = TRUE, conf_level = 0.95) %>%
+  build_table(df)
+result
+```
+
+So this works. However then the wording of the suffixes is not very clear. Also for the multivariate option we would need to do something similar...
+
+### Determine based on the presence of `arm` in `variables` and then use same function
+
+```{r, samefunction}
+fit_coxreg_univar <- function(variables,
+                              data,
+                              at = list(),
+                              control = control_coxreg()) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+  
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c(arm_name, "event", "time")]),
+    is_df_with_variables(data, as.list(unlist(variables)))
+  )
+
+  if (!is.null(variables$strata)) {
+    assert_that(
+      control$pval_method != "likelihood"
+    )
+  }
+
+  if (has_arm) {
+    n_arms <- nlevels(data[[variables$arm]])
+    assert_that(
+      n_arms == 2
+    )
+  }
+
+  vars <- unlist(variables[c(arm_name, "covariates", "strata")], use.names = FALSE)
+  for (i in vars) {
+    if (is.factor(data[[i]])) {
+      attr(data[[i]], "levels") <- levels(droplevels(data[[i]]))
+    }
+  }
+
+  forms <- h_coxreg_univar_formulas(variables, interaction = control$interaction)
+  mod <- lapply(
+    forms, function(x) {
+      coxph(formula = as.formula(x), data = data, ties = control$ties)
+    }
+  )
+
+  structure(
+    list(
+      mod = mod,
+      data = data,
+      control = control,
+      vars = variables,
+      at = at
+    ),
+    class = "coxreg.univar"
+  )
+}
+
+h_coxreg_univar_formulas <- function(variables,
+                                     interaction = FALSE) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+  
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c(arm_name, "event", "time")]),
+    is.flag(interaction),
+    has_arm || (!interaction)
+  )
+  forms <- paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ",
+    ifelse(
+      has_arm, 
+      paste0(variables$arm, ifelse(interaction, " * ", " + ")),
+      ""
+    ),
+    variables$covariates,
+    ifelse(
+      !is.null(variables$strata),
+      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
+      ""
+    )
+  )
+  nams <- variables$covariates
+  if (has_arm) {
+    ref <- paste0(
+      "Surv(", variables$time, ", ", variables$event, ") ~ ", 
+      variables$arm,
+      ifelse(
+        !is.null(variables$strata),
+        paste0(
+          " + strata(", paste0(variables$strata, collapse = ", "), ")"
+        ),
+        ""
+      )
+    )
+    forms <- c(ref, forms)
+    nams <- c("ref", nams)
+  }
+  setNames(forms, nams)
+}
+
+tidy.coxreg.univar <- function(x, # nousage # nolint
+                               ...) {
+  assert_that(
+    class(x) == "coxreg.univar"
+  )
+
+  mod <- x$mod
+  vars <- c(x$vars$arm, x$vars$covariates)
+  has_arm <- "arm" %in% names(x$vars)
+  
+  result <- if (!has_arm) {
+    Map(
+      mod = mod, vars = vars,
+      f = function(mod, vars) {
+        h_coxreg_multivar_extract(
+          var = vars,
+          data = x$data,
+          mod = mod,
+          control = x$control
+        )
+      }
+    )
+  } else if (x$control$interaction) {
+    Map(
+      mod = mod, covar = vars,
+      f = function(mod, covar) {
+        h_coxreg_extract_interaction(
+          effect = x$vars$arm, covar = covar, mod = mod, data = x$data,
+          at = x$at, control = x$control
+        )
+      }
+    )
+  } else {
+    Map(
+      mod = mod, vars = vars,
+      f = function(mod, vars) {
+        h_coxreg_univar_extract(
+          effect = x$vars$arm, covar = vars, data = x$data, mod = mod,
+          control = x$control
+        )
+      }
+    )
+  }
+  result <- do.call(rbind, result)
+
+  result$ci <- Map(lcl = result$lcl, ucl = result$ucl, f = function(lcl, ucl) c(lcl, ucl))
+  result$n <- lapply(result$n, empty_vector_if_na)
+  result$ci <- lapply(result$ci, empty_vector_if_na)
+  result$hr <- lapply(result$hr, empty_vector_if_na)
+  result$pval <- lapply(result$pval, empty_vector_if_na)
+  if (x$control$interaction) {
+    result$pval_inter <- lapply(result$pval_inter, empty_vector_if_na)
+  }
+  attr(result, "conf_level") <- x$control$conf_level
+  result
+}
+```
+
+Let's try it out again.
+
+```{r, tryout2}
+biomarker_model <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+df <- tidy(biomarker_model)
+s_coxreg(df = df, .var = "hr")
+result <- basic_table() %>%
+  split_rows_by("term", child_labels = "hidden") %>%
+  summarize_coxreg(multivar = TRUE, conf_level = 0.95) %>%
+  build_table(df)
+result
+```
+
+OK so this works also pretty well actually. Nice is that we don't duplicate code anymore and the function names make sense.
+
+## Idea for multivariate model without arm variable
+
+We also need to be able to work without an arm variable in the multivariate case, so  don't necessarily require arm variable. We can follow the same approach as above.
+
+```{r, multivaridea}
+fit_coxreg_multivar <- function(variables,
+                                data,
+                                control = control_coxreg()) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+  
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c(arm_name, "event", "time")]),
+    is_df_with_variables(data, as.list(unlist(variables))),
+    isFALSE(control$interaction)
+  )
+
+  if (!is.null(variables$strata)) {
+    assert_that(
+      control$pval_method != "likelihood"
+    )
+  }
+
+  form <- h_coxreg_multivar_formula(variables)
+  mod <- coxph(
+    formula = as.formula(form),
+    data = data,
+    ties = control$ties
+  )
+  structure(
+    list(
+      mod = mod,
+      data = data,
+      control = control,
+      vars = variables
+    ),
+    class = "coxreg.multivar"
+  )
+}
+
+h_coxreg_multivar_formula <- function(variables) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+  
+  assert_that(
+    is.character(variables$covariates),
+    is_variables(variables[c(arm_name, "event", "time")])
+  )
+
+  y <- paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ", 
+    ifelse(has_arm, variables$arm, "1")
+  )
+  if (length(variables$covariates) > 0) {
+    y <- paste(y, paste(variables$covariates, collapse = " + "), sep = " + ")
+  }
+  if (!is.null(variables$strata)) {
+    y <- paste0(y, " + strata(", paste0(variables$strata, collapse = ", "), ")")
+  }
+  y
+}
+```
+
+So that was pretty few changes actually. Nice. Let's also try this out.
+
+```{r, trymultivar}
+biom_multivar_model <- fit_coxreg_multivar(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+df2 <- tidy(biom_multivar_model)
+result_multivar <- basic_table() %>%
+  split_rows_by("term", child_labels = "hidden") %>%
+  summarize_coxreg(multivar = TRUE, conf_level = .95) %>%
+  build_table(df2)
+result_multivar
+```
+
+
+All good!
