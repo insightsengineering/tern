@@ -134,6 +134,29 @@ test_that("h_proportion_subgroups_df functions as expected when subgroups is NUL
 
 })
 
+test_that("h_proportion_subgroups_df works as expected with groups_lists", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs()
+
+  result <- h_proportion_subgroups_df(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+    data = adrs,
+    groups_lists = list(
+      BMRKR2 = list(
+        "low" = "LOW",
+        "low/medium" = c("LOW", "MEDIUM"),
+        "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+      )
+    )
+  )
+
+  expect_setequal(
+    result[result$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
+})
+
 test_that("h_odds_ratio_df functions as expected with valid input and default arguments", {
 
   result <- h_odds_ratio_df(
@@ -329,4 +352,31 @@ test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
 
   expect_equal(result, expected, tol = 0.000001)
 
+})
+
+test_that("h_odds_ratio_subgroups_df works as expected with groups_lists", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs()
+
+  result <- h_odds_ratio_subgroups_df(
+    variables = list(
+      rsp = "rsp",
+      arm = "ARM",
+      subgroups = c("SEX", "BMRKR2")
+    ),
+    data = adrs,
+    groups_lists = list(
+      BMRKR2 = list(
+        "low" = "LOW",
+        "low/medium" = c("LOW", "MEDIUM"),
+        "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+      )
+    )
+  )
+
+  expect_setequal(
+    result[result$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
 })

@@ -100,6 +100,36 @@ test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
 
 })
 
+test_that("extract_rsp_subgroups works as expected with groups_lists", {
+
+  adrs <- radrs(cached = TRUE) %>%
+    preprocess_adrs(n_records = 100)
+
+  result <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+    data = adrs,
+    groups_lists = list(
+      BMRKR2 = list(
+        "low" = "LOW",
+        "low/medium" = c("LOW", "MEDIUM"),
+        "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+      )
+    )
+  )
+
+  prop <- result$prop
+  expect_setequal(
+    prop[prop$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
+
+  or <- result$or
+  expect_setequal(
+    or[or$var == "BMRKR2", "subgroup"],
+    c("low", "low/medium", "low/medium/high")
+  )
+})
+
 test_that("extract_rsp_subgroups functions as expected with strata", {
 
   adrs <- radrs(cached = TRUE) %>%

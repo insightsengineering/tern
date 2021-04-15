@@ -7,6 +7,9 @@
 #'
 #' @inheritParams argument_convention
 #' @param data (`data frame`)\cr the dataset containing the variables to summarize.
+#' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
+#'   list, which specifies the new group levels via the names and the
+#'   levels that belong to it in the character vectors that are elements of the list.
 #' @param method (`string`)\cr
 #'   specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
@@ -41,7 +44,8 @@ NULL
 #'   population subgroups in data frames. Simple wrapper for [h_odds_ratio_subgroups_df()] and
 #'   [h_proportion_subgroups_df()]. Result is a list of two data frames:
 #'   `prop` and `or`. `variables` corresponds to the names of variables found in `data`, passed as a
-#'   named list and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`.
+#'   named list and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`. `groups_lists`
+#'   optionally specifies groupings for `subgroups` variables.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @export
 #' @examples
@@ -60,10 +64,41 @@ NULL
 #' )
 #' df_strat
 #'
-extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = NULL, label_all = "All Patients") {
+#' # Grouping of the BMRKR2 levels.
+#' df_grouped <- extract_rsp_subgroups(
+#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+#'   data = adrs_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+#' df_grouped
+#'
+extract_rsp_subgroups <- function(variables,
+                                  data,
+                                  groups_lists = list(),
+                                  conf_level = 0.95,
+                                  method = NULL,
+                                  label_all = "All Patients") {
 
-  df_prop <- h_proportion_subgroups_df(variables, data, label_all = label_all)
-  df_or <- h_odds_ratio_subgroups_df(variables, data, conf_level = conf_level, method = method, label_all = label_all)
+  df_prop <- h_proportion_subgroups_df(
+    variables,
+    data,
+    groups_lists = groups_lists,
+    label_all = label_all
+  )
+  df_or <- h_odds_ratio_subgroups_df(
+    variables,
+    data,
+    groups_lists = groups_lists,
+    conf_level = conf_level,
+    method = method,
+    label_all = label_all
+  )
 
   list(prop = df_prop, or = df_or)
 }
@@ -76,15 +111,21 @@ extract_rsp_subgroups <- function(variables, data, conf_level = 0.95, method = N
 #' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
 #'
 a_response_subgroups <- function(.formats = list(
-  n = "xx", n_rsp = "xx", prop = "xx.x%",
-  n_tot = "xx", or = list(format_extreme_values(2L)),
+  n = "xx",
+  n_rsp = "xx",
+  prop = "xx.x%",
+  n_tot = "xx",
+  or = list(format_extreme_values(2L)),
   ci = list(format_extreme_values_ci(2L)),
   pval = "x.xxxx | (<0.0001)")
 ) {
 
   assert_that(
     is.list(.formats),
-    all_elements_in_ref(names(.formats), ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"))
+    all_elements_in_ref(
+      names(.formats),
+      ref = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
+    )
   )
 
   afun_lst <- Map(function(stat, fmt) {
@@ -109,9 +150,13 @@ a_response_subgroups <- function(.formats = list(
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_rsp_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n` (total number of observations per group), `n_rsp` (number of responders per group),
-#'  `prop` (proportion of responders), `n_tot` (total number of observations),
-#'  `or` (odds ratio), `ci` (confidence interval of odds ratio) and `pval` (p value of the effect).
+#'  `n` (total number of observations per group),
+#'  `n_rsp` (number of responders per group),
+#'  `prop` (proportion of responders),
+#'  `n_tot` (total number of observations),
+#'  `or` (odds ratio),
+#'  `ci` (confidence interval of odds ratio) and
+#'  `pval` (p value of the effect).
 #'  Note, the statistics `n_tot`, `or` and `ci` are required.
 #' @export
 #' @examples
@@ -160,7 +205,11 @@ tabulate_rsp_subgroups <- function(lyt,
       split_fun = keep_split_levels("content"),
       nested = FALSE
     )
-    lyt_prop <- summarize_row_groups(lyt = lyt_prop, var = "var_label", cfun = afun_lst[names(colvars_prop$labels)])
+    lyt_prop <- summarize_row_groups(
+      lyt = lyt_prop,
+      var = "var_label",
+      cfun = afun_lst[names(colvars_prop$labels)]
+    )
     lyt_prop <- split_cols_by_multivar(
       lyt = lyt_prop,
       vars = colvars_prop$vars,
@@ -246,7 +295,9 @@ tabulate_rsp_subgroups <- function(lyt,
 #' @inheritParams tabulate_rsp_subgroups
 #' @return `list` of variables to tabulate and their labels.
 #'
-d_rsp_subgroups_colvars <- function(vars, conf_level = NULL, method = NULL) {
+d_rsp_subgroups_colvars <- function(vars,
+                                    conf_level = NULL,
+                                    method = NULL) {
 
   assert_that(
     is.character(vars),

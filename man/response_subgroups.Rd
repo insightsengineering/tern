@@ -10,6 +10,7 @@
 extract_rsp_subgroups(
   variables,
   data,
+  groups_lists = list(),
   conf_level = 0.95,
   method = NULL,
   label_all = "All Patients"
@@ -28,6 +29,10 @@ tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
 
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
+
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{method}{(\code{string})\cr
@@ -45,9 +50,13 @@ so no test is performed.}
 created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group), \code{n_rsp} (number of responders per group),
-\code{prop} (proportion of responders), \code{n_tot} (total number of observations),
-\code{or} (odds ratio), \code{ci} (confidence interval of odds ratio) and \code{pval} (p value of the effect).
+\code{n} (total number of observations per group),
+\code{n_rsp} (number of responders per group),
+\code{prop} (proportion of responders),
+\code{n_tot} (total number of observations),
+\code{or} (odds ratio),
+\code{ci} (confidence interval of odds ratio) and
+\code{pval} (p value of the effect).
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
 \description{
@@ -63,7 +72,8 @@ the required statistics. Tables typically used as part of forest plot.
 population subgroups in data frames. Simple wrapper for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and
 \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two data frames:
 \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data}, passed as a
-named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}.
+named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists}
+optionally specifies groupings for \code{subgroups} variables.
 
 \item \code{a_response_subgroups}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
 Returns is a list of Formatted Analysis functions with one element per statistic.
@@ -107,6 +117,20 @@ df_strat <- extract_rsp_subgroups(
   data = adrs_f
 )
 df_strat
+
+# Grouping of the BMRKR2 levels.
+df_grouped <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+  data = adrs_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
 
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
 

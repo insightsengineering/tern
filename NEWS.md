@@ -12,7 +12,7 @@ on the left bottom corner but above x-axis for greater legibility.
 * `g_km` now respects the ordering of the arm variable factor levels in the resulting Kaplan-Meier curve.
 * Added a new argument `armval` to `h_tbl_median_surv` and `h_grob_median_surv` to allow use of arm value as strata name in `g_km` when treatment arm variable only has one level.
 * New argument `no_fillin_visits` added to `h_adsl_adlb_merge_using_worst_flag` to specify the visits that are excluded from post-baseline worst toxicity grade output. Improved `h_adsl_adlb_merge_using_worst_flag` to include variables shared between `adsl` and `adlb`, along with `PARAM`, `PARAMCD`, `ATOXGR`, `BTOXGR` and optionally `AVISIT`, `AVISITN` when `by_visit = TRUE`. Previously, output only contains `USUBJID`, `ARMCD`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.
-* Added a new argument `groups_lists` to `extract_survival_subgroups` and associated helper functions which allows to group factor levels of subgroup variables into manually defined groups, enhancing the flexibility of the resulting forest graphs.
+* Added a new argument `groups_lists` to `extract_survival_subgroups`, `extract_rsp_subgroups` and associated helper functions which allows to group factor levels of subgroup variables into manually defined groups, enhancing the flexibility of the resulting forest graphs.
 
 # tern 0.7.2
 * Fixed internal test errors regarding column labels.

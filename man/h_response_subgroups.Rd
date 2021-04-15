@@ -10,13 +10,19 @@
 \usage{
 h_proportion_df(rsp, arm)
 
-h_proportion_subgroups_df(variables, data, label_all = "All Patients")
+h_proportion_subgroups_df(
+  variables,
+  data,
+  groups_lists = list(),
+  label_all = "All Patients"
+)
 
 h_odds_ratio_df(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL)
 
 h_odds_ratio_subgroups_df(
   variables,
   data,
+  groups_lists = list(),
   conf_level = 0.95,
   method = NULL,
   label_all = "All Patients"
@@ -30,6 +36,10 @@ h_odds_ratio_subgroups_df(
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
@@ -56,7 +66,8 @@ Main functionality is to prepare data for use in a layout creating function.
 
 \item \code{h_proportion_subgroups_df}: summarizes proportion of binary responses by arm and across subgroups
 in a data frame. \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and
-requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}.
+requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}. \code{groups_lists} optionally specifies
+groupings for \code{subgroups} variables.
 
 \item \code{h_odds_ratio_df}: helper to prepare a data frame with estimates of
 the odds ratio between a treatment and a control arm.
@@ -64,7 +75,7 @@ the odds ratio between a treatment and a control arm.
 \item \code{h_odds_ratio_subgroups_df}: summarizes estimates of the odds ratio between a treatment and a control
 arm across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}
-and \code{strat}.
+and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }}
 
 \examples{
@@ -101,6 +112,18 @@ h_proportion_subgroups_df(
   data = adrs_f
 )
 
+# Define groupings for BMRKR2 levels.
+h_proportion_subgroups_df(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+  data = adrs_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
 
 # Unstratatified analysis.
 h_odds_ratio_df(
@@ -135,6 +158,23 @@ h_odds_ratio_subgroups_df(
     strat = c("STRATA1", "STRATA2")
    ),
   data = adrs_f
+)
+
+# Define groupings of BMRKR2 levels.
+h_odds_ratio_subgroups_df(
+  variables = list(
+    rsp = "rsp",
+    arm = "ARM",
+    subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adrs_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
 )
 
 }

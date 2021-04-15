@@ -6,13 +6,8 @@
 #' @details Main functionality is to prepare data for use in a layout creating function.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams response_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
-#' @param data (`data frame`)\cr the dataset containing the variables to summarize.
-#' @param method (`string`)\cr
-#'   specifies the test used to calculate the p-value for the difference between
-#'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL`
-#'   so no test is performed.
-#' @param label_all (`string`)\cr label for the total population analysis.
 #' @name h_response_subgroups
 #' @order 1
 #' @examples
@@ -88,7 +83,8 @@ h_proportion_df <- function(rsp, arm) {
 
 #' @describeIn h_response_subgroups summarizes proportion of binary responses by arm and across subgroups
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
-#'    requires elements `rsp`, `arm` and optionally `subgroups`.
+#'    requires elements `rsp`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
+#'    groupings for `subgroups` variables.
 #' @export
 #' @examples
 #'
@@ -97,7 +93,22 @@ h_proportion_df <- function(rsp, arm) {
 #'   data = adrs_f
 #' )
 #'
-h_proportion_subgroups_df <- function(variables, data, label_all = "All Patients") {
+#' # Define groupings for BMRKR2 levels.
+#' h_proportion_subgroups_df(
+#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+#'   data = adrs_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+h_proportion_subgroups_df <- function(variables,
+                                      data,
+                                      groups_lists = list(),
+                                      label_all = "All Patients") {
 
   assert_that(
     is.character(variables$rsp),
@@ -121,7 +132,7 @@ h_proportion_subgroups_df <- function(variables, data, label_all = "All Patients
     result_all
   } else {
 
-    l_data <- h_split_by_subgroups(data, variables$subgroups)
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
       result <- h_proportion_df(grp$df[[variables$rsp]], grp$df[[variables$arm]])
@@ -259,7 +270,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #' @describeIn h_response_subgroups summarizes estimates of the odds ratio between a treatment and a control
 #'   arm across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`
-#'   and `strat`.
+#'   and `strat`. `groups_lists` optionally specifies groupings for `subgroups` variables.
 #' @export
 #' @examples
 #'
@@ -280,8 +291,26 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'   data = adrs_f
 #' )
 #'
+#' # Define groupings of BMRKR2 levels.
+#' h_odds_ratio_subgroups_df(
+#'   variables = list(
+#'     rsp = "rsp",
+#'     arm = "ARM",
+#'     subgroups = c("SEX", "BMRKR2")
+#'   ),
+#'   data = adrs_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+#'
 h_odds_ratio_subgroups_df <- function(variables,
                                       data,
+                                      groups_lists = list(),
                                       conf_level = 0.95,
                                       method = NULL,
                                       label_all = "All Patients") {
@@ -320,7 +349,7 @@ h_odds_ratio_subgroups_df <- function(variables,
     result_all
   } else {
 
-    l_data <- h_split_by_subgroups(data, variables$subgroups)
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
 
