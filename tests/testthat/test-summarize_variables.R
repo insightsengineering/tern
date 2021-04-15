@@ -1,3 +1,6 @@
+library(dplyr)
+
+
 test_that("s_summary return NA for x length 0L", {
 
   x <- numeric()
@@ -501,6 +504,29 @@ test_that("`summarize_vars` works with logical input", {
   expected_matrix <- structure(
     c("", "n", "count_fraction", "all obs", "5", "3 (60%)"),
     .Dim = 3:2
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("`summarize_vars` works with empty named numeric variables", {
+
+  dta <- tibble(
+    foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
+    boo = 1:6
+  )
+  dta <- dta %>% filter(foo != "a")
+  names(dta$boo) <- dta$foo
+
+  result <- basic_table() %>%
+    split_cols_by("foo") %>%
+    summarize_vars(vars = "boo") %>%
+    build_table(dta)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "n", "Mean (SD)", "Median", "Min - Max",  "a", "0", "NA (NA)", "NA", "NA - NA",
+      "b", "2", "3.5 (0.7)", "3.5", "3 - 4", "c", "2", "5.5 (0.7)", "5.5", "5 - 6"),
+    .Dim = c(5:4)
   )
 
   expect_identical(result_matrix, expected_matrix)

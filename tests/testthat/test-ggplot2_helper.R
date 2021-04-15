@@ -1,3 +1,6 @@
+library(dplyr)
+
+
 test_that("stat_mean_ci works for series without NAs (including extreme case n = 1 and various n_min values)", {
 
   # n = 1, na.rm = TRUE, n_min = 2
@@ -145,4 +148,21 @@ test_that("stat_median_ci works for series with NAs (including extreme case n = 
   attr(expected, "conf_level") <- NA_real_
   expect_identical(result, expected)
 
+})
+
+
+test_that("stat_median_ci works for named numeric values when name is missing)", {
+
+  dta <- tibble(
+    foo = factor(c("b", "b", "c", "c"), levels = c("a", "b", "c")),
+    boo = setNames(3:6, c("b", "b", "c", "c"))
+  )
+
+  # empty data.frame
+  dta_a <- dta %>% filter(foo == "a")
+
+  result <- stat_median_ci(dta_a$boo)
+  expected <- data.frame(y = NA_integer_, ymin = NA_real_, ymax = NA_real_)
+  attr(expected, "conf_level") <- NA_real_
+  expect_identical(result, expected)
 })

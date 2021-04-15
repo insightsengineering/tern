@@ -66,7 +66,7 @@ stat_mean_ci <- function(x,
 stat_median_ci <- function(x,
                            conf_level = 0.95,
                            na.rm = TRUE) { # nolint
-
+  x <- unname(x)
   if (na.rm)
     x <- na.omit(x)
   n <- length(x)
