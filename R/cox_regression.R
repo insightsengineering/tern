@@ -93,23 +93,28 @@ NULL
 #'   interaction = TRUE
 #' )
 #'
+#' ## Only covariates fitted in separate models.
+#' h_coxreg_univar_formulas(
+#'   variables = list(
+#'     time = "time", event = "status", covariates = c("X", "y")
+#'   )
+#' )
+#'
 h_coxreg_univar_formulas <- function(variables,
                                      interaction = FALSE) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+
   assert_that(
     is.character(variables$covariates),
-    is_variables(variables[c("arm", "event", "time")]),
-    is.flag(interaction)
+    is_variables(variables[c(arm_name, "event", "time")]),
+    is.flag(interaction),
+    (has_arm || (!interaction))
   )
-  ref <- paste0(
-    "Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm,
-    ifelse(
-      !is.null(variables$strata),
-      paste0(" + strata(", paste0(variables$strata, collapse = ", "), ")"),
-      ""
-    )
-  )
-  covar <- paste0(
-    "Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm,
+  forms <- paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ",
+    ifelse(has_arm, variables$arm, "1"),
     ifelse(interaction, " * ", " + "),
     variables$covariates,
     ifelse(
@@ -118,7 +123,23 @@ h_coxreg_univar_formulas <- function(variables,
       ""
     )
   )
-  setNames(c(ref, covar), c("ref", variables$covariates))
+  nams <- variables$covariates
+  if (has_arm) {
+    ref <- paste0(
+      "Surv(", variables$time, ", ", variables$event, ") ~ ",
+      variables$arm,
+      ifelse(
+        !is.null(variables$strata),
+        paste0(
+          " + strata(", paste0(variables$strata, collapse = ", "), ")"
+        ),
+        ""
+      )
+    )
+    forms <- c(ref, forms)
+    nams <- c("ref", nams)
+  }
+  setNames(forms, nams)
 }
 
 #' @describeIn cox_regression Helper for Multi-variable Cox Regression Formula
@@ -146,13 +167,27 @@ h_coxreg_univar_formulas <- function(variables,
 #'   )
 #' )
 #'
+#' # Example without treatment arm.
+#' h_coxreg_multivar_formula(
+#'   variables = list(
+#'     time = "AVAL", event = "event", covariates = c("RACE", "AGE")
+#'   )
+#' )
+#'
 h_coxreg_multivar_formula <- function(variables) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+
   assert_that(
     is.character(variables$covariates),
-    is_variables(variables[c("arm", "event", "time")])
+    is_variables(variables[c(arm_name, "event", "time")])
   )
 
-  y <- paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm)
+  y <- paste0(
+    "Surv(", variables$time, ", ", variables$event, ") ~ ",
+    ifelse(has_arm, variables$arm, "1")
+  )
   if (length(variables$covariates) > 0) {
     y <- paste(y, paste(variables$covariates, collapse = " + "), sep = " + ")
   }
@@ -171,7 +206,9 @@ h_coxreg_multivar_formula <- function(variables) {
 #' @param pval_method (`string`)\cr the method used for estimation of p.values;
 #'   `wald` (default) or `likelihood`.
 #' @param interaction (`flag`)\cr if `TRUE`, the model includes the
-#'   interaction between the studied treatment and candidate covariate.
+#'   interaction between the studied treatment and candidate covariate. Note that
+#'   for univariate models without treatment arm, and multivariate models, no
+#'   interaction can be used so that this needs to be `FALSE`.
 #' @param ties (`string`)\cr among `exact` (equivalent to `DISCRETE` in SAS),
 #'   `efron` and `breslow`, see [survival::coxph()].
 #'   Note: there is no equivalent of SAS `EXACT` method in R.
@@ -204,7 +241,9 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'   given the inputs.
 #' @param variables (`list`)\cr a named list corresponds to the names of variables found
 #'   in `data`, passed as a named list and corresponding to `time`, `event`, `arm`,
-#'   and `covariates` terms.
+#'   and `covariates` terms. If `arm` is missing from `variables`, then
+#'   only Cox model(s) including the `covariates` will be fitted and the corresponding
+#'   effect estimates will be tabulated later.
 #' @param data (`data frame`)\cr the dataset containing the variables to fit the
 #'   models.
 #' @param at (`list` of `numeric`)\cr when the candidate covariate is a
@@ -214,7 +253,7 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'   helper function [control_coxreg()].
 #' @return The function `fit_coxreg_univar` returns a `coxreg.univar` class object which is a named list
 #' with 5 elements:
-#'   - `mod`: Cox regression model fitted by [survival::coxph()].
+#'   - `mod`: Cox regression models fitted by [survival::coxph()].
 #'   - `data`: The original data frame input.
 #'   - `control`: The original control input.
 #'   - `vars`: The variables used in the model.
@@ -257,41 +296,51 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'   control = control_coxreg(conf_level = 0.91)
 #' )
 #'
+#' ## Cox regression: no arm, only covariates.
+#' mod4 <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+#'
 fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
                               control = control_coxreg()) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
+
   assert_that(
     is.character(variables$covariates),
-    is_variables(variables[c("arm", "event", "time")]),
+    is_variables(variables[c(arm_name, "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables)))
   )
-
   if (!is.null(variables$strata)) {
     assert_that(
       control$pval_method != "likelihood"
     )
   }
-
-  n_arms <- nlevels(data[[variables$arm]])
-  assert_that(
-    n_arms == 2
-  )
-
-  vars <- unlist(variables[c("arm", "covariates", "strata")], use.names = FALSE)
+  if (has_arm) {
+    n_arms <- nlevels(data[[variables$arm]])
+    assert_that(
+      n_arms == 2
+    )
+  }
+  vars <- unlist(variables[c(arm_name, "covariates", "strata")], use.names = FALSE)
   for (i in vars) {
     if (is.factor(data[[i]])) {
       attr(data[[i]], "levels") <- levels(droplevels(data[[i]]))
     }
   }
-
   forms <- h_coxreg_univar_formulas(variables, interaction = control$interaction)
   mod <- lapply(
     forms, function(x) {
       coxph(formula = as.formula(x), data = data, ties = control$ties)
     }
   )
-
   structure(
     list(
       mod = mod,
@@ -763,8 +812,21 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
 
   mod <- x$mod
   vars <- c(x$vars$arm, x$vars$covariates)
+  has_arm <- "arm" %in% names(x$vars)
 
-  result <- if (x$control$interaction) {
+  result <- if (!has_arm) {
+    Map(
+      mod = mod, vars = vars,
+      f = function(mod, vars) {
+        h_coxreg_multivar_extract(
+          var = vars,
+          data = x$data,
+          mod = mod,
+          control = x$control
+        )
+      }
+    )
+  } else if (x$control$interaction) {
     Map(
       mod = mod, covar = vars,
       f = function(mod, covar) {
@@ -814,7 +876,7 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
 #'
 #' # fit_coxreg_multivar
 #'
-#' ## Cox regression: multivariate cox regression
+#' ## Cox regression: multivariate Cox regression.
 #' multivar_model <- fit_coxreg_multivar(
 #'   variables = list(
 #'     time = "time", event = "status", arm = "armcd",
@@ -823,13 +885,25 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
 #'   data = dta_bladder
 #' )
 #'
+#' # Example without treatment arm.
+#' multivar_covs_model <- fit_coxreg_multivar(
+#'   variables = list(
+#'     time = "time", event = "status",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+#'
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {
+  assert_that(is_fully_named_list(variables))
+  has_arm <- "arm" %in% names(variables)
+  arm_name <- if (has_arm) "arm" else NULL
 
   assert_that(
     is.character(variables$covariates),
-    is_variables(variables[c("arm", "event", "time")]),
+    is_variables(variables[c(arm_name, "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables))),
     isFALSE(control$interaction)
   )
@@ -981,6 +1055,18 @@ tidy.coxreg.multivar <- function(x, # nousage # nolint
 #' df1 <- tidy(univar_model)
 #' s_coxreg(df = df1, .var = "hr")
 #'
+#' # Only covariates.
+#' univar_covs_model <- fit_coxreg_univar(
+#'   variables = list(
+#'     time = "time", event = "status",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+#' df1_covs <- tidy(univar_covs_model)
+#' s_coxreg(df = df1_covs, .var = "hr")
+#'
+#' # Multivariate.
 #' multivar_model <- fit_coxreg_multivar(
 #'   variables = list(
 #'     time = "time", event = "status", arm = "armcd",
@@ -990,6 +1076,17 @@ tidy.coxreg.multivar <- function(x, # nousage # nolint
 #' )
 #' df2 <- tidy(multivar_model)
 #' s_coxreg(df = df2, .var = "hr")
+#'
+#' # Multivariate without treatment arm.
+#' multivar_covs_model <- fit_coxreg_multivar(
+#'   variables = list(
+#'     time = "time", event = "status",
+#'     covariates = c("covar1", "covar2")
+#'   ),
+#'   data = dta_bladder
+#' )
+#' df2_covs <- tidy(multivar_covs_model)
+#' s_coxreg(df = df2_covs, .var = "hr")
 #'
 s_coxreg <- function(df, .var) {
   assert_that(
@@ -1016,10 +1113,15 @@ s_coxreg <- function(df, .var) {
 #' @inheritParams control_coxreg
 #' @param multivar (`flag`)\cr if `TRUE`, the multi-variable Cox regression will run
 #'   and no interaction will be considered between the studied treatment and c
-#'   candidate covariate. Default is `FALSE` for univariate Cox regression.
+#'   candidate covariate. Default is `FALSE` for univariate Cox regression including
+#'   an arm variable. When no arm variable is included in the univariate Cox regression,
+#'   then also `TRUE` should be used to tabulate the covariate effect estimates instead
+#'   of the treatment arm effect estimate across models.
 #' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n` (number of observation), `hr` (Hazard Ratio),
-#'  `ci` (confidence interval), `pval` (p.value of the treatment effect) and
+#'  `n` (number of observation),
+#'  `hr` (Hazard Ratio),
+#'  `ci` (confidence interval),
+#'  `pval` (p.value of the treatment effect) and
 #'  `pval_inter` (the p.value of the interaction effect between the treatment
 #'  and the covariate).
 #' @export
@@ -1039,6 +1141,21 @@ s_coxreg <- function(df, .var) {
 #'   summarize_coxreg(multivar = TRUE, conf_level = .95) %>%
 #'   build_table(df2)
 #' result_multivar
+#'
+#' # When tabulating univariate models with only covariates, also `multivar = TRUE`
+#' # is used.
+#' result_univar_covs <- basic_table() %>%
+#'   split_rows_by("term", child_labels = "hidden") %>%
+#'   summarize_coxreg(multivar = TRUE, conf_level = 0.95) %>%
+#'   build_table(df1_covs)
+#' result_univar_covs
+#'
+#' # No change for the multivariate tabulation when no treatment arm is included.
+#' result_multivar_covs <- basic_table() %>%
+#'   split_rows_by("term", child_labels = "hidden") %>%
+#'   summarize_coxreg(multivar = TRUE, conf_level = .95) %>%
+#'   build_table(df2_covs)
+#' result_multivar_covs
 #'
 summarize_coxreg <- function(lyt,
                              conf_level,

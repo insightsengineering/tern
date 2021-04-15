@@ -22,7 +22,9 @@ Note: there is no equivalent of SAS \code{EXACT} method in R.}
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{interaction}{(\code{flag})\cr if \code{TRUE}, the model includes the
-interaction between the studied treatment and candidate covariate.}
+interaction between the studied treatment and candidate covariate. Note that
+for univariate models without treatment arm, and multivariate models, no
+interaction can be used so that this needs to be \code{FALSE}.}
 }
 \value{
 A \code{list} of item corresponding to the arguments.

@@ -42,10 +42,14 @@ summarize_coxreg(
 \arguments{
 \item{variables}{(\code{list})\cr a named list corresponds to the names of variables found
 in \code{data}, passed as a named list and corresponding to \code{time}, \code{event}, \code{arm},
-and \code{covariates} terms.}
+and \code{covariates} terms. If \code{arm} is missing from \code{variables}, then
+only Cox model(s) including the \code{covariates} will be fitted and the corresponding
+effect estimates will be tabulated later.}
 
 \item{interaction}{(\code{flag})\cr if \code{TRUE}, the model includes the
-interaction between the studied treatment and candidate covariate.}
+interaction between the studied treatment and candidate covariate. Note that
+for univariate models without treatment arm, and multivariate models, no
+interaction can be used so that this needs to be \code{FALSE}.}
 
 \item{data}{(\verb{data frame})\cr the dataset containing the variables to fit the
 models.}
@@ -80,11 +84,16 @@ by a statistics function.}
 
 \item{multivar}{(\code{flag})\cr if \code{TRUE}, the multi-variable Cox regression will run
 and no interaction will be considered between the studied treatment and c
-candidate covariate. Default is \code{FALSE} for univariate Cox regression.}
+candidate covariate. Default is \code{FALSE} for univariate Cox regression including
+an arm variable. When no arm variable is included in the univariate Cox regression,
+then also \code{TRUE} should be used to tabulate the covariate effect estimates instead
+of the treatment arm effect estimate across models.}
 
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (number of observation), \code{hr} (Hazard Ratio),
-\code{ci} (confidence interval), \code{pval} (p.value of the treatment effect) and
+\code{n} (number of observation),
+\code{hr} (Hazard Ratio),
+\code{ci} (confidence interval),
+\code{pval} (p.value of the treatment effect) and
 \code{pval_inter} (the p.value of the interaction effect between the treatment
 and the covariate).}
 }
@@ -96,7 +105,7 @@ The function \code{h_coxreg_univar_formulas} returns a \code{character} vector c
 The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
 with 5 elements:
 \itemize{
-\item \code{mod}: Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.
+\item \code{mod}: Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.
 \item \code{data}: The original data frame input.
 \item \code{control}: The original control input.
 \item \code{vars}: The variables used in the model.
@@ -228,12 +237,26 @@ h_coxreg_univar_formulas(
   interaction = TRUE
 )
 
+## Only covariates fitted in separate models.
+h_coxreg_univar_formulas(
+  variables = list(
+    time = "time", event = "status", covariates = c("X", "y")
+  )
+)
+
 
 # `h_coxreg_multivar_formula`
 
 h_coxreg_multivar_formula(
   variables = list(
     time = "AVAL", event = "event", arm = "ARMCD", covariates = c("RACE", "AGE")
+  )
+)
+
+# Example without treatment arm.
+h_coxreg_multivar_formula(
+  variables = list(
+    time = "AVAL", event = "event", covariates = c("RACE", "AGE")
   )
 )
 
@@ -270,6 +293,15 @@ mod3 <- fit_coxreg_univar(
   control = control_coxreg(conf_level = 0.91)
 )
 
+## Cox regression: no arm, only covariates.
+mod4 <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+
 library(survival)
 
 dta_simple <-  data.frame(
@@ -292,10 +324,19 @@ tidy(mod2)
 
 # fit_coxreg_multivar
 
-## Cox regression: multivariate cox regression
+## Cox regression: multivariate Cox regression.
 multivar_model <- fit_coxreg_multivar(
   variables = list(
     time = "time", event = "status", arm = "armcd",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+
+# Example without treatment arm.
+multivar_covs_model <- fit_coxreg_multivar(
+  variables = list(
+    time = "time", event = "status",
     covariates = c("covar1", "covar2")
   ),
   data = dta_bladder
@@ -323,6 +364,18 @@ univar_model <- fit_coxreg_univar(
 df1 <- tidy(univar_model)
 s_coxreg(df = df1, .var = "hr")
 
+# Only covariates.
+univar_covs_model <- fit_coxreg_univar(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+df1_covs <- tidy(univar_covs_model)
+s_coxreg(df = df1_covs, .var = "hr")
+
+# Multivariate.
 multivar_model <- fit_coxreg_multivar(
   variables = list(
     time = "time", event = "status", arm = "armcd",
@@ -332,6 +385,17 @@ multivar_model <- fit_coxreg_multivar(
 )
 df2 <- tidy(multivar_model)
 s_coxreg(df = df2, .var = "hr")
+
+# Multivariate without treatment arm.
+multivar_covs_model <- fit_coxreg_multivar(
+  variables = list(
+    time = "time", event = "status",
+    covariates = c("covar1", "covar2")
+  ),
+  data = dta_bladder
+)
+df2_covs <- tidy(multivar_covs_model)
+s_coxreg(df = df2_covs, .var = "hr")
 
 
 # summarize_coxreg
@@ -347,5 +411,20 @@ result_multivar <- basic_table() \%>\%
   summarize_coxreg(multivar = TRUE, conf_level = .95) \%>\%
   build_table(df2)
 result_multivar
+
+# When tabulating univariate models with only covariates, also `multivar = TRUE`
+# is used.
+result_univar_covs <- basic_table() \%>\%
+  split_rows_by("term", child_labels = "hidden") \%>\%
+  summarize_coxreg(multivar = TRUE, conf_level = 0.95) \%>\%
+  build_table(df1_covs)
+result_univar_covs
+
+# No change for the multivariate tabulation when no treatment arm is included.
+result_multivar_covs <- basic_table() \%>\%
+  split_rows_by("term", child_labels = "hidden") \%>\%
+  summarize_coxreg(multivar = TRUE, conf_level = .95) \%>\%
+  build_table(df2_covs)
+result_multivar_covs
 
 }
