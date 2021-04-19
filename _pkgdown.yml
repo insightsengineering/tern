@@ -298,7 +298,9 @@ reference:
       - combine_vectors
       - empty_vector_if_na
       - to_n
+      - fct_collapse_only
       - fct_discard
+      - fct_explicit_na_if
       - n_available
       - range_noinf
 

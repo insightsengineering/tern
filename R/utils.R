@@ -68,40 +68,6 @@ get_covariates <- function(covariates) {
   setNames(as.list(cov_vars), cov_vars)
 }
 
-#' Combine Factor Levels
-#'
-#' Combine specified old factor Levels in a single new level.
-#'
-#' @param x factor
-#' @param levels level names to be combined
-#' @param new_level name of new level
-#'
-#' @return a factor
-#'
-#' @export
-#'
-#' @examples
-#' x <- factor(letters[1:5], levels = letters[5:1])
-#' tern:::combine_levels(x, levels = c('a', 'b') )
-#'
-#' tern:::combine_levels(x, c('e', 'b'))
-#'
-combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
-  stopifnot(
-    is.factor(x),
-    all(levels %in% levels(x))
-  )
-
-  lvls <- levels(x)
-
-  lvls[lvls %in% levels] <- new_level
-
-  levels(x) <- lvls
-
-  x
-}
-
-
 #' Replicate Entries of a Vector if Required
 #'
 #' Note that this will fail if `x` is not having length `n` or being a scalar.
@@ -121,65 +87,6 @@ to_n <- function(x, n) {
     x
   } else {
     stop("dimension mismatch")
-  }
-}
-
-#' Conversion of a Vector to a Factor
-#'
-#' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
-#' can decide whether they prefer converting to factor manually (e.g. for full control of
-#' factor levels).
-#'
-#' @param x (`atomic`)\cr object to convert.
-#' @param x_name (`string`)\cr name of `x`.
-#' @param na_level (`string`)\cr the explicit missing level which should be used when
-#'   converting a character vector.
-#'
-#' @return The factor with same attributes (except class) as `x`. Does not do any modifications
-#'   if `x` is already a factor.
-#'
-#' @export
-#'
-#' @examples
-#' as_factor_keep_attributes(with_label(c(1, 1, 2, 3), "id"))
-#' as_factor_keep_attributes(c("a", "b", ""), "id")
-#'
-as_factor_keep_attributes <- function(x,
-                                      x_name = deparse(substitute(x)),
-                                      na_level = "<Missing>") {
-  assert_that(
-    is.atomic(x),
-    is.string(x_name),
-    is.string(na_level)
-  )
-  if (is.factor(x)) {
-    return(x)
-  }
-  x_class <- class(x)[1]
-  warning(paste(
-    "automatically converting", x_class, "variable", x_name,
-    "to factor, better manually convert to factor to avoid failures"
-  ))
-  if (identical(length(x), 0L)) {
-    warning(paste(
-      x_name, "has length 0, this can lead to tabulation failures, better convert to factor"
-    ))
-  }
-  if (is.character(x)) {
-    x_no_na <- explicit_na(sas_na(x), label = na_level)
-    if (any(na_level %in% x_no_na)) {
-      do.call(
-        structure,
-        c(
-          list(.Data = forcats::fct_relevel(x_no_na, na_level, after = Inf)),
-          attributes(x)
-        )
-      )
-    } else {
-      do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
-    }
-  } else {
-    do.call(structure, c(list(.Data = as.factor(x)), attributes(x)))
   }
 }
 
@@ -502,28 +409,4 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #'
 n_available <- function(x) {
   sum(!is.na(x))
-}
-
-#' Discard Certain Levels from a Factor
-#'
-#' This discards the observations as well as the levels specified from a factor.
-#'
-#' @param x (`factor`)\cr the original factor.
-#' @param discard (`character`)\cr which levels to discard.
-#'
-#' @return The modified factor with observations as well as levels from `discard` dropped.
-#' @export
-#'
-#' @examples
-#' fct_discard(factor("a", "b", "c"), "c")
-#'
-fct_discard <- function(x, discard) {
-  assert_that(
-    is.factor(x),
-    is.character(discard),
-    noNA(discard)
-  )
-  new_obs <- x[x != discard]
-  new_levels <- setdiff(levels(x), discard)
-  factor(new_obs, levels = new_levels)
 }

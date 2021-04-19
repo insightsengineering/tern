@@ -1,37 +1,3 @@
-test_that("as_factor_keep_attributes works correctly for a character vector", {
-  foo <- with_label(c("a", "b"), "alphabet")
-  result <- expect_warning(
-    as_factor_keep_attributes(foo),
-    "automatically converting character variable foo to factor"
-  )
-  expected <- with_label(factor(c("a", "b")), "alphabet")
-  expect_identical(result, expected)
-})
-
-test_that("as_factor_keep_attributes converts empty strings for a character vector", {
-  foo <- with_label(c("a", "", "b"), "alphabet")
-  result <- expect_warning(
-    as_factor_keep_attributes(foo, na_level = "missing"),
-    "automatically converting character variable foo to factor"
-  )
-  expected <- with_label(factor(c("a", "missing", "b"), levels = c("a", "b", "missing")), "alphabet")
-  expect_identical(result, expected)
-})
-
-test_that("as_factor_keep_attributes shows correct name of vector in warning", {
-  foo <- with_label(c("a", "b"), "alphabet")
-  expect_warning(
-    as_factor_keep_attributes(foo, x_name = "FOO"),
-    "automatically converting character variable FOO to factor"
-  )
-})
-
-test_that("as_factor_keep_attributes does not modify a factor at all", {
-  foo <- factor(c(1, 2))
-  result <- expect_silent(as_factor_keep_attributes(foo))
-  expect_identical(result, foo)
-})
-
 test_that("f_conf_level works for proportion", {
   result <- f_conf_level(0.95)
   expected <- "95% CI"
@@ -54,6 +20,7 @@ test_that("get_covariates works for a character vector", {
   expected <- list(a = "a", b = "b", c = "c")
   expect_identical(result, expected)
 })
+
 test_that("get_covariates fails for non-character input", {
   expect_error(get_covariates(c(1, 2)))
   expect_error(get_covariates(factor(c("a", "b", "b"))))
@@ -70,20 +37,6 @@ test_that("day2month works correctly", {
   x <- c(403, 248, 30, 86)
   result <- day2month(x)
   expected <- c(13.2402464065708, 8.14784394250513, 0.985626283367556, 2.82546201232033)
-  expect_equal(result, expected)
-})
-
-test_that("combine_vectors works correctly", {
-  x <- c(1:3)
-  y <- c(4:6)
-  result <- combine_vectors(x, y)
-
-  expected <- list(
-    c(1, 4),
-    c(2, 5),
-    c(3, 6)
-  )
-
   expect_equal(result, expected)
 })
 
@@ -186,13 +139,6 @@ test_that("n_available works as expected", {
   x <- c(1, 2, 3, NA)
   result <- n_available(x)
   expected <- 3L
-  expect_identical(result, expected)
-})
-
-test_that("fct_discard works as expected", {
-  x <- factor(c("a", "b", "c"))
-  result <- fct_discard(x, "b")
-  expected <- factor(c("a", "c"))
   expect_identical(result, expected)
 })
 

@@ -130,5 +130,6 @@ Collate:
     'test_proportion_diff.R'
     'testthat_skip.R'
     'utils.R'
+    'utils_factor.R'
     'utils_grid.R'
     'wrap_text.R'
