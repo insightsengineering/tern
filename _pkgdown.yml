@@ -24,6 +24,7 @@ reference:
       - control_coxph
       - control_coxreg
       - control_incidence_rate
+      - control_step
       - control_surv_time
       - control_surv_timepoint
 
@@ -183,6 +184,10 @@ reference:
       - h_logistic_inter_terms
       - h_simple_term_labels
       - h_interaction_term_labels
+      - h_step_window
+      - h_step_trt_effect
+      - h_step_survival_formula
+      - h_step_survival_est
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
@@ -196,6 +201,7 @@ reference:
       - fit_coxreg_univar
       - fit_coxreg_multivar
       - fit_logistic
+      - fit_survival_step
       - as.rtable.mmrm
       - tidy.mmrm
       - tidy.summary.coxph

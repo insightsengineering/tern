@@ -32,6 +32,8 @@ by a statistics function.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
+
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
 \item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.

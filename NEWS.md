@@ -1,5 +1,3 @@
-* Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
-
 # tern 0.7.2.9000
 * Updated default position of hazard ratio table in `g_km` to stay
 on the left bottom corner but above x-axis for greater legibility.
@@ -15,6 +13,8 @@ on the left bottom corner but above x-axis for greater legibility.
 * Added a new argument `groups_lists` to `extract_survival_subgroups`, `extract_rsp_subgroups` and associated helper functions which allows to group factor levels of subgroup variables into manually defined groups, enhancing the flexibility of the resulting forest graphs.
 * Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fitted and the corresponding effect estimates can later be tabulated.
 * Modified `stat_median_ci` function so that when empty var with empty name is passed, no `row names contain missing values` error would show.
+* Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
+* Added Subgroup Treatment Effect Pattern (STEP) model fitting function `fit_survival_step`.
 * New utility functions to work with factors: `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided, and `fct_explicit_na_if` inserts explicit missings in a factor based on a condition.
 
 # tern 0.7.2

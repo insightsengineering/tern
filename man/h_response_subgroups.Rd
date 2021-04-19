@@ -35,7 +35,7 @@ h_odds_ratio_subgroups_df(
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
 list, which specifies the new group levels via the names and the

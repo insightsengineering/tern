@@ -25,6 +25,7 @@
 #'   by a statistics function.
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
+#' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
 #' @param df (`data frame`)\cr data set containing all analysis variables.
 #' @param drop (`flag`)\cr should non appearing occurrence levels be dropped from the resulting table.
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
