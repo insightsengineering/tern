@@ -6,17 +6,17 @@
 \usage{
 g_forest(
   tbl,
-  col_x,
-  col_ci,
-  vline = NULL,
+  col_x = 8,
+  col_ci = 9,
+  vline = 1,
   forest_header = h_default_forest_header(tbl),
-  xlim = NULL,
-  logx = FALSE,
-  x_at = NULL,
+  xlim = c(0.1, 10),
+  logx = TRUE,
+  x_at = c(0.1, 1, 10),
   width_row_names = NULL,
   width_columns = NULL,
   width_forest = unit(1, "null"),
-  col_symbol_size = NULL,
+  col_symbol_size = 1,
   draw = TRUE,
   newpage = TRUE
 )
@@ -143,6 +143,8 @@ g_forest(
   tbl = tbl,
   col_x = 1,
   col_ci = 2,
+  xlim = c(0.5, 2),
+  x_at = c(0.5, 1, 2),
   col_symbol_size = 3
 )
 
@@ -159,6 +161,8 @@ g_forest(
   tbl = tbl,
   col_x = 1,
   col_ci = 2,
+  xlim = c(0.5, 2),
+  x_at = c(0.5, 1, 2),
   vline = 1,
   forest_header = c("Hello", "World")
 )
