@@ -18,6 +18,6 @@ The modified factor with observations as well as levels from \code{discard} drop
 This discards the observations as well as the levels specified from a factor.
 }
 \examples{
-fct_discard(factor("a", "b", "c"), "c")
+fct_discard(factor(c("a", "b", "c")), "c")
 
 }

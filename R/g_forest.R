@@ -38,6 +38,7 @@ h_default_forest_header <- function(tbl) {
 #' Create a forest plot from any [rtables::rtable()] object that has a
 #' column with a single value and a column with 2 values.
 #'
+#' @inheritParams argument_convention
 #' @param tbl (`rtable`)
 #' @param col_x (`integer`)\cr column index with estimator.
 #' @param col_ci (`integer`)\cr column index with confidence intervals.
@@ -57,9 +58,6 @@ h_default_forest_header <- function(tbl) {
 #'  widths for the table columns. If `NULL` the widths get automatically calculated. See [grid::unit()].
 #' @param width_forest (`unit`)\cr
 #'  width for the forest column. If `NULL` the widths get automatically calculated. See [grid::unit()].
-#' @param draw (`flag`)\cr whether the plot should be drawn.
-#' @param newpage (`flag`)\cr
-#'  if `draw = TRUE` should plot be drawn on a new page.
 #' @param col_symbol_size (`integer`)\cr
 #'  column index from `tbl` containing data to be used to determine relative
 #'  size for estimator plot symbol. Typically, the symbol size is proportional to the

@@ -208,6 +208,7 @@ reference:
       - tidy.coxreg.univar
       - tidy.coxreg.multivar
       - tidy.glm
+      - tidy.step
       - logistic_regression_cols
       - logistic_summary_by_flag
 
@@ -219,6 +220,7 @@ reference:
       - g_waterfall
       - starts_with("g_mmrm")
       - g_ipp
+      - g_step
 
   - title: rtables Helper Functions
     desc: these functions help to work with the new rtables package and might be moved there later

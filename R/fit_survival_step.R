@@ -109,6 +109,10 @@ fit_survival_step <- function(variables,
     t(tmp)
   }
   result <- cbind(window_sel$interval, estimates)
-  class(result) <- c("matrix", "step")
-  result
+  structure(
+    result,
+    class = c("step", "matrix"),
+    variables = variables,
+    control = control
+  )
 }

@@ -60,8 +60,8 @@ size is used for all subgroups.}
 
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
-\item{newpage}{(\code{flag})\cr
-if \code{draw = TRUE} should plot be drawn on a new page.}
+\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
+Only considered if \code{draw = TRUE} is used.}
 }
 \description{
 Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a

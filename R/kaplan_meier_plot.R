@@ -24,8 +24,6 @@
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
 #' @param title (`string`)\cr title for plot.
-#' @param draw  (`flag`)\cr draw the plot on device.
-#' @param newpage (`flag`)\cr open a new page on the graphic device.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
 #'   to number of strata from [survival::survfit()].
 #' @param lty (`numeric`)\cr line type. Length of a vector should be equal
@@ -72,6 +70,7 @@ NULL
 #'
 #' @inheritParams grid::gTree
 #' @inheritParams kaplan_meier
+#' @inheritParams argument_convention
 #'
 #' @importFrom ggplot2 ggplotGrob
 #' @importFrom grid gList gTree grid.draw grid.newpage textGrob unit viewport

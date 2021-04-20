@@ -36,6 +36,8 @@ by a statistics function.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
+\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
+
 \item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
 
@@ -53,6 +55,9 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 \item{na_rm}{(\code{flag})\cr (deprecated) whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
+
+\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
+Only considered if \code{draw = TRUE} is used.}
 
 \item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
 

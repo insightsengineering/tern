@@ -101,6 +101,7 @@ Collate:
     'footnotes.R'
     'g_forest.R'
     'g_mmrm.R'
+    'g_step.R'
     'g_summary_by.R'
     'g_waterfall.R'
     'ggplot2_helper.R'

@@ -89,9 +89,10 @@ an optimal tick position on the x axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
 
-\item{draw}{(\code{flag})\cr draw the plot on device.}
+\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
-\item{newpage}{(\code{flag})\cr open a new page on the graphic device.}
+\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
+Only considered if \code{draw = TRUE} is used.}
 
 \item{gp}{A gpar object, typically the output
     from a call to the function \code{gpar}.  This is basically

@@ -27,6 +27,7 @@
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
 #' @param df (`data frame`)\cr data set containing all analysis variables.
+#' @param draw (`flag`)\cr whether the plot should be drawn.
 #' @param drop (`flag`)\cr should non appearing occurrence levels be dropped from the resulting table.
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
 #' @param id (`string`) \cr subject variable name.
@@ -37,6 +38,8 @@
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_rm (`flag`)\cr (deprecated) whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_level (`string`)\cr used to replace all `NA` or empty values in factors.
+#' @param newpage (`flag`)\cr whether the plot should be drawn on a new page.
+#'   Only considered if `draw = TRUE` is used.
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
 #' @param rsp (`logical`)\cr whether each subject is a responder or not.
 #' @param show_labels label visibility: one of "default", "visible" and "hidden".

@@ -1,4 +1,3 @@
-
 #' Combine Factor Levels
 #'
 #' Combine specified old factor Levels in a single new level.
@@ -104,7 +103,7 @@ as_factor_keep_attributes <- function(x,
 #' @export
 #'
 #' @examples
-#' fct_discard(factor("a", "b", "c"), "c")
+#' fct_discard(factor(c("a", "b", "c")), "c")
 #'
 fct_discard <- function(x, discard) {
   assert_that(
