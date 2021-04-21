@@ -1,4 +1,4 @@
-# tern 0.7.2.9000
+# tern 0.7.3
 * Updated default position of hazard ratio table in `g_km` to stay
 on the left bottom corner but above x-axis for greater legibility.
 * Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
