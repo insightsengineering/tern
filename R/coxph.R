@@ -78,6 +78,10 @@ univariate <- function(x) {
 #'   \item{tstr}{the strata term if included in the model.}
 #' }
 #'
+#' @section Warning:
+#' Note that `s_cox_univariate()` function is deprecated and will be removed in the coming releases.
+#' Please use the function `fit_coxreg_univar()` instead.
+#'
 #' @importFrom stats anova coef median model.matrix qnorm setNames terms update vcov
 #' @import survival
 #'
@@ -133,6 +137,9 @@ s_cox_univariate <- function(formula,
                              pval_method = c("wald", "likelihood"),
                              increments = NULL,
                              ...) {
+
+  ## Add deprecate warning
+  .Deprecated(new = "fit_coxreg_univar")
 
   ## Argument checks
   check_formula(formula)

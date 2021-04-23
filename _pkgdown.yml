@@ -373,3 +373,7 @@ reference:
       - h_tbl_coxph_pairwise
       - h_tbl_median_surv
       - h_xticks
+  - title: Deprecated Functions
+    desc: These functions will eventually be removed
+    contents:
+    - s_cox_univariate

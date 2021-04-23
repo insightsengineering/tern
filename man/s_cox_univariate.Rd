@@ -65,6 +65,12 @@ inclusion of the interaction terms and specified level of a quantitative variabl
 are therefore discriminated: no interaction with the covariate (i), interaction with a qualitative variable (ii),
 interaction with a quantitative variable without (iii) or with a specified level (iv) for the estimation.
 }
+\section{Warning}{
+
+Note that \code{s_cox_univariate()} function is deprecated and will be removed in the coming releases.
+Please use the function \code{fit_coxreg_univar()} instead.
+}
+
 \examples{
 library(random.cdisc.data)
 library(survival)
