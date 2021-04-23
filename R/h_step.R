@@ -149,7 +149,7 @@ h_step_survival_est <- function(formula,
     subset = .subset,
     ties = control$ties
   )
-  # produce a matrix with one row per `x` and columns `est` and `se`:
+  # Produce a matrix with one row per `x` and columns `est` and `se`.
   estimates <- t(vapply(
     X = x,
     FUN = h_step_trt_effect,
@@ -163,6 +163,95 @@ h_step_survival_est <- function(formula,
     n = fit$n,
     events = fit$nevent,
     loghr = estimates[, "est"],
+    se = estimates[, "se"],
+    ci_lower = estimates[, "est"] - q_norm * estimates[, "se"],
+    ci_upper = estimates[, "est"] + q_norm * estimates[, "se"]
+  )
+}
+
+#' @describeIn h_step builds the model formula used in response STEP calculations.
+#'
+h_step_rsp_formula <- function(variables,
+                               control = c(control_step(), control_logistic())) {
+  assert_that(
+    is.null(variables$covariates) || is.character(variables$covariates),
+    is_variables(variables[c("arm", "biomarker", "response")])
+  )
+  response_definition <- sub(
+    pattern = "response",
+    replacement = variables$response,
+    x = control$response_definition,
+    fixed = TRUE
+  )
+  form <- paste0(response_definition, " ~ ", variables$arm)
+  if (control$degree > 0) {
+    form <- paste0(form, " * poly(", variables$biomarker, ", degree = ", control$degree, ", raw = TRUE)")
+  }
+  if (!is.null(variables$covariates)) {
+    form <- paste(form, "+", paste(variables$covariates, collapse = "+"))
+  }
+  if (!is.null(variables$strata)) {
+    strata_arg <- if (length(variables$strata) > 1) {
+      paste0("I(interaction(", paste0(variables$strata, collapse = ", "), "))")
+    } else {
+      variables$strata
+    }
+    form <- paste0(form, "+ strata(", strata_arg, ")")
+  }
+  as.formula(form)
+}
+
+#' @describeIn h_step estimates the model with `formula` built based on
+#'   `variables` in `data` for a given `subset` and `control` parameters for the
+#'   logistic regression, and returns a matrix of number of observations `n`,
+#'   `events` as well as log hazard ratio estimates `loghr`, standard error `se`
+#'   and Wald confidence interval bounds `ci_lower` and `ci_upper`. One row is
+#'   included here for each biomarker value in `x`.
+#' @param formula (`formula`)\cr the regression model formula.
+#' @param subset (`logical`)\cr subset vector.
+#'
+h_step_rsp_est <- function(formula,
+                           data,
+                           variables,
+                           x,
+                           subset = rep(TRUE, nrow(data)),
+                           control = control_logistic()) {
+  assert_that(
+    is(formula, "formula"),
+    is_df_with_variables(data, variables),
+    is_numeric_vector(x),
+    is_logical_vector(subset),
+    is_fully_named_list(control)
+  )
+  # Note: `subset` in `glm` needs to be an expression referring to `data` variables.
+  data$.subset <- subset
+  fit <- if (is.null(variables$strata)) {
+    glm(
+      formula = formula,
+      data = data,
+      subset = .subset,
+      family = binomial("logit")
+    )
+  } else {
+    clogit(
+      formula = formula,
+      data = data,
+      subset = .subset
+    )
+  }
+  # Produce a matrix with one row per `x` and columns `est` and `se`.
+  estimates <- t(vapply(
+    X = x,
+    FUN = h_step_trt_effect,
+    FUN.VALUE = c(1, 2),
+    data = data,
+    model = fit,
+    variables = variables
+  ))
+  q_norm <- qnorm((1 + control$conf_level) / 2)
+  cbind(
+    n = length(fit$y),
+    logor = estimates[, "est"],
     se = estimates[, "se"],
     ci_lower = estimates[, "est"] - q_norm * estimates[, "se"],
     ci_upper = estimates[, "est"] + q_norm * estimates[, "se"]

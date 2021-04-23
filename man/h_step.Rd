@@ -6,6 +6,8 @@
 \alias{h_step_trt_effect}
 \alias{h_step_survival_formula}
 \alias{h_step_survival_est}
+\alias{h_step_rsp_formula}
+\alias{h_step_rsp_est}
 \title{Helper Functions for Subgroup Treatment Effect Pattern (STEP) Calculations}
 \usage{
 h_step_window(x, control = control_step())
@@ -21,6 +23,17 @@ h_step_survival_est(
   x,
   subset = rep(TRUE, nrow(data)),
   control = control_coxph()
+)
+
+h_step_rsp_formula(variables, control = c(control_step(), control_logistic()))
+
+h_step_rsp_est(
+  formula,
+  data,
+  variables,
+  x,
+  subset = rep(TRUE, nrow(data)),
+  control = control_logistic()
 )
 }
 \arguments{
@@ -58,6 +71,15 @@ ratio estimates. It returns a vector with elements \code{est} and \code{se}.
 \item \code{h_step_survival_est}: estimates the model with \code{formula} built based on
 \code{variables} in \code{data} for a given \code{subset} and \code{control} parameters for the
 Cox regression, and returns a matrix of number of observations \code{n},
+\code{events} as well as log hazard ratio estimates \code{loghr}, standard error \code{se}
+and Wald confidence interval bounds \code{ci_lower} and \code{ci_upper}. One row is
+included here for each biomarker value in \code{x}.
+
+\item \code{h_step_rsp_formula}: builds the model formula used in response STEP calculations.
+
+\item \code{h_step_rsp_est}: estimates the model with \code{formula} built based on
+\code{variables} in \code{data} for a given \code{subset} and \code{control} parameters for the
+logistic regression, and returns a matrix of number of observations \code{n},
 \code{events} as well as log hazard ratio estimates \code{loghr}, standard error \code{se}
 and Wald confidence interval bounds \code{ci_lower} and \code{ci_upper}. One row is
 included here for each biomarker value in \code{x}.

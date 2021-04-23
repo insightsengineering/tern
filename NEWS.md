@@ -14,7 +14,7 @@ on the left bottom corner but above x-axis for greater legibility.
 * Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fitted and the corresponding effect estimates can later be tabulated.
 * Modified `stat_median_ci` function so that when empty var with empty name is passed, no `row names contain missing values` error would show.
 * Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
-* Added Subgroup Treatment Effect Pattern (STEP) model fitting function `fit_survival_step`, tidy method `tidy.step` as well as the graph function `g_step`.
+* Added Subgroup Treatment Effect Pattern (STEP) model fitting functions `fit_rsp_step` and `fit_survival_step`, the corresponding tidy method `tidy.step` as well as the graph function `g_step`.
 * New utility functions to work with factors: `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided, and `fct_explicit_na_if` inserts explicit missings in a factor based on a condition.
 
 # tern 0.7.2

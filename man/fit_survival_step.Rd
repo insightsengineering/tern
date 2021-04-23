@@ -39,7 +39,6 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 # Testing dataset with just two treatment arms.
 library(random.cdisc.data)
 library(dplyr)
-library(forcats)
 
 adtte <- radtte(cached = TRUE)
 
@@ -50,7 +49,7 @@ adtte_f <- adtte \%>\%
   ) \%>\%
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
-    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+    ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
     is_event = CNSR == 0
   ) \%>\%
   var_relabel(

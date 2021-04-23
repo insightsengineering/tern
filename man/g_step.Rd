@@ -32,12 +32,15 @@ along the continuous biomarker value subgroups.
 \examples{
 library(survival)
 lung$sex <- factor(lung$sex)
+
+# Survival example.
 vars <- list(
   time = "time",
   event = "status",
   arm = "sex",
   biomarker = "age"
 )
+
 step_matrix <- fit_survival_step(
   variables = vars,
   data = lung,
@@ -66,5 +69,23 @@ g_step(
 step_data$extra <- exp(step_data$`Percentile Center`)
 g_step(step_data) +
   geom_line(aes(y = extra), linetype = 2, color = "green")
+
+# Response example.
+vars <- list(
+  response = "status",
+  arm = "sex",
+  biomarker = "age"
+)
+
+step_matrix <- fit_rsp_step(
+  variables = vars,
+  data = lung,
+  control = c(
+    control_logistic(response_definition = "I(response == 2)"),
+    control_step()
+  )
+)
+step_data <- broom::tidy(step_matrix)
+g_step(step_data)
 
 }
