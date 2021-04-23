@@ -1,0 +1,102 @@
+---
+title: "Design for Liver Laboratory Tests - Patients with Elevated Post-Baseline AST or ALT Levels at Two Consecutive Visits (with respect to baseline) (LBT10_BL)"
+author: "Wojciech Wojciak"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of LBT10_BL}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+Configuration
+=============
+
+```{r setup}
+library(dplyr)
+library(tern)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+Data for examples
+=================
+
+```{r data, results = "asis", eval = TRUE}
+
+# Download data files from BEE. At the terminal, run:
+# scp bee.roche.com:/opt/bee/analyses/stream2/master/2.10/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adhy.sas7bdat
+# scp bee.roche.com:/opt/bee/analyses/stream2/master/2.10/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adsl.sas7bdat
+
+adhy <- haven::read_sas(data_file = "adhy.sas7bdat")
+adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
+
+# Used for population N's shown in table header.
+adsl <- adsl %>% filter(SAFFL == "Y")
+
+# Select LBT10_BL parameters
+anl <- adhy %>%
+  filter(SAFFL == "Y") %>%
+  filter(PARAMCD %in% c("BL2AL2CB", "BL2AS2CB", "BG2AL2CB", "BG2AS2CB",
+                        "B2A2L2CB", "B2A2S2CB", "B2A5L2CB", "B2A5S2CB"))
+
+# Create TBILI_CAT - this is needed so we get the right nesting in the table.
+anl <- anl %>%
+  mutate(
+    TBILI_CAT = factor(case_when(
+      PARAMCD %in% c("BL2AL2CB", "BL2AS2CB") ~ "Total Bilirubin <= 2xULN",
+      PARAMCD %in% c("BG2AL2CB", "BG2AS2CB") ~ "Total Bilirubin > 2xULN",
+      PARAMCD %in% c("B2A2L2CB", "B2A2S2CB") ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 2xULN",
+      PARAMCD %in% c("B2A5L2CB", "B2A5S2CB") ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 5xULN"
+    ))
+  )
+
+# Create ALTAST_IND - this will be the labels for the ALT/AST categories displayed in the table.
+anl <- anl %>%
+  mutate(
+    ALTAST_IND = factor(case_when(
+      PARAMCD %in% c("BL2AL2CB", "BG2AL2CB", "B2A2L2CB", "B2A5L2CB") & AVALC == "Y" ~ "ALT >3xULN at 2 Visits",
+      PARAMCD %in% c("BL2AS2CB", "BG2AS2CB", "B2A2S2CB", "B2A5S2CB") & AVALC == "Y" ~ "AST >3xULN at 2 Visits",
+      TRUE ~ "Criteria not met"
+    ))
+  )
+
+anl <- df_explicit_na(anl)
+```
+
+Layout
+======
+
+```{r layout}
+
+tbl <- basic_table() %>%
+  split_cols_by("ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("TBILI_CAT") %>%
+  # below split helps us get the right denominator between ALT/AST categories but it's hidden
+  split_rows_by("PARAM", child_labels = "hidden", split_fun = drop_split_levels) %>%
+  count_occurrences("ALTAST_IND", .stats = "fraction", denom = "n") %>%
+  append_topleft("Liver Laboratory Test Criterion") %>%
+  build_table(anl, alt_counts_df = adsl)
+
+tbl
+
+# Filter out AVALC=N (Criteria not met) records.
+criteria_fun <- function(tr) {
+  row_label <- obj_label(tr)
+  ifelse(row_label == "Criteria not met", TRUE, FALSE)
+}
+
+result <- tbl %>% trim_rows(criteria = criteria_fun)
+result
+```
