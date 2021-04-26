@@ -294,7 +294,6 @@ reference:
       - stat_median_ci
       - h_g_ipp
       - h_set_nest_theme
-      - h_default_forest_header
 
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data

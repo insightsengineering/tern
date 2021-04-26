@@ -1,38 +1,3 @@
-#' Production of a Default `forest_header`
-#'
-#' This helper functions produces a default `forest_header` for [g_forest()].
-#' This will work well with the usual full table returned by [tabulate_rsp_subgroups()]
-#' and [tabulate_survival_subgroups()]. If no arm names can be inferred, it will just
-#' return `NULL` such that no header will be included by default. If arms names can be inferred,
-#' but not exactly two, an error will be thrown.
-#'
-#' @param tbl (`rtable`)\cr input table.
-#'
-#' @return Either a character vector with two elements, or `NULL`.
-#'
-h_default_forest_header <- function(tbl) {
-  tbl_names <- names(col_exprs(col_info(tbl)))
-  is_blank <- grepl("^(\\s+)\\..*", tbl_names)
-  stats_names <- tbl_names[is_blank]
-  has_hr <- any(grepl("\\.hr$", stats_names))
-  arm_names <- tbl_names[!is_blank]
-  if (length(arm_names)) {
-    first_parts <- unique(gsub("^(.+)\\..*", "\\1", arm_names))
-    assert_that(
-      identical(length(first_parts), 2L),
-      msg = "Default `forest_header` could not be constructed, please specify manually"
-    )
-    if (has_hr) {
-      # If the table has a hazard ratio column, we infer that this is a survival table
-      # and therefore revert the labels.
-      first_parts <- rev(first_parts)
-    }
-    paste0(first_parts, "\nBetter")
-  } else {
-    NULL
-  }
-}
-
 #' Create a Forest Plot based on a Table
 #'
 #' Create a forest plot from any [rtables::rtable()] object that has a
@@ -40,15 +5,16 @@ h_default_forest_header <- function(tbl) {
 #'
 #' @inheritParams argument_convention
 #' @param tbl (`rtable`)
-#' @param col_x (`integer`)\cr column index with estimator.
-#' @param col_ci (`integer`)\cr column index with confidence intervals.
+#' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
+#'   `tbl` attribute `col_x`, otherwise needs to be manually specified.
+#' @param col_ci (`integer`)\cr column index with confidence intervals. By default tries
+#'   to get this from `tbl` attribute `col_ci`, otherwise needs to be manually specified.
 #' @param vline (`number`)\cr
 #'   x coordinate for vertical line, if `NULL` then the line is omitted.
 #' @param forest_header (`character`, length 2)\cr
 #'   text displayed to the left and right of `vline`, respectively.
 #'   If `vline = NULL` then `forest_header` needs to be `NULL` too.
-#'   Has a reasonable default text parsed from the `tbl` arguments when this is the usual
-#'   full table returned by [tabulate_rsp_subgroups()] and [tabulate_survival_subgroups()].
+#'   By default tries to get this from `tbl` attribute `forest_header`.
 #' @param xlim (`numeric`)\cr limits for x axis.
 #' @param logx (`flag`)\cr show the x-values on logarithm scale.
 #' @param x_at (`numeric)\cr x-tick locations, if `NULL` they get automatically chosen.
@@ -100,16 +66,7 @@ h_default_forest_header <- function(tbl) {
 #' tbl <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
 #'
-#' p <- g_forest(
-#'   tbl = tbl,
-#'   col_x = 6,
-#'   col_ci = 7,
-#'   vline = 1,
-#'   xlim = c(.1, 10),
-#'   logx = TRUE,
-#'   x_at = c(.1, 1, 10),
-#'   draw = FALSE
-#' )
+#' p <- g_forest(tbl)
 #'
 #' draw_grob(p)
 #'
@@ -119,15 +76,8 @@ h_default_forest_header <- function(tbl) {
 #' tbl_or
 #'
 #' p <- g_forest(
-#'   tbl = tbl_or,
-#'   col_x = 2,
-#'   col_ci = 3,
-#'   vline = 1,
-#'   forest_header = c("Treatment\nBetter", "Comparison\nBetter"),
-#'   xlim = c(.1, 10),
-#'   logx = TRUE,
-#'   x_at = c(.1, 1, 10),
-#'   draw = FALSE
+#'   tbl_or,
+#'   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 #' )
 #'
 #' draw_grob(p)
@@ -169,10 +119,10 @@ h_default_forest_header <- function(tbl) {
 #' )
 #'
 g_forest <- function(tbl,
-                     col_x = 8,
-                     col_ci = 9,
+                     col_x = attr(tbl, "col_x"),
+                     col_ci = attr(tbl, "col_ci"),
                      vline = 1,
-                     forest_header = h_default_forest_header(tbl),
+                     forest_header = attr(tbl, "forest_header"),
                      xlim = c(0.1, 10),
                      logx = TRUE,
                      x_at = c(0.1, 1, 10),
@@ -188,6 +138,8 @@ g_forest <- function(tbl,
   nr <- nrow(tbl)
   nc <- ncol(tbl)
 
+  assert_that(!is.null(col_x), msg = "Please specify `col_x` manually.")
+  assert_that(!is.null(col_ci), msg = "Please specify `col_ci` manually.")
   stopifnot(
     col_x > 0 && col_x <= nc,
     col_ci > 0 && col_ci <= nc,

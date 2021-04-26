@@ -11,6 +11,7 @@ on the left bottom corner but above x-axis for greater legibility.
 * Added a new argument `armval` to `h_tbl_median_surv` and `h_grob_median_surv` to allow use of arm value as strata name in `g_km` when treatment arm variable only has one level.
 * New argument `no_fillin_visits` added to `h_adsl_adlb_merge_using_worst_flag` to specify the visits that are excluded from post-baseline worst toxicity grade output. Improved `h_adsl_adlb_merge_using_worst_flag` to include variables shared between `adsl` and `adlb`, along with `PARAM`, `PARAMCD`, `ATOXGR`, `BTOXGR` and optionally `AVISIT`, `AVISITN` when `by_visit = TRUE`. Previously, output only contains `USUBJID`, `ARMCD`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.
 * Added a new argument `groups_lists` to `extract_survival_subgroups`, `extract_rsp_subgroups` and associated helper functions which allows to group factor levels of subgroup variables into manually defined groups, enhancing the flexibility of the resulting forest graphs.
+* Forest graph function `g_forest` now extracts default arguments from attributes of the input table produced by `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` so that the user does not have to do this manually anymore.
 * Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fitted and the corresponding effect estimates can later be tabulated.
 * Modified `stat_median_ci` function so that when empty var with empty name is passed, no `row names contain missing values` error would show.
 * Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
@@ -110,7 +111,6 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Added possibility in `t_tte` to specify confidence level independent for `survfit`, `coxph`, and `ztest`, see the manual.
 * Fixed bug in `t_rsp` of not showing p-value, odds ratio and CIs when `strata_data` is not `NULL`.
 * Added stratified analysis for `t_forest_rsp` and `t_forest_tte`, stratified analysis is footnoted in `g_forest`.
-* Added helper function `h_default_forest_header` which gives a reasonable default for `forest_header` argument of `g_forest` if full tables are used, such that the user does not need to do this manually.
 * Added `footnotes`, `footnotes<-` and `add_footnotes<-` functions to deal with footnotes.
 * Added argument `conf_int` for confidence interval level to `t_el_forest_rps`, `t_forest_rsp`, `t_el_forest_tte`, `t_forest_tte`.
 * Added argument `col_symbol_size` to `g_forest` to control the relative size of symbols used in the plot.

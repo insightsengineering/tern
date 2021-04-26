@@ -295,13 +295,21 @@ tabulate_survival_subgroups <- function(lyt,
 
   if (is.null(table_survtime)) {
     result <- table_hr
+    hr_id <- match("hr", colvars_hr$vars)
+    ci_id <- match("lcl", colvars_hr$vars)
   } else {
     n_tot_id <- match("n_tot", colvars_hr$vars)
     result <- cbind_rtables(table_hr[, n_tot_id], table_survtime, table_hr[, -n_tot_id])
+    hr_id <- 1 + ncol(table_survtime) + match("hr", colvars_hr$vars[-n_tot_id])
+    ci_id <- 1 + ncol(table_survtime) + match("lcl", colvars_hr$vars[-n_tot_id])
   }
 
-  result
-
+  structure(
+    result,
+    forest_header = paste0(rev(levels(df$survtime$arm)), "\nBetter"),
+    col_x = hr_id,
+    col_ci = ci_id
+  )
 }
 
 #' Labels for Column Variables in Survival Duration by Subgroup Table
