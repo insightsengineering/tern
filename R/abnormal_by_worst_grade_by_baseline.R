@@ -78,7 +78,7 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
   worst_flag = c("WGRHIFL" = "Y"),
   by_visit = FALSE,
   no_fillin_visits = c("SCREENING", "BASELINE")
-){
+) {
   col_names <- names(worst_flag)
   filter_values <- worst_flag
 
