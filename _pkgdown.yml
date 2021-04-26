@@ -314,6 +314,8 @@ reference:
       - fct_explicit_na_if
       - n_available
       - range_noinf
+      - bins_percent_labels
+      - cut_quantile_bins
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
@@ -328,6 +330,7 @@ reference:
       - is_valid_factor
       - is_proportion
       - is_proportion_vector
+      - is_quantiles_vector
 
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers

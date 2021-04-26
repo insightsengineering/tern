@@ -10,6 +10,7 @@
 \alias{is_equal_length}
 \alias{is_proportion}
 \alias{is_proportion_vector}
+\alias{is_quantiles_vector}
 \alias{is_valid_factor}
 \alias{is_factor_no_na}
 \alias{is_valid_character}
@@ -32,6 +33,8 @@ is_equal_length(...)
 is_proportion(x, include_boundaries = FALSE)
 
 is_proportion_vector(x, include_boundaries = FALSE)
+
+is_quantiles_vector(x, include_boundaries = FALSE)
 
 is_valid_factor(x)
 
@@ -83,6 +86,9 @@ are all factors.
 \item \code{is_proportion}: Check whether \code{x} is a proportion: number between 0 and 1.
 
 \item \code{is_proportion_vector}: Check whether \code{x} is a vector of proportions (numbers between 0 and 1).
+
+\item \code{is_quantiles_vector}: Check whether \code{x} is a sorted vector of unique quantile proportions
+(numbers between 0 and 1).
 
 \item \code{is_valid_factor}: Check whether \code{x} is a valid factor (has levels and no empty string levels).
 
@@ -145,6 +151,13 @@ is_proportion(x = 0, include_boundaries = TRUE)
 is_proportion_vector(c(0.3, 0.1))
 is_proportion_vector(c(1.3, 0.1))
 is_proportion_vector(0, include_boundaries = TRUE)
+
+
+# Check whether `x` is a vector of sorted quantile proportions between 0 and 1.
+is_quantiles_vector(c(0.1, 0.3))
+is_quantiles_vector(c(0.3, 0.1))
+is_quantiles_vector(c(0.3, 0.3))
+is_quantiles_vector(0, include_boundaries = TRUE)
 
 
 # Check whether `x` is a valid factor.

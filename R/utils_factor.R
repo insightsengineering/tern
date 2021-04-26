@@ -91,6 +91,118 @@ as_factor_keep_attributes <- function(x,
   }
 }
 
+#' Labels for Bins in Percent
+#'
+#' This creates labels for quantile based bins in percent. This assumes the right-closed
+#' intervals as produced by [cut_quantile_bins()].
+#'
+#' @param probs (`proportion` vector)\cr the probabilities identifying the quantiles.
+#'   This is a sorted vector of unique `proportion` values, i.e. between 0 and 1, where
+#'   the boundaries 0 and 1 must not be included.
+#' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
+#'
+#' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
+#' @export
+#'
+#' @examples
+#' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
+#' bins_percent_labels(c(0.2, 0.5))
+#'
+#' # Determine how to round.
+#' bins_percent_labels(0.35224, digits = 1)
+#'
+#' # Passing an empty vector just gives a single bin 0-100%.
+#' bins_percent_labels(c())
+#'
+bins_percent_labels <- function(probs,
+                                digits = 0) {
+  assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
+  probs <- c(0, probs, 1)
+  percent <- round(probs * 100, digits = digits)
+  left <- paste0(head(percent, -1), "%")
+  right <- paste0(tail(percent, -1), "%")
+  without_left_bracket <- paste0(left, ",", right, "]")
+  with_left_bracket <- paste0("[", head(without_left_bracket, 1))
+  if (length(without_left_bracket) > 1) {
+    with_left_bracket <- c(
+      with_left_bracket,
+      paste0("(", tail(without_left_bracket, -1))
+    )
+  }
+  with_left_bracket
+}
+
+#' Cutting Numeric Vector into Empirical Quantile Bins
+#'
+#' This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
+#' the right side. That is, the first bin is the interval `[-Inf, q1]` where `q1` is
+#' the first quantile, the second bin is then `(q1, q2]`, etc., and the last bin
+#' is `(qn, +Inf]` where `qn` is the last quantile.
+#'
+#' @inheritParams bins_percent_labels
+#' @param x (`numeric`)\cr the continuous variable values which should be cut into
+#'   quantile bins. This may contain `NA` values, which are then
+#'   not used for the quantile calculations, but included in the return vector.
+#' @param labels (`character`)\cr the unique labels for the quantile bins. When there are `n`
+#'   probabilities in `probs`, then this must be `n + 1` long.
+#' @param type (`integer`)\cr type of quantiles to use, see [stats::quantile()] for details.
+#' @param ordered (`flag`)\cr should the result be an ordered factor.
+#'
+#' @return The factor variable with the appropriately labeled bins as levels.
+#' @export
+#'
+#' @examples
+#' # Default is to cut into quartile bins.
+#' cut_quantile_bins(cars$speed)
+#'
+#' # Use custom quantiles.
+#' cut_quantile_bins(cars$speed, probs = c(0.1, 0.2, 0.6, 0.88))
+#'
+#' # Use custom labels.
+#' cut_quantile_bins(cars$speed, labels = paste0("Q", 1:4))
+#'
+#' # NAs are preserved in result factor.
+#' ozone_binned <- cut_quantile_bins(airquality$Ozone)
+#' which(is.na(ozone_binned))
+#' # So you might want to make these explicit.
+#' explicit_na(ozone_binned)
+#'
+cut_quantile_bins <- function(x,
+                              probs = c(0.25, 0.5, 0.75),
+                              labels = bins_percent_labels(probs),
+                              type = 7,
+                              ordered = TRUE) {
+  assert_that(
+    is.numeric(x),
+    is_quantiles_vector(probs, include_boundaries = FALSE),
+    is_character_vector(labels, min_length = length(probs) + 1, max_length = length(probs) + 1),
+    !any(duplicated(labels)),
+    is.flag(ordered)
+  )
+  if (all(is.na(x))) {
+    # Early return if there are only NAs in input.
+    return(factor(x, ordered = ordered, levels = labels))
+  }
+  probs <- c(0, probs, 1)
+  quantiles <- quantile(
+    x,
+    probs = probs,
+    type = type,
+    na.rm = TRUE
+  )
+  assert_that(
+    !any(duplicated(quantiles)),
+    msg = "Duplicate quantiles produced, please use a coarser `probs` vector"
+  )
+  cut(
+    x,
+    breaks = quantiles,
+    labels = labels,
+    ordered_result = ordered,
+    include.lowest = TRUE,
+    right = TRUE
+  )
+}
 
 #' Discard Certain Levels from a Factor
 #'

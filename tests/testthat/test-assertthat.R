@@ -129,6 +129,13 @@ test_that("is_proportion_vector works as expected", {
   expect_false(is_proportion_vector(c(1, -1), include_boundaries = TRUE))
 })
 
+test_that("is_quantiles_vector works as expected", {
+  expect_true(is_quantiles_vector(c(0.1, 0.3)))
+  expect_false(is_quantiles_vector(c(0.3, 0.1)))
+  expect_false(is_quantiles_vector(c(0.3, 0.3)))
+  expect_true(is_quantiles_vector(0, include_boundaries = TRUE))
+})
+
 test_that("has_tabletree_colnames works correctly", {
   tab <- basic_table() %>%
     analyze("SEX") %>%

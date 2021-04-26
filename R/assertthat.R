@@ -187,6 +187,26 @@ on_failure(is_proportion_vector) <- function(call, env) {
   paste(deparse(call$x), "is not a vector of proportions (numbers between 0 and 1)")
 }
 
+#' @describeIn assertions Check whether `x` is a sorted vector of unique quantile proportions
+#'   (numbers between 0 and 1).
+#' @export
+#' @examples
+#'
+#' # Check whether `x` is a vector of sorted quantile proportions between 0 and 1.
+#' is_quantiles_vector(c(0.1, 0.3))
+#' is_quantiles_vector(c(0.3, 0.1))
+#' is_quantiles_vector(c(0.3, 0.3))
+#' is_quantiles_vector(0, include_boundaries = TRUE)
+#'
+is_quantiles_vector <- function(x, include_boundaries = FALSE) {
+  is_proportion_vector(x, include_boundaries = include_boundaries) &&
+    !is.unsorted(x) &&
+    !any(duplicated(x))
+}
+on_failure(is_quantiles_vector) <- function(call, env) {
+  paste(deparse(call$x), "is not a sorted vector of unique quantile proportions")
+}
+
 #' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty string levels).
 #' @export
 #' @examples

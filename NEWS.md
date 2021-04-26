@@ -16,7 +16,8 @@ on the left bottom corner but above x-axis for greater legibility.
 * Modified `stat_median_ci` function so that when empty var with empty name is passed, no `row names contain missing values` error would show.
 * Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
 * Added Subgroup Treatment Effect Pattern (STEP) model fitting functions `fit_rsp_step` and `fit_survival_step`, the corresponding tidy method `tidy.step` as well as the graph function `g_step`.
-* New utility functions to work with factors: `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided, and `fct_explicit_na_if` inserts explicit missings in a factor based on a condition.
+* New utility functions to work with factors: `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided, and `fct_explicit_na_if` inserts explicit missings in a factor based on a condition. 
+* Added utility function `cut_quantile_bins` to cut a numeric vector into quantile bins.
 * Deprecated `s_cox_univariate` function, use `fit_coxreg_univar` function instead.
 
 # tern 0.7.2
