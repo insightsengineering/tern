@@ -289,6 +289,32 @@ test_that("h_step_survival_est works as expected", {
   expect_equal(result[, "loghr"], c(1.075486, 1.082507, 1.089528), tol = 1e-6)
 })
 
+test_that("h_step_survival_est gives a readable warning when fitting warnings occur", {
+  dta_simple <- get_simple()
+  vars <- list(
+    arm = "armcd",
+    biomarker = "age",
+    time = "time",
+    event = "status",
+    covariates = "stage"
+  )
+  age_vals <- c(20, 30, 40)
+  # We increase `degree` such that model becomes very complex and hence fitting warnings occur.
+  form <- h_step_survival_formula(
+    variables = vars,
+    control = control_step(degree = 4)
+  )
+  expect_warning(
+    h_step_survival_est(
+      formula = form,
+      data = dta_simple,
+      variables = vars,
+      x = age_vals
+    ),
+    "Fit warnings occurred, please consider using a simpler model"
+  )
+})
+
 # h_step_rsp_formula ----
 
 test_that("h_step_rsp_formula works correctly without covariates", {
@@ -404,4 +430,30 @@ test_that("h_step_rsp_est works as expected with strata", {
   expect_identical(colnames(result), c("n", "logor", "se", "ci_lower", "ci_upper"))
   expect_equal(result[, "logor"], c(1.134057, 0.511102, -0.111853), tol = 1e-6)
   expect_equal(result[, "n"], rep(sum(subset), 3L))
+})
+
+test_that("h_step_rsp_est gives a readable warning when fitting warnings occur", {
+  dta_simple <- get_simple()
+  vars <- list(
+    arm = "armcd",
+    biomarker = "age",
+    response = "rsp",
+    covariates = "time",
+    strata = "stage"
+  )
+  age_vals <- c(20, 30, 40)
+  # We increase `degree` such that model becomes very complex and hence fitting warnings occur.
+  form <- h_step_rsp_formula(
+    variables = vars,
+    control = c(control_logistic(), control_step(degree = 4))
+  )
+  expect_warning(
+    h_step_rsp_est(
+      formula = form,
+      data = dta_simple,
+      variables = vars,
+      x = age_vals
+    ),
+    "Fit warnings occurred, please consider using a simpler model"
+  )
 })

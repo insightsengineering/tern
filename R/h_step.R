@@ -143,12 +143,31 @@ h_step_survival_est <- function(formula,
   )
   # Note: `subset` in `coxph` needs to be an expression referring to `data` variables.
   data$.subset <- subset
-  fit <- coxph(
-    formula = formula,
-    data = data,
-    subset = .subset,
-    ties = control$ties
+  coxph_warnings <- NULL
+  tryCatch(
+    withCallingHandlers(
+      expr = {
+        fit <- coxph(
+          formula = formula,
+          data = data,
+          subset = .subset,
+          ties = control$ties
+        )
+      },
+      warning = function(w) {
+        coxph_warnings <<- c(coxph_warnings, w)
+        invokeRestart("muffleWarning")
+      }
+    ),
+    finally = {
+    }
   )
+  if (!is.null(coxph_warnings)) {
+    warning(paste(
+      "Fit warnings occurred, please consider using a simpler model, or",
+      "larger `bandwidth`, less `num_points` in `control_step()` settings"
+    ))
+  }
   # Produce a matrix with one row per `x` and columns `est` and `se`.
   estimates <- t(vapply(
     X = x,
@@ -225,19 +244,38 @@ h_step_rsp_est <- function(formula,
   )
   # Note: `subset` in `glm` needs to be an expression referring to `data` variables.
   data$.subset <- subset
-  fit <- if (is.null(variables$strata)) {
-    glm(
-      formula = formula,
-      data = data,
-      subset = .subset,
-      family = binomial("logit")
-    )
-  } else {
-    clogit(
-      formula = formula,
-      data = data,
-      subset = .subset
-    )
+  fit_warnings <- NULL
+  tryCatch(
+    withCallingHandlers(
+      expr = {
+        fit <- if (is.null(variables$strata)) {
+          glm(
+            formula = formula,
+            data = data,
+            subset = .subset,
+            family = binomial("logit")
+          )
+        } else {
+          clogit(
+            formula = formula,
+            data = data,
+            subset = .subset
+          )
+        }
+      },
+      warning = function(w) {
+        fit_warnings <<- c(fit_warnings, w)
+        invokeRestart("muffleWarning")
+      }
+    ),
+    finally = {
+    }
+  )
+  if (!is.null(fit_warnings)) {
+    warning(paste(
+      "Fit warnings occurred, please consider using a simpler model, or",
+      "larger `bandwidth`, less `num_points` in `control_step()` settings"
+    ))
   }
   # Produce a matrix with one row per `x` and columns `est` and `se`.
   estimates <- t(vapply(

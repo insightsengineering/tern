@@ -36,6 +36,23 @@ tidy.step <- function(x, ...) {  #nolint #nousage
   new_y_vars <- c(new_est_var, c("ci_lower", "ci_upper"))
   names(dat)[match(est_var, nams)] <- new_est_var
   dat[, new_y_vars] <- exp(dat[, new_y_vars])
+  any_is_na <- any(is.na(dat[, new_y_vars]))
+  any_is_very_large <- any(abs(dat[, new_y_vars]) > 1e10, na.rm = TRUE)
+  if (any_is_na) {
+    warning(paste(
+      "Missing values in the point estimate or CI columns,",
+      "this will lead to holes in the `g_step()` plot"
+    ))
+  }
+  if (any_is_very_large) {
+    warning(paste(
+      "Very large absolute values in the point estimate or CI columns,",
+      "consider adding `scale_y_log10()` to the `g_step()` result for plotting"
+    ))
+  }
+  if (any_is_na || any_is_very_large) {
+    warning("Consider using larger `bandwidth`, less `num_points` in `control_step()` settings for fitting")
+  }
   structure(
     tibble::as_tibble(dat),
     estimate = new_est_var,

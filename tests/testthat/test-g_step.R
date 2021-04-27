@@ -53,3 +53,37 @@ test_that("tidy.step works as expected for response STEP results", {
   expect_equal(result[["Odds Ratio"]], exp(step_matrix[, "logor"]))
   expect_equal(result$ci_lower, exp(step_matrix[, "ci_lower"]))
 })
+
+test_that("tidy.step gives expected warnings when there are NAs in y variables", {
+  step_matrix <- structure(
+    cbind(loghr = c(1, 2), ci_lower = c(NA, 1), ci_upper = c(3, 6)),
+    class = c("step", "matrix"),
+    control = list(conf_level = 0.9),
+    variables = list(biomarker = "bla")
+  )
+  expect_warning(
+    broom::tidy(step_matrix),
+    "Missing values in the point estimate or CI columns"
+  )
+  expect_warning(
+    broom::tidy(step_matrix),
+    "Consider using larger `bandwidth`, less `num_points`"
+  )
+})
+
+test_that("tidy.step gives expected warnings when there are very large values in y variables", {
+  step_matrix <- structure(
+    cbind(loghr = c(1, 2), ci_lower = c(1e100, 1), ci_upper = c(3, 6)),
+    class = c("step", "matrix"),
+    control = list(conf_level = 0.9),
+    variables = list(biomarker = "bla")
+  )
+  expect_warning(
+    broom::tidy(step_matrix),
+    "Very large absolute values in the point estimate or CI columns"
+  )
+  expect_warning(
+    broom::tidy(step_matrix),
+    "Consider using larger `bandwidth`, less `num_points`"
+  )
+})

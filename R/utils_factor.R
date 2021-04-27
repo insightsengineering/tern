@@ -102,6 +102,7 @@ as_factor_keep_attributes <- function(x,
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
+#' @importFrom utils head tail
 #' @export
 #'
 #' @examples
@@ -119,14 +120,14 @@ bins_percent_labels <- function(probs,
   assert_that(is_quantiles_vector(probs, include_boundaries = FALSE))
   probs <- c(0, probs, 1)
   percent <- round(probs * 100, digits = digits)
-  left <- paste0(head(percent, -1), "%")
-  right <- paste0(tail(percent, -1), "%")
+  left <- paste0(utils::head(percent, -1), "%")
+  right <- paste0(utils::tail(percent, -1), "%")
   without_left_bracket <- paste0(left, ",", right, "]")
-  with_left_bracket <- paste0("[", head(without_left_bracket, 1))
+  with_left_bracket <- paste0("[", utils::head(without_left_bracket, 1))
   if (length(without_left_bracket) > 1) {
     with_left_bracket <- c(
       with_left_bracket,
-      paste0("(", tail(without_left_bracket, -1))
+      paste0("(", utils::tail(without_left_bracket, -1))
     )
   }
   with_left_bracket

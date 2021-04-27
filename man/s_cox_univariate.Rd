@@ -95,12 +95,13 @@ ADTTE_f <- within( # nolint
   } # nolint end
 )
 
+\dontrun{
 s_cox_univariate(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
   data = ADTTE_f,
   covariates = list(~SEX)
 )
-\dontrun{
+
 s_cox_univariate(
   formula = Surv(time = AVAL, event = 1 - CNSR) ~ arm(ARMCD),
   data = ADTTE_f,
