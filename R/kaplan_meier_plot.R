@@ -1135,10 +1135,10 @@ h_tbl_coxph_pairwise <- function(df,
       control = control_coxph_pw
     )
     res_df <- data.frame(
-      hr = format(round(res$hr, 4), nsmall = 4),
+      hr = format(round(res$hr, 2), nsmall = 2),
       hr_ci = paste0( # nolint
-        "(", format(round(res$hr_ci[1], 4), nsmall = 4), ", ",
-        format(round(res$hr_ci[2], 4), nsmall = 4), ")"
+        "(", format(round(res$hr_ci[1], 2), nsmall = 2), ", ",
+        format(round(res$hr_ci[2], 2), nsmall = 2), ")"
       ),
       pvalue = if (res$pvalue < 0.0001) "<0.0001" else format(round(res$pvalue, 4), 4),
       stringsAsFactors = FALSE

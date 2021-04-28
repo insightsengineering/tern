@@ -102,8 +102,8 @@ test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   )
   expected1 <- structure(
     list(
-      HR = c("1.3940", "2.7532"),
-      `95% CI` = c("(1.0251, 1.8957)", "(2.0478, 3.7017)"),
+      HR = c("1.39", "2.75"),
+      `95% CI` = c("(1.03, 1.90)", "(2.05, 3.70)"),
       `p-value (log-rank)` = c("0.0334", "<0.0001")
     ),
     row.names = c("ARM B", "ARM C"),
@@ -118,8 +118,8 @@ test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   )
   expected2 <- structure(
     list(
-      HR = c("1.3644", "2.7277"),
-      `99% CI` = c("(0.9091, 2.0476)", "(1.8346, 4.0555)"),
+      HR = c("1.36", "2.73"),
+      `99% CI` = c("(0.91, 2.05)", "(1.83, 4.06)"),
       `p-value (wald)` = c("0.0487", "<0.0001")
     ),
     row.names = c("ARM B", "ARM C"),
