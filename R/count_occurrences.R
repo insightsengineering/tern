@@ -89,7 +89,13 @@ s_count_occurrences <- function(df,
     count = n_ids_per_occurrence,
     count_fraction = lapply(
       n_ids_per_occurrence,
-      function(i, denom) c(i, i / denom),
+      function(i, denom) {
+        if (i == 0 && denom == 0) {
+          c(0, 0)
+        } else {
+          c(i, i / denom)
+        }
+      },
       denom = dn
     ),
     fraction = lapply(

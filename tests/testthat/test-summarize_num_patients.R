@@ -9,6 +9,17 @@ test_that("s_num_patients works as expected with healthy input", {
   expect_equal(result, expected, tolerance = 1e-4)
 })
 
+test_that("s_num_patients works as expected with empty input", {
+  x <- as.character()
+  result <- s_num_patients(x = x, labelstr = "", .N_col = 0)
+  expected <- list(
+    unique = c(0, 0),
+    nonunique = 0,
+    unique_count = with_label(0, " (n)")
+  )
+  expect_equal(result, expected, tolerance = 1e-4)
+})
+
 test_that("s_num_patients_content works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA)),
