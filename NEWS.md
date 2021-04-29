@@ -20,6 +20,7 @@ on the left bottom corner but above x-axis for greater legibility.
 * New utility functions to work with factors: `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided, and `fct_explicit_na_if` inserts explicit missings in a factor based on a condition. 
 * Added utility function `cut_quantile_bins` to cut a numeric vector into quantile bins.
 * Deprecated `s_cox_univariate` function, use `fit_coxreg_univar` function instead.
+* Update `sum_num_patients` and `count_occurrences` for the result `unique` and `count_fraction` to return (0, 0) when input is empty.
 
 # tern 0.7.2
 * Fixed internal test errors regarding column labels.
