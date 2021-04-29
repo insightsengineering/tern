@@ -2,10 +2,8 @@
 
 The `tern` R package contains analysis functions to create tables,
 listings and graphs (TLGs) as used in clinical trials. We also provide
-[teal](https://github.roche.com/NEST/teal) modules for outputs in `tern`
-in the
-[teal.modules.clinical](https://github.roche.com/NEST/teal.modules.clinical)
-R package.
+the `teal` modules for outputs in `tern` in the `teal.modules.clinical` R package.
+For more details see [here](https://go.roche.com/agile-R).
 
   - Note that tern can be used to create output for regulatory submissions when used in the enableR system. 
   
@@ -13,7 +11,7 @@ R package.
 
 # Installation
 
-Please refer to the quick start section in agile-R [here](https://pages.github.roche.com/NEST/docs/hugo/NEST/agile-R/master/quick_start/install-nest-environment/)
+Please refer to the quick start section in agile-R [here](https://go.roche.com/agile-R).
 
 The latest version of `tern` can be installed locally with:
 
