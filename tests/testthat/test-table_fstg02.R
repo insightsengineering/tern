@@ -65,14 +65,6 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
   # Add plot.
   g_forest(
     tbl = result,
-    col_x = 6,
-    col_ci = 7,
-    forest_header = c(paste0(levels(anl1$ARM)[2:1], rep("\nBetter", 2))),
-    vline = 1,
-    xlim = c(.1, 10),
-    logx = TRUE,
-    x_at = c(.1, 1, 10),
-    col_symbol_size = 1,
     draw = FALSE
   )
 
@@ -130,14 +122,6 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
   # Add plot.
   g_forest(
     tbl = result,
-    col_x = 6,
-    col_ci = 7,
-    forest_header = c(paste0(levels(anl2$ARM)[2:1], rep("\nBetter", 2))),
-    vline = 1,
-    xlim = c(.1, 10),
-    logx = TRUE,
-    x_at = c(.1, 1, 10),
-    col_symbol_size = 1,
     draw = FALSE
   )
 
@@ -178,14 +162,6 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
   # Add plot.
   g_forest(
     tbl = result,
-    col_x = 2,
-    col_ci = 3,
-    forest_header = c(paste0(levels(anl3$ARM)[2:1], rep("\nBetter", 2))),
-    vline = 1,
-    xlim = c(.1, 10),
-    logx = TRUE,
-    x_at = c(.1, 1, 10),
-    col_symbol_size = 1,
     draw = FALSE
   )
 })
@@ -229,14 +205,6 @@ test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
   # Add plot.
   g_forest(
     tbl = result,
-    col_x = 6,
-    col_ci = 7,
-    forest_header = c(paste0(levels(anl4$ARM)[2:1], rep("\nBetter", 2))),
-    vline = 1,
-    xlim = c(.1, 10),
-    logx = TRUE,
-    x_at = c(.1, 1, 10),
-    col_symbol_size = NULL,
     draw = FALSE
   )
 
