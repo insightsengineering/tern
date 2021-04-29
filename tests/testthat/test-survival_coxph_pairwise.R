@@ -128,8 +128,8 @@ test_that("coxph_pairwise works with default arguments and no stratification fac
     c(
       "", "Unstratified Analysis", "p-value (log-rank)",
       "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0334", "1.394", "(1.0251, 1.8957)", "ARM C", "", "<0.0001",
-      "2.7532", "(2.0478, 3.7017)"
+      "0.0334", "1.39", "(1.03, 1.9)", "ARM C", "", "<0.0001",
+      "2.75", "(2.05, 3.7)"
     ),
     .Dim = 5:4
   )
@@ -161,8 +161,8 @@ test_that("coxph_pairwise works with customized arguments and no stratification 
     c(
       "", "Unstratified Analysis", "p-value (likelihood)",
       "Hazard Ratio", "99% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0341", "1.394", "(0.9307, 2.0879)", "ARM C", "", "<0.0001",
-      "2.7532", "(1.8659, 4.0625)"
+      "0.0341", "1.39", "(0.93, 2.09)", "ARM C", "", "<0.0001",
+      "2.75", "(1.87, 4.06)"
     ),
     .Dim = 5:4
   )
@@ -194,8 +194,8 @@ test_that("coxph_pairwise works with default arguments and stratification factor
     c(
       "", "Stratified Analysis", "p-value (log-rank)",
       "Hazard Ratio", "95% CI", "ARM A", "", "", "", "", "ARM B", "",
-      "0.0478", "1.3644", "(1.0018, 1.8582)", "ARM C", "", "<0.0001",
-      "2.7277", "(2.0171, 3.6886)"
+      "0.0478", "1.36", "(1, 1.86)", "ARM C", "", "<0.0001",
+      "2.73", "(2.02, 3.69)"
     ),
     .Dim = 5:4
   )

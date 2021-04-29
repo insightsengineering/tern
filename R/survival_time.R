@@ -100,7 +100,7 @@ a_surv_time <- make_afun(
     "range" = 0L
   ),
   .formats = c(
-    "median" = "xx.xx",
+    "median" = "xx.x",
     "median_ci" = "(xx.x, xx.x)",
     "quantiles" = "xx.x, xx.x",
     "range_censor" = "xx.x to xx.x",
