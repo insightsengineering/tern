@@ -4,27 +4,30 @@
 \alias{fct_collapse_only}
 \title{Collapsing of Factor Levels and Keeping Only Those New Group Levels}
 \usage{
-fct_collapse_only(.f, ...)
+fct_collapse_only(.f, ..., .na_level = "<Missing>")
 }
 \arguments{
 \item{.f}{(\code{factor} or \code{character})\cr original vector.}
 
 \item{...}{(named \code{character} vectors)\cr levels in each vector provided will be collapsed into
 the new level given by the respective name.}
+
+\item{.na_level}{(\code{string})\cr which level to use for missings.}
 }
 \value{
 The modified factor with collapsed levels. Values and levels which are not included
-in the given character vectors input are discarded. The returned factor has levels in the order
-given.
+in the given character vectors input will be set to the missing level.
 }
 \description{
 This collapses levels and only keeps those new group levels, in the order provided.
+The returned factor has levels in the order given, with the possible missing level last (this will
+only be included if there are missings). Note that any existing \code{NA} in the input vector will
+not be replaced by the missing level. If needed \code{\link[=explicit_na]{explicit_na()}} can be called separately on the result.
 }
 \examples{
 fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 
 }
 \seealso{
-\code{\link[forcats:fct_collapse]{forcats::fct_collapse()}}, \code{\link[=fct_discard]{fct_discard()}}, \code{\link[forcats:fct_relevel]{forcats::fct_relevel()}} which are used
-internally.
+\code{\link[forcats:fct_collapse]{forcats::fct_collapse()}}, \code{\link[forcats:fct_relevel]{forcats::fct_relevel()}} which are used internally.
 }

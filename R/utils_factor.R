@@ -260,16 +260,18 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' Collapsing of Factor Levels and Keeping Only Those New Group Levels
 #'
 #' This collapses levels and only keeps those new group levels, in the order provided.
+#' The returned factor has levels in the order given, with the possible missing level last (this will
+#' only be included if there are missings). Note that any existing `NA` in the input vector will
+#' not be replaced by the missing level. If needed [explicit_na()] can be called separately on the result.
 #'
 #' @param .f (`factor` or `character`)\cr original vector.
 #' @param ... (named `character` vectors)\cr levels in each vector provided will be collapsed into
 #'   the new level given by the respective name.
+#' @param .na_level (`string`)\cr which level to use for missings.
 #'
 #' @return The modified factor with collapsed levels. Values and levels which are not included
-#'   in the given character vectors input are discarded. The returned factor has levels in the order
-#'   given.
-#' @seealso [forcats::fct_collapse()], [fct_discard()], [forcats::fct_relevel()] which are used
-#'   internally.
+#'   in the given character vectors input will be set to the missing level.
+#' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
 #' @export
 #' @importFrom forcats fct_collapse fct_relevel
@@ -277,9 +279,8 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' @examples
 #' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 #'
-fct_collapse_only <- function(.f, ...) {
-  x <- forcats::fct_collapse(.f, ..., other_level = "..DISCARD..")
-  x <- fct_discard(x, discard = "..DISCARD..")
+fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
+  x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   new_lvls <- names(list(...))
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
