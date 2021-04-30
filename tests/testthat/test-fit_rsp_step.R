@@ -1,7 +1,7 @@
 library(random.cdisc.data)
 
 get_data <- function() {
-  adrs <- radrs(cached = TRUE)
+  adrs <- radrs(cached = TRUE) #nolint
   adrs %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",
