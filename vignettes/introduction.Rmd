@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 The `tern` R package provides functions to create common analyses from clinical trials in `R`. The core functionality for tabulation is built on the more general purpose `rtables` package. New users should first begin by reading the "Introduction to rtables" vignette to become familiar with the `rtables` layout tabulation concepts.
 
-```{r, message=FALSE}
+```{r, eval=FALSE}
 vignette(topic = "introduction", package = "rtables")
 ```
 
