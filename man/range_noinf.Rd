@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{range_noinf}
 \alias{range_noinf}
-\title{Re-implemented \code{\link[base]{range.default}} default S3 method for numerical objects only.
+\title{Re-implemented \code{\link[base::range]{range.default}} default S3 method for numerical objects only.
 It returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
 without any warnings.}
 \usage{
@@ -11,17 +11,15 @@ range_noinf(x, na.rm = FALSE, finite = FALSE)
 \arguments{
 \item{x}{numeric S3 class, a sequence of numbers for which the range is computed.}
 
-\item{na.rm}{logical, indicating if \code{\link[base]{NA}}'s should be
-    omitted.}
+\item{na.rm}{(\code{logical})\cr indicating if NA should be omitted.}
 
-\item{finite}{logical, indicating if all non-finite elements should
-    be omitted.}
+\item{finite}{(\code{logical})\cr indicating if non-finite elements should be removed.}
 }
 \value{
 2-elements vector of class numeric.
 }
 \description{
-Re-implemented \code{\link[base]{range.default}} default S3 method for numerical objects only.
+Re-implemented \code{\link[base::range]{range.default}} default S3 method for numerical objects only.
 It returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
 without any warnings.
 }

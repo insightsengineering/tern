@@ -1,9 +1,10 @@
-#' Re-implemented \code{\link[base]{range.default}} default S3 method for numerical objects only.
+#' Re-implemented \code{\link[base::range]{range.default}} default S3 method for numerical objects only.
 #' It returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
 #' without any warnings.
 #'
 #' @param x numeric S3 class, a sequence of numbers for which the range is computed.
-#' @inheritParams base::range.default
+#' @param na.rm (`logical`)\cr indicating if NA should be omitted.
+#' @param finite (`logical`)\cr indicating if non-finite elements should be removed.
 #'
 #' @return 2-elements vector of class numeric.
 #'

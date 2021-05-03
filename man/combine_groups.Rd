@@ -11,8 +11,7 @@ combine_groups(fct, ref = NULL, collapse = "/")
 
 \item{ref}{(\code{string})\cr the reference level(s).}
 
-\item{collapse}{an optional character string to separate the results.  Not
-    \code{\link[base]{NA_character_}}.}
+\item{collapse}{(\code{string})\cr a character string to separate \code{fct} and \code{ref}.}
 }
 \value{
 a \code{list} with first item \code{ref} (reference) and second item \code{trt}
