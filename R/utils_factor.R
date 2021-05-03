@@ -267,7 +267,8 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' @param .f (`factor` or `character`)\cr original vector.
 #' @param ... (named `character` vectors)\cr levels in each vector provided will be collapsed into
 #'   the new level given by the respective name.
-#' @param .na_level (`string`)\cr which level to use for missings.
+#' @param .na_level (`string`)\cr which level to use for other levels, which should be missing in the
+#'   new factor. Note that this level must not be contained in the new levels specified in `...`.
 #'
 #' @return The modified factor with collapsed levels. Values and levels which are not included
 #'   in the given character vectors input will be set to the missing level.
@@ -280,7 +281,11 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))
 #'
 fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
-  x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   new_lvls <- names(list(...))
+  assert_that(
+    !(.na_level %in% new_lvls),
+    msg = paste0(".na_level currently set to '", .na_level, "' must not be contained in the new levels")
+  )
+  x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }

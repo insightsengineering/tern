@@ -165,3 +165,11 @@ test_that("fct_collapse_only works as expected with character input", {
   expected <- factor(c("<Missing>", "TRT", "CTRL", "CTRL"), levels = c("TRT", "CTRL", "<Missing>"))
   expect_identical(result, expected)
 })
+
+test_that("fct_collapse_only gives comprehensible error when `.na_level` is contained in new levels", {
+  x <- factor(c("a", "b", "c"))
+  expect_error(
+    fct_collapse_only(x, d = "a", e = "b", missing = "c", .na_level = "missing"),
+    ".na_level currently set to 'missing' must not be contained in the new levels"
+  )
+})

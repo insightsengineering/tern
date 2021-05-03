@@ -12,7 +12,8 @@ fct_collapse_only(.f, ..., .na_level = "<Missing>")
 \item{...}{(named \code{character} vectors)\cr levels in each vector provided will be collapsed into
 the new level given by the respective name.}
 
-\item{.na_level}{(\code{string})\cr which level to use for missings.}
+\item{.na_level}{(\code{string})\cr which level to use for other levels, which should be missing in the
+new factor. Note that this level must not be contained in the new levels specified in \code{...}.}
 }
 \value{
 The modified factor with collapsed levels. Values and levels which are not included
