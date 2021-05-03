@@ -324,6 +324,7 @@ reference:
       - is_character_or_factor
       - is_df_with_variables
       - is_df_with_factors
+      - is_df_with_nlevels_factor
       - is_factor_no_na
       - is_nonnegative_count
       - is_variables

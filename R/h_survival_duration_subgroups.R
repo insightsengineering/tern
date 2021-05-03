@@ -147,8 +147,7 @@ h_survtime_subgroups_df <- function(variables,
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
-    is_valid_factor(data[[variables$arm]]),
-    are_equal(nlevels(data[[variables$arm]]), 2)
+    is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
   )
 
   # Add All Patients.
@@ -331,8 +330,7 @@ h_coxph_subgroups_df <- function(variables,
     is.character(variables$strat) || is.null(variables$strat),
     is_character_single(label_all),
     is_df_with_variables(data, as.list(unlist(variables))),
-    is_valid_factor(data[[variables$arm]]),
-    are_equal(nlevels(data[[variables$arm]]), 2)
+    is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
   )
 
   # Add All Patients.

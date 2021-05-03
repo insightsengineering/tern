@@ -4,7 +4,7 @@
 #'
 #' @param x object to test
 #' @param df supposed data frame to test
-#' @param variables supposed variables list to test
+#' @param variables (named `list` of `character`)\cr supposed variables list to test
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing for proportions.
 #' @param ... a collection of objects to test.
 #' @return `flag` whether the assertion holds (`TRUE` or `FALSE`). When used inside
@@ -113,6 +113,50 @@ on_failure(is_df_with_factors) <- function(call, env) {
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
   paste(deparse(call$df), "does not contain only factor variables among:", deparse(vars))
+}
+
+#' @describeIn assertions Check whether `df` is a data frame where the analysis `variable`
+#'   is a factor with `n_levels` number of levels.
+#' @param variable (`string`)\cr name of the single variable.
+#' @param n_levels (`count`)\cr number of levels to compare with.
+#' @param relation (`string`)\cr which relational operator to use for the comparison.
+#' @export
+#' @examples
+#'
+#' # Check whether `df` contains a factor `variable` with `n_levels` levels.
+#' is_df_with_nlevels_factor(
+#'   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+#'   variable = "a",
+#'   n_levels = 2
+#' )
+#'
+is_df_with_nlevels_factor <- function(df,
+                                      variable,
+                                      n_levels,
+                                      relation = c("==", ">=")) {
+  assert_that(
+    is.string(variable),
+    is_df_with_factors(df, variables = list(factor = variable)),
+    is.count(n_levels)
+  )
+  relation <- match.arg(relation)
+  do.call(relation, list(x = nlevels(df[[variable]]), y = n_levels))
+}
+
+on_failure(is_df_with_nlevels_factor) <- function(call, env) {
+  variable <- eval(call$variable, envir = env)
+  n_levels <- eval(call$n_levels, envir = env)
+  actual_levels <- levels(eval(call$df, envir = env)[[variable]])
+  actual_n_levels <- length(actual_levels)
+  relation_text <- switch(
+    match.arg(eval(call$relation, envir = env), c("==", ">=")),
+    "==" = "exactly",
+    ">=" = "at least"
+  )
+  paste(
+    "variable", variable, "in data frame", deparse(call$df), "should have", relation_text, n_levels,
+    "levels, but has", actual_n_levels, "levels:", paste(actual_levels, collapse = ", ")
+  )
 }
 
 #' @describeIn assertions Check that objects provided are of same length.

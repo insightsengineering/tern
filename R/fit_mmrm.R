@@ -55,7 +55,12 @@ check_mmrm_vars <- function(vars,
   stopifnot(is.numeric(response_values))
 
   arm_values <- data_complete_regressors[[vars$arm]]
-  stopifnot(is.factor(arm_values) && nlevels(arm_values) >= 2)
+  assert_that(is_df_with_nlevels_factor(
+    data_complete_regressors,
+    variable = vars$arm,
+    n_levels = 2,
+    relation = ">="
+  ))
 
   visit_values <- data_complete_regressors[[vars$visit]]
   stopifnot(is.factor(visit_values))
@@ -66,7 +71,12 @@ check_mmrm_vars <- function(vars,
     droplevels()
 
   # Check all arms will still be present after NA filtering.
-  stopifnot(nlevels(arm_values) == nlevels(data_complete[[vars$arm]]))
+  assert_that(is_df_with_nlevels_factor(
+    data_complete,
+    variable = vars$arm,
+    n_levels = nlevels(arm_values),
+    relation = "=="
+  ))
 
   # Each arm should have at least have 5 records.
   if (!all(table(data_complete[[vars$arm]]) > 5)) {

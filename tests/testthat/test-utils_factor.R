@@ -146,14 +146,14 @@ test_that("fct_explicit_na_if works as expected with factor input", {
 # fct_collapse_only ----
 
 test_that("fct_collapse_only works as expected", {
-  x <- factor(c("a", "b", "c", "d"))
+  x <- factor(c("a", "b", "c", "d"), levels = c("a", "b", "c", "d"))
   result <- fct_collapse_only(x, TRT = "b", CTRL = c("c", "d"))
   expected <- factor(c("<Missing>", "TRT", "CTRL", "CTRL"), levels = c("TRT", "CTRL", "<Missing>"))
   expect_identical(result, expected)
 })
 
 test_that("fct_collapse_only uses the customized `na_level` as expected", {
-  x <- factor(c(NA, "b", "c", "d"))
+  x <- factor(c(NA, "b", "c", "d"), levels = c("b", "c", "d"))
   result <- fct_collapse_only(x, TRT = "b", CTRL = c("d"), .na_level = "Missing")
   expected <- factor(c(NA, "TRT", "Missing", "CTRL"), levels = c("TRT", "CTRL", "Missing"))
   expect_identical(result, expected)

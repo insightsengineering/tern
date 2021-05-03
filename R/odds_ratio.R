@@ -49,7 +49,7 @@ or_glm <- function(data, conf_level) {
 
   data$grp <- as_factor_keep_attributes(data$grp)
   assert_that(
-    identical(nlevels(data$grp), 2L)
+    is_df_with_nlevels_factor(data, variable = "grp", n_levels = 2)
   )
   formula <- as.formula("rsp ~ grp")
   model_fit <- glm(

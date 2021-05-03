@@ -22,6 +22,7 @@ on the left bottom corner but above x-axis for greater legibility.
 * Added utility function `cut_quantile_bins` to cut a numeric vector into quantile bins.
 * Deprecated `s_cox_univariate` function, use `fit_coxreg_univar` function instead.
 * Update `sum_num_patients` and `count_occurrences` for the result `unique` and `count_fraction` to return (0, 0) when input is empty.
+* Improved error message when number of levels in a factor variable in a data frame is not as expected.
 
 # tern 0.7.2
 * Fixed internal test errors regarding column labels.

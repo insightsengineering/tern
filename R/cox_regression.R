@@ -324,10 +324,7 @@ fit_coxreg_univar <- function(variables,
     )
   }
   if (has_arm) {
-    n_arms <- nlevels(data[[variables$arm]])
-    assert_that(
-      n_arms == 2
-    )
+    assert_that(is_df_with_nlevels_factor(data, variables$arm, 2L))
   }
   vars <- unlist(variables[c(arm_name, "covariates", "strata")], use.names = FALSE)
   for (i in vars) {

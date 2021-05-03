@@ -7,6 +7,7 @@
 \alias{is_variables}
 \alias{is_df_with_variables}
 \alias{is_df_with_factors}
+\alias{is_df_with_nlevels_factor}
 \alias{is_equal_length}
 \alias{is_proportion}
 \alias{is_proportion_vector}
@@ -27,6 +28,8 @@ is_variables(x)
 is_df_with_variables(df, variables)
 
 is_df_with_factors(df, variables)
+
+is_df_with_nlevels_factor(df, variable, n_levels, relation = c("==", ">="))
 
 is_equal_length(...)
 
@@ -51,7 +54,13 @@ has_tabletree_colnames(x, col_names)
 
 \item{df}{supposed data frame to test}
 
-\item{variables}{supposed variables list to test}
+\item{variables}{(named \code{list} of \code{character})\cr supposed variables list to test}
+
+\item{variable}{(\code{string})\cr name of the single variable.}
+
+\item{n_levels}{(\code{count})\cr number of levels to compare with.}
+
+\item{relation}{(\code{string})\cr which relational operator to use for the comparison.}
 
 \item{...}{a collection of objects to test.}
 
@@ -80,6 +89,9 @@ We provide additional assertion functions which can be used together with \code{
 
 \item \code{is_df_with_factors}: Check whether \code{df} is a data frame where the analysis \code{variables}
 are all factors.
+
+\item \code{is_df_with_nlevels_factor}: Check whether \code{df} is a data frame where the analysis \code{variable}
+is a factor with \code{n_levels} number of levels.
 
 \item \code{is_equal_length}: Check that objects provided are of same length.
 
@@ -130,6 +142,14 @@ is_df_with_variables(df = data.frame(a = 5, b = 3), variables = list(val = c("a"
 is_df_with_factors(
   df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
   variables = list(val = "a")
+)
+
+
+# Check whether `df` contains a factor `variable` with `n_levels` levels.
+is_df_with_nlevels_factor(
+  df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
+  variable = "a",
+  n_levels = 2
 )
 
 

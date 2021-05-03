@@ -348,11 +348,11 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
   result <- df[c("n", "hr", "pval", "ci")]
 
   expected <- with(
-    data = s_cox_univariate(
+    data = expect_warning(s_cox_univariate(
       formula = Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
       covariates = list(~ covar1)
-    ),
+    )),
     expr = {
       y <- list(
         n = as.list(n),
@@ -371,13 +371,13 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
 
   dta_bladder <- get_bladder()
   expected <- with(
-    data = s_cox_univariate(
+    data = expect_warning(s_cox_univariate(
       formula = Surv(time, status) ~ arm(armcd),
       data = dta_bladder,
       covariates = list(~ covar1),
       interactions = TRUE,
       pval_method = c("wald", "likelihood")[2]
-    ),
+    )),
     expr = {
       y <- list(
         n = as.list(n),
