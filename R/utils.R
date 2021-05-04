@@ -1,4 +1,4 @@
-#' Re-implemented \code{\link[base::range]{range.default}} default S3 method for numerical objects only.
+#' Re-implemented \code{\link[base:range]{range.default}} default S3 method for numerical objects only.
 #' It returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
 #' without any warnings.
 #'
