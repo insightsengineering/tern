@@ -71,10 +71,10 @@ test_that("s_surv_timepoint also works when there are 0 patients at risk", {
     is_event = "is_event"
   ))
   expected <- list(
-    pt_at_risk = with_label(0, "Patients remaining at risk"),
-    event_free_rate = with_label(0, "Event Free Rate (%)"),
-    rate_se = with_label(NaN, "Standard Error of Event Free Rate"),
-    rate_ci = with_label(c(NaN, NaN), "95% CI")
+    pt_at_risk = with_label(NA_real_, "Patients remaining at risk"),
+    event_free_rate = with_label(NA_real_, "Event Free Rate (%)"),
+    rate_se = with_label(NA_real_, "Standard Error of Event Free Rate"),
+    rate_ci = with_label(c(NA_real_, NA_real_), "95% CI")
   )
   expect_identical(result, expected)
 })

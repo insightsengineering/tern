@@ -68,9 +68,9 @@ s_surv_timepoint <- function(df,
   )
   s_srv_fit <- summary(srv_fit, times = time_point, extend = TRUE)
   df_srv_fit <- as.data.frame(s_srv_fit[c("time", "n.risk", "surv", "lower", "upper", "std.err")])
-  if (dim(df_srv_fit)[1] == 0) {
-    pt_at_risk <- event_free_rate <- rate_se <- NA
-    rate_ci <- c(NA, NA)
+  if (df_srv_fit[["n.risk"]] == 0) {
+    pt_at_risk <- event_free_rate <- rate_se <- NA_real_
+    rate_ci <- c(NA_real_, NA_real_)
   } else {
     pt_at_risk <- df_srv_fit$n.risk
     event_free_rate <- df_srv_fit$surv
@@ -150,16 +150,9 @@ s_surv_timepoint_diff <- function(df,
 
   res_x <- res_per_group[[2]]
   res_ref <- res_per_group[[1]]
-  rate_diff <- if (length(res_x$event_free_rate) == 0 || length(res_ref$event_free_rate) == 0) {
-    NA
-  } else {
-    res_x$event_free_rate - res_ref$event_free_rate
-  }
-  se_diff <- if (length(res_x$rate_se) == 0 || length(res_ref$rate_se) == 0) {
-    NA
-  } else {
-    sqrt(res_x$rate_se^2 + res_ref$rate_se^2)
-  }
+  rate_diff <- res_x$event_free_rate - res_ref$event_free_rate
+  se_diff <- sqrt(res_x$rate_se^2 + res_ref$rate_se^2)
+
   qs <- c(-1, 1) * qnorm(1 - (1 - control$conf_level) / 2)
   rate_diff_ci <- rate_diff + qs * se_diff
   ztest_pval <- if (is.na(rate_diff)) {
