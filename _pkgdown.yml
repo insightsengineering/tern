@@ -38,8 +38,10 @@ reference:
       - s_change_from_baseline
       - s_compare
       - s_count_abnormal
-      - s_count_abnormal_by_worst_grade
       - s_count_abnormal_by_baseline
+      - s_count_abnormal_by_worst_grade
+      - s_count_abnormal_by_worst_grade_by_baseline
+      - s_count_abnormal_lab_worsen_by_baseline
       - s_count_cumulative
       - s_count_nonmissing
       - s_count_missed_doses
@@ -73,8 +75,10 @@ reference:
     contents:
        - a_ancova
        - a_count_abnormal
-       - a_count_abnormal_by_worst_grade
        - a_count_abnormal_by_baseline
+       - a_count_abnormal_by_worst_grade
+       - a_count_abnormal_by_worst_grade_by_baseline
+       - a_count_abnormal_lab_worsen_by_baseline
        - a_count_cumulative
        - a_count_missed_doses
        - a_count_occurrences
@@ -99,8 +103,10 @@ reference:
     contents:
        - compare_vars
        - count_abnormal
-       - count_abnormal_by_worst_grade
        - count_abnormal_by_baseline
+       - count_abnormal_by_worst_grade
+       - count_abnormal_by_worst_grade_by_baseline
+       - count_abnormal_lab_worsen_by_baseline
        - count_cumulative
        - count_missed_doses
        - count_occurrences
@@ -134,6 +140,8 @@ reference:
       - footnotes
       - footnotes<-
       - add_footnotes<-
+      - h_adlb_worsen
+      - h_adsl_adlb_merge_using_worst_flag
       - h_ancova
       - h_append_grade_groups
       - h_count_cumulative
@@ -146,6 +154,7 @@ reference:
       - h_coxreg_multivar_extract
       - h_coxreg_univar_formulas
       - h_coxreg_multivar_formula
+      - h_group_counter
       - h_incidence_rate
       - h_incidence_rate_byar
       - h_incidence_rate_exact
@@ -155,6 +164,7 @@ reference:
       - h_proportion_subgroups_df
       - h_odds_ratio_df
       - h_odds_ratio_subgroups_df
+      - h_worsen_counter
       - or_glm
       - or_clogit
       - prop_chisq
@@ -347,6 +357,7 @@ reference:
       - get_mmrm_lsmeans
       - get_lme4_cov_estimate
       - get_lme4_diagnostics
+      - get_smooths
       - try_car_anova
       - d_count_cumulative
       - d_proportion
