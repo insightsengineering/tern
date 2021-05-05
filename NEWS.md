@@ -1,28 +1,38 @@
 # tern 0.7.3
-* Updated default formats of hr and hr_ci in `a_coxph_pairwise` and median in `s_surv_time` to align with STREAM. 
-* Updated `g_km` to now display hazard ratio and its confidence interval to two decimal places as done in STREAM.
-* Updated default position of hazard ratio table in `g_km` to stay on the left bottom corner but above x-axis for greater legibility.
-* Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
-* Created `range_noinf` utils function. This is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.
-* Updated the pre-processing code in the files `test-table_ttet01.R` and `test-table_dort01.R` to make sure the analysis variable `EVNT1` has both levels of the factor defined.
+
+### New Features
+* Added Subgroup Treatment Effect Pattern (STEP) model fitting functions `fit_rsp_step` and `fit_survival_step`, the corresponding tidy method `tidy.step` as well as the graph function `g_step`.
 * Added new layout function `compare_vars` which compares variables of different types between columns and produces a p-value for the comparison to the reference column. It is built on top of the `summarize_vars` functionality.
-* Updated `g_km` to show legend for symbol used to mark censored cases on the KM plot.
-* Updated `g_km`, `h_tbl_median_surv` and `h_grob_median_surv` to remove arm variable name from arm labels in plot legend and annotation tables.
-* `g_km` now respects the ordering of the arm variable factor levels in the resulting Kaplan-Meier curve.
-* Added a new argument `armval` to `h_tbl_median_surv` and `h_grob_median_surv` to allow use of arm value as strata name in `g_km` when treatment arm variable only has one level.
-* New argument `no_fillin_visits` added to `h_adsl_adlb_merge_using_worst_flag` to specify the visits that are excluded from post-baseline worst toxicity grade output. Improved `h_adsl_adlb_merge_using_worst_flag` to include variables shared between `adsl` and `adlb`, along with `PARAM`, `PARAMCD`, `ATOXGR`, `BTOXGR` and optionally `AVISIT`, `AVISITN` when `by_visit = TRUE`. Previously, output only contains `USUBJID`, `ARMCD`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.
+* Added utility functions:
+  * `cut_quantile_bins` cuts a numeric vector into quantile bins.
+  * `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided.
+  * `fct_explicit_na_if` inserts explicit missings in a factor based on a condition. 
+  * `range_noinf` is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.
+
+### Enhancements
+* Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fitted and the corresponding effect estimates can later be tabulated.
+* Added `fraction` in result returned by `s_count_occurrences`. It contains a list of numerators and denominators with one element per occurrence.
+* Updated `sum_num_patients` and `count_occurrences` for the result `unique` and `count_fraction` to return (0, 0) when input is empty.
 * Added a new argument `groups_lists` to `extract_survival_subgroups`, `extract_rsp_subgroups` and associated helper functions which allows to group factor levels of subgroup variables into manually defined groups, enhancing the flexibility of the resulting forest graphs.
 * Forest graph function `g_forest` now extracts default arguments from attributes of the input table produced by `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` so that the user does not have to do this manually anymore.
-* Cox regression via `fit_coxreg_univar` and `fit_coxreg_multivar` is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fitted and the corresponding effect estimates can later be tabulated.
-* Modified `stat_median_ci` function so that when empty var with empty name is passed, no `row names contain missing values` error would show.
-* Added `fraction` return in `s_count_occurrences` containing a list of numerators and denominators with one element per occurrence.
-* Added Subgroup Treatment Effect Pattern (STEP) model fitting functions `fit_rsp_step` and `fit_survival_step`, the corresponding tidy method `tidy.step` as well as the graph function `g_step`.
-* New utility functions to work with factors: `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided, and `fct_explicit_na_if` inserts explicit missings in a factor based on a condition. 
-* Added utility function `cut_quantile_bins` to cut a numeric vector into quantile bins.
-* Deprecated `s_cox_univariate` function, use `fit_coxreg_univar` function instead.
-* Update `sum_num_patients` and `count_occurrences` for the result `unique` and `count_fraction` to return (0, 0) when input is empty.
-* Improved error message when number of levels in a factor variable in a data frame is not as expected.
+* In `g_km`:
+  * Remove arm variable name from arm labels in plot legend and annotation tables.
+  * Show symbol used to mark censored cases and match order of arm variable factor levels in the legend.
+  * Display hazard ratio and its confidence interval to two decimal places. 
+  * Updated default position of hazard ratio table to stay on the left bottom corner but above x-axis.
+  * Use arm value as strata name in when treatment arm variable only has one level.
+* Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
+* New argument `no_fillin_visits` added to `h_adsl_adlb_merge_using_worst_flag` to specify the visits that are excluded from post-baseline worst toxicity grade output. Improved `h_adsl_adlb_merge_using_worst_flag` to include variables shared between `adsl` and `adlb`, along with `PARAM`, `PARAMCD`, `ATOXGR`, `BTOXGR` and optionally `AVISIT`, `AVISITN` when `by_visit = TRUE`. Previously, output only contains `USUBJID`, `ARMCD`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.
+
+### Bug Fixes
 * Fix bug in `s_surv_timepoint` for cases when there are zero patients at risk.
+* Modified `stat_median_ci` function so that when empty var with empty name is passed, no `row names contain missing values` error would show.
+
+### Miscellaneous
+* Deprecated `s_cox_univariate` function, use `fit_coxreg_univar` function instead.
+* Updated default formats of hr and hr_ci in `a_coxph_pairwise` and median in `s_surv_time` to align with STREAM. 
+* Updated the pre-processing code in the files `test-table_ttet01.R` and `test-table_dort01.R` to make sure the analysis variable `EVNT1` has both levels of the factor defined.
+* Improved error message when number of levels in a factor variable in a data frame is not as expected.
 
 # tern 0.7.2
 * Fixed internal test errors regarding column labels.
