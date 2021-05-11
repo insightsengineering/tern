@@ -80,7 +80,7 @@ test_that("Safety Summary Variant 1 works as expected", {
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)
@@ -220,8 +220,8 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 15)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 15)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)
@@ -343,7 +343,7 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)
@@ -471,9 +471,9 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one", ""), at = 3)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of unique preferred terms which are", ""), at = 10)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of adverse events which are", ""), at = 16)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of unique preferred terms which are"), at = 10)
+  result_adae <- insert_rrow(result_adae, rrow("Total number of adverse events which are"), at = 16)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)

@@ -45,7 +45,7 @@ test_that("EGT05_QTCAT default variant is produced correctly", {
   result <-  basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AVISIT", split_label = "Visit", child_labels = "default", visible_label = TRUE) %>%
+    split_rows_by("AVISIT", split_label = "Visit", child_labels = "default", label_pos = "visible") %>%
     summarize_vars(
       vars = c("AVALCAT1", "CHGCAT1"),
       var_labels = c("Value at Visit", "Change from Baseline")) %>%

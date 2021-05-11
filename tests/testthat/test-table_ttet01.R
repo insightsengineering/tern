@@ -41,7 +41,7 @@ test_that("TTET01 default variant is produced correctly", {
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Patients with event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 1L,
     ) %>%
@@ -195,7 +195,7 @@ test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alp
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Patients with event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 1L,
     ) %>%
@@ -287,7 +287,7 @@ test_that("TTET01 variant 4: with stratified analysis", {
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Patients with event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 1L,
     ) %>%
@@ -376,7 +376,7 @@ test_that("TTET01 variant 5: modifying time point", {
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Patients with event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 1L,
     ) %>%
@@ -457,7 +457,7 @@ test_that("TTET01 variant 6: requesting more than one p-value", {
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Patients with event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 1L,
     ) %>%

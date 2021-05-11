@@ -21,7 +21,7 @@ test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
       "PARAM",
       split_label = c("Parameter / Analysis Reference Range Indicator"),
       split_fun = keep_split_levels(c("Heart Rate", "QT Duration", "RR Duration")),
-      visible_label = TRUE
+      label_pos = "visible"
     ) %>%
     count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = FALSE) %>%
     build_table(df = adeg, alt_counts_df = adsl)
@@ -60,7 +60,7 @@ test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
     split_rows_by(
       "PARAM",
       split_label = c("Parameter / Analysis Reference Range Indicator"),
-      visible_label = TRUE,
+      label_pos = "visible",
       split_fun = keep_split_levels(c("Heart Rate", "QT Duration", "RR Duration"))
     ) %>%
     count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%

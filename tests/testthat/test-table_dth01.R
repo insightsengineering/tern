@@ -76,7 +76,7 @@ test_that("DTH01 variant 2 is produced correctly", {
       "LDDTHGR1",
       split_fun = remove_split_levels("<Missing>"),
       split_label = "Primary cause by days from last study drug administration",
-      visible_label = TRUE) %>%
+      label_pos = "visible") %>%
     summarize_vars("DTHCAT") %>%
     build_table(df = adsl)
   col_info(part2) <- col_info(part1)

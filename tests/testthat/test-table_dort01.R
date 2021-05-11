@@ -49,7 +49,7 @@ test_that("DORT01 variant 1 is produced correctly", {
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Responders with subsequent event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 2L,
     ) %>%
@@ -128,7 +128,7 @@ test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Responders with subsequent event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 2L,
     ) %>%
@@ -208,7 +208,7 @@ test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced cor
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Responders with subsequent event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 2L,
     ) %>%
@@ -288,7 +288,7 @@ test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is 
       "EVNT1",
       split_label = "Earliest contributing event",
       split_fun = keep_split_levels("Responders with subsequent event (%)"),
-      visible_label = TRUE,
+      label_pos = "visible",
       child_labels = "hidden",
       indent_mod = 2L,
     ) %>%
