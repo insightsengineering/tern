@@ -1,5 +1,5 @@
 # tern 0.7.3.9000
-.
+* added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade` for it to be used in `AET01_AESI` template.
 
 # tern 0.7.3
 

@@ -191,6 +191,36 @@ test_that("count_occurrences_by_grade works with default arguments for intensity
 
 })
 
+test_that("count_occurrences_by_grade label works when more than one variables are analyzed", {
+
+  df <- get_test_data_simple()
+  df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    count_occurrences_by_grade(var = "AESEV") %>%
+    count_occurrences_by_grade(var = "AETOXGR", var_labels = "Toxicity Grade") %>%
+    build_table(df, alt_counts_df = df_adsl)
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "AESEV", "MILD", "MODERATE", "SEVERE",
+      "Toxicity Grade", "1", "2", "3", "4", "5",
+      "A", "(N=3)", "", "0", "1 (33.3%)", "2 (66.7%)",
+      "", "0", "1 (33.3%)", "2 (66.7%)", "0", "0",
+      "B", "(N=3)", "", "2 (66.7%)", "1 (33.3%)", "0",
+      "", "2 (66.7%)", "1 (33.3%)", "0", "0", "0"
+    ),
+    .Dim = c(12L, 3L)
+  )
+
+  expect_identical(result_matrix, expected_matrix)
+
+})
+
+
 test_that("count_occurrences_by_grade works with custom arguments for grade", {
 
   df <- get_test_data_simple()

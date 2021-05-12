@@ -158,6 +158,7 @@ a_count_occurrences_by_grade <- make_afun(
 
 #' @describeIn count_occurrences_by_grade Layout creating function which can be used for creating tables,
 #'   which can take statistics function arguments and additional format arguments (see below).
+#' @param var_labels (`character`)\cr labels to show in the result table.
 #' @export
 #' @examples
 #'
@@ -189,6 +190,8 @@ a_count_occurrences_by_grade <- make_afun(
 #'
 count_occurrences_by_grade <- function(lyt,
                                        var,
+                                       var_labels = var,
+                                       show_labels = "default",
                                        ...,
                                        table_names = var,
                                        .stats = NULL,
@@ -206,6 +209,8 @@ count_occurrences_by_grade <- function(lyt,
   analyze(
     lyt = lyt,
     vars = var,
+    var_labels = var_labels,
+    show_labels = show_labels,
     afun = afun,
     table_names = table_names,
     extra_args = list(...)

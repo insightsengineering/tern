@@ -31,6 +31,8 @@ a_count_occurrences_by_grade(
 count_occurrences_by_grade(
   lyt,
   var,
+  var_labels = var,
+  show_labels = "default",
   ...,
   table_names = var,
   .stats = NULL,
@@ -71,6 +73,10 @@ by a statistics function.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
+
+\item{var_labels}{(\code{character})\cr labels to show in the result table.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 
