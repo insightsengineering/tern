@@ -24,8 +24,8 @@ test_that("LBT08 produce correctly", {
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
-    split_rows_by("PARAMCD") %>%
-    split_rows_by("GRADDR") %>%
+    split_rows_by("PARAMCD", label_pos = "topleft") %>%
+    split_rows_by("GRADDR", label_pos = "topleft") %>%
     count_abnormal_lab_worsen_by_baseline(
       var = "ATOXGR",
       variables = list(
@@ -34,14 +34,13 @@ test_that("LBT08 produce correctly", {
         direction_var = "GRADDR"
       )
     ) %>%
-    append_topleft("Direction of Abnormality") %>%
     build_table(df = df, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
     c(
-      "Direction of Abnormality", "", "ALT", "High", "1",
+      "PARAMCD", "  GRADDR", "ALT", "High", "1",
       "2", "3", "4", "Any", "Low", "1", "2", "3", "4", "Any", "CRP",
       "Low", "1", "2", "3", "4", "Any", "IGA", "High", "1", "2", "3",
       "4", "Any", "ARM A", "(N=134)", "", "", "16/119 (13.4%)", "14/123 (11.4%)",
