@@ -39,6 +39,7 @@ reference:
       - s_compare
       - s_count_abnormal
       - s_count_abnormal_by_baseline
+      - s_count_abnormal_by_marked
       - s_count_abnormal_by_worst_grade
       - s_count_abnormal_by_worst_grade_by_baseline
       - s_count_abnormal_lab_worsen_by_baseline
@@ -76,6 +77,7 @@ reference:
        - a_ancova
        - a_count_abnormal
        - a_count_abnormal_by_baseline
+       - a_count_abnormal_by_marked
        - a_count_abnormal_by_worst_grade
        - a_count_abnormal_by_worst_grade_by_baseline
        - a_count_abnormal_lab_worsen_by_baseline
@@ -104,6 +106,7 @@ reference:
        - compare_vars
        - count_abnormal
        - count_abnormal_by_baseline
+       - count_abnormal_by_marked
        - count_abnormal_by_worst_grade
        - count_abnormal_by_worst_grade_by_baseline
        - count_abnormal_lab_worsen_by_baseline

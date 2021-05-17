@@ -72,6 +72,7 @@ Collate:
     'formats.R'
     'abnormal.R'
     'abnormal_by_baseline.R'
+    'abnormal_by_marked.R'
     'abnormal_by_worst_grade.R'
     'abnormal_by_worst_grade_by_baseline.R'
     'abnormal_by_worst_grade_worsen.R'

@@ -33,7 +33,7 @@ test_that("s_count_abnormal_by_worst_grade works as expected", {
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
-test_that("s_count_abnormal_by_worst_grade works as expected with single abnormality", {
+test_that("s_count_abnormal_by_worst_grade works as expected", {
   adlb <- get_adlb()
   result <- s_count_abnormal_by_worst_grade(
     df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
