@@ -1,0 +1,534 @@
+---
+title: "Allow MMRM with a single treatment arm"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data
+
+```{r}
+library(assertthat)
+library(dplyr)
+library(random.cdisc.data)
+
+packageVersion("tern")
+packageVersion("rtables")
+
+adsl <- radsl(cached = TRUE)
+adqs <- radqs(cached = TRUE)
+adqs_f <- adqs %>%
+  dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+  droplevels() %>%
+  dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
+  dplyr::mutate(
+    AVISITN = rank(AVISITN) %>%
+    as.factor() %>%
+    as.numeric() %>%
+    as.factor()
+  )
+var_labels(adqs_f) <- var_labels(adqs)
+
+adqs_single <- adqs_f %>%
+  dplyr::filter(ARMCD == "ARM B") %>%
+  dplyr::mutate(ARMCD = droplevels(ARMCD))
+adsl_single <- adsl %>%
+  dplyr::filter(ARMCD == "ARM B")
+```
+
+## Model fitting
+
+Let's see what we need to change to make the model fitting work. Basically we want to treat the case of no arm variable explicitly.
+
+### Check function
+
+Now only when the arm variable is specified, we check it.
+
+```{r}
+check_mmrm_vars <- function(vars,
+                            data) {
+  stopifnot(is.list(vars))
+  stopifnot(is.data.frame(data))
+  labels <- list()
+
+  # Check whether variables are specified and in data.
+  is_specified <- function(var) {
+    !is.null(vars[[var]])
+  }
+  is_specified_and_in_data <- function(var) {
+    is_specified(var) && all(vars[[var]] %in% names(data))
+  }
+  check_and_get_label <- function(var) {
+    stopifnot(is_specified_and_in_data(var))
+    res <- NULL
+    for (v in vars[[var]]) {
+      label <- attr(data[[v]], "label")
+      string <- ifelse(!is.null(label), label, v)
+      res <- c(res, setNames(string, v))
+    }
+    labels[[var]] <<- res  # Saves the result under the `var` element of `labels`.
+  }
+  check_and_get_label("response")
+  check_and_get_label("id")
+  if (is_specified("arm")) {
+    check_and_get_label("arm")
+  }
+  check_and_get_label("visit")
+  if (is_specified("covariates")) {
+    vars$parts <- unique(unlist(strsplit(vars$covariates, split = "\\*|:")))
+    check_and_get_label("parts")
+  }
+
+  # Subset data to observations with complete regressors.
+  regressor_vars <- c(vars$arm, vars$visit, vars$parts)
+  data_complete_regressors <- data %>%
+    dplyr::filter(complete.cases(data[, regressor_vars])) %>%
+    droplevels()
+
+  # Check variable values in this complete data set.
+  response_values <- data_complete_regressors[[vars$response]]
+  stopifnot(is.numeric(response_values))
+
+  if (is_specified("arm")) {
+    arm_values <- data_complete_regressors[[vars$arm]]
+    assert_that(is_df_with_nlevels_factor(
+      data_complete_regressors,
+      variable = vars$arm,
+      n_levels = 2,
+      relation = ">="
+    ))
+  }
+
+  visit_values <- data_complete_regressors[[vars$visit]]
+  stopifnot(is.factor(visit_values))
+
+  # Remove all entries where response is NA, droplevels as well.
+  data_complete <- data_complete_regressors %>%
+    filter(!is.na(data_complete_regressors[, vars$response])) %>%
+    droplevels()
+
+  if (is_specified("arm")) {
+    # Check all arms will still be present after NA filtering.
+    assert_that(is_df_with_nlevels_factor(
+      data_complete,
+      variable = vars$arm,
+      n_levels = nlevels(arm_values),
+      relation = "=="
+    ))
+    
+    # Each arm should have at least have 5 records.
+    if (!all(table(data_complete[[vars$arm]]) > 5)) {
+      stop(paste("Each group / arm should have at least 5 records with non-missing", vars$response))
+    }
+  } else {
+    # The data should have at least 5 records.
+    if (!(nrow(data_complete) > 5)) {
+      stop(paste("There should be at least 5 records with non-missing", vars$response))
+    }
+  }
+
+  return(labels)
+}
+```
+
+### Build formula
+
+Here in case of missing arm variable we let the arm/visit part only contain the visit variable.
+
+```{r}
+build_mmrm_formula <- function(
+  vars,
+  cor_struct = c(
+    "unstructured",
+    "random-quadratic",
+    "random-slope",
+    "compound-symmetry"
+  )
+) {
+  cor_struct <- match.arg(cor_struct)
+
+  covariates_part <- paste(
+    vars$covariates,
+    collapse = " + "
+  )
+
+  arm_visit_part <- if (is.null(vars$arm)) {
+    vars$visit
+  } else {
+    paste0(
+      vars$arm,
+      "*",
+      vars$visit
+    )
+  }
+
+  random_effects_part <- cor_struct %>%
+    switch(
+      "unstructured" = "(0 + visit_var | id_var)",
+      "random-quadratic" = "(poly(as.numeric(visit_var), df=2) | id_var)",
+      "random-slope" = "(as.numeric(visit_var) | id_var)",
+      "compound-symmetry" = "(1 | id_var)"
+    ) %>%
+    gsub("visit_var", vars$visit, x = .) %>% #nolint
+    gsub("id_var", vars$id, x = .) #nolint
+
+  rhs_formula <- paste(
+    arm_visit_part,
+    "+",
+    random_effects_part
+  )
+  if (covariates_part != "") {
+    rhs_formula <- paste(
+      covariates_part,
+      "+",
+      rhs_formula
+    )
+  }
+
+  full_formula <- as.formula(paste(
+    vars$response,
+    "~",
+    rhs_formula
+  ))
+
+  return(full_formula)
+}
+```
+
+### Extract LS means
+
+We need to adjust the formula specifying the LS means when there is no arm variable. Further, we only calculate contrasts when there is an arm variable.
+
+```{r}
+get_mmrm_lsmeans <- function(fit,
+                             vars,
+                             conf_level,
+                             weights) {
+  data_complete <- fit@frame
+  specs <- if (is.null(vars$arm)) {
+    as.formula(paste("~ 1 |", vars$visit))
+  } else {
+    as.formula(paste("~ ", vars$arm, "|", vars$visit))
+  }
+  
+  lsmeans <- emmeans(
+    fit,
+    mode = "satterthwaite",
+    specs = specs,
+    weights = weights,
+    data = data_complete,
+    # The below option is needed to enable analysis of more than 3000 observations.
+    lmerTest.limit = nrow(data_complete)
+  )
+
+  # Relative Reduction (in change from baseline) is calculated using model based
+  # LS means as 100*(LS mean change from baseline in Control Pooled group –
+  # LS mean change from baseline in Treatment Group)/LS mean change from
+  # baseline in Control Pooled group.
+
+  # Adjusted estimate for each arm.
+  estimates <- confint(lsmeans, level = conf_level) %>%
+    as.data.frame() %>%
+    rename(
+      estimate = .data$emmean,
+      se = .data$SE,
+      lower_cl = .data$lower.CL,
+      upper_cl = .data$upper.CL
+    )
+
+  data_n <- data_complete %>%
+    group_by_at(.vars = c(vars$visit, vars$arm)) %>%
+    summarise(n = n()) %>%
+    ungroup()
+
+  estimates <- suppressWarnings(
+    # We don't have labels in `estimates`, which triggers a warning.
+    estimates %>%
+      left_join(data_n, by = c(vars$visit, vars$arm))
+  )
+  
+  results <-  if (is.null(vars$arm)) {
+    list(
+      estimates = estimates
+    )
+  } else {
+    # Get LS means for reference group to join into full dataframe so that relative reduction in
+    # LS mean (mean of response variable) can be computed with respect to reference level (e.g. ARM A).
+    arm_levels <- levels(data_complete[[vars$arm]])
+    reference_level <- arm_levels[1]
+    means_at_ref <- estimates %>%
+      filter(!!as.symbol(vars$arm) == reference_level) %>%
+      select(c(vars$visit, "estimate")) %>%
+      rename(ref = .data$estimate)
+    
+    relative_reduc <- estimates %>%
+      filter(!!as.symbol(vars$arm) != reference_level) %>%
+      left_join(means_at_ref, by = c(vars$visit)) %>%
+      mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
+      select(c(vars$visit, vars$arm, "relative_reduc"))
+    
+    # Start with the differences between LS means.
+    sum_fit_diff <- summary(
+      contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
+      level = conf_level,
+      infer = c(TRUE, TRUE),
+      adjust = "none"
+    )
+    
+    # Get the comparison group name from "contrast" column,
+    # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
+    contrasts <- sum_fit_diff %>%
+      mutate(
+        col_by = factor(
+          gsub(paste0("\\s-\\s", reference_level), "", contrast),
+          levels = arm_levels
+        )
+      ) %>%
+      select(-contrast) %>%
+      rename(!!as.symbol(vars$arm) := .data$col_by) %>%
+      left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
+      mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
+      rename(
+        se = .data$SE,
+        lower_cl = .data$lower.CL,
+        upper_cl = .data$upper.CL,
+        t_stat = .data$t.ratio,
+        p_value = .data$p.value
+      )
+    
+    list(
+      estimates = estimates,
+      contrasts = contrasts
+    )
+  }
+  
+  return(results)
+}
+```
+
+### Fitting function
+
+Now for the fitting function we just have to be careful for the `ref_level` result list element.
+
+```{r}
+fit_mmrm <- function(
+  vars = list(
+    response = "AVAL",
+    covariates = c(),
+    id = "USUBJID",
+    arm = "ARM",
+    visit = "AVISIT"
+  ),
+  data,
+  conf_level = 0.95,
+  cor_struct = "unstructured",
+  weights_emmeans = "proportional",
+  optimizer = "automatic",
+  parallel = FALSE
+) {
+  labels <- check_mmrm_vars(vars, data)
+  assert_that(
+    is_proportion(conf_level),
+    is.flag(parallel)
+  )
+  formula <- build_mmrm_formula(vars, cor_struct)
+
+  fit <- fit_lme4(
+    formula = formula,
+    data = data,
+    optimizer = optimizer,
+    n_cores = ifelse(parallel, get_free_cores(), 1L)
+  )
+
+  lsmeans <- get_mmrm_lsmeans(
+    fit = fit,
+    vars = vars,
+    conf_level = conf_level,
+    weights = weights_emmeans
+  )
+
+  cov_estimate <- get_lme4_cov_estimate(fit)
+  id_rows <- which(fit@frame[[vars$id]] == attr(cov_estimate, "id"))
+  visits <- fit@frame[[vars$visit]][id_rows]
+  rownames(cov_estimate) <- colnames(cov_estimate) <- as.character(visits)
+
+  diagnostics <- get_lme4_diagnostics(fit, cov_est = cov_estimate)
+
+  results <- list(
+    fit = fit,
+    cov_estimate = cov_estimate,
+    diagnostics = diagnostics,
+    lsmeans = lsmeans,
+    vars = vars,
+    labels = labels,
+    ref_level = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[1],
+    conf_level = conf_level
+  )
+  class(results) <- "mmrm"
+  return(results)
+}
+```
+
+## Test
+
+Now we can try it out:
+
+```{r}
+mmrm_results <- fit_mmrm(
+  vars = list(
+    response = "AVAL",
+    covariates = "BMRKR2",
+    id = "USUBJID",
+    visit = "AVISIT"
+  ),
+  data = adqs_single,
+  cor_struct = "unstructured",
+  weights_emmeans = "equal"
+)
+```
+
+So we have our `mmrm` object here.
+
+## Tables
+
+The fixed effect estimates are fine:
+
+```{r}
+as.rtable(mmrm_results, type = "fixed")
+```
+
+Covariance too:
+
+```{r}
+as.rtable(mmrm_results, type = "cov")
+```
+
+Criteria too:
+
+```{r}
+as.rtable(mmrm_results, type = "diagnostic")
+```
+
+### LS means
+
+The LS means table don't work out of the box.
+
+#### tidy method
+
+First we have to adapt the tidy method.
+
+```{r}
+tidy.mmrm <- function(x) {  #nolint #nousage
+  vars <- x$vars
+  estimates <- x$lsmeans$estimates
+  df <- if (is.null(vars$arm)) {
+    nams <- names(estimates)
+    to_rename <- match(c("estimate", "se", "df", "lower_cl", "upper_cl"), nams)
+    names(estimates)[to_rename] <- paste0(names(estimates)[to_rename], "_est")
+    estimates
+  } else {
+    contrasts <- x$lsmeans$contrasts
+    contrasts[[vars$arm]] <- factor(contrasts[[vars$arm]], levels = levels(estimates[[vars$arm]]))
+    merge(
+      x = estimates,
+      y = contrasts,
+      by = c(vars$arm, vars$visit),
+      suffixes = c("_est", "_contr"),
+      all = TRUE
+    )
+  }
+  df$conf_level <- x$conf_level
+  as_tibble(df)
+}
+```
+
+#### Stats function
+
+We need to define new a stats function and the corresponding formatted analysis function because the argument `.in_ref_col` in the original one.
+
+```{r}
+s_mmrm_lsmeans_single <- function(df) {
+  list(
+    n = df$n,
+    adj_mean_se = c(df$estimate_est, df$se_est),
+    adj_mean_ci = with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
+  )
+}
+
+a_mmrm_lsmeans_single <- make_afun(
+  s_mmrm_lsmeans_single,
+  .labels = c(
+    adj_mean_se = "Adjusted Mean (SE)"
+  ),
+  .formats = c(
+    n = "xx.",
+    adj_mean_se = sprintf_format("%.3f (%.3f)"),
+    adj_mean_ci = "(xx.xxx, xx.xxx)"
+  ),
+  .indent_mods = c(
+    adj_mean_ci = 1L
+  )
+)
+```
+
+#### Layout function
+
+Here we now decide between using the existing or the new formatted analysis function.
+```{r}
+summarize_lsmeans <- function(lyt,
+                              arms = TRUE,
+                              ...,
+                              table_names = "lsmeans_summary",
+                              .stats = NULL,
+                              .formats = NULL,
+                              .indent_mods = NULL,
+                              .labels = NULL) {
+  afun <- make_afun(
+    ifelse(arms, a_mmrm_lsmeans, a_mmrm_lsmeans_single),
+    .stats = .stats,
+    .formats = .formats,
+    .indent_mods = .indent_mods,
+    .labels = .labels
+  )
+  analyze(
+    lyt = lyt,
+    vars = "n",
+    afun = afun,
+    table_names = table_names,
+    extra_args = list(...)
+  )
+}
+```
+
+#### Try out
+
+We can then use the new tidy method and the updated layout function. Note that we can also have the estimates as columns here.
+
+```{r}
+df <- tidy(mmrm_results)
+
+basic_table() %>%
+  split_rows_by("AVISIT") %>%
+  add_colcounts() %>%
+  summarize_lsmeans(arms = FALSE) %>%
+  build_table(
+    df = df,
+    alt_counts_df = adsl_single
+  )
+
+basic_table() %>%
+  split_cols_by("AVISIT") %>%
+  summarize_lsmeans(arms = FALSE) %>%
+  build_table(
+    df = df
+  )
+```
+
+
+## Graphs
+
+This will work similarly. Can work on the details in production.
