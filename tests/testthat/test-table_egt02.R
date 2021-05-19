@@ -1,14 +1,16 @@
 # Tests the variants for EGT02.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
+
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
 test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
 
-  adsl <- radsl(cached = TRUE)
   # Note: We exclude "SCREENING" and "BASELINE" visits here
   # so to keep only post-baseline for analysis.
-  adeg <- radeg(cached = TRUE) %>%
+  adeg <- adeg %>%
     dplyr::filter(AVISIT != "SCREENING") %>%
     dplyr::filter(AVISIT != "BASELINE") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))
@@ -47,8 +49,8 @@ test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
 })
 
 test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
-  adsl <- radsl(cached = TRUE)
-  adeg <- radeg(cached = TRUE) %>%
+
+  adeg <- adeg %>%
     dplyr::filter(AVISIT != "SCREENING") %>%
     dplyr::filter(AVISIT != "BASELINE") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))

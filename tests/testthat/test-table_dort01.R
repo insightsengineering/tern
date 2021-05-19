@@ -1,6 +1,6 @@
 # Test variants of DORT01
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
 preproc_adtte <- function(adtte) {
@@ -24,9 +24,11 @@ preproc_adtte <- function(adtte) {
   anl
 }
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 test_that("DORT01 variant 1 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preproc_adtte()
 
   result <- basic_table() %>%
@@ -104,8 +106,7 @@ test_that("DORT01 variant 1 is produced correctly", {
 })
 
 test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preproc_adtte()
 
   result <- basic_table() %>%
@@ -184,8 +185,8 @@ test_that("DORT01 variant 2 (selecting sectons) is produced correctly", {
 })
 
 test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+
+  adtte <- adtte %>%
     preproc_adtte()
 
   result <- basic_table() %>%
@@ -264,8 +265,7 @@ test_that("DORT01 variant 3 (modifying conftype and alpha level) is produced cor
 })
 
 test_that("DORT01 variant 4 (modifying time point for the “xx duration”) is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preproc_adtte()
 
   result <- basic_table() %>%

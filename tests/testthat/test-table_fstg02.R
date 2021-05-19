@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 
 preprocess_adtte <- function(adtte) {
 
@@ -25,9 +25,11 @@ preprocess_adtte <- function(adtte) {
 
 }
 
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is produced correctly", {
 
-  anl1 <- radtte(cached = TRUE) %>%
+  anl1 <- adtte %>%
     preprocess_adtte()
 
   df <- extract_survival_subgroups(
@@ -72,7 +74,7 @@ test_that("FSTG02 table variant 1 (Subgroup Analysis of Survival Duration) is pr
 
 test_that("FSTG02 table variant 2 (specifying class variables and options for the treatment variable)", {
 
-  anl2 <- radtte(cached = TRUE) %>%
+  anl2 <- adtte %>%
     preprocess_adtte() %>%
     mutate(
       # Recode levels of arm.
@@ -129,7 +131,7 @@ test_that("FSTG02 table variant 2 (specifying class variables and options for th
 
 test_that("FSTG02 table variant 3 (selecting columns and changing the alpha level)", {
 
-  anl3 <- radtte(cached = TRUE) %>%
+  anl3 <- adtte %>%
     preprocess_adtte()
 
   df <- extract_survival_subgroups(
@@ -168,7 +170,7 @@ test_that("FSTG02 table variant 3 (selecting columns and changing the alpha leve
 
 test_that("FSTG02 table variant 4 (fixed symbol size) is produced correctly", {
 
-  anl4 <- radtte(cached = TRUE) %>%
+  anl4 <- adtte %>%
     preprocess_adtte()
 
   df <- extract_survival_subgroups(

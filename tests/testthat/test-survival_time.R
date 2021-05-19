@@ -1,8 +1,10 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 test_that("s_surv_time works with default arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -27,7 +29,7 @@ test_that("s_surv_time works with default arguments", {
 })
 
 test_that("s_surv_time works with customized arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -55,7 +57,7 @@ test_that("s_surv_time works with customized arguments", {
 })
 
 test_that("surv_time works with default arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -91,7 +93,7 @@ test_that("surv_time works with default arguments", {
 
 
 test_that("surv_time works with customized arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(

@@ -1,6 +1,6 @@
 # Test all variants of AET02 SMQ
 
-library(random.cdisc.data)
+library(scda)
 
 stack_adae_by_smq <- function(adae, smq) {
 
@@ -15,10 +15,10 @@ stack_adae_by_smq <- function(adae, smq) {
   do.call(rbind, l_df)
 }
 
-test_that("AET02SMQ variant 1 is produced correctly", {
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-  adae <- radae(cached = TRUE)
-  adsl <- radsl(cached = TRUE)
+test_that("AET02SMQ variant 1 is produced correctly", {
 
   adae <- stack_adae_by_smq(adae, c("SMQ01NAM"))
 
@@ -79,9 +79,6 @@ test_that("AET02SMQ variant 1 is produced correctly", {
 })
 
 test_that("AET02SMQ variant 2 is produced correctly", {
-
-  adae <- radae(cached = TRUE)
-  adsl <- radsl(cached = TRUE)
 
   adae <- stack_adae_by_smq(adae, c("SMQ01NAM", "CQ01NAM"))
 

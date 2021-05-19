@@ -1,11 +1,13 @@
 # Tests all variants of EXT01
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adex <- synthetic_cdisc_data("rcd_2021_05_05")$adex
+
 test_that("EXT01 default variant with numeric parameters is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adex <- radex(cached = TRUE) %>%
+  adex <- adex %>%
     filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
     mutate(
@@ -78,8 +80,7 @@ test_that("EXT01 default variant with numeric parameters is produced correctly",
 })
 
 test_that("EXT01 variant: with both numeric and categorical parameters", {
-  adsl <- radsl(cached = TRUE)
-  adex <- radex(cached = TRUE) %>%
+  adex <- adex %>%
     filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
     mutate(
@@ -186,8 +187,7 @@ test_that("EXT01 variant: with both numeric and categorical parameters", {
 })
 
 test_that("EXT01 variant: with user specified categories for missed doses", {
-  adsl <- radsl(cached = TRUE)
-  adex <- radex(cached = TRUE) %>%
+  adex <- adex %>%
     filter(PARCAT1 == "OVERALL" & PARCAT2 == "Drug A") %>%
     select(STUDYID, USUBJID, ARM, PARAMCD, PARAM, AVAL) %>%
     mutate(

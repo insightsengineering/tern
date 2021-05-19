@@ -2,13 +2,13 @@
 
 library(rtables)
 library(tern)
-library(random.cdisc.data)
+library(scda)
+
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
 test_that("EGT03 variant 1 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
-
-  adsl <- radsl(cached = TRUE)
-  adeg <- radeg(cached = TRUE)
   adeg_labels <- var_labels(adeg)
 
   # Filtering
@@ -79,9 +79,6 @@ test_that("EGT03 variant 1 is produced correctly", {
 
 test_that("EGT03 variant 2 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
-
-  adsl <- radsl(cached = TRUE)
-  adeg <- radeg(cached = TRUE)
   adeg_labels <- var_labels(adeg)
 
   # Filtering
@@ -143,9 +140,6 @@ test_that("EGT03 variant 2 is produced correctly", {
 
 test_that("EGT03 variant 3 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
-
-  adsl <- radsl(cached = TRUE)
-  adeg <- radeg(cached = TRUE)
   adeg_labels <- var_labels(adeg)
 
   # Filtering
@@ -206,9 +200,6 @@ test_that("EGT03 variant 3 is produced correctly", {
 
 test_that("EGT03 variant 4 is produced correctly", {
   set.seed(123, kind = "Mersenne-Twister")
-
-  adsl <- radsl(cached = TRUE)
-  adeg <- radeg(cached = TRUE)
   adeg_labels <- var_labels(adeg)
 
   # Filtering

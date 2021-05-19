@@ -1,10 +1,10 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-test_that("Safety Summary Variant 1 works as expected", {
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
+test_that("Safety Summary Variant 1 works as expected", {
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -122,9 +122,6 @@ test_that("Safety Summary Variant 1 works as expected", {
 })
 
 test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as expected", {
-
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
 
   # Add flags (TRUE/FALSE) for select AEs of interest.
   adae <- adae %>%
@@ -268,9 +265,6 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
 
 test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
-
   # Add flags (TRUE/FALSE) for select AEs of interest -- custom groups.
   adae <- adae %>%
     mutate(
@@ -379,8 +373,7 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
 
 test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Sections) works as expected", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     mutate(
       USUBJID_AESEQ = paste(USUBJID, AESEQ, sep = "@@") # Create unique ID per AE in dataset.
     )

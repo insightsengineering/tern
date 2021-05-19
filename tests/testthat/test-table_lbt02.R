@@ -1,12 +1,12 @@
 # Tests the single variant for LBT02.
 
-library(random.cdisc.data)
+library(scda)
 library(magrittr)
 
-test_that("LBT02 default variant is produced correctly", {
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
-  adsl <- radsl(cached = TRUE)
-  adlb <- radlb(cached = TRUE)
+test_that("LBT02 default variant is produced correctly", {
   adlb <- subset(adlb, AVISIT != "SCREENING" & PARAMCD == "ALT")
   adlb$AVISIT <- droplevels(adlb$AVISIT) # nolint snake_case
 

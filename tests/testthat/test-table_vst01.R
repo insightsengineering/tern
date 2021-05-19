@@ -1,11 +1,11 @@
 # Test the single variant for VST01
 
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
 gen_advs <- function() {
-  advs <- radvs(cached = TRUE) # nolintr
+  advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs # nolintr
   advs_label <- var_labels(advs)
 
   advs <- advs %>%

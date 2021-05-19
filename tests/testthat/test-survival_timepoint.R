@@ -1,8 +1,10 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 test_that("s_surv_timepoint works with default arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -26,7 +28,7 @@ test_that("s_surv_timepoint works with default arguments", {
 })
 
 test_that("s_surv_timepoint works with customized arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -53,7 +55,7 @@ test_that("s_surv_timepoint works with customized arguments", {
 })
 
 test_that("s_surv_timepoint also works when there are 0 patients at risk", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -80,7 +82,7 @@ test_that("s_surv_timepoint also works when there are 0 patients at risk", {
 })
 
 test_that("surv_timepoint works with default arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -114,7 +116,7 @@ test_that("surv_timepoint works with default arguments", {
 })
 
 test_that("surv_timepoint works with customized arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -150,7 +152,7 @@ test_that("surv_timepoint works with customized arguments", {
 
 
 test_that("s_surv_timepoint_diff works with default arguments for comparison group", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -180,7 +182,7 @@ test_that("s_surv_timepoint_diff works with default arguments for comparison gro
 
 
 test_that("s_surv_timepoint_diff works with customized arguments for comparison arm", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -209,7 +211,7 @@ test_that("s_surv_timepoint_diff works with customized arguments for comparison 
 })
 
 test_that("surv_timepoint for survival diff works with default arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -245,7 +247,7 @@ test_that("surv_timepoint for survival diff works with default arguments", {
 })
 
 test_that("surv_timepoint for survival diff works with customized arguments", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
@@ -283,7 +285,7 @@ test_that("surv_timepoint for survival diff works with customized arguments", {
 
 
 test_that("surv_timepoint no warning when multipled layers generated", {
-  adtte <- radtte(cached = TRUE)
+
   adtte_f <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(

@@ -1,11 +1,14 @@
 # Tests DMT01
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(rtables)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+advs <- synthetic_cdisc_data("rcd_2021_05_05")$advs
+
+
 test_that("DMT01 default and alternative variants are produced correctly", {
-  adsl <- radsl(cached = TRUE)
 
   # Change description in variable SEX.
   adsl <- adsl %>%
@@ -27,7 +30,6 @@ test_that("DMT01 default and alternative variants are produced correctly", {
 
 
   # Obtain SBP, DBP and weight.
-  advs <- radvs(cached = TRUE)
 
   get_param_advs <- function(pname, plabel) {
     ds <- advs %>%

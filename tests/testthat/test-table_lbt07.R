@@ -1,10 +1,12 @@
 # Tests LBT07.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+
 test_that("LBT07 is produced correctly", {
-  adlb <- radlb(cached = TRUE)
   adlb_f <- adlb %>%
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     dplyr::mutate(

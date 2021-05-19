@@ -1,11 +1,11 @@
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
-adsl_cached <- radsl(cached = TRUE)
+adsl_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adsl_cached <- adsl_cached %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_varlabels(var_labels(adsl_cached))
 
-adrs_cached <- radrs(cached = TRUE)
+adrs_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 adrs_cached <- adrs_cached %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_varlabels(var_labels(adrs_cached))
 
 get_adrs <- function() {

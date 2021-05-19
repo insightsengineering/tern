@@ -1,11 +1,13 @@
 # Test the single variant for EGT05_QTCAT
 
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+
 get_adeg <- function() {
-  adeg <- radeg(cached = TRUE) # nolintr
+  adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg # nolintr
   adeg_labels <- var_labels(adeg)
 
   adeg_f <- adeg %>%
@@ -39,7 +41,6 @@ get_adeg <- function() {
 }
 
 test_that("EGT05_QTCAT default variant is produced correctly", {
-  adsl <- radsl(cached = TRUE)
   adeg <- get_adeg()
 
   result <-  basic_table() %>%

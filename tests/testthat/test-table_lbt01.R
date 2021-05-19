@@ -1,13 +1,13 @@
 # Test the single variant for LBT01.
 
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
-test_that("LBT01 default variant is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adlb <- radlb(cached = TRUE)
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
+test_that("LBT01 default variant is produced correctly", {
   adlb_f <- adlb %>%
     dplyr::filter(
     PARAM == "Alanine Aminotransferase Measurement" &

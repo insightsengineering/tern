@@ -1,8 +1,8 @@
 # Preparation of the test case.
 library(dplyr)
-library(random.cdisc.data)
-adsl <- radsl(cached = TRUE)
-adrs <- radrs(cached = TRUE)
+library(scda)
+
+adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 # Select a response parameter endpoint.
 adrs <- adrs %>% dplyr::filter(PARAMCD == "INVET")

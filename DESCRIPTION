@@ -59,7 +59,9 @@ Suggests:
   random.cdisc.data (>= 0.3.10),
   test.nest (>= 0.2.8),
   rmarkdown,
-  tidyr
+  tidyr,
+  scda,
+  scda.2021
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true

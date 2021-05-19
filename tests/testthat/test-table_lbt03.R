@@ -1,12 +1,12 @@
 # Tests the single variant for LBT03.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-test_that("LBT03 default variant is produced correctly", {
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
-  adsl <- radsl(cached = TRUE)
-  adlb <- radlb(cached = TRUE)
+test_that("LBT03 default variant is produced correctly", {
   adlb_f <- adlb %>%
     dplyr::filter(AVISIT != "SCREENING", PARAMCD == "ALT") %>%
     dplyr::mutate(

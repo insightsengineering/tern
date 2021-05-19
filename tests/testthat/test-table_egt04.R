@@ -1,12 +1,12 @@
 # Tests the single variant for EGT04.
 
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 
-test_that("EGT04 default variant is produced correctly", {
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
-  adsl <- radsl(cached = TRUE)
-  adeg <- radeg(cached = TRUE)
+test_that("EGT04 default variant is produced correctly", {
   adeg_labels <- var_labels(adeg)
   adeg_f <- subset(
     adeg,

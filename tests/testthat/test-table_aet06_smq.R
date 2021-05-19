@@ -1,11 +1,13 @@
 # Test variants for AET06_SMQ.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+
 test_that("AET06_SMQ variant 1 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
+
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)
 
@@ -123,8 +125,7 @@ test_that("AET06_SMQ variant 1 is produced correctly", {
 })
 
 test_that("AET06_SMQ variant 2 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
+
 
   adsl_labels <- var_labels(adsl)
   adae_labels <- var_labels(adae)

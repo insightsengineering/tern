@@ -1,7 +1,7 @@
-library(random.cdisc.data)
+library(scda)
 
 get_data <- function() {
-  adrs <- radrs(cached = TRUE) #nolint
+  adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs #nolint
   adrs %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",

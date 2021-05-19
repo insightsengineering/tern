@@ -2,11 +2,11 @@
 
 library(dplyr)
 library(tern)
-library(random.cdisc.data)
+library(scda)
 library(broom)
 
-adsl <- radsl(cached = TRUE)
-adqs <- radqs(cached = TRUE)
+adqs <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
 #nolint start
 adqs_f <- adqs %>%

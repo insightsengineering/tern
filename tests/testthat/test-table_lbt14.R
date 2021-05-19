@@ -1,9 +1,9 @@
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
-adlb <- radlb(cached = TRUE)
-adsl <- radsl(cached = TRUE)
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 
 test_that("LBT14 variant 1: HIGH works as expected", {
 

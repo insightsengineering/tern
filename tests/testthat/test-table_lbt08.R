@@ -1,9 +1,9 @@
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
-adlb <- radlb(cached = TRUE)
-adsl <- radsl(cached = TRUE)
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
 adlb <- adlb %>% mutate(
   GRADDR = case_when(
     PARAMCD == "ALT" ~ "B",

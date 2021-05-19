@@ -1,10 +1,11 @@
 # Tests the variants for COXT02
 
 library(tern)
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(broom)
-adtte   <- radtte(cached = TRUE)
+
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 adtte_f <- subset(adtte, PARAMCD == "OS")   # _f: filtered
 adtte_f <- within( # nolint
   data = subset(

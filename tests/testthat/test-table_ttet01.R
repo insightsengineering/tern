@@ -1,6 +1,6 @@
 # Tests the variants for TTET01.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
 preproc_adtte <- function(adtte) {
@@ -24,9 +24,11 @@ preproc_adtte <- function(adtte) {
   anl
 }
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 test_that("TTET01 default variant is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preproc_adtte()
 
   l <- basic_table() %>%
@@ -113,8 +115,7 @@ test_that("TTET01 default variant is produced correctly", {
 })
 
 test_that("TTET01 variant 2: selecting sections to display", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preproc_adtte()
 
   l <- basic_table() %>%
@@ -179,8 +180,8 @@ test_that("TTET01 variant 2: selecting sections to display", {
 })
 
 test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alpha level", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+
+  adtte <- adtte %>%
     preproc_adtte()
 
   l <- basic_table() %>%
@@ -271,8 +272,7 @@ test_that("TTET01 variant 3: modifying analysis details like conftype, ties, alp
 })
 
 test_that("TTET01 variant 4: with stratified analysis", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preproc_adtte()
 
   l <- basic_table() %>%
@@ -360,8 +360,8 @@ test_that("TTET01 variant 4: with stratified analysis", {
 })
 
 test_that("TTET01 variant 5: modifying time point", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+
+  adtte <- adtte %>%
     preproc_adtte()
 
   l <- basic_table() %>%
@@ -441,8 +441,8 @@ test_that("TTET01 variant 5: modifying time point", {
 })
 
 test_that("TTET01 variant 6: requesting more than one p-value", {
-  adsl <- radsl(cached = TRUE)
-  adtte <- radtte(cached = TRUE) %>%
+
+  adtte <- adtte %>%
     preproc_adtte()
 
   l <- basic_table() %>%

@@ -1,9 +1,9 @@
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
 get_adlb <- function() {
-  adlb <- radlb(cached = TRUE) # nolintr
+  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb #nolintr
   adlb_f <- adlb %>%
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     dplyr::mutate(

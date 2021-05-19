@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 
 preprocess_adrs <- function(adrs, n_records = 20) {
 
@@ -17,6 +17,8 @@ preprocess_adrs <- function(adrs, n_records = 20) {
 
   adrs
 }
+
+adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
 test_that("h_proportion_df functions as expected with valid input and default arguments", {
 
@@ -84,7 +86,7 @@ test_that("h_proportion_df functions when 0 obs in one arm", {
 
 test_that("h_proportion_subgroups_df functions as expected with valid input and default arguments", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs()
 
   result <- h_proportion_subgroups_df(
@@ -110,7 +112,7 @@ test_that("h_proportion_subgroups_df functions as expected with valid input and 
 
 test_that("h_proportion_subgroups_df functions as expected when subgroups is NULL.", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs()
 
   result <- h_proportion_subgroups_df(
@@ -136,7 +138,7 @@ test_that("h_proportion_subgroups_df functions as expected when subgroups is NUL
 
 test_that("h_proportion_subgroups_df works as expected with groups_lists", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs()
 
   result <- h_proportion_subgroups_df(
@@ -180,7 +182,7 @@ test_that("h_odds_ratio_df functions as expected with valid input and default ar
 
 test_that("h_odds_ratio_df functions as expected with valid input and non-default arguments", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- h_odds_ratio_df(
@@ -208,7 +210,7 @@ test_that("h_odds_ratio_df functions as expected with valid input and non-defaul
 
 test_that("h_odds_ratio_df functions as expected with strata", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- h_odds_ratio_df(
@@ -264,7 +266,7 @@ test_that("h_odds_ratio_df functions when 0 obs in one arm", {
 
 test_that("h_odds_ratio_subgroups_df functions as expected with valid input and default arguments", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- h_odds_ratio_subgroups_df(
@@ -292,7 +294,7 @@ test_that("h_odds_ratio_subgroups_df functions as expected with valid input and 
 
 test_that("h_odds_ratio_subgroups_df functions as expected when subgroups is NULL.", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- h_odds_ratio_subgroups_df(
@@ -320,7 +322,7 @@ test_that("h_odds_ratio_subgroups_df functions as expected when subgroups is NUL
 
 test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- h_odds_ratio_subgroups_df(
@@ -356,7 +358,7 @@ test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
 
 test_that("h_odds_ratio_subgroups_df works as expected with groups_lists", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs()
 
   result <- h_odds_ratio_subgroups_df(

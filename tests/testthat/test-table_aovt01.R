@@ -1,11 +1,13 @@
 # Tests all variants of AOVT01
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adqs <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
+
 test_that("AOVT01 variant with single endpoint is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adqs <- radqs(cached = TRUE)
+
   adqs_single <- adqs %>%
     filter(
       AVISIT == "WEEK 1 DAY 8",  # single time point
@@ -50,8 +52,6 @@ test_that("AOVT01 variant with single endpoint is produced correctly", {
 })
 
 test_that("AOVT01 variant with multiple endpoints is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adqs <- radqs(cached = TRUE)
   adqs_multi <- filter(adqs, AVISIT == "WEEK 1 DAY 8")
   n_per_arm <- table(adsl$ARM)
 

@@ -1,12 +1,14 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(survival)
 
 get_test_data <- function() {
-  dta <- radtte(cached = TRUE) # nolintr
+  dta <- synthetic_cdisc_data("rcd_2021_05_05")$adtte # nolintr
   dta <- dta[dta$PARAMCD == "OS", ]
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 }
+
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 # h_data_plot ----
 test_that("h_data_plot works as expected", {
@@ -21,7 +23,7 @@ test_that("h_data_plot works as expected", {
 })
 
 test_that("h_data_plot respects the ordering of the arm variable factor levels", {
-  data <- radtte(cached = TRUE) %>%
+  data <- adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
     survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
@@ -91,7 +93,7 @@ test_that("h_tbl_median_surv estimates median survival time with CI", {
 })
 
 test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
-  df <- radtte(cached = TRUE) %>%
+  df <- adtte %>%
     filter(PARAMCD == "OS") %>%
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")

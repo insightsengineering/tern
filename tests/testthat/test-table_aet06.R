@@ -2,13 +2,13 @@
 # to variant 1, needing only the data frame to be pre-processed
 # and the baseline variable to be changed from SEX.
 
-library(random.cdisc.data)
+library(scda)
 library(magrittr)
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+
 
 test_that("AET06 variant 1 is produced correctly", {
-
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
@@ -94,9 +94,6 @@ test_that("AET06 variant 1 is produced correctly", {
 })
 
 test_that("AET06 variant 5 is produced correctly", {
-
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
 
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%

@@ -1,8 +1,11 @@
-library(random.cdisc.data)
+library(scda)
+
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+
 
 test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
-  adae <- radae(cached = TRUE)
-  adsl <- radsl(cached = TRUE)
+
   adae_r <- adae[adae$AEREL == "Y", ]
 
   lyt <- basic_table() %>%
@@ -170,8 +173,7 @@ test_that("AET09 variant 1 is produced correctly, AE related to study drug", {
 })
 
 test_that("AET09 variant 2 is produced correctly, AE related to study drug (including high-level terms)", {
-  adae <- radae(cached = TRUE)
-  adsl <- radsl(cached = TRUE)
+
   adae_r <- adae[adae$AEREL == "Y", ]
 
   lyt <- basic_table() %>%

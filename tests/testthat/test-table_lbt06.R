@@ -1,11 +1,12 @@
 # Tests all variants of LBT06.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+
 test_that("LBT06 default variant is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adlb <- radlb(cached = TRUE)
 
   adlb <- adlb %>%
     dplyr::filter(PARAMCD == "ALT") %>%

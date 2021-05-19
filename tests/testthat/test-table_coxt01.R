@@ -3,9 +3,10 @@
 
 # nolint start
 library(tern)
-library(random.cdisc.data)
+library(scda)
 library(broom)
-ADTTE <- radtte(cached = TRUE)
+
+ADTTE <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 saved_labels <- var_labels(ADTTE)
 
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered

@@ -1,8 +1,10 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+
 get_adsl <- function() {
-  adsl <- radsl(cached = TRUE) # nolintr
+  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl # nolintr
   set.seed(1)
   #nolint start
   adsl_f <- adsl %>%
@@ -199,7 +201,6 @@ test_that("Enrollment by Country Table is produced correctly", {
 
 test_that("Death table is produced correctly", {
   adsl <- get_adsl()
-  adae <- radae(cached = TRUE)
 
   result <- basic_table() %>%
     split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
@@ -223,7 +224,7 @@ test_that("Death table is produced correctly", {
 })
 
 test_that("Table of Serious Adverse Events is produced correctly (for one specific treatment arm)", {
-  adae <- radae(cached = TRUE)
+
   adae_serious <- adae %>% filter(AESER == "Y", SAFFL == "Y")
   adae_serious_arm <- adae_serious %>% filter(ARM == "A: Drug X")
 
@@ -264,7 +265,6 @@ test_that("Table of Serious Adverse Events is produced correctly (for one specif
 
 test_that("Table of Non-Serious Adverse Events is produced correctly", {
   adsl <- get_adsl()
-  adae <- radae(cached = TRUE)
   adae_nonser <- adae %>% filter(AESER != "Y", SAFFL == "Y")
   adae_trim <- get_adae_trimmed(adsl, adae_nonser, cutoff_rate = 0.05)
 

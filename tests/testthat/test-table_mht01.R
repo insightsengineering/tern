@@ -1,16 +1,19 @@
 # Tests the single variant for MHT01.
 
 library(dplyr)
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(tern)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+admh <- synthetic_cdisc_data("rcd_2021_05_05")$admh
+
 test_that("MHT01 variant 1 is produced accurately", {
 
-  adsl_f <- radsl(cached = TRUE) %>%
+  adsl_f <- adsl %>%
     filter(SAFFL == "Y")
 
-  admh_f <- radmh(cached = TRUE) %>%
+  admh_f <- admh %>%
     filter(
       SAFFL == "Y",
       MHBODSYS != "",
@@ -71,10 +74,10 @@ test_that("MHT01 variant 1 is produced accurately", {
 
 test_that("MHT01 variant 2 is produced accurately", {
 
-  adsl_f <- radsl(cached = TRUE) %>%
+  adsl_f <- adsl %>%
     filter(SAFFL == "Y")
 
-  admh_f <- radmh(cached = TRUE) %>%
+  admh_f <- admh %>%
     filter(
       SAFFL == "Y",
       MHBODSYS != "",
@@ -127,10 +130,10 @@ test_that("MHT01 variant 2 is produced accurately", {
 
 test_that("MHT01 variant 3 is produced accurately", {
 
-  adsl_f <- radsl(cached = TRUE) %>%
+  adsl_f <- adsl %>%
     filter(SAFFL == "Y")
 
-  admh_f <- radmh(cached = TRUE) %>%
+  admh_f <- admh %>%
     filter(
       SAFFL == "Y",
       MHBODSYS != "",
@@ -191,10 +194,10 @@ test_that("MHT01 variant 3 is produced accurately", {
 
 test_that("MHT01 variant 5 is produced accurately", {
 
-  adsl_f <- radsl(cached = TRUE) %>%
+  adsl_f <- adsl %>%
     filter(SAFFL == "Y")
 
-  admh_f <- radmh(cached = TRUE) %>%
+  admh_f <- admh %>%
     filter(
       SAFFL == "Y",
       MHBODSYS != "",

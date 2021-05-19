@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
 preprocess_adae <- function(adae) {
@@ -46,9 +46,11 @@ criteria_fun <- function(tr) {
   is(tr, "ContentRow")
 }
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+
 test_that("AET04_PI full table is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+  adae_max <- adae %>%
     preprocess_adae()
   result <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
@@ -104,8 +106,8 @@ test_that("AET04_PI full table is produced correctly", {
 })
 
 test_that("AET04_PI variant 1 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
@@ -153,8 +155,8 @@ test_that("AET04_PI variant 1 is produced correctly", {
 })
 
 test_that("AET04_PI variant 2 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
@@ -191,8 +193,8 @@ test_that("AET04_PI variant 2 is produced correctly", {
 })
 
 test_that("AET04_PI variant 3 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
@@ -233,8 +235,8 @@ test_that("AET04_PI variant 3 is produced correctly", {
 })
 
 test_that("AET04_PI variant 4 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
@@ -270,8 +272,8 @@ test_that("AET04_PI variant 4 is produced correctly", {
 })
 
 test_that("AET04_PI variant 5 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
   full_table <- full_table_aet04_pi(adsl, adae_max) %>%
     sort_at_path(
@@ -316,8 +318,8 @@ test_that("AET04_PI variant 5 is produced correctly", {
 })
 
 test_that("AET04_PI variant 6 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
 
   grade_groups <- list(
@@ -386,8 +388,8 @@ test_that("AET04_PI variant 6 is produced correctly", {
 })
 
 test_that("AET04_PI variant 7 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
 
   grade_groups <- list(
@@ -456,8 +458,8 @@ test_that("AET04_PI variant 7 is produced correctly", {
 })
 
 test_that("AET04_PI variant 8 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adae_max <- radae(cached = TRUE) %>%
+
+  adae_max <- adae %>%
     preprocess_adae()
 
   grade_groups <- list(

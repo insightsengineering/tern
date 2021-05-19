@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 
 preprocess_adtte <- function(adtte) {
 
@@ -21,9 +21,11 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 test_that("h_survtime_df functions as expected with valid input and default arguments", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_survtime_df(
@@ -45,7 +47,7 @@ test_that("h_survtime_df functions as expected with valid input and default argu
 
 test_that("h_survtime_df functions as expected when median is NA", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   # Edge case: median cannot be estimated.
@@ -75,7 +77,7 @@ test_that("h_survtime_df functions as expected when median is NA", {
 
 test_that("h_survtime_df functions as expected when 0 records in one group", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   # Edge case: 0 records in one group.
@@ -211,7 +213,7 @@ test_that("h_split_by_subgroups works as expected with groups_lists", {
 
 test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_survtime_subgroups_df(
@@ -241,7 +243,7 @@ test_that("h_survtime_subgroups_df functions as expected with valid input and de
 
 test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_survtime_subgroups_df(
@@ -267,7 +269,7 @@ test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.
 
 test_that("h_survtime_subgroups_df works as expected with groups_lists", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_survtime_subgroups_df(
@@ -290,7 +292,7 @@ test_that("h_survtime_subgroups_df works as expected with groups_lists", {
 
 test_that("h_coxph_df functions as expected with valid input and default arguments", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_coxph_df(
@@ -317,7 +319,7 @@ test_that("h_coxph_df functions as expected with valid input and default argumen
 
 test_that("h_coxph_df functions as expected with one stratification factor", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   # Test with one stratification factor.
@@ -345,7 +347,7 @@ test_that("h_coxph_df functions as expected with one stratification factor", {
 
 test_that("h_coxph_df functions as expected with multiple stratification factors", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_coxph_df(
@@ -372,7 +374,7 @@ test_that("h_coxph_df functions as expected with multiple stratification factors
 
 test_that("h_coxph_df functions as expected when 0 records in one group", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte() %>%
     filter(ARM == "A: Drug X")
 
@@ -400,7 +402,7 @@ test_that("h_coxph_df functions as expected when 0 records in one group", {
 
 test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_coxph_subgroups_df(
@@ -436,10 +438,10 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   expect_equal(result, expected, tol = 0.000001)
 
   # Test edge case where HR is (0, Inf)
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte() %>%
     filter(COUNTRY %in% c("CAN", "GBR")) %>%
-    reapply_varlabels(var_labels(radtte(cached = TRUE)))
+    reapply_varlabels(var_labels(adtte))
 
   result <- expect_warning(h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "COUNTRY"),
@@ -468,7 +470,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
 
 test_that("h_coxph_subgroups_df functions as expected with with stratification factors", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_coxph_subgroups_df(
@@ -498,7 +500,7 @@ test_that("h_coxph_subgroups_df functions as expected with with stratification f
 
 test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_coxph_subgroups_df(
@@ -527,7 +529,7 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
 
 test_that("h_coxph_subgroups_df works as expected with groups_lists", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- h_coxph_subgroups_df(

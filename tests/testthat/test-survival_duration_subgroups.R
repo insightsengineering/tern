@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
 preprocess_adtte <- function(adtte) {
@@ -23,9 +23,11 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- extract_survival_subgroups(
@@ -87,7 +89,7 @@ test_that("extract_survival_subgroups functions as expected with valid input and
 
 test_that("extract_survival_subgroups works as expected with groups_lists", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- extract_survival_subgroups(
@@ -117,7 +119,7 @@ test_that("extract_survival_subgroups works as expected with groups_lists", {
 
 test_that("extract_survival_subgroups functions as expected with NULL subgroups", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   result <- extract_survival_subgroups(
@@ -187,7 +189,7 @@ test_that("a_survival_subgroups functions as expected with valid input", {
 
 test_that("tabulate_survival_subgroups functions as expected with valid input", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   df <- extract_survival_subgroups(
@@ -222,7 +224,7 @@ test_that("tabulate_survival_subgroups functions as expected with valid input", 
 
 test_that("tabulate_survival_subgroups functions as expected with NULL subgroups", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   df <- extract_survival_subgroups(
@@ -250,10 +252,10 @@ test_that("tabulate_survival_subgroups functions as expected with NULL subgroups
 
 test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte() %>%
     slice(1:30) %>%
-    reapply_varlabels(var_labels(radtte(cached = TRUE)))
+    reapply_varlabels(var_labels(adtte))
 
   df <- expect_warning(extract_survival_subgroups(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "REGION1"),
@@ -285,7 +287,7 @@ test_that("tabulate_survival_subgroups functions as expected with extreme values
 
 test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
 
-  adtte <- radtte(cached = TRUE) %>%
+  adtte <- adtte %>%
     preprocess_adtte()
 
   df <- extract_survival_subgroups(

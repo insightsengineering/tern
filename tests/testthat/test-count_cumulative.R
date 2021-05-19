@@ -1,4 +1,3 @@
-library(random.cdisc.data)
 library(dplyr)
 
 test_that("h_count_cumulative works with healthy input and default arguments", {

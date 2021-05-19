@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 
 preproc_adae <- function(adae) {
 
@@ -93,10 +93,12 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
   anl
 }
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+
 test_that("AET04 variant 1 is produced correctly", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preproc_adae()
 
   gr_grp <-  list(
@@ -211,8 +213,7 @@ test_that("AET04 variant 1 is produced correctly", {
 
 test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preproc_adae() %>%
     dplyr::filter(ACTARM == "A: Drug X")
 
@@ -314,8 +315,7 @@ test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)",
 
 test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preproc_adae()
 
   gr_grp <-  list(
@@ -460,8 +460,7 @@ test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
 
 test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1&2, grades 3&4&5)", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preproc_adae() %>%
     dplyr::mutate(
       AETOXGR = forcats::fct_recode(AETOXGR, "5" = "Grade 5")
@@ -584,8 +583,7 @@ test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1
 
 test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at Least 5%, totals restricted)", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preproc_adae()
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4)
 
@@ -677,8 +675,7 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
 # NOTE: STREAM logic will only trim at term level
 test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae  %>%
     preproc_adae()
 
   raw_result <- raw_table(adae, adsl)
@@ -719,8 +716,7 @@ test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at L
 # NOTE: STREAM logic will only tream at term level
 test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preproc_adae()
 
   raw_result <- raw_table(adae, adsl)
@@ -769,8 +765,7 @@ test_that(
   "AET04 variant 11 is produced correctly
   (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preproc_adae()
 
   raw_result <- raw_table(adae, adsl)

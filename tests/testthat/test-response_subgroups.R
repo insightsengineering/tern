@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 
 preprocess_adrs <- function(adrs, n_records = 20) {
 
@@ -18,9 +18,11 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
+adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+
 test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- extract_rsp_subgroups(
@@ -61,7 +63,7 @@ test_that("extract_rsp_subgroups functions as expected with valid input and defa
 
 test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- extract_rsp_subgroups(
@@ -102,7 +104,7 @@ test_that("extract_rsp_subgroups functions as expected with NULL subgroups", {
 
 test_that("extract_rsp_subgroups works as expected with groups_lists", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- extract_rsp_subgroups(
@@ -132,7 +134,7 @@ test_that("extract_rsp_subgroups works as expected with groups_lists", {
 
 test_that("extract_rsp_subgroups functions as expected with strata", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 100)
 
   result <- extract_rsp_subgroups(
@@ -206,7 +208,7 @@ test_that("a_response_subgroups functions as expected with valid input", {
 
 test_that("tabulate_rsp_subgroups functions as expected with valid input", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
   df <- extract_rsp_subgroups(
@@ -289,7 +291,7 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input extreme
 
 test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
   df <- extract_rsp_subgroups(
@@ -322,7 +324,7 @@ test_that("tabulate_rsp_subgroups functions as expected with NULL subgroups", {
 
 test_that("tabulate_rsp_subgroups functions as expected when 0 obs in one arm", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
   df <- expect_warning(extract_rsp_subgroups(

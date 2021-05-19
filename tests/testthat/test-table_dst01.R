@@ -1,6 +1,4 @@
 # Tests all variants of DST01.
-
-library(random.cdisc.data)
 library(rtables)
 library(dplyr)
 

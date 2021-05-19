@@ -1,9 +1,11 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
+
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
 test_that("g_km default plot works", {
 
-  df <- radtte(cached = TRUE) %>%
+  df <- adtte %>%
     filter(PARAMCD == "OS") %>%
     mutate(is_event = CNSR == 0)
 
@@ -19,7 +21,7 @@ test_that("g_km default plot works", {
 
 test_that("g_km default plot witch ci_ribbon = TRUE works", {
 
-  df <- radtte(cached = TRUE) %>%
+  df <- adtte %>%
     filter(PARAMCD == "OS") %>%
     mutate(is_event = CNSR == 0)
 

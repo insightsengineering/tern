@@ -1,7 +1,7 @@
 get_data <- function() {
-  library(random.cdisc.data)
+  library(scda)
 
-  radtte(cached = TRUE) %>%
+  synthetic_cdisc_data("rcd_2021_05_05")$adtte %>%
     dplyr::filter(
       PARAMCD == "OS",
       ARM %in% c("B: Placebo", "A: Drug X")

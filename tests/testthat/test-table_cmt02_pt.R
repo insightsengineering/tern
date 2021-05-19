@@ -1,11 +1,13 @@
 # Test single variant for CMT02_PT
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
+
 test_that("CMT02_PT default variant is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  adcm <- radcm(cached = TRUE) %>%
+  adcm <- adcm %>%
     mutate(
       ASEQ = as.factor(ASEQ)
     )

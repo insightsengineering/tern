@@ -1,10 +1,12 @@
 # Test variants of DTH01
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+
 test_that("DTH01 variant 1 is produced correctly", {
-  adsl <- radsl(cached = TRUE) %>%
+  adsl <- adsl %>%
     df_explicit_na()
 
   tbl1 <- basic_table() %>%
@@ -36,7 +38,7 @@ test_that("DTH01 variant 1 is produced correctly", {
 })
 
 test_that("DTH01 variant 2 is produced correctly", {
-  adsl <- radsl(cached = TRUE) %>%
+  adsl <- adsl %>%
     df_explicit_na()
 
   part1 <- basic_table() %>%
@@ -119,7 +121,7 @@ test_that("DTH01 variant 2 is produced correctly", {
 })
 
 test_that("DTH01 variant 3 is produced correctly", {
-  adsl <- radsl(cached = TRUE) %>%
+  adsl <- adsl %>%
     df_explicit_na()
 
   # Reorder the levels in "DTHCAT" to put Other category at the end.
@@ -193,7 +195,7 @@ test_that("DTH01 variant 3 is produced correctly", {
 })
 
 test_that("DTH01 variant 4 is produced correctly", {
-  adsl <- radsl(cached = TRUE) %>%
+  adsl <- adsl %>%
     df_explicit_na()
 
   #Reorder the levels in "DTHCAT" to put Other category at the end.

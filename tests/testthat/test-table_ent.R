@@ -1,10 +1,11 @@
 # Tests all ENT variants.
 
-library(random.cdisc.data)
+library(scda)
+
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
 test_that("ENT01_IT is produced correctly", {
 
-  adsl <- radsl(cached = TRUE)
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
   adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
@@ -158,7 +159,6 @@ test_that("ENT01_IT is produced correctly", {
 
 test_that("ENT01a_IT is produced correctly", {
 
-  adsl <- radsl(cached = TRUE)
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
   adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
@@ -303,7 +303,6 @@ test_that("ENT01a_IT is produced correctly", {
 
 test_that("ENT02_IT is produced correctly", {
 
-  adsl <- radsl(cached = TRUE)
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
   adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]
@@ -615,7 +614,6 @@ test_that("ENT02_IT is produced correctly", {
 
 test_that("ENT02a_IT is produced correctly", {
 
-  adsl <- radsl(cached = TRUE)
   adsl$REGION1 <- droplevels(adsl$REGION1) # nolint
   adsl$COUNTRY <- droplevels(adsl$COUNTRY) # nolint
   adsl <- adsl[order(adsl$REGION1, adsl$COUNTRY, adsl$INVID), ]

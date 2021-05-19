@@ -1,11 +1,14 @@
 # Test variants for AET05.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adaette <- synthetic_cdisc_data("rcd_2021_05_05")$adaette
+
 test_that("AET05 variant 1 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  anl <- radaette(cached = TRUE) %>%
+
+  anl <- adaette %>%
     dplyr::filter(PARAM == "Time to first occurrence of any adverse event") %>%
     dplyr::mutate(is_event = CNSR == 0) %>%
     dplyr::mutate(n_events = as.integer(is_event))
@@ -24,9 +27,9 @@ test_that("AET05 variant 1 is produced correctly", {
     c(
       "", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "95% CI", "A: Drug X", "(N=134)",
-      "112.3", "78", "69.49", "(54.07, 84.91)", "B: Placebo", "(N=134)",
-      "77.4", "104", "134.37", "(108.54, 160.19)", "C: Combination",
-      "(N=132)", "119.4", "67", "56.1", "(42.67, 69.53)"
+      "93.1", "88", "94.57", "(74.81, 114.32)", "B: Placebo", "(N=134)",
+      "65.8", "109", "165.72", "(134.61, 196.83)", "C: Combination",
+      "(N=132)", "105.6", "76", "72", "(55.81, 88.18)"
     ),
     .Dim = c(6L, 4L)
   )
@@ -35,8 +38,8 @@ test_that("AET05 variant 1 is produced correctly", {
 })
 
 test_that("AET05 variant 2 is produced correctly", {
-  adsl <- radsl(cached = TRUE)
-  anl <- radaette(cached = TRUE) %>%
+
+  anl <- adaette %>%
     dplyr::filter(PARAM == "Time to first occurrence of any adverse event") %>%
     dplyr::mutate(is_event = CNSR == 0) %>%
     dplyr::mutate(n_events = as.integer(is_event))
@@ -55,9 +58,9 @@ test_that("AET05 variant 2 is produced correctly", {
     c(
       "", "", "Total patient-years at risk", "Number of adverse events observed",
       "AE rate per 100 patient-years", "95% CI", "A: Drug X", "(N=134)",
-      "112.3", "78", "69.49", "(54.93, 86.72)", "B: Placebo", "(N=134)",
-      "77.4", "104", "134.37", "(109.79, 162.81)", "C: Combination",
-      "(N=132)", "119.4", "67", "56.1", "(43.48, 71.25)"
+      "93.1", "88", "94.57", "(75.84, 116.51)", "B: Placebo", "(N=134)",
+      "65.8", "109", "165.72", "(136.07, 199.9)", "C: Combination",
+      "(N=132)", "105.6", "76", "72", "(56.72, 90.11)"
     ),
     .Dim = c(6L, 4L)
   )

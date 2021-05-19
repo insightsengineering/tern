@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
 preprocess_adrs <- function(adrs, n_records = 20) {
@@ -19,9 +19,11 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
+adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
+
 test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced correctly", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
   df <- extract_rsp_subgroups(
@@ -54,7 +56,7 @@ test_that("ONCT05 variant 1 (Objective Response Rate by Subgroup) is produced co
 
 test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
   adrs <- adrs %>%
@@ -97,7 +99,7 @@ test_that("ONCT05 variant 2 (Specifying class variables) is produced correctly",
 
 test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is produced correctly", {
 
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 200)
 
   df <- extract_rsp_subgroups(
@@ -129,7 +131,7 @@ test_that("ONCT05 variant 3 (selecting columns and changing the alpha level) is 
 test_that("ONCT05 variant 4 (setting values indicating response) is produced correctly", {
 
   # Define new criteria for responder.
-  adrs <- radrs(cached = TRUE) %>%
+  adrs <- adrs %>%
     preprocess_adrs(n_records = 200) %>%
     mutate(
       new_rsp = AVALC %in% c("CR", "PR")

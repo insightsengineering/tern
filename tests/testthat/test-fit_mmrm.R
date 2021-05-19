@@ -1,8 +1,10 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+data <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
+
 test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
-  data <- radqs(cached = TRUE) %>%
+  data <-  data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
 
   # No additional covariates.
@@ -39,7 +41,7 @@ test_that("check_mmrm_vars passes with healthy inputs and returns correct labels
 })
 
 test_that("check_mmrm_vars works with interaction terms in `covariates`", {
-  data <- radqs(cached = TRUE) %>%
+  data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
 
   vars <- list(
@@ -65,7 +67,7 @@ test_that("check_mmrm_vars works with interaction terms in `covariates`", {
 
 test_that("check_mmrm_vars works when there are missing values", {
   set.seed(123)
-  data <- radqs(cached = TRUE) %>%
+  data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
     dplyr::mutate(
       # Introduce extra missing response variable values.
@@ -104,7 +106,7 @@ test_that("check_mmrm_vars works when there are missing values", {
 })
 
 test_that("check_mmrm_vars fails if a variable is missing", {
-  data <- radqs(cached = TRUE) %>%
+  data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
   full_vars <- list(
     response = "AVAL",
@@ -121,7 +123,7 @@ test_that("check_mmrm_vars fails if a variable is missing", {
 })
 
 test_that("check_mmrm_vars fails if a variable is not included in `data`", {
-  data <- radqs(cached = TRUE) %>%
+  data <- data %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
   vars <- list(
     response = "AVAL",
@@ -464,7 +466,7 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 
   skip_if_too_deep(2)
 
-  data <- radqs(cached = TRUE) %>%
+  data <- data %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
     droplevels() %>%
     dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
@@ -494,7 +496,7 @@ test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 
   skip_if_too_deep(2)
 
-  data <- radqs(cached = TRUE) %>%
+  data <- data %>%
     dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
     droplevels() %>%
     dplyr::mutate(
@@ -597,7 +599,7 @@ expect_equal_result_tables <- function(result,
 # Produces different version of a ADQS subset.
 get_adqs <- function(version = c("A", "B")) {
   version <- match.arg(version)
-  adqs <- random.cdisc.data::radqs(cached = TRUE)
+  adqs <- data
   set.seed(123, kind = "Mersenne-Twister")  # Because of `sample` below.
   adqs_f <- adqs %>% {
     if (version == "A") {

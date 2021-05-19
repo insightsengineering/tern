@@ -1,9 +1,9 @@
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
-adlb <- radlb(cached = TRUE)
-adsl <- radsl(cached = TRUE)
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adlb <- adlb %>% mutate(
   GRADDR = case_when(
     PARAMCD == "ALT" ~ "B",
@@ -312,8 +312,8 @@ test_that("count_abnormal_lab_worsen_by_baseline", {
 })
 
 test_that("h_adlb_worsen all high", {
-  adlb <- radlb(cached = TRUE)
-  adsl <- radsl(cached = TRUE)
+  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
   adlb <- adlb %>% mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "H",
@@ -342,8 +342,8 @@ test_that("h_adlb_worsen all high", {
 })
 
 test_that("h_adlb_worsen all low", {
-  adlb <- radlb(cached = TRUE)
-  adsl <- radsl(cached = TRUE)
+  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+  adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
   adlb <- adlb %>% mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "L",

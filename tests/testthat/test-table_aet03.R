@@ -1,9 +1,9 @@
-library(random.cdisc.data)
+library(scda)
+
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 test_that("AET03 variant 1 is produced correctly", {
-
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE)
 
   adae$AEDECOD <- as.character(adae$AEDECOD) #nolint
   adae$AEBODSYS <- as.character(adae$AEBODSYS) #nolint

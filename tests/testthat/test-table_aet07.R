@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
 # 1. Preprocess ADAE so that deaths do not occur in arm "A: Drug X".
@@ -22,10 +22,12 @@ preprocess_adae <- function(adae) {
     filter(AESDTH == "Y")
 }
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
+
 test_that("AET07 variant 1 is produced correctly", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preprocess_adae()
 
   lyt <- basic_table() %>%
@@ -66,8 +68,7 @@ test_that("AET07 variant 1 is produced correctly", {
 
 test_that("AET07 variant 2 is produced correctly", {
 
-  adsl <- radsl(cached = TRUE)
-  adae <- radae(cached = TRUE) %>%
+  adae <- adae %>%
     preprocess_adae()
 
   lyt <- basic_table() %>%

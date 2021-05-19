@@ -1,12 +1,14 @@
 # Tests all variants of LBT04.
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+
 test_that("LBT04 default variant is produced correctly", {
-  adsl <- radsl(cached = TRUE)
   # Note: We exclude "SCREENING" visit here since otherwise it would be used as post-baseline below.
-  adlb <- radlb(cached = TRUE) %>%
+  adlb <- adlb %>%
     dplyr::filter(AVISIT != "SCREENING") %>%
     dplyr::mutate(AVISIT = droplevels(AVISIT))
 
