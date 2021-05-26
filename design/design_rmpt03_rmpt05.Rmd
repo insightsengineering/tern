@@ -1,0 +1,208 @@
+---
+title: "Design for RMPT03 and RMPT05"
+author: "Imanol Zubizarreta"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of LBT05}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(assertthat)
+library(dplyr)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+
+## Data for examples
+
+```{r data, results = "asis", eval = TRUE}
+
+pth <- "/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/efficacy/task01/outdata_vad/"
+
+adex <- haven::read_sas(paste0(pth, "adex.sas7bdat"))
+adsl <- haven::read_sas(paste0(pth, "adsl.sas7bdat"))
+
+# Ensure character variables are converted to factors and empty strings and NAs are explicit missing levels.
+# For details, refer to Teal and Study Data article.
+adex <- df_explicit_na(adex)
+adsl <- df_explicit_na(adsl)
+
+adex_f <- adex %>% filter(PARAMCD == "TDURD" & 
+                            PARCAT2 == "MPDL3280A/PLACEBO INFUSION" & 
+                            SAFFL == "Y") %>%
+mutate(SEX = factor(case_when(
+    SEX == "F" ~ "Female",
+    SEX == "M" ~ "Male"
+  )))
+
+
+adsl_f <- adsl %>% filter(adsl$SAFFL == "Y") %>%
+  mutate(SEX = factor(case_when(
+    SEX == "F" ~ "Female",
+    SEX == "M" ~ "Male"
+  )))
+
+```
+
+
+## New Tern function
+
+```{r}
+
+s_count_patients_exposure_in_cols <- function(df, 
+                                              .var = "AVAL" ,
+                                              id = "USUBJID",
+                                              labelstr = "",
+                                              .N_col,
+                                              custom_label = NULL
+)
+  
+{
+   
+  assert_that(
+    is.data.frame(df),
+    is.string(id),
+    is.string(labelstr),
+    is.null(custom_label) || is.string(custom_label),
+    all(c(.var, id) %in% names(df))
+  )
+  
+  row_label <- if (labelstr != "") {
+    labelstr
+  } else if (!is.null(custom_label)) {
+    custom_label
+  } else {
+    "Total patients numbers/person time"
+  }
+  
+  n_patients <- with_label(s_num_patients_content(df = df, .N_col, .var = id, labelstr = "")$unique, row_label)
+  
+  sum_exposure <- with_label(sum(df[[.var]]),row_label)
+  
+  y <- list(n_patients,sum_exposure)
+  names(y) <- c("n_patients", "sum_exposure")
+  y
+  
+}
+
+
+summarize_patients_exposure_in_cols <- function(lyt,
+                                                var,
+                                                id = "USUBJID",
+                                                ...,
+                                                .stats = c(
+                                                "n_patients",
+                                                "sum_exposure"
+                                                ),
+                                                .formats = NULL,
+                                                .labels = c(
+                                                n_patients = "Patients",
+                                                sum_exposure = "Person time"
+                                              ),
+                                                .indent_mods = NULL,
+                                                 col_split = TRUE) {
+  afun_list <- Map(
+    function(stat) {
+      make_afun(
+        s_count_patients_exposure_in_cols,
+        .stats = stat,
+        .formats = ifelse (stat == "n_patients", "xx (xx.x%)", "xx")
+      )
+
+    },
+    stat = .stats
+  )
+
+  if (col_split) {
+    lyt <- split_cols_by_multivar(
+      lyt = lyt,
+      vars = c(var, var),
+      varlabels = .labels[.stats]
+
+    )
+  }
+  summarize_row_groups(
+    lyt = lyt,
+    cfun = afun_list,
+    extra_args = list(...)
+  )
+}
+```
+
+
+## Full RMPT03 Example
+
+### Approach by using the above created new Tern function
+
+```{r}
+lyt <- basic_table() %>%
+  split_cols_by("SEX", split_fun = add_overall_level("Total", first = FALSE)) %>%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
+  split_rows_by("AGEGR1") %>%
+summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
+
+result <- build_table(lyt, df = adex_f, alt_counts_df = adsl_f)
+
+result
+```
+
+
+
+### Approach by using `analyze_colvars`
+
+``` {r}
+colfuns <- list(function(x, .N_col, labelstr) in_rows( " " = rcell(c(length(unique(x)), length(unique(x))/.N_col), format = "xx (xx.x%)")),
+                function(x, labelstr) in_rows(" " = sum(x), .formats = "xx"))
+
+l <- basic_table() %>%
+    split_cols_by("SEX", split_fun = add_overall_level("Total", first = FALSE)) %>%
+    split_cols_by_multivar(c("USUBJID", "AVAL"), varlabels = c("Patients", "Person time")) %>%
+    analyze_colvars(afun = colfuns) %>%
+    split_rows_by("AGEGR1", split_fun = drop_split_levels) %>%
+    analyze_colvars(afun = colfuns)
+
+result <- build_table(l, df = adex_f, alt_counts_df = adsl_f)
+
+result
+
+```
+
+## Full RMPT05 Example
+
+### Approach by using the above created new Tern function
+
+```{r}
+lyt <- basic_table() %>%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
+  split_rows_by("RACE") %>%
+summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
+
+result <- build_table(lyt, df = adex_f, alt_counts_df = adsl_f)
+
+result
+```
