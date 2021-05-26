@@ -2,6 +2,7 @@
 * Added new tern function `count_abnormal_by_marked` required for creating `LBT05` Stream template, where patients
 with marked laboratory abnormalities are counted. 
 * added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade` for it to be used in `AET01_AESI` template.
+* Changed `indent` argument in `append_varlabels` function to accept non-negative integer to represent the indent space defined by user. Previous calls with boolean indent will do an integer conversion and give a warning about this.
 
 # tern 0.7.3
 

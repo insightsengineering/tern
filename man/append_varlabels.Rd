@@ -4,7 +4,7 @@
 \alias{append_varlabels}
 \title{Add Variable Labels to Top Left Corner in Table}
 \usage{
-append_varlabels(lyt, df, vars, indent = FALSE)
+append_varlabels(lyt, df, vars, indent = 0L)
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -13,7 +13,8 @@ append_varlabels(lyt, df, vars, indent = FALSE)
 
 \item{vars}{(\code{character})\cr variable names of which the labels are to be looked up in \code{df}.}
 
-\item{indent}{(\code{flag})\cr should this be indented by 2 blanks (1 level in rtables)?}
+\item{indent}{(\code{integer})\cr non-negative number of nested indent space, default to 0L which means no indent.
+1L means two spaces indent, 2L means four spaces indent and so on.}
 }
 \value{
 The modified layout.
@@ -35,7 +36,7 @@ lyt <- basic_table() \%>\%
   split_rows_by("SEX") \%>\%
   append_varlabels(DM, "SEX") \%>\%
   analyze("AGE", afun = mean) \%>\%
-  append_varlabels(DM, "AGE", indent = TRUE)
+  append_varlabels(DM, "AGE", indent = 1)
 build_table(lyt, DM)
 
 lyt <- basic_table() \%>\%

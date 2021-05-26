@@ -233,7 +233,7 @@ test_that("append_varlabels works as expected", {
     split_rows_by("SEX") %>%
     append_varlabels(DM, "SEX") %>%
     analyze("AGE", afun = mean) %>%
-    append_varlabels(DM, "AGE", indent = TRUE)
+    append_varlabels(DM, "AGE", indent = 1L)
   result <- build_table(lyt, DM)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(

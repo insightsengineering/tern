@@ -274,7 +274,8 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'
 #' @inheritParams argument_convention
 #' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
-#' @param indent (`flag`)\cr should this be indented by 2 blanks (1 level in rtables)?
+#' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.
+#' 1L means two spaces indent, 2L means four spaces indent and so on.
 #'
 #' @return The modified layout.
 #'
@@ -289,7 +290,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   split_rows_by("SEX") %>%
 #'   append_varlabels(DM, "SEX") %>%
 #'   analyze("AGE", afun = mean) %>%
-#'   append_varlabels(DM, "AGE", indent = TRUE)
+#'   append_varlabels(DM, "AGE", indent = 1)
 #' build_table(lyt, DM)
 #'
 #' lyt <- basic_table() %>%
@@ -299,19 +300,23 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   append_varlabels(DM, c("SEX", "AGE"))
 #' build_table(lyt, DM)
 #'
-append_varlabels <- function(lyt, df, vars, indent = FALSE) {
+append_varlabels <- function(lyt, df, vars, indent = 0L) {
+
+  if (is.flag(indent)) {
+    warning("indent argument is now accepting integers. Boolean indent will be converted to integers.")
+    indent <- as.integer(indent)
+  }
+
   assert_that(
     is.data.frame(df),
     is.character(vars),
-    is.flag(indent)
+    is_nonnegative_count(indent)
   )
+
   lab <- var_labels(df[vars], fill = TRUE)
   lab <- paste(lab, collapse = " / ")
-  if (indent) {
-    lab <- paste0(
-      ifelse(indent, "  ", ""),
-      lab
-    )
-  }
+  space <- paste(rep(" ", indent * 2), collapse = "")
+  lab <- paste0(space, lab)
+
   append_topleft(lyt, lab)
 }
