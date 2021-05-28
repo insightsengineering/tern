@@ -37,7 +37,9 @@ check_mmrm_vars <- function(vars,
   }
   check_and_get_label("response")
   check_and_get_label("id")
-  check_and_get_label("arm")
+  if (is_specified("arm")) {
+    check_and_get_label("arm")
+  }
   check_and_get_label("visit")
   if (is_specified("covariates")) {
     vars$parts <- unique(unlist(strsplit(vars$covariates, split = "\\*|:")))
@@ -54,13 +56,15 @@ check_mmrm_vars <- function(vars,
   response_values <- data_complete_regressors[[vars$response]]
   stopifnot(is.numeric(response_values))
 
-  arm_values <- data_complete_regressors[[vars$arm]]
-  assert_that(is_df_with_nlevels_factor(
-    data_complete_regressors,
-    variable = vars$arm,
-    n_levels = 2,
-    relation = ">="
-  ))
+  if (is_specified("arm")) {
+    arm_values <- data_complete_regressors[[vars$arm]]
+    assert_that(is_df_with_nlevels_factor(
+      data_complete_regressors,
+      variable = vars$arm,
+      n_levels = 2,
+      relation = ">="
+    ))
+  }
 
   visit_values <- data_complete_regressors[[vars$visit]]
   stopifnot(is.factor(visit_values))
@@ -70,17 +74,24 @@ check_mmrm_vars <- function(vars,
     filter(!is.na(data_complete_regressors[, vars$response])) %>%
     droplevels()
 
-  # Check all arms will still be present after NA filtering.
-  assert_that(is_df_with_nlevels_factor(
-    data_complete,
-    variable = vars$arm,
-    n_levels = nlevels(arm_values),
-    relation = "=="
-  ))
+  if (is_specified("arm")) {
+    # Check all arms will still be present after NA filtering.
+    assert_that(is_df_with_nlevels_factor(
+      data_complete,
+      variable = vars$arm,
+      n_levels = nlevels(arm_values),
+      relation = "=="
+    ))
 
-  # Each arm should have at least have 5 records.
-  if (!all(table(data_complete[[vars$arm]]) > 5)) {
-    stop(paste("Each group / arm should have at least 5 records with non-missing", vars$response))
+    # Each arm should have at least have 5 records.
+    if (!all(table(data_complete[[vars$arm]]) > 5)) {
+      stop(paste("Each group / arm should have at least 5 records with non-missing", vars$response))
+    }
+  } else {
+    # The data should have at least 5 records.
+    if (!(nrow(data_complete) > 5)) {
+      stop(paste("There should be at least 5 records with non-missing", vars$response))
+    }
   }
 
   return(labels)
@@ -112,11 +123,15 @@ build_mmrm_formula <- function(
     collapse = " + "
   )
 
-  arm_visit_part <- paste0(
-    vars$arm,
-    "*",
+  arm_visit_part <- if (is.null(vars$arm)) {
     vars$visit
-  )
+  } else {
+    paste0(
+      vars$arm,
+      "*",
+      vars$visit
+    )
+  }
 
   random_effects_part <- cor_struct %>%
     switch(
@@ -495,10 +510,17 @@ get_mmrm_lsmeans <- function(fit,
                              conf_level,
                              weights) {
   data_complete <- fit@frame
+
+  specs <- if (is.null(vars$arm)) {
+    as.formula(paste("~ 1 |", vars$visit))
+  } else {
+    as.formula(paste("~ ", vars$arm, "|", vars$visit))
+  }
+
   lsmeans <- emmeans(
     fit,
     mode = "satterthwaite",
-    specs = as.formula(paste("~ ", vars$arm, "|", vars$visit)),
+    specs = specs,
     weights = weights,
     data = data_complete,
     # The below option is needed to enable analysis of more than 3000 observations.
@@ -531,54 +553,61 @@ get_mmrm_lsmeans <- function(fit,
       left_join(data_n, by = c(vars$visit, vars$arm))
   )
 
-  # Get LS means for reference group to join into full dataframe so that relative reduction in
-  # LS mean (mean of response variable) can be computed with respect to reference level (e.g. ARM A).
-  arm_levels <- levels(data_complete[[vars$arm]])
-  reference_level <- arm_levels[1]
-  means_at_ref <- estimates %>%
-    filter(!!as.symbol(vars$arm) == reference_level) %>%
-    select(c(vars$visit, "estimate")) %>%
-    rename(ref = .data$estimate)
+  results <-  if (is.null(vars$arm)) {
+    list(
+      estimates = estimates
+    )
+  } else {
+    # Get LS means for reference group to join into full dataframe so that relative reduction in
+    # LS mean (mean of response variable) can be computed with respect to reference level (e.g. ARM A).
+    arm_levels <- levels(data_complete[[vars$arm]])
+    reference_level <- arm_levels[1]
+    means_at_ref <- estimates %>%
+      filter(!!as.symbol(vars$arm) == reference_level) %>%
+      select(c(vars$visit, "estimate")) %>%
+      rename(ref = .data$estimate)
 
-  relative_reduc <- estimates %>%
-    filter(!!as.symbol(vars$arm) != reference_level) %>%
-    left_join(means_at_ref, by = c(vars$visit)) %>%
-    mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
-    select(c(vars$visit, vars$arm, "relative_reduc"))
+    relative_reduc <- estimates %>%
+      filter(!!as.symbol(vars$arm) != reference_level) %>%
+      left_join(means_at_ref, by = c(vars$visit)) %>%
+      mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
+      select(c(vars$visit, vars$arm, "relative_reduc"))
 
-  # Start with the differences between LS means.
-  sum_fit_diff <- summary(
-    contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
-    level = conf_level,
-    infer = c(TRUE, TRUE),
-    adjust = "none"
-  )
-
-  # Get the comparison group name from "contrast" column,
-  # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
-  contrasts <- sum_fit_diff %>%
-    mutate(
-      col_by = factor(
-        gsub(paste0("\\s-\\s", reference_level), "", contrast),
-        levels = arm_levels
-      )
-    ) %>%
-    select(-contrast) %>%
-    rename(!!as.symbol(vars$arm) := .data$col_by) %>%
-    left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
-    mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
-    rename(
-      se = .data$SE,
-      lower_cl = .data$lower.CL,
-      upper_cl = .data$upper.CL,
-      t_stat = .data$t.ratio,
-      p_value = .data$p.value
+    # Start with the differences between LS means.
+    sum_fit_diff <- summary(
+      contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
+      level = conf_level,
+      infer = c(TRUE, TRUE),
+      adjust = "none"
     )
 
-  results <- list(
-    estimates = estimates,
-    contrasts = contrasts
-  )
+    # Get the comparison group name from "contrast" column,
+    # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
+    contrasts <- sum_fit_diff %>%
+      mutate(
+        col_by = factor(
+          gsub(paste0("\\s-\\s", reference_level), "", contrast),
+          levels = arm_levels
+        )
+      ) %>%
+      select(-contrast) %>%
+      rename(!!as.symbol(vars$arm) := .data$col_by) %>%
+      left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
+      mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
+      rename(
+        se = .data$SE,
+        lower_cl = .data$lower.CL,
+        upper_cl = .data$upper.CL,
+        t_stat = .data$t.ratio,
+        p_value = .data$p.value
+      )
+
+    list(
+      estimates = estimates,
+      contrasts = contrasts
+    )
+  }
+
   return(results)
 }
 
@@ -746,7 +775,7 @@ fit_mmrm <- function(
     lsmeans = lsmeans,
     vars = vars,
     labels = labels,
-    ref_level = levels(data[[vars$arm]])[1],
+    ref_level = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[1],
     conf_level = conf_level
   )
   class(results) <- "mmrm"

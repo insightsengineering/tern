@@ -58,6 +58,7 @@ reference:
       - s_incidence_rate
       - s_length_proportion
       - s_mmrm_lsmeans
+      - s_mmrm_lsmeans_single
       - s_num_patients
       - s_num_patients_content
       - s_odds_ratio
@@ -88,6 +89,7 @@ reference:
        - a_count_patients_with_event
        - a_coxph_pairwise
        - a_mmrm_lsmeans
+       - a_mmrm_lsmeans_single
        - a_response_subgroups
        - a_survival_subgroups
        - a_odds_ratio

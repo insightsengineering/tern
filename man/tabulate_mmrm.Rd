@@ -9,6 +9,8 @@
 \alias{tidy.mmrm}
 \alias{s_mmrm_lsmeans}
 \alias{a_mmrm_lsmeans}
+\alias{s_mmrm_lsmeans_single}
+\alias{a_mmrm_lsmeans_single}
 \alias{summarize_lsmeans}
 \title{Tabulation of MMRM Results}
 \usage{
@@ -26,8 +28,13 @@ s_mmrm_lsmeans(df, .in_ref_col, show_relative = c("reduction", "increase"))
 
 a_mmrm_lsmeans(df, .in_ref_col, show_relative = c("reduction", "increase"))
 
+s_mmrm_lsmeans_single(df)
+
+a_mmrm_lsmeans_single(df)
+
 summarize_lsmeans(
   lyt,
+  arms = TRUE,
   ...,
   table_names = "lsmeans_summary",
   .stats = NULL,
@@ -53,6 +60,9 @@ summarize_lsmeans(
 (\code{treatment - control}) be shown for the relative change from baseline?}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{arms}{(\code{flag})\cr  should treatment variable be considered when using
+\code{summarize_lsmeans} layout generating function.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -92,6 +102,13 @@ data frame.
 \item \code{a_mmrm_lsmeans}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
+\item \code{s_mmrm_lsmeans_single}: Statistics function which is extracting estimates from a tidied LS means
+data frame when \code{ARM} is not considered in the model.
+
+\item \code{a_mmrm_lsmeans_single}: Formatted Analysis function (when \code{ARM} is not considered in the model)
+which can be further customized by calling
+\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{summarize_lsmeans}: Analyze function for tabulating LS means estimates from tidied \code{mmrm} results.
 }}
 
@@ -122,10 +139,26 @@ result <- fit_mmrm(
 )
 as.rtable(result, type = "cov", format = "xx.x")
 
+result_no_arm <- fit_mmrm(
+  vars = list(
+    response = "Reaction",
+    covariates = c(),
+    id = "Subject",
+    visit = "days_grouped"
+  ),
+  data = dat,
+  cor_struct = "compound-symmetry",
+  parallel = TRUE
+)
+as.rtable(result_no_arm, type = "cov", format = "xx.x")
+
 library(broom)
 df <- tidy(result)
+df_no_arm <- tidy(result_no_arm)
 
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
+
+s_mmrm_lsmeans_single(df_no_arm[4, ])
 
 
 dat_adsl <- dat \%>\%
@@ -138,6 +171,14 @@ basic_table() \%>\%
   summarize_lsmeans(show_relative = "increase") \%>\%
   build_table(
     df = tidy(result),
+    alt_counts_df = dat_adsl
+  )
+
+basic_table() \%>\%
+  split_rows_by("days_grouped") \%>\%
+  summarize_lsmeans(arms = FALSE) \%>\%
+  build_table(
+    df = tidy(result_no_arm),
     alt_counts_df = dat_adsl
   )
 

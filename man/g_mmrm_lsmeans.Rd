@@ -16,17 +16,19 @@ g_mmrm_lsmeans(
 )
 }
 \arguments{
-\item{object}{the MMRM model result produced by \code{\link{fit_mmrm}}.}
+\item{object}{(\code{mmrm})\cr model result produced by \code{\link{fit_mmrm}}.}
 
-\item{select}{character vector to select one or both of "estimates" and "contrasts" plots.}
+\item{select}{(\code{character})\cr to select one or both of "estimates" and "contrasts" plots.
+Note "contrasts" option is not applicable to model summaries excluding an arm variable.}
 
-\item{titles}{character vector with elements \code{estimates} and \code{contrasts} containing the plot titles.}
+\item{titles}{(\code{character})\cr with elements \code{estimates} and \code{contrasts} containing the plot titles.}
 
-\item{ylab}{string with the y axis label.}
+\item{ylab}{(\code{string})\cr with the y axis label.}
 
-\item{width}{width of the error bars.}
+\item{width}{(\code{numeric})\cr width of the error bars.}
 
-\item{show_pval}{should the p-values for the differences of LS means vs. control be displayed (not default)?}
+\item{show_pval}{(\code{flag})\cr should the p-values for the differences of
+LS means vs. control be displayed (not default)?}
 }
 \value{
 a \code{ggplot2} plot
@@ -39,6 +41,10 @@ is the reference level.
 \details{
 If variable labels are available in the original data set, then these are used. Otherwise
 the variable names themselves are used for annotating the plot.
+
+Contrast plot is not going to be returned if treatment is not
+considered in the \code{mmrm} object considered in \code{object} argument,
+no matter if \code{select} argument contains \code{contrasts} value.
 }
 \examples{
 library(dplyr)
@@ -72,6 +78,39 @@ g_mmrm_lsmeans(
   mmrm_results,
   select = "contrasts",
   titles = c(contrasts = "Contrasts of FKSI-FWB means"),
+  show_pval = TRUE,
+  width = 0.8
+)
+
+adqs_f2 <- adqs_f \%>\%
+ filter(ARMCD == "ARM A")
+
+mmrm_results_no_arm <- fit_mmrm(
+  vars = list(
+    response = "AVAL",
+    covariates = c("STRATA1", "BMRKR2"),
+    id = "USUBJID",
+    visit = "AVISIT"
+  ),
+  data = adqs_f2,
+  cor_struct = "random-quadratic",
+  weights_emmeans = "equal"
+)
+
+g_mmrm_lsmeans(mmrm_results_no_arm, select = "estimates")
+g_mmrm_lsmeans(
+  mmrm_results_no_arm,
+  select = c("estimates", "contrasts"),
+  titles = c(estimates = "Adjusted mean of FKSI-FWB",
+  contrasts = "it will not be created"),
+  show_pval = TRUE,
+  width = 0.8
+)
+
+g_mmrm_lsmeans(
+  mmrm_results_no_arm,
+  select = c("estimates"),
+  titles = c(estimates = "Adjusted mean of FKSI-FWB"),
   show_pval = TRUE,
   width = 0.8
 )

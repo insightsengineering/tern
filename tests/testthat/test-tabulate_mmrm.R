@@ -235,6 +235,26 @@ get_mmrm <- function() {
   )
 }
 
+
+get_mmrm_no_arm <- function() {
+  anl <- get_anl() %>%
+    mutate(
+      ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
+      AVISIT = factor(AVISIT)
+    )
+
+  mmrm <- fit_mmrm(
+    vars = list(
+      response = "AVAL",
+      visit = "AVISIT",
+      covariates = c("BMRKR2"),
+      id = "USUBJID"
+    ),
+    data = anl,
+    cor_struct = "random-quadratic"
+  )
+}
+
 test_that("h_mmrm_fixed works as expected", {
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
@@ -345,6 +365,27 @@ test_that("tidy.mmrm works as expected", {
   expect_equal(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
 })
 
+test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
+
+  skip_if_too_deep(2)
+
+  mmrm <- get_mmrm_no_arm()
+  result <- broom::tidy(mmrm)
+  result_one_row <- result[5, ]
+  expected_one_row <- tibble::tibble(
+    AVISIT = factor(
+      "WEEK 5 DAY 36",
+      levels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+    ),
+    estimate_est = 50.84261, se_est = 1.229794,
+    df_est = 75.71160, lower_cl_est = 48.39311,
+    upper_cl_est = 53.29211, n = 41L,
+    conf_level = 0.95
+  )
+  expect_is(result_one_row, "tbl_df")
+  expect_equivalent(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
+})
+
 test_that("s_mmrm_lsmeans works as expected when not in reference column", {
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
@@ -376,6 +417,21 @@ test_that("s_mmrm_lsmeans works as expected when in reference column", {
     diff_mean_ci = with_label(character(0), label = "95% CI"),
     change = with_label(character(0), label = "Relative Reduction (%)"),
     p_value = character(0)
+  )
+  expect_equal(result, expected, tolerance = 0.001)
+})
+
+test_that("s_mmrm_lsmeans_single works as expected", {
+
+  skip_if_too_deep(2)
+
+  mmrm <- get_mmrm_no_arm()
+  df <- broom::tidy(mmrm)
+  result <- s_mmrm_lsmeans_single(df[2, ])
+  expected <- list(
+    n = 41L,
+    adj_mean_se = c(48.703420, 1.180417),
+    adj_mean_ci = with_label(c(46.37198, 51.03486), label = "95% CI")
   )
   expect_equal(result, expected, tolerance = 0.001)
 })
@@ -429,6 +485,35 @@ test_that("summarize_lsmeans works as expected", {
       "0.4680", "", "13", "53.902 (2.169)", "(49.602, 58.202)", "3.616 (3.196)",
       "(-2.721, 9.954)", "7.2%", "0.2604"),
     .Dim = c(41L, 4L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
+
+  skip_if_too_deep(2)
+
+  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
+    skip("tests dont run with older version of lme4")
+  }
+
+  mmrm <- get_mmrm_no_arm()
+  df <- broom::tidy(mmrm)
+  result <- basic_table() %>%
+    split_rows_by("AVISIT") %>%
+    summarize_lsmeans(arms = FALSE) %>%
+    build_table(df)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c("", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
+      "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)", "95% CI", "WEEK 3 DAY 22",
+      "n", "Adjusted Mean (SE)", "95% CI", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
+      "95% CI", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)", "95% CI",
+      "all obs", "", "41", "50.486 (1.244)", "(48.011, 52.962)", "",
+      "41", "48.703 (1.180)", "(46.372, 51.035)", "", "41", "51.187 (1.193)",
+      "(48.83, 53.545)", "", "41", "50.029 (1.221)", "(47.618, 52.441)",
+      "", "41", "50.843 (1.230)", "(48.393, 53.292)"),
+    .Dim = c(21L, 2L)
   )
   expect_identical(result_matrix, expected_matrix)
 })

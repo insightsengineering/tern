@@ -11,8 +11,9 @@ NULL
 #'
 #' @param x (`mmrm`)\cr the original MMRM fit object.
 #' @param type (`string`)\cr type of table which should be returned.
+#' @param arms (`flag`)\cr  should treatment variable be considered when using
+#' `summarize_lsmeans` layout generating function.
 #' @param ... additional argument `format` for controlling the numeric format.
-#'
 #' @return [as.rtable.mmrm()] returns the fixed effects, covariance estimate or
 #'   diagnostic statistics tables.
 #' @export
@@ -44,6 +45,19 @@ NULL
 #'   parallel = TRUE
 #' )
 #' as.rtable(result, type = "cov", format = "xx.x")
+#'
+#' result_no_arm <- fit_mmrm(
+#'   vars = list(
+#'     response = "Reaction",
+#'     covariates = c(),
+#'     id = "Subject",
+#'     visit = "days_grouped"
+#'   ),
+#'   data = dat,
+#'   cor_struct = "compound-symmetry",
+#'   parallel = TRUE
+#' )
+#' as.rtable(result_no_arm, type = "cov", format = "xx.x")
 #'
 as.rtable.mmrm <- function(x,  #nolint
                            type = c("fixed", "cov", "diagnostic"),
@@ -108,19 +122,27 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 #' @examples
 #' library(broom)
 #' df <- tidy(result)
+#' df_no_arm <- tidy(result_no_arm)
 #'
 tidy.mmrm <- function(x) {  #nolint #nousage
-  contrasts <- x$lsmeans$contrasts
-  estimates <- x$lsmeans$estimates
   vars <- x$vars
-  contrasts[[vars$arm]] <- factor(contrasts[[vars$arm]], levels = levels(estimates[[vars$arm]]))
-  df <- merge(
-    x = estimates,
-    y = contrasts,
-    by = c(vars$arm, vars$visit),
-    suffixes = c("_est", "_contr"),
-    all = TRUE
-  )
+  estimates <- x$lsmeans$estimates
+  df <- if (is.null(vars$arm)) {
+    nams <- names(estimates)
+    to_rename <- match(c("estimate", "se", "df", "lower_cl", "upper_cl"), nams)
+    names(estimates)[to_rename] <- paste0(names(estimates)[to_rename], "_est")
+    estimates
+  } else {
+    contrasts <- x$lsmeans$contrasts
+    contrasts[[vars$arm]] <- factor(contrasts[[vars$arm]], levels = levels(estimates[[vars$arm]]))
+    merge(
+      x = estimates,
+      y = contrasts,
+      by = c(vars$arm, vars$visit),
+      suffixes = c("_est", "_contr"),
+      all = TRUE
+    )
+  }
   df$conf_level <- x$conf_level
   as_tibble(df)
 }
@@ -181,6 +203,41 @@ a_mmrm_lsmeans <- make_afun(
   .null_ref_cells = FALSE
 )
 
+#' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied LS means
+#' data frame when `ARM` is not considered in the model.
+#' @inheritParams argument_convention
+#' @export
+#' @examples
+#' s_mmrm_lsmeans_single(df_no_arm[4, ])
+#'
+s_mmrm_lsmeans_single <- function(df) {
+  list(
+    n = df$n,
+    adj_mean_se = c(df$estimate_est, df$se_est),
+    adj_mean_ci = with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
+  )
+}
+
+#' @describeIn tabulate_mmrm Formatted Analysis function (when `ARM` is not considered in the model)
+#' which can be further customized by calling
+#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @export
+#'
+a_mmrm_lsmeans_single <- make_afun(
+  s_mmrm_lsmeans_single,
+  .labels = c(
+    adj_mean_se = "Adjusted Mean (SE)"
+  ),
+  .formats = c(
+    n = "xx.",
+    adj_mean_se = sprintf_format("%.3f (%.3f)"),
+    adj_mean_ci = "(xx.xxx, xx.xxx)"
+  ),
+  .indent_mods = c(
+    adj_mean_ci = 1L
+  )
+)
+
 #' @describeIn tabulate_mmrm Analyze function for tabulating LS means estimates from tidied `mmrm` results.
 #' @inheritParams argument_convention
 #' @export
@@ -199,7 +256,16 @@ a_mmrm_lsmeans <- make_afun(
 #'     alt_counts_df = dat_adsl
 #'   )
 #'
+#' basic_table() %>%
+#'   split_rows_by("days_grouped") %>%
+#'   summarize_lsmeans(arms = FALSE) %>%
+#'   build_table(
+#'     df = tidy(result_no_arm),
+#'     alt_counts_df = dat_adsl
+#'   )
+#'
 summarize_lsmeans <- function(lyt,
+                              arms = TRUE,
                               ...,
                               table_names = "lsmeans_summary",
                               .stats = NULL,
@@ -207,7 +273,7 @@ summarize_lsmeans <- function(lyt,
                               .indent_mods = NULL,
                               .labels = NULL) {
   afun <- make_afun(
-    a_mmrm_lsmeans,
+    ifelse(arms, a_mmrm_lsmeans, a_mmrm_lsmeans_single),
     .stats = .stats,
     .formats = .formats,
     .indent_mods = .indent_mods,

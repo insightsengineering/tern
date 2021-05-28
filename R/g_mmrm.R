@@ -10,8 +10,8 @@ NULL
 #'
 #' This function produces diagnostic plots.
 #'
-#' @param object the MMRM model result produced by \code{\link{fit_mmrm}}.
-#' @param type string specifying the type of diagnostic plot to be produced:
+#' @param object (`mmrm`)\cr model result produced by \code{\link{fit_mmrm}}.
+#' @param type (`string`)\cr specifying the type of diagnostic plot to be produced:
 #'   \describe{
 #'     \item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
 #'       structure in the residuals that might be captured by adding additional covariates to the model.}
@@ -19,7 +19,7 @@ NULL
 #'       grouped by visits. Observations with an absolute standardized residual above \code{z_threshold} will be
 #'       labeled.}
 #'   }
-#' @param z_threshold optional number indicating the normal quantile threshold for the Q-Q plot.
+#' @param z_threshold (`numeric`)\cr optional number indicating the normal quantile threshold for the Q-Q plot.
 #'
 #' @return a \code{ggplot2} plot
 #'
@@ -156,17 +156,22 @@ g_mmrm_diagnostic <- function(
 #' comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
 #' is the reference level.
 #'
-#' @param object the MMRM model result produced by \code{\link{fit_mmrm}}.
-#' @param select character vector to select one or both of "estimates" and "contrasts" plots.
-#' @param titles character vector with elements \code{estimates} and \code{contrasts} containing the plot titles.
-#' @param ylab string with the y axis label.
-#' @param width width of the error bars.
-#' @param show_pval should the p-values for the differences of LS means vs. control be displayed (not default)?
+#' @param object (`mmrm`)\cr model result produced by \code{\link{fit_mmrm}}.
+#' @param select (`character`)\cr to select one or both of "estimates" and "contrasts" plots.
+#' Note "contrasts" option is not applicable to model summaries excluding an arm variable.
+#' @param titles (`character`)\cr with elements \code{estimates} and \code{contrasts} containing the plot titles.
+#' @param ylab (`string`)\cr with the y axis label.
+#' @param width (`numeric`)\cr width of the error bars.
+#' @param show_pval (`flag`)\cr should the p-values for the differences of
+#' LS means vs. control be displayed (not default)?
 #'
 #' @return a \code{ggplot2} plot
 #'
 #' @details If variable labels are available in the original data set, then these are used. Otherwise
 #'   the variable names themselves are used for annotating the plot.
+#' @details Contrast plot is not going to be returned if treatment is not
+#' considered in the `mmrm` object considered in `object` argument,
+#' no matter if `select` argument contains `contrasts` value.
 #'
 #' @export
 #' @import ggplot2
@@ -185,6 +190,7 @@ g_mmrm_diagnostic <- function(
 #'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #' var_labels(adqs_f) <- var_labels(adqs)
 #'
+#
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
@@ -207,6 +213,39 @@ g_mmrm_diagnostic <- function(
 #'   width = 0.8
 #' )
 #'
+#'adqs_f2 <- adqs_f %>%
+#'  filter(ARMCD == "ARM A")
+#'
+#'mmrm_results_no_arm <- fit_mmrm(
+#'   vars = list(
+#'     response = "AVAL",
+#'     covariates = c("STRATA1", "BMRKR2"),
+#'     id = "USUBJID",
+#'     visit = "AVISIT"
+#'   ),
+#'   data = adqs_f2,
+#'   cor_struct = "random-quadratic",
+#'   weights_emmeans = "equal"
+#' )
+#'
+#' g_mmrm_lsmeans(mmrm_results_no_arm, select = "estimates")
+#' g_mmrm_lsmeans(
+#'   mmrm_results_no_arm,
+#'   select = c("estimates", "contrasts"),
+#'   titles = c(estimates = "Adjusted mean of FKSI-FWB",
+#'   contrasts = "it will not be created"),
+#'   show_pval = TRUE,
+#'   width = 0.8
+#' )
+#'
+#' g_mmrm_lsmeans(
+#'   mmrm_results_no_arm,
+#'   select = c("estimates"),
+#'   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
+#'   show_pval = TRUE,
+#'   width = 0.8
+#' )
+#'
 g_mmrm_lsmeans <-
   function(object,
            select = c("estimates", "contrasts"),
@@ -220,93 +259,109 @@ g_mmrm_lsmeans <-
            width = 0.6,
            show_pval = TRUE) {
 
-  stopifnot(is(object, "mmrm"))
-  select <- match.arg(select, several.ok = TRUE)
-  stopifnot(is.character(titles), all(select %in% names(titles)))
-  stopifnot(is.character(ylab), identical(length(ylab), 1L))
-  stopifnot(is.numeric(width), identical(length(width), 1L))
-  stopifnot(is.logical(show_pval), identical(length(show_pval), 1L))
-
-  # Get relevant subsets of the estimates and contrasts data frames.
-  v <- object$vars
-  estimates <- object$lsmeans$estimates[, c(v$arm, v$visit, "estimate", "lower_cl", "upper_cl")]
-  estimates$p_value <- NA
-  contrasts <- object$lsmeans$contrasts[, c(v$arm, v$visit, "estimate", "lower_cl", "upper_cl", "p_value")]
-  contrasts[[v$arm]] <- factor(contrasts[[v$arm]], levels = levels(estimates[[v$arm]]))
-
-
-  plot_data <- if (identical(select, "estimates")) {
-    cbind(estimates, type = "estimates")
-  } else if (identical(select, "contrasts")) {
-    cbind(contrasts, type = "contrasts")
-  } else {
-    rbind(
-      cbind(estimates, type = "estimates"),
-      cbind(contrasts, type = "contrasts")
-    )
-  }
-
-  pd <- position_dodge2(width, preserve = "total", padding = .2)
-  result <- ggplot(
-    plot_data,
-    aes_string(
-      x = v$visit,
-      y = "estimate",
-      colour = v$arm,
-      group = v$arm,
-      ymin = "lower_cl",
-      ymax = "upper_cl"
-    )
-  ) +
-    geom_errorbar(width = width, position = pd) +
-    geom_point(position = pd) +
-    expand_limits(x = 0) +
-    scale_color_discrete(
-      name = object$labels$arm,
-      drop = FALSE  # To ensure same colors for only contrasts plot.
-    ) +
-    ylab(ylab) +
-    xlab(object$labels$visit) +
-    facet_wrap(
-      ~ type,
-      nrow = length(select),
-      scales = "free_y",  # Since estimates and contrasts need to have different y scales.
-      labeller = as_labeller(titles)
-    )
-  if ("contrasts" %in% select) {
-    result <- result +
-      geom_hline(
-        data = data.frame(type = "contrasts", height = 0),
-        aes_string(yintercept = "height"),
-        colour = "black"
-      )
-    if (show_pval) {
-      pval_data <- plot_data[plot_data$type == "contrasts", ]
-      pval_data$y_pval <- ifelse(
-        as.numeric(pval_data[[v$arm]]) %% 2,
-        pval_data$upper_cl,
-        pval_data$lower_cl
-      )
-      pval_data$vjust <- ifelse(
-        as.numeric(pval_data[[v$arm]]) %% 2,
-        -0.1,
-        +1.1
-      )
-      pval_data$y_total <- pval_data$y_pval + pval_data$vjust
-      pval_data$label <- ifelse(
-        pval_data$p_value < 0.0001,
-        "<0.0001",
-        sprintf("%.4f", pval_data$p_value)
-      )
-      result <- result +
-        geom_text(
-          data = pval_data,
-          mapping = aes_string(y = "y_pval", vjust = "vjust", label = "label"),
-          position = pd,
-          show.legend = FALSE
-        ) +
-        coord_cartesian(clip = "off")
+    stopifnot(is(object, "mmrm"))
+    select <- match.arg(select, several.ok = TRUE)
+    if (!("arm" %in% names(object$vars))) {
+      select <- "estimates"
+      arms <- FALSE
+      if (identical(names(titles), "contrasts"))
+      names(titles) <- "estimates"
+      titles <- titles
+    } else {
+      arms <- TRUE
     }
+    stopifnot(is.character(titles), all(select %in% names(titles)))
+    stopifnot(is.character(ylab), identical(length(ylab), 1L))
+    stopifnot(is.numeric(width), identical(length(width), 1L))
+    stopifnot(is.logical(show_pval), identical(length(show_pval), 1L))
+    if (isFALSE(arms)) {
+      stopifnot(sum(duplicated(object$lsmeans$estimates$AVISIT)) == 0L)
+    }
+
+    # Get relevant subsets of the estimates and contrasts data frames.
+    v <- object$vars
+    if (arms) {
+      estimates <- object$lsmeans$estimates[, c(v$arm, v$visit, "estimate", "lower_cl", "upper_cl")]
+      contrasts <- object$lsmeans$contrasts[, c(v$arm, v$visit, "estimate", "lower_cl", "upper_cl", "p_value")]
+      contrasts[[v$arm]] <- factor(contrasts[[v$arm]], levels = levels(estimates[[v$arm]]))
+    } else {
+      estimates <- object$lsmeans$estimates[, c(v$visit, "estimate", "lower_cl", "upper_cl")]
+    }
+    estimates$p_value <- NA
+
+    plot_data <- if (identical(select, "estimates") || isFALSE(arms)) {
+      cbind(estimates, type = "estimates")
+    } else if (identical(select, "contrasts")) {
+      cbind(contrasts, type = "contrasts")
+    } else {
+      rbind(
+        cbind(estimates, type = "estimates"),
+        cbind(contrasts, type = "contrasts")
+      )
+    }
+
+    pd <- position_dodge2(width, preserve = "total", padding = .2)
+
+    result <- ggplot(
+      plot_data,
+      aes_string(
+        x = v$visit,
+        y = "estimate",
+        colour = if (arms) v$arm else NULL,
+        group = if (arms) v$arm else NULL,
+        ymin = "lower_cl",
+        ymax = "upper_cl"
+      )
+    ) +
+      geom_errorbar(width = width, position = pd) +
+      geom_point(position = pd) +
+      expand_limits(x = 0) +
+      scale_color_discrete(
+        name = if (arms) object$labels$arm else NULL,
+        drop = FALSE  # To ensure same colors for only contrasts plot.
+      ) +
+      ylab(ylab) +
+      xlab(object$labels$visit) +
+      facet_wrap(
+        ~ type,
+        nrow = length(select),
+        scales = "free_y",  # Since estimates and contrasts need to have different y scales.
+        labeller = as_labeller(titles)
+      )
+    if ("contrasts" %in% select) {
+      result <- result +
+        geom_hline(
+          data = data.frame(type = "contrasts", height = 0),
+          aes_string(yintercept = "height"),
+          colour = "black"
+        )
+      if (show_pval) {
+        pval_data <- plot_data[plot_data$type == "contrasts", ]
+        pval_data$y_pval <- ifelse(
+          as.numeric(pval_data[[v$arm]]) %% 2,
+          pval_data$upper_cl,
+          pval_data$lower_cl
+        )
+        pval_data$vjust <- ifelse(
+          as.numeric(pval_data[[v$arm]]) %% 2,
+          -0.1,
+          +1.1
+        )
+        pval_data$y_total <- pval_data$y_pval + pval_data$vjust
+        pval_data$label <- ifelse(
+          pval_data$p_value < 0.0001,
+          "<0.0001",
+          sprintf("%.4f", pval_data$p_value)
+        )
+        result <- result +
+          geom_text(
+            data = pval_data,
+            mapping = aes_string(y = "y_pval", vjust = "vjust", label = "label"),
+            position = pd,
+            show.legend = FALSE
+          ) +
+          coord_cartesian(clip = "off")
+      }
+    }
+    return(result)
   }
-  return(result)
-}

@@ -38,6 +38,19 @@ test_that("check_mmrm_vars passes with healthy inputs and returns correct labels
     )
   )
   expect_identical(result2, expected2)
+
+  # Without arm
+  vars3 <- vars1
+  vars3$arm <- NULL
+  expect_silent(result3 <- check_mmrm_vars(vars3, data))
+
+  expected3 <- list(
+    response = setNames("Analysis Value", "AVAL"),
+    id = setNames("Unique Subject Identifier", "USUBJID"),
+    visit = setNames("Analysis Visit", "AVISIT")
+  )
+  expect_identical(result3, expected3)
+
 })
 
 test_that("check_mmrm_vars works with interaction terms in `covariates`", {
@@ -111,7 +124,6 @@ test_that("check_mmrm_vars fails if a variable is missing", {
   full_vars <- list(
     response = "AVAL",
     id = "USUBJID",
-    arm = "ARM",
     visit = "AVISIT"
   )
 
@@ -161,6 +173,14 @@ test_that("build_mmrm_formula builds the correct formula", {
   result2 <- build_mmrm_formula(vars2, cor_struct2)
   expected2 <- AVAL ~ STRATA1 + BMRKR2 + ARM * AVISIT + (1 | USUBJID)
   expect_equal(result2, expected2)
+
+  # Without arm
+  vars3 <- vars1
+  vars3$arm <- NULL
+  cor_struct3 <- "random-quadratic"
+  result3 <- build_mmrm_formula(vars3, cor_struct3)
+  expected3 <- AVAL ~ AVISIT + (poly(as.numeric(AVISIT), df = 2) | USUBJID)
+
 })
 
 test_that("fit_lme4_single_optimizer works as expected when there are no warnings or messages", {

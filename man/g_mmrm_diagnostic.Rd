@@ -11,9 +11,9 @@ g_mmrm_diagnostic(
 )
 }
 \arguments{
-\item{object}{the MMRM model result produced by \code{\link{fit_mmrm}}.}
+\item{object}{(\code{mmrm})\cr model result produced by \code{\link{fit_mmrm}}.}
 
-\item{type}{string specifying the type of diagnostic plot to be produced:
+\item{type}{(\code{string})\cr specifying the type of diagnostic plot to be produced:
 \describe{
 \item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
 structure in the residuals that might be captured by adding additional covariates to the model.}
@@ -22,7 +22,7 @@ grouped by visits. Observations with an absolute standardized residual above \co
 labeled.}
 }}
 
-\item{z_threshold}{optional number indicating the normal quantile threshold for the Q-Q plot.}
+\item{z_threshold}{(\code{numeric})\cr optional number indicating the normal quantile threshold for the Q-Q plot.}
 }
 \value{
 a \code{ggplot2} plot
