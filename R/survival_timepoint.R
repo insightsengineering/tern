@@ -29,10 +29,10 @@ NULL
 #' * `rate_se` : standard error of event free rate.
 #' * `rate_ci` : confidence interval for event free rate.
 #' @examples
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- radtte(cached = TRUE)
+#' ADTTE <- synthetic_cdisc_data("latest")$adtte
 #' ADTTE_f <- ADTTE %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(

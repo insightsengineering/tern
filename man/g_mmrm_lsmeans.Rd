@@ -48,11 +48,11 @@ no matter if \code{select} argument contains \code{contrasts} value.
 }
 \examples{
 library(dplyr)
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 
-adsl <- radsl(cached = TRUE)
-adqs <- radqs(cached = TRUE)
+adsl <- synthetic_cdisc_data("latest")$adsl
+adqs <- synthetic_cdisc_data("latest")$adqs
 adqs_f <- adqs \%>\%
   filter(PARAMCD=="FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
   droplevels() \%>\%

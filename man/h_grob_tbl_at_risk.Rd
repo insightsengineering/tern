@@ -23,12 +23,12 @@ the second to the number of patient at risk.
 \examples{
 
 \dontrun{
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- radtte(cached = TRUE) \%>\%
+fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 

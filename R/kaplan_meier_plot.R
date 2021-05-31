@@ -82,13 +82,13 @@ NULL
 #'
 #' @examples
 #'
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(ggplot2)
 #' library(survival)
 #' library(grid)
 #'
-#' df <- radtte(cached = TRUE) %>%
+#' df <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -396,18 +396,18 @@ g_km <- function(df,
 #' @examples
 #'
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
 #' # Test with multiple arms
-#' radtte(cached = TRUE) %>%
+#' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   tern:::h_data_plot()
 #'
 #' # Test with single arm
-#' radtte(cached = TRUE) %>%
+#' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   tern:::h_data_plot(armval = "ARM B")
@@ -448,11 +448,11 @@ h_data_plot <- function(fit_km,
 #' @examples
 #'
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' data <- radtte(cached = TRUE) %>%
+#' data <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
@@ -499,11 +499,11 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' @examples
 #' \dontrun{
 #'
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- radtte(cached = TRUE) %>%
+#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- tern:::h_data_plot(fit_km = fit_km)
@@ -656,12 +656,12 @@ h_ggkm <- function(data,
 #' @examples
 #'
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- radtte(cached = TRUE) %>%
+#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -720,11 +720,11 @@ h_decompose_gg <- function(gg) {
 #'
 #' @examples
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' fit_km <- radtte(cached = TRUE) %>%
+#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -818,12 +818,12 @@ h_km_layout <- function(data, g_el, title) {
 #' @examples
 #'
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- radtte(cached = TRUE) %>%
+#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
@@ -954,11 +954,11 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' @importFrom stats setNames
 #' @examples
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #'
-#' adtte <- radtte(cached = TRUE) %>%
+#' adtte <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS")
 #'
 #' fit <- survfit(
@@ -1006,14 +1006,14 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #'
 #' @examples
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
 #' grid.newpage()
 #' grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' radtte(cached = TRUE) %>%
+#' synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_grob_median_surv %>%
@@ -1056,12 +1056,12 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' @examples
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
-#' fit_km <- radtte(cached = TRUE) %>%
+#' fit_km <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
@@ -1102,10 +1102,10 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' @inheritParams g_km
 #' @examples
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #'
-#' adtte <- radtte(cached = TRUE) %>%
+#' adtte <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #'
@@ -1162,14 +1162,14 @@ h_tbl_coxph_pairwise <- function(df,
 #'
 #' @examples
 #' \dontrun{
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
 #'
 #' grid.newpage()
 #' grid.rect(gp = gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-#' data <- radtte(cached = TRUE) %>%
+#' data <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' tbl_grob <- tern:::h_grob_coxph(

@@ -76,10 +76,9 @@ a_count_missed_doses <- make_afun(
 #' @export
 #' @examples
 #' library(dplyr)
-#' library(random.cdisc.data)
-#'
-#' adsl <- radsl(cached = TRUE)
-#' adex <- radex(cached = TRUE)
+#' library(scda)
+#' adex <- synthetic_cdisc_data("latest")$adex
+#' adsl <- synthetic_cdisc_data("latest")$adsl
 #' anl <- adex %>%
 #'   distinct(STUDYID, USUBJID, ARM) %>%
 #'   mutate(

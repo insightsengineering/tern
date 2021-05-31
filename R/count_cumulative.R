@@ -130,8 +130,8 @@ a_count_cumulative <- make_afun(
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#' library(random.cdisc.data)
-#' ADSL <- radsl(cached = TRUE)
+#' library(scda)
+#' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' split_cols_by(lyt = NULL, "ARM") %>%
 #'   add_colcounts() %>%
 #'   count_cumulative(

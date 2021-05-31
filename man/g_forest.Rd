@@ -70,12 +70,12 @@ column with a single value and a column with 2 values.
 }
 \examples{
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(forcats)
 library(rtables)
 
-adrs <- radrs(cached = TRUE)
+adrs <- synthetic_cdisc_data("latest")$adrs
 
 n_records <- 20
 adrs_labels <- var_labels(adrs)

@@ -37,10 +37,10 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 \examples{
 
 # Testing dataset with just two treatment arms.
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-adtte <- radtte(cached = TRUE)
+adtte <- synthetic_cdisc_data("latest")$adtte
 
 adtte_f <- adtte \%>\%
   filter(

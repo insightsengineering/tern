@@ -44,10 +44,10 @@ but is out of scope as defined by the  Global Data Standards Repository
 (\strong{\code{GDS_Standard_TLG_Specs_Tables_2.doc}}).
 }
 \examples{
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-ADTTE <- radtte(cached = TRUE)
+ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- filter(
   ADTTE_f,

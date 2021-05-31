@@ -18,11 +18,11 @@ by N, median and confidence interval.
 }
 \examples{
 \dontrun{
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(survival)
 
-adtte <- radtte(cached = TRUE) \%>\%
+adtte <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS")
 
 fit <- survfit(

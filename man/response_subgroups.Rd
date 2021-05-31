@@ -84,12 +84,12 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 \examples{
 
 # Testing dataset.
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(forcats)
 library(rtables)
 
-adrs <- radrs(cached = TRUE)
+adrs <- synthetic_cdisc_data("latest")$adrs
 adrs_labels <- var_labels(adrs)
 
 adrs_f <- adrs \%>\%

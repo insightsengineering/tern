@@ -1,4 +1,5 @@
 # tern 0.7.3.9000
+* Switched examples `scda` from `random.cdisc.data`.
 * Added new tern function `count_abnormal_by_marked` required for creating `LBT05` Stream template, where patients
 with marked laboratory abnormalities are counted. 
 * added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade` for it to be used in `AET01_AESI` template.

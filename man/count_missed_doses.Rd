@@ -99,10 +99,9 @@ afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
 afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
 
 library(dplyr)
-library(random.cdisc.data)
-
-adsl <- radsl(cached = TRUE)
-adex <- radex(cached = TRUE)
+library(scda)
+adex <- synthetic_cdisc_data("latest")$adex
+adsl <- synthetic_cdisc_data("latest")$adsl
 anl <- adex \%>\%
   distinct(STUDYID, USUBJID, ARM) \%>\%
   mutate(

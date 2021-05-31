@@ -19,8 +19,8 @@ A \code{string} with the standard label for the AE basket.
 Labels for Adverse Event Baskets
 }
 \examples{
-library(random.cdisc.data)
-adae <- radae(cached = TRUE)
+library(scda)
+adae <- synthetic_cdisc_data("latest")$adae
 
 # Standardized query label includes scope.
 aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)

@@ -70,11 +70,11 @@ Draw the Kaplan-Meier plot using \code{ggplot2}.
 \examples{
 \dontrun{
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(survival)
 
-fit_km <- radtte(cached = TRUE) \%>\%
+fit_km <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 data_plot <- tern:::h_data_plot(fit_km = fit_km)

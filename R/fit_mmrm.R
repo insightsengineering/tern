@@ -690,12 +690,12 @@ get_mmrm_lsmeans <- function(fit,
 #' @importFrom utils.nest get_free_cores
 #'
 #' @examples
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(rtables)
 #'
-#' adsl <- radsl(cached = TRUE)
-#' adqs <- radqs(cached = TRUE)
+#' adsl <- synthetic_cdisc_data("latest")$adsl
+#' adqs <- synthetic_cdisc_data("latest")$adqs
 #' adqs_f <- adqs %>%
 #'   filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
 #'   droplevels() %>%

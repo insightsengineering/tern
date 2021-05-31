@@ -32,10 +32,10 @@ NULL
 #' * `range_event` : survival time range for observations with events.
 #' * `range` : survival time range for all observations.
 #' @examples
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- radtte(cached = TRUE)
+#' ADTTE <- synthetic_cdisc_data("latest")$adtte
 #' ADTTE_f <- ADTTE %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(

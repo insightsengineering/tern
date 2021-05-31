@@ -144,13 +144,13 @@ per group.
 }
 \examples{
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(ggplot2)
 library(survival)
 library(grid)
 
-df <- radtte(cached = TRUE) \%>\%
+df <- synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")

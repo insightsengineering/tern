@@ -90,10 +90,10 @@ univariate <- function(x) {
 #' @md
 #'
 #' @examples
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(survival)
 #'
-#' ADTTE <- radtte(cached = TRUE)
+#' ADTTE <- synthetic_cdisc_data("latest")$adtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 #' ADTTE_f <- within( # nolint
 #'   data = subset(
@@ -390,14 +390,14 @@ rht <- function(x) {
 #'
 #' @examples
 #' library(dplyr)
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(survival)
 #'
-#' ADSL <- radsl(cached = TRUE)
+#' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADSL <- ADSL %>%
 #'   filter(SEX %in% c("F", "M"))
 #' \dontrun{
-#' ADTTE <- radtte(ADSL, seed = 2) %>%
+#' ADTTE <- synthetic_cdisc_data("latest")$adtte %>%
 #'   filter(PARAMCD == "PFS")
 #' ADTTE$ARMCD <- droplevels(ADTTE$ARMCD)
 #' ADTTE$SEX <- droplevels(ADTTE$SEX)
@@ -662,10 +662,10 @@ check_increments <- function(increments, covariates) {
 #' @importFrom stats model.matrix coef terms vcov
 #'
 #' @examples
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #'
-#' ADTTE <- radtte(cached = TRUE)
+#' ADTTE <- synthetic_cdisc_data("latest")$adtte
 #' ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 #' ADTTE_f <- filter(
 #'   ADTTE_f,

@@ -33,14 +33,14 @@
 #'   col = letters[1:3]
 #' )
 #'
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #'
-#' ADSL <- radsl(cached = TRUE)
+#' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADSL_f <- ADSL %>%
 #'   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 #'
-#' ADRS <- radrs(cached = TRUE)
+#' ADRS <- synthetic_cdisc_data("latest")$adrs
 #' ADRS_f <- ADRS %>%
 #'   filter(PARAMCD == "OVRINV") %>%
 #'   mutate(pchg = rnorm(n(), 10, 50))

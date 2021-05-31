@@ -72,10 +72,10 @@ Please use the function \code{fit_coxreg_univar()} instead.
 }
 
 \examples{
-library(random.cdisc.data)
+library(scda)
 library(survival)
 
-ADTTE <- radtte(cached = TRUE)
+ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- subset(ADTTE, PARAMCD == "OS") # _f: filtered
 ADTTE_f <- within( # nolint
   data = subset(

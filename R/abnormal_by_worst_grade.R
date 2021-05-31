@@ -28,10 +28,10 @@ NULL
 #' @export
 #'
 #' @examples
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #'
-#' adlb <- radlb(cached = TRUE)
+#' adlb <- synthetic_cdisc_data("latest")$adlb
 #' adlb_f <- adlb %>%
 #'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
 #'   mutate(

@@ -286,8 +286,8 @@ extract <- function(x, names) {
 #' @export
 #'
 #' @examples
-#' library(random.cdisc.data)
-#' adae <- radae(cached = TRUE)
+#' library(scda)
+#' adae <- synthetic_cdisc_data("latest")$adae
 #'
 #' # Standardized query label includes scope.
 #' aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)

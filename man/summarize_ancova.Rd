@@ -109,11 +109,11 @@ h_ancova(
   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 )
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-adsl <- radsl(cached = TRUE)
-adqs <- radqs(cached = TRUE)
+adsl <- synthetic_cdisc_data("latest")$adsl
+adqs <- synthetic_cdisc_data("latest")$adqs
 adqs_single <- adqs \%>\%
   filter(
     AVISIT == "WEEK 1 DAY 8",  # single time point
@@ -134,11 +134,11 @@ s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_lev
 
 a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
 
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-adsl <- radsl(cached = TRUE)
-adqs <- radqs(cached = TRUE)
+adsl <- synthetic_cdisc_data("latest")$adsl
+adsl <- synthetic_cdisc_data("latest")$adqs
 
 adqs_single <- adqs \%>\%
   filter(

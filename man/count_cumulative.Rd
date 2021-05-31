@@ -138,8 +138,8 @@ s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALS
 afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
 afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 
-library(random.cdisc.data)
-ADSL <- radsl(cached = TRUE)
+library(scda)
+ADSL <- synthetic_cdisc_data("latest")$adsl
 split_cols_by(lyt = NULL, "ARM") \%>\%
   add_colcounts() \%>\%
   count_cumulative(

@@ -116,10 +116,10 @@ Adds the count statistics to the input layout for multiple flag variables at onc
 
 \examples{
 
-library(random.cdisc.data)
 library(dplyr)
-adsl <- radsl(cached = TRUE)
-adae <- radae(cached = TRUE)
+library(scda)
+adae <- synthetic_cdisc_data("latest")$adae
+adsl <- synthetic_cdisc_data("latest")$adsl
 
 # `s_count_patients_with_event()`
 

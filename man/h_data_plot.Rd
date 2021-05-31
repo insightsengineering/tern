@@ -23,18 +23,18 @@ within \code{g_km}.
 \examples{
 
 \dontrun{
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 library(survival)
 
 # Test with multiple arms
-radtte(cached = TRUE) \%>\%
+synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   tern:::h_data_plot()
 
 # Test with single arm
-radtte(cached = TRUE) \%>\%
+synthetic_cdisc_data("latest")$adtte \%>\%
   filter(PARAMCD == "OS", ARMCD == "ARM B") \%>\%
   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   tern:::h_data_plot(armval = "ARM B")

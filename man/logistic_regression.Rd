@@ -219,10 +219,10 @@ with the treatment arm is included in the model.
 }
 
 \examples{
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-adrs <- radrs(cached = TRUE)
+adrs <- synthetic_cdisc_data("latest")$adrs
 adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%

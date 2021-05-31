@@ -52,11 +52,11 @@ h_set_nest_theme <- function(font_size) {
 #' @export
 #' @examples
 #'
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #'
 #' # Select a small sample of data to plot.
-#' adlb <- radlb(cached = TRUE) %>%
+#' adlb <- synthetic_cdisc_data("latest")$adlb %>%
 #'   filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
 #'   slice(1:36)
 #'

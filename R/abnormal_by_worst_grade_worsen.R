@@ -34,10 +34,10 @@ NULL
 #'
 #' @examples
 #'
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
-#' adlb <- radlb(cached = TRUE)
-#' adsl <- radsl(cached = TRUE)
+#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adsl <- synthetic_cdisc_data("latest")$adsl
 #'
 #' #The direction variable, GRADDR, is based on metadata
 #' adlb <- adlb %>%

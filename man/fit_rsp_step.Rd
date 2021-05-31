@@ -37,10 +37,10 @@ Note that for the default degree 0 the \code{biomarker} variable is not included
 \examples{
 
 # Testing dataset with just two treatment arms.
-library(random.cdisc.data)
 library(dplyr)
+library(scda)
 
-adrs <- radrs(cached = TRUE)
+adrs <- synthetic_cdisc_data("latest")$adrs
 adrs_f <- adrs \%>\%
   filter(
     PARAMCD == "BESRSPI",

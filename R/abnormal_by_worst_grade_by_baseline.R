@@ -57,9 +57,9 @@ NULL
 #' @importFrom dplyr select filter pull left_join
 #'
 #' @examples
-#' library(random.cdisc.data)
-#' adlb <- radlb(cached = TRUE)
-#' adsl <- radsl(cached = TRUE)
+#' library(scda)
+#' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adsl <- synthetic_cdisc_data("latest")$adsl
 #'
 #' # `h_adsl_adlb_merge_using_worst_flag`
 #' adlb_out <- h_adsl_adlb_merge_using_worst_flag(adsl, adlb, worst_flag = c("WGRHIFL" = "Y"))

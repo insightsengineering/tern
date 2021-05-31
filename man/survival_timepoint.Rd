@@ -143,10 +143,10 @@ Note that additional formatting arguments can be used here.
 }}
 
 \examples{
-library(random.cdisc.data)
+library(scda)
 library(dplyr)
 
-ADTTE <- radtte(cached = TRUE)
+ADTTE <- synthetic_cdisc_data("latest")$adtte
 ADTTE_f <- ADTTE \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(

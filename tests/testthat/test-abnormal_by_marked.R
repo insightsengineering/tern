@@ -1,4 +1,4 @@
-library(random.cdisc.data)
+library(scda)
 library(rtables)
 library(dplyr)
 
@@ -6,7 +6,7 @@ get_adlb <- function() {
 
   set.seed(123)
 
-  adlb <- radlb(cached = TRUE) # nolintr
+  adlb <- synthetic_cdisc_data("latest")$adlb # nolintr
 
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the

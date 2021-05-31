@@ -19,12 +19,12 @@
 #' @examples
 #'
 #' # Testing dataset.
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(dplyr)
 #' library(forcats)
 #' library(rtables)
 #'
-#' adtte <- radtte(cached = TRUE)
+#' adtte <- synthetic_cdisc_data("latest")$adtte
 #'
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- var_labels(adtte)

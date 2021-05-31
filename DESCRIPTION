@@ -56,7 +56,6 @@ Suggests:
   lattice,
   knitr,
   Matrix,
-  random.cdisc.data (>= 0.3.10),
   test.nest (>= 0.2.8),
   rmarkdown,
   tidyr,
