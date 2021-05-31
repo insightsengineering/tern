@@ -6,7 +6,7 @@ get_adlb <- function() {
 
   set.seed(123)
 
-  adlb <- synthetic_cdisc_data("latest")$adlb # nolintr
+  adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
 
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
