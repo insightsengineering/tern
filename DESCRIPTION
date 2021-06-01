@@ -130,6 +130,7 @@ Collate:
     'summarize_change.R'
     'summarize_colvars.R'
     'summarize_num_patients.R'
+    'summarize_patients_exposure_in_cols.R'
     'survival_coxph_pairwise.R'
     'survival_duration_subgroups.R'
     'survival_time.R'

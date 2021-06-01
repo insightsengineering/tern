@@ -2,9 +2,10 @@
 * Switched examples `scda` from `random.cdisc.data`.
 * Added new tern function `count_abnormal_by_marked` required for creating `LBT05` Stream template, where patients
 with marked laboratory abnormalities are counted. 
-* added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade` for it to be used in `AET01_AESI` template.
+* Added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade` for it to be used in `AET01_AESI` template.
 * Enhanced `mmrm` related functions for fitting models where `arm` is not considered. 
 * Changed `indent` argument in `append_varlabels` function to accept non-negative integer to represent the indent space defined by user. Previous calls with boolean indent will do an integer conversion and give a warning about this.
+* Added new `tern` function `summarize_patients_exposure_in_cols` required for creating `RMPT01`, `RMPT03`, `RMPT04` and `RMPT05`. 
 
 # tern 0.7.3
 
