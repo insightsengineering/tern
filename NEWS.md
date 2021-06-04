@@ -6,6 +6,7 @@ with marked laboratory abnormalities are counted.
 * Enhanced `mmrm` related functions for fitting models where `arm` is not considered. 
 * Changed `indent` argument in `append_varlabels` function to accept non-negative integer to represent the indent space defined by user. Previous calls with boolean indent will do an integer conversion and give a warning about this.
 * Added new `tern` function `summarize_patients_exposure_in_cols` required for creating `RMPT01`, `RMPT03`, `RMPT04` and `RMPT05`. 
+* Updated `cox_regression` not to display p-values in case interaction is requested.
 
 # tern 0.7.3
 

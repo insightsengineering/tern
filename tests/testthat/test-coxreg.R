@@ -382,7 +382,7 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
       y <- list(
         n = as.list(n),
         hr = as.list(do.call(c, hr)),
-        pval = pval[c(1, 3)],
+        pval = pval[c(1)],
         pval_inter = lrt
       )
       y$ci <- ci

@@ -850,10 +850,12 @@ tidy.coxreg.univar <- function(x, # nousage # nolint
   result$n <- lapply(result$n, empty_vector_if_na)
   result$ci <- lapply(result$ci, empty_vector_if_na)
   result$hr <- lapply(result$hr, empty_vector_if_na)
-  result$pval <- lapply(result$pval, empty_vector_if_na)
   if (x$control$interaction) {
     result$pval_inter <- lapply(result$pval_inter, empty_vector_if_na)
+    # Remove interaction p-values due to change in specifications.
+    result$pval[result$effect != "Treatment:"] <- NA
   }
+  result$pval <- lapply(result$pval, empty_vector_if_na)
   attr(result, "conf_level") <- x$control$conf_level
   result
 }
