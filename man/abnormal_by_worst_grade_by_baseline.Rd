@@ -83,7 +83,8 @@ variable \code{.var} is counted. Inputs for \code{by_var} and \code{.var} can be
 \code{\link[=s_count_abnormal_by_worst_grade_by_baseline]{s_count_abnormal_by_worst_grade_by_baseline()}}. \code{by_grade} must be identical to the name
 of an element in the \code{grouping_list}
 \item \code{by_grade_list} (\code{list}): \cr indicating all outer groups of interest for
-\code{\link[=count_abnormal_by_worst_grade_by_baseline]{count_abnormal_by_worst_grade_by_baseline()}}. If \verb{by_grade_list`` is not specified, then all groups in }grouping_list\verb{will be used.}by_grade_list\verb{follows the same format as}grouping_list`.
+\code{\link[=count_abnormal_by_worst_grade_by_baseline]{count_abnormal_by_worst_grade_by_baseline()}}. If \code{by_grade_list} is not specified,
+then all groups in \code{grouping_list} will be used. \code{by_grade_list} follows the same format as \code{grouping_list}.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}

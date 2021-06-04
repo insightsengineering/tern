@@ -91,11 +91,11 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
   position_satisfy_filters <- Reduce(intersect, temp)
 
   adsl_adlb_common_columns <- intersect(colnames(adsl), colnames(adlb))
-  columns_from_adlb <- c("USUBJID", setdiff(colnames(adlb), adsl_adlb_common_columns))
+  columns_from_adlb <- c("USUBJID", "PARAM", "PARAMCD", "AVISIT", "AVISITN", "ATOXGR", "BTOXGR")
 
   adlb_f <- adlb[position_satisfy_filters, ] %>%
     filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
-    select(columns_from_adlb)
+    select(all_of(columns_from_adlb))
 
   avisits_grid <- adlb %>%
     filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
@@ -114,10 +114,15 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
 
     adsl_lb <- adsl %>%
-      select(adsl_adlb_common_columns) %>%
+      select(all_of(adsl_adlb_common_columns)) %>%
       merge(adsl_lb, by = "USUBJID")
 
     by_variables_from_adlb <- c("USUBJID", "AVISIT", "AVISITN", "PARAMCD", "PARAM")
+
+    adlb_btoxgr <- adlb %>%
+      select(c("USUBJID", "PARAMCD", "BTOXGR")) %>%
+      unique() %>%
+      rename("BTOXGR_MAP" = "BTOXGR")
 
     adlb_out <- merge(
       adlb_f,
@@ -126,6 +131,10 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       all = TRUE,
       sort = FALSE
       )
+    adlb_out <- adlb_out %>%
+      left_join(adlb_btoxgr, by = c("USUBJID", "PARAMCD")) %>%
+      mutate(BTOXGR = BTOXGR_MAP) %>%
+      select(-BTOXGR_MAP)
 
     adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),
                          var_labels(adlb[columns_from_adlb[! columns_from_adlb %in% by_variables_from_adlb]]),
@@ -141,7 +150,7 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
     adsl_lb <- adsl_lb %>% left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
 
     adsl_lb <- adsl %>%
-      select(adsl_adlb_common_columns) %>%
+      select(all_of(adsl_adlb_common_columns)) %>%
       merge(adsl_lb, by = "USUBJID")
 
     by_variables_from_adlb <- c("USUBJID", "PARAMCD", "PARAM")
@@ -235,7 +244,7 @@ h_group_counter <- function(df, id, .var, grouping_list) {
 #' [s_count_abnormal_by_worst_grade_by_baseline()]. `by_grade` must be identical to the name
 #' of an element in the `grouping_list`
 #' * `by_grade_list` (`list`): \cr indicating all outer groups of interest for
-#' [count_abnormal_by_worst_grade_by_baseline()]. If `by_grade_list`` is not specified,
+#' [count_abnormal_by_worst_grade_by_baseline()]. If `by_grade_list` is not specified,
 #' then all groups in `grouping_list` will be used. `by_grade_list` follows the same format as `grouping_list`.
 #'
 #' @return [s_count_abnormal_by_worst_grade_by_baseline()] returns the total patient count, and the
