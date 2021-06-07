@@ -261,7 +261,7 @@ g_mmrm_lsmeans <-
 
     stopifnot(is(object, "mmrm"))
     select <- match.arg(select, several.ok = TRUE)
-    if (!("arm" %in% names(object$vars))) {
+    if (is.null(object$vars$arm)) {
       select <- "estimates"
       arms <- FALSE
       if (identical(names(titles), "contrasts"))
