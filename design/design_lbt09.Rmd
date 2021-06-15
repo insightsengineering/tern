@@ -1,10 +1,10 @@
 ---
-title: "New Tern Function: Liver Laboratory Tests - Patients with Elevated Post-Baseline AST or ALT Levels (LBT09)"
-author: "Maximo Carreras"
+title: "Liver Laboratory Tests - Patients with Elevated Post-Baseline AST or ALT levels (LBT09)"
+author: "Wojciech Wojciak"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Design of LBT08}
+  %\VignetteIndexEntry{Design of LBT09}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 
@@ -18,64 +18,96 @@ knitr::opts_chunk$set(
 )
 ```
 
+# 0. Data pre-processing
 ```{r data, eval = TRUE}
 library(dplyr)
 library(tern)
 
 # At the terminal, run:
-# scp carrerm1@bee.roche.com:/opt/bee/analyses/stream2/master/2.10/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adhy.sas7bdat .
+# scp <username>@bee.roche.com:/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adhy.sas7bdat
 
 adhy <- haven::read_sas(data_file = "../adhy.sas7bdat")
                   
-# select only 4 parameters just to keep example simple:
-anl <- adhy %>% 
-  filter(PARAMCD %in% c("BLAL", "BLAS", "BGAL", "BGAS")) %>%
-  filter(ARM %in% c("ARM B", "ARM A"))
+# Ensure character variables are converted to factors and empty strings and NAs are explicit missing levels.
+adhy_liver <- df_explicit_na(adhy)
 
-# convert character to factors for tabulation
-anl <- df_explicit_na(anl)
+# Define values of interest in PARAMCD variable.
+paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL")
+paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS")
 
-anl_cnt <- anl %>% filter(PARAMCD %in% c("BLAL"))
+# Select LBT09 parameters.
+adhy_liver <- adhy_liver %>%
+  filter(SAFFL == "Y",
+         AVISIT %in% c("BASELINE", "POST-BASELINE"),
+         PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast))
 
-anl <- anl %>%
-  mutate(
-    PARAM2 = factor(
-      ifelse(
-        grepl("TBILI <= 2 times ULN", PARAM),
-        "Total Bilirubin <= 2xULN",
-        ifelse(
-          grepl("TBILI > 2 times ULN", PARAM),
-          "Total Bilirubin > 2xULN",
-          NA
-        )
-      )
+# Let's be explicit about factor levels for AVISIT and PARAMCD.
+adhy_liver <- adhy_liver %>%
+  mutate(AVISIT = factor(AVISIT, levels = c("BASELINE", "POST-BASELINE")),
+         PARAMCD = factor(PARAMCD, levels = c(paramcd_tbili_alt, paramcd_tbili_ast)))
+
+# Create TBILI_CAT categories variable - this is needed so we get the right nesting in the table.
+adhy_liver <- adhy_liver %>%
+  mutate(TBILI_CAT = factor(
+    case_when(
+      PARAMCD %in% c(paramcd_tbili_alt[1], paramcd_tbili_ast[1]) ~ "Total Bilirubin <= 2xULN",
+      PARAMCD %in% c(paramcd_tbili_alt[2], paramcd_tbili_ast[2]) ~ "Total Bilirubin > 2xULN",
+      PARAMCD %in% c(paramcd_tbili_alt[3], paramcd_tbili_ast[3]) ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 2xULN",
+      PARAMCD %in% c(paramcd_tbili_alt[4], paramcd_tbili_ast[4]) ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 5xULN"
+    ),
+    levels = c(
+      "Total Bilirubin <= 2xULN",
+      "Total Bilirubin > 2xULN",
+      "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 2xULN",
+      "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 5xULN"
     )
-    ,
-    AVALC2 = factor(
-      ifelse(
-        grepl("ALT value category", PARAM),
-        paste0("ALT ", AVALC),
-        ifelse(
-          grepl("AST value category", PARAM),
-          paste0("AST ", AVALC),
-          NA
-        )
-      ),
-      ordered = TRUE,
-      levels = c("ALT >3-5ULN", "ALT >5-10ULN", "ALT >10-20ULN", "ALT >20ULN", "AST >3-5ULN", "AST >5-10ULN",  "AST >10-20ULN", "AST >20ULN")
+  ))
+
+# Create ALTAST_CAT categories variable - this will be the labels for different ALT/AST categories displayed in the table.
+adhy_liver <- adhy_liver %>%
+  mutate(
+    ALTAST_CAT = factor(
+      case_when(
+        PARAMCD %in% paramcd_tbili_alt & AVALC == ">3-5ULN" ~ "ALT >3 - <= 5xULN",
+        PARAMCD %in% paramcd_tbili_alt & AVALC == ">5-10ULN" ~ "ALT >5 - <= 10xULN",
+        PARAMCD %in% paramcd_tbili_alt & AVALC == ">10-20ULN" ~ "ALT >10 - <= 20xULN",
+        PARAMCD %in% paramcd_tbili_alt & AVALC == ">20ULN" ~ "ALT > 20xULN",
+        PARAMCD %in% paramcd_tbili_ast & AVALC == ">3-5ULN" ~ "AST >3 - <= 5xULN",
+        PARAMCD %in% paramcd_tbili_ast & AVALC == ">5-10ULN" ~ "AST >5 - <= 10xULN",
+        PARAMCD %in% paramcd_tbili_ast & AVALC == ">10-20ULN" ~ "AST >10 - <= 20xULN",
+        PARAMCD %in% paramcd_tbili_ast & AVALC == ">20ULN" ~ "AST > 20xULN",
+        TRUE ~ "Criteria not met"),
+      levels = c("ALT >3 - <= 5xULN", "ALT >5 - <= 10xULN", "ALT >10 - <= 20xULN", "20" = "ALT > 20xULN",
+                 "AST >3 - <= 5xULN", "AST >5 - <= 10xULN", "AST >10 - <= 20xULN", "AST > 20xULN",
+                 "Criteria not met")
     )
   )
+```
 
-split_fun <- drop_split_levels
+# 1. Liver Laboratory Tests - Patients with Elevated Post-Baseline AST or ALT levels
+```{r variant 1}
+lyt <- basic_table() %>%
+  split_cols_by("ARM") %>%
+  split_cols_by("AVISIT") %>%
+  split_rows_by("TBILI_CAT") %>%
+  # below split helps us get the right denominator between ALT/AST but it's hidden
+  split_rows_by("PARAMCD", split_fun = drop_split_levels, child_labels = "hidden") %>%
+  count_occurrences(
+    vars = "ALTAST_CAT",
+    .stats = "fraction",
+    denom = "n",
+    drop =  TRUE) %>%
+  append_topleft("Liver Laboratory Test Criterion")
+  
 
-lyt <- basic_table() %>% 
-  split_cols_by(var = "ARM") %>%
-  split_cols_by(var = "AVISIT") %>%
-  split_rows_by("PARAM2", split_fun = split_fun) %>%
-  count_occurrences(vars = "AVALC2", .stats = c("count_fraction"), drop = FALSE)
+result <- build_table(lyt = lyt, df = adhy_liver)
 
-result <- build_table(lyt = lyt, df = anl, alt_counts_df = anl_cnt)
+# Trim away rows with Criteria not met
+criteria_fun <- function(tr) {
+  row_label <- obj_label(tr)
+  ifelse(row_label == "Criteria not met", TRUE, FALSE)
+}
 
+result <- result %>% trim_rows(criteria = criteria_fun)
 result
-
 ```
