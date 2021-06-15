@@ -41,8 +41,6 @@ reference:
       - s_count_abnormal_by_baseline
       - s_count_abnormal_by_marked
       - s_count_abnormal_by_worst_grade
-      - s_count_abnormal_by_worst_grade_by_baseline
-      - s_count_abnormal_lab_worsen_by_baseline
       - s_count_cumulative
       - s_count_nonmissing
       - s_count_missed_doses
@@ -81,7 +79,6 @@ reference:
        - a_count_abnormal_by_baseline
        - a_count_abnormal_by_marked
        - a_count_abnormal_by_worst_grade
-       - a_count_abnormal_by_worst_grade_by_baseline
        - a_count_abnormal_lab_worsen_by_baseline
        - a_count_cumulative
        - a_count_missed_doses
@@ -111,7 +108,6 @@ reference:
        - count_abnormal_by_baseline
        - count_abnormal_by_marked
        - count_abnormal_by_worst_grade
-       - count_abnormal_by_worst_grade_by_baseline
        - count_abnormal_lab_worsen_by_baseline
        - count_cumulative
        - count_missed_doses
@@ -161,7 +157,6 @@ reference:
       - h_coxreg_multivar_extract
       - h_coxreg_univar_formulas
       - h_coxreg_multivar_formula
-      - h_group_counter
       - h_incidence_rate
       - h_incidence_rate_byar
       - h_incidence_rate_exact
