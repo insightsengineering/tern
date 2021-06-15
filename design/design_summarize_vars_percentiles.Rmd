@@ -1,0 +1,289 @@
+---
+title: "Design for adding percentiles to summarize_vars"
+author: "Jana Stoilova"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design for adding percentiles to summarize_vars}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+Configuration
+=============
+
+```{r setup}
+library(rtables)
+library(tern)
+library(dplyr)
+library(assertthat)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+Data for examples
+=================
+```{r, data}
+
+library(scda)
+adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+
+```
+
+# Goal
+
+Our goal is to add percentiles to the list of results returned by `summarize_vars`.
+```{r, current}
+basic_table() %>%
+  split_rows_by("ARM") %>%
+  summarize_vars("AGE") %>%
+  build_table(adsl)
+
+```
+
+# New control function
+We first add a new `control` function to minimize the number of arguments. We reuse similar design to `control_surv_time`. Note that we will move the `conf_level` argument from `s_summary.numeric` inside this new control function in order to minimize function signature (it is used to report the CIs for the mean and median).
+
+Note quantile_type is set to Type 3 as this matches SAS definition but this needs to be checked.
+
+```{r, control}
+
+control_summarize_vars <- function(conf_level = 0.95,
+                              quantiles = c(0.25, 0.75),
+                              quantile_type = 3 ) {
+  
+  assert_that(
+    all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
+    identical(length(quantiles), 2L),
+    is_proportion(conf_level),
+    is_nonnegative_count(quantile_type),
+    quantile_type <= 9
+  )
+  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
+}
+
+# Try it out:
+control_summarize_vars()
+```
+
+# Changes to statistics function `s_summary.numeric`
+
+Add `control` argument replacing `conf_level`. Add `quantiles` to list of returned results.
+
+```{r, stats}
+s_summary.numeric <- function(x,
+                              na.rm = TRUE, # nolint
+                              denom,
+                              .N_row, # nolint
+                              .N_col, #nolint
+                              na_level,
+                              .var,
+                              control = control_summarize_vars(),
+                              ...) {
+  assert_that(is.numeric(x))
+  
+  conf_level <- control$conf_level
+  quantiles <- control$quantiles
+  quantile_type <- control$quantile_type
+
+  if (na.rm) x <- x[!is.na(x)]
+
+  y <- list()
+
+  dn <- length(x)
+  y$n <- dn
+  y$mean_sd <- c(
+    mean = if (dn > 0) mean(x) else NA_real_,
+    sd = sd(x)
+  )
+  y$median <- median(x)
+  
+  qts <- if (!na.rm && any(is.na(x))) {
+    c(NA_real_, NA_real_)
+  } else {
+    quantile(x, probs = quantiles, type = quantile_type, na.rm = na.rm)  
+  }
+  y$quantiles <- with_label(unname(qts), paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile"))
+
+  y$range <- range_noinf(x)
+
+  mean_ci_df <- stat_mean_ci(x, conf_level = conf_level, na.rm = na.rm)
+  mean_ci <- unname(as.numeric(mean_ci_df[, c("ymin", "ymax")]))
+  y$mean_ci <- with_label(mean_ci, paste("Mean", tern:::f_conf_level(conf_level)))
+
+  median_ci_df <- stat_median_ci(x, conf_level = conf_level, na.rm = na.rm)
+  median_ci <- unname(as.numeric(median_ci_df[, c("ymin", "ymax")]))
+  y$median_ci <- with_label(median_ci, paste("Median", tern:::f_conf_level(conf_level)))
+  
+  y
+}
+
+# Try it out:
+s_summary(numeric())
+s_summary(1:10, control = control_summarize_vars(quantiles = c(0.1, 0.9)))
+
+x <- c(NA_real_, 1)
+s_summary(x, na.rm = TRUE)
+s_summary(x, na.rm = FALSE)
+
+```
+
+# Formatted results
+
+Minor update to the `a_fun`:
+
+```{r, afun}
+
+.a_summary_numeric_formats <- c(
+  n = "xx.",
+  mean_sd = "xx.x (xx.x)",
+  median = "xx.x",
+  quantiles = "xx.x - xx.x",
+  range = "xx.x - xx.x",
+  mean_ci = "(xx.xx, xx.xx)",
+  median_ci = "(xx.xx, xx.xx)"
+)
+
+.a_summary_numeric_labels <- c(
+  mean_sd = "Mean (SD)",
+  median = "Median",
+  range = "Min - Max"
+)
+
+a_summary.numeric <- make_afun(
+  s_summary.numeric,
+  .formats = .a_summary_numeric_formats,
+  .labels = .a_summary_numeric_labels
+)
+
+# Test it out:
+a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+
+```
+
+# Summarize_vars
+
+Now we can just test `summarize_vars` (no changes to code):=.
+```{r, summarize_vars}
+
+create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
+
+  function(x,
+           ...,
+           .N_row,  # nolint
+           .N_col,  # nolint
+           .var) {
+
+    afun <- function(x, ...) {
+      UseMethod("afun", x)
+    }
+
+    numeric_stats <- afun_selected_stats(
+      .stats,
+      all_stats = names(.a_summary_numeric_formats)
+    )
+    afun.numeric <- make_afun( #nolint
+      a_summary.numeric,
+      .stats = numeric_stats,
+      .formats = extract(.formats, numeric_stats),
+      .labels = extract(.labels, numeric_stats),
+      .indent_mods = extract(.indent_mods, numeric_stats)
+    )
+
+    factor_stats <- afun_selected_stats(.stats, c("n", "count", "count_fraction"))
+    ungroup_stats <- afun_selected_stats(.stats, c("count", "count_fraction"))
+    afun.factor <- make_afun( #nolint
+      a_summary.factor,
+      .stats = factor_stats,
+      .formats = extract(.formats, factor_stats),
+      .labels = extract(.labels, factor_stats),
+      .indent_mods = extract(.indent_mods, factor_stats),
+      .ungroup_stats = ungroup_stats
+    )
+
+    afun.character <- make_afun( #nolint
+      a_summary.character,
+      .stats = factor_stats,
+      .formats = extract(.formats, factor_stats),
+      .labels = extract(.labels, factor_stats),
+      .indent_mods = extract(.indent_mods, factor_stats),
+      .ungroup_stats = ungroup_stats
+    )
+
+    afun.logical <- make_afun( #nolint
+      a_summary.logical,
+      .stats = factor_stats,
+      .formats = extract(.formats, factor_stats),
+      .labels = extract(.labels, factor_stats),
+      .indent_mods = extract(.indent_mods, factor_stats)
+    )
+
+    afun(
+      x = x,
+      ...,
+      .N_row = .N_row,
+      .N_col = .N_col,
+      .var = .var
+    )
+  }
+}
+
+summarize_vars <- function(lyt,
+                           vars,
+                           var_labels = vars,
+                           nested = TRUE,
+                           ...,
+                           show_labels = "default",
+                           table_names = vars,
+                           .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+                           .formats = NULL,
+                           .labels = NULL,
+                           .indent_mods = NULL) {
+
+  afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
+
+  analyze(
+    lyt = lyt,
+    vars = vars,
+    var_labels = var_labels,
+    afun = afun,
+    nested = nested,
+    extra_args = list(...),
+    inclNAs = TRUE,
+    show_labels = show_labels,
+    table_names = table_names
+  )
+}
+
+# Try it out
+basic_table() %>%
+  split_rows_by("ARM") %>%
+  summarize_vars("AGE", .stats = c("n", "quantiles", "range")) %>%
+  build_table(adsl)
+
+# Change label
+basic_table() %>%
+  split_rows_by("ARM") %>%
+  summarize_vars("AGE", .stats = c("n", "quantiles", "range"), .labels = c(quantiles = "Q1-Q3")) %>%
+  build_table(adsl)
+
+```
+
+# Testing other layout functions
+Note that `compare_vars`, `summarize_change` and `summarize_colvars` also depend on `s_summary.numeric`. During production will test if everything is working well there too.
+
