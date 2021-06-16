@@ -69,6 +69,18 @@ test_that("h_coxreg_univar_formulas creates formulas with strata", {
   expect_identical(result, expected)
 })
 
+test_that("h_coxreg_univar_formulas creates formula for reference when treatment is only considered", {
+  result <- h_coxreg_univar_formulas(
+    variables = list(
+      time = "time", event = "status", arm = "armcd"
+    )
+  )
+  expected <- c(
+    ref = "Surv(time, status) ~ armcd"
+  )
+  expect_identical(result, expected)
+})
+
 test_that("h_coxreg_univar_formulas creates formulas with interactions", {
   result <- h_coxreg_univar_formulas(
     variables = list(
@@ -103,6 +115,16 @@ test_that("h_coxreg_univar_formulas fails when requesting interaction without tr
   expect_error(h_coxreg_univar_formulas(
     variables = list(
       time = "time", event = "status", covariates = c("X", "y"),
+      strata = "SITE"
+    ),
+    interaction = TRUE
+  ))
+})
+
+test_that("h_coxreg_univar_formulas fails when requesting interaction without covariates", {
+  expect_error(h_coxreg_univar_formulas(
+    variables = list(
+      time = "time", event = "status", arm = "armcd",
       strata = "SITE"
     ),
     interaction = TRUE

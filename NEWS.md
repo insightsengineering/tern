@@ -7,6 +7,7 @@ with marked laboratory abnormalities are counted.
 * Changed `indent` argument in `append_varlabels` function to accept non-negative integer to represent the indent space defined by user. Previous calls with boolean indent will do an integer conversion and give a warning about this.
 * Added new `tern` function `summarize_patients_exposure_in_cols` required for creating `RMPT01`, `RMPT03`, `RMPT04` and `RMPT05`. 
 * Updated `cox_regression` not to display p-values in case interaction is requested.
+* Updated `cox_regression` to be able to work without covariates. 
 * Delete `count_abnormal_by_worst_grade_by_baseline` and its related statistic and analysis function as `LBT13` and 
 `LBT14` are adopting new design.
 

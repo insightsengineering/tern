@@ -106,12 +106,18 @@ h_coxreg_univar_formulas <- function(variables,
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
+  if (!is.null(variables$covariates)) {
+    assert_that(is.character(variables$covariates))
+    }
+
   assert_that(
-    is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
     is.flag(interaction),
-    (has_arm || (!interaction))
+    (has_arm || (!interaction)),
+    (!is.null(variables$covariates) || (!interaction))
   )
+
+  if (!is.null(variables$covariates)) {
   forms <- paste0(
     "Surv(", variables$time, ", ", variables$event, ") ~ ",
     ifelse(has_arm, variables$arm, "1"),
@@ -123,6 +129,9 @@ h_coxreg_univar_formulas <- function(variables,
       ""
     )
   )
+  } else {
+    forms <- NULL
+  }
   nams <- variables$covariates
   if (has_arm) {
     ref <- paste0(
@@ -313,8 +322,11 @@ fit_coxreg_univar <- function(variables,
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
+  if (!is.null(variables$covariates)) {
+    assert_that(is.character(variables$covariates))
+  }
+
   assert_that(
-    is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables)))
   )
