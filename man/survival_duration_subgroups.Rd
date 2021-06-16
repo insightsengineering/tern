@@ -16,15 +16,15 @@ extract_survival_subgroups(
 )
 
 a_survival_subgroups(
-  .formats = list(n = "xx", n_events = "xx", median = "xx.x", n_tot = "xx", hr =
-    list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
-    "x.xxxx | (<0.0001)")
+  .formats = list(n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x",
+    n_tot = "xx", hr = list(format_extreme_values(2L)), ci =
+    list(format_extreme_values_ci(2L)), pval = "x.xxxx | (<0.0001)")
 )
 
 tabulate_survival_subgroups(
   lyt,
   df,
-  vars = c("n_tot", "n", "median", "hr", "ci"),
+  vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
   time_unit = NULL
 )
 }
@@ -57,14 +57,16 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
 
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group),
+\code{n_tot_events} (total number of events per group),
 \code{n_events} (number of events per group),
+\code{n_tot} (total number of observations per group),
+\code{n} (number of observations per group),
 \code{median} (median survival time),
-\code{n_tot} (total number of observations),
 \code{hr} (hazard ratio),
 \code{ci} (confidence interval of hazard ratio) and
 \code{pval} (p value of the effect).
-Note, the statistics \code{n_tot}, \code{hr} and \code{ci} are required.}
+Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
+are required.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}
@@ -159,11 +161,11 @@ a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 basic_table() \%>\%
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 
-## Table with a full set of columns.
+## Table with a manually chosen set of columns: adding "pval".
 basic_table() \%>\%
   tabulate_survival_subgroups(
     df = df,
-    vars = c("n_tot", "n", "n_events", "median", "hr", "ci", "pval"),
+    vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
     time_unit = adtte_f$AVALU[1]
   )
 

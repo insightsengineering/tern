@@ -13,7 +13,7 @@ NULL
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #' be used as label.
 #' @export
-#' @return [s_count_patients_exposure_in_cols()] returns a list with the statistics:\cr
+#' @return [s_count_patients_sum_exposure()] returns a list with the statistics:\cr
 #' - `n_patients`: number of unique patients in `df`.
 #' - `sum_exposure`: sum of `.var` across all patients in `df`.
 #' @examples
@@ -33,7 +33,11 @@ NULL
 #' )
 #'
 #' s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
-#' s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), custom_label = "some user's custom label")
+#' s_count_patients_sum_exposure(
+#'   df = df,
+#'   .N_col = nrow(adsl),
+#'   custom_label = "some user's custom label"
+#' )
 #'
 s_count_patients_sum_exposure <- function(df, #nolintr
                                           .var = "AVAL",

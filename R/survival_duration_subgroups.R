@@ -120,6 +120,7 @@ extract_survival_subgroups <- function(variables,
 a_survival_subgroups <- function(.formats = list(
   n = "xx",
   n_events = "xx",
+  n_tot_events = "xx",
   median = "xx.x",
   n_tot = "xx",
   hr = list(format_extreme_values(2L)),
@@ -131,7 +132,7 @@ a_survival_subgroups <- function(.formats = list(
     is.list(.formats),
     all_elements_in_ref(
       names(.formats),
-      ref = c("n", "n_events", "median", "n_tot", "hr", "ci", "pval")
+      ref = c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
     )
   )
 
@@ -165,14 +166,16 @@ a_survival_subgroups <- function(.formats = list(
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n` (total number of observations per group),
+#'  `n_tot_events` (total number of events per group),
 #'  `n_events` (number of events per group),
+#'  `n_tot` (total number of observations per group),
+#'  `n` (number of observations per group),
 #'  `median` (median survival time),
-#'  `n_tot` (total number of observations),
 #'  `hr` (hazard ratio),
 #'  `ci` (confidence interval of hazard ratio) and
 #'  `pval` (p value of the effect).
-#'  Note, the statistics `n_tot`, `hr` and `ci` are required.
+#'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
+#'  are required.
 #' @export
 #' @examples
 #'
@@ -180,17 +183,17 @@ a_survival_subgroups <- function(.formats = list(
 #' basic_table() %>%
 #'   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 #'
-#' ## Table with a full set of columns.
+#' ## Table with a manually chosen set of columns: adding "pval".
 #' basic_table() %>%
 #'   tabulate_survival_subgroups(
 #'     df = df,
-#'     vars = c("n_tot", "n", "n_events", "median", "hr", "ci", "pval"),
+#'     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
 #'     time_unit = adtte_f$AVALU[1]
 #'   )
 #'
 tabulate_survival_subgroups <- function(lyt,
                                         df,
-                                        vars = c("n_tot", "n", "median", "hr", "ci"),
+                                        vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
                                         time_unit = NULL) {
 
   conf_level <- df$hr$conf_level[1]
@@ -209,8 +212,8 @@ tabulate_survival_subgroups <- function(lyt,
     labels = colvars$labels[names(colvars$labels) %in% c("n", "n_events", "median")]
   )
   colvars_hr <- list(
-    vars = colvars$vars[names(colvars$labels) %in% c("n_tot", "hr", "ci", "pval")],
-    labels = colvars$labels[names(colvars$labels) %in% c("n_tot", "hr", "ci", "pval")]
+    vars = colvars$vars[names(colvars$labels) %in% c("n_tot", "n_tot_events", "hr", "ci", "pval")],
+    labels = colvars$labels[names(colvars$labels) %in% c("n_tot", "n_tot_events", "hr", "ci", "pval")]
   )
 
   # Columns from table_survtime are optional.
@@ -256,7 +259,7 @@ tabulate_survival_subgroups <- function(lyt,
     table_survtime <- NULL
   }
 
-  # Columns "n_tot", "hr", "ci" in table_hr are required.
+  # Columns "n_tot_events" or "n_tot", and "hr", "ci" in table_hr are required.
   lyt_hr <- split_cols_by(lyt = lyt, var = "arm")
   lyt_hr <- split_rows_by(
     lyt = lyt_hr,
@@ -293,22 +296,28 @@ tabulate_survival_subgroups <- function(lyt,
   }
   table_hr <- build_table(lyt_hr, df = df$hr)
 
+  # There can be one or two vars starting with "n_tot".
+  n_tot_ids <- grep("^n_tot", colvars_hr$vars)
   if (is.null(table_survtime)) {
     result <- table_hr
     hr_id <- match("hr", colvars_hr$vars)
     ci_id <- match("lcl", colvars_hr$vars)
   } else {
-    n_tot_id <- match("n_tot", colvars_hr$vars)
-    result <- cbind_rtables(table_hr[, n_tot_id], table_survtime, table_hr[, -n_tot_id])
-    hr_id <- 1 + ncol(table_survtime) + match("hr", colvars_hr$vars[-n_tot_id])
-    ci_id <- 1 + ncol(table_survtime) + match("lcl", colvars_hr$vars[-n_tot_id])
+    # Reorder the table.
+    result <- cbind_rtables(table_hr[, n_tot_ids], table_survtime, table_hr[, -n_tot_ids])
+    # And then calculate column indices accordingly.
+    hr_id <- length(n_tot_ids) + ncol(table_survtime) + match("hr", colvars_hr$vars[-n_tot_ids])
+    ci_id <- length(n_tot_ids) + ncol(table_survtime) + match("lcl", colvars_hr$vars[-n_tot_ids])
+    n_tot_ids <- seq_along(n_tot_ids)
   }
 
   structure(
     result,
     forest_header = paste0(rev(levels(df$survtime$arm)), "\nBetter"),
     col_x = hr_id,
-    col_ci = ci_id
+    col_ci = ci_id,
+    # Take the first one for scaling the symbol sizes in graph.
+    col_symbol_size = n_tot_ids[1]
   )
 }
 
@@ -316,6 +325,7 @@ tabulate_survival_subgroups <- function(lyt,
 #'
 #' Internal function to check variables included in
 #' [tabulate_survival_subgroups()] and create column labels.
+#' Note that at least one of `n_tot` and `n_tot_events` needs to be provided in `vars`.
 #'
 #' @inheritParams tabulate_survival_subgroups
 #' @inheritParams argument_convention
@@ -330,8 +340,9 @@ d_survival_subgroups_colvars <- function(vars,
   assert_that(
     is.character(vars),
     is.string(time_unit) || is.null(time_unit),
-    all_elements_in_ref(c("n_tot", "hr", "ci"), vars),
-    all_elements_in_ref(vars, ref = c("n", "n_events", "median", "n_tot", "hr", "ci", "pval"))
+    all_elements_in_ref(c("hr", "ci"), vars),
+    any(c("n_tot", "n_tot_events") %in% vars),
+    all_elements_in_ref(vars, ref = c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval"))
   )
 
   propcase_time_label <- if (!is.null(time_unit)) {
@@ -345,6 +356,7 @@ d_survival_subgroups_colvars <- function(vars,
     n_events = "Events",
     median = propcase_time_label,
     n_tot = "Total n",
+    n_tot_events = "Total Events",
     hr = "Hazard Ratio",
     ci = paste0(100 * conf_level, "% Wald CI"),
     pval = method

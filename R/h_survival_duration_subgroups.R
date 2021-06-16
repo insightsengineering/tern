@@ -239,6 +239,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       # Dummy column needed downstream to create a nested header.
       arm = " ",
       n_tot = nrow(df_tte),
+      n_tot_events = sum(df_tte$is_event),
       hr = unname(as.numeric(result$hr)),
       lcl = unname(result$hr_ci[1]),
       ucl = unname(result$hr_ci[2]),
@@ -253,6 +254,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       # Dummy column needed downstream to create a nested header.
       arm = " ",
       n_tot = nrow(df_tte),
+      n_tot_events = sum(df_tte$is_event),
       hr = NA,
       lcl = NA,
       ucl = NA,

@@ -57,7 +57,7 @@ be used as label.}
 Set to \code{FALSE} when the required column split has been done already earlier in the layout pipe.}
 }
 \value{
-\code{\link[=s_count_patients_exposure_in_cols]{s_count_patients_exposure_in_cols()}} returns a list with the statistics:\cr
+\code{\link[=s_count_patients_sum_exposure]{s_count_patients_sum_exposure()}} returns a list with the statistics:\cr
 \itemize{
 \item \code{n_patients}: number of unique patients in \code{df}.
 \item \code{sum_exposure}: sum of \code{.var} across all patients in \code{df}.
@@ -93,7 +93,11 @@ adsl <- data.frame(
 )
 
 s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
-s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), custom_label = "some user's custom label")
+s_count_patients_sum_exposure(
+  df = df,
+  .N_col = nrow(adsl),
+  custom_label = "some user's custom label"
+)
 
 
 lyt <- basic_table() \%>\%

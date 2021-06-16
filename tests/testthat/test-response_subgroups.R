@@ -246,6 +246,39 @@ test_that("tabulate_rsp_subgroups functions as expected with valid input", {
   expect_equal(result_matrix, expected_matrix)
 })
 
+test_that("tabulate_rsp_subgroups correctly calculates column indices", {
+
+  adrs <- adrs %>%
+    preprocess_adrs(n_records = 200)
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+    data = adrs,
+    conf_level = 0.95,
+    method = "chisq"
+  )
+
+  # Case with both OR and response table parts.
+  result_both <- basic_table() %>%
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n", "prop", "or", "ci", "pval", "n_tot")
+    )
+  result_both_cols <- attributes(result_both)[c("col_x", "col_ci", "col_symbol_size")]
+  expected_both_cols <- list(col_x = 6L, col_ci = 7L, col_symbol_size = 1L)
+  expect_identical(result_both_cols, expected_both_cols)
+
+  # Case with just OR results.
+  result_or <- basic_table() %>%
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("or", "n_tot", "ci")
+    )
+  result_or_cols <- attributes(result_or)[c("col_x", "col_ci", "col_symbol_size")]
+  expected_or_cols <- list(col_x = 1L, col_ci = 3L, col_symbol_size = 2L)
+  expect_identical(result_or_cols, expected_or_cols)
+})
+
 test_that("tabulate_rsp_subgroups functions as expected with valid input extreme values in OR table", {
 
   var1 <- data.frame(

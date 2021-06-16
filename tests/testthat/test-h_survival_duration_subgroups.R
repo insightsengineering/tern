@@ -304,6 +304,7 @@ test_that("h_coxph_df functions as expected with valid input and default argumen
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
+    n_tot_events = 166,
     hr = 0.71736505115489,
     lcl = 0.527523110746632,
     ucl = 0.975526201857014,
@@ -314,7 +315,6 @@ test_that("h_coxph_df functions as expected with valid input and default argumen
   )
 
   expect_equal(result, expected, tol = 0.000001)
-
 })
 
 test_that("h_coxph_df functions as expected with one stratification factor", {
@@ -333,6 +333,7 @@ test_that("h_coxph_df functions as expected with one stratification factor", {
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
+    n_tot_events = 166,
     hr =  0.7343822,
     lcl = 0.5376802,
     ucl = 1.003045,
@@ -360,6 +361,7 @@ test_that("h_coxph_df functions as expected with multiple stratification factors
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
+    n_tot_events = 166,
     hr = 0.7412854,
     lcl = 0.5390265,
     ucl = 1.019438,
@@ -387,6 +389,7 @@ test_that("h_coxph_df functions as expected when 0 records in one group", {
   expected <- data.frame(
     arm = " ",
     n_tot = 134,
+    n_tot_events = 79,
     hr = NA,
     lcl = NA,
     ucl = NA,
@@ -397,7 +400,6 @@ test_that("h_coxph_df functions as expected when 0 records in one group", {
   )
 
   expect_equal(result, expected, tol = 0.000001)
-
 })
 
 test_that("h_coxph_subgroups_df functions as expected with valid input and default arguments", {
@@ -413,6 +415,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   expected <- data.frame(
     arm = rep(" ", 6),
     n_tot = c(268, 161, 107, 95, 93, 80),
+    n_tot_events = c(166, 95, 71, 61, 55, 50),
     hr = c(
       0.71736505115489, 0.697969331159471, 0.783616674201674, 0.705072968604656, 0.572806884078014, 0.976900177598777
     ),
@@ -439,7 +442,6 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
 
   # Test edge case where HR is (0, Inf)
   adtte <- adtte %>%
-    preprocess_adtte() %>%
     filter(COUNTRY %in% c("CAN", "GBR")) %>%
     reapply_varlabels(var_labels(adtte))
 
@@ -451,6 +453,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   expected <- data.frame(
     arm = rep(" ", 3),
     n_tot = c(12, 7, 5),
+    n_tot_events = c(7, 5, 2),
     hr = c(1.2230641194542, 0.679005471337507, 1142066054.5383),
     lcl = c(0.270922018090357, 0.112310823072285, 0),
     ucl = c(5.52146278416316, 4.10511131068404, Inf),
@@ -465,7 +468,6 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   )
 
   expect_equal(result, expected, tol = 0.000001)
-
 })
 
 test_that("h_coxph_subgroups_df functions as expected with with stratification factors", {
@@ -481,6 +483,7 @@ test_that("h_coxph_subgroups_df functions as expected with with stratification f
   expected <- data.frame(
     arm = rep(" ", 3),
     n_tot = c(268, 161, 107),
+    n_tot_events = c(166, 95, 71),
     hr = c(0.734382192317288, 0.759888515051216, 0.72253798908495),
     lcl = c(0.537680185840195, 0.501798302845741, 0.428328174772149),
     ucl = c(1.00304459527366, 1.15072241582342, 1.21883447417073),
@@ -495,7 +498,6 @@ test_that("h_coxph_subgroups_df functions as expected with with stratification f
   )
 
   expect_equal(result, expected, tol = 0.000001)
-
 })
 
 test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", {
@@ -511,6 +513,7 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
   expected <- data.frame(
     arm = " ",
     n_tot = 268,
+    n_tot_events = 166,
     hr = 0.71736505115489,
     lcl = 0.5275231,
     ucl = 0.9755262,

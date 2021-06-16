@@ -102,11 +102,11 @@ selected. For a lab that is needed for both low and high directions, the worst
 low records are selected for the low direction, and the worst high record are selected
 for the high direction.
 
-\code{\link[=h_group_counter]{h_group_counter()}} returns the counts and fraction of patients
+\code{\link[=h_worsen_counter]{h_worsen_counter()}} returns the counts and fraction of patients
 whose worst post-baseline lab grades are worse than their baseline grades, for
 post-baseline worst grades "1", "2", "3", "4" and "Any".
 
-\code{\link[=s_count_abnormal_by_worst_grade_by_baseline]{s_count_abnormal_by_worst_grade_by_baseline()}} returns the
+\code{\link[=s_count_abnormal_lab_worsen_by_baseline]{s_count_abnormal_lab_worsen_by_baseline()}} returns the
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 
@@ -163,7 +163,7 @@ df <- h_adlb_worsen(
   direction_var = "GRADDR"
   )
 
-# `h_group_counter`
+# `h_worsen_counter`
 h_worsen_counter(df \%>\% filter(PARAMCD == "CRP" & GRADDR == "Low"),
                  id = "USUBJID",
                  .var = "ATOXGR",

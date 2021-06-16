@@ -8,14 +8,16 @@ d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 }
 \arguments{
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group),
+\code{n_tot_events} (total number of events per group),
 \code{n_events} (number of events per group),
+\code{n_tot} (total number of observations per group),
+\code{n} (number of observations per group),
 \code{median} (median survival time),
-\code{n_tot} (total number of observations),
 \code{hr} (hazard ratio),
 \code{ci} (confidence interval of hazard ratio) and
 \code{pval} (p value of the effect).
-Note, the statistics \code{n_tot}, \code{hr} and \code{ci} are required.}
+Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
+are required.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
@@ -30,4 +32,5 @@ displaying unit.}
 \description{
 Internal function to check variables included in
 \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} and create column labels.
+Note that at least one of \code{n_tot} and \code{n_tot_events} needs to be provided in \code{vars}.
 }

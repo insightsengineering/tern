@@ -276,21 +276,23 @@ tabulate_rsp_subgroups <- function(lyt,
   }
   table_or <- build_table(lyt_or, df = df$or)
 
+  n_tot_id <- match("n_tot", colvars_or$vars)
   if (is.null(table_prop)) {
     result <- table_or
     or_id <- match("or", colvars_or$vars)
     ci_id <- match("lcl", colvars_or$vars)
   } else {
-    n_tot_id <- match("n_tot", colvars_or$vars)
     result <- cbind_rtables(table_or[, n_tot_id], table_prop, table_or[, -n_tot_id])
-    or_id <- 1 + ncol(table_prop) + match("or", colvars_or$vars[-n_tot_id])
-    ci_id <- 1 + ncol(table_prop) + match("lcl", colvars_or$vars[-n_tot_id])
+    or_id <- 1L + ncol(table_prop) + match("or", colvars_or$vars[-n_tot_id])
+    ci_id <- 1L + ncol(table_prop) + match("lcl", colvars_or$vars[-n_tot_id])
+    n_tot_id <- 1L
   }
   structure(
     result,
     forest_header = paste0(levels(df$prop$arm), "\nBetter"),
     col_x = or_id,
-    col_ci = ci_id
+    col_ci = ci_id,
+    col_symbol_size = n_tot_id
   )
 }
 

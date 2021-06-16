@@ -164,14 +164,14 @@ h_adlb_worsen <- function(
 #' highest post-baseline lab grade variable `.var`, baseline lab grade variable `baseline_var`,
 #' and the direction of interest specified in `direction_var`.
 #' @param baseline_var (`string`) \cr baseline lab grade variable
-#' @return [h_group_counter()] returns the counts and fraction of patients
+#' @return [h_worsen_counter()] returns the counts and fraction of patients
 #' whose worst post-baseline lab grades are worse than their baseline grades, for
 #' post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
 #' @export
 #'
 #' @examples
-#' # `h_group_counter`
+#' # `h_worsen_counter`
 #' h_worsen_counter(df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),
 #'                  id = "USUBJID",
 #'                  .var = "ATOXGR",
@@ -254,7 +254,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #' * `baseline_var` (`string`): \cr name of the data column containing baseline toxicity variable
 #' * `direction_var` (`string`): See `direction_var` for more detail
 
-#' @return [s_count_abnormal_by_worst_grade_by_baseline()] returns the
+#' @return [s_count_abnormal_lab_worsen_by_baseline()] returns the
 #' counts and fraction of patients whose worst post-baseline lab grades are worse than
 #' their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'

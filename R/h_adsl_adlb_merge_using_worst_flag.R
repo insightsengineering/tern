@@ -103,8 +103,8 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       )
     adlb_out <- adlb_out %>%
       left_join(adlb_btoxgr, by = c("USUBJID", "PARAMCD")) %>%
-      mutate(BTOXGR = BTOXGR_MAP) %>%
-      select(-BTOXGR_MAP)
+      mutate(BTOXGR = .data$BTOXGR_MAP) %>%
+      select(-.data$BTOXGR_MAP)
 
     adlb_var_labels <- c(var_labels(adlb[by_variables_from_adlb]),
                          var_labels(adlb[columns_from_adlb[! columns_from_adlb %in% by_variables_from_adlb]]),

@@ -16,7 +16,7 @@ g_forest(
   width_row_names = NULL,
   width_columns = NULL,
   width_forest = unit(1, "null"),
-  col_symbol_size = 1,
+  col_symbol_size = attr(tbl, "col_symbol_size"),
   draw = TRUE,
   newpage = TRUE
 )
@@ -57,7 +57,8 @@ width for the forest column. If \code{NULL} the widths get automatically calcula
 column index from \code{tbl} containing data to be used to determine relative
 size for estimator plot symbol. Typically, the symbol size is proportional to the
 sample size used to calculate the estimator. If \code{NULL}, the same symbol
-size is used for all subgroups.}
+size is used for all subgroups. By default tries to get this from
+\code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
 
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
@@ -116,7 +117,49 @@ p <- g_forest(
 
 draw_grob(p)
 
-# Works with any rtable
+# Survival forest plot example.
+
+adtte <- synthetic_cdisc_data("latest")$adtte
+
+# Save variable labels before data processing steps.
+adtte_labels <- var_labels(adtte)
+
+adtte_f <- adtte \%>\%
+  filter(
+    PARAMCD == "OS",
+    ARM \%in\% c("B: Placebo", "A: Drug X"),
+    SEX \%in\% c("M", "F")
+  ) \%>\%
+  mutate(
+    # Reorder levels of ARM to display reference arm before treatment arm.
+    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+    SEX = droplevels(SEX),
+    AVALU = as.character(AVALU),
+    is_event = CNSR == 0
+  ) \%>\%
+  var_relabel(
+    ARM = adtte_labels["ARM"],
+    SEX = adtte_labels["SEX"],
+    AVALU = adtte_labels["AVALU"],
+    is_event = "Event Flag"
+  )
+
+df <- extract_survival_subgroups(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM", subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adtte_f
+)
+
+table_hr <- basic_table() \%>\%
+  tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
+
+g_forest(table_hr)
+
+
+# Works with any rtable.
 
 tbl <- rtable(
   header = c("E", "CI", "N"),
