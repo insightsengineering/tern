@@ -188,8 +188,11 @@ h_coxreg_multivar_formula <- function(variables) {
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
+  if (!is.null(variables$covariates)) {
+    assert_that(is.character(variables$covariates))
+  }
+
   assert_that(
-    is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")])
   )
 
@@ -912,8 +915,11 @@ fit_coxreg_multivar <- function(variables,
   has_arm <- "arm" %in% names(variables)
   arm_name <- if (has_arm) "arm" else NULL
 
+  if (!is.null(variables$covariates)) {
+    assert_that(is.character(variables$covariates))
+  }
+
   assert_that(
-    is.character(variables$covariates),
     is_variables(variables[c(arm_name, "event", "time")]),
     is_df_with_variables(data, as.list(unlist(variables))),
     isFALSE(control$interaction)
