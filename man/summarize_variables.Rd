@@ -16,17 +16,7 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(
-  x,
-  na.rm = TRUE,
-  denom,
-  .N_row,
-  .N_col,
-  na_level,
-  .var,
-  conf_level,
-  ...
-)
+s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
 
 \method{s_summary}{numeric}(
   x,
@@ -36,7 +26,7 @@ s_summary(
   .N_col,
   na_level,
   .var,
-  conf_level = 0.95,
+  control = control_summarize_vars(),
   ...
 )
 
@@ -80,7 +70,7 @@ a_summary(x, ..., .N_row, .N_col, .var)
   .N_col,
   na_level,
   .var,
-  conf_level = 0.95,
+  control = control_summarize_vars(),
   ...
 )
 
@@ -150,7 +140,14 @@ this column across rows).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+\item{control}{a (\code{list}) of parameters for descriptive statistics details, specified by using \cr
+the helper function \link{control_summarize_vars}. Some possible parameter options are: \cr
+\itemize{
+\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for mean and median.
+\item \code{quantiles}: numeric vector of length two to specify the quantiles.
+\item \code{quantile_type} (\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
+}}
 
 \item{...}{arguments passed to \code{s_summary()}.}
 
@@ -183,6 +180,7 @@ If \code{x} is of class \code{numeric}, returns a list with named items:
 \item \code{median}: the \code{\link[=median]{median()}}.
 \item \code{mean_ci}: the CI for the mean (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
 \item \code{median_ci}: the CI for the median (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
+\item \code{quantiles}: two sample quantiles (from \code{\link[=quantile]{quantile()}}).
 \item \code{range}: the \code{\link[=range_noinf]{range_noinf()}}.
 }
 
@@ -304,7 +302,8 @@ dta_test <- data.frame(
 )
 
 ## The summary obtained in with `rtables`:
-split_cols_by(lyt = NULL, var = "Group") \%>\%
+basic_table() \%>\%
+  split_cols_by(var = "Group") \%>\%
   split_rows_by(var = "sub_group") \%>\%
   analyze(vars = "x", afun = s_summary) \%>\%
   build_table(df = dta_test)
@@ -404,36 +403,40 @@ build_table(l, df = dta_test)
 # `summarize_vars()` in rtables pipelines
 
 ## Default output within a `rtables` pipeline.
-l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+l <- basic_table() \%>\%
+  split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   summarize_vars(vars = "AVAL")
 
 build_table(l, df = dta_test)
 
 ## Select and format statistics output.
-l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+l <- basic_table() \%>\%
+  split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   summarize_vars(
     vars = "AVAL",
-    .stats = c("n", "mean_sd"),
+    .stats = c("n", "mean_sd", "quantiles"),
     .formats = c("mean_sd" = "xx.x, xx.x"),
-    .labels = c(n = "n", mean_sd = "Mean, SD")
+    .labels = c(n = "n", mean_sd = "Mean, SD", quantiles = c("Q1 - Q3"))
   )
 
 results <- build_table(l, df = dta_test)
 as_html(results)
 
 ## Use arguments interpreted by `s_summary`.
-l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+l <- basic_table() \%>\%
+  split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   summarize_vars(vars = "AVAL", na.rm = FALSE)
 
 results <- build_table(l, df = dta_test)
 
 ## Handle `NA` levels first when summarizing factors.
-dta_test$AVISIT <- NA
+dta_test$AVISIT <- NA_character_
 dta_test <- df_explicit_na(dta_test)
-l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+l <- basic_table() \%>\%
+  split_cols_by(var = "ARM") \%>\%
   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 
 results <- build_table(l, df = dta_test)

@@ -1,3 +1,31 @@
+#' Control Function for Descriptive Statistics
+#'
+#' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
+#' details for [s_summary].
+#'
+#' @inheritParams argument_convention
+#' @param quantiles (`numeric`) \cr of length two to specify the quantiles to calculate.
+#' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+#'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
+#'   This differs from R's default. See more about `type` in [stats::quantile()].
+#'
+#' @return A list of components with the same names as the arguments
+#' @export
+#'
+control_summarize_vars <- function(conf_level = 0.95,
+                                   quantiles = c(0.25, 0.75),
+                                   quantile_type = 2) {
+
+  assert_that(
+    all(vapply(quantiles, FUN = is_proportion, FUN.VALUE = TRUE)),
+    identical(length(quantiles), 2L),
+    is_proportion(conf_level),
+    is_nonnegative_count(quantile_type),
+    quantile_type <= 9
+  )
+  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
+}
+
 #' Summarize Variables
 #'
 #' We use the new S3 generic function [s_summary()] to implement summaries for
@@ -10,6 +38,13 @@
 NULL
 
 #' @inheritParams argument_convention
+#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
+#'    the helper function [control_summarize_vars]. Some possible parameter options are: \cr
+#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
+#' * `quantiles`: numeric vector of length two to specify the quantiles.
+#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+#'   See more about `type` in [stats::quantile()].
+#'
 #' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
 #'   an object description.
 #'
@@ -23,7 +58,7 @@ s_summary <- function(x,
                       .N_col,  # nolint
                       na_level,
                       .var,
-                      conf_level,
+                      control,
                       ...) {
   assert_that(
     is.flag(na.rm)
@@ -43,6 +78,7 @@ s_summary <- function(x,
 #' - `median`: the [median()].
 #' - `mean_ci`: the CI for the mean (from [stat_mean_ci()]).
 #' - `median_ci`: the CI for the median (from [stat_median_ci()]).
+#' - `quantiles`: two sample quantiles (from [quantile()]).
 #' - `range`: the [range_noinf()].
 #' @method s_summary numeric
 #' @order 3
@@ -73,7 +109,8 @@ s_summary <- function(x,
 #' )
 #'
 #' ## The summary obtained in with `rtables`:
-#' split_cols_by(lyt = NULL, var = "Group") %>%
+#' basic_table() %>%
+#'   split_cols_by(var = "Group") %>%
 #'   split_rows_by(var = "sub_group") %>%
 #'   analyze(vars = "x", afun = s_summary) %>%
 #'   build_table(df = dta_test)
@@ -89,9 +126,13 @@ s_summary.numeric <- function(x,
                               .N_col, #nolint
                               na_level,
                               .var,
-                              conf_level = 0.95,
+                              control = control_summarize_vars(),
                               ...) {
   assert_that(is.numeric(x))
+
+  conf_level <- control$conf_level
+  quantiles <- control$quantiles
+  quantile_type <- control$quantile_type
 
   if (na.rm) x <- x[!is.na(x)]
 
@@ -104,6 +145,14 @@ s_summary.numeric <- function(x,
     sd = sd(x)
   )
   y$median <- median(x)
+
+  qts <- if (!na.rm && any(is.na(x))) {
+    c(NA_real_, NA_real_)
+  } else {
+    quantile(x, probs = quantiles, type = quantile_type, na.rm = na.rm)
+  }
+  y$quantiles <- with_label(unname(qts), paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile"))
+
   y$range <- range_noinf(x)
 
   mean_ci_df <- stat_mean_ci(x, conf_level = conf_level, na.rm = na.rm)
@@ -303,6 +352,7 @@ a_summary <- function(x,
   n = "xx.",
   mean_sd = "xx.x (xx.x)",
   median = "xx.x",
+  quantiles = "xx.x - xx.x",
   range = "xx.x - xx.x",
   mean_ci = "(xx.xx, xx.xx)",
   median_ci = "(xx.xx, xx.xx)"
@@ -498,40 +548,43 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' # `summarize_vars()` in rtables pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
-#' l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+#' l <- basic_table() %>%
+#'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
 #'   summarize_vars(vars = "AVAL")
 #'
 #' build_table(l, df = dta_test)
 #'
 #' ## Select and format statistics output.
-#' l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+#' l <- basic_table() %>%
+#'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
 #'   summarize_vars(
 #'     vars = "AVAL",
-#'     .stats = c("n", "mean_sd"),
+#'     .stats = c("n", "mean_sd", "quantiles"),
 #'     .formats = c("mean_sd" = "xx.x, xx.x"),
-#'     .labels = c(n = "n", mean_sd = "Mean, SD")
+#'     .labels = c(n = "n", mean_sd = "Mean, SD", quantiles = c("Q1 - Q3"))
 #'   )
 #'
 #' results <- build_table(l, df = dta_test)
 #' as_html(results)
 #'
 #' ## Use arguments interpreted by `s_summary`.
-#' l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+#' l <- basic_table() %>%
+#'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
 #'   summarize_vars(vars = "AVAL", na.rm = FALSE)
 #'
 #' results <- build_table(l, df = dta_test)
 #'
 #' ## Handle `NA` levels first when summarizing factors.
-#' dta_test$AVISIT <- NA
+#' dta_test$AVISIT <- NA_character_
 #' dta_test <- df_explicit_na(dta_test)
-#' l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+#' l <- basic_table() %>%
+#'   split_cols_by(var = "ARM") %>%
 #'   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 #'
 #' results <- build_table(l, df = dta_test)
-
 #'
 #' \dontrun{
 #' Viewer(results)

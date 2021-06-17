@@ -11,6 +11,7 @@ with marked laboratory abnormalities are counted.
 * Delete `count_abnormal_by_worst_grade_by_baseline` and its related statistic and analysis function as `LBT13` and 
 `LBT14` are adopting new design.
 * Corrected `tabulate_survival_subgroups` and related survival forest plot functions to use total number of events, instead of observations, as default for scaling the symbol sizes in the plot. (The user might still use total number of observations manually if they wish to do so.)
+* Descriptive statistics returned by `summarize_vars` now include quantiles. Also `summarize_vars` now accepts the the control function `control_summarize_vars` to specify details about confidence level for mean and median and quantile details. The `control` argument replaces `conf_level`.
 
 # tern 0.7.3
 

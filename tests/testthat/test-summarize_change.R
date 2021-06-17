@@ -16,6 +16,7 @@ test_that("s_change_from_baseline handles empty data (complete missing for a vis
     n = 0L,
     mean_sd = c(mean = NA_real_, sd = NA_real_),
     median = NA_real_,
+    quantiles = with_label(c(NA_real_, NA_real_), "25% and 75%-ile"),
     range = c(NA_real_, NA_real_),
     mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
     median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
@@ -42,6 +43,7 @@ test_that("s_change_from_baseline handles NA in baseline values", {
     n = 3L,
     mean_sd = c(mean = 3, sd = 3),
     median = 3,
+    quantiles = with_label(c(0, 6), "25% and 75%-ile"),
     range = c(0, 6),
     mean_ci = with_label(c(-4.452413, 10.452413), "Mean 95% CI"),
     median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
@@ -71,6 +73,7 @@ test_that("s_change_from_baseline handles baseline substitution", {
       n = 2L,
       mean_sd = c(mean = 1.5, sd = 0.7071068),
       median = 1.5,
+      quantiles = with_label(c(1, 2), "25% and 75%-ile"),
       range = c(1, 2),
       mean_ci = with_label(c(-4.853102, 7.853102), "Mean 95% CI"),
       median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
@@ -80,6 +83,7 @@ test_that("s_change_from_baseline handles baseline substitution", {
       n = 2L,
       mean_sd = c(mean = 2.5, sd = 2.12132),
       median = 2.5,
+      quantiles = with_label(c(1, 4), "25% and 75%-ile"),
       range = c(1, 4),
       mean_ci = with_label(c(-16.55931, 21.55931), "Mean 95% CI"),
       median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")

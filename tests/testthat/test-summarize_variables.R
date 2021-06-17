@@ -1,5 +1,22 @@
 library(dplyr)
 
+test_that("control_summarize_vars works with customized parameters", {
+  result <- control_summarize_vars(
+    conf_level = 0.9,
+    quantiles = c(0.1, 0.9)
+  )
+  expected <- list(
+    conf_level = 0.9,
+    quantiles = c(0.1, 0.9),
+    quantile_type = 2
+  )
+  expect_identical(result, expected)
+})
+
+test_that("control_summarize_vars fails wrong inputs", {
+  expect_error(control_summarize_vars(quantiles = c(25, 75)))
+  expect_error(control_summarize_vars(conf_level = 95))
+})
 
 test_that("s_summary return NA for x length 0L", {
 
@@ -8,9 +25,10 @@ test_that("s_summary return NA for x length 0L", {
   result <- s_summary(x)
   expected <- list(
     n = 0,
-    range = c(NA_real_, NA_real_),
-    median_sd = NA_real_,
     mean = c(NA_real_, NA_real_),
+    median_sd = NA_real_,
+    quantiles = with_label(c(NA_real_, NA_real_), "25% and 75%-ile"),
+    range = c(NA_real_, NA_real_),
     mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
     median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
   )
@@ -27,9 +45,10 @@ test_that("s_summary handles NA", {
     n = 1,
     mean_sd = c(1, NA),
     median = 1,
+    quantiles = with_label(c(1, 1), "25% and 75%-ile"),
     range = c(1, 1),
     mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median = with_label(c(NA_real_, NA_real_), "Median 95% CI")
+    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
   )
   expect_equivalent(result, expected)
 
@@ -41,7 +60,8 @@ test_that("s_summary handles NA", {
     median = NA_real_,
     range = c(NA_real_, NA_real_),
     mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
+    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI"),
+    quantiles = with_label(c(NA_real_, NA_real_), "25% and 75%-ile")
   )
   expect_equivalent(result, expected)
 })
@@ -54,6 +74,7 @@ test_that("s_summary returns right results for n = 2", {
     n = 2,
     mean_sd = c(1.5, 0.7071068),
     median = 1.5,
+    quantiles = with_label(c(1, 2), "25% and 75%-ile"),
     range = c(1, 2),
     mean_ci = with_label(c(-4.853102, 7.853102), "Mean 95% CI"),
     median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
@@ -69,6 +90,7 @@ test_that("s_summary returns right results for n = 8", {
     n = 8,
     mean_sd = c(6, 3.207135),
     median = 6.5,
+    quantiles = with_label(c(3.5, 8.5), "25% and 75%-ile"),
     range = c(1, 10),
     mean_ci = with_label(c(3.318768, 8.681232), "Mean 95% CI"),
     median_ci = with_label(c(1, 10), "Median 95% CI")
@@ -347,6 +369,28 @@ test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", 
   expect_identical(to_string_matrix(result), expected)
 })
 
+test_that("`summarize_vars` works with healthy input, and control function.", {
+
+  dta_test <- data.frame(AVAL = c(1:9))
+
+  l <- basic_table() %>%
+    summarize_vars(
+      vars = "AVAL",
+      control = control_summarize_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
+      .stats = c("n", "mean_sd", "mean_ci", "quantiles")
+    )
+  result <- build_table(l, df = dta_test)
+
+  expected <- structure(
+    c(
+      "", "n", "Mean (SD)", "Mean 90% CI", "10% and 90%-ile", "all obs",
+      "9", "5 (2.7)", "(3.3, 6.7)", "1 - 9"
+    ),
+    .Dim = c(5L, 2L)
+  )
+
+  expect_identical(to_string_matrix(result), expected)
+})
 
 test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE`", {
 

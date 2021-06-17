@@ -4,7 +4,7 @@ test_that("s_compare works for numeric", {
     .ref_group = rnorm(5, -5, 1),
     .in_ref_col = FALSE
   ))
-  expect_named(result, c("n", "mean_sd", "median", "range", "mean_ci", "median_ci", "pval"))
+  expect_named(result, c("n", "mean_sd", "median", "quantiles", "range", "mean_ci", "median_ci", "pval"))
 })
 
 test_that("s_compare for numeric does not give p-value when not at least 2 values in each group", {

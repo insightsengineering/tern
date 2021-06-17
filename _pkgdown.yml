@@ -25,6 +25,7 @@ reference:
       - control_coxreg
       - control_incidence_rate
       - control_logistic
+      - control_summarize_vars
       - control_step
       - control_surv_time
       - control_surv_timepoint
