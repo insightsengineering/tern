@@ -49,10 +49,9 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 
   anl_terms <- adae %>%
     dplyr::group_by(ARM, AEBODSYS, AEDECOD) %>%
-    dplyr::count(
+    dplyr::summarise(
       unique_terms = n_distinct(USUBJID)
     ) %>%
-    dplyr::select(-n) %>%
     dplyr::ungroup()
 
   anl_terms <- dplyr::left_join(
