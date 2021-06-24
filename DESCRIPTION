@@ -22,7 +22,7 @@ Authors@R: c(
 Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
 Depends:
   R (>= 3.6),
-  rtables (>= 0.3.7),
+  rtables (>= 0.3.8),
   optimx
 Imports:
   assertthat,
