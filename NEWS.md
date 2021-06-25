@@ -1,17 +1,24 @@
 # tern 0.7.4
-* Switched examples `scda` from `random.cdisc.data`.
-* Added new tern function `count_abnormal_by_marked` required for creating `LBT05` Stream template, where patients
-with marked laboratory abnormalities are counted. 
-* Added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade` for it to be used in `AET01_AESI` template.
-* Enhanced `mmrm` related functions for fitting models where `arm` is not considered. 
-* Changed `indent` argument in `append_varlabels` function to accept non-negative integer to represent the indent space defined by user. Previous calls with boolean indent will do an integer conversion and give a warning about this.
-* Added new `tern` function `summarize_patients_exposure_in_cols` required for creating `RMPT01`, `RMPT03`, `RMPT04` and `RMPT05`. 
-* Updated `cox_regression` not to display p-values in case interaction is requested.
-* Updated `cox_regression` to be able to work without covariates. 
-* Delete `count_abnormal_by_worst_grade_by_baseline` and its related statistic and analysis function as `LBT13` and 
-`LBT14` are adopting new design.
+
+### New features
+* Added new safety layout functions:
+  * `count_abnormal_by_marked` tabulates marked laboratory abnormalities. 
+  * `summarize_patients_exposure_in_cols` tabulates patient counts and sum of exposure across all patients.
+
+### Enhancements
+* Enhanced `mmrm` related functions for fitting models without `arm` variable. 
+* Updated `cox_regression` to work without covariates. Also in case of interaction model summary, p-values for main effect coefficients are no longer displayed.
+* Descriptive statistics returned by `summarize_vars` now include quantiles. In addition, `summarize_vars` now accepts the the control function `control_summarize_vars` to specify details about confidence level for mean and median and quantile details. The `control` argument replaces `conf_level`.
+* Added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade`.
+* Changed `indent` argument in `append_varlabels` to accept non-negative integer to represent the indent space defined by user. Previous calls with Boolean `indent` will do an integer conversion and produce a warning.
+
+### Bug Fixes
 * Corrected `tabulate_survival_subgroups` and related survival forest plot functions to use total number of events, instead of observations, as default for scaling the symbol sizes in the plot. (The user might still use total number of observations manually if they wish to do so.)
-* Descriptive statistics returned by `summarize_vars` now include quantiles. Also `summarize_vars` now accepts the the control function `control_summarize_vars` to specify details about confidence level for mean and median and quantile details. The `control` argument replaces `conf_level`.
+* Helper function `h_adsl_adlb_merge_using_worst_flag` will now correctly impute `BTOXGR` for missing visits.
+
+### Miscellaneous
+* Deleted `count_abnormal_by_worst_grade_by_baseline` and its related statistic and analysis functions as lab abnormality tables can be achieved using a simpler design.
+* Switched data in examples to use `scda` instead of `random.cdisc.data` package.
 
 # tern 0.7.3
 
