@@ -24,7 +24,7 @@
 #'  * patients who do not have any post-baseline lab values
 #'  * patients without any post-baseline values flagged as the worst
 #'
-#' @importFrom dplyr select filter pull left_join
+#' @importFrom dplyr all_of filter left_join pull select
 #'
 #' @examples
 #' library(scda)

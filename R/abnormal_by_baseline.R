@@ -75,7 +75,8 @@ s_count_abnormal_by_baseline <- function(df,
   )
 
   # Keep only records with valid analysis value.
-  df <- df[!is.na(df[[.var]]), ]
+  df <- df_explicit_na(df)
+  df <- df[df[[.var]] != "<Missing>", ]
 
   anl <- data.frame(
     id = df[[variables$id]],
@@ -91,7 +92,7 @@ s_count_abnormal_by_baseline <- function(df,
   total_num <- length(unique(anl$id[anl$var == abnormal]))
 
   # Baseline NA records are counted only in total rows.
-  anl <- anl[!is.na(anl$baseline), ]
+  anl <- anl[anl$baseline != "<Missing>", ]
 
   # Abnormal:
   #   - Patients in denominator: have abnormality at baseline.

@@ -84,14 +84,13 @@ test_that("count_abnormal_by_baseline also works with character var", {
   )
 
   # Check with LOW abnormality.
-  expect_warning(
     result <- s_count_abnormal_by_baseline(
       df = df,
       .var = "myrange",
       abnormal = "LOW",
       variables = list(id = "myid", baseline = "mybase")
     )
-  )
+
   expected <- list(fraction = list(
     "not_abnormal" = with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
     "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
