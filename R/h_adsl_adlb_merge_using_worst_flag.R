@@ -24,7 +24,7 @@
 #'  * patients who do not have any post-baseline lab values
 #'  * patients without any post-baseline values flagged as the worst
 #'
-#' @importFrom dplyr all_of filter left_join pull select
+#' @importFrom dplyr filter left_join pull select
 #'
 #' @examples
 #' library(scda)
@@ -64,8 +64,8 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
   columns_from_adlb <- c("USUBJID", "PARAM", "PARAMCD", "AVISIT", "AVISITN", "ATOXGR", "BTOXGR")
 
   adlb_f <- adlb[position_satisfy_filters, ] %>%
-    filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
-    select(all_of(columns_from_adlb))
+    filter(!.data[["AVISIT"]] %in% no_fillin_visits)
+  adlb_f <- adlb_f[, columns_from_adlb]
 
   avisits_grid <- adlb %>%
     filter(!.data[["AVISIT"]] %in% no_fillin_visits) %>%
@@ -83,9 +83,8 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
       left_join(unique(adlb[c("AVISIT", "AVISITN")]), by = "AVISIT") %>%
       left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
 
-    adsl_lb <- adsl %>%
-      select(all_of(adsl_adlb_common_columns)) %>%
-      merge(adsl_lb, by = "USUBJID")
+    adsl1 <- adsl[, adsl_adlb_common_columns]
+    adsl_lb <- adsl1 %>% merge(adsl_lb, by = "USUBJID")
 
     by_variables_from_adlb <- c("USUBJID", "AVISIT", "AVISITN", "PARAMCD", "PARAM")
 
@@ -119,9 +118,8 @@ h_adsl_adlb_merge_using_worst_flag <- function( #nolint
 
     adsl_lb <- adsl_lb %>% left_join(unique(adlb[c("PARAM", "PARAMCD")]), by = "PARAMCD")
 
-    adsl_lb <- adsl %>%
-      select(all_of(adsl_adlb_common_columns)) %>%
-      merge(adsl_lb, by = "USUBJID")
+    adsl1 <- adsl[, adsl_adlb_common_columns]
+    adsl_lb <- adsl1 %>% merge(adsl_lb, by = "USUBJID")
 
     by_variables_from_adlb <- c("USUBJID", "PARAMCD", "PARAM")
 
