@@ -191,6 +191,8 @@ test_that("h_coxreg_multivar_extract extracts correct coxph results when covaria
     row.names = c(NA, -2L),
     class = "data.frame"
     )
+  attributes(result)$heading <- NULL
+  attributes(expected)$heading <- NULL
   expect_equal(result, expected, tolerance = 0.2)
 })
 
