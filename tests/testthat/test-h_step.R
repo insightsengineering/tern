@@ -189,6 +189,7 @@ test_that("h_step_trt_effect works for logistic regression models with interacti
 
 test_that("h_step_trt_effect works for conditional logistic regression without interaction", {
   dta <- get_adrs()
+  dta <- dta[sample(nrow(dta)), ]
   mod <- clogit(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta)
   vars <- list(
     arm = "ARMBIN",
@@ -206,6 +207,7 @@ test_that("h_step_trt_effect works for conditional logistic regression without i
 
 test_that("h_step_trt_effect works for conditional logistic regression with interaction", {
   dta <- get_adrs()
+  dta <- dta[sample(nrow(dta)), ]
   mod <- clogit(formula = RSP ~ ARMBIN * AGE + strata(STRATA1), data = dta)
   vars <- list(
     arm = "ARMBIN",
