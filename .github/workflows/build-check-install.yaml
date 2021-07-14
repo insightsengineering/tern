@@ -54,10 +54,16 @@ jobs:
         with:
           path: ${{ github.event.repository.name }}
 
-      - name: Print Branch Name
+      - name: Print and Check Branch Name
         run: |
-           cd ${{ github.event.repository.name }}
-           git branch --show-current
+          setwd("${{ github.event.repository.name }}")
+          branch_name <- system2("git", c("branch", "--show-current"), stdout = TRUE)
+          cat(paste("\ncurrent branch:", branch_name, "\n"))
+          if (file.exists("staged_dependencies.yaml") && !grepl("@", branch_name))
+            stop(paste0("Note this repo uses staged.dependencies and your branch",
+                        "name does not contain the target branch, e.g. use ",
+                         branch_name, "@main if you wanted to merge your changes into the main branch"))
+        shell: Rscript {0}
 
       - name: Install Dependencies
         run: |
