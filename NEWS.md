@@ -1,4 +1,5 @@
 # tern 0.7.4.9000
+* Enhanced `g_mmrm_diagnostic`to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing. 
 
 # tern 0.7.4
 

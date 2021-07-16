@@ -79,14 +79,25 @@ g_mmrm_diagnostic <- function(
   )
   amended_data$.resid <- amended_data[[vars$response]] - amended_data$.fitted
 
-  amended_data_smooth <- get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
-
   result <- if (type == "fit-residual") {
-    ggplot(amended_data, aes_string(x = ".fitted", y = ".resid")) +
+    amended_data_smooth <- suppressWarnings(tryCatch({
+      get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
+    }, error = function(msg) {
+      message(
+        paste(
+          "Warning: Data not amenable to the Locally Weighted Scatterplot Smoothing.",
+          "\nSmooth line will not be displayed in the fit-residual plot."
+        )
+      )
+    }
+    )
+  )
+    tmp <- ggplot(amended_data, aes_string(x = ".fitted", y = ".resid")) +
       geom_point(colour = "blue", alpha = 0.3) +
       facet_grid(as.formula(paste(". ~", vars$visit)), scales = "free_x") +
-      geom_hline(yintercept = 0) +
-      geom_line(
+      geom_hline(yintercept = 0)
+    if (!is.null(amended_data_smooth)) {
+      tmp <- tmp + geom_line(
         data = amended_data_smooth,
         aes_string(x = "x", y = "y", group = vars$visit),
         color = "red",
@@ -103,9 +114,12 @@ g_mmrm_diagnostic <- function(
         ),
         alpha = 0.4,
         color = "light grey"
-      ) +
+      )
+    }
+    tmp <- tmp +
       xlab("Fitted values") +
       ylab("Residuals")
+
   } else if (type == "q-q-residual") {
     # We use visit specific standard deviation of marginal residuals for scaling residuals.
     all_sigmas <- sqrt(diag(object$cov_estimate))
