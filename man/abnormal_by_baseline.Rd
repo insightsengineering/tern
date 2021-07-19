@@ -14,6 +14,7 @@ s_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
+  na_level = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
 
@@ -21,6 +22,7 @@ a_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
+  na_level = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
 
@@ -43,6 +45,9 @@ count_abnormal_by_baseline(
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{na_level}{(\code{string})\cr the explicit \code{na_level} argument you used in preprocessing steps using
+\code{\link[=df_explicit_na]{df_explicit_na()}}. Default to the "<Missing>".}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -99,6 +104,8 @@ Note that \code{df} should be filtered to include only post-baseline records.
 \item \code{s_count_abnormal_by_baseline}: For a single \code{abnormal} level, produce a statistic \code{fraction} which is
 a named list with 3 elements: \code{not_abnormal}, \code{abnormal} and \code{total}.
 Each element contains a vector with \code{num} and \code{denom} counts of patients.
+Please note that if the baseline variable or analysis variable contains \code{NA}, it is expected that \code{NA} has been
+conveyed to \code{na_level} appropriately beforehand with \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
 
 \item \code{a_count_abnormal_by_baseline}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -115,6 +122,7 @@ df <- data.frame(
  ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
  BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
  )
+df <- df_explicit_na(df)
 
 # Just for one abnormal level.
 s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")

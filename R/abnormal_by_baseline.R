@@ -46,6 +46,10 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #' @describeIn abnormal_by_baseline For a single `abnormal` level, produce a statistic `fraction` which is
 #'   a named list with 3 elements: `not_abnormal`, `abnormal` and `total`.
 #'   Each element contains a vector with `num` and `denom` counts of patients.
+#'   Please note that if the baseline variable or analysis variable contains `NA`, it is expected that `NA` has been
+#'   conveyed to `na_level` appropriately beforehand with [df_explicit_na()] or [explicit_na()].
+#' @param na_level (`string`)\cr the explicit `na_level` argument you used in preprocessing steps using
+#'   [df_explicit_na()]. Default to the "<Missing>".
 #'
 #' @export
 #'
@@ -55,6 +59,7 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #'  ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
 #'  BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
 #'  )
+#' df <- df_explicit_na(df)
 #'
 #' # Just for one abnormal level.
 #' s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
@@ -62,10 +67,12 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
+                                         na_level = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
   assert_that(
     is.string(.var),
     is.string(abnormal),
+    is.string(na_level),
     is.list(variables),
     all(names(variables) %in% c("id", "baseline")),
     is_df_with_variables(df, c(range = .var, variables)),
@@ -74,14 +81,20 @@ s_count_abnormal_by_baseline <- function(df,
     is_character_or_factor(df[[.var]])
   )
 
+  # If input is passed as character, changed to factor
+  df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)
+  df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_level)
+  assert_that(
+    is_factor_no_na(df[[.var]]),
+    is_factor_no_na(df[[variables$baseline]])
+  )
   # Keep only records with valid analysis value.
-  df <- df_explicit_na(df)
-  df <- df[df[[.var]] != "<Missing>", ]
+  df <- df[df[[.var]] != na_level, ]
 
   anl <- data.frame(
     id = df[[variables$id]],
-    var = as_factor_keep_attributes(df[[.var]]),
-    baseline = as_factor_keep_attributes(df[[variables$baseline]]),
+    var = df[[.var]],
+    baseline = df[[variables$baseline]],
     stringsAsFactors = FALSE
   )
 
@@ -92,7 +105,7 @@ s_count_abnormal_by_baseline <- function(df,
   total_num <- length(unique(anl$id[anl$var == abnormal]))
 
   # Baseline NA records are counted only in total rows.
-  anl <- anl[anl$baseline != "<Missing>", ]
+  anl <- anl[anl$baseline != na_level, ]
 
   # Abnormal:
   #   - Patients in denominator: have abnormality at baseline.
