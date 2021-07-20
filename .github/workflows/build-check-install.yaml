@@ -101,57 +101,6 @@ jobs:
         shell: bash
         continue-on-error: true
 
-      - name: Parse check output for posting as PR comment
-        if: github.event_name == 'pull_request'
-        id: check
-        run: |
-          # Convert UTF-8 encoded check output to ASCII
-          iconv -sc \
-            -f UTF-8 \
-            -t ascii//TRANSLIT \
-            -o ${{ github.event.repository.name }}.Rcheck/00check.ascii \
-            ${{ github.event.repository.name }}.Rcheck/00check.log
-          # Escape backslashes
-          sed -i -e 's/\\/\\\\/g' ${{ github.event.repository.name }}.Rcheck/00check.ascii
-          # https://trstringer.com/github-actions-multiline-strings/
-          output=$(cat ${{ github.event.repository.name }}.Rcheck/00check.ascii)
-          output="${output//'%'/'%25'}"
-          output="${output//$'\n'/'%0A'}"
-          output="${output//$'\r'/'%0D'}"
-          echo "::set-output name=check-output::$output"
-          status=$(tail -1 ${{ github.event.repository.name }}.Rcheck/00check.ascii)
-          echo "::set-output name=check-status::$status"
-        shell: bash
-
-
-# TODO: only if there are Errors, warnings, or notes
-      - name: Post check output as PR comment
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const output = `#### R CMD check for R v${{ matrix.config.tag }}
-
-            \`R CMD check\` resulted in \`${{ steps.check.outputs.check-status }}\`
-
-            <details><summary>Click here to show full output</summary>
-
-            \`\`\`R
-            ${{ steps.check.outputs.check-output }}
-            \`\`\`
-
-            </details>
-
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-
-
       - name: Catch warnings in R CMD check output
         id: catch-errors
         run: |
