@@ -1,4 +1,5 @@
 # tern 0.7.4.9000
+* Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) rsp records.
 * Enhanced `g_mmrm_diagnostic`to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing. 
 
 # tern 0.7.4
