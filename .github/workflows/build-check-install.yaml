@@ -79,7 +79,7 @@ jobs:
 
           sys_deps_for_pkg <- remotes::system_requirements("ubuntu", ubuntu_version, path = "${{ github.event.repository.name }}")
 
-          sys_pgks <- vapply(sys_deps_for_pkg, gsub, character(1), "^apt-get install -y ", USE.NAMES = FALSE)
+          sys_pgks <- gsub("^apt-get install -y ", "", sys_deps_for_pkg)
 
           has_pkgs <- vapply(sys_pgks, function(pkg) system2("dpkg", c("-l", pkg), stdout = NULL, stderr = NULL) == 0,  logical(1))
 
