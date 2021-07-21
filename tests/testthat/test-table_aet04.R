@@ -6,7 +6,6 @@ preproc_adae <- function(adae) {
     dplyr::mutate(
       AEDECOD = as.character(AEDECOD),
       AEBODSYS = as.character(AEBODSYS),
-      AETOXGR = forcats::fct_recode(AETOXGR, "Grade 5" = "5")
     )
 
   anl
@@ -15,9 +14,10 @@ preproc_adae <- function(adae) {
 raw_table <- function(adae, adsl) {
 
   gr_grp <-  list(
-    "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
+    "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4")
+    "Grade 3-4" = c("3", "4"),
+    "Grade 5" = "5"
   )
 
   lyt <- basic_table() %>%
@@ -97,13 +97,13 @@ adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae
 
 test_that("AET04 variant 1 is produced correctly", {
 
-  adae <- adae %>%
-    preproc_adae()
+  adae <- preproc_adae(adae)
 
   gr_grp <-  list(
-    "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
+    "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4")
+    "Grade 3-4" = c("3", "4"),
+    "Grade 5" = "5"
   )
 
   lyt <- basic_table() %>%
@@ -217,9 +217,10 @@ test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)",
     dplyr::filter(ACTARM == "A: Drug X")
 
   gr_grp <-  list(
-    "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
+    "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4")
+    "Grade 3-4" = c("3", "4"),
+    "Grade 5" = "5"
   )
 
   lyt <- basic_table() %>%
@@ -314,13 +315,13 @@ test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)",
 
 test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
 
-  adae <- adae %>%
-    preproc_adae()
+  adae <- preproc_adae(adae)
 
   gr_grp <-  list(
-    "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
+    "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4")
+    "Grade 3-4" = c("3", "4"),
+    "Grade 5" = "5"
   )
 
   lyt <- basic_table() %>%
@@ -459,11 +460,7 @@ test_that("AET04 variant 3 is produced correctly (Fill in of Grades)", {
 
 test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1&2, grades 3&4&5)", {
 
-  adae <- adae %>%
-    preproc_adae() %>%
-    dplyr::mutate(
-      AETOXGR = forcats::fct_recode(AETOXGR, "5" = "Grade 5")
-    )
+  adae <- preproc_adae(adae)
 
   gr_grp <-  list(
     "- Any Grade -" = c("1", "2", "3", "4", "5"),
@@ -582,14 +579,14 @@ test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1
 
 test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at Least 5%, totals restricted)", {
 
-  adae <- adae %>%
-    preproc_adae()
+  adae <- preproc_adae(adae)
   adae <- get_adae_trimmed(adsl, adae, cutoff_rate = 0.4)
 
   gr_grp <-  list(
-    "- Any Grade -" = c("1", "2", "3", "4", "Grade 5"),
+    "- Any Grade -" = c("1", "2", "3", "4", "5"),
     "Grade 1-2" = c("1", "2"),
-    "Grade 3-4" = c("3", "4")
+    "Grade 3-4" = c("3", "4"),
+    "Grade 5" = "5"
   )
 
   lyt <- basic_table() %>%
@@ -674,8 +671,7 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
 # NOTE: STREAM logic will only trim at term level
 test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at Least X Patients)", {
 
-  adae <- adae  %>%
-    preproc_adae()
+  adae <- preproc_adae(adae)
 
   raw_result <- raw_table(adae, adsl)
 
@@ -715,8 +711,7 @@ test_that("AET04 variant 8 is produced correctly (with an Incidence Rate of at L
 # NOTE: STREAM logic will only tream at term level
 test_that("AET04 variant 9 is produced correctlyb(with a Difference in Incidence Rate of at Least X%)", {
 
-  adae <- adae %>%
-    preproc_adae()
+  adae <- preproc_adae(adae)
 
   raw_result <- raw_table(adae, adsl)
 
@@ -764,8 +759,7 @@ test_that(
   "AET04 variant 11 is produced correctly
   (with an Incidence Rate of at Least X%, all SOCs w/o preferred terms removed)", {
 
-  adae <- adae %>%
-    preproc_adae()
+  adae <- preproc_adae(adae)
 
   raw_result <- raw_table(adae, adsl)
 
