@@ -8,7 +8,7 @@
 \alias{summarize_occurrences_by_grade}
 \title{Occurrence Counts by Grade}
 \usage{
-h_append_grade_groups(grade_groups, refs)
+h_append_grade_groups(grade_groups, refs, remove_single = TRUE)
 
 s_count_occurrences_by_grade(
   df,
@@ -16,6 +16,7 @@ s_count_occurrences_by_grade(
   .N_col,
   id = "USUBJID",
   grade_groups = list(),
+  remove_single = TRUE,
   labelstr = ""
 )
 
@@ -25,6 +26,7 @@ a_count_occurrences_by_grade(
   .N_col,
   id = "USUBJID",
   grade_groups = list(),
+  remove_single = TRUE,
   labelstr = ""
 )
 
@@ -56,6 +58,9 @@ summarize_occurrences_by_grade(
 
 \item{refs}{(named \code{list} of \code{numeric})\cr where each name corresponds to a reference grade level
 and each entry represents a count.}
+
+\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
+in the the output list; in this case only the grade groups names will be included in the output.}
 
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
@@ -99,7 +104,9 @@ greatest intensity/highest grade level.
 \section{Functions}{
 \itemize{
 \item \code{h_append_grade_groups}: Helper function for \code{\link[=s_count_occurrences_by_grade]{s_count_occurrences_by_grade()}} to
-insert grade groupings into list with individual grade frequencies.
+insert grade groupings into list with individual grade frequencies. The order of the final result
+follows the order of \code{grade_groups}. The elements under any-grade group (if any), i.e.
+the grade group equal to \code{refs} will be moved to the end. Grade groups names must be unique.
 
 \item \code{s_count_occurrences_by_grade}: Statistics function which given occurrence data counts the
 number of patients by highest grade. Returns a list of counts and fractions with one element
@@ -116,13 +123,25 @@ statistics function and additional format arguments (see below).
 }}
 
 \examples{
+
 h_append_grade_groups(
   list(
-    "Any Grade" = as.character(1:3),
-     "Grade 1-2" = c("1", "2")
+    "Any Grade" = as.character(1:5),
+    "Grade 1-2" = c("1", "2"),
+    "Grade 3-4" = c("3", "4")
     ),
-  list("1" = 10, "2" = 7, "3" = 2)
- )
+  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+)
+
+h_append_grade_groups(
+  list(
+    "Any Grade" = as.character(5:1),
+    "Grade A" = "5",
+    "Grade B" = c("4", "3")
+    ),
+  list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+)
+
 
 
 library(dplyr)
