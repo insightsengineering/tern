@@ -19,6 +19,23 @@ jobs:
           - {image: waddella/rocker_rstudio_4.1.0_deps, tag: 'latest'}
 
     steps:
+
+# TODO: add qpdf
+      - name: Check if Docker Image meets Requirements
+        run: |
+          lsb=$(lsb_release -d)
+          [[ ! $lsb =~ "Ubuntu" ]] && exit 1
+
+          for PKG in r-base curl git
+          do
+             dpkg -l $PKG
+             if [[ ! $? ]]; then
+               echo "System package $PGK is not available"
+               exit 1
+             fi
+          done
+        shell: bash
+
       - name: Gather info from PR
         uses: actions/github-script@v4
         id: get-pr
@@ -38,7 +55,7 @@ jobs:
               core.setFailed(`Request failed with error ${err}`)
             }
 
-      - name: Install Remotes R Package if Needed
+      - name: Install remotes R package if needed
         run: |
            options(repos = c(CRAN = "https://cloud.r-project.org/"))
            ncores <- parallel::detectCores(all.tests = FALSE, logical = TRUE)
@@ -63,14 +80,13 @@ jobs:
         with:
           path: ${{ github.event.repository.name }}
 
-      - name: Print Branch Name
+      - name: Print branch name
         run: |
            cd ${{ github.event.repository.name }}
            git branch --show-current
         shell: bash
 
-      - name: Install System Dependencies for R Package
-        if: runner.os == 'Linux'
+      - name: Install system dependencies for R package
         run: |
           ubuntu_info <- read.csv("/etc/os-release", sep = "=", header = FALSE)
           v_ubuntu_info <- setNames(ubuntu_info$V2, ubuntu_info$V1)
@@ -90,7 +106,7 @@ jobs:
         shell: Rscript {0}
 
 
-      - name: Install Dependencies
+      - name: Install R package dependencies
         run: |
           setwd("${{ github.event.repository.name }}")
           options(repos = c(CRAN = "https://cloud.r-project.org/"))
@@ -121,10 +137,13 @@ jobs:
         shell: bash
 
 # TODO: if configurable then --as-cran optionally
+# TODO: TESTING_DEPTH
       - name: Run R CMD CHECK
         run: R CMD check --no-manual ${{ env.PKGBUILD }}
         shell: bash
         continue-on-error: true
+        env:
+          TESTING_DEPTH: 3
 
       - name: Catch warnings in R CMD check output
         id: catch-errors
