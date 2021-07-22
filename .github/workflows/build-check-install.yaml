@@ -143,7 +143,7 @@ jobs:
         shell: bash
         continue-on-error: true
         env:
-          TESTING_DEPTH: 3
+          TESTING_DEPTH: 1
 
       - name: Catch warnings in R CMD check output
         id: catch-errors
