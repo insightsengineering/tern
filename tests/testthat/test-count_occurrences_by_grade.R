@@ -24,18 +24,40 @@ test_that("h_append_grade_groups works with valid input", {
       "Grade 1-2" = c("1", "2"),
       "Grade 3-4" = c("3", "4")
     ),
-    list("1" = 10L, "2" = 7L, "3" = 2L, "4" = 2L, "5" = 0L)
+    list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
   )
 
   expected <- list(
-    "Any Grade" = 21L,
-    "Grade 1-2" = 17L,
+    "Any Grade" = 150L,
+    "Grade 1-2" = 30L,
     "1" = 10L,
-    "2" = 7L,
-    "Grade 3-4" = 4L,
-    "3" = 2L,
-    "4" = 2L,
-    "5" = 0L
+    "2" = 20L,
+    "Grade 3-4" = 70L,
+    "3" = 30L,
+    "4" = 40L,
+    "5" = 50L
+  )
+  expect_equal(result, expected)
+})
+
+test_that("h_append_grade_groups works with valid input with revers order and one-element grade groups", {
+  result <- h_append_grade_groups(
+    list(
+      "Any Grade" = as.character(5:1),
+      "Grade A" = "5",
+      "Grade B" = c("4", "3")
+    ),
+    list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+  )
+
+  expected <- list(
+    "Any Grade" = 150L,
+    "Grade A" = 50L,
+    "Grade B" = 70L,
+    "4" = 40L,
+    "3" = 30L,
+    "2" = 20L,
+    "1" = 10L
   )
   expect_equal(result, expected)
 })

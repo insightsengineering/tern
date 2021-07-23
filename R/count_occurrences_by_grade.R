@@ -8,24 +8,40 @@
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
 #'   and each entry represents a count.
+#' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
+#' in the the output list; in this case only the grade groups names will be included in the output.
 #'
 #' @name count_occurrences_by_grade
 #'
 NULL
 
 #' @describeIn count_occurrences_by_grade  Helper function for [s_count_occurrences_by_grade()] to
-#'   insert grade groupings into list with individual grade frequencies.
+#'   insert grade groupings into list with individual grade frequencies. The order of the final result
+#'   follows the order of `grade_groups`. The elements under any-grade group (if any), i.e.
+#'   the grade group equal to `refs` will be moved to the end. Grade groups names must be unique.
 #' @export
 #' @examples
+#'
 #' h_append_grade_groups(
 #'   list(
-#'     "Any Grade" = as.character(1:3),
-#'      "Grade 1-2" = c("1", "2")
+#'     "Any Grade" = as.character(1:5),
+#'     "Grade 1-2" = c("1", "2"),
+#'     "Grade 3-4" = c("3", "4")
 #'     ),
-#'   list("1" = 10, "2" = 7, "3" = 2)
-#'  )
+#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+#' )
 #'
-h_append_grade_groups <- function(grade_groups, refs) {
+#' h_append_grade_groups(
+#'   list(
+#'     "Any Grade" = as.character(5:1),
+#'     "Grade A" = "5",
+#'     "Grade B" = c("4", "3")
+#'     ),
+#'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
+#' )
+#'
+#'
+h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 
   assert_that(
     is.list(grade_groups),
@@ -37,19 +53,35 @@ h_append_grade_groups <- function(grade_groups, refs) {
     all_elements_in_ref(elements, names(refs))
   )
 
-  result <- refs
+  ### compute sums in groups
+  grp_sum <- lapply(grade_groups, function(i) do.call(sum, refs[i]))
+  result <- c(grp_sum, refs)
 
-  for (i in seq_along(grade_groups)) {
+  ### order result while keeping grade_groups's ordering
+  ordr <- grade_groups
 
-    l_count_select <- result[grade_groups[[i]]]
-    frq <- do.call(sum, l_count_select)
-    index <- min(vapply(names(l_count_select), grep, x = names(result), numeric(1)))
+  # elements of any-grade group (if any) will be moved to the end
+  is_any <- sapply(grade_groups, setequal, y = names(refs))
+  ordr[is_any] <- list(character(0)) # hide elements under any-grade group
 
-    result <- append(result, frq, after = index - 1)
-    names(result)[index] <- names(grade_groups)[i]
+  # groups-elements combined sequence
+  ordr <- c(lapply(names(ordr), function(g) c(g, ordr[[g]])), recursive = TRUE, use.names = FALSE)
+  ordr <- ordr[!duplicated(ordr)]
+
+  # append remaining elements (if any)
+  ordr <- union(ordr, unlist(grade_groups[is_any])) # from any-grade group
+  ordr <- union(ordr, names(refs)) # from refs
+
+  # remove elements of single-element groups, if any
+  if (remove_single) {
+    is_single <- sapply(grade_groups, length) == 1L
+    ordr <- setdiff(ordr, unlist(grade_groups[is_single]))
   }
 
+  # apply the order
+  result <- result[ordr]
   result
+
 }
 
 #' @describeIn count_occurrences_by_grade Statistics function which given occurrence data counts the
@@ -87,6 +119,7 @@ s_count_occurrences_by_grade <- function(df,
                                          .N_col, #nolint
                                          id = "USUBJID",
                                          grade_groups = list(),
+                                         remove_single = TRUE,
                                          labelstr = "") {
 
   assert_that(
@@ -123,7 +156,7 @@ s_count_occurrences_by_grade <- function(df,
   }
 
   if (length(grade_groups) > 0) {
-    l_count <- h_append_grade_groups(grade_groups, l_count)
+    l_count <- h_append_grade_groups(grade_groups, l_count, remove_single)
   }
 
   l_count_fraction <- lapply(l_count, function(i, denom) c(i, i / denom), denom = .N_col)

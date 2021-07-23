@@ -241,7 +241,12 @@ prop_diff_cmh <- function(rsp,
   # first dimension: FALSE, TRUE
   # 2nd dimension: CONTROL, TX
   # 3rd dimension: levels of strat
-  t_tbl <- table(rsp, grp, strata)
+  # rsp as factor rsp to handle edge case of no FALSE (or TRUE) rsp records
+  t_tbl <- table(
+    factor(rsp, levels = c("FALSE", "TRUE")),
+    grp,
+    strata
+  )
   n1 <- colSums(t_tbl[1:2, 1, ])
   n2 <- colSums(t_tbl[1:2, 2, ])
   p1 <- t_tbl[2, 1, ] / n1

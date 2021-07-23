@@ -2,7 +2,7 @@ test_that("s_count_abnormal_by_baseline works with healthy input and default arg
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 3, 4)),
     ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
-    BNRIND = factor(c("LOW", "NORMAL", "NORMAL", NA)),
+    BNRIND = factor(c("LOW", "NORMAL", "NORMAL", "HIGH")),
     stringsAsFactors = FALSE
   )
 
@@ -13,7 +13,7 @@ test_that("s_count_abnormal_by_baseline works with healthy input and default arg
     abnormal = "LOW"
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 1L, denom = 2L), "Not low baseline status"),
+    "not_abnormal" = with_label(c(num = 1L, denom = 3L), "Not low baseline status"),
     "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
     "total" = with_label(c(num = 1L, denom = 4L), "Total")
   ))
@@ -28,7 +28,7 @@ test_that("s_count_abnormal_by_baseline works with healthy input and default arg
   )
   expected <- list(fraction = list(
     "not_abnormal" = with_label(c(num = 1L, denom = 3L), "Not high baseline status"),
-    "abnormal" = with_label(c(num = 0L, denom = 0L), "High baseline status"),
+    "abnormal" = with_label(c(num = 1L, denom = 1L), "High baseline status"),
     "total" = with_label(c(num = 2L, denom = 4L), "Total")
   ))
   expect_identical(result, expected)
@@ -38,7 +38,7 @@ test_that("s_count_abnormal_by_baseline also works with tibble and custom argume
   df <- dplyr::as_tibble(
     data.frame(
       myid = as.character(c(1:6)),
-      myrange = factor(c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", NA)),
+      myrange = factor(c("LOW", "NORMAL", "LOW", "NORMAL", "HIGH", "NORMAL")),
       mybase = factor(c("NORMAL", "LOW", "NORMAL", "HIGH", "NORMAL", "NORMAL")),
       stringsAsFactors = FALSE
     )
@@ -52,9 +52,9 @@ test_that("s_count_abnormal_by_baseline also works with tibble and custom argume
     variables = list(id = "myid", baseline = "mybase")
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
+    "not_abnormal" = with_label(c(num = 2L, denom = 5L), "Not low baseline status"),
     "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
-    "total" = with_label(c(num = 2L, denom = 5L), "Total")
+    "total" = with_label(c(num = 2L, denom = 6L), "Total")
   ))
   expect_identical(result, expected)
 
@@ -66,14 +66,14 @@ test_that("s_count_abnormal_by_baseline also works with tibble and custom argume
     variables = list(id = "myid", baseline = "mybase")
   )
   expected <- list(fraction = list(
-    "not_abnormal" = with_label(c(num = 1L, denom = 4L), "Not high baseline status"),
+    "not_abnormal" = with_label(c(num = 1L, denom = 5L), "Not high baseline status"),
     "abnormal" = with_label(c(num = 0L, denom = 1L), "High baseline status"),
-    "total" = with_label(c(num = 1L, denom = 5L), "Total")
+    "total" = with_label(c(num = 1L, denom = 6L), "Total")
   ))
   expect_identical(result, expected)
 })
 
-test_that("count_abnormal_by_baseline also works with character var", {
+test_that("count_abnormal_by_baseline throws warning with character var", {
   df <- dplyr::as_tibble(
     data.frame(
       myid = as.character(c(1:6)),
@@ -84,13 +84,14 @@ test_that("count_abnormal_by_baseline also works with character var", {
   )
 
   # Check with LOW abnormality.
-    result <- s_count_abnormal_by_baseline(
-      df = df,
-      .var = "myrange",
-      abnormal = "LOW",
-      variables = list(id = "myid", baseline = "mybase")
+  result <- expect_warning(
+      s_count_abnormal_by_baseline(
+        df = df,
+        .var = "myrange",
+        abnormal = "LOW",
+        variables = list(id = "myid", baseline = "mybase")
+      )
     )
-
   expected <- list(fraction = list(
     "not_abnormal" = with_label(c(num = 2L, denom = 4L), "Not low baseline status"),
     "abnormal" = with_label(c(num = 0L, denom = 1L), "Low baseline status"),
@@ -144,4 +145,32 @@ test_that("count_abnormal_by_baseline works with custom arguments", {
     .Dim = c(9L, 2L)
   )
   expect_identical(result_matrix, expected_matrix)
+})
+
+test_that("s_count_abnormal_by_baseline gives error for NA input", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 2, 3, 4)),
+    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+    BNRIND = factor(c("LOW", "NORMAL", "NORMAL", NA)),
+    stringsAsFactors = FALSE
+  )
+
+  expect_error(s_count_abnormal_by_baseline(
+    df = df,
+    .var = "ANRIND",
+    abnormal = "LOW"
+  ))
+
+  df <- data.frame(
+    USUBJID = as.character(c(1, 2, 3, 4)),
+    ANRIND = factor(c("NORMAL", "LOW", "HIGH", NA)),
+    BNRIND = factor(c("LOW", "NORMAL", "NORMAL", "HIGH")),
+    stringsAsFactors = FALSE
+  )
+
+  expect_error(s_count_abnormal_by_baseline(
+    df = df,
+    .var = "ANRIND",
+    abnormal = "LOW"
+  ))
 })
