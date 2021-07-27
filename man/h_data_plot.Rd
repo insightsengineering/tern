@@ -20,6 +20,16 @@ default)}
 Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
 }
+\details{
+This starts from the \code{\link[broom:reexports]{broom::tidy()}} result, and then:
+\itemize{
+\item post-processes the \code{strata} column into a factor,
+\item extends each stratum by an additional first row with time 0
+and probability 1 so that downstream plot lines start at those coordinates,
+\item adds a \code{censor} column,
+\item filters the rows before \code{max_time}.
+}
+}
 \examples{
 
 \dontrun{

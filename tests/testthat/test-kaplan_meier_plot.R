@@ -33,6 +33,18 @@ test_that("h_data_plot respects the ordering of the arm variable factor levels",
   expect_identical(levels(result$strata), c("ARM B", "ARM C", "ARM A"))
 })
 
+test_that("h_data_plot adds rows that have time 0 and estimate 1", {
+  data <- get_test_data()
+  result <- h_data_plot(data)
+  result_corner <- result %>%
+    dplyr::filter(time == 0, estimate == 1)
+  expect_identical(result_corner$strata, factor(c("ARM A", "ARM B", "ARM C")))
+  expect_true(with(
+    result_corner,
+    all(conf.high == 1) && all(conf.low == 1) && all(n.event == 0) && all(n.censor == 0)
+  ))
+})
+
 # h_xticks ----
 test_that("h_xticks works with default settings", {
   result <- h_data_plot(get_test_data()) %>%

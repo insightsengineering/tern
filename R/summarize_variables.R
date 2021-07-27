@@ -39,7 +39,7 @@ NULL
 
 #' @inheritParams argument_convention
 #' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars]. Some possible parameter options are: \cr
+#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
 #' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
 #' * `quantiles`: numeric vector of length two to specify the quantiles.
 #' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr

@@ -388,6 +388,13 @@ g_km <- function(df,
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
 #'
+#' This starts from the [broom::tidy()] result, and then:
+#' - post-processes the `strata` column into a factor,
+#' - extends each stratum by an additional first row with time 0
+#' and probability 1 so that downstream plot lines start at those coordinates,
+#' - adds a `censor` column,
+#' - filters the rows before `max_time`.
+#'
 #' @inheritParams kaplan_meier
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`) \cr used as strata name when treatment arm
@@ -417,6 +424,7 @@ h_data_plot <- function(fit_km,
                         armval = "All",
                         max_time = NULL) {
   y <- tidy(fit_km)
+
   if (!is.null(fit_km$strata)) {
     fit_km_var_level <- strsplit(names(fit_km$strata), "=")
     strata_levels <- vapply(fit_km_var_level, FUN = "[", FUN.VALUE = "a", i = 2)
@@ -428,6 +436,27 @@ h_data_plot <- function(fit_km,
   } else {
     y$strata <- armval
   }
+
+  y_by_strata <- split(y, y$strata)
+  y_by_strata_extended <- lapply(
+    y_by_strata,
+    FUN = function(tbl) {
+      first_row <- tbl[1L, ]
+      first_row$time <- 0
+      # nolint start
+      first_row$n.risk <- sum(first_row[, c("n.risk", "n.event", "n.censor")])
+      first_row$n.event <- first_row$n.censor <- 0
+      first_row$estimate <- first_row$conf.high <- first_row$conf.low <- 1
+      first_row$std.error <- 0
+      # nolint end
+      rbind(
+        first_row,
+        tbl
+      )
+    }
+  )
+  y <- do.call(rbind, y_by_strata_extended)
+
   y$censor <- ifelse(y$n.censor > 0, y$estimate, NA)
   if (!is.null(max_time)) {
     y <- y[y$time <= max(max_time), ]

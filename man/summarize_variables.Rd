@@ -141,7 +141,7 @@ this column across rows).}
 by a statistics function.}
 
 \item{control}{a (\code{list}) of parameters for descriptive statistics details, specified by using \cr
-the helper function \link{control_summarize_vars}. Some possible parameter options are: \cr
+the helper function \code{\link[=control_summarize_vars]{control_summarize_vars()}}. Some possible parameter options are: \cr
 \itemize{
 \item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for mean and median.
 \item \code{quantiles}: numeric vector of length two to specify the quantiles.
