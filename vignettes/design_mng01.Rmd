@@ -80,7 +80,8 @@ h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
 
 ##New function to display graphs 
  ```{r} 
- g_lineplot <- function(df, time_var, trt_var, line, down_limit, up_limit, table, stats, label = "Visit") {
+ g_lineplot <- function(df, time_var, trt_var, line, down_limit, up_limit, table, stats, label = "Visit",
+ gtitle = "Plot of Mean and Confidence Limits by Visit") {
   pd <- position_dodge(0.4)
 
   df_filtered <- filter(df, !is.na(!!sym(noquote(line))))
@@ -88,7 +89,7 @@ h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
     x = time_var,
     y = line, color = trt_var, linetype = trt_var,
     group = trt_var
-  )) +
+  )) + ggtitle(gtitle) +
     theme_bw() +
     geom_point(position = pd) +
     scale_y_continuous(labels = scales::comma, expand = expansion(c(0, .25))) +
@@ -152,16 +153,16 @@ sum_data <- h_summary_stats(ADLB, "AVAL", "AVISIT", "ARM", 0.05)
 #Simple plot mean, CI
 g_lineplot(sum_data,"AVISIT", "ARM", "mean", "CIup","CIdown", FALSE)
 #Simple plot mean, CI
-g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean","CIup", FALSE)
+g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean","CIup", FALSE, gtitle = "Plot of Mean and Upper Confidence Limit by Visit")
 #Simple plot mean, +/-
-g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean_sddown", "mean_sdup",FALSE)
+g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean_sddown", "mean_sdup",FALSE, gtitle = "Plot of Mean +/- SD by Visit")
 
 #Simple plot mean, CI plus table
 g_lineplot(sum_data,"AVISIT", "ARM", "mean","CIup","CIdown", TRUE, c("n", "Mean"))
 
 
-#continuous time variable
-sum_data <- h_summary_stats(ADLB, "AVAL", "AVISITN", "ARM", 0.05)
+#continuous time variable, customized alpha
+sum_data <- h_summary_stats(ADLB, "AVAL", "AVISITN", "ARM", 0.1)
 g_lineplot(sum_data,"AVISITN", "ARM", "mean","CIup","CIdown", TRUE, c("n", "Mean"))
 
 ```
