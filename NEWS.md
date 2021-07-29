@@ -3,6 +3,7 @@
 * Re-implemented the `h_append_grade_groups` function to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of `grade_groups`. 
 * Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) rsp records.
 * Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing. 
+* Fixed `g_km` such that lines in the plot now start correctly at time 0 and probability 1.
 
 # tern 0.7.4
 
@@ -68,7 +69,7 @@
 # tern 0.7.1
 * New argument `position_surv_med` added to `g_km` to move position of the annotation table with median survival times.  
 * Fixed bug in `g_km` related to the arguments `pch` and `size`. Previously, these arguments were not passed on to helper function `h_ggkm` and so were effectively being ignored.
-* Updated xticks and max_time arguments in `g_km` for greater functionality. max_time added as an argument in `h_xticks` to allow this. 
+* Updated xticks and max_time arguments in `g_km` for greater functionality. `max_time` added as an argument in `h_xticks` to allow this. 
 * Fixed bug in `prop_diff_cmh` that led to `NaN` weighted proportion difference estimates and missing confidence intervals. Previously, when for at least one stratum no patients from one treatment arm were included, then the estimation did not lead to numeric results.
 * Fixed bug in `prop_cmh` which previously gave an error in case of at least one stratum containing less than two observations.
 * New argument `n_events` added to `estimate_incidence_rate`.

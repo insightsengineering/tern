@@ -24,6 +24,7 @@ if (getRversion() >= "2.15.1") {
     "x",
     "control_coxph",
     "control_incidence_rate",
+    "control_summarize_vars",
     "control_surv_time",
     "control_surv_timepoint"
   ))
