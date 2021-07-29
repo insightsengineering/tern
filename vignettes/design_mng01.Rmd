@@ -34,7 +34,7 @@ library(ggplot2)
 ##Data for examples
 ```{r data, results = "asis", eval = TRUE}
 library(scda)
-ADLB <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
+ADLB <- synthetic_cdisc_data("latest")$adlb
 ADLB <- df_explicit_na(ADLB)
 ADLB <- filter(ADLB, ANL01FL == "Y" & PARAMCD == "ALT" & AVISIT != "SCREENING")
 
