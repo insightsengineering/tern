@@ -66,7 +66,7 @@ h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
   sum_data <- sum_data %>%
     right_join(all_levels, by = c(time_var, trt_var)) %>%
     mutate(
-      N = as.character(ifelse(is.na(count), 0, count)),
+      n = as.character(ifelse(is.na(count), 0, count)),
       Mean = as.character(format(mean, digits = 3, nsmall = 3)),
       CI = ifelse(!is.na(CIdown), paste0("(", format(CIdown, digits = 3, nsmall = 3), ", ", format(CIup, digits = 3, nsmall = 3), ")"), "NE"),
       Median = as.character(format(median, digits = 3, nsmall = 3)),
@@ -117,13 +117,16 @@ h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
 
 
     df_trans <- tidyr::pivot_longer(
-      data = select(df, trt_var, time_var, N, CI, Mean, Mean_SD, IQR),
+      data = select(df, trt_var, time_var, n, CI, Mean, Mean_SD, IQR),
       cols = -c(trt_var, time_var),
       names_to = "stat",
       values_to = "value"
     )
 
     df_trans <- filter(df_trans, stat %in% stats) %>% mutate(
+      stat = case_when(stat == "CI" ~ "95% CI for Mean",
+                       stat == "Mean_SD" ~ "Mean +/- SD",
+                       TRUE ~ stat),
       value = ifelse(is.na(value), "NE", as.character(value)),
       stat_lbl = as.factor(paste0(ARM, ": ", stat))
     )
@@ -154,11 +157,11 @@ g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean","CIup", FALSE)
 g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean_sddown", "mean_sdup",FALSE)
 
 #Simple plot mean, CI plus table
-g_lineplot(sum_data,"AVISIT", "ARM", "mean","CIup","CIdown", TRUE, c("N", "Mean"))
+g_lineplot(sum_data,"AVISIT", "ARM", "mean","CIup","CIdown", TRUE, c("n", "Mean"))
 
 
 #continuous time variable
 sum_data <- h_summary_stats(ADLB, "AVAL", "AVISITN", "ARM", 0.05)
-g_lineplot(sum_data,"AVISITN", "ARM", "mean","CIup","CIdown", TRUE, c("N", "Mean"))
+g_lineplot(sum_data,"AVISITN", "ARM", "mean","CIup","CIdown", TRUE, c("n", "Mean"))
 
 ```
