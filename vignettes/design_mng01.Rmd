@@ -42,33 +42,38 @@ ADLB <- filter(ADLB, ANL01FL == "Y" & PARAMCD == "ALT" & AVISIT != "SCREENING")
 
 ##New function to summarize statistics to display summary stats
  ```{r} 
-h_summary_stats <-function(df, var, time_var, trt_var, alpha){
+h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
+  sum_data <- df %>%
+    group_by_at(c(time_var, trt_var)) %>%
+    summarise(
+      count = sum(!is.na(!!sym(var))),
+      mean = mean(!!sym(var), na.rm = TRUE),
+      std = sd(!!sym(var), na.rm = TRUE),
+      mean_sdup = mean + std,
+      mean_sddown = mean - std,
+      CIup = mean(!!sym(var), na.rm = TRUE) + qt(1 - alpha / 2, n() - 1) * sd(!!sym(var), na.rm = TRUE) / sqrt(n()),
+      CIdown = mean(!!sym(var), na.rm = TRUE) - qt(1 - alpha / 2, n() - 1) * sd(!!sym(var), na.rm = TRUE) / sqrt(n()),
+      median = median(!!sym(var), na.rm = TRUE),
+      quant25 = quantile(!!sym(var), 0.25, na.rm = TRUE),
+      quant75 = quantile(!!sym(var), 0.75, na.rm = TRUE)
+    ) %>%
+    arrange_at(c(time_var, trt_var))
 
-sum_data <- df %>% group_by_at(c(time_var, trt_var)) %>% 
-   summarise(count = sum(!is.na(!!sym(var))), 
-                                       mean = mean(!!sym(var), na.rm = TRUE),
-                                       std = sd(!!sym(var), na.rm = TRUE),
-                                       mean_sdup = mean + std,
-                                       mean_sddown = mean - std,
-                                       CIup = mean(!!sym(var), na.rm = TRUE) + qt(1 - alpha/2, n() - 1) * sd(!!sym(var), na.rm = TRUE)/sqrt(n()), 
-                                       CIdown = mean(!!sym(var), na.rm = TRUE) -  qt(1 - alpha/2,n() - 1) * sd(!!sym(var), na.rm = TRUE)/sqrt(n()),
-                                       median = median(!!sym(var), na.rm = TRUE), 
-                                       quant25 = quantile(!!sym(var), 0.25, na.rm = TRUE),
-                                       quant75 = quantile(!!sym(var),  0.75, na.rm = TRUE)) %>% arrange_at(c(time_var, trt_var))
-                                                                                                                                                                                             
 
 
-all_levels <- expand.grid(unique(df[[time_var]]),unique(df[[trt_var]]))
-all_levels <- setNames(all_levels, c(time_var, trt_var))
-sum_data <- sum_data %>% right_join(all_levels, by = c(time_var, trt_var)) %>% 
-  mutate(N = as.character(ifelse(is.na(count), 0, count)),
-         Mean = as.character(format(mean, digits=3, nsmall=3)),
-         CI = ifelse(!is.na(CIdown),paste0("(", format(CIdown, digits=3, nsmall=3), ", ", format(CIup, digits=3, nsmall=3), ")"), "NE"),
-         Median = as.character(format(median, digits=3, nsmall=3)),
-         Mean_SD = ifelse(!is.na(mean_sddown),paste0("(", format(mean_sddown, digits=3, nsmall=3), ", ", format(mean_sdup, digits=3, nsmall=3), ")"), "NE"),
-         IQR = ifelse(!is.na(quant25),paste0("(", format(quant25, digits=3, nsmall=3), ", ", format(quant75, digits=3, nsmall=3), ")"), "NE"),
-  )
-sum_data
+  all_levels <- expand.grid(unique(df[[time_var]]), unique(df[[trt_var]]))
+  all_levels <- setNames(all_levels, c(time_var, trt_var))
+  sum_data <- sum_data %>%
+    right_join(all_levels, by = c(time_var, trt_var)) %>%
+    mutate(
+      N = as.character(ifelse(is.na(count), 0, count)),
+      Mean = as.character(format(mean, digits = 3, nsmall = 3)),
+      CI = ifelse(!is.na(CIdown), paste0("(", format(CIdown, digits = 3, nsmall = 3), ", ", format(CIup, digits = 3, nsmall = 3), ")"), "NE"),
+      Median = as.character(format(median, digits = 3, nsmall = 3)),
+      Mean_SD = ifelse(!is.na(mean_sddown), paste0("(", format(mean_sddown, digits = 3, nsmall = 3), ", ", format(mean_sdup, digits = 3, nsmall = 3), ")"), "NE"),
+      IQR = ifelse(!is.na(quant25), paste0("(", format(quant25, digits = 3, nsmall = 3), ", ", format(quant75, digits = 3, nsmall = 3), ")"), "NE"),
+    )
+  sum_data
 }
 
 ```
@@ -76,55 +81,67 @@ sum_data
 ##New function to display graphs 
  ```{r} 
  g_lineplot <- function(df, time_var, trt_var, line, down_limit, up_limit, table, stats, label = "Visit") {
-  
   pd <- position_dodge(0.4)
-  
-  df_filtered <- filter(df,!is.na(!!sym(noquote(line))))
-  plot1 <- ggplot(data = df_filtered, aes_string(x = time_var, 
-                                              y = line, color = trt_var, linetype = trt_var, 
-                                              group = trt_var)) + theme_bw() + geom_point(position = pd) +
-    scale_y_continuous(labels = scales::comma, expand = expansion(c(0, .25))) + ylab("") + xlab(label) +
-     theme(legend.key.size = unit(1, "cm")) + geom_point(position = pd, size = 3) + theme(legend.position = "bottom", 
-       legend.direction = "horizontal")
-    
-    plot1 <- plot1 + geom_line(position = pd) + 
-      geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd, linetype = "solid") 
-    
-    if (table) {
-    tbl_theme <- theme (panel.border = element_blank(),
-                        panel.grid.major = element_blank() , 
-                        panel.grid.minor = element_blank(),
-                        axis.ticks = element_blank(),
-                        axis.title = element_blank(),
-                        axis.text.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
-                        axis.text.x = element_blank())
-    
-   
+
+  df_filtered <- filter(df, !is.na(!!sym(noquote(line))))
+  plot1 <- ggplot(data = df_filtered, aes_string(
+    x = time_var,
+    y = line, color = trt_var, linetype = trt_var,
+    group = trt_var
+  )) +
+    theme_bw() +
+    geom_point(position = pd) +
+    scale_y_continuous(labels = scales::comma, expand = expansion(c(0, .25))) +
+    ylab("") +
+    xlab(label) +
+    theme(legend.key.size = unit(1, "cm")) +
+    geom_point(position = pd, size = 3) +
+    theme(
+      legend.position = "bottom",
+      legend.direction = "horizontal"
+    )
+
+  plot1 <- plot1 + geom_line(position = pd) +
+    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd, linetype = "solid")
+
+  if (table) {
+    tbl_theme <- theme(
+      panel.border = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.ticks = element_blank(),
+      axis.title = element_blank(),
+      axis.text.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
+      axis.text.x = element_blank()
+    )
+
+
     df_trans <- tidyr::pivot_longer(
       data = select(df, trt_var, time_var, N, CI, Mean, Mean_SD, IQR),
       cols = -c(trt_var, time_var),
       names_to = "stat",
       values_to = "value"
-    ) 
-    
-    df_trans <- filter(df_trans, stat %in% stats) %>% mutate(
-                                                             value = ifelse(is.na(value), "NE", as.character(value)),
-                                                             stat_lbl = as.factor(paste0(ARM, ": ", stat)) )
-   
-    tbl <- ggplot(df_trans, aes(x = !!sym(noquote(time_var)), y = stat_lbl, label = value) ) + 
-      geom_text(size = 3) +
-      scale_y_discrete(labels = levels(df_trans$stat_lbl)) + 
-      theme_bw() + 
-      tbl_theme
-    
-    ggpubr::ggarrange(plot1, tbl, heights = c(4, 1),
-                      ncol = 1, nrow = 2, align = "hv")
-    }  else{
-      plot1
-    }
+    )
 
+    df_trans <- filter(df_trans, stat %in% stats) %>% mutate(
+      value = ifelse(is.na(value), "NE", as.character(value)),
+      stat_lbl = as.factor(paste0(ARM, ": ", stat))
+    )
+
+    tbl <- ggplot(df_trans, aes(x = !!sym(noquote(time_var)), y = stat_lbl, label = value)) +
+      geom_text(size = 3) +
+      scale_y_discrete(labels = levels(df_trans$stat_lbl)) +
+      theme_bw() +
+      tbl_theme
+
+    ggpubr::ggarrange(plot1, tbl,
+      heights = c(4, 1),
+      ncol = 1, nrow = 2, align = "hv"
+    )
+  } else {
+    plot1
+  }
 }
- 
 ```
 ##Exapmples
 ```{r} 
