@@ -4,6 +4,7 @@
 * Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) rsp records.
 * Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing. 
 * Fixed `g_km` such that lines in the plot now start correctly at time 0 and probability 1.
+* Added new safety helper function h_stack_by_baskets to stack SMQ and/or CMQ records from adae.
 
 # tern 0.7.4
 

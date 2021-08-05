@@ -54,7 +54,7 @@ h_stack_by_baskets <- function(df,
   names_smq <- baskets[startsWith(baskets, "SMQ")]
   names_smq_concat <- lapply(names_smq, FUN = function(name_smq) {
     name_sc <- str_replace(name_smq, "NAM", "SC")
-    name_smq_concat <- c(name_smq, name_sc)
+    name_smq_concat <- c(name_smq, name_sc) #nolintr
   })
 
   #Concatenating NAM SC columns and adding them into the DF
@@ -62,16 +62,16 @@ h_stack_by_baskets <- function(df,
   df_keys_cq <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
   df_keys_cq_smq_concat <- df_keys_cq
 
-  for (names in names_smq_concat){
+  for (names in names_smq_concat) {
     name_smq_nam_tmp <- names[1]
     name_smq_sc_tmp <- names[2]
     smq_nam_tmp <- df_anl[[name_smq_nam_tmp]]
     smq_sc_tmp <- df_anl[[name_smq_sc_tmp]]
     nam_sc_concat_tmp <- rep(NA, length(smq_nam_tmp))
-    nam_sc_concat_all_tmp <- paste0(smq_nam_tmp,"(", smq_sc_tmp, ")")
+    nam_sc_concat_all_tmp <- paste0(smq_nam_tmp, "(", smq_sc_tmp, ")")
     pos_not_na_tmp <- which(!is.na(smq_nam_tmp))
     nam_sc_concat_tmp[pos_not_na_tmp] <- nam_sc_concat_all_tmp[pos_not_na_tmp]
-    col_name_tmp <- paste0(names[1],"_",names[2])
+    col_name_tmp <- paste0(names[1], "_", names[2])
     df_keys_cq_smq_concat[col_name_tmp] <- nam_sc_concat_tmp
   }
 
@@ -80,10 +80,9 @@ h_stack_by_baskets <- function(df,
     data.table::melt(data.table::setDT(df_keys_cq_smq_concat), id.vars = keys)
     )
 
-  result <- tibble(df_long[!is.na(df_long$value), c(keys,"value")])
+  result <- tibble(df_long[!is.na(df_long$value), c(keys, "value")])
   names(result) <- c(keys, "SMQ")
   var_labels(result) <- c(var_labels(result[names(result) %in% keys]), smq_varlabel)
 
   result
 }
-
