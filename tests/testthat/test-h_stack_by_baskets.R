@@ -1,0 +1,94 @@
+library(scda)
+test_that("h_stack_by_baskets returns the correct dataframe", {
+
+  adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ]
+
+  result <- h_stack_by_baskets(df = adae)
+
+  expected <- structure(list(
+    STUDYID = structure(c("AB12345", "AB12345", "AB12345", "AB12345"), label = c(STUDYID = "Study Identifier")),
+    USUBJID = structure(c(
+      "AB12345-BRA-1-id-265", "AB12345-BRA-1-id-141", "AB12345-BRA-1-id-141", "AB12345-BRA-1-id-141"
+    ),
+    label = c(USUBJID = "Unique Subject Identifier")
+    ),
+    AESEQ = structure(c(4L, 2L, 3L, 5L), label = c(AESEQ = "Sponsor-Defined Identifier")),
+    AETERM = structure(
+      c(6L, 10L, 1L, 1L),
+      .Label = c(
+        "trm A.1.1.1.1", "trm A.1.1.1.2", "trm B.1.1.1.1", "trm B.2.1.2.1",
+        "trm B.2.2.3.1", "trm C.1.1.1.3", "trm C.2.1.2.1", "trm D.1.1.1.1", "trm D.1.1.4.2", "trm D.2.1.5.3"
+      ), class = "factor", label = c(AETERM = "Reported Term for the Adverse Event")
+    ),
+    ASTDTM = structure(
+      c(1605312000, 1621814400, 1638230400, 1650499200),
+      tzone = "",
+      label = c(ASTDTM = "Analysis Start Datetime"),
+      class = c("POSIXct", "POSIXt")),
+    SMQ = structure(c(
+      "C.1.1.1.3/B.2.2.3.1 AESI (BROAD)", "D.2.1.5.3/A.1.1.1.1 AESI",
+      "D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.1.1.1.1 AESI"
+    ),
+    label = structure("Standardized MedDRA Query", .Names = "")
+    )
+  ), row.names = c(NA, -4L), class = c("tbl_df", "tbl", "data.frame"))
+  expect_identical(result, expected)
+})
+
+test_that(
+  "h_stack_by_baskets fails when selecting Standardized/Customized query names
+  that do not start with 'SMQ' or 'CQ' ", {
+
+    adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ]
+
+    expect_error(
+      h_stack_by_baskets(
+        df = adae,
+        baskets = c("NOT_SMQ01NAM")
+      )
+    )
+  })
+
+test_that(
+  "h_stack_by_baskets fails when selecting Standardized/Customized
+  query names that do not end with 'NAM' ", {
+
+    adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ]
+
+    expect_error(
+      h_stack_by_baskets(
+        df = adae,
+        baskets = c("SMQ01NAM_NOT")
+      )
+    )
+
+  })
+
+test_that(
+  "h_stack_by_baskets returns an empty dataframe with desired variables when there are no
+  adverse events falling within any of the baskets selected", {
+
+    adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ]
+    baskets <- grep("^(SMQ|CQ).*(NAM|SC)$", names(adae), value = TRUE)
+    adae[, baskets] <- NA
+    result <- h_stack_by_baskets(
+      df = adae
+    )
+
+    result_nrow <- nrow(result)
+    expected_nrow <- 0L
+
+    expect_identical(result_nrow, expected_nrow)
+
+    result_names <- names(result)
+    expected_names <- c("STUDYID", "USUBJID", "AESEQ", "AETERM", "ASTDTM", "SMQ")
+
+    expect_identical(result_names, expected_names)
+
+    result_var_labels <- var_labels(result)
+    expected_var_labels <- c(
+      STUDYID = "Study Identifier", USUBJID = "Unique Subject Identifier",
+      AESEQ = "Sponsor-Defined Identifier", AETERM = "Reported Term for the Adverse Event",
+      ASTDTM = "Analysis Start Datetime", SMQ  = "Standardized MedDRA Query")
+    expect_identical(result_var_labels, expected_var_labels)
+  })
