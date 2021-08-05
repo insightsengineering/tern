@@ -43,4 +43,5 @@ adae_smq <- h_stack_by_baskets(df = adae,
 smq_varlabel = "Standardized MedDRA Query"
 )
 
+
 }

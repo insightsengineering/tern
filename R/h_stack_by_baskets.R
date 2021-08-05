@@ -21,6 +21,7 @@
 #'
 #' @importFrom stringr str_replace
 #' @importFrom tibble tibble
+#' @importFrom data.table melt
 #'
 #' @examples
 #'
@@ -31,6 +32,7 @@
 #' adae_smq <- h_stack_by_baskets(df = adae,
 #' smq_varlabel = "Standardized MedDRA Query"
 #' )
+#'
 #'
 h_stack_by_baskets <- function(df,
                                baskets = grep("^(SMQ|CQ).*NAM$", names(df), value = TRUE),
@@ -48,36 +50,40 @@ h_stack_by_baskets <- function(df,
     all(keys %in% names(df))
   )
 
-  df_keys <- df[, names(df) %in% keys]
-  df_keys_baskets <- df[, names(df) %in% c(keys, baskets)]
-
-  smq_baskets <- baskets[startsWith(baskets, "SMQ")]
-  smq_scopes <- str_replace(smq_baskets, "NAM", "SC")
-  df_keys_baskets_scope <- tibble(df_keys_baskets, df[, c(smq_scopes)])
-  names(df_keys_baskets_scope) <- c(names(df_keys_baskets), smq_scopes)
-
-  result_labels <- c(var_labels(df_keys), smq_varlabel)
-
-  df_long_list <- lapply(baskets, function(ae_grp) {
-    keep <- !(is.na(df_keys_baskets_scope[[ae_grp]]))
-    df_long <- df_keys_baskets_scope[keep, ]
-    if (substr(ae_grp, 1, 3) == "SMQ") {
-      ae_scope <- str_replace(ae_grp, "NAM", "SC")
-      df_long[["SMQ"]] <- aesi_label(
-        as.character(df_long[[ae_grp]]),
-        scope = as.character(df_long[[ae_scope]])
-      )
-    } else {
-      df_long[["SMQ"]] <- df_long[[ae_grp]]
-    }
-    df_long
+  #Matching NAM SC pairs
+  names_smq <- baskets[startsWith(baskets, "SMQ")]
+  names_smq_concat <- lapply(names_smq, FUN = function(name_smq) {
+    name_sc <- str_replace(name_smq, "NAM", "SC")
+    name_smq_concat <- c(name_smq, name_sc)
   })
-  result <- do.call(rbind, df_long_list)
-  if (nrow(result) == 0) {
-    SMQ <- "" #nolintr
-    result <- tibble(result, SMQ)
+
+  #Concatenating NAM SC columns and adding them into the DF
+  df_anl <- df[, c(keys, baskets, str_replace(names_smq, "NAM", "SC"))]
+  df_keys_cq <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
+  df_keys_cq_smq_concat <- df_keys_cq
+
+  for (names in names_smq_concat){
+    name_smq_nam_tmp <- names[1]
+    name_smq_sc_tmp <- names[2]
+    smq_nam_tmp <- df_anl[[name_smq_nam_tmp]]
+    smq_sc_tmp <- df_anl[[name_smq_sc_tmp]]
+    nam_sc_concat_tmp <- rep(NA, length(smq_nam_tmp))
+    nam_sc_concat_all_tmp <- paste0(smq_nam_tmp,"(", smq_sc_tmp, ")")
+    pos_not_na_tmp <- which(!is.na(smq_nam_tmp))
+    nam_sc_concat_tmp[pos_not_na_tmp] <- nam_sc_concat_all_tmp[pos_not_na_tmp]
+    col_name_tmp <- paste0(names[1],"_",names[2])
+    df_keys_cq_smq_concat[col_name_tmp] <- nam_sc_concat_tmp
   }
-  result <- result[, names(result) %in% c(keys, "SMQ")]
-  var_labels(result) <- result_labels
+
+  #Transforming DF from wide to long format
+  df_long <- tibble(
+    data.table::melt(data.table::setDT(df_keys_cq_smq_concat), id.vars = keys)
+    )
+
+  result <- tibble(df_long[!is.na(df_long$value), c(keys,"value")])
+  names(result) <- c(keys, "SMQ")
+  var_labels(result) <- c(var_labels(result[names(result) %in% keys]), smq_varlabel)
+
   result
 }
+
