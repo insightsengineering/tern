@@ -52,7 +52,9 @@ Imports:
   tibble,
   broom,
   testthat (>= 2.0),
-  tidyselect
+  tidyselect,
+  data.table, 
+  stringr
 Suggests:
   lattice,
   knitr,
