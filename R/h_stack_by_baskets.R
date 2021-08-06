@@ -1,5 +1,5 @@
 #' Helper Function to create a new `SMQ` variable in ADAE by stacking
-#' `SMQ` and/or `CMQ` records.
+#' `SMQ` and/or `CQ` records.
 #'
 #' Helper Function to create a new `SMQ` variable in ADAE that
 #' consists of all adverse events belonging to selected
