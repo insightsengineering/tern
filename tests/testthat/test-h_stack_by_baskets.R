@@ -9,31 +9,31 @@ test_that("h_stack_by_baskets returns the correct dataframe", {
   expected <- structure(list(
     STUDYID = structure(
       c("AB12345", "AB12345", "AB12345", "AB12345"),
-      label = c(STUDYID = "Study Identifier")),
+      label = "Study Identifier"),
     USUBJID = structure(
       c("AB12345-BRA-1-id-141", "AB12345-BRA-1-id-141", "AB12345-BRA-1-id-141", "AB12345-BRA-1-id-265"),
-      label = c(USUBJID = "Unique Subject Identifier")),
+      label = "Unique Subject Identifier"),
     ASTDTM = structure(
       c(1621814400, 1638230400, 1650499200, 1605312000),
       tzone = "",
-      label = c(ASTDTM = "Analysis Start Datetime"),
+      label = "Analysis Start Datetime",
       class = c("POSIXct", "POSIXt")),
     AESEQ = structure(
       c(2L, 3L, 5L, 4L),
-      label = c(AESEQ = "Sponsor-Defined Identifier")),
+      label = "Sponsor-Defined Identifier"),
     AETERM = structure(
       c(10L, 1L, 1L, 6L),
       .Label = c(
         "trm A.1.1.1.1", "trm A.1.1.1.2", "trm B.1.1.1.1",
         "trm B.2.1.2.1", "trm B.2.2.3.1", "trm C.1.1.1.3",
         "trm C.2.1.2.1", "trm D.1.1.1.1", "trm D.1.1.4.2", "trm D.2.1.5.3"),
-      label = c(AETERM = "Reported Term for the Adverse Event"), class = "factor"),
+      label = c("Reported Term for the Adverse Event"), class = "factor"),
     SMQ = structure(
-      c(
-        "D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.1.1.1.1 AESI",
+      c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.1.1.1.1 AESI",
         "D.2.1.5.3/A.1.1.1.1 AESI", "C.1.1.1.3/B.2.2.3.1 AESI(BROAD)"),
-      label = structure("Standardized MedDRA Query", .Names = ""))),
-    row.names = c(NA, -4L), class = c("tbl_df", "tbl", "data.frame"))
+      label = "Standardized MedDRA Query")),
+    row.names = 1:4,
+    class = c("tbl_df", "tbl", "data.frame"))
   expect_identical(result, expected)
 })
 

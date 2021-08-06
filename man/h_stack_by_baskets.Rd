@@ -7,7 +7,7 @@
 \usage{
 h_stack_by_baskets(
   df,
-  baskets = grep("^(SMQ|CQ).*NAM$", names(df), value = TRUE),
+  baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
   smq_varlabel = "Standardized MedDRA Query",
   keys = c("STUDYID", "USUBJID", "ASTDTM", "AESEQ", "AETERM")
 )
@@ -15,16 +15,12 @@ h_stack_by_baskets(
 \arguments{
 \item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
 
-\item{baskets}{(\code{character})\cr character vector specifying
-variable names of the selected Standardized/Customized
-queries.}
+\item{baskets}{(\code{character})\cr variable names of the selected Standardized/Customized queries.}
 
-\item{smq_varlabel}{(\code{string})\cr string specifying
-the label of the new variable created.}
+\item{smq_varlabel}{(\code{string})\cr a label for the new variable created.}
 
-\item{keys}{(\code{character})\cr character vector specifying
-names of the key variables to be returned along with
-the new variable created.}
+\item{keys}{(\code{character})\cr names of the key variables to be returned
+along with the new variable created.}
 }
 \description{
 Helper Function to create a new \code{SMQ} variable in ADAE that
@@ -36,12 +32,8 @@ belonging to any of the selected baskets.
 \examples{
 
 library(scda)
-library(dplyr)
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[ 1:20 , ]
 
-adae_smq <- h_stack_by_baskets(df = adae,
-smq_varlabel = "Standardized MedDRA Query"
-)
-
+adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20 , ]
+h_stack_by_baskets(df = adae)
 
 }
