@@ -2,17 +2,16 @@ library(scda)
 library(dplyr)
 library(survival)
 
-get_test_data <- function() {
-  dta <- synthetic_cdisc_data("rcd_2021_05_05")$adtte # nolintr
-  dta <- dta[dta$PARAMCD == "OS", ]
-  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
-}
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte # nolintr
 
-adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+test_fit <- local({
+  dta <- adtte[adtte$PARAMCD == "OS", ]
+  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
+})
 
 # h_data_plot ----
 test_that("h_data_plot works as expected", {
-  data <- get_test_data()
+  data <- test_fit
   result <- h_data_plot(data)
   expect_is(result, "tbl_df")
   expect_identical(
@@ -34,7 +33,7 @@ test_that("h_data_plot respects the ordering of the arm variable factor levels",
 })
 
 test_that("h_data_plot adds rows that have time 0 and estimate 1", {
-  data <- get_test_data()
+  data <- test_fit
   result <- h_data_plot(data)
   result_corner <- result %>%
     dplyr::filter(time == 0, estimate == 1)
@@ -47,14 +46,14 @@ test_that("h_data_plot adds rows that have time 0 and estimate 1", {
 
 # h_xticks ----
 test_that("h_xticks works with default settings", {
-  result <- h_data_plot(get_test_data()) %>%
+  result <- h_data_plot(test_fit) %>%
     h_xticks()
   expected <- seq(0, 5000, 1000)
   expect_identical(result, expected)
 })
 
 test_that("h_xticks works with xticks number", {
-  result <- h_data_plot(get_test_data()) %>%
+  result <- h_data_plot(test_fit) %>%
     h_xticks(xticks = 100)
   expected <- seq(0, 4700, 100)
   expect_identical(result, expected)
@@ -62,28 +61,28 @@ test_that("h_xticks works with xticks number", {
 
 test_that("h_xticks works with xticks numeric", {
   expected <- c(0, 365, 1000)
-  result <- h_data_plot(get_test_data()) %>%
+  result <- h_data_plot(test_fit) %>%
     h_xticks(xticks = expected)
   expect_identical(result, expected)
 })
 
 test_that("h_xticks works with max_time only", {
   expected <- c(0, 1000, 2000, 3000)
-  result <- h_data_plot(get_test_data(), max_time = 3000) %>%
+  result <- h_data_plot(test_fit, max_time = 3000) %>%
     h_xticks(max_time = 3000)
   expect_identical(result, expected)
 })
 
 test_that("h_xticks works with xticks numeric when max_time is not NULL", {
   expected <- c(0, 365, 1000)
-  result <- h_data_plot(get_test_data(), max_time = 1500) %>%
+  result <- h_data_plot(test_fit, max_time = 1500) %>%
     h_xticks(xticks = expected, max_time = 1500)
   expect_identical(result, expected)
 })
 
 test_that("h_xticks works with xticks number when max_time is not NULL", {
   expected <- c(0, 500, 1000, 1500)
-  result <- h_data_plot(get_test_data(), max_time = 1500) %>%
+  result <- h_data_plot(test_fit, max_time = 1500) %>%
     h_xticks(xticks = 500, max_time = 1500)
   expect_identical(result, expected)
 })
@@ -91,7 +90,7 @@ test_that("h_xticks works with xticks number when max_time is not NULL", {
 
 # h_tbl_median_surv ----
 test_that("h_tbl_median_surv estimates median survival time with CI", {
-  result <- h_tbl_median_surv(fit_km = get_test_data())
+  result <- h_tbl_median_surv(fit_km = test_fit)
   expected <- structure(
     list(
       N = c(134, 134, 132),

@@ -1,6 +1,6 @@
 library(scda)
 
-get_data <- function() {
+raw_data <- local({
   adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs #nolint
   adrs %>%
     dplyr::filter(
@@ -13,10 +13,10 @@ get_data <- function() {
       RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
       SEX = factor(SEX)
     )
-}
+})
 
 test_that("fit_rsp_step works as expected with default options", {
-  data <- get_data()
+  data <- raw_data
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",
@@ -38,7 +38,7 @@ test_that("fit_rsp_step works as expected with default options", {
 })
 
 test_that("fit_rsp_step works as expected with global model fit", {
-  data <- get_data()
+  data <- raw_data
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",
@@ -67,7 +67,7 @@ test_that("fit_rsp_step works as expected with global model fit", {
 })
 
 test_that("fit_rsp_step works as expected with strata", {
-  data <- get_data()
+  data <- raw_data
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",

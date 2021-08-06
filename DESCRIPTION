@@ -51,8 +51,7 @@ Imports:
   viridisLite,
   tibble,
   broom,
-  testthat (>= 2.0),
-  tidyselect
+  testthat (>= 2.0)
 Suggests:
   lattice,
   knitr,
