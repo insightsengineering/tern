@@ -71,24 +71,29 @@ here.
 
 \examples{
 s_length_proportion(rep("CR", 10), .N_col = 100)
-
+s_length_proportion(factor(character(0)), .N_col = 100)
 a_length_proportion(rep("CR", 10), .N_col = 100)
+a_length_proportion(factor(character(0)), .N_col = 100)
 
-
+library(dplyr)
 # Use of the layout creating function.
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
-  ARM     = rep(LETTERS[1:3], each = 4),
+  ARM     = factor(rep(LETTERS[1:3], each = 4)),
   AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
+) \%>\% mutate(
+   AVALC = factor(AVAL, levels = c(0, 1),
+                 labels = c("Complete Response (CR)", "Partial Response (PR)"))
 )
-dta_test$AVALC <- as.factor(c(
-  "Complete Response (CR)", "Partial Response (PR)"
-)[dta_test$AVAL + 1])
 
-lyt <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+
+lyt <- basic_table() \%>\%
+  split_cols_by("ARM") \%>\%
   estimate_multinomial_response(var = "AVALC")
 
-html <- as_html(build_table(lyt = lyt, df = dta_test))
+tbl <- build_table(lyt, dta_test)
+
+html <- as_html(tbl)
 html
 
 \dontrun{
