@@ -48,8 +48,8 @@ split_text_grob(
 
 \item{name}{ A character identifier. }
 
-\item{gp}{An object of class \code{gpar}, typically the output
-    from a call to the function \code{gpar}.  This is basically
+\item{gp}{An object of class \code{"gpar"}, typically the output
+    from a call to the function \code{\link[grid]{gpar}}.  This is basically
     a list of graphical parameter settings.}
 
 \item{vp}{A Grid viewport object (or NULL).}
