@@ -46,8 +46,8 @@ count_abnormal_by_baseline(
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{na_level}{(\code{string})\cr the explicit \code{na_level} argument you used in preprocessing steps using
-\code{\link[=df_explicit_na]{df_explicit_na()}}. Default to the "<Missing>".}
+\item{na_level}{(\code{string}) \cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
+\code{df_explicit_na()}). The default is \code{"Missing"}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -72,6 +72,11 @@ to avoid warnings from \code{rtables}.}
 \code{\link[=a_count_abnormal_by_baseline]{a_count_abnormal_by_baseline()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
+Patient Counts with Abnormal Range Values by Baseline Status
+}
+\details{
+Note that \code{df} should be filtered to include only post-baseline records.
+
 Primary analysis variable \code{.var} indicates the abnormal range result (character or factor), and additional
 analysis variables are \code{id} (character or factor) and \code{baseline} (character or factor). For each
 direction specified in \code{abnormal} (e.g. high or low) we condition on baseline range result and count
@@ -94,9 +99,6 @@ patients in the numerator and denominator as follows:
 }
 }
 }
-\details{
-Note that \code{df} should be filtered to include only post-baseline records.
-}
 \section{Functions}{
 \itemize{
 \item \code{d_count_abnormal_by_baseline}: Description Function that produces the labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
@@ -105,7 +107,7 @@ Note that \code{df} should be filtered to include only post-baseline records.
 a named list with 3 elements: \code{not_abnormal}, \code{abnormal} and \code{total}.
 Each element contains a vector with \code{num} and \code{denom} counts of patients.
 Please note that if the baseline variable or analysis variable contains \code{NA}, it is expected that \code{NA} has been
-conveyed to \code{na_level} appropriately beforehand with \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
+conveyed to \code{na_level} appropriately beforehand with \code{df_explicit_na()} or \code{explicit_na()}.
 
 \item \code{a_count_abnormal_by_baseline}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
