@@ -3,7 +3,7 @@
 \name{h_stack_by_baskets}
 \alias{h_stack_by_baskets}
 \title{Helper Function to create a new \code{SMQ} variable in ADAE by stacking
-\code{SMQ} and/or \code{CMQ} records.}
+\code{SMQ} and/or \code{CQ} records.}
 \usage{
 h_stack_by_baskets(
   df,
