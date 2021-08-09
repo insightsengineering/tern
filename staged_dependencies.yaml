@@ -42,3 +42,6 @@ downstream_repos:
   insightsengineering/teal.osprey:
     repo: insightsengineering/teal.osprey
     host: https://github.com
+  insightsengineering/teal.modules.hermes:
+    repo: insightsengineering/teal.modules.hermes
+    host: https://github.com
