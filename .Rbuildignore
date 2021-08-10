@@ -12,3 +12,4 @@ TODO\.md
 ^Jenkinsfile$
 ^\.lintr$
 ^staged_dependencies.yaml$
+^LICENSE\.md$
