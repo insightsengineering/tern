@@ -247,7 +247,7 @@ get_mmrm_no_arm <- function() {
     vars = list(
       response = "AVAL",
       visit = "AVISIT",
-      covariates = c("BMRKR2"),
+      covariates = c("STRATA1"),
       id = "USUBJID"
     ),
     data = anl,
@@ -377,9 +377,9 @@ test_that("tidy.mmrm works as expected when treatment is not considered in the m
       "WEEK 5 DAY 36",
       levels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
     ),
-    estimate_est = 50.84261, se_est = 1.229794,
-    df_est = 75.71160, lower_cl_est = 48.39311,
-    upper_cl_est = 53.29211, n = 41L,
+    estimate_est = 50.84261, se_est = 1.263442,
+    df_est = 69.64544, lower_cl_est = 48.32253,
+    upper_cl_est = 53.36269, n = 41L,
     conf_level = 0.95
   )
   expect_is(result_one_row, "tbl_df")
@@ -509,10 +509,10 @@ test_that("summarize_lsmeans works as expected when treatment is not considered 
       "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)", "95% CI", "WEEK 3 DAY 22",
       "n", "Adjusted Mean (SE)", "95% CI", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
       "95% CI", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)", "95% CI",
-      "all obs", "", "41", "50.486 (1.244)", "(48.011, 52.962)", "",
-      "41", "48.703 (1.180)", "(46.372, 51.035)", "", "41", "51.187 (1.193)",
-      "(48.83, 53.545)", "", "41", "50.029 (1.221)", "(47.618, 52.441)",
-      "", "41", "50.843 (1.230)", "(48.393, 53.292)"),
+      "all obs", "", "41", "50.486 (1.238)", "(48.03, 52.942)", "",
+      "41", "48.703 (1.194)", "(46.346, 51.061)", "", "41", "51.187 (1.230)",
+      "(48.752, 53.623)", "", "41", "50.029 (1.266)", "(47.527, 52.532)",
+      "", "41", "50.843 (1.263)", "(48.323, 53.363)"),
     .Dim = c(21L, 2L)
   )
   expect_identical(result_matrix, expected_matrix)
