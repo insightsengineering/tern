@@ -98,6 +98,8 @@ jobs:
             system2("apt-get", "update")
             system2("apt-get", c("install", "-y", sys_pgks[!has_pkgs]))
           }
+          system2("apt-get", "update")
+          system2("apt-get", c("install", "-y", "haveged"))
         shell: Rscript {0}
 
       - name: Install R package dependencies
