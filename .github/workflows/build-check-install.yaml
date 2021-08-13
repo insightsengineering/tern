@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-install-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     container:
       image: ${{ matrix.config.image }}:${{ matrix.config.tag }}
     name: ${{ matrix.config.image }}, version ${{ matrix.config.tag }}
@@ -98,8 +98,6 @@ jobs:
             system2("apt-get", "update")
             system2("apt-get", c("install", "-y", sys_pgks[!has_pkgs]))
           }
-          system2("apt-get", "update")
-          system2("apt-get", c("install", "-y", "haveged"))
         shell: Rscript {0}
 
       - name: Install R package dependencies
