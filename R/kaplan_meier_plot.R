@@ -255,7 +255,7 @@ g_km <- function(df,
         strata = armval
       )
     } else {
-      strata_lst <- strsplit(levels(annot_tbl$strata), paste0(arm, "="))
+      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
       levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
       data.frame(
         n.risk = annot_tbl$n.risk,
@@ -426,9 +426,9 @@ h_data_plot <- function(fit_km,
   y <- tidy(fit_km)
 
   if (!is.null(fit_km$strata)) {
-    fit_km_var_level <- strsplit(names(fit_km$strata), paste0(variables$arm, "="))
+    fit_km_var_level <- strsplit(sub("=", "equals", names(fit_km$strata)), "equals")
     strata_levels <- vapply(fit_km_var_level, FUN = "[", FUN.VALUE = "a", i = 2)
-    strata_var_level <- strsplit(y$strata, paste0(variables$arm, "="))
+    strata_var_level <- strsplit(sub("=", "equals", y$strata), "equals")
     y$strata <- factor(
       vapply(strata_var_level, FUN = "[", FUN.VALUE = "a", i = 2),
       levels = strata_levels
@@ -873,7 +873,7 @@ h_km_layout <- function(data, g_el, title) {
 #' if (is.null(fit_km$strata)) {
 #'   annot_tbl <- with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "All"))
 #' } else {
-#'   strata_lst <- strsplit(levels(annot_tbl$strata), paste0(variables$arm, "="))
+#'   strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
 #'   levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
 #'   annot_tbl <- data.frame(
 #'     n.risk = annot_tbl$n.risk,
@@ -1002,7 +1002,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
     as.data.frame(t(summary(fit_km)$table), row.names = armval)
   } else {
     tbl <- summary(fit_km)$table
-    rownames_lst <- strsplit(rownames(tbl), paste0(variables$arm, "="))
+    rownames_lst <- strsplit(sub("=", "equals", rownames(tbl)), "equals")
     rownames(tbl) <- matrix(unlist(rownames_lst), ncol = 2, byrow = TRUE)[, 2]
     as.data.frame(tbl)
   }
