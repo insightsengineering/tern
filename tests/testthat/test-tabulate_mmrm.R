@@ -289,7 +289,7 @@ test_that("h_mmrm_fixed works as expected", {
       "0.2437", "0.7187", "0.2322", "0.7260", "0.1406"),
     .Dim = c(18L, 6L)
   )
-  expect_equal(result_matrix, expected_matrix, tolerance = 0.001)
+  expect_equal(result_matrix, expected_matrix, tolerance = 1e-3)
 })
 
 test_that("h_mmrm_cov works as expected", {
