@@ -52,7 +52,9 @@ Imports:
   tibble,
   broom,
   testthat (>= 2.0),
-  tidyselect
+  tidyselect,
+  data.table, 
+  stringr
 Suggests:
   lattice,
   knitr,
@@ -62,7 +64,7 @@ Suggests:
   tidyr,
   scda (>= 0.1.0),
   scda.2021 (>= 0.1.0)
-License: file LICENSE
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -111,6 +113,7 @@ Collate:
     'ggplot2_helper.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_response_subgroups.R'
+    'h_stack_by_baskets.R'
     'h_step.R'
     'h_survival_duration_subgroups.R'
     'individual_patient_plot.R'
