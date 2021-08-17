@@ -289,7 +289,11 @@ test_that("h_mmrm_fixed works as expected", {
       "0.2437", "0.7187", "0.2322", "0.7260", "0.1406"),
     .Dim = c(18L, 6L)
   )
-  expect_identical(result_matrix, expected_matrix)
+
+  result_numbers <- as.numeric(result_matrix[grepl("^-?\\d+", result_matrix)])
+  expected_numbers <- as.numeric(expected_matrix[grepl("^-?\\d+", result_matrix)])
+
+  expect_equal(result_numbers, expected_numbers, tolerance = 1e-3)
 })
 
 test_that("h_mmrm_cov works as expected", {
