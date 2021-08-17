@@ -45,7 +45,7 @@ test_that("g_km plot with < = > in group labels works", {
     df_explicit_na() %>%
     filter(PARAMCD == "OS", ARM == "A: Drug X", BEP01FL == "Y") %>%
     mutate(is_event = CNSR == 0,
-           group = as.factor(ifelse(AGE > 34, ">Median", "<=Median")))
+      group = as.factor(ifelse(AGE > 34, ">Median", "<=Median")))
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "group")
 
