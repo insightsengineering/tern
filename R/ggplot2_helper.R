@@ -7,20 +7,21 @@
 #' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
 #'     the confidence interval for mean.
 #'
-#' @importFrom stats na.omit qt sd
 #' @export
 #'
 #' @examples
 #' require(ggplot2)
-#' d <- ggplot(mtcars, aes(cyl, mpg)) + geom_point()
-#' d + stat_summary(
-#'   fun.data = stat_mean_ci, geom = "errorbar",
-#'   aes(group = 1, linetype = "mean")
+#'
+#' p <- ggplot(mtcars, aes(cyl, mpg)) + geom_point()
+#' p + stat_summary(
+#'   fun.data = stat_mean_ci,
+#'   geom = "errorbar"
 #' )
 #'
-#' d + stat_summary(
-#'   fun.data = function(x) stat_mean_ci(x, conf_level = 0.5),
-#'   geom = "errorbar", aes(group = 1, linetype = "mean")
+#' p + stat_summary(
+#'   fun.data = stat_mean_ci,
+#'   fun.args = list(conf_level = 0.5),
+#'   geom = "errorbar"
 #' )
 #'
 stat_mean_ci <- function(x,
@@ -33,7 +34,7 @@ stat_mean_ci <- function(x,
   n <- length(x)
   m <- mean(x)
 
-  # is.na(m) instead of any(is.na(x)) is used below, as these are equivalent here
+  # is.na(m) instead of any(is.na(x)) is used below, as these two are equivalent here
   if (n < n_min || is.na(m)) {
     data.frame(y = m, ymin = NA_real_, ymax = NA_real_)
   } else {
@@ -43,6 +44,42 @@ stat_mean_ci <- function(x,
 
 }
 
+#' Mean SD for `ggplot2`
+#'
+#' Convenient function for the addition of mean +/- standard deviation interval as
+#' error bars.
+#'
+#' @inheritParams argument_convention
+#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
+#'     the confidence interval for mean.
+#'
+#' @export
+#'
+#' @examples
+#' require(ggplot2)
+#'
+#' p <- ggplot(mtcars, aes(cyl, mpg)) + geom_point()
+#' p <- p + stat_summary(
+#'   fun.data = stat_mean_sd,
+#'   geom = "errorbar"
+#' )
+#'
+stat_mean_sd <- function(x,
+                         na.rm = TRUE,  # nolint
+                         n_min = 2) {
+
+  if (na.rm)
+    x <- na.omit(x)
+  m <- mean(x)
+
+  # is.na(m) instead of any(is.na(x)) is used below, as these two are equivalent here
+  if (length(x) < n_min || is.na(m)) {
+    data.frame(y = m, ymin = NA_real_, ymax = NA_real_)
+  } else {
+    data.frame(y = m, ymin = m - sd(x), ymax = m + sd(x))
+  }
+
+}
 
 #' Median CI for `ggplot2`
 #'
@@ -53,15 +90,14 @@ stat_mean_ci <- function(x,
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
-#' @importFrom stats median na.omit pbinom qbinom qt
 #' @export
 #'
 #' @examples
 #' require(ggplot2)
-#' d <- ggplot(mtcars, aes(cyl, mpg)) + geom_point()
-#' d + stat_summary(
-#'   fun.data = stat_median_ci, geom = "errorbar",
-#'   aes(group = 1, linetype = "median")
+#'
+#' p <- ggplot(mtcars, aes(cyl, mpg)) + geom_point()
+#' p + stat_summary(
+#'   fun.data = stat_median_ci, geom = "errorbar"
 #' )
 stat_median_ci <- function(x,
                            conf_level = 0.95,
@@ -75,7 +111,7 @@ stat_median_ci <- function(x,
   k <- qbinom(p = (1 - conf_level) / 2, size = n, prob = 0.5, lower.tail = TRUE)
 
   # k == 0 - for small samples (e.g. n <= 5) ci can be outside the observed range
-  # is.na(med) instead of any(is.na(x)) is used below, as these are equivalent here
+  # is.na(med) instead of any(is.na(x)) is used below, as these two are equivalent here
   if (k == 0 || is.na(med)) {
     ci <- data.frame(y = med, ymin = NA_real_, ymax = NA_real_)
     attr(ci, "conf_level") <- NA_real_

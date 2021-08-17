@@ -1,5 +1,7 @@
 title: "Design for MNG01"
-author: "Yuliia Bahatska"
+author:
+  - Yuliia Bahatska
+  - Wojciech Wojciak
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -27,21 +29,26 @@ knitr::opts_chunk$set(
 ## Configuration
 ```{r setup}
 library(dplyr)
-library(tern)
 library(ggplot2)
+library(tern)
 
 ```
-##Data for examples
+
+## Data for examples
 ```{r data, results = "asis", eval = TRUE}
-library(scda)
-ADLB <- synthetic_cdisc_data("latest")$adlb
-ADLB <- df_explicit_na(ADLB)
-ADLB <- filter(ADLB, ANL01FL == "Y" & PARAMCD == "ALT" & AVISIT != "SCREENING")
+
+ADLB <- scda::synthetic_cdisc_data("latest")$adlb
+
+ADLB <- ADLB %>%
+  filter(ANL01FL == "Y",
+         PARAMCD == "ALT",
+         AVISIT != "SCREENING") %>%
+  df_explicit_na()
 
 ```
 
-##New function to summarize statistics to display summary stats
- ```{r} 
+## New function to summarize statistics to display summary stats
+```{r} 
 h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
   sum_data <- df %>%
     group_by_at(c(time_var, trt_var)) %>%
@@ -78,8 +85,113 @@ h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
 
 ```
 
-##New function to display graphs 
- ```{r} 
+## New function to display graphs 
+```{r} 
+# g_linebar(ADLB)
+
+g_linebar <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM",
+                      stat_line_fun = mean, stat_bar_fun = tern::stat_mean_ci, 
+                      stat_bar_fun_args = NULL, table = FALSE,
+                      x_lab = "Visit", y_lab = "ALT", y_lab_units_var = "AVALU",
+                      title = "Plot of Mean and Confidence Limits by Visit",
+                      caption = "Mean and 95% CIs for mean are displayed.") {
+  
+  y_lab_units <- unique(df[[y_lab_units_var]])
+  stopifnot(length(y_lab_units) == 1)
+  y_lab <- paste0(y_lab, " (", y_lab_units, ")")
+  
+  p <- ggplot(
+    data = df,
+    mapping = aes_string(x = x, y = y, color = strata, shape = strata, lty = strata, pty = strata, group = strata)) + # nolint
+    stat_summary(
+      fun.data = stat_bar_fun,
+      fun.args = stat_bar_fun_args,
+      geom = "errorbar",
+      width = 0.45,
+      position = position_dodge(width = 0.4)
+    ) +
+    stat_summary(
+      fun = stat_line_fun,
+      geom = "point",
+      position = position_dodge(width = 0.4),
+      size = 3
+    ) +
+    stat_summary(
+      fun = stat_line_fun,
+      geom = "line",
+      position = position_dodge(width = 0.4)
+    ) +
+    scale_y_continuous(labels = scales::comma) +
+    theme(
+      legend.key.size = unit(1, "cm"),
+      legend.position = "bottom",
+      legend.direction = "horizontal"
+    ) +
+    theme_bw() +
+    labs(
+      title = title,
+      caption = caption,
+      x = x_lab,
+      y = y_lab,
+    )
+
+  # Optionally, add table to the bottom of the plot
+  if (table) {
+    tbl_theme <- theme(
+      panel.border = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.ticks = element_blank(),
+      axis.title = element_blank(),
+      axis.text.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
+      axis.text.x = element_blank()
+    )
+
+    df_trans <- tidyr::pivot_longer(
+      data = select(df, x, y, strata),
+      cols = -c(strata, x),
+      names_to = "stat",
+      values_to = "value"
+    )
+
+    df_trans <- filter(df_trans, stat %in% stats) %>% 
+      mutate(
+        stat = case_when(
+          stat == "CI" ~ "95% CI for Mean",
+          stat == "Mean_SD" ~ "Mean +/- SD",
+          TRUE ~ stat),
+        value = ifelse(is.na(value), "NE", as.character(value)),
+        stat_lbl = as.factor(paste0(ARM, ": ", stat))
+      )
+
+    tbl <- ggplot(df_trans, aes(x = x, y = stat_lbl, label = value)) +
+      geom_text(size = 3) +
+      scale_y_discrete(labels = levels(df_trans$stat_lbl)) +
+      theme_bw() +
+      tbl_theme
+
+    p <- ggpubr::ggarrange(p, tbl, heights = c(4, 1), ncol = 1, nrow = 2, align = "hv")
+
+  }
+  
+  return(p)
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  g_lineplot <- function(df, time_var, trt_var, line, down_limit, up_limit, table, stats, label = "Visit",
  gtitle = "Plot of Mean and Confidence Limits by Visit") {
   pd <- position_dodge(0.4)
@@ -87,7 +199,9 @@ h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
   df_filtered <- filter(df, !is.na(!!sym(noquote(line))))
   plot1 <- ggplot(data = df_filtered, aes_string(
     x = time_var,
-    y = line, color = trt_var, linetype = trt_var,
+    y = line, 
+    color = trt_var, 
+    linetype = trt_var,
     group = trt_var
   )) + ggtitle(gtitle) +
     theme_bw() +
@@ -147,7 +261,8 @@ h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
   }
 }
 ```
-##Exapmples
+
+## Exapmples
 ```{r} 
 sum_data <- h_summary_stats(ADLB, "AVAL", "AVISIT", "ARM", 0.05)
 #Simple plot mean, CI

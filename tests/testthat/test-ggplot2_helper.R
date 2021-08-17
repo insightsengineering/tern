@@ -1,6 +1,5 @@
 library(dplyr)
 
-
 test_that("stat_mean_ci works for series without NAs (including extreme case n = 1 and various n_min values)", {
 
   # n = 1, na.rm = TRUE, n_min = 2
@@ -79,6 +78,84 @@ test_that("stat_mean_ci works for series with NAs (including extreme case n = 1 
 
 })
 
+test_that("stat_mean_sd works for series without NAs (including extreme case n = 1 and various n_min values)", {
+
+  # n = 1, na.rm = TRUE, n_min = 2
+  result <- stat_mean_sd(x = 1)
+  expected <- data.frame(y = 1, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 1, na.rm = FALSE, n_min = 2
+  result <- stat_mean_sd(x = 1, na.rm = FALSE)
+  expected <- data.frame(y = 1, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = TRUE, n_min = 2
+  result <- round(stat_mean_sd(x = 1:2), digits = 2)
+  expected <- data.frame(y = 1.5, ymin = 0.79, ymax = 2.21)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = TRUE, n_min = 3
+  result <- stat_mean_sd(x = 1:2, n_min = 3)
+  expected <- data.frame(y = 1.5, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = FALSE, n_min = 2
+  result <- round(stat_mean_sd(x = 1:2, na.rm = FALSE), digits = 2)
+  expected <- data.frame(y = 1.5, ymin = 0.79, ymax = 2.21)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = FALSE, n_min = 3
+  result <- stat_mean_sd(x = 1:2, n_min = 3, na.rm = FALSE)
+  expected <- data.frame(y = 1.5, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+})
+
+test_that("stat_mean_sd works for series with NAs (including extreme case n = 1 and various n_min values)", {
+
+  # n = 0, na.rm = TRUE, n_min = 2
+  result <- stat_mean_sd(x = rep(NA, 10))
+  expected <- data.frame(y = NaN, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 0, na.rm = FALSE, n_min = 2
+  result <- stat_mean_sd(x = rep(NA, 10), na.rm = FALSE)
+  expected <- data.frame(y = NA_real_, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 1, na.rm = TRUE, n_min = 2
+  result <- stat_mean_sd(x = c(1, NA, NA, NA))
+  expected <- data.frame(y = 1, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 1, na.rm = FALSE, n_min = 2
+  result <- stat_mean_sd(x = c(1, NA, NA, NA), na.rm = FALSE)
+  expected <- data.frame(y = NA_real_, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = TRUE, n_min = 2
+  result <- round(stat_mean_sd(x = c(1:2, NA, NA, NA)), digits = 2)
+  expected <- data.frame(y = 1.5, ymin = 0.79, ymax = 2.21)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = TRUE, n_min = 3
+  result <- stat_mean_sd(x = c(1:2, NA, NA, NA), n_min = 3)
+  expected <- data.frame(y = 1.5, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = FALSE, n_min = 2
+  result <- stat_mean_sd(x = c(1:2, NA, NA, NA), na.rm = FALSE)
+  expected <- data.frame(y = NA_real_, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+  # n = 2, na.rm = FALSE, n_min = 3
+  result <- round(stat_mean_sd(x = c(1:2, NA, NA, NA), na.rm = FALSE, n_min = 3), digits = 2)
+  expected <- data.frame(y = NA_real_, ymin = NA_real_, ymax = NA_real_)
+  expect_identical(result, expected)
+
+})
+
 test_that("stat_median_ci works for series without NAs (including extreme case n = 1)", {
 
   # n = 1, na.rm = TRUE
@@ -149,7 +226,6 @@ test_that("stat_median_ci works for series with NAs (including extreme case n = 
   expect_identical(result, expected)
 
 })
-
 
 test_that("stat_median_ci works for named numeric values when name is missing)", {
 
