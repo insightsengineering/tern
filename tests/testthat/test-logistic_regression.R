@@ -411,7 +411,7 @@ test_that("h_glm_interaction_extract works for continuous interaction", {
 
 test_that("h_logistic_simple_terms works", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   adrs <- get_adrs()
   mod1 <- fit_logistic(
@@ -683,7 +683,7 @@ test_that("h_logistic_inter_terms works as expected", {
 
 test_that("tidy.glm works as expected for simple case", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   adrs <- get_adrs()
   mod1 <- fit_logistic(

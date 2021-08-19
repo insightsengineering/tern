@@ -302,7 +302,7 @@ test_that("h_mmrm_cov works as expected", {
     skip("tests dont run with older version of lme4")
   }
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   mmrm <- get_mmrm()
   result <- h_mmrm_cov(mmrm, format = "xx.xxxx")
@@ -324,7 +324,7 @@ test_that("h_mmrm_cov works as expected", {
 
 test_that("h_mmrm_diagnostic works as expected", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   mmrm <- get_mmrm()
   result <- h_mmrm_diagnostic(mmrm, format = "xx.x")
@@ -341,7 +341,7 @@ test_that("h_mmrm_diagnostic works as expected", {
 
 test_that("tidy.mmrm works as expected", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   mmrm <- get_mmrm()
   result <- broom::tidy(mmrm)
@@ -371,7 +371,7 @@ test_that("tidy.mmrm works as expected", {
 
 test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   mmrm <- get_mmrm_no_arm()
   result <- broom::tidy(mmrm)
@@ -408,7 +408,7 @@ test_that("s_mmrm_lsmeans works as expected when not in reference column", {
 
 test_that("s_mmrm_lsmeans works as expected when in reference column", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
@@ -427,7 +427,7 @@ test_that("s_mmrm_lsmeans works as expected when in reference column", {
 
 test_that("s_mmrm_lsmeans_single works as expected", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   mmrm <- get_mmrm_no_arm()
   df <- broom::tidy(mmrm)
@@ -442,7 +442,7 @@ test_that("s_mmrm_lsmeans_single works as expected", {
 
 test_that("summarize_lsmeans works as expected", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     skip("tests dont run with older version of lme4")
@@ -495,7 +495,7 @@ test_that("summarize_lsmeans works as expected", {
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
 
-  skip_if_too_deep(2)
+  test.nest::skip_if_too_deep(2)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     skip("tests dont run with older version of lme4")
