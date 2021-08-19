@@ -11,6 +11,8 @@ get_data <- function() {
 }
 
 test_that("s_count_patients_and_multiple_events works as expected", {
+  test.nest::skip_if_too_deep(0)
+
   df <- get_data()
   result <- s_count_patients_and_multiple_events(
     df = df,
@@ -30,6 +32,8 @@ test_that("s_count_patients_and_multiple_events works as expected", {
 })
 
 test_that("s_count_patients_and_multiple_events can have empty stats if requested", {
+  test.nest::skip_if_too_deep(0)
+
   df <- get_data()
   result <- s_count_patients_and_multiple_events(
     df = df,
@@ -50,6 +54,7 @@ test_that("s_count_patients_and_multiple_events can have empty stats if requeste
 })
 
 test_that("summarize_patients_events_in_cols works well with default arguments", {
+  test.nest::skip_if_too_deep(0)
 
   df <- get_data()
   result <- basic_table() %>%
@@ -73,6 +78,7 @@ test_that("summarize_patients_events_in_cols works well with default arguments",
 })
 
 test_that("summarize_patients_events_in_cols works well with custom arguments", {
+  test.nest::skip_if_too_deep(0)
 
   df <- get_data()
   result <- basic_table() %>%

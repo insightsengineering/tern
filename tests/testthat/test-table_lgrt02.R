@@ -32,6 +32,8 @@ get_adrs <- function() {
 }
 
 test_that("LGRT02 without interaction term is produced correctly", {
+  test.nest::skip_if_too_deep(0)
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -69,6 +71,8 @@ test_that("LGRT02 without interaction term is produced correctly", {
 })
 
 test_that("LGRT02 with categorical interaction is produced correctly", {
+  test.nest::skip_if_too_deep(0)
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -112,6 +116,8 @@ test_that("LGRT02 with categorical interaction is produced correctly", {
 })
 
 test_that("LGRT02 with continuous interaction is produced correctly", {
+  test.nest::skip_if_too_deep(0)
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,
@@ -156,6 +162,8 @@ test_that("LGRT02 with continuous interaction is produced correctly", {
 })
 
 test_that("LGRT02 with setting values indicating an event and custom alpha level is produced correctly", {
+  test.nest::skip_if_too_deep(0)
+
   adrs <- get_adrs()
   model <- fit_logistic(
     adrs,

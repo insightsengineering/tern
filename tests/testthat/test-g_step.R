@@ -1,4 +1,6 @@
 test_that("tidy.step works as expected for survival STEP results", {
+  test.nest::skip_if_too_deep(0)
+
   dat <- survival::lung
   dat$sex <- factor(dat$sex)
   vars <- list(
@@ -26,6 +28,8 @@ test_that("tidy.step works as expected for survival STEP results", {
 })
 
 test_that("tidy.step works as expected for response STEP results", {
+  test.nest::skip_if_too_deep(0)
+
   dat <- survival::lung
   dat$sex <- factor(dat$sex)
   vars <- list(
@@ -55,6 +59,8 @@ test_that("tidy.step works as expected for response STEP results", {
 })
 
 test_that("tidy.step gives expected warnings when there are NAs in y variables", {
+  test.nest::skip_if_too_deep(0)
+
   step_matrix <- structure(
     cbind(loghr = c(1, 2), ci_lower = c(NA, 1), ci_upper = c(3, 6)),
     class = c("step", "matrix"),
@@ -72,6 +78,8 @@ test_that("tidy.step gives expected warnings when there are NAs in y variables",
 })
 
 test_that("tidy.step gives expected warnings when there are very large values in y variables", {
+  test.nest::skip_if_too_deep(0)
+
   step_matrix <- structure(
     cbind(loghr = c(1, 2), ci_lower = c(1e100, 1), ci_upper = c(3, 6)),
     class = c("step", "matrix"),

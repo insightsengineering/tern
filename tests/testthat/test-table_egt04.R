@@ -7,6 +7,8 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adeg <- synthetic_cdisc_data("rcd_2021_05_05")$adeg
 
 test_that("EGT04 default variant is produced correctly", {
+  test.nest::skip_if_too_deep(0)
+
   adeg_labels <- var_labels(adeg)
   adeg_f <- subset(
     adeg,
