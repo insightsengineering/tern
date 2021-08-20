@@ -1,9 +1,12 @@
 # tern 0.7.4.9000
+* Added new safety helper function h_stack_by_baskets to stack SMQ and/or CQ records from ADAE data set.
 * Added `remove_single` argument to `h_append_grade_groups`, which allows to control whether the elements of one-element grade groups will be kept in the output or removed.
 * Re-implemented the `h_append_grade_groups` function to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of `grade_groups`. 
 * Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) rsp records.
 * Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing. 
 * Fixed `g_km` such that lines in the plot now start correctly at time 0 and probability 1.
+* Fixed a bug in `g_km` such that the equals sign can now be used in category labels.
+* Updated license and `README.md` with appropriate information for migration to public Github.
 
 # tern 0.7.4
 

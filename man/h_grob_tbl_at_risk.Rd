@@ -49,7 +49,7 @@ annot_tbl <- summary(fit_km, time = xticks)
 if (is.null(fit_km$strata)) {
   annot_tbl <- with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "All"))
 } else {
-  strata_lst <- strsplit(levels(annot_tbl$strata), "=")
+  strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
   levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
   annot_tbl <- data.frame(
     n.risk = annot_tbl$n.risk,
