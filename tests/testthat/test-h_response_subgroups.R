@@ -20,6 +20,9 @@ preprocess_adrs <- function(adrs, n_records = 20) {
 
 adrs <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 
+adrs_20 <- preprocess_adrs(adrs, 20)
+adrs_100 <- preprocess_adrs(adrs, 100)
+
 test_that("h_proportion_df functions as expected with valid input and default arguments", {
 
   rsp <- c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE)
@@ -86,8 +89,7 @@ test_that("h_proportion_df functions when 0 obs in one arm", {
 
 test_that("h_proportion_subgroups_df functions as expected with valid input and default arguments", {
 
-  adrs <- adrs %>%
-    preprocess_adrs()
+  adrs <- adrs_20
 
   result <- h_proportion_subgroups_df(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
@@ -112,8 +114,7 @@ test_that("h_proportion_subgroups_df functions as expected with valid input and 
 
 test_that("h_proportion_subgroups_df functions as expected when subgroups is NULL.", {
 
-  adrs <- adrs %>%
-    preprocess_adrs()
+  adrs <- adrs_20
 
   result <- h_proportion_subgroups_df(
     variables = list(rsp = "rsp", arm = "ARM"),
@@ -138,8 +139,7 @@ test_that("h_proportion_subgroups_df functions as expected when subgroups is NUL
 
 test_that("h_proportion_subgroups_df works as expected with groups_lists", {
 
-  adrs <- adrs %>%
-    preprocess_adrs()
+  adrs <- adrs_20
 
   result <- h_proportion_subgroups_df(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -182,8 +182,7 @@ test_that("h_odds_ratio_df functions as expected with valid input and default ar
 
 test_that("h_odds_ratio_df functions as expected with valid input and non-default arguments", {
 
-  adrs <- adrs %>%
-    preprocess_adrs(n_records = 100)
+  adrs <- adrs_100
 
   result <- h_odds_ratio_df(
     rsp = adrs$rsp,
@@ -210,8 +209,7 @@ test_that("h_odds_ratio_df functions as expected with valid input and non-defaul
 
 test_that("h_odds_ratio_df functions as expected with strata", {
 
-  adrs <- adrs %>%
-    preprocess_adrs(n_records = 100)
+  adrs <- adrs_100
 
   result <- h_odds_ratio_df(
     rsp = adrs$rsp,
@@ -266,8 +264,7 @@ test_that("h_odds_ratio_df functions when 0 obs in one arm", {
 
 test_that("h_odds_ratio_subgroups_df functions as expected with valid input and default arguments", {
 
-  adrs <- adrs %>%
-    preprocess_adrs(n_records = 100)
+  adrs <- adrs_100
 
   result <- h_odds_ratio_subgroups_df(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
@@ -294,8 +291,7 @@ test_that("h_odds_ratio_subgroups_df functions as expected with valid input and 
 
 test_that("h_odds_ratio_subgroups_df functions as expected when subgroups is NULL.", {
 
-  adrs <- adrs %>%
-    preprocess_adrs(n_records = 100)
+  adrs <- adrs_100
 
   result <- h_odds_ratio_subgroups_df(
     variables = list(rsp = "rsp", arm = "ARM"),
@@ -322,8 +318,7 @@ test_that("h_odds_ratio_subgroups_df functions as expected when subgroups is NUL
 
 test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
 
-  adrs <- adrs %>%
-    preprocess_adrs(n_records = 100)
+  adrs <- adrs_100
 
   result <- h_odds_ratio_subgroups_df(
     variables = list(
@@ -358,8 +353,7 @@ test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
 
 test_that("h_odds_ratio_subgroups_df works as expected with groups_lists", {
 
-  adrs <- adrs %>%
-    preprocess_adrs()
+  adrs <- adrs_20
 
   result <- h_odds_ratio_subgroups_df(
     variables = list(

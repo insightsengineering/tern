@@ -2,7 +2,7 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-get_adlb <- function() {
+adlb_raw <- local({
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb #nolintr
   adlb_f <- adlb %>%
     dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
@@ -12,10 +12,10 @@ get_adlb <- function() {
       WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
     )
   adlb_f
-}
+})
 
 test_that("s_count_abnormal_by_worst_grade works as expected", {
-  adlb <- get_adlb()
+  adlb <- adlb_raw
 
   result <- s_count_abnormal_by_worst_grade(
     df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
@@ -34,7 +34,7 @@ test_that("s_count_abnormal_by_worst_grade works as expected", {
 })
 
 test_that("s_count_abnormal_by_worst_grade works as expected", {
-  adlb <- get_adlb()
+  adlb <- adlb_raw
   result <- s_count_abnormal_by_worst_grade(
     df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
     .var = "ATOXGR",
@@ -52,7 +52,7 @@ test_that("s_count_abnormal_by_worst_grade works as expected", {
 })
 
 test_that("count_abnormal_by_worst_grade works as expected", {
-  adlb <- get_adlb()
+  adlb <- adlb_raw
   adlb_f <- adlb %>%
     dplyr::filter(PARAMCD == "IGA") %>%
     droplevels()
