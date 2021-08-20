@@ -2,8 +2,7 @@ library(scda)
 library(rtables)
 library(dplyr)
 
-get_adlb <- function() {
-
+adlb_raw <- local({
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
@@ -30,10 +29,11 @@ get_adlb <- function() {
         levels = c("", "HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL")
       ))
   adlb_f
-}
+})
+
 
 test_that("s_count_abnormal_by_marked works as expected", {
-  adlb <- get_adlb()
+  adlb <- adlb_raw
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1, kind = "Mersenne-Twister")
@@ -75,7 +75,7 @@ test_that("s_count_abnormal_by_marked works as expected", {
 
 
 test_that("s_count_abnormal_by_marked works as expected", {
-  adlb <- get_adlb()
+  adlb <- adlb_raw
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
@@ -119,7 +119,7 @@ test_that("s_count_abnormal_by_marked works as expected", {
 
 
 test_that("count_abnormal_by_marked works as expected", {
-  adlb <- get_adlb()
+  adlb <- adlb_raw
 
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 

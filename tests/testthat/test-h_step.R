@@ -1,18 +1,17 @@
 library(scda)
 
-get_simple <- function() {
-  data.frame(
-    time = c(5, 5, 10, 10, 5, 5, 5, 10, 10, 5),
-    status = c(0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
-    armcd  = factor(LETTERS[c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)], levels = c("A", "B")),
-    age = c(15, 68, 65, 17, 52, 12, 33, 45, 20, 17),
-    stage = factor(
-      c("1", "2", "1", "1", "1", "1", "2", "1", "2", "1"),
-      levels = c("1", "2")
-    ),
-    rsp = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
-  )
-}
+raw_data <- data.frame(
+  time = c(5, 5, 10, 10, 5, 5, 5, 10, 10, 5),
+  status = c(0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
+  armcd  = factor(LETTERS[c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)], levels = c("A", "B")),
+  age = c(15, 68, 65, 17, 52, 12, 33, 45, 20, 17),
+  stage = factor(
+    c("1", "2", "1", "1", "1", "1", "2", "1", "2", "1"),
+    levels = c("1", "2")
+  ),
+  rsp = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
+)
+
 
 get_adrs <- function() {
   synthetic_cdisc_data("rcd_2021_05_05")$adrs %>%
@@ -73,7 +72,7 @@ test_that("h_step_window also works for bandwidth `NULL`", {
 # h_step_trt_effect ----
 
 test_that("h_step_trt_effect works for Cox models without interaction", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   # Use a model without biomarker interaction, then we can compare with summary results.
   mod <- survival::coxph(survival::Surv(time, status) ~ armcd + age, data = dta_simple)
   vars <- list(
@@ -91,7 +90,7 @@ test_that("h_step_trt_effect works for Cox models without interaction", {
 })
 
 test_that("h_step_trt_effect works for Cox models with interaction", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   mod <- survival::coxph(survival::Surv(time, status) ~ armcd * age + stage, data = dta_simple)
   vars <- list(
     arm = "armcd",
@@ -120,7 +119,7 @@ test_that("h_step_trt_effect works for Cox models with interaction", {
 })
 
 test_that("h_step_trt_effect works for Cox models with strata", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   mod <- survival::coxph(
     survival::Surv(time, status) ~ armcd * age + strata(stage),
     data = dta_simple
@@ -141,7 +140,7 @@ test_that("h_step_trt_effect works for Cox models with strata", {
 })
 
 test_that("h_step_trt_effect works for logistic regression models without interaction", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   # Use a model without biomarker interaction, then we can compare with summary results.
   mod <- glm(status ~ armcd + age, data = dta_simple, family = binomial())
   vars <- list(
@@ -266,7 +265,7 @@ test_that("h_step_survival_formula works correctly with strata", {
 # h_step_survival_est ----
 
 test_that("h_step_survival_est works as expected", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
     biomarker = "age",
@@ -292,7 +291,7 @@ test_that("h_step_survival_est works as expected", {
 })
 
 test_that("h_step_survival_est gives a readable warning when fitting warnings occur", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
     biomarker = "age",
@@ -378,7 +377,7 @@ test_that("h_step_rsp_formula works correctly with strata", {
 # h_step_rsp_est ----
 
 test_that("h_step_rsp_est works as expected without strata", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
     biomarker = "age",
@@ -406,7 +405,7 @@ test_that("h_step_rsp_est works as expected without strata", {
 })
 
 test_that("h_step_rsp_est works as expected with strata", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
     biomarker = "age",
@@ -435,7 +434,7 @@ test_that("h_step_rsp_est works as expected with strata", {
 })
 
 test_that("h_step_rsp_est gives a readable warning when fitting warnings occur", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   vars <- list(
     arm = "armcd",
     biomarker = "age",

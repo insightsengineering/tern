@@ -1,14 +1,13 @@
-get_table <- function() {
-  basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("RACE") %>%
-    split_rows_by("STRATA1") %>%
-    summarize_vars("COUNTRY", .stats = "count_fraction") %>%
-    build_table(DM)
-}
+tbl_example <- basic_table() %>%
+  split_cols_by("ARM") %>%
+  split_rows_by("RACE") %>%
+  split_rows_by("STRATA1") %>%
+  summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+  build_table(DM)
+
 
 test_that("h_row_counts works as expected", {
-  tab <- get_table()
+  tab <- tbl_example
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -24,7 +23,7 @@ test_that("h_row_counts works as expected", {
 })
 
 test_that("h_row_fractions works as expected", {
-  tab <- get_table()
+  tab <- tbl_example
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -40,7 +39,7 @@ test_that("h_row_fractions works as expected", {
 })
 
 test_that("h_col_counts works as expected", {
-  tab <- get_table()
+  tab <- tbl_example
   result <- h_col_counts(tab, c("B: Placebo", "C: Combination"))
   expected <- c("B: Placebo" = 106L, "C: Combination" = 129L)
   expect_identical(result, expected)

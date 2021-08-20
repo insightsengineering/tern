@@ -1,16 +1,14 @@
 # [`get_simple`]: simple fabricated dataset for test scennarios.
-get_simple <- function() {
-  data.frame(
-    time = c(5, 5, 10, 10, 5, 5, 10, 10),
-    status = c(0, 0, 1, 0, 0, 1, 1, 1),
-    armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
-    age = c(15, 68, 65, 17, 12, 33, 45, 20),
-    stage = factor(
-      c("1", "2", "1", "1", "1", "2", "1", "2"),
-      levels = c("1", "2")
-    )
+raw_data <- data.frame(
+  time = c(5, 5, 10, 10, 5, 5, 10, 10),
+  status = c(0, 0, 1, 0, 0, 1, 1, 1),
+  armcd  = factor(LETTERS[c(1, 1, 1, 1, 2, 2, 2, 2)], levels = c("A", "B")),
+  age = c(15, 68, 65, 17, 12, 33, 45, 20),
+  stage = factor(
+    c("1", "2", "1", "1", "1", "2", "1", "2"),
+    levels = c("1", "2")
   )
-}
+)
 
 # [`get_bladder`]: survival dataset derived for test scenarios.
 get_bladder <- function() {
@@ -151,7 +149,7 @@ test_that("h_coxreg_univar_formulas creates formulas with multiple strata", {
 test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate names overlap", {
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   mod <- coxph(Surv(time, status) ~ age + stage, data = dta_simple)
   result <- h_coxreg_multivar_extract(var = "age", mod = mod, data = dta_simple)
   expected <- structure(
@@ -174,7 +172,7 @@ test_that("h_coxreg_multivar_extract extracts correct coxph results when covaria
 test_that("h_coxreg_multivar_extract extracts correct coxph results when covariate is a factor", {
   library(survival)
   set.seed(1, kind = "Mersenne-Twister")
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   mod <- coxph(Surv(time, status) ~ age + stage, data = dta_simple)
   result <- h_coxreg_multivar_extract(var = "stage", mod = mod, data = dta_simple)
   expected <- structure(
@@ -446,7 +444,7 @@ test_that("fit_coxreg_univar's result are identical to soon deprecated s_cox_uni
 # tidy.summary.coxph ----
 
 test_that("tidy.summary.coxph method tidies up the Cox regression model", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   mod <- summary(survival::coxph(Surv(time, status) ~ armcd, data = dta_simple))
   result <- broom::tidy(mod)
   expected <- dplyr::tibble(
@@ -465,7 +463,7 @@ test_that("tidy.summary.coxph method tidies up the Cox regression model", {
 # h_coxreg_univar_extract ----
 
 test_that("h_coxreg_univar_extract extracts coxph results", {
-  dta_simple <- get_simple()
+  dta_simple <- raw_data
   mod <- coxph(Surv(time, status) ~ armcd, data = dta_simple)
   result <- h_coxreg_univar_extract(effect = "armcd", covar = "armcd", mod = mod, data = dta_simple)
   expected <- data.frame(
