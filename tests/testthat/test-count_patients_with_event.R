@@ -232,6 +232,63 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
   expect_identical(result_matrix, expected_matrix)
 })
 
+test_that("count_patients_with_flags works with title row specified", {
+  adsl <- scda::synthetic_cdisc_data("latest")$adsl
+  adae <- scda::synthetic_cdisc_data("latest")$adae
+
+  # Create custom flags:
+  adae <- adae %>%
+    mutate(
+      SER = AESER == "Y",
+      REL = AEREL == "Y",
+      CTC35 = AETOXGR %in% c("3", "4", "5"),
+      CTC45 = AETOXGR %in% c("4", "5")
+    ) %>%
+    var_relabel(
+      SER = "Serious AE",
+      REL = "Related AE",
+      CTC35 = "Grade 3-5 AE",
+      CTC45 = "Grade 4/5 AE"
+    )
+
+  aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
+
+  # Create layout
+  lyt <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_patients_with_event(
+      vars = "USUBJID",
+      filters = c("STUDYID" = as.character(unique(adae$STUDYID))),
+      denom = "N_col",
+      .labels = c(count_fraction = "Total number of patients with at least one adverse event")
+    ) %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = var_labels(adae[, aesi_vars]),
+      .indent_mods = 1L,
+      title_row = "Total number of patients with at least one"
+    )
+
+  result <- build_table(lyt, df = adae, alt_counts_df = adsl)
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- t(structure(
+    c(
+      "", "A: Drug X", "B: Placebo", "C: Combination",
+      "", "(N=134)", "(N=134)", "(N=132)",
+      "Total number of patients with at least one adverse event", "122 (91%)", "123 (91.8%)", "120 (90.9%)",
+      "Total number of patients with at least one", "", "", "",
+      "Serious AE", "104 (77.6%)", "101 (75.4%)", "99 (75%)",
+      "Related AE", "105 (78.4%)", "108 (80.6%)", "109 (82.6%)",
+      "Grade 3-5 AE", "109 (81.3%)", "104 (77.6%)", "109 (82.6%)",
+      "Grade 4/5 AE", "91 (67.9%)", "90 (67.2%)", "93 (70.5%)"
+      ),
+    .Dim = c(4L, 8L)
+  ))
+  expect_identical(result_matrix, expected_matrix)
+})
+
 test_that("s_count_patients_with_event works with factor filters", {
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),

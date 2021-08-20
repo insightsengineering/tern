@@ -7,6 +7,7 @@
 * Fixed `g_km` such that lines in the plot now start correctly at time 0 and probability 1.
 * Fixed a bug in `g_km` such that the equals sign can now be used in category labels.
 * Updated license and `README.md` with appropriate information for migration to public Github.
+* Refactored `count_patients_with_flags` to include a title row with correct indentation.
 
 # tern 0.7.4
 
