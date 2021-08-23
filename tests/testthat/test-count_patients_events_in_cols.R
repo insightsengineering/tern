@@ -1,5 +1,4 @@
-get_data <- function() {
-  data.frame(
+raw_data <- data.frame(
     USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
     ARM = c("A", "A", "B", "B", "B", "B", "A"),
     AESER = rep("Y", 7),
@@ -8,12 +7,9 @@ get_data <- function() {
     AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
     AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
   )
-}
 
 test_that("s_count_patients_and_multiple_events works as expected", {
-  test.nest::skip_if_too_deep(0)
-
-  df <- get_data()
+  df <- raw_data
   result <- s_count_patients_and_multiple_events(
     df = df,
     id = "USUBJID",
@@ -32,9 +28,7 @@ test_that("s_count_patients_and_multiple_events works as expected", {
 })
 
 test_that("s_count_patients_and_multiple_events can have empty stats if requested", {
-  test.nest::skip_if_too_deep(0)
-
-  df <- get_data()
+  df <- raw_data
   result <- s_count_patients_and_multiple_events(
     df = df,
     id = "USUBJID",
@@ -56,7 +50,7 @@ test_that("s_count_patients_and_multiple_events can have empty stats if requeste
 test_that("summarize_patients_events_in_cols works well with default arguments", {
   test.nest::skip_if_too_deep(0)
 
-  df <- get_data()
+  df <- raw_data
   result <- basic_table() %>%
     summarize_patients_events_in_cols(
       filters_list = list(
@@ -80,7 +74,7 @@ test_that("summarize_patients_events_in_cols works well with default arguments",
 test_that("summarize_patients_events_in_cols works well with custom arguments", {
   test.nest::skip_if_too_deep(0)
 
-  df <- get_data()
+  df <- raw_data
   result <- basic_table() %>%
     summarize_patients_events_in_cols(
       filters_list = list(

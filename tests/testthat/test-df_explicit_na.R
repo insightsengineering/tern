@@ -1,4 +1,4 @@
-example_data <- function() {
+example_data <- local({
 
   my_data <- data.frame(
     v1 = factor(c("A", "B", "A", "B"), levels = c("B", "A")),
@@ -13,11 +13,11 @@ example_data <- function() {
   var_labels(my_data) <- paste0("Variable ", 1:7)
   my_data
 
-}
+})
 
 test_that("Default fill in of missing values and conversion to factor works as expected", {
 
-  my_data <- example_data()
+  my_data <- example_data
   result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = TRUE)
 
   expected <- data.frame(
@@ -55,7 +55,7 @@ test_that("Default fill in of missing values and conversion to factor works as e
 
 test_that("Default settings work when input data does not have labels", {
 
-  my_data <- example_data() %>%
+  my_data <- example_data %>%
     var_labels_remove()
 
   result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = TRUE)
@@ -94,7 +94,7 @@ test_that("Default settings work when input data does not have labels", {
 
 test_that("Only replace missing values without modifying character variables", {
 
-  my_data <- example_data()
+  my_data <- example_data
   result <- df_explicit_na(data = my_data, omit_columns = NULL, char_as_factor = FALSE)
 
   expected <- data.frame(
@@ -124,7 +124,7 @@ test_that("Only replace missing values without modifying character variables", {
 
 test_that("Default conversion to factor works with some variables omitted", {
 
-  my_data <- example_data()
+  my_data <- example_data
   result <- df_explicit_na(data = my_data, omit_columns = c("v2", "v6"), char_as_factor = TRUE)
 
   expected <- data.frame(
@@ -160,7 +160,7 @@ test_that("Default conversion to factor works with some variables omitted", {
 
 test_that("Check Errors", {
 
-  my_data <- example_data()
+  my_data <- example_data
 
   expect_error(df_explicit_na(my_data, na_level = NA), "na_level")
   expect_error(df_explicit_na(my_data, char_as_factor = "TRUE"), "logical")

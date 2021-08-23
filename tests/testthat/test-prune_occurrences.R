@@ -1,17 +1,12 @@
-get_table <- function() {
-  basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("RACE") %>%
-    split_rows_by("STRATA1") %>%
-    summarize_row_groups() %>%
-    summarize_vars("COUNTRY", .stats = "count_fraction") %>%
-    build_table(DM)
-}
+tab <- basic_table() %>%
+  split_cols_by("ARM") %>%
+  split_rows_by("RACE") %>%
+  split_rows_by("STRATA1") %>%
+  summarize_row_groups() %>%
+  summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+  build_table(DM)
 
 test_that("keep_rows works in a special case identical to standard pruning", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   row_condition <- !CombinationFunction(all_zero_or_na)
   pruning_fun <- keep_rows(row_condition)
   expect_is(pruning_fun, "function")
@@ -21,9 +16,6 @@ test_that("keep_rows works in a special case identical to standard pruning", {
 })
 
 test_that("keep_rows prunes everything if condition is always `FALSE`", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   row_condition <- function(table_row) {
     FALSE
   }
@@ -34,9 +26,6 @@ test_that("keep_rows prunes everything if condition is always `FALSE`", {
 })
 
 test_that("keep_rows keeps everything if condition is always `TRUE`", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   row_condition <- function(table_row) {
     TRUE
   }
@@ -47,9 +36,6 @@ test_that("keep_rows keeps everything if condition is always `TRUE`", {
 })
 
 test_that("keep_content_rows works as expected", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   more_than_twenty <- has_count_in_cols(atleast = 21L, col_names = names(tab))
   result <- prune_table(tab, keep_content_rows(more_than_twenty))
   result_leaves <- collect_leaves(result)
@@ -61,9 +47,6 @@ test_that("keep_content_rows works as expected", {
 })
 
 test_that("has_count_in_cols result works in a special case identical to standard pruning", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   row_condition <- has_count_in_cols(atleast = 1L, col_names = names(tab))
   result <- prune_table(tab, keep_rows(row_condition))
   expected <- prune_table(tab)
@@ -71,9 +54,6 @@ test_that("has_count_in_cols result works in a special case identical to standar
 })
 
 test_that("has_count_in_cols result performs comparisons correctly", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -92,9 +72,6 @@ test_that("has_count_in_cols result performs comparisons correctly", {
 })
 
 test_that("has_count_in_any_col result performs comparisons correctly", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -113,9 +90,6 @@ test_that("has_count_in_any_col result performs comparisons correctly", {
 })
 
 test_that("has_fraction_in_cols result works in a special case identical to standard pruning", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   row_condition <- has_fraction_in_cols(atleast = 0.000001, col_names = names(tab))
   result <- prune_table(tab, keep_rows(row_condition))
   expected <- prune_table(tab)
@@ -123,9 +97,6 @@ test_that("has_fraction_in_cols result works in a special case identical to stan
 })
 
 test_that("has_fraction_in_cols result performs comparisons correctly", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -148,9 +119,6 @@ test_that("has_fraction_in_cols result performs comparisons correctly", {
 })
 
 test_that("has_fraction_in_any_col result performs comparisons correctly", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -169,9 +137,6 @@ test_that("has_fraction_in_any_col result performs comparisons correctly", {
 })
 
 test_that("has_fractions_difference result performs comparisons correctly", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -190,9 +155,6 @@ test_that("has_fractions_difference result performs comparisons correctly", {
 })
 
 test_that("has_counts_difference result performs comparisons correctly", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   sub_tab <- tab[5, ]
   expect_identical(
     to_string_matrix(sub_tab),
@@ -211,9 +173,6 @@ test_that("has_counts_difference result performs comparisons correctly", {
 })
 
 test_that("combination of pruning functions works", {
-  test.nest::skip_if_too_deep(2)
-
-  tab <- get_table()
   result <- tab %>%
     prune_table(
       keep_rows(

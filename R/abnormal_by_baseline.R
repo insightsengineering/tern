@@ -53,7 +53,7 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #'   conveyed to `na_level` appropriately beforehand with `df_explicit_na()` or `explicit_na()`.
 #'
 #' @param na_level (`string`) \cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
-#'   `df_explicit_na()`). The default is `"Missing"`.
+#'   `df_explicit_na()`). The default is `"<Missing>"`.
 #'
 #' @export
 #'
