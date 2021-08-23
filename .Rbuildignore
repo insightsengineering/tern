@@ -11,4 +11,5 @@ TODO\.md
 ^\.drone\.yml$
 ^Jenkinsfile$
 ^\.lintr$
-^staged_dependencies.yaml$
+^staged_dependencies\.yaml$
+^LICENSE\.md$
