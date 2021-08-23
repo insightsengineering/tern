@@ -23,10 +23,13 @@ preprocess_adtte <- function(adtte) {
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
 
+adtte_preprop <- adtte %>%
+  preprocess_adtte()
+
+
 test_that("h_survtime_df functions as expected with valid input and default arguments", {
 
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_preprop
 
   result <- h_survtime_df(
     tte = adtte$AVAL,
@@ -47,8 +50,7 @@ test_that("h_survtime_df functions as expected with valid input and default argu
 
 test_that("h_survtime_df functions as expected when median is NA", {
 
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_preprop
 
   # Edge case: median cannot be estimated.
   df_na <- data.frame(
@@ -77,8 +79,7 @@ test_that("h_survtime_df functions as expected when median is NA", {
 
 test_that("h_survtime_df functions as expected when 0 records in one group", {
 
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_preprop
 
   # Edge case: 0 records in one group.
   df_na <- data.frame(
@@ -213,8 +214,8 @@ test_that("h_split_by_subgroups works as expected with groups_lists", {
 
 test_that("h_survtime_subgroups_df functions as expected with valid input and default arguments", {
 
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_preprop
+
 
   result <- h_survtime_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -532,8 +533,7 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
 
 test_that("h_coxph_subgroups_df works as expected with groups_lists", {
 
-  adtte <- adtte %>%
-    preprocess_adtte()
+  adtte <- adtte_preprop
 
   result <- h_coxph_subgroups_df(
     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),

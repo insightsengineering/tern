@@ -1,24 +1,20 @@
-get_data <- function() {
-  library(scda)
-
-  synthetic_cdisc_data("rcd_2021_05_05")$adtte %>%
-    dplyr::filter(
-      PARAMCD == "OS",
-      ARM %in% c("B: Placebo", "A: Drug X")
-    ) %>%
-    dplyr::mutate(
-      # Reorder levels of ARM to display reference arm before treatment arm.
-      ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
-      is_event = CNSR == 0
-    ) %>%
-    var_relabel(
-      ARM = "Treatment Arm",
-      is_event = "Event Flag"
-    )
-}
+raw_data <- scda::synthetic_cdisc_data("rcd_2021_05_05")$adtte %>%
+  dplyr::filter(
+    PARAMCD == "OS",
+    ARM %in% c("B: Placebo", "A: Drug X")
+  ) %>%
+  dplyr::mutate(
+    # Reorder levels of ARM to display reference arm before treatment arm.
+    ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
+    is_event = CNSR == 0
+  ) %>%
+  var_relabel(
+    ARM = "Treatment Arm",
+    is_event = "Event Flag"
+  )
 
 test_that("fit_survival_step works as expected with default options", {
-  data <- get_data()
+  data <- raw_data
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",
@@ -41,7 +37,7 @@ test_that("fit_survival_step works as expected with default options", {
 })
 
 test_that("fit_survival_step works as expected with global model fit", {
-  data <- get_data()
+  data <- raw_data
   variables <- list(
     arm = "ARM",
     biomarker = "BMRKR1",

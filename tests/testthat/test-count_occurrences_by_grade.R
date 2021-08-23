@@ -1,5 +1,5 @@
-get_test_data_simple <- function() {
 
+raw_data <- local({
   df <- data.frame(
     USUBJID = as.character(c(1:6, 1)),
     USUBJID2 = as.character(c(1:6, 1) * 10),
@@ -15,7 +15,7 @@ get_test_data_simple <- function() {
   )
 
   df
-}
+})
 
 test_that("h_append_grade_groups works with valid input", {
   result <- h_append_grade_groups(
@@ -63,7 +63,7 @@ test_that("h_append_grade_groups works with valid input with revers order and on
 })
 
 test_that("s_count_occurrences_by_grade works with valid input and default arguments for grade", {
-  df <- get_test_data_simple()
+  df <- raw_data
   result <- s_count_occurrences_by_grade(df = df, .var = "AETOXGR", .N_col = 10)
 
   expected <- list(count_fraction = c(
@@ -77,7 +77,7 @@ test_that("s_count_occurrences_by_grade works with valid input and default argum
   expect_equal(result, expected)
 
   # Test with empty input.
-  df_empty <- get_test_data_simple() %>%
+  df_empty <- raw_data %>%
     dplyr::filter(ARM == "D")
 
   result <- s_count_occurrences_by_grade(df = df_empty, .var = "AETOXGR", .N_col = 10)
@@ -95,7 +95,7 @@ test_that("s_count_occurrences_by_grade works with valid input and default argum
 })
 
 test_that("s_count_occurrences_by_grade works with valid input for grade grouping", {
-  df <- get_test_data_simple()
+  df <- raw_data
   result <- s_count_occurrences_by_grade(
     df = df,
     .var = "AETOXGR",
@@ -120,7 +120,7 @@ test_that("s_count_occurrences_by_grade works with valid input for grade groupin
   expect_equal(result, expected)
 
   # Test with empyt input.
-  df_empty <- get_test_data_simple() %>%
+  df_empty <- raw_data %>%
     dplyr::filter(ARM == "D")
 
   result <- s_count_occurrences_by_grade(
@@ -149,7 +149,7 @@ test_that("s_count_occurrences_by_grade works with valid input for grade groupin
 })
 
 test_that("s_count_occurrences_by_grade works with valid input for intensity and custom arguments", {
-  df <- get_test_data_simple()
+  df <- raw_data
 
   result <- s_count_occurrences_by_grade(
     df = df,
@@ -173,7 +173,7 @@ test_that("s_count_occurrences_by_grade works with valid input for intensity and
 
 test_that("count_occurrences_by_grade works with default arguments for intensity", {
 
-  df <- get_test_data_simple()
+  df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
   result <- basic_table() %>%
@@ -215,7 +215,7 @@ test_that("count_occurrences_by_grade works with default arguments for intensity
 
 test_that("count_occurrences_by_grade label works when more than one variables are analyzed", {
 
-  df <- get_test_data_simple()
+  df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
   result <- basic_table() %>%
@@ -245,7 +245,7 @@ test_that("count_occurrences_by_grade label works when more than one variables a
 
 test_that("count_occurrences_by_grade works with custom arguments for grade", {
 
-  df <- get_test_data_simple()
+  df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
   # Define additional grade groupings
@@ -281,7 +281,7 @@ test_that("count_occurrences_by_grade works with custom arguments for grade", {
 
 test_that("summarize_occurrences_by_grade works with default arguments for intensity", {
 
-  df <- get_test_data_simple()
+  df <- raw_data
   df_adsl <- data.frame(
     USUBJID = 1:9,
     ARM = rep(c("A", "B"), c(4, 5))
@@ -307,7 +307,7 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
   expect_identical(result_matrix, expected_matrix)
 
   # Test with empty input.
-  df <- get_test_data_simple()
+  df <- raw_data
   df_adsl <- data.frame(
     USUBJID = 1:20,
     ARM_EMPTY = rep(c("A", "B"), each = 10)
@@ -339,7 +339,7 @@ test_that("summarize_occurrences_by_grade works with default arguments for inten
 
 test_that("summarize_occurrences_by_grade works with custom arguments for grade", {
 
-  df <- get_test_data_simple()
+  df <- raw_data
   df_adsl <- data.frame(
     USUBJID = 1:10,
     ARM_EMPTY = rep(c("A", "B"), each = 5)

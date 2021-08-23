@@ -47,7 +47,7 @@ count_abnormal_by_baseline(
 by a statistics function.}
 
 \item{na_level}{(\code{string}) \cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
-\code{df_explicit_na()}). The default is \code{"Missing"}.}
+\code{df_explicit_na()}). The default is \code{"<Missing>"}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 

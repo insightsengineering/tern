@@ -8,7 +8,7 @@ adsl_cached <- adsl_cached %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_v
 adrs_cached <- synthetic_cdisc_data("rcd_2021_05_05")$adrs
 adrs_cached <- adrs_cached %>% dplyr::filter(SEX %in% c("F", "M")) %>% reapply_varlabels(var_labels(adrs_cached))
 
-get_adrs <- function() {
+adrs_example <- local({
   adrs_cached %>%
     dplyr::filter(
       PARAMCD == "BESRSPI",
@@ -16,10 +16,10 @@ get_adrs <- function() {
     ) %>%
     dplyr::mutate(Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
     reapply_varlabels(var_labels(adrs_cached))
-}
+})
 
 test_that("fit_logistic works with default paramters", {
-  data <- get_adrs()
+  data <- adrs_example
   result_model <- fit_logistic(data, variables = list(response = "Response", arm = "ARMCD"))
   expected_model <- glm(formula = Response ~ ARMCD, data = data, family = "binomial")
 
@@ -38,7 +38,7 @@ test_that("fit_logistic works with default paramters", {
 })
 
 test_that("fit_logistic works with covariates and interaction", {
-  data <- get_adrs()
+  data <- adrs_example
   result_model <- fit_logistic(
     data,
     variables = list(
@@ -64,7 +64,7 @@ test_that("fit_logistic works with covariates and interaction", {
 })
 
 test_that("fit_logistic works with different response definition", {
-  data <- get_adrs()
+  data <- adrs_example
   result_model <- fit_logistic(
     data,
     variables = list(response = "Response", arm = "ARMCD"),
@@ -77,7 +77,7 @@ test_that("fit_logistic works with different response definition", {
 })
 
 test_that("h_get_interaction_vars works as expected", {
-  data <- get_adrs()
+  data <- adrs_example
   model <- fit_logistic(
     data,
     variables = list(
@@ -91,7 +91,7 @@ test_that("h_get_interaction_vars works as expected", {
 })
 
 test_that("h_interaction_coef_name works as expected", {
-  data <- get_adrs()
+  data <- adrs_example
   model <- fit_logistic(
     data,
     variables = list(
@@ -109,7 +109,7 @@ test_that("h_interaction_coef_name works as expected", {
 })
 
 test_that("h_or_cat_interaction works as expected", {
-  data <- get_adrs()
+  data <- adrs_example
   model <- fit_logistic(
     data,
     variables = list(
@@ -144,7 +144,7 @@ test_that("h_or_cat_interaction works as expected", {
 })
 
 test_that("h_or_cont_interaction works as expected with median increment", {
-  data <- get_adrs()
+  data <- adrs_example
   model <- fit_logistic(
     data,
     variables = list(
@@ -187,7 +187,7 @@ test_that("h_or_cont_interaction works as expected with median increment", {
 })
 
 test_that("h_or_cont_interaction works as expected with custom increments", {
-  data <- get_adrs()
+  data <- adrs_example
   model <- fit_logistic(
     data,
     variables = list(
@@ -220,7 +220,7 @@ test_that("h_or_cont_interaction works as expected with custom increments", {
 })
 
 test_that("h_or_interaction works as expected", {
-  data <- get_adrs()
+  data <- adrs_example
   model_cont <- fit_logistic(
     data,
     variables = list(
@@ -287,7 +287,7 @@ test_that("h_interaction_term_labels works correctly when any term can be fulfil
 })
 
 test_that("h_glm_simple_term_extract works for factor and numeric variables", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
     variables = list(
@@ -338,7 +338,7 @@ test_that("h_glm_simple_term_extract works for factor and numeric variables", {
 })
 
 test_that("h_glm_interaction_extract works for categorical interaction", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
     variables = list(
@@ -375,7 +375,7 @@ test_that("h_glm_interaction_extract works for categorical interaction", {
 })
 
 test_that("h_glm_interaction_extract works for continuous interaction", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   model <- fit_logistic(
     adrs,
     variables = list(
@@ -413,7 +413,7 @@ test_that("h_logistic_simple_terms works", {
 
   skip_if_too_deep(2)
 
-  adrs <- get_adrs()
+  adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
     variables = list(
@@ -474,7 +474,7 @@ test_that("h_logistic_simple_terms works", {
 })
 
 test_that("h_glm_inter_term_extract works as expected with categorical interaction", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   model <- fit_logistic(
     adrs,
     variables = list(
@@ -596,7 +596,7 @@ test_that("h_glm_inter_term_extract works as expected with categorical interacti
 })
 
 test_that("h_glm_inter_term_extract works as expected with continuous interaction", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   model <- fit_logistic(
     adrs,
     variables = list(
@@ -621,7 +621,7 @@ test_that("h_glm_inter_term_extract works as expected with continuous interactio
 })
 
 test_that("h_logistic_inter_terms works as expected", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   model_cat <- fit_logistic(
     adrs,
     variables = list(
@@ -685,7 +685,7 @@ test_that("tidy.glm works as expected for simple case", {
 
   skip_if_too_deep(2)
 
-  adrs <- get_adrs()
+  adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
     variables = list(
@@ -750,7 +750,7 @@ test_that("tidy.glm works as expected for simple case", {
 })
 
 test_that("tidy.glm works as expected for interaction case", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
     variables = list(
@@ -831,7 +831,7 @@ test_that("logistic_summary_by_flag works", {
 })
 
 test_that("summarize_logistic works as expected for interaction model with continuous variable", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
     variables = list(
@@ -870,7 +870,7 @@ test_that("summarize_logistic works as expected for interaction model with conti
 })
 
 test_that("summarize_logistic works as expected for interaction model with categorical variable", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   model <- fit_logistic(
     adrs,
     variables = list(
@@ -910,7 +910,7 @@ test_that("summarize_logistic works as expected for interaction model with categ
 })
 
 test_that("summarize_logistic works as expected for simple model without interactions", {
-  adrs <- get_adrs()
+  adrs <- adrs_example
   mod1 <- fit_logistic(
     adrs,
     variables = list(response = "Response", arm = "ARMCD", covariates = "AGE")
