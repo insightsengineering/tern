@@ -6,8 +6,6 @@ library(dplyr)
 adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 
 test_that("DTH01 variant 1 is produced correctly", {
-  test.nest::skip_if_too_deep(0)
-
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -40,8 +38,6 @@ test_that("DTH01 variant 1 is produced correctly", {
 })
 
 test_that("DTH01 variant 2 is produced correctly", {
-  test.nest::skip_if_too_deep(0)
-
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -125,8 +121,6 @@ test_that("DTH01 variant 2 is produced correctly", {
 })
 
 test_that("DTH01 variant 3 is produced correctly", {
-  test.nest::skip_if_too_deep(0)
-
   adsl <- adsl %>%
     df_explicit_na()
 
@@ -201,8 +195,6 @@ test_that("DTH01 variant 3 is produced correctly", {
 })
 
 test_that("DTH01 variant 4 is produced correctly", {
-  test.nest::skip_if_too_deep(0)
-
   adsl <- adsl %>%
     df_explicit_na()
 

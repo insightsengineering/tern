@@ -411,3 +411,9 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 n_available <- function(x) {
   sum(!is.na(x))
 }
+
+# used for tests at the moments
+reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
+  do.call(var_relabel, c(list(x = x), as.list(varlables), list(...)))
+}
+

@@ -7,8 +7,6 @@ adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
 adcm <- synthetic_cdisc_data("rcd_2021_05_05")$adcm
 
 test_that("CMT02_PT default variant is produced correctly", {
-  test.nest::skip_if_too_deep(0)
-
   adcm <- adcm %>%
     mutate(
       ASEQ = as.factor(ASEQ)

@@ -29,8 +29,6 @@ adtte_f <- within( # nolint
   )
 
 test_that("COXT02 default variant 1 is produced correctly", {
-  test.nest::skip_if_too_deep(0)
-
   multivar_model <- fit_coxreg_multivar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
@@ -60,8 +58,6 @@ test_that("COXT02 default variant 1 is produced correctly", {
 })
 
 test_that("COXT02 variant 5 is produced correctly", {
-  test.nest::skip_if_too_deep(0)
-
   multivar_model <- fit_coxreg_multivar(
     variables = list(
       time = "AVAL", event = "event", arm = "ARMCD",
