@@ -382,7 +382,7 @@ test_that("summary_all_fits works as expected", {
 
 test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
 
-  test.nest::skip_if_too_deep(3)
+  test.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),
@@ -428,7 +428,7 @@ test_that("refit_lme4_all_optimizers can find a working optimizer if there is on
 
 test_that("refit_lme4_all_optimizers works with parallelization", {
 
-  test.nest::skip_if_too_deep(3)
+  test.nest::skip_if_too_deep(5)
 
   original_fit <- fit_lme4_single_optimizer(
     formula = Reaction ~ Days + (factor(Days) | Subject),

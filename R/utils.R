@@ -416,4 +416,3 @@ n_available <- function(x) {
 reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
   do.call(var_relabel, c(list(x = x), as.list(varlables), list(...)))
 }
-
