@@ -37,9 +37,9 @@ library(tern)
 ## Data for examples
 ```{r data, results = "asis", eval = TRUE}
 
-ADLB <- scda::synthetic_cdisc_data("latest")$adlb
+adlb <- scda::synthetic_cdisc_data("latest")$adlb
 
-ADLB <- ADLB %>%
+adlb <- adlb %>%
   filter(ANL01FL == "Y",
          PARAMCD == "ALT",
          AVISIT != "SCREENING") %>%
@@ -47,238 +47,241 @@ ADLB <- ADLB %>%
 
 ```
 
-## New function to summarize statistics to display summary stats
-```{r} 
-h_summary_stats <- function(df, var, time_var, trt_var, alpha) {
-  sum_data <- df %>%
-    group_by_at(c(time_var, trt_var)) %>%
-    summarise(
-      count = sum(!is.na(!!sym(var))),
-      mean = mean(!!sym(var), na.rm = TRUE),
-      std = sd(!!sym(var), na.rm = TRUE),
-      mean_sdup = mean + std,
-      mean_sddown = mean - std,
-      CIup = mean(!!sym(var), na.rm = TRUE) + qt(1 - alpha / 2, n() - 1) * sd(!!sym(var), na.rm = TRUE) / sqrt(n()),
-      CIdown = mean(!!sym(var), na.rm = TRUE) - qt(1 - alpha / 2, n() - 1) * sd(!!sym(var), na.rm = TRUE) / sqrt(n()),
-      median = median(!!sym(var), na.rm = TRUE),
-      quant25 = quantile(!!sym(var), 0.25, na.rm = TRUE),
-      quant75 = quantile(!!sym(var), 0.75, na.rm = TRUE)
-    ) %>%
-    arrange_at(c(time_var, trt_var))
-
-# Note: CIs for mean and CIs for median are the same for normal distribution. 
-
-  all_levels <- expand.grid(unique(df[[time_var]]), unique(df[[trt_var]]))
-  all_levels <- setNames(all_levels, c(time_var, trt_var))
-  sum_data <- sum_data %>%
-    right_join(all_levels, by = c(time_var, trt_var)) %>%
-    mutate(
-      n = as.character(ifelse(is.na(count), 0, count)),
-      Mean = as.character(format(mean, digits = 3, nsmall = 3)),
-      CI = ifelse(!is.na(CIdown), paste0("(", format(CIdown, digits = 3, nsmall = 3), ", ", format(CIup, digits = 3, nsmall = 3), ")"), "NE"),
-      Median = as.character(format(median, digits = 3, nsmall = 3)),
-      Mean_SD = ifelse(!is.na(mean_sddown), paste0("(", format(mean_sddown, digits = 3, nsmall = 3), ", ", format(mean_sdup, digits = 3, nsmall = 3), ")"), "NE"),
-      IQR = ifelse(!is.na(quant25), paste0("(", format(quant25, digits = 3, nsmall = 3), ", ", format(quant75, digits = 3, nsmall = 3), ")"), "NE"),
-    )
-  sum_data
-}
-
-```
-
 ## New function to display graphs 
 ```{r} 
-# g_linebar(ADLB)
 
-g_linebar <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM",
-                      stat_line_fun = mean, stat_bar_fun = tern::stat_mean_ci, 
-                      stat_bar_fun_args = NULL, table = FALSE,
-                      x_lab = "Visit", y_lab = "ALT", y_lab_units_var = "AVALU",
-                      title = "Plot of Mean and Confidence Limits by Visit",
-                      caption = "Mean and 95% CIs for mean are displayed.") {
-  
-  y_lab_units <- unique(df[[y_lab_units_var]])
-  stopifnot(length(y_lab_units) == 1)
-  y_lab <- paste0(y_lab, " (", y_lab_units, ")")
-  
+# Helper function to get the right cell formatting in the the table.
+format_row <- function(x, format, labels = NULL) {
+
+  format_cell <- function(x, format, label = NULL) {
+    fc <- rtables::format_rcell(x = x, format = format)
+    x_label <- attr(x, "label")
+    if (!is.null(label) && !is.na(label))
+      names(fc) <- label
+    else if (!is.null(x_label) && !is.na(x_label))
+      names(fc) <- x_label
+    else if (length(x) == length(fc))
+      names(fc) <- names(x)
+    as.data.frame(t(fc)) # cell: one row, one column data.frame
+  }
+
+  row <- dplyr::bind_cols(
+    lapply(
+      names(x), function(n) format_cell(x[[n]], format = format[n], label = labels[n])
+    )
+  )
+
+  row
+}
+
+# New plot function.
+g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", # nolint
+                       mid = "mean", interval = "mean_ci", whiskers = c("lwr", "upr"), table = NULL,
+                       control = control_summarize_vars(), na.rm = TRUE, # nolint
+                       mid_type = "pl", mid_point_size = 2, position = position_dodge(width = 0.4),
+                       legend_position = "bottom", legend_title = NULL,
+                       x_lab = "Visit", y_lab = "ALT", y_lab_units_var = "AVALU",
+                       title = "Plot of Mean and 95% Confidence Limits by Visit",
+                       caption = NULL) {
+
+  assert_that(is.character(x))
+  assert_that(is.character(y))
+  assert_that(is.character(strata) || is.null(strata))
+  assert_that(is.character(mid) || is.null(mid))
+  assert_that(is.character(interval) || is.null(interval))
+  assert_that(ifelse(is.character(interval), all(whiskers %in% c("lwr", "upr")), TRUE))
+  assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
+  assert_that(
+    ifelse(
+      is.character(mid),
+      (length(mid_type) == 1) && mid_type %in% c("pl", "p", "l"),
+      TRUE
+    )
+  )
+
+  ## Compute required statistics.
+  df_grp <- group_by_at(df, c(strata, x))
+  df_stats <- summarise(
+    df_grp,
+    bind_cols(
+      lapply(
+        s_summary(.data[[y]], control = control, stats = c(mid, interval), na.rm = na.rm),
+        function(x) as_tibble(t(x))
+      )
+    ),
+    .groups = "drop"
+  )
+
+  # add number of objects N in strata
+  if (!is.null(strata)) {
+
+    df_N <- df %>% # nolint
+      group_by_at(strata) %>%
+      summarise(
+        N = s_summary(.data[[y]], control = control, stats = "n", na.rm = na.rm)[[1]],
+        .groups = "drop"
+      )
+
+    df_stats <- dplyr::full_join(x = df_stats, y = df_N, by = strata)
+
+    strata_N <- paste0(strata, "_N") # nolint
+    df_stats[[strata_N]] <- paste0(df_stats[[strata]], " (N = ", df_stats$N, ")")
+
+  }
+
+  ## Prepare certain plot's properties
+
+  # y label
+  if (!is.null(y_lab_units_var)) {
+    unit <- unique(df[[y_lab_units_var]])
+    stopifnot("y_lab_units_var must be in df and df[[y]] must be of the same units" = length(unit) == 1) # nolint
+    y_lab <- paste0(y_lab, " (", unit, ")")
+  }
+
+  # legend title
+  if (is.null(legend_title) && !is.null(strata) && legend_position != "none") {
+    legend_title <- attr(df[[strata]], "label")
+  }
+
+  ## Build plot object.
   p <- ggplot(
-    data = df,
-    mapping = aes_string(x = x, y = y, color = strata, shape = strata, lty = strata, pty = strata, group = strata)) + # nolint
-    stat_summary(
-      fun.data = stat_bar_fun,
-      fun.args = stat_bar_fun_args,
-      geom = "errorbar",
-      width = 0.45,
-      position = position_dodge(width = 0.4)
-    ) +
-    stat_summary(
-      fun = stat_line_fun,
-      geom = "point",
-      position = position_dodge(width = 0.4),
-      size = 3
-    ) +
-    stat_summary(
-      fun = stat_line_fun,
-      geom = "line",
-      position = position_dodge(width = 0.4)
-    ) +
-    scale_y_continuous(labels = scales::comma) +
-    theme(
-      legend.key.size = unit(1, "cm"),
-      legend.position = "bottom",
-      legend.direction = "horizontal"
-    ) +
+    data = df_stats,
+    mapping = aes_string(
+      x = x, y = mid, color = strata_N, shape = strata_N, lty = strata_N, group = strata_N
+    ))
+
+  if (!is.null(mid)) {
+    # points
+    if (grepl("p", mid_type, fixed = TRUE)) {
+      p <- p + geom_point(position = position, size = mid_point_size)
+    }
+
+    # lines
+    if (grepl("l", mid_type, fixed = TRUE)) {
+      # for line graphs, the data points must be grouped so that it knows which points to connect.
+      m <- if (is.null(strata)) aes(group = 1)
+      p <- p + geom_line(mapping = m, position = position)
+    }
+  }
+
+  if (!is.null(interval)) {
+
+    yminmax <- paste(interval, whiskers, sep = "_")
+
+    p <- p +
+      geom_errorbar(
+        aes_string(ymin = yminmax[1], ymax = yminmax[max(1, length(whiskers))]),
+        width = 0.45,
+        position = position
+      )
+
+    if (length(whiskers) == 1) { # lwr or upr only; mid is then required
+      #workaround as geom_errorbar does not provide single-direction whiskers
+      p <- p +
+        geom_linerange(
+          aes_string(ymin = mid, ymax = yminmax),
+          position = position,
+          show.legend = FALSE
+        )
+    }
+  }
+
+  p <- p +
+    scale_y_continuous(labels = scales::comma, expand = expansion(c(0.25, .25))) +
     theme_bw() +
+    theme(
+      legend.key.width = unit(1, "cm"),
+      legend.position = legend_position,
+      legend.direction = ifelse(
+        legend_position %in% c("top", "bottom"),
+        "horizontal",
+        "vertical")
+    ) +
     labs(
       title = title,
       caption = caption,
+      color = legend_title,
+      lty = legend_title,
+      shape = legend_title,
       x = x_lab,
-      y = y_lab,
+      y = y_lab
     )
 
   # Optionally, add table to the bottom of the plot
-  if (table) {
-    tbl_theme <- theme(
-      panel.border = element_blank(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title = element_blank(),
-      axis.text.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
-      axis.text.x = element_blank()
-    )
+  if (!is.null(table)) {
 
-    df_trans <- tidyr::pivot_longer(
-      data = select(df, x, y, strata),
-      cols = -c(strata, x),
-      names_to = "stat",
-      values_to = "value"
-    )
-
-    df_trans <- filter(df_trans, stat %in% stats) %>% 
-      mutate(
-        stat = case_when(
-          stat == "CI" ~ "95% CI for Mean",
-          stat == "Mean_SD" ~ "Mean +/- SD",
-          TRUE ~ stat),
-        value = ifelse(is.na(value), "NE", as.character(value)),
-        stat_lbl = as.factor(paste0(ARM, ": ", stat))
+    df_stats_table <- df_grp %>%
+      summarise(
+        format_row(
+          x = s_summary(.data[[y]], control = control, stats = table, na.rm = na.rm),
+          format = summary_numeric_format(),
+          labels <- summary_numeric_labels()
+        ),
+        .groups = "drop"
       )
 
-    tbl <- ggplot(df_trans, aes(x = x, y = stat_lbl, label = value)) +
-      geom_text(size = 3) +
-      scale_y_discrete(labels = levels(df_trans$stat_lbl)) +
-      theme_bw() +
-      tbl_theme
+    stats_lev <- rev(setdiff(colnames(df_stats_table), c(strata, x)))
 
-    p <- ggpubr::ggarrange(p, tbl, heights = c(4, 1), ncol = 1, nrow = 2, align = "hv")
+    df_stats_table <- df_stats_table %>%
+      tidyr::pivot_longer(
+        cols = -c(strata, x),
+        names_to = "stat",
+        values_to = "value",
+        names_ptypes = list(stat = factor(levels = stats_lev))
+    )
+
+    tbl <- ggplot(df_stats_table, aes_string(x = x, y = "stat", label = "value", color = strata)) +
+      geom_text(size = 3) +
+      theme_bw() +
+      theme(
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
+        strip.text = element_text(hjust = 0),
+        strip.text.x = element_text(margin = margin(1.5, 0, 1.5, 0, "pt")),
+        strip.background = element_rect(fill = "grey95", color = NA),
+        legend.position = "none"
+      ) +
+      facet_wrap(as.formula(paste("~", strata)), ncol = 1)
+
+    p <- ggpubr::ggarrange(p, tbl, heights = c(3, 1), ncol = 1, nrow = 2, align = "v")
+    # alternatively, below code can be used if the above is having problems with
+    # horizontal alignment of x axis. This happens when the facet variables are the same
+    # and there are no legends - a kind of bug in ggpubr::ggarrange
+    # p <- p / tbl + plot_layout(heights = c(3, 1)) # patchwork R package is required # nolint
 
   }
-  
+
   return(p)
-  
+
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- g_lineplot <- function(df, time_var, trt_var, line, down_limit, up_limit, table, stats, label = "Visit",
- gtitle = "Plot of Mean and Confidence Limits by Visit") {
-  pd <- position_dodge(0.4)
-
-  df_filtered <- filter(df, !is.na(!!sym(noquote(line))))
-  plot1 <- ggplot(data = df_filtered, aes_string(
-    x = time_var,
-    y = line, 
-    color = trt_var, 
-    linetype = trt_var,
-    group = trt_var
-  )) + ggtitle(gtitle) +
-    theme_bw() +
-    geom_point(position = pd) +
-    scale_y_continuous(labels = scales::comma, expand = expansion(c(0, .25))) +
-    ylab("") +
-    xlab(label) +
-    theme(legend.key.size = unit(1, "cm")) +
-    geom_point(position = pd, size = 3) +
-    theme(
-      legend.position = "bottom",
-      legend.direction = "horizontal"
-    )
-
-  plot1 <- plot1 + geom_line(position = pd) +
-    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd, linetype = "solid")
-
-  if (table) {
-    tbl_theme <- theme(
-      panel.border = element_blank(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title = element_blank(),
-      axis.text.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 5)),
-      axis.text.x = element_blank()
-    )
-
-
-    df_trans <- tidyr::pivot_longer(
-      data = select(df, trt_var, time_var, n, CI, Mean, Mean_SD, IQR),
-      cols = -c(trt_var, time_var),
-      names_to = "stat",
-      values_to = "value"
-    )
-
-    df_trans <- filter(df_trans, stat %in% stats) %>% mutate(
-      stat = case_when(stat == "CI" ~ "95% CI for Mean",
-                       stat == "Mean_SD" ~ "Mean +/- SD",
-                       TRUE ~ stat),
-      value = ifelse(is.na(value), "NE", as.character(value)),
-      stat_lbl = as.factor(paste0(ARM, ": ", stat))
-    )
-
-    tbl <- ggplot(df_trans, aes(x = !!sym(noquote(time_var)), y = stat_lbl, label = value)) +
-      geom_text(size = 3) +
-      scale_y_discrete(labels = levels(df_trans$stat_lbl)) +
-      theme_bw() +
-      tbl_theme
-
-    ggpubr::ggarrange(plot1, tbl,
-      heights = c(4, 1),
-      ncol = 1, nrow = 2, align = "hv"
-    )
-  } else {
-    plot1
-  }
-}
 ```
 
-## Exapmples
-```{r} 
-sum_data <- h_summary_stats(ADLB, "AVAL", "AVISIT", "ARM", 0.05)
-#Simple plot mean, CI
-g_lineplot(sum_data,"AVISIT", "ARM", "mean", "CIdown","CIup", FALSE)
-#Simple plot mean, upper confidence limit
-g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean","CIup", FALSE, gtitle = "Plot of Mean and Upper Confidence Limit by Visit")
-#Simple plot median, CI
-g_lineplot(sum_data,"AVISIT", "ARM", "median", "CIdown","CIup", FALSE, gtitle = "Plot of Mean and Upper Confidence Limit by Visit")
-#Simple plot mean, +/- SD
-g_lineplot(sum_data,"AVISIT", "ARM", "mean", "mean_sddown", "mean_sdup",FALSE, gtitle = "Plot of Mean +/- SD by Visit")
-#Simple plot mean, CI plus table for statistics
-g_lineplot(sum_data,"AVISIT", "ARM", "mean","CIup","CIdown", TRUE, c("n", "Mean"))
 
+## Examples
+```{r examples} 
 
-#continuous time variable, customized alpha
-sum_data <- h_summary_stats(ADLB, "AVAL", "AVISITN", "ARM", 0.1)
-g_lineplot(sum_data,"AVISITN", "ARM", "mean","CIup","CIdown", TRUE, c("n", "Mean"))
+# Mean with CI
+g_lineplot(adlb)
 
+# Mean, upper whisker of CI
+g_lineplot(adlb, whiskers = "upr", title = "Plot of Mean and Upper 95% Confidence Limit by Visit")
+
+# Median with CI
+g_lineplot(adlb, mid = "median", title = "Plot of Median and 95% Confidence Limits by Visit")
+
+# Mean, +/- SD
+g_lineplot(adlb, interval = "mean_sdi", title = "Plot of Median +/- SD by Visit")
+
+# Mean with CI plot with stats table
+g_lineplot(adlb, table = c("n", "mean", "mean_ci"))
+
+# Mean with CI - continuous time variable, customized confidence level
+g_lineplot(adlb, x = "AVISITN", table = c("n", "mean"), control = list(conf_level = 0.80),
+           title = "Plot of Mean and 80% Confidence Limits by Visit")
 ```
