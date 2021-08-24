@@ -18,8 +18,8 @@ test_that("s_change_from_baseline handles empty data (complete missing for a vis
     median = NA_real_,
     quantiles = with_label(c(NA_real_, NA_real_), "25% and 75%-ile"),
     range = c(NA_real_, NA_real_),
-    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
+    mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
+    median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
   )
 
   expect_identical(result, expected)
@@ -45,8 +45,8 @@ test_that("s_change_from_baseline handles NA in baseline values", {
     median = 3,
     quantiles = with_label(c(0, 6), "25% and 75%-ile"),
     range = c(0, 6),
-    mean_ci = with_label(c(-4.452413, 10.452413), "Mean 95% CI"),
-    median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
+    mean_ci = with_label(c(mean_ci_lwr = -4.452413, mean_ci_upr = 10.452413), "Mean 95% CI"),
+    median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
   )
 
   expect_equal(result, expected, tol = 1e-6)
@@ -75,8 +75,8 @@ test_that("s_change_from_baseline handles baseline substitution", {
       median = 1.5,
       quantiles = with_label(c(1, 2), "25% and 75%-ile"),
       range = c(1, 2),
-      mean_ci = with_label(c(-4.853102, 7.853102), "Mean 95% CI"),
-      median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
+      mean_ci = with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
+      median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
     ),
     # Here we take the summary of the 2 baseline values.
     `TRUE` = list(
@@ -85,8 +85,8 @@ test_that("s_change_from_baseline handles baseline substitution", {
       median = 2.5,
       quantiles = with_label(c(1, 4), "25% and 75%-ile"),
       range = c(1, 4),
-      mean_ci = with_label(c(-16.55931, 21.55931), "Mean 95% CI"),
-      median_ci =  with_label(c(NA_real_, NA_real_), "Median 95% CI")
+      mean_ci = with_label(c(mean_ci_lwr = -16.55931, mean_ci_upr = 21.55931), "Mean 95% CI"),
+      median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
     )
   )
 
