@@ -39,7 +39,7 @@ p + stat_summary(
 
 p + stat_summary(
   fun.data = stat_mean_ci,
-  fun.args = list(conf_level = 0.5)
+  fun.args = list(conf_level = 0.5),
   geom = "errorbar"
 )
 
