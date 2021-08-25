@@ -59,6 +59,7 @@ s_summary <- function(x,
                       na_level,
                       .var,
                       control,
+                      stats,
                       ...) {
   assert_that(
     is.flag(na.rm)
@@ -127,42 +128,97 @@ s_summary.numeric <- function(x,
                               na_level,
                               .var,
                               control = control_summarize_vars(),
+                              stats = c("n", "mean_sd", "median", "mean_ci", "median_ci", "quantiles", "range"),
                               ...) {
   assert_that(is.numeric(x))
 
-  conf_level <- control$conf_level
-  quantiles <- control$quantiles
-  quantile_type <- control$quantile_type
+  if(is.null(stats)) { # return all the stats available
+    stats <- c(
+      "n", "mean", "sd", "mean_sd", "mean_ci", "mean_se", "mean_sdi",
+      "median", "median_ci", "quantiles", "irq", "range"
+      )
+  }
 
-  if (na.rm) x <- x[!is.na(x)]
+  if (na.rm)
+    x <- x[!is.na(x)]
 
   y <- list()
 
-  dn <- length(x)
-  y$n <- dn
-  y$mean_sd <- c(
-    mean = if (dn > 0) mean(x) else NA_real_,
-    sd = sd(x)
-  )
-  y$median <- median(x)
+  n <- length(x)
 
-  qts <- if (!na.rm && any(is.na(x))) {
-    c(NA_real_, NA_real_)
-  } else {
-    quantile(x, probs = quantiles, type = quantile_type, na.rm = na.rm)
+  if("n" %in% stats) {
+    y$n <- c("n" = n)
   }
-  y$quantiles <- with_label(unname(qts), paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile"))
 
-  y$range <- range_noinf(x)
+  if (any(grepl("^mean.*", stats))) {
+    y$mean <- c("mean" = ifelse(n > 0, mean(x), NA_real_))
+  }
 
-  mean_ci <- stat_mean_ci(x, conf_level = conf_level, na.rm = na.rm, gg_helper = FALSE)
-  y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(conf_level)))
+  if("sd" %in% stats) {
+    y$sd <- c("sd" = sd(x))
+  }
 
-  # c() to remove the conf_level attribute from stat_median_ci output
-  median_ci <- c(stat_median_ci(x, conf_level = conf_level, na.rm = na.rm, gg_helper = FALSE))
-  y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(conf_level)))
+  if("mean_sd" %in% stats) {
+    y$mean_sd <- c(y$mean, "sd" = sd(x))
+  }
 
-  y
+  if("mean_ci" %in% stats) {
+    mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = na.rm, gg_helper = FALSE)
+    y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
+  }
+
+  if("mean_se" %in% stats) {
+    mean_se <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = na.rm)/sqrt(n)
+    mean_se <- setNames(mean_se, c("mean_se_lwr", "mean_se_upr"))
+    y$mean_se <- with_label(mean_se, "Mean +/- 1xSE")
+  }
+
+  if("mean_sdi" %in% stats) {
+    mean_sdi <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = na.rm)
+    mean_sdi <- setNames(mean_sdi, c("mean_sdi_lwr", "mean_sdi_upr"))
+    y$mean_sdi <- with_label(mean_sdi, "Mean +/- 1xSD")
+  }
+
+  if("median" %in% stats) {
+    y$median <- c("median" = median(x, na.rm = na.rm))
+  }
+
+  if("median_ci" %in% stats) {
+    conf_level <- control$conf_level
+    median_ci <- stat_median_ci(x, conf_level = conf_level, na.rm = na.rm, gg_helper = FALSE)
+    cl <- attr(median_ci, "conf_level")
+    y$median_ci <- with_label(
+      median_ci,
+      paste("Median", f_conf_level(ifelse(!is.na(cl), round(cl, digits = 2), conf_level)))
+    )
+  }
+
+  if("iqr" %in% stats) {
+    if (any(is.na(x))) {
+      y$iqr <- c("iqr" = NA_real_)
+    } else {
+      y$iqr <- c("iqr" = IQR(x, na.rm = na.rm, type = control$quantile_type))
+    }
+  }
+
+  if("quantiles" %in% stats) {
+
+    quantiles <- control$quantiles
+
+    if (!na.rm && any(is.na(x))) {
+      qts <- c(NA_real_, NA_real_)
+    } else {
+      qts <- quantile(x, probs = quantiles, type = control$quantile_type, na.rm = na.rm)
+    }
+    y$quantiles <- with_label(qts, paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile"))
+  }
+
+  if("range" %in% stats) {
+    y$range <- setNames(range_noinf(x, na.rm = na.rm), c("min", "max"))
+  }
+
+  y[stats]
+
 }
 
 #' @describeIn summarize_variables Method for factor class. Note that,
