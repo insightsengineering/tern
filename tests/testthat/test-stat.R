@@ -8,14 +8,6 @@ test_that("stat_mean_ci works for series without NAs (including extreme case n =
   expect_identical(result, expected)
   expect_identical(result_gg, expected_gg)
 
-  # n = 1, na.rm = FALSE, n_min = 2
-  result <- stat_mean_ci(x = 1, na.rm = FALSE, gg_helper = FALSE)
-  result_gg <- stat_mean_ci(x = 1, na.rm = FALSE)
-  expected <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
-  expected_gg <- data.frame(y = 1, ymin = NA_real_, ymax = NA_real_)
-  expect_identical(result, expected)
-  expect_identical(result_gg, expected_gg)
-
   # n = 2, na.rm = TRUE, n_min = 2
   result <- round(stat_mean_ci(x = 1:2, gg_helper = FALSE), digits = 2)
   expected <- c(mean_ci_lwr = -4.85, mean_ci_upr = 7.85)
@@ -23,16 +15,6 @@ test_that("stat_mean_ci works for series without NAs (including extreme case n =
 
   # n = 2, na.rm = TRUE, n_min = 3
   result <- stat_mean_ci(x = 1:2, n_min = 3, gg_helper = FALSE)
-  expected <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
-  expect_identical(result, expected)
-
-  # n = 2, na.rm = FALSE, n_min = 2
-  result <- round(stat_mean_ci(x = 1:2, na.rm = FALSE, gg_helper = FALSE), digits = 2)
-  expected <- c(mean_ci_lwr = -4.85, mean_ci_upr = 7.85)
-  expect_identical(result, expected)
-
-  # n = 2, na.rm = FALSE, n_min = 3
-  result <- stat_mean_ci(x = 1:2, n_min = 3, na.rm = FALSE, gg_helper = FALSE)
   expected <- c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_)
   expect_identical(result, expected)
 
@@ -108,25 +90,8 @@ test_that("stat_median_ci works for series without NAs (including extreme case n
   expect_identical(result, expected)
   expect_identical(result_gg, expected_gg)
 
-  # n = 1, na.rm = FALSE
-  result <- stat_median_ci(x = 1, na.rm = FALSE, gg_helper = FALSE)
-  result_gg <- stat_median_ci(x = 1, na.rm = FALSE)
-  expected <- c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_)
-  expected_gg <- data.frame(y = 1, ymin = NA_real_, ymax = NA_real_)
-  attr(expected, "conf_level") <- NA_real_
-  attr(expected_gg, "conf_level") <- NA_real_
-  expect_identical(result, expected)
-  expect_identical(result_gg, expected_gg)
-
   # n = 10, na.rm = TRUE
   result <- stat_median_ci(x = 1:10, gg_helper = FALSE)
-  attr(result, "conf_level") <- round(attr(result, "conf_level"), digits = 2)
-  expected <- c(median_ci_lwr = 2L, median_ci_upr = 9L)
-  attr(expected, "conf_level") <- 0.98
-  expect_identical(result, expected)
-
-  # n = 10, na.rm = FALSE
-  result <- stat_median_ci(x = 1:10, na.rm = FALSE, gg_helper = FALSE)
   attr(result, "conf_level") <- round(attr(result, "conf_level"), digits = 2)
   expected <- c(median_ci_lwr = 2L, median_ci_upr = 9L)
   attr(expected, "conf_level") <- 0.98
