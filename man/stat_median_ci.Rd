@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.R
 \name{stat_median_ci}
 \alias{stat_median_ci}
-\title{Median CI for \code{ggplot2}}
+\title{Confidence Interval for Median}
 \usage{
 stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 }
@@ -18,8 +18,7 @@ for the use with ggplot.}
 }
 \description{
 Convenient function for calculating the median confidence interval.
-It is dedicated to use as a ggplot helper function for plotting
-confidence intervals as error bars.
+It can be used as a ggplot helper function for plotting.
 }
 \details{
 The function was adapted from \verb{DescTools/versions/0.99.35/source}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.R
 \name{stat_mean_ci}
 \alias{stat_mean_ci}
-\title{Mean CI for \code{ggplot2}}
+\title{Confidence Interval for Mean}
 \usage{
 stat_mean_ci(x, conf_level = 0.95, na.rm = TRUE, n_min = 2, gg_helper = TRUE)
 }
@@ -21,8 +21,7 @@ for the use with ggplot.}
 }
 \description{
 Convenient function for calculating the mean confidence interval.
-It is dedicated to use as a ggplot helper function for plotting
-confidence intervals as error bars.
+It can be used as a ggplot helper function for plotting.
 }
 \examples{
 
