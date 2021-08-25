@@ -362,7 +362,7 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   if (!is.null(groups)) {
     cc <- complete.cases(df[c(x, y, groups)])
     df_c <- df[cc, c(x, y, groups)]
-    df_c_ordered <- df_c[do.call("order", as.list(df_c[, groups, drop = FALSE])), ]
+    df_c_ordered <- df_c[do.call("order", as.list(df_c[, groups, drop = FALSE])), , drop = FALSE]
     df_c_g <- data.frame(Map(as.factor, df_c_ordered[groups]))
 
     df_smooth_raw <-
