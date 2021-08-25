@@ -490,7 +490,7 @@ test_that("summarize_lsmeans works as expected", {
       "(-2.721, 9.954)", "7.2%", "0.2604"),
     .Dim = c(41L, 4L)
   )
-  expect_equal(result_matrix, expected_matrix, tolerance = 1e-3)
+  expect_equal(result_matrix, expected_matrix, tolerance = 1e-2)
 })
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
