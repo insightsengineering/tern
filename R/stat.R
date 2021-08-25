@@ -1,8 +1,7 @@
-#' Mean CI for `ggplot2`
+#' Confidence Interval for Mean
 #'
 #' Convenient function for calculating the mean confidence interval.
-#' It is dedicated to use as a ggplot helper function for plotting
-#' confidence intervals as error bars.
+#' It can be used as a ggplot helper function for plotting.
 #'
 #' @inheritParams argument_convention
 #' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
@@ -10,6 +9,7 @@
 #' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
 #' for the use with ggplot.
 #'
+#' @importFrom stats qt
 #' @export
 #'
 #' @examples
@@ -57,11 +57,10 @@ stat_mean_ci <- function(x,
 
 }
 
-#' Median CI for `ggplot2`
+#' Confidence Interval for Median
 #'
 #' Convenient function for calculating the median confidence interval.
-#' It is dedicated to use as a ggplot helper function for plotting
-#' confidence intervals as error bars.
+#' It can be used as a ggplot helper function for plotting.
 #'
 #' @inheritParams argument_convention
 #' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
@@ -69,6 +68,7 @@ stat_mean_ci <- function(x,
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
+#' @importFrom stats qbinom pbinom
 #' @export
 #'
 #' @examples
@@ -98,18 +98,18 @@ stat_median_ci <- function(x,
   # k == 0 - for small samples (e.g. n <= 5) ci can be outside the observed range
   if (k == 0 || is.na(med)) {
     ci <- c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_)
-    conf_level_empir <- NA_real_
+    empir_conf_level <- NA_real_
   } else {
     x_sort <- sort(x)
     ci <- c(median_ci_lwr = x_sort[k], median_ci_upr = x_sort[n - k + 1])
-    conf_level_empir <- 1 - 2 * pbinom(k - 1, size = n, prob = 0.5)
+    empir_conf_level <- 1 - 2 * pbinom(k - 1, size = n, prob = 0.5)
   }
 
   if (gg_helper) {
     ci <- data.frame(y = med, ymin = ci[[1]], ymax = ci[[2]])
   }
 
-  attr(ci, "conf_level")  <- conf_level_empir
+  attr(ci, "conf_level")  <- empir_conf_level
 
   return(ci)
 
