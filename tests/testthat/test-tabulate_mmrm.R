@@ -319,7 +319,12 @@ test_that("h_mmrm_cov works as expected", {
       "-0.0679", "1.3693", "1.8764", "60.3583"),
     .Dim = c(6L, 6L)
   )
-  expect_identical(result_matrix, expected_matrix)
+
+  result_numbers <- as.numeric(result_matrix[grepl("^-?\\d+", result_matrix)])
+  expected_numbers <- as.numeric(expected_matrix[grepl("^-?\\d+", result_matrix)])
+
+  expect_equal(result_numbers, expected_numbers, tolerance = 1e-3)
+
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
@@ -494,7 +499,7 @@ test_that("summarize_lsmeans works as expected", {
   result_numbers <- as.numeric(result_matrix[grepl("^-?\\d+", result_matrix)])
   expected_numbers <- as.numeric(expected_matrix[grepl("^-?\\d+", result_matrix)])
 
-  expect_equal(result_numbers, expected_numbers, tolerance = 1e-2)
+  expect_equal(result_numbers, expected_numbers, tolerance = 1e-3)
 
 })
 
