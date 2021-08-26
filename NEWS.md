@@ -1,4 +1,5 @@
 # tern 0.7.4.9000
+* Added design doc for MNG01 plot.
 * Parametrized `stat_mean_ci` and `stat_median_ci` so that they may return different outputs.
 * Added new safety helper function h_stack_by_baskets to stack SMQ and/or CQ records from ADAE data set.
 * Added `remove_single` argument to `h_append_grade_groups`, which allows to control whether the elements of one-element grade groups will be kept in the output or removed.

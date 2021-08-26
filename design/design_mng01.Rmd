@@ -47,8 +47,100 @@ adlb <- adlb %>%
 
 ```
 
+## TEMPORARY - UNTIL ALL THE PREREQS ARE AVAILABLE
+```{r temp}
+
+s_summary.numeric <- function(x, # nolint
+                              na.rm = TRUE, # nolint
+                              denom,
+                              .N_row, # nolint
+                              .N_col, #nolint
+                              na_level,
+                              .var,
+                              control = control_summarize_vars(),
+                              ...) {
+  assert_that(is.numeric(x))
+  
+  control_diff <- setdiff(names(control_summarize_vars()), names(control))
+  control <- c(control, control_summarize_vars()[control_diff])
+
+  if (na.rm) {
+    x <- x[!is.na(x)]
+  }
+
+  y <- list()
+
+  y$n <- c("n" = length(x))
+
+  y$mean <- c("mean" = ifelse(length(x) == 0, NA_real_, mean(x, na.rm = FALSE)))
+
+  y$sd <- c("sd" = sd(x, na.rm = FALSE))
+
+  y$mean_sd <- c(y$mean, "sd" = sd(x, na.rm = FALSE))
+
+  mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
+  y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
+
+  mean_se <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE) / sqrt(y$n)
+  names(mean_se) <- c("mean_se_lwr", "mean_se_upr")
+  y$mean_se <- with_label(mean_se, "Mean -/+ 1xSE")
+
+  mean_sdi <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE)
+  names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
+  y$mean_sdi <- with_label(mean_sdi, "Mean -/+ 1xSD")
+
+  y$median <- c("median" = median(x, na.rm = FALSE))
+
+  median_ci <- stat_median_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
+  y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))
+
+  q <- control$quantiles
+  if (any(is.na(x))) {
+    qnts <- rep(NA_real_, length(q))
+  } else {
+    qnts <- quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
+  }
+  names(qnts) <- paste("quantile", q, sep = "_")
+  y$quantiles <- with_label(qnts, paste0(paste(paste0(q * 100, "%"), collapse = " and "), "-ile"))
+
+  y$iqr <- c("iqr" = ifelse(
+    any(is.na(x)),
+    NA_real_,
+    IQR(x, na.rm = FALSE, type = control$quantile_type))
+  )
+
+  y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
+
+  y
+}
+
+summary_numeric_format <- function() {
+  c(n = "xx.",
+    mean = "xx.x",
+    sd = "xx.x",
+    mean_sd = "xx.x (xx.x)",
+    mean_ci = "(xx.xx, xx.xx)",
+    mean_se = "(xx.xx, xx.xx)",
+    mean_sdi = "(xx.xx, xx.xx)",
+    median = "xx.x",
+    median_ci = "(xx.xx, xx.xx)",
+    quantiles = "xx.x - xx.x",
+    iqr = "xx.x - xx.x",
+    range = "xx.x - xx.x")
+}
+
+summary_numeric_labels <- function() {
+  c(mean = "Mean",
+    sd = "SD",
+    mean_sd = "Mean (SD)",
+    median = "Median",
+    iqr = "IQR",
+    range = "Min - Max")
+}
+
+```
 ## New function to display graphs 
-```{r} 
+```{r fun} 
 
 # Helper function to get the right cell formatting in the the table.
 format_row <- function(x, format, labels = NULL) {
@@ -75,9 +167,10 @@ format_row <- function(x, format, labels = NULL) {
 }
 
 # New plot function.
-g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", # nolint
+g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRUE, # nolint
                        mid = "mean", interval = "mean_ci", whiskers = c("lwr", "upr"), table = NULL,
-                       control = control_summarize_vars(), na.rm = TRUE, # nolint
+                       stat_fun = tern::s_summary.numeric, control = tern::control_summarize_vars(), 
+                       table_format = tern::summary_numeric_format(), table_labels = tern::summary_numeric_labels(),
                        mid_type = "pl", mid_point_size = 2, position = position_dodge(width = 0.4),
                        legend_position = "bottom", legend_title = NULL,
                        x_lab = "Visit", y_lab = "ALT", y_lab_units_var = "AVALU",
@@ -105,7 +198,7 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", # nolint
     df_grp,
     bind_cols(
       lapply(
-        s_summary(.data[[y]], control = control, stats = c(mid, interval), na.rm = na.rm),
+        stat_fun(.data[[y]], control = control, na.rm = na.rm)[c(mid, interval)],
         function(x) as_tibble(t(x))
       )
     ),
@@ -117,11 +210,8 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", # nolint
 
     df_N <- df %>% # nolint
       group_by_at(strata) %>%
-      summarise(
-        N = s_summary(.data[[y]], control = control, stats = "n", na.rm = na.rm)[[1]],
-        .groups = "drop"
-      )
-
+      summarise(N = ifelse(na.rm, sum(!is.na(.data[[y]])), n()), .groups = "drop")
+    
     df_stats <- dplyr::full_join(x = df_stats, y = df_N, by = strata)
 
     strata_N <- paste0(strata, "_N") # nolint
@@ -213,9 +303,9 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", # nolint
     df_stats_table <- df_grp %>%
       summarise(
         format_row(
-          x = s_summary(.data[[y]], control = control, stats = table, na.rm = na.rm),
-          format = summary_numeric_format(),
-          labels <- summary_numeric_labels()
+          x = stat_fun(.data[[y]], control = control, na.rm = na.rm)[table],
+          format = table_format,
+          labels <- table_labels
         ),
         .groups = "drop"
       )
@@ -268,20 +358,38 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", # nolint
 
 # Mean with CI
 g_lineplot(adlb)
+# temp
+# g_lineplot(adlb, stat_fun = s_summary.numeric, table_format = summary_numeric_format(), table_labels = summary_numeric_labels())
 
 # Mean, upper whisker of CI
 g_lineplot(adlb, whiskers = "upr", title = "Plot of Mean and Upper 95% Confidence Limit by Visit")
+# temp
+# g_lineplot(adlb, whiskers = "upr", title = "Plot of Mean and Upper 95% Confidence Limit by Visit",
+#            stat_fun = s_summary.numeric, table_format = summary_numeric_format(), table_labels = summary_numeric_labels())
 
 # Median with CI
 g_lineplot(adlb, mid = "median", title = "Plot of Median and 95% Confidence Limits by Visit")
+# temp
+# g_lineplot(adlb, mid = "median", title = "Plot of Median and 95% Confidence Limits by Visit",
+#            stat_fun = s_summary.numeric, table_format = summary_numeric_format(), table_labels = summary_numeric_labels())
 
 # Mean, +/- SD
 g_lineplot(adlb, interval = "mean_sdi", title = "Plot of Median +/- SD by Visit")
+# temp
+# g_lineplot(adlb, interval = "mean_sdi", title = "Plot of Median +/- SD by Visit",
+#            stat_fun = s_summary.numeric, table_format = summary_numeric_format(), table_labels = summary_numeric_labels())
 
 # Mean with CI plot with stats table
 g_lineplot(adlb, table = c("n", "mean", "mean_ci"))
+# temp
+# g_lineplot(adlb, table = c("n", "mean", "mean_ci"),
+#            stat_fun = s_summary.numeric, table_format = summary_numeric_format(), table_labels = summary_numeric_labels())
 
 # Mean with CI - continuous time variable, customized confidence level
 g_lineplot(adlb, x = "AVISITN", table = c("n", "mean"), control = list(conf_level = 0.80),
            title = "Plot of Mean and 80% Confidence Limits by Visit")
+# temp
+# g_lineplot(adlb, x = "AVISITN", table = c("n", "mean"), control = list(conf_level = 0.80),
+#            title = "Plot of Mean and 80% Confidence Limits by Visit",
+#            stat_fun = s_summary.numeric, table_format = summary_numeric_format(), table_labels = summary_numeric_labels())
 ```
