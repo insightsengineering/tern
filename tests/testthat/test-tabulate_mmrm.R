@@ -490,7 +490,12 @@ test_that("summarize_lsmeans works as expected", {
       "(-2.721, 9.954)", "7.2%", "0.2604"),
     .Dim = c(41L, 4L)
   )
-  expect_equal(result_matrix, expected_matrix, tolerance = 1e-2)
+
+  result_numbers <- as.numeric(result_matrix[grepl("^-?\\d+", result_matrix)])
+  expected_numbers <- as.numeric(expected_matrix[grepl("^-?\\d+", result_matrix)])
+
+  expect_equal(result_numbers, expected_numbers, tolerance = 1e-2)
+
 })
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
