@@ -44,6 +44,21 @@ NULL
 #' * `quantiles`: numeric vector of length two to specify the quantiles.
 #' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
 #'   See more about `type` in [stats::quantile()].
+#' @param stats a (`character`) vector with names of statistics to be computed for `x`.
+#' Possible values are: \cr
+#' - `n`: the [length()].
+#' - `mean`: the [mean()].
+#' - `sd`: the [sd()].
+#' - `mean_sd`: the [mean()] and [sd()].
+#' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
+#' - `mean_se`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]/[sqrt()]).
+#' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]).
+#' - `median`: the [median()].
+#' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
+#' - `quantiles`: two sample quantiles (from [quantile()]).
+#' - `iqr`: the [IQR()].
+#' - `range`: the [range_noinf()].
+#' - `NULL`: report all of the statistics listed above.
 #'
 #' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
 #'   an object description.
@@ -73,7 +88,8 @@ s_summary <- function(x,
 #'   intersection of a column and a row delimits an empty data selection.
 #'   Also, when the `mean` function is applied to an empty vector, `NA` will
 #'   be returned instead of `NaN`, the latter being standard behavior in R.
-#' @return If `x` is of class `numeric`, returns a list with named items:
+#' @return If `x` is of class `numeric`, returns a list with named items
+#' as specified by `stats` parameter. By default, the following elements are reported:
 #' - `n`: the [length()] of `x`.
 #' - `mean_sd`: the [mean()] and [sd()].
 #' - `median`: the [median()].
@@ -84,7 +100,7 @@ s_summary <- function(x,
 #' @method s_summary numeric
 #' @order 3
 #'
-#' @importFrom stats sd median
+#' @importFrom stats sd median IQR
 #' @export
 #'
 #' @examples
@@ -99,7 +115,7 @@ s_summary <- function(x,
 #' s_summary(x, na.rm = FALSE)
 #'
 #' x <- c(NA_real_, 1, 2)
-#' s_summary(x)
+#' s_summary(x, stats = NULL)
 #'
 #' ## Benefits in `rtables` contructions:
 #' require(rtables)
@@ -120,7 +136,7 @@ s_summary <- function(x,
 #' X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 #' lapply(X, function(x) s_summary(x$x))
 #'
-s_summary.numeric <- function(x,
+s_summary.numeric <- function(x, # nolint
                               na.rm = TRUE, # nolint
                               denom,
                               .N_row, # nolint
@@ -128,93 +144,93 @@ s_summary.numeric <- function(x,
                               na_level,
                               .var,
                               control = control_summarize_vars(),
-                              stats = c("n", "mean_sd", "median", "mean_ci", "median_ci", "quantiles", "range"),
+                              stats = c(
+                                "n", "mean_sd", "median", "mean_ci",
+                                "median_ci", "quantiles", "range"
+                              ),
                               ...) {
   assert_that(is.numeric(x))
 
-  if(is.null(stats)) { # return all the stats available
+  if (is.null(stats)) { # return all the stats available
     stats <- c(
       "n", "mean", "sd", "mean_sd", "mean_ci", "mean_se", "mean_sdi",
-      "median", "median_ci", "quantiles", "irq", "range"
+      "median", "median_ci", "quantiles", "iqr", "range"
       )
   }
 
-  if (na.rm)
+  if (na.rm) {
     x <- x[!is.na(x)]
-
-  y <- list()
+  }
 
   n <- length(x)
+  y <- list()
 
-  if("n" %in% stats) {
+  if ("n" %in% stats) {
     y$n <- c("n" = n)
   }
 
   if (any(grepl("^mean.*", stats))) {
-    y$mean <- c("mean" = ifelse(n > 0, mean(x), NA_real_))
+    y$mean <- ifelse(n == 0, NA_real_, mean(x, na.rm = FALSE))
   }
 
-  if("sd" %in% stats) {
-    y$sd <- c("sd" = sd(x))
+  if ("sd" %in% stats) {
+    y$sd <- c("sd" = sd(x, na.rm = FALSE))
   }
 
-  if("mean_sd" %in% stats) {
-    y$mean_sd <- c(y$mean, "sd" = sd(x))
+  if ("mean_sd" %in% stats) {
+    y$mean_sd <- c(y$mean, "sd" = sd(x, na.rm = FALSE))
   }
 
-  if("mean_ci" %in% stats) {
-    mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = na.rm, gg_helper = FALSE)
+  if ("mean_ci" %in% stats) {
+    mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
     y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
   }
 
-  if("mean_se" %in% stats) {
-    mean_se <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = na.rm)/sqrt(n)
-    mean_se <- setNames(mean_se, c("mean_se_lwr", "mean_se_upr"))
-    y$mean_se <- with_label(mean_se, "Mean +/- 1xSE")
+  if ("mean_se" %in% stats) {
+    mean_se <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE) / sqrt(n)
+    names(mean_se) <- c("mean_se_lwr", "mean_se_upr")
+    y$mean_se <- with_label(mean_se, "Mean -/+ 1xSE")
   }
 
-  if("mean_sdi" %in% stats) {
-    mean_sdi <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = na.rm)
-    mean_sdi <- setNames(mean_sdi, c("mean_sdi_lwr", "mean_sdi_upr"))
-    y$mean_sdi <- with_label(mean_sdi, "Mean +/- 1xSD")
+  if ("mean_sdi" %in% stats) {
+    mean_sdi <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE)
+    names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
+    y$mean_sdi <- with_label(mean_sdi, "Mean -/+ 1xSD")
   }
 
-  if("median" %in% stats) {
-    y$median <- c("median" = median(x, na.rm = na.rm))
+  if ("median" %in% stats) {
+    y$median <- c("median" = median(x, na.rm = FALSE))
   }
 
-  if("median_ci" %in% stats) {
-    conf_level <- control$conf_level
-    median_ci <- stat_median_ci(x, conf_level = conf_level, na.rm = na.rm, gg_helper = FALSE)
-    cl <- attr(median_ci, "conf_level")
-    y$median_ci <- with_label(
-      median_ci,
-      paste("Median", f_conf_level(ifelse(!is.na(cl), round(cl, digits = 2), conf_level)))
+  if ("median_ci" %in% stats) {
+    median_ci <- stat_median_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
+    y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))
+  }
+
+  if ("quantiles" %in% stats) {
+
+    q <- control$quantiles
+
+    if (any(is.na(x))) {
+      qnts <- rep(NA_real_, length(q))
+    } else {
+      qnts <- quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
+    }
+    names(qnts) <- paste("quantile", q, sep = "_")
+
+    y$quantiles <- with_label(qnts, paste0(paste(paste0(q * 100, "%"), collapse = " and "), "-ile"))
+  }
+
+  if ("iqr" %in% stats) {
+    y$iqr <- c("iqr" = ifelse(
+      any(is.na(x)),
+      NA_real_,
+      IQR(x, na.rm = FALSE, type = control$quantile_type))
     )
   }
 
-  if("iqr" %in% stats) {
-    if (any(is.na(x))) {
-      y$iqr <- c("iqr" = NA_real_)
-    } else {
-      y$iqr <- c("iqr" = IQR(x, na.rm = na.rm, type = control$quantile_type))
-    }
-  }
-
-  if("quantiles" %in% stats) {
-
-    quantiles <- control$quantiles
-
-    if (!na.rm && any(is.na(x))) {
-      qts <- c(NA_real_, NA_real_)
-    } else {
-      qts <- quantile(x, probs = quantiles, type = control$quantile_type, na.rm = na.rm)
-    }
-    y$quantiles <- with_label(qts, paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile"))
-  }
-
-  if("range" %in% stats) {
-    y$range <- setNames(range_noinf(x, na.rm = na.rm), c("min", "max"))
+  if ("range" %in% stats) {
+    y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
   }
 
   y[stats]

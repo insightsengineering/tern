@@ -16,7 +16,18 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
+s_summary(
+  x,
+  na.rm = TRUE,
+  denom,
+  .N_row,
+  .N_col,
+  na_level,
+  .var,
+  control,
+  stats,
+  ...
+)
 
 \method{s_summary}{numeric}(
   x,
@@ -27,6 +38,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
   na_level,
   .var,
   control = control_summarize_vars(),
+  stats = c("n", "mean_sd", "median", "mean_ci", "median_ci", "quantiles", "range"),
   ...
 )
 
@@ -71,6 +83,7 @@ a_summary(x, ..., .N_row, .N_col, .var)
   na_level,
   .var,
   control = control_summarize_vars(),
+  stats = c("n", "mean_sd", "median", "mean_ci", "median_ci", "quantiles", "range"),
   ...
 )
 
@@ -149,6 +162,24 @@ the helper function \code{\link[=control_summarize_vars]{control_summarize_vars(
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 }}
 
+\item{stats}{a (\code{character}) vector with names of statistics to be computed for \code{x}.
+Possible values are: \cr
+\itemize{
+\item \code{n}: the \code{\link[=length]{length()}}.
+\item \code{mean}: the \code{\link[=mean]{mean()}}.
+\item \code{sd}: the \code{\link[=sd]{sd()}}.
+\item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[=sd]{sd()}}.
+\item \code{mean_ci}: the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
+\item \code{mean_se}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[=sd]{sd()}}/\code{\link[=sqrt]{sqrt()}}).
+\item \code{mean_sdi}: the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[=sd]{sd()}}).
+\item \code{median}: the \code{\link[=median]{median()}}.
+\item \code{median_ci}: the CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
+\item \code{quantiles}: two sample quantiles (from \code{\link[=quantile]{quantile()}}).
+\item \code{iqr}: the \code{\link[=IQR]{IQR()}}.
+\item \code{range}: the \code{\link[=range_noinf]{range_noinf()}}.
+\item \code{NULL}: report all of the statistics listed above.
+}}
+
 \item{...}{arguments passed to \code{s_summary()}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
@@ -173,7 +204,8 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 to avoid warnings from \code{rtables}.}
 }
 \value{
-If \code{x} is of class \code{numeric}, returns a list with named items:
+If \code{x} is of class \code{numeric}, returns a list with named items
+as specified by \code{stats} parameter. By default, the following elements are reported:
 \itemize{
 \item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
 \item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[=sd]{sd()}}.
@@ -291,7 +323,7 @@ s_summary(x, na.rm = TRUE)
 s_summary(x, na.rm = FALSE)
 
 x <- c(NA_real_, 1, 2)
-s_summary(x)
+s_summary(x, stats = NULL)
 
 ## Benefits in `rtables` contructions:
 require(rtables)
