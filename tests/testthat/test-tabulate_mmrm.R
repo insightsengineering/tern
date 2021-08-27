@@ -328,31 +328,31 @@ test_that("h_mmrm_cov works as expected", {
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 1 DAY 8")),
     as.list(expected_tibble[, "1"][[1]]),
-    tolerance = 1e-3
+    tolerance = 1e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 2 DAY 15")),
     as.list(expected_tibble[, "2"][[1]]),
-    tolerance = 1e-3
+    tolerance = 1e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 3 DAY 22")),
     as.list(expected_tibble[, "3"][[1]]),
-    tolerance = 1e-3
+    tolerance = 1e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 4 DAY 29")),
     as.list(expected_tibble[, "4"][[1]]),
-    tolerance = 1e-3
+    tolerance = 1e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 5 DAY 36")),
     as.list(expected_tibble[, "5"][[1]]),
-    tolerance = 1e-3
+    tolerance = 1e-2
   )
 })
 
