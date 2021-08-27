@@ -26,28 +26,55 @@ control_summarize_vars <- function(conf_level = 0.95,
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
 }
 
-summary_numeric_format <- function() {
-  c(n = "xx.",
-    mean = "xx.x",
-    sd = "xx.x",
-    mean_sd = "xx.x (xx.x)",
-    mean_ci = "(xx.xx, xx.xx)",
-    mean_se = "(xx.xx, xx.xx)",
-    mean_sdi = "(xx.xx, xx.xx)",
-    median = "xx.x",
-    median_ci = "(xx.xx, xx.xx)",
-    quantiles = "xx.x - xx.x",
-    iqr = "xx.x - xx.x",
-    range = "xx.x - xx.x")
+#' Format Function for Descriptive Statistics
+#'
+#' Returns format patterns for descriptive statistics.
+#' The format is understood by the `rtables`.
+#'
+#' @param type (`string`)\cr choice of a summary data type.
+#' Only `counts` and `numeric` types are currently supported.
+#'
+#' @export
+#'
+summary_formats <- function(type = "numeric") {
+
+  if (type == "counts") {
+    c(n = "xx.",
+      count = "xx.",
+      count_fraction = format_count_fraction
+    )
+  } else {
+    c(n = "xx.",
+      mean = "xx.x",
+      sd = "xx.x",
+      mean_sd = "xx.x (xx.x)",
+      mean_ci = "(xx.xx, xx.xx)",
+      mean_se = "(xx.xx, xx.xx)",
+      mean_sdi = "(xx.xx, xx.xx)",
+      median = "xx.x",
+      median_ci = "(xx.xx, xx.xx)",
+      quantiles = "xx.x - xx.x",
+      iqr = "xx.x",
+      range = "xx.x - xx.x"
+    )
+  }
 }
 
-summary_numeric_labels <- function() {
+#' Label Function for Descriptive Statistics
+#'
+#' Returns labels of descriptive statistics.
+#'
+#' @export
+#'
+summary_labels <- function() {
+
   c(mean = "Mean",
     sd = "SD",
     mean_sd = "Mean (SD)",
     median = "Median",
     iqr = "IQR",
-    range = "Min - Max")
+    range = "Min - Max"
+  )
 }
 
 #' Summarize Variables
@@ -396,21 +423,8 @@ a_summary <- function(x,
   UseMethod("a_summary", x)
 }
 
-.a_summary_numeric_formats <- c(
-  n = "xx.",
-  mean_sd = "xx.x (xx.x)",
-  median = "xx.x",
-  quantiles = "xx.x - xx.x",
-  range = "xx.x - xx.x",
-  mean_ci = "(xx.xx, xx.xx)",
-  median_ci = "(xx.xx, xx.xx)"
-)
-
-.a_summary_numeric_labels <- c(
-  mean_sd = "Mean (SD)",
-  median = "Median",
-  range = "Min - Max"
-)
+.a_summary_numeric_formats <- summary_formats()
+.a_summary_numeric_labels <- summary_labels()
 
 #' @describeIn summarize_variables Formatted Analysis function method for `numeric`.
 #' @export
@@ -425,11 +439,7 @@ a_summary.numeric <- make_afun(
   .labels = .a_summary_numeric_labels
 )
 
-.a_summary_counts_formats <- c(
-  n = "xx.",
-  count = "xx.",
-  count_fraction = format_count_fraction
-)
+.a_summary_counts_formats <- summary_formats(type = "counts")
 
 #' @describeIn summarize_variables Method for `factor`.
 #' @export

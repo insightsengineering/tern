@@ -24,13 +24,18 @@ test_that("s_summary return NA for x length 0L", {
 
   result <- s_summary(x)
   expected <- list(
-    n = 0,
-    mean = c(NA_real_, NA_real_),
-    median_sd = NA_real_,
-    quantiles = with_label(c(NA_real_, NA_real_), "25% and 75%-ile"),
-    range = c(NA_real_, NA_real_),
-    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
+    n = c(n = 0),
+    mean = c(mean = NA_real_),
+    sd = c(sd = NA_real_),
+    mean_sd = c(mean = NA_real_, sd = NA_real_),
+    mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
+    mean_se = with_label(c(mean_se_lwr = NA_real_, mean_se_upr = NA_real_), "Mean -/+ 1xSE"),
+    mean_sdi = with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    median = c(median = NA_real_),
+    median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
+    quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
+    iqr = c(iqr = NA_real_),
+    range = c(min = NA_real_, max = NA_real_)
   )
   expect_equivalent(result, expected)
 })
@@ -43,12 +48,17 @@ test_that("s_summary handles NA", {
   result <- s_summary(x)
   expected <- list(
     n = 1,
-    mean_sd = c(1, NA),
-    median = 1,
-    quantiles = with_label(c(1, 1), "25% and 75%-ile"),
-    range = c(1, 1),
-    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
+    mean = c(mean = 1),
+    sd = c(sd = NA_real_),
+    mean_sd = c(mean = 1, sd = NA_real_),
+    mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
+    mean_se = with_label(c(mean_se_lwr = NA_real_, mean_se_upr = NA_real_), "Mean -/+ 1xSE"),
+    mean_sdi = with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    median = c(median = 1),
+    median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
+    quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 1), "25% and 75%-ile"),
+    iqr = c(iqr = 0),
+    range = c(min = 1, max = 1)
   )
   expect_equivalent(result, expected)
 
@@ -56,12 +66,17 @@ test_that("s_summary handles NA", {
   result <- s_summary(x, na.rm = FALSE)
   expected <- list(
     n = 2,
-    mean_sd = c(NA_real_, NA_real_),
-    median = NA_real_,
-    range = c(NA_real_, NA_real_),
-    mean_ci = with_label(c(NA_real_, NA_real_), "Mean 95% CI"),
-    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI"),
-    quantiles = with_label(c(NA_real_, NA_real_), "25% and 75%-ile")
+    mean = c(mean = NA_real_),
+    sd = c(sd = NA_real_),
+    mean_sd = c(mean = NA_real_, sd = NA_real_),
+    mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
+    mean_se = with_label(c(mean_se_lwr = NA_real_, mean_se_upr = NA_real_), "Mean -/+ 1xSE"),
+    mean_sdi = with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    median = c(median = NA_real_),
+    median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
+    quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
+    iqr = c(iqr = NA_real_),
+    range = c(min = NA_real_, max = NA_real_)
   )
   expect_equivalent(result, expected)
 })
@@ -72,12 +87,17 @@ test_that("s_summary returns right results for n = 2", {
   result <- s_summary(x)
   expected <- list(
     n = 2,
-    mean_sd = c(1.5, 0.7071068),
-    median = 1.5,
-    quantiles = with_label(c(1, 2), "25% and 75%-ile"),
-    range = c(1, 2),
-    mean_ci = with_label(c(-4.853102, 7.853102), "Mean 95% CI"),
-    median_ci = with_label(c(NA_real_, NA_real_), "Median 95% CI")
+    mean = c(mean = 1.5),
+    sd = c(sd = 0.7071068),
+    mean_sd = c(mean = 1.5, sd = 0.7071068),
+    mean_ci = with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
+    mean_se = with_label(c(mean_se_lwr = 1, mean_se_upr = 2), "Mean -/+ 1xSE"),
+    mean_sdi = with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
+    median = c(median = 1.5),
+    median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
+    quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 2), "25% and 75%-ile"),
+    iqr = c(iqr = 1),
+    range = c(min = 1, max = 2)
   )
   expect_equivalent(result, expected, tolerance = .00001)
 })
@@ -88,12 +108,17 @@ test_that("s_summary returns right results for n = 8", {
   result <- s_summary(x)
   expected <- list(
     n = 8,
-    mean_sd = c(6, 3.207135),
-    median = 6.5,
-    quantiles = with_label(c(3.5, 8.5), "25% and 75%-ile"),
-    range = c(1, 10),
-    mean_ci = with_label(c(3.318768, 8.681232), "Mean 95% CI"),
-    median_ci = with_label(c(1, 10), "Median 95% CI")
+    mean = c(mean = 6),
+    sd = c(sd = 3.207135),
+    mean_sd = c(mean = 6, sd = 3.207135),
+    mean_ci = with_label(c(mean_ci_lwr = 3.318768, mean_ci_upr = 8.681232), "Mean 95% CI"),
+    mean_se = with_label(c(mean_se_lwr = 4.866107, mean_se_upr = 7.133893), "Mean -/+ 1xSE"),
+    mean_sdi = with_label(c(mean_sdi_lwr = 2.792865, mean_sdi_upr = 9.207135), "Mean -/+ 1xSD"),
+    median = c(median = 6.5),
+    median_ci = with_label(c(median_ci_lwr = 1, median_ci_upr = 10), "Median 95% CI"),
+    quantiles = with_label(c(quantile_0.25 = 3.5, quantile_0.75 = 8.5), "25% and 75%-ile"),
+    iqr = c(iqr = 5),
+    range = c(min = 1, max = 10)
   )
   expect_equivalent(result, expected, tolerance = .00001)
 })

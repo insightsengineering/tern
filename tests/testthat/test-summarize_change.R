@@ -13,13 +13,21 @@ test_that("s_change_from_baseline handles empty data (complete missing for a vis
     na.rm = TRUE
   )
   expected <-  list(
-    n = 0L,
+    n = c(n = 0L),
+    mean = c(mean = NA_real_),
+    sd = c(sd = NA_real_),
     mean_sd = c(mean = NA_real_, sd = NA_real_),
-    median = NA_real_,
-    quantiles = with_label(c(NA_real_, NA_real_), "25% and 75%-ile"),
-    range = c(NA_real_, NA_real_),
     mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
-    median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
+    mean_se = with_label(c(mean_se_lwr = NA_real_, mean_se_upr = NA_real_), "Mean -/+ 1xSE"),
+    mean_sdi = with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
+    median = c(median = NA_real_),
+    median_ci = with_label(
+      `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
+      "Median 95% CI"
+    ),
+    quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
+    iqr = c(iqr = NA_real_),
+    range = c(min = NA_real_, max = NA_real_)
   )
 
   expect_identical(result, expected)
@@ -40,13 +48,21 @@ test_that("s_change_from_baseline handles NA in baseline values", {
     na.rm = TRUE
   )
   expected <-  list(
-    n = 3L,
+    n = c(n = 3L),
+    mean = c(mean = 3),
+    sd = c(sd = 3),
     mean_sd = c(mean = 3, sd = 3),
-    median = 3,
-    quantiles = with_label(c(0, 6), "25% and 75%-ile"),
-    range = c(0, 6),
     mean_ci = with_label(c(mean_ci_lwr = -4.452413, mean_ci_upr = 10.452413), "Mean 95% CI"),
-    median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
+    mean_se = with_label(c(mean_se_lwr = 1.267949, mean_se_upr = 4.732051), "Mean -/+ 1xSE"),
+    mean_sdi = with_label(c(mean_sdi_lwr = 0, mean_sdi_upr = 6), "Mean -/+ 1xSD"),
+    median = c(median = 3),
+    median_ci = with_label(
+      `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
+      "Median 95% CI"
+    ),
+    quantiles = with_label(c(quantile_0.25 = 0, quantile_0.75 = 6), "25% and 75%-ile"),
+    iqr = c(iqr = 6),
+    range = c(min = 0, max = 6)
   )
 
   expect_equal(result, expected, tol = 1e-6)
@@ -70,23 +86,39 @@ test_that("s_change_from_baseline handles baseline substitution", {
   expected <- list(
      # Here we take the summary of the 2 change values.
     `FALSE` = list(
-      n = 2L,
+      n = c(n = 2L),
+      mean = c(mean = 1.5),
+      sd = c(sd = 0.7071068),
       mean_sd = c(mean = 1.5, sd = 0.7071068),
-      median = 1.5,
-      quantiles = with_label(c(1, 2), "25% and 75%-ile"),
-      range = c(1, 2),
       mean_ci = with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
-      median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
+      mean_se = with_label(c(mean_se_lwr = 1, mean_se_upr = 2), "Mean -/+ 1xSE"),
+      mean_sdi = with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
+      median = c(median = 1.5),
+      median_ci = with_label(
+        `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
+        "Median 95% CI"
+      ),
+      quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 2), "25% and 75%-ile"),
+      iqr = c(iqr = 1),
+      range = c(min = 1, max = 2)
     ),
     # Here we take the summary of the 2 baseline values.
     `TRUE` = list(
-      n = 2L,
+      n = c(n = 2L),
+      mean = c(mean = 2.5),
+      sd = c(sd = 2.12132),
       mean_sd = c(mean = 2.5, sd = 2.12132),
-      median = 2.5,
-      quantiles = with_label(c(1, 4), "25% and 75%-ile"),
-      range = c(1, 4),
       mean_ci = with_label(c(mean_ci_lwr = -16.55931, mean_ci_upr = 21.55931), "Mean 95% CI"),
-      median_ci =  with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI")
+      mean_se = with_label(c(mean_se_lwr = 1, mean_se_upr = 4), "Mean -/+ 1xSE"),
+      mean_sdi = with_label(c(mean_sdi_lwr = 0.3786797, mean_sdi_upr = 4.6213203), "Mean -/+ 1xSD"),
+      median = c(median = 2.5),
+      median_ci = with_label(
+        `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
+        "Median 95% CI"
+      ),
+      quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 4), "25% and 75%-ile"),
+      iqr = c(iqr = 3),
+      range = c(min = 1, max = 4)
     )
   )
 
