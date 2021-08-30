@@ -492,8 +492,7 @@ test_that("summarize_lsmeans works as expected", {
       "(-2.721, 9.954)", "7.2%", "0.2604"),
     .Dim = c(41L, 4L)
   )
-
-  expect_identical(result_matrix, expected_matrix)
+  expect_equal(result_matrix, expected_matrix, tolerance = 1e-3)
 
 })
 
