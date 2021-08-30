@@ -5,8 +5,8 @@ test_that("s_compare works for numeric", {
     .in_ref_col = FALSE
   ))
   expect_named(result, c(
-    "n", "mean", "sd", "mean_sd", "mean_ci", "mean_se", "mean_sdi",
-    "median", "median_ci", "quantiles", "iqr", "range", "pval"
+    "n", "mean", "sd", "mean_sd", "mean_ci", "mean_sei", "mean_sdi",
+    "median", "mad", "median_ci", "quantiles", "iqr", "range", "pval"
   ))
 })
 

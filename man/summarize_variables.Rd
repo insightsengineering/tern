@@ -180,9 +180,10 @@ If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \item \code{sd}: the \code{\link[=sd]{sd()}} of \code{x}.
 \item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[=sd]{sd()}} of \code{x}.
 \item \code{mean_ci}: the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
-\item \code{mean_se}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[=sd]{sd()}}/\code{\link[=sqrt]{sqrt()}}).
+\item \code{mean_sei}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[=sd]{sd()}}/\code{\link[=sqrt]{sqrt()}}).
 \item \code{mean_sdi}: the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[=sd]{sd()}}).
 \item \code{median}: the \code{\link[=median]{median()}} of \code{x}.
+\item \code{mad}: the median absolute deviation of \code{x}, i.e.: (\link{median(x - median(x))}).
 \item \code{median_ci}: the CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
 \item \code{quantiles}: two sample quantiles of \code{x} (from \code{\link[=quantile]{quantile()}}).
 \item \code{iqr}: the \code{\link[=IQR]{IQR()}} of \code{x}.

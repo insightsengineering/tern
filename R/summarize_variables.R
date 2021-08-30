@@ -49,9 +49,10 @@ summary_formats <- function(type = "numeric") {
       sd = "xx.x",
       mean_sd = "xx.x (xx.x)",
       mean_ci = "(xx.xx, xx.xx)",
-      mean_se = "(xx.xx, xx.xx)",
+      mean_sei = "(xx.xx, xx.xx)",
       mean_sdi = "(xx.xx, xx.xx)",
       median = "xx.x",
+      mad = "xx.x",
       median_ci = "(xx.xx, xx.xx)",
       quantiles = "xx.x - xx.x",
       iqr = "xx.x",
@@ -72,6 +73,7 @@ summary_labels <- function() {
     sd = "SD",
     mean_sd = "Mean (SD)",
     median = "Median",
+    mad = "Median Absolute Deviation",
     iqr = "IQR",
     range = "Min - Max"
   )
@@ -130,9 +132,10 @@ s_summary <- function(x,
 #' - `sd`: the [sd()] of `x`.
 #' - `mean_sd`: the [mean()] and [sd()] of `x`.
 #' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
-#' - `mean_se`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]/[sqrt()]).
+#' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]/[sqrt()]).
 #' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]).
 #' - `median`: the [median()] of `x`.
+#' - `mad`: the median absolute deviation of `x`, i.e.: ([median(x - median(x))]).
 #' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
 #' - `quantiles`: two sample quantiles of `x` (from [quantile()]).
 #' - `iqr`: the [IQR()] of `x`.
@@ -208,15 +211,17 @@ s_summary.numeric <- function(x, # nolint
   mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
   y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
 
-  mean_se <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE) / sqrt(y$n)
-  names(mean_se) <- c("mean_se_lwr", "mean_se_upr")
-  y$mean_se <- with_label(mean_se, "Mean -/+ 1xSE")
+  mean_sei <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE) / sqrt(y$n)
+  names(mean_sei) <- c("mean_sei_lwr", "mean_sei_upr")
+  y$mean_sei <- with_label(mean_sei, "Mean -/+ 1xSE")
 
   mean_sdi <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE)
   names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
   y$mean_sdi <- with_label(mean_sdi, "Mean -/+ 1xSD")
 
   y$median <- c("median" = median(x, na.rm = FALSE))
+
+  y$mad <- c("mad" = median(x - y$median, na.rm = FALSE))
 
   median_ci <- stat_median_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
   y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))

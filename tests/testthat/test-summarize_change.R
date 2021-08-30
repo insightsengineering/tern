@@ -18,9 +18,10 @@ test_that("s_change_from_baseline handles empty data (complete missing for a vis
     sd = c(sd = NA_real_),
     mean_sd = c(mean = NA_real_, sd = NA_real_),
     mean_ci = with_label(c(mean_ci_lwr = NA_real_, mean_ci_upr = NA_real_), "Mean 95% CI"),
-    mean_se = with_label(c(mean_se_lwr = NA_real_, mean_se_upr = NA_real_), "Mean -/+ 1xSE"),
+    mean_sei = with_label(c(mean_sei_lwr = NA_real_, mean_sei_upr = NA_real_), "Mean -/+ 1xSE"),
     mean_sdi = with_label(c(mean_sdi_lwr = NA_real_, mean_sdi_upr = NA_real_), "Mean -/+ 1xSD"),
     median = c(median = NA_real_),
+    mad = c(mad = NA_real_),
     median_ci = with_label(
       `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
       "Median 95% CI"
@@ -53,9 +54,10 @@ test_that("s_change_from_baseline handles NA in baseline values", {
     sd = c(sd = 3),
     mean_sd = c(mean = 3, sd = 3),
     mean_ci = with_label(c(mean_ci_lwr = -4.452413, mean_ci_upr = 10.452413), "Mean 95% CI"),
-    mean_se = with_label(c(mean_se_lwr = 1.267949, mean_se_upr = 4.732051), "Mean -/+ 1xSE"),
+    mean_sei = with_label(c(mean_sei_lwr = 1.267949, mean_sei_upr = 4.732051), "Mean -/+ 1xSE"),
     mean_sdi = with_label(c(mean_sdi_lwr = 0, mean_sdi_upr = 6), "Mean -/+ 1xSD"),
     median = c(median = 3),
+    mad = c(mad = 0),
     median_ci = with_label(
       `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
       "Median 95% CI"
@@ -91,9 +93,10 @@ test_that("s_change_from_baseline handles baseline substitution", {
       sd = c(sd = 0.7071068),
       mean_sd = c(mean = 1.5, sd = 0.7071068),
       mean_ci = with_label(c(mean_ci_lwr = -4.853102, mean_ci_upr = 7.853102), "Mean 95% CI"),
-      mean_se = with_label(c(mean_se_lwr = 1, mean_se_upr = 2), "Mean -/+ 1xSE"),
+      mean_sei = with_label(c(mean_sei_lwr = 1, mean_sei_upr = 2), "Mean -/+ 1xSE"),
       mean_sdi = with_label(c(mean_sdi_lwr = 0.7928932, mean_sdi_upr = 2.2071068), "Mean -/+ 1xSD"),
       median = c(median = 1.5),
+      mad = c(mad = 0),
       median_ci = with_label(
         `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
         "Median 95% CI"
@@ -109,9 +112,10 @@ test_that("s_change_from_baseline handles baseline substitution", {
       sd = c(sd = 2.12132),
       mean_sd = c(mean = 2.5, sd = 2.12132),
       mean_ci = with_label(c(mean_ci_lwr = -16.55931, mean_ci_upr = 21.55931), "Mean 95% CI"),
-      mean_se = with_label(c(mean_se_lwr = 1, mean_se_upr = 4), "Mean -/+ 1xSE"),
+      mean_sei = with_label(c(mean_sei_lwr = 1, mean_sei_upr = 4), "Mean -/+ 1xSE"),
       mean_sdi = with_label(c(mean_sdi_lwr = 0.3786797, mean_sdi_upr = 4.6213203), "Mean -/+ 1xSD"),
       median = c(median = 2.5),
+      mad = c(mad = 0),
       median_ci = with_label(
         `attr<-`(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "conf_level", NA_real_),
         "Median 95% CI"
