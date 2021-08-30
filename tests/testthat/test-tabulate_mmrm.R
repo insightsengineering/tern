@@ -301,7 +301,7 @@ test_that("h_mmrm_cov works as expected", {
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     skip("tests dont run with older version of lme4")
   }
-
+  testthat::skip("temporary skip")
   test.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
@@ -319,7 +319,9 @@ test_that("h_mmrm_cov works as expected", {
       "-0.0679", "1.3693", "1.8764", "60.3583"),
     .Dim = c(6L, 6L)
   )
+
   expect_identical(result_matrix, expected_matrix)
+
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
@@ -441,7 +443,7 @@ test_that("s_mmrm_lsmeans_single works as expected", {
 })
 
 test_that("summarize_lsmeans works as expected", {
-
+  testthat::skip("temporary skip")
   test.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
@@ -491,6 +493,7 @@ test_that("summarize_lsmeans works as expected", {
     .Dim = c(41L, 4L)
   )
   expect_equal(result_matrix, expected_matrix, tolerance = 1e-3)
+
 })
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
