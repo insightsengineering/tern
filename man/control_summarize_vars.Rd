@@ -16,7 +16,8 @@ control_summarize_vars(
 \item{quantiles}{(\code{numeric}) \cr of length two to specify the quantiles to calculate.}
 
 \item{quantile_type}{(\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-Default is set to \code{2} as this matches the default quantile algorithm in SAS \verb{proc univariate} set by \code{QNTLDEF=5}.
+Default is set to \code{2} as this matches the default quantile algorithm
+in SAS \verb{proc univariate} set by \code{QNTLDEF=5}.
 This differs from R's default. See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.}
 }
 \value{

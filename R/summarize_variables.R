@@ -6,7 +6,8 @@
 #' @inheritParams argument_convention
 #' @param quantiles (`numeric`) \cr of length two to specify the quantiles to calculate.
 #' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
+#'   Default is set to `2` as this matches the default quantile algorithm
+#'   in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
 #'
 #' @return A list of components with the same names as the arguments
