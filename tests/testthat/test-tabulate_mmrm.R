@@ -235,7 +235,6 @@ get_mmrm <- function() {
   )
 }
 
-
 get_mmrm_no_arm <- function() {
   anl <- get_anl() %>%
     mutate(
@@ -254,6 +253,7 @@ get_mmrm_no_arm <- function() {
     cor_struct = "random-quadratic"
   )
 }
+
 
 test_that("h_mmrm_fixed works as expected", {
 
@@ -309,7 +309,7 @@ test_that("h_mmrm_cov works as expected", {
   result2 <- as.rtable(mmrm, type = "cov", format = "xx.xxxx")
   expect_identical(result, result2)
 
-  expected_tibble <- tribble(
+  expected_tibble <- tibble::tribble(
     ~"1", ~"2", ~"3", ~"4", ~"5",
     62.9854, 0.1138, -2.2943, -3.144, -2.4352,
     0.1138, 58.9081, -0.064, -0.0877, -0.0679,
@@ -328,31 +328,31 @@ test_that("h_mmrm_cov works as expected", {
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 1 DAY 8")),
     as.list(expected_tibble[, "1"][[1]]),
-    tolerance = 1e-2
+    tolerance = 5e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 2 DAY 15")),
     as.list(expected_tibble[, "2"][[1]]),
-    tolerance = 1e-2
+    tolerance = 5e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 3 DAY 22")),
     as.list(expected_tibble[, "3"][[1]]),
-    tolerance = 1e-2
+    tolerance = 5e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 4 DAY 29")),
     as.list(expected_tibble[, "4"][[1]]),
-    tolerance = 1e-1
+    tolerance = 5e-2
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 5 DAY 36")),
     as.list(expected_tibble[, "5"][[1]]),
-    tolerance = 1e-1
+    tolerance = 5e-2
   )
 })
 
@@ -490,7 +490,7 @@ test_that("summarize_lsmeans works as expected", {
     summarize_lsmeans(show_relative = "increase") %>%
     build_table(df)
 
-  expected_tibble <- tribble(
+  expected_tibble <- tibble::tribble(
     ~b, ~a, ~c,
     11, 17, 13,
     c(51.48359, 2.39400), c(51.604397, 1.932004), c(48.180218, 2.214652),
