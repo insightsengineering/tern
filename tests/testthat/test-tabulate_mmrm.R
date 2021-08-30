@@ -346,13 +346,13 @@ test_that("h_mmrm_cov works as expected", {
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 4 DAY 29")),
     as.list(expected_tibble[, "4"][[1]]),
-    tolerance = 1e-2
+    tolerance = 1e-1
   )
 
   expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 5 DAY 36")),
     as.list(expected_tibble[, "5"][[1]]),
-    tolerance = 1e-2
+    tolerance = 1e-1
   )
 })
 
