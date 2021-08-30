@@ -301,7 +301,7 @@ test_that("h_mmrm_cov works as expected", {
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
     skip("tests dont run with older version of lme4")
   }
-
+  test.nest::skip("temporary skip")
   test.nest::skip_if_too_deep(3)
 
   mmrm <- get_mmrm()
@@ -446,7 +446,7 @@ test_that("s_mmrm_lsmeans_single works as expected", {
 })
 
 test_that("summarize_lsmeans works as expected", {
-
+  test.nest::skip("temporary skip")
   test.nest::skip_if_too_deep(3)
 
   if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
