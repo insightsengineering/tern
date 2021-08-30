@@ -135,7 +135,7 @@ s_summary <- function(x,
 #' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]/[sqrt()]).
 #' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]).
 #' - `median`: the [median()] of `x`.
-#' - `mad`: the median absolute deviation of `x`, i.e.: ([median(x - median(x))]).
+#' - `mad`: the median absolute deviation of `x`, i.e.: ([median()] of `xc`, where `xc` = `x` - [median()]).
 #' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
 #' - `quantiles`: two sample quantiles of `x` (from [quantile()]).
 #' - `iqr`: the [IQR()] of `x`.
