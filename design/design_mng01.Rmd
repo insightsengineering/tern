@@ -222,7 +222,7 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
 
     df_stats_table <- df_stats_table %>%
       tidyr::pivot_longer(
-        cols = -c(strata, x),
+        cols = -all_of(c(strata, x)),
         names_to = "stat",
         values_to = "value",
         names_ptypes = list(stat = factor(levels = stats_lev))
@@ -280,6 +280,8 @@ g_lineplot(adlb, interval = "mean_sdi", title = "Plot of Median +/- SD by Visit"
 g_lineplot(adlb, table = c("n", "mean", "mean_ci"))
 
 # Mean with CI - continuous time variable, customized confidence level
-g_lineplot(adlb, x = "AVISITN", table = c("n", "mean"), control = list(conf_level = 0.80),
-           title = "Plot of Mean and 80% Confidence Limits by Visit")
+g_lineplot(
+  adlb, x = "AVISITN", table = c("n", "mean"), control = list(conf_level = 0.80),
+  title = "Plot of Mean and 80% Confidence Limits by Visit"
+)
 ```
