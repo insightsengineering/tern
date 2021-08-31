@@ -77,7 +77,7 @@ format_row <- function(x, format, labels = NULL) {
 # New plot function.
 g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRUE, # nolint
                        mid = "mean", interval = "mean_ci", whiskers = c("lwr", "upr"), table = NULL,
-                       sfun = tern::s_summary.numeric, ..., 
+                       sfun = tern::s_summary.numeric, ...,
                        table_format = tern::summary_formats(), table_labels = tern::summary_labels(),
                        mid_type = "pl", mid_point_size = 2, position = position_dodge(width = 0.4),
                        legend_position = "bottom", legend_title = NULL,
