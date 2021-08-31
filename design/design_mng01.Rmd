@@ -119,12 +119,12 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
     df_N <- df %>% # nolint
       group_by_at(strata) %>%
       summarise(N = ifelse(na.rm, sum(!is.na(.data[[y]])), n()), .groups = "drop")
-    
+
     assert_that(!("N" %in% colnames(df_stats))) # as we join with df_N (which has column N)
     df_stats <- dplyr::full_join(x = df_stats, y = df_N, by = strata)
 
     strata_N <- paste0(strata, "_N") # nolint
-    assert_that(!(strata_N %in% colnames(df_stats))) # as we create a new column strata_N 
+    assert_that(!(strata_N %in% colnames(df_stats))) # as we create a new column strata_N
     df_stats[[strata_N]] <- paste0(df_stats[[strata]], " (N = ", df_stats$N, ")")
 
   }
