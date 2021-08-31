@@ -77,7 +77,7 @@ format_row <- function(x, format, labels = NULL) {
 # New plot function.
 g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRUE, # nolint
                        mid = "mean", interval = "mean_ci", whiskers = c("lwr", "upr"), table = NULL,
-                       stat_fun = tern::s_summary.numeric, control = tern::control_summarize_vars(),
+                       sfun = tern::s_summary.numeric, ..., 
                        table_format = tern::summary_formats(), table_labels = tern::summary_labels(),
                        mid_type = "pl", mid_point_size = 2, position = position_dodge(width = 0.4),
                        legend_position = "bottom", legend_title = NULL,
@@ -106,7 +106,7 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
     df_grp,
     bind_cols(
       lapply(
-        stat_fun(.data[[y]], control = control, na.rm = na.rm)[c(mid, interval)],
+        sfun(.data[[y]], na.rm = na.rm, ...)[c(mid, interval)],
         function(x) as_tibble(t(x))
       )
     ),
@@ -213,9 +213,9 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
     df_stats_table <- df_grp %>%
       summarise(
         format_row(
-          x = stat_fun(.data[[y]], control = control, na.rm = na.rm)[table],
+          x = sfun(.data[[y]], na.rm = na.rm, ...)[table],
           format = table_format,
-          labels <- table_labels
+          labels = table_labels
         ),
         .groups = "drop"
       )
@@ -283,7 +283,7 @@ g_lineplot(adlb, table = c("n", "mean", "mean_ci"))
 
 # Mean with CI - continuous time variable, customized confidence level
 g_lineplot(
-  adlb, x = "AVISITN", table = c("n", "mean"), control = list(conf_level = 0.80),
+  adlb, x = "AVISITN", table = c("n", "mean", "mean_ci"), control = list(conf_level = 0.80),
   title = "Plot of Mean and 80% Confidence Limits by Visit"
 )
 ```
