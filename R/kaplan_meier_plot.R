@@ -81,7 +81,7 @@ NULL
 #' @export
 #'
 #' @examples
-#'
+#'\dontrun{
 #' library(scda)
 #' library(dplyr)
 #' library(ggplot2)
@@ -164,6 +164,7 @@ NULL
 #'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
 #'   position_surv_med = c(1, 0.7)
 #' )
+#'}
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
