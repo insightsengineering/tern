@@ -50,7 +50,7 @@ adlb <- adlb %>%
 ## New function to display graphs 
 ```{r fun} 
 
-# Helper function to get the right cell formatting in the the table.
+# Helper function to get the right formatting in the table.
 format_row <- function(x, format, labels = NULL) {
 
   format_cell <- function(x, format, label = NULL) {
