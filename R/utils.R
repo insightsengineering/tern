@@ -362,7 +362,7 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   if (!is.null(groups)) {
     cc <- complete.cases(df[c(x, y, groups)])
     df_c <- df[cc, c(x, y, groups)]
-    df_c_ordered <- df_c[order(df_c[groups]), ]
+    df_c_ordered <- df_c[do.call("order", as.list(df_c[, groups, drop = FALSE])), , drop = FALSE]
     df_c_g <- data.frame(Map(as.factor, df_c_ordered[groups]))
 
     df_smooth_raw <-
@@ -410,4 +410,9 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #'
 n_available <- function(x) {
   sum(!is.na(x))
+}
+
+# used for tests at the moments
+reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
+  do.call(var_relabel, c(list(x = x), as.list(varlables), list(...)))
 }

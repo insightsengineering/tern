@@ -20,7 +20,7 @@ test_that("tidy.step works as expected for survival STEP results", {
       "Interval Center", "Interval Lower", "Interval Upper", "n", "events",
       "Hazard Ratio", "se", "ci_lower", "ci_upper")
   )
-  expect_named(attributes(result), c("names", "row.names", "class", "estimate", "biomarker", "ci"))
+  expect_named(attributes(result), c("class", "row.names", "names", "estimate", "biomarker", "ci"), ignore.order = TRUE)
   expect_equal(result[["Hazard Ratio"]], exp(step_matrix[, "loghr"]))
   expect_equal(result$ci_lower, exp(step_matrix[, "ci_lower"]))
 })
@@ -49,7 +49,7 @@ test_that("tidy.step works as expected for response STEP results", {
       "Interval Center", "Interval Lower", "Interval Upper", "n",
       "Odds Ratio", "se", "ci_lower", "ci_upper")
   )
-  expect_named(attributes(result), c("names", "row.names", "class", "estimate", "biomarker", "ci"))
+  expect_named(attributes(result), c("class", "row.names", "names", "estimate", "biomarker", "ci"), ignore.order = TRUE)
   expect_equal(result[["Odds Ratio"]], exp(step_matrix[, "logor"]))
   expect_equal(result$ci_lower, exp(step_matrix[, "ci_lower"]))
 })

@@ -173,15 +173,21 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 to avoid warnings from \code{rtables}.}
 }
 \value{
-If \code{x} is of class \code{numeric}, returns a list with named items:
+If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \itemize{
 \item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
-\item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[=sd]{sd()}}.
-\item \code{median}: the \code{\link[=median]{median()}}.
-\item \code{mean_ci}: the CI for the mean (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
-\item \code{median_ci}: the CI for the median (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
-\item \code{quantiles}: two sample quantiles (from \code{\link[=quantile]{quantile()}}).
-\item \code{range}: the \code{\link[=range_noinf]{range_noinf()}}.
+\item \code{mean}: the \code{\link[=mean]{mean()}} of \code{x}.
+\item \code{sd}: the \code{\link[=sd]{sd()}} of \code{x}.
+\item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[=sd]{sd()}} of \code{x}.
+\item \code{mean_ci}: the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
+\item \code{mean_sei}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[=sd]{sd()}}/\code{\link[=sqrt]{sqrt()}}).
+\item \code{mean_sdi}: the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[=sd]{sd()}}).
+\item \code{median}: the \code{\link[=median]{median()}} of \code{x}.
+\item \code{mad}: the median absolute deviation of \code{x}, i.e.: (\code{\link[=median]{median()}} of \code{xc}, where \code{xc} = \code{x} - \code{\link[=median]{median()}}).
+\item \code{median_ci}: the CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
+\item \code{quantiles}: two sample quantiles of \code{x} (from \code{\link[=quantile]{quantile()}}).
+\item \code{iqr}: the \code{\link[=IQR]{IQR()}} of \code{x}.
+\item \code{range}: the \code{\link[=range_noinf]{range_noinf()}} of \code{x}.
 }
 
 If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with
@@ -291,7 +297,7 @@ s_summary(x, na.rm = TRUE)
 s_summary(x, na.rm = FALSE)
 
 x <- c(NA_real_, 1, 2)
-s_summary(x)
+s_summary(x, stats = NULL)
 
 ## Benefits in `rtables` contructions:
 require(rtables)

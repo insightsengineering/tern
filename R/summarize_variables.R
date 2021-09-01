@@ -26,6 +26,59 @@ control_summarize_vars <- function(conf_level = 0.95,
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type)
 }
 
+#' Format Function for Descriptive Statistics
+#'
+#' Returns format patterns for descriptive statistics.
+#' The format is understood by the `rtables`.
+#'
+#' @param type (`string`)\cr choice of a summary data type.
+#' Only `counts` and `numeric` types are currently supported.
+#'
+#' @export
+#'
+summary_formats <- function(type = "numeric") {
+
+  if (type == "counts") {
+    c(n = "xx.",
+      count = "xx.",
+      count_fraction = format_count_fraction
+    )
+  } else {
+    c(n = "xx.",
+      mean = "xx.x",
+      sd = "xx.x",
+      mean_sd = "xx.x (xx.x)",
+      mean_ci = "(xx.xx, xx.xx)",
+      mean_sei = "(xx.xx, xx.xx)",
+      mean_sdi = "(xx.xx, xx.xx)",
+      median = "xx.x",
+      mad = "xx.x",
+      median_ci = "(xx.xx, xx.xx)",
+      quantiles = "xx.x - xx.x",
+      iqr = "xx.x",
+      range = "xx.x - xx.x"
+    )
+  }
+}
+
+#' Label Function for Descriptive Statistics
+#'
+#' Returns labels of descriptive statistics.
+#'
+#' @export
+#'
+summary_labels <- function() {
+
+  c(mean = "Mean",
+    sd = "SD",
+    mean_sd = "Mean (SD)",
+    median = "Median",
+    mad = "Median Absolute Deviation",
+    iqr = "IQR",
+    range = "Min - Max"
+  )
+}
+
 #' Summarize Variables
 #'
 #' We use the new S3 generic function [s_summary()] to implement summaries for
@@ -72,18 +125,26 @@ s_summary <- function(x,
 #'   intersection of a column and a row delimits an empty data selection.
 #'   Also, when the `mean` function is applied to an empty vector, `NA` will
 #'   be returned instead of `NaN`, the latter being standard behavior in R.
-#' @return If `x` is of class `numeric`, returns a list with named items:
+#'
+#' @return If `x` is of class `numeric`, returns a list with named items: \cr
 #' - `n`: the [length()] of `x`.
-#' - `mean_sd`: the [mean()] and [sd()].
-#' - `median`: the [median()].
-#' - `mean_ci`: the CI for the mean (from [stat_mean_ci()]).
-#' - `median_ci`: the CI for the median (from [stat_median_ci()]).
-#' - `quantiles`: two sample quantiles (from [quantile()]).
-#' - `range`: the [range_noinf()].
+#' - `mean`: the [mean()] of `x`.
+#' - `sd`: the [sd()] of `x`.
+#' - `mean_sd`: the [mean()] and [sd()] of `x`.
+#' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
+#' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]/[sqrt()]).
+#' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [sd()]).
+#' - `median`: the [median()] of `x`.
+#' - `mad`: the median absolute deviation of `x`, i.e.: ([median()] of `xc`, where `xc` = `x` - [median()]).
+#' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
+#' - `quantiles`: two sample quantiles of `x` (from [quantile()]).
+#' - `iqr`: the [IQR()] of `x`.
+#' - `range`: the [range_noinf()] of `x`.
+#'
 #' @method s_summary numeric
 #' @order 3
 #'
-#' @importFrom stats sd median
+#' @importFrom stats sd median IQR
 #' @export
 #'
 #' @examples
@@ -98,7 +159,7 @@ s_summary <- function(x,
 #' s_summary(x, na.rm = FALSE)
 #'
 #' x <- c(NA_real_, 1, 2)
-#' s_summary(x)
+#' s_summary(x, stats = NULL)
 #'
 #' ## Benefits in `rtables` contructions:
 #' require(rtables)
@@ -119,7 +180,7 @@ s_summary <- function(x,
 #' X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 #' lapply(X, function(x) s_summary(x$x))
 #'
-s_summary.numeric <- function(x,
+s_summary.numeric <- function(x, # nolint
                               na.rm = TRUE, # nolint
                               denom,
                               .N_row, # nolint
@@ -130,38 +191,57 @@ s_summary.numeric <- function(x,
                               ...) {
   assert_that(is.numeric(x))
 
-  conf_level <- control$conf_level
-  quantiles <- control$quantiles
-  quantile_type <- control$quantile_type
+  control_diff <- setdiff(names(control_summarize_vars()), names(control))
+  control <- c(control, control_summarize_vars()[control_diff])
 
-  if (na.rm) x <- x[!is.na(x)]
+  if (na.rm) {
+    x <- x[!is.na(x)]
+  }
 
   y <- list()
 
-  dn <- length(x)
-  y$n <- dn
-  y$mean_sd <- c(
-    mean = if (dn > 0) mean(x) else NA_real_,
-    sd = sd(x)
-  )
-  y$median <- median(x)
+  y$n <- c("n" = length(x))
 
-  qts <- if (!na.rm && any(is.na(x))) {
-    c(NA_real_, NA_real_)
+  y$mean <- c("mean" = ifelse(length(x) == 0, NA_real_, mean(x, na.rm = FALSE)))
+
+  y$sd <- c("sd" = sd(x, na.rm = FALSE))
+
+  y$mean_sd <- c(y$mean, "sd" = sd(x, na.rm = FALSE))
+
+  mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
+  y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(control$conf_level)))
+
+  mean_sei <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE) / sqrt(y$n)
+  names(mean_sei) <- c("mean_sei_lwr", "mean_sei_upr")
+  y$mean_sei <- with_label(mean_sei, "Mean -/+ 1xSE")
+
+  mean_sdi <- y$mean[[1]] + c(-1, 1) * sd(x, na.rm = FALSE)
+  names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
+  y$mean_sdi <- with_label(mean_sdi, "Mean -/+ 1xSD")
+
+  y$median <- c("median" = median(x, na.rm = FALSE))
+
+  y$mad <- c("mad" = median(x - y$median, na.rm = FALSE))
+
+  median_ci <- stat_median_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
+  y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))
+
+  q <- control$quantiles
+  if (any(is.na(x))) {
+    qnts <- rep(NA_real_, length(q))
   } else {
-    quantile(x, probs = quantiles, type = quantile_type, na.rm = na.rm)
+    qnts <- quantile(x, probs = q, type = control$quantile_type, na.rm = FALSE)
   }
-  y$quantiles <- with_label(unname(qts), paste0(quantiles[1] * 100, "% and ", quantiles[2] * 100, "%-ile"))
+  names(qnts) <- paste("quantile", q, sep = "_")
+  y$quantiles <- with_label(qnts, paste0(paste(paste0(q * 100, "%"), collapse = " and "), "-ile"))
 
-  y$range <- range_noinf(x)
+  y$iqr <- c("iqr" = ifelse(
+    any(is.na(x)),
+    NA_real_,
+    IQR(x, na.rm = FALSE, type = control$quantile_type))
+  )
 
-  mean_ci_df <- stat_mean_ci(x, conf_level = conf_level, na.rm = na.rm)
-  mean_ci <- unname(as.numeric(mean_ci_df[, c("ymin", "ymax")]))
-  y$mean_ci <- with_label(mean_ci, paste("Mean", f_conf_level(conf_level)))
-
-  median_ci_df <- stat_median_ci(x, conf_level = conf_level, na.rm = na.rm)
-  median_ci <- unname(as.numeric(median_ci_df[, c("ymin", "ymax")]))
-  y$median_ci <- with_label(median_ci, paste("Median", f_conf_level(conf_level)))
+  y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
 
   y
 }
@@ -348,21 +428,8 @@ a_summary <- function(x,
   UseMethod("a_summary", x)
 }
 
-.a_summary_numeric_formats <- c(
-  n = "xx.",
-  mean_sd = "xx.x (xx.x)",
-  median = "xx.x",
-  quantiles = "xx.x - xx.x",
-  range = "xx.x - xx.x",
-  mean_ci = "(xx.xx, xx.xx)",
-  median_ci = "(xx.xx, xx.xx)"
-)
-
-.a_summary_numeric_labels <- c(
-  mean_sd = "Mean (SD)",
-  median = "Median",
-  range = "Min - Max"
-)
+.a_summary_numeric_formats <- summary_formats()
+.a_summary_numeric_labels <- summary_labels()
 
 #' @describeIn summarize_variables Formatted Analysis function method for `numeric`.
 #' @export
@@ -377,11 +444,7 @@ a_summary.numeric <- make_afun(
   .labels = .a_summary_numeric_labels
 )
 
-.a_summary_counts_formats <- c(
-  n = "xx.",
-  count = "xx.",
-  count_fraction = format_count_fraction
-)
+.a_summary_counts_formats <- summary_formats(type = "counts")
 
 #' @describeIn summarize_variables Method for `factor`.
 #' @export
