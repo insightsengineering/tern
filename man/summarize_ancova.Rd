@@ -103,12 +103,14 @@ summary tables for analysis of covariance (ANCOVA).
 }}
 
 \examples{
+\dontrun{
 h_ancova(
   .var = "Sepal.Length",
   .df_row = iris,
   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 )
-
+}
+\dontrun{
 library(scda)
 library(dplyr)
 
@@ -131,9 +133,11 @@ variables <- list(arm = "ARMCD", covariates = "SEX * AGE")
 conf_level <- 0.95
 
 s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-
+}
+\dontrun{
 a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-
+}
+\dontrun{
 library(scda)
 library(dplyr)
 
@@ -174,5 +178,5 @@ basic_table() \%>\%
     conf_level = 0.95, var_labels = "Adjusted mean"
   ) \%>\%
   build_table(adqs_multi, alt_counts_df = adsl)
-
+}
 }

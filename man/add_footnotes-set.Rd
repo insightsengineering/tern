@@ -23,9 +23,11 @@ footnotes(x)
 add_footnotes(x) <- "Add more footnotes"
 footnotes(x)
 
+\dontrun{
 x <- table(iris$Species)
 footnotes(x) <- "Species are equally distributed"
 footnotes(x)
 add_footnotes(x) <- "Add more footnotes"
 footnotes(x)
+}
 }

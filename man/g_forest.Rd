@@ -70,7 +70,7 @@ Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} ob
 column with a single value and a column with 2 values.
 }
 \examples{
-
+\dontrun{
 library(scda)
 library(dplyr)
 library(forcats)
@@ -194,5 +194,5 @@ g_forest(
   vline = 1,
   forest_header = c("Hello", "World")
 )
-
+}
 }
