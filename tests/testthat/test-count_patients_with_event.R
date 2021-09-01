@@ -267,7 +267,7 @@ test_that("count_patients_with_flags works with title row specified", {
       "USUBJID",
       flag_variables = var_labels(adae[, aesi_vars]),
       .indent_mods = 1L,
-      title_row = "Total number of patients with at least one"
+      label_row = "Total number of patients with at least one"
     )
 
   result <- build_table(lyt, df = adae, alt_counts_df = adsl)
