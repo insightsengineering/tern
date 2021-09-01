@@ -64,7 +64,7 @@ Suggests:
   tidyr,
   scda (>= 0.1.0),
   scda.2021 (>= 0.1.0)
-License: Apache 2.0 + file LICENSE
+License: Apache License 2.0 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
