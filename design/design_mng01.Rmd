@@ -51,7 +51,7 @@ adlb <- adlb %>%
 ```{r fun} 
 
 # Helper function to get the right formatting in the table.
-format_row <- function(x, format, labels = NULL) {
+h_format_row <- function(x, format, labels = NULL) {
 
   format_cell <- function(x, format, label = NULL) {
     fc <- rtables::format_rcell(x = x, format = format)
@@ -75,23 +75,40 @@ format_row <- function(x, format, labels = NULL) {
 }
 
 # New plot function.
-g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRUE, # nolint
-                       mid = "mean", interval = "mean_ci", whiskers = c("lwr", "upr"), table = NULL,
-                       sfun = tern::s_summary.numeric, ...,
-                       table_format = tern::summary_formats(), table_labels = tern::summary_labels(),
-                       mid_type = "pl", mid_point_size = 2, position = position_dodge(width = 0.4),
-                       legend_position = "bottom", legend_title = NULL,
-                       x_lab = "Visit", y_lab = "ALT", y_lab_units_var = "AVALU",
+g_lineplot <- function(df, # nolint
+                       alt_counts_df = NULL,
+                       variables = c(
+                         x = "AVISIT",
+                         y = "AVAL",
+                         strata = "ARM",
+                         y_lab = "PARAMCD",
+                         y_unit = "AVALU"
+                       ),
+                       mid = "mean",
+                       interval = "mean_ci",
+                       whiskers = c("lwr", "upr"),
+                       table = NULL,
+                       sfun = tern::s_summary,
+                       ...,
+                       na.rm = TRUE, # nolint
+                       table_format = tern::summary_formats(),
+                       table_labels = tern::summary_labels(),
+                       table_font_size = 3,
+                       mid_type = "pl",
+                       mid_point_size = 2,
+                       position = position_dodge(width = 0.4),
+                       legend_position = "bottom",
+                       legend_title = NULL,
+                       ggtheme = NULL,
                        title = "Plot of Mean and 95% Confidence Limits by Visit",
-                       caption = NULL) {
+                       caption = NULL,
+                       newpage = TRUE) {
 
-  assert_that(is.character(x))
-  assert_that(is.character(y))
-  assert_that(is.character(strata) || is.null(strata))
   assert_that(is.character(mid) || is.null(mid))
   assert_that(is.character(interval) || is.null(interval))
   assert_that(ifelse(is.character(interval), all(whiskers %in% c("lwr", "upr")), TRUE))
   assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
+  assert_that(is.string(title) || is.null(title))
   assert_that(
     ifelse(
       is.character(mid),
@@ -99,43 +116,68 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
       TRUE
     )
   )
+  assert_that(
+    is.character(variables),
+    all(c("x", "y") %in% names(variables))
+  )
 
+  x <- variables[["x"]]
+  y <- variables[["y"]]
+  strata <- if (!is.na(variables["strata"])) variables[["strata"]] # NULL if no strata in variables
+  y_lab <- if (!is.na(variables["y_lab"])) variables[["y_lab"]] # NULL if no y_lab in variables
+  y_unit <- if (!is.na(variables["y_unit"])) variables[["y_unit"]] # NULL if no y_unit in variables
+
+  ##################################################
   ## Compute required statistics.
-  df_grp <- group_by_at(df, c(strata, x))
-  df_stats <- summarise(
+  ##################################################
+  #df_stats <- aggregate( # nolint
+  #  x = df[[y]], # nolint
+  #  by = df[, c(strata, x)], # nolint
+  #  FUN = function(val) do.call(c, unname(sfun(val)[c(mid, interval)])) # nolint
+  #) # nolint
+  #assert_that(!(any(c(strata, x) %in% colnames(df_stats$x)))) # nolint
+  #df_stats <- cbind(df_stats[, c(strata, x)], df_stats$x) # nolint
+
+  df_grp <- dplyr::group_by_at(df, c(strata, x))
+  df_stats <- dplyr::summarise(
     df_grp,
-    bind_cols(
-      lapply(
-        sfun(.data[[y]], na.rm = na.rm, ...)[c(mid, interval)],
-        function(x) as_tibble(t(x))
-      )
-    ),
+    data.frame(t(do.call(c, unname(sfun(.data[[y]])[c(mid, interval)])))),
     .groups = "drop"
   )
 
   # add number of objects N in strata
-  if (!is.null(strata)) {
-
-    df_N <- df %>% # nolint
-      group_by_at(strata) %>%
-      summarise(N = ifelse(na.rm, sum(!is.na(.data[[y]])), n()), .groups = "drop")
-
-    assert_that(!("N" %in% colnames(df_stats))) # as we join with df_N (which has column N)
-    df_stats <- dplyr::full_join(x = df_stats, y = df_N, by = strata)
+  if (!is.null(strata) && !is.null(alt_counts_df)) {
 
     strata_N <- paste0(strata, "_N") # nolint
-    assert_that(!(strata_N %in% colnames(df_stats))) # as we create a new column strata_N
-    df_stats[[strata_N]] <- paste0(df_stats[[strata]], " (N = ", df_stats$N, ")")
 
+    df_N <- alt_counts_df %>% # nolint
+      dplyr::group_by_at(strata) %>%
+      dplyr::summarize(
+        {{strata_N}} := paste0(strata, "(N = ", ifelse(na.rm, sum(!is.na(.data[[y]])), n()), ")")
+      )
+
+    assert_that(!(strata_N %in% colnames(df_stats))) # as we join with df_N (which has column N)
+    df_stats <- dplyr::full_join(x = df_stats, y = df_N, by = strata)
+
+  } else if (!is.null(strata)) {
+    strata_N <- strata # nolint
+  } else {
+    strata_N <- NULL # nolint
   }
 
-  ## Prepare certain plot's properties
-
+  ##################################################
+  ## Prepare certain plot's properties.
+  ##################################################
   # y label
-  if (!is.null(y_lab_units_var)) {
-    unit <- unique(df[[y_lab_units_var]])
-    stopifnot("y_lab_units_var must be in df and df[[y]] must be of the same units" = length(unit) == 1) # nolint
-    y_lab <- paste0(y_lab, " (", unit, ")")
+  if (!is.null(y_lab)) {
+    y_lab <- unique(df[[y_lab]])
+    stopifnot("y_lab must be in df and df[[y_lab]] must be of the same value" = length(y_lab) == 1) # nolint
+  }
+
+  if (!is.null(y_unit)) {
+    y_unit <- unique(df[[y_unit]])
+    stopifnot("y_unit must be in df and df[[y_unit]] must be of the same value" = length(y_unit) == 1) # nolint
+    y_lab <- paste0(y_lab, " (", y_unit, ")")
   }
 
   # legend title
@@ -143,7 +185,9 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
     legend_title <- attr(df[[strata]], "label")
   }
 
+  ##################################################
   ## Build plot object.
+  ##################################################
   p <- ggplot(
     data = df_stats,
     mapping = aes_string(
@@ -164,6 +208,7 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
     }
   }
 
+  # interval
   if (!is.null(interval)) {
 
     yminmax <- paste(interval, whiskers, sep = "_")
@@ -188,31 +233,39 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
 
   p <- p +
     scale_y_continuous(labels = scales::comma, expand = expansion(c(0.25, .25))) +
-    theme_bw() +
-    theme(
-      legend.key.width = unit(1, "cm"),
-      legend.position = legend_position,
-      legend.direction = ifelse(
-        legend_position %in% c("top", "bottom"),
-        "horizontal",
-        "vertical")
-    ) +
     labs(
       title = title,
       caption = caption,
       color = legend_title,
       lty = legend_title,
       shape = legend_title,
-      x = x_lab,
+      x = attr(df[[x]], "label"),
       y = y_lab
     )
 
-  # Optionally, add table to the bottom of the plot
+  if (!is.null(ggtheme)) {
+    p <- p + ggtheme
+  } else {
+    p <- p +
+      theme_bw() +
+      theme(
+        legend.key.width = unit(1, "cm"),
+        legend.position = legend_position,
+        legend.direction = ifelse(
+          legend_position %in% c("top", "bottom"),
+          "horizontal",
+          "vertical")
+      )
+  }
+
+  ##################################################
+  ## Optionally, add table to the bottom of the plot.
+  ##################################################
   if (!is.null(table)) {
 
     df_stats_table <- df_grp %>%
-      summarise(
-        format_row(
+      dplyr::summarise(
+        h_format_row(
           x = sfun(.data[[y]], na.rm = na.rm, ...)[table],
           format = table_format,
           labels = table_labels
@@ -230,8 +283,8 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
         names_ptypes = list(stat = factor(levels = stats_lev))
     )
 
-    tbl <- ggplot(df_stats_table, aes_string(x = x, y = "stat", label = "value", color = strata)) +
-      geom_text(size = 3) +
+    tbl <- ggplot(df_stats_table, aes_string(x = x, y = "stat", label = "value")) +
+      geom_text(size = table_font_size) +
       theme_bw() +
       theme(
         panel.border = element_blank(),
@@ -245,14 +298,25 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
         strip.text.x = element_text(margin = margin(1.5, 0, 1.5, 0, "pt")),
         strip.background = element_rect(fill = "grey95", color = NA),
         legend.position = "none"
-      ) +
-      facet_wrap(as.formula(paste("~", strata)), ncol = 1)
+      )
 
-    p <- ggpubr::ggarrange(p, tbl, heights = c(3, 1), ncol = 1, nrow = 2, align = "v")
-    # alternatively, below code can be used if the above is having problems with
-    # horizontal alignment of x axis. This happens when the facet variables are the same
-    # and there are no legends - a kind of bug in ggpubr::ggarrange
-    # p <- p / tbl + plot_layout(heights = c(3, 1)) # patchwork R package is required # nolint
+    if (!is.null(strata)) {
+      tbl <- tbl + facet_wrap(facets = strata, ncol = 1)
+    }
+
+    # align plot and table
+    p_grob <- ggplotGrob(p)
+    tbl_grob <- ggplotGrob(tbl)
+    maxWidth <- grid::unit.pmax(p_grob$widths, tbl_grob$widths) # nolint
+    p_grob$widths <- maxWidth
+    tbl_grob$widths <- maxWidth
+
+    if (newpage) {
+      grid::grid.newpage()
+    }
+
+    p <- gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
+    #p <- gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL) # nolint
 
   }
 
@@ -269,6 +333,9 @@ g_lineplot <- function(df, x = "AVISIT", y = "AVAL", strata = "ARM", na.rm = TRU
 # Mean with CI
 g_lineplot(adlb)
 
+# Mean with CI, no stratification
+g_lineplot(adlb, variables = c(x = "AVISIT", y = "AVAL", y_lab = "PARAMCD", y_unit = "AVALU"))
+
 # Mean, upper whisker of CI
 g_lineplot(adlb, whiskers = "upr", title = "Plot of Mean and Upper 95% Confidence Limit by Visit")
 
@@ -283,7 +350,8 @@ g_lineplot(adlb, table = c("n", "mean", "mean_ci"))
 
 # Mean with CI - continuous time variable, customized confidence level
 g_lineplot(
-  adlb, x = "AVISITN", table = c("n", "mean", "mean_ci"), control = list(conf_level = 0.80),
+  adlb, variables = c(x = "AVISITN", y = "AVAL", strata = "ARM", y_lab = "PARAMCD", y_unit = "AVALU"),
+  table = c("n", "mean", "mean_ci"), control = list(conf_level = 0.80),
   title = "Plot of Mean and 80% Confidence Limits by Visit"
 )
 ```
