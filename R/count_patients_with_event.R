@@ -180,18 +180,12 @@ count_patients_with_event <- function(lyt,
 #'     fl2 = TRTEMFL == "Y",
 #'     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
 #'     fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
-#'   ) %>%
-#'   var_relabel(
-#'     fl1 = "Total AEs",
-#'     fl2 = "Total number of patients with at least one adverse event",
-#'     fl3 = "Total number of patients with fatal AEs",
-#'     fl4 = "Total number of patients with related fatal AEs"
 #'  )
 #'
 #' s_count_patients_with_flags(
 #'   adae,
 #'   "SUBJID",
-#'   flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")])
+#'   flag_variables = c("fl1", "fl2", "fl3", "fl4")
 #'  )
 #'
 s_count_patients_with_flags <- function(df,
@@ -200,10 +194,8 @@ s_count_patients_with_flags <- function(df,
                                         .N_col, #nolint
                                         .N_row, #nolint
                                         denom = c("n", "N_row", "N_col")) {
-  if (is.null(names(flag_variables))) {
-    flag_variables <- setNames(flag_variables, flag_variables)
-  }
 
+  if (is.null(names(flag_variables))) flag_variables <- setNames(flag_variables, flag_variables)
   flag_names <- unname(flag_variables)
   flag_variables <- names(flag_variables)
 
@@ -236,13 +228,16 @@ s_count_patients_with_flags <- function(df,
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the rtables formatting
 #' # function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_patients_with_flags, .stats = "count", .ungroup_stats = "count")
+#' afun <- make_afun(a_count_patients_with_flags,
+#'   .stats = "count_fraction",
+#'   .ungroup_stats = "count_fraction"
+#' )
 #' afun(
 #'   adae,
 #'   .N_col = 10L, # nolint
 #'   .N_row = 10L,
 #'   .var = "USUBJID",
-#'   flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")])
+#'   flag_variables = c("fl1", "fl2", "fl3", "fl4")
 #' )
 #'
 a_count_patients_with_flags <- make_afun(
@@ -289,7 +284,7 @@ a_count_patients_with_flags <- make_afun(
 #'     "SUBJID",
 #'     flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
 #'     label_row = "Flag Totals",
-#'     .stats = "count",
+#'     .stats = "count_fraction",
 #'     .indent_mods = 2L
 #'   )
 #'  build_table(lyt2, adae, alt_counts_df = adsl)
