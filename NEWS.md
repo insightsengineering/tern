@@ -1,23 +1,25 @@
 # tern 0.7.4.9000
+* Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each and every element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
 * Parametrized `stat_mean_ci` and `stat_median_ci` so that they may return different outputs.
 * Added new safety helper function h_stack_by_baskets to stack SMQ and/or CQ records from ADAE data set.
 * Added `remove_single` argument to `h_append_grade_groups`, which allows to control whether the elements of one-element grade groups will be kept in the output or removed.
-* Re-implemented the `h_append_grade_groups` function to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of `grade_groups`. 
+* Re-implemented the `h_append_grade_groups` function to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of `grade_groups`.
 * Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) rsp records.
-* Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing. 
+* Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing.
 * Fixed `g_km` such that lines in the plot now start correctly at time 0 and probability 1.
 * Fixed a bug in `g_km` such that the equals sign can now be used in category labels.
 * Updated license and `README.md` with appropriate information for migration to public Github.
+* Added `error_on_lint: TRUE` to `.lintr`.
 
 # tern 0.7.4
 
 ### New features
 * Added new safety layout functions:
-  * `count_abnormal_by_marked` tabulates marked laboratory abnormalities. 
+  * `count_abnormal_by_marked` tabulates marked laboratory abnormalities.
   * `summarize_patients_exposure_in_cols` tabulates patient counts and sum of exposure across all patients.
 
 ### Enhancements
-* Enhanced `mmrm` related functions for fitting models without `arm` variable. 
+* Enhanced `mmrm` related functions for fitting models without `arm` variable.
 * Updated `cox_regression` to work without covariates. Also in case of interaction model summary, p-values for main effect coefficients are no longer displayed.
 * Descriptive statistics returned by `summarize_vars` now include quantiles. In addition, `summarize_vars` now accepts the the control function `control_summarize_vars` to specify details about confidence level for mean and median and quantile details. The `control` argument replaces `conf_level`.
 * Added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade`.
@@ -39,7 +41,7 @@
 * Added utility functions:
   * `cut_quantile_bins` cuts a numeric vector into quantile bins.
   * `fct_collapse_only` collapses levels of a factor and only keeps those in the order provided.
-  * `fct_explicit_na_if` inserts explicit missings in a factor based on a condition. 
+  * `fct_explicit_na_if` inserts explicit missings in a factor based on a condition.
   * `range_noinf` is a kind of a wrapper function of `base::range`. It returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data.
 
 ### Enhancements
@@ -51,7 +53,7 @@
 * In `g_km`:
   * Remove arm variable name from arm labels in plot legend and annotation tables.
   * Show symbol used to mark censored cases and match order of arm variable factor levels in the legend.
-  * Display hazard ratio and its confidence interval to two decimal places. 
+  * Display hazard ratio and its confidence interval to two decimal places.
   * Updated default position of hazard ratio table to stay on the left bottom corner but above x-axis.
   * Use arm value as strata name in when treatment arm variable only has one level.
 * Updated `s_surv_time` function to use a newly created function `range_noinf` instead of `base::range`.
@@ -63,7 +65,7 @@
 
 ### Miscellaneous
 * Deprecated `s_cox_univariate` function, use `fit_coxreg_univar` function instead.
-* Updated default formats of hr and hr_ci in `a_coxph_pairwise` and median in `s_surv_time` to align with STREAM. 
+* Updated default formats of hr and hr_ci in `a_coxph_pairwise` and median in `s_surv_time` to align with STREAM.
 * Updated the pre-processing code in the files `test-table_ttet01.R` and `test-table_dort01.R` to make sure the analysis variable `EVNT1` has both levels of the factor defined.
 * Improved error message when number of levels in a factor variable in a data frame is not as expected.
 
@@ -71,9 +73,9 @@
 * Fixed internal test errors regarding column labels.
 
 # tern 0.7.1
-* New argument `position_surv_med` added to `g_km` to move position of the annotation table with median survival times.  
+* New argument `position_surv_med` added to `g_km` to move position of the annotation table with median survival times.
 * Fixed bug in `g_km` related to the arguments `pch` and `size`. Previously, these arguments were not passed on to helper function `h_ggkm` and so were effectively being ignored.
-* Updated xticks and max_time arguments in `g_km` for greater functionality. `max_time` added as an argument in `h_xticks` to allow this. 
+* Updated xticks and max_time arguments in `g_km` for greater functionality. `max_time` added as an argument in `h_xticks` to allow this.
 * Fixed bug in `prop_diff_cmh` that led to `NaN` weighted proportion difference estimates and missing confidence intervals. Previously, when for at least one stratum no patients from one treatment arm were included, then the estimation did not lead to numeric results.
 * Fixed bug in `prop_cmh` which previously gave an error in case of at least one stratum containing less than two observations.
 * New argument `n_events` added to `estimate_incidence_rate`.
@@ -125,12 +127,12 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Added new CI methods `anderson-hauck` and `newcombe` to `s_proportion_diff`.
 * Additional p-value methods (Fisher's Exact, Chi-Squared Test with Schouten Correction) for `s_test_proportion_diff`.
 * The binary summary table function `t_binary_outcome` takes now lists (instead of character vectors) specified by the helper function `control_binary_comparison` as the arguments `strat_analysis` and `unstrat_analysis`. In addition, Odds Ratio estimates and CIs are now included by default and can be removed, similarly to the other subsections of the arm comparison analyses. Also added argument `rsp_multinomial`.
-* Add new table function `t_el_multinomial_proportion`. 
+* Add new table function `t_el_multinomial_proportion`.
 * Add new table function `t_abn_shift`.
 * Add new MMRM analysis function `s_mmrm`, as well as corresponding table functions `t_mmrm_lsmeans`, `t_mmrm_cov`, `t_mmrm_diagnostic`, `t_mmrm_fixed`, and plot functions `g_mmrm_lsmeans`, `g_mmrm_diagnostic`. The results of these match SAS results (up to numeric precision).
 * Deprecated old MMRM functions `a_mmrm` and `t_mmrm` (they give a deprecation warning but still work). These will be removed in the next release. The reason is that the results of these functions don't match SAS results.
 * Fix bug in `g_km` related to numbers in patients at risk table. Previously, numbers were incorrect for integer time-to-event variable inputs.
-  
+
 # tern 0.6.7
 
 * For functions with `row_by` argument, inputs no longer require use of `nested_by`.
@@ -241,7 +243,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Refactor `t_events_*` family of functions.
 * Updated examples.
 
-# tern 0.5.0.3 
+# tern 0.5.0.3
 
 #### New TLGs
 
@@ -270,4 +272,4 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 
 # tern 0.5.0
 
-* First version where analysis functions names and arguments have been harmonized. 
+* First version where analysis functions names and arguments have been harmonized.
