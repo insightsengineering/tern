@@ -162,6 +162,7 @@ test_that("count_patients_with_flags works as expected", {
     count_patients_with_flags(
       "SUBJID",
       flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
+      denom = "N_col"
     )
 
   result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
@@ -209,12 +210,14 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
     count_patients_with_flags(
       "SUBJID",
       flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
-      table_names = paste0("SUBJID", c("flag1", "flag2"))
-    ) %>%
+      table_names = "SUBJID",
+      denom = "N_col"
+      ) %>%
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(test_data[, c("flag1", "flag2")]),
-      table_names = paste0("USUBJID", c("flag1", "flag2"))
+      table_names = "USUBJID",
+      denom = "N_col"
     )
 
   result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
@@ -232,7 +235,7 @@ test_that("count_patients_with_flags works as expected when specifying table_nam
   expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_patients_with_flags works with title row specified", {
+test_that("count_patients_with_flags works with label row specified", {
   adsl <- scda::synthetic_cdisc_data("latest")$adsl
   adae <- scda::synthetic_cdisc_data("latest")$adae
 
@@ -266,8 +269,10 @@ test_that("count_patients_with_flags works with title row specified", {
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(adae[, aesi_vars]),
-      .indent_mods = 1L,
-      label_row = "Total number of patients with at least one"
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible",
+      .indent_mods = 1L
     )
 
   result <- build_table(lyt, df = adae, alt_counts_df = adsl)
