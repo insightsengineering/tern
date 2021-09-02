@@ -180,12 +180,20 @@ count_patients_with_event <- function(lyt,
 #'     fl2 = TRTEMFL == "Y",
 #'     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
 #'     fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
+#'   ) %>%
+#'   var_relabel(
+#'     fl1 = "Total AEs",
+#'     fl2 = "Total number of patients with at least one adverse event",
+#'     fl3 = "Total number of patients with fatal AEs",
+#'     fl4 = "Total number of patients with related fatal AEs"
 #'  )
 #'
 #' s_count_patients_with_flags(
 #'   adae,
 #'   "SUBJID",
-#'   flag_variables = c("fl1", "fl2", "fl3", "fl4")
+#'   flag_variables = c("fl1", "fl2", "fl3", "fl4"),
+#'   denom = "N_col",
+#'   .N_col = 1000
 #'  )
 #'
 s_count_patients_with_flags <- function(df,
@@ -261,70 +269,33 @@ a_count_patients_with_flags <- make_afun(
 #' @examples
 #'
 #' # `count_patients_with_flags()`
-#' # Add labelled flag variables to analysis dataset.
-#' adae <- synthetic_cdisc_data("latest")$adae
-#' adae <- adae %>%
-#'   mutate(
-#'     fl1 = TRUE,
-#'     fl2 = TRTEMFL == "Y",
-#'     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
-#'     fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
-#'   ) %>%
-#'   var_relabel(
-#'     fl1 = "Total AEs",
-#'     fl2 = "Total number of patients with at least one adverse event",
-#'     fl3 = "Total number of patients with fatal AEs",
-#'     fl4 = "Total number of patients with related fatal AEs"
-#'  )
-#'
 #' lyt2 <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
 #'   count_patients_with_flags(
 #'     "SUBJID",
 #'     flag_variables = var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
-#'     label_row = "Flag Totals",
-#'     .stats = "count_fraction",
-#'     .indent_mods = 2L
+#'     denom = "N_col"
 #'   )
 #'  build_table(lyt2, adae, alt_counts_df = adsl)
 #'
 count_patients_with_flags <- function(lyt,
                                       var,
-                                      flag_variables,
                                       var_labels = var,
                                       show_labels = "hidden",
-                                      label_row = NULL,
                                       ...,
                                       table_names = "tbl_count_flags",
                                       .stats = "count_fraction",
                                       .formats = NULL,
-                                      .indent_mods = 0L) {
+                                      .indent_mods = NULL) {
 
-  if (.indent_mods < 1) indent <- -1 else indent <- 0L
-
-  if (!is.null(label_row)) {
-    var_labels <- label_row
-    show_labels <- "visible"
-    afun <- make_afun(
-      a_count_patients_with_flags,
-      .stats = .stats,
-      .formats = .formats,
-      .indent_mods = max(0L, .indent_mods - 1),
-      .ungroup_stats = .stats,
-      flag_variables = flag_variables
-    )
-  }
-  else {
     afun <- make_afun(
       a_count_patients_with_flags,
       .stats = .stats,
       .formats = .formats,
       .indent_mods = .indent_mods,
-      .ungroup_stats = .stats,
-      flag_variables = flag_variables
+      .ungroup_stats = .stats
     )
-  }
 
   lyt <- analyze(
     lyt = lyt,
@@ -333,7 +304,7 @@ count_patients_with_flags <- function(lyt,
     show_labels = show_labels,
     afun = afun,
     table_names = table_names,
-    indent_mod = indent
+    extra_args = list(...)
   )
 
   lyt
