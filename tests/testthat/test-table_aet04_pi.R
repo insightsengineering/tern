@@ -41,8 +41,7 @@ full_table_aet04_pi <- function(adsl, adae_max) {
       .stats = "count_fraction",
       .formats = c(count_fraction = format_fraction_threshold(0.01))
     ) %>%
-    build_table(adae_max, col_counts = col_counts) %>%
-    trim_rows()
+    build_table(adae_max, col_counts = col_counts)
 }
 
 criteria_fun <- function(tr) {
