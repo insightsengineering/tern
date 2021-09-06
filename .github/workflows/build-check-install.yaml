@@ -114,7 +114,7 @@ jobs:
 
           if (file.exists("staged_dependencies.yaml")) {
             cat("\nInstall Staged Dependencies\n\n\n")
-            if (!require("staged.dependencies")) remotes::install_github("openpharma/staged.dependencies", ref = "main", Ncpus = ncores)
+            if (!require("staged.dependencies")) remotes::install_github("openpharma/staged.dependencies", ref = "v0.1", Ncpus = ncores)
             cat("\nCalculating Staged Dependency Table...\n\n")
             print(staged.dependencies::dependency_table(), width = 120)
             cat("\n\n")
