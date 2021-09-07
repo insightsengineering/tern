@@ -235,7 +235,6 @@ get_mmrm <- function() {
   )
 }
 
-
 get_mmrm_no_arm <- function() {
   anl <- get_anl() %>%
     mutate(
@@ -254,6 +253,7 @@ get_mmrm_no_arm <- function() {
     cor_struct = "random-quadratic"
   )
 }
+
 
 test_that("h_mmrm_fixed works as expected", {
 
@@ -308,20 +308,52 @@ test_that("h_mmrm_cov works as expected", {
   result <- h_mmrm_cov(mmrm, format = "xx.xxxx")
   result2 <- as.rtable(mmrm, type = "cov", format = "xx.xxxx")
   expect_identical(result, result2)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22",
-      "WEEK 4 DAY 29", "WEEK 5 DAY 36", "WEEK 1 DAY 8", "62.9854",
-      "0.1138", "-2.2943", "-3.144", "-2.4352", "WEEK 2 DAY 15", "0.1138",
-      "58.9081", "-0.064", "-0.0877", "-0.0679", "WEEK 3 DAY 22", "-2.2943",
-      "-0.064", "60.195", "1.7678", "1.3693", "WEEK 4 DAY 29", "-3.144",
-      "-0.0877", "1.7678", "61.3275", "1.8764", "WEEK 5 DAY 36", "-2.4352",
-      "-0.0679", "1.3693", "1.8764", "60.3583"),
-    .Dim = c(6L, 6L)
+
+  expected_tibble <- tibble::tribble(
+    ~"1", ~"2", ~"3", ~"4", ~"5",
+    62.9854, 0.1138, -2.2943, -3.144, -2.4352,
+    0.1138, 58.9081, -0.064, -0.0877, -0.0679,
+    -2.2943, -0.064, 60.195, 1.7678, 1.3693,
+    -3.144, -0.0877, 1.7678, 61.3275, 1.8764,
+    -2.4352, -0.0679, 1.3693, 1.8764, 60.3583
   )
 
-  expect_identical(result_matrix, expected_matrix)
+  cell_values_to_list <- function(result, colpath) {
+    cell_values(result, colpath = colpath) %>%
+      purrr::flatten() %>%
+      lapply(`attr<-`, "label", NULL) %>%
+      unname()
+  }
 
+  expect_equal(
+    cell_values_to_list(result, colpath = c("WEEK 1 DAY 8")),
+    as.list(expected_tibble[, "1"][[1]]),
+    tolerance = 5e-2
+  )
+
+  expect_equal(
+    cell_values_to_list(result, colpath = c("WEEK 2 DAY 15")),
+    as.list(expected_tibble[, "2"][[1]]),
+    tolerance = 5e-2
+  )
+
+  expect_equal(
+    cell_values_to_list(result, colpath = c("WEEK 3 DAY 22")),
+    as.list(expected_tibble[, "3"][[1]]),
+    tolerance = 5e-2
+  )
+
+  expect_equal(
+    cell_values_to_list(result, colpath = c("WEEK 4 DAY 29")),
+    as.list(expected_tibble[, "4"][[1]]),
+    tolerance = 5e-2
+  )
+
+  expect_equal(
+    cell_values_to_list(result, colpath = c("WEEK 5 DAY 36")),
+    as.list(expected_tibble[, "5"][[1]]),
+    tolerance = 5e-2
+  )
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
@@ -457,43 +489,61 @@ test_that("summarize_lsmeans works as expected", {
     split_rows_by("AVISIT") %>%
     summarize_lsmeans(show_relative = "increase") %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 3 DAY 22", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "B: Placebo", "", "11", "51.484 (2.394)", "(46.726, 56.241)",
-      "", "", "", "", "", "11", "46.311 (2.315)", "(41.736, 50.885)",
-      "", "", "", "", "", "11", "50.024 (2.340)", "(45.397, 54.651)",
-      "", "", "", "", "", "11", "49.900 (2.362)", "(45.235, 54.565)",
-      "", "", "", "", "", "11", "50.285 (2.344)", "(45.638, 54.933)",
-      "", "", "", "", "A: Drug X", "", "17", "51.604 (1.932)", "(47.765, 55.443)",
-      "0.121 (3.075)", "(-5.99, 6.232)", "0.2%", "0.9688", "", "17",
-      "50.468 (1.869)", "(46.776, 54.161)", "4.158 (2.974)", "(-1.719, 10.034)",
-      "9%", "0.1642", "", "17", "51.193 (1.889)", "(47.458, 54.927)",
-      "1.168 (3.006)", "(-4.775, 7.112)", "2.3%", "0.6982", "", "17",
-      "48.421 (1.907)", "(44.655, 52.186)", "-1.479 (3.034)", "(-7.472, 4.513)",
-      "-3%", "0.6266", "", "17", "48.864 (1.892)", "(45.113, 52.615)",
-      "-1.421 (3.010)", "(-7.391, 4.549)", "-2.8%", "0.6379", "C: Combination",
-      "", "13", "48.180 (2.215)", "(43.78, 52.58)", "-3.303 (3.264)",
-      "(-9.789, 3.183)", "-6.4%", "0.3143", "", "13", "48.420 (2.143)",
-      "(44.186, 52.654)", "2.109 (3.158)", "(-4.13, 8.349)", "4.6%",
-      "0.5051", "", "13", "52.165 (2.166)", "(47.883, 56.446)", "2.141 (3.192)",
-      "(-4.169, 8.451)", "4.3%", "0.5035", "", "13", "52.243 (2.186)",
-      "(47.927, 56.559)", "2.343 (3.221)", "(-4.018, 8.705)", "4.7%",
-      "0.4680", "", "13", "53.902 (2.169)", "(49.602, 58.202)", "3.616 (3.196)",
-      "(-2.721, 9.954)", "7.2%", "0.2604"),
-    .Dim = c(41L, 4L)
-  )
-  expect_equal(result_matrix, expected_matrix, tolerance = 1e-3)
 
+  expected_tibble <- tibble::tribble(
+    ~b, ~a, ~c,
+    11, 17, 13,
+    c(51.48359, 2.39400), c(51.604397, 1.932004), c(48.180218, 2.214652),
+    c(46.72589, 56.24129), c(47.7654, 55.4434), c(43.78005, 52.58039),
+    character(0), c(0.1208049, 3.0750730), c(-3.303373, 3.264212),
+    character(0), c(-5.990182, 6.231791), c(-9.789470, 3.182723),
+    character(0), 0.002346473, -0.06416362,
+    character(0), 0.9687519, 0.3142882,
+    11, 17, 13,
+    c(46.310711, 2.315292), c(50.468318, 1.868905), c(48.420077, 2.142674),
+    c(41.73592, 50.88550), c(46.77558, 54.16106), c(44.18642, 52.65373),
+    character(0), c(4.157607, 2.974152), c(2.109366, 3.157656),
+    character(0), c(-1.719011, 10.034224), c(-4.129797, 8.348529),
+    character(0), 0.08977635, 0.04554813,
+    character(0), 0.1642018, 0.5051483,
+    11, 17, 13,
+    c(50.024343, 2.340421), c(51.192584, 1.889049), c(52.164950, 2.165651),
+    c(45.39723, 54.65146), c(47.45791, 54.92726), c(47.88347, 56.44643),
+    character(0), c(1.168242, 3.006372), c(2.140608, 3.191672),
+    character(0), c(-4.775464, 7.111948), c(-4.169368, 8.450583),
+    character(0), 0.02335347, 0.04279133,
+    character(0), 0.6981702, 0.5035233,
+    11, 17, 13,
+    c(49.899831, 2.362312), c(48.420584, 1.906599), c(52.24301, 2.18567),
+    c(45.23468, 54.56498), c(44.65542, 52.18575), c(47.92677, 56.55926),
+    character(0), c(-1.479247, 3.034442), c(2.343181, 3.221309),
+    character(0), c(-7.471715, 4.513221), c(-4.018273, 8.704635),
+    character(0), -0.02964432, 0.04695769,
+    character(0), 0.6265778, 0.468037,
+    11, 17, 13,
+    c(50.28516, 2.34359), c(48.86415, 1.89159), c(53.901527, 2.168549),
+    c(45.63761, 54.93272), c(45.11318, 52.61511), c(49.60155, 58.20151),
+    character(0), c(-1.421018, 3.010436), c(3.616364, 3.195963),
+    character(0), c(-7.390893, 4.548858), c(-2.721113, 9.953841),
+    character(0), -0.02825918, 0.07191711,
+    character(0), 0.6378949, 0.2604215
+  )
+
+  cell_values_to_list <- function(result, colpath) {
+    cell_values(result, colpath = colpath) %>%
+      purrr::flatten() %>%
+      lapply(`attr<-`, "label", NULL) %>%
+      unname()
+  }
+
+  result_b <- cell_values_to_list(result, colpath = c("ARM", "B: Placebo"))
+  expect_equal(result_b, as.list(expected_tibble[, "b"][[1]]), tolerance = 1e-3)
+
+  result_a <- cell_values_to_list(result, colpath = c("ARM", "A: Drug X"))
+  expect_equal(result_a, as.list(expected_tibble[, "a"][[1]]), tolerance = 1e-3)
+
+  result_c <- cell_values_to_list(result, colpath = c("ARM", "C: Combination"))
+  expect_equal(result_c, as.list(expected_tibble[, "c"][[1]]), tolerance = 1e-3)
 })
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {

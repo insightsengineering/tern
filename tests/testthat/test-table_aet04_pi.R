@@ -25,7 +25,10 @@ full_table_aet04_pi <- function(adsl, adae_max) {
   basic_table() %>%
     split_cols_by("ACTARM") %>%
     split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS", child_labels = "visible", nested = FALSE,
+      indent_mod = -1L, split_fun = trim_levels_in_group("AEDECOD")
+      ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -38,8 +41,7 @@ full_table_aet04_pi <- function(adsl, adae_max) {
       .stats = "count_fraction",
       .formats = c(count_fraction = format_fraction_threshold(0.01))
     ) %>%
-    build_table(adae_max, col_counts = col_counts) %>%
-    trim_rows()
+    build_table(adae_max, col_counts = col_counts)
 }
 
 criteria_fun <- function(tr) {
@@ -333,7 +335,10 @@ test_that("AET04_PI variant 6 is produced correctly", {
   full_table <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS", child_labels = "visible", nested = FALSE,
+      indent_mod = -1L, split_fun = trim_levels_in_group("AEDECOD")
+      ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -403,7 +408,10 @@ test_that("AET04_PI variant 7 is produced correctly", {
   full_table <- basic_table() %>%
     split_cols_by("ACTARM") %>%
     split_cols_by_groups("MAXAETOXGR", groups = grade_groups) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE, indent_mod = -1L) %>%
+    split_rows_by(
+      "AEBODSYS", child_labels = "visible", nested = FALSE,
+      indent_mod = -1L, split_fun = trim_levels_in_group("AEDECOD")
+      ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
