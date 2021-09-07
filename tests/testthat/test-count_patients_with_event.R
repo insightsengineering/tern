@@ -271,8 +271,7 @@ test_that("count_patients_with_flags works with label row specified", {
       flag_variables = var_labels(adae[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
-      show_labels = "visible",
-      .indent_mods = 1L
+      show_labels = "visible"
     )
 
   result <- build_table(lyt, df = adae, alt_counts_df = adsl)

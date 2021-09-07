@@ -78,8 +78,7 @@ test_that("Safety Summary Variant 1 works as expected", {
       flag_variables = var_labels(adae[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
-      show_labels = "visible",
-      .indent_mods = 1L
+      show_labels = "visible"
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
@@ -213,7 +212,6 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible",
-      .indent_mods = 1L,
       table_names = "table_ae"
     ) %>%
     count_patients_with_flags(
@@ -222,7 +220,6 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
       show_labels = "visible",
-      .indent_mods = 1L,
       table_names = "table_aesi"
     )
 
@@ -343,8 +340,7 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
       flag_variables = var_labels(adae[, aesi_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
-      show_labels = "visible",
-      .indent_mods = 1L
+      show_labels = "visible"
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
@@ -456,8 +452,7 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
       flag_variables = var_labels(adae[, count_subj_vars]),
       denom = "N_col",
       var_labels = "Total number of patients with at least one",
-      show_labels = "visible",
-      .indent_mods = 1L
+      show_labels = "visible"
     ) %>%
     count_patients_with_flags(
       "AEDECOD",
@@ -467,7 +462,6 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
       show_labels = "visible",
       .stats = "count",
       .formats = c(count = "xx"),
-      .indent_mods = 1L,
       table_names = "table_term"
     ) %>%
     count_patients_with_flags(
@@ -478,7 +472,6 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
       show_labels = "visible",
       .stats = "count",
       .formats = c(count = "xx"),
-      .indent_mods = 1L,
       table_names = "table_ae"
     )
 
