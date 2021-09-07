@@ -79,68 +79,6 @@ result <- build_table(lyt = lyt, df = adlb, alt_counts_df = adsl)
 result
 ```
 
-
-# New rtables split function
-
-This will be available soon.
-```{r, split_fun}
-keep_split_levels_of_vars3 <- function(map = NULL) {
-  
-  if (is.null(map) || any(sapply(map, class) != "character"))
-    stop("No map dataframe was provided or not all of the columns are of type character.")
-  
-  myfun <- function(df, spl, vals = NULL, labels = NULL, trim = FALSE) {
-    
-    allvars <- colnames(map)
-    splvar <- rtables:::spl_payload(spl)
-    outvars <- allvars[-(which(allvars == splvar):length(allvars))]
-
-    ## handle conditioning on outer variables (if any), 
-    ## subset the map depending on where we are in the split tree
-    if (outvars != "") {
-      outvars_levs <- unique(df[, outvars])[ , , drop = TRUE]
-      if (!is.null(dim(outvars_levs)))
-        stop ("Outer variables were not specified correctly in the map.")
-      outvars_filter <- paste(paste(outvars, paste0("'", outvars_levs, "'"), sep = " == "), 
-                              collapse = " & ")
-      map <- subset(map, subset = eval(parse(text = outvars_filter)), select = setdiff(allvars, outvars))
-      map <- unique(map)
-    }
-
-    ## handle split variable
-    nondup <- !duplicated(map[[splvar]])
-    ksl_fun <- keep_split_levels(only = map[[splvar]][nondup], reorder = TRUE)
-    ret <- ksl_fun(df, spl, vals, labels, trim = trim)
-    
-    ## keep non-split (inner) variables levels
-    ret$datasplit <- lapply(ret$values, function(splvar_lev) {
-
-      df3 <- ret$datasplit[[splvar_lev]]
-      
-      # loop through inner variables 
-      for (iv in setdiff(colnames(map), splvar)) { 
-        iv_lev <- df3[[iv]]
-        levkeep <- as.character(na.omit(unique(map[map[, splvar] == splvar_lev, iv])))
-        if (is.factor(iv_lev) && !all(levkeep %in% levels(iv_lev)))
-          stop("Attempted to keep invalid factor level(s) in split ", setdiff(levkeep, levels(iv_lev)))
-        
-        df3 <- df3[iv_lev %in% levkeep, , drop = FALSE]
-        
-        if (is.factor(iv_lev))
-          df3[[iv]] <- factor(as.character(df3[[iv]]), levels = levkeep)
-      }
-      
-      df3
-    })
-    names(ret$datasplit) <- ret$values
-    ret
-  }
-  
-  myfun
-}
-
-```
-
 # Metadata map
 
 Defines which lab directions are theoretically possible even if they don't exist in the dataset.
@@ -156,7 +94,7 @@ map <- data.frame(
 
 basic_table() %>%
   split_rows_by("LBCAT") %>%
-  split_rows_by("PARAMCD", split_fun = keep_split_levels_of_vars3(map = map)) %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map)) %>%
   analyze("ANRIND") %>%
   build_table(adlb)
 ```
@@ -175,6 +113,8 @@ s_count_abnormal <- function(df,
                              exclude_base_abn = FALSE
 ) {
 
+  # This will define the abnormal levels theoretially possible for a specific lab parameter
+  # within a split level of a layout.
   abn_levels <- intersect(abnormal, levels(df[[.var]]))
   
   result <- split(numeric(0), factor(abn_levels, levels = abn_levels))
@@ -211,6 +151,7 @@ s_count_abnormal <- function(df,
 }
 
 # Test it out.
+s_count_abnormal(adlb %>% filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
 s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND")
 
 ```
@@ -263,14 +204,24 @@ count_abnormal <- function(lyt,
   
 }
 
-# Not quite right yet. 
+# Final table working as expected: 
 basic_table() %>%
   split_rows_by("LBCAT") %>%
-  split_rows_by("PARAMCD", split_fun = keep_split_levels_of_vars3(map = map)) %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map)) %>%
   count_abnormal(
     var = "ANRIND",
     abnormal = c("LOW", "HIGH"),
     exclude_base_abn = FALSE
+  ) %>%
+  build_table(adlb, alt_counts_df = adsl)
+
+basic_table() %>%
+  split_rows_by("LBCAT") %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map)) %>%
+  count_abnormal(
+    var = "ANRIND",
+    abnormal = c("LOW", "HIGH"),
+    exclude_base_abn = TRUE
   ) %>%
   build_table(adlb, alt_counts_df = adsl)
 
