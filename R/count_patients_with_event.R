@@ -288,7 +288,7 @@ count_patients_with_flags <- function(lyt,
                                       var_labels = var,
                                       show_labels = "hidden",
                                       ...,
-                                      table_names = var_labels,
+                                      table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
                                       .formats = NULL,
                                       .indent_mods = NULL) {
