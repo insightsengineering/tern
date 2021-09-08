@@ -166,7 +166,7 @@ count_patients_with_event <- function(lyt,
 }
 
 #' @describeIn count_patients_with_event Statistics function that returns the number and the fraction
-#'   of unique identifiers with each particular flag. Returns a list of totals, counts, & counts and
+#'   of unique identifiers with each particular flag. Returns a list of totals, counts, counts and
 #'   fractions with one element per flag.
 #' @inheritParams argument_convention
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
