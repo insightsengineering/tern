@@ -25,13 +25,12 @@ NULL
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' h_ancova(
 #'   .var = "Sepal.Length",
 #'   .df_row = iris,
 #'   variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
 #' )
-#'}
+#'
 h_ancova <- function(.var,
                      .df_row,
                      variables) {
@@ -92,7 +91,6 @@ h_ancova <- function(.var,
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' library(scda)
 #' library(dplyr)
 #'
@@ -115,7 +113,7 @@ h_ancova <- function(.var,
 #' conf_level <- 0.95
 #'
 #' s_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-#'}
+#'
 s_ancova <- function(df,
                      .var,
                      .df_row,
@@ -186,9 +184,8 @@ s_ancova <- function(df,
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' a_ancova(df, .var, .df_row, variables, .ref_group, .in_ref_col = FALSE, conf_level)
-#'}
+#'
 a_ancova <- make_afun(
   s_ancova,
   .indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 1L, "pval" = 1L),
@@ -207,7 +204,6 @@ a_ancova <- make_afun(
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#' \dontrun{
 #' library(scda)
 #' library(dplyr)
 #'
@@ -239,6 +235,7 @@ a_ancova <- make_afun(
 #'   ) %>%
 #'   build_table(adqs_single, alt_counts_df = adsl)
 #'
+#' \dontrun{
 #' basic_table() %>%
 #'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
 #'   split_rows_by("PARAMCD") %>%
