@@ -288,7 +288,6 @@ g_forest <- function(tbl,
 #' @importFrom stats na.omit
 #'
 #' @examples
-#' \dontrun{
 #' tbl <- rtable(
 #'   header = rheader(
 #'    rrow("", "E", rcell("CI", colspan = 2), "N"),
@@ -312,7 +311,7 @@ g_forest <- function(tbl,
 #' )
 #'
 #'  draw_grob(p)
-#'}
+#'
 forest_grob <- function(tbl,
                         x,
                         lower,
@@ -678,7 +677,6 @@ forest_dot_line <- function(x,
 #' @importFrom rtables matrix_form
 #'
 #' @examples
-#' \dontrun{
 #' library(grid)
 #'
 #' tbl <- rtable(
@@ -695,7 +693,7 @@ forest_dot_line <- function(x,
 #'
 #' grid.newpage()
 #' showViewport(v)
-#'}
+#'
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,
@@ -851,11 +849,10 @@ grid.forest <- function(...) {# nousage # nolint
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' attributes(x)
-#'}
+#'
 `footnotes<-` <- function(x, value = NULL) { # nolint
   attr(x, "footnote") <- value
   x
@@ -886,13 +883,12 @@ footnotes <- function(x) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' footnotes(x)
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
-#' }
+#'
 
 `add_footnotes<-` <- function(x, value) { # nolint
   footnotes(x) <- c(footnotes(x), value)
