@@ -123,9 +123,9 @@ s_count_abnormal <- function(df,
   result <- split(numeric(0), factor(names(abn_levels), levels = names(abn_levels)))
 
   for (abn in names(abn_levels)) {
-    
+
     abnormal <- abn_levels[abn]
-    
+
     # Patients in the denominator fulfill:
     # - have at least one post-baseline visit
     # - their baseline must not be abnormal if `exclude_base_abn`.
@@ -137,16 +137,16 @@ s_count_abnormal <- function(df,
     }
     subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
     denom <- length(subjects_denom)
-    
+
     # Patients in the numerator fulfill:
     # - have at least one post-baseline visit with the required abnormality level
     # - are part of the denominator patients.
     subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
     subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
     num <- length(subjects_num)
-    
+
     result[[abn]] <- with_label(c(num = num, denom = denom), abn)
-    
+
   }
 
   result <- list(fraction = result)
@@ -209,10 +209,10 @@ count_abnormal <- function(lyt,
       extra_args = list(...),
       show_labels = "hidden"
     )
-  
+
 }
 
-# Final table working as expected: 
+# Final table working as expected:
 lyt1 <- basic_table() %>%
   split_rows_by("LBCAT") %>%
   split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map)) %>%
