@@ -37,6 +37,7 @@ the residuals. This is in line with the MMRM philosophy where random effects are
 model the marginal residual distribution.
 }
 \examples{
+\dontrun{
 library(dplyr)
 library(scda)
 
@@ -62,7 +63,7 @@ mmrm_results <- fit_mmrm(
 )
 g_mmrm_diagnostic(mmrm_results)
 g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
-
+}
 }
 \seealso{
 \code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.

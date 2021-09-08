@@ -36,7 +36,7 @@
 #' @export
 #'
 #' @examples
-#'
+#'\dontrun{
 #' library(scda)
 #' library(dplyr)
 #' library(forcats)
@@ -160,7 +160,7 @@
 #'   vline = 1,
 #'   forest_header = c("Hello", "World")
 #' )
-#'
+#'}
 g_forest <- function(tbl,
                      col_x = attr(tbl, "col_x"),
                      col_ci = attr(tbl, "col_ci"),
@@ -852,6 +852,7 @@ grid.forest <- function(...) {# nousage # nolint
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' attributes(x)
+#'
 `footnotes<-` <- function(x, value = NULL) { # nolint
   attr(x, "footnote") <- value
   x
@@ -865,10 +866,11 @@ grid.forest <- function(...) {# nousage # nolint
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' x <- table(iris$Species)
 #' footnotes(x) <- "Species are equally distributed"
 #' footnotes(x)
-#'
+#'}
 footnotes <- function(x) {
   attr(x, "footnote")
 }
@@ -886,6 +888,7 @@ footnotes <- function(x) {
 #' footnotes(x)
 #' add_footnotes(x) <- "Add more footnotes"
 #' footnotes(x)
+#'
 
 `add_footnotes<-` <- function(x, value) { # nolint
   footnotes(x) <- c(footnotes(x), value)
