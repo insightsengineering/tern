@@ -96,6 +96,7 @@ h_ancova <- function(.var,
 #'
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #' adqs <- synthetic_cdisc_data("latest")$adqs
+#'
 #' adqs_single <- adqs %>%
 #'   filter(
 #'     AVISIT == "WEEK 1 DAY 8",  # single time point
@@ -204,11 +205,6 @@ a_ancova <- make_afun(
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#' library(scda)
-#' library(dplyr)
-#'
-#' adsl <- synthetic_cdisc_data("latest")$adsl
-#' adsl <- synthetic_cdisc_data("latest")$adqs
 #'
 #' adqs_single <- adqs %>%
 #'   filter(
