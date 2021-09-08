@@ -6,13 +6,15 @@
 #' @details Missing entries are those with `NA` or empty strings and will
 #'   be replaced with a specified value. If factor variables include missing
 #'   values, the missing value will be inserted as the last level.
-#'   Similarly, in case character variables should be converted to factors with
-#'   `char_as_factor` option, the missing values will be set as the last level.
+#'   Similarly, in case character or logical variables should be converted to factors with
+#'   `char_as_factor` or `logical_as_factor` option, the missing values will be set as the last level.
 #'
 #' @param data (`data frame`)\cr data set.
 #' @param omit_columns (`character`)\cr names of variables from `data` that should
 #'   not be modified by this function.
 #' @param char_as_factor (`flag`)\cr whether to convert character variables
+#'   in `data` to factors.
+#' @param logical_as_factor (`flag`)\cr whether to convert logical variables
 #'   in `data` to factors.
 #' @param na_level (`string`)\cr used to replace all `NA` or empty
 #'   values inside non-`omit_columns` columns.
@@ -38,12 +40,13 @@
 #' # Encode missing values in a subset of columns.
 #' df_explicit_na(my_data, omit_columns = c("x", "y"))
 #'
-df_explicit_na <- function(data, omit_columns = NULL, char_as_factor = TRUE, na_level = "<Missing>") {
+df_explicit_na <- function(data, omit_columns = NULL, char_as_factor = TRUE, logical_as_factor = FALSE, na_level = "<Missing>") {
 
   assert_that(
     is.data.frame(data),
     is.null(omit_columns) || is_character_vector(omit_columns),
     is.flag(char_as_factor),
+    is.flag(logical_as_factor),
     is.string(na_level)
   )
 
