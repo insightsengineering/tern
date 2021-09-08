@@ -221,12 +221,14 @@ a_ancova <- make_afun(
 #'   summarize_ancova(
 #'     vars = "CHG",
 #'     variables = list(arm = "ARMCD", covariates = NULL),
+#'     table_names = "unadj",
 #'     conf_level = 0.95, var_labels = "Unadjusted comparison",
 #'     .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
 #'   ) %>%
 #'   summarize_ancova(
 #'     vars = "CHG",
 #'     variables = list(arm = "ARMCD", covariates = c("BASE", "STRATA1")),
+#'     table_names = "adj",
 #'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
 #'   ) %>%
 #'   build_table(adqs_single, alt_counts_df = adsl)
