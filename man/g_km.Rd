@@ -143,7 +143,7 @@ including the number of patient at risk at given time and the median survival
 per group.
 }
 \examples{
-
+\dontrun{
 library(scda)
 library(dplyr)
 library(ggplot2)
@@ -226,4 +226,5 @@ g_km(
   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
   position_surv_med = c(1, 0.7)
 )
+}
 }

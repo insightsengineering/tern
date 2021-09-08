@@ -35,6 +35,7 @@ NULL
 #' @seealso \code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.
 #'
 #' @examples
+#' \dontrun{
 #' library(dplyr)
 #' library(scda)
 #'
@@ -60,7 +61,7 @@ NULL
 #' )
 #' g_mmrm_diagnostic(mmrm_results)
 #' g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
-#'
+#'}
 g_mmrm_diagnostic <- function(
   object,
   type = c("fit-residual", "q-q-residual"),
@@ -191,6 +192,7 @@ g_mmrm_diagnostic <- function(
 #' @import ggplot2
 #'
 #' @examples
+#' \dontrun{
 #' library(dplyr)
 #' library(scda)
 #' library(rtables)
@@ -204,7 +206,6 @@ g_mmrm_diagnostic <- function(
 #'   mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
 #' var_labels(adqs_f) <- var_labels(adqs)
 #'
-#
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
@@ -259,7 +260,7 @@ g_mmrm_diagnostic <- function(
 #'   show_pval = TRUE,
 #'   width = 0.8
 #' )
-#'
+#'}
 g_mmrm_lsmeans <-
   function(object,
            select = c("estimates", "contrasts"),
