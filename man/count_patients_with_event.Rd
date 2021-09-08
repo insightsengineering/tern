@@ -136,7 +136,7 @@ customized by calling \code{\link[rtables:make_afun]{rtables::make_afun()}} on i
 to the input layout. Note that additional formatting arguments can be used here.
 
 \item \code{s_count_patients_with_flags}: Statistics function that returns the number and the fraction
-of unique identifiers with each particular flag. Returns a list of totals, counts, & counts and
+of unique identifiers with each particular flag. Returns a list of totals, counts, counts and
 fractions with one element per flag.
 
 \item \code{a_count_patients_with_flags}: Formatted Analysis function which can be further customized by calling
