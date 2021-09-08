@@ -21,9 +21,8 @@ x <- table(iris$Species)
 footnotes(x) <- "Species are equally distributed"
 attributes(x)
 
-\dontrun{
 x <- table(iris$Species)
 footnotes(x) <- "Species are equally distributed"
 attributes(x)
-}
+
 }
