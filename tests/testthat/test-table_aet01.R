@@ -76,11 +76,12 @@ test_that("Safety Summary Variant 1 works as expected", {
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(adae[, aesi_vars]),
-      .indent_mods = 1L
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible"
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)
@@ -208,17 +209,21 @@ test_that("Safety Summary Variant 2 (with Medical Concepts Section) works as exp
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(adae[, aesi_vars]),
-      .indent_mods = 1L
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible",
+      table_names = "table_ae"
     ) %>%
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(adae[, basket_vars]),
-      .indent_mods = 1L
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible",
+      table_names = "table_aesi"
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 15)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)
@@ -333,11 +338,12 @@ test_that("Safety Summary Variant 3 (with Modified Rows) works as expected", {
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(adae[, aesi_vars]),
-      .indent_mods = 1L
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible"
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)
@@ -444,29 +450,32 @@ test_that("Safety Summary Variant 4 (with Rows Counting Events and Additional Se
     count_patients_with_flags(
       "USUBJID",
       flag_variables = var_labels(adae[, count_subj_vars]),
-      .indent_mods = 1L
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible"
     ) %>%
     count_patients_with_flags(
       "AEDECOD",
       flag_variables = var_labels(adae[, count_term_vars]),
+      denom = "N_col",
+      var_labels = "Total number of unique preferred terms which are",
+      show_labels = "visible",
       .stats = "count",
       .formats = c(count = "xx"),
-      .indent_mods = 1L,
-      table_names = paste0("table_term_", count_term_vars)
+      table_names = "table_term"
     ) %>%
     count_patients_with_flags(
       "USUBJID_AESEQ",
       flag_variables = var_labels(adae[, count_ae_vars]),
+      denom = "N_col",
+      var_labels = "Total number of adverse events which are",
+      show_labels = "visible",
       .stats = "count",
       .formats = c(count = "xx"),
-      .indent_mods = 1L,
-      table_names = paste0("table_ae_", count_ae_vars)
+      table_names = "table_ae"
     )
 
   result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of patients with at least one"), at = 3)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of unique preferred terms which are"), at = 10)
-  result_adae <- insert_rrow(result_adae, rrow("Total number of adverse events which are"), at = 16)
 
   # Combine tables.
   col_info(result_adsl) <- col_info(result_adae)
