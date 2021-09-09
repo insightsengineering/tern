@@ -114,7 +114,7 @@ s_count_abnormal <- function(df,
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
-  
+
   # Assertions for abnormal
   assertthat::assert_that(
     is_character_vector(abnormal, min_length = 2, max_length = 2),
@@ -339,12 +339,12 @@ Example 3: Case where all `ANRIND` for a parameter are LOW but map has parameter
 map_alt_high <- map
 map_alt_high$ANRIND[map$PARAMCD == "ALT" & map$ANRIND == "LOW"] <- "HIGH"
 
-map_alt_high %>% 
+map_alt_high %>%
   filter(PARAMCD == "ALT") %>%
   count(ANRIND)
 
 # However in the observed data, ALT has only abnormalities in the LOW direction
-adlb %>% 
+adlb %>%
   filter(PARAMCD == "ALT") %>%
   count(ANRIND)
 
@@ -356,7 +356,6 @@ basic_table() %>%
     exclude_base_abn = FALSE
   ) %>%
   build_table(df = adlb, alt_counts_df = adsl)
-
 ```
 
 As can be seen in this example, the map ultimately defines what levels appear in the analysis even if they are observed in the data. This may potentially lead to errors and users should be careful when constructing these maps. Likely the addition of helper functions to this package will help reduce this risk as maps for standard safety data should be automatically constructed.
