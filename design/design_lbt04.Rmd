@@ -245,10 +245,10 @@ build_table(lyt2, df = adlb, alt_counts_df = adsl)
 
 # Additional edge cases
 
-Example 1: Case where all `ANRIND` for a parameter are NORMAL.
+Example 1: Case where all `ANRIND` for a parameter are in only one direction.
 ```{r, anrind_normal_only}
 
-# Here we make a dataset where all observed ALT values are NORMAL.
+# Here we make a dataset where all observed ALT values are LOW
 adlb_f1 <- adlb %>%
   filter(PARAMCD != "ALT" | ANRIND == "NORMAL")
 
@@ -331,3 +331,32 @@ basic_table() %>%
   ) %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
+
+Example 3: Case where all `ANRIND` for a parameter are LOW but map has parameter only in opposite direction (this is error in the map construction):
+```{r, error_in_map}
+
+# Here we set the abnormality direction of ALT to be HIGH in the map.
+map_alt_high <- map
+map_alt_high$ANRIND[map$PARAMCD == "ALT" & map$ANRIND == "LOW"] <- "HIGH"
+
+map_alt_high %>% 
+  filter(PARAMCD == "ALT") %>%
+  count(ANRIND)
+
+# However in the observed data, ALT has only abnormalities in the LOW direction
+adlb %>% 
+  filter(PARAMCD == "ALT") %>%
+  count(ANRIND)
+
+basic_table() %>%
+  split_rows_by("LBCAT") %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map_alt_high)) %>%
+  count_abnormal(
+    var = "ANRIND",
+    exclude_base_abn = FALSE
+  ) %>%
+  build_table(df = adlb, alt_counts_df = adsl)
+
+```
+
+As can be seen in this example, the map ultimately defines what levels appear in the analysis even if they are observed in the data. This may potentially lead to errors and users should be careful when constructing these maps. Likely the addition of helper functions to this package will help reduce this risk as maps for standard safety data should be automatically constructed.
