@@ -114,6 +114,13 @@ s_count_abnormal <- function(df,
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
+  
+  # Assertions for abnormal
+  assertthat::assert_that(
+    is_character_vector(abnormal, min_length = 2, max_length = 2),
+    !is.null(names(abnormal)),
+    any(abnormal %in% levels(df[[.var]]))
+  )
 
   # This will define the abnormal levels theoretically possible for a specific lab parameter
   # within a split level of a layout.
