@@ -28,4 +28,5 @@ footnotes(x) <- "Species are equally distributed"
 footnotes(x)
 add_footnotes(x) <- "Add more footnotes"
 footnotes(x)
+
 }
