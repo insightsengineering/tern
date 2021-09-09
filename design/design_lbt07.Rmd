@@ -288,9 +288,9 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 
 # afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 # 
-afun(
-   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
- )
+# afun(
+#    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
+#  )
 
 
 ```
@@ -304,7 +304,7 @@ count_abnormal_by_worst_grade <- function(lyt,
                                           abnormal,
                                           variables,
                                           ...,
-                                          table_names = abnormal,
+                                          table_names = var,
                                           .stats = NULL,
                                           .formats = NULL,
                                           .labels = NULL,
