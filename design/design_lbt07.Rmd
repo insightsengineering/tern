@@ -232,7 +232,8 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
         result[[abn_grade]] <- with_label(c(num, num / n), as.character(abn_grade))
       }
       
-      #any_grade_num <- length(unique(anl_abn$id))
+      any_grade_num <- length(unique(anl_abn$id))
+      result[[name_any]] <- with_label(c(any_grade_num , any_grade_num/n), name_any)
     }
   
   # for (abn in abn_levels) {
@@ -287,9 +288,10 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 
 # afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
 # 
-# afun(
-#    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
-#  )
+afun(
+   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
+ )
+
 
 ```
 
