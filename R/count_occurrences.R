@@ -128,7 +128,6 @@ a_count_occurrences <- make_afun(
   )
 
 #' @describeIn count_occurrences Analyze Function that counts occurrences as part of rtables layouts.
-#' @param var_labels (`character`)\cr title row to show in the result table.
 #'
 #' @export
 #'
