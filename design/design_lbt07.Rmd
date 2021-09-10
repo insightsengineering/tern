@@ -141,9 +141,6 @@ As we have seen above, `ATOXGRADE` variable is converted to numeric as the stati
 First, let's reconvert `ATOXGRADE` back to factor. Users should not convert `ATOXGRADE` to numeric in the future.
 The `s_*` will take care of assuring that `ATOXGRADE` is a factor by adding an assertion. 
 
-Additionally, the `abnormal` argument is now only going to be used for selecting the labels for "LOW"/"HIGH". 
-If we want them to keep as "Low"/"High" this argument could be removed. 
-
 ```{r}
 #just checking if the conversions are properly performed. 
 atox1 <- adlb$ATOXGR
@@ -167,7 +164,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             abnormal = c(Low = "Low", High = "High"),
                                             variables = list(
                                               id = "USUBJID", 
-                                              worst_grade_flag = c("WGRLOFL", "WGRHIFL")
+                                              worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL")
                                               )
                                             ){
 
@@ -177,6 +174,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
     is.list(variables),
     all(names(variables) %in% c("id", "worst_grade_flag", "anl_range_indic")),
     all(names(abnormal) %in% c("Low", "High")),
+    all(names(variables$worst_grade_flag) %in% c("Low", "High")),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
     is_logical_vector(df[[variables$worst_grade_flag[1]]]),
@@ -185,70 +183,74 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   )
 
   #Let's try to infer the target directions by using ATOXGRADE levels 
-  #First of all, 
   grade_levels_num <- as.numeric(as.character(levels(df[[.var]])))
   max_atoxgrade_num <- max(grade_levels_num)
   min_atoxgrade_num <- min(grade_levels_num)
 
- abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
-   abnormal
-   } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
-     c(abnormal[names(abnormal) == "High"])
-     } else c(abnormal[names(abnormal) == "Low"])
-
-  df <- df[!is.na(df[[.var]]), ]
-  flag_low_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRLOFL"]
-  flag_high_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRHIFL"]
-
-  anl <- data.frame(
-      id = df[[variables$id]],
-      grade = df[[.var]],
-      flag_low = df[[flag_low_name]],
-      flag_high = df[[flag_high_name]],
-      stringsAsFactors = FALSE
-    )
+  #I am adding  this conditional when the only available level (in case just 0 is stated in the map). 
+  #In this case the output will be an empty list (shown later in the edge cases)
   
-  # Denominator is number of patients with at least one valid measurement during treatment
-    n <- length(unique(anl$id))
+  if(grade_levels_num == 0 && length(grade_levels_num) == 1) {
     result <- list()
-    for (abn in names(abn_levels)){
-      abnormal <- abn
-      abnormal_label <- abn_levels[names(abn_levels) == abnormal]
-      name_any <- paste(abnormal_label, "- Any")
-      if (abnormal == "Low"){
-        anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
-        grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
-      } else if (abnormal == "High"){
-        anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
-        grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
-      }
-      for (grade in grades) {
-        num <- length(unique(anl_abn[anl_abn$grade == grade, "id", drop = TRUE]))
-        abn_grade <- paste(abnormal_label, "-", abs(as.numeric(grade)))
-        result[[abn_grade]] <- with_label(c(num, num / n), abn_grade)
-      }
+  } else {
+     abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
+       abnormal
+       } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
+         c(abnormal[names(abnormal) == "High"])
+         } else c(abnormal[names(abnormal) == "Low"])
+    
+      df <- df[!is.na(df[[.var]]), ]
+      flag_low_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRLOFL"]
+      flag_high_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRHIFL"]
+    
+      anl <- data.frame(
+          id = df[[variables$id]],
+          grade = df[[.var]],
+          flag_low = df[[flag_low_name]],
+          flag_high = df[[flag_high_name]],
+          stringsAsFactors = FALSE
+        )
       
-      any_grade_num <- length(unique(anl_abn$id))
-      result[[name_any]] <- with_label(c(any_grade_num , any_grade_num/n), name_any)
-    }
-
+      # Denominator is number of patients with at least one valid measurement during treatment
+        n <- length(unique(anl$id))
+        result <- list()
+        for (abn in names(abn_levels)){
+          abnormal <- abn
+          abnormal_label <- abn_levels[names(abn_levels) == abnormal]
+          name_any <- paste(abnormal_label, "- Any")
+          if (abnormal == "Low"){
+            anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
+            grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
+          } else if (abnormal == "High"){
+            anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
+            grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
+          }
+          for (grade in grades) {
+            num <- length(unique(anl_abn[anl_abn$grade == grade, "id", drop = TRUE]))
+            abn_grade <- paste(abnormal_label, "-", abs(as.numeric(grade)))
+            result[[abn_grade]] <- with_label(c(num, num / n), abn_grade)
+          }
+          any_grade_num <- length(unique(anl_abn$id))
+          result[[name_any]] <- with_label(c(any_grade_num , any_grade_num/n), name_any)
+        }
+  
+  }
+  
   result <- list(count_fraction = result)
   result
-  
-  
 }
 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .var = "ATOXGR",
-   abnormal = c("LOW", "HIGH"),
+   abnormal = c(Low = "Low", High = "High"),
    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
  )
 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels(),
    .var = "ATOXGR",
-   abnormal = c("LOW", "HIGH"),
+   abnormal = c(Low = "Low", High = "High"),
    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
  )
 
@@ -256,12 +258,23 @@ s_count_abnormal_by_worst_grade(
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
    .var = "ATOXGR",
-   abnormal = c("LOW", "HIGH"),
+   abnormal = c(Low = "Low", High = "High"),
    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
  )
-```
 
-When adding formats we are obtaining an error. This works if we do not consider the direction (remove `result[[abn]]` code and add just `result` in code line 204 of the statistics function)
+#The `abnormal` argument is now only going to be used for selecting the labels for "LOW"/"HIGH". 
+#If we want them to keep always as "Low"/"High", this argument could be removed. 
+#See the following example 
+
+s_count_abnormal_by_worst_grade(
+   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
+   .var = "ATOXGR",
+   abnormal = c(Low = "Loooooooow", High = "High"),
+   variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
+ )
+
+```
+No changes heres. 
 
 ```{r}
 a_count_abnormal_by_worst_grade <- make_afun(  #nolint
@@ -285,7 +298,9 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
  
 ```
 
+# New layout function
 
+Here the main change is to remove the for loop. 
 ```{r}
 
 count_abnormal_by_worst_grade <- function(lyt,
@@ -298,12 +313,11 @@ count_abnormal_by_worst_grade <- function(lyt,
                                           .formats = NULL,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
-  # assert_that(
-  #   is.string(var),
-  #   !is.null(names(abnormal)),
-  #   setequal(names(abnormal), names(variables$worst_grade_flag)),
-  #   is_equal_length(abnormal, table_names)
-  # )
+  assert_that(
+    is.string(var),
+    !is.null(names(abnormal)),
+    setequal(names(abnormal), names(variables$worst_grade_flag))
+  )
   afun <- make_afun(
     a_count_abnormal_by_worst_grade,
     .stats = .stats,
@@ -353,8 +367,8 @@ lyt_no_trim <- basic_table() %>%
   ) %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR",
-    abnormal = c(Low = "LOW", High = "HIGH"),
-    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
+    abnormal = c(Low = "Low", High = "High"),
+    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
@@ -377,8 +391,8 @@ lyt_trim_map <- basic_table() %>%
   ) %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR",
-    abnormal = c(Low = "LOW", High = "HIGH"),
-    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
+    abnormal = c(Low = "Low", High = "High"),
+    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
@@ -401,8 +415,8 @@ lyt_trim_group <- basic_table() %>%
   ) %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR",
-    abnormal = c(Low = "LOW", High = "HIGH"),
-    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
+    abnormal = c(Low = "Low", High = "High"),
+    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
@@ -417,7 +431,10 @@ build_table(
 ## What if user converts ATOXGR to numeric 
 
 ```{r}
+
 #adlb_f ATOXGRADE is numeric so let's use this dataframe
+
+#the function will return an error saying that ATOXGRADE is not a factor, as per one of the validation statements.
 build_table(
   lyt = lyt_trim_map,
   df = adlb_f,
@@ -428,9 +445,8 @@ build_table(
 
 ## Edge cases
 * Example 1: All grades 0 for a param. 
-* Example 2: All grades in the target direction (none 0). 
-* Example 3: All grades in an opposite direction 
-* Example 4: All grades for all params 0. 
+* Example 2: All grades in the target direction (none 0) for a param. 
+* Example 3: All grades in an opposite direction for a param. 
 
 Example 1: Case where all `ATOXGRADE` for ALT parameter are 0. 
 ```{r}
@@ -439,17 +455,116 @@ adlb_f3 <- adlb_f2 %>%
 
 adlb_f3 %>% count(PARAMCD, ATOXGR)
 
-#This is the expected output. 0 records are shown
+#This is the expected output. 0 records are shown for different grades.
 build_table(
   lyt = lyt_trim_map,
   df = adlb_f3,
   alt_counts_df = adsl
 )
 
-
-
-
+#Let's remove ALT/negative grade rows from the map and create a new empirical map
+empirical_map1 <- map %>% filter(
+  !(PARAMCD == "ALT" & ATOXGR < 0)
+)
 
 ```
 
-Example 2: 
+The following layout throws an error. 
+
+```{r}
+basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+                split_fun = trim_levels_to_map(map = empirical_map1)) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR",
+    abnormal = c(Low = "Low", High = "High"),
+    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  build_table(df = adlb_f2, alt_counts_df = adsl)
+
+```
+
+If all rows for `ALT` are removed in the `map` used, `ALT` will not appear in the table. 
+
+```{r}
+empirical_map2 <- map %>% filter(
+  PARAMCD != "ALT"
+)
+
+basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+                split_fun = trim_levels_to_map(map = empirical_map2)) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR",
+    abnormal = c(Low = "Low", High = "High"),
+    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  build_table(df = adlb_f2, alt_counts_df = adsl)
+
+``` 
+
+Example 2: All grades in the target direction (none 0) for a param.
+
+```{r}
+adlb_f4 <- adlb_f2 %>% 
+  filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
+adlb_f4 %>% count(PARAMCD, ATOXGR)
+```
+
+```{r}
+build_table(
+  lyt = lyt_trim_map,
+  df = adlb_f4,
+  alt_counts_df = adsl
+)
+
+```
+
+Example 3: All grades in an opposite direction from stated in map. 
+Scenario where map is incorrectly filled.
+It is returning an error that theoretically has nothing to do with this. 
+It works with `map = map` but not with `map2`.
+
+```{r}
+
+map2 <- map
+map2[map2$PARAMCD == "ALT", 2] <- "1"
+
+basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+                split_fun = trim_levels_to_map(map = map2)) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR",
+    abnormal = c(Low = "Low", High = "High"),
+    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  build_table(df = adlb_f2, alt_counts_df = adsl)
+```
+
