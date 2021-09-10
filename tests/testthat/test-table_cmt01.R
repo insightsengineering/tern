@@ -31,7 +31,7 @@ test_that("CMT01 default variant (Concomitant medications) is produced correctly
         nonunique = "Total number of treatments"
       )
     ) %>%
-    count_occurrences(var = "CMDECOD") %>%
+    count_occurrences(vars = "CMDECOD") %>%
     build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
@@ -93,7 +93,7 @@ test_that("CMT01 variant 1 (prior medications) is produced correctly", {
         nonunique = "Total number of treatments"
       )
     ) %>%
-    count_occurrences(var = "CMDECOD") %>%
+    count_occurrences(vars = "CMDECOD") %>%
     build_table(adcm_p, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
@@ -146,7 +146,7 @@ test_that("CMT01 variant 3 (Concomitant medications) is produced correctly", {
       .labels = c(unique = "Total number of patients with at least one treatment"),
       .stats = "unique"
     ) %>%
-    count_occurrences(var = "CMDECOD") %>%
+    count_occurrences(vars = "CMDECOD") %>%
     build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
@@ -194,7 +194,7 @@ test_that("CMT01 variant 4 (Concomitant medications) is produced correctly", {
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
     ) %>%
-    count_occurrences(var = "CMDECOD") %>%
+    count_occurrences(vars = "CMDECOD") %>%
     build_table(adcm_c, alt_counts_df = adsl) %>%
     sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences, decreasing = TRUE) %>%
     sort_at_path(path = c("CMCLAS"), scorefun = cont_n_onecol(4), decreasing = TRUE)
