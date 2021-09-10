@@ -131,3 +131,72 @@ test_that("count_occurrences functions as expected with valid input and default 
 
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("count_occurrences functions as expected with label row specified", {
+  adsl <- scda::synthetic_cdisc_data("latest")$adsl
+  adae <- scda::synthetic_cdisc_data("latest")$adae
+
+  adsl <- df_explicit_na(adsl)
+  adae <- df_explicit_na(
+    adae,
+    omit_columns = c("SMQ01NAM", "SMQ01SC", "SMQ02NAM", "SMQ02SC", "CQ01NAM", "STUDYID", "USUBJID")
+  )
+
+  df_max <- aggregate(as.numeric(AETOXGR) ~ USUBJID, data = adae, FUN = max, drop = FALSE)
+  colnames(df_max) <- c("USUBJID", "WTOXGR")
+
+  adae <- adae %>%
+    left_join(df_max, by = c("USUBJID")) %>%
+    mutate(
+      fl_ser = AESER == "Y"
+    ) %>%
+    mutate(
+      AEOUT = forcats::fct_recode(AEOUT,
+                                  "Fatal outcome" = "FATAL",
+                                  "Unresolved" = "NOT RECOVERED/NOT RESOLVED",
+                                  "Recovered/Resolved" = "RECOVERED/RESOLVED",
+                                  "Resolved with sequelae" = "RECOVERED/RESOLVED WITH SEQUELAE",
+                                  "Recovering/Resolving" = "RECOVERING/RESOLVING",
+                                  "Unknown outcome" = "UNKNOWN"
+      )
+    )
+
+  adsl1 <- adsl %>%
+    mutate(AEFL = ifelse(USUBJID %in% adae$USUBJID, TRUE, FALSE)) %>%
+    var_relabel(AEFL = "At least one AE")
+
+  lyt_adsl <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts()
+
+  result_adsl <- build_table(lyt_adsl, df = adsl1, alt_counts_df = adsl1)
+
+  lyt_adae <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    add_colcounts() %>%
+    count_occurrences(
+      vars = "AEOUT",
+      denom = "n",
+      var_labels = "Number of patients with at least one AE by outcome",
+      show_labels = "visible"
+    )
+
+  result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
+
+  col_info(result_adsl) <- col_info(result_adae)
+  result <- rbind(
+    result_adsl,
+    result_adae[1:nrow(result_adae), ]
+  )
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c("",               "",        "Number of patients with at least one AE by outcome", "Fatal outcome", "Unresolved", "Recovered/Resolved", "Resolved with sequelae", "Recovering/Resolving", "Unknown outcome",
+      "A: Drug X",      "(N=134)", "",                                                   "76 (62.3%)",    "61 (50%)",   "77 (63.1%)",         "45 (36.9%)",             "91 (74.6%)",           "32 (26.2%)",
+      "B: Placebo",     "(N=134)", "",                                                   "70 (56.9%)",    "66 (53.7%)", "82 (66.7%)",         "41 (33.3%)",             "77 (62.6%)",           "47 (38.2%)",
+      "C: Combination", "(N=132)", "",                                                   "75 (62.5%)",    "68 (56.7%)", "90 (75%)",           "42 (35%)",               "87 (72.5%)",           "39 (32.5%)"),
+    .Dim = c(9L, 4L))
+
+  expect_identical(result_matrix, expected_matrix)
+})

@@ -75,7 +75,7 @@ result <- basic_table() %>%
     .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_c, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
@@ -106,7 +106,7 @@ result <- basic_table() %>%
     .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_p, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
@@ -135,7 +135,7 @@ result <- basic_table() %>%
     .labels = c("Total number of patients with at least one treatment (%)"),
     .stats = "unique"
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_c, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
@@ -165,7 +165,7 @@ result <- basic_table() %>%
     .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_c, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences, decreasing = TRUE) %>%

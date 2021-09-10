@@ -12,6 +12,7 @@
 * Updated license and `README.md` with appropriate information for migration to public Github.
 * Added `error_on_lint: TRUE` to `.lintr`.
 * Refactored `count_patients_with_flags` to include a title row with correct indentation.
+* Added `var_labels` and `show_labels` arguments to `count_occurrences` to allow for creation of a title row, update tests.
 
 # tern 0.7.4
 

@@ -29,6 +29,8 @@ a_count_occurrences(
 count_occurrences(
   lyt,
   vars,
+  var_labels = vars,
+  show_labels = "hidden",
   ...,
   table_names = vars,
   .stats = "count_fraction",
@@ -60,6 +62,10 @@ by a statistics function.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr title row to show in the result table.}
+
+\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 
