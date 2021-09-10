@@ -26,6 +26,7 @@
 #' @examples
 #'
 #' my_data <- data.frame(
+#'   u = c(TRUE, FALSE, NA, TRUE),
 #'   v = factor(c("A", NA, NA, NA), levels = c("Z", "A")),
 #'   w = c("A", "B", NA, "C"),
 #'   x = c("D", "E", "F", NA),
@@ -36,7 +37,6 @@
 #'
 #' # Encode missing values in all character or factor columns.
 #' df_explicit_na(my_data)
-#'
 #' # Encode missing values in a subset of columns.
 #' df_explicit_na(my_data, omit_columns = c("x", "y"))
 #'
@@ -79,6 +79,25 @@ df_explicit_na <- function(data, omit_columns = NULL, char_as_factor = TRUE, log
 
       # Convert characters to factors, set na_level as the last value.
       if (is.character(xi) && char_as_factor) {
+        levels_xi <- setdiff(sort(unique(xi)), na_level)
+        if (na_level %in% unique(xi)) {
+          levels_xi <- c(levels_xi, na_level)
+        }
+
+        xi <- factor(xi, levels = levels_xi)
+      }
+
+      data[, x] <- with_label(xi, label = xi_label)
+
+    }
+
+    if (is.logical(xi)) {
+
+      # Handle empty strings and NA values.
+      # xi <- explicit_na(sas_na(xi), label = na_level)
+
+      # Convert logical variables to factors, set na_level as the last value.
+      if (is.logical(xi) && logical_as_factor) {
         levels_xi <- setdiff(sort(unique(xi)), na_level)
         if (na_level %in% unique(xi)) {
           levels_xi <- c(levels_xi, na_level)
