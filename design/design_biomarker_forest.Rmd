@@ -1,0 +1,48 @@
+---
+title: "Forest plot for continuous biomarker effects within populations and models"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Idea
+
+Instead of dichotomizing biomarker values into low/high groups and then creating
+a forest plot that compares these groups in different subpopulations (e.g. [SFG3](https://docs.nest.roche.com/releases/2021_07_07/embedded/biomarker-catalog/tlg_catalog/graphs/sfg03/) or [SFG4](https://docs.nest.roche.com/releases/2021_07_07/embedded/biomarker-catalog/tlg_catalog/graphs/sfg04/)), 
+here we want to show the continuous biomarker effects (i.e. how much does one unit
+increase change the odds or the hazard).
+Since we might want to look at the sensitivity of the results with regards to different
+regression models or patient populations we need additional columns for that as well.
+
+![](https://user-images.githubusercontent.com/1071227/128316619-e9e79808-11e6-443f-a604-09fa18f166e3.png)
+
+## Layout
+
+So overall columns could be:
+
+- Biomarker
+- Population
+- Model
+- n
+
+Then for survival:
+
+- Events
+- Median (Months)
+- HR
+
+Or for response:
+
+- Response Rate
+- Odds Ratio
+
+And for both:
+
+- 95% CI
+- p-value
+
+
