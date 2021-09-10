@@ -349,7 +349,31 @@ map <- data.frame(
 #   stringsAsFactors = FALSE
 # )
 
- lyt <- basic_table() %>%
+lyt_no_trim <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD)) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR",
+    abnormal = c(Low = "LOW", High = "HIGH"),
+    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+  
+build_table(
+  lyt = lyt_no_trim,
+  df = adlb_f2,
+  alt_counts_df = adsl
+)
+
+
+lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
   split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
@@ -367,13 +391,38 @@ map <- data.frame(
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
-result <- build_table(
-  lyt = lyt,
+build_table(
+  lyt = lyt_trim_map,
   df = adlb_f2,
   alt_counts_df = adsl
 )
 
 result
+
+lyt_trim_group <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+                split_fun = trim_levels_in_group("ATOXGR")) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR",
+    abnormal = c(Low = "LOW", High = "HIGH"),
+    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+  
+build_table(
+  lyt = lyt_trim_group,
+  df = adlb_f2,
+  alt_counts_df = adsl
+)
+
 ```
 
 ## Edge cases
