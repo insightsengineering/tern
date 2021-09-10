@@ -195,15 +195,16 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   df <- df[!is.na(df[[.var]]), ]
   flag_low_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRLOFL"]
   flag_high_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRHIFL"]
-  df$atoxgrade_num <- as.numeric(as.character(df[[.var]]))
-  df$abn_grade <- factor(ifelse(df$atoxgrade_num < 0, paste("Low -", abs(df$atoxgrade_num)), 
-                                                     ifelse(df$atoxgrade_num > 0, paste("High -", abs(df$atoxgrade_num)),
-                                                            paste("Normal -", abs(df$atoxgrade_num)))))
+  #df$atoxgrade_num <- as.numeric(as.character(df[[.var]]))
+  #df$abn_grade <- factor(ifelse(df$atoxgrade_num < 0, paste("Low -", abs(df$atoxgrade_num)), 
+                                                     #ifelse(df$atoxgrade_num > 0, paste("High -", abs(df$atoxgrade_num)),
+                                                            #paste("Normal -", abs(df$atoxgrade_num)))))
 
   anl <- data.frame(
       id = df[[variables$id]],
-      grade = as.numeric(as.character(df[[.var]])),
-      abn_grade = df$abn_grade,
+      #grade = as.numeric(as.character(df[[.var]])),
+      grade = df[[.var]],
+      #abn_grade = df$abn_grade,
       flag_low = df[[flag_low_name]],
       flag_high = df[[flag_high_name]],
       stringsAsFactors = FALSE
@@ -215,17 +216,24 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
     for (abn in abn_levels){
       abnormal <- abn
       if (abnormal == "Low"){
-        anl_abn <- anl[anl$flag_low & anl$grade < 0, , drop = FALSE]
+        anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
         name_any <- "Low - Any"
+        grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
       } else if (abnormal == "High"){
-        anl_abn <- anl[anl$flag_high & anl$grade > 0, , drop = FALSE]
+        anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
         name_any <- "High - Any"
+        grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
       }
       #abnormal_grades <- unique(anl_abn$abn_grade)
-      abnormal_grades <- levels(droplevels(anl_abn$abn_grade))
-      for (abn_grade in abnormal_grades) {
-        num <- length(unique(anl_abn[anl_abn$abn_grade == abn_grade, "id", drop = TRUE]))
-        result[[abn_grade]] <- with_label(c(num, num / n), as.character(abn_grade))
+      # setNames(grades) <- abs(grades)
+      # grades <- sort(unique(anl_abn$grade), decreasing = abn == "Low")
+      
+      
+      
+      for (grade in grades) {
+        num <- length(unique(anl_abn[anl_abn$grade == grade, "id", drop = TRUE]))
+        abn_grade <- paste(abnormal, "-", abs(as.numeric(grade)))
+        result[[abn_grade]] <- with_label(c(num, num / n), abn_grade)
       }
       
       any_grade_num <- length(unique(anl_abn$id))
@@ -330,7 +338,7 @@ count_abnormal_by_worst_grade <- function(lyt,
 ```{r}
 map <- data.frame(
   PARAMCD = c(rep("ALT", 5), rep("CRP", 9), rep("IGA", 5)),
-  ATOXGR = as.character(c(seq(0,4), c(seq(-4,4)), seq(0,4))),
+  ATOXGR = as.character(c(seq(-4,0), c(seq(-4,4)), seq(0,4))),
   stringsAsFactors = FALSE
 )
 
@@ -344,7 +352,8 @@ map <- data.frame(
  lyt <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD)) %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+                split_fun = trim_levels_to_map(map = map)) %>%
   summarize_num_patients(
     var = "USUBJID",
     required = "ATOXGR",
