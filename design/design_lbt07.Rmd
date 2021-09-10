@@ -136,12 +136,16 @@ result
 
 ## Updating the statistics function `s_count_abnormal_by_worst_grade`
 
-As we have seen above, `ATOXGRADE` variable is converted to numeric as the statistics function was designed to work with numeric `ATOXGRADE`. However, our goal now within the statistics function is to be able to infer the target directions to be displayed by usiong `ATOXGRADE` and we need to keep it as a factor in order to retain the levels and be still able to infer in edge cases where we may not have any abnormality grade for a certain parameter. 
+As we have seen above, `ATOXGRADE` variable is converted to numeric as the statistics function was designed to work with numeric `ATOXGRADE`. However, our goal now within the statistics function is to be able to infer the target directions to be displayed by using `ATOXGRADE` and we need to keep it as a factor in order to retain the levels and be still able to infer in edge cases where we may not have any abnormality grade for a certain parameter. 
 
-First, let's go reconvert `ATOXGRADE` back to factor. 
+First, let's reconvert `ATOXGRADE` back to factor. Users should not convert `ATOXGRADE` to numeric in the future.
+The `s_*` will take care of assuring that `ATOXGRADE` is a factor by adding an assertion. 
+
+Additionally, the `abnormal` argument is now only going to be used for selecting the labels for "LOW"/"HIGH". 
+If we want them to keep as "Low"/"High" this argument could be removed. 
 
 ```{r}
-#just checking if the conversions are working properly
+#just checking if the conversions are properly performed. 
 atox1 <- adlb$ATOXGR
 head(atox1)
 atox2 <- as.numeric(as.character(adlb$ATOXGR))
@@ -160,26 +164,26 @@ adlb_f2 <- adlb_f %>%
 
 s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             .var = "ATOXGR",
-                                            abnormal = c("LOW", "HIGH"), #we may not need this anymore! 
+                                            abnormal = c(Low = "Low", High = "High"),
                                             variables = list(
                                               id = "USUBJID", 
                                               worst_grade_flag = c("WGRLOFL", "WGRHIFL")
                                               )
                                             ){
 
-  # assert_that(
-  #   is.string(.var),
-  #   is.character(abnormal),
-  #   is.list(variables),
-  #   all(names(variables) %in% c("id", "worst_grade_flag", "anl_range_indic")),
-  #   is_df_with_variables(df, c(aval = .var, variables)),
-  #   is_numeric_vector(df[[.var]]),
-  #   is_logical_vector(df[[variables$worst_grade_flag[1]]]),
-  #   is_logical_vector(df[[variables$worst_grade_flag[2]]]),
-  #   is_character_or_factor(df[[variables$id]]),
-  #   is_character_or_factor(df[[variables$anl_range_indic]])
-  # )
-  
+  assert_that(
+    is.string(.var),
+    is.character(abnormal),
+    is.list(variables),
+    all(names(variables) %in% c("id", "worst_grade_flag", "anl_range_indic")),
+    all(names(abnormal) %in% c("Low", "High")),
+    is_df_with_variables(df, c(aval = .var, variables)),
+    is.factor(df[[.var]]),
+    is_logical_vector(df[[variables$worst_grade_flag[1]]]),
+    is_logical_vector(df[[variables$worst_grade_flag[2]]]),
+    is_character_or_factor(df[[variables$id]])
+  )
+
   #Let's try to infer the target directions by using ATOXGRADE levels 
   #First of all, 
   grade_levels_num <- as.numeric(as.character(levels(df[[.var]])))
@@ -187,24 +191,18 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   min_atoxgrade_num <- min(grade_levels_num)
 
  abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
-   c("Low", "High")
+   abnormal
    } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
-     c("High") 
-     } else c("Low")
+     c(abnormal[names(abnormal) == "High"])
+     } else c(abnormal[names(abnormal) == "Low"])
 
   df <- df[!is.na(df[[.var]]), ]
   flag_low_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRLOFL"]
   flag_high_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRHIFL"]
-  #df$atoxgrade_num <- as.numeric(as.character(df[[.var]]))
-  #df$abn_grade <- factor(ifelse(df$atoxgrade_num < 0, paste("Low -", abs(df$atoxgrade_num)), 
-                                                     #ifelse(df$atoxgrade_num > 0, paste("High -", abs(df$atoxgrade_num)),
-                                                            #paste("Normal -", abs(df$atoxgrade_num)))))
 
   anl <- data.frame(
       id = df[[variables$id]],
-      #grade = as.numeric(as.character(df[[.var]])),
       grade = df[[.var]],
-      #abn_grade = df$abn_grade,
       flag_low = df[[flag_low_name]],
       flag_high = df[[flag_high_name]],
       stringsAsFactors = FALSE
@@ -213,26 +211,20 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   # Denominator is number of patients with at least one valid measurement during treatment
     n <- length(unique(anl$id))
     result <- list()
-    for (abn in abn_levels){
+    for (abn in names(abn_levels)){
       abnormal <- abn
+      abnormal_label <- abn_levels[names(abn_levels) == abnormal]
+      name_any <- paste(abnormal_label, "- Any")
       if (abnormal == "Low"){
         anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
-        name_any <- "Low - Any"
         grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
       } else if (abnormal == "High"){
         anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
-        name_any <- "High - Any"
         grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
       }
-      #abnormal_grades <- unique(anl_abn$abn_grade)
-      # setNames(grades) <- abs(grades)
-      # grades <- sort(unique(anl_abn$grade), decreasing = abn == "Low")
-      
-      
-      
       for (grade in grades) {
         num <- length(unique(anl_abn[anl_abn$grade == grade, "id", drop = TRUE]))
-        abn_grade <- paste(abnormal, "-", abs(as.numeric(grade)))
+        abn_grade <- paste(abnormal_label, "-", abs(as.numeric(grade)))
         result[[abn_grade]] <- with_label(c(num, num / n), abn_grade)
       }
       
@@ -293,7 +285,6 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
  
 ```
 
-Here some updates are performed but it is not working as expected yet due to the above error. 
 
 ```{r}
 
@@ -335,6 +326,13 @@ count_abnormal_by_worst_grade <- function(lyt,
 
 ```
 
+
+In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions: 
+
+ * Layout without new split function,  correctly. 
+ * Layout with `trim_levels_to_map`
+ * Layout with `trim_levels_in_group`
+
 ```{r}
 map <- data.frame(
   PARAMCD = c(rep("ALT", 5), rep("CRP", 9), rep("IGA", 5)),
@@ -342,12 +340,7 @@ map <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# map <- data.frame(
-#   LBCAT = c("CHEMISTRY", "CHEMISTRY", "CHEMISTRY", "IMMUNOLOGY"),
-#   PARAMCD = c("ALT", "CRP", "CRP", "IGA"),
-#   ANRIND = c("LOW", "LOW", "HIGH", "HIGH"),
-#   stringsAsFactors = FALSE
-# )
+#All tables look OK
 
 lyt_no_trim <- basic_table() %>%
   split_cols_by("ARMCD") %>%
@@ -371,7 +364,6 @@ build_table(
   df = adlb_f2,
   alt_counts_df = adsl
 )
-
 
 lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
@@ -397,8 +389,6 @@ build_table(
   alt_counts_df = adsl
 )
 
-result
-
 lyt_trim_group <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
@@ -422,26 +412,44 @@ build_table(
   df = adlb_f2,
   alt_counts_df = adsl
 )
-
 ```
 
-## Edge cases
-* All grades 0 for a param. 
-* All grades in the target direction (none 0). 
-* All grades in an opposite direction 
-* All grades for all params 0. 
+## What if user converts ATOXGR to numeric 
 
-Example 1: Case where all `ATOXGRADE`for ALT parameter are 0. 
+```{r}
+#adlb_f ATOXGRADE is numeric so let's use this dataframe
+build_table(
+  lyt = lyt_trim_map,
+  df = adlb_f,
+  alt_counts_df = adsl
+)
+```
+
+
+## Edge cases
+* Example 1: All grades 0 for a param. 
+* Example 2: All grades in the target direction (none 0). 
+* Example 3: All grades in an opposite direction 
+* Example 4: All grades for all params 0. 
+
+Example 1: Case where all `ATOXGRADE` for ALT parameter are 0. 
 ```{r}
 adlb_f3 <- adlb_f2 %>% 
   filter(PARAMCD != "ALT" | ATOXGR == 0)
 
 adlb_f3 %>% count(PARAMCD, ATOXGR)
 
+#This is the expected output. 0 records are shown
 build_table(
-  lyt = lyt,
+  lyt = lyt_trim_map,
   df = adlb_f3,
   alt_counts_df = adsl
 )
 
+
+
+
+
 ```
+
+Example 2: 
