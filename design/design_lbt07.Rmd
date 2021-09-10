@@ -235,6 +235,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   result <- list(count_fraction = result)
   result
   
+  
 }
 
 s_count_abnormal_by_worst_grade(
