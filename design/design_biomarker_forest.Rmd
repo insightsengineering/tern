@@ -16,7 +16,7 @@ a forest plot that compares these groups in different subpopulations (e.g. [SFG3
 here we want to show the continuous biomarker effects (i.e. how much does one unit
 increase change the odds or the hazard).
 Since we might want to look at the sensitivity of the results with regards to different
-regression models or patient populations we need additional columns for that as well.
+regression models or patient populations we need additional inputs for that as well.
 
 ![](https://user-images.githubusercontent.com/1071227/128316619-e9e79808-11e6-443f-a604-09fa18f166e3.png)
 
@@ -26,7 +26,6 @@ So overall columns could be:
 
 - Biomarker
 - Population
-- Model
 - n
 
 Then for survival:
@@ -45,4 +44,51 @@ And for both:
 - 95% CI
 - p-value
 
+For the model, we would propose to have one model per output plot. 
+Then we can just look at multiple plots to see the effect of the models.
 
+## Implementation
+
+### Functions
+
+It seems that we will need new high level functions:
+- `extract_survival_biomarkers()`
+- `extract_rsp_biomarkers()`
+
+The naming here emphasizes that we are looking at multiple biomarkers at the same
+time.
+
+Also we will very likely need corresponding table functions:
+- `table_survival_biomarkers()`
+- `table_rsp_biomarkers()`
+
+However the graph function `g_forest()` is general enough and should therefore
+still be usable without major modifications.
+
+### Population specification
+
+It would be good if we can keep this consistent with the way we are doing it in the
+other forest plots. That is we could have a `subgroups = c("BEP01FL", "BMRKR2")` argument
+which gives the factor variables defining the subgroups / populations. Also the `groups_list` argument
+should still be usable to merge together certain factor levels of these subgroup variables.
+
+### Model specification
+
+In order to simplify the user interface and keep it consistent with the existing
+functions like `extract_survival_subgroups()`, we only specify one model for each plot.
+Currently the `variables` argument takes e.g.:
+
+- tte
+- is_event
+- arm
+- subgroups
+- strat
+
+So starting from this we would
+
+- replace `arm` by `biomarkers` to emphasize that it is not a factor and that
+we can specify multiple biomarkers at a time
+- add `covariates` so that the user can specify those too
+
+This is similar and uses the same terms as e.g. in `fit_survival_step()` (similar
+for the response version) so fits in that pattern nicely.
