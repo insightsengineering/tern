@@ -191,11 +191,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
    } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
      c("High") 
      } else c("Low")
- 
-  #Let's create a new variable that  
- 
-  #result <- split(numeric(0), factor(abn_levels, levels = abn_levels))
-  
+
   df <- df[!is.na(df[[.var]]), ]
   flag_low_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRLOFL"]
   flag_high_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRHIFL"]
@@ -203,8 +199,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   df$abn_grade <- factor(ifelse(df$atoxgrade_num < 0, paste("Low -", abs(df$atoxgrade_num)), 
                                                      ifelse(df$atoxgrade_num > 0, paste("High -", abs(df$atoxgrade_num)),
                                                             paste("Normal -", abs(df$atoxgrade_num)))))
-  #df$dir<- factor(ifelse(df$atoxgrade_num < 0, "Low", ifelse(df$atoxgrade_num > 0, "High", "Normal")))
-  
+
   anl <- data.frame(
       id = df[[variables$id]],
       grade = as.numeric(as.character(df[[.var]])),
@@ -226,7 +221,8 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
         anl_abn <- anl[anl$flag_high & anl$grade > 0, , drop = FALSE]
         name_any <- "High - Any"
       }
-      abnormal_grades <- unique(anl_abn$abn_grade)
+      #abnormal_grades <- unique(anl_abn$abn_grade)
+      abnormal_grades <- levels(droplevels(anl_abn$abn_grade))
       for (abn_grade in abnormal_grades) {
         num <- length(unique(anl_abn[anl_abn$abn_grade == abn_grade, "id", drop = TRUE]))
         result[[abn_grade]] <- with_label(c(num, num / n), as.character(abn_grade))
@@ -235,35 +231,21 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
       any_grade_num <- length(unique(anl_abn$id))
       result[[name_any]] <- with_label(c(any_grade_num , any_grade_num/n), name_any)
     }
-  
-  # for (abn in abn_levels) {
-  #   abnormal <- abn
-  #   # Numerator is number of patients with worst high grade (grade 1 to 4) or low grade (grade -1 to -4)
-  #   if (abnormal == "LOW") {
-  #     anl_abn <- anl[anl$flag_low & anl$grade < 0, , drop = FALSE]
-  #     grades <- setNames(- (1:4), as.character(1:4))
-  #   } else if (abnormal == "HIGH") {
-  #     anl_abn <- anl[anl$flag_high & anl$grade > 0, , drop = FALSE]
-  #     grades <- setNames(1:4, as.character(1:4))
-  #   }
-  #   
-  #   by_grade <- lapply(grades, function(i) {
-  #     num <- length(unique(anl_abn[anl_abn$grade == i, "id", drop = TRUE]))
-  #     with_label(c(num, num / n), as.character(abs(i)))
-  #   })
-  #   # Numerator for "Any" grade is number of patients with at least one high/low abnormality
-  #   any_grade_num <- length(unique(anl_abn$id))
-  #   
-  #   result[[abn]] <- c(by_grade, list("Any" =  with_label(c(any_grade_num, any_grade_num / n),"Any")))
-  # }
-  #   
+
   result <- list(count_fraction = result)
   result
   
 }
 
 s_count_abnormal_by_worst_grade(
-   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
+   .var = "ATOXGR",
+   abnormal = c("LOW", "HIGH"),
+   variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
+ )
+
+s_count_abnormal_by_worst_grade(
+   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels(),
    .var = "ATOXGR",
    abnormal = c("LOW", "HIGH"),
    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
@@ -271,7 +253,7 @@ s_count_abnormal_by_worst_grade(
 
 
 s_count_abnormal_by_worst_grade(
-   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels(),
+   df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
    .var = "ATOXGR",
    abnormal = c("LOW", "HIGH"),
    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
@@ -286,13 +268,20 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
   .formats = c(count_fraction = format_count_fraction)
 )
 
-# afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
-# 
-# afun(
-#    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
-#  )
-
-
+ afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
+ 
+ afun(
+    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels()
+  )
+ 
+ afun(
+    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
+  )
+ 
+ afun(
+    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
+  )
+ 
 ```
 
 Here some updates are performed but it is not working as expected yet due to the above error. 
@@ -328,26 +317,11 @@ count_abnormal_by_worst_grade <- function(lyt,
       lyt = lyt,
       vars = var,
       afun = afun,
-      table_names = table_names,
+      table_names = var,
       extra_args = c(list(abnormal = abnormal), list(...)),
       show_labels = "hidden"
     )
-  
-  
-  # for (i in seq_along(abnormal)) {
-  #   abn <- abnormal[i]
-  #   varlist <- variables
-  #   varlist$worst_grade_flag <- varlist$worst_grade_flag[names(abn)]
-  #   lyt <- analyze(
-  #     lyt = lyt,
-  #     vars = var,
-  #     var_labels = names(abn),
-  #     table_names = table_names[i],
-  #     afun = afun,
-  #     extra_args = c(list(abnormal = abn, variables = varlist), list(...)),
-  #     show_labels = "visible"
-  #   )
-  # }
+
 }
 
 ```
@@ -365,7 +339,6 @@ map <- data.frame(
 #   ANRIND = c("LOW", "LOW", "HIGH", "HIGH"),
 #   stringsAsFactors = FALSE
 # )
-
 
  lyt <- basic_table() %>%
   split_cols_by("ARMCD") %>%
@@ -391,8 +364,25 @@ result <- build_table(
 )
 
 result
-
 ```
 
+## Edge cases
+* All grades 0 for a param. 
+* All grades in the target direction (none 0). 
+* All grades in an opposite direction 
+* All grades for all params 0. 
 
+Example 1: Case where all `ATOXGRADE`for ALT parameter are 0. 
+```{r}
+adlb_f3 <- adlb_f2 %>% 
+  filter(PARAMCD != "ALT" | ATOXGR == 0)
 
+adlb_f3 %>% count(PARAMCD, ATOXGR)
+
+build_table(
+  lyt = lyt,
+  df = adlb_f3,
+  alt_counts_df = adsl
+)
+
+```
