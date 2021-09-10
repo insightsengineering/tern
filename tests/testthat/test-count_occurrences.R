@@ -186,16 +186,21 @@ test_that("count_occurrences functions as expected with label row specified", {
   col_info(result_adsl) <- col_info(result_adae)
   result <- rbind(
     result_adsl,
-    result_adae[1:nrow(result_adae), ]
+    result_adae[seq_len(nrow(result_adae)), ]
   )
 
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("",               "",        "Number of patients with at least one AE by outcome", "Fatal outcome", "Unresolved", "Recovered/Resolved", "Resolved with sequelae", "Recovering/Resolving", "Unknown outcome",
-      "A: Drug X",      "(N=134)", "",                                                   "76 (62.3%)",    "61 (50%)",   "77 (63.1%)",         "45 (36.9%)",             "91 (74.6%)",           "32 (26.2%)",
-      "B: Placebo",     "(N=134)", "",                                                   "70 (56.9%)",    "66 (53.7%)", "82 (66.7%)",         "41 (33.3%)",             "77 (62.6%)",           "47 (38.2%)",
-      "C: Combination", "(N=132)", "",                                                   "75 (62.5%)",    "68 (56.7%)", "90 (75%)",           "42 (35%)",               "87 (72.5%)",           "39 (32.5%)"),
+    c("", "", "Number of patients with at least one AE by outcome",
+      "Fatal outcome", "Unresolved", "Recovered/Resolved", "Resolved with sequelae",
+      "Recovering/Resolving", "Unknown outcome",
+      "A: Drug X", "(N=134)", "",
+      "76 (62.3%)", "61 (50%)", "77 (63.1%)", "45 (36.9%)", "91 (74.6%)", "32 (26.2%)",
+      "B: Placebo", "(N=134)", "",
+      "70 (56.9%)", "66 (53.7%)", "82 (66.7%)", "41 (33.3%)", "77 (62.6%)", "47 (38.2%)",
+      "C: Combination", "(N=132)", "",
+      "75 (62.5%)", "68 (56.7%)", "90 (75%)", "42 (35%)", "87 (72.5%)", "39 (32.5%)"),
     .Dim = c(9L, 4L))
 
   expect_identical(result_matrix, expected_matrix)

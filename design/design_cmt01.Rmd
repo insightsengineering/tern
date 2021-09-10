@@ -32,7 +32,6 @@ set.seed(1, kind = "Mersenne-Twister")
 library(dplyr)
 library(random.cdisc.data)
 library(assertthat)
-
 ```
 
 ## Set up data
@@ -53,7 +52,6 @@ adcm <- radcm(cached = TRUE)
 
 adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
 adcm_p <- adcm %>% filter(ATIREL == "PRIOR")
-
 ```
 
 
@@ -81,7 +79,6 @@ result <- basic_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
  result
-
 ```
 
 
@@ -112,7 +109,6 @@ result <- basic_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
  result
-
 ```
 
 
@@ -141,7 +137,6 @@ result <- basic_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
  result
-
 ```
 
 
@@ -172,5 +167,4 @@ result <- basic_table() %>%
   sort_at_path(path = c("CMCLAS"), scorefun = cont_n_onecol(4), decreasing = TRUE)
 
 result
-
 ```

@@ -55,7 +55,7 @@ result1 <- basic_table() %>%
   # split_cols_by(var = "ARM") %>%
   add_colcounts() %>%
   count_occurrences(vars = "AEDECOD") %>%
-  build_table(adae,col_count = n_per_arm)
+  build_table(adae, col_count = n_per_arm)
 
 result2 <- prune_table(result1,
     keep_rows(
