@@ -178,12 +178,10 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
     is_logical_vector(df[[variables$worst_grade_flag[2]]]),
     is_character_or_factor(df[[variables$id]])
   )
-
   #Let's try to infer the target directions by using ATOXGRADE levels 
   grade_levels_num <- as.numeric(as.character(levels(df[[.var]])))
   max_atoxgrade_num <- max(grade_levels_num)
   min_atoxgrade_num <- min(grade_levels_num)
-
   #I am adding  this conditional when the only available level (in case just 0 is stated in the map). 
   #In this case the output will be an empty list (shown later in the edge cases)
   if (grade_levels_num == 0 && length(grade_levels_num) == 1) {
@@ -199,7 +197,6 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
       df <- df[!is.na(df[[.var]]), ]
       flag_low_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRLOFL"]
       flag_high_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRHIFL"]
-    
       anl <- data.frame(
           id = df[[variables$id]],
           grade = df[[.var]],
@@ -207,7 +204,6 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           flag_high = df[[flag_high_name]],
           stringsAsFactors = FALSE
         )
-      
       # Denominator is number of patients with at least one valid measurement during treatment
         n <- length(unique(anl$id))
         result <- list()
@@ -215,10 +211,10 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           abnormal <- abn
           abnormal_label <- abn_levels[names(abn_levels) == abnormal]
           name_any <- paste(abnormal_label, "- Any")
-          if (abnormal == "Low"){
+          if (abnormal == "Low") {
             anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
             grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
-          } else if (abnormal == "High"){
+          } else if (abnormal == "High") {
             anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
             grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
           }
@@ -234,7 +230,6 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   result <- list(count_fraction = result)
   result
 }
-
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .var = "ATOXGR",
@@ -289,7 +284,6 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
  afun(
     df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
   )
- 
 ```
 
 # New layout function
@@ -333,8 +327,6 @@ count_abnormal_by_worst_grade <- function(lyt,
 }
 
 ```
-
-
 In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions: 
 
  * Layout without new split function,  correctly. 
