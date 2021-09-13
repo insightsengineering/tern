@@ -131,7 +131,6 @@ result <- build_table(
 )
 
 result
-
 ```
 
 ## Updating the statistics function `s_count_abnormal_by_worst_grade`
@@ -161,7 +160,6 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                               worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL")
                                               )
                                             ) {
-
   assert_that(
     is.string(.var),
     is.character(abnormal),
