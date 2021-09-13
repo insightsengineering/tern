@@ -21,7 +21,7 @@ test_that("CMT02_PT default variant is produced correctly", {
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
-    count_occurrences(var = "CMDECOD") %>%
+    count_occurrences(vars = "CMDECOD") %>%
     build_table(adcm, alt_counts_df = adsl) %>%
     sort_at_path(path =  c("CMDECOD"), scorefun = score_occurrences)
 

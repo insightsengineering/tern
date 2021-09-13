@@ -113,7 +113,7 @@ lyt <- basic_table() %>%
     .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one event", "Total number of events")
   ) %>%
-  count_occurrences(var = "CMDECOD")
+  count_occurrences(vars = "CMDECOD")
 
 build_table(lyt, adcm, col_counts = n_per_arm_tot) %>%
     prune_table()
