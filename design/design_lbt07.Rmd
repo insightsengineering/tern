@@ -135,12 +135,10 @@ result
 ```
 
 ## Updating the statistics function `s_count_abnormal_by_worst_grade`
-
 As we have seen above, `ATOXGRADE` variable is converted to numeric as the statistics function was designed to work with numeric `ATOXGRADE`. However, our goal now within the statistics function is to be able to infer the target directions to be displayed by using `ATOXGRADE` and we need to keep it as a factor in order to retain the levels and be still able to infer in edge cases where we may not have any abnormality grade for a certain parameter. 
 
 First, let's reconvert `ATOXGRADE` back to factor. Users should not convert `ATOXGRADE` to numeric in the future.
 The `s_*` will take care of assuring that `ATOXGRADE` is a factor by adding an assertion. 
-
 ```{r}
 #just checking if the conversions are properly performed. 
 atox1 <- adlb$ATOXGR
@@ -149,7 +147,6 @@ atox2 <- as.numeric(as.character(adlb$ATOXGR))
 head(atox2)
 atox3 <- as.factor(atox2)
 head(atox3)
-
 adlb_f2 <- adlb_f %>%
     dplyr::mutate(
       ATOXGR = as.factor(ATOXGR)
@@ -261,7 +258,6 @@ s_count_abnormal_by_worst_grade(
    abnormal = c(Low = "Loooooooow", High = "High"),
    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
  )
-
 ```
 No changes heres. 
 
@@ -314,7 +310,6 @@ count_abnormal_by_worst_grade <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "count_fraction"
   )
-  
   analyze(
       lyt = lyt,
       vars = var,
@@ -323,9 +318,7 @@ count_abnormal_by_worst_grade <- function(lyt,
       extra_args = c(list(abnormal = abnormal), list(...)),
       show_labels = "hidden"
     )
-
 }
-
 ```
 In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions: 
 
@@ -339,9 +332,7 @@ map <- data.frame(
   ATOXGR = as.character(c(seq(-4,0), c(seq(-4,4)), seq(0,4))),
   stringsAsFactors = FALSE
 )
-
 #All tables look OK
-
 lyt_no_trim <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
@@ -358,13 +349,11 @@ lyt_no_trim <- basic_table() %>%
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
-  
 build_table(
   lyt = lyt_no_trim,
   df = adlb_f2,
   alt_counts_df = adsl
 )
-
 lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
@@ -417,7 +406,6 @@ build_table(
 ## What if user converts ATOXGR to numeric 
 
 ```{r}
-
 #adlb_f ATOXGRADE is numeric so let's use this dataframe
 
 #the function will return an error saying that ATOXGRADE is not a factor, as per one of the validation statements.
@@ -427,8 +415,6 @@ build_table(
   alt_counts_df = adsl
 )
 ```
-
-
 ## Edge cases
 * Example 1: All grades 0 for a param. 
 * Example 2: All grades in the target direction (none 0) for a param. 
@@ -452,7 +438,6 @@ build_table(
 empirical_map1 <- map %>% filter(
   !(PARAMCD == "ALT" & ATOXGR < 0)
 )
-
 ```
 
 The following layout throws an error. 
@@ -476,7 +461,6 @@ basic_table() %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
   build_table(df = adlb_f2, alt_counts_df = adsl)
-
 ```
 
 If all rows for `ALT` are removed in the `map` used, `ALT` will not appear in the table. 
@@ -504,7 +488,6 @@ basic_table() %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
   build_table(df = adlb_f2, alt_counts_df = adsl)
-
 ``` 
 
 Example 2: All grades in the target direction (none 0) for a param.
@@ -521,7 +504,6 @@ build_table(
   df = adlb_f4,
   alt_counts_df = adsl
 )
-
 ```
 
 Example 3: All grades in an opposite direction from stated in map. 
