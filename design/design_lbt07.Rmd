@@ -150,15 +150,12 @@ head(atox2)
 atox3 <- as.factor(atox2)
 head(atox3)
 
-
 adlb_f2 <- adlb_f %>%
     dplyr::mutate(
       ATOXGR = as.factor(ATOXGR)
     )
 ```
-
 ```{r}
-
 s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             .var = "ATOXGR",
                                             abnormal = c(Low = "Low", High = "High"),
@@ -166,7 +163,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                               id = "USUBJID", 
                                               worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL")
                                               )
-                                            ){
+                                            ) {
 
   assert_that(
     is.string(.var),
@@ -189,16 +186,16 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
 
   #I am adding  this conditional when the only available level (in case just 0 is stated in the map). 
   #In this case the output will be an empty list (shown later in the edge cases)
-  
-  if(grade_levels_num == 0 && length(grade_levels_num) == 1) {
+  if (grade_levels_num == 0 && length(grade_levels_num) == 1) {
     result <- list()
   } else {
      abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
        abnormal
        } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
          c(abnormal[names(abnormal) == "High"])
-         } else c(abnormal[names(abnormal) == "Low"])
-    
+         } else { 
+           c(abnormal[names(abnormal) == "Low"])
+         }
       df <- df[!is.na(df[[.var]]), ]
       flag_low_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRLOFL"]
       flag_high_name <- variables$worst_grade_flag[variables$worst_grade_flag == "WGRHIFL"]
@@ -233,9 +230,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           any_grade_num <- length(unique(anl_abn$id))
           result[[name_any]] <- with_label(c(any_grade_num , any_grade_num/n), name_any)
         }
-  
   }
-  
   result <- list(count_fraction = result)
   result
 }
@@ -253,7 +248,6 @@ s_count_abnormal_by_worst_grade(
    abnormal = c(Low = "Low", High = "High"),
    variables = list(id = "USUBJID", worst_grade_flag = c("WGRLOFL", "WGRHIFL"))
  )
-
 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
@@ -544,7 +538,6 @@ It is returning an error that theoretically has nothing to do with this.
 It works with `map = map` but not with `map2`.
 
 ```{r}
-
 map2 <- map
 map2[map2$PARAMCD == "ALT", 2] <- "1"
 
@@ -567,4 +560,3 @@ basic_table() %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
-
