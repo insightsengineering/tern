@@ -6,8 +6,9 @@
 #' @details Missing entries are those with `NA` or empty strings and will
 #'   be replaced with a specified value. If factor variables include missing
 #'   values, the missing value will be inserted as the last level.
-#'   Similarly, in case character or logical variables should be converted to factors with
-#'   `char_as_factor` or `logical_as_factor` option, the missing values will be set as the last level.
+#'   Similarly, in case character or logical variables should be converted to factors
+#'   with the `char_as_factor` or `logical_as_factor` options, the missing values will
+#'   be set as the last level.
 #'
 #' @param data (`data frame`)\cr data set.
 #' @param omit_columns (`character`)\cr names of variables from `data` that should
@@ -37,12 +38,16 @@
 #'
 #' # Encode missing values in all character or factor columns.
 #' df_explicit_na(my_data)
-#' # Convert logical columns to factor columns.
+#' # Also convert logical columns to factor columns.
 #' df_explicit_na(my_data, logical_as_factor = TRUE)
 #' # Encode missing values in a subset of columns.
 #' df_explicit_na(my_data, omit_columns = c("x", "y"))
 #'
-df_explicit_na <- function(data, omit_columns = NULL, char_as_factor = TRUE, logical_as_factor = FALSE, na_level = "<Missing>") {
+df_explicit_na <- function(data,
+                           omit_columns = NULL,
+                           char_as_factor = TRUE,
+                           logical_as_factor = FALSE,
+                           na_level = "<Missing>") {
 
   assert_that(
     is.data.frame(data),
@@ -74,13 +79,24 @@ df_explicit_na <- function(data, omit_columns = NULL, char_as_factor = TRUE, log
     xi <- data[[x]]
     xi_label <- obj_label(xi)
 
+    # Determine whether to convert character or logical input.
+    do_char_conversion <- is.character(xi) && char_as_factor
+    do_logical_conversion <- is.logical(xi) && logical_as_factor
+
+    # Pre-convert logical to character to deal correctly with replacing NA
+    # values below.
+    if (do_logical_conversion) {
+      xi <- as.character(xi)
+    }
+
     if (is.factor(xi) || is.character(xi)) {
 
       # Handle empty strings and NA values.
       xi <- explicit_na(sas_na(xi), label = na_level)
 
-      # Convert characters to factors, set na_level as the last value.
-      if (is.character(xi) && char_as_factor) {
+      # Convert to factors if requested for the original type,
+      # set na_level as the last value.
+      if (do_char_conversion || do_logical_conversion) {
         levels_xi <- setdiff(sort(unique(xi)), na_level)
         if (na_level %in% unique(xi)) {
           levels_xi <- c(levels_xi, na_level)
@@ -90,28 +106,7 @@ df_explicit_na <- function(data, omit_columns = NULL, char_as_factor = TRUE, log
       }
 
       data[, x] <- with_label(xi, label = xi_label)
-
     }
-
-    if (is.logical(xi)) {
-
-      # Handle empty strings and NA values.
-      # xi <- explicit_na(sas_na(xi), label = na_level)
-
-      # Convert logical variables to factors, set na_level as the last value.
-      if (is.logical(xi) && logical_as_factor) {
-        levels_xi <- setdiff(sort(unique(xi)), na_level)
-        if (na_level %in% unique(xi)) {
-          levels_xi <- c(levels_xi, na_level)
-        }
-
-        xi <- factor(xi, levels = levels_xi)
-      }
-
-      data[, x] <- with_label(xi, label = xi_label)
-
-    }
-
   }
   return(data)
 }
