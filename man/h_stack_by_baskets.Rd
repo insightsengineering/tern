@@ -9,7 +9,8 @@ h_stack_by_baskets(
   df,
   baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
   smq_varlabel = "Standardized MedDRA Query",
-  keys = c("STUDYID", "USUBJID", "ASTDTM", "AESEQ", "AETERM")
+  keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
+  na_level = "<Missing>"
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ h_stack_by_baskets(
 
 \item{keys}{(\code{character})\cr names of the key variables to be returned
 along with the new variable created.}
+
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values
+in character or factor variables in the data.}
 }
 \description{
 Helper Function to create a new \code{SMQ} variable in ADAE that
@@ -33,7 +37,7 @@ belonging to any of the selected baskets.
 
 library(scda)
 
-adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20 , ]
+adae <- synthetic_cdisc_data("latest")$adae[1:20 , ] \%>\% df_explicit_na()
 h_stack_by_baskets(df = adae)
 
 }

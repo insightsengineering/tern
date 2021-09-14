@@ -12,6 +12,8 @@
 #' @param smq_varlabel (`string`)\cr a label for the new variable created.
 #' @param keys (`character`)\cr names of the key variables to be returned
 #' along with the new variable created.
+#' @param na_level (`string`)\cr used to replace all `NA` or empty values
+#' in character or factor variables in the data.
 #'
 #' @export
 #'
@@ -19,13 +21,14 @@
 #'
 #' library(scda)
 #'
-#' adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20 , ]
+#' adae <- synthetic_cdisc_data("latest")$adae[1:20 , ] %>% df_explicit_na()
 #' h_stack_by_baskets(df = adae)
 #'
 h_stack_by_baskets <- function(df,
                                baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
                                smq_varlabel = "Standardized MedDRA Query",
-                               keys = c("STUDYID", "USUBJID", "ASTDTM", "AESEQ", "AETERM")) {
+                               keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
+                               na_level = "<Missing>") {
 
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
@@ -40,8 +43,12 @@ h_stack_by_baskets <- function(df,
     all(endsWith(baskets, "NAM")),
     all(baskets %in% names(df)),
     all(keys %in% names(df)),
-    all(smq_sc %in% names(df))
+    all(smq_sc %in% names(df)),
+    is.string(na_level)
   )
+
+  #convert `na_level` records from baskets in NA for the later loop and from wide to long steps
+  df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA
 
   # Concatenate SMQxxxNAM with corresponding SMQxxxSC
   df_cnct <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
@@ -59,6 +66,15 @@ h_stack_by_baskets <- function(df,
   df_long <- tidyr::pivot_longer(
     data = df_cnct, cols = -keys, names_to = NULL, values_to = "SMQ", values_drop_na = TRUE
   )
+
+  df_long <- reshape(
+    data = df_cnct,
+    varying = list(names(df_cnct)[!(names(df_cnct) %in% keys)]),
+    v.names = "SMQ",
+    idvar = names(df_cnct)[names(df_cnct) %in% keys],
+    direction = "long"
+    )
+  df_long <- df_long[!is.na(df_long[, "SMQ"]), ]
 
   var_labels(df_long[, "SMQ"]) <- smq_varlabel
 
