@@ -24,10 +24,34 @@
 #' adae <- synthetic_cdisc_data("latest")$adae[1:20 , ] %>% df_explicit_na()
 #' h_stack_by_baskets(df = adae)
 #'
+#' aag <- data.frame(
+#' NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
+#' REFTERM = c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.2.2.2.2 AESI",
+#'  "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"),
+#' SCOPE = c("", "", "BROAD", "BROAD"),
+#' stringsAsFactors = FALSE
+#'  )
+#'
+#' basket_name <- c()
+#' cq_pos <- grep("^(CQ).+NAM$", aag$NAMVAR)
+#' smq_pos <- grep("^(SMQ).+NAM$", aag$NAMVAR)
+#' basket_name[cq_pos] <- aag$REFTERM[cq_pos]
+#' basket_name[smq_pos] <- paste0(aag$REFTERM[smq_pos], "(", aag$SCOPE[smq_pos], ")")
+#'
+#' aag_summary <- data.frame(
+#' basket = aag$NAMVAR,
+#' basket_name = basket_name,
+#' stringsAsFactors = TRUE
+#' )
+#'
+#' result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
+#' all(levels(aag_summary$basket_name) %in% levels(result$SMQ))
+#'
 h_stack_by_baskets <- function(df,
                                baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
                                smq_varlabel = "Standardized MedDRA Query",
                                keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
+                               aag_summary = NULL,
                                na_level = "<Missing>") {
 
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
@@ -44,7 +68,12 @@ h_stack_by_baskets <- function(df,
     all(baskets %in% names(df)),
     all(keys %in% names(df)),
     all(smq_sc %in% names(df)),
-    is.string(na_level)
+    is.string(na_level),
+    is.null(aag_summary) | is_df_with_variables(
+      df = aag_summary,
+      variables = list(val = c("basket", "basket_name"))
+      ),
+    sum(baskets %in% names(df)) > 0
   )
 
   #convert `na_level` records from baskets in NA for the later loop and from wide to long steps
@@ -52,6 +81,7 @@ h_stack_by_baskets <- function(df,
 
   # Concatenate SMQxxxNAM with corresponding SMQxxxSC
   df_cnct <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
+  var_labels <- c(var_labels(df_cnct[names(df_cnct) %in% keys]), smq_varlabel)
 
   for (nam in names(smq)) {
 
@@ -62,22 +92,37 @@ h_stack_by_baskets <- function(df,
 
   }
 
-  # Transform from wide to long format
-  df_long <- tidyr::pivot_longer(
-    data = df_cnct, cols = -keys, names_to = NULL, values_to = "SMQ", values_drop_na = TRUE
-  )
+  #Transform from wide to long format
+  # df_long <- tidyr::pivot_longer(
+  #   data = df_cnct, cols = -keys, names_to = NULL, values_to = "SMQ", values_drop_na = TRUE
+  # )
 
   df_long <- reshape(
     data = df_cnct,
     varying = list(names(df_cnct)[!(names(df_cnct) %in% keys)]),
     v.names = "SMQ",
     idvar = names(df_cnct)[names(df_cnct) %in% keys],
-    direction = "long"
+    direction = "long",
     )
-  df_long <- df_long[!is.na(df_long[, "SMQ"]), ]
 
-  var_labels(df_long[, "SMQ"]) <- smq_varlabel
+  df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% "time")]
+  SMQ_levels <- levels(df_long$SMQ)[levels(df_long$SMQ) != na_level]
 
+  #Assert that aag_summary$basket_name considers at least all levels from new variable SMQ
+  if (!is.null(aag_summary)) {
+    assert_that(
+      all(SMQ_levels %in% unique(aag_summary$basket_name))
+    )
+    df_long$SMQ <- factor(
+      df_long$SMQ,
+      levels = c(
+        SMQ_levels,
+        setdiff(unique(aag_summary$basket_name), SMQ_levels)
+      )
+    )
+  } else {
+    df_long$SMQ <- factor(df_long$SMQ, levels = SMQ_levels)
+  }
+  var_labels(df_long) <- var_labels
   df_long
-
 }
