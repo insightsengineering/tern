@@ -98,7 +98,6 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
 
   list(count_fraction = c(by_grade, list("Any" = c(any_grade_num, any_grade_num / n))))
 }
-
 ```
 
 ## Layout with the current old statistics function
