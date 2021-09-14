@@ -18,7 +18,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 # New Design for using new split function `trim_levels_to_map`
 
 ## Data for examples
@@ -36,7 +35,6 @@ adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "
 adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
 adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
 adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
-
 
 adlb_labels <- var_labels(adlb)
 
