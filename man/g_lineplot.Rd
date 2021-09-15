@@ -39,7 +39,7 @@ data set that will be used (only) to counts objects in strata.}
 \itemize{
 \item \code{x}: x-axis variable.
 \item \code{y}: y-axis variable.
-\item \code{group}: grouping variable, i.e. treatment arm.
+\item \code{strata}: grouping variable, i.e. treatment arm. Can be \code{NULL}.
 \item \code{ylab}: y-axis label variable. Can be \code{NULL}.
 \item \code{y_unit}: variable with units of \code{y}, units will added to the y-axis label. Can be \code{NULL}.
 }}
