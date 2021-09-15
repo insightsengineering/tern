@@ -12,6 +12,10 @@
 #' @param smq_varlabel (`string`)\cr a label for the new variable created.
 #' @param keys (`character`)\cr names of the key variables to be returned
 #' along with the new variable created.
+#' @param aag_summary (`data frame`)\cr data set containing the SMQ baskets
+#' and the levels of interest for the final SMQ variable. This is useful when
+#' there are some levels of interest that are not observed in the `ADAE` dataset.
+#' The two columns of this dataset should be named `basket` and `basket_name`.
 #' @param na_level (`string`)\cr used to replace all `NA` or empty values
 #' in character or factor variables in the data.
 #'
@@ -69,12 +73,17 @@ h_stack_by_baskets <- function(df,
     all(keys %in% names(df)),
     all(smq_sc %in% names(df)),
     is.string(na_level),
-    is.null(aag_summary) | is_df_with_variables(
-      df = aag_summary,
-      variables = list(val = c("basket", "basket_name"))
-      ),
     sum(baskets %in% names(df)) > 0
   )
+
+  if (!is.null(aag_summary)) {
+    assert_that(
+    is_df_with_variables(
+      df = aag_summary,
+      variables = list(val = c("basket", "basket_name"))
+      )
+    )
+  }
 
   #convert `na_level` records from baskets in NA for the later loop and from wide to long steps
   df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA
@@ -91,11 +100,6 @@ h_stack_by_baskets <- function(df,
     df_cnct[nam_notna, new_colname] <- paste0(df[[nam]], "(", df[[sc]], ")")[nam_notna]
 
   }
-
-  #Transform from wide to long format
-  # df_long <- tidyr::pivot_longer(
-  #   data = df_cnct, cols = -keys, names_to = NULL, values_to = "SMQ", values_drop_na = TRUE
-  # )
 
   df_long <- reshape(
     data = df_cnct,
@@ -115,13 +119,18 @@ h_stack_by_baskets <- function(df,
     )
     df_long$SMQ <- factor(
       df_long$SMQ,
-      levels = c(
-        SMQ_levels,
-        setdiff(unique(aag_summary$basket_name), SMQ_levels)
-      )
+      levels = sort(
+        c(
+          SMQ_levels,
+          setdiff(unique(aag_summary$basket_name), SMQ_levels)
+          )
+        )
     )
   } else {
-    df_long$SMQ <- factor(df_long$SMQ, levels = SMQ_levels)
+    df_long$SMQ <- factor(
+      df_long$SMQ,
+      levels = sort(SMQ_levels)
+      )
   }
   var_labels(df_long) <- var_labels
   df_long

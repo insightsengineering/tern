@@ -10,6 +10,7 @@ h_stack_by_baskets(
   baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
   smq_varlabel = "Standardized MedDRA Query",
   keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
+  aag_summary = NULL,
   na_level = "<Missing>"
 )
 }
@@ -22,6 +23,10 @@ h_stack_by_baskets(
 
 \item{keys}{(\code{character})\cr names of the key variables to be returned
 along with the new variable created.}
+
+\item{aag_summary}{(\verb{data frame})\cr data set containing the SMQ baskets
+and the levels of interest for the final SMQ variable. This is useful when
+there are some levels of interest that are not observed in the \code{ADAE} dataset.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values
 in character or factor variables in the data.}
@@ -39,5 +44,28 @@ library(scda)
 
 adae <- synthetic_cdisc_data("latest")$adae[1:20 , ] \%>\% df_explicit_na()
 h_stack_by_baskets(df = adae)
+
+aag <- data.frame(
+NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
+REFTERM = c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.2.2.2.2 AESI",
+ "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"),
+SCOPE = c("", "", "BROAD", "BROAD"),
+stringsAsFactors = FALSE
+ )
+
+basket_name <- c()
+cq_pos <- grep("^(CQ).+NAM$", aag$NAMVAR)
+smq_pos <- grep("^(SMQ).+NAM$", aag$NAMVAR)
+basket_name[cq_pos] <- aag$REFTERM[cq_pos]
+basket_name[smq_pos] <- paste0(aag$REFTERM[smq_pos], "(", aag$SCOPE[smq_pos], ")")
+
+aag_summary <- data.frame(
+basket = aag$NAMVAR,
+basket_name = basket_name,
+stringsAsFactors = TRUE
+)
+
+result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
+all(levels(aag_summary$basket_name) \%in\% levels(result$SMQ))
 
 }
