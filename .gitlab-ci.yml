@@ -1,0 +1,6 @@
+---
+
+include:
+  - project: 'nest/automation/gitlab-shared-library'
+    ref: master
+    file: R/R.gitlab-ci.yml
