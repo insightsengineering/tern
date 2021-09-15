@@ -1,7 +1,7 @@
 library(scda)
 test_that("h_stack_by_baskets returns the correct dataframe", {
 
-  adae <- synthetic_cdisc_data("rcd_2021_05_05")$adae[1:20, ]
+  adae <- synthetic_cdisc_data("latest")$adae[1:20, ]
 
   result <- h_stack_by_baskets(df = adae)
   attributes(result)$.internal.selfref <- NULL #nolintr

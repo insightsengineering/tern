@@ -114,9 +114,11 @@ h_stack_by_baskets <- function(df,
 
   #Assert that aag_summary$basket_name considers at least all levels from new variable SMQ
   if (!is.null(aag_summary)) {
-    assert_that(
-      all(SMQ_levels %in% unique(aag_summary$basket_name))
-    )
+
+     if (length(intersect(SMQ_levels, unique(aag_summary$basket_name))) == 0) {
+       warning("There are 0 groups in common between aag_summary and ADAE")
+     }
+
     df_long$SMQ <- factor(
       df_long$SMQ,
       levels = sort(
