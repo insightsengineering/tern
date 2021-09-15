@@ -19,7 +19,9 @@
 #' All the statistics indicated in `interval` variable must be present in the object returned by `sfun`,
 #' and be of a `double` or `numeric` type vector of length two.
 #' @param whiskers (`character`) \cr
-#' names of the intervals whiskers that will be plotted.
+#' names of the interval whiskers that will be plotted. Must match the `names` attribute of the
+#' `interval` element in the list returned by `sfun`.
+#' It is possible to specify one whisker only, lower or upper.
 #' @param table (`character` or `NULL`) \cr
 #' names of the statistics that will be displayed in the table below the plot.
 #' All the statistics indicated in `table` variable must be present in the object returned by `sfun`.
@@ -80,13 +82,15 @@
 #' g_lineplot(adlb, variables = c(x = "AVISIT", y = "AVAL", y_lab = "PARAMCD", y_unit = "AVALU"))
 #'
 #' # Mean, upper whisker of CI, no strata counts N
-#' g_lineplot(adlb, whiskers = "upr", title = "Plot of Mean and Upper 95% Confidence Limit by Visit")
+#' g_lineplot(adlb, whiskers = "mean_ci_upr", title = "Plot of Mean and Upper 95% Confidence Limit by Visit")
 #'
 #' # Median with CI
-#' g_lineplot(adlb, adsl, mid = "median", title = "Plot of Median and 95% Confidence Limits by Visit")
+#' g_lineplot(adlb, adsl, mid = "median", interval = "median_ci", whiskers = c("median_ci_lwr", "median_ci_upr"),
+#'   title = "Plot of Median and 95% Confidence Limits by Visit")
 #'
 #' # Mean, +/- SD
-#' g_lineplot(adlb, adsl, interval = "mean_sdi", title = "Plot of Median +/- SD by Visit")
+#' g_lineplot(adlb, adsl, interval = "mean_sdi", whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
+#'   title = "Plot of Median +/- SD by Visit")
 #'
 #' # Mean with CI plot with stats table
 #' g_lineplot(adlb, adsl, table = c("n", "mean", "mean_ci"))
@@ -109,7 +113,7 @@ g_lineplot <- function(df, # nolint
                        ),
                        mid = "mean",
                        interval = "mean_ci",
-                       whiskers = c("lwr", "upr"),
+                       whiskers = c("mean_ci_lwr", "mean_ci_upr"),
                        table = NULL,
                        sfun = tern::s_summary,
                        ...,
@@ -128,7 +132,7 @@ g_lineplot <- function(df, # nolint
 
   assert_that(is.character(mid) || is.null(mid))
   assert_that(is.character(interval) || is.null(interval))
-  assert_that(ifelse(is.character(interval), all(whiskers %in% c("lwr", "upr")), TRUE))
+  assert_that(ifelse(is.character(interval), length(whiskers) <= 2, TRUE))
   assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
   assert_that(is.string(title) || is.null(title))
   assert_that(
@@ -232,11 +236,9 @@ g_lineplot <- function(df, # nolint
   # interval
   if (!is.null(interval)) {
 
-    yminmax <- paste(interval, whiskers, sep = "_")
-
     p <- p +
       geom_errorbar(
-        aes_string(ymin = yminmax[1], ymax = yminmax[max(1, length(whiskers))]),
+        aes_string(ymin = whiskers[1], ymax = whiskers[max(1, length(whiskers))]),
         width = 0.45,
         position = position
       )
@@ -245,7 +247,7 @@ g_lineplot <- function(df, # nolint
       # workaround as geom_errorbar does not provide single-direction whiskers
       p <- p +
         geom_linerange(
-          aes_string(ymin = mid, ymax = yminmax),
+          aes_string(ymin = mid, ymax = whiskers),
           position = position,
           show.legend = FALSE
         )

@@ -11,7 +11,7 @@ g_lineplot(
     "AVALU"),
   mid = "mean",
   interval = "mean_ci",
-  whiskers = c("lwr", "upr"),
+  whiskers = c("mean_ci_lwr", "mean_ci_upr"),
   table = NULL,
   sfun = tern::s_summary,
   ...,
@@ -55,7 +55,9 @@ All the statistics indicated in \code{interval} variable must be present in the 
 and be of a \code{double} or \code{numeric} type vector of length two.}
 
 \item{whiskers}{(\code{character}) \cr
-names of the intervals whiskers that will be plotted.}
+names of the interval whiskers that will be plotted. Must match the \code{names} attribute of the
+\code{interval} element in the list returned by \code{sfun}.
+It is possible to specify one whisker only, lower or upper.}
 
 \item{table}{(\code{character} or \code{NULL}) \cr
 names of the statistics that will be displayed in the table below the plot.
@@ -126,13 +128,15 @@ g_lineplot(adlb, adsl)
 g_lineplot(adlb, variables = c(x = "AVISIT", y = "AVAL", y_lab = "PARAMCD", y_unit = "AVALU"))
 
 # Mean, upper whisker of CI, no strata counts N
-g_lineplot(adlb, whiskers = "upr", title = "Plot of Mean and Upper 95\% Confidence Limit by Visit")
+g_lineplot(adlb, whiskers = "mean_ci_upr", title = "Plot of Mean and Upper 95\% Confidence Limit by Visit")
 
 # Median with CI
-g_lineplot(adlb, adsl, mid = "median", title = "Plot of Median and 95\% Confidence Limits by Visit")
+g_lineplot(adlb, adsl, mid = "median", interval = "median_ci", whiskers = c("median_ci_lwr", "median_ci_upr"),
+  title = "Plot of Median and 95\% Confidence Limits by Visit")
 
 # Mean, +/- SD
-g_lineplot(adlb, adsl, interval = "mean_sdi", title = "Plot of Median +/- SD by Visit")
+g_lineplot(adlb, adsl, interval = "mean_sdi", whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
+  title = "Plot of Median +/- SD by Visit")
 
 # Mean with CI plot with stats table
 g_lineplot(adlb, adsl, table = c("n", "mean", "mean_ci"))
