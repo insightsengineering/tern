@@ -184,10 +184,8 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
          low_label
          }
       df <- df[!is.na(df[[.var]]), ]
-      
       flag_low_name <- variables$worst_grade_flag[names(variables$worst_grade_flag) == low_label]
       flag_high_name <- variables$worst_grade_flag[names(variables$worst_grade_flag) == high_label]
-    
       anl <- data.frame(
           id = df[[variables$id]],
           grade = df[[.var]],
@@ -198,14 +196,13 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
       # Denominator is number of patients with at least one valid measurement during treatment
         n <- length(unique(anl$id))
         result <- list()
-        for (abn in abn_levels){
+        for (abn in abn_levels) {
           abnormal <- abn
           name_any <- paste(abnormal, "- Any")
-          if (abnormal == low_label){
+          if (abnormal == low_label) {
             anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
-            grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = 
-                             TRUE)
-          } else if (abnormal == high_label){
+            grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
+          } else if (abnormal == high_label) {
             anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
             grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
           }
@@ -215,7 +212,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
             result[[abn_grade]] <- with_label(c(num, num / n), abn_grade)
           }
           any_grade_num <- length(unique(anl_abn$id))
-          result[[name_any]] <- with_label(c(any_grade_num , any_grade_num/n), name_any)
+          result[[name_any]] <- with_label(c(any_grade_num, any_grade_num/n), name_any)
         }
   }
   result <- list(count_fraction = result)
@@ -274,7 +271,6 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 
 Here the main change is to remove the for loop. 
 ```{r}
-
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           variables,
