@@ -13,3 +13,4 @@ TODO\.md
 ^\.lintr$
 ^staged_dependencies\.yaml$
 ^LICENSE\.md$
+^\.gitlab-ci\.yml$
