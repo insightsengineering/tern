@@ -148,7 +148,7 @@ adlb_f2 <- adlb_f %>%
 s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             .var = "ATOXGR",
                                             variables = list(
-                                              id = "USUBJID", 
+                                              id = "USUBJID",
                                               worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL")
                                               )
                                             ) {
@@ -167,22 +167,20 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
 
   low_label <- names(variables$worst_grade_flag)[variables$worst_grade_flag == "WGRLOFL"]
   high_label <- names(variables$worst_grade_flag)[variables$worst_grade_flag == "WGRHIFL"]
-  
-  #Let's try to infer the target directions by using ATOXGRADE levels 
+  #Let's try to infer the target directions by using ATOXGRADE levels
   grade_levels_num <- as.numeric(as.character(levels(df[[.var]])))
   max_atoxgrade_num <- max(grade_levels_num)
   min_atoxgrade_num <- min(grade_levels_num)
-  #I am adding  this conditional when the only available level (in case just 0 is stated in the map). 
+  #I am adding  this conditional when the only available level (in case just 0 is stated in the map).
   #In this case the output will be an empty list (shown later in the edge cases)
   if (grade_levels_num == 0 && length(grade_levels_num) == 1) {
     result <- list()
   } else {
-     abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
+     abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) {
         c(low_label, high_label)
-       } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
-         #c(abnormal[names(abnormal) == "High"])
+       } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) {
          high_label
-         } else { 
+         } else {
          low_label
          }
       df <- df[!is.na(df[[.var]]), ]
