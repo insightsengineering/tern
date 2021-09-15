@@ -145,14 +145,6 @@ First, let's reconvert `ATOXGRADE` back to factor. Users should not convert `ATO
 The `s_*` will take care of assuring that `ATOXGRADE` is a factor by adding an assertion. 
 
 ```{r}
-#just checking if the conversions are properly performed. 
-atox1 <- adlb$ATOXGR
-head(atox1)
-atox2 <- as.numeric(as.character(adlb$ATOXGR))
-head(atox2)
-atox3 <- as.factor(atox2)
-head(atox3)
-
 adlb_f2 <- adlb_f %>%
     dplyr::mutate(
       ATOXGR = as.factor(ATOXGR)
@@ -222,7 +214,8 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           name_any <- paste(abnormal, "- Any")
           if (abnormal == low_label){
             anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
-            grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
+            grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = 
+                             TRUE)
           } else if (abnormal == high_label){
             anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
             grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
@@ -380,7 +373,6 @@ lyt_trim_map <- basic_table() %>%
   ) %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR",
-    abnormal = c(Low = "Low", High = "High"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
@@ -472,7 +464,6 @@ basic_table() %>%
   ) %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR",
-    abnormal = c(Low = "Low", High = "High"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
@@ -500,7 +491,6 @@ basic_table() %>%
   ) %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR",
-    abnormal = c(Low = "Low", High = "High"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
@@ -547,7 +537,6 @@ basic_table() %>%
   ) %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR",
-    abnormal = c(Low = "Low", High = "High"),
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
