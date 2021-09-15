@@ -132,12 +132,14 @@ adtte_f <- adtte %>%
 
 ### High-level extract function
 
-Let's start with `extract_survival_biomarkers()`. This is very similar to
-`extract_survival_subgroups()`. So we just wraps different helper functions internally. 
+Let's start with `extract_survival_biomarkers()`. 
 
-One difference is the control list. Because we 
-internally will reuse a function that does not work with log-rank test,
-we need to use `control_coxreg()` instead of `control_coxph()`.
+Here we can leave out one helper function level, so the code here is actually
+more similar to `h_coxph_subgroups_df()`.
+
+Another difference is the control list. Because we internally will reuse a
+function that does not work with log-rank test, we need to use
+`control_coxreg()` instead of `control_coxph()`.
 
 ```{r}
 extract_survival_biomarkers <- function(variables,
@@ -145,88 +147,6 @@ extract_survival_biomarkers <- function(variables,
                                         groups_lists = list(),
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
-
-  df_survtime <- h_survtime_biomarkers_df(
-    variables,
-    data,
-    groups_lists = groups_lists,
-    label_all = label_all
-  )
-  df_hr <- h_coxreg_biomarkers_df(
-    variables,
-    data,
-    groups_lists = groups_lists,
-    control = control,
-    label_all = label_all
-  )
-  merge(df_survtime, df_hr, by = c("var", "subgroup"))
-}
-```
-
-### Helper for survival time estimation
-
-We can actually reuse the `h_survtime_subgroups_df()`
-function when we remove the assertion of a factor with exactly 2 levels from it.
-Here, we just give a dummy factor variable with a single level. Note that this is 
-safe because the downstream helper `h_survtime_df()` checks for a valid factor arm 
-variable and the code does not depend on 2 levels at this point.
-
-todo: also include biomarker variables in this such that we can see how
-many patients/events are actually not missing for a given combination of biomarker/
-population/ other variables! it might then be easier potentially to do this
-as part of the other helper function so we can avoid one of them...
-
-```{r}
-h_survtime_biomarkers_df <- function(variables,
-                                     data,
-                                     ...) {
-  arm_var <- ".dummy.arm.var"
-  assert_that(
-    is_df_with_variables(data, as.list(unlist(variables))),
-    is.null(variables$arm),
-    is.null(data[[arm_var]])
-  )
-  variables$arm <- arm_var
-  data[[arm_var]] <- factor("dummy_arm")
-  result <- h_survtime_subgroups_df(
-    variables = variables,
-    data = data,
-    ...
-  )
-  result <- result[, - match("arm", names(result))]
-  names(result)[1:2] <- c("n_tot", "n_tot_events")
-  result
-}
-```
-
-Let's try it out:
-
-```{r}
-h_survtime_biomarkers_df(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    subgroups = c("SEX", "BMRKR2")
-  ),
-  data = adtte_f
-)
-```
-
-So that works as expected.
-
-### Helper for Cox model regression
-
-So this is then very similar to `h_coxph_subgroups_df()`. Here we cannot reuse that
-function because we need to work with (multiple) continuous biomarker variables inside
-`h_coxreg_mult_cont_df()` (this replaces the single 2-level factor used inside`h_coxph_df()`).
-
-```{r}
-h_coxreg_biomarkers_df <- function(variables,
-                                   data,
-                                   groups_lists = list(),
-                                   control = control_coxreg(),
-                                   label_all = "All Patients") {
-
   assert_that(
     is.string(variables$tte),
     is.string(variables$is_event),
@@ -290,6 +210,10 @@ a data frame with columns:
 
 - `biomarker` (which biomarker was used here, i.e. which HR we report)
 - `biomarker_label` (same but nice label)
+- `n_tot` (this and the below 2 we need because they can be different depending
+   on the biomarker analyzed)
+- `n_tot_events`
+- `median`
 - `hr`
 - `lcl`
 - `ucl`
@@ -297,9 +221,10 @@ a data frame with columns:
 - `pval`
 - `pval_label`
 
-So it is similar to what we get out of `h_coxph_df()` but we don't need the
-total number of patients and events here, but instead the biomarker. Also
-the p-value label we don't really need.
+So it is similar to what we get out of `h_coxph_df()`, but in addition we need
+the biomarker.
+
+- todo: get median in the below too
 
 ```{r}
 h_coxreg_mult_cont_df <- function(tte,
@@ -319,14 +244,17 @@ h_coxreg_mult_cont_df <- function(tte,
   
   # If there is any data, run model, otherwise return empty results.
   result_df <- if (length(tte) > 0) { 
-    data <- data.frame(
+    data_constant <- data.frame(
       tte = tte,
       is_event = is_event,
-      biomarkers_data,
       covariates_data,
       strata_data
     )
     l_result <- lapply(biomarkers, function(bm) {
+      data <- na.omit(cbind(
+        data_constant,
+        biomarkers_data[bm]
+      ))
       bm_label <- var_labels(data, fill = TRUE)[bm]
       coxreg_list <- fit_coxreg_multivar(
         variables = list(
@@ -347,6 +275,8 @@ h_coxreg_mult_cont_df <- function(tte,
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
         biomarker_label = bm_label,
+        n_tot = nrow(data),
+        n_tot_events = sum(data$is_event),
         result[1L, c("hr", "lcl", "ucl")],
         conf_level = control[["conf_level"]],
         pval = result[1L, "pval"],
@@ -359,6 +289,8 @@ h_coxreg_mult_cont_df <- function(tte,
     data.frame(
       biomarker = biomarkers,
       biomarker_label = bm_label,
+      n_tot = 0L,
+      n_tot_events = 0L,
       hr = NA,
       lcl = NA,
       ucl = NA,
