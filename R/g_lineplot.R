@@ -7,7 +7,7 @@
 #' @param variables (named `character` vector) of variable names in `df` data set. Details are: \cr
 #' * `x`: x-axis variable.
 #' * `y`: y-axis variable.
-#' * `group`: grouping variable, i.e. treatment arm.
+#' * `strata`: grouping variable, i.e. treatment arm. Can be `NULL`.
 #' * `ylab`: y-axis label variable. Can be `NULL`.
 #' * `y_unit`: variable with units of `y`, units will added to the y-axis label. Can be `NULL`.
 #' @param mid (`character` or `NULL`) \cr
