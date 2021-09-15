@@ -63,7 +63,7 @@ test_that("h_stack_by_baskets returns the correct dataframe", {
           "CQ01NAM", "SMQ01NAM_SMQ01SC", "SMQ02NAM_SMQ02SC"
         )),
         v.names = "SMQ",
-        idvar = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
+        idvar = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ", "unique_id"),
         timevar = "time"
       ),
       class = c("tbl_df", "tbl", "data.frame")

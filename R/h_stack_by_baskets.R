@@ -51,6 +51,9 @@
 #' result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
 #' all(levels(aag_summary$basket_name) %in% levels(result$SMQ))
 #'
+#' result <- h_stack_by_baskets(df = adae, aag_summary = NULL, keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"))
+#'
+#'
 h_stack_by_baskets <- function(df,
                                baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
                                smq_varlabel = "Standardized MedDRA Query",
@@ -104,15 +107,17 @@ h_stack_by_baskets <- function(df,
 
   }
 
+  df_cnct$unique_id <- seq(1,nrow(df_cnct))
+
   df_long <- reshape(
     data = df_cnct,
-    varying = list(names(df_cnct)[!(names(df_cnct) %in% keys)]),
+    varying = list(names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]),
     v.names = "SMQ",
-    idvar = names(df_cnct)[names(df_cnct) %in% keys],
+    idvar = names(df_cnct)[names(df_cnct) %in% c(keys, "unique_id")],
     direction = "long",
     )
 
-  df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% "time")]
+  df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% c("time", "unique_id"))]
   SMQ_levels <- levels(df_long$SMQ)[levels(df_long$SMQ) != na_level]
 
   if (!is.null(aag_summary)) {
