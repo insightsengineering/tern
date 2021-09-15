@@ -28,8 +28,8 @@ library(dplyr)
 library(tern)
 library(assertthat)
 library(utils.nest)
-adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
+adlb <- synthetic_cdisc_data("latest")$adlb
+adsl <- synthetic_cdisc_data("latest")$adsl
 
 # Recode ADLB parameters to so that each one has different
 # possible abnormalities
