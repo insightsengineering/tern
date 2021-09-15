@@ -212,7 +212,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
             result[[abn_grade]] <- with_label(c(num, num / n), abn_grade)
           }
           any_grade_num <- length(unique(anl_abn$id))
-          result[[name_any]] <- with_label(c(any_grade_num, any_grade_num/n), name_any)
+          result[[name_any]] <- with_label(c(any_grade_num, any_grade_num / n), name_any)
        }
   }
   result <- list(count_fraction = result)
@@ -436,7 +436,7 @@ basic_table() %>%
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
-  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  append_topleft("    Highest NCI CTCAE Grade") %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
 
@@ -450,7 +450,7 @@ empirical_map2 <- map %>% filter(
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = empirical_map2)) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -462,14 +462,14 @@ basic_table() %>%
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
-  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  append_topleft("    Highest NCI CTCAE Grade") %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ``` 
 
 Example 2: All grades in the target direction (none 0) for a param.
 
 ```{r}
-adlb_f4 <- adlb_f2 %>% 
+adlb_f4 <- adlb_f2 %>%
   filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
 adlb_f4 %>% count(PARAMCD, ATOXGR)
 ```
@@ -494,7 +494,7 @@ map2[map2$PARAMCD == "ALT", 2] <- "1"
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = map2)) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -506,6 +506,6 @@ basic_table() %>%
     variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
-  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  append_topleft("    Highest NCI CTCAE Grade") %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
