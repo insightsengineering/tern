@@ -213,7 +213,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           }
           any_grade_num <- length(unique(anl_abn$id))
           result[[name_any]] <- with_label(c(any_grade_num, any_grade_num/n), name_any)
-        }
+       }
   }
   result <- list(count_fraction = result)
   result
@@ -236,7 +236,7 @@ s_count_abnormal_by_worst_grade(
    variables = list(id = "USUBJID", worst_grade_flag = c("Very Low" = "WGRLOFL", "Very High" = "WGRHIFL"))
  )
 
-#if something different from "WGRLOFL"/"WGRHIFL" is introduced as worst grade flags, the function will return an error. 
+#if something different from "WGRLOFL"/"WGRHIFL" is introduced as worst grade flags, the function will return an error.
 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
@@ -296,7 +296,7 @@ count_abnormal_by_worst_grade <- function(lyt,
       vars = var,
       afun = afun,
       table_names = var,
-      extra_args = c(list(variables = variables),list(...)),
+      extra_args = c(list(variables = variables), list(...)),
       show_labels = "hidden"
     )
 }
@@ -310,7 +310,7 @@ In the following chunk the `map` dataframe and three layouts are created to veri
 ```{r}
 map <- data.frame(
   PARAMCD = c(rep("ALT", 5), rep("CRP", 9), rep("IGA", 5)),
-  ATOXGR = as.character(c(seq(-4,0), c(seq(-4,4)), seq(0,4))),
+  ATOXGR = as.character(c(seq(-4, 0), c(seq(-4, 4)), seq(0, 4))),
   stringsAsFactors = FALSE
 )
 #All tables look OK
@@ -337,7 +337,7 @@ build_table(
 lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = map)) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -360,7 +360,7 @@ build_table(
 lyt_trim_group <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_in_group("ATOXGR")) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -400,7 +400,7 @@ build_table(
 
 Example 1: Case where all `ATOXGRADE` for ALT parameter are 0. 
 ```{r}
-adlb_f3 <- adlb_f2 %>% 
+adlb_f3 <- adlb_f2 %>%
   filter(PARAMCD != "ALT" | ATOXGR == 0)
 
 adlb_f3 %>% count(PARAMCD, ATOXGR)
@@ -424,7 +424,7 @@ The following layout throws an error.
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = empirical_map1)) %>%
   summarize_num_patients(
     var = "USUBJID",
