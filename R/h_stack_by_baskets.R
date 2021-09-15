@@ -58,6 +58,9 @@ h_stack_by_baskets <- function(df,
                                aag_summary = NULL,
                                na_level = "<Missing>") {
 
+  #Use of df_explicit_na() in case the user has not previously used
+  df <- df_explicit_na(df, na_level = na_level)
+
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)
@@ -112,12 +115,11 @@ h_stack_by_baskets <- function(df,
   df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% "time")]
   SMQ_levels <- levels(df_long$SMQ)[levels(df_long$SMQ) != na_level]
 
-  #Assert that aag_summary$basket_name considers at least all levels from new variable SMQ
   if (!is.null(aag_summary)) {
-
-     if (length(intersect(SMQ_levels, unique(aag_summary$basket_name))) == 0) {
-       warning("There are 0 groups in common between aag_summary and ADAE")
-     }
+    #A warning in case there is no match between ADAE and AAG levels
+    if (length(intersect(SMQ_levels, unique(aag_summary$basket_name))) == 0) {
+      warning("There are 0 groups in common between aag_summary and ADAE")
+    }
 
     df_long$SMQ <- factor(
       df_long$SMQ,
@@ -125,8 +127,8 @@ h_stack_by_baskets <- function(df,
         c(
           SMQ_levels,
           setdiff(unique(aag_summary$basket_name), SMQ_levels)
-          )
         )
+      )
     )
   } else {
     df_long$SMQ <- factor(
