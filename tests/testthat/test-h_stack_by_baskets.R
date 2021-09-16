@@ -57,15 +57,7 @@ test_that("h_stack_by_baskets returns the correct dataframe", {
           label = structure("Standardized MedDRA Query", .Names = "")
         )
       ),
-      row.names = c(NA, 4L),
-      reshapeLong = list(
-        varying = list(c(
-          "CQ01NAM", "SMQ01NAM_SMQ01SC", "SMQ02NAM_SMQ02SC"
-        )),
-        v.names = "SMQ",
-        idvar = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ", "unique_id"),
-        timevar = "time"
-      ),
+      row.names = c(NA, -4L),
       class = c("tbl_df", "tbl", "data.frame")
     )
   expect_identical(result, expected)
