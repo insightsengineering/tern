@@ -224,8 +224,6 @@ a data frame with columns:
 So it is similar to what we get out of `h_coxph_df()`, but in addition we need
 the biomarker.
 
-- todo: get median in the below too
-
 ```{r}
 h_coxreg_mult_cont_df <- function(tte,
                                   is_event,
@@ -271,16 +269,24 @@ h_coxreg_mult_cont_df <- function(tte,
         h_coxreg_multivar_extract, 
         c(list(var = bm), coxreg_list[c("mod", "data", "control")])
       )
+      median <- s_surv_time(
+        df = data, 
+        .var = "tte", 
+        is_event = "is_event"
+      )$median
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
         biomarker_label = bm_label,
         n_tot = nrow(data),
         n_tot_events = sum(data$is_event),
+        median = as.numeric(median),
         result[1L, c("hr", "lcl", "ucl")],
         conf_level = control[["conf_level"]],
         pval = result[1L, "pval"],
-        pval_label = control[["pval_method"]],
+        pval_label = paste0(
+          "p-value (", stringr::str_to_sentence(control[["pval_method"]]), ")"
+        ),
         stringsAsFactors = FALSE
       )
     })
@@ -296,7 +302,9 @@ h_coxreg_mult_cont_df <- function(tte,
       ucl = NA,
       conf_level = control[["conf_level"]],
       pval = NA,
-      pval_label = control[["pval_method"]],
+      pval_label = paste0(
+        "p-value (", stringr::str_to_sentence(control[["pval_method"]]), ")"
+      ),
       stringsAsFactors = FALSE
     )
   }
@@ -321,33 +329,7 @@ So that works as expected.
 
 ### Trying it out so far
 
-That means we can try out the higher level helper 
-`h_coxreg_biomarkers_df()` now:
-
-```{r}
-h_coxreg_biomarkers_df(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    biomarkers = c("BMRKR1", "AGE"),
-    covariates = "REGION1",
-    strata = c("STRATA1", "STRATA2"),
-    subgroups = "BMRKR2"
-  ),
-  data = adtte_f,
-  groups_lists = list(
-    BMRKR2 = list(
-      "low" = "LOW",
-      "low/medium" = c("LOW", "MEDIUM"),
-      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-    )
-  )
-)
-```
-
-That looks ok too.
-
-And we can also check the high-level extract function now.
+We can check the high-level extract function now.
 
 ```{r}
 df <- extract_survival_biomarkers(
@@ -377,12 +359,11 @@ See https://docs.google.com/spreadsheets/d/1vztLvMWvlGygL2DITqkNTNf_AJh1zN0YdiX1
 for the layout of the table we want to achieve.
 
 Idea is:
-- merge the survtime and hr tables together by the population key
-- then row split by biomarker
+- row split by biomarker
 - summarize rows with all patients
 - row split by subgroup variable
 - and then again row split / summarize row group by level
-- the analyze colvars needs to go across all (survtime and hr) results
+- the analyze colvars needs to go across all results
 
 ```{r}
 lyt <- basic_table()
