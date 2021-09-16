@@ -2,5 +2,5 @@
 
 include:
   - project: 'nest/automation/gitlab-shared-library'
-    ref: master
+    ref: main
     file: R/R.gitlab-ci.yml
