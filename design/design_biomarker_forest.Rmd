@@ -142,6 +142,9 @@ function that does not work with log-rank test, we need to use
 `control_coxreg()` instead of `control_coxph()`.
 
 ```{r}
+library(assertthat)
+library(utils.nest)
+library(tern)
 extract_survival_biomarkers <- function(variables,
                                         data,
                                         groups_lists = list(),
@@ -253,7 +256,7 @@ h_coxreg_mult_cont_df <- function(tte,
         data_constant,
         biomarkers_data[bm]
       ))
-      bm_label <- var_labels(data, fill = TRUE)[bm]
+      bm_label <- var_labels(biomarkers_data, fill = TRUE)[bm]
       coxreg_list <- fit_coxreg_multivar(
         variables = list(
           time = "tte",
@@ -352,163 +355,138 @@ df <- extract_survival_biomarkers(
 )
 ```
 
-### High-level tabulation function
+### Tabulation function
 
 Now we come to the tabulation. 
 See https://docs.google.com/spreadsheets/d/1vztLvMWvlGygL2DITqkNTNf_AJh1zN0YdiX1MkkqCaU
 for the layout of the table we want to achieve.
 
-Idea is:
-- row split by biomarker
-- summarize rows with all patients
-- row split by subgroup variable
-- and then again row split / summarize row group by level
-- the analyze colvars needs to go across all results
+#### Helper for tabulating single biomarker results
+
+Since it does not work otherwise, we will generate sub-tables for each biomarker using
+this helper function, and then afterwards bind them together. This is the same strategy
+which we used in SFG5 (comparing on subgroups).
 
 ```{r}
-lyt <- basic_table()
-df <- df
-vars <- c("n_tot", "n_tot_events", "median", "hr", "ci", "pval")
-time_unit <- as.character(adtte_f$AVALU[1])
+h_tab_surv_one_biomarker <- function(df_sub,
+                                     afun_lst,
+                                     colvars) {
+  lyt <- basic_table()
+  # Row split by row type - only keep the content rows here.
+  lyt_sub <- split_rows_by(
+    lyt = lyt,
+    var = "row_type",
+    split_fun = keep_split_levels("content"),
+    nested = FALSE,
+    indent_mod = 1L
+  )
+  # Summarize rows with all patients.
+  lyt_sub <- summarize_row_groups(
+    lyt = lyt_sub,
+    var = "var_label",
+    cfun = afun_lst
+  )
+  # Split cols by the multiple variables to populate into columns.
+  lyt_sub <- split_cols_by_multivar(
+    lyt = lyt_sub,
+    vars = colvars$vars,
+    varlabels = colvars$labels
+  )
+  
+  # If there is any subgroup variables, we extend the layout accordingly.
+  if ("analysis" %in% df$row_type) {
+    
+    # Now only continue with the subgroup rows.
+    lyt_sub <- split_rows_by(
+      lyt = lyt_sub,
+      var = "row_type",
+      split_fun = keep_split_levels("analysis"),
+      nested = FALSE,
+      child_labels = "hidden"
+    ) 
+    # Split by the subgroup variable.
+    lyt_sub <- split_rows_by(
+      lyt = lyt_sub, 
+      var = "var",
+      labels_var = "var_label",
+      nested = TRUE,
+      child_labels = "visible",
+      indent_mod = 1L
+    )
+    # Then analyze colvars for each subgroup.
+    lyt_sub <- summarize_row_groups(
+      lyt = lyt_sub,
+      cfun = afun_lst,
+      var = "subgroup"
+    )
+  }
+  
+  result <- build_table(lyt_sub, df = df_sub) 
+}
+```
 
+#### High-level function
+
+So with that we can now build the high-level tabulation function.
+
+```{r}
 tabulate_survival_biomarkers <- function(lyt,
                                          df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {
   
-  conf_level <- df$hr$conf_level[1]
-  method <-  df$hr$pval_label[1]
+  conf_level <- df$conf_level[1]
+  method <-  df$pval_label[1]
 
-  afun_lst <- a_survival_subgroups()
-  colvars <- d_survival_subgroups_colvars(
+  afun_lst <- a_survival_subgroups()[vars]
+  colvars <- tern:::d_survival_subgroups_colvars(
     vars,
     conf_level = conf_level,
     method = method,
     time_unit = time_unit
   )
-
-  colvars_survtime <- list(
-    vars = colvars$vars[names(colvars$labels) %in% c("n_tot", "n_tot_events", "median")],
-    labels = colvars$labels[names(colvars$labels) %in% c("n_tot", "n_tot_events", "median")]
-  )
-  colvars_hr <- list(
-    vars = colvars$vars[names(colvars$labels) %in% c("hr", "ci", "pval")],
-    labels = colvars$labels[names(colvars$labels) %in% c("hr", "ci", "pval")]
-  )
-
-  # Columns from table_survtime are optional.
-  if (length(colvars_survtime$vars) > 0) {
-
-    lyt_survtime <- split_rows_by(
-      lyt = lyt,
-      var = "row_type",
-      split_fun = keep_split_levels("content"),
-      nested = FALSE
+  
+  df_subs <- split(df, f = df$biomarker)
+  tabs <- lapply(df_subs, FUN = function(df_sub) {
+    tab_sub <- h_tab_surv_one_biomarker(
+      df_sub = df_sub,
+      afun_lst = afun_lst,
+      colvars = colvars
     )
-    lyt_survtime <- summarize_row_groups(
-      lyt = lyt_survtime,
-      var = "var_label",
-      cfun = afun_lst[names(colvars_survtime$labels)]
-    )
-    lyt_survtime <- split_cols_by_multivar(
-      lyt = lyt_survtime,
-      vars = colvars_survtime$vars,
-      varlabels = colvars_survtime$labels
-    )
-
-    if ("analysis" %in% df$survtime$row_type) {
-      lyt_survtime <- split_rows_by(
-        lyt = lyt_survtime,
-        var = "row_type",
-        split_fun = keep_split_levels("analysis"),
-        nested = FALSE,
-        child_labels = "hidden"
-      )
-      lyt_survtime <- split_rows_by(lyt = lyt_survtime, var = "var_label", nested = TRUE)
-      lyt_survtime <- analyze_colvars(
-        lyt = lyt_survtime,
-        afun = afun_lst[names(colvars_survtime$labels)],
-        inclNAs = TRUE
-      )
-    }
-
-    table_survtime <- build_table(lyt_survtime, df = df$survtime)
-
-  } else {
-    table_survtime <- NULL
-  }
-
-  # Columns "n_tot_events" or "n_tot", and "hr", "ci" in table_hr are required.
-  lyt_hr <- split_rows_by(
-    lyt = lyt,
-    var = "row_type",
-    split_fun = keep_split_levels("content"),
-    nested = FALSE
-  )
-  lyt_hr <- split_rows_by(
-    lyt = lyt_hr,
-    var = "biomarker_label",
-    child_labels = "visible",
-    nested = TRUE
-  )
-  lyt_hr <- summarize_row_groups(
-    lyt = lyt_hr,
-    var = "var_label",
-    cfun = afun_lst[names(colvars_hr$labels)]
-  )
-  lyt_hr <- split_cols_by_multivar(
-    lyt = lyt_hr,
-    vars = colvars_hr$vars,
-    varlabels = colvars_hr$labels
-  ) %>%
-    append_topleft("Baseline Risk Factors")
-
-  if ("analysis" %in% df$survtime$row_type) {
-    lyt_hr <- split_rows_by(
-      lyt = lyt_hr,
-      var = "row_type",
-      split_fun = keep_split_levels("analysis"),
-      nested = FALSE,
-      child_labels = "hidden"
-    )
-    lyt_hr <- split_rows_by(
-      lyt = lyt_hr,
-      var = "biomarker_label",
-      child_labels = "visible",
-      nested = TRUE
-    )
-    lyt_hr <- split_rows_by(lyt = lyt_hr, var = "var_label", nested = TRUE)
-    lyt_hr <- analyze_colvars(
-      lyt = lyt_hr,
-      afun = afun_lst[names(colvars_hr$labels)],
-      inclNAs = TRUE
-    )
-  }
-  table_hr <- build_table(lyt_hr, df = df$hr)
-
-  # There can be one or two vars starting with "n_tot".
-  n_tot_ids <- grep("^n_tot", colvars_hr$vars)
-  if (is.null(table_survtime)) {
-    result <- table_hr
-    hr_id <- match("hr", colvars_hr$vars)
-    ci_id <- match("lcl", colvars_hr$vars)
-  } else {
-    # Reorder the table.
-    result <- cbind_rtables(table_hr[, n_tot_ids], table_survtime, table_hr[, -n_tot_ids])
-    # And then calculate column indices accordingly.
-    hr_id <- length(n_tot_ids) + ncol(table_survtime) + match("hr", colvars_hr$vars[-n_tot_ids])
-    ci_id <- length(n_tot_ids) + ncol(table_survtime) + match("lcl", colvars_hr$vars[-n_tot_ids])
-    n_tot_ids <- seq_along(n_tot_ids)
-  }
+    insert_rrow(tab_sub, rrow(df_sub$biomarker_label[1]))
+  })
+  result <- do.call(rbind, tabs)
+  
+  n_tot_ids <- grep("^n_tot", colvars$vars)
+  hr_id <- match("hr", colvars$vars)
+  ci_id <- match("lcl", colvars$vars)
 
   structure(
     result,
-    forest_header = paste0(rev(levels(df$survtime$arm)), "\nBetter"),
+    # todo: determine forest_header
+    # forest_header = paste0(rev(levels(df$survtime$arm)), "\nBetter"),
     col_x = hr_id,
     col_ci = ci_id,
-    # Take the first one for scaling the symbol sizes in graph.
     col_symbol_size = n_tot_ids[1]
   )
 }
+```
+
+#### Trying it out
+
+```{r, results="asis"}
+tab <- basic_table() %>%
+  tabulate_survival_biomarkers(df = df, time_unit = "days")
+as_html(tab)
+```
+
+Nice!
+
+### Forest plot
+
+Now finally we can see if the forest plot can be produced from this table.
+
+```{r, fig.width = 15, fig.height = 5}
+g_forest(tab, xlim = c(0.9, 1.1))
 ```
 
