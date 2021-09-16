@@ -160,17 +160,18 @@ g_lineplot <- function(df, # nolint
   # df_stats <- aggregate( # nolint
   #   x = df[[y]], # nolint
   #   by = df[, c(strata, x)], # nolint
-  #   FUN = function(val) do.call(c, unname(sfun(val)[c(mid, interval)])) # nolint
+  #   FUN = function(val) do.call(c, unname(sfun(val, ...)[c(mid, interval)])) # nolint
   # ) # nolint
   # assert_that(!(any(c(strata, x) %in% colnames(df_stats$x)))) # nolint
   # df_stats <- cbind(df_stats[, c(strata, x)], df_stats$x) # nolint
 
-  df_grp <- dplyr::group_by_at(df, c(strata, x))
-  df_stats <- dplyr::summarise(
-    df_grp,
-    data.frame(t(do.call(c, unname(sfun(.data[[y]])[c(mid, interval)])))),
-    .groups = "drop"
-  )
+  df_grp <- dplyr::group_by_at(df[, c(strata, x, y)], c(strata, x))
+
+  df_stats <- df_grp %>%
+    dplyr::summarise(
+      data.frame(t(do.call(c, unname(sfun(.data[[y]], ...)[c(mid, interval)])))),
+      .groups = "drop"
+    )
 
   # add number of objects N in strata
   if (!is.null(strata) && !is.null(alt_counts_df)) {
@@ -338,8 +339,8 @@ g_lineplot <- function(df, # nolint
       grid::grid.newpage()
     }
 
-    p <- gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
-    #p <- gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL) # nolint
+    #p <- gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1)) # nolint
+    p <- gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL)
 
   }
 
