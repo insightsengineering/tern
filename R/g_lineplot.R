@@ -57,7 +57,7 @@
 #' @param newpage (`logical` scalar) \cr should plot be drawn on new page?
 #'
 #' @import ggplot2
-#' @importFrom dplyr group_by_at summarise all_of
+#' @importFrom dplyr group_by_at summarise all_of full_join
 #' @importFrom grid grid.newpage unit.pmax
 #' @importFrom gridExtra grid.arrange
 #'
@@ -100,6 +100,10 @@
 #'   adlb, adsl, table = c("n", "mean", "mean_ci"), control = list(conf_level = 0.80),
 #'   title = "Plot of Mean and 80% Confidence Limits by Visit"
 #' )
+#'
+#' # Mean with CI, table, filtered data
+#' adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
+#' g_lineplot(adlb_f, table = c("n", "mean"))
 #'
 #'
 g_lineplot <- function(df, # nolint
@@ -156,7 +160,8 @@ g_lineplot <- function(df, # nolint
   ##################################################
   ## Compute required statistics.
   ##################################################
-  # base R solution (does not work when c(mid, interval) is of length one, or strata is NULL)
+  # some partial example of base R solution
+  # (does not work when c(mid, interval) is of length one, or strata is NULL)
   # df_stats <- aggregate( # nolint
   #   x = df[[y]], # nolint
   #   by = df[, c(strata, x)], # nolint
@@ -165,7 +170,14 @@ g_lineplot <- function(df, # nolint
   # assert_that(!(any(c(strata, x) %in% colnames(df_stats$x)))) # nolint
   # df_stats <- cbind(df_stats[, c(strata, x)], df_stats$x) # nolint
 
-  df_grp <- dplyr::group_by_at(df[, c(strata, x, y)], c(strata, x))
+  if (!is.null(table)) {
+    df_grp <- df %>%
+      tidyr::expand(.data[[strata]], .data[[x]]) %>% # expand based on levels of factors
+      dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x)) %>%
+      dplyr::group_by_at(c(strata, x))
+  } else {
+    df_grp <- df_grp <- dplyr::group_by_at(df, c(strata, x))
+  }
 
   df_stats <- df_grp %>%
     dplyr::summarise(
@@ -223,14 +235,14 @@ g_lineplot <- function(df, # nolint
   if (!is.null(mid)) {
     # points
     if (grepl("p", mid_type, fixed = TRUE)) {
-      p <- p + geom_point(position = position, size = mid_point_size)
+      p <- p + geom_point(position = position, size = mid_point_size, na.rm = TRUE)
     }
 
     # lines
     if (grepl("l", mid_type, fixed = TRUE)) {
       # for line graphs, the data points must be grouped so that it knows which points to connect.
       m <- if (is.null(strata)) aes(group = 1)
-      p <- p + geom_line(mapping = m, position = position)
+      p <- p + geom_line(mapping = m, position = position, na.rm = TRUE)
     }
   }
 
@@ -340,7 +352,7 @@ g_lineplot <- function(df, # nolint
     }
 
     gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
-    #gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL) # nolint
+
   }
 
   else {
@@ -389,6 +401,8 @@ h_format_row <- function(x, format, labels = NULL) {
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
     fc <- rtables::format_rcell(x = x, format = format)
+    if (is.na(fc))
+      fc <- "NA"
     x_label <- attr(x, "label")
     if (!is.null(label) && !is.na(label))
       names(fc) <- label

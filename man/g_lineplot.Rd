@@ -147,6 +147,10 @@ g_lineplot(
   title = "Plot of Mean and 80\% Confidence Limits by Visit"
 )
 
+# Mean with CI, table, filtered data
+adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
+g_lineplot(adlb_f, table = c("n", "mean"))
+
 
 }
 \author{
