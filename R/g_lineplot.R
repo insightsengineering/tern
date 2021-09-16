@@ -174,8 +174,12 @@ g_lineplot <- function(df, # nolint
   # assert_that(!(any(c(strata, x) %in% colnames(df_stats$x)))) # nolint
   # df_stats <- cbind(df_stats[, c(strata, x)], df_stats$x) # nolint
 
-  df_grp <- df %>%
-    tidyr::expand(.data[[strata]], .data[[x]]) %>% # expand based on levels of factors
+  if (!is.null(strata)) {
+    df_grp <- tidyr::expand(df, .data[[strata]], .data[[x]]) # expand based on levels of factors
+  } else {
+    df_grp <- tidyr::expand(df, NULL, .data[[x]])
+  }
+  df_grp <- df_grp %>%
     dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x)) %>%
     dplyr::group_by_at(c(strata, x))
 
@@ -260,8 +264,10 @@ g_lineplot <- function(df, # nolint
       # workaround as geom_errorbar does not provide single-direction whiskers
       p <- p +
         geom_linerange(
+          data = df_stats[!is.na(df_stats[[whiskers]]), ], # as na.rm =TRUE does not suppress warnings
           aes_string(ymin = mid, ymax = whiskers),
           position = position,
+          na.rm = TRUE,
           show.legend = FALSE
         )
     }
