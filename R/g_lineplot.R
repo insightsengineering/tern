@@ -174,14 +174,10 @@ g_lineplot <- function(df, # nolint
   # assert_that(!(any(c(strata, x) %in% colnames(df_stats$x)))) # nolint
   # df_stats <- cbind(df_stats[, c(strata, x)], df_stats$x) # nolint
 
-  if (!is.null(table)) {
-    df_grp <- df %>%
-      tidyr::expand(.data[[strata]], .data[[x]]) %>% # expand based on levels of factors
-      dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x)) %>%
-      dplyr::group_by_at(c(strata, x))
-  } else {
-    df_grp <- df_grp <- dplyr::group_by_at(df, c(strata, x))
-  }
+  df_grp <- df %>%
+    tidyr::expand(.data[[strata]], .data[[x]]) %>% # expand based on levels of factors
+    dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x)) %>%
+    dplyr::group_by_at(c(strata, x))
 
   df_stats <- df_grp %>%
     dplyr::summarise(
