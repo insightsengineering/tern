@@ -108,13 +108,18 @@ h_stack_by_baskets <- function(df,
   }
 
   df_cnct$unique_id <- seq(1,nrow(df_cnct))
+  var_cols <- names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]
+  # have to convert df_cnct from tibble to dataframe
+  # as it throws a warning otherwise about rownames.
+  # tibble do not support rownames
 
   df_long <- reshape(
-    data = df_cnct,
-    varying = list(names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]),
+    data = as.data.frame(df_cnct),
+    varying = var_cols,
     v.names = "SMQ",
     idvar = names(df_cnct)[names(df_cnct) %in% c(keys, "unique_id")],
     direction = "long",
+    new.row.names = seq(prod(length(var_cols), nrow(df_cnct)))
     )
 
   df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% c("time", "unique_id"))]
@@ -142,5 +147,5 @@ h_stack_by_baskets <- function(df,
       )
   }
   var_labels(df_long) <- var_labels
-  df_long
+  tibble(df_long)
 }
