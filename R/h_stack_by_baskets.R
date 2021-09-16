@@ -91,48 +91,60 @@ h_stack_by_baskets <- function(df,
     )
   }
 
-  #convert `na_level` records from baskets in NA for the later loop and from wide to long steps
-  df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA
+  var_labels <- c(var_labels(df[names(df) %in% keys]), smq_varlabel)
 
-  # Concatenate SMQxxxNAM with corresponding SMQxxxSC
-  df_cnct <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
-  var_labels <- c(var_labels(df_cnct[names(df_cnct) %in% keys]), smq_varlabel)
 
-  for (nam in names(smq)) {
-
-    sc <- smq[nam] # SMQxxxSC corresponding to SMQxxxNAM
-    nam_notna <- !is.na(df[[nam]])
-    new_colname <- paste(nam, sc, sep = "_")
-    df_cnct[nam_notna, new_colname] <- paste0(df[[nam]], "(", df[[sc]], ")")[nam_notna]
-
-  }
-
-  df_cnct$unique_id <- seq(1,nrow(df_cnct))
-  var_cols <- names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]
-  # have to convert df_cnct from tibble to dataframe
-  # as it throws a warning otherwise about rownames.
-  # tibble do not support rownames
-
-  df_long <- reshape(
-    data = as.data.frame(df_cnct),
-    varying = var_cols,
-    v.names = "SMQ",
-    idvar = names(df_cnct)[names(df_cnct) %in% c(keys, "unique_id")],
-    direction = "long",
-    new.row.names = seq(prod(length(var_cols), nrow(df_cnct)))
+  if (all(df[, baskets] == na_level)) { #in case there is no level for the target baskets
+    df_long <- setNames(
+      data.frame(matrix(ncol = length(keys) + 1, nrow = 0)), c(keys, "SMQ")
     )
+    df_long <- data.frame(sapply(df_long, function(x) {
+      x <- as.factor(x)
+      }))
+  } else {
 
-  df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% c("time", "unique_id"))]
-  SMQ_levels <- levels(df_long$SMQ)[levels(df_long$SMQ) != na_level]
+    #convert `na_level` records from baskets in NA for the later loop and from wide to long steps
+    df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA
+
+    # Concatenate SMQxxxNAM with corresponding SMQxxxSC
+    df_cnct <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
+
+    for (nam in names(smq)) {
+
+      sc <- smq[nam] # SMQxxxSC corresponding to SMQxxxNAM
+      nam_notna <- !is.na(df[[nam]])
+      new_colname <- paste(nam, sc, sep = "_")
+      df_cnct[nam_notna, new_colname] <- paste0(df[[nam]], "(", df[[sc]], ")")[nam_notna]
+
+    }
+
+      df_cnct$unique_id <- seq(1,nrow(df_cnct))
+      var_cols <- names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]
+      # have to convert df_cnct from tibble to dataframe
+      # as it throws a warning otherwise about rownames.
+      # tibble do not support rownames
+
+      df_long <- reshape(
+        data = as.data.frame(df_cnct),
+        varying = var_cols,
+        v.names = "SMQ",
+        idvar = names(df_cnct)[names(df_cnct) %in% c(keys, "unique_id")],
+        direction = "long",
+        new.row.names = seq(prod(length(var_cols), nrow(df_cnct)))
+        )
+
+      df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% c("time", "unique_id"))]
+    }
+
+  SMQ_levels <- levels(df_long[["SMQ"]])[levels(df_long[["SMQ"]]) != na_level]
 
   if (!is.null(aag_summary)) {
     #A warning in case there is no match between ADAE and AAG levels
     if (length(intersect(SMQ_levels, unique(aag_summary$basket_name))) == 0) {
       warning("There are 0 groups in common between aag_summary and ADAE")
     }
-
-    df_long$SMQ <- factor(
-      df_long$SMQ,
+    df_long[["SMQ"]] <- factor(
+      df_long[["SMQ"]],
       levels = sort(
         c(
           SMQ_levels,
@@ -141,8 +153,8 @@ h_stack_by_baskets <- function(df,
       )
     )
   } else {
-    df_long$SMQ <- factor(
-      df_long$SMQ,
+    df_long[["SMQ"]] <- factor(
+      df_long[["SMQ"]],
       levels = sort(SMQ_levels)
       )
   }
