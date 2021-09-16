@@ -339,12 +339,13 @@ g_lineplot <- function(df, # nolint
       grid::grid.newpage()
     }
 
-    #p <- gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1)) # nolint
-    p <- gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL)
-
+    gridExtra::grid.arrange(p_grob, tbl_grob, ncol = 1, heights = c(3, 1))
+    #gridExtra::marrangeGrob(list(p_grob, tbl_grob), nrow = 2, ncol = 1, heights = c(3, 1), top = NULL) # nolint
   }
 
-  return(p)
+  else {
+    p
+  }
 
 }
 
