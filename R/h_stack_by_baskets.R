@@ -146,14 +146,14 @@ h_stack_by_baskets <- function(df,
 
   if (!is.null(aag_summary)) {
     #A warning in case there is no match between ADAE and AAG levels
-    if (length(intersect(SMQ_levels, unique(aag_summary$basket_name))) == 0) {
+    if (length(intersect(smq_levels, unique(aag_summary$basket_name))) == 0) {
       warning("There are 0 basket levels in common between aag_summary$basket_name and ADAE")
     }
     df_long[["SMQ"]] <- factor(
       df_long[["SMQ"]],
       levels = sort(
         c(
-          SMQ_levels,
+          smq_levels,
           setdiff(unique(aag_summary$basket_name), smq_levels)
         )
       )
@@ -161,7 +161,7 @@ h_stack_by_baskets <- function(df,
   } else {
     df_long[["SMQ"]] <- factor(
       df_long[["SMQ"]],
-      levels = sort(SMQ_levels)
+      levels = sort(smq_levels)
       )
   }
   var_labels(df_long) <- var_labels
