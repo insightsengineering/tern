@@ -106,7 +106,7 @@ h_stack_by_baskets <- function(df,
   var_labels <- c(var_labels(df[, keys]), smq_varlabel)
 
   if (all(df[, baskets] == na_level)) { #in case there is no level for the target baskets
-    df_long <- df[-c(1:nrow(df)), keys] # we just need an empty dataframe keeping all factor levels
+    df_long <- df[-seq_len(nrow(df)), keys] # we just need an empty dataframe keeping all factor levels
   } else {
 
     #convert `na_level` records from baskets in NA for the later loop and from wide to long steps
@@ -124,7 +124,7 @@ h_stack_by_baskets <- function(df,
 
     }
 
-      df_cnct$unique_id <- seq(1,nrow(df_cnct))
+      df_cnct$unique_id <- seq(1, nrow(df_cnct))
       var_cols <- names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]
       # have to convert df_cnct from tibble to dataframe
       # as it throws a warning otherwise about rownames.
@@ -142,7 +142,7 @@ h_stack_by_baskets <- function(df,
       df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% c("time", "unique_id"))]
     }
 
-  SMQ_levels <- levels(df_long[["SMQ"]])[levels(df_long[["SMQ"]]) != na_level]
+  smq_levels <- levels(df_long[["SMQ"]])[levels(df_long[["SMQ"]]) != na_level]
 
   if (!is.null(aag_summary)) {
     #A warning in case there is no match between ADAE and AAG levels
@@ -154,7 +154,7 @@ h_stack_by_baskets <- function(df,
       levels = sort(
         c(
           SMQ_levels,
-          setdiff(unique(aag_summary$basket_name), SMQ_levels)
+          setdiff(unique(aag_summary$basket_name), smq_levels)
         )
       )
     )
