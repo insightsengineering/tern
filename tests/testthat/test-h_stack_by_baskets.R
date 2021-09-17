@@ -93,16 +93,13 @@ test_that(
   })
 
 test_that(
-  "h_stack_by_baskets returns an empty dataframe with desired variables when there are no
+  "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no
   adverse events falling within any of the baskets selected", {
 
     adae <- synthetic_cdisc_data("latest")$adae[1:20, ] %>% df_explicit_na()
-    baskets <- grep("^(SMQ|CQ).*(NAM|SC)$", names(adae), value = TRUE)
+    baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
-    # data switching to logical after this NA assignment.
-    adae[, baskets] <- NA
-    # so will reconvert them to character
-    adae[baskets] <- lapply(adae[baskets], as.character)
+    adae[, baskets] <- "<Missing>"
     result <- h_stack_by_baskets(
       df = adae
     )
@@ -128,7 +125,7 @@ test_that(
   "The levels of the SQM column does also
   include the options from aag_summary not observed in ADAE", {
     adae <- synthetic_cdisc_data("latest")$adae[1:20, ] %>% df_explicit_na()
-    baskets <- grep("^(SMQ|CQ).*(NAM|SC)$", names(adae), value = TRUE)
+    baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)
 
     aag_summary <- data.frame(
       basket = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),

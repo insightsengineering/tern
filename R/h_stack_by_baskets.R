@@ -128,7 +128,7 @@ h_stack_by_baskets <- function(df,
       var_cols <- names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]
       # have to convert df_cnct from tibble to dataframe
       # as it throws a warning otherwise about rownames.
-      # tibble do not support rownames
+      # tibble do not support rownames and reshape creates rownames
 
       df_long <- reshape(
         data = as.data.frame(df_cnct),
