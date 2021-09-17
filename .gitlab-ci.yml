@@ -3,4 +3,4 @@
 include:
   - project: 'nest/automation/gitlab-shared-library'
     ref: NEST-gitlab-ci
-    file: R/R_NEST.gitlab-ci.yml
+    file: R/R_NEST_min.gitlab-ci.yml
