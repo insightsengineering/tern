@@ -2,7 +2,6 @@ library(scda)
 test_that("h_stack_by_baskets returns the correct dataframe", {
 
   adae <- synthetic_cdisc_data("latest")$adae[1:20, ] %>% df_explicit_na()
-
   result <- h_stack_by_baskets(df = adae)
 
   expected <-
