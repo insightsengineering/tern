@@ -48,7 +48,7 @@ h_stack_by_baskets(df = adae)
 
 aag <- data.frame(
 NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
-REFTERM = c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.2.2.2.2 AESI",
+REFNAME = c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.2.2.2.2 AESI",
  "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"),
 SCOPE = c("", "", "BROAD", "BROAD"),
 stringsAsFactors = FALSE
@@ -57,8 +57,10 @@ stringsAsFactors = FALSE
 basket_name <- c()
 cq_pos <- grep("^(CQ).+NAM$", aag$NAMVAR)
 smq_pos <- grep("^(SMQ).+NAM$", aag$NAMVAR)
-basket_name[cq_pos] <- aag$REFTERM[cq_pos]
-basket_name[smq_pos] <- paste0(aag$REFTERM[smq_pos], "(", aag$SCOPE[smq_pos], ")")
+basket_name[cq_pos] <- aag$REFNAME[cq_pos]
+basket_name[smq_pos] <- paste0(
+aag$REFNAME[smq_pos], "(", aag$SCOPE[smq_pos], ")"
+)
 
 aag_summary <- data.frame(
 basket = aag$NAMVAR,
@@ -68,5 +70,7 @@ stringsAsFactors = TRUE
 
 result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
 all(levels(aag_summary$basket_name) \%in\% levels(result$SMQ))
+
+result <- h_stack_by_baskets(df = adae, aag_summary = NULL, keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"))
 
 }

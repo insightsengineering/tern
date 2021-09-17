@@ -53,8 +53,8 @@ not.}
 \item{name}{a character identifier for the grob.  Used to find the
     grob on the display list and/or as a child of another grob. }
 
-\item{gp}{A \code{"gpar"} object, typically the output
-    from a call to the function \code{\link[grid]{gpar}}.  This is basically
+\item{gp}{A gpar object, typically the output
+    from a call to the function \code{gpar}.  This is basically
     a list of graphical parameter settings.}
 
 \item{vp}{a \code{\link[grid]{viewport}} object (or \code{NULL}).}

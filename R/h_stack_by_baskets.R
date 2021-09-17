@@ -21,6 +21,8 @@
 #'
 #' @export
 #'
+#' @importFrom stats reshape
+#'
 #' @examples
 #'
 #' library(scda)
@@ -30,7 +32,7 @@
 #'
 #' aag <- data.frame(
 #' NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
-#' REFTERM = c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.2.2.2.2 AESI",
+#' REFNAME = c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.2.2.2.2 AESI",
 #'  "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"),
 #' SCOPE = c("", "", "BROAD", "BROAD"),
 #' stringsAsFactors = FALSE
@@ -39,8 +41,10 @@
 #' basket_name <- c()
 #' cq_pos <- grep("^(CQ).+NAM$", aag$NAMVAR)
 #' smq_pos <- grep("^(SMQ).+NAM$", aag$NAMVAR)
-#' basket_name[cq_pos] <- aag$REFTERM[cq_pos]
-#' basket_name[smq_pos] <- paste0(aag$REFTERM[smq_pos], "(", aag$SCOPE[smq_pos], ")")
+#' basket_name[cq_pos] <- aag$REFNAME[cq_pos]
+#' basket_name[smq_pos] <- paste0(
+#' aag$REFNAME[smq_pos], "(", aag$SCOPE[smq_pos], ")"
+#' )
 #'
 #' aag_summary <- data.frame(
 #' basket = aag$NAMVAR,
@@ -51,8 +55,11 @@
 #' result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
 #' all(levels(aag_summary$basket_name) %in% levels(result$SMQ))
 #'
-#' result <- h_stack_by_baskets(df = adae, aag_summary = NULL, keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"))
-#'
+#' result <- h_stack_by_baskets(
+#' df = adae,
+#' aag_summary = NULL,
+#' keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM")
+#' )
 #'
 h_stack_by_baskets <- function(df,
                                baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
@@ -89,18 +96,17 @@ h_stack_by_baskets <- function(df,
       variables = list(val = c("basket", "basket_name"))
       )
     )
+    #Warning in case there is no match between `aag_summary$basket` and `baskets` argument.
+    #Honestly, I think those should completely match. Target baskets should be the same.
+    if (length(intersect(baskets, unique(aag_summary$basket))) == 0) {
+      warning("There are 0 baskets in common between aag_summary$basket and `baskets` argument.")
+    }
   }
 
-  var_labels <- c(var_labels(df[names(df) %in% keys]), smq_varlabel)
-
+  var_labels <- c(var_labels(df[, keys]), smq_varlabel)
 
   if (all(df[, baskets] == na_level)) { #in case there is no level for the target baskets
-    df_long <- setNames(
-      data.frame(matrix(ncol = length(keys) + 1, nrow = 0)), c(keys, "SMQ")
-    )
-    df_long <- data.frame(sapply(df_long, function(x) {
-      x <- as.factor(x)
-      }))
+    df_long <- df[-c(1:nrow(df)), keys] # we just need an empty dataframe keeping all factor levels
   } else {
 
     #convert `na_level` records from baskets in NA for the later loop and from wide to long steps
@@ -141,7 +147,7 @@ h_stack_by_baskets <- function(df,
   if (!is.null(aag_summary)) {
     #A warning in case there is no match between ADAE and AAG levels
     if (length(intersect(SMQ_levels, unique(aag_summary$basket_name))) == 0) {
-      warning("There are 0 groups in common between aag_summary and ADAE")
+      warning("There are 0 basket levels in common between aag_summary$basket_name and ADAE")
     }
     df_long[["SMQ"]] <- factor(
       df_long[["SMQ"]],
