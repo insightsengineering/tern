@@ -51,15 +51,16 @@ adlb <- adlb %>% mutate(
     ATOXGR == -4 ~ "4",
     ATOXGR == "<Missing>" ~ "Missing"
   )
-) %>% mutate(
-  BTOXGR_GP = case_when(
-    BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
-    BTOXGR == -1 ~ "1",
-    BTOXGR == -2 ~ "2",
-    BTOXGR == -3 ~ "3",
-    BTOXGR == -4 ~ "4",
-    BTOXGR == "<Missing>" ~ "Missing"
-  )
+) %>%
+  mutate(
+    BTOXGR_GP = case_when(
+      BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
+      BTOXGR == -1 ~ "1",
+      BTOXGR == -2 ~ "2",
+      BTOXGR == -3 ~ "3",
+      BTOXGR == -4 ~ "4",
+      BTOXGR == "<Missing>" ~ "Missing"
+    )
 )
 
 # adjust factor levels for correct order of AVISIT and Grouping to show

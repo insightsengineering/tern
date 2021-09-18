@@ -24,8 +24,9 @@ library(dplyr)
 library(tern)
 
 adhy <- haven::read_sas(data_file = "../adhy.sas7bdat")
-                  
-# Ensure character variables are converted to factors and empty strings and NAs are explicit missing levels.
+
+# Ensure character variables are converted to factors
+# and empty strings and NAs are explicit missing levels.
 adhy_liver <- df_explicit_na(adhy)
 
 # Define values of interest in PARAMCD variable.
@@ -43,14 +44,21 @@ adhy_liver <- adhy_liver %>%
   mutate(AVISIT = factor(AVISIT, levels = c("BASELINE", "POST-BASELINE")),
          PARAMCD = factor(PARAMCD, levels = c(paramcd_tbili_alt, paramcd_tbili_ast)))
 
-# Create TBILI_CAT categories variable - this is needed so we get the right nesting in the table.
+# Create TBILI_CAT categories variable
+# this is needed so we get the right nesting in the table.
 adhy_liver <- adhy_liver %>%
   mutate(TBILI_CAT = factor(
     case_when(
       PARAMCD %in% c(paramcd_tbili_alt[1], paramcd_tbili_ast[1]) ~ "Total Bilirubin <= 2xULN",
       PARAMCD %in% c(paramcd_tbili_alt[2], paramcd_tbili_ast[2]) ~ "Total Bilirubin > 2xULN",
-      PARAMCD %in% c(paramcd_tbili_alt[3], paramcd_tbili_ast[3]) ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 2xULN",
-      PARAMCD %in% c(paramcd_tbili_alt[4], paramcd_tbili_ast[4]) ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 5xULN"
+      PARAMCD %in% c(
+        paramcd_tbili_alt[3],
+        paramcd_tbili_ast[3]
+      ) ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 2xULN",
+      PARAMCD %in% c(
+        paramcd_tbili_alt[4],
+        paramcd_tbili_ast[4]
+      ) ~ "Total Bilirubin > 2xULN and Alkaline Phosphatase <= 5xULN"
     ),
     levels = c(
       "Total Bilirubin <= 2xULN",
@@ -60,7 +68,9 @@ adhy_liver <- adhy_liver %>%
     )
   ))
 
-# Create ALTAST_CAT categories variable - this will be the labels for different ALT/AST categories displayed in the table.
+# Create ALTAST_CAT categories variable
+# this will be the labels for different
+# ALT/AST categories displayed in the table.
 adhy_liver <- adhy_liver %>%
   mutate(
     ALTAST_CAT = factor(
@@ -74,9 +84,16 @@ adhy_liver <- adhy_liver %>%
         PARAMCD %in% paramcd_tbili_ast & AVALC == ">10-20ULN" ~ "AST >10 - <= 20xULN",
         PARAMCD %in% paramcd_tbili_ast & AVALC == ">20ULN" ~ "AST > 20xULN",
         TRUE ~ "Criteria not met"),
-      levels = c("ALT >3 - <= 5xULN", "ALT >5 - <= 10xULN", "ALT >10 - <= 20xULN", "20" = "ALT > 20xULN",
-                 "AST >3 - <= 5xULN", "AST >5 - <= 10xULN", "AST >10 - <= 20xULN", "AST > 20xULN",
-                 "Criteria not met")
+      levels = c(
+        "ALT >3 - <= 5xULN",
+        "ALT >5 - <= 10xULN",
+        "ALT >10 - <= 20xULN",
+        "20" = "ALT > 20xULN",
+        "AST >3 - <= 5xULN",
+        "AST >5 - <= 10xULN",
+        "AST >10 - <= 20xULN",
+        "AST > 20xULN",
+        "Criteria not met")
     )
   )
 ```
@@ -95,7 +112,7 @@ lyt <- basic_table() %>%
     denom = "n",
     drop =  TRUE) %>%
   append_topleft("Liver Laboratory Test Criterion")
-  
+
 
 result <- build_table(lyt = lyt, df = adhy_liver)
 

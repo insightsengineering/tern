@@ -13,7 +13,7 @@ vignette: >
   %\VignetteIndexEntry{Design for MMRM tables}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 

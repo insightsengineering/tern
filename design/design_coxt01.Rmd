@@ -307,12 +307,12 @@ s_coxreg <- function(df, .var) {
     list(split(df[, .var, drop = FALSE], f = df$term)),
     .var
   )
-  
+
   y[[.var]] <- lapply(
     X = y[[.var]],
     FUN = function(x) with_label(unlist(x), rownames(x))
   )
-  
+
   y
 }
 

@@ -112,7 +112,6 @@ result <- basic_table() %>%
   build_table(df = adeg, col_counts = n_col_counts)
 
 as_html(result)
-
 ```
 
 Reference

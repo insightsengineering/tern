@@ -226,7 +226,6 @@ h_decompose_gg <- function(gg) {
   )
   lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
 }
-
 ```
 
 ```{r, h_decompose_gg_example}
@@ -255,7 +254,6 @@ grid.draw(g_el$panel)
 grid.newpage()
 grid.rect(gp = gpar(lty = 1, col = "royalblue", fill = "gray85", lwd = 5))
 grid.draw(with(g_el, cbind(ylab, yaxis)))
-
 ```
 
 Layout
@@ -489,7 +487,6 @@ h_tbl_median_surv <- function(fit) {
     c("N", "Median", "95% CI")
   )
 }
-
 ```
 
 ```{r, h_tbl_median_surv_example}
@@ -533,7 +530,6 @@ h_grob_median_surv <- function(fit,
     )
   )
 }
-
 ```
 
 ```{r, h_grob_median_surv_example}
@@ -572,7 +568,6 @@ h_grob_y_annot <- function(ylab, yaxis) {
     )
   )
 }
-
 ```
 
 
@@ -721,7 +716,6 @@ g_km <- function(fit_km,
     )
   )
 }
-
 ```
 
 ### Examples {.tabset}

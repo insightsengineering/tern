@@ -33,7 +33,7 @@ library(rtables)
 packageVersion("rtables")
 ```
 
-### Functions 
+### Functions
 
 #### `summarize_colvars`
 
@@ -60,48 +60,48 @@ dta_test <- data.frame(
   AVAL    = round(rnorm(3*6), 2),
   CHG     = round(rnorm(3*6), 2)
 )
-result <- basic_table() %>% 
+result <- basic_table() %>%
   split_cols_by("ARM") %>%
   add_colcounts() %>%
-  split_rows_by("AVISIT") %>% 
+  split_rows_by("AVISIT") %>%
   split_cols_by_multivar(
     vars = c("AVAL", "CHG"),
     varlabels = c("Analysis Value", "Absolute Change from Baseline")
-  ) %>% 
-  summarize_colvars() %>% 
+  ) %>%
+  summarize_colvars() %>%
   build_table(df = dta_test)
 result
 ```
 
 At this point I don't know where the warning "longer argument not a multiple of length of shorter"
-is coming from. It seems to be rtables internal. Filed at https://github.com/Roche/rtables/issues/76 
+is coming from. It seems to be rtables internal. Filed at https://github.com/Roche/rtables/issues/76
 
-Notes: `summarize_colvars` does not need a vars argument since var names are inherited from `[rtables::split_cols_by_multivar()]`. 
+Notes: `summarize_colvars` does not need a vars argument since var names are inherited from `[rtables::split_cols_by_multivar()]`.
 
-Also note that we cannot yet have column number totals in the `ARM` top split, but only get the duplicate 
+Also note that we cannot yet have column number totals in the `ARM` top split, but only get the duplicate
 column numbers below the analysis columns.
 
 #### Modified output
 
 ```{r application_02}
-result <- basic_table() %>% 
+result <- basic_table() %>%
   split_cols_by("ARM") %>%
   add_colcounts() %>%
-  split_rows_by("AVISIT") %>% 
+  split_rows_by("AVISIT") %>%
   split_cols_by_multivar(
     vars = c("AVAL", "CHG"),
     varlabels = c("Analysis Value", "Absolute Change from Baseline")
-  ) %>% 
+  ) %>%
   summarize_colvars(
     .labels = c(range = "Range")
-  ) %>% 
+  ) %>%
   build_table(df = dta_test)
 result
 ```
 
 Note:
-- Add this point we cannot easily remove cell contents of the intersection of a "Baseline" visit 
-  and the "Change from Baseline" column. 
-- Alternative concepts such as similar to `summarize_change` are theoretically possible but 
+- Add this point we cannot easily remove cell contents of the intersection of a "Baseline" visit
+  and the "Change from Baseline" column.
+- Alternative concepts such as similar to `summarize_change` are theoretically possible but
   would not be elegant here since the two columns should be handled in parallel when using
   `analyze_colvars`.

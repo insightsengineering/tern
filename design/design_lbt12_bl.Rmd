@@ -43,7 +43,7 @@ adsl <- adsl %>% filter(SAFFL == "Y")
 # Select LBT12 parameters
 anl <- adhy %>%
   filter(SAFFL == "Y") %>%
-  filter(PARAMCD %in% c('ASTPBASE', 'ALTPBASE', 'ALTASTPB') & AVISIT == "POST-BASELINE") %>%
+  filter(PARAMCD %in% c("ASTPBASE", "ALTPBASE", "ALTASTPB") & AVISIT == "POST-BASELINE") %>%
   mutate(ARM_AVALC = case_when(
     AVALC == "Y" & ACTARMCD == "A" ~ "ARM A",
     AVALC == "Y" & ACTARMCD == "B" ~ "ARM B",
@@ -64,7 +64,7 @@ result <- basic_table() %>%
   split_cols_by("TITLE") %>%
   split_cols_by("APERIODC") %>%
   split_rows_by("PARAM") %>%
-  split_rows_by("ACTARM", split_fun = drop_split_levels, child_labels = "hidden") %>% 
+  split_rows_by("ACTARM", split_fun = drop_split_levels, child_labels = "hidden") %>%
   count_occurrences(vars = "ARM_AVALC", denom = "n", .stats = "fraction") %>%
   build_table(anl)
 
@@ -77,4 +77,6 @@ result <- result %>% trim_rows(criteria = criteria_fun)
 result
 ```
 
-For rows with 0 count, the above way will now show that arm. However this should be solved when new split function that can produce a map and show specifically what rows should be included in the layout.
+For rows with 0 count, the above way will now show that arm.
+However this should be solved when new split function that can
+produce a map and show specifically what rows should be included in the layout.

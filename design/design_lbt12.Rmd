@@ -43,7 +43,7 @@ adsl <- adsl %>% filter(SAFFL == "Y")
 # Select LBT12 parameters
 anl <- adhy %>%
   filter(SAFFL == "Y") %>%
-  filter(PARAMCD %in% c('ASTPULN', 'ALTPULN', 'ALTASTPU') & AVISIT == "POST-BASELINE") %>%
+  filter(PARAMCD %in% c("ASTPULN", "ALTPULN", "ALTASTPU") & AVISIT == "POST-BASELINE") %>%
   mutate(ARM_AVALC = case_when(
     AVALC == "Y" & ACTARMCD == "A" ~ "ARM A",
     AVALC == "Y" & ACTARMCD == "B" ~ "ARM B",

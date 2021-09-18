@@ -1,7 +1,7 @@
 ---
 title: "STEP fitting and plotting design"
 output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -32,21 +32,21 @@ fitted by a single polynomial function.
 library(tern)
 library(ggplot2.utils)
 library(dplyr)
-adtte <- ex_adtte %>% 
+adtte <- ex_adtte %>%
   filter(
     PARAMCD == "OS"
   ) %>%
   mutate(
     AVAL = day2month(AVAL),
     AVALU = "Months",
-    is_event = CNSR == 0, 
+    is_event = CNSR == 0,
     ARM_BIN = forcats::fct_collapse(
       ARM,
       CTRL = c("B: Placebo"),
       TRT = c("A: Drug X", "C: Combination")
     ),
     ARM_BIN = droplevels(forcats::fct_relevel(ARM_BIN, "CTRL"))
-  ) %>% 
+  ) %>%
   var_relabel(BEP01FL = "BEP",
               BMRKR2 = "Biomarker (Categorical)")
 ```
@@ -55,7 +55,7 @@ adtte <- ex_adtte %>%
 
 We can have two sets of functions, a bit similar to the forest plot functions:
 
-1. The first set calculates the required numeric results in a matrix format (we can use a custom S3 class): `fit_survival_step()` and `fit_rsp_step()`. 
+1. The first set calculates the required numeric results in a matrix format (we can use a custom S3 class): `fit_survival_step()` and `fit_rsp_step()`.
 1. The second is just a single function `g_step()` which takes the result object and creates the ggplot.
 
 The advantage is that we only have a single plotting function and can later add e.g. functions for continuous endpoints easily. Note that here, in contrast to the forest functions, we don't need to create a table as intermediate object, since the main result is a graph without a table. However, this could be added later if required.
@@ -96,7 +96,7 @@ control_step <- function(biomarker = NULL,
   if (missing(bandwidth)) {
     # Infer bandwidth.
     bandwidth <- if (use_percentile) {
-      0.25 
+      0.25
     } else if (!is.null(biomarker)) {
       diff(range(biomarker, na.rm = TRUE)) / 4
     } else {
@@ -133,7 +133,7 @@ control_step()
 #' @return A list of two which contains the logical selection matrix `sel`
 #'   and interval information matrix `interval`.
 #'
-window_selection <- function(x, 
+window_selection <- function(x,
                              control = control_step()) {
 
   assert_that(
@@ -209,7 +209,7 @@ We will need small helper functions to create the formula. Notice that they are 
 ```{r, formsurvhelper}
 h_coxph_biomarker_formula <- function(variables, control = control_step()) {
   assert_that(
-    is.null(variables$covariates) || is.character(variables$covariates), 
+    is.null(variables$covariates) || is.character(variables$covariates),
     is_variables(variables[c("arm", "biomarker", "event", "time")])
   )
   form <- paste0("Surv(", variables$time, ", ", variables$event, ") ~ ", variables$arm)
@@ -264,7 +264,7 @@ termest
 
 Here we see that we
 - don't have an intercept in a Cox regression model. Therefore we also don't need to extend the coefficients artificially with a 1 in the front
-- we need to center the predictors by the column means from the sample provided for fitting, before multiplying with the estimated coefficients vector. 
+- we need to center the predictors by the column means from the sample provided for fitting, before multiplying with the estimated coefficients vector.
 - The result is actually not yet a (log) hazard ratio because for that we would need to not just fix one treatment arm value but compare this with the linear predictor term part from the other level.
 
 We can obtain this conveniently with the `predict` method. Let's say we want to estimate the treatment effect at biomarker value `newx = 10`.
@@ -272,7 +272,7 @@ We can obtain this conveniently with the `predict` method. Let's say we want to 
 ```{r, withpred}
 newx <- 10
 trtlvs <- levels(td$trt)
-newdata_trt <- td[1, ] %>% 
+newdata_trt <- td[1, ] %>%
   dplyr::mutate(x = newx, trt = trtlvs[2])
 newdata_ref <- newdata_trt %>%
   dplyr::mutate(trt = trtlvs[1])
@@ -293,7 +293,7 @@ Based on the above we can now write a small helper function which gives the esti
 #' @param variables the variables list
 #' @param x value of the biomarker variable at which treatment effect should be estimated at
 h_trt_effect_biomarker <- function(data,
-                                   model, 
+                                   model,
                                    variables,
                                    x) {
   assert_that(
@@ -320,15 +320,15 @@ h_trt_effect_biomarker <- function(data,
 }
 
 h_trt_effect_biomarker(
-  data = td, 
-  model = mod, 
+  data = td,
+  model = mod,
   variables = list(
-    time = "time", 
-    event = "event", 
-    arm = "trt", 
-    biomarker = "x", 
+    time = "time",
+    event = "event",
+    arm = "trt",
+    biomarker = "x",
     covariates = "y"
-  ), 
+  ),
   x = newx
 )
 ```
@@ -344,8 +344,8 @@ Now we can build the statistics function which fits the model given a logical `s
 #' @param x numeric vector of biomarker values where to perform treatment effect estimations.
 #' @param subset the logical vector subsetting the data (default is to take all observations)
 #' @param control list with details in `control_coxph()` format
-s_coxph_subset <- function(formula, 
-                           data, 
+s_coxph_subset <- function(formula,
+                           data,
                            variables,
                            x,
                            subset = rep(TRUE, nrow(data)),
@@ -357,10 +357,10 @@ s_coxph_subset <- function(formula,
     data = data,
     subset = .subset,
     ties = control$ties
-  )  
+  )
   # produce a matrix with one row per `x` and columns `est` and `se`:
   estimates <- t(vapply(
-    X = x, 
+    X = x,
     FUN = h_trt_effect_biomarker,
     FUN.VALUE = c(1, 2),
     data = data,
@@ -443,9 +443,9 @@ Let's try it out:
 ```{r, fitsurvexample}
 variables <- list(
   arm = "ARM_BIN",
-  biomarker = "BMRKR1", 
+  biomarker = "BMRKR1",
   covariates = c("AGE", "BMRKR2"),
-  event = "is_event", 
+  event = "is_event",
   time = "AVAL"
 )
 
@@ -471,12 +471,12 @@ g_step <- function(step_matrix) {
       names_to = c("type", "bound"),
       names_pattern = "(.*)_(.*)",
       values_to = "y"
-    ) 
+    )
   plot_dat <- dplyr::bind_rows(
     dplyr::select(plot_dat, c(x, type, bound, y)),
     dplyr::select(plot_dat, c(x, type, bound, hr)) %>%
       dplyr::rename(y = "hr") %>%
-      dplyr::mutate(type = "est", bound = "middle") 
+      dplyr::mutate(type = "est", bound = "middle")
   )
   ggplot(plot_dat) +
     geom_hline(yintercept = 1, linetype = 2, color = "gray") +

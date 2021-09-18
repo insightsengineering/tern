@@ -32,9 +32,7 @@ Configuration
 
 ```{r setup}
 # devtools::install_github(
-#   repo = "NEST/rtables",
-#   ref = "devel",
-#   host = "https://github.roche.com/api/v3",
+#   repo = "Roche/rtables",
 #   upgrade = "never"
 # )
 
