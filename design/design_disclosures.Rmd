@@ -167,17 +167,17 @@ Notes for production:
 [x] for function test use very small df so that we can manually count and compare
 
 ```{r test data for ae tables}
-variables = list(id = "USUBJID",
+variables <- list(id = "USUBJID",
                  serious = "AESER",
                  fatal = "AESDTH",
                  related = "AEREL",
                  term = "AEDECOD")
 
 test_df <- data.frame(
-  USUBJID = rep(c("id1","id2", "id3", "id4"), c(2, 3, 1, 1)),
+  USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
   ARM = c("A", "A", "B", "B", "B", "B", "A"),
   AESER = rep("Y", 7),
-  AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N") ,
+  AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N"),
   AEREL = c("Y", "Y", "N", "Y", "Y", "N", "Y"),
   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
@@ -280,14 +280,14 @@ a_patients_events_list$patients_all(test_df, variables)
 a_term_patients_events_list <- list(
   patients_all = make_afun(
     function(df, variables, ...) {
-      patients_all = s_count_occurrences(df, .N_col = 1L, .var = variables$term, id = variables$id)
+      patients_all <- s_count_occurrences(df, .N_col = 1L, .var = variables$term, id = variables$id)
     },
     .stats = "count",
     .ungroup_stats = "count"
   ),
   events_all = make_afun(
     function(df, variables, ...) {
-    events_all = s_summary(df[[variables$term]])
+    events_all <- s_summary(df[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -296,7 +296,7 @@ a_term_patients_events_list <- list(
     function(df, variables, ...) {
       is_related <- df[[variables$related]] == "Y"
       df_f <- df[is_related, ]
-      events_related = s_summary(df_f[[variables$term]])
+      events_related <- s_summary(df_f[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -305,7 +305,7 @@ a_term_patients_events_list <- list(
     function(df, variables, ...) {
       is_fatal <- df[[variables$fatal]] == "Y"
       df_f <- df[is_fatal, ]
-      events_fatal = s_summary(df_f[[variables$term]])
+      events_fatal <- s_summary(df_f[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -315,7 +315,7 @@ a_term_patients_events_list <- list(
       is_related <- df[[variables$related]] == "Y"
       is_fatal <-  df[[variables$fatal]] == "Y"
       df_f <- df[is_related & is_fatal, ]
-      events_fatal_related = s_summary(df_f[[variables$term]])
+      events_fatal_related <- s_summary(df_f[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -339,7 +339,11 @@ analyze_term_patients_events <- function(lyt,
                                                "events_fatal_related"),
                                       ...) {
 
-  analyze_colvars(lyt = lyt, afun = a_term_patients_events_list, extra_args = list(variables = variables, .stats = .stats, ...))
+  analyze_colvars(
+    lyt = lyt,
+    afun = a_term_patients_events_list,
+    extra_args = list(variables = variables, .stats = .stats, ...)
+  )
 }
 
 ```
@@ -347,7 +351,13 @@ analyze_term_patients_events <- function(lyt,
 ```{r}
 basic_table() %>%
   split_cols_by_multivar(vars =  c("USUBJID", "AESER", "AEREL", "AESDTH", "AEBODSYS"),
-                         varlabels = c("Patients (All)", "Events (All)", "Events (Related)", "Events (Fatal)", "Events (Fatal & Related")) %>%
+                         varlabels = c(
+                           "Patients (All)",
+                           "Events (All)",
+                           "Events (Related)",
+                           "Events (Fatal)",
+                           "Events (Fatal & Related")
+                         ) %>%
   analyze_patients_events() %>%  # this produces the top row: total n of patients ...
   split_rows_by("AEBODSYS", nested = FALSE) %>%
   analyze_term_patients_events() %>%
@@ -362,7 +372,7 @@ basic_table() %>%
 ```{r preprocessing of adae}
 #To filter >- 5% of patients in an treatment group
 # Simple wrapper to return subset ADAE to a threshold of xx%.
-get_adae_trimmed <- function(adsl, adae, cutoff_rate){
+get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 
   n_per_arm <- adsl %>%
     dplyr::count(ARM)
@@ -402,9 +412,15 @@ basic_table() %>%
   split_cols_by("ARM") %>%
   split_cols_by_multivar(vars =  c("USUBJID", "AESER"),
                          varlabels = c("Patients (All)", "Events (All)")) %>%
-  analyze_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces the top row: total n of patients ...
+  analyze_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces the top row: total n of patients ...
   split_rows_by("AEBODSYS", nested = FALSE) %>%
-  analyze_term_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces all the 2nd level rows below
+  analyze_term_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces all the 2nd level rows below
   build_table(test_df2) %>%
   prune_table()
 ```
@@ -417,12 +433,19 @@ adae_trim <- get_adae_trimmed(adsl_f, adae_nonser, cutoff_rate = 0.4)
 basic_table() %>%
   split_cols_by("ARM") %>%
   split_cols_by_multivar(vars =  c("USUBJID", "AESER"),
-                         varlabels = c("Patients (All)", "Events (All)")) %>%
-  analyze_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces the top row: total n of patients ...
+                         varlabels = c(
+                           "Patients (All)",
+                           "Events (All)"
+                         )) %>%
+  analyze_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces the top row: total n of patients ...
   split_rows_by("AEBODSYS", nested = FALSE) %>%
-  analyze_term_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces all the 2nd level rows below
+  analyze_term_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces all the 2nd level rows below
   build_table(adae_trim) %>%
   prune_table()
 ```
-
-

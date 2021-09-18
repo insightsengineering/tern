@@ -31,12 +31,6 @@ Configuration
 
 
 ```{r setup}
-# devtools::install_github(
-#   repo = "Roche/rtables",
-#   upgrade = "never"
-# )
-
-
 library(random.cdisc.data)
 library(assertthat)
 library(rtables)
@@ -55,27 +49,34 @@ packageVersion("rtables")
 adsl <- radsl(cached = TRUE)
 set.seed(36857, kind = "Mersenne-Twister")
 
-# create DTHCAT 
+# create DTHCAT
+# nolint start
 adsl$DTHCAT <- NA
 adsl$DTHCAT[!is.na(adsl$DTHDT)] <- sample(
   x = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER"),
   size = sum(!is.na(adsl$DTHDT)),
   replace = TRUE, prob = c(.5, .3, .2)
 )
-adsl$DTHCAT <- factor(adsl$DTHCAT, level=c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER"))
+adsl$DTHCAT <- factor(adsl$DTHCAT, level = c("ADVERSE EVENT", "PROGRESSIVE DISEASE", "OTHER"))
 
 
-#Create DTHCAUS with reasons for "Other" specified. 
+#Create DTHCAUS with reasons for "Other" specified.
 #Death flag variable (Y or N)
-adsl <- adsl %>% mutate(DTHCAUS = ifelse(!is.na(DTHCAT) & DTHCAT == "OTHER", 
+adsl <- adsl %>% mutate(DTHCAUS = ifelse(!is.na(DTHCAT) & DTHCAT == "OTHER",
                                           sample(
-                                            x = c("Post-study reporting of death", "LOST TO FOLLOW UP", "MISSING", "SUICIDE", "UNKNOWN"),
+                                            x = c(
+                                              "Post-study reporting of death",
+                                              "LOST TO FOLLOW UP",
+                                              "MISSING",
+                                              "SUICIDE",
+                                              "UNKNOWN"
+                                            ),
                                             size = sum((!is.na(adsl$DTHCAT) & adsl$DTHCAT == "OTHER")),
-                                            replace = TRUE, prob = c(.1,.3, .3, .2, .1)),
+                                            replace = TRUE, prob = c(.1, .3, .3, .2, .1)),
                                           as.character(DTHCAT)
-                                          ), 
+                                          ),
                         DTHFL = ifelse(is.na(DTHDT), "N", "Y"))
-                        
+
 adsl$DTHCAUS <- as.factor(adsl$DTHCAUS)
 
 # Create dummy variables LDDTHELD and LDDTHGR1 as in ADSL GDSR structure
@@ -84,42 +85,43 @@ adsl <- within(
   expr = {
     TRTEDTM <- as.Date(TRTEDTM)
     DTHDT <- as.Date(DTHDT)
-    
+
     DTHDT[!is.na(DTHDT)] <- {
       DTHDT[!is.na(DTHDT)] +
         round(rnorm(n = sum(!is.na(DTHDT)), mean = 30, sd = 8))
     }
-    
+
     # Dummy variable LDDTHELD: Elapsed Days from Last Dose to Death.
     LDDTHELD <- as.numeric(DTHDT - TRTEDTM)
-    
-    # Dummy variable LDDTHGR1: Last Dose to Death - Days Elapsed Grp 1. Categorical variable with 2 levels: "<=30" and ">30"
+
+    # Dummy variable LDDTHGR1:
+    # Last Dose to Death - Days Elapsed Grp 1. Categorical variable with 2 levels: "<=30" and ">30"
     LDDTHGR1 <- cut(
       LDDTHELD,
       breaks = c(
         min(LDDTHELD, na.rm = TRUE), 30, max(LDDTHELD, na.rm = TRUE)
       ), include.lowest = TRUE
     )
-    
   }
 )
+# nolint end
 
 # LDDTHGR1: Categorical variable with 2 levels: "<=30" and ">30"
 levels(adsl$LDDTHGR1) <- c("<=30", ">30")
-
 ```
 
 
-# Variant 1. Deaths 
+# Variant 1. Deaths
 
 ```{r variant 1}
 # Application with default value.
-tbl1 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
+tbl1 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+    count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
                                    .formats = c(count_fraction = "xx (xx.x%)"))  %>%
   summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
-  build_table (df= adsl)
+  build_table(df = adsl)
 
 tbl1
 ```
@@ -128,29 +130,40 @@ tbl1
 
 ```{r variant 2}
 
-part1 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
+part1 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+    count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
                                    .formats = c(count_fraction = "xx (xx.x%)"))  %>%
-  summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death"))  %>% build_table (df= adsl)
+  summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
+    build_table(df = adsl)
 
-part2 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% 
+part2 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
   split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
   summarize_vars("DTHCAUS", nested = T, .stats = "count_fraction", .indent_mods = c("count_fraction" = 4L)) %>%
-  build_table (df= adsl) %>% prune_table() 
+  build_table(df = adsl) %>%
+    prune_table()
 
-part3 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
- add_colcounts() %>% 
-  summarize_vars(vars ="LDDTHGR1", var_labels = "Days from last drug administration", show_labels = "visible")  %>% build_table (df= adsl)
+part3 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+ add_colcounts() %>%
+  summarize_vars(
+    vars = "LDDTHGR1",
+    var_labels = "Days from last drug administration",
+    show_labels = "visible") %>%
+      build_table(df = adsl)
 
-part4 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% split_rows_by("LDDTHGR1", split_label="Primary cause by days from last study drug administration",visible_label = TRUE) %>% 
+part4 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+    split_rows_by(
+      "LDDTHGR1",
+      split_label = "Primary cause by days from last study drug administration",
+      visible_label = TRUE) %>%
   summarize_vars("DTHCAT") %>%
-  build_table (df= adsl)
+  build_table(df = adsl)
 
 col_info(part2) <- col_info(part1)
 col_info(part3) <- col_info(part2)
@@ -161,31 +174,33 @@ tbl2 <- rbind(tbl2, part3)
 tbl2 <- rbind(tbl2, part4)
 tbl2
 ```
-   
+ 
 # Variant 3 Deaths (for studies collecting death information from public records)
 ```{r variant 3}
 # preprocessing steps
-l <- levels(adsl[adsl$DTHCAT=="OTHER",]$DTHCAUS)
+l <- levels(adsl[adsl$dthcat == "OTHER", ]$DTHCAUS)
 
 #table
-part1 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
+part1 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+    count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
                                    .formats = c(count_fraction = "xx (xx.x%)"))  %>%
   summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
-  build_table (df= adsl)
+  build_table(df = adsl)
 
 
-part2 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
+part2 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+    split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
   count_values("DTHCAUS", values = l[4], .labels = c(count_fraction = "Post study reporting of deaths"),
-                                   .formats = c(count_fraction = "xx (xx.x%)"), 
-                                   .indent_mods = c(count_fraction = 4L) )  %>%
+                                   .formats = c(count_fraction = "xx (xx.x%)"),
+                                   .indent_mods = c(count_fraction = 4L))  %>%
    count_values("DTHCAUS", values = l[-4], .labels = c(count_fraction = "All other causes"),
-                                    .formats = c(count_fraction = "xx (xx.x%)"), 
-                                    .indent_mods = c(count_fraction = 4L) )  %>%
-  build_table(adsl) 
+                                    .formats = c(count_fraction = "xx (xx.x%)"),
+                                    .indent_mods = c(count_fraction = 4L))  %>%
+  build_table(adsl)
 
 
 col_info(part2) <- col_info(part1)
@@ -198,36 +213,42 @@ tbl3
 
 ```{r variant 4}
 #preprocessing steps
-l <- levels(adsl[adsl$DTHCAT=="OTHER",]$DTHCAUS)
-adsl <- adsl %>% mutate (DTHCAUS_other = ifelse(DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death", as.character(DTHCAUS), NA)) 
-adsl$DTHCAUS_other <- as.factor(adsl$DTHCAUS_other)
+l <- levels(adsl[adsl$dthcat == "OTHER", ]$DTHCAUS)
+adsl <- adsl %>%
+  mutate(DTHCAUS_other = ifelse(
+    DTHCAT == "OTHER" & DTHCAUS != "Post-study reporting of death",
+    as.character(DTHCAUS), NA)
+  )
+adsl$dthcaus_other <- as.factor(adsl$dthcaus_other)
 
 #table
-part1 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
+part1 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+    count_values("DTHFL", values = "Y", .labels =  c(count_fraction = "Total number of deaths"),
                                    .formats = c(count_fraction = "xx (xx.x%)"))  %>%
   summarize_vars(vars = c("DTHCAT"), var_labels = c("Primary cause of death")) %>%
-  build_table (df= adsl)
+  build_table(df = adsl)
 
 
-part2 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
+part2 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
+    split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
   count_values("DTHCAUS", values = l[4], .labels = c(count_fraction = "Post study reporting of deaths"),
-                                   .formats = c(count_fraction = "xx (xx.x%)"), 
-                                   .indent_mods = c(count_fraction = 4L) )  %>%
+                                   .formats = c(count_fraction = "xx (xx.x%)"),
+                                   .indent_mods = c(count_fraction = 4L))  %>%
    count_values("DTHCAUS", values = l[-4], .labels = c(count_fraction = "All other causes"),
-                                    .formats = c(count_fraction = "xx (xx.x%)"), 
-                                    .indent_mods = c(count_fraction = 4L) )  %>%
-  build_table(adsl) 
+                                    .formats = c(count_fraction = "xx (xx.x%)"),
+                                    .indent_mods = c(count_fraction = 4L))  %>%
+  build_table(adsl)
 
-part3 <- basic_table() %>% 
-  split_cols_by("ARM",split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
-  add_colcounts() %>% 
+part3 <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
+  add_colcounts() %>%
   split_rows_by("DTHCAT", split_fun = keep_split_levels("OTHER"), child_labels = "hidden") %>%
   summarize_vars("DTHCAUS_other", nested = T, .stats = "count_fraction", .indent_mods = c("count_fraction" = 6L)) %>%
-  build_table (df= adsl) 
+  build_table(df = adsl)
 
 col_info(part2) <- col_info(part1)
 col_info(part3) <- col_info(part2)
@@ -235,7 +256,4 @@ col_info(part3) <- col_info(part2)
 tbl4 <- rbind(part1, part2)
 tbl4 <- rbind(tbl4, part3)
 tbl4
-
 ```
-
-

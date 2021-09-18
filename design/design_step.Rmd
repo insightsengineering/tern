@@ -153,7 +153,7 @@ window_selection <- function(x,
     # Create windows according to percentile cutoffs
     xs <- seq(0, 1, length = control$num_points + 2)[-1]
     for (i in seq_len(control$num_points)) {
-      out[i, 2:3] = c(max(xs[i] - control$bandwidth, 0), min(xs[i] + control$bandwidth, 1))
+      out[i, 2:3] <- c(max(xs[i] - control$bandwidth, 0), min(xs[i] + control$bandwidth, 1))
       out[i, 5:6] <- quantile(x, out[i, 2:3])
       sel[, i] <- x >= out[i, 5] & x <= out[i, 6]
     }

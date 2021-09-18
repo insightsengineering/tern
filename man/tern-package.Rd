@@ -12,7 +12,7 @@ tern is an analysis package to create tables, listings and graphs to analyze cli
 Useful links:
 \itemize{
   \item \url{https://github.com/insightsengineering/tern}
-  \item Report bugs at \url{https://github.com/insightsengineering/tern/issues}
+  \item Report bugs at \url{https://github..com/insightsengineering/tern/issues}
 }
 
 }

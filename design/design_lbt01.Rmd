@@ -54,11 +54,11 @@ summarize_colvars
 set.seed(5)
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
-  PARAMCD = rep("lab", 6*3),
+  PARAMCD = rep("lab", 6 * 3),
   AVISIT  = rep(paste0("V", 1:3), 6),
   ARM     = rep(LETTERS[1:3], rep(6, 3)),
-  AVAL    = round(rnorm(3*6), 2),
-  CHG     = round(rnorm(3*6), 2)
+  AVAL    = round(rnorm(3 * 6), 2),
+  CHG     = round(rnorm(3 * 6), 2)
 )
 result <- basic_table() %>%
   split_cols_by("ARM") %>%
