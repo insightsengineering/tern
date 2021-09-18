@@ -326,8 +326,7 @@ test_that("get_lme4_diagnostics works as expected with a random slope model", {
     data = lme4::sleepstudy
   )
   result <- get_lme4_diagnostics(fit)
-  # Expected value from SAS, see
-  # https://github.roche.com/sabanesd/allinR/blob/master/mmrm/comparison/test_mmrm_4.R
+
   expected <- list(
     "REML criterion" = 1743.6,
     AIC = 1751.6,
@@ -690,9 +689,6 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
   # REPEATED AVISIT / subject=USUBJID type=un r rcorr;
   # LSMEANS AVISIT*ARMCD / pdiff=all cl alpha=0.05 slice=AVISIT;
   # RUN;
-  #
-  # See https://github.roche.com/sabanesd/allinR/blob/master/mmrm/comparison/test_mmrm_1.R
-  # for reproducing the numbers below.
 
   # REML criterion value.
   expect_equal(
@@ -870,9 +866,6 @@ test_that("fit_mmrm works also with missing data", {
   # REPEATED AVISIT / subject=USUBJID type=un r rcorr;
   # LSMEANS AVISIT*ARMCD / pdiff=all cl alpha=0.05 slice=AVISIT;
   # RUN;
-  #
-  # See https://github.roche.com/sabanesd/allinR/blob/master/mmrm/comparison/test_mmrm_2.R
-  # for reproducing the numbers below.
 
   # REML criterion value.
   expect_equal(
@@ -1042,9 +1035,6 @@ test_that("fit_mmrm works with compound symmetry covariance structure", {
   # REPEATED AVISIT / subject=USUBJID type=cs r rcorr;
   # LSMEANS AVISIT*ARMCD / pdiff=all cl alpha=0.05 slice=AVISIT;
   # RUN;
-  #
-  # See https://github.roche.com/sabanesd/allinR/blob/master/mmrm/comparison/test_mmrm_3.R
-  # for reproducing the numbers below.
 
   # REML criterion value.
   expect_equal(

@@ -33,18 +33,17 @@ packageVersion("rtables")
 
 ## DATA PREPROCESSING
 
-Note that `ADSL.STSTFL` does not exist in [STREAM](https://rochewiki.roche.com/confluence/pages/viewpage.action?spaceKey=SPADSCL&title=3.+Macros+and+Programs#id-3.MacrosandPrograms-t_dd_discl) but is generated here. 
 ```{r data, results = "asis", eval = TRUE}
 adsl <- radsl(cached = TRUE)
 adae <- radae(cached = TRUE)
 set.seed(1)
 
 #nolint start
-adsl_f <- adsl %>% 
-  filter(SAFFL == "Y") %>% # Safety Evaluable Population 
+adsl_f <- adsl %>%
+  filter(SAFFL == "Y") %>% # Safety Evaluable Population
   mutate(
-    STSTFL = case_when(is.na(RANDDT) ~ "N", # derive flag for "Started Study", 
-                     TRUE ~ "Y"), 
+    STSTFL = case_when(is.na(RANDDT) ~ "N", # derive flag for "Started Study",
+                     TRUE ~ "Y"),
     COMPSTUD = case_when(EOSSTT == "COMPLETED" ~ "Y", # derive flag for "Completed Study"
                          TRUE ~ "N"),
     DISCSTUD = case_when(EOSSTT == "DISCONTINUED" ~ "Y", # derive flag for "Discontinued study"
@@ -52,7 +51,7 @@ adsl_f <- adsl %>%
     AGEGRP = case_when(AGE < 65 ~ "< 65 yrs",
                        AGE >= 65 ~ ">= 65 yrs"),
     ETHNIC = sample(c("Ethnicity 1", "Ethnicity 2", "Unknown"), nrow(.), replace = TRUE),
-    DTHFL = ifelse(is.na(DTHDT), "N", "Y") 
+    DTHFL = ifelse(is.na(DTHDT), "N", "Y")
     ) %>% var_relabel(STSTFL = "Start Study",
                       COMPSTUD = "Study Completion Flag",
                       DISCSTUD = "Study Discontinuation Flag",
@@ -63,10 +62,10 @@ adsl_f <- adsl %>%
 
 adsl_f$AGEGRP <- factor(adsl_f$AGEGRP, levels = c("< 65 yrs", ">= 65 yrs"))
 adsl_f$ETHNIC <- factor(adsl_f$ETHNIC, levels = c("Ethnicity 1", "Ethnicity 2", "Unknown"))
-adsl_f$DTHFL <- factor(adsl_f$DTHFL, levels = c("Y", "N"))  
+adsl_f$DTHFL <- factor(adsl_f$DTHFL, levels = c("Y", "N"))
 
-adae_serious <- adae %>% filter(AESER == "Y", SAFFL == "Y") #Filtering for only serious AEs 
-adae_nonser <- adae %>% filter(AESER != "Y", SAFFL == "Y")#Filtering for only non-serious AEs 
+adae_serious <- adae %>% filter(AESER == "Y", SAFFL == "Y") #Filtering for only serious AEs
+adae_nonser <- adae %>% filter(AESER != "Y", SAFFL == "Y")#Filtering for only non-serious AEs
 #nolint end
 ```
 
@@ -78,25 +77,25 @@ We will reuse pre-existing functions `count_values`, `summarize_vars` and `count
 basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
-  count_values("STSTFL", 
-               values = "Y", 
-               .labels = c(count_fraction = "Started Study"), 
+  count_values("STSTFL",
+               values = "Y",
+               .labels = c(count_fraction = "Started Study"),
                .formats = c(count_fraction = "xx (xx.xx%)")) %>%
-  count_values("COMPSTUD", 
-               values = "Y", 
-               .labels = c(count_fraction = "Completed Study"), 
+  count_values("COMPSTUD",
+               values = "Y",
+               .labels = c(count_fraction = "Completed Study"),
                .formats = c(count_fraction = "xx (xx.xx%)")) %>%
-  count_values("DISCSTUD", 
-               values = "Y", 
-               .labels = c(count_fraction = "Discontinued Study"), 
+  count_values("DISCSTUD",
+               values = "Y",
+               .labels = c(count_fraction = "Discontinued Study"),
                .formats = "xx (xx.xx%)") %>%
-  summarize_vars("DCSREAS", 
-                 .stats = "count_fraction", 
-                 show_labels = "hidden", 
-                 .indent_mods = c(count_fraction = 2L), 
+  summarize_vars("DCSREAS",
+                 .stats = "count_fraction",
+                 show_labels = "hidden",
+                 .indent_mods = c(count_fraction = 2L),
                  .formats = c(count_fraction = "xx (xx.xx%)"),
                  denom = "N_col") %>%
-  build_table(adsl_f) 
+  build_table(adsl_f)
 ```
 
 ## 2. Demographic Table
@@ -109,8 +108,8 @@ var_labels <- c(
     "Race",
     "Ethnicity"
     )
-result <- basic_table() %>% 
-  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>% 
+result <- basic_table() %>%
+  split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
   summarize_vars(vars = vars, var_labels = var_labels) %>%
   build_table(adsl_f)
@@ -118,9 +117,9 @@ result
 ```
 
 
-## 3. Enrollment by Country Table 
+## 3. Enrollment by Country Table
 ```{r}
-result <- basic_table() %>% 
+result <- basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
   summarize_vars("COUNTRY", .formats = c(count_fraction = "xx (xx.xx%)")) %>%
@@ -135,24 +134,24 @@ result
 result <- basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
-  count_values("DTHFL", 
-               values = "Y", 
-               .labels = c(count_fraction = "Total Number of Deaths"), 
+  count_values("DTHFL",
+               values = "Y",
+               .labels = c(count_fraction = "Total Number of Deaths"),
                .formats = c(count_fraction = "xx (xx.xx%)")) %>%
   build_table(adsl_f)
 result
 ```
 
-*Approach 2:* According to [STREAM](https://rochewiki.roche.com/confluence/pages/viewpage.action?spaceKey=SPADSCL&title=3.+Macros+and+Programs#id-3.MacrosandPrograms-t_dd_discl), this table uses `aet07` as a template hence I have demonstrated deaths table production using `adae.AESDTH` as well. Please note that `AESDTH` is the death flag for deaths that were due to AE and will not equal the total number of deaths in the study. I will use approach 2 for production. 
+*Approach 2:* This table uses `aet07` as a template hence I have demonstrated deaths table production using `adae.AESDTH` as well. Please note that `AESDTH` is the death flag for deaths that were due to AE and will not equal the total number of deaths in the study. I will use approach 2 for production.
 ```{r}
 n_per_arm <- table(adsl_f$ARM)
 n_col_counts <- c(n_per_arm, sum(table(adsl_f$ARM)))
 result <- basic_table() %>%
   split_cols_by("ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
   add_colcounts() %>%
-  count_patients_with_event("USUBJID", 
-               filters = c("AESDTH" = "Y"), 
-               .labels = c(count_fraction = "Total Number of Deaths"), 
+  count_patients_with_event("USUBJID",
+               filters = c("AESDTH" = "Y"),
+               .labels = c(count_fraction = "Total Number of Deaths"),
                .formats = c(count_fraction = "xx (xx.xx%)")) %>%
   build_table(adae, col_counts = n_col_counts)
 result
@@ -162,23 +161,23 @@ result
 ## 5. Serious Adverse Events, Fatal Serious Adverse Events and Serious Adverse Events Related to Study Medication, by Treatment Group
 
 Notes for production:
-[x] add count statistic to s_count_occurrences 
-[x] use variables list 
-[x] use base R filtering 
+[x] add count statistic to s_count_occurrences
+[x] use variables list
+[x] use base R filtering
 [x] for function test use very small df so that we can manually count and compare
- 
+
 ```{r test data for ae tables}
-variables = list(id = "USUBJID", 
+variables <- list(id = "USUBJID",
                  serious = "AESER",
                  fatal = "AESDTH",
                  related = "AEREL",
                  term = "AEDECOD")
 
 test_df <- data.frame(
-  USUBJID = rep(c("id1","id2", "id3", "id4"), c(2, 3, 1, 1)),
+  USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
   ARM = c("A", "A", "B", "B", "B", "B", "A"),
   AESER = rep("Y", 7),
-  AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N") ,
+  AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N"),
   AEREL = c("Y", "Y", "N", "Y", "Y", "N", "Y"),
   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
@@ -252,23 +251,23 @@ a_patients_events_list <- list(
   )
 )
 
-analyze_patients_events <- function(lyt, 
+analyze_patients_events <- function(lyt,
                                     variables = list(
-                                      id = "USUBJID", 
+                                      id = "USUBJID",
                                       serious = "AESER",
                                       fatal = "AESDTH",
                                       related = "AEREL"),
                                     .stats = c(
-                                      "patients_all", 
-                                      "events_all", 
-                                      "events_fatal", 
-                                      "events_related", 
+                                      "patients_all",
+                                      "events_all",
+                                      "events_fatal",
+                                      "events_related",
                                       "events_fatal_related"),
                                       ...) {
-  
-  analyze_colvars(lyt = lyt, 
-                  afun = a_patients_events_list, 
-                  extra_args = list(variables = variables, 
+
+  analyze_colvars(lyt = lyt,
+                  afun = a_patients_events_list,
+                  extra_args = list(variables = variables,
                                     .stats = .stats, ...))
 }
 
@@ -281,14 +280,14 @@ a_patients_events_list$patients_all(test_df, variables)
 a_term_patients_events_list <- list(
   patients_all = make_afun(
     function(df, variables, ...) {
-      patients_all = s_count_occurrences(df, .N_col = 1L, .var = variables$term, id = variables$id)
+      patients_all <- s_count_occurrences(df, .N_col = 1L, .var = variables$term, id = variables$id)
     },
     .stats = "count",
     .ungroup_stats = "count"
   ),
   events_all = make_afun(
     function(df, variables, ...) {
-    events_all = s_summary(df[[variables$term]])
+    events_all <- s_summary(df[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -297,7 +296,7 @@ a_term_patients_events_list <- list(
     function(df, variables, ...) {
       is_related <- df[[variables$related]] == "Y"
       df_f <- df[is_related, ]
-      events_related = s_summary(df_f[[variables$term]])
+      events_related <- s_summary(df_f[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -306,7 +305,7 @@ a_term_patients_events_list <- list(
     function(df, variables, ...) {
       is_fatal <- df[[variables$fatal]] == "Y"
       df_f <- df[is_fatal, ]
-      events_fatal = s_summary(df_f[[variables$term]])
+      events_fatal <- s_summary(df_f[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -316,7 +315,7 @@ a_term_patients_events_list <- list(
       is_related <- df[[variables$related]] == "Y"
       is_fatal <-  df[[variables$fatal]] == "Y"
       df_f <- df[is_related & is_fatal, ]
-      events_fatal_related = s_summary(df_f[[variables$term]])
+      events_fatal_related <- s_summary(df_f[[variables$term]])
     },
     .stats = "count",
     .ungroup_stats = "count"
@@ -326,32 +325,42 @@ a_term_patients_events_list <- list(
 a_term_patients_events_list$patients_all(test_df, variables)
 a_term_patients_events_list$events_all(adae_serious, variables)
 
-analyze_term_patients_events <- function(lyt, 
+analyze_term_patients_events <- function(lyt,
                                     variables = list(
-                                      id = "USUBJID", 
+                                      id = "USUBJID",
                                       serious = "AESER",
                                       fatal = "AESDTH",
                                       related = "AEREL",
                                       term = "AEDECOD"),
-                                    .stats = c("patients_all", 
-                                               "events_all", 
-                                               "events_fatal", 
-                                               "events_related", 
+                                    .stats = c("patients_all",
+                                               "events_all",
+                                               "events_fatal",
+                                               "events_related",
                                                "events_fatal_related"),
                                       ...) {
-  
-  analyze_colvars(lyt = lyt, afun = a_term_patients_events_list, extra_args = list(variables = variables, .stats = .stats, ...))
+
+  analyze_colvars(
+    lyt = lyt,
+    afun = a_term_patients_events_list,
+    extra_args = list(variables = variables, .stats = .stats, ...)
+  )
 }
 
 ```
 
 ```{r}
 basic_table() %>%
-  split_cols_by_multivar(vars =  c("USUBJID", "AESER", "AEREL", "AESDTH", "AEBODSYS"), 	 
-                         varlabels = c("Patients (All)", "Events (All)", "Events (Related)", "Events (Fatal)", "Events (Fatal & Related")) %>%	                         
-  analyze_patients_events() %>%  # this produces the top row: total n of patients ...	  
+  split_cols_by_multivar(vars =  c("USUBJID", "AESER", "AEREL", "AESDTH", "AEBODSYS"),
+                         varlabels = c(
+                           "Patients (All)",
+                           "Events (All)",
+                           "Events (Related)",
+                           "Events (Fatal)",
+                           "Events (Fatal & Related")
+                         ) %>%
+  analyze_patients_events() %>%  # this produces the top row: total n of patients ...
   split_rows_by("AEBODSYS", nested = FALSE) %>%
-  analyze_term_patients_events() %>%  
+  analyze_term_patients_events() %>%
   build_table(test_df) %>%
   prune_table()
 
@@ -363,7 +372,7 @@ basic_table() %>%
 ```{r preprocessing of adae}
 #To filter >- 5% of patients in an treatment group
 # Simple wrapper to return subset ADAE to a threshold of xx%.
-get_adae_trimmed <- function(adsl, adae, cutoff_rate){
+get_adae_trimmed <- function(adsl, adae, cutoff_rate) {
 
   n_per_arm <- adsl %>%
     dplyr::count(ARM)
@@ -396,34 +405,47 @@ get_adae_trimmed <- function(adsl, adae, cutoff_rate){
   anl
 }
 
-test_df2 <- get_adae_trimmed(test_asl, test_df, cutoff_rate = 0.4) 
+test_df2 <- get_adae_trimmed(test_asl, test_df, cutoff_rate = 0.4)
 
  # this produces all the 2nd level rows below
 basic_table() %>%
   split_cols_by("ARM") %>%
-  split_cols_by_multivar(vars =  c("USUBJID", "AESER"), 
+  split_cols_by_multivar(vars =  c("USUBJID", "AESER"),
                          varlabels = c("Patients (All)", "Events (All)")) %>%
-  analyze_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces the top row: total n of patients ...
+  analyze_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces the top row: total n of patients ...
   split_rows_by("AEBODSYS", nested = FALSE) %>%
-  analyze_term_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces all the 2nd level rows below
+  analyze_term_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces all the 2nd level rows below
   build_table(test_df2) %>%
   prune_table()
 ```
 
 Challenge: How to change row labels in `a_patients_events_list`.
 ```{r}
-adae_trim <- get_adae_trimmed(adsl_f, adae_nonser, cutoff_rate = 0.4) 
+adae_trim <- get_adae_trimmed(adsl_f, adae_nonser, cutoff_rate = 0.4)
 
  # this produces all the 2nd level rows below
 basic_table() %>%
   split_cols_by("ARM") %>%
-  split_cols_by_multivar(vars =  c("USUBJID", "AESER"), 
-                         varlabels = c("Patients (All)", "Events (All)")) %>%
-  analyze_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces the top row: total n of patients ...
+  split_cols_by_multivar(vars =  c("USUBJID", "AESER"),
+                         varlabels = c(
+                           "Patients (All)",
+                           "Events (All)"
+                         )) %>%
+  analyze_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces the top row: total n of patients ...
   split_rows_by("AEBODSYS", nested = FALSE) %>%
-  analyze_term_patients_events(.stats = c("patients_all", "events_all")) %>%  # this produces all the 2nd level rows below
+  analyze_term_patients_events(.stats = c(
+    "patients_all",
+    "events_all"
+  )) %>%  # this produces all the 2nd level rows below
   build_table(adae_trim) %>%
   prune_table()
 ```
-
-
