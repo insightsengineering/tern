@@ -29,13 +29,6 @@ knitr::opts_chunk$set(
 Introduction
 ============
 
-+ Existing TLG [entry](https://nest-docs.kubemea.science.roche.com/releases/2020_10_20/embedded/agile-R/tlg_catalog/graphs/kmg01/)
-+ Existing
-[prototype](https://pages.github.roche.com/collinf1/RGraphics/RGraphics_grid/RGraphics_grid.html) 
-following
-[issue 499](https://github.roche.com/NEST/tern/issues/499).
-
-
 Specification: the function `g_km` is the current version of the API and the
 new prototype should accept compatible arguments.
 

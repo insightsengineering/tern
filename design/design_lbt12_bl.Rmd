@@ -34,10 +34,6 @@ Data for examples
 
 ```{r data, results = "asis", eval = TRUE}
 
-# Download data files from BEE. At the terminal, run:
-# scp liy396@bee.roche.com:/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adhy.sas7bdat ./temp/
-# scp liy396@bee.roche.com:/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adsl.sas7bdat ./temp/
-
 adhy <- haven::read_sas(data_file = "/home/rstudio/nest_projects/tern/temp/adhy.sas7bdat")
 adsl <- haven::read_sas(data_file = "/home/rstudio/nest_projects/tern/temp/adsl.sas7bdat")
 

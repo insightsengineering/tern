@@ -23,9 +23,6 @@ knitr::opts_chunk$set(
 library(dplyr)
 library(tern)
 
-# At the terminal, run:
-# scp <username>@bee.roche.com:/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adhy.sas7bdat
-
 adhy <- haven::read_sas(data_file = "../adhy.sas7bdat")
                   
 # Ensure character variables are converted to factors and empty strings and NAs are explicit missing levels.

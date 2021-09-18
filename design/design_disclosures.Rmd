@@ -33,7 +33,6 @@ packageVersion("rtables")
 
 ## DATA PREPROCESSING
 
-Note that `ADSL.STSTFL` does not exist in [STREAM](https://rochewiki.roche.com/confluence/pages/viewpage.action?spaceKey=SPADSCL&title=3.+Macros+and+Programs#id-3.MacrosandPrograms-t_dd_discl) but is generated here. 
 ```{r data, results = "asis", eval = TRUE}
 adsl <- radsl(cached = TRUE)
 adae <- radae(cached = TRUE)

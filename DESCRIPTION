@@ -69,8 +69,8 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
-URL: https://github.roche.com/NEST/tern/
-BugReports: https://github.roche.com/NEST/tern/issues
+URL: https://github.com/insightsengineering/tern
+BugReports: https://github..com/insightsengineering/tern/issues
 Collate: 
     'formats.R'
     'abnormal.R'

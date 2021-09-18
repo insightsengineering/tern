@@ -216,7 +216,7 @@ Maybe there is a way to change the column header here?
 
 ## Complicated table
 
-Now we get to the more complicated LS means table. Here we will try to use the approach from [https://pages.github.roche.com/NEST/rtables_examples/model_tabulation.html].
+Now we get to the more complicated LS means table.
 
 First we write our `tidy` method:
 

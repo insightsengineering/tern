@@ -11,9 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Objective
 
-We want to provide functions to enable Subgroup Treatment Effect Pattern (STEP) graphs for survival and response outcomes. See [https://pages.github.roche.com/Rpackages/rBiomarker/dev/articles/Showcases.html#survival-outcome](here) for a mockup. Generally we will follow the `rBiomarker` package function `PlotSTEP`, see [https://github.roche.com/Rpackages/rBiomarker/blob/master/R/PlotSTEP.R](code here):
+We want to provide functions to enable Subgroup Treatment Effect Pattern (STEP) graphs for survival and response outcomes.
 
-> This function computes the treatment effect as a function of a biomarker variable and
+> A _PlotSTEP_ function computes the treatment effect as a function of a biomarker variable and
 plot it at given locations. The function fits multiple Cox or generalized linear (GLM) models at each running window of the biomarker variable then outputs the estimation of treatment effect (hazard
 ratio for Cox model, and odds ratio or proportion difference for GLM) along with its
 confidence interval at each window center.
@@ -123,8 +123,6 @@ control_step()
 ```
 
 ## Window function
-
-We adapt a bit the window function [WindowSel](https://github.roche.com/Rpackages/rBiomarker/blob/c4f1e72b4b265c421226ad3a5279ce24ce984d01/R/PlotSTEP.R#L496) from `rBiomarker`.
 
 ```{r, window}
 #' Create a Window-selection Matrix given STEP Control Settings
@@ -237,7 +235,7 @@ Actually we don't really need the biomarker variable name when the degree is zer
 
 ## Understanding the treatment effect estimation for a Cox model with polynomial biomarker term interaction
 
-It is not clear if the [PredictTE](https://github.roche.com/Rpackages/rBiomarker/blob/c4f1e72b4b265c421226ad3a5279ce24ce984d01/R/PlotSTEP.R#L273) function from `rBiomarker` is doing the correct thing for the polynomial biomarker interaction case. Therefore we tried to understand this from the provided `predict()` method in R from scratch.
+We tried to understand this from the provided `predict()` method in R from scratch.
 
 ```{r, coxpredictions}
 set.seed(123)

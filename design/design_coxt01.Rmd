@@ -29,8 +29,6 @@ knitr::opts_chunk$set(
 Introduction
 ============
 
-+ Existing TLG [entry](https://nest-docs.kubemea.science.roche.com/releases/2020_08_20/embedded/agile-R/tlg_catalog/tables/coxt01/)
-+ STREAM [template](https://pages.github.roche.com/MDIS/stream_doc/um/report_outputs_coxt01.html)
 + GDSR [@Hughes2020a]
 
 Four examples to produce:
