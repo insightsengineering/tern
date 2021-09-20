@@ -173,8 +173,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   grade_levels_num <- as.numeric(as.character(levels(df[[.var]])))
   max_atoxgrade_num <- max(grade_levels_num)
   min_atoxgrade_num <- min(grade_levels_num)
-  #I am adding  this conditional when the only available level (in case just 0 is stated in the map).
-  #In this case the output will be an empty list (shown later in the edge cases)
+
      abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
         c(low_label, high_label)
        } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
