@@ -162,8 +162,8 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
     !is.null(names(variables$worst_high_flag)),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
-    is_logical_vector(df[[variables$worst_low_flag]]) | is.logical(df[[variables$worst_low_flag]]),
-    is_logical_vector(df[[variables$worst_high_flag]]) | is.logical(df[[variables$worst_high_flag]]),
+    is_logical_vector(df[[variables$worst_low_flag]]) || is_logical_empty(df[[variables$worst_low_flag]]),
+    is_logical_vector(df[[variables$worst_high_flag]]) || is_logical_empty(df[[variables$worst_high_flag]]),
     is_character_or_factor(df[[variables$id]])
   )
 
@@ -215,10 +215,12 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           for (grade in grades) {
             num <- length(unique(anl_abn[anl_abn$grade == grade, "id", drop = TRUE]))
             abn_grade <- paste(abnormal, "-", abs(as.numeric(grade)))
-            result[[abn_grade]] <- with_label(c(num, num / n), abn_grade)
+            fraction <- if_else(n == 0, 0, num / n)
+            result[[abn_grade]] <- with_label(c(num, fraction), abn_grade)
           }
           any_grade_num <- length(unique(anl_abn$id))
-          result[[name_any]] <- with_label(c(any_grade_num , any_grade_num/n), name_any)
+          fraction_any <- if_else(n == 0, 0, any_grade_num/n)
+          result[[name_any]] <- with_label(c(any_grade_num , fraction_any), name_any)
         }
   }
   result <- list(count_fraction = result)
@@ -279,6 +281,10 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
  
  afun(
     df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
+  )
+ 
+ afun(
+    df_empty
   )
 ```
 
@@ -518,4 +524,29 @@ basic_table() %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
   build_table(df = adlb_f2, alt_counts_df = adsl)
+```
+
+Edge case not related to mapping: 
+
+
+```{r}
+adlb_f5 <- adlb_f2 %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
+#adlb_f5 <- adlb_f5 %>% filter(PARAMCD == "ALT")
+
+basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+                split_fun = trim_levels_to_map(map = map)) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  build_table(df = adlb_f5, alt_counts_df = adsl)
 ```
