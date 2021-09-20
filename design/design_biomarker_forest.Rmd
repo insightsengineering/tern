@@ -151,23 +151,15 @@ extract_survival_biomarkers <- function(variables,
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
   assert_that(
-    is.string(variables$tte),
-    is.string(variables$is_event),
-    is.character(variables$biomarkers),
+    is.list(variables),
     is.character(variables$subgroups) || is.null(variables$subgroups),
-    is.character(variables$strat) || is.null(variables$strat),
-    is.character(variables$covariates) || is.null(variables$covariates),
-    is.string(label_all),
-    is_df_with_variables(data, as.list(unlist(variables)))
+    is.string(label_all)
   )
 
-  # Add All Patients.
+  # Start with all patients.
   result_all <- h_coxreg_mult_cont_df(
-    tte = data[[variables$tte]],
-    is_event = data[[variables$is_event]],
-    biomarkers_data = data[variables$biomarkers],
-    covariates_data = if (is.null(variables$covariates)) NULL else data[variables$covariates],
-    strata_data = if (is.null(variables$strat)) NULL else data[variables$strat],
+    variables = variables,
+    data = data,
     control = control
   )
   result_all$subgroup <- label_all
@@ -175,26 +167,21 @@ extract_survival_biomarkers <- function(variables,
   result_all$var_label <- label_all
   result_all$row_type <- "content"
 
-  # Add Subgroups.
   if (is.null(variables$subgroups)) {
+    # Only return result for all patients.
     result_all
   } else {
+    # Add subgroups results.
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
-
     l_result <- lapply(l_data, function(grp) {
-
       result <- h_coxreg_mult_cont_df(
-        tte = grp$df[[variables$tte]],
-        is_event = grp$df[[variables$is_event]],
-        biomarkers_data = grp$df[variables$biomarkers],
-        covariates_data = if (is.null(variables$covariates)) NULL else grp$df[variables$covariates],
-        strata_data = if (is.null(variables$strat)) NULL else grp$df[variables$strat],
+        variables = variables,
+        data = grp$df,
         control = control
       )
       result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
       cbind(result, result_labels)
     })
-
     result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
     result_subgroups$row_type <- "analysis"
 
@@ -227,44 +214,44 @@ a data frame with columns:
 So it is similar to what we get out of `h_coxph_df()`, but in addition we need
 the biomarker.
 
+Note that there is unfortunately currently an inconsistency between the variable
+names accepted by `extract_survival_subgroups()` and `fit_coxreg_multivar()`.
+This could be addressed in a separate issue, however it would be a breaking change
+for users therefore needs caution. Here we stick with the variable
+names accepted by `extract_survival_subgroups()`.
+
 ```{r}
-h_coxreg_mult_cont_df <- function(tte,
-                                  is_event,
-                                  biomarkers_data,
-                                  covariates_data,
-                                  strata_data,
+h_surv_to_coxreg_variables <- function(variables, biomarker) {
+  list(
+    time = variables$tte,
+    event = variables$is_event,
+    arm = biomarker,
+    covariates = variables$covariates,
+    strata = variables$strata
+  )
+}
+
+h_coxreg_mult_cont_df <- function(variables,
+                                  data,
                                   control = control_coxreg()) {
   assert_that(
-    is_numeric_vector(tte),
-    is_logical_vector(is_event),
-    is.data.frame(biomarkers_data),
-    all(sapply(biomarkers_data, is.numeric)),
+    is.list(variables),
+    is_character_vector(variables$biomarkers),
+    is_df_with_variables(data, as.list(unlist(variables))),
     is_fully_named_list(control)
   )
-  biomarkers <- names(biomarkers_data)
-  
+
   # If there is any data, run model, otherwise return empty results.
-  result_df <- if (length(tte) > 0) { 
-    data_constant <- data.frame(
-      tte = tte,
-      is_event = is_event,
-      covariates_data,
-      strata_data
-    )
-    l_result <- lapply(biomarkers, function(bm) {
-      data <- na.omit(cbind(
+  result_df <- if (nrow(data) > 0) { 
+    bm_cols <- match(variables$biomarkers, names(data))
+    data_constant <- data[, - bm_cols]
+    l_result <- lapply(variables$biomarkers, function(bm) {
+      data <- droplevels(na.omit(cbind(
         data_constant,
-        biomarkers_data[bm]
-      ))
-      bm_label <- var_labels(biomarkers_data, fill = TRUE)[bm]
+        data[bm]
+      )))
       coxreg_list <- fit_coxreg_multivar(
-        variables = list(
-          time = "tte",
-          event = "is_event",
-          arm = bm,
-          covariates = names(covariates_data),
-          strata = names(strata_data)
-        ),
+        variables = h_surv_to_coxreg_variables(variables, bm),
         data = data,
         control = control
       )
@@ -274,13 +261,13 @@ h_coxreg_mult_cont_df <- function(tte,
       )
       median <- s_surv_time(
         df = data, 
-        .var = "tte", 
-        is_event = "is_event"
+        .var = variables$tte, 
+        is_event = variables$is_event
       )$median
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
-        biomarker_label = bm_label,
+        biomarker_label = var_labels(data[bm], fill = TRUE),
         n_tot = nrow(data),
         n_tot_events = sum(data$is_event),
         median = as.numeric(median),
@@ -295,10 +282,9 @@ h_coxreg_mult_cont_df <- function(tte,
     })
     do.call(rbind, args = c(l_result, make.row.names = FALSE))
   } else {
-    bm_labels <- var_labels(biomarkers_data, fill = TRUE)[biomarkers]
     data.frame(
-      biomarker = biomarkers,
-      biomarker_label = bm_labels,
+      biomarker = variables$biomarkers,
+      biomarker_label = var_labels(data[variables$biomarkers], fill = TRUE),
       n_tot = 0L,
       n_tot_events = 0L,
       hr = NA,
@@ -321,11 +307,14 @@ Let's try this out first.
 
 ```{r}
 h_coxreg_mult_cont_df(
-  tte = adtte_f$AVAL,
-  is_event = adtte_f$is_event,
-  biomarkers_data = adtte_f[c("BMRKR1", "AGE")],
-  covariates_data = adtte_f[c("REGION1")],
-  strata_data = adtte_f[c("STRATA1", "STRATA2")]
+  variables = list(
+    tte = "AVAL", 
+    is_event = "is_event", 
+    biomarkers = c("BMRKR1", "AGE"), 
+    covariates = "REGION1", 
+    strata = c("STRATA1", "STRATA2")
+  ),
+  data = adtte_f
 )
 ```
 
@@ -341,8 +330,8 @@ df <- extract_survival_biomarkers(
     tte = "AVAL",
     is_event = "is_event",
     biomarkers = c("BMRKR1", "AGE"),
-    covariates = "REGION1",
-    strata = c("STRATA1", "STRATA2"),
+    strata = "STRATA1",
+    covariates = "RACE",
     subgroups = "BMRKR2"
   ),
   data = adtte_f,
@@ -491,3 +480,8 @@ Now finally we can see if the forest plot can be produced from this table.
 g_forest(tab, xlim = c(0.9, 1.1))
 ```
 
+## Production Notes
+
+- We need to make `h_coxreg_multivar_extract()` more robust. Currently if there is 
+a small subgroup data set and e.g. a covariate with small numbers of categories in the
+model then this can easily fail.
