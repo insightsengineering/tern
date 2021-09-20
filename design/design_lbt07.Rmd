@@ -409,6 +409,7 @@ build_table(
 * Example 1: All grades 0 for a param. 
 * Example 2: All grades in the target direction (none 0) for a param. 
 * Example 3: All grades in an opposite direction for a param. 
+* Example: Case where there is an arm that has no lab records. 
 
 Example 1: Case where all `ATOXGRADE` for ALT parameter are 0. 
 ```{r}
@@ -476,6 +477,41 @@ basic_table() %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ``` 
 
+Another option would be to trim 0 rows that do not contain "-Any" as the rowname. 
+
+```{r}
+result <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+                split_fun = trim_levels_to_map(map = map)) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  build_table(df = adlb_f3, alt_counts_df = adsl)
+
+
+all_zero_or_na_not_any <- function(tr) {
+  is_any_row <- length(grep("+Any$", obj_label(tr), value = TRUE)) > 0
+  if (!is(tr, "TableRow") || is(tr, "LabelRow") || is_any_row)
+    return(FALSE)
+  rvs <- unlist(unname(row_values(tr)))
+  all(is.na(rvs) | rvs == 0 | !is.finite(rvs))
+}
+
+result <- trim_rows(result, criteria = all_zero_or_na_not_any)
+result
+```
+
+
+
 Example 2: All grades in the target direction (none 0) for a param.
 
 ```{r}
@@ -518,7 +554,7 @@ basic_table() %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
 
-Edge case not related to map dataframe. Case where there is an arm that has no lab records. 
+Example 4:  Case where there is an arm that has no lab records. 
 
 ```{r}
 adlb_f3 <- adlb_f2 %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
@@ -540,6 +576,3 @@ basic_table() %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
   build_table(df = adlb_f3, alt_counts_df = adsl)
 ```
-
-
-
