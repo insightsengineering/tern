@@ -71,10 +71,11 @@ stringsAsFactors = TRUE
 result <- h_stack_by_baskets(df = adae, aag_summary = aag_summary)
 all(levels(aag_summary$basket_name) \%in\% levels(result$SMQ))
 
-result <- h_stack_by_baskets(
+h_stack_by_baskets(
 df = adae,
 aag_summary = NULL,
-keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM")
+keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"),
+baskets = "SMQ01NAM"
 )
 
 }
