@@ -1239,7 +1239,12 @@ muffled_car_anova <- function(mod, test_statistic) {
           type = "III"
         )
       },
-      message = function(m) invokeRestart("muffleMessage")
+      message = function(m) invokeRestart("muffleMessage"),
+      error = function(e) stop(paste(
+        "the model seems to have convergence problems, please try to change",
+        "the configuration of covariates or strata variables, e.g.",
+        "- original error:", e
+      ))
     )
   )
 }
