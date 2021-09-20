@@ -311,7 +311,7 @@ count_abnormal_by_worst_grade <- function(lyt,
       vars = var,
       afun = afun,
       table_names = var,
-      extra_args = c(list(variables = variables),list(...)),
+      extra_args = list(...),
       show_labels = "hidden"
     )
 }
