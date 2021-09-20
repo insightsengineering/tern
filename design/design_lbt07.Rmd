@@ -162,8 +162,8 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
     !is.null(names(variables$worst_high_flag)),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
-    is_logical_vector(df[[variables$worst_low_flag]]),
-    is_logical_vector(df[[variables$worst_high_flag]]),
+    is_logical_vector(df[[variables$worst_low_flag]]) | is.logical(df[[variables$worst_low_flag]]),
+    is_logical_vector(df[[variables$worst_high_flag]]) | is.logical(df[[variables$worst_high_flag]]),
     is_character_or_factor(df[[variables$id]])
   )
 
@@ -227,27 +227,37 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .var = "ATOXGR",
-   variables = list(id = "USUBJID", worst_low_flag = c(Low = "WGRLOFL"), worst_high_flag = c(High = "WGRHIFL")))
+   variables = list(id = "USUBJID", worst_low_flag = c(Looooow = "WGRLOFL"), worst_high_flag = c(High = "WGRHIFL")))
 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels(),
    .var = "ATOXGR",
-   variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", "Very High" = "WGRHIFL"))
- )
+   variables = list(id = "USUBJID", worst_low_flag = c(Looooow = "WGRLOFL"), worst_high_flag = c(Hiiiiiigh = "WGRHIFL")))
 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
    .var = "ATOXGR",
-   variables = list(id = "USUBJID", worst_grade_flag = c("Very Low" = "WGRLOFL", "Very High" = "WGRHIFL"))
- )
+   variables = list(id = "USUBJID", worst_low_flag = c(Low = "WGRLOFL"), worst_high_flag = c("Very High" = "WGRHIFL")))
 
-#if something different from "WGRLOFL"/"WGRHIFL" is introduced as worst grade flags, the function will return an error. 
-
+# The following example throws an error as we are introducing a worst_low_flag value that is not in df. 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels(),
    .var = "ATOXGR",
-   variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFLLLLL", High = "WGRHIFL"))
+   variables = list(id = "USUBJID", worst_low_flag = c(Low = "WGRLOOOOFL"), worst_high_flag = c("Very High" = "WGRHIFL")))
+
+# Test with an empty dataframe 
+df_empty <- 
+  data.frame(
+    ATOXGR = factor(NULL, levels = c("0", "1", "2")),
+    USUBJID = character(0),
+    WGRLOFL = logical(0),
+    WGRHIFL = logical(0)
+  )
+
+s_count_abnormal_by_worst_grade(
+   df = df_empty
  )
+
 ```
 No changes heres. 
 
@@ -279,7 +289,6 @@ Here the main change is to remove the for loop.
 
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
-                                          variables,
                                           ...,
                                           table_names = var,
                                           .stats = NULL,
@@ -309,7 +318,7 @@ count_abnormal_by_worst_grade <- function(lyt,
 ```
 In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions: 
 
- * Layout without new split function,  correctly. 
+ * Layout without new split function. 
  * Layout with `trim_levels_to_map`
  * Layout with `trim_levels_in_group`
 
@@ -330,16 +339,17 @@ lyt_no_trim <- basic_table() %>%
     .stats = "unique_count"
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "ATOXGR",
-    variables = list(id = "USUBJID", worst_grade_flag = c(Loooooow = "WGRLOFL", High = "WGRHIFL"))
+    var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
+
 build_table(
   lyt = lyt_no_trim,
   df = adlb_f2,
   alt_counts_df = adsl
 )
+
 lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
@@ -351,8 +361,7 @@ lyt_trim_map <- basic_table() %>%
     .stats = "unique_count"
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "ATOXGR",
-    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+    var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
@@ -374,8 +383,7 @@ lyt_trim_group <- basic_table() %>%
     .stats = "unique_count"
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "ATOXGR",
-    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+    var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
@@ -438,8 +446,7 @@ basic_table() %>%
     .stats = "unique_count"
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "ATOXGR",
-    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+    var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
@@ -464,8 +471,7 @@ basic_table() %>%
     .stats = "unique_count"
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "ATOXGR",
-    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+    var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
@@ -488,14 +494,13 @@ build_table(
 )
 ```
 
-Example 3: All grades in an opposite direction from stated in map. 
+Example 3: All grades in an opposite direction (in addition) from stated in map. 
 Scenario where map is incorrectly filled.
-It is returning an error that theoretically has nothing to do with this. 
-It works with `map = map` but not with `map2`.
+In this scenario we are not obtaining an error but map level rows with NAs. 
 
 ```{r}
 map2 <- map
-map2[map2$PARAMCD == "ALT", 2] <- "1"
+map2[map2$PARAMCD == "ALT" & map2$ATOXGR != "0", 2] <- "1"
 
 basic_table() %>%
   split_cols_by("ARMCD") %>%
@@ -508,8 +513,7 @@ basic_table() %>%
     .stats = "unique_count"
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "ATOXGR",
-    variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+    var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
