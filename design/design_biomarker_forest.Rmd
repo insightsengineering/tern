@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Idea
 
 Instead of dichotomizing biomarker values into low/high groups and then creating
-a forest plot that compares these groups in different subpopulations (e.g. [SFG3](https://docs.nest.roche.com/releases/2021_07_07/embedded/biomarker-catalog/tlg_catalog/graphs/sfg03/) or [SFG4](https://docs.nest.roche.com/releases/2021_07_07/embedded/biomarker-catalog/tlg_catalog/graphs/sfg04/)), 
+a forest plot that compares these groups in different subpopulations (e.g. SFG3 or SFG4),
 here we want to show the continuous biomarker effects (i.e. how much does one unit
 increase change the odds or the hazard).
 Since we might want to look at the sensitivity of the results with regards to different
