@@ -149,24 +149,26 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
                                             .var = "ATOXGR",
                                             variables = list(
                                               id = "USUBJID", 
-                                              worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL")
+                                              worst_low_flag = c(Low = "WGRLOFL"), 
+                                              worst_high_flag = c(High = "WGRHIFL")
                                               )
                                             ) {
 
   assert_that(
     is.string(.var),
     is.list(variables),
-    all(names(variables) %in% c("id", "worst_grade_flag", "anl_range_indic")),
-    all(variables$worst_grade_flag %in% c("WGRLOFL", "WGRHIFL")),
+    all(names(variables) %in% c("id", "worst_low_flag", "worst_high_flag")),
+    !is.null(names(variables$worst_low_flag)),
+    !is.null(names(variables$worst_high_flag)),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
-    is_logical_vector(df[[variables$worst_grade_flag[1]]]),
-    is_logical_vector(df[[variables$worst_grade_flag[2]]]),
+    is_logical_vector(df[[variables$worst_low_flag]]),
+    is_logical_vector(df[[variables$worst_high_flag]]),
     is_character_or_factor(df[[variables$id]])
   )
 
-  low_label <- names(variables$worst_grade_flag)[variables$worst_grade_flag == "WGRLOFL"]
-  high_label <- names(variables$worst_grade_flag)[variables$worst_grade_flag == "WGRHIFL"]
+  low_label <- names(variables$worst_low_flag)
+  high_label <- names(variables$worst_high_flag)
   
   #Let's try to infer the target directions by using ATOXGRADE levels 
   grade_levels_num <- as.numeric(as.character(levels(df[[.var]])))
@@ -180,15 +182,14 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
      abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
         c(low_label, high_label)
        } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
-         #c(abnormal[names(abnormal) == "High"])
          high_label
          } else { 
          low_label
          }
       df <- df[!is.na(df[[.var]]), ]
       
-      flag_low_name <- variables$worst_grade_flag[names(variables$worst_grade_flag) == low_label]
-      flag_high_name <- variables$worst_grade_flag[names(variables$worst_grade_flag) == high_label]
+      flag_low_name <- variables$worst_low_flag
+      flag_high_name <- variables$worst_high_flag
     
       anl <- data.frame(
           id = df[[variables$id]],
@@ -226,8 +227,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .var = "ATOXGR",
-   variables = list(id = "USUBJID", worst_grade_flag = c(Looooow = "WGRLOFL", High = "WGRHIFL"))
- )
+   variables = list(id = "USUBJID", worst_low_flag = c(Low = "WGRLOFL"), worst_high_flag = c(High = "WGRHIFL")))
 
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels(),
