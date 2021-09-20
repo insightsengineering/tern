@@ -176,9 +176,6 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   min_atoxgrade_num <- min(grade_levels_num)
   #I am adding  this conditional when the only available level (in case just 0 is stated in the map). 
   #In this case the output will be an empty list (shown later in the edge cases)
-  if (grade_levels_num == 0 && length(grade_levels_num) == 1) {
-    result <- list()
-  } else {
      abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
         c(low_label, high_label)
        } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
@@ -222,7 +219,6 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           fraction_any <- if_else(n == 0, 0, any_grade_num/n)
           result[[name_any]] <- with_label(c(any_grade_num , fraction_any), name_any)
         }
-  }
   result <- list(count_fraction = result)
   result
 }
@@ -502,7 +498,7 @@ build_table(
 
 Example 3: All grades in an opposite direction (in addition) from stated in map. 
 Scenario where map is incorrectly filled.
-In this scenario we are not obtaining an error but map level rows with NAs. 
+In this scenario we are not obtaining an error but map level rows the direction stated by the map. 
 
 ```{r}
 map2 <- map
@@ -526,12 +522,10 @@ basic_table() %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
 
-Edge case not related to mapping: 
-
+Edge case not related to map dataframe. Case where there is an arm that has no lab records. 
 
 ```{r}
-adlb_f5 <- adlb_f2 %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
-#adlb_f5 <- adlb_f5 %>% filter(PARAMCD == "ALT")
+adlb_f3 <- adlb_f2 %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
 
 basic_table() %>%
   split_cols_by("ARMCD") %>%
@@ -548,5 +542,8 @@ basic_table() %>%
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade") %>% 
-  build_table(df = adlb_f5, alt_counts_df = adsl)
+  build_table(df = adlb_f3, alt_counts_df = adsl)
 ```
+
+
+
