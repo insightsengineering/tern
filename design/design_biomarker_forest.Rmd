@@ -295,9 +295,10 @@ h_coxreg_mult_cont_df <- function(tte,
     })
     do.call(rbind, args = c(l_result, make.row.names = FALSE))
   } else {
+    bm_labels <- var_labels(biomarkers_data, fill = TRUE)[biomarkers]
     data.frame(
       biomarker = biomarkers,
-      biomarker_label = bm_label,
+      biomarker_label = bm_labels,
       n_tot = 0L,
       n_tot_events = 0L,
       hr = NA,
