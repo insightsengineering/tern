@@ -141,7 +141,7 @@ h_stack_by_baskets <- function(df,
         )
 
       df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% c("time", "unique_id"))]
-      df_long$SMQ <- as.factor(df_long$SMQ)
+      df_long$SMQ <- as.factor(df_long$SMQ) #nolint
     }
 
   smq_levels <- levels(df_long[["SMQ"]])[levels(df_long[["SMQ"]]) != na_level]
