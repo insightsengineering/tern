@@ -67,7 +67,7 @@ Suggests:
 License: Apache License 2.0 | file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 URL: https://github.roche.com/NEST/tern/
 BugReports: https://github.roche.com/NEST/tern/issues

@@ -94,8 +94,8 @@ an optimal tick position on the x axis.}
 \item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
 Only considered if \code{draw = TRUE} is used.}
 
-\item{gp}{A gpar object, typically the output
-    from a call to the function \code{gpar}.  This is basically
+\item{gp}{A \code{"gpar"} object, typically the output
+    from a call to the function \code{\link[grid]{gpar}}.  This is basically
     a list of graphical parameter settings.}
 
 \item{vp}{a \code{\link[grid]{viewport}} object (or \code{NULL}).}
