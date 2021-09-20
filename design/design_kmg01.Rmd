@@ -29,13 +29,6 @@ knitr::opts_chunk$set(
 Introduction
 ============
 
-+ Existing TLG [entry](https://nest-docs.kubemea.science.roche.com/releases/2020_10_20/embedded/agile-R/tlg_catalog/graphs/kmg01/)
-+ Existing
-[prototype](https://pages.github.roche.com/collinf1/RGraphics/RGraphics_grid/RGraphics_grid.html) 
-following
-[issue 499](https://github.roche.com/NEST/tern/issues/499).
-
-
 Specification: the function `g_km` is the current version of the API and the
 new prototype should accept compatible arguments.
 
@@ -233,7 +226,6 @@ h_decompose_gg <- function(gg) {
   )
   lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
 }
-
 ```
 
 ```{r, h_decompose_gg_example}
@@ -262,7 +254,6 @@ grid.draw(g_el$panel)
 grid.newpage()
 grid.rect(gp = gpar(lty = 1, col = "royalblue", fill = "gray85", lwd = 5))
 grid.draw(with(g_el, cbind(ylab, yaxis)))
-
 ```
 
 Layout
@@ -496,7 +487,6 @@ h_tbl_median_surv <- function(fit) {
     c("N", "Median", "95% CI")
   )
 }
-
 ```
 
 ```{r, h_tbl_median_surv_example}
@@ -540,7 +530,6 @@ h_grob_median_surv <- function(fit,
     )
   )
 }
-
 ```
 
 ```{r, h_grob_median_surv_example}
@@ -579,7 +568,6 @@ h_grob_y_annot <- function(ylab, yaxis) {
     )
   )
 }
-
 ```
 
 
@@ -728,7 +716,6 @@ g_km <- function(fit_km,
     )
   )
 }
-
 ```
 
 ### Examples {.tabset}
