@@ -170,24 +170,22 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
   low_label <- names(variables$worst_low_flag)
   high_label <- names(variables$worst_high_flag)
   
-  #Let's try to infer the target directions by using ATOXGRADE levels 
   grade_levels_num <- as.numeric(as.character(levels(df[[.var]])))
   max_atoxgrade_num <- max(grade_levels_num)
   min_atoxgrade_num <- min(grade_levels_num)
-  #I am adding  this conditional when the only available level (in case just 0 is stated in the map). 
+  #I am adding  this conditional when the only available level (in case just 0 is stated in the map).
   #In this case the output will be an empty list (shown later in the edge cases)
      abn_levels <-  if (max_atoxgrade_num > 0 & min_atoxgrade_num < 0) { 
         c(low_label, high_label)
        } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
          high_label
-         } else { 
+         } else {
          low_label
          }
       df <- df[!is.na(df[[.var]]), ]
       
       flag_low_name <- variables$worst_low_flag
       flag_high_name <- variables$worst_high_flag
-    
       anl <- data.frame(
           id = df[[variables$id]],
           grade = df[[.var]],
@@ -198,14 +196,13 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
       # Denominator is number of patients with at least one valid measurement during treatment
         n <- length(unique(anl$id))
         result <- list()
-        for (abn in abn_levels){
+        for (abn in abn_levels) {
           abnormal <- abn
           name_any <- paste(abnormal, "- Any")
-          if (abnormal == low_label){
+          if (abnormal == low_label) {
             anl_abn <- anl[anl$flag_low & as.numeric(as.character(anl$grade)) < 0, , drop = FALSE]
-            grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = 
-                             TRUE)
-          } else if (abnormal == high_label){
+            grades <- sort(as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) < 0]), decreasing = TRUE)
+          } else if (abnormal == high_label) {
             anl_abn <- anl[anl$flag_high & as.numeric(as.character(anl$grade)) > 0, , drop = FALSE]
             grades <- as.numeric(levels(anl_abn$grade)[levels(anl_abn$grade) > 0])
           }
@@ -288,7 +285,6 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 
 Here the main change is to remove the for loop. 
 ```{r}
-
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           ...,
@@ -327,7 +323,7 @@ In the following chunk the `map` dataframe and three layouts are created to veri
 ```{r}
 map <- data.frame(
   PARAMCD = c(rep("ALT", 5), rep("CRP", 9), rep("IGA", 5)),
-  ATOXGR = as.character(c(seq(-4,0), c(seq(-4,4)), seq(0,4))),
+  ATOXGR = as.character(c(seq(-4, 0), c(seq(-4, 4)), seq(0, 4))),
   stringsAsFactors = FALSE
 )
 #All tables look OK
@@ -355,7 +351,7 @@ build_table(
 lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = map)) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -377,7 +373,7 @@ build_table(
 lyt_trim_group <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_in_group("ATOXGR")) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -416,7 +412,7 @@ build_table(
 
 Example 1: Case where all `ATOXGRADE` for ALT parameter are 0. 
 ```{r}
-adlb_f3 <- adlb_f2 %>% 
+adlb_f3 <- adlb_f2 %>%
   filter(PARAMCD != "ALT" | ATOXGR == 0)
 
 adlb_f3 %>% count(PARAMCD, ATOXGR)
@@ -440,7 +436,7 @@ The following layout throws an error.
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = empirical_map1)) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -451,7 +447,7 @@ basic_table() %>%
     var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
-  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  append_topleft("    Highest NCI CTCAE Grade") %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
 
@@ -465,7 +461,7 @@ empirical_map2 <- map %>% filter(
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = empirical_map2)) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -476,14 +472,14 @@ basic_table() %>%
     var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
-  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  append_topleft("    Highest NCI CTCAE Grade") %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ``` 
 
 Example 2: All grades in the target direction (none 0) for a param.
 
 ```{r}
-adlb_f4 <- adlb_f2 %>% 
+adlb_f4 <- adlb_f2 %>%
   filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
 adlb_f4 %>% count(PARAMCD, ATOXGR)
 ```
@@ -507,7 +503,7 @@ map2[map2$PARAMCD == "ALT" & map2$ATOXGR != "0", 2] <- "1"
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD), 
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f2$PARAMCD),
                 split_fun = trim_levels_to_map(map = map2)) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -518,7 +514,7 @@ basic_table() %>%
     var = "ATOXGR"
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
-  append_topleft("    Highest NCI CTCAE Grade") %>% 
+  append_topleft("    Highest NCI CTCAE Grade") %>%
   build_table(df = adlb_f2, alt_counts_df = adsl)
 ```
 
