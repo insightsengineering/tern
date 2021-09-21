@@ -62,7 +62,6 @@ the results for a single biomarker.
 }}
 
 \examples{
-
 # Testing dataset.
 library(scda)
 library(dplyr)
@@ -91,7 +90,6 @@ adtte_f <- adtte \%>\%
     SEX = adtte_labels["SEX"],
     is_event = "Event Flag"
   )
-
 
 # This is how the variable list is converted internally.
 h_surv_to_coxreg_variables(

@@ -141,7 +141,7 @@ extract_survival_biomarkers <- function(variables,
 
 #' @describeIn survival_biomarkers_subgroups table creating function.
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
-#'   [extract_biomarkers_subgroups()].
+#'   [extract_survival_biomarkers()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
 #'  `n_tot_events` (total number of events per group),
 #'  `n_tot` (total number of observations per group),
@@ -152,7 +152,7 @@ extract_survival_biomarkers <- function(variables,
 #'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
 #'  are required.
 #' @seealso [h_tab_surv_one_biomarker()] which is used internally.
-#' @note In contrast to [table_survival_subgroups()] this tabulation function does
+#' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
 #' @export

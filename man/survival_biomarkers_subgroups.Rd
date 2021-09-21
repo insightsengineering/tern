@@ -35,7 +35,7 @@ helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
-\code{\link[=extract_biomarkers_subgroups]{extract_biomarkers_subgroups()}}.}
+\code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.}
 
 \item{vars}{(\code{character})\cr the name of statistics to be reported among
 \code{n_tot_events} (total number of events per group),
@@ -71,7 +71,7 @@ population subgroups in a single data frame.
 }}
 
 \note{
-In contrast to \code{\link[=table_survival_subgroups]{table_survival_subgroups()}} this tabulation function does
+In contrast to \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} this tabulation function does
 not start from an input layout \code{lyt}. This is because internally the table is
 created by combining multiple subtables.
 }
