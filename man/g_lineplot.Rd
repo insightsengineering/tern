@@ -22,6 +22,7 @@ g_lineplot(
   legend_position = "bottom",
   ggtheme = NULL,
   title = "Plot of Mean and 95\% Confidence Limits by Visit",
+  subtitle = NULL,
   caption = NULL,
   table_format = tern::summary_formats(),
   table_labels = tern::summary_labels(),
@@ -91,6 +92,8 @@ a graphical theme as provided by \code{ggplot2} to control outlook of the plot.}
 
 \item{title}{(\code{character} scalar) \cr plot title.}
 
+\item{subtitle}{(\code{character} scalar) \cr plot subtitle.}
+
 \item{caption}{(\code{character} scalar) \cr optional caption below the plot.}
 
 \item{table_format}{(named \code{character} or \code{NULL}) \cr
@@ -122,7 +125,7 @@ adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENI
 adsl <- scda::synthetic_cdisc_data("latest")$adsl
 
 # Mean with CI
-g_lineplot(adlb, adsl)
+g_lineplot(adlb, adsl, subtitle = "Laboratory Test: ALT")
 
 # Mean with CI, no stratification
 g_lineplot(adlb, variables = c(x = "AVISIT", y = "AVAL", y_lab = "PARAMCD", y_unit = "AVALU"))

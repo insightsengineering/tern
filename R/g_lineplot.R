@@ -44,6 +44,7 @@
 #' @param ggtheme (`theme`) \cr
 #' a graphical theme as provided by `ggplot2` to control outlook of the plot.
 #' @param title (`character` scalar) \cr plot title.
+#' @param subtitle (`character` scalar) \cr plot subtitle.
 #' @param caption (`character` scalar) \cr optional caption below the plot.
 #' @param table_format (named `character` or `NULL`) \cr
 #' format patterns for descriptive statistics used in the (optional) table appended to the plot.
@@ -76,7 +77,7 @@
 #' adsl <- scda::synthetic_cdisc_data("latest")$adsl
 #'
 #' # Mean with CI
-#' g_lineplot(adlb, adsl)
+#' g_lineplot(adlb, adsl, subtitle = "Laboratory Test: ALT")
 #'
 #' # Mean with CI, no stratification
 #' g_lineplot(adlb, variables = c(x = "AVISIT", y = "AVAL", y_lab = "PARAMCD", y_unit = "AVALU"))
@@ -132,6 +133,7 @@ g_lineplot <- function(df, # nolint
                        legend_position = "bottom",
                        ggtheme = NULL,
                        title = "Plot of Mean and 95% Confidence Limits by Visit",
+                       subtitle = NULL,
                        caption = NULL,
                        table_format = tern::summary_formats(),
                        table_labels = tern::summary_labels(),
@@ -143,6 +145,7 @@ g_lineplot <- function(df, # nolint
   assert_that(ifelse(is.character(interval), length(whiskers) <= 2, TRUE))
   assert_that(ifelse(length(whiskers) == 1, is.character(mid), TRUE))
   assert_that(is.string(title) || is.null(title))
+  assert_that(is.string(subtitle) || is.null(subtitle))
   assert_that(
     ifelse(
       is.character(mid),
@@ -154,6 +157,15 @@ g_lineplot <- function(df, # nolint
     is.character(variables),
     all(c("x", "y") %in% names(variables))
   )
+
+  # variables_default <- c( # nolint
+  #   x = "AVISIT", # nolint
+  #   y = "AVAL", # nolint
+  #   strata = "ARM", # nolint
+  #   ylab = "PARAMCD", # nolint
+  #   y_unit = "AVALU" # nolint
+  # ) # nolint
+  # variables <- c(variables, variables_default[setdiff(names(variables_default), names(variables))]) # nolint
 
   x <- variables[["x"]]
   y <- variables[["y"]]
@@ -277,6 +289,7 @@ g_lineplot <- function(df, # nolint
     scale_y_continuous(labels = scales::comma, expand = expansion(c(0.25, .25))) +
     labs(
       title = title,
+      subtitle = subtitle,
       caption = caption,
       color = legend_title,
       lty = legend_title,
