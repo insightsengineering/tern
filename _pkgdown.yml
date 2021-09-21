@@ -1,4 +1,4 @@
-url: https://go.roche.com/nest-docs/releases/latest/api-reference/tern
+url: https://insightsengineering.github.io/tern
 
 template:
   params:
@@ -7,7 +7,7 @@ template:
 navbar:
   right:
     - icon: fa-github
-      href: https://github.roche.com/NEST/tern
+      href: https://github.com/insightsengineering/tern
 
 reference:
   - title: Overview Pages

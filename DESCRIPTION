@@ -69,8 +69,8 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
-URL: https://github.roche.com/NEST/tern/
-BugReports: https://github.roche.com/NEST/tern/issues
+URL: https://github.com/insightsengineering/tern
+BugReports: https://github..com/insightsengineering/tern/issues
 Collate: 
     'formats.R'
     'abnormal.R'
@@ -105,9 +105,9 @@ Collate:
     'fit_survival_step.R'
     'footnotes.R'
     'g_forest.R'
+    'g_lineplot.R'
     'g_mmrm.R'
     'g_step.R'
-    'g_summary_by.R'
     'g_waterfall.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_response_subgroups.R'

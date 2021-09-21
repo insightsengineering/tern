@@ -34,10 +34,6 @@ Data for examples
 
 ```{r data, results = "asis", eval = TRUE}
 
-# Download data files from BEE. At the terminal, run:
-# scp bee.roche.com:/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adlb.sas7bdat
-# scp bee.roche.com:/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adsl.sas7bdat
-
 adlb <- haven::read_sas(data_file = "adlb.sas7bdat")
 adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
 
@@ -55,15 +51,16 @@ adlb <- adlb %>% mutate(
     ATOXGR == -4 ~ "4",
     ATOXGR == "<Missing>" ~ "Missing"
   )
-) %>% mutate(
-  BTOXGR_GP = case_when(
-    BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
-    BTOXGR == -1 ~ "1",
-    BTOXGR == -2 ~ "2",
-    BTOXGR == -3 ~ "3",
-    BTOXGR == -4 ~ "4",
-    BTOXGR == "<Missing>" ~ "Missing"
-  )
+) %>%
+  mutate(
+    BTOXGR_GP = case_when(
+      BTOXGR %in% c(0, 1, 2, 3, 4) ~ "Not Low",
+      BTOXGR == -1 ~ "1",
+      BTOXGR == -2 ~ "2",
+      BTOXGR == -3 ~ "3",
+      BTOXGR == -4 ~ "4",
+      BTOXGR == "<Missing>" ~ "Missing"
+    )
 )
 
 # adjust factor levels for correct order of AVISIT and Grouping to show

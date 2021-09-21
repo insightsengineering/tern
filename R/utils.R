@@ -91,34 +91,6 @@ to_n <- function(x, n) {
   }
 }
 
-#' Check an Arm Variable
-#'
-#' @inheritParams argument_convention
-#' @param x (`data.frame` or `vector`)\cr input data.
-#' @param col_N (`numeric`)\cr explicit column counts.
-#' @param min_num_levels (`count`)\cr minimum number of levels that `col_by` needs to have.
-#'
-#' @return Nothing, just passes without error if everything is ok.
-#'
-check_col_by_factor <- function(x,
-                                col_by,
-                                col_N, # nolint
-                                min_num_levels = 2) {
-  stopifnot(
-    is.factor(col_by),
-    !any(is.na(col_by)) && !("" %in% levels(col_by)),
-    length(col_N) == nlevels(col_by),
-    nlevels(col_by) >= min_num_levels
-  )
-  if (is.data.frame(x)) {
-    stopifnot(nrow(col_by) == nrow(x))
-  } else {
-    stopifnot(nrow(col_by) == length(x))
-  }
-
-  invisible(NULL)
-}
-
 #' Check Element Dimension
 #'
 #' Checks if the elements in `...` have the same dimension.

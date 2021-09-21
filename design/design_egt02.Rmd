@@ -18,14 +18,6 @@ bibliography: ../inst/REFERENCES.bib
 
 ---
 
-Links:
-
-- [https://github.roche.com/NEST/tern/issues/712](https://github.roche.com/NEST/tern/issues/712)
-- [TLG Catalog](https://nest-docs.kubemea.science.roche.com/releases/2020_08_20/embedded/agile-R/tlg_catalog/tables/egt02/)
-- [GDSR](https://gdsr.roche.com/resource/gdsr.roche.com/release/products/dataAnalysis/GDS_Standard_TLG_Specs_Tables_1.doc) [@Hughes2020]
-- [EGT02_1](https://pages.github.roche.com/MDIS/stream_doc/um/report_outputs_egt02_1.html)
-- [EGT02_2](https://pages.github.roche.com/MDIS/stream_doc/um/report_outputs_egt02_2.html)
-
 Configuration
 =============
 
@@ -120,7 +112,6 @@ result <- basic_table() %>%
   build_table(df = adeg, col_counts = n_col_counts)
 
 as_html(result)
-
 ```
 
 Reference
