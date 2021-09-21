@@ -29,8 +29,7 @@ and the levels of interest for the final SMQ variable. This is useful when
 there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values
-in character or factor variables in the data.}
+\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
 }
 \description{
 Helper Function to create a new \code{SMQ} variable in ADAE that
