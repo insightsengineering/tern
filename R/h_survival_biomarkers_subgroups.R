@@ -162,12 +162,14 @@ h_coxreg_mult_cont_df <- function(variables,
       biomarker_label = var_labels(data[variables$biomarkers], fill = TRUE),
       n_tot = 0L,
       n_tot_events = 0L,
+      median = NA,
       hr = NA,
       lcl = NA,
       ucl = NA,
       conf_level = conf_level,
       pval = NA,
       pval_label = pval_label,
+      row.names = seq_along(variables$biomarkers),
       stringsAsFactors = FALSE
     )
   }
