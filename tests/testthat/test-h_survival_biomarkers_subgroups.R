@@ -1,3 +1,30 @@
+library(scda)
+library(dplyr)
+
+preprocess_adtte <- function(adtte) {
+
+  # Save variable labels before data processing steps.
+  adtte_labels <- var_labels(adtte)
+
+  adtte_mod <- adtte %>%
+    dplyr::filter(
+      PARAMCD == "OS",
+      ARM %in% c("B: Placebo", "A: Drug X"),
+      SEX %in% c("M", "F")
+    ) %>%
+    dplyr::mutate(
+      # Reorder levels of ARM to display reference arm before treatment arm.
+      ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
+      SEX = droplevels(SEX),
+      AVALU = as.character(AVALU),
+      is_event = CNSR == 0
+    )
+
+  reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
+}
+
+adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
+
 # h_surv_to_coxreg_variables ----
 
 test_that("h_surv_to_coxreg_variables works as expected", {
@@ -23,6 +50,9 @@ test_that("h_surv_to_coxreg_variables works as expected", {
 # h_coxreg_mult_cont_df ----
 
 test_that("h_coxreg_mult_cont_df works as expected", {
+  adtte_f <- adtte %>%
+    preprocess_adtte()
+
   result <- expect_silent(h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
@@ -50,6 +80,9 @@ test_that("h_coxreg_mult_cont_df works as expected", {
 })
 
 test_that("h_coxreg_mult_cont_df returns missing values if data is empty (0 rows)", {
+  adtte_f <- adtte %>%
+    preprocess_adtte()
+
   result <- expect_silent(h_coxreg_mult_cont_df(
     variables = list(
       tte = "AVAL",
