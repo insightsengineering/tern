@@ -150,14 +150,12 @@ g_lineplot <- function(df, # nolint
 
     strata_N <- paste0(strata, "_N") # nolint
 
-    df_N <- alt_counts_df %>% # nolint
-      dplyr::group_by_at(strata) %>%
-      dplyr::summarize(
-        {{strata_N}} := paste0(strata, "(N = ", ifelse(na.rm, sum(!is.na(.data[[y]])), n()), ")")
-      )
+    df_N <- as.data.frame(table(alt_counts_df[[strata]], exclude = c(NA, NaN, Inf))) # nolint
+    colnames(df_N) <- c(strata, "N")
+    df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")")
 
     assert_that(!(strata_N %in% colnames(df_stats))) # as we join with df_N (which has column N)
-    df_stats <- dplyr::full_join(x = df_stats, y = df_N, by = strata)
+    df_stats <- dplyr::full_join(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
 
   } else if (!is.null(strata)) {
     strata_N <- strata # nolint
@@ -266,7 +264,7 @@ g_lineplot <- function(df, # nolint
     df_stats_table <- df_grp %>%
       dplyr::summarise(
         h_format_row(
-          x = sfun(.data[[y]], na.rm = na.rm, ...)[table],
+          x = sfun(.data[[y]], ...)[table],
           format = table_format,
           labels = table_labels
         ),
