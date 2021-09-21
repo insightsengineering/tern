@@ -26,7 +26,7 @@ along with the new variable created.}
 
 \item{aag_summary}{(\verb{data frame})\cr data set containing the SMQ baskets
 and the levels of interest for the final SMQ variable. This is useful when
-there are some levels of interest that are not observed in the \code{ADAE} dataset.
+there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values

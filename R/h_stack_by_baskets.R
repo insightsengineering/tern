@@ -14,7 +14,7 @@
 #' along with the new variable created.
 #' @param aag_summary (`data frame`)\cr data set containing the SMQ baskets
 #' and the levels of interest for the final SMQ variable. This is useful when
-#' there are some levels of interest that are not observed in the `ADAE` dataset.
+#' there are some levels of interest that are not observed in the `df` dataset.
 #' The two columns of this dataset should be named `basket` and `basket_name`.
 #' @param na_level (`string`)\cr used to replace all `NA` or empty values
 #' in character or factor variables in the data.
@@ -167,5 +167,5 @@ h_stack_by_baskets <- function(df,
       )
   }
   var_labels(df_long) <- var_labels
-  tibble(df_long)
+  tibble::tibble(df_long)
 }
