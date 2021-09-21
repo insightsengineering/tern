@@ -64,9 +64,6 @@
     <loc>https://insightsengineering.github.io/tern/reference/cfun_by_flag.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/check_col_by_factor.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/check_diff_prop_ci.html</loc>
   </url>
   <url>
@@ -262,6 +259,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/g_km.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/g_lineplot.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/g_mmrm.html</loc>
   </url>
   <url>
@@ -305,6 +305,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_decompose_gg.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/h_format_row.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_ggkm.html</loc>
