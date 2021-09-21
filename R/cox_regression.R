@@ -108,7 +108,7 @@ h_coxreg_univar_formulas <- function(variables,
 
   if (!is.null(variables$covariates)) {
     assert_that(is.character(variables$covariates))
-    }
+  }
 
   assert_that(
     is_variables(variables[c(arm_name, "event", "time")]),
