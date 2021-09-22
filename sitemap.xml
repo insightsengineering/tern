@@ -343,6 +343,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/h_step.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/h_survival_biomarkers_subgroups.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_survival_duration_subgroups.html</loc>
   </url>
   <url>
@@ -461,6 +464,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/summary_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/survival_biomarkers_subgroups.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/survival_coxph_pairwise.html</loc>
