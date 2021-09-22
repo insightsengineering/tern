@@ -74,20 +74,13 @@ adtte <- synthetic_cdisc_data("latest")$adtte
 adtte_labels <- var_labels(adtte)
 
 adtte_f <- adtte \%>\%
-  filter(
-    PARAMCD == "OS",
-    ARM \%in\% c("B: Placebo", "A: Drug X"),
-    SEX \%in\% c("M", "F")
-  ) \%>\%
+  filter(PARAMCD == "OS") \%>\%
   mutate(
-    # Reorder levels of ARM to display reference arm before treatment arm.
-    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
-    SEX = droplevels(SEX),
+    AVALU = as.character(AVALU),
     is_event = CNSR == 0
   ) \%>\%
   var_relabel(
-    ARM = adtte_labels["ARM"],
-    SEX = adtte_labels["SEX"],
+    AVALU = adtte_labels["AVALU"],
     is_event = "Event Flag"
   )
 

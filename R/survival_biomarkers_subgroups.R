@@ -24,21 +24,12 @@
 #' adtte_labels <- var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
-#'   filter(
-#'     PARAMCD == "OS",
-#'     ARM %in% c("B: Placebo", "A: Drug X"),
-#'     SEX %in% c("M", "F")
-#'   ) %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   mutate(
-#'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
-#'     SEX = droplevels(SEX),
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
 #'   ) %>%
 #'   var_relabel(
-#'     ARM = adtte_labels["ARM"],
-#'     SEX = adtte_labels["SEX"],
 #'     AVALU = adtte_labels["AVALU"],
 #'     is_event = "Event Flag"
 #'   )
@@ -64,7 +55,7 @@ NULL
 #'     is_event = "is_event",
 #'     biomarkers = c("BMRKR1", "AGE"),
 #'     strata = "STRATA1",
-#'     covariates = "RACE",
+#'     covariates = "SEX",
 #'     subgroups = "BMRKR2"
 #'   ),
 #'   data = adtte_f
@@ -78,7 +69,7 @@ NULL
 #'     is_event = "is_event",
 #'     biomarkers = c("BMRKR1", "AGE"),
 #'     strata = "STRATA1",
-#'     covariates = "RACE",
+#'     covariates = "SEX",
 #'     subgroups = "BMRKR2"
 #'   ),
 #'   data = adtte_f,
@@ -164,12 +155,12 @@ extract_survival_biomarkers <- function(variables,
 #' ## Table with a manually chosen set of columns: leave out "pval", reorder.
 #' tab <- tabulate_survival_biomarkers(
 #'   df = df,
-#'   vars = c("n_tot_events", "ci", "n_tot_events", "median", "hr"),
+#'   vars = c("n_tot_events", "ci", "n_tot", "median", "hr"),
 #'   time_unit = as.character(adtte_f$AVALU[1])
 #' )
 #'
 #' ## Finally produce the forest plot.
-#' g_forest(tab)
+#' g_forest(tab, xlim = c(0.8, 1.2))
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {

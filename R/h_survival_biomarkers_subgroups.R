@@ -21,22 +21,16 @@
 #' adtte_labels <- var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
-#'   filter(
-#'     PARAMCD == "OS",
-#'     ARM %in% c("B: Placebo", "A: Drug X"),
-#'     SEX %in% c("M", "F")
-#'   ) %>%
+#'   filter(PARAMCD == "OS") %>%
 #'   mutate(
-#'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
-#'     SEX = droplevels(SEX),
+#'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
 #'   ) %>%
 #'   var_relabel(
-#'     ARM = adtte_labels["ARM"],
-#'     SEX = adtte_labels["SEX"],
+#'     AVALU = adtte_labels["AVALU"],
 #'     is_event = "Event Flag"
 #'   )
+#'
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list
@@ -45,7 +39,6 @@ NULL
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
 #' @export
 #' @examples
-#'
 #' # This is how the variable list is converted internally.
 #' h_surv_to_coxreg_variables(
 #'   variables = list(

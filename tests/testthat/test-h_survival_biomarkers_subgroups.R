@@ -7,20 +7,17 @@ preprocess_adtte <- function(adtte) {
   adtte_labels <- var_labels(adtte)
 
   adtte_mod <- adtte %>%
-    dplyr::filter(
-      PARAMCD == "OS",
-      ARM %in% c("B: Placebo", "A: Drug X"),
-      SEX %in% c("M", "F")
-    ) %>%
+    dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
-      # Reorder levels of ARM to display reference arm before treatment arm.
-      ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
-      SEX = droplevels(SEX),
       AVALU = as.character(AVALU),
       is_event = CNSR == 0
     )
 
-  reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
+  reapply_varlabels(
+    adtte_mod,
+    adtte_labels,
+    is_event = "Event Flag"
+  )
 }
 
 adtte <- synthetic_cdisc_data("rcd_2021_05_05")$adtte
@@ -66,14 +63,14 @@ test_that("h_coxreg_mult_cont_df works as expected", {
   expected <- data.frame(
     biomarker = c("BMRKR1", "AGE"),
     biomarker_label = c("Continous Level Biomarker 1", "Age"),
-    n_tot = c(48L, 48L),
-    n_tot_events = c(25L, 25L),
-    median = c(1269.40388857211, 1269.40388857211),
-    hr = c(0.992727618706316, 1.00485769099575),
-    lcl = c(0.859391304891713, 0.950491104268725),
-    ucl = c(1.14675133356916, 1.06233396043214),
+    n_tot = c(400L, 400L),
+    n_tot_events = c(282, 282),
+    median = c(680.959764183532, 680.959764183532),
+    hr = c(0.987763289663857, 1.00846344622999),
+    lcl = c(0.954322484256844, 0.993087951019815),
+    ucl = c(1.0223759080426, 1.02407699271519),
     conf_level = c(0.95, 0.95),
-    pval = c(0.920991170690111, 0.864415775291559),
+    pval = c(0.483520242485134, 0.282314224545607),
     pval_label = c("p-value (Wald)", "p-value (Wald)")
   )
   expect_equal(result, expected, tol = 1e-5)
