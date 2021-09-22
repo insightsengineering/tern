@@ -168,6 +168,7 @@ reference:
       - h_proportion_subgroups_df
       - h_odds_ratio_df
       - h_odds_ratio_subgroups_df
+      - h_stack_by_baskets
       - h_worsen_counter
       - or_glm
       - or_clogit
