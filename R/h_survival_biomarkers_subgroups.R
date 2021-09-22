@@ -87,7 +87,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'     tte = "AVAL",
 #'     is_event = "is_event",
 #'     biomarkers = c("BMRKR1", "AGE"),
-#'     covariates = "REGION1",
+#'     covariates = "SEX",
 #'     strata = c("STRATA1", "STRATA2")
 #'   ),
 #'   data = adtte_f
@@ -121,32 +121,29 @@ h_coxreg_mult_cont_df <- function(variables,
   # If there is any data, run model, otherwise return empty results.
   if (nrow(data) > 0) {
     bm_cols <- match(variables$biomarkers, names(data))
-    data_constant <- data[, - bm_cols]
     l_result <- lapply(variables$biomarkers, function(bm) {
-      data_with_bm <- droplevels(na.omit(cbind(
-        data_constant,
-        data[bm]
-      )))
       coxreg_list <- fit_coxreg_multivar(
         variables = h_surv_to_coxreg_variables(variables, bm),
-        data = data_with_bm,
+        data = data,
         control = control
       )
       result <- do.call(
         h_coxreg_multivar_extract,
         c(list(var = bm), coxreg_list[c("mod", "data", "control")])
       )
+      data_fit <- as.data.frame(as.matrix(coxreg_list$mod$y))
+      data_fit$status <- as.logical(data_fit$status)
       median <- s_surv_time(
-        df = data_with_bm,
-        .var = variables$tte,
-        is_event = variables$is_event
+        df = data_fit,
+        .var = "time",
+        is_event = "status"
       )$median
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
         biomarker_label = var_labels(data[bm], fill = TRUE),
-        n_tot = nrow(data_with_bm),
-        n_tot_events = sum(data_with_bm$is_event),
+        n_tot = coxreg_list$mod$n,
+        n_tot_events = coxreg_list$mod$nevent,
         median = as.numeric(median),
         result[1L, c("hr", "lcl", "ucl")],
         conf_level = conf_level,
