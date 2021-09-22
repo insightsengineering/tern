@@ -109,7 +109,7 @@ df <- h_coxreg_mult_cont_df(
     tte = "AVAL",
     is_event = "is_event",
     biomarkers = c("BMRKR1", "AGE"),
-    covariates = "REGION1",
+    covariates = "SEX",
     strata = c("STRATA1", "STRATA2")
   ),
   data = adtte_f
