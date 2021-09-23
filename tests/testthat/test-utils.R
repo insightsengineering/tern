@@ -27,16 +27,16 @@ test_that("get_covariates fails for non-character input", {
 })
 
 test_that("month2day works correctly", {
-  x <- c(13.25, 8.15, 1, 2.834)
+  x <- c(13.25, 8.15, 1, 2.834, NA)
   result <- month2day(x)
-  expected <- c(403.296875, 248.065625, 30.4375, 86.259875)
+  expected <- c(403.296875, 248.065625, 30.4375, 86.259875, NA)
   expect_equal(result, expected)
 })
 
 test_that("day2month works correctly", {
-  x <- c(403, 248, 30, 86)
+  x <- c(403, 248, 30, 86, NA)
   result <- day2month(x)
-  expected <- c(13.2402464065708, 8.14784394250513, 0.985626283367556, 2.82546201232033)
+  expected <- c(13.2402464065708, 8.14784394250513, 0.985626283367556, 2.82546201232033, NA)
   expect_equal(result, expected)
 })
 

@@ -157,7 +157,7 @@ make_names <- function(nams) {
 #' month2day(x)
 #'
 month2day <- function(x) {
-  assert_that(is_numeric_vector(x))
+  assert_that(is_numeric_vector(na.omit(x)))
   x * 30.4375
 }
 
@@ -172,7 +172,7 @@ month2day <- function(x) {
 #' day2month(x)
 #'
 day2month <- function(x) {
-  assert_that(is_numeric_vector(x))
+  assert_that(is_numeric_vector(na.omit(x)))
   x / 30.4375
 }
 
