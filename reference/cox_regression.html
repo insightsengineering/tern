@@ -103,27 +103,6 @@ size in a survival analysis." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../v0.7.4/index.html">v0.7.4</a></li>
-   <li><a href="../v0.7.3/index.html">v0.7.3</a></li>
-   <li><a href="../v0.7.1/index.html">v0.7.1</a></li>
-   <li><a href="../v0.7.0/index.html">v0.7.0</a></li>
-   <li><a href="../v0.6.9/index.html">v0.6.9</a></li>
-   <li><a href="../v0.6.8/index.html">v0.6.8</a></li>
-   <li><a href="../v0.6.7/index.html">v0.6.7</a></li>
-   <li><a href="../v0.6.6/index.html">v0.6.6</a></li>
-   <li><a href="../v0.6.5/index.html">v0.6.5</a></li>
-   <li><a href="../v0.6.4/index.html">v0.6.4</a></li>
-   <li><a href="../v0.6.2/index.html">v0.6.2</a></li>
-   <li><a href="../v0.6.1/index.html">v0.6.1</a></li>
-   <li><a href="../v0.6.0/index.html">v0.6.0</a></li>
-   <li><a href="../v0.5.0/index.html">v0.5.0</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -189,7 +168,7 @@ size in a survival analysis.</p>
       <th>variables</th>
       <td><p>(<code>list</code>)<br /> a named list corresponds to the names of variables found
 in <code>data</code>, passed as a named list and corresponding to <code>time</code>, <code>event</code>, <code>arm</code>,
-and <code>covariates</code> terms. If <code>arm</code> is missing from <code>variables</code>, then
+<code>strata</code>, and <code>covariates</code> terms. If <code>arm</code> is missing from <code>variables</code>, then
 only Cox model(s) including the <code>covariates</code> will be fitted and the corresponding
 effect estimates will be tabulated later.</p></td>
     </tr>
@@ -428,13 +407,22 @@ it rather prepares the data to be used by the layout creating function.</p></li>
   <span class='op'>)</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE"</div><div class='input'>
+<span class='co'># Addition of an optional strata.</span>
+<span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span>
+  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, arm <span class='op'>=</span> <span class='st'>"ARMCD"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,
+    strata <span class='op'>=</span> <span class='st'>"SITE"</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "Surv(AVAL, event) ~ ARMCD + RACE + AGE + strata(SITE)"</div><div class='input'>
 <span class='co'># Example without treatment arm.</span>
 <span class='fu'>h_coxreg_multivar_formula</span><span class='op'>(</span>
   variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>
+    time <span class='op'>=</span> <span class='st'>"AVAL"</span>, event <span class='op'>=</span> <span class='st'>"event"</span>, covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RACE"</span>, <span class='st'>"AGE"</span><span class='op'>)</span>,
+    strata <span class='op'>=</span> <span class='st'>"SITE"</span>
   <span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Surv(AVAL, event) ~ 1 + RACE + AGE"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "Surv(AVAL, event) ~ 1 + RACE + AGE + strata(SITE)"</div><div class='input'>
 
 <span class='co'># fit_coxreg_univar</span>
 
