@@ -1,4 +1,5 @@
 # tern 0.7.4.9000
+* Added `g_lineplot` plot function and removed `g_summary_by`.
 * Added design doc for MNG01 plot.
 * Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each and every element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
 * Parametrized `stat_mean_ci` and `stat_median_ci` so that they may return different outputs.
@@ -14,6 +15,7 @@
 * Refactored `count_patients_with_flags` to include a title row with correct indentation.
 * Added `var_labels` and `show_labels` arguments to `count_occurrences` to allow for creation of a title row, update tests.
 * Added option to also convert logical variables to factor variables in `df_explicit_na`.
+* Added functions to estimate continuous biomarker effects across multiple subgroups for survival endpoints, which can be used to produce corresponding forest plots, see `survival_biomarkers_subgroups`.
 
 # tern 0.7.4
 
@@ -225,7 +227,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 
 # tern 0.6.1
 
-* Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66.
+* Fixed colors in Kaplan-Meyer-Plot
 * Refactor of all functions to pass `test.nest` tests:
     * Changed `width_row.names` argument of `g_forest` function into `width_row_names`.
     * Changed `censor.show` argument of `g_km` function into `censor_show`.

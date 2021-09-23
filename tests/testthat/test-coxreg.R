@@ -492,6 +492,18 @@ test_that("muffled_car_anova muffles notes about dropped strata term", {
   expect_silent(muffled_car_anova(mod, test_statistic = "Wald"))
 })
 
+test_that("muffled_car_anova gives a hint in the error message when an error occurs", {
+  bladder2 <- bladder[1:20, ]
+  mod <- coxph(
+    Surv(stop, event) ~ (rx + size + number) * strata(enum) + cluster(id),
+    bladder2
+  )
+  expect_error(
+    muffled_car_anova(mod, test_statistic = "Wald"),
+    "the model seems to have convergence problems"
+  )
+})
+
 # tidy.coxreg.univar ----
 
 test_that("tidy.coxreg.univar method tidies up the univariate Cox regression model", {

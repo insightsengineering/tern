@@ -108,7 +108,7 @@ h_coxreg_univar_formulas <- function(variables,
 
   if (!is.null(variables$covariates)) {
     assert_that(is.character(variables$covariates))
-    }
+  }
 
   assert_that(
     is_variables(variables[c(arm_name, "event", "time")]),
@@ -1239,7 +1239,12 @@ muffled_car_anova <- function(mod, test_statistic) {
           type = "III"
         )
       },
-      message = function(m) invokeRestart("muffleMessage")
+      message = function(m) invokeRestart("muffleMessage"),
+      error = function(e) stop(paste(
+        "the model seems to have convergence problems, please try to change",
+        "the configuration of covariates or strata variables, e.g.",
+        "- original error:", e
+      ))
     )
   )
 }

@@ -1,4 +1,4 @@
-url: https://go.roche.com/nest-docs/releases/latest/api-reference/tern
+url: https://insightsengineering.github.io/tern
 
 template:
   params:
@@ -7,7 +7,7 @@ template:
 navbar:
   right:
     - icon: fa-github
-      href: https://github.roche.com/NEST/tern
+      href: https://github.com/insightsengineering/tern
 
 reference:
   - title: Overview Pages
@@ -134,8 +134,8 @@ reference:
        - summarize_coxreg
        - tabulate_rsp_subgroups
        - tabulate_survival_subgroups
+       - tabulate_survival_biomarkers
        - test_proportion_diff
-
 
   - title: Analysis Helper Functions
     desc: these functions are useful to help definining the analysis
@@ -155,6 +155,7 @@ reference:
       - h_coxreg_inter_effect.numeric
       - h_coxreg_inter_estimations
       - h_coxreg_univar_extract
+      - h_coxreg_mult_cont_df
       - h_coxreg_multivar_extract
       - h_coxreg_univar_formulas
       - h_coxreg_multivar_formula
@@ -167,6 +168,7 @@ reference:
       - h_proportion_subgroups_df
       - h_odds_ratio_df
       - h_odds_ratio_subgroups_df
+      - h_stack_by_baskets
       - h_worsen_counter
       - or_glm
       - or_clogit
@@ -204,6 +206,8 @@ reference:
       - h_step_rsp_est
       - h_step_survival_formula
       - h_step_survival_est
+      - h_surv_to_coxreg_variables
+      - h_tab_surv_one_biomarker
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
@@ -212,6 +216,7 @@ reference:
       - pairwise
       - univariate
       - extract_rsp_subgroups
+      - extract_survival_biomarkers
       - extract_survival_subgroups
       - fit_mmrm
       - fit_coxreg_univar

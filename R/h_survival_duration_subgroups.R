@@ -146,8 +146,7 @@ h_survtime_subgroups_df <- function(variables,
     is.character(variables$arm),
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is_character_single(label_all),
-    is_df_with_variables(data, as.list(unlist(variables))),
-    is_df_with_nlevels_factor(data, variable = variables$arm, n_levels = 2)
+    is_df_with_variables(data, as.list(unlist(variables)))
   )
 
   # Add All Patients.
@@ -158,7 +157,7 @@ h_survtime_subgroups_df <- function(variables,
   result_all$row_type <- "content"
 
   # Add Subgroups.
-if (is.null(variables$subgroups)) {
+  if (is.null(variables$subgroups)) {
     result_all
   } else {
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
