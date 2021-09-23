@@ -178,11 +178,15 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
         c(low_label, high_label)
        } else if (max_atoxgrade_num > 0 & min_atoxgrade_num >= 0) { 
          high_label
-         } else {
+         } else if (min_atoxgrade_num < 0 & max_atoxgrade_num <= 0) {
          low_label
-         }
+         } else NULL
+     
       df <- df[!is.na(df[[.var]]), ]
-      
+     
+   if (is.null(abn_levels)) {
+     result <- list()
+   } else {
       flag_low_name <- variables$worst_low_flag
       flag_high_name <- variables$worst_high_flag
       anl <- data.frame(
@@ -215,9 +219,17 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
           fraction_any <- if_else(n == 0, 0, any_grade_num/n)
           result[[name_any]] <- with_label(c(any_grade_num , fraction_any), name_any)
         }
+   }
   result <- list(count_fraction = result)
   result
 }
+
+s_count_abnormal_by_worst_grade(
+   df = adlb_f3 %>% filter(PARAMCD == "ALT") %>% droplevels(),
+   .var = "ATOXGR",
+   variables = list(id = "USUBJID", worst_low_flag = c(Looooow = "WGRLOFL"), worst_high_flag = c(High = "WGRHIFL")))
+
+
 s_count_abnormal_by_worst_grade(
    df = adlb_f2 %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .var = "ATOXGR",
