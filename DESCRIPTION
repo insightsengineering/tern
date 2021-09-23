@@ -54,7 +54,7 @@ Imports:
   testthat (>= 2.0),
   tidyselect,
   data.table, 
-  stringr
+  stringr,
   tidyr
 Suggests:
   lattice,
