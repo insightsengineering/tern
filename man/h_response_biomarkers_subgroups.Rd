@@ -41,8 +41,8 @@ when reading about the user-facing functions.
 \section{Functions}{
 \itemize{
 \item \code{h_rsp_to_logistic_variables}: helps with converting the "response" function variable list
-to the "logistic regression" variable list. The reason is that currently there is an inconsistency between the variable
-names accepted by \code{extract_rsp_subgroups()} and \code{fit_logistic()}.
+to the "logistic regression" variable list. The reason is that currently there is an
+inconsistency between the variable names accepted by \code{extract_rsp_subgroups()} and \code{fit_logistic()}.
 
 \item \code{h_logistic_mult_cont_df}: prepares estimates for number of responses, patients and
 overall response rate, as well as odds ratio estimates, confidence intervals and p-values, for multiple
