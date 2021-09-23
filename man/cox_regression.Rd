@@ -42,7 +42,7 @@ summarize_coxreg(
 \arguments{
 \item{variables}{(\code{list})\cr a named list corresponds to the names of variables found
 in \code{data}, passed as a named list and corresponding to \code{time}, \code{event}, \code{arm},
-and \code{covariates} terms. If \code{arm} is missing from \code{variables}, then
+\code{strata}, and \code{covariates} terms. If \code{arm} is missing from \code{variables}, then
 only Cox model(s) including the \code{covariates} will be fitted and the corresponding
 effect estimates will be tabulated later.}
 
@@ -253,10 +253,19 @@ h_coxreg_multivar_formula(
   )
 )
 
+# Addition of an optional strata.
+h_coxreg_multivar_formula(
+  variables = list(
+    time = "AVAL", event = "event", arm = "ARMCD", covariates = c("RACE", "AGE"),
+    strata = "SITE"
+  )
+)
+
 # Example without treatment arm.
 h_coxreg_multivar_formula(
   variables = list(
-    time = "AVAL", event = "event", covariates = c("RACE", "AGE")
+    time = "AVAL", event = "event", covariates = c("RACE", "AGE"),
+    strata = "SITE"
   )
 )
 
