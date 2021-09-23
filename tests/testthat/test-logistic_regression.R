@@ -18,6 +18,8 @@ adrs_example <- local({
     reapply_varlabels(var_labels(adrs_cached))
 })
 
+# fit_logistic ----
+
 test_that("fit_logistic works with default paramters", {
   data <- adrs_example
   result_model <- fit_logistic(data, variables = list(response = "Response", arm = "ARMCD"))
@@ -74,7 +76,47 @@ test_that("fit_logistic works with different response definition", {
     result_model$formula,
     1 - Response ~ ARMCD
   )
+
 })
+
+test_that("fit_logistic works with a single stratification variable", {
+  data <- adrs_example
+  result <- expect_silent(fit_logistic(
+    data,
+    variables = list(
+      response = "Response",
+      arm = "ARMCD",
+      covariates = c("AGE", "RACE"),
+      strata = "STRATA1"
+    )
+  ))
+  expect_s3_class(result, c("clogit", "coxph"))
+
+  expected_formula <- Surv(rep(1, 373L), Response) ~ ARMCD + AGE + RACE + strata(STRATA1)
+  result_formula <- result$formula
+  expect_equal(result_formula, expected_formula)
+})
+
+test_that("fit_logistic works with two stratification variables", {
+  data <- adrs_example
+  result <- expect_silent(fit_logistic(
+    data,
+    variables = list(
+      response = "Response",
+      arm = "ARMCD",
+      covariates = c("AGE", "RACE"),
+      strata = c("STRATA1", "STRATA2")
+    )
+  ))
+  expect_s3_class(result, c("clogit", "coxph"))
+
+  expected_formula <- Surv(rep(1, 373L), Response) ~ ARMCD + AGE + RACE +
+    strata(I(interaction(STRATA1, STRATA2)))
+  result_formula <- result$formula
+  expect_equal(result_formula, expected_formula)
+})
+
+# h_get_interaction_vars ----
 
 test_that("h_get_interaction_vars works as expected", {
   data <- adrs_example
@@ -89,6 +131,8 @@ test_that("h_get_interaction_vars works as expected", {
   expected <- c("ARMCD", "RACE")
   expect_setequal(result, expected)
 })
+
+# h_interaction_coef_name ----
 
 test_that("h_interaction_coef_name works as expected", {
   data <- adrs_example
@@ -107,6 +151,8 @@ test_that("h_interaction_coef_name works as expected", {
   expected <- "ARMCDARM B:RACEWHITE"
   expect_identical(result, expected)
 })
+
+# h_or_cat_interaction ----
 
 test_that("h_or_cat_interaction works as expected", {
   data <- adrs_example
@@ -142,6 +188,8 @@ test_that("h_or_cat_interaction works as expected", {
     expect_named(res, levels(data$ARMCD))
   }
 })
+
+# h_or_cont_interaction ----
 
 test_that("h_or_cont_interaction works as expected with median increment", {
   data <- adrs_example
@@ -219,6 +267,8 @@ test_that("h_or_cont_interaction works as expected with custom increments", {
   ))
 })
 
+# h_or_interaction ----
+
 test_that("h_or_interaction works as expected", {
   data <- adrs_example
   model_cont <- fit_logistic(
@@ -255,6 +305,8 @@ test_that("h_or_interaction works as expected", {
   expect_is(result_cat, "list")
 })
 
+# h_simple_term_labels ----
+
 test_that("h_simple_term_labels works correctly with factor input", {
   x <- c("A", "B", "C", "B", "A")
   terms <- factor(c("B", "C"))
@@ -263,6 +315,8 @@ test_that("h_simple_term_labels works correctly with factor input", {
   expected <- c("B, n = 2", "C, n = 1")
   expect_identical(result, expected)
 })
+
+# h_interaction_term_labels ----
 
 test_that("h_interaction_term_labels works correctly with factor input", {
   x <- c("A", "B", "C", "B", "A")
@@ -285,6 +339,8 @@ test_that("h_interaction_term_labels works correctly when any term can be fulfil
   expected <- "B or 2, n = 3"
   expect_identical(result, expected)
 })
+
+# h_glm_simple_term_extract ----
 
 test_that("h_glm_simple_term_extract works for factor and numeric variables", {
   adrs <- adrs_example
@@ -336,6 +392,8 @@ test_that("h_glm_simple_term_extract works for factor and numeric variables", {
   expected2$pvalue <- list(0.206759410411742)
   expect_equal(result2, expected2[, names(result2)], tolerance = 0.00001)
 })
+
+# h_glm_interaction_extract ----
 
 test_that("h_glm_interaction_extract works for categorical interaction", {
   adrs <- adrs_example
@@ -409,6 +467,8 @@ test_that("h_glm_interaction_extract works for continuous interaction", {
   expect_equivalent(result, expected)
 })
 
+# h_logistic_simple_terms ----
+
 test_that("h_logistic_simple_terms works", {
 
   test.nest::skip_if_too_deep(3)
@@ -472,6 +532,8 @@ test_that("h_logistic_simple_terms works", {
   expected2$ci <- list(numeric(0), c(0.117267420069842, 4.44600632363543))
   expect_equal(result2, expected2[, names(result2)], tolerance = 0.000001)
 })
+
+# h_glm_inter_term_extract ----
 
 test_that("h_glm_inter_term_extract works as expected with categorical interaction", {
   adrs <- adrs_example
@@ -681,6 +743,8 @@ test_that("h_logistic_inter_terms works as expected", {
   )
 })
 
+# tidy.glm ----
+
 test_that("tidy.glm works as expected for simple case", {
 
   test.nest::skip_if_too_deep(3)
@@ -795,6 +859,8 @@ test_that("tidy.glm works as expected for interaction case", {
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
+# logistic_regression_cols ----
+
 test_that("logistic_regression_cols works as expected", {
   result <- basic_table() %>%
     logistic_regression_cols(conf_level = 0.75) %>%
@@ -824,11 +890,15 @@ test_that("logistic_regression_cols works as expected", {
   expect_identical(result_matrix, expected_matrix)
 })
 
+# logistic_summary_by_flag ----
+
 test_that("logistic_summary_by_flag works", {
   layout_fun <- logistic_summary_by_flag("is_variable")
   expect_is(layout_fun, "function")
   expect_silent(layout_fun(basic_table()))
 })
+
+# summarize_logistic ----
 
 test_that("summarize_logistic works as expected for interaction model with continuous variable", {
   adrs <- adrs_example

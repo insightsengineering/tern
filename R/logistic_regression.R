@@ -94,20 +94,39 @@ fit_logistic <- function(data,
     x = response_definition,
     fixed = TRUE
   )
-  forms <- paste0(response_definition, " ~ ", variables$arm)
+  form <- paste0(response_definition, " ~ ", variables$arm)
   if (!is.null(variables$covariates)) {
-    forms <- paste0(forms, " + ", paste(variables$covariates, collapse = " + "))
+    form <- paste0(form, " + ", paste(variables$covariates, collapse = " + "))
   }
-  if (is.null(variables$interaction)) {
-    formula <- as.formula(forms)
-  } else {
+  if (!is.null(variables$interaction)) {
     assert_that(
       is.string(variables$interaction),
       variables$interaction %in% variables$covariates
     )
-    formula <- as.formula(paste0(forms, " + ", variables$arm, ":", variables$interaction))
+    form <- paste0(form, " + ", variables$arm, ":", variables$interaction)
   }
-  do.call(glm, list(formula = formula, family = "binomial", data = as.name("data")))
+  if (!is.null(variables$strata)) {
+    strata_arg <- if (length(variables$strata) > 1) {
+      paste0("I(interaction(", paste0(variables$strata, collapse = ", "), "))")
+    } else {
+      variables$strata
+    }
+    form <- paste0(form, "+ strata(", strata_arg, ")")
+  }
+  formula <- as.formula(form)
+
+  if (is.null(variables$strata)) {
+    stats::glm(
+      formula = formula,
+      data = data,
+      family = binomial("logit")
+    )
+  } else {
+    survival::clogit(
+      formula = formula,
+      data = data
+    )
+  }
 }
 
 #' @describeIn logistic_regression Helper function to extract interaction variable names from a fitted

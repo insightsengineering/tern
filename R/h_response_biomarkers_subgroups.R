@@ -100,16 +100,16 @@ h_logistic_mult_cont_df <- function(variables,
   if (nrow(data) > 0) {
     bm_cols <- match(variables$biomarkers, names(data))
     l_result <- lapply(variables$biomarkers, function(bm) {
-      fit_glm <- fit_logistic(
+      model_fit <- fit_logistic(
         variables = h_rsp_to_logistic_variables(variables, bm),
         data = data
       )
       result <- h_logistic_simple_terms(
         x = bm,
-        fit_glm = fit_glm,
+        fit_glm = model_fit,
         conf_level = control$conf_level
       )
-      data_fit <- fit_glm$model
+      data_fit <- model_fit$model
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
