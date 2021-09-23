@@ -28,8 +28,8 @@
 NULL
 
 #' @describeIn response_biomarkers_subgroups prepares estimates for number of responses, patients and
-#'   overall response rate, as well as odds ratio estimates, confidence intervals and p-values, for multiple biomarkers across
-#'   population subgroups in a single data frame.
+#'   overall response rate, as well as odds ratio estimates, confidence intervals and p-values,
+#'   for multiple biomarkers across population subgroups in a single data frame.
 #'   `variables` corresponds to the names of variables found in `data`, passed as a
 #'   named list and requires elements `rsp` and `biomarkers` (vector of continuous
 #'   biomarker variables) and optionally `covariates`, `subgroups` and `strat`.

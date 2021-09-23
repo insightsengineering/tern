@@ -25,8 +25,8 @@
 NULL
 
 #' @describeIn h_response_biomarkers_subgroups helps with converting the "response" function variable list
-#'   to the "logistic regression" variable list. The reason is that currently there is an inconsistency between the variable
-#'   names accepted by `extract_rsp_subgroups()` and `fit_logistic()`.
+#'   to the "logistic regression" variable list. The reason is that currently there is an
+#'   inconsistency between the variable names accepted by `extract_rsp_subgroups()` and `fit_logistic()`.
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
 #' @export
 #' @examples

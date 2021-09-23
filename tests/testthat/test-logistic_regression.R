@@ -393,6 +393,39 @@ test_that("h_glm_simple_term_extract works for factor and numeric variables", {
   expect_equal(result2, expected2[, names(result2)], tolerance = 0.00001)
 })
 
+test_that("h_glm_simple_term_extract can extract continuous variable results from clogit objects", {
+  adrs <- adrs_example
+  mod <- fit_logistic(
+    adrs,
+    variables = list(
+      response = "Response",
+      arm = "ARMCD",
+      covariates = c("AGE", "RACE"),
+      strata = "STRATA1"
+    )
+  )
+
+  result <- expect_silent(h_glm_simple_term_extract("AGE", mod))
+  expected <- data.frame(
+    variable = "AGE",
+    variable_label = "AGE",
+    term = "AGE",
+    term_label = "AGE",
+    interaction = "",
+    interaction_label = "",
+    reference = "",
+    reference_label = "",
+    estimate = list(0.0676647151818399),
+    std_error = list(0.0520141193356704),
+    df = list(1),
+    pvalue = list(0.193295665385862),
+    is_variable_summary = FALSE,
+    is_term_summary = TRUE,
+    stringsAsFactors = FALSE
+  )
+  expect_equivalent(result, expected, tolerance = 0.000001)
+})
+
 # h_glm_interaction_extract ----
 
 test_that("h_glm_interaction_extract works for categorical interaction", {
@@ -531,6 +564,48 @@ test_that("h_logistic_simple_terms works", {
   expected2$ucl <- list(numeric(0), 4.44600632363543)
   expected2$ci <- list(numeric(0), c(0.117267420069842, 4.44600632363543))
   expect_equal(result2, expected2[, names(result2)], tolerance = 0.000001)
+})
+
+test_that("h_logistic_simple_terms can extract continuous variable results from clogit objects", {
+
+  test.nest::skip_if_too_deep(3)
+
+  adrs <- adrs_example
+  mod <- fit_logistic(
+    adrs,
+    variables = list(
+      response = "Response",
+      arm = "ARMCD",
+      covariates = c("AGE", "RACE", "SEX"),
+      strata = "STRATA1"
+    )
+  )
+  result <- expect_silent(h_logistic_simple_terms("AGE", mod))
+  expected <- data.frame(
+    variable = "AGE",
+    variable_label = "AGE",
+    term = "AGE",
+    term_label = "AGE",
+    interaction = "",
+    interaction_label = "",
+    reference = "",
+    reference_label = "",
+    estimate = list(0.0702118550278999),
+    std_error = list(0.0519336089598534),
+    df = list(1),
+    pvalue = list(0.176390002484421),
+    is_variable_summary = FALSE,
+    is_term_summary = TRUE,
+    odds_ratio = list(1.07273542157503),
+    lcl = list(0.968917172422821),
+    ucl = list(1.18767766477317),
+    stringsAsFactors = FALSE
+  )
+  expected$ci <- list(c(
+    0.968917172422821,
+    1.18767766477317
+  ))
+  expect_equivalent(result, expected, tolerance = 0.000001)
 })
 
 # h_glm_inter_term_extract ----
