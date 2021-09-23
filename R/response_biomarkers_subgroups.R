@@ -58,7 +58,7 @@ NULL
 #'     rsp = "rsp",
 #'     biomarkers = c("BMRKR1", "AGE"),
 #'     covariates = "SEX",
-#'     subgroups = c"BMRKR2",
+#'     subgroups = "BMRKR2",
 #'     strat = "STRATA1"
 #'   ),
 #'   data = adrs_f,

@@ -124,7 +124,8 @@ fit_logistic <- function(data,
   } else {
     survival::clogit(
       formula = formula,
-      data = data
+      data = data,
+      x = TRUE
     )
   }
 }
@@ -418,13 +419,17 @@ h_interaction_term_labels <- function(terms1,
 #'
 h_glm_simple_term_extract <- function(x, fit_glm) {
   assert_that(
-    "glm" %in% class(fit_glm),
+    inherits(fit_glm, c("glm", "clogit")),
     is.string(x)
   )
   xs_class <- attr(fit_glm$terms, "dataClasses")
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
-  stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
+  stats <- if (inherits(fit_glm, "glm")) {
+    c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
+  } else {
+    c("estimate" = "coef", "std_error" = "se(coef)", "pvalue" = "Pr(>|z|)")
+  }
   # Make sure x is not interaction term
   assert_that(x %in% names(xs_class))
   x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
@@ -436,10 +441,18 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
   x_stats$df <- as.list(1)
   if (xs_class[x] == "numeric") {
     x_stats$term <- x
-    x_stats$term_label <- var_labels(fit_glm$data[x], fill = TRUE)
+    x_stats$term_label <- if (inherits(fit_glm, "glm")) {
+      var_labels(fit_glm$data[x], fill = TRUE)
+    } else {
+      x
+    }
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
   } else {
+    assert_that(
+      inherits(fit_glm, "glm"),
+      msg = "for non-numeric variables only glm models are supported"
+    )
     x_numbers <- table(fit_glm$data[[x]])
     x_stats$term <- xs_level[[x]][-1]
     x_stats$term_label <- h_simple_term_labels(x_stats$term, x_numbers)
@@ -466,7 +479,11 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats <- rbind(x_main, x_stats)
   }
   x_stats$variable <- x
-  x_stats$variable_label <- var_labels(fit_glm$data[x], fill = TRUE)
+  x_stats$variable_label <- if (inherits(fit_glm, "glm")) {
+    var_labels(fit_glm$data[x], fill = TRUE)
+  } else {
+    x
+  }
   x_stats$interaction <- ""
   x_stats$interaction_label <- ""
   x_stats$reference <- ""
@@ -698,10 +715,10 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #' h_logistic_simple_terms("AGE", mod1)
 #'
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
-  assert_that(
-    "glm" %in% class(fit_glm),
-    fit_glm$family$family == "binomial"
-  )
+  assert_that(inherits(fit_glm, c("glm", "clogit")))
+  if (inherits(fit_glm, "glm")) {
+    assert_that(fit_glm$family$family == "binomial")
+  }
   terms_name <- attr(terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]

@@ -109,7 +109,11 @@ h_logistic_mult_cont_df <- function(variables,
         fit_glm = model_fit,
         conf_level = control$conf_level
       )
-      data_fit <- model_fit$model
+      data_fit <- if (inherits(model_fit, "glm")) {
+        model_fit$model
+      } else {
+        data.frame(rsp = as.logical(as.matrix(model_fit$y)[, "status"]))
+      }
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
