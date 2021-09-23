@@ -1,0 +1,9 @@
+pandoc: 1.19.2.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  missing-data: missing-data.html
+urls:
+  reference: https://pages.github.roche.com/Rpackages/tern/reference
+  article: https://pages.github.roche.com/Rpackages/tern/articles
+
