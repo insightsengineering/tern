@@ -188,69 +188,16 @@ h_coxreg_mult_cont_df <- function(variables,
 h_tab_surv_one_biomarker <- function(df,
                                      vars,
                                      time_unit) {
-  conf_level <- df$conf_level[1]
-  method <-  df$pval_label[1]
   afuns <- a_survival_subgroups()[vars]
   colvars <- d_survival_subgroups_colvars(
     vars,
-    conf_level = conf_level,
-    method = method,
+    conf_level = df$conf_level[1],
+    method = df$pval_label[1],
     time_unit = time_unit
   )
-
-  lyt <- basic_table()
-
-  # Row split by row type - only keep the content rows here.
-  lyt <- split_rows_by(
-    lyt = lyt,
-    var = "row_type",
-    split_fun = keep_split_levels("content"),
-    nested = FALSE,
-    indent_mod = 1L
+  h_tab_one_biomarker(
+    df = df,
+    afuns = afuns,
+    colvars = colvars
   )
-
-  # Summarize rows with all patients.
-  lyt <- summarize_row_groups(
-    lyt = lyt,
-    var = "var_label",
-    cfun = afuns
-  )
-
-  # Split cols by the multiple variables to populate into columns.
-  lyt <- split_cols_by_multivar(
-    lyt = lyt,
-    vars = colvars$vars,
-    varlabels = colvars$labels
-  )
-
-  # If there is any subgroup variables, we extend the layout accordingly.
-  if ("analysis" %in% df$row_type) {
-
-    # Now only continue with the subgroup rows.
-    lyt <- split_rows_by(
-      lyt = lyt,
-      var = "row_type",
-      split_fun = keep_split_levels("analysis"),
-      nested = FALSE,
-      child_labels = "hidden"
-    )
-
-    # Split by the subgroup variable.
-    lyt <- split_rows_by(
-      lyt = lyt,
-      var = "var",
-      labels_var = "var_label",
-      nested = TRUE,
-      child_labels = "visible",
-      indent_mod = 1L
-    )
-
-    # Then analyze colvars for each subgroup.
-    lyt <- summarize_row_groups(
-      lyt = lyt,
-      cfun = afuns,
-      var = "subgroup"
-    )
-  }
-  build_table(lyt, df = df)
 }

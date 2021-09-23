@@ -77,12 +77,13 @@ fit_logistic <- function(data,
                            response = "Response",
                            arm = "ARMCD",
                            covariates = NULL,
-                           interaction = NULL
+                           interaction = NULL,
+                           strata = NULL
                          ),
                          response_definition = "response") {
   assert_that(
     is.list(variables),
-    all(names(variables) %in% c("response", "arm", "covariates", "interaction")),
+    all(names(variables) %in% c("response", "arm", "covariates", "interaction", "strata")),
     is_df_with_variables(data, as.list(unlist(variables))),
     is.string(response_definition),
     grepl("response", response_definition)

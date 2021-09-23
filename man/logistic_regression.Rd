@@ -24,7 +24,7 @@
 fit_logistic(
   data,
   variables = list(response = "Response", arm = "ARMCD", covariates = NULL, interaction
-    = NULL),
+    = NULL, strata = NULL),
   response_definition = "response"
 )
 
