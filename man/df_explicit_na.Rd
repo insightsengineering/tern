@@ -8,6 +8,7 @@ df_explicit_na(
   data,
   omit_columns = NULL,
   char_as_factor = TRUE,
+  logical_as_factor = FALSE,
   na_level = "<Missing>"
 )
 }
@@ -18,6 +19,9 @@ df_explicit_na(
 not be modified by this function.}
 
 \item{char_as_factor}{(\code{flag})\cr whether to convert character variables
+in \code{data} to factors.}
+
+\item{logical_as_factor}{(\code{flag})\cr whether to convert logical variables
 in \code{data} to factors.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty
@@ -34,12 +38,14 @@ variables in a data frame.
 Missing entries are those with \code{NA} or empty strings and will
 be replaced with a specified value. If factor variables include missing
 values, the missing value will be inserted as the last level.
-Similarly, in case character variables should be converted to factors with
-\code{char_as_factor} option, the missing values will be set as the last level.
+Similarly, in case character or logical variables should be converted to factors
+with the \code{char_as_factor} or \code{logical_as_factor} options, the missing values will
+be set as the last level.
 }
 \examples{
 
 my_data <- data.frame(
+  u = c(TRUE, FALSE, NA, TRUE),
   v = factor(c("A", NA, NA, NA), levels = c("Z", "A")),
   w = c("A", "B", NA, "C"),
   x = c("D", "E", "F", NA),
@@ -50,7 +56,8 @@ my_data <- data.frame(
 
 # Encode missing values in all character or factor columns.
 df_explicit_na(my_data)
-
+# Also convert logical columns to factor columns.
+df_explicit_na(my_data, logical_as_factor = TRUE)
 # Encode missing values in a subset of columns.
 df_explicit_na(my_data, omit_columns = c("x", "y"))
 

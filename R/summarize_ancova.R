@@ -96,6 +96,7 @@ h_ancova <- function(.var,
 #'
 #' adsl <- synthetic_cdisc_data("latest")$adsl
 #' adqs <- synthetic_cdisc_data("latest")$adqs
+#'
 #' adqs_single <- adqs %>%
 #'   filter(
 #'     AVISIT == "WEEK 1 DAY 8",  # single time point
@@ -204,11 +205,6 @@ a_ancova <- make_afun(
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#' library(scda)
-#' library(dplyr)
-#'
-#' adsl <- synthetic_cdisc_data("latest")$adsl
-#' adsl <- synthetic_cdisc_data("latest")$adqs
 #'
 #' adqs_single <- adqs %>%
 #'   filter(
@@ -225,16 +221,19 @@ a_ancova <- make_afun(
 #'   summarize_ancova(
 #'     vars = "CHG",
 #'     variables = list(arm = "ARMCD", covariates = NULL),
+#'     table_names = "unadj",
 #'     conf_level = 0.95, var_labels = "Unadjusted comparison",
 #'     .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
 #'   ) %>%
 #'   summarize_ancova(
 #'     vars = "CHG",
 #'     variables = list(arm = "ARMCD", covariates = c("BASE", "STRATA1")),
+#'     table_names = "adj",
 #'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates BASE and STRATA1)"
 #'   ) %>%
 #'   build_table(adqs_single, alt_counts_df = adsl)
 #'
+#' \dontrun{
 #' basic_table() %>%
 #'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
 #'   split_rows_by("PARAMCD") %>%
@@ -244,7 +243,7 @@ a_ancova <- make_afun(
 #'     conf_level = 0.95, var_labels = "Adjusted mean"
 #'   ) %>%
 #'   build_table(adqs_multi, alt_counts_df = adsl)
-#'
+#'}
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,

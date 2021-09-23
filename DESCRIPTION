@@ -64,14 +64,13 @@ Suggests:
   tidyr,
   scda (>= 0.1.0),
   scda.2021 (>= 0.1.0)
-License: MIT + file LICENSE
+License: Apache License 2.0 | file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr
-URL: https://github.roche.com/NEST/tern/
-BugReports: https://github.roche.com/NEST/tern/issues
+URL: https://github.com/insightsengineering/tern
+BugReports: https://github..com/insightsengineering/tern/issues
 Collate: 
     'formats.R'
     'abnormal.R'
@@ -106,14 +105,15 @@ Collate:
     'fit_survival_step.R'
     'footnotes.R'
     'g_forest.R'
+    'g_lineplot.R'
     'g_mmrm.R'
     'g_step.R'
-    'g_summary_by.R'
     'g_waterfall.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_response_subgroups.R'
     'h_stack_by_baskets.R'
     'h_step.R'
+    'h_survival_biomarkers_subgroups.R'
     'h_survival_duration_subgroups.R'
     'individual_patient_plot.R'
     'kaplan_meier_plot.R'
@@ -135,6 +135,7 @@ Collate:
     'summarize_colvars.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
+    'survival_biomarkers_subgroups.R'
     'survival_coxph_pairwise.R'
     'survival_duration_subgroups.R'
     'survival_time.R'

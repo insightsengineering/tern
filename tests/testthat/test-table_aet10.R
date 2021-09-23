@@ -13,7 +13,7 @@ test_that("AET10 default variant is produced correctly", {
   result1 <- basic_table() %>%
     split_cols_by(var = "ARM", split_fun = add_overall_level("All Patients", first = FALSE)) %>%
     add_colcounts() %>%
-    count_occurrences(var = "AEDECOD") %>%
+    count_occurrences(vars = "AEDECOD") %>%
     build_table(adae, alt_counts_df = adsl)
 
   result2 <- prune_table(

@@ -131,3 +131,35 @@ test_that("count_occurrences functions as expected with valid input and default 
 
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("count_occurrences functions as expected with label row specified", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 4, 4, 6, 6, 6, 7, 7, 8)),
+    MHDECOD = factor(
+      c("MH1", "MH2", "MH1", "MH1", "MH1", "MH1", "MH2", "MH1", "MH2"),
+      levels = c("MH1", "MH2")
+    )
+  )
+  df_adsl <- data.frame(
+    USUBJID = 1:9
+  )
+
+  lyt <- basic_table() %>%
+    count_occurrences(
+      vars = "MHDECOD",
+      var_labels = "MH Term",
+      show_labels = "visible"
+    )
+
+  result <- rtable_object <- lyt %>%
+    build_table(df, alt_counts_df = df_adsl)
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c("", "MH Term", "MH1", "MH2", "all obs",
+      "", "4 (44.4%)", "3 (33.3%)"),
+    .Dim = c(4L, 2L))
+
+  expect_identical(result_matrix, expected_matrix)
+})

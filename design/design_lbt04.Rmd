@@ -57,132 +57,60 @@ adlb$BNRIND[adlb$PARAMCD == "ALT" & adlb$BNRIND == "HIGH"] <- "LOW"
 adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
 adlb$BNRIND[adlb$PARAMCD == "IGA" & adlb$BNRIND == "LOW"] <- "HIGH"
 
-adlb %>% count(PARAMCD, BNRIND, ANRIND)
+adlb_no_CRP_L <- filter(adlb, !(PARAMCD == "CRP" & ANRIND == "LOW")) # "0" in single row only CRP -> LOW # nolintr
+adlb_no_ALT_LN <- filter(adlb, !(PARAMCD == "ALT" & ANRIND %in% c("LOW", "NORMAL"))) # "0" for the whole ALT inner group # nolintr
+adlb_no_IGA_NH <- filter(adlb, !(PARAMCD == "IGA" & ANRIND %in% c("HIGH", "NORMAL"))) # "0" for the whole IMMUNOLOGY outer group # nolintr
+adlb_no_ALT_LH <- filter(adlb, PARAMCD != "ALT" | ANRIND == "NORMAL") # normal level and no any abnormal level for ALT # nolintr
+adlb_no_ALT_NH <- filter(adlb, PARAMCD != "ALT" | ANRIND == "LOW") # normal level and no any abnormal level for ALT # nolintr
 
-```
-
-# Current functionality
-
-Our goal is to re-desing the `count_abnormal` layout so that based on a metadata map, the row with "High" records under ALT and "Low" records under IGA can be removed.
-```{r, current}
-lyt <- basic_table() %>%
+# counts (no dropping)
+lyt_0 <- basic_table() %>%
   split_rows_by("LBCAT") %>%
-  split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
-  count_abnormal(
-    var = "ANRIND",
-    abnormal = c(Low = "LOW", High = "HIGH"),
-    exclude_base_abn = FALSE
-  )
+  split_rows_by("PARAMCD") %>%
+  analyze("ANRIND")
 
-result <- build_table(lyt = lyt, df = adlb, alt_counts_df = adsl)
-
-result
+build_table(lyt_0, adlb)
+build_table(lyt_0, adlb_no_CRP_L)
+build_table(lyt_0, adlb_no_ALT_LN)
+build_table(lyt_0, adlb_no_IGA_NH)
+build_table(lyt_0, adlb_no_ALT_LH)
+build_table(lyt_0, adlb_no_ALT_NH)
 ```
 
-
-# New rtables split function
-
-This will be available soon.
-```{r, split_fun}
-keep_split_levels_of_vars3 <- function(map = NULL) {
-  
-  if (is.null(map) || any(sapply(map, class) != "character"))
-    stop("No map dataframe was provided or not all of the columns are of type character.")
-  
-  myfun <- function(df, spl, vals = NULL, labels = NULL, trim = FALSE) {
-    
-    allvars <- colnames(map)
-    splvar <- rtables:::spl_payload(spl)
-    outvars <- allvars[-(which(allvars == splvar):length(allvars))]
-
-    ## handle conditioning on outer variables (if any), 
-    ## subset the map depending on where we are in the split tree
-    if (outvars != "") {
-      outvars_levs <- unique(df[, outvars])[ , , drop = TRUE]
-      if (!is.null(dim(outvars_levs)))
-        stop ("Outer variables were not specified correctly in the map.")
-      outvars_filter <- paste(paste(outvars, paste0("'", outvars_levs, "'"), sep = " == "), 
-                              collapse = " & ")
-      map <- subset(map, subset = eval(parse(text = outvars_filter)), select = setdiff(allvars, outvars))
-      map <- unique(map)
-    }
-
-    ## handle split variable
-    nondup <- !duplicated(map[[splvar]])
-    ksl_fun <- keep_split_levels(only = map[[splvar]][nondup], reorder = TRUE)
-    ret <- ksl_fun(df, spl, vals, labels, trim = trim)
-    
-    ## keep non-split (inner) variables levels
-    ret$datasplit <- lapply(ret$values, function(splvar_lev) {
-
-      df3 <- ret$datasplit[[splvar_lev]]
-      
-      # loop through inner variables 
-      for (iv in setdiff(colnames(map), splvar)) { 
-        iv_lev <- df3[[iv]]
-        levkeep <- as.character(na.omit(unique(map[map[, splvar] == splvar_lev, iv])))
-        if (is.factor(iv_lev) && !all(levkeep %in% levels(iv_lev)))
-          stop("Attempted to keep invalid factor level(s) in split ", setdiff(levkeep, levels(iv_lev)))
-        
-        df3 <- df3[iv_lev %in% levkeep, , drop = FALSE]
-        
-        if (is.factor(iv_lev))
-          df3[[iv]] <- factor(as.character(df3[[iv]]), levels = levkeep)
-      }
-      
-      df3
-    })
-    names(ret$datasplit) <- ret$values
-    ret
-  }
-  
-  myfun
-}
-
-```
-
-# Metadata map
-
-Defines which lab directions are theoretically possible even if they don't exist in the dataset.
-
-```{r, metadata}
-
-map <- data.frame(
-  LBCAT = c("CHEMISTRY", "CHEMISTRY", "CHEMISTRY", "IMMUNOLOGY"),
-  PARAMCD = c("ALT", "CRP", "CRP", "IGA"),
-  ANRIND = c("LOW", "LOW", "HIGH", "HIGH"),
-  stringsAsFactors = FALSE
-)
-
-basic_table() %>%
-  split_rows_by("LBCAT") %>%
-  split_rows_by("PARAMCD", split_fun = keep_split_levels_of_vars3(map = map)) %>%
-  analyze("ANRIND") %>%
-  build_table(adlb)
-```
-
-
-# Statistics function
+# Update count_abnormal layout function
 
 Here we update the default `abnormal` to be for multiple directions (previously was either LOW or HIGH). The function will return a list depending on the intersection of the factor levels available in the analysis variable `.var` and the values of `abnormal`.
 
-```{r, sfun}
+```{r, update_count_abnormal}
 
+######################
+## s_count_abnormal
+######################
 s_count_abnormal <- function(df,
                              .var,
-                             abnormal = c("LOW", "HIGH"),
+                             abnormal = c(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
 
+  # Assertions for abnormal
+  assertthat::assert_that(
+    is_character_vector(abnormal, min_length = 2, max_length = 2),
+    !is.null(names(abnormal)),
+    any(abnormal %in% levels(df[[.var]]))
+  )
+
+  # This will define the abnormal levels theoretically possible for a specific lab parameter
+  # within a split level of a layout.
   abn_levels <- intersect(abnormal, levels(df[[.var]]))
-  
-  result <- split(numeric(0), factor(abn_levels, levels = abn_levels))
-  
-  for (abn in abn_levels) {
-    
-    abnormal <- abn
-    
+  names(abn_levels) <- names(abnormal)[abnormal %in% abn_levels]
+
+  result <- split(numeric(0), factor(names(abn_levels), levels = names(abn_levels)))
+
+  for (abn in names(abn_levels)) {
+
+    abnormal <- abn_levels[abn]
+
     # Patients in the denominator fulfill:
     # - have at least one post-baseline visit
     # - their baseline must not be abnormal if `exclude_base_abn`.
@@ -194,16 +122,16 @@ s_count_abnormal <- function(df,
     }
     subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
     denom <- length(subjects_denom)
-    
+
     # Patients in the numerator fulfill:
     # - have at least one post-baseline visit with the required abnormality level
     # - are part of the denominator patients.
     subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
     subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
     num <- length(subjects_num)
-    
+
     result[[abn]] <- with_label(c(num = num, denom = denom), abn)
-    
+
   }
 
   result <- list(fraction = result)
@@ -211,28 +139,36 @@ s_count_abnormal <- function(df,
 }
 
 # Test it out.
+s_count_abnormal(adlb %>% filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
 s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND")
+# switch order of HIGH and LOW
+s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW"))
 
-```
+######################
+## a_count_abnormal
+######################
 
-```{r, afun}
 # No changes here.
-
-a_count_abnormal <- make_afun(
+a_count_abnormal <- make_afun( # nolint
   s_count_abnormal,
   .formats = c(fraction = format_fraction)
 )
-```
 
-# New layout function
+# Just small update to examples:
+a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
+a_fun(adlb %>% filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
+a_fun(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND")
 
-Here the main change is using the `.ungroup_stats` argument.
+######################
+## count_abnormal
+######################
 
-```{r, new_layout}
+# Here the main change is using the '.ungroup_stats' argument.
+# Also it makes sense to remove 'abnormal' since it is no longer needed separately
+# from the '...' arguments passed to 's_count_abnormal'.
 
 count_abnormal <- function(lyt,
                            var,
-                           abnormal,
                            ...,
                            table_names = var,
                            .stats = NULL,
@@ -257,21 +193,159 @@ count_abnormal <- function(lyt,
       vars = var,
       afun = afun,
       table_names = table_names,
-      extra_args = c(list(abnormal = abnormal), list(...)),
+      extra_args = list(...),
       show_labels = "hidden"
     )
-  
-}
 
-# Not quite right yet. 
-basic_table() %>%
-  split_rows_by("LBCAT") %>%
-  split_rows_by("PARAMCD", split_fun = keep_split_levels_of_vars3(map = map)) %>%
+}
+```
+
+# Standard layout - no "0" records at split
+
+```{r, standard}
+lyt <- basic_table() %>%
+  split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
+  split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
+  # analyze("ANRIND") # nolint
   count_abnormal(
     var = "ANRIND",
-    abnormal = c("LOW", "HIGH"),
+    abnormal = c(Low = "LOW", High = "HIGH"),
     exclude_base_abn = FALSE
+  )
+
+build_table(lyt = lyt, df = adlb, alt_counts_df = adsl)
+build_table(lyt = lyt, df = adlb_no_CRP_L, alt_counts_df = adsl)
+build_table(lyt = lyt, df = adlb_no_ALT_LN, alt_counts_df = adsl) # whole ALT dropped due to drop_split_levels at PARAMCD # nolint
+build_table(lyt = lyt, df = adlb_no_IGA_NH, alt_counts_df = adsl) # whole IMMUNOLOGY dropped due to drop_split_levels LBCAT # nolint
+build_table(lyt = lyt, df = adlb_no_ALT_LH, alt_counts_df = adsl) # CHEMISTRY -> ALT remains as there CHEMISTRY -> ALT -> NORMAL records exist # nolint
+build_table(lyt = lyt, df = adlb_no_ALT_NH, alt_counts_df = adsl)
+
+# Change exclude_base_abn
+basic_table() %>%
+  split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
+  split_rows_by("PARAMCD", split_fun = drop_split_levels) %>%
+  # analyze("ANRIND") # nolint
+  count_abnormal(
+    var = "ANRIND",
+    abnormal = c(Low = "LOW", High = "HIGH"),
+    exclude_base_abn = TRUE
   ) %>%
-  build_table(adlb, alt_counts_df = adsl)
+  build_table(df = adlb, alt_counts_df = adsl)
 
 ```
+
+Despite the fact that we drop split levels, there might be still some "0" records in the leafs of the tree as they come from count_abnormal.
+For the majority of cases we can drop these "0" leaf records too, using trim_levels_in_group split function.
+However, there is a one case when this approach does not work as `count_abnormal` requires that at least one abnormal level is present
+in a data for a given study variable. Even if we modify `count_abnormal` so that we relax this requirement, it must still return something 
+which will then appear in the final output. So if there are such specific cases to handle, the `trim_levels_to_map` should be used 
+(see the next paragraph). 
+
+# Standard layout - no "0" records at all with exception
+
+```{r, standard_no_0_records}
+lyt_no0 <- basic_table() %>%
+  split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_in_group("ANRIND")) %>% # we also trim levels of ANRIND
+  # analyze("ANRIND") # nolint
+  count_abnormal(
+    var = "ANRIND",
+    abnormal = c(Low = "LOW", High = "HIGH"),
+    exclude_base_abn = FALSE
+  )
+
+build_table(lyt = lyt_no0, df = adlb, alt_counts_df = adsl)
+build_table(lyt = lyt_no0, df = adlb_no_CRP_L, alt_counts_df = adsl) # no CHEMISTRY/ALT/HIGH, CHEMISTRY/CRP/LOW, IMMUNOLOGY/IGA/LOW due to trim_levels_in_group # nolint
+build_table(lyt = lyt_no0, df = adlb_no_ALT_LN, alt_counts_df = adsl) # whole ALT and IMMUNOLOGY/IGA/LOW dropped due to trim_levels_in_group # nolint
+build_table(lyt = lyt_no0, df = adlb_no_IGA_NH, alt_counts_df = adsl) # whole IMMUNOLOGY dropped due to drop_split_levels LBCAT and CHEMISTRY/ALT/HIGH due to trim_levels_in_group # nolint
+build_table(lyt = lyt_no0, df = adlb_no_ALT_LH, alt_counts_df = adsl) # FAILS at count_abnormal as there are only normal levels (no abnormal) # nolint
+build_table(lyt = lyt_no0, df = adlb_no_ALT_NH, alt_counts_df = adsl) # no CHEMISTRY/ALT/HIGH, IMMUNOLOGY/IGA/LOW due to trim_levels_in_group # nolint
+
+```
+
+# Metadata map layout
+
+Based on a metadata map, some of the levels of split and inner variables can be removed before layout function.
+Using this feature, we can define which lab directions are theoretically possible even if they don't exist in the data set.
+
+```{r, map}
+
+# We do know upfront (i.e. without exploratory data analysis and regardless of any particular instance of the data)
+# that some records will always be "0", and hence these records may not be displayed,
+# regardless of whether or not other "0" records (if any) are supposed to be displayed.
+# For instance, CHEMISTRY -> ALT -> HIGH as well as IMMUNOLOGY -> IGA -> LOW are an examples of such "0" records.
+
+# Note here we include "NORMAL" levels as they are needed for defining the denominators
+# in the final layout.
+
+map <- data.frame(
+  LBCAT = c(rep("CHEMISTRY", 5), rep("IMMUNOLOGY", 2)),
+  PARAMCD = c(rep("ALT", 2), rep("CRP", 3), rep("IGA", 2)),
+  ANRIND = c("LOW", "NORMAL", "LOW", "HIGH", "NORMAL", "HIGH", "NORMAL"),
+  stringsAsFactors = FALSE
+)
+map
+
+lyt_map <- basic_table() %>%
+  split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map)) %>%
+  #analyze("ANRIND") %>%
+  count_abnormal(
+    var = "ANRIND",
+    abnormal = c(Low = "LOW", High = "HIGH"),
+    exclude_base_abn = FALSE
+  )
+
+build_table(lyt = lyt_map, df = adlb, alt_counts_df = adsl)
+build_table(lyt = lyt_map, df = adlb_no_CRP_L, alt_counts_df = adsl)
+build_table(lyt = lyt_map, df = adlb_no_ALT_LN, alt_counts_df = adsl)
+build_table(lyt = lyt_map, df = adlb_no_IGA_NH, alt_counts_df = adsl)
+build_table(lyt = lyt_map, df = adlb_no_ALT_LH, alt_counts_df = adsl)
+build_table(lyt = lyt_map, df = adlb_no_ALT_NH, alt_counts_df = adsl)
+
+# Another example of map, here we remove ALT from the previous map.
+
+map_no_ALT <- filter(map, PARAMCD != "ALT") # nolint
+map_no_ALT
+
+lyt_map_no_ALT <- basic_table() %>% # nolint
+  split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map_no_ALT)) %>%
+  #analyze("ANRIND") %>%
+  count_abnormal(
+    var = "ANRIND",
+    abnormal = c(Low = "LOW", High = "HIGH"),
+    exclude_base_abn = FALSE
+  )
+
+build_table(lyt = lyt_map_no_ALT, df = adlb, alt_counts_df = adsl)
+build_table(lyt = lyt_map_no_ALT, df = adlb_no_CRP_L, alt_counts_df = adsl)
+build_table(lyt = lyt_map_no_ALT, df = adlb_no_ALT_LN, alt_counts_df = adsl)
+build_table(lyt = lyt_map_no_ALT, df = adlb_no_IGA_NH, alt_counts_df = adsl)
+build_table(lyt = lyt_map_no_ALT, df = adlb_no_ALT_LH, alt_counts_df = adsl)
+build_table(lyt = lyt_map_no_ALT, df = adlb_no_ALT_NH, alt_counts_df = adsl)
+
+# Here we set the abnormality direction of ALT to be HIGH in the map.
+map_ALT_H <- map # nolint
+map_ALT_H$ANRIND[map$PARAMCD == "ALT" & map$ANRIND == "LOW"] <- "HIGH"
+
+lyt_map_ALT_H <- basic_table() %>% # nolint
+  split_rows_by("LBCAT", split_fun = drop_split_levels) %>%
+  split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map = map_ALT_H)) %>%
+  #analyze("ANRIND") %>%
+  count_abnormal(
+    var = "ANRIND",
+    abnormal = c(Low = "LOW", High = "HIGH"),
+    exclude_base_abn = FALSE
+  )
+
+build_table(lyt = lyt_map_ALT_H, df = adlb, alt_counts_df = adsl)
+build_table(lyt = lyt_map_ALT_H, df = adlb_no_CRP_L, alt_counts_df = adsl)
+build_table(lyt = lyt_map_ALT_H, df = adlb_no_ALT_LN, alt_counts_df = adsl)
+build_table(lyt = lyt_map_ALT_H, df = adlb_no_IGA_NH, alt_counts_df = adsl)
+build_table(lyt = lyt_map_ALT_H, df = adlb_no_ALT_LH, alt_counts_df = adsl)
+build_table(lyt = lyt_map_ALT_H, df = adlb_no_ALT_NH, alt_counts_df = adsl)
+```
+
+As can be seen in this example, the map ultimately defines what levels appear in the analysis even if they are observed in the data. This may potentially lead to errors and users should be careful when constructing these maps. Likely the addition of helper functions to this package will help reduce this risk as maps for standard safety data should be automatically constructed.
+To remove all "0" records, the data should be first examined and then the map should be created. This is so called empirical map, in contrast to (theoretical) map which can be built upfront, without the need of exploring of the actual data set.

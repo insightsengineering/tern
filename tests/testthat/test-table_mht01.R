@@ -39,7 +39,7 @@ test_that("MHT01 variant 1 is produced accurately", {
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
-    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
+    count_occurrences(vars = "MHDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
@@ -106,7 +106,7 @@ test_that("MHT01 variant 2 is produced accurately", {
       .stats = c("unique", "nonunique"),
       .labels = c("Total number of patients with at least one event", "Total number of events")
     ) %>%
-    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
+    count_occurrences(vars = "MHDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, admh_f_prior, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
@@ -159,7 +159,7 @@ test_that("MHT01 variant 3 is produced accurately", {
       .stats = "unique",
       .labels = c(unique = "Total number of patients with at least one event")
     ) %>%
-    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
+    count_occurrences(vars = "MHDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
@@ -223,7 +223,7 @@ test_that("MHT01 variant 5 is produced accurately", {
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(unique = "Total number of patients with at least one event")) %>%
-    count_occurrences(var = "MHDECOD", .indent_mods = -1L)
+    count_occurrences(vars = "MHDECOD", .indent_mods = -1L)
 
   result <- build_table(lyt, admh_f, alt_counts_df = adsl_f)
   result_matrix <- to_string_matrix(result)
