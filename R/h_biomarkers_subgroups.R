@@ -7,7 +7,7 @@
 #' @param afuns (named `list` of `function`)\cr analysis functions.
 #' @param colvars (`list` with `vars` and `labels`)\cr variables to tabulate and their labels.
 #'
-#' @return
+#' @return The `rtables` table object.
 #' @export
 h_tab_one_biomarker <- function(df,
                                 afuns,

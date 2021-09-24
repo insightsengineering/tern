@@ -33,7 +33,7 @@ test_that("extract_rsp_biomarkers functions as expected with valid input and def
       subgroups = c("SEX", "BMRKR2")
     ),
     data = adrs_f
-  )
+  ))
   expected <- data.frame(
     biomarker = c(
       "AGE", "BMRKR1", "AGE", "BMRKR1",
@@ -111,7 +111,7 @@ test_that("extract_rsp_biomarkers functions as expected with valid input and def
       "analysis", "analysis", "analysis", "analysis", "analysis",
       "analysis", "analysis", "analysis"
     )
-  ))
+  )
   expect_equal(result, expected, tolerance = 1e-5)
 })
 

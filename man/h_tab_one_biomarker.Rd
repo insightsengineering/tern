@@ -14,7 +14,7 @@ h_tab_one_biomarker(df, afuns, colvars)
 \item{colvars}{(\code{list} with \code{vars} and \code{labels})\cr variables to tabulate and their labels.}
 }
 \value{
-
+The \code{rtables} table object.
 }
 \description{
 This is used by \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}},
