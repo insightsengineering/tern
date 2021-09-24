@@ -15,7 +15,7 @@
 * Refactored `count_patients_with_flags` to include a title row with correct indentation.
 * Added `var_labels` and `show_labels` arguments to `count_occurrences` to allow for creation of a title row, update tests.
 * Added option to also convert logical variables to factor variables in `df_explicit_na`.
-* Added functions to estimate continuous biomarker effects across multiple subgroups for survival endpoints, which can be used to produce corresponding forest plots, see `survival_biomarkers_subgroups`.
+* Added functions to estimate continuous biomarker effects across multiple subgroups for survival and binary response endpoints, which can be used to produce corresponding forest plots, see `survival_biomarkers_subgroups` and `response_biomarkers_subgroups`.
 * Fixed `day2month` and `month2day` to work with NA data.
 
 # tern 0.7.4
