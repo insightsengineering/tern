@@ -355,7 +355,6 @@ reference:
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
-      - check_col_by_factor
       - check_same_n
       - check_mmrm_vars
       - build_mmrm_formula
