@@ -54,14 +54,14 @@ Imports:
   testthat (>= 2.0),
   tidyselect,
   data.table, 
-  stringr
+  stringr,
+  tidyr
 Suggests:
   lattice,
   knitr,
   Matrix,
   test.nest (>= 0.2.9),
   rmarkdown,
-  tidyr,
   scda (>= 0.1.0),
   scda.2021 (>= 0.1.0)
 License: Apache License 2.0 | file LICENSE
