@@ -34,7 +34,12 @@ NULL
 #'   named list and requires elements `rsp` and `biomarkers` (vector of continuous
 #'   biomarker variables) and optionally `covariates`, `subgroups` and `strat`.
 #'   `groups_lists` optionally specifies groupings for `subgroups` variables.
+#' @param control (named `list`)\cr controls for the response definition and the
+#'   confidence level produced by [control_logistic()].
 #' @seealso [h_logistic_mult_cont_df()] which is used internally.
+#' @note You can also specify a continuous variable in `rsp` and then use the
+#'   `response_definition` control to convert that internally to a logical
+#'   variable reflecting binary response.
 #' @export
 #' @examples
 #' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
@@ -52,10 +57,12 @@ NULL
 #' df
 #'
 #' # Here we group the levels of `BMRKR2` manually, and we add a stratification
-#' # variable `STRATA1`.
+#' # variable `STRATA1`. We also here use a continuous variable `EOSDY`
+#' # which is then binarized internally (response is defined as this variable
+#' # being larger than 500).
 #' df_grouped <- extract_rsp_biomarkers(
 #'   variables = list(
-#'     rsp = "rsp",
+#'     rsp = "EOSDY",
 #'     biomarkers = c("BMRKR1", "AGE"),
 #'     covariates = "SEX",
 #'     subgroups = "BMRKR2",
@@ -68,6 +75,9 @@ NULL
 #'       "low/medium" = c("LOW", "MEDIUM"),
 #'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
 #'     )
+#'   ),
+#'   control = control_logistic(
+#'     response_definition = "I(response > 500)"
 #'   )
 #' )
 #' df_grouped
@@ -78,6 +88,7 @@ extract_rsp_biomarkers <- function(variables,
                                    label_all = "All Patients") {
   assert_that(
     is.list(variables),
+    is.string(variables$rsp),
     is.character(variables$subgroups) || is.null(variables$subgroups),
     is.string(label_all)
   )

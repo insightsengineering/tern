@@ -28,6 +28,9 @@ tabulate_rsp_biomarkers(
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
+\item{control}{(named \code{list})\cr controls for the response definition and the
+confidence level produced by \code{\link[=control_logistic]{control_logistic()}}.}
+
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
@@ -64,6 +67,10 @@ biomarker variables) and optionally \code{covariates}, \code{subgroups} and \cod
 }}
 
 \note{
+You can also specify a continuous variable in \code{rsp} and then use the
+\code{response_definition} control to convert that internally to a logical
+variable reflecting binary response.
+
 In contrast to \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}} this tabulation function does
 not start from an input layout \code{lyt}. This is because internally the table is
 created by combining multiple subtables.
@@ -98,10 +105,12 @@ df <- extract_rsp_biomarkers(
 df
 
 # Here we group the levels of `BMRKR2` manually, and we add a stratification
-# variable `STRATA1`.
+# variable `STRATA1`. We also here use a continuous variable `EOSDY`
+# which is then binarized internally (response is defined as this variable
+# being larger than 500).
 df_grouped <- extract_rsp_biomarkers(
   variables = list(
-    rsp = "rsp",
+    rsp = "EOSDY",
     biomarkers = c("BMRKR1", "AGE"),
     covariates = "SEX",
     subgroups = "BMRKR2",
@@ -114,6 +123,9 @@ df_grouped <- extract_rsp_biomarkers(
       "low/medium" = c("LOW", "MEDIUM"),
       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
     )
+  ),
+  control = control_logistic(
+    response_definition = "I(response > 500)"
   )
 )
 df_grouped

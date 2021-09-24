@@ -102,7 +102,8 @@ h_logistic_mult_cont_df <- function(variables,
     l_result <- lapply(variables$biomarkers, function(bm) {
       model_fit <- fit_logistic(
         variables = h_rsp_to_logistic_variables(variables, bm),
-        data = data
+        data = data,
+        response_definition = control$response_definition
       )
       result <- h_logistic_simple_terms(
         x = bm,
