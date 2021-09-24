@@ -328,6 +328,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/h_km_layout.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/h_response_biomarkers_subgroups.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_response_subgroups.html</loc>
   </url>
   <url>
@@ -347,6 +350,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_survival_duration_subgroups.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/h_tab_one_biomarker.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_tbl_coxph_pairwise.html</loc>
@@ -404,6 +410,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/refit_lme4_all_optimizers.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/response_biomarkers_subgroups.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/response_subgroups.html</loc>
