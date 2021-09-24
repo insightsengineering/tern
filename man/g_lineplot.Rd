@@ -70,8 +70,7 @@ The names of the \code{list} elements refer to the names of the statistics
 and are used by \code{mid}, \code{interval}, \code{table}.
 It must be able to accept as input a vector with data for which statistics are computed.}
 
-\item{...}{\cr
-optional arguments to \code{sfun}.}
+\item{...}{optional arguments to \code{sfun}.}
 
 \item{mid_type}{(\code{character} scalar) \cr
 controls the type of the \code{mid} plot, it can be point (\code{p}), line (\code{l}), or point and line (\code{pl}).}
