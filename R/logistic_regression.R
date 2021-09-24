@@ -9,7 +9,7 @@
 #' response in model containing all specified covariates.
 #' Allow option to include one two-way interaction and present similar output for
 #' each interaction degree of freedom.
-#' Note: For \code{glm} formula, the variable names need to be standard dataframe column name without
+#' Note: For the formula, the variable names need to be standard dataframe column name without
 #' special characters.
 #'
 #' @section Model Specification:
@@ -25,16 +25,19 @@
 #'
 #' @inheritParams argument_convention
 #' @param fit_glm (`glm`)\cr logistic regression model fitted by [stats::glm()] with "binomial" family.
+#'   Limited functionality is also available for conditional logistic regression models fitted by
+#'   [survival::clogit()], currently this is used only by [extract_rsp_biomarkers()].
 #' @param x (`string` or `character`)\cr a variable or interaction term in `fit_glm` (depending on the
 #'   helper function).
 #' @name logistic_regression
 #'
 NULL
 
-#' @describeIn logistic_regression Fit a logistic regression model.
+#' @describeIn logistic_regression Fit a (conditional) logistic regression model.
 #' @param data (`data frame`)\cr the data frame on which the model was fit.
 #' @param response_definition (`string`)\cr the definition of what an event is in terms of `response`.
-#'   This will be used when fitting the logistic regression model on the left hand side of the formula.
+#'   This will be used when fitting the (conditional) logistic regression model on the left hand
+#'   side of the formula.
 #'
 #' @importFrom stats as.formula glm
 #'
@@ -77,12 +80,13 @@ fit_logistic <- function(data,
                            response = "Response",
                            arm = "ARMCD",
                            covariates = NULL,
-                           interaction = NULL
+                           interaction = NULL,
+                           strata = NULL
                          ),
                          response_definition = "response") {
   assert_that(
     is.list(variables),
-    all(names(variables) %in% c("response", "arm", "covariates", "interaction")),
+    all(names(variables) %in% c("response", "arm", "covariates", "interaction", "strata")),
     is_df_with_variables(data, as.list(unlist(variables))),
     is.string(response_definition),
     grepl("response", response_definition)
@@ -93,20 +97,40 @@ fit_logistic <- function(data,
     x = response_definition,
     fixed = TRUE
   )
-  forms <- paste0(response_definition, " ~ ", variables$arm)
+  form <- paste0(response_definition, " ~ ", variables$arm)
   if (!is.null(variables$covariates)) {
-    forms <- paste0(forms, " + ", paste(variables$covariates, collapse = " + "))
+    form <- paste0(form, " + ", paste(variables$covariates, collapse = " + "))
   }
-  if (is.null(variables$interaction)) {
-    formula <- as.formula(forms)
-  } else {
+  if (!is.null(variables$interaction)) {
     assert_that(
       is.string(variables$interaction),
       variables$interaction %in% variables$covariates
     )
-    formula <- as.formula(paste0(forms, " + ", variables$arm, ":", variables$interaction))
+    form <- paste0(form, " + ", variables$arm, ":", variables$interaction)
   }
-  do.call(glm, list(formula = formula, family = "binomial", data = as.name("data")))
+  if (!is.null(variables$strata)) {
+    strata_arg <- if (length(variables$strata) > 1) {
+      paste0("I(interaction(", paste0(variables$strata, collapse = ", "), "))")
+    } else {
+      variables$strata
+    }
+    form <- paste0(form, "+ strata(", strata_arg, ")")
+  }
+  formula <- as.formula(form)
+
+  if (is.null(variables$strata)) {
+    stats::glm(
+      formula = formula,
+      data = data,
+      family = binomial("logit")
+    )
+  } else {
+    survival::clogit(
+      formula = formula,
+      data = data,
+      x = TRUE
+    )
+  }
 }
 
 #' @describeIn logistic_regression Helper function to extract interaction variable names from a fitted
@@ -385,7 +409,7 @@ h_interaction_term_labels <- function(terms1,
 }
 
 #' @describeIn logistic_regression Helper function to tabulate the main effect
-#'   results of a logistic regression model.
+#'   results of a (conditional) logistic regression model.
 #'
 #' @importFrom car Anova
 #' @importFrom rtables var_labels
@@ -398,14 +422,18 @@ h_interaction_term_labels <- function(terms1,
 #'
 h_glm_simple_term_extract <- function(x, fit_glm) {
   assert_that(
-    "glm" %in% class(fit_glm),
+    inherits(fit_glm, c("glm", "clogit")),
     is.string(x)
   )
   xs_class <- attr(fit_glm$terms, "dataClasses")
   xs_level <- fit_glm$xlevels
   xs_coef <- summary(fit_glm)$coefficients
-  stats <- c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
-  # Make sure x is not interaction term
+  stats <- if (inherits(fit_glm, "glm")) {
+    c("estimate" = "Estimate", "std_error" = "Std. Error", "pvalue" = "Pr(>|z|)")
+  } else {
+    c("estimate" = "coef", "std_error" = "se(coef)", "pvalue" = "Pr(>|z|)")
+  }
+  # Make sure x is not an interaction term.
   assert_that(x %in% names(xs_class))
   x_sel <- if (xs_class[x] == "numeric") x else paste0(x, xs_level[[x]][-1])
   x_stats <- as.data.frame(xs_coef[x_sel, stats, drop = FALSE], stringsAsFactors = FALSE)
@@ -416,10 +444,21 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
   x_stats$df <- as.list(1)
   if (xs_class[x] == "numeric") {
     x_stats$term <- x
-    x_stats$term_label <- var_labels(fit_glm$data[x], fill = TRUE)
+    x_stats$term_label <- if (inherits(fit_glm, "glm")) {
+      var_labels(fit_glm$data[x], fill = TRUE)
+    } else {
+      # We just fill in here with the `term` itself as we don't have the data available.
+      x
+    }
     x_stats$is_variable_summary <- FALSE
     x_stats$is_term_summary <- TRUE
   } else {
+    assert_that(
+      inherits(fit_glm, "glm"),
+      msg = "for non-numeric variables only glm models are supported"
+    )
+    # The reason is that we don't have the original data set in the `clogit` object
+    # and therefore cannot determine the `x_numbers` here.
     x_numbers <- table(fit_glm$data[[x]])
     x_stats$term <- xs_level[[x]][-1]
     x_stats$term_label <- h_simple_term_labels(x_stats$term, x_numbers)
@@ -446,7 +485,11 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
     x_stats <- rbind(x_main, x_stats)
   }
   x_stats$variable <- x
-  x_stats$variable_label <- var_labels(fit_glm$data[x], fill = TRUE)
+  x_stats$variable_label <- if (inherits(fit_glm, "glm")) {
+    var_labels(fit_glm$data[x], fill = TRUE)
+  } else {
+    x
+  }
   x_stats$interaction <- ""
   x_stats$interaction_label <- ""
   x_stats$reference <- ""
@@ -678,10 +721,10 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #' h_logistic_simple_terms("AGE", mod1)
 #'
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
-  assert_that(
-    "glm" %in% class(fit_glm),
-    fit_glm$family$family == "binomial"
-  )
+  assert_that(inherits(fit_glm, c("glm", "clogit")))
+  if (inherits(fit_glm, "glm")) {
+    assert_that(fit_glm$family$family == "binomial")
+  }
   terms_name <- attr(terms(fit_glm), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]

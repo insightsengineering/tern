@@ -336,7 +336,6 @@ d_rsp_subgroups_colvars <- function(vars,
     # it is not acutally used in the tabulation.
     # Variables used in the tabulation are lcl and ucl, see `a_response_subgroups` for details.
     colvars[colvars == "ci"] <- "lcl"
-
   }
 
   if ("pval" %in% colvars) {
