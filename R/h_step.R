@@ -222,8 +222,8 @@ h_step_rsp_formula <- function(variables,
 
 #' @describeIn h_step estimates the model with `formula` built based on
 #'   `variables` in `data` for a given `subset` and `control` parameters for the
-#'   logistic regression, and returns a matrix of number of observations `n`,
-#'   `events` as well as log hazard ratio estimates `loghr`, standard error `se`
+#'   logistic regression, and returns a matrix of number of observations `n`
+#'   as well as log odds ratio estimates `logor`, standard error `se`
 #'   and Wald confidence interval bounds `ci_lower` and `ci_upper`. One row is
 #'   included here for each biomarker value in `x`.
 #' @param formula (`formula`)\cr the regression model formula.

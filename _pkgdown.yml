@@ -3,6 +3,7 @@ url: https://insightsengineering.github.io/tern
 template:
   params:
     bootswatch: cerulean
+    ganalytics: "UA-125641273-1"
 
 navbar:
   right:
@@ -121,6 +122,7 @@ reference:
        - estimate_incidence_rate
        - estimate_multinomial_response
        - estimate_odds_ratio
+       - response_biomarkers_subgroups
        - summarize_ancova
        - summarize_change
        - summarize_colvars
@@ -208,6 +210,10 @@ reference:
       - h_step_survival_est
       - h_surv_to_coxreg_variables
       - h_tab_surv_one_biomarker
+      - h_response_biomarkers_subgroups
+      - h_tab_one_biomarker
+      - summary_formats
+      - summary_labels
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
@@ -239,6 +245,7 @@ reference:
     contents:
       - g_forest
       - g_km
+      - g_lineplot
       - g_waterfall
       - starts_with("g_mmrm")
       - g_ipp
@@ -252,6 +259,7 @@ reference:
       - h_col_counts
       - h_row_counts
       - h_row_fractions
+      - h_format_row
       - has_tabletree_colnames
       - is_leaf_table
       - h_content_first_row
@@ -354,7 +362,6 @@ reference:
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
-      - check_col_by_factor
       - check_same_n
       - check_mmrm_vars
       - build_mmrm_formula
