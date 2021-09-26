@@ -30,8 +30,7 @@
 #' The names of the `list` elements refer to the names of the statistics
 #' and are used by `mid`, `interval`, `table`.
 #' It must be able to accept as input a vector with data for which statistics are computed.
-#' @param ... \cr
-#' optional arguments to `sfun`.
+#' @param ... optional arguments to `sfun`.
 #' @param mid_type (`character` scalar) \cr
 #' controls the type of the `mid` plot, it can be point (`p`), line (`l`), or point and line (`pl`).
 #' @param mid_point_size (`integer` or `double`) \cr
