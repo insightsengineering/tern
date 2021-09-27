@@ -44,8 +44,8 @@ library(tern)
 library(dplyr)
 library(stringr)
 
-adsl <- haven::read_sas(data_file = "/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adsl.sas7bdat")
-adae <- haven::read_sas(data_file = "/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adae.sas7bdat")
+adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
+adae <- haven::read_sas(data_file = "adae.sas7bdat")
 
 adsl <- filter(adsl, SAFFL == "Y")
 adae<-filter(adae,(!is.na(AEBODSYS) |  !is.na(AEDECOD)) & ANL01FL=="Y" & SAFFL=="Y")

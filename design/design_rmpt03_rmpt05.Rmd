@@ -41,9 +41,6 @@ packageVersion("rtables")
 ## Data for examples
 
 ```{r data, results = "asis", eval = TRUE}
-
-pth <- "/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/efficacy/task01/outdata_vad/"
-
 adex <- haven::read_sas(paste0(pth, "adex.sas7bdat"))
 adsl <- haven::read_sas(paste0(pth, "adsl.sas7bdat"))
 
