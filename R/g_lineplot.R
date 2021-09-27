@@ -483,7 +483,7 @@ h_format_row <- function(x, format, labels = NULL) {
 
 #' Control Function for g_lineplot Function
 #'
-#' Keeps default values for a vector of variables for g_lineplot function.
+#' Default values for `variables` parameter in [tern::g_lineplot] function.
 #'
 #' @return A character vector with names of variables.
 #' @export
