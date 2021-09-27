@@ -48,7 +48,7 @@ adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
 adae <- haven::read_sas(data_file = "adae.sas7bdat")
 
 adsl <- filter(adsl, SAFFL == "Y")
-adae<-filter(adae,(!is.na(AEBODSYS) |  !is.na(AEDECOD)) & ANL01FL=="Y" & SAFFL=="Y")
+adae <-filter(adae, (!is.na(AEBODSYS) |  !is.na(AEDECOD)) & ANL01FL=="Y" & SAFFL=="Y")
 
 adae <- df_explicit_na(adae)
 adsl <- df_explicit_na(adsl)
@@ -102,7 +102,7 @@ adae <- adae %>%
   )
 
 
-not_resolved <-adae %>% 
+not_resolved <- adae %>% 
   filter(AEOUT != "RECOVERED/RESOLVED" & AEOUT != "FATAL") %>% 
   select(unique("USUBJID")) %>% mutate(
     NOT_RESOLVED = "Y"
@@ -113,7 +113,6 @@ adae <- adae %>%
     ALL_RESOLVED = is.na(NOT_RESOLVED),
     NOT_RESOLVED = !is.na(NOT_RESOLVED)
   ) %>%
-    
   var_relabel(
     ALL_RESOLVED = "Total number of patients with all non-fatal AEs resolved",
     NOT_RESOLVED = "Total number of patients with at least one non-fatal unresolved or ongoing AE"
