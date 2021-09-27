@@ -127,7 +127,7 @@ summarize_patients_exposure_in_cols <- function(lyt,
       make_afun(
         s_count_patients_exposure_in_cols,
         .stats = stat,
-        .formats = ifelse (stat == "n_patients", "xx (xx.x%)", "xx")
+        .formats = ifelse(stat == "n_patients", "xx (xx.x%)", "xx")
       )
 
     },
@@ -172,8 +172,12 @@ result
 ### Approach by using `analyze_colvars`
 
 ``` {r}
-colfuns <- list(function(x, .N_col, labelstr) in_rows( " " = rcell(c(length(unique(x)), length(unique(x))/.N_col), format = "xx (xx.x%)")),
-                function(x, labelstr) in_rows(" " = sum(x), .formats = "xx"))
+colfuns <- list(
+  function(x, .N_col, labelstr) in_rows( " " = rcell(
+    c(length(unique(x)), length(unique(x))/.N_col), format = "xx (xx.x%)"
+  )),
+  function(x, labelstr) in_rows(" " = sum(x), .formats = "xx")
+)
 
 l <- basic_table() %>%
     split_cols_by("SEX", split_fun = add_overall_level("Total", first = FALSE)) %>%
