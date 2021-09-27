@@ -58,7 +58,7 @@ mutate(SEX = factor(case_when(
   )))
 
 
-adsl_f <- adsl %>% 
+adsl_f <- adsl %>%
   filter(adsl$SAFFL == "Y") %>%
   mutate(SEX = factor(case_when(
     SEX == "F" ~ "Female",
@@ -72,16 +72,14 @@ adsl_f <- adsl %>%
 
 ```{r}
 
-s_count_patients_exposure_in_cols <- function(df, 
-                                              .var = "AVAL" ,
+s_count_patients_exposure_in_cols <- function(df,
+                                              .var = "AVAL",
                                               id = "USUBJID",
                                               labelstr = "",
                                               .N_col,
                                               custom_label = NULL
-)
-  
-{
-   
+) {
+
   assert_that(
     is.data.frame(df),
     is.string(id),
@@ -97,7 +95,7 @@ s_count_patients_exposure_in_cols <- function(df,
   } else {
     "Total patients numbers/person time"
   }
-  
+
   n_patients <- with_label(s_num_patients_content(df = df, .N_col, .var = id, labelstr = "")$unique, row_label)
   
   sum_exposure <- with_label(sum(df[[.var]]),row_label)
