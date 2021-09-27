@@ -48,7 +48,7 @@ adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
 adae <- haven::read_sas(data_file = "adae.sas7bdat")
 
 adsl <- filter(adsl, SAFFL == "Y")
-adae <-filter(adae, (!is.na(AEBODSYS) |  !is.na(AEDECOD)) & ANL01FL=="Y" & SAFFL=="Y")
+adae <-filter(adae, (!is.na(AEBODSYS) | !is.na(AEDECOD)) & ANL01FL == "Y" & SAFFL == "Y")
 
 adae <- df_explicit_na(adae)
 adsl <- df_explicit_na(adsl)
@@ -101,10 +101,10 @@ adae <- adae %>%
     RELSER = "No. of patients with serious, related AE"
   )
 
-
-not_resolved <- adae %>% 
-  filter(AEOUT != "RECOVERED/RESOLVED" & AEOUT != "FATAL") %>% 
-  select(unique("USUBJID")) %>% mutate(
+not_resolved <- adae %>%
+  filter(AEOUT != "RECOVERED/RESOLVED" & AEOUT != "FATAL") %>%
+  select(unique("USUBJID")) %>% 
+  mutate(
     NOT_RESOLVED = "Y"
   )
 adae <- adae %>%
@@ -125,11 +125,10 @@ colnames(df_max) <- c("USUBJID", "WTOXGR")
 adae <- adae %>%
   left_join(df_max, by = c("USUBJID")) %>%
   mutate(
-    WTOXGR = factor(WTOXGR, levels = c("1", "2", "3", "4", "5")),
-    
+    WTOXGR = factor(WTOXGR, levels = c("1", "2", "3", "4", "5"))
   ) %>%
   mutate(
-    WTOXGR = forcats::fct_recode(WTOXGR, 
+    WTOXGR = forcats::fct_recode(WTOXGR,
                                  "Grade 1" = "1",
                                  "Grade 2" = "2",
                                  "Grade 3" = "3",
@@ -142,7 +141,7 @@ adae <- adae %>%
   )
 
 
-aesi_vars <- c(  "WD","DSM", "CONTRT","ALL_RESOLVED","NOT_RESOLVED","SER","REL" )
+aesi_vars <- c("WD", "DSM", "CONTRT", "ALL_RESOLVED", "NOT_RESOLVED", "SER", "REL" )
 ```
 
 ##New function to summarize grades and display labels
