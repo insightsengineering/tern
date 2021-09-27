@@ -9,7 +9,7 @@
 #'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
 #'
-#' @return A list of components with the same names as the arguments
+#' @return A list of components with the same names as the arguments.
 #' @export
 #'
 control_summarize_vars <- function(conf_level = 0.95,
