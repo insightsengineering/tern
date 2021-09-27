@@ -38,7 +38,7 @@ Imports:
   rlang,
   scales,
   stats,
-  survival,
+  survival (>= 3.2-13),
   utils,
   utils.nest (>= 0.2.11),
   forcats,
