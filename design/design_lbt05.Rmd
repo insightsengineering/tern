@@ -48,9 +48,12 @@ adsl <- haven::read_sas(paste0(pth, "adsl.sas7bdat"))
 adsl <- df_explicit_na(adsl)
 adlb <- df_explicit_na(adlb)
 
-#Important points for understanding preprocessing steps: 
-#1. “single, not last” and “last or replicated” categories should be mutually exclusive. If a patient has abonormalities that meet both the "single, not last" and "last or replicated" criteria, then the patient will be counted only under the "last or replicated" category.
-# Hence, in order the patient not to be considered in "single", when is "last or replicated" we are creating AVALCAT1_NUM, and using this variable to later create the final AVALCAT1_FL analysis variable. 
+# Important points for understanding preprocessing steps:
+# 1. “single, not last” and “last or replicated” categories should be mutually exclusive. If a patient has abonormalities
+# that meet both the "single, not last" and "last or replicated" criteria, then the patient will be counted only under 
+# the "last or replicated" category.
+# Hence, in order the patient not to be considered in "single", when is "last or replicated" we are creating 
+# AVALCAT1_NUM, and using this variable to later create the final AVALCAT1_FL analysis variable. 
 
 
 adlb_f <-
@@ -81,12 +84,12 @@ adlb_f <-
       AVALCAT1_NUM == 3 ~ "Last or replicated",
       TRUE ~ "<Missing>"
     )
-  ) 
+  )
 
 adsl_f <- adsl %>% filter(SAFFL == "Y")
 
 adsl_f <- df_explicit_na(adsl)
-adlb_f <- df_explicit_na(adlb_f) 
+adlb_f <- df_explicit_na(adlb_f)
 ```
 
 ## New Tern function
@@ -94,12 +97,11 @@ adlb_f <- df_explicit_na(adlb_f)
 ```{r}
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1_FL",
-                                       abnormal = c(Low= "low", High = "high"),
+                                       abnormal = c(Low = "low", High = "high"),
                                        variables = list(id = "USUBJID", direction = "DIRECTION")) {
-  #abnormal <- match.arg(abnormal)
+
   assert_that(
     is.string(.var),
-    #is.string(abnormal),
     is.list(variables),
     all(names(variables) %in% c("id", "direction")),
     is_df_with_variables(df, c(aval=.var, variables)),

@@ -267,8 +267,7 @@ lyt_adae <- basic_table() %>%
   ) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = var_labels(adae[, aesi_vars]),
-    
+    flag_variables = var_labels(adae[, aesi_vars])
   )
 result_adae <- build_table(lyt_adae, df = adae_smq, alt_counts_df = adsl)
 result_adae
