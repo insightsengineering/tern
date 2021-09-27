@@ -51,15 +51,13 @@ Imports:
   viridisLite,
   tibble,
   broom,
-  testthat (>= 2.0),
-  tidyselect,
-  data.table, 
   stringr,
   tidyr
 Suggests:
   lattice,
   knitr,
   Matrix,
+  testthat (>= 2.0),
   test.nest (>= 0.2.11),
   rmarkdown,
   scda (>= 0.1.1),
