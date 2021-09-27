@@ -48,7 +48,7 @@ adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
 adae <- haven::read_sas(data_file = "adae.sas7bdat")
 
 adsl <- filter(adsl, SAFFL == "Y")
-adae <-filter(adae, (!is.na(AEBODSYS) | !is.na(AEDECOD)) & ANL01FL == "Y" & SAFFL == "Y")
+adae <- filter(adae, (!is.na(AEBODSYS) | !is.na(AEDECOD)) & ANL01FL == "Y" & SAFFL == "Y")
 
 adae <- df_explicit_na(adae)
 adsl <- df_explicit_na(adsl)
