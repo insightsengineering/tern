@@ -10,5 +10,5 @@ control_lineplot_vars()
 A character vector with names of variables.
 }
 \description{
-Default values for \code{variables} parameter in \link{g_lineplot} function.
+Default values for \code{variables} parameter in \code{g_lineplot} function.
 }
