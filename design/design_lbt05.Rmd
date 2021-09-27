@@ -49,11 +49,11 @@ adsl <- df_explicit_na(adsl)
 adlb <- df_explicit_na(adlb)
 
 # Important points for understanding preprocessing steps:
-# 1. “single, not last” and “last or replicated” categories should be mutually exclusive. If a patient has abonormalities
-# that meet both the "single, not last" and "last or replicated" criteria, then the patient will be counted only under 
-# the "last or replicated" category.
-# Hence, in order the patient not to be considered in "single", when is "last or replicated" we are creating 
-# AVALCAT1_NUM, and using this variable to later create the final AVALCAT1_FL analysis variable. 
+# 1. “single, not last” and “last or replicated” categories should be mutually exclusive. If a patient has
+# abonormalities that meet both the "single, not last" and "last or replicated" criteria, then the patient will be
+# counted only under the "last or replicated" category.
+# Hence, in order the patient not to be considered in "single", when is "last or replicated" we are creating
+# AVALCAT1_NUM, and using this variable to later create the final AVALCAT1_FL analysis variable.
 
 
 adlb_f <-
@@ -104,7 +104,7 @@ s_count_abnormal_by_marked <- function(df,
     is.string(.var),
     is.list(variables),
     all(names(variables) %in% c("id", "direction")),
-    is_df_with_variables(df, c(aval=.var, variables)),
+    is_df_with_variables(df, c(aval = .var, variables)),
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]])
   )
@@ -199,7 +199,7 @@ lyt <- basic_table() %>%
   split_rows_by("PARAM", split_fun = split_fun) %>%
   summarize_num_patients(var = "USUBJID",
                          .stats = "unique_count") %>%
-  count_abnormal_by_marked(var = "AVALCAT1_FL" ,
+  count_abnormal_by_marked(var = "AVALCAT1_FL",
                               abnormal = c(Low = "low", High = "high"),
                               variables = list(id = "USUBJID", direction = "DIRECTION"))
 
