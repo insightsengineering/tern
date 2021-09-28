@@ -41,9 +41,6 @@ packageVersion("rtables")
 ## Data for examples
 
 ```{r data, results = "asis", eval = TRUE}
-
-pth <- "/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/efficacy/task01/outdata_vad/"
-
 adex <- haven::read_sas(paste0(pth, "adex.sas7bdat"))
 adsl <- haven::read_sas(paste0(pth, "adsl.sas7bdat"))
 
@@ -52,8 +49,8 @@ adsl <- haven::read_sas(paste0(pth, "adsl.sas7bdat"))
 adex <- df_explicit_na(adex)
 adsl <- df_explicit_na(adsl)
 
-adex_f <- adex %>% filter(PARAMCD == "TDURD" & 
-                            PARCAT2 == "MPDL3280A/PLACEBO INFUSION" & 
+adex_f <- adex %>% filter(PARAMCD == "TDURD" &
+                            PARCAT2 == "MPDL3280A/PLACEBO INFUSION" &
                             SAFFL == "Y") %>%
 mutate(SEX = factor(case_when(
     SEX == "F" ~ "Female",
@@ -61,7 +58,8 @@ mutate(SEX = factor(case_when(
   )))
 
 
-adsl_f <- adsl %>% filter(adsl$SAFFL == "Y") %>%
+adsl_f <- adsl %>%
+  filter(adsl$SAFFL == "Y") %>%
   mutate(SEX = factor(case_when(
     SEX == "F" ~ "Female",
     SEX == "M" ~ "Male"
@@ -74,16 +72,14 @@ adsl_f <- adsl %>% filter(adsl$SAFFL == "Y") %>%
 
 ```{r}
 
-s_count_patients_exposure_in_cols <- function(df, 
-                                              .var = "AVAL" ,
+s_count_patients_exposure_in_cols <- function(df, #nolint
+                                              .var = "AVAL",
                                               id = "USUBJID",
                                               labelstr = "",
-                                              .N_col,
+                                              .N_col, #nolint
                                               custom_label = NULL
-)
-  
-{
-   
+) {
+
   assert_that(
     is.data.frame(df),
     is.string(id),
@@ -91,7 +87,7 @@ s_count_patients_exposure_in_cols <- function(df,
     is.null(custom_label) || is.string(custom_label),
     all(c(.var, id) %in% names(df))
   )
-  
+
   row_label <- if (labelstr != "") {
     labelstr
   } else if (!is.null(custom_label)) {
@@ -99,19 +95,19 @@ s_count_patients_exposure_in_cols <- function(df,
   } else {
     "Total patients numbers/person time"
   }
-  
+
   n_patients <- with_label(s_num_patients_content(df = df, .N_col, .var = id, labelstr = "")$unique, row_label)
-  
-  sum_exposure <- with_label(sum(df[[.var]]),row_label)
-  
-  y <- list(n_patients,sum_exposure)
+
+  sum_exposure <- with_label(sum(df[[.var]]), row_label)
+
+  y <- list(n_patients, sum_exposure)
   names(y) <- c("n_patients", "sum_exposure")
   y
-  
+
 }
 
 
-summarize_patients_exposure_in_cols <- function(lyt,
+summarize_patients_exposure_in_cols <- function(lyt, #nolint
                                                 var,
                                                 id = "USUBJID",
                                                 ...,
@@ -131,7 +127,7 @@ summarize_patients_exposure_in_cols <- function(lyt,
       make_afun(
         s_count_patients_exposure_in_cols,
         .stats = stat,
-        .formats = ifelse (stat == "n_patients", "xx (xx.x%)", "xx")
+        .formats = ifelse(stat == "n_patients", "xx (xx.x%)", "xx")
       )
 
     },
@@ -176,8 +172,12 @@ result
 ### Approach by using `analyze_colvars`
 
 ``` {r}
-colfuns <- list(function(x, .N_col, labelstr) in_rows( " " = rcell(c(length(unique(x)), length(unique(x))/.N_col), format = "xx (xx.x%)")),
-                function(x, labelstr) in_rows(" " = sum(x), .formats = "xx"))
+colfuns <- list(
+  function(x, .N_col, labelstr) in_rows(" " = rcell( #nolint
+    c(length(unique(x)), length(unique(x)) / .N_col), format = "xx (xx.x%)"
+  )),
+  function(x, labelstr) in_rows(" " = sum(x), .formats = "xx")
+)
 
 l <- basic_table() %>%
     split_cols_by("SEX", split_fun = add_overall_level("Total", first = FALSE)) %>%
