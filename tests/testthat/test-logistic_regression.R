@@ -80,7 +80,8 @@ test_that("fit_logistic works with different response definition", {
 })
 
 test_that("fit_logistic works with a single stratification variable", {
-  data <- adrs_example
+  # sample because survival::clogit used to give unstable results for sorted data
+  data <- adrs_example[sample(nrow(adrs_example), nrow(adrs_example)), ]
   result <- expect_silent(fit_logistic(
     data,
     variables = list(
