@@ -72,11 +72,11 @@ adsl_f <- adsl %>%
 
 ```{r}
 
-s_count_patients_exposure_in_cols <- function(df,
+s_count_patients_exposure_in_cols <- function(df, #nolint
                                               .var = "AVAL",
                                               id = "USUBJID",
                                               labelstr = "",
-                                              .N_col,
+                                              .N_col, #nolint
                                               custom_label = NULL
 ) {
 
@@ -107,7 +107,7 @@ s_count_patients_exposure_in_cols <- function(df,
 }
 
 
-summarize_patients_exposure_in_cols <- function(lyt,
+summarize_patients_exposure_in_cols <- function(lyt, #nolint
                                                 var,
                                                 id = "USUBJID",
                                                 ...,
@@ -173,7 +173,7 @@ result
 
 ``` {r}
 colfuns <- list(
-  function(x, .N_col, labelstr) in_rows(" " = rcell(
+  function(x, .N_col, labelstr) in_rows(" " = rcell( #nolint
     c(length(unique(x)), length(unique(x)) / .N_col), format = "xx (xx.x%)"
   )),
   function(x, labelstr) in_rows(" " = sum(x), .formats = "xx")

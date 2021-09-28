@@ -147,7 +147,7 @@ aesi_vars <- c("WD", "DSM", "CONTRT", "ALL_RESOLVED", "NOT_RESOLVED", "SER", "RE
 ##New function to summarize grades and display labels
 
 ```{r}
-count_occurrences_by_grade_label <- function(lyt,
+count_occurrences_by_grade_label <- function(lyt, #nolint
                                              var,
                                              var_labels = var,
                                              ...,
