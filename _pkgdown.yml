@@ -49,6 +49,7 @@ reference:
       - s_count_occurrences
       - s_count_occurrences_by_grade
       - s_count_patients_with_event
+      - s_count_patients_with_flags
       - s_count_patients_and_multiple_events
       - s_count_patients_sum_exposure
       - s_count_values
@@ -87,6 +88,7 @@ reference:
        - a_count_occurrences
        - a_count_occurrences_by_grade
        - a_count_patients_with_event
+       - a_count_patients_with_flags
        - a_coxph_pairwise
        - a_mmrm_lsmeans
        - a_mmrm_lsmeans_single
