@@ -18,6 +18,7 @@
 * Added option to also convert logical variables to factor variables in `df_explicit_na`.
 * Added functions to estimate continuous biomarker effects across multiple subgroups for survival and binary response endpoints, which can be used to produce corresponding forest plots, see `survival_biomarkers_subgroups` and `response_biomarkers_subgroups`.
 * Fixed `day2month` and `month2day` to work with NA data.
+* Added `na_level` argument to `count_abnormal_by_baseline`.
 
 # tern 0.7.4
 
