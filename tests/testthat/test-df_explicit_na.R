@@ -217,6 +217,18 @@ test_that("Check Errors", {
   expect_error(df_explicit_na(my_data, omit_columns = 1), "character")
   expect_error(df_explicit_na(my_data, na_level = NULL), "character")
   expect_error(df_explicit_na(c("A")), "data.frame")
-  expect_error(df_explicit_na(my_data, omit_columns = names(my_data)), "character")
+
+})
+
+test_that("df_explicit_na just returns unmodified data if all columns are omitted", {
+
+  my_data <- example_data
+  result <- expect_silent(df_explicit_na(
+    data = my_data,
+    omit_columns = names(my_data),
+    char_as_factor = FALSE,
+    logical_as_factor = TRUE
+  ))
+  expect_identical(result, my_data)
 
 })
