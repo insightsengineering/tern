@@ -89,7 +89,7 @@ controls the type of the \code{mid} plot, it can be point (\code{p}), line (\cod
 \item{mid_point_size}{(\code{integer} or \code{double}) \cr
 controls the font size of the point for \code{mid} plot.}
 
-\item{position}{(\code{character} or \code{call})\cr
+\item{position}{(\code{character} or \code{call}) \cr
 geom element position adjustment, either as a string, or the result of a call to a position adjustment function.}
 
 \item{legend_title}{(\code{character} string) \cr legend title.}

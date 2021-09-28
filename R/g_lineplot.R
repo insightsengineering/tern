@@ -42,7 +42,7 @@
 #' controls the type of the `mid` plot, it can be point (`p`), line (`l`), or point and line (`pl`).
 #' @param mid_point_size (`integer` or `double`) \cr
 #' controls the font size of the point for `mid` plot.
-#' @param position (`character` or `call`)\cr
+#' @param position (`character` or `call`) \cr
 #' geom element position adjustment, either as a string, or the result of a call to a position adjustment function.
 #' @param legend_title (`character` string) \cr legend title.
 #' @param legend_position (`character`) \cr
