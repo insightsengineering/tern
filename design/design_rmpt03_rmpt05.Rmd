@@ -173,8 +173,8 @@ result
 
 ``` {r}
 colfuns <- list(
-  function(x, .N_col, labelstr) in_rows( " " = rcell(
-    c(length(unique(x)), length(unique(x))/.N_col), format = "xx (xx.x%)"
+  function(x, .N_col, labelstr) in_rows(" " = rcell(
+    c(length(unique(x)), length(unique(x)) / .N_col), format = "xx (xx.x%)"
   )),
   function(x, labelstr) in_rows(" " = sum(x), .formats = "xx")
 )
