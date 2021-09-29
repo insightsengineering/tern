@@ -112,7 +112,8 @@
 #'
 #' # Mean with CI, table and customized confidence level
 #' g_lineplot(
-#'   adlb, adsl, table = c("n", "mean", "mean_ci"), control = list(conf_level = 0.80),
+#'   adlb, adsl, table = c("n", "mean", "mean_ci"),
+#'   control = list(conf_level = 0.80, quantiles = c(0.25, 0.75), quantile_type = 2),
 #'   title = "Plot of Mean and 80% Confidence Limits by Visit"
 #' )
 #'

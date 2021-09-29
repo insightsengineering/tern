@@ -58,7 +58,7 @@ test_that("tidy.step gives expected warnings when there are NAs in y variables",
   step_matrix <- structure(
     cbind(loghr = c(1, 2), ci_lower = c(NA, 1), ci_upper = c(3, 6)),
     class = c("step", "matrix"),
-    control = list(conf_level = 0.9),
+    control = list(conf_level = 0.9, quantiles = c(0.25, 0.75), quantile_type = 2),
     variables = list(biomarker = "bla")
   )
   expect_warning(
@@ -75,7 +75,7 @@ test_that("tidy.step gives expected warnings when there are very large values in
   step_matrix <- structure(
     cbind(loghr = c(1, 2), ci_lower = c(1e100, 1), ci_upper = c(3, 6)),
     class = c("step", "matrix"),
-    control = list(conf_level = 0.9),
+    control = list(conf_level = 0.9, quantiles = c(0.25, 0.75), quantile_type = 2),
     variables = list(biomarker = "bla")
   )
   expect_warning(
