@@ -4,10 +4,10 @@
 \alias{try_fun}
 \title{Make a safe evaluation of any function}
 \usage{
-try_fun(FUN, ..., timeout = 60 * 5)
+try_fun(fun, ..., timeout = 60 * 5)
 }
 \arguments{
-\item{FUN}{(\code{character})\cr function name, without \code{::} pattern.}
+\item{fun}{(\code{character})\cr function name, without \code{::} pattern.}
 
 \item{...}{(\code{character})\cr function arguments.}
 
