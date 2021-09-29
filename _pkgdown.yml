@@ -214,6 +214,7 @@ reference:
       - h_tab_surv_one_biomarker
       - h_response_biomarkers_subgroups
       - h_tab_one_biomarker
+      - try_fun
       - summary_formats
       - summary_labels
 
