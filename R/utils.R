@@ -413,7 +413,7 @@ try_fun <- function(fun, ..., timeout = 60 * 5) {
   on.exit(setTimeLimit(elapsed = Inf, transient = FALSE))
   res <- try(eval(rlang::call2(fun, ...)), silent = TRUE)
   if (inherits(res, "try-error")) {
-    stop(sprintf("%s is not evaluated properly.", fun))
+    stop(sprintf("%s is not evaluated properly. %s", fun, attr(res, "condition")$message))
   } else {
     res
   }
