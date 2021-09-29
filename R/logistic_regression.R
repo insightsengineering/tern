@@ -91,6 +91,7 @@ fit_logistic <- function(data,
     is.string(response_definition),
     grepl("response", response_definition)
   )
+
   response_definition <- sub(
     pattern = "response",
     replacement = variables$response,
