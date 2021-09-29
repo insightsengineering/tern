@@ -388,3 +388,31 @@ n_available <- function(x) {
 reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
   do.call(var_relabel, c(list(x = x), as.list(varlables), list(...)))
 }
+
+#' Make a safe evaluation of any function
+#'
+#' Small utility function for better safe evaluation.
+#'
+#' @param FUN (`character`)\cr function name, without `::` pattern.
+#' @param ... (`character`)\cr function arguments.
+#' @param timeout (`numeric`)\cr specifying the maximum number of seconds the expression is allowed to run
+#'  before being interrupted by the timeout. By default it is 5 minutes.
+#'
+#' @return Function assessment or an error.
+#'
+#' @examples
+#' library(survival)
+#' try_fun("clogit", I(Ozone > 140 ~ Solar.R), airquality))
+#'
+#' try_fun("mean", 10)
+#'
+try_fun <- function(FUN, ..., timeout = 60*5) {
+  setTimeLimit(elapsed = timeout, transient = TRUE)
+  on.exit(setTimeLimit(elapsed = Inf, transient = FALSE))
+  res <- try(eval(rlang::call2(FUN, ...)), silent = TRUE)
+  if (inherits(res, "try-error")) {
+    stop(sprintf("%s is not evaluated properly.", FUN))
+  } else {
+    res
+  }
+}

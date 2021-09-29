@@ -260,7 +260,7 @@ h_step_rsp_est <- function(formula,
             formula = formula,
             data = data,
             subset = .subset
-          )
+            )
         }
       },
       warning = function(w) {

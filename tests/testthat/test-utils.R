@@ -697,3 +697,17 @@ test_that("range_noinf for DOUBLE [with zero-len data, with NAs, with Inf] with 
   expect_identical(result, expected)
 
 })
+
+test_that("wrong inputs try_fun", {
+  expect_error(try_fun("FUN_NOTEXISTS", a = 2))
+  expect_error(try_fun("mean", aa = 2))
+})
+
+test_that("too long evaluation try_fun", {
+  expect_error(try_fun("Sys.sleep", 10, timeout = 1))
+})
+
+test_that("correct try_fun", {
+  expect_identical(try_fun("mean", 10), 10)
+  expect_equal(coef(try_fun("clogit", I(Ozone > 140 ~ Solar.R), airquality)), c(Solar.R = 0.00830372))
+})

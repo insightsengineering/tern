@@ -125,7 +125,8 @@ fit_logistic <- function(data,
       family = binomial("logit")
     )
   } else {
-    survival::clogit(
+    try_fun(
+      "clogit",
       formula = formula,
       data = data,
       x = TRUE
