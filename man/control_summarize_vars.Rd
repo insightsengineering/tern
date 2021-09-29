@@ -20,7 +20,7 @@ Default is set to \code{2} as this matches the default quantile algorithm in SAS
 This differs from R's default. See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.}
 }
 \value{
-A list of components with the same names as the arguments
+A list of components with the same names as the arguments.
 }
 \description{
 Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify

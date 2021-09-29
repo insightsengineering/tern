@@ -7,8 +7,7 @@
 g_lineplot(
   df,
   alt_counts_df = NULL,
-  variables = c(x = "AVISIT", y = "AVAL", strata = "ARM", ylab = "PARAMCD", y_unit =
-    "AVALU"),
+  variables = control_lineplot_vars(),
   mid = "mean",
   interval = "mean_ci",
   whiskers = c("mean_ci_lwr", "mean_ci_upr"),
@@ -21,8 +20,13 @@ g_lineplot(
   legend_title = NULL,
   legend_position = "bottom",
   ggtheme = NULL,
+  y_lab = NULL,
+  y_lab_add_paramcd = TRUE,
+  y_lab_add_unit = TRUE,
   title = "Plot of Mean and 95\% Confidence Limits by Visit",
-  subtitle = NULL,
+  subtitle = "",
+  subtitle_add_paramcd = TRUE,
+  subtitle_add_unit = TRUE,
   caption = NULL,
   table_format = tern::summary_formats(),
   table_labels = tern::summary_labels(),
@@ -40,9 +44,11 @@ data set that will be used (only) to counts objects in strata.}
 \itemize{
 \item \code{x}: x-axis variable.
 \item \code{y}: y-axis variable.
-\item \code{strata}: grouping variable, i.e. treatment arm. Can be \code{NULL}.
-\item \code{ylab}: y-axis label variable. Can be \code{NULL}.
-\item \code{y_unit}: variable with units of \code{y}, units will added to the y-axis label. Can be \code{NULL}.
+\item \code{strata}: grouping variable, i.e. treatment arm. Can be \code{NA} to indicate lack of groups.
+\item \code{paramcd}: the variable name for parameter's code. Used for y-axis label and plot's subtitle.
+Can be \code{NA} if paramcd is not to be added to the y-axis label or subtitle.
+\item \code{y_unit}: variable with units of \code{y}. Used for y-axis label and plot's subtitle.
+Can be \code{NA} if y unit is not to be added to the y-axis label or subtitle.
 }}
 
 \item{mid}{(\code{character} or \code{NULL}) \cr
@@ -78,7 +84,7 @@ controls the type of the \code{mid} plot, it can be point (\code{p}), line (\cod
 \item{mid_point_size}{(\code{integer} or \code{double}) \cr
 controls the font size of the point for \code{mid} plot.}
 
-\item{position}{(\code{character} or \code{call})\cr
+\item{position}{(\code{character} or \code{call}) \cr
 geom element position adjustment, either as a string, or the result of a call to a position adjustment function.}
 
 \item{legend_title}{(\code{character} string) \cr legend title.}
@@ -89,15 +95,30 @@ the position of the plot legend (\code{none}, \code{left}, \code{right}, \code{b
 \item{ggtheme}{(\code{theme}) \cr
 a graphical theme as provided by \code{ggplot2} to control outlook of the plot.}
 
+\item{y_lab}{(\code{character} scalar) \cr y-axis label.
+If it equals to \code{NULL}, then no label will be added.}
+
+\item{y_lab_add_paramcd}{(\code{logical} scalar) \cr
+should paramcd, i.e. \code{unique(df[[variables["paramcd"]]])} be added to the y-axis label \code{y_lab}?}
+
+\item{y_lab_add_unit}{(\code{logical} scalar) \cr
+should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the y-axis label \code{y_lab}?}
+
 \item{title}{(\code{character} scalar) \cr plot title.}
 
 \item{subtitle}{(\code{character} scalar) \cr plot subtitle.}
+
+\item{subtitle_add_paramcd}{(\code{logical} scalar) \cr
+should paramcd, i.e. \code{unique(df[[variables["paramcd"]]])} be added to the plot's subtitle \code{subtitle}?}
+
+\item{subtitle_add_unit}{(\code{logical} scalar) \cr
+should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the plot's subtitle \code{subtitle}?}
 
 \item{caption}{(\code{character} scalar) \cr optional caption below the plot.}
 
 \item{table_format}{(named \code{character} or \code{NULL}) \cr
 format patterns for descriptive statistics used in the (optional) table appended to the plot.
-It is passed directly to the \code{\link[tern]{h_format_row}} function through the \code{format} parameter.
+It is passed directly to the \code{h_format_row} function through the \code{format} parameter.
 Names of \code{table_format} must match the names of statistics returned by \code{sfun} function.}
 
 \item{table_labels}{(named \code{character} or \code{NULL}) \cr
@@ -117,17 +138,15 @@ depending on whether or not a table is appended to the plot.
 Line plot with the optional table
 }
 \examples{
-
+adsl <- scda::synthetic_cdisc_data("latest")$adsl
 adlb <- scda::synthetic_cdisc_data("latest")$adlb
 adlb <- dplyr::filter(adlb, ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 
-adsl <- scda::synthetic_cdisc_data("latest")$adsl
-
 # Mean with CI
-g_lineplot(adlb, adsl, subtitle = "Laboratory Test: ALT")
+g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
 
 # Mean with CI, no stratification
-g_lineplot(adlb, variables = c(x = "AVISIT", y = "AVAL", y_lab = "PARAMCD", y_unit = "AVALU"))
+g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
 
 # Mean, upper whisker of CI, no strata counts N
 g_lineplot(adlb, whiskers = "mean_ci_upr",
@@ -142,7 +161,8 @@ g_lineplot(adlb, adsl, mid = "median", interval = "median_ci",
 
 # Mean, +/- SD
 g_lineplot(adlb, adsl, interval = "mean_sdi", whiskers = c("mean_sdi_lwr", "mean_sdi_upr"),
-  title = "Plot of Median +/- SD by Visit")
+  title = "Plot of Median +/- SD by Visit"
+)
 
 # Mean with CI plot with stats table
 g_lineplot(adlb, adsl, table = c("n", "mean", "mean_ci"))

@@ -1,6 +1,5 @@
 # tern 0.7.5
-
-* Added `g_lineplot` plot function and removed `g_summary_by`.
+* Added `g_lineplot` plot function, including new `h_format_row` helper function and `control_lineplot_vars` function. Removed `g_summary_by`.
 * Added design doc for MNG01 plot.
 * Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each and every element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
 * Parametrized `stat_mean_ci` and `stat_median_ci` so that they may return different outputs.
