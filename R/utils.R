@@ -401,12 +401,14 @@ reapply_varlabels <- function(x, varlables, ...) { # nolintr # nousage
 #' @return Function assessment or an error.
 #'
 #' @examples
+#' \dontrun{
 #' library(survival)
-#' try_fun("clogit", I(Ozone > 140 ~ Solar.R), airquality))
+#' try_fun("clogit", I(Ozone > 140) ~ Solar.R, airquality)
 #'
 #' try_fun("mean", 10)
+#' }
 #'
-try_fun <- function(FUN, ..., timeout = 60*5) {
+try_fun <- function(FUN, ..., timeout = 60 * 5) {
   setTimeLimit(elapsed = timeout, transient = TRUE)
   on.exit(setTimeLimit(elapsed = Inf, transient = FALSE))
   res <- try(eval(rlang::call2(FUN, ...)), silent = TRUE)

@@ -21,9 +21,11 @@ Function assessment or an error.
 Small utility function for better safe evaluation.
 }
 \examples{
+\dontrun{
 library(survival)
-try_fun("clogit", I(Ozone > 140 ~ Solar.R), airquality))
+try_fun("clogit", I(Ozone > 140) ~ Solar.R, airquality)
 
 try_fun("mean", 10)
+}
 
 }
