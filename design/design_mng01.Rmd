@@ -28,6 +28,7 @@ knitr::opts_chunk$set(
 
 ## Configuration
 ```{r setup}
+library(assertthat)
 library(dplyr)
 library(ggplot2)
 library(tern)
@@ -275,7 +276,7 @@ g_lineplot <- function(df, # nolint
 
     df_stats_table <- df_stats_table %>%
       tidyr::pivot_longer(
-        cols = -all_of(c(strata, x)),
+        cols = -c(strata, x),
         names_to = "stat",
         values_to = "value",
         names_ptypes = list(stat = factor(levels = stats_lev))
