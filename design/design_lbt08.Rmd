@@ -29,7 +29,8 @@ adlb <- adlb %>% mutate(
     PARAMCD == "CRP" ~ "L",
     PARAMCD == "IGA" ~ "H"
     )
-  ) %>% filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+  ) %>%
+  filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 ```
 
 
@@ -45,8 +46,7 @@ h_adlb_worsen <- function(
   adlb,
   worst_flag_low = c("WGRLOFL" = "Y"),
   worst_flag_high = c("WGRHIFL" = "Y"),
-  direction_var = "GRADDR"
-){
+  direction_var = "GRADDR") {
 
   assert_that(
     is.string(direction_var),
@@ -74,10 +74,7 @@ h_adlb_worsen <- function(
 
   #select variables of interest
   adlb_f <- adlb[position_satisfy_filters, ] %>%
-    select(tidyselect::all_of(c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR", names(worst_flag), direction_var)))
-  
-  
-  
+    select(tidyselect::all_of(c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR", names(worst_flag), direction_var))) # nolint
 
   #generate subsets for different directionality
   adlb_f_h <- adlb_f[adlb_f[[direction_var]] == "H", ]
@@ -139,7 +136,7 @@ df <- h_adlb_worsen(
    - condition 1 (misisng baseline): patients included in denom who has missing at baseline
    - condition 2 (valid baseline): patients included in denom whose post-baseline grade is worse than baseline grade
 ```{r h_count}
-h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
+h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 
   assert_that(
     is.string(id),
@@ -156,10 +153,10 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
   #obtain directionality
   direction <- unique(df[[direction_var]])
 
-  if (direction == "Low"){
+  if (direction == "Low") {
     grade <- -1:-4
     worst_grade <- -4
-  } else if (direction == "High"){
+  } else if (direction == "High") {
     grade <- 1:4
     worst_grade <- 4
   }
@@ -179,18 +176,18 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
       c(num = num, denom = denom)
     })
   }else{
-    by_grade <- lapply(1, function(i){
+    by_grade <- lapply(1, function(i) {
       c(num = 0, denom = 0)
     })
   }
 
-  names(by_grade) <- as.character(1: length(by_grade))
+  names(by_grade) <- as.character(seq_len(by_grade))
 
   #baseline grade less 4 or missing
   df_temp <- df[df[[baseline_var]] %in% c(0:(worst_grade - sign(worst_grade)), "<Missing>"), ]
 
   #ensure direction
-  df_temp <- df_temp[df_temp[[.var]] %in% grade,]
+  df_temp <- df_temp[df_temp[[.var]] %in% grade, ]
 
   #denom: number of patients with baseline values less than 4 or <missing> and post-baseline in the same direction
   denom <- length(unique(df_temp[, id, drop = TRUE]))
@@ -200,7 +197,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
   df_temp_nm <- df_temp[which(df_temp[[baseline_var]] != "<Missing>"), ]
 
   #condition 2: if post-baseline values are present then post-baseline values must be worse than baseline
-  if (direction == "Low"){
+  if (direction == "Low") {
     con2 <- which(as.numeric(as.character(df_temp_nm[[.var]])) < as.numeric(as.character(df_temp_nm[[baseline_var]])))
   } else {
     con2 <- which(as.numeric(as.character(df_temp_nm[[.var]])) > as.numeric(as.character(df_temp_nm[[baseline_var]])))
@@ -213,11 +210,11 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var){
 }
 
 df_test <- expand.grid(
-  ATOXGR = c(-4,-3,-2,-1,0,1,2,3,4, "<Missing>"),
-  BTOXGR = c(-4,-3,-2,-1,0,1,2,3,4, "<Missing>")
+  ATOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>"),
+  BTOXGR = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, "<Missing>")
   )
 
-df_test <- cbind(USUBJID = 1:100, df_test, GRADDR ="Low")
+df_test <- cbind(USUBJID = 1:100, df_test, GRADDR = "Low")
 
 result <- h_worsen_counter(
   df_test,
