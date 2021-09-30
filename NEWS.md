@@ -1,4 +1,5 @@
 # tern 0.7.5
+* Updated `LICENCE` and `README` with new package reference.
 * Added `g_lineplot` plot function, including new `h_format_row` helper function and `control_lineplot_vars` function. Removed `g_summary_by`.
 * Added design doc for MNG01 plot.
 * Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each and every element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
@@ -10,7 +11,6 @@
 * Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing.
 * Fixed `g_km` such that lines in the plot now start correctly at time 0 and probability 1.
 * Fixed a bug in `g_km` such that the equals sign can now be used in category labels.
-* Updated license and `README.md` with appropriate information for migration to public Github.
 * Added `error_on_lint: TRUE` to `.lintr`.
 * Refactored `count_patients_with_flags` to include a title row with correct indentation.
 * Added `var_labels` and `show_labels` arguments to `count_occurrences` to allow for creation of a title row, update tests.
