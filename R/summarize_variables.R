@@ -191,9 +191,6 @@ s_summary.numeric <- function(x, # nolint
                               ...) {
   assert_that(is.numeric(x))
 
-  control_diff <- setdiff(names(control_summarize_vars()), names(control))
-  control <- c(control, control_summarize_vars()[control_diff])
-
   if (na.rm) {
     x <- x[!is.na(x)]
   }
