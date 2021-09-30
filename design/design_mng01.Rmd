@@ -350,7 +350,7 @@ g_lineplot(adlb, table = c("n", "mean", "mean_ci"))
 g_lineplot(
   adlb, variables = c(x = "AVISITN", y = "AVAL", strata = "ARM", y_lab = "PARAMCD", y_unit = "AVALU"),
   table = c("n", "mean", "mean_ci"),
-  control = list(conf_level = 0.80, quantiles = c(0.25, 0.75), quantile_type = 2),
+  control = control_summarize_vars(conf_level = 0.80),
   title = "Plot of Mean and 80% Confidence Limits by Visit"
 )
 ```
