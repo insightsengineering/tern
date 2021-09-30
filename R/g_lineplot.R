@@ -72,6 +72,7 @@
 #' @importFrom dplyr group_by_at summarise full_join
 #' @importFrom grid grid.newpage unit.pmax
 #' @importFrom gridExtra grid.arrange
+#' @importFrom tidyselect all_of
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'
@@ -361,7 +362,7 @@ g_lineplot <- function(df, # nolint
 
     df_stats_table <- df_stats_table %>%
       tidyr::pivot_longer(
-        cols = -c(strata, x),
+        cols = -tidyselect::all_of(c(strata, x)),
         names_to = "stat",
         values_to = "value",
         names_ptypes = list(stat = factor(levels = stats_lev))

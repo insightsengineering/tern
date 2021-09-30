@@ -50,6 +50,7 @@ Imports:
   dfoptim,
   viridisLite,
   tibble,
+  tidyselect,
   broom,
   stringr,
   tidyr

@@ -74,7 +74,7 @@ h_adlb_worsen <- function(
 
   #select variables of interest
   adlb_f <- adlb[position_satisfy_filters, ] %>%
-    select(c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR", names(worst_flag), direction_var))
+    select(tidyselect::all_of(c("USUBJID", "ARMCD", "AVISIT", "PARAMCD", "ATOXGR", "BTOXGR", names(worst_flag), direction_var)))
   
   
   
