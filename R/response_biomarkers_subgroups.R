@@ -173,7 +173,8 @@ tabulate_rsp_biomarkers <- function(df,
       df = df_sub,
       vars = vars
     )
-    label_at_path(tab_sub, path = "root") <- df_sub$biomarker_label[1]
+    # Insert label row as first row in table.
+    label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
     tab_sub
   })
   result <- do.call(rbind, tabs)
