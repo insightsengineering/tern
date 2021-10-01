@@ -38,7 +38,8 @@ test_that("1. Cox Regression", {
     data = ADTTE_f
   )
   df <- tidy(mod1)
-  result <- split_rows_by(lyt = NULL, "effect") %>%
+  result <- basic_table() %>%
+    split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
     summarize_coxreg(conf_level = .95) %>%
     build_table(df = df)
@@ -68,7 +69,8 @@ test_that("2. Cox Regression (with Interaction Term)", {
     control = control_coxreg(interaction = TRUE)
   )
   df <- tidy(mod2)
-  result <- split_rows_by(lyt = NULL, "effect") %>%
+  result <- basic_table() %>%
+    split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
     summarize_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
     build_table(df = df)
@@ -104,7 +106,8 @@ test_that("3. Cox Regression (specifying covariates)", {
     at = list(AGE = c(30, 40, 50))
   )
   df <- tidy(mod3)
-  result <- split_rows_by(lyt = NULL, "effect") %>%
+  result <- basic_table() %>%
+    split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
     summarize_coxreg(conf_level = .95, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
     build_table(df = df)
@@ -148,7 +151,8 @@ test_that("4. Cox Regression (setting strata, ties, and alpha level)", {
     at = list(AGE = c(30, 40, 50))
   )
   df <- tidy(mod4)
-  result <- split_rows_by(lyt = NULL, "effect") %>%
+  result <- basic_table() %>%
+    split_rows_by("effect") %>%
     split_rows_by("term", child_labels = "hidden") %>%
     summarize_coxreg(conf_level = conf_level, vars = c("n", "hr", "ci", "pval", "pval_inter")) %>%
     build_table(df = df)

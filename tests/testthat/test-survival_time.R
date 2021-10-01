@@ -65,9 +65,9 @@ test_that("surv_time works with default arguments", {
       is_event = CNSR == 0
     )
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD"
   ) %>%
     surv_time(
       vars = "AVAL",
@@ -101,9 +101,9 @@ test_that("surv_time works with customized arguments", {
       is_event = CNSR == 0
     )
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD"
+  result <- basic_table() %>%
+    split_cols_by(
+     var = "ARMCD"
   ) %>%
     surv_time(
       vars = "AVAL",
