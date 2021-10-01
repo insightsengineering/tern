@@ -125,7 +125,8 @@ s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event 
 a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
 
 
-split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
+basic_table() \%>\%
+split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
   add_colcounts() \%>\%
   coxph_pairwise(
     vars = "AVAL",
@@ -134,7 +135,8 @@ split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
   ) \%>\%
   build_table(df = ADTTE_f)
 
-split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") \%>\%
+basic_table() \%>\%
+split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
   add_colcounts() \%>\%
   coxph_pairwise(
     vars = "AVAL",

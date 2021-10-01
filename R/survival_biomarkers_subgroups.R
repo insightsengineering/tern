@@ -177,7 +177,8 @@ tabulate_survival_biomarkers <- function(df,
       vars = vars,
       time_unit = time_unit
     )
-    insert_rrow(tab_sub, rrow(df_sub$biomarker_label[1]))
+    label_at_path(tab_sub, path = "root") <- df_sub$biomarker_label[1]
+    tab_sub
   })
   result <- do.call(rbind, tabs)
 

@@ -1,7 +1,7 @@
 library(dplyr)
 
 test_that("h_count_cumulative works with healthy input and default arguments", {
-  set.seed(1)
+  set.seed(1, kind = "Mersenne-Twister")
   x <- c(sample(1:10, 10), NA)
 
   result <- h_count_cumulative(
@@ -17,7 +17,7 @@ test_that("h_count_cumulative works with healthy input and default arguments", {
 })
 
 test_that("h_count_cumulative works with customized arguments", {
-  set.seed(1)
+  set.seed(1, kind = "Mersenne-Twister")
   rand <- rnorm(10, 5, 5)
   x <- c(rand[1:5], NA, rand[6:10])
 
@@ -37,7 +37,7 @@ test_that("h_count_cumulative works with customized arguments", {
 })
 
 test_that("s_count_cumulative works with healthy input and default arguments", {
-  set.seed(1)
+  set.seed(1, kind = "Mersenne-Twister")
   x <- c(sample(1:10, 10), NA)
 
   result <- s_count_cumulative(
@@ -57,7 +57,7 @@ test_that("s_count_cumulative works with healthy input and default arguments", {
 })
 
 test_that("s_count_cumulative works with customized arguments", {
-  set.seed(1)
+  set.seed(1, kind = "Mersenne-Twister")
   rand <- rnorm(10, 5, 5)
   x <- c(rand[1:5], NA, rand[6:10])
 
@@ -81,18 +81,20 @@ test_that("s_count_cumulative works with customized arguments", {
 })
 
 test_that("count_cumulative works with default arguments", {
-  set.seed(1)
+  set.seed(1, kind = "Mersenne-Twister")
   df <- data.frame(
     a = c(sample(1:10, 10), NA),
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- split_cols_by(lyt = NULL, "grp") %>%
+  result <- basic_table() %>%
+    split_cols_by("grp") %>%
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7)
     ) %>%
     build_table(df)
+
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -106,13 +108,14 @@ test_that("count_cumulative works with default arguments", {
 })
 
 test_that("count_cumulative works with customized arguments", {
-  set.seed(1)
+  set.seed(1, kind = "Mersenne-Twister")
   df <- data.frame(
     a = c(sample(1:10, 10), NA),
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- split_cols_by(lyt = NULL, "grp") %>%
+  result <- basic_table() %>%
+    split_cols_by("grp") %>%
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7),
