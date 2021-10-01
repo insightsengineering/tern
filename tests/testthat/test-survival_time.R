@@ -102,9 +102,7 @@ test_that("surv_time works with customized arguments", {
     )
 
   result <- basic_table() %>%
-    split_cols_by(
-     var = "ARMCD"
-  ) %>%
+    split_cols_by(var = "ARMCD") %>%
     surv_time(
       vars = "AVAL",
       var_labels = "Survival Time (Months)",
