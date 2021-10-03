@@ -19,7 +19,8 @@ adrs <- adrs %>%
   )
 
 test_that("RSPT01: 1. Best Overall Response", {
-  l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
     estimate_proportion(
       vars = "is_rsp",
@@ -71,7 +72,8 @@ test_that("RSPT01: 1. Best Overall Response", {
 })
 
 test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
-  l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
     estimate_proportion(
       vars = "is_rsp",
@@ -119,7 +121,8 @@ test_that("RSPT01: 2. Best Overall Response (selecting sections to display)", {
 test_that("RSPT01: 3. Best Overall Response (modifying settings)", {
   conf_level <- 0.90
   method_prop <- "clopper-pearson"
-  l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
     estimate_proportion(
       vars = "is_rsp",
@@ -255,7 +258,8 @@ test_that("RSPT01: 4. Best Overall Response (with stratified analysis)", {
 })
 
 test_that("RSPT01: 5. Best Overall Response (modifying the definition of overall response)", {
-  l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
     estimate_proportion(
       vars = "is_rsp",
@@ -325,7 +329,8 @@ test_that("RSPT01: 6. Best Overall Response (define new sections to display)", {
       )
     )
 
-  l <- split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
     add_colcounts() %>%
     estimate_proportion(
       vars = "is_rsp",
