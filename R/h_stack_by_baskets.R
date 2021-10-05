@@ -159,7 +159,7 @@ h_stack_by_baskets <- function(df,
     )
   } else {
 
-    all_na_basket_flag <- vapply(df[, baskets], function(x){
+    all_na_basket_flag <- vapply(df[, baskets], function(x) {
       all(is.na(x))
     }, FUN.VALUE = logical(1))
     all_na_basket <- baskets[all_na_basket_flag]
