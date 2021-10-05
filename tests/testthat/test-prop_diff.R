@@ -58,7 +58,7 @@ test_that("`prop_diff_nc` (proportion difference by Newcombe)", {
 
 test_that("`prop_diff_cmh` (proportion difference by CMH)", {
 
-  set.seed(2)
+  set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- sample(c("Placebo", "Treatment"), 100, TRUE)
   grp <- factor(grp, levels = c("Placebo", "Treatment"))
@@ -87,7 +87,7 @@ test_that("`prop_diff_cmh` (proportion difference by CMH)", {
 
 test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
 
-  set.seed(2)
+  set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- sample(c("Placebo", "Treatment"), 100, TRUE)
   grp <- factor(grp, levels = c("Placebo", "Treatment"))
@@ -128,7 +128,8 @@ test_that("`estimate_proportion_diff` is compatible with `rtables`", {
     grp = factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
   )
 
-  l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
     estimate_proportion_diff(
       vars = "rsp",
       conf_level = 0.90,

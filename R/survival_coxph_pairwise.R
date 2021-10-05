@@ -129,7 +129,8 @@ a_coxph_pairwise <- make_afun(
 #' @export
 #' @examples
 #'
-#' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+#' basic_table() %>%
+#' split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%
 #'   coxph_pairwise(
 #'     vars = "AVAL",
@@ -138,7 +139,8 @@ a_coxph_pairwise <- make_afun(
 #'   ) %>%
 #'   build_table(df = ADTTE_f)
 #'
-#' split_cols_by(lyt = NULL, var = "ARMCD", ref_group = "ARM A") %>%
+#' basic_table() %>%
+#' split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%
 #'   coxph_pairwise(
 #'     vars = "AVAL",

@@ -397,7 +397,8 @@ a_proportion_diff <- make_afun(
 #' @export
 #' @examples
 #'
-#' l <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+#' l <- basic_table() %>%
+#' split_cols_by(var = "grp", ref_group = "B") %>%
 #'   estimate_proportion_diff(
 #'     vars = "rsp",
 #'     conf_level = 0.90,

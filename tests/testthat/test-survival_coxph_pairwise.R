@@ -112,10 +112,10 @@ test_that("coxph_pairwise works with default arguments and no stratification fac
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     coxph_pairwise(
       vars = "AVAL",
@@ -144,10 +144,10 @@ test_that("coxph_pairwise works with customized arguments and no stratification 
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     coxph_pairwise(
       vars = "AVAL",
@@ -178,10 +178,10 @@ test_that("coxph_pairwise works with default arguments and stratification factor
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     coxph_pairwise(
       vars = "AVAL",
@@ -211,10 +211,10 @@ test_that("coxph_pairwise works with customized arguments and stratification fac
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     coxph_pairwise(
       vars = "AVAL",
