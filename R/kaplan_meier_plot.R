@@ -295,7 +295,7 @@ g_km <- function(df,
          children = gList(g_el$panel)
        ),
 
-        # Survfit summary table (top-right corner).
+       # Survfit summary table (top-right corner).
         if (annot_surv_med) {
           gTree(
             vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
@@ -348,7 +348,6 @@ g_km <- function(df,
         ),
 
         # Add the table with patient-at-risk numbers.
-
        if (annot_at_risk) {
         gTree(
           vp = viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
@@ -357,7 +356,6 @@ g_km <- function(df,
        },
 
        if (annot_at_risk) {
-        # Add the table with patient-at-risk labels.
         gTree(
           vp = viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
           children = grobs_patient$label
