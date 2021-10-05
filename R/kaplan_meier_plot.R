@@ -245,50 +245,58 @@ g_km <- function(df,
     ci_ribbon = ci_ribbon
   )
 
-  if (annot_at_risk) {
-    g_el <- h_decompose_gg(gg) # nolint
-    # This is the content of the table that will be below the graph.
-    annot_tbl <- summary(fit_km, time = xticks)
-    annot_tbl <- if (is.null(fit_km$strata)) {
-      data.frame(
-        n.risk = annot_tbl$n.risk,
-        time = annot_tbl$time,
-        strata = armval
-      )
-    } else {
-      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
-      levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
-      data.frame(
-        n.risk = annot_tbl$n.risk,
-        time = annot_tbl$time,
-        strata = annot_tbl$strata
-      )
-    }
+ g_el <- h_decompose_gg(gg) # nolint
 
-    grobs_patient <- h_grob_tbl_at_risk(
-      data = data_plot,
-      annot_tbl = annot_tbl,
-      xlim = max(max_time, data_plot$time, xticks)
-    )
-    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title) # nolint
-    ttl_row <- as.numeric(!is.null(title))
-    km_grob <- gTree(
-      vp = viewport(layout = lyt, height = .95, width = .95),
-      children = gList(
 
-        # Title.
-        if (!is.null(ttl_row)) {
-          gTree(
-            vp = viewport(layout.pos.row = 1, layout.pos.col = 2),
-            children =  gList(textGrob(label = title, x = unit(0, "npc"), hjust = 0))
-          )
-        },
+ if (annot_at_risk) {
+   # This is the content of the table that will be below the graph.
+   annot_tbl <- summary(fit_km, time = xticks)
+   annot_tbl <- if (is.null(fit_km$strata)) {
+     data.frame(
+       n.risk = annot_tbl$n.risk,
+       time = annot_tbl$time,
+       strata = armval
+     )
+   } else {
+     strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
+     levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+     data.frame(
+       n.risk = annot_tbl$n.risk,
+       time = annot_tbl$time,
+       strata = annot_tbl$strata
+     )
+ }
 
-        # The Kaplan - Meier curve (top-right corner).
-        gTree(
-          vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-          children = gList(g_el$panel)
-        ),
+   grobs_patient <- h_grob_tbl_at_risk(
+     data = data_plot,
+     annot_tbl = annot_tbl,
+     xlim = max(max_time, data_plot$time, xticks)
+   )
+
+ }
+
+
+ if (annot_at_risk | annot_surv_med | annot_coxph) {
+
+   lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title) # nolint
+   ttl_row <- as.numeric(!is.null(title))
+   km_grob <- gTree(
+     vp = viewport(layout = lyt, height = .95, width = .95),
+     children = gList(
+
+       # Title.
+       if (!is.null(ttl_row)) {
+         gTree(
+           vp = viewport(layout.pos.row = 1, layout.pos.col = 2),
+           children =  gList(textGrob(label = title, x = unit(0, "npc"), hjust = 0))
+         )
+       },
+
+       # The Kaplan - Meier curve (top-right corner).
+       gTree(
+         vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
+         children = gList(g_el$panel)
+       ),
 
         # Survfit summary table (top-right corner).
         if (annot_surv_med) {
@@ -343,22 +351,28 @@ g_km <- function(df,
         ),
 
         # Add the table with patient-at-risk numbers.
+
+       if (annot_at_risk) {
         gTree(
           vp = viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
           children = grobs_patient$at_risk
-        ),
-
+        )
+       },
+       if (annot_at_risk) {
         # Add the table with patient-at-risk labels.
         gTree(
           vp = viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
           children = grobs_patient$label
-        ),
+        )
+       },
 
+       if (annot_at_risk) {
         # Add the x-axis for the table.
         gTree(
           vp = viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
           children = gList(rbind(g_el$xaxis, g_el$xlab))
         )
+       }
       )
     )
 
