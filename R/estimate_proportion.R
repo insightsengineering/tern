@@ -231,7 +231,8 @@ a_proportion <- make_afun(
 #'   AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
 #' )
 #'
-#' split_cols_by(lyt = NULL, "ARM") %>%
+#' basic_table() %>%
+#' split_cols_by("ARM") %>%
 #'   estimate_proportion(vars = "AVAL") %>%
 #'   build_table(df = dta_test)
 #'

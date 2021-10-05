@@ -10,7 +10,8 @@ test_that("LBT02 default variant is produced correctly", {
   adlb <- subset(adlb, AVISIT != "SCREENING" & PARAMCD == "ALT")
   adlb$AVISIT <- droplevels(adlb$AVISIT) # nolint snake_case
 
-  l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
     split_rows_by(var = "AVISIT") %>%
     add_colcounts() %>%
     summarize_vars(vars = "AVAL")

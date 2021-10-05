@@ -399,7 +399,8 @@ dta_test <- data.frame(
   AVAL    = c(9:1, rep(NA, 9))
 )
 
-l <- split_cols_by(lyt = NULL, var = "ARM") \%>\%
+l <- basic_table() \%>\%
+split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   analyze(vars = "AVAL", afun = afun)
 
