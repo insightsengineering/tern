@@ -59,15 +59,18 @@ get_full_table_with_empty <- function() {
   lyt <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE,
-                  split_fun = trim_levels_in_group("AEDECOD", drop_outlevs = FALSE))  %>%
+    split_rows_by(
+      var = "AEBODSYS", child_labels = "visible", nested = FALSE,
+      split_fun = trim_levels_in_group("AEDECOD", drop_outlevs = FALSE)
+    ) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one event",
         nonunique = "Total number of events"
-      )) %>%
+      )
+    ) %>%
     count_occurrences(vars = "AEDECOD", drop = FALSE)
 
   build_table(lyt, dfae, alt_counts_df = attr(dfae, "dfsl"))

@@ -83,4 +83,3 @@ test_that("h_content_first_row works as expected", {
   result <- h_content_first_row(simple_tab)
   expect_is(result, "ContentRow")
 })
-
