@@ -247,7 +247,6 @@ g_km <- function(df,
 
  g_el <- h_decompose_gg(gg) # nolint
 
-
  if (annot_at_risk) {
    # This is the content of the table that will be below the graph.
    annot_tbl <- summary(fit_km, time = xticks)
@@ -255,7 +254,7 @@ g_km <- function(df,
      data.frame(
        n.risk = annot_tbl$n.risk,
        time = annot_tbl$time,
-       strata = armval
+       strata = as.factor(armval)
      )
    } else {
      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
@@ -275,15 +274,13 @@ g_km <- function(df,
 
  }
 
-
  if (annot_at_risk | annot_surv_med | annot_coxph) {
 
-   lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title) # nolint
+   lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, annot_at_risk = annot_at_risk) # nolint
    ttl_row <- as.numeric(!is.null(title))
    km_grob <- gTree(
      vp = viewport(layout = lyt, height = .95, width = .95),
      children = gList(
-
        # Title.
        if (!is.null(ttl_row)) {
          gTree(
@@ -358,6 +355,7 @@ g_km <- function(df,
           children = grobs_patient$at_risk
         )
        },
+
        if (annot_at_risk) {
         # Add the table with patient-at-risk labels.
         gTree(
@@ -748,6 +746,9 @@ h_decompose_gg <- function(gg) {
 #'
 #' @inheritParams kaplan_meier
 #' @param g_el (`list` of `gtable`)\cr list as obtained by `h_decompose_gg()`.
+#' @param annot_at_risk (`flag`)\cr compute and add the annotation table
+#'   reporting the number of patient at risk matching the main grid of the
+#'   Kaplan-Meier curve.
 #'
 #' @details
 #' The layout corresponds to a grid of two columns and five rows of unequal
@@ -784,7 +785,7 @@ h_decompose_gg <- function(gg) {
 #' grid.show.layout(lyt)
 #' }
 #'
-h_km_layout <- function(data, g_el, title) {
+h_km_layout <- function(data, g_el, title, annot_at_risk) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -800,7 +801,7 @@ h_km_layout <- function(data, g_el, title) {
 
   if (is.null(title)) {
     grid.layout(
-      nrow = 5, ncol = 2,
+      nrow = ifelse(annot_at_risk, 5, 4), ncol = 2,
       widths = unit(c(col_annot_width, 1), c("pt", "null")),
       heights = unit(
         c(
@@ -821,7 +822,7 @@ h_km_layout <- function(data, g_el, title) {
     )
   } else {
     grid.layout(
-      nrow = 6, ncol = 2,
+      nrow = ifelse(annot_at_risk, 6, 5), ncol = 2,
       widths = unit(c(col_annot_width, 1), c("pt", "null")),
       heights = unit(
         c(
