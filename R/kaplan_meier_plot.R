@@ -246,7 +246,7 @@ g_km <- function(df,
 
   g_el <- h_decompose_gg(gg) #nolint
 
- if (annot_at_risk) {
+  if (annot_at_risk) {
    # This is the content of the table that will be below the graph.
    annot_tbl <- summary(fit_km, time = xticks)
    annot_tbl <- if (is.null(fit_km$strata)) {
