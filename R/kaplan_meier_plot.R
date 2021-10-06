@@ -797,6 +797,18 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
     )
   )
 
+  no_at_risk_tbl <- ifelse(
+    annot_at_risk,
+    rep(TRUE, 5),
+    c(rep(TRUE, 3), rep(FALSE, 2))
+  )
+
+  no_at_risk_tbl_title <- ifelse(
+    annot_at_risk,
+    rep(TRUE, 6),
+    c(rep(TRUE, 4), rep(FALSE, 2))
+  )
+
   if (is.null(title)) {
     grid.layout(
       nrow = ifelse(annot_at_risk, 5, 3), ncol = 2,
@@ -808,14 +820,14 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
           convertX(g_el$guide$heights, "pt"),
           nlines + 1,
           convertX(with(g_el, xaxis$height + ylab$width), "pt")
-        ),
+        )[no_at_risk_tbl],
         c(
           "null",
           "pt",
           "pt",
           "lines",
           "pt"
-        )
+        )[no_at_risk_tbl]
       )
     )
   } else {
@@ -830,7 +842,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
           convertX(g_el$guide$heights, "pt"),
           nlines + 1,
           convertX(with(g_el, xaxis$height + ylab$width), "pt")
-        ),
+        )[no_at_risk_tbl_title],
         c(
           "lines",
           "null",
@@ -838,7 +850,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
           "pt",
           "lines",
           "pt"
-        )
+        )[no_at_risk_tbl_title]
       )
     )
   }
