@@ -227,7 +227,7 @@ g_km <- function(df,
   )
 
   xticks <- h_xticks(data = data_plot, xticks = xticks, max_time = max_time)
-  gg <- h_ggkm(
+ gg <- h_ggkm(
     data = data_plot,
     censor_show = censor_show,
     pch = pch,
@@ -245,7 +245,7 @@ g_km <- function(df,
     ci_ribbon = ci_ribbon
   )
 
- g_el <- h_decompose_gg(gg) # nolint
+ g_el <- h_decompose_gg(gg) #nolint
 
  if (annot_at_risk) {
    # This is the content of the table that will be below the graph.
@@ -296,7 +296,7 @@ g_km <- function(df,
        ),
 
        # Survfit summary table (top-right corner).
-        if (annot_surv_med) {
+       if (annot_surv_med) {
           gTree(
             vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
             children = h_grob_median_surv(
@@ -348,7 +348,7 @@ g_km <- function(df,
         ),
 
         # Add the table with patient-at-risk numbers.
-       if (annot_at_risk) {
+        if (annot_at_risk) {
         gTree(
           vp = viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
           children = grobs_patient$at_risk
