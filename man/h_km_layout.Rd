@@ -4,7 +4,7 @@
 \alias{h_km_layout}
 \title{Helper: KM Layout}
 \usage{
-h_km_layout(data, g_el, title, annot_at_risk)
+h_km_layout(data, g_el, title, annot_at_risk = TRUE)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
