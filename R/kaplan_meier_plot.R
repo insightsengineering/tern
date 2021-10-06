@@ -783,7 +783,7 @@ h_decompose_gg <- function(gg) {
 #' grid.show.layout(lyt)
 #' }
 #'
-h_km_layout <- function(data, g_el, title, annot_at_risk) {
+h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -799,7 +799,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk) {
 
   if (is.null(title)) {
     grid.layout(
-      nrow = ifelse(annot_at_risk, 5, 4), ncol = 2,
+      nrow = ifelse(annot_at_risk, 5, 3), ncol = 2,
       widths = unit(c(col_annot_width, 1), c("pt", "null")),
       heights = unit(
         c(
@@ -820,7 +820,7 @@ h_km_layout <- function(data, g_el, title, annot_at_risk) {
     )
   } else {
     grid.layout(
-      nrow = ifelse(annot_at_risk, 6, 5), ncol = 2,
+      nrow = ifelse(annot_at_risk, 6, 4), ncol = 2,
       widths = unit(c(col_annot_width, 1), c("pt", "null")),
       heights = unit(
         c(
