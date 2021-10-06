@@ -274,7 +274,7 @@ g_km <- function(df,
 
  }
 
- if (annot_at_risk | annot_surv_med | annot_coxph) {
+ if (annot_at_risk || annot_surv_med || annot_coxph) {
 
    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, annot_at_risk = annot_at_risk) # nolint
    ttl_row <- as.numeric(!is.null(title))
