@@ -242,56 +242,60 @@ g_km <- function(df,
     lty = lty,
     col = col,
     ggtheme = ggtheme,
-    ci_ribbon = ci_ribbon
-  )
+    ci_ribbon = ci_ribbon)
+
+  g_el <- h_decompose_gg(gg) #nolint
 
   if (annot_at_risk) {
-    g_el <- h_decompose_gg(gg) # nolint
-    # This is the content of the table that will be below the graph.
-    annot_tbl <- summary(fit_km, time = xticks)
-    annot_tbl <- if (is.null(fit_km$strata)) {
-      data.frame(
-        n.risk = annot_tbl$n.risk,
-        time = annot_tbl$time,
-        strata = as.factor(armval)
-      )
-    } else {
-      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
-      levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
-      data.frame(
-        n.risk = annot_tbl$n.risk,
-        time = annot_tbl$time,
-        strata = annot_tbl$strata
-      )
-    }
+   # This is the content of the table that will be below the graph.
+   annot_tbl <- summary(fit_km, time = xticks)
+   annot_tbl <- if (is.null(fit_km$strata)) {
+     data.frame(
+       n.risk = annot_tbl$n.risk,
+       time = annot_tbl$time,
+       strata = as.factor(armval)
+     )
+   } else {
+     strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
+     levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+     data.frame(
+       n.risk = annot_tbl$n.risk,
+       time = annot_tbl$time,
+       strata = annot_tbl$strata
+     )
+ }
 
-    grobs_patient <- h_grob_tbl_at_risk(
-      data = data_plot,
-      annot_tbl = annot_tbl,
-      xlim = max(max_time, data_plot$time, xticks)
-    )
-    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title) # nolint
-    ttl_row <- as.numeric(!is.null(title))
-    km_grob <- gTree(
-      vp = viewport(layout = lyt, height = .95, width = .95),
-      children = gList(
+   grobs_patient <- h_grob_tbl_at_risk(
+     data = data_plot,
+     annot_tbl = annot_tbl,
+     xlim = max(max_time, data_plot$time, xticks)
+   )
 
-        # Title.
-        if (!is.null(ttl_row)) {
-          gTree(
-            vp = viewport(layout.pos.row = 1, layout.pos.col = 2),
-            children =  gList(textGrob(label = title, x = unit(0, "npc"), hjust = 0))
-          )
-        },
+ }
 
-        # The Kaplan - Meier curve (top-right corner).
-        gTree(
-          vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-          children = gList(g_el$panel)
-        ),
+ if (annot_at_risk || annot_surv_med || annot_coxph) {
 
-        # Survfit summary table (top-right corner).
-        if (annot_surv_med) {
+   lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, annot_at_risk = annot_at_risk) # nolint
+   ttl_row <- as.numeric(!is.null(title))
+   km_grob <- gTree(
+     vp = viewport(layout = lyt, height = .95, width = .95),
+     children = gList(
+       # Title.
+       if (!is.null(ttl_row)) {
+         gTree(
+           vp = viewport(layout.pos.row = 1, layout.pos.col = 2),
+           children =  gList(textGrob(label = title, x = unit(0, "npc"), hjust = 0))
+         )
+       },
+
+       # The Kaplan - Meier curve (top-right corner).
+       gTree(
+         vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
+         children = gList(g_el$panel)
+       ),
+
+       # Survfit summary table (top-right corner).
+       if (annot_surv_med) {
           gTree(
             vp = viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
             children = h_grob_median_surv(
@@ -343,22 +347,27 @@ g_km <- function(df,
         ),
 
         # Add the table with patient-at-risk numbers.
+        if (annot_at_risk) {
         gTree(
           vp = viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
           children = grobs_patient$at_risk
-        ),
+        )
+       },
 
-        # Add the table with patient-at-risk labels.
+       if (annot_at_risk) {
         gTree(
           vp = viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
           children = grobs_patient$label
-        ),
+        )
+       },
 
+       if (annot_at_risk) {
         # Add the x-axis for the table.
         gTree(
           vp = viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
           children = gList(rbind(g_el$xaxis, g_el$xlab))
         )
+       }
       )
     )
 
@@ -734,6 +743,9 @@ h_decompose_gg <- function(gg) {
 #'
 #' @inheritParams kaplan_meier
 #' @param g_el (`list` of `gtable`)\cr list as obtained by `h_decompose_gg()`.
+#' @param annot_at_risk (`flag`)\cr compute and add the annotation table
+#'   reporting the number of patient at risk matching the main grid of the
+#'   Kaplan-Meier curve.
 #'
 #' @details
 #' The layout corresponds to a grid of two columns and five rows of unequal
@@ -770,7 +782,7 @@ h_decompose_gg <- function(gg) {
 #' grid.show.layout(lyt)
 #' }
 #'
-h_km_layout <- function(data, g_el, title) {
+h_km_layout <- function(data, g_el, title, annot_at_risk = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -784,9 +796,21 @@ h_km_layout <- function(data, g_el, title) {
     )
   )
 
+  no_at_risk_tbl <- ifelse(
+    annot_at_risk,
+    rep(TRUE, 5),
+    c(rep(TRUE, 3), rep(FALSE, 2))
+  )
+
+  no_at_risk_tbl_title <- ifelse(
+    annot_at_risk,
+    rep(TRUE, 6),
+    c(rep(TRUE, 4), rep(FALSE, 2))
+  )
+
   if (is.null(title)) {
     grid.layout(
-      nrow = 5, ncol = 2,
+      nrow = ifelse(annot_at_risk, 5, 3), ncol = 2,
       widths = unit(c(col_annot_width, 1), c("pt", "null")),
       heights = unit(
         c(
@@ -795,19 +819,19 @@ h_km_layout <- function(data, g_el, title) {
           convertX(g_el$guide$heights, "pt"),
           nlines + 1,
           convertX(with(g_el, xaxis$height + ylab$width), "pt")
-        ),
+        )[no_at_risk_tbl],
         c(
           "null",
           "pt",
           "pt",
           "lines",
           "pt"
-        )
+        )[no_at_risk_tbl]
       )
     )
   } else {
     grid.layout(
-      nrow = 6, ncol = 2,
+      nrow = ifelse(annot_at_risk, 6, 4), ncol = 2,
       widths = unit(c(col_annot_width, 1), c("pt", "null")),
       heights = unit(
         c(
@@ -817,7 +841,7 @@ h_km_layout <- function(data, g_el, title) {
           convertX(g_el$guide$heights, "pt"),
           nlines + 1,
           convertX(with(g_el, xaxis$height + ylab$width), "pt")
-        ),
+        )[no_at_risk_tbl_title],
         c(
           "lines",
           "null",
@@ -825,7 +849,7 @@ h_km_layout <- function(data, g_el, title) {
           "pt",
           "lines",
           "pt"
-        )
+        )[no_at_risk_tbl_title]
       )
     )
   }
