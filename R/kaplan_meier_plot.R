@@ -253,7 +253,7 @@ g_km <- function(df,
       data.frame(
         n.risk = annot_tbl$n.risk,
         time = annot_tbl$time,
-        strata = armval
+        strata = as.factor(armval)
       )
     } else {
       strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
