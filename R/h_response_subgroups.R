@@ -47,14 +47,14 @@ NULL
 h_proportion_df <- function(rsp, arm) {
 
   assert_that(
-    is_logical_vector(rsp),
+    is.logical(rsp),
     is_valid_factor(arm),
     is_equal_length(rsp, arm)
   )
 
   lst_rsp <- split(rsp, arm)
   lst_results <- Map(function(x, arm) {
-
+    x <- x[!is.na(x)]
     if (length(x) > 0) {
       s_prop <- s_proportion(x)
       data.frame(
@@ -67,7 +67,7 @@ h_proportion_df <- function(rsp, arm) {
     } else {
       data.frame(
         arm = arm,
-        n = length(x),
+        n = 0L,
         n_rsp = NA,
         prop = NA,
         stringsAsFactors = FALSE
