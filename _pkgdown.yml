@@ -25,9 +25,10 @@ reference:
       - control_coxph
       - control_coxreg
       - control_incidence_rate
+      - control_lineplot_vars
       - control_logistic
-      - control_summarize_vars
       - control_step
+      - control_summarize_vars
       - control_surv_time
       - control_surv_timepoint
 
@@ -44,18 +45,19 @@ reference:
       - s_count_abnormal_by_marked
       - s_count_abnormal_by_worst_grade
       - s_count_cumulative
-      - s_count_nonmissing
       - s_count_missed_doses
+      - s_count_nonmissing
       - s_count_occurrences
       - s_count_occurrences_by_grade
-      - s_count_patients_with_event
       - s_count_patients_and_multiple_events
       - s_count_patients_sum_exposure
+      - s_count_patients_with_event
+      - s_count_patients_with_flags
       - s_count_values
-      - s_cox_univariate
-      - s_cox_multivariate
       - s_coxph_pairwise
       - s_coxreg
+      - s_cox_multivariate
+      - s_cox_univariate
       - s_incidence_rate
       - s_length_proportion
       - s_mmrm_lsmeans
@@ -87,13 +89,14 @@ reference:
        - a_count_occurrences
        - a_count_occurrences_by_grade
        - a_count_patients_with_event
+       - a_count_patients_with_flags
        - a_coxph_pairwise
        - a_mmrm_lsmeans
        - a_mmrm_lsmeans_single
-       - a_response_subgroups
-       - a_survival_subgroups
        - a_odds_ratio
        - a_proportion
+       - a_response_subgroups
+       - a_survival_subgroups
        - a_surv_time
        - a_surv_timepoint
        - a_surv_timepoint_diff
@@ -117,279 +120,275 @@ reference:
        - count_occurrences_by_grade
        - count_patients_with_event
        - count_patients_with_flags
-       - estimate_proportion
-       - estimate_proportion_diff
        - estimate_incidence_rate
        - estimate_multinomial_response
        - estimate_odds_ratio
+       - estimate_proportion
+       - estimate_proportion_diff
        - response_biomarkers_subgroups
        - summarize_ancova
        - summarize_change
        - summarize_colvars
-       - summarize_lsmeans
+       - summarize_coxreg
        - summarize_logistic
+       - summarize_lsmeans
        - summarize_num_patients
        - summarize_occurrences_by_grade
        - summarize_patients_events_in_cols
        - summarize_patients_exposure_in_cols
        - summarize_vars
-       - summarize_coxreg
        - tabulate_rsp_subgroups
-       - tabulate_survival_subgroups
        - tabulate_survival_biomarkers
+       - tabulate_survival_subgroups
        - test_proportion_diff
 
   - title: Analysis Helper Functions
     desc: these functions are useful to help definining the analysis
     contents:
+      - add_footnotes<-
       - arm
       - footnotes
       - footnotes<-
-      - add_footnotes<-
       - h_adlb_worsen
       - h_adsl_adlb_merge_using_worst_flag
       - h_ancova
       - h_append_grade_groups
       - h_count_cumulative
+      - h_coxph_df
+      - h_coxph_subgroups_df
       - h_coxreg_extract_interaction
       - h_coxreg_inter_effect
       - h_coxreg_inter_effect.factor
       - h_coxreg_inter_effect.numeric
       - h_coxreg_inter_estimations
-      - h_coxreg_univar_extract
       - h_coxreg_mult_cont_df
       - h_coxreg_multivar_extract
-      - h_coxreg_univar_formulas
       - h_coxreg_multivar_formula
+      - h_coxreg_univar_extract
+      - h_coxreg_univar_formulas
+      - h_format_row
+      - h_get_interaction_vars
+      - h_glm_inter_term_extract
+      - h_glm_interaction_extract
+      - h_glm_simple_term_extract
       - h_incidence_rate
       - h_incidence_rate_byar
       - h_incidence_rate_exact
       - h_incidence_rate_normal
       - h_incidence_rate_normal_log
-      - h_proportion_df
-      - h_proportion_subgroups_df
-      - h_odds_ratio_df
-      - h_odds_ratio_subgroups_df
-      - h_stack_by_baskets
-      - h_worsen_counter
-      - or_glm
-      - or_clogit
-      - prop_chisq
-      - prop_cmh
-      - prop_fisher
-      - prop_schouten
-      - prop_diff_cmh
-      - prop_diff_nc
-      - prop_diff_ha
-      - prop_diff_wald
-      - h_mmrm_fixed
+      - h_interaction_coef_name
+      - h_interaction_term_labels
+      - h_logistic_inter_terms
+      - h_logistic_simple_terms
       - h_mmrm_cov
       - h_mmrm_diagnostic
-      - h_survtime_df
-      - h_survtime_subgroups_df
-      - h_coxph_df
-      - h_coxph_subgroups_df
-      - h_split_by_subgroups
-      - h_get_interaction_vars
-      - h_interaction_coef_name
+      - h_mmrm_fixed
+      - h_odds_ratio_df
+      - h_odds_ratio_subgroups_df
       - h_or_cat_interaction
       - h_or_cont_interaction
       - h_or_interaction
-      - h_glm_simple_term_extract
-      - h_glm_interaction_extract
-      - h_glm_inter_term_extract
-      - h_logistic_simple_terms
-      - h_logistic_inter_terms
-      - h_simple_term_labels
-      - h_interaction_term_labels
-      - h_step_window
-      - h_step_trt_effect
-      - h_step_rsp_formula
-      - h_step_rsp_est
-      - h_step_survival_formula
-      - h_step_survival_est
-      - h_surv_to_coxreg_variables
-      - h_tab_surv_one_biomarker
+      - h_proportion_df
+      - h_proportion_subgroups_df
       - h_response_biomarkers_subgroups
+      - h_simple_term_labels
+      - h_split_by_subgroups
+      - h_stack_by_baskets
+      - h_step_rsp_est
+      - h_step_rsp_formula
+      - h_step_survival_est
+      - h_step_survival_formula
+      - h_step_trt_effect
+      - h_step_window
+      - h_surv_to_coxreg_variables
+      - h_survtime_df
+      - h_survtime_subgroups_df
       - h_tab_one_biomarker
+      - h_tab_surv_one_biomarker
+      - h_worsen_counter
+      - or_clogit
+      - or_glm
+      - prop_chisq
+      - prop_cmh
+      - prop_diff_cmh
+      - prop_diff_ha
+      - prop_diff_nc
+      - prop_diff_wald
+      - prop_fisher
+      - prop_schouten
       - summary_formats
       - summary_labels
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
     contents:
+      - as.rtable.mmrm
       - estimate_coef
-      - pairwise
-      - univariate
       - extract_rsp_subgroups
       - extract_survival_biomarkers
       - extract_survival_subgroups
-      - fit_mmrm
-      - fit_coxreg_univar
       - fit_coxreg_multivar
+      - fit_coxreg_univar
       - fit_logistic
-      - fit_survival_step
+      - fit_mmrm
       - fit_rsp_step
-      - as.rtable.mmrm
-      - tidy.mmrm
-      - tidy.summary.coxph
-      - tidy.coxreg.univar
-      - tidy.coxreg.multivar
-      - tidy.glm
-      - tidy.step
+      - fit_survival_step
       - logistic_regression_cols
       - logistic_summary_by_flag
+      - pairwise
+      - tidy.coxreg.multivar
+      - tidy.coxreg.univar
+      - tidy.glm
+      - tidy.mmrm
+      - tidy.step
+      - tidy.summary.coxph
+      - univariate
 
   - title: Graphs
     desc: Graphs
     contents:
       - g_forest
+      - g_ipp
       - g_km
       - g_lineplot
+      - g_step
       - g_waterfall
       - starts_with("g_mmrm")
-      - g_ipp
-      - g_step
 
   - title: rtables Helper Functions
     desc: these functions help to work with the new rtables package and might be moved there later
     contents:
-      - to_string_matrix
       - add_rowcounts
-      - h_col_counts
-      - h_row_counts
-      - h_row_fractions
-      - h_format_row
-      - has_tabletree_colnames
-      - is_leaf_table
-      - h_content_first_row
-      - groups_list_to_df
-      - combine_groups
-      - combine_counts
-      - split_cols_by_groups
+      - append_varlabels
       - as.rtable
       - as.rtable.data.frame
-      - make_names
-      - unlist_and_blank_na
       - cfun_by_flag
-      - append_varlabels
+      - combine_counts
+      - combine_groups
+      - groups_list_to_df
+      - has_tabletree_colnames
+      - h_col_counts
+      - h_content_first_row
+      - h_format_row
+      - h_row_counts
+      - h_row_fractions
+      - is_leaf_table
+      - make_names
+      - split_cols_by_groups
+      - to_string_matrix
+      - unlist_and_blank_na
 
   - title: rtables Formatting Functions
     desc: these functions provide customized formatting rules to work with the rtables package
     contents:
-      - format_fraction
       - format_count_fraction
-      - format_fraction_threshold
-      - format_xx
       - format_extreme_values
       - format_extreme_values_ci
+      - format_fraction
+      - format_fraction_threshold
+      - format_xx
 
   - title: rtables Scoring Functions
     desc: these functions can help with sorting of tables
     contents:
       - score_occurrences
       - score_occurrences_cols
-      - score_occurrences_subtable
       - score_occurrences_cont_cols
+      - score_occurrences_subtable
 
   - title: rtables Pruning Functions
     desc: these functions and classes help with flexible pruning of tables
     contents:
-      - keep_rows
-      - keep_content_rows
-      - has_count_in_cols
-      - has_count_in_any_col
-      - has_counts_difference
-      - has_fraction_in_cols
-      - has_fraction_in_any_col
-      - has_fractions_difference
       - CombinationFunction
+      - has_counts_difference
+      - has_count_in_any_col
+      - has_count_in_cols
+      - has_fractions_difference
+      - has_fraction_in_any_col
+      - has_fraction_in_cols
+      - keep_content_rows
+      - keep_rows
 
   - title: Graphs Helper Functions
     desc: these functions are useful to modify graphs
     contents:
+      - arrange_grobs
+      - color_palette
       - decorate_grob
       - decorate_grob_factory
       - decorate_grob_set
-      - split_text_grob
-      - stack_grobs
-      - arrange_grobs
       - draw_grob
-      - color_palette
-      - stat_mean_ci
-      - stat_median_ci
       - h_g_ipp
       - h_set_nest_theme
+      - split_text_grob
+      - stack_grobs
+      - stat_mean_ci
+      - stat_median_ci
 
   - title: Data Helper Functions
     desc: these functions are used by other functions to derive data
     contents:
-      - explicit_na
-      - sas_na
-      - combine_levels
-      - as_factor_keep_attributes
-      - df_explicit_na
-      - month2day
-      - day2month
       - aesi_label
+      - as_factor_keep_attributes
+      - bins_percent_labels
+      - combine_levels
       - combine_vectors
+      - cut_quantile_bins
+      - day2month
+      - df_explicit_na
       - empty_vector_if_na
-      - to_n
+      - explicit_na
       - fct_collapse_only
       - fct_discard
       - fct_explicit_na_if
+      - month2day
       - n_available
       - range_noinf
-      - bins_percent_labels
-      - cut_quantile_bins
+      - sas_na
+      - to_n
 
   - title: Assertion Functions
     desc: these functions supplement those in the assertthat package
     contents:
       - all_elements_in_ref
       - is_character_or_factor
-      - is_df_with_variables
       - is_df_with_factors
       - is_df_with_nlevels_factor
+      - is_df_with_variables
       - is_factor_no_na
       - is_nonnegative_count
-      - is_variables
-      - is_valid_factor
       - is_proportion
       - is_proportion_vector
       - is_quantiles_vector
+      - is_valid_factor
+      - is_variables
 
   - title: Non-exported Functions
     desc: the documentation for those unexported functions is useful for developers
     contents:
-      - check_same_n
-      - check_mmrm_vars
+      - afun_selected_stats
       - build_mmrm_formula
-      - fit_lme4_single_optimizer
-      - summary_all_fits
-      - refit_lme4_all_optimizers
-      - fit_lme4
-      - get_mmrm_lsmeans
-      - get_lme4_cov_estimate
-      - get_lme4_diagnostics
-      - get_smooths
-      - try_car_anova
+      - check_diff_prop_ci
+      - check_mmrm_vars
+      - check_same_n
+      - c_label_n
       - d_count_cumulative
+      - d_count_missed_doses
+      - d_onco_rsp_label
       - d_proportion
       - d_proportion_diff
-      - d_test_proportion_diff
-      - d_onco_rsp_label
-      - check_diff_prop_ci
-      - c_label_n
-      - h_col_indices
-      - get_covariates
-      - d_count_missed_doses
       - d_rsp_subgroups_colvars
       - d_survival_subgroups_colvars
-      - afun_selected_stats
+      - d_test_proportion_diff
       - extract
-      - labels_or_names
-      - muffled_car_anova
+      - fit_lme4
+      - fit_lme4_single_optimizer
+      - get_covariates
+      - get_lme4_cov_estimate
+      - get_lme4_diagnostics
+      - get_mmrm_lsmeans
+      - get_smooths
+      - h_col_indices
       - h_data_plot
       - h_decompose_gg
       - h_ggkm
@@ -402,6 +401,11 @@ reference:
       - h_tbl_coxph_pairwise
       - h_tbl_median_surv
       - h_xticks
+      - labels_or_names
+      - muffled_car_anova
+      - refit_lme4_all_optimizers
+      - summary_all_fits
+      - try_car_anova
   - title: Deprecated Functions
     desc: These functions will eventually be removed
     contents:
