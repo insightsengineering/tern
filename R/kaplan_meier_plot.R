@@ -1268,7 +1268,7 @@ h_grob_coxph <- function(...,
    return(
      gList(
        gTree(
-         vp = NULL, 
+         vp = NULL,
          children = NULL
        )
      )
