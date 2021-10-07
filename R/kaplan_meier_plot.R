@@ -1265,7 +1265,7 @@ h_grob_coxph <- function(...,
      "not any level to be compared in the arm variable."
    )
           )
-  return(
+   return(
      gList(
        gTree(
          vp = NULL,
