@@ -64,8 +64,11 @@ or_glm <- function(data, conf_level) {
   )
 
   values <- setNames(c(or, or_ci), c("est", "lcl", "ucl"))
+  n_tot <- setNames(length(model_fit$model$rsp), "n_tot")
 
-  list(or_ci = values)
+  list(or_ci = values,
+       n_tot = n_tot
+  )
 }
 
 #' @describeIn odds_ratio estimates the odds ratio based on [survival::clogit()]. This is done for
@@ -104,6 +107,7 @@ or_clogit <- function(data, conf_level) {
   # Deviation from convention: `survival::strata` must be simply `strata`.
   formula <- as.formula("rsp ~ grp + strata(strata)")
   model_fit <- clogit(formula = formula, data = data)
+  n_tot <- setNames(model_fit$n, "n_tot")
 
   # Create a list with one set of OR estimates and CI per coefficient, i.e.
   # comparison of one group vs. the reference group.
@@ -117,7 +121,9 @@ or_clogit <- function(data, conf_level) {
       nm = c("est", "lcl", "ucl")
     )
   }
-  list(or_ci = or_ci)
+  list(or_ci = or_ci,
+       n_tot = n_tot
+       )
 }
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
@@ -228,6 +234,7 @@ s_odds_ratio <- function(df,
         trt_grp %in% names(y_all$or_ci)
       )
       y$or_ci <- y_all$or_ci[[trt_grp]]
+      y$n_tot <- y_all$n_tot
     }
   }
 
@@ -235,7 +242,14 @@ s_odds_ratio <- function(df,
     x = y$or_ci,
     label = paste0("Odds Ratio (", 100 * conf_level, "% CI)")
   )
+
+  y$n_tot <- with_label(
+    x = y$n_tot,
+    label = "n_tot"
+  )
+
   y
+
 }
 
 #' @describeIn odds_ratio Formatted Analysis function which can be further customized by calling
