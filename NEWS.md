@@ -18,6 +18,7 @@
 * Added functions to estimate continuous biomarker effects across multiple subgroups for survival and binary response endpoints, which can be used to produce corresponding forest plots, see `survival_biomarkers_subgroups` and `response_biomarkers_subgroups`.
 * Fixed `day2month` and `month2day` to work with NA data.
 * Added `na_level` argument to `count_abnormal_by_baseline`.
+* Added functionality in `h_row_counts` to handle analysis rows with `NULL` cells.
 
 # tern 0.7.4
 
