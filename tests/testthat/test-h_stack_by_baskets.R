@@ -51,7 +51,7 @@ test_that("h_stack_by_baskets returns the correct dataframe", {
         AESEQ = structure(c(2L, 3L, 5L, 4L), label = c(AESEQ = "Sponsor-Defined Identifier")),
         SMQ = structure(
           c(2L, 2L, 2L, 1L),
-          .Label = c("C.1.1.1.3/B.2.2.3.1 AESI(BROAD)", "D.2.1.5.3/A.1.1.1.1 AESI"),
+          .Label = c("C.1.1.1.3/B.2.2.3.1 AESI(BROAD)", "D.2.1.5.3/A.1.1.1.1 AESI", "SMQ02NAM"),
           class = "factor",
           label = structure("Standardized MedDRA Query", .Names = "")
         )
@@ -118,6 +118,10 @@ test_that(
       AEDECOD = "Dictionary-Derived Term", AESEQ = "Sponsor-Defined Identifier",
       SMQ  = "Standardized MedDRA Query")
     expect_identical(result_var_labels, expected_var_labels)
+
+    result_smq_levels <- levels(result$SMQ)
+    expected_smq_levels <- c("CQ01NAM", "SMQ01NAM", "SMQ02NAM")
+    expect_identical(result_smq_levels, expected_smq_levels)
   })
 
 test_that(

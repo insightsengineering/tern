@@ -23,7 +23,13 @@ h_row_counts <- function(table_row,
                          col_names = NULL,
                          col_indices = h_col_indices(table_row, col_names)) {
   row_vals <- row_values(table_row)[col_indices]
-  counts <- sapply(row_vals, "[", 1L)
+  counts <- vapply(row_vals, function(rv) {
+    if (is.null(rv)) {
+      NA_real_
+    } else {
+      rv[1L]
+    }
+  }, FUN.VALUE = numeric(1))
   assert_that(is_integerish(counts))
   counts
 }
