@@ -36,7 +36,6 @@
 #'     ARM = fct_relevel(ARM, "B: Placebo"),
 #'     rsp = AVALC == "CR"
 #'   )
-#'
 #' var_labels(adrs_f) <- c(adrs_labels, "Response")
 #'
 NULL
