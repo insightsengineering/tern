@@ -1261,10 +1261,8 @@ h_grob_coxph <- function(...,
   error = function(w) {
    message(paste(
      "Warning: Cox table will not be displayed as there is",
-     "not any level to be compared in the arm variable."
-   )
-          )
-    return(
+     "not any level to be compared in the arm variable."))
+   return(
       gList(
         gTree(
           vp = NULL,
