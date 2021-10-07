@@ -1243,7 +1243,8 @@ h_grob_coxph <- function(...,
                          )
 ) {
   data <- h_tbl_coxph_pairwise(...) # nolint
-  gt <- gridExtra::tableGrob(d = data, theme = ttheme)
+  tryCatch({
+  gt <- gridExtra::tableGrob(d = data, theme = ttheme) #ERROR 'data' must be of a vector type, was 'NULL'
   vp <- viewport(
     x = unit(x, "npc") + unit(1, "lines"),
     y = unit(y, "npc") + unit(1.5, "lines"),
@@ -1251,11 +1252,24 @@ h_grob_coxph <- function(...,
     width =  sum(gt$widths),
     just = c("left", "bottom")
   )
-
   gList(
     gTree(
       vp = vp,
       children = gList(gt)
     )
+  )
+  },
+  error = function(w) {
+   message(paste(
+      "Warning: Cox table will not be displayed as there is",
+      "not any level to be compared in the arm variable."))
+    return(gList(
+      gTree(
+        vp = NULL,
+        children = NULL
+      )
+    )
+  )
+  }
   )
 }
