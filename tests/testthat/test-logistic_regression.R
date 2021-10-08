@@ -115,7 +115,7 @@ test_that("fit_logistic works with two stratification variables", {
     STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
     AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
     SEX = rep(c("M", "F"), 10),
-    RACE = LETTERS[c(rep(c(3,4), 10))]
+    RACE = LETTERS[c(rep(c(3, 4), 10))]
   )
 
   result <- expect_silent(fit_logistic(
