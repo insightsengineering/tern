@@ -80,42 +80,61 @@ test_that("fit_logistic works with different response definition", {
 })
 
 test_that("fit_logistic works with a single stratification variable", {
-  # sample because survival::clogit used to give unstable results for sorted data
-  data <- adrs_example[sample(nrow(adrs_example), nrow(adrs_example)), ]
+
+  data <- data.frame(
+    Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
+    STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
+    AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
+    SEX = rep(c("M", "F"), 10),
+    RACE = LETTERS[c(rep(c(3, 4), 10))]
+  )
+
   result <- expect_silent(fit_logistic(
     data,
     variables = list(
       response = "Response",
       arm = "ARMCD",
-      covariates = c("AGE", "RACE"),
+      covariates = c("RACE", "AGE"),
       strata = "STRATA1"
     )
   ))
   expect_s3_class(result, c("clogit", "coxph"))
 
-  expected_formula <- Surv(rep(1, 373L), Response) ~ ARMCD + AGE + RACE + strata(STRATA1)
+  expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE + strata(STRATA1)
   result_formula <- result$formula
   expect_equal(result_formula, expected_formula)
 })
 
 test_that("fit_logistic works with two stratification variables", {
-  data <- adrs_example
+  data <- data.frame(
+    Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
+    STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
+    AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
+    SEX = rep(c("M", "F"), 10),
+    RACE = LETTERS[c(rep(c(3, 4), 10))]
+  )
+
   result <- expect_silent(fit_logistic(
     data,
     variables = list(
       response = "Response",
       arm = "ARMCD",
-      covariates = c("AGE", "RACE"),
+      covariates = c("RACE", "AGE"),
       strata = c("STRATA1", "STRATA2")
     )
   ))
   expect_s3_class(result, c("clogit", "coxph"))
 
-  expected_formula <- Surv(rep(1, 373L), Response) ~ ARMCD + AGE + RACE +
+  expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE +
     strata(I(interaction(STRATA1, STRATA2)))
   result_formula <- result$formula
   expect_equal(result_formula, expected_formula)
 })
+
 
 # h_get_interaction_vars ----
 
@@ -395,9 +414,18 @@ test_that("h_glm_simple_term_extract works for factor and numeric variables", {
 })
 
 test_that("h_glm_simple_term_extract can extract continuous variable results from clogit objects", {
-  adrs <- adrs_example
+  data <- data.frame(
+    Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
+    STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
+    AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
+    SEX = rep(c("M", "F"), 10),
+    RACE = LETTERS[c(rep(c(3, 4), 10))]
+  )
+
   mod <- fit_logistic(
-    adrs,
+    data,
     variables = list(
       response = "Response",
       arm = "ARMCD",
@@ -416,10 +444,10 @@ test_that("h_glm_simple_term_extract can extract continuous variable results fro
     interaction_label = "",
     reference = "",
     reference_label = "",
-    estimate = list(0.0676647151818399),
-    std_error = list(0.0520141193356704),
+    estimate = list(0.01843522),
+    std_error = list(0.02429352),
     df = list(1),
-    pvalue = list(0.193295665385862),
+    pvalue = list(0.4479403),
     is_variable_summary = FALSE,
     is_term_summary = TRUE,
     stringsAsFactors = FALSE
@@ -571,9 +599,18 @@ test_that("h_logistic_simple_terms can extract continuous variable results from 
 
   test.nest::skip_if_too_deep(3)
 
-  adrs <- adrs_example
+  data <- data.frame(
+    Response = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
+    ARMCD =    letters[c(1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 2, 2)],
+    STRATA1 = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
+    STRATA2 = LETTERS[c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)],
+    AGE = c(45, 67, 23, 17, 87, 66, 45, 34, 32, 34, 67, 65, 64, 66, 24, 35, 46, 78, 10, 45),
+    SEX = rep(c("M", "F"), 10),
+    RACE = LETTERS[c(rep(c(3, 4), 10))]
+  )
+
   mod <- fit_logistic(
-    adrs,
+    data,
     variables = list(
       response = "Response",
       arm = "ARMCD",
@@ -591,20 +628,20 @@ test_that("h_logistic_simple_terms can extract continuous variable results from 
     interaction_label = "",
     reference = "",
     reference_label = "",
-    estimate = list(0.0702118550278999),
-    std_error = list(0.0519336089598534),
+    estimate = list(0.01843522),
+    std_error = list(0.02429352),
     df = list(1),
-    pvalue = list(0.176390002484421),
+    pvalue = list(0.4479403),
     is_variable_summary = FALSE,
     is_term_summary = TRUE,
-    odds_ratio = list(1.07273542157503),
-    lcl = list(0.968917172422821),
-    ucl = list(1.18767766477317),
+    odds_ratio = list(1.018606),
+    lcl = list(0.9712424),
+    ucl = list(1.06828),
     stringsAsFactors = FALSE
   )
   expected$ci <- list(c(
-    0.968917172422821,
-    1.18767766477317
+    0.9712424,
+    1.0682798
   ))
   expect_equivalent(result, expected, tolerance = 0.000001)
 })
