@@ -143,6 +143,10 @@ each interaction degree of freedom.
 Note: For the formula, the variable names need to be standard dataframe column name without
 special characters.
 }
+\details{
+Note this function may hang or error for certain datasets when an old version of the
+survival package (< 3.2-13) is used.
+}
 \section{Functions}{
 \itemize{
 \item \code{fit_logistic}: Fit a (conditional) logistic regression model.
