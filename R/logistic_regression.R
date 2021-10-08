@@ -40,7 +40,8 @@ NULL
 #'   side of the formula.
 #'
 #' @importFrom stats as.formula glm
-#'
+#' @details Note this function may hang or error for certain datasets when an old version of the
+#'   survival package (< 3.2-13) is used.
 #' @export
 #'
 #' @examples
