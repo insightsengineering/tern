@@ -4,7 +4,7 @@
 \alias{h_km_layout}
 \title{Helper: KM Layout}
 \usage{
-h_km_layout(data, g_el, title)
+h_km_layout(data, g_el, title, annot_at_risk = TRUE)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
@@ -12,6 +12,10 @@ h_km_layout(data, g_el, title)
 \item{g_el}{(\code{list} of \code{gtable})\cr list as obtained by \code{h_decompose_gg()}.}
 
 \item{title}{(\code{string})\cr title for plot.}
+
+\item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table
+reporting the number of patient at risk matching the main grid of the
+Kaplan-Meier curve.}
 }
 \description{
 Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.

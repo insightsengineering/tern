@@ -90,10 +90,10 @@ test_that("surv_timepoint works with default arguments", {
       is_event = CNSR == 0
     )
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -124,10 +124,10 @@ test_that("surv_timepoint works with customized arguments", {
       is_event = CNSR == 0
     )
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -219,10 +219,10 @@ test_that("surv_timepoint for survival diff works with default arguments", {
       is_event = CNSR == 0
     )
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -255,10 +255,10 @@ test_that("surv_timepoint for survival diff works with customized arguments", {
       is_event = CNSR == 0
     )
 
-  result <- split_cols_by(
-    lyt = NULL,
-    var = "ARMCD",
-    ref_group = "ARM A"
+  result <- basic_table() %>%
+    split_cols_by(
+      var = "ARMCD",
+      ref_group = "ARM A"
   ) %>%
     surv_timepoint(
       vars = "AVAL",

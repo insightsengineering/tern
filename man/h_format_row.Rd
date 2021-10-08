@@ -12,7 +12,7 @@ Elements of \code{x} must be \code{numeric} vectors.}
 
 \item{format}{(named \code{character} or \code{NULL}) \cr
 format patterns for \code{x}. Names of the \code{format} must match the names of \code{x}.
-This parameter is passed directly to the \code{\link[rtables]{format_rcell}}
+This parameter is passed directly to the \code{rtables::format_rcell}
 function through the \code{format} parameter.}
 
 \item{labels}{(named \code{character} or \code{NULL}) \cr
