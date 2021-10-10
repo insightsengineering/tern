@@ -177,7 +177,7 @@ tabulate_rsp_biomarkers <- function(df,
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
     tab_sub
   })
-  result <- do.call(rbind, tabs)
+  result <- do.call(rbind_fix, tabs)
 
   n_id <- grep("n_tot", vars)
   or_id <- match("or", vars)

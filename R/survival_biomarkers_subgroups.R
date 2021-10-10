@@ -181,7 +181,7 @@ tabulate_survival_biomarkers <- function(df,
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
     tab_sub
   })
-  result <- do.call(rbind, tabs)
+  result <- do.call(rbind_fix, tabs)
 
   n_tot_ids <- grep("^n_tot", vars)
   hr_id <- match("hr", vars)
