@@ -63,7 +63,7 @@ test_that("h_proportion_df functions as expected when 0 responses in one group",
 test_that("h_proportion_df fails with wrong input", {
 
   expect_error(h_proportion_df(
-    rsp = c(TRUE, FALSE, NA),
+    rsp = c(TRUE, FALSE, Inf),
     arm = factor(c("A", "B", "A"), levels = c("B", "A"))
   ))
 
@@ -207,6 +207,27 @@ test_that("h_odds_ratio_df functions as expected with valid input and non-defaul
 
 })
 
+test_that("h_odds_ratio_df functions as expected with partial NA input and default arguments", {
+
+  result <- h_odds_ratio_df(
+    c(TRUE, FALSE, FALSE, NA, TRUE),
+    arm = factor(c("A", "A", "B", "A", "B"), levels = c("A", "B"))
+  )
+
+  expected <- data.frame(
+    arm = " ",
+    n_tot = 4,
+    or = 1,
+    lcl = 0.01984252,
+    ucl = 50.39681,
+    conf_level = 0.95,
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(result, expected, tol = 0.000001)
+
+})
+
 test_that("h_odds_ratio_df functions as expected with strata", {
 
   adrs <- adrs_100
@@ -248,7 +269,7 @@ test_that("h_odds_ratio_df functions when 0 obs in one arm", {
 
   expected <- data.frame(
     arm = " ",
-    n_tot = 6,
+    n_tot = 0,
     or = NA,
     lcl = NA,
     ucl = NA,

@@ -32,7 +32,8 @@ NULL
 #' data <- data.frame(
 #'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1)),
 #'   grp = letters[c(1, 1, 1, 2, 2, 2, 1, 2)],
-#'   strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)]
+#'   strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)],
+#'   stringsAsFactors = TRUE
 #' )
 #'
 #' # Odds ratio based on glm.
@@ -64,11 +65,9 @@ or_glm <- function(data, conf_level) {
   )
 
   values <- setNames(c(or, or_ci), c("est", "lcl", "ucl"))
-  n_tot <- setNames(length(model_fit$model$rsp), "n_tot")
+  n_tot <- setNames(nrow(model_fit$model), "n_tot")
 
-  list(or_ci = values,
-       n_tot = n_tot
-  )
+  list(or_ci = values, n_tot = n_tot)
 }
 
 #' @describeIn odds_ratio estimates the odds ratio based on [survival::clogit()]. This is done for
@@ -85,7 +84,8 @@ or_glm <- function(data, conf_level) {
 #' data <- data.frame(
 #'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
 #'   grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
-#'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)]
+#'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
+#'   stringsAsFactors = TRUE
 #' )
 #'
 #' # Odds ratio based on stratified estimation by conditional logistic regression.
@@ -107,7 +107,6 @@ or_clogit <- function(data, conf_level) {
   # Deviation from convention: `survival::strata` must be simply `strata`.
   formula <- as.formula("rsp ~ grp + strata(strata)")
   model_fit <- clogit(formula = formula, data = data)
-  n_tot <- setNames(model_fit$n, "n_tot")
 
   # Create a list with one set of OR estimates and CI per coefficient, i.e.
   # comparison of one group vs. the reference group.
@@ -121,9 +120,9 @@ or_clogit <- function(data, conf_level) {
       nm = c("est", "lcl", "ucl")
     )
   }
-  list(or_ci = or_ci,
-       n_tot = n_tot
-       )
+
+  list(or_ci = or_ci, n_tot = c(n_tot = model_fit$n))
+
 }
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
