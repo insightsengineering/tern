@@ -228,3 +228,36 @@ test_that("tabulate_survival_biomarkers functions as expected with NULL subgroup
   expected_first_col <- c("", "Age", "All Patients", "Continous Level Biomarker 1", "All Patients")
   expect_identical(result_matrix[, 1L], expected_first_col)
 })
+
+test_that("tabulate_survival_biomarkers works with only a single biomarker in the data frame", {
+  df1 <- data.frame(
+    biomarker = "BMRKR1",
+    biomarker_label = "Continous Level Biomarker 1",
+    n_tot = 400L,
+    n_tot_events = 282,
+    median = 680,
+    hr = 0.98,
+    lcl = 0.95,
+    ucl = 1.01,
+    conf_level = 0.95,
+    pval = 0.3,
+    pval_label = "p-value (Wald)",
+    subgroup = "All Patients",
+    var = "ALL",
+    var_label = "All Patients",
+    row_type = "content"
+  )
+  result <- expect_silent(tabulate_survival_biomarkers(df1))
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- matrix(
+    data = c(
+      "", "Continous Level Biomarker 1", "All Patients",
+      "Total n", "", "400", "Total Events", "", "282", "Median", "",
+      "680", "Hazard Ratio", "", "0.98", "95% Wald CI", "", "(0.95, 1.01)",
+      "p-value (Wald)", "", "0.3000"
+    ),
+    nrow = 3,
+    ncol = 7
+  )
+  expect_identical(result_matrix, expected_matrix)
+})

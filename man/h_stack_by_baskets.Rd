@@ -24,7 +24,7 @@ h_stack_by_baskets(
 \item{keys}{(\code{character})\cr names of the key variables to be returned
 along with the new variable created.}
 
-\item{aag_summary}{(\verb{data frame})\cr data set containing the SMQ baskets
+\item{aag_summary}{(\verb{data frame})\cr containing the SMQ baskets
 and the levels of interest for the final SMQ variable. This is useful when
 there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
@@ -47,13 +47,13 @@ h_stack_by_baskets(df = adae)
 
 aag <- data.frame(
 NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
-REFNAME = c("D.2.1.5.3/A.1.1.1.1 AESI", "D.2.1.5.3/A.2.2.2.2 AESI",
+REFNAME = c("D.2.1.5.3/A.1.1.1.1 AESI", "X.9.9.9.9/Y.8.8.8.8 AESI",
  "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"),
 SCOPE = c("", "", "BROAD", "BROAD"),
 stringsAsFactors = FALSE
  )
 
-basket_name <- c()
+basket_name <- character(nrow(aag))
 cq_pos <- grep("^(CQ).+NAM$", aag$NAMVAR)
 smq_pos <- grep("^(SMQ).+NAM$", aag$NAMVAR)
 basket_name[cq_pos] <- aag$REFNAME[cq_pos]

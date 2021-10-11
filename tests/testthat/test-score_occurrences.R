@@ -49,6 +49,33 @@ get_full_table <- function() {
     prune_table()
 }
 
+get_full_table_with_empty <- function() {
+
+  dfae <- get_df_ae() %>%
+    df_explicit_na()
+  # add empty level for class
+  levels(dfae$AEBODSYS) <- c(levels(dfae$AEBODSYS), "EMPTY_LEVEL")
+
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    split_rows_by(
+      var = "AEBODSYS", child_labels = "visible", nested = FALSE,
+      split_fun = trim_levels_in_group("AEDECOD", drop_outlevs = FALSE)
+    ) %>%
+    summarize_num_patients(
+      var = "USUBJID",
+      .stats = c("unique", "nonunique"),
+      .labels = c(
+        unique = "Total number of patients with at least one event",
+        nonunique = "Total number of events"
+      )
+    ) %>%
+    count_occurrences(vars = "AEDECOD", drop = FALSE)
+
+  build_table(lyt, dfae, alt_counts_df = attr(dfae, "dfsl"))
+}
+
 test_that("score_occurrences functions as expected", {
   full_table <- get_full_table()
 
@@ -74,6 +101,38 @@ test_that("score_occurrences functions as expected", {
     c("AEPT2", "2 (66.7%)", "1 (100%)", "0"),
     c("AEPT1", "1 (33.3%)", "0", "0"),
     c("AEPT3", "0", "0", "1 (100%)")
+  )
+
+  expect_equal(result, expected)
+})
+
+test_that("score_occurrences functions as expected with empty analysis rows", {
+  full_table <- get_full_table_with_empty()
+
+  sorted_table <- full_table %>%
+    sort_at_path(
+      path =  c("AEBODSYS", "*", "AEDECOD"),
+      scorefun = score_occurrences,
+      na.pos = "omit"
+    )
+
+  result <- to_string_matrix(sorted_table)
+
+  expected <- structure(
+    c(
+      "", "", "AEBS1", "Total number of patients with at least one event",
+      "Total number of events", "AEPT1", "AEPT2", "AEPT3", "AEBS2",
+      "Total number of patients with at least one event", "Total number of events",
+      "AEPT2", "AEPT1", "AEPT3", "EMPTY_LEVEL", "Total number of patients with at least one event",
+      "Total number of events", "A", "(N=3)", "", "2 (66.7%)", "7",
+      "2 (66.7%)", "2 (66.7%)", "1 (33.3%)", "", "2 (66.7%)", "3",
+      "2 (66.7%)", "1 (33.3%)", "0", "", "0", "0", "B", "(N=1)", "",
+      "1 (100%)", "3", "1 (100%)", "1 (100%)", "1 (100%)", "", "1 (100%)",
+      "2", "1 (100%)", "0", "0", "", "0", "0", "C", "(N=1)", "", "1 (100%)",
+      "4", "1 (100%)", "1 (100%)", "1 (100%)", "", "1 (100%)", "1",
+      "0", "0", "1 (100%)", "", "0", "0"
+    ),
+    .Dim = c(17L, 4L)
   )
 
   expect_equal(result, expected)
