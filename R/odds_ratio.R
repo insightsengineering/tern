@@ -168,7 +168,7 @@ s_odds_ratio <- function(df,
                          variables = list(arm = NULL, strata = NULL),
                          conf_level = 0.95,
                          groups_list = NULL) {
-  y <- list(or_ci = "")
+  y <- list(or_ci = "", n_tot = "")
 
   if (!.in_ref_col) {
 
