@@ -84,7 +84,7 @@ with the new Analyze Function summarize_vars()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -1496,7 +1496,8 @@ functions (and possibly others in the future), we provide a constructor that doe
   AVAL    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span><span class='op'>:</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>lyt <span class='op'>=</span> <span class='cn'>NULL</span>, var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://roche.github.io/rtables/reference/split_rows_by.html'>split_rows_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"AVISIT"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://roche.github.io/rtables/reference/analyze.html'>analyze</a></span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"AVAL"</span>, afun <span class='op'>=</span> <span class='va'>afun</span><span class='op'>)</span>
 
@@ -1585,86 +1586,96 @@ functions (and possibly others in the future), we provide a constructor that doe
 
 <span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta_test</span><span class='op'>)</span>
 <span class='fu'><a href='https://roche.github.io/rtables/reference/as_html.html'>as_html</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;table class="table table-condensed table-hover"&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;th class="" style="white-space:pre;"&gt;&lt;/th&gt;
-#&gt;     &lt;th class=" text-center" colspan="1"&gt;A&lt;/th&gt;
-#&gt;     &lt;th class=" text-center" colspan="1"&gt;B&lt;/th&gt;
-#&gt;     &lt;th class=" text-center" colspan="1"&gt;C&lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1"&gt;V1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;n&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;2&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;0&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;7.5, 2.1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;3, NA&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;NA, NA&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;6 - 9&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;3 - 3&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;NA - NA&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1"&gt;V2&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;n&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;2&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;0&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;6.5, 2.1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;2, NA&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;NA, NA&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;5 - 8&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;2 - 2&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;NA - NA&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1"&gt;V3&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;n&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;2&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;0&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;5.5, 2.1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;1, NA&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;NA, NA&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;4 - 7&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;1 - 1&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;NA - NA&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
+</div><div class='output co'>#&gt; &lt;div class="rtables-all-parts-block rtables-container"&gt;
+#&gt;   &lt;table class="table table-condensed table-hover"&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;th style="white-space:pre;"&gt;&lt;/th&gt;
+#&gt;       &lt;th class="text-center"&gt;A&lt;/th&gt;
+#&gt;       &lt;th class="text-center"&gt;B&lt;/th&gt;
+#&gt;       &lt;th class="text-center"&gt;C&lt;/th&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left"&gt;V1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;2&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;0&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;7.5, 2.1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;3, NA&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;6 - 9&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;3 - 3&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left"&gt;V2&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;2&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;0&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;6.5, 2.1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;2, NA&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;5 - 8&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;2 - 2&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left"&gt;V3&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;2&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;0&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;5.5, 2.1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;1, NA&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;NA, NA&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;4 - 7&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;1 - 1&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;NA - NA&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;caption style="caption-side:top;"&gt;&lt;div class="rtables-titles-block rtables-container"&gt;
+#&gt;         &lt;div class="rtables-main-titles-block rtables-container"&gt;
+#&gt;           &lt;p class="rtables-main-title"&gt;&lt;/p&gt;
+#&gt;         &lt;/div&gt;
+#&gt;         &lt;div class="rtables-subtitles-block rtables-container"&gt;&lt;/div&gt;
+#&gt;       &lt;/div&gt;
+#&gt;     &lt;/caption&gt;
+#&gt;   &lt;/table&gt;
+#&gt;   &lt;div class="rtables-footers-block rtables-container"&gt;&lt;/div&gt;
+#&gt; &lt;/div&gt;</div><div class='input'>
 <span class='co'>## Use arguments interpreted by `s_summary`.</span>
 <span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARM"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>

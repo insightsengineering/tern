@@ -88,7 +88,7 @@ belonging to any of the selected baskets." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -184,7 +184,7 @@ along with the new variable created.</p></td>
     </tr>
     <tr>
       <th>aag_summary</th>
-      <td><p>(<code>data frame</code>)<br /> data set containing the SMQ baskets
+      <td><p>(<code>data frame</code>)<br /> containing the SMQ baskets
 and the levels of interest for the final SMQ variable. This is useful when
 there are some levels of interest that are not observed in the <code>df</code> dataset.
 The two columns of this dataset should be named <code>basket</code> and <code>basket_name</code>.</p></td>
@@ -211,13 +211,13 @@ The two columns of this dataset should be named <code>basket</code> and <code>ba
 #&gt; <span style='color: #BCBCBC;'>4</span> AB12345 AB12345-BRA-1-id-265 2020-11-14 <span style='color: #949494;'>00:00:00</span> dcd C.1.1.1.3     4 C.1.1.1.…</div><div class='input'>
 <span class='va'>aag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
 NAMVAR <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CQ01NAM"</span>, <span class='st'>"CQ02NAM"</span>, <span class='st'>"SMQ01NAM"</span>, <span class='st'>"SMQ02NAM"</span><span class='op'>)</span>,
-REFNAME <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D.2.1.5.3/A.1.1.1.1 AESI"</span>, <span class='st'>"D.2.1.5.3/A.2.2.2.2 AESI"</span>,
+REFNAME <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D.2.1.5.3/A.1.1.1.1 AESI"</span>, <span class='st'>"X.9.9.9.9/Y.8.8.8.8 AESI"</span>,
  <span class='st'>"C.1.1.1.3/B.2.2.3.1 AESI"</span>, <span class='st'>"C.1.1.1.3/B.3.3.3.3 AESI"</span><span class='op'>)</span>,
 SCOPE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>""</span>, <span class='st'>"BROAD"</span>, <span class='st'>"BROAD"</span><span class='op'>)</span>,
 stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>
  <span class='op'>)</span>
 
-<span class='va'>basket_name</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>basket_name</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>aag</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>cq_pos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"^(CQ).+NAM$"</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span><span class='op'>)</span>
 <span class='va'>smq_pos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"^(SMQ).+NAM$"</span>, <span class='va'>aag</span><span class='op'>$</span><span class='va'>NAMVAR</span><span class='op'>)</span>
 <span class='va'>basket_name</span><span class='op'>[</span><span class='va'>cq_pos</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>aag</span><span class='op'>$</span><span class='va'>REFNAME</span><span class='op'>[</span><span class='va'>cq_pos</span><span class='op'>]</span>

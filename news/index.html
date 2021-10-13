@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -136,36 +136,67 @@
       <small>Source: <a href='https://github.com/insightsengineering/tern/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="tern-0749000" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.4.9000">
-<a href="#tern-0749000" class="anchor"></a>tern 0.7.4.9000</h1>
+    <div id="tern-0759000" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.5.9000">
+<a href="#tern-0759000" class="anchor"></a>tern 0.7.5.9000</h1>
+</div>
+    <div id="tern-075" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.5">
+<a href="#tern-075" class="anchor"></a>tern 0.7.5</h1>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h3>
 <ul>
-<li>Added <code>g_lineplot</code> plot function and removed <code>g_summary_by</code>.</li>
-<li>Added design doc for MNG01 plot.</li>
-<li>Added a couple of new statistics to <code>s_summary.numeric</code>. Added <code>names</code> attribute to each and every element of the final list returned by the <code>s_summary.numeric</code> function. Added <code>summary_formats</code> and <code>summary_labels</code> helper functions.</li>
-<li>Parametrized <code>stat_mean_ci</code> and <code>stat_median_ci</code> so that they may return different outputs.</li>
-<li>Added new safety helper function h_stack_by_baskets to stack SMQ and/or CQ records from ADAE data set.</li>
-<li>Added <code>remove_single</code> argument to <code>h_append_grade_groups</code>, which allows to control whether the elements of one-element grade groups will be kept in the output or removed.</li>
-<li>Re-implemented the <code>h_append_grade_groups</code> function to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of <code>grade_groups</code>.</li>
-<li>Fixed <code>prop_diff_cmh</code> to handle edge case of no FALSE (or TRUE) rsp records.</li>
-<li>Enhanced <code>g_mmrm_diagnostic</code> to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing.</li>
-<li>Fixed <code>g_km</code> such that lines in the plot now start correctly at time 0 and probability 1.</li>
-<li>Fixed a bug in <code>g_km</code> such that the equals sign can now be used in category labels.</li>
-<li>Updated license and <code>README.md</code> with appropriate information for migration to public Github.</li>
-<li>Added <code>error_on_lint: TRUE</code> to <code>.lintr</code>.</li>
-<li>Refactored <code>count_patients_with_flags</code> to include a title row with correct indentation.</li>
-<li>Added <code>var_labels</code> and <code>show_labels</code> arguments to <code>count_occurrences</code> to allow for creation of a title row, update tests.</li>
-<li>Added option to also convert logical variables to factor variables in <code>df_explicit_na</code>.</li>
 <li>Added functions to estimate continuous biomarker effects across multiple subgroups for survival and binary response endpoints, which can be used to produce corresponding forest plots, see <code>survival_biomarkers_subgroups</code> and <code>response_biomarkers_subgroups</code>.</li>
-<li>Fixed <code>day2month</code> and <code>month2day</code> to work with NA data.</li>
+<li>Added <code>g_lineplot</code> plot function, including new <code>h_format_row</code> helper function and <code>control_lineplot_vars</code> function. Removed <code>g_summary_by</code>.</li>
+<li>Added new safety helper function <code>h_stack_by_baskets</code> to stack events in SMQ and/or CQ basket flag in ADAE data set.</li>
 </ul>
+</div>
+<div id="enhancements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#enhancements" class="anchor"></a>Enhancements</h3>
+<ul>
+<li>Added a couple of new statistics to <code>s_summary.numeric</code>. Added <code>names</code> attribute to each element of the final list returned by the <code>s_summary.numeric</code> function. Added <code>summary_formats</code> and <code>summary_labels</code> helper functions.</li>
+<li>Added option to also convert logical variables to factor variables in <code>df_explicit_na</code>.</li>
+<li>Refactored <code>h_append_grade_groups</code> to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of <code>grade_groups</code>. Also, added <code>remove_single</code> argument which controls whether the elements of one-element grade groups will be kept in the output or removed.</li>
+<li>Added <code>var_labels</code> and <code>show_labels</code> arguments to <code>count_occurrences</code> and <code>count_patients_with_flags</code> to allow for creation of a title row.</li>
+<li>Added <code>na_level</code> argument to <code>count_abnormal_by_baseline</code>.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<ul>
+<li>Fixed <code>prop_diff_cmh</code> to handle edge case of no FALSE (or TRUE) responses.</li>
+<li>Enhanced <code>g_mmrm_diagnostic</code> to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing.</li>
+<li>Several fixes in <code>g_km</code>:
+<ul>
+<li>Plot can now display any combination of the annotation tables for number of patients at risk, median survival time, and CoxPH summary.</li>
+<li>Function will return a warning instead of an error if the <code>arm</code> variable includes only one level and <code>annot_coxph = TRUE</code>.</li>
+<li>Lines in the plot now start correctly at time 0 and probability 1.</li>
+<li>The equals sign can now be used in category labels.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="miscellaneous" class="section level3">
+<h3 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
+<ul>
+<li>Fixed <code>day2month</code> and <code>month2day</code> to work with NA data.</li>
+<li>Parametrized <code>stat_mean_ci</code> and <code>stat_median_ci</code> so that they may return different outputs.</li>
+<li>Added functionality in <code>h_row_counts</code> to handle analysis rows with <code>NULL</code> cells.</li>
+<li>Updated <code>LICENCE</code> and <code>README</code> with new package references.</li>
+<li>Added <code>error_on_lint: TRUE</code> to <code>.lintr</code>.</li>
+</ul>
+</div>
 </div>
     <div id="tern-074" class="section level1">
 <h1 class="page-header" data-toc-text="0.7.4">
 <a href="#tern-074" class="anchor"></a>tern 0.7.4</h1>
-<div id="new-features" class="section level3">
+<div id="new-features-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h3>
+<a href="#new-features-1" class="anchor"></a>New features</h3>
 <ul>
 <li>Added new safety layout functions:
 <ul>
@@ -177,9 +208,9 @@
 </li>
 </ul>
 </div>
-<div id="enhancements" class="section level3">
+<div id="enhancements-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#enhancements" class="anchor"></a>Enhancements</h3>
+<a href="#enhancements-1" class="anchor"></a>Enhancements</h3>
 <ul>
 <li>Enhanced <code>mmrm</code> related functions for fitting models without <code>arm</code> variable.</li>
 <li>Updated <code>cox_regression</code> to work without covariates. Also in case of interaction model summary, p-values for main effect coefficients are no longer displayed.</li>
@@ -188,17 +219,17 @@
 <li>Changed <code>indent</code> argument in <code>append_varlabels</code> to accept non-negative integer to represent the indent space defined by user. Previous calls with Boolean <code>indent</code> will do an integer conversion and produce a warning.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level3">
+<div id="bug-fixes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Corrected <code>tabulate_survival_subgroups</code> and related survival forest plot functions to use total number of events, instead of observations, as default for scaling the symbol sizes in the plot. (The user might still use total number of observations manually if they wish to do so.)</li>
 <li>Helper function <code>h_adsl_adlb_merge_using_worst_flag</code> will now correctly impute <code>BTOXGR</code> for missing visits.</li>
 </ul>
 </div>
-<div id="miscellaneous" class="section level3">
+<div id="miscellaneous-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
+<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h3>
 <ul>
 <li>Deleted <code>count_abnormal_by_worst_grade_by_baseline</code> and its related statistic and analysis functions as lab abnormality tables can be achieved using a simpler design.</li>
 <li>Switched data in examples to use <code>scda</code> instead of <code>random.cdisc.data</code> package.</li>
@@ -208,9 +239,9 @@
     <div id="tern-073" class="section level1">
 <h1 class="page-header" data-toc-text="0.7.3">
 <a href="#tern-073" class="anchor"></a>tern 0.7.3</h1>
-<div id="new-features-1" class="section level3">
+<div id="new-features-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New Features</h3>
+<a href="#new-features-2" class="anchor"></a>New Features</h3>
 <ul>
 <li>Added Subgroup Treatment Effect Pattern (STEP) model fitting functions <code>fit_rsp_step</code> and <code>fit_survival_step</code>, the corresponding tidy method <code>tidy.step</code> as well as the graph function <code>g_step</code>.</li>
 <li>Added new layout function <code>compare_vars</code> which compares variables of different types between columns and produces a p-value for the comparison to the reference column. It is built on top of the <code>summarize_vars</code> functionality.</li>
@@ -228,9 +259,9 @@
 </li>
 </ul>
 </div>
-<div id="enhancements-1" class="section level3">
+<div id="enhancements-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#enhancements-1" class="anchor"></a>Enhancements</h3>
+<a href="#enhancements-2" class="anchor"></a>Enhancements</h3>
 <ul>
 <li>Cox regression via <code>fit_coxreg_univar</code> and <code>fit_coxreg_multivar</code> is now also possible without treatment arm. In the univariate case this means that separate univariate models for the provided covariates are fitted and the corresponding effect estimates can later be tabulated.</li>
 <li>Added <code>fraction</code> in result returned by <code>s_count_occurrences</code>. It contains a list of numerators and denominators with one element per occurrence.</li>
@@ -250,17 +281,17 @@
 <li>New argument <code>no_fillin_visits</code> added to <code>h_adsl_adlb_merge_using_worst_flag</code> to specify the visits that are excluded from post-baseline worst toxicity grade output. Improved <code>h_adsl_adlb_merge_using_worst_flag</code> to include variables shared between <code>adsl</code> and <code>adlb</code>, along with <code>PARAM</code>, <code>PARAMCD</code>, <code>ATOXGR</code>, <code>BTOXGR</code> and optionally <code>AVISIT</code>, <code>AVISITN</code> when <code>by_visit = TRUE</code>. Previously, output only contains <code>USUBJID</code>, <code>ARMCD</code>, <code>PARAMCD</code>, <code>ATOXGR</code>, and <code>BTOXGR</code>.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level3">
+<div id="bug-fixes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Fix bug in <code>s_surv_timepoint</code> for cases when there are zero patients at risk.</li>
 <li>Modified <code>stat_median_ci</code> function so that when empty var with empty name is passed, no <code>row names contain missing values</code> error would show.</li>
 </ul>
 </div>
-<div id="miscellaneous-1" class="section level3">
+<div id="miscellaneous-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h3>
+<a href="#miscellaneous-2" class="anchor"></a>Miscellaneous</h3>
 <ul>
 <li>Deprecated <code>s_cox_univariate</code> function, use <code>fit_coxreg_univar</code> function instead.</li>
 <li>Updated default formats of hr and hr_ci in <code>a_coxph_pairwise</code> and median in <code>s_surv_time</code> to align with STREAM.</li>

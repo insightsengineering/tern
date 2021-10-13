@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -313,7 +313,8 @@ to the input layout. Note that additional formatting arguments can be used here.
 #&gt; 2       hr           0.72          0       Hazard Ratio
 #&gt; 3    hr_ci   (0.53, 0.98)          0             95% CI</div><div class='input'>
 
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>lyt <span class='op'>=</span> <span class='cn'>NULL</span>, var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>coxph_pairwise</span><span class='op'>(</span>
     vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,
@@ -328,7 +329,8 @@ to the input layout. Note that additional formatting arguments can be used here.
 #&gt;   p-value (log-rank)                0.0334        &lt;0.0001  
 #&gt;   Hazard Ratio                       1.39          2.75    
 #&gt;     95% CI                        (1.03, 1.9)   (2.05, 3.7)</div><div class='input'>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>lyt <span class='op'>=</span> <span class='cn'>NULL</span>, var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>coxph_pairwise</span><span class='op'>(</span>
     vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,

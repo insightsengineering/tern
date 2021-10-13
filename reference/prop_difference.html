@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -437,7 +437,8 @@ should be accounted for.</p></li>
 #&gt; 1     diff             25          0 Difference in Response rate (%)
 #&gt; 2  diff_ci     (-92, 100)          0         90% CI (Anderson-Hauck)</div><div class='input'>
 
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>lyt <span class='op'>=</span> <span class='cn'>NULL</span>, var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>estimate_proportion_diff</span><span class='op'>(</span>
     vars <span class='op'>=</span> <span class='st'>"rsp"</span>,
     conf_level <span class='op'>=</span> <span class='fl'>0.90</span>,

@@ -83,7 +83,7 @@ proportions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -363,7 +363,8 @@ additional format arguments.</p></li>
 #&gt; 1     pval         0.3736          0 p-value (Cochran-Mantel-Haenszel Test)</div><div class='input'>
 
 <span class='co'># With rtables pipelines.</span>
-<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>lyt <span class='op'>=</span> <span class='cn'>NULL</span>, var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"grp"</span>, ref_group <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>test_proportion_diff</span><span class='op'>(</span>
     vars <span class='op'>=</span> <span class='st'>"rsp"</span>,
     method <span class='op'>=</span> <span class='st'>"cmh"</span>, variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='st'>"strat"</span><span class='op'>)</span>

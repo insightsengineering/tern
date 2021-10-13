@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -142,7 +142,7 @@
     <p>Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>h_km_layout</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>g_el</span>, <span class='va'>title</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>h_km_layout</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>g_el</span>, <span class='va'>title</span>, annot_at_risk <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +158,12 @@
     <tr>
       <th>title</th>
       <td><p>(<code>string</code>)<br /> title for plot.</p></td>
+    </tr>
+    <tr>
+      <th>annot_at_risk</th>
+      <td><p>(<code>flag</code>)<br /> compute and add the annotation table
+reporting the number of patient at risk matching the main grid of the
+Kaplan-Meier curve.</p></td>
     </tr>
     </table>
 

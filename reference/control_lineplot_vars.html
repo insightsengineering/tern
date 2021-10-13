@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Labels for Bins in Percent — bins_percent_labels • tern</title>
+<title>Control Function for g_lineplot Function — control_lineplot_vars • tern</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Labels for Bins in Percent — bins_percent_labels" />
-<meta property="og:description" content="This creates labels for quantile based bins in percent. This assumes the right-closed
-intervals as produced by cut_quantile_bins()." />
+<meta property="og:title" content="Control Function for g_lineplot Function — control_lineplot_vars" />
+<meta property="og:description" content="Default values for variables parameter in g_lineplot function.
+A variable's default value can be overwritten for any variable." />
 
 
 
@@ -134,47 +134,62 @@ intervals as produced by cut_quantile_bins()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Labels for Bins in Percent</h1>
-    <small class="dont-index">Source: <a href='https://github.com/insightsengineering/tern/blob/master/R/utils_factor.R'><code>R/utils_factor.R</code></a></small>
-    <div class="hidden name"><code>bins_percent_labels.Rd</code></div>
+    <h1>Control Function for g_lineplot Function</h1>
+    <small class="dont-index">Source: <a href='https://github.com/insightsengineering/tern/blob/master/R/g_lineplot.R'><code>R/g_lineplot.R</code></a></small>
+    <div class="hidden name"><code>control_lineplot_vars.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This creates labels for quantile based bins in percent. This assumes the right-closed
-intervals as produced by <code><a href='cut_quantile_bins.html'>cut_quantile_bins()</a></code>.</p>
+    <p>Default values for <code>variables</code> parameter in <code>g_lineplot</code> function.
+A variable's default value can be overwritten for any variable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='va'>probs</span>, digits <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>control_lineplot_vars</span><span class='op'>(</span>
+  x <span class='op'>=</span> <span class='st'>"AVISIT"</span>,
+  y <span class='op'>=</span> <span class='st'>"AVAL"</span>,
+  strata <span class='op'>=</span> <span class='st'>"ARM"</span>,
+  paramcd <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
+  y_unit <span class='op'>=</span> <span class='st'>"AVALU"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>probs</th>
-      <td><p>(<code>proportion</code> vector)<br /> the probabilities identifying the quantiles.
-This is a sorted vector of unique <code>proportion</code> values, i.e. between 0 and 1, where
-the boundaries 0 and 1 must not be included.</p></td>
+      <th>x</th>
+      <td><p>(<code>character</code> scalar) x variable name. <br /></p></td>
     </tr>
     <tr>
-      <th>digits</th>
-      <td><p>(<code>integer</code>)<br /> number of decimal places to round the percent numbers.</p></td>
+      <th>y</th>
+      <td><p>(<code>character</code> scalar) y variable name. <br /></p></td>
+    </tr>
+    <tr>
+      <th>strata</th>
+      <td><p>(<code>character</code> scalar or <code>NA</code>) strata variable name. <br /></p></td>
+    </tr>
+    <tr>
+      <th>paramcd</th>
+      <td><p>(<code>character</code> scalar or <code>NA</code>) paramcd variable name. <br /></p></td>
+    </tr>
+    <tr>
+      <th>y_unit</th>
+      <td><p>(<code>character</code> scalar or <code>NA</code>) y_unit variable name. <br /></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Character vector with labels in the format <code>[0%,20%]</code>, <code>(20%,50%]</code>, etc.</p>
+    <p>A named character vector with names of variables.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Wojciech Wojciak wojciech.wojciak@contractors.roche.com</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Just pass the internal probability bounds, then 0 and 100% will be added automatically.</span>
-<span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "[0%,20%]"   "(20%,50%]"  "(50%,100%]"</div><div class='input'>
-<span class='co'># Determine how to round.</span>
-<span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fl'>0.35224</span>, digits <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "[0%,35.2%]"   "(35.2%,100%]"</div><div class='input'>
-<span class='co'># Passing an empty vector just gives a single bin 0-100%.</span>
-<span class='fu'>bins_percent_labels</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "[0%,100%]"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>control_lineplot_vars</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         x         y    strata   paramcd    y_unit 
+#&gt;  "AVISIT"    "AVAL"     "ARM" "PARAMCD"   "AVALU" </div><div class='input'><span class='fu'>control_lineplot_vars</span><span class='op'>(</span>strata <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         x         y    strata   paramcd    y_unit 
+#&gt;  "AVISIT"    "AVAL"        NA "PARAMCD"   "AVALU" </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

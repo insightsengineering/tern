@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -145,8 +145,7 @@
     <pre class="usage"><span class='fu'>g_lineplot</span><span class='op'>(</span>
   <span class='va'>df</span>,
   alt_counts_df <span class='op'>=</span> <span class='cn'>NULL</span>,
-  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"AVISIT"</span>, y <span class='op'>=</span> <span class='st'>"AVAL"</span>, strata <span class='op'>=</span> <span class='st'>"ARM"</span>, ylab <span class='op'>=</span> <span class='st'>"PARAMCD"</span>, y_unit <span class='op'>=</span>
-    <span class='st'>"AVALU"</span><span class='op'>)</span>,
+  variables <span class='op'>=</span> <span class='fu'><a href='control_lineplot_vars.html'>control_lineplot_vars</a></span><span class='op'>(</span><span class='op'>)</span>,
   mid <span class='op'>=</span> <span class='st'>"mean"</span>,
   interval <span class='op'>=</span> <span class='st'>"mean_ci"</span>,
   whiskers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_ci_lwr"</span>, <span class='st'>"mean_ci_upr"</span><span class='op'>)</span>,
@@ -159,8 +158,13 @@
   legend_title <span class='op'>=</span> <span class='cn'>NULL</span>,
   legend_position <span class='op'>=</span> <span class='st'>"bottom"</span>,
   ggtheme <span class='op'>=</span> <span class='cn'>NULL</span>,
+  y_lab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  y_lab_add_paramcd <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  y_lab_add_unit <span class='op'>=</span> <span class='cn'>TRUE</span>,
   title <span class='op'>=</span> <span class='st'>"Plot of Mean and 95% Confidence Limits by Visit"</span>,
-  subtitle <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subtitle <span class='op'>=</span> <span class='st'>""</span>,
+  subtitle_add_paramcd <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  subtitle_add_unit <span class='op'>=</span> <span class='cn'>TRUE</span>,
   caption <span class='op'>=</span> <span class='cn'>NULL</span>,
   table_format <span class='op'>=</span> <span class='fu'>tern</span><span class='fu'>::</span><span class='fu'><a href='summary_formats.html'>summary_formats</a></span><span class='op'>(</span><span class='op'>)</span>,
   table_labels <span class='op'>=</span> <span class='fu'>tern</span><span class='fu'>::</span><span class='fu'><a href='summary_labels.html'>summary_labels</a></span><span class='op'>(</span><span class='op'>)</span>,
@@ -185,9 +189,11 @@ data set that will be used (only) to counts objects in strata.</p></td>
       <td><p>(named <code>character</code> vector) of variable names in <code>df</code> data set. Details are: <br /></p><ul>
 <li><p><code>x</code>: x-axis variable.</p></li>
 <li><p><code>y</code>: y-axis variable.</p></li>
-<li><p><code>strata</code>: grouping variable, i.e. treatment arm. Can be <code>NULL</code>.</p></li>
-<li><p><code>ylab</code>: y-axis label variable. Can be <code>NULL</code>.</p></li>
-<li><p><code>y_unit</code>: variable with units of <code>y</code>, units will added to the y-axis label. Can be <code>NULL</code>.</p></li>
+<li><p><code>strata</code>: grouping variable, i.e. treatment arm. Can be <code>NA</code> to indicate lack of groups.</p></li>
+<li><p><code>paramcd</code>: the variable name for parameter's code. Used for y-axis label and plot's subtitle.
+Can be <code>NA</code> if paramcd is not to be added to the y-axis label or subtitle.</p></li>
+<li><p><code>y_unit</code>: variable with units of <code>y</code>. Used for y-axis label and plot's subtitle.
+Can be <code>NA</code> if y unit is not to be added to the y-axis label or subtitle.</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -241,7 +247,7 @@ controls the font size of the point for <code>mid</code> plot.</p></td>
     </tr>
     <tr>
       <th>position</th>
-      <td><p><br />
+      <td><p>(<code>character</code> or <code>call</code>) <br />
 geom element position adjustment, either as a string, or the result of a call to a position adjustment function.</p></td>
     </tr>
     <tr>
@@ -259,12 +265,37 @@ the position of the plot legend (<code>none</code>, <code>left</code>, <code>rig
 a graphical theme as provided by <code>ggplot2</code> to control outlook of the plot.</p></td>
     </tr>
     <tr>
+      <th>y_lab</th>
+      <td><p>(<code>character</code> scalar) <br /> y-axis label.
+If it equals to <code>NULL</code>, then no label will be added.</p></td>
+    </tr>
+    <tr>
+      <th>y_lab_add_paramcd</th>
+      <td><p>(<code>logical</code> scalar) <br />
+should paramcd, i.e. <code><a href='https://rdrr.io/r/base/unique.html'>unique(df[[variables["paramcd"]]])</a></code> be added to the y-axis label <code>y_lab</code>?</p></td>
+    </tr>
+    <tr>
+      <th>y_lab_add_unit</th>
+      <td><p>(<code>logical</code> scalar) <br />
+should y unit, i.e. <code><a href='https://rdrr.io/r/base/unique.html'>unique(df[[variables["y_unit"]]])</a></code> be added to the y-axis label <code>y_lab</code>?</p></td>
+    </tr>
+    <tr>
       <th>title</th>
       <td><p>(<code>character</code> scalar) <br /> plot title.</p></td>
     </tr>
     <tr>
       <th>subtitle</th>
       <td><p>(<code>character</code> scalar) <br /> plot subtitle.</p></td>
+    </tr>
+    <tr>
+      <th>subtitle_add_paramcd</th>
+      <td><p>(<code>logical</code> scalar) <br />
+should paramcd, i.e. <code><a href='https://rdrr.io/r/base/unique.html'>unique(df[[variables["paramcd"]]])</a></code> be added to the plot's subtitle <code>subtitle</code>?</p></td>
+    </tr>
+    <tr>
+      <th>subtitle_add_unit</th>
+      <td><p>(<code>logical</code> scalar) <br />
+should y unit, i.e. <code><a href='https://rdrr.io/r/base/unique.html'>unique(df[[variables["y_unit"]]])</a></code> be added to the plot's subtitle <code>subtitle</code>?</p></td>
     </tr>
     <tr>
       <th>caption</th>
@@ -274,7 +305,7 @@ a graphical theme as provided by <code>ggplot2</code> to control outlook of the 
       <th>table_format</th>
       <td><p>(named <code>character</code> or <code>NULL</code>) <br />
 format patterns for descriptive statistics used in the (optional) table appended to the plot.
-It is passed directly to the <code><a href='h_format_row.html'>h_format_row</a></code> function through the <code>format</code> parameter.
+It is passed directly to the <code>h_format_row</code> function through the <code>format</code> parameter.
 Names of <code>table_format</code> must match the names of statistics returned by <code>sfun</code> function.</p></td>
     </tr>
     <tr>
@@ -303,17 +334,15 @@ depending on whether or not a table is appended to the plot.</p>
     <p>Wojciech Wojciak wojciech.wojciak@contractors.roche.com</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'>scda</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
 <span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='fu'>scda</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
 <span class='va'>adlb</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>adlb</span>, <span class='va'>ANL01FL</span> <span class='op'>==</span> <span class='st'>"Y"</span>, <span class='va'>PARAMCD</span> <span class='op'>==</span> <span class='st'>"ALT"</span>, <span class='va'>AVISIT</span> <span class='op'>!=</span> <span class='st'>"SCREENING"</span><span class='op'>)</span>
 
-<span class='va'>adsl</span> <span class='op'>&lt;-</span> <span class='fu'>scda</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-
 <span class='co'># Mean with CI</span>
-<span class='fu'>g_lineplot</span><span class='op'>(</span><span class='va'>adlb</span>, <span class='va'>adsl</span>, subtitle <span class='op'>=</span> <span class='st'>"Laboratory Test: ALT"</span><span class='op'>)</span>
+<span class='fu'>g_lineplot</span><span class='op'>(</span><span class='va'>adlb</span>, <span class='va'>adsl</span>, subtitle <span class='op'>=</span> <span class='st'>"Laboratory Test:"</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Mean with CI, no stratification</span>
-<span class='fu'>g_lineplot</span><span class='op'>(</span><span class='va'>adlb</span>, variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"AVISIT"</span>, y <span class='op'>=</span> <span class='st'>"AVAL"</span>, y_lab <span class='op'>=</span> <span class='st'>"PARAMCD"</span>, y_unit <span class='op'>=</span> <span class='st'>"AVALU"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>g_lineplot</span><span class='op'>(</span><span class='va'>adlb</span>, variables <span class='op'>=</span> <span class='fu'><a href='control_lineplot_vars.html'>control_lineplot_vars</a></span><span class='op'>(</span>strata <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Mean, upper whisker of CI, no strata counts N</span>
 <span class='fu'>g_lineplot</span><span class='op'>(</span><span class='va'>adlb</span>, whiskers <span class='op'>=</span> <span class='st'>"mean_ci_upr"</span>,
@@ -328,14 +357,16 @@ depending on whether or not a table is appended to the plot.</p>
 </div><div class='img'><img src='g_lineplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Mean, +/- SD</span>
 <span class='fu'>g_lineplot</span><span class='op'>(</span><span class='va'>adlb</span>, <span class='va'>adsl</span>, interval <span class='op'>=</span> <span class='st'>"mean_sdi"</span>, whiskers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean_sdi_lwr"</span>, <span class='st'>"mean_sdi_upr"</span><span class='op'>)</span>,
-  title <span class='op'>=</span> <span class='st'>"Plot of Median +/- SD by Visit"</span><span class='op'>)</span>
+  title <span class='op'>=</span> <span class='st'>"Plot of Median +/- SD by Visit"</span>
+<span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Mean with CI plot with stats table</span>
 <span class='fu'>g_lineplot</span><span class='op'>(</span><span class='va'>adlb</span>, <span class='va'>adsl</span>, table <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"mean"</span>, <span class='st'>"mean_ci"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Mean with CI, table and customized confidence level</span>
 <span class='fu'>g_lineplot</span><span class='op'>(</span>
-  <span class='va'>adlb</span>, <span class='va'>adsl</span>, table <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"mean"</span>, <span class='st'>"mean_ci"</span><span class='op'>)</span>, control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.80</span><span class='op'>)</span>,
+  <span class='va'>adlb</span>, <span class='va'>adsl</span>, table <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"n"</span>, <span class='st'>"mean"</span>, <span class='st'>"mean_ci"</span><span class='op'>)</span>,
+  control <span class='op'>=</span> <span class='fu'><a href='control_summarize_vars.html'>control_summarize_vars</a></span><span class='op'>(</span>conf_level <span class='op'>=</span> <span class='fl'>0.80</span><span class='op'>)</span>,
   title <span class='op'>=</span> <span class='st'>"Plot of Mean and 80% Confidence Limits by Visit"</span>
 <span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-7.png' alt='' width='700' height='433' /></div><div class='input'>

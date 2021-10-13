@@ -83,7 +83,7 @@ survival time range of censored/event patients." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -301,7 +301,8 @@ to the input layout. Note that additional formatting arguments can be used here.
 #&gt; 4 range_censor   0.4 to 154.7          0 Range (censored)
 #&gt; 5  range_event   0.3 to 116.4          0    Range (event)
 #&gt; 6        range   0.3 to 154.7          0            Range</div><div class='input'>
-<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>lyt <span class='op'>=</span> <span class='cn'>NULL</span>, var <span class='op'>=</span> <span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>surv_time</span><span class='op'>(</span>
     vars <span class='op'>=</span> <span class='st'>"AVAL"</span>,

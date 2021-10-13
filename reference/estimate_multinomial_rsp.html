@@ -83,7 +83,7 @@ regarding the level of a factor." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
       </span>
     </div>
 
@@ -280,38 +280,48 @@ here.</p></li>
 
 <span class='va'>html</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://roche.github.io/rtables/reference/as_html.html'>as_html</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>
 <span class='va'>html</span>
-</div><div class='output co'>#&gt; &lt;table class="table table-condensed table-hover"&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;th class="" style="white-space:pre;"&gt;&lt;/th&gt;
-#&gt;     &lt;th class=" text-center" colspan="1"&gt;A&lt;/th&gt;
-#&gt;     &lt;th class=" text-center" colspan="1"&gt;B&lt;/th&gt;
-#&gt;     &lt;th class=" text-center" colspan="1"&gt;C&lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1"&gt;Complete Response (CR)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;0 (0%)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;2 (50%)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;4 (100%)&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;95% CI (Wald, with correction)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;(0, 12.5)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;(0, 100)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;(87.5, 100)&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1"&gt;Partial Response (PR)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;4 (100%)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;2 (50%)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;0 (0%)&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr class=""&gt;
-#&gt;     &lt;td class=" text-left" colspan="1" style="padding-left: 3ch"&gt;95% CI (Wald, with correction)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;(87.5, 100)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;(0, 100)&lt;/td&gt;
-#&gt;     &lt;td class=" text-center" colspan="1"&gt;(0, 12.5)&lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
+</div><div class='output co'>#&gt; &lt;div class="rtables-all-parts-block rtables-container"&gt;
+#&gt;   &lt;table class="table table-condensed table-hover"&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;th style="white-space:pre;"&gt;&lt;/th&gt;
+#&gt;       &lt;th class="text-center"&gt;A&lt;/th&gt;
+#&gt;       &lt;th class="text-center"&gt;B&lt;/th&gt;
+#&gt;       &lt;th class="text-center"&gt;C&lt;/th&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left"&gt;Complete Response (CR)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;0 (0%)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;2 (50%)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;4 (100%)&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;95% CI (Wald, with correction)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;(0, 12.5)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;(0, 100)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;(87.5, 100)&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left"&gt;Partial Response (PR)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;4 (100%)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;2 (50%)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;0 (0%)&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;tr&gt;
+#&gt;       &lt;td class="text-left" style="padding-left: 3ch"&gt;95% CI (Wald, with correction)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;(87.5, 100)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;(0, 100)&lt;/td&gt;
+#&gt;       &lt;td class="text-center"&gt;(0, 12.5)&lt;/td&gt;
+#&gt;     &lt;/tr&gt;
+#&gt;     &lt;caption style="caption-side:top;"&gt;&lt;div class="rtables-titles-block rtables-container"&gt;
+#&gt;         &lt;div class="rtables-main-titles-block rtables-container"&gt;
+#&gt;           &lt;p class="rtables-main-title"&gt;&lt;/p&gt;
+#&gt;         &lt;/div&gt;
+#&gt;         &lt;div class="rtables-subtitles-block rtables-container"&gt;&lt;/div&gt;
+#&gt;       &lt;/div&gt;
+#&gt;     &lt;/caption&gt;
+#&gt;   &lt;/table&gt;
+#&gt;   &lt;div class="rtables-footers-block rtables-container"&gt;&lt;/div&gt;
+#&gt; &lt;/div&gt;</div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='fu'><a href='https://roche.github.io/rtables/reference/Viewer.html'>Viewer</a></span><span class='op'>(</span><span class='va'>html</span><span class='op'>)</span>
 <span class='op'>}</span>
