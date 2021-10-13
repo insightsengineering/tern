@@ -127,7 +127,7 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
    .N_col = 10L, # nolint
    .var = "AETOXGR",
    id = "USUBJID",
-   grade_groups = list("ANY" = levels(df$AETOXGR))
+   grade_groups = grade_groups
  )
 ```
 
