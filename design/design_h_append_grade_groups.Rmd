@@ -63,11 +63,6 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
   )
   elements <- unique(unlist(grade_groups))
 
-  # This is control that all elements from grade_groups need to be in refs
-  # assert_that(
-  #   all_elements_in_ref(elements, names(refs))
-  # )
-
   ### compute sums in groups
   grp_sum <- lapply(grade_groups, function(i) do.call(sum, refs[i]))
   if (!all_elements_in_ref(elements, names(refs))) {
