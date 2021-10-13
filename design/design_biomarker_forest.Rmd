@@ -1,0 +1,487 @@
+---
+title: "Forest plot for continuous biomarker effects within populations and models"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Idea
+
+Instead of dichotomizing biomarker values into low/high groups and then creating
+a forest plot that compares these groups in different subpopulations (e.g. SFG3 or SFG4),
+here we want to show the continuous biomarker effects (i.e. how much does one unit
+increase change the odds or the hazard).
+Since we might want to look at the sensitivity of the results with regards to different
+regression models or patient populations we need additional inputs for that as well.
+
+![](https://user-images.githubusercontent.com/1071227/128316619-e9e79808-11e6-443f-a604-09fa18f166e3.png)
+
+## Layout
+
+So overall columns could be:
+
+- Biomarker
+- Population
+- n
+
+Then for survival:
+
+- Events
+- Median (Months)
+- HR
+
+Or for response:
+
+- Response Rate
+- Odds Ratio
+
+And for both:
+
+- 95% CI
+- p-value
+
+For the model, we would propose to have one model per output plot. 
+Then we can just look at multiple plots to see the effect of the models.
+
+## Design
+
+### Functions
+
+It seems that we will need new high level functions:
+- `extract_survival_biomarkers()`
+- `extract_rsp_biomarkers()`
+
+The naming here emphasizes that we are looking at multiple biomarkers at the same
+time. Naming is hard though, which we will see below again.
+
+Also we will very likely need corresponding table functions:
+- `tabulate_survival_biomarkers()`
+- `tabulate_rsp_biomarkers()`
+
+However the graph function `g_forest()` is general enough and should therefore
+still be usable without major modifications.
+
+### Population specification
+
+It would be good if we can keep this consistent with the way we are doing it in the
+other forest plots. That is we could have a `subgroups = c("BEP01FL", "BMRKR2")` argument
+which gives the factor variables defining the subgroups / populations. Also the `groups_list` argument
+should still be usable to merge together certain factor levels of these subgroup variables.
+
+### Model specification
+
+In order to simplify the user interface and keep it consistent with the existing
+functions like `extract_survival_subgroups()`, we only specify one model for each plot.
+Currently the `variables` argument takes e.g.:
+
+- tte
+- is_event
+- arm
+- subgroups
+- strat
+
+So starting from this we would
+
+- replace `arm` by `biomarkers` to emphasize that it is not a factor and that
+we can specify multiple biomarkers at a time
+- add `covariates` so that the user can specify those too
+
+This is similar and uses the same terms as e.g. in `fit_survival_step()` (similar
+for the response version) so fits in that pattern nicely.
+
+## Prototype: Survival
+
+We now code prototypes for the above functions, but just for the survival version.
+The response version will be very similar and part of the production PR.
+
+### Test data
+
+```{r}
+library(scda)
+library(dplyr)
+library(forcats)
+library(rtables)
+
+adtte <- synthetic_cdisc_data("latest")$adtte
+
+# Save variable labels before data processing steps.
+adtte_labels <- var_labels(adtte)
+
+adtte_f <- adtte %>%
+  filter(
+    PARAMCD == "OS",
+    ARM %in% c("B: Placebo", "A: Drug X"),
+    SEX %in% c("M", "F")
+  ) %>%
+  mutate(
+    # Reorder levels of ARM to display reference arm before treatment arm.
+    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+    SEX = droplevels(SEX),
+    is_event = CNSR == 0
+  ) %>%
+  var_relabel(
+    ARM = adtte_labels["ARM"],
+    SEX = adtte_labels["SEX"],
+    is_event = "Event Flag"
+  )
+```
+
+### High-level extract function
+
+Let's start with `extract_survival_biomarkers()`. 
+
+Here we can leave out one helper function level, so the code here is actually
+more similar to `h_coxph_subgroups_df()`.
+
+Another difference is the control list. Because we internally will reuse a
+function that does not work with log-rank test, we need to use
+`control_coxreg()` instead of `control_coxph()`.
+
+```{r}
+library(assertthat)
+library(utils.nest)
+library(tern)
+extract_survival_biomarkers <- function(variables,
+                                        data,
+                                        groups_lists = list(),
+                                        control = control_coxreg(),
+                                        label_all = "All Patients") {
+  assert_that(
+    is.list(variables),
+    is.character(variables$subgroups) || is.null(variables$subgroups),
+    is.string(label_all)
+  )
+
+  # Start with all patients.
+  result_all <- h_coxreg_mult_cont_df(
+    variables = variables,
+    data = data,
+    control = control
+  )
+  result_all$subgroup <- label_all
+  result_all$var <- "ALL"
+  result_all$var_label <- label_all
+  result_all$row_type <- "content"
+
+  if (is.null(variables$subgroups)) {
+    # Only return result for all patients.
+    result_all
+  } else {
+    # Add subgroups results.
+    l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
+    l_result <- lapply(l_data, function(grp) {
+      result <- h_coxreg_mult_cont_df(
+        variables = variables,
+        data = grp$df,
+        control = control
+      )
+      result_labels <- grp$df_labels[rep(1, times = nrow(result)), ]
+      cbind(result, result_labels)
+    })
+    result_subgroups <- do.call(rbind, args = c(l_result, make.row.names = FALSE))
+    result_subgroups$row_type <- "analysis"
+
+    rbind(
+      result_all,
+      result_subgroups
+    )
+  }
+}
+```
+
+### Helper to calcute multivariate Cox models across all biomarkers
+
+So now we come to the core part of the calculations. We would like to have as result
+a data frame with columns:
+
+- `biomarker` (which biomarker was used here, i.e. which HR we report)
+- `biomarker_label` (same but nice label)
+- `n_tot` (this and the below 2 we need because they can be different depending
+   on the biomarker analyzed)
+- `n_tot_events`
+- `median`
+- `hr`
+- `lcl`
+- `ucl`
+- `conf_level`
+- `pval`
+- `pval_label`
+
+So it is similar to what we get out of `h_coxph_df()`, but in addition we need
+the biomarker.
+
+Note that there is unfortunately currently an inconsistency between the variable
+names accepted by `extract_survival_subgroups()` and `fit_coxreg_multivar()`.
+This could be addressed in a separate issue, however it would be a breaking change
+for users therefore needs caution. Here we stick with the variable
+names accepted by `extract_survival_subgroups()`.
+
+```{r}
+h_surv_to_coxreg_variables <- function(variables, biomarker) {
+  list(
+    time = variables$tte,
+    event = variables$is_event,
+    arm = biomarker,
+    covariates = variables$covariates,
+    strata = variables$strata
+  )
+}
+
+h_coxreg_mult_cont_df <- function(variables,
+                                  data,
+                                  control = control_coxreg()) {
+  assert_that(
+    is.list(variables),
+    is_character_vector(variables$biomarkers),
+    is_df_with_variables(data, as.list(unlist(variables))),
+    is_fully_named_list(control)
+  )
+
+  # If there is any data, run model, otherwise return empty results.
+  result_df <- if (nrow(data) > 0) { 
+    bm_cols <- match(variables$biomarkers, names(data))
+    data_constant <- data[, - bm_cols]
+    l_result <- lapply(variables$biomarkers, function(bm) {
+      data <- droplevels(na.omit(cbind(
+        data_constant,
+        data[bm]
+      )))
+      coxreg_list <- fit_coxreg_multivar(
+        variables = h_surv_to_coxreg_variables(variables, bm),
+        data = data,
+        control = control
+      )
+      result <- do.call(
+        h_coxreg_multivar_extract, 
+        c(list(var = bm), coxreg_list[c("mod", "data", "control")])
+      )
+      median <- s_surv_time(
+        df = data, 
+        .var = variables$tte, 
+        is_event = variables$is_event
+      )$median
+      data.frame(
+        # Dummy column needed downstream to create a nested header.
+        biomarker = bm,
+        biomarker_label = var_labels(data[bm], fill = TRUE),
+        n_tot = nrow(data),
+        n_tot_events = sum(data$is_event),
+        median = as.numeric(median),
+        result[1L, c("hr", "lcl", "ucl")],
+        conf_level = control[["conf_level"]],
+        pval = result[1L, "pval"],
+        pval_label = paste0(
+          "p-value (", stringr::str_to_sentence(control[["pval_method"]]), ")"
+        ),
+        stringsAsFactors = FALSE
+      )
+    })
+    do.call(rbind, args = c(l_result, make.row.names = FALSE))
+  } else {
+    data.frame(
+      biomarker = variables$biomarkers,
+      biomarker_label = var_labels(data[variables$biomarkers], fill = TRUE),
+      n_tot = 0L,
+      n_tot_events = 0L,
+      hr = NA,
+      lcl = NA,
+      ucl = NA,
+      conf_level = control[["conf_level"]],
+      pval = NA,
+      pval_label = paste0(
+        "p-value (", stringr::str_to_sentence(control[["pval_method"]]), ")"
+      ),
+      stringsAsFactors = FALSE
+    )
+  }
+
+  result_df
+}
+```
+
+Let's try this out first.
+
+```{r}
+h_coxreg_mult_cont_df(
+  variables = list(
+    tte = "AVAL", 
+    is_event = "is_event", 
+    biomarkers = c("BMRKR1", "AGE"), 
+    covariates = "REGION1", 
+    strata = c("STRATA1", "STRATA2")
+  ),
+  data = adtte_f
+)
+```
+
+So that works as expected.
+
+### Trying it out so far
+
+We can check the high-level extract function now.
+
+```{r}
+df <- extract_survival_biomarkers(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    biomarkers = c("BMRKR1", "AGE"),
+    strata = "STRATA1",
+    covariates = "RACE",
+    subgroups = "BMRKR2"
+  ),
+  data = adtte_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+```
+
+### Tabulation function
+
+Now we come to the tabulation. 
+See https://docs.google.com/spreadsheets/d/1vztLvMWvlGygL2DITqkNTNf_AJh1zN0YdiX1MkkqCaU
+for the layout of the table we want to achieve.
+
+#### Helper for tabulating single biomarker results
+
+Since it does not work otherwise, we will generate sub-tables for each biomarker using
+this helper function, and then afterwards bind them together. This is the same strategy
+which we used in SFG5 (comparing on subgroups).
+
+```{r}
+h_tab_surv_one_biomarker <- function(df_sub,
+                                     afun_lst,
+                                     colvars) {
+  lyt <- basic_table()
+  # Row split by row type - only keep the content rows here.
+  lyt_sub <- split_rows_by(
+    lyt = lyt,
+    var = "row_type",
+    split_fun = keep_split_levels("content"),
+    nested = FALSE,
+    indent_mod = 1L
+  )
+  # Summarize rows with all patients.
+  lyt_sub <- summarize_row_groups(
+    lyt = lyt_sub,
+    var = "var_label",
+    cfun = afun_lst
+  )
+  # Split cols by the multiple variables to populate into columns.
+  lyt_sub <- split_cols_by_multivar(
+    lyt = lyt_sub,
+    vars = colvars$vars,
+    varlabels = colvars$labels
+  )
+  
+  # If there is any subgroup variables, we extend the layout accordingly.
+  if ("analysis" %in% df$row_type) {
+    
+    # Now only continue with the subgroup rows.
+    lyt_sub <- split_rows_by(
+      lyt = lyt_sub,
+      var = "row_type",
+      split_fun = keep_split_levels("analysis"),
+      nested = FALSE,
+      child_labels = "hidden"
+    ) 
+    # Split by the subgroup variable.
+    lyt_sub <- split_rows_by(
+      lyt = lyt_sub, 
+      var = "var",
+      labels_var = "var_label",
+      nested = TRUE,
+      child_labels = "visible",
+      indent_mod = 1L
+    )
+    # Then analyze colvars for each subgroup.
+    lyt_sub <- summarize_row_groups(
+      lyt = lyt_sub,
+      cfun = afun_lst,
+      var = "subgroup"
+    )
+  }
+  
+  result <- build_table(lyt_sub, df = df_sub) 
+}
+```
+
+#### High-level function
+
+So with that we can now build the high-level tabulation function.
+
+```{r}
+tabulate_survival_biomarkers <- function(lyt,
+                                         df,
+                                         vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
+                                         time_unit = NULL) {
+  
+  conf_level <- df$conf_level[1]
+  method <-  df$pval_label[1]
+
+  afun_lst <- a_survival_subgroups()[vars]
+  colvars <- tern:::d_survival_subgroups_colvars(
+    vars,
+    conf_level = conf_level,
+    method = method,
+    time_unit = time_unit
+  )
+  
+  df_subs <- split(df, f = df$biomarker)
+  tabs <- lapply(df_subs, FUN = function(df_sub) {
+    tab_sub <- h_tab_surv_one_biomarker(
+      df_sub = df_sub,
+      afun_lst = afun_lst,
+      colvars = colvars
+    )
+    insert_rrow(tab_sub, rrow(df_sub$biomarker_label[1]))
+  })
+  result <- do.call(rbind, tabs)
+  
+  n_tot_ids <- grep("^n_tot", colvars$vars)
+  hr_id <- match("hr", colvars$vars)
+  ci_id <- match("lcl", colvars$vars)
+
+  structure(
+    result,
+    # todo: determine forest_header
+    # forest_header = paste0(rev(levels(df$survtime$arm)), "\nBetter"),
+    col_x = hr_id,
+    col_ci = ci_id,
+    col_symbol_size = n_tot_ids[1]
+  )
+}
+```
+
+#### Trying it out
+
+```{r, results="asis"}
+tab <- basic_table() %>%
+  tabulate_survival_biomarkers(df = df, time_unit = "days")
+as_html(tab)
+```
+
+Nice!
+
+### Forest plot
+
+Now finally we can see if the forest plot can be produced from this table.
+
+```{r, fig.width = 15, fig.height = 5}
+g_forest(tab, xlim = c(0.9, 1.1))
+```
+
+## Production Notes
+
+- We need to make `h_coxreg_multivar_extract()` more robust. Currently if there is 
+a small subgroup data set and e.g. a covariate with small numbers of categories in the
+model then this can easily fail.

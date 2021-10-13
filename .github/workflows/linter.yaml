@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - pre-release
   pull_request:
 
 jobs:
@@ -27,5 +28,5 @@ jobs:
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE: true
           VALIDATE_MARKDOWN: true
-          VALIDATE_R: true
+          VALIDATE_R: TRUE
           VALIDATE_YAML: true

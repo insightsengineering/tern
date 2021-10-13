@@ -47,6 +47,7 @@ considered in the \code{mmrm} object considered in \code{object} argument,
 no matter if \code{select} argument contains \code{contrasts} value.
 }
 \examples{
+\dontrun{
 library(dplyr)
 library(scda)
 library(rtables)
@@ -114,5 +115,5 @@ g_mmrm_lsmeans(
   show_pval = TRUE,
   width = 0.8
 )
-
+}
 }

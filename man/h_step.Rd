@@ -79,8 +79,8 @@ included here for each biomarker value in \code{x}.
 
 \item \code{h_step_rsp_est}: estimates the model with \code{formula} built based on
 \code{variables} in \code{data} for a given \code{subset} and \code{control} parameters for the
-logistic regression, and returns a matrix of number of observations \code{n},
-\code{events} as well as log hazard ratio estimates \code{loghr}, standard error \code{se}
+logistic regression, and returns a matrix of number of observations \code{n}
+as well as log odds ratio estimates \code{logor}, standard error \code{se}
 and Wald confidence interval bounds \code{ci_lower} and \code{ci_upper}. One row is
 included here for each biomarker value in \code{x}.
 }}

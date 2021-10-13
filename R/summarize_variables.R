@@ -9,7 +9,7 @@
 #'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
 #'
-#' @return A list of components with the same names as the arguments
+#' @return A list of components with the same names as the arguments.
 #' @export
 #'
 control_summarize_vars <- function(conf_level = 0.95,
@@ -190,9 +190,6 @@ s_summary.numeric <- function(x, # nolint
                               control = control_summarize_vars(),
                               ...) {
   assert_that(is.numeric(x))
-
-  control_diff <- setdiff(names(control_summarize_vars()), names(control))
-  control <- c(control, control_summarize_vars()[control_diff])
 
   if (na.rm) {
     x <- x[!is.na(x)]
@@ -524,7 +521,8 @@ a_summary.logical <- make_afun(
 #'   AVAL    = c(9:1, rep(NA, 9))
 #' )
 #'
-#' l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+#' l <- basic_table() %>%
+#' split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
 #'   analyze(vars = "AVAL", afun = afun)
 #'

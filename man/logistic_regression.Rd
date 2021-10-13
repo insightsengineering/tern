@@ -24,7 +24,7 @@
 fit_logistic(
   data,
   variables = list(response = "Response", arm = "ARMCD", covariates = NULL, interaction
-    = NULL),
+    = NULL, strata = NULL),
   response_definition = "response"
 )
 
@@ -87,7 +87,8 @@ summarize_logistic(lyt, conf_level)
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{response_definition}{(\code{string})\cr the definition of what an event is in terms of \code{response}.
-This will be used when fitting the logistic regression model on the left hand side of the formula.}
+This will be used when fitting the (conditional) logistic regression model on the left hand
+side of the formula.}
 
 \item{fit_glm}{logistic regression model fitted by \code{\link[stats:glm]{stats::glm()}} with "binomial" family.}
 
@@ -139,12 +140,16 @@ Report p-value for Wald chi-square test of the null hypothesis that covariate ha
 response in model containing all specified covariates.
 Allow option to include one two-way interaction and present similar output for
 each interaction degree of freedom.
-Note: For \code{glm} formula, the variable names need to be standard dataframe column name without
+Note: For the formula, the variable names need to be standard dataframe column name without
 special characters.
+}
+\details{
+Note this function may hang or error for certain datasets when an old version of the
+survival package (< 3.2-13) is used.
 }
 \section{Functions}{
 \itemize{
-\item \code{fit_logistic}: Fit a logistic regression model.
+\item \code{fit_logistic}: Fit a (conditional) logistic regression model.
 
 \item \code{h_get_interaction_vars}: Helper function to extract interaction variable names from a fitted
 model assuming only one interaction term.
@@ -170,7 +175,7 @@ of numbers of patients.
 of numbers of patients.
 
 \item \code{h_glm_simple_term_extract}: Helper function to tabulate the main effect
-results of a logistic regression model.
+results of a (conditional) logistic regression model.
 
 \item \code{h_glm_interaction_extract}: Helper function to tabulate the interaction term
 results of a logistic regression model.

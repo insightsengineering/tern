@@ -32,7 +32,6 @@ set.seed(1, kind = "Mersenne-Twister")
 library(dplyr)
 library(random.cdisc.data)
 library(assertthat)
-
 ```
 
 ## Set up data
@@ -53,7 +52,6 @@ adcm <- radcm(cached = TRUE)
 
 adcm_c <- adcm %>% filter(ATIREL == "CONCOMITANT")
 adcm_p <- adcm %>% filter(ATIREL == "PRIOR")
-
 ```
 
 
@@ -75,13 +73,12 @@ result <- basic_table() %>%
     .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_c, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
  result
-
 ```
 
 
@@ -106,13 +103,12 @@ result <- basic_table() %>%
     .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_p, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
  result
-
 ```
 
 
@@ -135,13 +131,12 @@ result <- basic_table() %>%
     .labels = c("Total number of patients with at least one treatment (%)"),
     .stats = "unique"
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_c, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path =  c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences)
 
  result
-
 ```
 
 
@@ -165,12 +160,11 @@ result <- basic_table() %>%
     .stats = c("unique", "nonunique"),
     .labels = c("Total number of patients with at least one treatment (%)", "Total number of treatments")
   ) %>%
-  count_occurrences(var = "CMDECOD") %>%
+  count_occurrences(vars = "CMDECOD") %>%
   build_table(adcm_c, col_counts = n_per_arm) %>%
   prune_table() %>%
   sort_at_path(path = c("CMCLAS", "*", "CMDECOD"), scorefun = score_occurrences, decreasing = TRUE) %>%
   sort_at_path(path = c("CMCLAS"), scorefun = cont_n_onecol(4), decreasing = TRUE)
 
 result
-
 ```

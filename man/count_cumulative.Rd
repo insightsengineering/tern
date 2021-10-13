@@ -122,7 +122,7 @@ should be accounted for.
 }}
 
 \examples{
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister")
 x <- c(sample(1:10, 10), NA)
 .N_col <- length(x)
 h_count_cumulative(x, 5, .N_col = .N_col)
@@ -140,7 +140,8 @@ afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
 
 library(scda)
 ADSL <- synthetic_cdisc_data("latest")$adsl
-split_cols_by(lyt = NULL, "ARM") \%>\%
+basic_table() \%>\%
+split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
   count_cumulative(
     vars = "AGE",

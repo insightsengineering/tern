@@ -1,14 +1,33 @@
-# tern 0.7.4.9000
-* Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each and every element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
-* Parametrized `stat_mean_ci` and `stat_median_ci` so that they may return different outputs.
-* Added new safety helper function h_stack_by_baskets to stack SMQ and/or CQ records from ADAE data set.
-* Added `remove_single` argument to `h_append_grade_groups`, which allows to control whether the elements of one-element grade groups will be kept in the output or removed.
-* Re-implemented the `h_append_grade_groups` function to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of `grade_groups`.
-* Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) rsp records.
+# tern 0.7.5.9000
+
+# tern 0.7.5
+
+### New features
+* Added functions to estimate continuous biomarker effects across multiple subgroups for survival and binary response endpoints, which can be used to produce corresponding forest plots, see `survival_biomarkers_subgroups` and `response_biomarkers_subgroups`.
+* Added `g_lineplot` plot function, including new `h_format_row` helper function and `control_lineplot_vars` function. Removed `g_summary_by`.
+* Added new safety helper function `h_stack_by_baskets` to stack events in SMQ and/or CQ basket flag in ADAE data set.
+
+### Enhancements
+* Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
+* Added option to also convert logical variables to factor variables in `df_explicit_na`.
+* Refactored `h_append_grade_groups` to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of `grade_groups`. Also, added `remove_single` argument which controls whether the elements of one-element grade groups will be kept in the output or removed.
+* Added `var_labels` and `show_labels` arguments to `count_occurrences` and `count_patients_with_flags` to allow for creation of a title row.
+* Added `na_level` argument to `count_abnormal_by_baseline`.
+
+### Bug Fixes
+* Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) responses.
 * Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing.
-* Fixed `g_km` such that lines in the plot now start correctly at time 0 and probability 1.
-* Fixed a bug in `g_km` such that the equals sign can now be used in category labels.
-* Updated license and `README.md` with appropriate information for migration to public Github.
+* Several fixes in `g_km`:
+  * Plot can now display any combination of the annotation tables for number of patients at risk, median survival time, and CoxPH summary.
+  * Function will return a warning instead of an error if the `arm` variable includes only one level and `annot_coxph = TRUE`.
+  * Lines in the plot now start correctly at time 0 and probability 1.
+  * The equals sign can now be used in category labels.
+
+### Miscellaneous
+* Fixed `day2month` and `month2day` to work with NA data.
+* Parametrized `stat_mean_ci` and `stat_median_ci` so that they may return different outputs.
+* Added functionality in `h_row_counts` to handle analysis rows with `NULL` cells.
+* Updated `LICENCE` and `README` with new package references.
 * Added `error_on_lint: TRUE` to `.lintr`.
 
 # tern 0.7.4
@@ -221,7 +240,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 
 # tern 0.6.1
 
-* Fixed colors in Kaplan-Meyer-Plot https://github.roche.com/NEST/tern/issues/66.
+* Fixed colors in Kaplan-Meyer-Plot
 * Refactor of all functions to pass `test.nest` tests:
     * Changed `width_row.names` argument of `g_forest` function into `width_row_names`.
     * Changed `censor.show` argument of `g_km` function into `censor_show`.

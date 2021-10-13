@@ -108,7 +108,7 @@ h_coxreg_univar_formulas <- function(variables,
 
   if (!is.null(variables$covariates)) {
     assert_that(is.character(variables$covariates))
-    }
+  }
 
   assert_that(
     is_variables(variables[c(arm_name, "event", "time")]),
@@ -176,10 +176,19 @@ h_coxreg_univar_formulas <- function(variables,
 #'   )
 #' )
 #'
+#' # Addition of an optional strata.
+#' h_coxreg_multivar_formula(
+#'   variables = list(
+#'     time = "AVAL", event = "event", arm = "ARMCD", covariates = c("RACE", "AGE"),
+#'     strata = "SITE"
+#'   )
+#' )
+#'
 #' # Example without treatment arm.
 #' h_coxreg_multivar_formula(
 #'   variables = list(
-#'     time = "AVAL", event = "event", covariates = c("RACE", "AGE")
+#'     time = "AVAL", event = "event", covariates = c("RACE", "AGE"),
+#'     strata = "SITE"
 #'   )
 #' )
 #'
@@ -253,7 +262,7 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'   given the inputs.
 #' @param variables (`list`)\cr a named list corresponds to the names of variables found
 #'   in `data`, passed as a named list and corresponding to `time`, `event`, `arm`,
-#'   and `covariates` terms. If `arm` is missing from `variables`, then
+#'   `strata`, and `covariates` terms. If `arm` is missing from `variables`, then
 #'   only Cox model(s) including the `covariates` will be fitted and the corresponding
 #'   effect estimates will be tabulated later.
 #' @param data (`data frame`)\cr the dataset containing the variables to fit the
@@ -1239,7 +1248,12 @@ muffled_car_anova <- function(mod, test_statistic) {
           type = "III"
         )
       },
-      message = function(m) invokeRestart("muffleMessage")
+      message = function(m) invokeRestart("muffleMessage"),
+      error = function(e) stop(paste(
+        "the model seems to have convergence problems, please try to change",
+        "the configuration of covariates or strata variables, e.g.",
+        "- original error:", e
+      ))
     )
   )
 }
