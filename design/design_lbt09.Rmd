@@ -192,25 +192,34 @@ adhy_liver <- adhy_liver %>%
   )
 
 map <- data.frame(
-  ALTAST_ind = c(rep("ALT", 4), rep("AST", 4)),
+  ALTAST_ind = c(rep("ALT", 5), rep("AST", 5)),
   ALTAST_CAT = c(
-    "ALT >3 - <= 5xULN", "ALT >5 - <= 10xULN", "ALT >10 - <= 20xULN", "20" = "ALT > 20xULN",
-    "AST >3 - <= 5xULN", "AST >5 - <= 10xULN", "AST >10 - <= 20xULN", "AST > 20xULN"
+    "ALT >3 - <= 5xULN", "ALT >5 - <= 10xULN", "ALT >10 - <= 20xULN", "20" = "ALT > 20xULN", "Criteria not met",
+    "AST >3 - <= 5xULN", "AST >5 - <= 10xULN", "AST >10 - <= 20xULN", "AST > 20xULN", "Criteria not met"
   ),
   stringsAsFactors = FALSE
 )
 
-basic_table() %>%
+result <- basic_table() %>%
   split_cols_by("ARM") %>%
   split_cols_by("AVISIT") %>%
   split_rows_by("TBILI_CAT") %>%
   # below split helps us get the right denominator between ALT/AST but it can be hidden
-  split_rows_by("ALTAST_ind", split_fun = trim_levels_to_map(map)) %>% #, child_labels = "hidden") %>%
+  split_rows_by("ALTAST_ind", split_fun = trim_levels_to_map(map), child_labels = "hidden") %>%
   count_occurrences(
     vars = "ALTAST_CAT",
     .stats = "fraction",
     denom = "n",
-    drop =  TRUE) %>%
+    drop =  FALSE) %>%
   append_topleft("Liver Laboratory Test Criterion") %>%
   build_table(df = adhy_liver)
+
+# Trim away rows with Criteria not met
+criteria_fun <- function(tr) {
+  row_label <- obj_label(tr)
+  ifelse(row_label == "Criteria not met", TRUE, FALSE)
+}
+
+result <- result %>% trim_rows(criteria = criteria_fun)
+result
 ```
