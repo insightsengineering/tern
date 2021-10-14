@@ -83,9 +83,9 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
   result <- result[ordr]
   
   #remove zeros
-  keep_el <- lapply(result, function(x) {x != 0})
-  keep_el <- c(keep_el, recursive = TRUE, use.names = FALSE)
-  result <- result[keep_el]
+  # keep_el <- lapply(result, function(x) {x != 0})
+  # keep_el <- c(keep_el, recursive = TRUE, use.names = FALSE)
+  # result <- result[keep_el]
   
   result
 
@@ -147,10 +147,14 @@ adsl <- adsl %>% filter(SAFFL == "Y") %>% df_explicit_na()
 adae <- adae %>% filter(ANL01FL == "Y") %>% df_explicit_na()
 ```
 
+old way
 ```{r}
+start_time <- Sys.time()
 grade_groups<-  list(
   "- Any Intensity -" = c("MILD", "MODERATE", "SEVERE", "LIFE THREATENING")
 )  
+
+split_fun <- drop_split_levels
 
 lyt <- basic_table() %>%
   split_cols_by("ACTARM") %>%
@@ -164,7 +168,7 @@ lyt <- basic_table() %>%
     child_labels = "visible", 
     nested = TRUE, 
     indent_mod = -1L,
-    split_fun = trim_levels_in_group("ASEV"),
+    split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEBODSYS)
     ) %>%
@@ -177,7 +181,7 @@ lyt <- basic_table() %>%
     child_labels = "visible", 
     nested = TRUE, 
     indent_mod = -1L,
-    split_fun = trim_levels_in_group("ASEV"),
+    split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEDECOD)
     ) %>%
@@ -198,6 +202,7 @@ result <- lyt %>%
     adae,
     alt_counts_df = adsl
     ) %>%
+  trim_rows() %>%
   sort_at_path(
     path = "AEBODSYS",
     scorefun = cont_n_allcols,
@@ -209,17 +214,95 @@ result <- lyt %>%
     decreasing = TRUE
   )
 
-result 
+end_time <- Sys.time()
+print(end_time - start_time)
 ```
 
-### check with STREAM AET04
+new way
 ```{r}
+start_time <- Sys.time()
+grade_groups<-  list(
+  "- Any Intensity -" = c("MILD", "MODERATE", "SEVERE", "LIFE THREATENING")
+)  
+
+split_fun <- trim_levels_in_group("ASEV")
+
+lyt <- basic_table() %>%
+  split_cols_by("ACTARM") %>%
+  add_colcounts() %>%
+  summarize_occurrences_by_grade(
+    var = "ASEV",
+    grade_groups = grade_groups
+  ) %>%
+  split_rows_by(
+    "AEBODSYS", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = split_fun,
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEBODSYS)
+    ) %>%
+  summarize_occurrences_by_grade(
+    var = "ASEV",
+    grade_groups = grade_groups
+  ) %>%
+  split_rows_by(
+    "AEDECOD", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = split_fun,
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEDECOD)
+    ) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique",
+    .labels = c("- Any Intensity -")
+  ) %>%
+  count_occurrences_by_grade(
+    var = "ASEV", 
+    .indent_mods = -1L
+    ) %>%
+  append_varlabels(adae, "ASEV", indent = 2L)
+
+
+result <- lyt %>%
+  build_table(
+    adae,
+    alt_counts_df = adsl
+    ) %>%
+  trim_rows() %>%
+  sort_at_path(
+    path = "AEBODSYS",
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  ) %>%
+  sort_at_path(
+    path = c("AEBODSYS", "*", "AEDECOD"),
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  )
+
+end_time <- Sys.time()
+print(end_time - start_time)
+```
+
+
+### check with STREAM AET04
+
+old way
+```{r}
+start_time <- Sys.time()
 gr_grp <-  list(
   "- Any Grade -" = c("1", "2", "3", "4", "5"),
   "Grade 1-2" = c("1", "2"),
   "Grade 3-4" = c("3", "4"),
   "Grade 5" = "5"
 )
+
+split_fun <- drop_split_levels
 
 lyt <- basic_table() %>%
   split_cols_by("ACTARM") %>%
@@ -233,7 +316,7 @@ lyt <- basic_table() %>%
     child_labels = "visible", 
     nested = TRUE, 
     indent_mod = -1L,
-    split_fun = trim_levels_in_group("AETOXGR"),
+    split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEBODSYS)
   ) %>%
@@ -246,7 +329,7 @@ lyt <- basic_table() %>%
     child_labels = "visible", 
     nested = TRUE, 
     indent_mod = -1L,
-    split_fun = trim_levels_in_group("AETOXGR"),
+    split_fun = split_fun,
     label_pos = "topleft",
     split_label = obj_label(adae$AEDECOD)
   ) %>%
@@ -264,6 +347,77 @@ lyt <- basic_table() %>%
 
 result <- lyt %>%
   build_table(adae, alt_counts_df = adsl) %>%
+  trim_rows() %>%
+  sort_at_path(
+    path = "AEBODSYS",
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  ) %>%
+  sort_at_path(
+    path = c("AEBODSYS", "*", "AEDECOD"),
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  )
+end_time <- Sys.time()
+print(end_time - start_time)
+```
+
+new way
+```{r}
+start_time <- Sys.time()
+gr_grp <-  list(
+  "- Any Grade -" = c("1", "2", "3", "4", "5"),
+  "Grade 1-2" = c("1", "2"),
+  "Grade 3-4" = c("3", "4"),
+  "Grade 5" = "5"
+)
+
+split_fun <- trim_levels_in_group("AETOXGR")
+
+lyt <- basic_table() %>%
+  split_cols_by("ACTARM") %>%
+  add_colcounts() %>%
+  summarize_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) %>%
+  split_rows_by(
+    "AEBODSYS", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = split_fun,
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEBODSYS)
+  ) %>%
+  summarize_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) %>%
+  split_rows_by(
+    "AEDECOD", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = split_fun,
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEDECOD)
+  ) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique",
+    .labels = "- Any Grade -"
+  ) %>%
+  count_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp[-1],
+    .indent_mods = -1L
+  ) %>%
+  append_varlabels(adae, "AETOXGR", indent = 2L)
+
+result <- lyt %>%
+  build_table(adae, alt_counts_df = adsl) %>%
+  trim_rows() %>%
   sort_at_path(
     path = "AEBODSYS",
     scorefun = cont_n_allcols,
@@ -275,6 +429,6 @@ result <- lyt %>%
     decreasing = TRUE
   )
 
-result
-
+end_time <- Sys.time()
+print(end_time - start_time)
 ```
