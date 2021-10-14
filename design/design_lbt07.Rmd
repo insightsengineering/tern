@@ -260,7 +260,7 @@ s_count_abnormal_by_worst_grade(
  )
 
 ```
-No changes heres. 
+No changes here. 
 
 ```{r}
 a_count_abnormal_by_worst_grade <- make_afun(  #nolint
@@ -286,6 +286,7 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
     df_empty
   )
 ```
+
 
 # New layout function
 

@@ -1,0 +1,486 @@
+---
+title: "Design: Laboratory Test Results with Highest NCI CTCAE Grade Post-Baseline (LBT07)"
+author: "Heng Wang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design of LBT07}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+# New Design for using new split function `trim_levels_to_map` and `.spl_context`
+
+## Data for examples
+
+```{r, data}
+library(scda)
+library(dplyr)
+library(tern)
+library(assertthat)
+library(utils.nest)
+adlb <- synthetic_cdisc_data("latest")$adlb
+adsl <- synthetic_cdisc_data("latest")$adsl
+
+# Recode ADLB parameters to so that each one has different
+# possible abnormalities
+
+adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
+adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
+adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
+
+adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
+adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
+adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
+
+adlb_labels <- var_labels(adlb)
+
+adlb_f <- adlb %>%
+    dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
+    dplyr::mutate(
+      WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
+      WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
+    ) %>%
+    droplevels()
+
+var_labels(adlb_f) <- adlb_labels
+```
+
+## Updating the statistics function `s_count_abnormal_by_worst_grade` by using `.spl_context` and `trim_levels_to_map`
+
+Regardless of whether `.spl_context` and `trim_levels_to_map` are used or not, a new argument `na_level` should be used in order to later remove the missing rows correctly. 
+Additionally, later it is going to be shown that tables will require pruning/trimming in order to remove "NORMAL" rows. We cannot get rid of them previously as they are needed to
+calculate the total number of patients with at least one valid lab measurement (denominators). This can be an important drawback to be considered when deciding whether `.spl_context` should be used or not.  
+
+```{r}
+s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
+                                            .var = "ATOXGR",
+                                            .spl_context,
+                                            variables = list(
+                                              id = "USUBJID", 
+                                              worst_low_flag = "WGRLOFL", 
+                                              worst_high_flag = "WGRHIFL"
+                                              ), 
+                                            na_level = "<Missing>"
+                                            ) {
+
+  
+   assert_that(
+    is.string(.var),
+    is.list(variables),
+    all(names(variables) %in% c("id", "worst_low_flag", "worst_high_flag")),
+    is_df_with_variables(df, c(aval = .var, variables)),
+    is.factor(df[[.var]]),
+    is_logical_vector(df[[variables$worst_low_flag]]) || is_logical_empty(df[[variables$worst_low_flag]]),
+    is_logical_vector(df[[variables$worst_high_flag]]) || is_logical_empty(df[[variables$worst_high_flag]]),
+    is_character_or_factor(df[[variables$id]]),
+    is.string(na_level)
+  )
+  
+  if (nrow(df) == 0) { #for cases where no `trim_levels_to_map` or `trim_levels_in_group` is used and df is empty for some param/direction combination. 
+    result <-list()
+          result[["Any"]] <- with_label(c(0 , 0), "Any")
+          result <- list(count_fraction = result)
+  } else {
+  
+    grade_levels_num <- as.numeric(as.character(unique(df[[.var]])))
+    max_atoxgrade_num <- max(grade_levels_num)
+    min_atoxgrade_num <- min(grade_levels_num)
+    
+    #make sure that there are just grades in one direction (either all positive or negative numbers)
+    min_max_same_direction <- (min_atoxgrade_num <= 0 && max_atoxgrade_num <= 0) || (min_atoxgrade_num >= 0 && max_atoxgrade_num >= 0)
+    
+    assert_that(
+      isTRUE(min_max_same_direction)
+    )
+    
+    #In case the user does not convert previously the NA-s into explicit missing values. 
+    df <- df_explicit_na(df, na_level = na_level)
+    
+     worst_flag <- if (min_atoxgrade_num < 0 && max_atoxgrade_num <= 0) {
+       variables[["worst_low_flag"]]
+     } else {
+       variables[["worst_high_flag"]]
+     }
+       
+    df <- df[!(df[[.var]] == na_level), ] 
+    
+    anl <- data.frame(
+        id = df[[variables$id]],
+        grade = df[[.var]],
+        worst_flag = df[[worst_flag]],
+        stringsAsFactors = FALSE
+      )
+    # Denominator is number of patients with at least one valid measurement during treatment for this param
+    # We are selecting the row related to the param's split as this contains the target information. 
+    spl_row <- .spl_context[nrow(.spl_context) - 1, ]
+    cur_col_subset <- spl_row$cur_col_subset[[1]]
+    full_parent_df <- spl_row$full_parent_df[[1]]
+    cur_col_parent_df <-  full_parent_df[cur_col_subset, ]
+    cur_col_parent_df <- cur_col_parent_df[!(cur_col_parent_df[[.var]] == na_level), ] 
+    n <- length(unique(cur_col_parent_df$USUBJID)) 
+    
+    result <- list()
+    anl_abn <- anl[anl$worst_flag & abs(as.numeric(as.character(anl$grade))) > 0, , drop = FALSE]
+    target_grades <- levels(anl_abn$grade)[abs(as.numeric(levels(anl_abn$grade))) > 0]
+    sorted_grades <- sort(as.numeric(target_grades), decreasing = ifelse(worst_flag == variables[["worst_low_flag"]], TRUE, FALSE))
+    
+    for (grade in sorted_grades) {
+      num <- length(unique(anl_abn[anl_abn$grade == grade, "id", drop = TRUE]))
+      fraction <- if_else(n == 0, 0, num / n)
+      result[[as.character(abs(grade))]] <- with_label(c(num, fraction), as.character(abs(grade)))
+    }
+    any_grade_num <- length(unique(anl_abn$id))
+    fraction_any <- if_else(n == 0, 0, any_grade_num/n)
+    result[["Any"]] <- with_label(c(any_grade_num , fraction_any), "Any")
+    result <- list(count_fraction = result)
+  }
+  result
+}
+
+
+s_count_abnormal_by_worst_grade(
+   df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
+   .spl_context = data.frame(cur_col_n = c(100, 50), all_cols_n = c(200, 100)),
+   .var = "ATOXGR",
+   variables = list(id = "USUBJID", worst_low_flag = "WGRLOFL", worst_high_flag = "WGRHIFL"))
+
+s_count_abnormal_by_worst_grade(
+   df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT" & ANRIND == "HIGH") %>% droplevels(),
+   .spl_context = data.frame(cur_col_n = c(100, 50), all_cols_n = c(200, 100)),
+   .var = "ATOXGR",
+   variables = list(id = "USUBJID", worst_low_flag = "WGRLOFL", worst_high_flag = "WGRHIFL"))
+
+s_count_abnormal_by_worst_grade(
+   df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP" & ANRIND == "HIGH") %>% droplevels(),
+   .spl_context = data.frame(cur_col_n = c(100, 50), all_cols_n = c(200, 100)),
+   .var = "ATOXGR",
+   variables = list(id = "USUBJID", worst_low_flag = "WGRLOFL", worst_high_flag = "WGRHIFL"))
+
+
+# Test with an empty dataframe 
+df_empty <- 
+  data.frame(
+    ATOXGR = factor(NULL, levels = c("0", "1", "2")),
+    USUBJID = character(0),
+    WGRLOFL = logical(0),
+    WGRHIFL = logical(0)
+  )
+
+s_count_abnormal_by_worst_grade(
+   df = df_empty,
+    .spl_context = data.frame(cur_col_n = c(100, 50), all_cols_n = c(200, 100)),
+   .var = "ATOXGR",
+   variables = list(id = "USUBJID", worst_low_flag = "WGRLOFL", worst_high_flag = "WGRHIFL")
+ )
+```
+
+No changes here. 
+
+```{r}
+a_count_abnormal_by_worst_grade <- make_afun(  #nolint
+  s_count_abnormal_by_worst_grade,
+  .spl_context = data.frame(cur_col_n = c(100, 50), all_cols_n = c(200, 100)),
+  .formats = c(count_fraction = format_count_fraction)
+)
+
+ afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction" )
+ 
+ afun(
+    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT" ) %>% droplevels()
+  )
+ 
+ afun(
+    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT" & ANRIND == "HIGH") %>% droplevels()
+  )
+ 
+ afun(
+    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
+  )
+ 
+ #This gives an error as the s_* function is just supported for one direction per execution. 
+ afun(
+    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
+  )
+ 
+ afun(
+    df_empty
+  )
+```
+
+# New layout function
+
+Here the main change is to remove the for loop. 
+```{r}
+count_abnormal_by_worst_grade <- function(lyt,
+                                          var,
+                                          ...,
+                                          table_names = var,
+                                          .stats = NULL,
+                                          .formats = NULL,
+                                          .labels = NULL,
+                                          .indent_mods = NULL) {
+  assert_that(
+    is.string(var)
+    )
+  afun <- make_afun(
+    a_count_abnormal_by_worst_grade,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .ungroup_stats = "count_fraction"
+  )
+  analyze(
+      lyt = lyt,
+      vars = var,
+      afun = afun,
+      table_names = var,
+      extra_args = list(...),
+      show_labels = "hidden"
+    )
+}
+```
+
+
+In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions: 
+
+ * Layout without new split function. 
+ * Layout with `trim_levels_to_map`
+ * Layout with `trim_levels_in_group`
+
+The `map` dataframe requires introducing "NORMAL" levels as they are needed to obtain the total number of patients with a valid lab measurement (denominator). 
+This fact requires somehow dealing with these "NORMAL" cases to not appear in the table. 
+when using `trim_levels_to_map` or `trim_levels_in_group` the table needs to be pruned/trimmed to remove "NORMAL" rows. This may be a drawback. 
+
+
+```{r}
+
+map <- data.frame(
+  PARAMCD = c(rep("ALT", 5), rep("CRP", 9), rep("IGA", 5)),
+  ANRIND = c(rep("LOW", 4), "NORMAL", rep("LOW", 4), "NORMAL", rep("HIGH", 4), "NORMAL", rep("HIGH", 4)),
+  ATOXGR = as.character(c(seq(-4, 0), c(seq(-4, 4)), seq(0, 4))),
+  stringsAsFactors = FALSE
+)
+
+##### Without any new split function
+lyt_no_trim <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD)) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>% # Removing "NORMAL" level by using remove_split_levels()
+  split_rows_by("ANRIND", label_pos = "topleft", split_label = "Direction of abnormality", split_fun = remove_split_levels("NORMAL")) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+
+build_table(
+  lyt = lyt_no_trim,
+  df = adlb_f,
+  alt_counts_df = adsl
+) 
+
+###### Using `trim_levels_to_map`
+lyt_trim_map <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD),
+                split_fun = trim_levels_to_map(map = map)) %>% 
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  split_rows_by("ANRIND", label_pos = "topleft",
+                split_label = "Direction of abnormality",
+                split_fun = trim_levels_to_map(map = map)) %>% 
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+  
+build_table(
+  lyt = lyt_trim_map,
+  df = adlb_f,
+  alt_counts_df = adsl
+) %>% prune_table() #Have to use prune table to remove NORMAL 0 rows but we may be deleting other 0 rows. 
+
+###### Using `trim_levels_in_group`
+lyt_trim_group <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD),
+                split_fun = trim_levels_in_group("ANRIND")) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  split_rows_by("ANRIND", label_pos = "topleft",
+                split_fun = trim_levels_in_group("ATOXGR")) %>%
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("  Direction of Abnormality") %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+  
+build_table(
+  lyt = lyt_trim_group,
+  df = adlb_f,
+  alt_counts_df = adsl
+) %>% prune_table() 
+
+```
+
+# An additional drawback 
+
+`spl_row <- .spl_context[nrow(.spl_context) - 1, ]` within the s_* function can be risky. 
+With this, we are assuming that the last split will always be the one for `ANRIND, what if the user decides to make a later additional `split_rows_by()` after `ANRIND`?
+See example below, this may not make sense but wanted to show that in the later layout, `.spl_context[nrow(.spl_context) - 1, ]`wold take the split belonging `ANRIND`. 
+This can make the users get confused. Should we add a warning every time `count_abnormal_by_worst_grade`is using saying that the fractions are always calculated based on the parent split? 
+
+
+```{r}
+
+lyt_additional <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD),
+                split_fun = trim_levels_to_map(map = map)) %>% 
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  split_rows_by("ANRIND", label_pos = "topleft",
+                split_label = "Direction of abnormality",
+                split_fun = trim_levels_to_map(map = map)) %>% 
+  split_rows_by("SEX") %>% 
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+
+build_table(
+  lyt = lyt_additional,
+  df = adlb_f,
+  alt_counts_df = adsl
+)
+
+```
+
+
+#Some edge cases
+
+Example 1: If all rows for `ALT` are removed in the `map` used, `ALT` will not appear in the table. 
+
+```{r}
+empirical_map2 <- map %>% filter(
+  PARAMCD != "ALT"
+)
+
+###### Using `trim_levels_to_map`
+lyt_trim_map <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD),
+                split_fun = trim_levels_to_map(map = empirical_map2)) %>% 
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  split_rows_by("ANRIND", label_pos = "topleft",
+                split_label = "Direction of abnormality",
+                split_fun = trim_levels_to_map(map = map)) %>% 
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+  
+build_table(
+  lyt = lyt_trim_map,
+  df = adlb_f,
+  alt_counts_df = adsl
+) %>% prune_table()
+
+```
+
+
+Example 2: All grades in the target direction (none 0) for a param.
+
+```{r}
+adlb_f2 <- adlb_f %>%
+  filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
+adlb_f2 %>% count(PARAMCD, ATOXGR)
+```
+
+```{r}
+build_table(
+  lyt = lyt_trim_map,
+  df = adlb_f2,
+  alt_counts_df = adsl
+) %>% prune_table()
+```
+
+Example 3: All grades in an opposite direction (in addition) from stated in map. 
+Scenario where map is incorrectly filled.
+In this scenario we are not obtaining an error but map level rows the direction stated by the map. 
+
+```{r}
+map2 <- map
+map2[map2$PARAMCD == "ALT" & map2$ATOXGR != "0", 2] <- "1"
+
+###### Using `trim_levels_to_map`
+lyt_trim_map <- basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD),
+                split_fun = trim_levels_to_map(map = map2)) %>% 
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "ATOXGR",
+    .stats = "unique_count"
+  ) %>%
+  split_rows_by("ANRIND", label_pos = "topleft",
+                split_label = "Direction of abnormality",
+                split_fun = trim_levels_to_map(map = map)) %>% 
+  count_abnormal_by_worst_grade(
+    var = "ATOXGR"
+  ) %>%
+  append_topleft("    Highest NCI CTCAE Grade")
+  
+build_table(
+  lyt = lyt_trim_map,
+  df = adlb_f,
+  alt_counts_df = adsl
+) %>% prune_table()
+
+```
+
+Example 4:  Case where there is an arm that has no lab records. We are obtaining an error here. 
+
+```{r}
+adlb_f3 <- adlb_f %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
+build_table(
+  lyt = lyt_trim_map,
+  df = adlb_f3,
+  alt_counts_df = adsl
+)
+
+```
+
