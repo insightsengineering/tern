@@ -47,7 +47,8 @@ test_that("estimate_multinomial_response returns right result", {
     "Complete Response (CR)", "Partial Response (PR)"
   )[dta_test$AVAL + 1])
 
-  lyt <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  lyt <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
     estimate_multinomial_response(var = "AVALC")
   result <- build_table(lyt = lyt, df = dta_test)
   result_matrix <- to_string_matrix(result)

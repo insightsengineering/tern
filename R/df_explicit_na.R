@@ -62,10 +62,9 @@ df_explicit_na <- function(data,
   } else {
     setdiff(names(data), omit_columns) # May have duplicates.
   }
-
-  assert_that(
-    is_character_vector(target_vars)
-  )
+  if (length(target_vars) == 0) {
+    return(data)
+  }
 
   l_target_vars <- split(target_vars, target_vars)
 

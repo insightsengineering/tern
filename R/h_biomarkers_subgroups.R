@@ -19,8 +19,7 @@ h_tab_one_biomarker <- function(df,
     lyt = lyt,
     var = "row_type",
     split_fun = keep_split_levels("content"),
-    nested = FALSE,
-    indent_mod = 1L
+    nested = FALSE
   )
 
   # Summarize rows with all patients.
@@ -55,8 +54,7 @@ h_tab_one_biomarker <- function(df,
       var = "var",
       labels_var = "var_label",
       nested = TRUE,
-      child_labels = "visible",
-      indent_mod = 1L
+      child_labels = "visible"
     )
 
     # Then analyze colvars for each subgroup.

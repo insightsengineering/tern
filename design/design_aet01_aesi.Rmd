@@ -44,11 +44,11 @@ library(tern)
 library(dplyr)
 library(stringr)
 
-adsl <- haven::read_sas(data_file = "/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adsl.sas7bdat")
-adae <- haven::read_sas(data_file = "/opt/bee/analyses/stream2/master/2.11/stream2/doc/examples/molecule/project/safety/task01/outdata_vad/adae.sas7bdat")
+adsl <- haven::read_sas(data_file = "adsl.sas7bdat")
+adae <- haven::read_sas(data_file = "adae.sas7bdat")
 
 adsl <- filter(adsl, SAFFL == "Y")
-adae<-filter(adae,(!is.na(AEBODSYS) |  !is.na(AEDECOD)) & ANL01FL=="Y" & SAFFL=="Y")
+adae <- filter(adae, (!is.na(AEBODSYS) | !is.na(AEDECOD)) & ANL01FL == "Y" & SAFFL == "Y")
 
 adae <- df_explicit_na(adae)
 adsl <- df_explicit_na(adsl)
@@ -101,10 +101,10 @@ adae <- adae %>%
     RELSER = "No. of patients with serious, related AE"
   )
 
-
-not_resolved <-adae %>% 
-  filter(AEOUT != "RECOVERED/RESOLVED" & AEOUT != "FATAL") %>% 
-  select(unique("USUBJID")) %>% mutate(
+not_resolved <- adae %>%
+  filter(AEOUT != "RECOVERED/RESOLVED" & AEOUT != "FATAL") %>%
+  select(unique("USUBJID")) %>%
+  mutate(
     NOT_RESOLVED = "Y"
   )
 adae <- adae %>%
@@ -113,7 +113,6 @@ adae <- adae %>%
     ALL_RESOLVED = is.na(NOT_RESOLVED),
     NOT_RESOLVED = !is.na(NOT_RESOLVED)
   ) %>%
-    
   var_relabel(
     ALL_RESOLVED = "Total number of patients with all non-fatal AEs resolved",
     NOT_RESOLVED = "Total number of patients with at least one non-fatal unresolved or ongoing AE"
@@ -126,11 +125,10 @@ colnames(df_max) <- c("USUBJID", "WTOXGR")
 adae <- adae %>%
   left_join(df_max, by = c("USUBJID")) %>%
   mutate(
-    WTOXGR = factor(WTOXGR, levels = c("1", "2", "3", "4", "5")),
-    
+    WTOXGR = factor(WTOXGR, levels = c("1", "2", "3", "4", "5"))
   ) %>%
   mutate(
-    WTOXGR = forcats::fct_recode(WTOXGR, 
+    WTOXGR = forcats::fct_recode(WTOXGR,
                                  "Grade 1" = "1",
                                  "Grade 2" = "2",
                                  "Grade 3" = "3",
@@ -143,13 +141,13 @@ adae <- adae %>%
   )
 
 
-aesi_vars <- c(  "WD","DSM", "CONTRT","ALL_RESOLVED","NOT_RESOLVED","SER","REL" )
+aesi_vars <- c("WD", "DSM", "CONTRT", "ALL_RESOLVED", "NOT_RESOLVED", "SER", "REL")
 ```
 
 ##New function to summarize grades and display labels
 
 ```{r}
-count_occurrences_by_grade_label <- function(lyt,
+count_occurrences_by_grade_label <- function(lyt, #nolint
                                              var,
                                              var_labels = var,
                                              ...,
@@ -166,7 +164,6 @@ count_occurrences_by_grade_label <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "count_fraction"
   )
-  
   analyze(
     lyt = lyt,
     vars = var,
@@ -200,13 +197,12 @@ lyt_adae <- basic_table() %>%
   ) %>%
   count_occurrences_by_grade_label(
     var = "WTOXGR",
-    var_labels="Total number of patients with at least one AE by worst grade",
-    .show_labels="visible"
+    var_labels = "Total number of patients with at least one AE by worst grade",
+    .show_labels = "visible"
   ) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = var_labels(adae[, aesi_vars]),
-    
+    flag_variables = var_labels(adae[, aesi_vars])
   )
 result_adae <- build_table(lyt_adae, df = adae, alt_counts_df = adsl)
 result <- insert_rrow(result_adae, rrow("Total number of patients with at least one AE by worst grade ", ""), at = 3)
@@ -219,15 +215,14 @@ result_adae
 ```{r}
 stack_adae_by_smq <- function(adae, smq) {
   adae_labels <- c(var_labels(adae), "Standardized MedDRA Query")
-  l_df <- lapply(smq, function(ae_grp){
-    ae_scope<-str_replace(ae_grp, "NAM", "SC")
+  l_df <- lapply(smq, function(ae_grp) {
+    ae_scope <- str_replace(ae_grp, "NAM", "SC")
     keep <- adae[[ae_grp]] != "<Missing>"
     df <- adae[keep, ]
     if (substr(ae_grp, 1, 3) == "SMQ") {
-      df[["SMQ"]] <- aesi_label(as.character(df[[ae_grp]]), scope=as.character(df[[ae_scope]]))
-    } else
-    {
-      df[["SMQ"]] <-df[[ae_grp]]
+      df[["SMQ"]] <- aesi_label(as.character(df[[ae_grp]]), scope = as.character(df[[ae_scope]]))
+    } else {
+      df[["SMQ"]] <- df[[ae_grp]]
     }
     df
   })
@@ -237,7 +232,7 @@ stack_adae_by_smq <- function(adae, smq) {
 }
 
 
-adae_smq <- stack_adae_by_smq(adae, c("CQ01NAM","CQ02NAM","SMQ01NAM"))
+adae_smq <- stack_adae_by_smq(adae, c("CQ01NAM", "CQ02NAM", "SMQ01NAM"))
 
 split_fun <- remove_split_levels("<Missing>")
 # Layout for variables from adae dataset.
@@ -245,9 +240,9 @@ lyt_adae <- basic_table() %>%
   split_cols_by("ACTARM") %>%
   add_colcounts() %>%
   split_rows_by(
-    "SMQ", 
-    child_labels = "visible", 
-    nested = FALSE, 
+    "SMQ",
+    child_labels = "visible",
+    nested = FALSE,
     indent_mod = -1L,
     split_fun = split_fun
   ) %>%
@@ -267,13 +262,12 @@ lyt_adae <- basic_table() %>%
   ) %>%
   count_occurrences_by_grade_label(
     var = "WTOXGR",
-    var_labels="Total number of patients with at least one AE by worst grade",
-    .show_labels="visible"
+    var_labels = "Total number of patients with at least one AE by worst grade",
+    .show_labels = "visible"
   ) %>%
   count_patients_with_flags(
     "USUBJID",
-    flag_variables = var_labels(adae[, aesi_vars]),
-    
+    flag_variables = var_labels(adae[, aesi_vars])
   )
 result_adae <- build_table(lyt_adae, df = adae_smq, alt_counts_df = adsl)
 result_adae

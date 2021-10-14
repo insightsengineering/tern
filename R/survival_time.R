@@ -114,7 +114,8 @@ a_surv_time <- make_afun(
 #' @inheritParams argument_convention
 #' @export
 #' @examples
-#' split_cols_by(lyt = NULL, var = "ARMCD") %>%
+#' basic_table() %>%
+#' split_cols_by(var = "ARMCD") %>%
 #'   add_colcounts() %>%
 #'   surv_time(
 #'     vars = "AVAL",

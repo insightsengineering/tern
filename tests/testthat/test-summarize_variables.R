@@ -354,7 +354,8 @@ test_that("create_afun_summary creates an `afun` that works", {
     stringsAsFactors = TRUE
   )
 
-  l <- split_cols_by(lyt = NULL, var = "ARM") %>%
+  l <- basic_table() %>%
+    split_cols_by(var = "ARM") %>%
     split_rows_by(var = "AVISIT") %>%
     analyze(vars = c("AVAL", "ARM"), afun = afun)
 
@@ -385,7 +386,8 @@ test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", 
 
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
-  l <- summarize_vars(lyt = NULL, vars = "AVAL")
+  l <- basic_table() %>%
+    summarize_vars(vars = "AVAL")
   result <- build_table(l, df = dta_test)
 
   expected <- structure(
@@ -426,7 +428,8 @@ test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE
 
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
-  l <- summarize_vars(lyt = NULL, vars = "AVAL", na.rm = FALSE)
+  l <- basic_table() %>%
+    summarize_vars(vars = "AVAL", na.rm = FALSE)
   result <- build_table(l, df = dta_test)
 
   expected <- structure(

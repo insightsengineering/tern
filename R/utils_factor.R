@@ -224,7 +224,7 @@ fct_discard <- function(x, discard) {
     is.character(discard),
     noNA(discard)
   )
-  new_obs <- x[x != discard]
+  new_obs <- x[!(x %in% discard)]
   new_levels <- setdiff(levels(x), discard)
   factor(new_obs, levels = new_levels)
 }

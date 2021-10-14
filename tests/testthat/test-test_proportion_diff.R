@@ -141,7 +141,8 @@ test_that("test_proportion_diff returns right result", {
     strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
-  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  result <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
     test_proportion_diff(
       vars = "rsp",
       method = "cmh", variables = list(strata = "strat")
@@ -164,7 +165,8 @@ test_that("test_proportion_diff edge case: all responder by chisq", {
     grp = factor(rep(c("A", "B"), each = 50))
   )
 
-  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  result <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh")[1]
@@ -183,7 +185,8 @@ test_that("test_proportion_diff edge case: all responder by schouten", {
     grp = factor(rep(c("A", "B"), each = 50))
   )
 
-  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  result <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh")[2]
@@ -206,7 +209,8 @@ test_that("test_proportion_diff edge case: all responder by fisher", {
     grp = factor(rep(c("A", "B"), each = 50))
   )
 
-  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  result <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh")[3]
@@ -226,7 +230,8 @@ test_that("test_proportion_diff edge case: all responder by CMH", {
     strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
-  result <- split_cols_by(lyt = NULL, var = "grp", ref_group = "B") %>%
+  result <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh")[4],

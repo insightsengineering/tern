@@ -110,18 +110,18 @@ h_logistic_mult_cont_df <- function(variables,
         fit_glm = model_fit,
         conf_level = control$conf_level
       )
-      data_fit <- if (inherits(model_fit, "glm")) {
-        model_fit$model
+      resp_vector <- if (inherits(model_fit, "glm")) {
+        model_fit$model[[variables$rsp]]
       } else {
-        data.frame(rsp = as.logical(as.matrix(model_fit$y)[, "status"]))
+        as.logical(as.matrix(model_fit$y)[, "status"])
       }
       data.frame(
         # Dummy column needed downstream to create a nested header.
         biomarker = bm,
         biomarker_label = var_labels(data[bm], fill = TRUE),
-        n_tot = nrow(data_fit),
-        n_rsp = sum(data_fit$rsp),
-        prop = mean(data_fit$rsp),
+        n_tot = length(resp_vector),
+        n_rsp = sum(resp_vector),
+        prop = mean(resp_vector),
         or = as.numeric(result[1L, "odds_ratio"]),
         lcl = as.numeric(result[1L, "lcl"]),
         ucl = as.numeric(result[1L, "ucl"]),
