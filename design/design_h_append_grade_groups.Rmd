@@ -39,19 +39,6 @@ packageVersion("rtables")
 Data for examples
 =================
 
-```{r data, results = "asis", eval = TRUE}
-grade_groups <- list(
-  "Any Grade" = as.character(1:5),
-  "Grade 1-2" = c("1", "2"),
-  "Grade 3-4" = c("3", "4")
-)
-
-refs <- list("1" = 10, "2" = 20, "3" = 30, "4" = 40)
-
-h_append_grade_groups(grade_groups, refs)
-```
-
-
 ### h_append_grade_groups
 
 ```{r, sfun}
@@ -94,49 +81,56 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 
   # apply the order
   result <- result[ordr]
+  
+  #remove zeros
+  keep_el <- lapply(result, function(x) {x != 0})
+  keep_el <- c(keep_el, recursive = TRUE, use.names = FALSE)
+  result <- result[keep_el]
+  
   result
 
 }
 ```
 
-### s_count_occurrences_by_grade
+```{r data, results = "asis", eval = TRUE}
+grade_groups <- list(
+  "Any Grade" = as.character(1:5),
+  "Grade 1-2" = c("1", "2"),
+  "Grade 3-4" = c("3", "4")
+)
+
+refs <- list("1" = 10, "2" = 20)
+
+h_append_grade_groups(grade_groups, refs)
+```
+
+example
 
 ```{r}
- df <- data.frame(
-   USUBJID = as.character(c(1:6, 1)),
-   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
-   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:4)),
-   AESEV = factor(
-     x = c("MILD", "MODERATE", "SEVERE", "MILD",  "MILD", "MODERATE", "SEVERE"),
-     levels = c("MILD", "MODERATE", "SEVERE")
-   ),
-   stringsAsFactors = FALSE
- )
+df <- data.frame(
+  USUBJID = as.character(1:30),
+  ARM = factor(c(rep("ARM A", 15), rep("ARM B", 15)), levels = c("ARM A", "ARM B")),
+  SOC = as.factor(rep("SOC1", 30)),
+  AETOXGR = factor(c(rep(1, 10), rep(2, 20)) , levels = c(1, 2))
+)
 
  df_adsl <- df %>%
    select(USUBJID, ARM) %>%
    unique
+
+ # s_count_occurrences_by_grade(
+ #   df,
+ #   .N_col = 30L, # nolint
+ #   .var = "AETOXGR",
+ #   id = "USUBJID",
+ #   grade_groups = grade_groups
+ # )
  
- s_count_occurrences_by_grade(
-   df,
-   .N_col = 10L, # nolint
-   .var = "AETOXGR",
-   id = "USUBJID",
-   grade_groups = grade_groups
- )
-```
-
-
-```{r}
- grade_groups <-  list(
-   "-Any-" = c("1", "2", "3", "4", "5"),
-   "Grade 1-2" = c("1", "2"),
-   "Grade 3-5" = c("3", "4", "5")
- )
-
+ 
  basic_table() %>%
    split_cols_by("ARM") %>%
    add_colcounts() %>%
+   split_rows_by("SOC", split_fun = trim_levels_in_group("AETOXGR")) %>%
    count_occurrences_by_grade(
      var = "AETOXGR",
      grade_groups = grade_groups
@@ -144,3 +138,143 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
    build_table(df, alt_counts_df = df_adsl)
 ```
 
+### check with STREAM AET03
+```{r}
+adsl <- haven::read_sas("../adsl.sas7bdat")
+adae <- haven::read_sas("../adae.sas7bdat")
+
+adsl <- adsl %>% filter(SAFFL == "Y") %>% df_explicit_na()
+adae <- adae %>% filter(ANL01FL == "Y") %>% df_explicit_na()
+```
+
+```{r}
+grade_groups<-  list(
+  "- Any Intensity -" = c("MILD", "MODERATE", "SEVERE", "LIFE THREATENING")
+)  
+
+lyt <- basic_table() %>%
+  split_cols_by("ACTARM") %>%
+  add_colcounts() %>%
+  summarize_occurrences_by_grade(
+    var = "ASEV",
+    grade_groups = grade_groups
+  ) %>%
+  split_rows_by(
+    "AEBODSYS", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = trim_levels_in_group("ASEV"),
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEBODSYS)
+    ) %>%
+  summarize_occurrences_by_grade(
+    var = "ASEV",
+    grade_groups = grade_groups
+  ) %>%
+  split_rows_by(
+    "AEDECOD", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = trim_levels_in_group("ASEV"),
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEDECOD)
+    ) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique",
+    .labels = c("- Any Intensity -")
+  ) %>%
+  count_occurrences_by_grade(
+    var = "ASEV", 
+    .indent_mods = -1L
+    ) %>%
+  append_varlabels(adae, "ASEV", indent = 2L)
+
+
+result <- lyt %>%
+  build_table(
+    adae,
+    alt_counts_df = adsl
+    ) %>%
+  sort_at_path(
+    path = "AEBODSYS",
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  ) %>%
+  sort_at_path(
+    path = c("AEBODSYS", "*", "AEDECOD"),
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  )
+
+result 
+```
+
+### check with STREAM AET04
+```{r}
+gr_grp <-  list(
+  "- Any Grade -" = c("1", "2", "3", "4", "5"),
+  "Grade 1-2" = c("1", "2"),
+  "Grade 3-4" = c("3", "4"),
+  "Grade 5" = "5"
+)
+
+lyt <- basic_table() %>%
+  split_cols_by("ACTARM") %>%
+  add_colcounts() %>%
+  summarize_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) %>%
+  split_rows_by(
+    "AEBODSYS", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = trim_levels_in_group("AETOXGR"),
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEBODSYS)
+  ) %>%
+  summarize_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp
+  ) %>%
+  split_rows_by(
+    "AEDECOD", 
+    child_labels = "visible", 
+    nested = TRUE, 
+    indent_mod = -1L,
+    split_fun = trim_levels_in_group("AETOXGR"),
+    label_pos = "topleft",
+    split_label = obj_label(adae$AEDECOD)
+  ) %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique",
+    .labels = "- Any Grade -"
+  ) %>%
+  count_occurrences_by_grade(
+    var = "AETOXGR",
+    grade_groups = gr_grp[-1],
+    .indent_mods = -1L
+  ) %>%
+  append_varlabels(adae, "AETOXGR", indent = 2L)
+
+result <- lyt %>%
+  build_table(adae, alt_counts_df = adsl) %>%
+  sort_at_path(
+    path = "AEBODSYS",
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  ) %>%
+  sort_at_path(
+    path = c("AEBODSYS", "*", "AEDECOD"),
+    scorefun = cont_n_allcols,
+    decreasing = TRUE
+  )
+
+result
+
+```
