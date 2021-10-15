@@ -29,6 +29,8 @@ NULL
 #' * `pvalue` : p-value to test HR = 1.
 #' * `hr` : hazard ratio.
 #' * `hr_ci` : confidence interval for hazard ratio.
+#' * `n_tot` : total number of observations
+#' * `n_tot` : total number of events
 #'
 #' @examples
 #' library(scda)
@@ -67,7 +69,9 @@ s_coxph_pairwise <- function(df,
       list(
         pvalue = with_label("", paste0("p-value (", pval_method, ")")),
         hr = with_label("", "Hazard Ratio"),
-        hr_ci = with_label("", f_conf_level(conf_level))
+        hr_ci = with_label("", f_conf_level(conf_level)),
+        n_tot = with_label("", "n_tot"),
+        n_tot_events =  with_label("", "n_tot_events")
       )
     )
   }
@@ -158,7 +162,7 @@ coxph_pairwise <- function(lyt,
                            var_labels = "CoxPH",
                            show_labels = "visible",
                            table_names = vars,
-                           .stats = NULL,
+                           .stats = c("pvalue", "hr", "hr_ci"),
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
