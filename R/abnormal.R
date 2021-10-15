@@ -151,9 +151,8 @@ a_count_abnormal <- make_afun(
 #'
 count_abnormal <- function(lyt,
                            var,
-                           abnormal,
                            ...,
-                           table_names = abnormal,
+                           table_names = var,
                            .stats = NULL,
                            .formats = NULL,
                            .labels = NULL,
@@ -164,23 +163,19 @@ count_abnormal <- function(lyt,
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,
-    .indent_mods = .indent_mods
+    .indent_mods = .indent_mods,
+    .ungroup_stats = "fraction"
   )
   assert_that(
-    is.string(var),
-    is_equal_length(abnormal, table_names)
+    is.string(var)
   )
 
-  for (i in seq_along(abnormal)) {
-    abn <- abnormal[i]
-    lyt <- analyze(
-      lyt = lyt,
-      vars = var,
-      afun = afun,
-      extra_args = c(list(abnormal = abn), list(...)),
-      show_labels = "hidden",
-      table_names = table_names[i]
-    )
-  }
-  lyt
+  analyze(
+    lyt = lyt,
+    vars = var,
+    afun = afun,
+    table_names = table_names,
+    extra_args = list(...),
+    show_labels = "hidden"
+  )
 }
