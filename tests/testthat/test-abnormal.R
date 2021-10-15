@@ -16,34 +16,30 @@ test_that("s_count_abnormal works with healthy input and default arguments", {
     ONTRTFL == "Y"
   )
 
-  # Check with LOW abnormality.
+  # Check with LOW and HIGH abnormality.
   result <- s_count_abnormal(
     df = df,
     .var = "ANRIND",
-    abnormal = c(low = "LOW")
+    abnormal = c(high = "HIGH", low = "LOW")
   )
-  expected <- list(fraction = with_label(
+
+  expected_result <- split(numeric(0), as.factor(c("low", "high")))
+  expected_result[["low"]] <- with_label(
     label = "low",
     c(
       num = 1L,  # Patient 1 had LOW during treatment.
       denom = 2L  # Both patients 1 and 2 have post-baseline assessments.
     )
-  ))
-  expect_identical(result, expected)
-
-  # Check with HIGH abnormality.
-  result <- s_count_abnormal(
-    df = df,
-    .var = "ANRIND",
-    abnormal = c(High = "HIGH")
   )
-  expected <- list(fraction = with_label(
-    label = "High",
+  expected_result[["high"]] <- with_label(
+    label = "high",
     c(
-      num = 1L,  # One patient had HIGH during treatment.
-      denom = 2L  # Since by default we don't exclude patients with abnormality.
+      num = 1L,  # Patient 2 had HIGH during treatment.
+      denom = 2L  # Both patients 1 and 2 have post-baseline assessments.
     )
-  ))
+  )
+
+  expected <- list(fraction = expected_result)
   expect_identical(result, expected)
 })
 
@@ -62,36 +58,30 @@ test_that("s_count_abnormal works when excluding patients with abnormality at ba
     ONTRTFL == "Y"
   )
 
-  # Check with LOW abnormality.
+  # Check with LOW and HIGH abnormality.
   result <- s_count_abnormal(
     df = df,
     .var = "ANRIND",
-    abnormal = c(low = "LOW"),
+    abnormal = c(high = "HIGH", low = "LOW"),
     exclude_base_abn = TRUE
   )
-  expected <- list(fraction = with_label(
+  expected_result <- split(numeric(0), as.factor(c("low", "high")))
+  expected_result[["low"]] <- with_label(
     label = "low",
     c(
-      num = 1L,  # Patient 1 had a new LOW during treatment.
-      denom = 2L  # Only patients 1 and 2 had non-LOW at baseline.
+      num = 1L,  # Patient 1 had LOW during treatment.
+      denom = 2L  # Both patients 1 and 2 have post-baseline assessments.
     )
-  ))
-  expect_identical(result, expected)
-
-  # Check with HIGH abnormality.
-  result <- s_count_abnormal(
-    df = df,
-    .var = "ANRIND",
-    abnormal = c(High = "HIGH"),
-    exclude_base_abn = TRUE
   )
-  expected <- list(fraction = with_label(
-    label = "High",
+  expected_result[["high"]] <- with_label(
+    label = "high",
     c(
-      num = 1L,  # Only patient 3 had a new HIGH during treatment.
-      denom = 2L  # Patients 1 and 3 did not have HIGH at baseline.
+      num = 1L,  # Patient 3 had HIGH during treatment.
+      denom = 2L  # Both patients 1 and 3 have post-baseline assessments.
     )
-  ))
+  )
+
+  expected <- list(fraction = expected_result)
   expect_identical(result, expected)
 })
 
@@ -112,38 +102,32 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
     mytrtfl == "Y"
   )
 
-  # Check with LOW abnormality.
+  # Check with HIGH and LOW abnormality.
   result <- s_count_abnormal(
     df = df,
     .var = "myrange",
-    abnormal = c(low = "LOW"),
+    abnormal = c(high = "HIGH", low = "LOW"),
     variables = list(id = "myid", baseline = "myblrange"),
     exclude_base_abn = TRUE
   )
-  expected <- list(fraction = with_label(
+
+  expected_result <- split(numeric(0), as.factor(c("low", "high")))
+  expected_result[["low"]] <- with_label(
     label = "low",
     c(
-      num = 0L,  # No patient had a new LOW after baseline.
-      denom = 1L  # Only patient 2 did not have low during baseline.
+      num = 0L,  # Patient 1 is removed due to baseline being abnormal.
+      denom = 1L  # Only patients 2 has post-baseline assessments.
     )
-  ))
-  expect_identical(result, expected)
-
-  # Check with HIGH abnormality.
-  result <- s_count_abnormal(
-    df = df,
-    .var = "myrange",
-    abnormal = c(high = "HIGH"),
-    variables = list(id = "myid", baseline = "myblrange"),
-    exclude_base_abn = TRUE
   )
-  expected <- list(fraction = with_label(
+  expected_result[["high"]] <- with_label(
     label = "high",
     c(
-      num = 0L,  # Note that patient 2 does not count, as there was a HIGH during baseline already.
-      denom = 1L  # Only patient 1 is in the denominator.
+      num = 0L,  # Patient 2 is removed due to baseline being abnormal.
+      denom = 1L  # Only patients 1 has post-baseline assessments.
     )
-  ))
+  )
+
+  expected <- list(fraction = expected_result)
   expect_identical(result, expected)
 })
 
@@ -200,8 +184,7 @@ test_that("count_abnormal works with custom arguments", {
       variables = list(id = "ID", baseline = "BL_RANGE"),
       .indent_mods = c(fraction = 1L),
       .formats = c(fraction = "xx / xx"),
-      exclude_base_abn = TRUE,
-      table_names = c("below", "above")
+      exclude_base_abn = TRUE
     ) %>%
     build_table(df2)
   result_matrix <- to_string_matrix(result)
