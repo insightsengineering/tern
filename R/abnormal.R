@@ -58,36 +58,50 @@ s_count_abnormal <- function(df,
 ) {
   assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
-    is.string(abnormal),
+    is_character_vector(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
+    any(abnormal %in% levels(df[[.var]])),
     is_character_or_factor(df[[variables$baseline]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[.var]]),
-    abnormal %in% levels(df[[.var]]),
     is.flag(exclude_base_abn)
   )
 
-  # Patients in the denominator fulfill:
-  # - have at least one post-baseline visit
-  # - their baseline must not be abnormal if `exclude_base_abn`.
-  subjects_post_any <- df[[variables$id]]
-  subjects_exclude <- if (exclude_base_abn) {
-    df[df[[variables$baseline]] == abnormal, ][[variables$id]]
-  } else {
-    c()
+  # This will define the abnormal levels theoretically possible for a specific lab parameter
+  # within a split level of a layout.
+  abn_levels <- intersect(abnormal, levels(df[[.var]]))
+  names(abn_levels) <- names(abnormal)[abnormal %in% abn_levels]
+
+  result <- split(numeric(0), factor(names(abn_levels), levels = names(abn_levels)))
+
+  for (abn in names(abn_levels)) {
+
+    abnormal <- abn_levels[abn]
+
+    # Patients in the denominator fulfill:
+    # - have at least one post-baseline visit
+    # - their baseline must not be abnormal if `exclude_base_abn`.
+    subjects_post_any <- df[[variables$id]]
+    subjects_exclude <- if (exclude_base_abn) {
+      df[df[[variables$baseline]] == abnormal, ][[variables$id]]
+    } else {
+      c()
+    }
+    subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
+    denom <- length(subjects_denom)
+
+    # Patients in the numerator fulfill:
+    # - have at least one post-baseline visit with the required abnormality level
+    # - are part of the denominator patients.
+    subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
+    subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
+    num <- length(subjects_num)
+
+    result[[abn]] <- with_label(c(num = num, denom = denom), abn)
+
   }
-  subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
-  denom <- length(subjects_denom)
-
-  # Patients in the numerator fulfill:
-  # - have at least one post-baseline visit with the required abnormality level
-  # - are part of the denominator patients.
-  subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
-  subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
-  num <- length(subjects_num)
-
-  result <- c(num = num, denom = denom)
-  list(fraction = with_label(result, names(abnormal)))
+  result <- list(fraction = result)
+  result
 }
 
 #' @describeIn abnormal Formatted Analysis function which can be further customized by calling
