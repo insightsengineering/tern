@@ -55,8 +55,8 @@ s_coxph_pairwise <- function(df,
   assert_that(
     is_df_with_variables(df, list(tte = .var, is_event = is_event)),
     is.string(.var),
-    is_numeric_vector(df[[.var]]),
-    is_logical_vector(df[[is_event]])
+    is.numeric(df[[.var]]),
+    is.logical(df[[is_event]])
   )
   pval_method <- control$pval_method
   ties <- control$ties
@@ -106,7 +106,9 @@ s_coxph_pairwise <- function(df,
   list(
     pvalue = with_label(unname(pval), paste0("p-value (", pval_method, ")")),
     hr = with_label(sum_cox$conf.int[1, 1], "Hazard Ratio"),
-    hr_ci = with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level))
+    hr_ci = with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
+    n_tot = with_label(sum_cox$n, "n_tot"),
+    n_tot_events = with_label(sum_cox$nevent, "n_tot_events")
   )
 }
 
@@ -119,8 +121,8 @@ s_coxph_pairwise <- function(df,
 #'
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,
-  .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L),
-  .formats = c(pvalue = "x.xxxx | (<0.0001)", hr = "xx.xx", hr_ci = "(xx.xx, xx.xx)")
+  .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L),
+  .formats = c(pvalue = "x.xxxx | (<0.0001)", hr = "xx.xx", hr_ci = "(xx.xx, xx.xx)", n_tot = "xx.xx", n_tot_events = "xx.xx")
 )
 
 

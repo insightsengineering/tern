@@ -73,6 +73,7 @@ h_survtime_df <- function(tte, is_event, arm) {
 
   lst_tte <- split(df_tte, arm)
   lst_results <- Map(function(x, arm) {
+    x <- x[!is.na(x)]
 
     if (nrow(x) > 0) {
 
@@ -192,9 +193,9 @@ h_survtime_subgroups_df <- function(variables,
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
 
   assert_that(
-    is_numeric_vector(tte),
-    is_logical_vector(is_event),
-    is_valid_factor(arm),
+    is.numeric(tte),
+    is.logical(is_event),
+    is.factor(arm),
     are_equal(nlevels(arm), 2),
     is_equal_length(tte, is_event, arm)
   )
