@@ -88,61 +88,53 @@ Here we update the default `abnormal` to be for multiple directions (previously 
 ######################
 s_count_abnormal <- function(df,
                              .var,
-                             abnormal = c(Low = "LOW", High = "HIGH"),
-                             variables = list(id = "USUBJID", baseline = "BNRIND"),
+                             abnormal = list(Low = "LOW", High = "HIGH"),
+                             variables = list(baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
 
   # Assertions for abnormal
   assertthat::assert_that(
-    is_character_vector(abnormal, min_length = 2, max_length = 2),
+    is_character_list(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
-    any(abnormal %in% levels(df[[.var]]))
+    any(unlist(abnormal) %in% levels(df[[.var]]))
   )
 
-  # This will define the abnormal levels theoretically possible for a specific lab parameter
-  # within a split level of a layout.
-  abn_levels <- intersect(abnormal, levels(df[[.var]]))
-  names(abn_levels) <- names(abnormal)[abnormal %in% abn_levels]
-
-  result <- split(numeric(0), factor(names(abn_levels), levels = names(abn_levels)))
-
-  for (abn in names(abn_levels)) {
-
-    abnormal <- abn_levels[abn]
+  count_abnormal_single <- function(abn_name, abn) {
 
     # Patients in the denominator fulfill:
     # - have at least one post-baseline visit
     # - their baseline must not be abnormal if `exclude_base_abn`.
-    subjects_post_any <- df[[variables$id]]
-    subjects_exclude <- if (exclude_base_abn) {
-      df[df[[variables$baseline]] == abnormal, ][[variables$id]]
+    if (exclude_base_abn) {
+      denom <- !(df[[variables$baseline]] %in% abn)
     } else {
-      c()
+      denom <- rep(TRUE, nrow(df))
     }
-    subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
-    denom <- length(subjects_denom)
 
     # Patients in the numerator fulfill:
     # - have at least one post-baseline visit with the required abnormality level
     # - are part of the denominator patients.
-    subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
-    subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
-    num <- length(subjects_num)
+    num <- (df[[.var]] %in% abn) & denom
 
-    result[[abn]] <- with_label(c(num = num, denom = denom), abn)
-
+    with_label(c(num = sum(num), denom = sum(denom)), abn_name)
   }
 
+  # This will define the abnormal levels theoretically possible for a specific lab parameter
+  # within a split level of a layout.
+  abnormal_lev <- sapply(abnormal, intersect, levels(df[[.var]]))
+  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, is_empty)]
+
+  result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
   result <- list(fraction = result)
   result
+
 }
 
 # Test it out.
 s_count_abnormal(adlb %>% filter(PARAMCD == "ALT") %>% droplevels(), .var = "ANRIND")
 s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND")
 # switch order of HIGH and LOW
-s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW"))
+s_count_abnormal(adlb %>% filter(PARAMCD == "CRP"), .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
 ######################
 ## a_count_abnormal
@@ -209,7 +201,7 @@ lyt <- basic_table() %>%
   # analyze("ANRIND") # nolint
   count_abnormal(
     var = "ANRIND",
-    abnormal = c(Low = "LOW", High = "HIGH"),
+    abnormal = list(Low = "LOW", High = "HIGH"),
     exclude_base_abn = FALSE
   )
 
@@ -227,7 +219,7 @@ basic_table() %>%
   # analyze("ANRIND") # nolint
   count_abnormal(
     var = "ANRIND",
-    abnormal = c(Low = "LOW", High = "HIGH"),
+    abnormal = list(Low = "LOW", High = "HIGH"),
     exclude_base_abn = TRUE
   ) %>%
   build_table(df = adlb, alt_counts_df = adsl)
@@ -250,7 +242,7 @@ lyt_no0 <- basic_table() %>%
   # analyze("ANRIND") # nolint
   count_abnormal(
     var = "ANRIND",
-    abnormal = c(Low = "LOW", High = "HIGH"),
+    abnormal = list(Low = "LOW", High = "HIGH"),
     exclude_base_abn = FALSE
   )
 
@@ -292,7 +284,7 @@ lyt_map <- basic_table() %>%
   #analyze("ANRIND") %>%
   count_abnormal(
     var = "ANRIND",
-    abnormal = c(Low = "LOW", High = "HIGH"),
+    abnormal = list(Low = "LOW", High = "HIGH"),
     exclude_base_abn = FALSE
   )
 
@@ -314,7 +306,7 @@ lyt_map_no_ALT <- basic_table() %>% # nolint
   #analyze("ANRIND") %>%
   count_abnormal(
     var = "ANRIND",
-    abnormal = c(Low = "LOW", High = "HIGH"),
+    abnormal = list(Low = "LOW", High = "HIGH"),
     exclude_base_abn = FALSE
   )
 
@@ -335,7 +327,7 @@ lyt_map_ALT_H <- basic_table() %>% # nolint
   #analyze("ANRIND") %>%
   count_abnormal(
     var = "ANRIND",
-    abnormal = c(Low = "LOW", High = "HIGH"),
+    abnormal = list(Low = "LOW", High = "HIGH"),
     exclude_base_abn = FALSE
   )
 
