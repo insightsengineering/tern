@@ -45,10 +45,10 @@ NULL
 #'   filter(ONTRTFL == "Y")
 #'
 #' # For abnormal level "HIGH" we get the following counts.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW"))
 #'
 #' # Optionally exclude patients with abnormality at baseline.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"), exclude_base_abn = TRUE)
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE)
 #'
 s_count_abnormal <- function(df,
                              .var,
@@ -110,7 +110,8 @@ s_count_abnormal <- function(df,
 #' @export
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`.
-#' a_count_abnormal(df, .var = "ANRIND", abnormal = c(low = "LOW"))
+#' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
+#' a_fun(df, .var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"))
 #'
 a_count_abnormal <- make_afun(
   s_count_abnormal,
