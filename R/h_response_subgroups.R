@@ -51,10 +51,12 @@ h_proportion_df <- function(rsp, arm) {
     is_valid_factor(arm),
     is_equal_length(rsp, arm)
   )
+  non_missing_rsp <- !is.na(rsp)
+  rsp <- rsp[non_missing_rsp]
+  arm <- arm[non_missing_rsp]
 
   lst_rsp <- split(rsp, arm)
   lst_results <- Map(function(x, arm) {
-  x <- x[!is.na(x)]
     if (length(x) > 0) {
       s_prop <- s_proportion(x)
       data.frame(
