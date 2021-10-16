@@ -89,7 +89,7 @@ Here we update the default `abnormal` to be for multiple directions (previously 
 s_count_abnormal <- function(df,
                              .var,
                              abnormal = list(Low = "LOW", High = "HIGH"),
-                             variables = list(baseline = "BNRIND"),
+                             variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
 
@@ -106,17 +106,19 @@ s_count_abnormal <- function(df,
     # - have at least one post-baseline visit
     # - their baseline must not be abnormal if `exclude_base_abn`.
     if (exclude_base_abn) {
-      denom <- !(df[[variables$baseline]] %in% abn)
+      denom_select <- !(df[[variables$baseline]] %in% abn)
     } else {
-      denom <- rep(TRUE, nrow(df))
+      denom_select <- TRUE
     }
+    denom <- length(unique(df[denom_select, variables$id, drop = TRUE]))
 
     # Patients in the numerator fulfill:
     # - have at least one post-baseline visit with the required abnormality level
     # - are part of the denominator patients.
-    num <- (df[[.var]] %in% abn) & denom
+    num_select <- (df[[.var]] %in% abn) & denom_select
+    num <- length(unique(df[num_select, variables$id, drop = TRUE]))
 
-    with_label(c(num = sum(num), denom = sum(denom)), abn_name)
+    with_label(c(num = num, denom = denom), abn_name)
   }
 
   # This will define the abnormal levels theoretically possible for a specific lab parameter
