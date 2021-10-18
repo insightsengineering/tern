@@ -73,7 +73,9 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             na_level = "<Missing>"
                                             ) {
 
-  
+
+  spl_row <- .spl_context[1, ]
+
    assert_that(
     is.string(.var),
     is.list(variables),
@@ -122,7 +124,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
       )
     # Denominator is number of patients with at least one valid measurement during treatment for this param
     # We are selecting the row related to the param's split as this contains the target information. 
-    spl_row <- .spl_context[nrow(.spl_context) - 1, ]
+    
     cur_col_subset <- spl_row$cur_col_subset[[1]]
     full_parent_df <- spl_row$full_parent_df[[1]]
     cur_col_parent_df <-  full_parent_df[cur_col_subset, ]
@@ -272,6 +274,9 @@ map <- data.frame(
   stringsAsFactors = FALSE
 )
 
+#Let's update `map` dataframe by removing "NORMAL" rows as the layout properly works without them 
+map <- map[map$ANRIND != "NORMAL", ]
+
 ##### Without any new split function
 lyt_no_trim <- basic_table() %>%
   split_cols_by("ARMCD") %>%
@@ -311,13 +316,13 @@ lyt_trim_map <- basic_table() %>%
   count_abnormal_by_worst_grade(
     var = "ATOXGR"
   ) %>%
-  append_topleft("    Highest NCI CTCAE Grade")
+  append_topleft("    Highest NCI CTCAE Grade") %>% build_table(adlb_f)
   
 build_table(
   lyt = lyt_trim_map,
   df = adlb_f,
   alt_counts_df = adsl
-) %>% prune_table() #Have to use prune table to remove NORMAL 0 rows but we may be deleting other 0 rows. 
+) 
 
 ###### Using `trim_levels_in_group`
 lyt_trim_group <- basic_table() %>%
