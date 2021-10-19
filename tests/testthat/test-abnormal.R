@@ -20,7 +20,7 @@ test_that("s_count_abnormal works with healthy input and default arguments", {
   result <- s_count_abnormal(
     df = df,
     .var = "ANRIND",
-    abnormal = c(high = "HIGH", low = "LOW")
+    abnormal = list(high = "HIGH", low = "LOW")
   )
 
   expected_result <- split(numeric(0), as.factor(c("low", "high")))
@@ -62,7 +62,7 @@ test_that("s_count_abnormal works when excluding patients with abnormality at ba
   result <- s_count_abnormal(
     df = df,
     .var = "ANRIND",
-    abnormal = c(high = "HIGH", low = "LOW"),
+    abnormal = list(high = "HIGH", low = "LOW"),
     exclude_base_abn = TRUE
   )
   expected_result <- split(numeric(0), as.factor(c("low", "high")))
@@ -106,7 +106,7 @@ test_that("s_count_abnormal also works with tibble and custom arguments", {
   result <- s_count_abnormal(
     df = df,
     .var = "myrange",
-    abnormal = c(high = "HIGH", low = "LOW"),
+    abnormal = list(high = "HIGH", low = "LOW"),
     variables = list(id = "myid", baseline = "myblrange"),
     exclude_base_abn = TRUE
   )
@@ -148,7 +148,7 @@ test_that("count_abnormal works with default arguments", {
     )
 
   result <- basic_table() %>%
-    count_abnormal(var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"), exclude_base_abn = TRUE) %>%
+    count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"), exclude_base_abn = TRUE) %>%
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
@@ -180,7 +180,7 @@ test_that("count_abnormal works with custom arguments", {
   result <- basic_table() %>%
     count_abnormal(
       var = "RANGE",
-      abnormal = c("< LLN" = "LOW", "> ULN" = "HIGH"),
+      abnormal = list("< LLN" = "LOW", "> ULN" = "HIGH"),
       variables = list(id = "ID", baseline = "BL_RANGE"),
       .indent_mods = c(fraction = 1L),
       .formats = c(fraction = "xx / xx"),
@@ -215,7 +215,7 @@ test_that("count_abnormal works with default arguments and visit", {
 
   result <- basic_table() %>%
     split_rows_by("AVISIT", split_fun = drop_split_levels) %>%
-    count_abnormal(var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH")) %>%
+    count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH")) %>%
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
