@@ -47,10 +47,10 @@ NULL
 #'   filter(ONTRTFL == "Y")
 #'
 #' # For abnormal level "HIGH" we get the following counts.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW"))
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 #'
 #' # Optionally exclude patients with abnormality at baseline.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE)
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE)
 #'
 s_count_abnormal <- function(df,
                              .var,
@@ -76,7 +76,7 @@ s_count_abnormal <- function(df,
     if (exclude_base_abn) {
       denom_select <- !(df[[variables$baseline]] %in% abn)
     } else {
-      denorm_select <- TRUE
+      denom_select <- TRUE
     }
     denom <- length(unique(df[denom_select, variables$id, drop = TRUE]))
 
@@ -106,7 +106,7 @@ s_count_abnormal <- function(df,
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`.
 #' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
-#' a_fun(df, .var = "ANRIND", abnormal = c(low = "LOW", high = "HIGH"))
+#' a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
 #'
 a_count_abnormal <- make_afun(
   s_count_abnormal,
@@ -121,7 +121,7 @@ a_count_abnormal <- make_afun(
 #' @examples
 #' # Layout creating function.
 #' basic_table() %>%
-#'   count_abnormal(var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW")) %>%
+#'   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) %>%
 #'   build_table(df)
 #'
 #' # Passing of statistics function and formatting arguments.
@@ -140,7 +140,7 @@ a_count_abnormal <- make_afun(
 #' basic_table() %>%
 #'   count_abnormal(
 #'     var = "RANGE",
-#'     abnormal = c(low = "LOW", high = "HIGH"),
+#'     abnormal = list(low = "LOW", high = "HIGH"),
 #'     variables = list(id = "ID", baseline = "BL_RANGE")
 #'   ) %>%
 #'   build_table(df2)
