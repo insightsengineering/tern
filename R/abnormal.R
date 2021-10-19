@@ -54,54 +54,47 @@ NULL
 #'
 s_count_abnormal <- function(df,
                              .var,
-                             abnormal,
+                             abnormal = list(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
   assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
-    is_character_vector(abnormal, min_length = 2, max_length = 2),
+    is_character_list(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
-    any(abnormal %in% levels(df[[.var]])),
+    any(unlist(abnormal) %in% levels(df[[.var]])),
     is_character_or_factor(df[[variables$baseline]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[.var]]),
     is.flag(exclude_base_abn)
   )
 
-  # This will define the abnormal levels theoretically possible for a specific lab parameter
-  # within a split level of a layout.
-  abn_levels <- intersect(abnormal, levels(df[[.var]]))
-  names(abn_levels) <- names(abnormal)[abnormal %in% abn_levels]
-
-  result <- split(numeric(0), factor(names(abn_levels), levels = names(abn_levels)))
-
-  for (abn in names(abn_levels)) {
-
-    abnormal <- abn_levels[abn]
-
+  count_abnormal_single <- function(abn_name, abn) {
     # Patients in the denominator fulfill:
     # - have at least one post-baseline visit
     # - their baseline must not be abnormal if `exclude_base_abn`.
-    subjects_post_any <- df[[variables$id]]
-    subjects_exclude <- if (exclude_base_abn) {
-      df[df[[variables$baseline]] == abnormal, ][[variables$id]]
+    if (exclude_base_abn) {
+      denom_select <- !(df[[variables$baseline]] %in% abn)
     } else {
-      c()
+      denorm_select <- TRUE
     }
-    subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
-    denom <- length(subjects_denom)
+    denom <- length(unique(df[denom_select, variables$id, drop = TRUE]))
 
     # Patients in the numerator fulfill:
     # - have at least one post-baseline visit with the required abnormality level
     # - are part of the denominator patients.
-    subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
-    subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
-    num <- length(subjects_num)
+    num_select <- (df[[.var]] %in% abn) & denom_select
+    num <- length(unique(df[num_select, variables$id, drop = TRUE]))
 
-    result[[abn]] <- with_label(c(num = num, denom = denom), abn)
-
+    with_label(c(num = num, denom = denom), abn_name)
   }
+
+  # This will define the abnormal levels theoretically possible for a specific lab parameter
+  # within a split level of a layout.
+  abnormal_lev <- lapply(abnormal, intersect, levels(df[[.var]]))
+  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, is_empty)]
+
+  result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
   result <- list(fraction = result)
   result
 }
