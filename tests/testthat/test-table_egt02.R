@@ -25,7 +25,7 @@ test_that("(EGT02) 1. Regardless of Abnormality at Baseline", {
       split_fun = keep_split_levels(c("Heart Rate", "QT Duration", "RR Duration")),
       label_pos = "visible"
     ) %>%
-    count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = FALSE) %>%
+    count_abnormal("ANRIND", abnormal = list(Low = "LOW", High = "HIGH"), exclude_base_abn = FALSE) %>%
     build_table(df = adeg, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
@@ -65,7 +65,7 @@ test_that("(EGT02) 2. Among Subjects Without Abnormality at Baseline", {
       label_pos = "visible",
       split_fun = keep_split_levels(c("Heart Rate", "QT Duration", "RR Duration"))
     ) %>%
-    count_abnormal("ANRIND", abnormal = c(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%
+    count_abnormal("ANRIND", abnormal = list(Low = "LOW", High = "HIGH"), exclude_base_abn = TRUE) %>%
     build_table(df = adeg, alt_counts_df = adsl)
 
   result_matrix <- to_string_matrix(result)
