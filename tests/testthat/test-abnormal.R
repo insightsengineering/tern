@@ -227,3 +227,46 @@ test_that("count_abnormal works with default arguments and visit", {
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("s_count_abnormal works with healthy input and grouped abnormal arguments", {
+
+  abn_levels <- c("LOW", "NORMAL", "HIGH", "LOW LOW", "HIGH HIGH")
+
+  df <- data.frame(
+    USUBJID = as.character(c(1, 1, 2, 2, 3, 4)),
+    ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH", "LOW LOW", "HIGH HIGH"), levels = abn_levels),
+    BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH", "NORMAL", "NORMAL"), levels = abn_levels),
+    ONTRTFL = c("", "Y", "", "Y", "Y", "Y"),
+    stringsAsFactors = FALSE
+  )
+
+  df <- df %>% filter(
+    ONTRTFL == "Y"
+  )
+
+  # Check with LOW and HIGH abnormality.
+  result <- s_count_abnormal(
+    df = df,
+    .var = "ANRIND",
+    abnormal = list(high = c("HIGH", "HIGH HIGH"), low = c("LOW", "LOW LOW"))
+  )
+
+  expected_result <- split(numeric(0), as.factor(c("low", "high")))
+  expected_result[["low"]] <- with_label(
+    label = "low",
+    c(
+      num = 2L,  # Patient 1 and 3 had LOW during treatment.
+      denom = 4L  # Both patients 1, 2, 3 and 4 have post-baseline assessments.
+    )
+  )
+  expected_result[["high"]] <- with_label(
+    label = "high",
+    c(
+      num = 2L,  # Patient 2 and 4 had HIGH during treatment.
+      denom = 4L  # Both patients 1, 2, 3 and 4 have post-baseline assessments.
+    )
+  )
+
+  expected <- list(fraction = expected_result)
+  expect_identical(result, expected)
+})
