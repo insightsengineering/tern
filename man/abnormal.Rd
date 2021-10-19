@@ -40,7 +40,9 @@ count_abnormal(
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{abnormal}{(named \code{string} or \code{character})\cr identifying the abnormal range level(s) in \code{var}.}
+\item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{var}. Default to
+\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the name list, for example,
+\code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 

@@ -15,7 +15,9 @@
 #' @details Note that `df` should be filtered to include only post-baseline records.
 #'
 #' @inheritParams argument_convention
-#' @param abnormal (named `string` or `character`)\cr identifying the abnormal range level(s) in `var`.
+#' @param abnormal (`named list`)\cr identifying the abnormal range level(s) in `var`. Default to
+#' `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the name list, for example,
+#' `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`
 #'
 #' @name abnormal
 #' @include formats.R
