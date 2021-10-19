@@ -356,9 +356,9 @@ print(end_time - start_time)
 new way
 ```{r}
 start_time <- Sys.time()
-grade_groups<-  list(
+grade_groups <- list(
   "- Any Intensity -" = c("MILD", "MODERATE", "SEVERE")
-)  
+)
 
 split_fun <- trim_levels_in_group("AESEV")
 
@@ -370,9 +370,9 @@ lyt <- basic_table() %>%
     grade_groups = grade_groups
   ) %>%
   split_rows_by(
-    "AEBODSYS", 
-    child_labels = "visible", 
-    nested = TRUE, 
+    "AEBODSYS",
+    child_labels = "visible",
+    nested = TRUE,
     indent_mod = -1L,
     split_fun = split_fun,
     label_pos = "topleft",
@@ -383,9 +383,9 @@ lyt <- basic_table() %>%
     grade_groups = grade_groups
   ) %>%
   split_rows_by(
-    "AEDECOD", 
-    child_labels = "visible", 
-    nested = TRUE, 
+    "AEDECOD",
+    child_labels = "visible",
+    nested = TRUE,
     indent_mod = -1L,
     split_fun = split_fun,
     label_pos = "topleft",
@@ -397,7 +397,7 @@ lyt <- basic_table() %>%
     .labels = c("- Any Intensity -")
   ) %>%
   count_occurrences_by_grade(
-    var = "AESEV", 
+    var = "AESEV",
     .indent_mods = -1L
     ) %>%
   append_varlabels(adae, "AESEV", indent = 2L)
@@ -447,7 +447,7 @@ lyt <- basic_table() %>%
     grade_groups = gr_grp
   ) %>%
   split_rows_by(
-    "AEBODSYS", 
+    "AEBODSYS",
     child_labels = "visible", 
     nested = TRUE, 
     indent_mod = -1L,
