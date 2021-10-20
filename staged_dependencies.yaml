@@ -24,9 +24,6 @@ downstream_repos:
   insightsengineering/osprey:
     repo: insightsengineering/osprey
     host: https://github.com
-  insightsengineering/teal:
-    repo: insightsengineering/teal
-    host: https://github.com
   insightsengineering/teal.devel:
     repo: insightsengineering/teal.devel
     host: https://github.com
