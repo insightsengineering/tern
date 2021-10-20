@@ -90,7 +90,6 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             ) {
 
   param <- .spl_context$split[.spl_context$split %in% variables[["param"]]]
-  
   assert_that(
     is.string(.var),
     is.list(variables),
@@ -172,10 +171,10 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
   .formats = c(count_fraction = format_count_fraction)
 )
 
- afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction" )
+ afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
  
  afun(
-    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT" ) %>% droplevels()
+    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels()
   )
  
  afun(
@@ -256,7 +255,12 @@ lyt_no_trim <- basic_table() %>%
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>% # Removing "NORMAL" level by using remove_split_levels()
-  split_rows_by("GRADE_DIR", label_pos = "topleft", split_label = "Direction of abnormality", split_fun = remove_split_levels("NORMAL")) %>%
+  split_rows_by(
+  "GRADE_DIR",
+  label_pos = "topleft",
+  split_label = "Direction of abnormality",
+  split_fun = remove_split_levels("NORMAL")
+  ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL"
   ) %>%
@@ -278,7 +282,12 @@ lyt_trim_map <- basic_table() %>%
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>% # Removing "NORMAL" level by using remove_split_levels()
-  split_rows_by("GRADE_DIR", label_pos = "topleft", split_label = "Direction of abnormality", split_fun = trim_levels_to_map(map = map)) %>%
+  split_rows_by(
+  "GRADE_DIR",
+  label_pos = "topleft",
+  split_label = "Direction of abnormality",
+  split_fun = trim_levels_to_map(map = map)
+  ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL"
   ) %>%
@@ -313,8 +322,8 @@ build_table(
   lyt = lyt_trim_group,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) %>% prune_table()
-
+) %>%
+prune_table()
 ```
 
 #Some edge cases
@@ -336,7 +345,12 @@ lyt_trim_map2 <- basic_table() %>%
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>% # Removing "NORMAL" level by using remove_split_levels()
-  split_rows_by("GRADE_DIR", label_pos = "topleft", split_label = "Direction of abnormality", split_fun = trim_levels_to_map(map = empirical_map2)) %>%
+  split_rows_by(
+  "GRADE_DIR", 
+  label_pos = "topleft",
+  split_label = "Direction of abnormality",
+  split_fun = trim_levels_to_map(map = empirical_map2)
+  ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL"
   ) %>%
@@ -394,7 +408,11 @@ lyt_trim_map3 <- basic_table() %>%
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>% # Removing "NORMAL" level by using remove_split_levels()
-  split_rows_by("GRADE_DIR", label_pos = "topleft", split_label = "Direction of abnormality", split_fun = trim_levels_to_map(map = map2)) %>%
+  split_rows_by("GRADE_DIR",
+  label_pos = "topleft",
+  split_label = "Direction of abnormality",
+  split_fun = trim_levels_to_map(map = map2)
+  ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL"
   ) %>%
