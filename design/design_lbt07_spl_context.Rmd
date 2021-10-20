@@ -28,6 +28,7 @@ library(dplyr)
 library(tern)
 library(assertthat)
 library(utils.nest)
+library(forcats)
 adlb <- synthetic_cdisc_data("latest")$adlb
 adsl <- synthetic_cdisc_data("latest")$adsl
 
@@ -95,8 +96,9 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
     is.list(variables),
     is.string(variables$id),
     is_character_vector(variables$param),
+    is.string(variables$anrind),
     all(names(variables) %in% c("id", "param", "anrind")),
-    is_df_with_variables(df, c(aval = .var, variables)),
+    is_df_with_variables(df, c(a = .var, variables)),
     is.factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[param]]),
@@ -108,7 +110,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   # I am adding variables$param = c("PARAMCD", "PARAM")
   #as the user can split_rows_by either PARAMCD or PARAM
   first_row <- .spl_context[.spl_context$split %in% variables[["param"]], ]
-  param <- first_row$split
+  #param <- first_row$split
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "ANY")
   result <- split(numeric(0), factor(x_lvls))
 
@@ -138,12 +140,19 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
 
 #We can create a full_parent_df within .spl_context but this is not the scope of this design doc.
 #We can see the correct denominators later in the user-faced function.
+adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT") %>% droplevels()
+full_parent_df <- list(adlb_f_alt, "not_needed")
+cur_col_subset <- list(adlb_f_alt$ARMCD == "ARM A", "not_needed")
+spl_context <- data.frame(
+  split = c("PARAM", "GRADE_DIR"),
+  full_parent_df = I(full_parent_df),
+  cur_col_subset = I(cur_col_subset)
+  )
 s_count_abnormal_by_worst_grade(
    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
-   .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "GRADE_DIR")),
+   .spl_context = spl_context,
    .var = "GRADE_ANL",
    variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"),  anrind = c("GRADE_DIR")))
-
 
 # Test with an empty dataframe
 df_empty <-
@@ -157,7 +166,7 @@ df_empty <-
 
 s_count_abnormal_by_worst_grade(
    df = df_empty,
-   .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "GRADE_DIR")),
+   .spl_context = data.frame(whatever = c(0, 0), split = c("PARAM", "GRADE_DIR")),
    .var = "GRADE_ANL",
    variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"), anrind = c("GRADE_DIR")))
 ```
@@ -167,7 +176,7 @@ No changes here.
 ```{r}
 a_count_abnormal_by_worst_grade <- make_afun(  #nolint
   s_count_abnormal_by_worst_grade,
-  .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "GRADE_DIR")),
+  .spl_context = spl_context,
   .formats = c(count_fraction = format_count_fraction)
 )
 
@@ -175,18 +184,6 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
  
  afun(
     df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels()
-  )
- 
- afun(
-    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT" & ANRIND == "HIGH") %>% droplevels()
-  )
- 
- afun(
-    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
-  )
- 
- afun(
-    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
   )
  
  afun(
