@@ -83,20 +83,19 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             .var = "GRADE_ANL",
                                             .spl_context,
                                             variables = list(
-                                              id = "USUBJID", 
-                                              param  = c("PARAMCD", "PARAM"), 
+                                              id = "USUBJID",
+                                              param  = c("PARAMCD", "PARAM"),
                                               anrind = c("GRADE_DIR")
                                             )
                                             ) {
 
-  
   param <- .spl_context$split[.spl_context$split %in% variables[["param"]]]
   
   assert_that(
     is.string(.var),
     is.list(variables),
-    is.string(variables$id), 
-    is_character_vector(variables$param), 
+    is.string(variables$id),
+    is_character_vector(variables$param),
     all(names(variables) %in% c("id", "param", "anrind")),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
@@ -111,9 +110,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   #as the user can split_rows_by either PARAMCD or PARAM
   first_row <- .spl_context[.spl_context$split %in% variables[["param"]], ]
   param <- first_row$split
-  
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "ANY")
-
   result <- split(numeric(0), factor(x_lvls))
 
   subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
@@ -140,8 +137,8 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   result
 }
 
-#We can create a full_parent_df within .spl_context but this is not the scope of this design doc. 
-#We can see the correct denominators later in the user-faced function. 
+#We can create a full_parent_df within .spl_context but this is not the scope of this design doc.
+#We can see the correct denominators later in the user-faced function.
 s_count_abnormal_by_worst_grade(
    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "GRADE_DIR")),
