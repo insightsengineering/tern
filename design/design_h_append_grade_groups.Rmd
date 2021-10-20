@@ -448,8 +448,8 @@ lyt <- basic_table() %>%
   ) %>%
   split_rows_by(
     "AEBODSYS",
-    child_labels = "visible", 
-    nested = TRUE, 
+    child_labels = "visible",
+    nested = TRUE,
     indent_mod = -1L,
     split_fun = split_fun,
     label_pos = "topleft",
@@ -460,9 +460,9 @@ lyt <- basic_table() %>%
     grade_groups = gr_grp
   ) %>%
   split_rows_by(
-    "AEDECOD", 
-    child_labels = "visible", 
-    nested = TRUE, 
+    "AEDECOD",
+    child_labels = "visible",
+    nested = TRUE,
     indent_mod = -1L,
     split_fun = split_fun,
     label_pos = "topleft",
@@ -517,9 +517,9 @@ lyt <- basic_table() %>%
     grade_groups = gr_grp
   ) %>%
   split_rows_by(
-    "AEBODSYS", 
-    child_labels = "visible", 
-    nested = TRUE, 
+    "AEBODSYS",
+    child_labels = "visible",
+    nested = TRUE,
     indent_mod = -1L,
     split_fun = split_fun,
     label_pos = "topleft",
@@ -530,8 +530,8 @@ lyt <- basic_table() %>%
     grade_groups = gr_grp
   ) %>%
   split_rows_by(
-    "AEDECOD", 
-    child_labels = "visible", 
+    "AEDECOD",
+    child_labels = "visible",
     nested = TRUE, 
     indent_mod = -1L,
     split_fun = split_fun,
