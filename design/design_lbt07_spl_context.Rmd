@@ -85,30 +85,35 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             .spl_context,
                                             variables = list(
                                               id = "USUBJID", 
-                                              param  = c("PARAMCD", "PARAM")
+                                              param  = c("PARAMCD", "PARAM"), 
+                                              anrind = c("GRADE_DIR")
                                             )
                                             
                                             ) {
 
   
-  # I am adding variables$param = c("PARAMCD", "PARAM") 
-  #as the user can split_rows_by either PARAMCD or PARAM
-  first_row <- .spl_context[.spl_context$split %in% variables[["param"]], ]
-  param <- first_row$split
+  param <- .spl_context$split[.spl_context$split %in% variables[["param"]]]
   
   assert_that(
     is.string(.var),
     is.list(variables),
     is.string(variables$id), 
     is_character_vector(variables$param), 
-    all(names(variables) %in% c("id", "param")),
+    all(names(variables) %in% c("id", "param", "anrind")),
     is_df_with_variables(df, c(aval = .var, variables)),
     is.factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[param]]),
-    all(!is.na(df[[.var]])) #NA-s are not accepted in Grades
+    all(!is.na(df[[.var]])), #NA-s are not accepted in Grades
+    #To verify that the split_rows_by are performed with correct variables.
+    all(c(param, variables[["anrind"]]) %in% .spl_context$split)
     )
 
+  # I am adding variables$param = c("PARAMCD", "PARAM") 
+  #as the user can split_rows_by either PARAMCD or PARAM
+  first_row <- .spl_context[.spl_context$split %in% variables[["param"]], ]
+  param <- first_row$split
+  
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "ANY")
 
   result <- split(numeric(0), factor(x_lvls))
@@ -141,9 +146,9 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
 #We can see the correct denominators later in the user-faced function. 
 s_count_abnormal_by_worst_grade(
    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
-   .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "HELLOOO")),
+   .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "GRADE_DIR")),
    .var = "GRADE_ANL",
-   variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM")))
+   variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"),  anrind = c("GRADE_DIR")))
 
 
 # Test with an empty dataframe 
@@ -152,14 +157,15 @@ df_empty <-
     GRADE_ANL = factor(NULL, levels = c("0", "1", "2")),
     USUBJID = character(0),
     PARAMCD = factor(NULL, levels = c("ALT")),
-    PARAM = factor(NULL, levels = c("ALT"))
+    PARAM = factor(NULL, levels = c("ALT")), 
+    GRADE_DIR = factor(NULL, levels = c("LOW"))
   )
 
 s_count_abnormal_by_worst_grade(
    df = df_empty,
-   .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "HELLOOO")),
+   .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "GRADE_DIR")),
    .var = "GRADE_ANL",
-   variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM")))
+   variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"), anrind = c("GRADE_DIR")))
 ```
 
 No changes here. 
@@ -167,7 +173,7 @@ No changes here.
 ```{r}
 a_count_abnormal_by_worst_grade <- make_afun(  #nolint
   s_count_abnormal_by_worst_grade,
-  .spl_context = data.frame(cur_col_n = c(100, 50), all_cols_n = c(200, 100)),
+  .spl_context = data.frame(cur_col_n = c(0, 0), split = c("PARAM", "GRADE_DIR")),
   .formats = c(count_fraction = format_count_fraction)
 )
 
@@ -185,7 +191,6 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
     df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "IGA") %>% droplevels()
   )
  
- #This gives an error as the s_* function is just supported for one direction per execution. 
  afun(
     df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP") %>% droplevels()
   )
@@ -303,7 +308,7 @@ lyt_trim_group <- basic_table() %>%
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>%
-  split_rows_by("ANRIND", label_pos = "topleft",
+  split_rows_by("GRADE_DIR", label_pos = "topleft",
                 split_fun = trim_levels_in_group("ATOXGR")) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL"
