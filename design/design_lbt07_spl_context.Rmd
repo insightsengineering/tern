@@ -150,7 +150,6 @@ s_count_abnormal_by_worst_grade(
    .var = "GRADE_ANL",
    variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"),  anrind = c("GRADE_DIR")))
 
-
 # Test with an empty dataframe 
 df_empty <- 
   data.frame(
@@ -431,6 +430,4 @@ build_table(
   df = adlb_f3 %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
-
 ```
-
