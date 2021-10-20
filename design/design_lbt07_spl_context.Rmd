@@ -346,7 +346,7 @@ lyt_trim_map2 <- basic_table() %>%
     .stats = "unique_count"
   ) %>% # Removing "NORMAL" level by using remove_split_levels()
   split_rows_by(
-  "GRADE_DIR", 
+  "GRADE_DIR",
   label_pos = "topleft",
   split_label = "Direction of abnormality",
   split_fun = trim_levels_to_map(map = empirical_map2)
