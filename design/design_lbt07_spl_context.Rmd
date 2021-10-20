@@ -74,7 +74,6 @@ adlb_f <- adlb_f %>%
       `4` = "-4"
     ), c("0", "1", "2", "3", "4"))
   )
-
 ```
 
 ## Updating the statistics function `s_count_abnormal_by_worst_grade` by using `.spl_context` and `trim_levels_to_map`
@@ -88,7 +87,6 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                               param  = c("PARAMCD", "PARAM"), 
                                               anrind = c("GRADE_DIR")
                                             )
-                                            
                                             ) {
 
   
@@ -109,7 +107,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
     all(c(param, variables[["anrind"]]) %in% .spl_context$split)
     )
 
-  # I am adding variables$param = c("PARAMCD", "PARAM") 
+  # I am adding variables$param = c("PARAMCD", "PARAM")
   #as the user can split_rows_by either PARAMCD or PARAM
   first_row <- .spl_context[.spl_context$split %in% variables[["param"]], ]
   param <- first_row$split
@@ -151,13 +149,13 @@ s_count_abnormal_by_worst_grade(
    variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"),  anrind = c("GRADE_DIR")))
 
 
-# Test with an empty dataframe 
-df_empty <- 
+# Test with an empty dataframe
+df_empty <-
   data.frame(
     GRADE_ANL = factor(NULL, levels = c("0", "1", "2")),
     USUBJID = character(0),
     PARAMCD = factor(NULL, levels = c("ALT")),
-    PARAM = factor(NULL, levels = c("ALT")), 
+    PARAM = factor(NULL, levels = c("ALT")),
     GRADE_DIR = factor(NULL, levels = c("LOW"))
   )
 
@@ -168,7 +166,7 @@ s_count_abnormal_by_worst_grade(
    variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"), anrind = c("GRADE_DIR")))
 ```
 
-No changes here. 
+No changes here.
 
 ```{r}
 a_count_abnormal_by_worst_grade <- make_afun(  #nolint
@@ -202,7 +200,7 @@ a_count_abnormal_by_worst_grade <- make_afun(  #nolint
 
 # New layout function
 
-Here the main change is to remove the for loop. 
+Here the main change is to remove the for loop.
 ```{r}
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
@@ -235,23 +233,21 @@ count_abnormal_by_worst_grade <- function(lyt,
 ```
 
 
-In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions: 
+In the following chunk the `map` dataframe and three layouts are created to verify that the refactored function is still able to return the table correctly with/without the new split functions:
 
- * Layout without new split function. 
+ * Layout without new split function.
  * Layout with `trim_levels_to_map`
  * Layout with `trim_levels_in_group`
 
-The `map` dataframe requires introducing "NORMAL" levels as they are needed to obtain the total number of patients with a valid lab measurement (denominator). 
-This fact requires somehow dealing with these "NORMAL" cases to not appear in the table. 
-when using `trim_levels_to_map` or `trim_levels_in_group` the table needs to be pruned/trimmed to remove "NORMAL" rows. This may be a drawback. 
-
+The `map` dataframe requires introducing "NORMAL" levels as they are needed to obtain the total number of patients with a valid lab measurement (denominator).
+This fact requires somehow dealing with these "NORMAL" cases to not appear in the table.
+when using `trim_levels_to_map` or `trim_levels_in_group` the table needs to be pruned/trimmed to remove "NORMAL" rows. This may be a drawback.
 
 ```{r}
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
   lapply(as.character) %>%
   as.data.frame() %>%
   arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
-
 
 ##### Without any new split function
 lyt_no_trim <- basic_table() %>%
@@ -273,7 +269,7 @@ build_table(
   lyt = lyt_no_trim,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) 
+)
 
 ###### Using `trim_levels_to_map`
 lyt_trim_map <- basic_table() %>%
@@ -295,7 +291,7 @@ build_table(
   lyt = lyt_trim_map,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) 
+)
 
 ###### Using `trim_levels_in_group`
 lyt_trim_group <- basic_table() %>%
@@ -320,20 +316,18 @@ build_table(
   lyt = lyt_trim_group,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) %>% prune_table() 
+) %>% prune_table()
 
 ```
 
-
 #Some edge cases
 
-Example 1: If all rows for `ALT` are removed in the `map`. 
+Example 1: If all rows for `ALT` are removed in the `map`.
 
 ```{r}
 empirical_map2 <- map %>% filter(
   PARAM != "Alanine Aminotransferase Measurement"
 )
-
 
 ###### Using `trim_levels_to_map`
 lyt_trim_map2 <- basic_table() %>%
@@ -355,10 +349,10 @@ build_table(
   lyt = lyt_trim_map2,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) #We are obtaining an error. 
+) #We are obtaining an error.
 
-# Let's remove ALT records from the analysis dataset. 
-# It's seems we have no other choice but to exclude ALT from dataset as well. 
+# Let's remove ALT records from the analysis dataset.
+# It's seems we have no other choice but to exclude ALT from dataset as well.
 
 adlb_f_no_alt <- adlb_f %>% filter(PARAMCD != "ALT") %>% droplevels()
 
@@ -366,11 +360,8 @@ build_table(
   lyt = lyt_trim_map2,
   df = adlb_f_no_alt %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) #We are obtaining an error. 
-
-
+) #We are obtaining an error.
 ```
-
 
 Example 2: All grades in the target direction (none 0) for a param.
 
@@ -378,7 +369,6 @@ Example 2: All grades in the target direction (none 0) for a param.
 adlb_f2 <- adlb_f %>%
   filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
 adlb_f2 %>% count(PARAMCD, ATOXGR, GRADE_ANL)
-
 ```
 
 ```{r}
@@ -386,17 +376,16 @@ build_table(
   lyt = lyt_trim_map,
   df = adlb_f2 %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) 
+)
 ```
 
-Example 3: Opposite direction (in addition) from stated in map. 
+Example 3: Opposite direction (in addition) from stated in map.
 Scenario where map is incorrectly filled.
-In this scenario we are not obtaining an error but map level rows the direction stated by the map. 
+In this scenario we are not obtaining an error but map level rows the direction stated by the map.
 
 ```{r}
 map2 <- map
 map2[map2$PARAM == "Alanine Aminotransferase Measurement", 2] <- "HIGH"
-
 
 ###### Using `trim_levels_to_map`
 lyt_trim_map3 <- basic_table() %>%
@@ -418,11 +407,10 @@ build_table(
   lyt = lyt_trim_map3,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) 
-
+)
 ```
 
-Example 4:  Case where there is an arm that has no lab records. Table correctly obtained. 
+Example 4:  Case where there is an arm that has no lab records. Table correctly obtained.
 
 ```{r}
 adlb_f3 <- adlb_f %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
@@ -431,6 +419,4 @@ build_table(
   df = adlb_f3 %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
-
 ```
-
