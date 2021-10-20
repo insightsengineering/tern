@@ -108,9 +108,8 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
     )
 
   # I am adding variables$param = c("PARAMCD", "PARAM")
-  #as the user can split_rows_by either PARAMCD or PARAM
+  # as the user can split_rows_by either PARAMCD or PARAM
   first_row <- .spl_context[.spl_context$split %in% variables[["param"]], ]
-  #param <- first_row$split
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "ANY")
   result <- split(numeric(0), factor(x_lvls))
 
