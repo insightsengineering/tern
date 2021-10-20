@@ -532,7 +532,7 @@ lyt <- basic_table() %>%
   split_rows_by(
     "AEDECOD",
     child_labels = "visible",
-    nested = TRUE, 
+    nested = TRUE,
     indent_mod = -1L,
     split_fun = split_fun,
     label_pos = "topleft",
