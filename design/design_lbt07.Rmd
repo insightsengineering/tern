@@ -182,7 +182,7 @@ s_count_abnormal_by_worst_grade <- function(df, #nolint
       } else NULL
 
    df <- df[!is.na(df[[.var]]), ]
-     
+   
    if (is.null(abn_levels)) {
      result <- list(empty = NULL)
    } else {
