@@ -356,7 +356,32 @@ statistics function and additional format arguments (see below).</p></li>
 #&gt; $`1`
 #&gt; [1] 10
 #&gt; </div><div class='input'>
-
+<span class='fu'>h_append_grade_groups</span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+    <span class='st'>"Any Grade"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>,
+    <span class='st'>"Grade 1-2"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1"</span>, <span class='st'>"2"</span><span class='op'>)</span>,
+    <span class='st'>"Grade 3-4"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"3"</span>, <span class='st'>"4"</span><span class='op'>)</span>
+    <span class='op'>)</span>,
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"1"</span> <span class='op'>=</span> <span class='fl'>10</span>, <span class='st'>"2"</span> <span class='op'>=</span> <span class='fl'>5</span>, <span class='st'>"3"</span> <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; $`Any Grade`
+#&gt; [1] 15
+#&gt; 
+#&gt; $`Grade 1-2`
+#&gt; [1] 15
+#&gt; 
+#&gt; $`1`
+#&gt; [1] 10
+#&gt; 
+#&gt; $`2`
+#&gt; [1] 5
+#&gt; 
+#&gt; $`Grade 3-4`
+#&gt; [1] 0
+#&gt; 
+#&gt; $`3`
+#&gt; [1] 0
+#&gt; </div><div class='input'>
 
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>

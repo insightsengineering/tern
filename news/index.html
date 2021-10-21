@@ -161,6 +161,7 @@
 <li>Refactored <code>h_append_grade_groups</code> to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of <code>grade_groups</code>. Also, added <code>remove_single</code> argument which controls whether the elements of one-element grade groups will be kept in the output or removed.</li>
 <li>Added <code>var_labels</code> and <code>show_labels</code> arguments to <code>count_occurrences</code> and <code>count_patients_with_flags</code> to allow for creation of a title row.</li>
 <li>Added <code>na_level</code> argument to <code>count_abnormal_by_baseline</code>.</li>
+<li>Updated <code>h_append_grade_groups</code> to no longer fill-in empty grade groups with zeros.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
