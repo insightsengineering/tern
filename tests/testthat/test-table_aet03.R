@@ -25,13 +25,13 @@ test_that("AET03 variant 1 is produced correctly", {
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("ASEV"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_occurrences_by_grade(
       var = "ASEV",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEDECOD", split_fun = trim_levels_in_group("ASEV"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",

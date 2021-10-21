@@ -28,13 +28,13 @@ raw_table <- function(adae, adsl) {
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -115,13 +115,13 @@ test_that("AET04 variant 1 is produced correctly", {
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -233,13 +233,13 @@ test_that("AET04 variant 2 is produced correctly (Fill in of Treatment Groups)",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -479,13 +479,13 @@ test_that("AET04 variant 4 is produced correctly (Collapsing of Grades: grades 1
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -602,13 +602,13 @@ test_that("AET04 variant 6 is produced correctly (with an Incidence Rate of at L
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = gr_grp
     ) %>%
     split_rows_by("AEDECOD", split_fun = trim_levels_in_group("AETOXGR"),
-                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+      child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
