@@ -24,12 +24,14 @@ test_that("AET03 variant 1 is produced correctly", {
       var = "ASEV",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEBODSYS", child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEBODSYS", split_fun = trim_levels_in_group("ASEV"),
+                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_occurrences_by_grade(
       var = "ASEV",
       grade_groups = gr_grp
     ) %>%
-    split_rows_by("AEDECOD", child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
+    split_rows_by("AEDECOD", split_fun = trim_levels_in_group("ASEV"),
+                  child_labels = "visible", nested = TRUE, indent_mod = -1L) %>%
     summarize_num_patients(
       var = "USUBJID",
       .stats = "unique",
@@ -39,7 +41,6 @@ test_that("AET03 variant 1 is produced correctly", {
 
   result <- lyt %>%
     build_table(adae, alt_counts_df = adsl) %>%
-    trim_rows() %>%
     sort_at_path(
       path = "AEBODSYS",
       scorefun = cont_n_allcols,
