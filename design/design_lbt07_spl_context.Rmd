@@ -105,7 +105,8 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   #To verify that the `split_rows_by` are performed with correct variables.
   #Informative message
   assert_that(all(c(variables[["param"]], variables[["anrind"]]) %in% .spl_context$split),
-              msg = "variabes$param and variables$anrind are not taking the same variables as the ones used for splitting rows in the layout.")
+              msg = "variabes$param and variables$anrind are not taking
+              the same variables as the ones used for splitting rows in the layout.")
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ]
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "ANY")
@@ -255,7 +256,7 @@ lyt_no_trim <- basic_table() %>%
   split_fun = remove_split_levels("NORMAL")
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "GRADE_ANL", 
+    var = "GRADE_ANL",
     variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
@@ -275,7 +276,7 @@ lyt_trim_map <- basic_table() %>%
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
-  ) %>% 
+  ) %>%
   split_rows_by(
   "GRADE_DIR",
   label_pos = "topleft",
@@ -340,7 +341,7 @@ lyt_trim_map2 <- basic_table() %>%
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
-  ) %>% 
+  ) %>%
   split_rows_by(
   "GRADE_DIR",
   label_pos = "topleft",
@@ -404,7 +405,7 @@ lyt_trim_map3 <- basic_table() %>%
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
-  ) %>% 
+  ) %>%
   split_rows_by("GRADE_DIR",
   label_pos = "topleft",
   split_label = "Direction of abnormality",
