@@ -13,6 +13,7 @@
 * Refactored `h_append_grade_groups` to improve its flexibility, robustness and clearness as well as to make sure the result is ordered according to the order of `grade_groups`. Also, added `remove_single` argument which controls whether the elements of one-element grade groups will be kept in the output or removed.
 * Added `var_labels` and `show_labels` arguments to `count_occurrences` and `count_patients_with_flags` to allow for creation of a title row.
 * Added `na_level` argument to `count_abnormal_by_baseline`.
+* Updated `h_append_grade_groups` to no longer fill-in empty grade groups with zeros.
 
 ### Bug Fixes
 * Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) responses.
