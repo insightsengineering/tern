@@ -85,38 +85,36 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             .spl_context,
                                             variables = list(
                                               id = "USUBJID",
-                                              param  = c("PARAMCD", "PARAM"),
-                                              anrind = c("GRADE_DIR")
-                                            )
-                                            ) {
+                                              param  = "PARAMCD",
+                                              anrind = "GRADE_DIR"
+                                            )) {
 
-  param <- .spl_context$split[.spl_context$split %in% variables[["param"]]]
   assert_that(
     is.string(.var),
     is.list(variables),
     is.string(variables$id),
-    is_character_vector(variables$param),
+    is.string(variables$param),
     is.string(variables$anrind),
     all(names(variables) %in% c("id", "param", "anrind")),
     is_df_with_variables(df, c(a = .var, variables)),
     is.factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]]),
-    is.factor(df[[param]]),
-    all(!is.na(df[[.var]])), #NA-s are not accepted in Grades
-    #To verify that the split_rows_by are performed with correct variables.
-    all(c(param, variables[["anrind"]]) %in% .spl_context$split)
-    )
+    is.factor(df[[variables[["param"]]]]),
+    all(!is.na(df[[.var]]))
+  )
+  #To verify that the `split_rows_by` are performed with correct variables.
+  #Informative message
+  assert_that(all(c(variables[["param"]], variables[["anrind"]]) %in% .spl_context$split),
+              msg = "variabes$param and variables$anrind are not taking the same variables as the ones used for splitting rows in the layout.")
 
-  # I am adding variables$param = c("PARAMCD", "PARAM")
-  # as the user can split_rows_by either PARAMCD or PARAM
-  first_row <- .spl_context[.spl_context$split %in% variables[["param"]], ]
+  first_row <- .spl_context[.spl_context$split == variables[["param"]], ]
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "ANY")
   result <- split(numeric(0), factor(x_lvls))
 
   subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
   subj_cur_col <- subj[first_row$cur_col_subset[[1]]]
   # some subject may have a record for HI flag and LO flag but should be counted only once.
-  denom <- subj_cur_col %>% unique() %>% length()
+  denom <- length(unique(subj_cur_col))
 
   for (lvl in x_lvls) {
     if (lvl != "ANY") {
@@ -151,7 +149,7 @@ s_count_abnormal_by_worst_grade(
    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .spl_context = spl_context,
    .var = "GRADE_ANL",
-   variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"),  anrind = c("GRADE_DIR")))
+   variables = list(id = "USUBJID", param  = "PARAM",  anrind = "GRADE_DIR"))
 
 # Test with an empty dataframe
 df_empty <-
@@ -167,7 +165,7 @@ s_count_abnormal_by_worst_grade(
    df = df_empty,
    .spl_context = data.frame(whatever = c(0, 0), split = c("PARAM", "GRADE_DIR")),
    .var = "GRADE_ANL",
-   variables = list(id = "USUBJID", param  = c("PARAMCD", "PARAM"), anrind = c("GRADE_DIR")))
+   variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR"))
 ```
 
 No changes here.
@@ -196,15 +194,14 @@ Here the main change is to remove the for loop.
 ```{r}
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
+                                          variables,
                                           ...,
                                           table_names = var,
                                           .stats = NULL,
                                           .formats = NULL,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
-  assert_that(
-    is.string(var)
-    )
+
   afun <- make_afun(
     a_count_abnormal_by_worst_grade,
     .stats = .stats,
@@ -214,13 +211,13 @@ count_abnormal_by_worst_grade <- function(lyt,
     .ungroup_stats = "count_fraction"
   )
   analyze(
-      lyt = lyt,
-      vars = var,
-      afun = afun,
-      table_names = var,
-      extra_args = list(...),
-      show_labels = "hidden"
-    )
+    lyt = lyt,
+    vars = var,
+    afun = afun,
+    table_names = var,
+    extra_args = c(list(variables = variables, list(...))),
+    show_labels = "hidden"
+  )
 }
 ```
 
@@ -258,7 +255,8 @@ lyt_no_trim <- basic_table() %>%
   split_fun = remove_split_levels("NORMAL")
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "GRADE_ANL"
+    var = "GRADE_ANL", 
+    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
 
@@ -277,7 +275,7 @@ lyt_trim_map <- basic_table() %>%
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
-  ) %>% # Removing "NORMAL" level by using remove_split_levels()
+  ) %>% 
   split_rows_by(
   "GRADE_DIR",
   label_pos = "topleft",
@@ -285,7 +283,8 @@ lyt_trim_map <- basic_table() %>%
   split_fun = trim_levels_to_map(map = map)
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "GRADE_ANL"
+    var = "GRADE_ANL",
+    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
@@ -309,7 +308,8 @@ lyt_trim_group <- basic_table() %>%
   split_rows_by("GRADE_DIR", label_pos = "topleft",
                 split_fun = trim_levels_in_group("ATOXGR")) %>%
   count_abnormal_by_worst_grade(
-    var = "GRADE_ANL"
+    var = "GRADE_ANL",
+    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
   ) %>%
   append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
@@ -340,7 +340,7 @@ lyt_trim_map2 <- basic_table() %>%
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
-  ) %>% # Removing "NORMAL" level by using remove_split_levels()
+  ) %>% 
   split_rows_by(
   "GRADE_DIR",
   label_pos = "topleft",
@@ -348,7 +348,8 @@ lyt_trim_map2 <- basic_table() %>%
   split_fun = trim_levels_to_map(map = empirical_map2)
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "GRADE_ANL"
+    var = "GRADE_ANL",
+    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
@@ -403,14 +404,15 @@ lyt_trim_map3 <- basic_table() %>%
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
-  ) %>% # Removing "NORMAL" level by using remove_split_levels()
+  ) %>% 
   split_rows_by("GRADE_DIR",
   label_pos = "topleft",
   split_label = "Direction of abnormality",
   split_fun = trim_levels_to_map(map = map2)
   ) %>%
   count_abnormal_by_worst_grade(
-    var = "GRADE_ANL"
+    var = "GRADE_ANL",
+    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
