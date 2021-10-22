@@ -40,8 +40,7 @@ test_that("extract_survival_subgroups functions as expected with valid input and
       list(
         arm = structure(
           c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
-          .Label = c("B: Placebo",
-                     "A: Drug X"),
+          .Label = c("B: Placebo", "A: Drug X"),
           class = "factor"
         ),
         n = c(134L, 134L, 82L, 79L, 52L, 55L, 45L, 50L, 56L, 37L, 33L, 47L),
@@ -124,14 +123,9 @@ test_that("extract_survival_subgroups functions as expected with valid input and
     ),
     hr = structure(
       list(
-        arm = c(" ", " ",
-                " ", " ", " ", " "),
+        arm = c(" ", " ", " ", " ", " ", " "),
         n_tot = structure(c(268L, 161L, 107L, 95L, 93L, 80L), label = "n_tot"),
-        n_tot_events = structure(
-          c(
-            166, 95, 71, 61, 55, 50
-            ),
-          label = "n_tot_events"),
+        n_tot_events = structure(c(166, 95, 71, 61, 55, 50), label = "n_tot_events"),
         hr = c(
           0.717365051154891,
           0.697969331159471,
@@ -173,10 +167,8 @@ test_that("extract_survival_subgroups functions as expected with valid input and
           "p-value (log-rank)",
           "p-value (log-rank)"
         ),
-        subgroup = c("All Patients", "F", "M",
-                     "LOW", "MEDIUM", "HIGH"),
-        var = c("ALL", "SEX", "SEX", "BMRKR2",
-                "BMRKR2", "BMRKR2"),
+        subgroup = c("All Patients", "F", "M", "LOW", "MEDIUM", "HIGH"),
+        var = c("ALL", "SEX", "SEX", "BMRKR2", "BMRKR2", "BMRKR2"),
         var_label = c(
           "All Patients",
           "Sex",
@@ -194,7 +186,8 @@ test_that("extract_survival_subgroups functions as expected with valid input and
           "analysis"
         )
       ),
-      row.names = c(NA, -6L), class = "data.frame"))
+      row.names = c(NA, -6L), class = "data.frame")
+  )
   expect_equal(result, expected, tol = 0.000001)
 })
 
@@ -244,18 +237,15 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
         list(
           arm = structure(
             1:2,
-            .Label = c("B: Placebo",
-                       "A: Drug X"),
+            .Label = c("B: Placebo", "A: Drug X"),
             class = "factor"
           ),
           n = c(134L, 134L),
           n_events = c(87L, 79L),
           median = c(837.42801327648, 1260.49053370248),
-          subgroup = c("All Patients",
-                       "All Patients"),
+          subgroup = c("All Patients", "All Patients"),
           var = c("ALL", "ALL"),
-          var_label = c("All Patients",
-                        "All Patients"),
+          var_label = c("All Patients", "All Patients"),
           row_type = c("content", "content")
         ),
         row.names = c(NA, -2L),
@@ -275,7 +265,11 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
           subgroup = "All Patients",
           var = "ALL",
           var_label = "All Patients",
-          row_type = "content"), row.names = c(NA, -1L), class = "data.frame"))
+          row_type = "content"
+        ), 
+        row.names = c(NA, -1L),
+        class = "data.frame")
+    )
   expect_equal(result, expected, tol = 0.000001)
 })
 
