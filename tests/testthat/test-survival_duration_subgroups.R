@@ -119,7 +119,7 @@ test_that("extract_survival_subgroups functions as expected with valid input and
           "analysis"
         )
       ),
-      row.names = c(NA,-12L),
+      row.names = c(NA, -12L),
       class = "data.frame"
     ),
     hr = structure(
@@ -258,7 +258,7 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
                         "All Patients"),
           row_type = c("content", "content")
         ),
-        row.names = c(NA,-2L),
+        row.names = c(NA, -2L),
         class = "data.frame"
       ),
       hr = structure(
