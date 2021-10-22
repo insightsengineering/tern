@@ -177,8 +177,8 @@ map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%
-  split_rows_by("PARAM") \%>\%
-  split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) \%>\%
+  split_rows_by("PARAM", split_fun = trim_levels_to_map(map)) \%>\%
+  split_rows_by("GRADE_DIR") \%>\%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
     variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
