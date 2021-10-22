@@ -163,7 +163,7 @@ baseline can be excluded from numerator and denominator.</p>
     <pre class="usage"><span class='fu'>s_count_abnormal</span><span class='op'>(</span>
   <span class='va'>df</span>,
   <span class='va'>.var</span>,
-  <span class='va'>abnormal</span>,
+  abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Low <span class='op'>=</span> <span class='st'>"LOW"</span>, High <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span>,
   variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, baseline <span class='op'>=</span> <span class='st'>"BNRIND"</span><span class='op'>)</span>,
   exclude_base_abn <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>
@@ -171,7 +171,7 @@ baseline can be excluded from numerator and denominator.</p>
 <span class='fu'>a_count_abnormal</span><span class='op'>(</span>
   <span class='va'>df</span>,
   <span class='va'>.var</span>,
-  <span class='va'>abnormal</span>,
+  abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Low <span class='op'>=</span> <span class='st'>"LOW"</span>, High <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span>,
   variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"USUBJID"</span>, baseline <span class='op'>=</span> <span class='st'>"BNRIND"</span><span class='op'>)</span>,
   exclude_base_abn <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>
@@ -179,9 +179,8 @@ baseline can be excluded from numerator and denominator.</p>
 <span class='fu'>count_abnormal</span><span class='op'>(</span>
   <span class='va'>lyt</span>,
   <span class='va'>var</span>,
-  <span class='va'>abnormal</span>,
   <span class='va'>...</span>,
-  table_names <span class='op'>=</span> <span class='va'>abnormal</span>,
+  table_names <span class='op'>=</span> <span class='va'>var</span>,
   .stats <span class='op'>=</span> <span class='cn'>NULL</span>,
   .formats <span class='op'>=</span> <span class='cn'>NULL</span>,
   .labels <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -202,7 +201,9 @@ by a statistics function.</p></td>
     </tr>
     <tr>
       <th>abnormal</th>
-      <td><p>(named <code>string</code> or <code>character</code>)<br /> identifying the abnormal range level(s) in <code>var</code>.</p></td>
+      <td><p>(<code>named list</code>)<br /> identifying the abnormal range level(s) in <code>var</code>. Default to
+<code><a href='https://rdrr.io/r/base/list.html'>list(Low = "LOW", High = "HIGH")</a></code> but you can also group different levels into the name list, for example,
+<code>abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))</code></p></td>
     </tr>
     <tr>
       <th>variables</th>
@@ -291,30 +292,48 @@ works with a single variable but multiple abnormal levels.</p></li>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ONTRTFL</span> <span class='op'>==</span> <span class='st'>"Y"</span><span class='op'>)</span>
 
 <span class='co'># For abnormal level "HIGH" we get the following counts.</span>
-<span class='fu'>s_count_abnormal</span><span class='op'>(</span><span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>s_count_abnormal</span><span class='op'>(</span><span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span>, low <span class='op'>=</span> <span class='st'>"LOW"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $fraction
+#&gt; $fraction$high
 #&gt;   num denom 
 #&gt;     1     2 
 #&gt; attr(,"label")
 #&gt; [1] "high"
+#&gt; 
+#&gt; $fraction$low
+#&gt;   num denom 
+#&gt;     1     2 
+#&gt; attr(,"label")
+#&gt; [1] "low"
+#&gt; 
 #&gt; </div><div class='input'>
 <span class='co'># Optionally exclude patients with abnormality at baseline.</span>
-<span class='fu'>s_count_abnormal</span><span class='op'>(</span><span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span>, exclude_base_abn <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>s_count_abnormal</span><span class='op'>(</span><span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span>, low <span class='op'>=</span> <span class='st'>"LOW"</span><span class='op'>)</span>, exclude_base_abn <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $fraction
+#&gt; $fraction$high
 #&gt;   num denom 
 #&gt;     0     1 
 #&gt; attr(,"label")
 #&gt; [1] "high"
+#&gt; 
+#&gt; $fraction$low
+#&gt;   num denom 
+#&gt;     1     2 
+#&gt; attr(,"label")
+#&gt; [1] "low"
+#&gt; 
 #&gt; </div><div class='input'>
 <span class='co'># Use the Formatted Analysis function for `analyze()`.</span>
-<span class='fu'>a_count_abnormal</span><span class='op'>(</span><span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>low <span class='op'>=</span> <span class='st'>"LOW"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>a_fun</span> <span class='op'>&lt;-</span> <span class='fu'>make_afun</span><span class='op'>(</span><span class='va'>a_count_abnormal</span>, .ungroup_stats <span class='op'>=</span> <span class='st'>"fraction"</span><span class='op'>)</span>
+<span class='fu'>a_fun</span><span class='op'>(</span><span class='va'>df</span>, .var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>low <span class='op'>=</span> <span class='st'>"LOW"</span>, high <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
 #&gt; ----------------------------
 #&gt;   row_name formatted_cell indent_mod row_label
-#&gt; 1 fraction      1/2 (50%)          0       low</div><div class='input'>
+#&gt; 1      low      1/2 (50%)          0       low
+#&gt; 2     high      1/2 (50%)          0      high</div><div class='input'>
 <span class='co'># Layout creating function.</span>
 <span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>count_abnormal</span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span>, low <span class='op'>=</span> <span class='st'>"LOW"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>count_abnormal</span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ANRIND"</span>, abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"HIGH"</span>, low <span class='op'>=</span> <span class='st'>"LOW"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>build_table</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;         all obs 
 #&gt; ----------------
@@ -336,7 +355,7 @@ works with a single variable but multiple abnormal levels.</p></li>
 <span class='fu'>basic_table</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>count_abnormal</span><span class='op'>(</span>
     var <span class='op'>=</span> <span class='st'>"RANGE"</span>,
-    abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>low <span class='op'>=</span> <span class='st'>"LOW"</span>, high <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span>,
+    abnormal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>low <span class='op'>=</span> <span class='st'>"LOW"</span>, high <span class='op'>=</span> <span class='st'>"HIGH"</span><span class='op'>)</span>,
     variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"ID"</span>, baseline <span class='op'>=</span> <span class='st'>"BL_RANGE"</span><span class='op'>)</span>
   <span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>build_table</span><span class='op'>(</span><span class='va'>df2</span><span class='op'>)</span>
