@@ -483,7 +483,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
           "analysis"
         )
       ),
-      row.names = c(NA,-6L),
+      row.names = c(NA, -6L),
       class = "data.frame"
     )
 
@@ -520,7 +520,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
       var_label = c("All Patients", "Country", "Country"),
       row_type = c("content", "analysis", "analysis")
     ),
-    row.names = c(NA,-3L),
+    row.names = c(NA, -3L),
     class = "data.frame"
   )
 
@@ -560,7 +560,7 @@ test_that("h_coxph_subgroups_df functions as expected with stratification factor
                       "Sex", "Sex"),
         row_type = c("content", "analysis", "analysis")
       ),
-      row.names = c(NA,-3L),
+      row.names = c(NA, -3L),
       class = "data.frame"
     )
 
@@ -594,7 +594,7 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
         var_label = "All Patients",
         row_type = "content"
       ),
-      row.names = c(NA,-1L),
+      row.names = c(NA, -1L),
       class = "data.frame"
     )
   expect_equal(result, expected, tol = 0.000001)
