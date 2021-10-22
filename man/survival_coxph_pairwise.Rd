@@ -34,7 +34,7 @@ coxph_pairwise(
   var_labels = "CoxPH",
   show_labels = "visible",
   table_names = vars,
-  .stats = NULL,
+  .stats = c("pvalue", "hr", "hr_ci"),
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -91,6 +91,8 @@ The statistics are:
 \item \code{pvalue} : p-value to test HR = 1.
 \item \code{hr} : hazard ratio.
 \item \code{hr_ci} : confidence interval for hazard ratio.
+\item \code{n_tot} : total number of observations
+\item \code{n_tot} : total number of events
 }
 }
 \description{
