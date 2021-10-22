@@ -122,7 +122,7 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                 "variabes$param and variables$anrind are not taking the",
                 "same variables as the ones used for splitting rows in the layout.")
              )
-  first_row <- .spl_context[.spl_context$split == variables[["param"]], ]
+  first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "Any")
   result <- split(numeric(0), factor(x_lvls))
 
