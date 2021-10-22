@@ -19,7 +19,7 @@ test_that("LBT04 default variant is produced correctly", {
     split_rows_by("PARAM", split_fun = drop_split_levels) %>%
     count_abnormal(
       var = "ANRIND",
-      abnormal = c(Low = "LOW", High = "HIGH"),
+      abnormal = list(Low = "LOW", High = "HIGH"),
       exclude_base_abn = TRUE
     ) %>%
     build_table(adlb, alt_counts_df = adsl)

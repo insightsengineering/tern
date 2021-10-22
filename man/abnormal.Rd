@@ -10,7 +10,7 @@
 s_count_abnormal(
   df,
   .var,
-  abnormal,
+  abnormal = list(Low = "LOW", High = "HIGH"),
   variables = list(id = "USUBJID", baseline = "BNRIND"),
   exclude_base_abn = FALSE
 )
@@ -18,7 +18,7 @@ s_count_abnormal(
 a_count_abnormal(
   df,
   .var,
-  abnormal,
+  abnormal = list(Low = "LOW", High = "HIGH"),
   variables = list(id = "USUBJID", baseline = "BNRIND"),
   exclude_base_abn = FALSE
 )
@@ -26,9 +26,8 @@ a_count_abnormal(
 count_abnormal(
   lyt,
   var,
-  abnormal,
   ...,
-  table_names = abnormal,
+  table_names = var,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -41,7 +40,9 @@ count_abnormal(
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{abnormal}{(named \code{string} or \code{character})\cr identifying the abnormal range level(s) in \code{var}.}
+\item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{var}. Default to
+\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the name list, for example,
+\code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -118,17 +119,18 @@ df <- df \%>\%
   filter(ONTRTFL == "Y")
 
 # For abnormal level "HIGH" we get the following counts.
-s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
+s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 
 # Optionally exclude patients with abnormality at baseline.
-s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"), exclude_base_abn = TRUE)
+s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE)
 
 # Use the Formatted Analysis function for `analyze()`.
-a_count_abnormal(df, .var = "ANRIND", abnormal = c(low = "LOW"))
+a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
+a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
 
 # Layout creating function.
 basic_table() \%>\%
-  count_abnormal(var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW")) \%>\%
+  count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) \%>\%
   build_table(df)
 
 # Passing of statistics function and formatting arguments.
@@ -147,7 +149,7 @@ df2 <- df2 \%>\%
 basic_table() \%>\%
   count_abnormal(
     var = "RANGE",
-    abnormal = c(low = "LOW", high = "HIGH"),
+    abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE")
   ) \%>\%
   build_table(df2)

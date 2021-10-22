@@ -15,7 +15,9 @@
 #' @details Note that `df` should be filtered to include only post-baseline records.
 #'
 #' @inheritParams argument_convention
-#' @param abnormal (named `string` or `character`)\cr identifying the abnormal range level(s) in `var`.
+#' @param abnormal (`named list`)\cr identifying the abnormal range level(s) in `var`. Default to
+#' `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the name list, for example,
+#' `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`
 #'
 #' @name abnormal
 #' @include formats.R
@@ -45,49 +47,56 @@ NULL
 #'   filter(ONTRTFL == "Y")
 #'
 #' # For abnormal level "HIGH" we get the following counts.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"))
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
 #'
 #' # Optionally exclude patients with abnormality at baseline.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = c(high = "HIGH"), exclude_base_abn = TRUE)
+#' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"), exclude_base_abn = TRUE)
 #'
 s_count_abnormal <- function(df,
                              .var,
-                             abnormal,
+                             abnormal = list(Low = "LOW", High = "HIGH"),
                              variables = list(id = "USUBJID", baseline = "BNRIND"),
                              exclude_base_abn = FALSE
 ) {
   assert_that(
     is_df_with_variables(df, c(range = .var, variables)),
-    is.string(abnormal),
+    is_character_list(abnormal, min_length = 2, max_length = 2),
     !is.null(names(abnormal)),
+    any(unlist(abnormal) %in% levels(df[[.var]])),
     is_character_or_factor(df[[variables$baseline]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[.var]]),
-    abnormal %in% levels(df[[.var]]),
     is.flag(exclude_base_abn)
   )
 
-  # Patients in the denominator fulfill:
-  # - have at least one post-baseline visit
-  # - their baseline must not be abnormal if `exclude_base_abn`.
-  subjects_post_any <- df[[variables$id]]
-  subjects_exclude <- if (exclude_base_abn) {
-    df[df[[variables$baseline]] == abnormal, ][[variables$id]]
-  } else {
-    c()
+  count_abnormal_single <- function(abn_name, abn) {
+    # Patients in the denominator fulfill:
+    # - have at least one post-baseline visit
+    # - their baseline must not be abnormal if `exclude_base_abn`.
+    if (exclude_base_abn) {
+      denom_select <- !(df[[variables$baseline]] %in% abn)
+    } else {
+      denom_select <- TRUE
+    }
+    denom <- length(unique(df[denom_select, variables$id, drop = TRUE]))
+
+    # Patients in the numerator fulfill:
+    # - have at least one post-baseline visit with the required abnormality level
+    # - are part of the denominator patients.
+    num_select <- (df[[.var]] %in% abn) & denom_select
+    num <- length(unique(df[num_select, variables$id, drop = TRUE]))
+
+    with_label(c(num = num, denom = denom), abn_name)
   }
-  subjects_denom <- setdiff(subjects_post_any, subjects_exclude)
-  denom <- length(subjects_denom)
 
-  # Patients in the numerator fulfill:
-  # - have at least one post-baseline visit with the required abnormality level
-  # - are part of the denominator patients.
-  subjects_post_abnormal <- df[df[[.var]] == abnormal, ][[variables$id]]
-  subjects_num <- intersect(subjects_post_abnormal, subjects_denom)
-  num <- length(subjects_num)
+  # This will define the abnormal levels theoretically possible for a specific lab parameter
+  # within a split level of a layout.
+  abnormal_lev <- lapply(abnormal, intersect, levels(df[[.var]]))
+  abnormal_lev <- abnormal_lev[!sapply(abnormal_lev, is_empty)]
 
-  result <- c(num = num, denom = denom)
-  list(fraction = with_label(result, names(abnormal)))
+  result <- sapply(names(abnormal_lev), function(i) count_abnormal_single(i, abnormal_lev[[i]]), simplify = FALSE)
+  result <- list(fraction = result)
+  result
 }
 
 #' @describeIn abnormal Formatted Analysis function which can be further customized by calling
@@ -96,7 +105,8 @@ s_count_abnormal <- function(df,
 #' @export
 #' @examples
 #' # Use the Formatted Analysis function for `analyze()`.
-#' a_count_abnormal(df, .var = "ANRIND", abnormal = c(low = "LOW"))
+#' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
+#' a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
 #'
 a_count_abnormal <- make_afun(
   s_count_abnormal,
@@ -111,7 +121,7 @@ a_count_abnormal <- make_afun(
 #' @examples
 #' # Layout creating function.
 #' basic_table() %>%
-#'   count_abnormal(var = "ANRIND", abnormal = c(high = "HIGH", low = "LOW")) %>%
+#'   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) %>%
 #'   build_table(df)
 #'
 #' # Passing of statistics function and formatting arguments.
@@ -130,16 +140,15 @@ a_count_abnormal <- make_afun(
 #' basic_table() %>%
 #'   count_abnormal(
 #'     var = "RANGE",
-#'     abnormal = c(low = "LOW", high = "HIGH"),
+#'     abnormal = list(low = "LOW", high = "HIGH"),
 #'     variables = list(id = "ID", baseline = "BL_RANGE")
 #'   ) %>%
 #'   build_table(df2)
 #'
 count_abnormal <- function(lyt,
                            var,
-                           abnormal,
                            ...,
-                           table_names = abnormal,
+                           table_names = var,
                            .stats = NULL,
                            .formats = NULL,
                            .labels = NULL,
@@ -150,23 +159,19 @@ count_abnormal <- function(lyt,
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,
-    .indent_mods = .indent_mods
+    .indent_mods = .indent_mods,
+    .ungroup_stats = "fraction"
   )
   assert_that(
-    is.string(var),
-    is_equal_length(abnormal, table_names)
+    is.string(var)
   )
 
-  for (i in seq_along(abnormal)) {
-    abn <- abnormal[i]
-    lyt <- analyze(
-      lyt = lyt,
-      vars = var,
-      afun = afun,
-      extra_args = c(list(abnormal = abn), list(...)),
-      show_labels = "hidden",
-      table_names = table_names[i]
-    )
-  }
-  lyt
+  analyze(
+    lyt = lyt,
+    vars = var,
+    afun = afun,
+    table_names = table_names,
+    extra_args = list(...),
+    show_labels = "hidden"
+  )
 }
