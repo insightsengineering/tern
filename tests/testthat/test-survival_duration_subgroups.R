@@ -266,7 +266,7 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
           var = "ALL",
           var_label = "All Patients",
           row_type = "content"
-        ), 
+        ),
         row.names = c(NA, -1L),
         class = "data.frame")
     )
