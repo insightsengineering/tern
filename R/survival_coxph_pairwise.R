@@ -126,7 +126,13 @@ s_coxph_pairwise <- function(df,
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,
   .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L),
-  .formats = c(pvalue = "x.xxxx | (<0.0001)", hr = "xx.xx", hr_ci = "(xx.xx, xx.xx)", n_tot = "xx.xx", n_tot_events = "xx.xx")
+  .formats = c(
+    pvalue = "x.xxxx | (<0.0001)",
+    hr = "xx.xx",
+    hr_ci = "(xx.xx, xx.xx)",
+    n_tot = "xx.xx",
+    n_tot_events = "xx.xx"
+  )
 )
 
 
