@@ -252,6 +252,26 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       pval_label = obj_label(result$pvalue),
       stringsAsFactors = FALSE
     )
+
+  } else if (
+    (nrow(l_df[[1]]) == 0 && nrow(l_df[[2]]) > 0) ||
+    (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
+  ) {
+
+    df_tte_complete <- df_tte[complete.cases(df_tte), ]
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = nrow(df_tte_complete),
+      n_tot_events = sum(df_tte_complete$is_event),
+      hr = NA,
+      lcl = NA,
+      ucl = NA,
+      conf_level = control[["conf_level"]],
+      pval = NA,
+      pval_label = NA,
+      stringsAsFactors = FALSE
+    )
   } else {
 
     df <- data.frame(
@@ -267,6 +287,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       pval_label = NA,
       stringsAsFactors = FALSE
     )
+
   }
 
   df

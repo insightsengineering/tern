@@ -110,18 +110,14 @@ test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)
     c(
       "",
       "Odds Ratio (95% CI)",
-      "n_tot",
       "a",
-      "",
       "",
       "b",
       "0.25 (0.01 - 7.45)",
-      "6",
       "c",
-      "0.5 (0.02 - 11.09)",
-      "7"
+      "0.5 (0.02 - 11.09)"
     ),
-    .Dim = 3:4
+    .Dim = c(2L, 4L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -146,15 +142,12 @@ test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)",
       c(
         "",
         "Odds Ratio (95% CI)",
-        "n_tot",
         "A",
         "",
-        "",
         "B",
-        "1.3 (0.58 - 2.92)",
-        "100"
+        "1.3 (0.58 - 2.92)"
       ),
-      .Dim = c(3L, 3L)
+      .Dim = 2:3
     )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -191,16 +184,12 @@ test_that("estimate_odds_ratio works with strata and combined groups", {
       c(
         "",
         "Odds Ratio (95% CI)",
-        "n_tot",
         "C: Combination",
         "",
-        "",
         "A: Drug X/B: Placebo",
-        "1.24 (0.54 - 2.89)",
-        "100"
+        "1.24 (0.54 - 2.89)"
       ),
-      .Dim = c(3L,
-               3L)
+      .Dim = 2:3
     )
   expect_identical(result_matrix, expected_matrix)
 })

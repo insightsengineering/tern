@@ -41,7 +41,7 @@ estimate_odds_ratio(
   ...,
   show_labels = "hidden",
   table_names = vars,
-  .stats = NULL,
+  .stats = "or_ci",
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL

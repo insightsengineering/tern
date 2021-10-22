@@ -39,16 +39,15 @@ test_that("extract_survival_subgroups functions as expected with valid input and
     survtime = structure(
       list(
         arm = structure(
-          c(1L, 2L, 1L,
-            2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+          c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
           .Label = c("B: Placebo",
                      "A: Drug X"),
           class = "factor"
         ),
-        n = c(134L, 134L, 82L, 79L,
-              52L, 55L, 45L, 50L, 56L, 37L, 33L, 47L),
-        n_events = c(87L, 79L,
-                     50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L),
+        n = c(134L, 134L, 82L, 79L, 52L, 55L, 45L, 50L, 56L, 37L, 33L, 47L),
+        n_events = c(
+          87L, 79L, 50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L
+          ),
         median = c(
           837.42801327648,
           1260.49053370248,
@@ -127,10 +126,12 @@ test_that("extract_survival_subgroups functions as expected with valid input and
       list(
         arm = c(" ", " ",
                 " ", " ", " ", " "),
-        n_tot = structure(c(268L, 161L, 107L, 95L,
-                            93L, 80L), label = "n_tot"),
-        n_tot_events = structure(c(166,
-                                   95, 71, 61, 55, 50), label = "n_tot_events"),
+        n_tot = structure(c(268L, 161L, 107L, 95L, 93L, 80L), label = "n_tot"),
+        n_tot_events = structure(
+          c(
+            166, 95, 71, 61, 55, 50
+            ),
+          label = "n_tot_events"),
         hr = c(
           0.717365051154891,
           0.697969331159471,
@@ -155,8 +156,7 @@ test_that("extract_survival_subgroups functions as expected with valid input and
           1.01136831633695,
           1.71890049393127
         ),
-        conf_level = c(0.95,
-                       0.95, 0.95, 0.95, 0.95, 0.95),
+        conf_level = c(0.95, 0.95, 0.95, 0.95, 0.95, 0.95),
         pval = c(
           0.0334029294775114,
           0.0814817359933965,
@@ -194,8 +194,7 @@ test_that("extract_survival_subgroups functions as expected with valid input and
           "analysis"
         )
       ),
-      row.names = c(NA,
-                    -6L), class = "data.frame"))
+      row.names = c(NA, -6L), class = "data.frame"))
   expect_equal(result, expected, tol = 0.000001)
 })
 
@@ -250,8 +249,7 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
             class = "factor"
           ),
           n = c(134L, 134L),
-          n_events = c(87L,
-                       79L),
+          n_events = c(87L, 79L),
           median = c(837.42801327648, 1260.49053370248),
           subgroup = c("All Patients",
                        "All Patients"),
@@ -404,48 +402,48 @@ test_that("tabulate_survival_subgroups functions as expected with extreme values
   expect_equal(result_matrix, expected_matrix)
 })
 
-# test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
-#
-#   adtte <- adtte %>%
-#     preprocess_adtte()
-#
-#   df <- extract_survival_subgroups(
-#     variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "RACE"),
-#     data = adtte
-#   )
-#
-#   result <- basic_table() %>%
-#     tabulate_survival_subgroups(
-#       df = df,
-#       vars = c("n_tot_events", "n", "n_events", "median", "hr", "ci", "pval"),
-#       time_unit = adtte$AVALU[1]
-#     )
-#
-#   result_matrix <- to_string_matrix(result)
-#
-#   expected_matrix <- structure(
-#     c(
-#       "Baseline Risk Factors", "", "All Patients", "Race",
-#       "ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE",
-#       "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER", " ",
-#       "Total Events", "166", "", "82", "35", "35", "12", "1", "1",
-#       "B: Placebo", "n", "134", "", "67", "28", "26", "11", "1", "1",
-#       "B: Placebo", "Events", "87", "", "40", "20", "19", "6", "1",
-#       "1", "B: Placebo", "Median (DAYS)", "837.4", "", "906", "751.4",
-#       "841.2", "741.9", "33.6", "153.5", "A: Drug X", "n", "134", "",
-#       "68", "31", "27", "8", "0", "0", "A: Drug X", "Events", "79",
-#       "", "42", "15", "16", "6", "NA", "NA", "A: Drug X", "Median (DAYS)",
-#       "1260.5", "", "1274.8", "1327.8", "774.7", "849.3", "NA", "NA",
-#       " ", "Hazard Ratio", "0.72", "", "0.75", "0.63", "0.69", "1.01",
-#       "NA", "NA", " ", "95% Wald CI", "(0.53, 0.98)", "", "(0.48, 1.17)",
-#       "(0.32, 1.25)", "(0.35, 1.35)", "(0.28, 3.61)", "(NA, NA)", "(NA, NA)",
-#       " ", "p-value (log-rank)", "0.0334", "", "0.2012", "0.1832",
-#       "0.2745", "0.9839", "NA", "NA"
-#     ),
-#     .Dim = 10:11
-#   )
-#   expect_equal(result_matrix, expected_matrix)
-# })
+test_that("tabulate_survival_subgroups functions as expected when one arm has 0 records", {
+
+  adtte <- adtte %>%
+    preprocess_adtte()
+
+  df <- extract_survival_subgroups(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "RACE"),
+    data = adtte
+  )
+
+  result <- basic_table() %>%
+    tabulate_survival_subgroups(
+      df = df,
+      vars = c("n_tot_events", "n", "n_events", "median", "hr", "ci", "pval"),
+      time_unit = adtte$AVALU[1]
+    )
+
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c(
+      "Baseline Risk Factors", "", "All Patients", "Race",
+      "ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE", "AMERICAN INDIAN OR ALASKA NATIVE",
+      "MULTIPLE", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER", " ",
+      "Total Events", "166", "", "82", "35", "35", "12", "1", "1",
+      "B: Placebo", "n", "134", "", "67", "28", "26", "11", "1", "1",
+      "B: Placebo", "Events", "87", "", "40", "20", "19", "6", "1",
+      "1", "B: Placebo", "Median (DAYS)", "837.4", "", "906", "751.4",
+      "841.2", "741.9", "33.6", "153.5", "A: Drug X", "n", "134", "",
+      "68", "31", "27", "8", "0", "0", "A: Drug X", "Events", "79",
+      "", "42", "15", "16", "6", "NA", "NA", "A: Drug X", "Median (DAYS)",
+      "1260.5", "", "1274.8", "1327.8", "774.7", "849.3", "NA", "NA",
+      " ", "Hazard Ratio", "0.72", "", "0.75", "0.63", "0.69", "1.01",
+      "NA", "NA", " ", "95% Wald CI", "(0.53, 0.98)", "", "(0.48, 1.17)",
+      "(0.32, 1.25)", "(0.35, 1.35)", "(0.28, 3.61)", "(NA, NA)", "(NA, NA)",
+      " ", "p-value (log-rank)", "0.0334", "", "0.2012", "0.1832",
+      "0.2745", "0.9839", "NA", "NA"
+    ),
+    .Dim = 10:11
+  )
+  expect_equal(result_matrix, expected_matrix)
+})
 
 test_that("tabulate_survival_subgroups works correctly with both `n_tot` and `n_tot_events` in `vars`", {
 

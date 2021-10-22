@@ -245,6 +245,27 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
       df$pval_label <- obj_label(result_test$pval)
     }
 
+    # In those cases cannot go through the model so will obtain n_tot from data.
+  } else if (
+    (nrow(l_df[[1]]) == 0 && nrow(l_df[[2]]) > 0) ||
+    (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
+    ) {
+
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = sum(complete.cases(df_rsp)),
+      or = NA,
+      lcl = NA,
+      ucl = NA,
+      conf_level = conf_level,
+      stringsAsFactors = FALSE
+    )
+    if (!is.null(method)) {
+      df$pval <- NA
+      df$pval_label <- NA
+    }
+
   } else {
 
     df <- data.frame(
@@ -257,11 +278,11 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
       conf_level = conf_level,
       stringsAsFactors = FALSE
     )
+
     if (!is.null(method)) {
       df$pval <- NA
       df$pval_label <- NA
     }
-
   }
 
   df
