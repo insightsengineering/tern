@@ -498,8 +498,7 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   expected <- structure(
     list(
       arm = c(" ", " ", " "),
-      n_tot = structure(c(12L,
-                          7L, 5L), label = "n_tot"),
+      n_tot = structure(c(12L, 7L, 5L), label = "n_tot"),
       n_tot_events = structure(c(7, 5, 2), label = "n_tot_events"),
       hr = c(1.2230641194542, 0.679005471337507, 1142066058.58766),
       lcl = c(0.270922018090357, 0.112310823072285, 0),
