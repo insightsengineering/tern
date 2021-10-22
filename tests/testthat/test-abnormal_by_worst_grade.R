@@ -83,7 +83,9 @@ test_that("count_abnormal_by_worst_grade works as expected", {
     PARAMCD == "IGA") %>%
     droplevels()
 
-  map <- unique(adlb[adlb$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
+  map <- unique(
+    adlb[adlb$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]
+    ) %>%
    lapply(as.character) %>%
    as.data.frame() %>%
    arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
@@ -140,9 +142,10 @@ test_that("count_abnormal_by_worst_grade works as expected", {
   expect_identical(result_matrix, expected_matrix)
 })
 
-test_that("count_abnormal_by_worst_grade returns an error when
-          variables$param and variables$anrind are taking variable names not
-          used for splitting the layout in rows.", {
+test_that(
+  "count_abnormal_by_worst_grade returns an error when variables$param
+  and variables$anrind are taking variable names not used
+  for splitting the layout in rows.", {
   adlb <- adlb_raw
   adlb_f <- adlb %>% filter(
     PARAMCD == "IGA") %>%
