@@ -417,10 +417,8 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
     structure(
       list(
         arm = c(" ", " ", " ", " ", " ", " "),
-        n_tot = structure(c(268L,
-                            161L, 107L, 95L, 93L, 80L), label = "n_tot"),
-        n_tot_events = structure(c(166,
-                                   95, 71, 61, 55, 50), label = "n_tot_events"),
+        n_tot = structure(c(268L, 161L, 107L, 95L, 93L, 80L), label = "n_tot"),
+        n_tot_events = structure(c(166, 95, 71, 61, 55, 50), label = "n_tot_events"),
         hr = c(
           0.717365051154891,
           0.697969331159471,
@@ -462,10 +460,8 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
           "p-value (log-rank)",
           "p-value (log-rank)"
         ),
-        subgroup = c("All Patients", "F", "M",
-                     "LOW", "MEDIUM", "HIGH"),
-        var = c("ALL", "SEX", "SEX", "BMRKR2",
-                "BMRKR2", "BMRKR2"),
+        subgroup = c("All Patients", "F", "M", "LOW", "MEDIUM", "HIGH"),
+        var = c("ALL", "SEX", "SEX", "BMRKR2", "BMRKR2", "BMRKR2"),
         var_label = c(
           "All Patients",
           "Sex",
@@ -553,11 +549,9 @@ test_that("h_coxph_subgroups_df functions as expected with stratification factor
           "p-value (log-rank)",
           "p-value (log-rank)"
         ),
-        subgroup = c("All Patients",
-                     "F", "M"),
+        subgroup = c("All Patients", "F", "M"),
         var = c("ALL", "SEX", "SEX"),
-        var_label = c("All Patients",
-                      "Sex", "Sex"),
+        var_label = c("All Patients", "Sex", "Sex"),
         row_type = c("content", "analysis", "analysis")
       ),
       row.names = c(NA, -3L),
