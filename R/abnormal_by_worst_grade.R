@@ -118,8 +118,10 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   #To verify that the `split_rows_by` are performed with correct variables.
   #Informative message
   assert_that(all(c(variables[["param"]], variables[["anrind"]]) %in% .spl_context$split),
-              msg = "variabes$param and variables$anrind are not taking the same variables
-    as the ones used for splitting rows in the layout.")
+              msg = paste(
+                "variabes$param and variables$anrind are not taking the",
+                "same variables as the ones used for splitting rows in the layout.")
+             )
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ]
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "Any")
