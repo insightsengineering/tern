@@ -375,3 +375,45 @@ test_that("summarize_occurrences_by_grade works with custom arguments for grade"
   )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that("count_occurrences_by_grade works with trim_levels_in_group split function", {
+
+  df <- data.frame(
+    USUBJID = as.character(1:30),
+    ARM = factor(c(rep("ARM A", 15), rep("ARM B", 15)), levels = c("ARM A", "ARM B")),
+    SOC = as.factor(rep("SOC1", 30)),
+    AETOXGR = factor(c(rep(1, 10), rep(2, 20)), levels = c(1:5))
+  )
+  df_adsl <- df %>%
+    select(USUBJID, ARM) %>%
+    unique()
+
+  # Define additional grade groupings
+  grade_groups <- list(
+    "-Any-" = as.character(1:5),
+    "Grade 1-2" = c("1", "2"),
+    "Grade 3-4" = c("3", "4")
+  )
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    split_rows_by("SOC", split_fun = trim_levels_in_group("AETOXGR")) %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = grade_groups
+    ) %>%
+    build_table(df, alt_counts_df = df_adsl)
+
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "", "SOC1", "-Any-", "Grade 1-2", "1", "2",
+      "ARM A", "(N=15)", "", "15 (100%)", "15 (100%)",
+      "10 (66.7%)", "5 (33.3%)", "ARM B", "(N=15)", "",
+      "15 (100%)", "15 (100%)", "0", "15 (100%)"
+    ),
+    .Dim = c(7L, 3L)
+  )
+  expect_identical(result_matrix, expected_matrix)
+})

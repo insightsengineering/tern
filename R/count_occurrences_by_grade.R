@@ -40,6 +40,14 @@ NULL
 #'   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
 #' )
 #'
+#' h_append_grade_groups(
+#'   list(
+#'     "Any Grade" = as.character(1:5),
+#'     "Grade 1-2" = c("1", "2"),
+#'     "Grade 3-4" = c("3", "4")
+#'     ),
+#'   list("1" = 10, "2" = 5, "3" = 0)
+#' )
 #'
 h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 
@@ -47,14 +55,15 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
     is.list(grade_groups),
     is.list(refs)
   )
+  refs_orig <- refs
   elements <- unique(unlist(grade_groups))
-
-  assert_that(
-    all_elements_in_ref(elements, names(refs))
-  )
 
   ### compute sums in groups
   grp_sum <- lapply(grade_groups, function(i) do.call(sum, refs[i]))
+  if (!all_elements_in_ref(elements, names(refs))) {
+    padding_el <- setdiff(elements, names(refs))
+    refs[padding_el] <- 0
+  }
   result <- c(grp_sum, refs)
 
   ### order result while keeping grade_groups's ordering
@@ -80,8 +89,17 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 
   # apply the order
   result <- result[ordr]
-  result
 
+  # remove groups without any elements in the original refs
+  # note: it's OK if groups have 0 value
+  keep_grp <- vapply(grade_groups, function(x, rf) {
+    any(x %in% rf)
+  }, rf = names(refs_orig), logical(1))
+
+  keep_el <- names(result) %in% names(refs_orig) | names(result) %in% names(keep_grp)[keep_grp]
+  result <- result[keep_el]
+
+  result
 }
 
 #' @describeIn count_occurrences_by_grade Statistics function which given occurrence data counts the
