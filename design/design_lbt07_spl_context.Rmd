@@ -271,7 +271,8 @@ build_table(
 lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD)) %>%
+  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD), 
+                split_fun = trim_levels_to_map(map = map)) %>%
   summarize_num_patients(
     var = "USUBJID",
     required = "GRADE_ANL",
@@ -280,8 +281,7 @@ lyt_trim_map <- basic_table() %>%
   split_rows_by(
   "GRADE_DIR",
   label_pos = "topleft",
-  split_label = "Direction of abnormality",
-  split_fun = trim_levels_to_map(map = map)
+  split_label = "Direction of abnormality"
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
@@ -336,7 +336,7 @@ empirical_map2 <- map %>% filter(
 lyt_trim_map2 <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD)) %>%
+  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD), split_fun = trim_levels_to_map(map = empirical_map2)) %>%
   summarize_num_patients(
     var = "USUBJID",
     required = "GRADE_ANL",
@@ -345,8 +345,7 @@ lyt_trim_map2 <- basic_table() %>%
   split_rows_by(
   "GRADE_DIR",
   label_pos = "topleft",
-  split_label = "Direction of abnormality",
-  split_fun = trim_levels_to_map(map = empirical_map2)
+  split_label = "Direction of abnormality"
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
@@ -358,18 +357,7 @@ build_table(
   lyt = lyt_trim_map2,
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
-) #We are obtaining an error.
-
-# Let's remove ALT records from the analysis dataset.
-# It's seems we have no other choice but to exclude ALT from dataset as well.
-
-adlb_f_no_alt <- adlb_f %>% filter(PARAMCD != "ALT") %>% droplevels()
-
-build_table(
-  lyt = lyt_trim_map2,
-  df = adlb_f_no_alt %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
-  alt_counts_df = adsl
-) #We are obtaining an error.
+) 
 ```
 
 Example 2: All grades in the target direction (none 0) for a param.
@@ -400,7 +388,8 @@ map2[map2$PARAM == "Alanine Aminotransferase Measurement", 2] <- "HIGH"
 lyt_trim_map3 <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD)) %>%
+  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD), 
+                split_fun = trim_levels_to_map(map = map2)) %>%
   summarize_num_patients(
     var = "USUBJID",
     required = "GRADE_ANL",
@@ -408,8 +397,7 @@ lyt_trim_map3 <- basic_table() %>%
   ) %>%
   split_rows_by("GRADE_DIR",
   label_pos = "topleft",
-  split_label = "Direction of abnormality",
-  split_fun = trim_levels_to_map(map = map2)
+  split_label = "Direction of abnormality"
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
