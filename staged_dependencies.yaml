@@ -18,9 +18,6 @@ upstream_repos:
     repo: Roche/rtables
     host: https://github.com
 downstream_repos:
-  insightsengineering/hermes:
-    repo: insightsengineering/hermes
-    host: https://github.com
   insightsengineering/osprey:
     repo: insightsengineering/osprey
     host: https://github.com
