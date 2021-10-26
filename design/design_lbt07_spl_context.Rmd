@@ -444,7 +444,7 @@ build_table(
 Example 4:  Case where there is an arm that has no lab records. Table correctly obtained.
 
 ```{r}
-adlb_f3 <- adlb_f %>% 
+adlb_f3 <- adlb_f %>%
   filter(!(ARMCD == "ARM A" & PARAMCD == "ALT")) %>%
   droplevels()
 
