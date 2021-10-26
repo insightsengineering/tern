@@ -20,8 +20,6 @@ adlb_raw <- local({
   adlb_f <- adlb %>%
     filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     mutate(
-      WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
-      WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE),
       GRADE_DIR = factor(
         case_when(
           ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
@@ -41,7 +39,7 @@ adlb_raw <- local({
         c("0", "1", "2", "3", "4")
       )
     ) %>%
-    filter(WGRLOFL == TRUE | WGRHIFL == TRUE) %>%
+    filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
     droplevels()
   adlb_f
 })
@@ -65,7 +63,7 @@ test_that("s_count_abnormal_by_worst_grade works as expected", {
       droplevels(),
     .spl_context = spl_context,
     .var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM",  anrind = "GRADE_DIR"))
+    variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR"))
 
   expected <- list(count_fraction = list(
     `1` = with_label(c(count = 14, fraction = 0.1044776), "1"),
@@ -96,7 +94,7 @@ test_that("count_abnormal_by_worst_grade works as expected", {
     split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
     count_abnormal_by_worst_grade(
       var = "GRADE_ANL",
-      variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
+      variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
     ) %>%
     build_table(df = adlb_f)
 
@@ -144,7 +142,7 @@ test_that("count_abnormal_by_worst_grade works as expected", {
 
 test_that(
   "count_abnormal_by_worst_grade returns an error when variables$param
-  and variables$anrind are taking variable names not used
+  and variables$grade_dir are taking variable names not used
   for splitting the layout in rows.", {
   adlb <- adlb_raw
   adlb_f <- adlb %>% filter(
@@ -157,7 +155,7 @@ test_that(
     split_rows_by("GRADE_DIR") %>%
     count_abnormal_by_worst_grade(
       var = "GRADE_ANL",
-      variables = list(id = "USUBJID", param  = "PARAMCD", anrind = "ANRIND")
+      variables = list(id = "USUBJID", param  = "PARAMCD", grade_dir = "ANRIND")
     ) %>%
     build_table(df = adlb_f)
   )

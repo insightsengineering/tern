@@ -24,8 +24,6 @@ adlb_raw <- local({
   adlb_f <- adlb %>%
     filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
     mutate(
-      WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
-      WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE),
       GRADE_DIR = factor(
         case_when(
           ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
@@ -45,7 +43,7 @@ adlb_raw <- local({
         c("0", "1", "2", "3", "4")
       )
     ) %>%
-    filter(WGRLOFL == TRUE | WGRHIFL == TRUE) %>%
+    filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
     droplevels()
   adlb_f
 })
@@ -57,7 +55,7 @@ test_that("LBT07 is produced correctly", {
     as.data.frame() %>%
     arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
 
-  l <- basic_table() %>%
+  lyt <- basic_table() %>%
     split_cols_by("ARMCD") %>%
     add_colcounts() %>%
     split_rows_by("PARAM", label_pos = "topleft") %>%
@@ -74,10 +72,10 @@ test_that("LBT07 is produced correctly", {
     ) %>%
     count_abnormal_by_worst_grade(
       var = "GRADE_ANL",
-      variables = list(id = "USUBJID", param  = "PARAM",  anrind = "GRADE_DIR")
+      variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
     )
 
-  result <- build_table(l, adlb_f, alt_counts_df = adsl)
+  result <- build_table(lyt, adlb_f, alt_counts_df = adsl)
   result_matrix <- to_string_matrix(result)
 
   expected_matrix <-
