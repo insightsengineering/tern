@@ -142,6 +142,14 @@ h_append_grade_groups(
   list("1" = 10, "2" = 20, "3" = 30, "4" = 40, "5" = 50),
 )
 
+h_append_grade_groups(
+  list(
+    "Any Grade" = as.character(1:5),
+    "Grade 1-2" = c("1", "2"),
+    "Grade 3-4" = c("3", "4")
+    ),
+  list("1" = 10, "2" = 5, "3" = 0)
+)
 
 
 library(dplyr)
