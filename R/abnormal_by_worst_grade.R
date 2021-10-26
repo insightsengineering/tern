@@ -105,9 +105,9 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   assert_that(all(c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split),
               msg = paste(
                 "variabes$param and variables$grade_dir must match",
-                "the variables used for splitting rows in the layout.")
+                "the variables used for splitting rows in the layout."
+              )
              )
-
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "Any")
   result <- split(numeric(0), factor(x_lvls))
