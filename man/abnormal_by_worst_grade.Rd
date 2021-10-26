@@ -11,22 +11,20 @@ s_count_abnormal_by_worst_grade(
   df = adlb_f,
   .var = "GRADE_ANL",
   .spl_context,
-  variables = list(id = "USUBJID", param = "PARAM", anrind = "GRADE_DIR")
+  variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
 )
 
 a_count_abnormal_by_worst_grade(
   df = adlb_f,
   .var = "GRADE_ANL",
   .spl_context,
-  variables = list(id = "USUBJID", param = "PARAM", anrind = "GRADE_DIR")
+  variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
 )
 
 count_abnormal_by_worst_grade(
   lyt,
   var,
-  variables,
   ...,
-  table_names = var,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -39,6 +37,9 @@ count_abnormal_by_worst_grade(
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
+\item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
+that is passed by \code{rtables}.}
+
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -47,9 +48,6 @@ by a statistics function.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
-
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
@@ -57,8 +55,6 @@ to avoid warnings from \code{rtables}.}
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
-\item{abnormal}{(\code{character})\cr identifying the abnormality direction.}
 }
 \value{
 \code{\link[=s_count_abnormal_by_worst_grade]{s_count_abnormal_by_worst_grade()}} the single statistic \code{count_fraction} with grade 1 to 4
@@ -67,8 +63,8 @@ and "Any" results.
 \code{\link[=a_count_abnormal_by_worst_grade]{a_count_abnormal_by_worst_grade()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
-Primary analysis variable \code{.var} indicates the toxicity grade (numeric), and additional
-analysis variables are \code{id} (character or factor), \code{param} (\code{factor}) and \code{anrind} (\code{factor}).
+Primary analysis variable \code{.var} indicates the toxicity grade (factor), and additional
+analysis variables are \code{id} (character or factor), \code{param} (\code{factor}) and \code{grade_dir} (\code{factor}).
 The pre-processing steps are crucial when using this function.
 For a certain direction (e.g. high or low) this function counts
 patients in the denominator as number of patients with at least one valid measurement during treatment,
@@ -79,19 +75,20 @@ and patients in the numerator as follows:
 }
 }
 \details{
-The pre-processing steps are crucial when using this function.
+The pre-processing steps are crucial when using this function. From the standard
+lab grade variable \code{ATOXGR}, derive the following two variables:
 \itemize{
-\item New Reference Indicator variable \code{GRADE_DIR} is created in order not to consider
-the records where grade is 0 and range indicator is HIGH/LOW. This will replace \code{ANRIND}.
-\item New Toxicity Grade variable \code{GRADE_ANL} is created to replace \code{ATOXGR} where all negative
-\code{ATOXGR} values are replaced by their absolute values.
-\item \code{df} is filtered out to include only post-baseline records with worst grade flags.
+\item A grade direction variable (e.g. \code{GRADE_DIR}) is required in order to obtain
+the correct denominators when building the layout as it is used to define row splitting.
+\item A toxicity grade variable (e.g. \code{GRADE_ANL}) where all negative values from
+\code{ATOXGR} are replaced by their absolute values.
+\item Prior to tabulation, \code{df} must filtered to include only post-baseline records with worst grade flags.
 }
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_worst_grade}: Statistics function which counts patients with worst grade
-for a single \code{abnormal} level, consisting of counts and percentages of patients with worst grade
+\item \code{s_count_abnormal_by_worst_grade}: Statistics function which counts patients with worst grade,
+consisting of counts and percentages of patients with worst grade
 \code{1} to \code{4}, and \code{Any} non-zero grade.
 
 \item \code{a_count_abnormal_by_worst_grade}: Formatted Analysis function which can be further customized by calling
@@ -108,27 +105,20 @@ library(forcats)
 
 adlb <- synthetic_cdisc_data("latest")$adlb
 
-# Data set is modified in order to have some
- parameters with grades only in one direction
+# Data is modified in order to have some parameters with grades only in one direction
 # and simulate the real data.
-adlb$ATOXGR[
-adlb$PARAMCD == "ALT" & adlb$ATOXGR \%in\% c("1", "2", "3", "4")
-] <- "-1"
+adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR \%in\% c("1", "2", "3", "4")] <- "-1"
 adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
 adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
 
-adlb$ATOXGR[
-adlb$PARAMCD == "IGA" & adlb$ATOXGR \%in\% c("-1", "-2", "-3", "-4")
-] <- "1"
+adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR \%in\% c("-1", "-2", "-3", "-4")] <- "1"
 adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
 adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 
-# Here starts the real preprocessing.
+# Here starts the real pre-processing.
 adlb_f <- adlb \%>\%
   filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
   mutate(
-    WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
-    WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE),
     GRADE_DIR = factor(case_when(
      ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
      ATOXGR == "0" ~ "ZERO",
@@ -140,36 +130,34 @@ adlb_f <- adlb \%>\%
        c("0", "1", "2", "3", "4")
      )
    ) \%>\%
-  filter(WGRLOFL == TRUE | WGRHIFL == TRUE) \%>\%
+  filter(WGRLOFL == "Y" | WGRHIFL == "Y") \%>\%
   droplevels()
 
 adlb_f_alt <- adlb_f \%>\% filter(PARAMCD == "ALT") \%>\% droplevels()
 full_parent_df <- list(adlb_f_alt, "not_needed")
-cur_col_subset <- list(adlb_f_alt$ARMCD == "ARM A", "not_needed")
+cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
 
+# This mimics a split structure on PARAM and GRADE_DIR for a total column
 spl_context <- data.frame(
   split = c("PARAM", "GRADE_DIR"),
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
 )
+
 s_count_abnormal_by_worst_grade(
-  df = adlb_f \%>\% filter(
-  ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW") \%>\%
-  droplevels(),
+  df = adlb_f_alt,
   .spl_context = spl_context,
-  .var = "GRADE_ANL",
-  variables = list(id = "USUBJID", param  = "PARAM",  anrind = "GRADE_DIR"))
+  .var = "GRADE_ANL"
+)
 
 # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
 # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction", .spl_context = spl_context)
-afun(
-  df = adlb_f \%>\% filter(
-  ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW") \%>\%
-  droplevels()
-)
+afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
+afun(df = adlb_f_alt, .spl_context = spl_context)
 
 
+# Map excludes records without abnormal grade since they should not be displayed
+# in the table.
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
  lapply(as.character) \%>\%
  as.data.frame() \%>\%
@@ -177,11 +165,11 @@ map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%
-  split_rows_by("PARAM", split_fun = trim_levels_to_map(map)) \%>\%
-  split_rows_by("GRADE_DIR") \%>\%
+  split_rows_by("PARAM") \%>\%
+  split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) \%>\%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
+    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) \%>\%
   build_table(df = adlb_f)
 
