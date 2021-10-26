@@ -102,7 +102,6 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
     is.factor(df[[variables[["param"]]]]),
     all(!is.na(df[[.var]]))
   )
-  
   # The correct denominator depends on users using the collect layout, so here
   # we verify that two `split_rows_by` are performed with correct variables and
   # if not return an informative message.
@@ -116,7 +115,6 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
 
   subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
   subj_cur_col <- subj[first_row$cur_col_subset[[1]]]
-  
   # Some subject may have a record for HI flag and LO flag but should be counted only once.
   denom <- length(unique(subj_cur_col))
 
@@ -178,19 +176,16 @@ s_count_abnormal_by_worst_grade(
 No changes here.
 
 ```{r}
-a_count_abnormal_by_worst_grade <- make_afun(
-  s_count_abnormal_by_worst_grade,
-  .formats = c(count_fraction = format_count_fraction)
+a_count_abnormal_by_worst_grade <- make_afun( #nolint
+s_count_abnormal_by_worst_grade,
+.formats = c(count_fraction = format_count_fraction)
 )
-
  afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
- 
  afun(
     df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
     .spl_context = spl_context,
     variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
   )
- 
  afun(
     df_empty,
     .spl_context = data.frame(whatever = c(0, 0), split = c("PARAM", "GRADE_DIR")),
@@ -266,7 +261,7 @@ build_table(
 )
 
 # Note in the map we remove the "normal" results where GRADE_DIR == "ZERO"
-# because they should not be part of the final table and are not needed for 
+# because they should not be part of the final table and are not needed for
 # calculating the numerator or denominator.
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
   lapply(as.character) %>%
@@ -294,7 +289,7 @@ lyt_trim_map <- basic_table() %>%
     "GRADE_DIR",
     label_pos = "topleft",
     split_label = "Direction of abnormality",
-    split_fun = trim_levels_to_map(map) 
+    split_fun = trim_levels_to_map(map)
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
@@ -319,7 +314,7 @@ lyt_trim_group <- basic_table() %>%
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>%
-  split_rows_by("GRADE_DIR", 
+  split_rows_by("GRADE_DIR",
                 label_pos = "topleft",
                 split_label = "Direction of abnormality",
                 split_fun = trim_levels_in_group("GRADE_ANL")
@@ -335,9 +330,9 @@ build_table(
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 ) %>%
-prune_table() 
+prune_table()
 
-# Note the prune_table is needed since there's no way to remove GRADE_DIR=ZERO 
+# Note the prune_table is needed since there's no way to remove GRADE_DIR=ZERO
 # and trim levels in GRADE_DIR in one step without writing a custom split
 # function.
 ```
@@ -352,7 +347,7 @@ empirical_map2 <- map %>% filter(
   PARAM != "Alanine Aminotransferase Measurement"
 )
 
-adlb_f_no_ALT <- adlb_f %>% 
+adlb_f_no_ALT <- adlb_f %>% #nolint
   filter(PARAM != "Alanine Aminotransferase Measurement") %>%
   droplevels()
 
