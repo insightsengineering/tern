@@ -1,6 +1,6 @@
 ---
-title: "Design: Laboratory Test Results with Highest NCI CTCAE Grade Post-Baseline (LBT07)"
-author: "Heng Wang"
+title: "Design: Laboratory Test Results with Highest NCI CTCAE Grade Post-Baseline (LBT07) with spl_context"
+author: "Imanol Zubizarreta, Jana Stoilova"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -85,8 +85,8 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
                                             .spl_context,
                                             variables = list(
                                               id = "USUBJID",
-                                              param  = "PARAMCD",
-                                              anrind = "GRADE_DIR"
+                                              param  = "PARAM",
+                                              grade_dir = "GRADE_DIR"
                                             )) {
 
   assert_that(
@@ -94,19 +94,21 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
     is.list(variables),
     is.string(variables$id),
     is.string(variables$param),
-    is.string(variables$anrind),
-    all(names(variables) %in% c("id", "param", "anrind")),
+    is.string(variables$grade_dir),
+    all(names(variables) %in% c("id", "param", "grade_dir")),
     is_df_with_variables(df, c(a = .var, variables)),
     is.factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]]),
     is.factor(df[[variables[["param"]]]]),
     all(!is.na(df[[.var]]))
   )
-  #To verify that the `split_rows_by` are performed with correct variables.
-  #Informative message
-  assert_that(all(c(variables[["param"]], variables[["anrind"]]) %in% .spl_context$split),
-              msg = "variabes$param and variables$anrind are not taking
-              the same variables as the ones used for splitting rows in the layout.")
+  
+  # The correct denominator depends on users using the collect layout, so here
+  # we verify that two `split_rows_by` are performed with correct variables and
+  # if not return an informative message.
+  assert_that(all(c(variables[["param"]], variables[["grade_dir"]]) %in% .spl_context$split),
+              msg = "variabes$param and variables$grade_dir must match
+              the variables used for splitting rows in the layout.")
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ]
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "ANY")
@@ -114,7 +116,8 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
 
   subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
   subj_cur_col <- subj[first_row$cur_col_subset[[1]]]
-  # some subject may have a record for HI flag and LO flag but should be counted only once.
+  
+  # Some subject may have a record for HI flag and LO flag but should be counted only once.
   denom <- length(unique(subj_cur_col))
 
   for (lvl in x_lvls) {
@@ -136,8 +139,9 @@ s_count_abnormal_by_worst_grade <- function(df = adlb_f, #nolint
   result
 }
 
-#We can create a full_parent_df within .spl_context but this is not the scope of this design doc.
-#We can see the correct denominators later in the user-faced function.
+# We can create a full_parent_df within .spl_context but this is not the scope of this design doc.
+# We can see the correct denominators later in the user-faced function.
+
 adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT") %>% droplevels()
 full_parent_df <- list(adlb_f_alt, "not_needed")
 cur_col_subset <- list(adlb_f_alt$ARMCD == "ARM A", "not_needed")
@@ -146,11 +150,13 @@ spl_context <- data.frame(
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
   )
+
 s_count_abnormal_by_worst_grade(
    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
    .spl_context = spl_context,
    .var = "GRADE_ANL",
-   variables = list(id = "USUBJID", param  = "PARAM",  anrind = "GRADE_DIR"))
+   variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
+)
 
 # Test with an empty dataframe
 df_empty <-
@@ -166,26 +172,29 @@ s_count_abnormal_by_worst_grade(
    df = df_empty,
    .spl_context = data.frame(whatever = c(0, 0), split = c("PARAM", "GRADE_DIR")),
    .var = "GRADE_ANL",
-   variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR"))
+   variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR"))
 ```
 
 No changes here.
 
 ```{r}
-a_count_abnormal_by_worst_grade <- make_afun(  #nolint
+a_count_abnormal_by_worst_grade <- make_afun(
   s_count_abnormal_by_worst_grade,
-  .spl_context = spl_context,
   .formats = c(count_fraction = format_count_fraction)
 )
 
  afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
  
  afun(
-    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels()
+    df = adlb_f %>% filter(ARMCD == "ARM A" & PARAMCD == "ALT") %>% droplevels(),
+    .spl_context = spl_context,
+    variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
   )
  
  afun(
-    df_empty
+    df_empty,
+    .spl_context = data.frame(whatever = c(0, 0), split = c("PARAM", "GRADE_DIR")),
+    variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR")
   )
 ```
 
@@ -195,9 +204,7 @@ Here the main change is to remove the for loop.
 ```{r}
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
-                                          variables,
                                           ...,
-                                          table_names = var,
                                           .stats = NULL,
                                           .formats = NULL,
                                           .labels = NULL,
@@ -215,8 +222,7 @@ count_abnormal_by_worst_grade <- function(lyt,
     lyt = lyt,
     vars = var,
     afun = afun,
-    table_names = var,
-    extra_args = c(list(variables = variables, list(...))),
+    extra_args = list(...),
     show_labels = "hidden"
   )
 }
@@ -229,17 +235,9 @@ In the following chunk the `map` dataframe and three layouts are created to veri
  * Layout with `trim_levels_to_map`
  * Layout with `trim_levels_in_group`
 
-The `map` dataframe requires introducing "NORMAL" levels as they are needed to obtain the total number of patients with a valid lab measurement (denominator).
-This fact requires somehow dealing with these "NORMAL" cases to not appear in the table.
-when using `trim_levels_to_map` or `trim_levels_in_group` the table needs to be pruned/trimmed to remove "NORMAL" rows. This may be a drawback.
-
 ```{r}
-map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
-  lapply(as.character) %>%
-  as.data.frame() %>%
-  arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
 
-##### Without any new split function
+##### Without any new split function --> we see LOW/HIGH sections under each lab parameter
 lyt_no_trim <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
@@ -248,16 +246,16 @@ lyt_no_trim <- basic_table() %>%
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
-  ) %>% # Removing "NORMAL" level by using remove_split_levels()
+  ) %>%
   split_rows_by(
   "GRADE_DIR",
   label_pos = "topleft",
   split_label = "Direction of abnormality",
-  split_fun = remove_split_levels("NORMAL")
+  split_fun = remove_split_levels("ZERO") # Removing "ZERO" level
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
+    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
 
@@ -267,25 +265,40 @@ build_table(
   alt_counts_df = adsl
 )
 
+# Note in the map we remove the "normal" results where GRADE_DIR == "ZERO"
+# because they should not be part of the final table and are not needed for 
+# calculating the numerator or denominator.
+map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
+  lapply(as.character) %>%
+  as.data.frame() %>%
+  arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+
 ###### Using `trim_levels_to_map`
+
+# Note: important that trimming happens at GRADE_DIR to get correct denominator.
 lyt_trim_map <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD),
-                split_fun = trim_levels_to_map(map = map)) %>%
+  split_rows_by(
+    "PARAM",
+    label_pos = "topleft",
+    split_label = obj_label(adlb_f$PARAMCD),
+    split_fun = drop_split_levels
+  ) %>%
   summarize_num_patients(
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>%
   split_rows_by(
-  "GRADE_DIR",
-  label_pos = "topleft",
-  split_label = "Direction of abnormality"
+    "GRADE_DIR",
+    label_pos = "topleft",
+    split_label = "Direction of abnormality",
+    split_fun = trim_levels_to_map(map) 
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
+    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
@@ -306,13 +319,15 @@ lyt_trim_group <- basic_table() %>%
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>%
-  split_rows_by("GRADE_DIR", label_pos = "topleft",
-                split_fun = trim_levels_in_group("ATOXGR")) %>%
+  split_rows_by("GRADE_DIR", 
+                label_pos = "topleft",
+                split_label = "Direction of abnormality",
+                split_fun = trim_levels_in_group("GRADE_ANL")
+  ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
+    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
-  append_topleft("  Direction of Abnormality") %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
 build_table(
@@ -320,27 +335,35 @@ build_table(
   df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 ) %>%
-prune_table()
+prune_table() 
+
+# Note the prune_table is needed since there's no way to remove GRADE_DIR=ZERO 
+# and trim levels in GRADE_DIR in one step without writing a custom split
+# function.
 ```
 
-#Some edge cases
+# Some edge cases
 
 Example 1: If all rows for `ALT` are removed in the `map`.
 
+We can only generate the table if all ALT rows are also removed from the dataset.
 ```{r}
 empirical_map2 <- map %>% filter(
   PARAM != "Alanine Aminotransferase Measurement"
 )
+
+adlb_f_no_ALT <- adlb_f %>% 
+  filter(PARAM != "Alanine Aminotransferase Measurement") %>%
+  droplevels()
 
 ###### Using `trim_levels_to_map`
 lyt_trim_map2 <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
   split_rows_by(
-  "PARAM",
-  label_pos = "topleft",
-  split_label = obj_label(adlb_f$PARAMCD),
-  split_fun = trim_levels_to_map(map = empirical_map2)
+    "PARAM",
+    label_pos = "topleft",
+    split_label = obj_label(adlb_f$PARAMCD)
   ) %>%
   summarize_num_patients(
     var = "USUBJID",
@@ -348,25 +371,27 @@ lyt_trim_map2 <- basic_table() %>%
     .stats = "unique_count"
   ) %>%
   split_rows_by(
-  "GRADE_DIR",
-  label_pos = "topleft",
-  split_label = "Direction of abnormality"
+    "GRADE_DIR",
+    label_pos = "topleft",
+    split_label = "Direction of abnormality",
+    split_fun = trim_levels_to_map(map = empirical_map2)
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
+    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
 build_table(
   lyt = lyt_trim_map2,
-  df = adlb_f %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
+  df = adlb_f_no_ALT %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
   alt_counts_df = adsl
 )
 ```
 
 Example 2: All grades in the target direction (none 0) for a param.
 
+Numerator counts are the same BUT denominator is different since 0 grade records are removed.
 ```{r}
 adlb_f2 <- adlb_f %>%
   filter(PARAMCD != "ALT" | as.numeric(as.character(ATOXGR)) < 0)
@@ -382,8 +407,8 @@ build_table(
 ```
 
 Example 3: Opposite direction (in addition) from stated in map.
-Scenario where map is incorrectly filled.
-In this scenario we are not obtaining an error but map level rows the direction stated by the map.
+Scenario where map is incorrectly constructed.
+In this scenario we are not obtaining an error but introduce rows with 0s in the direction stated by the map.
 
 ```{r}
 map2 <- map
@@ -393,20 +418,24 @@ map2[map2$PARAM == "Alanine Aminotransferase Measurement", 2] <- "HIGH"
 lyt_trim_map3 <- basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAM", label_pos = "topleft", split_label = obj_label(adlb_f$PARAMCD),
-                split_fun = trim_levels_to_map(map = map2)) %>%
+  split_rows_by(
+    "PARAM",
+    label_pos = "topleft",
+    split_label = obj_label(adlb_f$PARAMCD)
+  ) %>%
   summarize_num_patients(
     var = "USUBJID",
     required = "GRADE_ANL",
     .stats = "unique_count"
   ) %>%
   split_rows_by("GRADE_DIR",
-  label_pos = "topleft",
-  split_label = "Direction of abnormality"
+    label_pos = "topleft",
+    split_label = "Direction of abnormality",
+    split_fun = trim_levels_to_map(map = map2)
   ) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAM", anrind = "GRADE_DIR")
+    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   append_topleft("    Highest NCI CTCAE Grade")
   
@@ -420,7 +449,10 @@ build_table(
 Example 4:  Case where there is an arm that has no lab records. Table correctly obtained.
 
 ```{r}
-adlb_f3 <- adlb_f %>% filter(!(ARMCD == "ARM A" & PARAMCD == "ALT"))
+adlb_f3 <- adlb_f %>% 
+  filter(!(ARMCD == "ARM A" & PARAMCD == "ALT")) %>%
+  droplevels()
+
 build_table(
   lyt = lyt_trim_map,
   df = adlb_f3 %>% filter(WGRLOFL == TRUE | WGRHIFL == TRUE),
