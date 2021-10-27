@@ -50,3 +50,32 @@ Design
 
 Maybe the function can get different `method` so that map for different templates can be created accordingly.
 
+```{r}
+h_map_with_count_abnormal <- function(
+  df,
+  split_rows_varibles,
+  anl_variable,
+  abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
+  method = c("default", "both", "lbt04")
+) {
+  assert_that(
+    is.string(anl_variable),
+    is_df_with_variables(df, list(val = split_rows_varibles, anl = anl_variable)),
+    is_character_list(abnormal, min_length = 2, max_length = 2)
+  )
+  method <- match.arg(method)
+  
+  # default method will only have what is observed in the df, and records with all normals will be excluded to avoind error in rtable building.
+  if(method == "default") {
+    df_abnormal <- subset(df, df[[anl_variable]] %in% unlist(abnormal))
+    map <- unique(df_abnormal[c(split_rows_varibles, anl_variable)])
+    map_normal <- unique(map[, split_rows_varibles])
+    map_normal[[anl_variable]] = "NORMAL"
+    map <- rbind(map, map_normal)
+    map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
+  }
+  
+  map
+}
+```
+
