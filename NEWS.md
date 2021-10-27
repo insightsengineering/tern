@@ -1,6 +1,6 @@
 # tern 0.7.5.9000
-* Refactored `count_abnormal_by_worst_grade` `tern` function used in the layout `LBT07`. 
-* Enhanced `tern` functions related to subgroup analyses (Survival Duration and Best Overall Response) to calculate 
+* Refactored `count_abnormal_by_worst_grade` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators. This is a breaking change. 
+* Enhanced `tern` functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (Survival Duration and Best Overall Response analyses) to calculate 
 `N`-s based on the records considered to create the model. 
 
 # tern 0.7.5
