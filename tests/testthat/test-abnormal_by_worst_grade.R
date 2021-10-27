@@ -1,84 +1,162 @@
 library(scda)
 library(rtables)
 library(dplyr)
+library(forcats)
 
 adlb_raw <- local({
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb #nolintr
+
+  # Data set is modified in order to have some parameters with grades only in one direction
+  # and simulate the real data.
+  adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
+  adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
+  adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
+
+  adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
+  adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
+  adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
+
+  # Here starts the real preprocessing.
   adlb_f <- adlb %>%
-    dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
-    dplyr::mutate(
-      ATOXGR = as.numeric(as.character(ATOXGR)),
-      WGRLOFL = case_when(WGRLOFL == "Y" ~ TRUE, TRUE ~ FALSE),
-      WGRHIFL = case_when(WGRHIFL == "Y" ~ TRUE, TRUE ~ FALSE)
-    )
+    filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
+    mutate(
+      GRADE_DIR = factor(
+        case_when(
+          ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
+          ATOXGR == "0" ~ "ZERO",
+          ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
+        ),
+        levels = c("LOW", "ZERO", "HIGH")
+      ),
+      GRADE_ANL = fct_relevel(
+        fct_recode(
+          ATOXGR,
+          `1` = "-1",
+          `2` = "-2",
+          `3` = "-3",
+          `4` = "-4"
+        ),
+        c("0", "1", "2", "3", "4")
+      )
+    ) %>%
+    filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+    droplevels()
   adlb_f
 })
 
 test_that("s_count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
 
-  result <- s_count_abnormal_by_worst_grade(
-    df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-    .var = "ATOXGR",
-    abnormal = "low",
-    variables = list(id = "USUBJID", worst_grade_flag = "WGRLOFL")
-  )
-  expected <- list(count_fraction = list(
-    `1` = c(16, 0.119402985074627),
-    `2` = c(21, 0.156716417910448),
-    `3` = c(12, 0.0895522388059701),
-    `4` = c(11, 0.082089552238806),
-    Any = c(60, 0.447761194029851)
-  ))
-  expect_equal(result, expected, tolerance = 0.000001)
-})
+  adlb_alt <- adlb %>% filter(PARAMCD == "ALT") %>% droplevels()
+  full_parent_df <- list(adlb_alt, "not_needed")
+  cur_col_subset <- list(adlb_alt$ARMCD == "ARM A", "not_needed")
 
-test_that("s_count_abnormal_by_worst_grade works as expected", {
-  adlb <- adlb_raw
-  result <- s_count_abnormal_by_worst_grade(
-    df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-    .var = "ATOXGR",
-    abnormal = c(High = "high"),
-    variables = list(id = "USUBJID", worst_grade_flag = c(High = "WGRHIFL"))
+  spl_context <- data.frame(
+    split = c("PARAM", "GRADE_DIR"),
+    full_parent_df = I(full_parent_df),
+    cur_col_subset = I(cur_col_subset)
   )
+
+  result <- s_count_abnormal_by_worst_grade(
+    df = adlb %>% filter(
+    ARMCD == "ARM A" & PARAMCD == "ALT" & GRADE_DIR == "LOW") %>%
+      droplevels(),
+    .spl_context = spl_context,
+    .var = "GRADE_ANL",
+    variables = list(id = "USUBJID", param  = "PARAM",  grade_dir = "GRADE_DIR"))
+
   expected <- list(count_fraction = list(
-    `1` = c(17, 0.126865671641791),
-    `2` = c(15, 0.111940298507463),
-    `3` = c(16, 0.119402985074627),
-    `4` = c(12, 0.0895522388059701),
-    Any = c(60, 0.447761194029851)
+    `1` = with_label(c(count = 14, fraction = 0.1044776), "1"),
+    `2` = with_label(c(count = 13, fraction = 0.09701493), "2"),
+    `3` = with_label(c(count = 20, fraction = 0.1492537), "3"),
+    `4` = with_label(c(count = 7, fraction = 0.05223881), "4"),
+    Any = with_label(c(count = 54, fraction = 0.4029851), "Any")
   ))
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
 test_that("count_abnormal_by_worst_grade works as expected", {
   adlb <- adlb_raw
-  adlb_f <- adlb %>%
-    dplyr::filter(PARAMCD == "IGA") %>%
+  adlb_f <- adlb %>% filter(
+    PARAMCD == "IGA") %>%
     droplevels()
+
+  map <- unique(
+    adlb[adlb$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]
+    ) %>%
+   lapply(as.character) %>%
+   as.data.frame() %>%
+   arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+
   result <- basic_table() %>%
     split_cols_by("ARMCD") %>%
-    split_rows_by("PARAMCD") %>%
+    split_rows_by("PARAM") %>%
+    split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
     count_abnormal_by_worst_grade(
-      var = "ATOXGR",
-      abnormal = c(Low = "low", High = "high"),
-      variables = list(id = "USUBJID", worst_grade_flag = c(Low = "WGRLOFL", High = "WGRHIFL"))
+      var = "GRADE_ANL",
+      variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
     ) %>%
     build_table(df = adlb_f)
+
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "IGA", "Low", "1", "2", "3", "4", "Any",
-      "High", "1", "2", "3", "4", "Any", "ARM A", "", "", "17 (12.7%)",
-      "12 (9%)", "15 (11.2%)", "10 (7.5%)", "54 (40.3%)", "",
-      "25 (18.7%)", "14 (10.4%)", "12 (9%)", "11 (8.2%)", "62 (46.3%)",
-      "ARM B", "", "", "23 (17.2%)", "15 (11.2%)", "11 (8.2%)", "16 (11.9%)",
-      "65 (48.5%)", "", "14 (10.4%)", "20 (14.9%)", "13 (9.7%)",
-      "13 (9.7%)", "60 (44.8%)", "ARM C", "", "", "17 (12.9%)",
-      "14 (10.6%)", "14 (10.6%)", "10 (7.6%)", "55 (41.7%)", "",
-      "13 (9.8%)", "16 (12.1%)", "17 (12.9%)", "4 (3%)", "50 (37.9%)"
-    ),
-    .Dim = c(14L, 4L)
-  )
+  expected_matrix <-
+    structure(
+      c(
+        "",
+        "Immunoglobulin A Measurement",
+        "HIGH",
+        "1",
+        "2",
+        "3",
+        "4",
+        "Any",
+        "ARM A",
+        "",
+        "",
+        "25 (18.7%)",
+        "14 (10.4%)",
+        "12 (9%)",
+        "11 (8.2%)",
+        "62 (46.3%)",
+        "ARM B",
+        "",
+        "",
+        "14 (10.4%)",
+        "20 (14.9%)",
+        "13 (9.7%)",
+        "13 (9.7%)",
+        "60 (44.8%)",
+        "ARM C",
+        "",
+        "",
+        "13 (9.8%)",
+        "16 (12.1%)",
+        "17 (12.9%)",
+        "4 (3%)",
+        "50 (37.9%)"
+      ),
+      .Dim = c(8L, 4L)
+    )
   expect_identical(result_matrix, expected_matrix)
 })
+
+test_that(
+  "count_abnormal_by_worst_grade returns an error when variables$param
+  and variables$grade_dir are taking variable names not used
+  for splitting the layout in rows.", {
+  adlb <- adlb_raw
+  adlb_f <- adlb %>% filter(
+    PARAMCD == "IGA") %>%
+    droplevels()
+
+  expect_error(result <- basic_table() %>%
+    split_cols_by("ARMCD") %>%
+    split_rows_by("PARAM") %>%
+    split_rows_by("GRADE_DIR") %>%
+    count_abnormal_by_worst_grade(
+      var = "GRADE_ANL",
+      variables = list(id = "USUBJID", param  = "PARAMCD", grade_dir = "ANRIND")
+    ) %>%
+    build_table(df = adlb_f)
+  )
+  })

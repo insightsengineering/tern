@@ -28,6 +28,9 @@
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
+\item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
+that is passed by \code{rtables}.}
+
 \item{col_by}{(\code{factor})\cr defining column groups.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}

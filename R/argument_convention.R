@@ -23,6 +23,8 @@
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
 #'   by a statistics function.
+#' @param .spl_context (`data frame`)\cr gives information about ancestor split states
+#'   that is passed by `rtables`.
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
