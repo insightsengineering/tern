@@ -61,16 +61,22 @@ h_map_with_count_abnormal <- function(
   assert_that(
     is.string(anl_variable),
     is_df_with_variables(df, list(val = split_rows_varibles, anl = anl_variable)),
-    is_character_list(abnormal, min_length = 2, max_length = 2)
+    is_character_list(abnormal, min_length = 2, max_length = 2),
+    is_df_with_factors(df, list(val = anl_variable))
   )
   method <- match.arg(method)
+  
+  normal_value <- setdiff(levels(df[[anl_variable]]), unlist(abnormal))
+  assert_that(
+    length(normal_value) == 1
+  )
   
   # default method will only have what is observed in the df, and records with all normals will be excluded to avoind error in rtable building.
   if(method == "default") {
     df_abnormal <- subset(df, df[[anl_variable]] %in% unlist(abnormal))
     map <- unique(df_abnormal[c(split_rows_varibles, anl_variable)])
     map_normal <- unique(map[, split_rows_varibles])
-    map_normal[[anl_variable]] = "NORMAL"
+    map_normal[[anl_variable]] = normal_value
     map <- rbind(map, map_normal)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
   }
