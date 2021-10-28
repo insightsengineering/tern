@@ -81,6 +81,15 @@ h_map_with_count_abnormal <- function(
     map_normal[[anl_variable]] <- normal_value
     map <- rbind(map, map_normal)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
+  } else if (method == "both") { # both method will have both directions for all observed PARAMs like in VST02ß
+    map <- unique(df[split_rows_varibles])
+    anl_variable_levels <- unname(append(unlist(abnormal), normal_value))
+    anl_variable_df <- as.data.frame(anl_variable_levels)
+    colnames(anl_variable_df) <- anl_variable
+    anl_variable_df <- do.call("rbind", replicate(nrow(map), anl_variable_df, simplify = FALSE))
+    map <- do.call("rbind", replicate(length(anl_variable_levels), map, simplify = FALSE))
+    map <- cbind(map, anl_variable_df)
+    map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
   }
 
   map
