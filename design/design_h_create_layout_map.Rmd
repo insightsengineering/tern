@@ -56,7 +56,8 @@ h_map_with_count_abnormal <- function(
   split_rows_varibles,
   anl_variable,
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
-  method = c("default", "both", "lbt04")
+  method = c("default", "both", "lbt04"),
+  na_level = "<Missing>"
 ) {
   assert_that(
     is.string(anl_variable),
@@ -65,6 +66,9 @@ h_map_with_count_abnormal <- function(
     is_df_with_factors(df, list(val = anl_variable))
   )
   method <- match.arg(method)
+  
+  # drop unused levels
+  df <- droplevels(df)
 
   normal_value <- setdiff(levels(df[[anl_variable]]), unlist(abnormal))
   assert_that(
@@ -93,7 +97,34 @@ h_map_with_count_abnormal <- function(
   } else if (method == "lbt04") { 
     #lbt04 method follows the rule that at least one observation with ANRLO > 0 for low 
     #direction and at least one observation with ANRHI is not missing for high direction.
+    assert_that(
+      is_df_with_variables(df, list(low = "ANRLO", high = "ANRHI"))
+      # might need some assert that abnormal should have low and high direction
+    )
+
+    df_low <- subset(df, df[["ANRLO"]] > 0)
+    map_low <- unique(df_low[split_rows_varibles])
+    low_levels <- unname(unlist(abnormal[toupper(names(abnormal)) == "LOW"]))
+    low_levels_df <- as.data.frame(low_levels)
+    colnames(low_levels_df) <- anl_variable
+    low_levels_df <- do.call("rbind", replicate(nrow(map_low), low_levels_df, simplify = FALSE))
+    map_low <- map_low[rep(seq_len(nrow(map_low)), each = length(low_levels)), ]
+    map_low <- cbind(map_low, low_levels_df)
     
+    df_high <- subset(df, df[["ANRHI"]] != na_level | !is.na(df[["ANRHI"]]))
+    map_high <- unique(df_high[split_rows_varibles])
+    high_levels <- unname(unlist(abnormal[toupper(names(abnormal)) == "HIGH"]))
+    high_levels_df <- as.data.frame(high_levels)
+    colnames(high_levels_df) <- anl_variable
+    high_levels_df <- do.call("rbind", replicate(nrow(map_high), high_levels_df, simplify = FALSE))
+    map_high <- map_high[rep(seq_len(nrow(map_high)), each = length(high_levels)), ]
+    map_high <- cbind(map_high, high_levels_df)
+    
+    map_normal <- unique(rbind(map_low, map_high)[split_rows_varibles])
+    map_normal[anl_variable] <- normal_value
+    
+    map <- rbind(map_low, map_high, map_normal)
+    map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
   }
 
   map
