@@ -84,7 +84,7 @@ h_map_with_count_abnormal <- function(
     map_normal[[anl_variable]] <- normal_value
     map <- rbind(map, map_normal)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
-  } else if (method == "both") { 
+  } else if (method == "both") {
     # both method will have both directions for all observed PARAMs like in VST02ß
     map <- unique(df[split_rows_varibles])
     anl_variable_levels <- unname(append(unlist(abnormal), normal_value))
@@ -94,8 +94,8 @@ h_map_with_count_abnormal <- function(
     map <- map[rep(seq_len(nrow(map)), each = length(anl_variable_levels)), ]
     map <- cbind(map, anl_variable_df)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
-  } else if (method == "lbt04") { 
-    #lbt04 method follows the rule that at least one observation with ANRLO > 0 for low 
+  } else if (method == "lbt04") {
+    #lbt04 method follows the rule that at least one observation with ANRLO > 0 for low
     #direction and at least one observation with ANRHI is not missing for high direction.
     assert_that(
       is_df_with_variables(df, list(low = "ANRLO", high = "ANRHI"))
@@ -136,11 +136,13 @@ Unit tests
 ```{r}
 df <- data.frame(
   USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
-  AVISIT = c(rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2)),
+  AVISIT = c(
+    rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2)
+  ),
   PARAM = rep(c("ALT", "CPR"), 6),
   ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4))
 )
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL"))
+df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 ```
 
 ```{r}
@@ -155,7 +157,7 @@ h_map_with_count_abnormal(
 see difference between default and both
 ```{r}
 df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL"))
+df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 h_map_with_count_abnormal(
   df = df,
   split_rows_varibles = "PARAM",
@@ -174,7 +176,7 @@ h_map_with_count_abnormal(
 
 For lbt04, use stream real data to test
 ```{r}
-ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na()
+ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na() #nolint
 adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
 
 h_map_with_count_abnormal(
@@ -183,6 +185,6 @@ h_map_with_count_abnormal(
   anl_variable = "ANRIND",
   abnormal = list(low = "LOW", high = "HIGH"),
   method = "lbt04"
-) %>% arrange(PARAM)
+)
 ```
 
