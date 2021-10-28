@@ -42,8 +42,7 @@ Introduction
 When templates like LBT04, VST02, EGT02, LBT15 et al were refactored using `trim_levels_to_map`, how to define the map
 correctly is critical. Different templates have different scenarios to create the map. For example
 - VST02/ECGT02 have both directions
-- LBT04 follow the rule that at least one observation with ANRLO > 0 for low direction and at least one observation with
-ANRHI is not missing for high direction.
+- LBT04 follow the rule that at least one observation with ANRLO > 0 for low direction and at least one observation with ANRHI is not missing for high direction.
 - LBT15 map is created from metadata.
 
 Design
@@ -81,15 +80,20 @@ h_map_with_count_abnormal <- function(
     map_normal[[anl_variable]] <- normal_value
     map <- rbind(map, map_normal)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
-  } else if (method == "both") { # both method will have both directions for all observed PARAMs like in VST02ß
+  } else if (method == "both") { 
+    # both method will have both directions for all observed PARAMs like in VST02ß
     map <- unique(df[split_rows_varibles])
     anl_variable_levels <- unname(append(unlist(abnormal), normal_value))
     anl_variable_df <- as.data.frame(anl_variable_levels)
     colnames(anl_variable_df) <- anl_variable
     anl_variable_df <- do.call("rbind", replicate(nrow(map), anl_variable_df, simplify = FALSE))
-    map <- do.call("rbind", replicate(length(anl_variable_levels), map, simplify = FALSE))
+    map <- map[rep(seq_len(nrow(map)), each = length(anl_variable_levels)), ]
     map <- cbind(map, anl_variable_df)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
+  } else if (method == "lbt04") { 
+    #lbt04 method follows the rule that at least one observation with ANRLO > 0 for low 
+    #direction and at least one observation with ANRHI is not missing for high direction.
+    
   }
 
   map
