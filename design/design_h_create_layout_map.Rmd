@@ -53,19 +53,18 @@ Maybe the function can get different `method` so that map for different template
 ```{r}
 h_map_with_count_abnormal <- function(
   df,
-  split_rows_varibles,
-  anl_variable,
+  variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
-  method = c("default", "both", "lbt04"),
+  method = c("default", "range"),
   na_level = "<Missing>"
 ) {
+  method <- match.arg(method)
   assert_that(
     is.string(anl_variable),
-    is_df_with_variables(df, list(val = split_rows_varibles, anl = anl_variable)),
     is_character_list(abnormal, min_length = 2, max_length = 2),
-    is_df_with_factors(df, list(val = anl_variable))
+    is_df_with_factors(df, list(val = variables$anl))
   )
-  method <- match.arg(method)
+
 
   # drop unused levels
   df <- droplevels(df)
@@ -75,9 +74,12 @@ h_map_with_count_abnormal <- function(
     length(normal_value) == 1
   )
 
-  # default method will only have what is observed in the df, and records with all normals will be excluded to avoind
+  # default method will only have what is observed in the df, and records with all normals will be excluded to avoid
   # error in rtable building.
   if (method == "default") {
+    assert_that(
+      is_df_with_variables(df, variables = list(anl = variables$anl, split_row = variables$split_rows))
+    )
     df_abnormal <- subset(df, df[[anl_variable]] %in% unlist(abnormal))
     map <- unique(df_abnormal[c(split_rows_varibles, anl_variable)])
     map_normal <- unique(subset(map, select = split_rows_varibles))
@@ -88,7 +90,7 @@ h_map_with_count_abnormal <- function(
     #lbt04 method follows the rule that at least one observation with ANRLO > 0 for low
     #direction and at least one observation with ANRHI is not missing for high direction.
     assert_that(
-      is_df_with_variables(df, list(low = "ANRLO", high = "ANRHI"))
+      is_df_with_variables(df, variables)
       # might need some assert that abnormal should have low and high direction
     )
 
