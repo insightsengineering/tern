@@ -70,8 +70,8 @@ s_coxph_pairwise <- function(df,
         pvalue = with_label("", paste0("p-value (", pval_method, ")")),
         hr = with_label("", "Hazard Ratio"),
         hr_ci = with_label("", f_conf_level(conf_level)),
-        n_tot = with_label("", "n_tot"),
-        n_tot_events =  with_label("", "n_tot_events")
+        n_tot = with_label("", "Total n"),
+        n_tot_events =  with_label("", "Total events")
       )
     )
   }
@@ -111,8 +111,8 @@ s_coxph_pairwise <- function(df,
     pvalue = with_label(unname(pval), paste0("p-value (", pval_method, ")")),
     hr = with_label(sum_cox$conf.int[1, 1], "Hazard Ratio"),
     hr_ci = with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
-    n_tot = with_label(sum_cox$n, "n_tot"),
-    n_tot_events = with_label(sum_cox$nevent, "n_tot_events")
+    n_tot = with_label(sum_cox$n, "Total n"),
+    n_tot_events = with_label(sum_cox$nevent, "Total events")
   )
 }
 

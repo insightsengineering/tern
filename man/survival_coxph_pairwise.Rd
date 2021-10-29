@@ -92,7 +92,7 @@ The statistics are:
 \item \code{hr} : hazard ratio.
 \item \code{hr_ci} : confidence interval for hazard ratio.
 \item \code{n_tot} : total number of observations
-\item \code{n_tot} : total number of events
+\item \code{n_tot_events} : total number of events
 }
 }
 \description{

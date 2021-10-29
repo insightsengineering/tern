@@ -24,8 +24,8 @@ test_that("s_coxph_pairwise works with default arguments and no stratification f
     pvalue = with_label(0.03340293, "p-value (log-rank)"),
     hr = with_label(0.7173651, "Hazard Ratio"),
     hr_ci = with_label(c(0.5275231, 0.9755262), "95% CI"),
-    n_tot = with_label(268, "n_tot"),
-    n_tot_events = with_label(166, "n_tot_events")
+    n_tot = with_label(268L, "Total n"),
+    n_tot_events = with_label(166L, "Total events")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -52,8 +52,8 @@ test_that("s_coxph_pairwise works with customized arguments and no stratificatio
     pvalue = with_label(0.03417907, "p-value (wald)"),
     hr = with_label(0.7173651, "Hazard Ratio"),
     hr_ci = with_label(c(0.5542485, 0.9284871), "90% CI"),
-    n_tot = with_label(268, "n_tot"),
-    n_tot_events = with_label(166, "n_tot_events")
+    n_tot = with_label(268L, "Total n"),
+    n_tot_events = with_label(166L, "Total events")
   )
   expect_equal(result, expected, tolerance = 0.000001)
 })
@@ -79,8 +79,8 @@ test_that("s_coxph_pairwise works with default arguments and stratification fact
     pvalue = with_label(0.03398278, "p-value (log-rank)"),
     hr = with_label(0.7057806, "Hazard Ratio"),
     hr_ci = with_label(c(0.5106793, 0.9754189), "95% CI"),
-    n_tot = with_label(268, "n_tot"),
-    n_tot_events = with_label(166, "n_tot_events")
+    n_tot = with_label(268L, "Total n"),
+    n_tot_events = with_label(166L, "Total events")
   )
   expect_equal(result, expected, tolerance = 0.00001)
 })
@@ -107,8 +107,8 @@ test_that("s_coxph_pairwise works with customized arguments and stratification f
     pvalue = with_label(0.03479608, "p-value (wald)"),
     hr = with_label(0.7057806, "Hazard Ratio"),
     hr_ci = with_label(c(0.5379481, 0.9259745), "90% CI"),
-    n_tot = with_label(268, "n_tot"),
-    n_tot_events = with_label(166, "n_tot_events")
+    n_tot = with_label(268L, "Total n"),
+    n_tot_events = with_label(166L, "Total events")
   )
   expect_equal(result, expected, tolerance = 0.00001)
 })

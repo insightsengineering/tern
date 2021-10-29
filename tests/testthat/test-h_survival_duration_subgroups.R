@@ -39,8 +39,8 @@ test_that("h_survtime_df functions as expected with valid input and default argu
 
   expected <- data.frame(
     arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
-    n = c(134, 134),
-    n_events = c(87, 79),
+    n = c(134L, 134L),
+    n_events = c(87L, 79L),
     median = c(837.42801327648, 1260.49053370248),
     stringsAsFactors = FALSE
   )
@@ -67,9 +67,9 @@ test_that("h_survtime_df functions as expected when median is NA", {
 
   expected <- data.frame(
     arm = factor(c("A", "B"), levels = c("A", "B")),
-    n = c(3, 3),
-    n_events = c(1, 3),
-    median = c(NA, 2),
+    n = c(3L, 3L),
+    n_events = c(1L, 3L),
+    median = c(NA, 2L),
     stringsAsFactors = FALSE
   )
 
@@ -96,9 +96,9 @@ test_that("h_survtime_df functions as expected when 0 records in one group", {
 
   expected <- data.frame(
     arm = factor(c("A", "B"), levels = c("A", "B")),
-    n = c(0, 6),
-    n_events = c(NA, 4),
-    median = c(NA, 5),
+    n = c(0L, 6L),
+    n_events = c(NA, 4L),
+    median = c(NA, 5L),
     stringsAsFactors = FALSE
   )
 
@@ -224,7 +224,7 @@ test_that("h_survtime_subgroups_df functions as expected with valid input and de
 
   expected <- data.frame(
     arm = factor(rep(c("B: Placebo", "A: Drug X"), 6), levels = c("B: Placebo", "A: Drug X")),
-    n = c(134, 134, 82, 79, 52, 55, 45, 50, 56, 37, 33, 47),
+    n = c(134L, 134L, 82L, 79L, 52L, 55L, 45L, 50L, 56L, 37L, 33L, 47L),
     n_events = c(87L, 79L, 50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L),
     median = c(
       837.42801327648, 1260.49053370248, 850.920785514258, 1274.80474338372,
@@ -254,8 +254,8 @@ test_that("h_survtime_subgroups_df functions as expected when subgroups is NULL.
 
   expected <- data.frame(
     arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
-    n = c(134, 134),
-    n_events = c(87, 79),
+    n = c(134L, 134L),
+    n_events = c(87L, 79L),
     median = c(837.42801327648, 1260.49053370248),
     subgroup = c("All Patients", "All Patients"),
     var = c(rep("ALL", 2)),
@@ -304,8 +304,8 @@ test_that("h_coxph_df functions as expected with valid input and default argumen
 
   expected <- data.frame(
     arm = " ",
-    n_tot = with_label(268, "n_tot"),
-    n_tot_events = with_label(166, "n_tot_events"),
+    n_tot = 268L,
+    n_tot_events = 166L,
     hr = 0.71736505115489,
     lcl = 0.527523110746632,
     ucl = 0.975526201857014,
@@ -333,8 +333,8 @@ test_that("h_coxph_df functions as expected with one stratification factor", {
 
   expected <- data.frame(
     arm = " ",
-    n_tot = with_label(268, "n_tot"),
-    n_tot_events = with_label(166, "n_tot_events"),
+    n_tot = 268L,
+    n_tot_events = 166L,
     hr =  0.7343822,
     lcl = 0.5376802,
     ucl = 1.003045,
@@ -361,8 +361,8 @@ test_that("h_coxph_df functions as expected with multiple stratification factors
 
   expected <- data.frame(
     arm = " ",
-    n_tot = with_label(268, "n_tot"),
-    n_tot_events = with_label(166, "n_tot_events"),
+    n_tot = 268L,
+    n_tot_events = 166L,
     hr = 0.7412854,
     lcl = 0.5390265,
     ucl = 1.019438,
@@ -389,8 +389,8 @@ test_that("h_coxph_df functions as expected when 0 records in one group", {
 
   expected <- data.frame(
     arm = " ",
-    n_tot = 134,
-    n_tot_events = 79,
+    n_tot = 134L,
+    n_tot_events = 79L,
     hr = NA,
     lcl = NA,
     ucl = NA,
@@ -417,8 +417,8 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
     structure(
       list(
         arm = c(" ", " ", " ", " ", " ", " "),
-        n_tot = structure(c(268L, 161L, 107L, 95L, 93L, 80L), label = "n_tot"),
-        n_tot_events = structure(c(166, 95, 71, 61, 55, 50), label = "n_tot_events"),
+        n_tot = c(268L, 161L, 107L, 95L, 93L, 80L),
+        n_tot_events = c(166L, 95L, 71L, 61L, 55L, 50L),
         hr = c(
           0.717365051154891,
           0.697969331159471,
@@ -498,8 +498,8 @@ test_that("h_coxph_subgroups_df functions as expected with valid input and defau
   expected <- structure(
     list(
       arm = c(" ", " ", " "),
-      n_tot = structure(c(12L, 7L, 5L), label = "n_tot"),
-      n_tot_events = structure(c(7, 5, 2), label = "n_tot_events"),
+      n_tot = c(12L, 7L, 5L),
+      n_tot_events = c(7, 5, 2),
       hr = c(1.2230641194542, 0.679005471337507, 1142066058.58766),
       lcl = c(0.270922018090357, 0.112310823072285, 0),
       ucl = c(5.52146278416316, 4.10511131068404, Inf),
@@ -536,8 +536,8 @@ test_that("h_coxph_subgroups_df functions as expected with stratification factor
     structure(
       list(
         arm = c(" ", " ", " "),
-        n_tot = structure(c(268L, 161L, 107L), label = "n_tot"),
-        n_tot_events = structure(c(166, 95, 71), label = "n_tot_events"),
+        n_tot = c(268L, 161L, 107L),
+        n_tot_events = c(166, 95, 71),
         hr = c(0.734382192317288, 0.759888515051215, 0.72253798908495),
         lcl = c(0.537680185840195, 0.501798302845741, 0.428328174772149),
         ucl = c(1.00304459527366, 1.15072241582342, 1.21883447417073),
@@ -574,8 +574,8 @@ test_that("h_coxph_subgroups_df functions as expected when subgroups is NULL.", 
     structure(
       list(
         arm = " ",
-        n_tot = structure(268L, label = "n_tot"),
-        n_tot_events = structure(166, label = "n_tot_events"),
+        n_tot = 268L,
+        n_tot_events = 166L,
         hr = 0.717365051154891,
         lcl = 0.527523110746632,
         ucl = 0.975526201857015,

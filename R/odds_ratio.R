@@ -65,7 +65,7 @@ or_glm <- function(data, conf_level) {
   )
 
   values <- setNames(c(or, or_ci), c("est", "lcl", "ucl"))
-  n_tot <- setNames(nrow(model_fit$model), "n_tot")
+  n_tot <- setNames(nrow(model_fit$model), "Total n")
 
   list(or_ci = values, n_tot = n_tot)
 }
@@ -242,7 +242,7 @@ s_odds_ratio <- function(df,
 
   y$n_tot <- with_label(
     x = y$n_tot,
-    label = "n_tot"
+    label = "Total n"
   )
 
   y
