@@ -65,7 +65,7 @@ or_glm <- function(data, conf_level) {
   )
 
   values <- setNames(c(or, or_ci), c("est", "lcl", "ucl"))
-  n_tot <- setNames(nrow(model_fit$model), "Total n")
+  n_tot <- setNames(nrow(model_fit$model), "n_tot")
 
   list(or_ci = values, n_tot = n_tot)
 }
