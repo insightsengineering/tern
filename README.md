@@ -41,6 +41,7 @@ the `teal` modules for outputs in `tern` in the `teal.modules.clinical` R packag
    Here is an example of a real command (with name_of_the_archive substituted by the output of the build command):
    ```
    $ Rscript -e 'install.packages("tern_0.9.5.9000.tar.gz")'
+   ```
 
 
 # Presentations
