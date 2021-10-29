@@ -30,7 +30,7 @@ NULL
 #' * `hr` : hazard ratio.
 #' * `hr_ci` : confidence interval for hazard ratio.
 #' * `n_tot` : total number of observations
-#' * `n_tot` : total number of events
+#' * `n_tot_events` : total number of events
 #'
 #' @examples
 #' library(scda)

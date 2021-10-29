@@ -124,8 +124,8 @@ test_that("extract_survival_subgroups functions as expected with valid input and
     hr = structure(
       list(
         arm = c(" ", " ", " ", " ", " ", " "),
-        n_tot = structure(c(268L, 161L, 107L, 95L, 93L, 80L), label = "n_tot"),
-        n_tot_events = structure(c(166, 95, 71, 61, 55, 50), label = "n_tot_events"),
+        n_tot = c(268L, 161L, 107L, 95L, 93L, 80L),
+        n_tot_events = c(166, 95, 71, 61, 55, 50),
         hr = c(
           0.717365051154891,
           0.697969331159471,
@@ -254,8 +254,8 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
       hr = structure(
         list(
           arm = " ",
-          n_tot = structure(268L, label = "n_tot"),
-          n_tot_events = structure(166, label = "n_tot_events"),
+          n_tot = 268L,
+          n_tot_events = 166L,
           hr = 0.717365051154891,
           lcl = 0.527523110746632,
           ucl = 0.975526201857015,
