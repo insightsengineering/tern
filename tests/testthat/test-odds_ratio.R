@@ -61,7 +61,7 @@ test_that("s_odds_ratio estimates right OR and CI (unstratified analysis)", {
       c(est = 1 / 2 / 2 / 1, lcl = 0.0083, ucl = 7.4518),
       "Odds Ratio (95% CI)"
     ),
-    n_tot = with_label(setNames(6, "Total n"), "Total n")
+    n_tot = with_label(setNames(6, "n_tot"), "Total n")
   )
   expect_equal(result, expected, tolerance = 1e-4)
 })
