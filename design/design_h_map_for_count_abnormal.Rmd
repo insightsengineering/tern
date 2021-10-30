@@ -75,7 +75,8 @@ h_map_for_count_abnormal <- function(
 
   normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
   assert_that(
-    length(normal_value) == 1
+    length(normal_value) == 1 # how do I do a python assert() so that I can have customized error message.
+    # Here I mainly want to capture if the abnormals are all included (LOW LOW and HIGH HIGH)
   )
 
   # default method will only have what is observed in the df, and records with all normals will be excluded to avoid
@@ -91,11 +92,11 @@ h_map_for_count_abnormal <- function(
     map <- rbind(map, map_normal)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
   } else if (method == "range") {
-    #lbt04 method follows the rule that at least one observation with ANRLO > 0 for low
+    #range method follows the rule that at least one observation with ANRLO > 0 for low
     #direction and at least one observation with ANRHI is not missing for high direction.
     assert_that(
       is_df_with_variables(df, variables)
-      # might need some assert that abnormal should have low and high direction
+      # also need some assert that abnormal should have low and high direction
     )
 
     df_low <- subset(df, df[[variables$range_low]] > 0)
