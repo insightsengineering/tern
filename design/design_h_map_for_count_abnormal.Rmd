@@ -123,8 +123,8 @@ h_map_for_count_abnormal <- function(
   }
 
   # sort map final output
-  for (i in 1:length(variables$split_rows)) {
-    map <- map[ order(map[[i]]) ,]
+  for (i in seq_len(length(variables$split_rows))) {
+    map <- map[ order(map[[i]]), ]
   }
 }
 ```
