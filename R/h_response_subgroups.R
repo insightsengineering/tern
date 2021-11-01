@@ -47,14 +47,16 @@ NULL
 h_proportion_df <- function(rsp, arm) {
 
   assert_that(
-    is_logical_vector(rsp),
+    is.logical(rsp),
     is_valid_factor(arm),
     is_equal_length(rsp, arm)
   )
+  non_missing_rsp <- !is.na(rsp)
+  rsp <- rsp[non_missing_rsp]
+  arm <- arm[non_missing_rsp]
 
   lst_rsp <- split(rsp, arm)
   lst_results <- Map(function(x, arm) {
-
     if (length(x) > 0) {
       s_prop <- s_proportion(x)
       data.frame(
@@ -67,7 +69,7 @@ h_proportion_df <- function(rsp, arm) {
     } else {
       data.frame(
         arm = arm,
-        n = length(x),
+        n = 0L,
         n_rsp = NA,
         prop = NA,
         stringsAsFactors = FALSE
@@ -219,7 +221,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
-      n_tot = nrow(df_rsp),
+      n_tot = unname(result_odds_ratio$n_tot["n_tot"]),
       or = unname(result_odds_ratio$or_ci["est"]),
       lcl = unname(result_odds_ratio$or_ci["lcl"]),
       ucl = unname(result_odds_ratio$or_ci["ucl"]),
@@ -243,12 +245,16 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
       df$pval_label <- obj_label(result_test$pval)
     }
 
-  } else {
+    # In those cases cannot go through the model so will obtain n_tot from data.
+  } else if (
+    (nrow(l_df[[1]]) == 0 && nrow(l_df[[2]]) > 0) ||
+    (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
+    ) {
 
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
-      n_tot = nrow(df_rsp),
+      n_tot = sum(complete.cases(df_rsp)),
       or = NA,
       lcl = NA,
       ucl = NA,
@@ -260,6 +266,23 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
       df$pval_label <- NA
     }
 
+  } else {
+
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = 0L,
+      or = NA,
+      lcl = NA,
+      ucl = NA,
+      conf_level = conf_level,
+      stringsAsFactors = FALSE
+    )
+
+    if (!is.null(method)) {
+      df$pval <- NA
+      df$pval_label <- NA
+    }
   }
 
   df

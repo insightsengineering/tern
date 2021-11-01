@@ -32,7 +32,8 @@ NULL
 #' data <- data.frame(
 #'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1)),
 #'   grp = letters[c(1, 1, 1, 2, 2, 2, 1, 2)],
-#'   strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)]
+#'   strata = letters[c(1, 2, 1, 2, 2, 2, 1, 2)],
+#'   stringsAsFactors = TRUE
 #' )
 #'
 #' # Odds ratio based on glm.
@@ -64,8 +65,9 @@ or_glm <- function(data, conf_level) {
   )
 
   values <- setNames(c(or, or_ci), c("est", "lcl", "ucl"))
+  n_tot <- setNames(nrow(model_fit$model), "n_tot")
 
-  list(or_ci = values)
+  list(or_ci = values, n_tot = n_tot)
 }
 
 #' @describeIn odds_ratio estimates the odds ratio based on [survival::clogit()]. This is done for
@@ -82,7 +84,8 @@ or_glm <- function(data, conf_level) {
 #' data <- data.frame(
 #'   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
 #'   grp =    letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3)],
-#'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)]
+#'   strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
+#'   stringsAsFactors = TRUE
 #' )
 #'
 #' # Odds ratio based on stratified estimation by conditional logistic regression.
@@ -117,7 +120,7 @@ or_clogit <- function(data, conf_level) {
       nm = c("est", "lcl", "ucl")
     )
   }
-  list(or_ci = or_ci)
+  list(or_ci = or_ci, n_tot = c(n_tot = model_fit$n))
 }
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
@@ -163,7 +166,7 @@ s_odds_ratio <- function(df,
                          variables = list(arm = NULL, strata = NULL),
                          conf_level = 0.95,
                          groups_list = NULL) {
-  y <- list(or_ci = "")
+  y <- list(or_ci = "", n_tot = "")
 
   if (!.in_ref_col) {
 
@@ -228,6 +231,7 @@ s_odds_ratio <- function(df,
         trt_grp %in% names(y_all$or_ci)
       )
       y$or_ci <- y_all$or_ci[[trt_grp]]
+      y$n_tot <- y_all$n_tot
     }
   }
 
@@ -235,6 +239,12 @@ s_odds_ratio <- function(df,
     x = y$or_ci,
     label = paste0("Odds Ratio (", 100 * conf_level, "% CI)")
   )
+
+  y$n_tot <- with_label(
+    x = y$n_tot,
+    label = "Total n"
+  )
+
   y
 }
 
@@ -282,7 +292,7 @@ estimate_odds_ratio <- function(lyt,
                                 ...,
                                 show_labels = "hidden",
                                 table_names = vars,
-                                .stats = NULL,
+                                .stats = "or_ci",
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
