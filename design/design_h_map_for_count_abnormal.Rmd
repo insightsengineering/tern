@@ -60,7 +60,8 @@ h_map_for_count_abnormal <- function(
 ) {
   method <- match.arg(method)
   assert_that(
-    # how do I assert that variables is passed as a list with names anl, split_rows et al?
+    "anl" %in% names(variables),
+    "split_rows" %in% names(variables),
     is_variables(variables),
     is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
@@ -95,8 +96,9 @@ h_map_for_count_abnormal <- function(
     #range method follows the rule that at least one observation with ANRLO > 0 for low
     #direction and at least one observation with ANRHI is not missing for high direction.
     assert_that(
-      is_df_with_variables(df, variables)
-      # also need some assert that abnormal should have low and high direction
+      is_df_with_variables(df, variables),
+      "range_low" %in% names(variables),
+      "range_high" %in% names(variables)
     )
 
     df_low <- subset(df, df[[variables$range_low]] > 0)
