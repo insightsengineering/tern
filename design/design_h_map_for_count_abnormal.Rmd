@@ -93,8 +93,8 @@ h_map_for_count_abnormal <- function(
 
   normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
   assert_that(
-    length(normal_value) == 1 # how do I do a python assert() so that I can have customized error message.
-    # Here I mainly want to capture if the abnormals are all included (LOW LOW and HIGH HIGH)
+    length(normal_value) == 1,
+    all_elements_in_ref(setdiff(levels(df[[variables$anl]]), normal_value), unlist(abnormal))
   )
 
   # default method will only have what is observed in the df, and records with all normals will be excluded to avoid
