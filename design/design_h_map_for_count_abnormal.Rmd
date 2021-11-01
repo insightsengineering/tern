@@ -48,6 +48,21 @@ correctly is critical. Different templates have different scenarios to create th
 Design
 =============
 
+New assert functions
+```{r}
+is_df_with_no_na_level <- function(df, variables, na_level) {
+  assert_that(
+    is_df_with_variables(df, variables),
+    is.string(na_level)
+  )
+  !any(df[, unlist(variables)] == na_level)
+}
+on_failure(is_df_with__no_na_level) <- function(call, env) {
+  paste(deparse(call$df), "contains missing data as defined by the argument na_level")
+}
+```
+
+
 Maybe the function can get different `method` so that map for different templates can be created accordingly.
 
 ```{r}
@@ -65,9 +80,11 @@ h_map_for_count_abnormal <- function(
     is_variables(variables),
     is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
-    !any(df[variables$split_rows] == na_level),
+    # !any(df[variables$split_rows] == na_level),
+    is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
     is_factor_no_na(df[variables$split_rows]),
-    !na_level %in% df[[variables$anl]],
+    # !na_level %in% df[[variables$anl]],
+    is_df_with_no_na_level(df, variables = list(anl = variables$anl), na_level = na_level),
     is_factor_no_na(df[[variables$anl]])
   )
 
