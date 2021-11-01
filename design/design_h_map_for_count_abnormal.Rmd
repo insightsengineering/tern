@@ -66,9 +66,9 @@ h_map_for_count_abnormal <- function(
     is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
     !any(df[variables$split_rows] == na_level),
-    !any(is.na(df[variables$split_rows])),
+    is_factor_no_na(df[variables$split_rows]),
     !na_level %in% df[[variables$anl]],
-    !any(is.na(df[[variables$anl]]))
+    is_factor_no_na(df[[variables$anl]])
   )
 
   # drop unused levels
