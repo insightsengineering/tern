@@ -176,7 +176,7 @@ along with a confidence interval.</p>
   <span class='va'>...</span>,
   show_labels <span class='op'>=</span> <span class='st'>"hidden"</span>,
   table_names <span class='op'>=</span> <span class='va'>vars</span>,
-  .stats <span class='op'>=</span> <span class='cn'>NULL</span>,
+  .stats <span class='op'>=</span> <span class='st'>"or_ci"</span>,
   .formats <span class='op'>=</span> <span class='cn'>NULL</span>,
   .labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   .indent_mods <span class='op'>=</span> <span class='cn'>NULL</span>
@@ -299,26 +299,32 @@ arguments (see below).</p></li>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
   rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,
   grp <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,
-  strata <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>
+  strata <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,
+  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
 <span class='co'># Odds ratio based on glm.</span>
 <span class='fu'>or_glm</span><span class='op'>(</span><span class='va'>data</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable data$grp to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $or_ci
+</div><div class='output co'>#&gt; $or_ci
 #&gt;        est        lcl        ucl 
 #&gt; 0.33333333 0.01669735 6.65441589 
+#&gt; 
+#&gt; $n_tot
+#&gt; n_tot 
+#&gt;     8 
 #&gt; </div><div class='input'>
 
 <span class='co'># Data with 3 groups.</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
   rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>,
   grp <span class='op'>=</span>    <span class='va'>letters</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>]</span>,
-  strata <span class='op'>=</span> <span class='va'>LETTERS</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>
+  strata <span class='op'>=</span> <span class='va'>LETTERS</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>,
+  stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
 <span class='co'># Odds ratio based on stratified estimation by conditional logistic regression.</span>
 <span class='fu'>or_clogit</span><span class='op'>(</span><span class='va'>data</span>, conf_level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable data$grp to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; <span class='warning'>Warning: automatically converting character variable data$strata to factor, better manually convert to factor to avoid failures</span></div><div class='output co'>#&gt; $or_ci
+</div><div class='output co'>#&gt; $or_ci
 #&gt; $or_ci$b
 #&gt;        est        lcl        ucl 
 #&gt; 0.28814553 0.02981009 2.78522598 
@@ -327,6 +333,10 @@ arguments (see below).</p></li>
 #&gt;       est       lcl       ucl 
 #&gt; 0.5367919 0.0673365 4.2791881 
 #&gt; 
+#&gt; 
+#&gt; $n_tot
+#&gt; n_tot 
+#&gt;    20 
 #&gt; </div><div class='input'>
 
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12</span><span class='op'>)</span>
@@ -349,6 +359,12 @@ arguments (see below).</p></li>
 #&gt; 0.8484848 0.3831831 1.8788053 
 #&gt; attr(,"label")
 #&gt; [1] "Odds Ratio (95% CI)"
+#&gt; 
+#&gt; $n_tot
+#&gt; n_tot 
+#&gt;   100 
+#&gt; attr(,"label")
+#&gt; [1] "Total n"
 #&gt; </div><div class='input'>
 <span class='co'># Stratified analysis.</span>
 <span class='fu'>s_odds_ratio</span><span class='op'>(</span>
@@ -364,6 +380,12 @@ arguments (see below).</p></li>
 #&gt; 0.7689750 0.3424155 1.7269154 
 #&gt; attr(,"label")
 #&gt; [1] "Odds Ratio (95% CI)"
+#&gt; 
+#&gt; $n_tot
+#&gt; n_tot 
+#&gt;   100 
+#&gt; attr(,"label")
+#&gt; [1] "Total n"
 #&gt; </div><div class='input'>
 <span class='fu'>a_odds_ratio</span><span class='op'>(</span>
   df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dta</span>, <span class='va'>grp</span> <span class='op'>==</span> <span class='st'>"A"</span><span class='op'>)</span>,
@@ -375,7 +397,8 @@ arguments (see below).</p></li>
 </div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
 #&gt; ----------------------------
 #&gt;   row_name     formatted_cell indent_mod           row_label
-#&gt; 1    or_ci 0.85 (0.38 - 1.88)          0 Odds Ratio (95% CI)</div><div class='input'>
+#&gt; 1    or_ci 0.85 (0.38 - 1.88)          0 Odds Ratio (95% CI)
+#&gt; 2    n_tot                100          0             Total n</div><div class='input'>
 
 <span class='va'>dta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
   rsp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
@@ -387,9 +410,9 @@ arguments (see below).</p></li>
   <span class='fu'>estimate_odds_ratio</span><span class='op'>(</span>vars <span class='op'>=</span> <span class='st'>"rsp"</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://roche.github.io/rtables/reference/build_table.html'>build_table</a></span><span class='op'>(</span><span class='va'>l</span>, df <span class='op'>=</span> <span class='va'>dta</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                         B           A        
-#&gt; ---------------------------------------------
-#&gt;   Odds Ratio (95% CI)       0.72 (0.33 - 1.6)</div><div class='input'>
+</div><div class='output co'>#&gt;                       B           A        
+#&gt; -------------------------------------------
+#&gt; Odds Ratio (95% CI)       0.72 (0.33 - 1.6)</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

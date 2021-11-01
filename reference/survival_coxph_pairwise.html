@@ -169,7 +169,7 @@
   var_labels <span class='op'>=</span> <span class='st'>"CoxPH"</span>,
   show_labels <span class='op'>=</span> <span class='st'>"visible"</span>,
   table_names <span class='op'>=</span> <span class='va'>vars</span>,
-  .stats <span class='op'>=</span> <span class='cn'>NULL</span>,
+  .stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pvalue"</span>, <span class='st'>"hr"</span>, <span class='st'>"hr_ci"</span><span class='op'>)</span>,
   .formats <span class='op'>=</span> <span class='cn'>NULL</span>,
   .labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   .indent_mods <span class='op'>=</span> <span class='cn'>NULL</span>
@@ -263,6 +263,8 @@ to avoid warnings from <code>rtables</code>.</p></td>
 <li><p><code>pvalue</code> : p-value to test HR = 1.</p></li>
 <li><p><code>hr</code> : hazard ratio.</p></li>
 <li><p><code>hr_ci</code> : confidence interval for hazard ratio.</p></li>
+<li><p><code>n_tot</code> : total number of observations</p></li>
+<li><p><code>n_tot_events</code> : total number of events</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
@@ -304,14 +306,26 @@ to the input layout. Note that additional formatting arguments can be used here.
 #&gt; [1] 0.5275231 0.9755262
 #&gt; attr(,"label")
 #&gt; [1] "95% CI"
+#&gt; 
+#&gt; $n_tot
+#&gt; [1] 268
+#&gt; attr(,"label")
+#&gt; [1] "Total n"
+#&gt; 
+#&gt; $n_tot_events
+#&gt; [1] 166
+#&gt; attr(,"label")
+#&gt; [1] "Total events"
 #&gt; </div><div class='input'>
 <span class='fu'>a_coxph_pairwise</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df_ref_group</span>, .in_ref_col <span class='op'>=</span> <span class='cn'>FALSE</span>, .var <span class='op'>=</span> <span class='st'>"AVAL"</span>, is_event <span class='op'>=</span> <span class='st'>"is_event"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; RowsVerticalSection (in_rows) object print method:
 #&gt; ----------------------------
-#&gt;   row_name formatted_cell indent_mod          row_label
-#&gt; 1   pvalue         0.0334          0 p-value (log-rank)
-#&gt; 2       hr           0.72          0       Hazard Ratio
-#&gt; 3    hr_ci   (0.53, 0.98)          0             95% CI</div><div class='input'>
+#&gt;       row_name formatted_cell indent_mod          row_label
+#&gt; 1       pvalue         0.0334          0 p-value (log-rank)
+#&gt; 2           hr           0.72          0       Hazard Ratio
+#&gt; 3        hr_ci   (0.53, 0.98)          0             95% CI
+#&gt; 4        n_tot            268          0            Total n
+#&gt; 5 n_tot_events            166          0       Total events</div><div class='input'>
 
 <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -328,7 +342,7 @@ to the input layout. Note that additional formatting arguments can be used here.
 #&gt; Unstratified Analysis                                      
 #&gt;   p-value (log-rank)                0.0334        &lt;0.0001  
 #&gt;   Hazard Ratio                       1.39          2.75    
-#&gt;     95% CI                        (1.03, 1.9)   (2.05, 3.7)</div><div class='input'>
+#&gt;   95% CI                          (1.03, 1.9)   (2.05, 3.7)</div><div class='input'>
 <span class='fu'><a href='https://roche.github.io/rtables/reference/basic_table.html'>basic_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 <span class='fu'><a href='https://roche.github.io/rtables/reference/split_cols_by.html'>split_cols_by</a></span><span class='op'>(</span>var <span class='op'>=</span> <span class='st'>"ARMCD"</span>, ref_group <span class='op'>=</span> <span class='st'>"ARM A"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://roche.github.io/rtables/reference/add_colcounts.html'>add_colcounts</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -346,7 +360,7 @@ to the input layout. Note that additional formatting arguments can be used here.
 #&gt; Stratified Analysis                                     
 #&gt;   p-value (wald)                 0.0487       &lt;0.0001   
 #&gt;   Hazard Ratio                    1.36          2.73    
-#&gt;     95% CI                      (1, 1.86)   (2.02, 3.69)</div></pre>
+#&gt;   95% CI                        (1, 1.86)   (2.02, 3.69)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
