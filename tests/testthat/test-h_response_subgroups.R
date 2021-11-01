@@ -63,7 +63,7 @@ test_that("h_proportion_df functions as expected when 0 responses in one group",
 test_that("h_proportion_df fails with wrong input", {
 
   expect_error(h_proportion_df(
-    rsp = c(TRUE, FALSE, NA),
+    rsp = c(TRUE, FALSE, Inf),
     arm = factor(c("A", "B", "A"), levels = c("B", "A"))
   ))
 
