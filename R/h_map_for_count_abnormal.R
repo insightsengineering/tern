@@ -31,5 +31,83 @@ h_map_for_count_abnormal <- function(
 ) {
   method <- match.arg(method)
   assert_that(
+    "anl" %in% names(variables),
+    "split_rows" %in% names(variables),
+    is_variables(variables),
+    is_character_list(abnormal, min_length = 2, max_length = 2),
+    is_df_with_factors(df, list(val = variables$anl)),
+    is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
+    is_factor_no_na(df[variables$split_rows]),
+    is_df_with_no_na_level(df, variables = list(anl = variables$anl), na_level = na_level),
+    is_factor_no_na(df[[variables$anl]])
   )
+
+  # Drop usued levels from df as they are not supposed to be in the final map
+  df <- droplevels(df)
+
+  normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
+  assert_that(
+    # Based on the understanding of clinical data, there should only be one level of normal which is "NORMAL"
+    length(normal_value) == 1
+  )
+
+  # Default method will only have what is observed in the df, and records with all normals will be excluded to avoid
+  # error in layout building.
+  if (method == "default") {
+    assert_that(
+      is_df_with_variables(df, variables = list(anl = variables$anl, split_row = variables$split_rows))
+    )
+    df_abnormal <- subset(df, df[[variables$anl]] %in% unlist(abnormal))
+    map <- unique(df_abnormal[c(variables$split_rows, variables$anl)])
+    map_normal <- unique(subset(map, select = variables$split_rows))
+    map_normal[[variables$anl]] <- normal_value
+    map <- rbind(map, map_normal)
+  } else if (method == "range") {
+    #range method follows the rule that at least one observation with ANRLO > 0 for low
+    #direction and at least one observation with ANRHI is not missing for high direction.
+    assert_that(
+      is_df_with_variables(df, variables),
+      "range_low" %in% names(variables),
+      "range_high" %in% names(variables),
+      "LOW" %in% toupper(names(abnormal)),
+      "HIGH" %in% toupper(names(abnormal))
+    )
+
+    #Define low direction of map
+    df_low <- subset(df, df[[variables$range_low]] > 0)
+    map_low <- unique(df_low[variables$split_rows])
+    low_levels <- unname(unlist(abnormal[toupper(names(abnormal)) == "LOW"]))
+    low_levels_df <- as.data.frame(low_levels)
+    colnames(low_levels_df) <- variables$anl
+    low_levels_df <- do.call("rbind", replicate(nrow(map_low), low_levels_df, simplify = FALSE))
+    rownames(map_low) <- NULL #Just to avoid strange row index in case upstream functions changed
+    map_low <- map_low[rep(seq_len(nrow(map_low)), each = length(low_levels)), ]
+    map_low <- cbind(map_low, low_levels_df)
+
+    #Define high direction of map
+    df_high <- subset(df, df[[variables$range_high]] != na_level | !is.na(df[[variables$range_high]]))
+    map_high <- unique(df_high[variables$split_rows])
+    high_levels <- unname(unlist(abnormal[toupper(names(abnormal)) == "HIGH"]))
+    high_levels_df <- as.data.frame(high_levels)
+    colnames(high_levels_df) <- variables$anl
+    high_levels_df <- do.call("rbind", replicate(nrow(map_high), high_levels_df, simplify = FALSE))
+    rownames(map_high) <- NULL
+    map_high <- map_high[rep(seq_len(nrow(map_high)), each = length(high_levels)), ]
+    map_high <- cbind(map_high, high_levels_df)
+
+    #Define normal of map
+    map_normal <- unique(rbind(map_low, map_high)[variables$split_rows])
+    map_normal[variables$anl] <- normal_value
+
+    map <- rbind(map_low, map_high, map_normal)
+  }
+
+  # map should be all characters
+  map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
+
+  # sort the map final output by split_rows variables
+  for (i in rev(seq_len(length(variables$split_rows)))) {
+    map <- map[order(map[[i]]), ]
+  }
+  map
 }
