@@ -21,6 +21,15 @@
 #'
 #' library(scda)
 #' adlb <- synthetic_cdisc_data("latest")$adlb
+#' adlb <- df_explicit_na(adlb)
+#'
+#' h_map_for_count_abnormal(
+#'   df = adlb,
+#'   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
+#'   abnormal = list(low = c("LOW"), high = c("HIGH")),
+#'   method = "default",
+#'   na_level = "<Missing>"
+#' )
 #'
 h_map_for_count_abnormal <- function(
   df,
@@ -37,7 +46,7 @@ h_map_for_count_abnormal <- function(
     is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
     is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
-    is_factor_no_na(df[variables$split_rows]),
+    !any(is.na(df[variables$split_rows])),
     is_df_with_no_na_level(df, variables = list(anl = variables$anl), na_level = na_level),
     is_factor_no_na(df[[variables$anl]])
   )
