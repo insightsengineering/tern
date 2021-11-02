@@ -349,3 +349,19 @@ on_failure(has_tabletree_colnames) <- function(call, env) {
 
   paste0("required column names ", deparse(missing_col_names), " are not found in table")
 }
+
+#' @describeIn assertion check if the input `df` has `na_level` in its `variables`.
+#' @param df (`data frame`)\cr input dataset
+#' @param variables (`named list`)\cr columns from dataset where you want to check if `na_level` exists.
+#' @param na_level (`string`)\cr the string user has been using to represent NA or missing data.
+#'
+is_df_with_no_na_level <- function(df, variables, na_level) {
+  assert_that(
+    is_df_with_variables(df, variables),
+    is.string(na_level)
+  )
+  !any(df[, unlist(variables)] == na_level)
+}
+on_failure(is_df_with_no_na_level) <- function(call, env){
+  paste(deparse(call$df), "contains missing data as defined by the argument na_level")
+}
