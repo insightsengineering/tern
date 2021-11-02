@@ -22,6 +22,14 @@
 #' library(scda)
 #' adlb <- synthetic_cdisc_data("latest")$adlb
 #'
-h_map_for_count_abnormal <- function() {
-
+h_map_for_count_abnormal <- function(
+  df,
+  variables = list(anl = "ANRIND", split_rows = c("PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
+  abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
+  method = c("default", "range"),
+  na_level = "<Missing>"
+) {
+  method <- match.arg(method)
+  assert_that(
+  )
 }
