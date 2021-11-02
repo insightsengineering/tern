@@ -39,5 +39,14 @@ Helper Function to create a map dataframe from the input dataset, which can be u
 
 library(scda)
 adlb <- synthetic_cdisc_data("latest")$adlb
+adlb <- df_explicit_na(adlb)
+
+h_map_for_count_abnormal(
+  df = adlb,
+  variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "default",
+  na_level = "<Missing>"
+)
 
 }
