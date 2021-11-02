@@ -36,56 +36,159 @@ test_that("extract_survival_subgroups functions as expected with valid input and
   )
 
   expected <- list(
-    survtime = data.frame(
-      arm = factor(rep(c("B: Placebo", "A: Drug X"), 6), levels = c("B: Placebo", "A: Drug X")),
-      n = c(134, 134, 82, 79, 52, 55, 45, 50, 56, 37, 33, 47),
-      n_events = c(87L, 79L, 50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L),
-      median = c(
-        837.42801327648, 1260.49053370248, 850.920785514258, 1274.80474338372,
-        527.665885794264, 849.297617184933, 751.431436610118, 1160.64578110184,
-        722.792588842567, 1269.40388857211, 848.239273340441, 1070.80218764022
+    survtime = structure(
+      list(
+        arm = structure(
+          c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+          .Label = c("B: Placebo", "A: Drug X"),
+          class = "factor"
+        ),
+        n = c(134L, 134L, 82L, 79L, 52L, 55L, 45L, 50L, 56L, 37L, 33L, 47L),
+        n_events = c(
+          87L, 79L, 50L, 45L, 37L, 34L, 30L, 31L, 36L, 19L, 21L, 29L
+          ),
+        median = c(
+          837.42801327648,
+          1260.49053370248,
+          850.920785514258,
+          1274.80474338372,
+          527.665885794264,
+          849.297617184933,
+          751.431436610118,
+          1160.64578110184,
+          722.792588842567,
+          1269.40388857211,
+          848.239273340441,
+          1070.80218764022
+        ),
+        subgroup = c(
+          "All Patients",
+          "All Patients",
+          "F",
+          "F",
+          "M",
+          "M",
+          "LOW",
+          "LOW",
+          "MEDIUM",
+          "MEDIUM",
+          "HIGH",
+          "HIGH"
+        ),
+        var = c(
+          "ALL",
+          "ALL",
+          "SEX",
+          "SEX",
+          "SEX",
+          "SEX",
+          "BMRKR2",
+          "BMRKR2",
+          "BMRKR2",
+          "BMRKR2",
+          "BMRKR2",
+          "BMRKR2"
+        ),
+        var_label = c(
+          "All Patients",
+          "All Patients",
+          "Sex",
+          "Sex",
+          "Sex",
+          "Sex",
+          "Categorical Level Biomarker 2",
+          "Categorical Level Biomarker 2",
+          "Categorical Level Biomarker 2",
+          "Categorical Level Biomarker 2",
+          "Categorical Level Biomarker 2",
+          "Categorical Level Biomarker 2"
+        ),
+        row_type = c(
+          "content",
+          "content",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis"
+        )
       ),
-      subgroup = c(
-        "All Patients", "All Patients", "F", "F", "M", "M",
-        "LOW", "LOW", "MEDIUM", "MEDIUM", "HIGH", "HIGH"
-      ),
-      var = c(rep("ALL", 2), rep("SEX", 4), rep("BMRKR2", 6)),
-      var_label = c(rep("All Patients", 2), rep("Sex", 4), rep("Categorical Level Biomarker 2", 6)),
-      row_type = c(rep("content", 2), rep("analysis", 10)),
-      stringsAsFactors = FALSE
+      row.names = c(NA, -12L),
+      class = "data.frame"
     ),
-    hr = data.frame(
-      arm = rep(" ", 6),
-      n_tot = c(268, 161, 107, 95, 93, 80),
-      n_tot_events = c(166, 95, 71, 61, 55, 50),
-      hr = c(
-        0.71736505115489, 0.697969331159471, 0.783616674201674, 0.705072968604656,
-        0.572806884078014, 0.976900177598777
+    hr = structure(
+      list(
+        arm = c(" ", " ", " ", " ", " ", " "),
+        n_tot = c(268L, 161L, 107L, 95L, 93L, 80L),
+        n_tot_events = c(166, 95, 71, 61, 55, 50),
+        hr = c(
+          0.717365051154891,
+          0.697969331159471,
+          0.783616674201674,
+          0.705072968604656,
+          0.572806884078014,
+          0.976900177598778
+        ),
+        lcl = c(
+          0.527523110746632,
+          0.464781196048063,
+          0.487344418692844,
+          0.424365474268753,
+          0.324419621563317,
+          0.555200234313668
+        ),
+        ucl = c(
+          0.975526201857015,
+          1.04815167089682,
+          1.26000230747263,
+          1.17146167914251,
+          1.01136831633695,
+          1.71890049393127
+        ),
+        conf_level = c(0.95, 0.95, 0.95, 0.95, 0.95, 0.95),
+        pval = c(
+          0.0334029294775114,
+          0.0814817359933965,
+          0.313183467032327,
+          0.17526198076925,
+          0.0517494169527886,
+          0.935389266684535
+        ),
+        pval_label = c(
+          "p-value (log-rank)",
+          "p-value (log-rank)",
+          "p-value (log-rank)",
+          "p-value (log-rank)",
+          "p-value (log-rank)",
+          "p-value (log-rank)"
+        ),
+        subgroup = c("All Patients", "F", "M", "LOW", "MEDIUM", "HIGH"),
+        var = c("ALL", "SEX", "SEX", "BMRKR2", "BMRKR2", "BMRKR2"),
+        var_label = c(
+          "All Patients",
+          "Sex",
+          "Sex",
+          "Categorical Level Biomarker 2",
+          "Categorical Level Biomarker 2",
+          "Categorical Level Biomarker 2"
+        ),
+        row_type = c(
+          "content",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis",
+          "analysis"
+        )
       ),
-      lcl = c(
-        0.527523110746632, 0.464781196048063, 0.487344418692843, 0.424365474268753,
-        0.324419621563317, 0.555200234313668
-      ),
-      ucl = c(
-        0.975526201857014, 1.04815167089682, 1.26000230747263, 1.17146167914251,
-        1.01136831633695, 1.71890049393127
-      ),
-      conf_level = 0.95,
-      pval = c(
-        0.0334029294775113, 0.0814817359933963, 0.313183467032326,
-        0.17526198076925, 0.0517494169527888, 0.935389266684535
-      ),
-      pval_label = rep("p-value (log-rank)", 6),
-      subgroup = c("All Patients", "F", "M", "LOW", "MEDIUM", "HIGH"),
-      var = c("ALL", "SEX", "SEX", "BMRKR2", "BMRKR2", "BMRKR2"),
-      var_label = c("All Patients", "Sex", "Sex", rep("Categorical Level Biomarker 2", 3)),
-      row_type = c("content", rep("analysis", 5)),
-      stringsAsFactors = FALSE
-    )
+      row.names = c(NA, -6L), class = "data.frame")
   )
-
   expect_equal(result, expected, tol = 0.000001)
-
 })
 
 test_that("extract_survival_subgroups works as expected with groups_lists", {
@@ -128,36 +231,45 @@ test_that("extract_survival_subgroups functions as expected with NULL subgroups"
     data = adtte
   )
 
-  expected <- list(
-    survtime = data.frame(
-      arm = factor(c("B: Placebo", "A: Drug X"), levels = c("B: Placebo", "A: Drug X")),
-      n = c(134, 134),
-      n_events = c(87L, 79L),
-      median = c(837.42801327648, 1260.49053370248),
-      subgroup = rep("All Patients", 2),
-      var = rep("ALL", 2),
-      var_label = rep("All Patients", 2),
-      row_type = rep("content", 2),
-      stringsAsFactors = FALSE
-    ),
-    hr = data.frame(
-      arm = " ",
-      n_tot = 268,
-      n_tot_events = 166,
-      hr = 0.71736505115489,
-      lcl = 0.527523110746632,
-      ucl = 0.975526201857014,
-      conf_level = 0.95,
-      pval = 0.0334029294775113,
-      pval_label = "p-value (log-rank)",
-      subgroup = "All Patients",
-      var = "ALL",
-      var_label = "All Patients",
-      row_type = "content",
-      stringsAsFactors = FALSE
+  expected <-
+    list(
+      survtime = structure(
+        list(
+          arm = structure(
+            1:2,
+            .Label = c("B: Placebo", "A: Drug X"),
+            class = "factor"
+          ),
+          n = c(134L, 134L),
+          n_events = c(87L, 79L),
+          median = c(837.42801327648, 1260.49053370248),
+          subgroup = c("All Patients", "All Patients"),
+          var = c("ALL", "ALL"),
+          var_label = c("All Patients", "All Patients"),
+          row_type = c("content", "content")
+        ),
+        row.names = c(NA, -2L),
+        class = "data.frame"
+      ),
+      hr = structure(
+        list(
+          arm = " ",
+          n_tot = 268L,
+          n_tot_events = 166L,
+          hr = 0.717365051154891,
+          lcl = 0.527523110746632,
+          ucl = 0.975526201857015,
+          conf_level = 0.95,
+          pval = 0.0334029294775114,
+          pval_label = "p-value (log-rank)",
+          subgroup = "All Patients",
+          var = "ALL",
+          var_label = "All Patients",
+          row_type = "content"
+        ),
+        row.names = c(NA, -1L),
+        class = "data.frame")
     )
-  )
-
   expect_equal(result, expected, tol = 0.000001)
 })
 
