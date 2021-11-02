@@ -362,6 +362,6 @@ is_df_with_no_na_level <- function(df, variables, na_level) {
   )
   !any(df[, unlist(variables)] == na_level)
 }
-on_failure(is_df_with_no_na_level) <- function(call, env){
+on_failure(is_df_with_no_na_level) <- function(call, env) {
   paste(deparse(call$df), "contains missing data as defined by the argument na_level")
 }

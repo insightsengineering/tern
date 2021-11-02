@@ -31,8 +31,8 @@ test_that("h_map_for_count_abnormal returns the correct map for default method w
 
 test_that("h_map_for_count_abnormal returns the correct map for range method with healthy input", {
 
-  df$ANRLO <- 5
-  df$ANRHI <- 20
+  df$ANRLO <- 5 #nolint
+  df$ANRHI <- 20 #nolint
 
   result <- h_map_for_count_abnormal(
     df = df,
