@@ -24,10 +24,10 @@ h_map_for_count_abnormal(
 
 \item{method}{(\code{string})\cr indicates how the returned map will be constructed. Can be either \code{"default"} or
 \code{"range"}.
-If method is \code{"default"}, the returned map will only have the abnormals that are observed in the \code{df}, and
-records with all normals will be excluded to avoid error in creating layout.
-If method is \code{"range"}, the returned map will be based on the rule that at least one observation with ANRLO > 0 for
-low direction and at least one observation with ANRHI is not missing for high direction.}
+If method is \code{"default"}, the returned map will only have the abnormal directions that are observed in the \code{df}, and
+records with all normal values will be excluded to avoid error in creating layout.
+If method is \code{"range"}, the returned map will be based on the rule that at least one observation with low range > 0
+for low direction and at least one observation with high range is not missing for high direction.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors.}
 }

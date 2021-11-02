@@ -9,10 +9,10 @@
 #' `abnormal = list(Low = "LOW", High = "HIGH"))`
 #' @param method (`string`)\cr indicates how the returned map will be constructed. Can be either `"default"` or
 #' `"range"`.
-#' If method is `"default"`, the returned map will only have the abnormals that are observed in the `df`, and
-#' records with all normals will be excluded to avoid error in creating layout.
-#' If method is `"range"`, the returned map will be based on the rule that at least one observation with ANRLO > 0 for
-#' low direction and at least one observation with ANRHI is not missing for high direction.
+#' If method is `"default"`, the returned map will only have the abnormal directions that are observed in the `df`, and
+#' records with all normal values will be excluded to avoid error in creating layout.
+#' If method is `"range"`, the returned map will be based on the rule that at least one observation with low range > 0
+#' for low direction and at least one observation with high range is not missing for high direction.
 #'
 #' @export
 #'
@@ -60,8 +60,8 @@ h_map_for_count_abnormal <- function(
     length(normal_value) == 1
   )
 
-  # Default method will only have what is observed in the df, and records with all normals will be excluded to avoid
-  # error in layout building.
+  # Default method will only have what is observed in the df, and records with all normal values will be excluded to
+  # avoid error in layout building.
   if (method == "default") {
     assert_that(
       is_df_with_variables(df, variables = list(anl = variables$anl, split_row = variables$split_rows))
