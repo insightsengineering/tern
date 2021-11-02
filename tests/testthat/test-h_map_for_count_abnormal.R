@@ -153,3 +153,30 @@ test_that(
     expect_identical(as.matrix(result), as.matrix(expected))
   }
 )
+
+# for range method, a theoretical map is built based on the rule at least one ANRLO >0 and one ANRHI not missing
+test_that(
+  "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input", {
+    df$ANRLO <- 5 #nolint
+    df$ANRHI <- 20 #nolint
+    df$ANRLO <- ifelse(df$PARAM == "ALT", 0, df$ANRLO) #nolint
+    df$ANRHI <- ifelse(df$PARAM == "CPR", NA, df$ANRHI) #nolint
+
+    result <- h_map_for_count_abnormal(
+      df = df,
+      variables = list(anl = "ANRIND", split_rows = "PARAM", range_low = "ANRLO", range_high = "ANRHI"),
+      abnormal = list(low = c("LOW"), high = c("HIGH")),
+      method = "range"
+    )
+
+    # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
+    # order of anl variable within the split_rows group because the order of split_rows is something we want to check
+    result <- result %>% group_by(PARAM) %>% arrange(ANRIND, .by_group = TRUE)
+
+    expected <- data.frame(
+      PARAM = c(rep("ALT", 2), rep("CPR", 2)),
+      ANRIND = c("HIGH", "NORMAL", "LOW", "NORMAL")
+    )
+    expect_identical(as.matrix(result), as.matrix(expected))
+  }
+)
