@@ -180,6 +180,7 @@ reference:
       - h_interaction_term_labels
       - h_logistic_inter_terms
       - h_logistic_simple_terms
+      - h_map_for_count_abnormal
       - h_mmrm_cov
       - h_mmrm_diagnostic
       - h_mmrm_fixed
