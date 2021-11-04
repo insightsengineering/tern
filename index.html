@@ -87,7 +87,6 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
 <div id="tern" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#tern" class="anchor"></a>tern</h1></div>
@@ -96,55 +95,55 @@
 <li><p>Note that tern can be used to create output for regulatory submissions when used in the enableR system.</p></li>
 <li><p>Use of tern in other contexts/systems is for exploratory analysis, quality control, etc.</p></li>
 </ul>
-</div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
-<div id="clone-and-install-manually" class="section level2">
+<div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clone-and-install-manually" class="anchor"></a>Clone and install manually</h2>
+<a href="#installation" class="anchor"></a>Installation</h2>
+<div id="clone-and-install-manually" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clone-and-install-manually" class="anchor"></a>Clone and install manually</h3>
 <ol>
 <li>
 <p>Clone the repository</p>
 <p>The repository can be downloaded directly from the <code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository">Github tutorial on cloning to learn more</a>). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github">connecting to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">creating and using PAT</a>.</p>
 <ol>
-<li>
-<p>Using PAT. Input in the Git Bash console, PowerShell or any Linux shell:</p>
-<pre><code>$ git clone https://github.com/insightsengineering/tern.git
-Username: your_username_goes_here
-Password: your_token_goes_here</code></pre>
-</li>
+<li>Using PAT. Input in the Git Bash console, PowerShell or any Linux shell:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git clone https://github.com/insightsengineering/tern.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Username:</span> your_username_goes_here</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Password:</span> your_token_goes_here</span></code></pre></div>
+<ol>
 <li>
 <p>Using SSH. If set up properly, the repository is ready to be cloned executing:</p>
-<pre><code>$ git clone https://github.com/insightsengineering/tern.git</code></pre>
-<p>This creates a subdirectory <code>tern</code> containing the cloned repository.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/insightsengineering/tern.git</span></code></pre></div>
 </li>
 </ol>
+<p>This creates a subdirectory <code>tern</code> containing the cloned repository.</p>
 </li>
 <li>
 <p>Build and install</p>
 <p>The native R tools provide a quick way to install a package. Run in PowerShell or any Linux shell:</p>
-<pre><code>$ R CMD build tern</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD build tern</span></code></pre></div>
 <p>This command builds the package and creates an archive. The name of the archive is output by the command at then of building. Then input in the shell:</p>
-<pre><code>$ Rscript -e 'install.packages("name_of_the_archive")</code></pre>
-<p>Here is an example of a real command (with name_of_the_archive substituted by the output of the build command): ``` $ Rscript -e ‘install.packages(“tern_0.9.5.9000.tar.gz”)’</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("name_of_the_archive")'</span></span></code></pre></div>
+<p>Here is an example of a real command (with name_of_the_archive substituted by the output of the build command):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("tern_0.9.5.9000.tar.gz")'</span></span></code></pre></div>
 </li>
 </ol>
 </div>
 </div>
-<div id="presentations" class="section level1">
-<h1 class="hasAnchor">
-<a href="#presentations" class="anchor"></a>Presentations</h1>
+<div id="presentations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#presentations" class="anchor"></a>Presentations</h2>
 <ul>
 <li><a href="https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing">Stats Software Initiative - R Series. June 18, 2018</a></li>
 </ul>
 </div>
-<div id="acknowledgments" class="section level1">
-<h1 class="hasAnchor">
-<a href="#acknowledgments" class="anchor"></a>Acknowledgments</h1>
+<div id="acknowledgments" class="section level2">
+<h2 class="hasAnchor">
+<a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
 <p>There are a number of people who have previously been actively working on <code>tern</code> including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao Yu Mo.</p>
 </div>
-
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
