@@ -1,9 +1,9 @@
 # tern 0.7.5.9000
-* Refactored `count_abnormal_by_worst_grade` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators. This is a breaking change. 
+* Refactored `count_abnormal_by_worst_grade` `tern` function and related statistics and formatting functions to use a more efficient layout with `.spl_context` argument used for determining denominators and with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. This is a breaking change. 
 * Enhanced `tern` functions `tabulate_survival_subgroups` and `tabulate_rsp_subgroups` (Survival Duration and Best Overall Response analyses) to calculate `N`-s based on the records considered to create the model. 
 * Refactored `count_abnormal` function and related statistics and formatting functions to use a more 
-efficient layout with `trim_levels_to_map` and update `abnormal` argument to be able to take more than one level
-for each direction. This is a breaking change.
+efficient layout with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. Also updated
+`abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
 
 
 # tern 0.7.5
