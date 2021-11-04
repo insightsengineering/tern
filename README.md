@@ -8,9 +8,9 @@ the `teal` modules for outputs in `tern` in the `teal.modules.clinical` R packag
 
   - Use of tern in other contexts/systems is for exploratory analysis, quality control, etc.
 
-# Installation
+## Installation
 
-## Clone and install manually
+### Clone and install manually
 1. Clone the repository
 
    The repository can be downloaded directly from the `github.com` site as an archive (see [Github tutorial on cloning to learn more](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository)). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on [connecting to Github using SSH](https://docs.github.com/en/github/authenticating-to-github) or [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
@@ -51,11 +51,11 @@ the `teal` modules for outputs in `tern` in the `teal.modules.clinical` R packag
    ```
 
 
-# Presentations
+## Presentations
 
   - [Stats Software Initiative - R Series.
     June 18, 2018](https://docs.google.com/presentation/d/1OB7MMt3YKzfMJ-gXcGpcRqM8tjbMZWqeEki164L38i4/edit?usp=sharing)
 
-# Acknowledgments
+## Acknowledgments
 
 There are a number of people who have previously been actively working on `tern` including: Maximilian Mordig, Jennifer Li, Chendi Liao, Yuyao Song, Edgar Manukyan, Carolyn Zhang, Mark Rothe, Xiao Yu Mo.
