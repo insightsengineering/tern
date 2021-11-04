@@ -36,7 +36,8 @@ test_that("or_clogit estimates right OR and CI", {
     or_ci = list(# from SAS
       b = c(est = 0.288, lcl = 0.036, ucl = 2.272),
       c = c(est = 0.780, lcl = 0.075, ucl = 8.146)
-    )
+    ),
+    n_tot = setNames(20, "n_tot")
   )
   expect_equal(result, expected, tolerance = 1e-3)
 })
@@ -59,7 +60,8 @@ test_that("s_odds_ratio estimates right OR and CI (unstratified analysis)", {
     or_ci = with_label(
       c(est = 1 / 2 / 2 / 1, lcl = 0.0083, ucl = 7.4518),
       "Odds Ratio (95% CI)"
-    )
+    ),
+    n_tot = with_label(setNames(6, "n_tot"), "Total n")
   )
   expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -86,7 +88,8 @@ test_that("s_odds_ratio estimates right OR and CI (stratified analysis)", {
     or_ci = with_label(
       c(est = 0.76898, lcl = 0.34242, ucl = 1.72692),
       "Odds Ratio (95% CI)"
-    )
+    ),
+    n_tot = with_label(setNames(100, "n_tot"), "Total n")
   )
   expect_equal(result, expected, tolerance = 1e-4)
 })
@@ -105,8 +108,14 @@ test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "Odds Ratio (95% CI)", "a", "", "b", "0.25 (0.01 - 7.45)",
-      "c", "0.5 (0.02 - 11.09)"
+      "",
+      "Odds Ratio (95% CI)",
+      "a",
+      "",
+      "b",
+      "0.25 (0.01 - 7.45)",
+      "c",
+      "0.5 (0.02 - 11.09)"
     ),
     .Dim = c(2L, 4L)
   )
@@ -128,13 +137,20 @@ test_that("estimate_odds_ratio estimates right OR and CI (stratified analysis)",
     build_table(df = data)
 
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "Odds Ratio (95% CI)", "A", "", "B", "1.3 (0.58 - 2.92)"),
-    .Dim = 2:3
-  )
+  expected_matrix <-
+    structure(
+      c(
+        "",
+        "Odds Ratio (95% CI)",
+        "A",
+        "",
+        "B",
+        "1.3 (0.58 - 2.92)"
+      ),
+      .Dim = 2:3
+    )
   expect_identical(result_matrix, expected_matrix)
 })
-
 
 test_that("estimate_odds_ratio works with strata and combined groups", {
   set.seed(1, kind = "Mersenne-Twister")
@@ -163,8 +179,17 @@ test_that("estimate_odds_ratio works with strata and combined groups", {
 
   result <- build_table(lyt = lyt, df = anl)
   result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c("", "Odds Ratio (95% CI)", "C: Combination", "", "A: Drug X/B: Placebo", "1.24 (0.54 - 2.89)"), .Dim = 2:3
-  )
+  expected_matrix <-
+    structure(
+      c(
+        "",
+        "Odds Ratio (95% CI)",
+        "C: Combination",
+        "",
+        "A: Drug X/B: Placebo",
+        "1.24 (0.54 - 2.89)"
+      ),
+      .Dim = 2:3
+    )
   expect_identical(result_matrix, expected_matrix)
 })

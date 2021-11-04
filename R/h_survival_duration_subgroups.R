@@ -59,9 +59,9 @@ NULL
 h_survtime_df <- function(tte, is_event, arm) {
 
   assert_that(
-    is_numeric_vector(tte),
-    is_logical_vector(is_event),
-    is_valid_factor(arm),
+    is.numeric(tte),
+    is.logical(is_event),
+    is.factor(arm),
     is_equal_length(tte, is_event, arm)
   )
 
@@ -70,6 +70,11 @@ h_survtime_df <- function(tte, is_event, arm) {
     is_event = is_event,
     stringsAsFactors = FALSE
   )
+
+  #Delete NAs
+  non_missing_rows <- complete.cases(df_tte)
+  df_tte <- df_tte[non_missing_rows, ]
+  arm <- arm[non_missing_rows]
 
   lst_tte <- split(df_tte, arm)
   lst_results <- Map(function(x, arm) {
@@ -192,9 +197,9 @@ h_survtime_subgroups_df <- function(variables,
 h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control_coxph()) {
 
   assert_that(
-    is_numeric_vector(tte),
-    is_logical_vector(is_event),
-    is_valid_factor(arm),
+    is.numeric(tte),
+    is.logical(is_event),
+    is.factor(arm),
     are_equal(nlevels(arm), 2),
     is_equal_length(tte, is_event, arm)
   )
@@ -237,8 +242,8 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
-      n_tot = nrow(df_tte),
-      n_tot_events = sum(df_tte$is_event),
+      n_tot = unname(as.numeric(result$n_tot)),
+      n_tot_events = unname(as.numeric(result$n_tot_events)),
       hr = unname(as.numeric(result$hr)),
       lcl = unname(result$hr_ci[1]),
       ucl = unname(result$hr_ci[2]),
@@ -247,13 +252,18 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       pval_label = obj_label(result$pvalue),
       stringsAsFactors = FALSE
     )
-  } else {
 
+  } else if (
+    (nrow(l_df[[1]]) == 0 && nrow(l_df[[2]]) > 0) ||
+    (nrow(l_df[[1]]) > 0 && nrow(l_df[[2]]) == 0)
+  ) {
+
+    df_tte_complete <- df_tte[complete.cases(df_tte), ]
     df <- data.frame(
       # Dummy column needed downstream to create a nested header.
       arm = " ",
-      n_tot = nrow(df_tte),
-      n_tot_events = sum(df_tte$is_event),
+      n_tot = nrow(df_tte_complete),
+      n_tot_events = sum(df_tte_complete$is_event),
       hr = NA,
       lcl = NA,
       ucl = NA,
@@ -262,6 +272,22 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
       pval_label = NA,
       stringsAsFactors = FALSE
     )
+  } else {
+
+    df <- data.frame(
+      # Dummy column needed downstream to create a nested header.
+      arm = " ",
+      n_tot = 0L,
+      n_tot_events = 0L,
+      hr = NA,
+      lcl = NA,
+      ucl = NA,
+      conf_level = control[["conf_level"]],
+      pval = NA,
+      pval_label = NA,
+      stringsAsFactors = FALSE
+    )
+
   }
 
   df
