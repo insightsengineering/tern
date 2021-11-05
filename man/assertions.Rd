@@ -211,4 +211,11 @@ all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
 all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
 all_elements_in_ref(c(1:3), c(1:5))
 
+
+df <- data.frame(a = 1:3, b = 2:4)
+df$a <- ifelse(df$a == 1, "<Missing>", df$a)
+is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
+is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
+is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
+
 }

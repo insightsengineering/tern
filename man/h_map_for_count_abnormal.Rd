@@ -18,8 +18,8 @@ h_map_for_count_abnormal(
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{df}. Default to
-\code{list(Low = "LOW LOW", High = "HIGH HIGH")} but you can also group different levels into the name list, for example,
+\item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{df}. Based on the levels of abnormality
+of the input dataset, it can be something like \code{list(Low = "LOW LOW", High = "HIGH HIGH")} or
 \verb{abnormal = list(Low = "LOW", High = "HIGH"))}}
 
 \item{method}{(\code{string})\cr indicates how the returned map will be constructed. Can be either \code{"default"} or
