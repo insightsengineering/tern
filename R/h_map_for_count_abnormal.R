@@ -83,9 +83,6 @@ h_map_for_count_abnormal <- function(
   # Default method will only have what is observed in the df, and records with all normal values will be excluded to
   # avoid error in layout building.
   if (method == "default") {
-    assert_that(
-      is_df_with_variables(df, variables = list(anl = variables$anl, split_row = variables$split_rows))
-    )
     df_abnormal <- subset(df, df[[variables$anl]] %in% unlist(abnormal))
     map <- unique(df_abnormal[c(variables$split_rows, variables$anl)])
     map_normal <- unique(subset(map, select = variables$split_rows))
