@@ -354,6 +354,7 @@ on_failure(has_tabletree_colnames) <- function(call, env) {
 #' @param df (`data frame`)\cr input dataset.
 #' @param variables (`named list`)\cr columns from dataset where you want to check if `na_level` exists.
 #' @param na_level (`string`)\cr the string user has been using to represent NA or missing data.
+#' @export
 #'
 #' @examples
 #'
