@@ -143,6 +143,7 @@
 <li>Refactored <code>count_abnormal_by_worst_grade</code> <code>tern</code> function and related statistics and formatting functions to use a more efficient layout with <code>.spl_context</code> argument used for determining denominators and with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. This is a breaking change.</li>
 <li>Enhanced <code>tern</code> functions <code>tabulate_survival_subgroups</code> and <code>tabulate_rsp_subgroups</code> (Survival Duration and Best Overall Response analyses) to calculate <code>N</code>-s based on the records considered to create the model.</li>
 <li>Refactored <code>count_abnormal</code> function and related statistics and formatting functions to use a more efficient layout with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. Also updated <code>abnormal</code> argument to be able to consider more than one level for each direction. This is a breaking change.</li>
+<li>Added <code>h_map_for_count_abnormal</code> so that the map used in <code>trim_levels_to_map</code> split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.</li>
 </ul>
 </div>
     <div id="tern-075" class="section level1">
