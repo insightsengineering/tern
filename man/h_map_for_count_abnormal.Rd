@@ -49,6 +49,14 @@ h_map_for_count_abnormal(
   na_level = "<Missing>"
 )
 
+h_map_for_count_abnormal(
+  df = adlb,
+  variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "range",
+  na_level = "<Missing>"
+)
+
 df <- data.frame(
  USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
  AVISIT = c(

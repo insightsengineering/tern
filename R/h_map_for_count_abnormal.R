@@ -31,6 +31,14 @@
 #'   na_level = "<Missing>"
 #' )
 #'
+#' h_map_for_count_abnormal(
+#'   df = adlb,
+#'   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
+#'   abnormal = list(low = c("LOW"), high = c("HIGH")),
+#'   method = "range",
+#'   na_level = "<Missing>"
+#' )
+#'
 #' df <- data.frame(
 #'  USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
 #'  AVISIT = c(
@@ -92,7 +100,7 @@ h_map_for_count_abnormal <- function(
     #range method follows the rule that at least one observation with ANRLO > 0 for low
     #direction and at least one observation with ANRHI is not missing for high direction.
     assert_that(
-      is_df_with_variables(df, variables),
+      is_df_with_variables(df, variables = list(range_low = variables$range_low, range_high = variables$range_high)),
       "range_low" %in% names(variables),
       "range_high" %in% names(variables),
       "LOW" %in% toupper(names(abnormal)),
