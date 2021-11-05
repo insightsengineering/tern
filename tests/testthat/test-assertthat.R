@@ -238,3 +238,21 @@ test_that("is_df_with_nlevels_factor gives expected error message for >= relatio
     relation = ">="
   )), "variable b in data frame df should have at least 5 levels, but has 3 levels: a, b, x")
 })
+
+# is_df_with_no_na_level ----
+
+test_that("is_df_with_no_na_level is TRUE with healthy input", {
+  expect_true(is_df_with_no_na_level(
+    df = data.frame(a = "A", b = 3),
+    variables = list(vars = c("a", "b")),
+    na_level = "<Missing>"
+  ))
+})
+
+test_that("is_df_with_no_na_level is FALSE with missing data", {
+  expect_false(is_df_with_no_na_level(
+    df = data.frame(a = "A", b = "<Missing>"),
+    variables = list(vars = c("a", "b")),
+    na_level = "<Missing>"
+  ))
+})

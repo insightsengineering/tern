@@ -109,6 +109,7 @@ Collate:
     'g_waterfall.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_biomarkers_subgroups.R'
+    'h_map_for_count_abnormal.R'
     'h_response_biomarkers_subgroups.R'
     'h_response_subgroups.R'
     'h_stack_by_baskets.R'

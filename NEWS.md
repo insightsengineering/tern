@@ -4,6 +4,7 @@
 * Refactored `count_abnormal` function and related statistics and formatting functions to use a more 
 efficient layout with `trim_levels_to_map` split function under `split_rows_by` to show only the desired levels in the table. Also updated
 `abnormal` argument to be able to consider more than one level for each direction. This is a breaking change.
+* Added `h_map_for_count_abnormal` so that the map used in `trim_levels_to_map` split function can be created by calling this helper function. Currently it supports two methods: one with all observed mapping, one with at least low limit above zero and at least one non missing high limit.
 
 
 # tern 0.7.5

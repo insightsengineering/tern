@@ -180,6 +180,7 @@ reference:
       - h_interaction_term_labels
       - h_logistic_inter_terms
       - h_logistic_simple_terms
+      - h_map_for_count_abnormal
       - h_mmrm_cov
       - h_mmrm_diagnostic
       - h_mmrm_fixed
@@ -355,6 +356,7 @@ reference:
       - is_df_with_factors
       - is_df_with_nlevels_factor
       - is_df_with_variables
+      - is_df_with_no_na_level
       - is_factor_no_na
       - is_nonnegative_count
       - is_proportion

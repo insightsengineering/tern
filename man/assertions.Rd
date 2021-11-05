@@ -17,6 +17,7 @@
 \alias{is_valid_character}
 \alias{all_elements_in_ref}
 \alias{has_tabletree_colnames}
+\alias{is_df_with_no_na_level}
 \title{Additional Assertions for \code{assert_that}}
 \usage{
 is_character_or_factor(x)
@@ -48,13 +49,15 @@ is_valid_character(x)
 all_elements_in_ref(x, ref)
 
 has_tabletree_colnames(x, col_names)
+
+is_df_with_no_na_level(df, variables, na_level)
 }
 \arguments{
 \item{x}{object to test}
 
-\item{df}{supposed data frame to test}
+\item{df}{(\verb{data frame})\cr input dataset.}
 
-\item{variables}{(named \code{list} of \code{character})\cr supposed variables list to test}
+\item{variables}{(\verb{named list})\cr columns from dataset where you want to check if \code{na_level} exists.}
 
 \item{variable}{(\code{string})\cr name of the single variable.}
 
@@ -69,6 +72,8 @@ has_tabletree_colnames(x, col_names)
 \item{ref}{(\code{vector})\cr where matches from \code{x} are sought for \code{all_elements_in_ref}.}
 
 \item{col_names}{(\code{character})\cr column names which should be present in the table.}
+
+\item{na_level}{(\code{string})\cr the string user has been using to represent NA or missing data.}
 }
 \value{
 \code{flag} whether the assertion holds (\code{TRUE} or \code{FALSE}). When used inside
@@ -111,6 +116,8 @@ is a factor with \code{n_levels} number of levels.
 \item \code{all_elements_in_ref}: Check whether all elements of \code{x} are in a reference vector.
 
 \item \code{has_tabletree_colnames}: Check whether rtables object \code{x} has the specified column names.
+
+\item \code{is_df_with_no_na_level}: check if the input \code{df} has \code{na_level} in its \code{variables}.
 }}
 
 \examples{
@@ -203,5 +210,12 @@ is_valid_character("")
 all_elements_in_ref(c("a", "b"), c("a", "b", "c"))
 all_elements_in_ref(c("a", "d"), c("a", "b", "c"))
 all_elements_in_ref(c(1:3), c(1:5))
+
+
+df <- data.frame(a = 1:3, b = 2:4)
+df$a <- ifelse(df$a == 1, "<Missing>", df$a)
+is_df_with_no_na_level(df, variables = list(a = "a"), na_level = "<Missing>")
+is_df_with_no_na_level(df, variables = list(b = "b"), na_level = "<Missing>")
+is_df_with_no_na_level(df, variables = list(a = "a", b = "b"), na_level = "<Missing>")
 
 }
