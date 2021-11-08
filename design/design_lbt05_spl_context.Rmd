@@ -95,7 +95,7 @@ adlb <- df_explicit_na(adlb)
 # Recode ADLB parameters to so that each one has different
 # possible abnormalities
 adlb_f$ANRIND[adlb_f$PARAMCD == "ALT" & (adlb_f$ANRIND == "HIGH" | adlb_f$ANRIND == "HIGH HIGH")] <- "LOW"
-adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" || adlb_f$ANRIND == "LOW LOW")] <- "HIGH"
+adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" | adlb_f$ANRIND == "LOW LOW")] <- "HIGH"
 ```
 
 ## New Tern function
