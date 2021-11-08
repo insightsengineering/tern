@@ -1,0 +1,255 @@
+---
+title: "Design for LBT05"
+author: "Imanol Zubizarreta"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: journal
+    highlight: zenburn
+vignette: >
+  %\VignetteIndexEntry{Design of LBT05}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "svg"
+)
+```
+
+## Configuration
+
+```{r setup}
+library(rtables)
+library(tern)
+library(assertthat)
+library(dplyr)
+
+packageVersion("tern")
+packageVersion("rtables")
+```
+
+## Data for examples
+
+```{r data, results = "asis", eval = TRUE}
+library(scda)
+library(dplyr)
+library(tern)
+
+adsl <- synthetic_cdisc_data("latest")$adsl
+adlb <- synthetic_cdisc_data("latest")$adlb
+
+# Ensure character variables are converted to factors and empty strings and NAs are explicit missing levels.
+adsl <- df_explicit_na(adsl)
+adlb <- df_explicit_na(adlb)
+
+  # Modify ANRIND and create AVALCAT1/PARCAT2
+  # PARCAT2 is just used for filtering, but in order to be the
+  # filtering as realistic as possible, will create the variable.
+  qntls <- adlb %>%
+    group_by(PARAMCD) %>%
+    summarise(as_tibble(t(quantile(AVAL, probs = c(0.1, 0.9)))), .groups = "drop_last") %>%
+    rename(q1 = 2, q2 = 3)
+
+  adlb <- adlb %>%
+    left_join(qntls, by = "PARAMCD")
+
+  avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
+
+  set.seed(1)
+  adlb <- adlb %>%
+    group_by(USUBJID, PARAMCD, BASETYPE) %>%
+    mutate(ANRIND = factor(case_when(
+      ANRIND == "LOW" & AVAL <= q1 ~ "LOW LOW",
+      ANRIND == "HIGH" & AVAL >= q2 ~ "HIGH HIGH",
+      TRUE ~ as.character(ANRIND)),
+      levels = c("", "HIGH", "HIGH HIGH", "LOW", "LOW LOW", "NORMAL")
+    ),
+    AVALCAT1 = factor(case_when(
+      ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
+        sample(x = avalcat1, size = n(), replace = TRUE, prob = c(0.3, 0.6, 0.1)),
+      TRUE ~ ""),
+      levels = c("", avalcat1)
+    ),
+    PARCAT2 = factor(ifelse(ANRIND %in% c("HIGH HIGH", "LOW LOW"), "LS",
+                            sample(c("SI", "CV", "LS"), size = n(), replace = TRUE)
+    )
+    )) %>%
+    select(-q1, -q2)
+ 
+  #Preprocessing steps
+  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL)) 
+  
+  
+  #adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT" & ANRIND %in% c("LOW", "LOW LOW"))
+  
+  
+# Recode ADLB parameters to so that each one has different
+# possible abnormalities
+adlb_f$ANRIND[adlb_f$PARAMCD == "ALT" & (adlb_f$ANRIND == "HIGH" | adlb_f$ANRIND == "HIGH HIGH")] <- "LOW"
+adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" || adlb_f$ANRIND == "LOW LOW")] <- "HIGH"
+```
+
+## New Tern function
+
+```{r}
+s_count_abnormal_by_marked <- function(df,
+                                       .var = "AVALCAT1",
+                                       .spl_context,
+                                       abnormal = list(Low = c("LOW LOW"), High = c("HIGH HIGH")),
+                                       category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
+                                       variables = list(id = "USUBJID", param = "PARAM", direction = "ANRIND")
+                                       ) {
+  assert_that(
+    is.string(.var),
+    is.list(abnormal),
+    is.list(variables),
+    is.list(category),
+    all(names(abnormal) %in% c("Low", "High")),
+    all(names(category) %in% c("single", "last_replicated")),
+    all(names(variables) %in% c("id", "param", "direction")),
+    is_df_with_variables(df, c(aval = .var, variables)),
+    is_character_or_factor(df[[.var]]),
+    is_character_or_factor(df[[variables$id]])
+    #all(abnormal %in% c("LOW LOW", "HIGH HIGH"))
+  )
+  
+  # For numerators, select records based on direction.
+  # `abnormal` contains values for both directions but 
+  # now split_rows_by("ANRIND")  will be used and hence there should just be 
+  # "LOW LOW" or "HIGH HIGH" but not both. We will verify this anyway.
+  df_abn_low <- df[df[[variables$direction]] %in% abnormal$Low, ]
+  df_abn_high <- df[df[[variables$direction]] %in% abnormal$High, ]
+  assert_that(nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L)
+  
+  
+  first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
+  # Patients in the denominator have at least one post-baseline visit.
+  subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
+  subj_cur_col <- subj[first_row$cur_col_subset[[1]]]
+  # Some subjects may have a record for high and low directions but
+  # should be counted only once.
+  denom <- length(unique(subj_cur_col))
+
+  if (denom > 0) {
+    
+    #numerator
+    df_abn <- df[df[[variables$direction]] %in% abnormal, ]
+    
+    subjects_last_replicated <- unique(df_abn[df_abn[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE])
+    subjects_single <- unique(df_abn[df_abn[[.var]] %in% category[["single"]], variables$id, drop = TRUE])
+    # Subjects who have both single and last/replicated abnormalities are counted in only the last/replicated group.
+    subjects_single <- setdiff(subjects_single, subjects_last_replicated)
+    n_single <- length(subjects_single)
+    n_last_replicated <- length(subjects_last_replicated)
+    n_any <- n_single + n_last_replicated
+    result <- list(count_fraction = list(
+      "Single, not last" = c(n_single, n_single / denom),
+      "Last or replicated" = c(n_last_replicated, n_last_replicated / denom),
+      "Any Abnormality" = c(n_any, n_any / denom)
+    ))
+  } else if (denom == 0) {
+    result <- list(count_fraction = list(
+      "Single, not last" = c(0, 0),
+      "Last or replicated" = c(0, 0),
+      "Any Abnormality" = c(0, 0)
+    ))
+  }
+  result
+}
+
+
+adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT") %>% droplevels()
+full_parent_df <- list(adlb_f_alt, "not_needed")
+cur_col_subset <- list(adlb_f_alt$ARMCD == "ARM A", "not_needed")
+spl_context <- data.frame(
+  split = c("PARAM", "ANRIND"),
+  full_parent_df = I(full_parent_df),
+  cur_col_subset = I(cur_col_subset)
+  )
+
+s_count_abnormal_by_marked(
+   df = adlb_f_alt,
+   .spl_context = spl_context,
+   .var = "AVALCAT1"
+   )
+
+
+
+
+a_count_abnormal_by_marked <- make_afun(  #nolint
+  s_count_abnormal_by_marked,
+  .formats = c(count_fraction = format_count_fraction)
+)
+
+
+
+count_abnormal_by_marked <- function(lyt,
+                                     var,
+                                     abnormal,
+                                     variables,
+                                     ...,
+                                     table_names = abnormal,
+                                     .stats = NULL,
+                                     .formats = NULL,
+                                     .labels = NULL,
+                                     .indent_mods = NULL) {
+  assert_that(
+    is.string(var),
+    !is.null(names(abnormal)),
+    is_equal_length(abnormal, table_names)
+  )
+  afun <- make_afun(
+    a_count_abnormal_by_marked,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .ungroup_stats = "count_fraction"
+  )
+  for (i in seq_along(abnormal)) {
+    abn <- abnormal[i]
+    varlist <- variables
+    lyt <- analyze(
+      lyt = lyt,
+      vars = var,
+      var_labels = names(abn),
+      table_names = table_names[i],
+      afun = afun,
+      extra_args = c(list(abnormal = abn, variables = varlist, list(...))),
+      show_labels = "visible"
+    )
+  }
+  lyt
+}
+
+
+```
+
+
+## Full LBT05 Example
+```{r}
+# Define the split function
+split_fun <- drop_split_levels
+
+lyt <- basic_table() %>%
+  split_cols_by("ACTARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAM", split_fun = split_fun) %>%
+  summarize_num_patients(var = "USUBJID",
+                         .stats = "unique_count") %>%
+  count_abnormal_by_marked(var = "AVALCAT1_FL",
+                              abnormal = c(Low = "low", High = "high"),
+                              variables = list(id = "USUBJID", direction = "DIRECTION"))
+
+result <- build_table(lyt, df = adlb_f, alt_counts_df = adsl_f)
+result
+```
