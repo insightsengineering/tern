@@ -86,7 +86,7 @@ adlb <- df_explicit_na(adlb)
     select(-q1, -q2)
  
   #Preprocessing steps
-  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL)) 
+  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))
   
   
   #adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT" & ANRIND %in% c("LOW", "LOW LOW"))
@@ -98,7 +98,7 @@ adlb_f$ANRIND[adlb_f$PARAMCD == "ALT" & (adlb_f$ANRIND == "HIGH" | adlb_f$ANRIND
 adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" | adlb_f$ANRIND == "LOW LOW")] <- "HIGH"
 
 # will add an additional preprocessing step to derive a new variable that is going to be used as the split variable instead of ANRIND, to have a correct split labels
-adlb_f <- adlb_f %>% 
+adlb_f <- adlb_f %>%
   mutate(abn_dir = factor(case_when(
     ANRIND == "LOW LOW" ~ "Low",
     ANRIND == "HIGH HIGH" ~ "High",
@@ -192,7 +192,6 @@ s_count_abnormal_by_marked(
    .var = "AVALCAT1"
    )
 
-
 a_count_abnormal_by_marked <- make_afun(  #nolint
   s_count_abnormal_by_marked,
   .formats = c(count_fraction = format_count_fraction)
@@ -243,12 +242,12 @@ map <- unique(adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "
   as.data.frame() %>%
   arrange(PARAM, abn_dir, AVALCAT1)
 
-lyt_map <- basic_table() %>% 
-  split_cols_by("ARM") %>% 
+lyt_map <- basic_table() %>%
+  split_cols_by("ARM") %>%
   split_rows_by("PARAM") %>%
-  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
   split_rows_by("abn_dir", split_fun = trim_levels_to_map(map = map)) %>%
-  count_abnormal_by_marked(var = "AVALCAT1") 
+  count_abnormal_by_marked(var = "AVALCAT1")
 
 table_map <- build_table(lyt = lyt_map, df = adlb_f)
 table_map
@@ -258,35 +257,34 @@ table_map
 ### With `trim_levels_in_group`
 
 ```{r}
-lyt_in_group <- basic_table() %>% 
-  split_cols_by("ARM") %>% 
+lyt_in_group <- basic_table() %>%
+  split_cols_by("ARM") %>%
   split_rows_by("PARAM", split_fun = trim_levels_in_group(innervar  = "abn_dir")) %>%
-  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
   split_rows_by("abn_dir") %>%
-  count_abnormal_by_marked(var = "AVALCAT1") 
+  count_abnormal_by_marked(var = "AVALCAT1")
 
 
 table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f)
 table_in_group
-
 ```
 
 ### Without any new split function 
 
 ```{r}
-lyt_normal <- basic_table() %>% 
-  split_cols_by("ARM") %>% 
+lyt_normal <- basic_table() %>%
+  split_cols_by("ARM") %>%
   split_rows_by("PARAM") %>%
-  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
   split_rows_by("abn_dir") %>%
-  count_abnormal_by_marked(var = "AVALCAT1") 
+  count_abnormal_by_marked(var = "AVALCAT1")
 
 
 table_normal <- build_table(lyt = lyt_normal, df = adlb_f)
 table_normal
 ```
 
-## Deleting 0 rows for `Single, not last` and `Last or replicated` 
+## Deleting 0 rows for `Single, not last` and `Last or replicated`
 
 If we want to remove the 0 cases of `Single, not last` and `Last or replicated` we have to keep using `trim_rows`
 
@@ -321,12 +319,12 @@ adlb_f_no_ALT <- adlb_f %>% #nolint
   filter(PARAM != "Alanine Aminotransferase Measurement") %>%
   droplevels()
 
-lyt_map_emp <- basic_table() %>% 
-  split_cols_by("ARM") %>% 
+lyt_map_emp <- basic_table() %>%
+  split_cols_by("ARM") %>%
   split_rows_by("PARAM") %>%
-  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
   split_rows_by("abn_dir", split_fun = trim_levels_to_map(map = empirical_map1)) %>%
-  count_abnormal_by_marked(var = "AVALCAT1") 
+  count_abnormal_by_marked(var = "AVALCAT1")
 
 table_map_emp <- build_table(lyt = lyt_map_emp, df = adlb_f_no_ALT)
 table_map_emp
@@ -340,12 +338,12 @@ In this scenario we are not obtaining an error but introduce rows with 0s in the
 map2 <- map
 map2[map2$PARAM == "Alanine Aminotransferase Measurement", 2] <- "High"
 
-lyt_map2 <- basic_table() %>% 
-  split_cols_by("ARM") %>% 
+lyt_map2 <- basic_table() %>%
+  split_cols_by("ARM") %>%
   split_rows_by("PARAM") %>%
-  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
   split_rows_by("abn_dir", split_fun = trim_levels_to_map(map = map2)) %>%
-  count_abnormal_by_marked(var = "AVALCAT1") 
+  count_abnormal_by_marked(var = "AVALCAT1")
 
 table_map2 <- build_table(lyt = lyt_map2, df = adlb_f)
 table_map2
