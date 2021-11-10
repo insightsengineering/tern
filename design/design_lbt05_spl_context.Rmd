@@ -93,9 +93,20 @@ adlb <- df_explicit_na(adlb)
   
   
 # Recode ADLB parameters to so that each one has different
-# possible abnormalities
+# possible marked abnormalities
 adlb_f$ANRIND[adlb_f$PARAMCD == "ALT" & (adlb_f$ANRIND == "HIGH" | adlb_f$ANRIND == "HIGH HIGH")] <- "LOW"
 adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" | adlb_f$ANRIND == "LOW LOW")] <- "HIGH"
+
+# will add an additional preprocessing step to derive a new variable that is going to be used as the split variable instead of ANRIND, to have a correct split labels
+adlb_f <- adlb_f %>% 
+  mutate(abn_dir = factor(case_when(
+    ANRIND == "LOW LOW" ~ "Low",
+    ANRIND == "HIGH HIGH" ~ "High",
+    TRUE ~ ""
+  ),
+  levels = c("Low", "High")
+  )
+  )
 ```
 
 ## New Tern function
@@ -104,13 +115,13 @@ adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" | adlb_f$ANRIND 
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
                                        .spl_context,
-                                       abnormal = list(Low = c("LOW LOW"), High = c("HIGH HIGH")),
+                                       abnormal = c(Low = "Low", High = "High"),
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-                                       variables = list(id = "USUBJID", param = "PARAM", direction = "ANRIND")
+                                       variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
                                        ) {
   assert_that(
     is.string(.var),
-    is.list(abnormal),
+    is.character(abnormal),
     is.list(variables),
     is.list(category),
     all(names(abnormal) %in% c("Low", "High")),
@@ -119,15 +130,14 @@ s_count_abnormal_by_marked <- function(df,
     is_df_with_variables(df, c(aval = .var, variables)),
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]])
-    #all(abnormal %in% c("LOW LOW", "HIGH HIGH"))
   )
   
   # For numerators, select records based on direction.
-  # `abnormal` contains values for both directions but 
-  # now split_rows_by("ANRIND")  will be used and hence there should just be 
-  # "LOW LOW" or "HIGH HIGH" but not both. We will verify this anyway.
-  df_abn_low <- df[df[[variables$direction]] %in% abnormal$Low, ]
-  df_abn_high <- df[df[[variables$direction]] %in% abnormal$High, ]
+  # `abnormal` considers both directions but 
+  # now split_rows_by("abn_dir")  will be used and hence there should just be 
+  # "Low" or "High" but not both. We will verify this anyway.
+  df_abn_low <- df[df[[variables$direction]] %in% abnormal["Low"], ]
+  df_abn_high <- df[df[[variables$direction]] %in% abnormal["High"], ]
   assert_that(nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L)
   
   
@@ -183,29 +193,26 @@ s_count_abnormal_by_marked(
    )
 
 
-
-
 a_count_abnormal_by_marked <- make_afun(  #nolint
   s_count_abnormal_by_marked,
   .formats = c(count_fraction = format_count_fraction)
 )
 
+afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
 
+
+afun(df = adlb_f_alt, .spl_context = spl_context)
 
 count_abnormal_by_marked <- function(lyt,
                                      var,
-                                     abnormal,
                                      variables,
                                      ...,
-                                     table_names = abnormal,
                                      .stats = NULL,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
   assert_that(
-    is.string(var),
-    !is.null(names(abnormal)),
-    is_equal_length(abnormal, table_names)
+    is.string(var)
   )
   afun <- make_afun(
     a_count_abnormal_by_marked,
@@ -215,41 +222,145 @@ count_abnormal_by_marked <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "count_fraction"
   )
-  for (i in seq_along(abnormal)) {
-    abn <- abnormal[i]
-    varlist <- variables
+  
     lyt <- analyze(
       lyt = lyt,
       vars = var,
-      var_labels = names(abn),
-      table_names = table_names[i],
       afun = afun,
-      extra_args = c(list(abnormal = abn, variables = varlist, list(...))),
-      show_labels = "visible"
+      show_labels = "hidden"
     )
-  }
   lyt
 }
+```
 
+## Different use cases
 
+### With `trim_levels_to_map`
+
+```{r}
+map <- unique(adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "", c("PARAM", "abn_dir", "AVALCAT1")]) %>%
+  lapply(as.character) %>%
+  as.data.frame() %>%
+  arrange(PARAM, abn_dir, AVALCAT1)
+
+lyt_map <- basic_table() %>% 
+  split_cols_by("ARM") %>% 
+  split_rows_by("PARAM") %>%
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  split_rows_by("abn_dir", split_fun = trim_levels_to_map(map = map)) %>%
+  count_abnormal_by_marked(var = "AVALCAT1") 
+
+table_map <- build_table(lyt = lyt_map, df = adlb_f)
+table_map
 ```
 
 
-## Full LBT05 Example
+### With `trim_levels_in_group`
+
 ```{r}
-# Define the split function
-split_fun <- drop_split_levels
+lyt_in_group <- basic_table() %>% 
+  split_cols_by("ARM") %>% 
+  split_rows_by("PARAM", split_fun = trim_levels_in_group(innervar  = "abn_dir")) %>%
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  split_rows_by("abn_dir") %>%
+  count_abnormal_by_marked(var = "AVALCAT1") 
 
-lyt <- basic_table() %>%
-  split_cols_by("ACTARMCD") %>%
-  add_colcounts() %>%
-  split_rows_by("PARAM", split_fun = split_fun) %>%
-  summarize_num_patients(var = "USUBJID",
-                         .stats = "unique_count") %>%
-  count_abnormal_by_marked(var = "AVALCAT1_FL",
-                              abnormal = c(Low = "low", High = "high"),
-                              variables = list(id = "USUBJID", direction = "DIRECTION"))
 
-result <- build_table(lyt, df = adlb_f, alt_counts_df = adsl_f)
-result
+table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f)
+table_in_group
+
+```
+
+### Without any new split function 
+
+```{r}
+lyt_normal <- basic_table() %>% 
+  split_cols_by("ARM") %>% 
+  split_rows_by("PARAM") %>%
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  split_rows_by("abn_dir") %>%
+  count_abnormal_by_marked(var = "AVALCAT1") 
+
+
+table_normal <- build_table(lyt = lyt_normal, df = adlb_f)
+table_normal
+```
+
+## Deleting 0 rows for `Single, not last` and `Last or replicated` 
+
+If we want to remove the 0 cases of `Single, not last` and `Last or replicated` we have to keep using `trim_rows`
+
+```{r}
+all_zero_or_na_not_any <- function(tr) {
+  if (!is(tr, "TableRow") || is(tr, "LabelRow") || obj_label(tr) == "Any Abnormality")
+    return(FALSE)
+  rvs <- unlist(unname(row_values(tr)))
+  all(is.na(rvs) | rvs == 0 | !is.finite(rvs))
+}
+
+table_map_trimmed <- trim_rows(table_map, criteria = all_zero_or_na_not_any)
+table_map_trimmed
+
+table_in_group_trimmed <- trim_rows(table_in_group, criteria = all_zero_or_na_not_any)
+table_in_group_trimmed
+
+table_normal_trimmed <- trim_rows(table_normal, criteria = all_zero_or_na_not_any)
+table_normal_trimmed
+```
+
+## Some extreme cases
+
+Example 1: If all rows for `ALT` are removed in the `map`.
+
+```{r}
+empirical_map1 <- map %>% filter(
+  PARAM != "Alanine Aminotransferase Measurement"
+)
+
+adlb_f_no_ALT <- adlb_f %>% #nolint
+  filter(PARAM != "Alanine Aminotransferase Measurement") %>%
+  droplevels()
+
+lyt_map_emp <- basic_table() %>% 
+  split_cols_by("ARM") %>% 
+  split_rows_by("PARAM") %>%
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  split_rows_by("abn_dir", split_fun = trim_levels_to_map(map = empirical_map1)) %>%
+  count_abnormal_by_marked(var = "AVALCAT1") 
+
+table_map_emp <- build_table(lyt = lyt_map_emp, df = adlb_f_no_ALT)
+table_map_emp
+```
+
+Example 2: Opposite direction (in addition) from stated in map.
+Scenario where map is incorrectly constructed.
+In this scenario we are not obtaining an error but introduce rows with 0s in the direction stated by the map.
+
+```{r}
+map2 <- map
+map2[map2$PARAM == "Alanine Aminotransferase Measurement", 2] <- "High"
+
+lyt_map2 <- basic_table() %>% 
+  split_cols_by("ARM") %>% 
+  split_rows_by("PARAM") %>%
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>% 
+  split_rows_by("abn_dir", split_fun = trim_levels_to_map(map = map2)) %>%
+  count_abnormal_by_marked(var = "AVALCAT1") 
+
+table_map2 <- build_table(lyt = lyt_map2, df = adlb_f)
+table_map2
+```
+
+Example 3:  Case where there is an arm that has no lab records. Table correctly obtained.
+
+```{r}
+adlb_f2 <- adlb_f %>%
+  filter(!(ARMCD == "ARM A" & PARAMCD == "ALT")) %>%
+  droplevels()
+
+build_table(
+  lyt = lyt_map,
+  df = adlb_f2,
+  alt_counts_df = adsl
+)
 ```
