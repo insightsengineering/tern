@@ -86,18 +86,16 @@ adlb <- df_explicit_na(adlb)
     select(-q1, -q2)
  
   #Preprocessing steps
-  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))
-  
-  
-  #adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT" & ANRIND %in% c("LOW", "LOW LOW"))
-  
+  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))  
   
 # Recode ADLB parameters to so that each one has different
 # possible marked abnormalities
 adlb_f$ANRIND[adlb_f$PARAMCD == "ALT" & (adlb_f$ANRIND == "HIGH" | adlb_f$ANRIND == "HIGH HIGH")] <- "LOW"
 adlb_f$ANRIND[adlb_f$PARAMCD == "IGA" & (adlb_f$ANRIND == "LOW" | adlb_f$ANRIND == "LOW LOW")] <- "HIGH"
 
-# will add an additional preprocessing step to derive a new variable that is going to be used as the split variable instead of ANRIND, to have a correct split labels
+# will add an additional preprocessing step to derive a new variable
+# that is going to be used as the split variable instead of ANRIND,
+# to have a correct split labels
 adlb_f <- adlb_f %>%
   mutate(abn_dir = factor(case_when(
     ANRIND == "LOW LOW" ~ "Low",
@@ -131,16 +129,15 @@ s_count_abnormal_by_marked <- function(df,
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]])
   )
-  
+
   # For numerators, select records based on direction.
-  # `abnormal` considers both directions but 
-  # now split_rows_by("abn_dir")  will be used and hence there should just be 
+  # `abnormal` considers both directions but
+  # now split_rows_by("abn_dir")  will be used and hence there should just be
   # "Low" or "High" but not both. We will verify this anyway.
   df_abn_low <- df[df[[variables$direction]] %in% abnormal["Low"], ]
   df_abn_high <- df[df[[variables$direction]] %in% abnormal["High"], ]
   assert_that(nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L)
-  
-  
+
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
   # Patients in the denominator have at least one post-baseline visit.
   subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
@@ -150,12 +147,16 @@ s_count_abnormal_by_marked <- function(df,
   denom <- length(unique(subj_cur_col))
 
   if (denom > 0) {
-    
+
     #numerator
     df_abn <- df[df[[variables$direction]] %in% abnormal, ]
-    
-    subjects_last_replicated <- unique(df_abn[df_abn[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE])
-    subjects_single <- unique(df_abn[df_abn[[.var]] %in% category[["single"]], variables$id, drop = TRUE])
+
+    subjects_last_replicated <- unique(
+    df_abn[df_abn[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE]
+    )
+    subjects_single <- unique(
+    df_abn[df_abn[[.var]] %in% category[["single"]], variables$id, drop = TRUE]
+    )
     # Subjects who have both single and last/replicated abnormalities are counted in only the last/replicated group.
     subjects_single <- setdiff(subjects_single, subjects_last_replicated)
     n_single <- length(subjects_single)
