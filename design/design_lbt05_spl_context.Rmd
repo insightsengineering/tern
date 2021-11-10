@@ -86,7 +86,7 @@ adlb <- df_explicit_na(adlb)
     select(-q1, -q2)
  
   #Preprocessing steps
-  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))  
+  adlb_f <- adlb %>% filter(ONTRTFL == "Y" & PARCAT2 == "LS" & SAFFL == "Y" & !is.na(AVAL))
   
 # Recode ADLB parameters to so that each one has different
 # possible marked abnormalities
@@ -222,7 +222,7 @@ count_abnormal_by_marked <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "count_fraction"
   )
-  
+
     lyt <- analyze(
       lyt = lyt,
       vars = var,
@@ -238,7 +238,9 @@ count_abnormal_by_marked <- function(lyt,
 ### With `trim_levels_to_map`
 
 ```{r}
-map <- unique(adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "", c("PARAM", "abn_dir", "AVALCAT1")]) %>%
+map <- unique(
+adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "", c("PARAM", "abn_dir", "AVALCAT1")]
+) %>%
   lapply(as.character) %>%
   as.data.frame() %>%
   arrange(PARAM, abn_dir, AVALCAT1)
