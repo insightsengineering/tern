@@ -37,49 +37,90 @@ NULL
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)),
 #'   ARMCD = factor(c(rep("ARM A", 5),rep("ARM B", 5))),
-#'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH HIGH","LOW LOW",
-#'   "LOW", "LOW", "HIGH HIGH", "LOW", "HIGH HIGH")),
+#'   ANRIND = factor(c("NORMAL", "HIGH", "HIGH", "HIGH HIGH","HIGH",
+#'   "HIGH", "HIGH", "HIGH HIGH", "NORMAL", "HIGH HIGH")),
 #'   ONTRTFL = c("", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"),
 #'   PARAMCD = factor(rep("CRP", 10)),
 #'   AVALCAT1 = factor(c("", "", "", "SINGLE", "REPLICATED", "", "", "LAST", "", "SINGLE")),
 #'   stringsAsFactors = FALSE
 #' )
 #'
+#' df <- df %>%
+#' mutate(abn_dir = factor(case_when(
+#'   ANRIND == "LOW LOW" ~ "Low",
+#'   ANRIND == "HIGH HIGH" ~ "High",
+#'   TRUE ~ ""
+#'   )
+#'  )
+#')
+#'
 #' # Select only post-baseline records.
 #' df <- df %>% filter(ONTRTFL == "Y")
-#'  s_count_abnormal_by_marked(df = df,
-#'  .var = "AVALCAT1",
-#'  abnormal = c(High = "HIGH HIGH"),
-#'  variables = list(id = "USUBJID", direction = "ANRIND")
+#'
+#' full_parent_df <- list(df, "not_needed")
+#' cur_col_subset <- list(rep(TRUE, nrow(df)), "not_needed")
+#'
+#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
+#'
+#'
+#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
+#' spl_context <- data.frame(
+#'   split = c("PARAMCD", "GRADE_DIR"),
+#'   full_parent_df = I(full_parent_df),
+#'   cur_col_subset = I(cur_col_subset)
 #' )
 #'
-#'  s_count_abnormal_by_marked(df = df,
+#' s_count_abnormal_by_marked(
+#'  df = df,
+#'  .spl_context = spl_context,
 #'  .var = "AVALCAT1",
-#'  abnormal = c(Low = "LOW LOW"),
-#'  variables = list(id = "USUBJID", direction = "ANRIND")
-#' )
+#'  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+#')
+#'
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
-                                       abnormal = c(Low = "LOW LOW"),
-                                       variables = list(id = "USUBJID", direction = "ANRIND")) {
+                                       .spl_context,
+                                       abnormal = c(Low = "Low", High = "High"),
+                                       category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
+                                       variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
+) {
   assert_that(
     is.string(.var),
+    is.character(abnormal),
     is.list(variables),
-    all(names(variables) %in% c("id", "direction")),
+    is.list(category),
+    all(names(abnormal) %in% c("Low", "High")),
+    all(names(category) %in% c("single", "last_replicated")),
+    all(names(variables) %in% c("id", "param", "direction")),
     is_df_with_variables(df, c(aval = .var, variables)),
     is_character_or_factor(df[[.var]]),
-    is_character_or_factor(df[[variables$id]]),
-    all(abnormal %in% c("LOW LOW", "HIGH HIGH"))
+    is_character_or_factor(df[[variables$id]])
   )
 
+  # For numerators, select records based on direction.
+  df_abn_low <- df[df[[variables$direction]] %in% abnormal["Low"], ]
+  df_abn_high <- df[df[[variables$direction]] %in% abnormal["High"], ]
+  assert_that(nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L)
+
+  first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
   # Patients in the denominator have at least one post-baseline visit.
-  subjects_post_any <- unique(df[[variables$id]])
-  denom <- length(subjects_post_any)
+  subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
+  subj_cur_col <- subj[first_row$cur_col_subset[[1]]]
+  # Some subjects may have a record for high and low directions but
+  # should be counted only once.
+  denom <- length(unique(subj_cur_col))
+
   if (denom > 0) {
-    # For numerators, select records based on direction.
-    df_abn <- df[df[[variables$direction]] == abnormal, ]
-    subjects_last_replicated <- unique(df_abn[df_abn[[.var]] %in% c("LAST", "REPLICATED"), variables$id, drop = TRUE])
-    subjects_single <- unique(df_abn[df_abn[[.var]] == "SINGLE", variables$id, drop = TRUE])
+
+    #numerator
+    df_abn <- df[df[[variables$direction]] %in% abnormal, ]
+
+    subjects_last_replicated <- unique(
+      df_abn[df_abn[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE]
+    )
+    subjects_single <- unique(
+      df_abn[df_abn[[.var]] %in% category[["single"]], variables$id, drop = TRUE]
+    )
     # Subjects who have both single and last/replicated abnormalities are counted in only the last/replicated group.
     subjects_single <- setdiff(subjects_single, subjects_last_replicated)
     n_single <- length(subjects_single)
@@ -109,12 +150,11 @@ s_count_abnormal_by_marked <- function(df,
 #' # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
 #' afun(
-#'   df = df,
-#'   .var = "AVALCAT1",
-#'   abnormal = c(High = "HIGH HIGH"),
-#'   variables = list(id = "USUBJID", direction = "ANRIND")
-#' )
-
+#' df = df,
+#'  .spl_context = spl_context,
+#'  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+#'  )
+#'
 a_count_abnormal_by_marked <- make_afun(
   s_count_abnormal_by_marked,
   .formats = c(count_fraction = format_count_fraction)
@@ -128,25 +168,21 @@ a_count_abnormal_by_marked <- make_afun(
 #' split_cols_by("ARMCD") %>%
 #' summarize_num_patients(var = "USUBJID",
 #'                        .stats = "unique_count") %>%
-#' count_abnormal_by_marked(var = "AVALCAT1" ,
-#'                          abnormal = c(Low = "LOW LOW", High = "HIGH HIGH"),
-#'                          variables = list(id = "USUBJID", direction = "ANRIND")) %>%
-#'                          build_table(df = df)
+#' count_abnormal_by_marked(var = "AVALCAT1",
+#' variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+#' ) %>%
+#' build_table(df = df)
 #'
 count_abnormal_by_marked <- function(lyt,
                                      var,
-                                     abnormal,
                                      variables,
                                      ...,
-                                     table_names = abnormal,
                                      .stats = NULL,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
   assert_that(
-    is.string(var),
-    !is.null(names(abnormal)),
-    is_equal_length(abnormal, table_names)
+    is.string(var)
   )
   afun <- make_afun(
     a_count_abnormal_by_marked,
@@ -156,18 +192,12 @@ count_abnormal_by_marked <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = "count_fraction"
   )
-  for (i in seq_along(abnormal)) {
-    abn <- abnormal[i]
-    varlist <- variables
-    lyt <- analyze(
-      lyt = lyt,
-      vars = var,
-      var_labels = names(abn),
-      table_names = table_names[i],
-      afun = afun,
-      extra_args = c(list(abnormal = abn, variables = varlist, list(...))),
-      show_labels = "visible"
-    )
-  }
+
+  lyt <- analyze(
+    lyt = lyt,
+    vars = var,
+    afun = afun,
+    show_labels = "hidden"
+  )
   lyt
 }

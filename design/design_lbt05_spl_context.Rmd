@@ -32,6 +32,8 @@ library(rtables)
 library(tern)
 library(assertthat)
 library(dplyr)
+library(scda)
+
 
 packageVersion("tern")
 packageVersion("rtables")
@@ -40,9 +42,6 @@ packageVersion("rtables")
 ## Data for examples
 
 ```{r data, results = "asis", eval = TRUE}
-library(scda)
-library(dplyr)
-library(tern)
 
 adsl <- synthetic_cdisc_data("latest")$adsl
 adlb <- synthetic_cdisc_data("latest")$adlb
@@ -182,7 +181,7 @@ adlb_f_alt <- adlb_f %>% filter(PARAMCD == "ALT") %>% droplevels()
 full_parent_df <- list(adlb_f_alt, "not_needed")
 cur_col_subset <- list(adlb_f_alt$ARMCD == "ARM A", "not_needed")
 spl_context <- data.frame(
-  split = c("PARAM", "ANRIND"),
+  split = c("PARAM", "abn_dir"),
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
   )
