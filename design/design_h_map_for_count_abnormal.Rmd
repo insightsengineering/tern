@@ -147,13 +147,13 @@ h_map_for_count_abnormal <- function(
     )
     ext_ncictc4 <- haven::read_sas("/home/rstudio/nest_projects/tern/design/metadata/ext_ncictc4.sas7bdat")
     ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
-    ext_ncictc4 <- ext_ncictc4[ ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
+    ext_ncictc4 <- ext_ncictc4[ ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]),]
     ext_ncictc4[[variables$anl]] <- na_level
-    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1","2","3","4"), ][[variables$anl]] <- "HIGH"
-    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1","-2","-3","-4"), ][[variables$anl]] <- "LOW"
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[variables$anl]] <- "HIGH"
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[variables$anl]] <- "LOW"
     ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("0"), ][[variables$anl]] <- "NORMAL"
     ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[variables$anl]] != na_level, ][c("PARAMCD", variables$anl)])
-    
+
     #incude extra split_rows
     map <- if ("PARAMCD" %in% variables$split_rows) {
       unique(df[c(variables$split_rows)])
@@ -240,9 +240,9 @@ map <- h_map_for_count_abnormal(
   na_level = "<Missing>"
 )
 
-lyt <- basic_table() %>% 
+lyt <- basic_table() %>%
   split_cols_by(var = "ARM") %>%
-  add_colcounts() %>% 
+  add_colcounts() %>%
   split_rows_by("PARCAT1", split_fun = trim_levels_to_map(map = map)) %>%
   split_rows_by("PARAM", split_fun = trim_levels_to_map(map = map)) %>%
   count_abnormal(
