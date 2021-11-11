@@ -81,8 +81,8 @@ h_map_for_count_abnormal <- function(
     is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
     # !any(df[variables$split_rows] == na_level),
-    is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
-    is_factor_no_na(df[variables$split_rows]),
+    # is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
+    # is_factor_no_na(df[variables$split_rows]),
     # !na_level %in% df[[variables$anl]],
     is_df_with_no_na_level(df, variables = list(anl = variables$anl), na_level = na_level),
     is_factor_no_na(df[[variables$anl]])
@@ -141,11 +141,11 @@ h_map_for_count_abnormal <- function(
 
     map <- rbind(map_low, map_high, map_normal)
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
-  } else if (method = "meta_ext_ncictc4") {
+  } else if (method == "meta_ext_ncictc4") {
     assert_that(
       is_df_with_variables(df, variables = list(paramcd = "PARAMCD"))
     )
-    ext_ncictc4 <- haven::read_sas("./metadata/ext_ncictc4.sas7bdat")
+    ext_ncictc4 <- haven::read_sas("/home/rstudio/nest_projects/tern/design/metadata/ext_ncictc4.sas7bdat")
     ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
     ext_ncictc4 <- ext_ncictc4[ ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
     ext_ncictc4[[variables$anl]] <- na_level
@@ -155,7 +155,11 @@ h_map_for_count_abnormal <- function(
     ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[variables$anl]] != na_level, ][c("PARAMCD", variables$anl)])
     
     #incude extra split_rows
-    map <- unique(df[c(variables$split_rows, "PARAMCD")])
+    map <- if ("PARAMCD" %in% variables$split_rows) {
+      unique(df[c(variables$split_rows)])
+    } else {
+      unique(df[c(variables$split_rows, "PARAMCD")])
+    }
     map <- merge(map, ext_ncictc4)
     map <- map[c(variables$split_rows, variables$anl)]
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
@@ -167,6 +171,17 @@ h_map_for_count_abnormal <- function(
   }
   map
 }
+```
+
+test with new method and stream data
+```{r}
+h_map_for_count_abnormal(
+  df = adlb_f,
+  variables = list(anl = "ATOXGR_CAT", split_rows = c("PARCAT1", "PARAM")),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "meta_ext_ncictc4",
+  na_level = "<Missing>"
+)
 ```
 
 Unit tests
