@@ -147,7 +147,7 @@ h_map_for_count_abnormal <- function(
     )
     ext_ncictc4 <- haven::read_sas("/home/rstudio/nest_projects/tern/design/metadata/ext_ncictc4.sas7bdat")
     ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
-    ext_ncictc4 <- ext_ncictc4[ ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]),]
+    ext_ncictc4 <- ext_ncictc4[ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
     ext_ncictc4[[variables$anl]] <- na_level
     ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[variables$anl]] <- "HIGH"
     ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[variables$anl]] <- "LOW"
