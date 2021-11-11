@@ -57,14 +57,33 @@ test_that("s_count_abnormal_by_marked works as expected", {
     select(-.data$q1, -.data$q2)
   #Preprocessing steps
   adlb_f <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL))
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+      )
+      )
+      )
+
+  adlb_crp <- adlb_f %>% filter(PARAMCD == "CRP") %>% droplevels()
+  full_parent_df <- list(adlb_crp, "not_needed")
+  cur_col_subset <- list(adlb_crp$ARMCD == "ARM A", "not_needed")
+
+  spl_context <- data.frame(
+    split = c("PARAMCD", "abn_dir"),
+    full_parent_df = I(full_parent_df),
+    cur_col_subset = I(cur_col_subset)
+  )
 
   result <- s_count_abnormal_by_marked(
-    df = adlb %>% dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+    df = adlb_crp %>% filter(ARMCD == "ARM A") %>% droplevels(),
+    .spl_context = spl_context,
     .var = "AVALCAT1",
-    abnormal = "LOW LOW",
-    variables = list(id = "USUBJID", direction = "ANRIND")
-  )
+    abnormal = c(Low = "Low"),
+    variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+    )
+
   expected <- list(count_fraction = list(
     `Single, not last` = c(2.00000000, 0.01492537),
     `Last or replicated` = c(10.00000000, 0.07462687),
@@ -76,7 +95,6 @@ test_that("s_count_abnormal_by_marked works as expected", {
 
 test_that("s_count_abnormal_by_marked works as expected", {
   adlb <- adlb_raw
-
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1, kind = "Mersenne-Twister")
@@ -100,15 +118,33 @@ test_that("s_count_abnormal_by_marked works as expected", {
     select(-.data$q1, -.data$q2)
   #Preprocessing steps
   adlb_f <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL))
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+    )
+    )
+    )
+
+  adlb_crp <- adlb_f %>% filter(PARAMCD == "CRP") %>% droplevels()
+  full_parent_df <- list(adlb_crp, "not_needed")
+  cur_col_subset <- list(adlb_crp$ARMCD == "ARM A", "not_needed")
+
+  spl_context <- data.frame(
+    split = c("PARAMCD", "abn_dir"),
+    full_parent_df = I(full_parent_df),
+    cur_col_subset = I(cur_col_subset)
+  )
 
   result <- s_count_abnormal_by_marked(
-    df = adlb %>%
-      dplyr::filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
+    df = adlb_crp %>% filter(ARMCD == "ARM A") %>% droplevels(),
+    .spl_context = spl_context,
     .var = "AVALCAT1",
-    abnormal = "HIGH HIGH",
-    variables = list(id = "USUBJID", direction = "ANRIND")
+    abnormal = c(High = "High"),
+    variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   )
+
   expected <- list(count_fraction = list(
     `Single, not last` = c(1.000000000, 0.007462687),
     `Last or replicated` = c(10.00000000, 0.07462687),
@@ -116,6 +152,7 @@ test_that("s_count_abnormal_by_marked works as expected", {
   ))
   expect_equal(result, expected, tolerance = 0.000001)
 })
+
 
 
 test_that("count_abnormal_by_marked works as expected", {
@@ -144,20 +181,37 @@ test_that("count_abnormal_by_marked works as expected", {
     select(-.data$q1, -.data$q2)
   #Preprocessing steps
   adlb_f <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL))
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+      )
+      )
+      )
+
 
   adlb_f <- adlb_f %>%
     filter(PARAMCD == "CRP") %>%
      droplevels()
 
-  result <- basic_table() %>%
-    split_cols_by("ARMCD") %>%
-    count_abnormal_by_marked(
+  map <- unique(
+    adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "" & adlb_f$PARAMCD == "CRP", c("PARAMCD", "abn_dir")]
+    ) %>%
+    lapply(as.character) %>%
+    as.data.frame() %>%
+    arrange(PARAMCD, abn_dir)
+
+  basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  split_rows_by("PARAMCD") %>%
+  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
+  split_rows_by("abn_dir", split_fun = trim_levels_to_map(map)) %>%
+  count_abnormal_by_marked(
     var = "AVALCAT1",
-    abnormal = c(Low = "LOW LOW", High = "HIGH HIGH"),
-    variables = list(id = "USUBJID", direction = "ANRIND")) %>%
-    build_table(df = adlb_f)
-    result_matrix <- to_string_matrix(result)
+    variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+  ) %>%
+  build_table(df = adlb_f)
 
   expected_matrix <- structure(
     c("", "Low", "Single, not last", "Last or replicated",

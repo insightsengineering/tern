@@ -93,10 +93,12 @@ s_count_abnormal_by_marked <- function(df,
     is_character_or_factor(df[[variables$id]])
   )
 
-  # For numerators, select records based on direction.
   df_abn_low <- df[df[[variables$direction]] %in% abnormal["Low"], ]
   df_abn_high <- df[df[[variables$direction]] %in% abnormal["High"], ]
-  assert_that(nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L)
+  assert_that(
+    nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L,
+    msg = "Marked abnormalities from directions are being considered in a single estimation."
+  )
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
   # Patients in the denominator have at least one post-baseline visit.
