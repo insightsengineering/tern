@@ -253,10 +253,10 @@ lyt <- basic_table() %>%
   ) %>%
   append_topleft("    Direction of Abnormality")
 
-build_table(lyt, adlb_f %>% filter(LBCAT != "<Missing>"), alt_counts_df=adsl)
+build_table(lyt, adlb_f %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 
 # variant 2
-adlb_f_2 <- adlb_f %>% 
+adlb_f_2 <- adlb_f %>%
   mutate(
     ATOXGR_CAT = fct_collapse(ATOXGR,
                               "LOW" = c("-2", "-3", "-4"),
@@ -270,5 +270,5 @@ adlb_f_2 <- adlb_f %>%
     )
   )
 
-build_table(lyt, adlb_f_2 %>% filter(LBCAT != "<Missing>"), alt_counts_df=adsl)
+build_table(lyt, adlb_f_2 %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 ```
