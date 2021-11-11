@@ -35,13 +35,14 @@ NULL
 #' library(dplyr)
 #'
 #' df <- data.frame(
-#'   USUBJID = as.character(c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)),
-#'   ARMCD = factor(c(rep("ARM A", 5),rep("ARM B", 5))),
+#'   USUBJID = as.character(c(rep(1, 5), rep(2, 5), rep(1, 5), rep(2, 5))),
+#'   ARMCD = factor(c(rep("ARM A", 5), rep("ARM B", 5), rep("ARM A", 5),rep("ARM B", 5))),
 #'   ANRIND = factor(c("NORMAL", "HIGH", "HIGH", "HIGH HIGH","HIGH",
-#'   "HIGH", "HIGH", "HIGH HIGH", "NORMAL", "HIGH HIGH")),
-#'   ONTRTFL = c("", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"),
-#'   PARAMCD = factor(rep("CRP", 10)),
-#'   AVALCAT1 = factor(c("", "", "", "SINGLE", "REPLICATED", "", "", "LAST", "", "SINGLE")),
+#'   "HIGH", "HIGH", "HIGH HIGH", "NORMAL", "HIGH HIGH", "NORMAL", "LOW", "LOW", "LOW LOW","LOW",
+#'   "LOW", "LOW", "LOW LOW", "NORMAL", "LOW LOW")),
+#'   ONTRTFL = rep(c("", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"), 2),
+#'   PARAMCD = factor(c(rep("CRP", 10), rep("ALT", 10))),
+#'   AVALCAT1 = factor(rep(c("", "", "", "SINGLE", "REPLICATED", "", "", "LAST", "", "SINGLE"), 2)),
 #'   stringsAsFactors = FALSE
 #' )
 #'
@@ -56,14 +57,9 @@ NULL
 #'
 #' # Select only post-baseline records.
 #' df <- df %>% filter(ONTRTFL == "Y")
-#'
-#' full_parent_df <- list(df, "not_needed")
-#' cur_col_subset <- list(rep(TRUE, nrow(df)), "not_needed")
-#'
-#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
-#'
-#'
-#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
+#' df_crp <- df %>% filter(PARAMCD == "CRP") %>% droplevels()
+#' full_parent_df <- list(df_crp, "not_needed")
+#' cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
 #' spl_context <- data.frame(
 #'   split = c("PARAMCD", "GRADE_DIR"),
 #'   full_parent_df = I(full_parent_df),
@@ -71,7 +67,7 @@ NULL
 #' )
 #'
 #' s_count_abnormal_by_marked(
-#'  df = df,
+#'  df = df_crp,
 #'  .spl_context = spl_context,
 #'  .var = "AVALCAT1",
 #'  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
@@ -150,7 +146,7 @@ s_count_abnormal_by_marked <- function(df,
 #' # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
 #' afun(
-#' df = df,
+#' df = df_crp,
 #'  .spl_context = spl_context,
 #'  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #'  )
@@ -164,10 +160,21 @@ a_count_abnormal_by_marked <- make_afun(
 #' which can take statistics function arguments and additional format arguments (see below).
 #' @export
 #' @examples
+#'
+#' map <- unique(
+#'   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
+#'   ) %>%
+#'   lapply(as.character) %>%
+#'   as.data.frame() %>%
+#'   arrange(PARAMCD, abn_dir)
+#'
+#'
 #' basic_table() %>%
 #' split_cols_by("ARMCD") %>%
+#' split_rows_by("PARAMCD") %>%
 #' summarize_num_patients(var = "USUBJID",
-#'                        .stats = "unique_count") %>%
+#' .stats = "unique_count") %>%
+#' split_rows_by("abn_dir", split_fun = trim_levels_to_map(map)) %>%
 #' count_abnormal_by_marked(var = "AVALCAT1",
 #' variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
 #' ) %>%
@@ -175,7 +182,6 @@ a_count_abnormal_by_marked <- make_afun(
 #'
 count_abnormal_by_marked <- function(lyt,
                                      var,
-                                     variables,
                                      ...,
                                      .stats = NULL,
                                      .formats = NULL,
@@ -197,7 +203,8 @@ count_abnormal_by_marked <- function(lyt,
     lyt = lyt,
     vars = var,
     afun = afun,
-    show_labels = "hidden"
+    show_labels = "hidden",
+    extra_args = c(list(...))
   )
   lyt
 }

@@ -237,12 +237,14 @@ count_abnormal_by_marked <- function(lyt,
 ### With `trim_levels_to_map`
 
 ```{r}
+
+# we do not have to add AVALCAT1 analysis variable in the map.
 map <- unique(
-adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "", c("PARAM", "abn_dir", "AVALCAT1")]
+adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "", c("PARAM", "abn_dir")]
 ) %>%
   lapply(as.character) %>%
   as.data.frame() %>%
-  arrange(PARAM, abn_dir, AVALCAT1)
+  arrange(PARAM, abn_dir)
 
 lyt_map <- basic_table() %>%
   split_cols_by("ARM") %>%
