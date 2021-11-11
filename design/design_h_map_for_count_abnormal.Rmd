@@ -70,7 +70,7 @@ h_map_for_count_abnormal <- function(
   df,
   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
-  method = c("default", "range"),
+  method = c("default", "range", "meta_ext_ncictc4"),
   na_level = "<Missing>"
 ) {
   method <- match.arg(method)
@@ -140,6 +140,24 @@ h_map_for_count_abnormal <- function(
     map_normal[variables$anl] <- normal_value
 
     map <- rbind(map_low, map_high, map_normal)
+    map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
+  } else if (method = "meta_ext_ncictc4") {
+    assert_that(
+      is_df_with_variables(df, variables = list(paramcd = "PARAMCD"))
+    )
+    ext_ncictc4 <- haven::read_sas("./metadata/ext_ncictc4.sas7bdat")
+    ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
+    ext_ncictc4 <- ext_ncictc4[ ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
+    ext_ncictc4[[variables$anl]] <- na_level
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1","2","3","4"), ][[variables$anl]] <- "HIGH"
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1","-2","-3","-4"), ][[variables$anl]] <- "LOW"
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("0"), ][[variables$anl]] <- "NORMAL"
+    ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[variables$anl]] != na_level, ][c("PARAMCD", variables$anl)])
+    
+    #incude extra split_rows
+    map <- unique(df[c(variables$split_rows, "PARAMCD")])
+    map <- merge(map, ext_ncictc4)
+    map <- map[c(variables$split_rows, variables$anl)]
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
   }
 
