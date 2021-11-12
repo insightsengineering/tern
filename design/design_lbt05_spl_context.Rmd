@@ -274,6 +274,13 @@ lyt_in_group <- basic_table() %>%
 
 table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f)
 table_in_group
+
+# If we want to remove the 0 cases of `Single, not last` and `Last or replicated` 
+# we can achieve this with `trim_levels_in_group`
+
+table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f %>% filter(!AVALCAT1 %in% c("SINGLE")) %>% droplevels())
+table_in_group
+
 ```
 
 ### Without any new split function 
@@ -291,27 +298,6 @@ table_normal <- build_table(lyt = lyt_normal, df = adlb_f)
 table_normal
 ```
 
-## Deleting 0 rows for `Single, not last` and `Last or replicated`
-
-If we want to remove the 0 cases of `Single, not last` and `Last or replicated` we have to keep using `trim_rows`
-
-```{r}
-all_zero_or_na_not_any <- function(tr) {
-  if (!is(tr, "TableRow") || is(tr, "LabelRow") || obj_label(tr) == "Any Abnormality")
-    return(FALSE)
-  rvs <- unlist(unname(row_values(tr)))
-  all(is.na(rvs) | rvs == 0 | !is.finite(rvs))
-}
-
-table_map_trimmed <- trim_rows(table_map, criteria = all_zero_or_na_not_any)
-table_map_trimmed
-
-table_in_group_trimmed <- trim_rows(table_in_group, criteria = all_zero_or_na_not_any)
-table_in_group_trimmed
-
-table_normal_trimmed <- trim_rows(table_normal, criteria = all_zero_or_na_not_any)
-table_normal_trimmed
-```
 
 ## Some extreme cases
 
