@@ -154,7 +154,7 @@ on_failure(is_df_with_nlevels_factor) <- function(call, env) {
     ">=" = "at least"
   )
   paste(
-    "variable", variable, "in data frame", deparse(substitute(df, env)), "should have", relation_text, n_levels,
+    "variable", variable, "in data frame", deparse(call$df), "should have", relation_text, n_levels,
     "levels, but has", actual_n_levels, "levels:", paste(actual_levels, collapse = ", ")
   )
 }
