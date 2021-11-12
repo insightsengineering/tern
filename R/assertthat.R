@@ -84,10 +84,10 @@ is_df_with_variables <- function(df, variables) {
   all(unlist(variables) %in% names(df))
 }
 on_failure(is_df_with_variables) <- function(call, env) {
-  var_df <- colnames(eval(call$df))
+  var_df <- colnames(eval(call$df, envir = env))
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
-  paste(deparse(call$df), "does not contain all variables among:", deparse(vars))
+  paste(deparse(substitute(df, env)), "does not contain all variables among:", deparse1(vars))
 }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
@@ -109,10 +109,10 @@ is_df_with_factors <- function(df, variables) {
 }
 
 on_failure(is_df_with_factors) <- function(call, env) {
-  var_df <- colnames(eval(call$df))
+  var_df <- colnames(eval(call$df, envir = env))
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
-  paste(deparse(call$df), "does not contain only factor variables among:", deparse(vars))
+  paste(deparse(substitute(df, env)), "does not contain only factor variables among:", deparse1(vars))
 }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variable`
@@ -154,7 +154,7 @@ on_failure(is_df_with_nlevels_factor) <- function(call, env) {
     ">=" = "at least"
   )
   paste(
-    "variable", variable, "in data frame", deparse(call$df), "should have", relation_text, n_levels,
+    "variable", variable, "in data frame", deparse(substitute(df, env)), "should have", relation_text, n_levels,
     "levels, but has", actual_n_levels, "levels:", paste(actual_levels, collapse = ", ")
   )
 }
@@ -331,7 +331,7 @@ on_failure(all_elements_in_ref) <- function(call, env) {
   ref <- eval(call$ref, envir = env)
   not_in_ref <- x[!(x %in% ref)]
 
-  paste0("Some elements ", deparse(not_in_ref), " are not in the reference (", deparse(ref), ").")
+  paste0("Some elements ", deparse1(not_in_ref), " are not in the reference (", deparse1(ref), ").")
 }
 
 #' @describeIn assertions Check whether rtables object `x` has the specified column names.
@@ -347,7 +347,7 @@ on_failure(has_tabletree_colnames) <- function(call, env) {
   col_names <- eval(call$col_names, envir = env)
   missing_col_names <- x[!(x %in% col_names)]
 
-  paste0("required column names ", deparse(missing_col_names), " are not found in table")
+  paste0("required column names ", deparse1(missing_col_names), " are not found in table")
 }
 
 #' @describeIn assertions check if the input `df` has `na_level` in its `variables`.
@@ -372,5 +372,5 @@ is_df_with_no_na_level <- function(df, variables, na_level) {
   !any(df[, unlist(variables)] == na_level)
 }
 on_failure(is_df_with_no_na_level) <- function(call, env) {
-  paste(deparse(call$df), "contains missing data as defined by the argument na_level")
+  paste(deparse(substitute(df, env)), "contains missing data as defined by the argument na_level")
 }
