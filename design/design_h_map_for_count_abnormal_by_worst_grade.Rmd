@@ -47,92 +47,31 @@ Design
 Maybe the function can get different `method` so that map for different templates can be created accordingly.
 
 ```{r}
-h_map_for_count_abnormal <- function(
+h_map_for_count_abnormal_by_worst_grade <- function(
   df,
   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
   method = c("default", "range"),
   na_level = "<Missing>"
 ) {
-  method <- match.arg(method)
-  assert_that(
-    "anl" %in% names(variables),
-    "split_rows" %in% names(variables),
-    is_variables(variables),
-    is_character_list(abnormal, min_length = 2, max_length = 2),
-    is_df_with_factors(df, list(val = variables$anl)),
-    # !any(df[variables$split_rows] == na_level),
-    is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
-    is_factor_no_na(df[variables$split_rows]),
-    # !na_level %in% df[[variables$anl]],
-    is_df_with_no_na_level(df, variables = list(anl = variables$anl), na_level = na_level),
-    is_factor_no_na(df[[variables$anl]])
-  )
 
-  # drop unused levels
-  df <- droplevels(df)
-
-  normal_value <- setdiff(levels(df[[variables$anl]]), unlist(abnormal))
-  assert_that(
-    length(normal_value) == 1,
-    all_elements_in_ref(setdiff(levels(df[[variables$anl]]), normal_value), unlist(abnormal))
-  )
-
-  # default method will only have what is observed in the df, and records with all normals will be excluded to avoid
-  # error in rtable building.
-  if (method == "default") {
-    assert_that(
-      is_df_with_variables(df, variables = list(anl = variables$anl, split_row = variables$split_rows))
-    )
-    df_abnormal <- subset(df, df[[variables$anl]] %in% unlist(abnormal))
-    map <- unique(df_abnormal[c(variables$split_rows, variables$anl)])
-    map_normal <- unique(subset(map, select = variables$split_rows))
-    map_normal[[variables$anl]] <- normal_value
-    map <- rbind(map, map_normal)
-    map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
-  } else if (method == "range") {
-    #range method follows the rule that at least one observation with ANRLO > 0 for low
-    #direction and at least one observation with ANRHI is not missing for high direction.
-    assert_that(
-      is_df_with_variables(df, variables),
-      "range_low" %in% names(variables),
-      "range_high" %in% names(variables)
-    )
-
-    df_low <- subset(df, df[[variables$range_low]] > 0)
-    map_low <- unique(df_low[variables$split_rows])
-    low_levels <- unname(unlist(abnormal[toupper(names(abnormal)) == "LOW"]))
-    low_levels_df <- as.data.frame(low_levels)
-    colnames(low_levels_df) <- variables$anl
-    low_levels_df <- do.call("rbind", replicate(nrow(map_low), low_levels_df, simplify = FALSE))
-    map_low <- map_low[rep(seq_len(nrow(map_low)), each = length(low_levels)), ]
-    map_low <- cbind(map_low, low_levels_df)
-
-    df_high <- subset(df, df[[variables$range_high]] != na_level | !is.na(df[[variables$range_high]]))
-    map_high <- unique(df_high[variables$split_rows])
-    high_levels <- unname(unlist(abnormal[toupper(names(abnormal)) == "HIGH"]))
-    high_levels_df <- as.data.frame(high_levels)
-    colnames(high_levels_df) <- variables$anl
-    high_levels_df <- do.call("rbind", replicate(nrow(map_high), high_levels_df, simplify = FALSE))
-    map_high <- map_high[rep(seq_len(nrow(map_high)), each = length(high_levels)), ]
-    map_high <- cbind(map_high, high_levels_df)
-
-    map_normal <- unique(rbind(map_low, map_high)[variables$split_rows])
-    map_normal[variables$anl] <- normal_value
-
-    map <- rbind(map_low, map_high, map_normal)
-    map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
-  }
-
-  # sort map final output
-  for (i in rev(seq_len(length(variables$split_rows)))) {
-    map <- map[order(map[[i]]), ]
-  }
-  map
 }
 ```
 
-Unit tests
+STREAM data test
+=============
+
+```{r}
+adsl <- ADSL %>% filter(SAFFL == "Y") %>% df_explicit_na()
+adlb <- ADLB %>% df_explicit_na() %>%
+  filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
+
+
+```
+
+
+
+Unit Tests
 =============
 ```{r}
 df <- data.frame(
