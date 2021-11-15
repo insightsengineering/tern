@@ -119,18 +119,3 @@ h_map_with_count_abnormal(
   method = "both"
 )
 ```
-
-For lbt04, use stream real data to test
-```{r}
-ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na() #nolint
-adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
-
-h_map_with_count_abnormal(
-  df = adlb_f %>% filter(LBCAT != "<Missing>"),
-  split_rows_varibles = c("LBCAT", "PARAM"),
-  anl_variable = "ANRIND",
-  abnormal = list(low = "LOW", high = "HIGH"),
-  method = "lbt04"
-)
-```
-
