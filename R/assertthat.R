@@ -88,7 +88,7 @@ on_failure(is_df_with_variables) <- function(call, env) {
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
   paste(deparse(call$df), "does not contain all variables among:",
-        paste(deparse(vars, width.cutoff = 500), collapse = ""))
+        paste(deparse(vars), collapse = ""))
 }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
