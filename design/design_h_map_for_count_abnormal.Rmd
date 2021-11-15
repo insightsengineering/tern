@@ -151,7 +151,7 @@ h_map_for_count_abnormal <- function(
     assert_that(
       is_df_with_variables(df, variables = list(paramcd = "PARAMCD"))
     )
-    ext_ncictc4 <- data("ext_ncictc4")
+    data("ext_ncictc4")
     ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
     ext_ncictc4 <- ext_ncictc4[ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
     ext_ncictc4[[variables$anl]] <- na_level
@@ -238,6 +238,23 @@ h_map_with_count_abnormal(
 
 test with new method and stream data for lbt15
 ```{r}
+adsl <- ADSL %>% df_explicit_na() %>% filter(SAFFL == "Y")
+adlb_f <- ADLB %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI")
+adlb_f <- adlb_f %>% 
+  mutate(
+    ATOXGR_CAT = fct_collapse(ATOXGR,
+                              "LOW" = c("-3", "-4"),
+                              "NORMAL" = c("-2", "-1", "0", "1", "2"),
+                              "HIGH" = c("3", "4")
+    ),
+    BTOXGR_CAT = fct_collapse(BTOXGR,
+                              "LOW" = c("-3", "-4"),
+                              "NORMAL" = c("-2", "-1", "0", "1", "2", "<Missing>"),
+                              "HIGH" = c("3", "4")
+    )
+  )
+
+
 map <- h_map_for_count_abnormal(
   df = adlb_f,
   variables = list(anl = "ATOXGR_CAT", split_rows = c("PARCAT1", "PARAM")),
