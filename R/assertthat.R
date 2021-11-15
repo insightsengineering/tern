@@ -114,7 +114,7 @@ on_failure(is_df_with_factors) <- function(call, env) {
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
   paste(deparse(call$df), "does not contain only factor variables among:",
-        paste(deparse(vars, width.cutoff = 500), collapse = ""))
+        paste(deparse(vars), collapse = ""))
 }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variable`
