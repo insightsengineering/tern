@@ -333,8 +333,8 @@ on_failure(all_elements_in_ref) <- function(call, env) {
   ref <- eval(call$ref, envir = env)
   not_in_ref <- x[!(x %in% ref)]
 
-  paste0("Some elements ", paste(deparse(not_in_ref, width.cutoff = 500), collapse = ""),
-         " are not in the reference (", paste(deparse(ref, width.cutoff = 500), collapse = ""), ").")
+  paste0("Some elements ", paste(deparse(not_in_ref=), collapse = ""),
+         " are not in the reference (", paste(deparse(ref), collapse = ""), ").")
 }
 
 #' @describeIn assertions Check whether rtables object `x` has the specified column names.
@@ -350,7 +350,7 @@ on_failure(has_tabletree_colnames) <- function(call, env) {
   col_names <- eval(call$col_names, envir = env)
   missing_col_names <- x[!(x %in% col_names)]
 
-  paste0("required column names ", paste(deparse(missing_col_names, width.cutoff = 500), collapse = ""),
+  paste0("required column names ", paste(deparse(missing_col_names), collapse = ""),
          " are not found in table")
 }
 
