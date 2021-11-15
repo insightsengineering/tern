@@ -46,6 +46,12 @@ Design
 
 Maybe the function can get different `method` so that map for different templates can be created accordingly.
 
+```{r eval=FALSE}
+ext_ncictc4 <- haven::read_sas("metadata/ext_ncictc4.sas7bdat")
+ext_ncictc4 <- usethis::use_data(ext_ncictc4)
+```
+
+
 ```{r}
 h_map_for_count_abnormal_by_worst_grade <- function(
   df,
