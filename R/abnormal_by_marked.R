@@ -16,7 +16,6 @@
 #' and `Last or replicated` criteria, then the patient will be counted only under the `Last or replicated` category.
 
 #' @inheritParams argument_convention
-#' @param abnormal (named `string` or `character`)\cr identifying the abnormal direction in `var`.
 #'
 #' @name abnormal_by_marked
 #'
@@ -67,7 +66,7 @@ NULL
 #' )
 #'
 #' s_count_abnormal_by_marked(
-#'  df = df_crp,
+#'  df = df_crp %>% filter(abn_dir == "High"),
 #'  .spl_context = spl_context,
 #'  .var = "AVALCAT1",
 #'  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
@@ -76,29 +75,23 @@ NULL
 s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
                                        .spl_context,
-                                       abnormal = c(Low = "Low", High = "High"),
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
                                        variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
 ) {
   assert_that(
     is.string(.var),
-    is.character(abnormal),
     is.list(variables),
     is.list(category),
-    all(names(abnormal) %in% c("Low", "High")),
     all(names(category) %in% c("single", "last_replicated")),
     all(names(variables) %in% c("id", "param", "direction")),
     is_df_with_variables(df, c(aval = .var, variables)),
     is_character_or_factor(df[[.var]]),
-    is_character_or_factor(df[[variables$id]])
+    is_character_or_factor(df[[variables$id]]),
+    length(unique(df[[variables$direction]])) == 1L
   )
 
-  df_abn_low <- df[df[[variables$direction]] %in% abnormal["Low"], ]
-  df_abn_high <- df[df[[variables$direction]] %in% abnormal["High"], ]
-  assert_that(
-    nrow(df_abn_high) == 0L || nrow(df_abn_low) == 0L,
-    msg = "Marked abnormalities from directions are being considered in a single estimation."
-  )
+  #check that abn_dir contains only one direction values
+
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
   # Patients in the denominator have at least one post-baseline visit.
@@ -111,13 +104,13 @@ s_count_abnormal_by_marked <- function(df,
   if (denom > 0) {
 
     #numerator
-    df_abn <- df[df[[variables$direction]] %in% abnormal, ]
+    #df_abn <- df[df[[variables$direction]] %in% abnormal, ]
 
     subjects_last_replicated <- unique(
-      df_abn[df_abn[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE]
+      df[df[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE]
     )
     subjects_single <- unique(
-      df_abn[df_abn[[.var]] %in% category[["single"]], variables$id, drop = TRUE]
+      df[df[[.var]] %in% category[["single"]], variables$id, drop = TRUE]
     )
     # Subjects who have both single and last/replicated abnormalities are counted in only the last/replicated group.
     subjects_single <- setdiff(subjects_single, subjects_last_replicated)

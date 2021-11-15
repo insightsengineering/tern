@@ -77,10 +77,9 @@ test_that("s_count_abnormal_by_marked works as expected", {
   )
 
   result <- s_count_abnormal_by_marked(
-    df = adlb_crp %>% filter(ARMCD == "ARM A") %>% droplevels(),
+    df = adlb_crp %>% filter(ARMCD == "ARM A" & abn_dir == "Low") %>% droplevels(),
     .spl_context = spl_context,
     .var = "AVALCAT1",
-    abnormal = c(Low = "Low"),
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
     )
 
@@ -138,10 +137,9 @@ test_that("s_count_abnormal_by_marked works as expected", {
   )
 
   result <- s_count_abnormal_by_marked(
-    df = adlb_crp %>% filter(ARMCD == "ARM A") %>% droplevels(),
+    df = adlb_crp %>% filter(ARMCD == "ARM A" & abn_dir == "High") %>% droplevels(),
     .spl_context = spl_context,
     .var = "AVALCAT1",
-    abnormal = c(High = "High"),
     variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
   )
 
@@ -190,7 +188,6 @@ test_that("count_abnormal_by_marked works as expected", {
       )
       )
 
-
   adlb_f <- adlb_f %>%
     filter(PARAMCD == "CRP") %>%
      droplevels()
@@ -200,26 +197,31 @@ test_that("count_abnormal_by_marked works as expected", {
     ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
-    arrange(PARAMCD, abn_dir)
+    arrange(PARAMCD, !desc(abn_dir))
 
-  basic_table() %>%
-  split_cols_by("ARMCD") %>%
-  split_rows_by("PARAMCD") %>%
-  summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
-  split_rows_by("abn_dir", split_fun = trim_levels_to_map(map)) %>%
-  count_abnormal_by_marked(
-    var = "AVALCAT1",
-    variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-  ) %>%
-  build_table(df = adlb_f)
+
+  result <- basic_table() %>%
+    split_cols_by("ARMCD") %>%
+    split_rows_by("PARAMCD") %>%
+    summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
+    split_rows_by("abn_dir", split_fun = trim_levels_to_map(map)) %>%
+    count_abnormal_by_marked(
+      var = "AVALCAT1",
+      variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+    ) %>%
+    build_table(df = adlb_f)
+
+  result_matrix <- to_string_matrix(result)
 
   expected_matrix <- structure(
-    c("", "Low", "Single, not last", "Last or replicated",
+    c("", "CRP (n)", "Low", "Single, not last", "Last or replicated",
       "Any Abnormality", "High", "Single, not last", "Last or replicated",
-      "Any Abnormality", "ARM A", "", "2 (1.5%)", "10 (7.5%)", "12 (9%)",
-      "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "ARM B", "", "0", "7 (5.2%)",
-      "7 (5.2%)", "", "2 (1.5%)", "9 (6.7%)", "11 (8.2%)", "ARM C",
-      "", "0", "7 (5.3%)", "7 (5.3%)", "", "1 (0.8%)", "12 (9.1%)",
-      "13 (9.8%)"), .Dim = c(9L, 4L))
+      "Any Abnormality", "ARM A", "134", "", "2 (1.5%)", "10 (7.5%)",
+      "12 (9%)", "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "ARM B",
+      "134", "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)", "9 (6.7%)",
+      "11 (8.2%)", "ARM C", "132", "", "0", "7 (5.3%)", "7 (5.3%)",
+      "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)"),
+    .Dim = c(10L, 4L)
+    )
   expect_identical(result_matrix, expected_matrix)
 })
