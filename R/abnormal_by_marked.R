@@ -50,7 +50,8 @@ NULL
 #'   ANRIND == "LOW LOW" ~ "Low",
 #'   ANRIND == "HIGH HIGH" ~ "High",
 #'   TRUE ~ ""
-#'   )
+#'   ),
+#'   levels = c("Low", "High")
 #'  )
 #')
 #'
@@ -87,10 +88,8 @@ s_count_abnormal_by_marked <- function(df,
     is_df_with_variables(df, c(aval = .var, variables)),
     is_character_or_factor(df[[.var]]),
     is_character_or_factor(df[[variables$id]]),
-    length(unique(df[[variables$direction]])) == 1L
+    length(unique(df[[variables$direction]])) <= 1L
   )
-
-  #check that abn_dir contains only one direction values
 
 
   first_row <- .spl_context[.spl_context$split == variables[["param"]], ] #nolint
@@ -102,9 +101,6 @@ s_count_abnormal_by_marked <- function(df,
   denom <- length(unique(subj_cur_col))
 
   if (denom > 0) {
-
-    #numerator
-    #df_abn <- df[df[[variables$direction]] %in% abnormal, ]
 
     subjects_last_replicated <- unique(
       df[df[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE]
@@ -163,17 +159,42 @@ a_count_abnormal_by_marked <- make_afun(
 #'   as.data.frame() %>%
 #'   arrange(PARAMCD, abn_dir)
 #'
+#' basic_table() %>%
+#'   split_cols_by("ARMCD") %>%
+#'   split_rows_by("PARAMCD") %>%
+#'   summarize_num_patients(
+#'     var = "USUBJID",
+#'     .stats = "unique_count") %>%
+#'   split_rows_by(
+#'     "abn_dir",
+#'     split_fun = trim_levels_to_map(map)) %>%
+#'   count_abnormal_by_marked(
+#'     var = "AVALCAT1",
+#'     variables = list(
+#'       id = "USUBJID",
+#'       param = "PARAMCD",
+#'       direction = "abn_dir")
+#'     ) %>%
+#'   build_table(df = df)
+#'
 #'
 #' basic_table() %>%
-#' split_cols_by("ARMCD") %>%
-#' split_rows_by("PARAMCD") %>%
-#' summarize_num_patients(var = "USUBJID",
-#' .stats = "unique_count") %>%
-#' split_rows_by("abn_dir", split_fun = trim_levels_to_map(map)) %>%
-#' count_abnormal_by_marked(var = "AVALCAT1",
-#' variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-#' ) %>%
-#' build_table(df = df)
+#'   split_cols_by("ARMCD") %>%
+#'   split_rows_by("PARAMCD") %>%
+#'   summarize_num_patients(
+#'     var = "USUBJID",
+#'     .stats = "unique_count") %>%
+#'   split_rows_by(
+#'     "abn_dir",
+#'     split_fun = trim_levels_in_group("abn_dir")) %>%
+#'   count_abnormal_by_marked(
+#'     var = "AVALCAT1",
+#'     variables = list(
+#'       id = "USUBJID",
+#'       param = "PARAMCD",
+#'       direction = "abn_dir")
+#'     ) %>%
+#'   build_table(df = df)
 #'
 count_abnormal_by_marked <- function(lyt,
                                      var,

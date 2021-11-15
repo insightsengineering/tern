@@ -2,7 +2,6 @@ library(scda)
 library(dplyr)
 
 get_adlb <- function() {
-
   adlb <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolintr
   # Modify ANRIND and create AVALCAT1/PARCAT2
   # PARCAT2 is just used for filtering, but in order to be the
@@ -34,8 +33,9 @@ get_adlb <- function() {
 test_that("LBT05 variant 1 is produced correctly", {
   adlb <- get_adlb()
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-  split_fun <- drop_split_levels
+
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
+
   set.seed(1, kind = "Mersenne-Twister")
 
   adlb <- adlb %>% mutate(
@@ -55,28 +55,41 @@ test_that("LBT05 variant 1 is produced correctly", {
     PARCAT2 = factor("LS")
   ) %>%
     select(-.data$q1, -.data$q2)
-  #Preprocessing steps
-  adlb <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL))
 
   #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
   #just the `Any Abnormality` row is shown when there is no marked abonormality.
-  adlb$ANRIND[adlb$PARAMCD == "ALT"] <- "LOW"
-  adlb$AVALCAT1[adlb$PARAMCD == "ALT"] <- ""
+  adlb$ANRIND[adlb$PARAMCD == "ALT"] <- "NORMAL"
 
-  split_fun <- drop_split_levels
+  #Preprocessing steps
+  adlb <- adlb %>%
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+    ),
+    levels = c("Low", "High")
+    )
+  )
+
+  map <- unique(
+    adlb[adlb$abn_dir %in% c("Low", "High") & adlb$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
+    ) %>%
+    lapply(as.character) %>%
+    as.data.frame() %>%
+    arrange(PARAMCD, desc(abn_dir)) %>%
+  add_row(PARAMCD = "ALT", abn_dir = "Low")
 
   lyt <- basic_table() %>%
     split_cols_by("ACTARMCD") %>%
     add_colcounts() %>%
-    split_rows_by("PARAM", split_fun = split_fun, label_pos = "topleft", split_label = "Laboratory Test") %>%
-    append_topleft("  Direction of abnormality") %>%
+    split_rows_by("PARAMCD", label_pos = "topleft", split_label = "Laboratory Test") %>%
     summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
-
+    append_topleft("  Direction of abnormality") %>%
+    split_rows_by("abn_dir", split_fun = trim_levels_to_map(map)) %>%
     count_abnormal_by_marked(
       var = "AVALCAT1",
-      abnormal = c(Low = "LOW LOW", High = "HIGH HIGH"),
-      variables = list(id = "USUBJID", direction = "ANRIND")
+      variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
     )
 
   result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
@@ -93,24 +106,21 @@ test_that("LBT05 variant 1 is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c("Laboratory Test", "  Direction of abnormality",
-      "Alanine Aminotransferase Measurement (n)", "Low", "Any Abnormality",
-      "High", "Any Abnormality", "C-Reactive Protein Measurement (n)",
-      "Low", "Single, not last", "Last or replicated", "Any Abnormality",
-      "High", "Single, not last", "Last or replicated", "Any Abnormality",
-      "Immunoglobulin A Measurement (n)", "Low", "Single, not last",
-      "Last or replicated", "Any Abnormality", "High", "Single, not last",
-      "Last or replicated", "Any Abnormality", "ARM A", "(N=134)",
-      "134", "", "0", "", "0", "134", "", "2 (1.5%)", "10 (7.5%)",
-      "12 (9%)", "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "134", "",
-      "2 (1.5%)", "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)", "4 (3%)",
-      "ARM B", "(N=134)", "134", "", "0", "", "0", "134", "", "0",
-      "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)", "9 (6.7%)", "11 (8.2%)",
-      "134", "", "1 (0.7%)", "8 (6%)", "9 (6.7%)", "", "0", "9 (6.7%)",
-      "9 (6.7%)", "ARM C", "(N=132)", "132", "", "0", "", "0", "132",
-      "", "0", "7 (5.3%)", "7 (5.3%)", "", "1 (0.8%)", "12 (9.1%)",
-      "13 (9.8%)", "132", "", "1 (0.8%)", "10 (7.6%)", "11 (8.3%)",
-      "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
-    .Dim = c(25L, 4L)
+       "ALT (n)", "Low", "Any Abnormality", "CRP (n)", "Low", "Single, not last",
+       "Last or replicated", "Any Abnormality", "High", "Single, not last",
+       "Last or replicated", "Any Abnormality", "IGA (n)", "Low", "Single, not last",
+       "Last or replicated", "Any Abnormality", "High", "Single, not last",
+       "Last or replicated", "Any Abnormality", "ARM A", "(N=134)",
+       "134", "", "0", "134", "", "2 (1.5%)", "10 (7.5%)", "12 (9%)",
+       "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "134", "", "2 (1.5%)",
+       "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)", "4 (3%)", "ARM B",
+       "(N=134)", "134", "", "0", "134", "", "0", "7 (5.2%)", "7 (5.2%)",
+       "", "2 (1.5%)", "9 (6.7%)", "11 (8.2%)", "134", "", "1 (0.7%)",
+       "8 (6%)", "9 (6.7%)", "", "0", "9 (6.7%)", "9 (6.7%)", "ARM C",
+       "(N=132)", "132", "", "0", "132", "", "0", "7 (5.3%)", "7 (5.3%)",
+       "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)", "132", "", "1 (0.8%)",
+       "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
+    .Dim = c(23L, 4L)
     )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -118,8 +128,9 @@ test_that("LBT05 variant 1 is produced correctly", {
 test_that("LBT05 variant 2 is produced correctly", {
   adlb <- get_adlb()
   adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-  split_fun <- drop_split_levels
+
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
+
   set.seed(1, kind = "Mersenne-Twister")
 
   adlb <- adlb %>% mutate(
@@ -139,48 +150,64 @@ test_that("LBT05 variant 2 is produced correctly", {
     PARCAT2 = factor("LS")
   ) %>%
     select(-.data$q1, -.data$q2)
+
+  #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
+  #just the `Any Abnormality` row is shown when there is no marked abonormality.
+  adlb$ANRIND[adlb$PARAMCD == "ALT"] <- "NORMAL"
+
   #Preprocessing steps
   adlb <- adlb %>%
-    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL))
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+    ),
+    levels = c("Low", "High")
+    )
+    )
 
-    lyt <- basic_table() %>%
-      split_cols_by("ACTARMCD") %>%
-      add_colcounts() %>%
-      split_rows_by("PARAM", split_fun = split_fun, label_pos = "topleft", split_label = "Laboratory Test") %>%
-      append_topleft("  Direction of abnormality") %>%
-      summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
-      count_abnormal_by_marked(
-        var = "AVALCAT1",
-        abnormal = c(Low = "LOW LOW", High = "HIGH HIGH"),
-        variables = list(id = "USUBJID", direction = "ANRIND")
-      )
+  map <- unique(
+    adlb[adlb$abn_dir %in% c("Low", "High") & adlb$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
+  ) %>%
+    lapply(as.character) %>%
+    as.data.frame() %>%
+    arrange(PARAMCD, desc(abn_dir)) %>%
+    add_row(PARAMCD = "ALT", abn_dir = "Low")
 
-    result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
+  lyt <- basic_table() %>%
+    split_cols_by("ACTARMCD") %>%
+    add_colcounts() %>%
+    split_rows_by("PARAMCD", label_pos = "topleft", split_label = "Laboratory Test") %>%
+    summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
+    append_topleft("  Direction of abnormality") %>%
+    split_rows_by("abn_dir", split_fun = trim_levels_to_map(map)) %>%
+    count_abnormal_by_marked(
+      var = "AVALCAT1",
+      variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+    )
 
-    result_matrix <- to_string_matrix(result)
-    expected_matrix <- structure(
-      c("Laboratory Test", "  Direction of abnormality",
-        "Alanine Aminotransferase Measurement (n)", "Low", "Single, not last",
-        "Last or replicated", "Any Abnormality", "High", "Single, not last",
-        "Last or replicated", "Any Abnormality", "C-Reactive Protein Measurement (n)",
-        "Low", "Single, not last", "Last or replicated", "Any Abnormality",
-        "High", "Single, not last", "Last or replicated", "Any Abnormality",
-        "Immunoglobulin A Measurement (n)", "Low", "Single, not last",
-        "Last or replicated", "Any Abnormality", "High", "Single, not last",
-        "Last or replicated", "Any Abnormality", "ARM A", "(N=134)",
-        "134", "", "0", "5 (3.7%)", "5 (3.7%)", "", "1 (0.7%)", "8 (6%)",
-        "9 (6.7%)", "134", "", "2 (1.5%)", "10 (7.5%)", "12 (9%)", "",
-        "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "134", "", "2 (1.5%)",
-        "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)", "4 (3%)", "ARM B",
-        "(N=134)", "134", "", "0", "13 (9.7%)", "13 (9.7%)", "", "1 (0.7%)",
-        "11 (8.2%)", "12 (9%)", "134", "", "0", "7 (5.2%)", "7 (5.2%)",
-        "", "2 (1.5%)", "9 (6.7%)", "11 (8.2%)", "134", "", "1 (0.7%)",
-        "8 (6%)", "9 (6.7%)", "", "0", "9 (6.7%)", "9 (6.7%)", "ARM C",
-        "(N=132)", "132", "", "0", "5 (3.8%)", "5 (3.8%)", "", "1 (0.8%)",
-        "6 (4.5%)", "7 (5.3%)", "132", "", "0", "7 (5.3%)", "7 (5.3%)",
-        "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)", "132", "", "1 (0.8%)",
-        "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
-    .Dim = c(29L, 4L)
+  result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
+  result_matrix <- to_string_matrix(result)
+
+  expected_matrix <- structure(
+    c("Laboratory Test", "  Direction of abnormality",
+      "ALT (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
+      "CRP (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
+      "High", "Single, not last", "Last or replicated", "Any Abnormality",
+      "IGA (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
+      "High", "Single, not last", "Last or replicated", "Any Abnormality",
+      "ARM A", "(N=134)", "134", "", "0", "0", "0", "134", "", "2 (1.5%)",
+      "10 (7.5%)", "12 (9%)", "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)",
+      "134", "", "2 (1.5%)", "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)",
+      "4 (3%)", "ARM B", "(N=134)", "134", "", "0", "0", "0", "134",
+      "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)", "9 (6.7%)",
+      "11 (8.2%)", "134", "", "1 (0.7%)", "8 (6%)", "9 (6.7%)", "",
+      "0", "9 (6.7%)", "9 (6.7%)", "ARM C", "(N=132)", "132", "", "0",
+      "0", "0", "132", "", "0", "7 (5.3%)", "7 (5.3%)", "", "1 (0.8%)",
+      "12 (9.1%)", "13 (9.8%)", "132", "", "1 (0.8%)", "10 (7.6%)",
+      "11 (8.3%)", "", "1 (0.8%)", "5 (3.8%)", "6 (4.5%)"),
+    .Dim = c(25L, 4L)
     )
     expect_identical(result_matrix, expected_matrix)
   })
@@ -188,8 +215,9 @@ test_that("LBT05 variant 2 is produced correctly", {
   test_that("LBT05 variant 4 is produced correctly", {
     adlb <- get_adlb()
     adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-    split_fun <- drop_split_levels
+
     avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
+
     set.seed(1, kind = "Mersenne-Twister")
 
     adlb <- adlb %>% mutate(
@@ -209,49 +237,60 @@ test_that("LBT05 variant 2 is produced correctly", {
       PARCAT2 = factor("LS")
     ) %>%
       select(-.data$q1, -.data$q2)
-    #Preprocessing steps
-    adlb <- adlb %>%
-      filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL))
 
     #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
-    #just parameters with at least one marked abnormality.
-    adlb$ANRIND[adlb$PARAMCD == "ALT"] <- "LOW"
-    adlb$AVALCAT1[adlb$PARAMCD == "ALT"] <- ""
+    #just ALT rows are removed
+    adlb$ANRIND[adlb$PARAMCD == "ALT"] <- "NORMAL"
 
-    split_fun <- drop_split_levels
+    #Preprocessing steps
+    adlb <- adlb %>%
+      filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+      mutate(abn_dir = factor(case_when(
+        ANRIND == "LOW LOW" ~ "Low",
+        ANRIND == "HIGH HIGH" ~ "High",
+        TRUE ~ ""
+      ),
+      levels = c("Low", "High")
+      )
+      )
+
+    map <- unique(
+      adlb[adlb$abn_dir %in% c("Low", "High") & adlb$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
+    ) %>%
+      lapply(as.character) %>%
+      as.data.frame() %>%
+      arrange(PARAMCD, desc(abn_dir))
 
     lyt <- basic_table() %>%
       split_cols_by("ACTARMCD") %>%
       add_colcounts() %>%
-      split_rows_by("PARAM", split_fun = split_fun, label_pos = "topleft", split_label = "Laboratory Test") %>%
-      append_topleft("  Direction of abnormality") %>%
+      split_rows_by("PARAMCD", split_fun = trim_levels_to_map(map), label_pos = "topleft", split_label = "Laboratory Test") %>%
       summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
+      append_topleft("  Direction of abnormality") %>%
+      split_rows_by("abn_dir") %>%
       count_abnormal_by_marked(
         var = "AVALCAT1",
-        abnormal = c(Low = "LOW LOW", High = "HIGH HIGH"),
-        variables = list(id = "USUBJID", direction = "ANRIND")
+        variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
       )
 
-    result <- build_table(lyt, df = adlb, alt_counts_df = adsl) %>%
-      prune_table()
+    result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
 
     result_matrix <- to_string_matrix(result)
     expected_matrix <- structure(
       c("Laboratory Test", "  Direction of abnormality",
-        "C-Reactive Protein Measurement (n)", "Low", "Single, not last",
-        "Last or replicated", "Any Abnormality", "High", "Single, not last",
-        "Last or replicated", "Any Abnormality", "Immunoglobulin A Measurement (n)",
-        "Low", "Single, not last", "Last or replicated", "Any Abnormality",
+        "CRP (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
         "High", "Single, not last", "Last or replicated", "Any Abnormality",
-        "ARM A", "(N=134)", "134", "", "2 (1.5%)", "10 (7.5%)", "12 (9%)",
-        "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "134", "", "2 (1.5%)",
-        "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)", "4 (3%)", "ARM B",
-        "(N=134)", "134", "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)",
-        "9 (6.7%)", "11 (8.2%)", "134", "", "1 (0.7%)", "8 (6%)", "9 (6.7%)",
-        "", "0", "9 (6.7%)", "9 (6.7%)", "ARM C", "(N=132)", "132", "",
-        "0", "7 (5.3%)", "7 (5.3%)", "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)",
-        "132", "", "1 (0.8%)", "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)",
-        "5 (3.8%)", "6 (4.5%)"),
+        "IGA (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
+        "High", "Single, not last", "Last or replicated", "Any Abnormality",
+        "ARM A", "(N=134)", "23", "", "2 (8.7%)", "10 (43.5%)", "12 (52.2%)",
+        "", "1 (4.3%)", "10 (43.5%)", "11 (47.8%)", "11", "", "2 (18.2%)",
+        "5 (45.5%)", "7 (63.6%)", "", "0", "4 (36.4%)", "4 (36.4%)",
+        "ARM B", "(N=134)", "17", "", "0", "7 (41.2%)", "7 (41.2%)",
+        "", "2 (11.8%)", "9 (52.9%)", "11 (64.7%)", "18", "", "1 (5.6%)",
+        "8 (44.4%)", "9 (50%)", "", "0", "9 (50%)", "9 (50%)", "ARM C",
+        "(N=132)", "18", "", "0", "7 (38.9%)", "7 (38.9%)", "", "1 (5.6%)",
+        "12 (66.7%)", "13 (72.2%)", "17", "", "1 (5.9%)", "10 (58.8%)",
+        "11 (64.7%)", "", "1 (5.9%)", "5 (29.4%)", "6 (35.3%)"),
       .Dim = c(20L, 4L)
       )
     expect_identical(result_matrix, expected_matrix)

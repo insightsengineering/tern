@@ -63,8 +63,8 @@ test_that("s_count_abnormal_by_marked works as expected", {
       ANRIND == "HIGH HIGH" ~ "High",
       TRUE ~ ""
       )
-      )
-      )
+    )
+  )
 
   adlb_crp <- adlb_f %>% filter(PARAMCD == "CRP") %>% droplevels()
   full_parent_df <- list(adlb_crp, "not_needed")
@@ -151,6 +151,60 @@ test_that("s_count_abnormal_by_marked works as expected", {
   expect_equal(result, expected, tolerance = 0.000001)
 })
 
+
+test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
+          two direction values", {
+  adlb <- adlb_raw
+  avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
+
+  set.seed(1, kind = "Mersenne-Twister")
+
+  adlb <- adlb %>% mutate(
+    AVALCAT1 = factor(
+      case_when(
+        .data$ANRIND %in% c("HIGH HIGH", "LOW LOW") ~
+          sample(
+            x = avalcat1,
+            size = n(),
+            replace = TRUE,
+            prob = c(0.3, 0.6, 0.1)
+          ),
+        TRUE ~ ""
+      ),
+      levels = c("", avalcat1)
+    ),
+    PARCAT2 = factor("LS")
+  ) %>%
+    select(-.data$q1, -.data$q2)
+  #Preprocessing steps
+  adlb_f <- adlb %>%
+    filter(.data$ONTRTFL == "Y" & .data$PARCAT2 == "LS" & .data$SAFFL == "Y" & !is.na(.data$AVAL)) %>%
+    mutate(abn_dir = factor(case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+    )
+    )
+    )
+
+  adlb_crp <- adlb_f %>% filter(PARAMCD == "CRP") %>% droplevels()
+  full_parent_df <- list(adlb_crp, "not_needed")
+  cur_col_subset <- list(adlb_crp$ARMCD == "ARM A", "not_needed")
+
+  spl_context <- data.frame(
+    split = c("PARAMCD", "abn_dir"),
+    full_parent_df = I(full_parent_df),
+    cur_col_subset = I(cur_col_subset)
+  )
+
+  expect_error(s_count_abnormal_by_marked(
+    df = adlb_crp,
+    .spl_context = spl_context,
+    .var = "AVALCAT1",
+    variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+  ))
+
+})
 
 
 test_that("count_abnormal_by_marked works as expected", {
