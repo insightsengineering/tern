@@ -87,8 +87,7 @@ on_failure(is_df_with_variables) <- function(call, env) {
   var_df <- colnames(eval(call$df, envir = env))
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
-  paste(deparse(call$df), "does not contain all variables among:",
-        paste(deparse(vars), collapse = ""))
+  paste(deparse(call$df), "does not contain all variables among:", paste(deparse(vars), collapse = ""))
 }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
@@ -113,8 +112,7 @@ on_failure(is_df_with_factors) <- function(call, env) {
   var_df <- colnames(eval(call$df, envir = env))
   vars <- eval(call$variables, envir = env)
   vars <- vars[! unlist(vars) %in% var_df]
-  paste(deparse(call$df), "does not contain only factor variables among:",
-        paste(deparse(vars), collapse = ""))
+  paste(deparse(call$df), "does not contain only factor variables among:", paste(deparse(vars), collapse = ""))
 }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variable`
@@ -333,7 +331,7 @@ on_failure(all_elements_in_ref) <- function(call, env) {
   ref <- eval(call$ref, envir = env)
   not_in_ref <- x[!(x %in% ref)]
 
-  paste0("Some elements ", paste(deparse(not_in_ref=), collapse = ""),
+  paste0("Some elements ", paste(deparse(not_in_ref), collapse = ""),
          " are not in the reference (", paste(deparse(ref), collapse = ""), ").")
 }
 
@@ -350,8 +348,7 @@ on_failure(has_tabletree_colnames) <- function(call, env) {
   col_names <- eval(call$col_names, envir = env)
   missing_col_names <- x[!(x %in% col_names)]
 
-  paste0("required column names ", paste(deparse(missing_col_names), collapse = ""),
-         " are not found in table")
+  paste0("required column names ", paste(deparse(missing_col_names), collapse = ""), " are not found in table")
 }
 
 #' @describeIn assertions check if the input `df` has `na_level` in its `variables`.
