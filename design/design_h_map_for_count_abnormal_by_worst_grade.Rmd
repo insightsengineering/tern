@@ -55,12 +55,39 @@ ext_ncictc4 <- usethis::use_data(ext_ncictc4)
 ```{r}
 h_map_for_count_abnormal_by_worst_grade <- function(
   df,
-  variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
-  abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
-  method = c("default", "range"),
+  variables = list(anl = "GRADE_ANL", split_rows = c("PARAM", "GRADE_DIR")),
+  abnormal = list(low = "LOW", high = "HIGH"),
   na_level = "<Missing>"
 ) {
+  assert_that(
+    is_df_with_variables(df, variables),
+    "anl" %in% names(variables),
+    "split_rows" %in% names(variables),
+    "PARAM" %in% unlist(variables) || "PARAMCD" %in% unlist(variables),
+    is_df_with_factors(df, variables),
+    any(unlist(abnormal) %in% levels(df[[variables$split_rows[-1]]]))
+  )
+  data("ext_ncictc4")
+  ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
+  ext_ncictc4 <- ext_ncictc4[ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
+  ext_ncictc4[[variables$split_rows[-1]]] <- na_level
+  ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[variables$split_rows[-1]]] <- abnormal$high
+  ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[variables$split_rows[-1]]] <- abnormal$low
+  ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[variables$split_rows[-1]]] != na_level, ][c("PARAMCD", variables$split_rows[-1])]) #nolint
 
+  if ("PARAMCD" %in% variables$split_rows) {
+    map <- unique(df[c(variables$split_rows, variables$anl)])
+    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal),]
+    map <- merge(map, ext_ncictc4, all = TRUE)
+  } else {
+    map <- unique(df[c(variables$split_rows, "PARAMCD", variables$anl)])
+    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal),]
+    ext_ncictc4 <- merge(ext_ncictc4, param_map)
+    map <- merge(map, ext_ncictc4, all = TRUE)
+  }
+
+  map <- map[c(variables$split_rows, variables$anl)]
+  map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
 }
 ```
 
@@ -71,7 +98,42 @@ STREAM data test
 adsl <- ADSL %>% filter(SAFFL == "Y") %>% df_explicit_na()
 adlb <- ADLB %>% df_explicit_na() %>%
   filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
+adlb_f <- adlb %>%
+  mutate(
+    GRADE_DIR = factor(case_when(
+      ATOXGR %in% c("-1", "-2", "-3") ~ "LOW",
+      ATOXGR == "0" ~ "ZERO",
+      ATOXGR %in% c("1", "2", "3") ~ "HIGH"),
+      levels = c("LOW", "ZERO", "HIGH")),
+    GRADE_ANL = fct_relevel(
+      fct_recode(ATOXGR,
+                 `1` = "-1", `2` = "-2", `3` = "-3"),
+      c("0", "1", "2", "3")
+    )
+  ) %>%
+  filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+  droplevels()
+levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "Any")
 
+map <- adlb_f %>% select(PARAMCD, GRADE_DIR, GRADE_ANL) %>% unique() %>% filter(GRADE_DIR != "ZERO")
+map <- ext_ncictc4 %>% left_join(map, by = c("PARAMCD", "GRADE_DIR")) %>% unique() %>% arrange(PARAMCD)
+map <- map %>% mutate(GRADE_ANL = ifelse(is.na(GRADE_ANL), "Any", as.character(GRADE_ANL)))
+
+basic_table() %>%
+  split_cols_by("ARMCD") %>%
+  add_colcounts() %>%
+  split_rows_by("PARAMCD") %>%
+  summarize_num_patients(
+    var = "USUBJID",
+    required = "GRADE_DIR",
+    .stats = "unique_count"
+  ) %>% 
+  split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
+  count_abnormal_by_worst_grade(
+    var = "GRADE_ANL",
+    variables = list(id = "USUBJID", param  = "PARAMCD", grade_dir = "GRADE_DIR")
+  ) %>%
+  build_table(df = adlb_f, alt_counts_df = adsl)
 
 ```
 
@@ -89,33 +151,4 @@ df <- data.frame(
   ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4))
 )
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
-```
-
-```{r}
-h_map_with_count_abnormal(
-  df = df,
-  split_rows_varibles = "PARAM",
-  anl_variable = "ANRIND",
-  abnormal = list(low = "LOW", high = "HIGH"),
-  method = "both"
-)
-```
-see difference between default and both
-```{r}
-df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
-h_map_with_count_abnormal(
-  df = df,
-  split_rows_varibles = "PARAM",
-  anl_variable = "ANRIND",
-  abnormal = list(low = "LOW", high = "HIGH"),
-  method = "default"
-)
-h_map_with_count_abnormal(
-  df = df,
-  split_rows_varibles = "PARAM",
-  anl_variable = "ANRIND",
-  abnormal = list(low = "LOW", high = "HIGH"),
-  method = "both"
-)
 ```
