@@ -85,6 +85,7 @@ h_map_for_count_abnormal_by_worst_grade <- function(
     ext_ncictc4 <- merge(ext_ncictc4, param_map)
     map <- merge(map, ext_ncictc4, all = TRUE)
   }
+  map[[variables$anl]][is.na(map[[variables$anl]])] <- "Any"
 
   map <- map[c(variables$split_rows, variables$anl)]
   map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
@@ -115,14 +116,17 @@ adlb_f <- adlb %>%
   droplevels()
 levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "Any")
 
-map <- adlb_f %>% select(PARAMCD, GRADE_DIR, GRADE_ANL) %>% unique() %>% filter(GRADE_DIR != "ZERO")
-map <- ext_ncictc4 %>% left_join(map, by = c("PARAMCD", "GRADE_DIR")) %>% unique() %>% arrange(PARAMCD)
-map <- map %>% mutate(GRADE_ANL = ifelse(is.na(GRADE_ANL), "Any", as.character(GRADE_ANL)))
+# map <- adlb_f %>% select(PARAMCD, GRADE_DIR, GRADE_ANL) %>% unique() %>% filter(GRADE_DIR != "ZERO")
+# map <- ext_ncictc4 %>% left_join(map, by = c("PARAMCD", "GRADE_DIR")) %>% unique() %>% arrange(PARAMCD)
+# map <- map %>% mutate(GRADE_ANL = ifelse(is.na(GRADE_ANL), "Any", as.character(GRADE_ANL)))
+map <- h_map_for_count_abnormal_by_worst_grade(
+  df = adlb_f
+)
 
 basic_table() %>%
   split_cols_by("ARMCD") %>%
   add_colcounts() %>%
-  split_rows_by("PARAMCD") %>%
+  split_rows_by("PARAM") %>%
   summarize_num_patients(
     var = "USUBJID",
     required = "GRADE_DIR",
@@ -131,7 +135,7 @@ basic_table() %>%
   split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param  = "PARAMCD", grade_dir = "GRADE_DIR")
+    variables = list(id = "USUBJID", param  = "PARAM", grade_dir = "GRADE_DIR")
   ) %>%
   build_table(df = adlb_f, alt_counts_df = adsl)
 
