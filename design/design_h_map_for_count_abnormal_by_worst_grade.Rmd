@@ -86,11 +86,14 @@ h_map_for_count_abnormal_by_worst_grade <- function(
 
   if ("PARAMCD" %in% variables$split_rows) {
     map <- unique(df[c(variables$split_rows, variables$anl)])
-    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal),]
+    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal), ]
     map <- merge(map, ext_ncictc4, all = TRUE)
   } else {
     map <- unique(df[c(variables$split_rows, "PARAMCD", variables$anl)])
-    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal),]
+    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal), ]
+
+    # Below is to include other variables into the ext_ncictc4 otherwise PARAM will be NA in the final map
+    param_map <- unique(df[c(head(variables$split_rows, -1), "PARAMCD")])
     ext_ncictc4 <- merge(ext_ncictc4, param_map)
     map <- merge(map, ext_ncictc4, all = TRUE)
   }
@@ -104,7 +107,13 @@ h_map_for_count_abnormal_by_worst_grade <- function(
 STREAM data test
 =============
 
-```{r}
+Below codes are just to read in STREAM data. The source data is deleted after data got read in the envrionment.
+```{r eval=FALSE}
+library(forcats)
+
+ADSL <- haven::read_sas("data/adsl.sas7bdat")
+ADLB <- haven::read_sas("data/adlb.sas7bdat")
+
 adsl <- ADSL %>% filter(SAFFL == "Y") %>% df_explicit_na()
 adlb <- ADLB %>% df_explicit_na() %>%
   filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
@@ -124,10 +133,46 @@ adlb_f <- adlb %>%
   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
   droplevels()
 levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "Any")
+#I had to add "any" into the levels of analysis variable `GRADE_ANL` for the functions to work. Not sure if there's
+#better way to handle this.
+```
 
+Pre-processing
+```{r}
+library(forcats)
+library(scda) # scda is only for knit to work
+
+adsl <- synthetic_cdisc_data("latest")$adsl
+adlb <- synthetic_cdisc_data("latest")$adlb
+
+adsl <- adsl %>% filter(SAFFL == "Y") %>% df_explicit_na()
+adlb <- adlb %>% df_explicit_na() %>%
+  filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI" & SAFFL == "Y")
+adlb_f <- adlb %>%
+  mutate(
+    GRADE_DIR = factor(case_when(
+      ATOXGR %in% c("-1", "-2", "-3") ~ "LOW",
+      ATOXGR == "0" ~ "ZERO",
+      ATOXGR %in% c("1", "2", "3") ~ "HIGH"),
+      levels = c("LOW", "ZERO", "HIGH")),
+    GRADE_ANL = fct_relevel(
+      fct_recode(ATOXGR,
+                 `1` = "-1", `2` = "-2", `3` = "-3"),
+      c("0", "1", "2", "3")
+    )
+  ) %>%
+  filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+  droplevels()
+levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "Any")
+```
+
+Build LBT07
+```{r}
+# The commented-out codes were what used to create the map
 # map <- adlb_f %>% select(PARAMCD, GRADE_DIR, GRADE_ANL) %>% unique() %>% filter(GRADE_DIR != "ZERO")
 # map <- ext_ncictc4 %>% left_join(map, by = c("PARAMCD", "GRADE_DIR")) %>% unique() %>% arrange(PARAMCD)
 # map <- map %>% mutate(GRADE_ANL = ifelse(is.na(GRADE_ANL), "Any", as.character(GRADE_ANL)))
+
 map <- h_map_for_count_abnormal_by_worst_grade(
   df = adlb_f
 )
@@ -148,20 +193,4 @@ basic_table() %>%
   ) %>%
   build_table(df = adlb_f, alt_counts_df = adsl)
 
-```
-
-
-
-Unit Tests
-=============
-```{r}
-df <- data.frame(
-  USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
-  AVISIT = c(
-    rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2), rep("WEEK 1", 2), rep("WEEK 2", 2)
-  ),
-  PARAM = rep(c("ALT", "CPR"), 6),
-  ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4))
-)
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 ```
