@@ -57,7 +57,7 @@ is_df_with_no_na_level <- function(df, variables, na_level) {
   )
   !any(df[, unlist(variables)] == na_level)
 }
-on_failure(is_df_with__no_na_level) <- function(call, env) {
+on_failure(is_df_with_no_na_level) <- function(call, env) {
   paste(deparse(call$df), "contains missing data as defined by the argument na_level")
 }
 ```
@@ -66,7 +66,7 @@ on_failure(is_df_with__no_na_level) <- function(call, env) {
 Maybe the function can get different `method` so that map for different templates can be created accordingly.
 
 ```{r}
-h_map_for_count_abnormal <- function(
+h_map_with_count_abnormal <- function(
   df,
   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
@@ -74,15 +74,16 @@ h_map_for_count_abnormal <- function(
   na_level = "<Missing>"
 ) {
   method <- match.arg(method)
+
   assert_that(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
     is_variables(variables),
-    is_character_list(abnormal, min_length = 2, max_length = 2),
+    utils.nest:::is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
-    # !any(df[variables$split_rows] == na_level),
+    # !any(df[[variables$split_rows]] == na_level),
     is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
-    is_factor_no_na(df[variables$split_rows]),
+    is_factor_no_na(as.factor(df[[variables$split_rows]])),
     # !na_level %in% df[[variables$anl]],
     is_df_with_no_na_level(df, variables = list(anl = variables$anl), na_level = na_level),
     is_factor_no_na(df[[variables$anl]])
@@ -168,10 +169,9 @@ df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 ```{r}
 h_map_with_count_abnormal(
   df = df,
-  split_rows_varibles = "PARAM",
-  anl_variable = "ANRIND",
+  variables = list(anl = "ANRIND", split_rows = c("PARAM")),
   abnormal = list(low = "LOW", high = "HIGH"),
-  method = "both"
+  method = "default"
 )
 ```
 see difference between default and both
@@ -180,31 +180,30 @@ df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIN
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 h_map_with_count_abnormal(
   df = df,
-  split_rows_varibles = "PARAM",
-  anl_variable = "ANRIND",
+  variables = list(anl = "ANRIND", split_rows = c("PARAM")),
   abnormal = list(low = "LOW", high = "HIGH"),
   method = "default"
 )
-h_map_with_count_abnormal(
-  df = df,
-  split_rows_varibles = "PARAM",
-  anl_variable = "ANRIND",
-  abnormal = list(low = "LOW", high = "HIGH"),
-  method = "both"
-)
+
+# I think we can test this in production? 
+# h_map_with_count_abnormal(
+#   df = df,
+#   variables = list(anl = "ANRIND", split_rows = c("PARAM")),
+#   abnormal = list(low = "LOW", high = "HIGH"),
+#   method = "range"
+# )
 ```
 
 For lbt04, use stream real data to test
 ```{r}
-ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na() #nolint
+ADLB <- haven::read_sas("/home/rstudio/nest_projects/data/adlb.sas7bdat") %>% df_explicit_na() #nolint
 adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
 
 h_map_with_count_abnormal(
   df = adlb_f %>% filter(LBCAT != "<Missing>"),
-  split_rows_varibles = c("LBCAT", "PARAM"),
-  anl_variable = "ANRIND",
+  variables = list(anl = "ANRIND", split_rows = c("LBCAT")),
   abnormal = list(low = "LOW", high = "HIGH"),
-  method = "lbt04"
+  method = "default"
 )
 ```
 
