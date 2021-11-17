@@ -1,5 +1,5 @@
 ---
-title: "Design for helper function to create layout map"
+title: "Design for helper function to create layout map in LBT04/VST02/EGT02/LBT15"
 author: "Rosemary Li"
 date: "`r Sys.Date()`"
 output:
@@ -10,7 +10,7 @@ output:
     theme: journal
     highlight: zenburn
 vignette: >
-  %\VignetteIndexEntry{Design of LBT04}
+  %\VignetteIndexEntry{Design of LBT04/VST02/EGT02/LBT15}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -48,8 +48,9 @@ correctly is critical. Different templates have different scenarios to create th
 Design
 =============
 
-New assert functions
-```{r}
+New assert functions.
+@Joe, this is legacy function from last sprint, please ignore it.
+```{r eval=FALSE}
 is_df_with_no_na_level <- function(df, variables, na_level) {
   assert_that(
     is_df_with_variables(df, variables),
@@ -64,13 +65,15 @@ on_failure(is_df_with_no_na_level) <- function(call, env) {
 
 
 Maybe the function can get different `method` so that map for different templates can be created accordingly.
-Store and use metadata
+Store and use metadata.
+
+Below codes only need to run once and then load data using `data("ext_ncictc4")`.
 ```{r eval=FALSE}
 ext_ncictc4 <- haven::read_sas("/home/rstudio/nest_projects/tern/design/metadata/ext_ncictc4.sas7bdat")
 ext_ncictc4 <- usethis::use_data(ext_ncictc4)
 ```
 
-
+@Joe, for this one, please only focus on the method being "meta_ext_ncictc4", other two are already in production.
 ```{r}
 h_map_for_count_abnormal <- function(
   df,
@@ -84,7 +87,7 @@ h_map_for_count_abnormal <- function(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
     is_variables(variables),
-    is_character_list(abnormal, min_length = 2, max_length = 2),
+    utils.nest::is_character_list(abnormal, min_length = 2, max_length = 2),
     is_df_with_factors(df, list(val = variables$anl)),
     # !any(df[variables$split_rows] == na_level),
     # is_df_with_no_na_level(df, variables = list(split_rows = variables$split_rows), na_level = na_level),
@@ -149,15 +152,16 @@ h_map_for_count_abnormal <- function(
     map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
   } else if (method == "meta_ext_ncictc4") {
     assert_that(
-      is_df_with_variables(df, variables = list(paramcd = "PARAMCD"))
+      is_df_with_variables(df, variables = list(paramcd = "PARAMCD")),
+      any(lengths(abnormal) < 2) # I want to make sure LOW LOW/HIGH HIGH doesn't go into abnormal for this method #nolint
     )
     data("ext_ncictc4")
     ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
     ext_ncictc4 <- ext_ncictc4[ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
     ext_ncictc4[[variables$anl]] <- na_level
-    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[variables$anl]] <- "HIGH"
-    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[variables$anl]] <- "LOW"
-    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("0"), ][[variables$anl]] <- "NORMAL"
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[variables$anl]] <- abnormal$high
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[variables$anl]] <- abnormal$low
+    ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("0"), ][[variables$anl]] <- normal_value
     ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[variables$anl]] != na_level, ][c("PARAMCD", variables$anl)])
 
     #incude extra split_rows
@@ -181,7 +185,7 @@ h_map_for_count_abnormal <- function(
 
 Unit tests
 =============
-```{r}
+```{r eval=FALSE}
 df <- data.frame(
   USUBJID = c(rep("1", 4), rep("2", 4), rep("3", 4)),
   AVISIT = c(
@@ -193,27 +197,19 @@ df <- data.frame(
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 ```
 
-```{r}
-h_map_with_count_abnormal(
-  df = df,
-  split_rows_varibles = "PARAM",
-  anl_variable = "ANRIND",
-  abnormal = list(low = "LOW", high = "HIGH"),
-  method = "both"
-)
-```
-see difference between default and both
-```{r}
+see difference between default and both.
+@Joe, ignore this, this is legacy from last spring
+```{r eval=FALSE}
 df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
-h_map_with_count_abnormal(
+h_map_for_count_abnormal(
   df = df,
   split_rows_varibles = "PARAM",
   anl_variable = "ANRIND",
   abnormal = list(low = "LOW", high = "HIGH"),
   method = "default"
 )
-h_map_with_count_abnormal(
+h_map_for_count_abnormal(
   df = df,
   split_rows_varibles = "PARAM",
   anl_variable = "ANRIND",
@@ -222,21 +218,13 @@ h_map_with_count_abnormal(
 )
 ```
 
-For lbt15, use stream real data to test
-```{r}
-ADLB <- haven::read_sas("../data/adlb.sas7bdat") %>% df_explicit_na() #nolint
-adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
+STREAM tests with LBT15
+=============
 
-h_map_with_count_abnormal(
-  df = adlb_f %>% filter(LBCAT != "<Missing>"),
-  variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM")),
-  abnormal = list(low = c("LOW"), high = c("HIGH")),
-  method = "meta_ext_ncictc4"
-)
-```
+test with new method and stream data for lbt15.
+```{r eval=FALSE}
+# ADSL and ADLB are stream source data read in with haven::read_sas()
 
-test with new method and stream data for lbt15
-```{r}
 adsl <- ADSL %>% df_explicit_na() %>% filter(SAFFL == "Y")
 adlb_f <- ADLB %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
   mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")), 
@@ -296,3 +284,65 @@ adlb_f_2 <- adlb_f %>%
 
 build_table(lyt, adlb_f_2 %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
 ```
+
+replace stream data with scda so that knit will work
+```{r}
+library(scda)
+library(forcats)
+library(tern)
+adsl <- synthetic_cdisc_data("latest")$adsl
+adlb <- synthetic_cdisc_data("latest")$adlb
+adlb[["PARCAT2"]] <- "SI" # for knit to work
+adlb[["PARCAT1"]] <- adlb$LBCAT # for knit to work
+adlb <- adlb %>% mutate(
+  PARAMCD = case_when(
+    PARAMCD == "ALT" ~ "ALTSI",
+    PARAMCD == "CRP" ~ "CPKSI",
+    PARAMCD == "IGA" ~ "ALBUMSI"
+  )
+) # for knit to work because scda doesn't have the correct PARAMCD from grading criteria. Maybe scda needs to be updated? #nolint
+
+adsl <- adsl %>% df_explicit_na() %>% filter(SAFFL == "Y")
+adlb_f <- adlb %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
+  mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")), 
+         BTOXGR = factor(BTOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>"))) 
+adlb_f <- adlb_f %>%
+  mutate(
+    ATOXGR_CAT = fct_collapse(ATOXGR,
+                              "LOW" = c("-3", "-4"),
+                              "NORMAL" = c("-2", "-1", "0", "1", "2"),
+                              "HIGH" = c("3", "4")
+    ),
+    BTOXGR_CAT = fct_collapse(BTOXGR,
+                              "LOW" = c("-3", "-4"),
+                              "NORMAL" = c("-2", "-1", "0", "1", "2", "<Missing>"),
+                              "HIGH" = c("3", "4")
+    )
+  )
+
+
+map <- h_map_for_count_abnormal(
+  df = adlb_f,
+  variables = list(anl = "ATOXGR_CAT", split_rows = c("PARCAT1", "PARAM")),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "meta_ext_ncictc4",
+  na_level = "<Missing>"
+)
+
+lyt <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("PARCAT1", split_fun = trim_levels_to_map(map = map)) %>%
+  split_rows_by("PARAM", split_fun = trim_levels_to_map(map = map)) %>%
+  count_abnormal(
+    var = "ATOXGR_CAT",
+    abnormal = list(low = "LOW", high = "HIGH"),
+    variables = list(id = "USUBJID", baseline = "BTOXGR_CAT"),
+    exclude_base_abn = TRUE
+  ) %>%
+  append_topleft("    Direction of Abnormality")
+
+build_table(lyt, adlb_f, alt_counts_df = adsl)
+
+```
+
