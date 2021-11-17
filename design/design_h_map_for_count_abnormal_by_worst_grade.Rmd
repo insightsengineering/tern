@@ -10,7 +10,7 @@ output:
     theme: journal
     highlight: zenburn
 vignette: >
-  %\VignetteIndexEntry{Design of LBT04}
+  %\VignetteIndexEntry{Design of LBT07}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -41,17 +41,26 @@ Introduction
 
 LBT07 used the function `count_abnormal_by_worst_grade` which will need a map for layout.
 
+For STREAM, there's a meta data called ext_ncitct4 which is the grading criteria for lab abnormality, see reference here
+https://pages.github.roche.com/MDIS/stream_doc/um/vad_concept_grading.html
+
+Based on the above grading criteria, two reference datasets were created called `__atoxgr_low_ref.sas7bdat` and 
+`__atoxgr_high_ref.sas7bdat` which were used as the lab abnormal direction reference for both LBT07 and LBT15. All the
+three meta datasets can be found on bee with the path `/opt/bee/analyses/stream2/master/current/stream2/app/metadata/`
+
+The idea here is to derive the map used in `trim_levels_to_map` directly from `ext_ncitct4`.
+
 Design
 =============
 
-Maybe the function can get different `method` so that map for different templates can be created accordingly.
-
+The below steps are just to store the ext_ncitct4 data as rda file. After this, use `data("ext_ncitct4")` to load data.
 ```{r eval=FALSE}
 ext_ncictc4 <- haven::read_sas("metadata/ext_ncictc4.sas7bdat")
 ext_ncictc4 <- usethis::use_data(ext_ncictc4)
 ```
 
-
+This helper function replies on user to put the correct `variables$split_rows` in the same order as their layout.
+Also the `abnormal` is the value that they used in pre-processing.
 ```{r}
 h_map_for_count_abnormal_by_worst_grade <- function(
   df,
@@ -65,7 +74,7 @@ h_map_for_count_abnormal_by_worst_grade <- function(
     "split_rows" %in% names(variables),
     "PARAM" %in% unlist(variables) || "PARAMCD" %in% unlist(variables),
     is_df_with_factors(df, variables),
-    any(unlist(abnormal) %in% levels(df[[variables$split_rows[-1]]]))
+    any(unlist(abnormal) %in% levels(df[[variables$split_rows[-1]]])) # This is to check if the abnormals are the same as pre-processing #nolint
   )
   data("ext_ncictc4")
   ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
