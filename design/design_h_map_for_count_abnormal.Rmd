@@ -222,24 +222,25 @@ h_map_with_count_abnormal(
 )
 ```
 
-For lbt04, use stream real data to test
+For lbt15, use stream real data to test
 ```{r}
-ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na() #nolint
+ADLB <- haven::read_sas("../data/adlb.sas7bdat") %>% df_explicit_na() #nolint
 adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
 
 h_map_with_count_abnormal(
   df = adlb_f %>% filter(LBCAT != "<Missing>"),
-  split_rows_varibles = c("LBCAT", "PARAM"),
-  anl_variable = "ANRIND",
-  abnormal = list(low = "LOW", high = "HIGH"),
-  method = "lbt04"
+  variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM")),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "meta_ext_ncictc4"
 )
 ```
 
 test with new method and stream data for lbt15
 ```{r}
 adsl <- ADSL %>% df_explicit_na() %>% filter(SAFFL == "Y")
-adlb_f <- ADLB %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI")
+adlb_f <- ADLB %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
+  mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")), 
+         BTOXGR = factor(BTOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>"))) 
 adlb_f <- adlb_f %>%
   mutate(
     ATOXGR_CAT = fct_collapse(ATOXGR,
