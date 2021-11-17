@@ -144,6 +144,7 @@ library(scda) # scda is only for knit to work
 
 adsl <- synthetic_cdisc_data("latest")$adsl
 adlb <- synthetic_cdisc_data("latest")$adlb
+adlb[["PARCAT2"]] <- "SI" # only for knit to work
 
 adsl <- adsl %>% filter(SAFFL == "Y") %>% df_explicit_na()
 adlb <- adlb %>% df_explicit_na() %>%
@@ -163,7 +164,7 @@ adlb_f <- adlb %>%
   ) %>%
   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
   droplevels()
-levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "Any")
+levels(adlb_f$GRADE_ANL) <- c("0", "1", "2", "3", "4", "Any")
 ```
 
 Build LBT07
