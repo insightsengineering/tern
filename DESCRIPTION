@@ -1,74 +1,76 @@
 Package: tern
 Title: Create Common TLGs used in Clinical Trials
+Version: 0.7.5.9001
 Date: 2021-10-13
-Version: 0.7.5.9000
 Authors@R: c(
-  person("NEST", email = "nestcicd@roche.com", role = c("aut", "cre")),
-  person("Roche", role = c("cph", "fnd")),
-  person("Audrey", "Boruvka", email = "audrey.boruvka@roche.com", role = "ctb"),
-  person("Saibah", "Chohan", email = "saibah.chohan@roche.com", role = "aut"),
-  person("Francois", "Collin", email = "francois.collin@contractors.roche.com", role = "aut"),
-  person("Nick", "Paszty", email = "paszty.nicholas@gene.com", role = "aut"),
-  person("Ting", "Qi", email = "qit3@gene.com", role = "aut"),
-  person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
-  person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut"),
-  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
-  person("Heng", "Wang", email = "wang.heng@gene.com", role = "aut"),
-  person("Godwin", "Yung", email = "yungg@gene.com", role = "aut"),
-  person("Carreras", "Maximo", email = "maximo.carreras@roche.com", role = "aut"),
-  person("Zhao", "Rui", email = "zhaor8@gene.com", role = "aut"),
-  person("Wojciech", "Wojciak", email = "wojciech.wojciak@contractors.roche.com", role = "aut")
+    person("NEST", , , "nestcicd@roche.com", role = c("aut", "cre")),
+    person("Roche", role = c("cph", "fnd")),
+    person("Audrey", "Boruvka", , "audrey.boruvka@roche.com", role = "ctb"),
+    person("Saibah", "Chohan", , "saibah.chohan@roche.com", role = "aut"),
+    person("Francois", "Collin", , "francois.collin@contractors.roche.com", role = "aut"),
+    person("Nick", "Paszty", , "paszty.nicholas@gene.com", role = "aut"),
+    person("Ting", "Qi", , "qit3@gene.com", role = "aut"),
+    person("Daniel", "Sabanes Bove", , "daniel.sabanes_bove@roche.com", role = "aut"),
+    person("Jana", "Stoilova", , "jana.stoilova@roche.com", role = "aut"),
+    person("Adrian", "Waddell", , "adrian.waddell@roche.com", role = "aut"),
+    person("Heng", "Wang", , "wang.heng@gene.com", role = "aut"),
+    person("Godwin", "Yung", , "yungg@gene.com", role = "aut"),
+    person("Carreras", "Maximo", , "maximo.carreras@roche.com", role = "aut"),
+    person("Zhao", "Rui", , "zhaor8@gene.com", role = "aut"),
+    person("Wojciech", "Wojciak", , "wojciech.wojciak@contractors.roche.com", role = "aut")
   )
-Description: Table, Listings, and Graphs (TLG) library for common outputs used in clinical trials. 
-Depends:
-  R (>= 3.6),
-  rtables (>= 0.3.8),
-  optimx
-Imports:
-  assertthat,
-  dplyr,
-  grDevices,
-  ggplot2,
-  grid,
-  gridExtra,
-  gtable,
-  magrittr,
-  methods,
-  purrr,
-  rlang,
-  scales,
-  stats,
-  survival (>= 3.1-11),
-  utils,
-  utils.nest (>= 0.2.11),
-  forcats,
-  car,
-  emmeans (>= 1.4.5),
-  labeling,
-  lme4 (>= 1.1-21),
-  lmerTest (>= 3.1-1),
-  dfoptim,
-  viridisLite,
-  tibble,
-  broom,
-  stringr,
-  tidyr
-Suggests:
-  lattice,
-  knitr,
-  Matrix,
-  testthat (>= 2.0),
-  test.nest (>= 0.2.11),
-  rmarkdown,
-  scda (>= 0.1.1),
-  scda.2021 (>= 0.1.1)
+Description: Table, Listings, and Graphs (TLG) library for common outputs
+    used in clinical trials.
 License: Apache License 2.0 | file LICENSE
+URL: https://github.com/insightsengineering/tern
+BugReports: https://github..com/insightsengineering/tern/issues
+Depends:
+    optimx,
+    R (>= 3.6),
+    rtables (>= 0.3.8)
+Imports:
+    assertthat,
+    broom,
+    car,
+    dfoptim,
+    dplyr,
+    emmeans (>= 1.4.5),
+    forcats,
+    ggplot2,
+    grDevices,
+    grid,
+    gridExtra,
+    gtable,
+    labeling,
+    lme4 (>= 1.1-21),
+    lmerTest (>= 3.1-1),
+    magrittr,
+    methods,
+    purrr,
+    rlang,
+    scales,
+    stats,
+    stringr,
+    survival (>= 3.1-11),
+    tibble,
+    tidyr,
+    utils,
+    utils.nest (>= 0.2.11),
+    viridisLite
+Suggests:
+    knitr,
+    lattice,
+    Matrix,
+    rmarkdown,
+    scda (>= 0.1.1),
+    scda.2021 (>= 0.1.1),
+    test.nest (>= 0.2.11),
+    testthat (>= 2.0)
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-VignetteBuilder: knitr
-URL: https://github.com/insightsengineering/tern
-BugReports: https://github..com/insightsengineering/tern/issues
 Collate: 
     'formats.R'
     'abnormal.R'
