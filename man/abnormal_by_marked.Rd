@@ -144,7 +144,7 @@ s_count_abnormal_by_marked(
 # so that the rtables formatting function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
 afun(
-df = df_crp,
+ df = df_crp \%>\% filter(abn_dir == "High"),
  .spl_context = spl_context,
  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
  )
