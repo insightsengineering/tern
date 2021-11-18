@@ -166,7 +166,7 @@ s_count_abnormal_by_marked <- function(df,
     cat_is_single <- cat == "single"
     cat_name <- ifelse(cat_is_single, "Single, not last", "Last or replicated")
     if (levels_exist) {
-      if(denom == 0) result[[cat_name]] <- c(0, 0) else {
+      if (denom == 0) result[[cat_name]] <- c(0, 0) else {
         if (cat_is_single) {
           result[[cat_name]] <- c(n_single, n_single / denom)
         } else {
@@ -280,7 +280,7 @@ lyt_in_group <- basic_table() %>%
 table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f)
 table_in_group
 
-# If we want to remove the 0 cases of `Single, not last` and `Last or replicated` 
+# If we want to remove the 0 cases of `Single, not last` and `Last or replicated`
 # we can achieve this with `trim_levels_in_group`
 
 table_in_group <- build_table(lyt = lyt_in_group, df = adlb_f %>% filter(!AVALCAT1 %in% c("SINGLE")) %>% droplevels())
@@ -288,7 +288,7 @@ table_in_group
 
 ```
 
-### Without any new split function 
+### Without any new split function
 
 ```{r}
 lyt_normal <- basic_table() %>%

@@ -247,7 +247,10 @@ test_that("count_abnormal_by_marked works as expected", {
      droplevels()
 
   map <- unique(
-    adlb_f[adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "" & adlb_f$PARAMCD == "CRP", c("PARAMCD", "abn_dir")]
+    adlb_f[
+      adlb_f$abn_dir %in% c("Low", "High") & adlb_f$AVALCAT1 != "" & adlb_f$PARAMCD == "CRP",
+      c("PARAMCD", "abn_dir")
+    ]
     ) %>%
     lapply(as.character) %>%
     as.data.frame() %>%
