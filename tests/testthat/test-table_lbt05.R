@@ -239,7 +239,7 @@ test_that("LBT05 variant 2 is produced correctly", {
       select(-.data$q1, -.data$q2)
 
     #Let's remove all marked abrnormalities for ALT so that it can be demonstrated that
-    #just ALT rows are removed
+    #ALT rows are removed
     adlb$ANRIND[adlb$PARAMCD == "ALT"] <- "NORMAL"
 
     #Preprocessing steps
@@ -253,6 +253,7 @@ test_that("LBT05 variant 2 is produced correctly", {
       levels = c("Low", "High")
       )
       )
+
 
     map <- unique(
       adlb[adlb$abn_dir %in% c("Low", "High") & adlb$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
@@ -273,7 +274,8 @@ test_that("LBT05 variant 2 is produced correctly", {
         variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
       )
 
-    result <- build_table(lyt, df = adlb, alt_counts_df = adsl)
+    result <- build_table(lyt, df = adlb, alt_counts_df = adsl) %>%
+      prune_table()
 
     result_matrix <- to_string_matrix(result)
     expected_matrix <- structure(
@@ -282,15 +284,15 @@ test_that("LBT05 variant 2 is produced correctly", {
         "High", "Single, not last", "Last or replicated", "Any Abnormality",
         "IGA (n)", "Low", "Single, not last", "Last or replicated", "Any Abnormality",
         "High", "Single, not last", "Last or replicated", "Any Abnormality",
-        "ARM A", "(N=134)", "23", "", "2 (8.7%)", "10 (43.5%)", "12 (52.2%)",
-        "", "1 (4.3%)", "10 (43.5%)", "11 (47.8%)", "11", "", "2 (18.2%)",
-        "5 (45.5%)", "7 (63.6%)", "", "0", "4 (36.4%)", "4 (36.4%)",
-        "ARM B", "(N=134)", "17", "", "0", "7 (41.2%)", "7 (41.2%)",
-        "", "2 (11.8%)", "9 (52.9%)", "11 (64.7%)", "18", "", "1 (5.6%)",
-        "8 (44.4%)", "9 (50%)", "", "0", "9 (50%)", "9 (50%)", "ARM C",
-        "(N=132)", "18", "", "0", "7 (38.9%)", "7 (38.9%)", "", "1 (5.6%)",
-        "12 (66.7%)", "13 (72.2%)", "17", "", "1 (5.9%)", "10 (58.8%)",
-        "11 (64.7%)", "", "1 (5.9%)", "5 (29.4%)", "6 (35.3%)"),
+        "ARM A", "(N=134)", "134", "", "2 (1.5%)", "10 (7.5%)", "12 (9%)",
+        "", "1 (0.7%)", "10 (7.5%)", "11 (8.2%)", "134", "", "2 (1.5%)",
+        "5 (3.7%)", "7 (5.2%)", "", "0", "4 (3%)", "4 (3%)", "ARM B",
+        "(N=134)", "134", "", "0", "7 (5.2%)", "7 (5.2%)", "", "2 (1.5%)",
+        "9 (6.7%)", "11 (8.2%)", "134", "", "1 (0.7%)", "8 (6%)", "9 (6.7%)",
+        "", "0", "9 (6.7%)", "9 (6.7%)", "ARM C", "(N=132)", "132", "",
+        "0", "7 (5.3%)", "7 (5.3%)", "", "1 (0.8%)", "12 (9.1%)", "13 (9.8%)",
+        "132", "", "1 (0.8%)", "10 (7.6%)", "11 (8.3%)", "", "1 (0.8%)",
+        "5 (3.8%)", "6 (4.5%)"),
       .Dim = c(20L, 4L)
       )
     expect_identical(result_matrix, expected_matrix)
