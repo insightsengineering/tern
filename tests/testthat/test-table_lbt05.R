@@ -266,7 +266,7 @@ test_that("LBT05 variant 2 is produced correctly", {
       split_cols_by("ACTARMCD") %>%
       add_colcounts() %>%
       split_rows_by(
-        "PARAMCD", 
+        "PARAMCD",
         split_fun = trim_levels_in_group("abn_dir", drop_outlevs = TRUE),
         label_pos = "topleft",
         split_label = "Laboratory Test") %>%
