@@ -83,7 +83,12 @@ s_count_abnormal_by_marked <- function(df,
     is.string(.var),
     is.list(variables),
     is.list(category),
+<<<<<<< HEAD
     all(names(category) %in% c("single", "last_replicated")),
+=======
+    all(names(abnormal) %in% c("Low", "High")),
+    all(c("single", "last_replicated") %in% names(category) ),
+>>>>>>> 5188a27f625ed428bc1e28f6bcb5eea402dbb182
     all(names(variables) %in% c("id", "param", "direction")),
     is_df_with_variables(df, c(aval = .var, variables)),
     is_character_or_factor(df[[.var]]),
@@ -100,8 +105,10 @@ s_count_abnormal_by_marked <- function(df,
   # should be counted only once.
   denom <- length(unique(subj_cur_col))
 
-  if (denom > 0) {
+  #numerator
+  df_abn <- df[df[[variables$direction]] %in% abnormal, ]
 
+<<<<<<< HEAD
     subjects_last_replicated <- unique(
       df[df[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE]
     )
@@ -124,10 +131,46 @@ s_count_abnormal_by_marked <- function(df,
       "Last or replicated" = c(0, 0),
       "Any Abnormality" = c(0, 0)
     ))
+=======
+  subjects_last_replicated <- unique(
+    df_abn[df_abn[[.var]] %in% category[["last_replicated"]], variables$id, drop = TRUE]
+  )
+  subjects_single <- unique(
+    df_abn[df_abn[[.var]] %in% category[["single"]], variables$id, drop = TRUE]
+  )
+
+  # Subjects who have both single and last/replicated abnormalities are counted in only the last/replicated group.
+  subjects_single <- setdiff(subjects_single, subjects_last_replicated)
+  n_single <- length(subjects_single)
+  n_last_replicated <- length(subjects_last_replicated)
+  n_any <- n_single + n_last_replicated
+
+  result <- list()
+  for (cat in names(category)) {
+    levels_exist <- (sum(levels(df[[.var]]) %in% category[[cat]]) > 0 && n_single > 0)
+    cat_is_single <- cat == "single"
+    cat_name <- ifelse(cat_is_single, "Single, not last", "Last or replicated")
+    if (levels_exist) {
+      if(denom == 0) result[[cat_name]] <- c(0, 0) else {
+        if (cat_is_single) {
+          result[[cat_name]] <- c(n_single, n_single / denom)
+        } else {
+          result[[cat_name]] <- c(n_last_replicated, n_last_replicated / denom)
+        }
+      }
+    }
+>>>>>>> 5188a27f625ed428bc1e28f6bcb5eea402dbb182
   }
+
+  if (denom == 0) {
+    result[["Any Abnormality"]] <- c(0, 0)
+  } else {
+    result[["Any Abnormality"]] <- c(n_any, n_any / denom)
+  }
+
+  result <- list(count_fraction = result)
   result
 }
-
 #' @describeIn abnormal_by_marked Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
 #' @return [a_count_abnormal_by_marked()] returns the corresponding list with formatted [rtables::CellValue()].
