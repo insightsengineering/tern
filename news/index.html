@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9001</span>
       </span>
     </div>
 
@@ -136,10 +136,11 @@
       <small>Source: <a href='https://github.com/insightsengineering/tern/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="tern-0759000" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.5.9000">
-<a href="#tern-0759000" class="anchor"></a>tern 0.7.5.9000</h1>
+    <div id="tern-0759001" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.5.9001">
+<a href="#tern-0759001" class="anchor"></a>tern 0.7.5.9001</h1>
 <ul>
+<li>Refactored <code>count_abnormal_by_marked</code> <code>tern</code> function and related statistics and formatting functions to use a more efficient layout with <code>.spl_context</code> argument used for determining denominators and with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. This is a breaking change.</li>
 <li>Refactored <code>count_abnormal_by_worst_grade</code> <code>tern</code> function and related statistics and formatting functions to use a more efficient layout with <code>.spl_context</code> argument used for determining denominators and with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. This is a breaking change.</li>
 <li>Enhanced <code>tern</code> functions <code>tabulate_survival_subgroups</code> and <code>tabulate_rsp_subgroups</code> (Survival Duration and Best Overall Response analyses) to calculate <code>N</code>-s based on the records considered to create the model.</li>
 <li>Refactored <code>count_abnormal</code> function and related statistics and formatting functions to use a more efficient layout with <code>trim_levels_to_map</code> split function under <code>split_rows_by</code> to show only the desired levels in the table. Also updated <code>abnormal</code> argument to be able to consider more than one level for each direction. This is a breaking change.</li>
