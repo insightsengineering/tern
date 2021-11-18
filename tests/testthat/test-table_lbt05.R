@@ -265,7 +265,11 @@ test_that("LBT05 variant 2 is produced correctly", {
     lyt <- basic_table() %>%
       split_cols_by("ACTARMCD") %>%
       add_colcounts() %>%
-      split_rows_by("PARAMCD", split_fun = trim_levels_in_group("abn_dir", drop_outlevs = TRUE), label_pos = "topleft", split_label = "Laboratory Test") %>%
+      split_rows_by(
+        "PARAMCD", 
+        split_fun = trim_levels_in_group("abn_dir", drop_outlevs = TRUE),
+        label_pos = "topleft",
+        split_label = "Laboratory Test") %>%
       summarize_num_patients(var = "USUBJID", .stats = "unique_count") %>%
       append_topleft("  Direction of abnormality") %>%
       split_rows_by("abn_dir") %>%
