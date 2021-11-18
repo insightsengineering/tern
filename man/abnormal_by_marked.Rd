@@ -42,6 +42,9 @@ by a statistics function.}
 \item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
+\item{category}{(\code{list})\cr with different marked category names for single
+and last or replicated.}
+
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}

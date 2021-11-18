@@ -16,7 +16,8 @@
 #' and `Last or replicated` criteria, then the patient will be counted only under the `Last or replicated` category.
 
 #' @inheritParams argument_convention
-#'
+#' @param category (`list`)\cr with different marked category names for single
+#' and last or replicated.
 #' @name abnormal_by_marked
 #'
 NULL
