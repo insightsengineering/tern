@@ -150,3 +150,4 @@ Collate:
     'utils_factor.R'
     'utils_grid.R'
     'wrap_text.R'
+LazyData: true
