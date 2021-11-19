@@ -346,3 +346,34 @@ build_table(lyt, adlb_f, alt_counts_df = adsl)
 
 ```
 
+As discussed in the design PR #255, how should we deal with some PARAMCDs that are not in the input dataset.
+```{r}
+adlb_f_noALTSI <- adlb_f %>% filter(PARAMCD != "ALTSI")
+build_table(lyt, adlb_f_noALTSI %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+```
+
+```{r}
+map_test <- h_map_for_count_abnormal(
+  df = adlb_f_noALTSI,
+  variables = list(anl = "ATOXGR_CAT", split_rows = c("PARCAT1", "PARAM")),
+  abnormal = list(low = c("LOW"), high = c("HIGH")),
+  method = "meta_ext_ncictc4",
+  na_level = "<Missing>"
+)
+
+lyt_test <- basic_table() %>%
+  split_cols_by(var = "ARM") %>%
+  add_colcounts() %>%
+  split_rows_by("PARCAT1", split_fun = trim_levels_to_map(map = map_test)) %>%
+  split_rows_by("PARAM", split_fun = trim_levels_to_map(map = map_test)) %>%
+  count_abnormal(
+    var = "ATOXGR_CAT",
+    abnormal = list(low = "LOW", high = "HIGH"),
+    variables = list(id = "USUBJID", baseline = "BTOXGR_CAT"),
+    exclude_base_abn = TRUE
+  ) %>%
+  append_topleft("    Direction of Abnormality")
+
+build_table(lyt_test, adlb_f_noALTSI %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl)
+```
+
