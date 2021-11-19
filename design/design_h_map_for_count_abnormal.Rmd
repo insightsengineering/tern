@@ -75,7 +75,7 @@ ext_ncictc4 <- usethis::use_data(ext_ncictc4)
 
 @Joe, for this one, please only focus on the method being "meta_ext_ncictc4", other two are already in production.
 ```{r}
-h_map_for_count_abnormal <- function(
+h_map_with_count_abnormal <- function(
   df,
   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM"), range_low = "ANRLO", range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
@@ -83,6 +83,7 @@ h_map_for_count_abnormal <- function(
   na_level = "<Missing>"
 ) {
   method <- match.arg(method)
+
   assert_that(
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
@@ -197,19 +198,26 @@ df <- data.frame(
 df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
 ```
 
-see difference between default and both.
-@Joe, ignore this, this is legacy from last spring
-```{r eval=FALSE}
-df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
-h_map_for_count_abnormal(
+```{r}
+h_map_with_count_abnormal(
   df = df,
   split_rows_varibles = "PARAM",
   anl_variable = "ANRIND",
   abnormal = list(low = "LOW", high = "HIGH"),
+  method = "both"
+)
+```
+see difference between default and both
+```{r}
+df <- df %>% mutate(ANRIND = ifelse(PARAM == "ALT", "NORMAL", as.character(ANRIND)))
+df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) #nolint
+h_map_for_count_abnormal(
+  df = df,
+  variables = list(anl = "ANRIND", split_rows = c("PARAM")),
+  abnormal = list(low = "LOW", high = "HIGH"),
   method = "default"
 )
-h_map_for_count_abnormal(
+h_map_with_count_abnormal(
   df = df,
   split_rows_varibles = "PARAM",
   anl_variable = "ANRIND",
@@ -287,46 +295,15 @@ build_table(lyt, adlb_f_2 %>% filter(LBCAT != "<Missing>"), alt_counts_df = adsl
 
 replace stream data with scda so that knit will work
 ```{r}
-library(scda)
-library(forcats)
-library(tern)
-adsl <- synthetic_cdisc_data("latest")$adsl
-adlb <- synthetic_cdisc_data("latest")$adlb
-adlb[["PARCAT2"]] <- "SI" # for knit to work
-adlb[["PARCAT1"]] <- adlb$LBCAT # for knit to work
-adlb <- adlb %>% mutate(
-  PARAMCD = case_when(
-    PARAMCD == "ALT" ~ "ALTSI",
-    PARAMCD == "CRP" ~ "CPKSI",
-    PARAMCD == "IGA" ~ "ALBUMSI"
-  )
-) # for knit to work because scda doesn't have the correct PARAMCD from grading criteria. Maybe scda needs to be updated? #nolint
+ADLB <- haven::read_sas("../adlb.sas7bdat") %>% df_explicit_na() #nolint
+adlb_f <- ADLB %>% filter(ONTRTFL == "Y" & ANRIND != "<Missing>" & PARCAT2 == "SI")
 
-adsl <- adsl %>% df_explicit_na() %>% filter(SAFFL == "Y")
-adlb_f <- adlb %>% df_explicit_na() %>% filter(ONTRTFL == "Y" & ATOXGR != "<Missing>" & PARCAT2 == "SI") %>%
-  mutate(ATOXGR = factor(ATOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>")), 
-         BTOXGR = factor(BTOXGR, levels = c("-4", "4", "-1", "-2", "-3", "0", "1", "2", "3", "<Missing>"))) 
-adlb_f <- adlb_f %>%
-  mutate(
-    ATOXGR_CAT = fct_collapse(ATOXGR,
-                              "LOW" = c("-3", "-4"),
-                              "NORMAL" = c("-2", "-1", "0", "1", "2"),
-                              "HIGH" = c("3", "4")
-    ),
-    BTOXGR_CAT = fct_collapse(BTOXGR,
-                              "LOW" = c("-3", "-4"),
-                              "NORMAL" = c("-2", "-1", "0", "1", "2", "<Missing>"),
-                              "HIGH" = c("3", "4")
-    )
-  )
-
-
-map <- h_map_for_count_abnormal(
-  df = adlb_f,
-  variables = list(anl = "ATOXGR_CAT", split_rows = c("PARCAT1", "PARAM")),
-  abnormal = list(low = c("LOW"), high = c("HIGH")),
-  method = "meta_ext_ncictc4",
-  na_level = "<Missing>"
+h_map_with_count_abnormal(
+  df = adlb_f %>% filter(LBCAT != "<Missing>"),
+  split_rows_varibles = c("LBCAT", "PARAM"),
+  anl_variable = "ANRIND",
+  abnormal = list(low = "LOW", high = "HIGH"),
+  method = "lbt04"
 )
 
 lyt <- basic_table() %>%
