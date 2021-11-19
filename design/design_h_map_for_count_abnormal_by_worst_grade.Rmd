@@ -68,39 +68,41 @@ h_map_for_count_abnormal_by_worst_grade <- function(
   abnormal = list(low = "LOW", high = "HIGH"),
   na_level = "<Missing>"
 ) {
+  last_split_var <- variables$split_rows[-1]
   assert_that(
     is_df_with_variables(df, variables),
     "anl" %in% names(variables),
     "split_rows" %in% names(variables),
     "PARAM" %in% unlist(variables) || "PARAMCD" %in% unlist(variables),
     is_df_with_factors(df, variables),
-    any(unlist(abnormal) %in% levels(df[[variables$split_rows[-1]]])) # This is to check if the abnormals are the same as pre-processing #nolint
+    any(unlist(abnormal) %in% levels(df[[last_split_var]])) # This is to check if the abnormals are the same as pre-processing #nolint
   )
   data("ext_ncictc4")
   ext_ncictc4 <- ext_ncictc4[c("PARAMCD", "RESULT")]
   ext_ncictc4 <- ext_ncictc4[ext_ncictc4[["PARAMCD"]] %in% unique(df[["PARAMCD"]]), ]
-  ext_ncictc4[[variables$split_rows[-1]]] <- na_level
-  ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[variables$split_rows[-1]]] <- abnormal$high
-  ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[variables$split_rows[-1]]] <- abnormal$low
-  ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[variables$split_rows[-1]]] != na_level, ][c("PARAMCD", variables$split_rows[-1])]) #nolint
+  ext_ncictc4[[last_split_var]] <- na_level
+  ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("1", "2", "3", "4"), ][[last_split_var]] <- abnormal$high
+  ext_ncictc4[ext_ncictc4[["RESULT"]] %in% c("-1", "-2", "-3", "-4"), ][[last_split_var]] <- abnormal$low
+  ext_ncictc4 <- unique(ext_ncictc4[ext_ncictc4[[last_split_var]] != na_level, ][c("PARAMCD", last_split_var)]) #nolint
 
   if ("PARAMCD" %in% variables$split_rows) {
     map <- unique(df[c(variables$split_rows, variables$anl)])
-    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal), ]
+    map <- map[map[[last_split_var]] %in% unlist(abnormal), ]
     map <- merge(map, ext_ncictc4, all = TRUE)
   } else {
     map <- unique(df[c(variables$split_rows, "PARAMCD", variables$anl)])
-    map <- map[map[[variables$split_rows[-1]]] %in% unlist(abnormal), ]
+    map <- map[map[[last_split_var]] %in% unlist(abnormal), ]
 
     # Below is to include other variables into the ext_ncictc4 otherwise PARAM will be NA in the final map
     param_map <- unique(df[c(head(variables$split_rows, -1), "PARAMCD")])
     ext_ncictc4 <- merge(ext_ncictc4, param_map)
     map <- merge(map, ext_ncictc4, all = TRUE)
   }
-  map[[variables$anl]][is.na(map[[variables$anl]])] <- "Any"
 
-  map <- map[c(variables$split_rows, variables$anl)]
   map <- data.frame(lapply(map, as.character), stringsAsFactors = FALSE)
+  map <- map[c(variables$split_rows, variables$anl)]
+  map[[variables$anl]][is.na(map[[variables$anl]])] <- "Any"
+  map
 }
 ```
 
