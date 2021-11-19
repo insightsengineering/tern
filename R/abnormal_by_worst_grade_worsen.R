@@ -341,11 +341,6 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun(  #nolint
 #'
 count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
                                                   var,
-                                                  variables = list(
-                                                    id = "USUBJID",
-                                                    baseline_var = "BTOXGR",
-                                                    direction_var = "GRADDR"
-                                                  ),
                                                   ...,
                                                   table_names = NULL,
                                                   .stats = NULL,
@@ -353,9 +348,8 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
                                                   .labels = NULL,
                                                   .indent_mods = NULL) {
   assert_that(
-    is.string(var),
-    setequal(names(variables), c("id", "baseline_var", "direction_var"))
-  )
+    is.string(var)
+    )
 
   afun <- make_afun(
     a_count_abnormal_lab_worsen_by_baseline,
@@ -369,7 +363,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, #nolint
     lyt = lyt,
     vars = var,
     afun = afun,
-    extra_args = c(list(variables = variables), list(...)),
+    extra_args = list(...),
     show_labels = "hidden"
   )
 

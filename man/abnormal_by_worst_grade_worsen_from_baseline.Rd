@@ -33,7 +33,6 @@ a_count_abnormal_lab_worsen_by_baseline(
 count_abnormal_lab_worsen_by_baseline(
   lyt,
   var,
-  variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR"),
   ...,
   table_names = NULL,
   .stats = NULL,
