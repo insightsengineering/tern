@@ -190,7 +190,6 @@ s_summary.numeric <- function(x, # nolint
                               na_level,
                               .var,
                               control = control_summarize_vars(),
-                              labelstr = "",
                               ...) {
   assert_that(is.numeric(x))
 

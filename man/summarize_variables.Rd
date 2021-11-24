@@ -27,7 +27,6 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, control, ...)
   na_level,
   .var,
   control = control_summarize_vars(),
-  labelstr = "",
   ...
 )
 
@@ -72,7 +71,6 @@ a_summary(x, ..., .N_row, .N_col, .var)
   na_level,
   .var,
   control = control_summarize_vars(),
-  labelstr = "",
   ...
 )
 
@@ -152,9 +150,6 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 }}
 
 \item{...}{arguments passed to \code{s_summary()}.}
-
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

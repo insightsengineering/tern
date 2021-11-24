@@ -8,8 +8,8 @@ summarize_pk_in_cols(
   lyt,
   var,
   ...,
-  .stats = c("n", "mean_sd"),
-  .labels = c(n = "n", mean_sd = "mean (sd)"),
+  .stats = c("n", "mean", "sd", "cv", "median"),
+  .labels = c(n = "n", mean = "mean", sd = "sd", cv = "CV \% Mean", median = "Median"),
   .indent_mods = NULL,
   col_split = TRUE
 )
@@ -22,4 +22,16 @@ summarize_pk_in_cols(
 }
 \description{
 Title
+}
+\examples{
+
+library(random.cdisc.data)
+adsl <- radsl(100)
+
+lyt <- basic_table() \%>\%
+  split_rows_by(var = "ARM") \%>\%
+  split_rows_by(var = "SEX") \%>\%
+  summarize_pk_in_cols(var = "AGE", col_split = TRUE)
+  result <- build_table(lyt, df = adsl)
+  result
 }

@@ -1,3 +1,36 @@
+#' Title
+#'
+#' @param labelstr
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+s_summary_pk <- function(x,
+                         labelstr = "",
+                         custom_label = "Statistics",
+                         ...) {
+
+  row_label <- if (labelstr != "") {
+    labelstr
+  } else if (!is.null(custom_label)) {
+    custom_label
+  } else {
+    "Statistics"
+  }
+
+  results <- s_summary.numeric(x)
+  results$n <-  with_label(results$n, row_label)
+  results$mean <- with_label(results$mean, row_label)
+  results$sd <-  with_label(results$sd, row_label)
+  results$cv <- with_label(results$cv, row_label)
+  results$min <- with_label(results$range[["min"]], row_label)
+  results$max <- with_label(results$range[["max"]], row_label)
+  results$median <- with_label(results$median, row_label)
+
+  results
+
+}
 
 #' Title
 #'
@@ -18,40 +51,28 @@
 #' adsl <- radsl(100)
 #'
 #' lyt <- basic_table() %>%
-#'   summarize_pk_in_cols(var = "AGE", col_split = TRUE) %>%
+#'   split_rows_by(var = "ARM") %>%
 #'   split_rows_by(var = "SEX") %>%
-#'   summarize_pk_in_cols(var = "AGE", col_split = FALSE)
+#'   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
 #'   result <- build_table(lyt, df = adsl)
 #'   result
 
 summarize_pk_in_cols <- function(lyt,
                          var,
                          ...,
-                         .stats = c("n", "mean_sd", "cv"),
-                         .labels = c(n = "n", mean_sd = "mean (sd)", cv = "CV %"),
+                         .stats = c("n", "mean", "sd", "cv", "median"),
+                         .labels = c(n = "n", mean = "mean", sd = "sd", cv = "CV % Mean", median = "Median"),
                          .indent_mods = NULL,
                          col_split = TRUE) {
 
 
-  .a_summary_numeric_formats <- summary_formats()
   afun_list <- Map(function(stat) {
     make_afun(
-      s_summary.numeric,
+      s_summary_pk,
       .stats = stat,
-      .formats = .a_summary_numeric_formats[names(.a_summary_numeric_formats) == stat])
+      .formats = summary_formats()[names(summary_formats()) == stat])
   },
   stat = .stats)
-  # analyze(
-  #   lyt = lyt,
-  #   vars = vars,
-  #   var_labels = var_labels,
-  #   afun = afun,
-  #   nested = nested,
-  #   extra_args = list(...),
-  #   inclNAs = TRUE,
-  #   show_labels = show_labels,
-  #   table_names = table_names
-  # )
 
   if (col_split) {
   lyt <- split_cols_by_multivar(lyt = lyt,
