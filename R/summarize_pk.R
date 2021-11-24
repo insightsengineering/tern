@@ -18,24 +18,27 @@
 #' adsl <- radsl(100)
 #'
 #' lyt <- basic_table() %>%
-#'   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
+#'   summarize_pk_in_cols(var = "AGE", col_split = TRUE) %>%
+#'   split_rows_by(var = "SEX") %>%
+#'   summarize_pk_in_cols(var = "AGE", col_split = FALSE)
 #'   result <- build_table(lyt, df = adsl)
 #'   result
 
 summarize_pk_in_cols <- function(lyt,
                          var,
                          ...,
-                         .stats = c("n", "mean_sd"),
-                         .labels = c(n = "n", mean_sd = "mean (sd)"),
+                         .stats = c("n", "mean_sd", "cv"),
+                         .labels = c(n = "n", mean_sd = "mean (sd)", cv = "CV %"),
                          .indent_mods = NULL,
                          col_split = TRUE) {
 
+
+  .a_summary_numeric_formats <- summary_formats()
   afun_list <- Map(function(stat) {
     make_afun(
       s_summary.numeric,
       .stats = stat,
-      .formats = ifelse(stat == "n", "xx", "xx.xx (xx.xx)")
-    )
+      .formats = .a_summary_numeric_formats[names(.a_summary_numeric_formats) == stat])
   },
   stat = .stats)
   # analyze(
@@ -50,10 +53,12 @@ summarize_pk_in_cols <- function(lyt,
   #   table_names = table_names
   # )
 
+  if (col_split) {
   lyt <- split_cols_by_multivar(lyt = lyt,
                                 vars = rep(var, length(.stats)),
                                 varlabels = .labels[.stats])
 
+  }
   summarize_row_groups(lyt = lyt,
                        var = var,
                        cfun = afun_list,
