@@ -56,7 +56,8 @@ summary_formats <- function(type = "numeric") {
       median_ci = "(xx.xx, xx.xx)",
       quantiles = "xx.x - xx.x",
       iqr = "xx.x",
-      range = "xx.x - xx.x"
+      range = "xx.x - xx.x",
+      cv = "xx.xx"
     )
   }
 }
@@ -75,7 +76,8 @@ summary_labels <- function() {
     median = "Median",
     mad = "Median Absolute Deviation",
     iqr = "IQR",
-    range = "Min - Max"
+    range = "Min - Max",
+    cv = "CV (%)"
   )
 }
 
@@ -239,6 +241,8 @@ s_summary.numeric <- function(x, # nolint
   )
 
   y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
+
+  y$cv <- c("cv" = y$sd/y$mean * 100)
 
   y
 }
