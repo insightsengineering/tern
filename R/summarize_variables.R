@@ -189,7 +189,7 @@ s_summary.numeric <- function(x, # nolint
                               .N_col, #nolint
                               na_level,
                               .var,
-                              control = control_summarize_vars(),
+                              control = control_summarize_vars()
                               ...) {
   assert_that(is.numeric(x))
 
@@ -242,7 +242,9 @@ s_summary.numeric <- function(x, # nolint
 
   y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
 
-  y$cv <- c("cv" = y$sd/y$mean * 100)
+  y$cv <- c("cv" = y$sd / y$mean * 100)
+
+  y$geom_mean <- c("geom_mean" = exp(mean(log(x))))
 
   y
 }
