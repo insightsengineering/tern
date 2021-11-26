@@ -52,6 +52,22 @@ check_mmrm_vars <- function(vars,
     dplyr::filter(complete.cases(data[, regressor_vars])) %>%
     droplevels()
 
+  # Check there is no more than one record per patient and visit.
+  grouped_visit_usubjid <- data_complete_regressors %>%
+    group_by(.data[[vars$visit]], .data[[vars$id]]) %>%
+    count()
+  if (any(grouped_visit_usubjid$n > 1)) {
+    dupl_subjects <- grouped_visit_usubjid[[vars$id]][grouped_visit_usubjid$n > 1]
+  }
+
+  assert_that(
+    !any(grouped_visit_usubjid$n > 1),
+    msg = sprintf(
+      "There is more than one record per visit for subject(s) %s",
+      paste(dupl_subjects, collapse=", ")
+      )
+    )
+
   # Check variable values in this complete data set.
   response_values <- data_complete_regressors[[vars$response]]
   stopifnot(is.numeric(response_values))
