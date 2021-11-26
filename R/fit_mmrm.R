@@ -57,14 +57,14 @@ check_mmrm_vars <- function(vars,
     group_by(.data[[vars$visit]], .data[[vars$id]]) %>%
     count()
   if (any(grouped_visit_usubjid$n > 1)) {
-    dupl_subjects <- grouped_visit_usubjid[[vars$id]][grouped_visit_usubjid$n > 1]
+    dupl_subjects <- grouped_visit_usubjid[[vars$id]][grouped_visit_usubjid$n > 1] # nolint
   }
 
   assert_that(
     !any(grouped_visit_usubjid$n > 1),
     msg = sprintf(
       "There is more than one record per visit for subject(s) %s",
-      paste(dupl_subjects, collapse=", ")
+      paste(dupl_subjects, collapse=", ") # nolint
       )
     )
 
