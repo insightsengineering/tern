@@ -57,7 +57,11 @@ summary_formats <- function(type = "numeric") {
       quantiles = "xx.x - xx.x",
       iqr = "xx.x",
       range = "xx.x - xx.x",
-      cv = "xx.xx"
+      cv = "xx.x",
+      min = "xx.x",
+      max = "xx",
+      geom_mean = "xx.x",
+      geom_cv = "xx.x"
     )
   }
 }
@@ -77,7 +81,11 @@ summary_labels <- function() {
     mad = "Median Absolute Deviation",
     iqr = "IQR",
     range = "Min - Max",
-    cv = "CV (%)"
+    cv = "CV (%)",
+    min = "Minimum",
+    max = "Maximum",
+    geom_mean = "Geometric Mean",
+    geom_cv = "CV Geometric"
   )
 }
 
@@ -189,7 +197,7 @@ s_summary.numeric <- function(x, # nolint
                               .N_col, #nolint
                               na_level,
                               .var,
-                              control = control_summarize_vars()
+                              control = control_summarize_vars(),
                               ...) {
   assert_that(is.numeric(x))
 
@@ -241,10 +249,14 @@ s_summary.numeric <- function(x, # nolint
   )
 
   y$range <- setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
+  y$min <- y$range[1]
+  y$max <- y$range[2]
 
   y$cv <- c("cv" = y$sd / y$mean * 100)
 
   y$geom_mean <- c("geom_mean" = exp(mean(log(x))))
+
+  y$geom_cv <- c("geom_cv" = sqrt(exp(sd(log(x)) ^ 2) - 1) * 100)
 
   y
 }

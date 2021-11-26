@@ -19,14 +19,18 @@ s_summary_pk <- function(x,
     "Statistics"
   }
 
+  # Calling s_summary.numeric
   results <- s_summary.numeric(x)
+
   results$n <-  with_label(results$n, row_label)
   results$mean <- with_label(results$mean, row_label)
   results$sd <-  with_label(results$sd, row_label)
   results$cv <- with_label(results$cv, row_label)
-  results$min <- with_label(results$range[["min"]], row_label)
-  results$max <- with_label(results$range[["max"]], row_label)
+  results$min <- with_label(results$min, row_label)
+  results$max <- with_label(results$max, row_label)
   results$median <- with_label(results$median, row_label)
+  results$geom_mean <- with_label(results$geom_mean, row_label)
+  results$geom_cv <- with_label(results$geom_cv, row_label)
 
   results
 
@@ -47,8 +51,8 @@ s_summary_pk <- function(x,
 #'
 #' @examples
 #'
-#' library(random.cdisc.data)
-#' adsl <- radsl(100)
+#' library(scda)
+#' adsl <- scda::synthetic_cdisc_data("latest")$adsl
 #'
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM") %>%
@@ -56,14 +60,29 @@ s_summary_pk <- function(x,
 #'   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
 #'   result <- build_table(lyt, df = adsl)
 #'   result
+#'
+#' lyt <- basic_table() %>%
+#'   summarize_pk_in_cols(var = "AGE", col_split = TRUE)
+#'   result <- build_table(lyt, df = adsl)
+#'   result
 
 summarize_pk_in_cols <- function(lyt,
-                         var,
-                         ...,
-                         .stats = c("n", "mean", "sd", "cv", "median"),
-                         .labels = c(n = "n", mean = "mean", sd = "sd", cv = "CV % Mean", median = "Median"),
-                         .indent_mods = NULL,
-                         col_split = TRUE) {
+                                 var,
+                                 ...,
+                                 .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
+                                 .labels = c(
+                                 n = "n",
+                                 mean = "mean",
+                                 sd = "sd",
+                                 cv = "CV % Mean",
+                                 geom_mean = "Geometric Mean",
+                                 geom_cv = "CV % Geometric Mean",
+                                 median = "Median",
+                                 min = "Minimum",
+                                 max = "Maximum"
+                                 ),
+                                 .indent_mods = NULL,
+                                 col_split = TRUE) {
 
 
   afun_list <- Map(function(stat) {
