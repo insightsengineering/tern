@@ -150,6 +150,11 @@ s_summary <- function(x,
 #' - `quantiles`: two sample quantiles of `x` (from [quantile()]).
 #' - `iqr`: the [IQR()] of `x`.
 #' - `range`: the [range_noinf()] of `x`.
+#' - `min`: the [max()] of `x`.
+#' - `max`: the [min()] of `x`.
+#' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean()*100`).
+#' - `geom_mean`: the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
+#' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
 #'
 #' @method s_summary numeric
 #' @order 3

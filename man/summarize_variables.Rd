@@ -188,6 +188,11 @@ If \code{x} is of class \code{numeric}, returns a list with named items: \cr
 \item \code{quantiles}: two sample quantiles of \code{x} (from \code{\link[=quantile]{quantile()}}).
 \item \code{iqr}: the \code{\link[=IQR]{IQR()}} of \code{x}.
 \item \code{range}: the \code{\link[=range_noinf]{range_noinf()}} of \code{x}.
+\item \code{min}: the \code{\link[=max]{max()}} of \code{x}.
+\item \code{max}: the \code{\link[=min]{min()}} of \code{x}.
+\item \code{cv}: the coefficient of variation of \code{x}, i.e.: (\code{sd()/mean()*100}).
+\item \code{geom_mean}: the geometric mean of \code{x}, i.e.: (\code{exp(mean(log(x)))}).
+\item \code{geom_cv}: the geometric coefficient of variation of \code{x}, i.e.: (\code{sqrt(exp(sd(log(x))^2) - 1)*100}).
 }
 
 If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with
