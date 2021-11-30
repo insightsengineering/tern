@@ -1,6 +1,6 @@
 # Preparation of the test case.
 library(dplyr)
-ADPC <- random.cdisc.data::cadpc %>% filter(AVAL != 0)
+adpc <- random.cdisc.data::cadpc %>% filter(AVAL != 0)
 
 test_that("PKPT03 is produced correctly", {
 
@@ -9,7 +9,7 @@ test_that("PKPT03 is produced correctly", {
     split_rows_by(var = "PARAM") %>%
     summarize_pk_in_cols(var = "AVAL", col_split = TRUE)
 
-  result <- build_table(l, df = ADPC)
+  result <- build_table(l, df = adpc)
 
   result_matrix <- to_string_matrix(result)
   expected_matrix <- t(structure(
