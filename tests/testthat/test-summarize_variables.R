@@ -633,4 +633,3 @@ test_that("`summarize_vars` works with empty named numeric variables", {
 
   expect_identical(result_matrix, expected_matrix)
 })
-
