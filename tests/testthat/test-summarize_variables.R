@@ -36,7 +36,12 @@ test_that("s_summary return NA for x length 0L", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
     iqr = c(iqr = NA_real_),
-    range = c(min = NA_real_, max = NA_real_)
+    range = c(min = NA_real_, max = NA_real_),
+    min = c(min = NA_real_),
+    max = c(max = NA_real_),
+    cv = c(cv.sd = NA_real_),
+    geom_mean = c(geom_mean = NA_real_),
+    geom_cv = c(geom_cv = NA_real_)
   )
   expect_equivalent(result, expected)
 })
@@ -60,7 +65,12 @@ test_that("s_summary handles NA", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 1), "25% and 75%-ile"),
     iqr = c(iqr = 0),
-    range = c(min = 1, max = 1)
+    range = c(min = 1, max = 1),
+    min = c(min = 1),
+    max = c(max = 1),
+    cv = c(cv.sd = NA_real_),
+    geom_mean = c(geom_mean = 1),
+    geom_cv = c(geom_cv = NA_real_)
   )
   expect_equivalent(result, expected)
 
@@ -79,7 +89,12 @@ test_that("s_summary handles NA", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
     iqr = c(iqr = NA_real_),
-    range = c(min = NA_real_, max = NA_real_)
+    range = c(min = NA_real_, max = NA_real_),
+    min = c(min = NA_real_),
+    max = c(max = NA_real_),
+    cv = c(cv.sd = NA_real_),
+    geom_mean = c(geom_mean = NA_real_),
+    geom_cv = c(geom_cv = NA_real_)
   )
   expect_equivalent(result, expected)
 })
@@ -101,7 +116,12 @@ test_that("s_summary returns right results for n = 2", {
     median_ci = with_label(c(median_ci_lwr = NA_real_, median_ci_upr = NA_real_), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 2), "25% and 75%-ile"),
     iqr = c(iqr = 1),
-    range = c(min = 1, max = 2)
+    range = c(min = 1, max = 2),
+    min = c(min = 1),
+    max = c(max = 2),
+    cv = c(cv.sd = 47.14045),
+    geom_mean = c(geom_mean = 1.414214),
+    geom_cv = c(geom_cv = 52.10922)
   )
   expect_equivalent(result, expected, tolerance = .00001)
 })
@@ -123,7 +143,12 @@ test_that("s_summary returns right results for n = 8", {
     median_ci = with_label(c(median_ci_lwr = 1, median_ci_upr = 10), "Median 95% CI"),
     quantiles = with_label(c(quantile_0.25 = 3.5, quantile_0.75 = 8.5), "25% and 75%-ile"),
     iqr = c(iqr = 5),
-    range = c(min = 1, max = 10)
+    range = c(min = 1, max = 10),
+    min = c(min = 1),
+    max = c(max = 10),
+    cv = c(cv.sd = 53.45225),
+    geom_mean = c(geom_mean = 4.842534),
+    geom_cv = c(geom_cv = 96.61307)
   )
   expect_equivalent(result, expected, tolerance = .00001)
 })
@@ -608,3 +633,4 @@ test_that("`summarize_vars` works with empty named numeric variables", {
 
   expect_identical(result_matrix, expected_matrix)
 })
+

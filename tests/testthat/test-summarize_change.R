@@ -28,7 +28,12 @@ test_that("s_change_from_baseline handles empty data (complete missing for a vis
     ),
     quantiles = with_label(c(quantile_0.25 = NA_real_, quantile_0.75 = NA_real_), "25% and 75%-ile"),
     iqr = c(iqr = NA_real_),
-    range = c(min = NA_real_, max = NA_real_)
+    range = c(min = NA_real_, max = NA_real_),
+    min = c(min = NA_real_),
+    max = c(max = NA_real_),
+    cv = c(cv.sd = NA_real_),
+    geom_mean = c(geom_mean = NaN),
+    geom_cv = c(geom_cv = NA_real_)
   )
 
   expect_identical(result, expected)
@@ -64,7 +69,12 @@ test_that("s_change_from_baseline handles NA in baseline values", {
     ),
     quantiles = with_label(c(quantile_0.25 = 0, quantile_0.75 = 6), "25% and 75%-ile"),
     iqr = c(iqr = 6),
-    range = c(min = 0, max = 6)
+    range = c(min = 0, max = 6),
+    min = c(min = 0),
+    max = c(max = 6),
+    cv = c(cv.sd = 100),
+    geom_mean = c(geom_mean = 0),
+    geom_cv = c(geom_cv = NA_real_)
   )
 
   expect_equal(result, expected, tol = 1e-6)
@@ -103,7 +113,12 @@ test_that("s_change_from_baseline handles baseline substitution", {
       ),
       quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 2), "25% and 75%-ile"),
       iqr = c(iqr = 1),
-      range = c(min = 1, max = 2)
+      range = c(min = 1, max = 2),
+      min = c(min = 1),
+      max = c(max = 2),
+      cv = c(cv.sd = 47.14045),
+      geom_mean = c(geom_mean = 1.414214),
+      geom_cv = c(geom_cv = 52.10922)
     ),
     # Here we take the summary of the 2 baseline values.
     `TRUE` = list(
@@ -122,7 +137,13 @@ test_that("s_change_from_baseline handles baseline substitution", {
       ),
       quantiles = with_label(c(quantile_0.25 = 1, quantile_0.75 = 4), "25% and 75%-ile"),
       iqr = c(iqr = 3),
-      range = c(min = 1, max = 4)
+      range = c(min = 1, max = 4),
+      min = c(min = 1),
+      max = c(max = 4),
+      cv = c(cv.sd = 84.85281),
+      geom_mean = c(geom_mean = 2),
+      geom_cv = c(geom_cv = 127.0458)
+
     )
   )
 
