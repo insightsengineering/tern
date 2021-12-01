@@ -75,8 +75,8 @@ summarize_pk_in_cols <- function(lyt,
                                  .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
                                  .labels = c(
                                  n = "n",
-                                 mean = "mean",
-                                 sd = "sd",
+                                 mean = "Mean",
+                                 sd = "SD",
                                  cv = "CV % Mean",
                                  geom_mean = "Geometric Mean",
                                  geom_cv = "CV % Geometric Mean",
@@ -87,11 +87,21 @@ summarize_pk_in_cols <- function(lyt,
                                  .indent_mods = NULL,
                                  col_split = TRUE) {
 
+  sum_format <- c(n = "xx.",
+                  mean = "xx.xx",
+                  sd = "xx.xx",
+                  median = "xx.xx",
+                  cv = "xx.x",
+                  min = "xx.xx",
+                  max = "xx.xx",
+                  geom_mean = "xx.xx",
+                  geom_cv = "xx.x")
+
   afun_list <- Map(function(stat) {
     make_afun(
       s_summary_pk,
       .stats = stat,
-      .formats = summary_formats()[names(summary_formats()) == stat])
+      .formats = sum_format[names(sum_format) == stat])
     },
     stat = .stats)
 
