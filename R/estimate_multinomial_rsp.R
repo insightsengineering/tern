@@ -35,7 +35,7 @@ d_onco_rsp_label <- function(x) { # nousage # nolint
   )
 
   assert_that(all(x %in% names(desc)))
-  factor(desc[x], levels = desc[x])
+  factor(desc[x], levels = unique(desc[x]))
 }
 
 #' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that
