@@ -2,20 +2,19 @@
 test_that("d_onco_rsp_label provide right response labels", {
   rsp <- c("CR", "NE", "PR")
   result <- d_onco_rsp_label(rsp)
-  expected <- c(
-    CR = "Complete Response (CR)", NE = "Not Evaluable (NE)", PR = "Partial Response (PR)"
+  expected <- factor(
+    c(CR = "Complete Response (CR)", NE = "Not Evaluable (NE)", PR = "Partial Response (PR)"),
+    levels = c("Complete Response (CR)", "Not Evaluable (NE)", "Partial Response (PR)")
   )
-
   expect_identical(result, expected)
 })
 
 test_that("d_onco_rsp_label describe label with x being a factor", {
   a <- factor(c("CR", "SD", "PR", "PD", "NE"))
   result <- d_onco_rsp_label(a)
-  expected <- c(
-    CR = "Complete Response (CR)", SD = "Stable Disease (SD)",
-    PR = "Partial Response (PR)", PD = "Progressive Disease (PD)",
-    NE = "Not Evaluable (NE)"
+  expected <- factor(
+    c(CR = "Complete Response (CR)", SD = "Stable Disease (SD)", PR = "Partial Response (PR)",
+      PD = "Progressive Disease (PD)", NE = "Not Evaluable (NE)")
   )
   expect_identical(result, expected)
 })
