@@ -14,9 +14,7 @@ test_that("d_onco_rsp_label describe label with x being a factor", {
   result <- d_onco_rsp_label(a)
   expected <- factor(
     c(CR = "Complete Response (CR)", SD = "Stable Disease (SD)", PR = "Partial Response (PR)",
-      PD = "Progressive Disease (PD)", NE = "Not Evaluable (NE)"),
-    levels = c(CR = "Complete Response (CR)", SD = "Stable Disease (SD)", PR = "Partial Response (PR)",
-               PD = "Progressive Disease (PD)", NE = "Not Evaluable (NE)")
+      PD = "Progressive Disease (PD)", NE = "Not Evaluable (NE)")
   )
   expect_identical(result, expected)
 })
