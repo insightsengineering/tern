@@ -46,7 +46,7 @@ s_count_values.character <- function(x,
   if (na.rm) x <- x[!is.na(x)]
   is_in_values <- x %in% values
   assertthat::assert_that(
-    noNA(is_in_values)
+    assertthat::noNA(is_in_values)
   )
   s_summary(is_in_values, ...)
 }

@@ -221,7 +221,7 @@ fct_discard <- function(x, discard) {
   assertthat::assert_that(
     is.factor(x),
     is.character(discard),
-    noNA(discard)
+    assertthat::noNA(discard)
   )
   new_obs <- x[!(x %in% discard)]
   new_levels <- setdiff(levels(x), discard)

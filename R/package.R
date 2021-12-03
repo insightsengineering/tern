@@ -7,6 +7,7 @@
 #' @import rtables
 #' @import utils.nest
 #' @importFrom assertthat assert_that
+#' @importFrom broom tidy
 #' @importFrom ggplot2 ggplot
 #' @importFrom magrittr %>%
 #' @importFrom methods is
